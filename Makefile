@@ -159,6 +159,10 @@ test-semantics: build
 	python3 tests/semantics/eager_fatal_state_review.py
 	python3 tests/semantics/eager_fatal_precision_state.py
 	python3 tests/semantics/eager_fiber_state.py
+	python3 tests/semantics/weak_reference_sources.py
+	python3 tests/semantics/weak_reference_state.py
+	python3 tests/semantics/weak_reference_review.py
+	python3 tests/semantics/weak_reference_state_review.py
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
 	python3 tests/semantics/scoped_callables_protocol.py

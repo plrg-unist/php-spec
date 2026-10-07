@@ -8,9 +8,9 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 ## Current checkpoint
 
 The canonical source includes accepted ArrayAccess292 (`1d0f8ea23`) and 304
-(`0f2ecffc6`), plus reviewed eager destruction270, with 276 modules on baseline
+(`0f2ecffc6`), plus reviewed eager destruction270 and WeakReference296, with 277 modules on baseline
 `38f1dfaa045f`. Independently accepted
-private milestones 286, 288, 289, 290, 291, 293, 294, 296 and 297 await
+private milestones 286, 288, 289, 290, 291, 293, 294 and 297 await
 ordered Git integration. Other private work covers 295, 298, 299 and 300, with
 301–303 in development. Held 279 work and user-paused return verification remain
 set aside; unaccepted return changes stay held. Full core and final combined
@@ -27,10 +27,22 @@ assertions and the separate fatal/actual-parent cuts retain their recorded input
 in the [ledger](coverage/semantics/eager-destructors-review.json). The actual Array
 warning/cleanup original now agrees and rejects a forged source-marker suffix.
 The [contract](docs/semantics/SOURCE-EAGER-DESTRUCTORS.md) keeps active destructor
-Fiber transfer, compound Stringable reception, GC, weak references, output buffers
+Fiber transfer, compound Stringable reception, GC, wider weak protocols, output buffers
 and later freeing open. Actual 292/304 composition passes strict-SL initialization
 and one new exact returned-object lifetime source at276, with stable inputs;
 earlier cuts gain no renewed execution credit.
+
+WeakReference296 memoizes allocated wrappers using nonowning immutable semantic
+target IDs. `get` copies a live target into a genuine strong result; destructor
+resurrection stays live, while actual free clears weak lookup before child
+retirement. Forbidden direct NEW preserves genuine pre-argument candidates and
+validated parked stacks. Twenty-one exact originals and nine reached cuts/344
+physical premises retain their private275 inputs in the
+[ledger](coverage/semantics/weak-reference-review.json); five Unsupported controls
+earn zero agreement. The [contract](docs/semantics/WEAK-REFERENCES.md) keeps
+pending-carrier unwind, deferred construction, wider consumers, GC and WeakMap
+open. Actual292/304/270 composition passes strict277 initialization and one new
+exact weak lifetime original, with stable inputs and separate recorded cuts.
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.

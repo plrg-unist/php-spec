@@ -1,0 +1,344 @@
+;; Zend/zend_weakrefs.c retains a raw referent, with one live wrapper per object.
+;; Semantic object IDs never reuse. Membership becomes false at actual free entry,
+;; before outgoing properties retire; destructor entry and resurrection keep it.
+dec $weakref_at(pstate, nat) : pobject?
+def $weakref_at(S, n) = (WEAKREFERENCE n_target?)
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $weakref_at(S, n) = eps -- otherwise
+def $weakref_object(WEAKREFERENCE n_target?) = true
+def $object_name(S, n) = $ptascii("WeakReference") -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $getclass_live_object(S, n) = true -- if $weakref_at(S, n) =/= eps
+def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("weakreference"))
+  -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $weakref_pair(S, n_left, n_right) = true
+  -- if S.OBJECTS[n_left] = WEAKREFERENCE n_target_left?
+  -- if S.OBJECTS[n_right] = WEAKREFERENCE n_target_right?
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS eps, NEXT 0, POSITIONS eps, SERIAL 0})
+  -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $clone_value(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Trying to clone an uncloneable object of class WeakReference"), z)
+  -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+
+dec $weakref_find(pstate, pnode*, nat) : nat?
+def $weakref_find(S, eps, n_target) = eps
+def $weakref_find(S, (HOBJECT n) :: pnode_tail*, n_target) = (n)
+  -- if S.OBJECTS[n] = WEAKREFERENCE (n_target)
+def $weakref_find(S, (HOBJECT n) :: pnode_tail*, n_target) = $weakref_find(S, pnode_tail*, n_target)
+  -- if S.OBJECTS[n] =/= WEAKREFERENCE (n_target)
+def $weakref_find(S, (HCELL n) :: pnode_tail*, n_target) = $weakref_find(S, pnode_tail*, n_target)
+def $weakref_find(S, (HARRAY n) :: pnode_tail*, n_target) = $weakref_find(S, pnode_tail*, n_target)
+dec $weakref_done(pstate, pvalue) : pstate
+dec $weakref_create(pstate, nat) : pstate
+def $weakref_create(S, n_target) = $weakref_done(S, POBJECT n)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_target) = (n)
+def $weakref_create(S, n_target) = $weakref_done(S[.OBJECTS = S.OBJECTS ++ [WEAKREFERENCE (n_target)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], POBJECT n)
+  -- if $weakref_find(S, S.ALLOCATIONS, n_target) = eps
+  -- if n = |S.OBJECTS|
+dec $weakref_get(pstate, nat) : pvalue
+def $weakref_get(S, n) = POBJECT n_target
+  -- if $weakref_at(S, n) = (WEAKREFERENCE (n_target))
+  -- if (HOBJECT n_target) <- S.ALLOCATIONS
+def $weakref_get(S, n) = PNULL -- otherwise
+def $weakref_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+
+def $weakref_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_WEAKREF_CREATE, INTRINSIC_WEAKREF_GET, INTRINSIC_WEAKREF_CONSTRUCT])
+def $weakref_static(pintrinsic) = (pintrinsic = INTRINSIC_WEAKREF_CREATE)
+def $config_kind(pintrinsic) = true -- if $weakref_kind(pintrinsic)
+def $intrinsic_name(INTRINSIC_WEAKREF_CREATE) = $ptascii("WeakReference::create")
+def $intrinsic_name(INTRINSIC_WEAKREF_GET) = $ptascii("WeakReference::get")
+def $intrinsic_name(INTRINSIC_WEAKREF_CONSTRUCT) = $ptascii("WeakReference::__construct")
+def $config_required(INTRINSIC_WEAKREF_CREATE) = 1
+def $config_required(INTRINSIC_WEAKREF_GET) = 0
+def $config_required(INTRINSIC_WEAKREF_CONSTRUCT) = 0
+def $config_parameter(INTRINSIC_WEAKREF_CREATE, ptbytes) = (0) -- if ptbytes = $ptascii("object")
+def $config_parameter_name(INTRINSIC_WEAKREF_CREATE, 0) = $ptascii("object")
+dec $weakref_method(ptbytes) : pintrinsic?
+def $weakref_method(ptbytes) = (INTRINSIC_WEAKREF_CREATE) -- if $ptlc(ptbytes) = $ptascii("create")
+def $weakref_method(ptbytes) = (INTRINSIC_WEAKREF_GET) -- if $ptlc(ptbytes) = $ptascii("get")
+def $weakref_method(ptbytes) = (INTRINSIC_WEAKREF_CONSTRUCT) -- if $ptlc(ptbytes) = $ptascii("__construct")
+def $weakref_method(ptbytes) = eps -- otherwise
+dec $weakref_method_name(pintrinsic) : ptbytes
+def $weakref_method_name(INTRINSIC_WEAKREF_CREATE) = $ptascii("create")
+def $weakref_method_name(INTRINSIC_WEAKREF_GET) = $ptascii("get")
+def $weakref_method_name(INTRINSIC_WEAKREF_CONSTRUCT) = $ptascii("__construct")
+dec $weakref_static_class(pstate, porigin, phpType19) : bool
+def $weakref_static_class(S, PORIGIN n pcpath, phpType19) = true
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes, eps))
+  -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("weakreference")
+def $weakref_static_class(S, porigin, phpType19) = true
+  -- if ~$ppscoped_named(phpType19)
+  -- if phpType19 = expression
+  -- if $parser_literal(expression) = eps
+def $weakref_static_class(S, porigin, phpType19) = true
+  -- if ~$ppscoped_named(phpType19)
+  -- if phpType19 = expression
+  -- if $parser_literal(expression) = (PSTRING ptbytes)
+  -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("weakreference")
+def $weakref_static_class(S, porigin, phpType19) = false -- otherwise
+dec $weakref_new_site(pstate, porigin) : bool
+def $weakref_new_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
+  -- if $new_source_name(S, porigin) = (ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("weakreference")
+  -- if ~$ppfirstclass(phpType7*)
+def $weakref_new_site(S, porigin) = false -- otherwise
+dec $weakref_site(pstate, porigin, pintrinsic) : bool
+def $weakref_site(S, porigin, INTRINSIC_WEAKREF_CONSTRUCT) = true -- if $weakref_new_site(S, porigin)
+dec $weakref_method_site(pstate, porigin, pintrinsic) : bool
+def $weakref_method_site(S, porigin, pintrinsic) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $weakref_method_name(pintrinsic))
+  -- if ~$ppfirstclass(phpType7*)
+def $weakref_method_site(S, porigin, pintrinsic) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $weakref_method_name(pintrinsic))
+  -- if ~$ppfirstclass(phpType7*)
+def $weakref_method_site(S, porigin, pintrinsic) = false -- otherwise
+def $weakref_any_method_site(S, porigin) = ($weakref_method_site(S, porigin, INTRINSIC_WEAKREF_CREATE) \/ $weakref_method_site(S, porigin, INTRINSIC_WEAKREF_GET) \/ $weakref_method_site(S, porigin, INTRINSIC_WEAKREF_CONSTRUCT))
+def $weakref_site(S, porigin, pintrinsic) = true -- if $weakref_method_site(S, porigin, pintrinsic)
+def $weakref_site(S, porigin, pintrinsic) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $weakref_static(pintrinsic)
+  -- if $weakref_static_class(S, porigin, phpType19)
+  -- if $method_source_name(phpType20, $weakref_method_name(pintrinsic))
+  -- if ~$ppfirstclass(phpType7*)
+def $weakref_site(S, porigin, pintrinsic) = false -- otherwise
+def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
+  -- if $weakref_new_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
+def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $weakref_site(S, porigin, INTRINSIC_WEAKREF_CREATE)
+
+dec $weakref_start(pstate, pintrinsic, nat?, int, bool) : pstate
+def $weakref_start(S, pintrinsic, n?, z, true) = S[.TODO = [CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n?, SELECTION eps, LINE z, PACKS eps}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = ptask :: ptask_tail*
+def $weakref_start(S, pintrinsic, n?, z, false) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n?, SELECTION eps, LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $weakref_start(S_read, pintrinsic, (n), z, true)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $weakref_at(S_read, n) =/= eps
+  -- if $weakref_method(ptbytes) = (pintrinsic)
+  -- if ~$ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "capture of internal WeakReference API target"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $weakref_at(S_read, n) =/= eps
+  -- if $ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method WeakReference::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $weakref_at(S_read, n) =/= eps
+  -- if $weakref_method(ptbytes) = eps /\ ~$ppfirstclass(phpType7*)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $weakref_start(S, INTRINSIC_WEAKREF_CREATE, eps, z, true)
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("weakreference")
+  -- if $weakref_method(ptbytes) = (INTRINSIC_WEAKREF_CREATE)
+  -- if ~$ppfirstclass(phpType7*)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Non-static method WeakReference::") ++ $weakref_method_name(pintrinsic) ++ $ptascii("() cannot be called statically"), z)
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("weakreference")
+  -- if $weakref_method(ptbytes) = (pintrinsic)
+  -- if ~$weakref_static(pintrinsic) /\ ~$ppfirstclass(phpType7*)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined method WeakReference::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("weakreference")
+  -- if $weakref_method(ptbytes) = eps /\ ~$ppfirstclass(phpType7*)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "capture of internal WeakReference API target"]
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("weakreference")
+  -- if $ppfirstclass(phpType7*)
+def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING ($ptascii("WeakReference")))]
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PSTRING ptbytes)
+  -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("weakreference")
+
+def $new_has_ctor(S, ptbytes) = true -- if $ptlc(ptbytes) = $ptascii("weakreference")
+dec $weakref_deferred_new(pstate) : bool
+def $weakref_deferred_new(S) = true
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_ast_constructor_context(S, pconstantcontext)
+  -- if S.ORIGIN = (porigin)
+  -- if $weakref_new_site(S, porigin)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+def $weakref_deferred_new(S) = false -- otherwise
+def $new_class(S, ptbytes, z) = S[.OBJECTS = S.OBJECTS ++ [WEAKREFERENCE eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ptlc(ptbytes) = $ptascii("weakreference")
+  -- if ~$weakref_deferred_new(S)
+  -- if n = |S.OBJECTS|
+def $new_class(S, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakReference deferred constructor initializer"]
+  -- if $ptlc(ptbytes) = $ptascii("weakreference")
+  -- if $weakref_deferred_new(S)
+def $constructor_start_ready(S, ptbytes, phpType7*, z) = S_ready[.TODO = (CONFIG_ARGS pconfigcall) :: (CTOR_RESULT n) :: ptask_tail*]
+  -- if $ptlc(ptbytes) = $ptascii("weakreference")
+  -- if S_new = $new_class(S, ptbytes, $new_allocation_line(S, z))
+  -- if S_new.RESULT = KNOWN (POBJECT n)
+  -- if S_ready = $weakref_start(S_new, INTRINSIC_WEAKREF_CONSTRUCT, (n), z, false)
+  -- if S_ready.TODO = (CONFIG_ARGS pconfigcall) :: ptask_tail*
+def $ctor_result_valid(S, n) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $weakref_new_site(S, porigin)
+  -- if $weakref_at(S, n) = (WEAKREFERENCE eps)
+def $config_selected_valid(S, pconfigcall) = true
+  -- if $weakref_kind(pconfigcall.KIND) /\ pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+  -- if $weakref_static(pconfigcall.KIND) \/ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $weakref_method_site(S, pconfigcall.SITE, pconfigcall.KIND) \/ (pconfigcall.KIND = INTRINSIC_WEAKREF_CONSTRUCT /\ n_target? = eps /\ $weakref_new_site(S, pconfigcall.SITE))
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_CREATE
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps
+  -- if $origin_node(S.SOURCES, pconfigcall.SITE) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $weakref_site(S, pconfigcall.SITE, pconfigcall.KIND)
+def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $weakref_method_name(pconfigcall.KIND), CLASS ($ptascii("WeakReference")), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $weakref_kind(pconfigcall.KIND)
+  -- if $weakref_static(pconfigcall.KIND)
+def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $weakref_method_name(pconfigcall.KIND), CLASS ($ptascii("WeakReference")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $weakref_kind(pconfigcall.KIND) /\ ~$weakref_static(pconfigcall.KIND)
+dec $weakref_receive(pstate, pconfigcall) : pstate
+rule PhpStep/weakref-config-invoke: S ~> $weakref_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $weakref_kind(pconfigcall.KIND) /\ $config_invoke_valid(S, pconfigcall)
+def $config_receive(S, pconfigcall) = $weakref_receive(S, pconfigcall) -- if $weakref_kind(pconfigcall.KIND)
+def $weakref_receive(S, pconfigcall) = $config_error(S, pconfigcall, "Error", $ptascii("Direct instantiation of WeakReference is not allowed, use WeakReference::create instead"))
+  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_CONSTRUCT
+def $weakref_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("() expects exactly ") ++ $decimal_integer($config_required(pconfigcall.KIND)) ++ $ptascii(" argument") ++ $config_plural($config_required(pconfigcall.KIND)) ++ $ptascii(", ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND =/= INTRINSIC_WEAKREF_CONSTRUCT
+  -- if |pconfigcall.SENT| =/= $config_required(pconfigcall.KIND)
+def $weakref_receive(S, pconfigcall) = $config_error(S, pconfigcall, "TypeError", $ptascii("WeakReference::create(): Argument #1 ($object) must be of type object, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
+  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_CREATE
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if ~$config_object(pvalue)
+def $weakref_receive(S, pconfigcall) = $weakref_create(S, n)
+  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_CREATE
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+def $weakref_receive(S, pconfigcall) = $weakref_done(S, $weakref_get(S, n))
+  -- if pconfigcall.KIND = INTRINSIC_WEAKREF_GET /\ pconfigcall.SENT = eps
+  -- if pconfigcall.OWNER = (n)
+
+dec $weakref_init_call(pstate, nat, pconfigcall) : bool
+;; A NEW continuation returns the exact object selected before its arguments.
+def $ctor_pair_target(S, CONFIG_ARGS pconfigcall) = (n)
+  -- if pconfigcall.OWNER = (n)
+  -- if $weakref_init_call(S, n, pconfigcall)
+def $ctor_pair_target(S, CONFIG_SEND pconfigcall) = (n)
+  -- if pconfigcall.OWNER = (n)
+  -- if $weakref_init_call(S, n, pconfigcall)
+def $ctor_pair_target(S, CONFIG_INVOKE pconfigcall) = (n)
+  -- if pconfigcall.OWNER = (n)
+  -- if $weakref_init_call(S, n, pconfigcall)
+def $ctor_pair_target(S, CONFIG_UNPACK_PREP pconfigcall) = (n)
+  -- if pconfigcall.OWNER = (n)
+  -- if $weakref_init_call(S, n, pconfigcall)
+def $ctor_pair_target(S, CONFIG_UNPACK_NEXT pconfigcall poperand n_index) = (n)
+  -- if pconfigcall.OWNER = (n)
+  -- if $weakref_init_call(S, n, pconfigcall)
+def $ctor_pair_target(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = (n)
+  -- if S_view = S[.ORIGIN = pdestructionoperation.ORIGIN]
+  -- if $ctor_pair_target(S_view, pdestructionoperation.SOURCE) = (n)
+  -- if S.OBJECTS[n] = WEAKREFERENCE eps
+
+;; Failed NEW retains its original candidate only in the actual throw release.
+dec $weakref_failed_release(pstate, nat, pdestructionrelease) : bool
+def $weakref_failed_release(S, n, pdestructionrelease) = true
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
+  -- if (DESTRUCTION_VALUE (HOBJECT n)) <- pdestructionrelease.JOBS
+  -- if n <- S.DESTRUCTION.CALLED
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_error
+  -- if pdestructionoperation.PENDING = (n_error)
+  -- if pdestructionoperation.ORIGIN = (porigin)
+  -- if $weakref_new_site(S, porigin)
+def $weakref_failed_release(S, n, pdestructionrelease) = false -- otherwise
+
+;; The only null-born wrapper is a genuine, still-pending forbidden constructor.
+dec $weakref_init_task(pstate, nat, ptask) : bool
+def $weakref_init_task(S, n, CONFIG_ARGS pconfigcall) = ($weakref_init_call(S, n, pconfigcall))
+def $weakref_init_task(S, n, CONFIG_SEND pconfigcall) = ($weakref_init_call(S, n, pconfigcall))
+def $weakref_init_task(S, n, CONFIG_INVOKE pconfigcall) = ($weakref_init_call(S, n, pconfigcall))
+def $weakref_init_task(S, n, CONFIG_UNPACK_PREP pconfigcall) = ($weakref_init_call(S, n, pconfigcall))
+def $weakref_init_task(S, n, CONFIG_UNPACK_NEXT pconfigcall poperand n_index) = ($weakref_init_call(S, n, pconfigcall))
+def $weakref_init_task(S, n, DESTRUCTOR_RELEASE pdestructionrelease) = $weakref_failed_release(S, n, pdestructionrelease)
+def $weakref_init_task(S, n, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $weakref_init_task(S[.ORIGIN = pdestructionoperation.ORIGIN], n, pdestructionoperation.SOURCE)
+def $weakref_init_task(S, n, CTOR_RESULT n) = ($weakref_new_site(S, porigin)) -- if S.ORIGIN = (porigin)
+def $weakref_init_task(S, n, ptask) = false -- otherwise
+def $weakref_init_call(S, n, pconfigcall) = (pconfigcall.KIND = INTRINSIC_WEAKREF_CONSTRUCT /\ pconfigcall.OWNER = (n) /\ pconfigcall.SELECTION = eps /\ $weakref_new_site(S, pconfigcall.SITE))
+dec $weakref_init_tasks(pstate, nat, ptask*) : bool
+def $weakref_init_tasks(S, n, eps) = false
+def $weakref_init_tasks(S, n, ptask :: ptask_tail*) = ($weakref_init_task(S, n, ptask) \/ $weakref_init_tasks(S, n, ptask_tail*))
+dec $weakref_init_frames(pstate, nat, pframe*) : bool
+def $weakref_init_frames(S, n, eps) = false
+def $weakref_init_frames(S, n, pframe :: pframe_tail*) = ($weakref_init_tasks($constant_frame_scope(S, pframe, pframe_tail*), n, pframe.TODO) \/ $weakref_init_frames(S, n, pframe_tail*))
+dec $weakref_init_vm(pstate, nat, pfibervm) : bool
+def $weakref_init_vm(S, n, pfibervm) = ($weakref_init_tasks(S_view, n, pfibervm.TODO) \/ $weakref_init_frames(S_view, n, pfibervm.FRAMES))
+  -- if S_view = $fiber_vm_restore(S, pfibervm)
+dec $weakref_init_carrier(pstate, nat, pnode) : bool
+def $weakref_init_carrier(S, n, HOBJECT n_carrier) = true
+  -- if S.OBJECTS[n_carrier] = FIBER pfiber
+  -- if pfiber.VM = (pfibervm)
+  -- if $fiber_record_valid(S, n_carrier, pfiber)
+  -- if $weakref_init_vm(S, n, pfibervm)
+def $weakref_init_carrier(S, n, HOBJECT n_carrier) = true
+  -- if S.OBJECTS[n_carrier] = GENERATOR pgenerator
+  -- if pgenerator.FRAME = (pframe)
+  -- if $generator_record_valid(S, pgenerator)
+  -- if $weakref_init_frames(S, n, [pframe])
+def $weakref_init_carrier(S, n, pnode) = false -- otherwise
+dec $weakref_init_carriers(pstate, nat, pnode*) : bool
+def $weakref_init_carriers(S, n, eps) = false
+def $weakref_init_carriers(S, n, pnode :: pnode_tail*) = ($weakref_init_carrier(S, n, pnode) \/ $weakref_init_carriers(S, n, pnode_tail*))
+dec $weakref_init_callers(pstate, nat, pfibercaller*) : bool
+def $weakref_init_callers(S, n, eps) = false
+def $weakref_init_callers(S, n, pfibercaller :: pfibercaller_tail*) = true
+  -- if $fiber_vm_valid(S, pfibercaller.VM, pfibercaller.PREVIOUS, pfibercaller_tail*)
+  -- if $weakref_init_vm(S, n, pfibercaller.VM)
+def $weakref_init_callers(S, n, pfibercaller :: pfibercaller_tail*) = $weakref_init_callers(S, n, pfibercaller_tail*)
+  -- if ~$fiber_vm_valid(S, pfibercaller.VM, pfibercaller.PREVIOUS, pfibercaller_tail*) \/ ~$weakref_init_vm(S, n, pfibercaller.VM)
+dec $weakref_init_pending(pstate, nat) : bool
+def $weakref_init_pending(S, n) = ($weakref_init_tasks(S, n, S.TODO) \/ $weakref_init_frames(S, n, S.FRAMES) \/ $weakref_init_carriers(S, n, S.ALLOCATIONS) \/ $weakref_init_callers(S, n, S.FIBERCALLERS))
+
+;; Saved pending NEW arguments need genuine forced-stack retirement, not a
+;; historical carrier descriptor after its owning allocation has been freed.
+dec $weakref_carrier_candidates(pstate, nat, pnode*) : bool
+dec $weakref_carrier_candidate(pstate, nat, pnode) : bool
+def $weakref_carrier_candidates(S, n_carrier, eps) = false
+def $weakref_carrier_candidates(S, n_carrier, pnode :: pnode_tail*) = ($weakref_carrier_candidate(S, n_carrier, pnode) \/ $weakref_carrier_candidates(S, n_carrier, pnode_tail*))
+def $weakref_carrier_candidate(S, n_carrier, HOBJECT n) = true
+  -- if S.OBJECTS[n] = WEAKREFERENCE eps
+  -- if $weakref_init_carrier(S, n, HOBJECT n_carrier)
+def $weakref_carrier_candidate(S, n_carrier, pnode) = false -- otherwise
+def $weakref_pending_carrier(S, HOBJECT n_carrier) = true
+  -- if (HOBJECT n_carrier) <- S.ALLOCATIONS
+  -- if $weakref_carrier_candidates(S, n_carrier, S.ALLOCATIONS)
+def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "abandoning WeakReference constructor argument stack"]
+  -- if $weakref_pending_carrier(S, pnode)
+
+dec $weakref_records_valid(pstate, pnode*, nat*) : bool
+def $weakref_records_valid(S, eps, n_seen*) = true
+def $weakref_records_valid(S, (HOBJECT n) :: pnode_tail*, n_seen*) = true
+  -- if S.OBJECTS[n] = WEAKREFERENCE (n_target)
+  -- if $(n_target < n) /\ ~(n_target <- n_seen*)
+  -- if $weakref_records_valid(S, pnode_tail*, n_target :: n_seen*)
+def $weakref_records_valid(S, (HOBJECT n) :: pnode_tail*, n_seen*) = true
+  -- if S.OBJECTS[n] = WEAKREFERENCE eps
+  -- if $weakref_init_pending(S, n)
+  -- if $weakref_records_valid(S, pnode_tail*, n_seen*)
+def $weakref_records_valid(S, (HOBJECT n) :: pnode_tail*, n_seen*) = $weakref_records_valid(S, pnode_tail*, n_seen*)
+  -- if ~$weakref_object(S.OBJECTS[n])
+def $weakref_records_valid(S, (HCELL n) :: pnode_tail*, n_seen*) = $weakref_records_valid(S, pnode_tail*, n_seen*)
+def $weakref_records_valid(S, (HARRAY n) :: pnode_tail*, n_seen*) = $weakref_records_valid(S, pnode_tail*, n_seen*)
+def $weakref_records_valid(S, pnode*, n_seen*) = false -- otherwise
+def $closure_live_object_valid(S, n) = true -- if $weakref_at(S, n) =/= eps
+def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $property_live_complete(S, (HOBJECT n) :: pnode*) = $property_live_complete(S, pnode*) -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $weakref_state_valid(S) = $weakref_records_valid(S, S.ALLOCATIONS, eps)

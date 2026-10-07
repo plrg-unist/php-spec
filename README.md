@@ -391,6 +391,16 @@ lifetime stream and rejects a forged source-marker suffix in reached states.
 Active automatic-destruction Fiber transfer, compound Stringable reception, GC,
 output buffers and later request cleanup remain required.
 Full core and a fresh combined offline rebuild remain required.
+
+[WeakReference 296](docs/semantics/WEAK-REFERENCES.md) memoizes live wrappers without
+owning their targets. `get` returns a strong result; resurrection keeps the target
+live, and actual free clears weak lookup before child destruction. Twenty-one
+exact sources and nine reached cuts (344 physical premises) pass; five Unsupported
+controls earn zero agreement. Pending-carrier unwind, deferred construction,
+wider consumers, cycles/explicit GC and WeakMap remain required. Canonical292/304
+composition separately passes strict277 initialization and one exact weak lifetime
+source; earlier cuts retain their inputs.
+
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
 binds exact PHPT/CLI diagnostics and reproducible parser patches. Positional

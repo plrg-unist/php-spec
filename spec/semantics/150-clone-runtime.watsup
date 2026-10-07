@@ -75,9 +75,12 @@ def $clone_object(S, n_source) = $clone_statics($clone_captures($clone_scope(S_n
 dec $clone_is_object(pvalue) : bool
 def $clone_is_object(POBJECT n) = true
 def $clone_is_object(pvalue) = false -- otherwise
+dec $weakref_object(pobject) : bool
+def $weakref_object(pobject) = false -- otherwise
 dec $clone_value(pstate, pvalue, int) : pstate
 def $clone_value(S, POBJECT n, z) = $clone_object(S, n)
   -- if ~$throwable_object(S, n) /\ ~$fiber_object(S.OBJECTS[n])
+  -- if ~$weakref_object(S.OBJECTS[n])
 def $clone_value(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Trying to clone an uncloneable object of class ") ++ $object_name(S, n), z)
   -- if $throwable_object(S, n)
 def $clone_value(S, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("clone(): Argument #1 ($object) must be of type object, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"), z)

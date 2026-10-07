@@ -1,0 +1,214 @@
+{
+  "scope": "WeakReference creation/get identity, nonowning targets, returned ownership, destructor/free timing and authenticated forbidden-NEW candidates.",
+  "status": "independently_reviewed_bounded_runtime_integrated",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "semantic_snapshot": {
+    "base": "4924b3ec5597fc24eb0183427cff28e7b4c5037a",
+    "canonical_parent": "38f1dfaa045fd38bc62c4e489936cc54a9fc8bd3",
+    "reviewed_spec270_sha256": "d85fc9f4f1df452d90fc3f7be8a6b198cfdc9bc0e7a7524fceb51fb427aad908",
+    "private_modules": 275,
+    "source_patch_sha256": "2d86a99f0acd6b7a2faef4fddc0802971f30e2a5cb307a921db0feee07875aef",
+    "source_patch": ".tools/weakref-source-current.patch",
+    "tracked_integration": true
+  },
+  "contract": [
+    "Only allocated WeakReference wrappers memoize an immutable semantic target ID. The target has no ownership edge; get copies a currently allocated target into its ordinary strong result owner. Semantic IDs do not reuse, while native store handles may reuse.",
+    "Destructor entry and resurrection retain allocation membership. Actual free removes membership before outgoing children retire; failed user constructors suppress their destructor but still invalidate the weak target at actual free.",
+    "A direct forbidden NEW allocates before argument effects. Null-born candidates require authentic NEW/config/result or failed-release certificates, including validated allocated saved stacks. Abandoned pending stacks stop before actual carrier free and preserve the exact release owner."
+  ],
+  "validation": {
+    "normal_source_agreements": 21,
+    "author_normal": 15,
+    "independent_normal": 6,
+    "unsupported_controls": 5,
+    "reached_cuts": 9,
+    "physical_main_premises": 344,
+    "author_physical": 245,
+    "independent_physical": 99,
+    "counting": "Three setup premises per reached case are included. Distinct logical assertion credit is not claimed; each original source agreement is counted once.",
+    "source_cuts": [
+      {
+        "role": "memoized identity",
+        "agreements": 1,
+        "report": ".tools/shutdown-review-39_82hx2/report.json",
+        "context": ".tools/weakref-first-15-stpiywwy/context.json",
+        "patch": "9e7c123e4e9426c214b7b09fc417763d26da830f54a58f1cd7f9aebea63e608c"
+      },
+      {
+        "role": "failed-candidate ordered retirement",
+        "agreements": 1,
+        "report": ".tools/shutdown-review-lf9bu1st/report.json",
+        "record": ".tools/weakref-selected-15-52d3b88_/report.json",
+        "patch": "6acc511f75c8cf8eea1f14c8426978adc811f81117c8f4c1d6dfa1e7d716c2c5"
+      },
+      {
+        "role": "remaining author originals",
+        "agreements": 13,
+        "controls": 3,
+        "report": ".tools/shutdown-review-1mpf1jek/report.json",
+        "record": ".tools/weakref-selected-15-8k6lkoua/report.json"
+      },
+      {
+        "role": "independent originals",
+        "agreements": 6,
+        "report": ".tools/shutdown-review-4kdpmam5/report.json",
+        "record": ".tools/weakref-selected-15-vlbd5wxx/report.json"
+      },
+      {
+        "role": "pending-carrier abort",
+        "agreements": 0,
+        "controls": 2,
+        "report": ".tools/shutdown-review-kdb13xvl/report.json",
+        "record": ".tools/weakref-selected-15-d5bl42ck/report.json"
+      }
+    ],
+    "state_cuts": [
+      {
+        "role": "authentic failed constructor release",
+        "premises": [
+          46
+        ],
+        "report": ".tools/shutdown-state-review-_u3ui5od/report.json",
+        "record": ".tools/weakref-selected-15-um4ojoa0/report.json",
+        "patch": "6acc511f75c8cf8eea1f14c8426978adc811f81117c8f4c1d6dfa1e7d716c2c5"
+      },
+      {
+        "role": "stop before Fiber/Generator pending-stack free",
+        "premises": [
+          41,
+          41
+        ],
+        "report": ".tools/shutdown-state-review-0b412xkm/report.json",
+        "record": ".tools/weakref-selected-15-b_gat0zu/report.json"
+      },
+      {
+        "role": "nested exact candidate and parked owners",
+        "premises": [
+          47,
+          35,
+          35
+        ],
+        "report": ".tools/shutdown-state-review-_6d4rti1/report.json",
+        "record": ".tools/weakref-selected-15-5lqy4va1/report.json"
+      },
+      {
+        "role": "independent owner-shape, borrowed selector and destructor get",
+        "premises": [
+          33,
+          30,
+          36
+        ],
+        "report": ".tools/shutdown-state-review-annxlje4/report.json",
+        "record": ".tools/weakref-selected-15-d_8d_dk2/report.json"
+      }
+    ],
+    "result": "Original native/model stdout and stderr match in full with normal status/exit0. Unsupported controls return CLI1 with exact reasons and zero agreement. Reached checks return true/newline, exit0 and empty stderr. All recorded selected inputs stayed stable; no timeout, interruption or retained owned process group.",
+    "unchanged_cuts": "Later disjoint pending-carrier stop does not renew the earlier memo/ordered cuts. Original native filenames/bytes are reused; no historical 270 gate is rerun."
+  },
+  "runtime": {
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "framework_pin": "da36ac3c434cd291940293a63da64544307730a3",
+    "identities_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "tests/semantics/_build/default/numeric_runner.exe": "0787d1435876ac0522de9f30f3ae3605858d0c79337b5f2885e48abdb882d1f7",
+      "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d"
+    },
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent"
+    },
+    "caps_seconds": {
+      "native": 30,
+      "production_semantics": 60,
+      "source_outer": 75,
+      "numeric": 120
+    },
+    "jobs": 1,
+    "fresh_combined_offline_rebuild": false
+  },
+  "preserved_failures": [
+    {
+      "reports": [
+        ".tools/weakref-first-15-h06mqni0/report.json",
+        ".tools/weakref-first-15-ze70bxk8/report.json",
+        ".tools/weakref-first-15-k3v9de6d/report.json",
+        ".tools/weakref-first-15-0x7fpxye/report.json",
+        ".tools/weakref-first-15-sl_9tj1_/report.json"
+      ],
+      "reason": "First declaration-order, premise-binding and duplicate-public-validator compiler/init failures remain zero."
+    },
+    {
+      "reports": [
+        ".tools/shutdown-review-jq5psh9w/report.json",
+        ".tools/shutdown-review-hc6shkyq/report.json"
+      ],
+      "reason": "First memo source failures exposed real generic class dispatch overlap and absent Weak method argument ingress; both remain zero."
+    },
+    {
+      "reports": [
+        ".tools/shutdown-state-review-ey7lygso/report.json"
+      ],
+      "reason": "Actual null-born candidate lost constructor-task authority during ordered failed release; exact operation/throw/source certificates now authenticate that disposition."
+    },
+    {
+      "reports": [
+        ".tools/shutdown-state-review-yqsc5sf2/report.json",
+        ".tools/shutdown-state-review-lpzvntm5/report.json",
+        ".tools/shutdown-state-review-umb3dbsx/report.json",
+        ".tools/shutdown-state-review-o37aoazf/report.json"
+      ],
+      "reason": "The first shared-owner selection, genuine post-carrier-free admission failures and terminal-drive fixture mismatch remain zero. Corrected cuts use actual last-owner source states and genuine PhpStep entry, without weakening source/state guards."
+    },
+    {
+      "reports": [
+        ".tools/shutdown-review-ofemyahh/report.json"
+      ],
+      "reason": "Old full Fiber stream match predates the admitted intermediate-free correction; retained without final source agreement credit. Both final abort controls earn zero."
+    },
+    {
+      "reports": [
+        ".tools/shutdown-review-rsmjj501/report.json"
+      ],
+      "reason": "Original native trace observer failure remains zero; corrected original is preserved separately in shutdown-review-l1s02ipj."
+    }
+  ],
+  "raw_recovery": "All raw paths resolve under php-spec/.tools/weakrefs-current-15. The selected record/context files bind actual snapshot, runtime/compiler hashes, CWD/env, argv, caps, elapsed times, exits and raw report paths. No bulky evidence is tracked.",
+  "maintained": {
+    "sources": [
+      "tests/semantics/weak_reference_sources.py",
+      "tests/semantics/weak_reference_review.py"
+    ],
+    "states": [
+      "tests/semantics/weak_reference_state.py",
+      "tests/semantics/weak_reference_state_review.py"
+    ],
+    "commands": [
+      "python3 tests/semantics/weak_reference_sources.py --native-report .tools/shutdown-review-rsmjj501/report.json --native-report .tools/shutdown-review-l1s02ipj/report.json --native-report .tools/shutdown-review-3e_fsh47/report.json --native-report .tools/shutdown-review-rmotr8vy/report.json --native-report .tools/shutdown-review-xe7r5wyf/report.json --native-report .tools/shutdown-review-xbdrgpy1/report.json --native-report .tools/shutdown-review-2n2w5n28/report.json --native-report .tools/shutdown-review-b_wv4o4c/report.json",
+      "python3 tests/semantics/weak_reference_review.py --native-report .tools/shutdown-review-xi59ffcb/report.json --native-report .tools/shutdown-review-rqj189oh/report.json --native-report .tools/shutdown-review-sintjglz/report.json",
+      "python3 tests/semantics/weak_reference_state.py",
+      "python3 tests/semantics/weak_reference_state_review.py"
+    ]
+  },
+  "remaining": [
+    "Final combined validation and fresh offline rebuild",
+    "Cycles, explicit collection, WeakMap and wider WeakReference property/declaration/callable consumers",
+    "Deferred constant-AST Weak constructor and first-class API captures",
+    "Genuine pending-carrier forced unwind after accepted lifecycle implementation; no unaccepted291 import",
+    "Returns verification remains paused; no dependent implementation admitted"
+  ],
+  "canonical_292_304_270_composition": {
+    "parent": "f1cd72774",
+    "modules": 277,
+    "spec296_sha256": "a52e4101a3fbff0b3310a0842d0148c54e6913e6468082987d1c1e3ec56c220f",
+    "record": ".tools/ex-integration-16-296-391ojg0t/report.json",
+    "source_report": ".tools/shutdown-review-53kgfcth/report.json",
+    "case": "returned-arrayaccess-child-weak-retirement",
+    "result": "Strict-SL init true/exit0/empty stderr; exact original-source normal native/model whole stream and exit0; stable affected inputs; original275 cuts are not renewed",
+    "maintained": "tests/semantics/weak_reference_review_cases.json",
+    "reviewer": "exceptions_review_16",
+    "complete_core": false
+  }
+}

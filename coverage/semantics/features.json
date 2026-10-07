@@ -13110,15 +13110,30 @@
     {
       "id": "lifecycle.weak-reference",
       "milestone": "5b",
-      "status": "pending",
-      "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "status": "partial",
+      "dependencies": [
+        "lifecycle.destructor-timing"
       ],
-      "review": null
+      "implementation": [
+        "spec/semantics/296-weak-references.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/257-request-destructors.watsup",
+        "spec/semantics/281-fibers.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/weak_reference_state.py",
+        "tests/semantics/weak_reference_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/weak_reference_sources.py",
+        "tests/semantics/weak_reference_review.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_weakrefs.c",
+        "vendor/php-src/Zend/zend_objects_API.c",
+        "vendor/php-src/Zend/zend_objects.c"
+      ],
+      "review": "Integrated module296 on reviewed270: nonowning immutable semantic target IDs, allocated-wrapper memoization and real strong get results. Resurrection remains live; actual free clears lookup before outgoing child destruction. 21 exact normal originals, 5 zero-agreement Unsupported controls and 9 reached cuts (344 physical premises) retain separate tested snapshots in weak-reference-review.json. Authentic forbidden-NEW candidates survive argument effects and validated parked stacks; actual pending-carrier retirement stops before free. Deferred construction, wider consumers, cycles/explicit GC and WeakMap remain required. Canonical292/304/270 composition separately passes strict277 initialization and one new exact weak lifetime original; earlier cuts retain their inputs and no family closure is claimed."
     },
     {
       "id": "lifecycle.weak-map",

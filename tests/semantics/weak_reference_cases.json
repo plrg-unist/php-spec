@@ -1,0 +1,187 @@
+[
+  {
+    "id": "create-memoizes-live-wrapper",
+    "source": "<?php $o=new stdClass;$w=WeakReference::create($o);$same=WeakReference::create($o);$other=WeakReference::create(new stdClass);echo ($w===$same),\"|\",($w->get()===$o),\"|\",($w==$other),\"|\",(($w instanceof WeakReference)?\"yes\":\"no\"),\"|\",get_class($w),\"|\",((array)$w===[]),\"|\";",
+    "source_sha256": "25d7cc307321ce45f0c51218ae68c75fdd7b5500312836685352a3c62083d5db",
+    "stdout": "1|1|1|yes|WeakReference|1|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "temporary-argument-retires-before-result-use",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\"|\";}}$w=WeakReference::create(new D(\"tmp\"));echo ($w->get()===null),\"|\";",
+    "source_sha256": "7ee9061047d1477b3d16fb8a70d86f5d34e049876b8097b8f5485ef20972e01a",
+    "stdout": "D:tmp|1|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "reused-store-handle-does-not-revive-target",
+    "source": "<?php class D{public $id;function __construct($id){$this->id=$id;}function __destruct(){echo \"D:\",$this->id,\"|\";}}$o=new D(\"old\");$w=WeakReference::create($o);unset($o);$fresh=new D(\"new\");$v=WeakReference::create($fresh);echo ($w->get()===null),\"|\",($w===$v?\"same\":\"new\"),\"|\",($v->get()===$fresh),\"|\";unset($fresh);",
+    "source_sha256": "7b4fb5e1e95f9d4958af280e39a53e2f256cf0da7b9bf7b0ce32475295135077",
+    "stdout": "D:old|1|new|1|D:new|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "static-create-through-instance-borrows-selector",
+    "source": "<?php $o=new stdClass;$w=WeakReference::create($o);$watch=WeakReference::create($w);function drop($x){unset($GLOBALS[\"w\"]);echo ($GLOBALS[\"watch\"]->get()===null?\"gone\":\"live\"),\"|\";return $x;}$fresh=$w->create(drop($o));echo ($watch->get()===null),\"|\",($fresh->get()===$o),\"|\";",
+    "source_sha256": "8380d175fddd96426903c7fe378219104a96a51c739e8a5a83841d5266382d5b",
+    "stdout": "gone|1|1|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "namespace-alias-named-object",
+    "source": "<?php namespace Local;use WeakReference as W;$o=new \\stdClass;$w=W::create(object:$o);echo ($w->get()===$o),\"|\";unset($o);echo ($w->get()===null),\"|\";",
+    "source_sha256": "5e2d456cd20ee2d28ecec8d126e42aa6281946e6ff2f47957ad0ddbc521b96c7",
+    "stdout": "1|1|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "constructor-evaluates-positional-arguments",
+    "source": "<?php function arg(){echo \"A|\";return new stdClass;}try{new WeakReference(arg());}catch(Error $e){echo $e->getMessage(),\"|\";}try{new WeakReference(foo:arg());}catch(Error $e){echo $e->getMessage(),\"|\";}",
+    "source_sha256": "530409ad4eee9cd69d7f5d6d244589e8d5e4a2433c4f8451fe5ff6222bb71757",
+    "stdout": "A|Direct instantiation of WeakReference is not allowed, use WeakReference::create instead|A|Unknown named parameter $foo|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "clone-remains-forbidden",
+    "source": "<?php $o=new stdClass;$w=WeakReference::create($o);try{clone $w;}catch(Error $e){echo $e->getMessage(),\"|\";}echo ($w->get()===$o),\"|\";",
+    "source_sha256": "13c35f7e1a3ae9bd4957f0293aa81ed77858a5c469e2cf94fabf75c520ae3118",
+    "stdout": "Trying to clone an uncloneable object of class WeakReference|1|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "argument-destructor-throw-retirement-has-no-api-frame",
+    "source": "<?php class D{function __destruct(){throw new Exception(\"retire\");}}try{$w=WeakReference::create(new D);}catch(Exception $e){$t=$e->getTrace();echo $e->getMessage(),\"|\",$t[0][\"class\"],$t[0][\"type\"],$t[0][\"function\"],\"|\",(isset($t[1])?\"extra\":\"end\"),\"|\";}echo (isset($w)?\"bound\":\"gone\"),\"|\";",
+    "source_sha256": "a2da20d06d66eead573aedbf271e51ed8f138b7d7402a8c5e7b611bf8c105c2e",
+    "stdout": "retire|D->__destruct|end|gone|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "arity-type-named-static-errors",
+    "source": "<?php $o=new stdClass;$w=WeakReference::create($o);try{WeakReference::create();}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\";}try{WeakReference::create(null);}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\";}try{WeakReference::create($o,1);}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\";}try{WeakReference::create(target:$o);}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\";}try{$w->get(1);}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\";}try{WeakReference::get();}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\";}try{$w->missing();}catch(Throwable $e){echo get_class($e),\":\",$e->getMessage(),\"|\";}",
+    "source_sha256": "1ec996fe693fbf22dcfd1671282fc4083f06edd460e0202604592fca79dcb64a",
+    "stdout": "ArgumentCountError:WeakReference::create() expects exactly 1 argument, 0 given|TypeError:WeakReference::create(): Argument #1 ($object) must be of type object, null given|ArgumentCountError:WeakReference::create() expects exactly 1 argument, 2 given|Error:Unknown named parameter $target|ArgumentCountError:WeakReference::get() expects exactly 0 arguments, 1 given|Error:Non-static method WeakReference::get() cannot be called statically|Error:Call to undefined method WeakReference::missing()|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "api-type-error-keeps-static-api-trace",
+    "source": "<?php try{WeakReference::create(null);}catch(TypeError $e){$t=$e->getTrace();echo $t[0][\"class\"],$t[0][\"type\"],$t[0][\"function\"],\"|\";}",
+    "source_sha256": "2a9cddd94b2e4a45b57ed4bde17a711b206c6d1a1e70dba4fc215f9fc6e4fa09",
+    "stdout": "WeakReference::create|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "forbidden-constructor-candidate-parks-in-fiber",
+    "source": "<?php $f=new Fiber(function(){try{new WeakReference(Fiber::suspend(\"pause\"));}catch(Error $e){echo \"E|\";}});echo $f->start(),\"|held|\";$f->resume();echo \"done\";",
+    "source_sha256": "d008c95b22e94d45a9b56384da6f3ab5971887d1849cfb07f86bfc5198dd108b",
+    "stdout": "pause|held|E|done",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "forbidden-constructor-candidate-parks-in-generator",
+    "source": "<?php function g(){try{new WeakReference(yield \"pause\");}catch(Error $e){echo \"E|\";}}$g=g();echo $g->current(),\"|\";$g->next();echo \"done\";",
+    "source_sha256": "c72bd0ee4c3e9cdd83ad5eb5861aa54f6dbaf7ea510708973065abb1db734485",
+    "stdout": "pause|E|done",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "nested-forbidden-constructors-retain-distinct-candidates",
+    "source": "<?php try{new WeakReference(new WeakReference());}catch(Error $e){echo \"E|\";}echo \"done\";",
+    "source_sha256": "6ffa67d31762e06e9b85a551cc08d0960bba1eead1e88770924f4c168d35c53d",
+    "stdout": "E|done",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "deferred-weak-constructor-stops-before-allocation",
+    "source": "<?php function f($w=new WeakReference()){echo \"bad\";}try{f();}catch(Error $e){echo $e->getMessage();}",
+    "source_sha256": "d63b54ea9f2ab49cef14a98c7ef316f62425a22b911a5d38204b3baedaf0b59b",
+    "stdout": "Direct instantiation of WeakReference is not allowed, use WeakReference::create instead",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "WeakReference deferred constructor initializer"
+  },
+  {
+    "id": "forbidden-constructor-candidate-retires-through-ordered-release",
+    "source": "<?php class D{function __destruct(){}}try{new WeakReference();}catch(Error $e){echo \"E|\";}echo \"done\";",
+    "source_sha256": "12813cd498f8b0a649f9d6f5eb9f705ad18a5037f81b9bafa5a56e2bd6115a3a",
+    "stdout": "E|done",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "computed-api-names-and-dynamic-ordinary-new",
+    "source": "<?php $c=\"WeakReference\";try{new $c;}catch(Error $e){echo \"E|\";}$o=new stdClass;$m=\"create\";$w=WeakReference::$m($o);$g=\"get\";echo ($w->{$g}()===$o),\"|\";",
+    "source_sha256": "4ffdfa5a01128c1b7a1f210f48497623c85cd83ef7af1d69a2929503c9cf808e",
+    "stdout": "E|1|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "static-api-capture-is-explicitly-unsupported",
+    "source": "<?php $f=WeakReference::create(...);echo get_class($f);",
+    "source_sha256": "18bf79a2a22620f2ca51ed878b2ca5310897c9a532f6d79fdc0f4c2a670e2e2a",
+    "stdout": "Closure",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "capture of internal WeakReference API target"
+  },
+  {
+    "id": "instance-api-capture-is-explicitly-unsupported",
+    "source": "<?php $o=new stdClass;$w=WeakReference::create($o);$f=$w->get(...);echo get_class($f);",
+    "source_sha256": "4b2b877e95bbb4322bc48dfad8d80e09352986481432fbf3788d8a04c9216589",
+    "stdout": "Closure",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "capture of internal WeakReference API target"
+  },
+  {
+    "id": "abandon-fiber-with-pending-weak-constructor",
+    "source": "<?php class D{function __destruct(){}}$f=new Fiber(function(){try{new WeakReference(Fiber::suspend(\"pause\"));}catch(Error $e){echo \"BAD|\";}});echo $f->start(),\"|\";unset($f);echo \"END\";",
+    "source_sha256": "e54db0b995fe788a8b5080a27c39a9cb34d257085bd5c7f5e96a3854de546518",
+    "stdout": "pause|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "force-closing a suspended Fiber"
+  },
+  {
+    "id": "abandon-generator-with-pending-weak-constructor",
+    "source": "<?php class D{function __destruct(){}}function g(){try{new WeakReference(yield \"pause\");}catch(Error $e){echo \"BAD|\";}}$g=g();echo $g->current(),\"|\";unset($g);echo \"END\";",
+    "source_sha256": "d3c55030861ccd2e6d3b67a776396679239e19e9268f4b98a761eb154f4d66ba",
+    "stdout": "pause|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "expected_unsupported": "abandoning WeakReference constructor argument stack"
+  }
+]

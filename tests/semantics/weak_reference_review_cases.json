@@ -1,0 +1,71 @@
+[
+  {
+    "id": "review-get-resurrects-until-later-free",
+    "source": "<?php\nclass Target {\n    public function __destruct() {\n        global $weak, $hold, $count;\n        $count += 1;\n        echo \"D\", $count, \":\";\n        echo $weak->get() === $this ? \"live|\" : \"lost|\";\n        $hold = $weak->get();\n    }\n}\n$count = 0;\n$hold = null;\n$object = new Target();\n$weak = WeakReference::create($object);\nunset($object);\necho $weak->get() === $hold ? \"held|\" : \"lost|\";\nunset($hold);\necho $weak->get() === null ? \"gone|\" : \"live|\";\necho $count, \"|END\";\n",
+    "source_sha256": "c27b61a8686830f9e3abb0b92b15b0ccf4a79dd99df2cfb3a5019da7f6cab5d4",
+    "stdout": "D1:live|held|gone|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "review-parent-free-notifies-before-child-destructor",
+    "source": "<?php\nclass ChildObject {\n    public function __destruct() {\n        global $parentWeak;\n        echo $parentWeak->get() === null ? \"C:null|\" : \"C:live|\";\n    }\n}\nclass ParentObject {\n    public $child;\n    public function __construct($child) { $this->child = $child; }\n    public function __destruct() {\n        global $parentWeak;\n        echo $parentWeak->get() === $this ? \"P:live|\" : \"P:lost|\";\n    }\n}\n$child = new ChildObject();\n$parent = new ParentObject($child);\n$parentWeak = WeakReference::create($parent);\nunset($child);\nunset($parent);\necho $parentWeak->get() === null ? \"N|END\" : \"L|END\";\n",
+    "source_sha256": "e49169792935828495f4a500808aad52168ce93fb049be531ec2b33450297002",
+    "stdout": "P:live|C:null|N|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "review-weak-chain-retirement-does-not-own-targets",
+    "source": "<?php\nclass Target { public function __destruct() { echo \"D|\"; } }\n$object = new Target();\n$a = WeakReference::create($object);\n$b = WeakReference::create($a);\n$c = WeakReference::create($b);\necho $b->get() === $a ? \"a|\" : \"wrong|\";\necho $c->get() === $b ? \"b|\" : \"wrong|\";\nunset($b);\necho $c->get() === null ? \"goneb|\" : \"heldb|\";\necho $a->get() === $object ? \"alivea|\" : \"losta|\";\nunset($a);\necho $c->get() === null ? \"stillgone|\" : \"revived|\";\nunset($object);\necho \"END\";\n",
+    "source_sha256": "fdf381129ec72cc2f39b293bbec6dc8b6cf3b9a325e1c27d0bccc594ea0ceebc",
+    "stdout": "a|b|goneb|alivea|stillgone|D|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "review-wrapper-cache-turnover-is-not-a-root",
+    "source": "<?php\nclass Target { public function __destruct() { echo \"T|\"; } }\n$object = new Target();\n$first = WeakReference::create($object);\n$watch = WeakReference::create($first);\n$alias = $first;\nunset($first);\necho $watch->get() === $alias ? \"A|\" : \"lost|\";\nunset($alias);\necho $watch->get() === null ? \"gone|\" : \"held|\";\n$second = WeakReference::create($object);\necho $second->get() === $object ? \"fresh|\" : \"lost|\";\necho $watch->get() === null ? \"stillgone|\" : \"revived|\";\n$memo = WeakReference::create($object);\necho $memo === $second ? \"memo|\" : \"new|\";\nunset($object);\necho $second->get() === null && $memo->get() === null ? \"bothnull|END\" : \"live|END\";\n",
+    "source_sha256": "90068be53511c2865589700c3144b55dccede4eb55294a0e9185d6320467a145",
+    "stdout": "A|gone|fresh|stillgone|memo|T|bothnull|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "review-failed-target-constructor-retires-without-destructor",
+    "source": "<?php\nclass Target {\n    public function __construct() {\n        global $weak;\n        $weak = WeakReference::create($this);\n        echo $weak->get() === $this ? \"ctor:live|\" : \"ctor:lost|\";\n        throw new Exception(\"constructor failed\");\n    }\n    public function __destruct() { echo \"BAD-DESTRUCTOR|\"; }\n}\ntry { new Target(); } catch (Exception $e) { echo \"caught|\"; }\necho $weak->get() === null ? \"null|END\" : \"live|END\";\n",
+    "source_sha256": "b10146d2c5b3c33a4e3b1ad26e2df58564282792cd8288fc2113d6d720499042",
+    "stdout": "ctor:live|caught|null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "review-dynamic-static-class-and-nullsafe-get",
+    "source": "<?php\n$class = \"WeakReference\";\n$object = new stdClass();\n$weak = $class::create($object);\n$memo = $class::create($object);\necho $weak === $memo ? \"memo|\" : \"new|\";\necho $weak?->get() === $object ? \"live|\" : \"lost|\";\nunset($object);\necho $weak?->get() === null ? \"gone|END\" : \"held|END\";\n",
+    "source_sha256": "e7476ee01c16ecd2eaa424a8e32a6bd5006f5ec6d551cc64ea8d16df45e76198",
+    "stdout": "memo|live|gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "returned-arrayaccess-child-weak-retirement",
+    "source": "<?php\nerror_reporting(0);\nclass InnerObject292 implements ArrayAccess {\n    public function __destruct() { echo \"D:inner;\"; }\n    public function offsetExists(mixed $offset): bool { return false; }\n    public function offsetGet(mixed $offset): mixed { return null; }\n    public function offsetSet(mixed $offset,mixed $value): void { echo 'S:',$offset,':',$value,';'; $GLOBALS['written292']=$value; }\n    public function offsetUnset(mixed $offset): void {}\n}\nclass OuterObject292 implements ArrayAccess {\n    public function __destruct() { echo \"D:outer;\"; }\n    public function offsetExists(mixed $offset): bool { return false; }\n    public function offsetGet(mixed $offset): mixed { echo 'G;'; $inner=$GLOBALS['inner292']; unset($GLOBALS['inner292'],$GLOBALS['o292']); return $inner; }\n    public function offsetSet(mixed $offset, mixed $value): void { echo 'WRONGSET;'; }\n    public function offsetUnset(mixed $offset): void { echo 'WRONGUNSET;'; }\n}\n\n$inner292=new InnerObject292; $o292=new OuterObject292;\n$wi292=WeakReference::create($inner292); $wo292=WeakReference::create($o292);\nset_error_handler(function($n,$m) { echo 'WRONGNOTICE;'; return true; },8);\n$r292=($o292[1][7]=13);\nrestore_error_handler();\necho 'R:',$r292,':',$written292,':',(int)isset($inner292),':',(int)isset($o292),';';\necho \"W:\",(int)($wi292->get()===null),\":\",(int)($wo292->get()===null),\";\";\n",
+    "stdout": "G;D:outer;S:7:13;D:inner;R:13:13:0:0;W:1:1;",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "8cd261c228c08657725d9a32a8993d0c10d5ab075475f5070714a2aa74315990",
+    "derived_from": {
+      "path": "tests/semantics/arrayaccess_write_review_cases.py",
+      "id": "nested-returned-object-survives-both-global-retirements",
+      "source_sha256": "fb0c6de81351580bb6dc79e78ddec1f456f8694a8278d33ca9991542830e6e74",
+      "changes": "Adds echoing destructors and WeakReference lookup after the accepted returned-object ownership source."
+    }
+  }
+]

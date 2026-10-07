@@ -800,6 +800,7 @@ def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class
   -- if S_read.RESULT = KNOWN (PSTRING n*)
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("closure")
+  -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("weakreference")
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
@@ -930,6 +931,7 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpTy
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
 def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Class \"") ++ n_class* ++ $ptascii("\" not found"), z)[.TODO = eps]
   -- if $ptlc($typed_callable_name(n_class*)) =/= $ptascii("fiber")
+  -- if $ptlc($typed_callable_name(n_class*)) =/= $ptascii("weakreference")
   -- if $class_named(S.CLASSNAMES, $ptlc(n_class*)) = eps
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__construct") \/ $scoped_internal_ctor_kind(S, phpType19, n_class*) = eps)
   -- if ($ptlc(ptbytes_method) =/= $ptascii("__tostring") \/ $scoped_internal_method_kind(S, phpType19, n_class*, ptbytes_method) = eps)
