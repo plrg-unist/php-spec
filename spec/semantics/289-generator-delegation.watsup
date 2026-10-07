@@ -170,7 +170,9 @@ def $generator_cached_value(S, n, false) = $generator_from_operand(S, poperand)
 def $generator_cached_value(S, n, false) = PNULL
   -- if $generator_from_raw(S, n, $(|S.OBJECTS| + 1)) = eps
 def $generator_cached_value(S, n, true) = $generator_from_key(S, n, $(|S.OBJECTS| + 1))
-def $generator_cache_shape(S, pgenerator) = ((pgenerator.VALUE = eps) = (pgenerator.KEY = eps))
+dec $generator_yield_key_cache_pending(pstate, pgenerator) : bool
+def $generator_yield_key_cache_pending(S, pgenerator) = false -- otherwise
+def $generator_cache_shape(S, pgenerator) = (((pgenerator.VALUE = eps) = (pgenerator.KEY = eps)) \/ $generator_yield_key_cache_pending(S, pgenerator))
   -- if pgenerator.DELEGATE = eps
 def $generator_cache_shape(S, pgenerator) = ($generator_from_code(S, pgenerator, pgeneratorfrom.SITE) /\ $generator_from_cache_valid(S, pgeneratorfrom))
   -- if pgenerator.DELEGATE = (pgeneratorfrom)

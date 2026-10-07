@@ -1,0 +1,153 @@
+;; ZEND_YIELD copies VALUE before reading its delayed key CV. The warning's
+;; continuation owns only the frozen null; the Generator already owns VALUE.
+dec $generator_yield_key_operand(pstate, porigin) : poperand?
+dec $generator_yield_key_read_valid(pstate, nat, porigin, int) : bool
+dec $generator_yield_key_input_valid(pstate, nat, porigin) : bool
+dec $generator_yield_key_task_ids(ptask) : nat*
+dec $generator_yield_key_tasks_ids(ptask*) : nat*
+dec $generator_yield_key_frames_ids(pframe*) : nat*
+dec $generator_yield_key_owner_scope(pstate, nat) : bool
+dec $generator_yield_key_owner_frames(pstate, nat, pframe*) : bool
+dec $generator_yield_key_cache_task(pstate, pgenerator, ptask) : bool
+dec $generator_yield_key_cache_scope(pstate, pgenerator) : bool
+dec $generator_yield_key_cache_frames(pstate, pgenerator, pframe*) : bool
+dec $generator_yield_key_suspend(pstate, nat, porigin, int) : pstate
+
+def $generator_yield_key_operand(S, porigin) = (VARIABLE n_key* z_key)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield (NExprVariable phpType32 metadata_key) phpType5_value metadata)
+  -- if $cv_source_name(S, phpType32) = (n_key*)
+  -- if ~$this_name(n_key*) /\ ~$psautoglobal(n_key*)
+  -- if z_key = $variable_line(phpType32, metadata_key)
+def $generator_yield_key_operand(S, porigin) = eps -- otherwise
+def $generator_yield_key_pending(S) = true
+  -- if S.TODO = (GENERATOR_YIELD_STORE porigin (poperand)) :: ptask*
+  -- if S.ORIGIN = (porigin)
+  -- if $generator_active(S) /\ ~$generator_close_active(S)
+  -- if $generator_yield_site(S, porigin)
+  -- if $generator_yield_key_operand(S, porigin) = (poperand)
+  -- if $error_missing_operand(S, poperand)
+  -- if ~$error_missing_operand(S, S.RESULT)
+
+rule PhpStep/generator-yield-key-cache: S ~> $generator_set(S_value[.TODO = (GENERATOR_YIELD_KEY pgeneratorop.OBJECT porigin z) :: ptask_tail*][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)], pgeneratorop.OBJECT, pgenerator[.VALUE = (pvalue)][.KEY = eps])
+  -- if S.TODO = (GENERATOR_YIELD_STORE porigin (poperand)) :: ptask_tail*
+  -- if $generator_yield_key_pending(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_resumer*
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if z = $generator_yield_line(S, porigin)
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+rule PhpStep/generator-yield-key-value-abrupt: S ~> S_value
+  -- if S.TODO = (GENERATOR_YIELD_STORE porigin (poperand)) :: ptask_tail*
+  -- if $generator_yield_key_pending(S)
+  -- if S_value = $resolve_at(S, S.RESULT, $generator_yield_line(S, porigin))
+  -- if S_value.COMPLETION =/= NORMAL
+
+;; Only an actual running frame and its source key admit the partial cache.
+;; Saved handler frames use the same source/resumer checks as the live frame.
+def $generator_yield_key_read_valid(S, n, porigin, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $generator_active(S) /\ ~$generator_close_active(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask*
+  -- if pgeneratorop.OBJECT = n
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if pgenerator.FRAME = eps /\ pgenerator.RETURN = eps /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.VALUE =/= eps /\ pgenerator.KEY = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.INSTANCE = pgenerator.CLOSURE
+  -- if $generator_yield_site(S, porigin)
+  -- if $generator_yield_key_operand(S, porigin) =/= eps
+  -- if z = $generator_yield_line(S, porigin)
+def $generator_yield_key_read_valid(S, n, porigin, z) = false -- otherwise
+def $generator_yield_key_input_valid(S, n, porigin) = (S.BASE = BASE_VALUE (KNOWN PNULL) /\ (S.RESULT = KNOWN PNULL \/ $generator_yield_key_operand(S, porigin) = (S.RESULT)) /\ $generator_id_count($generator_yield_key_tasks_ids(S.TODO), n) = 1)
+def $generator_yield_key_cache_task(S, pgenerator, GENERATOR_YIELD_KEY n porigin z) = true
+  -- if $generator_yield_key_read_valid(S, n, porigin, z)
+  -- if $generator_yield_key_input_valid(S, n, porigin)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+def $generator_yield_key_cache_task(S, pgenerator, ERROR_READ_RESULT perrorread) = $generator_yield_key_cache_task(S[.RESULT = perrorread.RESULT][.BASE = perrorread.BASE], pgenerator, perrorread.ORIGINAL)
+  -- if $error_read_valid(S, perrorread)
+def $generator_yield_key_cache_task(S, pgenerator, ERROR_HANDLER_INVOKE perrorcall) = $generator_yield_key_cache_task(S, pgenerator, perrorcall.RESUME)
+  -- if $error_call_valid(S, perrorcall)
+def $generator_yield_key_cache_task(S, pgenerator, ERROR_HANDLER_RESULT perrorcall) = $generator_yield_key_cache_task(S, pgenerator, perrorcall.RESUME)
+  -- if $error_call_valid(S, perrorcall)
+def $generator_yield_key_cache_task(S, pgenerator, ptask) = false -- otherwise
+def $generator_yield_key_cache_scope(S, pgenerator) = $generator_yield_key_cache_task(S, pgenerator, ptask)
+  -- if S.TODO = ptask :: ptask_tail*
+def $generator_yield_key_cache_scope(S, pgenerator) = false -- otherwise
+def $generator_yield_key_cache_frames(S, pgenerator, eps) = false
+def $generator_yield_key_cache_frames(S, pgenerator, pframe :: pframe_tail*) = ($generator_yield_key_cache_scope($constant_frame_scope(S, pframe, pframe_tail*), pgenerator) \/ $generator_yield_key_cache_frames(S, pgenerator, pframe_tail*))
+def $generator_yield_key_cache_pending(S, pgenerator) = ($generator_yield_key_cache_scope(S, pgenerator) \/ $generator_yield_key_cache_frames(S, pgenerator, S.FRAMES))
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.VALUE =/= eps /\ pgenerator.KEY = eps /\ pgenerator.DELEGATE = eps
+
+;; Count the live continuation once; ORIGINAL/INPUT remain provenance. The
+;; public node guard pins its exact object even for equal Generator payloads.
+def $generator_yield_key_task_ids(GENERATOR_YIELD_KEY n porigin z) = [n]
+def $generator_yield_key_task_ids(ERROR_READ_RESULT perrorread) = $generator_yield_key_task_ids(perrorread.TASK)
+def $generator_yield_key_task_ids(ERROR_HANDLER_INVOKE perrorcall) = $generator_yield_key_task_ids(perrorcall.RESUME)
+def $generator_yield_key_task_ids(ERROR_HANDLER_RESULT perrorcall) = $generator_yield_key_task_ids(perrorcall.RESUME)
+def $generator_yield_key_task_ids(AT porigin ptask) = $generator_yield_key_task_ids(ptask)
+def $generator_yield_key_task_ids(CHOOSE ptask_true* ptask_false* z) = $generator_yield_key_tasks_ids(ptask_true*) ++ $generator_yield_key_tasks_ids(ptask_false*)
+def $generator_yield_key_task_ids(ptask) = eps -- otherwise
+def $generator_yield_key_tasks_ids(eps) = eps
+def $generator_yield_key_tasks_ids(ptask :: ptask_tail*) = $generator_yield_key_task_ids(ptask) ++ $generator_yield_key_tasks_ids(ptask_tail*)
+def $generator_yield_key_frames_ids(eps) = eps
+def $generator_yield_key_frames_ids(pframe :: pframe_tail*) = $generator_yield_key_tasks_ids(pframe.TODO) ++ $generator_yield_key_frames_ids(pframe_tail*)
+def $generator_yield_key_owner_scope(S, n) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $generator_yield_key_task_ids(ptask) = [n]
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if $generator_yield_key_cache_scope(S, pgenerator)
+def $generator_yield_key_owner_scope(S, n) = false -- otherwise
+def $generator_yield_key_owner_frames(S, n, eps) = false
+def $generator_yield_key_owner_frames(S, n, pframe :: pframe_tail*) = ($generator_yield_key_owner_scope($constant_frame_scope(S, pframe, pframe_tail*), n) \/ $generator_yield_key_owner_frames(S, n, pframe_tail*))
+def $generator_yield_key_node_valid(S, n) = ($generator_id_count($generator_yield_key_tasks_ids(S.TODO) ++ $generator_yield_key_frames_ids(S.FRAMES), n) = 1 /\ ($generator_yield_key_owner_scope(S, n) \/ $generator_yield_key_owner_frames(S, n, S.FRAMES)))
+  -- if $generator_object(S, n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.VALUE =/= eps /\ pgenerator.KEY = eps
+
+def $error_simple_read(GENERATOR_YIELD_KEY n porigin z) = true
+def $error_read_line(GENERATOR_YIELD_KEY n porigin z, z_origin) = z
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = GENERATOR_YIELD_KEY n porigin z
+  -- if $generator_yield_key_read_valid(S, n, porigin, z)
+  -- if $generator_yield_key_operand(S, porigin) = (perrorread.INPUT)
+  -- if perrorread.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if perrorread.LINE = z
+def $task_nodes(GENERATOR_YIELD_KEY n porigin z) = eps
+def $call_task_valid(S, GENERATOR_YIELD_KEY n porigin z) = ($generator_yield_key_read_valid(S, n, porigin, z) /\ $generator_yield_key_input_valid(S, n, porigin))
+def $generator_internal_task(GENERATOR_YIELD_KEY n porigin z) = true
+
+def $generator_yield_key_suspend(S, n, porigin, z) = $restore_frame($generator_set(S_key, n, pgenerator[.FRAME = ($generator_frame(S_key, ptask_tail*))][.PHASE = GENERATOR_PAUSED][.KEY = (pvalue_key)][.INDEX = $generator_index(pgenerator.INDEX, pvalue_key)])[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
+  -- if S.TODO = (GENERATOR_YIELD_KEY n porigin z) :: ptask_tail*
+  -- if $generator_yield_key_read_valid(S, n, porigin, z)
+  -- if $generator_yield_key_input_valid(S, n, porigin)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if S_key = $resolve_at(S, S.RESULT, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN pvalue_key
+def $generator_yield_key_suspend(S, n, porigin, z) = S_key
+  -- if S_key = $resolve_at(S, S.RESULT, z)
+  -- if S_key.COMPLETION =/= NORMAL
+rule PhpStep/generator-yield-key-suspend: S ~> $generator_yield_key_suspend(S, n, porigin, z)
+  -- if S.TODO = (GENERATOR_YIELD_KEY n porigin z) :: ptask_tail*
+  -- if $generator_yield_key_read_valid(S, n, porigin, z)
+  -- if $generator_yield_key_input_valid(S, n, porigin)
+
+;; Zend reinjects into a genuinely delegated child. A parked parent link alone
+;; does not distinguish that invocation from a direct child API call.
+def $generator_yield_warning_throw(S, n_throwable) = S
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask*
+  -- if $generator_from_operation_tasks(S, pgeneratorop, pframe.TODO, pframe.CONTEXT)
+def $error_read_discard(S, ERROR_READ_RESULT perrorread) = $generator_yield_warning_throw(S_cached, n_throwable)
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if perrorread.ORIGINAL = GENERATOR_YIELD_KEY n porigin z
+  -- if $error_read_valid(S, perrorread)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if S_cached = $generator_set(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pgenerator[.KEY = (PNULL)])
