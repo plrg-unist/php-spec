@@ -1,0 +1,163 @@
+{
+  "scope": "First emitted constant echo operand and static-variable assignment origins during ordinary include/eval operand destruction; separate narrow required-core increment.",
+  "status": "private_independently_accepted_source3_entry46",
+  "tested_revision": "a52c3ae4f71bf62e211219aaa5b1ae0a231be83c",
+  "target": "PHP8.5.10 CLI NTS64",
+  "semantic_parent": "Authenticated final-release trace and public admission cut in source-stringable-retirement-review.json.",
+  "source_semantic_root": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-first-emission-semantics-298",
+  "semantic_sha256": {
+    "spec/semantics/298-source-stringable-lifetime.watsup": "47ef1d79f78f03176a253067dcaf92321b5a889dd5a68b6366ce965fc122de11"
+  },
+  "engine_route": "Zend/zend_compile.c::zend_compile_echo compiles the operand before emitting ECHO. zend_compile_assign restores the delayed static-variable lhs line after compiling a constant RHS; this also includes auto-global delayed FETCH_W, and excludes this/GLOBALS.",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1",
+    "include_path": ".:"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "compiler": {
+    "pin": "da36ac3c434cd291940293a63da64544307730a3",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "modules": 276,
+    "exit": 0,
+    "seconds": 3.344068765640259,
+    "fresh_rebuild": false
+  },
+  "caps_seconds": {
+    "compiler": 300,
+    "native": 30,
+    "source_model": 60,
+    "source_outer": 90,
+    "state": 90
+  },
+  "source_command": "python3 .tools/source-stringable-first-emission-check-16.py",
+  "source_raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-first-emission-run-faocga2p/report.json",
+  "source_agreements": 3,
+  "sources": [
+    {
+      "case": "echo",
+      "source_sha256": "d58f91165677dbc463c7dd480d4e5d72fed6a75117ad542bb3c051e027d6ce6c",
+      "native_original": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-first-emission-native-v3mxnnpl/report.json",
+      "seconds": 31.12183713912964,
+      "exit_status": 0,
+      "stdout_equal": true,
+      "stderr_equal": true
+    },
+    {
+      "case": "assignment",
+      "source_sha256": "0dc391a880557a7194a2abcbfa931638c4c2561480d5d2daca12c2550a927cac",
+      "native_original": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-first-emission-native-v3mxnnpl/report.json",
+      "seconds": 32.02783703804016,
+      "exit_status": 0,
+      "stdout_equal": true,
+      "stderr_equal": true
+    },
+    {
+      "case": "eval",
+      "source_sha256": "09a0e4a46ec59189ba02e2363a063c1fbff81695f7800b5ff97b46f2ba9fefc9",
+      "native_original": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-first-emission-eval-native-703etem6/report.json",
+      "seconds": 15.292310953140259,
+      "exit_status": 0,
+      "stdout_equal": true,
+      "stderr_equal": true
+    }
+  ],
+  "source_stable": {
+    "inputs_stable": true,
+    "head_stable": true,
+    "status_stable": true
+  },
+  "source_patch": {
+    "path": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-first-emission-candidate-16.patch",
+    "sha256": "3f2515ffccf0f7581961abf9a0a54525f339072bb0b91222c51a43d404b9d95d",
+    "bytes": 3612,
+    "files": 1
+  },
+  "admission": {
+    "status": "passed",
+    "bindings": 20,
+    "checks": 26,
+    "total": 46,
+    "scope": "Genuine compile-complete ENTER, skipped early declaration, echo line5/public/heap and missing code/history plus wrong owner/suffix controls.",
+    "fixture": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/prepared-first-work-entry-16-bound/admission.watsup",
+    "raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/first-work-entry-bound-16-run-ydv0g21k/report.json",
+    "command": "python3 /home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/run-first-work-entry-bound-16.py",
+    "observed": "true\n",
+    "stderr": "",
+    "application_evaluations": 1,
+    "process": {
+      "exit": 0,
+      "timeout": false,
+      "elapsed": 27.300573587417603,
+      "cap_seconds": 90,
+      "group_after": []
+    },
+    "stable": {
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true
+    }
+  },
+  "maintained": {
+    "sources": [
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case first-echo --semantic-root .tools/source-stringable-first-emission-semantics-298",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case first-assignment --semantic-root .tools/source-stringable-first-emission-semantics-298",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case first-eval --semantic-root .tools/source-stringable-first-emission-semantics-298"
+    ],
+    "states": "python3 tests/semantics/source_stringable_retirement_protocol.py --case entry --semantic-root .tools/source-stringable-first-emission-semantics-298",
+    "prepare_only": "python3 tests/semantics/source_stringable_retirement_protocol.py --case entry --prepare-only",
+    "note": "Five files are byte-identical relocations of the three originals and two providers; preparation adds no runtime agreement.",
+    "prepared": {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-stringable-retirement-protocol-t1wy256p/PREPARED.json",
+      "bindings": 20,
+      "checks": 26,
+      "total": 46,
+      "fixture_sha256": "8c533baedc2bf0e8e93442e01cd84a08a5c4cd7a78b2965f63a56db40eac847f",
+      "frontend_accepted": true,
+      "adapter_ok": true,
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "default_selection_note": "Subsequent edits preserve the original seven-source/two-state defaults and add explicit Makefile first-work selections; entry-only fixture construction is unchanged."
+    }
+  },
+  "required_follow_on": [
+    "first emitted work beyond constant RETURN/ECHO and literal-variable constant assignment",
+    "broader provider/helper and pending exception checkpoints",
+    "final combined-source and fresh copied-path network-isolated offline rebuild"
+  ],
+  "integration": "Independently accepted private extension, queued for canonical integration. Earlier source7/fast98/helper78 retain their original cuts without renewal. Original entry fixture elaboration stop is preserved with zero credit.",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "_build/default/adapter/main.exe": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+    ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d"
+  },
+  "preserved_zero_credit": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-review-15-source-cv/ex270-stringable/first-work-entry-16-run-r_hwq7wn/report.json",
+      "reason": "Unparenthesized singleton SEQUENCE was interpreted as indexing and failed fixture elaboration before any model evaluation. The bound derivative adds only explicit constructor/list parentheses; all46 obligations preserved.",
+      "seconds": 2.2277095317840576,
+      "exit": 1,
+      "application_evaluations": 0
+    }
+  ]
+}

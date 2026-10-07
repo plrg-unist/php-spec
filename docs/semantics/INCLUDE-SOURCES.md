@@ -41,10 +41,97 @@ Four destructor-free originals agree and 73/60/45/29 state premises pass.
 Parser-rejection helper states use the existing production allocation-pruning
 boundary to register ParseError handles; this is not an extra reached VM step.
 Maintained tests are `source_array_sources.py` and `source_array_protocol.py`.
-The original destructor lifetime witness remains native-only until genuine eager
-release is installed. Fast constant returns, destructor traces before body entry,
-captured Stringable lifetime and undefined-source warning ingress remain required,
-along with broader providers.
+The original destructor lifetime witness also agrees in the separately reviewed270
+composition. Selected Stringable/undefined ingress, fast helper results and source
+retirement traces are installed below; broader producers/providers remain required.
+
+[Stringable sources298](../../coverage/semantics/source-stringable-review.json)
+keep the original input owner separate from the cast receiver. Borrowed CVs add
+no owner; captured objects and reference-cell contents survive compiler notices
+until their authentic release. Returned bytes stay fixed when __toString rewrites
+the CV or reference cell. If releasing its receiver throws after a successful cast,
+eval still compiles and publishes while preserving that Throwable; an ordinary
+empty include raises ValueError with it as previous, while eval/once retain it.
+One original and three explicitly named unpromoted/direct-call companions agree,
+and37 reached pending/parser-await premises pass. The original promotion cases
+remain required core with zero agreement; the function_exists observer is outside
+CORE. Maintained source/state helpers accept --semantic-root for the frozen private
+cut and default to the repository after integration. Its broader parser/provider
+and compiler-emission obligations remain required.
+
+The [separate ordering cut](../../coverage/semantics/source-stringable-ordering-review.json)
+selects a sole implicit return from authenticated formal compilation, rather than
+AST statement count. Early functions and unused compiled constants, including
+arrays and literal strlen, emit no body operations; explicit return and count
+take the regular path. Fast include copies1 before captured operand destruction.
+A destructor throw then survives assignment/echo until selected C-helper checks;
+reporting writes occur before propagation. Eligible warnings skip their handler
+and default output while ineligible warnings keep default output. Type/value
+argument errors preserve the pending object; arity errors allocate and chain it.
+Immediate pending eval compiler fatals preserve the same Throwable and authentic
+destructor/keyword trace. Twelve exact comparisons (7 originals/5 direct-call
+companions) and42 reached ownership/public-entry/record checks pass. Maintained
+ordering source/state helpers default to the integrated repository; --semantic-root
+selects the retained private cut. Additional emissions, checkpoints and wider
+provider/parser behavior remain required.
+
+The [helper return cut](../../coverage/semantics/source-stringable-helper-review.json)
+copies false after empty eval/failed include and true after once skip before
+captured operand destruction. A throw then survives assignment/echo until the
+reporting helper executes its write and propagates it. The captured helper context
+retains its phase, nonce and selected included path; HELPER selects a no-unit
+record with canonical unused UNIT0. Three original sources and a separate42 reached
+public/heap/ownership/context checks pass. Original41 false remains preserved because
+its supposed missing path was the main script, already included at startup.
+Maintained helper source/state tests default to the repository after integration;
+relocation preparation adds no runtime credit.
+
+The [final-release trace cut](../../coverage/semantics/source-stringable-retirement-review.json)
+installs the first authenticated compiled constant-return operand before ordinary
+source cleanup. Destructor traces use the actual emitted opcode line: a simple
+return, multiline literal and folded binary expression retain distinct child
+lines. Their entered include frame keeps its genuine filename argument. Fast
+source cleanup instead uses the main keyword location and a zero-argument frame;
+completed empty-eval, once-skip and failed-include helpers preserve that wrapper
+after their provider context retires. Seven exact original-source comparisons
+pass. A separate98-premise fast admission gate authenticates the copied value,
+caller, live operation and continuation; corrected empty-eval helper78 also passes.
+Original43 false and helper fixture stops retain zero credit. Wider first-emission
+forms, helpers/providers and exception
+checkpoints remain required. The [first-work extension](../../coverage/semantics/source-stringable-first-work-review.json)
+adds the first constant ECHO operand line and the restored lhs line of a
+assignment to a literal variable name with a constant, effect-free RHS. It includes
+auto-global variable names while excluding `this` and `GLOBALS`. An early
+non-op declaration is skipped only by the existing no-runtime-work predicate.
+Three exact originals pass (include ECHO5/assignment4 and eval ECHO2); reached
+entry46 also passes with genuine compilation/public/heap and malformed
+code/history/owner/suffix controls. The original fixture stop retains zero credit.
+Other first-work forms preserve the existing entry origin
+and remain required.
+
+[Undefined operands293](../../coverage/semantics/source-undefined-review.json)
+dispatch the genuine variable warning before eval/file conversion. A direct CV
+returns the fixed uninitialized null value even when the callback defines,
+replaces or deletes that variable. The continuation borrows its source storage;
+it adds no object or array owner. Direct callback traces retain the compiled
+operand line and zero-argument keyword frame. Completed computed names retain
+their effects, including embedded NUL bytes; their missing-variable fetch runs
+before the keyword and has no pre-parser keyword frame.
+
+Ordinary include/require reject the resulting empty path before any provider
+request. They do so even when the direct warning handler throws, creating
+`ValueError("Path must not be empty")` with the handler exception as previous.
+Eval and once operations preserve the handler exception. A computed-variable
+fetch that throws never reaches the keyword. Normal empty once operations still
+use finite open-failure facts. The maintained source and state suites distinguish
+the original trace-printing private source, whose full model run timed out, from
+the separately compared 76-line `private-state.php` companion; only its four
+trace-printing loop lines are blank. Missing computed-name producers remain
+explicitly Unsupported, and wider dynamic sources remain required.
+The separate275 composition agrees on that Array original and a fresh handler
+object-retval cleanup source. Its admission correction projects only the genuine
+saved caller and pairs destructor receiver/site/line with the actual frame;
+35 reached positive and malformed controls pass without renewing either source.
 
 Failed-open warnings suspend for eligible handlers. The stream message is fixed
 before the first callback; the second include warning or required `Error` samples

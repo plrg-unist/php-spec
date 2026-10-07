@@ -37,7 +37,22 @@ parser or file-provider work. [The Array operand ledger](coverage/semantics/sour
 records frozen `Array` bytes after callbacks, borrowed versus captured owners,
 late path/once lookup and cleanup before nontrivial file bodies or catch search.
 Four exact sources and 207 state premises pass; the destructor lifetime original
-awaits accepted eager release, and wider source/provider behavior remains required.
+also agrees in the separately reviewed eager-release composition. Wider source/provider behavior remains required.
+
+[Undefined eval/include operands](coverage/semantics/source-undefined-review.json)
+resume real warnings with fixed null after handler writes and retain the native
+empty-path error priority. [Stringable source ownership](coverage/semantics/source-stringable-review.json)
+keeps converted bytes and borrowed/captured owners through cast and destructor
+failures. Separate [ordering](coverage/semantics/source-stringable-ordering-review.json)
+and [helper-result](coverage/semantics/source-stringable-helper-review.json) cuts
+cover compiler fast returns, delayed exceptions and copied false/true results.
+
+[Final-release traces](coverage/semantics/source-stringable-retirement-review.json)
+authenticate child opcode lines, genuine filename arguments and zero-argument
+fast/helper frames. The [first-work extension](coverage/semantics/source-stringable-first-work-review.json)
+adds constant ECHO and assignment to a literal variable name entry lines. Each ledger retains
+its original source/state cuts and failures; the installed rules add no renewed
+credit to those cuts. Wider source producers, emissions and providers remain open.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed

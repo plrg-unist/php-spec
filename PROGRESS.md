@@ -7,15 +7,33 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-The canonical source includes accepted ArrayAccess292 (`1d0f8ea23`) and 304
-(`0f2ecffc6`), plus reviewed eager destruction270, WeakReference296, Fiber291/302
-and Generator289/303/310, with 282 modules descended from `38f1dfaa045f`.
-Independently accepted
-private milestones 286, 288, 290, 293, 294 and 297 await
-ordered Git integration. Other private work covers 295, 298, 299 and 300, with
-301 and 308 in development. Held 279 work and user-paused return verification remain
-set aside; unaccepted return changes stay held. Full core and final combined
-offline validation remain pending. Existing entries retain their tested cuts.
+The canonical source includes accepted ArrayAccess292/304, eager destruction270,
+WeakReference296, Fiber291/302, Generator289/303/310 and source operands293/298,
+with 284 modules descended from `38f1dfaa045f`. The ordered source integration
+preserves the final Generator eager-release bridge and Fiber cleanup guards.
+Its new combined compiler/source/state cut is pending; earlier accepted cuts
+retain their original inputs. Independently accepted private milestones 286, 288,
+290, 294, 295, 297, 305, 306, 308 and 309 await ordered Git integration. Other private work
+covers 299, 300 and 301; source-emission314 remains private and unvalidated.
+Held 279 and user-paused return verification stay set aside. Complete core and the
+final combined, fresh offline rebuild remain required.
+
+Undefined source operands293 resume genuine warnings with fixed null after
+handler writes, preserving direct empty-path errors and earlier computed-name
+fetch timing. Borrowed/captured Stringable sources298 keep converted bytes and
+real owners through cast destruction, compiler notices and parser/provider work.
+Separate reviewed cuts cover compiler fast returns, delayed error-API checkpoints,
+empty/once/failed helper results and authentic child/main retirement traces.
+[Undefined](coverage/semantics/source-undefined-review.json),
+[lifetime](coverage/semantics/source-stringable-review.json),
+[ordering](coverage/semantics/source-stringable-ordering-review.json),
+[helper](coverage/semantics/source-stringable-helper-review.json) and
+[retirement](coverage/semantics/source-stringable-retirement-review.json) ledgers
+preserve every original cut and failure. The separate
+[first-work extension](coverage/semantics/source-stringable-first-work-review.json)
+adds constant ECHO and assignment to a literal variable name opcode lines: three original
+source agreements and 46 reached entry premises retain their accepted private cut.
+Broader producers, first emissions, checkpoints and providers remain required.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
@@ -127,9 +145,9 @@ provider/parsing/compiler notices and retire before nontrivial file bodies or
 catch search. Four exact destructor-free sources and 207 state premises pass at
 3b2c; actual33df preserves Fiber/ArrayAccess/trait-demand routes and passes SL273
 at5a0e. The [ledger](coverage/semantics/source-array-review.json) retains original
-fixture/compiler failures and the native-only destructor lifetime witness pending
-accepted eager release. Undefined operands, captured Stringable lifetime, fast
-returns, destructor traces and wider providers remain required.
+fixture/compiler failures; the destructor lifetime witness agrees in the separately
+reviewed270 composition. Selected undefined/Stringable ingress, helper results and
+retirement traces are installed above. Wider source producers/providers remain required.
 
 ArrayAccess284 now admits its builtin interface contract and direct R/IS,
 isset/empty, Set/append and Unset calls. Effective inherited methods and tentative

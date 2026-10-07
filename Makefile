@@ -264,6 +264,21 @@ test-semantics: build
 	python3 tests/semantics/suspended_precision_protocol.py
 	python3 tests/semantics/source_array_sources.py
 	python3 tests/semantics/source_array_protocol.py
+	python3 tests/semantics/source_undefined_sources.py
+	python3 tests/semantics/source_undefined_protocol.py
+	python3 tests/semantics/source_undefined_review.py
+	python3 tests/semantics/source_stringable_sources.py
+	python3 tests/semantics/source_stringable_protocol.py
+	python3 tests/semantics/source_stringable_ordering_sources.py
+	python3 tests/semantics/source_stringable_ordering_protocol.py
+	python3 tests/semantics/source_stringable_helper_sources.py
+	python3 tests/semantics/source_stringable_helper_protocol.py
+	python3 tests/semantics/source_stringable_retirement_sources.py
+	python3 tests/semantics/source_stringable_retirement_protocol.py
+	python3 tests/semantics/source_stringable_retirement_sources.py --case first-echo
+	python3 tests/semantics/source_stringable_retirement_sources.py --case first-assignment
+	python3 tests/semantics/source_stringable_retirement_sources.py --case first-eval
+	python3 tests/semantics/source_stringable_retirement_protocol.py --case entry
 	python3 tests/semantics/noctor_compiler.py
 	python3 tests/semantics/noctor_args.py
 	python3 tests/semantics/noctor_args_protocol.py

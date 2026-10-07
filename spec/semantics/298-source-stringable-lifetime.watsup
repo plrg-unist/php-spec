@@ -474,20 +474,33 @@ def $source_pending_record_valid(S, psourcepending) = $source_helper_pending_val
   -- if psourcepending.HELPER = (psourcehelper)
 
 ;; Ordinary nested code installs its first opcode before FREE_OP1. Skip only
-;; forms already proved to emit no runtime work; a compiled constant RETURN
-;; authenticates its operand occurrence and opcode line. Wider emission forms
-;; retain their existing entry until their compiler behavior is represented.
-dec $source_first_return_origin(pstate, nat, ppwork*) : porigin?
-def $source_first_return_origin(S, n, eps) = eps
-def $source_first_return_origin(S, n, (PPCWORK pcpath statement plenv n_line) :: ppwork*) = $source_first_return_origin(S, n, ppwork*)
+;; forms already proved to emit no runtime work. Constant RETURN/ECHO operands
+;; and assignments to literal variable names authenticate the first opcode;
+;; wider expression work remains outside this entry-origin cut.
+dec $source_first_work_origin(pstate, nat, ppwork*) : porigin?
+def $source_first_work_origin(S, n, eps) = eps
+def $source_first_work_origin(S, n, (PPCWORK pcpath statement plenv n_line) :: ppwork*) = $source_first_work_origin(S, n, ppwork*)
   -- if $source_fast_statement(S, n, pcpath, statement)
-def $source_first_return_origin(S, n, (PPCWORK pcpath (NStmtReturn expression metadata) plenv n_line) :: ppwork*) = (porigin)
+def $source_first_work_origin(S, n, (PPCWORK pcpath (NStmtReturn expression metadata) plenv n_line) :: ppwork*) = (porigin)
   -- if ~$source_fast_statement(S, n, pcpath, NStmtReturn expression metadata)
   -- if porigin = PORIGIN n (pcpath ++ [PCFIELD 0])
   -- if $compiled_read(S, porigin) = (pvalue)
   -- if $compiled_effects(S, porigin) = eps
   -- if $source_fast_constant(pvalue)
-def $source_first_return_origin(S, n, ppwork*) = eps -- otherwise
+def $source_first_work_origin(S, n, (PPCWORK pcpath (NStmtEcho (SEQUENCE expression*) metadata) plenv n_line) :: ppwork*) = (porigin)
+  -- if expression* = expression_head :: expression_tail*
+  -- if porigin = PORIGIN n (pcpath ++ [PCFIELD 0, PCINDEX 0])
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $compiled_effects(S, porigin) = eps
+  -- if $source_fast_constant(pvalue)
+def $source_first_work_origin(S, n, (PPCWORK pcpath (NStmtExpression (NExprAssign (NExprVariable (BYTES text) metadata_var) expression_rhs metadata_assign) metadata) plenv n_line) :: ppwork*) = (PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 0]))
+  -- if ~$source_fast_statement(S, n, pcpath, NStmtExpression (NExprAssign (NExprVariable (BYTES text) metadata_var) expression_rhs metadata_assign) metadata)
+  -- if $base64(text) =/= $ptascii("this") /\ $base64(text) =/= $ptascii("GLOBALS")
+  -- if porigin_rhs = PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 1])
+  -- if $compiled_read(S, porigin_rhs) = (pvalue)
+  -- if $compiled_effects(S, porigin_rhs) = eps
+  -- if $source_fast_constant(pvalue)
+def $source_first_work_origin(S, n, ppwork*) = eps -- otherwise
 def $source_operand_entry_origin(S, psourceoperand, n) = (porigin)
   -- if $source_operand_enter_valid(S, psourceoperand, n)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
@@ -495,7 +508,7 @@ def $source_operand_entry_origin(S, psourceoperand, n) = (porigin)
   -- if P.COMPLETION = PPCNORMAL
   -- if $compilation_image_valid(S, pcunit, P)
   -- if (PDEXIT n PCSCOMPLETE) <- S.DECLARATIONS
-  -- if $source_first_return_origin(S, n, P.WORK) = (porigin)
+  -- if $source_first_work_origin(S, n, P.WORK) = (porigin)
 
 ;; A fast file helper has not entered a nested code frame. Reuse its single
 ;; live wrapper, but omit the filename argument while the actual operand

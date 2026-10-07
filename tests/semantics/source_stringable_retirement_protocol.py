@@ -259,6 +259,58 @@ PREMISES = {'fast': ['',
             'S_bad_suffix.FRAMES[0], eps), pdestructionoperation) = KNOWN PNULL']}
 
 
+HELPERS['entry'] = ''
+PREMISES['entry'] = ['  -- if S_open = $php_file_startup_run($first_work_review_program(), 10000, eps, eps, {REPORTING '
+ '($ptascii("30719")), INCLUDEPATH $ptascii(".:")})',
+ '  -- if S_open.COMPLETION = SOURCE_PENDING',
+ '  -- if S_open.FILECONTEXTS = pfilecontext_open :: eps',
+ '  -- if pfilecontext_open.PHASE = FILE_RESOLVE_WAIT',
+ '  -- if S_parse = $file_open_resume(S_open, (FILE_OPENED pfilecontext_open.NONCE eps eps eps eps eps))',
+ '  -- if S_parse.COMPLETION = SOURCE_PENDING',
+ '  -- if S_parse.FILECONTEXTS = pfilecontext_parse :: eps',
+ '  -- if pfilecontext_parse.UNIT = (n_unit)',
+ '  -- if S = $file_parse_resume(S_parse, (SOURCE_ACCEPT n_unit eps $first_work_review_child()))',
+ '  -- if S.COMPLETION = NORMAL',
+ '  -- if S.TODO = (SOURCE_OPERAND_ENTER psourceoperand n_unit) :: ptask_body*',
+ '  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)',
+ '  -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))',
+ '  -- if P.WORK = (PPCWORK pcpath_fn statement_fn plenv_fn n_fn) :: (PPCWORK pcpath_echo statement_echo '
+ 'plenv_echo n_echo) :: ppwork_tail*',
+ '  -- if statement_echo = (NStmtEcho (SEQUENCE ([expression_echo])) metadata_echo)',
+ '  -- if porigin_echo = PORIGIN n_unit (pcpath_echo ++ [PCFIELD 0, PCINDEX 0])',
+ '  -- if S_no_code = S[.CODE = eps]',
+ '  -- if S_no_exit = S[.DECLARATIONS = eps]',
+ '  -- if S_bad_tail = S[.TODO = [SOURCE_OPERAND_ENTER psourceoperand n_unit]]',
+ '  -- if S_bad_owner = S[.FILECONTEXTS = [S.FILECONTEXTS[0][.OWNER = 1]]]',
+ '  -- if $source_operand_enter_valid(S, psourceoperand, n_unit)',
+ '  -- if $call_descriptors_valid(S)',
+ '  -- if $call_entry_check(S) = S',
+ '  -- if $heap_valid($heap_graph(S))',
+ '  -- if P.COMPLETION = PPCNORMAL /\\ $compilation_image_valid(S, pcunit, P)',
+ '  -- if (PDEXIT n_unit PCSCOMPLETE) <- S.DECLARATIONS',
+ '  -- if $source_fast_statement(S, n_unit, pcpath_fn, statement_fn)',
+ '  -- if ~$source_fast_statement(S, n_unit, pcpath_echo, statement_echo)',
+ '  -- if $source_first_work_origin(S, n_unit, P.WORK) = (porigin_echo)',
+ '  -- if $source_operand_entry_origin(S, psourceoperand, n_unit) = (porigin_echo)',
+ '  -- if $property_current_line(S[.ORIGIN = (porigin_echo)]) = 5',
+ '  -- if $source_first_work_origin(S, n_unit, [PPCWORK pcpath_echo (NStmtEcho (SEQUENCE eps) metadata_echo) '
+ 'plenv_echo n_echo]) = eps',
+ '  -- if $source_first_work_origin(S, n_unit, [PPCWORK pcpath_echo (NStmtExpression expression_echo '
+ 'metadata_echo) plenv_echo n_echo]) = eps',
+ '  -- if $source_first_work_origin(S_no_code, n_unit, P.WORK) = eps',
+ '  -- if $source_operand_entry_origin(S_no_code, psourceoperand, n_unit) = S_no_code.ORIGIN',
+ '  -- if $source_operand_entry_origin(S_no_exit, psourceoperand, n_unit) = S_no_exit.ORIGIN',
+ '  -- if $heap_valid($heap_graph(S_bad_tail))',
+ '  -- if ~$source_operand_enter_valid(S_bad_tail, psourceoperand, n_unit)',
+ '  -- if ~$call_descriptors_valid(S_bad_tail)',
+ '  -- if $call_entry_check(S_bad_tail).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"',
+ '  -- if $source_operand_entry_origin(S_bad_tail, psourceoperand, n_unit) = S_bad_tail.ORIGIN',
+ '  -- if $heap_valid($heap_graph(S_bad_owner))',
+ '  -- if ~$source_operand_enter_valid(S_bad_owner, psourceoperand, n_unit)',
+ '  -- if ~$call_descriptors_valid(S_bad_owner)',
+ '  -- if $call_entry_check(S_bad_owner).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"',
+ '  -- if $source_operand_entry_origin(S_bad_owner, psourceoperand, n_unit) = S_bad_owner.ORIGIN']
+
 def run_case(case, args):
     semantic = args.semantic_root.resolve()
     sys.path.insert(0, str(ROOT / 'tests/semantics'))
@@ -266,8 +318,8 @@ def run_case(case, args):
     from recorded_worker import Worker
     recorder.ROOT = ROOT
     directory = ROOT / 'tests/semantics/source-stringable-retirement'
-    source = directory / ('fast.php' if case == 'fast' else 'empty-eval.php')
-    child = directory / 'deferred-compile-only.php' if case == 'fast' else None
+    source = directory / {'fast': 'fast.php', 'helper': 'empty-eval.php', 'entry': 'first-echo.php'}[case]
+    child = directory / {'fast': 'deferred-compile-only.php', 'entry': 'first-echo-child.php'}[case] if case != 'helper' else None
     profile_file = ROOT / 'tests/semantics/profile.json'
     profile = dict(json.loads(profile_file.read_bytes()), include_path='.:', error_reporting='30719')
     flags = [arg for key, value in profile.items() for arg in ('-d', key + '=' + value)]
@@ -303,10 +355,11 @@ def run_case(case, args):
               'profile': profile, 'source': str(source), 'child': str(child) if child is not None else None, 'semantic_root': str(semantic),
               'mode': 'SL', 'cache': False, 'det': True,
               'compiler_pin': 'da36ac3c434cd291940293a63da64544307730a3',
-              'selected': 'first actual fast/helper operand destructor, before trace-loop effects',
-              'case': case, 'binding_premises': 42 if case == 'fast' else 27,
-              'selected_admission_premises': 98 if case == 'fast' else 78,
-              'check_premises': 56 if case == 'fast' else 51,
+              'selected': ('compile-complete source operand entry' if case == 'entry' else
+                           'first actual fast/helper operand destructor, before trace-loop effects'),
+              'case': case, 'binding_premises': {'fast': 42, 'helper': 27, 'entry': 20}[case],
+              'selected_admission_premises': {'fast': 98, 'helper': 78, 'entry': 46}[case],
+              'check_premises': {'fast': 56, 'helper': 51, 'entry': 26}[case],
               'source_agreements': 0, 'application_evaluations': 0, 'passed': False,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': 'absent', 'jobs': 1}}
     try:
@@ -327,13 +380,14 @@ def run_case(case, args):
         finally:
             checked_worker.close()
         (out / 'checked.json').write_text(json.dumps(checked) + '\n')
-        prefix = 'retirement_trace_review' if case == 'fast' else 'retirement_helper_review'
+        prefix = {'fast': 'retirement_trace_review', 'helper': 'retirement_helper_review',
+                  'entry': 'first_work_review'}[case]
         start = ('$php_file_startup_run($' + prefix + '_program(), '
-                 + ('10000' if case == 'fast' else '1') + ', $base64('
+                 + ('1' if case == 'helper' else '10000') + ', $base64('
                  + json.dumps(b64(bytes(source))) + '), $base64(' + json.dumps(b64(bytes(ROOT)))
                  + '), {REPORTING ($ptascii("30719")), INCLUDEPATH $ptascii(".:")})')
         premises = list(PREMISES[case])
-        premises[0] = '  -- if ' + ('S_open' if case == 'fast' else 'S_seed') + ' = ' + start
+        premises[0] = '  -- if ' + ('S_seed' if case == 'helper' else 'S_open') + ' = ' + start
         fixture = ('dec $' + prefix + '_program() : program\ndef $' + prefix + '_program() = '
                    + checked[0]['fixture'] + '\n')
         if child is not None:
@@ -342,7 +396,7 @@ def run_case(case, args):
                       + ' ' + seq(child.read_bytes()) + ')')
             accepted = '(SOURCE_ACCEPT n_unit ' + seq(child.read_bytes()) + ' $' + prefix + '_child())'
             premises[4] = '  -- if S_parse = $file_open_resume(S_open, ' + opened + ')'
-            premises[8] = '  -- if S_run = $file_parse_resume(S_parse, ' + accepted + ')'
+            premises[8] = '  -- if ' + ('S' if case == 'entry' else 'S_run') + ' = $file_parse_resume(S_parse, ' + accepted + ')'
             fixture += ('dec $' + prefix + '_child() : program\ndef $' + prefix + '_child() = '
                         + checked[1]['fixture'] + '\n')
         fixture += HELPERS[case]
@@ -371,7 +425,7 @@ def run_case(case, args):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--prepare-only', action='store_true')
-    parser.add_argument('--case', choices=('fast', 'helper'))
+    parser.add_argument('--case', choices=('fast', 'helper', 'entry'))
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args(argv)
     return all(run_case(case, args) for case in ((args.case,) if args.case else ('fast', 'helper')))

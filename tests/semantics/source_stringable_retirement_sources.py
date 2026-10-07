@@ -16,7 +16,9 @@ CASES = {'regular': 'deferred-regular.php',
          'regular-multiline': 'deferred-regular-multiline.php',
          'regular-binary': 'deferred-regular-binary.php',
          'fast': 'deferred-compile-only.php', 'empty-eval': None,
-         'once-skip': 'helper-skip-body.php', 'missing-include': 'helper-missing-file.php'}
+         'once-skip': 'helper-skip-body.php', 'missing-include': 'helper-missing-file.php',
+         'first-echo': 'first-echo-child.php', 'first-assignment': 'first-assignment-child.php',
+         'first-eval': None}
 
 b64 = lambda value: base64.b64encode(value).decode()
 
@@ -48,7 +50,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(CASES)
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith('first-'))
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)
@@ -75,9 +77,9 @@ def main():
               'inputs': before, 'profile': profile, 'selected': selected, 'rows': [],
               'application_evaluations': 0, 'passed': False,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': 'absent', 'jobs': 1},
-              'scope': 'Seven final-release trace witnesses. Ordinary constant returns use their actual '
-                       'first emitted opcode line; fast and no-unit helpers retain authentic keyword '
-                       'frames with no filename argument during captured operand destruction.'}
+              'scope': 'Final-release trace witnesses. Ordinary constant returns, echo and static-variable '
+                       'assignments use their first emitted opcode line; fast and no-unit helpers '
+                       'retain keyword frames with no filename argument during operand destruction.'}
     try:
         for name in selected:
             directory = out / name
