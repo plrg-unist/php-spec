@@ -1,6 +1,6 @@
 # Positional untyped defaults
 
-The paired compiler90/runtime91 increment admits untyped positional default parameters, including omitted by-reference parameters. Parameters with types, variadics, named or unpacked arguments and reference returns remain subsequent core increments. The missing PHP_VERSION builtin constant value stays an explicit source boundary; PHP_INT_SIZE is covered by the independent default catalogue.
+The original compiler90/runtime91 increment admits untyped positional default parameters, including omitted by-reference parameters. Typed, variadic, named/unpacked and constructor reception have separate increment contracts; wider defaults and reference returns remain required. The missing PHP_VERSION builtin constant value stays an explicit source boundary; PHP_INT_SIZE is covered by the independent default catalogue.
 
 Compiler17 normalizes signatures through its suspension interface and compiler90 uses the existing45 constant-expression pipeline in the declaration's namespace, imports and magic context. Every source default is compiled, including defaults removed by required-after-optional normalization. Function CODE owns actual parameter subtrees as well as the body. A surviving DEFAULTS entry records its zero-based index, original Param field6 origin and STORED or DEFERRED kind. Stored values borrow the existing unit pool. Parameter CODEEXPR entries retain emitted receive lines, including required parameters and discarded defaults.
 
@@ -35,6 +35,69 @@ before establishing cache reuse behavior.
 Receive tasks require the actual current callee, omitted index, previously initialized parameter slots and the exact source-derived queue shape. Bind tasks require their parameter context and final queue position. Observer readiness clauses are disjoint between stages requiring the current result and stages relying only on recorded facts. Retained actual-source counterexamples cover trailing tasks and ternary/coalesce readiness before their finite repairs.
 
 The maintained source catalogue, cache/task protocol, readiness protocol and suspended-state driver complement independent original-context cache, alias, line and no-default compatibility replays. Final evidence identities and acceptance are recorded separately; this document does not claim completion of all call or constant families.
+
+Parameter callable defaults286 extend surviving deferred `NParam` initializers
+with static/no-use REAL Closures and fixed named-function/static-method FCCs.
+At the286 cut, direct-array and compiled-redirect flow branches were implemented
+without discriminating source/state witnesses. Omitted receives allocate fresh
+Closure objects; callable values never enter `DEFAULTCACHE`. REAL lexical and
+called scope both use the receiving function's current lexical scope, including
+rebound makers. Physical FCC ASTs retain their first successful target through
+later failure or trait import; each receive selects its fresh called class.
+
+Source/default/index/publication receipts authenticate transfer to the receiving
+slot. A raw-trait warning saves the actual target before allocation and resumes
+through the genuine receive frame. Unscoped Closure makers mint an immutable
+nonowning source marker; erasing it cannot turn a retired bound maker into an
+unscoped one. Static writes preserve this marker, while clones copy the plain
+body and rely on earlier receipt authority. Receipts own neither maker nor receiver.
+
+The pinned routes are `ZEND_RECV_INIT`, `zend_compile_const_expr_closure` and
+`zend_ast_evaluate_ex`'s CALL/STATIC_CALL/OP_ARRAY cases. Ordinary code in the
+created Closure body uses ordinary NEW ordering: after autoload, a private
+constructor rejects before nested argument effects. Parameter AST NEW retains
+its separate initializer ordering. Eleven normal originals and two compiler
+rejections, mixed 342 earlier plus 162 affected/new state premises, and one
+separate body-autoload interaction retain their distinct revisions in the
+[deferred-default ledger](../../coverage/semantics/deferred-static-defaults-review.json).
+Builtin FCC targets and broader producers remain required. This increment is
+private; it does not close defaults, Closures or PHP core.
+
+Parameter aliases295 preserve the actual borrowed global or cached class-constant
+Closure identity, shared statics and donor lexical/called permission. Receiving
+scope grants no new body permission, and alias proofs add no owners. Direct mixed
+arrays distinguish borrowed leaves from fresh direct Closures and preserve nested
+COW; genuine compiled ternaries authenticate the selected arm and reject pruned
+or transplanted facts. Eight exact normal sources and640 reached checks over14
+originals pass at a separate dirty d39d cut (367 AL,273 strict SL).
+
+At the295 cut, global aliases required a callback-free initializer, quiet value
+classes and facts, and each read prefix equal to the current constant table.
+Literal bool keys and null values were admitted; effectful null keys remained
+unsupported. Six warning/retry/object/trailing-Closure/shadow controls rejected
+explicitly and earned zero native agreement. The306 increment below adds bounded
+single-emitter reads and registrations through callbacks, retries and nested
+reentry. Suspended Fibers, wider transformed and object-bearing producers remain
+required. The ledger preserves every failed
+fixture, native null-key notice and original AL120s private-method timeout; the
+unchanged private42 passes strict SL under the same cap. Canonical integration is pending.
+
+Parameter alias causality306 records actual deferred receive births without adding
+heap owners. The current/saved receive, exact source call chain and callback
+frontier authenticate nested parents. Checked eval requests capture the prefix
+and registration cut before provider work; completed declarations retain that
+same birth and ingress. Captured LOOKUP/FACTS distinguish reads before and after
+a callback and preserve the old deprecated2048 value after a user17 shadow.
+The first causal branch admits regular fixed-key arrays in named functions with
+one source-derived potential emitter. Ten exact normal originals pass across
+v9/v10. All15 genuine state groups/1170 premises pass across v10 prefix134,
+v11 five555 and v13 nine481; the existing37 reporting checks pass separately.
+Five controls reject unsupported routes and earn zero native agreement.
+Multiple emitters, parked Fibers, object/null-key/outside-eval and wider producers
+remain required. The ledger keeps these cuts distinct from accepted295/286.
+Current295 main selects eight quiet originals and two object boundaries;306
+replaces four superseded causal Unsupported tails. Historical sources and checks
+remain unchanged, including full fourteen-fixture preparation.
 
 Accepted on exact909/e25eb2b9: code1fce6586, compiler2b247d81, runtime8151b96d and
 [independent reviewc7cb1b44](../../coverage/semantics/default-parameter-review.json).

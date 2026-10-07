@@ -833,6 +833,25 @@ and 174 reached premises pass at separate cuts; one actual generator interaction
 preserves eager default creation before suspension. Global-constant AST NEW
 autoload and wider class-link consumers remain required. Default `spl_autoload`
 filesystem search stays excluded.
+[Private parameter callable defaults286](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md)
+create fresh static Closures/FCCs using the authentic receive scope and cached
+physical FCC target. Nonowning receipts survive maker retirement and ordinary
+clone/static writes. Eleven normal sources, two compiler rejections and 504
+state premises retain separate cuts; one body-autoload interaction preserves
+ordinary private-constructor argument suppression.
+Private parameter aliases295 preserve borrowed global/cached class-constant
+identity, statics and donor permission through direct mixed arrays and selected
+compiled ternaries. Eight normal sources and640 reached checks retain separate
+AL367/SL273 cuts. Global aliases require callback-free initializers and quiet
+values/facts; its historical six Unsupported boundaries earn zero agreement. Broader effectful read/registration causality, transformed producers and full
+core remain required; canonical integration is pending.
+Private parameter alias causality306 preserves callback reads and registrations
+through genuine receive generations, nested reentry, retries and deprecated-value
+capture. Ten normal originals,15 genuine state groups/1170 premises and37 existing
+reporting checks pass at distinct cuts. Five controls reject unsupported routes
+with zero native agreement; wider effectful producers remain required.
+Current295 dispatch retains eight quiet originals/two object controls;306 replaces
+its four former causal Unsupported fixtures without changing archival checks.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

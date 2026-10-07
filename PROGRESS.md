@@ -178,6 +178,47 @@ actual 38f + 292 / 274 agrees through array-include conversion287, private
 Owner/Child warning selection and live GLOBALS RHS rebinding; algorithmic,
 structuring and loader checks pass. The original missing-provider input failure
 retains zero agreement.
+Private parameter alias causality306 preserves callback reads, retries, nested
+reentry and captured deprecated values through dense nonowning receive births
+and source-derived parent/frontier/eval cuts. Ten exact normal originals pass
+across v9/v10. Strict SL276, all15 genuine state groups/1170 premises and the
+37-check reporting interface pass on distinct cuts: prefix134 at v10, five555
+at v11 and nine481 at v13. Five controls reject unsupported multiemitter,
+parked Fiber, object/null-key and outside-eval routes with zero native agreement;
+these and wider producers remain required. Catalogue125 preserves prior115.
+The [ledger](coverage/semantics/deferred-static-defaults-review.json) retains
+original failures, runtime identities and concise recovery. Independent review
+accepts this bounded increment; canonical integration is pending. No numeric
+actor or writer lease is held.
+
+Private parameter aliases295 preserve borrowed global/cached class-constant
+Closure identity, statics and donor body permission without adding owners.
+Direct mixed-array defaults and selected compiled ternaries now have genuine
+source/state witnesses. Eight normal originals and640 reached checks over14
+originals pass on the dirty d39d cut:367 AL plus273 strict SL at identical120s
+caps. Six historical effectful/object boundaries rejected explicitly and earned
+zero native agreement. The unchanged private42 passes SL after its retained AL timeout.
+[The ledger](coverage/semantics/deferred-static-defaults-review.json) binds actual
+module/runtime hashes and distinct failed/corrected cuts. Global alias admission
+is bounded to callback-free initializers and quiet values/facts. The306 slice
+above adds bounded effectful read/registration causality; multiple
+emitters, suspended Fibers and wider producers remain open. Historical
+catalogue115 and protocol sources retain exact native bytes. Canonical
+integration is pending.
+
+Private parameter callable defaults286 allocate fresh static/no-use Closures and
+fixed FCCs from genuine deferred `NParam` receives. REAL scope follows the
+receiving lexical class; physical FCC targets stay cached while called classes
+remain fresh. Immutable nonowning unscoped evidence survives maker retirement;
+plain clones retain earlier permission without acquiring receipts. Nine normal
+and two compiler originals pass at0f90; two new originals and one affected replay
+pass atd39d. Earlier mixed342 and affected/new162 state premises retain distinct
+cuts, including retired rebound-maker and coherent wrapper-erasure controls.
+The separate actual285 Closure-body autoload source passes atd39d: private
+constructor access rejects before nested argument effects. All274 production
+modules pass the public SL path. The [ledger](coverage/semantics/deferred-static-defaults-review.json)
+preserves original failures and the wider producer obligations beyond295.
+Independent review accepts these gates; Canonical integration is pending.
 
 The integrated dynamic/FCC clone maker follow-on was validated from frozen305
 commit367e581df. Live clone calls capture the selected name before arguments;
