@@ -1,6 +1,11 @@
 rule PhpStep/array-literal: S ~> S_new[.TODO = (ARRAY_NEXT n phpType13*) :: ptask_tail*][.RESULT = KNOWN PNULL][.ORIGIN = $origin_first_item(S.ORIGIN, phpType13*)]
   -- if S.TODO = (EVAL (NExprArray (SEQUENCE phpType13*) metadata)) :: ptask_tail*
+  -- if phpType13* =/= eps
   -- if S_new = $allocate_array(S, $array_empty())
+  -- if S_new.RESULT = KNOWN (PARRAY n)
+rule PhpStep/array-literal-empty: S ~> S_new[.TODO = (ARRAY_NEXT n eps) :: ptask_tail*][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (EVAL (NExprArray (SEQUENCE eps) metadata)) :: ptask_tail*
+  -- if S_new = $allocate_immutable_empty(S)
   -- if S_new.RESULT = KNOWN (PARRAY n)
 rule PhpStep/array-finished: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PARRAY n)]
   -- if S.TODO = (ARRAY_NEXT n eps) :: ptask_tail*

@@ -896,7 +896,9 @@ def $fiber_state_valid(S) = ($fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLE
 dec $weakref_state_valid(pstate) : bool
 def $weakref_state_valid(S) = true -- otherwise
 dec $clone_windows_valid(pstate) : bool
-def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $generator_state_valid(S) /\ $fiber_state_valid(S) /\ $weakref_state_valid(S) /\ $clone_windows_valid(S))
+dec $gc_state_valid(pstate) : bool
+def $gc_state_valid(S) = true -- otherwise
+def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $generator_state_valid(S) /\ $fiber_state_valid(S) /\ $weakref_state_valid(S) /\ $clone_windows_valid(S) /\ $gc_state_valid(S))
 
 def $closure_live_object_valid(S, n) = true -- if S.OBJECTS[n] = FIBER pfiber
 def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if S.OBJECTS[n] = FIBER pfiber
