@@ -237,7 +237,7 @@ CASES = {
             '~(n_returned <- S.DESTRUCTION.CALLED)',
             '$fiber_record_valid(S, n, pfiber)',
             '~$fiber_record_valid($fiber_put(S, n, pfiber[.GRACEFUL = true]), n, pfiber[.GRACEFUL = true])',
-            'pfiberfinish_forged = {OBJECT n, PENDING eps, SEQUENCE pfiber.SEQUENCE}',
+            'pfiberfinish_forged = {OBJECT n, PENDING eps, SEQUENCE pfiber.SEQUENCE, PROTECTED eps}',
             '~$fiber_ordinary_finish_live(S, pfiberfinish_forged)',
             '~$fiber_record_valid($fiber_put(S, n, pfiber[.FINISH = (pfiberfinish_forged)]), n, pfiber[.FINISH = (pfiberfinish_forged)])',
             *VALID, *PAUSE, *DONE,

@@ -164,7 +164,7 @@ CASES = {
             '$heap_owners($heap_graph(S), HOBJECT n_returned) = 1',
             '$fiber_record_valid(S, n, pfiber)',
             '~$fiber_record_valid(S, n, pfiber[.GRACEFUL = true])',
-            'pfiberfinish_forged = {OBJECT n, PENDING eps, SEQUENCE pfiber.SEQUENCE}',
+            'pfiberfinish_forged = {OBJECT n, PENDING eps, SEQUENCE pfiber.SEQUENCE, PROTECTED eps}',
             '~$fiber_record_valid(S, n, pfiber[.FINISH = (pfiberfinish_forged)])',
             '~$fiber_callback_finish_live(S, pfiberfinish_forged)',
             *VALID, *PAUSE, *DONE,
