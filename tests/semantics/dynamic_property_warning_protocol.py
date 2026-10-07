@@ -153,6 +153,7 @@ def pending_assertions(initial, expected):
         '$property_dynamic_entry(S_entry, perrorcall, pdynamicproperty)',
         *seek('S_entry', 'S_release', 2),
         'S_release.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty_pending) :: ptask_release_tail*',
+        'pdynamicproperty_pending.PENDING = (n_pending)',
         'pdynamicproperty_pending = pdynamicproperty[.PENDING = (n_pending)]',
         '$throwable_live(S_release, n_pending)',
         '$heap_owners($heap_graph(S_release), HOBJECT n_pending) = 1',
