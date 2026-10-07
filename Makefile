@@ -348,6 +348,7 @@ test-semantics: build
 	python3 tests/semantics/dynamic_property_warning_protocol.py --group resurrection
 	python3 tests/semantics/dynamic_property_warning_protocol.py --group pending-resurrection
 	python3 tests/semantics/dynamic_property_warning_protocol.py --group temporary-cleanup
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group gc-protected
 	python3 tests/semantics/dynamic_property_warning_protocol.py --group exit
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind normal
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind compiler

@@ -47,6 +47,9 @@ def $dynamic_phase(S, 6) = true
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = PROPERTY_DYNAMIC_INSERT pdynamicproperty
   -- if pdestructorcall.OBJECT = pdynamicproperty.TARGET
+def $dynamic_phase(S, 7) = true
+  -- if S.TODO = (GC_TRACE pgccall) :: ptask_tail*
+  -- if $call_task_valid(S, GC_TRACE pgccall)
 def $dynamic_phase(S, n) = false -- otherwise
 dec $dynamic_seek(pstate, nat, nat) : pstate
 def $dynamic_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -84,6 +87,8 @@ def assertions(initial, group, expected):
         return pending_assertions(initial, expected, group=='pending-resurrection')
     if group=='exit':
         return exit_assertions(initial)
+    if group=='gc-protected':
+        return gc_assertions(initial, expected)
     clauses = ['S_initial = '+initial, '~S_initial.COMPILESTOP',
         *seek('S_initial', 'S_entry', 0),
         'S_entry.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_entry_tail*',
@@ -252,6 +257,50 @@ def temporary_assertions(initial, used, expected):
         *valid(state+'_done')]
 
 
+def gc_assertions(initial, expected):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial','S_collect',7),
+        'S_collect.TODO = (GC_TRACE pgccall) :: ptask_collect_tail*',
+        'pgccall.PASS = 0', 'pgccall.PENDING = eps',
+        '$dynamic_output(S_collect.EVENTS) = $ptascii("warning|held|")',
+        'S_collect.FRAMES = pframe :: pframe_tail*',
+        'pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_handler_tail*',
+        'perrorcall.RESUME = PROPERTY_DYNAMIC_RESULT pdynamicproperty',
+        '~pdynamicproperty.RETIRED', 'pdynamicproperty.PENDING = eps',
+        'S_saved = $constant_frame_scope(S_collect, pframe, pframe_tail*)',
+        '$property_dynamic_valid(S_saved,pdynamicproperty)',
+        '$error_entered_call_valid(S_saved,perrorcall)',
+        '$task_nodes(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = [HOBJECT pdynamicproperty.TARGET]',
+        '$heap_owners($heap_graph(S_collect),HOBJECT pdynamicproperty.TARGET) = 1',
+        'S_global = $global_table_view(S_collect)',
+        '$lookup(S_global.ENV,$ptascii("object")) = eps',
+        'S_trace_found = $drive_steps(S_collect,1)',
+        'S_trace_found.COMPLETION = BUDGET',
+        'S_trace = S_trace_found[.COMPLETION = NORMAL]', *valid('S_trace'),
+        'S_trace.TODO = (GC_DTORS pgcplan) :: ptask_collect_tail*',
+        'pgcplan.CALL = pgccall',
+        '(HOBJECT pdynamicproperty.TARGET) <- pgcplan.GRAPH.ROOTS',
+        '$heap_owners(pgcplan.GRAPH,HOBJECT pdynamicproperty.TARGET) = 1',
+        '~((HOBJECT pdynamicproperty.TARGET) <- pgcplan.COUNTED)',
+        '~((HOBJECT pdynamicproperty.TARGET) <- pgcplan.DTORS)',
+        '~((HOBJECT pdynamicproperty.TARGET) <- pgcplan.FREESET)',
+        *seek('S_trace','S_release',2),
+        'S_release.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_release_tail*',
+        'S_release.GC.ACTIVE = eps', 'S_release.GC.PLAN = eps',
+        '$heap_owners($heap_graph(S_release),HOBJECT pdynamicproperty.TARGET) = 1',
+        '$dynamic_output(S_release.EVENTS) = $ptascii("warning|held|0|")',
+        *seek('S_release','S_insert',3),
+        'S_insert.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty_insert) :: ptask_insert_tail*',
+        'pdynamicproperty_insert = pdynamicproperty[.RETIRED = true]',
+        '$property_dynamic_valid(S_insert,pdynamicproperty_insert)',
+        *retired_receiver('S_insert',True),
+        '$dynamic_output(S_insert.EVENTS) = $ptascii("warning|held|0|drop|")',
+        'S_done = $drive_steps(S_insert,2048)',
+        r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
+        '$dynamic_output(S_done.EVENTS) = '+cross.invoke.byte_expr(expected.encode()),
+        *valid('S_done')]
+
+
 def exit_assertions(initial):
     return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
         *seek('S_initial', 'S_entry', 0),
@@ -293,7 +342,7 @@ def exit_assertions(initial):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--group', choices=['reentry','retirement','resurrection','pending','pending-resurrection','temporary-cleanup','exit'], required=True)
+    parser.add_argument('--group', choices=['reentry','retirement','resurrection','pending','pending-resurrection','temporary-cleanup','gc-protected','exit'], required=True)
     parser.add_argument('--prepare-only', action='store_true')
     args=parser.parse_args()
     os.environ.update(LC_ALL='C', TZ='UTC', GIT_OPTIONAL_LOCKS='0')
@@ -303,6 +352,7 @@ def main():
           'resurrection':'dynamic-retired-receiver-resurrects',
           'pending':'dynamic-handler-retires-and-throws',
           'pending-resurrection':'dynamic-retired-receiver-resurrects-pending',
+          'gc-protected':'dynamic-warning-gc-protected-resurrection',
           'exit':'dynamic-handler-exit-shutdown'}.get(args.group)
     report={'before':before, 'group':args.group, 'profile':cross.invoke.types.PROFILE,
             'passed':False, 'native_evaluations':0, 'model_evaluations':0,
