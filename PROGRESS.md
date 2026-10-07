@@ -7,11 +7,11 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-The canonical source includes accepted ArrayAccess292/304, eager destruction270,
+The canonical source includes accepted ArrayAccess292/304/309, eager destruction270,
 WeakReference296, ordinary cycle collection301, Fiber291/302/308,
 Generator289/303/310 and source operands293/298,
 plus instance/readonly properties288/294 and clone300/305 with cached maker selection,
-with291 modules descended from `38f1dfaa045f`. The ordered integration preserves
+with292 modules descended from `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
@@ -20,7 +20,7 @@ cuts below retain their original inputs.
 The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
 cuts retain their original inputs. Independently accepted private milestones286,
-290, 295, 297, 306 and309 await ordered Git integration. Other private work covers299
+290, 295, 297 and306 await ordered Git integration. Other private work covers299
 and auto-global emission316. Nonconstant source-emission314 is installed after Fiber308.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
@@ -153,13 +153,16 @@ actual 38f + accepted 292 + 304 / 275 agrees through include conversion,
 private Owner/Child selection, GLOBALS
 reference rebinding and a retained-cell append. The
 [append ledger](coverage/semantics/arrayaccess-append-review.json) keeps cuts and
-original failures separate. Final simple returned-child append309 is independently
-accepted at its private276 and actual278 cuts. The current287 composition keeps
+original failures separate. Final simple returned-child append309 is installed;
+its private276 and actual278 cuts remain independently accepted. The current287 composition keeps
 the canonical Generator/Fiber/source fields; clean718b passes full compilation,
 one new exact Fiber Set/paused-Generator finalizer original and64 strict-SL
 premises. The actual291 bridge overcc397 keeps PROP call/cleanup schemas and
 also matches the same original;64 retains its287 cut. Independent review accepts
-these separate gates; ordered integration is pending.
+these separate gates. Canonical292 over2a2 preserves HANDLE/TEMP/NOGC
+and301 and passes full compilation plus one new exact cyclic-child original:
+Set collects an unrelated cycle, readback returns old CELL25 after global
+rebinding to31, and later collection frees the returned child/count1.
 The [returned-child ledger](coverage/semantics/arrayaccess-returned-append-review.json)
 preserves eight sources/160 premises, separate lifetime/provider/compiler/warning
 cuts and zero-credit original failures. Wider producers, by-reference Get and
@@ -1324,8 +1327,8 @@ failures and interrupted evidence.
   ingress;282 stages missing/scalar R and quiet-container warnings with genuine
   row/key owners. ArrayAccess284 adds the builtin contract and direct R/IS,
   isset/empty, Set/append and Unset calls. Writable292 adds direct compound and
-  ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append.
-  By-reference Get, wider memoized ArrayAccess consumers
+  ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append,
+  and309 adds final simple append to returned children. By-reference Get, wider memoized ArrayAccess consumers
   and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.

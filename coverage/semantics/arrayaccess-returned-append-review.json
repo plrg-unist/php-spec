@@ -1,6 +1,6 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "decision": "Private309 and actual278 interactions remain independently accepted at their recorded cuts. Current287 compiler/source1/reached64 pass at718b3847f; current291 compiler and the affected same original pass at681f755c0, independently accepted by arguments_review_18. Exact maintained promotion adds no execution credit; canonical integration pending.",
+  "decision": "Returned-child append309 is integrated with292 modules after independently accepted current301 compiler/new GC-source gates at79f513778. Earlier private309/actual278, current287 source1/reached64 and current291 compiler/source1 retain their recorded cuts. Exact maintained promotion adds no execution credit; independent review is arguments_review_18.",
   "baseline": "c1d5011a0 (accepted292+304; 275 modules)",
   "tested_revision": {
     "head": "a0954c2dc12250cde676bb2fb26bd7e45d299ca8",
@@ -279,7 +279,8 @@
     "actual_preparation": "python3 -B tests/semantics/arrayaccess_returned_append_current_prepare.py",
     "actual_source": "python3 -B tests/semantics/arrayaccess_returned_append_current_run.py PREPARED_REPORT",
     "selected_state_execution": "python3 -B tests/semantics/arrayaccess_returned_append_state_run.py PREPARED_REPORT",
-    "maintained_runner_build": "scripts/opam-exec.sh dune build --root tests/semantics -j 1 numeric_runner.exe"
+    "maintained_runner_build": "scripts/opam-exec.sh dune build --root tests/semantics -j 1 numeric_runner.exe",
+    "actual_gc_source": "python3 -B tests/semantics/arrayaccess_returned_append_gc_run.py"
   },
   "failures_preserved": [
     {
@@ -366,8 +367,8 @@
   "boundaries": "By-reference Get, wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess declaration ordering remain open. Dynamic selected facts require coherence without callback-history authentication. Earlier284/292/304 accepted cuts are preserved without renewal; user-paused returns verification remains separate. No fresh offline build, complete-core or family-closure claim.",
   "evidence": "Large original commands/stdout/stderr/exit/process-group/revision artifacts remain in ignored .tools; this ledger records concise provenance and recovery commands.",
   "coordination": {
-    "numeric_actor": "None; current287 and current291 compiler/source gates completed, inputs stable and producer groups closed. Numeric1 released to root.",
-    "canonical_writer": "Root controls ordered integration. ARG makes no canonical writes without the assigned writer handoff."
+    "numeric_actor": "None; current292 compiler/source gates completed, inputs stable and producer groups closed. Numeric1 released to root.",
+    "canonical_writer": "ARG309 integrated under the assigned sole-writer handoff; root controls subsequent ordered integration."
   },
   "portable_publication": {
     "commits": [
@@ -391,7 +392,7 @@
   "current_parent_join": {
     "parent": "68393cbbb/286",
     "semantic_commit": "6b3b4fa48/287",
-    "status": "PASS independently accepted by arguments_review_18; canonical integration pending",
+    "status": "PASS independently accepted by arguments_review_18; integrated over2a2e1af7c/291 with292 modules",
     "scope": "Exact accepted309 guards and270 unused Set normalization; pure171/207/33/46/82/84 factors retain current Generator, Fiber, call and source-emission fields. Earlier accepted cuts are not renewed.",
     "tested_revision": "718b3847fa79a754f16eb26458ea4fdd79ec74a1 /287, clean/stable",
     "compiler": {
@@ -429,6 +430,25 @@
         "result": "PASS affected same original: exact normal stdout/stderr/exit, model26.059s under unchanged CLI60/outer90/100000steps/jobs1, checked/accepted frontend, stable inputs/closed groups"
       },
       "retained_credit": "718b/287 source1/reached64 and all older private/actual cuts retain their original identities; this bridge does not renew64 or old gates."
+    },
+    "actual_gc_bridge": {
+      "parent": "2a2e1af7c/291 (accepted ordinary cycle collection301)",
+      "tested_revision": "79f5137786d9af9faa3a3570df3213f2cf7dcfbe /292, clean/stable",
+      "status": "PASS independently accepted by arguments_review_18",
+      "scope": "Exact accepted ARG semantic hunks preserve all HANDLE/TEMP/NOGC fields, borrowed GC buffers and301; the270 delta remains unused Set-result normalization.",
+      "compiler": {
+        "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/actual-prepared-vohj7o10/report.json",
+        "result": "PASS full algo/struct9.85MB/9.45MB,3.039s/3.851s, all helper markers, empty stderr/exit0, stable inputs/closed groups; compiler-only"
+      },
+      "source": {
+        "report": ".tools/arrayaccess-returned-append-current-parent-18/.tools/arrayaccess-returned-append/gc-source-elrx4ref/report.json",
+        "path": "tests/semantics/arrayaccess-returned-append-current/cycle-collection.php",
+        "agreements": 1,
+        "result": "PASS one new original: exact normal stdout/stderr/exit, model31.171s under unchanged CLI60/outer90/100000steps/jobs1, checked/accepted frontend, stable inputs/closed groups",
+        "stdout": "G;S:1:11;L;K:1;H:1;R:25;C;N:1;E:1:25:31;"
+      },
+      "interaction": "The first collection retires an unrelated cycle/count1 while genuine returned-child owners keep the cyclic child alive. The unrelated cycle's destructor mutates old RHS CELL25 and rebinds global RHS31 before used Set readback. A later collection retires the child/count1 and clears WeakReference.",
+      "retained_credit": "All earlier private/actual source and reached-state cuts keep their original identities. This bridge adds only the new GC source and current compiler checks; no64/160 or historical renewal."
     }
   }
 }

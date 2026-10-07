@@ -58,7 +58,7 @@ rows are extracted. Copies of real reference cells detach only when their actual
 owners permit it, including permanent literal-pool roots. Append and explicit-null
 dimension tasks retain distinct source forms at public admission.
 
-Module309 adds final simple append to a returned ArrayAccess child. The final
+Integrated module309 adds final simple append to a returned ArrayAccess child. The final
 writer transfers into Set with a null key, retaining its genuine returned-cell
 owner and the selected child until the call finishes. Missing RHS demand keeps
 captured null when its handler populates the CV or replaces the global child;
@@ -183,8 +183,15 @@ source target and checks direct/zero/one-step resumption. These are separate
 current-parent gates, with prior cuts and failures unchanged. The actual291
 bridge overcc397 preserves new PROP call/cleanup schemas and matches the same
 original;64 retains its287 cut. Compiler stages and source agreement keep separate
-records in the ledger.
+records in the ledger. Canonical292 over2a2 preserves HANDLE/TEMP release jobs
+and borrowed NOGC receipts from301 and passes one new exact cyclic-child
+original. Collection inside Set frees an unrelated cycle/count1 while the
+returned child stays alive; the collected cycle's destructor changes the old RHS
+cell to25 and rebinds the global name to31. Used assignment reads25; the next collection
+frees the child/count1 and clears its weak observer.
 
 `arrayaccess_returned_append_fiber_prepare.py` compiles that reached recipe;
 `arrayaccess_returned_append_state_run.py PREPARED_REPORT` runs it strictly.
 `arrayaccess_returned_append_fiber_run.py` compares the exact original with PHP.
+
+`arrayaccess_returned_append_gc_run.py` compares that exact GC original with PHP.

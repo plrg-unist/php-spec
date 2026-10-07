@@ -374,7 +374,10 @@ pointer. Eight normal sources and two strict-SL recipes/160 premises pass at one
 private cut. The separately accepted eager/weak lifetime composition keeps typed
 old-cell readback and genuine callback/provider owners. One new current287
 original and64 strict-SL premises also preserve readback across Fiber suspension
-and a paused Generator finalizer. By-reference Get, wider
+and a paused Generator finalizer. The canonical292 GC interaction retains
+a cyclic returned child across collection inside Set, reads the old RHS cell
+after a collector destructor rebinds its global name, and frees the child on the
+next collection. By-reference Get, wider
 memoized/property/GLOBALS consumers and combined Iterator/ArrayAccess notice
 ordering remain required.
 
