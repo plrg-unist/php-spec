@@ -21,6 +21,15 @@ changes only the completion to explicit `Unsupported`; the adapter rejects a
 malformed `resume_eval` response before semantic mutation and retains the live
 session for a valid response.
 
+The public continuation evaluates response validation and source resumption once.
+Normal, shutdown-ready and destructor-ready results use the original remaining
+budget; abrupt or refused results return the resumed state even when that budget
+is absent. The private 290-module change passes strict initialization, 73 reached
+malformed/saved-owner/budget predicates and one persistent public session covering
+wrong identity, valid response and replay rejection. Its full Generator/Fiber
+default-retry original still times out at the unchanged 55-second host cap and
+earns no source agreement. Raw results remain in `.tools/defaults-composition/model-v9`.
+
 The trusted worker is the source-to-AST authority. The adapter's direct
 `resume_eval` endpoint checks response identity and AST type but cannot prove
 that an arbitrary client-supplied AST came from those bytes. Source-agreement

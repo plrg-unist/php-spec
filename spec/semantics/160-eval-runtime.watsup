@@ -601,17 +601,16 @@ def $eval_resume_valid(S, SOURCE_PARSE_REJECT n n_bytes* n_message* z) = $eval_r
 def $eval_resume_valid(S, SOURCE_COMPILE_REJECT n n_bytes* n_message* z) = $eval_resume_rejected(S, pevalcontext, pevalcontext_tail*, FAILED_COMPILE, n_message*, z)
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
 dec $eval_resume(pstate, psourceresponse) : pstate
-def $eval_resume(S, psourceresponse) = $eval_resume_valid(S, psourceresponse)
-  -- if $eval_response_valid(S, psourceresponse)
-def $eval_resume(S, psourceresponse) = S[.COMPLETION = UNSUPPORTED "invalid eval parser response"]
-  -- if ~$eval_response_valid(S, psourceresponse)
+dec $eval_resume_checked(pstate, psourceresponse, bool) : pstate
+def $eval_resume(S, psourceresponse) = $eval_resume_checked(S, psourceresponse, $eval_response_valid(S, psourceresponse))
+def $eval_resume_checked(S, psourceresponse, true) = $eval_resume_valid(S, psourceresponse)
+def $eval_resume_checked(S, psourceresponse, false) = S[.COMPLETION = UNSUPPORTED "invalid eval parser response"]
 dec $eval_continue(pstate, psourceresponse) : pstate
-def $eval_continue(S, psourceresponse) = $drive_steps(S_next, n)
-  -- if S.SERVICELEFT = (n)
-  -- if S_next = $eval_resume(S, psourceresponse)
+dec $eval_continue_result(nat?, pstate) : pstate
+def $eval_continue(S, psourceresponse) = $eval_continue_result(S.SERVICELEFT, $eval_resume(S, psourceresponse))
+def $eval_continue_result((n), S_next) = $drive_steps(S_next, n)
   -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next) \/ $destructor_ready(S_next)
-def $eval_continue(S, psourceresponse) = S_next
-  -- if S_next = $eval_resume(S, psourceresponse)
+def $eval_continue_result(n?, S_next) = S_next
   -- if S_next.COMPLETION =/= NORMAL
   -- if ~$shutdown_ready(S_next) /\ ~$destructor_ready(S_next)
 
