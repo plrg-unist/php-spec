@@ -866,8 +866,8 @@ def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = true
   -- if $generator_flat_tasks(pfibervm.TODO) /\ $generator_flat_frames(pfibervm.FRAMES)
   -- if $generator_resume_ids(pfibervm.TODO) = eps /\ $generator_saved_ids(pfibervm.FRAMES) = eps
   ;; The transfer domain excludes a loader in this saved VM. Validate the
-  ;; active source/publication on S and this VM's tasks without its eval markers.
-  -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n?][.FIBERCALLERS = pfibercaller*][.COMPLETION = NORMAL][.EVALCONTEXTS = eps]
+  ;; active source/publication on S and this VM's tasks without loader contexts.
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n?][.FIBERCALLERS = pfibercaller*][.COMPLETION = NORMAL][.EVALCONTEXTS = eps][.FILECONTEXTS = eps]
   -- if $eval_tasks_markers_valid(S_view, S_view.TODO)
   -- if $eval_requests_owned(S_view.TODO)
   -- if $eval_frames_markers_valid(S_view, S_view.FRAMES)
