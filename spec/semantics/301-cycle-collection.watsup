@@ -50,6 +50,12 @@ dec $gc_handle_jobs(pdestructionjob*, nat) : nat
 dec $gc_handle_task(pstate, ptask, nat) : nat
 dec $gc_handle_tasks(pstate, ptask*, nat) : nat
 dec $gc_handle_frames(pstate, pframe*, nat) : nat
+dec $gc_handle_vm(pstate, pfibervm, nat?, nat) : nat
+dec $gc_handle_fiber(pstate, pnode, nat) : nat
+dec $gc_handle_fibers(pstate, pnode*, nat) : nat
+dec $gc_handle_callers(pstate, pfibercaller*, nat) : nat
+dec $gc_handle_closers(pstate, pfiberclose*, nat) : nat
+dec $gc_handle_all(pstate, nat) : nat
 dec $gc_begin(pstate, pconfigcall) : pstate
 dec $gc_receive(pstate, pconfigcall) : pstate
 dec $gc_simple_done(pstate, pvalue) : pstate
@@ -571,7 +577,25 @@ def $gc_handle_tasks(S, eps, n) = 0
 def $gc_handle_tasks(S, ptask :: ptask_tail*, n) = $($gc_handle_task(S, ptask, n) + $gc_handle_tasks(S, ptask_tail*, n))
 def $gc_handle_frames(S, eps, n) = 0
 def $gc_handle_frames(S, pframe :: pframe_tail*, n) = $($gc_handle_tasks(S, pframe.TODO, n) + $gc_handle_frames(S, pframe_tail*, n))
-def $gc_retired_valid(S, n) = ($destructor_jobs_valid(S, [DESTRUCTION_HANDLE n]) /\ $($gc_handle_tasks(S, S.TODO, n) + $gc_handle_frames(S, S.FRAMES, n)) = 1)
+;; Saved VMs carry actual release tasks, unlike borrowed call/history copies.
+;; Exclude the already-restored active view when local VM admission rechecks it.
+def $gc_handle_vm(S, pfibervm, n_active?, n) = $($gc_handle_tasks(S_view, S_view.TODO, n) + $gc_handle_frames(S_view, S_view.FRAMES, n))
+  -- if n_active? =/= S.ACTIVEFIBER
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n_active?][.COMPLETION = NORMAL]
+def $gc_handle_vm(S, pfibervm, n_active?, n) = 0 -- otherwise
+def $gc_handle_fiber(S, HOBJECT n_fiber, n) = $gc_handle_vm(S, pfibervm, (n_fiber), n)
+  -- if $fiber_at(S, n_fiber) = (pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+def $gc_handle_fiber(S, pnode, n) = 0 -- otherwise
+def $gc_handle_fibers(S, eps, n) = 0
+def $gc_handle_fibers(S, pnode :: pnode_carriers*, n) = $($gc_handle_fiber(S, pnode, n) + $gc_handle_fibers(S, pnode_carriers*, n))
+def $gc_handle_callers(S, eps, n) = 0
+def $gc_handle_callers(S, pfibercaller :: pfibercaller_tail*, n) = $($gc_handle_vm(S, pfibercaller.VM, pfibercaller.PREVIOUS, n) + $gc_handle_callers(S, pfibercaller_tail*, n))
+def $gc_handle_closers(S, eps, n) = 0
+def $gc_handle_closers(S, pfiberclose :: pfiberclose_tail*, n) = $($gc_handle_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS, n) + $gc_handle_closers(S, pfiberclose_tail*, n))
+def $gc_handle_all(S, n) = $($gc_handle_tasks(S, S.TODO, n) + $gc_handle_frames(S, S.FRAMES, n) + $gc_handle_fibers(S, S.ALLOCATIONS, n) + $gc_handle_callers(S, S.FIBERCALLERS, n) + $gc_handle_closers(S, S.FIBERCLOSERS, n))
+def $gc_retired_valid(S, n) = ($destructor_jobs_valid(S, [DESTRUCTION_HANDLE n]) /\ $gc_handle_all(S, n) = 1)
 def $gc_buffer_unique(pgcslot*) = $heap_unique($gc_physical_nodes(pgcslot*))
 def $gc_slots_valid(S, eps, nat*, n) = true
 def $gc_slots_valid(S, GC_EMPTY :: pgcslot*, nat*, n) = (n <- nat* /\ $gc_slots_valid(S, pgcslot*, nat*, $(n + 1)))

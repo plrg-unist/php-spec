@@ -419,7 +419,8 @@ rule PhpStep/destructor-release-call: S ~> $destructor_select(S_next, n, false, 
 rule PhpStep/destructor-release-internal: S ~> $internal_destructor_enter(S, pnode, pdestructionrelease)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
-  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_unheld), pnode) = 0
   -- if $internal_destructor_pending(S_unheld, pnode)
