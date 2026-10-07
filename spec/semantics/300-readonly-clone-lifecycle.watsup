@@ -307,6 +307,7 @@ def $clone_context_kind(S, pcallcontext) = true
   -- if $clone_method(S, pcloneoperation.TARGET) = (pmethoddesc)
   -- if pcallcontext.TARGET = METHOD_TARGET pcloneoperation.TARGET pmethoddesc.FUNCTION.ORIGIN
   -- if pcallcontext.CALLSITE = (pcloneoperation.SITE)
+  -- if $method_call_selected(S, pcallcontext.TARGET, pcloneoperation.SITE)
 def $clone_context_kind(S, pcallcontext) = false -- otherwise
 
 def $clone_context_frame_valid(S, pcallcontext, pframe, pframe_tail*) = true
