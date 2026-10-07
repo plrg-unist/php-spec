@@ -611,8 +611,31 @@ rebound. Ordinary StaticCall results also retain their reference kind in direct
 by-reference sends; value results emit the existing Notice and use a fresh cell,
 while first-class callable results reject. Focused ownership checks cover parameter
 retirement and allocation release, without claiming destructor/GC callbacks.
-Readonly/hooks, instance asymmetric setters, broader temporary-return Notice
-timing and callable/typed-reference consumers remain open.
+Backed asymmetric instance setters288 enforce lexical permission across direct,
+compound, reference, dimension and unset operations, while diagnostics retain
+called scope. Raw object interiors and object foreach references preserve their
+native exceptions. Stringable `.=` retains the selected destination and restores
+the writer scope after callbacks. Private34 normal/eight compiler/350 reached
+checks retain their [cuts](coverage/semantics/instance-set-access-review.json);
+one actual Fiber source preserves the captured property across suspension.
+Readonly follow-ons/hooks, wider borrowed destination lifetime, static Stringable compounds
+and broader temporary-return/callable/typed-reference consumers remain open.
+The ordinary [readonly slice294](docs/semantics/SOURCE-READONLY.md) adds first
+initialization, initialized write priority, detached object references and genuine
+first Stringable reentry. Its 39 normal/18 declaration controls, separate Fiber1,
+243 reached conditions and SL275 keep distinct cuts. Genuine clone300 callbacks
+add object-owned readonly allowances through return/throw/exit and Fiber parking,
+preserving borrowed versus actual temporary/intrinsic input owners. Its separate
+20 normals/five declarations/exit1 and 264 reached controls pass with SL276.
+[Nonempty readonly clone updates](docs/semantics/READONLY-CLONE-UPDATES.md) add a
+second window, captured conversions and write revisions. A separate dynamic/FCC
+selection follow-on has 20 distinct source agreements, 665 clauses across seven
+reached-state groups and a passing compiler gate at recorded cuts. Pending-candidate
+identity admission remains open. The current290 composition separately passes
+two exact originals and79 reached premises for private clone makers and live
+clone windows during Generator/Fiber close. Last-owner destination
+release, Deprecated method dispatch and promotion remain required. The new reference controls supersede one historical288 internal assertion
+without renewing the other accepted gates.
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.
@@ -720,7 +743,7 @@ Temporary-current and internal API capture consumers remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
-Readonly members, hooks and user magic methods remain open.
+Wider readonly lifecycle, hooks and user magic methods remain open.
 [`Closure::call`](docs/semantics/CLOSURE-CALL.md) invokes ordinary and fake method
 captures with temporary receiver/scope, shared source statics and original wrapper
 values. Binding warnings precede inner-name errors; forwarding reference warnings
@@ -811,7 +834,9 @@ filesystem search stays excluded.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
-Clone callbacks, readonly/hook semantics and lifecycle integration remain open.
+Genuine clone callbacks and nonempty readonly update windows have separate cuts;
+Generator callbacks, hooks and wider lifecycle
+integration remain open.
 [`get_class` testing support](docs/semantics/GET-CLASS.md) observes finite live
 object names and executing lexical scope through direct and callable invocation.
 [Labels and goto](docs/semantics/SOURCE-GOTO.md) now resolve within each callable,

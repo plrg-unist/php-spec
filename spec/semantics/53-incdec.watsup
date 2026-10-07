@@ -92,7 +92,9 @@ def $update_write(S_changed, S_original, DECREMENT, PINT $(-9223372036854775808)
 def $update_write(S_changed, S_original, pupdate, pvalue_old, pvalue_new, z) = $location_write(S_changed, S_original.LOCATION, pvalue_new) -- otherwise
 
 dec $update_location(pstate, pupdate, bool, int) : pstate
-def $update_location(S, pupdate, b_post, z) = S_changed
+dec $property_update_abrupt(pstate, plocation, pvalue, int) : pstate
+def $property_update_abrupt(S, plocation, pvalue, z) = S -- otherwise
+def $update_location(S, pupdate, b_post, z) = $property_update_abrupt(S_changed, S.LOCATION, pvalue_old, z)
   -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_old
   -- if S_changed = $update_value(S, pupdate, pvalue_old, z)
   -- if S_changed.COMPLETION =/= NORMAL
@@ -174,6 +176,8 @@ def $rw_dimension(S, poperand?, pstringfetch, z) = $string_dimension_fetch(S, po
 def $rw_dimension(S, poperand?, pstringfetch, z) = $rw_array_dimension($fetch_location_array(S, S.LOCATION, z), poperand?, z) -- otherwise
 
 dec $rw_base(pstate, pbase, pstringfetch, int) : pstate
+dec $property_rw_check(pstate, nat, ptbytes, pstringfetch, int) : pstate
+def $property_rw_check(S, n, ptbytes, pstringfetch, z) = S -- otherwise
 def $rw_base(S, BASE_VALUE (VARIABLE n_name* z_name), pstringfetch, z) = $rw_name(S, n_name*, z)
 def $rw_base(S, BASE_NAME poperand z_name, pstringfetch, z) = S_name
   -- if S_name = $resolve_name(S, poperand, z_name)
@@ -185,7 +189,7 @@ def $rw_base(S, BASE_NAME poperand z_name, pstringfetch, z) = $rw_name(S_name, n
 def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = S_read
   -- if S_read = $base_read(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z)
   -- if S_read.COMPLETION =/= NORMAL
-def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = S_read[.LOCATION = PROPERTY n_object ptbytes_key]
+def $rw_base(S, BASE_PROPERTY (POBJECT n_object) ptbytes, pstringfetch, z) = $property_rw_check(S_read[.LOCATION = PROPERTY n_object ptbytes_key], n_object, ptbytes_key, pstringfetch, z)
   -- if S_read = $base_read(S, BASE_PROPERTY (POBJECT n_object) ptbytes, z)
   -- if S_read.COMPLETION = NORMAL
   -- if $property_resolve(S_read, n_object, ptbytes) = PROPERTY_ACCESS ptbytes_key

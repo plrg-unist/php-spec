@@ -23,7 +23,21 @@ dec $consumer_producer_history(pstate, pshutdownproducer) : pstate
 dec $consumer_producer_tables(pstate, pshutdownproducer) : pstate
 dec $consumer_producer_nodes(pshutdownproducer) : pnode*
 dec $consumer_producer_capture(pstate, pshutdownentry) : bool
+dec $consumer_producer_source(pstate, pshutdownentry) : bool
 dec $consumer_producer_internal(pstate, pcalltarget) : bool
+dec $consumer_producer_internal_at(pstate, pshutdownproducer) : bool
+dec $consumer_clone_context(pstate, pcallcontext) : bool
+def $consumer_clone_context(S, pcallcontext) = false -- otherwise
+dec $consumer_clone_receipt(pstate, pcallcontext) : pcloneproducer?
+def $consumer_clone_receipt(S, pcallcontext) = eps -- otherwise
+dec $consumer_producer_ordinary_at(pstate, pshutdownproducer) : bool
+def $consumer_producer_ordinary_at(S, pshutdownproducer) = true -- otherwise
+dec $consumer_clone_producer_valid(pstate, pshutdownproducer) : bool
+def $consumer_clone_producer_valid(S, pshutdownproducer) = false -- otherwise
+dec $consumer_clone_birth_record(pstate, pconfigcall, nat) : pstate
+def $consumer_clone_birth_record(S, pconfigcall, n) = S -- otherwise
+dec $consumer_clone_birth_valid(pstate, pconfigcall, nat?, pshutdownproducer?) : bool
+def $consumer_clone_birth_valid(S, pconfigcall, n?, pshutdownproducer?) = true -- otherwise
 dec $consumer_string_target(pstate, pcalltarget) : bool
 dec $consumer_producer_receiver(pclosurescope?) : nat?
 dec $consumer_producer_bound_receiver(pclosurebinding?) : nat?
@@ -247,7 +261,7 @@ def $consumer_capture_valid(S, porigin, (pmethodcapture)) = true
 ;; A C-selected maker may retire its old registry and Closure before the new
 ;; queue entry runs. Keep only its immutable target and scope/binding records.
 ;; Reconstruction below is for pure lookups and creates no heap owners.
-def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext) \/ $fiber_context_kind(S, pcallcontext))})
+def $consumer_producer_current(S) = ({TARGET pcallcontext.TARGET, SITE pcallcontext.CALLSITE, SCOPE $consumer_producer_scope(S, pcallcontext.TARGET), BINDING $consumer_producer_binding(S, pcallcontext.TARGET), INTERNAL ($error_context_kind(S, pcallcontext) \/ $exception_context_kind(S, pcallcontext) \/ $shutdown_context_kind(S, pcallcontext) \/ $stringify_context_kind(S, pcallcontext) \/ $fiber_context_kind(S, pcallcontext) \/ $consumer_clone_context(S, pcallcontext)), CLONE $consumer_clone_receipt(S, pcallcontext)})
   -- if S.CURRENT = (pcallcontext)
 def $consumer_producer_current(S) = eps -- if S.CURRENT = eps
 def $consumer_producer_scope(S, pcalltarget) = $closure_scope_at(S.CLOSURESCOPES, n)
@@ -264,11 +278,13 @@ def $consumer_producer_bound_receiver((pclosurebinding)) = pclosurebinding.RECEI
 def $consumer_producer_tables(S, pshutdownproducer) = S[.CLOSURESCOPES =  $consumer_producer_scopes(pshutdownproducer.SCOPE) ++ S.CLOSURESCOPES][.CLOSUREBINDINGS = $consumer_producer_bindings(pshutdownproducer.BINDING) ++ S.CLOSUREBINDINGS]
 def $consumer_producer_history(S, pshutdownproducer) = S_tables[.ALLOCATIONS = S_tables.ALLOCATIONS ++ $consumer_producer_nodes(pshutdownproducer)]
   -- if S_tables = $consumer_producer_tables(S, pshutdownproducer)
-def $consumer_producer_capture(S, pshutdownentry) = $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+def $consumer_producer_source(S, pshutdownentry) = $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)
+  -- if $consumer_clone_birth_valid(S, pshutdownentry.CALL, pshutdownentry.BIRTH, pshutdownentry.PRODUCER)
   -- if pshutdownentry.PRODUCER = eps
   -- if pshutdownentry.CAPTURE = eps
   -- if $consumer_capture_function(S, pshutdownentry.CALL.SITE, eps) = eps
-def $consumer_producer_capture(S, pshutdownentry) = true
+def $consumer_producer_source(S, pshutdownentry) = true
+  -- if $consumer_clone_birth_valid(S, pshutdownentry.CALL, pshutdownentry.BIRTH, pshutdownentry.PRODUCER)
   -- if pshutdownentry.PRODUCER = (pshutdownproducer)
   -- if $consumer_producer_snapshot(pshutdownproducer)
   -- if $consumer_producer_site(pshutdownentry.CAPTURE, pshutdownproducer.SITE)
@@ -279,10 +295,17 @@ def $consumer_producer_capture(S, pshutdownentry) = true
   -- if $trait_source_same(pfunction_source, pfunction)
   -- if $shutdown_capture_scope(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_lexical_class(S_history, pshutdownproducer.TARGET)
   -- if $consumer_capture_called(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE) = $target_called_class(S_history, pshutdownproducer.TARGET)
-  -- if (~pshutdownproducer.INTERNAL /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal(S_history, pshutdownproducer.TARGET))
+  -- if (~pshutdownproducer.INTERNAL /\ $consumer_producer_ordinary_at(S_history, pshutdownproducer) /\ $consumer_capture_valid(S, pshutdownentry.CALL.SITE, pshutdownentry.CAPTURE)) \/ (pshutdownproducer.INTERNAL /\ $consumer_producer_internal_at(S_history, pshutdownproducer))
+  -- if pshutdownentry.CAPTURE = eps \/ $consumer_producer_function(pshutdownentry.CAPTURE, pfunction.ORIGIN)
+def $consumer_producer_source(S, pshutdownentry) = false -- otherwise
+def $consumer_producer_capture(S, pshutdownentry) = $consumer_producer_source(S, pshutdownentry)
+  -- if pshutdownentry.PRODUCER = eps
+def $consumer_producer_capture(S, pshutdownentry) = true
+  -- if $consumer_producer_source(S, pshutdownentry)
+  -- if pshutdownentry.PRODUCER = (pshutdownproducer)
+  -- if S_history = $consumer_producer_history(S, pshutdownproducer)
   -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
   -- if papiquery.THIS = $target_receiver(S_history, pshutdownproducer.TARGET)
-  -- if pshutdownentry.CAPTURE = eps \/ $consumer_producer_function(pshutdownentry.CAPTURE, pfunction.ORIGIN)
 def $consumer_producer_capture(S, pshutdownentry) = false -- otherwise
 def $consumer_producer_function((pmethodcapture), porigin) = (pmethodcapture.FUNCTION = porigin)
 def $consumer_producer_function(eps, porigin) = false
@@ -292,6 +315,10 @@ dec $consumer_destructor_target(pstate, pcalltarget) : bool
 def $consumer_producer_internal(S, pcalltarget) = ($handler_method_tag(pcalltarget) \/ $consumer_producer_named(pcalltarget) \/ $consumer_string_target(S, pcalltarget) \/ $consumer_destructor_target(S, pcalltarget))
   -- if $target_instance(pcalltarget) = eps
 def $consumer_producer_internal(S, pcalltarget) = true -- if $target_instance(pcalltarget) =/= eps
+def $consumer_producer_internal_at(S, pshutdownproducer) = $consumer_producer_internal(S, pshutdownproducer.TARGET)
+  -- if pshutdownproducer.CLONE = eps
+def $consumer_producer_internal_at(S, pshutdownproducer) = $consumer_clone_producer_valid(S, pshutdownproducer)
+  -- if pshutdownproducer.CLONE =/= eps
 def $consumer_string_target(S, METHOD_TARGET n porigin) = true
   -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__tostring")
@@ -307,9 +334,11 @@ def $consumer_producer_scopes(eps) = eps
 def $consumer_producer_bindings((pclosurebinding)) = [pclosurebinding]
 def $consumer_producer_bindings(eps) = eps
 def $consumer_producer_snapshot(pshutdownproducer) = true
+  -- if pshutdownproducer.CLONE = eps \/ pshutdownproducer.INTERNAL
   -- if $target_instance(pshutdownproducer.TARGET) = eps
   -- if pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps
 def $consumer_producer_snapshot(pshutdownproducer) = true
+  -- if pshutdownproducer.CLONE = eps \/ pshutdownproducer.INTERNAL
   -- if $target_instance(pshutdownproducer.TARGET) = (n)
   -- if (pshutdownproducer.SCOPE = eps /\ pshutdownproducer.BINDING = eps) \/ $consumer_producer_object(pshutdownproducer.SCOPE, pshutdownproducer.BINDING, n)
 def $consumer_producer_snapshot(pshutdownproducer) = false -- otherwise
@@ -356,11 +385,12 @@ def $api_target_valid(S, papiquery, porigin, ptbytes) = $consumer_shutdown_targe
 def $shutdown_selection_scope(S, pshutdownentry) = $consumer_shutdown_scope(S, papiquery, pshutdownentry)
   -- if pshutdownentry.TARGET = API_METHOD_TARGET papiquery porigin ptbytes b_static
 def $shutdown_scoped_target(API_METHOD_TARGET papiquery porigin ptbytes b_static) = true
-def $consumer_shutdown_register(S, pconfigcall, papiquery, porigin, ptbytes, b_static) = S[.TODO = ptask_tail*][.SHUTDOWN.ENTRIES = S.SHUTDOWN.ENTRIES ++ [pshutdownentry]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $consumer_shutdown_register(S, pconfigcall, papiquery, porigin, ptbytes, b_static) = S_birth[.TODO = ptask_tail*][.SHUTDOWN.ENTRIES = S.SHUTDOWN.ENTRIES ++ [pshutdownentry]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if pconfigcall.SENT = (NAMED_SENT (KNOWN papiquery.VALUE)) :: pnamedslot*
   -- if papiquery_selected = $consumer_query_selected(S, papiquery)
-  -- if pshutdownentry = {CALL pconfigcall, CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, ARGS $shutdown_values(pnamedslot*)}
+  -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, |S.SHUTDOWN.ENTRIES|)
+  -- if pshutdownentry = {CALL pconfigcall, BIRTH (|S.SHUTDOWN.ENTRIES|), CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S), RAW $consumer_snapshot(S, papiquery_selected), TARGET API_METHOD_TARGET papiquery_selected porigin ptbytes b_static, ARGS $shutdown_values(pnamedslot*)}
 
 def $consumer_exception_invalid(S, pexceptioncall, ptbytes) = S[.TODO = eps][.COMPLETION = INTERNALFATAL ($ptascii("Invalid callback ") ++ $error_callback_name(S, pexceptioncall.CALLBACK) ++ $ptascii(", ") ++ ptbytes) ($long_and(S.REPORTING, 1) =/= 0)][.TRACE = eps][.ORIGIN = eps][.ERRORORIGIN = eps]
 def $api_finish(S, EXCEPTION_HANDLER_INVOKE pexceptioncall, pvalue, HANDLERINVALID ptbytes) = $consumer_exception_invalid(S, pexceptioncall, ptbytes)

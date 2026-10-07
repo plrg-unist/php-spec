@@ -1,3 +1,6 @@
+dec $ppproperty_supported(int) : bool
+dec $ppproperty_declared_set(int, bool) : ppropertyvisibility?
+dec $ppproperty_readonly_name(bool) : ptbytes
 ;; Public declared instance properties are immutable source descriptors. Values
 ;; live in per-object slots; the compiler records defaults in the unit pool.
 syntax ppropertywork = PPROPERTIES ppstate ppropertydesc*
@@ -66,6 +69,8 @@ dec $ppproperty_plain_intersection(ptbranch*) : bool
 dec $ppproperty_flag(int, int) : bool
 dec $ppproperty_explicit(ppropdefault) : bool
 dec $ppproperty_group_line_valid(ppstate, metadata) : bool
+dec $ppproperty_instance_supported(int) : bool
+def $ppproperty_instance_supported(flags) = false -- otherwise
 def $ppproperty_flag(flags, bit) = $((flags / bit) \ 2 = 1)
 def $ppproperty_explicit(PROP_STORED porigin) = true
 def $ppproperty_explicit(PROP_DEFERRED porigin) = true
@@ -168,11 +173,13 @@ def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, pprop
   -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* =/= eps /\ $ppproperty_explicit(ppropdefault)
 def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, $ptascii("Static property ") ++ pchheader.NAME ++ $ptascii("::$") ++ ptbytes ++ $ptascii(" cannot be readonly"), $nabs(z))) ppropertydesc*
   -- if ($ppproperty_flag(flags, 64) \/ pchheader.READONLY) /\ ptbranch* =/= eps /\ ~$ppproperty_explicit(ppropdefault) /\ $ppproperty_flag(flags, 8)
-def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES P (ppropertydesc* ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, KEY $ppproperty_key(flags, ptbytes, pchheader.NAME), VISIBILITY $ppproperty_visibility(flags), SETVISIBILITY $ppproperty_set_visibility(flags), FINAL $ppproperty_final(flags), STATIC $ppproperty_flag(flags, 8), TYPE ptbranch*, DEFAULT ppropdefault, LINE $nabs(z) }])
-  -- if (flags <- [0, 1, 2, 4] \/ $ppproperty_static_supported(flags)) /\ ~pchheader.READONLY
+def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES P (ppropertydesc* ++ [{ ORIGIN PORIGIN P.FOLD.SOURCE.ID pcpath, NAME ptbytes, KEY $ppproperty_key(flags, ptbytes, pchheader.NAME), VISIBILITY $ppproperty_visibility(flags), SETVISIBILITY $ppproperty_declared_set(flags, $ppproperty_flag(flags, 64) \/ pchheader.READONLY), FINAL $ppproperty_final(flags), STATIC $ppproperty_flag(flags, 8), READONLY ($ppproperty_flag(flags, 64) \/ pchheader.READONLY), TYPE ptbranch*, DEFAULT ppropdefault, LINE $nabs(z) }])
+  -- if $ppproperty_supported(flags)
+  -- if ~($ppproperty_flag(flags, 64) \/ pchheader.READONLY) \/ (ptbranch* =/= eps /\ ~$ppproperty_explicit(ppropdefault) /\ ~$ppproperty_flag(flags, 8))
   -- if $ppproperty_set_issue(flags, ptbranch*, pchheader.NAME, ptbytes) = eps
 def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppconstant_error(P, ptbytes_error, $nabs(z))) ppropertydesc*
-  -- if $ppproperty_static_supported(flags) /\ ~pchheader.READONLY
+  -- if $ppproperty_supported(flags)
+  -- if ~($ppproperty_flag(flags, 64) \/ pchheader.READONLY) \/ (ptbranch* =/= eps /\ ~$ppproperty_explicit(ppropdefault) /\ ~$ppproperty_flag(flags, 8))
   -- if $ppproperty_set_issue(flags, ptbranch*, pchheader.NAME, ptbytes) = (ptbytes_error)
 def $ppproperty_finish(P, pcpath, flags, ptbytes, ptbranch*, ppropdefault, ppropertydesc*, pchheader, z) = PPROPERTIES ($ppunsupported(P, "property visibility, static, readonly, or final")) ppropertydesc* -- otherwise
 

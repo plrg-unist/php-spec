@@ -1,0 +1,206 @@
+;; zend_declare_typed_property adds protected(set) only for public readonly
+;; declarations without an explicit setter. An explicit public(set) remains
+;; globally initializable after the ordinary equivalent-visibility normalization.
+def $ppproperty_supported(flags) = $ppproperty_supported($(flags - 64))
+  -- if $ppproperty_flag(flags, 64)
+def $ppproperty_supported(flags) = (flags <- [0, 1, 2, 4] \/ $ppproperty_static_supported(flags) \/ $ppproperty_instance_supported(flags))
+  -- if ~$ppproperty_flag(flags, 64)
+def $ppproperty_declared_set(flags, true) = (PROPERTY_PROTECTED)
+  -- if $ppproperty_visibility(flags) = PROPERTY_PUBLIC
+  -- if $ppproperty_raw_set(flags) = eps
+def $ppproperty_declared_set(flags, b) = $ppproperty_set_visibility(flags) -- otherwise
+def $ppproperty_readonly_name(true) = $ptascii("readonly ")
+def $ppproperty_readonly_name(false) = $ptascii("non-readonly ")
+def $property_set_readonly_name(ppropertydesc) = $ptascii("readonly ")
+  -- if ppropertydesc.READONLY
+  -- if ppropertydesc.SETVISIBILITY = (PROPERTY_PROTECTED)
+def $property_set_readonly_name(ppropertydesc) = eps -- otherwise
+
+def $property_readonly_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.READONLY
+def $property_readonly_desc(S, n, ptbytes) = eps -- otherwise
+def $property_readonly_written(S, n, ptbytes) = true
+  -- if $property_readonly_desc(S, n, ptbytes) =/= eps
+  -- if $location_slot(S, PROPERTY n ptbytes) = DEFINED pvalue
+  -- if ~$clone_reinitable(S, n, ptbytes)
+def $property_readonly_written(S, n, ptbytes) = false -- otherwise
+dec $property_readonly_message(pstate, nat, ptbytes, ptbytes) : ptbytes
+def $property_readonly_message(S, n, ptbytes, ptbytes_operation) = $ptascii("Cannot ") ++ ptbytes_operation ++ $ptascii(" readonly property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME
+  -- if $property_readonly_desc(S, n, ptbytes) = (ppropertydesc)
+def $property_readonly_error(S, n, ptbytes, ptbytes_operation, z) = $throw_scalar(S, "Error", $property_readonly_message(S, n, ptbytes, ptbytes_operation), z)
+  -- if S.COMPLETION = NORMAL
+def $property_readonly_error(S, n, ptbytes, ptbytes_operation, z) = $throwable_previous(S_new, n_new, n_old)
+  -- if $throwable_pending(S.COMPLETION)
+  -- if S_old = $throwable_materialize(S)
+  -- if S_old.COMPLETION = THROWING n_old
+  -- if S_new = $throwable_materialize($throw_scalar(S_old[.COMPLETION = NORMAL], "Error", $property_readonly_message(S_old, n, ptbytes, ptbytes_operation), z))
+  -- if S_new.COMPLETION = THROWING n_new
+def $property_readonly_error(S, n, ptbytes, ptbytes_operation, z) = S -- otherwise
+
+;; FETCH_OBJ_W/RW returns a copy of a raw object before FETCH_REF flags are
+;; applied. Whole source references use a detached cell; target reference binds
+;; cannot replace the backed slot through that copy. Scalar and uninitialized
+;; slots still take the readonly/setter indirect-modification error.
+def $property_receiver_copy(S, n, ptbytes) = true
+  -- if $property_instance_set_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.READONLY \/ ~$class_static_set_allowed(S, ppropertydesc)
+  -- if $property_instance_raw_object(S, n, ptbytes)
+def $property_receiver_copy(S, n, ptbytes) = false -- otherwise
+def $property_reference_copy(S, n, ptbytes) = $reference_cell(S[.STORE = S.STORE ++ [DEFINED (POBJECT n_value)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]], n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $location_slot(S, PROPERTY n ptbytes) = DEFINED (POBJECT n_value)
+  -- if n_cell = |S.STORE|
+def $property_reference_slot(S, n, ptbytes, z) = $object_table_sync($property_reference_fetch_unshared($object_table_write(S, n), n, ptbytes, z), n)
+def $property_reference_target_check(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot assign by reference to overloaded object"), z)
+  -- if $property_receiver_copy(S, n, ptbytes)
+def $property_reference_target_check(S, n, ptbytes, z) = $property_instance_indirect_check(S, n, ptbytes, false, z)
+  -- if ~$property_receiver_copy(S, n, ptbytes)
+
+;; Object foreach binds slots directly, bypassing setter visibility, but it
+;; rejects initialized readonly slots even when they contain a raw object.
+def $property_foreach_reference(S, n, ptbytes, z) = $property_readonly_error(S, n, ptbytes, $ptascii("acquire reference to"), z)
+  -- if $property_readonly_desc(S, n, ptbytes) =/= eps
+def $property_foreach_reference(S, n, ptbytes, z) = $property_reference_slot(S, n, ptbytes, z)
+  -- if $property_readonly_desc(S, n, ptbytes) = eps
+
+;; The first simple readonly write checks its live slot and setter before
+;; converting a weak Stringable RHS. Zend does not repeat those checks after
+;; __toString: a callback may initialize the slot, and the outer converted write
+;; still commits. The saved source/address and own consumer remain authenticated.
+def $property_string_result_task(PROPERTY_STRING_RESULT ppropertystring) = true
+def $property_string_result_task(ptask) = false -- otherwise
+def $property_string_site_valid(S, PORIGIN n pcpath, z) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprAssign (NExprPropertyFetch expression phpType20 metadata_property) expression_rhs metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if ~pcode.STRICT
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_assignment, b_assignment))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z, b_target))
+def $property_string_site_valid(S, porigin, z) = false -- otherwise
+
+dec $property_string_base(pstate, pbase, int) : pstate
+def $property_string_base(S, BASE_PROPERTY_PENDING pbase poperand z_base, z) = $property_pending_resolve(S, pbase, poperand, PPW, z_base, z)
+def $property_string_base(S, BASE_PROPERTY pvalue ptbytes, z) = S[.BASE = BASE_PROPERTY pvalue ptbytes]
+def $property_string_base(S, pbase, z) = S[.COMPLETION = UNSUPPORTED "readonly string destination"] -- otherwise
+dec $property_string_rhs_valid(pstate, ppropertystring) : bool
+def $property_string_rhs_valid(S, ppropertystring) = true
+  -- if ppropertystring.RHS = VARIABLE ptbytes z
+  -- if $origin_child((ppropertystring.SITE), [PCFIELD 1]) = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprVariable phpType32 metadata)
+  -- if $reference_cv(NExprVariable phpType32 metadata) = (ptbytes)
+  -- if $variable_line(phpType32, metadata) = z
+def $property_string_rhs_valid(S, ppropertystring) = true
+  -- if ppropertystring.RHS = KNOWN (POBJECT ppropertystring.OBJECT)
+  -- if $origin_child((ppropertystring.SITE), [PCFIELD 1]) = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $reference_cv(expression) = eps
+def $property_string_rhs_valid(S, ppropertystring) = true
+  -- if ppropertystring.RHS = REFERENCE n_cell
+  -- if $origin_child((ppropertystring.SITE), [PCFIELD 1]) = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $static_string_reference_rhs(expression)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+def $property_string_rhs_valid(S, ppropertystring) = false -- otherwise
+
+dec $property_string_address(pstate, pbase, nat, ptbytes) : bool
+dec $property_string_known_name(poperand) : bool
+def $property_string_known_name(KNOWN (PSTRING ptbytes)) = true
+def $property_string_known_name(poperand) = false -- otherwise
+dec $property_string_known_object(pbase) : bool
+def $property_string_known_object(BASE_VALUE (KNOWN (POBJECT n))) = true
+def $property_string_known_object(pbase) = false -- otherwise
+def $property_string_address(S, BASE_PROPERTY (POBJECT n) ptbytes, n_target, ptbytes_key) = (n = n_target /\ $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key)
+def $property_string_address(S, BASE_PROPERTY_PENDING (BASE_VALUE (KNOWN (POBJECT n))) (KNOWN (PSTRING ptbytes)) z, n_target, ptbytes_key) = (n = n_target /\ $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key)
+def $property_string_address(S, BASE_PROPERTY_PENDING (BASE_VALUE (KNOWN (POBJECT n))) poperand z, n_target, ptbytes_key) = (n = n_target)
+  -- if ~$property_string_known_name(poperand)
+def $property_string_address(S, BASE_PROPERTY_PENDING pbase (KNOWN (PSTRING ptbytes)) z, n_target, ptbytes_key) = ($property_resolve(S, n_target, ptbytes) = PROPERTY_ACCESS ptbytes_key)
+  -- if ~$property_string_known_object(pbase)
+def $property_string_address(S, pbase, n_target, ptbytes_key) = true -- otherwise
+dec $property_string_this(pstate, expression, nat) : bool
+def $property_string_this(S, NExprPropertyFetch (NExprVariable phpType32 metadata_receiver) phpType20 metadata, n_target) = ($this_receiver(S) = (n_target))
+  -- if $direct_this(phpType32)
+def $property_string_this(S, expression, n_target) = true -- otherwise
+
+dec $property_string_record_valid(pstate, ppropertystring) : bool
+def $property_string_record_valid(S, ppropertystring) = true
+  -- if S.ORIGIN = (ppropertystring.SITE)
+  -- if $property_string_site_valid(S, ppropertystring.SITE, ppropertystring.LINE)
+  -- if $origin_node(S.SOURCES, ppropertystring.SITE) = (NExprAssign expression_target expression_rhs metadata)
+  -- if $property_pending_source_base(S[.ORIGIN = $origin_child((ppropertystring.SITE), [PCFIELD 0])], ppropertystring.BASE, expression_target)
+  -- if $property_string_address(S, ppropertystring.BASE, ppropertystring.TARGET, ppropertystring.KEY)
+  -- if $property_string_this(S, expression_target, ppropertystring.TARGET)
+  -- if $compound_string_place(S, PROPERTY ppropertystring.TARGET ppropertystring.KEY, expression_target)
+  -- if $property_readonly_desc(S, ppropertystring.TARGET, ppropertystring.KEY) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertystring.DECL
+  -- if $class_static_set_allowed(S, ppropertydesc)
+  -- if $property_string_rhs_valid(S, ppropertystring)
+  -- if $heap_member(HOBJECT ppropertystring.TARGET, S.ALLOCATIONS)
+  -- if $heap_member(HOBJECT ppropertystring.OBJECT, S.ALLOCATIONS)
+  -- if $typed_conversion_at(S, ppropertydesc.TYPE, POBJECT ppropertystring.OBJECT, false) = TYPEDEPENDENT "user object string conversion"
+  -- if $stringable_instance(S, ppropertystring.OBJECT)
+def $property_string_record_valid(S, ppropertystring) = false -- otherwise
+
+dec $property_string_capture(pstate, pbase, int) : ppropertystring?
+def $property_string_capture(S, pbase, z) = (ppropertystring)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $property_string_site_valid(S, porigin_site, z)
+  -- if S_base = $property_string_base(S, pbase, z)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.BASE = BASE_PROPERTY (POBJECT n_target) ptbytes
+  -- if $property_resolve(S_base, n_target, ptbytes) = PROPERTY_ACCESS ptbytes_key
+  -- if $property_readonly_desc(S_base, n_target, ptbytes_key) = (ppropertydesc)
+  -- if ~$property_set_denied(S_base, n_target, ptbytes_key)
+  -- if S_read = $resolve_at(S_base, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n_object)
+  -- if ppropertystring = {SITE porigin_site, BASE pbase, TARGET n_target, KEY ptbytes_key, DECL ppropertydesc.ORIGIN, RHS S.RESULT, OBJECT n_object, LINE z}
+  -- if $property_string_record_valid(S_read, ppropertystring)
+def $property_string_capture(S, pbase, z) = eps -- otherwise
+def $property_string_callback_candidate(S) = true
+  -- if S.TODO = (ASSIGN_ARRAY pbase z b) :: ptask_tail*
+  -- if $property_string_capture(S, pbase, z) = (ppropertystring)
+def $property_string_callback_candidate(S) = false -- otherwise
+def $task_nodes(PROPERTY_STRING_RESULT ppropertystring) = [HOBJECT ppropertystring.TARGET, HOBJECT ppropertystring.OBJECT] ++ $operand_nodes(ppropertystring.RHS)
+
+def $property_string_consumer_guard(S, n, PROPERTY_STRING_RESULT ppropertystring) = (n = ppropertystring.OBJECT /\ $property_string_record_valid(S, ppropertystring))
+def $property_string_consumer_guard(S, n, ptask) = true -- otherwise
+def $property_string_result_guard(S, n, porigin, z) = (n = ppropertystring.OBJECT /\ porigin = ppropertystring.SITE /\ z = ppropertystring.LINE /\ $property_string_record_valid(S, ppropertystring))
+  -- if S.TODO = (STRINGIFY_RESULT n porigin z) :: (PROPERTY_STRING_RESULT ppropertystring) :: ptask_tail*
+def $property_string_result_guard(S, n, porigin, z) = true -- otherwise
+def $stringify_source(S, porigin, z, PROPERTY_STRING_RESULT ppropertystring) = (porigin = ppropertystring.SITE /\ z = ppropertystring.LINE /\ $property_string_record_valid(S, ppropertystring))
+def $stringify_consumer_tail_valid(S, porigin, z, PROPERTY_STRING_RESULT ppropertystring, ptask_tail*) = $stringify_source(S, porigin, z, PROPERTY_STRING_RESULT ppropertystring)
+def $property_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_site), z) = true
+  -- if $property_string_site_valid(S, porigin_site, z)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site)
+def $property_string_pending_line_valid(S, pcalltarget, porigin?, z) = false -- otherwise
+def $property_string_context_line_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $property_string_site_valid(S, porigin_site, pcallcontext.LINE)
+  -- if $stringify_context_kind(S, pcallcontext)
+def $property_string_context_line_valid(S, pcallcontext) = false -- otherwise
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (PROPERTY_STRING_RESULT ppropertystring) :: ptask_tail*
+def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, METHOD_TARGET n porigin_method, porigin_site) = true
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if pframe.ORIGIN = (porigin_site)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (PROPERTY_STRING_RESULT ppropertystring) :: ptask_tail*
+  -- if S_caller = $parameter_string_frame_scope(S, pframe, pframe_tail*)
+  -- if $stringify_source(S_caller, porigin_site, z, PROPERTY_STRING_RESULT ppropertystring)
+  -- if $property_string_consumer_guard(S_caller, n, PROPERTY_STRING_RESULT ppropertystring)
+  -- if $stringify_consumer_tail_valid(S_caller, porigin_site, z, PROPERTY_STRING_RESULT ppropertystring, ptask_tail*)
+def $call_task_valid(S, PROPERTY_STRING_RESULT ppropertystring) = $property_string_record_valid(S, ppropertystring)
+
+rule PhpStep/readonly-string-begin: S ~> $user_string_begin(S_read, ppropertystring.OBJECT, ppropertystring.SITE, z, PROPERTY_STRING_RESULT ppropertystring, ptask_tail*)
+  -- if S.TODO = (ASSIGN_ARRAY pbase z b) :: ptask_tail*
+  -- if $property_string_capture(S, pbase, z) = (ppropertystring)
+  -- if S_base = $property_string_base(S, pbase, z)
+  -- if S_read = $resolve_at(S_base, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/readonly-string-complete: S ~> S_written[.HELD = S.HELD]
+  -- if S.TODO = (PROPERTY_STRING_RESULT ppropertystring) :: ptask_tail*
+  -- if $property_string_record_valid(S, ppropertystring)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_inputs = $hold_task_inputs(S)
+  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, ppropertystring.TARGET), ppropertystring.TARGET, ppropertystring.KEY, PSTRING ptbytes, ppropertystring.LINE), ppropertystring.TARGET)
+
