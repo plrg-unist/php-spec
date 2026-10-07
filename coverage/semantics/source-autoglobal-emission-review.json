@@ -1,0 +1,220 @@
+{
+  "scope": "Literal core auto-global FETCH_R selects its variable line before direct ECHO or a later literal property fetch at owned include operand retirement. Partial core.",
+  "status": "independently_accepted_private",
+  "tested_revision": "f0a47d8f5fd1927c8fd2b78da17d6d1efb8c9c1c",
+  "semantic_root": ".tools/source-autoglobal-emission-316",
+  "modules": 278,
+  "source_sha256": "c9de3571d92d7041094694b031da80311c5c8468c7c370991c7cad593db9fb83",
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "compiler_pin": "da36ac3c434cd291940293a63da64544307730a3",
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "_build/default/adapter/main.exe": "1d7cebf175b60a6e2a534460ec2c4aff206cdd901e34f35f959041a49f5ac2f9",
+    ".tools/request-clock.so": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064"
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1",
+    "include_path": ".:",
+    "variables_order": "EGPCS",
+    "auto_globals_jit": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "request_facts": {
+    "env": [
+      "LC_ALL=C",
+      "TZ=UTC"
+    ],
+    "argv": "absolute original main only",
+    "file": "original main",
+    "cwd": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress",
+    "seconds": "1700000000",
+    "microseconds": 125000,
+    "variables_order": "EGPCS",
+    "auto_globals_jit": true
+  },
+  "request_transport": "Accepted request-clock provider passes PHPRQ001 primitive facts on FD198 before pinned CLI execution; pure SpecTec derives globals.",
+  "compiler": {
+    "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-autoglobal-emission-run-de6r8k00/report.json",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "process": {
+      "exit": 0,
+      "elapsed": 3.1663951873779297,
+      "timeout": false,
+      "group_after": [],
+      "cap_seconds": 300
+    },
+    "application_evaluations": 0,
+    "retained": "Provider-only fixture correction changes no compiler inputs; the passed gate was not rerun."
+  },
+  "sources": {
+    "harness": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-autoglobal-emission-request-check-18.py",
+    "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-autoglobal-request-run-g0rscrgj/report.json",
+    "source_agreements": 2,
+    "application_evaluations": 2,
+    "rows": [
+      {
+        "case": "direct",
+        "process": {
+          "exit": 0,
+          "elapsed": 38.3914589881897,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "stdout_equal": true,
+        "stderr_equal": true
+      },
+      {
+        "case": "property",
+        "process": {
+          "exit": 0,
+          "elapsed": 38.99307322502136,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "stdout_equal": true,
+        "stderr_equal": true
+      }
+    ],
+    "freeze": {
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true
+    }
+  },
+  "preserved_stops": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-autoglobal-emission-run-de6r8k00/report.json",
+      "case": "direct",
+      "reason": "request environment variable; ordinary fixture omitted explicit request facts",
+      "elapsed": 10.625497102737427,
+      "source_agreements": 0
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-review-18-autoglobal/autoglobal-state-run-_qys0j4j/report.json",
+      "case": "entry",
+      "reason": "Request-literal elaboration stop; canonical record field order and explicit typed helper corrected the fixture.",
+      "elapsed": 2.240938425064087,
+      "application_evaluations": 0,
+      "accepted_state_premises": 0,
+      "source_agreements": 0
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-review-18-autoglobal/autoglobal-state-run-nopkyu_v/report.json",
+      "case": "entry",
+      "reason": "Copied Generator OWNER>0 assertion returned false; this genuine MAIN source has OWNER0/current eps/frames eps.",
+      "elapsed": 23.75484347343445,
+      "application_evaluations": 1,
+      "accepted_state_premises": 0,
+      "source_agreements": 0
+    }
+  ],
+  "maintained": {
+    "relocation_preparation": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/autoglobal-relocation-prepare-18-p6728oq8/PREPARED.json",
+    "application_evaluations": 0,
+    "compatibility": "Four relocated PHP files change only the child basename. Relocation earns no renewed source credit; prior private cuts retain original paths and request facts.",
+    "source_commands": [
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case autoglobal-direct",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case autoglobal-property"
+    ],
+    "guards": {
+      "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-expression-emission-protocol-4rf8d6fu/report.json",
+      "semantic_root": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-autoglobal-emission-316",
+      "case": "guards",
+      "binding_premises": 32,
+      "check_premises": 40,
+      "physical_premises": 72,
+      "application_evaluations": 1,
+      "process": {
+        "exit": 0,
+        "elapsed": 3.4757258892059326,
+        "timeout": false,
+        "group_after": [],
+        "cap_seconds": 90
+      },
+      "observed": "true\n",
+      "scope": "Current316-aware classification changes GET-property first emission to receiver FETCH5; original isolated277 guards72 keep their own earlier inputs."
+    }
+  },
+  "engine_symbols": [
+    "zend_try_compile_cv",
+    "zend_compile_simple_var_no_cv",
+    "zend_delayed_compile_prop",
+    "zend_compile_echo"
+  ],
+  "remaining": [
+    "GLOBALS FETCH_GLOBALS, this and http_response_header lowering",
+    "Computed variable/property names, builtin/argument receivers and broader first emissions",
+    "Broader source producers/providers, complete core and final combined fresh offline rebuild"
+  ],
+  "state": {
+    "harness": "/home/user/workspace/php-spec/.tools/include-review-18-autoglobal/run-state-18.py",
+    "raw": "/home/user/workspace/php-spec/.tools/include-review-18-autoglobal/autoglobal-state-run-na0_l53k/report.json",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "physical_premises": 90,
+    "application_evaluations": 2,
+    "source_agreements": 0,
+    "rows": [
+      {
+        "case": "entry",
+        "binding_premises": 36,
+        "check_premises": 43,
+        "physical_premises": 79,
+        "process": {
+          "exit": 0,
+          "elapsed": 45.03870177268982,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "observed": "true\n"
+      },
+      {
+        "case": "guards",
+        "binding_premises": 5,
+        "check_premises": 6,
+        "physical_premises": 11,
+        "process": {
+          "exit": 0,
+          "elapsed": 3.222705125808716,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "observed": "true\n"
+      }
+    ],
+    "scope": "Genuine MAIN OWNER0, entry to first destructor, variable FETCH5/property6, retained cast-valued GET payload, public/heap/source-owner admission, three heap-identical compiler-certificate forgeries and zero/one-step resumption; computed-name classification exclusion.",
+    "freeze": {
+      "inputs_stable": true,
+      "module_stats_stable": true,
+      "head_stable": true,
+      "status_stable": true
+    }
+  }
+}

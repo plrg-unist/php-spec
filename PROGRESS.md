@@ -20,8 +20,9 @@ cuts below retain their original inputs.
 The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
 cuts retain their original inputs. Independently accepted private milestones286,
-290, 295, 297 and306 await ordered Git integration. Other private work covers299
-and auto-global emission316. Nonconstant source-emission314 is installed after Fiber308.
+290, 295, 297 and306 await ordered Git integration. Other private work covers299.
+Auto-global emission316 is independently accepted at its isolated278 cut;
+current-parent integration remains pending. Nonconstant source-emission314 is installed after Fiber308.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
 
@@ -60,6 +61,14 @@ The [composition ledger](coverage/semantics/include-source-composition-review.js
 records genuine child line5/main keyword21, retained captured input after alias
 clearing, the saved Generator caller and public/heap owner/suffix controls. The
 maintained relocated fixture prepares 49 premises with zero runtime applications.
+
+[Auto-global emission316](coverage/semantics/source-autoglobal-emission-review.json)
+selects literal FETCH_R5 before ECHO or property6. Its isolated278 cut passes
+strict compilation, two exact explicit-request originals, independent79 MAIN
+entry/first-destructor/source/image premises, computed-name11 and new maintained72
+classification premises. The omitted-request Unsupported, request-literal fixture
+stop and copied Generator-owner false fixture retain zero accepted credit.
+Four relocated sources gain no execution credit; wider emissions remain required.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.

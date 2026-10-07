@@ -33,3 +33,15 @@ forgeries. The maintained generator case prepares70 with zero applications.
 Earlier literal, retirement and Generator-composition cuts keep their original
 identities. Broader emission, complete core and the final combined, fresh offline
 rebuild remain required.
+
+Module316 adds literal core auto-globals except `GLOBALS`: direct ECHO emits
+FETCH_R at the variable line, and a literal property receiver emits that same
+fetch before the property instruction. Both expression records retain their
+real lines and the source-entry hook authenticates the complete image.
+The [separate ledger](../../coverage/semantics/source-autoglobal-emission-review.json)
+records isolated278 source2 with explicit request facts, independent79 genuine
+MAIN entry/retirement/heap/image/resumption premises, computed-name11 and a new
+maintained72 classification cut. The source cases use the reviewed FD198 request
+provider; `scripts/build-request-provider.sh` prepares it. Relocation earns zero
+renewed source credit. `GLOBALS`, `this`, `http_response_header`, computed names
+and broader producers remain required. Current-parent integration is pending.
