@@ -40,6 +40,13 @@ def $dynamic_phase(S, 5) = true
   -- if S.TODO = (EXIT_INVOKE pexitcall) :: ptask_tail*
   -- if $exit_invoke_valid(S, pexitcall)
   -- if $property_dynamic_exit_pending(S)
+def $dynamic_phase(S, 6) = true
+  -- if $dynamic_output(S.EVENTS) = $ptascii("warning|receiver|")
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = PROPERTY_DYNAMIC_INSERT pdynamicproperty
+  -- if pdestructorcall.OBJECT = pdynamicproperty.TARGET
 def $dynamic_phase(S, n) = false -- otherwise
 dec $dynamic_seek(pstate, nat, nat) : pstate
 def $dynamic_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -203,6 +210,48 @@ def pending_assertions(initial, expected, resurrect):
         *valid('S_done')]
 
 
+def temporary_assertions(initial, used, expected):
+    label = 'used' if used else 'unused'
+    state = 'S_'+label
+    record = 'pdynamicproperty_'+label
+    rhs = 'n_rhs_'+label
+    operation = 'pdestructionoperation_'+label
+    call = 'pdestructorcall_'+label
+    context = 'pcallcontext_'+label
+    tail = 'ptask_'+label+'_tail*'
+    return [state+'_initial = '+initial, '~'+state+'_initial.COMPILESTOP',
+        *seek(state+'_initial', state+'_insert', 3),
+        f'{state}_insert.TODO = (PROPERTY_DYNAMIC_INSERT {record}) :: {tail}',
+        f'{record}.RHS = KNOWN (POBJECT {rhs})',
+        f'{record}.SELECTED = {record}.RHS', f'~{record}.RETIRED',
+        f'{record}.PENDING = eps', f'{record}.TARGET =/= {rhs}',
+        f'$heap_owners($heap_graph({state}_insert), HOBJECT {record}.TARGET) = 1',
+        f'$heap_owners($heap_graph({state}_insert), HOBJECT {rhs}) = 1',
+        f'$objectprops_at({state}_insert.OBJECTPROPS, {record}.TARGET) = (eps)',
+        *seek(state+'_insert', state+'_cleanup', 6),
+        f'{state}_cleanup.CURRENT = ({context})',
+        f'$destructor_context_call({context}, {state}_cleanup.CURRENT, {state}_cleanup.FRAMES) = ({call})',
+        f'$destructor_context_valid({state}_cleanup, {context})',
+        f'{call}.OBJECT = {record}.TARGET', f'{call}.OPERATION = ({operation})',
+        f'{operation}.SOURCE = PROPERTY_DYNAMIC_INSERT {record}',
+        f'{operation}.VALUE = '+(f'KNOWN (POBJECT {rhs})' if used else 'KNOWN PNULL'),
+        f'{operation}.PENDING = eps',
+        f'$heap_owners($heap_graph({state}_cleanup), HOBJECT {rhs}) = '+str(2 if used else 1),
+        f'$objectprops_at({state}_cleanup.OBJECTPROPS, {record}.TARGET) = ([{{DECL eps, NAME ($ptascii("x")), STATE PROP_VALUE (DIRECT (POBJECT {rhs}))}}])',
+        f'{state}_zero = $drive_steps({state}_cleanup, 0)',
+        f'{state}_zero.COMPLETION = BUDGET',
+        f'{state}_zero[.COMPLETION = NORMAL] = {state}_cleanup',
+        f'{state}_one_found = $drive_steps({state}_cleanup, 1)',
+        f'{state}_one_found.COMPLETION = BUDGET',
+        f'{state}_one = {state}_one_found[.COMPLETION = NORMAL]', *valid(state+'_one'),
+        f'{state}_done = $drive_steps({state}_one, 2048)',
+        f'{state}_done.COMPLETION = NORMAL /\\ {state}_done.TODO = eps /\\ {state}_done.CURRENT = eps /\\ {state}_done.FRAMES = eps',
+        f'~$heap_member(HOBJECT {record}.TARGET, {state}_done.ALLOCATIONS)',
+        f'~$heap_member(HOBJECT {rhs}, {state}_done.ALLOCATIONS)',
+        f'$dynamic_output({state}_done.EVENTS) = '+cross.invoke.byte_expr(expected.encode()),
+        *valid(state+'_done')]
+
+
 def exit_assertions(initial):
     return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
         *seek('S_initial', 'S_entry', 0),
@@ -244,7 +293,7 @@ def exit_assertions(initial):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--group', choices=['reentry','retirement','resurrection','pending','pending-resurrection','exit'], required=True)
+    parser.add_argument('--group', choices=['reentry','retirement','resurrection','pending','pending-resurrection','temporary-cleanup','exit'], required=True)
     parser.add_argument('--prepare-only', action='store_true')
     args=parser.parse_args()
     os.environ.update(LC_ALL='C', TZ='UTC', GIT_OPTIONAL_LOCKS='0')
@@ -254,28 +303,46 @@ def main():
           'resurrection':'dynamic-retired-receiver-resurrects',
           'pending':'dynamic-handler-retires-and-throws',
           'pending-resurrection':'dynamic-retired-receiver-resurrects-pending',
-          'exit':'dynamic-handler-exit-shutdown'}[args.group]
-    original=sources.BOUNDARIES[name][0] if args.group=='exit' else sources.CASES[name]
-    source=out/'source.php'; source.write_bytes(original)
+          'exit':'dynamic-handler-exit-shutdown'}.get(args.group)
     report={'before':before, 'group':args.group, 'profile':cross.invoke.types.PROFILE,
             'passed':False, 'native_evaluations':0, 'model_evaluations':0,
             'state_assertions_evaluated':0, 'runner_mode':'SL', 'numeric_cap_seconds':120}
     print(out, flush=True)
     try:
-        sources.prepare(out, source)
-        initial='$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
-        clauses=['program_source = '+(out/'program.watsup').read_text().strip(), *assertions(initial,args.group,sources.EXPECTED.get(name,''))]
+        originals = []
+        if args.group=='temporary-cleanup':
+            clauses=[]
+            hashes={}
+            for used in [False,True]:
+                name='dynamic-'+('used' if used else 'unused')+'-computed-receiver-rhs-cleanup'
+                directory=out/name; directory.mkdir()
+                source=directory/'source.php'; original=sources.CASES[name]
+                source.write_bytes(original); originals.append((source,original))
+                sources.prepare(directory,source)
+                program='program_'+('used' if used else 'unused')
+                initial='$php_run('+program+',0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
+                clauses += [program+' = '+(directory/'program.watsup').read_text().strip(),
+                    *temporary_assertions(initial,used,sources.EXPECTED[name])]
+                hashes[name]=cross.invoke.sha(source)
+            report['source_sha256']=hashes
+        else:
+            original=sources.BOUNDARIES[name][0] if args.group=='exit' else sources.CASES[name]
+            source=out/'source.php'; source.write_bytes(original); originals.append((source,original))
+            sources.prepare(out, source)
+            initial='$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
+            clauses=['program_source = '+(out/'program.watsup').read_text().strip(), *assertions(initial,args.group,sources.EXPECTED.get(name,''))]
+            report['source_sha256']=cross.invoke.sha(source)
         fixture=out/'protocol.watsup'
         fixture.write_text(PREFIX+'dec $body() : bool\ndef $body() = true\n'+''.join('  -- if '+c+'\n' for c in clauses)+'\ndec $main() : bool\ndef $main() = $body()\n')
         (out/'assertions.json').write_text(json.dumps(clauses,indent=2)+'\n')
-        report.update(assertions=len(clauses),source_sha256=cross.invoke.sha(source),fixture_sha256=cross.invoke.sha(fixture))
+        report.update(assertions=len(clauses),fixture_sha256=cross.invoke.sha(fixture))
         if not args.prepare_only:
             modules=json.loads((ROOT/'spec/semantics/modules.json').read_text())
             result=cross.invoke.process([str(ROOT/'tests/semantics/_build/default/numeric_runner.exe'),'--sl',
                 *[str(ROOT/module) for module in modules],str(fixture)],out/'numeric',120,ROOT)
             assert result.returncode==0 and result.stdout==b'true\n' and not result.stderr
             report['state_assertions_evaluated']=len(clauses)
-        assert cross.snapshot(None)==before and source.read_bytes()==original
+        assert cross.snapshot(None)==before and all(path.read_bytes()==original for path,original in originals)
         report['passed']=True
     except BaseException as error:
         report['failure']={'type':type(error).__name__,'message':str(error)}
