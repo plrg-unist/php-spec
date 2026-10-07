@@ -11,8 +11,9 @@ The canonical source includes accepted ArrayAccess292/304, eager destruction270,
 WeakReference296, Fiber291/302, Generator289/303/310 and source operands293/298,
 with 284 modules descended from `38f1dfaa045f`. The ordered source integration
 preserves the final Generator eager-release bridge and Fiber cleanup guards.
-Its new combined compiler/source/state cut is pending; earlier accepted cuts
-retain their original inputs. Independently accepted private milestones 286, 288,
+Its new combined cut passes strict 284 compilation, one exact source original and
+49 reached premises during active nested Generator delegation. Earlier accepted
+cuts retain their original inputs. Independently accepted private milestones 286, 288,
 290, 294, 295, 297, 305, 306, 308 and 309 await ordered Git integration. Other private work
 covers 299, 300 and 301; source-emission314 remains private and unvalidated.
 Held 279 and user-paused return verification stay set aside. Complete core and the
@@ -34,6 +35,10 @@ preserve every original cut and failure. The separate
 adds constant ECHO and assignment to a literal variable name opcode lines: three original
 source agreements and 46 reached entry premises retain their accepted private cut.
 Broader producers, first emissions, checkpoints and providers remain required.
+The [composition ledger](coverage/semantics/include-source-composition-review.json)
+records genuine child line5/main keyword21, retained captured input after alias
+clearing, the saved Generator caller and public/heap owner/suffix controls. The
+maintained relocated fixture prepares 49 premises with zero runtime applications.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.

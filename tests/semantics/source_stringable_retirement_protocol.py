@@ -311,6 +311,93 @@ PREMISES['entry'] = ['  -- if S_open = $php_file_startup_run($first_work_review_
  '  -- if $call_entry_check(S_bad_owner).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"',
  '  -- if $source_operand_entry_origin(S_bad_owner, psourceoperand, n_unit) = S_bad_owner.ORIGIN']
 
+HELPERS['composition'] = '\ndec $combined_review_reached(pstate) : bool\ndef $combined_review_reached(S) = true\n  -- if S.CURRENT = (pcallcontext)\n  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)\n  -- if pdestructorcall.OPERATION = (pdestructionoperation)\n  -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_ENTER psourceoperand n\ndef $combined_review_reached(S) = false -- otherwise\ndec $combined_review_seek(pstate, nat) : pstate\ndef $combined_review_seek(S, n) = S -- if $combined_review_reached(S)\ndef $combined_review_seek(S, n) = S\n  -- if ~$combined_review_reached(S)\n  -- if S.COMPLETION =/= NORMAL /\\ S.COMPLETION =/= BUDGET\ndef $combined_review_seek(S, 0) = S -- if ~$combined_review_reached(S)\ndef $combined_review_seek(S, n) = $combined_review_seek($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1)))\n  -- if ~$combined_review_reached(S)\n  -- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n  -- if $(n > 0)\n\n'
+PREMISES['composition'] = ['  -- if S_open = $php_file_startup_run($combined_review_program(), 10000, '
+ '$base64("L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2luY2x1ZGUtZGV2LTE0LWFycmF5LWluZ3Jlc3MvLnRvb2xzL2luY2x1ZGUtY29tYmluZWQtMTYvZ2VuZXJhdG9yLXNvdXJjZS5waHA="), '
+ '$base64("L2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2luY2x1ZGUtZGV2LTE0LWFycmF5LWluZ3Jlc3M="), '
+ '{REPORTING ($ptascii("30719")), INCLUDEPATH $ptascii(".:")})',
+ '  -- if S_open.COMPLETION = SOURCE_PENDING',
+ '  -- if S_open.FILECONTEXTS = pfilecontext_open :: eps',
+ '  -- if pfilecontext_open.PHASE = FILE_RESOLVE_WAIT',
+ '  -- if S_parse = $file_open_resume(S_open, (FILE_OPENED pfilecontext_open.NONCE ([47, 104, 111, '
+ '109, 101, 47, 117, 115, 101, 114, 47, 119, 111, 114, 107, 115, 112, 97, 99, 101, 47, 112, 104, 112, '
+ '45, 115, 112, 101, 99, 47, 46, 116, 111, 111, 108, 115, 47, 105, 110, 99, 108, 117, 100, 101, 45, '
+ '100, 101, 118, 45, 49, 52, 45, 97, 114, 114, 97, 121, 45, 105, 110, 103, 114, 101, 115, 115, 47, 46, '
+ '116, 111, 111, 108, 115, 47, 105, 110, 99, 108, 117, 100, 101, 45, 99, 111, 109, 98, 105, 110, 101, '
+ '100, 45, 49, 54, 47, 103, 101, 110, 101, 114, 97, 116, 111, 114, 45, 115, 111, 117, 114, 99, 101, '
+ '46, 112, 104, 112]) ([47, 104, 111, 109, 101, 47, 117, 115, 101, 114, 47, 119, 111, 114, 107, 115, '
+ '112, 97, 99, 101, 47, 112, 104, 112, 45, 115, 112, 101, 99, 47, 46, 116, 111, 111, 108, 115, 47, '
+ '105, 110, 99, 108, 117, 100, 101, 45, 100, 101, 118, 45, 49, 52, 45, 97, 114, 114, 97, 121, 45, 105, '
+ '110, 103, 114, 101, 115, 115, 47, 46, 116, 111, 111, 108, 115, 47, 105, 110, 99, 108, 117, 100, 101, '
+ '45, 99, 111, 109, 98, 105, 110, 101, 100, 45, 49, 54, 47, 103, 101, 110, 101, 114, 97, 116, 111, '
+ '114, 45, 115, 111, 117, 114, 99, 101, 45, 99, 104, 105, 108, 100, 46, 112, 104, 112]) ([47, 104, '
+ '111, 109, 101, 47, 117, 115, 101, 114, 47, 119, 111, 114, 107, 115, 112, 97, 99, 101, 47, 112, 104, '
+ '112, 45, 115, 112, 101, 99, 47, 46, 116, 111, 111, 108, 115, 47, 105, 110, 99, 108, 117, 100, 101, '
+ '45, 100, 101, 118, 45, 49, 52, 45, 97, 114, 114, 97, 121, 45, 105, 110, 103, 114, 101, 115, 115, 47, '
+ '46, 116, 111, 111, 108, 115, 47, 105, 110, 99, 108, 117, 100, 101, 45, 99, 111, 109, 98, 105, 110, '
+ '101, 100, 45, 49, 54, 47, 103, 101, 110, 101, 114, 97, 116, 111, 114, 45, 115, 111, 117, 114, 99, '
+ '101, 45, 99, 104, 105, 108, 100, 46, 112, 104, 112]) ([47, 104, 111, 109, 101, 47, 117, 115, 101, '
+ '114, 47, 119, 111, 114, 107, 115, 112, 97, 99, 101, 47, 112, 104, 112, 45, 115, 112, 101, 99, 47, '
+ '46, 116, 111, 111, 108, 115, 47, 105, 110, 99, 108, 117, 100, 101, 45, 100, 101, 118, 45, 49, 52, '
+ '45, 97, 114, 114, 97, 121, 45, 105, 110, 103, 114, 101, 115, 115, 47, 46, 116, 111, 111, 108, 115, '
+ '47, 105, 110, 99, 108, 117, 100, 101, 45, 99, 111, 109, 98, 105, 110, 101, 100, 45, 49, 54, 47, 103, '
+ '101, 110, 101, 114, 97, 116, 111, 114, 45, 115, 111, 117, 114, 99, 101, 45, 99, 104, 105, 108, 100, '
+ '46, 112, 104, 112]) ([60, 63, 112, 104, 112, 10, 102, 117, 110, 99, 116, 105, 111, 110, 32, 99, 111, '
+ '109, 98, 105, 110, 101, 100, 95, 99, 104, 105, 108, 100, 95, 114, 101, 97, 100, 121, 95, 49, 54, 40, '
+ '41, 32, 123, 125, 10, 10, 101, 99, 104, 111, 10, 32, 32, 32, 32, 39, 112, 114, 111, 118, 105, 100, '
+ '101, 114, 45, 98, 111, 100, 121, 39, 59, 10, 114, 101, 116, 117, 114, 110, 32, 53, 50, 59, 10])))',
+ '  -- if S_parse.COMPLETION = SOURCE_PENDING',
+ '  -- if S_parse.FILECONTEXTS = pfilecontext_parse :: eps',
+ '  -- if pfilecontext_parse.UNIT = (n_unit)',
+ '  -- if S_entry = $file_parse_resume(S_parse, (SOURCE_ACCEPT n_unit ([60, 63, 112, 104, 112, 10, '
+ '102, 117, 110, 99, 116, 105, 111, 110, 32, 99, 111, 109, 98, 105, 110, 101, 100, 95, 99, 104, 105, '
+ '108, 100, 95, 114, 101, 97, 100, 121, 95, 49, 54, 40, 41, 32, 123, 125, 10, 10, 101, 99, 104, 111, '
+ '10, 32, 32, 32, 32, 39, 112, 114, 111, 118, 105, 100, 101, 114, 45, 98, 111, 100, 121, 39, 59, 10, '
+ '114, 101, 116, 117, 114, 110, 32, 53, 50, 59, 10]) $combined_review_child()))',
+ '  -- if S_entry.COMPLETION = NORMAL',
+ '  -- if S_entry.TODO = (SOURCE_OPERAND_ENTER psourceoperand n_unit) :: ptask_body*',
+ '  -- if S_entry.CURRENT = (pcallcontext_entry)',
+ '  -- if $generator_context_operation(S_entry, pcallcontext_entry) = (pgeneratorop_entry)',
+ '  -- if $operand_nodes(psourceoperand.INPUT) = [HOBJECT n_operand]',
+ '  -- if $source_operand_entry_origin(S_entry, psourceoperand, n_unit) = (porigin_work)',
+ '  -- if S_reached = $combined_review_seek(S_entry, 400)',
+ '  -- if S_reached.COMPLETION = NORMAL \\/ S_reached.COMPLETION = BUDGET',
+ '  -- if S = S_reached[.COMPLETION = NORMAL]',
+ '  -- if S.CURRENT = (pcallcontext)',
+ '  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)',
+ '  -- if pdestructorcall.OPERATION = (pdestructionoperation)',
+ '  -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_ENTER psourceoperand n_unit',
+ '  -- if S_owner = $source_string_owner_scope(S, psourceoperand.OWNER)',
+ '  -- if S_bad_owner = S_entry[.FILECONTEXTS = [S_entry.FILECONTEXTS[0][.OWNER = '
+ '$(psourceoperand.OWNER + 1)]]]',
+ '  -- if S_bad_tail = S_entry[.TODO = [SOURCE_OPERAND_ENTER psourceoperand n_unit]]',
+ '  -- if $call_descriptors_valid(S_entry)',
+ '  -- if $call_entry_check(S_entry) = S_entry',
+ '  -- if $heap_valid($heap_graph(S_entry))',
+ '  -- if $generator_from_state_valid(S_entry)',
+ '  -- if $(psourceoperand.OWNER > 0)',
+ '  -- if $global_quiet_name(S_entry, $ptascii("combined_operand_16")).RESULT = KNOWN PNULL',
+ '  -- if (HOBJECT n_operand) <- S_entry.ALLOCATIONS',
+ '  -- if $source_operand_enter_valid(S_entry, psourceoperand, n_unit)',
+ '  -- if $property_current_line(S_entry[.ORIGIN = (porigin_work)]) = 5',
+ '  -- if $call_descriptors_valid(S)',
+ '  -- if $call_entry_check(S) = S',
+ '  -- if $heap_valid($heap_graph(S))',
+ '  -- if $destructor_call_live(S, pdestructorcall)',
+ '  -- if pdestructionoperation.ORIGIN = (porigin_work)',
+ '  -- if pdestructionoperation.CALLER = S_entry.CURRENT /\\ S_owner.CURRENT = S_entry.CURRENT',
+ '  -- if $generator_context_operation(S_owner, pcallcontext_entry) = (pgeneratorop_entry)',
+ '  -- if $heap_valid($heap_graph(S_bad_owner))',
+ '  -- if ~$source_operand_enter_valid(S_bad_owner, psourceoperand, n_unit)',
+ '  -- if ~$call_descriptors_valid(S_bad_owner)',
+ '  -- if $call_entry_check(S_bad_owner).COMPLETION = UNSUPPORTED "invalid compiled function '
+ 'descriptor"',
+ '  -- if $heap_valid($heap_graph(S_bad_tail))',
+ '  -- if ~$source_operand_enter_valid(S_bad_tail, psourceoperand, n_unit)',
+ '  -- if ~$call_descriptors_valid(S_bad_tail)',
+ '  -- if $call_entry_check(S_bad_tail).COMPLETION = UNSUPPORTED "invalid compiled function '
+ 'descriptor"']
+
 def run_case(case, args):
     semantic = args.semantic_root.resolve()
     sys.path.insert(0, str(ROOT / 'tests/semantics'))
@@ -318,8 +405,8 @@ def run_case(case, args):
     from recorded_worker import Worker
     recorder.ROOT = ROOT
     directory = ROOT / 'tests/semantics/source-stringable-retirement'
-    source = directory / {'fast': 'fast.php', 'helper': 'empty-eval.php', 'entry': 'first-echo.php'}[case]
-    child = directory / {'fast': 'deferred-compile-only.php', 'entry': 'first-echo-child.php'}[case] if case != 'helper' else None
+    source = directory / {'fast': 'fast.php', 'helper': 'empty-eval.php', 'entry': 'first-echo.php', 'composition': 'generator-source.php'}[case]
+    child = directory / {'fast': 'deferred-compile-only.php', 'entry': 'first-echo-child.php', 'composition': 'generator-source-child.php'}[case] if case != 'helper' else None
     profile_file = ROOT / 'tests/semantics/profile.json'
     profile = dict(json.loads(profile_file.read_bytes()), include_path='.:', error_reporting='30719')
     flags = [arg for key, value in profile.items() for arg in ('-d', key + '=' + value)]
@@ -355,11 +442,12 @@ def run_case(case, args):
               'profile': profile, 'source': str(source), 'child': str(child) if child is not None else None, 'semantic_root': str(semantic),
               'mode': 'SL', 'cache': False, 'det': True,
               'compiler_pin': 'da36ac3c434cd291940293a63da64544307730a3',
-              'selected': ('compile-complete source operand entry' if case == 'entry' else
+              'selected': ('active Generator source entry and first regular operand destructor' if case == 'composition' else
+                           'compile-complete source operand entry' if case == 'entry' else
                            'first actual fast/helper operand destructor, before trace-loop effects'),
-              'case': case, 'binding_premises': {'fast': 42, 'helper': 27, 'entry': 20}[case],
-              'selected_admission_premises': {'fast': 98, 'helper': 78, 'entry': 46}[case],
-              'check_premises': {'fast': 56, 'helper': 51, 'entry': 26}[case],
+              'case': case, 'binding_premises': {'fast': 42, 'helper': 27, 'entry': 20, 'composition': 25}[case],
+              'selected_admission_premises': {'fast': 98, 'helper': 78, 'entry': 46, 'composition': 49}[case],
+              'check_premises': {'fast': 56, 'helper': 51, 'entry': 26, 'composition': 24}[case],
               'source_agreements': 0, 'application_evaluations': 0, 'passed': False,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': 'absent', 'jobs': 1}}
     try:
@@ -381,7 +469,7 @@ def run_case(case, args):
             checked_worker.close()
         (out / 'checked.json').write_text(json.dumps(checked) + '\n')
         prefix = {'fast': 'retirement_trace_review', 'helper': 'retirement_helper_review',
-                  'entry': 'first_work_review'}[case]
+                  'entry': 'first_work_review', 'composition': 'combined_review'}[case]
         start = ('$php_file_startup_run($' + prefix + '_program(), '
                  + ('1' if case == 'helper' else '10000') + ', $base64('
                  + json.dumps(b64(bytes(source))) + '), $base64(' + json.dumps(b64(bytes(ROOT)))
@@ -396,7 +484,7 @@ def run_case(case, args):
                       + ' ' + seq(child.read_bytes()) + ')')
             accepted = '(SOURCE_ACCEPT n_unit ' + seq(child.read_bytes()) + ' $' + prefix + '_child())'
             premises[4] = '  -- if S_parse = $file_open_resume(S_open, ' + opened + ')'
-            premises[8] = '  -- if ' + ('S' if case == 'entry' else 'S_run') + ' = $file_parse_resume(S_parse, ' + accepted + ')'
+            premises[8] = '  -- if ' + ('S' if case == 'entry' else 'S_entry' if case == 'composition' else 'S_run') + ' = $file_parse_resume(S_parse, ' + accepted + ')'
             fixture += ('dec $' + prefix + '_child() : program\ndef $' + prefix + '_child() = '
                         + checked[1]['fixture'] + '\n')
         fixture += HELPERS[case]
@@ -425,7 +513,7 @@ def run_case(case, args):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--prepare-only', action='store_true')
-    parser.add_argument('--case', choices=('fast', 'helper', 'entry'))
+    parser.add_argument('--case', choices=('fast', 'helper', 'entry', 'composition'))
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args(argv)
     return all(run_case(case, args) for case in ((args.case,) if args.case else ('fast', 'helper')))

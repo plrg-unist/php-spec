@@ -279,6 +279,8 @@ test-semantics: build
 	python3 tests/semantics/source_stringable_retirement_sources.py --case first-assignment
 	python3 tests/semantics/source_stringable_retirement_sources.py --case first-eval
 	python3 tests/semantics/source_stringable_retirement_protocol.py --case entry
+	python3 tests/semantics/source_stringable_retirement_sources.py --case generator-source
+	python3 tests/semantics/source_stringable_retirement_protocol.py --case composition
 	python3 tests/semantics/noctor_compiler.py
 	python3 tests/semantics/noctor_args.py
 	python3 tests/semantics/noctor_args_protocol.py

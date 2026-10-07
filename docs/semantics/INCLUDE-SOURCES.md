@@ -133,6 +133,19 @@ object-retval cleanup source. Its admission correction projects only the genuine
 saved caller and pairs destructor receiver/site/line with the actual frame;
 35 reached positive and malformed controls pass without renewing either source.
 
+The [actual Generator/source composition](../../coverage/semantics/include-source-composition-review.json)
+runs undefined eval and a captured coalesce include under active nested delegation.
+The Stringable callback clears the actual aliased operand cell; its captured input
+survives until entry into the compiled child. An early declaration emits no body
+work, so ordinary release uses the first constant ECHO operand's child line5 while
+the include wrapper retains main keyword21 and its genuine filename argument.
+Strict284 compilation and one exact original agree. A separate 49-premise reached
+cut preserves every Generator frame, public/heap admission and the saved caller,
+and rejects heap-valid forged provider-owner and missing-body suffix states.
+The two explicit maintained selectors preserve older default campaigns; relocated
+source/provider construction prepares the same 49 premises with zero evaluations.
+Earlier private cuts gain no renewed execution credit.
+
 Failed-open warnings suspend for eligible handlers. The stream message is fixed
 before the first callback; the second include warning or required `Error` samples
 the live effective path after that callback. Throw skips the remaining failure

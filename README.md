@@ -52,7 +52,9 @@ authenticate child opcode lines, genuine filename arguments and zero-argument
 fast/helper frames. The [first-work extension](coverage/semantics/source-stringable-first-work-review.json)
 adds constant ECHO and assignment to a literal variable name entry lines. Each ledger retains
 its original source/state cuts and failures; the installed rules add no renewed
-credit to those cuts. Wider source producers, emissions and providers remain open.
+credit to those cuts. One new [Generator/source composition](coverage/semantics/include-source-composition-review.json)
+passes strict compilation, an exact source original and 49 reached premises.
+Wider source producers, emissions and providers remain open.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
