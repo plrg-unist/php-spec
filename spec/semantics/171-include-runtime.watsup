@@ -311,21 +311,20 @@ def $file_once_record_open(S, n_kind, n_opened*) = S[.INCLUDEDOPENED = $file_inc
 def $file_once_record_open(S, n_kind, n_opened*) = S
   -- if ~$file_once_kind(n_kind)
 dec $file_open_resume(pstate, pfileopenresponse) : pstate
-def $file_open_resume(S, pfileopenresponse) = $file_open_resume_valid(S, pfileopenresponse)
-  -- if $file_open_response_valid(S, pfileopenresponse)
-def $file_open_resume(S, pfileopenresponse) = S[.COMPLETION = UNSUPPORTED "invalid file resolution response"]
-  -- if ~$file_open_response_valid(S, pfileopenresponse)
+dec $file_open_resume_checked(pstate, pfileopenresponse, bool) : pstate
+def $file_open_resume(S, pfileopenresponse) = $file_open_resume_checked(S, pfileopenresponse, $file_open_response_valid(S, pfileopenresponse))
+def $file_open_resume_checked(S, pfileopenresponse, true) = $file_open_resume_valid(S, pfileopenresponse)
+def $file_open_resume_checked(S, pfileopenresponse, false) = S[.COMPLETION = UNSUPPORTED "invalid file resolution response"]
 dec $file_open_continue(pstate, pfileopenresponse) : pstate
-def $file_open_continue(S, pfileopenresponse) = $drive_steps(S_next, n)
+dec $file_open_continued(pstate, pstate) : pstate
+def $file_open_continue(S, pfileopenresponse) = $file_open_continued(S, $file_open_resume(S, pfileopenresponse))
+def $file_open_continued(S, S_next) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
-  -- if S_next = $file_open_resume(S, pfileopenresponse)
   -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next) \/ $destructor_ready(S_next)
-def $file_open_continue(S, pfileopenresponse) = $drive_steps(S_next, n)
+def $file_open_continued(S, S_next) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
-  -- if S_next = $file_open_resume(S, pfileopenresponse)
   -- if S_next.COMPLETION = THROWN text n_message* z
-def $file_open_continue(S, pfileopenresponse) = S_next
-  -- if S_next = $file_open_resume(S, pfileopenresponse)
+def $file_open_continued(S, S_next) = S_next
   -- if S_next.COMPLETION =/= NORMAL
   -- if ~$shutdown_ready(S_next) /\ ~$destructor_ready(S_next)
 
@@ -405,17 +404,17 @@ def $file_parse_resume_valid(S, SOURCE_PARSE_REJECT n_unit n_bytes* n_message* z
 def $file_parse_resume_valid(S, SOURCE_COMPILE_REJECT n_unit n_bytes* n_message* z) = $file_parse_resume_rejected(S, pfilecontext, pfilecontext_tail*, FAILED_COMPILE, n_message*, z)
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
 dec $file_parse_resume(pstate, psourceresponse) : pstate
-def $file_parse_resume(S, psourceresponse) = $file_parse_resume_valid(S, psourceresponse)
-  -- if $file_parse_response_valid(S, psourceresponse)
-def $file_parse_resume(S, psourceresponse) = S[.COMPLETION = UNSUPPORTED "invalid file parser response"]
-  -- if ~$file_parse_response_valid(S, psourceresponse)
+dec $file_parse_resume_checked(pstate, psourceresponse, bool) : pstate
+def $file_parse_resume(S, psourceresponse) = $file_parse_resume_checked(S, psourceresponse, $file_parse_response_valid(S, psourceresponse))
+def $file_parse_resume_checked(S, psourceresponse, true) = $file_parse_resume_valid(S, psourceresponse)
+def $file_parse_resume_checked(S, psourceresponse, false) = S[.COMPLETION = UNSUPPORTED "invalid file parser response"]
 dec $file_parse_continue(pstate, psourceresponse) : pstate
-def $file_parse_continue(S, psourceresponse) = $drive_steps(S_next, n)
+dec $file_parse_continued(pstate, pstate) : pstate
+def $file_parse_continue(S, psourceresponse) = $file_parse_continued(S, $file_parse_resume(S, psourceresponse))
+def $file_parse_continued(S, S_next) = $drive_steps(S_next, n)
   -- if S.SERVICELEFT = (n)
-  -- if S_next = $file_parse_resume(S, psourceresponse)
   -- if S_next.COMPLETION = NORMAL \/ $shutdown_ready(S_next) \/ $destructor_ready(S_next)
-def $file_parse_continue(S, psourceresponse) = S_next
-  -- if S_next = $file_parse_resume(S, psourceresponse)
+def $file_parse_continued(S, S_next) = S_next
   -- if S_next.COMPLETION =/= NORMAL
   -- if ~$shutdown_ready(S_next) /\ ~$destructor_ready(S_next)
 

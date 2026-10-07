@@ -429,9 +429,12 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $closure_state_valid(S)
 def $call_descriptors_scoped_valid(S_live, S) = false -- otherwise
 
+dec $call_entry_scope_checked(pstate, bool) : pstate
+dec $call_entry_descriptors_checked(pstate, bool) : pstate
 def $call_entry_check(S) = S -- if S.COMPLETION =/= NORMAL
-def $call_entry_check(S) = S -- if S.COMPLETION = NORMAL /\ $scope_codes_valid(S, S.CODE) /\ $call_descriptors_valid(S)
-def $call_entry_check(S) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled global designation"]
-  -- if S.COMPLETION = NORMAL /\ ~$scope_codes_valid(S, S.CODE)
-def $call_entry_check(S) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"]
-  -- if S.COMPLETION = NORMAL /\ $scope_codes_valid(S, S.CODE) /\ ~$call_descriptors_valid(S)
+def $call_entry_check(S) = $call_entry_scope_checked(S, $scope_codes_valid(S, S.CODE))
+  -- if S.COMPLETION = NORMAL
+def $call_entry_scope_checked(S, true) = $call_entry_descriptors_checked(S, $call_descriptors_valid(S))
+def $call_entry_scope_checked(S, false) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled global designation"]
+def $call_entry_descriptors_checked(S, true) = S
+def $call_entry_descriptors_checked(S, false) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"]

@@ -196,6 +196,7 @@ def $key_write_plan(S) = (pkeywriter)
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$key_write_path_task(ptask)
+  -- if ~$key_append_task(ptask)
   -- if $key_write_writer(S, porigin, ptask, $key_write_task_base(ptask, S.BASE, S.RESULT), S.RESULT) = (pkeywriter)
   -- if $container_write_root(S, pkeywriter.BASE)
   -- if $key_write_target_base(pkeywriter.BASE)

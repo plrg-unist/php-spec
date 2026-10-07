@@ -15,6 +15,7 @@ dec $exception_warning_resume(ptask) : bool
 dec $error_handler_values(pstate, perrorcall) : pvalue*
 dec $error_handler_operands(pstate, pcalltarget, pvalue*, nat, int) : (pstate, poperand*)
 dec $error_handler_enter(pstate, perrorcall, pcalltarget, pfunction) : pstate
+dec $error_handler_invoke_known(pstate, perrorcall) : pstate?
 dec $error_missing_operand(pstate, poperand) : bool
 dec $error_simple_read(ptask) : bool
 dec $error_read_shape(ptask, poperand, pbase) : perrorread?
@@ -153,9 +154,8 @@ def $error_handler_enter(S, perrorcall, pcalltarget, pfunction) = $call_arity($t
   -- if perrorcall_entered = perrorcall[.TARGET = (pcalltarget)]
   -- if S_pending = S[.ERRORHANDLER.CALLBACK = eps][.TODO = (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_tail*]
   -- if $error_handler_operands(S_pending, pcalltarget, $error_handler_values(S, perrorcall), 0, $error_callback_line(S, perrorcall)) = (S_args, poperand*)
-rule PhpStep/error-handler-enter: S ~> $error_handler_enter(S, perrorcall, pcalltarget, pfunction)
+def $error_handler_invoke_known(S, perrorcall) = ($error_handler_enter(S, perrorcall, pcalltarget, pfunction))
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
-  -- if $error_call_valid(S, perrorcall)
   -- if perrorcall.TARGET = eps
   -- if $error_handler_eligible(S, perrorcall.LEVEL)
   -- if S.ERRORHANDLER.CALLBACK = (perrorcall.CALLBACK)
@@ -163,29 +163,32 @@ rule PhpStep/error-handler-enter: S ~> $error_handler_enter(S, perrorcall, pcall
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if ~pfunction.SIGNATURE.BYREF
   -- if ~$api_special(S, perrorcall.CALLBACK)
-rule PhpStep/error-handler-reference-return: S ~> S[.COMPLETION = UNSUPPORTED "error-handler reference-return body"]
+def $error_handler_invoke_known(S, perrorcall) = (S[.COMPLETION = UNSUPPORTED "error-handler reference-return body"])
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
-  -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if pfunction.SIGNATURE.BYREF
   -- if ~$api_special(S, perrorcall.CALLBACK)
-rule PhpStep/error-handler-pending-callable: S ~> S[.COMPLETION = UNSUPPORTED "error-handler callback body outside admitted source callable forms"]
+def $error_handler_invoke_known(S, perrorcall) = (S[.COMPLETION = UNSUPPORTED "error-handler callback body outside admitted source callable forms"])
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
-  -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
   -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERUNKNOWN text
   -- if ~$api_special(S, perrorcall.CALLBACK)
 def $error_invalid_callback(S, perrorcall, ptbytes) = $error_api_error(S, pconfigcall, "Error", ptbytes)
   -- if perrorcall.RESUME = ERROR_TRIGGER_PHASE pconfigcall n
 def $error_invalid_callback(S, perrorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, $error_callback_line(S, perrorcall)) -- otherwise
-rule PhpStep/error-handler-invalid-callback: S ~> $error_handler_restore($error_invalid_callback(S, perrorcall, $ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ n_reason*), perrorcall.CALLBACK)
+def $error_handler_invoke_known(S, perrorcall) = ($error_handler_restore($error_invalid_callback(S, perrorcall, $ptascii("Invalid callback ") ++ $error_callback_name(S, perrorcall.CALLBACK) ++ $ptascii(", ") ++ n_reason*), perrorcall.CALLBACK))
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if ~$exception_warning_resume(perrorcall.RESUME)
-  -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_target(S, perrorcall.CALLBACK) = eps
   -- if $error_handler_resolution(S, perrorcall.CALLBACK) = HANDLERINVALID n_reason*
   -- if ~$api_special(S, perrorcall.CALLBACK)
+def $error_handler_invoke_known(S, perrorcall) = eps -- otherwise
+rule PhpStep/error-handler-invoke: S ~> S_next
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if $error_call_valid(S, perrorcall)
+  -- if $error_handler_invoke_known(S, perrorcall) = (S_next)
+
 ;; A fatal default bails out before Zend reaches automatic raw restoration.
 def $error_fallback_finish(S, pvalue) = $error_handler_restore(S, pvalue) -- if S.COMPLETION = NORMAL
 def $error_fallback_finish(S, pvalue) = S -- if S.COMPLETION =/= NORMAL

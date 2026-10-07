@@ -57,7 +57,9 @@ def $scope_expressions_valid(S, pcode, (CODEWRITE pcpath z) :: pcodeexpr*) = $sc
 def $scope_expressions_valid(S, pcode, (CODEEFFECT pcpath) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)
 def $scope_codes_valid(S, eps) = true
 def $scope_codes_valid(S, pcode :: pcode_tail*) = ($scope_markers_valid(S, pcode.UNIT, pcode.GLOBALS) /\ $scope_expressions_valid(S, pcode, pcode.EXPRESSIONS) /\ $scope_codes_valid(S, pcode_tail*))
-def $scope_check(S) = S -- if $scope_codes_valid(S, S.CODE)
-def $scope_check(S) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled global designation"] -- if ~$scope_codes_valid(S, S.CODE)
+dec $scope_check_result(pstate, bool) : pstate
+def $scope_check(S) = $scope_check_result(S, $scope_codes_valid(S, S.CODE))
+def $scope_check_result(S, true) = S
+def $scope_check_result(S, false) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid compiled global designation"]
 
 def $scope_expressions_valid(S, pcode, (CODEARG pcpath) :: pcodeexpr*) = $scope_expressions_valid(S, pcode, pcodeexpr*)

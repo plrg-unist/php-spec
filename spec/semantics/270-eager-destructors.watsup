@@ -237,9 +237,11 @@ def $eager_live_slots(S, pnode :: pnode_tail*) = pnode :: $eager_live_slots(S, p
 def $eager_live_slots(S, pnode :: pnode_tail*) = $eager_live_slots(S, pnode_tail*) -- if ~(pnode <- S.ALLOCATIONS)
 
 def $eager_written_task(WRITE_NAME n* z) = true
+def $eager_written_task(ACCESS_RESULT paccess) = true
+  -- if paccess.MODE = ACCESS_SET
 def $eager_written_task(ptask) = false -- otherwise
-;; Unused assignments have no copied opcode result. The installed binding owns
-;; the RHS; an old-value destructor can remove it and destroy that value now.
+;; Unused assignments have no copied opcode result. Other live owners determine
+;; whether the RHS survives destruction of a replaced value or receiver.
 def $eager_unused_assignment(S, S_next) = true
   -- if S.TODO = ptask :: ptask_tail*
   -- if $eager_written_task(ptask)
