@@ -365,6 +365,7 @@ test-semantics: build
 	python3 tests/semantics/readonly_clone_selection_protocol.py --group shared-origin-positive --sl
 	python3 tests/semantics/readonly_clone_selection_protocol.py --group autoload-birth --sl
 	python3 tests/semantics/readonly_clone_selection_protocol.py --group keyword-shutdown-birth --sl
+	python3 tests/semantics/readonly_clone_selection_protocol.py --group closer-window --sl
 	python3 tests/semantics/user_string_parameters.py
 	python3 tests/semantics/user_string_parameters_protocol.py
 	python3 tests/semantics/variadic_string_parameters.py

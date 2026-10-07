@@ -27,7 +27,9 @@ GROUPS = {'consumer-birth': (('dyn', 'readonly-clone-dynamic-string-maker-surviv
  'autoload-birth': (('manual',
                      'readonly-selected-manual-clone-autoload-publishes-after-unregister'),),
  'keyword-shutdown-birth': (('shutdown',
-                             'readonly-dynamic-clone-created-private-keyword-shutdown-after-retirement'),)}
+                             'readonly-dynamic-clone-created-private-keyword-shutdown-after-retirement'),),
+ 'closer-window': (('source',
+                    'readonly-live-clone-window-survives-fiber-close-caller-parking'),)}
 
 FIBER_PREFIX = r'''
 def $clone_updates_review_phase(S,16) = true
@@ -46,6 +48,15 @@ def $clone_updates_review_phase(S,18) = true
   -- if pautoloadcall.NAME = $ptascii("Later")
   -- if S.AUTOLOAD.ENTRIES = eps /\ S.AUTOLOAD.BIRTHS = eps
   -- if S.AUTOSEQ = 5
+'''
+
+CLOSER_PREFIX = r'''
+def $clone_updates_review_phase(S,19) = true
+  -- if S.FIBERCLOSERS = pfiberclose :: pfiberclose_tail*
+  -- if S.ACTIVEFIBER = (pfiberclose.OBJECT)
+  -- if S.CLONES = [pclonewindow]
+  -- if pclonewindow.PHASE = CLONE_CALLBACK
+  -- if $clone_window_vm(pfiberclose.VM,pclonewindow.OPERATION,CLONE_CALLBACK)
 '''
 
 CLAUSES = {
@@ -710,6 +721,85 @@ $consumer_producer_capture(S_transplant,pshutdownentry_shutdown)
 ~$clone_shutdown_births_valid(S_transplant,S_transplant.SHUTDOWN.ENTRIES,0)
 ~$call_descriptors_valid(S_transplant)
 ''',
+    'closer-window': r'''
+~S_initial_source.COMPILESTOP
+S_found = $clone_updates_review_seek(S_initial_source,19,4096)
+S_found.COMPLETION = NORMAL \/ S_found.COMPLETION = BUDGET
+S = S_found[.COMPLETION = NORMAL]
+$clone_updates_review_phase(S,19)
+S.CLONES = [pclonewindow]
+pclonewindow.PHASE = CLONE_CALLBACK
+pcloneoperation = pclonewindow.OPERATION
+pclonewindow.AVAILABLE = [$ptascii("x")]
+$clone_written_revision(S.CLONES,pcloneoperation.TARGET,$ptascii("x")) = (0)
+$location_slot(S,PROPERTY pcloneoperation.TARGET $ptascii("x")) = DEFINED (PSTRING $ptascii("seed"))
+S.FIBERCLOSERS = pfiberclose :: pfiberclose_tail*
+pfiberclose.PREVIOUS = eps
+pfiberclose.VM.CURRENT = (pcallcontext_clone)
+pcallcontext_clone.TARGET = METHOD_TARGET pcloneoperation.TARGET porigin_method
+pcallcontext_clone.CALLSITE = (pcloneoperation.SITE)
+pfiberclose.VM.FRAMES = pframe_clone :: pframe_clone_tail*
+pframe_clone.TODO = (CLONE_CALLBACK_RESULT pcloneoperation) :: ptask_clone_tail*
+S_vm = $fiber_vm_restore(S,pfiberclose.VM)
+$clone_context_valid(S_vm,pcallcontext_clone)
+S_source = $constant_frame_scope(S_vm,pframe_clone,pframe_clone_tail*)
+$clone_operation_source_valid(S_source,pcloneoperation)
+$clone_window_vm(pfiberclose.VM,pcloneoperation,CLONE_CALLBACK)
+$clone_window_closers(S.FIBERCLOSERS,pcloneoperation,CLONE_CALLBACK)
+~$clone_window_tasks(S.TODO,pcloneoperation,CLONE_CALLBACK)
+~$clone_window_frames(S.FRAMES,pcloneoperation,CLONE_CALLBACK)
+~$clone_window_fibers(S,S.ALLOCATIONS,pcloneoperation,CLONE_CALLBACK)
+~$clone_window_callers(S.FIBERCALLERS,pcloneoperation,CLONE_CALLBACK)
+$clone_window_live(S,pcloneoperation,CLONE_CALLBACK)
+$clone_windows_valid(S)
+$call_descriptors_valid(S)
+$call_entry_check(S) = S
+$heap_valid($heap_graph(S))
+(HOBJECT pcloneoperation.TARGET) <- $fiber_vm_nodes(pfiberclose.VM)
+pcloneoperation_bad = pcloneoperation[.LINE = $(pcloneoperation.LINE + 1)]
+pframe_bad = pframe_clone[.TODO = (CLONE_CALLBACK_RESULT pcloneoperation_bad) :: ptask_clone_tail*]
+pfiberclose_bad = pfiberclose[.VM.FRAMES = pframe_bad :: pframe_clone_tail*]
+S_bad = S[.FIBERCLOSERS = pfiberclose_bad :: pfiberclose_tail*]
+$heap_graph(S_bad) = $heap_graph(S)
+~$clone_window_vm(pfiberclose_bad.VM,pcloneoperation,CLONE_CALLBACK)
+~$clone_window_closers(S_bad.FIBERCLOSERS,pcloneoperation,CLONE_CALLBACK)
+~$clone_window_live(S_bad,pcloneoperation,CLONE_CALLBACK)
+~$clone_windows_valid(S_bad)
+~$call_descriptors_valid(S_bad)
+$drive(S_bad,0).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"
+S_coherent = S_bad[.CLONES = [pclonewindow[.OPERATION = pcloneoperation_bad]]]
+$heap_graph(S_coherent) = $heap_graph(S)
+$clone_window_live(S_coherent,pcloneoperation_bad,CLONE_CALLBACK)
+$clone_window_body_valid(S_coherent,pclonewindow[.OPERATION = pcloneoperation_bad])
+$clone_windows_valid(S_coherent)
+S_coherent_vm = $fiber_vm_restore(S_coherent,pfiberclose_bad.VM)
+S_coherent_source = $constant_frame_scope(S_coherent_vm,pframe_bad,pframe_clone_tail*)
+~$clone_operation_source_valid(S_coherent_source,pcloneoperation_bad)
+~$clone_context_frame_valid(S_coherent_vm,pcallcontext_clone,pframe_bad,pframe_clone_tail*)
+~$call_descriptors_valid(S_coherent)
+$drive(S_coherent,0).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"
+S_zero = $drive_steps(S,0)
+S_zero = S[.COMPLETION = BUDGET]
+$clone_windows_valid(S_zero)
+$call_descriptors_valid(S_zero)
+$heap_valid($heap_graph(S_zero))
+S_one_found = $drive_steps(S_zero[.COMPLETION = NORMAL],1)
+S_one_found.COMPLETION = NORMAL \/ S_one_found.COMPLETION = BUDGET
+S_one = S_one_found[.COMPLETION = NORMAL]
+$clone_windows_valid(S_one)
+$call_descriptors_valid(S_one)
+$heap_valid($heap_graph(S_one))
+S_one.CLONES = [pclonewindow]
+$clone_window_live(S_one,pcloneoperation,CLONE_CALLBACK)
+S_done = $drive_steps(S_one,4096)
+S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps
+$clone_updates_review_output(S_done.EVENTS) = $ptascii("close|seed/late|done")
+S_done.CLONES = eps
+S_done.FIBERCLOSERS = eps
+$clone_windows_valid(S_done)
+$call_descriptors_valid(S_done)
+$heap_valid($heap_graph(S_done))
+''',
 }
 
 
@@ -767,6 +857,8 @@ def main():
         prefix = PREFIX
         if args.group == 'autoload-birth':
             prefix += AUTOLOAD_PREFIX
+        elif args.group == 'closer-window':
+            prefix += CLOSER_PREFIX
         elif args.group != 'keyword-shutdown-birth':
             prefix += FIBER_PREFIX
         fixture = out/'protocol.watsup'
