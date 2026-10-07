@@ -68,7 +68,11 @@ strict compilation, two exact explicit-request originals, independent79 MAIN
 entry/first-destructor/source/image premises, computed-name11 and new maintained72
 classification premises. The omitted-request Unsupported, request-literal fixture
 stop and copied Generator-owner false fixture retain zero accepted credit.
-Four relocated sources gain no execution credit; wider emissions remain required.
+A separate cc397-parent291 join passes strict compilation, one genuine readonly
+clone-owned include original and independent64 entry/first-destructor premises,
+including maker-site and receiver-line counterexamples. Its two maintained
+relocations gain no refreshed execution credit; actual292-parent integration and
+wider emissions remain required.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.

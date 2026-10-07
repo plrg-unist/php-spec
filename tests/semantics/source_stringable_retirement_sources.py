@@ -27,7 +27,8 @@ CASES = {'regular': 'deferred-regular.php',
          'expression-cycle-collection': 'generator-expression-child.php',
          'expression-cycle-direct': 'generator-expression-child.php',
          'autoglobal-direct': 'autoglobal-direct-child.php',
-         'autoglobal-property': 'autoglobal-property-child.php'}
+         'autoglobal-property': 'autoglobal-property-child.php',
+         'autoglobal-readonly-clone': 'autoglobal-readonly-clone-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys

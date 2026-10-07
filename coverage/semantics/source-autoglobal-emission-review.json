@@ -135,10 +135,11 @@
   "maintained": {
     "relocation_preparation": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/autoglobal-relocation-prepare-18-p6728oq8/PREPARED.json",
     "application_evaluations": 0,
-    "compatibility": "Four relocated PHP files change only the child basename. Relocation earns no renewed source credit; prior private cuts retain original paths and request facts.",
+    "compatibility": "Four relocated PHP files change only the child basename. Relocation earns no renewed source credit; prior private cuts retain original paths and request facts. Two current readonly-clone files relocate that separate original, changing only the child basename, with no renewed source credit.",
     "source_commands": [
       "python3 tests/semantics/source_stringable_retirement_sources.py --case autoglobal-direct",
-      "python3 tests/semantics/source_stringable_retirement_sources.py --case autoglobal-property"
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case autoglobal-property",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case autoglobal-readonly-clone"
     ],
     "guards": {
       "raw": "/home/user/workspace/php-spec/.tools/include-dev-14-array-ingress/.tools/source-expression-emission-protocol-4rf8d6fu/report.json",
@@ -216,5 +217,55 @@
       "head_stable": true,
       "status_stable": true
     }
+  },
+  "current_291_join": {
+    "tested_revision": "eb6bff8e5a6773680cd6c5de7ca4ef17ba7b9e7f",
+    "semantic_root": "/home/user/workspace/php-spec/.tools/include-autoglobal-316-actual-18",
+    "modules": 291,
+    "parent_revision": "cc397adf6eb85622735e663f109fa6a6ddb7de54",
+    "source_raw": "/home/user/workspace/php-spec/.tools/include-autoglobal-316-actual-18/.tools/include-autoglobal-current-18/readonly-clone-current-igl37bbi/report.json",
+    "state_raw": "/home/user/workspace/php-spec/.tools/include-review-18-autoglobal-current/readonly-clone-state-run-5gm2hs2_/report.json",
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "exit": 0,
+      "elapsed": 3.5054144859313965,
+      "cap_seconds": 300,
+      "application_evaluations": 0
+    },
+    "source": {
+      "source_agreements": 1,
+      "application_evaluations": 1,
+      "status": "normal",
+      "exit_status": 0,
+      "elapsed": 68.51201152801514,
+      "cap_seconds": 90,
+      "worker_timeout_seconds": 60
+    },
+    "state": {
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "physical_premises": 64,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "elapsed": 81.05736923217773,
+      "cap_seconds": 90,
+      "observed": "true\n"
+    },
+    "scope": "Genuine readonly __clone reinitializes copied path, closes its window and produces an owned include input. First GET FETCH5/property6 precedes destruction; unchanged seed, retained source/caller/heap/public image and two heap-identical maker-site/receiver-line forgeries are checked.",
+    "freeze": {
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true,
+      "module_stats_stable": true
+    },
+    "reproduction": "python3 tests/semantics/source_stringable_retirement_sources.py --case autoglobal-readonly-clone; maintained relocation adds no fresh execution credit."
+  },
+  "actual_parent_integration": {
+    "parent_revision": "7609ad03a2ae2a0c8697945f72287c777990c74a",
+    "modules": 293,
+    "status": "pending_compiler_relevant_source_and_compact_independent_gc_interaction"
   }
 }

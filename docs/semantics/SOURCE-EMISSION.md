@@ -44,4 +44,8 @@ MAIN entry/retirement/heap/image/resumption premises, computed-name11 and a new
 maintained72 classification cut. The source cases use the reviewed FD198 request
 provider; `scripts/build-request-provider.sh` prepares it. Relocation earns zero
 renewed source credit. `GLOBALS`, `this`, `http_response_header`, computed names
-and broader producers remain required. Current-parent integration is pending.
+and broader producers remain required. A fresh cc397-parent291 readonly-clone
+source1 and independent64-premise cut pass separately. The owned include operand
+comes from a genuine readonly clone callback; the original seed stays unchanged.
+Its maintained relocation earns no refreshed execution credit. Actual292-parent
+integration remains pending, including the new ordinary collector interaction.
