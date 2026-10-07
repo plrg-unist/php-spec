@@ -168,7 +168,8 @@ rule PhpStep/exit-invoke: S ~> $exit_receive(S[.TODO = ptask_tail*], pexitcall)
 ;; Request globals/statics remain roots for the future shutdown protocol.
 def $exit_completion(EXITED z) = true
 def $exit_completion(pcompletion) = false -- otherwise
-def $exit_start_unwind(S, z) = $file_warning_drop_scope($error_release_iterators($silence_unwind(S)))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+dec $clone_exit_drop(pstate) : pstate
+def $exit_start_unwind(S, z) = $clone_exit_drop($file_warning_drop_scope($error_release_iterators($silence_unwind(S))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = eps][.ERRORORIGIN = eps][.TODO = [EXIT_UNWIND z]][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
 dec $eval_compile_exit_pending(pstate) : bool
 def $drive_steps(S, n) = $drive_steps($exit_start_unwind(S, z), n)
   -- if S.COMPLETION = EXITED z

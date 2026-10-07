@@ -1,3 +1,8 @@
+dec $property_string_result_task(ptask) : bool
+dec $clone_update_string_result_task(ptask) : bool
+def $clone_update_string_result_task(ptask) = false -- otherwise
+dec $clone_update_string_site_valid(pstate, porigin, int) : bool
+def $clone_update_string_site_valid(S, porigin, z) = false -- otherwise
 ;; A declared or inherited public __toString() makes an ordinary class
 ;; Stringable even without an explicit implements clause.
 def $stringable_instance(S, n) = true
@@ -105,12 +110,15 @@ def $stringify_source(S, porigin_site, z, CONCAT_AFTER_RIGHT porigin_parent n_le
 def $stringify_source(S, porigin_site, z, RETURN_VALUE z) = $typed_return_source(S, porigin_site, z)
 def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
 
+dec $property_string_site_valid(pstate, porigin, int) : bool
+dec $property_string_consumer_guard(pstate, nat, ptask) : bool
+dec $property_string_result_guard(pstate, nat, porigin, int) : bool
 dec $stringify_site_valid(pstate, porigin, int) : bool
 dec $default_internal_string_site_valid(pstate, porigin, int) : bool
 def $default_internal_string_site_valid(S, porigin_site, z) = false -- otherwise
 dec $ordinary_internal_string_site_valid(pstate, porigin, int) : bool
 def $ordinary_internal_string_site_valid(S, porigin_site, z) = false -- otherwise
-def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $file_operand_child_site(S, porigin_site, z) \/ $interpolation_child_site_valid(S, porigin_site, z) \/ $config_string_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z) \/ $static_string_site_valid(S, porigin_site, z) \/ $parameter_string_site_valid(S, porigin_site, z) \/ $default_internal_string_site_valid(S, porigin_site, z) \/ $ordinary_internal_string_site_valid(S, porigin_site, z) \/ $compound_string_site_valid(S, porigin_site, z))
+def $stringify_site_valid(S, porigin_site, z) = ($stringify_source(S, porigin_site, z, EMIT z) \/ $stringify_source(S, porigin_site, z, PRINT_EMIT porigin_site z) \/ $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) \/ $eval_operand_child_site(S, porigin_site, z) \/ $file_operand_child_site(S, porigin_site, z) \/ $interpolation_child_site_valid(S, porigin_site, z) \/ $config_string_child_site(S, porigin_site, z) \/ $concat_child_site_valid(S, porigin_site, z, 0) \/ $concat_child_site_valid(S, porigin_site, z, 1) \/ $terminal_string_site(S, porigin_site, z) \/ $typed_return_source(S, porigin_site, z) \/ $static_string_site_valid(S, porigin_site, z) \/ $parameter_string_site_valid(S, porigin_site, z) \/ $default_internal_string_site_valid(S, porigin_site, z) \/ $ordinary_internal_string_site_valid(S, porigin_site, z) \/ $compound_string_site_valid(S, porigin_site, z) \/ $property_string_site_valid(S, porigin_site, z) \/ $clone_update_string_site_valid(S, porigin_site, z))
 
 dec $stringify_consumer_tail_valid(pstate, porigin, int, ptask, ptask*) : bool
 dec $stringify_eval_consumer(ptask) : bool
@@ -129,6 +137,8 @@ def $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tai
   -- if ~$stringify_interpolation_consumer(ptask_consumer)
   -- if ~$stringify_typed_return_consumer(ptask_consumer)
   -- if ~$static_string_result_task(ptask_consumer)
+  -- if ~$property_string_result_task(ptask_consumer)
+  -- if ~$clone_update_string_result_task(ptask_consumer)
 def $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*) = false -- otherwise
 
 dec $stringify_method_selected(pstate, nat, porigin, porigin) : bool
@@ -146,6 +156,7 @@ def $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site) = true
   -- if S.ORIGIN = (porigin_site)
   -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_site) z) :: (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
   -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+  -- if $property_string_consumer_guard(S, n, ptask_consumer)
   -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
 def $stringify_pending(S, pcalltarget, porigin_site) = false -- otherwise
 def $stringify_pending_site(S, porigin_site) = true
@@ -159,6 +170,8 @@ def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, METHOD_TARGET 
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if pframe.ORIGIN = (porigin_site)
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
+  -- if ~$property_string_result_task(ptask_consumer)
+  -- if ~$clone_update_string_result_task(ptask_consumer)
   -- if $stringify_source($parameter_string_frame_scope(S, pframe, pframe_tail*), porigin_site, z, ptask_consumer)
   -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
 def $stringify_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin_site) = $stringify_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin_site)
@@ -204,6 +217,7 @@ def $stringify_context_frame_valid(S, pcallcontext, pframe) = true
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
   -- if z = pcallcontext.LINE
   -- if $stringify_source(S, porigin_site, pcallcontext.LINE, ptask_consumer)
+  -- if $property_string_consumer_guard(S, n, ptask_consumer)
   -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
 def $stringify_context_frame_valid(S, pcallcontext, pframe) = false -- otherwise
 def $stringify_chain_valid(S, eps, eps) = true
@@ -232,6 +246,7 @@ def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if ~$eval_compile_string_result_kind(S.TODO)
   -- if $ordinary_internal_generic_result_valid(S, n, porigin_site, z)
   -- if $compound_string_result_guard(S, n, porigin_site, z)
+  -- if $property_string_result_guard(S, n, porigin_site, z)
   -- if $stringable_instance(S, n)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
   -- if ~$typed_return_source(S, porigin_site, z)
@@ -242,6 +257,7 @@ def $stringify_result_valid(S, n, porigin_site, z) = true
   -- if ~$eval_compile_string_result_kind(S.TODO)
   -- if $ordinary_internal_generic_result_valid(S, n, porigin_site, z)
   -- if $compound_string_result_guard(S, n, porigin_site, z)
+  -- if $property_string_result_guard(S, n, porigin_site, z)
   -- if $stringable_instance(S, n)
   -- if $typed_return_source(S, porigin_site, z)
   -- if $stringify_site_valid(S, porigin_site, z)
@@ -273,7 +289,7 @@ def $stringify_task_marker(STRINGIFY_RESULT n porigin_site z) = true
 def $stringify_task_marker(ptask) = false -- otherwise
 dec $stringify_pair_valid(pstate, ptask, ptask, ptask*, bool) : bool
 def $stringify_pair_valid(S, ptask, ptask_next, ptask_tail*, false) = true
-def $stringify_pair_valid(S, STRINGIFY_RESULT n porigin_site z, ptask_next, ptask_tail*, true) = ($stringify_source(S, porigin_site, z, ptask_next) /\ $stringify_consumer_tail_valid(S, porigin_site, z, ptask_next, ptask_tail*))
+def $stringify_pair_valid(S, STRINGIFY_RESULT n porigin_site z, ptask_next, ptask_tail*, true) = ($stringify_source(S, porigin_site, z, ptask_next) /\ $property_string_consumer_guard(S, n, ptask_next) /\ $stringify_consumer_tail_valid(S, porigin_site, z, ptask_next, ptask_tail*))
 def $stringify_pairs_valid(S, eps) = true
 def $stringify_pairs_valid(S, [ptask]) = ~$stringify_task_marker(ptask)
 def $stringify_pairs_valid(S, ptask :: ptask_next :: ptask_tail*) = ($stringify_pair_valid(S, ptask, ptask_next, ptask_tail*, $stringify_task_marker(ptask)) /\ $stringify_pairs_valid($call_after_origin(S, ptask), ptask_next :: ptask_tail*))
@@ -315,6 +331,7 @@ rule PhpStep/user-string-return: S ~> S_read[.TODO = ptask_consumer :: ptask_tai
   -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
   -- if $stringify_result_valid(S, n, porigin_site, z)
   -- if $stringify_source(S, porigin_site, z, ptask_consumer)
+  -- if $property_string_consumer_guard(S, n, ptask_consumer)
   -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL

@@ -1,3 +1,4 @@
+dec $property_set_readonly_name(ppropertydesc) : ptbytes
 ;; Setter authorization concerns the declaration syntax, not an escaped CV alias.
 def $class_static_set_allowed(S, ppropertydesc) = true
   -- if ppropertydesc.SETVISIBILITY = eps \/ ppropertydesc.SETVISIBILITY = (PROPERTY_PUBLIC)
@@ -16,7 +17,7 @@ def $class_static_set_scope(S) = $ptascii("scope ") ++ pclassdesc.NAME
   -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc)
 def $class_static_set_scope(S) = $ptascii("global scope") -- otherwise
 dec $class_static_set_message(pstate, ppropertydesc, ptbytes) : ptbytes
-def $class_static_set_message(S, ppropertydesc, ptbytes_operation) = $ptascii("Cannot ") ++ ptbytes_operation ++ [32] ++ $property_visibility_name(ppropertyvisibility) ++ $ptascii("(set) property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" from ") ++ $class_static_set_scope(S)
+def $class_static_set_message(S, ppropertydesc, ptbytes_operation) = $ptascii("Cannot ") ++ ptbytes_operation ++ [32] ++ $property_visibility_name(ppropertyvisibility) ++ $ptascii("(set) ") ++ $property_set_readonly_name(ppropertydesc) ++ $ptascii("property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" from ") ++ $class_static_set_scope(S)
   -- if ppropertydesc.SETVISIBILITY = (ppropertyvisibility)
 
 ;; Static address flags may have raised an error already. Zend's subsequent

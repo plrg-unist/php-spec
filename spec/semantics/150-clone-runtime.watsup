@@ -4,6 +4,10 @@ dec $clone_update_base_valid(pstate, pclonecall, nat, nat, nat) : bool
 dec $clone_update_prefix_valid(pstate, nat, pentry*, int) : bool
 dec $clone_same_kind(pobject, pobject) : bool
 dec $clone_thrown(pcompletion) : bool
+dec $clone_method(pstate, nat) : pmethoddesc?
+dec $clone_callback_value(pstate, pvalue) : bool
+dec $clone_lifecycle_start(pstate, nat, porigin, int, pclonecall?) : pstate
+dec $clone_readonly_updates(pstate, nat) : bool
 ;; Clone property storage before running any update or callback. The copy
 ;; constructor unwraps singleton references and retains surviving aliases.
 dec $clone_slot(pstate, ppropertyslot) : ppropertyslot
@@ -91,6 +95,7 @@ rule PhpStep/clone-result: S ~> S_out[.HELD = S.HELD]
   -- if S_read = $resolve(S, S.RESULT)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$clone_callback_value(S_read, pvalue)
   -- if S_out = $clone_value($hold_task_inputs(S_read), pvalue, z)
 rule PhpStep/clone-read-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (CLONE_RESULT porigin z) :: ptask_tail*
@@ -271,11 +276,14 @@ def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "TypeError", $pt
 def $clone_receive(S, pclonecall) = $clone_object($hold_task_inputs(S), n)[.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
   -- if ~$throwable_object(S, n)
+  -- if $clone_method(S, n) = eps
   -- if S.TODO = ptask :: ptask_tail*
 def $clone_receive(S, pclonecall) = S_cloned[.TODO = (CLONE_UPDATE pclonecall n_object n_array 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN (PARRAY n_array))]
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$throwable_object(S, n)
+  -- if $clone_method(S, n) = eps
+  -- if ~$clone_readonly_updates(S, n)
   -- if S_cloned = $clone_object(S, n)
   -- if S_cloned.RESULT = KNOWN (POBJECT n_object)
 def $clone_receive(S, pclonecall) = $clone_error(S, pclonecall, "Error", $ptascii("Trying to clone an uncloneable object of class ") ++ $object_name(S, n))

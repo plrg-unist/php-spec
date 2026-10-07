@@ -7,14 +7,17 @@ def $property_instance_set_desc(S, n, ptbytes) = (ppropertydesc)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ~ppropertydesc.STATIC
-  -- if ppropertydesc.SETVISIBILITY =/= eps
+  -- if ppropertydesc.SETVISIBILITY =/= eps \/ ppropertydesc.READONLY
 def $property_instance_set_desc(S, n, ptbytes) = eps -- otherwise
 
 def $property_set_denied(S, n, ptbytes) = true
   -- if $property_instance_set_desc(S, n, ptbytes) = (ppropertydesc)
-  -- if ~$class_static_set_allowed(S, ppropertydesc)
+  -- if $property_readonly_written(S, n, ptbytes) \/ ~$class_static_set_allowed(S, ppropertydesc)
+def $property_set_check(S, n, ptbytes, ptbytes_operation, z) = $property_readonly_error(S, n, ptbytes, ptbytes_operation, z)
+  -- if $property_readonly_written(S, n, ptbytes)
 def $property_set_check(S, n, ptbytes, ptbytes_operation, z) = $class_static_set_error(S, ppropertydesc, ptbytes_operation, z)
   -- if $property_set_denied(S, n, ptbytes)
+  -- if ~$property_readonly_written(S, n, ptbytes)
   -- if $property_instance_set_desc(S, n, ptbytes) = (ppropertydesc)
 
 dec $property_instance_raw_object(pstate, nat, ptbytes) : bool
@@ -24,8 +27,13 @@ def $property_instance_raw_object(S, n, ptbytes) = true
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (POBJECT n_value))
 def $property_instance_raw_object(S, n, ptbytes) = false -- otherwise
 
+def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = $property_readonly_error(S, n, ptbytes, $ptascii("indirectly modify"), z)
+  -- if $property_instance_set_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.READONLY
+  -- if ~b_object \/ ~$property_instance_raw_object(S, n, ptbytes)
 def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = $class_static_set_error(S, ppropertydesc, $ptascii("indirectly modify"), z)
   -- if $property_instance_set_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if ~ppropertydesc.READONLY
   -- if ~$class_static_set_allowed(S, ppropertydesc)
   -- if ~b_object \/ ~$property_instance_raw_object(S, n, ptbytes)
 
@@ -44,7 +52,7 @@ def $property_receiver_denied(S, POBJECT n, ptbytes, ppmode) = true
   -- if ppmode = PPW \/ ppmode = PPRW \/ ppmode = PPUNSET
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
   -- if $property_instance_set_desc(S, n, ptbytes_key) = (ppropertydesc)
-  -- if ~$class_static_set_allowed(S, ppropertydesc)
+  -- if ppropertydesc.READONLY \/ ~$class_static_set_allowed(S, ppropertydesc)
   -- if ~$property_instance_raw_object(S, n, ptbytes_key)
   -- if ppmode =/= PPUNSET \/ $location_slot(S, PROPERTY n ptbytes_key) =/= UNDEFINED
 def $property_receiver_read(S, POBJECT n, ptbytes, ppmode, z) = $property_instance_indirect_check(S, n, ptbytes_key, true, z)
