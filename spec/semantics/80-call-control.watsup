@@ -140,6 +140,8 @@ def $call_arity(S, pfunction, n_args, porigin?, z) = $default_begin(S, pfunction
   -- if ~$typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
 def $call_arity(S, pfunction, n_args, porigin?, z) = S[.TODO = [TYPE_RECEIVE pfunction.ORIGIN 0]]
   -- if $typed_parameters($call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS))
+dec $call_supported_signature(pstate, pfunction) : bool
+def $call_supported_signature(S, pfunction) = $ppsupported_signature(pfunction.SIGNATURE) -- otherwise
 dec $call_enter(pstate, pfunction, poperand*, porigin?, int) : pstate
 def $call_enter(S, pfunction, poperand*, porigin?, z) = S_bound[.CURRENT = ({TARGET pfunction.ORIGIN, DEFAULTRECEIVE eps, WRAPPER eps, INSTANCE eps, RECEIVER eps, LEXICAL_CLASS eps, CALLED_CLASS eps, FUNCTION pfunction.ORIGIN, NAME pfunction.NAME, CALLSITE porigin?, LINE z, PARAMS (psparam.NAME)*, ARGC n_args, HOLES eps, EXTRA poperand*[n_received:n_extra], NAMED eps})][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if psparam* = pfunction.SIGNATURE.PARAMETERS
@@ -148,7 +150,7 @@ def $call_enter(S, pfunction, poperand*, porigin?, z) = S_bound[.CURRENT = ({TAR
   -- if n_params = |psparam_fixed*|
   -- if n_received = $call_received(n_args, n_params)
   -- if n_extra = $(n_args - n_received)
-  -- if $ppsupported_signature(pfunction.SIGNATURE)
+  -- if $call_supported_signature(S, pfunction)
   -- if S_entered = $save_frame(S)
   -- if S_bound = $bind_parameters(S_entered[.CVS = pfunction.CVS][.SYMBOLS = pfunction.CVS], psparam_fixed*, poperand*)
 def $call_enter(S, pfunction, poperand*, porigin?, z) = S[.COMPLETION = UNSUPPORTED "unconnected function signature"]

@@ -155,7 +155,7 @@ def $ppdispatch(P, pcpath, NExprYieldFrom expression metadata, PPR) = $ppconstan
 def $ppdispatch(P, pcpath, NExprYieldFrom expression metadata, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
   -- if P.FOLD.FUNCTION =/= eps
   -- if ~P.RETURNREF
-def $ppdispatch(P, pcpath, NExprYieldFrom expression metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"yield from\" inside a by-reference generator"), $nabs($source_line(metadata)))
+def $ppdispatch(P, pcpath, NExprYieldFrom expression metadata, PPR) = $ppconstant_error(P, $ptascii("Cannot use \"yield from\" inside a by-reference generator"), $nabs($expression_line(expression)))
   -- if P.FOLD.FUNCTION =/= eps
   -- if P.RETURNREF
 
@@ -576,9 +576,6 @@ def $generator_loop_ids(eps) = eps
 def $generator_loop_ids((pgeneratorloop)) = [pgeneratorloop.ITERATOR]
 def $error_keep_iterators((GENERATORITER n n_object) :: piterator*, n_live*) = (GENERATORITER n n_object) :: $error_keep_iterators(piterator*, n_live*) -- if n <- n_live*
 def $error_keep_iterators((GENERATORITER n n_object) :: piterator*, n_live*) = $error_keep_iterators(piterator*, n_live*) -- if ~(n <- n_live*)
-
-def $ppdispatch(P, pcpath, NExprArrowFunction (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN b_ref) phpType16 phpType18 expression metadata, PPR) = $ppunsupported(P, "arrow generator body")
-  -- if $generator_syntax(expression)
 
 def $generator_iterator(GENERATORITER n n_object) = true
 def $generator_iterator(piterator) = false -- otherwise

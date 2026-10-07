@@ -1,0 +1,173 @@
+;; zend_fiber_execute's internal root calls core handlers with weak receives.
+;; CONFIG owns the copied C arguments. Its result tail is borrowed, and keeps
+;; the original start diagnostic site even when a handler suspends and resumes.
+dec $fiber_core_result_kind(ptask) : bool
+dec $fiber_core_name_error(pintrinsic, pnamedslot*, (ptbytes, poperand)*) : ptbytes?
+dec $fiber_core_named_map(pintrinsic, pnamedslot*, (ptbytes, poperand)*) : pnamedslot*
+dec $fiber_core_tail(ptask*) : (nat, pconfigcall)?
+dec $fiber_core_tail_frames(pframe*) : (nat, pconfigcall)?
+dec $fiber_core_count(ptask*) : nat
+dec $fiber_core_frame_count(pframe*) : nat
+dec $fiber_core_result_valid(pstate, nat, pconfigcall) : bool
+dec $fiber_core_start_valid(pstate, nat, pconfigcall) : bool
+dec $fiber_core_base_frame(pstate, pframe) : bool
+dec $fiber_core_active_call(pstate) : pconfigcall?
+
+def $fiber_core_target(PSTRING ptbytes) = (FIBER_REPORTING_TARGET)
+  -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("error_reporting")
+def $fiber_core_target(pvalue) = eps -- otherwise
+def $target_nodes(FIBER_REPORTING_TARGET) = eps
+def $fiber_callback_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
+  -- if $fiber_core_target(pvalue) = (pcalltarget)
+def $fiber_cached_target_valid(S, pfiber) = true
+  -- if $fiber_core_target(pfiber.RAW) = pfiber.TARGET
+  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
+def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done($fiber_put(S_birth, n, pfiber[.READY = true][.CALL = (pconfigcall)][.RAW = pvalue][.TARGET = (pcalltarget)][.BIRTH = $dynamic_new_find(S, S.TODO, pconfigcall.SITE)][.CAPTURE = $consumer_capture_current(S, pconfigcall.SITE)][.PRODUCER = $consumer_producer_current(S)]), PNULL)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $fiber_core_target(pvalue) = (pcalltarget)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if ~pfiber.READY
+  -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, n)
+
+;; zend_call_function maps extra named arguments before entering the handler.
+;; Its failures contain the public API frame, without an invented C frame.
+def $fiber_core_name_error(pintrinsic, pnamedslot*, eps) = eps
+def $fiber_core_name_error(pintrinsic, pnamedslot*, (ptbytes, poperand) :: (ptbytes_tail, poperand_tail)*) = ($ptascii("Unknown named parameter $") ++ $c_string(ptbytes))
+  -- if $config_parameter(pintrinsic, ptbytes) = eps
+def $fiber_core_name_error(pintrinsic, pnamedslot*, (ptbytes, poperand) :: (ptbytes_tail, poperand_tail)*) = ($ptascii("Named parameter $") ++ $c_string(ptbytes) ++ $ptascii(" overwrites previous argument"))
+  -- if $config_parameter(pintrinsic, ptbytes) = (n)
+  -- if $named_slot_at(pnamedslot*, n) = NAMED_SENT poperand_old
+def $fiber_core_name_error(pintrinsic, pnamedslot*, (ptbytes, poperand) :: (ptbytes_tail, poperand_tail)*) = $fiber_core_name_error(pintrinsic, $named_slot_set(pnamedslot*, n, poperand), (ptbytes_tail, poperand_tail)*)
+  -- if $config_parameter(pintrinsic, ptbytes) = (n)
+  -- if $named_slot_at(pnamedslot*, n) = NAMED_HOLE
+def $fiber_core_named_map(pintrinsic, pnamedslot*, eps) = pnamedslot*
+def $fiber_core_named_map(pintrinsic, pnamedslot*, (ptbytes, poperand) :: (ptbytes_tail, poperand_tail)*) = $fiber_core_named_map(pintrinsic, $named_slot_set(pnamedslot*, n, poperand), (ptbytes_tail, poperand_tail)*)
+  -- if $config_parameter(pintrinsic, ptbytes) = (n)
+
+rule PhpStep/fiber-core-enter-name-error: S ~> $throwable_allocate_at(S, "Error", ptbytes, pfibercaller.API.SITE, pfibercaller.API.LINE, $eval_exception_trace(S))
+  -- if S.TODO = (FIBER_ENTER n pnamedargs) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n]
+  -- if $fiber_enter_valid(S, n, pnamedargs)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
+  -- if pintrinsic = INTRINSIC_ERROR_REPORTING
+  -- if $fiber_core_name_error(pintrinsic, pnamedargs.SLOTS, pnamedargs.NAMED) = (ptbytes)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+rule PhpStep/fiber-core-enter: S ~> $fiber_put(S[.TODO = [CONFIG_INVOKE pconfigcall, FIBER_CORE_RESULT n pconfigcall] ++ ptask_tail*][.ORIGIN = (pconfigcall.SITE)], n, pfiber[.ENTRY = ({SLOTS pnamedslot*, NAMED eps})])
+  -- if S.TODO = (FIBER_ENTER n pnamedargs) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n]
+  -- if $fiber_enter_valid(S, n, pnamedargs)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
+  -- if pintrinsic = INTRINSIC_ERROR_REPORTING
+  -- if $fiber_core_name_error(pintrinsic, pnamedargs.SLOTS, pnamedargs.NAMED) = eps
+  -- if pnamedslot* = $fiber_core_named_map(pintrinsic, pnamedargs.SLOTS, pnamedargs.NAMED)
+  -- if n_count = |pnamedslot*|
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pconfigcall = {SITE pfibercaller.API.SITE, KIND pintrinsic, INDEX n_count, SENT pnamedslot*, NAMED false, OWNER eps, SELECTION eps, LINE pfibercaller.API.LINE, PACKS eps}
+
+;; One final borrowed tail, in the native root or its saved handler frame.
+def $fiber_core_result_kind(FIBER_CORE_RESULT n pconfigcall) = true
+def $fiber_core_result_kind(ptask) = false -- otherwise
+def $fiber_core_tail([FIBER_CORE_RESULT n pconfigcall, FIBER_FINISH n]) = ((n, pconfigcall))
+def $fiber_core_tail(ptask :: ptask_tail*) = $fiber_core_tail(ptask_tail*)
+  -- if ~$fiber_core_result_kind(ptask)
+def $fiber_core_tail(ptask*) = eps -- otherwise
+def $fiber_core_tail_frames(eps) = eps
+def $fiber_core_tail_frames(pframe :: pframe_tail*) = ((n, pconfigcall))
+  -- if $fiber_core_tail(pframe.TODO) = ((n, pconfigcall))
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = ($empty_table())
+  -- if pframe.ORIGIN = (pconfigcall.SITE) /\ pframe_tail* = eps
+def $fiber_core_tail_frames(pframe :: pframe_tail*) = $fiber_core_tail_frames(pframe_tail*)
+  -- if $fiber_core_tail(pframe.TODO) = eps
+def $fiber_core_tail_frames(pframe*) = eps -- otherwise
+def $fiber_core_count(eps) = 0
+def $fiber_core_count((FIBER_CORE_RESULT n pconfigcall) :: ptask*) = $(1 + $fiber_core_count(ptask*))
+def $fiber_core_count(ptask :: ptask_tail*) = $fiber_core_count(ptask_tail*)
+  -- if ~$fiber_core_result_kind(ptask)
+def $fiber_core_frame_count(eps) = 0
+def $fiber_core_frame_count(pframe :: pframe_tail*) = $($fiber_core_count(pframe.TODO) + $fiber_core_frame_count(pframe_tail*))
+def $fiber_core_start_valid(S, n, pconfigcall) = true
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n /\ pfibercaller.API.OBJECT = n
+  -- if pfibercaller.API.START = (pnamedargs)
+  -- if pfibercaller.API.KIND = eps
+  -- if pfibercaller.API.SITE = pconfigcall.SITE /\ pfibercaller.API.LINE = pconfigcall.LINE
+  -- if $fiber_core_name_error(pconfigcall.KIND, pnamedargs.SLOTS, pnamedargs.NAMED) = eps
+  -- if $fiber_core_named_map(pconfigcall.KIND, pnamedargs.SLOTS, pnamedargs.NAMED) = pconfigcall.SENT
+def $fiber_core_start_valid(S, n, pconfigcall) = true -- if S.FIBERCALLERS = eps
+def $fiber_core_start_valid(S, n, pconfigcall) = true
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n /\ pfibercaller.API.START = eps
+def $fiber_core_start_valid(S, n, pconfigcall) = false -- otherwise
+def $fiber_core_result_valid(S, n, pconfigcall) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.STATUS <- [FIBER_RUNNING, FIBER_SUSPENDED]
+  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
+  -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
+  -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.PACKS = eps
+  -- if ~pconfigcall.NAMED
+  -- if pconfigcall.INDEX = |pconfigcall.SENT|
+  -- if pfiber.ENTRY = ({SLOTS pconfigcall.SENT, NAMED eps})
+  -- if $fiber_method_site(S, pconfigcall.SITE, eps)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+  -- if $fiber_cache_valid(S, n, pfiber)
+  -- if $fiber_core_start_valid(S, n, pconfigcall)
+  -- if $($fiber_core_count(S.TODO) + $fiber_core_frame_count(S.FRAMES)) = 1
+  -- if (S.CURRENT = eps /\ S.FRAMES = eps /\ S.ORIGIN = (pconfigcall.SITE) /\ $fiber_core_tail(S.TODO) = ((n, pconfigcall))) \/ $fiber_core_tail_frames(S.FRAMES) = ((n, pconfigcall))
+def $fiber_core_result_valid(S, n, pconfigcall) = false -- otherwise
+def $fiber_core_config(S, pconfigcall) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_core_result_valid(S, n, pconfigcall)
+def $fiber_core_config(S, pconfigcall) = false -- otherwise
+def $fiber_core_config_valid(S, pconfigcall) = ($fiber_core_config(S, pconfigcall) /\ S.ORIGIN = (pconfigcall.SITE) /\ $config_slots_valid(S, pconfigcall.SENT))
+def $call_task_valid(S, FIBER_CORE_RESULT n pconfigcall) = ($fiber_core_result_valid(S, n, pconfigcall) /\ S.ORIGIN = (pconfigcall.SITE))
+def $task_nodes(FIBER_CORE_RESULT n pconfigcall) = eps
+def $fiber_core_base_frame(S, pframe) = true
+  -- if pframe.CONTEXT = eps /\ pframe.LOCALS = ($empty_table())
+  -- if pframe.SILENCES = eps /\ pframe.HELD = eps
+  -- if pframe.BORROWEDREAD = eps /\ pframe.OBJECTCAST = eps /\ pframe.CONSTCONTEXT = eps
+  -- if $fiber_core_tail(pframe.TODO) = ((n, pconfigcall))
+  -- if pframe.ORIGIN = (pconfigcall.SITE)
+  -- if $fiber_core_result_valid(S, n, pconfigcall)
+def $fiber_core_base_frame(S, pframe) = false -- otherwise
+def $call_saved_context_valid(S, pframe) = true -- if $fiber_core_base_frame(S, pframe)
+
+;; C has no user callsite immediately above the dummy internal root. The
+;; public Fiber::start/resume suffix is appended by the ordinary trace walker.
+def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE eps, LINE $(-1), FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $fiber_core_config(S, pconfigcall)
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))
+  -- if $destructor_context_valid(S, pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.CALLER = eps
+  -- if $fiber_core_tail_frames(S.FRAMES) = ((n, pconfigcall))
+  -- if pdestructorcall.ORIGIN = (pconfigcall.SITE)
+  -- if $fiber_core_result_valid(S, n, pconfigcall)
+def $fiber_core_active_call(S) = (pconfigcall)
+  -- if $fiber_core_tail(S.TODO) = ((n, pconfigcall))
+  -- if $fiber_core_result_valid(S, n, pconfigcall)
+def $fiber_core_active_call(S) = eps -- otherwise
+def $fiber_core_root(S) = (S.CURRENT = eps /\ S.FRAMES = eps /\ $fiber_core_active_call(S) =/= eps)
+def $destructor_private_error(S, pdestructorcall, ptbytes) = $throwable_allocate_at(S, "Error", ptbytes_message, pfibercaller.API.SITE, pfibercaller.API.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))))
+  -- if $fiber_core_root(S)
+  -- if $fiber_core_active_call(S) = (pconfigcall)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
+  -- if ptbytes_message = $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct() from scope Fiber")
+
+;; free_args precedes the Fiber result store and function_name retirement.
+;; This tail adds no owner for arguments that have already been released.
+rule PhpStep/fiber-core-result: S ~> S[.TODO = ptask_tail*][.ORIGIN = eps]
+  -- if S.TODO = (FIBER_CORE_RESULT n pconfigcall) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $fiber_core_result_valid(S, n, pconfigcall)
+def $fiber_marker(FIBER_CORE_RESULT n pconfigcall) = true
+rule PhpStep/fiber-core-result-throw: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*][.ORIGIN = eps]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_CORE_RESULT n pconfigcall) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $fiber_core_result_valid(S, n, pconfigcall)
+  -- if $throwable_live(S, n_throwable)
+def $call_after_origin(S, FIBER_CORE_RESULT n pconfigcall) = S[.ORIGIN = eps]

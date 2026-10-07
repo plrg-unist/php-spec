@@ -56,6 +56,10 @@ credit to those cuts. One new [Generator/source composition](coverage/semantics/
 passes strict compilation, an exact source original and 49 reached premises.
 [Nonconstant first emission](docs/semantics/SOURCE-EMISSION.md) now distinguishes ordinary CV ECHO, literal property FETCH and no-argument named-call INIT lines. The separate actual286 Generator/property cut passes one original and 70 reached entry/retirement premises. Wider source producers, emissions and providers remain open.
 
+Literal auto-global first FETCH has a separate [private278 cut](coverage/semantics/source-autoglobal-emission-review.json): two explicit-request originals, independent90 source/retirement premises and new maintained72 classification premises. A separate cc397-parent291 readonly-clone join passes one exact original and64 independent premises. The actual293 join passes compilation, the same exact original and47 focused collector/source-retirement premises. Broader first emissions remain required.
+
+Literal `$GLOBALS` first FETCH is integrated with a separately reviewed [private294 cut](coverage/semantics/source-globals-emission-review.json): four exact originals preserve later coercion/property warnings, and67 independent premises retain authentic lines, global tables and snapshot timing. Actual296 passes strict compilation with independently reviewed Arrow/Fiber compatibility; earlier source/state credit stays separate.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -208,6 +212,12 @@ runs pending finally bodies with real scopes, graph links and cached owners.
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
 including eager argument and frame cleanup with pending exception chains.
+[Arrow Generator311](docs/semantics/ARROW-GENERATORS.md) validates eager
+parameters, deferred captures, implicit yield/delegation returns and original
+signatures. Value warnings retain the same Throwable, cached key and closed
+Closure owner. The current default/Fiber/Stringable-eval composition passes its
+source and75 reached cleanup premises; earlier cuts retain their identities.
+Final294 preserves the accepted property, collection and source-emission modules.
 IteratorAggregate, reference yields, wider call forms, request/terminal cleanup
 and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
@@ -907,6 +917,10 @@ shared globals and handlers, cached callbacks and original C argument buffers.
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
+Internal `error_reporting` callbacks retain weak C receives, owned arguments,
+warning producers and real resumer/destructor traces through handler suspension.
+The [callback ledger](coverage/semantics/fiber-core-callbacks-review.json) separates
+bounded state checks from unconfirmed rich whole-source execution.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

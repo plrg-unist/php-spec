@@ -1,0 +1,27 @@
+;; Auto-globals cannot use a CV operand: their first read emits FETCH_R before
+;; ECHO or a later property fetch. GLOBALS has separate FETCH_GLOBALS lowering.
+;; Authored expression records certify the variable's emitted line; the source
+;; entry hook continues to authenticate the complete image and release suffix.
+dec $source_emission_auto_fetch(pstate, nat, pcpath, expression) : bool
+def $source_emission_auto_fetch(S, n, pcpath, NExprVariable (BYTES text) metadata) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (BYTES text) metadata)
+  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], BYTES text) = (ptbytes)
+  -- if $psautoglobal(ptbytes) /\ ptbytes =/= $ptascii("GLOBALS")
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if z = $source_line(metadata)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_auto_fetch(S, n, pcpath, expression) = false -- otherwise
+
+;; These branches are disjoint from314's ordinary CV and named-call cases.
+def $source_echo_emission_origin(S, n, pcpath, expression) = (PORIGIN n pcpath)
+  -- if $source_emission_auto_fetch(S, n, pcpath, expression)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_auto_fetch(S, n, pcpath ++ [PCFIELD 0], expression_receiver)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if z_property = $source_line(metadata_property)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps

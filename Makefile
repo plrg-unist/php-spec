@@ -170,6 +170,11 @@ test-semantics: build
 	python3 tests/semantics/fiber_ordinary_review.py
 	python3 tests/semantics/fiber_protected_state.py
 	python3 tests/semantics/fiber_protected_review.py
+	python3 tests/semantics/fiber_core_state.py
+	python3 tests/semantics/fiber_core_review.py
+	python3 tests/semantics/fiber_core_integration_protocol.py
+	python3 tests/semantics/fiber_core_file_review.py
+	python3 tests/semantics/fiber_core_latest_sources.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -581,6 +586,15 @@ test-semantics: build
 	python3 tests/semantics/generator_fiber_close_review_protocol.py --sl
 	python3 tests/semantics/generator_integration_review.py --mode full
 	python3 tests/semantics/generator_eager_close_review_protocol.py --mode check --sl
+	python3 tests/semantics/arrow_generator_prepare.py --mode full
+	python3 tests/semantics/arrow_generator_review.py --mode full
+	python3 tests/semantics/arrow_generator_protocol.py --mode check --sl
+	python3 tests/semantics/arrow_generator_review_protocol.py --mode check --sl
+	python3 tests/semantics/arrow_generator_warning_review_protocol.py --mode check --sl
+	python3 tests/semantics/arrow_generator_globals_role_review_protocol.py --mode check --sl
+	python3 tests/semantics/arrow_generator_integration.py --mode full
+	python3 tests/semantics/arrow_generator_integration_protocol.py --mode check --sl
+	python3 tests/semantics/arrow_generator_cleanup_protocol.py --mode check --sl
 	python3 tests/semantics/iterator_declaration_notices.py
 	python3 tests/semantics/eval_declaration_notices_protocol.py
 	python3 tests/semantics/runtime_formatter_protocol.py

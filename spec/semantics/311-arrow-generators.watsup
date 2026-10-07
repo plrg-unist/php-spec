@@ -1,0 +1,84 @@
+;; Arrow Generators keep the real implicit-return path and eager captures.
+;; Their declared type constrains the created Generator, not its return payload.
+def $pparrow_supported_signature(pssignature, expression) = $ppsupported_signature(pssignature[.RETURNS = eps])
+  -- if $generator_syntax(expression)
+def $pparrow_supported_signature(pssignature, expression) = $ppsupported_signature(pssignature)
+  -- if ~$generator_syntax(expression)
+def $call_supported_signature(S, pfunction) = $ppsupported_signature(pfunction.SIGNATURE[.RETURNS = eps])
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if $generator_syntax(expression)
+def $pparrow_generator_body(P, pcpath, expression) = $pparrow_body(P, pcpath, expression)
+  -- if ~$generator_syntax(expression)
+def $pparrow_generator_body(P, pcpath, expression) = $ppconstant_error(P, $ptascii("Generator return type must be a supertype of Generator, ") ++ $pttypename(P.RETURNS) ++ $ptascii(" given"), P.LOCATION.LINE)
+  -- if $generator_syntax(expression)
+  -- if P.RETURNS =/= eps /\ ~$generator_return_supertype(P.RETURNS)
+def $pparrow_generator_body(P, pcpath, expression) = $ppunsupported(P, "generator reference yields")
+  -- if $generator_syntax(expression)
+  -- if P.RETURNS = eps \/ $generator_return_supertype(P.RETURNS)
+  -- if P.RETURNREF /\ ~$generator_from_syntax(expression)
+def $pparrow_generator_body(P, pcpath, expression) = $pparrow_body(P[.RETURNS = eps], pcpath, expression)
+  -- if $generator_syntax(expression)
+  -- if P.RETURNS = eps \/ $generator_return_supertype(P.RETURNS)
+  -- if P.RETURNREF /\ $generator_from_syntax(expression)
+def $pparrow_generator_body(P, pcpath, expression) = $pparrow_body(P[.RETURNS = eps][.RETURNREF = false], pcpath, expression)
+  -- if $generator_syntax(expression)
+  -- if P.RETURNS = eps \/ $generator_return_supertype(P.RETURNS)
+  -- if ~P.RETURNREF
+
+;; Ordinary YIELD reads its delayed value CV before its delayed key. Reuse
+;; the missing-read null continuation; forced close rejects before this read.
+dec $generator_yield_read_key_source(pstate, porigin, poperand?) : bool
+def $generator_yield_read_key_source(S, porigin, eps) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield ABSENT phpType5_value metadata)
+def $generator_yield_read_key_source(S, porigin, (VARIABLE n_key* z)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield (NExprVariable phpType32 metadata_key) phpType5_value metadata)
+  -- if $cv_source_name(S, phpType32) = (n_key*)
+  -- if ~$this_name(n_key*) /\ ~$psautoglobal(n_key*)
+  -- if z = $variable_line(phpType32, metadata_key)
+def $generator_yield_read_key_source(S, porigin, (KNOWN (POBJECT n))) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield (NExprVariable phpType32 metadata_key) phpType5_value metadata)
+  -- if $direct_this(phpType32)
+  -- if $this_receiver(S) = (n)
+def $generator_yield_read_key_source(S, porigin, (KNOWN pvalue)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield expression_key phpType5_value metadata)
+  -- if ~$generator_key_cv(S, porigin)
+def $generator_yield_read_key_source(S, porigin, (KNOWN (PARRAY n))) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield (NExprVariable phpType32 metadata_key) phpType5_value metadata)
+  -- if $cv_source_name(S, phpType32) = (n_key*)
+  -- if n_key* = $ptascii("GLOBALS")
+def $generator_yield_read_key_source(S, porigin, (KNOWN pvalue)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield (NExprVariable phpType32 metadata_key) phpType5_value metadata)
+  -- if $cv_source_name(S, phpType32) = (n_key*)
+  -- if $psautoglobal(n_key*) /\ n_key* =/= $ptascii("GLOBALS")
+def $generator_yield_read_key_source(S, porigin, poperand?) = false -- otherwise
+def $error_simple_read(GENERATOR_YIELD_STORE porigin poperand?) = true
+def $error_read_line(GENERATOR_YIELD_STORE porigin poperand?, z_origin) = z_origin
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = GENERATOR_YIELD_STORE porigin poperand?
+  -- if S.ORIGIN = (porigin)
+  -- if $generator_active(S) /\ ~$generator_close_active(S)
+  -- if $generator_yield_site(S, porigin)
+  -- if $generator_yield_read_key_source(S, porigin, poperand?)
+  -- if $error_variable_source(S, (porigin), [PCFIELD 1], perrorread.NAME)
+  -- if perrorread.LINE = $generator_yield_line(S, porigin)
+
+;; YIELD returns from the VM even when its value warning handler throws. Zend
+;; still writes null/key, then closes this frame and rethrows into its resumer.
+;; A pending exception suppresses a second undefined-CV warning for the key.
+dec $generator_yield_throw_key(pstate, pgenerator, poperand?, int) : (pstate, pvalue, int)
+def $generator_yield_throw_key(S, pgenerator, (poperand), z) = $generator_yield_key(S, pgenerator, (KNOWN PNULL), z)
+  -- if $error_missing_operand(S, poperand)
+def $generator_yield_throw_key(S, pgenerator, poperand?, z) = $generator_yield_key(S, pgenerator, poperand?, z)
+  -- if ~$error_missing_operand(S, $generator_optional_operand(poperand?))
+;; Preserve the closed-record Closure owner before eager frame retirement.
+def $error_read_discard(S, ERROR_READ_RESULT perrorread) = $throw_frame_resume($restore_frame($generator_frame_release(S_cached, S_cached)), n_throwable)
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if perrorread.ORIGINAL = GENERATOR_YIELD_STORE porigin poperand?
+  -- if $error_read_valid(S, perrorread)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_resumer*
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if (S_key, pvalue_key, z_index) = $generator_yield_throw_key(S, pgenerator, poperand?, perrorread.LINE)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_cached = $generator_set(S_key[.TODO = [THROW_SEARCH n_throwable]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgeneratorop.OBJECT, pgenerator[.VALUE = (PNULL)][.KEY = (pvalue_key)][.INDEX = z_index])

@@ -5,7 +5,9 @@ import argparse
 import base64
 import hashlib
 import json
+import struct
 import subprocess
+import sys
 import tempfile
 
 import error_handler_run as recorder
@@ -23,9 +25,22 @@ CASES = {'regular': 'deferred-regular.php',
          'expression-call-property': 'call-property-child.php',
          'expression-generator': 'generator-expression-child.php',
          'expression-cycle-collection': 'generator-expression-child.php',
-         'expression-cycle-direct': 'generator-expression-child.php'}
+         'expression-cycle-direct': 'generator-expression-child.php',
+         'autoglobal-direct': 'autoglobal-direct-child.php',
+         'autoglobal-property': 'autoglobal-property-child.php',
+         'autoglobal-readonly-clone': 'autoglobal-readonly-clone-child.php',
+         'globals-direct': 'globals-direct-child.php',
+         'globals-property': 'globals-property-child.php',
+         'globals-direct-nonthrow': 'globals-direct-nonthrow-child.php',
+         'globals-property-nonthrow': 'globals-property-nonthrow-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
+REQUEST_EXEC = '''import os,sys
+fd=os.open(sys.argv[-1],os.O_RDONLY)
+os.dup2(fd,198,inheritable=True)
+if fd!=198: os.close(fd)
+os.execve(sys.argv[1],sys.argv[1:-2],dict(os.environ,LD_PRELOAD=sys.argv[-2]))
+'''
 
 
 def source_inputs(out, source, provider):
@@ -55,7 +70,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)
@@ -67,6 +82,8 @@ def main():
                ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
                ROOT / '.tools/php-file.so', ROOT / 'tests/semantics/profile.json',
                ROOT / 'tests/semantics/error_handler_run.py', Path(__file__)]
+    if any(name.startswith(('autoglobal-', 'globals-')) for name in selected):
+        watched += [ROOT / '.tools/request-clock.so', ROOT / 'native/request_clock.c']
     for name in selected:
         watched.append(SOURCES / (name + '.php'))
         if CASES[name] is not None and name != 'missing-include':
@@ -77,6 +94,8 @@ def main():
     git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
     revision, status = git('rev-parse', 'HEAD'), git('status', '--short')
     profile = dict(json.loads((ROOT / 'tests/semantics/profile.json').read_bytes()), include_path='.:')
+    if any(name.startswith(('autoglobal-', 'globals-')) for name in selected):
+        profile.update(variables_order='EGPCS', auto_globals_jit='1')
     flags = [arg for key, value in profile.items() for arg in ('-d', key + '=' + value)]
     report = {'revision': revision, 'working_tree_status': status, 'semantic_root': str(semantic),
               'inputs': before, 'profile': profile, 'selected': selected, 'rows': [],
@@ -92,8 +111,22 @@ def main():
             source = SOURCES / (name + '.php')
             provider = SOURCES / CASES[name] if CASES[name] is not None else None
             model_args = source_inputs(directory, source, provider)
-            native = recorder.recorded([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(source)],
-                                       directory / 'native', 30)
+            native_command = [str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(source)]
+            request = None
+            if name.startswith(('autoglobal-', 'globals-')):
+                request = {'env': [[b64(b'LC_ALL'), b64(b'C')], [b64(b'TZ'), b64(b'UTC')]],
+                           'argv': [b64(bytes(source))], 'file': b64(bytes(source)), 'cwd': b64(bytes(ROOT)),
+                           'seconds': '1700000000', 'microseconds': 125000, 'variables': b64(b'EGPCS'), 'jit': True}
+                context = directory / 'request.json'
+                context.write_text(json.dumps(request) + '\n')
+                entries = [base64.b64decode(k) + b'=' + base64.b64decode(v) for k, v in request['env']]
+                payload = directory / 'input.bin'
+                payload.write_bytes(b'PHPRQ001' + struct.pack('<qII', int(request['seconds']), request['microseconds'], len(entries))
+                                    + b''.join(struct.pack('<I', len(entry)) + entry for entry in entries))
+                native_command = [sys.executable, '-c', REQUEST_EXEC, *native_command,
+                                  str(ROOT / '.tools/request-clock.so'), str(payload)]
+                model_args += ['--request-context', str(context)]
+            native = recorder.recorded(native_command, directory / 'native', 30)
             model = recorder.recorded([str(semantic / 'bin/php-semantics'), str(source), *model_args,
                                        '--steps', '100000', '--timeout', '60'], directory / 'model', 90)
             report['application_evaluations'] += 1
@@ -111,7 +144,7 @@ def main():
                       and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program'
                       and outcome.get('status') == expected_status and outcome.get('exit_status') == expected_exit
                       and outcome.get('reason') is None and stdout_equal and stderr_equal)
-            report['rows'].append({'id': name, 'passed': passed, 'native': native, 'model': model,
+            report['rows'].append({'id': name, 'passed': passed, 'native': native, 'model': model, 'request': request,
                                    'outcome': outcome, 'stdout_equal': stdout_equal, 'stderr_equal': stderr_equal})
             print(name, passed, flush=True)
             if not passed:

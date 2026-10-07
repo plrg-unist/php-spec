@@ -275,6 +275,60 @@ the authoritative captured-old payload and its property projection together,
 retaining the control identity, closer and terminal role. That alternative state
 is structurally admitted; the diagnostic earns zero acceptance credit.
 
+## Internal reporting callbacks
+
+Module 313 supports string `error_reporting` callbacks, including case and
+leading-backslash lookup, with an immutable concrete cached target. The internal
+root receives weakly even from strict source. Named arguments map before entering
+the C handler, so unknown/duplicate-name failures have only the public Fiber API
+frame; entered arity/type failures also retain the real reporting frame.
+
+CONFIG owns its copied C buffer. The unique core-result tail borrows those
+arguments and authenticates the original start site, mapped ENTRY, constructor
+cache and running/suspended Fiber. Handler suspension retains the C producer in
+the saved frame after the original public start buffer returns. The warning keeps
+the start location while resumed traces use the actual resumer. Ordinary strict
+handler source calls retain their own strict receive behavior.
+
+Handler receiver retirement retains the real C reporting frame, original argument
+and public API suffix. Private destructor errors stop at that internal root and
+report Fiber scope. Handler/destructor mask writes precede the old-mask sample;
+the successful setter updates shared INI while returning to the caller restores
+its saved live mask. The defined C result precedes the Fiber result store.
+
+The [review ledger](../../coverage/semantics/fiber-core-callbacks-review.json)
+retains 19 distinct normal originals at their original cuts and the separate
+strict-SL compiler/state evidence. The rich public-destructor original still
+times out as a whole-source run. Six bounded reached cuts execute its original
+clauses 0..54; two additional components check scope-code admission and the actual
+zero-step state. Clauses 55..57 involving literal `drive(S, 0)` are derived from
+those checks and the checked driver composition, not credited as an exact run.
+The original 63-premise fixture remains an explicit selection in
+`fiber_core_review.py`; its default selects the five other independent groups.
+`fiber_core_state.py` maintains the two author groups. Fixture relocation adds no
+execution credit. Wider internal callback bodies and Fiber callable/FCC entry
+remain required.
+
+The separate tested 291-module parent composes the newer protected cleanup and clone
+birth rules with 313. Active eval/include admission uses the live source state;
+parked Fiber tasks and frames are checked with empty loader contexts. The exact
+Stringable-eval/reporting, clone-born cache and finite-file originals agree with
+PHP. Genuine eval response/owner and borrowed C-result checks pass with97 recorded
+premises. The independent running-file47 rejects parked direct/frame markers
+without changing the heap; its direct control keeps the authentic Fiber-wait head.
+Its eval-only counterfactual is a VM predicate, not an older full-chain run. The
+earlier46 retains its narrower head-rewrite scope. These cuts add no runtime
+credit to older campaigns or nonempty fast/helper pending-exception state.
+
+The latest 295-module join over integrated parent `892d8b187` preserves canonical
+GC301, returned-child append309, source emission316 and Arrow311 rules, including
+the shared scoped source/Fiber validator. Strict compilation and one fresh source
+pass: the reporting handler collects an ordinary array cycle, then a Stringable
+eval child reads literal `$_GET` after cast retirement. Native and model use the
+same explicit primitive CLI request facts and produce `1|S|D|E|19:30719:2`.
+The generic invocation's missing-request Unsupported retains zero agreement.
+These new gates do not renew older source/state cuts or confirm full63/rich execution.
+
 ## Required follow-ons
 
 Five destruction control lists move with each VM stack: calls, releases, frames,
@@ -284,7 +338,7 @@ suppressed `exit` in a destroyed Fiber remain required consumers.
 
 `getReturn` after graceful close without an actual return, request/fatal cleanup,
 deprecated constructor callable stages,
-core internal callback bodies, reference forwarding, API callable/FCC entry,
+wider core internal callback bodies, reference forwarding, API callable/FCC entry,
 `start` unpacking and switching during initialization/source loading remain
 required. The first transfer domain rejects active or saved constant/default and
 autoload initialization, and active Generator execution, including switches in

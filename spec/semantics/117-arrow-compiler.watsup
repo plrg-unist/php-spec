@@ -57,10 +57,11 @@ dec $pparrow_ready(ppstate, ppstate, pcpath, ptbytes, ptbytes*, expression, meta
 dec $pparrow_finish(ppstate, ppstate, pcpath, ptbytes, pssignature, metadata) : ppstate
 dec $pparrow_uses(ppstate, pcpath, ptbytes*) : ppstate
 dec $pparrow_body(ppstate, pcpath, expression) : ppstate
+dec $pparrow_supported_signature(pssignature, expression) : bool
+dec $pparrow_generator_body(ppstate, pcpath, expression) : ppstate
 dec $pparrow_return(ppstate, pcpath, text?) : ppstate
 
 def $ppdispatch(P, pcpath, NExprArrowFunction (SEQUENCE eps) (BOOLEAN b_static) (BOOLEAN b_ref) phpType16 phpType18 expression metadata, PPR) = $pparrow_begin($pparrow_outer(P, ptbytes_names*), pcpath, phpType16, ptbytes_names*, phpType18, expression, b_ref, metadata)
-  -- if ~$generator_syntax(expression)
   -- if ptbytes_names* = $pparrow_remove($pparrow_discover(expression), $pparrow_param_names(phpType16))
 
 def $pparrow_uses(P, pcpath, eps) = P
@@ -89,13 +90,13 @@ def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, 
 def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDONE (PSERROR psdiagnostic*)) = $ppsignature_diagnostics(P, psdiagnostic*)
   -- if P.COMPLETION = PPCNORMAL
 def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "dependent closure signature")
-  -- if P.COMPLETION = PPCNORMAL /\ ~$ppsupported_signature(pssignature)
+  -- if P.COMPLETION = PPCNORMAL /\ ~$pparrow_supported_signature(pssignature, expression_body)
 def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDONE (PSOK pssignature psdiagnostic*)) = $pparrow_finish(P_outer, P_body, pcpath, ptbytes, pssignature, metadata)
-  -- if P.COMPLETION = PPCNORMAL /\ $ppsupported_signature(pssignature)
+  -- if P.COMPLETION = PPCNORMAL /\ $pparrow_supported_signature(pssignature, expression_body)
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
   -- if P_uses = $pparrow_uses(P_header, pcpath ++ [PCFIELD 5], ptbytes_names*)
-  -- if P_body = $pparrow_body(P_uses, pcpath ++ [PCFIELD 5], expression_body)
+  -- if P_body = $pparrow_generator_body(P_uses, pcpath ++ [PCFIELD 5], expression_body)
 def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDEFAULTREQUEST pscontinuation) = $pparrow_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
 

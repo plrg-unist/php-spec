@@ -269,11 +269,14 @@ def run_case(case, args):
                ROOT / 'tests/semantics/recorded_worker.py', ROOT / 'tests/semantics/static_types.py',
                ROOT / 'tests/semantics/error_handler_run.py']
     modules = []
+    manifest = semantic / 'spec/semantics/modules.json'
+    module_names = json.loads(manifest.read_bytes())
+    autoglobal = any(Path(name).name == '316-source-autoglobal-emission.watsup' for name in module_names)
+    watched.append(manifest)
     if not args.prepare_only:
-        manifest = semantic / 'spec/semantics/modules.json'
-        modules = [semantic / name for name in json.loads(manifest.read_bytes())]
+        modules = [semantic / name for name in module_names]
         assert any(path.name == '314-source-expression-emission.watsup' for path in modules)
-        watched += [manifest, *modules, runner]
+        watched += [*modules, runner]
     snapshot = lambda: {str(path): sha(path) for path in watched}
     before = snapshot()
     git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
@@ -339,6 +342,8 @@ def run_case(case, args):
                     '$origin_node(S_' + label + '.SOURCES, PORIGIN 0 (' + cp + ')) = (expression_' + label + ')']
                 expected = ('(PORIGIN 0 (' + (cp[:-1] + ', PCFIELD 0]' if label == 'call_property' else cp)
                             + '))' if label in ('cv', 'property', 'call_property') else 'eps')
+                if label == 'autoglobal' and autoglobal:
+                    expected = '(PORIGIN 0 (' + cp[:-1] + ', PCFIELD 0]))'
                 checks += [
                     'P_' + label + '.COMPLETION = PPCNORMAL /\\ S_' + label + '.COMPLETION = NORMAL',
                     '$compilation_image_valid(S_' + label + ', pcunit_' + label + ', P_' + label + ')',

@@ -33,3 +33,35 @@ forgeries. The maintained generator case prepares70 with zero applications.
 Earlier literal, retirement and Generator-composition cuts keep their original
 identities. Broader emission, complete core and the final combined, fresh offline
 rebuild remain required.
+
+Module316 adds literal core auto-globals except `GLOBALS`: direct ECHO emits
+FETCH_R at the variable line, and a literal property receiver emits that same
+fetch before the property instruction. Both expression records retain their
+real lines and the source-entry hook authenticates the complete image.
+The [separate ledger](../../coverage/semantics/source-autoglobal-emission-review.json)
+records isolated278 source2 with explicit request facts, independent79 genuine
+MAIN entry/retirement/heap/image/resumption premises, computed-name11 and a new
+maintained72 classification cut. The source cases use the reviewed FD198 request
+provider; `scripts/build-request-provider.sh` prepares it. Relocation earns zero
+renewed source credit. `GLOBALS`, `this`, `http_response_header`, computed names
+and broader producers remain required. A fresh cc397-parent291 readonly-clone
+source1 and independent64-premise cut pass separately. The owned include operand
+comes from a genuine readonly clone callback; the original seed stays unchanged.
+Its maintained relocation earns no refreshed execution credit. The actual293 join
+retains returned-child ArrayAccess309 and collector301, passing strict compilation,
+the same exact original and47 focused source-retirement/GC/public premises. A
+heap-identical DISCARD-only NOGC receipt on genuine SOURCE_ENTER is rejected;
+earlier suites keep their original inputs and execution credit.
+
+Module320 adds literal `$GLOBALS` FETCH_GLOBALS selection before direct ECHO or a
+literal property read. It authenticates the actual AST, certified variable line
+and completed compiler image, without requiring an ordinary global scope marker.
+Snapshot creation and later warning/coercion remain runtime work. The
+[separate ledger](../../coverage/semantics/source-globals-emission-review.json)
+records private294 strict compilation, four exact originals and independent67
+premises. Parenthesized property FETCH6/property8 reaches first destruction with
+no child snapshot; heap-identical line/scope-marker forgeries reject public entry.
+Returning destructors preserve direct Array Warning5 and property-on-array
+Warning6. Actual296 retains Arrow311/Fiber313 and passes strict compilation with
+independently reviewed introduced compatibility; private source/state cuts keep
+their inputs. Relocations earn no renewed credit; broader emissions remain required.
