@@ -96,8 +96,8 @@ def assertions(initial, group, expected):
             f'{bad} = S_entry[.TODO = (ERROR_HANDLER_INVOKE perrorcall_{label}) :: ptask_entry_tail*]',
             f'$heap_graph({bad}) = $heap_graph(S_entry)',
             f'~$error_call_valid({bad}, perrorcall_{label})', f'~$call_descriptors_valid({bad})',
-            f'S_rejected_{label} = $drive_steps({bad}, 0)',
-            f'S_rejected_{label}.COMPLETION = UNSUPPORTED "invalid compiled call descriptor"']
+            f'S_rejected_{label} = $drive({bad}, 0)',
+            f'S_rejected_{label}.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"']
     clauses += ['perrorcall_coherent = perrorcall_line[.LINE = pdynamicproperty_line.LINE]',
         'S_bad_coherent = S_entry[.TODO = (ERROR_HANDLER_INVOKE perrorcall_coherent) :: ptask_entry_tail*]',
         '$heap_graph(S_bad_coherent) = $heap_graph(S_entry)',
