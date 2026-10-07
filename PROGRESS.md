@@ -8,9 +8,10 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 ## Current checkpoint
 
 The canonical source includes accepted ArrayAccess292/304, eager destruction270,
-WeakReference296, Fiber291/302/308, Generator289/303/310 and source operands293/298,
+WeakReference296, ordinary cycle collection301, Fiber291/302/308,
+Generator289/303/310 and source operands293/298,
 plus instance/readonly properties288/294 and clone300/305 with cached maker selection,
-with290 modules descended from `38f1dfaa045f`. The ordered integration preserves
+with291 modules descended from `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
@@ -19,10 +20,25 @@ cuts below retain their original inputs.
 The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
 cuts retain their original inputs. Independently accepted private milestones286,
-290, 295, 297, 306 and309 await ordered Git integration. Other private work covers299,
-301 and auto-global emission316. Nonconstant source-emission314 is installed after Fiber308.
+290, 295, 297, 306 and309 await ordered Git integration. Other private work covers299
+and auto-global emission316. Nonconstant source-emission314 is installed after Fiber308.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
+
+Ordinary collection301 preserves potential-root order, discarded-temporary
+decrements, parked handle authority, weak retirement, destructor guards and
+frozen per-pass counts. Its original30/606 and private285-parent3/45 retain their
+recorded cuts. The actual286-parent composition passes strict compilation and
+initialization, one exact captured-source retirement original and66 independent
+strict-SL premises for genuine child6/main26 context, guard ownership, forged
+plans/consumers and live-state resumption. The larger nested-Generator original
+retains its90s timeout with zero agreement. Actual290-parent composition passes
+strict291 compilation/initialization and one new exact readonly self-clone/GC
+original: both real cycles are weakly observable until two destructors/count2,
+then both retire and a second collection returns0. The
+[ledger](coverage/semantics/cycle-collection-review.json) retains each distinct
+cut. Hidden collector-Fiber transfer/lifecycle317, internal graphs, automatic
+thresholds, wider resurrection and final request freeing remain required.
 
 Undefined source operands293 resume genuine warnings with fixed null after
 handler writes, preserving direct empty-path errors and earlier computed-name

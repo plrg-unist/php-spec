@@ -420,9 +420,17 @@ owning their targets. `get` returns a strong result; resurrection keeps the targ
 live, and actual free clears weak lookup before child destruction. Twenty-one
 exact sources and nine reached cuts (344 physical premises) pass; five Unsupported
 controls earn zero agreement. Pending-carrier unwind, deferred construction,
-wider consumers, cycles/explicit GC and WeakMap remain required. Canonical292/304
+wider consumers and WeakMap remain required. Canonical292/304
 composition separately passes strict277 initialization and one exact weak lifetime
 source; earlier cuts retain their inputs.
+
+[Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
+object/array cycle collection, ordered destructor callbacks and real weak
+retirement. Its retained30-source/606-premise and private3/45 cuts remain separate
+from the new captured-source/66-premise and readonly-clone/GC compositions.
+Current291 strict compiler/initialization and the readonly clone original pass;
+the larger nested-Generator source retains a zero-credit90s timeout. Internal
+graphs, hidden collector Fibers, automatic thresholds and wider freeing remain open.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)

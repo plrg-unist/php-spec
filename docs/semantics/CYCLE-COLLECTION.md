@@ -89,4 +89,15 @@ remaining12 sources and240 new state premises retain7c0d3d. See the
 composition at the 285-module parent passes strict initialization, three new
 exact originals and45 reached SL premises for the direct temporary consumers
 and ordinary parked-handle admission. The earlier30/606 cuts retain their inputs.
-Canonical integration and the final combined offline rebuild remain required.
+The actual286-parent composition adds one exact original in which captured
+include-input retirement calls the collector before the child's first property
+FETCH. Declaration effects, child6/main26 traces, count1 and weak retirement
+agree;66 independent strict-SL premises check the live guard, source context,
+heap-identical plan/consumer forgeries and zero/one-step resumption. A larger
+nested-Generator original timed out at90s and retains zero agreement.
+The actual290-parent composition preserves the readonly/clone state and public
+admission while adding collection: strict291 compilation/initialization and one
+new readonly-self clone original pass. Reinitialized slots produce two real
+cycles, weakly observable until two destructors/count2, then actual retirement
+and a second count0. Earlier cuts retain their original inputs. Wider GC and
+the final combined offline rebuild remain required.

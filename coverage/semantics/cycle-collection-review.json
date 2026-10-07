@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "target": "PHP8.5.10 CLI NTS64, error_reporting30719; ordinary private276 modules",
-  "scope": "Independently accepted bounded explicit ordinary-object/array collection; canonical composition and full core remain open.",
+  "target": "PHP8.5.10 CLI NTS64, error_reporting30719",
+  "scope": "Independently accepted bounded explicit ordinary-object/array collection with separate actual286/290 parent compositions; wider GC and complete core remain open.",
   "accepted_prerequisites": {
     "eager270_source_sha256": "d85fc9f4f1df452d90fc3f7be8a6b198cfdc9bc0e7a7524fceb51fb427aad908",
     "weak296_source_patch_sha256": "2d86a99f0acd6b7a2faef4fddc0802971f30e2a5cb307a921db0feee07875aef",
@@ -270,5 +270,44 @@
     "preserved_compiler_failure_zero_credit": ".tools/gc-current285-16-compiler-i9oc1jbo/report.json",
     "recovery": "python3 .tools/run-gc-current285-16.py GATE, choosing compiler, init, source or state; source uses --case ID --native-report REPORT. Frozen tools and strict-SL120/jobs1 remain explicit.",
     "maintained_state_command": "python3 tests/semantics/cycle_collection_state_review.py --sl --case retired-parent-handle-is-authentic-in-suspended-child-vm"
+  },
+  "introduced_source_entry_composition": {
+    "scope": "Actual68393/286 parent plus accepted301 (287 modules); earlier30/606 and3/45 retain their original cuts.",
+    "test_root": ".tools/gc-current287-18",
+    "compiler_revision": "a66eeaaa4cc06bec36a8ae77fdcc15c280b086f2",
+    "compiler_report": ".tools/gc-join-18-compiler-04fuawmq/report.json",
+    "initializer_report": ".tools/gc-join-18-init-mh5tiowc/report.json",
+    "source_revision": "8822b0ba4",
+    "source_report": ".tools/source-stringable-retirement-sources-db0bg_dh/report.json",
+    "source_id": "expression-cycle-direct",
+    "source_status": "normal0; exact captured-input retirement, compiled declaration effects, child6/main26, collector count1 and weak retirement; empty stderr, stable inputs/HEAD/status.",
+    "state_revision": "3fde9eae5",
+    "state_report": ".tools/source-expression-emission-protocol-8tb7p6kt/report.json",
+    "state_physical_premises": 66,
+    "state_scope": "29 genuine source/state bindings and37 reached checks; source context, collector guard, heap-identical caller/count/duplicate-consumer and child-owner forgeries, zero/one-step resumption.",
+    "state_result": "strict SL true newline, empty stderr, exit0/no timeout, group_after empty, stable inputs/HEAD/status.",
+    "preserved_nested_generator_zero_credit": {
+      "revision": "a66eeaaa4cc06bec36a8ae77fdcc15c280b086f2",
+      "report": ".tools/source-stringable-retirement-sources-kjhsu9bq/report.json",
+      "source_id": "expression-cycle-collection",
+      "result": "Native normal0 is preserved; model outer90s timeout, exit-9, empty stdout, group_after empty, stable inputs/HEAD/status. Zero agreement."
+    },
+    "recovery": [
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case expression-cycle-direct",
+      "python3 tests/semantics/source_expression_emission_protocol.py --case collector"
+    ]
+  },
+  "introduced_readonly_clone_composition": {
+    "scope": "Actualcc397/290 parent plus accepted301 (291 modules); preserve canonical clone fields, cached maker births and both clone/GC public admission.",
+    "test_root": ".tools/gc-current291-18",
+    "tested_revision": "ac672aa2bd501b9079a0ebc8f0f404c0c201f383",
+    "compiler_report": ".tools/gc-join-18-compiler-c1vl1xdm/report.json",
+    "initializer_report": ".tools/gc-join-18-init-k802qfno/report.json",
+    "source_report": ".tools/shutdown-review-68bgl8_7/report.json",
+    "source_id": "readonly-clone-reinitialized-self-slots-remain-real-cycles",
+    "original_native_report": ".tools/gc-readonly-clone-native-18-4gm4twwn/report.json",
+    "source_stdout": "own|live|D|D|2|gone|0|END",
+    "result": "Exact normal0 native/model tuple, empty stderr, model exit0/no timeout; first native exit0/no timeout/group_after empty, reused without another engine execution.",
+    "recovery": "python3 tests/semantics/cycle_collection_sources.py --match readonly-clone-reinitialized-self-slots-remain-real-cycles"
   }
 }
