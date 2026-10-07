@@ -30,8 +30,8 @@ The canonical source includes accepted ArrayAccess292/304/309, eager destruction
 WeakReference296, ordinary cycle collection301, Fiber291/302/308/313,
 Generator289/303/310/311 and source operands293/298,
 plus instance/readonly properties288/294 and clone300/305 with cached maker selection,
-with295 modules descended from `38f1dfaa045f`. The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316.
+with296 modules descended from `38f1dfaa045f`. The ordered integration preserves
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -96,11 +96,11 @@ premises, including a heap-identical forged NOGC receipt. Earlier cuts retain
 their own inputs; wider emissions remain required.
 
 [Literal GLOBALS emission320](coverage/semantics/source-globals-emission-review.json)
-is independently accepted at private294: strict compilation, four exact originals
-and67 independent entry/image/no-snapshot/runtime-name premises. Genuine
-FETCH5 precedes later direct Array Warning5 or property-on-array Warning6; the
-parenthesized entry retains FETCH6/property8. Relocations add no execution credit.
-Actual-parent integration and broader first emissions remain pending.
+is integrated: FETCH5 precedes later direct Array Warning5 or property-on-array
+Warning6; parenthesized entry retains FETCH6/property8 and snapshot timing.
+Private294 source4/67 premises retain their inputs. Actual296 passes strict
+compilation with reviewed Arrow/Fiber compatibility and no renewed source/state
+credit. Relocations add no execution credit; broader first emissions remain required.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.

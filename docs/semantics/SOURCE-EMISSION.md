@@ -62,5 +62,6 @@ records private294 strict compilation, four exact originals and independent67
 premises. Parenthesized property FETCH6/property8 reaches first destruction with
 no child snapshot; heap-identical line/scope-marker forgeries reject public entry.
 Returning destructors preserve direct Array Warning5 and property-on-array
-Warning6. Maintained relocations earn no renewed credit; actual-parent integration
-and broader emissions remain pending.
+Warning6. Actual296 retains Arrow311/Fiber313 and passes strict compilation with
+independently reviewed introduced compatibility; private source/state cuts keep
+their inputs. Relocations earn no renewed credit; broader emissions remain required.
