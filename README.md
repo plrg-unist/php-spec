@@ -342,7 +342,11 @@ through Notice, reentry and throw. Earlier284 retains28 unique programs/492
 assertions. Writable292 adds34 normal source agreements and1016 reached premises
 across13 recipes; one fresh current-parent source agrees.
 Affected GLOBALS reference finish and direct/nested Unset admission are repaired.
-Nested compound append, by-reference Get, wider memoized/property/GLOBALS
+Append304 adds intermediate append through returned arrays and final compound
+append to returned children, preserving copied reference cells and pending-error
+operator order. Its 49 normal sources and eight reached recipes/723 premises pass;
+one new parent interaction agrees. Final simple append to a returned ArrayAccess
+child, by-reference Get, wider memoized/property/GLOBALS
 consumers and combined Iterator/ArrayAccess notice ordering remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw

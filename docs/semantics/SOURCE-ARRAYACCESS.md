@@ -50,8 +50,25 @@ be populated by its warning handler before conversion, unlike an ArrayAccess
 key's independent-null latch. The old249 direct unset admission is restricted
 to its direct base, avoiding overlap with255's nested continuation.
 
-Nested compound append, wider memoized/property/GLOBALS ArrayAccess producers,
-by-reference Get results and combined Iterator/ArrayAccess declaration ordering
+Module304 reconstructs intermediate append after Get, including repeated `[]`,
+and final compound append through returned arrays or child objects. Array append
+inserts the next index without a null/missing-key lookup; an ArrayAccess child
+receives null in Get and Set. Owned returned ancestors survive until selected
+rows are extracted. Copies of real reference cells detach only when their actual
+owners permit it, including permanent literal-pool roots. Append and explicit-null
+dimension tasks retain distinct source forms at public admission.
+
+False-conversion handler throws still permit the DIM_OP's row insertion, late CV
+sample and binary operation. A successful numeric result can be written while the
+old error remains pending; divide/modulo by zero or negative shift instead installs
+the new primary above its complete old chain. Conversion warnings and integer
+double conversion have their own pending-error checkpoints. Eligible installed
+handlers are skipped by Zend's pending-exception call API; ineligible or absent
+handlers retain default reporting. Object concat skips method execution and keeps
+the pending error, so this branch uses no live Stringable return producer.
+
+Final simple append to a returned ArrayAccess child, wider memoized/property/GLOBALS
+ArrayAccess producers, by-reference Get results and combined Iterator/ArrayAccess declaration ordering
 remain required core work. Newly reachable unsupported paths stop explicitly.
 By-reference Get stays separate from the user-paused return verification.
 
@@ -92,3 +109,22 @@ source-reached recipes. `python3 -B tests/semantics/arrayaccess_write_prepare.py
 [fixture-id ...]` compiles them using the existing tools and a read-only revision
 snapshot. Compilation, source agreement and reached-state execution remain
 separate; promotion of identical recipes adds no semantic execution credit.
+
+Append304 retains 49 unique normal comparisons at three source cuts and eight
+source-reached strict-SL recipes/723 premises at two state cuts. The
+[append ledger](../../coverage/semantics/arrayaccess-append-review.json) records
+the existing exact runtime, caps, environment, original failures and narrower
+admission repair. One fresh actual38f+accepted292+304/275 source agrees through
+include conversion, private Owner/Child scope and a retained old reference cell;
+its finite-v2 cwd/caller/Array certificate is supplied from the start. Earlier284
+and292 gates are retained without renewal.
+
+Append originals and original native observations are in
+`arrayaccess_append_cases.py` and `arrayaccess_append_review_cases.py`.
+Two default diagnostics retain their original visible filename in `OBSERVED_FILES`;
+a fresh differential comparison must use its new native observation or explicitly
+substitute that filename. `arrayaccess_append_protocol.py` and
+`arrayaccess_append_review_protocol.py` retain the eight executed recipes.
+`python3 -B tests/semantics/arrayaccess_append_prepare.py [fixture-id ...]`
+compiles their merged helper prefix; three affected prefix checks are preparation
+only and do not renew the 723 executed premises.

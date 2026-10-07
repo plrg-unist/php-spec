@@ -7,13 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-The canonical source includes accepted ArrayAccess292 at `1d0f8ea23` (274
-modules), on baseline `38f1dfaa045f`. Independently accepted private milestones
-270, 286, 288, 289, 290, 291, 293, 294, 296, 297 and 304 await ordered Git
-integration. Other private work covers 295, 298, 299 and 300, with 301–303 in
-development. Held 279 work and user-paused return verification remain set aside;
-unaccepted return changes stay held. Full core and final combined offline
-validation remain pending. Existing behavior entries retain their tested cuts.
+The canonical source includes accepted ArrayAccess292 (`1d0f8ea23`) and 304
+(`0f2ecffc6`), with 275 modules on baseline `38f1dfaa045f`. Independently accepted
+private milestones 270, 286, 288, 289, 290, 291, 293, 294, 296 and 297 await
+ordered Git integration. Other private work covers 295, 298, 299 and 300, with
+301–303 in development. Held 279 work and user-paused return verification remain
+set aside; unaccepted return changes stay held. Full core and final combined
+offline validation remain pending. Existing entries retain their tested cuts.
+
+ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
+supports final compound append, including null-key Get/Set on returned children.
+Returned temporary arrays extract selected rows before retirement; copied real
+cells detach or remain shared according to their actual owners. False-conversion
+throws preserve the same-opcode append/write/operator priority, conversion
+checkpoints, callback eligibility and complete previous chain. Dimension records
+require a real key expression, keeping `[]` distinct from `[null]` at public
+admission. Forty-nine normal sources agree across retained cuts; eight genuine
+strict-SL recipes with 723 premises pass. One fresh interaction at
+actual 38f + accepted 292 + 304 / 275 agrees through include conversion,
+private Owner/Child selection, GLOBALS
+reference rebinding and a retained-cell append. The
+[append ledger](coverage/semantics/arrayaccess-append-review.json) keeps cuts and
+original failures separate. Final simple append to a returned ArrayAccess child
+is the next required 309 slice; wider producers, by-reference Get and complete
+core remain open. Paused return verification stays separate.
 
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
@@ -29,7 +46,7 @@ independent 793 premises pass across 13 recipes (1016 total), with 634 in AL and
 382 in strict SL.
 The [writable ledger](coverage/semantics/arrayaccess-write-review.json) records
 actual revision/diffs, original failures and excluded count-observer0; its
-core-language companion agrees. Nested compound append, by-reference Get,
+core-language companion agrees. Final simple child append, by-reference Get,
 wider memoized/property/GLOBALS producers and combined interface notice ordering
 remain required. Paused return validation remains separate. One fresh source at
 actual 38f + 292 / 274 agrees through array-include conversion287, private
@@ -1068,8 +1085,10 @@ failures and interrupted evidence.
   Container276 adds undefined/null/false W/RW initialization and final array-reference
   ingress;282 stages missing/scalar R and quiet-container warnings with genuine
   row/key owners. ArrayAccess284 adds the builtin contract and direct R/IS,
-  isset/empty, Set/append and Unset calls. Full nested/RW/reference and wider
-  memoized ArrayAccess consumers, combined Iterator/ArrayAccess notice ordering,
+  isset/empty, Set/append and Unset calls. Writable292 adds direct compound and
+  ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append.
+  Final simple child append, by-reference Get, wider memoized ArrayAccess consumers
+  and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container
