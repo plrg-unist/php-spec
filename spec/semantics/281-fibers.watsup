@@ -835,7 +835,8 @@ def $fiber_sequences_unique(S, pnode :: pnode_tail*, n_seen*) = $fiber_sequences
   -- if ~(n <- n_seen*)
 def $fiber_sequences_unique(S, pnode*, n_seen*) = false -- otherwise
 def $fiber_state_valid(S) = ($fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps) /\ $fiber_live_records(S, S.ALLOCATIONS) /\ $fiber_sequences_unique(S, S.ALLOCATIONS, eps) /\ $(S.FIBERSEQ > 0))
-def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $generator_state_valid(S) /\ $fiber_state_valid(S))
+dec $clone_windows_valid(pstate) : bool
+def $call_descriptors_valid(S) = ($call_descriptors_local_valid(S) /\ $generator_state_valid(S) /\ $fiber_state_valid(S) /\ $clone_windows_valid(S))
 
 def $closure_live_object_valid(S, n) = true -- if S.OBJECTS[n] = FIBER pfiber
 def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if S.OBJECTS[n] = FIBER pfiber

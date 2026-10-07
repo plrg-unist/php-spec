@@ -1,0 +1,245 @@
+{
+  "scope": "genuine clone callbacks and per-object readonly window; nonempty updates and destination release remain separate",
+  "cases": [
+    {
+      "id": "readonly-clone-success-once",
+      "source_sha256": "a71bc646d3943b66d1b250984b3c2cea2a825e9e34983a63fb14f34f8c292922",
+      "expected_stdout": "3|Cannot modify readonly property Owner::$x|5|Cannot modify readonly property Owner::$x|1/3/5",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() {\n        $this->x += 2; echo $this->x, '|';\n        try { ++$this->x; } catch (Error $e) { echo $e->getMessage(), '|'; }\n    }\n}\n$o = new Owner(); $one = clone $o; $two = clone $one;\necho $o->x, '/', $one->x, '/', $two->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-type-failure-preserves-capability",
+      "source_sha256": "b8365db8972e3916d25a34706680ff75137a7bf4ae28122e2c1605a34cd4c2eb",
+      "expected_stdout": "Cannot assign string to property Owner::$x of type int|Cannot modify readonly property Owner::$x|1/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() {\n        try { $this->x = 'bad'; } catch (TypeError $e) { echo $e->getMessage(), '|'; }\n        $this->x = 2;\n        try { $this->x = 'bad'; } catch (Error $e) { echo $e->getMessage(), '|'; }\n    }\n}\n$o = new Owner(); $copy = clone $o; echo $o->x, '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-unset-reinitialize",
+      "source_sha256": "adca9f10a3ab35300d6a50b320d1206653eb18d4e1e9154d0178f2d7dca3a0a8",
+      "expected_stdout": "no|Cannot unset readonly property Owner::$x|1/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() {\n        unset($this->x); echo isset($this->x) ? 'yes|' : 'no|'; $this->x = 2;\n        try { unset($this->x); } catch (Error $e) { echo $e->getMessage(), '|'; }\n    }\n}\n$o = new Owner(); $copy = clone $o; echo $o->x, '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-indirect-reference-denials",
+      "source_sha256": "0d78e6cba88c16ee63225807b637826149b625dbbaccab68df408bbf0c46c75a",
+      "expected_stdout": "Cannot indirectly modify readonly property Owner::$x|Cannot indirectly modify readonly property Owner::$a|1/2/1/3",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x; public readonly array $a;\n    public function __construct() { $this->x = 1; $this->a = [1]; }\n    public function __clone() {\n        try { $r =& $this->x; } catch (Error $e) { echo $e->getMessage(), '|'; }\n        try { $this->a[] = 2; } catch (Error $e) { echo $e->getMessage(), '|'; }\n        $this->x += 1; $this->a = [3];\n    }\n}\n$o = new Owner(); $copy = clone $o;\necho $o->x, '/', $copy->x, '/', $o->a[0], '/', $copy->a[0];\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-abrupt-relocks-escaped-copy",
+      "source_sha256": "e5a1577bf8fd5ad6fbdbb5a52add82be792d322aec7f02d43372f0fbb66657e0",
+      "expected_stdout": "stop|Cannot modify readonly property Owner::$x|1/1/gone",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function put() { $this->x = 2; }\n    public function __clone() { $GLOBALS['leaked'] = $this; throw new Exception('stop'); }\n}\n$o = new Owner();\ntry { $copy = clone $o; } catch (Exception $e) { echo $e->getMessage(), '|'; }\ntry { $leaked->put(); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $o->x, '/', $leaked->x, '/', isset($copy) ? 'bound' : 'gone';\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-string-throw-preserves-capability",
+      "source_sha256": "270b9a82ada539397136ccc32dbfea6d1d75379d2e404782c9f99cdb0f1b3c07",
+      "expected_stdout": "T|stop|seed/replacement",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Box { public function __toString(): string { echo 'T|'; throw new Exception('stop'); } }\nclass Owner {\n    public readonly string $x;\n    public function __construct() { $this->x = 'seed'; }\n    public function __clone() {\n        try { $this->x = new Box(); } catch (Exception $e) { echo $e->getMessage(), '|'; }\n        $this->x = 'replacement';\n    }\n}\n$o = new Owner(); $copy = clone $o; echo $o->x, '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-set-scope-before-success",
+      "source_sha256": "1b79774b06b2915d971a062ed2cc83be9f0753339c27fc69b9f217b16bef2715",
+      "expected_stdout": "Cannot modify protected(set) readonly property Owner::$x from global scope|1/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nfunction outside($o) { $o->x = 8; }\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() {\n        try { outside($this); } catch (Error $e) { echo $e->getMessage(), '|'; }\n        $this->x = 2;\n    }\n}\n$o = new Owner(); $copy = clone $o; echo $o->x, '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-nested-object-windows",
+      "source_sha256": "63ddc4e99fbf9815e670959c2c1df4b7da6f801aaef7f3ff2707b1de8636c1e6",
+      "expected_stdout": "O|I|2/3|1/3",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() {\n        if ($GLOBALS['depth'] === 0) {\n            echo 'O|'; $GLOBALS['depth'] = 1; $inner = clone $this;\n            $this->x = 3; echo $inner->x, '/', $this->x, '|';\n        } else { echo 'I|'; $this->x = 2; }\n    }\n}\n$depth = 0; $o = new Owner(); $copy = clone $o; echo $o->x, '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-private-clone-access",
+      "source_sha256": "a316de5aedb72db1ad35972c87e12755036cf662c62e29a7197fc58b4a0c12da",
+      "expected_stdout": "Call to private method Owner::__clone() from global scope|gone|C|1/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    private function __clone() { echo 'C|'; $this->x = 2; }\n    public function copied() { return clone $this; }\n}\n$o = new Owner();\ntry { $denied = clone $o; } catch (Error $e) { echo $e->getMessage(), '|'; }\necho isset($denied) ? 'bound|' : 'gone|';\n$copy = $o->copied(); echo $o->x, '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-manual-clone-method-does-not-open-window",
+      "source_sha256": "b31ae82f9631bae1f2ea620db14c5228ca2e2d518f1c5533e48ed632914ecbb5",
+      "expected_stdout": "C|Cannot modify readonly property Owner::$x|C|C|Cannot modify readonly property Owner::$x|1/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() { echo 'C|'; $this->x = 2; }\n}\n$o = new Owner();\ntry { $o->__clone(); } catch (Error $e) { echo $e->getMessage(), '|'; }\n$c = clone $o;\ntry { $c->__clone(); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $o->x, '/', $c->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-fiber-escaped-window",
+      "source_sha256": "b0fe3a2a5252eebe01b1c08f030f4b9f3e455c9706ecb15cb9615d0980027526",
+      "expected_stdout": "C|pause|2|Cannot modify readonly property Owner::$x|Cannot modify readonly property Owner::$y|Cannot modify readonly property Owner::$z|1/2/10/9/same",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public public(set) readonly int $y;\n    public public(set) readonly int $z;\n    public function __construct() { $this->x = 1; $this->y = 10; }\n    public function put($value) { $this->x = $value; }\n    public function __clone() {\n        $GLOBALS['escaped'] = $this;\n        echo 'C|'; Fiber::suspend('pause');\n        try { $this->x = 3; } catch (Error $e) { echo $e->getMessage(), '|'; }\n    }\n}\n$o = new Owner();\n$fiber = new Fiber(function () use ($o) { return clone $o; });\necho $fiber->start(), '|';\n$escaped->put(2); echo $escaped->x, '|';\n$fiber->resume(); $c = $fiber->getReturn();\ntry { $c->y = 11; } catch (Error $e) { echo $e->getMessage(), '|'; }\n$c->z = 9;\ntry { $c->z = 12; } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $o->x, '/', $c->x, '/', $c->y, '/', $c->z, '/', $c === $escaped ? 'same' : 'different';\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-cv-original-retired",
+      "source_sha256": "0c59bf050d43868f25708f53078c862108eee26d22850841827afb2c324e7f32",
+      "expected_stdout": "C|gone/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() {\n        unset($GLOBALS['original']); echo 'C|'; $this->x = 2;\n    }\n}\n$original = new Owner(); $copy = clone $original;\necho isset($original) ? 'live' : 'gone', '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-intrinsic-original-retired",
+      "source_sha256": "309766a5071e12ec6e86c8934aaf8b766b853cec7bba333a74803ac0759fa16c",
+      "expected_stdout": "C|gone/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() {\n        unset($GLOBALS['original']); echo 'C|'; $this->x = 2;\n    }\n}\n$original = new Owner(); $copy = clone($original);\necho isset($original) ? 'live' : 'gone', '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-unset-slot-flags",
+      "source_sha256": "1696b1257d3d3000c95e7372c424c03c52246fb643eca48550d8220bcc849190",
+      "expected_stdout": "U|Cannot modify readonly property Owner::$x|Cannot modify readonly property Owner::$y|Cannot modify readonly property Owner::$z|1/2/3/4",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public readonly int $y;\n    public readonly int $z;\n    public function __construct() { $this->x = 1; unset($this->z); }\n    public function __clone() {\n        unset($this->x, $this->y, $this->z); echo 'U|';\n        $this->x = 2; $this->y = 3; $this->z = 4;\n        try { $this->x = 5; } catch (Error $e) { echo $e->getMessage(), '|'; }\n        try { $this->y = 6; } catch (Error $e) { echo $e->getMessage(), '|'; }\n        try { $this->z = 7; } catch (Error $e) { echo $e->getMessage(), '|'; }\n    }\n}\n$original = new Owner(); $copy = clone $original;\necho $original->x, '/', $copy->x, '/', $copy->y, '/', $copy->z;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-inherited-declaring-scope",
+      "source_sha256": "e548298f678309f5cb461b3dbb2d323615c21f19cde44b079d2e2bbd8e65f9c7",
+      "expected_stdout": "Owner/Child|Call to protected method Owner::__clone() from global scope|1/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public private(set) readonly int $x;\n    public function __construct() { $this->x = 1; }\n    protected function __clone() {\n        echo __CLASS__, '/', get_called_class(), '|'; $this->x = 2;\n    }\n}\nclass Child extends Owner { public function copy() { return clone $this; } }\n$original = new Child(); $copy = $original->copy();\ntry { clone $original; } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $original->x, '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-variadic-only-admitted",
+      "source_sha256": "6edce3d6c0b6c6b6dfcb14daf0ba9962035c6b735303ae39f86e546819b13b1f",
+      "expected_stdout": "empty|1/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone(...$args) {\n        echo $args === [] ? 'empty|' : 'full|'; $this->x = 2;\n    }\n}\n$original = new Owner(); $copy = clone $original;\necho $original->x, '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-required-parameter-rejected",
+      "source_sha256": "129ce6053fb336b1a8c1ab7b5ad97e0bdeb82948d52fbd8b28a0c555d94a3f3e",
+      "expected_stdout": "",
+      "expected_exit_status": 255,
+      "expected_compile_message": "Method Owner::__clone() cannot take arguments",
+      "expected_compile_line": 2,
+      "source": "<?php\nclass Owner { public readonly int $x; public function __clone($value) {} }\n",
+      "kind": "compiler"
+    },
+    {
+      "id": "readonly-clone-optional-parameter-rejected",
+      "source_sha256": "6e6c5ac9e6304f91f9a48f74a32e959fde0e4510f3c5f4bc50e7f4ae7a4b90fa",
+      "expected_stdout": "",
+      "expected_exit_status": 255,
+      "expected_compile_message": "Method Owner::__clone() cannot take arguments",
+      "expected_compile_line": 2,
+      "source": "<?php\nclass Owner { public readonly int $x; public function __clone($value = 1) {} }\n",
+      "kind": "compiler"
+    },
+    {
+      "id": "readonly-clone-static-rejected",
+      "source_sha256": "727e6e0e7b08285d3d03cced5d972ad9714088caffa7ddceecb3e829b03f6f3c",
+      "expected_stdout": "",
+      "expected_exit_status": 255,
+      "expected_compile_message": "Method Owner::__clone() cannot be static",
+      "expected_compile_line": 2,
+      "source": "<?php\nclass Owner { public readonly int $x; public static function __clone() {} }\n",
+      "kind": "compiler"
+    },
+    {
+      "id": "readonly-clone-nonvoid-rejected",
+      "source_sha256": "f2b6cf0dcbc3e7930d837059130d23a0617bf0583520a46d9f25fa3a94eff0ad",
+      "expected_stdout": "",
+      "expected_exit_status": 255,
+      "expected_compile_message": "Owner::__clone(): Return type must be void when declared",
+      "expected_compile_line": 2,
+      "source": "<?php\nclass Owner { public readonly int $x; public function __clone(): int { return 1; } }\n",
+      "kind": "compiler"
+    },
+    {
+      "id": "readonly-clone-argument-priority-rejected",
+      "source_sha256": "530eaabc35530bf2b364a92a9f20cf4551969dbddf86684705e5cf842c88974f",
+      "expected_stdout": "",
+      "expected_exit_status": 255,
+      "expected_compile_message": "Method Owner::__clone() cannot take arguments",
+      "expected_compile_line": 2,
+      "source": "<?php\nclass Owner { public readonly int $x; public static function __clone($value): int { return 1; } }\n",
+      "kind": "compiler"
+    },
+    {
+      "id": "readonly-clone-factory-temporary-source",
+      "source_sha256": "63040c5041946dd2e037f99c19c52d7694fd2cbce169194664ff1569675bb144",
+      "expected_stdout": "C|2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() { echo 'C|'; $this->x = 2; }\n}\nfunction receiver() { return new Owner(); }\n$copy = clone receiver(); echo $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-access-error-intrinsic-trace",
+      "source_sha256": "dc82c4739aef134a077604c1a8fad67581c3b7c2acc7ad6e281494d79bd4b14a",
+      "expected_stdout": "B/empty|I/clone",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner { private function __clone() {} }\n$original = new Owner();\ntry { clone $original; } catch (Error $e) {\n    $trace = $e->getTrace(); echo 'B/', $trace === [] ? 'empty' : 'nonempty', '|';\n}\ntry { clone($original, []); } catch (Error $e) {\n    $trace = $e->getTrace(); echo 'I/', $trace[0]['function'];\n}\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-two-argument-intrinsic-original-retired",
+      "source_sha256": "45acbc9a8ef00056d9d76b192596c4044808f54e6c865360ff4aca41f8782189",
+      "expected_stdout": "C|gone/2",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public function __construct() { $this->x = 1; }\n    public function __clone() {\n        unset($GLOBALS['original']); echo 'C|'; $this->x = 2;\n    }\n}\n$original = new Owner(); $copy = clone($original, []);\necho isset($original) ? 'live' : 'gone', '/', $copy->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-state-clone-window",
+      "source_sha256": "d506014d9adb73774949e19055a2b697557364f06d45229046f873e743cc25ac",
+      "expected_stdout": "U|Cannot assign array to property Owner::$x of type int|F|W|Cannot unset readonly property Owner::$x|1/2/3/4/1",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public readonly int $y;\n    public readonly int $z;\n    public int $mutable = 10;\n    public function __construct() { $this->x = 1; unset($this->z); }\n    public function __clone() {\n        unset($this->x, $this->y, $this->z); echo 'U|';\n        try { $this->x = []; } catch (TypeError $e) { echo $e->getMessage(), '|'; }\n        echo 'F|'; $this->x = 2; $this->y = 3; $this->z = 4; echo 'W|';\n    }\n}\n$original = new Owner(); $other = new Owner(); $copy = clone $original;\ntry { $copy->__clone(); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $original->x, '/', $copy->x, '/', $copy->y, '/', $copy->z, '/', $other->x;\n",
+      "kind": "normal"
+    },
+    {
+      "id": "readonly-clone-exit-shutdown-relocks",
+      "source_sha256": "918ccdac95823be3c5849cafcabdea1088dc4b45691405d782075e773ebccc60",
+      "expected_stdout": "C|bye|Cannot modify readonly property Owner::$y|1/10",
+      "expected_stderr": "",
+      "expected_exit_status": 0,
+      "expected_model_status": "explicit_exit",
+      "source": "<?php\nclass Owner {\n    public readonly int $x;\n    public public(set) readonly int $y;\n    public function __construct() { $this->x = 1; $this->y = 10; }\n    public function __clone() {\n        $GLOBALS['escaped'] = $this; echo 'C|'; exit('bye|');\n    }\n}\nregister_shutdown_function(function () {\n    try { $GLOBALS['escaped']->y = 11; } catch (Error $e) { echo $e->getMessage(), '|'; }\n    echo $GLOBALS['escaped']->x, '/', $GLOBALS['escaped']->y;\n});\n$original = new Owner(); $copy = clone $original; echo 'after';\n",
+      "kind": "exit"
+    }
+  ]
+}
