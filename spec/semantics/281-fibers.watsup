@@ -862,8 +862,13 @@ def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = true
   -- if ~pfibervm.GLOBAL \/ (pfibervm.TABLE = $empty_table() /\ pfibervm.CURRENT = eps /\ pfibervm.FRAMES = eps /\ n? = eps)
   -- if $generator_flat_tasks(pfibervm.TODO) /\ $generator_flat_frames(pfibervm.FRAMES)
   -- if $generator_resume_ids(pfibervm.TODO) = eps /\ $generator_saved_ids(pfibervm.FRAMES) = eps
-  -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n?][.FIBERCALLERS = pfibercaller*][.COMPLETION = NORMAL]
-  -- if $call_descriptors_local_valid(S_view)
+  ;; The transfer domain excludes a loader in this saved VM. Validate the
+  ;; active source/publication on S and this VM's tasks without its eval markers.
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n?][.FIBERCALLERS = pfibercaller*][.COMPLETION = NORMAL][.EVALCONTEXTS = eps]
+  -- if $eval_tasks_markers_valid(S_view, S_view.TODO)
+  -- if $eval_requests_owned(S_view.TODO)
+  -- if $eval_frames_markers_valid(S_view, S_view.FRAMES)
+  -- if $call_descriptors_scoped_valid(S, S_view)
 def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = false -- otherwise
 
 def $fiber_waiting_ids(eps) = eps

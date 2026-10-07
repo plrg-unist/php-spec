@@ -39,6 +39,7 @@ def main():
     driver.DECLARATIONS = {}
     driver.UNSUPPORTED = {}
     driver.WATCHED += [
+        'spec/semantics/84-call-integrity.watsup',
         'spec/semantics/95-typed-calls.watsup',
         'spec/semantics/117-arrow-compiler.watsup',
         'spec/semantics/118-arrows.watsup',
