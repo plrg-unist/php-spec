@@ -90,7 +90,7 @@
   "frozen305": "Accepted305 inputs and old12/468 remain unchanged. Direct shutdown26c25 passes at367e581df and is separately published at a2cab39d0.",
   "recovery": "Regenerate exact originals with readonly_clone_selection_sources.py --select and one state group with readonly_clone_selection_protocol.py --group GROUP --sl; --prepare recreates checked fixtures only. Both are included in test-semantics. Raw evidence stays outside Git; obtain a root numeric allocation before execution.",
   "composition_current": {
-    "status": "prepared private composition; SL290/compiler application0 PASS, corrected native2 PASS; model/state UNRUN",
+    "status": "independently reviewed private composition; production SL290, two exact normal originals and79 source-reached strict-SL clauses PASS; Git integration pending",
     "parent": "c54cc0ff837848dbcf5005d7f2be5238df9b3577",
     "parent_modules": 286,
     "composed_modules": 290,
@@ -105,18 +105,20 @@
         "case": "readonly-clone-produced-private-fiber-closes-generator-after-maker-retirement",
         "sha256": "1469f46faaeff142c32685fd9c9481f989d20ec85e2a3e2946063eeaef3be949",
         "expected_stdout": "seed/late|body|2|close1|after|7|done",
-        "native": "PASS;no model credit",
-        "model": "UNRUN"
+        "native": "PASS",
+        "model": "PASS; checked program/normal/exit0/reasonnull/diagnosticnull; exact streams",
+        "model_seconds": 10.86572
       },
       {
         "case": "readonly-live-clone-window-survives-fiber-close-caller-parking",
         "sha256": "c20c080c30853019f7e049b0aac19f5e6d605a721bc24fdda9783b01e9acdfde",
         "expected_stdout": "close|seed/late|done",
-        "native": "PASS;no model credit",
-        "model": "UNRUN"
+        "native": "PASS",
+        "model": "PASS; checked program/normal/exit0/reasonnull/diagnosticnull; exact streams",
+        "model_seconds": 8.21003
       }
     ],
-    "recovery": "Run only the two new IDs through readonly_clone_selection_sources.py --select after root allocation; no accepted20/665 renewal. The independent reached-window group is being prepared from the actual saved closer VM.",
+    "recovery": "Regenerate the two new IDs with readonly_clone_selection_sources.py --select and the maintained closer-window group with readonly_clone_selection_protocol.py --group closer-window --sl after numeric allocation. Earlier20/665 keep their recorded cuts and were not renewed.",
     "prior_preparation": "7b2441369 fixed577/285 composition; no numeric execution",
     "compiler": {
       "cut": "f6b2cad344a52e9fce6ce7e874a1b4bb47be8b9b",
@@ -126,6 +128,22 @@
       "raw": ".tools/property-clone-producer-selection-preparation16/composition-sl290-attempt1/report.json"
     },
     "native_preparation": ".tools/property-clone-producer-selection-preparation16/composition-corrected-native2-attempt1/report.json; explicit public(set) authorizes the intended global clone-with write; model0",
-    "preserved_failures": "composition290-two-originals-attempt1 prelaunch missing --select0; attempt2 original499 implicit protected(set) native255/model0, second original unrun; original predicted499/c54 bytes retained outside Git"
+    "preserved_failures": "composition290-two-originals-attempt1 prelaunch missing --select0; attempt2 original499 implicit protected(set) native255/model0, second original unrun; original predicted499/c54 bytes retained outside Git",
+    "semantic_cut": "f6b2cad344a52e9fce6ce7e874a1b4bb47be8b9b",
+    "source_cut": "4767e8ea6ec29896ec97bfd770df48ef0c9cf784",
+    "sources_raw": ".tools/property-clone-producer-selection-preparation16/composition290-two-originals-attempt3/report.json",
+    "reached_state": {
+      "group": "closer-window",
+      "clauses": 79,
+      "seconds": 34.669,
+      "cut": "4767e8ea6ec29896ec97bfd770df48ef0c9cf784",
+      "raw": ".tools/property-readonly-review16/composed-clone-closer-state1/report.json",
+      "behavior": "Actual saved closer VM is the sole clone-window carrier. Heap-identical line-only and coherent marker/window forgeries fail public source/context admission. Zero/one-step resumption preserves genuine owners; completion clears windows and closers.",
+      "result": "strict SL/true newline/exit0/empty stderr; workers closed and inputs unchanged; source agreement0",
+      "maintained_parity": {
+        "raw": ".tools/property-readonly-review16/composed-clone-closer-parity1.json",
+        "result": "Fresh checked source/program/prefix and all79 clauses match the accepted fixture; only initial-variable alpha rename and source filename relocation differ. Frontend/adapter closed; model evaluations0. The original copied-clause typo remains preserved as unrun."
+      }
+    }
   }
 }

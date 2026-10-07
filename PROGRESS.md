@@ -7,21 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-The private property/clone composition uses fixed current parentc54cc0ff8
-and290 modules, retaining the canonical286 source, Generator, Fiber and
-destruction fields, including source-emission314. Its strict SL290/compiler application0 gate passes
-at f6b2cad34; two corrected native originals match, while model/reached gates
-remain unrun. Earlier private cuts below retain their original inputs.
+The private property/clone composition uses fixed parentc54cc0ff8 and290 modules,
+retaining the canonical286 source, Generator, Fiber and destruction fields,
+including source-emission314. Strict SL290/compiler application0 passes at
+f6b2cad34. Two new exact normal originals and79 independently reviewed strict-SL
+premises pass at4767e8ea6. Earlier private cuts below retain their original inputs;
+Git integration is pending.
 
 The canonical source includes accepted ArrayAccess292/304, eager destruction270,
 WeakReference296, Fiber291/302/308, Generator289/303/310 and source operands293/298,
-with 285 modules descended from `38f1dfaa045f`. The ordered source integration
+with 286 modules descended from `38f1dfaa045f`. The ordered source integration
 preserves the final Generator eager-release bridge and Fiber cleanup guards.
 The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
 cuts retain their original inputs. Independently accepted private milestones 286, 288,
-290, 294, 295, 297, 305, 306 and 309 await ordered Git integration. Other private work
-covers 299, 300 and 301; source-emission314 remains private and unvalidated.
+290, 294, 295, 297, 300, 305, 306 and 309 await ordered Git integration. Other private work
+covers 299 and301. Nonconstant source-emission314 is installed after Fiber308.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
 
@@ -187,6 +188,15 @@ affected private shutdown companion now agrees exactly at367e581df and is
 published at a2cab39d0. Dynamic-property warning ingress needs an
 owned callback continuation and real destination lifetime; its preserved CALLS308
 source remains Unsupported with zero agreement.
+
+The actual290 composition preserves ordinary borrowed eager-cleanup certificates
+and authenticates live clone windows in the existing saved Fiber-close VM without
+adding heap roots. Two new exact originals cover a retired private clone maker
+closing a Generator inside its Fiber and a live clone window surviving Fiber
+close before a second-window write. One strict-SL reached group passes79 premises
+for the sole saved carrier, heap-identical source-line forgeries, zero/one-step
+resumption and terminal window retirement. Its maintained `closer-window` group
+keeps this actual-parent cut separate from the earlier20/665 selection evidence.
 
 Readonly clone-with updates305 now open an independent second window, preserve
 the saved setter scope and ordered weak writes, and unwind alias/conversion

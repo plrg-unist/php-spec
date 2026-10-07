@@ -45,7 +45,7 @@ interrupted runs retain zero agreement credit.
 
 One direct private shutdown callback original also agrees exactly after both
 clone objects retire at the separately recorded367e581df cut. Dynamic/FCC clone
-maker sites are required core follow-ons. Receiver-release,
+maker selection is implemented in the separate follow-on below. Receiver-release,
 implicit Generator callbacks, Deprecated dispatch, promotions, hooks, enums and
 wider lifecycle behavior remain open. This slice does not complete readonly or
 clone semantics.
@@ -79,6 +79,14 @@ pending-candidate identity rewrites before storage remain open. The
 records these cuts and limits. Original compiler, fixture and runtime failures
 remain preserved; prepare-only parity adds no model credit. This follow-on does not
 renew the frozen305 evidence above.
+
+Current290 composition on c54cc0ff8 preserves the installed source, Generator,
+Fiber and destruction protocols. Its two new exact originals pass after private
+clone maker retirement and while a live callback window is parked in the real
+Fiber-close caller VM. The independent `closer-window` group passes79 strict-SL
+premises for that sole carrier, heap-identical source-line forgeries, budget
+resumption and terminal retirement. Regenerate it with `--group closer-window
+--sl`; this cut does not renew the earlier20/665 evidence.
 
 Matching pinned engine routes: `zend_objects_clone_obj_with` and
 `zend_objects_clone_members` in `Zend/zend_objects.c`; `zend_std_write_property`

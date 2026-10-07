@@ -625,7 +625,9 @@ preserving borrowed versus actual temporary/intrinsic input owners. Its separate
 second window, captured conversions and write revisions. A separate dynamic/FCC
 selection follow-on has 20 distinct source agreements, 665 clauses across seven
 reached-state groups and a passing compiler gate at recorded cuts. Pending-candidate
-identity admission remains open. Last-owner destination
+identity admission remains open. The current290 composition separately passes
+two exact originals and79 reached premises for private clone makers and live
+clone windows during Generator/Fiber close. Last-owner destination
 release, Deprecated method dispatch and promotion remain required. The new reference controls supersede one historical288 internal assertion
 without renewing the other accepted gates.
 Simple typed property assignment converts its declaration
@@ -735,7 +737,7 @@ Temporary-current and internal API capture consumers remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
-Readonly members, hooks and user magic methods remain open.
+Wider readonly lifecycle, hooks and user magic methods remain open.
 [`Closure::call`](docs/semantics/CLOSURE-CALL.md) invokes ordinary and fake method
 captures with temporary receiver/scope, shared source statics and original wrapper
 values. Binding warnings precede inner-name errors; forwarding reference warnings

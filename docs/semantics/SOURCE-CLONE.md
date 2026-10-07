@@ -52,6 +52,10 @@ adds no owner for a borrowed CV. The cached original identity may therefore
 retire during the callback. The copy remains owned by its real continuation.
 Exact operation/target markers authenticate each implicit callback and window
 through local, saved and parked stacks. Mutable input history remains bounded.
+Ordinary last-owner Fiber close retains a live callback window in its existing
+saved caller VM; the permission record contributes no heap owner. The separately
+tested current290 composition restores the first window before the independent
+clone-with update window and rejects heap-identical forged source lines.
 The exit binder positively admits only EXIT/DIE identities after the enum grows.
 Protected/private properties reuse the lexical resolver and mangled slot keys described
 in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PROPERTY-VISIBILITY.md).
@@ -74,6 +78,10 @@ keeps these cuts separate from ordinary294 and records SL276/application0.
 Later cached-producer controls in the
 [update ledger](../../coverage/semantics/readonly-clone-updates-review.json)
 cover parked writes and maker retirement without renewing that callback cut.
+The maintained `closer-window` group in
+[selection controls](../../tests/semantics/readonly_clone_selection_protocol.py)
+adds79 actual-parent premises; [its ledger](../../coverage/semantics/readonly-clone-selection-review.json)
+keeps these separate from the earlier source and state cuts.
 
 Matching engine sources: `zend_compile_func_clone` and `zend_compile_clone` in
 `vendor/php-src/Zend/zend_compile.c`; `ZEND_CLONE` in `Zend/zend_vm_def.h`;
