@@ -81,8 +81,17 @@ independent reached premises after a narrow84/281 repair: source publication is
 checked on the live stack, while parked Fiber tasks retain their own eval-marker
 guards. Controls reject live OWNER and parked direct/CHOOSE marker forgeries;
 the frame-marker helper uses authentic saved leaf fields. The original invalid
-eval response and two fixture syntax stops retain zero credit. Latest-parent
-cleanup/property composition and ordered Git integration remain required.
+eval response and two fixture syntax stops retain zero credit.
+
+The actual `2a2e1af7c` property/collection parent plus311 passes strict compiler292,
+the same source and75 independent cleanup premises. Its genuine retired source
+object has one physical HANDLE obligation; removing the task/registry marker
+keeps the heap valid but rejects that helper obligation. No occupied GC_RETIRED
+slot or public rejection is claimed. Arrow Closure last ownership, new gc/clone
+validation and actual close/budget resumption pass. The parked projection also
+clears FILECONTEXTS under the existing empty-loader transfer domain; genuine
+file-marker runtime evidence belongs to the calls pair. Frozen148 is not renewed.
+Ordered Git integration remains required.
 
 Maintained commands are:
 
@@ -95,6 +104,7 @@ python3 tests/semantics/arrow_generator_warning_review_protocol.py --mode check 
 python3 tests/semantics/arrow_generator_globals_role_review_protocol.py --mode check --sl
 python3 tests/semantics/arrow_generator_integration.py --mode full
 python3 tests/semantics/arrow_generator_integration_protocol.py --mode check --sl
+python3 tests/semantics/arrow_generator_cleanup_protocol.py --mode check --sl
 ```
 
 This bounded slice does not establish complete Generator, arrow or core semantics.

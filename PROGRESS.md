@@ -18,8 +18,11 @@ with exact311 and maintained fixtures at287 modules. One fresh original combines
 an eager NEW default, active Fiber, temporary Stringable eval CV ECHO entry and
 last-owner child close. Its scoped source/Fiber validator repair passes strict
 compiler287, one native/model agreement and148 independent reached premises;
-earlier cuts retain their identities. Latest-parent cleanup/property composition
-and ordered Git integration remain required. [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
+earlier cuts retain their identities. Exact311 also composes over the actual
+`2a2e1af7c` property/collection parent at292: strict compilation, the same original
+and75 independent source-HANDLE/Arrow-close/gc/clone premises pass without
+renewing148. Ordered Git integration remains required.
+[Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The canonical source includes accepted ArrayAccess292/304, eager destruction270,
 WeakReference296, ordinary cycle collection301, Fiber291/302/308,

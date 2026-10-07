@@ -78,7 +78,9 @@ and implicit-return routes. Eager parameters, sent results, delegation, scope an
 original signatures retain separate source/state cuts. Value-warning cleanup
 retains the same Throwable, cached key and closed Closure owner. A separate
 frozen287 default/Fiber/eval composition passes one source and148 reached
-premises; latest-parent join and ordered Git integration remain required.
+premises. The actual292 property/collection parent separately passes the same
+source and75 reached physical-HANDLE/Arrow-close premises. Ordered Git integration
+remains required.
 
 Constructor-created global constant instances follow the existing noncache
 policy for object defaults. Receives, yield caches and return values retain the
