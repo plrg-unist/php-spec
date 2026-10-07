@@ -1033,7 +1033,8 @@ def $autoload_entry_metadata(S, pautoloadentry) = true
 def $autoload_entry_metadata(S, pautoloadentry) = false -- otherwise
 def $autoload_selected_scope(S, pautoloadentry, HANDLER_METHOD_TARGET b_class porigin ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess)) = true
   -- if pcallableaccess.SITE = eps /\ pcallableaccess.CREATION = eps
-  -- if $consumer_capture_valid(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE)
+  -- if pshutdownentry = {CALL pautoloadentry.CALL, BIRTH pautoloadentry.BIRTH, CAPTURE pautoloadentry.CAPTURE, PRODUCER pautoloadentry.PRODUCER, RAW pautoloadentry.RAW, TARGET HANDLER_METHOD_TARGET b_class porigin ptbytes (SCOPE_METHOD_TARGET pcalltarget pcallableaccess), ARGS eps}
+  -- if $consumer_producer_source(S, pshutdownentry)
   -- if pcallableaccess.SCOPE = $shutdown_capture_scope(S, pautoloadentry.CALL.SITE, pautoloadentry.CAPTURE)
 def $autoload_selected_scope(S, pautoloadentry, pcalltarget) = true -- if ~$shutdown_scoped_target(pcalltarget)
 def $autoload_selected_scope(S, pautoloadentry, pcalltarget) = false -- otherwise
