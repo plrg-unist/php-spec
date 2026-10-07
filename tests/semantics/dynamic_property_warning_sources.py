@@ -23,6 +23,8 @@ CASES = {
     'dynamic-computed-receiver': b"<?php\nclass DynamicComputedReceiver18 { public function __destruct() { echo 'drop|'; } }\n$object = new DynamicComputedReceiver18();\nfunction selected_receiver18() { return $GLOBALS['object']; }\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|'; unset($GLOBALS['object']); echo 'released|'; return true;\n});\nselected_receiver18()->x = 7;\necho 'done';\n",
     'dynamic-promoted-rhs-used-result': b"<?php\nclass DynamicPlainRhsPromotedReference18 {}\n$object = new DynamicPlainRhsPromotedReference18();\n$rhs = 7;\n$replacement = 9;\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|';\n    $GLOBALS['rhs'] =& $GLOBALS['replacement'];\n    return true;\n});\n$assigned = ($object->x = $rhs);\necho $assigned, '|', $object->x, '|', $rhs, '|';\n$replacement = 13;\necho $assigned, '/', $object->x, '/', $rhs, '|done';\n",
     'dynamic-duplicate-latest-write-unset': b"<?php\nclass DynamicDuplicateLatestWriteUnset18 {}\n$object = new DynamicDuplicateLatestWriteUnset18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\n$object->x = 9;\nforeach ($object as $key => $value) {\n    echo $key, '=', $value, '|';\n}\nunset($object->x);\nforeach ($object as $key => $value) {\n    echo $key, '=', $value, '|';\n}\necho $object->x, '|done';\n",
+    'dynamic-retired-receiver-resurrects': b"<?php\nclass DynamicRetiredReceiverResurrects18 {\n    public function __destruct() {\n        echo 'drop|';\n        $GLOBALS['revived'] = $this;\n    }\n}\n$object = new DynamicRetiredReceiverResurrects18();\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|';\n    unset($GLOBALS['object']);\n    echo 'released|';\n    return true;\n});\ntry {\n    $object->x = 7;\n    echo 'returned|';\n} catch (Error $error) {\n    echo 'error|';\n}\necho isset($revived->x) ? 'inserted|' : 'absent|';\necho 'done';\n",
+    'dynamic-retired-receiver-resurrects-pending': b"<?php\nclass DynamicRetiredReceiverResurrectsPending18 {\n    public function __destruct() {\n        echo 'drop|';\n        $GLOBALS['revived'] = $this;\n    }\n}\n$object = new DynamicRetiredReceiverResurrectsPending18();\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|';\n    unset($GLOBALS['object']);\n    echo 'released|';\n    throw new Exception('stop');\n});\ntry {\n    $object->x = 7;\n    echo 'returned|';\n} catch (Exception $error) {\n    echo $error->getMessage(), '|';\n} catch (Error $error) {\n    echo 'replacement|';\n}\necho isset($revived->x) ? 'inserted|' : 'absent|';\necho 'done';\n",
 }
 EXPECTED = {
     'dynamic-reentry-table': 'warning|x=2|x=7|7|done',
@@ -36,6 +38,8 @@ EXPECTED = {
     'dynamic-computed-receiver': 'warning|released|drop|done',
     'dynamic-promoted-rhs-used-result': 'warning|9|9|9|9/13/13|done',
     'dynamic-duplicate-latest-write-unset': 'warning|x=2|x=9|x=2|2|done',
+    'dynamic-retired-receiver-resurrects': 'warning|released|drop|error|absent|done',
+    'dynamic-retired-receiver-resurrects-pending': 'warning|released|drop|stop|absent|done',
 }
 BOUNDARIES = {
     'dynamic-handler-exit-shutdown': (

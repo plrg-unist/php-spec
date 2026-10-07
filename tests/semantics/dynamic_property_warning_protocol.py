@@ -73,15 +73,16 @@ def seek(parent, state, phase):
 
 
 def assertions(initial, group, expected):
-    if group=='pending':
-        return pending_assertions(initial, expected)
+    if group in ['pending','pending-resurrection']:
+        return pending_assertions(initial, expected, group=='pending-resurrection')
     if group=='exit':
         return exit_assertions(initial)
     clauses = ['S_initial = '+initial, '~S_initial.COMPILESTOP',
         *seek('S_initial', 'S_entry', 0),
         'S_entry.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_entry_tail*',
         'perrorcall.RESUME = PROPERTY_DYNAMIC_RESULT pdynamicproperty',
-        'pdynamicproperty.PENDING = eps', 'pdynamicproperty.KEY = $ptascii("x")',
+        'pdynamicproperty.PENDING = eps', '~pdynamicproperty.RETIRED',
+        'pdynamicproperty.KEY = $ptascii("x")',
         'pdynamicproperty.RHS = KNOWN (PINT 7)',
         'pdynamicproperty.SELECTED = KNOWN (PINT 7)',
         '$task_nodes(PROPERTY_DYNAMIC_RESULT pdynamicproperty) = [HOBJECT pdynamicproperty.TARGET]',
@@ -92,6 +93,7 @@ def assertions(initial, group, expected):
     forged = {
         'line': 'pdynamicproperty[.LINE = $(pdynamicproperty.LINE + 1)]',
         'literal': 'pdynamicproperty[.RHS = KNOWN (PINT 9)][.SELECTED = KNOWN (PINT 9)]',
+        'retired': 'pdynamicproperty[.RETIRED = true]',
         'key': 'pdynamicproperty[.KEY = $ptascii("y")]'}
     for label, record in forged.items():
         bad = 'S_bad_'+label
@@ -116,12 +118,13 @@ def assertions(initial, group, expected):
         '$error_entered_call_valid(S_owner, perrorcall_entered)',
         *seek('S_body', 'S_release', 2),
         'S_release.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty) :: ptask_release_tail*']
-    if group=='retirement':
+    if group in ['retirement','resurrection']:
         clauses += ['$heap_owners($heap_graph(S_release), HOBJECT pdynamicproperty.TARGET) = 1',
             'S_global = $global_table_view(S_release)', '$lookup(S_global.ENV, $ptascii("object")) = eps']
     clauses += [*seek('S_release', 'S_insert', 3),
-        'S_insert.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty) :: ptask_insert_tail*',
-        '$property_dynamic_valid(S_insert, pdynamicproperty)']
+        'S_insert.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty_insert) :: ptask_insert_tail*',
+        'pdynamicproperty_insert = pdynamicproperty[.RETIRED = '+str(group!='reentry').lower()+']',
+        '$property_dynamic_valid(S_insert, pdynamicproperty_insert)']
     if group=='reentry':
         clauses += ['$heap_member(HOBJECT pdynamicproperty.TARGET, S_insert.ALLOCATIONS)',
             '$objectprops_at(S_insert.OBJECTPROPS, pdynamicproperty.TARGET) = ([{DECL eps, NAME ($ptascii("x")), STATE PROP_VALUE (DIRECT (PINT 2))}])',
@@ -134,8 +137,7 @@ def assertions(initial, group, expected):
             '$location_slot(S_inserted, PROPERTY pdynamicproperty.TARGET ($ptascii("x"))) = DEFINED (PINT 7)']
         parent = 'S_inserted'
     else:
-        clauses += ['~$heap_member(HOBJECT pdynamicproperty.TARGET, S_insert.ALLOCATIONS)',
-            '$heap_owners($heap_graph(S_insert), HOBJECT pdynamicproperty.TARGET) = 0',
+        clauses += [*retired_receiver('S_insert', group=='resurrection'),
             '$dynamic_output(S_insert.EVENTS) = $ptascii("warning|released|drop|")']
         parent = 'S_insert'
     clauses += [f'S_done = $drive_steps({parent}, 2048)',
@@ -144,12 +146,25 @@ def assertions(initial, group, expected):
     return clauses
 
 
-def pending_assertions(initial, expected):
+def retired_receiver(state, resurrect):
+    if not resurrect:
+        return [f'~$heap_member(HOBJECT pdynamicproperty.TARGET, {state}.ALLOCATIONS)',
+            f'$heap_owners($heap_graph({state}), HOBJECT pdynamicproperty.TARGET) = 0']
+    cell='n_revived_'+state.removeprefix('S_')
+    return [f'$heap_member(HOBJECT pdynamicproperty.TARGET, {state}.ALLOCATIONS)',
+        f'$heap_owners($heap_graph({state}), HOBJECT pdynamicproperty.TARGET) = 1',
+        f'$objectprops_at({state}.OBJECTPROPS, pdynamicproperty.TARGET) = (eps)',
+        f'{state}_global = $global_table_view({state})',
+        f'$lookup({state}_global.ENV, $ptascii("revived")) = ({cell})',
+        f'{state}_global.STORE[{cell}] = DEFINED (POBJECT pdynamicproperty.TARGET)']
+
+
+def pending_assertions(initial, expected, resurrect):
     return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
         *seek('S_initial', 'S_entry', 0),
         'S_entry.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_entry_tail*',
         'perrorcall.RESUME = PROPERTY_DYNAMIC_RESULT pdynamicproperty',
-        'pdynamicproperty.PENDING = eps',
+        'pdynamicproperty.PENDING = eps', '~pdynamicproperty.RETIRED',
         '$property_dynamic_entry(S_entry, perrorcall, pdynamicproperty)',
         *seek('S_entry', 'S_release', 2),
         'S_release.TODO = (PROPERTY_DYNAMIC_RESULT pdynamicproperty_pending) :: ptask_release_tail*',
@@ -165,15 +180,16 @@ def pending_assertions(initial, expected):
         'S_cleanup.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*',
         'pdestructionoperation.SOURCE = PROPERTY_DYNAMIC_RESULT pdynamicproperty_pending',
         'pdestructionoperation.PENDING = (n_pending)',
-        'pdynamicproperty_cleared = pdynamicproperty_pending[.PENDING = eps]',
+        'pdynamicproperty_cleared = pdynamicproperty_pending[.PENDING = eps][.RETIRED = true]',
         '$call_task_valid(S_cleanup, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)',
         '$heap_owners($heap_graph(S_cleanup), HOBJECT n_pending) = 1',
-        '~$heap_member(HOBJECT pdynamicproperty.TARGET, S_cleanup.ALLOCATIONS)',
+        *retired_receiver('S_cleanup', resurrect),
         *seek('S_cleanup', 'S_insert', 3),
-        'S_insert.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty_pending) :: ptask_insert_tail*',
-        '$property_dynamic_valid(S_insert, pdynamicproperty_pending)',
+        'S_insert.TODO = (PROPERTY_DYNAMIC_INSERT pdynamicproperty_insert) :: ptask_insert_tail*',
+        'pdynamicproperty_insert = pdynamicproperty_pending[.RETIRED = true]',
+        '$property_dynamic_valid(S_insert, pdynamicproperty_insert)',
         '$heap_owners($heap_graph(S_insert), HOBJECT n_pending) = 1',
-        '~$heap_member(HOBJECT pdynamicproperty.TARGET, S_insert.ALLOCATIONS)',
+        *retired_receiver('S_insert', resurrect),
         '$dynamic_output(S_insert.EVENTS) = $ptascii("warning|released|drop|")',
         'S_throw_found = $drive_steps(S_insert, 1)',
         'S_throw_found.COMPLETION = BUDGET',
@@ -228,14 +244,17 @@ def exit_assertions(initial):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--group', choices=['reentry','retirement','pending','exit'], required=True)
+    parser.add_argument('--group', choices=['reentry','retirement','resurrection','pending','pending-resurrection','exit'], required=True)
     parser.add_argument('--prepare-only', action='store_true')
     args=parser.parse_args()
     os.environ.update(LC_ALL='C', TZ='UTC', GIT_OPTIONAL_LOCKS='0')
     before=cross.snapshot(None)
     out=Path(tempfile.mkdtemp(prefix='dynamic-property-'+args.group+'-', dir=ROOT/'.tools'))
     name={'reentry':'dynamic-reentry-table', 'retirement':'dynamic-handler-retires-destination',
-          'pending':'dynamic-handler-retires-and-throws', 'exit':'dynamic-handler-exit-shutdown'}[args.group]
+          'resurrection':'dynamic-retired-receiver-resurrects',
+          'pending':'dynamic-handler-retires-and-throws',
+          'pending-resurrection':'dynamic-retired-receiver-resurrects-pending',
+          'exit':'dynamic-handler-exit-shutdown'}[args.group]
     original=sources.BOUNDARIES[name][0] if args.group=='exit' else sources.CASES[name]
     source=out/'source.php'; source.write_bytes(original)
     report={'before':before, 'group':args.group, 'profile':cross.invoke.types.PROFILE,
