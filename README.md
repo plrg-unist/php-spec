@@ -837,6 +837,13 @@ cover shared wrappers, typed descendants, exception chaining and expired-pointer
 refusals at separate cuts; the actual341 composition passes strict compilation.
 Whole `$GLOBALS` snapshots during wrapper retirement
 remain Unsupported.
+Ordinary INSTANCE storage359 now keeps one physical parent pin through ordered
+property release. WeakReference already returns null during child callbacks, while
+safe class metadata remains readable; each slot transfers its owner and detaches
+its type source exactly once. Five new originals and 164/57/67 reached premises
+cover pending exceptions, the Generator RETURN-child interaction and genuine
+Fiber suspension, with distinct source and repair cuts in the review. Raw property
+payload access and escaped reacquisition during this window remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;

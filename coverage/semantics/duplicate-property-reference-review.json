@@ -1,10 +1,10 @@
 {
   "target": "PHP 8.5.10 CLI NTS64 profile30719",
-  "status": "partial; independently reviewed physical property references, descendant/typed-slot timing and last-owner previous-wrapper retirement",
+  "status": "partial; independently reviewed physical property references, descendant/typed-slot timing and last-owner previous-wrapper retirement and ordinary INSTANCE storage lifetime",
   "semantic_cut": "3429f29ad",
   "tested_cut": "87f9b399a",
   "modules": 298,
-  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues, without retaining the retired parent. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws.",
+  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws. Ordinary DESTRUCTOR_RELEASE now preserves a physical INSTANCE free_obj pin and unvisited slot edges until their individual transfer; early Weak notification and safe class metadata reads are distinct from physical retirement.",
   "admission": "Source AST, runtime line, iterator/cursor and selected physical address are checked. RELEASE recaptures the live selected slot; entered COMMIT may survive retired receiver storage while its selected HCELL remains real. Fresh false HOBJECT C-owner and selected-cell/source forgeries fail public admission. This bounded source/current-address check is not a historical reachability proof.",
   "engine": [
     "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_RW, ZEND_FE_FETCH_RW; selected Bucket promotion/ADDREF precedes previous target-CV destruction; receiver wrapper is dereferenced on each fetch",
@@ -483,5 +483,74 @@
       },
       "review": "Actual CALLS354 Fiber parser/task/trace modules and manifest remain unchanged; SOURCE353 receiver/write and property-null tasks plus COMP270 allocation-edge graph hooks are preserved. Only tested wrapper semantics differ; normal5 and reached136/139 retain their original cuts."
     }
+  },
+  "ordinary_instance_storage_pin": {
+    "parent": "4cd2eab3a",
+    "modules": 346,
+    "raw_root": ".tools/properties-instance-storage-pin19/.tools/",
+    "scope": "Ordinary non-Throwable INSTANCE free_obj holds one actual task pin. Dynamic then declared slots retain unvisited edges, detach exact typed sources and transfer each existing owner to ordinary release once. Weak#get hides the logically freeing parent while its nonowning semantic target history remains; class metadata reads remain available. Final sole-pin retirement precedes HANDLE reuse; escaped extra ownership stops explicitly.",
+    "engine": [
+      "Zend/zend_objects_API.c: zend_objects_store_del invalidates the store handle and holds physical refcount1 across free_obj",
+      "Zend/zend_objects.c: zend_object_std_dtor notifies Weak before dynamic/declared property release; each typed slot detaches its own reference source",
+      "Zend/zend_gc.h: GC_MAY_LEAK excludes occupied GC_INFO, including a physically occupied retired buffer slot"
+    ],
+    "native_first": {
+      "cut": "02fccf600/342",
+      "raw": "instance-storage-native-first19-inv2zwrr/report.json",
+      "observations": 4,
+      "model_evaluations": 0,
+      "fifth": {
+        "cut": "03b0bae6f/345",
+        "raw": "instance-storage-native-fiber19-qfkl17og/report.json",
+        "observations": 1
+      }
+    },
+    "sources": {
+      "cut": "56b323d89/346",
+      "raw": "dynamic-property-warning-source-24236u3l/report.json",
+      "normal_agreements": 5,
+      "meaning": "Five distinct exact normal0 originals: metadata/early Weak, declared type timing, A/B exception chaining and atomic foreach bind, unchanged411B Generator RETURN-child, and genuine Fiber suspension."
+    },
+    "repairs": {
+      "weak_history": {
+        "cut": "99e3902c6/346",
+        "compiler": "instance-storage-current346-sl-init1-attempt6/report.json",
+        "affected_sources": 2,
+        "raw": "dynamic-property-warning-source-kho743cb/report.json",
+        "meaning": "Existing nonowning target history remains valid; actual current/saved INSTANCE stage makes get null without constructor-eps records."
+      },
+      "gc_physical_occupancy": {
+        "cut": "d91ef1ea4/346",
+        "compiler": "instance-storage-current346-sl-init1-attempt7/report.json",
+        "affected_sources": 1,
+        "raw": "dynamic-property-warning-source-q4u6hw5k/report.json",
+        "meaning": "Temporary metadata reads cannot add a second physical slot for an already retired buffered parent. Unbuffered first insertion is preserved."
+      }
+    },
+    "reached": {
+      "cut": "d91ef1ea4/346",
+      "typed": {
+        "premises": 164,
+        "raw": "instance-storage-pin-haqi7p52/report.json"
+      },
+      "generator": {
+        "premises": 57,
+        "raw": "instance-storage-pin-nkg5ec8f/report.json"
+      },
+      "fiber": {
+        "premises": 67,
+        "raw": "instance-storage-pin-4j7tj356/report.json"
+      },
+      "meaning": "Setup-inclusive genuine release, child callback, typed detach, pending A/B, sole final pin and selected bind states. Generator RETURN and parent each have their real pin; parked Fiber owns the actual saved marker. Missing/duplicate carriers, stale slots, escaped owners, payload refusals, malformed Weak records and duplicate GC slots are constructed controls, not reached witnesses. Native/model evaluations0."
+    },
+    "preserved_stops": [
+      "Original342 GEN RETURN-child source-te2tsyw0 interpreter failure earns0 agreement; no localized reached-state cause was claimed.",
+      "Strict attempts1-4: slice/declaration/indexed-element DSL admission failures, application0.",
+      "instance-storage-pin-ki39iq6c: clone SENT-list parser correction0; instance-storage-pin-sxmu5jih: premature argument-release selector0, narrowed to genuine foreach release.",
+      "instance-storage-pin-u_to_gl5: genuine pin rejects constructor-only Weak eps row; diagnostic(false,true,true,true) isolates Weak admission.",
+      "instance-storage-pin-6i__jc6y: genuine child GC buffer rejects duplicate physical Parent. Partition/buffer diagnostics retain only GC failure and actual RETIRED+ROOT duplicate,0 agreement."
+    ],
+    "review": "properties_review_19 independently accepts pinned engine order, source observations/agreements and three new state groups. Earlier ordinary descendant/typed fixtures are adapted to actual physical pin stages but receive0 renewed credit. Prior wrapper/303/346 and Generator355 campaigns retain their own cuts.",
+    "remaining": "Raw freeing-parent property payload access, casts/clones/structural reads, escape/reacquisition, direct private303 INSTANCE storage pins and STDINSTANCE table storage remain required. Released-CV mutation, dying-wrapper snapshots, wider raw-pointer consumers and binding-time exit remain required; no complete-family claim."
   }
 }

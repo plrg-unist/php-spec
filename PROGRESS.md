@@ -933,6 +933,16 @@ and refusal of whole `$GLOBALS` snapshots or expired borrowed-reference reads.
 Shared wrappers and surviving payloads decline this staged path. Earlier source,
 compiler and state cuts remain separate. The actual341 join over `6848742a2`
 passes strict initialization at `ecd8e8745`.
+Ordinary INSTANCE free_obj now retains one physical parent pin while visiting
+property slots in release order; this supersedes immediate physical retirement
+in the ordinary descendant path. WeakReference is already null during children,
+while safe class metadata remains readable. Five exact originals pass at
+`56b323d89`; separate Weak/get repairs pass affected2 at `99e3902c6`, and physical
+GC-slot occupancy passes affected1 plus strict346 at `d91ef1ea4`. Three fresh
+groups pass 164/57/67 premises at that latter cut, covering exact typed detach,
+A/B chaining, actual355 RETURN-child ownership and genuine parked Fiber pins.
+Adapted earlier ordinary fixtures carry no new credit; private303 INSTANCE pins,
+STDINSTANCE storage and wider raw-payload/escape behavior remain required.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
