@@ -747,8 +747,12 @@ def container_assertions(initial, expected, pending, descendants=False):
         clauses += [
             f'S_guard_{label}.STORE = S_first.STORE /\\ S_guard_{label}.ALLOCATIONS = S_first.ALLOCATIONS']
     if descendants:
-        clauses += ['S_property = $property_read(S_first, POBJECT n_previous, $ptascii("declared"), pforeachbind.LINE)',
-            'S_property.COMPLETION = UNSUPPORTED "freeing instance property access"']
+        clauses += ['S_property = $property_read(S_first, POBJECT n_previous, $ptascii("declared"), pforeachbind.LINE)']
+        if pending:
+            clauses += ['S_property.COMPLETION = UNSUPPORTED "freeing instance property access"']
+        else:
+            clauses += ['S_property.COMPLETION = NORMAL',
+                'S_property.RESULT = KNOWN (POBJECT n_second)']
     clauses += [*seek('S_first', 'S_second', phase_second),
         'S_second.CURRENT = (pcallcontext_second)',
         '$destructor_context_call(pcallcontext_second, S_second.CURRENT, S_second.FRAMES) = (pdestructorcall_second)',

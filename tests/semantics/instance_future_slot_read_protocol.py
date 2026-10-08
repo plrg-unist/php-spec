@@ -91,8 +91,8 @@ def controls():
     return [
         '$instance_storage_read_value(S_child, n_parent, $ptascii("child")) = eps',
         '$property_read(S_child, POBJECT n_parent, $ptascii("child"), 1).COMPLETION = UNSUPPORTED "freeing instance property access"',
-        '$instance_storage_read_item(S_child, DIRECT (POBJECT n_leaf)) = eps',
-        '$instance_storage_read_item(S_child, DIRECT (PARRAY 0)) = eps',
+        '$instance_storage_read_item(S_child, DIRECT (POBJECT (|S_child.OBJECTS|))) = eps',
+        '$instance_storage_read_item(S_child, DIRECT (PARRAY (|S_child.ARRAYS|))) = eps',
         '$instance_storage_read_item(S_child, UNINITIALIZED) = eps',
         '$instance_storage_read_item(S_child, DIRECT PUNDEFINED) = eps',
         'S_missing = S_child[.FRAMES = $instance_test_without_frames(S_child.FRAMES)]',
@@ -132,12 +132,13 @@ def scalar_assertions(initial, expected):
             value = 'PSTRING '+value
         clauses += read('S_child', key, value)
     clauses += controls()
-    # A valid unvisited untyped slot image still cannot expose a heap payload.
+    # A valid unvisited slot still cannot reacquire an already-freeing object.
     clauses += [
-        'ppropertyslot_heap = ppropertyslot_nothing[.STATE = PROP_VALUE (DIRECT (POBJECT n_leaf))]',
+        'ppropertyslot_heap = ppropertyslot_nothing[.STATE = PROP_VALUE (DIRECT (POBJECT n_parent))]',
         'pinstancestorage_heap = pinstancestorage[.SLOTS[4] = ppropertyslot_heap]',
         'S_heap = S_child[.OBJECTPROPS = $objectprops_set(S_child.OBJECTPROPS, n_parent, $instance_storage_cleared(pinstancestorage_heap.SLOTS, 0))][.FRAMES = pframe_owner[.TODO = $future_replace_stage(pframe_owner.TODO, pinstancestorage_heap)] :: pframe_tail*]',
         '$instance_storage_state_valid(S_heap)',
+        '$instance_storage_freeing(S_heap, n_parent)',
         '$instance_storage_read_value(S_heap, n_parent, $ptascii("nothing")) = eps',
         *seek('S_child', 'S_after_number', 1),
         '$instance_storage_for(S_after_number, n_parent) = (pinstancestorage[.NEXT = 2])',
