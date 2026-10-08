@@ -1649,8 +1649,9 @@ and69 supplied conditions plus6 setup clauses pass at `297715fb6` (29.446s), aft
 prefix-aware cache dispatch and the shared `039abc623` handler-context fallback.
 Raw evidence is under `.tools/trait-fcc-failed-target-current19/.tools/`:
 `method-runtime-w4gfa3m7`, `method-runtime-j2l114gl` and
-`closure-call-protocol-v8z8eaza`. The original own/state failures and alias failure
-`method-runtime-q6upsv1_` remain preserved with zero agreement credit.
+`closure-call-protocol-v8z8eaza`. The original own/state failures
+(`method-runtime-w4gfa3m7`, `closure-call-protocol-x00j9n0z`) and alias failure
+`method-runtime-q6upsv1_` remain preserved without passing credit.
 At the reviewed332 composition `f19c12d66` over `9d1956cd5`, strict algo/struct
 pass3.419/4.370s; the alias tuple and46 supplied ordinary-receipt/scope conditions
 plus6 setup clauses pass (23.352s), including declaration, call and heap validators.
@@ -1659,6 +1660,11 @@ Raw evidence is `.tools/trait-fcc-failed-target-publish19/.tools/`:
 `trait266-object-algo-txlrnwr9` and `trait266-object-struct-zc6hpeu2`.
 The earlier source2/69 cuts bridge unchanged; current source, Generator,
 ArrayAccess-certificate and pruning-graph fields are preserved.
+The final334 composition `5ebf803b2` over `86e7f6ccb` passes strict algo/struct
+at3.519/4.370s (`trait266-object-algo-l0tbn4ov`,
+`trait266-object-struct-npafxy47` in the same publish evidence directory).
+Typed-property retirement and bound Fiber-start ownership remain unchanged;
+the source/state cuts bridge without renewal.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do broader differing-owner later births and
