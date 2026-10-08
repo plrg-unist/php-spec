@@ -1,6 +1,6 @@
 # Explicit cycle collection
 
-Modules 301/317/325/332/335/338 implement a bounded ordinary-object/array collector on the pinned
+Modules 301/317/325/332/335/338/342 implement a bounded ordinary-object/array collector on the pinned
 PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
@@ -34,6 +34,14 @@ the real API caller while the worker remains suspended and reusable; its saved
 idle VM retains no exception. The real waiter owns the receiver and argument,
 and throw has one temporary global error-task owner. Worker mask restoration
 and current API source/sequence authentication remain intact.
+
+Module342 admits the same real public transfer during an active pass when the
+authentic plan has no uncalled marked destructor. The unique collector consumer
+stays in the real caller VM, so nested GC remains busy0. Main collection leaves
+the worker's old scan interval intact; an already-called slot may normalize its
+tag, but cannot invoke a callback or change owners. Resume/throw resuspends the
+cached worker with its mask and no retained supplied value/error. A stale interval
+containing an uncalled marked destructor remains Unsupported.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -127,7 +135,7 @@ zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
 Explicit boundaries remain for wider internal lifetime graphs, public idle-worker
-transfer during an active collection, active-pass failed close and wider
+transfer with uncalled pass destructors, active-pass failed close and wider
 callbackless close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
@@ -227,3 +235,12 @@ without renewing these cuts.
 The larger prior-chain source retains its60s model timeout with zero agreement
 and remains selectable; its reached continuation at the existing120s state cap
 is a separate result. Earlier335 and collector cuts are unchanged.
+
+Active exhausted-pass transfer342 passes private323 compilation/initialization,
+two exact originals and127/138 independent strict-SL physical premises (runner
+declarations125/136). Same-heap outstanding-dtor, source/plan and duplicate-consumer
+controls reject; genuine parked admission, one-step return, error owners/masks
+and exact continuations pass. Final327 over `5f478ea6a` compiles at `f9dbe3205` with
+reviewed337/339/307/334/302 intersections. The initial fixture elaboration stop
+and unexecuted interval-overlap preparation retain zero agreement; earlier cuts
+are unchanged.

@@ -190,7 +190,7 @@ syntax pcontainerreadphase = READ_BASE_CV ptbytes | READ_KEY_CV ptbytes | READ_O
 syntax pcontainerread = { READ pkeyread, SELECTED poperand, PHASE pcontainerreadphase }
 syntax paccessmode = ACCESS_READ pkeymode | ACCESS_SET | ACCESS_UNSET | ACCESS_COMPOUND pbin pvalue | ACCESS_REFERENCE_COMPOUND pbin nat | ACCESS_FETCH bool bool
 syntax paccessphase = ACCESS_KEY_CV ptbytes | ACCESS_VALUE_CV ptbytes | ACCESS_UNSET_FALSE | ACCESS_TRUTH ptbytes bool | ACCESS_CALL ptbytes | ACCESS_NOTICE
-syntax paccess = { SITE porigin, TARGET porigin, LINE int, KEYLINE int, MODE paccessmode, BASE pbase, INPUT poperand, RHS poperand, SELECTED poperand, OBJECT nat?, OFFSET pvalue, VALUE pvalue, LATCH bool, OUTER bool, TASK ptask, PHASE paccessphase }
+syntax paccess = { SITE porigin, TARGET porigin, LINE int, KEYLINE int, MODE paccessmode, BASE pbase, INPUT poperand, RHS poperand, SELECTED poperand, OBJECT nat?, OFFSET pvalue, VALUE pvalue, LATCH bool, KEYHOLE bool, OUTER bool, TASK ptask, PHASE paccessphase }
 syntax perrorcall = { SITE porigin, LEVEL int, MESSAGE nat*, LINE int, EVENT pevent, CALLBACK pvalue, TARGET pcalltarget?, RESUME ptask }
 syntax pfdiagnostic = { SITE porigin, OWNER porigin, LEVEL int, MESSAGE nat*, LINE int }
 syntax pdeclnotice = { CLASS porigin, METHOD porigin, LINE int, MESSAGE nat* }
@@ -240,6 +240,9 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | DESTRUCTOR_OPERATION_EXIT pdestructionoperation
   | ACCESS_REFERENCE_VALUE_RESULT porigin poperand int
   | ACCESS_REFERENCE_VALUE_RELEASE paccess poperand
+  | ACCESS_STRING_PREP paccess poperand ptbytes?
+  | ACCESS_STRING_RESULT paccess poperand ptbytes? nat
+  | ACCESS_SET_ENTER paccess
   | DESTRUCTOR_PREQUEUE pcompletion | EXCEPTION_HANDLER_CLEAN pexceptioncall bool | ERROR_HANDLER_CLEAN perrorcall
   | DESTRUCTOR_FATAL pdestructionfatal
   | SHUTDOWN_RENDER pshutdownrender | SHUTDOWN_SEND nat nat poperand* | SHUTDOWN_REFERENCE nat nat poperand* | SHUTDOWN_ENTER nat poperand* | SHUTDOWN_RESULT nat poperand*
@@ -263,7 +266,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
-  | TRAIT_DATA_SEED pdeclnoticeitem* | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
+  | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
   | PROPERTY_STRING_RESULT ppropertystring | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
   | PROPERTY_DYNAMIC_RESULT pdynamicproperty | PROPERTY_DYNAMIC_INSERT pdynamicproperty

@@ -184,5 +184,9 @@ agreement; this demonstrates no speedup or231 coverage.
 Its actual335-parent319 composition passes strict initialization on `3e56ab759`,
 without renewing the316 runtime cuts.
 Both factors compose over SOURCE336/320 by static review; the per-edge partition
-`2582d7008`/319 passes strict and48 graph premises but has no full-retry result.
+`2582d7008`/319 passes strict and 48 graph premises. The actual `c38af3cf7`/320 full
+retry still times out at host 55.065 with empty streams and zero agreement.
+Fixed-state Fiber protection graph reuse on `181931c20`/321 passes strict, 22
+partiality and 65 reached lifecycle premises; its full retry still times out at
+host 55.066 with empty streams and zero agreement. No speedup or 231 credit follows.
 Whole retry composition and wider producers remain open.

@@ -368,6 +368,9 @@ test-semantics: build
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group binding-gc
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group container
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group container-throw
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group descendants
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group descendants-throw
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group descendants-guard
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group notice-owner
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group scalar-warning
@@ -566,6 +569,10 @@ test-semantics: build
 	python3 tests/semantics/trait_failed_real_protocol.py
 	python3 tests/semantics/trait_failed_real_review_protocol.py
 	python3 tests/semantics/trait_failed_real_crossfile_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_unpublished_fcc_receipt_cases.json
+	python3 tests/semantics/trait_unpublished_fcc_retired_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_unpublished_fcc_adaptation_cases.json
+	python3 tests/semantics/trait_unpublished_fcc_adaptation_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_failed_name_cases.json
 	python3 tests/semantics/trait_failed_name_protocol.py
 	python3 tests/semantics/trait_failed_name_review_protocol.py

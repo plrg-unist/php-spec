@@ -287,9 +287,12 @@ def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [METHODC
 def $clone_same_kind(METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?, METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?) = true
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
-def $target_function(S, CLOSURE_TARGET n) = (pmethoddesc.FUNCTION)
+dec $method_closure_functions(pstate, nat, pmethoddesc) : (pfunction, pfunction)
+def $method_closure_functions(S, n, pmethoddesc) = (pmethoddesc.FUNCTION, pmethoddesc.FUNCTION) -- otherwise
+def $target_function(S, CLOSURE_TARGET n) = (pfunction_view)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
   -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $method_closure_functions(S, n, pmethoddesc) = (pfunction_base, pfunction_view)
 def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, porigin))
   -- if $current_instance(S) = (n)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
@@ -414,7 +417,9 @@ def $method_capture_authorized(S, pmethoddesc, porigin_site, porigin_requested, 
   -- if $method_capture_certificate_valid(S, porigin_site, (pmethodcapture))
   -- if $method_capture_in_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, pmethodcapture.LEXICAL_CLASS, pmethodcapture.CALLED_CLASS)
 def $method_capture_authorized(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, pmethodcapture?) = false -- otherwise
-def $closure_scope_row_valid(S, pclosurescope) = true
+dec $method_closure_scope_ordinary(pstate, pclosurescope) : bool
+dec $method_closure_scope_valid(pstate, pclosurescope) : bool
+def $method_closure_scope_ordinary(S, pclosurescope) = true
   -- if pclosurescope.CREATION = eps
   -- if n = pclosurescope.OBJECT
   -- if $(n < |S.OBJECTS|)
@@ -428,6 +433,10 @@ def $closure_scope_row_valid(S, pclosurescope) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (pclosurescope.CALLED)
   -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc_owner.NAME, |S.CLASSES|) \/ $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps \/ $class_constant_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps \/ $parameter_callable_method_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope)
   -- if $method_capture_receiver_valid(S, pmethoddesc, pclosurescope)
+def $method_closure_scope_ordinary(S, pclosurescope) = false -- otherwise
+def $method_closure_scope_valid(S, pclosurescope) = $method_closure_scope_ordinary(S, pclosurescope) -- otherwise
+def $closure_scope_row_valid(S, pclosurescope) = true
+  -- if $method_closure_scope_valid(S, pclosurescope)
 def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?

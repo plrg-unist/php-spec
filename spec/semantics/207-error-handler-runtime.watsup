@@ -43,6 +43,7 @@ dec $error_context_frame_call(pcallcontext, pframe*) : perrorcall?
 dec $error_context_frame_head(pcallcontext, pframe*) : perrorcall?
 dec $error_context_current_call(pstate, pcallcontext) : perrorcall?
 dec $error_context_anchor(pstate, pcallcontext, pcallcontext?, pframe*) : bool
+dec $error_context_receiving_function(pstate, pcallcontext) : pfunction?
 dec $error_handler_registered(pstate, perrorhandler) : bool
 dec $error_trace_capture(pstate, int, ptask) : pstate
 dec $error_fallback_finish(pstate, pvalue) : pstate
@@ -424,7 +425,7 @@ def $error_context_trace_location(S, pcallcontext, pcallcontext_other?, pframe :
 def $error_context_trace_location(S, pcallcontext, pcallcontext_other?, pframe*) = eps -- otherwise
 def $trace_context_location(S, pcallcontext, porigin) = (porigin_trace, z)
   -- if $error_context_trace_location(S, pcallcontext, S.CURRENT, S.FRAMES) = ((porigin_trace, z))
-def $error_context_valid(S, pcallcontext) = true
+def $error_context_receiving_function(S, pcallcontext) = (pfunction)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if $error_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
   -- if perrorcall.TARGET = (pcallcontext.TARGET)
@@ -440,13 +441,13 @@ def $error_context_valid(S, pcallcontext) = true
   -- if n_received = $call_received(4, n_fixed)
   -- if |pcallcontext.EXTRA| = $(4 - n_received)
   -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
-def $error_context_valid(S, pcallcontext) = false -- otherwise
+def $error_context_receiving_function(S, pcallcontext) = eps -- otherwise
+def $error_context_valid(S, pcallcontext) = ($error_context_receiving_function(S, pcallcontext) =/= eps)
 ;; Handler arguments come from Zend's four-value dispatch, not source call args.
 def $named_receives_ready(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)
-  -- if $error_context_valid(S, pcallcontext)
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN
-  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if $error_context_receiving_function(S, pcallcontext) = (pfunction)
   -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
 def $error_context_trigger(S, pcallcontext) = (pconfigcall)

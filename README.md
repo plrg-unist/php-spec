@@ -410,9 +410,18 @@ original and64 strict-SL premises also preserve readback across Fiber suspension
 and a paused Generator finalizer. The canonical292 GC interaction retains
 a cyclic returned child across collection inside Set, reads the old RHS cell
 after a collector destructor rebinds its global name, and frees the child on the
-next collection. By-reference Get, wider
-memoized/property/GLOBALS consumers and combined Iterator/ArrayAccess notice
-ordering remain required.
+next collection. Untyped/mixed reference Get and its named/nested consumers are
+implemented; wider memoized/property/GLOBALS consumers and combined
+Iterator/ArrayAccess notice ordering remain required.
+
+[Stringable ArrayAccess compounds](coverage/semantics/arrayaccess-stringable-compound-review.json)
+convert the left and live RHS through ordinary callbacks before Set, retaining
+the raw Get result and exact key/base cleanup order through throws and Fiber
+parking. An initially defined key unset by a callback remains a missing C-call
+argument, so Set receives its real default or throws before entry. Twenty-three
+normal originals agree across retained private cuts; compiler negatives and
+independent reached states are recorded separately. Complete
+ArrayAccess behavior and the combined offline rebuild remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -468,7 +477,9 @@ source; earlier cuts retain their inputs.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
-retirement. Its retained30-source/606-premise and private3/45 cuts remain separate
+retirement. Fiber protection scans reuse one graph within an unchanged state,
+preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Its retained30-source/606-premise and private3/45 cuts remain separate
 from the new captured-source/66-premise and readonly-clone/GC compositions.
 The earlier 291-module strict compiler/initialization and readonly clone original pass;
 the larger nested-Generator source retains a zero-credit 90s timeout.
@@ -485,12 +496,17 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, public idle-worker transfer during an active collection, automatic
+graphs, public idle-worker transfer with uncalled pass destructors, automatic
 thresholds and wider freeing remain open. Module332 adds quiescent public idle
 resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
 Three new exact originals and two strict-SL groups with169 premises pass at
 separate cuts; the final315 current-parent join passes combined compilation.
+Module342 admits idle public resume/throw during an active pass after all planned
+destructors are marked called: the pass stays busy, masks restore and injected
+errors retain identity without remaining in the worker. Two exact originals and
+265 independent physical premises retain private323; final327 compilation
+preserves337/339/307/334/302. Remaining-dtor stale-interval transfer is still required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -723,17 +739,23 @@ explicit Unsupported boundaries; computed names and wider writes remain required
 select each duplicate bucket independently while preserving declared readonly/type
 checks and latest named access. Reference foreach retains the actual shared receiver
 cell across replacement, unset and object/array/scalar changes. Previous plain-CV
-object destruction reads the old value before the selected reference is installed;
-normal and throwing cleanup preserve that reference. Late scalar warnings retain
+own-destructor object cleanup reads the old value while the object remains live;
+normal and throwing cleanup preserve the selected reference. Late scalar warnings retain
 the iterator owner through callbacks and remove it on normal or abrupt completion.
 A fresh original and 92 reached premises cover explicit GC while the saved binding
 continuation retains its selected cell; the318 composition retains Fiber API captures.
 Previous plain-CV arrays now release ordinary and nested child destructors in
 order before installing the selected reference, including after a child throws.
 Six new originals and 284 reached premises check shared owners, selected-property
-mutation/deletion and exception chaining. Released-CV mutation, raw dying-array
-reads, callback-capable previous reference wrappers and internal Generator/Fiber
-retirement, binding-time exit and expired notice buckets remain explicit boundaries;
+mutation/deletion and exception chaining. Ordinary previous objects without their
+own destructor now release dynamic children before declared children; four new
+originals and 313 reached premises cover shared owners, retirement and throwing
+cleanup. Retiring typed property sources remain excluded: two native controls
+observe constraints during dynamic callbacks and their removal after retirement.
+The engine detaches sources at each declared slot; implementing this is required next.
+Released-CV mutation, raw retired-container reads, callback-capable previous
+reference wrappers and internal Generator/Fiber retirement, binding-time exit
+and expired notice buckets remain explicit boundaries;
 full foreach coverage remains required.
 
 Simple typed property assignment converts its declaration
@@ -776,8 +798,24 @@ demand retains the composing file, physical fetch line and expression frame.
 Static, capture-free REAL Closure dependencies can also be created before the
 using class is published, with an exact collision receipt and cache owner. Failed
 imports retain dead receipts while retiring live owners; fatal trait links reserve
-their name before later binding, without publishing the failed class. Wider
-initializer contexts, unpublished-owner FCC births, held/open failed links and readonly
+their name before later binding, without publishing the failed class. First-target
+method FCCs also retain source-checked dead receipts after failed composition,
+reconstructing the exact trait method-copy plan and declaration prefix. Immutable
+parameter TYPE views retain the callable's birth scope and canonical code, defaults,
+return contract and statics. Receipt access uses the unfixed exporting-trait scope;
+68 supplied private/protected forgery checks pass, with12 setup clauses separate.
+Focused
+source2 and87 supplied strict-SL conditions cover retirement and equal lexical/called
+FCC scope, with12 setup clauses separate. The reviewed322 composition passes strict
+compilation and a genuine active default/TYPE checkpoint with26 supplied conditions
+plus6 setup clauses; that checkpoint ends at the old-U constructor Error.
+Live concrete aliases and visibility adaptations preserve the exact selected body,
+default and alias static cells. Three normal source comparisons and44 supplied
+birth/default/static conditions pass, with6 setup clauses separate.
+Parameter-view full-source constructor,
+handler and variadic cases, differing-owner later births
+and executable reuse of a failed target remain open. Wider
+initializer contexts, held/open failed links and readonly
 storage remain
 required. The current313 join passes strict compilation, one fresh REAL/constructor
 source agreement and46 source-reached conditions plus6 setup clauses, including

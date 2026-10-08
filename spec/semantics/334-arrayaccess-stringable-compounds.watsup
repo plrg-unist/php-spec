@@ -1,0 +1,165 @@
+;; DIM_OP owns its raw Get RV until after Set. Object casts add only their
+;; STRINGIFY_RESULT owner; the referent is not copied across a reference Get.
+dec $access_string_source(pstate, paccess, poperand) : bool
+dec $access_string_begin(pstate, paccess, poperand) : pstate
+dec $access_string_value(pstate, paccess, poperand, ptbytes?) : pstate
+dec $access_string_finish(pstate, paccess, poperand, ptbytes?, ptbytes, ptask*) : pstate
+dec $access_string_set(pstate, paccess, poperand, ptbytes) : pstate
+dec $access_string_set_operand(paccess) : poperand?
+dec $access_string_nodes(paccess, poperand) : pnode*
+dec $access_set_hole_target(pstate, paccess) : pcalltarget?
+dec $access_set_hole_context(pstate, pcallcontext) : bool
+dec $access_set_variadic_hole_error(pstate, paccess, pfunction) : pstate
+
+def $access_string_source(S, paccess, KNOWN pvalue) = true
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")
+  -- if $access_valid(S, paccess)
+  -- if paccess.OBJECT = (n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("offsetGet"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+def $access_string_source(S, paccess, REFERENCE n) = true
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")
+  -- if $access_valid(S, paccess)
+  -- if $access_reference_get(S, paccess)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+def $access_string_source(S, paccess, poperand) = false -- otherwise
+
+def $access_string_begin(S, paccess, poperand) = S[.TODO = (ACCESS_STRING_PREP paccess poperand eps) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
+def $access_compound_result(S, paccess, pvalue) = $access_string_begin(S, paccess, KNOWN pvalue)
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
+def $access_reference_compound(S, paccess, n) = $access_string_begin(S, paccess, REFERENCE n)
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
+
+def $access_string_value(S, paccess, poperand, eps) = $quiet_operand(S, poperand)
+def $access_string_value(S, paccess, poperand, (ptbytes)) = $quiet_operand(S, paccess.SELECTED)
+def $access_string_finish(S, paccess, poperand, eps, ptbytes, ptask_tail*) = S[.TODO = (ACCESS_STRING_PREP paccess poperand (ptbytes)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $access_string_finish(S, paccess, poperand, (ptbytes_left), ptbytes_right, ptask_tail*) = $access_string_set(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], paccess, poperand, ptbytes_left ++ ptbytes_right)
+def $access_string_set(S, paccess, KNOWN pvalue, ptbytes) = $access_compound_set(S, paccess[.MODE = ACCESS_COMPOUND CONCAT pvalue][.VALUE = PSTRING ptbytes][.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+def $access_string_set(S, paccess, REFERENCE n, ptbytes) = $access_compound_set(S, paccess[.MODE = ACCESS_REFERENCE_COMPOUND CONCAT n][.VALUE = PSTRING ptbytes][.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+
+;; std_write_dimension releases its own receiver/key copies first. The VM then
+;; retires rv, OP_DATA, the outer receiver, OP2 key and finally OP1 base.
+def $access_string_set_operand(paccess) = (KNOWN pvalue)
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT pvalue
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
+def $access_string_set_operand(paccess) = (REFERENCE n)
+  -- if paccess.MODE = ACCESS_REFERENCE_COMPOUND CONCAT n
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
+def $access_string_set_operand(paccess) = eps -- otherwise
+def $access_roots(paccess, b_inner) = $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner) ++ $access_string_nodes(paccess, poperand)
+  -- if $access_string_set_operand(paccess) = (poperand)
+def $access_string_nodes(paccess, poperand) = $operand_nodes(poperand) ++ $value_nodes(paccess.VALUE) ++ $operand_nodes(paccess.RHS) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $operand_nodes(paccess.INPUT) ++ $base_nodes(paccess.BASE)
+  -- if ~$access_write_task(paccess.TASK)
+  -- if ~$access_finish_task(paccess.TASK)
+def $access_string_nodes(paccess, poperand) = $operand_nodes(poperand) ++ $value_nodes(paccess.VALUE) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) -- otherwise
+def $task_nodes(ACCESS_STRING_PREP paccess poperand ptbytes?) = $access_string_nodes(paccess, poperand)
+def $task_nodes(ACCESS_STRING_RESULT paccess poperand ptbytes? n) = $access_string_nodes(paccess, poperand)
+def $call_task_valid(S, ACCESS_STRING_PREP paccess poperand ptbytes?) = $access_string_source(S, paccess, poperand)
+def $call_task_valid(S, ACCESS_STRING_RESULT paccess poperand ptbytes? n) = ($access_string_source(S, paccess, poperand) /\ $(n < |S.OBJECTS|))
+
+def $stringify_source(S, porigin_site, z, ACCESS_STRING_RESULT paccess poperand ptbytes? n) = ($access_string_source(S, paccess, poperand) /\ porigin_site = paccess.SITE /\ z = paccess.LINE)
+def $stringify_source_consumer(ACCESS_STRING_RESULT paccess poperand ptbytes? n) = true
+def $stringify_consumer_tail_valid(S, porigin_site, z, ACCESS_STRING_RESULT paccess poperand ptbytes? n, ptask_tail*) = $stringify_source(S, porigin_site, z, ACCESS_STRING_RESULT paccess poperand ptbytes? n)
+def $stringify_consumer_receiver_valid(S, n, ACCESS_STRING_RESULT paccess poperand ptbytes? n_selected) = (n = n_selected)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (ACCESS_STRING_RESULT paccess poperand ptbytes? n_selected) :: ptask_tail*
+
+rule PhpStep/access-string-call: S ~> $user_string_begin(S_value[.ORIGIN = (paccess.SITE)], n, paccess.SITE, paccess.LINE, ACCESS_STRING_RESULT paccess poperand ptbytes? n, ptask_tail*)
+  -- if S.TODO = (ACCESS_STRING_PREP paccess poperand ptbytes?) :: ptask_tail*
+  -- if $access_string_source(S, paccess, poperand)
+  -- if S_value = $access_string_value(S, paccess, poperand, ptbytes?)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_value, n)
+rule PhpStep/access-string-plain: S ~> $access_string_finish(S_string, paccess, poperand, ptbytes?, ptbytes_result, ptask_tail*)
+  -- if S.TODO = (ACCESS_STRING_PREP paccess poperand ptbytes?) :: ptask_tail*
+  -- if $access_string_source(S, paccess, poperand)
+  -- if S_value = $access_string_value(S, paccess, poperand, ptbytes?)
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_value, pvalue)
+  -- if S_string = $stringify(S_value, pvalue, paccess.LINE)
+  -- if S_string.COMPLETION = NORMAL
+  -- if S_string.RESULT = KNOWN (PSTRING ptbytes_result)
+rule PhpStep/access-string-abrupt: S ~> S_string
+  -- if S.TODO = (ACCESS_STRING_PREP paccess poperand ptbytes?) :: ptask_tail*
+  -- if $access_string_source(S, paccess, poperand)
+  -- if S_value = $access_string_value(S, paccess, poperand, ptbytes?)
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_value, pvalue)
+  -- if S_string = $stringify(S_value, pvalue, paccess.LINE)
+  -- if S_string.COMPLETION =/= NORMAL
+rule PhpStep/access-string-result: S ~> $access_string_finish(S, paccess, poperand, ptbytes?, ptbytes_result, ptask_tail*)
+  -- if S.TODO = (ACCESS_STRING_RESULT paccess poperand ptbytes? n) :: ptask_tail*
+  -- if $call_task_valid(S, ACCESS_STRING_RESULT paccess poperand ptbytes? n)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_result)
+
+;; A defined key CV may become UNDEF inside Get or a conversion. The std
+;; handler copies that UNDEF into the C-call buffer; it is a positional hole,
+;; not a new undefined-variable read or a null argument.
+def $access_compound_set(S, paccess) = S[.TODO = (ACCESS_SET_ENTER paccess[.OFFSET = PNULL][.KEYHOLE = true]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~paccess.LATCH
+  -- if $error_missing_operand(S, paccess.INPUT)
+  -- if S.TODO = ptask :: ptask_tail*
+def $access_holes(paccess) = [0] -- if paccess.KEYHOLE
+def $access_holes(paccess) = eps -- if ~paccess.KEYHOLE
+def $access_set_hole_target(S, paccess) = (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN)
+  -- if paccess.KEYHOLE
+  -- if $access_valid(S, paccess)
+  -- if $error_missing_operand(S, paccess.INPUT)
+  -- if paccess.OBJECT = (n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("offsetSet"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $access_method_selected(S, paccess, METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN)
+def $access_set_hole_target(S, paccess) = eps -- otherwise
+def $call_task_valid(S, ACCESS_SET_ENTER paccess) = ($access_set_hole_target(S, paccess) =/= eps)
+def $task_nodes(ACCESS_SET_ENTER paccess) = $access_roots(paccess, true)
+rule PhpStep/access-set-hole-enter: S ~> $target_after_enter($named_enter(S[.TODO = (ACCESS_RESULT paccess) :: ptask_tail*], pfunction, {SLOTS ([NAMED_HOLE, NAMED_SENT (KNOWN paccess.VALUE)]), NAMED eps}, (paccess.SITE), paccess.LINE), pcalltarget)
+  -- if S.TODO = (ACCESS_SET_ENTER paccess) :: ptask_tail*
+  -- if $access_set_hole_target(S, paccess) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS) = psparam :: psparam_tail*
+rule PhpStep/access-set-hole-variadic: S ~> $access_set_variadic_hole_error(S, paccess, pfunction)
+  -- if S.TODO = (ACCESS_SET_ENTER paccess) :: ptask_tail*
+  -- if $access_set_hole_target(S, paccess) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS) = eps
+
+;; zend_handle_undef_args throws from a fake callee frame before RECV_VARIADIC.
+;; Only traceback projection normalizes the absent slot to null.
+def $access_set_variadic_hole_error(S, paccess, pfunction) = $throwable_allocate_at(S[.ORIGIN = (paccess.SITE)], "ArgumentCountError", pfunction.NAME ++ $ptascii("(): Argument #1 not passed"), pfunction.ORIGIN, $default_parameter_line(S, pfunction.ORIGIN, 0), $source_trace_prefixed(S, [ptraceframe]))
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, paccess.SITE), LINE paccess.LINE, FUNCTION pmethoddesc.NAME, CLASS (pclassdesc.NAME), TYPE ($ptascii("->")), ARGS $trace_indexed_args([PNULL, paccess.VALUE], 0), HASARGS true}
+
+def $access_set_hole_context(S, pcallcontext) = $access_context(S, pcallcontext)
+  -- if pcallcontext.HOLES = [0]
+def $access_set_hole_context(S, pcallcontext) = false -- otherwise
+def $named_call_shape(S, pcalltarget, (porigin)) = {SLOTS ([NAMED_HOLE, NAMED_SENT (KNOWN PNULL)]), NAMED eps}
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = pcalltarget
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $access_set_hole_context(S, pcallcontext)
+def $named_preflight_stage(S, porigin, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $access_set_hole_context(S, pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if n_limit = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $(n <= n_limit)
+  -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pnamedargs.SLOTS, n)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $access_set_hole_context(S, pcallcontext)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pnamedargs.SLOTS, pcallcontext.ARGC)
+def $call_holes_source_valid(S, pcallcontext, pfunction) = true
+  -- if $access_set_hole_context(S, pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN

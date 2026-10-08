@@ -40,17 +40,21 @@ dec $property_callable_cached_function(pstate, porigin) : pfunction?
 dec $constant_callable_imported_context(pstate, porigin) : bool
 dec $constant_callable_imported_record(pstate, pconstantclosure) : bool
 dec $constant_callable_cached_method(pstate, porigin) : pmethoddesc?
+dec $constant_callable_cached_method_at(pstate, porigin, nat) : pmethoddesc?
 dec $constant_callable_cached_function(pstate, porigin) : pfunction?
 dec $constant_callable_record_owner(pstate, pconstantclosure) : porigin?
 dec $constant_callable_class_name(pstate, porigin, porigin, phpType19) : ptbytes?
 dec $constant_callable_method_class(pstate, porigin, porigin, nat) : porigin?
 dec $constant_callable_method_fresh(pstate, porigin, porigin, nat) : (pmethoddesc, porigin)?
+dec $constant_callable_method_selected(pstate, porigin, porigin, porigin, nat, ptbytes) : pmethoddesc?
 dec $constant_callable_method(pstate, porigin, porigin, nat) : (pmethoddesc, porigin)?
 dec $constant_callable_method_access(pstate, porigin, porigin, pmethoddesc) : bool
+dec $constant_callable_cached_method_access(pstate, porigin, porigin, pmethoddesc) : bool
 dec $constant_callable_named_create(pstate, porigin) : pstate
 dec $constant_callable_named_allocate(pstate, porigin, pfunction, nat) : pstate
 dec $constant_callable_method_create(pstate, porigin) : pstate
 dec $constant_callable_method_allocate(pstate, porigin, pmethoddesc, porigin, nat) : pstate
+dec $constant_callable_method_result(pstate, pstate, porigin, pmethoddesc) : pstate
 dec $constant_callable_classes_foldable((pkey, pvalueclass)*) : bool
 dec $ppconstant_callable_initializer(ppstate) : bool
 dec $parameter_callable_active(pstate, porigin) : bool
@@ -251,25 +255,28 @@ def $constant_callable_method_fresh(S, porigin, porigin_owner, n_prefix) = ((pme
   -- if $constant_callable_method_class(S, porigin, porigin_owner, n_prefix) = (porigin_called)
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
   -- if $constant_callable_method_name(phpType20) = (ptbytes_method)
-  -- if $effective_method(S, porigin_called, $ptlc(ptbytes_method), |S.CLASSES|) = (pmethoddesc)
+  -- if $constant_callable_method_selected(S, porigin, porigin_owner, porigin_called, n_prefix, $ptlc(ptbytes_method)) = (pmethoddesc)
 def $constant_callable_method_fresh(S, porigin, porigin_owner, n_prefix) = eps -- otherwise
+def $constant_callable_method_selected(S, porigin, porigin_owner, porigin_called, n_prefix, ptbytes_method) = $effective_method(S, porigin_called, ptbytes_method, |S.CLASSES|) -- otherwise
+def $constant_callable_cached_method_at(S, porigin, n_prefix) = $constant_callable_cached_method(S, porigin) -- otherwise
 def $constant_callable_method(S, porigin, porigin_owner, n_prefix) = $constant_callable_method_fresh(S, porigin, porigin_owner, n_prefix)
-  -- if $constant_callable_cached_method(S, porigin) = eps
+  -- if $constant_callable_cached_method_at(S, porigin, n_prefix) = eps
 def $constant_callable_method(S, porigin, porigin_owner, n_prefix) = ((pmethoddesc, porigin_called))
-  -- if $constant_callable_cached_method(S, porigin) = (pmethoddesc)
+  -- if $constant_callable_cached_method_at(S, porigin, n_prefix) = (pmethoddesc)
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin) = (pconstantclosure_first)
   -- if $(pconstantclosure_first.PREFIX <= n_prefix)
   -- if $constant_callable_method_class(S, porigin, porigin_owner, n_prefix) = (porigin_called)
 def $constant_callable_method(S, porigin, porigin_owner, n_prefix) = eps -- otherwise
 def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = $method_accessible(S, pmethoddesc, (porigin_owner))
   -- if $constant_callable_cached_method(S, porigin) = eps
-def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = true
-  -- if $constant_callable_cached_method(S, porigin) = (pmethoddesc)
-def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = false -- otherwise
+def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = $constant_callable_cached_method_access(S, porigin, porigin_owner, pmethoddesc)
+  -- if $constant_callable_cached_method(S, porigin) =/= eps
+def $constant_callable_cached_method_access(S, porigin, porigin_owner, pmethoddesc) = ($constant_callable_cached_method(S, porigin) = (pmethoddesc)) -- otherwise
 
-def $constant_callable_method_allocate(S, porigin, pmethoddesc, porigin_called, n_prefix) = $constant_callable_stamp(S_scoped, n, porigin, n_prefix)
+def $constant_callable_method_allocate(S, porigin, pmethoddesc, porigin_called, n_prefix) = $constant_callable_method_result(S, $constant_callable_stamp(S_scoped, n, porigin, n_prefix), porigin, pmethoddesc)
   -- if n = |S.OBJECTS|
   -- if S_scoped = S[.OBJECTS = S.OBJECTS ++ [METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin porigin_called eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED porigin_called, RECEIVER eps, CREATION eps}]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $constant_callable_method_result(S, S_result, porigin, pmethoddesc) = S_result -- otherwise
 def $constant_callable_method_create(S, porigin) = $constant_callable_method_allocate(S, porigin, pmethoddesc, porigin_called, n_prefix)
   -- if $constant_callable_context(S, porigin) = ((porigin_decl, porigin_owner))
   -- if n_prefix = $constant_callable_creation_prefix(S, porigin)
@@ -297,6 +304,7 @@ def $constant_callable_method_create(S, porigin) = $throw_scalar(S, "Error", $pt
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
   -- if $constant_callable_class_name(S, porigin, porigin_owner, phpType19) = (ptbytes_class)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = eps
+  -- if $constant_callable_method_class(S, porigin, porigin_owner, $constant_callable_creation_prefix(S, porigin)) = eps
   -- if expression = NExprStaticCall phpType19 phpType20 phpType6 metadata
 def $constant_callable_method_create(S, porigin) = $throw_scalar(S, "Error", $ptascii("Call to undefined method ") ++ ptbytes_class ++ $ptascii("::") ++ ptbytes_method ++ $ptascii("()"), $runtime_line(S, eps, expression))
   -- if $constant_callable_context(S, porigin) = ((porigin_decl, porigin_owner))

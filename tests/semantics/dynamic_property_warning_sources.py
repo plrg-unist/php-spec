@@ -12,6 +12,10 @@ from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    'review-descendant-order19': b"<?php\nclass ReviewDescendantReceiver19 { public $x = 2; public $y = 3; }\nclass ReviewDescendantHolder19 { public $declared; }\nclass ReviewDescendantA19 { public function __destruct() { echo 'A|'; } }\nclass ReviewDescendantB19 { public function __destruct() { echo 'B|'; } }\n$object = new ReviewDescendantReceiver19();\n$value = new ReviewDescendantHolder19();\n$value->declared = new ReviewDescendantA19();\n$dynamic = new ReviewDescendantB19();\n@$value->dynamic = $dynamic;\nunset($dynamic);\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\necho $value, '|done';\n",
+    'review-descendant-shared-parent19': b"<?php\nclass ReviewDescendantReceiver19 { public $x = 2; public $y = 3; }\nclass ReviewDescendantHolder19 { public $first; public $second; }\nclass ReviewDescendantA19 { public function __destruct() { echo 'A|'; } }\nclass ReviewDescendantB19 { public function __destruct() { echo 'B|'; } }\n$object = new ReviewDescendantReceiver19();\n$value = new ReviewDescendantHolder19();\n$value->first = new ReviewDescendantA19();\n$value->second = new ReviewDescendantB19();\n$held = $value;\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\necho $value, '|held|';\nunset($held);\necho 'done';\n",
+    'review-descendant-shared-reference19': b"<?php\nclass ReviewDescendantReceiver19 { public $x = 2; public $y = 3; }\nclass ReviewDescendantHolder19 { public $first; public $second; }\nclass ReviewDescendantA19 { public function __destruct() { echo 'A|'; } }\nclass ReviewDescendantB19 { public function __destruct() { echo 'B|'; } }\n$object = new ReviewDescendantReceiver19();\n$child = new ReviewDescendantA19();\n$held =& $child;\n$value = new ReviewDescendantHolder19();\n$value->first =& $child;\n$value->second = new ReviewDescendantB19();\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\nunset($child, $held);\necho 'done';\n",
+    'review-descendant-two-throws19': b"<?php\nclass ReviewDescendantReceiver19 { public $x = 2; public $y = 3; }\nclass ReviewDescendantHolder19 { public $first; public $second; }\nclass ReviewDescendantA19 { public function __destruct() {\n    echo 'A|'; unset($GLOBALS['object']->x); throw new Exception('A');\n} }\nclass ReviewDescendantB19 { public function __destruct() { echo 'B|'; throw new Exception('B'); } }\n$object = new ReviewDescendantReceiver19();\n$value = new ReviewDescendantHolder19();\n$value->first = new ReviewDescendantA19();\n$value->second = new ReviewDescendantB19();\ntry {\n    foreach ($object as $key => &$value) { echo 'unexpected|'; }\n} catch (Exception $error) { echo 'caught=', $error->getMessage(), '/previous=', $error->getPrevious()->getMessage(), '|'; }\necho $value, '|';\necho isset($object->x) ? 'present|' : 'absent|';\necho 'done';\n",
     'review-container-mutate-selected19': b"<?php\nclass ReviewContainerReceiver19 { public $x = 2; public $y = 3; }\n\nclass ReviewContainerA19 { public function __destruct() { echo 'A|'; } }\nclass ReviewContainerB19 { public function __destruct() {\n    echo 'B|'; $GLOBALS['object']->x = 9;\n} }\n\n$object = new ReviewContainerReceiver19();\n$value = [new ReviewContainerA19(), new ReviewContainerB19()];\n\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\necho $value, '|done';\n",
     'review-container-nested19': b"<?php\nclass ReviewContainerReceiver19 { public $x = 2; public $y = 3; }\n\nclass ReviewContainerA19 { public function __destruct() { echo 'A|'; } }\nclass ReviewContainerB19 { public function __destruct() { echo 'B|'; } }\n\nclass ReviewContainerC19 { public function __destruct() { echo 'C|'; } }\n\n$object = new ReviewContainerReceiver19();\n$value = [new ReviewContainerA19(), [new ReviewContainerB19(), new ReviewContainerC19()]];\n\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\necho $value, '|done';\n",
     'review-container-shared-outer19': b"<?php\nclass ReviewContainerReceiver19 { public $x = 2; public $y = 3; }\n\nclass ReviewContainerA19 { public function __destruct() { echo 'A|'; } }\nclass ReviewContainerB19 { public function __destruct() { echo 'B|'; } }\n\n$object = new ReviewContainerReceiver19();\n$value = [new ReviewContainerA19(), new ReviewContainerB19()];\n$held = $value;\n\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\necho $value, '|held|';\nunset($held);\necho 'done';\n",
@@ -62,6 +66,10 @@ CASES = {
 }
 
 EXPECTED = {
+    'review-descendant-order19': 'B|A|x=2|y=3|3|done',
+    'review-descendant-shared-parent19': 'x=2|y=3|3|held|A|B|done',
+    'review-descendant-shared-reference19': 'B|x=2|y=3|A|done',
+    'review-descendant-two-throws19': 'A|B|caught=B/previous=A|2|absent|done',
     'review-container-mutate-selected19': 'A|B|x=9|y=3|3|done',
     'review-container-nested19': 'A|B|C|x=2|y=3|3|done',
     'review-container-shared-outer19': 'x=2|y=3|3|held|A|B|done',
@@ -112,6 +120,8 @@ EXPECTED = {
 }
 
 BOUNDARIES = {
+    'review-descendant-typed-source19': (b"<?php\nclass ReviewTypedDescendantReceiver19 { public $x = 2; public $y = 3; }\nclass ReviewTypedDescendantHolder19 { public int $number; }\nclass ReviewTypedDescendantChild19 { public function __destruct() {\n    echo 'B|';\n    try { $GLOBALS['r'] = 'bad'; echo 'bad|'; }\n    catch (TypeError $error) { echo 'type|'; }\n} }\n$object = new ReviewTypedDescendantReceiver19();\n$r = 7;\n$value = new ReviewTypedDescendantHolder19();\n$value->number =& $r;\n$dynamic = new ReviewTypedDescendantChild19();\n@$value->dynamic = $dynamic;\nunset($dynamic);\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\n$r = 'free';\necho $r, '/', $value, '|done';\n", 'foreach reference previous CV pointer lifetime', b'', b'B|type|x=2|y=3|free/3|done'),
+    'review-descendant-nested-typed-source19': (b"<?php\nclass ReviewTypedDescendantReceiver19 { public $x = 2; public $y = 3; }\nclass ReviewTypedDescendantOuter19 { public $nested; }\nclass ReviewTypedDescendantHolder19 { public int $number; }\nclass ReviewTypedDescendantChild19 { public function __destruct() {\n    echo 'B|';\n    try { $GLOBALS['r'] = 'bad'; echo 'bad|'; }\n    catch (TypeError $error) { echo 'type|'; }\n} }\n$object = new ReviewTypedDescendantReceiver19();\n$r = 7;\n$typed = new ReviewTypedDescendantHolder19();\n$typed->number =& $r;\n$dynamic = new ReviewTypedDescendantChild19();\n@$typed->dynamic = $dynamic;\nunset($dynamic);\n$value = new ReviewTypedDescendantOuter19();\n$value->nested = $typed;\nunset($typed);\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\n$r = 'free';\necho $r, '/', $value, '|done';\n", 'foreach reference previous CV pointer lifetime', b'', b'B|type|x=2|y=3|free/3|done'),
     'dynamic-handler-exit-shutdown': (
         b"<?php\nclass DynamicHandlerExitShutdown18 {}\n$object = new DynamicHandlerExitShutdown18();\nregister_shutdown_function(function() use ($object) {\n    echo isset($object->x) ? 'inserted|' : 'absent|';\n});\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|';\n    exit(0);\n});\n$object->x = 7;\necho 'unreachable|';\n",
         'dynamic property warning exit continuation'),
@@ -147,7 +157,11 @@ def prepare(directory, source):
         if frontend: frontend.close()
 
 
-def boundary(directory, source, reason, expected_stdout=b'warning|'):
+def boundary(directory, source, reason, expected_stdout=b'warning|', native_stdout=None):
+    if native_stdout is not None:
+        observed = cross.invoke.process([str(ROOT/'.tools/php/bin/php'), '-n', *cross.invoke.types.FLAGS, str(source)],
+                                        directory/'native', 30, directory)
+        assert observed.returncode == 0 and observed.stdout == native_stdout and not observed.stderr
     result = cross.invoke.process([str(ROOT/'bin/php-semantics'), str(source),
         '--steps', '100000', '--timeout', '60'], directory/'model', 90, directory)
     assert result.returncode == 1 and not result.stderr
@@ -157,7 +171,10 @@ def boundary(directory, source, reason, expected_stdout=b'warning|'):
     assert outcome['exit_status'] is None and outcome['diagnostic'] is None
     assert base64.b64decode(outcome['stdout'], validate=True) == expected_stdout
     assert not base64.b64decode(outcome['stderr'], validate=True)
-    return {'status':outcome['status'], 'reason':reason, 'agreement_claim':False}
+    result = {'status':outcome['status'], 'reason':reason, 'agreement_claim':False}
+    if native_stdout is not None:
+        result['native_observation'] = {'exit_status':0, 'stdout':native_stdout.decode()}
+    return result
 
 
 def main():
@@ -185,8 +202,9 @@ def main():
             report['records'].append(row)
             if args.mode=='prepare': row['outcome'] = prepare(directory, source)
             elif args.mode=='boundary': row['outcome'] = boundary(directory, source, BOUNDARIES[name][1],
-                BOUNDARIES[name][2] if len(BOUNDARIES[name])==3 else
-                (b'warning|old|' if name=='duplicate-reference-foreach-binding-exit18' else b'warning|'))
+                BOUNDARIES[name][2] if len(BOUNDARIES[name])>=3 else
+                (b'warning|old|' if name=='duplicate-reference-foreach-binding-exit18' else b'warning|'),
+                BOUNDARIES[name][3] if len(BOUNDARIES[name])==4 else None)
             else: row['outcome'] = cross.source(
                 {'abrupt':False, 'expected_exit_status':0, 'expected_stdout':EXPECTED[name]}, directory, source)
             assert cross.snapshot(None)==before

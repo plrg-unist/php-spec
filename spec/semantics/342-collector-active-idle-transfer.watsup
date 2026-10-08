@@ -1,0 +1,7 @@
+;; Main-thread collection does not refresh the cached worker's scan interval.
+;; Once all genuine pass destructors are marked called, any stale interval has
+;; no uncalled marked destructor left. The real public API can resuspend it.
+def $gc_worker_public_pass_valid(S) = true
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if $gc_uncalled(S, pgcplan.DTORS) = eps
