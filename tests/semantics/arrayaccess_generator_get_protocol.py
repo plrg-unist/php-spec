@@ -35,6 +35,8 @@ def $get_phase(S, 4) = true
   -- if pgenerator.ACCESS =/= eps
 def $get_phase(S, 5) = true
   -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionjob*
+  -- if $destructor_uncalled_node(S, HOBJECT n)
   -- if pgenclose.STAGE = CLOSE_FINISHED
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.ACCESS =/= eps
