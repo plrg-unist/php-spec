@@ -21,6 +21,8 @@ dec $static_compound_method_target(pcalltarget) : bool
 dec $static_compound_scoped_selection(pstate, ppropertyid, porigin) : (pstaticselection, ppropertydesc)?
 dec $static_compound_selected_descriptor(pstate, pstaticcompound, pstaticselection, porigin) : ppropertydesc?
 dec $static_compound_enter_event(pstate, pstaticcompound, porigin, int) : pclassconstantevent
+dec $static_compound_dynamic_name(pstate, porigin) : ptbytes?
+dec $static_compound_dynamic_root(pstate, ppropertyid, porigin) : porigin?
 
 def $static_compound_selection(S, ppropertyid, porigin) = ((porigin_class, ppropertydesc))
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 (NVarLikeIdentifier (BYTES text) metadata_name) metadata_property) expression_right metadata)
@@ -295,3 +297,45 @@ def $class_constant_history_fills(S, (CCCOMPOUNDSELECT pstaticcompound pstaticse
   -- if $static_compound_selected_descriptor(S, pstaticcompound, pstaticselection, porigin) =/= eps
   -- if $static_compound_history_target(S, pstaticcompound, porigin, z, (porigin_flag, b_flag)*, n_previous, n_prefix)
   -- if $class_static_selection_published((porigin_flag, b_flag)*, pstaticselection)
+
+;; The prepared base retains FETCH_CLASS selection through eager RHS work.
+def $static_compound_dynamic_name(S, porigin) = ($base64(text))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 (NVarLikeIdentifier (BYTES text) metadata_name) metadata_property) expression_right metadata)
+  -- if ~$ppscoped_named(phpType19) /\ ~$class_static_literal_class(phpType19)
+def $static_compound_dynamic_name(S, porigin) = eps -- otherwise
+def $compound_target(S, CONCAT, BASE_CLASS_STATIC porigin_root ptbytes, poperand, z) = S_changed[.BASE = S.BASE]
+  -- if S.ORIGIN = (porigin)
+  -- if $static_compound_dynamic_name(S, porigin) = (ptbytes)
+  -- if $compound_string_site_valid(S, porigin, z)
+  -- if S_changed = $compound_operands($compound_location(S[.BASE = BASE_CLASS_STATIC porigin_root ptbytes], BASE_CLASS_STATIC porigin_root ptbytes, z), CONCAT, poperand, z)
+def $static_compound_dynamic_root(S, ppropertyid, porigin) = (porigin_root)
+  -- if S.BASE = BASE_CLASS_STATIC porigin_root ptbytes
+  -- if $static_compound_dynamic_name(S, porigin) = (ptbytes)
+def $static_compound_dynamic_root(S, ppropertyid, porigin) = (pstaticselection.ROOT)
+  -- if S.TODO = (COMPOUND_LIVE_PREP pcompoundstring pvalue) :: ptask*
+  -- if pcompoundstring.PLACE = STATIC_COMPOUND pstaticcompound
+  -- if pcompoundstring.SITE = porigin /\ pstaticcompound.DECL = ppropertyid
+  -- if $(pstaticcompound.ENTRY < |S.CLASSCONSTANTHISTORY|)
+  -- if S.CLASSCONSTANTHISTORY[pstaticcompound.ENTRY] = CCCOMPOUNDSELECT pstaticcompound pstaticselection porigin pcompoundstring.LINE n_prefix
+  -- if pstaticselection.ROOT = pstaticcompound.CLASS
+  -- if pstaticselection.SCOPE = eps /\ pstaticselection.CALLED = eps /\ pstaticselection.CLOSURE = eps
+def $static_compound_dynamic_root(S, ppropertyid, porigin) = eps -- otherwise
+
+def $static_compound_scoped_selection(S, ppropertyid, porigin) = ((pstaticselection, ppropertydesc))
+  -- if $static_compound_dynamic_name(S, porigin) = (ptbytes)
+  -- if $static_compound_dynamic_root(S, ppropertyid, porigin) = (porigin_root)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_fetch)
+  -- if pstaticselection = {SITE porigin_fetch, ROOT porigin_root, SCOPE eps, CALLED eps, CLOSURE eps}
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if $class_static_select(S, porigin_root, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) =/= eps
+def $static_compound_selected_descriptor(S, pstaticcompound, pstaticselection, porigin) = (ppropertydesc)
+  -- if $static_compound_dynamic_name(S, porigin) = (ptbytes)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (pstaticselection.SITE)
+  -- if pstaticselection.ROOT = pstaticcompound.CLASS
+  -- if pstaticselection.SCOPE = eps /\ pstaticselection.CALLED = eps /\ pstaticselection.CLOSURE = eps
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if $class_static_select(S, pstaticselection.ROOT, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = pstaticcompound.DECL
+  -- if $class_static_at(S.CLASSSTATICS, pstaticcompound.DECL) =/= eps
