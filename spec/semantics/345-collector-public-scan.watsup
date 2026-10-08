@@ -282,3 +282,9 @@ def $gc_worker_public_reentry(S, pconfigcall, pvalue) = $fiber_activate(S_bound,
   -- if pfiber_bound = pfiber[.GC = (pgcworker[.GUARD = (pgcguard_new)])][.VM = (pfibervm_bound)]
   -- if S_bound = $fiber_put(S, n, pfiber_bound)
 def $gc_worker_public_reentry(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "public collector callback reentry after its physical pass changed"] -- otherwise
+def $gc_worker_start(S, pgcplan, b_fresh) = S[.COMPLETION = UNSUPPORTED "new collector Fiber pass while a public callback remains suspended"]
+  -- if S.GC.WORKER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcguard.PUBLIC =/= eps
