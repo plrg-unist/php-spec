@@ -108,5 +108,13 @@
     "native_stdout": "7|17",
     "native_stderr": "",
     "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-fcc-start-unpack-dynamic-pack-retired-history",
+    "source": "<?php\n$target = new Fiber(static function (int $value, string $label = 'D', ...$extra) {\n    echo $value, '|', $label, '|', $extra['tail'], '|';\n    return 29;\n});\n$start = $target->start(...);\n$weak = WeakReference::create($start);\nfunction startUnpackRetireCapture19() {\n    global $start;\n    $start = null;\n    echo 'P|';\n    $value = '7';\n    return ['value' => $value, 'tail' => 'X'];\n}\n$yielded = $start->__invoke(...startUnpackRetireCapture19());\necho (int)($yielded === null), '|', $target->getReturn(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "2dc46b93f717f0ff1180eb1640066cd28b58a8e79f051050f8785360e86ff376",
+    "native_stdout": "P|7|D|X|1|29|1",
+    "native_stderr": "",
+    "native_exit": 0
   }
 ]
