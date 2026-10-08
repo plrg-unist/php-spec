@@ -119,5 +119,7 @@ retains private311 source5 and275 independent entry, target-warning and
 argument/fallback/admission premises. Existing213 argument and327 computed-name
 continuations freeze null while retaining handler writes; the narrow runtime-line
 helper preserves noarg/CV defaults. The original parser stop and wrong-CODEARG
-trace remain separate with zero affected credit. Final shared-parent composition
-is pending; wider argument forms and providers remain required.
+trace remain separate with zero affected credit. Actual316 passes strict
+compilation with reviewed trait/ArrayAccess/collector compatibility. Earlier
+source/state cuts and relocations gain no renewed credit; wider argument forms
+and providers remain required.
