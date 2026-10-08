@@ -10,12 +10,14 @@ dec $gc_worker_public_step(pstate, pfiberapi) : pstate
 dec $gc_worker_public_scan_pass(pstate) : bool
 dec $gc_worker_public_task(pstate, pfiberapi) : ptask
 dec $gc_worker_public_api_valid(pstate, pfiberapi) : bool
+dec $gc_worker_public_source_api_valid(pstate, pfiberapi) : bool
 
 def $gc_worker_public_pass_valid(S) = true
   -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
 def $gc_worker_public_pass_valid(S) = false -- otherwise
 def $gc_worker_public_scan_pass(S) = false -- otherwise
 def $gc_worker_public_task(S, pfiberapi) = GC_WORKER_PUBLIC pfiberapi -- otherwise
+def $gc_worker_public_source_api_valid(S, pfiberapi) = $fiber_api_valid(S, pfiberapi) -- otherwise
 
 def $gc_worker_public_ready(S, pconfigcall) = true
   -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
@@ -58,7 +60,7 @@ def $gc_worker_public_api_valid(S, pfiberapi) = true
   -- if S.ACTIVEFIBER = (pfiberapi.OBJECT) /\ S.GC.WORKER = S.ACTIVEFIBER
   -- if pfiberapi.KIND = (pintrinsic)
   -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
-  -- if $fiber_api_valid(S, pfiberapi)
+  -- if $gc_worker_public_source_api_valid(S, pfiberapi)
   -- if $fiber_at(S, pfiberapi.OBJECT) = (pfiber)
   -- if $gc_worker_cache_valid(S, pfiberapi.OBJECT, pfiber)
   -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.VM = eps

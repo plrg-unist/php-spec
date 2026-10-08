@@ -14,6 +14,34 @@ dec $gc_worker_scan_target(pstate, nat, nat) : (nat, nat)?
 dec $gc_worker_scan_enter(pstate, pgcpublic, nat, nat) : pstate
 dec $gc_worker_scan_finish(pstate, pgcpublic) : pstate
 dec $gc_worker_public_keep(pstate, nat) : pstate
+dec $gc_worker_public_raw_api(pstate) : pfiberapi?
+dec $gc_worker_public_captured_api_valid(pstate, pfiberapi) : bool
+
+;; The result tail in the real saved caller owns a bound fake Closure. Read
+;; the raw scan/guard here: validating that guard would recurse through this hook.
+def $gc_worker_public_raw_api(S) = (pgcpublic.API)
+  -- if S.TODO = [GC_WORKER_SCAN pgcpublic]
+  -- if S.ACTIVEFIBER = (pgcpublic.API.OBJECT)
+  -- if $fiber_at(S, pgcpublic.API.OBJECT) = (pfiber)
+  -- if pfiber.GC = (pgcworker) /\ pgcworker.GUARD = eps
+def $gc_worker_public_raw_api(S) = (pgcpublic.API)
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard) /\ pgcguard.PUBLIC = (pgcpublic)
+def $gc_worker_public_raw_api(S) = eps -- otherwise
+def $gc_worker_public_captured_api_valid(S, pfiberapi) = $fiber_api_valid(S, pfiberapi)
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
+  -- if $fiber_bound_kind(pconfigcall.KIND)
+def $gc_worker_public_captured_api_valid(S, pfiberapi) = true
+  -- if $fiber_bound_core_call(S, pfiberapi) =/= eps
+def $gc_worker_public_captured_api_valid(S, pfiberapi) = false -- otherwise
+def $gc_worker_public_source_api_valid(S, pfiberapi) = true
+  -- if $gc_worker_public_raw_api(S) = (pfiberapi)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.API = pfiberapi /\ pfibercaller.OBJECT = pfiberapi.OBJECT
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if $gc_worker_public_captured_api_valid(S_caller, pfiberapi)
 
 def $gc_slot_node(GC_DTOR_ROOT n) = (HOBJECT n)
 def $gc_nodes((GC_DTOR_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_nodes(pgcslot*)
