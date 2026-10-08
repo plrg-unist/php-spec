@@ -809,9 +809,12 @@ source2 and87 supplied strict-SL conditions cover retirement and equal lexical/c
 FCC scope, with12 setup clauses separate. The reviewed322 composition passes strict
 compilation and a genuine active default/TYPE checkpoint with26 supplied conditions
 plus6 setup clauses; that checkpoint ends at the old-U constructor Error.
+Live concrete aliases and visibility adaptations preserve the exact selected body,
+default and alias static cells. Three normal source comparisons and44 supplied
+birth/default/static conditions pass, with6 setup clauses separate.
 Parameter-view full-source constructor,
-handler and variadic cases, live adaptations, later births reusing a different
-first target and executable reuse of a failed target remain open. Wider
+handler and variadic cases, differing-owner later births
+and executable reuse of a failed target remain open. Wider
 initializer contexts, held/open failed links and readonly
 storage remain
 required. The current313 join passes strict compilation, one fresh REAL/constructor

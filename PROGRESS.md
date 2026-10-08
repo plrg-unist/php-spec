@@ -1534,10 +1534,22 @@ Raw artifacts are `trait266-object-algo-s6o6pssf`,
 `closure-call-protocol-08sz3xg1`, `closure-call-protocol-q5w3a8qt` and
 `fcc-access-review19/native-*` under the same current
 worktree's `.tools/`.
+Live concrete alias/visibility lookup now uses the exact source copy plan only
+when ordinary import lookup misses. At `6470366fa`, strict algo/struct pass3.469/4.322s;
+three normal source tuples and one genuine birth/default/static checkpoint with44
+supplied conditions plus6 setup clauses pass (18.696s). Cloned aliases share their
+canonical static cells while own methods and excluded originals keep distinct targets.
+Raw evidence is `.tools/trait-fcc-adaptations-current19/.tools/`:
+`method-runtime-rbmzbjug`, `closure-call-protocol-tb4117ep`,
+`trait266-object-algo-wqm4aoeh` and `trait266-object-struct-2n7pfvr6`.
+The reviewed327 composition at `1f6313f7e` over `e044ff7cb` passes strict
+algo/struct at3.369/4.220s without renewing those source/state cuts. Its raw
+compiler results are `trait266-object-algo-gtfakyej` and
+`trait266-object-struct-d2ofi_zz` in the same evidence directory.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
-remains open, as do live
-adaptation lookup, differing-owner later births and executable failed-target reuse.
+remains open, as do differing-owner later births and
+executable failed-target reuse.
 Paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,

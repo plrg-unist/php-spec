@@ -1,0 +1,53 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "alias-public",
+      "source": "<?php\ntrait T {\n    public static function m($v = 7) {\n        static $n = 0;\n        echo \"T:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n    public const Y = self::q(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nset_error_handler(static function () { return true; });\nclass C {\n    use U { m as q; }\n    public static $x = self::Y;\n    public static function m() { echo \"OWN;\"; }\n}\n$f = C::Y;\n$f();\n$g = clone $f;\n$g();\nC::m();\n",
+      "source_sha256": "175c8fe211cbc95463bb518f14c10859d043334359c5be2365d95c3c16daf1ea",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-adaptations-current19/.tools/fcc-adaptation-review19/native-alias-public/command.json",
+      "native_raw_sha256": "c1fe7434b4dabbe12648f2a6d20c3eaae4bdc1167b00757c8ec0f084c617b82b",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "VDpVOkM6NzoxO1Q6VTpDOjc6MjtPV047",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "visibility-to-public",
+      "source": "<?php\ntrait T {\n    protected static function m($v = 5) {\n        static $n = 0;\n        echo \"T:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nset_error_handler(static function () { return true; });\nclass C {\n    use U { m as public; }\n    public static $x = self::Y;\n}\n$f = C::Y;\n$f();\nC::m();\n",
+      "source_sha256": "b0dc24dd6ad5ce0e32940d5d9fe1d2bcfb3f8334187fcad4394a069788bbfdf2",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-adaptations-current19/.tools/fcc-adaptation-review19/native-visibility-to-public/command.json",
+      "native_raw_sha256": "de86fcf68a253676a5e3e3ed7cd9fd3876b30c02ea25ce860bbf3ee6925c8cd5",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "VDpVOkM6NToxO1Q6QzpDOjU6Mjs=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "precedence-excluded-alias",
+      "source": "<?php\ntrait T {\n    public static function m($v = 7) {\n        static $n = 0;\n        echo \"T:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n    public const Y = self::q(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\ntrait V {\n    public static function m($v = 9) {\n        static $n = 0;\n        echo \"V:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n}\nset_error_handler(static function () { return true; });\nclass C {\n    use U, V { U::m insteadof V; V::m as q; }\n    public static $x = self::Y;\n}\n$f = C::Y;\n$f();\nC::m();\n",
+      "source_sha256": "9b866c3628a8b9aaa5794182f29111aa3eece9f7b4b24924338fb1750bde8296",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-adaptations-current19/.tools/fcc-adaptation-review19/native-precedence-excluded-alias/command.json",
+      "native_raw_sha256": "b2e6a0db1158deffb00bbe3823f9e87458bd95640985b5f220b91ed1fe942d7b",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "VjpWOkM6OToxO1Q6QzpDOjc6MTs=",
+      "stderr_template_base64": ""
+    }
+  ],
+  "scope": "Concrete first-target FCC aliases, visibility-to-public and excluded-method aliases; broader TYPE-view full-source and failed cached-target reuse remain open."
+}
