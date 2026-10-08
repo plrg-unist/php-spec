@@ -1,0 +1,50 @@
+;; zend_call_function owns the fake Closure while borrowing its this_ptr.
+;; RAW owns the other Closure reference until callback retirement.
+def $fiber_core_binding(S, pfiber) = (pfibercapture.INPUT, (n_capture))
+  -- if pfiber.RAW = POBJECT n_capture
+  -- if pfiber.TARGET = (FIBER_API_TARGET n_capture)
+  -- if $fiber_capture_core_live(S, n_capture)
+  -- if S.OBJECTS[n_capture] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_bound_kind(pfibercapture.KIND)
+def $config_receive(S, pconfigcall) = $fiber_receive(S, pconfigcall)
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if $fiber_core_config_valid(S, pconfigcall)
+
+;; A transferred API frame owns sent values, but no extra bound receiver.
+def $fiber_caller_api_nodes(pfibercaller) = $fiber_value_nodes(pfibercaller.API.SENT)
+  -- if pfibercaller.VM.TODO = [FIBER_WAIT pfibercaller.API, FIBER_API_CORE_RESULT n_runner n_capture pconfigcall, FIBER_FINISH n_runner]
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if pconfigcall.OWNER = (pfibercaller.API.OBJECT) /\ pconfigcall.SELECTION = (n_capture)
+  -- if pfibercaller.API.KIND = (pconfigcall.KIND) /\ pfibercaller.API.START = eps
+  -- if pfibercaller.API.SITE = pconfigcall.SITE /\ pfibercaller.API.LINE = pconfigcall.LINE
+  -- if pfibercaller.API.SENT = $fiber_config_sent(pconfigcall)
+
+dec $fiber_bound_core_call(pstate, pfiberapi) : pconfigcall?
+def $fiber_bound_core_call(S, pfiberapi) = (pconfigcall)
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if pfiberapi.KIND = (pintrinsic)
+  -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if pfiberapi.START = eps
+  -- if S.TODO = [FIBER_WAIT pfiberapi, FIBER_API_CORE_RESULT n_runner n_capture pconfigcall, FIBER_FINISH n_runner]
+  -- if $fiber_api_core_result_valid(S, n_runner, n_capture, pconfigcall)
+  -- if pconfigcall.KIND = pintrinsic /\ pconfigcall.OWNER = (pfiberapi.OBJECT)
+  -- if pconfigcall.SELECTION = (n_capture)
+  -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
+  -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
+  -- if $config_slots_valid(S, pconfigcall.SENT)
+  -- if pintrinsic =/= INTRINSIC_FIBER_THROW \/ $class_instanceof(S, $fiber_config_value(pconfigcall), $ptascii("Throwable"))
+def $fiber_bound_core_call(S, pfiberapi) = eps -- otherwise
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $fiber_bound_core_call(S, pfiberapi) =/= eps
+def $fiber_caller_api_trace(S, pfiberapi) = $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))
+  -- if $fiber_bound_core_call(S, pfiberapi) = (pconfigcall)
+
+;; Public calls into the cached idle collector keep the same saved C root.
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if S.TODO = [GC_WORKER_PUBLIC pfiberapi]
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.API = pfiberapi /\ pfibercaller.OBJECT = pfiberapi.OBJECT
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if $fiber_bound_core_call(S_caller, pfiberapi) =/= eps

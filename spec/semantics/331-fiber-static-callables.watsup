@@ -179,6 +179,7 @@ def $fiber_capture_invoke(S, pconfigcall) = $fiber_receive(S[.TODO = (CONFIG_INV
   -- if b_invoke = $exit_method_site(S, pconfigcall.SITE)
 def $config_receive(S, pconfigcall) = $fiber_capture_invoke(S, pconfigcall)
   -- if $fiber_capture_config_tag(pconfigcall)
+  -- if ~$fiber_core_config(S, pconfigcall)
 def $task_nodes(FIBER_CAPTURE_RELEASE n porigin) = [HOBJECT n]
 def $task_nodes(FIBER_CAPTURE_RESULT n pconfigcall false) = [HOBJECT n]
 def $task_nodes(FIBER_CAPTURE_RESULT n pconfigcall true) = [HOBJECT n, HOBJECT n] ++ $named_slots_roots(pconfigcall.SENT)
@@ -246,12 +247,12 @@ def $fiber_api_valid(S, pfiberapi) = true
 
 ;; Constructor caches are immutable borrowed target pointers. RAW owns the
 ;; Closure; the C result tail separately owns zend_call_function's addref.
-;; Bound instance APIs need their own C receiver protocol and remain Unsupported.
+;; Bound APIs borrow the receiver through the RAW Closure and the binding hook.
 dec $fiber_capture_core_live(pstate, nat) : bool
 def $fiber_capture_core_live(S, n) = true
   -- if $fiber_capture_live(S, n)
   -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
-  -- if $fiber_static(pfibercapture.KIND)
+  -- if $fiber_static(pfibercapture.KIND) \/ $fiber_bound_kind(pfibercapture.KIND)
 def $fiber_capture_core_live(S, n) = false -- otherwise
 def $fiber_core_callback_target(FIBER_API_TARGET n) = true
 def $target_nodes(FIBER_API_TARGET n) = eps
@@ -324,13 +325,15 @@ def $call_after_origin(S, FIBER_API_CORE_RESULT n n_capture pconfigcall) = S[.OR
 
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
   -- if $fiber_capture_config_tag(pconfigcall)
+  -- if ~$fiber_core_config(S, pconfigcall)
   -- if ~$exit_method_site(S, pconfigcall.SITE)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($fiber_trace_type(pconfigcall.KIND)), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
   -- if $fiber_capture_config_tag(pconfigcall)
+  -- if ~$fiber_core_config(S, pconfigcall)
   -- if $exit_method_site(S, pconfigcall.SITE)
   -- if ptraceframe = {FILE eps, LINE $(-1), FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($fiber_trace_type(pconfigcall.KIND)), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
   -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE eps, LINE $(-1), FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($fiber_trace_type(pconfigcall.KIND)), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
   -- if $fiber_core_config(S, pconfigcall)
-  -- if $fiber_static(pconfigcall.KIND)
+  -- if $fiber_static(pconfigcall.KIND) \/ $fiber_bound_kind(pconfigcall.KIND)
