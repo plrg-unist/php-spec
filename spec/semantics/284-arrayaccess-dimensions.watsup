@@ -658,7 +658,7 @@ def $access_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, pori
   -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin))
 def $access_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $access_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
 def $access_entered(S, pcallcontext?, eps, pcalltarget, porigin) = false
-def $access_selected(S, pcalltarget, porigin) = ($access_pending(S, pcalltarget, porigin) \/ $access_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin))
+def $access_selected(S, pcalltarget, porigin) = ($access_pending(S, pcalltarget, porigin) \/ $access_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin) \/ $access_generator_selected(S, S.CURRENT, S.FRAMES, pcalltarget, porigin))
 def $access_context_kind(S, pcallcontext) = true
   -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
   -- if pcallcontext.CALLSITE = (porigin)
@@ -672,16 +672,16 @@ def $access_context_kind(S, pcallcontext) = false -- otherwise
 def $access_context(S, pcallcontext) = true
   -- if $access_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin)
-  -- if $access_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
+  -- if $access_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin) \/ $access_generator_context(S, pcallcontext)
 def $access_context(S, pcallcontext) = false -- otherwise
 def $access_marker(pframe) = true -- if pframe.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
 def $access_marker(pframe) = false -- otherwise
 def $access_chain(S, eps, eps) = true
-def $access_chain(S, (pcallcontext), eps) = ~$access_context_kind(S, pcallcontext)
+def $access_chain(S, (pcallcontext), eps) = (~$access_context_kind(S, pcallcontext) \/ $access_generator_context(S, pcallcontext))
 def $access_chain(S, (pcallcontext), pframe :: pframe_tail*) = ($access_frame(S, pcallcontext, pframe) /\ $access_chain(S, pframe.CONTEXT, pframe_tail*))
-  -- if $access_context_kind(S, pcallcontext) \/ $access_marker(pframe)
+  -- if ($access_context_kind(S, pcallcontext) /\ ~$access_generator_context(S, pcallcontext)) \/ $access_marker(pframe)
 def $access_chain(S, (pcallcontext), pframe :: pframe_tail*) = $access_chain(S, pframe.CONTEXT, pframe_tail*)
-  -- if ~$access_context_kind(S, pcallcontext)
+  -- if ~$access_context_kind(S, pcallcontext) \/ $access_generator_context(S, pcallcontext)
   -- if ~$access_marker(pframe)
 def $access_chain(S, eps, pframe :: pframe_tail*) = $access_chain(S, pframe.CONTEXT, pframe_tail*) -- if ~$access_marker(pframe)
 def $access_chain(S, eps, pframe :: pframe_tail*) = false -- if $access_marker(pframe)

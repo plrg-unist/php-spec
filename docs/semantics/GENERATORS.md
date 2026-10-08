@@ -59,12 +59,18 @@ frame scopes, Closure targets and one real saved resumer per running Generator.
 Internal continuations cannot hide in source wrappers or branches. Public
 admission and ownership checks use actual source-reached states.
 
+[Implicit ArrayAccess Get344](SOURCE-ARRAYACCESS.md) creates mixed/untyped Get
+Generators, with both declaration reference flags. The real saved frame owns the
+receiver and arguments; a nonowning source certificate authenticates Get after
+its caller returns. Ordinary close preserves the actual destructor continuation
+and pending exception through its finished marker.
+
 Array, source Iterator and Generator graph delegation are covered by
 [Module289](GENERATOR-DELEGATION.md), including shared progress, return transfer,
 live callback references and natural owner cleanup. [Reference yields328](GENERATOR-REFERENCE-YIELDS.md)
 add live cells, value-API snapshots, foreach/destructuring aliases and authentic
 Notice/cleanup readback. IteratorAggregate, broader reference producers, dynamic/nullsafe
-API calls, named/unpacked API arguments, scoped static and implicit callback
+API calls, named/unpacked API arguments, scoped static and other implicit callback
 creation, and creation through changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.

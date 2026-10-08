@@ -115,9 +115,15 @@ keeps the 23 normal original-source agreements, compiler negatives and independe
 reached-state checks at their separate cuts. Bare/fall-through NULL and
 finally-sensitive reference-Get Notices remain unaccepted; non-mixed typed return
 verification remains user-paused.
-Implicit Generator Get creation still stops at module280's existing deferred-call
-scope boundary, before334 conversion. The actual328 interaction remains
-Unsupported and receives no original-source agreement credit.
+Module344 creates an unstarted Generator from mixed/untyped implicit Get,
+including reference-yield declarations. The received frame owns its key and
+receiver after the access returns. A nonowning target/site/line certificate
+preserves exact source permission through escape, resume and ordinary close;
+finished close cleanup reaches its real caller and preserves replacement
+exceptions. Compound conversion throws the native Generator-to-string Error
+without starting the body or calling Set. The old334 deferred-creation failure
+stays immutable; later agreement and source-reached checks have separate cuts in
+the [Generator Get ledger](../../coverage/semantics/arrayaccess-generator-get-review.json).
 Actual298 also passes full compilation, strict initialization and one new exact
 Fiber-core warning/Get suspension original. Its real internal reporting tail
 survives the parked Get and resumed shared property write;318 fields remain

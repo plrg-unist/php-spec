@@ -82,7 +82,7 @@ dec $generator_close_exception_nodes(nat?) : pnode*
 dec $generator_close_enter_task(ptask) : bool
 dec $generator_close_yield_node(pcnode?) : bool
 dec $generator_close_destructor_ready(pstate, pgenrelease) : bool
-dec $generator_close_destructor_tasks(ptask*, nat?, nat?, ptask) : bool
+dec $generator_close_destructor_tasks(pstate, ptask*, nat?, nat?, ptask) : bool
 dec $generator_close_destructor_pending(pstate, nat?) : pstate
 
 def $generator_close_started(GENERATOR pgenerator) = (pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING])
@@ -228,31 +228,41 @@ def $generator_close_children(S, HOBJECT n) = $generator_close_frame_nodes(S, pf
 def $generator_close_children(S, pnode) = $node_children(S, pnode) -- otherwise
 ;; Cached storage can enter the ordinary destructor loop only when its actual
 ;; pending carrier is reachable through these release markers.
-def $generator_close_destructor_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*, n_local?, n_caller?, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
-def $generator_close_destructor_tasks((DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask*, n_local?, n_caller?, DESTRUCTOR_FRAME_EXIT pdestructionframe) = true
-def $generator_close_destructor_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(ptask*, n_local?, n_caller?, ptask_exit)
-def $generator_close_destructor_tasks((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(ptask*, n_local?, n_caller?, ptask_exit)
+def $generator_close_destructor_tasks(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*, n_local?, n_caller?, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
+def $generator_close_destructor_tasks(S, (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask*, n_local?, n_caller?, DESTRUCTOR_FRAME_EXIT pdestructionframe) = true
+def $generator_close_destructor_tasks(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(S, ptask*, n_local?, n_caller?, ptask_exit)
+def $generator_close_destructor_tasks(S, (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(S, ptask*, n_local?, n_caller?, ptask_exit)
   -- if pgenrelease.PENDING = eps \/ pgenrelease.PENDING = n_local? \/ pgenrelease.PENDING = n_caller?
-def $generator_close_destructor_tasks(ptask*, n_local?, n_caller?, ptask_exit) = false -- otherwise
+def $generator_close_destructor_tasks(S, (GENERATOR_CLOSE_DONE pgenclose) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(S, ptask*, n_local?, n_caller?, ptask_exit)
+  -- if pgenclose.STAGE = CLOSE_FINISHED
+  -- if $generator_close_done_valid(S, pgenclose)
+  -- if pgenclose.PENDING = eps \/ pgenclose.PENDING = n_local? \/ pgenclose.PENDING = n_caller?
+def $generator_close_destructor_tasks(S, ptask*, n_local?, n_caller?, ptask_exit) = false -- otherwise
 def $generator_close_destructor_ready(S, pgenrelease) = true
   -- if $destructor_operational(S) /\ $destructor_user_source(S)
   -- if $destructor_operation_for(S) = (pdestructionoperation)
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if $destructor_operation_valid(S, pdestructionoperation)
-  -- if $generator_close_destructor_tasks(S.TODO, pgenrelease.PENDING, pdestructionoperation.PENDING, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)
+  -- if $generator_close_destructor_tasks(S, S.TODO, pgenrelease.PENDING, pdestructionoperation.PENDING, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)
 def $generator_close_destructor_ready(S, pgenrelease) = true
   -- if $destructor_operational(S) /\ $destructor_user_source(S)
   -- if $destructor_operation_for(S) = eps
   -- if $destructor_selected_frame(S) = (pdestructionframe)
   -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
   -- if $destructor_frame_valid(S, pdestructionframe)
-  -- if $generator_close_destructor_tasks(S.TODO, pgenrelease.PENDING, pdestructionframe.PENDING, DESTRUCTOR_FRAME_EXIT pdestructionframe)
+  -- if $generator_close_destructor_tasks(S, S.TODO, pgenrelease.PENDING, pdestructionframe.PENDING, DESTRUCTOR_FRAME_EXIT pdestructionframe)
 def $generator_close_destructor_ready(S, pgenrelease) = false -- otherwise
 def $generator_close_destructor_pending(S, eps) = S
 def $generator_close_destructor_pending(S, (n)) = $generator_destructor_finish(S, n)
 def $destructor_operation_tasks((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, pdestructionoperation, pdestructionoperation_new) = (GENERATOR_CLOSE_RELEASE pgenrelease[.PENDING = pdestructionoperation_new.PENDING]) :: $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation_new)
 def $destructor_release_frame((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, pdestructionframe) = $destructor_release_frame(ptask*, pdestructionframe)
 def $destructor_frame_tasks((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, pdestructionframe, pdestructionframe_new) = (GENERATOR_CLOSE_RELEASE pgenrelease[.PENDING = pdestructionframe_new.PENDING]) :: $destructor_frame_tasks(ptask*, pdestructionframe, pdestructionframe_new)
+def $destructor_operation_tasks((GENERATOR_CLOSE_DONE pgenclose) :: ptask*, pdestructionoperation, pdestructionoperation_new) = (GENERATOR_CLOSE_DONE pgenclose[.PENDING = pdestructionoperation_new.PENDING]) :: $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation_new)
+  -- if pgenclose.STAGE = CLOSE_FINISHED
+def $destructor_release_frame((GENERATOR_CLOSE_DONE pgenclose) :: ptask*, pdestructionframe) = $destructor_release_frame(ptask*, pdestructionframe)
+  -- if pgenclose.STAGE = CLOSE_FINISHED
+def $destructor_frame_tasks((GENERATOR_CLOSE_DONE pgenclose) :: ptask*, pdestructionframe, pdestructionframe_new) = (GENERATOR_CLOSE_DONE pgenclose[.PENDING = pdestructionframe_new.PENDING]) :: $destructor_frame_tasks(ptask*, pdestructionframe, pdestructionframe_new)
+  -- if pgenclose.STAGE = CLOSE_FINISHED
 def $generator_close_current(eps) = eps
 def $generator_close_current((pgeneratorfrom)) = pgeneratorfrom.CURRENT
 def $generator_close_release(S, pgenrelease) = $generator_close_release_end(S, pgenrelease)
@@ -697,6 +707,7 @@ def $generator_close_done_valid(S, pgenclose) = true
   -- if pgenerator.FRAME = eps /\ pgenclose.FRAME = eps
   -- if S.CURRENT = pgenclose.CALLER /\ S.ORIGIN = pgenclose.CALLSITE
   -- if pgenclose.CONTEXT.FUNCTION = pgenerator.FUNCTION /\ pgenclose.CONTEXT.INSTANCE = pgenerator.CLOSURE
+  -- if $access_generator_close_valid(S, pgenclose)
   -- if (pgenerator.PHASE = GENERATOR_RUNNING /\ pgenclose.STAGE =/= CLOSE_QUEUED /\ pgenclose.STAGE =/= CLOSE_FINISHED) \/ (pgenerator.PHASE = GENERATOR_CLOSED /\ pgenclose.STAGE = CLOSE_FINISHED)
   -- if $generator_from_input_of(pgenerator.DELEGATE) = eps
   -- if $generator_close_site(S, pgenerator, pgenclose.SITE)

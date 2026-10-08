@@ -571,9 +571,24 @@ The final composition of 326 modules over TRAIT307 `55c2eab0c` preserves its
 TYPE/default/FCC source guards by independent pointwise review; the 325-module
 compiler cut remains separate.
 The ordinary helper-base compiler repair preserves special builtin temporary
-rejection. Implicit Generator Get creation retains its existing deferred-scope
-boundary. Bare/fall-through NULL, finally-sensitive Notice ingress and wider
+rejection. The deferred Generator Get control at this334 cut remains zero-credit;
+module344 below records the later repair. Bare/fall-through NULL, finally-sensitive
+Notice ingress and wider
 producers remain open; non-mixed typed return verification remains user-paused.
+
+ArrayAccess344 creates mixed/untyped implicit Generator Get results without
+starting their body, including reference-yield declarations. A nonowning
+TARGET/SITE/LINE certificate preserves exact Get scope after its emitter returns;
+actual frames and received arguments retain every heap owner. Ordinary last-owner
+close reaches the real caller carrier through an authenticated finished marker,
+including destructor replacement of a pending finally exception. Seven maintained
+normal originals pass across `dc27aa3e1`, `09ec7db36` and `3ff67878e`; the unchanged
+334 Unsupported original has a separate new positive cut. Full327 compilation and
+six initialization premises pass at `09ec7db36`. Independent423 reached premises
+pass at `4e3062ac4`; actual331 algo/struct and initialization over `d811717a0`
+pass separately at `f2d3c6d29`, with reviewed request/name/graph-carry interactions.
+No earlier334 evidence is renewed.
+Typed non-mixed producers and the other paused return lanes remain unchanged.
 
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
