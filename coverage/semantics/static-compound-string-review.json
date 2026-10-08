@@ -1,0 +1,137 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "module": "spec/semantics/356-static-compound-string.watsup",
+  "decision": "Twelve exact source agreements and368 independent reached premises accepted; actual-composition compiler/init pending",
+  "behavior": [
+    "Literal named-class static-property concat retains the selected plain slot or original reference cell through callbacks and uses the live/evaluated RHS staging from352.",
+    "Typed nonstring stores verify the final value and return that converted result; initial-string reference fast paths preserve unchecked late type sources.",
+    "Plain-slot alias detachment retains Zend property-info constraints on escaped aliases. Nonowning entry/retirement/write history binds their source and cell without adding roots.",
+    "Evaluated RHS cleanup follows the final store; read, initialization and setter errors retain their preconversion priority."
+  ],
+  "engine_routes": {
+    "vendor/php-src/Zend/zend_vm_def.h": "ZEND_ASSIGN_STATIC_PROP_OP",
+    "vendor/php-src/Zend/zend_execute.c": [
+      "zend_binary_assign_op_typed_ref",
+      "zend_binary_assign_op_typed_prop"
+    ],
+    "vendor/php-src/Zend/zend_operators.c": "concat_function"
+  },
+  "raw_directory": ".tools/static-compound-string-19/.tools/static-stringable-compounds",
+  "preserved_counterexample": {
+    "revision": "3747d02aa21afd8ceafa6f49e1997e6016a49d77",
+    "report": "probe-3xovdvja/report.json",
+    "native_stdout": "L;V:aafter;R:after;X:aafter;E;",
+    "model_status": "unsupported",
+    "model_stdout": "",
+    "reason": "user object string conversion",
+    "agreement_credit": 0
+  },
+  "sources": {
+    "normal_originals": 12,
+    "cuts": [
+      {
+        "revision": "c4eddd5ac349ca49282f2fb38b11a24f216f4074",
+        "report": "run-qo15z6d5/report.json",
+        "normal_originals": 11,
+        "passed": true,
+        "inputs_stable": true,
+        "groups_reaped": true
+      },
+      {
+        "revision": "163e8a91cfa0b9c42323b27d34fd75e52c0d3a56",
+        "report": "run-_4ot7i5h/report.json",
+        "normal_originals": 1,
+        "selection": [
+          "static-compound-typed-reference-verification-and-rejection"
+        ],
+        "passed": true,
+        "inputs_stable": true,
+        "groups_reaped": true
+      }
+    ]
+  },
+  "private_compiler_init": {
+    "revision": "c4eddd5ac349ca49282f2fb38b11a24f216f4074",
+    "modules": 340,
+    "report": "run-qo15z6d5/report.json",
+    "algo_bytes": 10903786,
+    "struct_bytes": 10566115,
+    "strict_SL_initial_premises": 6,
+    "passed": true,
+    "later_change": "Two source-preserving guards require ENTRY to precede RETIRE/WRITE; new state and actual-composition gates validate that change."
+  },
+  "new_reached": {
+    "revision": "e1484c2f6b606e973110377b4707f04af7929a42",
+    "modules": 340,
+    "report": "reached-run-y6ol21mw/report.json",
+    "groups": [
+      {
+        "id": "plain-slot-retirement-and-reentry",
+        "premises": 184,
+        "strict_SL_seconds": 91.366,
+        "algo_bytes": 10973202
+      },
+      {
+        "id": "captured-reference-and-unchecked-write",
+        "premises": 184,
+        "strict_SL_seconds": 76.531,
+        "algo_bytes": 10971662
+      }
+    ],
+    "premises": 368,
+    "passed": true,
+    "inputs_stable": true,
+    "groups_reaped": true
+  },
+  "current_composition": {
+    "parent": "e1c3d4d618890ae7dcba8ce6d7b799d5c8a338b4",
+    "modules": 344,
+    "status": "pending",
+    "renewed_source_or_reached_credit": 0
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed",
+    "profile": "tests/semantics/profile.json"
+  },
+  "caps": {
+    "compiler": 120,
+    "strict_SL_initial": 120,
+    "native": 45,
+    "CLI": 60,
+    "outer": 90,
+    "steps": 100000,
+    "source_phase": 480,
+    "strict_SL_reached": 300
+  },
+  "jobs": 1,
+  "reproduce_source": [
+    "python3 tests/semantics/static_compound_string_prepare.py",
+    "python3 tests/semantics/static_compound_string_run.py PREPARED/report.json"
+  ],
+  "reproduce_states": [
+    "python3 tests/semantics/static_compound_string_prepare.py static-compound-history-reentry-and-spare",
+    "python3 tests/semantics/static_compound_string_state_prepare.py PREPARED/report.json",
+    "python3 tests/semantics/static_compound_string_state_run.py REACHED/manifest.json"
+  ],
+  "boundaries": [
+    "Computed, dynamic and scoped self/parent/static class selectors and wider borrowed destination lifetime remain separate.",
+    "A registered-handler missing direct RHS-CV warning still stops at the preexisting Unsupported producer-continuation boundary.",
+    "Earlier334/344/352 evidence and paused typed/NULL/finally-sensitive return-producer lanes are unchanged."
+  ],
+  "preserved_compiler_stops": [
+    "run-helxm23b/report.json",
+    "run-kadc69wd/report.json"
+  ],
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "preserved_fixture_failure": {
+    "report": "reached-run-o8nhp08a/report.json",
+    "reason": "Renderer update tried to bind the selected receiver before its saved field was extracted; compiler stop corrected only in fixture.",
+    "credit": 0
+  }
+}
