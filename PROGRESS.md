@@ -17,7 +17,9 @@ types and names their diagnostics. The promoted-parameter original, initial
 compiler stop, typed-companion failure and fixture parse stop retain zero credit;
 the explicit-property companion is distinct. Compound selectors, start unpacking,
 promotion and broader lifecycle work remain required; paused returns stay excluded.
-[Raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json).
+Actual 355 over `aa8ebb4d1` passes strict compilation at `cb42ba678`, preserving
+current startup/source/collector and retained-method guards; private source/state
+cuts retain their inputs. [Raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json).
 
 Assertions368 supplies early startup `-1`/`0`/`1` selection for main/eval/include
 and replay, resolved direct-call elision, pre-argument immutable descriptions,
@@ -39,8 +41,7 @@ Earlier private 350-module source/state/helper cuts retain their own identities.
 367 ordinary simple array START retains six exact normals and 267/160 reached
 premises at their own cuts, with ordered positional/receiver/named unwind and
 real start exception sites. Actual 352 over `262ab0c38` passes strict compilation
-at `c757a7e25`;
-no earlier evidence is renewed. [Ledger](coverage/semantics/fiber-array-start-review.json).
+at `c757a7e25`; no earlier evidence is renewed. [Ledger](coverage/semantics/fiber-array-start-review.json).
 
 Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
 Actual close/cache owners survive normal rendering and handler-registry mutation;
