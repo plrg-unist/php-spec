@@ -115,5 +115,14 @@
     "native_stderr": "",
     "native_exit": 0,
     "expected_model": "normal"
+  },
+  {
+    "id": "current-collector-destructor-scoped-private-static-cache",
+    "source": "<?php\ndeclare(strict_types=1);\n$child = null;\nclass CollectorCallable322 {\n    public $cycle;\n    private static function task(int $value) { echo 'T', $value, '|'; return $value + 1; }\n    public function __destruct() {\n        global $child;\n        echo 'G', Fiber::getCurrent() !== null, '|';\n        $child = new Fiber('self::task');\n        echo 'C|';\n    }\n}\nset_error_handler(static function () { echo 'D', Fiber::getCurrent() !== null, '|'; return true; });\n$cycle = new CollectorCallable322;\n$cycle->cycle = $cycle;\nunset($cycle);\necho gc_collect_cycles(), '|';\n$child->start('17');\necho $child->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "a932fe52c262febf8ca3ca078d82d63a28b479f5608138babb38c65dcb8ea52f",
+    "native_stdout": "G|D|C|1|T17|18",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
   }
 ]
