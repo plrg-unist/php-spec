@@ -108,6 +108,20 @@ dec $gc_graph_nodes(pstate, pnode*) : pnode*
 dec $gc_graph(pstate) : hgraph
 dec $gc_transition_done(pstate, pstate, pgc) : pstate
 dec $gc_terminal_park(pstate, pgcplan) : bool
+dec $gc_fiber_trace(pstate, pgcplan) : pstate
+dec $gc_consumer_scope(pstate, pgccall) : pstate?
+dec $gc_call_local_scope(pstate, pgccall) : pstate
+dec $gc_parked_call_count(pstate, pgccall) : nat
+dec $gc_parked_plan_count(pstate, pgcplan) : nat
+dec $gc_snapshot_fresh(pstate, pgcplan) : bool
+dec $gc_worker_state_valid(pstate) : bool
+def $gc_parked_call_count(S, pgccall) = 0 -- otherwise
+def $gc_parked_plan_count(S, pgcplan) = 0 -- otherwise
+def $gc_snapshot_fresh(S, pgcplan) = $gc_fresh_tasks(S.TODO, pgcplan) -- otherwise
+def $gc_consumer_scope(S, pgccall) = (S)
+  -- if $($gc_consumer_count(S.TODO, pgccall) + $gc_consumer_frame_count(S.FRAMES, pgccall) > 0)
+def $gc_consumer_scope(S, pgccall) = eps -- otherwise
+def $gc_fiber_trace(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "cycle collector destructor Fiber transfer"] -- otherwise
 
 def $gc_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_GC_COLLECT, INTRINSIC_GC_ENABLE, INTRINSIC_GC_DISABLE, INTRINSIC_GC_ENABLED])
 def $intrinsic_name(INTRINSIC_GC_COLLECT) = $ptascii("gc_collect_cycles")
@@ -494,7 +508,10 @@ def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED
   -- if pnode_protected* = $heap_reach(pnode_dtors*, eps, H.EDGES)
   -- if pnode_free* = $destruction_nodes_delete(pnode_visit*, pnode_protected*)
 
-def $gc_call_scope(S, pgccall) = S[.CURRENT = pgccall.CALLER][.ORIGIN = pgccall.ORIGIN][.CONSTCONTEXT = pgccall.CONSTCONTEXT]
+def $gc_call_local_scope(S, pgccall) = S[.CURRENT = pgccall.CALLER][.ORIGIN = pgccall.ORIGIN][.CONSTCONTEXT = pgccall.CONSTCONTEXT]
+def $gc_call_scope(S, pgccall) = $gc_call_local_scope(S_scope, pgccall)
+  -- if $gc_consumer_scope(S, pgccall) = (S_scope)
+def $gc_call_scope(S, pgccall) = S -- otherwise
 ;; Inspect actual continuations only. Plans, ACTIVE and historical snapshots
 ;; carry no authority or ownership without their one live VM consumer.
 def $gc_consumer_count(eps, pgccall) = 0
@@ -522,8 +539,8 @@ def $gc_fresh_tasks((GC_DTORS pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.
 def $gc_fresh_tasks((GC_FREE pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.INDEX = 0
 def $gc_fresh_tasks((AT porigin ptask) :: ptask_tail*, pgcplan) = $gc_fresh_tasks(ptask :: ptask_tail*, pgcplan)
 def $gc_fresh_tasks(ptask*, pgcplan) = false -- otherwise
-def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S, pgcplan.CALL)) -- if $gc_fresh_tasks(S.TODO, pgcplan)
-def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_fresh_tasks(S.TODO, pgcplan)
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S, pgcplan.CALL)) -- if $gc_snapshot_fresh(S, pgcplan)
+def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_snapshot_fresh(S, pgcplan)
 def $gc_call_live(S, pgccall) = true
   -- if S.GC.ACTIVE = (pgccall) /\ $(pgccall.NONCE < S.GC.NEXT)
   -- if pgccall.CALL.KIND = INTRINSIC_GC_COLLECT /\ pgccall.CALL.SENT = eps
@@ -531,7 +548,7 @@ def $gc_call_live(S, pgccall) = true
   -- if $config_invoke_valid($gc_call_scope(S, pgccall), pgccall.CALL)
   -- if $destructor_pending_valid(S, pgccall.PENDING)
   -- if pgccall.PASS =/= 0 \/ pgccall.TOTAL = 0
-  -- if $($gc_consumer_count(S.TODO, pgccall) + $gc_consumer_frame_count(S.FRAMES, pgccall)) = 1
+  -- if $($gc_consumer_count(S.TODO, pgccall) + $gc_consumer_frame_count(S.FRAMES, pgccall) + $gc_parked_call_count(S, pgccall)) = 1
 def $gc_call_live(S, pgccall) = false -- otherwise
 def $gc_scope_valid(S, pgccall) = ($gc_call_live(S, pgccall) /\ S.CURRENT = pgccall.CALLER /\ S.ORIGIN = pgccall.ORIGIN /\ S.CONSTCONTEXT = pgccall.CONSTCONTEXT)
 def $gc_done_prefix(S, pgcplan) = true
@@ -556,8 +573,8 @@ def $gc_plan_live(S, pgcplan) = true
   -- if pgcplan.FREESET = $destruction_nodes_delete($gc_visit(pgcplan.GRAPH, pgcplan.CANDIDATES, $gc_white(pgcplan.GRAPH, pgcplan.CANDIDATES), eps), $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
   -- if pgcplan.PROXIES = $gc_proxy_edges(pgcplan.TABLES, pgcplan.GRAPH.NODES)
   -- if $gc_proxy_edges_valid(pgcplan.GRAPH, pgcplan.PROXIES)
-  -- if $gc_snapshot_valid(S, pgcplan)
-  -- if $($gc_plan_consumer_count(S.TODO, pgcplan) + $gc_plan_frame_count(S.FRAMES, pgcplan)) = 1
+  -- if $gc_snapshot_valid($gc_call_scope(S, pgcplan.CALL), pgcplan)
+  -- if $($gc_plan_consumer_count(S.TODO, pgcplan) + $gc_plan_frame_count(S.FRAMES, pgcplan) + $gc_parked_plan_count(S, pgcplan)) = 1
   -- if $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits(pgcplan.CANDIDATES), $gc_white(pgcplan.GRAPH, pgcplan.CANDIDATES), eps, eps) = (pnode_visit*, pgcplan.COUNTED)
   -- if $gc_done_prefix(S, pgcplan)
 def $gc_plan_live(S, pgcplan) = false -- otherwise
@@ -610,7 +627,7 @@ def $gc_active_valid(S) = $gc_call_live(S, pgccall)
 def $gc_active_valid(S) = $gc_plan_live(S, pgcplan)
   -- if S.GC.PLAN = (pgcplan)
 def $gc_active_valid(S) = false -- otherwise
-def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S))
+def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S))
 
 def $gc_simple_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
 def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PBOOL S.GC.ENABLED) -- if pconfigcall.KIND = INTRINSIC_GC_ENABLED
@@ -655,7 +672,7 @@ def $gc_replace(S, pgcplan, ptask) = S[.GC.PLAN = (pgcplan)][.GC.ACTIVE = (pgcpl
 def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cycle collection of internal lifetime graph"]
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if ~$gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES)) /\ pgcplan.CANDIDATES =/= eps
-def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cycle collector destructor Fiber transfer"]
+def $gc_trace(S, pgccall) = $gc_fiber_trace(S, pgcplan)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER =/= eps /\ pgcplan.DTORS =/= eps

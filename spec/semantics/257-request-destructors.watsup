@@ -9,6 +9,7 @@ dec $destructor_selected_frame(pstate) : pdestructionframe?
 dec $destructor_selected_pending(pstate, pdestructionframe?) : nat?
 dec $destructor_trace_suffix(pstate, pcallcontext) : ptraceframe*
 dec $destructor_source_site(pstate) : porigin?
+dec $destructor_access_scope(pstate) : porigin?
 dec $destructor_boundary_valid(pstate, pdestructorcall) : bool
 dec $destructor_saved_operations(pstate, pdestructorcall*) : pdestructionoperation*
 
@@ -484,17 +485,18 @@ rule PhpStep/destructor-enter: S ~> $call_arity($target_after_enter($call_enter(
   -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
   -- if $destructor_enter_valid(S, pdestructorcall)
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
-  -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if $method_accessible(S, pmethoddesc, $destructor_access_scope(S))
 dec $destructor_private_error(pstate, pdestructorcall, ptbytes) : pstate
+def $destructor_access_scope(S) = $method_current_scope(S) -- otherwise
 dec $fiber_core_root(pstate) : bool
 def $destructor_private_error(S, pdestructorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, pdestructorcall.LINE)
   -- if ~$fiber_finished_root(S)
   -- if ~$fiber_core_root(S)
-rule PhpStep/destructor-private-error: S ~> $destructor_private_error(S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*], pdestructorcall, $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct()") ++ $method_scope_suffix(S, $method_current_scope(S)))
+rule PhpStep/destructor-private-error: S ~> $destructor_private_error(S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*], pdestructorcall, $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct()") ++ $method_scope_suffix(S, $destructor_access_scope(S)))
   -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
   -- if $destructor_enter_valid(S, pdestructorcall)
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
-  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
+  -- if ~$method_accessible(S, pmethoddesc, $destructor_access_scope(S))
   -- if pdestructorcall.USER
 def $destructor_warning(S, pdestructorcall) = $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct() from global scope during shutdown ignored")
   -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)

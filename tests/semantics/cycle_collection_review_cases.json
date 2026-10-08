@@ -241,5 +241,86 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-detached-reentry-review-18",
+    "source": "<?php\nclass Reentry317 {\n    public $self;\n    public static $seen = 0;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $held, $cached;\n        $id = self::$seen++;\n        echo $id, \"<|\";\n        if ($id === 0) {\n            $held = Fiber::getCurrent();\n            Fiber::suspend();\n            $child = new Reentry317();\n            $weak = WeakReference::create($child);\n            unset($child);\n            echo \"reentry:\", gc_collect_cycles(), \"|\";\n            echo $weak->get() === null ? \"child:gone|\" : \"child:live|\";\n        } elseif ($id === 1) {\n            $cached = Fiber::getCurrent();\n        } else {\n            echo Fiber::getCurrent() === $cached ? \"cached|\" : \"changed|\";\n        }\n        echo $id, \">|\";\n    }\n}\n$request = new Fiber(function () {\n    $a = new Reentry317();\n    $b = new Reentry317();\n    unset($a, $b);\n    echo \"first:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\n$held->resume();\necho $held->isTerminated() ? \"done|\" : \"pending|\";\necho \"last:\", gc_collect_cycles(), \"|END\";\n",
+    "stdout": "first:0<|1<|1>|1|reentry:2<|cached|2>|1|child:gone|0>|done|last:1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "a8df5e43fbdc81ec836088b920c80c196a9e695635f0550dec6fbb04f15ed683"
+  },
+  {
+    "id": "collector-detached-pending-review-18",
+    "source": "<?php\nclass Pending317 {\n    public $self;\n    public static $seen = 0;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $held;\n        $id = self::$seen++;\n        if ($id === 1) {\n            $held = Fiber::getCurrent();\n            Fiber::suspend();\n        }\n        throw new Exception(\"E\" . $id);\n    }\n}\n$request = new Fiber(function () {\n    $a = new Pending317();\n    $b = new Pending317();\n    $c = new Pending317();\n    unset($a, $b, $c);\n    try {\n        gc_collect_cycles();\n    } catch (Exception $e) {\n        echo \"collect:\", $e->getMessage(), \":\";\n        echo $e->getPrevious() === null ? \"none|\" : $e->getPrevious()->getMessage() . \"|\";\n    }\n});\n$request->start();\ntry {\n    $held->resume();\n} catch (Exception $e) {\n    echo \"resume:\", $e->getMessage(), \":\";\n    echo $e->getPrevious() === null ? \"none|\" : $e->getPrevious()->getMessage() . \"|\";\n}\necho $held->isTerminated() ? \"done|\" : \"pending|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "collect:E2:none|resume:E1:E0|done|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "fab81a3c74ee5d6ff8b77c3756c62af0d15e54088360c645c5e9fcc301af2ac8"
+  },
+  {
+    "id": "collector-private-scope-review-18",
+    "source": "<?php\nclass Scoped317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    private function __destruct() { echo \"D|\"; }\n    public static function collect() {\n        $cycle = new self();\n        unset($cycle);\n        try {\n            echo gc_collect_cycles(), \"|\";\n        } catch (Error $e) {\n            echo \"E:\", $e->getMessage(), \"|\";\n        }\n    }\n}\necho \"main:\";\nScoped317::collect();\n$request = new Fiber(function () { Scoped317::collect(); });\necho \"fiber:\";\n$request->start();\necho \"END\";\n",
+    "stdout": "main:D|1|fiber:D|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "8d23a476ddab1286048691ad491b0de3dc27f692a2cd9979489150f5102da9ad"
+  },
+  {
+    "id": "collector-retired-caller-review-18",
+    "source": "<?php\nclass Held317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $held;\n        $held = Fiber::getCurrent();\n        Fiber::suspend();\n        echo \"resume|\";\n    }\n}\nclass Caller317 {\n    public function collect() {\n        $cycle = new Held317();\n        unset($cycle);\n        echo gc_collect_cycles(), \"|\";\n    }\n    public function __destruct() { echo \"caller-dtor|\"; }\n}\n$caller = new Caller317();\n$weak = WeakReference::create($caller);\n$request = new Fiber(function () use ($caller) { $caller->collect(); });\nunset($caller);\n$request->start();\necho $weak->get() === null ? \"caller:gone|\" : \"caller:live|\";\n$held->resume();\necho $held->isTerminated() ? \"done|\" : \"pending|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "0|caller-dtor|caller:gone|resume|done|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "55ae7451e728596edc33f2b8fa3e6d46771f09c02bd794ae1b3b587311ac01e2"
+  },
+  {
+    "id": "collector-cached-reporting-review-18",
+    "source": "<?php\nclass Reporting317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        echo error_reporting(), \"|\";\n        error_reporting(0);\n    }\n}\n$request = new Fiber(function () {\n    $a = new Reporting317();\n    unset($a);\n    echo gc_collect_cycles(), \"|\";\n    error_reporting(30719);\n    $b = new Reporting317();\n    unset($b);\n    echo gc_collect_cycles(), \"|\";\n});\n$request->start();\necho \"END\";\n",
+    "stdout": "30719|1|0|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "a96f72be45c1fcb1943782732b9c33f5a732b7d6a82b1cf7b3e921e1db66ecea"
+  },
+  {
+    "id": "collector-retired-callable-review-18",
+    "source": "<?php\nclass Callable317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $cached;\n        echo isset($cached) ? (Fiber::getCurrent() === $cached ? \"same|\" : \"new|\") : \"first|\";\n        $cached = Fiber::getCurrent();\n    }\n}\n$collect = gc_collect_cycles(...);\n$weak = WeakReference::create($collect);\n$request = new Fiber(function () use ($collect) {\n    $a = new Callable317();\n    unset($a);\n    echo $collect(), \"|\";\n});\nunset($collect);\n$request->start();\necho $weak->get() === null ? \"callable:gone|\" : \"callable:live|\";\n$again = new Fiber(function () {\n    $b = new Callable317();\n    unset($b);\n    echo gc_collect_cycles(), \"|\";\n});\n$again->start();\necho \"END\";\n",
+    "stdout": "first|1|callable:gone|same|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "118bd84f1840fccc512cd046703b0a09e446d6874d3818aa52dcf6e7bdc286e9"
+  },
+  {
+    "id": "collector-compact-traces-review-18",
+    "source": "<?php\nclass Trace317 {\n    public $self;\n    public static $suspend = false;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        if (self::$suspend) {\n            global $held;\n            $held = Fiber::getCurrent();\n            Fiber::suspend();\n        }\n        throw new Exception(\"E\");\n    }\n}\n$request = new Fiber(function () {\n    $a = new Trace317();\n    unset($a);\n    try { gc_collect_cycles(); } catch (Exception $e) {\n        $trace = $e->getTrace();\n        echo \"collect:\", $trace[1][\"function\"], \":\", $trace[2][\"function\"], \"|\";\n    }\n    unset($trace, $e);\n    Trace317::$suspend = true;\n    $b = new Trace317();\n    unset($b);\n    echo \"detach:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\ntry { $held->resume(); } catch (Exception $e) {\n    $trace = $e->getTrace();\n    echo \"resume:\", $trace[1][\"function\"], \":\", $trace[2][\"function\"], \"|\";\n}\necho $held->isTerminated() ? \"done|\" : \"pending|\";\necho \"END\";\n",
+    "stdout": "collect:gc_destructor_fiber:gc_collect_cycles|detach:0|resume:gc_destructor_fiber:resume|done|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "36fe4aaca16d70c3efee1ed33b0b05c020222d9d831400191990158925b87bf2"
+  },
+  {
+    "id": "collector-compact-pending-review-18",
+    "source": "<?php\nclass CompactPending317 {\n    public $self;\n    public static $seen = 0;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $held;\n        $id = self::$seen++;\n        if ($id === 1) {\n            $held = Fiber::getCurrent();\n            Fiber::suspend();\n        }\n        throw new Exception(\"E\" . $id);\n    }\n}\n$request = new Fiber(function () {\n    $a = new CompactPending317();\n    $b = new CompactPending317();\n    unset($a, $b);\n    try { echo \"collect:\", gc_collect_cycles(), \"|\"; }\n    catch (Exception $e) { echo \"collect-error:\", $e->getMessage(), \"|\"; }\n});\n$request->start();\ntry { $held->resume(); } catch (Exception $e) {\n    echo \"resume:\", $e->getMessage(), \":\", $e->getPrevious()->getMessage(), \"|\";\n}\necho $held->isTerminated() ? \"done|\" : \"pending|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "collect:1|resume:E1:E0|done|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "5f42cbb488d6ed180b06b86e49c6baa38ad2684014cbad695dc97c6555ef7186"
+  },
+  {
+    "id": "collector-cached-ini-review-18",
+    "source": "<?php\nclass Reporting317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        echo error_reporting(), \"|\";\n        error_reporting(0);\n    }\n}\n$request = new Fiber(function () {\n    $a = new Reporting317();\n    unset($a);\n    echo gc_collect_cycles(), \"|\";\n    ini_set(\"error_reporting\", \"30719\");\n    $b = new Reporting317();\n    unset($b);\n    echo gc_collect_cycles(), \"|\";\n});\n$request->start();\necho \"END\";\n",
+    "stdout": "30719|1|0|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "db7db99000753a8165d58e90f1611cbc2e555e1bcb0bc8a812baa1e32aa87c5a"
   }
 ]

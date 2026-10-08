@@ -1,0 +1,564 @@
+;; Zend/zend_gc.c::gc_call_destructors_in_fiber. The internal handler is a
+;; genuine Fiber with no PHP function_name/constructor callback. BIRTH and
+;; SOURCE are borrowed; the cache and the live guard are its actual owners.
+dec $gc_worker_birth_valid(pstate, pgccall) : bool
+dec $gc_worker_call_source_valid(pstate, pconfigcall) : bool
+dec $gc_worker_selected_source_valid(pstate, pconfigcall) : bool
+dec $gc_worker_cache_valid(pstate, nat, pfiber) : bool
+dec $gc_worker_guard_valid(pstate, pgcguard) : bool
+dec $gc_worker_guard_count(ptask*, pgcguard) : nat
+dec $gc_worker_guard_task(ptask, pgcguard) : nat
+dec $gc_worker_guard_frames(pframe*, pgcguard) : nat
+dec $gc_worker_guard_tail(ptask*, pgcguard) : bool
+dec $gc_worker_guard_frame_tail(pframe*, pgcguard) : bool
+dec $gc_worker_guard_at(pstate) : pgcguard?
+dec $gc_worker_put_guard(pstate, nat, pgcguard?) : pstate
+dec $gc_worker_plan_set(pstate, pgcplan) : pstate
+dec $gc_worker_start(pstate, pgcplan, bool) : pstate
+dec $gc_worker_cached(pstate, pgccall) : pstate
+dec $gc_worker_start_plan(pstate, pgcplan, bool) : pgcplan
+dec $gc_worker_guard_attachment(pstate, pgcguard) : bool
+dec $gc_worker_start_vm(pstate, nat, pfiber) : pstate
+dec $gc_worker_enter(pstate, nat, pgcplan, nat) : pstate
+dec $gc_worker_idle(pstate, nat, pgcplan) : pstate
+dec $gc_worker_detach(pstate, nat, pgcplan) : pstate
+dec $gc_worker_guard_done(pstate, pgcguard) : pstate
+dec $gc_worker_guard_drop(pstate, pgcguard) : pstate
+dec $gc_worker_pending_tasks(ptask*, pgcguard, pgcguard) : ptask*
+dec $gc_worker_pending(pstate, pgcguard, nat) : pstate
+dec $gc_worker_run_valid(pstate, nat) : bool
+dec $gc_worker_wait_valid(pstate, nat, pgcplan) : bool
+dec $gc_worker_replace_tasks(ptask*, pgcplan, pgcplan) : ptask*
+dec $gc_worker_replacement_tasks(ptask*, pgcplan) : bool
+dec $gc_worker_replacement_pending(pstate, pgcplan, nat) : pstate
+dec $gc_call_vm_count(pstate, pfibervm, nat?, pgccall) : nat
+dec $gc_plan_vm_count(pstate, pfibervm, nat?, pgcplan) : nat
+dec $gc_call_caller_count(pstate, pfibercaller*, pgccall) : nat
+dec $gc_plan_caller_count(pstate, pfibercaller*, pgcplan) : nat
+dec $gc_call_close_count(pstate, pfiberclose*, pgccall) : nat
+dec $gc_plan_close_count(pstate, pfiberclose*, pgcplan) : nat
+dec $gc_caller_scope(pstate, pfibercaller*, pgccall) : pstate?
+dec $gc_close_scope(pstate, pfiberclose*, pgccall) : pstate?
+dec $gc_worker_scope(pcallcontext?) : porigin?
+dec $gc_worker_start_buffer(pstate, pgcplan, bool) : pstate
+
+;; Restored VM views exclude their borrowed parked copy. Only TODO/FRAMES,
+;; never destructor histories or PLAN itself, authenticate the global pass.
+def $gc_call_vm_count(S, pfibervm, n?, pgccall) = $($gc_consumer_count(pfibervm.TODO, pgccall) + $gc_consumer_frame_count(pfibervm.FRAMES, pgccall))
+  -- if n? =/= S.ACTIVEFIBER
+def $gc_call_vm_count(S, pfibervm, n?, pgccall) = 0 -- if n? = S.ACTIVEFIBER
+def $gc_plan_vm_count(S, pfibervm, n?, pgcplan) = $($gc_plan_consumer_count(pfibervm.TODO, pgcplan) + $gc_plan_frame_count(pfibervm.FRAMES, pgcplan))
+  -- if n? =/= S.ACTIVEFIBER
+def $gc_plan_vm_count(S, pfibervm, n?, pgcplan) = 0 -- if n? = S.ACTIVEFIBER
+def $gc_call_caller_count(S, eps, pgccall) = 0
+def $gc_call_caller_count(S, pfibercaller :: pfibercaller_tail*, pgccall) = $($gc_call_vm_count(S, pfibercaller.VM, pfibercaller.PREVIOUS, pgccall) + $gc_call_caller_count(S, pfibercaller_tail*, pgccall))
+def $gc_plan_caller_count(S, eps, pgcplan) = 0
+def $gc_plan_caller_count(S, pfibercaller :: pfibercaller_tail*, pgcplan) = $($gc_plan_vm_count(S, pfibercaller.VM, pfibercaller.PREVIOUS, pgcplan) + $gc_plan_caller_count(S, pfibercaller_tail*, pgcplan))
+def $gc_call_close_count(S, eps, pgccall) = 0
+def $gc_call_close_count(S, pfiberclose :: pfiberclose_tail*, pgccall) = $($gc_call_vm_count(S, pfiberclose.VM, pfiberclose.PREVIOUS, pgccall) + $gc_call_close_count(S, pfiberclose_tail*, pgccall))
+def $gc_plan_close_count(S, eps, pgcplan) = 0
+def $gc_plan_close_count(S, pfiberclose :: pfiberclose_tail*, pgcplan) = $($gc_plan_vm_count(S, pfiberclose.VM, pfiberclose.PREVIOUS, pgcplan) + $gc_plan_close_count(S, pfiberclose_tail*, pgcplan))
+def $gc_parked_call_count(S, pgccall) = $($gc_call_caller_count(S, S.FIBERCALLERS, pgccall) + $gc_call_close_count(S, S.FIBERCLOSERS, pgccall))
+def $gc_parked_plan_count(S, pgcplan) = $($gc_plan_caller_count(S, S.FIBERCALLERS, pgcplan) + $gc_plan_close_count(S, S.FIBERCLOSERS, pgcplan))
+def $gc_caller_scope(S, eps, pgccall) = eps
+def $gc_caller_scope(S, pfibercaller :: pfibercaller_tail*, pgccall) = ($fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*][.COMPLETION = NORMAL])
+  -- if $($gc_call_vm_count(S, pfibercaller.VM, pfibercaller.PREVIOUS, pgccall) > 0)
+def $gc_caller_scope(S, pfibercaller :: pfibercaller_tail*, pgccall) = $gc_caller_scope(S, pfibercaller_tail*, pgccall)
+  -- if $gc_call_vm_count(S, pfibercaller.VM, pfibercaller.PREVIOUS, pgccall) = 0
+def $gc_close_scope(S, eps, pgccall) = eps
+def $gc_close_scope(S, pfiberclose :: pfiberclose_tail*, pgccall) = ($fiber_vm_restore(S, pfiberclose.VM)[.ACTIVEFIBER = pfiberclose.PREVIOUS][.FIBERCLOSERS = pfiberclose_tail*][.COMPLETION = NORMAL])
+  -- if $($gc_call_vm_count(S, pfiberclose.VM, pfiberclose.PREVIOUS, pgccall) > 0)
+def $gc_close_scope(S, pfiberclose :: pfiberclose_tail*, pgccall) = $gc_close_scope(S, pfiberclose_tail*, pgccall)
+  -- if $gc_call_vm_count(S, pfiberclose.VM, pfiberclose.PREVIOUS, pgccall) = 0
+def $gc_consumer_scope(S, pgccall) = (S_scope)
+  -- if $($gc_consumer_count(S.TODO, pgccall) + $gc_consumer_frame_count(S.FRAMES, pgccall)) = 0
+  -- if $gc_caller_scope(S, S.FIBERCALLERS, pgccall) = (S_scope)
+def $gc_consumer_scope(S, pgccall) = (S_scope)
+  -- if $($gc_consumer_count(S.TODO, pgccall) + $gc_consumer_frame_count(S.FRAMES, pgccall)) = 0
+  -- if $gc_caller_scope(S, S.FIBERCALLERS, pgccall) = eps
+  -- if $gc_close_scope(S, S.FIBERCLOSERS, pgccall) = (S_scope)
+
+def $gc_task_consumer(GC_WORKER_WAIT n pgcplan, pgccall) = 1 -- if pgcplan.CALL = pgccall
+def $gc_task_consumer(GC_WORKER_REPLACE pgcplan, pgccall) = 1 -- if pgcplan.CALL = pgccall
+def $gc_task_plan_consumer(GC_WORKER_WAIT n pgcplan_task, pgcplan) = 1 -- if pgcplan_task = pgcplan
+def $gc_task_plan_consumer(GC_WORKER_REPLACE pgcplan_task, pgcplan) = 1 -- if pgcplan_task = pgcplan
+def $gc_snapshot_fresh(S, pgcplan) = true
+  -- if S.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_tail*
+  -- if pgcplan.INDEX = 0
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+
+def $gc_worker_birth_valid(S, pgccall) = true
+  -- if $(pgccall.NONCE < S.GC.NEXT)
+  -- if $(pgccall.PASS <= 1)
+  -- if pgccall.CALL.KIND = INTRINSIC_GC_COLLECT
+  -- if pgccall.CALL.SENT = eps
+  -- if pgccall.ORIGIN = (pgccall.CALL.SITE)
+  -- if pgccall.PENDING = eps
+  -- if $gc_worker_call_source_valid($gc_call_local_scope(S, pgccall), pgccall.CALL)
+def $gc_worker_birth_valid(S, pgccall) = false -- otherwise
+;; BIRTH/SOURCE remember a completed selection. They authenticate immutable
+;; source/arena facts, without re-resolving later functions or owning a retired
+;; intrinsic Closure. The actual collecting caller still uses gc_plan_valid.
+def $gc_worker_call_source_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_GC_COLLECT
+  -- if pconfigcall.SENT = eps
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if pconfigcall.SITE = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pconfigcall.LINE, false))
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
+  -- if $config_sent_shape(S, pconfigcall)
+  -- if $gc_worker_selected_source_valid(S, pconfigcall)
+def $gc_worker_call_source_valid(S, pconfigcall) = false -- otherwise
+def $gc_worker_selected_source_valid(S, pconfigcall) = true
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = eps
+  -- if ~$pipe_site(S, pconfigcall.SITE)
+  -- if $exit_fixed(S, pconfigcall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pconfigcall.KIND)
+def $gc_worker_selected_source_valid(S, pconfigcall) = true
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = eps
+  -- if $pipe_site(S, pconfigcall.SITE)
+  -- if $pipe_fixed_name(S, pconfigcall.SITE) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pconfigcall.KIND)
+def $gc_worker_selected_source_valid(S, pconfigcall) = true
+  -- if pconfigcall.OWNER = eps
+  -- if pconfigcall.SELECTION = (n_nonce)
+  -- if $(n_nonce < |S.SELECTEDCALLS|)
+  -- if S.SELECTEDCALLS[n_nonce] = pselectedcall
+  -- if pselectedcall.NONCE = n_nonce
+  -- if pselectedcall.SITE = pconfigcall.SITE
+  -- if pselectedcall.KIND = pconfigcall.KIND
+  -- if pselectedcall.LINE = pconfigcall.LINE
+  -- if $selected_entry_source_valid(S, pselectedcall)
+def $gc_worker_selected_source_valid(S, pconfigcall) = true
+  -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = eps
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
+  -- if ($exit_fixed(S, pconfigcall.SITE) = eps /\ $exit_dynamic_site(S, pconfigcall.SITE)) \/ $exit_method_site(S, pconfigcall.SITE)
+def $gc_worker_selected_source_valid(S, pconfigcall) = false -- otherwise
+def $gc_worker_cache_valid(S, n, pfiber) = true
+  -- if pfiber.GC = (pgcworker)
+  -- if $gc_worker_birth_valid(S, pgcworker.BIRTH)
+  -- if pfiber.READY
+  -- if ~pfiber.RETURNED
+  -- if ~pfiber.FAILED
+  -- if ~pfiber.GRACEFUL
+  -- if pfiber.CALL = eps
+  -- if pfiber.RAW = PNULL
+  -- if pfiber.TARGET = eps
+  -- if pfiber.BIRTH = eps
+  -- if pfiber.CAPTURE = eps
+  -- if pfiber.PRODUCER = eps
+  -- if pfiber.ENTRY = eps
+  -- if pfiber.FINISH = eps
+  -- if pfiber.VALUE = PNULL
+  -- if $(pfiber.SEQUENCE > 0)
+  -- if $(pfiber.SEQUENCE < S.FIBERSEQ)
+def $gc_worker_cache_valid(S, n, pfiber) = false -- otherwise
+def $gc_internal_worker(S, n) = true
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC =/= eps
+def $gc_internal_worker(S, n) = false -- otherwise
+def $gc_worker_state_valid(S) = true -- if S.GC.WORKER = eps
+def $gc_worker_state_valid(S) = true
+  -- if S.GC.WORKER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $gc_worker_cache_valid(S, n, pfiber)
+  -- if pfiber.STATUS <- [FIBER_RUNNING, FIBER_SUSPENDED]
+def $gc_worker_state_valid(S) = false -- otherwise
+def $fiber_cache_valid(S, n, pfiber) = $gc_worker_cache_valid(S, n, pfiber) -- if pfiber.GC =/= eps
+def $fiber_record_valid(S, n, pfiber) = true
+  -- if $gc_worker_cache_valid(S, n, pfiber)
+  -- if pfiber.STATUS = FIBER_RUNNING
+  -- if pfiber.VM = eps
+  -- if S.ACTIVEFIBER = (n) \/ n <- $fiber_waiting_ids(S.FIBERCALLERS) \/ n <- $fiber_close_waiting_ids(S.FIBERCLOSERS)
+def $fiber_record_valid(S, n, pfiber) = true
+  -- if $gc_worker_cache_valid(S, n, pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+  -- if pgcworker.GUARD = eps
+  -- if S.GC.WORKER = (n)
+  -- if pfibervm.TODO = [GC_WORKER_IDLE n]
+  -- if $fiber_vm_valid(S, pfibervm, (n), eps)
+def $fiber_record_valid(S, n, pfiber) = true
+  -- if $gc_worker_cache_valid(S, n, pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if S.GC.WORKER =/= (n)
+  -- if ~pfibervm.GLOBAL
+  -- if pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*
+  -- if pfiberapi.OBJECT = n
+  -- if pfiberapi.SEQUENCE = pfiber.SEQUENCE
+  -- if $fiber_vm_valid(S, pfibervm, (n), eps)
+def $fiber_finish_valid(S, n) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $gc_worker_cache_valid(S, n, pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if S.GC.WORKER =/= (n) \/ pgcworker.GUARD =/= eps
+  -- if pfiber.STATUS <- [FIBER_RUNNING, FIBER_SUSPENDED]
+def $call_task_valid(S, GC_WORKER_IDLE n) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if S.GC.WORKER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $gc_worker_cache_valid(S, n, pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if S.ORIGIN = eps
+def $fiber_resume(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "public resumption of an idle cached collector Fiber"]
+  -- if pconfigcall.OWNER = S.GC.WORKER
+  -- if S.GC.WORKER =/= eps
+
+;; The request object-store pass destroys the cached idle internal handler. It
+;; has no PHP callback or live guard; DESTROYED exits its loop and drops cache.
+def $gc_worker_idle_store_ready(S) = true
+  -- if S.TODO = [DESTRUCTOR_STORE]
+  -- if $call_task_valid(S, DESTRUCTOR_STORE)
+  -- if $(S.DESTRUCTION.INDEX < S.DESTRUCTION.NEXT)
+  -- if S.GC.ACTIVE = eps
+  -- if S.GC.PLAN = eps
+  -- if S.GC.WORKER = (n)
+  -- if $destructor_handle(S, S.DESTRUCTION.INDEX, 0) = (n)
+  -- if $internal_destructor_pending(S, HOBJECT n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $fiber_record_valid(S, n, pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+rule PhpStep/gc-worker-idle-store: S ~> S_retired[.GC = $gc_buffer_add(S_retired.GC, HOBJECT n)]
+  -- if $gc_worker_idle_store_ready(S)
+  -- if S.GC.WORKER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if S_retired = $fiber_put(S[.GC.WORKER = eps][.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)], n, $fiber_terminated(pfiber, PNULL, false)[.GRACEFUL = true][.RETURNED = false])
+
+;; The caller row records the actual gc_collect_cycles invocation. It is not a
+;; user Fiber::start/resume receipt, and its trace therefore has no Fiber class.
+def $fiber_caller_wait(S, pfibercaller) = true
+  -- if $gc_worker_api(pfibercaller.API)
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT pfibercaller.OBJECT pgcplan) :: ptask_tail*
+  -- if pfibercaller.API.SITE = pgcplan.CALL.CALL.SITE
+  -- if pfibercaller.API.LINE = pgcplan.CALL.CALL.LINE
+  -- if pfibercaller.API.START = eps
+  -- if pfibercaller.API.SENT = eps
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $gc_worker_api(pfiberapi)
+  -- if pfiberapi.START = eps
+  -- if pfiberapi.SENT = eps
+  -- if $(pfiberapi.SEQUENCE > 0)
+  -- if $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if pfiberapi.SITE = pgcplan.CALL.CALL.SITE
+  -- if pfiberapi.LINE = pgcplan.CALL.CALL.LINE
+  -- if $fiber_at(S, pfiberapi.OBJECT) = (pfiber)
+  -- if $gc_worker_cache_valid(S, pfiberapi.OBJECT, pfiber)
+  -- if pfiber.SEQUENCE = pfiberapi.SEQUENCE
+def $gc_worker_wait_valid(S, n, pgcplan) = true
+  -- if S.GC.WORKER = (n)
+  -- if $gc_plan_valid(S, pgcplan)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.STATUS = FIBER_RUNNING
+  -- if $gc_worker_cache_valid(S, n, pfiber)
+def $gc_worker_wait_valid(S, n, pgcplan) = false -- otherwise
+def $call_task_valid(S, GC_WORKER_WAIT n pgcplan) = $gc_worker_wait_valid(S, n, pgcplan)
+def $gc_worker_run_valid(S, n) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if S.GC.WORKER = (n)
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if S.ORIGIN = eps
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $gc_worker_cache_valid(S, n, pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n
+  -- if $gc_worker_api(pfibercaller.API)
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_tail*
+def $gc_worker_run_valid(S, n) = false -- otherwise
+def $call_task_valid(S, GC_WORKER_RUN n) = $gc_worker_run_valid(S, n)
+def $task_nodes(GC_WORKER_RUN n) = eps
+def $task_nodes(GC_WORKER_IDLE n) = eps
+def $task_nodes(GC_WORKER_WAIT n pgcplan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
+def $task_nodes(GC_WORKER_REPLACE pgcplan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
+def $task_nodes(GC_WORKER_GUARD pgcguard) = [HOBJECT pgcguard.OBJECT] ++ $instance_roots(pgcguard.PENDING)
+def $eager_explicit_task(GC_WORKER_RUN n) = true
+def $eager_explicit_task(GC_WORKER_GUARD pgcguard) = true
+def $eager_explicit_task(GC_WORKER_IDLE n) = true
+def $eager_explicit_task(GC_WORKER_WAIT n pgcplan) = true
+def $eager_explicit_task(GC_WORKER_REPLACE pgcplan) = true
+
+def $gc_worker_put_guard(S, n, pgcguard?) = $fiber_put(S, n, pfiber[.GC = (pgcworker[.GUARD = pgcguard?])])
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+def $gc_worker_plan_set(S, pgcplan) = S[.GC.PLAN = (pgcplan)][.GC.ACTIVE = (pgcplan.CALL)][.FIBERCALLERS = pfibercaller[.VM.TODO = (GC_WORKER_WAIT pfibercaller.OBJECT pgcplan) :: ptask_tail*] :: pfibercaller_tail*]
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if $gc_worker_api(pfibercaller.API)
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT pfibercaller.OBJECT pgcplan_old) :: ptask_tail*
+def $gc_worker_start(S, pgcplan, b_fresh) = $gc_worker_start_vm(S_running, n, pfiber)[.TODO = [GC_WORKER_RUN n]][.ACTIVEFIBER = (n)][.FIBERCALLERS = pfibercaller :: S_caller.FIBERCALLERS][.FIBERSEQ = $(S_caller.FIBERSEQ + 1)]
+  -- if S_cached = $gc_worker_cached(S, pgcplan.CALL)
+  -- if S_cached.GC.WORKER = (n)
+  -- if $fiber_at(S_cached, n) = (pfiber)
+  -- if pgcplan_next = $gc_worker_start_plan(S_cached, pgcplan, b_fresh)
+  -- if S_caller = $gc_replace($gc_worker_start_buffer(S_cached, pgcplan_next, b_fresh), pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
+  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ}
+  -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
+  -- if S_running = $fiber_put(S_caller, n, pfiber[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = pfiberapi.SEQUENCE])
+def $gc_worker_start_vm(S, n, pfiber) = $fiber_fresh_vm(S, n, {SLOTS eps, NAMED eps})
+  -- if pfiber.VM = eps
+def $gc_worker_start_vm(S, n, pfiber) = $fiber_vm_restore(S, pfibervm)
+  -- if pfiber.VM = (pfibervm)
+def $gc_worker_cached(S, pgccall) = $destruction_store_new(S[.OBJECTS = S.OBJECTS ++ [FIBER pfiber]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.GC.WORKER = (n)])
+  -- if S.GC.WORKER = eps
+  -- if n = |S.OBJECTS|
+  -- if pfiber = $fiber_empty()[.READY = true][.GC = ({BIRTH pgccall[.PENDING = eps], GUARD eps})]
+def $gc_worker_cached(S, pgccall) = S -- if S.GC.WORKER =/= eps
+def $gc_worker_start_plan(S, pgcplan, true) = $gc_plan(S, pgcplan.CALL)
+def $gc_worker_start_plan(S, pgcplan, false) = pgcplan
+def $gc_worker_start_buffer(S, pgcplan, true) = S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps]
+def $gc_worker_start_buffer(S, pgcplan, false) = S
+def $gc_fiber_trace(S, pgcplan) = $gc_worker_start(S, pgcplan, true)
+  -- if $fiber_transfer_domain(S)
+def $gc_fiber_trace(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "collector Fiber transfer during an initializer, source loader or Generator continuation"]
+  -- if ~$fiber_transfer_domain(S)
+
+rule PhpStep/gc-worker-skip: S ~> $gc_worker_plan_set(S, pgcplan_next)
+  -- if S.TODO = [GC_WORKER_RUN n]
+  -- if $gc_worker_run_valid(S, n)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pnode = pgcplan.DTORS[pgcplan.INDEX]
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode)
+  -- if pgcplan_next = pgcplan[.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_SKIPPED pnode]]
+rule PhpStep/gc-worker-enter: S ~> $gc_worker_enter(S, n, pgcplan, n_object)
+  -- if S.TODO = [GC_WORKER_RUN n]
+  -- if $gc_worker_run_valid(S, n)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n_object
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+  -- if $destructor_uncalled_node(S, HOBJECT n_object)
+def $gc_worker_enter(S, n, pgcplan, n_object) = $destructor_select(S_guarded, n_object, false, eps)
+  -- if pgcguard = {WORKER n, SOURCE pgcplan.CALL[.PENDING = eps], INDEX pgcplan.INDEX, OBJECT n_object, PENDING pgcplan.CALL.PENDING}
+  -- if S_moved = $gc_worker_plan_set(S, pgcplan[.CALL.PENDING = eps])
+  -- if S_guarded = $gc_worker_put_guard(S_moved[.TODO = [GC_WORKER_GUARD pgcguard, FIBER_FINISH n]], n, (pgcguard))
+rule PhpStep/gc-worker-idle: S ~> $gc_worker_idle(S, n, pgcplan)
+  -- if S.TODO = [GC_WORKER_RUN n]
+  -- if $gc_worker_run_valid(S, n)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.INDEX = |pgcplan.DTORS|
+def $gc_worker_idle(S, n, pgcplan) = S_returned[.TODO = (GC_FREE pgcplan) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if S_idle = S[.TODO = [GC_WORKER_IDLE n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_saved = $fiber_put(S_idle, n, pfiber[.STATUS = FIBER_SUSPENDED][.VM = ($fiber_vm(S_idle))])
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if S_returned = $fiber_vm_restore(S_saved, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if S_returned.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_tail*
+
+def $gc_worker_guard_task(AT porigin ptask, pgcguard) = $gc_worker_guard_task(ptask, pgcguard)
+def $gc_worker_guard_task(GC_WORKER_GUARD pgcguard_task, pgcguard) = 1 -- if pgcguard_task = pgcguard
+def $gc_worker_guard_task(ptask, pgcguard) = 0 -- otherwise
+def $gc_worker_guard_count(eps, pgcguard) = 0
+def $gc_worker_guard_count(ptask :: ptask_tail*, pgcguard) = $($gc_worker_guard_task(ptask, pgcguard) + $gc_worker_guard_count(ptask_tail*, pgcguard))
+def $gc_worker_guard_frames(eps, pgcguard) = 0
+def $gc_worker_guard_frames(pframe :: pframe_tail*, pgcguard) = $($gc_worker_guard_count(pframe.TODO, pgcguard) + $gc_worker_guard_frames(pframe_tail*, pgcguard))
+def $gc_worker_guard_tail([GC_WORKER_GUARD pgcguard, FIBER_FINISH n], pgcguard) = (n = pgcguard.WORKER)
+def $gc_worker_guard_tail(ptask :: ptask_tail*, pgcguard) = $gc_worker_guard_tail(ptask_tail*, pgcguard)
+  -- if ptask =/= GC_WORKER_GUARD pgcguard
+def $gc_worker_guard_tail(ptask*, pgcguard) = false -- otherwise
+def $gc_worker_guard_frame_tail(eps, pgcguard) = false
+def $gc_worker_guard_frame_tail(pframe :: pframe_tail*, pgcguard) = ($gc_worker_guard_tail(pframe.TODO, pgcguard) \/ $gc_worker_guard_frame_tail(pframe_tail*, pgcguard))
+def $gc_worker_guard_at(S) = (pgcguard)
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if $gc_worker_guard_valid(S, pgcguard)
+def $gc_worker_guard_at(S) = eps -- otherwise
+def $gc_worker_guard_valid(S, pgcguard) = true
+  -- if S.ACTIVEFIBER = (pgcguard.WORKER)
+  -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
+  -- if $gc_worker_cache_valid(S, pgcguard.WORKER, pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if $gc_worker_birth_valid(S, pgcguard.SOURCE)
+  -- if (HOBJECT pgcguard.OBJECT) <- S.ALLOCATIONS
+  -- if pgcguard.OBJECT <- S.DESTRUCTION.CALLED
+  -- if $destructor_pending_valid(S, pgcguard.PENDING)
+  -- if $($gc_worker_guard_count(S.TODO, pgcguard) + $gc_worker_guard_frames(S.FRAMES, pgcguard)) = 1
+  -- if $gc_worker_guard_tail(S.TODO, pgcguard) \/ $gc_worker_guard_frame_tail(S.FRAMES, pgcguard)
+  -- if $gc_worker_guard_attachment(S, pgcguard)
+def $gc_worker_guard_valid(S, pgcguard) = false -- otherwise
+
+;; The real source-less C root saves its empty table when entering a destructor.
+;; Its adjacent guard authenticates this frame after the original caller retires.
+dec $gc_worker_base_frame(pstate, pframe) : bool
+def $gc_worker_base_frame(S, pframe) = true
+  -- if S.ACTIVEFIBER = (n)
+  -- if pframe.CONTEXT = eps
+  -- if pframe.LOCALS = ($empty_table())
+  -- if pframe.TODO = [DESTRUCTOR_RESULT pdestructorcall, GC_WORKER_GUARD pgcguard, FIBER_FINISH n]
+  -- if pframe.ORIGIN = eps
+  -- if pframe.SILENCES = eps
+  -- if pframe.HELD = eps
+  -- if pframe.BORROWEDREAD = eps
+  -- if pframe.OBJECTCAST = eps
+  -- if pframe.CONSTCONTEXT = eps
+  -- if pgcguard.WORKER = n
+  -- if pdestructorcall.OBJECT = pgcguard.OBJECT
+  -- if pdestructorcall.CALLER = eps
+  -- if pdestructorcall.ORIGIN = eps
+  -- if pdestructorcall.CONSTCONTEXT = eps
+  -- if $gc_worker_guard_valid(S, pgcguard)
+def $gc_worker_base_frame(S, pframe) = false -- otherwise
+def $call_saved_context_valid(S, pframe) = true -- if $gc_worker_base_frame(S, pframe)
+
+def $gc_worker_guard_attachment(S, pgcguard) = true
+  -- if S.GC.WORKER = (pgcguard.WORKER)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if pgcplan.CALL = pgcguard.SOURCE
+  -- if pgcplan.INDEX = pgcguard.INDEX
+  -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT pgcguard.OBJECT
+def $gc_worker_guard_attachment(S, pgcguard) = true -- if S.GC.WORKER =/= (pgcguard.WORKER)
+def $gc_worker_guard_attachment(S, pgcguard) = false -- otherwise
+def $call_task_valid(S, GC_WORKER_GUARD pgcguard) = $gc_worker_guard_valid(S, pgcguard)
+def $destructor_leaf_valid(S, pdestructorcall) = true
+  -- if pdestructorcall.RELEASE = eps
+  -- if pdestructorcall.FRAME = eps
+  -- if pdestructorcall.OPERATION = eps
+  -- if $gc_worker_guard_at(S) = (pgcguard)
+  -- if pgcguard.OBJECT = pdestructorcall.OBJECT
+  -- if pdestructorcall.CALLER = eps
+  -- if pdestructorcall.ORIGIN = eps
+  -- if pdestructorcall.CONSTCONTEXT = eps
+def $gc_source(S) = true
+  -- if S.CURRENT = eps
+  -- if $gc_worker_guard_at(S) =/= eps
+def $destructor_tail_pending((GC_WORKER_GUARD pgcguard) :: ptask_tail*) = pgcguard.PENDING
+def $gc_worker_scope(eps) = eps
+def $gc_worker_scope((pcallcontext)) = pcallcontext.LEXICAL_CLASS
+def $destructor_access_scope(S) = $gc_worker_scope(pgcguard.SOURCE.CALLER)
+  -- if S.CURRENT = eps
+  -- if $gc_worker_guard_at(S) = (pgcguard)
+
+def $gc_worker_pending_tasks(eps, pgcguard, pgcguard_new) = eps
+def $gc_worker_pending_tasks((GC_WORKER_GUARD pgcguard) :: ptask_tail*, pgcguard, pgcguard_new) = (GC_WORKER_GUARD pgcguard_new) :: ptask_tail*
+def $gc_worker_pending_tasks(ptask :: ptask_tail*, pgcguard, pgcguard_new) = ptask :: $gc_worker_pending_tasks(ptask_tail*, pgcguard, pgcguard_new)
+  -- if ptask =/= GC_WORKER_GUARD pgcguard
+def $gc_worker_pending(S, pgcguard, n_error) = $gc_worker_put_guard(S[.TODO = $gc_worker_pending_tasks(ptask_tail*, pgcguard, pgcguard_new)], pgcguard.WORKER, (pgcguard_new))
+  -- if S.TODO = (THROW_SEARCH n_error) :: ptask_tail*
+  -- if pgcguard_new = pgcguard[.PENDING = (n_error)]
+def $destructor_resume_pending(S, pdestructorcall) = $gc_worker_pending(S, pgcguard, n_error)
+  -- if pdestructorcall.RELEASE = eps
+  -- if pdestructorcall.FRAME = eps
+  -- if pdestructorcall.OPERATION = eps
+  -- if S.TODO = (THROW_SEARCH n_error) :: ptask_tail*
+  -- if $gc_worker_guard_at(S) = (pgcguard)
+  -- if pgcguard.OBJECT = pdestructorcall.OBJECT
+rule PhpStep/gc-worker-guard-return: S ~> $gc_worker_guard_done(S, pgcguard)
+  -- if S.TODO = (GC_WORKER_GUARD pgcguard) :: ptask_tail*
+  -- if $gc_worker_guard_valid(S, pgcguard)
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+def $gc_worker_guard_drop(S, pgcguard) = $gc_worker_put_guard(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgcguard.WORKER, eps)
+  -- if S.TODO = (GC_WORKER_GUARD pgcguard) :: ptask_tail*
+def $gc_worker_guard_done(S, pgcguard) = $gc_worker_plan_set($gc_worker_guard_drop(S, pgcguard)[.TODO = [GC_WORKER_RUN pgcguard.WORKER]], pgcplan_next)
+  -- if S.GC.WORKER = (pgcguard.WORKER)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan_next = pgcplan[.CALL.PENDING = pgcguard.PENDING][.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_CALLED (HOBJECT pgcguard.OBJECT)]][.DONE = pgcplan.DONE ++ [HOBJECT pgcguard.OBJECT]]
+def $gc_worker_guard_done(S, pgcguard) = S[.COMPLETION = UNSUPPORTED "zero-owner target after detached collector guard retirement"]
+  -- if S.GC.WORKER =/= (pgcguard.WORKER)
+  -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
+  -- if $heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) = 0
+def $gc_worker_guard_done(S, pgcguard) = S_dropped[.GC = $gc_buffer_add(S_dropped.GC, HOBJECT pgcguard.OBJECT)]
+  -- if S.GC.WORKER =/= (pgcguard.WORKER)
+  -- if pgcguard.PENDING = eps
+  -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
+  -- if $($heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) > 0)
+def $gc_worker_guard_done(S, pgcguard) = S_dropped[.GC = $gc_buffer_add(S_dropped.GC, HOBJECT pgcguard.OBJECT)][.TODO = (THROW_SEARCH n_error) :: S_dropped.TODO]
+  -- if S.GC.WORKER =/= (pgcguard.WORKER)
+  -- if pgcguard.PENDING = (n_error)
+  -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
+  -- if $($heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) > 0)
+
+;; Suspension moves the current dtor_obj frame, including old_exception, into
+;; the detached VM. The real cache owner becomes one ordinary release job.
+def $fiber_back(S, pvalue, false) = $gc_worker_detach(S, pfibercaller.OBJECT, pgcplan)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if $gc_worker_api(pfibercaller.API)
+  -- if S.ACTIVEFIBER = (pfibercaller.OBJECT)
+  -- if ~$fiber_close_boundary(S)
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT pfibercaller.OBJECT pgcplan) :: ptask_tail*
+def $gc_worker_detach(S, n, pgcplan) = $destructor_release_begin(S_detached, [DESTRUCTION_VALUE (HOBJECT n)])
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcplan_next = pgcplan[.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_DETACHED (HOBJECT pgcguard.OBJECT)]]
+  -- if S_returned = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if S_returned.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_tail*
+  -- if S_detached = S_returned[.GC.WORKER = eps][.GC.PLAN = (pgcplan_next)][.GC.ACTIVE = (pgcplan_next.CALL)][.TODO = (GC_WORKER_REPLACE pgcplan_next) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+def $gc_steps_valid(S, (HOBJECT n) :: pnode*, (GC_DETACHED (HOBJECT n)) :: pgcprogress*) = (n <- S.DESTRUCTION.CALLED /\ $gc_steps_valid(S, pnode*, pgcprogress*))
+def $gc_step_done((GC_DETACHED pnode) :: pgcprogress*) = $gc_step_done(pgcprogress*)
+def $call_task_valid(S, GC_WORKER_REPLACE pgcplan) = ($gc_plan_valid(S, pgcplan) /\ S.GC.WORKER = eps /\ $(pgcplan.INDEX > 0))
+rule PhpStep/gc-worker-replace: S ~> $gc_worker_start(S, pgcplan, false)
+  -- if S.TODO = (GC_WORKER_REPLACE pgcplan) :: ptask_tail*
+  -- if $call_task_valid(S, GC_WORKER_REPLACE pgcplan)
+
+def $gc_worker_replacement_tasks((GC_WORKER_REPLACE pgcplan) :: ptask_tail*, pgcplan) = true
+def $gc_worker_replacement_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pgcplan) = $gc_worker_replacement_tasks(ptask_tail*, pgcplan)
+def $gc_worker_replacement_tasks(ptask_tail*, pgcplan) = false -- otherwise
+def $gc_worker_replace_tasks((GC_WORKER_REPLACE pgcplan) :: ptask_tail*, pgcplan, pgcplan_new) = (GC_WORKER_REPLACE pgcplan_new) :: ptask_tail*
+def $gc_worker_replace_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pgcplan, pgcplan_new) = (DESTRUCTOR_RELEASE pdestructionrelease) :: $gc_worker_replace_tasks(ptask_tail*, pgcplan, pgcplan_new)
+def $gc_worker_replacement_pending(S, pgcplan, n_error) = S_linked[.TODO = $gc_worker_replace_tasks(S_linked.TODO, pgcplan, pgcplan_new)][.GC.PLAN = (pgcplan_new)][.GC.ACTIVE = (pgcplan_new.CALL)]
+  -- if S_linked = $fiber_close_chain(S, n_error, pgcplan.CALL.PENDING)
+  -- if pgcplan_new = pgcplan[.CALL.PENDING = (n_error)]
+def $fiber_close_error_return(S, n_error) = $gc_worker_replacement_pending(S, pgcplan, n_error)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if $gc_worker_replacement_tasks(S.TODO, pgcplan)
+
+;; Empty function_name needs no callback retirement. DESTROYED handling still
+;; uses the genuine force-close frame and its private graceful control object.
+def $fiber_finish(S, n) = $fiber_close_back($fiber_put(S, n, $fiber_terminated(pfiber, PNULL, false)), PNULL, false)
+  -- if $gc_internal_worker(S, n)
+  -- if $fiber_close_boundary(S)
+  -- if S.ACTIVEFIBER = (n)
+  -- if S.CURRENT = eps
+  -- if S.FRAMES = eps
+  -- if $fiber_at(S, n) = (pfiber)
+def $fiber_throw_finish(S, n, n_exit) = $fiber_close_back($fiber_put(S, n, $fiber_terminated(pfiber, PNULL, false)[.GRACEFUL = true][.RETURNED = false]), PNULL, false)
+  -- if $gc_internal_worker(S, n)
+  -- if $fiber_close_boundary(S)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $fiber_graceful_for(S, n, pfiber.SEQUENCE, n_exit)
+def $fiber_throw_finish(S, n, n_error) = $fiber_close_back($fiber_put(S, n, $fiber_terminated(pfiber, PNULL, true)), POBJECT n_error, true)
+  -- if $gc_internal_worker(S, n)
+  -- if $fiber_close_boundary(S)
+  -- if $throwable_member(S, n_error)
+  -- if $fiber_at(S, n) = (pfiber)
+
+def $destructor_trace_suffix(S, pcallcontext) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("gc_destructor_fiber"), CLASS eps, TYPE eps, ARGS eps, HASARGS true}]
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if $gc_worker_guard_at(S) = (pgcguard)
+  -- if pgcguard.OBJECT = pdestructorcall.OBJECT
+def $fiber_caller_trace(S) = $config_trace_frames(S_caller, pgcplan.CALL.CALL, eps) ++ $eval_exception_trace_from(S_caller, eps)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if $gc_worker_api(pfibercaller.API)
+  -- if ~$fiber_close_boundary(S)
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT pfibercaller.OBJECT pgcplan) :: ptask_tail*
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
