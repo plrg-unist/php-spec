@@ -38,6 +38,72 @@ def reject_temporary_operation(suffix, change):
 
 
 CASES = {
+    'collector-bare-root-keeps-zero-owner-target': {
+        'source': SOURCES['collector-zero-guard-review-18'],
+        'stage': '$gc_bare_nodes(S.GC.BUFFER) = [HOBJECT n_target] '
+                 '-- if S.GC.ACTIVE = eps -- if S.GC.PLAN = eps',
+        'checks': [
+            '(HOBJECT n_target) <- S.ALLOCATIONS',
+            'n_target <- S.DESTRUCTION.CALLED',
+            '$heap_owners($heap_graph(S), HOBJECT n_target) = 0',
+            '~((HOBJECT n_target) <- $machine_roots(S))',
+            '$weakref_find(S, S.ALLOCATIONS, n_target) = (n_wrapper)',
+            '$weakref_get(S, n_wrapper) = POBJECT n_target',
+            '$gc_slot_find(S.GC.BUFFER, HOBJECT n_target, 0) = (n_slot)',
+            'S.GC.BUFFER[n_slot] = GC_BARE_ROOT n_target',
+            '$gc_bare_valid(S, n_target)', *VALID,
+            'S_bad_called = S[.DESTRUCTION.CALLED = eps]',
+            '$heap_graph(S_bad_called) = $heap_graph(S)',
+            '~$gc_bare_valid(S_bad_called, n_target)',
+            '~$gc_state_valid(S_bad_called)',
+            'S_bad_free = S[.GC.FREE = n_slot :: S.GC.FREE]',
+            '$heap_graph(S_bad_free) = $heap_graph(S)',
+            '~$gc_state_valid(S_bad_free)',
+            *pause(), *replay(),
+            '$weakref_get(S_done, n_wrapper) = PNULL',
+            '~((HOBJECT n_target) <- S_done.ALLOCATIONS)',
+            '$gc_slot_find(S_done.GC.BUFFER, HOBJECT n_target, 0) = eps',
+            '$gc_bare_nodes(S_done.GC.BUFFER) = eps',
+            'S_done.GC.NEXT = 2', '$gc_state_valid(S_done)',
+            'S_done.EVENTS = [OUTPUT $ptascii("first:"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|"), OUTPUT $ptascii("released|"), OUTPUT $ptascii("done|"), OUTPUT $ptascii("after:"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("gone|"), OUTPUT $ptascii("END")]',
+        ],
+    },
+    'collector-real-reacquisition-cancels-bare-retention': {
+        'source': SOURCES['collector-zero-guard-child-reacquire-review-18'],
+        'stage': 'S.ACTIVEFIBER = eps -- if S.GC.ACTIVE = eps '
+                 '-- if S.GC.PLAN = eps -- if S.RESULT = KNOWN PNULL '
+                 '-- if $lookup(S.ENV, $ptascii("rescued")) = (n_cell) '
+                 '-- if S.STORE[n_cell] = DEFINED (POBJECT n_target) '
+                 '-- if $heap_owners($heap_graph(S), HOBJECT n_target) = 1',
+        'checks': [
+            '(HOBJECT n_target) <- S.ALLOCATIONS',
+            'n_target <- S.DESTRUCTION.CALLED',
+            '$gc_bare_nodes(S.GC.BUFFER) = eps',
+            '$gc_slot_find(S.GC.BUFFER, HOBJECT n_target, 0) = (n_slot)',
+            'S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n_target)',
+            '~$gc_bare_valid(S, n_target)',
+            '$weakref_find(S, S.ALLOCATIONS, n_target) = (n_wrapper)',
+            '$weakref_get(S, n_wrapper) = POBJECT n_target',
+            '$objectprops_at(S.OBJECTPROPS, n_target) = (ppropertyslot_all*)',
+            '$property_slot_at(ppropertyslot_all*, $ptascii("child")) = (ppropertyslot_child)',
+            'ppropertyslot_child.STATE = PROP_VALUE (DIRECT (POBJECT n_child))',
+            '$heap_owners($heap_graph(S), HOBJECT n_child) = 1',
+            '~(n_child <- S.DESTRUCTION.CALLED)',
+            '$weakref_find(S, S.ALLOCATIONS, n_child) = (n_child_wrapper)',
+            '$weakref_get(S, n_child_wrapper) = POBJECT n_child', *VALID,
+            'S_bad_bare = S[.GC.BUFFER = $gc_slot_set(S.GC.BUFFER, n_slot, GC_BARE_ROOT n_target)]',
+            '$heap_graph(S_bad_bare) = $heap_graph(S)',
+            '~$gc_state_valid(S_bad_bare)',
+            *pause(), *replay(),
+            '$weakref_get(S_done, n_wrapper) = PNULL',
+            '$weakref_get(S_done, n_child_wrapper) = PNULL',
+            '~((HOBJECT n_target) <- S_done.ALLOCATIONS)',
+            '~((HOBJECT n_child) <- S_done.ALLOCATIONS)',
+            '$gc_bare_nodes(S_done.GC.BUFFER) = eps',
+            'S_done.GC.NEXT = 2', '$gc_state_valid(S_done)',
+            'S_done.EVENTS = [OUTPUT $ptascii("first:"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|"), OUTPUT $ptascii("bare|"), OUTPUT $ptascii("done|"), OUTPUT $ptascii("reacquired|"), OUTPUT $ptascii("child-dtor:"), OUTPUT $ptascii("parent-gone|"), OUTPUT $ptascii("child-gone|"), OUTPUT $ptascii("parent-gone|"), OUTPUT $ptascii("after:"), OUTPUT $ptascii("0"), OUTPUT $ptascii("|END")]',
+        ],
+    },
     'collector-cached-vm-keeps-reporting-and-one-parked-pass': {
         'source': SOURCES['collector-cached-ini-review-18'],
         'stage': 'S.TODO = [GC_WORKER_RUN n_worker] '
