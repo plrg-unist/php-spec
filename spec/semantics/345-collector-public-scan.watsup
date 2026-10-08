@@ -17,6 +17,7 @@ dec $gc_worker_public_keep(pstate, nat) : pstate
 dec $gc_worker_public_raw_api(pstate) : pfiberapi?
 dec $gc_worker_public_captured_api_valid(pstate, pfiberapi) : bool
 dec $gc_worker_public_frames(pframe*, pgcguard, pgcguard) : pframe*
+dec $gc_worker_public_origin_view(pstate, pstate, ptask*) : bool
 dec $gc_worker_public_frame_view(pstate, pstate, pframe*) : bool
 dec $gc_worker_public_frame_result_view(pstate, pstate, pframe) : bool
 dec $gc_worker_public_parked(pstate, nat, pfiber) : bool
@@ -203,13 +204,17 @@ def $gc_worker_public_guard_live(S) = true
 def $gc_worker_public_guard_live(S) = false -- otherwise
 def $gc_worker_public_frames(eps, pgcguard, pgcguard_new) = eps
 def $gc_worker_public_frames(pframe :: pframe_tail*, pgcguard, pgcguard_new) = pframe[.TODO = $gc_worker_pending_tasks(pframe.TODO, pgcguard, pgcguard_new)] :: $gc_worker_public_frames(pframe_tail*, pgcguard, pgcguard_new)
+def $gc_worker_public_origin_view(S_scope, S, eps) = false
+def $gc_worker_public_origin_view(S_scope, S, (ORIGIN_RETURN porigin?) :: ptask_tail*) = ($fiber_vm(S) = $fiber_vm(S_scope[.ORIGIN = porigin?]) \/ $gc_worker_public_origin_view(S_scope, S, ptask_tail*))
+def $gc_worker_public_origin_view(S_scope, S, ptask :: ptask_tail*) = $gc_worker_public_origin_view(S_scope, S, ptask_tail*) -- otherwise
 def $gc_worker_public_frame_view(S_parked, S, eps) = false
-def $gc_worker_public_frame_view(S_parked, S, pframe :: pframe_tail*) = ($fiber_vm(S) = $fiber_vm(S_scope) \/ $gc_worker_public_frame_result_view(S_scope, S, pframe) \/ $gc_worker_public_frame_view(S_parked, S, pframe_tail*))
+def $gc_worker_public_frame_view(S_parked, S, pframe :: pframe_tail*) = ($fiber_vm(S) = $fiber_vm(S_scope) \/ $gc_worker_public_origin_view(S_scope, S, pframe.TODO) \/ $gc_worker_public_frame_result_view(S_scope, S, pframe) \/ $gc_worker_public_frame_view(S_parked, S, pframe_tail*))
   -- if S_scope = $constant_frame_scope(S_parked, pframe, pframe_tail*)
 def $gc_worker_public_frame_result_view(S_scope, S, pframe) = true
   -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if S_scope.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
-  -- if $fiber_vm(S) = $fiber_vm($call_after_origin(S_scope, DESTRUCTOR_RESULT pdestructorcall))
+  -- if S_result = $call_after_origin(S_scope, DESTRUCTOR_RESULT pdestructorcall)
+  -- if $fiber_vm(S) = $fiber_vm(S_result) \/ $gc_worker_public_origin_view(S_result, S, ptask_tail*)
 def $gc_worker_public_frame_result_view(S_scope, S, pframe) = false -- otherwise
 def $fiber_suspend(S, pconfigcall, pvalue) = $fiber_suspend_save(S_parked, pconfigcall, pvalue)
   -- if $gc_worker_guard_at(S) = (pgcguard)
@@ -232,7 +237,7 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if S_parked = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = (pgcguard.WORKER)][.FIBERCALLERS = eps][.COMPLETION = NORMAL]
   -- if pfibervm.TODO = (FIBER_CONTINUE pgcpublic.API) :: ptask_tail*
   -- if $fiber_continue_valid(S_parked, pgcpublic.API)
-  -- if pfibervm = $fiber_vm(S) \/ $gc_worker_public_frame_view(S_parked, S, pfibervm.FRAMES)
+  -- if pfibervm = $fiber_vm(S) \/ $gc_worker_public_origin_view(S_parked, S, pfibervm.TODO) \/ $gc_worker_public_frame_view(S_parked, S, pfibervm.FRAMES)
   -- if pgcguard.WORKER = pgcpublic.API.OBJECT
   -- if pgcguard.SOURCE = pgcpublic.SOURCE /\ pgcguard.INDEX = pgcpublic.INDEX
   -- if $(pgcguard.INDEX < pgcpublic.END)
