@@ -12,7 +12,7 @@ dec $live_phase(pstate, nat) : bool
 def $live_phase(S, 0) = true
   -- if $outputs(S.EVENTS) = $ptascii("L;D:before;P;")
   -- if S.CURRENT = (pcallcontext)
-  -- if S.FRAMES = pframe :: pframe*
+  -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
 def $live_phase(S, 1) = true
   -- if S.CURRENT = eps
