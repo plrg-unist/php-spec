@@ -117,7 +117,6 @@ syntax papiquery = { SOURCE ptask, VALUE pvalue, INPUT pvalue, METHOD pitem, SCO
 syntax perrorread = { ORIGINAL ptask, INPUT poperand, BASE pbase, NAME nat*, LINE int, TASK ptask, RESULT poperand }
 ;; A dereferenced CV pointer is borrowed across an error callback, not a zval owner.
 syntax pidentityread = { SITE porigin, OP pbin, LEFT nat*, LEFTLINE int, RIGHT nat*, LINE int, CELL nat, BASE pbase }
-syntax pforeachbind = { SITE porigin, FOREACH porigin, ITERATOR nat, OBJECT nat, POSITION nat, KEY ptbytes, NAME ptbytes, OLD nat, VALUE pvalue, NEW nat, CALLER pcallcontext?, CONSTCONTEXT pconstantcontext?, LINE int }
 syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIGIN porigin?, RAW parray?, SENT poperand?, RECEIVED poperand? }
 syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
 syntax pclosurescope, pclosurebinding
@@ -210,6 +209,7 @@ syntax pordinaryinternal = {SOURCE pctorcall, CALL pctorcall, INDEX nat, VALUES 
 syntax pconstantlookup = { ORIGIN porigin, SITE porigin, DECL porigin, PREFIX nat }
 syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass, LOOKUP pconstantlookup? }
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
+syntax pforeachbind = { SITE porigin, FOREACH porigin, ITERATOR nat, OBJECT nat, POSITION nat, KEY ptbytes, NAME ptbytes, OLD nat, VALUE pvalue, NEW nat, CALLER pcallcontext?, CONSTCONTEXT pconstantcontext?, LINE int }
 syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
 syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
