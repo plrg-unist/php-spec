@@ -349,8 +349,6 @@ rule PhpStep/destructor-global-store: S ~> S[.DESTRUCTION.PHASE = DESTRUCTION_ST
 
 ;; Object-store handles are reused before this pass; reuse stops during it. The
 ;; live upper bound grows when a destructor creates another object.
-dec $instance_storage_freeing(pstate, nat) : bool
-dec $instance_storage_state_valid(pstate) : bool
 def $instance_storage_freeing(S, n) = false -- otherwise
 def $instance_storage_state_valid(S) = true -- otherwise
 def $destructor_handle(S, n_handle, n) = (n)
