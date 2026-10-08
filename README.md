@@ -171,9 +171,12 @@ Assertions now distinguish startup modes `-1`, `0` and `1` before compilation,
 including eval/include replay. Known direct calls capture normalized descriptions;
 dynamic and first-class calls keep ordinary argument evaluation. Twenty-five
 retained source/profile comparisons and 64 reached-state premises pass, including
-fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime mode
-updates, assertion options/callbacks, Stringable descriptions and wider expression
-export remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
+fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime INI updates
+preserve initial/current raw bytes and restore state; quiet quantities, positive
+mode 2, negative-boundary refusals and nested/throwing warning handlers match
+twelve further source profiles. Parsing warnings, Stringable-option refusal,
+assertion options/callbacks, Stringable descriptions and wider expression export
+remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows

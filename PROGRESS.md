@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Runtime assertion INI preserves raw initial/current bytes, modified/restore timing
+and the live numeric mode. Quiet quantities permit nonnegative updates; changes
+involving a negative mode warn before a frozen false completion on the handler's state.
+At `1593cd3ca` (354 modules), strict compilation, 12 new native-profile source
+tuples, 54 typed quantity/state premises and 96 authentic state premises pass.
+Nested writes and original thrown identity survive; altered refusal bytes/options
+are rejected. Raw output is under
+`.tools/compiler-assertion-ini-368-19/.tools/{assertion-ini-gate-v1,method-runtime-9j809l_h,assertion-ini-state-v1}`.
+Parsing warnings/overflow and authenticated Stringable-option refusal remain
+required; explicit startup transport still admits exactly `-1`/`0`/`1`.
+The actual 356-module composition over `4563a5bf9` passes strict initialization
+at `06409ee08` (4.471 seconds); raw output is in
+`.tools/compiler-assertion-ini-current-19/.tools/assertion-ini-current-gate-v1`.
+Earlier 354-module runtime cuts retain their identities.
+
 Module 370 executes simple RAW Fiber API array C-root callbacks, including start
 and constructor. RAW owns current members; frozen caches and C handlers borrow
 the receiver, with separate original/copied buffers. Saved states and actual
@@ -30,8 +45,8 @@ retain identity. Independent quote7 at `45cdd2f92`, export17 at `85f098d5f` and
 startup18 retain separate cuts. Raw results are under
 `.tools/compiler-assertions-368-19/.tools/{method-runtime-itg9mwvs,assertion-state-v3,assertion-gate-v13,assertion-gate-v10,assertion-gate-v8,assertion-startup-v1}`;
 startup rejection classification is derived from unchanged recorded streams.
-Original compiler/receive failures remain preserved. Runtime INI updates,
-options/callbacks, Stringable descriptions and wider export/producer shapes remain
+Original compiler/receive failures remain preserved. Assertion options/callbacks,
+Stringable descriptions and wider export/producer shapes remain
 required. Combined/offline catalogue wiring is prepared; its fresh run is pending.
 The actual 354-module composition over `fa0180918` passes strict initialization
 at `c24807fcd` (4.370 seconds); raw output is in

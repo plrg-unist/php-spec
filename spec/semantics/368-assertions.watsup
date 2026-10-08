@@ -113,7 +113,8 @@ def $assertion_ini_set(S, pconfigcall, preqbytes) = S[.TODO = ptask_tail*][.ASSE
 def $assertion_ini_set(S, pconfigcall, preqbytes) = $error_dispatch(S[.ASSERTIONSMODIFIED = true], 2, $assertion_ini_warning(), pconfigcall.LINE, DIAGNOSTIC "Warning" $assertion_ini_warning() pconfigcall.LINE, ASSERTION_INI_FAILED pconfigcall preqbytes ($precision_value(S)))
   -- if $assertion_quantity(preqbytes) = (z_new)
   -- if $assertion_ini_blocked(S.ASSERTIONS, z_new)
-def $assertion_ini_set(S, pconfigcall, preqbytes) = S[.ASSERTIONSMODIFIED = true][.COMPLETION = UNSUPPORTED "assertion INI quantity parsing warning"] -- otherwise
+  -- if $assertion_ini_option_valid(S, pconfigcall)
+def $assertion_ini_set(S, pconfigcall, preqbytes) = S[.ASSERTIONSMODIFIED = true][.COMPLETION = UNSUPPORTED "assertion INI parsing warning or Stringable refusal"] -- otherwise
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $assertion_ini_set(S_value, pconfigcall, n_new*)
   -- if n_option* = $ptascii("zend.assertions")
   -- if $config_ini_value_conversion(pvalue) = ptypeconversion
@@ -150,11 +151,6 @@ def $assertion_ini_argument(S, pconfigcall, z_precision) = eps -- otherwise
 def $assertion_ini_option_valid(S, pconfigcall) = true
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT poperand]
   -- if n_option* = $ptascii("zend.assertions")
-def $assertion_ini_option_valid(S, pconfigcall) = true
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT poperand]
-  -- if $config_string_object(pconfigcall) = (n_object)
-  -- if $config_string_source(S, pconfigcall) = ((porigin_child, z_child))
-  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, pconfigcall.LINE)
 def $assertion_ini_option_valid(S, pconfigcall) = false -- otherwise
 def $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision) = true
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
