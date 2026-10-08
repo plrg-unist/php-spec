@@ -18,6 +18,9 @@ zero agreement. The compiler stop and original static fixture failure remain
 zero; the corrected fixture pins V in its genuine cleanup carrier and queued
 receiver retirement. Compound selectors, Fiber-start unpacking, broader adapters
 and lifecycle/library behavior remain required.
+Actual348 over `b03c0d918` passes strict compilation at `e109fec8a`, preserving
+current storage pins, compound/SELF, Generator and generic ownership paths;
+private source/state cuts retain their inputs.
 [Array-consumer ledger](coverage/semantics/fiber-array-consumers-review.json).
 
 Module 360 closes normal request delegations, detaching real input owners before
