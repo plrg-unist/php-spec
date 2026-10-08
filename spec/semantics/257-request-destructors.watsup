@@ -237,23 +237,28 @@ def $error_read_discard(S, ORDINARY_CTOR_WARNING pordinaryinternal pvalue) = $ct
 
 ;; Ordinary eager release is the immediately following lifecycle phase. During
 ;; stage2, zero-ref releases are effectful and retain their exact source caller.
-def $destruction_prune(S, pnode_live*) = S_new
+syntax pdestructionprunecase = PRUNE_KEEP_UNSUPPORTED | PRUNE_REFUSE_RELEASE | PRUNE_BEGIN_RELEASE | PRUNE_DROP_STORE
+dec $destruction_prune_case(pstate, pnode*) : pdestructionprunecase
+dec $destruction_prune_waiting_case(pstate, bool) : pdestructionprunecase
+dec $destruction_prune_case_result(pstate, pnode*, pdestructionprunecase) : pstate
+def $destruction_prune(S, pnode_live*) = $destruction_prune_case_result(S_new, pnode_live*, pdestructionprunecase)
   -- if S_new = $request_fatal_state($destruction_store_new(S))
-  -- if $destructor_unsupported(S_new.COMPLETION)
-def $destruction_prune(S, pnode_live*) = S_new[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
-  -- if S_new = $request_fatal_state($destruction_store_new(S))
-  -- if ~$destructor_unsupported(S_new.COMPLETION)
-  -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
-  -- if ~$destructor_operational(S_new)
-def $destruction_prune(S, pnode_live*) = $destructor_release_begin(S_new, $destruction_values($gc_zero(S_new, $heap_graph(S_new), S_new.ALLOCATIONS)))
-  -- if S_new = $request_fatal_state($destruction_store_new(S))
-  -- if ~$destructor_unsupported(S_new.COMPLETION)
-  -- if $destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
-  -- if $destructor_operational(S_new)
-def $destruction_prune(S, pnode_live*) = $prune_live($destruction_store_drop(S_new, $gc_release_order(S_new, $heap_graph(S_new))), pnode_live*)
-  -- if S_new = $request_fatal_state($destruction_store_new(S))
-  -- if ~$destructor_unsupported(S_new.COMPLETION)
-  -- if ~$destructor_waiting(S_new, $destruction_nodes_delete(S_new.ALLOCATIONS, pnode_live*))
+  -- if pdestructionprunecase = $destruction_prune_case(S_new, pnode_live*)
+def $destruction_prune_case(S, pnode_live*) = PRUNE_KEEP_UNSUPPORTED
+  -- if $destructor_unsupported(S.COMPLETION)
+def $destruction_prune_case(S, pnode_live*) = pdestructionprunecase
+  -- if ~$destructor_unsupported(S.COMPLETION)
+  -- if b_waiting = $destructor_waiting(S, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*))
+  -- if pdestructionprunecase = $destruction_prune_waiting_case(S, b_waiting)
+def $destruction_prune_waiting_case(S, false) = PRUNE_DROP_STORE
+def $destruction_prune_waiting_case(S, true) = PRUNE_REFUSE_RELEASE
+  -- if ~$destructor_operational(S)
+def $destruction_prune_waiting_case(S, true) = PRUNE_BEGIN_RELEASE
+  -- if $destructor_operational(S)
+def $destruction_prune_case_result(S, pnode_live*, PRUNE_KEEP_UNSUPPORTED) = S
+def $destruction_prune_case_result(S, pnode_live*, PRUNE_REFUSE_RELEASE) = S[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
+def $destruction_prune_case_result(S, pnode_live*, PRUNE_BEGIN_RELEASE) = $destructor_release_begin(S, $destruction_values($gc_zero(S, $heap_graph(S), S.ALLOCATIONS)))
+def $destruction_prune_case_result(S, pnode_live*, PRUNE_DROP_STORE) = $prune_live($destruction_store_drop(S, $gc_release_order(S, $heap_graph(S))), pnode_live*)
 
 def $destructor_ready(S) = true
   -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
