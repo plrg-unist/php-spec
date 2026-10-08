@@ -138,6 +138,18 @@ set_error_handler("warn");$value=3;
 foreach(give() as &$alias){$alias["value"]=8;break;}
 echo $value,":",$alias["value"];
 ''', b'3:8', 0),
+    'ordinary-previous-key-during-new-key-warning': (
+        b'''<?php
+function warn($n,$m,$f,$l){echo "W",$l,"|",$GLOBALS["g"]->current(),":",$GLOBALS["g"]->key(),":",(int)$GLOBALS["g"]->valid(),"|";return true;}
+function give(){yield 8=>1;yield $missingKey=>2;}
+$g=give();set_error_handler("warn");echo "C|",$g->current(),":",$g->key(),"|";$g->next();echo $g->current(),":",(int)($g->key()===null);
+''', b'C|1:8|W3|2:8:1|2:1', 0),
+    'reference-previous-key-during-new-key-warning': (
+        b'''<?php
+function warn($n,$m,$f,$l){echo "W",$l,"|",$GLOBALS["g"]->current(),":",$GLOBALS["g"]->key(),":",(int)$GLOBALS["g"]->valid(),"|";return true;}
+function &give(&$value){yield 8=>$value;yield $missingKey=>$value;}
+$value=4;$g=give($value);set_error_handler("warn");echo "C|",$g->current(),":",$g->key(),"|";$g->next();echo $g->current(),":",(int)($g->key()===null);
+''', b'C|4:8|W3|4:8:1|4:1', 0),
 }
 
 
@@ -145,6 +157,7 @@ def main():
     driver.CASES = CASES
     driver.DECLARATIONS = {}
     driver.UNSUPPORTED = {}
+    driver.REQUEST_CASES = {'globals-fetch-uses-reference-to-snapshot-without-notice'}
     driver.WATCHED += ['tests/semantics/reference_yield_review.py']
     return driver.main()
 
