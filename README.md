@@ -85,6 +85,14 @@ lookup. Six exact originals and128 independent premises retain private341;
 actual343 passes strict compilation with reviewed Generator storage compatibility.
 Dynamic/builtin/argument/fallback calls and wider emissions remain required.
 
+[Direct named noarg ECHO calls](coverage/semantics/source-direct-call-emission-review.json)
+retire owned include/eval operands before INIT, including late function installation.
+Returned Stringable temporaries and reference wrappers survive until bytes are
+printed; a mutated referent can retire earlier without losing successful cast
+bytes to its pending exception. Ten exact originals and247 independent premises
+retain private344; actual349 passes strict compilation over CALLS362. Borrowed CVs
+keep their separate release path; wider call and output consumers remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -540,6 +548,8 @@ The driver carries an already successful original-state owner order into the
 following GC pass; failed or skipped destruction branches retain public fallbacks.
 Pure graph pruning counts owners once and removes zero-owner cascades through a
 worklist, preserving roots and the order and multiplicity of nodes and edges.
+GC also reuses pruning's graph edges when pruning leaves the prepared state
+identical; changed states recompute their edges.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
