@@ -601,7 +601,13 @@ without depending on retired caller metadata or old physical slots. An explicit
 no-destructor-tag check lets the retained scan finish safely. One normal source
 and 203 independent physical premises pass; the captured source retains its 60s
 CLI timeout/zero agreement. Final 345 compilation over `4cd2eab3a` passes.
-Reentry during a different active pass and internal takeover remain required.
+A new internal collection now resumes the actual parked callback with null and
+keeps its retained local interval separate from the new global scan. The unvisited
+destructor target survives retracing and runs at request cleanup. One normal source
+and 154 independent physical premises pass; original and compact old-error CLI
+runs retain 60s timeouts/zero agreement. Final 349 over `63786460e` compiles.
+Residual-tag dispatch, repeated internal
+suspension and different-active-pass public reentry remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

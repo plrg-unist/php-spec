@@ -147,8 +147,17 @@ caller/old-slot authority. One normal source and 203 independent physical premis
 pass at separate b28/95fd+9765 cuts; captured source CLI 60s timeouts retain zero
 agreement. Final 345 over `4cd2eab3a` compiles at `0c23223f3`, preserving reviewed
 Fiber-factory/trait additions. One obsolete maintained post-pass refusal premise
-is superseded; earlier cuts are not renewed. Reentry during a different active pass,
-internal takeover and broader GC remain required.
+is superseded; earlier cuts are not renewed.
+A new internal collection now resumes the same parked callback with null and a
+real GC_WAIT caller. Frozen PLAN.SCAN preserves its old local suffix independently
+of the reset global scan; UNVISITED gives no DONE credit. Residual tags remain
+physical but do not seed retracing. One normal source at 9bc and 154 independent
+physical premises at 0f007+9c8246 pass, including original old-error identity,
+owner 2→1 and full request cleanup. Original/compact old-error CLI 60s timeouts retain
+zero agreement. Final 349 over `63786460e` compiles at `f1b0dea7a`, preserving
+reviewed SOURCE361, exact-state pruning graph reuse and dynamic ARG356.
+Residual dispatch/overlap, repeated internal suspension, different-active-pass
+public reentry and broader GC remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
