@@ -82,6 +82,21 @@ Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
 
+SOURCE365 extends361 through a shared certificate for one ordinary positional
+CV argument. INIT5 precedes live SEND8; operand retirement can install the callee
+or replace the CV, while returning warnings send fixed null and earlier throws
+abort later work. Returned TMPVAR/HCELL values retain bytes after argument deletion;
+conversion and final release use ECHO8 independently of call initialization.
+Public pending/active cast admission authenticates that separate line.
+Nine exact originals retain seven rows at `21fc1ae04`, eval at `3493d49bd` and the
+new line discriminator at `3c9cc065f`, all private349. The two unchanged baselines
+and intermediate final-destructor line mismatch retain zero affected agreement.
+Independent236 premises (150 bindings/86 checks) retain three groups at `f5f4ac0c1`
+and the affected result group at `3c9cc065f`. Actual351 over `760771d9d` passes
+strict compilation with reviewed Generator/Fiber, trait and storage-read compatibility.
+No new module or owner schema is added.
+[Ledger](coverage/semantics/source-echo-cv-call-review.json).
+
 Source361 selects first INIT for a direct ECHO of a resolved named noarg
 nonbuiltin call without namespace fallback. Owned include/eval operands retire
 before invocation, allowing late function installation. A returned Stringable
