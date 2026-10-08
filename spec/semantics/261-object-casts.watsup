@@ -437,6 +437,7 @@ def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_r
   -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position b_ref)
   -- if pobjectforeach = {SITE porigin, LINE z, OBJECT n_object, ITERATOR n, POSITION n_position, TABLE n_table, SERIAL n_serial, KEY ptbytes, REF b_ref}
 
+dec $property_foreach_selected_reference(pstate, nat, nat, ptbytes, int) : pstate
 def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, false) = $object_foreach_deliver(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next false)], n, n_object, statement, z, $property_visible_name(S, n_object, ptbytes), KNOWN $entry_read_value(S, pitem), false)
 def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = $object_foreach_deliver(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n, n_object, statement, z, ptbytes, KNOWN PNULL, true)
   -- if S.OBJECTS[n_object] = STDINSTANCE
@@ -448,11 +449,11 @@ def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem
   -- if S_ref = $object_table_reference_bucket(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_table, ptbytes)
 def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = $object_foreach_deliver(S_ref, n, n_object, statement, z, $property_visible_name(S, n_object, ptbytes), REFERENCE S_ref.CELL, true)
   -- if S.OBJECTS[n_object] =/= STDINSTANCE
-  -- if S_ref = $property_foreach_reference(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, ptbytes, z)
+  -- if S_ref = $property_foreach_selected_reference(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, n_next, ptbytes, z)
   -- if S_ref.COMPLETION = NORMAL
 def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true) = S_ref[.TODO = eps]
   -- if S.OBJECTS[n_object] =/= STDINSTANCE
-  -- if S_ref = $property_foreach_reference(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, ptbytes, z)
+  -- if S_ref = $property_foreach_selected_reference(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next true)], n_object, n_next, ptbytes, z)
   -- if S_ref.COMPLETION =/= NORMAL
 
 dec $object_foreach_task_count(ptask, nat) : nat

@@ -1,0 +1,48 @@
+;; FE_FETCH_RW promotes the physical bucket selected before advancing the
+;; cursor. Reentrant creation can leave several dynamic buckets with one name.
+dec $property_foreach_selected_slot(pstate, nat, nat, ptbytes) : ppropertyslot?
+def $property_foreach_selected_slot(S, n, n_next, ptbytes) = (ppropertyslot)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $(n_next > 0)
+  -- if $(n_next <= |ppropertyslot_all*|)
+  -- if ppropertyslot = ppropertyslot_all*[$nabs($(n_next - 1))]
+  -- if ppropertyslot.NAME = ptbytes
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if pitem =/= UNINITIALIZED
+  -- if $property_visible_key(S, n, ptbytes)
+def $property_foreach_selected_slot(S, n, n_next, ptbytes) = eps -- otherwise
+
+;; Unique tables retain the reviewed name-based property reference path.
+def $property_foreach_selected_reference(S, n, n_next, ptbytes, z) = $property_foreach_reference(S, n, ptbytes, z)
+  -- if ~$property_duplicate_table(S, n)
+  -- if $property_foreach_selected_slot(S, n, n_next, ptbytes) =/= eps
+
+;; Declared keys remain unique even in a table containing duplicate dynamic
+;; buckets. Foreach bypasses setter visibility but keeps readonly/type checks.
+def $property_foreach_selected_reference(S, n, n_next, ptbytes, z) = $property_readonly_error(S, n, ptbytes, $ptascii("acquire reference to"), z)
+  -- if $property_duplicate_table(S, n)
+  -- if $property_foreach_selected_slot(S, n, n_next, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
+  -- if $property_readonly_desc(S, n, ptbytes) =/= eps
+def $property_foreach_selected_reference(S, n, n_next, ptbytes, z) = $property_reference_slot(S, n, ptbytes, z)
+  -- if $property_duplicate_table(S, n)
+  -- if $property_foreach_selected_slot(S, n, n_next, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL =/= eps
+  -- if $property_readonly_desc(S, n, ptbytes) = eps
+
+def $property_foreach_selected_reference(S, n, n_next, ptbytes, z) = $reference_cell(S, n_cell)[.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $property_duplicate_table(S, n)
+  -- if $property_foreach_selected_slot(S, n, n_next, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+def $property_foreach_selected_reference(S, n, n_next, ptbytes, z) = S_ref[.OBJECTPROPS = $objectprops_set(S_ref.OBJECTPROPS, n, ppropertyslot_new*)][.CELL = n_cell][.RESULT = REFERENCE n_cell]
+  -- if $property_duplicate_table(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_foreach_selected_slot(S, n, n_next, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if n_cell = |S.STORE|
+  -- if S_ref = $reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n_cell]], n_cell)
+  -- if n_selected = $nabs($(n_next - 1))
+  -- if n_tail = $nabs($(|ppropertyslot_all*| - n_next))
+  -- if ppropertyslot_new* = ppropertyslot_all*[0:n_selected] ++ [ppropertyslot[.STATE = PROP_VALUE (ALIAS n_cell)]] ++ ppropertyslot_all*[n_next:n_tail]
