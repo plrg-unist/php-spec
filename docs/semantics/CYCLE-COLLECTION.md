@@ -73,9 +73,9 @@ checking its producer snapshot. SCAN checks live-guard/receipt consistency, not
 universal authenticity of coherently rewritten completed producer history.
 The pinned release 8.5.10 executes this path despite matching debug assertions
 for !dtor_fiber_running and GC_IS_ROOT; the model preserves the observed tag
-instead of silently normalizing it. Residual-tag dispatch/overlap, repeated
-internal suspension and different-active-pass public reentry remain explicit
-Unsupported behavior and required work.
+instead of silently normalizing it. The later cuts below add public and fresh
+internal residual dispatch. Main residual dispatch, overlap, repeated internal
+suspension and different-active-pass public reentry remain required work.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -345,3 +345,25 @@ different-active-pass reentry and whole larger-source completion remain required
 no complete-GC or offline-rebuild claim is made.
 Final 351 over `8e513981b` compiles at `3f2ff607d`, preserving reviewed GEN363
 fatal/report/trace exclusions,364/ARRAY tasks and TRAIT/PROPS additions.
+
+Fresh internal collection reloads its real global interval and scans both
+residual and newly marked destructor tags. RESIDUAL remains true under a genuine
+internal API/GC_WAIT caller; PLAN.SCAN stays eps, and current source/cursor/slot
+authenticate callbacks. The real collector caller supplies scope. The callback error keeps one
+continuation owner through guard, scan and collector wait; the caller’s outer
+error stays in its real finally continuation until ordinary chaining.
+Nested-data removal debits every frozen residual tag when fresh destructors are
+present, so TOTAL is signed: first-pass −1 plus retrace 2 returns 1 while both
+D/E retire. The pinned native weak probe independently confirms D-gone.
+
+At separate 6132 fixture cuts finalized as a476c929a, 91/75 strict-SL physical
+premises (recorder 81/65, authored 78/62) pass both complete original
+continuations, physical mode/wait/end/slot negatives, signed retrace and exact
+new/previous exception identities. The entry PASS row remains inside a false
+aggregate; the corrected global-view group passes separately. Earlier mistaken
+entry-owner and local/global fixture assumptions retain zero affected credit.
+Both original whole CLI runs retain 60s timeouts/zero agreement. Final 353 over
+`d2bba03b2` compiles at `3f2016024`, preserving reviewed 366/367, source, trait,
+storage and Generator cleanup changes. Main physical residual dispatch is
+explicit Unsupported and required next; overlap, repeated internal suspension,
+different-active-pass reentry, whole CLI completion and broader GC remain open.

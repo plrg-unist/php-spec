@@ -226,9 +226,14 @@ source and 119 independent physical premises (66/53) pass at separate ed30 fixtu
 cuts, including both original full continuations and error owner 3→2. The larger
 resume CLI retains its 60s timeout/zero agreement. Final 351 over `8e513981b`
 compiles at `3f2ff607d`, preserving reviewed GEN363/364/TRAIT/PROPS fields.
-Residual internal dispatch/
-overlap, repeated internal suspension, different-active-pass reentry and broader
-GC remain required.
+Fresh internal entry now scans residual and new destructor tags through the real
+GC_WAIT caller and physical interval. Signed accounting preserves the residual
+debit: first-pass −1 plus retrace 2 returns 1 while D/E both retire. Independent
+91/75 physical premises at separate 6132 fixture cuts complete both originals,
+including prior-error identity; both whole CLI runs retain 60s timeouts/zero
+agreement. Final 353 over `d2bba03b2` compiles at `3f2016024`. Main residual
+physical dispatch, overlap, repeated internal suspension, different-active-pass
+reentry, whole CLI completion and broader GC remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning

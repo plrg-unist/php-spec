@@ -630,9 +630,12 @@ Quiescent public resume/throw now reloads the global physical interval and calls
 residual tagged destructors in the cached worker. One compact throw source and
 119 independent physical premises pass, including both original continuations
 and exact injected-error identity. The larger resume CLI retains its 60s timeout/
-zero agreement. Final 351 over `8e513981b` compiles. Residual internal dispatch/
-overlap, repeated internal suspension
-and different-active-pass public reentry remain required.
+zero agreement. Final 351 over `8e513981b` compiles. Fresh internal collection now
+scans residual and new tags with its genuine GC caller. Signed −1+2 accounting
+returns 1 while both destructors retire. Two original full continuations pass
+166 independent physical premises; both whole CLI runs retain 60s timeouts/zero
+agreement. Final 353 over `d2bba03b2` compiles. Main residual dispatch, overlap,
+repeated internal suspension and different-active-pass reentry remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
