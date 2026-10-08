@@ -1,0 +1,51 @@
+;; A resolved user call emits INIT before reading its single ordinary CV
+;; argument. DO_CALL keeps the call line, while the later computed FETCH_R
+;; inherits the post-argument compiler line. The returned name stays runtime
+;; work; these source/compiler certificates never read the current argument.
+dec $source_emission_argument_call(pstate, nat, pcpath, expression) : porigin?
+def $source_emission_argument_call(S, n, pcpath, NExprVariable (NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) metadata)
+  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = eps
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_call, false))
+  -- if $(z_call > 0)
+  -- if z_call = $source_line(metadata_call)
+  -- if pcpath_argument = pcpath ++ [PCFIELD 0, PCFIELD 1, PCINDEX 0, PCFIELD 1]
+  -- if $source_emission_cv(S, n, pcpath_argument, NExprVariable (BYTES text_argument) metadata_value)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_argument) = ((z_argument, false))
+  -- if z_argument = $source_line(metadata_value)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_argument, false))
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_argument_call(S, n, pcpath, expression) = eps -- otherwise
+
+def $source_echo_emission_origin(S, n, pcpath, expression) = (porigin)
+  -- if $source_emission_argument_call(S, n, pcpath, expression) = (porigin)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (porigin)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_argument_call(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (porigin)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if z_property = $source_line(metadata_property)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+
+;; Existing CV/noarg forms keep40's child-line default. This authenticated
+;; argument form uses the outer FETCH certificate, including existing runtime
+;; line overrides, instead of its earlier INIT/DO_CALL certificate.
+def $dynamic_name_line(S, expression) = $runtime_line(S, eps, NExprVariable expression metadata)
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable expression metadata)
+  -- if $source_emission_argument_call(S, n, pcpath, NExprVariable expression metadata) = (porigin_call)
+
+;; Reuse327's nonowning captured name and fixed-null resume after a missing
+;; target warning. Ordinary by-value argument warnings keep207/213's separate
+;; CALL_SEND continuation and selected-callee ownership.
+def $computed_name_source(S, pnameread) = true
+  -- if pnameread.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (expression)
+  -- if $source_emission_argument_call(S, n, pcpath, expression) = (porigin_call)
+  -- if $code_expression_at_source(S, pnameread.SITE, eps) = (pnameread.LINE)
+  -- if ~$scope_global(S[.ORIGIN = (pnameread.SITE)], eps)
+  -- if ~$this_name(pnameread.NAME) /\ ~$psautoglobal(pnameread.NAME)

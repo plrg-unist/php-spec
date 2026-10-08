@@ -84,7 +84,9 @@ rule PhpStep/environment-variable: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED
   -- if $cv_source_name(S, phpType32) = (n_name*)
   -- if $environment_blocked(S, n_name*)
   -- if ~$this_name(n_name*)
-rule PhpStep/dynamic-variable: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), NAME_READ $runtime_line(S, [PCFIELD 0], expression)] ++ ptask_tail*]
+dec $dynamic_name_line(pstate, expression) : int
+def $dynamic_name_line(S, expression) = $runtime_line(S, [PCFIELD 0], expression) -- otherwise
+rule PhpStep/dynamic-variable: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression), NAME_READ $dynamic_name_line(S, expression)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprVariable phpType32 metadata)) :: ptask_tail*
   -- if $cv_source_name(S, phpType32) = eps
   -- if phpType32 = expression

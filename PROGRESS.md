@@ -65,9 +65,9 @@ WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332,
 Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with315 modules composed over
-`79546523e03d`. The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330.
+with316 modules composed over
+`9ee350879b4c`. The ordered integration preserves
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -231,6 +231,15 @@ show the live name changes before lookup; a missing target resumes null after ha
 name/target writes. Genuine entry/warning/identity controls pass174 premises.
 Actual310 passes strict compilation with reviewed Fiber/collector/constructor compatibility.
 Earlier cuts and relocations gain no renewed credit; broader names remain required.
+
+[One-argument computed-name emission333](coverage/semantics/source-call-argument-emission-review.json)
+is integrated: operand retirement uses INIT6 before argument lookup,
+and outer FETCH7 precedes property10. Five exact originals and275 independent
+entry/warning/identity/admission premises retain live CV reads and handler writes
+with fixed-null argument/target resumes. The parser stop and incorrect CODEARG
+origin mismatch have zero affected credit. Actual316 passes strict compilation
+with reviewed trait/ArrayAccess/collector compatibility; earlier noarg/CV cuts
+and relocations gain no renewed credit.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
