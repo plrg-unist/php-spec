@@ -1,4 +1,4 @@
-"""Fresh keyword static compound originals; native/model agreement required."""
+"""Fresh static-selector compound originals; native/model agreement required."""
 
 
 CASES = [
@@ -187,5 +187,142 @@ echo "P:", KeywordInstanceChildReview19::$value, ";X:", $result,
 ''',
         'expected_stdout': 'L;M:ab;X:ab;B:base;L;P:ab;X:ab;B:base;E;',
         'discriminator': 'Instance and parent-forwarded method calls retain their called child for static selection while preserving the base slot.',
+    },
+    {
+        'id': 'dynamic-class-live-rhs',
+        'source': '''<?php
+class DynamicStaticFirstReview19 { public static mixed $value; }
+class DynamicStaticSecondReview19 { public static mixed $value = "other"; }
+class LeftDynamicStaticReview19 {
+    public function __toString(): string {
+        global $class, $rhs;
+        echo "L;";
+        $class = "DynamicStaticSecondReview19";
+        $rhs = "after";
+        return "a";
+    }
+}
+$class = "DynamicStaticFirstReview19";
+$rhs = "before";
+DynamicStaticFirstReview19::$value = new LeftDynamicStaticReview19();
+$result = ($class::$value .= $rhs);
+echo "A:", DynamicStaticFirstReview19::$value,
+     ";B:", DynamicStaticSecondReview19::$value,
+     ";C:", $class, ";R:", $rhs, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'L;A:aafter;B:other;C:DynamicStaticSecondReview19;R:after;X:aafter;E;',
+        'discriminator': 'The class CV changes during left conversion, while final store and expression result retain the class selected for the original property fetch; the RHS CV stays live.',
+    },
+    {
+        'id': 'dynamic-rhs-rebind-before-capture',
+        'source': '''<?php
+class DynamicRhsFirstReview19 { public static mixed $value; }
+class DynamicRhsSecondReview19 { public static mixed $value = "other"; }
+class LeftDynamicRhsReview19 {
+    public function __toString(): string { echo "L;"; return "a"; }
+}
+function dynamicRhsRebindReview19() {
+    global $class;
+    echo "R;";
+    $class = "DynamicRhsSecondReview19";
+    return "b";
+}
+$class = "DynamicRhsFirstReview19";
+DynamicRhsFirstReview19::$value = new LeftDynamicRhsReview19();
+$result = ($class::$value .= dynamicRhsRebindReview19());
+echo "A:", DynamicRhsFirstReview19::$value,
+     ";B:", DynamicRhsSecondReview19::$value,
+     ";C:", $class, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'R;L;A:ab;B:other;C:DynamicRhsSecondReview19;X:ab;E;',
+        'discriminator': 'The class CV changes during RHS evaluation, before compound capture, while the final destination remains the class selected by FETCH_CLASS.',
+    },
+    {
+        'id': 'dynamic-helper-string-once',
+        'source': '''<?php
+class DynamicHelperFirstReview19 { public static mixed $value; }
+class DynamicHelperSecondReview19 { public static mixed $value = "other"; }
+class LeftDynamicHelperReview19 {
+    public function __toString(): string {
+        global $class, $rhs;
+        echo "L;";
+        $class = "DynamicHelperSecondReview19";
+        $rhs = "after";
+        return "a";
+    }
+}
+function dynamicStringSelectorReview19() {
+    global $class, $calls;
+    echo "C;";
+    $calls++;
+    return $class;
+}
+$class = "DynamicHelperFirstReview19";
+$calls = 0;
+$rhs = "before";
+DynamicHelperFirstReview19::$value = new LeftDynamicHelperReview19();
+$result = (dynamicStringSelectorReview19()::$value .= $rhs);
+echo "A:", DynamicHelperFirstReview19::$value,
+     ";B:", DynamicHelperSecondReview19::$value,
+     ";C:", $class, ";R:", $rhs, ";N:", $calls, ";X:", $result, ";";
+$class = "DynamicHelperFirstReview19";
+DynamicHelperFirstReview19::$value = "x";
+$scalar = ($class::$value .= "y");
+DynamicHelperFirstReview19::$value = "overwritten";
+echo "S:", $scalar, ";F:", DynamicHelperFirstReview19::$value,
+     ";B:", DynamicHelperSecondReview19::$value, ";E;";
+''',
+        'expected_stdout': 'C;L;A:aafter;B:other;C:DynamicHelperSecondReview19;R:after;N:1;X:aafter;S:xy;F:overwritten;B:other;E;',
+        'discriminator': 'An untyped helper supplies the class string once; callback changes cannot re-evaluate that helper or redirect the retained destination. A scalar-only dynamic CONCAT then returns copied xy, survives destination overwrite, and must bypass selected Stringable ENTRY creation.',
+    },
+    {
+        'id': 'dynamic-tmp-object-selector-release',
+        'source': '''<?php
+class DynamicObjectFirstReview19 {
+    public static mixed $value;
+    public function __destruct() { echo "Q;"; }
+}
+class DynamicObjectSecondReview19 { public static mixed $value = "other"; }
+class LeftDynamicObjectReview19 {
+    public function __toString(): string { echo "L;"; return "a"; }
+}
+function dynamicObjectSelectorReview19() {
+    echo "C;";
+    return new DynamicObjectFirstReview19();
+}
+function dynamicObjectRhsReview19() { echo "R;"; return "b"; }
+DynamicObjectFirstReview19::$value = new LeftDynamicObjectReview19();
+$result = (dynamicObjectSelectorReview19()::$value .= dynamicObjectRhsReview19());
+echo "A:", DynamicObjectFirstReview19::$value,
+     ";B:", DynamicObjectSecondReview19::$value, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'C;Q;R;L;A:ab;B:other;X:ab;E;',
+        'discriminator': 'FETCH_CLASS consumes and releases its temporary object selector before RHS evaluation, while nonowning class metadata survives through Stringable conversion.',
+    },
+    {
+        'id': 'dynamic-captured-reference-rebind',
+        'source': '''<?php
+class DynamicAliasFirstReview19 { public static mixed $value; }
+class DynamicAliasSecondReview19 { public static mixed $value = "other"; }
+class LeftDynamicAliasReview19 {
+    public function __toString(): string {
+        global $class, $replacement;
+        echo "L;";
+        DynamicAliasFirstReview19::$value =& $replacement;
+        $class = "DynamicAliasSecondReview19";
+        return "a";
+    }
+}
+$class = "DynamicAliasFirstReview19";
+$replacement = "changed";
+DynamicAliasFirstReview19::$value = new LeftDynamicAliasReview19();
+$alias =& DynamicAliasFirstReview19::$value;
+$result = ($class::$value .= "b");
+echo "A:", DynamicAliasFirstReview19::$value,
+     ";B:", DynamicAliasSecondReview19::$value,
+     ";O:", $alias, ";C:", $class, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'L;A:changed;B:other;O:ab;C:DynamicAliasSecondReview19;X:ab;E;',
+        'discriminator': 'Dynamic selected ENTRY retains the originally referenced cell through class-CV and property-row rebinding; final raw backing and expression result follow that captured cell.',
     },
 ]
