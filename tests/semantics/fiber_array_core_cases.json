@@ -1,0 +1,68 @@
+[
+  {
+    "id": "peer-fiber-raw-array-cow-retains-original-bound-target",
+    "source": "<?php\n$target = new Fiber(static function () {\n    echo Fiber::suspend('Y'), '|';\n    return 17;\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$other = new Fiber(static function () { echo 'UNREACHED|'; return 99; });\n$pair = [$target, 'ReSuMe'];\n$runner = new Fiber($pair);\n$pair[0] = $other;\n$pair[1] = 'throw';\nunset($target, $pair);\necho (int)($weak->get() !== null), '|';\necho (int)($runner->start(value: 'R') === null), '|';\necho (int)($weak->get() === null), '|', (int)$runner->isTerminated(), '|';\necho (int)($runner->getReturn() === null), '|', (int)$other->isStarted();\n",
+    "source_sha256": "f4f06eeee6d742d8826bc2d2ac57a1019fae33f23735f59f1047c053843690ae",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Constructor callback selection keeps the original plain-array snapshot through external COW writes and selector retirement. RAW owns its array and bound member; after the callback finishes, its last target owner retires. All getReturn reads follow normal termination.",
+    "native_stdout": "Y|1|R|1|1|1|1|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-raw-array-reference-members-use-borrowed-frozen-cache",
+    "source": "<?php\n$target = new Fiber(static function () {\n    echo Fiber::suspend('Y'), '|';\n    return 17;\n});\necho $target->start(), '|';\n$other = new Fiber(static function () { echo 'UNREACHED|'; return 99; });\n$receiver = $target;\n$method = 'ReSuMe';\n$pair = [&$receiver, &$method];\n$runner = new Fiber($pair);\n$receiver = $other;\n$method = 'throw';\n$pair = null;\necho (int)($runner->start(value: 'R') === null), '|';\necho $target->getReturn(), '|', (int)$other->isStarted(), '|';\necho (int)($runner->getReturn() === null);\n",
+    "source_sha256": "479d72fe1d61adcbc3aa9814b1b7114b37ba6e18c58988d9530e24d0a7057efa",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Constructor fci_cache freezes the selected method and receiver before member-reference mutation. The original selected target deliberately remains owned by its main variable: the engine cache itself is borrowed, while RAW now owns the changed receiver reference. No dangling cached receiver is invoked.",
+    "native_stdout": "Y|R|1|17|0|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-raw-array-static-object-is-owned-only-through-raw-array",
+    "source": "<?php\n$input = new Fiber(static function () { echo 'UNREACHED|'; return 13; });\n$weak = WeakReference::create($input);\n$pair = [$input, 'SuSpEnD'];\n$runner = new Fiber($pair);\nunset($input, $pair);\necho (int)($weak->get() !== null), '|';\necho $runner->start(value: 'V'), '|';\necho (int)($weak->get() !== null), '|';\necho (int)($runner->resume('R') === null), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "fb2349f69f5deff7ae06ad422a0c21480a7a4f49e3e1c471fc070797234d530c",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Static Fiber::suspend selects the actual runner, but RAW is the original callback array and therefore still owns its object-style input until callback retirement. The callback cache and API add no input owner; normal resume finishes with defined return R.",
+    "native_stdout": "1|V|1|1|R|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-raw-array-start-named-buffer-and-real-parent",
+    "source": "<?php\nfunction rawArrayStartBody(int $value, $suffix = 'D', ...$tail) {\n    global $target;\n    echo $value, '|', $suffix, '|', $tail['tag'], '|';\n    echo (int)(Fiber::getCurrent() === $target), '|';\n    echo Fiber::suspend('Y'), '|';\n    return 29;\n}\n$target = new Fiber('rawArrayStartBody');\n$runner = new Fiber([$target, 'StArT']);\n$parent = new Fiber(static function () use ($runner) {\n    echo 'P|';\n    echo (int)($runner->start(value: '7', tag: 'X') === null), '|';\n    return 19;\n});\n$parent->start();\necho $runner->getReturn(), '|', (int)$runner->isTerminated(), '|';\necho (int)($target->resume('R') === null), '|';\necho $target->getReturn(), '|', $parent->getReturn();\n",
+    "source_sha256": "2afd5dd0113451adc43be77c08c3f8a2014deb37a51c330b485c663f62a340b8",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Original named/default/variadic forwarding crosses a real main-parent-runner-target chain. The root START callback returns its target suspension value into the runner return store; the outer start returns null. All return reads follow defined completion.",
+    "native_stdout": "P|7|D|X|1|1|Y|1|R|1|29|19",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-raw-array-constructor-warning-parks-real-root",
+    "source": "<?php\nclass RawArrayCtorBase {\n    public static function callback() { echo 'UNREACHED|'; return 11; }\n}\nclass RawArrayCtorChild extends RawArrayCtorBase {}\n$target = new Fiber(static function () { echo 'UNREACHED|'; return 17; });\n$weak = WeakReference::create($target);\n$pair = [$target, '__construct'];\n$runner = new Fiber($pair);\nunset($target, $pair);\nset_error_handler(static function ($level, $message) {\n    echo 'W', (int)($level === 8192), (int)(Fiber::getCurrent() === $GLOBALS['runner']), '|';\n    echo 'R', Fiber::suspend('P'), '|';\n    return true;\n});\necho $runner->start(callback: [RawArrayCtorChild::class, 'RawArrayCtorBase::callback']), '|';\ntry { $runner->resume(9); }\ncatch (FiberError $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\nunset($error);\nrestore_error_handler();\necho (int)$runner->isTerminated(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "19098c9812e2e9b7ba342c56bf7d34eef31a62c951b265da276c367bf066b438",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "The RAW array retains the last constructor receiver through deprecated compound callback parsing and a suspended warning handler. Resuming authentic parser continuation rejects repeated construction, with real root/API traces; neither callback body executes and no failed return is read.",
+    "native_stdout": "W11|RP|9|Cannot call constructor twice|__construct.00|resume.11|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-raw-array-throw-identity-and-defined-core-get-return",
+    "source": "<?php\nfunction rawArrayThrowBody() {\n    global $original;\n    try { Fiber::suspend('Y'); }\n    catch (Exception $caught) {\n        echo (int)($caught === $original), '|', $caught->getMessage(), '|';\n        return 37;\n    }\n}\n$target = new Fiber('rawArrayThrowBody');\necho $target->start(), '|';\n$original = new Exception('X');\n$runner = new Fiber([$target, 'ThRoW']);\necho (int)($runner->start(exception: $original) === null), '|';\necho (int)($runner->getReturn() === null), '|';\n$get = new Fiber([$target, 'GeTrEtUrN']);\necho (int)($get->start() === null), '|', $get->getReturn(), '|';\n$status = new Fiber([$target, 'IsTeRmInAtEd']);\necho (int)($status->start() === null), '|', (int)$status->getReturn();\n",
+    "source_sha256": "a29b9c04d6ca8b5438ac542c3c336d68f5cacb75f384893d5d733055a89daabe",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "The raw bound throw callback injects the original Throwable into the actual suspended target. Later raw getReturn and status callbacks consume only the safely defined return37 and terminated state.",
+    "native_stdout": "Y|1|X|1|1|1|37|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
