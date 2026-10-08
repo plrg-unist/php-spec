@@ -48,18 +48,19 @@ class name sets the called class for static methods. A nonstatic scoped method m
 reuse the active `$this` only when it is an instance of the requested class;
 its called class is then the receiver's class. Visibility is checked before
 arguments. Ordinary nonconstructor methods check access before abstract or
-missing-receiver rejection. One normal abstract-call source and24 supplied
-clauses plus6 setup retain their separate cut. A literal `__construct` call uses
-Zend's constructor arm, checking private denial against any active receiver
-before receiver compatibility, and bypasses ordinary method access/abstract checks; without a compatible receiver an abstract
-constructor reports the nonstatic-call Error. A variable method name follows
-ordinary method lookup. Two further normal originals and54 supplied clauses plus12
-setup pass at `0c48e90f3`/356:40 genuine clauses include both actual rejections
-and all four global validators, while14 helper-only clauses cover flag/source dispatch probes. A further
-normal source and24 genuine clauses plus6 setup validate private constructor
-denial with an unrelated live receiver, before any argument or allocation effect. Parser-foldable string concatenation of `__construct` also
-uses that arm. Class expressions resolve their type and lookup before a
-computed method name; literal class lookup follows the computed name.
+missing-receiver rejection. A literal `__construct` call uses Zend's constructor
+arm: it checks private denial against any active receiver before receiver
+compatibility and bypasses ordinary method access/abstract checks. Private
+constructor errors name the requested class even when the constructor is inherited. Without a compatible receiver,
+an abstract constructor reports the nonstatic-call Error. A variable method name
+follows ordinary lookup; parser-foldable string concatenation of `__construct`
+uses the constructor arm. Class expressions resolve their type and lookup before
+a computed method name; literal class lookup follows the computed name.
+
+Original-source and genuine rejection checks retain their separate cuts in
+[PROGRESS](../../PROGRESS.md), including no argument/allocation effects and all
+four global validators. Flag/source and alternate-consumer helper probes are
+counted separately from genuine continuations.
 
 Scoped selected tasks retain requested, declaring and called class origins,
 the genuine receiver, and the captured class selector. An object class selector

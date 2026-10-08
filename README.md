@@ -998,12 +998,9 @@ execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
 Ordinary abstract scoped calls reject before arguments, and inaccessible concrete
 nonstatic methods report access errors before missing-receiver errors. Literal
-constructor calls retain their separate opcode dispatch, checking private denial
-before receiver compatibility. That further case passes one original and24
-genuine checks plus6 setup. The preceding two cases pass
-two normal originals and54 supplied checks plus12 setup clauses (40 genuine
-clauses and14 helper-only clauses covering flag/source probes); prior abstract-call
-evidence remains separate.
+constructor calls retain separate opcode dispatch: private denial precedes
+receiver compatibility, and inherited private constructor errors name the requested
+class.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work

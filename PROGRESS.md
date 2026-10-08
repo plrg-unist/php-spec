@@ -2087,6 +2087,15 @@ Final356 projection `4366f4cae` over `02bff2460` passes strict algo/struct at
 3.769/4.823s, preserving current storage-release guards. Source1/24 bridge
 unchanged; publish19 raw compiler evidence is `trait266-object-algo-n0wtdaju`
 and `trait266-object-struct-prg8u30p` under its `.tools/` directory.
+Inherited private constructor errors now name the requested class while retaining
+the declaring-owner access proof. At `4c3ece53d`/357 over actual `cbdb9d10a`,
+strict algo/struct pass3.772/4.821s; one new normal original and28 supplied clauses
+plus6 setup pass (6.123s):26 genuine clauses cover inherited selection/rejection
+and all four globals, while2 helper-only clauses check the other Error consumer.
+Current19 raw evidence is `method-runtime-svn8anig`, `closure-call-protocol-66s2dn57`,
+`trait266-object-algo-zgrybsbw` and `trait266-object-struct-n2_844cu`;
+original normal mismatch `s0r3su65` retains zero agreement. Prior constructor
+cuts are not renewed; current375 collector/task fields remain preserved.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and
