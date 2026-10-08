@@ -4,47 +4,84 @@
     "source": "<?php\n$target = new Fiber(static function () {\n    echo Fiber::suspend('Y'), '|';\n    return 17;\n});\n$other = new Fiber(static function () { echo 'X|'; return 99; });\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$receiver = $target;\n$method = 'ReSuMe';\n$pair = [&$receiver, &$method];\n$resume = $pair(...);\n$again = $pair(...);\n$copy = clone $resume;\n$returnPair = [$target, 'getReturn'];\n$get = $returnPair(...);\necho (int)($resume == $again), (int)($resume == $copy), (int)($resume === $copy), '|';\n$receiver = $other;\n$method = 'throw';\n$pair = null;\n$returnPair = null;\n$receiver = null;\nunset($target);\necho (int)($weak->get() !== null), '|';\n$resume(value: 7);\necho $get(), '|', (int)$other->isStarted(), '|';\nunset($resume, $again, $copy, $get);\necho (int)($weak->get() === null);\n",
     "source_sha256": "a68770c7131f9c4904b7cf25c0a5eb33c28590e24a0a929e8efd5c49082ed0ef",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Frozen bound receiver/name survive reference-member mutation and source-array retirement. Independent conversions and clone share native equality; defined getReturn17 and final capture retirement observe ownership."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Frozen bound receiver/name survive reference-member mutation and source-array retirement. Independent conversions and clone share native equality; defined getReturn17 and final capture retirement observe ownership.",
+    "native_stdout": "Y|110|1|7|17|0|1",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-fcc-static-input-retires-before-suspend",
     "source": "<?php\n$input = new Fiber(static function () { echo 'X|'; return 99; });\n$weak = WeakReference::create($input);\n$receiver = $input;\n$method = 'SuSpEnD';\n$pair = [&$receiver, &$method];\n$runner = new Fiber(static function () {\n    global $input, $weak, $receiver, $method, $pair;\n    $suspend = $pair(...);\n    $receiver = null;\n    $method = 'getCurrent';\n    $pair = null;\n    $input = null;\n    echo (int)($weak->get() === null), '|';\n    echo $suspend(value: 'V'), '|';\n    return 23;\n});\necho $runner->start(), '|';\necho (int)($weak->get() === null), '|';\n$runner->resume('R');\necho $runner->getReturn();\n",
     "source_sha256": "cecf2ce503570c2b23fe922d06a9a328950d3d35bad2454d1806bb5e601a34f4",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "An object-style static suspension capture freezes the selected method but adds no receiver owner. Retired input must stay dead while the actual runner suspends and resumes."
+    "native_status": "recorded",
+    "engine_derived_expectation": "An object-style static suspension capture freezes the selected method but adds no receiver owner. Retired input must stay dead while the actual runner suspends and resumes.",
+    "native_stdout": "1|V|1|R|23",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-fcc-start-core-keeps-named-buffer",
     "source": "<?php\nfunction arrayFccStartBody19(int $value = 3, $fallback = 'D', ...$tail) {\n    echo $value, '|', $fallback, '|', $tail['extra'], '|';\n    echo Fiber::suspend('Y'), '|';\n    return 29;\n}\n$target = new Fiber('arrayFccStartBody19');\n$weak = WeakReference::create($target);\n$pair = [$target, 'StArT'];\n$start = $pair(...);\n$pair = [$target, 'resume'];\n$resume = $pair(...);\n$pair = [$target, 'getReturn'];\n$get = $pair(...);\n$pair = null;\nunset($target);\n$runner = new Fiber($start);\nunset($start);\necho (int)($weak->get() !== null), '|';\necho $runner->start(value: '7', extra: 'X'), '|';\n$resume->__invoke(value: 'R');\necho $get(), '|', (int)$runner->isTerminated(), '|';\nunset($resume, $get);\necho (int)($weak->get() === null);\n",
     "source_sha256": "00d9c2fc4a9223f7a7f970373d15ddd74a113375f263994fc05cdefd196e1e11",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Array-FCC start used as a C-root Closure preserves weak typed named/default/variadic arguments; explicit-invoke resume and defined getReturn consume other array captures after all selector arrays retire."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Array-FCC start used as a C-root Closure preserves weak typed named/default/variadic arguments; explicit-invoke resume and defined getReturn consume other array captures after all selector arrays retire.",
+    "native_stdout": "1|7|D|X||R|29|1|1",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-fcc-constructor-core-last-raw-retirement",
     "source": "<?php\nclass ArrayFccCtorArg19 {\n    public function __invoke() {}\n    public function __destruct() {\n        global $weak;\n        echo 'D', (int)($weak->get() === null), '|';\n    }\n}\n$target = new Fiber(static function () {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; }\n});\necho $target->start(), '|';\n$weak = WeakReference::create($target);\n$pair = [$target, '__construct'];\n$ctor = $pair(...);\n$runner = new Fiber($ctor);\nunset($target, $pair, $ctor);\ntry {\n    $runner->start(new ArrayFccCtorArg19());\n} catch (FiberError $error) {\n    echo 'C|', $error->getMessage(), '|';\n    unset($error);\n}\necho (int)($weak->get() === null), (int)$runner->isTerminated();\n",
     "source_sha256": "38b1b1b359cfee54852368fe45ee0ba404dfb97556deadba02a0cfc23fc1baa8",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "A constructor capture survives only through the runner RAW, parses a genuine invokable argument, then rejects READY. Native observation will pin last RAW receiver force-close versus original/captured argument and exception retirement without assuming trace-argument retention."
+    "native_status": "recorded",
+    "engine_derived_expectation": "A constructor capture survives only through the runner RAW, parses a genuine invokable argument, then rejects READY. Native observation will pin last RAW receiver force-close versus original/captured argument and exception retirement without assuming trace-argument retention.",
+    "native_stdout": "Y|F|C|Cannot call constructor twice|D1|11",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "author-fiber-array-fcc-retired-reference-body-trace",
     "source": "<?php\nfunction arrayFccFreshBody19() {\n    global $original;\n    Fiber::suspend('Y');\n    $original = new Exception('body');\n    throw $original;\n}\n$target = new Fiber('arrayFccFreshBody19');\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$receiver = $target;\n$method = 'ReSuMe';\n$pair = [&$receiver, &$method];\n$resume = $pair(...);\n$direct = $target->resume(...);\necho (int)($resume == $direct), '|';\n$receiver = new Fiber(static function () { return 99; });\n$method = 'throw';\n$pair = null;\nunset($target, $direct);\ntry { $resume->__invoke(value: 'R'); }\ncatch (Exception $caught) {\n    echo (int)($caught === $original), '|', $caught->getMessage(), '|';\n    foreach ($caught->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\necho (int)($weak->get() !== null), '|';\nunset($resume);\necho (int)($weak->get() === null);\n",
     "source_sha256": "6afc1d22c515466ae04a5b3e5ec7f85dd2b8864f36fe09063f845f90172849c1",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Array FCC freezes dereferenced receiver and method, compares like the same direct FCC, retains the selected receiver through retired aliases, and preserves fresh body Exception identity and real saved explicit-invoke trace."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Array FCC freezes dereferenced receiver and method, compares like the same direct FCC, retains the selected receiver through retired aliases, and preserves fresh body Exception identity and real saved explicit-invoke trace.",
+    "native_stdout": "Y|1|1|body|arrayFccFreshBody19.00|resume.11|__invoke.11|1|1",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "author-fiber-array-fcc-class-static-current-and-core",
     "source": "<?php\n$pair = ['FiBeR', 'GeTcUrReNt'];\n$current = $pair(...);\n$clone = clone $current;\n$direct = Fiber::getCurrent(...);\n$pair[0] = 'MissingClass19';\n$pair[1] = 'missing';\necho (int)($current == $direct), '|', (int)($clone == $current), '|';\necho (int)($current() === null), '|', (int)($clone->__invoke() === null), '|';\n$parent = new Fiber(static function () use ($current) {\n    echo (int)($current() === Fiber::getCurrent()), '|';\n    return 17;\n});\n$parent->start();\necho $parent->getReturn(), '|';\n$runner = new Fiber($current);\n$runner->start();\necho (int)($runner->getReturn() === $runner);\n",
     "source_sha256": "02507e61f956535b412fa7c88365d5d05e9a6c7c2ff3a098c34c7e3a4fa601f4",
     "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Class-string static selection is case insensitive and immutable after pair mutation. Clone/direct capture equality and direct, explicit invoke, nested user and C-root consumers preserve getCurrent identity.",
+    "native_stdout": "1|1|1|1|1|17|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-array-fcc-init-errors-before-conversion",
+    "source": "<?php\n$target = new Fiber(static function () { echo 'X|'; return 17; });\n$pair = ['Fiber', 'resume'];\ntry { $capture = $pair(...); }\ncatch (Error $error) { echo $error->getMessage(), '|'; }\n$pair = [$target, 'missing'];\ntry { $capture = $pair(...); }\ncatch (Error $error) { echo $error->getMessage(), '|'; }\n$pair = ['receiver' => $target, 1 => 'getCurrent'];\ntry { $capture = $pair(...); }\ncatch (Error $error) { echo $error->getMessage(), '|'; }\necho (int)$target->isStarted();\n",
+    "source_sha256": "0d203a8c7a44ee6cff945c59245e40cdfbd3d6607ec40fccf37a9623dfbe3733",
+    "expected_model": "normal",
     "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Class-string static selection is case insensitive and immutable after pair mutation. Clone/direct capture equality and direct, explicit invoke, nested user and C-root consumers preserve getCurrent identity."
+    "engine_derived_expectation": "First-class array INIT rejects a nonstatic class selector, missing Fiber method and malformed member indices before conversion. No target callback executes."
+  },
+  {
+    "id": "boundary-fiber-array-first-class-conversion",
+    "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$pair = [$target, 'isStarted'];\n$call = $pair(...);\necho (int)$call();\n",
+    "source_sha256": "022a7d9f8d5a34242203dcdf325910c8b853cc160f0602282d8865141da17cd7",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Identical362 Unsupported source is an affected364 original: simple Fiber array first-class conversion should now produce a callable capture.",
+    "native_stdout": "0",
+    "native_stderr": "",
+    "native_exit": 0
   }
 ]
