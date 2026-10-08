@@ -44,6 +44,21 @@ def $source_emission_dynamic_cv_call(S, n, pcpath, NExprFuncCall (NExprVariable 
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_argument) = ((z_argument, false))
   -- if z_argument = $source_line(metadata_value)
   -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_dynamic_cv_call(S, n, pcpath, NExprFuncCall (NExprVariable (BYTES text_callee) metadata_callee) (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_init)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall (NExprVariable (BYTES text_callee) metadata_callee) (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_callee) metadata_callee)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = eps
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_init, false))
+  -- if z_init = $source_line(metadata_callee)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_call, false))
+  -- if $(z_call > 0)
+  -- if z_call = $callable_line(metadata_call)
+  -- if pcpath_argument = pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1]
+  -- if $source_emission_cv(S, n, pcpath_argument, NExprVariable (BYTES text_argument) metadata_value)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_argument) = ((z_argument, false))
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
 def $source_emission_dynamic_cv_call(S, n, pcpath, expression) = eps -- otherwise
 
 ;; INIT also precedes the single ordinary CV's SEND. The argument certificate
@@ -91,8 +106,8 @@ def $source_emission_echo_line(S, n, pcpath, NExprFuncCall phpType19_callee (SEQ
 def $source_emission_echo_line(S, n, pcpath, NExprFuncCall phpType19_callee (SEQUENCE ([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_argument)
   -- if $source_emission_echo_call(S, n, pcpath, NExprFuncCall phpType19_callee (SEQUENCE ([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_init)
   -- if $code_expression_at_source(S, PORIGIN n pcpath, [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (z_argument)
-def $source_emission_echo_line(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_argument)
-  -- if $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_init)
+def $source_emission_echo_line(S, n, pcpath, NExprFuncCall phpType19_callee (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_argument)
+  -- if $source_emission_echo_call(S, n, pcpath, NExprFuncCall phpType19_callee (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_init)
   -- if $code_expression_at_source(S, PORIGIN n pcpath, [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (z_argument)
 def $source_emission_echo_line(S, n, pcpath, expression) = eps -- otherwise
 def $echo_expression_line(S, expression) = $constant_runtime_line(S, z)
@@ -177,6 +192,27 @@ def $error_read_resume(S, perrorread, ptask_tail*) = $dynamic_value(S[.TODO = pt
   -- if perrorread.TASK = CALL_DYNAMIC porigin z_init z_call
   -- if $error_read_valid(S, perrorread)
 
+;; Deferred named CV sends use their compiled SEND descriptor, independently
+;; of the borrowed operand's documentary source line. Selection remains pinned.
+dec $echo_dynamic_named_send_line(pstate, ptask) : int?
+def $echo_dynamic_named_send_line(S, NAMED_SEND pcalltarget eps 0 pnamedargs (PORIGIN n pcpath) z_call) = (z_send)
+  -- if pnamedargs = {SLOTS eps, NAMED eps}
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if expression = NExprFuncCall phpType19_callee (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call
+  -- if $source_emission_dynamic_cv_call(S, n, pcpath, expression) = (z_init)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath, eps) = (z_call)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath, [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (z_send)
+  -- if $echo_call_site_valid(S, PORIGIN n pcpath, z_send)
+def $echo_dynamic_named_send_line(S, ptask) = eps -- otherwise
+dec $echo_dynamic_named_read_shape(pstate, ptask, poperand, pbase, int) : perrorread?
+def $echo_dynamic_named_read_shape(S, NAMED_SEND pcalltarget phpType7* n pnamedargs (porigin) z_call, poperand, pbase, z_send) = (perrorread[.LINE = z_send])
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19_callee (SEQUENCE ([(NArg phpType3 (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call)
+  -- if poperand = VARIABLE $base64(text_argument) $source_line(metadata_value)
+  -- if $error_read_shape(NAMED_SEND pcalltarget phpType7* n pnamedargs (porigin) z_call, poperand, pbase) = (perrorread)
+def $echo_dynamic_named_read_shape(S, ptask, poperand, pbase, z_send) = eps -- otherwise
+def $error_read_state_shape(S, ptask, poperand, pbase) = $echo_dynamic_named_read_shape(S, ptask, poperand, pbase, z_send)
+  -- if $echo_dynamic_named_send_line(S, ptask) = (z_send)
+
 ;; A throwing SEND warning releases the selected receiver at SEND, before the
 ;; call. Preserve the discarded read as documentary source, without an owner
 ;; or a later read of the replaced callee/argument or retired receiver.
@@ -190,6 +226,9 @@ def $echo_dynamic_send_source(S, perrorread) = true
   -- if $error_variable_source(S, (PORIGIN n pcpath), [PCFIELD 1, PCINDEX 0, PCFIELD 1], perrorread.NAME)
   -- if $echo_call_site_valid(S, PORIGIN n pcpath, perrorread.LINE)
   -- if perrorread.LINE = $call_send_line(S, (PORIGIN n pcpath), 0)
+def $echo_dynamic_send_source(S, perrorread) = true
+  -- if $echo_dynamic_named_send_line(S, perrorread.ORIGINAL) = (perrorread.LINE)
+  -- if $error_read_state_shape(S, perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread)
 def $echo_dynamic_send_source(S, perrorread) = false -- otherwise
 def $eager_operation_source(S, THROW_SEARCH n_pending) = ERROR_READ_RESULT perrorread
   -- if S.TODO = (THROW_SEARCH n_pending) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
@@ -200,6 +239,10 @@ def $eager_operation_source_guard(S, pdestructionoperation) = ($echo_dynamic_sen
   -- if pdestructionoperation.SOURCE = ERROR_READ_RESULT perrorread
   -- if pdestructionoperation.PENDING =/= eps
   -- if perrorread.ORIGINAL = CALL_SEND pcalltarget phpType7* n poperand* porigin? z
+def $eager_operation_source_guard(S, pdestructionoperation) = ($echo_dynamic_send_source(S, perrorread) /\ pdestructionoperation.ORIGIN = porigin? /\ pdestructionoperation.VALUE = KNOWN PNULL)
+  -- if pdestructionoperation.SOURCE = ERROR_READ_RESULT perrorread
+  -- if pdestructionoperation.PENDING =/= eps
+  -- if perrorread.ORIGINAL = NAMED_SEND pcalltarget phpType7* n pnamedargs porigin? z
 def $destructor_source_line(S) = perrorread.LINE
   -- if $destructor_operation_for(S) = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = ERROR_READ_RESULT perrorread
