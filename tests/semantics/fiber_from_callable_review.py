@@ -51,6 +51,43 @@ HISTORY = [
 ]
 
 CASES = {
+    'factory-wait-trace-keeps-real-resume-and-invoke-sites': {
+        'source': SOURCES['author-fiber-from-resume-body-identity-trace'],
+        'stage': ('S.FIBERCALLERS = [pfibercaller] '
+                  '-- if pfibercaller.API.KIND = (INTRINSIC_FIBER_RESUME) '
+                  '-- if pfibercaller.VM.TODO = (FIBER_WAIT pfibercaller.API) :: '
+                  '(FIBER_CAPTURE_RESULT n_capture pconfigcall true) :: ptask_saved* '
+                  '-- if S.TODO = (FIBER_CONTINUE pfiberapi_continue) :: ptask_child*'),
+        'checks': [
+            'S.ACTIVEFIBER = (n_receiver)', 'pfibercaller.OBJECT = n_receiver',
+            'pfibercaller.PREVIOUS = eps', 'pfibercaller.VM.GLOBAL',
+            'pconfigcall.KIND = INTRINSIC_FIBER_RESUME',
+            'pconfigcall.OWNER = (n_receiver)', 'pconfigcall.SELECTION = (n_capture)',
+            'pconfigcall.SENT = [NAMED_SENT (KNOWN (PINT 17))]', 'pconfigcall.NAMED',
+            'S.OBJECTS[n_capture] = FIBERAPICLOSURE pfibercapture',
+            'pfibercapture.FACTORY = (pfiberfactory)',
+            '$fiber_capture_live(S, n_capture)',
+            'S_wait = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = eps][.FIBERCALLERS = eps]',
+            '$fiber_capture_result_valid(S_wait, n_capture, pconfigcall, true)',
+            '$fiber_api_valid(S_wait, pfibercaller.API)',
+            '$fiber_wait_valid(S_wait, pfibercaller.API)',
+            '$fiber_continue_valid(S, pfiberapi_continue)',
+            '$config_trace_frames(S_wait, pconfigcall, [PINT 17]) = [ptraceframe_handler, ptraceframe_invoke]',
+            'ptraceframe_handler.FILE = eps', 'ptraceframe_handler.LINE = $(-1)',
+            'ptraceframe_handler.FUNCTION = $ptascii("resume")',
+            'ptraceframe_handler.ARGS = [(KINT 0, PINT 17)]',
+            'ptraceframe_invoke.FUNCTION = $ptascii("__invoke")',
+            'ptraceframe_invoke.FILE = $call_sourcefile(S.FILES, pconfigcall.SITE)',
+            'ptraceframe_invoke.LINE = pconfigcall.LINE',
+            'ptraceframe_invoke.ARGS = ptraceframe_handler.ARGS',
+            '$fiber_caller_api_trace(S_wait, pfibercaller.API) = [ptraceframe_wait, ptraceframe_invoke]',
+            'ptraceframe_wait = ptraceframe_handler[.FILE = $call_sourcefile(S.FILES, pconfigcall.SITE)][.LINE = pconfigcall.LINE]',
+            '$fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps)',
+            *review.VALID, *ZERO, *FINISH,
+            events('1', '|', 'body', '|', 'fromFiberResumeBody19', '.', '0', '0', '|',
+                   'resume', '->', '1', '1', '|', '__invoke', '->', '1', '1', '|', '1', '0'),
+        ],
+    },
     'factory-resume-freezes-members-after-history-retires': {
         'source': SOURCES['peer-fiber-from-callable-frozen-pair-retired-factory'],
         'stage': ('S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_capture* '
