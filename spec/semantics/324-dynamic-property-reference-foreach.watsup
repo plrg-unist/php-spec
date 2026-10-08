@@ -94,6 +94,54 @@ rule PhpStep/foreach-fetch-reference-replacement-kind: S ~> S[.COMPLETION = UNSU
   -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
   -- if ~$class_plain_instance(S, n_object)
 
+;; A late scalar fetch warns once, then leaves the loop even if its callback
+;; changes the wrapper payload. The iterator retains only its real wrapper.
+dec $foreach_scalar_value(pvalue) : bool
+def $foreach_scalar_value(pvalue) = (~$is_array_value(pvalue) /\ $type_bytes(pvalue) =/= $ptascii("object"))
+def $foreach_late_scalar(S, HCELL n_cell) = true
+  -- if S.SOURCEPENDING = eps
+  -- if S.TODO = (FOREACH_NEXT n (HCELL n_cell) statement (porigin) z) :: ptask_tail*
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $foreach_scalar_value(pvalue)
+  -- if $iterator_lookup(S.ITERATORS, n) = (piterator)
+  -- if $foreach_reference_iterator(piterator)
+def $foreach_late_scalar(S, pnode) = false -- otherwise
+dec $foreach_scalar_message(pvalue) : ptbytes
+def $foreach_scalar_message(pvalue) = $ptascii("foreach() argument must be of type array|object, ") ++ $unpack_type_bytes(pvalue) ++ $ptascii(" given")
+dec $foreach_scalar_valid(pstate, nat, nat, porigin, pvalue, int) : bool
+def $foreach_scalar_valid(S, n, n_cell, porigin, pvalue, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+  -- if statement = NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if $ppforeach_references(expression_value, b_ref)
+  -- if z = $runtime_line(S, [PCFIELD 0], expression)
+  -- if (HCELL n_cell) <- S.ALLOCATIONS /\ n_cell <- S.REFCELLS
+  -- if S.STORE[n_cell] = DEFINED pvalue_current
+  -- if $foreach_scalar_value(pvalue)
+  -- if $iterator_lookup(S.ITERATORS, n) = (piterator)
+  -- if $foreach_reference_iterator(piterator)
+def $foreach_scalar_valid(S, n, n_cell, porigin, pvalue, z) = false -- otherwise
+rule PhpStep/foreach-fetch-reference-scalar: S ~> $error_dispatch(S[.ORIGIN = (porigin)], 2, $foreach_scalar_message(pvalue), z, DIAGNOSTIC "Warning" $foreach_scalar_message(pvalue) z, FOREACH_SCALAR_END n n_cell porigin pvalue z)
+  -- if S.TODO = (FOREACH_NEXT n (HCELL n_cell) statement (porigin) z) :: ptask_tail*
+  -- if $foreach_late_scalar(S, HCELL n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $foreach_scalar_valid(S[.ORIGIN = (porigin)], n, n_cell, porigin, pvalue, z)
+def $task_nodes(FOREACH_SCALAR_END n n_cell porigin pvalue z) = [HCELL n_cell]
+def $error_task_iterator(FOREACH_SCALAR_END n n_cell porigin pvalue z) = [n]
+def $return_discard(S, FOREACH_SCALAR_END n n_cell porigin pvalue z) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)]
+def $error_read_discard(S, FOREACH_SCALAR_END n n_cell porigin pvalue z) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)]
+def $call_task_valid(S, FOREACH_SCALAR_END n n_cell porigin pvalue z) = $foreach_scalar_valid(S, n, n_cell, porigin, pvalue, z)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = FOREACH_SCALAR_END n n_cell porigin pvalue z
+  -- if $foreach_scalar_valid(S, n, n_cell, porigin, pvalue, z)
+  -- if perrorcall.TARGET =/= eps \/ S.STORE[n_cell] = DEFINED pvalue
+  -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $foreach_scalar_message(pvalue)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" $foreach_scalar_message(pvalue) z
+rule PhpStep/foreach-reference-scalar-end: S ~> $foreach_finish(S, n)
+  -- if S.TODO = (FOREACH_SCALAR_END n n_cell porigin pvalue z) :: ptask_tail*
+  -- if $foreach_scalar_valid(S, n, n_cell, porigin, pvalue, z)
+
 ;; FE_FETCH_RW owns the selected wrapper before dropping the previous CV, but
 ;; installs that wrapper only after the old value's destructor has returned.
 ;; The old CV bits are borrowed during this interval, not an extra value owner.

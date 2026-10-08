@@ -213,11 +213,13 @@ dec $foreach_finish(pstate, nat) : pstate
 def $foreach_finish(S, n) = S[.TODO = ptask_tail*][.ITERATORS = $iterator_remove(S.ITERATORS, n)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
 
+dec $foreach_late_scalar(pstate, pnode) : bool
 rule PhpStep/foreach-fetch-scalar: S ~> $foreach_finish($foreach_warning(S[.ORIGIN = porigin?], pvalue, z), n)
   -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
   -- if pvalue = $foreach_owner_value(S, pnode)
   -- if ~$is_array_value(pvalue)
   -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
+  -- if ~$foreach_late_scalar(S, pnode)
 rule PhpStep/foreach-fetch-end: S ~> $foreach_finish(S_selected, n)
   -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask_tail*
   -- if $foreach_owner_value(S, pnode) = PARRAY n_original
