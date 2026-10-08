@@ -22,7 +22,7 @@ def main():
     driver.UNSUPPORTED = UNSUPPORTED
     driver.NATIVE_ERROR_PREFIXES = {
         'peer-request-render-throws-with-live-generator-cache':
-            b'Warning: Uncaught Exception in exception handling during call to RenderAbortException::__toString()',
+            b'Fatal error: Uncaught Exception: render',
     }
     driver.WATCHED += [
         'spec/semantics/152-throwable-runtime.watsup',
