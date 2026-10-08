@@ -106,8 +106,8 @@ Returning retirement changes the live name before lookup; reused327 fixed-null
 resume retains later handler name/target writes. The noarg-call control remains
 327-positive and330-negative. Actual310 passes strict compilation; independently
 reviewed Fiber/collector/constructor parent paths are disjoint here. Earlier cuts
-and relocations gain no renewed credit. Undefined name CV/conversion variants
-and wider producers remain required.
+and relocations gain no renewed credit. Module339 below adds undefined ordinary
+name CVs; conversion callbacks and wider producers remain required.
 
 Module333 adds a resolved named user call with one positional ordinary CV
 argument as the computed name. INIT6 precedes argument lookup; DO_CALL retains6
@@ -137,3 +137,21 @@ expectation correction leaves the semantics unchanged and earns no original cred
 Actual320 preserves331/324/335 and passes strict compilation with reviewed disjoint
 selectors. Earlier cuts and relocations gain no renewed credit; wider argument forms,
 computed producers, first emissions and providers remain required.
+
+Module339 adds the first warning when an ordinary CV supplying a computed name
+is undefined. Vendored `zend_fetch_var_address_helper` ignores the return from
+`ZVAL_UNDEFINED_OP1` and converts the actual CV pointer after the handler returns.
+The source-authenticated, nonowning NAME_CV_READ_RESULT therefore rereads the
+restored caller CV quietly before NAME_READ. Handler-created names and empty-name
+targets are live; a second missing-target warning still uses327's fixed-null
+result. The early327 missing-operand guard keeps the two producers disjoint.
+The [ledger](../../coverage/semantics/source-missing-name-cv-review.json) retains
+private321 strict compilation, seven exact originals and171 independent premises,
+including local/global isolation, handler-false fallback, first-warning throw,
+missing/unset cells and include retirement before FETCH6/property8. The original
+fixture failures and diagnostic vectors earn zero affected credit. Actual324 over
+`6b51f811c` passes strict compilation at `e3d6a7c85`; independent review finds the
+introduced bound-Fiber, Generator, collector and array guards compatible without
+renewing earlier cuts. User Stringable
+and warning-producing name conversions keep their existing Unsupported boundaries;
+wider names, emissions and providers remain required.
