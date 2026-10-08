@@ -691,8 +691,13 @@ suspended worker before physical replacement, running finally or transferring
 its real error into collection pending. Two original full continuations pass
 166 independent physical premises, including count1/weak retirement and exact
 new/previous exception identity. Both whole CLI 60s timeouts retain zero agreement.
-Final 358 over `0059e0a9e` compiles at `0da2cdae7`. Takeover resuspension, overlap,
-different-active-pass reentry and whole CLI completion remain required.
+Final 358 over `0059e0a9e` compiles at `0da2cdae7`. Old public callbacks can now
+suspend again during internal takeover: replacement uses the advanced reset
+cursor while earlier marked targets survive and real FINALLY errors stay
+separate. Both original full continuations pass 212 independent physical
+premises; both whole CLI 60s timeouts retain zero agreement. Final 358 over
+`6ed4873bd` compiles at `0bc957892`. Overlap, different-active-pass reentry and
+whole CLI completion remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

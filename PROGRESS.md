@@ -360,9 +360,17 @@ cuts, finalized as `292b27847`, complete both unchanged originals, count1/weak
 retirement and exact new/previous identities. Both whole CLI 60s timeouts retain
 zero agreement; the first failed-state root-order premise has zero affected credit.
 Final 358 over `0059e0a9e` compiles at `0da2cdae7`, preserving both empty-PACKS API
-constructors and reviewed inherited-constructor/quiet-read behavior. Takeover
-resuspension, overlap, different-active-pass reentry, whole CLI completion and
-broader GC remain required.
+constructors and reviewed inherited-constructor/quiet-read behavior.
+Old public callbacks can now suspend again during internal takeover. Detachment
+captures the reset global cursor's advanced suffix, preserving earlier marked
+targets without DONE credit and keeping the two real FINALLY errors separate.
+At separate `88daee39b` fixture cuts, finalized as `27e65e46e`, 114/98 independent
+physical premises complete both unchanged originals. The affected error fixture
+now checks request-final retirement of the new error; its obsolete lookup has
+zero affected credit. Both whole CLI 60s timeouts retain zero agreement. Final
+358 over `6ed4873bd` compiles at `0bc957892`, preserving reviewed Generator render
+and dynamic-source hooks. Overlap, different-active-pass reentry, whole CLI
+completion and broader GC remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
