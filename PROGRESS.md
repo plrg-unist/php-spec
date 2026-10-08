@@ -14,8 +14,8 @@ Three exact originals and85 reached premises pass at separate private cuts.
 An actual305-parent unowned-close original collects the target in the same active
 pass;117 reached premises validate its real two-owner private-control retirement
 and saved caller VM. The narrow scoped admission repair passes changed compilation.
-The final309 join over callable Fibers322 awaits its sole combined compiler;
-earlier source/state cuts retain their identities.
+The final309 join over callable Fibers322 passes its sole combined compiler
+at `b4cfe4a14`; earlier source/state cuts retain their identities.
 [Scope and retained cuts](docs/semantics/CYCLE-COLLECTION.md).
 
 Integrated321 copies a known YIELD value before an ordinary missing

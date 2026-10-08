@@ -158,6 +158,6 @@ one fresh unowned-close original agrees on same-pass count1, weak worker/target
 retirement and second count0. Its authentic post-close admission failures are
 preserved; the narrow retiring/scoped repair passes changed compilation and the
 affected strict-SL group with117 physical premises. These source and state cuts
-remain distinct. The final309 composition over callable Fibers322 is awaiting
-its required combined compiler; no source/state renewal or offline rebuild is
-claimed.
+remain distinct. The final309 composition over callable Fibers322 passes its
+required combined compiler at `b4cfe4a14`; source/state cuts are not renewed
+and no offline rebuild is claimed.
