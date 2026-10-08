@@ -8,6 +8,52 @@ dec $fiber_callable_raw_valid(pstate, papiquery) : bool
 dec $fiber_callable_snapshot(pfibercallable) : pfiber
 dec $fiber_callable_receipt_valid(pstate, pfibercallable) : bool
 
+;; New-expression result markers stay tied to the allocated constructor owner
+;; while callback resolution warns or calls a user handler.
+def $ctor_pair_target(S, CONFIG_ARGS pconfigcall) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_ARGS pconfigcall)
+def $ctor_pair_target(S, CONFIG_SEND pconfigcall) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_SEND pconfigcall)
+def $ctor_pair_target(S, CONFIG_UNPACK_PREP pconfigcall) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_UNPACK_PREP pconfigcall)
+def $ctor_pair_target(S, CONFIG_UNPACK_NEXT pconfigcall poperand n_cursor) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_UNPACK_NEXT pconfigcall poperand n_cursor)
+def $ctor_pair_target(S, CONFIG_INVOKE pconfigcall) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_INVOKE pconfigcall)
+def $ctor_pair_target(S, API_CALLABLE_RESULT papiquery n) = $ctor_pair_target(S, papiquery.SOURCE)
+  -- if $call_task_valid(S, API_CALLABLE_RESULT papiquery n)
+def $ctor_pair_target(S, ERROR_HANDLER_INVOKE perrorcall) = $ctor_pair_target(S, perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall)
+def $ctor_pair_target(S, ERROR_HANDLER_RESULT perrorcall) = $ctor_pair_target(S, perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
+def $ctor_pair_target(S, ERROR_HANDLER_CLEAN perrorcall) = $ctor_pair_target(S, perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall)
+dec $fiber_ctor_result_pending(pstate, nat, ptask*) : bool
+def $fiber_ctor_result_pending(S, n, ptask :: (CTOR_RESULT n) :: ptask_tail*) = true
+  -- if $ctor_pair_target(S, ptask) = (n)
+def $fiber_ctor_result_pending(S, n, ptask :: ptask_tail*) = $fiber_ctor_result_pending(S, n, ptask_tail*) -- otherwise
+def $fiber_ctor_result_pending(S, n, eps) = false
+dec $fiber_ctor_result_owner(pstate, nat, pfiber) : bool
+def $fiber_ctor_result_owner(S, n, pfiber) = $fiber_ctor_result_pending(S, n, S.TODO)
+  -- if ~pfiber.READY
+def $fiber_ctor_result_owner(S, n, pfiber) = true
+  -- if pfiber.READY
+  -- if pfiber.CALL = (pconfigcall)
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $fiber_cache_valid(S, n, pfiber)
+def $fiber_ctor_result_owner(S, n, pfiber) = false -- otherwise
+def $ctor_result_valid(S, n) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $fiber_new_site(S, porigin)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $fiber_ctor_result_owner(S, n, pfiber)
+
 def $fiber_receive_value(S, pconfigcall, pvalue) = $api_begin(S, CONFIG_INVOKE pconfigcall, pvalue)
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if $api_special(S, pvalue)
