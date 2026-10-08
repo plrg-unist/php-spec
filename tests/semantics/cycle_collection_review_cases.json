@@ -502,5 +502,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-new-fiber-pass-keeps-parked-old-error-review-24",
+    "source": "<?php\n$w=null;$o=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w,$o;\n  if($this->k===0){\n   $o=new Exception;\n   echo 'A|',$w->throw($o),'|';\n  }else{\n   echo Fiber::suspend('paused')===null?'B:null|':'bad-value|';\n  }\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);\necho gc_collect_cycles(),'|';\nclass D {\n public $s;\n function __destruct(){global $w;echo Fiber::getCurrent()===$w?'D:cached|':'D:other|';}\n}\n$t=new Fiber(function(){\n global $o;\n $d=new D;$d->s=$d;unset($d);\n try{echo 'new-GC|',gc_collect_cycles(),'|';}\n catch(Throwable $c){echo $c===$o?'old|':'bad-old|';}\n});\n$t->start();echo 'END';\n",
+    "source_sha256": "446020648211c21eef596609c2dc8e04afa446c804a6b0079ab18cbc3b2ff86e",
+    "stdout": "A|paused|1|new-GC|B:null|old|ENDD:other|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

@@ -168,7 +168,7 @@ syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED n
 syntax hedge
 syntax hgraph
 syntax pgcvisit = GC_VISIT pnode bool
-syntax pgcprogress = GC_CALLED pnode | GC_SKIPPED pnode | GC_DETACHED pnode
+syntax pgcprogress = GC_CALLED pnode | GC_SKIPPED pnode | GC_DETACHED pnode | GC_UNVISITED pnode nat nat
 syntax pgcslot = GC_EMPTY | GC_ROOT pnode | GC_RETIRED nat | GC_BARE_ROOT nat | GC_DTOR_ROOT nat
 syntax pgcscan = {INDEX nat, END nat}
 syntax pgcpublic
