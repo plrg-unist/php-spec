@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source339 adds the missing ordinary name-CV warning before computed FETCH.
+Returning handlers change the live caller CV used for conversion; absent/unset
+CVs quietly become null, while a later missing-target warning keeps fixed null.
+Seven exact originals and171 independent premises pass at private `bf7bcb3da`/321,
+including local/global isolation, fallback, throw priority and authentic include
+retirement/FETCH6. The actual324 composition over `6b51f811c` passes strict
+compilation at `e3d6a7c85` with reviewed bound-Fiber/Generator/collector/array
+compatibility. Original fixture failures and diagnostic vectors retain zero
+affected credit. [Ledger](coverage/semantics/source-missing-name-cv-review.json).
+
 337 adds bound first-class `resume`/`throw`/defined `getReturn` and status methods.
 The Closure owns its selected Fiber; direct and explicit `__invoke` calls borrow
 that receiver while retaining their actual argument buffers and saved operation
@@ -125,10 +135,10 @@ WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/3
 Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 322 modules composed over
-`0bb453754`, retaining static Fiber API captures331, physical property references324 and collector335/338.
+with 324 modules composed over
+`6b51f811c`, retaining static/bound Fiber API captures331/337, physical property references324 and collector335/338.
 The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336.
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
