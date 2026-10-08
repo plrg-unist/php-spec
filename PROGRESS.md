@@ -166,6 +166,15 @@ still hits55.065 with empty streams and zero agreement. Empty/HANDLE and fallbac
 domains are statically preserved, with no demonstrated speedup or231 credit.
 The actual316 join retains332/333 roots/source fields and passes strict
 initialization on `1e95f04a8` in3.870s; earlier314 runtime cuts stay distinct.
+The per-node zero-scan factor binds each owner count once in the unchanged heap.
+Private `8bbe41e3d`/316 passes strict initialization, DONE44/ACTIVE77, independent
+35 graph premises and the exact WeakReference original in9.175s. The graph
+fixture's initial parse stop keeps zero runtime credit. The full 1697-byte retry
+still hits55.065 with empty streams and zero agreement; inputs stay stable and
+groups are reaped. No speedup or231 credit follows. Raw records are under
+`.tools/compiler-gc-zero-owners-18/.tools/gc-zero-owners-gate-v1/run-v{1,2}`.
+The actual335-parent319 composition passes strict initialization on `3e56ab759`
+in4.019s; earlier316 runtime cuts retain their identities.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

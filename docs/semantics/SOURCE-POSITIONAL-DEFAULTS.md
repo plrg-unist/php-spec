@@ -176,4 +176,11 @@ The separate lazy release-walk factor passes strict314,121 keep/release predicat
 and the WeakReference original on `cd2f2a355`; full retry55.065 remains zero.
 Its actual316 join retains current root/source hooks and passes strict
 initialization on `1e95f04a8`, without renewed source or speedup credit.
+The separate per-node zero-scan owner-count factor passes strict316, DONE44,
+ACTIVE77, independent35 graph premises and the WeakReference original on
+`8bbe41e3d`. Its initial graph-fixture parse stop keeps zero runtime credit.
+The full 1697-byte retry still reaches host55.065 with empty streams and zero
+agreement; this demonstrates no speedup or231 coverage.
+Its actual335-parent319 composition passes strict initialization on `3e56ab759`,
+without renewing the316 runtime cuts.
 Whole retry composition and wider producers remain open.

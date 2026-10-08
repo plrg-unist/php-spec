@@ -950,6 +950,8 @@ Eight exact normal originals and eight genuine state groups/761 premises pass;
 the strict compiler277 gate retains its separate cut. Current306 dispatch delegates
 its former two-frontier control to312. Parked Fibers, object/null-key/outside-eval
 producers and wider initializer forms remain required; integration is pending.
+Scoped collector scan refinements pass affected state/source controls; the full
+default retry still exceeds the 55-second host cap.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
