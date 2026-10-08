@@ -75,4 +75,6 @@ and9 newly affected maintained checks. Genuine method/private scope permits the
 later property read; absent-instance retirement precedes Error5. Parenthesized
 FETCH6/property8 and same-heap line/scope counterexamples pass. The initial wrong
 INSTANCE fixture false has zero accepted credit; previous72 is preparation-only.
-Relocations add no execution credit; actual-parent integration remains pending.
+Actual303 passes strict compilation while retaining property warnings318, current
+default/source/DIR rules and ArrayAccess319. Their introduced paths are independently
+reviewed as disjoint here. Private source/state cuts and relocations gain no renewed credit.

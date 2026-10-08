@@ -31,9 +31,9 @@ WeakReference296, ordinary cycle collection301, Fiber291/302/308/313,
 Generator289/303/310/311 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with302 modules descended from
+with303 modules descended from
 `38f1dfaa045f`. The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320.
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -127,11 +127,12 @@ compilation with reviewed Arrow/Fiber compatibility and no renewed source/state
 credit. Relocations add no execution credit; broader first emissions remain required.
 
 [Literal this emission323](coverage/semantics/source-this-emission-review.json)
-is independently accepted at private297: FETCH5 precedes child work or the later
+is integrated: FETCH5 precedes child work or the later
 missing-instance Error5, while a method include retains its receiver/private scope.
-Four exact originals,70 independent premises and only9 affected guard checks pass;
-the corrected INSTANCE fixture false retains zero accepted credit. Relocations add
-no renewed execution credit; actual-parent integration and broader emissions remain pending.
+Private297 retains four exact originals,70 independent premises and9 affected guard
+checks; the initial INSTANCE fixture false has zero accepted credit. Actual303
+passes strict compilation with reviewed property/default/argument compatibility.
+Relocations and the actual join add no source/state credit; broader emissions remain required.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
