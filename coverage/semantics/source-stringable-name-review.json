@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendored tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "scope": "Stringable ordinary CV-computed variable names: borrowed CV, selected implicit call, captured returned bytes, cast-owner retirement, live target lookup and pending destructor-exception warning ordering.",
+  "engine_evidence": [
+    "Zend/zend_vm_def.h::zend_fetch_var_address_helper converts the actual name CV and performs target lookup before NEXT_OPCODE_CHECK_EXCEPTION after successful conversion.",
+    "Zend/zend_object_handlers.c::zend_std_cast_object_tostring adds/releases its cast receiver owner before testing the returned string.",
+    "Zend/zend_operators.c::__zval_get_string_func returns successful cast bytes even after receiver release sets EG(exception).",
+    "Zend/zend.c error dispatch retains default diagnostics with a pending exception; an eligible registered handler fails without callback or fallback."
+  ],
+  "private_cut": {
+    "revision": "fdb6e4577c2e3507c837f0307c02505314e662e2",
+    "modules": 325,
+    "semantic_inputs_sha256": {
+      "spec/semantics/30-storage.watsup": "e098b4c6d0b0152a6d9ff6679629954cd0ffd5489facee78df1f444a0035aede",
+      "spec/semantics/40-control.watsup": "bc14b52d43d685d348b6fcf41d4a815ce8c267fcbfb3d29075c62de06234530a",
+      "spec/semantics/168-user-string-runtime.watsup": "12d3ff95013f156e60adfc185df2d76235fe8d3d10fa3500de5130822d72a46a",
+      "spec/semantics/343-stringable-computed-cv-name.watsup": "f35fba749f123561282a240eff7e8d4bf2dd5762491d0698579815293fc363d1",
+      "spec/semantics/modules.json": "895a690ee528dc33ca0ccd6adf5959288b8cb9da44659111437eb91cd4d4c75c"
+    },
+    "binary_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+      "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1",
+      "include_path": ".:"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "strict_compiler": {
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "cap_seconds": 300,
+      "elapsed_seconds": 3.986504554748535,
+      "application_evaluations": 0
+    },
+    "source": {
+      "record": ".tools/include-stringable-name-343-private-19/.tools/stringable-name-originals-19/stringable-name-source-run-pxebnbc_/report.json",
+      "record_sha256": "f353638afdeb4ccb4be9962dc8423c0285e96eaab16a28151aa90782bf68196b",
+      "passed": true,
+      "selected": [
+        "basic",
+        "mutation",
+        "cast-throw",
+        "handler-created",
+        "target-warning",
+        "destructor-throw",
+        "retirement",
+        "pending-missing-default"
+      ],
+      "application_evaluations": 8,
+      "source_agreements": 8,
+      "comparison": "Exact original stdout/stderr bytes, checked accepted program, normal/exit0; empty producer stderr, CLI60/outer90 seconds, serial jobs1.",
+      "stability": "Inputs/head/status stable; all processes reaped without timeout.",
+      "native_records": [
+        ".tools/include-stringable-name-343-private-19/.tools/stringable-name-originals-19/stringable-name-native-duuelq__/report.json",
+        ".tools/include-stringable-name-343-private-19/.tools/stringable-name-originals-19/stringable-name-native-extra-8o_yv5y4/report.json"
+      ],
+      "native_bridge": "Native7 and the added default-warning original retain separate input/head/status-stable captures; no native execution is counted as a semantic application."
+    },
+    "independent_state": {
+      "groups": [
+        {
+          "case": "call",
+          "physical_main_premises": 48,
+          "bindings": 22,
+          "checks": 26,
+          "record": ".tools/include-review-19-stringable-name/state-run-7wvtivpi/report.json",
+          "record_sha256": "6022aee2d2dcc1eb2dc8eff532babd127ca2b00490543fc9334056d8b0cb7f15",
+          "row_passed": true,
+          "elapsed_seconds": 8.962071418762207,
+          "retained_row": "Row0 only; the whole report records a later lifetime47 false. Call fixture bytes are unchanged by the later alias-phase correction."
+        },
+        {
+          "case": "lifetime",
+          "physical_main_premises": 47,
+          "bindings": 24,
+          "checks": 23,
+          "record": ".tools/include-review-19-stringable-name/state-run-w7xe9wy5/report.json",
+          "record_sha256": "1200f60886e3536f5fe683615945da289cf14dafb3d55b5545683b98f44fa1ec",
+          "row_passed": true,
+          "elapsed_seconds": 17.845284938812256
+        },
+        {
+          "case": "pending",
+          "physical_main_premises": 39,
+          "bindings": 16,
+          "checks": 23,
+          "record": ".tools/include-review-19-stringable-name/state-run-yi1e8ymj/report.json",
+          "record_sha256": "128a72a032045434b92e565ea177c395e245653a9e56bf029ff59932b448eaa6",
+          "row_passed": true,
+          "elapsed_seconds": 12.519539833068848
+        }
+      ],
+      "physical_main_premises": 134,
+      "application_evaluations": 3,
+      "source_agreements": 0,
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "cap_seconds": 90,
+      "jobs": 1,
+      "scope": "Genuine selected-call/current+saved source integrity, sole/aliased cast-owner release, fixed returned bytes/live target, target-warning null, pending default/eligible/mask-ineligible/silent diagnostics.",
+      "stability": "All selected rows true, with input/module-stat/head/status stability and empty producer stderr; processes reaped without timeout."
+    }
+  },
+  "publication": {
+    "fixture_revision": "4bed82efea9fb672177c3563d8904ba0004e066b",
+    "path": "tests/semantics/source-stringable-retirement/stringable-name-*.php",
+    "relocation": "Eight files byte-identical; retirement main changes only three exact child-basename literals. Eight additive selectors are excluded from the old default.",
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "reproduction": {
+    "private_source_cwd": ".tools/include-stringable-name-343-private-19",
+    "private_source_command": "python3 .tools/stringable-name-originals-19/run-source.py",
+    "maintained_source_command": "python3 tests/semantics/source_stringable_retirement_sources.py --case stringable-name-pending-missing-default",
+    "raw_artifacts": "Ignored .tools paths; no raw execution archive is tracked.",
+    "state_command": "python3 .tools/include-review-19-stringable-name/run-state.py --source-report .tools/include-stringable-name-343-private-19/.tools/stringable-name-originals-19/stringable-name-source-run-pxebnbc_/report.json",
+    "current_compiler_cwd": ".tools/include-stringable-name-343-actual-19",
+    "current_compiler_command": "python3 .tools/stringable-name-actual-current-19/run-compiler.py fe9ad60a9d"
+  },
+  "remaining": "Special this/auto-global targets, warning-producing name conversions and wider computed producers/emissions remain required. Earlier source/state cuts and relocated fixtures gain no renewed execution credit; no family status closes.",
+  "preserved_zero_credit": [
+    {
+      "record": ".tools/include-review-19-stringable-name/state-run-zsflxhvx/report.json",
+      "result": "Elaboration-only empty-iteration fixture failure; no application.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-stringable-name/state-run-wv56otjl/report.json",
+      "result": "Call48 false because phase classification inspected BUDGET rather than resumed NORMAL; other groups unrun.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-stringable-name/call-debug-run-v8p18888/report.json",
+      "result": "Empty predicate vector: a reached-state binding failed; diagnostic only.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-stringable-name/call-shape-run-kepox_cg/report.json",
+      "result": "Shape diagnostic fallback; no acceptance.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-stringable-name/call-frontier-run-qe19g_y_/report.json",
+      "result": "Localized the missing phase to BUDGET classification; diagnostic only.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-stringable-name/state-run-7wvtivpi/report.json",
+      "result": "Lifetime47 false; call48 row0 is accepted separately. The alias retained the object but still traversed a release-operation wrapper.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-stringable-name/lifetime-debug-run-dsuia3mu/report.json",
+      "result": "Only alias-phase checks6/15 false among23; a bounded genuine READY seek corrected the fixture. Diagnostic only.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-stringable-name/native-7urfo2mw/report.json",
+      "result": "Initial independent unset probe removed only a local global alias, so its assumed owner release was absent. Corrected native controls retained separately.",
+      "accepted_premises": 0
+    }
+  ],
+  "independent_native_controls": [
+    ".tools/include-review-19-stringable-name/native-rfbtz9_d/report.json",
+    ".tools/include-review-19-stringable-name/pending-native-iedra0u1/report.json"
+  ],
+  "prior_composition": {
+    "revision": "8bf796b3b361c82fc894d1a6826f29ed00f96ba3",
+    "modules": 328,
+    "record": ".tools/include-stringable-name-343-actual-19/.tools/stringable-name-actual-current-19/stringable-name-actual-compiler-mzuxutzi/report.json",
+    "passed": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "scope": "The already-started328 compiler reaped before the parent update arrived. This retained cut makes no final-current claim."
+  },
+  "actual_composition": {
+    "canonical_parent": "fe9ad60a9d00b7566becaa34e94f97cbfdbeb963",
+    "revision": "890496dec7beb11d67d71645bd41fff7e7da67ba",
+    "modules": 329,
+    "manifest": "Exact canonical328 prefix followed by unchanged343.",
+    "record": ".tools/include-stringable-name-343-actual-19/.tools/stringable-name-actual-current-19/stringable-name-actual-compiler-440e50c4/report.json",
+    "record_sha256": "8d2268e1d156debd262ef98c645f70c643ea9faf3ecffcc4ef86f1960148da18",
+    "passed": true,
+    "elapsed_seconds": 4.017487525939941,
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "stability": "Inputs/module-stats/head/status stable; empty stderr, no timeout and fully reaped.",
+    "independent_compatibility": "307 trait copied-closure/birth-receipt guards and341 bound Fiber/C-root/RAW restored-caller rules are source/target/task disjoint;342 GC-worker readiness changes no Stringable roots. Canonical30 fields/tasks are preserved and40/168 hooks remain additive. Earlier327/330/339 protocols are unchanged.",
+    "retained_credit": "Source8/state134 keep fdb/325; no earlier source/state evidence is renewed."
+  }
+}

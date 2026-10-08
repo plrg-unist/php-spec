@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source343 adds Stringable ordinary computed-name CVs with a separate cast owner.
+Returned bytes survive receiver retirement before live target lookup; a pending
+destructor exception permits the default missing-target warning but suppresses
+an eligible registered handler. Eight exact originals and134 independent premises
+retain private `fdb6e4577`/325. Actual329 over `fe9ad60a9d` passes strict compilation
+at `890496dec`, with reviewed callable/trait/collector compatibility. Original
+fixture failures and diagnostic cuts retain zero affected credit.
+[Ledger](coverage/semantics/source-stringable-name-review.json).
+
 341 executes fixed bound API captures as Fiber C-root callbacks. Immutable RAW
 selection preserves the receiver, borrowed API ownership and genuine nested or
 idle collector caller chains. Last callback retirement can close its receiver
