@@ -31,6 +31,19 @@ def $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NAr
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_argument) = ((z_argument, false))
   -- if z_argument = $source_line(metadata_value)
   -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+;; A deferred named SEND uses the argument-label line. Complete-image admission
+;; authenticates its descriptor independently of the CV's source line or value.
+def $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if z = $source_line(metadata_call)
+  -- if pcpath_argument = pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1]
+  -- if $source_emission_cv(S, n, pcpath_argument, NExprVariable (BYTES text_argument) metadata_value)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
 def $source_emission_echo_call(S, n, pcpath, expression) = eps -- otherwise
 
 ;; DO_CALL restores its own line on the emitted opcode; CG(zend_lineno) stays
@@ -40,6 +53,9 @@ def $source_emission_echo_line(S, n, pcpath, expression) = (z)
   -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
 def $source_emission_echo_line(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_argument)
   -- if $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_init)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath, [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (z_argument)
+def $source_emission_echo_line(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_argument)
+  -- if $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_init)
   -- if $code_expression_at_source(S, PORIGIN n pcpath, [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (z_argument)
 def $source_emission_echo_line(S, n, pcpath, expression) = eps -- otherwise
 def $echo_expression_line(S, expression) = $constant_runtime_line(S, z)

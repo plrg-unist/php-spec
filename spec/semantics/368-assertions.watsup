@@ -1,0 +1,286 @@
+;; Assertion compilation selects the builtin after lexical name resolution.
+;; Its negative startup mode omits argument compilation, unlike runtime mode0.
+dec $assertion_ini_mode(preqbytes) : int?
+dec $ppassertion_selected(pnresult) : bool
+dec $ppassertion_prepare(ppstate, pcpath, phpType7*) : ppstate
+dec $assertion_control(preqbytes) : bool
+dec $assertion_quote_byte(nat, bool) : preqbytes
+dec $assertion_quote_content(preqbytes, bool) : preqbytes
+dec $assertion_quote(preqbytes) : preqbytes
+dec $assertion_export_name(name) : preqbytes
+dec $assertion_export(expression, int) : preqbytes?
+dec $assertion_export_epochs(expression, int, int) : preqbytes?
+dec $assertion_export_at(expression, int, int, int) : preqbytes?
+dec $assertion_export_args(phpType7*, int, int) : preqbytes?
+dec $assertion_export_arg(phpType7, int) : preqbytes?
+dec $assertion_export_arg_epochs(phpType7, int, int) : preqbytes?
+dec $assertion_export_join(preqbytes, phpType7*, int, int) : preqbytes?
+dec $assertion_export_binary(expression) : (preqbytes, int, int, int, expression, expression)?
+dec $assertion_binary(pbin) : (preqbytes, int, int, int)
+dec $assertion_parentheses(preqbytes, bool) : preqbytes
+dec $assertion_float(nat, int) : preqbytes
+dec $assertion_float_text(nat, preqbytes) : preqbytes
+dec $assertion_direct_site(pstate, porigin) : bool
+dec $assertion_default(pstate, pconfigcall) : preqbytes?
+dec $assertion_success(pstate) : pstate
+dec $assertion_failed(pstate, pconfigcall, preqbytes) : pstate
+dec $assertion_failed_result(pstate) : pstate
+dec $assertion_test(pstate, pconfigcall, pvalue, pvalue) : pstate
+dec $assertion_description_value(pstate, pconfigcall, pvalue, pvalue) : pstate
+dec $assertion_receive(pstate, pconfigcall) : pstate
+dec $assertion_entry(pstate, prequest?, preqbytes?) : pstate
+dec $assertion_entry_cwd(prequest?, preqbytes?) : preqbytes?
+dec $php_assertions_run(program, nat, preqbytes, pstartup?, bool, preqbytes?, preqbytes, preqbytes, prequest?, preqbytes?) : pstate
+dec $assertion_constant_at(pconstant*, pcpath) : preqbytes?
+dec $assertion_trace_call(pstate, pconfigcall) : pconfigcall
+def $assertion_ini_mode(preqbytes) = (-1) -- if preqbytes = $ptascii("-1")
+def $assertion_ini_mode(preqbytes) = (0) -- if preqbytes = $ptascii("0")
+def $assertion_ini_mode(preqbytes) = (1) -- if preqbytes = $ptascii("1")
+def $assertion_ini_mode(preqbytes) = eps -- otherwise
+
+def $intrinsic_name(INTRINSIC_ASSERT) = $ptascii("assert")
+def $intrinsic_named(preqbytes) = (INTRINSIC_ASSERT) -- if $ptlc(preqbytes) = $ptascii("assert")
+def $config_kind(INTRINSIC_ASSERT) = true
+def $assertion_kind(INTRINSIC_ASSERT) = true
+def $config_parameter(INTRINSIC_ASSERT, preqbytes) = (0) -- if preqbytes = $ptascii("assertion")
+def $config_parameter(INTRINSIC_ASSERT, preqbytes) = (1) -- if preqbytes = $ptascii("description")
+def $config_parameter_name(INTRINSIC_ASSERT, 0) = $ptascii("assertion")
+def $config_parameter_name(INTRINSIC_ASSERT, 1) = $ptascii("description")
+
+def $ppassertion_selected(PNRESOLVED pnreference) = ($intrinsic_lookup(pnreference.RESOLVED, pnreference.FALLBACK) = (INTRINSIC_ASSERT))
+def $ppassertion_selected(pnresult) = false -- otherwise
+def $ppcall_direct(P, pcpath, pnresult, phpType7*) = P[.FOLD = $pfremember(P.FOLD, pcpath, (PBOOL true), P.LOCATION.LINE)]
+  -- if $ppassertion_selected(pnresult)
+  -- if $(P.FOLD.MEMORY.ASSERTIONS < 0)
+def $ppcall_direct(P, pcpath, pnresult, phpType7*) = $ppcall_args($ppcall_name($ppassertion_prepare(P, pcpath, phpType7*), pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult)
+  -- if $ppassertion_selected(pnresult)
+  -- if $(P.FOLD.MEMORY.ASSERTIONS >= 0)
+def $ppassertion_prepare(P, pcpath, [NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata]) = P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCASSERTION pcpath ($ptascii("assert(") ++ preqbytes ++ [41])]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $exit_argument_name(phpType3) = eps \/ $exit_argument_name(phpType3) = ($ptascii("assertion"))
+  -- if $assertion_export_arg_epochs(NArg phpType3 expression (BOOLEAN false) (BOOLEAN false) metadata, $precision_value(P.FOLD.MEMORY), P.FOLD.PARSEPRECISION) = (preqbytes)
+def $ppassertion_prepare(P, pcpath, phpType7*) = $ppunsupported(P, "assertion generated description argument shape or AST export")
+  -- otherwise
+def $ppassertion_prepare(P, pcpath, phpType7*) = P
+  -- if P.COMPLETION =/= PPCNORMAL \/ |phpType7*| =/= 1
+
+;; Zend exports normalized AST bytes, independently of source quote spelling.
+def $assertion_control(eps) = false
+def $assertion_control(n :: preqbytes) = ($(n < 32) \/ $assertion_control(preqbytes))
+def $assertion_quote_byte(n, false) = [92, n] -- if n <- [39, 92]
+def $assertion_quote_byte(n, false) = [n] -- if ~(n <- [39, 92])
+def $assertion_quote_byte(10, true) = [92, 110]
+def $assertion_quote_byte(13, true) = [92, 114]
+def $assertion_quote_byte(9, true) = [92, 116]
+def $assertion_quote_byte(12, true) = [92, 102]
+def $assertion_quote_byte(11, true) = [92, 118]
+def $assertion_quote_byte(27, true) = [92, 101]
+def $assertion_quote_byte(n, true) = [92, 48, $(48 + n / 8), $(48 + n \ 8)]
+  -- if $(n < 32)
+  -- if ~(n <- [10, 13, 9, 12, 11, 27])
+def $assertion_quote_byte(n, true) = [92, n] -- if n <- [34, 36, 92]
+def $assertion_quote_byte(n, true) = [n] -- if $(n >= 32) /\ ~(n <- [34, 36, 92])
+def $assertion_quote_content(eps, b) = eps
+def $assertion_quote_content(n :: preqbytes, b) = $assertion_quote_byte(n, b) ++ $assertion_quote_content(preqbytes, b)
+def $assertion_quote(preqbytes) = [34] ++ $assertion_quote_content(preqbytes, true) ++ [34] -- if $assertion_control(preqbytes)
+def $assertion_quote(preqbytes) = [39] ++ $assertion_quote_content(preqbytes, false) ++ [39] -- if ~$assertion_control(preqbytes)
+def $assertion_export_name(name) = preqbytes -- if $ptast(name) = PTNAME PTPLAIN preqbytes
+def $assertion_export_name(name) = [92] ++ preqbytes -- if $ptast(name) = PTNAME PTFULL preqbytes
+def $assertion_export_name(name) = $ptascii("namespace") ++ [92] ++ preqbytes -- if $ptast(name) = PTNAME PTRELATIVE preqbytes
+def $assertion_binary(ADD) = ($ptascii(" + "), 200, 200, 201)
+def $assertion_binary(SUBTRACT) = ($ptascii(" - "), 200, 200, 201)
+def $assertion_binary(MULTIPLY) = ($ptascii(" * "), 210, 210, 211)
+def $assertion_binary(DIVIDE) = ($ptascii(" / "), 210, 210, 211)
+def $assertion_binary(MODULO) = ($ptascii(" % "), 210, 210, 211)
+def $assertion_binary(SHIFTLEFT) = ($ptascii(" << "), 190, 190, 191)
+def $assertion_binary(SHIFTRIGHT) = ($ptascii(" >> "), 190, 190, 191)
+def $assertion_binary(BITOR) = ($ptascii(" | "), 140, 140, 141)
+def $assertion_binary(BITAND) = ($ptascii(" & "), 160, 160, 161)
+def $assertion_binary(BITXOR) = ($ptascii(" ^ "), 150, 150, 151)
+def $assertion_binary(IDENTICAL) = ($ptascii(" === "), 170, 171, 171)
+def $assertion_binary(NOTIDENTICAL) = ($ptascii(" !== "), 170, 171, 171)
+def $assertion_binary(EQUAL) = ($ptascii(" == "), 170, 171, 171)
+def $assertion_binary(NOTEQUAL) = ($ptascii(" != "), 170, 171, 171)
+def $assertion_binary(LESS) = ($ptascii(" < "), 180, 181, 181)
+def $assertion_binary(LESSEQUAL) = ($ptascii(" <= "), 180, 181, 181)
+def $assertion_binary(GREATER) = ($ptascii(" > "), 180, 181, 181)
+def $assertion_binary(GREATEREQUAL) = ($ptascii(" >= "), 180, 181, 181)
+def $assertion_binary(SPACESHIP) = ($ptascii(" <=> "), 180, 181, 181)
+def $assertion_binary(POWER) = ($ptascii(" ** "), 250, 251, 250)
+def $assertion_binary(LOGICALXOR) = ($ptascii(" xor "), 40, 40, 41)
+def $assertion_export_binary(expression) = ((preqbytes, z, z_left, z_right, expression_left, expression_right))
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin =/= CONCAT
+  -- if (preqbytes, z, z_left, z_right) = $assertion_binary(pbin)
+def $assertion_export_binary(NExprBinaryOpConcat expression_left expression_right metadata) = (($ptascii(" . "), 185, 185, 186, expression_left, expression_right))
+def $assertion_export_binary(NExprBinaryOpBooleanAnd expression_left expression_right metadata) = (($ptascii(" && "), 130, 130, 131, expression_left, expression_right))
+def $assertion_export_binary(NExprBinaryOpBooleanOr expression_left expression_right metadata) = (($ptascii(" || "), 120, 120, 121, expression_left, expression_right))
+def $assertion_export_binary(NExprBinaryOpLogicalAnd expression_left expression_right metadata) = (($ptascii(" and "), 50, 50, 51, expression_left, expression_right))
+def $assertion_export_binary(NExprBinaryOpLogicalOr expression_left expression_right metadata) = (($ptascii(" or "), 30, 30, 31, expression_left, expression_right))
+def $assertion_export_binary(expression) = eps -- otherwise
+def $assertion_parentheses(preqbytes, false) = preqbytes
+def $assertion_parentheses(preqbytes, true) = [40] ++ preqbytes ++ [41]
+def $assertion_float(n, z) = $assertion_float_text(n, preqbytes)
+  -- if (preqbytes, b) = $number_text(NFLOAT n, z)
+def $assertion_float_text(n, preqbytes) = preqbytes ++ $ptascii(".0")
+  -- if $float_decode(n) = FINITE n_sign n_numerator n_denominator
+  -- if ~(46 <- preqbytes)
+def $assertion_float_text(n, preqbytes) = preqbytes -- otherwise
+def $assertion_export(expression, z) = $assertion_export_epochs(expression, z, z)
+def $assertion_export_epochs(expression, z, z_parse) = $assertion_export_at(expression, z, z_parse, 0)
+def $assertion_export_at(NScalarString (BYTES text) metadata, z, z_parse, z_priority) = ($assertion_quote($base64(text)))
+def $assertion_export_at(NScalarInt (INTEGER i) metadata, z, z_parse, z_priority) = ($decimal_integer(i))
+def $assertion_export_at(NScalarFloat (FLOAT text) metadata, z, z_parse, z_priority) = ($assertion_float($hex_bits(text, 0), z))
+def $assertion_export_at(NExprConstFetch name metadata, z, z_parse, z_priority) = ($assertion_export_name(name))
+def $assertion_export_at(NExprVariable (BYTES text) metadata, z, z_parse, z_priority) = ([36] ++ $base64(text))
+def $assertion_export_at(NExprFuncCall name (SEQUENCE phpType7*) metadata, z, z_parse, z_priority) = ($assertion_export_name(name) ++ [40] ++ preqbytes ++ [41])
+  -- if $assertion_export_args(phpType7*, z, z_parse) = (preqbytes)
+def $assertion_export_at(NExprArrayDimFetch expression ABSENT metadata, z, z_parse, z_priority) = ($assertion_parentheses(preqbytes ++ $ptascii("[]"), $(z_priority > 260)))
+  -- if $assertion_export_at(expression, z, z_parse, 260) = (preqbytes)
+def $assertion_export_at(NExprArrayDimFetch expression_base expression_index metadata, z, z_parse, z_priority) = ($assertion_parentheses(preqbytes_base ++ [91] ++ preqbytes_index ++ [93], $(z_priority > 260)))
+  -- if $assertion_export_at(expression_base, z, z_parse, 260) = (preqbytes_base)
+  -- if $assertion_export_epochs(expression_index, z, z_parse) = (preqbytes_index)
+def $assertion_export_at(NExprBinaryOpConcat expression_left expression_right metadata, z, z_parse, z_priority) = ($assertion_quote(preqbytes))
+  -- if $parser_literal_at(NExprBinaryOpConcat expression_left expression_right metadata, z_parse) = (PSTRING preqbytes)
+def $assertion_export_at(expression, z, z_parse, z_priority) = ($assertion_parentheses(preqbytes_left ++ preqbytes_operator ++ preqbytes_right, $(z_priority > z_operator)))
+  -- if $parser_literal_at(expression, z_parse) = eps
+  -- if $assertion_export_binary(expression) = ((preqbytes_operator, z_operator, z_left, z_right, expression_left, expression_right))
+  -- if $assertion_export_at(expression_left, z, z_parse, z_left) = (preqbytes_left)
+  -- if $assertion_export_at(expression_right, z, z_parse, z_right) = (preqbytes_right)
+def $assertion_export_at(expression, z, z_parse, z_priority) = eps -- otherwise
+def $assertion_export_arg(phpType7, z) = $assertion_export_arg_epochs(phpType7, z, z)
+def $assertion_export_arg_epochs(NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata, z, z_parse) = $assertion_export_epochs(expression, z, z_parse)
+def $assertion_export_arg_epochs(NArg (NIdentifier (BYTES text) metadata_name) expression (BOOLEAN false) (BOOLEAN false) metadata, z, z_parse) = ($base64(text) ++ $ptascii(": ") ++ preqbytes)
+  -- if $assertion_export_epochs(expression, z, z_parse) = (preqbytes)
+def $assertion_export_arg_epochs(phpType7, z, z_parse) = eps -- otherwise
+def $assertion_export_args(eps, z, z_parse) = (eps)
+def $assertion_export_args(phpType7 :: phpType7_tail*, z, z_parse) = $assertion_export_join(preqbytes, phpType7_tail*, z, z_parse)
+  -- if $assertion_export_arg_epochs(phpType7, z, z_parse) = (preqbytes)
+def $assertion_export_args(phpType7*, z, z_parse) = eps -- otherwise
+def $assertion_export_join(preqbytes, eps, z, z_parse) = (preqbytes)
+def $assertion_export_join(preqbytes, phpType7*, z, z_parse) = (preqbytes ++ $ptascii(", ") ++ preqbytes_tail)
+  -- if phpType7* =/= eps
+  -- if $assertion_export_args(phpType7*, z, z_parse) = (preqbytes_tail)
+def $assertion_export_join(preqbytes, phpType7*, z, z_parse) = eps -- otherwise
+
+;; A direct ASSERT_CHECK skips the complete call in mode0. Dynamic selections
+;; and first-class closures still evaluate their ordinary argument sequence.
+def $assertion_direct_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $exit_fixed(S, porigin) = ((preqbytes, preqbytes_fallback?))
+  -- if $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (INTRINSIC_ASSERT)
+def $assertion_direct_site(S, porigin) = false -- otherwise
+def $config_prepare(S, INTRINSIC_ASSERT, z, eps, porigin) = S[.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $(S.ASSERTIONS <= 0)
+  -- if $assertion_direct_site(S, porigin)
+def $assertion_default(S, pconfigcall) = $assertion_constant_at(ppool.CONSTANTS, pcpath)
+  -- if $assertion_direct_site(S, pconfigcall.SITE)
+  -- if pconfigcall.SITE = PORIGIN n pcpath
+  -- if $pool_at(S.POOLS, n) = (ppool)
+def $assertion_default(S, pconfigcall) = eps -- otherwise
+def $assertion_success(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+def $assertion_failed(S, pconfigcall, preqbytes) = $assertion_failed_result($config_error(S, $assertion_trace_call(S, pconfigcall), "AssertionError", preqbytes))
+def $assertion_failed_result(S) = $throwable_constructor_field(S, n, "code", PINT 1)
+  -- if S.COMPLETION = THROWING n
+def $assertion_failed_result(S) = S -- otherwise
+def $assertion_test(S, pconfigcall, pvalue, pvalue_description) = $assertion_success(S) -- if $truth(S, pvalue)
+def $assertion_test(S, pconfigcall, pvalue, POBJECT n) = S[.COMPLETION = THROWING n]
+  -- if ~$truth(S, pvalue)
+  -- if $throwable_member(S, n)
+def $assertion_test(S, pconfigcall, pvalue, PSTRING preqbytes) = $assertion_failed(S, pconfigcall, preqbytes) -- if ~$truth(S, pvalue)
+def $assertion_test(S, pconfigcall, pvalue, PNULL) = $assertion_failed(S, pconfigcall, eps) -- if ~$truth(S, pvalue)
+def $assertion_description_value(S, pconfigcall, pvalue, PNULL) = $assertion_test(S, pconfigcall, pvalue, PNULL)
+def $assertion_description_value(S, pconfigcall, pvalue, PSTRING preqbytes) = $assertion_test(S, pconfigcall, pvalue, PSTRING preqbytes)
+def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = $assertion_test(S, pconfigcall, pvalue, POBJECT n) -- if $throwable_member(S, n)
+def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = $assertion_test(S, pconfigcall, pvalue, PSTRING preqbytes)
+  -- if $typed_scalar(pvalue_description) /\ ~$method_string(pvalue_description)
+  -- if $config_conversion(S, pconfigcall, pvalue_description) = TYPEVALUE (PSTRING preqbytes)
+def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = S[.COMPLETION = UNSUPPORTED "assert Stringable description callback"]
+  -- if ~$throwable_member(S, n)
+  -- if $stringable_instance(S, n)
+  -- if ~$config_strict(S, pconfigcall)
+def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = $config_error(S, pconfigcall, "TypeError", $ptascii("assert(): Argument #2 ($description) must be of type Throwable|string|null, ") ++ $typed_given(S, pvalue_description) ++ $ptascii(" given")) -- otherwise
+def $assertion_receive(S, pconfigcall) = $assertion_success(S) -- if $(S.ASSERTIONS <= 0)
+def $assertion_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("assert() expects at least 1 argument, 0 given"))
+  -- if $(S.ASSERTIONS > 0)
+  -- if pconfigcall.SENT = eps
+def $assertion_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("assert() expects at most 2 arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
+  -- if $(S.ASSERTIONS > 0)
+  -- if $(|pconfigcall.SENT| > 2)
+def $assertion_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("assert(): Argument #1 ($assertion) not passed"))
+  -- if $(S.ASSERTIONS > 0)
+  -- if $config_missing(pconfigcall.SENT, 0) = (0)
+  -- if $(|pconfigcall.SENT| <= 2)
+def $assertion_receive(S, pconfigcall) = $assertion_description_value(S, pconfigcall, pvalue, PSTRING preqbytes)
+  -- if $(S.ASSERTIONS > 0)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $assertion_default(S, pconfigcall) = (preqbytes)
+def $assertion_receive(S, pconfigcall) = $assertion_description_value(S, pconfigcall, pvalue, PNULL)
+  -- if $(S.ASSERTIONS > 0)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $assertion_default(S, pconfigcall) = eps
+def $assertion_receive(S, pconfigcall) = $assertion_description_value(S, pconfigcall, pvalue, pvalue_description)
+  -- if $(S.ASSERTIONS > 0)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_description)]
+def $assertion_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "assert argument receive shape"] -- otherwise
+rule PhpStep/assertion-invoke: S ~> $assertion_receive(S, pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_ASSERT
+  -- if $config_invoke_valid(S, pconfigcall)
+
+;; Optional request/file facts follow the existing entry checks. Compilation
+;; receives the mode before pplexical performs any argument/context checks.
+def $assertion_entry(S, eps, eps) = S
+def $assertion_entry(S, (Q), eps) = $request_bootstrap(S, Q) -- if $request_valid(Q)
+def $assertion_entry(S, eps, (preqbytes_cwd)) = S[.FILECWD = (preqbytes_cwd)][.FILEINCLUDEPATH = ($startup_include_path(S.STARTUP))][.INCLUDEDOPENED = [preqbytes_file]]
+  -- if $source_filename(preqbytes_cwd)
+  -- if S.FILES = [SOURCEFILE 0 preqbytes_file]
+def $assertion_entry(S, (Q), (preqbytes_cwd)) = $request_bootstrap(S[.FILECWD = (preqbytes_cwd)][.FILEINCLUDEPATH = ($startup_include_path(S.STARTUP))][.INCLUDEDOPENED = [preqbytes_file]], Q)
+  -- if $source_filename(preqbytes_cwd)
+  -- if S.FILES = [SOURCEFILE 0 preqbytes_file]
+  -- if $request_valid(Q)
+  -- if Q.CWD = (preqbytes_cwd)
+def $assertion_entry_cwd(eps, preqbytes?) = preqbytes?
+def $assertion_entry_cwd((Q), preqbytes?) = Q.CWD
+def $php_assertions_run(program, n, preqbytes_file, pstartup?, b_display, preqbytes_display?, preqbytes_precision, preqbytes_assertions, prequest?, preqbytes_cwd?) = $drive($compile_source(S_initial, P), n)
+  -- if $source_filename(preqbytes_file)
+  -- if $precision_startup_valid(pstartup?, b_display, preqbytes_display?, preqbytes_precision)
+  -- if $assertion_ini_mode(preqbytes_assertions) = (z_assertions)
+  -- if S_initial = $assertion_entry($precision_initial(pstartup?, b_display, preqbytes_display?, preqbytes_precision)[.FILES = [SOURCEFILE 0 preqbytes_file]][.ASSERTIONS = z_assertions], prequest?, preqbytes_cwd?)
+  -- if P = $ppstart_assertions_epochs(0, program, preqbytes_file, $assertion_entry_cwd(prequest?, preqbytes_cwd?), eps, eps, $precision_value(S_initial), eps, z_assertions)
+def $php_assertions_run(program, n, preqbytes_file, pstartup?, b_display, preqbytes_display?, preqbytes_precision, preqbytes_assertions, prequest?, preqbytes_cwd?) = $initial_state(UNSUPPORTED "invalid assertion startup INI, request or file context") -- otherwise
+
+;; Description bytes are nonowning compiler metadata, captured before arguments.
+def $assertion_constant_at(eps, pcpath) = eps
+def $assertion_constant_at((PCCASSERTION pcpath preqbytes) :: pconstant*, pcpath) = (preqbytes)
+def $assertion_constant_at((PCCASSERTION pcpath_other preqbytes) :: pconstant*, pcpath) = $assertion_constant_at(pconstant*, pcpath) -- if pcpath_other =/= pcpath
+def $assertion_constant_at((PCONSTANT pcpath_other pvalue) :: pconstant*, pcpath) = $assertion_constant_at(pconstant*, pcpath)
+def $assertion_constant_at((PCCLASS pcpath_other pvalueclass) :: pconstant*, pcpath) = $assertion_constant_at(pconstant*, pcpath)
+def $assertion_constant_at((PCCPRECISION pcpath_other z) :: pconstant*, pcpath) = $assertion_constant_at(pconstant*, pcpath)
+def $export_compiler_descriptor(PPCASSERTION pcpath preqbytes) = [PCCASSERTION pcpath preqbytes]
+def $compiled_operands(P, (PPCASSERTION pcpath preqbytes) :: ppexprdone*) = $compiled_operands(P, ppexprdone*)
+def $ppmergeoperands(ppconstants, (PPCASSERTION pcpath preqbytes) :: ppexprdone*) = $ppmergeoperands(ppconstants, ppexprdone*)
+def $ppmemo_at((PPCASSERTION pcpath_other preqbytes) :: ppexprdone*, pcpath) = $ppmemo_at(ppexprdone*, pcpath)
+def $ppbuiltin_operand((PPCASSERTION pcpath_other preqbytes) :: ppexprdone*, pcpath) = $ppbuiltin_operand(ppexprdone*, pcpath)
+def $constant_at((PCCASSERTION pcpath_other preqbytes) :: pconstant*, pcpath) = $constant_at(pconstant*, pcpath)
+def $constant_class_at((PCCASSERTION pcpath_other preqbytes) :: pconstant*, pcpath) = $constant_class_at(pconstant*, pcpath)
+def $constant_precision_at((PCCASSERTION pcpath_other preqbytes) :: pconstant*, pcpath) = $constant_precision_at(pconstant*, pcpath)
+def $constants_nodes((PCCASSERTION pcpath preqbytes) :: pconstant*) = $constants_nodes(pconstant*)
+def $constants_valid(pcunit, (PCCASSERTION pcpath preqbytes) :: pconstant*, pnode*) = true
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (NExprFuncCall name (SEQUENCE ([phpType7])) metadata)
+  -- if $startup_bytes(preqbytes)
+  -- if $assertion_constant_at(pconstant*, pcpath) = eps
+  -- if $constants_valid(pcunit, pconstant*, pnode*)
+def $pool_shift_constants((PCCASSERTION pcpath preqbytes) :: pconstant*, n) = (PCCASSERTION pcpath preqbytes) :: $pool_shift_constants(pconstant*, n)
+def $constant_pool_classes((PCCASSERTION pcpath preqbytes) :: pconstant*) = $constant_pool_classes(pconstant*)
+def $constant_pool_values_valid(S, pconstant_all*, (PCCASSERTION pcpath preqbytes) :: pconstant*) = $constant_pool_values_valid(S, pconstant_all*, pconstant*)
+def $compilation_map_constants((PCCASSERTION pcpath preqbytes) :: pconstant*, pcompilemap) = (PCCASSERTION pcpath preqbytes) :: $compilation_map_constants(pconstant*, pcompilemap)
+def $compilation_metadata_constant(PCCASSERTION pcpath preqbytes) = true
+def $trait_pool_facts(S, n, (PCCASSERTION pcpath preqbytes) :: pconstant*) = $trait_pool_facts(S, n, pconstant*)
+def $trait_pool_classes((PCCASSERTION pcpath preqbytes) :: pconstant*) = $trait_pool_classes(pconstant*)
+def $assertion_trace_call(S, pconfigcall) = pconfigcall[.SENT = pconfigcall.SENT ++ [NAMED_SENT (KNOWN (PSTRING preqbytes))]]
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $assertion_default(S, pconfigcall) = (preqbytes)
+def $assertion_trace_call(S, pconfigcall) = pconfigcall -- otherwise

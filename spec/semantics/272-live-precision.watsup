@@ -24,9 +24,9 @@ def $precision_set(S, preqbytes_new, preqbytes_old) = S[.PRECISIONMODIFIED = tru
 def $precision_memory(S, z_precision) = S[.PRECISIONINIT = preqbytes][.PRECISIONINI = preqbytes][.PRECISIONMODIFIED = false]
   -- if preqbytes = $decimal_integer(z_precision)
 def $compile_source_precision(S, P) = P
-  -- if $precision_value(P.FOLD.MEMORY) = $precision_value(S)
-def $compile_source_precision(S, P) = $ppstart_precision_external(P.FOLD.SOURCE.ID, P.FOLD.SOURCE.AST, P.LOCATION.FILE, P.FOLD.CWD, P.EVALCLASS, P.FOLD.EXTERNAL, $precision_value(S))
-  -- if $precision_value(P.FOLD.MEMORY) =/= $precision_value(S)
+  -- if $precision_value(P.FOLD.MEMORY) = $precision_value(S) /\ P.FOLD.MEMORY.ASSERTIONS = S.ASSERTIONS
+def $compile_source_precision(S, P) = $ppstart_assertions_epochs(P.FOLD.SOURCE.ID, P.FOLD.SOURCE.AST, P.LOCATION.FILE, P.FOLD.CWD, P.EVALCLASS, P.FOLD.EXTERNAL, $precision_value(S), eps, S.ASSERTIONS)
+  -- if $precision_value(P.FOLD.MEMORY) =/= $precision_value(S) \/ P.FOLD.MEMORY.ASSERTIONS =/= S.ASSERTIONS
 
 def $source_precision(S, (PORIGIN n pcpath)) = $declaration_precision(S.DECLARATIONS, n)
   -- if S.DECLARATIONS =/= eps
@@ -171,9 +171,10 @@ def $pprecord_precision(P, pcpath) = P[.EXPRESSIONS = $ppprecision_without(P.EXP
 def $pprecord_precision(P, pcpath) = P[.EXPRESSIONS = $ppprecision_without(P.EXPRESSIONS, pcpath)]
   -- if $precision_value(P.FOLD.MEMORY) = P.FOLD.PARSEPRECISION
 def $export_precisions(eps) = eps
-def $export_precisions((PPCPRECISION pcpath z) :: ppexprdone*) = (PCCPRECISION pcpath z) :: $export_precisions(ppexprdone*)
-def $export_precisions(ppexprdone :: ppexprdone_tail*) = $export_precisions(ppexprdone_tail*)
-  -- if ~$ppprecision_tag(ppexprdone)
+dec $export_compiler_descriptor(ppexprdone) : pconstant*
+def $export_compiler_descriptor(PPCPRECISION pcpath z) = [PCCPRECISION pcpath z]
+def $export_compiler_descriptor(ppexprdone) = eps -- otherwise
+def $export_precisions(ppexprdone :: ppexprdone_tail*) = $export_compiler_descriptor(ppexprdone) ++ $export_precisions(ppexprdone_tail*)
 def $compiled_precision(S, (PORIGIN n pcpath)) = (z)
   -- if $pool_at(S.POOLS, n) = (ppool)
   -- if $constant_precision_at(ppool.CONSTANTS, pcpath) = (z)

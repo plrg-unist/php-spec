@@ -1,0 +1,459 @@
+{
+  "scope": "Native-first direct, aliased, dynamic and first-class assertions, startup modes and exact descriptions; runtime options/callbacks and wider AST export remain required follow-ons.",
+  "cases": [
+    {
+      "id": "direct-effects-mode1",
+      "source": "<?php function side(){echo 'arg|';return false;} try{echo assert(side())?'true':'false';}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "ce32eea6b7a0247d1c56f2492c0923b54c913e6fcba834ec3ec92cb7041a600e",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "YXJnfGNhdWdodDphc3NlcnQoc2lkZSgpKQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "direct-effects-mode0",
+      "source": "<?php function side(){echo 'arg|';return false;} try{echo assert(side())?'true':'false';}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "ce32eea6b7a0247d1c56f2492c0923b54c913e6fcba834ec3ec92cb7041a600e",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "dHJ1ZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "direct-effects-modeminus1",
+      "source": "<?php function side(){echo 'arg|';return false;} try{echo assert(side())?'true':'false';}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "ce32eea6b7a0247d1c56f2492c0923b54c913e6fcba834ec3ec92cb7041a600e",
+      "startup_ini": {
+        "zend.assertions": "LTE="
+      },
+      "stdout_base64": "dHJ1ZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "-1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "argument-compile-mode0",
+      "source": "<?php echo assert($a[])?'true':'false';\n",
+      "source_sha256": "06ee04bb57be4118c669cf1969ce040b18a6bc52823fb4c4627567bde27b67bd",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgW10gZm9yIHJlYWRpbmcgaW4ge0ZJTEV9IG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "argument-compile-modeminus1",
+      "source": "<?php echo assert($a[])?'true':'false';\n",
+      "source_sha256": "06ee04bb57be4118c669cf1969ce040b18a6bc52823fb4c4627567bde27b67bd",
+      "startup_ini": {
+        "zend.assertions": "LTE="
+      },
+      "stdout_base64": "dHJ1ZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "-1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "user-alias-mode0",
+      "source": "<?php namespace N; function other($v){echo 'user|';return $v;} function side(){echo 'arg|';return false;} use function N\\other as assert; echo assert(side())?'true':'false';\n",
+      "source_sha256": "5b01ce16e740e6f62095cdb47b04b8cc51ae0d364b2c8e87a8cc470c50b22ba2",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "YXJnfHVzZXJ8ZmFsc2U=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "global-alias-mode1",
+      "source": "<?php namespace N; use function \\assert as verify; try{echo verify(false)?'true':'false';}catch(\\AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "96cb73cf9f1a5dd78ba624d1e0fa4ab83c3f8021b00e28c7c7d25c4576179b2b",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "Y2F1Z2h0OmFzc2VydChmYWxzZSk=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "global-alias-mode0",
+      "source": "<?php namespace N; use function \\assert as verify; try{echo verify(false)?'true':'false';}catch(\\AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "96cb73cf9f1a5dd78ba624d1e0fa4ab83c3f8021b00e28c7c7d25c4576179b2b",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "dHJ1ZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "namespace-fallback-mode0",
+      "source": "<?php namespace N; function side(){echo 'arg|';return false;} echo assert(side())?'true':'false';\n",
+      "source_sha256": "470196f04550b00abacce583c13c9613096c379c6c6821d08a9f2b849d1eb014",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "dHJ1ZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "namespace-relative-mode0",
+      "source": "<?php namespace N; try{namespace\\assert(false);}catch(\\Error $e){echo $e->getMessage();}\n",
+      "source_sha256": "0fdf69cee275961248f52a2a1a267afbda01386c7e00e630dd1fb92e19560031",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "Q2FsbCB0byB1bmRlZmluZWQgZnVuY3Rpb24gTlxhc3NlcnQoKQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "dynamic-effects-mode1",
+      "source": "<?php function side(){echo 'arg|';return false;} $f='assert'; try{echo $f(side())?'true':'false';}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "e5509679df711a2fb133e392cd08d815212d4843d2524ac4787b6ce7f57b6244",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "YXJnfGNhdWdodDo=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "dynamic-effects-mode0",
+      "source": "<?php function side(){echo 'arg|';return false;} $f='assert'; try{echo $f(side())?'true':'false';}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "e5509679df711a2fb133e392cd08d815212d4843d2524ac4787b6ce7f57b6244",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "YXJnfHRydWU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "dynamic-effects-modeminus1",
+      "source": "<?php function side(){echo 'arg|';return false;} $f='assert'; try{echo $f(side())?'true':'false';}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "e5509679df711a2fb133e392cd08d815212d4843d2524ac4787b6ce7f57b6244",
+      "startup_ini": {
+        "zend.assertions": "LTE="
+      },
+      "stdout_base64": "YXJnfHRydWU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "-1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "description-escaped-mode1",
+      "source": "<?php try{assert( \"\\0\\t\" === 'wrong' );}catch(AssertionError $e){echo $e->getMessage();}\n",
+      "source_sha256": "7b0113ba5b754d6b120692507a690d3efeca67a0a7672b40e28c375a90151dac",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "YXNzZXJ0KCJcMDAwXHQiID09PSAnd3JvbmcnKQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "description-explicit-mode1",
+      "source": "<?php try{assert(false,'given');}catch(AssertionError $e){echo $e->getMessage();}\n",
+      "source_sha256": "cf5dd3eabfd76b4c394b1b08aed0200a5a0d7d450065fde557fc46fc690aff57",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "Z2l2ZW4=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "throwable-identity-mode1",
+      "source": "<?php $original=new Exception('given');try{assert(false,$original);}catch(Throwable $e){echo $e===$original?'same:':'wrong:',$e->getMessage();}\n",
+      "source_sha256": "340bcd6173b4e0719260c86547bfbe348d9ca4d1e38b75b1f83318a45e842edf",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "c2FtZTpnaXZlbg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "description-named-mode1",
+      "source": "<?php try{assert(assertion:false);}catch(AssertionError $e){echo $e->getMessage();}\n",
+      "source_sha256": "a15741ff3905dcb8c8a74614d92eb6014f81741b2de8a4fc669fbd7295c94abe",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "YXNzZXJ0KGFzc2VydGlvbjogZmFsc2Up",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "fcc-description-mode1",
+      "source": "<?php $f=assert(...);try{$f(false);}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\n",
+      "source_sha256": "569c612fe9529171bfbaf50ceef3686990130738e6a711485fa52d2a59c9ba8e",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "Y2F1Z2h0Og==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "description-invalid-truthy-mode1",
+      "source": "<?php try{echo assert(true,[])?'true':'false';}catch(TypeError $e){echo $e->getMessage();}\n",
+      "source_sha256": "03eda7b37bf4ec55d3776497d1b609d2d31f6ee6271e0aaea97e1a4c5615e16f",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "YXNzZXJ0KCk6IEFyZ3VtZW50ICMyICgkZGVzY3JpcHRpb24pIG11c3QgYmUgb2YgdHlwZSBUaHJvd2FibGV8c3RyaW5nfG51bGwsIGFycmF5IGdpdmVu",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "throwable-truthy-mode1",
+      "source": "<?php $original=new Exception('given');echo assert(true,$original)?'true':'false';\n",
+      "source_sha256": "ed96bf644691ea196752cef88a8beca83cc60630f3310a72951d176834dbd4a7",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "dHJ1ZQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "18d8cf3594f9959e2c8af1cd92085a59236aa2b211a9184a4dacc2ed18cc609f"
+    },
+    {
+      "id": "eval-compile-mode0",
+      "source": "<?php echo 'before|'; eval(\"echo assert(\\$a[]) ? 'true' : 'false';\"); echo '|after';\n",
+      "source_sha256": "4b58b017597c298007e114586a32659b3cd494cd1bcd5e190956f967f8aa7fc6",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "YmVmb3JlfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgW10gZm9yIHJlYWRpbmcgaW4ge0ZJTEV9KDEpIDogZXZhbCgpJ2QgY29kZSBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-entry-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "39c44b620db8782025b307b462fff5aaae2212b470e5f88088cbee048200e237"
+    },
+    {
+      "id": "eval-compile-mode-1",
+      "source": "<?php echo 'before|'; eval(\"echo assert(\\$a[]) ? 'true' : 'false';\"); echo '|after';\n",
+      "source_sha256": "4b58b017597c298007e114586a32659b3cd494cd1bcd5e190956f967f8aa7fc6",
+      "startup_ini": {
+        "zend.assertions": "LTE="
+      },
+      "stdout_base64": "YmVmb3JlfHRydWV8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "-1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-entry-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "39c44b620db8782025b307b462fff5aaae2212b470e5f88088cbee048200e237"
+    },
+    {
+      "id": "include-compile-mode0",
+      "source": "<?php echo 'before|'; include __DIR__.'/assert-child.php'; echo '|after';\n",
+      "source_sha256": "c9bd1f757f75353b78d52fe3d49dc86e31469ce2eb5b3f1855c9bfb6cf127bc6",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "YmVmb3JlfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgW10gZm9yIHJlYWRpbmcgaW4ge0ZJTEU6YXNzZXJ0LWNoaWxkLnBocH0gb24gbGluZSAxClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-entry-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "39c44b620db8782025b307b462fff5aaae2212b470e5f88088cbee048200e237",
+      "files": [
+        {
+          "name": "assert-child.php",
+          "source": "<?php echo assert($a[]) ? 'true' : 'false';\n",
+          "source_sha256": "647782cc7225442f385961beace3b6b4ba4a7162ca6568fd91f92e7f02ff70eb"
+        }
+      ]
+    },
+    {
+      "id": "include-compile-mode-1",
+      "source": "<?php echo 'before|'; include __DIR__.'/assert-child.php'; echo '|after';\n",
+      "source_sha256": "c9bd1f757f75353b78d52fe3d49dc86e31469ce2eb5b3f1855c9bfb6cf127bc6",
+      "startup_ini": {
+        "zend.assertions": "LTE="
+      },
+      "stdout_base64": "YmVmb3JlfHRydWV8YWZ0ZXI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "-1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-entry-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "39c44b620db8782025b307b462fff5aaae2212b470e5f88088cbee048200e237",
+      "files": [
+        {
+          "name": "assert-child.php",
+          "source": "<?php echo assert($a[]) ? 'true' : 'false';\n",
+          "source_sha256": "647782cc7225442f385961beace3b6b4ba4a7162ca6568fd91f92e7f02ff70eb"
+        }
+      ]
+    },
+    {
+      "id": "description-literal-concat-mode1",
+      "source": "<?php try{assert('a'.'b' === 'wrong');}catch(AssertionError $e){echo $e->getMessage();}\n",
+      "source_sha256": "4d23005d8509a40c8fd3c8103cc392d8266d382a36791c3f890f3b3a244fd49e",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "YXNzZXJ0KCdhYicgPT09ICd3cm9uZycp",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-concat-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "8cf320a2c11cbc542a184431c1a471dbdc793fa68c8414264bd464ff9a238cd2"
+    }
+  ],
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  }
+}

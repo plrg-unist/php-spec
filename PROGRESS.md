@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Assertions368 supplies early startup `-1`/`0`/`1` selection for main/eval/include
+and replay, resolved direct-call elision, pre-argument immutable descriptions,
+dynamic/FCC evaluation and description validation before truth. At `02f0d61c4`
+(350 modules), strict compilation, 25 exact native-profile source tuples and 64
+authentic state premises pass; fresh errors have code 1 and supplied Throwables
+retain identity. Independent quote7 at `45cdd2f92`, export17 at `85f098d5f` and
+startup18 retain separate cuts. Raw results are under
+`.tools/compiler-assertions-368-19/.tools/{method-runtime-itg9mwvs,assertion-state-v3,assertion-gate-v13,assertion-gate-v10,assertion-gate-v8,assertion-startup-v1}`;
+startup rejection classification is derived from unchanged recorded streams.
+Original compiler/receive failures remain preserved. Runtime INI updates,
+options/callbacks, Stringable descriptions and wider export/producer shapes remain
+required. Combined/offline catalogue wiring is prepared; its fresh run is pending.
+The actual 354-module composition over `fa0180918` passes strict initialization
+at `c24807fcd` (4.370 seconds); raw output is in
+`.tools/compiler-assertions-368-current-19/.tools/assertion-current-gate-v1`.
+Earlier private 350-module source/state/helper cuts retain their own identities.
+
 Module 367 executes ordinary simple Fiber-array `start`: immutable selection
 survives argument effects, and one receiver plus the original positional/named
 buffer transfer to the waiting API. Nonowning receipts remain valid after actual
@@ -101,6 +118,17 @@ source/state cuts retain their inputs.
 Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
+
+Direct ECHO now admits one named ordinary CV argument through361's existing
+certificate and owning output protocol. INIT5 precedes live SEND; known second-slot
+binding uses ECHO8, while late-bound names use7. Default holes, unknown-name errors
+before CV demand and fixed-null returning warnings retain their native order.
+Returned TMPVAR/HCELL values survive post-SEND argument mutation. Seven exact
+originals and204 independent premises (142 bindings/62 checks) retain `5baec287b`/351.
+Actual354 over `1c4c8f283` passes strict compilation with reviewed current-parent
+compatibility. The unchanged baseline's parent/cast lines and early destruction
+retain zero agreement. No new module or owner schema is added.
+[Ledger](coverage/semantics/source-echo-named-cv-call-review.json).
 
 SOURCE365 extends361 through a shared certificate for one ordinary positional
 CV argument. INIT5 precedes live SEND8; operand retirement can install the callee
@@ -1134,9 +1162,16 @@ Native3 at `8488dbc53` establish safe reads; the unchanged scalar model baseline
 stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
 `b89e7e66d`; fresh104/89 premises at that same cut prove frame ownership, live9
 with its typed source, real NEXT advancement/detach and consumed-slot refusal.
-The old typed fixture is adapted statically with no renewed credit. Quiet/heap
-payloads, uninitialized/consumed storage, mutation and escape remain required.
+The old typed fixture is adapted statically with no renewed credit. Quiet reads,
+uninitialized/consumed storage, mutation and escape remain required.
 The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
+Future initialized declared object/array reads now copy the live payload owner; ALIAS reads
+retain the referent without acquiring its wrapper. Native3 at `8bd90af79` precede
+an explicit unchanged-model Unsupported control with zero agreement. Strict351,
+source3 and fresh136/134 premises pass at `756c4673b`, covering actual captured
+VALUE/result transfer, nullable alias rebinding/type detach and array COW/child
+survival through parent retirement. Earlier fixtures are adapted statically only.
+The actual353 join over `26134d7a0` passes strict initialization at `8469aa86e`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -2218,6 +2253,19 @@ algo/struct at3.719/4.721s, preserving computed-static, Generator and source
 consumers; the private source1/40 cut bridges unchanged. Raw compiler evidence
 is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-5o1ambud`
 and `trait266-object-struct-ifvl6gz9` in the same directory.
+Retained failed-class `self::n(argument())` now selects an authenticated copied abstract
+method and rejects it before argument evaluation. The shared required-class proof
+keeps the existing implicit SELF construction behavior; unknown phases stay
+Unsupported rather than becoming a fresh named lookup. At `b40dc5c2d`/354 over
+`2257ebf82`, strict algo/struct pass3.719/4.723s, one shutdown PHP-error source
+and41 supplied pre-send/source/phase conditions plus6 setup clauses pass (28.598s),
+including unchanged allocations/events, the exact remaining TODO and all four
+validators. Raw evidence under current19 `.tools/` is `method-runtime-cl8ncs4a`,
+`closure-call-protocol-rms153ed`, `trait266-object-algo-tx_skl4w` and
+`trait266-object-struct-sa28i5sp`. The accepted-baseline mismatch `pynrj2xf`
+retains zero agreement; previous SELF/STATIC cuts are unchanged. Parent assertion,
+source, storage and collector fields remain intact. Wider failed-owner members
+and the larger parameter-view sources remain open.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,

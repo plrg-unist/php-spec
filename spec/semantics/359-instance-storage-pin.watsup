@@ -198,15 +198,20 @@ def $generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
 
 ;; The NEXT-prefix image clears every consumed slot. An initialized slot equal
 ;; to its original image is therefore still owned by the actual parent carrier.
-;; Read its current scalar/alias value; consumed native zvals remain raw storage.
+;; Copy the current value into RESULT; references contribute their referent,
+;; while consumed native zvals and freeing ordinary object targets stay refused.
+dec $instance_storage_readable(pstate, pvalue) : bool
+def $instance_storage_readable(S, PARRAY n) = ($(n < |S.ARRAYS|) /\ (HARRAY n) <- S.ALLOCATIONS)
+def $instance_storage_readable(S, POBJECT n) = ($(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, n))
+def $instance_storage_readable(S, pvalue) = ($value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED) -- otherwise
 dec $instance_storage_read_item(pstate, pitem) : pvalue?
 def $instance_storage_read_item(S, DIRECT pvalue) = (pvalue)
-  -- if $value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED
+  -- if $instance_storage_readable(S, pvalue)
 def $instance_storage_read_item(S, ALIAS n) = (pvalue)
   -- if $(n < |S.STORE|)
   -- if (HCELL n) <- S.ALLOCATIONS /\ n <- S.REFCELLS
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED
+  -- if $instance_storage_readable(S, pvalue)
 def $instance_storage_read_item(S, pitem) = eps -- otherwise
 dec $instance_storage_read_value(pstate, nat, ptbytes) : pvalue?
 def $instance_storage_read_value(S, n, ptbytes) = (pvalue)
