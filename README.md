@@ -715,17 +715,23 @@ explicit Unsupported boundaries; computed names and wider writes remain required
 select each duplicate bucket independently while preserving declared readonly/type
 checks and latest named access. Reference foreach retains the actual shared receiver
 cell across replacement, unset and object/array/scalar changes. Previous plain-CV
-object destruction reads the old value before the selected reference is installed;
-normal and throwing cleanup preserve that reference. Late scalar warnings retain
+own-destructor object cleanup reads the old value while the object remains live;
+normal and throwing cleanup preserve the selected reference. Late scalar warnings retain
 the iterator owner through callbacks and remove it on normal or abrupt completion.
 A fresh original and 92 reached premises cover explicit GC while the saved binding
 continuation retains its selected cell; the318 composition retains Fiber API captures.
 Previous plain-CV arrays now release ordinary and nested child destructors in
 order before installing the selected reference, including after a child throws.
 Six new originals and 284 reached premises check shared owners, selected-property
-mutation/deletion and exception chaining. Released-CV mutation, raw dying-array
-reads, callback-capable previous reference wrappers and internal Generator/Fiber
-retirement, binding-time exit and expired notice buckets remain explicit boundaries;
+mutation/deletion and exception chaining. Ordinary previous objects without their
+own destructor now release dynamic children before declared children; four new
+originals and 313 reached premises cover shared owners, retirement and throwing
+cleanup. Retiring typed property sources remain excluded: two native controls
+observe constraints during dynamic callbacks and their removal after retirement.
+The engine detaches sources at each declared slot; implementing this is required next.
+Released-CV mutation, raw retired-container reads, callback-capable previous
+reference wrappers and internal Generator/Fiber retirement, binding-time exit
+and expired notice buckets remain explicit boundaries;
 full foreach coverage remains required.
 
 Simple typed property assignment converts its declaration

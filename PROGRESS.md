@@ -566,8 +566,8 @@ failures, commands and cuts; no historical clone campaign is renewed.
 
 Physical duplicate-property reference foreach324 now selects and promotes the
 actual bucket, preserving latest named access and declared readonly/type checks.
-Staged previous-CV destruction keeps its raw value readable, masks its released
-edge and installs the selected reference before normal/throw continuation. The
+Staged own-destructor previous-CV cleanup keeps its raw value readable while live,
+masks its released edge and installs the selected reference before normal/throw continuation. The
 real shared receiver cell survives unset/recreate and follows alias writes, table
 replacement and object/array/scalar dispatch; late scalar warnings retain that
 owner until normal or abrupt iterator removal. Initial12 normals and288 reached
@@ -583,8 +583,15 @@ including nested arrays and continuation after
 a child throws. Six new exact normals at `ccafc5d65` and 139/145 reached premises
 at fixture-corrected `368bed28a` cover surviving array/reference owners, selected
 property mutation/deletion and B/previous=A exception chaining; strict318 initialization
-and the actual321 join at `be7edc9e2` pass. Released-CV mutation, raw dying-array reads, callback-capable previous
-reference wrappers, internal Generator/Fiber descendants, binding-time exit, nonordinary replacement objects
+and the actual321 join at `be7edc9e2` pass. Ordinary prior-CV objects without their
+own destructor now release dynamic children before declared children. Four exact
+originals and 152/161 reached premises at `531145bb4` cover shared owners, retired
+OLD masking and atomic binding with B/previous=A. At `95899634d`, strict initialization
+and 19 fresh guard premises pass; two native observations retain explicit Unsupported
+and zero agreement for direct/nested retiring typed sources. Per-slot typed-source
+detachment is the required next behavior. Released-CV mutation, raw retired-container
+reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
+binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original
 now stops at builtin dispatch and retains zero agreement credit. Bounded
 source/current-address admission is not a

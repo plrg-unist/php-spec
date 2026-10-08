@@ -1,15 +1,16 @@
 {
   "target": "PHP 8.5.10 CLI NTS64 profile30719",
-  "status": "partial; independently reviewed prior-array retirement extension and actual321 join accepted",
+  "status": "partial; independently reviewed ordinary prior-object descendant retirement, excluding retiring typed property sources",
   "semantic_cut": "3429f29ad",
   "tested_cut": "87f9b399a",
   "modules": 298,
-  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV object cleanup keeps its old raw value readable until atomic selected-reference installation on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw.",
+  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; retiring typed property sources are excluded pending per-slot detachment.",
   "admission": "Source AST, runtime line, iterator/cursor and selected physical address are checked. RELEASE recaptures the live selected slot; entered COMMIT may survive retired receiver storage while its selected HCELL remains real. Fresh false HOBJECT C-owner and selected-cell/source forgeries fail public admission. This bounded source/current-address check is not a historical reachability proof.",
   "engine": [
     "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_RW, ZEND_FE_FETCH_RW; selected Bucket promotion/ADDREF precedes previous target-CV destruction; receiver wrapper is dereferenced on each fetch",
     "vendor/php-src/Zend/zend_hash.c: zend_hash_iterator_pos; physical cursor changes table on payload replacement",
-    "vendor/php-src/Zend/zend_hash.c: zend_array_destroy; ordered physical child zval destruction continues with a pending exception; Zend/zend_objects.c: zend_objects_destroy_object preserves/chains pending exceptions"
+    "vendor/php-src/Zend/zend_hash.c: zend_array_destroy; ordered physical child zval destruction continues with a pending exception; Zend/zend_objects.c: zend_objects_destroy_object preserves/chains pending exceptions",
+    "vendor/php-src/Zend/zend_objects.c: zend_object_std_dtor releases dynamic properties before declared slots; typed reference sources detach immediately before their individual declared slot destruction"
   ],
   "execution": "Project-local executables copied from accepted318 composition; identities retained in raw init records. Production SL_mode and numeric --sl; no fresh rebuild claim. LC_ALL=C/TZ=UTC; original file/cwd/profile, hashes, streams and commands retained per report.",
   "caps": "native30/modelCLI60/process90/numericSL120/outer420/jobs1 serial",
@@ -94,7 +95,7 @@
       "mutation of released foreach CV (same-value write, unset, promotion and rebind)",
       "foreach reference previous CV pointer lifetime (callback-capable array)"
     ],
-    "remaining": "Released-CV mutation, raw dying-array reads, callback-capable previous reference wrappers and internal Generator/Fiber descendants, binding-time exit/shutdown, nonordinary replacement objects and expired borrowed notice buckets remain required. Earlier318 boundaries retain their own cuts."
+    "remaining": "Released-CV mutation, raw retired-container reads, callback-capable previous reference wrappers and internal Generator/Fiber descendants, binding-time exit/shutdown, nonordinary replacement objects and expired borrowed notice buckets remain required. Typed property-source slot detachment is the next required lifetime behavior; current descendant admission excludes actual retiring typed sources. Earlier318 boundaries retain their own cuts."
   },
   "zero_credit": {
     "prior_cv_order": "duplicate-reference-binding-observation-counterexample1-attempt1: native old versus model new, bothnormal0; corrected by staged binding",
@@ -208,5 +209,71 @@
       },
       "review": "Independent exact30/270/39 seam accepted. GEN REF/BORROWED tasks remain additive; generator-only value guard leaves FOREACH_BIND_RELEASE on the same default; retired-edge split preserves mask ownership. Prior source6/state284 cuts retain their identities."
     }
+  },
+  "prior_object_descendants": {
+    "parent": "0bb453754",
+    "semantic_cut": "db162be94",
+    "modules": 321,
+    "raw_root": ".tools/properties-foreach-descendants19/.tools/",
+    "scope": "Plain previous-CV INSTANCE with no own destructor and ordinary destructor-producing descendants, without retiring typed property sources. Actual release order is dynamic before declared; retired raw OLD remains masked, and selected binding precedes exception propagation. Live own-destructor raw reads remain supported.",
+    "sources": {
+      "cut": "531145bb4",
+      "raw": "dynamic-property-warning-source-qgfitn9h/report.json",
+      "normal_agreements": 4,
+      "selection": [
+        "review-descendant-order19",
+        "review-descendant-shared-parent19",
+        "review-descendant-shared-reference19",
+        "review-descendant-two-throws19"
+      ],
+      "meaning": "Exact native/public normal0 streams: dynamic B before declared A, shared parent delay, shared child-reference survival, selected x deletion and B/previous=A exception chaining."
+    },
+    "reached": {
+      "cut": "531145bb4",
+      "groups": {
+        "descendants": 152,
+        "descendants-throw": 161
+      },
+      "raw": [
+        "duplicate-property-reference-oj8ru7id/report.json",
+        "duplicate-property-reference-squmqyr5/report.json"
+      ],
+      "meaning": "Setup-inclusive genuine no-own-destructor release/callback premises; physical declaration order differs from release order; retired OLD mask, child/selected ownership, fetch refusal, pending chain, wrapper/arena controls and zero/one-step atomic installation. S_live is a constructed guard-only positive control, not a reached-state witness. Native/model evaluations0."
+    },
+    "compiler": {
+      "cut": "531145bb4",
+      "raw": "descendant-current321-sl-init1-attempt1/report.json",
+      "passed": true,
+      "application_evaluations": 0
+    },
+    "typed_source_guard": {
+      "cut": "95899634d",
+      "rule": "Reject actual OBJECT_PROP_SOURCE entries owned by HOBJECTs in the real retirement walk, including nested holders. Unrelated live sources and untyped aliases do not trigger it; common array-descendant admission is conservatively restricted too.",
+      "compiler": {
+        "raw": "descendant-typed-guard-current321-sl-init1-attempt1/report.json",
+        "passed": true,
+        "application_evaluations": 0
+      },
+      "positive": {
+        "group": "descendants-guard",
+        "premises": 19,
+        "raw": "duplicate-property-reference-210srfr4/report.json",
+        "meaning": "Genuine new untyped source ingress with empty PROPREFS and actual callback-producing retirement walk; native/model evaluations0."
+      },
+      "controls": {
+        "raw": "dynamic-property-warning-boundary-itbks37n/report.json",
+        "selection": [
+          "review-descendant-typed-source19",
+          "review-descendant-nested-typed-source19"
+        ],
+        "native_observations": 2,
+        "expected_unsupported": 2,
+        "agreement_claim": false,
+        "native_stdout": "B|type|x=2|y=3|free/3|done",
+        "reason": "foreach reference previous CV pointer lifetime"
+      },
+      "remaining": "Implement declared-slot source detachment at its actual destruction visit. Dynamic and earlier declared callbacks must retain later slot constraints; after retirement the surviving alias is unconstrained."
+    },
+    "review": "properties_review_19 independently accepts pinned engine order, bounded code/guards, frozen source4/state313 and guard19/native2+Unsupported2 reports. Earlier array6/state284 and324 source/state cuts retain their original identities; no renewal."
   }
 }
