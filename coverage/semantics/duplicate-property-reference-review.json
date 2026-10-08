@@ -4,7 +4,7 @@
   "semantic_cut": "3429f29ad",
   "tested_cut": "87f9b399a",
   "modules": 298,
-  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws. Ordinary DESTRUCTOR_RELEASE now preserves a physical INSTANCE free_obj pin and unvisited slot edges until their individual transfer; early Weak notification and safe class metadata reads are distinct from physical retirement. Ordinary stdClass storage now retains the same physical parent pin; a materialized property table transfers one HARRAY edge before unique bucket cleanup or shared-table decrement.",
+  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws. Ordinary DESTRUCTOR_RELEASE now preserves a physical INSTANCE free_obj pin and unvisited slot edges until their individual transfer; early Weak notification and safe class metadata reads are distinct from physical retirement. Ordinary stdClass storage now retains the same physical parent pin; a materialized property table transfers one HARRAY edge before unique bucket cleanup or shared-table decrement. Initialized future declared scalar reads now use the current slot under the actual unique INSTANCE storage carrier and preserve ordinary visibility; consumed and heap-backed payload access stays explicit.",
   "admission": "Source AST, runtime line, iterator/cursor and selected physical address are checked. RELEASE recaptures the live selected slot; entered COMMIT may survive retired receiver storage while its selected HCELL remains real. Fresh false HOBJECT C-owner and selected-cell/source forgeries fail public admission. This bounded source/current-address check is not a historical reachability proof.",
   "engine": [
     "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_RW, ZEND_FE_FETCH_RW; selected Bucket promotion/ADDREF precedes previous target-CV destruction; receiver wrapper is dereferenced on each fetch",
@@ -695,6 +695,73 @@
         "application_evaluations": 0
       },
       "meaning": "Exact accepted parent union preserves SOURCE/ARG/EX/STATIC/CALLS schemas, physical GC slots and graph preparation. No prior source/state campaign is renewed."
+    }
+  },
+  "ordinary_instance_future_reads": {
+    "parent": "f0ab3bcaaebc80c967773d9964ce7f1fad41c8ac",
+    "modules": 349,
+    "raw_root": ".tools/properties-instance-future-slot-read19/.tools/",
+    "scope": "Initialized node-free declared DIRECT/ALIAS property reads during ordinary INSTANCE free_obj. Exact current slot equals its captured image under the real unique carrier; the basic NEXT-prefix image proves it has not been consumed. Current ALIAS values and declared typing remain live. Public entry preserves existing visibility resolution and denial errors; no new owner, schema or module.",
+    "engine": [
+      "Zend/zend_objects.c: zend_object_std_dtor visits declared slots sequentially after dynamic cleanup; zend_object_dtor_property detaches each typed source at its visit",
+      "Zend/zend_object_handlers.c: zend_std_read_property resolves visibility/offset before returning an initialized OBJ_PROP; ordinary R fetch copies/dereferences that current value",
+      "Zend/zend_vm_def.h: ZEND_FETCH_OBJ_R uses ZVAL_COPY_DEREF for the initialized property result"
+    ],
+    "native_first": {
+      "cut": "8488dbc53/349",
+      "raw": "instance-future-native-first19-s0epxz6j/report.json",
+      "observations": 3,
+      "model_evaluations": 0
+    },
+    "preserved_baseline": {
+      "cut": "8488dbc53/349",
+      "raw": "instance-future-baseline19-57rxe2l6/report.json",
+      "status": "unsupported",
+      "reason": "freeing instance property access",
+      "stdout": "C|",
+      "normal_agreements": 0,
+      "meaning": "Checked unchanged scalar original explicitly stops at the read guard; no engine-bug or opaque runner-failure claim."
+    },
+    "compiler": {
+      "cut": "b89e7e66d/349",
+      "raw": "instance-future-current349-sl-init1-attempt1/report.json",
+      "passed": true,
+      "elapsed_seconds": 4.429,
+      "application_evaluations": 0
+    },
+    "sources": {
+      "cut": "b89e7e66d/349",
+      "raw": "dynamic-property-warning-source-nl8ox2ms/report.json",
+      "normal_agreements": 3,
+      "meaning": "Three distinct exact originals cover int/string/bool/null reads, current ALIAS9 with a still-live int constraint, and public read followed by private denial.",
+      "sha256": {
+        "review-instance-future-scalar19": "c568e5cc199436d2e16b26603f15cb182a91f62d6774eea5769438f4d94ee5d7",
+        "review-instance-future-typed-alias19": "f5bfb1247ef40c851f668ec9bafd1adbffb6228c23db9ef1c51b6c28dfecd077",
+        "review-instance-future-visibility19": "2a9eab1110a810e52d50301d1b61feafe913fe07c83fec462376be336a3769b5"
+      }
+    },
+    "reached": {
+      "cut": "b89e7e66d/349",
+      "scalar": {
+        "premises": 104,
+        "raw": "instance-future-slot-8_85tlur/report.json"
+      },
+      "alias": {
+        "premises": 89,
+        "raw": "instance-future-slot-6ot1yic8/report.json"
+      },
+      "meaning": "193 setup-inclusive premises at genuine callback/current-frame and later NEXT2 boundaries. Reads preserve the heap; current9 retains its exact PROPREF source until actual detach, after which number reads refuse. Missing/duplicate carriers, bad NEXT and forged heap/undefined/type cases are constructed controls; no unsafe native consumed-storage observation. Native/model evaluations0, SL120/jobs1."
+    },
+    "review": "properties_review_19 independently accepts the native bytes/streams, unchanged explicit baseline, exact-image future proof, visibility, compiler/source3 and104/89 raw reached gates. The earlier ordinary typed fixture is adapted statically only; all historical campaigns remain unrenewed.",
+    "remaining": "Quiet, uninitialized and heap-backed future reads, consumed native property storage, raw parent mutation/reference acquisition, escape, direct private303 physical pins, released-CV mutation and wider pointer consumers remain required.",
+    "composition": {
+      "parent": "9782fbb4e64e3b7fa67a29941745cd5a9f744fbe",
+      "cut": "4fbcf845e6b5c6502acc229b85314ea31a3fe599/351",
+      "raw": "instance-future-current351-sl-init1-attempt1/report.json",
+      "passed": true,
+      "elapsed_seconds": 4.429,
+      "application_evaluations": 0,
+      "meaning": "Exact GEN363, EX residual-worker and TRAIT347 parent seams independently reviewed; source3 and193 premises retain their b89e cut without renewal."
     }
   }
 }

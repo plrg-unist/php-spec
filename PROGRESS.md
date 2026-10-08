@@ -1100,6 +1100,15 @@ New reached groups pass150/91/51 premises at `f064fd2c6`/`56d3b070b`/`2282b68da`
 covering table ownership, B-before-A throws, early Weak and actual355 RETURN storage.
 Original baseline/fixture failures retain zero credit; prior campaigns are unchanged.
 The actual349 join over `013ca6d2b` passes strict initialization at `e7e74c6c9`.
+Unvisited initialized declared scalar reads now preserve ordinary visibility and
+use the current DIRECT/ALIAS value under the actual unique storage carrier.
+Native3 at `8488dbc53` establish safe reads; the unchanged scalar model baseline
+stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
+`b89e7e66d`; fresh104/89 premises at that same cut prove frame ownership, live9
+with its typed source, real NEXT advancement/detach and consumed-slot refusal.
+The old typed fixture is adapted statically with no renewed credit. Quiet/heap
+payloads, uninitialized/consumed storage, mutation and escape remain required.
+The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
