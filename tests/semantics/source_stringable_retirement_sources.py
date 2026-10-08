@@ -109,7 +109,8 @@ CASES = {'regular': 'deferred-regular.php',
          'echo-cv-call-result-throw': 'echo-cv-call-result-throw-child.php',
          'echo-cv-call-retirement-throw': 'echo-cv-call-retirement-throw-child.php',
          'echo-cv-call-eval-reference': None,
-         'echo-cv-call-baseline-lifetime': None}
+         'echo-cv-call-baseline-lifetime': None,
+         'echo-cv-call-result-lines': 'echo-cv-call-result-lines-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
