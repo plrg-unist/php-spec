@@ -16,9 +16,9 @@ target into the ordinary result owner. Discarding or saving that result uses the
 existing ordered release machinery.
 
 Object IDs never reuse. `get` checks target allocation and the actual ordinary
-INSTANCE storage359 stage, without a second registry or a store-handle identity.
+INSTANCE/stdClass storage359 stage, without a second registry or a store-handle identity.
 Ordinary `__destruct` and resurrection keep the target live. During ordinary
-free_obj, Weak notification precedes child release while one physical parent pin
+INSTANCE/stdClass free_obj, Weak notification precedes child release while one physical parent pin
 remains allocated, so `get` already returns null. Native notification clears its
 raw pointer; the model retains the nonowning semantic ID as borrowed history.
 Closed Generator storage355 instead retains its weak target through Closure/cache

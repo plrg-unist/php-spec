@@ -70,11 +70,12 @@ def $fiber_factory_new(S, pconfigcall, pvalue, pentry*) = $from_done(S[.OBJECTS 
   -- if $fiber_factory_selection(S, pvalue, pentry*) = ((pintrinsic, ptbytes, n_input?))
   -- if n = |S.OBJECTS|
   -- if pfiberfactory = {CALL pconfigcall, ITEMS pentry*}
-  -- if pfibercapture = {SITE pconfigcall.SITE, KIND pintrinsic, NAME ptbytes, INPUT n_input?, FACTORY (pfiberfactory)}
+  -- if pfibercapture = {SITE pconfigcall.SITE, KIND pintrinsic, NAME ptbytes, INPUT n_input?, FACTORY (pfiberfactory), ARRAY eps}
   -- if $fiber_capture_source_valid(S, pfibercapture)
 
 def $fiber_capture_source_valid(S, pfibercapture) = true
   -- if pfibercapture.FACTORY = (pfiberfactory)
+  -- if pfibercapture.ARRAY = eps
   -- if pconfigcall = pfiberfactory.CALL
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if pconfigcall.SITE = pfibercapture.SITE

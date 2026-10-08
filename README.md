@@ -555,6 +555,8 @@ Pure graph pruning counts owners once and removes zero-owner cascades through a
 worklist, preserving roots and the order and multiplicity of nodes and edges.
 GC also reuses pruning's graph edges when pruning leaves the prepared state
 identical; changed states recompute their edges.
+The retained composed default/Generator/Fiber original agrees with native PHP;
+its catalogue is included in the combined semantic and offline checks.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
@@ -880,6 +882,12 @@ Fiber suspension, with distinct source and repair cuts in the review. The compos
 adds one exact Iterator-child original and 113 reached premises; future
 destructor-tail validation applies the real result discard before owner checks.
 Raw property payload access and escaped reacquisition remain required.
+The same physical pin now covers ordinary stdClass storage. A materialized
+property table transfers its one HARRAY owner before bucket cleanup; shared tables
+keep their children after the parent retires. Five new exact originals and
+150/91/51 reached premises cover deletion/reinsertion order, exception chaining,
+early Weak notification and the Generator RETURN-child interaction at separate cuts.
+The actual349 composition passes strict compilation.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -954,9 +962,13 @@ If data binding succeeds before abstract verification fails, later cached calls
 use the fixed class scope while an imported first birth keeps its trait scope.
 One shutdown original and59 supplied phase/scope/static conditions pass, with6
 setup clauses separate; the failed class stays unpublished.
-A retained `new self` rejects an unresolved abstract trait requirement before
-arguments or instance allocation. One shutdown original and39 supplied conditions plus6
-setup clauses pass; this proof covers classes without parent/interface contracts.
+Retained `new self` rejects an unresolved abstract trait requirement before
+arguments or instance allocation. Imported and own/private targets require explicit
+data completion; two shutdown originals and83 supplied conditions plus12 setup
+clauses pass at separate cuts. Parent/interface construction contracts remain open.
+Retained `new static` constructs the published called class and enters arguments
+after allocation. One shutdown original and40 supplied conditions plus6 setup
+clauses pass, including durable selected-NEW static-fill history.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
@@ -1242,11 +1254,15 @@ The [factory ledger](coverage/semantics/fiber-from-callable-review.json) keeps
 distinct source and state cuts.
 Ordinary callable arrays with simple method names now select fixed bound and
 static Fiber APIs before argument evaluation. Frozen dereferenced members survive
-selector mutation or retirement; the pending call owns its bound receiver once, while static object
-selectors own none. Constructor callable parsing retains its real warning
-continuation and validation-before-status order. Fiber-start argument unpacking,
-array-selected start, array first-class conversion, array C-root callbacks and
-compound array or factory selectors remain required.
+selector mutation or retirement; the pending call owns its bound receiver once,
+while static object selectors own none. Constructor callable parsing retains its
+real warning continuation and validation-before-status order.
+Simple Fiber API arrays also convert to first-class Closures. A distinct source
+witness freezes the selected members; the temporary bound receiver owner moves
+into the Closure, while static selectors add none. Clone/equality and direct,
+explicit `__invoke` or C-root calls reuse the existing API protocols, including
+start and constructor captures. Ordinary array-selected start, raw array C-root
+callbacks, compound selectors and Fiber-start argument unpacking remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

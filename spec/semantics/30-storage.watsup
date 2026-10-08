@@ -57,6 +57,7 @@ syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | 
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
   | CCUPDATENEW porigin pdynamicnew nat
+  | CCSTATICNEW porigin pdynamicnew nat | CCSTATICRETIRENEW porigin pdynamicnew nat nat
   | CCTRAITCACHE porigin ptraitcachecause
   | CCTRAITBIRTH nat porigin ptraitcachecause
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
@@ -109,7 +110,7 @@ syntax pconfigpack = { INDEX nat, SITE porigin, LINE int, ARRAY nat, ITEMS pentr
 syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
 syntax pfiberfactory = { CALL pconfigcall, ITEMS pentry* }
 syntax pfiberarray = { SITE porigin, INIT int, LINE int, ARRAY nat, ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT nat? }
-syntax pfibercapture = { SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT nat?, FACTORY pfiberfactory? }
+syntax pfibercapture = { SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT nat?, FACTORY pfiberfactory?, ARRAY pfiberarray? }
 ;; Zend retains the raw callable, not the registration-time function cache.
 syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
@@ -287,6 +288,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | API_CALLABLE_RESULT papiquery nat
   | DEFAULT_STRING_RESULT pparameterstring | VARIADIC_STRING_RESULT pvariadicstring
   | CLOSURE_CALL_RESULT porigin int | CLOSURE_CALL_FORWARD pclosurecall nat pnamedargs nat
+  | FIBER_ARRAY_CONVERT pfiberarray
   | METHOD_CONVERT pcalltarget porigin int | ARRAY_CONVERT pcalltarget parrayselection | STRING_CONVERT pcalltarget pstringselection
   | FIBER_ARRAY_RELEASE pfiberarray | FIBER_ARRAY_RESULT pfiberarray pconfigcall
   | CTOR_ARGS pctorcall | CTOR_SEND pctorcall | CTOR_UNPACK_PREP pctorcall | CTOR_UNPACK_NEXT pctorcall poperand nat | CTOR_INVOKE pctorcall

@@ -267,6 +267,7 @@ def $property_unique_names(ppropertyslot :: ppropertyslot_tail*) = $property_uni
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
 def $property_unique_names(ppropertyslot :: ppropertyslot_tail*) = (~$property_slot_named(ppropertyslot_tail*, ppropertyslot.NAME) /\ $property_unique_names(ppropertyslot_tail*))
+  -- if ppropertyslot.DECL =/= eps \/ ppropertyslot.STATE =/= PROP_UNSET
 ;; Reentrant zend_hash_add_new can leave two live dynamic buckets. Declared
 ;; slots still have unique keys; stdClass keeps its shared-table invariant.
 dec $property_declared_names(ppropertyslot*) : bool

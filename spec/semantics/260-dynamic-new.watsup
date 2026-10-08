@@ -340,6 +340,45 @@ def $class_constant_history_fills(S, (CCUPDATENEW porigin pdynamicnew n) :: pcla
   -- if $class_constant_history_trigger(S, pdynamicnew.SITE, n)
   -- if $class_constant_parent_chain(S, porigin_root, porigin, |S.CLASSES|)
 
+;; Deferred static fills retain the same NEW selection as table completion.
+def $static_default_fill_event_for(S, pstaticdefaultcontext, n) = CCSTATICNEW pstaticdefaultcontext.DECL pdynamicnew n
+  -- if $class_static_selection_at(S.TODO) = eps
+  -- if pstaticdefaultcontext.ORIGIN = (porigin)
+  -- if $dynamic_new_find(S, S.TODO, porigin) = (pdynamicnew)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pdynamicnew.CLASS)) = (pstaticdefaultcontext.ROOT)
+def $static_default_retire_event_for(S, pstaticdefaultcontext, n, n_cell) = CCSTATICRETIRENEW pstaticdefaultcontext.DECL pdynamicnew n n_cell
+  -- if $class_static_selection_at(S.TODO) = eps
+  -- if pstaticdefaultcontext.ORIGIN = (porigin)
+  -- if $dynamic_new_find(S, S.TODO, porigin) = (pdynamicnew)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pdynamicnew.CLASS)) = (pstaticdefaultcontext.ROOT)
+def $static_default_fill_event(CCSTATICNEW porigin pdynamicnew n) = true
+def $static_default_fills((CCSTATICNEW porigin pdynamicnew n) :: pclassconstantevent*) = porigin :: $static_default_fills(pclassconstantevent*)
+def $static_default_retirement_event(CCSTATICRETIRENEW porigin pdynamicnew n n_cell, porigin, n_cell) = true
+def $class_constant_event_ordinal(CCSTATICNEW porigin pdynamicnew n) = n
+def $class_constant_event_ordinal(CCSTATICRETIRENEW porigin pdynamicnew n n_cell) = n
+def $class_constant_compile_events(S, (CCSTATICNEW porigin pdynamicnew n) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_compile_events(S, (CCSTATICRETIRENEW porigin pdynamicnew n n_cell) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_history_fills(S, (CCSTATICNEW porigin pdynamicnew n) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled* ++ [porigin], n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if $dynamic_new_record_valid(S, pdynamicnew)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pdynamicnew.CLASS)) = (porigin_root)
+  -- if $static_default_history_fill_root(S, porigin, pdynamicnew.SITE, n, porigin_root, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*)
+  -- if $instance_default_static_ready(S, porigin, S.CLASSCONSTANTHISTORY[0:$nabs($(|S.CLASSCONSTANTHISTORY| - |pclassconstantevent*| - 1))])
+def $class_constant_history_fills(S, (CCSTATICRETIRENEW porigin pdynamicnew n n_cell) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n)
+  -- if $(n_previous <= n /\ n <= |S.DECLARATIONS|)
+  -- if $(n_cell < |S.STORE|)
+  -- if $dynamic_new_record_valid(S, pdynamicnew)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pdynamicnew.CLASS)) = (porigin_root)
+  -- if porigin <- porigin_filled*
+  -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $static_default_source_valid(S, ppropertydesc)
+  -- if $property_declaring_class(S.CLASSES, porigin) = (porigin_owner)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_owner) = (b_owner)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_root) = (b_root)
+  -- if $class_constant_parent_chain(S, porigin_root, porigin_owner, |S.CLASSES|)
+  -- if $class_constant_history_trigger(S, pdynamicnew.SITE, n)
+
 ;; Known intrinsic interfaces and Closure fail during allocation, before sends.
 def $internal_new_forbidden(ptbytes) = true
   -- if $ptlc(ptbytes) = $ptascii("closure")

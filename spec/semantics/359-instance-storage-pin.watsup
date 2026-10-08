@@ -13,6 +13,7 @@ dec $instance_storage_select(pinstancestorage*, nat) : pinstancestorage?
 dec $instance_storage_for(pstate, nat) : pinstancestorage?
 dec $instance_storage_order(ppropertyslot*, bool, nat) : nat*
 dec $instance_storage_image(ppropertyslot*, ppropertyslot*, nat*, nat) : bool
+dec $instance_storage_table_valid(pstate, pinstancestorage) : bool
 dec $instance_storage_basic(pstate, pinstancestorage) : bool
 dec $instance_storage_basics(pstate, pinstancestorage*) : bool
 dec $instance_storage_ids(pinstancestorage*) : nat*
@@ -24,6 +25,7 @@ dec $instance_storage_called(pstate, nat) : pstate
 dec $instance_storage_begin(pstate, nat) : pstate
 dec $instance_storage_transfer(pstate, pinstancestorage, ptask*) : pstate
 dec $instance_storage_cleared(ppropertyslot*, nat) : ppropertyslot*
+dec $instance_storage_unset_all(ppropertyslot*) : ppropertyslot*
 
 def $instance_storage_task(INSTANCE_STORAGE_STEP pinstancestorage) = (pinstancestorage)
 def $instance_storage_task(AT porigin ptask) = $instance_storage_task(ptask)
@@ -80,7 +82,15 @@ def $instance_storage_node(S, n) = true
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+def $instance_storage_node(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $instance_storage_node(S, n) = false -- otherwise
+def $instance_storage_table_valid(S, pinstancestorage) = true
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
+def $instance_storage_table_valid(S, pinstancestorage) = (pinstancestorage.NEXT = 0 /\ $object_tables_list_valid(S, [{OBJECT pinstancestorage.OBJECT, TABLE n_table}]))
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = (n_table)
 def $instance_storage_basic(S, pinstancestorage) = true
   -- if $instance_storage_node(S, pinstancestorage.OBJECT)
   -- if (HOBJECT pinstancestorage.OBJECT) <- S.ALLOCATIONS
@@ -88,6 +98,7 @@ def $instance_storage_basic(S, pinstancestorage) = true
   -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
   -- if $(pinstancestorage.NEXT <= |nat_order*|)
   -- if $instance_storage_image(ppropertyslot*, pinstancestorage.SLOTS, nat_order*[0:pinstancestorage.NEXT], 0)
+  -- if $instance_storage_table_valid(S, pinstancestorage)
   -- if $(pinstancestorage.OBJECT < |S.DESTRUCTION.HANDLES|)
   -- if S.DESTRUCTION.HANDLES[pinstancestorage.OBJECT] = pinstancestorage.HANDLE
   -- if $(pinstancestorage.HANDLE > 0) /\ $(pinstancestorage.HANDLE < S.DESTRUCTION.NEXT)
@@ -131,24 +142,36 @@ def $instance_storage_cleared(ppropertyslot*, n) = ppropertyslot*[0:n] ++ [pprop
   -- if ppropertyslot_selected = ppropertyslot*[n]
   -- if n_next = $(n + 1)
   -- if n_tail = $nabs($(|ppropertyslot*| - n - 1))
+def $instance_storage_unset_all(eps) = eps
+def $instance_storage_unset_all(ppropertyslot :: ppropertyslot_tail*) = ppropertyslot[.STATE = PROP_UNSET] :: $instance_storage_unset_all(ppropertyslot_tail*)
 def $instance_storage_transfer(S, pinstancestorage, ptask*) = $destructor_release_begin(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, pinstancestorage.OBJECT, $instance_storage_cleared(ppropertyslot_all*, n_slot))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = $(pinstancestorage.NEXT + 1)]) :: ptask*], $destruction_values($property_slot_nodes([ppropertyslot_selected])))
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = (ppropertyslot_all*)
   -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
   -- if n_slot = nat_order*[pinstancestorage.NEXT]
   -- if ppropertyslot_selected = ppropertyslot_all*[n_slot]
   -- if S_detached = $propref_detach_slot(S, pinstancestorage.OBJECT, ppropertyslot_selected)
+;; A real stdClass property HashTable owns its buckets. Transfer that one edge,
+;; retaining the physical parent until shared-table return or bucket cleanup.
+rule PhpStep/instance-storage-table: S ~> $destructor_release_begin(S[.OBJECTTABLES = $object_table_remove(S.OBJECTTABLES, pinstancestorage.OBJECT)][.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, pinstancestorage.OBJECT, $instance_storage_unset_all(pinstancestorage.SLOTS))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = |pinstancestorage.SLOTS|]) :: ptask*], [DESTRUCTION_VALUE (HARRAY n_table)])
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = (n_table)
 rule PhpStep/instance-storage-slot: S ~> $instance_storage_transfer(S, pinstancestorage, ptask*)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
   -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if $(pinstancestorage.NEXT < |pinstancestorage.SLOTS|)
 rule PhpStep/instance-storage-finish: S ~> $destructor_release_begin(S[.TODO = ptask*][.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT pinstancestorage.OBJECT)], [DESTRUCTION_HANDLE pinstancestorage.OBJECT])
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
   -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if pinstancestorage.NEXT = |pinstancestorage.SLOTS|
   -- if $heap_owners($heap_graph(S), HOBJECT pinstancestorage.OBJECT) = 1
 rule PhpStep/instance-storage-escaped: S ~> S[.COMPLETION = UNSUPPORTED "freeing instance escaped reacquisition"]
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
   -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $object_table_at(S.OBJECTTABLES, pinstancestorage.OBJECT) = eps
   -- if pinstancestorage.NEXT = |pinstancestorage.SLOTS|
   -- if $($heap_owners($heap_graph(S), HOBJECT pinstancestorage.OBJECT) > 1)
 
