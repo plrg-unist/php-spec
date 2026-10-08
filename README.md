@@ -565,7 +565,7 @@ preserves the accepted current parent. Cached callbacks now suspend and reenter
 within the same live physical pass, preserving the cache and rebinding the fresh
 public API. One normal source and 228 reached physical premises pass; captured
 old/new exception priority completes in the state checks while its source CLI
-retains a 60s timeout with zero agreement. Final 341 compilation preserves `dc68616a3`.
+retains a 60s timeout with zero agreement. Final 343 compilation preserves `e1c3d4d61`.
 Post-pass reentry and internal takeover remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

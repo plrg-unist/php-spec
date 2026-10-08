@@ -277,9 +277,10 @@ check live caller versus parked VM authority, actual frame/result/origin views,
 sequence/copy/slot/source/post-pass forgeries, fresh captured caller owners,
 old 2/new 4 exception owners, one-step replay and exact normal continuations.
 The compact source keeps its new error in the final global reference cell with
-one owner; the old error, runner and capture retire. Final 341 over `dc68616a3`
-compiles at `9774f1efb`; the origin comparison factor and introduced parent rules
-are independently reviewed pointwise. Both captured source variants retain60s
+one owner; the old error, runner and capture retire. Final 343 over `e1c3d4d61`
+compiles at `bb74145c7`, retaining the earlier341 cut separately. The origin
+comparison factor, Generator storage, call-key source and eager owner-order
+changes are independently reviewed pointwise. Both captured source variants retain60s
 CLI timeouts with zero source agreement, including the final retry. Earlier
 state timeouts/incorrect final-retirement assertions retain zero affected credit.
 No old cuts are renewed and no offline rebuild is claimed.

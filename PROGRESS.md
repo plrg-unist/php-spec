@@ -76,8 +76,9 @@ and saved-frame projections; reentry binds the fresh public API without detachin
 or adding an owner. One normal source and 228 independent physical premises pass
 at separate cuts, including captured old/new exception priority and exact full
 continuations. Both captured source variants retain 60s CLI timeouts/zero agreement;
-fixture stops remain zero affected credit. Final 341 over `dc68616a3` compiles at
-`9774f1efb`, with reviewed pointwise origin-cost and current-parent compatibility.
+fixture stops remain zero affected credit. Final 343 over `e1c3d4d61` compiles at
+`bb74145c7`, preserving reviewed Generator storage, call-key source and eager
+owner-order changes; the earlier341 compiler cut remains separate.
 Earlier345 cuts remain separate. Post-pass reentry/internal takeover and broader
 GC remain required. [Ledger](coverage/semantics/cycle-collection-review.json).
 
