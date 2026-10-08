@@ -511,6 +511,7 @@ dec $fiber_core_root(pstate) : bool
 def $destructor_private_error(S, pdestructorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, pdestructorcall.LINE)
   -- if ~$fiber_finished_root(S)
   -- if ~$fiber_core_root(S)
+  -- if S.CURRENT =/= eps \/ ~$gc_worker_public_guard_live(S)
 rule PhpStep/destructor-private-error: S ~> $destructor_private_error(S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*], pdestructorcall, $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct()") ++ $method_scope_suffix(S, $destructor_access_scope(S)))
   -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
   -- if $destructor_enter_valid(S, pdestructorcall)

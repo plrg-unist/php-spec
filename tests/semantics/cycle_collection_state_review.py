@@ -516,7 +516,7 @@ CASES = {
             'pfibercaller.VM.CURRENT = (pcallcontext_public)',
             'pcallcontext_public.LEXICAL_CLASS = (porigin_public_class)',
             '$gc_worker_scope(pgcplan.CALL.CALLER) = eps',
-            '$gc_worker_guard_scope(S_one, pgcguard) = (porigin_public_class)',
+            '$gc_worker_guard_scope(S_one, pgcguard) = eps',
             '$gc_worker_public_guard_live(S_one)',
             '$call_descriptors_valid(S_one)', '$heap_valid($heap_graph(S_one))',
             '$gc_slot_find(S_one.GC.BUFFER, HOBJECT n_actor, 0) = (n_actor_slot)',

@@ -156,10 +156,15 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
   -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
-def $gc_worker_guard_scope(S, pgcguard) = $gc_worker_scope(pfibercaller.VM.CURRENT)
+;; zend_get_executed_scope stops at the internal Fiber::resume/throw frame.
+;; Its builtin class has no user-class origin and grants no nonpublic access.
+def $gc_worker_guard_scope(S, pgcguard) = eps -- if pgcguard.PUBLIC =/= eps
+def $destructor_private_error(S, pdestructorcall, ptbytes) = $throwable_allocate_at(S, "Error", ptbytes_message, pgcpublic.API.SITE, pgcpublic.API.LINE, $fiber_caller_trace(S))
+  -- if S.CURRENT = eps
+  -- if $gc_worker_guard_at(S) = (pgcguard)
   -- if pgcguard.PUBLIC = (pgcpublic)
-  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
-  -- if pfibercaller.API = pgcpublic.API
+  -- if $destructor_method(S, pdestructorcall.OBJECT) = (pmethoddesc)
+  -- if ptbytes_message = $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct() from scope Fiber")
 def $gc_worker_guard_done(S, pgcguard) = $gc_worker_public_keep(S_scan, pgcguard.OBJECT)
   -- if pgcguard.PUBLIC = (pgcpublic)
   -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
