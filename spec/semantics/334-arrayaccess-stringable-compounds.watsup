@@ -9,6 +9,7 @@ dec $access_string_set_operand(paccess) : poperand?
 dec $access_string_nodes(paccess, poperand) : pnode*
 dec $access_set_hole_target(pstate, paccess) : pcalltarget?
 dec $access_set_hole_context(pstate, pcallcontext) : bool
+dec $access_set_variadic_hole_error(pstate, paccess, pfunction) : pstate
 
 def $access_string_source(S, paccess, KNOWN pvalue) = true
   -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
@@ -109,6 +110,7 @@ def $access_holes(paccess) = eps -- if ~paccess.KEYHOLE
 def $access_set_hole_target(S, paccess) = (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN)
   -- if paccess.KEYHOLE
   -- if $access_valid(S, paccess)
+  -- if $error_missing_operand(S, paccess.INPUT)
   -- if paccess.OBJECT = (n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii("offsetSet"), |S.CLASSES|) = (pmethoddesc)
@@ -122,11 +124,18 @@ rule PhpStep/access-set-hole-enter: S ~> $target_after_enter($named_enter(S[.TOD
   -- if $access_set_hole_target(S, paccess) = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS) = psparam :: psparam_tail*
-rule PhpStep/access-set-hole-variadic: S ~> S[.COMPLETION = UNSUPPORTED "ArrayAccess undefined variadic Set argument"]
+rule PhpStep/access-set-hole-variadic: S ~> $access_set_variadic_hole_error(S, paccess, pfunction)
   -- if S.TODO = (ACCESS_SET_ENTER paccess) :: ptask_tail*
   -- if $access_set_hole_target(S, paccess) = (pcalltarget)
   -- if $target_function(S, pcalltarget) = (pfunction)
   -- if $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS) = eps
+
+;; zend_handle_undef_args throws from a fake callee frame before RECV_VARIADIC.
+;; Only traceback projection normalizes the absent slot to null.
+def $access_set_variadic_hole_error(S, paccess, pfunction) = $throwable_allocate_at(S[.ORIGIN = (paccess.SITE)], "ArgumentCountError", pfunction.NAME ++ $ptascii("(): Argument #1 not passed"), pfunction.ORIGIN, $default_parameter_line(S, pfunction.ORIGIN, 0), $source_trace_prefixed(S, [ptraceframe]))
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, paccess.SITE), LINE paccess.LINE, FUNCTION pmethoddesc.NAME, CLASS (pclassdesc.NAME), TYPE ($ptascii("->")), ARGS [(KINT 0, PNULL), (KINT 1, paccess.VALUE)], HASARGS true}
 
 def $access_set_hole_context(S, pcallcontext) = ($access_context(S, pcallcontext) /\ pcallcontext.HOLES = [0])
 def $named_call_shape(S, pcalltarget, (porigin)) = {SLOTS ([NAMED_HOLE, NAMED_SENT (KNOWN PNULL)]), NAMED eps}

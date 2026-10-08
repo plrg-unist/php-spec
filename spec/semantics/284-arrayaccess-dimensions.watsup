@@ -706,7 +706,7 @@ def $access_context_node(pcnode, ptbytes) = false -- otherwise
 ;; This terminal is reached from the scalar helper only after its key U. It has
 ;; no VM receiver pin; std_has_dimension supplies the sole handler protection.
 def $access_container(S, pcontainerread, n) = $access_call(S, paccess, $ptascii("offsetExists"))
-  -- if paccess = {SITE pcontainerread.READ.SITE, TARGET pcontainerread.READ.SITE, LINE pcontainerread.READ.LINE, KEYLINE pcontainerread.READ.LINE, MODE ACCESS_READ pcontainerread.READ.MODE, BASE pcontainerread.READ.OWNERS, INPUT pcontainerread.READ.INPUT, RHS KNOWN PNULL, SELECTED pcontainerread.SELECTED, OBJECT (n), OFFSET pcontainerread.READ.VALUE, VALUE PNULL, LATCH (pcontainerread.READ.PHASE = KEY_CV), OUTER false, TASK KEY_READ_DIM pcontainerread.READ.INPUT pcontainerread.READ.LINE pcontainerread.READ.MODE, PHASE ACCESS_CALL $ptascii("offsetExists")}
+  -- if paccess = {SITE pcontainerread.READ.SITE, TARGET pcontainerread.READ.SITE, LINE pcontainerread.READ.LINE, KEYLINE pcontainerread.READ.LINE, MODE ACCESS_READ pcontainerread.READ.MODE, BASE pcontainerread.READ.OWNERS, INPUT pcontainerread.READ.INPUT, RHS KNOWN PNULL, SELECTED pcontainerread.SELECTED, OBJECT (n), OFFSET pcontainerread.READ.VALUE, VALUE PNULL, LATCH (pcontainerread.READ.PHASE = KEY_CV), KEYHOLE false, OUTER false, TASK KEY_READ_DIM pcontainerread.READ.INPUT pcontainerread.READ.LINE pcontainerread.READ.MODE, PHASE ACCESS_CALL $ptascii("offsetExists")}
 
 def $access_cv_operand(VARIABLE n_name* z) = true
 def $access_cv_operand(poperand) = false -- otherwise
