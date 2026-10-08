@@ -49,7 +49,8 @@ rule PhpStep/fiber-array-convert: S ~> S[.TODO = ptask_tail*][.OBJECTS = S.OBJEC
   -- if pfibercapture = {SITE pfiberarray.SITE, KIND pfiberarray.KIND, NAME pfiberarray.NAME, INPUT pfiberarray.INPUT, FACTORY eps, ARRAY (pfiberarray)}
   -- if $fiber_capture_source_valid(S, pfibercapture)
 def $fiber_capture_source_valid(S, pfibercapture) = true
-  -- if pfibercapture.FACTORY = eps /\ pfibercapture.ARRAY = (pfiberarray)
+  -- if pfibercapture.FACTORY = eps
+  -- if pfibercapture.ARRAY = (pfiberarray)
   -- if pfibercapture.SITE = pfiberarray.SITE /\ pfibercapture.KIND = pfiberarray.KIND
   -- if pfibercapture.NAME = pfiberarray.NAME /\ pfibercapture.INPUT = pfiberarray.INPUT
   -- if $fiber_array_capture_source_valid(S, pfiberarray)
