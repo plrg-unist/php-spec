@@ -14,7 +14,10 @@ later destructors. Internal C-root trace rows preserve real function arguments.
 Seven exact php_error255 originals and 493 strict premises pass at separate cuts;
 original refusals, preparation stops and corrected trace/admission failures stay at zero.
 Abrupt rendering/release, message-warning conversion, parked/escaped storage and
-wider terminal cleanup remain required. [Ledger](coverage/semantics/generator-request-abrupt-review.json).
+wider terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
+compilation at `ba1c17c07`, preserving current schema, storage and collector/source
+guards; private source/state cuts retain their own revisions.
+[Ledger](coverage/semantics/generator-request-abrupt-review.json).
 
 Module 364 converts simple Fiber API arrays to first-class Closures, including
 start and constructor methods. An independent ARRAY witness freezes selected
