@@ -15,7 +15,10 @@ rejection without executing their bodies. Strict339 initialization, eleven exact
 normal originals at separate cuts and independent210/author112 reached premises
 pass. The original registered-builtin Unsupported failure retains zero agreement;
 pre-entry names and entered constructor traces retain native frames and arguments.
-Outer unpacking, broader callable adapters and lifecycle consumers remain required.
+The actual341 composition over `500a2cedc` passes strict initialization with
+reviewed current source353, compound-string352, property-warning and generic
+ownership guards; earlier source/state cuts retain their inputs. Outer unpacking,
+broader callable adapters and lifecycle consumers remain required.
 [Constructor-capture ledger](coverage/semantics/fiber-constructor-callables-review.json).
 
 
