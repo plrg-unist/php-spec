@@ -187,10 +187,12 @@ def $generator_request_retired_nodes(eps) = eps
 def $generator_request_retired_nodes((n_object, n_handle) :: (n_tail, n_handle_tail)*) = (HOBJECT n_object) :: $generator_request_retired_nodes((n_tail, n_handle_tail)*)
 def $generator_request_retired_keep(S) = $heap_reach($generator_request_retired_nodes(S.DESTRUCTION.RETIRED), eps, $heap_graph(S).EDGES)
   -- if S.DESTRUCTION.RETIRED =/= eps
+def $generator_request_retired_keep_graph(S, H) = $heap_reach($generator_request_retired_nodes(S.DESTRUCTION.RETIRED), eps, H.EDGES)
+  -- if S.DESTRUCTION.RETIRED =/= eps
 def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES
   -- if S.GC.ACTIVE = eps /\ $gc_bare_nodes(S.GC.BUFFER) = eps
   -- if S.DESTRUCTION.RETIRED =/= eps
-def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep(S)).NODES
+def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep_graph(S, H)).NODES
   -- if S.GC.ACTIVE = eps /\ $gc_bare_nodes(S.GC.BUFFER) = eps
   -- if S.DESTRUCTION.RETIRED =/= eps
 def $generator_request_retired_filter(S, eps) = eps

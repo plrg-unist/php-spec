@@ -371,6 +371,8 @@ test-semantics: build
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group descendants
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group descendants-throw
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group descendants-guard
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group typed-slot
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group typed-slot-fiber
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group notice-owner
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group scalar-warning

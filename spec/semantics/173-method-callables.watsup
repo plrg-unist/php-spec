@@ -287,11 +287,13 @@ def $clone_object(S, n_source) = $clone_scope(S[.OBJECTS = S.OBJECTS ++ [METHODC
 def $clone_same_kind(METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?, METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?) = true
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+dec $closure_method_origin(pstate, porigin) : pmethoddesc?
+def $closure_method_origin(S, porigin) = $class_method_origin(S.CLASSES, porigin) -- otherwise
 dec $method_closure_functions(pstate, nat, pmethoddesc) : (pfunction, pfunction)
 def $method_closure_functions(S, n, pmethoddesc) = (pmethoddesc.FUNCTION, pmethoddesc.FUNCTION) -- otherwise
 def $target_function(S, CLOSURE_TARGET n) = (pfunction_view)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
-  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
   -- if $method_closure_functions(S, n, pmethoddesc) = (pfunction_base, pfunction_view)
 def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, porigin))
   -- if $current_instance(S) = (n)

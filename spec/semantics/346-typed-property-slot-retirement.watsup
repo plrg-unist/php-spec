@@ -1,0 +1,110 @@
+;; zend_object_dtor_property removes a reference type source immediately before
+;; decrementing that declared slot. Earlier child callbacks retain later sources.
+;; This job replaces the slot's existing HCELL owner; it never owns the parent.
+dec $property_slot_release_job(pstate, nat, ppropertyslot) : pdestructionjob*
+dec $property_slot_release_jobs(pstate, nat, ppropertyslot*, bool) : pdestructionjob*
+def $property_slot_release_job(S, n_object, ppropertyslot) = [DESTRUCTION_PROP_SOURCE pproptypesource n_cell]
+  -- if ppropertyslot.DECL = (ppropertyid)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if pproptypesource = OBJECT_PROP_SOURCE n_object ppropertyslot.NAME ppropertyid
+  -- if $propref_source_present(S.PROPREFS, n_cell, pproptypesource)
+def $property_slot_release_job(S, n_object, ppropertyslot) = $destruction_values($property_slot_nodes([ppropertyslot])) -- otherwise
+def $property_slot_release_jobs(S, n_object, eps, b) = eps
+def $property_slot_release_jobs(S, n_object, ppropertyslot :: ppropertyslot_tail*, b) = $property_slot_release_job(S, n_object, ppropertyslot) ++ $property_slot_release_jobs(S, n_object, ppropertyslot_tail*, b)
+  -- if (ppropertyslot.DECL = eps) = b
+def $property_slot_release_jobs(S, n_object, ppropertyslot :: ppropertyslot_tail*, b) = $property_slot_release_jobs(S, n_object, ppropertyslot_tail*, b)
+  -- if (ppropertyslot.DECL = eps) =/= b
+def $destruction_child_jobs(S, HOBJECT n) = $property_slot_release_jobs(S, n, ppropertyslot*, true) ++ $property_slot_release_jobs(S, n, ppropertyslot*, false)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+def $destruction_job_node(DESTRUCTION_PROP_SOURCE pproptypesource n_cell) = (HCELL n_cell)
+def $gc_temporary_nodes((DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob*) = $gc_temporary_nodes(pdestructionjob*)
+
+;; Collect the actual owning queues, including parked Fiber VMs. Certificates
+;; in destructor CALL.RELEASE are borrowed and deliberately never inspected.
+;; Exclude only the carrier whose VM is already restored as the active view.
+dec $property_release_tasks(pdestructionrelease, ptask*) : nat
+dec $property_release_frames(pdestructionrelease, pframe*) : nat
+dec $property_release_owners(pdestructionrelease, ptask*, pframe*) : nat
+dec $property_release_records(pdestructionrelease*, ptask*, pframe*, pdestructionrelease*) : pdestructionrelease*
+dec $property_release_vm(pstate, pfibervm, nat?, pdestructionrelease*) : pdestructionrelease*
+dec $property_release_object(pstate, pnode, pdestructionrelease*) : pdestructionrelease*
+dec $property_release_objects(pstate, pnode*, pdestructionrelease*) : pdestructionrelease*
+dec $property_release_callers(pstate, pfibercaller*, pdestructionrelease*) : pdestructionrelease*
+dec $property_release_closers(pstate, pfiberclose*, pdestructionrelease*) : pdestructionrelease*
+dec $property_release_queues(pstate) : pdestructionrelease*
+def $property_release_tasks(pdestructionrelease, eps) = 0
+def $property_release_tasks(pdestructionrelease, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = $(1 + $property_release_tasks(pdestructionrelease, ptask*))
+def $property_release_tasks(pdestructionrelease, ptask_head :: ptask*) = $property_release_tasks(pdestructionrelease, ptask*)
+  -- if ptask_head =/= DESTRUCTOR_RELEASE pdestructionrelease
+def $property_release_frames(pdestructionrelease, eps) = 0
+def $property_release_frames(pdestructionrelease, pframe :: pframe_tail*) = $($property_release_tasks(pdestructionrelease, pframe.TODO) + $property_release_frames(pdestructionrelease, pframe_tail*))
+def $property_release_owners(pdestructionrelease, ptask*, pframe*) = $($property_release_tasks(pdestructionrelease, ptask*) + $property_release_frames(pdestructionrelease, pframe*))
+def $property_release_records(eps, ptask*, pframe*, pdestructionrelease_done*) = pdestructionrelease_done*
+def $property_release_records(pdestructionrelease :: pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*) = $property_release_records(pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done* ++ [pdestructionrelease, pdestructionrelease])
+  -- if $($property_release_owners(pdestructionrelease, ptask*, pframe*) > 1)
+def $property_release_records(pdestructionrelease :: pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*) = $property_release_records(pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done* ++ [pdestructionrelease])
+  -- if $property_release_owners(pdestructionrelease, ptask*, pframe*) = 1
+def $property_release_records(pdestructionrelease :: pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*) = $property_release_records(pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*)
+  -- if $property_release_owners(pdestructionrelease, ptask*, pframe*) = 0
+def $property_release_vm(S, pfibervm, n_active?, pdestructionrelease*) = $property_release_records(pfibervm.DESTRUCTORRELEASES, pfibervm.TODO, pfibervm.FRAMES, pdestructionrelease*)
+  -- if n_active? =/= S.ACTIVEFIBER
+def $property_release_vm(S, pfibervm, n_active?, pdestructionrelease*) = pdestructionrelease* -- otherwise
+def $property_release_object(S, HOBJECT n, pdestructionrelease*) = $property_release_vm(S, pfibervm, (n), pdestructionrelease*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+def $property_release_object(S, pnode, pdestructionrelease*) = pdestructionrelease* -- otherwise
+def $property_release_objects(S, eps, pdestructionrelease*) = pdestructionrelease*
+def $property_release_objects(S, pnode :: pnode_tail*, pdestructionrelease*) = $property_release_objects(S, pnode_tail*, $property_release_object(S, pnode, pdestructionrelease*))
+def $property_release_callers(S, eps, pdestructionrelease*) = pdestructionrelease*
+def $property_release_callers(S, pfibercaller :: pfibercaller_tail*, pdestructionrelease*) = $property_release_callers(S, pfibercaller_tail*, $property_release_vm(S, pfibercaller.VM, pfibercaller.PREVIOUS, pdestructionrelease*))
+def $property_release_closers(S, eps, pdestructionrelease*) = pdestructionrelease*
+def $property_release_closers(S, pfiberclose :: pfiberclose_tail*, pdestructionrelease*) = $property_release_closers(S, pfiberclose_tail*, $property_release_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS, pdestructionrelease*))
+def $property_release_queues(S) = $property_release_closers(S, S.FIBERCLOSERS, $property_release_callers(S, S.FIBERCALLERS, $property_release_objects(S, S.ALLOCATIONS, $property_release_records(S.DESTRUCTION.RELEASES, S.TODO, S.FRAMES, eps))))
+
+dec $property_source_jobs(pdestructionjob*, nat, pproptypesource) : nat
+dec $property_source_job_pending(pdestructionjob, pdestructionjob*, nat, pproptypesource) : bool
+dec $property_source_queues(pdestructionrelease*, nat, pproptypesource) : nat
+def $property_source_job_pending(DESTRUCTION_PROP_SOURCE pproptypesource_job n_job, pdestructionjob*, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = (n_job = n_cell /\ pproptypesource_job = OBJECT_PROP_SOURCE n_object ptbytes ppropertyid /\ (DESTRUCTION_HANDLE n_object) <- pdestructionjob*)
+def $property_source_job_pending(pdestructionjob_head, pdestructionjob*, n_cell, pproptypesource) = false -- otherwise
+def $property_source_jobs(eps, n_cell, pproptypesource) = 0
+def $property_source_jobs(pdestructionjob_head :: pdestructionjob*, n_cell, pproptypesource) = $(1 + $property_source_jobs(pdestructionjob*, n_cell, pproptypesource))
+  -- if $property_source_job_pending(pdestructionjob_head, pdestructionjob*, n_cell, pproptypesource)
+def $property_source_jobs(pdestructionjob_head :: pdestructionjob*, n_cell, pproptypesource) = $property_source_jobs(pdestructionjob*, n_cell, pproptypesource)
+  -- if ~$property_source_job_pending(pdestructionjob_head, pdestructionjob*, n_cell, pproptypesource)
+def $property_source_queues(eps, n_cell, pproptypesource) = 0
+def $property_source_queues(pdestructionrelease :: pdestructionrelease_tail*, n_cell, pproptypesource) = $($property_source_jobs(pdestructionrelease.JOBS, n_cell, pproptypesource) + $property_source_queues(pdestructionrelease_tail*, n_cell, pproptypesource))
+dec $property_retired_source_valid(pstate, nat, pproptypesource) : bool
+def $property_retired_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = true
+  -- if $(n_cell < |S.STORE|) /\ $(n_object < |S.OBJECTS|)
+  -- if n_cell <- S.REFCELLS /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if ~((HOBJECT n_object) <- S.ALLOCATIONS)
+  -- if $(n_object < |S.DESTRUCTION.HANDLES|)
+  -- if n_handle = S.DESTRUCTION.HANDLES[n_object]
+  -- if $(n_handle > 0) /\ $(n_handle < S.DESTRUCTION.NEXT)
+  -- if ~(n_handle <- S.DESTRUCTION.FREE)
+  -- if $destructor_handle(S, n_handle, 0) = eps
+  -- if S.OBJECTS[n_object] = INSTANCE porigin
+  -- if $propref_descriptor(S, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = (ppropertydesc)
+  -- if ~ppropertydesc.READONLY /\ ppropertydesc.TYPE =/= eps
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $container_init_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
+def $property_retired_source_valid(S, n_cell, pproptypesource) = false -- otherwise
+def $propref_source_queued(S, n_cell, pproptypesource) = ($property_retired_source_valid(S, n_cell, pproptypesource) /\ $property_source_queues($property_release_queues(S), n_cell, pproptypesource) = 1)
+def $propref_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = true
+  -- if $property_retired_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if $propref_source_queued(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+def $destructor_jobs_valid(S, (DESTRUCTION_PROP_SOURCE (OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) n_cell) :: pdestructionjob*) = true
+  -- if (DESTRUCTION_HANDLE n_object) <- pdestructionjob*
+  -- if $property_source_jobs((DESTRUCTION_PROP_SOURCE (OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) n_cell) :: pdestructionjob*, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = 1
+  -- if $property_retired_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if $propref_source_present(S.PROPREFS, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if $propref_source_queued(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if $destructor_jobs_valid(S, pdestructionjob*)
+
+rule PhpStep/destructor-release-property-source: S ~> $destructor_release_replace(S[.PROPREFS = $propref_detach(S.PROPREFS, n_cell, pproptypesource)], pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HCELL n_cell)) :: pdestructionjob*])
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob*

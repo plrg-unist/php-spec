@@ -73,11 +73,11 @@ def $parameter_callable_wrapper_proof(pobject, pparameterreceive?) = false -- ot
 dec $parameter_callable_current_evidence(pstate, pfunction) : pparameterreceive?
 dec $parameter_callable_scope_valid(pstate, pparameterclosure, pfunction) : bool
 def $parameter_callable_scope_valid(S, pparameterclosure, pfunction) = true
-  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $closure_method_origin(S, pfunction.ORIGIN) = (pmethoddesc)
   -- if pparameterclosure.SCOPE = (pmethoddesc.OWNER)
   -- if pparameterclosure.EVIDENCE = eps
 def $parameter_callable_scope_valid(S, pparameterclosure, pfunction) = true
-  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = eps
+  -- if $closure_method_origin(S, pfunction.ORIGIN) = eps
   -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
   -- if pparameterclosure.SCOPE = eps /\ pparameterclosure.EVIDENCE = eps
 def $parameter_callable_scope_valid(S, pparameterclosure, pfunction) = true
@@ -111,7 +111,7 @@ def $parameter_callable_function_published(S, pfunction, n_prefix) = true
   -- if $callable_at($constant_callable_functions(S, S.DECLARATIONS[0:n_prefix]), $ptlc(pfunction.NAME)) = (pfunction.ORIGIN)
 def $parameter_callable_function_published(S, pfunction, n_prefix) = true
   -- if $(n_prefix <= |S.DECLARATIONS|)
-  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $closure_method_origin(S, pfunction.ORIGIN) = (pmethoddesc)
   -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], pmethoddesc.OWNER)
 def $parameter_callable_function_published(S, pfunction, n_prefix) = true
   -- if $(n_prefix <= |S.DECLARATIONS|)

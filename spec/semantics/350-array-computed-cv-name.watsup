@@ -1,0 +1,34 @@
+;; Array conversion borrows the ordinary name CV. Returning from its warning
+;; fixes the name to "Array" without rereading that CV; FETCH then sees the live
+;; target. A throwing handler abandons this result before target lookup.
+def $computed_array_name_plan(S) = (pnameread)
+  -- if S.TODO = (NAME_READ z) :: ptask_tail*
+  -- if ~$source_name_pending(S)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprVariable (NExprVariable (BYTES text_name) metadata_name) metadata)
+  -- if pnameread = {SITE porigin, NAME $base64(text_name), LINE z}
+  -- if $computed_cv_name_source(S, pnameread)
+  -- if ~$error_missing_operand(S, S.RESULT)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (PARRAY n)
+def $computed_array_name_plan(S) = eps -- otherwise
+def $computed_array_name_begin(S, pnameread) = $error_dispatch(S_read[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $ptascii("Array to string conversion"), pnameread.LINE, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") pnameread.LINE, NAME_ARRAY_RESULT pnameread)
+  -- if $computed_array_name_plan(S) = (pnameread)
+  -- if S_read = $resolve_at(S, S.RESULT, pnameread.LINE)
+dec $computed_array_name_valid(pstate, pnameread) : bool
+def $computed_array_name_valid(S, pnameread) = $computed_cv_name_valid(S, pnameread)
+def $call_task_valid(S, NAME_ARRAY_RESULT pnameread) = $computed_array_name_valid(S, pnameread)
+def $task_nodes(NAME_ARRAY_RESULT pnameread) = eps
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = NAME_ARRAY_RESULT pnameread
+  -- if $computed_array_name_valid(S, pnameread)
+  -- if perrorcall.SITE = pnameread.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pnameread.LINE
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+rule PhpStep/computed-array-name-warning-resume: S ~> S[.TODO = (NAME_READ pnameread.LINE) :: ptask_tail*][.RESULT = KNOWN (PSTRING $ptascii("Array"))][.BASE = BASE_VALUE (KNOWN (PSTRING $ptascii("Array")))]
+  -- if S.TODO = (NAME_ARRAY_RESULT pnameread) :: ptask_tail*
+  -- if $computed_array_name_valid(S, pnameread)

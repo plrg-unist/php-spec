@@ -82,22 +82,30 @@ def $objectprops_prune(pobjectprops :: pobjectprops_tail*, pnode*) = $objectprop
 ;; Object destruction walks the property table in slot order, independently
 ;; of when aliases were attached to a cell. Each removal still swaps the
 ;; last source within that cell's type-source vector.
-dec $proprefs_prune_slots(ppropref*, nat, ppropertyslot*) : ppropref*
+dec $proprefs_prune_slots(pstate, ppropref*, nat, ppropertyslot*) : ppropref*
+dec $propref_source_queued(pstate, nat, pproptypesource) : bool
+def $propref_source_queued(S, n_cell, pproptypesource) = false -- otherwise
 dec $propref_detachable_slot(ppropertyslot) : bool
 def $propref_detachable_slot({DECL (porigin), NAME ptbytes, STATE PROP_VALUE (ALIAS n_cell)}) = true
 def $propref_detachable_slot(ppropertyslot) = false -- otherwise
-def $proprefs_prune_slots(ppropref_list*, n_object, eps) = ppropref_list*
-def $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot :: ppropertyslot_tail*) = $proprefs_prune_slots($propref_detach(ppropref_list*, n_cell, OBJECT_PROP_SOURCE n_object ppropertyslot.NAME porigin_decl), n_object, ppropertyslot_tail*)
+def $proprefs_prune_slots(S, ppropref_list*, n_object, eps) = ppropref_list*
+def $proprefs_prune_slots(S, ppropref_list*, n_object, ppropertyslot :: ppropertyslot_tail*) = $proprefs_prune_slots(S, $propref_detach(ppropref_list*, n_cell, OBJECT_PROP_SOURCE n_object ppropertyslot.NAME porigin_decl), n_object, ppropertyslot_tail*)
   -- if $propref_detachable_slot(ppropertyslot)
   -- if ppropertyslot.DECL = (porigin_decl)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
-def $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot :: ppropertyslot_tail*) = $proprefs_prune_slots(ppropref_list*, n_object, ppropertyslot_tail*)
+  -- if ~$propref_source_queued(S, n_cell, OBJECT_PROP_SOURCE n_object ppropertyslot.NAME porigin_decl)
+def $proprefs_prune_slots(S, ppropref_list*, n_object, ppropertyslot :: ppropertyslot_tail*) = $proprefs_prune_slots(S, ppropref_list*, n_object, ppropertyslot_tail*)
+  -- if $propref_detachable_slot(ppropertyslot)
+  -- if ppropertyslot.DECL = (porigin_decl)
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if $propref_source_queued(S, n_cell, OBJECT_PROP_SOURCE n_object ppropertyslot.NAME porigin_decl)
+def $proprefs_prune_slots(S, ppropref_list*, n_object, ppropertyslot :: ppropertyslot_tail*) = $proprefs_prune_slots(S, ppropref_list*, n_object, ppropertyslot_tail*)
   -- if ~$propref_detachable_slot(ppropertyslot)
 dec $proprefs_live(ppropref*, pnode*) : ppropref*
-def $proprefs_prune(ppropref_list*, eps, pnode*) = $proprefs_live(ppropref_list*, pnode*)
-def $proprefs_prune(ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune(ppropref_list*, pobjectprops_tail*, pnode*)
+def $proprefs_prune(S, ppropref_list*, eps, pnode*) = $proprefs_live(ppropref_list*, pnode*)
+def $proprefs_prune(S, ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune(S, ppropref_list*, pobjectprops_tail*, pnode*)
   -- if (HOBJECT pobjectprops.OBJECT) <- pnode*
-def $proprefs_prune(ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune($proprefs_prune_slots(ppropref_list*, pobjectprops.OBJECT, pobjectprops.SLOTS), pobjectprops_tail*, pnode*)
+def $proprefs_prune(S, ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune(S, $proprefs_prune_slots(S, ppropref_list*, pobjectprops.OBJECT, pobjectprops.SLOTS), pobjectprops_tail*, pnode*)
   -- if ~((HOBJECT pobjectprops.OBJECT) <- pnode*)
 
 dec $propref_unique_sources(pproptypesource*) : bool

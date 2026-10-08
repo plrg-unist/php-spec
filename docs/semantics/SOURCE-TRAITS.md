@@ -1,6 +1,6 @@
 # Source trait composition
 
-Modules 228, 238, 254, 259, 266, 274, 290, 297, 299 and 307 compile, link and access source
+Modules 228, 238, 254, 259, 266, 274, 290, 297, 299, 307 and 347 compile, link and access source
 traits under pinned PHP 8.5.10.
 A using class overrides trait methods; trait methods override inherited methods.
 Nested uses, duplicate imports, `insteadof`, aliases, visibility changes and final
@@ -257,8 +257,15 @@ Later failed imports authenticate the already published first owner's cached
 method at the new birth prefix. A different own method is never substituted;
 the later owner retires while the first cache remains live. One PHP-error source
 and68 supplied retirement conditions pass, with6 setup clauses separate.
+Module347 retains a failed first target's exact canonical metadata without
+restoring class publication or imported methods. Later collision-backed and
+ordinary published receipts recover that cached target and its original lexical
+scope, including private own methods and aliases absent from the later class.
+Three shutdown originals and115 supplied checkpoint conditions cover literal
+defaults and clone-shared statics;12 setup clauses are separate. The first Closure
+stays retired and cannot regain a live value or scope.
 Dependency fills in held/open compilation, broader differing-owner later births and
-executable failed-target reuse retain explicit boundaries.
+wider failed-owner member/construction behavior retain explicit boundaries.
 Wider parameter-view full-source constructor, handler and variadic cases remain
 unvalidated obligations.
 An excluded `parent::` collision control terminated the pinned engine with

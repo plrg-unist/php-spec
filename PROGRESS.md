@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
+resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
+Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335
+over `94e3593e6` passes strict compilation at `4832f2226` with reviewed current-parent
+compatibility. The fixture elaboration stop has zero application/acceptance credit.
+[Ledger](coverage/semantics/source-array-name-review.json).
+
+348 executes bound `start` first-class captures directly and through explicit
+`__invoke`. Immutable receiver selection and original positional/named buffers
+survive argument effects, nested same-Closure calls, weak callback receives and
+cleanup. Waiting calls borrow the receiver from the Closure; explicit invocation
+keeps its extra Closure owner and copied buffer. Status and entry errors retain
+actual start callsites. Strict329 initialization, ten normal originals and
+independent186/author96 reached premises pass at the recorded private cuts.
+Two C-root-start/outer-unpack controls and the separate original `is_int` builtin
+dependency failure have zero agreement. That builtin remains required core work;
+a distinct fresh comparison original checks the same weak int receive.
+C-root `start`, constructor captures and broader adapters remain required.
+The actual333 composition over `05ef7bb9f` passes strict initialization with
+reviewed Generator/property/Throwable/ownership interactions; earlier source and
+state cuts retain their inputs.
+[Start-capture ledger](coverage/semantics/fiber-start-callables-review.json).
+
 Source343 adds Stringable ordinary computed-name CVs with a separate cast owner.
 Returned bytes survive receiver retirement before live target lookup; a pending
 destructor exception permits the default missing-target warning but suppresses
@@ -27,7 +50,7 @@ nested108 and collector93 checks; original failures retain zero credit.
 The actual328 composition over `175a197e9` passes strict initialization while
 preserving current collector342, method307, source339 and ownership factors;
 earlier source/state cuts retain their inputs.
-Bound `start`, constructor captures and broader adapters remain required;
+C-root `start`, constructor captures and broader adapters remain required;
 paused undefined-result verification is excluded. Earlier331/337 cuts are unchanged.
 [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json).
 
@@ -296,6 +319,16 @@ and passes changed initialization plus a genuine retirement fixture with 73 body
 190 physical premises. Earlier 326 cuts stay separate. Raw failures and checks remain
 under `.tools/compiler-fiber-protection-current-19/.tools` (`prune-graph-controls-v{1,2,3}`
 and `full-default-retry-prune-graph-v1`) and `.tools/compiler-prune-graph-publication-19/.tools/prune-graph-gen330-controls-v1`.
+Known-current graph reuse now covers keep, zero and release scans, avoiding
+rebuilding the graph inside bare/retired retention. Exact `c09806280`/330 passes
+strict initialization, 52 independent premises and reached DONE51, bare62,
+destructor82 and retired193 physical premises (38/50/76 body premises for
+DONE/bare/retired). Public modified-graph helpers and changed-preparation paths
+stay intact. Raw checks: `.tools/compiler-prune-graph-publication-19/.tools/prune-graph-keep-controls-v1`.
+Final 334-module composition at `989e6bb09` passes changed initialization in
+4.222s; its earlier 330 fixture identities stay separate. Raw final check:
+`.tools/compiler-prune-keep-current-19/.tools/prune-keep-current-controls-v1`.
+The new factor's original full-source retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
@@ -571,9 +604,24 @@ The final composition of 326 modules over TRAIT307 `55c2eab0c` preserves its
 TYPE/default/FCC source guards by independent pointwise review; the 325-module
 compiler cut remains separate.
 The ordinary helper-base compiler repair preserves special builtin temporary
-rejection. Implicit Generator Get creation retains its existing deferred-scope
-boundary. Bare/fall-through NULL, finally-sensitive Notice ingress and wider
+rejection. The deferred Generator Get control at this334 cut remains zero-credit;
+module344 below records the later repair. Bare/fall-through NULL, finally-sensitive
+Notice ingress and wider
 producers remain open; non-mixed typed return verification remains user-paused.
+
+ArrayAccess344 creates mixed/untyped implicit Generator Get results without
+starting their body, including reference-yield declarations. A nonowning
+TARGET/SITE/LINE certificate preserves exact Get scope after its emitter returns;
+actual frames and received arguments retain every heap owner. Ordinary last-owner
+close reaches the real caller carrier through an authenticated finished marker,
+including destructor replacement of a pending finally exception. Seven maintained
+normal originals pass across `dc27aa3e1`, `09ec7db36` and `3ff67878e`; the unchanged
+334 Unsupported original has a separate new positive cut. Full327 compilation and
+six initialization premises pass at `09ec7db36`. Independent423 reached premises
+pass at `4e3062ac4`; actual331 algo/struct and initialization over `d811717a0`
+pass separately at `f2d3c6d29`, with reviewed request/name/graph-carry interactions.
+No earlier334 evidence is renewed.
+Typed non-mixed producers and the other paused return lanes remain unchanged.
 
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
@@ -713,8 +761,15 @@ own destructor now release dynamic children before declared children. Four exact
 originals and 152/161 reached premises at `531145bb4` cover shared owners, retired
 OLD masking and atomic binding with B/previous=A. At `95899634d`, strict initialization
 and 19 fresh guard premises pass; two native observations retain explicit Unsupported
-and zero agreement for direct/nested retiring typed sources. Per-slot typed-source
-detachment is the required next behavior. Released-CV mutation, raw retired-container
+and zero agreement for direct/nested retiring typed sources at that cut.
+Module346 now keeps each typed source until its actual declared-slot release visit,
+including parked Fiber queues, without retaining the retired parent. Six normal
+originals at `77a17756c`, 151 reached premises at `cc326bf43` and 84 Fiber premises
+at `7573d02bb` retain separate cuts. They cover declaration order, two sources on
+one cell, pending exception chaining, exact detach ownership and resumed scoped
+Throwable validation against the actual live heap. The actual332 join at
+`108d07bb5` passes strict initialization; private Generator-close typed-slot timing
+remains required. Released-CV mutation, raw retired-container
 reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original
@@ -1602,10 +1657,35 @@ first state invocation before numeric execution; that infrastructure failure is
 retained without semantic credit.
 These unchanged cuts bridge to the reviewed328 composition, preserving bound
 callback RAW/INPUT, caller ownership and source fields.
+Module347 retains exact first-failure method metadata for later genuine FCCs,
+without restoring the failed class's imports, publication or retired live value.
+Three shutdown originals cover an imported target, an own/private target and an
+alias absent from the later published class, preserving literal defaults and
+clone-shared static cells. The imported tuple passes at `6985967dc`; the own tuple
+and69 supplied conditions plus6 setup clauses pass at `297715fb6` (29.446s), after
+prefix-aware cache dispatch and the shared `039abc623` handler-context fallback.
+Raw evidence is under `.tools/trait-fcc-failed-target-current19/.tools/`:
+`method-runtime-w4gfa3m7`, `method-runtime-j2l114gl` and
+`closure-call-protocol-v8z8eaza`. The original own/state failures
+(`method-runtime-w4gfa3m7`, `closure-call-protocol-x00j9n0z`) and alias failure
+`method-runtime-q6upsv1_` remain preserved without passing credit.
+At the reviewed332 composition `f19c12d66` over `9d1956cd5`, strict algo/struct
+pass3.419/4.370s; the alias tuple and46 supplied ordinary-receipt/scope conditions
+plus6 setup clauses pass (23.352s), including declaration, call and heap validators.
+Raw evidence is `.tools/trait-fcc-failed-target-publish19/.tools/`:
+`method-runtime-yzmgrx7y`, `closure-call-protocol-9bii28x9`,
+`trait266-object-algo-txlrnwr9` and `trait266-object-struct-zc6hpeu2`.
+The earlier source2/69 cuts bridge unchanged; current source, Generator,
+ArrayAccess-certificate and pruning-graph fields are preserved.
+The final334 composition `5ebf803b2` over `86e7f6ccb` passes strict algo/struct
+at3.519/4.370s (`trait266-object-algo-l0tbn4ov`,
+`trait266-object-struct-npafxy47` in the same publish evidence directory).
+Typed-property retirement and bound Fiber-start ownership remain unchanged;
+the source/state cuts bridge without renewal.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do broader differing-owner later births and
-executable failed-target reuse.
+wider failed-owner member/construction behavior.
 Paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,

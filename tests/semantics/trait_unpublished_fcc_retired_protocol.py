@@ -277,6 +277,155 @@ CASES['published-first-target-survives-different-owner-failed-later-birth'] = {
     'checks': LATER,
 }
 
+FAILED_TARGET_STAGE = ('S.TODO = (STATIC_INIT porigin_static) :: ptask_tail* '
+         '-- if S.CURRENT = (pcallcontext) '
+         '-- if pcallcontext.TARGET = CLOSURE_TARGET n_fcc '
+         '-- if pcallcontext.LEXICAL_CLASS = (porigin_u) '
+         '-- if $class_at(S.CLASSES, porigin_u) = (pclassdesc_u) '
+         '-- if pclassdesc_u.NAME = $ptascii("U") '
+         '-- if pcallcontext.CALLED_CLASS = (porigin_e) '
+         '-- if $class_at(S.CLASSES, porigin_e) = (pclassdesc_e) '
+         '-- if pclassdesc_e.NAME = $ptascii("E")')
+FAILED_TARGET = [
+    '$call_current_valid(S)',
+    '$constant_callable_record(S.CONSTANTCLOSURES, n_fcc) = (pconstantclosure)',
+    '$constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure_first)',
+    '$(pconstantclosure_first.OBJECT < n_fcc)',
+    'pconstantclosure_first.DECL =/= pconstantclosure.DECL',
+    '$trait_fcc_failed_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_c, pmethoddesc_unfixed))',
+    '$trait_fcc_cached_header(S, pconstantclosure.SITE) = eps',
+    '$class_at(S.CLASSES, porigin_c) = (pclassdesc_c)',
+    'pclassdesc_c.NAME = $ptascii("C")',
+    '$class_named(S.CLASSNAMES, $ptascii("c")) = eps',
+    '$class_named(S.CLASSNAMES, $ptascii("e")) = (porigin_e)',
+    '$trait_failed_cache_index(S.DECLARATIONS, porigin_c, 0) = (n_failed)',
+    '$(n_failed < pconstantclosure.PREFIX)',
+    '$class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = eps',
+    '$closure_method_origin(S, pcallcontext.FUNCTION) = (pmethoddesc)',
+    'pmethoddesc.OWNER = porigin_c',
+    'pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_c porigin_source ptbytes_method',
+    'pmethoddesc.NAME = $ptascii("m")',
+    'pmethoddesc_unfixed.OWNER = porigin_u',
+    'pmethoddesc_unfixed[.OWNER = porigin_c] = pmethoddesc',
+    'pmethoddesc.FUNCTION <- $trait_fcc_retained_functions(S)',
+    '$function_at($all_functions(S), pmethoddesc.FUNCTION.ORIGIN) = (pmethoddesc.FUNCTION)',
+    '$constant_callable_cached_method_at(S, pconstantclosure.SITE, pconstantclosure.PREFIX) = (pmethoddesc_unfixed)',
+    '$constant_callable_cached_method_at(S, pconstantclosure.SITE, pconstantclosure_first.PREFIX) = eps',
+    '$constant_callable_record_valid(S, pconstantclosure_first)',
+    '~$constant_callable_value_valid(S, pconstantclosure_first.OBJECT, pconstantclosure.SITE)',
+    '~(HOBJECT pconstantclosure_first.OBJECT <- S.ALLOCATIONS)',
+    '$closure_scope_at(S.CLOSURESCOPES, pconstantclosure_first.OBJECT) = eps',
+    '$constant_callable_record_valid(S, pconstantclosure)',
+    '$constant_callable_value_valid(S, n_fcc, pconstantclosure.SITE)',
+    'S.OBJECTS[n_fcc] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE porigin_e eps)',
+    '$closure_scope_at(S.CLOSURESCOPES, n_fcc) = (pclosurescope)',
+    r'pclosurescope.LEXICAL = porigin_u /\ pclosurescope.CALLED = porigin_e',
+    r'pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps',
+    '$trait_fcc_scope_owner(S, pmethoddesc, pconstantclosure.SITE, porigin_e, pclosurescope) = (porigin_e)',
+    '$method_closure_scope_valid(S, pclosurescope)',
+    '$target_function(S, CLOSURE_TARGET n_fcc) = (pfunction)',
+    'pfunction = pmethoddesc.FUNCTION',
+    '$default_at(pfunction.DEFAULTS, 0) = (pdefault)',
+    'pdefault.KIND = PDSTORED',
+    '$lookup(S.ENV, $ptascii("v")) = (n_parameter)',
+    'S.STORE[n_parameter] = DEFINED (PINT 7)',
+    '$state_static_at(S, porigin_static) = eps',
+    '$trait_static_key(S, porigin_static) = TRAIT_ORIGIN porigin_c porigin_static ptbytes_method',
+    'PhpStep: S ~> S_static',
+    'S_static.COMPLETION = NORMAL',
+    'S_static.CURRENT = S.CURRENT',
+    '$state_static_at(S_static, porigin_static) = (n_static)',
+    '$lookup(S_static.ENV, $ptascii("n")) = (n_static)',
+    'S_static.STORE[n_static] = DEFINED (PINT 0)',
+    '$static_at(S_static.STATICS, TRAIT_ORIGIN porigin_c porigin_static ptbytes_method) = (n_static)',
+    '$class_constant_state_valid(S_static)',
+    '$call_descriptors_valid(S_static)',
+    '$declaration_history_valid(S_static)',
+    '$heap_valid($heap_graph(S_static))',
+    '$trait_fcc_scope_owner(S, pmethoddesc, pconstantclosure.SITE, porigin_e, pclosurescope[.LEXICAL = porigin_c]) = eps',
+    '$trait_fcc_scope_owner(S, pmethoddesc, pconstantclosure.SITE, porigin_e, pclosurescope[.RECEIVER = (n_fcc)]) = eps',
+    '$method_named(pclassdesc_e.METHODS, $ptascii("m")) = (pmethoddesc_e)',
+    'pmethoddesc_e.FUNCTION.ORIGIN =/= pmethoddesc.FUNCTION.ORIGIN',
+    'S_fresh = S[.OBJECTS = $object_set(S.OBJECTS, n_fcc, CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc_e.FUNCTION.ORIGIN pconstantclosure.SITE porigin_e eps))]',
+    '$trait_fcc_scope_owner(S_fresh, pmethoddesc_e, pconstantclosure.SITE, porigin_e, pclosurescope) = eps',
+    '~$closure_scope_row_valid(S_fresh, pclosurescope)',
+    'S_resurrect = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT pconstantclosure_first.OBJECT]]',
+    '$trait_fcc_failed_header(S_resurrect, pconstantclosure.SITE) = eps',
+    '$closure_method_origin(S_resurrect, pcallcontext.FUNCTION) = eps',
+    'S.CONSTANTCLOSURES = pconstantclosure_first :: pconstantclosure_tail*',
+    'S_wrong_decl = S[.CONSTANTCLOSURES = pconstantclosure_first[.DECL = porigin_c] :: pconstantclosure_tail*]',
+    '$trait_fcc_failed_header(S_wrong_decl, pconstantclosure.SITE) = eps',
+    '$closure_method_origin(S_wrong_decl, pcallcontext.FUNCTION) = eps',
+]
+CASES['failed-first-target-shutdown-default-and-static-identity'] = {
+    'source': SOURCES['failed-first-shutdown'],
+    'stage': FAILED_TARGET_STAGE,
+    'checks': FAILED_TARGET,
+}
+
+FAILED_ALIAS_STAGE = ('S.TODO = (STATIC_INIT porigin_static) :: ptask_tail* '
+         '-- if S.CURRENT = (pcallcontext) '
+         '-- if pcallcontext.TARGET = CLOSURE_TARGET n_fcc '
+         '-- if pcallcontext.LEXICAL_CLASS = (porigin_u) '
+         '-- if $class_at(S.CLASSES, porigin_u) = (pclassdesc_u) '
+         '-- if pclassdesc_u.NAME = $ptascii("U") '
+         '-- if pcallcontext.CALLED_CLASS = (porigin_e) '
+         '-- if $class_at(S.CLASSES, porigin_e) = (pclassdesc_e) '
+         '-- if pclassdesc_e.NAME = $ptascii("E")')
+FAILED_ALIAS = [
+    '$call_current_valid(S)',
+    '$constant_callable_record(S.CONSTANTCLOSURES, n_fcc) = (pconstantclosure)',
+    '$constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure_first)',
+    '$trait_fcc_failed_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_c, pmethoddesc_unfixed))',
+    '$(pconstantclosure_first.OBJECT < n_fcc)',
+    '$trait_fcc_cached_header(S, pconstantclosure.SITE) = eps',
+    '$class_named(S.CLASSNAMES, $ptascii("c")) = eps',
+    '$class_named(S.CLASSNAMES, $ptascii("e")) = (porigin_e)',
+    '$method_named(pclassdesc_e.METHODS, $ptascii("q")) = eps',
+    '$trait_real_birth_at(S.CLASSCONSTANTHISTORY, n_fcc) = eps',
+    '$class_constant_callable_receipt_owner(S, pconstantclosure) = (porigin_e)',
+    '$constant_callable_published(S.DECLARATIONS[0:pconstantclosure.PREFIX], porigin_e)',
+    '$constant_callable_cached_method_at(S, pconstantclosure.SITE, pconstantclosure.PREFIX) = (pmethoddesc_unfixed)',
+    '$trait_fcc_snapshot_ordinary(S, pconstantclosure) = (pmethoddesc_unfixed)',
+    '$class_method_origin(S.CLASSES, pcallcontext.FUNCTION) = eps',
+    '$closure_method_origin(S, pcallcontext.FUNCTION) = (pmethoddesc)',
+    'pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_c porigin_source ptbytes_method',
+    'pmethoddesc.NAME = $ptascii("q")',
+    'pmethoddesc_unfixed.OWNER = porigin_u',
+    'pmethoddesc_unfixed[.OWNER = porigin_c] = pmethoddesc',
+    '$constant_callable_record_valid(S, pconstantclosure_first)',
+    '~$constant_callable_value_valid(S, pconstantclosure_first.OBJECT, pconstantclosure.SITE)',
+    '$constant_callable_value_valid(S, n_fcc, pconstantclosure.SITE)',
+    '$closure_scope_at(S.CLOSURESCOPES, n_fcc) = (pclosurescope)',
+    r'pclosurescope.LEXICAL = porigin_u /\ pclosurescope.CALLED = porigin_e',
+    r'pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps',
+    '$trait_fcc_scope_owner(S, pmethoddesc, pconstantclosure.SITE, porigin_e, pclosurescope) = (porigin_e)',
+    '$method_closure_scope_valid(S, pclosurescope)',
+    '$trait_static_key(S, porigin_static) = TRAIT_ORIGIN porigin_c porigin_static ptbytes_method',
+    'PhpStep: S ~> S_static',
+    'S_static.COMPLETION = NORMAL',
+    '$state_static_at(S_static, porigin_static) = (n_static)',
+    'S_static.STORE[n_static] = DEFINED (PINT 0)',
+    '$static_at(S_static.STATICS, TRAIT_ORIGIN porigin_c porigin_static ptbytes_method) = (n_static)',
+    '$class_constant_state_valid(S_static)',
+    '$call_descriptors_valid(S_static)',
+    '$declaration_history_valid(S_static)',
+    '$heap_valid($heap_graph(S_static))',
+    '$trait_fcc_scope_owner(S, pmethoddesc, pconstantclosure.SITE, porigin_e, pclosurescope[.CALLED = porigin_c]) = eps',
+    'S_wrong_called = S[.OBJECTS = $object_set(S.OBJECTS, n_fcc, CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE porigin_c eps))]',
+    '$trait_fcc_snapshot_ordinary(S_wrong_called, pconstantclosure) = eps',
+    '$trait_fcc_snapshot_ordinary(S, pconstantclosure[.PREFIX = pconstantclosure_first.PREFIX]) = eps',
+    'S.CONSTANTCLOSURES = pconstantclosure_first :: pconstantclosure_tail*',
+    'S_wrong_source = S[.CONSTANTCLOSURES = pconstantclosure_first[.DECL = porigin_c] :: pconstantclosure_tail*]',
+    '$trait_fcc_failed_header(S_wrong_source, pconstantclosure.SITE) = eps',
+    '$trait_fcc_snapshot_ordinary(S_wrong_source, pconstantclosure) = eps',
+]
+CASES['failed-first-alias-target-published-import-scope'] = {
+    'source': SOURCES['failed-first-alias-target-shutdown'],
+    'stage': FAILED_ALIAS_STAGE,
+    'checks': FAILED_ALIAS,
+}
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--match', default='')
