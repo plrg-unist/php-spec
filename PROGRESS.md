@@ -7,6 +7,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source336 adds one named ordinary CV argument to computed-name emission: INIT6
+precedes known FETCH8/property11, and unknown `Sent` binds Error7 before CV demand.
+Six exact originals and325 independent premises retain private317. The final320
+composition over `89c1019cc` passes strict compilation at `29f5f402b` with reviewed
+331/324/335 compatibility. The original deferred-operand fixture false and diagnostic
+earn zero affected credit. [Ledger](coverage/semantics/source-named-argument-emission-review.json).
+
 Collector335 admits normal last-owner close of a detached worker after collection.
 Assigning null to its shared cell runs `finally` immediately; the worker retires
 and its borrowed zero-owner target waits for the next real collection/count1.
@@ -81,10 +88,10 @@ WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/3
 Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 319 modules composed over
-`6fac6d270`, retaining static Fiber API captures331 and physical property references324.
+with 320 modules composed over
+`89c1019cc`, retaining static Fiber API captures331, physical property references324 and collector335.
 The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333.
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
