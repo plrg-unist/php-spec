@@ -19,6 +19,7 @@ dec $destructor_saved_operations(pstate, pdestructorcall*) : pdestructionoperati
 dec $destructor_global_direct(pstate, preqbytes) : bool
 dec $destructor_uncalled_node(pstate, pnode) : bool
 dec $generator_destructor_pending(pstate, pnode) : bool
+dec $generator_request_retired_state_valid(pstate) : bool
 dec $destructor_leaf_valid(pstate, pdestructorcall) : bool
 dec $destructor_releases_valid(pstate, pdestructionrelease*) : bool
 dec $destructor_calls_valid(pstate, pdestructorcall*) : bool
@@ -691,7 +692,6 @@ def $destruction_state_valid(S) = true
   -- if $eager_abandoned_valid(S, S.DESTRUCTION.ABANDONED)
   -- if $eager_property_caches_valid(S, S.DESTRUCTION.PROPCACHE)
 def $destruction_state_valid(S) = false -- otherwise
-dec $generator_request_retired_state_valid(pstate) : bool
 def $generator_request_retired_state_valid(S) = (S.DESTRUCTION.RETIRED = eps) -- otherwise
 def $destructor_releases_valid(S, eps) = true
 def $destructor_releases_valid(S, pdestructionrelease :: pdestructionrelease_tail*) = ($destructor_release_live(S, pdestructionrelease) /\ $destructor_releases_valid(S, pdestructionrelease_tail*))

@@ -169,6 +169,10 @@ rule PhpStep/generator-request-resume: S ~> $generator_close_release_claim(S[.TO
 ;; Object-store dtor_obj ends with bare GC_DELREF, not OBJ_RELEASE. A zero-ref
 ;; bucket and its cache remain allocated until real acquisition or storage free.
 ;; RETIRED authenticates that bucket; it contributes no physical heap root.
+def $eager_explicit_task(GENERATOR_CLOSE_DONE pgenclose) = true
+  -- if pgenclose.STORE =/= eps /\ pgenclose.PENDING = eps
+def $eager_explicit_task(GENERATOR_REQUEST_RESUME pgenclose) = true
+  -- if pgenclose.STORE =/= eps
 def $generator_close_release_claim(S, pgenclose) = S
   -- if pgenclose.STORE = (n_handle)
   -- if pgenclose.PENDING = eps
