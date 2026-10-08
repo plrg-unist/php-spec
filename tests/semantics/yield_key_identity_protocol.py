@@ -26,13 +26,19 @@ def $key_identity_seek(S,n) = $key_identity_seek($drive_steps(S[.COMPLETION = NO
   -- if ~$key_identity_phase(S)
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
   -- if $(n > 0)
+dec $key_identity_outer_head(pframe,nat) : bool
+def $key_identity_outer_head(pframe,n) = true
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = ERROR_READ_RESULT perrorread
+  -- if perrorread.ORIGINAL = GENERATOR_YIELD_KEY n porigin z
+def $key_identity_outer_head(pframe,n) = false -- otherwise
 dec $key_identity_without_outer(pframe*,nat) : pframe*
 def $key_identity_without_outer(eps,n) = eps
 def $key_identity_without_outer(pframe_head :: pframe_tail*,n) = pframe_head[.TODO = ptask_tail*] :: pframe_tail*
-  -- if pframe_head.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
-  -- if perrorcall.RESUME = ERROR_READ_RESULT perrorread
-  -- if perrorread.ORIGINAL = GENERATOR_YIELD_KEY n porigin z
-def $key_identity_without_outer(pframe_head :: pframe_tail*,n) = pframe_head :: $key_identity_without_outer(pframe_tail*,n) -- otherwise
+  -- if $key_identity_outer_head(pframe_head,n)
+  -- if pframe_head.TODO = ptask_head :: ptask_tail*
+def $key_identity_without_outer(pframe_head :: pframe_tail*,n) = pframe_head :: $key_identity_without_outer(pframe_tail*,n)
+  -- if ~$key_identity_outer_head(pframe_head,n)
 '''
 
 
