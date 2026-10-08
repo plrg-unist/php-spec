@@ -1143,6 +1143,7 @@ an explicit unchanged-model Unsupported control with zero agreement. Strict351,
 source3 and fresh136/134 premises pass at `756c4673b`, covering actual captured
 VALUE/result transfer, nullable alias rebinding/type detach and array COW/child
 survival through parent retirement. Earlier fixtures are adapted statically only.
+The actual353 join over `26134d7a0` passes strict initialization at `8469aa86e`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

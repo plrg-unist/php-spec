@@ -922,7 +922,8 @@ mutating accesses remain required. The actual351 composition passes strict initi
 Future initialized declared object and array reads now acquire the copied payload owner, dereferencing
 property aliases without retaining their wrapper. Three further originals and
 136/134 reached premises cover alias rebinding, array copy-on-write and kept
-children surviving parent retirement until explicit release.
+children surviving parent retirement until explicit release. The actual353
+composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
