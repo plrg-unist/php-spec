@@ -617,6 +617,7 @@ def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.EN
 dec $reference_cell(pstate, nat) : pstate
 dec $foreach_released_cell(pstate, nat) : bool
 dec $foreach_released_container_cell(pstate, nat) : bool
+dec $foreach_released_container_name(pstate, nat*) : bool
 dec $foreach_released_name(pstate, nat*) : bool
 def $reference_cell(S, n) = S[.COMPLETION = UNSUPPORTED "mutation of released foreach CV"] -- if $foreach_released_cell(S, n)
 def $reference_cell(S, n) = S -- if ~$foreach_released_cell(S, n) /\ n <- S.REFCELLS

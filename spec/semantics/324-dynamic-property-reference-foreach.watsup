@@ -173,14 +173,25 @@ def $foreach_bind_view(S) = S -- if ~$scope_global(S, eps)
 ;; Plain array retirement uses the same physical child-zval release queue.
 ;; Its old CV bits remain borrowed; reading that dying payload is unsupported.
 dec $foreach_bind_prior_unsupported(pstate, ptbytes, nat, int) : bool
+dec $foreach_bind_internal_nodes(pstate, pnode*) : bool
+def $foreach_bind_internal_nodes(S, eps) = false
+def $foreach_bind_internal_nodes(S, pnode :: pnode_tail*) = ($internal_destructor_pending(S, pnode) \/ $foreach_bind_internal_nodes(S, pnode_tail*))
 dec $foreach_bind_plain_payload(pstate, ptbytes, nat, int, pvalue) : bool
 def $foreach_bind_plain_payload(S, ptbytes, n_source, z, POBJECT n_previous) = ((HOBJECT n_previous) <- S.ALLOCATIONS /\ ~(n_previous <- S.DESTRUCTION.CALLED) /\ $destructor_method(S, n_previous) =/= eps)
-def $foreach_bind_plain_payload(S, ptbytes, n_source, z, PARRAY n_previous) = ((HARRAY n_previous) <- S.ALLOCATIONS /\ $foreach_bind_prior_unsupported(S, ptbytes, n_source, z))
+def $foreach_bind_plain_payload(S, ptbytes, n_source, z, PARRAY n_previous) = true
+  -- if (HARRAY n_previous) <- S.ALLOCATIONS
+  -- if S_bound = $scope_bind_name(S[.CELL = n_source], eps, ptbytes, z)
+  -- if S_bound.COMPLETION = NORMAL
+  -- if S_view = $foreach_bind_view(S)
+  -- if $lookup(S_view.ENV, ptbytes) = (n_old)
+  -- if pnode_retired* = $destruction_release_walk($heap_graph(S_bound), $destruction_values([HCELL n_old]), eps)
+  -- if $destructor_waiting(S, pnode_retired*)
+  -- if ~$foreach_bind_internal_nodes(S, pnode_retired*)
 def $foreach_bind_plain_payload(S, ptbytes, n_source, z, pvalue) = false -- otherwise
-dec $foreach_bind_payload_kind(pvalue) : bool
-def $foreach_bind_payload_kind(POBJECT n) = true
-def $foreach_bind_payload_kind(PARRAY n) = true
-def $foreach_bind_payload_kind(pvalue) = false -- otherwise
+dec $foreach_bind_payload_kind(pstate, pvalue) : bool
+def $foreach_bind_payload_kind(S, POBJECT n) = $(n < |S.OBJECTS|)
+def $foreach_bind_payload_kind(S, PARRAY n) = $(n < |S.ARRAYS|)
+def $foreach_bind_payload_kind(S, pvalue) = false -- otherwise
 
 dec $foreach_bind_capture(pstate, ptbytes, nat, int) : pforeachbind?
 def $foreach_bind_capture(S, ptbytes, n_source, z) = (pforeachbind)
@@ -245,7 +256,7 @@ def $foreach_bind_body_valid(S, pforeachbind) = true
   -- if $foreach_bind_source(S, pforeachbind.NAME, pforeachbind.LINE, S.TODO) = (pforeachbind.ITERATOR, pforeachbind.OBJECT, pforeachbind.FOREACH, pforeachbind.OWNER)
   -- if $(pforeachbind.OLD < |S.STORE|) /\ $(pforeachbind.NEW < |S.STORE|)
   -- if pforeachbind.OLD =/= pforeachbind.NEW /\ ~(pforeachbind.OLD <- S.REFCELLS)
-  -- if $foreach_bind_payload_kind(pforeachbind.VALUE)
+  -- if $foreach_bind_payload_kind(S, pforeachbind.VALUE)
   -- if S.STORE[pforeachbind.OLD] = DEFINED pforeachbind.VALUE
   -- if (HCELL pforeachbind.OLD) <- S.ALLOCATIONS
   -- if (HCELL pforeachbind.NEW) <- S.ALLOCATIONS /\ pforeachbind.NEW <- S.REFCELLS
@@ -313,6 +324,10 @@ def $foreach_released_container_cell(S, n) = true
   -- if S.STORE[n] = DEFINED (PARRAY n_array)
   -- if $foreach_released_cell(S, n)
 def $foreach_released_container_cell(S, n) = false -- otherwise
+def $foreach_released_container_name(S, ptbytes) = true
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $foreach_released_container_cell(S, n)
+def $foreach_released_container_name(S, ptbytes) = false -- otherwise
 
 dec $foreach_bind_store(pstate, pforeachbind) : pstate
 def $foreach_bind_store(S, pforeachbind) = $scope_bind_name(S[.STORE = $set_cell(S.STORE, pforeachbind.OLD, UNDEFINED)][.CELL = pforeachbind.NEW], eps, pforeachbind.NAME, pforeachbind.LINE)[.RESULT = KNOWN PNULL]

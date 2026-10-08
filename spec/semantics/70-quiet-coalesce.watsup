@@ -11,10 +11,14 @@ def $quiet_name(S, n_name*) = S[.RESULT = KNOWN PNULL]
   -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = UNDEFINED
+def $quiet_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "released foreach container payload read"]
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
+  -- if $foreach_released_container_name(S, n_name*)
 def $quiet_name(S, n_name*) = S[.RESULT = KNOWN pvalue]
   -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if ~$foreach_released_container_cell(S, n_cell)
 
 dec $quiet_operand(pstate, poperand) : pstate
 def $quiet_operand(S, VARIABLE n_name* z) = $quiet_name(S, n_name*)
