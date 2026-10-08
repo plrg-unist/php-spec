@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Runtime assertion INI preserves raw initial/current bytes, modified/restore timing
+and the live numeric mode. Quiet quantities permit nonnegative updates; changes
+involving a negative mode warn before a frozen false completion on the handler's state.
+At `1593cd3ca` (354 modules), strict compilation, 12 new native-profile source
+tuples, 54 typed quantity/state premises and 96 authentic state premises pass.
+Nested writes and original thrown identity survive; altered refusal bytes/options
+are rejected. Raw output is under
+`.tools/compiler-assertion-ini-368-19/.tools/{assertion-ini-gate-v1,method-runtime-9j809l_h,assertion-ini-state-v1}`.
+Parsing warnings/overflow and authenticated Stringable-option refusal remain
+required; explicit startup transport still admits exactly `-1`/`0`/`1`.
+The actual 356-module composition over `4563a5bf9` passes strict initialization
+at `06409ee08` (4.471 seconds); raw output is in
+`.tools/compiler-assertion-ini-current-19/.tools/assertion-ini-current-gate-v1`.
+Earlier 354-module runtime cuts retain their identities.
+
 Module 370 executes simple RAW Fiber API array C-root callbacks, including start
 and constructor. RAW owns current members; frozen caches and C handlers borrow
 the receiver, with separate original/copied buffers. Saved states and actual
@@ -30,8 +45,8 @@ retain identity. Independent quote7 at `45cdd2f92`, export17 at `85f098d5f` and
 startup18 retain separate cuts. Raw results are under
 `.tools/compiler-assertions-368-19/.tools/{method-runtime-itg9mwvs,assertion-state-v3,assertion-gate-v13,assertion-gate-v10,assertion-gate-v8,assertion-startup-v1}`;
 startup rejection classification is derived from unchanged recorded streams.
-Original compiler/receive failures remain preserved. Runtime INI updates,
-options/callbacks, Stringable descriptions and wider export/producer shapes remain
+Original compiler/receive failures remain preserved. Assertion options/callbacks,
+Stringable descriptions and wider export/producer shapes remain
 required. Combined/offline catalogue wiring is prepared; its fresh run is pending.
 The actual 354-module composition over `fa0180918` passes strict initialization
 at `c24807fcd` (4.370 seconds); raw output is in
@@ -54,8 +69,15 @@ the future validation view. Earlier seven/493 cuts retain their own inputs.
 The current 353-module composition over `a210cd253` passes strict compilation at
 `b7b693fa3`; earlier validation retains its own inputs and current fields remain intact.
 Original refusals, preparation stops and corrected trace/admission failures stay at zero.
-Abrupt rendering/release, message-warning conversion, parked/escaped storage and
-wider terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
+Request C-root renderer rethrows with no current handler add three exact fatal
+originals and 527 reached premises. The real receiver decrement preserves owners;
+the builtin inner Throwable reports/releases before the original report and
+Generator/cache/EHR carriers are abandoned. Structural future projections avoid
+heap-query recursion; full admission and malformed producer rejection remain intact.
+Actual 356 over `2b98ff468` passes strict compilation at `72d5f7353`;
+private source/state cuts retain their own inputs.
+Live-handler/deeper rendering, abrupt exception release, message warnings,
+parked/escaped storage and generic terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
 guards; private source/state cuts retain their own revisions.
 [Ledger](coverage/semantics/generator-request-abrupt-review.json).
@@ -122,6 +144,22 @@ source/state cuts retain their inputs.
 Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
+
+Direct ECHO now admits an ordinary CV dynamic callee with no arguments.
+The source certificate selects INIT5 independently of call7 and ECHO5, before
+operand retirement, live selection and warning demand. Undefined handlers resume
+captured null; invoker/array selection and existing TMPVAR/HCELL output ownership
+preserve mutation and retirement order. Dynamic and implicit-string declaration
+history alternatives now have disjoint domains, allowing a returned cast to
+publish a function before later eval. Nine exact originals retain seven rows at
+`50f11389e`, late installation at `dc8943d37` and cast publication at `f01375e6f`,
+all private354. Independent239 premises retain `dc8943d37`, with38 fresh history premises at
+`f01375e6f` (277 total,193 bindings/84 checks). Actual356 over `5107cc589`
+passes strict compilation with reviewed Generator/collector/scoped-method and
+assertion-state compatibility. Original
+baseline mismatches and nondeterministic replay failures retain zero agreement.
+No module, task or owner schema is added; wider callee/argument forms remain open.
+[Ledger](coverage/semantics/source-echo-dynamic-cv-call-review.json).
 
 Direct ECHO now admits one named ordinary CV argument through361's existing
 certificate and owning output protocol. INIT5 precedes live SEND; known second-slot
@@ -263,9 +301,18 @@ GC_WAIT caller and physical interval. Signed accounting preserves the residual
 debit: first-pass −1 plus retrace 2 returns 1 while D/E both retire. Independent
 91/75 physical premises at separate 6132 fixture cuts complete both originals,
 including prior-error identity; both whole CLI runs retain 60s timeouts/zero
-agreement. Final 353 over `d2bba03b2` compiles at `3f2016024`. Main residual
-physical dispatch, overlap, repeated internal suspension, different-active-pass
-reentry, whole CLI completion and broader GC remain required.
+agreement. Final 353 over `d2bba03b2` compiles at `3f2016024`.
+372 now scans main-thread residual/fresh tags with a local physical interval,
+leaving the cached Fiber cursor unchanged. Exact frozen slots and called flags
+authenticate callbacks without adding residual D to fresh DTORS; E protects D’s
+error before ordinary finally chaining. At `7e5ff7198`/354, strict compilation/init
+and 93/78 independent physical premises complete both unchanged originals,
+including signed count1, D/E retirement and exact new/previous identities. Final
+356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed abstract-method,
+typed freeing-read, raw Fiber-array tasks and ASSERTIONS additions. Both whole
+CLI 60s timeouts retain zero agreement. Overlap, repeated internal
+suspension, different-active-pass reentry, whole CLI completion and broader GC
+remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -1984,6 +2031,39 @@ original failures. Actual227/232/239 composition adds nine source comparisons an
 127 state premises at separate cutoffs: saved default constructors, cold selected
 references, physical interface diagnostic files and imported-maker Closure scope.
 Accepted233/237 routes remain preserved; the method checkpoint remains partial.
+Ordinary class-owned abstract scoped calls now reject before argument evaluation,
+with access errors preceding abstract rejection and concrete/trait-warning dispatch
+unchanged. At `a962cef07`/354 over `aa8ebb4d1`, strict algo/struct pass3.719/4.673s,
+one normal source and24 supplied clauses plus6 setup pass (5.220s). Nineteen
+clauses check the genuine rejection and all four validators; five helper-only
+clauses check access/nonstatic priority and concrete dispatch. Raw evidence
+under current19 `.tools/` is `method-runtime-ciqhcicl`,
+`closure-call-protocol-98d5klby`, `trait266-object-algo-u5b6vb34` and
+`trait266-object-struct-e68x39kk`; baseline interpreter failure `4rvh0zjs`
+retains zero agreement. Source-profile recording now preserves legacy argv/text
+metadata and merges dictionary profiles; five representation checks pass without
+semantic reruns. Wider method/core obligations remain open.
+The reviewed355 projection `da11ceff4` over `035bbe2de` passes strict
+algo/struct at3.719/4.823s, preserving current storage and bound-constructor targets.
+Source1/24 bridge unchanged; raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-vgui9wdk`
+and `trait266-object-struct-p9t_dgxh` in the same directory.
+Concrete nonstatic scoped calls now check access before a missing-receiver Error;
+literal constructor calls bypass ordinary method access/abstract lookup, preserving
+the constructor opcode arm. At `0c48e90f3`/356 over `4563a5bf9`, strict algo/struct
+pass3.770/4.770s. Two new normal originals and34/20 supplied clauses plus6 setup
+per case pass (5.269/5.319s):40 genuine clauses cover actual rejection/no argument
+or allocation effects and all four global validators;14 clauses are helper-only
+flag/source probes. The protected-call baseline mismatch `7bc1r1bg` remains zero
+agreement. Raw current19 `.tools/` evidence is `method-runtime-y4klgpdm`,
+`method-runtime-cn0j7jql`, `closure-call-protocol-pxes1q9x`,
+`closure-call-protocol-5t_9yrp5`, `trait266-object-algo-4_69i9m4` and
+`trait266-object-struct-z558o98n`. Prior abstract/failed-owner sources and states
+are unchanged and not renewed; wider method/core obligations remain open.
+Final356 projection `e65e35e2a` over `43890afab` passes strict algo/struct at
+3.869/4.871s, preserving current assertion/Generator fields and dispatch.
+Source2/34+20 bridge unchanged; raw publish19 compiler evidence is
+`.tools/trait266-object-algo-l1ao1xno` and `trait266-object-struct-qztdz26_`.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and

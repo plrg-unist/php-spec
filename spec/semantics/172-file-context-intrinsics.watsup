@@ -414,7 +414,8 @@ def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.TODO = ptask_tail
   -- if n_option* =/= $ptascii("error_reporting")
   -- if n_option* =/= $ptascii("display_errors")
   -- if n_option* =/= $ptascii("precision")
-  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors"), $ptascii("precision")] \/ n_option* = eps \/ 0 <- n_option*
+  -- if n_option* =/= $ptascii("zend.assertions")
+  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors"), $ptascii("precision"), $ptascii("zend.assertions")] \/ n_option* = eps \/ 0 <- n_option*
   -- if $config_ini_value_conversion(pvalue) =/= TYPEREJECT
   -- if S.TODO = ptask :: ptask_tail*
 ;; Primitive option strings cannot name a directive in the pinned profile.
@@ -423,6 +424,7 @@ def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.TODO = ptask_tail
   -- if n_option* =/= $ptascii("error_reporting")
   -- if n_option* =/= $ptascii("display_errors")
   -- if n_option* =/= $ptascii("precision")
+  -- if n_option* =/= $ptascii("zend.assertions")
   -- if n_option* =/= eps
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
   -- if $typed_scalar(pvalue_option)
@@ -449,14 +451,16 @@ def $config_ini_option_miss(pconfigcall, n_option*) = true
   -- if n_option* =/= $ptascii("error_reporting")
   -- if n_option* =/= $ptascii("display_errors")
   -- if n_option* =/= $ptascii("precision")
-  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors"), $ptascii("precision")] \/ n_option* = eps \/ 0 <- n_option*
+  -- if n_option* =/= $ptascii("zend.assertions")
+  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors"), $ptascii("precision"), $ptascii("zend.assertions")] \/ n_option* = eps \/ 0 <- n_option*
 ;; Converted primitive options cannot name a directive in the pinned profile.
 def $config_ini_option_miss(pconfigcall, n_option*) = true
   -- if n_option* =/= $ptascii("include_path")
   -- if n_option* =/= $ptascii("error_reporting")
   -- if n_option* =/= $ptascii("display_errors")
   -- if n_option* =/= $ptascii("precision")
-  -- if ~($ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors"), $ptascii("precision")] \/ n_option* = eps \/ 0 <- n_option*)
+  -- if n_option* =/= $ptascii("zend.assertions")
+  -- if ~($ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors"), $ptascii("precision"), $ptascii("zend.assertions")] \/ n_option* = eps \/ 0 <- n_option*)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if $typed_scalar(pvalue)
   -- if ~$method_string(pvalue)
@@ -513,6 +517,7 @@ def $config_ini_unary_finish(S, pconfigcall, n_option*) = S[.COMPLETION = UNSUPP
   -- if n_option* =/= $ptascii("error_reporting")
   -- if n_option* =/= $ptascii("display_errors")
   -- if n_option* =/= $ptascii("precision")
+  -- if n_option* =/= $ptascii("zend.assertions")
   -- if ~$config_ini_option_miss(pconfigcall, n_option*)
 ;; INI argument conversion is independent of file facts; lookup follows it.
 dec $config_ini_kind(pintrinsic) : bool
@@ -820,7 +825,8 @@ rule PhpStep/config-restore-string-ignored: S ~> S[.ORIGIN = (pconfigcall.SITE)]
   -- if n_option* =/= $ptascii("error_reporting")
   -- if n_option* =/= $ptascii("display_errors")
   -- if n_option* =/= $ptascii("precision")
-  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors"), $ptascii("precision")] \/ n_option* = eps \/ 0 <- n_option*
+  -- if n_option* =/= $ptascii("zend.assertions")
+  -- if $ptlc(n_option*) <- [$ptascii("include_path"), $ptascii("error_reporting"), $ptascii("display_errors"), $ptascii("precision"), $ptascii("zend.assertions")] \/ n_option* = eps \/ 0 <- n_option*
 rule PhpStep/config-restore-reporting-string-result: S ~> $config_reporting_restore(S)[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
@@ -852,6 +858,7 @@ rule PhpStep/config-restore-string-unsupported: S ~> S[.COMPLETION = UNSUPPORTED
   -- if $ptlc(n_option*) =/= $ptascii("error_reporting")
   -- if $ptlc(n_option*) =/= $ptascii("display_errors")
   -- if $ptlc(n_option*) =/= $ptascii("precision")
+  -- if $ptlc(n_option*) =/= $ptascii("zend.assertions")
   -- if n_option* =/= eps
   -- if ~(0 <- n_option*)
 rule PhpStep/config-ini-get-string-result: S ~> $config_ini_get_finish(S_call, pconfigcall, n_option*)

@@ -129,10 +129,13 @@ def run(match, catalogue=DEFAULT_CASES):
                                     os.fsencode(directory / child['name']))
         passed = passed and actual.get('stdout') == row['stdout_base64']
         passed = passed and actual.get('stderr') == base64.b64encode(stderr).decode()
+        native_profile = row.get('native_profile', shared_profile or {})
+        if isinstance(shared_profile, dict) and isinstance(native_profile, dict):
+            native_profile = dict(shared_profile, **native_profile)
         records.append({'id': row['id'], 'pass': passed,
                         'native_group': row['native_group'],
                         'native_raw_sha256': row['native_raw_sha256'],
-                        'native_profile': dict(shared_profile or {}, **row.get('native_profile', {})),
+                        'native_profile': native_profile,
                         'source_sha256': row['source_sha256'],
                         'command_record': str(command_path),
                         'runner_exit_status': status,

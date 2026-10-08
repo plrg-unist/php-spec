@@ -108,6 +108,15 @@ retain live handler writes. Returned temporary/reference owners keep bytes after
 argument mutation. Seven exact originals and204 independent premises retain private351; actual354
 passes strict compilation. Wider call shapes remain required.
 
+[Direct ECHO through an ordinary dynamic callee CV](coverage/semantics/source-echo-dynamic-cv-call-review.json)
+now retires the source operand at INIT5 before selecting the live callable.
+Undefined-CV handlers retain fixed null; selected invokers survive callee deletion,
+and returned temporary/reference owners keep bytes before destruction. Callable
+and ECHO lines remain distinct. A returned cast can publish a function and survive
+later eval history replay. Nine exact originals retain their private354 cuts;
+independent277 premises pass. Actual356 passes strict compilation. Wider callee
+and argument producers remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -171,9 +180,12 @@ Assertions now distinguish startup modes `-1`, `0` and `1` before compilation,
 including eval/include replay. Known direct calls capture normalized descriptions;
 dynamic and first-class calls keep ordinary argument evaluation. Twenty-five
 retained source/profile comparisons and 64 reached-state premises pass, including
-fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime mode
-updates, assertion options/callbacks, Stringable descriptions and wider expression
-export remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
+fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime INI updates
+preserve initial/current raw bytes and restore state; quiet quantities, positive
+mode 2, negative-boundary refusals and nested/throwing warning handlers match
+twelve further source profiles. Parsing warnings, Stringable-option refusal,
+assertion options/callbacks, Stringable descriptions and wider expression export
+remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
@@ -306,8 +318,10 @@ delegated cache lifetime and nested normal handlers. [Request fatal cleanup 363]
 retains Generator/cache owners through normal fatal rendering, releases the reported
 exception before bailout, then suppresses later destructors. Normal exception-owned
 stdClass/ordinary child cleanup retains full admission and actual storage pins.
-Abrupt rendering or exception release, parked/escaped storage and broader terminal
-cleanup remain required.
+A renderer rethrow at request C root reports/releases its builtin inner Throwable
+before abandoning the original report and real Generator/cache owners. Live-handler
+or deeper rendering, abrupt exception release, parked/escaped storage and generic
+terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -652,8 +666,15 @@ zero agreement. Final 351 over `8e513981b` compiles. Fresh internal collection n
 scans residual and new tags with its genuine GC caller. Signed −1+2 accounting
 returns 1 while both destructors retire. Two original full continuations pass
 166 independent physical premises; both whole CLI runs retain 60s timeouts/zero
-agreement. Final 353 over `d2bba03b2` compiles. Main residual dispatch, overlap,
-repeated internal suspension and different-active-pass reentry remain required.
+agreement. Final 353 over `d2bba03b2` compiles. Main-thread residual dispatch372
+uses its own physical interval and real caller scope without changing the cached
+Fiber cursor. Strict354 compilation/init and 171 independent physical premises
+complete both unchanged originals with count1, D/E retirement and exact exception
+priority. Final 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed
+trait, storage, raw Fiber-array and ASSERTIONS additions; both whole CLI 60s
+timeouts retain zero agreement. Overlap, repeated
+internal suspension, different-active-pass reentry and whole CLI completion remain
+required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -968,6 +989,12 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
+Ordinary abstract scoped calls reject before arguments, and inaccessible concrete
+nonstatic methods report access errors before missing-receiver errors. Literal
+constructor calls retain their separate opcode dispatch. The latter two cases pass
+two normal originals and54 supplied checks plus12 setup clauses (40 genuine
+clauses and14 helper-only clauses covering flag/source probes); prior abstract-call
+evidence remains separate.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work

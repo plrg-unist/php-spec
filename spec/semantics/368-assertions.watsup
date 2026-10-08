@@ -1,6 +1,19 @@
 ;; Assertion compilation selects the builtin after lexical name resolution.
 ;; Its negative startup mode omits argument compilation, unlike runtime mode0.
 dec $assertion_ini_mode(preqbytes) : int?
+dec $assertion_quantity_trim(preqbytes) : preqbytes
+dec $assertion_quantity_base(preqbytes) : (nat, preqbytes)?
+dec $assertion_quantity_digit(nat) : nat
+dec $assertion_quantity_digits(nat, preqbytes, nat, nat) : ndigits
+dec $assertion_quantity_factor(preqbytes) : nat?
+dec $assertion_quantity(preqbytes) : int?
+dec $assertion_restore(pstate) : pstate
+dec $assertion_ini_set(pstate, pconfigcall, preqbytes) : pstate
+dec $assertion_ini_blocked(int, int) : bool
+dec $assertion_ini_warning() : preqbytes
+dec $assertion_ini_argument(pstate, pconfigcall, int) : preqbytes?
+dec $assertion_ini_option_valid(pstate, pconfigcall) : bool
+dec $assertion_ini_failed_valid(pstate, pconfigcall, preqbytes, int) : bool
 dec $ppassertion_selected(pnresult) : bool
 dec $ppassertion_prepare(ppstate, pcpath, phpType7*) : ppstate
 dec $assertion_control(preqbytes) : bool
@@ -37,6 +50,136 @@ def $assertion_ini_mode(preqbytes) = (-1) -- if preqbytes = $ptascii("-1")
 def $assertion_ini_mode(preqbytes) = (0) -- if preqbytes = $ptascii("0")
 def $assertion_ini_mode(preqbytes) = (1) -- if preqbytes = $ptascii("1")
 def $assertion_ini_mode(preqbytes) = eps -- otherwise
+
+;; This decoder admits quantities that do not emit a parsing warning. Raw bytes
+;; stay separate from EG(assertions); malformed/overflow warning paths are pending.
+def $assertion_quantity_trim(eps) = eps
+def $assertion_quantity_trim(preqbytes) = $assertion_quantity_trim(preqbytes[0:n])
+  -- if $(|preqbytes| > 0) -- if n = $nabs($(|preqbytes| - 1)) -- if $ntspace(preqbytes[n])
+def $assertion_quantity_trim(preqbytes) = $nttrim(preqbytes)
+  -- if $(|preqbytes| > 0) -- if n = $nabs($(|preqbytes| - 1)) -- if ~$ntspace(preqbytes[n])
+def $assertion_quantity_base([48]) = ((8, [48]))
+def $assertion_quantity_base(48 :: n :: preqbytes) = ((16, preqbytes)) -- if n <- [88,120]
+def $assertion_quantity_base(48 :: n :: preqbytes) = ((8, preqbytes)) -- if n <- [79,111]
+def $assertion_quantity_base(48 :: n :: preqbytes) = ((2, preqbytes)) -- if n <- [66,98]
+def $assertion_quantity_base(48 :: n :: preqbytes) = ((8, 48 :: n :: preqbytes))
+  -- if $ntdigit(n) \/ n <- [71,103,77,109,75,107]
+def $assertion_quantity_base(n :: preqbytes) = ((10, n :: preqbytes)) -- if n =/= 48
+def $assertion_quantity_base(preqbytes) = eps -- otherwise
+def $assertion_quantity_digit(n) = $nabs($(n - 48)) -- if $ntdigit(n)
+def $assertion_quantity_digit(n) = $nabs($(n - 55)) -- if $(n >= 65) /\ $(n <= 70)
+def $assertion_quantity_digit(n) = $nabs($(n - 87)) -- if $(n >= 97) /\ $(n <= 102)
+def $assertion_quantity_digit(n) = 16 -- otherwise
+def $assertion_quantity_digits(n_base, eps, n_acc, n_count) = DIGITS n_acc n_count eps
+def $assertion_quantity_digits(n_base, n :: preqbytes, n_acc, n_count) = $assertion_quantity_digits(n_base, preqbytes, $(n_acc * n_base + $assertion_quantity_digit(n)), $(n_count + 1))
+  -- if $($assertion_quantity_digit(n) < n_base)
+def $assertion_quantity_digits(n_base, n :: preqbytes, n_acc, n_count) = DIGITS n_acc n_count (n :: preqbytes)
+  -- if $($assertion_quantity_digit(n) >= n_base)
+def $assertion_quantity_factor(eps) = (1)
+def $assertion_quantity_factor([n]) = (1024) -- if n <- [75,107]
+def $assertion_quantity_factor([n]) = (1048576) -- if n <- [77,109]
+def $assertion_quantity_factor([n]) = (1073741824) -- if n <- [71,103]
+def $assertion_quantity_factor(preqbytes) = eps -- otherwise
+def $assertion_quantity(preqbytes) = (0) -- if $assertion_quantity_trim(preqbytes) = eps
+def $assertion_quantity(preqbytes) = (z)
+  -- if preqbytes_trimmed = $assertion_quantity_trim(preqbytes)
+  -- if preqbytes_trimmed =/= eps
+  -- if (n_sign, preqbytes_digits) = $ntsign(preqbytes_trimmed)
+  -- if $assertion_quantity_base(preqbytes_digits) = ((n_base, preqbytes_unsigned))
+  -- if DIGITS n_value n_count preqbytes_tail = $assertion_quantity_digits(n_base, preqbytes_unsigned, 0, 0)
+  -- if $(n_count > 0)
+  -- if $assertion_quantity_factor($nttrim(preqbytes_tail)) = (n_factor)
+  -- if z = $nsigned(n_sign, $(n_value * n_factor))
+  -- if $(z >= -9223372036854775808) /\ $(z <= 9223372036854775807)
+def $assertion_quantity(preqbytes) = eps -- otherwise
+def $assertion_memory(S, z) = S[.ASSERTIONS = z][.ASSERTIONSINIT = $decimal_integer(z)][.ASSERTIONSINI = $decimal_integer(z)][.ASSERTIONSMODIFIED = false]
+def $assertion_state_valid(S) = true
+  -- if $startup_bytes(S.ASSERTIONSINIT) /\ $startup_bytes(S.ASSERTIONSINI)
+  -- if $assertion_quantity(S.ASSERTIONSINIT) = (z_initial)
+  -- if $assertion_quantity(S.ASSERTIONSINI) = (S.ASSERTIONS)
+  -- if S.ASSERTIONSMODIFIED \/ S.ASSERTIONSINI = S.ASSERTIONSINIT
+  -- if z_initial = S.ASSERTIONS \/ ($(z_initial >= 0) /\ $(S.ASSERTIONS >= 0))
+def $assertion_state_valid(S) = false -- otherwise
+def $assertion_restore(S) = S[.ASSERTIONS = z_initial][.ASSERTIONSINI = S.ASSERTIONSINIT][.ASSERTIONSMODIFIED = false]
+  -- if S.ASSERTIONSMODIFIED
+  -- if $assertion_quantity(S.ASSERTIONSINIT) = (z_initial)
+def $assertion_restore(S) = S -- otherwise
+def $assertion_ini_blocked(z_old, z_new) = (z_old =/= z_new /\ ($(z_old < 0) \/ $(z_new < 0)))
+def $assertion_ini_warning() = $ptascii("zend.assertions may be completely enabled or disabled only in php.ini")
+def $assertion_ini_set(S, pconfigcall, preqbytes) = S[.TODO = ptask_tail*][.ASSERTIONS = z_new][.ASSERTIONSINI = preqbytes][.ASSERTIONSMODIFIED = true][.RESULT = KNOWN (PSTRING S.ASSERTIONSINI)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $assertion_quantity(preqbytes) = (z_new)
+  -- if ~$assertion_ini_blocked(S.ASSERTIONS, z_new)
+  -- if S.TODO = ptask :: ptask_tail*
+def $assertion_ini_set(S, pconfigcall, preqbytes) = $error_dispatch(S[.ASSERTIONSMODIFIED = true], 2, $assertion_ini_warning(), pconfigcall.LINE, DIAGNOSTIC "Warning" $assertion_ini_warning() pconfigcall.LINE, ASSERTION_INI_FAILED pconfigcall preqbytes ($precision_value(S)))
+  -- if $assertion_quantity(preqbytes) = (z_new)
+  -- if $assertion_ini_blocked(S.ASSERTIONS, z_new)
+  -- if $assertion_ini_option_valid(S, pconfigcall)
+def $assertion_ini_set(S, pconfigcall, preqbytes) = S[.ASSERTIONSMODIFIED = true][.COMPLETION = UNSUPPORTED "assertion INI parsing warning or Stringable refusal"] -- otherwise
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $assertion_ini_set(S_value, pconfigcall, n_new*)
+  -- if n_option* = $ptascii("zend.assertions")
+  -- if $config_ini_value_conversion(pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_value = $typed_apply(S, ptypeconversion, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING n_new*)
+def $config_ini_get_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING S.ASSERTIONSINI)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_option* = $ptascii("zend.assertions")
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_unary_finish(S, pconfigcall, n_option*) = $assertion_restore(S)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if n_option* = $ptascii("zend.assertions")
+  -- if S.TODO = ptask :: ptask_tail*
+rule PhpStep/assertion-ini-restore-string-result: S ~> $assertion_restore(S)[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN (PSTRING n_option*)
+  -- if n_option* = $ptascii("zend.assertions")
+
+;; Refusal is decided before dispatch. The completion keeps every original
+;; argument owner and returns false on the handler's resulting state.
+def $assertion_ini_argument(S, pconfigcall, z_precision) = (preqbytes)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
+  -- if $precision_ini_valid($decimal_integer(z_precision))
+  -- if $config_ini_value_conversion(pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_value = $typed_apply($precision_memory(S, z_precision), ptypeconversion, pconfigcall.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING preqbytes)
+def $assertion_ini_argument(S, pconfigcall, z_precision) = eps -- otherwise
+def $assertion_ini_option_valid(S, pconfigcall) = true
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING n_option*)), NAMED_SENT poperand]
+  -- if n_option* = $ptascii("zend.assertions")
+def $assertion_ini_option_valid(S, pconfigcall) = false -- otherwise
+def $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision) = true
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $assertion_ini_option_valid(S, pconfigcall)
+  -- if $assertion_ini_argument(S, pconfigcall, z_precision) = (preqbytes)
+  -- if $assertion_quantity(preqbytes) = (z_new)
+  -- if $assertion_ini_blocked(S.ASSERTIONS, z_new)
+def $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision) = false -- otherwise
+def $task_nodes(ASSERTION_INI_FAILED pconfigcall preqbytes z_precision) = $config_nodes(pconfigcall)
+def $selected_task_nonce(ASSERTION_INI_FAILED pconfigcall preqbytes z_precision) = pconfigcall.SELECTION
+def $call_task_valid(S, ASSERTION_INI_FAILED pconfigcall preqbytes z_precision) = $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision)
+rule PhpStep/assertion-ini-failed: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ASSERTION_INI_FAILED pconfigcall preqbytes z_precision) :: ptask_tail*
+  -- if $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision)
+def $error_call_valid(S, perrorcall) = true
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.RESUME = ASSERTION_INI_FAILED pconfigcall preqbytes z_precision
+  -- if $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision)
+  -- if pconfigcall.SITE = perrorcall.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.MESSAGE = $assertion_ini_warning()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ASSERTION_INI_FAILED pconfigcall preqbytes z_precision
+def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
 
 def $intrinsic_name(INTRINSIC_ASSERT) = $ptascii("assert")
 def $intrinsic_named(preqbytes) = (INTRINSIC_ASSERT) -- if $ptlc(preqbytes) = $ptascii("assert")
@@ -248,7 +391,7 @@ def $php_assertions_run(program, n, preqbytes_file, pstartup?, b_display, preqby
   -- if $source_filename(preqbytes_file)
   -- if $precision_startup_valid(pstartup?, b_display, preqbytes_display?, preqbytes_precision)
   -- if $assertion_ini_mode(preqbytes_assertions) = (z_assertions)
-  -- if S_initial = $assertion_entry($precision_initial(pstartup?, b_display, preqbytes_display?, preqbytes_precision)[.FILES = [SOURCEFILE 0 preqbytes_file]][.ASSERTIONS = z_assertions], prequest?, preqbytes_cwd?)
+  -- if S_initial = $assertion_entry($precision_initial(pstartup?, b_display, preqbytes_display?, preqbytes_precision)[.FILES = [SOURCEFILE 0 preqbytes_file]][.ASSERTIONS = z_assertions][.ASSERTIONSINIT = preqbytes_assertions][.ASSERTIONSINI = preqbytes_assertions], prequest?, preqbytes_cwd?)
   -- if P = $ppstart_assertions_epochs(0, program, preqbytes_file, $assertion_entry_cwd(prequest?, preqbytes_cwd?), eps, eps, $precision_value(S_initial), eps, z_assertions)
 def $php_assertions_run(program, n, preqbytes_file, pstartup?, b_display, preqbytes_display?, preqbytes_precision, preqbytes_assertions, prequest?, preqbytes_cwd?) = $initial_state(UNSUPPORTED "invalid assertion startup INI, request or file context") -- otherwise
 

@@ -271,3 +271,19 @@ strict compilation with reviewed current-parent compatibility.
 The [ledger](../../coverage/semantics/source-echo-named-cv-call-review.json)
 retains the original baseline mismatch separately. Wider argument/callee/output
 producers and final combined offline validation remain required.
+
+The361 ECHO certificate also admits a noarg call through an ordinary CV callee.
+Exact source and completed-image descriptors keep INIT5/CV5, call7 and ECHO5
+separate, without inspecting the live callee value. Operand retirement precedes
+selection; callable arrays and invokable objects use the existing runtime path.
+An authenticated CALL_DYNAMIC warning record resumes directly with captured null,
+even after handler writes, avoiding a forged intermediate variable read. Existing
+returned TMPVAR/REFERENCE certificates survive callee mutation and preserve bytes
+before final release. The fixed-site history delegate excludes dynamic sites;
+196's dynamic-method and implicit-string alternatives are disjoint, so a returned
+cast can publish a function before later eval replay without retaining its object.
+The [ledger](../../coverage/semantics/source-echo-dynamic-cv-call-review.json) retains
+nine exact originals and277 independent premises at their private354 cuts.
+Actual356 over `5107cc589` passes strict compilation with reviewed current-parent
+compatibility. Wider callee and
+argument producers, emissions and the final combined offline rebuild remain required.

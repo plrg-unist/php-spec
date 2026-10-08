@@ -1,0 +1,150 @@
+;; gc_call_destructors(..., NULL) scans physical tags with its own local
+;; interval. It neither reloads nor updates the cached Fiber's global cursor.
+;; Residual targets are real callbacks, not members of the fresh DTORS list.
+dec $gc_main_context(pstate, pgcplan, pgcscan) : bool
+dec $gc_main_marked(pgcplan, nat, nat) : bool
+dec $gc_main_tag_source(pgcplan, pgcslot, nat) : bool
+dec $gc_main_tags(pgcplan, pgcslot*, nat) : bool
+dec $gc_main_scan_valid(pstate, pgcplan, pgcscan) : bool
+dec $gc_main_return_live(pstate, pgcplan, pgcscan, nat) : bool
+dec $gc_main_return_valid(pstate, pgcplan, pgcscan, nat) : bool
+dec $gc_main_object(pstate, pgcslot) : nat?
+dec $gc_main_target(pstate, nat, nat) : (nat, nat)?
+dec $gc_main_enter(pstate, pgcplan, pgcscan, nat, nat) : pstate
+dec $gc_main_done(pstate, pgcplan, pgcscan, nat) : pstate
+dec $gc_main_finish(pstate, pgcplan, pgcscan) : pstate
+dec $gc_main_progress(pstate, pnode*) : pgcprogress*
+dec $gc_main_anchor_tasks(ptask*) : (pgcplan, pgcscan, nat)?
+dec $gc_main_anchor_frames(pframe*) : (pgcplan, pgcscan, nat)?
+dec $gc_main_anchor(pstate) : (pgcplan, pgcscan, nat)?
+dec $gc_main_pending_tasks(ptask*, pgcplan, pgcplan) : ptask*
+
+def $gc_main_trace(S, pgcplan) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps], pgcplan, GC_MAIN_SCAN pgcplan pgcscan)
+  -- if n_end = |pgcplan.BUFFER|
+  -- if pgcscan = {INDEX 0, END n_end}
+def $gc_task_consumer(GC_MAIN_SCAN pgcplan pgcscan, pgccall) = 1 -- if pgcplan.CALL = pgccall
+def $gc_task_consumer(GC_MAIN_RETURN pgcplan pgcscan n, pgccall) = 1 -- if pgcplan.CALL = pgccall
+def $gc_task_plan_consumer(GC_MAIN_SCAN pgcplan_task pgcscan, pgcplan) = 1 -- if pgcplan_task = pgcplan
+def $gc_task_plan_consumer(GC_MAIN_RETURN pgcplan_task pgcscan n, pgcplan) = 1 -- if pgcplan_task = pgcplan
+def $gc_fresh_tasks((GC_MAIN_SCAN pgcplan pgcscan) :: ptask*, pgcplan) = true -- if pgcscan.INDEX = 0
+def $task_nodes(GC_MAIN_SCAN pgcplan pgcscan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
+def $task_nodes(GC_MAIN_RETURN pgcplan pgcscan n) = [HOBJECT n] ++ $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
+def $eager_explicit_task(GC_MAIN_SCAN pgcplan pgcscan) = true
+def $eager_explicit_task(GC_MAIN_RETURN pgcplan pgcscan n) = true
+
+def $gc_main_marked(pgcplan, n_slot, n) = true
+  -- if $(n_slot < |pgcplan.BUFFER|)
+  -- if pgcplan.BUFFER[n_slot] = GC_DTOR_ROOT n \/ (pgcplan.BUFFER[n_slot] = GC_ROOT (HOBJECT n) /\ (HOBJECT n) <- pgcplan.DTORS)
+def $gc_main_marked(pgcplan, n_slot, n) = false -- otherwise
+def $gc_main_tag_source(pgcplan, GC_DTOR_ROOT n, n_slot) = $gc_main_marked(pgcplan, n_slot, n)
+def $gc_main_tag_source(pgcplan, pgcslot, n_slot) = true -- otherwise
+def $gc_main_tags(pgcplan, eps, n) = true
+def $gc_main_tags(pgcplan, pgcslot :: pgcslot_tail*, n) = ($gc_main_tag_source(pgcplan, pgcslot, n) /\ $gc_main_tags(pgcplan, pgcslot_tail*, $(n + 1)))
+  -- if $(n < |pgcplan.BUFFER|)
+def $gc_main_tags(pgcplan, pgcslot :: pgcslot_tail*, n) = true -- if $(n >= |pgcplan.BUFFER|)
+def $gc_main_context(S, pgcplan, pgcscan) = true
+  -- if S.ACTIVEFIBER = eps
+  -- if $gc_plan_live(S, pgcplan)
+  -- if pgcplan.SCAN = eps
+  -- if pgcplan.DTORS =/= eps
+  -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
+  -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
+  -- if pgcscan.END = |pgcplan.BUFFER| /\ $(pgcscan.INDEX <= pgcscan.END)
+  -- if $gc_main_tags(pgcplan, S.GC.BUFFER, 0)
+  -- if S.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, 0, pgcscan.INDEX, 0)
+def $gc_main_context(S, pgcplan, pgcscan) = false -- otherwise
+def $gc_main_scan_valid(S, pgcplan, pgcscan) = ($gc_main_context(S, pgcplan, pgcscan) /\ $gc_scope_valid(S, pgcplan.CALL))
+def $call_task_valid(S, GC_MAIN_SCAN pgcplan pgcscan) = $gc_main_scan_valid(S, pgcplan, pgcscan)
+def $gc_main_return_live(S, pgcplan, pgcscan, n) = true
+  -- if $gc_main_context(S, pgcplan, pgcscan)
+  -- if $(pgcscan.INDEX < pgcscan.END) /\ $(pgcscan.INDEX < |S.GC.BUFFER|)
+  -- if $gc_main_marked(pgcplan, pgcscan.INDEX, n)
+  -- if ~(n <- pgcplan.CALLED)
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (pgcscan.INDEX)
+  -- if S.GC.BUFFER[pgcscan.INDEX] = GC_ROOT (HOBJECT n)
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ $gc_dtor_tag_valid(S, n)
+def $gc_main_return_live(S, pgcplan, pgcscan, n) = false -- otherwise
+def $gc_main_return_valid(S, pgcplan, pgcscan, n) = ($gc_main_return_live(S, pgcplan, pgcscan, n) /\ $gc_scope_valid(S, pgcplan.CALL) /\ n <- S.DESTRUCTION.CALLED)
+def $call_task_valid(S, GC_MAIN_RETURN pgcplan pgcscan n) = $gc_main_return_valid(S, pgcplan, pgcscan, n)
+
+def $gc_main_object(S, GC_DTOR_ROOT n) = (n)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $gc_dtor_tag_valid(S, n)
+  -- if $destructor_uncalled_node(S, HOBJECT n)
+def $gc_main_object(S, pgcslot) = eps -- otherwise
+def $gc_main_target(S, n, n_end) = eps
+  -- if $(n >= n_end) \/ $(n >= |S.GC.BUFFER|)
+def $gc_main_target(S, n, n_end) = ((n, n_object))
+  -- if $(n < n_end) /\ $(n < |S.GC.BUFFER|)
+  -- if $gc_main_object(S, S.GC.BUFFER[n]) = (n_object)
+def $gc_main_target(S, n, n_end) = $gc_main_target(S, $(n + 1), n_end)
+  -- if $(n < n_end) /\ $(n < |S.GC.BUFFER|)
+  -- if $gc_main_object(S, S.GC.BUFFER[n]) = eps
+rule PhpStep/gc-main-scan-enter: S ~> $gc_main_enter(S, pgcplan, pgcscan, n_slot, n_object)
+  -- if S.TODO = (GC_MAIN_SCAN pgcplan pgcscan) :: ptask_tail*
+  -- if $gc_main_scan_valid(S, pgcplan, pgcscan)
+  -- if $gc_main_target(S, pgcscan.INDEX, pgcscan.END) = ((n_slot, n_object))
+def $gc_main_enter(S, pgcplan, pgcscan, n_slot, n_object) = $destructor_select(S_ready, n_object, false, eps)
+  -- if S.TODO = (GC_MAIN_SCAN pgcplan pgcscan) :: ptask_tail*
+  -- if pgcscan_next = pgcscan[.INDEX = n_slot]
+  -- if S_ready = S[.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, pgcscan.INDEX, $(n_slot + 1), 0)][.TODO = (GC_MAIN_RETURN pgcplan pgcscan_next n_object) :: ptask_tail*]
+rule PhpStep/gc-main-scan-return: S ~> $gc_main_done(S, pgcplan, pgcscan, n)
+  -- if S.TODO = (GC_MAIN_RETURN pgcplan pgcscan n) :: ptask_tail*
+  -- if $gc_main_return_valid(S, pgcplan, pgcscan, n)
+def $gc_main_done(S, pgcplan, pgcscan, n) = $gc_worker_public_keep(S_done, n)
+  -- if S.TODO = (GC_MAIN_RETURN pgcplan pgcscan n) :: ptask_tail*
+  -- if S_done = S[.TODO = (GC_MAIN_SCAN pgcplan pgcscan[.INDEX = $(pgcscan.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/gc-main-scan-finish: S ~> $gc_main_finish(S, pgcplan, pgcscan)
+  -- if S.TODO = (GC_MAIN_SCAN pgcplan pgcscan) :: ptask_tail*
+  -- if $gc_main_scan_valid(S, pgcplan, pgcscan)
+  -- if $gc_main_target(S, pgcscan.INDEX, pgcscan.END) = eps
+def $gc_main_progress(S, eps) = eps
+def $gc_main_progress(S, pnode :: pnode_tail*) = (GC_SKIPPED pnode) :: $gc_main_progress(S, pnode_tail*)
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode) \/ ~$gc_marked(S, pnode)
+def $gc_main_finish(S, pgcplan, pgcscan) = $gc_replace(S_clear, pgcplan_done, GC_FREE pgcplan_done)
+  -- if S_clear = S[.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, pgcscan.INDEX, pgcscan.END, 0)]
+  -- if pgcplan_done = pgcplan[.INDEX = |pgcplan.DTORS|][.STEPS = $gc_main_progress(S_clear, pgcplan.DTORS)]
+
+;; Authenticate the actual physical return task in the active or saved main
+;; frame. The target need not be a member of the fresh plan's DTORS list.
+def $gc_main_anchor_tasks((GC_MAIN_RETURN pgcplan pgcscan n) :: ptask*) = ((pgcplan, pgcscan, n))
+def $gc_main_anchor_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = $gc_main_anchor_tasks(ptask*)
+def $gc_main_anchor_tasks((DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = $gc_main_anchor_tasks(ptask*)
+def $gc_main_anchor_tasks((DESTRUCTOR_ENTER pdestructorcall) :: ptask*) = $gc_main_anchor_tasks(ptask*)
+def $gc_main_anchor_tasks((THROW_SEARCH n_error) :: ptask*) = $gc_main_anchor_tasks(ptask*)
+def $gc_main_anchor_tasks(ptask*) = eps -- otherwise
+def $gc_main_anchor_frames(eps) = eps
+def $gc_main_anchor_frames(pframe :: pframe_tail*) = ((pgcplan, pgcscan, n))
+  -- if $gc_main_anchor_tasks(pframe.TODO) = ((pgcplan, pgcscan, n))
+def $gc_main_anchor_frames(pframe :: pframe_tail*) = $gc_main_anchor_frames(pframe_tail*)
+  -- if $gc_main_anchor_tasks(pframe.TODO) = eps
+def $gc_main_anchor(S) = ((pgcplan, pgcscan, n))
+  -- if $gc_main_anchor_tasks(S.TODO) = ((pgcplan, pgcscan, n))
+def $gc_main_anchor(S) = $gc_main_anchor_frames(S.FRAMES)
+  -- if $gc_main_anchor_tasks(S.TODO) = eps
+def $destructor_leaf_valid(S, pdestructorcall) = true
+  -- if pdestructorcall.RELEASE = eps /\ pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if $gc_main_anchor(S) = ((pgcplan, pgcscan, n))
+  -- if n = pdestructorcall.OBJECT
+  -- if $gc_main_return_live(S, pgcplan, pgcscan, n)
+  -- if pgcplan.CALL.CALLER = pdestructorcall.CALLER /\ pgcplan.CALL.ORIGIN = pdestructorcall.ORIGIN /\ pgcplan.CALL.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT
+def $gc_source(S) = true
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_main_anchor(S) = ((pgcplan, pgcscan, n))
+  -- if $gc_main_return_live(S, pgcplan, pgcscan, n)
+  -- if $gc_scope_valid(S, pgcplan.CALL)
+def $destructor_tail_pending((GC_MAIN_RETURN pgcplan pgcscan n) :: ptask*) = pgcplan.CALL.PENDING
+def $gc_main_pending_tasks((GC_MAIN_RETURN pgcplan pgcscan n) :: ptask*, pgcplan, pgcplan_new) = (GC_MAIN_RETURN pgcplan_new pgcscan n) :: ptask*
+def $gc_main_pending_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, pgcplan, pgcplan_new) = (DESTRUCTOR_RELEASE pdestructionrelease) :: $gc_main_pending_tasks(ptask*, pgcplan, pgcplan_new)
+def $destructor_resume_pending(S, pdestructorcall) = S[.TODO = $gc_main_pending_tasks(ptask*, pgcplan, pgcplan_new)][.GC.PLAN = (pgcplan_new)][.GC.ACTIVE = (pgcplan_new.CALL)]
+  -- if pdestructorcall.RELEASE = eps /\ pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if S.TODO = (THROW_SEARCH n_error) :: ptask*
+  -- if $gc_main_anchor(S) = ((pgcplan, pgcscan, n))
+  -- if n = pdestructorcall.OBJECT
+  -- if $gc_main_return_live(S, pgcplan, pgcscan, n)
+  -- if pgcplan_new = pgcplan[.CALL.PENDING = (n_error)]
+def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S, pgcplan.CALL.CALL, eps)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if $gc_main_anchor(S) = ((pgcplan, pgcscan, n))
+  -- if n = pdestructorcall.OBJECT
+  -- if $gc_main_return_live(S, pgcplan, pgcscan, n)

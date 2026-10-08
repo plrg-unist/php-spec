@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Post-report child storage original; expected observation awaits native baseline."""
+"""Post-report child storage original with accepted native/model observation."""
 import generator_force_close_review as driver
 
 

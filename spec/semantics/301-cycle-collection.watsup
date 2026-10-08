@@ -67,6 +67,7 @@ dec $gc_receive(pstate, pconfigcall) : pstate
 dec $gc_simple_done(pstate, pvalue) : pstate
 dec $gc_replace(pstate, pgcplan, ptask) : pstate
 dec $gc_trace(pstate, pgccall) : pstate
+dec $gc_main_trace(pstate, pgcplan) : pstate
 dec $gc_dtor_begin(pstate, pgcplan, nat) : pstate
 dec $gc_dtor_done(pstate, pgcplan, nat) : pstate
 dec $gc_free(pstate, pgcplan) : pstate
@@ -727,7 +728,7 @@ def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BU
   -- if pgcplan.CANDIDATES = eps \/ $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER = eps \/ pgcplan.DTORS = eps
   -- if pgcplan.DTORS = eps \/ pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
-def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "main collector dispatch with residual destructor tags"]
+def $gc_trace(S, pgccall) = $gc_main_trace(S, pgcplan)
   -- if S.ACTIVEFIBER = eps
   -- if ~$gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)

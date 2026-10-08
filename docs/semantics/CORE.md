@@ -121,8 +121,11 @@ call. Preserve this distinction, `AssertionError`/supplied throwable behavior,
 callback effects, and the deprecated `assert_options` controls. Module368 implements
 the three explicit startup modes, selected normalized descriptions, ordinary
 dynamic/FCC evaluation, description type-check priority and Throwable identity.
-Runtime mode changes, options/callbacks, Stringable descriptions, wider export
-and single named-description/unpack producers remain required core work.
+Quiet runtime INI updates preserve raw/initial values, modified/restore timing,
+positive enabled quantities and post-handler state after negative-boundary refusal.
+Parsing-warning paths, authenticated Stringable-option refusal, wider startup facts,
+options/callbacks, Stringable descriptions, wider export and single
+named-description/unpack producers remain required core work.
 
 Each intrinsic follows the target's argument/type checks and exception propagation,
 including source-backed early-return cases such as disabled assertions.
