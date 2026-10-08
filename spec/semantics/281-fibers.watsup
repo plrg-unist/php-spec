@@ -264,10 +264,13 @@ def $fiber_receive_value(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if ~$api_special(S, pvalue)
   -- if $fiber_callback_resolution(S, pvalue) = HANDLERUNKNOWN text
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if ~pfiber.READY \/ $error_handler_callable(S, pvalue) =/= (true)
 def $fiber_receive_value(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "FiberError", $ptascii("Cannot call constructor twice"))
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if ~$api_special(S, pvalue)
-  -- if $fiber_callback_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
+  -- if $error_handler_callable(S, pvalue) = (true)
   -- if pconfigcall.OWNER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.READY
