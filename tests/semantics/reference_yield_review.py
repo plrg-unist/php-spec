@@ -105,6 +105,23 @@ set_error_handler("warn");$error=new Exception("notice");$generator=give();echo 
 try{$generator->current();}catch(Exception $caught){echo "O",(int)($caught===$error),":",(int)($caught->getPrevious()===null),"|";}
 echo (int)$generator->valid(),":",(int)($generator->current()===null);
 ''', b'C|N8:3|O1:1|0:1', 0),
+    'key-warning-property-owner-retirement-keeps-untyped-cache-alias': (
+        b'''<?php
+class Box328 {public int $value=4;function __destruct(){echo "B|";}}
+$box=new Box328;$weakBox=WeakReference::create($box);$outside=&$box->value;
+function warn($n,$m,$f,$l){echo "W",$l,"|";$GLOBALS["box"]=null;echo (int)($GLOBALS["weakBox"]->get()===null),"|";$GLOBALS["outside"]="free";return true;}
+function &give(){yield $missingKey=>$GLOBALS["box"]->value;}
+set_error_handler("warn");$generator=give();echo "C|",$generator->current(),":",(int)($generator->key()===null);
+''', b'C|W5|B|1|free:1', 0),
+    'ordinary-parent-delegates-live-reference-child-with-value-iteration': (
+        b'''<?php
+function &leaf(&$value){yield $value;yield $value;}
+function parent328(&$value){yield from leaf($value);}
+$value=3;$generator=parent328($value);$copy=$generator->current();$value=7;
+echo $copy,":",$generator->current(),"|";
+foreach($generator as $item){echo $item,"|";$item=9;}
+echo $value;
+''', b'3:7|7|7|7', 0),
 }
 
 
