@@ -1240,7 +1240,17 @@ premises pass at `fc7727974`. The unchanged earlier dynamic Unsupported record
 retains zero agreement. Actual349 over COMP `ea58ac361` passes algo/struct/init
 at `bba0c15be`, with pointwise361/362 and same-state graph-factor review and
 no5/241 source/state renewal.
-Computed property names, keyword scopes entered through Closure/fromCallable or
+Computed static-property compounds366 delay name CV reads until after RHS work,
+retain evaluated name/RHS operands through real class preparation, then transfer
+the selected property to the existing static conversion/store. Buffered fetch
+lines remain distinct from initializer error lines. Six exact originals pass at
+separate `a0b4f81c9`/`82ea0e591`/`03bf61f0a` cuts; first-cut compiler/init passes.
+New295 reached premises pass at `1abff50f4`, including real cold-preparation
+owners, compiled-name/marker forgeries and retained REF selection. Actual-parent
+compiler/init passes at `ed57a7c5c` over CALLS367 `9aec542e2` (353 modules),
+with pointwise SOURCE365/367 owner/line review and no6/295 source/state renewal.
+Stringable
+property-name callbacks, keyword scopes entered through Closure/fromCallable or
 other callable wrappers, wider borrowed lifetime and registered-handler
 missing-RHS continuations remain separate; paused return producers are unchanged.
 

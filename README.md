@@ -241,6 +241,12 @@ callback changes to the selector preserve that destination. Five new exact
 originals and241 reached premises cover helper and temporary object selectors,
 scalar continuation, captured references and typed expression results.
 The separate actual349 composition passes compilation and initialization.
+Computed static-property names now read direct name CVs after RHS evaluation
+and preserve evaluated name values or reference cells. Six further originals
+cover that timing, cold initialization with owned RHS temporaries, selected class
+roots, typed results and multiline access-error cleanup. Another295 independent
+reached premises validate queued owners, resolved-name authority and resumption.
+The separate actual353 composition passes compilation and initialization.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
