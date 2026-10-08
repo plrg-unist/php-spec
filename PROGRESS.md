@@ -205,6 +205,13 @@ entry/admission/pending-handler premises. Original Unsupported and two fixture
 stops retain zero affected credit. Actual307 passes strict compilation with reviewed
 collector/Generator/ArrayAccess compatibility; broader names remain required.
 
+[CV-computed name emission330](coverage/semantics/source-cv-name-emission-review.json)
+is independently accepted at private308: compiling the ordinary name CV emits no opcode,
+and outer FETCH6 precedes property8 after operand retirement. Four exact originals
+show the live name changes before lookup; a missing target resumes null after handler
+name/target writes. Genuine entry/warning/identity controls pass174 premises.
+Relocations add no execution credit; actual integration and broader names remain required.
+
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
 The accepted private52 normal/four compiler agreements and618 reached premises,

@@ -95,3 +95,14 @@ remain distinct. Actual307 preserves the accepted collector/Generator/ArrayAcces
 fields and passes strict compilation. Independent review finds their introduced
 selectors disjoint from the name call and warning continuation. Earlier source/state
 cuts and relocations gain no renewed execution credit.
+
+Module330 adds the ordinary CV-computed name: the name CV emits no opcode,
+so the outer variable FETCH inherits its child's compiler line. Reused314 CV
+certification, original nested AST, outer/child CODEEXPR6 and literal property8
+identify that occurrence; selection never reads the current name value.
+The [ledger](../../coverage/semantics/source-cv-name-emission-review.json) retains
+private308 source4 and174 genuine entry/warning/identity/control premises.
+Returning retirement changes the live name before lookup; reused327 fixed-null
+resume retains later handler name/target writes. The noarg-call control remains
+327-positive and330-negative. Relocations add no execution credit; actual integration,
+undefined name CV/conversion variants and wider producers remain required.
