@@ -7,6 +7,7 @@ dec $trait_fcc_failed_method_select(pstate, pconstantclosure*, (porigin, pmethod
 dec $trait_fcc_retained_method_functions(pstate, pmethoddesc*) : pfunction*
 dec $trait_fcc_retained_function_add(pstate, pmethoddesc, pfunction*) : pfunction*
 dec $trait_fcc_failed_data_phase(pcompletion, porigin, pmethoddesc, pmethoddesc) : (porigin, pmethoddesc)?
+dec $trait_fcc_failed_phase_cache(pstate, pconstantclosure, ptraitcachecause, pdefaultcache*) : pdefaultcache*
 
 def $trait_fcc_failed_target(S, pconstantclosure) = ((ptraitcachecause.CLASS, pmethoddesc_copy, pmethoddesc))
   -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
@@ -40,12 +41,22 @@ def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = $trait_fcc_faile
   -- if $trait_fcc_failed_target(S, pconstantclosure) = ((porigin_owner, pmethoddesc_copy, pmethoddesc))
   -- if pmethoddesc.OWNER =/= porigin_owner
   -- if $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_methods, ptraitmethod*))
-  -- if S_before = S_methods[.CLASSCONSTANTCACHE = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin_owner, n_failed)][.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.TODO = [TRAIT_NOTICE_REPLAY porigin_owner n_failed ptraitcachecause.USERPREFIX]]
+  -- if pdefaultcache_prefix* = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin_owner, n_failed)
+  -- if S_before = S_methods[.CLASSCONSTANTCACHE = $trait_fcc_failed_phase_cache(S, pconstantclosure, ptraitcachecause, pdefaultcache_prefix*)][.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.TODO = [TRAIT_NOTICE_REPLAY porigin_owner n_failed ptraitcachecause.USERPREFIX]]
   -- if $class_at(S_before.CLASSES, porigin_owner) = (pclassdesc_methods)
   -- if $trait_fetch(S_before, $trait_plan(S_before, pclassdesc_methods).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
   -- if S_constants = $trait_data_constants(S_before, pclassdesc_methods, pclassdesc_traits*, eps)
   -- if $class_at(S_constants.CLASSES, porigin_owner) = (pclassdesc_constants)
   -- if S_data = $trait_data_properties(S_constants, pclassdesc_constants, pclassdesc_traits*, eps)
+;; The authenticated direct FCC has no effect beyond its allocation/diagnostic.
+;; Its exact first value suffices for scratch data comparisons; no live cache or
+;; allocation is restored, and wider initializers keep the complete replay.
+def $trait_fcc_failed_phase_cache(S, pconstantclosure, ptraitcachecause, pdefaultcache*) = pdefaultcache* ++ [{ORIGIN pconstantclosure.DECL, VALUE POBJECT pconstantclosure.OBJECT, CLASS PVCLOSURE pconstantclosure.OBJECT pconstantclosure.SITE}]
+  -- if $default_cache_at(pdefaultcache*, pconstantclosure.DECL) = eps
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = pconstantclosure.DECL /\ pclassconstantdesc.INITIALIZER = pconstantclosure.SITE
+  -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, POBJECT pconstantclosure.OBJECT)
+def $trait_fcc_failed_phase_cache(S, pconstantclosure, ptraitcachecause, pdefaultcache*) = pdefaultcache* -- otherwise
 def $trait_fcc_failed_data_phase(NORMAL, porigin_owner, pmethoddesc_copy, pmethoddesc) = ((porigin_owner, pmethoddesc_copy))
 def $trait_fcc_failed_data_phase(pcompletion, porigin_owner, pmethoddesc_copy, pmethoddesc) = ((porigin_owner, pmethoddesc))
   -- if $iterator_notice_link_fatal(pcompletion)
