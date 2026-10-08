@@ -70,5 +70,23 @@
     "native_stdout": "W11|RP|9|Cannot call constructor twice|__construct->00|resume->11|111",
     "native_stderr": "",
     "native_exit": 0
+  },
+  {
+    "id": "author-fiber-ctor-ready-builtin-validation",
+    "source": "<?php\n$target = new Fiber(static function () { echo 'O|'; return 17; });\n$ctor = $target->__construct(...);\ntry { $ctor('strlen'); }\ncatch (FiberError $error) { echo 'D|', $error->getMessage(), '|'; }\ntry { $ctor->__invoke(callback: '\\STRLEN'); }\ncatch (FiberError $error) { echo 'I|', $error->getMessage(), '|'; }\n$runner = new Fiber($ctor);\ntry { $runner->start(callback: 'strLen'); }\ncatch (FiberError $error) { echo 'C|', $error->getMessage(), '|'; }\necho (int)$target->isStarted(), (int)$runner->isTerminated(), '|';\n$target->start();\necho $target->getReturn();\n",
+    "source_sha256": "f5570b5bdf63087a2c4fb35df963678f94d79a3afb49c94b2d3435f15c9c7a58",
+    "expected_model": "normal",
+    "native_stdout": "D|Cannot call constructor twice|I|Cannot call constructor twice|C|Cannot call constructor twice|01|O|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-ctor-capture-preentry-error-traces",
+    "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$ctor = $target->__construct(...);\ntry { $ctor(wrong: 17); }\ncatch (Error $error) {\n    echo 'D|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\ntry { $ctor->__invoke(wrong: 17); }\ncatch (Error $error) {\n    echo 'I|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\ntry { $ctor->__invoke(); }\ncatch (ArgumentCountError $error) {\n    echo 'M|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\necho (int)$target->isStarted();\n",
+    "source_sha256": "909eb54536dc6cffdebe09f6acc7395b3bf4053500f3ebb8b8c5dc693c82a3cf",
+    "expected_model": "normal",
+    "native_stdout": "D|Unknown named parameter $wrong|I|Unknown named parameter $wrong|M|Fiber::__construct() expects exactly 1 argument, 0 given|__construct->11|__invoke->11|0",
+    "native_stderr": "",
+    "native_exit": 0
   }
 ]
