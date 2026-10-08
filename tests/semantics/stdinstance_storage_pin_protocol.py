@@ -249,7 +249,9 @@ def shared_assertions(initial, expected):
         '$instance_test_output(S_finish.EVENTS) = $ptascii("C|")',
         # Constructed empty-table admission must still transfer its table owner.
         'pinstancestorage_empty = pinstancestorage[.SLOTS = eps]',
-        'S_empty = S_pinned[.ARRAYS = $array_replace(S_pinned.ARRAYS, n_table, $array_empty())][.OBJECTPROPS = $objectprops_set(S_pinned.OBJECTPROPS, n_parent, eps)][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage_empty) :: ptask_pin_tail*]',
+        'S_empty = S_pinned[.ARRAYS = $array_replace(S_pinned.ARRAYS, n_table, $array_empty())][.OBJECTPROPS = $objectprops_set(S_pinned.OBJECTPROPS, n_parent, eps)][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage_empty) :: ptask_pin_tail*][.HELD = (HOBJECT n_leaf) :: S_pinned.HELD]',
+        '$heap_owners($heap_graph(S_empty), HOBJECT n_leaf) = 1',
+        *base.valid('S_empty'),
         '$instance_storage_valid(S_empty, pinstancestorage_empty)',
         *one('S_empty', 'S_empty_transfer'),
         'S_empty_transfer.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_empty) :: (INSTANCE_STORAGE_STEP pinstancestorage_empty) :: ptask_pin_tail*',
