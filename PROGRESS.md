@@ -1272,7 +1272,9 @@ Unsupported baseline at `ad8135241` remain separate from strict356/source3 and
 157/138 reached premises at `310e0fac6`. Actual receiver-release queues, unchanged
 borrowed owners, alias rebinding/type detach and kept-child survival pass without
 corrections. Earlier quiet assertions are adapted statically only; no campaign
-is renewed. Consumed/missing slots and wider magic access remain required.
+is renewed. The actual358 join over `77d86df730` passes strict initialization
+at `36df1d531` (4.663s); source3/295 retain their original changed cut.
+Consumed/missing slots and wider magic access remain required.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

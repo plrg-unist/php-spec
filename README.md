@@ -986,6 +986,7 @@ quiet `isset`, `empty` and `??` without magic consumers. Terminal probes borrow
 their payload; coalescing copies the live referent. Three originals cover private,
 null and typed INITIAL/UNSET results; 157/138 reached premises prove unchanged
 heap owners, alias rebinding/type detach and kept-child survival.
+The actual358 composition passes strict initialization.
 Consumed/missing storage and wider magic accesses remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
