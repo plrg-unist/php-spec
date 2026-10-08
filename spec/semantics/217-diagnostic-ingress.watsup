@@ -73,6 +73,9 @@ dec $deprecated_constant_task(ptask, pdeprecatedconstant) : bool
 def $deprecated_constant_task(DEPRECATED_CONSTANT_RESULT pdeprecatedconstant, pdeprecatedconstant) = true
 def $deprecated_constant_task(ERROR_HANDLER_INVOKE perrorcall, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
 def $deprecated_constant_task(ERROR_HANDLER_RESULT perrorcall, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+def $deprecated_constant_task(ERROR_HANDLER_CLEAN perrorcall, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+def $deprecated_constant_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
 def $deprecated_constant_task(ptask, pdeprecatedconstant) = false -- otherwise
 dec $deprecated_constant_valid(pstate, pdeprecatedconstant) : bool
 def $deprecated_constant_valid(S, pdeprecatedconstant) = true
