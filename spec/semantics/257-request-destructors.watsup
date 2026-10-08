@@ -19,6 +19,7 @@ dec $destructor_saved_operations(pstate, pdestructorcall*) : pdestructionoperati
 dec $destructor_global_direct(pstate, preqbytes) : bool
 dec $destructor_uncalled_node(pstate, pnode) : bool
 dec $generator_destructor_pending(pstate, pnode) : bool
+dec $generator_request_retired_state_valid(pstate) : bool
 dec $destructor_leaf_valid(pstate, pdestructorcall) : bool
 dec $destructor_releases_valid(pstate, pdestructionrelease*) : bool
 dec $destructor_calls_valid(pstate, pdestructorcall*) : bool
@@ -353,6 +354,7 @@ rule PhpStep/destructor-store-skip: S ~> S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.
   -- if ~(n <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S, n) = eps
   -- if ~$internal_destructor_pending(S, HOBJECT n)
+  -- if ~$generator_destructor_pending(S, HOBJECT n)
 rule PhpStep/destructor-store-past: S ~> S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)]
   -- if S.TODO = [DESTRUCTOR_STORE]
   -- if $call_task_valid(S, DESTRUCTOR_STORE)
@@ -675,6 +677,7 @@ def $destruction_state_valid(S) = true
   -- if $destructor_numbers_valid(S.DESTRUCTION.CALLED, |S.OBJECTS|)
   -- if $destructor_numbers_valid(S.DESTRUCTION.FREE, S.DESTRUCTION.NEXT)
   -- if $destructor_unique(S.DESTRUCTION.CALLED) /\ $destructor_unique(S.DESTRUCTION.FREE)
+  -- if $generator_request_retired_state_valid(S)
   -- if ~(0 <- S.DESTRUCTION.FREE)
   -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING \/ $destructor_startup_order($global_table_view(S))
   -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_STORE \/ S.DESTRUCTION.NOREUSE
@@ -689,6 +692,7 @@ def $destruction_state_valid(S) = true
   -- if $eager_abandoned_valid(S, S.DESTRUCTION.ABANDONED)
   -- if $eager_property_caches_valid(S, S.DESTRUCTION.PROPCACHE)
 def $destruction_state_valid(S) = false -- otherwise
+def $generator_request_retired_state_valid(S) = (S.DESTRUCTION.RETIRED = eps) -- otherwise
 def $destructor_releases_valid(S, eps) = true
 def $destructor_releases_valid(S, pdestructionrelease :: pdestructionrelease_tail*) = ($destructor_release_live(S, pdestructionrelease) /\ $destructor_releases_valid(S, pdestructionrelease_tail*))
 def $destructor_calls_valid(S, eps) = true

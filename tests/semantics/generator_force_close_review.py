@@ -13,6 +13,7 @@ from generator_review import run
 
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST_CASES = set()
+NATIVE_ERROR_PREFIXES = {}
 
 # Existing FD198 transport: primitive request inputs, no PHP evaluation.
 REQUEST_EXEC = '''import os,sys
@@ -204,7 +205,12 @@ CASES = {'graph-temporary-child': (b'<?php\nfunction inner(){try{yield 1;}finall
                             b'race() as $r){echo $r["function"],";";}}}}function go(){$g=seq();echo $g->current();unset($g);echo "Z";}go()'
                             b';',
                             b'1seq;go;Z',
-                            0)}
+                            0),
+ 'request-end-required': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";}}$g=seq();echo $g->current();echo "Z";\n',
+                          b'1ZF', 0),
+ 'self-cache-cycle-required': (b'<?php\nfunction seq(){try{$self=yield 1;yield 2;}finally{echo "F";}}$g=seq();echo $g->current(),$g->send('
+                               b'$g);unset($g);echo "Z";',
+                               b'12ZF', 0)}
 DECLARATIONS = {'finally-break-live-loop': (b'<?php\nfunction seq(){while(true){try{yield 1;echo "X";}finally{echo "F";break;}}echo "S";}$g=seq();echo '
                              b'$g->current();unset($g);echo "Z";\n',
                              b'jump out of a finally block is disallowed',
@@ -213,16 +219,7 @@ DECLARATIONS = {'finally-break-live-loop': (b'<?php\nfunction seq(){while(true){
                              b'echo $g->current();unset($g);echo "Z";\n',
                              b'jump out of a finally block is disallowed',
                              2)}
-UNSUPPORTED = {'request-end-required': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";}}$g=seq();echo $g->current();echo "Z";\n',
-                          b'1ZF',
-                          'Generator force-close at request end',
-                          0),
- 'self-cache-cycle-required': (b'<?php\nfunction seq(){try{$self=yield 1;yield 2;}finally{echo "F";}}$g=seq();echo $g->current(),$g->send('
-                               b'$g);unset($g);echo "Z";',
-                               b'12ZF',
-                               'Generator force-close at request end',
-                               0),
- 'finalizer-exit-required': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";exit(7);}}$g=seq();echo $g->current();unset($g);echo '
+UNSUPPORTED = {'finalizer-exit-required': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";exit(7);}}$g=seq();echo $g->current();unset($g);echo '
                              b'"Z";\n',
                              b'1F',
                              'Generator force-close terminal cleanup',
@@ -244,6 +241,7 @@ WATCHED = [
     "spec/semantics/80-call-control.watsup",
     "spec/semantics/148-core-intrinsics.watsup", "spec/semantics/257-request-destructors.watsup",
     "spec/semantics/280-generators.watsup", "spec/semantics/289-generator-delegation.watsup",
+    "spec/semantics/301-cycle-collection.watsup",
     "spec/semantics/303-generator-force-close.watsup", "spec/semantics/modules.json",
     "tests/semantics/profile.json", "bin/php-semantics", "_build/default/adapter/main.exe",
     "tests/semantics/generator_force_close_review.py", "tests/semantics/generator_review.py",
@@ -320,7 +318,9 @@ def main():
             else:
                 expected = CASES[name][1] if name in CASES else UNSUPPORTED[name][1]
                 expected_exit = CASES[name][2] if name in CASES else UNSUPPORTED[name][3]
-                assert native.returncode == expected_exit and not native.stderr and native.stdout == expected, (name, native)
+                prefix = NATIVE_ERROR_PREFIXES.get(name)
+                error_matches = native.stderr.lstrip(b"\r\n").startswith(prefix.replace(b"{file}", os.fsencode(path))) if prefix else not native.stderr
+                assert native.returncode == expected_exit and error_matches and native.stdout == expected, (name, native)
             if args.mode == "full":
                 model = run(model_command, case / "model", 90)
                 row["model_exit"] = model.returncode

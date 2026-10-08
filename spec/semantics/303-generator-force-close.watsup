@@ -16,6 +16,11 @@ dec $generator_destructor_request_ready(pstate, pdestructionrelease, pnode) : bo
 dec $generator_close_merge(pstate, nat?, nat?) : (pstate, nat?)
 dec $generator_close_children(pstate, pnode) : pnode*
 dec $generator_close_prepare(pstate, pgenrelease, nat) : pstate
+dec $generator_close_prepare_store(pstate, pgenrelease, nat, nat?) : pstate
+dec $generator_request_prune_ready(pstate) : bool
+dec $generator_close_owner_valid(pstate, pgenclose) : bool
+dec $generator_close_request_valid(pstate, pgenclose) : bool
+dec $generator_request_done_pending(pstate, pgenclose) : bool
 dec $generator_close_enter(pstate, pgenclose) : pstate
 dec $generator_close_scan(pstate, nat, porigin, ptask*) : pstate
 dec $generator_close_skip_marker(pstate, ptask, ptask*) : pstate
@@ -24,6 +29,7 @@ dec $generator_close_queued_skip(pstate, pgenclose, ptask, ptask*) : pstate
 dec $generator_close_finally_enter(pstate, porigin, ptask*) : pstate
 dec $generator_close_end(pstate, nat, porigin) : pstate
 dec $generator_close_done(pstate, pgenclose) : pstate
+dec $generator_close_release_claim(pstate, pgenclose) : pstate
 dec $generator_close_saved(pstate, pcallcontext?, pframe*) : pgenclose?
 dec $generator_close_context_tasks(pcallcontext, ptask*) : bool
 dec $generator_close_context_frames(pcallcontext, pframe*) : bool
@@ -111,6 +117,8 @@ def $generator_prune(S, pnode_live*) = $generator_fiber_close(S)
   -- if S.ACTIVEFIBER =/= eps
 def $generator_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "Generator force-close at request end"]
   -- if ~$generator_close_dead(S, S.ALLOCATIONS, pnode_live*)
+  -- if ~$generator_request_prune_ready(S)
+def $generator_request_prune_ready(S) = false -- otherwise
 
 ;; Eager slot decrements enter this loop before the generic free_obj walk.
 ;; The outer release certificate remains borrowed, and its remaining slots
@@ -135,8 +143,8 @@ rule PhpStep/generator-destructor-request: S ~> S[.COMPLETION = UNSUPPORTED "Gen
   -- if $generator_destructor_pending(S_unheld, pnode)
   -- if ~pdestructionrelease.USER \/ $destructor_active(S)
   -- if ~$generator_destructor_request_ready(S, pdestructionrelease, pnode)
-;; The global release has no USER body to resume when this genuine paused
-;; frame has no active finally. Keep its request carrier and physical owner.
+;; The global release has no USER caller. Its genuine paused frame retains
+;; the complete source-authenticated close plan and physical cache owner.
 def $generator_destructor_request_ready(S, pdestructionrelease, HOBJECT n) = true
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [DESTRUCTOR_RELEASE pdestructionrelease, DESTRUCTOR_GLOBALS]
@@ -157,8 +165,6 @@ def $generator_destructor_request_ready(S, pdestructionrelease, HOBJECT n) = tru
   -- if pframe.ORIGIN = (porigin)
   -- if $generator_close_site(S, pgenerator, porigin)
   -- if $generator_close_frame_valid(S, pgenerator, pframe)
-  -- if ~$generator_finalizer_frame(S, pgenerator.FRAME)
-  -- if $generator_close_regions(S, porigin) = eps
   -- if $generator_close_plan_valid($generator_frame_scope(S, pframe), porigin, pframe.TODO, 0)
   -- if $generator_close_original_tasks_valid($generator_frame_scope(S, pframe), porigin, pframe.TODO)
 def $generator_destructor_request_ready(S, pdestructionrelease, pnode) = false -- otherwise
@@ -298,7 +304,8 @@ rule PhpStep/generator-close-release: S ~> $generator_close_release(S, pgenrelea
 
 ;; Input release runs in the actual caller. The saved frame still owns its
 ;; parameter cells and unfinished operands, independently of the graph edge.
-def $generator_close_prepare(S, pgenrelease, n) = $generator_close_begin_pending(S_detached[.TODO = (GENERATOR_CLOSE_ENTER {OBJECT n, SITE porigin, CONTEXT pcallcontext, CALLER S.CURRENT, CALLSITE S.ORIGIN, STAGE CLOSE_QUEUED, NEXT 0, FRAME (pframe), PENDING eps}) :: (GENERATOR_CLOSE_RELEASE pgenrelease[.PENDING = eps]) :: ptask_tail*], $destruction_values($generator_values_nodes($generator_from_input_of(pgenerator.DELEGATE))), pgenrelease.PENDING)
+def $generator_close_prepare(S, pgenrelease, n) = $generator_close_prepare_store(S, pgenrelease, n, eps)
+def $generator_close_prepare_store(S, pgenrelease, n, n_store?) = $generator_close_begin_pending(S_detached[.TODO = (GENERATOR_CLOSE_ENTER {OBJECT n, SITE porigin, CONTEXT pcallcontext, CALLER S.CURRENT, CALLSITE S.ORIGIN, STAGE CLOSE_QUEUED, NEXT 0, FRAME (pframe), PENDING eps, STORE n_store?}) :: (GENERATOR_CLOSE_RELEASE pgenrelease[.PENDING = eps]) :: ptask_tail*], $destruction_values($generator_values_nodes($generator_from_input_of(pgenerator.DELEGATE))), pgenrelease.PENDING)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.FRAME = (pframe)
@@ -517,8 +524,12 @@ def $generator_return(S, KNOWN pvalue) = $restore_frame($generator_set(S[.TODO =
 def $generator_frame_release(S_before, S_after) = $generator_set(S_after[.TODO = $generator_close_finished(S_after.TODO)], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED])
   -- if $generator_close_saved(S_before, S_before.CURRENT, S_before.FRAMES) = (pgenclose)
   -- if S_before.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
-def $generator_close_done(S, pgenclose) = $generator_close_begin_pending(S[.TODO = ptask*], [DESTRUCTION_VALUE (HOBJECT pgenclose.OBJECT)], pgenclose.PENDING)
+def $generator_close_done(S, pgenclose) = $generator_close_release_claim(S[.TODO = ptask*], pgenclose)
   -- if S.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
+  -- if ~$generator_request_done_pending(S, pgenclose)
+def $generator_request_done_pending(S, pgenclose) = false -- otherwise
+def $generator_close_release_claim(S, pgenclose) = $generator_close_begin_pending(S, [DESTRUCTION_VALUE (HOBJECT pgenclose.OBJECT)], pgenclose.PENDING)
+  -- if pgenclose.STORE = eps
 rule PhpStep/generator-close-done: S ~> $generator_close_done(S, pgenclose)
   -- if S.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
 def $generator_close_frame_pending(S, S_new) = (~$generator_close_terminal_tasks(S.TODO) /\ ($generator_close_saved(S, S.CURRENT, S.FRAMES) =/= eps \/ $generator_close_dead(S_new, S_new.ALLOCATIONS, $heap_prune($destructor_frame_graph(S, S_new)).NODES)))
@@ -670,12 +681,15 @@ def $generator_close_enter_valid(S, pgenclose) = true
   -- if pgenclose.STAGE = CLOSE_QUEUED /\ pgenclose.NEXT = 0
   -- if S.CURRENT = pgenclose.CALLER /\ S.ORIGIN = pgenclose.CALLSITE
   -- if $generator_close_frame_valid(S, pgenerator, pframe)
-  -- if $heap_owners($heap_graph(S)[.ROOTS = $destruction_node_delete($machine_roots(S), HOBJECT pgenclose.OBJECT)], HOBJECT pgenclose.OBJECT) = 0
+  -- if $generator_close_owner_valid(S, pgenclose)
   -- if S_scope = $generator_frame_scope(S, pframe)[.FRAMES = $save_frame(S).FRAMES]
   -- if $generator_close_plan_valid(S_scope, pgenclose.SITE, pframe.TODO, pgenclose.NEXT)
   -- if $generator_close_original_tasks_valid(S_scope, pgenclose.SITE, pframe.TODO)
   -- if $call_tasks_valid(S_scope, $generator_close_drop_claim(pframe.TODO, pgenclose.OBJECT, pgenclose.SITE))
 def $generator_close_enter_valid(S, pgenclose) = false -- otherwise
+def $generator_close_owner_valid(S, pgenclose) = (pgenclose.STORE = eps /\ $heap_owners($heap_graph(S)[.ROOTS = $destruction_node_delete($machine_roots(S), HOBJECT pgenclose.OBJECT)], HOBJECT pgenclose.OBJECT) = 0)
+  -- if pgenclose.STORE = eps
+def $generator_close_request_valid(S, pgenclose) = true -- if pgenclose.STORE = eps
 def $generator_close_done_valid(S, pgenclose) = true
   -- if $generator_object(S, pgenclose.OBJECT) /\ (HOBJECT pgenclose.OBJECT <- S.ALLOCATIONS)
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
@@ -687,6 +701,7 @@ def $generator_close_done_valid(S, pgenclose) = true
   -- if $generator_from_input_of(pgenerator.DELEGATE) = eps
   -- if $generator_close_site(S, pgenerator, pgenclose.SITE)
   -- if $generator_close_pending_valid(S, pgenclose.PENDING)
+  -- if $generator_close_request_valid(S, pgenclose)
 def $generator_close_done_valid(S, pgenclose) = false -- otherwise
 def $generator_record_valid(S, pgenerator) = ($generator_close_function(S, pgenerator) /\ $generator_integer(pgenerator.INDEX) /\ $generator_closure_valid(S, pgenerator) /\ pgenerator.FRAME = eps /\ pgenerator.RETURN = eps /\ $generator_cache_shape(S, pgenerator) /\ $generator_from_input_of(pgenerator.DELEGATE) = eps)
   -- if pgenerator.PHASE = GENERATOR_CLOSING

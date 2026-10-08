@@ -57,18 +57,44 @@ surviving external owners, wrong scopes/callers, erased or forged finally plans,
 ordinary-marker substitution and stranded input continuations reject at
 full public admission.
 
+Module 340 continues normal source exhaustion through the real shutdown,
+reverse-global and ascending object-store passes, including pure Generators.
+Direct-global last-owner release runs pending finally and frees the cache.
+Store close also closes externally owned suspended frames; it marks the real
+handle called and transfers one native dtor pin, without replacing other owners.
+An escaping exception reaches a registered normal handler after frame close
+and before cache release. Uncaught exceptions and abrupt handlers remain required
+Unsupported controls with zero agreement.
+
+Store dtor returns with bare `GC_DELREF`. If frame cleanup removed the last
+real owner, borrowed `(object,handle)` retirement keeps the allocated bucket and
+outgoing cache graph with zero physical owners. Actual WeakReference acquisition
+clears this retention, so its later ordinary last-owner release frees storage.
+Admission checks the consumed handle, processed index, called mark, phase and
+unique zero-owner certificate. Existing collector bare-retirement preparation
+runs first; this metadata adds no heap root or collector-buffer tag.
+
+The [request ledger](../../coverage/semantics/generator-request-finally-review.json)
+records 19 distinct normal originals and 692 physical strict-SL premises across
+separate cuts. 85 premises assert required abrupt controls and grant no observation
+agreement. The original zero-owner observer mismatch and earlier fixture/source
+failures remain zero. Fresh/unstarted store close, delegating request close and
+wider terminal/free-storage behavior remain required; no full lifecycle claim.
+
 Pinned authority is `vendor/php-src/Zend/zend_generators.c`, especially
 `zend_generator_dtor_storage` and `zend_generator_free_storage`, plus authored
-`ZEND_YIELD`/`ZEND_YIELD_FROM` in `Zend/zend_vm_def.h`. The target remains PHP
+`ZEND_YIELD`/`ZEND_YIELD_FROM` in `Zend/zend_vm_def.h`,
+`zend_execute_API.c::shutdown_destructors`, `zend_objects_API.c::zend_objects_store_call_destructors`
+and `zend_exceptions.c::zend_throw_exception_internal`. The target remains PHP
 8.5.10 CLI NTS 64-bit with the project profile, `LC_ALL=C`, `TZ=UTC`.
 
 Independent source review closes 40 normal tuples and two compiler rejections
 across `generator-force-close-review-rlbhdmu_` (first16), `78yejgzi`
 (remaining22 plus compiler2) and `k7mcky3f` (introduced foreach2). Five exact
-Unsupported controls earn no agreement: request-end close, a self-cache cycle,
+Unsupported controls earned no agreement at that303 cut: request-end close, a self-cache cycle,
 bare finalizer exit, exit with a started local child and warning-handler exit.
 Module310 separately covers ordinary paused-Generator release inside an active
-Fiber. Request-end, terminal cleanup, parked running Generators, cyclic GC, user
+Fiber. Wider request/terminal cleanup, parked running Generators, cyclic GC, user
 destructors and broader Generator/reference APIs remain required.
 
 Eight ordinary source programs pass in eleven finite state groups: 88 reached
@@ -92,8 +118,8 @@ rebuild or final combined-core credit. Canonical integration preserves the newer
 eager-destruction and Fiber clauses; the bounded actual282 composition passes the
 [introduced compiler, source and state checks](GENERATOR-FIBER-CLOSE.md).
 Original Unsupported observations for the two now-admitted last-owner sources
-remain in their earlier cuts. Request-end close retains its precise Unsupported
-reason and earns zero agreement.
+remain in their earlier cuts. 340 separately promotes the byte-identical request
+and self-cache-cycle originals; their old Unsupported observations stay zero.
 
 `python3 tests/semantics/generator_force_close_review.py --select graph-temporary-child`
 compares the complete native/model tuple at source60/outer90 seconds.

@@ -441,6 +441,10 @@ def $generator_closed_closure(pgenerator) = eps -- if pgenerator.PHASE =/= GENER
 def $node_children(S, HOBJECT n) = $generator_frame_nodes(pgenerator.FRAME) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_closed_closure(pgenerator) ++ $generator_from_nodes(pgenerator.DELEGATE)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $object_name(S, n) = $ptascii("Generator") -- if S.OBJECTS[n] = GENERATOR pgenerator
+def $getclass_live_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $generator_arguments_nodes(eps) = eps
 def $generator_arguments_nodes(pvalue :: pvalue_tail*) = $value_nodes(pvalue) ++ $generator_arguments_nodes(pvalue_tail*)
 def $generator_operation_nodes(pgeneratorop) = [HOBJECT pgeneratorop.OBJECT] ++ $generator_arguments_nodes(pgeneratorop.ARGUMENTS)

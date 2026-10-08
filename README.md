@@ -223,6 +223,10 @@ catch/finally execution and exception identity. [Delegation](docs/semantics/GENE
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
 runs pending finally bodies with real scopes, graph links and cached owners.
+Request 340 adds reverse-global and ascending-store close, handler-before-cache
+exception delivery and borrowed zero-owner store buckets. Genuine weak
+reacquisition restores ordinary release; fresh store and abrupt terminal cleanup
+remain required. [Retained cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
 including eager argument and frame cleanup with pending exception chains.
