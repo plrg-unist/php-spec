@@ -146,3 +146,53 @@ def $method_self_class_scope_valid(S, pclassdesc) = true
   -- if pclosurescope.LEXICAL = pclassdesc.ORIGIN
   -- if $method_closure_scope_valid(S, pclosurescope)
   -- if $call_current_valid(S)
+
+;; Keyword SELF retains the actual class entry. Recognize that source-owned
+;; request before the ordinary named constructor path; unknown failed layouts
+;; must not become a fresh named lookup or an allocation.
+def $trait_fcc_retained_new_scope(S, PORIGIN n_unit pcpath) = ((pclassdesc, pconstantclosure_first))
+  -- if S.ORIGIN = (PORIGIN n_unit pcpath)
+  -- if $ordinary_keyword_new_site(S, PORIGIN n_unit pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if $method_source_task(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.LEXICAL_CLASS = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if $goto_owner_scope(S.CURRENT, $goto_source_owner($all_functions(S), n_unit, pcpath))
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure_first, porigin_owner, pmethoddesc_first))
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if pclosurescope.LEXICAL = porigin_owner
+  -- if $method_closure_scope_valid(S, pclosurescope)
+  -- if $call_current_valid(S)
+
+;; This proof covers an implicit abstract trait requirement after data fixup.
+;; Parent and interface binding, including implicit Stringable, remain separate
+;; obligations. The exact copied requirements decide abstractness, not fixup alone.
+dec $trait_fcc_failed_abstract(pstate, pclassdesc, pconstantclosure) : bool
+def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure_first) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if $trait_fcc_retained_new_scope(S, porigin_site) = ((pclassdesc, pconstantclosure_first))
+  -- if pclassdesc.PARENT = eps /\ ~pclassdesc.ABSTRACT
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((pconstantclosure_first.SITE, ptraitcachecause))
+  -- if $trait_fcc_failed_target(S, pconstantclosure_first) = ((pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
+  -- if $trait_fcc_failed_fixup_at(S, pconstantclosure_first, |S.DECLARATIONS|) = ((pclassdesc.ORIGIN, pmethoddesc_copy))
+  -- if $trait_fcc_receipt_composition(S, ptraitcachecause) = ((S_copy, ptraitmethod*, ptraitmethod_required*))
+  -- if $class_at(S_copy.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_copy)
+  -- if $trait_import_interfaces(pclassdesc_copy, pclassdesc_copy.METHODS) = eps
+  -- if S_required = $trait_requirements(S_copy, pclassdesc_copy, ptraitmethod_required*)
+  -- if S_required.COMPLETION = NORMAL
+  -- if $class_at(S_required.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_required)
+  -- if $trait_import_interfaces(pclassdesc_required, pclassdesc_required.METHODS) = eps
+  -- if $pil_contract_issue(S_required, pclassdesc_required) = METHOD_OK
+  -- if $pil_abstract_message(S_required, pclassdesc_required) = (ptbytes_message)
+def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure) = false -- otherwise
+def $trait_fcc_retained_new(S, pclassdesc, pconstantclosure, z) = $throw_scalar(S, "Error", $ptascii("Cannot instantiate abstract class ") ++ pclassdesc.NAME, z)
+  -- if $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure)
+def $trait_fcc_retained_new(S, pclassdesc, pconstantclosure, z) = S[.COMPLETION = UNSUPPORTED "retained failed class construction"] -- otherwise
