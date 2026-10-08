@@ -626,3 +626,33 @@ echo "E;";
         'discriminator': 'The hole preflight evaluates a fresh constructor-free NEW default, preserves both genuine C argument slots for introspection and retires the default object after Set.',
     },
 ])
+
+CASES.append({
+    'id': 'stringable-key-unset-variadic-set-fake-frame',
+    'source': '''<?php
+class UnsetKeyLeftReview19 {
+    public function __toString(): string {
+        echo "L;";
+        unset($GLOBALS['keyReview19']);
+        return 'a';
+    }
+}
+class UnsetKeyBoxReview19 implements ArrayAccess {
+    public function offsetExists($key): bool { return true; }
+    public function offsetGet($key): mixed { echo "G:", $key, ";"; return new UnsetKeyLeftReview19(); }
+    public function offsetSet(...$args): void { echo "entered;"; }
+    public function offsetUnset($key): void { echo "wrongUnset;"; }
+}
+$keyReview19 = 'before';
+$boxReview19 = new UnsetKeyBoxReview19();
+try { $boxReview19[$keyReview19] .= 'b'; }
+catch (ArgumentCountError $errorReview19) {
+    echo "X:", $errorReview19->getMessage(), ";F:", $errorReview19->getLine(), ";";
+    $traceReview19 = $errorReview19->getTrace();
+    echo "T:", $traceReview19[0]['class'], "::", $traceReview19[0]['function'], ":", $traceReview19[0]['type'], ":", $traceReview19[0]['line'], ";";
+}
+echo "E;";
+''',
+    'expected_stdout': 'G:before;L;X:UnsetKeyBoxReview19::offsetSet(): Argument #1 not passed;F:12;T:UnsetKeyBoxReview19::offsetSet:->:17;E;',
+    'discriminator': 'A variadic-only Set still rejects a missing C slot before entry and reports the declaring method line and a genuine implicit Set traceback frame.',
+})

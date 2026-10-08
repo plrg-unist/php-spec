@@ -8,6 +8,8 @@ CASES = [
     ('left-write-and-current-rhs', 'left-stringable-write-and-current-rhs-conversion'),
     ('cast-owner-in-parked-fiber', 'stringable-cast-owner-survives-fiber-park-after-cell-write'),
     ('computed-key-and-base-owner-order', 'computed-base-owner-survives-through-final-computed-key-release'),
+    ('undefined-key-required-preflight', 'stringable-key-unset-required-set-argument'),
+    ('undefined-key-new-default-owner', 'stringable-key-unset-new-set-default-argview'),
 ]
 
 COMPILER_CASES = [
@@ -49,6 +51,22 @@ def $seek_park(S, n_fiber, n) = $seek_park($drive_steps(S[.COMPLETION = NORMAL],
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
   -- if $(n > 0)
 def $seek_park(S, n_fiber, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
+dec $hole_default_stage(pstate) : bool
+def $hole_default_stage(S) = true
+  -- if S.TODO = [NAMED_PREFLIGHT porigin 1]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.HOLES = [0]
+def $hole_default_stage(S) = false -- otherwise
+dec $seek_hole_default(pstate, nat) : pstate
+def $seek_hole_default(S, n) = S
+  -- if $hole_default_stage(S)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+def $seek_hole_default(S, n) = $seek_hole_default($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1)))
+  -- if ~$hole_default_stage(S)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $(n > 0)
+def $seek_hole_default(S, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
+
 '''
 
 
@@ -229,12 +247,120 @@ $ppdispatch(P, eps, NScalarInt (INTEGER 1) eps, PPRW) = P[.COMPLETION = PPCABRUP
     return stage, checks
 
 
+def key_hole_entry():
+    return r'''
+S.TODO = (ACCESS_SET_ENTER paccess) :: ptask_tail*
+paccess.KEYHOLE
+~paccess.LATCH
+paccess.MODE = ACCESS_COMPOUND CONCAT (POBJECT n_left)
+paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
+paccess.OBJECT = (n_box)
+paccess.BASE = BASE_VALUE (VARIABLE $ptascii("boxReview19") z_box)
+paccess.INPUT = VARIABLE $ptascii("keyReview19") z_key
+paccess.OFFSET = PNULL
+paccess.RHS = KNOWN (PSTRING $ptascii("b"))
+paccess.VALUE = PSTRING $ptascii("ab")
+paccess.OUTER
+$error_missing_operand(S, paccess.INPUT)
+$access_valid(S, paccess)
+$access_holes(paccess) = [0]
+$access_holes(paccess[.KEYHOLE = false]) = eps
+$access_set_hole_target(S, paccess) = (METHOD_TARGET n_box porigin_method)
+$target_function(S, METHOD_TARGET n_box porigin_method) = (pfunction)
+pfunction.SIGNATURE.PARAMETERS[0].NAME = $ptascii("key")
+pfunction.SIGNATURE.PARAMETERS[1].NAME = $ptascii("value")
+$call_task_valid(S, ACCESS_SET_ENTER paccess)
+~$call_task_valid(S, ACCESS_SET_ENTER paccess[.KEYHOLE = false])
+~$call_task_valid(S, ACCESS_SET_ENTER paccess[.LATCH = true])
+~$call_task_valid(S, ACCESS_SET_ENTER paccess[.OFFSET = PSTRING $ptascii("before")])
+~$call_task_valid(S, ACCESS_SET_ENTER paccess[.SITE = PORIGIN 0 eps])
+~$call_task_valid(S, ACCESS_SET_ENTER paccess[.LINE = $(paccess.LINE + 1)])
+~$call_task_valid(S, ACCESS_SET_ENTER paccess[.OBJECT = (|S.OBJECTS|)])
+$task_nodes(ACCESS_SET_ENTER paccess) = [HOBJECT n_box, HOBJECT n_left, HOBJECT n_box]
+$task_nodes(ACCESS_SET_ENTER paccess) = $task_nodes(ACCESS_RESULT paccess)
+(HOBJECT n_left) <- S.ALLOCATIONS
+(HOBJECT n_box) <- S.ALLOCATIONS
+$heap_owners($heap_prune($heap_graph(S)), HOBJECT n_left) = 1
+$outputs(S.EVENTS) = $ptascii("G:before;L;")
+S_forged = S[.TODO = (ACCESS_SET_ENTER paccess[.KEYHOLE = false]) :: ptask_tail*]
+$heap_graph(S_forged) = $heap_graph(S)
+$heap_valid($heap_graph(S_forged))
+~$call_descriptors_valid(S_forged)
+PhpStep: S ~> S_enter
+S_enter.TODO = [NAMED_PREFLIGHT porigin_method 0]
+S_enter.CURRENT = (pcallcontext)
+pcallcontext.TARGET = METHOD_TARGET n_box porigin_method
+pcallcontext.CALLSITE = (paccess.SITE)
+pcallcontext.LINE = paccess.LINE
+pcallcontext.ARGC = 2
+pcallcontext.HOLES = [0]
+pcallcontext.NAMED = eps
+pcallcontext.WRAPPER = eps
+S_enter.FRAMES = pframe :: pframe_tail*
+pframe.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
+$access_set_hole_context(S_enter, pcallcontext)
+$access_frame(S_enter, pcallcontext, pframe)
+~$named_defined(S_enter, $ptascii("key"))
+$named_defined(S_enter, $ptascii("value"))
+$named_call_shape(S_enter, METHOD_TARGET n_box porigin_method, (paccess.SITE)) = {SLOTS ([NAMED_HOLE, NAMED_SENT (KNOWN PNULL)]), NAMED eps}
+$named_preflight_valid(S_enter, porigin_method, 0)
+$call_holes_valid(S_enter, pcallcontext)
+S_enter.EVENTS = S.EVENTS
+S_no_hole = S_enter[.CURRENT = (pcallcontext[.HOLES = eps])]
+$heap_graph(S_no_hole) = $heap_graph(S_enter)
+$heap_valid($heap_graph(S_no_hole))
+~$call_descriptors_valid(S_no_hole)
+S_no_source = S_enter[.FRAMES = pframe[.TODO = (ACCESS_RESULT paccess[.KEYHOLE = false]) :: ptask_tail*] :: pframe_tail*]
+$heap_graph(S_no_source) = $heap_graph(S_enter)
+~$call_descriptors_valid(S_no_source)
+'''.strip().splitlines() + guards('S') + guards('S_enter')
+
+
+def key_hole_required():
+    stage = 'S.TODO = (ACCESS_SET_ENTER paccess) :: ptask_tail*'
+    checks = key_hole_entry() + r'''
+$default_at(pfunction.DEFAULTS, 0) = eps
+PhpStep: S_enter ~> S_error
+S_error = S_enter[.COMPLETION = THROWN "ArgumentCountError" $ptascii("UnsetKeyBoxReview19::offsetSet(): Argument #1 ($key) not passed") $default_parameter_line(S_enter, porigin_method, 0)]
+S_error.EVENTS = S_enter.EVENTS
+'''.strip().splitlines()
+    return stage, checks
+
+
+def key_hole_default():
+    stage = 'S.TODO = (ACCESS_SET_ENTER paccess) :: ptask_tail*'
+    checks = key_hole_entry() + r'''
+$default_at(pfunction.DEFAULTS, 0) = (pdefault)
+pdefault.KIND = PDDEFERRED
+$default_cache_at(S_enter.DEFAULTCACHE, pdefault.ORIGIN) = eps
+S_default_reached = $seek_hole_default(S_enter, 100)
+S_default_reached.COMPLETION = NORMAL \/ S_default_reached.COMPLETION = BUDGET
+S_default = S_default_reached[.COMPLETION = NORMAL]
+S_default.TODO = [NAMED_PREFLIGHT porigin_method 1]
+S_default.CURRENT = (pcallcontext)
+$lookup(S_default.ENV, $ptascii("key")) = (n_default_cell)
+S_default.STORE[n_default_cell] = DEFINED (POBJECT n_default)
+n_default =/= n_left
+(HOBJECT n_default) <- S_default.ALLOCATIONS
+(HOBJECT n_left) <- S_default.ALLOCATIONS
+$heap_owners($heap_prune($heap_graph(S_default)), HOBJECT n_default) = 1
+$heap_owners($heap_prune($heap_graph(S_default)), HOBJECT n_left) = 1
+$default_cache_at(S_default.DEFAULTCACHE, pdefault.ORIGIN) = eps
+$named_preflight_valid(S_default, porigin_method, 1)
+$call_holes_valid(S_default, pcallcontext)
+$outputs(S_default.EVENTS) = $ptascii("G:before;L;")
+'''.strip().splitlines() + guards('S_default')
+    return stage, checks
+
+
 def render(name, fixture, filename, expected):
     stage, checks = {
         'reference-carrier-admission': admission,
         'left-write-and-current-rhs': current_rhs,
         'cast-owner-in-parked-fiber': fiber_owner,
         'computed-key-and-base-owner-order': computed_owners,
+        'undefined-key-required-preflight': key_hole_required,
+        'undefined-key-new-default-owner': key_hole_default,
     }[name]()
     checks = [f'S_initial = $php_run({fixture}, 0, {filename})',
               'S_initial.COMPLETION = BUDGET',
