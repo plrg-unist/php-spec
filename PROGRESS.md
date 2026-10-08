@@ -339,7 +339,7 @@ the shared property CELL write while restoring main reporting. Parent318 fields
 are preserved; this source makes no dynamic-property runtime claim. Final302
 over b135 preserves new default receive fields and passes full algorithmic and
 structuring compilation. Module326 adds named sends and nested captured-row
-updates below. VALUE-return warning-handler producers and wider producers remain required;
+updates below; private329 adds VALUE-return Notice callbacks. Wider producers remain required;
 typed non-mixed return verification stays user-paused.
 
 Integrated ArrayAccess326 admits captured live ELEMENT rows for named reference
@@ -350,9 +350,22 @@ duplicate rejection before promotion, copy/shared-cell behavior and resumption.
 The [consumer ledger](coverage/semantics/arrayaccess-reference-consumers-review.json)
 keeps this303 cut separate. Final306 over `40e3c4fcc` passes full algorithmic
 and structuring compilation at `46c624e89`; independent seam review requires no
-source/state renewal. VALUE-return
-Notice-handler producers and wider Get behavior remain open; typed non-mixed
+source/state renewal. Private329 adds VALUE-return Notice callbacks below;
+wider Get behavior remains open. Typed non-mixed
 return verification stays user-paused.
+
+Private ArrayAccess329 stages the RETURN_REF_VALUE Notice for genuine untyped/mixed
+reference Get. The computed operand survives ordinary handler return, throw or
+Fiber suspension without a pre-Notice cell write or saved referent owner. Throw
+materialization bypasses Get's inner catch, retains the real RV through local
+release, then transfers its owner after the caller's access owner so the receiver
+retires before the returned value. Nine new exact normal originals and four
+genuine strict-SL groups/401 premises pass at `13e29b78d`/307. The
+[producer ledger](coverage/semantics/arrayaccess-reference-value-review.json)
+preserves both compiler-only failures and the corrected native rebind forecast.
+Actual-parent composition is pending. Finally-sensitive Notice ingress,
+bare/fall-through NULL, handler exit and wider producers remain open; typed
+non-mixed return verification stays user-paused.
 
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
@@ -1627,8 +1640,9 @@ failures and interrupted evidence.
   isset/empty, Set/append and Unset calls. Writable292 adds direct compound and
   ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append,
   and309 adds final simple append to returned children. Module319 adds untyped/mixed
-  reference Get;326 adds named sends and nested captured-row updates. VALUE-return
-  warning handlers, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
+  reference Get;326 adds named sends and nested captured-row updates, and private329
+  adds VALUE-return Notice callbacks. Finally-sensitive Notice ingress, bare/fall-through
+  NULL, handler exit, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container

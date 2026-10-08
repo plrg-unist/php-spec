@@ -1,0 +1,183 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "module": "spec/semantics/329-arrayaccess-reference-value-notices.watsup",
+  "decision": "Private scope independently accepted; actual-parent composition pending",
+  "revision": "13e29b78d4b1a6c37a9ec0944d12f2ae18fc35a3",
+  "base": "46c624e897f4637fa2f87789e5ffe93511d18a46",
+  "modules": 307,
+  "scope": "Resumable RETURN_REF_VALUE Notice for genuine untyped/mixed implicit reference Get; raw RV retained through handler and materialized once, with local/receiver/RV throw ordering",
+  "recovery_root": ".tools/arrayaccess-reference-get-value-producer-18",
+  "reports": {
+    "preparation": ".tools/arrayaccess-reference-value/prepared-3ldrwij6/report.json",
+    "source": ".tools/arrayaccess-reference-value/run-moh1n9bi/report.json",
+    "reached": ".tools/arrayaccess-reference-value/reached-run-n865fd8d/report.json"
+  },
+  "commands": [
+    "python3 tests/semantics/arrayaccess_reference_value_prepare.py",
+    "python3 tests/semantics/arrayaccess_reference_value_run.py .tools/arrayaccess-reference-value/prepared-3ldrwij6/report.json",
+    "python3 tests/semantics/arrayaccess_reference_value_reached_prepare.py .tools/arrayaccess-reference-value/prepared-3ldrwij6/report.json",
+    "python3 tests/semantics/arrayaccess_reference_value_reached_run.py .tools/arrayaccess-reference-value/review-reached-9an3lvuy/manifest.json"
+  ],
+  "profile": "tests/semantics/profile.json; error_reporting30719, LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING removed",
+  "caps": {
+    "compiler": 120,
+    "initial": 120,
+    "native": 45,
+    "CLI": 60,
+    "outer": 90,
+    "steps": 100000,
+    "source_phase": 480,
+    "strict_SL": 300,
+    "jobs": 1,
+    "cache": false,
+    "deterministic": true
+  },
+  "runtime_inputs": {
+    ".tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712
+    },
+    ".tools/spectec/bin/p4spectec": {
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "bytes": 32150944
+    },
+    "_build/default/adapter/main.exe": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976
+    },
+    "tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "bytes": 28628992
+    }
+  },
+  "compiler_initial": {
+    "algo": {
+      "emitted_bytes": 10222619,
+      "seconds": 3.111
+    },
+    "struct": {
+      "emitted_bytes": 9845836,
+      "seconds": 3.937
+    },
+    "strict_SL_initial": {
+      "premises": 6,
+      "seconds": 4.679
+    }
+  },
+  "sources": {
+    "unique_normal": 9,
+    "records": [
+      {
+        "id": "reference-get-value-return-warning-producer",
+        "stdout": "G;H:8;G;H:8;H:8192;E;",
+        "model_seconds": 10.704
+      },
+      {
+        "id": "reference-value-warning-throw-retires-computed-array-token",
+        "stdout": "G;H:8;D;X:halt;E;",
+        "model_seconds": 12.147
+      },
+      {
+        "id": "reference-value-warning-handler-suspends-before-materialization",
+        "stdout": "A:G;H:8;return;H:8192;E;R;",
+        "model_seconds": 14.882
+      },
+      {
+        "id": "reference-value-warning-keeps-return-opcode-file-and-line",
+        "stdout": "G;H:8:1:1;E;",
+        "model_seconds": 9.882
+      },
+      {
+        "id": "untyped-computed-array-keeps-embedded-reference-through-notice",
+        "stdout": "G;H:8;R:8;D;E;",
+        "model_seconds": 11.763
+      },
+      {
+        "id": "value-designated-raw-reference-observes-handler-write",
+        "stdout": "G;H:8;D;Z;E:1;",
+        "model_seconds": 11.654
+      },
+      {
+        "id": "value-designated-raw-reference-keeps-old-cell-after-rebind",
+        "stdout": "G;H:8;Z;D;E:1;",
+        "model_seconds": 12.3
+      },
+      {
+        "id": "notice-handler-false-resumes-masked-default-once",
+        "stdout": "G;H:8;E;",
+        "model_seconds": 9.784
+      },
+      {
+        "id": "reference-value-notice-throw-leaves-get-before-receiver-and-rv-release",
+        "stdout": "G;H:8;L;B;D;X:halt;E;",
+        "model_seconds": 14.357
+      }
+    ]
+  },
+  "reached": {
+    "recipes": 4,
+    "physical_premises": 401,
+    "records": [
+      {
+        "id": "fiber-notice-ingress",
+        "premises": 81,
+        "seconds": 78.876
+      },
+      {
+        "id": "raw-reference-after-handler-write",
+        "premises": 111,
+        "seconds": 58.01
+      },
+      {
+        "id": "raw-reference-after-global-rebind",
+        "premises": 115,
+        "seconds": 59.95
+      },
+      {
+        "id": "throw-frame-owner-after-retired-receiver",
+        "premises": 94,
+        "seconds": 54.85
+      }
+    ]
+  },
+  "outcome": "Nine credited native/model streams exact normal and four strict-SL streams true; physical stderr empty, exits0, stable clean inputs, source21 and reached8 producer groups closed",
+  "independent_review": "arguments_review_18 independently accepted semantics, originals, physical source/reached streams and fixture recorder; no reviewer actor",
+  "failures_zero_credit": [
+    {
+      "report": ".tools/arrayaccess-reference-value/native-a82myn4z/report.json",
+      "kind": "Native-only forecast for local global-alias rebinding",
+      "observed_stdout": "G;H:8;Z;E:0;D;",
+      "resolution": "Final original rebinds the actual GLOBALS entry; corrected native-only record retained in native-rebind-trnf4zwl. Initial duplicate location row has no additional source credit."
+    },
+    {
+      "report": ".tools/arrayaccess-reference-value/run-uuhwj3e_/report.json",
+      "revision": "66089fb0fe4c2f05c7ebbeb3235032a7bb36c3f2",
+      "kind": "Compiler-only registration order failure",
+      "stdout_bytes": 191,
+      "resolution": "329 moved after its declared ArrayAccess dependencies; no init/source/state executed"
+    },
+    {
+      "report": ".tools/arrayaccess-reference-value/run-53zgtsmp/report.json",
+      "revision": "91da701b7ca176fc40742243a2274faab016c740",
+      "kind": "Compiler-only otherwise premise failure",
+      "stdout_bytes": 202,
+      "resolution": "Fallback frame pop expressed by the existing pure tail-slice pattern; no init/source/state executed"
+    }
+  ],
+  "remaining": [
+    "Actual-parent composition and integration",
+    "Finally-sensitive reference VALUE-return Notice ingress",
+    "Bare/fall-through RETURN_REF_NULL Notice producer",
+    "Handler exit and non-Get Notice producers",
+    "Stringable/wider ArrayAccess producers and complete core",
+    "Typed non-mixed reference return verification remains user-paused"
+  ],
+  "source_references": [
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_RETURN_BY_REF/zend_leave_helper",
+    "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_dimension",
+    "spec/semantics/99-reference-returns.watsup::reference_return_notice/materialize",
+    "spec/semantics/257-request-destructors.watsup::destructor_frame_begin/throw_finish",
+    "spec/semantics/207-error-handler-runtime.watsup::error_dispatch/error_read_discard"
+  ],
+  "recovery_note": "Report paths resolve within recovery_root from canonical project. Raw original inputs/streams remain ignored; maintained originals/renderers regenerate fresh reports with local tools. Native-only preparatory witnesses add no source/model credit; no319/326 renewal."
+}
