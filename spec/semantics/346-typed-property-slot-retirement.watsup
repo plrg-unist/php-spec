@@ -17,6 +17,8 @@ def $property_slot_release_jobs(S, n_object, ppropertyslot :: ppropertyslot_tail
 def $destruction_child_jobs(S, HOBJECT n) = $property_slot_release_jobs(S, n, ppropertyslot*, true) ++ $property_slot_release_jobs(S, n, ppropertyslot*, false)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+def $generator_close_child_jobs(S, HOBJECT n) = $destruction_child_jobs(S, HOBJECT n)
+  -- if S.OBJECTS[n] = INSTANCE porigin
 def $destruction_job_node(DESTRUCTION_PROP_SOURCE pproptypesource n_cell) = (HCELL n_cell)
 def $gc_temporary_nodes((DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob*) = $gc_temporary_nodes(pdestructionjob*)
 
@@ -77,6 +79,7 @@ def $property_source_jobs(pdestructionjob_head :: pdestructionjob*, n_cell, ppro
 def $property_source_queues(eps, n_cell, pproptypesource) = 0
 def $property_source_queues(pdestructionrelease :: pdestructionrelease_tail*, n_cell, pproptypesource) = $($property_source_jobs(pdestructionrelease.JOBS, n_cell, pproptypesource) + $property_source_queues(pdestructionrelease_tail*, n_cell, pproptypesource))
 dec $property_retired_source_valid(pstate, nat, pproptypesource) : bool
+dec $property_generator_source_count(pstate, nat, pproptypesource) : nat
 def $property_retired_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = true
   -- if $(n_cell < |S.STORE|) /\ $(n_object < |S.OBJECTS|)
   -- if n_cell <- S.REFCELLS /\ (HCELL n_cell) <- S.ALLOCATIONS
@@ -92,7 +95,7 @@ def $property_retired_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbyte
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n_cell, pvalue) \/ $container_init_value(S, n_cell, pvalue) \/ $parameter_backing_value(S, n_cell, pvalue)
 def $property_retired_source_valid(S, n_cell, pproptypesource) = false -- otherwise
-def $propref_source_queued(S, n_cell, pproptypesource) = ($property_retired_source_valid(S, n_cell, pproptypesource) /\ $property_source_queues($property_release_queues(S), n_cell, pproptypesource) = 1)
+def $propref_source_queued(S, n_cell, pproptypesource) = ($property_retired_source_valid(S, n_cell, pproptypesource) /\ $($property_source_queues($property_release_queues(S), n_cell, pproptypesource) + $property_generator_source_count(S, n_cell, pproptypesource)) = 1)
 def $propref_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = true
   -- if $property_retired_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
   -- if $propref_source_queued(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
@@ -108,3 +111,50 @@ rule PhpStep/destructor-release-property-source: S ~> $destructor_release_replac
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if pdestructionrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob*
+
+;; Private Generator cleanup owns its jobs directly in TODO/FRAMES, rather than
+;; DESTRUCTION.RELEASES. Count each actual task occurrence and exclude only the
+;; saved carrier whose VM has already been restored as the active view.
+dec $property_generator_source_task(ptask, nat, pproptypesource) : nat
+dec $property_generator_source_tasks(ptask*, nat, pproptypesource) : nat
+dec $property_generator_source_frames(pframe*, nat, pproptypesource) : nat
+dec $property_generator_source_vm(pstate, pfibervm, nat?, nat, pproptypesource) : nat
+dec $property_generator_source_object(pstate, pnode, nat, pproptypesource) : nat
+dec $property_generator_source_objects(pstate, pnode*, nat, pproptypesource) : nat
+dec $property_generator_source_callers(pstate, pfibercaller*, nat, pproptypesource) : nat
+dec $property_generator_source_closers(pstate, pfiberclose*, nat, pproptypesource) : nat
+def $property_generator_source_task(GENERATOR_CLOSE_RELEASE pgenrelease, n_cell, pproptypesource) = $property_source_jobs(pgenrelease.JOBS, n_cell, pproptypesource)
+def $property_generator_source_task(ptask, n_cell, pproptypesource) = 0 -- otherwise
+def $property_generator_source_tasks(eps, n_cell, pproptypesource) = 0
+def $property_generator_source_tasks(ptask :: ptask_tail*, n_cell, pproptypesource) = $($property_generator_source_task(ptask, n_cell, pproptypesource) + $property_generator_source_tasks(ptask_tail*, n_cell, pproptypesource))
+def $property_generator_source_frames(eps, n_cell, pproptypesource) = 0
+def $property_generator_source_frames(pframe :: pframe_tail*, n_cell, pproptypesource) = $($property_generator_source_tasks(pframe.TODO, n_cell, pproptypesource) + $property_generator_source_frames(pframe_tail*, n_cell, pproptypesource))
+def $property_generator_source_vm(S, pfibervm, n_active?, n_cell, pproptypesource) = $($property_generator_source_tasks(pfibervm.TODO, n_cell, pproptypesource) + $property_generator_source_frames(pfibervm.FRAMES, n_cell, pproptypesource))
+  -- if n_active? =/= S.ACTIVEFIBER
+def $property_generator_source_vm(S, pfibervm, n_active?, n_cell, pproptypesource) = 0 -- otherwise
+def $property_generator_source_object(S, HOBJECT n, n_cell, pproptypesource) = $property_generator_source_vm(S, pfibervm, (n), n_cell, pproptypesource)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+def $property_generator_source_object(S, pnode, n_cell, pproptypesource) = 0 -- otherwise
+def $property_generator_source_objects(S, eps, n_cell, pproptypesource) = 0
+def $property_generator_source_objects(S, pnode :: pnode_tail*, n_cell, pproptypesource) = $($property_generator_source_object(S, pnode, n_cell, pproptypesource) + $property_generator_source_objects(S, pnode_tail*, n_cell, pproptypesource))
+def $property_generator_source_callers(S, eps, n_cell, pproptypesource) = 0
+def $property_generator_source_callers(S, pfibercaller :: pfibercaller_tail*, n_cell, pproptypesource) = $($property_generator_source_vm(S, pfibercaller.VM, pfibercaller.PREVIOUS, n_cell, pproptypesource) + $property_generator_source_callers(S, pfibercaller_tail*, n_cell, pproptypesource))
+def $property_generator_source_closers(S, eps, n_cell, pproptypesource) = 0
+def $property_generator_source_closers(S, pfiberclose :: pfiberclose_tail*, n_cell, pproptypesource) = $($property_generator_source_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS, n_cell, pproptypesource) + $property_generator_source_closers(S, pfiberclose_tail*, n_cell, pproptypesource))
+def $property_generator_source_count(S, n_cell, pproptypesource) = $($property_generator_source_tasks(S.TODO, n_cell, pproptypesource) + $property_generator_source_frames(S.FRAMES, n_cell, pproptypesource) + $property_generator_source_objects(S, S.ALLOCATIONS, n_cell, pproptypesource) + $property_generator_source_callers(S, S.FIBERCALLERS, n_cell, pproptypesource) + $property_generator_source_closers(S, S.FIBERCLOSERS, n_cell, pproptypesource))
+def $generator_close_jobs_valid(S, (DESTRUCTION_PROP_SOURCE (OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) n_cell) :: pdestructionjob*) = true
+  -- if (DESTRUCTION_HANDLE n_object) <- pdestructionjob*
+  -- if $property_source_jobs((DESTRUCTION_PROP_SOURCE (OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) n_cell) :: pdestructionjob*, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = 1
+  -- if $property_retired_source_valid(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if $propref_source_present(S.PROPREFS, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if $propref_source_queued(S, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid)
+  -- if $generator_close_jobs_valid(S, pdestructionjob*)
+def $generator_close_release(S, pgenrelease) = S[.PROPREFS = $propref_detach(S.PROPREFS, n_cell, pproptypesource)][.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = (DESTRUCTION_VALUE (HCELL n_cell)) :: pdestructionjob*]) :: ptask*]
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob*
+  -- if $generator_close_release_valid(S, pgenrelease)
+def $gc_handle_task(S, GENERATOR_CLOSE_RELEASE pgenrelease, n) = $gc_handle_jobs(pgenrelease.JOBS, n)
+  -- if $generator_close_release_valid(S, pgenrelease)

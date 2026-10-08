@@ -15,6 +15,7 @@ dec $generator_destructor_finish(pstate, nat) : pstate
 dec $generator_destructor_request_ready(pstate, pdestructionrelease, pnode) : bool
 dec $generator_close_merge(pstate, nat?, nat?) : (pstate, nat?)
 dec $generator_close_children(pstate, pnode) : pnode*
+dec $generator_close_child_jobs(pstate, pnode) : pdestructionjob*
 dec $generator_close_prepare(pstate, pgenrelease, nat) : pstate
 dec $generator_close_prepare_store(pstate, pgenrelease, nat, nat?) : pstate
 dec $generator_request_prune_ready(pstate) : bool
@@ -226,6 +227,7 @@ def $generator_close_children(S, HOBJECT n) = $generator_close_frame_nodes(S, pf
   -- if pgenerator.PHASE = GENERATOR_FRESH
   -- if pgenerator.FRAME = (pframe)
 def $generator_close_children(S, pnode) = $node_children(S, pnode) -- otherwise
+def $generator_close_child_jobs(S, pnode) = $destruction_values($generator_close_children(S, pnode)) -- otherwise
 ;; Cached storage can enter the ordinary destructor loop only when its actual
 ;; pending carrier is reachable through these release markers.
 def $generator_close_destructor_tasks(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*, n_local?, n_caller?, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
@@ -302,7 +304,7 @@ def $generator_close_release(S, pgenrelease) = S[.COMPLETION = UNSUPPORTED "ordi
   -- if ~$generator_close_node(S, pnode)
   -- if $destructor_uncalled_node(S, pnode)
   -- if ~$generator_close_destructor_ready(S, pgenrelease)
-def $generator_close_release(S, pgenrelease) = $prune_live(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = $destruction_values($generator_close_children(S, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*]) :: ptask*], $destruction_node_delete(S.ALLOCATIONS, pnode))
+def $generator_close_release(S, pgenrelease) = $prune_live(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = $generator_close_child_jobs(S, pnode) ++ $destruction_free_job(pnode) ++ pdestructionjob*]) :: ptask*], $destruction_node_delete(S.ALLOCATIONS, pnode))
   -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
   -- if pgenrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
   -- if pnode <- S.ALLOCATIONS
@@ -659,6 +661,7 @@ def $generator_close_captures_valid(S, pnode :: pnode_tail*) = ((pnode <- S.ALLO
 def $generator_close_jobs_valid(S, eps) = true
 def $generator_close_jobs_valid(S, (DESTRUCTION_VALUE pnode) :: pdestructionjob*) = ($generator_close_captures_valid(S, [pnode]) /\ $generator_close_jobs_valid(S, pdestructionjob*))
 def $generator_close_jobs_valid(S, (DESTRUCTION_HANDLE n) :: pdestructionjob*) = ($(n < |S.OBJECTS|) /\ ~(HOBJECT n <- S.ALLOCATIONS) /\ $generator_close_jobs_valid(S, pdestructionjob*))
+def $generator_close_jobs_valid(S, pdestructionjob*) = false -- otherwise
 def $generator_close_pending_valid(S, eps) = true
 def $generator_close_pending_valid(S, (n)) = $throwable_live(S, n)
 def $generator_close_release_valid(S, pgenrelease) = ($generator_close_jobs_valid(S, pgenrelease.JOBS) /\ $call_reference_operand_valid(S, pgenrelease.VALUE) /\ $generator_close_captures_valid(S, $base_nodes(pgenrelease.BASE)) /\ $generator_close_pending_valid(S, pgenrelease.PENDING) /\ pgenrelease.COMPLETION = NORMAL)
