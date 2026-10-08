@@ -1,0 +1,188 @@
+;; concat_function converts op1 before dereferencing the selected op2 slot.
+;; CV slots are borrowed; evaluated VAR/TMP slots survive the final store.
+dec $compound_live_cv_source(pstate, porigin, poperand) : bool
+dec $compound_live_cv_name(pstate, porigin, pcpath) : (nat*)?
+dec $compound_live_copy(pstate, porigin) : bool
+dec $compound_live_destination_cv(pstate, plocation, porigin) : bool
+dec $compound_live_self(pstate, plocation, porigin, poperand) : bool
+dec $compound_live_flags(pstate, pcompoundstring) : bool
+dec $compound_live_selected(pstate, pcompoundstring) : bool
+dec $compound_live_source(pstate, pcompoundstring) : bool
+dec $compound_live_valid(pstate, pcompoundstring) : bool
+dec $compound_live_begin(pstate, pvalue, poperand, porigin, int) : pstate
+dec $compound_live_write(pstate, pcompoundstring, pvalue) : pstate
+
+def $compound_live_cv_name(S, porigin, pcpath) = $reference_cv(expression)
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $origin_node(S.SOURCES, porigin_operand) = (expression)
+def $compound_live_cv_name(S, porigin, pcpath) = eps -- otherwise
+def $compound_live_cv_source(S, porigin, VARIABLE n_name* z) = true
+  -- if $compound_live_cv_name(S, porigin, [PCFIELD 1]) = (n_name*)
+  -- if $code_expression_at_source(S, porigin, [PCFIELD 1]) = (z)
+def $compound_live_cv_source(S, porigin, poperand) = false -- otherwise
+def $compound_live_copy(S, porigin) = $assignment_self(expression_left, expression_right)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat expression_left expression_right metadata)
+  -- if expression_left = NExprArrayDimFetch expression phpType5 metadata_left
+def $compound_live_copy(S, porigin) = false -- otherwise
+
+def $compound_selected_operand(S, CONCAT, VARIABLE n_name* z, poperand_resolved) = VARIABLE n_name* z
+  -- if S.ORIGIN = (porigin)
+  -- if $compound_live_cv_source(S, porigin, VARIABLE n_name* z)
+  -- if ~$error_missing_operand(S, VARIABLE n_name* z)
+def $compound_selected_operand(S, CONCAT, REFERENCE n, poperand_resolved) = REFERENCE n
+  -- if S.ORIGIN = (porigin)
+  -- if $compound_live_cv_name(S, porigin, [PCFIELD 1]) = eps
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+;; ASSIGN_OP retains its actual CV; DIM keeps the compiler's self snapshot.
+def $compound_snapshot(CONCAT, BASE_VALUE (VARIABLE n_name* z), expression_left, expression_right) = false
+  -- if $reference_cv(expression_left) = (n_name*)
+  -- if $reference_cv(expression_right) = (n_name*)
+
+def $compound_live_destination_cv(S, ROOT n, porigin) = true
+  -- if $compound_live_cv_name(S, porigin, [PCFIELD 0]) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if ~(n <- S.REFCELLS)
+def $compound_live_destination_cv(S, plocation, porigin) = false -- otherwise
+def $compound_live_self(S, plocation, porigin, VARIABLE n_name* z) = true
+  -- if $compound_live_destination_cv(S, plocation, porigin)
+  -- if $compound_live_cv_name(S, porigin, [PCFIELD 0]) = (n_name*)
+def $compound_live_self(S, plocation, porigin, poperand) = false -- otherwise
+def $compound_live_flags(S, pcompoundstring) = true
+  -- if ~pcompoundstring.CV /\ ~pcompoundstring.SELF
+def $compound_live_flags(S, pcompoundstring) = true
+  -- if pcompoundstring.CV
+  -- if pcompoundstring.PLACE = ROOT n
+  -- if $compound_live_cv_name(S, pcompoundstring.SITE, [PCFIELD 0]) = (n_name*)
+  -- if ~pcompoundstring.SELF
+def $compound_live_flags(S, pcompoundstring) = true
+  -- if pcompoundstring.CV /\ pcompoundstring.SELF
+  -- if pcompoundstring.PLACE = ROOT n
+  -- if pcompoundstring.RIGHT = VARIABLE n_name* z
+  -- if $compound_live_cv_name(S, pcompoundstring.SITE, [PCFIELD 0]) = (n_name*)
+def $compound_live_flags(S, pcompoundstring) = false -- otherwise
+
+;; The source/slot kind survives cleanup. Only the live guard owns op2 nodes.
+def $compound_live_selected(S, pcompoundstring) = true -- if pcompoundstring.SELECTED = eps
+def $compound_live_selected(S, pcompoundstring) = $(n < |S.OBJECTS|) -- if pcompoundstring.SELECTED = (n)
+def $compound_live_source(S, pcompoundstring) = true
+  -- if $compound_string_source(S, pcompoundstring.PLACE, pcompoundstring.SITE, pcompoundstring.LINE)
+  -- if $compound_live_flags(S, pcompoundstring)
+  -- if $compound_live_selected(S, pcompoundstring)
+  -- if $compound_live_cv_source(S, pcompoundstring.SITE, pcompoundstring.RIGHT)
+def $compound_live_source(S, pcompoundstring) = true
+  -- if $compound_string_source(S, pcompoundstring.PLACE, pcompoundstring.SITE, pcompoundstring.LINE)
+  -- if $compound_live_flags(S, pcompoundstring)
+  -- if $compound_live_selected(S, pcompoundstring)
+  -- if pcompoundstring.RIGHT = KNOWN pvalue
+  -- if $compound_live_cv_name(S, pcompoundstring.SITE, [PCFIELD 1]) = eps \/ pvalue = PNULL \/ $compound_live_copy(S, pcompoundstring.SITE)
+  -- if $origin_child((pcompoundstring.SITE), [PCFIELD 1]) = (porigin_right)
+  -- if $compiled_read(S, porigin_right) = eps \/ $compiled_read(S, porigin_right) = (pvalue)
+def $compound_live_source(S, pcompoundstring) = true
+  -- if $compound_string_source(S, pcompoundstring.PLACE, pcompoundstring.SITE, pcompoundstring.LINE)
+  -- if $compound_live_flags(S, pcompoundstring)
+  -- if $compound_live_selected(S, pcompoundstring)
+  -- if pcompoundstring.RIGHT = REFERENCE n
+  -- if $compound_live_cv_name(S, pcompoundstring.SITE, [PCFIELD 1]) = eps
+def $compound_live_source(S, pcompoundstring) = false -- otherwise
+def $compound_live_valid(S, pcompoundstring) = ($compound_live_source(S, pcompoundstring) /\ $heap_subset($operand_nodes(pcompoundstring.RIGHT), S.ALLOCATIONS) /\ $call_reference_operand_valid(S, pcompoundstring.RIGHT))
+
+def $compound_live_begin(S, pvalue_left, poperand, porigin, z) = S[.TODO = (COMPOUND_LIVE_PREP {PLACE S.LOCATION, RIGHT poperand, SITE porigin, LINE z, CV $compound_live_destination_cv(S, S.LOCATION, porigin), SELF $compound_live_self(S, S.LOCATION, porigin, poperand), SELECTED eps} pvalue_left) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $compound_operand_value(S, CONCAT, pvalue_left, pvalue_right, poperand, z) = $compound_live_begin(S, pvalue_left, poperand, porigin, z)
+  -- if $user_string_value(S, pvalue_left) \/ $user_string_value(S, pvalue_right)
+  -- if S.ORIGIN = (porigin)
+  -- if $compound_live_valid(S, {PLACE S.LOCATION, RIGHT poperand, SITE porigin, LINE z, CV $compound_live_destination_cv(S, S.LOCATION, porigin), SELF $compound_live_self(S, S.LOCATION, porigin, poperand), SELECTED eps})
+def $compound_string_pending(S) = true
+  -- if S.TODO = (COMPOUND_LIVE_PREP pcompoundstring pvalue) :: ptask*
+
+def $task_nodes(COMPOUND_LIVE_PREP pcompoundstring pvalue) = $operand_nodes(pcompoundstring.RIGHT) ++ $compound_string_place_nodes(pcompoundstring.PLACE)
+def $task_nodes(COMPOUND_LIVE_LEFT pcompoundstring) = $operand_nodes(pcompoundstring.RIGHT) ++ $compound_string_place_nodes(pcompoundstring.PLACE)
+def $task_nodes(COMPOUND_LIVE_RIGHT pcompoundstring ptbytes) = $operand_nodes(pcompoundstring.RIGHT) ++ $compound_string_place_nodes(pcompoundstring.PLACE)
+def $task_nodes(COMPOUND_LIVE_RELEASE pcompoundstring) = $operand_nodes(pcompoundstring.RIGHT) ++ $compound_string_place_nodes(pcompoundstring.PLACE)
+def $task_nodes(COMPOUND_LIVE_DONE pcompoundstring) = $compound_string_place_nodes(pcompoundstring.PLACE)
+def $compound_string_frame((STRINGIFY_RESULT n porigin z) :: (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*) = (porigin = pcompoundstring.SITE /\ z = pcompoundstring.LINE)
+def $compound_string_frame((STRINGIFY_RESULT n porigin z) :: (COMPOUND_LIVE_RIGHT pcompoundstring ptbytes) :: ptask*) = (porigin = pcompoundstring.SITE /\ z = pcompoundstring.LINE)
+def $stringify_source(S, porigin, z, COMPOUND_LIVE_LEFT pcompoundstring) = ($compound_live_valid(S, pcompoundstring) /\ porigin = pcompoundstring.SITE /\ z = pcompoundstring.LINE)
+  -- if pcompoundstring.SELECTED = (n)
+def $stringify_source(S, porigin, z, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes) = ($compound_live_valid(S, pcompoundstring) /\ porigin = pcompoundstring.SITE /\ z = pcompoundstring.LINE)
+  -- if pcompoundstring.SELECTED = (n)
+def $stringify_source_consumer(COMPOUND_LIVE_LEFT pcompoundstring) = true
+def $stringify_source_consumer(COMPOUND_LIVE_RIGHT pcompoundstring ptbytes) = true
+def $stringify_consumer_tail_valid(S, porigin, z, COMPOUND_LIVE_LEFT pcompoundstring, ptask*) = $stringify_source(S, porigin, z, COMPOUND_LIVE_LEFT pcompoundstring)
+def $stringify_consumer_tail_valid(S, porigin, z, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes, ptask*) = $stringify_source(S, porigin, z, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes)
+def $stringify_consumer_receiver_valid(S, n, COMPOUND_LIVE_LEFT pcompoundstring) = (pcompoundstring.SELECTED = (n))
+def $stringify_consumer_receiver_valid(S, n, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes) = (pcompoundstring.SELECTED = (n))
+def $call_task_valid(S, COMPOUND_LIVE_PREP pcompoundstring pvalue_left) = ($compound_live_valid(S, pcompoundstring) /\ pcompoundstring.SELECTED = eps /\ S.ORIGIN = (pcompoundstring.SITE) /\ $compound_string_initial_place(S, pcompoundstring.PLACE, pcompoundstring.SITE) /\ $location_slot(S, pcompoundstring.PLACE) = DEFINED pvalue_left /\ pcompoundstring.CV = $compound_live_destination_cv(S, pcompoundstring.PLACE, pcompoundstring.SITE) /\ pcompoundstring.SELF = $compound_live_self(S, pcompoundstring.PLACE, pcompoundstring.SITE, pcompoundstring.RIGHT))
+def $call_task_valid(S, COMPOUND_LIVE_LEFT pcompoundstring) = ($compound_live_valid(S, pcompoundstring) /\ S.ORIGIN = (pcompoundstring.SITE))
+def $call_task_valid(S, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes) = ($compound_live_valid(S, pcompoundstring) /\ S.ORIGIN = (pcompoundstring.SITE))
+def $call_task_valid(S, COMPOUND_LIVE_RELEASE pcompoundstring) = ($compound_live_valid(S, pcompoundstring) /\ S.ORIGIN = (pcompoundstring.SITE))
+def $call_task_valid(S, COMPOUND_LIVE_DONE pcompoundstring) = ($compound_live_source(S, pcompoundstring) /\ S.ORIGIN = (pcompoundstring.SITE))
+
+rule PhpStep/compound-live-left-call: S ~> $user_string_begin(S, n, pcompoundstring.SITE, pcompoundstring.LINE, COMPOUND_LIVE_LEFT pcompoundstring[.SELECTED = (n)], ptask*)
+  -- if S.TODO = (COMPOUND_LIVE_PREP pcompoundstring (POBJECT n)) :: ptask*
+  -- if $stringable_instance(S, n)
+rule PhpStep/compound-live-left-plain: S ~> S_string[.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*]
+  -- if S.TODO = (COMPOUND_LIVE_PREP pcompoundstring pvalue) :: ptask*
+  -- if ~$user_string_value(S, pvalue)
+  -- if S_string = $stringify(S, pvalue, pcompoundstring.LINE)
+  -- if S_string.COMPLETION = NORMAL
+rule PhpStep/compound-live-left-abrupt: S ~> S_string[.TODO = eps]
+  -- if S.TODO = (COMPOUND_LIVE_PREP pcompoundstring pvalue) :: ptask*
+  -- if ~$user_string_value(S, pvalue)
+  -- if S_string = $stringify(S, pvalue, pcompoundstring.LINE)
+  -- if S_string.COMPLETION =/= NORMAL
+rule PhpStep/compound-live-self: S ~> S[.TODO = (COMPOUND_LIVE_RIGHT pcompoundstring[.SELECTED = eps] ptbytes) :: ptask*]
+  -- if S.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
+  -- if pcompoundstring.SELF
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+rule PhpStep/compound-live-right-call: S ~> $user_string_begin(S_read, n, pcompoundstring.SITE, pcompoundstring.LINE, COMPOUND_LIVE_RIGHT pcompoundstring[.SELECTED = (n)] ptbytes_left, ptask*)
+  -- if S.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
+  -- if ~pcompoundstring.SELF
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_left)
+  -- if S_read = $quiet_operand(S, pcompoundstring.RIGHT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
+rule PhpStep/compound-live-right-plain: S ~> S_string[.TODO = (COMPOUND_LIVE_RIGHT pcompoundstring[.SELECTED = eps] ptbytes_left) :: ptask*]
+  -- if S.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
+  -- if ~pcompoundstring.SELF
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_left)
+  -- if S_read = $quiet_operand(S, pcompoundstring.RIGHT)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_read, pvalue)
+  -- if S_string = $stringify(S_read, pvalue, pcompoundstring.LINE)
+  -- if S_string.COMPLETION = NORMAL
+rule PhpStep/compound-live-right-abrupt: S ~> S_string[.TODO = eps]
+  -- if S.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
+  -- if ~pcompoundstring.SELF
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_left)
+  -- if S_read = $quiet_operand(S, pcompoundstring.RIGHT)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_read, pvalue)
+  -- if S_string = $stringify(S_read, pvalue, pcompoundstring.LINE)
+  -- if S_string.COMPLETION =/= NORMAL
+
+;; A result pointer selected before a callback still names that CV slot,
+;; even if the callback has since installed a reference container there.
+def $compound_live_write(S, pcompoundstring, pvalue) = $write_name($unset_name(S, n_name*), n_name*, pvalue)
+  -- if pcompoundstring.CV
+  -- if $compound_live_cv_name(S, pcompoundstring.SITE, [PCFIELD 0]) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if n <- S.REFCELLS
+def $compound_live_write(S, pcompoundstring, pvalue) = $write_name(S, n_name*, pvalue)
+  -- if pcompoundstring.CV
+  -- if $compound_live_cv_name(S, pcompoundstring.SITE, [PCFIELD 0]) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if ~(n <- S.REFCELLS)
+def $compound_live_write(S, pcompoundstring, pvalue) = $write_name(S, n_name*, pvalue)
+  -- if pcompoundstring.CV
+  -- if $compound_live_cv_name(S, pcompoundstring.SITE, [PCFIELD 0]) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = eps
+def $compound_live_write(S, pcompoundstring, pvalue) = $compound_string_write(S, pcompoundstring.PLACE, pcompoundstring.SITE, pvalue)
+  -- if ~pcompoundstring.CV
+rule PhpStep/compound-live-store: S ~> $compound_live_write(S[.TODO = (COMPOUND_LIVE_RELEASE pcompoundstring) :: ptask*][.LOCATION = pcompoundstring.PLACE][.RESULT = KNOWN pvalue], pcompoundstring, pvalue)
+  -- if S.TODO = (COMPOUND_LIVE_RIGHT pcompoundstring ptbytes_left) :: ptask*
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_right)
+  -- if pvalue = PSTRING (ptbytes_left ++ ptbytes_right)
+rule PhpStep/compound-live-release: S ~> S[.TODO = (COMPOUND_LIVE_DONE pcompoundstring) :: ptask*]
+  -- if S.TODO = (COMPOUND_LIVE_RELEASE pcompoundstring) :: ptask*
+rule PhpStep/compound-live-done: S ~> S[.TODO = ptask*]
+  -- if S.TODO = (COMPOUND_LIVE_DONE pcompoundstring) :: ptask*
