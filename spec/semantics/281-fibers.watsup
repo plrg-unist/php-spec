@@ -17,6 +17,9 @@ def $fiber_object(pobject) = false -- otherwise
 def $fiber_put(S, n, pfiber) = S[.OBJECTS = $object_set(S.OBJECTS, n, FIBER pfiber)]
 def $fiber_empty() = {READY false, CALL eps, RAW PNULL, TARGET eps, BIRTH eps, CAPTURE eps, PRODUCER eps, ENTRY eps, FINISH eps, GC eps, STATUS FIBER_INIT, VM eps, VALUE PNULL, RETURNED false, FAILED false, GRACEFUL false, SEQUENCE 0}
 def $object_name(S, n) = $ptascii("Fiber") -- if S.OBJECTS[n] = FIBER pfiber
+def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, $ptascii("Fiber"))
+  -- if S.OBJECTS[n] = FIBER pfiber
+def $typed_given(S, POBJECT n) = $ptascii("Fiber") -- if S.OBJECTS[n] = FIBER pfiber
 def $getclass_live_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
@@ -244,11 +247,7 @@ def $fiber_callback_resolution(S, pvalue) = $error_handler_resolution(S, pvalue)
 dec $fiber_cached_target_valid(pstate, pfiber) : bool
 
 ;; Constructor Z_PARAM_FUNC runs before the repeated-constructor status test.
-;; Initial support is the existing declared callable family; deprecated raw
-;; keywords and compound selectors need the genuine effectful API adapter.
-def $fiber_receive_value(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "Fiber constructor deprecated callable selection"]
-  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
-  -- if $api_special(S, pvalue)
+;; Deprecated keyword and compound selectors use the effectful API adapter.
 def $fiber_receive_value(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("Fiber::__construct(): Argument #1 ($callback) must be a valid callback, ") ++ ptbytes)
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if ~$api_special(S, pvalue)
@@ -342,8 +341,11 @@ def $fiber_cache_valid(S, n, pfiber) = true
   -- if $fiber_cached_target_valid(S, pfiber)
 def $fiber_cache_valid(S, n, pfiber) = false -- otherwise
 
+dec $fiber_callable_target_tag(pcalltarget) : bool
+def $fiber_callable_target_tag(pcalltarget) = false -- otherwise
 def $fiber_cached_target_valid(S, pfiber) = true
   -- if pfiber.TARGET = (pcalltarget)
+  -- if ~$fiber_callable_target_tag(pcalltarget)
   -- if $error_handler_selected(S, pfiber.RAW, pcalltarget)
   -- if $fiber_scope_target(pcalltarget) = eps \/ $fiber_scope_target(pcalltarget) = $fiber_scope(S, pfiber)
   -- if $target_function(S, pcalltarget) = (pfunction)

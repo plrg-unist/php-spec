@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Collector325 retains a detached zero-owner target and its outgoing graph through
+a borrowed buffer tag, without adding an owner. Real weak reacquisition restores
+ordinary last-owner release and parent retirement before child destruction.
+Three exact originals and85 reached premises pass at separate private cuts.
+An actual305-parent unowned-close original collects the target in the same active
+pass;117 reached premises validate its real two-owner private-control retirement
+and saved caller VM. The narrow scoped admission repair passes changed compilation.
+The final309 join over callable Fibers322 passes its sole combined compiler
+at `b4cfe4a14`; earlier source/state cuts retain their identities.
+[Scope and retained cuts](docs/semantics/CYCLE-COLLECTION.md).
+
 Integrated321 copies a known YIELD value before an ordinary missing
 key-CV warning, authenticates one object-specific partial-cache carrier and keeps
 null key/index/opcode-line behavior through callbacks. Actual child-resume markers
@@ -41,12 +52,12 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The current source includes accepted ArrayAccess292/304/309/319/326, eager destruction270,
-WeakReference296, ordinary cycle collection301 and collector Fibers317,
-Fiber291/302/308/313, Generator289/303/310/311/321 and source operands293/298,
+WeakReference296, ordinary cycle collection301 and collector Fibers317/325,
+Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with307 modules descended from
-`ee2c9eb1f0fd`. The ordered integration preserves
+with309 modules composed over
+`cd624aeef74cd`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
@@ -114,8 +125,9 @@ mask restoration and real count1/weak retirement. The final304 additive join
 preserves newer default-receive, Get/reference and literal-this source schemas
 and passes the required combined compiler without source/state renewal.
 The fresh explicit-INI source discriminates
-cached mask reuse. The two larger 60s model timeouts and native-only detached
-zero-owner path retain zero agreement. Wider internal graphs, idle-worker public
+cached mask reuse. The two larger 60s model timeouts retain zero agreement.
+Module325 adds separately tested detached zero-owner retention, real reacquisition
+and active unowned-close retirement. Wider internal graphs, idle-worker public
 resumption, automatic thresholds, resurrection and final request freeing remain
 required.
 
@@ -565,6 +577,17 @@ preserves prior source/state cuts and separates bounded public checks from the
 unconfirmed rich whole-source/full63 runs. Wider internal/FCC/reference callbacks,
 initialization, request/fatal/GC consumers and complete core remain required;
 the final fresh offline rebuild is outstanding and returns verification stays paused.
+
+Fiber322 adds effectful scoped/deprecated constructor method selection,
+warning-before-status ordering and immutable original maker/scope authority.
+Actual Fiber nominal argument admission and inherited RuntimeException construction
+close gaps found by unchanged originals. The actual305-parent interaction preserves
+a private static callback made by a GC destructor after its receiver retires;
+one exact source and92 reached premises pass independently. Earlier thirteen
+sources and815 conditions retain their original cuts in the
+[constructor ledger](coverage/semantics/fiber-callable-constructors-review.json).
+Final307-parent composition passes strict308 and compatibility review; broader callable/FCC,
+internal/reference/lifecycle consumers and final validation remain required.
 
 Generator280 creates object-owned suspended frames after eager ordinary receives.
 Value yields, literal iterator methods, `getReturn` and value foreach retain

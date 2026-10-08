@@ -1,0 +1,201 @@
+;; Z_PARAM_FUNC resolves deprecated selectors before the repeated-constructor
+;; check. Selection snapshots borrow the constructor's retained raw callback.
+dec $fiber_callable_pending_valid(pstate, papiquery) : bool
+dec $fiber_callable_capture_valid(pstate, pfiber, pconfigcall) : bool
+dec $fiber_callable_this_valid(pstate, pfiber, papiquery) : bool
+dec $fiber_callable_scope_valid(pstate, pfiber, papiquery) : bool
+dec $fiber_callable_raw_valid(pstate, papiquery) : bool
+dec $fiber_callable_snapshot(pfibercallable) : pfiber
+dec $fiber_callable_receipt_valid(pstate, pfibercallable) : bool
+
+;; New-expression result markers stay tied to the allocated constructor owner
+;; while callback resolution warns or calls a user handler.
+def $ctor_pair_target(S, CONFIG_ARGS pconfigcall) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_ARGS pconfigcall)
+def $ctor_pair_target(S, CONFIG_SEND pconfigcall) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_SEND pconfigcall)
+def $ctor_pair_target(S, CONFIG_UNPACK_PREP pconfigcall) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_UNPACK_PREP pconfigcall)
+def $ctor_pair_target(S, CONFIG_UNPACK_NEXT pconfigcall poperand n_cursor) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_UNPACK_NEXT pconfigcall poperand n_cursor)
+def $ctor_pair_target(S, CONFIG_INVOKE pconfigcall) = pconfigcall.OWNER
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $call_task_valid(S, CONFIG_INVOKE pconfigcall)
+def $ctor_pair_target(S, API_CALLABLE_RESULT papiquery n) = $ctor_pair_target(S, papiquery.SOURCE)
+  -- if $call_task_valid(S, API_CALLABLE_RESULT papiquery n)
+def $ctor_pair_target(S, ERROR_HANDLER_INVOKE perrorcall) = $ctor_pair_target(S, perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_INVOKE perrorcall)
+def $ctor_pair_target(S, ERROR_HANDLER_RESULT perrorcall) = $ctor_pair_target(S, perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
+def $ctor_pair_target(S, ERROR_HANDLER_CLEAN perrorcall) = $ctor_pair_target(S, perrorcall.RESUME)
+  -- if $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall)
+dec $fiber_ctor_result_pending(pstate, nat, ptask*) : bool
+def $fiber_ctor_result_pending(S, n, eps) = false
+def $fiber_ctor_result_pending(S, n, [ptask]) = false
+def $fiber_ctor_result_pending(S, n, ptask :: ptask_next :: ptask_tail*) = (($ctor_pair_target(S, ptask) = (n) /\ ptask_next = CTOR_RESULT n) \/ $fiber_ctor_result_pending(S, n, ptask_next :: ptask_tail*))
+dec $fiber_ctor_result_owner(pstate, nat, pfiber) : bool
+def $fiber_ctor_result_owner(S, n, pfiber) = $fiber_ctor_result_pending(S, n, S.TODO)
+  -- if ~pfiber.READY
+def $fiber_ctor_result_owner(S, n, pfiber) = true
+  -- if pfiber.READY
+  -- if pfiber.CALL = (pconfigcall)
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $fiber_cache_valid(S, n, pfiber)
+def $fiber_ctor_result_owner(S, n, pfiber) = false -- otherwise
+def $ctor_result_valid(S, n) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $fiber_new_site(S, porigin)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $fiber_ctor_result_owner(S, n, pfiber)
+
+def $fiber_receive_value(S, pconfigcall, pvalue) = $api_begin(S, CONFIG_INVOKE pconfigcall, pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $api_special(S, pvalue)
+
+;; The pending call owns the Fiber and its one received callback. READY may be
+;; true here: warnings and callable rejection precede the status test.
+def $api_source_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) =/= eps
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN papiquery.VALUE)]
+  -- if $config_invoke_valid(S, pconfigcall)
+
+def $fiber_callable_pending_valid(S, papiquery) = true
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $api_source_valid(S, papiquery)
+  -- if papiquery.SCOPE = $api_frame_scope(S)
+  -- if papiquery.CALLED = $api_frame_called(S)
+  -- if papiquery.THIS = $api_frame_this(S)
+  -- if papiquery.LINE = pconfigcall.LINE
+def $fiber_callable_pending_valid(S, papiquery) = false -- otherwise
+
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $ptascii("Fiber::__construct(): Argument #1 ($callback) must be a valid callback, ") ++ ptbytes)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $config_error(S, pconfigcall, "Error", ptbytes)
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED (API_METHOD_TARGET papiquery porigin ptbytes b_static)) = $config_error(S, pconfigcall, "FiberError", $ptascii("Cannot call constructor twice"))
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.READY
+def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, HANDLERRESOLVED (API_METHOD_TARGET papiquery porigin ptbytes b_static)) = $fiber_done($fiber_put(S_birth, n, pfiber[.READY = true][.CALL = (pconfigcall)][.RAW = pvalue][.TARGET = (FIBER_METHOD_TARGET pfibercallable)][.BIRTH = pfibercallable.BIRTH][.CAPTURE = pfibercallable.CAPTURE][.PRODUCER = pfibercallable.PRODUCER]), PNULL)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if ~pfiber.READY
+  -- if $fiber_callable_pending_valid(S, papiquery)
+  -- if papiquery_selected = $consumer_query_selected(S, papiquery)
+  -- if $consumer_method_valid(S, papiquery_selected, porigin, ptbytes)
+  -- if pfibercallable = {QUERY papiquery_selected, METHOD porigin, NAME ptbytes, STATIC b_static, BIRTH $dynamic_new_find(S, S.TODO, pconfigcall.SITE), CAPTURE $consumer_capture_current(S, pconfigcall.SITE), PRODUCER $consumer_producer_current(S)}
+  -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, n)
+
+;; A retained cache authenticates the original maker without requiring that
+;; frame or the mutable method/class references to keep their current values.
+;; Producer authentication follows the older immutable target chain rather
+;; than consulting the current Fiber's own cache.
+def $fiber_callable_capture_valid(S, pfiber, pconfigcall) = true
+  -- if $consumer_capture_valid($fiber_producer_view(S, pfiber.PRODUCER), pconfigcall.SITE, pfiber.CAPTURE)
+def $fiber_callable_capture_valid(S, pfiber, pconfigcall) = true
+  -- if pfiber.PRODUCER = (pshutdownproducer)
+  -- if pshutdownproducer.INTERNAL
+  -- if $consumer_producer_snapshot(pshutdownproducer)
+  -- if $consumer_producer_site(pfiber.CAPTURE, pshutdownproducer.SITE)
+def $fiber_callable_capture_valid(S, pfiber, pconfigcall) = false -- otherwise
+def $fiber_callable_this_valid(S, pfiber, papiquery) = true -- if pfiber.PRODUCER = eps
+def $fiber_callable_this_valid(S, pfiber, papiquery) = true
+  -- if pfiber.PRODUCER = (pshutdownproducer)
+  -- if papiquery.THIS = $target_receiver($fiber_producer_view(S, pfiber.PRODUCER), pshutdownproducer.TARGET)
+def $fiber_callable_this_valid(S, pfiber, papiquery) = false -- otherwise
+def $fiber_callable_scope_valid(S, pfiber, papiquery) = true
+  -- if pfiber.READY
+  -- if pfiber.CALL = (pconfigcall)
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN papiquery.VALUE)]
+  -- if pconfigcall.SELECTION = eps
+  -- if pfiber.RAW = papiquery.VALUE
+  -- if $fiber_birth_valid(S, pfiber)
+  -- if S_site = $fiber_cache_view(S, pfiber.BIRTH)
+  -- if $fiber_site(S_site, pconfigcall.SITE, INTRINSIC_FIBER_CONSTRUCT)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+  -- if $intrinsic_count(S_site, pconfigcall.SITE) = (pconfigcall.INDEX)
+  -- if $fiber_callable_capture_valid(S, pfiber, pconfigcall)
+  -- if papiquery.SCOPE = $fiber_scope(S, pfiber)
+  -- if papiquery.CALLED = $consumer_capture_called(S, pconfigcall.SITE, pfiber.CAPTURE)
+  -- if $consumer_capture_this(S, pconfigcall.SITE, pfiber.CAPTURE, papiquery.THIS)
+  -- if $fiber_callable_this_valid(S, pfiber, papiquery)
+  -- if papiquery.LINE = pconfigcall.LINE
+def $fiber_callable_scope_valid(S, pfiber, papiquery) = false -- otherwise
+
+;; Direct members are immutable raw zvals. Aliases may have changed after
+;; selection, so their current values cannot replace the selected snapshot.
+def $fiber_callable_raw_valid(S, papiquery) = true
+  -- if papiquery.VALUE = PSTRING ptbytes
+  -- if papiquery.METHOD = DIRECT papiquery.VALUE
+  -- if papiquery.ORIGINAL = ptbytes
+def $fiber_callable_raw_valid(S, papiquery) = true
+  -- if papiquery.VALUE = PARRAY n
+  -- if $(n < |S.ARRAYS|)
+  -- if |S.ARRAYS[n].ITEMS| = 2
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
+  -- if $api_item_snapshot(pitem_receiver, papiquery.INPUT)
+  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes)
+  -- if $api_item_snapshot(pitem_method, PSTRING ptbytes)
+  -- if $api_item_snapshot(pitem_method, PSTRING papiquery.ORIGINAL)
+def $fiber_callable_raw_valid(S, papiquery) = false -- otherwise
+;; Producer targets may outlive the maker Fiber and its cleared callback cache.
+;; This immutable receipt owns nothing; source and scope checks use the same
+;; constructor facts as a live cache, with full producer authentication over
+;; the finite chain of earlier selected targets.
+def $fiber_callable_snapshot(pfibercallable) = $fiber_empty()[.READY = true][.CALL = (pconfigcall)][.RAW = pfibercallable.QUERY.VALUE][.BIRTH = pfibercallable.BIRTH][.CAPTURE = pfibercallable.CAPTURE][.PRODUCER = pfibercallable.PRODUCER]
+  -- if pfibercallable.QUERY.SOURCE = CONFIG_INVOKE pconfigcall
+def $fiber_callable_receipt_valid(S, pfibercallable) = true
+  -- if papiquery = pfibercallable.QUERY
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if pconfigcall.OWNER = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FIBER pfiber_owner
+  -- if pfiber = $fiber_callable_snapshot(pfibercallable)
+  -- if $fiber_callable_scope_valid(S, pfiber, papiquery)
+  -- if $fiber_producer_valid(S, pfiber)
+  -- if $fiber_callable_raw_valid(S, papiquery)
+  -- if $consumer_method_valid(S, papiquery, pfibercallable.METHOD, pfibercallable.NAME)
+  -- if $class_method_origin(S.CLASSES, pfibercallable.METHOD) = (pmethoddesc)
+  -- if pfibercallable.STATIC = pmethoddesc.STATIC
+def $fiber_callable_receipt_valid(S, pfibercallable) = false -- otherwise
+def $fiber_callable_target_tag(FIBER_METHOD_TARGET pfibercallable) = true
+def $fiber_cached_target_valid(S, pfiber) = true
+  -- if pfiber.TARGET = (FIBER_METHOD_TARGET pfibercallable)
+  -- if pfibercallable.QUERY.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pfiber.CALL = (pconfigcall)
+  -- if pfiber.RAW = pfibercallable.QUERY.VALUE
+  -- if pfiber.BIRTH = pfibercallable.BIRTH
+  -- if pfiber.CAPTURE = pfibercallable.CAPTURE
+  -- if pfiber.PRODUCER = pfibercallable.PRODUCER
+  -- if $error_handler_retained(S, pfiber.RAW)
+  -- if $fiber_callable_receipt_valid(S, pfibercallable)
+def $target_function(S, FIBER_METHOD_TARGET pfibercallable) = (pmethoddesc.FUNCTION)
+  -- if $fiber_callable_receipt_valid(S, pfibercallable)
+  -- if $class_method_origin(S.CLASSES, pfibercallable.METHOD) = (pmethoddesc)
+def $target_nodes(FIBER_METHOD_TARGET pfibercallable) = eps -- if pfibercallable.STATIC
+def $target_nodes(FIBER_METHOD_TARGET pfibercallable) = $scoped_receiver_nodes(pfibercallable.QUERY.CLASS.RECEIVER) -- if ~pfibercallable.STATIC
+def $target_instance(FIBER_METHOD_TARGET pfibercallable) = eps
+def $target_receiver(S, FIBER_METHOD_TARGET pfibercallable) = $handler_method_receiver(pmethoddesc, n)
+  -- if pfibercallable.QUERY.CLASS.RECEIVER = (n)
+  -- if $class_method_origin(S.CLASSES, pfibercallable.METHOD) = (pmethoddesc)
+def $target_receiver(S, FIBER_METHOD_TARGET pfibercallable) = eps -- if pfibercallable.QUERY.CLASS.RECEIVER = eps
+def $target_lexical_class(S, FIBER_METHOD_TARGET pfibercallable) = (pmethoddesc.OWNER)
+  -- if $class_method_origin(S.CLASSES, pfibercallable.METHOD) = (pmethoddesc)
+def $target_called_class(S, FIBER_METHOD_TARGET pfibercallable) = (pfibercallable.QUERY.CLASS.CALLED)
+def $handler_method_tag(FIBER_METHOD_TARGET pfibercallable) = true

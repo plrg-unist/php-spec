@@ -1,0 +1,289 @@
+{
+  "scope": "Scoped and deprecated Fiber constructor method selection, immutable cached scope/producer receipts, warning ordering and actual constructor result-owner admission. No additional metadata receiver owner.",
+  "parent_revision": "9100ca2c7729d6d157b4e522331cdc02c5c85f02",
+  "source_revision": "df28cff80358d530a9e4a778b23ef97230780465",
+  "modules": 296,
+  "implementation": [
+    "spec/semantics/322-fiber-callable-selection.watsup",
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/281-fibers.watsup"
+  ],
+  "affected_existing_gaps": {
+    "RuntimeException": "152/157/161 finite kind, Exception parent/base and inherited constructor admission",
+    "Fiber_type": "281 actual FIBER kind nominal argument admission and diagnostic label"
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "semantic_mode": "SL",
+    "cache": false,
+    "determinism_checks": true
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "source_profile": "tests/semantics/profile.json",
+    "script_encoding_override": "removed"
+  },
+  "budgets": {
+    "source_steps": 100000,
+    "source_model_seconds": 60,
+    "source_process_seconds": 75,
+    "state_seek_steps": 4000,
+    "state_finish_steps": 4000,
+    "state_process_seconds": 120,
+    "jobs": 1
+  },
+  "compiler": {
+    "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+    "report": "fiber-callable-sl-u1db0sf9/report.json",
+    "passed": true,
+    "exit": 0,
+    "timeout": false
+  },
+  "sources": {
+    "catalog": "tests/semantics/fiber_callable_cases.json",
+    "distinct_normal_agreements": 13,
+    "cuts": [
+      {
+        "revision": "6cde4c89638bf7a65e540c039e631d9eb607dedc",
+        "report": "fiber-callable-source-8gncbhrb/report.json",
+        "normal_agreements": 6,
+        "cases": [
+          "author-fiber-constructor-callable-strict-weak-called-class",
+          "author-fiber-constructor-callable-bound-maker-source-scope",
+          "author-fiber-constructor-callable-dynamic-birth-static-keyword",
+          "private-self-string",
+          "parent-receiver-retirement",
+          "aliased-class-and-method-cache"
+        ]
+      },
+      {
+        "revision": "e955e4a3822f7e7b7d1861fdf29d57bf37d47a45",
+        "report": "fiber-callable-source-m3a3i28z/report.json",
+        "normal_agreements": 2,
+        "cases": [
+          "deprecation-handler-throws",
+          "deprecation-handler-suspends"
+        ]
+      },
+      {
+        "revision": "14fb0c524fd36359bf4b7e50b86fcafdaac08f61",
+        "report": "fiber-callable-source-buwkg9es/report.json",
+        "normal_agreements": 5,
+        "cases": [
+          "repeated-constructor-warns-first",
+          "outside-scope-rejection",
+          "retired-internal-method-maker",
+          "retired-api-selected-maker",
+          "same-class-maker-this-snapshot"
+        ]
+      }
+    ],
+    "native_only_originals": "Ten independent and three author originals; native recordings at 2891/812e/9100 are distinct from their later model cuts and alone earn zero model agreement."
+  },
+  "state": {
+    "author": [
+      {
+        "case": "constructor-deprecation-result-authenticates-original-source",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-5qm3gozg/report.json",
+        "recorded_conditions": 88,
+        "passed": true
+      },
+      {
+        "case": "repeated-constructor-validates-callback-before-ready-error",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-v61pixgq/report.json",
+        "recorded_conditions": 82,
+        "passed": true
+      },
+      {
+        "case": "bound-maker-retired-certificate-keeps-original-scope",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-aib63nb5/report.json",
+        "recorded_conditions": 80,
+        "passed": true
+      }
+    ],
+    "author_recorded_conditions": 250,
+    "independent": [
+      {
+        "case": "cached-alias-class-and-method-snapshots-survive-writes",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-4jzko273/report.json",
+        "recorded_conditions": 103,
+        "passed": true
+      },
+      {
+        "case": "internal-method-maker-null-callsite-survives-retirement",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-x74gsu1j/report.json",
+        "recorded_conditions": 87,
+        "passed": true
+      },
+      {
+        "case": "nested-api-maker-receipt-survives-cleared-old-fiber",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-1b_8u15k/report.json",
+        "recorded_conditions": 86,
+        "passed": true
+      },
+      {
+        "case": "same-class-this-and-immutable-string-stay-authenticated",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-ckidc0qc/report.json",
+        "recorded_conditions": 88,
+        "passed": true
+      },
+      {
+        "case": "parent-callback-receiver-retires-on-authentic-fiber-root",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-pggu7ctk/report.json",
+        "recorded_conditions": 72,
+        "passed": true
+      },
+      {
+        "case": "throwing-deprecation-runtime-exception-inherits-real-exception-storage",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-gw8e4n3y/report.json",
+        "recorded_conditions": 52,
+        "passed": true
+      },
+      {
+        "case": "suspended-deprecation-handler-keeps-authentic-constructor-owner",
+        "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+        "report": "fiber-state-review-3wnt0yv2/report.json",
+        "recorded_conditions": 77,
+        "passed": true
+      }
+    ],
+    "independent_status": "Seven groups independently accepted at the corrected descriptor cut; original failures remain zero credit.",
+    "independent_recorded_conditions": 565,
+    "total_recorded_conditions": 815
+  },
+  "diagnosis": {
+    "report": "fiber-callable-descriptor-diagnosis-3snymc_k/report.json",
+    "revision": "14fb0c524fd36359bf4b7e50b86fcafdaac08f61",
+    "result": "Actual 64-predicate vector isolates call_tasks_valid and its Fiber CTOR_RESULT admission; all other inspected descriptor/heap predicates true. Diagnostic is separate from assertion-group acceptance."
+  },
+  "zero_credit_failures": [
+    {
+      "report": "fiber-callable-source-8gncbhrb/report.json",
+      "case": "deprecation-handler-throws",
+      "result": "Unsupported internal RuntimeException construction; original retained, affected source passed after finite builtin Throwable admissions."
+    },
+    {
+      "report": "fiber-callable-source-m3a3i28z/report.json",
+      "case": "repeated-constructor-warns-first",
+      "result": "Original typed Fiber parameter rejected actual Fiber; source unchanged, affected source passed after actual-kind nominal admissions."
+    },
+    {
+      "report": "fiber-state-review-ykkuhjpa/report.json",
+      "result": "Fixture elaboration uses nonexistent STDOUT; corrected to exact EVENTS before affected rerun."
+    },
+    {
+      "report": "fiber-state-review-w_mey202/report.json",
+      "result": "Actual pending state failed public call_descriptors_valid due missing Fiber CTOR_RESULT admission; source/query/preceding current/frame checks passed."
+    },
+    {
+      "report": "fiber-callable-sl-f0baraau/report.json",
+      "result": "Recursive function return with otherwise premise is rejected by SpecTec; disjoint list clauses correct syntax without widening the pending owner condition."
+    },
+    {
+      "report": "fiber-state-review-f3tc5ri7/report.json",
+      "case": "nested-api-maker-receipt-survives-cleared-old-fiber",
+      "result": "Shared start-stage matched earlier self::make before maker unset; refine only stage to actual child task leaf, retain every lifetime/receipt guard."
+    },
+    {
+      "report": "fiber-state-review-s1ukw0z7/report.json",
+      "case": "suspended-deprecation-handler-keeps-authentic-constructor-owner",
+      "result": "Reached saved frame/owner authentication, scope forgery, zero-budget and post-suspend caller-state controls passed; scratch RESULT is cleared to PNULL during eager API owner release. Corrected fixture also authenticates the original source and returned W in the real operation carrier; affected77 subsequently passed."
+    }
+  ],
+  "recovery": {
+    "raw_root": ".tools/calls-fiber-callable-api-18/.tools",
+    "sources": "python3 tests/semantics/fiber_callable_sources.py [--case CASE] [--native-report EXACT_REPORT]",
+    "author": "python3 tests/semantics/fiber_callable_state.py [--case CASE]",
+    "independent": "python3 tests/semantics/fiber_callable_review.py [--case CASE]",
+    "policy": "Defaults generate checked original source fixtures and run serially, stopping at first failure. Maintained tests have no operational dependency on old raw outputs. Relocation and metadata updates earn no new execution credit; raw reports preserve commands, exits, bytes and tested inputs."
+  },
+  "review": {
+    "implementation": "Accepted by calls_review_18, including immutable direct raw snapshots, historical same-class THIS binding, null-callsite producer and finite retired-producer chains.",
+    "publication": "accepted by calls_review_18; maintained CASE dictionaries/catalog preserve actual passed cuts, no relocation execution credit.",
+    "canonical_integration": "accepted final308 join under the sole-writer lease; semantic freeze f742 and prior runtime cuts are separate from publication changes."
+  },
+  "remaining": [
+    "Fiber callable/FCC API capture, wider core internal/reference callbacks and remaining lifecycle consumers.",
+    "Rich public-destructor whole-source and full63 literal state run remain unconfirmed zero credit in fiber-core-callbacks-review.json; bounded cuts and derived clauses are separate.",
+    "Complete core and final combined fresh offline rebuild remain required; returns verification stays user-paused."
+  ],
+  "suspend_projection": {
+    "report": "fiber-callable-suspend-projection-1syew_jv/model.process.json",
+    "revision": "df28cff80358d530a9e4a778b23ef97230780465",
+    "result": "Actual one-step eager API release clears scratch RESULT to PNULL while its source-bound destructor operation owns the returned W value; diagnostic supports the affected fixture projection, not group acceptance."
+  },
+  "current_parent": {
+    "parent_revision": "40e3c4fcce9e8adb7240a8640d9504548e8b33a7",
+    "source_revision": "b266acf0a7e48c7a359df3a55760d56eb28ad60c",
+    "modules": 306,
+    "scope": "A GC destructor creates a scoped private static Fiber callback. Its real receiver allocation retires before child start; immutable INTERNAL/null-callsite/THIS producer history remains authenticated without a receiver owner. GC runs in main: no collector worker lifecycle credit.",
+    "compiler": {
+      "report": "fiber-callable-sl-duxpeqo8/report.json",
+      "passed": true,
+      "exit": 0,
+      "timeout": false
+    },
+    "source": {
+      "case": "current-collector-destructor-scoped-private-static-cache",
+      "source_sha256": "a932fe52c262febf8ca3ca078d82d63a28b479f5608138babb38c65dcb8ea52f",
+      "report": "fiber-callable-source-vt5b_9u9/report.json",
+      "distinct_normal_agreements": 1,
+      "stdout": "G|D|C|1|T17|18",
+      "native_exit": 0,
+      "model_exit": 0,
+      "timeout": false
+    },
+    "independent": {
+      "case": "collector-destructor-receipt-borrows-retired-receiver",
+      "report": "fiber-state-review-tcz6d36f/report.json",
+      "recorded_conditions": 92,
+      "passed": true,
+      "exit": 0,
+      "timeout": false,
+      "controls": "Actual retired receiver arena/allocation/zero owners, historical METHOD_TARGET authority, INTERNAL/null-callsite/THIS/source cache binding, heap-identical producer/line forgeries, no worker, literal zero/one-step C entry and defined18 completion."
+    },
+    "zero_credit_failures": [
+      {
+        "report": "fiber-callable-source-5vq1qko4/report.json",
+        "result": "Native expectation predicted active Fiber during main GC. Exact native output is G|D|C|1|T17|18; only expected bytes corrected, identical source subsequently agrees with the model. Original failed native expectation retains zero agreement."
+      }
+    ],
+    "recovery": {
+      "raw_root": ".tools/calls-fiber-callable-current-18/.tools",
+      "source": "python3 tests/semantics/fiber_callable_sources.py --case current-collector-destructor-scoped-private-static-cache",
+      "independent": "python3 tests/semantics/fiber_callable_current_review.py"
+    },
+    "review": {
+      "implementation_and_gates": "accepted by calls_review_18",
+      "publication": "accepted by calls_review_18; exact standalone92 fixture and current source/catalog preserve tested inputs without renewed execution credit."
+    },
+    "prior_cuts": "Original thirteen sources and815 conditions retain their accepted revisions; current source1/reached92 add no renewal or full-core claim."
+  },
+  "final_parent": {
+    "parent_revision": "37dce306e46e7d64609b226f504a63bb089b87cd",
+    "source_revision": "f742d1cbdf052e83e2de9a44a1323b9c84b5f04c",
+    "modules": 308,
+    "compatibility": "Reviewed seven-file322 port preserves all canonical307 imports, PROPS318/collector317/default fields, ArrayAccess326 and327 computed NAME_READ_RESULT guards.322 is byte-identical to df28;326 captured ELEMENT writers and327 nonowning name-read warning phases are disjoint from constructor CONFIG/API and CTOR_RESULT authority. No325 import.",
+    "compiler": {
+      "report": "fiber-callable-sl-br7lo8n_/report.json",
+      "passed": true,
+      "exit": 0,
+      "timeout": false
+    },
+    "review": "Actual source freeze and326/327 compatibility accepted by calls_review_18; final strict308 passes without renewing prior runtime cuts."
+  }
+}

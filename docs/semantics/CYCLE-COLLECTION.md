@@ -1,6 +1,6 @@
 # Explicit cycle collection
 
-Modules 301/317 implement a bounded ordinary-object/array collector on the pinned
+Modules 301/317/325 implement a bounded ordinary-object/array collector on the pinned
 PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
@@ -73,6 +73,18 @@ decrement can leave an allocated zero-owner target until retrace. Only the
 authentic processed prefix permits that disposition, so another destructor can
 obtain and resurrect it through WeakReference without inventing a root.
 
+After a detached worker drops its guard, module325 records an allocated zero-owner
+ordinary target in a borrowed buffer slot. The slot retains its outgoing graph
+physically and contributes no machine owner. Real collection handles the buffered
+target; a real WeakReference result promotes the slot to ordinary potential-root
+behavior before pruning. Releasing that last ordinary owner retires the parent
+and weak lookup before child callbacks. An unowned worker's forced-close finally
+may create the zero target during an active pass; the same pass retraces it.
+Its private close control retires only through the authentic release tail,
+including both real C owners. Saved caller views borrow that exact shared control's
+retirement authority while ordinary closure checks retain their saved scope;
+the control gains no PHP catch authority.
+
 All selected destructors run before the protected subgraph is freed. Collection
 retraces once after their effects, preserves once marks, and atomically disposes
 the callback-free ordinary white graph. Actual retirement nulls weak lookup.
@@ -87,7 +99,7 @@ zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
 Explicit boundaries remain for wider internal lifetime graphs, public resumption
-of an idle cached worker, detached guard retirement leaving a zero-owner target,
+of an idle cached worker, wider callbackless close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
 Wider GC, WeakMap and final combined offline validation remain required.
@@ -138,3 +150,14 @@ and the real cycle count1/weak retirement completes.
 The final additive304 publication preserves newer parameter receive/source,
 ArrayAccess reference/borrowed-Unset and literal-this emission schemas and passes
 the required combined compiler. These disjoint joins add no source/state renewal.
+
+Module325's private299 cut passes strict compilation/initialization, three exact
+originals and two strict-SL groups with39/46 physical premises. A separate
+actual305-parent composition preserves Generator321 and compute-once pruning39:
+one fresh unowned-close original agrees on same-pass count1, weak worker/target
+retirement and second count0. Its authentic post-close admission failures are
+preserved; the narrow retiring/scoped repair passes changed compilation and the
+affected strict-SL group with117 physical premises. These source and state cuts
+remain distinct. The final309 composition over callable Fibers322 passes its
+required combined compiler at `b4cfe4a14`; source/state cuts are not renewed
+and no offline rebuild is claimed.

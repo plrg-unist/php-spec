@@ -465,10 +465,14 @@ retirement. Thirteen exact originals and two independent strict-SL groups with
 298 compilation/initialization and one fresh reporting-Fiber/handler source,
 including nested busy GC0 and real count1/weak retirement. The final304 additive
 join preserves newer call/source schemas and passes combined compilation.
-Larger exception-source 60s timeouts
-remain separate from the compact trace/pending controls. Wider internal graphs,
-public idle-worker resumption, detached zero-owner guard retirement, automatic
-thresholds and wider freeing remain open.
+Collector325 keeps detached zero-owner targets and outgoing children without
+adding owners; real weak reacquisition restores ordinary release. Three exact
+originals/85 reached premises retain their private cuts. A fresh active
+unowned-close original and117 reached premises separately check same-pass count1,
+real private-control retirement and saved caller admission. Larger exception-source
+60s timeouts remain separate from compact trace/pending controls. Wider internal
+graphs, public idle-worker resumption, automatic thresholds and wider freeing
+remain open.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
@@ -950,6 +954,13 @@ pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
 Internal `error_reporting` callbacks retain weak C receives, owned arguments,
 warning producers and real resumer/destructor traces through handler suspension.
+Scoped constructor selectors (`self`, `parent`, `static` and compound method
+arrays) now use the effectful callable resolver. Warning callbacks can mutate,
+throw or suspend before the repeated-constructor check. Cached scope and maker
+receipts survive reference changes and maker retirement without extra heap owners.
+The [constructor ledger](coverage/semantics/fiber-callable-constructors-review.json)
+keeps distinct source cuts and independently accepted state checks, including
+a callback made by a GC destructor whose receiver has already retired.
 The [callback ledger](coverage/semantics/fiber-core-callbacks-review.json) separates
 bounded state checks from unconfirmed rich whole-source execution.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
