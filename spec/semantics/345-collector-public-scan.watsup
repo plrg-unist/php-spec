@@ -23,12 +23,14 @@ def $gc_worker_public_raw_api(S) = (pgcpublic.API)
   -- if S.TODO = [GC_WORKER_SCAN pgcpublic]
   -- if S.ACTIVEFIBER = (pgcpublic.API.OBJECT)
   -- if $fiber_at(S, pgcpublic.API.OBJECT) = (pfiber)
-  -- if pfiber.GC = (pgcworker) /\ pgcworker.GUARD = eps
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
 def $gc_worker_public_raw_api(S) = (pgcpublic.API)
   -- if S.ACTIVEFIBER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.GC = (pgcworker)
-  -- if pgcworker.GUARD = (pgcguard) /\ pgcguard.PUBLIC = (pgcpublic)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcguard.PUBLIC = (pgcpublic)
 def $gc_worker_public_raw_api(S) = eps -- otherwise
 def $gc_worker_public_captured_api_valid(S, pfiberapi) = $fiber_api_valid(S, pfiberapi)
   -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
