@@ -274,7 +274,8 @@
         "spec/semantics/304-arrayaccess-append-dimensions.watsup",
         "spec/semantics/309-arrayaccess-returned-append.watsup",
         "spec/semantics/319-arrayaccess-reference-get.watsup",
-        "spec/semantics/326-arrayaccess-reference-consumers.watsup"
+        "spec/semantics/326-arrayaccess-reference-consumers.watsup",
+        "spec/semantics/329-arrayaccess-reference-value-notices.watsup"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
@@ -311,9 +312,11 @@
         "tests/semantics/arrayaccess_reference_get_review_cases.py",
         "tests/semantics/arrayaccess_reference_get_run.py",
         "tests/semantics/arrayaccess_reference_consumer_cases.py",
-        "tests/semantics/arrayaccess_reference_consumer_run.py"
+        "tests/semantics/arrayaccess_reference_consumer_run.py",
+        "tests/semantics/arrayaccess_reference_value_cases.py",
+        "tests/semantics/arrayaccess_reference_value_run.py"
       ],
-      "review": "Historical storage review: Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required. Module269 adds bounded GLOBALS W/RW name/missing-entry continuations for direct updates/compound and nested array ingress. Returned missing fetches detach callback-created constrained/reentry aliases; throws preserve writes and skip late RHS. Author9/224 and independent12/273 share four originals (17 unique/497); actualc906 current604958 passes. globals-write-review.json keeps separate cuts and original multiline/native prediction corrections; earlier containers and wider GLOBALS/memoized producers remain required. Module276 adds bounded undefined/null/false W/RW initialization and array-reference ingress, genuine callback/source owners and typed DIM_OP backing transport/clear; container-warning-review.json keeps30 unique/517 and current851 separate. Wider producers remain required. Module282 stages bounded scalar/missing R and quiet-container warnings with genuine row/key owners and distinct terminal predicates; container-read-review.json keeps20 unique/484, current5eefe and later quiet-object controls separate. Full ArrayAccess and wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Module292 adds bounded ordinary by-value compound/Get-temporary/nested W/RW/Unset continuations with actual key/RHS/row owners and callback/throw ordering. Its affected276 GLOBALS ROOT reference finish and249 direct/nested Unset admission are repaired; arrayaccess-write-review.json records34 source agreements and separate reached gates. By-reference Get and wider ArrayAccess producers remain required; no family closure or accepted284 renewal. Module304 adds bounded intermediate append through returned arrays and final compound child append, with real temporary/reference owners and pending-error conversion/operator priority. Its49 sources,8 strict-SL recipes/723 premises and one fresh275 parent interaction retain separate cuts. By-reference Get and wider producers remain required; no family closure or old-gate renewal. Module309 adds final simple returned-child Set(null), transferring genuine writer roots and preserving latched-null RHS, selected child and old result-cell readback. Eight normal sources and two strict-SL recipes/160 premises pass at a095/276; actual-parent composition is accepted at863. By-reference Get and wider producers remain required. Current-parent718b/287 additionally accepts one Fiber Set/paused-Generator finalizer original and64 strict-SL premises; earlier cuts remain separate. Module319 accepts untyped/mixed by-reference Get demand, shared/sole writable wrappers, raw DIM_OP CELL ownership and authenticated nested-reference/borrowed-Unset carriers. Fourteen exact normal originals and six strict-SL recipes/375 premises retain separate cuts in arrayaccess-reference-get-review.json. Actual298 passes full compiler/init and one new exact Fiber-core warning/Get suspension original; earlier14/375 cuts remain separate. Final302 overb135 preserves accepted default fields and passes full algorithmic/structuring compilation. Module326 adds named sends/nested captured-row updates below. VALUE-return warning handlers, Stringable/wider producers and complete core remain required. Typed non-mixed return verification stays user-paused. Integrated326 adds authenticated live captured-row certificates for named reference sends and nested pre/post updates, preserving named checks and finishing dispatch. Six new exact normal originals and three strict-SL groups/246 premises retain their private303 cut in arrayaccess-reference-consumers-review.json. Final306 over40e3c4fcc passes full algorithmic/structuring compilation at46c624e89; current ECHO/collector/pruning seams are independently accepted without source/state renewal. VALUE-return Notice-handler and wider producers remain open; typed non-mixed return verification stays user-paused.",
+      "review": "Historical storage review: Array reference acquisition/rebinding, captured locations/COW and delayed key/RHS ordering are reviewed. Scalar/string reads, string writes and reference errors are source-active; temporary-expression targets reject during compilation. Independent evidence: dimension-read-review.json, dimension-write-review.json and traversal-temporary-review.json. Quiet access modes, object callbacks, frames/properties and source GC remain pending. Known admitted false-reference FETCH deprecation mismatch remains open: false-reference-fetch-review.json. Current addition: CLI bootstrap, request-wide auto-global activation, PG value ownership and GLOBALS snapshots/access are reviewed. Frames, dynamic source execution and broader services remain pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required. Module269 adds bounded GLOBALS W/RW name/missing-entry continuations for direct updates/compound and nested array ingress. Returned missing fetches detach callback-created constrained/reentry aliases; throws preserve writes and skip late RHS. Author9/224 and independent12/273 share four originals (17 unique/497); actualc906 current604958 passes. globals-write-review.json keeps separate cuts and original multiline/native prediction corrections; earlier containers and wider GLOBALS/memoized producers remain required. Module276 adds bounded undefined/null/false W/RW initialization and array-reference ingress, genuine callback/source owners and typed DIM_OP backing transport/clear; container-warning-review.json keeps30 unique/517 and current851 separate. Wider producers remain required. Module282 stages bounded scalar/missing R and quiet-container warnings with genuine row/key owners and distinct terminal predicates; container-read-review.json keeps20 unique/484, current5eefe and later quiet-object controls separate. Full ArrayAccess and wider producers remain required. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Module292 adds bounded ordinary by-value compound/Get-temporary/nested W/RW/Unset continuations with actual key/RHS/row owners and callback/throw ordering. Its affected276 GLOBALS ROOT reference finish and249 direct/nested Unset admission are repaired; arrayaccess-write-review.json records34 source agreements and separate reached gates. By-reference Get and wider ArrayAccess producers remain required; no family closure or accepted284 renewal. Module304 adds bounded intermediate append through returned arrays and final compound child append, with real temporary/reference owners and pending-error conversion/operator priority. Its49 sources,8 strict-SL recipes/723 premises and one fresh275 parent interaction retain separate cuts. By-reference Get and wider producers remain required; no family closure or old-gate renewal. Module309 adds final simple returned-child Set(null), transferring genuine writer roots and preserving latched-null RHS, selected child and old result-cell readback. Eight normal sources and two strict-SL recipes/160 premises pass at a095/276; actual-parent composition is accepted at863. By-reference Get and wider producers remain required. Current-parent718b/287 additionally accepts one Fiber Set/paused-Generator finalizer original and64 strict-SL premises; earlier cuts remain separate. Module319 accepts untyped/mixed by-reference Get demand, shared/sole writable wrappers, raw DIM_OP CELL ownership and authenticated nested-reference/borrowed-Unset carriers. Fourteen exact normal originals and six strict-SL recipes/375 premises retain separate cuts in arrayaccess-reference-get-review.json. Actual298 passes full compiler/init and one new exact Fiber-core warning/Get suspension original; earlier14/375 cuts remain separate. Final302 overb135 preserves accepted default fields and passes full algorithmic/structuring compilation. Module326 adds named sends/nested captured-row updates below. VALUE-return warning handlers, Stringable/wider producers and complete core remain required. Typed non-mixed return verification stays user-paused. Integrated326 adds authenticated live captured-row certificates for named reference sends and nested pre/post updates, preserving named checks and finishing dispatch. Six new exact normal originals and three strict-SL groups/246 premises retain their private303 cut in arrayaccess-reference-consumers-review.json. Final306 over40e3c4fcc passes full algorithmic/structuring compilation at46c624e89; current ECHO/collector/pruning seams are independently accepted without source/state renewal. VALUE-return Notice-handler and wider producers remain open; typed non-mixed return verification stays user-paused. Module329 adds genuine untyped/mixed implicit Get VALUE-return Notice callbacks with raw carrier identity and local/receiver/RV throw ordering. Nine exact normal originals and four strict-SL groups/401 premises retain their13e29/307 cut. Final314 over2a2f69a71 passes full algorithmic/structuring compilation, preserving current trait/constructor/pruning fields without source/state renewal. Finally-sensitive Notice ingress, bare/fall-through NULL, handler exit, Stringable/wider producers and user-paused non-mixed typed verification remain open.",
       "helper_tests": [
         "tests/semantics/ownership.py",
         "coverage/semantics/ownership.json",
@@ -334,7 +337,11 @@
         "tests/semantics/arrayaccess_returned_append_protocol.py",
         "tests/semantics/arrayaccess_returned_append_prepare.py",
         "tests/semantics/arrayaccess_returned_append_fiber_protocol.py",
-        "tests/semantics/arrayaccess_returned_append_fiber_prepare.py"
+        "tests/semantics/arrayaccess_returned_append_fiber_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached.py",
+        "tests/semantics/arrayaccess_reference_value_reached_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached_run.py"
       ],
       "evidence": [
         "coverage/semantics/dimension-tail-review.json",
@@ -350,7 +357,8 @@
         "docs/semantics/SOURCE-ARRAYACCESS.md",
         "coverage/semantics/arrayaccess-review.json",
         "coverage/semantics/arrayaccess-write-review.json",
-        "coverage/semantics/arrayaccess-returned-append-review.json"
+        "coverage/semantics/arrayaccess-returned-append-review.json",
+        "coverage/semantics/arrayaccess-reference-value-review.json"
       ]
     },
     {
@@ -4298,7 +4306,8 @@
         "spec/semantics/86-reference-arguments.watsup",
         "spec/semantics/94-typed-function-compiler.watsup",
         "spec/semantics/95-type-values.watsup",
-        "spec/semantics/95-typed-calls.watsup"
+        "spec/semantics/95-typed-calls.watsup",
+        "spec/semantics/329-arrayaccess-reference-value-notices.watsup"
       ],
       "source_tests": [
         "tests/semantics/function_calls.py",
@@ -4312,9 +4321,20 @@
         "tests/semantics/typed_function_compiler.py",
         "tests/semantics/typed_function_protocol.py",
         "tests/semantics/typed_function_state.py",
-        "coverage/semantics/typed-function-review.json"
+        "coverage/semantics/typed-function-review.json",
+        "tests/semantics/arrayaccess_reference_value_cases.py",
+        "tests/semantics/arrayaccess_reference_value_run.py"
       ],
-      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending."
+      "review": "Accepted first named-call increment at f3149e32 (code a8fdac1e, author d907c5db/04ac151f): calls-final-review.json binds139 exact source comparisons,40 protocol fixtures and current869 state9/2079 assertions. Named declarations activate at their compile/runtime phase; untyped positional value parameters, recursion, local/global frames, value returns and fatal cleanup execute through checked source. At that checkpoint reference/default/typed/named/unpacked/variadic protocols were subsequent work. Positional reference increment31640654: reference-parameter-review.json binds frozen882 and canonical884 bridge,166 exact source replays,61 independent original agreements,283 shared destructuring regressions,independent8state1868 and author6state1413 assertions. Reference cells survive later argument effects, rebinding, saved/surplus/held ownership and unwinding. Defaults/types/reference returns/named/unpacked/variadic and remaining callable/object/exception protocols stay pending; full family closure remains open. Builtin scalar/container positional parameter and value-return checks are accepted at e097f95e (code0ed17419, tested926/baa, one-test bridge to926/599); typed-function-review.json binds the exact source/state/protocol gates. Class/object/callable types, reference returns and full family closure remain pending. Module329 adds genuine untyped/mixed implicit Get VALUE-return Notice callbacks with raw carrier identity and local/receiver/RV throw ordering. Nine exact normal originals and four strict-SL groups/401 premises retain their13e29/307 cut. Final314 over2a2f69a71 passes full algorithmic/structuring compilation, preserving current trait/constructor/pruning fields without source/state renewal. Finally-sensitive Notice ingress, bare/fall-through NULL, handler exit, Stringable/wider producers and user-paused non-mixed typed verification remain open.",
+      "helper_tests": [
+        "tests/semantics/arrayaccess_reference_value_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached.py",
+        "tests/semantics/arrayaccess_reference_value_reached_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached_run.py"
+      ],
+      "evidence": [
+        "coverage/semantics/arrayaccess-reference-value-review.json"
+      ]
     },
     {
       "node": "Stmt_Static",
@@ -8779,20 +8799,29 @@
         "spec/semantics/98-reference-return-compiler.watsup",
         "spec/semantics/99-reference-returns.watsup",
         "spec/semantics/79-call-frames.watsup",
-        "spec/semantics/84-call-integrity.watsup"
+        "spec/semantics/84-call-integrity.watsup",
+        "spec/semantics/329-arrayaccess-reference-value-notices.watsup"
       ],
-      "helper_tests": [],
+      "helper_tests": [
+        "tests/semantics/arrayaccess_reference_value_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached.py",
+        "tests/semantics/arrayaccess_reference_value_reached_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached_run.py"
+      ],
       "source_tests": [
         "tests/semantics/reference_returns.py",
         "tests/semantics/reference_return_state.py",
         "tests/semantics/reference_return_protocol.py",
-        "tests/semantics/reference_return_demand.py"
+        "tests/semantics/reference_return_demand.py",
+        "tests/semantics/arrayaccess_reference_value_cases.py",
+        "tests/semantics/arrayaccess_reference_value_run.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
-        "coverage/semantics/reference-return-review.json"
+        "coverage/semantics/reference-return-review.json",
+        "coverage/semantics/arrayaccess-reference-value-review.json"
       ],
       "review": "Bounded named positional source reference returns accepted9959e771, code563fee7a on942/3c331e74 with explicit7951/dd8 state-test-only bridges. Source classification, caller demand, typed shared-cell coercion and owning reference/value consumers are reviewed through12 native profiles,26/378 protocol,4dense1282 and2 exact933 bridges; linked review preserves author gates and originals. Suppression, object/typed-property reference constraints, finally/generators and full callable closure remain pending.",
       "planned_source_tests": [
@@ -11729,7 +11758,8 @@
         "spec/semantics/304-arrayaccess-append-dimensions.watsup",
         "spec/semantics/309-arrayaccess-returned-append.watsup",
         "spec/semantics/319-arrayaccess-reference-get.watsup",
-        "spec/semantics/326-arrayaccess-reference-consumers.watsup"
+        "spec/semantics/326-arrayaccess-reference-consumers.watsup",
+        "spec/semantics/329-arrayaccess-reference-value-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/arrayaccess_protocol.py",
@@ -11756,7 +11786,11 @@
         "tests/semantics/arrayaccess_reference_get_reached_run.py",
         "tests/semantics/arrayaccess_reference_consumer_reached.py",
         "tests/semantics/arrayaccess_reference_consumer_reached_prepare.py",
-        "tests/semantics/arrayaccess_reference_consumer_reached_run.py"
+        "tests/semantics/arrayaccess_reference_consumer_reached_run.py",
+        "tests/semantics/arrayaccess_reference_value_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached.py",
+        "tests/semantics/arrayaccess_reference_value_reached_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached_run.py"
       ],
       "source_tests": [
         "tests/semantics/arrayaccess_cases.py",
@@ -11779,7 +11813,9 @@
         "tests/semantics/arrayaccess_reference_get_review_cases.py",
         "tests/semantics/arrayaccess_reference_get_run.py",
         "tests/semantics/arrayaccess_reference_consumer_cases.py",
-        "tests/semantics/arrayaccess_reference_consumer_run.py"
+        "tests/semantics/arrayaccess_reference_consumer_run.py",
+        "tests/semantics/arrayaccess_reference_value_cases.py",
+        "tests/semantics/arrayaccess_reference_value_run.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
@@ -11789,9 +11825,10 @@
         "coverage/semantics/arrayaccess-append-review.json",
         "coverage/semantics/arrayaccess-returned-append-review.json",
         "coverage/semantics/arrayaccess-reference-get-review.json",
-        "coverage/semantics/arrayaccess-reference-consumers-review.json"
+        "coverage/semantics/arrayaccess-reference-consumers-review.json",
+        "coverage/semantics/arrayaccess-reference-value-review.json"
       ],
-      "review": "Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Module292 adds bounded ordinary by-value compound/Get-temporary/nested W/RW/Unset continuations with actual key/RHS/row owners and callback/throw ordering. Its affected276 GLOBALS ROOT reference finish and249 direct/nested Unset admission are repaired; arrayaccess-write-review.json records34 source agreements and separate reached gates. By-reference Get and wider ArrayAccess producers remain required; no family closure or accepted284 renewal. Module304 adds bounded intermediate append through returned arrays and final compound child append, with real temporary/reference owners and pending-error conversion/operator priority. Its49 sources,8 strict-SL recipes/723 premises and one fresh275 parent interaction retain separate cuts. By-reference Get and wider producers remain required; no family closure or old-gate renewal. Module309 adds final simple returned-child Set(null), transferring genuine writer roots and preserving latched-null RHS, selected child and old result-cell readback. Eight normal sources and two strict-SL recipes/160 premises pass at a095/276; actual-parent composition is accepted at863. By-reference Get and wider producers remain required. Actual eager/weak/provider composition now passes one unchanged broad source and three strict-SL groups/184 premises at863. Unused Set result normalization retains four source controls/90 owner premises at5441; smaller source/provider60 at8ce remain separate. Whole-list access traversal preserves first-match order and public guards. No full-family closure or earlier evidence renewal. Current-parent718b/287 additionally accepts one Fiber Set/paused-Generator finalizer original and64 strict-SL premises; earlier cuts remain separate. Module319 accepts untyped/mixed by-reference Get demand, shared/sole writable wrappers, raw DIM_OP CELL ownership and authenticated nested-reference/borrowed-Unset carriers. Fourteen exact normal originals and six strict-SL recipes/375 premises retain separate cuts in arrayaccess-reference-get-review.json. Actual298 passes full compiler/init and one new exact Fiber-core warning/Get suspension original; earlier14/375 cuts remain separate. Final302 overb135 preserves accepted default fields and passes full algorithmic/structuring compilation. Module326 adds named sends/nested captured-row updates below. VALUE-return warning handlers, Stringable/wider producers and complete core remain required. Typed non-mixed return verification stays user-paused. Integrated326 adds authenticated live captured-row certificates for named reference sends and nested pre/post updates, preserving named checks and finishing dispatch. Six new exact normal originals and three strict-SL groups/246 premises retain their private303 cut in arrayaccess-reference-consumers-review.json. Final306 over40e3c4fcc passes full algorithmic/structuring compilation at46c624e89; current ECHO/collector/pruning seams are independently accepted without source/state renewal. VALUE-return Notice-handler and wider producers remain open; typed non-mixed return verification stays user-paused."
+      "review": "Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. Module292 adds bounded ordinary by-value compound/Get-temporary/nested W/RW/Unset continuations with actual key/RHS/row owners and callback/throw ordering. Its affected276 GLOBALS ROOT reference finish and249 direct/nested Unset admission are repaired; arrayaccess-write-review.json records34 source agreements and separate reached gates. By-reference Get and wider ArrayAccess producers remain required; no family closure or accepted284 renewal. Module304 adds bounded intermediate append through returned arrays and final compound child append, with real temporary/reference owners and pending-error conversion/operator priority. Its49 sources,8 strict-SL recipes/723 premises and one fresh275 parent interaction retain separate cuts. By-reference Get and wider producers remain required; no family closure or old-gate renewal. Module309 adds final simple returned-child Set(null), transferring genuine writer roots and preserving latched-null RHS, selected child and old result-cell readback. Eight normal sources and two strict-SL recipes/160 premises pass at a095/276; actual-parent composition is accepted at863. By-reference Get and wider producers remain required. Actual eager/weak/provider composition now passes one unchanged broad source and three strict-SL groups/184 premises at863. Unused Set result normalization retains four source controls/90 owner premises at5441; smaller source/provider60 at8ce remain separate. Whole-list access traversal preserves first-match order and public guards. No full-family closure or earlier evidence renewal. Current-parent718b/287 additionally accepts one Fiber Set/paused-Generator finalizer original and64 strict-SL premises; earlier cuts remain separate. Module319 accepts untyped/mixed by-reference Get demand, shared/sole writable wrappers, raw DIM_OP CELL ownership and authenticated nested-reference/borrowed-Unset carriers. Fourteen exact normal originals and six strict-SL recipes/375 premises retain separate cuts in arrayaccess-reference-get-review.json. Actual298 passes full compiler/init and one new exact Fiber-core warning/Get suspension original; earlier14/375 cuts remain separate. Final302 overb135 preserves accepted default fields and passes full algorithmic/structuring compilation. Module326 adds named sends/nested captured-row updates below. VALUE-return warning handlers, Stringable/wider producers and complete core remain required. Typed non-mixed return verification stays user-paused. Integrated326 adds authenticated live captured-row certificates for named reference sends and nested pre/post updates, preserving named checks and finishing dispatch. Six new exact normal originals and three strict-SL groups/246 premises retain their private303 cut in arrayaccess-reference-consumers-review.json. Final306 over40e3c4fcc passes full algorithmic/structuring compilation at46c624e89; current ECHO/collector/pruning seams are independently accepted without source/state renewal. VALUE-return Notice-handler and wider producers remain open; typed non-mixed return verification stays user-paused. Module329 adds genuine untyped/mixed implicit Get VALUE-return Notice callbacks with raw carrier identity and local/receiver/RV throw ordering. Nine exact normal originals and four strict-SL groups/401 premises retain their13e29/307 cut. Final314 over2a2f69a71 passes full algorithmic/structuring compilation, preserving current trait/constructor/pruning fields without source/state renewal. Finally-sensitive Notice ingress, bare/fall-through NULL, handler exit, Stringable/wider producers and user-paused non-mixed typed verification remain open."
     },
     {
       "id": "protocols.Stringable",
@@ -12087,7 +12124,8 @@
         "spec/semantics/276-container-write-continuations.watsup",
         "spec/semantics/282-container-read-continuations.watsup",
         "spec/semantics/327-source-computed-emission.watsup",
-        "spec/semantics/330-source-cv-name-emission.watsup"
+        "spec/semantics/330-source-cv-name-emission.watsup",
+        "spec/semantics/329-arrayaccess-reference-value-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/error_handler_protocol.py",
@@ -12132,7 +12170,11 @@
         "tests/semantics/container_warning_protocol.py",
         "tests/semantics/container_warning_prepare.py",
         "tests/semantics/container_read_protocol.py",
-        "tests/semantics/container_read_prepare.py"
+        "tests/semantics/container_read_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached.py",
+        "tests/semantics/arrayaccess_reference_value_reached_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached_run.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
@@ -12185,7 +12227,9 @@
         "tests/semantics/container_warning_current.php",
         "tests/semantics/container_read_cases.py",
         "tests/semantics/container_read_current.php",
-        "tests/semantics/source_stringable_retirement_sources.py"
+        "tests/semantics/source_stringable_retirement_sources.py",
+        "tests/semantics/arrayaccess_reference_value_cases.py",
+        "tests/semantics/arrayaccess_reference_value_run.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -12217,7 +12261,8 @@
         "docs/semantics/SOURCE-CONTAINER-READS.md",
         "coverage/semantics/container-read-review.json",
         "coverage/semantics/source-computed-emission-review.json",
-        "coverage/semantics/source-cv-name-emission-review.json"
+        "coverage/semantics/source-cv-name-emission-review.json",
+        "coverage/semantics/arrayaccess-reference-value-review.json"
       ],
       "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Accepted208 adds initially-reference left-CV identity reads with a genuine saved borrowed pointer and no extra cell owner. Privatef15 author6 normal+control0/three162 and independent3 models(native reuse)/two130 remain distinct from fresh getter/setterf959 author1/74+independent1/111 and current method-stringc67 source1/77. warning-reads-review.json binds original raw/peers and source-equivalent publication. Plain-CV wrappers, other read producers and full core remain open. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/magic/autoload/internal/exception/lifecycle callbacks remain open. Source-certified209 missing-CV branch/loop/short-circuit/NOT/ternary-condition continuations pass mixed author8 normal plus castUnsupported0/four225 and independent retained-native model3/three160. Original certificate failure and branch recording collision remain preserved. Current PIPE normal source1/69 and independent throwing source1/corrected96 are accepted at0d881, preserving the original wrong INSTANCE premise. Current deferred-cache normal source1/95 and independent throw source1/89 pass at8c74. Source-equivalent promotion preserves disjoint actual201 without replay or new credit. Broader producers stay open; later consumer checks remain separate. warning-truth-review.json records separate revisions/profiles. The tested211 composition at38cab separately accepts author source1/93 and independent strict instance-emitter source1/107, preserving original-null branch/BOOL consumers and raw restoration through parameter rejection. Current211/constants/property endpoints remain unchanged; source-equivalent publication adds no execution credit. Private/protected nonstatic bare-object handlers use effective __invoke lookup without ordinary explicit visibility access. Selected ARG4, replacement/throw and strict USER truth-warning parameter rejection retain the genuine saved emitter and cleanup. Dynamic compilation-warning and wider callable consumers remain open. See invoke-publication-current-review.json. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Lexical private/protected ordinary array/string selectors215 now authenticate actual selecting scope across saved calls, capture/clone and API dispatch. Object parent-private redirection differs from concrete-class lookup; protected access follows the root prototype. Origin-only creator permission survives retirement without a new owner, and API raw callbacks resolve at each dispatch. See scoped-callables-current-review.json. Module221 stages keyword/compound error registration and delayed dispatch, clearing the registry before selection warnings and authenticating foreign-this API targets. Default/variadic, other internal and user-return warning ingress, magic/autoload and transformed consumers remain required; keyword-compound-callables-current-review.json records its separate evidence. Source-certified213 casts, selected copies and ordinary by-value sends preserve captured null and selected owners through handler mutation; direct ASSIGN writes null through handler throw. Mixed author21 normal/control0+236 and independent10/197 retain their tested revisions and original failures. Fresh actual6395 composition at181f accepts static-reference/outer-array source1/94 and complementary cached-callee source1/96. Source-equivalent publication preserves released reporting, backing216 and named-class6771; no fresh execution or rebuild credit. Broader producers and paused returns remain open (warning-consumers-review.json). Fresh actual213 source1/94 selects lexical Owner-private over Child-public and preserves captured-null WRITE_NAME on handler throw, genuine caller argument view and selected receiver cleanup. scoped-callables-current-review.json keeps it distinct from the earlier scoped author/independent checks. Module220 passes author9 sources/211 checks and independent5 sources/249 checks at484d. Existing86/105 missing-CV reference sends retain real null cells without warnings after named selection. Rejected post-handler ASSIGN keeps the live typed value and chains the handler error under a caller TypeError at the restored emitter. Two independent fixture phase failures remain preserved; only affected/unrun states were executed. Actual3919 composition preserves215/217 and passes one reduced scoped-handler source at5bce: typed caller alias/introspection, authentic TypeError line/file/emitter trace and retained previous-chain identity/lifetime. The original heavier observer keeps its CLI60 timeout and zero agreement. Broader producers and paused returns stay open. Module226 captures the missing direct global R-fetch name/null before callbacks; throws skip later ASSIGN/SEND and preserve the typed destination/original exception. Genuine76 request snapshots retain numeric keys, singleton unwrap, shared references, COW and pool owners. Author8/207 and independent8/221 preserve their private cutoffs; two derived currented6 sources atbb90 retain private/called-class/eager208 and cold typed219 alias/chain interactions. Original count Unsupported, fixture failures and combined CLI60 timeout remain preserved with no agreement credit. Wider key/object/container producers, ordinary snapshots without request facts and broader reference-result consumers remain required. Read-key warning continuations233 now preserve genuine operands, conversion protection and ordered float notices; dimension-key-review.json retains original source/state/current cuts. Wider producers remain open. Writable242 adds bounded defined CV-array W/RW and direct GLOBALS reference warnings with preconversion separation, exact-one acquisition, real cells, delayed RHS and named priority. Author11/340 (including two independent originals), independent15 fresh/266 plus those retained2, and actual3b622 current1 keep distinct cuts in dimension-write-continuations-review.json. Broader GLOBALS RW and wider producers remain required. Module249 adds direct defined CV-array coalesce-assignment and final unset warning continuations: genuine quiet/memo operands, distinct read/write lines, write-copy abort/delayed RHS, unset float-tail protection and copied-table liveness. Author6/255 and independent10/216 share one retained multiline original (15 unique private agreements); two reduced actualab5 trait-handler sources pass at f5/ea. Original CLI60 timeouts retain zero agreement. Module249 retains its separate cuts in dimension-edit-review.json; wider memoized containers and producers remain required. Module255 adds bounded CV-rooted nested-unset and append continuations: native protection/liveness, genuine abort temporaries, retained computed RHS and late missing-RHS insertion/throw timing. Author6/247 and independent18/356 share one original (23 unique); private-FCC current223 passes. dimension-tail-review.json retains separate cuts; wider producers remain required. Module262 adds nested defined CV-array coalesce continuations with genuine quiet row owners, recursive memoized W views, abort TEMP and late keyed-RHS null/type-error cleanup. Author9/233 and independent11/277 share two originals (18 unique/510); actual6013 current9ac passes. nested-coalesce-review.json keeps retained and affected cf7 cuts distinct; wider containers/GLOBALS RW remain required. Module269 adds bounded GLOBALS W/RW name/missing-entry continuations for direct updates/compound and nested array ingress. Returned missing fetches detach callback-created constrained/reentry aliases; throws preserve writes and skip late RHS. Author9/224 and independent12/273 share four originals (17 unique/497); actualc906 current604958 passes. globals-write-review.json keeps separate cuts and original multiline/native prediction corrections; earlier containers and wider GLOBALS/memoized producers remain required. Module276 adds bounded undefined/null/false W/RW initialization and array-reference ingress, genuine callback/source owners and typed DIM_OP backing transport/clear; container-warning-review.json keeps30 unique/517 and current851 separate. Wider producers remain required. Module282 stages bounded scalar/missing R and quiet-container warnings with genuine row/key owners and distinct terminal predicates; container-read-review.json keeps20 unique/484, current5eefe and later quiet-object controls separate. Full ArrayAccess and wider producers remain required. Module327 selects computed noarg named-user-call INIT6 before FETCH6/property8; private304 source3/affected1 and independent188 premises retain separate cuts. Its missing-name warning continuation resumes fixed null after handler writes. Actual307 passes strict compilation with independently reviewed collector/Generator/ArrayAccess compatibility, without renewing source/state credit. Wider computed producers remain required; see source-computed-emission-review.json. Module330 selects the outer CV-computed FETCH6 before property8; private308 source4 and174 genuine entry/warning/identity/control premises retain their inputs. Reused327 fixed-null resume preserves handler name/target writes. Actual310 passes strict compilation with reviewed Fiber/collector/constructor compatibility, without renewed source/state credit. Wider names remain required; see source-cv-name-emission-review.json."
     },
@@ -12275,7 +12320,8 @@
         "spec/semantics/142-method-runtime.watsup",
         "spec/semantics/215-scoped-callables.watsup",
         "spec/semantics/233-dimension-key-continuations.watsup",
-        "spec/semantics/282-container-read-continuations.watsup"
+        "spec/semantics/282-container-read-continuations.watsup",
+        "spec/semantics/329-arrayaccess-reference-value-notices.watsup"
       ],
       "helper_tests": [
         "tests/semantics/error_handler_protocol.py",
@@ -12286,7 +12332,11 @@
         "tests/semantics/include_chdir_warning_protocol.py",
         "tests/semantics/scoped_callables_protocol.py",
         "tests/semantics/container_read_protocol.py",
-        "tests/semantics/container_read_prepare.py"
+        "tests/semantics/container_read_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached.py",
+        "tests/semantics/arrayaccess_reference_value_reached_prepare.py",
+        "tests/semantics/arrayaccess_reference_value_reached_run.py"
       ],
       "source_tests": [
         "tests/semantics/error_handler_cases.py",
@@ -12299,7 +12349,9 @@
         "tests/semantics/scoped_callables.py",
         "tests/semantics/scoped_callables_cases.json",
         "tests/semantics/container_read_cases.py",
-        "tests/semantics/container_read_current.php"
+        "tests/semantics/container_read_current.php",
+        "tests/semantics/arrayaccess_reference_value_cases.py",
+        "tests/semantics/arrayaccess_reference_value_run.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend.c",
@@ -12313,7 +12365,8 @@
         "coverage/semantics/include-config-pipe-review.json",
         "coverage/semantics/scoped-callables-current-review.json",
         "docs/semantics/SOURCE-CONTAINER-READS.md",
-        "coverage/semantics/container-read-review.json"
+        "coverage/semantics/container-read-review.json",
+        "coverage/semantics/arrayaccess-reference-value-review.json"
       ],
       "review": "Bounded206/207 installed: private author23 supported tuples plus1 Unsupported0agreement/eight298 and independent source3/three240 retain mixed revisions/native reuse. Fresh current0489 composition atb3aa accepts author source2/75 and independent source1/87 across property197, compiler, INI and array205, including164 internal trace readback and exact malformed callback-array errors. error-handlers-review.json binds originals, releases and source-equivalent publication. Broader warning/API/callable/exception/lifecycle/reporting readback remains partial; no full-family or rebuild claim. Public method-array/class-method-string API callbacks211 store raw values and resolve at each dispatch, with authentic emitting-frame selection and frozen entered ownership/ARG4/trace through reference mutation, replacement, nested reentry, throw and false fallback. Core author15 (11normal2error2separateUnsupported)/five258 and independent9normal/three185 remain distinct from current CONFIG PIPE source1/state93. handler-callables-current-review.json preserves original failures and zero-agreement controls; broader compound/magic/autoload/internal/exception/lifecycle callbacks remain open. Private/protected nonstatic bare-object handlers use effective __invoke lookup without ordinary explicit visibility access. Selected ARG4, replacement/throw and strict USER truth-warning parameter rejection retain the genuine saved emitter and cleanup. Dynamic compilation-warning and wider callable consumers remain open. See invoke-publication-current-review.json. Failed CHDIR handlers retain CWD/raw/caller state and both trace operands; the PIPE ledger separates current source1/136, earlier three sources and compiler25 checks. Lexical private/protected ordinary array/string selectors215 now authenticate actual selecting scope across saved calls, capture/clone and API dispatch. Object parent-private redirection differs from concrete-class lookup; protected access follows the root prototype. Origin-only creator permission survives retirement without a new owner, and API raw callbacks resolve at each dispatch. See scoped-callables-current-review.json; broader keyword/compound/magic/autoload/internal and transformed consumers remain open. Module282 stages bounded scalar/missing R and quiet-container warnings with genuine row/key owners and distinct terminal predicates; container-read-review.json keeps20 unique/484, current5eefe and later quiet-object controls separate. Full ArrayAccess and wider producers remain required."
     },

@@ -846,7 +846,9 @@ rule PhpStep/destructor-frame-return: S ~> S[.TODO = ptask_tail*][.DESTRUCTION.F
   -- if $destructor_frame_valid(S, pdestructionframe)
   -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
   -- if pdestructionframe.PENDING = eps
-rule PhpStep/destructor-frame-throw: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.DESTRUCTION.FRAMES = pdestructionframe_tail*][.RESULT = KNOWN PNULL][.HELD = eps]
+dec $destructor_frame_throw_finish(pstate, pdestructionframe, nat, ptask*) : pstate
+def $destructor_frame_throw_finish(S, pdestructionframe, n, ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.DESTRUCTION.FRAMES = S.DESTRUCTION.FRAMES[1:$nabs($(|S.DESTRUCTION.FRAMES| - 1))]][.RESULT = KNOWN PNULL][.HELD = eps] -- otherwise
+rule PhpStep/destructor-frame-throw: S ~> $destructor_frame_throw_finish(S, pdestructionframe, n, ptask_tail*)
   -- if S.TODO = (DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask_tail*
   -- if $destructor_frame_valid(S, pdestructionframe)
   -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
