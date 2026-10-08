@@ -380,6 +380,9 @@ test-semantics: build
 	python3 tests/semantics/instance_storage_pin_protocol.py --group typed
 	python3 tests/semantics/instance_storage_pin_protocol.py --group generator
 	python3 tests/semantics/instance_storage_pin_protocol.py --group fiber
+	python3 tests/semantics/stdinstance_storage_pin_protocol.py --group table
+	python3 tests/semantics/stdinstance_storage_pin_protocol.py --group shared
+	python3 tests/semantics/stdinstance_storage_pin_protocol.py --group generator
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
