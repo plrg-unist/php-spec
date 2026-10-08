@@ -104,5 +104,7 @@ The [ledger](../../coverage/semantics/source-cv-name-emission-review.json) retai
 private308 source4 and174 genuine entry/warning/identity/control premises.
 Returning retirement changes the live name before lookup; reused327 fixed-null
 resume retains later handler name/target writes. The noarg-call control remains
-327-positive and330-negative. Relocations add no execution credit; actual integration,
-undefined name CV/conversion variants and wider producers remain required.
+327-positive and330-negative. Actual310 passes strict compilation; independently
+reviewed Fiber/collector/constructor parent paths are disjoint here. Earlier cuts
+and relocations gain no renewed credit. Undefined name CV/conversion variants
+and wider producers remain required.
