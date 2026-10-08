@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Collector332 adds quiescent public resume/throw into the cached collector Fiber.
+Its real caller transfer preserves the worker mask and idle cache without a
+stored exception or supplied-value worker owner. Strict compilation/initialization
+and three exact source controls pass at `084aebce1`; two explicit strict-SL groups
+with169 premises pass separately at `0649fd604`. The final315 composition over
+`79546523e` passes combined compilation at `f3d62ee7b` without renewing earlier
+cuts. Active-pass idle transfer remains Unsupported; complete GC and the fresh
+combined offline rebuild remain required.
+
 Collector325 retains a detached zero-owner target and its outgoing graph through
 a borrowed buffer tag, without adding an owner. Real weak reacquisition restores
 ordinary last-owner release and parent retirement before child destruction.
@@ -52,12 +61,12 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
-WeakReference296, ordinary cycle collection301 and collector Fibers317/325,
+WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332,
 Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with314 modules composed over
-`2a2f69a71e07`. The ordered integration preserves
+with315 modules composed over
+`79546523e03d`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at

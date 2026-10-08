@@ -473,8 +473,12 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, public idle-worker resumption, automatic thresholds and wider freeing
-remain open.
+graphs, public idle-worker transfer during an active collection, automatic
+thresholds and wider freeing remain open. Module332 adds quiescent public idle
+resume/throw: supplied values are discarded, new cycles await real collection,
+and exceptions reach the caller without terminating or remaining in the worker.
+Three new exact originals and two strict-SL groups with169 premises pass at
+separate cuts; the final315 current-parent join passes combined compilation.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)

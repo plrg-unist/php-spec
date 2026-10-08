@@ -1,6 +1,6 @@
 # Explicit cycle collection
 
-Modules 301/317/325 implement a bounded ordinary-object/array collector on the pinned
+Modules 301/317/325/332 implement a bounded ordinary-object/array collector on the pinned
 PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
@@ -26,6 +26,14 @@ replacement cache. Traces contain the source-less `gc_destructor_fiber` frame
 and the actual collecting API or resumer. Destructor access inherits the real
 collecting caller's scope. Request destruction terminates an idle cached worker
 at its authentic object-store handle without invoking a fabricated callback.
+
+Module332 admits public resume/throw into the cached idle worker while no
+collection is active. Normal resume discards the supplied value and suspends
+again without collecting a new unmarked cycle. An injected exception reaches
+the real API caller while the worker remains suspended and reusable; its saved
+idle VM retains no exception. The real waiter owns the receiver and argument,
+and throw has one temporary global error-task owner. Worker mask restoration
+and current API source/sequence authentication remain intact.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -98,8 +106,8 @@ under an `AT` wrapper. Historical snapshots cannot authorize arbitrary callbacks
 zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
-Explicit boundaries remain for wider internal lifetime graphs, public resumption
-of an idle cached worker, wider callbackless close-return contexts,
+Explicit boundaries remain for wider internal lifetime graphs, public idle-worker
+transfer during an active collection, wider callbackless close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
 Wider GC, WeakMap and final combined offline validation remain required.
@@ -161,3 +169,13 @@ affected strict-SL group with117 physical premises. These source and state cuts
 remain distinct. The final309 composition over callable Fibers322 passes its
 required combined compiler at `b4cfe4a14`; source/state cuts are not renewed
 and no offline rebuild is claimed.
+
+Module332 passes private311 compilation/strict initialization and three new exact
+originals at `084aebce1`. Two explicit strict-SL groups pass91/78 physical premises
+at `0649fd604`: authentic API/cache and masks, unmarked-cycle ownership, transient
+error owners, same-heap source/sequence/extra-task forgeries, budget identity and
+real one-step resumption, post-return public admission and one full continuation.
+The first AL120 timeout retains zero agreement; a60-premise strict prefix is a
+separate diagnostic. The final315 join over `79546523e` passes combined compilation
+at `f3d62ee7b`, preserving329/TRAIT/CV/keep seams without old source/state renewal.
+No active-pass public transfer or copied-tool offline rebuild is claimed.
