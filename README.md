@@ -509,6 +509,7 @@ Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
 Keep and release scans also reuse the carried graph, including detached and
 retired buckets; public helpers retain their behavior for modified graphs.
+GC transitions read observed edges after their roots without rebuilding those roots.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate

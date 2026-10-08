@@ -378,6 +378,14 @@ Raw checks: `.tools/compiler-fiber-blocked-scan-19/.tools/fiber-blocked-controls
 Final 336-module composition at `3f19f2278` passes changed initialization in4.122s.
 Raw final check: `.tools/compiler-fiber-blocked-current-19/.tools/fiber-blocked-current-controls-v1`.
 This factor's original full-source retry remains UNRUN.
+Module301's removed-owner consumer now reads the same observed state's edges
+after its first roots call, preserving owner order and fallback. Exact `c0cbdd69b`/336
+passes initialization, 51 typed physical/44 main and 56 reached physical/39 main
+premises, with explicit admission of the changed branch. Raw checks:
+`.tools/compiler-gc-transition-edges-19/.tools/gc-observed-edges-controls-v1`.
+Final 339-module composition at `a164f0f9e` passes changed initialization in4.171s.
+Raw final check: `.tools/compiler-gc-transition-edges-current-19/.tools/gc-observed-edges-current-controls-v1`.
+The combined original retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

@@ -198,4 +198,6 @@ initialization and focused helper/retention controls. Its `94e3593e6`/334 full r
 still times out at host55.045 with empty streams and zero agreement.
 Deferring total Fiber owner scans at `7b02a1d39`/334 passes helper and genuine
 false-frontier controls; that factor's original full-source retry is UNRUN.
+Same-state GC edge consumption at `c0cbdd69b`/336 passes typed and admitted
+source-step controls; the combined original retry remains UNRUN.
 Whole retry composition and wider producers remain open.
