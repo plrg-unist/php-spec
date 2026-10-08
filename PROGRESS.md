@@ -7,6 +7,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
+resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
+Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335
+over `94e3593e6` passes strict compilation at `4832f2226` with reviewed current-parent
+compatibility. The fixture elaboration stop has zero application/acceptance credit.
+[Ledger](coverage/semantics/source-array-name-review.json).
+
 348 executes bound `start` first-class captures directly and through explicit
 `__invoke`. Immutable receiver selection and original positional/named buffers
 survive argument effects, nested same-Closure calls, weak callback receives and
