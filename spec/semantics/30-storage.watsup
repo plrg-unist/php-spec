@@ -222,8 +222,6 @@ syntax pconstantlookup = { ORIGIN porigin, SITE porigin, DECL porigin, PREFIX na
 syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass, LOOKUP pconstantlookup? }
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
 syntax pinstancestorage = { OBJECT nat, HANDLE nat, SLOTS ppropertyslot*, NEXT nat, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool }
-dec $instance_storage_freeing(pstate, nat) : bool
-dec $instance_storage_state_valid(pstate) : bool
 syntax pforeachbind = { SITE porigin, FOREACH porigin, ITERATOR nat, OBJECT nat, OWNER pnode, POSITION nat, KEY ptbytes, NAME ptbytes, OLD nat, WRAPPER nat?, VALUE pvalue, NEW nat, CALLER pcallcontext?, CONSTCONTEXT pconstantcontext?, LINE int }
 syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
