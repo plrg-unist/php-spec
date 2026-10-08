@@ -1,0 +1,186 @@
+{
+  "milestone": 341,
+  "status": "independently-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "semantic_code": "00107464a6d45bc740f5d22e9c2d90755de418a0",
+  "baseline": "6b51f811c7c1c6975356687a96b95e2516f91044",
+  "modules": 324,
+  "scope": [
+    "Fixed bound resume/throw/status/defined getReturn first-class captures execute as Fiber C-root callbacks.",
+    "Immutable RAW Closure, cached target and live capture receiver determine CONFIG ownership and selection; static/core defaults remain receiver-free.",
+    "The raw callback and core result tail own the Closure; waiting APIs borrow its receiver and retain only actual sent buffer roots.",
+    "Nested and idle collector transfers authenticate the genuine runner and outer caller chain, exact site/line/buffer and saved result/finish tail.",
+    "Callback retirement can force-close its last receiver before original start arguments retire. C-root API trace frames have no file or line; unknown names fail before handler entry."
+  ],
+  "compiler": {
+    "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-bound-core-sl-4vcd58jg/report.json",
+    "sha256": "177a96d5528059de052f241474a9030682129942656b2ff88058119ccc698f6e",
+    "revision": "00107464a6d45bc740f5d22e9c2d90755de418a0",
+    "passed": true,
+    "modules": 324,
+    "mode": "SL",
+    "initialization": true
+  },
+  "source": {
+    "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-bound-core-source-ms1626is/report.json",
+    "sha256": "a99f32873f55d40dae2f3aa83a78fb20aed5050f5147fcb9870ce2a80e7cd10d",
+    "revision": "f8ad4f2a46e1c81de83a1ed90d506e5abcfcc908",
+    "passed": true,
+    "new_normal_originals": 10,
+    "affected_former_unsupported_originals": 1,
+    "normal_agreements": 11,
+    "inputs_stable": true,
+    "head_stable": true
+  },
+  "states": {
+    "independent_groups": 3,
+    "independent_premises": 255,
+    "author_groups": 1,
+    "author_premises": 93,
+    "premises_include_five_setup_clauses_per_group": true,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-3_abd8fh/report.json",
+        "sha256": "34648815ec6f2aff85036c8c8c0caaf32f2d2f04a0043e3703a8cec59f867823",
+        "revision": "99f55b4b4d8549070f676d594dafb86f57dfa10f",
+        "passed": true,
+        "group": "bound-core-selection-keeps-raw-binding-and-borrowed-receiver",
+        "role": "independent",
+        "premises": 83,
+        "source_sha256": "ae106629a6f0f525ae33f1e94277b6b8646aea5eb63a66e4e2c74f0ae6cd6ce7"
+      },
+      {
+        "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-pr7ucn31/report.json",
+        "sha256": "2fa7214c75df11d858b8bd77b8645e628afbb0b2ea5809be3458f9418b3dd91c",
+        "revision": "e5e7d0429a6d4ba105a94c1fcfe720f816b741f5",
+        "passed": true,
+        "group": "bound-core-nested-wait-keeps-real-runner-and-parent-chain",
+        "role": "independent",
+        "premises": 108,
+        "source_sha256": "e9f14d9e7a708f9b4ba4e0fda06440d2a246e2f6767b9110e5f3124825fb4ce7"
+      },
+      {
+        "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-u2jcp3bw/report.json",
+        "sha256": "ad6bab246f06eb2c41df7166c35196983df51715c7ea4ded2ddccff5d1b259fa",
+        "revision": "e5e7d0429a6d4ba105a94c1fcfe720f816b741f5",
+        "passed": true,
+        "group": "bound-core-raw-retirement-precedes-original-start-argument",
+        "role": "independent",
+        "premises": 64,
+        "source_sha256": "13cbb0af0d72ae028cc68ab879bd89cecd8cbc6456362ab34e04dd20726b5c3c"
+      },
+      {
+        "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-zts8dd_c/report.json",
+        "sha256": "59acebb0e2855721aa4340620a2211652e6f36acf83a2ccf12fa9ad92866a3ce",
+        "revision": "11c4832c5615220b52b6e23e5c8f8794eb01e6d6",
+        "passed": true,
+        "group": "bound-core-collector-restores-runner-and-real-outer-caller",
+        "role": "author",
+        "premises": 93,
+        "source_sha256": "0ebf8845cc1edf1b237589f31aa28cece0f86d96f470c61b25162cfd1785577e"
+      }
+    ]
+  },
+  "semantic_inputs": {
+    "spec/semantics/313-fiber-core-callbacks.watsup": "75bf7166606deb0fec76cfb9aaf18cb4096140737c263ec27af6419c8978236f",
+    "spec/semantics/331-fiber-static-callables.watsup": "55c6999b1953f50f7b7dc052411dfbdaa17d363824b3ea4190f02872c66b2bee",
+    "spec/semantics/337-fiber-bound-callables.watsup": "3bbd84d8c4197d2d4db2bd2d5f77c681232532500f1082f62a887c4c0e77e5ff",
+    "spec/semantics/341-fiber-bound-core-callables.watsup": "6a9f3d366b2dc675bc4d6ad98e333bed0437b3de1ce701aad9cc4a24dfad7be0"
+  },
+  "failures": [
+    {
+      "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-bound-core-source-lm3pvk6y/report.json",
+      "sha256": "b1e3414a4d7b199bcecf3a816e3c6e821de055cde73e224ab274400a9b3a0553",
+      "revision": "0816f5c1371b194e956ee18c093ff99ac1db37e6",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Binding tuple scalar was not explicitly constructed as an option; fixed in ba1850ed5."
+    },
+    {
+      "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-pbw9ldze/report.json",
+      "sha256": "4f541e555020d28a5a16b085c868c0a8321faf5d5f42e7195e62601b3ea64e4f",
+      "revision": "99f55b4b4d8549070f676d594dafb86f57dfa10f",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Genuine nested borrowed-root helper selected the ordinary receiver-root fallback."
+    },
+    {
+      "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-hqccpkoi/report.json",
+      "sha256": "f3c690c971eb9f7303a7fe5e719b17348ba7d20f37df85deaffb2400d5875680",
+      "revision": "861fda442afce23a5d8d69b8f50298764656a4e9",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Seven exact guard premises passed; the same helper fallback fault remained."
+    },
+    {
+      "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-_yuzsiw3/report.json",
+      "sha256": "18d486369c38681c423ee876b82ffbd6dcba9cfc0ccf7087d68dd5c28ed5b19d",
+      "revision": "c6a0fa5e6e13a9868e2c938694489ea88804e3b4",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Every exact guard passed; local API and sequential exact-tail binding fixed the helper matching fault in 00107464a."
+    },
+    {
+      "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-t_tm2x1u/report.json",
+      "sha256": "35a230bdee51ca01ca623118dad13670b5e02543dc82722d1cf16b108cabc8ac",
+      "revision": "00107464a6d45bc740f5d22e9c2d90755de418a0",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Fixed borrowed-root helper passed; fixture expected three runner owners, omitting the active copied parent CV alongside the persistent capture. Four source-reached owner components are proved by 108."
+    },
+    {
+      "path": ".tools/calls-fiber-bound-core-19/.tools/fiber-state-review-fu5hnedq/report.json",
+      "sha256": "f70f8674062a4cb4140a22609a94deefb08956e9bf3b91c0b9cca4e5b7437e20",
+      "revision": "e5e7d0429a6d4ba105a94c1fcfe720f816b741f5",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Fixture put the original named start value in positional slots. Corrected to empty SLOTS and exact NAMED buffer; callback CONFIG retains the mapped slot."
+    }
+  ],
+  "identity": {
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "determinism_checks": true,
+      "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+      "ocaml": "5.1.0"
+    },
+    "runtime": {
+      "version": "8.5.10",
+      "sapi": "cli",
+      "int_size": 8,
+      "zts": false,
+      "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+      "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "source_budgets": {
+      "steps": 100000,
+      "model_seconds": 60,
+      "process_seconds": 75
+    },
+    "state_budgets": {
+      "seek_steps": 4000,
+      "finish_steps": 4000,
+      "process_seconds": 120
+    }
+  },
+  "recovery": {
+    "worktree": ".tools/calls-fiber-bound-core-19",
+    "branch": "calls/fiber-bound-core-19",
+    "source_command": "python3 tests/semantics/fiber_bound_core_sources.py",
+    "independent_command": "python3 tests/semantics/fiber_bound_core_review.py --case <recorded group>",
+    "author_command": "python3 tests/semantics/fiber_bound_core_collector.py",
+    "compiler_command": "python3 .tools/fiber-bound-core-prep-19/compile.py",
+    "raw_reports": "Report paths are relative to canonical php-spec; raw generated programs, exact argv and streams remain outside Git."
+  },
+  "limits": [
+    "The 11 whole-source comparisons retain their f8ad cut before the narrow borrowed waiting-root helper fix. Unaffected selection83 retains99f; nested108 and collector93 drive their exact originals to completion after that fix. Retirement64 also passes at the later cut.",
+    "The former 337 C-root Unsupported original is supported only at the 341 cut; its original zero-credit observation and earlier331/337 cuts are unchanged.",
+    "Bound start and constructor captures, broader callable adapters/consumers and already tracked lifecycle boundaries remain required. Undefined-result getReturn and paused returns_verify are excluded."
+  ]
+}
