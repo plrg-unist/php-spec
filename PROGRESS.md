@@ -2125,6 +2125,14 @@ algo/struct at3.719/4.621s; source1/44 bridge with current callback witnesses
 and stdClass storage preserved. Raw compiler evidence is
 `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-jen_5u_i`
 and `trait266-object-struct-iqurkbph` in the same directory.
+Explicit abstract retained SELF now authenticates the original class flags and
+rejects construction even when data binding failed earlier; the implicit proof
+still requires NORMAL. At `00d1acb37`/350 over `7c4a13bc1`, strict algo/struct
+pass3.719/4.670s, one shutdown PHP-error tuple and39 supplied NEW/source-flag
+conditions plus6 setup clauses pass (27.209s), including all four validators.
+Raw evidence under current19 `.tools/` is `method-runtime-vcokv2pq`,
+`closure-call-protocol-7qumzqku`, `trait266-object-algo-9ms95gjp` and
+`trait266-object-struct-es2vzasj`. Earlier cuts remain unchanged.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,

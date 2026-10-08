@@ -280,9 +280,11 @@ with6 setup clauses separate. Callbacks between fixup and failure remain open.
 Retained `new self` proves an unresolved implicit abstract trait requirement
 from completed data binding and the exact copied requirements, rejecting construction
 before arguments. Imported and own/private targets share the explicit completion
-proof; equal scope descriptors alone cannot establish it. The failed class stays
-unpublished, and an unknown proof stays Unsupported. Two shutdown PHP-error originals
-and83 supplied NEW/phase conditions plus12 setup clauses pass at separate cuts.
+proof; equal scope descriptors alone cannot establish it. Explicit abstractness
+is authenticated directly from class source flags and rejects construction even after
+an earlier data failure. The failed class stays unpublished, and an unknown proof
+stays Unsupported. Three shutdown PHP-error originals and122 supplied NEW/phase/flag
+conditions plus18 setup clauses pass at separate cuts.
 Retained `new static` constructs the published called class using its exact
 saved scope/source proof; deferred static fills retain that NEW selection in durable
 history. One shutdown PHP-error original and40 supplied argument-entry/history
