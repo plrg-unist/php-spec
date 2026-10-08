@@ -163,4 +163,6 @@ times out at host55 with zero agreement and no demonstrated speedup.
 The separate destructor preparation/waiting factor passes strict305,173 affected
 predicates and the WeakReference original on `5559f2c00`; its full retry still
 times out at host55.066 with empty streams and zero agreement.
+Their actual309 join retains current collector/caller hooks and passes strict
+initialization on `13bc4e931`; the earlier lifecycle/source cuts remain distinct.
 Whole retry composition and wider producers remain open.

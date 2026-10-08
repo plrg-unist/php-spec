@@ -35,6 +35,8 @@ private `5559f2c00` cut, strict305 initialization,110 source-reached/controlled
 branch and fallback predicates, GEN63 and the parent-child WeakReference original
 pass. The selected-result Unmatch fallback remains statically reviewed; the full
 default retry still exceeds host55. No speedup or whole-retry agreement is claimed.
+The actual309 join preserves current collector/caller hooks and passes strict
+initialization on `13bc4e931`; it adds no lifecycle/source renewal.
 
 Exception-handler return values release before the original Throwable and before
 the old handler is restored. Error-handler return values release before restoring

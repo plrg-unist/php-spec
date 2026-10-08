@@ -113,6 +113,10 @@ RHS Unmatch fallback is statically preserved. Its full retry still times out at
 host55.066 with empty streams and zero agreement. The maintained
 `destruction_prune_protocol.py` reproduces the corrected110 fixture; its original
 relation-premise elaboration stop earns no runtime credit.
+Both factors now join actual `bf1c0053a`/309, preserving current325/322/326/327
+root and caller hooks. Strict initialization passes on `13bc4e931` in3.769s.
+The earlier139/173/WeakReference cuts retain their own inputs; no source renewal
+or speedup is claimed.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
