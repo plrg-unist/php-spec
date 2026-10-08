@@ -223,9 +223,26 @@ groups are reaped. No speedup or231 credit follows. Raw records are under
 The actual335-parent319 composition passes strict initialization on `3e56ab759`
 in4.019s; earlier316 runtime cuts retain their identities.
 Private `2582d7008`/319 partitions edge targets before source-membership scans,
-passing strict initialization and48 graph premises; its full retry is UNRUN.
-Both pure factors compose over SOURCE336/320 by static review. Raw owner checks:
-`.tools/compiler-edge-owners-19/.tools/edge-owner-gate-v1`.
+passing strict initialization and 48 graph premises. Both factors compose over
+SOURCE336/320 by static review. Actual `c38af3cf7`/320 full retry still hits 55.065
+with empty streams and zero agreement; inputs stay stable and groups are reaped.
+No speedup or 231 credit is claimed. Raw checks/retry stay under
+`.tools/compiler-edge-owners-19/.tools/edge-owner-gate-v1` and
+`.tools/compiler-gc-zero-owners-current-parent-19/.tools/full-default-retry-edge-v1`.
+A zero-credit `c38af3cf7`/320 diagnostic identifies Fiber protection as the main
+completed pruning cost. Module 302 now builds its graph at the first object and
+reuses it within the unchanged state, preserving lazy empty/nonobject prefixes,
+eager scan order and Unmatch fallbacks. Exact `181931c20`/321 passes strict
+initialization, 22 controlled partiality premises and 65 source-reached
+protected-result/lifecycle premises. Its original
+full retry still times out at 55.066 with empty streams and zero agreement.
+The first compiler stop and two malformed Runtime expectations (actual false)
+remain preserved; Runtime propagation and eager evaluation of later nodes remain
+statically reviewed.
+Composition over `b7ed1bea1`/326 preserves SOURCE339, TRAIT307 and ARG334
+by static review, without runtime renewal.
+Raw records: `.tools/compiler-fiber-protection-graph-19/.tools`
+(`fiber-protection-gate-v{1,2,3,4}` and `full-default-retry-protection-v1`).
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

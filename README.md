@@ -477,7 +477,9 @@ source; earlier cuts retain their inputs.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
-retirement. Its retained30-source/606-premise and private3/45 cuts remain separate
+retirement. Fiber protection scans reuse one graph within an unchanged state,
+preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Its retained30-source/606-premise and private3/45 cuts remain separate
 from the new captured-source/66-premise and readonly-clone/GC compositions.
 The earlier 291-module strict compiler/initialization and readonly clone original pass;
 the larger nested-Generator source retains a zero-credit 90s timeout.
