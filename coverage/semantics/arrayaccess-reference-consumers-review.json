@@ -1,0 +1,136 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "module": "spec/semantics/326-arrayaccess-reference-consumers.watsup",
+  "decision": "Private scope independently accepted; actual-parent composition pending",
+  "revision": "0f0045dc5d52705af85da7c1e7851de3cea95b8c",
+  "parent": "fe2278d3403e8d7015f937ac1d2b0438e64fb494",
+  "modules": 303,
+  "scope": "Authenticated live ELEMENT rows for named-reference sends and pre/post updates; existing named checks and finishing dispatch unchanged",
+  "recovery_root": ".tools/arrayaccess-reference-get-consumers-18",
+  "reports": {
+    "preparation": ".tools/arrayaccess-reference-consumers/prepared-bc_ia789/report.json",
+    "source": ".tools/arrayaccess-reference-consumers/run-coc2znkn/report.json",
+    "reached": ".tools/arrayaccess-reference-consumers/reached-run-al9al_mn/report.json"
+  },
+  "commands": [
+    "python3 tests/semantics/arrayaccess_reference_consumer_prepare.py",
+    "python3 tests/semantics/arrayaccess_reference_consumer_run.py .tools/arrayaccess-reference-consumers/prepared-bc_ia789/report.json",
+    "python3 tests/semantics/arrayaccess_reference_consumer_reached_run.py .tools/arrayaccess-reference-consumers/review-reached-qa6hemle/manifest.json"
+  ],
+  "profile": "tests/semantics/profile.json; error_reporting30719, LC_ALL=C, TZ=UTC, PHP_SPEC_SCRIPT_ENCODING removed",
+  "caps": {
+    "compiler": 120,
+    "initial": 120,
+    "native": 45,
+    "CLI": 60,
+    "outer": 90,
+    "steps": 100000,
+    "strict_SL": 300,
+    "jobs": 1,
+    "cache": false,
+    "deterministic": true
+  },
+  "runtime_inputs": {
+    ".tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712
+    },
+    ".tools/spectec/bin/p4spectec": {
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "bytes": 32150944
+    },
+    "_build/default/adapter/main.exe": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976
+    },
+    "tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "bytes": 28628992
+    }
+  },
+  "compiler_initial": {
+    "algo": {
+      "emitted_bytes": 10127916,
+      "seconds": 3.16
+    },
+    "struct": {
+      "emitted_bytes": 9738711,
+      "seconds": 3.992
+    },
+    "strict_SL_initial": {
+      "premises": 6,
+      "seconds": 4.604
+    }
+  },
+  "sources": {
+    "unique_normal": 6,
+    "records": [
+      {
+        "id": "direct-named-reference-get-keeps-real-property-cell",
+        "stdout": "G;F:7;E:8;",
+        "model_seconds": 8.767
+      },
+      {
+        "id": "named-value-argument-keeps-returned-array-copy",
+        "stdout": "G;F:8;E:7;",
+        "model_seconds": 9.194
+      },
+      {
+        "id": "named-reference-argument-captured-returned-row",
+        "stdout": "G;F:7;E:8;",
+        "model_seconds": 9.307
+      },
+      {
+        "id": "nested-updates-captured-returned-row",
+        "stdout": "G;G;E:7:9:9;",
+        "model_seconds": 9.935
+      },
+      {
+        "id": "named-reference-duplicate-check-after-get-before-promotion",
+        "stdout": "G;X:Named parameter $row overwrites previous argument;E:7:5;",
+        "model_seconds": 9.95
+      },
+      {
+        "id": "nested-updates-preserve-copy-and-shared-embedded-alias",
+        "stdout": "G;G;E:7:9:9:7:9:9;",
+        "model_seconds": 11.747
+      }
+    ]
+  },
+  "reached": {
+    "recipes": 3,
+    "physical_premises": 246,
+    "records": [
+      {
+        "id": "named-row-promotion",
+        "premises": 81,
+        "seconds": 39.83
+      },
+      {
+        "id": "named-duplicate-before-promotion",
+        "premises": 73,
+        "seconds": 36.532
+      },
+      {
+        "id": "update-copy-and-embedded-alias",
+        "premises": 92,
+        "seconds": 44.332
+      }
+    ]
+  },
+  "outcome": "All credited streams exact normal or strict-SL true, physical stderr empty, exits0, stable clean inputs; source15 and reached6 producer groups closed",
+  "independent_review": "arguments_review_18 independently accepted source, semantics, fixtures and physical streams; no reviewer actor",
+  "failures_zero_credit": [],
+  "remaining": [
+    "Current-parent integration",
+    "Mixed/untyped VALUE-return Get Notice-handler continuation",
+    "Stringable/wider producers and complete core",
+    "Typed non-mixed reference return verification remains user-paused"
+  ],
+  "source_references": [
+    "spec/semantics/242-dimension-write-continuations.watsup::key_write_writer/key_write_finish",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_FUNC_ARG",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_PRE_INC/ZEND_POST_INC"
+  ],
+  "recovery_note": "Report paths resolve within recovery_root from canonical project; raw inputs and streams remain ignored. Maintained originals/renderers regenerate them with local tools; no319 source/state renewal."
+}

@@ -296,6 +296,16 @@ structuring compilation. Named reference sends, nested captured-row updates,
 VALUE-return warning-handler producers and wider producers remain required;
 typed non-mixed return verification stays user-paused.
 
+Private ArrayAccess326 admits captured live ELEMENT rows for named reference
+sends and nested pre/post updates. Exact source/writer/RHS/temp guards preserve
+name-check priority and existing finishing dispatch. Six new exact normal
+originals and three genuine strict-SL groups/246 premises cover named promotion,
+duplicate rejection before promotion, copy/shared-cell behavior and resumption.
+The [consumer ledger](coverage/semantics/arrayaccess-reference-consumers-review.json)
+keeps this303 cut separate; actual-parent composition is pending. VALUE-return
+Notice-handler producers and wider Get behavior remain open; typed non-mixed
+return verification stays user-paused.
+
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
 reference consumers. Defined key/RHS CVs remain live across compound Get;
