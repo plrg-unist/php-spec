@@ -578,7 +578,7 @@ def $destructor_finish(S, pdestructorcall) = $destructor_release_begin(S_done, [
   -- if S_done = S[.DESTRUCTION.CALLS = pdestructorcall_tail*][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
   -- if $heap_owners($heap_graph(S_done), HOBJECT pdestructorcall.OBJECT) = 0
 ;; Future tail guards see the borrowed stacks after their preceding marker.
-def $call_after_origin(S, DESTRUCTOR_RESULT pdestructorcall) = S[.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.DESTRUCTION.CALLS = pdestructorcall_tail*]
+def $call_after_origin(S, DESTRUCTOR_RESULT pdestructorcall) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.DESTRUCTION.CALLS = pdestructorcall_tail*]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
 def $call_after_origin(S, DESTRUCTOR_ENTER pdestructorcall) = S[.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.DESTRUCTION.CALLS = pdestructorcall_tail*]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*

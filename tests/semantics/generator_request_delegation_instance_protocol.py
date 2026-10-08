@@ -9,6 +9,11 @@ from reference_yield_protocol import valid
 driver = base.driver
 CASES = source.CASES
 PREFIX = r'''
+dec $instance_join_enter(ptask*) : pgenclose?
+def $instance_join_enter(eps) = eps
+def $instance_join_enter((GENERATOR_CLOSE_ENTER pgenclose) :: ptask*) = (pgenclose)
+def $instance_join_enter(ptask :: ptask_tail*) = $instance_join_enter(ptask_tail*)
+  -- if ~$generator_close_enter_task(ptask)
 def $request_finally_phase(S,200) = (S.TODO = [DESTRUCTOR_GLOBALS])
 def $request_finally_phase(S,201) = true
   -- if S.CURRENT = (pcallcontext)
@@ -80,6 +85,24 @@ $heap_owners($heap_graph(S_weak_result[.RESULT = KNOWN PNULL]),HOBJECT n_outer) 
 $instance_storage_for(S_weak_result,n_iterator) = (pinstancestorage)
 $weakref_get(S_weak_result,n_wi) = PNULL
 $weakref_get(S_weak_result,n_wg) = POBJECT n_outer
+S_weak_result.FRAMES = [pframe_weak]
+pframe_weak.TODO = (DESTRUCTOR_RESULT pdestructorcall_weak) :: ptask_weak_tail*
+$instance_join_enter(pframe_weak.TODO) = (pgenclose_weak)
+pgenclose_weak.OBJECT = n_outer /\ pgenclose_weak.STORE = eps
+S_weak_root = $constant_frame_scope(S_weak_result,pframe_weak,eps)
+S_weak_root.RESULT = KNOWN (POBJECT n_outer)
+$call_task_valid(S_weak_root,DESTRUCTOR_RESULT pdestructorcall_weak)
+~$generator_close_owner_valid(S_weak_root,pgenclose_weak)
+S_discard = $call_after_origin(S_weak_root,DESTRUCTOR_RESULT pdestructorcall_weak)
+S_discard.RESULT = KNOWN PNULL /\ S_discard.BASE = BASE_VALUE (KNOWN PNULL)
+$heap_owners($heap_graph(S_discard),HOBJECT n_outer) = 1
+$generator_close_owner_valid(S_discard,pgenclose_weak)
+$generator_close_enter_valid(S_discard,pgenclose_weak)
+S_extra = S_discard[.HELD = (HOBJECT n_outer) :: S_discard.HELD]
+~$generator_close_owner_valid(S_extra,pgenclose_weak)
+~$generator_close_enter_valid(S_extra,pgenclose_weak)
+S_weak_result.RESULT = KNOWN (POBJECT n_outer)
+$heap_owners($heap_graph(S_weak_result),HOBJECT n_outer) = 2
 '''.strip().splitlines()
     checks += base.seek('S_enter', 'S_weak_result', 202) + valid('S_enter')
     checks += r'''
