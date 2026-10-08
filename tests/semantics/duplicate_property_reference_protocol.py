@@ -15,6 +15,7 @@ CASES = {
     'physical':'duplicate-reference-foreach-escaped-first18',
     'binding':'duplicate-reference-foreach-binding-observation18',
     'pending-binding':'duplicate-reference-foreach-binding-throw18',
+    'receiver-cleanup':'reference-foreach-receiver-cleanup-rebind18',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -26,7 +27,8 @@ def $dupref_is_output(OUTPUT ptbytes) = true
 def $dupref_is_output(pevent) = false -- otherwise
 dec $dupref_phase(pstate, nat) : bool
 def $dupref_phase(S, 0) = true
-  -- if S.TODO = (FOREACH_NEXT n (HOBJECT n_object) statement porigin? z) :: ptask_tail*
+  -- if S.TODO = (FOREACH_NEXT n (HCELL n_receiver) statement porigin? z) :: ptask_tail*
+  -- if S.STORE[n_receiver] = DEFINED (POBJECT n_object)
   -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object 0 true)
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = ([{DECL eps, NAME $ptascii("x"), STATE PROP_VALUE (DIRECT (PINT 2))}, {DECL eps, NAME $ptascii("x"), STATE PROP_VALUE (DIRECT (PINT 7))}])
 def $dupref_phase(S, 1) = true
@@ -64,6 +66,19 @@ def $dupref_phase(S, 5) = true
 def $dupref_phase(S, 6) = true
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_tail*
   -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
+def $dupref_phase(S, 7) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_operation_for(S) = eps
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
+  -- if $dupref_output(S.EVENTS) = $ptascii("old|receiver-drop|")
+  -- if ~((HOBJECT pforeachbind.OBJECT) <- S.ALLOCATIONS)
+def $dupref_phase(S, 8) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (LIST_STORE (NExprVariable phpType32 metadata) (REFERENCE n_cell) true z) :: ptask_tail*
+  -- if $cv_name(phpType32) = ($ptascii("value"))
+  -- if $dupref_output(S.EVENTS) = $ptascii("old|receiver-drop|x=1|")
 def $dupref_phase(S, n) = false -- otherwise
 dec $dupref_seek(pstate, nat, nat) : pstate
 def $dupref_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -99,7 +114,10 @@ def seek(parent, state, phase):
 def physical_assertions(initial, expected):
     return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
         *seek('S_initial', 'S_before', 0),
-        'S_before.TODO = (FOREACH_NEXT n_iterator (HOBJECT n_object) statement porigin_foreach? z_foreach) :: ptask_before_tail*',
+        'S_before.TODO = (FOREACH_NEXT n_iterator (HCELL n_receiver) statement porigin_foreach? z_foreach) :: ptask_before_tail*',
+        'S_before.STORE[n_receiver] = DEFINED (POBJECT n_object)',
+        'n_receiver <- S_before.REFCELLS',
+        '$heap_owners($heap_graph(S_before), HCELL n_receiver) = 2',
         'statement = NStmtForeach expression_iterable phpType5 (BOOLEAN true) expression_value phpType23 (BOOLEAN false) metadata_foreach',
         '$objectprops_at(S_before.OBJECTPROPS, n_object) = (ppropertyslot_before*)',
         '$property_next(S_before, n_object, ppropertyslot_before*, 0, 0) = ($ptascii("x"), DIRECT (PINT 2), 1)',
@@ -171,7 +189,7 @@ def binding_assertions(initial, expected, pending):
                           ('cell', '[.NEW = n_receiver_cell]')]:
         if label=='cell':
             clauses += ['$lookup(S_release.ENV, $ptascii("object")) = (n_receiver_cell)',
-                        'n_receiver_cell =/= pforeachbind.NEW', '~(n_receiver_cell <- S_release.REFCELLS)']
+                        'n_receiver_cell =/= pforeachbind.NEW', 'n_receiver_cell <- S_release.REFCELLS']
         clauses += [f'pforeachbind_bad_{label} = pforeachbind'+change,
             f'S_bad_{label} = S_release[.TODO = (FOREACH_BIND_RELEASE pforeachbind_bad_{label}) :: ptask_release_tail*]',
             f'$heap_valid($heap_graph(S_bad_{label}))',
@@ -232,6 +250,69 @@ def binding_assertions(initial, expected, pending):
         '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
 
 
+def receiver_cleanup_assertions(initial, expected):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_release', 4),
+        'S_release.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_release_tail*',
+        '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)',
+        'pforeachbind.OWNER = HCELL n_receiver',
+        '$lookup(S_release.ENV, $ptascii("object")) = (n_receiver)',
+        'n_receiver <- S_release.REFCELLS',
+        'S_release.STORE[n_receiver] = DEFINED (POBJECT pforeachbind.OBJECT)',
+        'S_release.STORE[pforeachbind.OLD] = DEFINED (POBJECT n_previous)',
+        'S_release.STORE[pforeachbind.NEW] = DEFINED (PINT 1)',
+        '$heap_owners($heap_graph(S_release), HCELL pforeachbind.NEW) = 2',
+        *seek('S_release', 'S_cleanup', 7),
+        'S_cleanup.CURRENT = (pcallcontext_cleanup)',
+        '$destructor_context_call(pcallcontext_cleanup, S_cleanup.CURRENT, S_cleanup.FRAMES) = (pdestructorcall)',
+        'pdestructorcall.OPERATION = (pdestructionoperation_cleanup)',
+        'pdestructionoperation_cleanup.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        'pdestructorcall.OBJECT = n_previous',
+        '$foreach_released_cell(S_cleanup, pforeachbind.OLD)',
+        '$node_children(S_cleanup, HCELL pforeachbind.OLD) = eps',
+        'S_cleanup.STORE[pforeachbind.OLD] = DEFINED (POBJECT n_previous)',
+        'S_cleanup.STORE[n_receiver] = DEFINED (POBJECT n_next_receiver)',
+        'n_next_receiver =/= pforeachbind.OBJECT',
+        '(HOBJECT n_next_receiver) <- S_cleanup.ALLOCATIONS',
+        '~((HOBJECT pforeachbind.OBJECT) <- S_cleanup.ALLOCATIONS)',
+        '$heap_owners($heap_graph(S_cleanup), HOBJECT pforeachbind.OBJECT) = 0',
+        'S_cleanup.STORE[pforeachbind.NEW] = DEFINED (PINT 1)',
+        '$heap_owners($heap_graph(S_cleanup), HCELL pforeachbind.NEW) = 1',
+        '$task_nodes(FOREACH_BIND_COMMIT pforeachbind) = [HCELL pforeachbind.NEW]',
+        '$foreach_bind_scope(S_cleanup, pforeachbind, S_cleanup.FRAMES) = (S_caller)',
+        '$lookup(S_caller.ENV, pforeachbind.NAME) = (pforeachbind.OLD)',
+        *seek('S_cleanup', 'S_finish', 6),
+        'S_finish.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_finish_tail*',
+        'pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        'pdestructionoperation.PENDING = eps',
+        '$foreach_bind_operation_source_valid(S_finish, pdestructionoperation, pforeachbind)',
+        '$eager_operation_source_valid(S_finish, pdestructionoperation)',
+        'S_one_found = $drive_steps(S_finish, 1)',
+        'S_one_found.COMPLETION = BUDGET', 'S_one = S_one_found[.COMPLETION = NORMAL]',
+        *valid('S_one'),
+        '$lookup(S_one.ENV, pforeachbind.NAME) = (pforeachbind.NEW)',
+        'S_one.STORE[pforeachbind.OLD] = UNDEFINED',
+        'S_one.STORE[pforeachbind.NEW] = DEFINED (PINT 1)',
+        '$heap_owners($heap_graph(S_one), HCELL pforeachbind.NEW) = 1',
+        '~$foreach_released_cell(S_one, pforeachbind.OLD)',
+        'S_one.TODO = ptask_finish_tail*',
+        '$dupref_output(S_one.EVENTS) = $ptascii("old|receiver-drop|")',
+        *seek('S_one', 'S_next', 8),
+        'S_next.TODO = (LIST_STORE expression_value (REFERENCE n_next_cell) true z_value) :: ptask_next_tail*',
+        '$lookup(S_next.ENV, $ptascii("object")) = (n_receiver)',
+        'S_next.STORE[n_receiver] = DEFINED (POBJECT n_next_receiver)',
+        '$iterator_lookup(S_next.ITERATORS, pforeachbind.ITERATOR) = (OBJECTITER pforeachbind.ITERATOR n_next_receiver 1 true)',
+        'S_next.STORE[pforeachbind.NEW] = DEFINED (PINT 1)',
+        '$heap_owners($heap_graph(S_next), HCELL pforeachbind.NEW) = 1',
+        'S_next.STORE[n_next_cell] = DEFINED (PINT 3)',
+        '$heap_owners($heap_graph(S_next), HCELL n_next_cell) = 2',
+        'n_next_cell =/= pforeachbind.NEW',
+        'S_done = $drive(S_next, 2048)',
+        r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
+        'S_done.ITERATORS = eps', 'S_done.DESTRUCTION.OPERATIONS = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -240,6 +321,7 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
+            receiver_cleanup_assertions(initial, sources.EXPECTED[case]) if group=='receiver-cleanup' else
             binding_assertions(initial, sources.EXPECTED[case], group=='pending-binding'))
     clauses = ['program_source = '+(directory/'program.watsup').read_text().strip(), *body]
     fixture = directory/'protocol.watsup'
