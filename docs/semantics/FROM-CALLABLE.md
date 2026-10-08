@@ -31,6 +31,17 @@ creator evidence survives the parent capture retiring. Static children retain no
 parent or former receiver; nonstatic children own their actual bound receiver.
 Cold private static references and source statics use the consuming trait class.
 
+Module358 also selects Fiber APIs from simple method arrays and static
+class-method strings. Its capture records dereferenced members and the completed
+factory call, including named or unpacked arguments. Later array mutation and
+retirement cannot change the selected method or receiver. Retired factory
+owners authenticate historical selection without owning anything; static
+object-style selectors add no receiver root. The result shares the existing
+Fiber API direct, explicit `__invoke` and C-root behavior. The
+[Fiber factory ledger](../../coverage/semantics/fiber-from-callable-review.json)
+tracks these checks; ordinary API callable arrays and effectful compound factory
+selectors remain required.
+
 Invalid callable values raise the factory's `TypeError`. An actual-object getter
 denial becomes its previous `Error`, with raw selected method spelling. A throwing
 deprecation handler fully unwinds and runs `finally` before the factory creates a

@@ -1185,8 +1185,16 @@ Callable parsing, including deprecated selectors and suspended warning handlers,
 precedes repeated-constructor rejection. Known registered callbacks reach that
 rejection without executing their body. The
 [constructor-capture ledger](coverage/semantics/fiber-constructor-callables-review.json)
-records source/error traces, parser ownership and last-RAW retirement. Outer
-unpacking and broader callable adapters remain required.
+records source/error traces, parser ownership and last-RAW retirement.
+`Closure::fromCallable` now selects Fiber APIs from simple method arrays and
+static class-method strings. Frozen callback members and completed factory
+arguments authenticate the capture after arrays or the factory owner retire;
+bound captures own their receiver, while static object selectors add no owner.
+Direct, explicit `__invoke` and C-root consumers reuse the selected API protocol.
+Successful waiting calls retain their real API callsite in exception traces.
+The [factory ledger](coverage/semantics/fiber-from-callable-review.json) keeps
+distinct source and state cuts. Fiber-start argument unpacking, ordinary API
+callable arrays and effectful compound factory selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

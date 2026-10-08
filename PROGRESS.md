@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+358 selects simple Fiber API method arrays and static class-method strings
+through `Closure::fromCallable`, including named and unpacked factory arguments.
+Frozen members and completed factory history survive callback-array mutation,
+array retirement and factory-owner retirement without new metadata roots.
+Bound receivers and static object selectors keep their distinct ownership;
+direct, explicit `__invoke` and C-root calls reuse the existing API protocols.
+Successful waiting resume/throw traces retain their actual API callsite.
+Strict342 initialization, ten exact normal originals at7+3 cuts and independent288
+plus author114 reached premises pass. The original trace mismatch and two fixture
+stops retain zero affected credit; native recorder preparation stopped before
+launch and is separate from the accepted ten-original native cut.
+Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
+factory selectors and wider lifecycle/library consumers remain required.
+[Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
+
 Source357 selects INIT for a named noarg nonbuiltin key call in an ordinary
 CV-base DIM, directly under ECHO or before a literal property. Owned include/eval
 operands retire before the call; existing runtime keeps the base borrowed and the
