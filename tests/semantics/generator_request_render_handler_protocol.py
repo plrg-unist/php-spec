@@ -228,9 +228,9 @@ $heap_owners($heap_graph(S_warned),HOBJECT n_payload) = 1
 ''')
     if warning:
         checks += ['ptbytes_cached =/= eps', '$throwable_field(S_warned,n_parent,"message") = PSTRING ($ptascii("changed"))',
-                   '$request_fatal_stderr(S_warned.EVENTS) = eps']
+                   '~((DIAGNOSTIC_INTERNAL "Warning" ($generator_request_render_warning(S_warned,pgenfatal)) 0) <- S_warned.EVENTS)']
     else:
-        checks += ['ptbytes_cached = eps', '$request_fatal_stderr(S_warned.EVENTS) =/= eps']
+        checks += ['ptbytes_cached = eps', '(DIAGNOSTIC_INTERNAL "Warning" ($generator_request_render_warning(S_warned,pgenfatal)) 0) <- S_warned.EVENTS']
     checks += base.seek('S_report', 'S_warned', 431) + fatal.normal_valid('S_report')
     checks += ['S_report.RESULT = KNOWN (PSTRING ptbytes_cached)',
                '$generator_request_report_valid(S_report,pgenfatal)']
