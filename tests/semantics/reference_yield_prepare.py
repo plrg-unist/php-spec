@@ -122,6 +122,33 @@ $generator->next();echo $generator->current();
 ''', b'C|1|D|9', 0),
     'promoted-reference-arrow-value-iteration': (
         b'<?php\n$x=5;$f=fn&()=>yield $x;foreach($f() as $v){echo $v;}echo "Z";\n', b'5Z', 0),
+    'destructuring-inner-reference-mutates-producer-array': (
+        b'<?php\nfunction &g(&$a){yield $a;} $a=[1]; $g=g($a); foreach($g as [&$v]){$v=9; break;} echo $a[0],":",$g->current()[0];\n',
+        b'9:9', 0),
+    'destructuring-inner-reference-retains-value-api-copy': (
+        b'''<?php
+function &g(&$array){yield $array;}
+$array=[1];$generator=g($array);$copy=$generator->current();
+foreach($generator as [&$value]){$value=9;break;}
+echo $copy[0],":",$array[0],":",$generator->current()[0];
+unset($generator);$value=12;echo "|",$array[0];
+''', b'1:9:9|12', 0),
+    'destructuring-inner-reference-wraps-value-cache': (
+        b'''<?php
+function &g(){yield [1];}
+function notice328($number,$message){echo "N|";return true;}
+set_error_handler("notice328");$generator=g();$copy=$generator->current();
+foreach($generator as [&$value]){$value=9;break;}
+echo $copy[0],":",$generator->current()[0],":",$value;
+unset($generator);$value=12;echo "|",$value;
+''', b'N|1:9:9|12', 0),
+    'destructuring-inner-reference-rejects-value-producer-before-body': (
+        b'''<?php
+function g(){echo "B";yield [1];}
+$generator=g();try{foreach($generator as [&$value]){echo "X";}}
+catch(Exception $error){echo "E|";}
+echo $generator->current()[0];
+''', b'E|B1', 0),
 }
 
 DECLARATIONS = {

@@ -15,6 +15,8 @@ CASES = {
     'reference-retired-key': source.CASES['reference-previous-key-during-new-key-warning'],
     'ordinary-retired-value': source.CASES['ordinary-previous-value-during-new-value-warning'],
     'notice-retval-borrow': author.CASES['handler-retval-retirement-keeps-key-and-notice-ingress'],
+    'destructuring-live-reference': author.CASES['destructuring-inner-reference-mutates-producer-array'],
+    'destructuring-cache-wrapper': author.CASES['destructuring-inner-reference-wraps-value-cache'],
 }
 WATCHED = driver.source.WATCHED + [
     'spec/semantics/97-call-reference-acquisition.watsup',
@@ -32,6 +34,14 @@ WATCHED = driver.source.WATCHED + [
     'tests/semantics/reference_yield_protocol.py',
 ]
 PREFIX = r'''
+dec $reference_destructuring_next(ptask) : bool
+def $reference_destructuring_next(GENERATOR_NEXT pgeneratorop) = true
+def $reference_destructuring_next(ptask) = false -- otherwise
+dec $reference_destructuring_operation(ptask*) : pgeneratorop?
+def $reference_destructuring_operation(eps) = eps
+def $reference_destructuring_operation((GENERATOR_NEXT pgeneratorop) :: ptask*) = (pgeneratorop)
+def $reference_destructuring_operation(ptask_head :: ptask_tail*) = $reference_destructuring_operation(ptask_tail*)
+  -- if ~$reference_destructuring_next(ptask_head)
 dec $reference_yield_remove(nat*,nat) : nat*
 def $reference_yield_remove(eps,n) = eps
 def $reference_yield_remove(n :: n_tail*,n) = n_tail*
@@ -103,6 +113,17 @@ def $reference_yield_phase(S,14) = true
   -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
   -- if perrorcall.RESUME = GENERATOR_YIELD_REF_NOTICE n porigin poperand? (PINT 5) z
   -- if $close_outputs(S.EVENTS) = $ptascii("C|W2|D:4|4|W8|D")
+def $reference_yield_phase(S,15) = true
+  -- if S.TODO = (AT porigin (LIST_PATTERN expression (REFERENCE n_cell) z)) :: ptask*
+  -- if $reference_destructuring_operation(ptask*) = (pgeneratorop)
+  -- if $ppforeach_references(expression,false)
+def $reference_yield_phase(S,16) = true
+  -- if S.TODO = (STMT (NStmtExpression (NExprAssign (NExprVariable phpType32 metadata_target) (NScalarInt (INTEGER 9) metadata_value) metadata_assign) metadata)) :: ptask*
+def $reference_yield_phase(S,17) = true
+  -- if S.TODO = (STMT (NStmtBreak ABSENT metadata)) :: ptask*
+def $reference_yield_phase(S,18) = true
+  -- if S.TODO = (STMT (NStmtForeach expression phpType5_key (BOOLEAN false) expression_value phpType23 (BOOLEAN false) metadata)) :: ptask*
+  -- if $close_outputs(S.EVENTS) = $ptascii("N|")
 def $reference_yield_phase(S,n) = false -- otherwise
 dec $reference_yield_seek(pstate,nat,nat) : pstate
 def $reference_yield_seek(S,n_phase,n) = S -- if $reference_yield_phase(S,n_phase)
@@ -158,7 +179,62 @@ def assertions(checked, path, directory, name):
                + driver.driver.byte_expr(os.fsencode(path)) + ','
                + driver.driver.byte_expr(os.fsencode(driver.ROOT)) + ')')
     checks = ['S_initial = ' + initial, '~S_initial.COMPILESTOP']
-    if name == 'key-cache-retirement':
+    if name in ['destructuring-live-reference', 'destructuring-cache-wrapper']:
+        previous = 'S_initial'
+        if name == 'destructuring-cache-wrapper':
+            checks += seek('S_value', previous, 18) + valid('S_value')
+            checks += r'''
+$trace_slot(S_value,S_value.ENV,$ptascii("generator")) = POBJECT n_generator
+S_value.OBJECTS[n_generator] = GENERATOR pgenerator_value
+pgenerator_value.PHASE = GENERATOR_PAUSED /\ pgenerator_value.REFCELL = eps
+pgenerator_value.VALUE = (PARRAY n_array_value)
+$trace_slot(S_value,S_value.ENV,$ptascii("copy")) = PARRAY n_array_value
+'''.strip().splitlines()
+            previous = 'S_value'
+        checks += seek('S_pattern', previous, 15) + valid('S_pattern')
+        checks += r'''
+S_pattern.TODO = (AT porigin_pattern (LIST_PATTERN expression_pattern (REFERENCE n_cell) z)) :: ptask_pattern*
+$reference_destructuring_operation(ptask_pattern*) = (pgeneratorop)
+pgeneratorop.LOOP = (pgeneratorloop)
+pgeneratorloop.STATEMENT = NStmtForeach expression_iterable phpType5_key (BOOLEAN false) expression_pattern phpType23 (BOOLEAN false) metadata
+$ppforeach_references(expression_pattern,false)
+$generator_loop_site(S_pattern,pgeneratorop,pgeneratorloop)
+$generator_operation_site(S_pattern,pgeneratorop)
+~$generator_loop_site(S_pattern,pgeneratorop[.NAME = "current"],pgeneratorloop)
+~$generator_loop_site(S_pattern,pgeneratorop,pgeneratorloop[.ITERATOR = $(pgeneratorloop.ITERATOR + 1)])
+n_generator = pgeneratorop.OBJECT
+S_pattern.OBJECTS[n_generator] = GENERATOR pgenerator_pattern
+pgenerator_pattern.PHASE = GENERATOR_PAUSED /\ pgenerator_pattern.KEY = (PINT 0)
+$generator_reference_producer(S_pattern,pgenerator_pattern)
+S_pattern.STORE[n_cell] = DEFINED (PARRAY n_array_pattern)
+$generator_loop_capture(S_pattern,n_generator,true) = S_pattern
+$generator_loop_operand(S_pattern,n_generator,true) = REFERENCE n_cell
+$generator_loop_operand(S_pattern,n_generator,false) = KNOWN (PARRAY n_array_pattern)
+'''.strip().splitlines()
+        checks += cache_owner('S_pattern', 'pgenerator_pattern', 'n_generator', 'n_cell')
+        if name == 'destructuring-live-reference':
+            checks += ['$lookup(S_pattern.ENV,$ptascii("a")) = (n_cell)']
+        else:
+            checks += ['~(n_cell <- S_value.REFCELLS)',
+                       'n_array_pattern = n_array_value']
+        checks += seek('S_bound', 'S_pattern', 16) + valid('S_bound')
+        alias = 'v' if name == 'destructuring-live-reference' else 'value'
+        checks += ['$lookup(S_bound.ENV,$ptascii("' + alias + '")) = (n_alias)',
+                   'n_alias <- S_bound.REFCELLS', 'S_bound.STORE[n_alias] = DEFINED (PINT 1)',
+                   'S_bound.STORE[n_cell] = DEFINED (PARRAY n_array_live)',
+                   'S_bound.ARRAYS[n_array_live].ITEMS = [ENTRY (KINT 0) (ALIAS n_alias)]',
+                   '$generator_cached_value(S_bound,n_generator,false) = PARRAY n_array_live']
+        checks += seek('S_changed', 'S_bound', 17) + valid('S_changed')
+        checks += ['S_changed.STORE[n_alias] = DEFINED (PINT 9)',
+                   'S_changed.STORE[n_cell] = DEFINED (PARRAY n_array_live)',
+                   '$generator_cached_value(S_changed,n_generator,false) = PARRAY n_array_live',
+                   'S_changed.ARRAYS[n_array_live].ITEMS = [ENTRY (KINT 0) (ALIAS n_alias)]']
+        if name == 'destructuring-cache-wrapper':
+            checks += ['n_array_live =/= n_array_value',
+                       'S_changed.ARRAYS[n_array_value].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT 1))]',
+                       '$trace_slot(S_changed,S_changed.ENV,$ptascii("copy")) = PARRAY n_array_value']
+        previous = 'S_changed'
+    elif name == 'key-cache-retirement':
         checks += seek('S_key', 'S_initial', 0) + valid('S_key')
         checks += r'''
 S_key.TODO = (GENERATOR_YIELD_KEY n_generator porigin z) :: ptask_tail*
@@ -411,6 +487,16 @@ $generator_reference_notice_frames(S_notice.FRAMES) = eps
     elif name == 'literal-notice-cache-wrapper':
         checks += ['S_resumed.STORE[n_cell] = DEFINED (PINT 8)',
                    '$heap_owners($heap_graph(S_resumed),HCELL n_cell) = 1']
+    elif name == 'destructuring-live-reference':
+        checks += ['S_resumed.STORE[n_alias] = DEFINED (PINT 9)',
+                   '$lookup(S_resumed.ENV,$ptascii("v")) = (n_alias)',
+                   '$lookup(S_resumed.ENV,$ptascii("a")) = (n_cell)']
+    elif name == 'destructuring-cache-wrapper':
+        checks += ['~((HOBJECT n_generator) <- S_resumed.ALLOCATIONS)',
+                   '~((HCELL n_cell) <- S_resumed.ALLOCATIONS)',
+                   'S_resumed.STORE[n_alias] = DEFINED (PINT 12)',
+                   '$lookup(S_resumed.ENV,$ptascii("value")) = (n_alias)',
+                   '$heap_owners($heap_graph(S_resumed),HCELL n_alias) = 1']
     return checks
 
 
