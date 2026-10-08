@@ -81,7 +81,7 @@ def selection(state, suffix, scope, called, root):
 def event_forgeries(state, suffix, changes):
     checks = []
     for name, change in changes:
-        bad = state + '_bad_' + name
+        bad = state + '_' + suffix + '_bad_' + name
         checks += [f'{bad} = {state}[.CLASSCONSTANTHISTORY[pstaticcompound_{suffix}.ENTRY] = CCCOMPOUNDSELECT pstaticcompound_{suffix} pstaticselection_{suffix}[{change}] pcompoundstring_{suffix}.SITE pcompoundstring_{suffix}.LINE n_prefix_{suffix}]',
                    f'$heap_graph({bad}) = $heap_graph({state})',
                    f'~$class_constant_history_valid({bad})',
