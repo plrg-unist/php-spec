@@ -2,13 +2,15 @@
 ;; body or finally. The real STORE pin remains until all bound CVs are released.
 
 dec $generator_request_fresh_any(pstate, pnode*) : bool
+dec $generator_request_fresh_node(pstate, pnode) : bool
 dec $generator_request_fresh_closed(pgenerator) : bool
 
-def $generator_request_fresh_any(S, eps) = false
-def $generator_request_fresh_any(S, (HOBJECT n) :: pnode*) = true
+def $generator_request_fresh_node(S, HOBJECT n) = true
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_FRESH
-def $generator_request_fresh_any(S, pnode :: pnode_tail*) = $generator_request_fresh_any(S, pnode_tail*) -- otherwise
+def $generator_request_fresh_node(S, pnode) = false -- otherwise
+def $generator_request_fresh_any(S, eps) = false
+def $generator_request_fresh_any(S, pnode :: pnode_tail*) = ($generator_request_fresh_node(S, pnode) \/ $generator_request_fresh_any(S, pnode_tail*))
 def $generator_request_operational(S) = true
   -- if $generator_request_terminal(S)
   -- if $generator_request_fresh_any(S, S.ALLOCATIONS)
