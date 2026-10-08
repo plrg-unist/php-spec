@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+354 executes bound `__construct` captures directly, through explicit `__invoke`
+and as Fiber C-root callbacks. Immutable receivers and real parser/warning
+continuations preserve validation-before-status ordering, handler suspension and
+last-RAW retirement. Known valid registered callbacks reach repeated-constructor
+rejection without executing their bodies. Strict339 initialization, eleven exact
+normal originals at separate cuts and independent210/author112 reached premises
+pass. The original registered-builtin Unsupported failure retains zero agreement;
+pre-entry names and entered constructor traces retain native frames and arguments.
+Outer unpacking, broader callable adapters and lifecycle consumers remain required.
+[Constructor-capture ledger](coverage/semantics/fiber-constructor-callables-review.json).
+
 351 executes captured `start` as a Fiber C-root callback. Immutable RAW selection
 and genuine outer caller chains preserve separate original/copied argument
 buffers, RAW/result Closure owners and borrowed API receivers. Inner traces have
