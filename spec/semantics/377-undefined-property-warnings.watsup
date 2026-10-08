@@ -49,13 +49,13 @@ def $property_undefined_slot(S, n, ptbytes) = true
   -- if $instance_storage_untyped_unset_desc(S, n, ptbytes) =/= eps
 def $property_undefined_slot(S, n, ptbytes) = true
   -- if ~$instance_storage_freeing(S, n)
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
-  -- if $property_slot_at(ppropertyslot*, ptbytes) = eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = eps
 def $property_undefined_slot(S, n, ptbytes) = true
   -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
-  -- if $property_slot_at(ppropertyslot*, ptbytes) = (ppropertyslot)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_UNSET
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.TYPE = eps
