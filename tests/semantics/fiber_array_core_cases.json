@@ -66,6 +66,17 @@
     "native_exit": 0
   },
   {
+    "id": "peer-fiber-raw-array-last-member-explicit-property-before-original-start-argument",
+    "source": "<?php\nclass RawArrayLastPayload19 {\n    private WeakReference $target;\n    public function __construct(WeakReference $target) { $this->target = $target; }\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\n$target = new Fiber(static function () {\n    try {\n        echo 'B|';\n        Fiber::suspend('Y');\n        Fiber::suspend('Z');\n    } finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$runner = new Fiber([$target, 'ReSuMe']);\nunset($target);\necho $runner->start(new RawArrayLastPayload19($weak)), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null), '|', (int)$runner->isTerminated();\n",
+    "source_sha256": "3420c7c0dfa20c40fd35888fdda959111e9b51535f672c801bad0c987322c0e9",
+    "expected_model": "normal",
+    "engine_derived_expectation": "Distinct explicit-property companion to the preserved promotion boundary: the same typed property, typed constructor receive, destructor and call operations observe last RAW force-close before original start-argument retirement.",
+    "native_status": "recorded",
+    "native_stdout": "B|Y|F|D1||Z|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
     "id": "peer-fiber-raw-array-last-member-closes-before-original-start-argument",
     "source": "<?php\nclass RawArrayLastPayload19 {\n    public function __construct(private WeakReference $target) {}\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\n$target = new Fiber(static function () {\n    try {\n        echo 'B|';\n        Fiber::suspend('Y');\n        Fiber::suspend('Z');\n    } finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$runner = new Fiber([$target, 'ReSuMe']);\nunset($target);\necho $runner->start(new RawArrayLastPayload19($weak)), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null), '|', (int)$runner->isTerminated();\n",
     "source_sha256": "9b8516c5bd1812868e7a8e3a21f6243ca861efa5433f0ce613cd1693feedb9ad",
@@ -120,13 +131,5 @@
     "native_stdout": "1|17",
     "native_stderr": "",
     "native_exit": 0
-  },
-  {
-    "id": "peer-fiber-raw-array-last-member-explicit-property-before-original-start-argument",
-    "source": "<?php\nclass RawArrayLastPayload19 {\n    private WeakReference $target;\n    public function __construct(WeakReference $target) { $this->target = $target; }\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\n$target = new Fiber(static function () {\n    try {\n        echo 'B|';\n        Fiber::suspend('Y');\n        Fiber::suspend('Z');\n    } finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$runner = new Fiber([$target, 'ReSuMe']);\nunset($target);\necho $runner->start(new RawArrayLastPayload19($weak)), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null), '|', (int)$runner->isTerminated();\n",
-    "source_sha256": "3420c7c0dfa20c40fd35888fdda959111e9b51535f672c801bad0c987322c0e9",
-    "expected_model": "normal",
-    "engine_derived_expectation": "Distinct explicit-property companion to the preserved promotion boundary: the same typed property, typed constructor receive, destructor and call operations observe last RAW force-close before original start-argument retirement.",
-    "native_status": "unrun-awaiting-recording"
   }
 ]
