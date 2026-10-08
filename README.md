@@ -1022,7 +1022,8 @@ Bound first-class `resume`, `throw`, `getReturn` and status methods retain their
 selected Fiber. Calls borrow its receiver from the Closure and preserve distinct
 direct and `__invoke` buffers through nested transfers and retirement. The
 [bound-callable ledger](coverage/semantics/fiber-bound-api-callables-review.json)
-records the new originals and reached checks; bound `start` captures and C-root
+records the new originals and reached checks, including saved calls to the idle
+collector Fiber. Bound `start` captures and C-root
 callback receivers remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.

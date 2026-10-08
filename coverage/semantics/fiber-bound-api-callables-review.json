@@ -1,6 +1,6 @@
 {
   "milestone": 337,
-  "status": "independently-reviewed-private-cut",
+  "status": "independently-reviewed",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "semantic_code": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
   "baseline": "afd57f1e5e0988f426193a794ddfce9bd5e7328c",
@@ -10,7 +10,8 @@
     "Selected receiver and method-name snapshots survive dynamic-name mutation, clone and __invoke aliases; loose equality includes receiver identity.",
     "The Closure owns its receiver. CONFIG and waiting API calls borrow that receiver and own only actual sent buffers.",
     "Direct and explicit __invoke owners, trace frames and argument retirement remain distinct through nested Fiber transfers.",
-    "Source-reached admission rejects wrong selected Closure/receiver, changed API buffers/kinds/sites/lines/sequences and hidden/duplicated result markers."
+    "Source-reached admission rejects wrong selected Closure/receiver, changed API buffers/kinds/sites/lines/sequences and hidden/duplicated result markers.",
+    "Captured public resume/throw of the exposed idle collector Fiber authenticates the actual saved caller continuation while the worker executes its C loop."
   ],
   "compiler": {
     "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-bound-api-sl-_lbkb8s0/report.json",
@@ -111,6 +112,16 @@
       "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-v2urf8nf",
       "reason": "Independent nested fixture CHOOSE sequence syntax; corrected only parentheses.",
       "credit": 0
+    },
+    {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-state-review-n6wotjiw",
+      "reason": "The forged API line omitted the paired CONFIG line, changing structural borrowed receiver roots; corrected only the fixture to preserve its heap-identical premise.",
+      "credit": 0
+    },
+    {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-state-review-ftf9fjr9",
+      "reason": "The fixture expected the idle cache to survive ordinary request completion; corrected only the final cache/retirement assertions.",
+      "credit": 0
     }
   ],
   "identity": {
@@ -139,7 +150,8 @@
     "tests/semantics/fiber_bound_api_sources.py",
     "tests/semantics/fiber_bound_api_cases.json",
     "tests/semantics/fiber_bound_api_state.py",
-    "tests/semantics/fiber_bound_api_review.py"
+    "tests/semantics/fiber_bound_api_review.py",
+    "tests/semantics/fiber_bound_collector_review.py"
   ],
   "required_followons": [
     "Bound start and constructor first-class captures.",
@@ -148,7 +160,45 @@
   ],
   "limits": [
     "Earlier331 source/state cuts retain their original identities; no renewal or full-core claim.",
-    "Raw reports and failures stay below .tools/calls-fiber-bound-api-19 in the canonical checkout; all ledger report paths are relative to that checkout. Maintained scripts regenerate focused observations with the project-local oracle.",
-    "This private cut has not yet received current-parent composition evidence."
-  ]
+    "Raw private-cut reports and failures stay below .tools/calls-fiber-bound-api-19 in the canonical checkout; all ledger report paths are relative to that checkout. Maintained scripts regenerate focused observations with the project-local oracle.",
+    "Raw composition reports and fixture failures stay below .tools/calls-fiber-bound-api-current-19; source/compiler on the GEN321 parent and the final115-premise PROPS composition retain distinct tested revisions."
+  ],
+  "composition": {
+    "semantic_fix": "42884fd0f",
+    "initial_parent": "f89fbee745b66ad0123fa46096b9d7cfdd462cd8",
+    "state_parent": "0bb453754bd51f66066738411e276c9842a15f7a",
+    "compiler": {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-bound-api-sl-lu79gogv/report.json",
+      "sha256": "50c5e6badf206d6a1d3b673cd1f19d5e92d1da936de4385dcd2b0f203ebc57f7",
+      "revision": "42884fd0f6f848ac9ea99360e86cc779b92a0ec9",
+      "passed": true,
+      "modules": 322,
+      "mode": "SL",
+      "initialization": true,
+      "inputs_stable": true
+    },
+    "collector_original": {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-bound-api-source-vq8rzav0/report.json",
+      "sha256": "8955bbc7531328bb04b747812441c09d7b0b77bfb38745a3f319fb97a93ed5cc",
+      "revision": "903ff44845fa733133f0e35201396cf747a87e94",
+      "passed": true,
+      "normal_agreements": 1,
+      "selection": [
+        "peer-bound-idle-collector-calls"
+      ],
+      "inputs_stable": true,
+      "head_stable": true
+    },
+    "collector_state": {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-state-review-b8w0w028/report.json",
+      "sha256": "2ae3d4a124c6ed90320786a9d368f2d9479c768a602356358d2d2c7b9e08bbf0",
+      "revision": "023232cd9ce5fc0acb9c684f4478ccaf3e52aeb6",
+      "passed": true,
+      "groups": 1,
+      "independent_premises": 115,
+      "group": "bound-collector-throw-authenticates-saved-invoke-owner",
+      "modules": 322
+    },
+    "review": "The11-line collector API wrapper restores the genuine caller/previous actor/tail and reuses bound WAIT/result authentication. PROPS prior-array guards preserve all five destruction queues and generic receiver edges; they are disjoint from captured-call validation. Earlier9/468 retain their own cuts."
+  }
 }

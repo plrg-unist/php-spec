@@ -410,9 +410,12 @@ Waiting resume/throw operations authenticate the selected Closure, receiver,
 kind, source, line and exact sent buffer against their genuine result tail.
 Nested saved callers retain that protocol. Direct and explicit invocation keep
 their distinct API/Closure trace frames, and last-capture retirement can close a
-suspended receiver. The [bound-callable ledger](../../coverage/semantics/fiber-bound-api-callables-review.json)
+suspended receiver. Public calls to the exposed idle collector authenticate their
+capture through the saved caller while the collector executes its C loop.
+The [bound-callable ledger](../../coverage/semantics/fiber-bound-api-callables-review.json)
 records strict318 initialization, nine new normal originals, explicit Unsupported
-controls and source-reached ownership/admission checks at their private cuts.
+controls and source-reached ownership/admission checks at their private cuts,
+separately from the actual322 compiler and collector interaction checks.
 Earlier331 evidence retains its original inputs.
 
 Bound `start` captures, constructor capture and bound C-root callback receivers
