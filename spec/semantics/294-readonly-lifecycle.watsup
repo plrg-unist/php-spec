@@ -61,8 +61,10 @@ def $property_reference_target_check(S, n, ptbytes, z) = $property_instance_indi
 ;; rejects initialized readonly slots even when they contain a raw object.
 def $property_foreach_reference(S, n, ptbytes, z) = $property_readonly_error(S, n, ptbytes, $ptascii("acquire reference to"), z)
   -- if $property_readonly_desc(S, n, ptbytes) =/= eps
+  -- if ~$property_duplicate_table(S, n)
 def $property_foreach_reference(S, n, ptbytes, z) = $property_reference_slot(S, n, ptbytes, z)
   -- if $property_readonly_desc(S, n, ptbytes) = eps
+  -- if ~$property_duplicate_table(S, n)
 
 ;; The first simple readonly write checks its live slot and setter before
 ;; converting a weak Stringable RHS. Zend does not repeat those checks after
@@ -203,4 +205,3 @@ rule PhpStep/readonly-string-complete: S ~> S_written[.HELD = S.HELD]
   -- if S.RESULT = KNOWN (PSTRING ptbytes)
   -- if S_inputs = $hold_task_inputs(S)
   -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, ppropertystring.TARGET), ppropertystring.TARGET, ppropertystring.KEY, PSTRING ptbytes, ppropertystring.LINE), ppropertystring.TARGET)
-

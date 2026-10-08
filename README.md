@@ -652,11 +652,23 @@ preserving borrowed versus actual temporary/intrinsic input owners. Its separate
 second window, captured conversions and write revisions. A separate dynamic/FCC
 selection follow-on has 20 distinct source agreements, 665 clauses across seven
 reached-state groups and a passing compiler gate at recorded cuts. Pending-candidate
-identity admission remains open. The current290 composition separately passes
+identity admission remains open. The earlier290 composition separately passes
 two exact originals and79 reached premises for private clone makers and live
 clone windows during Generator/Fiber close. Last-owner destination
 release, Deprecated method dispatch and promotion remain required. The new reference controls supersede one historical288 internal assertion
 without renewing the other accepted gates.
+
+Ordinary literal dynamic-property creation in module 318 resumes eligible warning handlers,
+including throws with a surviving receiver, live CV/reference RHS selection and
+same-key reentry. Physical duplicate buckets retain native lookup and foreach
+order. Receiver retirement stays latched across destructor resurrection; unused
+and used assignment results retain different cleanup lifetimes. Its
+[review](coverage/semantics/dynamic-property-warning-review.json) keeps the private
+source/state cuts and current 297-module GC/cleanup interaction separate. Handler exit,
+array casts/reference foreach over duplicate buckets and expired or undefined RHS
+pointers remain explicit Unsupported boundaries; computed names and wider writes
+remain required.
+
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.
