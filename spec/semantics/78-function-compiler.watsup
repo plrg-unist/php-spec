@@ -30,6 +30,7 @@ dec $psendline(metadata) : nat
 dec $ppfunction_early(pfunction*, ptbytes) : pfunction?
 dec $ppfunction_add(ppstate, pfunction) : ppstate
 dec $ppcall_name(ppstate, pcpath, pnresult) : ppstate
+dec $ppcall_direct(ppstate, pcpath, pnresult, phpType7*) : ppstate
 dec $ppbuiltin_prepare(ppstate, pcpath, pnresult, phpType7*) : ppstate
 dec $ppcall_done(ppstate, pcpath, int) : ppstate
 dec $ppcall_args(ppstate, pcpath, nat, phpType7*, pnresult) : ppstate
@@ -152,7 +153,8 @@ def $ppcall_args(P, pcpath, n, (NArg ABSENT expression (BOOLEAN false) (BOOLEAN 
   -- if P.COMPLETION = PPCNORMAL
 def $ppcall_args(P, pcpath, n, phpType7*, pnresult) = $ppunsupported(P, "named, unpacked or reference call argument compilation")
   -- otherwise
-def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_args($ppcall_name($ppbuiltin_prepare(P, pcpath, pnresult, phpType7*), pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult)
+def $ppcall_direct(P, pcpath, pnresult, phpType7*) = $ppcall_args($ppcall_name($ppbuiltin_prepare(P, pcpath, pnresult, phpType7*), pcpath, pnresult), pcpath ++ [PCFIELD 1], 0, phpType7*, pnresult) -- otherwise
+def $ppdispatch(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPR) = $ppcall_direct(P, pcpath, pnresult, phpType7*)
   -- if ~$ppfirstclass(phpType7*)
   -- if pnresult = $ppexit_resolve(P.ENV, name)
 

@@ -23,8 +23,6 @@ def $fiber_array_new(S, n, porigin, z_init, z_call) = $throw_scalar(S, "Error", 
   -- if $fiber_factory_members(S, PARRAY n, $fiber_factory_items(S, PARRAY n)) = ((PSTRING ptbytes_class, ptbytes))
   -- if $fiber_factory_method(ptbytes) = (pintrinsic)
   -- if ~$fiber_static(pintrinsic)
-def $fiber_array_new(S, n, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "ordinary array Fiber start argument buffer"]
-  -- if $fiber_factory_selection(S, PARRAY n, $fiber_factory_items(S, PARRAY n)) = ((INTRINSIC_FIBER_START, ptbytes, n_input?))
 def $fiber_array_new(S, n, porigin, z_init, z_call) = S[.TODO = [CONFIG_ARGS pconfigcall, FIBER_ARRAY_RELEASE pfiberarray] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pentry* = $fiber_factory_items(S, PARRAY n)
   -- if $fiber_factory_selection(S, PARRAY n, pentry*) = ((pintrinsic, ptbytes, n_input?))

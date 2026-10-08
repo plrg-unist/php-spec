@@ -385,7 +385,7 @@ def main():
     parser.add_argument('--timeout', type=float, default=30)
     parser.add_argument('--request-context', type=Path, help='JSON file containing explicit primitive request facts')
     parser.add_argument('--file-snapshot', type=Path, help='finite include/require resolution and file-byte facts')
-    parser.add_argument('--startup-ini', type=Path, help='JSON registered startup precision, display_errors (base64 or null), or error_reporting/include_path with optional display_errors/precision')
+    parser.add_argument('--startup-ini', type=Path, help='JSON registered startup zend.assertions/precision, display_errors (base64 or null), or error_reporting/include_path with optional display_errors/precision/zend.assertions')
     args = parser.parse_args()
     if args.steps < 0 or args.timeout <= 0:
         parser.error('steps must be nonnegative and timeout positive')

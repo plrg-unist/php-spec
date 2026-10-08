@@ -130,9 +130,14 @@ def $config_string_trace_context(S, pcallcontext) = true
 def $config_string_trace_context(S, pcallcontext) = false -- otherwise
 def $config_dynamic_selection(S, pintrinsic, porigin) = ($config_kind(pintrinsic) /\ $dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps)
 def $config_pipe_selection(S, pintrinsic, porigin) = ($config_kind(pintrinsic) /\ $pipe_site(S, porigin) /\ $pipe_fixed_name(S, porigin) = eps)
-def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+dec $config_prepare(pstate, pintrinsic, int, nat?, porigin) : pstate
+dec $assertion_kind(pintrinsic) : bool
+def $assertion_kind(pintrinsic) = false -- otherwise
+def $intrinsic_prepare(S, pintrinsic, z, n_owner?) = $config_prepare(S, pintrinsic, z, n_owner?, porigin)
   -- if $config_kind(pintrinsic)
   -- if S.ORIGIN = (porigin)
+def $config_prepare(S, pintrinsic, z, n_owner?, porigin) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- otherwise
 def $intrinsic_pipe(S, pintrinsic, pvalue, porigin, z, n_owner?) = S[.TODO = (CONFIG_INVOKE {SITE porigin, KIND pintrinsic, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $config_kind(pintrinsic)
 def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_call) = S[.SELECTSEQ = $(n_nonce + 1)][.SELECTEDCALLS = S.SELECTEDCALLS ++ [pselectedcall]][.TODO = (CONFIG_ARGS {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER eps, SELECTION (n_nonce), LINE z_call, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -754,14 +759,14 @@ def $error_trigger_trace_values(S, pconfigcall) = [PNULL]
 rule PhpStep/config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
-  -- if ~$error_api_kind(pconfigcall.KIND)
+  -- if ~$error_api_kind(pconfigcall.KIND) /\ ~$assertion_kind(pconfigcall.KIND)
   -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND) /\ ~$gc_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH =/= eps \/ $config_ini_kind(pconfigcall.KIND)
   -- if ~$config_string_launch(S, pconfigcall)
 rule PhpStep/config-invoke-no-file: S ~> S[.COMPLETION = UNSUPPORTED "include_path intrinsic requires finite file mode"]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $config_invoke_valid(S, pconfigcall)
-  -- if ~$error_api_kind(pconfigcall.KIND)
+  -- if ~$error_api_kind(pconfigcall.KIND) /\ ~$assertion_kind(pconfigcall.KIND)
   -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND) /\ ~$gc_kind(pconfigcall.KIND)
   -- if S.FILEINCLUDEPATH = eps
   -- if ~$config_ini_kind(pconfigcall.KIND)

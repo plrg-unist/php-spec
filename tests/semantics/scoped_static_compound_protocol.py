@@ -372,7 +372,225 @@ $static_compound_source(S_dynamic_verified, pstaticcompound_dynamic_typed, pcomp
 ''') + guards('S_dynamic_verified')
     return checks + finish('S_dynamic_verified', row['expected_stdout'])
 
+COMPUTED_CASES = [
+    ('computed-name-timing-and-queued-owners', [
+        'computed-property-cv-tmp-timing', 'computed-property-cold-default']),
+    ('computed-selection-reference-authority', [
+        'computed-property-reference-name', 'computed-property-selected-roots']),
+]
+
+COMPUTED_EXTRA = r'''
+def $scoped_phase(S, 4) = true
+  -- if S.TODO = (COMPOUND_STATIC_NAME pcomputedcompound) :: ptask*
+def $scoped_phase(S, 5) = true
+  -- if S.TODO = (COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) :: ptask*
+def $scoped_phase(S, 6) = true
+  -- if S.TODO = (COMPOUND_APPLY CONCAT (BASE_CLASS_STATIC_PENDING poperand_class poperand_name) false z) :: ptask*
+def $scoped_phase(S, 7) = true
+  -- if S.TODO = (CLASS_CONST_STATIC poperand ptbytes z) :: (COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) :: ptask*
+'''
+
+
+def computed_guards(state):
+    return [f'$call_descriptors_valid({state})',
+            f'$class_constant_history_valid({state})',
+            f'$heap_valid($heap_graph({state}))']
+
+
+def computed_start(state, row, phase=4):
+    return [f'{state}_initial = $php_run({row["fixture"]}, 0, {row["filename"]})',
+            f'{state}_initial.COMPLETION = BUDGET',
+            *seek(state, f'{state}_initial[.COMPLETION = NORMAL]', phase)]
+
+
+def computed_name(state, suffix):
+    return [f'{state}.TODO = (COMPOUND_STATIC_NAME pcomputedcompound_{suffix}) :: ptask_{suffix}*',
+            f'$computed_static_valid({state}, pcomputedcompound_{suffix})',
+]
+
+
+def computed_live(state, suffix, value, selected=False):
+    checks = [f'{state}.TODO = (COMPOUND_LIVE_PREP pcompoundstring_{suffix} {value}) :: ptask_{suffix}*',
+              f'pcompoundstring_{suffix}.PLACE = STATIC_COMPOUND pstaticcompound_{suffix}',
+              f'$static_compound_capture({state}, pstaticcompound_{suffix}.DECL, pcompoundstring_{suffix}.SITE, pstaticcompound_{suffix}.ENTRY) = (pstaticcompound_{suffix})']
+    if selected:
+        checks += [f'{state}.CLASSCONSTANTHISTORY[pstaticcompound_{suffix}.ENTRY] = CCCOMPOUNDSELECT pstaticcompound_{suffix} pstaticselection_{suffix} pcompoundstring_{suffix}.SITE pcompoundstring_{suffix}.LINE n_prefix_{suffix}']
+    else:
+        checks += [f'{state}.CLASSCONSTANTHISTORY[pstaticcompound_{suffix}.ENTRY] = CCCOMPOUNDENTER pstaticcompound_{suffix} pcompoundstring_{suffix}.SITE pcompoundstring_{suffix}.LINE n_prefix_{suffix}']
+    return checks
+
+
+
+def computed_finish(state, expected, resume=True):
+    checks = ([f'{state}_zero = $drive_steps({state}, 0)',
+               f'{state}_zero = {state}[.COMPLETION = BUDGET]',
+               f'{state}_one = $drive_steps({state}, 1)',
+               f'{state}_one.COMPLETION = BUDGET',
+               f'{state}_done = $drive({state}_one[.COMPLETION = NORMAL], 1000)',
+               f'{state}_done = $drive({state}, 1000)'] if resume else
+              [f'{state}_done = $drive({state}, 1000)'])
+    return checks + [f'{state}_done.COMPLETION = NORMAL',
+                     f'$outputs({state}_done.EVENTS) = $ptascii("{expected}")',
+                     *computed_guards(state + '_done')]
+
+def computed_timing(row, cold_row):
+    checks = computed_start('S_producer', row, 6) + computed_guards('S_producer')
+    checks += seek('S_cv_name', 'S_producer', 4) + computed_name('S_cv_name', 'cv')
+    checks += lines(r'''
+pcomputedcompound_cv.NAME = VARIABLE $ptascii("property") z_cv_name
+pcomputedcompound_cv.RIGHT = KNOWN (PSTRING $ptascii("s"))
+S_cv_global = $global_table_view(S_cv_name)
+$lookup(S_cv_global.ENV, $ptascii("property")) = (n_property)
+S_cv_name.STORE[n_property] = DEFINED (PSTRING $ptascii("other"))
+$task_nodes(COMPOUND_STATIC_NAME pcomputedcompound_cv) = eps
+''') + computed_guards('S_cv_name')
+    for label, change in [
+        ('line', '.LINE = $(pcomputedcompound_cv.LINE + 1)'),
+        ('site', '.SITE = porigin_cv_fetch'),
+        ('cv_copy', '.NAME = KNOWN (PSTRING $ptascii("other"))'),
+        ('rhs_cv', '.RIGHT = VARIABLE $ptascii("property") z_cv_name'),
+    ]:
+        if label == 'site':
+            checks += ['$origin_child((pcomputedcompound_cv.SITE), [PCFIELD 0]) = (porigin_cv_fetch)']
+        checks += [f'pcomputedcompound_bad_{label} = pcomputedcompound_cv[{change}]',
+                   f'~$computed_static_valid(S_cv_name, pcomputedcompound_bad_{label})',
+                   f'~$call_task_valid(S_cv_name, COMPOUND_STATIC_NAME pcomputedcompound_bad_{label})']
+    checks += seek('S_cv_ready', 'S_cv_name', 5) + lines(r'''
+S_cv_ready.TODO = (COMPOUND_STATIC_READY pcomputedcompound_cv porigin_timing $ptascii("other")) :: ptask_cv*
+S_cv_ready.BASE = BASE_CLASS_STATIC porigin_timing $ptascii("other")
+''') + computed_guards('S_cv_ready')
+    checks += seek('S_cv_live', 'S_cv_ready', 0)
+    checks += computed_live('S_cv_live', 'cv_live', '(POBJECT n_other)')
+    checks += computed_guards('S_cv_live')
+    checks += seek('S_cv_stored', 'S_cv_live', 1)
+    checks += seek('S_tmp_name', 'S_cv_stored', 4) + computed_name('S_tmp_name', 'tmp')
+    checks += lines(r'''
+pcomputedcompound_tmp.NAME = KNOWN (PSTRING $ptascii("value"))
+S_tmp_name.STORE[n_property] = DEFINED (PSTRING $ptascii("other"))
+''') + computed_guards('S_tmp_name')
+    checks += seek('S_tmp_live', 'S_tmp_name', 0)
+    checks += computed_live('S_tmp_live', 'tmp_live', '(POBJECT n_value)')
+    checks += computed_guards('S_tmp_live')
+    checks += computed_finish('S_tmp_live', row['expected_stdout'])
+    checks += computed_start('S_cold_name', cold_row) + computed_name('S_cold_name', 'cold')
+    checks += computed_guards('S_cold_name')
+    checks += lines(r'''
+pcomputedcompound_cold.NAME = KNOWN (PSTRING $ptascii("value"))
+pcomputedcompound_cold.RIGHT = KNOWN (POBJECT n_cold_rhs)
+$task_nodes(COMPOUND_STATIC_NAME pcomputedcompound_cold) = [HOBJECT n_cold_rhs]
+(HOBJECT n_cold_rhs) <- S_cold_name.ALLOCATIONS
+$computed_static_name_compatible(S_cold_name, pcomputedcompound_cold.SITE, $ptascii("value"))
+~$computed_static_name_compatible(S_cold_name, pcomputedcompound_cold.SITE, $ptascii("other"))
+$scoped_selector_class(S_cold_name, pcomputedcompound_cold.CLASS) = (porigin_cold)
+ptask_cold_work* = $class_constant_static_work(S_cold_name, pcomputedcompound_cold.CLASS, $ptascii("value"), pcomputedcompound_cold.LINE)
+ptask_cold_work* =/= eps
+S_cold_queued_step = $drive_steps(S_cold_name, 1)
+S_cold_queued_step.COMPLETION = BUDGET
+S_cold_queued = S_cold_queued_step[.COMPLETION = NORMAL]
+S_cold_queued.TODO = ptask_cold_work* ++ [CLASS_CONST_STATIC pcomputedcompound_cold.CLASS $ptascii("value") pcomputedcompound_cold.LINE, COMPOUND_STATIC_READY pcomputedcompound_cold porigin_cold $ptascii("value")] ++ ptask_cold*
+$computed_static_marker(S_cold_queued, S_cold_queued.TODO, pcomputedcompound_cold, porigin_cold, $ptascii("value"))
+$task_nodes(COMPOUND_STATIC_READY pcomputedcompound_cold porigin_cold $ptascii("value")) = [HOBJECT n_cold_rhs]
+S_cold_bad_queue = S_cold_queued[.TODO = ptask_cold_work* ++ [CLASS_CONST_STATIC pcomputedcompound_cold.CLASS $ptascii("value") pcomputedcompound_cold.LINE, COMPOUND_STATIC_READY pcomputedcompound_cold porigin_cold $ptascii("other")] ++ ptask_cold*]
+~$computed_static_marker(S_cold_bad_queue, S_cold_bad_queue.TODO, pcomputedcompound_cold, porigin_cold, $ptascii("other"))
+~$call_descriptors_valid(S_cold_bad_queue)
+''') + computed_guards('S_cold_queued')
+    checks += seek('S_cold_marker', 'S_cold_queued', 7) + computed_guards('S_cold_marker')
+    checks += seek('S_cold_live', 'S_cold_marker', 0)
+    checks += computed_live('S_cold_live', 'cold_live', '(PSTRING ptbytes_cold_left)')
+    checks += lines(r'''
+ptbytes_cold_left = $ptascii("a")
+pcompoundstring_cold_live.RIGHT = KNOWN (POBJECT n_cold_rhs)
+$task_nodes(COMPOUND_LIVE_PREP pcompoundstring_cold_live (PSTRING ptbytes_cold_left)) = [HOBJECT n_cold_rhs]
+$class_static_select(S_cold_live, pstaticcompound_cold_live.CLASS, $ptascii("other")) = (ppropertydesc_cold_other)
+pstaticcompound_cold_wrong = pstaticcompound_cold_live[.DECL = ppropertydesc_cold_other.ORIGIN]
+pcompoundstring_cold_wrong = pcompoundstring_cold_live[.PLACE = STATIC_COMPOUND pstaticcompound_cold_wrong]
+S_cold_wrong = S_cold_live[.TODO = (COMPOUND_LIVE_PREP pcompoundstring_cold_wrong (PSTRING ptbytes_cold_left)) :: ptask_cold_live*][.CLASSCONSTANTHISTORY[pstaticcompound_cold_live.ENTRY] = CCCOMPOUNDENTER pstaticcompound_cold_wrong pcompoundstring_cold_live.SITE pcompoundstring_cold_live.LINE n_prefix_cold_live]
+$static_compound_descriptor(S_cold_wrong, pstaticcompound_cold_wrong, pcompoundstring_cold_live.SITE) = eps
+~$class_constant_history_valid(S_cold_wrong)
+~$call_descriptors_valid(S_cold_wrong)
+''') + computed_guards('S_cold_live')
+    return checks + computed_finish('S_cold_live', cold_row['expected_stdout'], resume=False)
+
+
+def computed_references(row, selected_row):
+    checks = computed_start('S_ref_name', row) + computed_name('S_ref_name', 'name_ref')
+    checks += lines(r'''
+pcomputedcompound_name_ref.NAME = REFERENCE n_original_name
+pcomputedcompound_name_ref.RIGHT = KNOWN (PSTRING $ptascii("b"))
+$task_nodes(COMPOUND_STATIC_NAME pcomputedcompound_name_ref) = [HCELL n_original_name]
+n_original_name <- S_ref_name.REFCELLS
+S_ref_global = $global_table_view(S_ref_name)
+$lookup(S_ref_global.ENV, $ptascii("property")) = (n_rebound_name)
+n_original_name =/= n_rebound_name
+S_ref_name.STORE[n_original_name] = DEFINED (PSTRING $ptascii("value"))
+S_ref_name.STORE[n_rebound_name] = DEFINED (PSTRING $ptascii("other"))
+''') + computed_guards('S_ref_name')
+    checks += seek('S_ref_ready', 'S_ref_name', 5) + lines(r'''
+S_ref_ready.TODO = (COMPOUND_STATIC_READY pcomputedcompound_name_ref porigin_reference $ptascii("value")) :: ptask_name_ref*
+$call_task_valid(S_ref_ready, COMPOUND_STATIC_READY pcomputedcompound_name_ref porigin_reference $ptascii("value"))
+''')
+    checks += seek('S_ref_live', 'S_ref_ready', 0)
+    checks += computed_live('S_ref_live', 'ref_live', '(POBJECT n_ref_left)')
+    checks += lines(r'''
+pstaticcompound_ref_live.CELL = (n_ref_static)
+~pstaticcompound_ref_live.VERIFY
+S_ref_cv_changed = S_ref_live[.STORE[n_rebound_name] = DEFINED (PSTRING $ptascii("value"))]
+$compound_live_source(S_ref_cv_changed, pcompoundstring_ref_live)
+''') + computed_guards('S_ref_live')
+    checks += seek('S_ref_written', 'S_ref_live', 1) + lines(r'''
+S_ref_written.STORE[n_ref_static] = DEFINED (PSTRING $ptascii("ab"))
+$class_static_at(S_ref_written.CLASSSTATICS, pstaticcompound_ref_live.DECL) = (pclassstatic_ref_rebound)
+pclassstatic_ref_rebound.STATE = PROP_VALUE (ALIAS n_ref_replacement)
+n_ref_replacement =/= n_ref_static
+S_ref_written.STORE[n_ref_replacement] = DEFINED (PSTRING $ptascii("changed"))
+$static_compound_source(S_ref_written, pstaticcompound_ref_live, pcompoundstring_ref_live.SITE, pcompoundstring_ref_live.LINE)
+''') + computed_guards('S_ref_written')
+    checks += computed_finish('S_ref_written', row['expected_stdout'])
+    checks += computed_start('S_root_name', selected_row) + computed_name('S_root_name', 'root_name')
+    checks += lines(r'''
+pcomputedcompound_root_name.CLASS = KNOWN (PSTRING $ptascii("ComputedDynamicRootReview19"))
+pcomputedcompound_root_name.NAME = VARIABLE $ptascii("property") z_root_name
+S_root_global = $global_table_view(S_root_name)
+$lookup(S_root_global.ENV, $ptascii("class")) = (n_class_cv)
+S_root_name.STORE[n_class_cv] = DEFINED (PSTRING $ptascii("ComputedDynamicDecoyReview19"))
+''') + computed_guards('S_root_name')
+    checks += seek('S_root_live', 'S_root_name', 0)
+    checks += computed_live('S_root_live', 'root_live', '(POBJECT n_root_left)', selected=True)
+    checks += lines(r'''
+$class_named(S_root_live.CLASSNAMES, $ptlc($ptascii("ComputedDynamicRootReview19"))) = (porigin_dynamic_root)
+$class_named(S_root_live.CLASSNAMES, $ptlc($ptascii("ComputedDynamicDecoyReview19"))) = (porigin_dynamic_decoy)
+pstaticcompound_root_live.CLASS = porigin_dynamic_root
+pstaticselection_root_live.ROOT = porigin_dynamic_root
+pstaticselection_root_live.SCOPE = eps /\ pstaticselection_root_live.CALLED = eps
+pstaticcompound_root_live.CELL = (n_root_alias)
+S_root_bad_event = S_root_live[.CLASSCONSTANTHISTORY[pstaticcompound_root_live.ENTRY] = CCCOMPOUNDSELECT pstaticcompound_root_live pstaticselection_root_live[.ROOT = porigin_dynamic_decoy] pcompoundstring_root_live.SITE pcompoundstring_root_live.LINE n_prefix_root_live]
+~$class_constant_history_valid(S_root_bad_event)
+~$compound_live_source(S_root_bad_event, pcompoundstring_root_live)
+''') + computed_guards('S_root_live')
+    checks += seek('S_root_written', 'S_root_live', 1)
+    checks += seek('S_keyword_live', 'S_root_written', 0)
+    checks += computed_live('S_keyword_live', 'keyword_live', '(PINT z_keyword_left)', selected=True)
+    checks += lines(r'''
+z_keyword_left = 7
+$class_named(S_keyword_live.CLASSNAMES, $ptlc($ptascii("ComputedKeywordRootReview19"))) = (porigin_keyword_base)
+$class_named(S_keyword_live.CLASSNAMES, $ptlc($ptascii("ComputedKeywordChildReview19"))) = (porigin_keyword_child)
+pstaticselection_keyword_live.SCOPE = (porigin_keyword_base)
+pstaticselection_keyword_live.CALLED = (porigin_keyword_child)
+pstaticselection_keyword_live.ROOT = porigin_keyword_child
+pstaticcompound_keyword_live.CELL = eps
+pstaticcompound_keyword_live.VERIFY
+''') + computed_guards('S_keyword_live')
+    checks += seek('S_keyword_written', 'S_keyword_live', 1) + lines(r'''
+S_keyword_written.RESULT = KNOWN (PINT 72)
+$class_static_at(S_keyword_written.CLASSSTATICS, pstaticcompound_keyword_live.DECL) = (pclassstatic_keyword_written)
+pclassstatic_keyword_written.STATE = PROP_VALUE (DIRECT (PINT 72))
+$static_compound_source(S_keyword_written, pstaticcompound_keyword_live, pcompoundstring_keyword_live.SITE, pcompoundstring_keyword_live.LINE)
+''') + computed_guards('S_keyword_written')
+    return checks
+
+
 CASES += DYNAMIC_CASES
+CASES += COMPUTED_CASES
 
 
 def render(name, sources):
@@ -384,9 +602,13 @@ def render(name, sources):
         checks = dynamic_base(sources[DYNAMIC_CASES[0][1][0]], sources[DYNAMIC_CASES[0][1][1]])
     elif name == DYNAMIC_CASES[1][0]:
         checks = dynamic_reference(sources[DYNAMIC_CASES[1][1][0]])
+    elif name == COMPUTED_CASES[0][0]:
+        checks = computed_timing(sources[COMPUTED_CASES[0][1][0]], sources[COMPUTED_CASES[0][1][1]])
+    elif name == COMPUTED_CASES[1][0]:
+        checks = computed_references(sources[COMPUTED_CASES[1][1][0]], sources[COMPUTED_CASES[1][1][1]])
     else:
         raise ValueError(name)
-    text = EXTRA + DYNAMIC_EXTRA + PREFIX.replace('STAGE', '$scoped_phase(S, 0)')
+    text = EXTRA + DYNAMIC_EXTRA + COMPUTED_EXTRA + PREFIX.replace('STAGE', '$scoped_phase(S, 0)')
     text += '\ndec $main() : bool\ndef $main() = true\n'
     text += ''.join('  -- if ' + check + '\n' for check in checks)
     return text, checks

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "peer-fiber-array-start-freezes-members-before-last-receiver-retirement",
+    "source": "<?php\nfunction arrayStartLastReceiver19(int $value = 3, $fallback = 'D', ...$tail) {\n    global $weak;\n    try {\n        echo $value, '|', $fallback, '|', $tail['extra'], '|';\n        echo (int)($weak->get() === Fiber::getCurrent()), '|';\n        Fiber::suspend('Y');\n    } finally { echo 'F|'; }\n}\nfunction retireArrayStartSelector19() {\n    global $target, $receiver, $method, $pair, $other, $weak;\n    $receiver = $other;\n    $method = 'resume';\n    $pair = null;\n    $target = null;\n    echo (int)($weak->get() !== null), '|';\n    return '7';\n}\n$target = new Fiber('arrayStartLastReceiver19');\n$weak = WeakReference::create($target);\n$other = new Fiber(static function () { echo 'X|'; return 99; });\n$receiver = $target;\n$method = 'StArT';\n$pair = [&$receiver, &$method];\necho $pair(value: retireArrayStartSelector19(), extra: 'X'), '|';\necho (int)($weak->get() === null), '|', (int)$other->isStarted();\n",
+    "source_sha256": "a060325515d72b2b6a34ff96a44496aa71ffa0d2004573f7d65a2bb0cfd2887d",
+    "expected_model": "normal",
+    "engine_derived_expectation": "The bound start call owns its selected receiver before arguments. Member references and the selector retire during argument evaluation, while original named/default/variadic values enter the selected target. Expected1|7|D|X|1|F|Y|1|0; native observation must pin final force-close versus returned Y.",
+    "native_stdout": "1|7|D|X|1|F|Y|1|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-array-start-nested-parent-and-repeat-error-trace",
+    "source": "<?php\nfunction arrayStartNestedBody19($value = 'D', ...$tail) {\n    global $target;\n    echo $value, '|', $tail['extra'], '|';\n    echo (int)(Fiber::getCurrent() === $target), '|';\n    return 17;\n}\nfunction arrayStartLateArgument19() { echo 'A|'; return 'late'; }\n$target = new Fiber('arrayStartNestedBody19');\n$pair = [$target, 'start'];\n$parent = new Fiber(static function () use (&$pair) {\n    echo 'P|';\n    echo (int)($pair(value: 'V', extra: 'N') === null), '|';\n    return 19;\n});\n$parent->start();\necho $target->getReturn(), '|', $parent->getReturn(), '|';\ntry { $pair(value: arrayStartLateArgument19()); }\ncatch (FiberError $error) {\n    echo 'E|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\necho 'END';\n",
+    "source_sha256": "3b0e6dd5c8fc3dc586e0ebd662293508e486002a93e7969f3d631285244c39a3",
+    "expected_model": "normal",
+    "engine_derived_expectation": "A genuine user-parent array start preserves current-Fiber identity and defined returns. A repeated start evaluates its argument before the status error, and the trace contains the real start callsite without a Closure wrapper. ExpectedP|V|N|1|1|17|19|A|E|Cannot start a fiber that has already been started|start.11|END; native recording pending.",
+    "native_stdout": "P|V|N|1|1|17|19|A|E|Cannot start a fiber that has already been started|start.11|END",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-array-start-recursive-same-site-arguments",
+    "source": "<?php\nfunction recursiveArrayStart367($depth) {\n    global $pair;\n    try { return $pair(value: $depth ? recursiveArrayStart367($depth - 1) : 'V'); }\n    catch (FiberError $error) {\n        echo $depth, ':', $error->getMessage(), '|';\n        return 'caught';\n    }\n}\n$target = new Fiber(static function ($value) { echo $value, '|'; return 31; });\n$pair = [$target, 'StArT'];\nrecursiveArrayStart367(2);\necho $target->getReturn();\n",
+    "source_sha256": "f840b778d08d6ed35fd2cc5edbf489ed9e116e18867e2730186c0ae9b43f71ca",
+    "expected_model": "normal",
+    "engine_derived_expectation": "Recursive user argument frames select the same ordinary array start at one source site. The innermost starts the target once, then outer calls validate status after argument evaluation and report FiberError; safely defined return31 remains available.",
+    "native_stdout": "V|1:Cannot start a fiber that has already been started|2:Cannot start a fiber that has already been started|31",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-array-start-abrupt-positional-and-named-owner-order",
+    "source": "<?php\nclass ArrayStartPayload367 {\n    public function __destruct() {\n        global $weak;\n        echo 'D', (int)($weak->get() === null), '|';\n    }\n}\nfunction abruptArrayStart367() {\n    global $pair;\n    $pair = null;\n    echo 'A|';\n    throw new Exception('argument');\n}\n$target = new Fiber(static function () {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$pair = [$target, 'start'];\nunset($target);\ntry { $pair(new ArrayStartPayload367(), abruptArrayStart367()); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\necho (int)($weak->get() === null), '|';\n$target = new Fiber(static function () {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$pair = [$target, 'start'];\nunset($target);\ntry { $pair(first: new ArrayStartPayload367(), second: abruptArrayStart367()); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\necho (int)($weak->get() === null);\n",
+    "source_sha256": "f7a7a4b5356239b5ca7a702b2ad10823cfe0f16b0ec1a09f24ae87c9395d7a51",
+    "expected_model": "normal",
+    "engine_derived_expectation": "A throwing argument retires the last selector while the pending ordinary start still owns its receiver and earlier payload. Positional versus extra-named payload destructors observe the real Zend argument/receiver unwind order; the handler never enters and no undefined return is read.",
+    "native_stdout": "Y|A|D0|F|argument|1|Y|A|F|D1|argument|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-array-start-keeps-named-default-and-variadic-buffer",
+    "source": "<?php\nfunction arrayStartBody19(int $value, $suffix = 'D', ...$rest) {\n    echo (int)($value === 7), '|', $suffix, '|', $rest['tag'], '|';\n    echo Fiber::suspend('Y'), '|';\n    return 29;\n}\n$target = new Fiber('arrayStartBody19');\n$pair = [$target, 'StArT'];\necho $pair(value: '7', tag: 'X'), '|';\n$resume = [$target, 'resume'];\necho (int)($resume(value: 'R') === null), '|';\n$get = [$target, 'getReturn'];\n$status = [$target, 'isTerminated'];\necho $get(), '|', (int)$status();\n",
+    "source_sha256": "e11e52f40bccca1b2f039fea465ad3ad3c1a68d5c7934800e61a0332a3c1e60b",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "An array-selected start forwards its original named buffer to the user callback, preserving weak integer conversion, a default and a named variadic surplus. Return reads occur after defined return29.",
+    "native_stdout": "1|D|X|Y|R|1|29|1",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expectation": "Ordinary array start forwards the original named/default/variadic buffer; the pre367 Unsupported observation retains zero agreement."
+  },
+  {
+    "id": "author-fiber-array-start-body-throw-and-entry-name-cleanup",
+    "source": "<?php\nfunction arrayStartBodyThrow367($value) {\n    global $original;\n    echo $value, '|';\n    $original = new Exception('body');\n    throw $original;\n}\nfunction retireArrayStartThrow367() {\n    global $target, $pair;\n    $target = null;\n    $pair = null;\n    return 'V';\n}\n$target = new Fiber('arrayStartBodyThrow367');\n$weak = WeakReference::create($target);\n$pair = [$target, 'start'];\ntry { $pair(value: retireArrayStartThrow367()); }\ncatch (Exception $error) {\n    echo (int)($error === $original), '|', (int)($weak->get() === null), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\nfunction arrayStartNoParameters367() { echo 'UNREACHED|'; return 17; }\n$nameTarget = new Fiber('arrayStartNoParameters367');\n$namePair = [$nameTarget, 'start'];\ntry { $namePair(unknown: 7); }\ncatch (Error $error) {\n    echo $error->getMessage(), '|', (int)$nameTarget->isTerminated(), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\necho 'END';\n",
+    "source_sha256": "737c5f7eb49d71b32ba0ad53b9f2e3cf8e3d57de9ae8a55cd1b4f124a58fb241",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "expectation": "Body throw retains original exception identity and real caller trace after last selected receiver/array retirement. Unknown target named arguments fail before body entry and terminate that target without getReturn.",
+    "native_stdout": "V|1|1|arrayStartBodyThrow367.00|start.11|Unknown named parameter $unknown|1|start.11|END",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
