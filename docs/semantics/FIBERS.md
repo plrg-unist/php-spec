@@ -329,6 +329,32 @@ same explicit primitive CLI request facts and produce `1|S|D|E|19:30719:2`.
 The generic invocation's missing-request Unsupported retains zero agreement.
 These new gates do not renew older source/state cuts or confirm full63/rich execution.
 
+## Scoped constructor callables
+
+Module322 routes deprecated `self`, `parent`, `static` and compound array method
+selectors through the existing effectful callable stages. Class selection precedes
+its warning; an aliased method is read afterward. Warning handlers may mutate,
+throw or suspend, and callable validation still precedes the repeated-constructor
+error. The cached target keeps its original lexical/called/receiver scope after
+aliases change and makers retire, including a maker entered through another Fiber.
+The immutable receipt adds no heap owner; actual raw callbacks and live receiver
+entries retain their ordinary owners.
+
+Admission binds direct raw members, actual maker `this`, producer/capture history
+and constructor source. Pending new-expression result markers pair with their
+authenticated live constructor owner; completed markers bind the selected cache
+to that new source. Actual Fiber values gain nominal typed argument admission.
+The unchanged throwing-handler original also required the finite inherited
+RuntimeException kind/parent/base/constructor mappings.
+
+The [constructor ledger](../../coverage/semantics/fiber-callable-constructors-review.json)
+records thirteen normal originals at separate source cuts and strict296/three
+author/seven independent groups at the corrected descriptor cut. Canonical
+integration remains pending. Maintained source/state scripts preserve
+the checked original fixtures and stop at the first failure; relocation adds no
+execution credit. The earlier rich whole-source and full63 literal runs remain
+unconfirmed zero credit.
+
 ## Required follow-ons
 
 Five destruction control lists move with each VM stack: calls, releases, frames,
@@ -337,7 +363,6 @@ cleanup and property caches stay shared. Request scans, fatal cleanup, GC and
 suppressed `exit` in a destroyed Fiber remain required consumers.
 
 `getReturn` after graceful close without an actual return, request/fatal cleanup,
-deprecated constructor callable stages,
 wider core internal callback bodies, reference forwarding, API callable/FCC entry,
 `start` unpacking and switching during initialization/source loading remain
 required. The first transfer domain rejects active or saved constant/default and

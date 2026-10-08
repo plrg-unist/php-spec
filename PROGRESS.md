@@ -566,6 +566,15 @@ unconfirmed rich whole-source/full63 runs. Wider internal/FCC/reference callback
 initialization, request/fatal/GC consumers and complete core remain required;
 the final fresh offline rebuild is outstanding and returns verification stays paused.
 
+Private Fiber322 adds effectful scoped/deprecated constructor method selection,
+warning-before-status ordering and immutable original maker/scope authority.
+Actual Fiber nominal argument admission and inherited RuntimeException construction
+close gaps found by the unchanged originals. Thirteen sources retain separate cuts;
+strict296 and three author/seven independent state groups pass. Canonical
+integration is queued. The [constructor ledger](coverage/semantics/fiber-callable-constructors-review.json)
+retains failures, source/state scopes and recovery commands; broader callable/FCC,
+internal/reference/lifecycle consumers and final validation remain required.
+
 Generator280 creates object-owned suspended frames after eager ordinary receives.
 Value yields, literal iterator methods, `getReturn` and value foreach retain
 captured aliases, ordinary private creation scope and real resumer traces.

@@ -950,6 +950,12 @@ pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
 Internal `error_reporting` callbacks retain weak C receives, owned arguments,
 warning producers and real resumer/destructor traces through handler suspension.
+Scoped constructor selectors (`self`, `parent`, `static` and compound method
+arrays) now use the effectful callable resolver. Warning callbacks can mutate,
+throw or suspend before the repeated-constructor check. Cached scope and maker
+receipts survive reference changes and maker retirement without extra heap owners.
+The [constructor ledger](coverage/semantics/fiber-callable-constructors-review.json)
+keeps distinct source cuts and independently accepted state checks.
 The [callback ledger](coverage/semantics/fiber-core-callbacks-review.json) separates
 bounded state checks from unconfirmed rich whole-source execution.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers

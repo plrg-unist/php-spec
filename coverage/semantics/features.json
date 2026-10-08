@@ -11550,18 +11550,23 @@
       "helper_tests": [
         "tests/semantics/throwable_compiler.py",
         "tests/semantics/throwable_protocol.py",
-        "tests/semantics/ordinary_constructor_protocol.py"
+        "tests/semantics/ordinary_constructor_protocol.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
         "tests/semantics/throwable_expressions.py",
-        "tests/semantics/ordinary_constructor_sources.py"
+        "tests/semantics/ordinary_constructor_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
         "docs/semantics/THROWABLES.md",
-        "coverage/semantics/ordinary-throwable-reception-review.json"
+        "coverage/semantics/ordinary-throwable-reception-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial."
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. The unchanged322 throwing-handler original requires finite RuntimeException kind, inherited Exception parent/base and constructor admissions; its normal agreement retains the e955 cut. The directly affected inherited-storage/interface state group passes at df28 in fiber-callable-constructors-review.json; no wider SPL class coverage is claimed."
     },
     {
       "id": "protocols.Exception",
@@ -11572,16 +11577,21 @@
         "spec/semantics/250-ordinary-throwable-reception.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/ordinary_constructor_protocol.py"
+        "tests/semantics/ordinary_constructor_protocol.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
-        "tests/semantics/ordinary_constructor_sources.py"
+        "tests/semantics/ordinary_constructor_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
-        "coverage/semantics/ordinary-throwable-reception-review.json"
+        "coverage/semantics/ordinary-throwable-reception-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial."
+      "review": "Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. The unchanged322 throwing-handler original requires finite RuntimeException kind, inherited Exception parent/base and constructor admissions; its normal agreement retains the e955 cut. The directly affected inherited-storage/interface state group passes at df28 in fiber-callable-constructors-review.json; no wider SPL class coverage is claimed."
     },
     {
       "id": "protocols.Error",
@@ -13391,7 +13401,8 @@
         "spec/semantics/291-fiber-lifecycle.watsup",
         "spec/semantics/302-fiber-callback-retirement.watsup",
         "spec/semantics/308-fiber-protected-completion.watsup",
-        "spec/semantics/313-fiber-core-callbacks.watsup"
+        "spec/semantics/313-fiber-core-callbacks.watsup",
+        "spec/semantics/322-fiber-callable-selection.watsup"
       ],
       "helper_tests": [
         "tests/semantics/fiber_state_review.py",
@@ -13403,20 +13414,25 @@
         "tests/semantics/fiber_core_state.py",
         "tests/semantics/fiber_core_review.py",
         "tests/semantics/fiber_core_integration_protocol.py",
-        "tests/semantics/fiber_core_file_review.py"
+        "tests/semantics/fiber_core_file_review.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
         "tests/semantics/fiber_review.py",
         "tests/semantics/fiber_review_cases.json",
         "tests/semantics/fiber_core_file_review.py",
-        "tests/semantics/fiber_core_latest_sources.py"
+        "tests/semantics/fiber_core_latest_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md",
-        "coverage/semantics/fiber-core-callbacks-review.json"
+        "coverage/semantics/fiber-core-callbacks-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit. Private322 implements effectful scoped/deprecated constructor method selection, warning-before-status ordering and immutable original maker/scope authority without metadata heap owners. Thirteen normal originals retain separate cuts; corrected strict296 and author250/independent565 pass, canonical integration remains pending. Broader callable/FCC/internal/reference/lifecycle consumers and rich whole-source/full63 remain open; see fiber-callable-constructors-review.json."
     },
     {
       "id": "resumable.Fiber-start",
@@ -13428,7 +13444,8 @@
         "spec/semantics/291-fiber-lifecycle.watsup",
         "spec/semantics/302-fiber-callback-retirement.watsup",
         "spec/semantics/308-fiber-protected-completion.watsup",
-        "spec/semantics/313-fiber-core-callbacks.watsup"
+        "spec/semantics/313-fiber-core-callbacks.watsup",
+        "spec/semantics/322-fiber-callable-selection.watsup"
       ],
       "helper_tests": [
         "tests/semantics/fiber_state_review.py",
@@ -13440,20 +13457,25 @@
         "tests/semantics/fiber_core_state.py",
         "tests/semantics/fiber_core_review.py",
         "tests/semantics/fiber_core_integration_protocol.py",
-        "tests/semantics/fiber_core_file_review.py"
+        "tests/semantics/fiber_core_file_review.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
         "tests/semantics/fiber_review.py",
         "tests/semantics/fiber_review_cases.json",
         "tests/semantics/fiber_core_file_review.py",
-        "tests/semantics/fiber_core_latest_sources.py"
+        "tests/semantics/fiber_core_latest_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md",
-        "coverage/semantics/fiber-core-callbacks-review.json"
+        "coverage/semantics/fiber-core-callbacks-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit. Private322 implements effectful scoped/deprecated constructor method selection, warning-before-status ordering and immutable original maker/scope authority without metadata heap owners. Thirteen normal originals retain separate cuts; corrected strict296 and author250/independent565 pass, canonical integration remains pending. Broader callable/FCC/internal/reference/lifecycle consumers and rich whole-source/full63 remain open; see fiber-callable-constructors-review.json."
     },
     {
       "id": "resumable.Fiber-suspend",
@@ -13465,7 +13487,8 @@
         "spec/semantics/291-fiber-lifecycle.watsup",
         "spec/semantics/302-fiber-callback-retirement.watsup",
         "spec/semantics/308-fiber-protected-completion.watsup",
-        "spec/semantics/313-fiber-core-callbacks.watsup"
+        "spec/semantics/313-fiber-core-callbacks.watsup",
+        "spec/semantics/322-fiber-callable-selection.watsup"
       ],
       "helper_tests": [
         "tests/semantics/fiber_state_review.py",
@@ -13477,20 +13500,25 @@
         "tests/semantics/fiber_core_state.py",
         "tests/semantics/fiber_core_review.py",
         "tests/semantics/fiber_core_integration_protocol.py",
-        "tests/semantics/fiber_core_file_review.py"
+        "tests/semantics/fiber_core_file_review.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
         "tests/semantics/fiber_review.py",
         "tests/semantics/fiber_review_cases.json",
         "tests/semantics/fiber_core_file_review.py",
-        "tests/semantics/fiber_core_latest_sources.py"
+        "tests/semantics/fiber_core_latest_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md",
-        "coverage/semantics/fiber-core-callbacks-review.json"
+        "coverage/semantics/fiber-core-callbacks-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit. Private322 implements effectful scoped/deprecated constructor method selection, warning-before-status ordering and immutable original maker/scope authority without metadata heap owners. Thirteen normal originals retain separate cuts; corrected strict296 and author250/independent565 pass, canonical integration remains pending. Broader callable/FCC/internal/reference/lifecycle consumers and rich whole-source/full63 remain open; see fiber-callable-constructors-review.json."
     },
     {
       "id": "resumable.Fiber-resume",
@@ -13502,7 +13530,8 @@
         "spec/semantics/291-fiber-lifecycle.watsup",
         "spec/semantics/302-fiber-callback-retirement.watsup",
         "spec/semantics/308-fiber-protected-completion.watsup",
-        "spec/semantics/313-fiber-core-callbacks.watsup"
+        "spec/semantics/313-fiber-core-callbacks.watsup",
+        "spec/semantics/322-fiber-callable-selection.watsup"
       ],
       "helper_tests": [
         "tests/semantics/fiber_state_review.py",
@@ -13514,20 +13543,25 @@
         "tests/semantics/fiber_core_state.py",
         "tests/semantics/fiber_core_review.py",
         "tests/semantics/fiber_core_integration_protocol.py",
-        "tests/semantics/fiber_core_file_review.py"
+        "tests/semantics/fiber_core_file_review.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
         "tests/semantics/fiber_review.py",
         "tests/semantics/fiber_review_cases.json",
         "tests/semantics/fiber_core_file_review.py",
-        "tests/semantics/fiber_core_latest_sources.py"
+        "tests/semantics/fiber_core_latest_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md",
-        "coverage/semantics/fiber-core-callbacks-review.json"
+        "coverage/semantics/fiber-core-callbacks-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit. Private322 implements effectful scoped/deprecated constructor method selection, warning-before-status ordering and immutable original maker/scope authority without metadata heap owners. Thirteen normal originals retain separate cuts; corrected strict296 and author250/independent565 pass, canonical integration remains pending. Broader callable/FCC/internal/reference/lifecycle consumers and rich whole-source/full63 remain open; see fiber-callable-constructors-review.json."
     },
     {
       "id": "resumable.Fiber-throw",
@@ -13539,7 +13573,8 @@
         "spec/semantics/291-fiber-lifecycle.watsup",
         "spec/semantics/302-fiber-callback-retirement.watsup",
         "spec/semantics/308-fiber-protected-completion.watsup",
-        "spec/semantics/313-fiber-core-callbacks.watsup"
+        "spec/semantics/313-fiber-core-callbacks.watsup",
+        "spec/semantics/322-fiber-callable-selection.watsup"
       ],
       "helper_tests": [
         "tests/semantics/fiber_state_review.py",
@@ -13551,20 +13586,25 @@
         "tests/semantics/fiber_core_state.py",
         "tests/semantics/fiber_core_review.py",
         "tests/semantics/fiber_core_integration_protocol.py",
-        "tests/semantics/fiber_core_file_review.py"
+        "tests/semantics/fiber_core_file_review.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
         "tests/semantics/fiber_review.py",
         "tests/semantics/fiber_review_cases.json",
         "tests/semantics/fiber_core_file_review.py",
-        "tests/semantics/fiber_core_latest_sources.py"
+        "tests/semantics/fiber_core_latest_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md",
-        "coverage/semantics/fiber-core-callbacks-review.json"
+        "coverage/semantics/fiber-core-callbacks-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit. Private322 implements effectful scoped/deprecated constructor method selection, warning-before-status ordering and immutable original maker/scope authority without metadata heap owners. Thirteen normal originals retain separate cuts; corrected strict296 and author250/independent565 pass, canonical integration remains pending. Broader callable/FCC/internal/reference/lifecycle consumers and rich whole-source/full63 remain open; see fiber-callable-constructors-review.json."
     },
     {
       "id": "resumable.Fiber-status",
@@ -13576,7 +13616,8 @@
         "spec/semantics/291-fiber-lifecycle.watsup",
         "spec/semantics/302-fiber-callback-retirement.watsup",
         "spec/semantics/308-fiber-protected-completion.watsup",
-        "spec/semantics/313-fiber-core-callbacks.watsup"
+        "spec/semantics/313-fiber-core-callbacks.watsup",
+        "spec/semantics/322-fiber-callable-selection.watsup"
       ],
       "helper_tests": [
         "tests/semantics/fiber_state_review.py",
@@ -13588,20 +13629,25 @@
         "tests/semantics/fiber_core_state.py",
         "tests/semantics/fiber_core_review.py",
         "tests/semantics/fiber_core_integration_protocol.py",
-        "tests/semantics/fiber_core_file_review.py"
+        "tests/semantics/fiber_core_file_review.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
         "tests/semantics/fiber_review.py",
         "tests/semantics/fiber_review_cases.json",
         "tests/semantics/fiber_core_file_review.py",
-        "tests/semantics/fiber_core_latest_sources.py"
+        "tests/semantics/fiber_core_latest_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md",
-        "coverage/semantics/fiber-core-callbacks-review.json"
+        "coverage/semantics/fiber-core-callbacks-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit. Private322 implements effectful scoped/deprecated constructor method selection, warning-before-status ordering and immutable original maker/scope authority without metadata heap owners. Thirteen normal originals retain separate cuts; corrected strict296 and author250/independent565 pass, canonical integration remains pending. Broader callable/FCC/internal/reference/lifecycle consumers and rich whole-source/full63 remain open; see fiber-callable-constructors-review.json."
     },
     {
       "id": "resumable.Fiber-return",
@@ -13613,7 +13659,8 @@
         "spec/semantics/291-fiber-lifecycle.watsup",
         "spec/semantics/302-fiber-callback-retirement.watsup",
         "spec/semantics/308-fiber-protected-completion.watsup",
-        "spec/semantics/313-fiber-core-callbacks.watsup"
+        "spec/semantics/313-fiber-core-callbacks.watsup",
+        "spec/semantics/322-fiber-callable-selection.watsup"
       ],
       "helper_tests": [
         "tests/semantics/fiber_state_review.py",
@@ -13625,20 +13672,25 @@
         "tests/semantics/fiber_core_state.py",
         "tests/semantics/fiber_core_review.py",
         "tests/semantics/fiber_core_integration_protocol.py",
-        "tests/semantics/fiber_core_file_review.py"
+        "tests/semantics/fiber_core_file_review.py",
+        "tests/semantics/fiber_callable_state.py",
+        "tests/semantics/fiber_callable_review.py"
       ],
       "source_tests": [
         "tests/semantics/fiber_review.py",
         "tests/semantics/fiber_review_cases.json",
         "tests/semantics/fiber_core_file_review.py",
-        "tests/semantics/fiber_core_latest_sources.py"
+        "tests/semantics/fiber_core_latest_sources.py",
+        "tests/semantics/fiber_callable_sources.py",
+        "tests/semantics/fiber_callable_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_fibers.c",
         "docs/semantics/FIBERS.md",
-        "coverage/semantics/fiber-core-callbacks-review.json"
+        "coverage/semantics/fiber-core-callbacks-review.json",
+        "coverage/semantics/fiber-callable-constructors-review.json"
       ],
-      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit."
+      "review": "281 live user-callback transfers independently reviewed: constructor caches selection; start/suspend/resume/throw preserve genuine VM and C argument owners; status, current identity and stored return values are implemented. Thirty normal originals and thirteen source-derived states/782 conditions retain explicit mixed cuts in FIBERS.md. Deferred/literal named holes, entry-error caller provenance and raw named-buffer admission are validated through genuine continuations and forgeries. Actual constant-NEW identity and separate Generator execution preserve owners and global/parked admission; three Unsupported controls have zero agreement. Internal/reference callbacks, API capture, unpacking and initialization/source switching remain required; no full-family closure. Modules291/302 add bounded ordinary force-close and callback retirement: catches skip the private control, finally/replacement paths retain genuine pending/result owners, defined returned null remains distinct from a body throw, and suspended captures preserve VM continuations. All five destruction control lists move with the VM; request/fatal cleanup, protected body-undefined results, GC and wider consumers remain required. Accepted291 retains29 normal close comparisons and14 reached states/1037 conditions; accepted302 retains15 targeted normal comparisons and12 groups/871 conditions. FIBERS.md keeps exact mixed cuts and zero-credit failures/controls; the undefined-result native witness is held. Module 308 adds returned-result protected cleanup and nonowning previous-write authentication; its frozen source/state cuts and tested 280 composition over 9dd are recorded in FIBERS.md. Integrated final-parent ed7 composition separately passes strict285 initialization, the same defined-result original and two strict-SL groups/113 premises; prior277/280 cuts retain their own inputs and counts. The original verbose-source timeout retains zero agreement; CALLS308 dynamic-property warning retains Unsupported at its original cut without a renewed result. Ordinary creation318 is tracked separately. 313 adds cached string error_reporting callbacks with weak C receives, owned arguments and retained warning/resumer/destructor provenance. Its separate ledger preserves original source/state cuts and unconfirmed rich whole-source/full63; wider internal/FCC/reference/lifecycle behavior remains open. Latest294-parent composition retains canonical GC/ArrayAccess/source/Arrow guards and passes strict295 plus one fresh explicit-request GC/autoglobal-eval source; prior cuts gain no renewed credit. Private322 implements effectful scoped/deprecated constructor method selection, warning-before-status ordering and immutable original maker/scope authority without metadata heap owners. Thirteen normal originals retain separate cuts; corrected strict296 and author250/independent565 pass, canonical integration remains pending. Broader callable/FCC/internal/reference/lifecycle consumers and rich whole-source/full63 remain open; see fiber-callable-constructors-review.json."
     },
     {
       "id": "resumable.suspension-cleanup",
