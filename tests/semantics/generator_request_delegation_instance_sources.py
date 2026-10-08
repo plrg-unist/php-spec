@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Actual359+360 Iterator-input interaction; expectation provisional until run."""
+"""Actual359+360 Iterator-input child cleanup interaction."""
 import generator_force_close_review as driver
 
 CASES = {

@@ -851,8 +851,10 @@ property release. WeakReference already returns null during child callbacks, whi
 safe class metadata remains readable; each slot transfers its owner and detaches
 its type source exactly once. Five new originals and 164/57/67 reached premises
 cover pending exceptions, the Generator RETURN-child interaction and genuine
-Fiber suspension, with distinct source and repair cuts in the review. Raw property
-payload access and escaped reacquisition during this window remain required.
+Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
+adds one exact Iterator-child original and 113 reached premises; future
+destructor-tail validation applies the real result discard before owner checks.
+Raw property payload access and escaped reacquisition remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;

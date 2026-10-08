@@ -978,6 +978,11 @@ groups pass 164/57/67 premises at that latter cut, covering exact typed detach,
 A/B chaining, actual355 RETURN-child ownership and genuine parked Fiber pins.
 Adapted earlier ordinary fixtures carry no new credit; private303 INSTANCE pins,
 STDINSTANCE storage and wider raw-payload/escape behavior remain required.
+The 347-module join over `cd7d74529` passes strict initialization and one exact
+Iterator-child original at `5916e0e0b`. Its 113 shared premises at `9d007c3d4`
+preserve live Weak-result ownership of 2 and future-tail ownership of 1 after genuine
+destructor-result discard; added owners still reject queued close. The original
+shared failure/timeouts remain uncredited; prior359/360 campaigns are unchanged.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
