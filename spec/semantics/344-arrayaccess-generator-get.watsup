@@ -1,0 +1,147 @@
+;; Implicit Get loses its emitter frame after returning a Generator. This
+;; source certificate owns no nodes; only the real Generator frame/VM owns
+;; the received key and receiver.
+dec $access_generator_line(pstate, porigin, int) : bool
+dec $access_generator_key_line(pstate, porigin, int) : bool
+dec $access_generator_origin(pstate, pgeneratoraccess, porigin) : bool
+dec $access_generator_shape(pstate, pcallcontext, pgeneratoraccess) : bool
+dec $access_generator_frame(pstate, pframe?, pgeneratoraccess) : bool
+dec $access_generator_running(pcallcontext?, pframe*, nat, pcallcontext) : bool
+dec $access_generator_resume_task(ptask*, nat, pcallcontext) : bool
+dec $access_generator_close_tasks(ptask*, nat, pcallcontext) : bool
+dec $access_generator_close_frames(pframe*, nat, pcallcontext) : bool
+dec $access_generator_retained(pstate, nat, pgenerator, pcallcontext) : bool
+dec $access_generator_nodes(pstate, pnode*, pcallcontext) : bool
+dec $access_generator_node(pstate, pnode, pcallcontext) : bool
+
+def $access_generator_key_line(S, porigin, z) = ($code_expression_at_source(S, porigin, [PCFIELD 1]) = (z))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+  -- if phpType5 =/= ABSENT
+def $access_generator_key_line(S, porigin, z) = ($code_expression_at_source(S, porigin, [PCFIELD 0]) = (z))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression ABSENT metadata)
+def $access_generator_key_line(S, porigin, z) = false -- otherwise
+def $access_generator_line(S, porigin, z) = $access_generator_key_line(S, porigin, z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrayDimFetch expression phpType5 metadata)
+def $access_generator_line(S, porigin, z) = $access_generator_key_line(S, porigin_target, z)
+  -- if $origin_node(S.SOURCES, porigin) = (pcnode)
+  -- if $key_write_op(pcnode) =/= eps \/ $key_write_update(pcnode) =/= eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_target)
+def $access_generator_line(S, porigin, z) = false -- otherwise
+
+def $access_generator_origin(S, pgeneratoraccess, porigin) = true
+  -- if pgeneratoraccess.TARGET = METHOD_TARGET n porigin
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $access_instance(S, POBJECT n)
+  -- if $effective_method(S, porigin_class, $ptascii("offsetGet"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
+  -- if ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $function_generator(S, pmethoddesc.FUNCTION)
+  -- if $access_reference_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if $access_generator_line(S, pgeneratoraccess.SITE, pgeneratoraccess.LINE)
+def $access_generator_origin(S, pgeneratoraccess, porigin) = false -- otherwise
+def $access_generator_shape(S, pcallcontext, pgeneratoraccess) = true
+  -- if $context_target(pcallcontext) = pgeneratoraccess.TARGET
+  -- if pcallcontext.CALLSITE = (pgeneratoraccess.SITE)
+  -- if pcallcontext.LINE = pgeneratoraccess.LINE
+  -- if $access_generator_origin(S, pgeneratoraccess, pcallcontext.FUNCTION)
+  -- if pcallcontext.ARGC = 1
+  -- if pcallcontext.HOLES = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps
+  -- if $target_function(S, pgeneratoraccess.TARGET) = (pfunction)
+  -- if psparam* = pfunction.SIGNATURE.PARAMETERS
+  -- if pcallcontext.PARAMS = (psparam.NAME)*
+  -- if n_received = $call_received(1, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if |pcallcontext.EXTRA| = $(1 - n_received)
+  -- if $call_sent_operands_valid(S, pgeneratoraccess.TARGET, n_received, pcallcontext.EXTRA)
+def $access_generator_shape(S, pcallcontext, pgeneratoraccess) = false -- otherwise
+
+;; Initial permission cannot come from the retained certificate itself.
+def $access_generator_creation(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if $access_frame(S, pcallcontext, pframe)
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $access_generator_shape(S, pcallcontext, {TARGET $context_target(pcallcontext), SITE porigin, LINE pcallcontext.LINE})
+def $access_generator_creation(S, pcallcontext) = false -- otherwise
+def $access_generator_capture(S, pcallcontext) = ({TARGET $context_target(pcallcontext), SITE porigin, LINE pcallcontext.LINE})
+  -- if $access_generator_creation(S, pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin)
+def $access_generator_capture(S, pcallcontext) = eps -- otherwise
+
+def $access_generator_frame(S, eps, pgeneratoraccess) = true
+def $access_generator_frame(S, (pframe), pgeneratoraccess) = $access_generator_shape(S, pcallcontext, pgeneratoraccess)
+  -- if pframe.CONTEXT = (pcallcontext)
+def $access_generator_frame(S, pframe?, pgeneratoraccess) = false -- otherwise
+def $access_generator_record_valid(S, pgenerator) = true -- if pgenerator.ACCESS = eps
+def $access_generator_record_valid(S, pgenerator) = ($access_generator_origin(S, pgeneratoraccess, pgenerator.FUNCTION) /\ $access_generator_frame(S, pgenerator.FRAME, pgeneratoraccess))
+  -- if pgenerator.ACCESS = (pgeneratoraccess)
+
+;; A finished close marker is borrowed history. Its argument values and
+;; receiver may already be retired, so it confers no live call permission.
+def $access_generator_close_valid(S, pgenclose) = true
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.ACCESS = eps
+def $access_generator_close_valid(S, pgenclose) = true
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.ACCESS = (pgeneratoraccess)
+  -- if $access_generator_origin(S, pgeneratoraccess, pgenerator.FUNCTION)
+  -- if pgeneratoraccess.TARGET = METHOD_TARGET n pgenerator.FUNCTION
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $class_method_origin(S.CLASSES, pgenerator.FUNCTION) = (pmethoddesc)
+  -- if pcallcontext = pgenclose.CONTEXT
+  -- if $context_target(pcallcontext) = pgeneratoraccess.TARGET
+  -- if pcallcontext.CALLSITE = (pgeneratoraccess.SITE) /\ pcallcontext.LINE = pgeneratoraccess.LINE
+  -- if pcallcontext.FUNCTION = pgenerator.FUNCTION /\ pcallcontext.NAME = pmethoddesc.FUNCTION.NAME
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (n)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER) /\ pcallcontext.CALLED_CLASS = (porigin_class)
+  -- if pcallcontext.ARGC = 1
+  -- if pcallcontext.HOLES = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps
+  -- if psparam* = pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS
+  -- if pcallcontext.PARAMS = (psparam.NAME)*
+  -- if n_received = $call_received(1, |$call_fixed_parameters(psparam*)|)
+  -- if |pcallcontext.EXTRA| = $(1 - n_received)
+def $access_generator_close_valid(S, pgenclose) = false -- otherwise
+
+def $access_generator_resume_task((GENERATOR_RESUME pgeneratorop) :: ptask*, n, pcallcontext) = (pgeneratorop.OBJECT = n)
+def $access_generator_resume_task((GENERATOR_CLOSE_DONE pgenclose) :: ptask*, n, pcallcontext) = (pgenclose.OBJECT = n /\ pgenclose.CONTEXT = pcallcontext /\ pgenclose.STAGE =/= CLOSE_FINISHED)
+def $access_generator_resume_task(ptask*, n, pcallcontext) = false -- otherwise
+def $access_generator_running((pcallcontext_current), pframe :: pframe_tail*, n, pcallcontext) = ((pcallcontext_current = pcallcontext /\ $access_generator_resume_task(pframe.TODO, n, pcallcontext)) \/ $access_generator_running(pframe.CONTEXT, pframe_tail*, n, pcallcontext))
+def $access_generator_running(eps, pframe :: pframe_tail*, n, pcallcontext) = $access_generator_running(pframe.CONTEXT, pframe_tail*, n, pcallcontext)
+def $access_generator_running(pcallcontext_current?, eps, n, pcallcontext) = false
+def $access_generator_close_tasks(eps, n, pcallcontext) = false
+def $access_generator_close_tasks((GENERATOR_CLOSE_ENTER pgenclose) :: ptask*, n, pcallcontext) = ((pgenclose.OBJECT = n /\ pgenclose.CONTEXT = pcallcontext /\ pframe.CONTEXT = (pcallcontext)) \/ $access_generator_close_tasks(ptask*, n, pcallcontext))
+  -- if pgenclose.FRAME = (pframe)
+def $access_generator_close_tasks((GENERATOR_CLOSE_ENTER pgenclose) :: ptask*, n, pcallcontext) = $access_generator_close_tasks(ptask*, n, pcallcontext)
+  -- if pgenclose.FRAME = eps
+def $access_generator_close_tasks(ptask :: ptask_tail*, n, pcallcontext) = $access_generator_close_tasks(ptask_tail*, n, pcallcontext)
+  -- if ~$generator_close_enter_task(ptask)
+def $access_generator_close_frames(eps, n, pcallcontext) = false
+def $access_generator_close_frames(pframe :: pframe_tail*, n, pcallcontext) = ($access_generator_close_tasks(pframe.TODO, n, pcallcontext) \/ $access_generator_close_frames(pframe_tail*, n, pcallcontext))
+
+def $access_generator_retained(S, n, pgenerator, pcallcontext) = true
+  -- if pgenerator.ACCESS = (pgeneratoraccess)
+  -- if $access_generator_shape(S, pcallcontext, pgeneratoraccess)
+  -- if pgenerator.PHASE <- [GENERATOR_FRESH, GENERATOR_PAUSED, GENERATOR_DELEGATING]
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.CONTEXT = (pcallcontext)
+def $access_generator_retained(S, n, pgenerator, pcallcontext) = $access_generator_running(S.CURRENT, S.FRAMES, n, pcallcontext)
+  -- if pgenerator.ACCESS = (pgeneratoraccess)
+  -- if $access_generator_shape(S, pcallcontext, pgeneratoraccess)
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+def $access_generator_retained(S, n, pgenerator, pcallcontext) = ($access_generator_close_tasks(S.TODO, n, pcallcontext) \/ $access_generator_close_frames(S.FRAMES, n, pcallcontext))
+  -- if pgenerator.ACCESS = (pgeneratoraccess)
+  -- if $access_generator_shape(S, pcallcontext, pgeneratoraccess)
+  -- if pgenerator.PHASE = GENERATOR_CLOSING
+def $access_generator_retained(S, n, pgenerator, pcallcontext) = false -- otherwise
+def $access_generator_nodes(S, eps, pcallcontext) = false
+def $access_generator_nodes(S, pnode :: pnode_tail*, pcallcontext) = ($access_generator_node(S, pnode, pcallcontext) \/ $access_generator_nodes(S, pnode_tail*, pcallcontext))
+def $access_generator_node(S, HOBJECT n, pcallcontext) = $access_generator_retained(S, n, pgenerator, pcallcontext)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+def $access_generator_node(S, pnode, pcallcontext) = false -- otherwise
+def $access_generator_context(S, pcallcontext) = $access_generator_nodes(S, S.ALLOCATIONS, pcallcontext)
+
+def $access_generator_selected(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = (($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin) /\ $access_generator_context(S, pcallcontext)) \/ $access_generator_selected(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin))
+def $access_generator_selected(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $access_generator_selected(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+def $access_generator_selected(S, (pcallcontext), eps, pcalltarget, porigin) = ($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin) /\ $access_generator_context(S, pcallcontext))
+def $access_generator_selected(S, eps, eps, pcalltarget, porigin) = false
