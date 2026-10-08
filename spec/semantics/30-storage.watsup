@@ -177,7 +177,7 @@ syntax pgcprogress = GC_CALLED pnode | GC_SKIPPED pnode | GC_DETACHED pnode | GC
 syntax pgcslot = GC_EMPTY | GC_ROOT pnode | GC_RETIRED nat | GC_BARE_ROOT nat | GC_DTOR_ROOT nat
 syntax pgcscan = {INDEX nat, END nat}
 syntax pgcpublic
-syntax pgccall = {NONCE nat, CALL pconfigcall, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, PASS nat, TOTAL nat, PENDING nat?}
+syntax pgccall = {NONCE nat, CALL pconfigcall, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, PASS nat, TOTAL int, PENDING nat?}
 syntax pgcplan = {CALL pgccall, GRAPH hgraph, TABLES pobjecttable*, CALLED nat*, PROXIES hedge*, COUNTED pnode*, BUFFER pgcslot*, CANDIDATES pnode*, DTORS pnode*, FREESET pnode*, SCAN pgcscan?, INDEX nat, STEPS pgcprogress*, DONE pnode*}
 syntax pgcguard = {WORKER nat, SOURCE pgccall, INDEX nat, OBJECT nat, PENDING nat?, PUBLIC pgcpublic?}
 syntax pgcworker = {BIRTH pgccall, GUARD pgcguard?}
