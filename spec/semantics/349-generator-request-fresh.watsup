@@ -51,6 +51,10 @@ def $destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCT
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
   -- if pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
   -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+def $generator_request_tail_task(DESTRUCTOR_RESULT pdestructorcall) = true
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
+  -- if pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
 
 ;; free_storage releases the closed Closure before the cached zvals.
 def $destruction_child_jobs(S, HOBJECT n) = $destruction_values($generator_close_children(S, HOBJECT n))

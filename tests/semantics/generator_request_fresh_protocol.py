@@ -21,6 +21,12 @@ def $request_finally_phase(S,60) = true
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_FRESH
   -- if $generator_request_store_ready(S,n)
+def $request_finally_phase(S,61) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = METHOD_TARGET n porigin
+  -- if $object_name(S,n) = $ptascii("First349")
+  -- if $trace_context_function(S,pcallcontext) = $ptascii("__destruct")
+  -- if $close_outputs(S.EVENTS) = $ptascii("C|")
 def $request_finally_phase(S,62) = true
   -- if S.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
@@ -119,7 +125,16 @@ $close_outputs(S_queued.EVENTS) = $ptascii("C|")
     else:
         checks += ['$generator_frame_scope(S_store,pframe_store) = S_frame',
                    '$trace_slot(S_frame,S_frame.ENV,$ptascii("second")) = POBJECT n_second']
-        checks += base.seek('S_handler', 'S_queued', 63) + valid('S_handler')
+        checks += base.seek('S_destructor', 'S_queued', 61) + valid('S_destructor')
+        checks += ['S_destructor.FRAMES = [pframe_destructor]',
+                   'pframe_destructor.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_destructor_tail*',
+                   '$generator_request_tail_task(DESTRUCTOR_RESULT pdestructorcall)',
+                   '$generator_request_store_tail(pframe_destructor.TODO)',
+                   'S_destructor.OBJECTS[n_generator] = GENERATOR pgenerator_closed',
+                   '$generator_request_fresh_closed(pgenerator_closed)',
+                   '$heap_owners($heap_graph(S_destructor),HOBJECT n_generator) = 2',
+                   '$heap_owners($heap_graph(S_destructor),HOBJECT n_second) = 1']
+        checks += base.seek('S_handler', 'S_destructor', 63) + valid('S_handler')
         checks += ['S_handler.FRAMES = [pframe_handler]',
                    'pframe_handler.CONTEXT = eps',
                    'pframe_handler.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_handler_tail*',
@@ -138,7 +153,8 @@ $close_outputs(S_queued.EVENTS) = $ptascii("C|")
                    '$close_outputs(S_handler.EVENTS) = $ptascii("C|A")']
         checks += ['pdestructorcall_user = pdestructorcall[.USER = true]',
                    '$destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall_user) :: ptask_handler_tail*,pdestructorcall) = eps',
-                   '$destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall_user) :: ptask_handler_tail*,pdestructorcall_user) = eps']
+                   '$destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall_user) :: ptask_handler_tail*,pdestructorcall_user) = eps',
+                   '~$generator_request_tail_task(DESTRUCTOR_RESULT pdestructorcall_user)']
         reject(checks, 'handler_user',
                'S_handler[.FRAMES = [pframe_handler[.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall_user) :: ptask_handler_tail*]]]',
                'S_handler')
