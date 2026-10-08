@@ -1,0 +1,128 @@
+;; Literal undefined-property FETCH borrows a CV receiver and owns a temporary.
+;; The handler may retire a borrowed receiver or populate live storage; the
+;; interrupted result remains null in either case.
+dec $property_undefined_history(pstate, nat) : bool
+def $property_undefined_history(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
+  -- if $effective_method(S, porigin, $ptascii("__get"), |S.CLASSES|) = eps
+def $property_undefined_history(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $property_undefined_history(S, n) = false -- otherwise
+dec $property_undefined_class(pstate, nat) : bool
+def $property_undefined_class(S, n) = true
+  -- if $instance_storage_node(S, n)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $property_undefined_history(S, n)
+def $property_undefined_class(S, n) = false -- otherwise
+
+;; These source and slot predicates are heap-graph independent: ownership uses
+;; them already at the pending FETCH, before dispatch can enter user code.
+dec $property_undefined_borrowed_source(pstate, pnameread) : bool
+def $property_undefined_borrowed_source(S, pnameread) = true
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (NExprPropertyFetch expression_receiver phpType20 metadata)
+  -- if $reference_cv(expression_receiver) =/= eps
+  -- if ~$scope_global(S, [PCFIELD 0])
+def $property_undefined_borrowed_source(S, pnameread) = true
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (NExprPropertyFetch (NExprVariable phpType32 metadata_receiver) phpType20 metadata)
+  -- if $direct_this(phpType32)
+def $property_undefined_borrowed_source(S, pnameread) = false -- otherwise
+dec $property_undefined_cv_receiver(pstate, ppropertywarning) : bool
+def $property_undefined_cv_receiver(S, ppropertywarning) = true
+  -- if $origin_node(S.SOURCES, ppropertywarning.READ.SITE) = (NExprPropertyFetch expression_receiver phpType20 metadata)
+  -- if $reference_cv(expression_receiver) = (ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED (POBJECT ppropertywarning.OBJECT)
+def $property_undefined_cv_receiver(S, ppropertywarning) = true
+  -- if $origin_node(S.SOURCES, ppropertywarning.READ.SITE) = (NExprPropertyFetch (NExprVariable phpType32 metadata_receiver) phpType20 metadata)
+  -- if $direct_this(phpType32)
+  -- if $this_receiver(S) = (ppropertywarning.OBJECT)
+def $property_undefined_cv_receiver(S, ppropertywarning) = false -- otherwise
+
+dec $property_undefined_slot(pstate, nat, ptbytes) : bool
+def $property_undefined_slot(S, n, ptbytes) = true
+  -- if $instance_storage_freeing(S, n)
+  -- if $instance_storage_untyped_unset_desc(S, n, ptbytes) =/= eps
+def $property_undefined_slot(S, n, ptbytes) = true
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ptbytes) = eps
+def $property_undefined_slot(S, n, ptbytes) = true
+  -- if ~$instance_storage_freeing(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_UNSET
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps
+def $property_undefined_slot(S, n, ptbytes) = false -- otherwise
+
+;; KEY was resolved in the interrupted caller, not in the handler's scope.
+;; Only the future mode rechecks its still-pending physical slot visit.
+dec $property_undefined_carrier(pstate, ppropertywarning) : bool
+def $property_undefined_carrier(S, ppropertywarning) = true
+  -- if ~ppropertywarning.FREEING
+  -- if ppropertywarning.BORROWED
+def $property_undefined_carrier(S, ppropertywarning) = true
+  -- if ~ppropertywarning.FREEING
+  -- if ~ppropertywarning.BORROWED
+  -- if $property_undefined_class(S, ppropertywarning.OBJECT)
+  -- if ~$instance_storage_freeing(S, ppropertywarning.OBJECT)
+def $property_undefined_carrier(S, ppropertywarning) = true
+  -- if ppropertywarning.FREEING
+  -- if $instance_storage_untyped_unset_desc(S, ppropertywarning.OBJECT, ppropertywarning.KEY) =/= eps
+def $property_undefined_carrier(S, ppropertywarning) = false -- otherwise
+dec $property_undefined_read_valid(pstate, ppropertywarning) : bool
+def $property_undefined_read_valid(S, ppropertywarning) = true
+  -- if $property_null_read_valid(S, ppropertywarning.READ)
+  -- if $property_undefined_history(S, ppropertywarning.OBJECT)
+  -- if ppropertywarning.BORROWED = $property_undefined_borrowed_source(S, ppropertywarning.READ)
+  -- if $property_undefined_carrier(S, ppropertywarning)
+  -- if $property_visible_name(S, ppropertywarning.OBJECT, ppropertywarning.KEY) = ppropertywarning.READ.NAME
+def $property_undefined_read_valid(S, ppropertywarning) = false -- otherwise
+def $property_undefined_read_plan(S) = (ppropertywarning)
+  -- if S.TODO = (DIM_FETCH z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_undefined_class(S, n)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
+  -- if $property_undefined_slot(S, n, ptbytes_key)
+  -- if pnameread = {SITE porigin, NAME ptbytes, LINE z}
+  -- if ppropertywarning = {READ pnameread, OBJECT n, KEY ptbytes_key, FREEING $instance_storage_freeing(S, n), BORROWED $property_undefined_borrowed_source(S, pnameread)}
+  -- if ~ppropertywarning.BORROWED \/ $property_undefined_cv_receiver(S, ppropertywarning)
+  -- if $property_undefined_read_valid(S, ppropertywarning)
+def $machine_base_roots(S) = eps
+  -- if $property_undefined_read_plan(S) = (ppropertywarning)
+  -- if ppropertywarning.BORROWED
+dec $property_undefined_read_message(pstate, ppropertywarning) : preqbytes
+def $property_undefined_read_message(S, ppropertywarning) = $ptascii("Undefined property: ") ++ $object_name(S, ppropertywarning.OBJECT) ++ $ptascii("::$") ++ $c_string(ppropertywarning.READ.NAME)
+def $property_undefined_read_begin(S, ppropertywarning) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $property_undefined_read_message(S, ppropertywarning), ppropertywarning.READ.LINE, DIAGNOSTIC "Warning" $property_undefined_read_message(S, ppropertywarning) ppropertywarning.READ.LINE, PROPERTY_UNDEFINED_RESULT ppropertywarning)
+  -- if $property_undefined_read_plan(S) = (ppropertywarning)
+def $call_task_valid(S, PROPERTY_UNDEFINED_RESULT ppropertywarning) = $property_undefined_read_valid(S, ppropertywarning)
+def $task_nodes(PROPERTY_UNDEFINED_RESULT ppropertywarning) = eps
+  -- if ppropertywarning.BORROWED
+def $task_nodes(PROPERTY_UNDEFINED_RESULT ppropertywarning) = [HOBJECT ppropertywarning.OBJECT]
+  -- if ~ppropertywarning.BORROWED
+dec $property_undefined_entry(pstate, perrorcall, ppropertywarning) : bool
+def $property_undefined_entry(S, perrorcall, ppropertywarning) = true
+  -- if perrorcall.TARGET = eps
+  -- if $property_undefined_read_plan(S[.TODO = (DIM_FETCH ppropertywarning.READ.LINE) :: S.TODO][.BASE = BASE_PROPERTY (POBJECT ppropertywarning.OBJECT) ppropertywarning.READ.NAME]) = (ppropertywarning)
+def $property_undefined_entry(S, perrorcall, ppropertywarning) = true
+  -- if perrorcall.TARGET =/= eps
+def $property_undefined_entry(S, perrorcall, ppropertywarning) = false -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_UNDEFINED_RESULT ppropertywarning
+  -- if $property_undefined_read_valid(S, ppropertywarning)
+  -- if $property_undefined_entry(S, perrorcall, ppropertywarning)
+  -- if perrorcall.SITE = ppropertywarning.READ.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = ppropertywarning.READ.LINE
+  -- if perrorcall.MESSAGE = $property_undefined_read_message(S, ppropertywarning)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+rule PhpStep/property-undefined-warning-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_UNDEFINED_RESULT ppropertywarning) :: ptask_tail*
+  -- if $property_undefined_read_valid(S, ppropertywarning)
