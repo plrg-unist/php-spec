@@ -394,5 +394,23 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-detached-quiescent-last-owner-assignment-review-18",
+    "source": "<?php\n$worker = null;\nclass HeldCollectorCycle {\n    public $self;\n    function __destruct() {\n        global $worker;\n        $worker = Fiber::getCurrent(); echo 'D|';\n        try { Fiber::suspend(); }\n        finally { $this->self = null; echo 'finally|'; }\n    }\n}\n$x = new HeldCollectorCycle; $x->self = $x;\n$targetWeak = WeakReference::create($x); unset($x);\n$collector = new Fiber(function () { echo 'first:', gc_collect_cycles(), '|'; });\n$collector->start(); unset($collector);\n$workerWeak = WeakReference::create($worker); echo 'held|';\n$worker = null;\necho $workerWeak->get() === null ? 'worker-gone|' : 'worker-live|';\necho 'next:', gc_collect_cycles(), '|';\necho $targetWeak->get() === null ? 'target-gone|' : 'target-live|';\necho 'END';\n",
+    "stdout": "first:D|0|held|finally|worker-gone|next:1|target-gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "8416a15b496d29772191248ebef77fb25feb0668276a7e6433e9be1f2b444db1"
+  },
+  {
+    "id": "collector-detached-quiescent-fiber-last-owner-close-18",
+    "source": "<?php\n$worker = null;\nclass HeldCollectorCycle {\n    public $self;\n    function __destruct() {\n        global $worker;\n        $worker = Fiber::getCurrent(); echo 'D|';\n        try { Fiber::suspend(); }\n        finally { $this->self = null; echo 'finally|'; }\n    }\n}\n$x = new HeldCollectorCycle; $x->self = $x;\n$targetWeak = WeakReference::create($x); unset($x);\n$collector = new Fiber(function () { echo 'first:', gc_collect_cycles(), '|'; });\n$collector->start(); unset($collector);\n$workerWeak = WeakReference::create($worker); echo 'held|';\n$closer = new Fiber(function () {\n    global $worker;\n    $worker = null; echo 'closed-in-fiber|';\n});\n$closer->start(); unset($closer);\necho $workerWeak->get() === null ? 'worker-gone|' : 'worker-live|';\necho 'next:', gc_collect_cycles(), '|';\necho $targetWeak->get() === null ? 'target-gone|' : 'target-live|';\necho 'END';\n",
+    "stdout": "first:D|0|held|finally|closed-in-fiber|worker-gone|next:1|target-gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "93d4fe7d4b4edd181610b79878d3df42056873a937b985c2c5bf8f64db6e1a64"
   }
 ]

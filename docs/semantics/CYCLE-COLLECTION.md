@@ -1,6 +1,6 @@
 # Explicit cycle collection
 
-Modules 301/317/325/332 implement a bounded ordinary-object/array collector on the pinned
+Modules 301/317/325/332/335 implement a bounded ordinary-object/array collector on the pinned
 PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
@@ -93,6 +93,17 @@ including both real C owners. Saved caller views borrow that exact shared contro
 retirement authority while ordinary closure checks retain their saved scope;
 the control gains no PHP catch authority.
 
+Module335 extends that storage admission to normal detached-worker close after
+the collection is quiescent. It requires the actual control-release, operation-exit
+and worker-release tail, a terminated graceful worker, and exactly the real
+control owners. The same live state authenticates saved caller views; it adds
+neither an owner nor catch/throw authority. Assigning null to the shared worker
+cell drops its last ordinary owner, so `finally` runs immediately and weak worker
+lookup clears. `unset` alone leaves the suspended destructor's global alias
+alive and does not exercise this close. The zero-owner target remains borrowed
+until the next real collection/count1. A throwing `finally` has a distinct
+failed-close control lifetime and remains required.
+
 All selected destructors run before the protected subgraph is freed. Collection
 retraces once after their effects, preserves once marks, and atomically disposes
 the callback-free ordinary white graph. Actual retirement nulls weak lookup.
@@ -107,12 +118,14 @@ zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
 Explicit boundaries remain for wider internal lifetime graphs, public idle-worker
-transfer during an active collection, wider callbackless close-return contexts,
+transfer during an active collection, failed-finally and wider callbackless
+close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
 Wider GC, WeakMap and final combined offline validation remain required.
 
-Engine sources: `Zend/zend_gc.c`, `Zend/zend_objects_API.c`,
+Engine sources: `Zend/zend_gc.c::{gc_call_destructors,gc_destructor_fiber}`,
+`Zend/zend_fibers.c::zend_fiber_object_destroy`, `Zend/zend_objects_API.c`,
 `Zend/zend_objects.c`, `Zend/zend_weakrefs.c`, `Zend/zend_compile.c`,
 `Zend/zend_execute.h`, `Zend/zend_ast.c`, and
 `Zend/zend_vm_def.h::ZEND_FREE` with `Zend/zend_vm_gen.php::op1_free_op`.
@@ -179,3 +192,15 @@ The first AL120 timeout retains zero agreement; a60-premise strict prefix is a
 separate diagnostic. The final315 join over `79546523e` passes combined compilation
 at `f3d62ee7b`, preserving329/TRAIT/CV/keep seams without old source/state renewal.
 No active-pass public transfer or copied-tool offline rebuild is claimed.
+
+Normal quiescent close335 passes private317 compilation/initialization, two exact
+normal originals and two independent strict-SL groups with100/116 physical
+premises (runner declarations97/113). The groups check the genuine two control
+owners, zero-target borrowing, normal completion, source/sequence/split/failed
+forgeries, saved caller admission, no Throwable authority, budget identity and
+complete continuations. The final319 join over `6fac6d270` passes combined
+compilation at `e12be6f67`; independent review preserves331 callable tags and324
+HCELL/staged-binding owners. Earlier source/state cuts are unchanged.
+The original unset probes and throwing-finally assignment retain native-only
+results with zero335 agreement; the [ledger](../../coverage/semantics/cycle-collection-review.json)
+records their exact sources and recovery paths.

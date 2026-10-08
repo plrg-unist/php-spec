@@ -66,7 +66,9 @@ Computed variable names from resolved no-argument user calls have a reviewed [pr
 
 Ordinary CV-computed names have a reviewed [private308 cut](coverage/semantics/source-cv-name-emission-review.json): the outer FETCH6 precedes a later property8, with four exact originals and174 independent premises. Retirement changes the live name before lookup; handler name/target writes survive fixed-null resume. Actual310 passes strict compilation with reviewed Fiber/collector/constructor compatibility; earlier source/state results keep their inputs.
 
-Computed names from a resolved user call with one ordinary CV argument have a reviewed [private311 cut](coverage/semantics/source-call-argument-emission-review.json): operand retirement uses the INIT6 location before argument lookup, while outer FETCH7 precedes property10. Five exact originals and275 independent premises preserve live argument reads and fixed-null argument/target warning resumes after handler writes. The initial parser stop and wrong argument-certificate trace retain zero affected credit. Actual316 passes strict compilation with reviewed trait/ArrayAccess/collector compatibility; earlier source/state cuts retain their inputs.
+Computed names from a resolved user call with one positional ordinary CV argument have a reviewed [private311 cut](coverage/semantics/source-call-argument-emission-review.json): operand retirement uses the INIT6 location before argument lookup, while outer FETCH7 precedes property10. Five exact originals and275 independent premises preserve live argument reads and fixed-null argument/target warning resumes after handler writes. The initial parser stop and wrong argument-certificate trace retain zero affected credit. Actual316 passes strict compilation with reviewed trait/ArrayAccess/collector compatibility; earlier source/state cuts retain their inputs.
+
+One named ordinary CV argument now retains INIT6 before known FETCH8/property11 and unknown-name Error7 before CV demand. [Six exact originals and325 independent premises](coverage/semantics/source-named-argument-emission-review.json) preserve second-slot binding, default holes and fixed-null warning resumes. Actual320 passes strict compilation with reviewed Fiber/property/collector compatibility; earlier cuts retain their inputs.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
@@ -231,7 +233,13 @@ copy the value before callbacks, preserve null keys and distinguish genuine chil
 exception reinjection from direct API close. Its27 normal observations and658
 reached premises retain separate cuts; actual305 passes strict compilation after
 reviewed receive/source/ARG319/collector compatibility, without source/state renewal.
-IteratorAggregate, reference yields, wider call forms, request/terminal cleanup
+[Reference yields328](docs/semantics/GENERATOR-REFERENCE-YIELDS.md) preserve live
+cache cells, value-API array copies and direct/destructured foreach aliases.
+Notice callbacks and retired cache readback retain authentic nonowning carriers;
+bounded nonfinalizing global release preserves ordered cache retirement.
+Actual321 passes strict compilation over336 and the reviewed39/301 owner factors;
+earlier source/state cuts retain their inputs.
+IteratorAggregate, wider call forms and reference producers, request/terminal cleanup
 and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
@@ -481,6 +489,10 @@ resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
 Three new exact originals and two strict-SL groups with169 premises pass at
 separate cuts; the final315 current-parent join passes combined compilation.
+Normal last-owner close335 runs the detached worker's `finally` immediately
+and leaves its borrowed target for the next real collection/count1. Two exact
+originals and two independent reached groups (216 physical premises) retain their private cut; final319
+compilation preserves331/324. Failed-finally close remains required.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
@@ -708,9 +720,13 @@ normal and throwing cleanup preserve that reference. Late scalar warnings retain
 the iterator owner through callbacks and remove it on normal or abrupt completion.
 A fresh original and 92 reached premises cover explicit GC while the saved binding
 continuation retains its selected cell; the318 composition retains Fiber API captures.
-Released-CV mutation, wider callback-capable containers, binding-time exit and
-expired notice buckets remain explicit boundaries; full foreach coverage remains
-required.
+Previous plain-CV arrays now release ordinary and nested child destructors in
+order before installing the selected reference, including after a child throws.
+Six new originals and 284 reached premises check shared owners, selected-property
+mutation/deletion and exception chaining. Released-CV mutation, raw dying-array
+reads, callback-capable previous reference wrappers and internal Generator/Fiber
+retirement, binding-time exit and expired notice buckets remain explicit boundaries;
+full foreach coverage remains required.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
@@ -944,6 +960,8 @@ Eight exact normal originals and eight genuine state groups/761 premises pass;
 the strict compiler277 gate retains its separate cut. Current306 dispatch delegates
 its former two-frontier control to312. Parked Fibers, object/null-key/outside-eval
 producers and wider initializer forms remain required; integration is pending.
+Scoped collector scan refinements pass affected state/source controls; the full
+default retry still exceeds the 55-second host cap.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.

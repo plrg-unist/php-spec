@@ -1,0 +1,29 @@
+;; A held detached worker may lose its last ordinary owner after collection.
+;; Its callbackless close returns to the real release continuation, without a
+;; live replacement plan. Only those private C zvals gain retiring admission.
+dec $gc_worker_quiescent_retiring(pstate, nat) : bool
+def $gc_worker_quiescent_retiring(S, n_exit) = true
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if $(n_exit < |S.OBJECTS|) /\ (HOBJECT n_exit) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_exit] = FIBERGRACEFUL n_worker n_sequence
+  -- if $(n_worker < n_exit) /\ $(n_sequence > 0) /\ $(n_sequence < S.FIBERSEQ)
+  -- if S.GC.WORKER =/= (n_worker)
+  -- if $fiber_at(S, n_worker) = (pfiber)
+  -- if pfiber.STATUS = FIBER_TERMINATED /\ pfiber.SEQUENCE = n_sequence
+  -- if pfiber.GRACEFUL /\ ~pfiber.FAILED /\ ~pfiber.RETURNED
+  -- if $fiber_record_valid(S, n_worker, pfiber)
+  -- if n_worker <- S.DESTRUCTION.CALLED
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_control) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (DESTRUCTOR_RELEASE pdestructionrelease_worker) :: ptask_tail*
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease_control :: pdestructionrelease_worker :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionrelease_control.USER /\ $destructor_release_valid(S, pdestructionrelease_control)
+  -- if pdestructionrelease_worker.USER /\ $destructor_release_valid(S, pdestructionrelease_worker)
+  -- if pdestructionrelease_worker.JOBS = [DESTRUCTION_VALUE (HOBJECT n_worker)]
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_exit
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if n_owners = $heap_count(HOBJECT n_exit, $destruction_job_nodes(pdestructionrelease_control.JOBS))
+  -- if $(n_owners > 0) /\ $heap_owners($heap_graph(S), HOBJECT n_exit) = n_owners
+def $gc_worker_quiescent_retiring(S, n_exit) = false -- otherwise
+def $gc_worker_graceful_retiring(S, n_exit) = true
+  -- if $gc_worker_quiescent_retiring(S, n_exit)

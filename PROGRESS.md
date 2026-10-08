@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator328 adds source-owned reference-yield cells, value-API array snapshots
+and direct/inner-reference destructuring aliases. Notice/cleanup readback retains
+nonowning old-cache metadata and precise delegated exception reinjection.
+Private normal-source cuts remain separate; cache/warning690, delegation163,
+nonfinalizing request215, terminal-refusal40 and destructuring177 physical
+premises pass at their recorded inputs. The new minimal `9:9` original closes
+the preserved `1:1`/extra-Notice failure. Actual321 over `c38af3cf770` passes strict
+compilation at `c21e5ce52`, preserving336 and the reviewed39/301 owner factors.
+Active-finally request close remains required Unsupported with zero agreement;
+paused generic returns stay excluded.
+[Scope and retained cuts](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
+
+Source336 adds one named ordinary CV argument to computed-name emission: INIT6
+precedes known FETCH8/property11, and unknown `Sent` binds Error7 before CV demand.
+Six exact originals and325 independent premises retain private317. The final320
+composition over `89c1019cc` passes strict compilation at `29f5f402b` with reviewed
+331/324/335 compatibility. The original deferred-operand fixture false and diagnostic
+earn zero affected credit. [Ledger](coverage/semantics/source-named-argument-emission-review.json).
+
+Collector335 admits normal last-owner close of a detached worker after collection.
+Assigning null to its shared cell runs `finally` immediately; the worker retires
+and its borrowed zero-owner target waits for the next real collection/count1.
+Two exact normal originals and two independent strict-SL groups with100/116
+physical premises pass at the private317 cut. The final319 composition over
+`6fac6d270` preserves static Fiber331 and property324 fields/tasks/owners and
+passes combined compilation at `e12be6f67`. Failed-finally close remains open;
+earlier collector cuts keep their inputs. [Ledger](coverage/semantics/cycle-collection-review.json).
+
 331 adds source-authenticated static `getCurrent`/`suspend` first-class Closures
 with receiver-free capture, alias/clone history and distinct direct, `__invoke`
 and Fiber C-root owners through resume/throw cleanup. Independent sources and
@@ -68,13 +96,14 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
-WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332,
-Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
+WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335,
+Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 318 modules composed over
-`afd57f1e5`, retaining static Fiber API captures331. The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333.
+with 321 modules composed over
+`c38af3cf770`, retaining static Fiber API captures331, physical property references324 and collector335.
+The ordered integration preserves
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -149,6 +178,19 @@ still hits55.065 with empty streams and zero agreement. Empty/HANDLE and fallbac
 domains are statically preserved, with no demonstrated speedup or231 credit.
 The actual316 join retains332/333 roots/source fields and passes strict
 initialization on `1e95f04a8` in3.870s; earlier314 runtime cuts stay distinct.
+The per-node zero-scan factor binds each owner count once in the unchanged heap.
+Private `8bbe41e3d`/316 passes strict initialization, DONE44/ACTIVE77, independent
+35 graph premises and the exact WeakReference original in9.175s. The graph
+fixture's initial parse stop keeps zero runtime credit. The full 1697-byte retry
+still hits55.065 with empty streams and zero agreement; inputs stay stable and
+groups are reaped. No speedup or231 credit follows. Raw records are under
+`.tools/compiler-gc-zero-owners-18/.tools/gc-zero-owners-gate-v1/run-v{1,2}`.
+The actual335-parent319 composition passes strict initialization on `3e56ab759`
+in4.019s; earlier316 runtime cuts retain their identities.
+Private `2582d7008`/319 partitions edge targets before source-membership scans,
+passing strict initialization and48 graph premises; its full retry is UNRUN.
+Both pure factors compose over SOURCE336/320 by static review. Raw owner checks:
+`.tools/compiler-edge-owners-19/.tools/edge-owner-gate-v1`.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
@@ -259,7 +301,7 @@ preserving raw caches, input forwarding, actual callback demand and return trans
 The accepted private52 normal/four compiler agreements and618 reached premises,
 plus the distinct actual274 source/87-premise cut, retain their original inputs.
 Canonical integration preserves newer ArrayAccess/Fiber/call fields; introduced
-composition checks pass with303/310. IteratorAggregate, reference yields and
+composition checks pass with303/310. IteratorAggregate, wider reference-yield forms and
 wider lifecycle/API behavior remain required. [Scope and retained evidence](docs/semantics/GENERATOR-DELEGATION.md).
 
 Generator303 now runs ordinary last-owner finalizers, releasing delegation links
@@ -535,9 +577,17 @@ premises at87f9b399a. The actual318 join at `f643ed070` passes strict
 initialization and 92 fresh GC/saved-COMMIT premises; one separately tested
 original collects during the previous CV destructor with exact normal output.
 The331 schema/FCC seam is independently reviewed; earlier cuts keep their inputs.
-HOBJECT-owner forgeries fail public reference-foreach admission. Mutation of the released CV, callback-capable container retirement,
-binding-time exit, nonordinary replacement objects and expired notice buckets
-remain explicit boundaries. Bounded source/current-address admission is not a
+HOBJECT-owner forgeries fail public reference-foreach admission. Previous plain-CV
+array retirement now stages ordinary child destructors in physical order,
+including nested arrays and continuation after
+a child throws. Six new exact normals at `ccafc5d65` and 139/145 reached premises
+at fixture-corrected `368bed28a` cover surviving array/reference owners, selected
+property mutation/deletion and B/previous=A exception chaining; strict318 initialization
+and the actual321 join at `be7edc9e2` pass. Released-CV mutation, raw dying-array reads, callback-capable previous
+reference wrappers, internal Generator/Fiber descendants, binding-time exit, nonordinary replacement objects
+and expired notice buckets remain Unsupported. The preserved `is_array` original
+now stops at builtin dispatch and retains zero agreement credit. Bounded
+source/current-address admission is not a
 historical reachability proof. The concise
 [review](coverage/semantics/duplicate-property-reference-review.json) preserves
 original mismatches and the uncredited strlen observer; no earlier318 campaign

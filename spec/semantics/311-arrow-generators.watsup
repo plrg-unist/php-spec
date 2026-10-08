@@ -12,7 +12,7 @@ def $pparrow_generator_body(P, pcpath, expression) = $pparrow_body(P, pcpath, ex
 def $pparrow_generator_body(P, pcpath, expression) = $ppconstant_error(P, $ptascii("Generator return type must be a supertype of Generator, ") ++ $pttypename(P.RETURNS) ++ $ptascii(" given"), P.LOCATION.LINE)
   -- if $generator_syntax(expression)
   -- if P.RETURNS =/= eps /\ ~$generator_return_supertype(P.RETURNS)
-def $pparrow_generator_body(P, pcpath, expression) = $ppunsupported(P, "generator reference yields")
+def $pparrow_generator_body(P, pcpath, expression) = $pparrow_body(P[.RETURNS = eps][.RETURNREF = false], pcpath, expression)
   -- if $generator_syntax(expression)
   -- if P.RETURNS = eps \/ $generator_return_supertype(P.RETURNS)
   -- if P.RETURNREF /\ ~$generator_from_syntax(expression)
@@ -57,6 +57,7 @@ def $error_read_source(S, perrorread) = true
   -- if perrorread.ORIGINAL = GENERATOR_YIELD_STORE porigin poperand?
   -- if S.ORIGIN = (porigin)
   -- if $generator_active(S) /\ ~$generator_close_active(S)
+  -- if ~$generator_reference_active(S)
   -- if $generator_yield_site(S, porigin)
   -- if $generator_yield_read_key_source(S, porigin, poperand?)
   -- if $error_variable_source(S, (porigin), [PCFIELD 1], perrorread.NAME)
@@ -85,4 +86,4 @@ def $error_read_discard(S, ERROR_READ_RESULT perrorread) = $generator_yield_warn
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if (S_key, pvalue_key, z_index) = $generator_yield_throw_key(S, pgenerator, poperand?, perrorread.LINE)
   -- if S_key.COMPLETION = NORMAL
-  -- if S_cached = $generator_set(S_key[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgeneratorop.OBJECT, pgenerator[.VALUE = (PNULL)][.KEY = (pvalue_key)][.INDEX = z_index])
+  -- if S_cached = $generator_set(S_key[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgeneratorop.OBJECT, pgenerator[.VALUE = (PNULL)][.KEY = (pvalue_key)][.BORROWED = eps][.INDEX = z_index])

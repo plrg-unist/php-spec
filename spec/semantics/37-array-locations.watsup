@@ -41,8 +41,12 @@ def $location_write_result(S, plocation, pvalue, poperand) = S_written
 dec $location_name(pstate, nat*) : pstate
 def $location_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if $environment_blocked(S, n_name*)
+def $location_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "released foreach container payload read"]
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $foreach_released_container_name(S, n_name*)
 def $location_name(S, n_name*) = S_cell[.LOCATION = ROOT S_cell.CELL]
   -- if ~$environment_blocked(S, n_name*)
+  -- if ~$foreach_released_container_name(S, n_name*)
   -- if S_cell = $ensure(S, n_name*)
 
 ;; A location borrows RESULT. The mutation caller holds live inputs explicitly
