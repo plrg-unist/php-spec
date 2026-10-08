@@ -1,4 +1,4 @@
-"""Render fresh keyword selection controls without numeric execution."""
+"""Render selected static class controls without numeric execution."""
 from pathlib import Path
 import base64
 import json
@@ -18,6 +18,10 @@ store.mkdir(exist_ok=True)
 out = Path(tempfile.mkdtemp(prefix='review-reached-', dir=store))
 rows = []
 for name, source_ids in CASES:
+    present = [source_id in source_rows for source_id in source_ids]
+    if not any(present):
+        continue
+    assert all(present), (name, source_ids)
     sources = {}
     for source_id in source_ids:
         row = source_rows[source_id]
@@ -33,11 +37,12 @@ for name, source_ids in CASES:
     rows.append({'id': name, 'source_id': source_ids[0], 'source': first['source'],
                  'program': first['fixture'], 'fixture': str(path),
                  'assertions': len(checks), 'source_ids': source_ids})
+assert rows, 'No complete selected static state group'
 (out / 'manifest.json').write_text(json.dumps({
     'revision': prepared['revision'], 'preparation': str(prepared_path),
     'renderer': str(Path(__file__).with_name('scoped_static_compound_protocol.py')),
     'records': rows,
-    'scope': 'Fresh keyword static selection pure rendering; no compiler/execution credit'
+    'scope': 'Fresh selected static group rendering; no compiler/execution credit'
 }, indent=2) + '\n')
 print(out)
 for row in rows:
