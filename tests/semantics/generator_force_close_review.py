@@ -13,6 +13,7 @@ from generator_review import run
 
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST_CASES = set()
+NATIVE_ERROR_PREFIXES = {}
 
 # Existing FD198 transport: primitive request inputs, no PHP evaluation.
 REQUEST_EXEC = '''import os,sys
@@ -320,7 +321,9 @@ def main():
             else:
                 expected = CASES[name][1] if name in CASES else UNSUPPORTED[name][1]
                 expected_exit = CASES[name][2] if name in CASES else UNSUPPORTED[name][3]
-                assert native.returncode == expected_exit and not native.stderr and native.stdout == expected, (name, native)
+                prefix = NATIVE_ERROR_PREFIXES.get(name)
+                error_matches = native.stderr.lstrip(b"\r\n").startswith(prefix.replace(b"{file}", os.fsencode(path))) if prefix else not native.stderr
+                assert native.returncode == expected_exit and error_matches and native.stdout == expected, (name, native)
             if args.mode == "full":
                 model = run(model_command, case / "model", 90)
                 row["model_exit"] = model.returncode

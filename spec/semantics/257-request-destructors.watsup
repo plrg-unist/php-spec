@@ -353,6 +353,7 @@ rule PhpStep/destructor-store-skip: S ~> S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.
   -- if ~(n <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S, n) = eps
   -- if ~$internal_destructor_pending(S, HOBJECT n)
+  -- if ~$generator_destructor_pending(S, HOBJECT n)
 rule PhpStep/destructor-store-past: S ~> S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)]
   -- if S.TODO = [DESTRUCTOR_STORE]
   -- if $call_task_valid(S, DESTRUCTOR_STORE)

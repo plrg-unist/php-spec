@@ -236,6 +236,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | CALLABLE_SCALAR_RESULT ptask poperand pvalue int
   | CALLABLE_STRING_RESULT ptask poperand nat nat int
   | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
+  | GENERATOR_REQUEST_RESUME pgenclose
   | DESTRUCTOR_OPERATION_EXIT pdestructionoperation
   | ACCESS_REFERENCE_VALUE_RESULT porigin poperand int
   | ACCESS_REFERENCE_VALUE_RELEASE paccess poperand
@@ -358,7 +359,7 @@ syntax pfiber = { READY bool, CALL pconfigcall?, RAW pvalue, TARGET pcalltarget?
 syntax pfibercallable = { QUERY papiquery, METHOD porigin, NAME ptbytes, STATIC bool, BIRTH pdynamicnew?, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer? }
 syntax pgeneratorphase = GENERATOR_FRESH | GENERATOR_PAUSED | GENERATOR_RUNNING | GENERATOR_CLOSED | GENERATOR_DELEGATING | GENERATOR_CLOSING
 syntax pgenclosestage = CLOSE_QUEUED | CLOSE_BODY porigin | CLOSE_SCANNING | CLOSE_FLOW | CLOSE_FINISHED
-syntax pgenclose = { OBJECT nat, SITE porigin, CONTEXT pcallcontext, CALLER pcallcontext?, CALLSITE porigin?, STAGE pgenclosestage, NEXT nat, FRAME pframe?, PENDING nat? }
+syntax pgenclose = { OBJECT nat, SITE porigin, CONTEXT pcallcontext, CALLER pcallcontext?, CALLSITE porigin?, STAGE pgenclosestage, NEXT nat, FRAME pframe?, PENDING nat?, STORE nat? }
 syntax pgenrelease = { JOBS pdestructionjob*, VALUE poperand, BASE pbase, PENDING nat?, COMPLETION pcompletion }
 syntax pgeneratorborrowed = { VALUE poperand?, KEY pvalue? }
 syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom? }
