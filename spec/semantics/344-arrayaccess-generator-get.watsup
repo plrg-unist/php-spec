@@ -69,6 +69,13 @@ def $access_generator_capture(S, pcallcontext) = ({TARGET $context_target(pcallc
   -- if pcallcontext.CALLSITE = (porigin)
 def $access_generator_capture(S, pcallcontext) = eps -- otherwise
 
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $access_generator_creation(S, pcallcontext)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
+
 def $access_generator_frame(S, eps, pgeneratoraccess) = true
 def $access_generator_frame(S, (pframe), pgeneratoraccess) = $access_generator_shape(S, pcallcontext, pgeneratoraccess)
   -- if pframe.CONTEXT = (pcallcontext)
