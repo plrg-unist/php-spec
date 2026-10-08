@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+341 executes fixed bound API captures as Fiber C-root callbacks. Immutable RAW
+selection preserves the receiver, borrowed API ownership and genuine nested or
+idle collector caller chains. Last callback retirement can close its receiver
+before the original `start` argument destructor; C-root API traces have no file
+or line. Strict324 initialization, ten new normal originals plus one affected337
+former boundary, independent255 and author93 reached premises pass at separate
+recorded cuts. The narrow saved-root helper correction is covered by full-drive
+nested108 and collector93 checks; original failures retain zero credit.
+Bound `start`, constructor captures and broader adapters remain required;
+paused undefined-result verification is excluded. Earlier331/337 cuts are unchanged.
+[C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json).
+
 Collector342 admits public idle resume/throw during an active pass once every
 planned destructor is marked called. The real parked collector consumer remains
 busy; worker cache/mask and transient error ownership follow332. Two exact normal
@@ -31,7 +43,7 @@ The Closure owns its selected Fiber; direct and explicit `__invoke` calls borrow
 that receiver while retaining their actual argument buffers and saved operation
 provenance. Strict318 initialization, nine normal originals and author65/independent403
 reached premises pass at the recorded private cuts. Two explicit start/C-root
-Unsupported controls earn zero agreement; earlier331 evidence is unchanged. A
+Unsupported controls earn zero agreement at that cut; earlier331 evidence is unchanged. A
 separate actual322 composition passes strict initialization, one collector
 original and115 independent premises: captured public resume/throw authenticate
 the genuine saved caller, preserve borrowed receiver roots and retire the idle

@@ -32,12 +32,6 @@ def $named_closure_same(S, n_left, n_right) = true
   -- if pfibercapture_left.KIND = pfibercapture_right.KIND
   -- if pfibercapture_left.INPUT = pfibercapture_right.INPUT
 
-;; An instance API cannot enter the receiver-free C-root configuration used by331.
-def $fiber_callback_resolution(S, POBJECT n) = HANDLERUNKNOWN "bound Fiber API callback receiver"
-  -- if $fiber_capture_live(S, n)
-  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
-  -- if $fiber_bound_kind(pfibercapture.KIND)
-
 ;; The waiting API owns its sent buffer and borrows this_ptr from the Closure.
 ;; Its following result marker owns that Closure. Authenticate both as one call.
 def $fiber_caller_api_nodes(pfibercaller) = $fiber_value_nodes(pfibercaller.API.SENT)
