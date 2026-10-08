@@ -702,6 +702,10 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
+Deferred trait parameter constructors preserve selected scope through class-table
+work and retain valid initialization history after an ordinary capture is released.
+A fresh original and38 reached checks pass independently; unpublished-FCC work
+remains separate.
 [Source traits](docs/semantics/SOURCE-TRAITS.md) compose nested uses, conflicts
 and adaptations with using-class scope, original body provenance and distinct
 class/alias static cells. Property/constant composition preserves invariant source

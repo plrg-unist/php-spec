@@ -403,6 +403,8 @@ test-semantics: build
 	python3 tests/semantics/default_constructor_sources.py
 	python3 tests/semantics/default_constructor_protocol.py
 	python3 tests/semantics/default_constructor_api_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_constructor_selection_cases.json
+	python3 tests/semantics/trait_constructor_selection_protocol.py
 	python3 tests/semantics/internal_default_constructor_sources.py
 	python3 tests/semantics/internal_default_constructor_protocol.py
 	python3 tests/semantics/internal_default_reception_sources.py

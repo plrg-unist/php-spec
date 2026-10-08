@@ -1186,6 +1186,15 @@ original failures. Actual227/232/239 composition adds nine source comparisons an
 references, physical interface diagnostic files and imported-maker Closure scope.
 Accepted233/237 routes remain preserved; the method checkpoint remains partial.
 
+Deferred trait parameter constructors now preserve their selected scope across
+class-table initialization, including actual arguments, constructor choice and
+source line. Independent actual1fa6af571 compiler gates, one fresh ordinary source
+and38 supplied reached checks (6 setup) pass on the accepted40e3 foundation without
+307. Genuine constructor allocation, capture retirement, durable table history and
+post-retirement property iteration are covered. Earlier unpublished-FCC/count
+originals keep their separate Unsupported/private results and zero transferred
+agreement; no whole trait-family or paused return closure is claimed.
+
 Trait data238 composes constants and properties before parent inheritance, with
 scoped invariant types, evaluated pure compatibility, source keyword diagnostics
 and full using-class member identities. Inherited statics share cells; explicit
