@@ -229,6 +229,7 @@ def $dupref_phase(S, 30) = true
   -- if $dupref_generator_release(S.TODO, S.FRAMES) = (pgenrelease)
 def $dupref_phase(S, 31) = true
   -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_operation_for(S) = eps
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
