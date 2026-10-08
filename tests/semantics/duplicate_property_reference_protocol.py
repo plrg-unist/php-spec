@@ -16,6 +16,7 @@ CASES = {
     'binding':'duplicate-reference-foreach-binding-observation18',
     'pending-binding':'duplicate-reference-foreach-binding-throw18',
     'receiver-cleanup':'reference-foreach-receiver-cleanup-rebind18',
+    'notice-owner':'reference-foreach-invalid-key-unset-receiver18',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -79,6 +80,11 @@ def $dupref_phase(S, 8) = true
   -- if S.TODO = (LIST_STORE (NExprVariable phpType32 metadata) (REFERENCE n_cell) true z) :: ptask_tail*
   -- if $cv_name(phpType32) = ($ptascii("value"))
   -- if $dupref_output(S.EVENTS) = $ptascii("old|receiver-drop|x=1|")
+def $dupref_phase(S, 9) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if perrorcall.TARGET = eps
+  -- if perrorcall.RESUME = OBJECT_FOREACH_KEY pobjectforeach
 def $dupref_phase(S, n) = false -- otherwise
 dec $dupref_seek(pstate, nat, nat) : pstate
 def $dupref_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -313,6 +319,34 @@ def receiver_cleanup_assertions(initial, expected):
         '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
 
 
+def notice_owner_assertions(initial):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_notice', 9),
+        'S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_notice_tail*',
+        'perrorcall.RESUME = OBJECT_FOREACH_KEY pobjectforeach',
+        'pobjectforeach.REF',
+        'pobjectforeach.OWNER = HCELL n_receiver',
+        '$lookup(S_notice.ENV, $ptascii("object")) = (n_receiver)',
+        'n_receiver <- S_notice.REFCELLS',
+        'S_notice.STORE[n_receiver] = DEFINED (POBJECT pobjectforeach.OBJECT)',
+        '$task_nodes(perrorcall.RESUME) = [HCELL n_receiver]',
+        '$object_foreach_owner_valid(S_notice, pobjectforeach)',
+        '$error_call_valid(S_notice, perrorcall)',
+        '$dupref_output(S_notice.EVENTS) = eps',
+        'S_notice_zero = $drive(S_notice, 0)',
+        'S_notice_zero.COMPLETION = BUDGET',
+        'S_notice_zero[.COMPLETION = NORMAL] = S_notice',
+        'pobjectforeach_bad = pobjectforeach[.OWNER = HOBJECT pobjectforeach.OBJECT]',
+        'perrorcall_bad = perrorcall[.RESUME = OBJECT_FOREACH_KEY pobjectforeach_bad]',
+        'S_bad = S_notice[.TODO = (ERROR_HANDLER_INVOKE perrorcall_bad) :: ptask_notice_tail*]',
+        '$heap_valid($heap_graph(S_bad))',
+        '~$object_foreach_owner_valid(S_bad, pobjectforeach_bad)',
+        '~$error_call_valid(S_bad, perrorcall_bad)',
+        '~$call_descriptors_valid(S_bad)',
+        'S_rejected = $drive(S_bad, 0)',
+        'S_rejected.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"']
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -321,6 +355,7 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
+            notice_owner_assertions(initial, sources.EXPECTED[case]) if group=='notice-owner' else
             receiver_cleanup_assertions(initial, sources.EXPECTED[case]) if group=='receiver-cleanup' else
             binding_assertions(initial, sources.EXPECTED[case], group=='pending-binding'))
     clauses = ['program_source = '+(directory/'program.watsup').read_text().strip(), *body]
