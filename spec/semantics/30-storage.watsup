@@ -617,6 +617,8 @@ def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.EN
 ;; unwrap an ALIAS into DIRECT while the original cell's wrapper remains intact.
 dec $reference_cell(pstate, nat) : pstate
 dec $foreach_released_cell(pstate, nat) : bool
+dec $foreach_released_container_cell(pstate, nat) : bool
+dec $foreach_released_container_name(pstate, nat*) : bool
 dec $foreach_released_name(pstate, nat*) : bool
 def $reference_cell(S, n) = S[.COMPLETION = UNSUPPORTED "mutation of released foreach CV"] -- if $foreach_released_cell(S, n)
 def $reference_cell(S, n) = S -- if ~$foreach_released_cell(S, n) /\ n <- S.REFCELLS
@@ -661,10 +663,15 @@ def $read_name(S, n_name*, z) = $missing(S, n_name*, z)
   -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = UNDEFINED
+def $read_name(S, n_name*, z) = S[.COMPLETION = UNSUPPORTED "released foreach container payload read"]
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $foreach_released_container_cell(S, n_cell)
 def $read_name(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
   -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
   -- if $lookup(S.ENV, n_name*) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if ~$foreach_released_container_cell(S, n_cell)
 
 dec $resolve(pstate, poperand) : pstate
 def $resolve(S, KNOWN pvalue) = S[.RESULT = KNOWN pvalue]
