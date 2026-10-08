@@ -58,6 +58,10 @@ def run(match, catalogue=DEFAULT_CASES):
         assert sha(source) == row['source_sha256'], row['id']
         command = [str(ROOT / 'bin/php-semantics'), str(source),
                    '--steps', '100000', '--timeout', '45']
+        if 'startup_ini' in row:
+            startup = directory / 'startup-ini.json'
+            startup.write_text(json.dumps(row['startup_ini']) + '\n')
+            command += ['--startup-ini', str(startup)]
         entries = []
         for child in row.get('files', []):
             assert Path(child['name']).name == child['name'], 'invalid child filename'
@@ -128,7 +132,7 @@ def run(match, catalogue=DEFAULT_CASES):
         records.append({'id': row['id'], 'pass': passed,
                         'native_group': row['native_group'],
                         'native_raw_sha256': row['native_raw_sha256'],
-                        'native_profile': row.get('native_profile', shared_profile),
+                        'native_profile': dict(shared_profile or {}, **row.get('native_profile', {})),
                         'source_sha256': row['source_sha256'],
                         'command_record': str(command_path),
                         'runner_exit_status': status,

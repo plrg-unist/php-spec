@@ -473,9 +473,11 @@ let execute value request =
     let reporting = List.mem_assoc "error_reporting" (assoc json)
     and path = List.mem_assoc "include_path" (assoc json)
     and display = List.mem_assoc "display_errors" (assoc json)
-    and precision = List.mem_assoc "precision" (assoc json) in
+    and precision = List.mem_assoc "precision" (assoc json)
+    and assertions = List.mem_assoc "zend.assertions" (assoc json) in
     let additional = (if display then ["display_errors"] else []) @
-                     (if precision then ["precision"] else []) in
+                     (if precision then ["precision"] else []) @
+                     (if assertions then ["zend.assertions"] else []) in
     if reporting && path then
       exact (["error_reporting"; "include_path"] @ additional) json
     else exact (if additional = [] then ["display_errors"] else additional) json) startup_json;
@@ -508,6 +510,14 @@ let execute value request =
        | Run.Pass _ -> fail "invalid startup precision facts"
        | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg));
       value) (List.assoc_opt "precision" (assoc json))) in
+  let assertions = Option.bind startup_json (fun json ->
+    Option.map (fun json ->
+      let value = decode_bytes json in
+      (match Runner.Interp.eval_func "assertion_ini_mode" [] [value] with
+       | Run.Pass mode when V.Get.opt mode <> None -> ()
+       | Run.Pass _ -> fail "invalid startup zend.assertions facts"
+       | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg));
+      value) (List.assoc_opt "zend.assertions" (assoc json))) in
   Option.iter (fun facts ->
     let include_path = match startup with
       | None -> `String "Ljo="
@@ -557,6 +567,20 @@ let execute value request =
          | "php_file_run" -> "php_file_startup_run"
          | "php_request_file_run" -> "php_request_file_startup_run"
          | _ -> assert false), arguments @ [value] in
+  let name, arguments = match assertions with
+    | None -> name, arguments
+    | Some raw ->
+        let q = match List.filter (fun (key,_) -> key = "request") (assoc request) with
+          | [] -> None | [(_,json)] -> Some (import_request (module Runner) json)
+          | _ -> fail "duplicate request field" in
+        let cwd = Option.map (fun facts -> decode_bytes (field "cwd" facts)) snapshot in
+        "php_assertions_run", [value; V.Make.nat (Bigint.of_int budget);
+          decode_bytes filename_json; V.Make.opt (T.opt (typ "pstartup")) startup;
+          V.Make.bool (display <> None);
+          Option.value display ~default:(V.Make.opt (T.opt (typ "preqbytes")) None);
+          Option.value precision ~default:(decode_bytes (`String "MTQ=")); raw;
+          V.Make.opt (T.opt (typ "prequest")) q;
+          V.Make.opt (T.opt (typ "preqbytes")) cwd] in
   match Runner.Interp.eval_func name [] arguments with
   | Run.Pass state -> check (typ "pstate") state;
       let pending = pending_from_state state in
