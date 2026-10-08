@@ -7,6 +7,9 @@ dec $access_string_finish(pstate, paccess, poperand, ptbytes?, ptbytes, ptask*) 
 dec $access_string_set(pstate, paccess, poperand, ptbytes) : pstate
 dec $access_string_set_operand(paccess) : poperand?
 dec $access_string_nodes(paccess, poperand) : pnode*
+dec $access_holes(paccess) : nat*
+dec $access_set_hole_target(pstate, paccess) : pcalltarget?
+dec $access_set_hole_context(pstate, pcallcontext) : bool
 
 def $access_string_source(S, paccess, KNOWN pvalue) = true
   -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
@@ -94,3 +97,59 @@ rule PhpStep/access-string-result: S ~> $access_string_finish(S, paccess, popera
   -- if S.TODO = (ACCESS_STRING_RESULT paccess poperand ptbytes? n) :: ptask_tail*
   -- if $call_task_valid(S, ACCESS_STRING_RESULT paccess poperand ptbytes? n)
   -- if S.RESULT = KNOWN (PSTRING ptbytes_result)
+
+;; A defined key CV may become UNDEF inside Get or a conversion. The std
+;; handler copies that UNDEF into the C-call buffer; it is a positional hole,
+;; not a new undefined-variable read or a null argument.
+def $access_compound_set(S, paccess) = S[.TODO = (ACCESS_SET_ENTER paccess[.OFFSET = PNULL][.KEYHOLE = true]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~paccess.LATCH
+  -- if $error_missing_operand(S, paccess.INPUT)
+  -- if S.TODO = ptask :: ptask_tail*
+def $access_holes(paccess) = [0] -- if paccess.KEYHOLE
+def $access_holes(paccess) = eps -- if ~paccess.KEYHOLE
+def $access_set_hole_target(S, paccess) = (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN)
+  -- if paccess.KEYHOLE
+  -- if $access_valid(S, paccess)
+  -- if paccess.OBJECT = (n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("offsetSet"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $access_method_selected(S, paccess, METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN)
+def $access_set_hole_target(S, paccess) = eps -- otherwise
+def $call_task_valid(S, ACCESS_SET_ENTER paccess) = ($access_set_hole_target(S, paccess) =/= eps)
+def $task_nodes(ACCESS_SET_ENTER paccess) = $access_roots(paccess, true)
+rule PhpStep/access-set-hole-enter: S ~> $target_after_enter($named_enter(S[.TODO = (ACCESS_RESULT paccess) :: ptask_tail*], pfunction, {SLOTS ([NAMED_HOLE, NAMED_SENT (KNOWN paccess.VALUE)]), NAMED eps}, (paccess.SITE), paccess.LINE), pcalltarget)
+  -- if S.TODO = (ACCESS_SET_ENTER paccess) :: ptask_tail*
+  -- if $access_set_hole_target(S, paccess) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS) = psparam :: psparam_tail*
+rule PhpStep/access-set-hole-variadic: S ~> S[.COMPLETION = UNSUPPORTED "ArrayAccess undefined variadic Set argument"]
+  -- if S.TODO = (ACCESS_SET_ENTER paccess) :: ptask_tail*
+  -- if $access_set_hole_target(S, paccess) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS) = eps
+
+def $access_set_hole_context(S, pcallcontext) = ($access_context(S, pcallcontext) /\ pcallcontext.HOLES = [0])
+def $named_call_shape(S, pcalltarget, (porigin)) = {SLOTS ([NAMED_HOLE, NAMED_SENT (KNOWN PNULL)]), NAMED eps}
+  -- if S.CURRENT = (pcallcontext)
+  -- if $context_target(pcallcontext) = pcalltarget
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $access_set_hole_context(S, pcallcontext)
+def $named_preflight_stage(S, porigin, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $access_set_hole_context(S, pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if n_limit = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $(n <= n_limit)
+  -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pnamedargs.SLOTS, n)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $access_set_hole_context(S, pcallcontext)
+  -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
+  -- if $named_preflight_slots(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), pnamedargs.SLOTS, pcallcontext.ARGC)
+def $call_holes_source_valid(S, pcallcontext, pfunction) = true
+  -- if $access_set_hole_context(S, pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN

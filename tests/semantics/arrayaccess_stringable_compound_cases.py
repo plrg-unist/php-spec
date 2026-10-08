@@ -542,3 +542,87 @@ echo "R:", $result334, ";E;";
         'discriminator': 'The Set handler copy is the last key owner after a CV unset and releases before the raw Get RV; a computed key instead owns its OP2 until later.',
     },
 ]
+
+CASES.extend([
+    {
+        'id': 'stringable-key-unset-required-set-argument',
+        'source': '''<?php
+class UnsetKeyLeftReview19 {
+    public function __toString(): string {
+        echo "L;";
+        unset($GLOBALS['keyReview19']);
+        return 'a';
+    }
+}
+class UnsetKeyBoxReview19 implements ArrayAccess {
+    public function offsetExists($key): bool { return true; }
+    public function offsetGet($key): mixed { echo "G:", $key, ";"; return new UnsetKeyLeftReview19(); }
+    public function offsetSet($key, $value): void { echo "S:", (int)($key === null), ":", $value, ";"; }
+    public function offsetUnset($key): void { echo "wrongUnset;"; }
+}
+$keyReview19 = 'before';
+$boxReview19 = new UnsetKeyBoxReview19();
+try { $boxReview19[$keyReview19] .= 'b'; }
+catch (ArgumentCountError $errorReview19) { echo "X:", $errorReview19->getMessage(), ";"; }
+echo "E;";
+''',
+        'expected_stdout': 'G:before;L;X:UnsetKeyBoxReview19::offsetSet(): Argument #1 ($key) not passed;E;',
+        'discriminator': 'An initially defined key CV can become UNDEF during left conversion; the real implicit call rejects its required argument before Set.',
+    },
+    {
+        'id': 'stringable-key-unset-optional-set-default',
+        'source': '''<?php
+class UnsetKeyLeftReview19 {
+    public function __toString(): string {
+        echo "L;";
+        unset($GLOBALS['keyReview19']);
+        return 'a';
+    }
+}
+class UnsetKeyBoxReview19 implements ArrayAccess {
+    public function offsetExists($key): bool { return true; }
+    public function offsetGet($key): mixed { echo "G:", $key, ";"; return new UnsetKeyLeftReview19(); }
+    public function offsetSet($key = 'fallback', $value = null): void { echo "S:", $key, ":", $value, ";"; }
+    public function offsetUnset($key): void { echo "wrongUnset;"; }
+}
+$keyReview19 = 'before';
+$boxReview19 = new UnsetKeyBoxReview19();
+try { $boxReview19[$keyReview19] .= 'b'; }
+catch (ArgumentCountError $errorReview19) { echo "X:", $errorReview19->getMessage(), ";"; }
+echo "E;";
+''',
+        'expected_stdout': 'G:before;L;S:fallback:ab;E;',
+        'discriminator': 'The C call preserves the UNDEF key argument and performs real optional receive default fill, rather than passing null.',
+    },
+    {
+        'id': 'stringable-key-unset-new-set-default-argview',
+        'source': '''<?php
+class NewKeyLeftReview19 {
+    public function __toString(): string {
+        echo "L;";
+        unset($GLOBALS['keyReview19']);
+        return 'a';
+    }
+}
+class NewKeyDefaultReview19 {
+    public function __toString(): string { echo "K;"; return 'fallback'; }
+    public function __destruct() { echo "D;"; }
+}
+class NewKeyBoxReview19 implements ArrayAccess {
+    public function offsetExists($key): bool { return true; }
+    public function offsetGet($key): mixed { echo "G:", $key, ";"; return new NewKeyLeftReview19(); }
+    public function offsetSet($key = new NewKeyDefaultReview19(), $value = null): void {
+        echo "S:", func_num_args(), ":", (int)(func_get_arg(0) === $key), ";";
+        echo "V:", $key, ":", $value, ";";
+    }
+    public function offsetUnset($key): void { echo "wrongUnset;"; }
+}
+$keyReview19 = 'before';
+$boxReview19 = new NewKeyBoxReview19();
+$boxReview19[$keyReview19] .= 'b';
+echo "E;";
+''',
+        'expected_stdout': 'G:before;L;S:2:1;V:K;fallback:ab;D;E;',
+        'discriminator': 'The hole preflight evaluates a fresh constructor-free NEW default, preserves both genuine C argument slots for introspection and retires the default object after Set.',
+    },
+])

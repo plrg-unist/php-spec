@@ -112,6 +112,7 @@ def $access_compound_result(S, paccess, pvalue_left) = S_binary[.HELD = S.HELD]
 def $access_compound_set(S, paccess) = $access_call(S, paccess[.OFFSET = PNULL], $ptascii("offsetSet")) -- if paccess.LATCH
 def $access_compound_set(S, paccess) = $access_call(S[.RESULT = KNOWN PNULL], paccess[.OFFSET = pvalue], $ptascii("offsetSet"))
   -- if ~paccess.LATCH
+  -- if ~$error_missing_operand(S, paccess.INPUT)
   -- if S_key = $quiet_operand(S, paccess.INPUT)
   -- if S_key.RESULT = KNOWN pvalue
 def $access_result_done(S, paccess, pvalue) = $access_compound_result(S, paccess, pvalue)
