@@ -1,6 +1,6 @@
 ;; Fixed instance API fake Closures retain the selected Fiber as this_ptr.
-;; start's variadic buffer and constructor callback parsing are separate protocols.
-def $fiber_bound_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW, INTRINSIC_FIBER_RETURN, INTRINSIC_FIBER_STARTED, INTRINSIC_FIBER_SUSPENDED, INTRINSIC_FIBER_RUNNING, INTRINSIC_FIBER_TERMINATED])
+;; start's variadic buffer is separate; constructor parsing extends this in354.
+def $fiber_bound_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_FIBER_CONSTRUCT, INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW, INTRINSIC_FIBER_RETURN, INTRINSIC_FIBER_STARTED, INTRINSIC_FIBER_SUSPENDED, INTRINSIC_FIBER_RUNNING, INTRINSIC_FIBER_TERMINATED])
 def $fiber_bound_name(ptbytes) = $fiber_bound_kind(pintrinsic)
   -- if $fiber_method(ptbytes) = (pintrinsic)
 def $fiber_bound_name(ptbytes) = false -- otherwise
