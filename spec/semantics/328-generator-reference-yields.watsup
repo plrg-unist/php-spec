@@ -34,7 +34,7 @@ def $ppgenerator_reference_scope(P, pcpath) = b
   -- if $ppgenerator_reference_owner($occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath)) = (b)
 def $ppgenerator_reference_scope(P, pcpath) = $ppgenerator_reference_scope(P, pcpath[0:n])
   -- if $ppgenerator_reference_owner($occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath)) = eps
-  -- if |pcpath| > 0
+  -- if $(|pcpath| > 0)
   -- if n = $nabs($(|pcpath| - 1))
 def $ppgenerator_reference_scope(P, eps) = false
   -- if $ppgenerator_reference_owner($occurrence_node(P.FOLD.SOURCE.OCCURRENCES, eps)) = eps
@@ -319,8 +319,8 @@ def $generator_borrowed_task(S, n, ERROR_HANDLER_RESULT perrorcall) = $generator
 def $generator_borrowed_task(S, n, ERROR_HANDLER_CLEAN perrorcall) = $generator_borrowed_task(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, perrorcall.RESUME)
   -- if $error_cleanup_valid(S, perrorcall)
 def $generator_borrowed_task(S, n, ptask) = false -- otherwise
-def $generator_borrowed_tasks(S, n, ptask :: ptask*) = true
-  -- if $generator_borrowed_task(S, n, ptask)
+def $generator_borrowed_tasks(S, n, ptask_head :: ptask_tail*) = true
+  -- if $generator_borrowed_task(S, n, ptask_head)
 def $generator_borrowed_tasks(S, n, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (GENERATOR_YIELD_STORE porigin poperand?) :: ptask*) = true
   -- if $destructor_operation_valid(S, pdestructionoperation)
   -- if pdestructionoperation.SOURCE = GENERATOR_YIELD_DONE porigin poperand?
@@ -364,8 +364,8 @@ def $generator_borrowed_node_valid(S, n) = true
   -- if ~$generator_value_present(pgenerator) \/ pgeneratorborrowed.VALUE = eps
   -- if pgeneratorborrowed.VALUE =/= eps \/ pgeneratorborrowed.KEY =/= eps
   -- if $generator_borrowed_scope(S, n) \/ $generator_borrowed_frames(S, n, S.FRAMES)
-def $generator_borrowed_node_valid(S, n) = false -- if $generator_object(S, n) -- otherwise
 def $generator_borrowed_node_valid(S, n) = true -- if ~$generator_object(S, n)
+def $generator_borrowed_node_valid(S, n) = false -- otherwise
 def $generator_borrowed_operand_live(S, REFERENCE n) = $call_reference_operand_valid(S, REFERENCE n)
 def $generator_borrowed_operand_live(S, KNOWN pvalue) = $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
 def $generator_borrowed_operand_live(S, poperand) = false -- otherwise
