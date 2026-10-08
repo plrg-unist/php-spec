@@ -1,6 +1,6 @@
 # Explicit cycle collection
 
-Module 301 implements a bounded ordinary-object/array collector on the pinned
+Modules 301/317 implement a bounded ordinary-object/array collector on the pinned
 PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
@@ -9,6 +9,23 @@ establish complete GC, WeakMap, or request-freeing semantics.
 source call and argument protocols. Manual collection works while automatic GC
 is disabled. A nested collection during a collector destructor returns zero.
 The real API continuation remains present through callbacks and pending throws.
+
+Collection inside a running Fiber uses the actual cached internal collector
+Fiber. It has visible identity and a saved VM, but no PHP callback or constructor
+receipt. The cache supplies one owner; the collecting caller keeps the genuine
+pending API continuation. Global collection stays busy through nested Fiber
+calls, while cached reuse preserves the worker's reporting mask independently
+of shared INI changes.
+
+A suspended destructor detaches its worker and the remaining batch continues
+on a replacement. Its real guard retains the current target and pending exception
+until resumption or ordinary force-close. The original caller and callable can
+retire without invalidating that guard. Resuming the detached worker completes
+only its current destructor; a new collection from that callback may use the
+replacement cache. Traces contain the source-less `gc_destructor_fiber` frame
+and the actual collecting API or resumer. Destructor access inherits the real
+collecting caller's scope. Request destruction terminates an idle cached worker
+at its authentic object-store handle without invoking a fabricated callback.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -69,8 +86,9 @@ under an `AT` wrapper. Historical snapshots cannot authorize arbitrary callbacks
 zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
-Explicit boundaries remain for internal lifetime graphs, collector-Fiber
-transfer, resurrection of initially free non-destructor garbage, a new zero-owner
+Explicit boundaries remain for wider internal lifetime graphs, public resumption
+of an idle cached worker, detached guard retirement leaving a zero-owner target,
+resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
 Wider GC, WeakMap and final combined offline validation remain required.
 
@@ -101,3 +119,22 @@ new readonly-self clone original pass. Reinitialized slots produce two real
 cycles, weakly observable until two destructors/count2, then actual retirement
 and a second count0. Earlier cuts retain their original inputs. Wider GC and
 the final combined offline rebuild remain required.
+
+The larger three-throw collector trace and detached pending-chain originals
+retain their 60s model timeouts with zero agreement. They remain explicitly
+selectable and are excluded from the default Makefile targets; compact controls
+separately exercise the internal trace and detached previous-exception chain.
+
+At the recorded private module 317 cuts, thirteen exact normal source originals and two
+independent strict-SL groups with 78/68 physical premises pass. A fresh explicit-INI
+original distinguishes the cached mask from changed shared INI; the earlier
+reporting original remains a separate observation. The held-guard group also
+checks admission of the real saved C root after its original caller retires.
+Compilation with 292 modules passes; earlier source, cached-state and initialization
+cuts retain their identities in the ledger. The actual318 parent composition
+passes strict compilation/initialization with298 modules and one fresh exact
+reporting-Fiber/handler original: nested collection stays busy0, masks restore,
+and the real cycle count1/weak retirement completes.
+The final additive304 publication preserves newer parameter receive/source,
+ArrayAccess reference/borrowed-Unset and literal-this emission schemas and passes
+the required combined compiler. These disjoint joins add no source/state renewal.

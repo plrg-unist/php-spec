@@ -39,11 +39,11 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The current source includes accepted ArrayAccess292/304/309/319, eager destruction270,
-WeakReference296, ordinary cycle collection301, Fiber291/302/308/313,
-Generator289/303/310/311 and source operands293/298,
+WeakReference296, ordinary cycle collection301 and collector Fibers317,
+Fiber291/302/308/313, Generator289/303/310/311 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with303 modules descended from
+with304 modules descended from
 `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323.
 The property/clone composition passes strict SL290/compiler application0 at
@@ -93,8 +93,20 @@ strict291 compilation/initialization and one new exact readonly self-clone/GC
 original: both real cycles are weakly observable until two destructors/count2,
 then both retire and a second collection returns0. The
 [ledger](coverage/semantics/cycle-collection-review.json) retains each distinct
-cut. Hidden collector-Fiber transfer/lifecycle317, internal graphs, automatic
-thresholds, wider resurrection and final request freeing remain required.
+cut. Module 317 adds the actual collector-Fiber cache,
+global parked collection, detached target/pending guards, replacement batches,
+source-less traces/scope and callbackless idle retirement. Thirteen exact normals
+and two strict-SL groups with 78/68 premises pass at separate cuts with 292 modules.
+The actual318 parent passes strict298 compilation/initialization and one fresh
+reporting-Fiber/handler original, preserving global busy0 through nested callbacks,
+mask restoration and real count1/weak retirement. The final304 additive join
+preserves newer default-receive, Get/reference and literal-this source schemas
+and passes the required combined compiler without source/state renewal.
+The fresh explicit-INI source discriminates
+cached mask reuse. The two larger 60s model timeouts and native-only detached
+zero-owner path retain zero agreement. Wider internal graphs, idle-worker public
+resumption, automatic thresholds, resurrection and final request freeing remain
+required.
 
 Undefined source operands293 resume genuine warnings with fixed null after
 handler writes, preserving direct empty-path errors and earlier computed-name

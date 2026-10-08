@@ -3,6 +3,7 @@
 ;; Throwable. The waiting object-store frame retains its graceful zval and the
 ;; actual pending VALUE slot; neither its IDs nor source proof add owners.
 dec $fiber_close_for(pfiberclose*, nat) : pfiberclose?
+dec $gc_internal_worker(pstate, nat) : bool
 dec $fiber_close_exit(pfiberclose*, nat) : pfiberclose?
 dec $fiber_close_valid(pstate, pfiberclose) : bool
 dec $fiber_close_start(pstate, nat, pdestructionrelease) : pstate
@@ -41,6 +42,8 @@ dec $fiber_close_chain(pstate, nat, nat?) : pstate
 dec $fiber_close_error_return(pstate, nat) : pstate
 dec $fiber_release_operation(ptask*) : pdestructionoperation?
 dec $fiber_request_store_ready(pstate) : bool
+dec $gc_worker_idle_store_ready(pstate) : bool
+def $gc_worker_idle_store_ready(S) = false -- otherwise
 
 def $fiber_close_for(eps, n) = eps
 def $fiber_close_for(pfiberclose :: pfiberclose_tail*, n) = (pfiberclose)
@@ -177,7 +180,7 @@ def $fiber_chain_valid(S, (n), pfibercaller :: pfibercaller_tail*, pfiberclose*,
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.STATUS = FIBER_RUNNING
   -- if pfibercaller.API.SEQUENCE = pfiber.SEQUENCE
-  -- if pfibercaller.VM.TODO = (FIBER_WAIT pfibercaller.API) :: ptask_tail*
+  -- if $fiber_caller_wait(S, pfibercaller)
   -- if $fiber_vm_valid(S, pfibercaller.VM, pfibercaller.PREVIOUS, pfibercaller_tail*)
   -- if $fiber_chain_valid(S, pfibercaller.PREVIOUS, pfibercaller_tail*, pfiberclose*, n :: n_seen*)
 def $fiber_chain_valid(S, n?, pfibercaller*, pfiberclose*, n_seen*) = false -- otherwise
@@ -191,6 +194,7 @@ def $internal_destructor_pending(S, HOBJECT n) = true
   -- if ~$fiber_closing(S, (n))
 def $internal_destructor_pending(S, pnode) = false -- otherwise
 def $fiber_request_store_ready(S) = true
+  -- if ~$gc_worker_idle_store_ready(S)
   -- if S.TODO = [DESTRUCTOR_STORE]
   -- if $call_task_valid(S, DESTRUCTOR_STORE)
   -- if $(S.DESTRUCTION.INDEX < S.DESTRUCTION.NEXT)
@@ -257,6 +261,7 @@ def $fiber_throw_pending_valid(S, n_fiber, n_throwable) = ($throwable_live(S, n_
   -- if $fiber_close_boundary(S)
   -- if $fiber_at(S, n_fiber) = (pfiber)
 def $fiber_throw_finish(S, n_fiber, n_exit) = $fiber_callback_retire(S, n_fiber, PNULL, (n_exit))
+  -- if ~$gc_internal_worker(S, n_fiber)
   -- if $fiber_close_boundary(S)
   -- if $fiber_at(S, n_fiber) = (pfiber)
   -- if $fiber_graceful_for(S, n_fiber, pfiber.SEQUENCE, n_exit)
@@ -265,6 +270,7 @@ def $fiber_throw_finish(S, n_fiber, n_exit) = $fiber_callback_retire(S, n_fiber,
 ;; Keep the Fiber RUNNING and DESTROYED while the ordered callback slots retire.
 ;; FINISH is borrowed; its task owns the genuine pending exception once.
 def $fiber_finish(S, n) = $fiber_callback_retire(S_read, n, pvalue, eps)
+  -- if ~$gc_internal_worker(S, n)
   -- if S.ACTIVEFIBER = (n)
   -- if $fiber_close_boundary(S)
   -- if S.FRAMES = eps /\ S.CURRENT = eps
@@ -273,6 +279,7 @@ def $fiber_finish(S, n) = $fiber_callback_retire(S_read, n, pvalue, eps)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 def $fiber_throw_finish(S, n_fiber, n_throwable) = $fiber_callback_retire(S, n_fiber, PNULL, (n_throwable))
+  -- if ~$gc_internal_worker(S, n_fiber)
   -- if $fiber_close_boundary(S)
   -- if $throwable_member(S, n_throwable)
 def $fiber_callback_retire(S, n, pvalue, n_pending?) = $destructor_release_begin(S_ready, $destruction_values($fiber_callback_nodes(pfiber)))

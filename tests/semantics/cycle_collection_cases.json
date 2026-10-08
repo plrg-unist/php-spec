@@ -61,5 +61,59 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-worker-identity-and-idle-reuse",
+    "source": "<?php\nclass Cycle317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $request, $worker;\n        $current = Fiber::getCurrent();\n        echo $current === null ? \"main|\" : ($current === $request ? \"request|\" : \"worker|\");\n        if ($current !== null) {\n            echo $worker === null ? \"new|\" : ($worker === $current ? \"same|\" : \"changed|\");\n            $worker = $current;\n            echo $current->isRunning() ? \"running|\" : \"stopped|\";\n        }\n    }\n}\n$request = null;\n$worker = null;\n$c = new Cycle317();\nunset($c);\necho \"main-count:\", gc_collect_cycles(), \"|\";\n$request = new Fiber(function () {\n    $a = new Cycle317();\n    unset($a);\n    echo \"first:\", gc_collect_cycles(), \"|\";\n    $b = new Cycle317();\n    unset($b);\n    echo \"second:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\necho $worker->isSuspended() ? \"idle|\" : \"busy|\";\necho $request->isTerminated() ? \"request-done|END\" : \"request-live|END\";\n",
+    "stdout": "main-count:main|1|first:worker|new|running|1|second:worker|same|running|1|idle|request-done|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "ad1cc9b2f2caa0ad2e0f04672d027238c199a474bdb21b2e6707c6efd04b2f9f"
+  },
+  {
+    "id": "collector-detached-suspend-keeps-guard-and-finishes-only-one-callback",
+    "source": "<?php\nclass Cycle317 {\n    public $self;\n    public static $seen = 0;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $held;\n        $id = self::$seen++;\n        echo $id, \"<|\";\n        if ($id === 0) {\n            $held = Fiber::getCurrent();\n            echo Fiber::suspend(\"discarded\"), \"|\";\n        }\n        echo $id, \">|\";\n    }\n}\n$f = new Fiber(function () {\n    global $wa, $wb;\n    $a = new Cycle317();\n    $b = new Cycle317();\n    $wa = WeakReference::create($a);\n    $wb = WeakReference::create($b);\n    unset($a);\n    unset($b);\n    echo \"collect:\", gc_collect_cycles(), \"|\";\n    echo \"request-after|\";\n});\necho $f->start() === null ? \"start:null|\" : \"start:value|\";\necho $held->isSuspended() ? \"held|\" : \"lost|\";\necho $wa->get() === null ? \"a:null|\" : \"a:live|\";\necho $wb->get() === null ? \"b:null|\" : \"b:live|\";\necho \"middle:\", gc_collect_cycles(), \"|\";\n$held->resume(\"resumed\");\necho $held->isTerminated() ? \"done|\" : \"pending|\";\necho \"last:\", gc_collect_cycles(), \"|END\";\n",
+    "stdout": "collect:0<|1<|1>|1|request-after|start:null|held|a:null|b:live|middle:0|resumed|0>|done|last:1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "0cf36cf7850c603729b91ef56bed48411d7cd0b03b0e4ac8611e70e87b285267"
+  },
+  {
+    "id": "collector-unowned-suspended-worker-force-closes-current-finally",
+    "source": "<?php\nclass Cycle317 {\n    public $self;\n    public static $seen = 0;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $weakWorker;\n        $id = self::$seen++;\n        echo $id, \"<|\";\n        try {\n            if ($id === 0) {\n                $weakWorker = WeakReference::create(Fiber::getCurrent());\n                Fiber::suspend(\"discarded\");\n                echo \"unreachable|\";\n            }\n        } finally {\n            echo $id, \">|\";\n        }\n    }\n}\n$f = new Fiber(function () {\n    global $wa, $wb;\n    $a = new Cycle317();\n    $b = new Cycle317();\n    $wa = WeakReference::create($a);\n    $wb = WeakReference::create($b);\n    unset($a);\n    unset($b);\n    echo \"collect:\", gc_collect_cycles(), \"|\";\n});\n$f->start();\necho $weakWorker->get() === null ? \"worker:null|\" : \"worker:live|\";\necho $wa->get() === null && $wb->get() === null ? \"both:null|\" : \"kept|\";\necho \"last:\", gc_collect_cycles(), \"|END\";\n",
+    "stdout": "collect:0<|0>|1<|1>|2|worker:null|both:null|last:0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "7c9afcc73b0dc69a6ce2b15a9b033d51a9aa64a37b5fed362351df192252034a"
+  },
+  {
+    "id": "collector-detached-throw-has-worker-and-real-resumer-traces",
+    "source": "<?php\nclass Cycle317 {\n    public $self;\n    public static $seen = 0;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $held;\n        $id = self::$seen++;\n        echo $id, \"<|\";\n        if ($id === 0) {\n            $held = Fiber::getCurrent();\n            Fiber::suspend();\n        }\n        echo $id, \">|\";\n        throw new Exception(\"E\" . $id);\n    }\n}\n$f = new Fiber(function () {\n    $a = new Cycle317();\n    $b = new Cycle317();\n    $c = new Cycle317();\n    unset($a);\n    unset($b);\n    unset($c);\n    try {\n        gc_collect_cycles();\n    } catch (Exception $e) {\n        $trace = $e->getTrace();\n        echo \"collect:\", $e->getMessage(), \":\", $e->getPrevious()->getMessage(), \":\", $trace[1][\"function\"], \":\", $trace[2][\"function\"], \"|\";\n    }\n    echo \"request-after|\";\n});\n$f->start();\ntry {\n    $held->resume();\n} catch (Exception $e) {\n    $trace = $e->getTrace();\n    echo \"resume:\", $e->getMessage(), \":\", $trace[1][\"function\"], \":\", $trace[2][\"function\"], \"|\";\n}\necho $held->isTerminated() ? \"done|\" : \"pending|\";\necho gc_collect_cycles(), \"|END\";\n",
+    "stdout": "0<|1<|1>|2<|2>|collect:E2:E1:gc_destructor_fiber:gc_collect_cycles|request-after|0>|resume:E0:gc_destructor_fiber:resume|done|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "3d9f409513a585ade504f64a9ddb366288d02abad852ac682d46e255cf1dba74"
+  },
+  {
+    "id": "collector-busy-state-survives-nested-user-fiber-api",
+    "source": "<?php\nclass Cycle317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $request;\n        echo Fiber::getCurrent() === $request ? \"request|\" : \"worker|\";\n        $child = new Fiber(function () {\n            echo \"nested:\", gc_collect_cycles(), \"|\";\n            Fiber::suspend(\"child\");\n            echo \"child-after|\";\n        });\n        echo $child->start(), \"|\";\n        $child->resume();\n        echo \"worker-after|\";\n    }\n}\n$request = new Fiber(function () {\n    $c = new Cycle317();\n    unset($c);\n    echo \"outer:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\necho \"END\";\n",
+    "stdout": "outer:worker|nested:0|child|child-after|worker-after|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "e9af31ce5b6eb9df31e459f53087a0bc83adbf5abc40098ac46547b58ef1a7f7"
+  },
+  {
+    "id": "collector-two-detached-workers-resume-in-reverse-after-later-main-pass",
+    "source": "<?php\nclass Cycle317 {\n    public $self;\n    public static $seen = 0;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $one, $two;\n        $id = self::$seen++;\n        echo $id, \"<|\";\n        if ($id === 0) {\n            $one = Fiber::getCurrent();\n            Fiber::suspend(\"one\");\n        } elseif ($id === 1) {\n            $two = Fiber::getCurrent();\n            Fiber::suspend(\"two\");\n        }\n        echo $id, \">|\";\n    }\n}\n$f = new Fiber(function () {\n    $a = new Cycle317();\n    $b = new Cycle317();\n    $c = new Cycle317();\n    unset($a);\n    unset($b);\n    unset($c);\n    echo \"first:\", gc_collect_cycles(), \"|\";\n});\n$f->start();\necho $one === $two ? \"same|\" : \"distinct|\";\n$d = new Cycle317();\nunset($d);\necho \"main:\", gc_collect_cycles(), \"|\";\n$two->resume();\n$one->resume();\necho \"last:\", gc_collect_cycles(), \"|END\";\n",
+    "stdout": "first:0<|1<|2<|2>|1|distinct|main:3<|3>|1|1>|0>|last:2|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "724c1804057d20e62eaf432005530872722ab00f1133fe1c6a3d7fe70500bdb0"
   }
 ]
