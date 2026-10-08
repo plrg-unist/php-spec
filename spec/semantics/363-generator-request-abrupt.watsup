@@ -481,6 +481,7 @@ def $generator_request_resume_plain((ERROR_HANDLER_CLEAN perrorcall) :: ptask_ta
 
 def $generator_request_render_abrupt(S) = true
   -- if S.TODO = (THROW_SEARCH n_abrupt) :: ptask_tail*
+  -- if $generator_request_report_at(ptask_tail*) = eps
   -- if $generator_request_render_at(S.TODO) = ((pgenfatal, n, b, ptask_result*))
   -- if $generator_request_render_return_valid(S, pgenfatal, n, b)
 def $generator_request_render_abrupt(S) = false -- otherwise
