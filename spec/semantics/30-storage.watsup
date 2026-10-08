@@ -151,7 +151,7 @@ syntax pevalcontext
 syntax pfilecontext
 syntax pdeclaration
 syntax ptraceframe
-syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_TEMP pnode | DESTRUCTION_HANDLE nat
+syntax pdestructionjob = DESTRUCTION_VALUE pnode | DESTRUCTION_TEMP pnode | DESTRUCTION_HANDLE nat | DESTRUCTION_PROP_SOURCE pproptypesource nat
 syntax pdestructionrelease = {JOBS pdestructionjob*, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool}
 syntax pdestructionframe = {PENDING nat?, VALUE poperand, CALLER pcallcontext?, FUNCTION porigin, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?}
 syntax pdestructioncleanup = {SOURCE ptask, TARGET pshutdownproducer, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, RELEASED bool}
@@ -546,7 +546,7 @@ dec $property_reference_fetch(pstate, nat, ptbytes, int) : pstate
 dec $property_reference_check(pstate, nat, ptbytes, int) : pstate
 dec $property_current_line(pstate) : int
 dec $objectprops_prune(pobjectprops*, pnode*) : pobjectprops*
-dec $proprefs_prune(ppropref*, pobjectprops*, pnode*) : ppropref*
+dec $proprefs_prune(pstate, ppropref*, pobjectprops*, pnode*) : ppropref*
 dec $cv_name(phpType32) : (nat*)?
 dec $direct_this(phpType32) : bool
 dec $global_this_error(pstate, int) : pstate
