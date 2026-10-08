@@ -2091,6 +2091,20 @@ algo/struct at3.669/4.520s, preserving current SCAN, source, compound-static
 and Fiber fields. The unchanged source1/40 cuts bridge; raw compiler evidence
 is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-hw829us3`
 and `trait266-object-struct-h1twh_vj` in the same directory.
+Own/private retained SELF now uses the same explicit data-completion proof;
+equal method descriptors cannot substitute for successful data binding. At
+`45f4d56df`/349 over `cea25ed85`, strict algo/struct pass3.621/4.570s,
+one shutdown PHP-error tuple and44 supplied NEW/phase conditions plus6 setup
+clauses pass (28.059s), including fatal/unknown denials and all four validators.
+Raw evidence under the current19 `.tools/` directory is `method-runtime-wl909uqp`,
+`closure-call-protocol-4ip6lkrl`, `trait266-object-algo-neuz73kp` and
+`trait266-object-struct-mi7_5yec`. The imported fixup guard is equivalent;
+earlier source/state cuts keep their identities.
+The reviewed350 composition `55db5a21f` over `813af1719` passes strict
+algo/struct at3.719/4.621s; source1/44 bridge with current callback witnesses
+and stdClass storage preserved. Raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-jen_5u_i`
+and `trait266-object-struct-iqurkbph` in the same directory.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,
