@@ -324,8 +324,11 @@ retains Generator/cache owners through normal fatal rendering, releases the repo
 exception before bailout, then suppresses later destructors. Normal exception-owned
 stdClass/ordinary child cleanup retains full admission and actual storage pins.
 A renderer rethrow at request C root reports/releases its builtin inner Throwable
-before abandoning the original report and real Generator/cache owners. Live-handler
-or deeper rendering, abrupt exception release, parked/escaped storage and generic
+before abandoning the original report and real Generator/cache owners. A returning
+renderer-installed handler releases its inner exception before registry restoration;
+warning callbacks can refresh the original cached string before fatal reporting.
+Three originals and 611 reached premises retain separate cuts. Throwing callbacks,
+deeper rendering, abrupt exception release, parked/escaped storage and generic
 terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current

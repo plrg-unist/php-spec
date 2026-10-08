@@ -92,7 +92,11 @@ Generator/cache/EHR carriers are abandoned. Structural future projections avoid
 heap-query recursion; full admission and malformed producer rejection remain intact.
 Actual 356 over `2b98ff468` passes strict compilation at `72d5f7353`;
 private source/state cuts retain their own inputs.
-Live-handler/deeper rendering, abrupt exception release, message warnings,
+A renderer-installed handler returning normally adds three exact fatal originals
+and 611 reached premises: inner release precedes handler restoration, warning callbacks
+receive Unknown/line0, and fatal reporting reads the original live cached string.
+Real pins/transient Weak owners, actual-head refusal and budget replay pass.
+Throwing callbacks/deeper rendering, abrupt exception release, message warnings,
 parked/escaped storage and generic terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
 guards; private source/state cuts retain their own revisions.
