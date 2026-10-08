@@ -95,7 +95,11 @@ ptask_report_tail* = (EXCEPTION_HANDLER_RESULT pexceptioncall_report) :: (GENERA
 pexceptioncall_report.OBJECT = n_old
 n_old =/= n_exception
 $throwable_live(S_report,n_old)
-$heap_owners($heap_graph(S_report),HOBJECT n_old) = 1
+$throwable_field(S_report,n_exception,"trace") = PARRAY n_trace
+$entry_lookup(S_report.ARRAYS[n_trace].ITEMS,KINT 0) = (DIRECT (PARRAY n_trace_frame))
+$entry_lookup(S_report.ARRAYS[n_trace_frame].ITEMS,KSTRING $ptascii("args")) = (DIRECT (PARRAY n_trace_args))
+$entry_lookup(S_report.ARRAYS[n_trace_args].ITEMS,KINT 0) = (DIRECT (POBJECT n_old))
+$heap_owners($heap_graph(S_report),HOBJECT n_old) = 2
 $throwable_field(S_report,n_exception,"previous") = PNULL
 pgenfatal_report.HANDLERS = S_report.EXCEPTIONHANDLERS
 $generator_request_resume_valid(S_report,pgenclose_report)
@@ -145,7 +149,7 @@ $request_fatal_stderr(S_lookup.EVENTS) = eps
 S_lookup.EXCEPTIONHANDLER =/= eps
 S_lookup.EXCEPTIONHANDLERS =/= pgenfatal_string.HANDLERS
 $throwable_live(S_lookup,n_old)
-$heap_owners($heap_graph(S_lookup),HOBJECT n_old) = 1
+$heap_owners($heap_graph(S_lookup),HOBJECT n_old) = 2
 $throwable_field(S_lookup,n_exception,"previous") = PNULL
 ''')
         previous = 'S_lookup'
