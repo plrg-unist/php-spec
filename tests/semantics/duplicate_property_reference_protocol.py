@@ -355,7 +355,7 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
-            notice_owner_assertions(initial, sources.EXPECTED[case]) if group=='notice-owner' else
+            notice_owner_assertions(initial) if group=='notice-owner' else
             receiver_cleanup_assertions(initial, sources.EXPECTED[case]) if group=='receiver-cleanup' else
             binding_assertions(initial, sources.EXPECTED[case], group=='pending-binding'))
     clauses = ['program_source = '+(directory/'program.watsup').read_text().strip(), *body]
