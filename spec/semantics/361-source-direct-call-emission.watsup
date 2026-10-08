@@ -1,0 +1,66 @@
+;; Direct named noarg calls emit INIT before ECHO. Selection uses the completed
+;; static name/image, including when operand retirement installs the function.
+dec $source_emission_noarg_call(pstate, nat, pcpath, expression) : int?
+def $source_emission_noarg_call(S, n, pcpath, NExprFuncCall name (SEQUENCE eps) metadata) = (z)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE eps) metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if z = $source_line(metadata)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_noarg_call(S, n, pcpath, expression) = eps -- otherwise
+
+def $source_echo_emission_origin(S, n, pcpath, expression) = (PORIGIN n pcpath)
+  -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
+
+dec $echo_call_site_valid(pstate, porigin, int) : bool
+def $echo_call_site_valid(S, PORIGIN n pcpath, z) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
+  -- if $echo_emit_source(S, PORIGIN n pcpath, z)
+def $echo_call_site_valid(S, porigin_site, z) = false -- otherwise
+
+;; ECHO owns its returned TMPVAR in addition to the cast callback's pin. A raw
+;; VARIABLE/CELL is borrowed and retains the existing conversion/release path.
+dec $call_echo_string_plan(pstate) : pechoresult?
+def $call_echo_string_plan(S) = ({OBJECT n, SITE porigin_site, LINE z, TAIL ptask_tail*})
+  -- if S.TODO = (EMIT z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S, n)
+  -- if $echo_call_site_valid(S, porigin_site, z)
+def $call_echo_string_plan(S) = eps -- otherwise
+def $call_echo_string_pending(S) = ($call_echo_string_plan(S) =/= eps)
+
+rule PhpStep/echo-call-string-begin: S ~> $user_string_begin(S, pechoresult.OBJECT, pechoresult.SITE, pechoresult.LINE, ECHO_CALL_RESULT pechoresult, pechoresult.TAIL)
+  -- if $call_echo_string_plan(S) = (pechoresult)
+
+dec $echo_call_result_source(pstate, pechoresult) : bool
+def $echo_call_result_source(S, pechoresult) = $echo_call_site_valid(S, pechoresult.SITE, pechoresult.LINE)
+dec $echo_call_result_suffix(ptask*, pechoresult) : bool
+def $echo_call_result_suffix(eps, pechoresult) = false
+def $echo_call_result_suffix((ECHO_CALL_RESULT pechoresult) :: ptask_tail*, pechoresult) = (pechoresult.TAIL = ptask_tail*)
+def $echo_call_result_suffix(ptask :: ptask_tail*, pechoresult) = $echo_call_result_suffix(ptask_tail*, pechoresult)
+  -- if ptask =/= ECHO_CALL_RESULT pechoresult
+dec $echo_call_result_valid(pstate, pechoresult) : bool
+def $echo_call_result_valid(S, pechoresult) = (S.ORIGIN = (pechoresult.SITE) /\ $echo_call_result_source(S, pechoresult) /\ $stringable_instance(S, pechoresult.OBJECT) /\ $echo_call_result_suffix(S.TODO, pechoresult))
+
+def $task_nodes(ECHO_CALL_RESULT pechoresult) = [HOBJECT pechoresult.OBJECT]
+def $call_task_valid(S, ECHO_CALL_RESULT pechoresult) = $echo_call_result_valid(S, pechoresult)
+def $stringify_source_consumer(ECHO_CALL_RESULT pechoresult) = true
+def $stringify_source(S, porigin_site, z, ECHO_CALL_RESULT pechoresult) = (porigin_site = pechoresult.SITE /\ z = pechoresult.LINE /\ $echo_call_result_source(S, pechoresult))
+def $stringify_consumer_receiver_valid(S, n, ECHO_CALL_RESULT pechoresult) = (n = pechoresult.OBJECT)
+def $stringify_consumer_tail_valid(S, porigin_site, z, ECHO_CALL_RESULT pechoresult, ptask_tail*) = ($stringify_source(S, porigin_site, z, ECHO_CALL_RESULT pechoresult) /\ pechoresult.TAIL = ptask_tail*)
+
+rule PhpStep/echo-call-string-result: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ECHO_CALL_RESULT pechoresult) :: ptask_tail*
+  -- if $echo_call_result_valid(S, pechoresult)
+  -- if pechoresult.TAIL = ptask_tail*
+  -- if S.RESULT = KNOWN (PSTRING n_text*)
+
+;; The consumed temporary can already be freed while its destructor operation
+;; finishes; authenticate source/line without demanding a second live owner.
+def $eager_operation_source_guard(S, pdestructionoperation) = ($echo_call_result_source(S, pechoresult) /\ pdestructionoperation.ORIGIN = (pechoresult.SITE) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = ECHO_CALL_RESULT pechoresult

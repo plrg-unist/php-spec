@@ -124,6 +124,7 @@ syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIG
 syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
 syntax pnameread = { SITE porigin, NAME nat*, LINE int }
 syntax pnamestring = { READ pnameread, OBJECT nat, TAIL ptask* }
+syntax pechoresult = { OBJECT nat, SITE porigin, LINE int, TAIL ptask* }
 syntax pcompoundstring = { PLACE plocation, RIGHT poperand, SITE porigin, LINE int, CV bool, SELF bool, SELECTED nat? }
 syntax pclosurescope, pclosurebinding
 ;; The selecting callback is borrowed history, not a retained queue owner.
@@ -310,7 +311,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | METHOD_PREP phpType20 phpType7* bool bool int | METHOD_NAME poperand phpType7* int | METHOD_RESULT | CTOR_RESULT nat
   | INTERPOLATE_COLLECT porigin nat poperand* | INTERPOLATE_CAPTURE porigin nat poperand* | INTERPOLATE_NEXT pinterpolation | INTERPOLATE_CONVERT pinterpolation | INTERPOLATE_RESOLVE pinterpolation nat* | INTERPOLATE_ARRAY_RESULT pinterpolation poperand | INTERPOLATE_AFTER pinterpolation | INTERPOLATE_FINISH porigin
   | SOURCE_ARRAY_RESULT psourceoperand | SOURCE_READ_RESULT psourceoperand | SOURCE_NAME_RESULT psourceoperand int | SOURCE_STRING_RESULT psourceoperand nat | SOURCE_STRING_READY psourceoperand nat preqbytes | SOURCE_STRING_PENDING psourceoperand preqbytes nat | SOURCE_STRING_PROPAGATE psourceoperand preqbytes nat | SOURCE_OPERAND_FAST psourceoperand nat | SOURCE_FAST_FINISH psourceoperand nat | SOURCE_HELPER_RELEASE psourceoperand psourcehelper | SOURCE_HELPER_FINISH psourceoperand psourcehelper | SOURCE_OPERAND_RELEASE psourceoperand | SOURCE_OPERAND_ENTER psourceoperand nat | SOURCE_OPERAND_THROW psourceoperand nat
-  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
+  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | ECHO_CALL_RESULT pechoresult | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int
