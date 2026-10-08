@@ -610,8 +610,13 @@ keeps its retained local interval separate from the new global scan. The unvisit
 destructor target survives retracing and runs at request cleanup. One normal source
 and 154 independent physical premises pass; original and compact old-error CLI
 runs retain 60s timeouts/zero agreement. Final 349 over `63786460e` compiles.
-Residual-tag dispatch, repeated internal
-suspension and different-active-pass public reentry remain required.
+Quiescent public resume/throw now reloads the global physical interval and calls
+residual tagged destructors in the cached worker. One compact throw source and
+119 independent physical premises pass, including both original continuations
+and exact injected-error identity. The larger resume CLI retains its 60s timeout/
+zero agreement. Final 351 over `8e513981b` compiles. Residual internal dispatch/
+overlap, repeated internal suspension
+and different-active-pass public reentry remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

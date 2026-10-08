@@ -325,6 +325,23 @@ continuations pass. D stays uncalled/marked through free/retrace and becomes
 called/marked only at request cleanup. Original 4460 and compact f093 CLI 60s
 timeouts retain zero agreement; no old cuts are renewed. Final 349 over
 `63786460e` compiles at `f1b0dea7a` with reviewed SOURCE361, exact-state pruning
-graph reuse and dynamic ARG356 intersections. Residual dispatch, overlap,
-repeated internal suspension and different-active-pass reentry remain
-required; no complete-GC or offline-rebuild claim is made.
+graph reuse and dynamic ARG356 intersections. Its residual public dispatch
+boundary is extended by the separate cut below; earlier cuts remain unchanged.
+
+Quiescent public resume/throw now reloads the global interval and calls residual
+physical tags. RESIDUAL stays set after the last tag is normalized, so callback
+validation still requires its actual slot/cursor and fresh API. BIRTH is borrowed
+metadata without an owner or access scope; public access still uses Fiber scope.
+Already-called tags normalize without another callback. Internal takeover
+explicitly rebinds the mode to its real GC caller. One compact throw source agrees
+at `ed30c2cb4`; the larger resume CLI retains its 60s timeout/zero agreement.
+Independent strict-SL groups at separate ed30 fixture cuts, finalized as73c08 have 66/53 physical premises
+(recorder 63/50, authored 60/47), including both full original continuations,
+physical slot/end/source/sequence forgeries and error owner 3→2. The first resume
+PASS row remains inside a false aggregate; the corrected throw passes separately.
+Its mistaken caller-root fixture and aborted unchanged attempt retain zero
+affected credit. Residual internal dispatch/overlap, repeated internal suspension,
+different-active-pass reentry and whole larger-source completion remain required;
+no complete-GC or offline-rebuild claim is made.
+Final 351 over `8e513981b` compiles at `3f2ff607d`, preserving reviewed GEN363
+fatal/report/trace exclusions,364/ARRAY tasks and TRAIT/PROPS additions.

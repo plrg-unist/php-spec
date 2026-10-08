@@ -184,8 +184,16 @@ physical premises at 0f007+9c8246 pass, including original old-error identity,
 owner 2→1 and full request cleanup. Original/compact old-error CLI 60s timeouts retain
 zero agreement. Final 349 over `63786460e` compiles at `f1b0dea7a`, preserving
 reviewed SOURCE361, exact-state pruning graph reuse and dynamic ARG356.
-Residual dispatch/overlap, repeated internal suspension, different-active-pass
-public reentry and broader GC remain required.
+Quiescent public resume/throw now scans residual physical tags in the current
+global interval. A persistent mode keeps normalized callback slots under physical
+authority; BIRTH owns nothing and supplies no access scope. One compact throw
+source and 119 independent physical premises (66/53) pass at separate ed30 fixture
+cuts, including both original full continuations and error owner 3→2. The larger
+resume CLI retains its 60s timeout/zero agreement. Final 351 over `8e513981b`
+compiles at `3f2ff607d`, preserving reviewed GEN363/364/TRAIT/PROPS fields.
+Residual internal dispatch/
+overlap, repeated internal suspension, different-active-pass reentry and broader
+GC remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
