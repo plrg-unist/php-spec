@@ -475,5 +475,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-active-public-cached-core-old-pending-new-throw-review-22",
+    "source": "<?php\n$w = null; $secondError = null;\nclass S351 {\n    public $s;\n    function __destruct() { global $w; $w = Fiber::getCurrent(); }\n}\n$seed = new Fiber(function () {\n    $a = new S351; $a->s = $a;\n    $b = new S351; $b->s = $b;\n    unset($a, $b); gc_collect_cycles();\n});\n$seed->start(); unset($seed);\nclass C351 {\n    public $s; public $k;\n    function __destruct() {\n        global $w, $secondError;\n        if ($this->k === 0) {\n            $firstError = new Exception('old');\n            echo 'A|', $w->throw($firstError), '|';\n            $secondError = new Exception('new');\n            $runner = new Fiber($w->throw(...));\n            try { $runner->start($secondError); }\n            catch (Throwable $caught) { echo $caught === $firstError ? 'old|' : 'wrong-old|'; }\n            $runner = null; $secondError = null;\n        } else {\n            try { Fiber::suspend('paused'); }\n            catch (Throwable $caught) { echo $caught === $secondError ? 'new|' : 'wrong-new|'; }\n        }\n    }\n}\n$a = new C351; $a->s = $a; $a->k = 0;\n$b = new C351; $b->s = $b; $b->k = 1;\nunset($a, $b);\necho gc_collect_cycles(), '|END';\n",
+    "source_sha256": "36976a609114af99c0fffed98d4c192b86f57e717a7d0838a15dbfd19ae6fdef",
+    "stdout": "A|paused|new|old|2|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
