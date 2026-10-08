@@ -76,7 +76,14 @@ $generator_request_bailout_valid(S_storage,pgenfatal_bailout)
 $generator_request_resume_valid(S_storage,pgenclose)
 ''')
     checks += fatal.normal_valid('S_storage')
+    checks += fatal.lines(r'''
+~$generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage[.USER = true])
+$generator_request_bailout_tail((INSTANCE_STORAGE_STEP pinstancestorage[.USER = true]) :: ptask_storage_tail*,pgenfatal_bailout) = eps
+$generator_request_bailout_at((INSTANCE_STORAGE_STEP pinstancestorage[.USER = true]) :: ptask_storage_tail*) = eps
+~$generator_request_resume_plain((INSTANCE_STORAGE_STEP pinstancestorage[.USER = true]) :: ptask_storage_tail*,pgenclose)
+''')
     reject(checks, 'storage_user', 'S_storage[.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.USER = true]) :: ptask_storage_tail*]', 'S_storage')
+    reject(checks, 'storage_handle', 'S_storage[.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.HANDLE = 0]) :: ptask_storage_tail*]', 'S_storage')
     checks += ['S_transfer_step = $drive_steps(S_storage,1)',
                'S_transfer_step.COMPLETION = NORMAL \\/ S_transfer_step.COMPLETION = BUDGET',
                'S_transferred = S_transfer_step[.COMPLETION = NORMAL]']
@@ -157,6 +164,8 @@ $heap_owners($heap_graph(S_bailout),HOBJECT n_old) = 1
 
 
 def main():
+    process = driver.driver.process
+    driver.driver.process = lambda argv, path, seconds, root: process(argv, path, min(seconds, 120), root)
     base.CASES = CASES
     driver.CASES = CASES
     driver.NATIVE_ERROR_PREFIXES = {NAME: b'Fatal error: Uncaught ChildExceptionPostReport363: handler'}

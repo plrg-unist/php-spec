@@ -144,6 +144,8 @@ def $generator_request_resume_position(ptask*, pgenclose) = $generator_request_r
   -- if $generator_request_report_at(ptask*) = (pgenfatal)
   -- if $generator_request_fatal_tail(ptask*, pgenfatal) = (ptask_tail*)
 def $generator_request_resume_plain((GENERATOR_REQUEST_BAILOUT pgenfatal) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
+def $generator_request_resume_plain((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
+  -- if $generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage)
 def $generator_request_resume_plain((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps
   -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
@@ -249,11 +251,15 @@ rule PhpStep/generator-request-fatal-message-required: S ~> S[.COMPLETION = UNSU
 
 def $generator_request_bailout_tail((GENERATOR_REQUEST_BAILOUT pgenfatal) :: ptask_tail*, pgenfatal) = (ptask_tail*)
 def $generator_request_bailout_tail((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*, pgenfatal) = $generator_request_bailout_tail(ptask_tail*, pgenfatal)
+def $generator_request_bailout_tail((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pgenfatal) = $generator_request_bailout_tail(ptask_tail*, pgenfatal)
+  -- if $generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage)
 def $generator_request_bailout_tail((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pgenfatal) = $generator_request_bailout_tail(ptask_tail*, pgenfatal)
   -- if ~pdestructorcall.USER
 def $generator_request_bailout_tail(ptask*, pgenfatal) = eps -- otherwise
 def $generator_request_bailout_at((GENERATOR_REQUEST_BAILOUT pgenfatal) :: ptask_tail*) = (pgenfatal)
 def $generator_request_bailout_at((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*) = $generator_request_bailout_at(ptask_tail*)
+def $generator_request_bailout_at((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*) = $generator_request_bailout_at(ptask_tail*)
+  -- if $generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage)
 def $generator_request_bailout_at((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*) = $generator_request_bailout_at(ptask_tail*)
   -- if ~pdestructorcall.USER
 def $generator_request_bailout_at(ptask*) = eps -- otherwise
