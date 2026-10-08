@@ -150,6 +150,12 @@ function warn($n,$m,$f,$l){echo "W",$l,"|",$GLOBALS["g"]->current(),":",$GLOBALS
 function &give(&$value){yield 8=>$value;yield $missingKey=>$value;}
 $value=4;$g=give($value);set_error_handler("warn");echo "C|",$g->current(),":",$g->key(),"|";$g->next();echo $g->current(),":",(int)($g->key()===null);
 ''', b'C|4:8|W3|4:8:1|4:1', 0),
+    'ordinary-previous-value-during-new-value-warning': (
+        b'''<?php
+function warn($n,$m,$f,$l){echo "W",$l,"|",$GLOBALS["g"]->current(),":",$GLOBALS["g"]->key(),":",(int)$GLOBALS["g"]->valid(),"|";return true;}
+function give(){yield 8=>1;yield $missingValue;}
+$g=give();set_error_handler("warn");echo "C|",$g->current(),":",$g->key(),"|";$g->next();echo (int)($g->current()===null),":",$g->key();
+''', b'C|1:8|W3|1:8:1|1:9', 0),
 }
 
 
