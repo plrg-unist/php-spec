@@ -181,14 +181,22 @@ def $trait_fcc_retained_new_scope(S, PORIGIN n_unit pcpath) = ((pclassdesc, pcon
   -- if $method_closure_scope_valid(S, pclosurescope)
   -- if $call_current_valid(S)
 
+dec $trait_fcc_failed_abstract(pstate, pclassdesc, pconstantclosure) : bool
+;; An explicit abstract flag is installed before trait data binding. Its source
+;; declaration, rather than a completed data phase, authenticates rejection.
+def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure_first) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if pclassdesc.ABSTRACT
+  -- if $trait_fcc_retained_new_scope(S, porigin_site) = ((pclassdesc, pconstantclosure_first))
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 (INTEGER int_flags) (NIdentifier (BYTES text_name) metadata_name) phpType44 phpType42 phpType23 metadata)
+  -- if int_flags <- [16,80]
 ;; This proof covers an implicit abstract trait requirement after data fixup.
 ;; Parent and interface binding, including implicit Stringable, remain separate
 ;; obligations. The exact copied requirements decide abstractness, not fixup alone.
-dec $trait_fcc_failed_abstract(pstate, pclassdesc, pconstantclosure) : bool
 def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure_first) = true
   -- if S.ORIGIN = (porigin_site)
-  -- if $trait_fcc_retained_new_scope(S, porigin_site) = ((pclassdesc, pconstantclosure_first))
   -- if pclassdesc.PARENT = eps /\ ~pclassdesc.ABSTRACT
+  -- if $trait_fcc_retained_new_scope(S, porigin_site) = ((pclassdesc, pconstantclosure_first))
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((pconstantclosure_first.SITE, ptraitcachecause))
   -- if $trait_fcc_failed_target(S, pconstantclosure_first) = ((pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
   -- if $trait_fcc_failed_data_at(S, pconstantclosure_first, |S.DECLARATIONS|) = ((NORMAL, pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
