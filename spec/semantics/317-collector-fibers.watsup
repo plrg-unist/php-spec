@@ -24,6 +24,8 @@ dec $gc_worker_idle(pstate, nat, pgcplan) : pstate
 dec $gc_worker_detach(pstate, nat, pgcplan) : pstate
 dec $gc_worker_guard_done(pstate, pgcguard) : pstate
 dec $gc_worker_guard_drop(pstate, pgcguard) : pstate
+dec $gc_worker_guard_zero(pstate, pgcguard) : pstate
+def $gc_worker_guard_zero(S, pgcguard) = S[.COMPLETION = UNSUPPORTED "zero-owner target after detached collector guard retirement"] -- otherwise
 dec $gc_worker_pending_tasks(ptask*, pgcguard, pgcguard) : ptask*
 dec $gc_worker_pending(pstate, pgcguard, nat) : pstate
 dec $gc_worker_run_valid(pstate, nat) : bool
@@ -479,7 +481,7 @@ def $gc_worker_guard_done(S, pgcguard) = $gc_worker_plan_set($gc_worker_guard_dr
   -- if S.GC.WORKER = (pgcguard.WORKER)
   -- if S.GC.PLAN = (pgcplan)
   -- if pgcplan_next = pgcplan[.CALL.PENDING = pgcguard.PENDING][.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_CALLED (HOBJECT pgcguard.OBJECT)]][.DONE = pgcplan.DONE ++ [HOBJECT pgcguard.OBJECT]]
-def $gc_worker_guard_done(S, pgcguard) = S[.COMPLETION = UNSUPPORTED "zero-owner target after detached collector guard retirement"]
+def $gc_worker_guard_done(S, pgcguard) = $gc_worker_guard_zero(S, pgcguard)
   -- if S.GC.WORKER =/= (pgcguard.WORKER)
   -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
   -- if $heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) = 0
@@ -551,6 +553,40 @@ def $fiber_throw_finish(S, n, n_error) = $fiber_close_back($fiber_put(S, n, $fib
   -- if $fiber_close_boundary(S)
   -- if $throwable_member(S, n_error)
   -- if $fiber_at(S, n) = (pfiber)
+
+;; The callbackless close returns before its two private control zvals retire.
+;; Admit only their real ordered release under the still-live replacement pass.
+dec $gc_worker_graceful_retiring(pstate, nat) : bool
+def $gc_worker_graceful_retiring(S, n_exit) = true
+  -- if $(n_exit < |S.OBJECTS|) /\ (HOBJECT n_exit) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_exit] = FIBERGRACEFUL n_worker n_sequence
+  -- if $(n_worker < n_exit)
+  -- if $fiber_at(S, n_worker) = (pfiber)
+  -- if pfiber.STATUS = FIBER_TERMINATED /\ pfiber.SEQUENCE = n_sequence
+  -- if pfiber.GRACEFUL /\ ~pfiber.FAILED /\ ~pfiber.RETURNED
+  -- if $fiber_record_valid(S, n_worker, pfiber)
+  -- if n_worker <- S.DESTRUCTION.CALLED
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_control) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (DESTRUCTOR_RELEASE pdestructionrelease_worker) :: (GC_WORKER_REPLACE pgcplan) :: ptask_tail*
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease_control :: pdestructionrelease_worker :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionrelease_control.USER /\ $destructor_release_valid(S, pdestructionrelease_control)
+  -- if pdestructionrelease_worker.USER /\ $destructor_release_valid(S, pdestructionrelease_worker)
+  -- if pdestructionrelease_worker.JOBS = [DESTRUCTION_VALUE (HOBJECT n_worker)]
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_exit
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if $call_task_valid(S, GC_WORKER_REPLACE pgcplan)
+  -- if pgcplan.STEPS[$nabs($(pgcplan.INDEX - 1))] = GC_DETACHED pnode
+  -- if n_owners = $heap_count(HOBJECT n_exit, $destruction_job_nodes(pdestructionrelease_control.JOBS))
+  -- if $(n_owners > 0) /\ $heap_owners($heap_graph(S), HOBJECT n_exit) = n_owners
+def $gc_worker_graceful_retiring(S, n_exit) = false -- otherwise
+def $fiber_graceful_retiring(S, n_exit) = true -- if $gc_worker_graceful_retiring(S, n_exit)
+def $closure_live_node_scoped_valid(S_live, S, HOBJECT n_exit) = true
+  -- if $(n_exit < |S.OBJECTS|) /\ (HOBJECT n_exit) <- S.ALLOCATIONS
+  -- if $(n_exit < |S_live.OBJECTS|)
+  -- if S.OBJECTS[n_exit] = FIBERGRACEFUL n_worker n_sequence
+  -- if S_live.OBJECTS[n_exit] = S.OBJECTS[n_exit]
+  -- if $gc_worker_graceful_retiring(S_live, n_exit)
 
 def $destructor_trace_suffix(S, pcallcontext) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("gc_destructor_fiber"), CLASS eps, TYPE eps, ARGS eps, HASARGS true}]
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
