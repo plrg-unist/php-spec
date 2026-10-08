@@ -250,9 +250,21 @@ class LeftLateAliasReview19 {
 $rhs = "b";
 $target = new LeftLateAliasReview19();
 $target .= $rhs;
-echo "V:", $target, ";A:", $alias, ";E;";
+echo "V:", $target, ";A:", $alias, ";";
+class LeftDetachedAliasReview19 {
+    public function __toString(): string {
+        echo "L;";
+        unset($GLOBALS['target']);
+        $GLOBALS['target'] = "changed";
+        return "a";
+    }
+}
+$target = new LeftDetachedAliasReview19();
+$alias =& $target;
+$target .= $rhs;
+echo "R:", $target, ";K:", $alias, ";E;";
 ''',
-        'expected_stdout': 'L;V:ab;A:changed;E;',
-        'discriminator': 'The initial unreferenced destination CV remains the final result slot after the left callback creates an alias.',
+        'expected_stdout': 'L;V:ab;A:changed;L;R:changed;K:ab;E;',
+        'discriminator': 'An initially plain destination CV detaches a late alias at final store; an initially referenced destination writes its original cell after the caller CV is rebound.',
     },
 ]
