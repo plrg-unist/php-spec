@@ -106,6 +106,16 @@ def $echo_call_site_valid(S, PORIGIN n pcpath, z) = true
   -- if $echo_emit_source(S, PORIGIN n pcpath, z)
 def $echo_call_site_valid(S, porigin_site, z) = false -- otherwise
 
+;; An implicit cast uses ECHO's line rather than the named call's INIT line.
+;; Its real pending/entered conversion certificate keeps ordinary calls distinct.
+def $echo_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_site), z) = true
+  -- if $echo_call_site_valid(S, porigin_site, z)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site)
+def $echo_string_context_line_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $echo_call_site_valid(S, porigin_site, pcallcontext.LINE)
+  -- if $stringify_context(S, pcallcontext)
+
 ;; ECHO owns its returned TMPVAR or REFERENCE wrapper in addition to the cast
 ;; pin. VARIABLE/BORROWED operands retain the existing borrowed release path.
 dec $echo_call_reference_operand(poperand) : bool
