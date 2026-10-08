@@ -1,0 +1,220 @@
+;; ASSIGN_STATIC_PROP_OP selects the actual property zval/reference value
+;; before either conversion. This metadata owns neither a slot nor its cell.
+dec $static_compound_selection(pstate, ppropertyid, porigin) : (porigin, ppropertydesc)?
+dec $static_compound_descriptor(pstate, pstaticcompound, porigin) : ppropertydesc?
+dec $static_compound_string(pvalue) : bool
+dec $static_compound_verify(pstate, ppropertydesc, nat?, pvalue) : bool
+dec $static_compound_capture(pstate, ppropertyid, porigin, nat) : pstaticcompound?
+dec $static_compound_entry(pclassconstantevent, pstaticcompound, porigin, int) : bool
+dec $static_compound_source(pstate, pstaticcompound, porigin, int) : bool
+dec $static_compound_writer(pstate, pstaticcompound, porigin) : pcompoundstring?
+dec $static_compound_retire_sources(ppropref*, nat, ppropertyid, nat) : ppropref*
+dec $static_compound_retire(pstate, pstaticcompound, porigin, int) : pstate
+dec $static_compound_direct(pstate, pstaticcompound, porigin, int, pvalue) : pstate
+dec $static_compound_history_target(pstate, pstaticcompound, porigin, int, (porigin, bool)*, nat, nat) : bool
+dec $static_compound_retirement_event(pclassconstantevent, ppropertyid, nat) : bool
+dec $static_compound_write_event(pclassconstantevent, prefcoercion) : bool
+dec $static_compound_write_seen(pclassconstantevent*, prefcoercion) : bool
+dec $static_compound_unchecked(pstate, pstaticcompound, porigin, int, ptbytes) : pstate
+dec $static_compound_store(pstate, pstaticcompound, porigin, int, pvalue) : pstate
+
+def $static_compound_selection(S, ppropertyid, porigin) = ((porigin_class, ppropertydesc))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 (NVarLikeIdentifier (BYTES text) metadata_name) metadata_property) expression_right metadata)
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $scoped_source_name(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], phpType19) = (ptbytes_class)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $ptlc(ptbytes_class) = $ptlc(pclassdesc.NAME)
+  -- if $class_static_select(S, porigin_class, $base64(text)) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) =/= eps
+def $static_compound_selection(S, ppropertyid, porigin) = eps -- otherwise
+def $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if $static_compound_selection(S, pstaticcompound.DECL, porigin) = ((pstaticcompound.CLASS, ppropertydesc))
+def $static_compound_descriptor(S, pstaticcompound, porigin) = eps -- otherwise
+def $static_compound_string(PSTRING ptbytes) = true
+def $static_compound_string(pvalue) = false -- otherwise
+def $static_compound_verify(S, ppropertydesc, eps, pvalue) = (ppropertydesc.TYPE =/= eps /\ ~$static_compound_string(pvalue))
+def $static_compound_verify(S, ppropertydesc, (n), pvalue) = ($propref_at(S.PROPREFS, n) =/= eps /\ ~$static_compound_string(pvalue))
+
+def $static_compound_capture(S, ppropertyid, porigin, n_entry) = (pstaticcompound)
+  -- if $static_compound_selection(S, ppropertyid, porigin) = ((porigin_class, ppropertydesc))
+  -- if $class_static_accessible(S, ppropertydesc) /\ $class_static_set_allowed(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if pstaticcompound = {CLASS porigin_class, DECL ppropertyid, CELL eps, VERIFY $static_compound_verify(S, ppropertydesc, eps, pvalue), ENTRY n_entry}
+def $static_compound_capture(S, ppropertyid, porigin, n_entry) = (pstaticcompound)
+  -- if $static_compound_selection(S, ppropertyid, porigin) = ((porigin_class, ppropertydesc))
+  -- if $class_static_accessible(S, ppropertydesc) /\ $class_static_set_allowed(S, ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if (HCELL n) <- S.ALLOCATIONS /\ n <- S.REFCELLS
+  -- if pstaticcompound = {CLASS porigin_class, DECL ppropertyid, CELL (n), VERIFY $static_compound_verify(S, ppropertydesc, (n), pvalue), ENTRY n_entry}
+def $static_compound_capture(S, ppropertyid, porigin, n_entry) = eps -- otherwise
+
+def $static_compound_source(S, pstaticcompound, porigin, z) = true
+  -- if $compound_string_site_valid(S, porigin, z)
+  -- if $(pstaticcompound.ENTRY < |S.CLASSCONSTANTHISTORY|)
+  -- if $static_compound_entry(S.CLASSCONSTANTHISTORY[pstaticcompound.ENTRY], pstaticcompound, porigin, z)
+  -- if $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if pstaticcompound.CELL = eps
+  -- if ~pstaticcompound.VERIFY \/ ppropertydesc.TYPE =/= eps
+def $static_compound_source(S, pstaticcompound, porigin, z) = true
+  -- if $compound_string_site_valid(S, porigin, z)
+  -- if $(pstaticcompound.ENTRY < |S.CLASSCONSTANTHISTORY|)
+  -- if $static_compound_entry(S.CLASSCONSTANTHISTORY[pstaticcompound.ENTRY], pstaticcompound, porigin, z)
+  -- if $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if pstaticcompound.CELL = (n)
+  -- if $(n < |S.STORE|)
+def $static_compound_source(S, pstaticcompound, porigin, z) = false -- otherwise
+def $compound_string_source(S, STATIC_COMPOUND pstaticcompound, porigin, z) = $static_compound_source(S, pstaticcompound, porigin, z)
+def $compound_string_initial_place(S, STATIC_COMPOUND pstaticcompound, porigin) = ($static_compound_capture(S, pstaticcompound.DECL, porigin, pstaticcompound.ENTRY) = (pstaticcompound))
+def $location_slot(S, STATIC_COMPOUND pstaticcompound) = $location_slot(S, CLASS_STATIC pstaticcompound.DECL)
+  -- if pstaticcompound.CELL = eps
+def $location_slot(S, STATIC_COMPOUND pstaticcompound) = S.STORE[n]
+  -- if pstaticcompound.CELL = (n)
+  -- if $(n < |S.STORE|)
+def $compound_operand_value(S, CONCAT, pvalue_left, pvalue_right, poperand, z) = $compound_live_begin(S_captured, pvalue_left, poperand, porigin, z)
+  -- if $user_string_value(S, pvalue_left) \/ $user_string_value(S, pvalue_right)
+  -- if S.ORIGIN = (porigin)
+  -- if S.LOCATION = CLASS_STATIC ppropertyid
+  -- if $static_compound_capture(S, ppropertyid, porigin, |S.CLASSCONSTANTHISTORY|) = (pstaticcompound)
+  -- if S_entered = S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCCOMPOUNDENTER pstaticcompound porigin z (|S.DECLARATIONS|)]]
+  -- if S_captured = S_entered[.LOCATION = STATIC_COMPOUND pstaticcompound]
+  -- if $compound_live_valid(S_captured, {PLACE STATIC_COMPOUND pstaticcompound, RIGHT poperand, SITE porigin, LINE z, CV false, SELF false, SELECTED eps})
+
+def $static_compound_writer(S, pstaticcompound, porigin) = (pcompoundstring)
+  -- if S.TODO = (COMPOUND_LIVE_RELEASE pcompoundstring) :: ptask*
+  -- if pcompoundstring.PLACE = STATIC_COMPOUND pstaticcompound
+  -- if pcompoundstring.SITE = porigin /\ S.ORIGIN = (porigin)
+  -- if ~pcompoundstring.CV /\ ~pcompoundstring.SELF
+  -- if $compound_live_valid(S, pcompoundstring)
+def $static_compound_writer(S, pstaticcompound, porigin) = eps -- otherwise
+def $compound_string_write(S, STATIC_COMPOUND pstaticcompound, porigin, pvalue) = $static_compound_store(S, pstaticcompound, porigin, pcompoundstring.LINE, pvalue)
+  -- if $static_compound_writer(S, pstaticcompound, porigin) = (pcompoundstring)
+def $compound_string_write(S, STATIC_COMPOUND pstaticcompound, porigin, pvalue) = S[.COMPLETION = UNSUPPORTED "invalid static compound writer"]
+  -- if $static_compound_writer(S, pstaticcompound, porigin) = eps
+
+;; These history events retain source facts, never a destination owner.
+def $static_compound_entry(CCCOMPOUNDENTER pstaticcompound porigin z n_prefix, pstaticcompound, porigin, z) = true
+def $static_compound_entry(pclassconstantevent, pstaticcompound, porigin, z) = false -- otherwise
+def $class_constant_event_ordinal(CCCOMPOUNDENTER pstaticcompound porigin z n_prefix) = n_prefix
+def $class_constant_compile_events(S, (CCCOMPOUNDENTER pstaticcompound porigin z n_prefix) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_event_ordinal(CCCOMPOUNDRETIRE pstaticcompound n porigin z n_prefix) = n_prefix
+def $class_constant_event_ordinal(CCCOMPOUNDWRITE pstaticcompound porigin z ptbytes n_prefix) = n_prefix
+def $class_constant_compile_events(S, (CCCOMPOUNDRETIRE pstaticcompound n porigin z n_prefix) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $class_constant_compile_events(S, (CCCOMPOUNDWRITE pstaticcompound porigin z ptbytes n_prefix) :: pclassconstantevent*, S_entry) = $class_constant_compile_events(S, pclassconstantevent*, S_entry)
+def $static_compound_history_target(S, pstaticcompound, porigin, z, (porigin_flag, b_flag)*, n_previous, n_prefix) = true
+  -- if $(n_previous <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
+  -- if $static_compound_source(S, pstaticcompound, porigin, z)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, pstaticcompound.CLASS) =/= eps
+  -- if $property_declaring_class(S.CLASSES, pstaticcompound.DECL) = (porigin_owner)
+  -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_owner) =/= eps
+def $static_compound_history_target(S, pstaticcompound, porigin, z, (porigin_flag, b_flag)*, n_previous, n_prefix) = false -- otherwise
+def $class_constant_history_fills(S, (CCCOMPOUNDENTER pstaticcompound porigin z n_prefix) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_prefix)
+  -- if $(pstaticcompound.ENTRY + |pclassconstantevent*| + 1 = |S.CLASSCONSTANTHISTORY|)
+  -- if $static_compound_history_target(S, pstaticcompound, porigin, z, (porigin_flag, b_flag)*, n_previous, n_prefix)
+def $class_constant_history_fills(S, (CCCOMPOUNDRETIRE pstaticcompound n porigin z n_prefix) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_prefix)
+  -- if $(pstaticcompound.ENTRY + |pclassconstantevent*| + 1 < |S.CLASSCONSTANTHISTORY|)
+  -- if pstaticcompound.CELL = eps
+  -- if $(n < |S.STORE|)
+  -- if $static_compound_history_target(S, pstaticcompound, porigin, z, (porigin_flag, b_flag)*, n_previous, n_prefix)
+  -- if $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+def $class_constant_history_fills(S, (CCCOMPOUNDWRITE pstaticcompound porigin z ptbytes n_prefix) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_prefix)
+  -- if $(pstaticcompound.ENTRY + |pclassconstantevent*| + 1 < |S.CLASSCONSTANTHISTORY|)
+  -- if pstaticcompound.CELL = (n)
+  -- if ~pstaticcompound.VERIFY
+  -- if $(n < |S.STORE|)
+  -- if $static_compound_history_target(S, pstaticcompound, porigin, z, (porigin_flag, b_flag)*, n_previous, n_prefix)
+
+;; A plain slot releases a reference installed during conversion without the
+;; ordinary type-source removal. Bind its retained constraint to that event.
+def $static_compound_retire_sources(eps, n, ppropertyid, n_event) = eps
+def $static_compound_retire_sources(ppropref :: ppropref_tail*, n, ppropertyid, n_event) = ppropref[.SOURCES = $propref_replace(ppropref.SOURCES, CLASS_PROP_SOURCE ppropertyid, COMPOUND_CLASS_PROP_SOURCE ppropertyid n_event)] :: ppropref_tail*
+  -- if ppropref.CELL = n
+def $static_compound_retire_sources(ppropref :: ppropref_tail*, n, ppropertyid, n_event) = ppropref :: $static_compound_retire_sources(ppropref_tail*, n, ppropertyid, n_event)
+  -- if ppropref.CELL =/= n
+def $static_compound_retire(S, pstaticcompound, porigin, z) = S[.PROPREFS = $static_compound_retire_sources(S.PROPREFS, n, pstaticcompound.DECL, |S.CLASSCONSTANTHISTORY|)][.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCCOMPOUNDRETIRE pstaticcompound n porigin z (|S.DECLARATIONS|)]]
+  -- if pstaticcompound.CELL = eps
+  -- if $static_compound_writer(S, pstaticcompound, porigin) = (pcompoundstring)
+  -- if pcompoundstring.LINE = z
+  -- if $class_static_at(S.CLASSSTATICS, pstaticcompound.DECL) = (pclassstatic)
+  -- if pclassstatic.STATE = PROP_VALUE (ALIAS n)
+  -- if $propref_source_present(S.PROPREFS, n, CLASS_PROP_SOURCE pstaticcompound.DECL)
+  -- if $propref_source_valid(S, n, CLASS_PROP_SOURCE pstaticcompound.DECL)
+def $static_compound_retire(S, pstaticcompound, porigin, z) = S -- otherwise
+def $static_compound_retirement_event(CCCOMPOUNDRETIRE pstaticcompound n porigin z n_prefix, ppropertyid, n) = (pstaticcompound.DECL = ppropertyid)
+def $static_compound_retirement_event(pclassconstantevent, ppropertyid, n) = false -- otherwise
+def $propref_source_valid(S, n, COMPOUND_CLASS_PROP_SOURCE ppropertyid n_event) = true
+  -- if $(n_event < |S.CLASSCONSTANTHISTORY|)
+  -- if $static_compound_retirement_event(S.CLASSCONSTANTHISTORY[n_event], ppropertyid, n)
+  -- if $class_constant_history_valid(S)
+  -- if $(n < |S.STORE|) /\ n <- S.REFCELLS /\ (HCELL n) <- S.ALLOCATIONS
+  -- if $class_static_active_desc(S, S.CLASSNAMES, ppropertyid) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $typed_exact(ppropertydesc.TYPE, pvalue) \/ $typed_object_exact(S, ppropertydesc.TYPE, pvalue) \/ $reference_coercion_value(S, n, pvalue) \/ $container_init_value(S, n, pvalue) \/ $parameter_backing_value(S, n, pvalue)
+def $propref_descriptor(S, COMPOUND_CLASS_PROP_SOURCE ppropertyid n_event) = $class_static_active_desc(S, S.CLASSNAMES, ppropertyid)
+def $propref_source_same(COMPOUND_CLASS_PROP_SOURCE ppropertyid n_event, CLASS_PROP_SOURCE ppropertyid_target) = (ppropertyid = ppropertyid_target)
+def $propref_removal_finish(pproptypesource*, CLASS_PROP_SOURCE ppropertyid, COMPOUND_CLASS_PROP_SOURCE ppropertyid n_event) = $propref_replace(pproptypesource*, CLASS_PROP_SOURCE ppropertyid, COMPOUND_CLASS_PROP_SOURCE ppropertyid n_event)
+
+;; The initial-string/untyped REF path bypasses verification even after its
+;; callback attaches new sources. This producer is separate from return coercion.
+def $reference_coercion_admission(S, n, porigin, z, ptbytes) = true
+  -- if S.TODO = (COMPOUND_LIVE_RELEASE pcompoundstring) :: ptask*
+  -- if pcompoundstring.PLACE = STATIC_COMPOUND pstaticcompound
+  -- if $static_compound_writer(S, pstaticcompound, porigin) = (pcompoundstring)
+  -- if pstaticcompound.CELL = (n)
+  -- if ~pstaticcompound.VERIFY
+  -- if pcompoundstring.LINE = z
+  -- if $(n < |S.STORE|) /\ n <- S.REFCELLS /\ (HCELL n) <- S.ALLOCATIONS
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN (PSTRING ptbytes)
+def $static_compound_unchecked(S, pstaticcompound, porigin, z, ptbytes) = S_written[.CLASSCONSTANTHISTORY = S_written.CLASSCONSTANTHISTORY ++ [CCCOMPOUNDWRITE pstaticcompound porigin z ptbytes (|S.DECLARATIONS|)]]
+  -- if pstaticcompound.CELL = (n)
+  -- if $reference_coercion_admission(S, n, porigin, z, ptbytes)
+  -- if S_written = $reference_coercion_write(S, n, porigin, z, ptbytes)
+def $static_compound_unchecked(S, pstaticcompound, porigin, z, ptbytes) = S[.COMPLETION = UNSUPPORTED "invalid static compound reference producer"] -- otherwise
+def $static_compound_write_event(CCCOMPOUNDWRITE pstaticcompound porigin z ptbytes n_prefix, prefcoercion) = (pstaticcompound.CELL = (prefcoercion.CELL) /\ porigin = prefcoercion.SITE /\ z = prefcoercion.LINE /\ ptbytes = prefcoercion.VALUE /\ ~pstaticcompound.VERIFY)
+def $static_compound_write_event(pclassconstantevent, prefcoercion) = false -- otherwise
+def $static_compound_write_seen(eps, prefcoercion) = false
+def $static_compound_write_seen(pclassconstantevent :: pclassconstantevent_tail*, prefcoercion) = ($static_compound_write_event(pclassconstantevent, prefcoercion) \/ $static_compound_write_seen(pclassconstantevent_tail*, prefcoercion))
+def $reference_coercion_row_valid(S, prefcoercion) = true
+  -- if $(prefcoercion.CELL < |S.STORE|) /\ prefcoercion.CELL <- S.REFCELLS /\ (HCELL prefcoercion.CELL) <- S.ALLOCATIONS
+  -- if S.STORE[prefcoercion.CELL] = DEFINED (PSTRING prefcoercion.VALUE)
+  -- if $static_compound_write_seen(S.CLASSCONSTANTHISTORY, prefcoercion)
+  -- if $class_constant_history_valid(S)
+
+def $static_compound_direct(S, pstaticcompound, porigin, z, pvalue) = S_retired[.CLASSSTATICS = $class_static_set(S_retired.CLASSSTATICS, pstaticcompound.DECL, PROP_VALUE (DIRECT pvalue))][.RESULT = KNOWN pvalue]
+  -- if S_retired = $static_compound_retire(S, pstaticcompound, porigin, z)
+def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = $static_compound_direct(S, pstaticcompound, porigin, z, pvalue)
+  -- if pstaticcompound.CELL = eps /\ ~pstaticcompound.VERIFY
+def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = $static_compound_direct(S_converted, pstaticcompound, porigin, z, pvalue_new)
+  -- if pstaticcompound.CELL = eps /\ pstaticcompound.VERIFY
+  -- if $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if ptypeconversion = $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S))
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_converted = $typed_apply(S, ptypeconversion, z)
+  -- if S_converted.COMPLETION = NORMAL
+  -- if S_converted.RESULT = KNOWN pvalue_new
+def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = S_converted
+  -- if pstaticcompound.CELL = eps /\ pstaticcompound.VERIFY
+  -- if $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if ptypeconversion = $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S))
+  -- if ptypeconversion =/= TYPEREJECT
+  -- if S_converted = $typed_apply(S, ptypeconversion, z)
+  -- if S_converted.COMPLETION =/= NORMAL
+def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = $class_static_store_ordinary(S, pstaticcompound.CLASS, ppropertydesc.NAME, pvalue, z)
+  -- if pstaticcompound.CELL = eps /\ pstaticcompound.VERIFY
+  -- if $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S)) = TYPEREJECT
+def $static_compound_store(S, pstaticcompound, porigin, z, PSTRING ptbytes) = $static_compound_unchecked(S, pstaticcompound, porigin, z, ptbytes)
+  -- if pstaticcompound.CELL = (n)
+  -- if ~pstaticcompound.VERIFY
+def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = $write_cell_checked(S, n, pvalue, z)
+  -- if pstaticcompound.CELL = (n)
+  -- if pstaticcompound.VERIFY
+  -- if $(n < |S.STORE|) /\ n <- S.REFCELLS /\ (HCELL n) <- S.ALLOCATIONS
+def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = S[.COMPLETION = UNSUPPORTED "static compound storage integrity"] -- otherwise
