@@ -2065,6 +2065,18 @@ Final356 projection `e65e35e2a` over `43890afab` passes strict algo/struct at
 3.869/4.871s, preserving current assertion/Generator fields and dispatch.
 Source2/34+20 bridge unchanged; raw publish19 compiler evidence is
 `.tools/trait266-object-algo-l1ao1xno` and `trait266-object-struct-qztdz26_`.
+Literal private constructor denial now precedes receiver compatibility even for
+an unrelated active object. At `f515fd26b`/356 over `976a55232`, strict algo/struct
+pass3.769/4.770s; one new normal original and24 genuine clauses plus6 setup pass
+(5.773s), including the live receiver, exact rejection/no argument effects and
+all four global validators. Current19 raw evidence is `method-runtime-seg05ujm`,
+`closure-call-protocol-2hk6y4ou`, `trait266-object-algo-c7g31qwq` and
+`trait266-object-struct-g7x1yycz`; original normal mismatch `2oh2ovm1` retains
+zero agreement. Prior constructor/protected/retained-FCC cuts are unchanged.
+Final356 projection `4366f4cae` over `02bff2460` passes strict algo/struct at
+3.769/4.823s, preserving current storage-release guards. Source1/24 bridge
+unchanged; publish19 raw compiler evidence is `trait266-object-algo-n0wtdaju`
+and `trait266-object-struct-prg8u30p` under its `.tools/` directory.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and

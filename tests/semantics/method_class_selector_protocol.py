@@ -466,5 +466,49 @@ CASES['published-abstract-constructor-call-before-arguments'] = {
     'checks': ABSTRACT_CONSTRUCTOR_CALL,
 }
 
+PRIVATE_CTOR_UNRELATED_STAGE = ('S.TODO = (SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) phpType7* z) :: ptask_tail* -- if $ptlc($base64(text_class)) = '
+ '$ptascii("a") -- if $ptlc($base64(text_method)) = $ptascii("__construct") -- if S.ORIGIN = '
+ '(porigin_site) -- if S.CURRENT = (pcallcontext) -- if pcallcontext.RECEIVER = (n_receiver) -- if '
+ '$class_named(S.CLASSNAMES, $ptascii("b")) = (porigin_b) -- if $class_named(S.CLASSNAMES, '
+ '$ptascii("a")) = (porigin_a) -- if $class_at(S.CLASSES, porigin_a) = (pclassdesc_a)')
+# All24 clauses use the genuine B.go receiver and A constructor selection.
+PRIVATE_CTOR_UNRELATED = ['$scoped_class_task(S, NName (BYTES text_class) metadata_class, NIdentifier (BYTES text_method) '
+ 'metadata_method, phpType7*, z)',
+ '$call_task_valid(S, SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) phpType7* z)',
+ 'pclassdesc_a.NAME = $ptascii("A") /\\ pclassdesc_a.KIND = "class" /\\ ~pclassdesc_a.ABSTRACT',
+ '$scoped_source_name(S, NName (BYTES text_class) metadata_class) = (pclassdesc_a.NAME)',
+ '$method_named(pclassdesc_a.METHODS, $ptascii("__construct")) = (pmethoddesc_ctor)',
+ 'pmethoddesc_ctor.OWNER = porigin_a /\\ ~pmethoddesc_ctor.ABSTRACT /\\ ~pmethoddesc_ctor.STATIC '
+ '/\\ pmethoddesc_ctor.VISIBILITY = PROPERTY_PRIVATE',
+ '~$method_accessible(S, pmethoddesc_ctor, (porigin_b))',
+ '$scoped_ctor_arm(S)',
+ 'pcallcontext.LEXICAL_CLASS = (porigin_b) /\\ pcallcontext.CALLED_CLASS = (porigin_b)',
+ 'S.OBJECTS[n_receiver] = INSTANCE porigin_b /\\ (HOBJECT n_receiver) <- S.ALLOCATIONS',
+ '~$scoped_receiver_valid(S, porigin_a, pmethoddesc_ctor, (n_receiver))',
+ '$scoped_ctor_private_denied(S, pmethoddesc_ctor, (n_receiver))',
+ 'phpType7* = (NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument) '
+ ':: phpType7_tail*',
+ 'phpType7_tail* = eps',
+ '$origin_node(S.SOURCES, porigin_site) = (NExprStaticCall (NName (BYTES text_class) '
+ 'metadata_class) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) '
+ 'metadata_call)',
+ '$call_current_valid(S)',
+ 'PhpStep: S ~> S_rejected',
+ 'S_rejected.COMPLETION = THROWN "Error" $ptascii("Cannot call private A::__construct()") z',
+ 'S_rejected.TODO = eps /\\ S_rejected.CURRENT = S.CURRENT',
+ 'S_rejected.OBJECTS = S.OBJECTS /\\ S_rejected.ALLOCATIONS = S.ALLOCATIONS /\\ S_rejected.EVENTS '
+ '= S.EVENTS',
+ '$class_constant_state_valid(S_rejected)',
+ '$call_descriptors_valid(S_rejected)',
+ '$declaration_history_valid(S_rejected)',
+ '$heap_valid($heap_graph(S_rejected))']
+CASES['private-constructor-unrelated-receiver-before-arguments'] = {
+    'source': SOURCES['private-constructor-unrelated-receiver-before-arguments'],
+    'stage': PRIVATE_CTOR_UNRELATED_STAGE,
+    'checks': PRIVATE_CTOR_UNRELATED,
+}
+
 if __name__ == '__main__':
     protocol.run(CASES, (Path(__file__), CATALOGUE))
