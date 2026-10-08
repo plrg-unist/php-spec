@@ -725,9 +725,13 @@ normal and throwing cleanup preserve that reference. Late scalar warnings retain
 the iterator owner through callbacks and remove it on normal or abrupt completion.
 A fresh original and 92 reached premises cover explicit GC while the saved binding
 continuation retains its selected cell; the318 composition retains Fiber API captures.
-Released-CV mutation, wider callback-capable containers, binding-time exit and
-expired notice buckets remain explicit boundaries; full foreach coverage remains
-required.
+Previous plain-CV arrays now release ordinary and nested child destructors in
+order before installing the selected reference, including after a child throws.
+Six new originals and 284 reached premises check shared owners, selected-property
+mutation/deletion and exception chaining. Released-CV mutation, raw dying-array
+reads, callback-capable previous reference wrappers and internal Generator/Fiber
+retirement, binding-time exit and expired notice buckets remain explicit boundaries;
+full foreach coverage remains required.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference

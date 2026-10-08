@@ -587,9 +587,17 @@ premises at87f9b399a. The actual318 join at `f643ed070` passes strict
 initialization and 92 fresh GC/saved-COMMIT premises; one separately tested
 original collects during the previous CV destructor with exact normal output.
 The331 schema/FCC seam is independently reviewed; earlier cuts keep their inputs.
-HOBJECT-owner forgeries fail public reference-foreach admission. Mutation of the released CV, callback-capable container retirement,
-binding-time exit, nonordinary replacement objects and expired notice buckets
-remain explicit boundaries. Bounded source/current-address admission is not a
+HOBJECT-owner forgeries fail public reference-foreach admission. Previous plain-CV
+array retirement now stages ordinary child destructors in physical order,
+including nested arrays and continuation after
+a child throws. Six new exact normals at `ccafc5d65` and 139/145 reached premises
+at fixture-corrected `368bed28a` cover surviving array/reference owners, selected
+property mutation/deletion and B/previous=A exception chaining; strict318 initialization
+and the actual321 join at `be7edc9e2` pass. Released-CV mutation, raw dying-array reads, callback-capable previous
+reference wrappers, internal Generator/Fiber descendants, binding-time exit, nonordinary replacement objects
+and expired notice buckets remain Unsupported. The preserved `is_array` original
+now stops at builtin dispatch and retains zero agreement credit. Bounded
+source/current-address admission is not a
 historical reachability proof. The concise
 [review](coverage/semantics/duplicate-property-reference-review.json) preserves
 original mismatches and the uncredited strlen observer; no earlier318 campaign
