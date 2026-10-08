@@ -212,4 +212,47 @@ echo "P:", $holder->slot, ";R:", $rhs, ";E;";
         'expected_stdout': 'L;D:aafter;L;P:aafter;R:after;E;',
         'discriminator': 'Ordinary array-element and plain-property compound opcodes both read the RHS CV after left conversion.',
     },
+    {
+        'id': 'compound-concat-rhs-reference-return-owner',
+        'source': '''<?php
+class LeftReturnedRhsReview19 {
+    public function __toString(): string {
+        echo "L;";
+        unset($GLOBALS['rhs']);
+        $GLOBALS['rhs'] = "after";
+        return "a";
+    }
+}
+function &referenceRhsReview19() {
+    global $rhs;
+    echo "Q;";
+    return $rhs;
+}
+$rhs = "before";
+$target = new LeftReturnedRhsReview19();
+$target .= referenceRhsReview19();
+echo "V:", $target, ";R:", $rhs, ";E;";
+''',
+        'expected_stdout': 'Q;L;V:abefore;R:after;E;',
+        'discriminator': 'An accepted untyped reference-return helper preserves its received RHS cell across caller CV removal and rebinding.',
+    },
+    {
+        'id': 'compound-concat-late-left-alias',
+        'source': '''<?php
+class LeftLateAliasReview19 {
+    public function __toString(): string {
+        echo "L;";
+        $GLOBALS['alias'] =& $GLOBALS['target'];
+        $GLOBALS['target'] = "changed";
+        return "a";
+    }
+}
+$rhs = "b";
+$target = new LeftLateAliasReview19();
+$target .= $rhs;
+echo "V:", $target, ";A:", $alias, ";E;";
+''',
+        'expected_stdout': 'L;V:ab;A:changed;E;',
+        'discriminator': 'The initial unreferenced destination CV remains the final result slot after the left callback creates an alias.',
+    },
 ]
