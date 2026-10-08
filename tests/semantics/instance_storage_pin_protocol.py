@@ -193,9 +193,11 @@ def typed_assertions(initial, expected):
         'S_gc_duplicate = S_first[.GC.BUFFER = S_first.GC.BUFFER ++ [GC_ROOT (HOBJECT n_parent)]]',
         '~$gc_buffer_valid(S_gc_duplicate, S_gc_duplicate.GC)',
         'S_replay = S_first[.OBJECTPROPS = $objectprops_set(S_first.OBJECTPROPS, n_parent, pinstancestorage.SLOTS)]',
-        '~$instance_storage_basic(S_replay, pinstancestorage[.NEXT = 1])']
+        '~$instance_storage_basic(S_replay, pinstancestorage[.NEXT = 1])',
+        'S_future_read = $property_read(S_first, POBJECT n_parent, ppropertyslot_number.NAME, 1)',
+        'S_future_read.COMPLETION = NORMAL',
+        'S_future_read.RESULT = KNOWN (PINT 7)']
     for call in [
-        '$property_read(S_first, POBJECT n_parent, ppropertyslot_number.NAME, 1)',
         '$property_store_value(S_first, n_parent, ppropertyslot_number.NAME, PINT 4, 1)',
         '$property_unset(S_first, POBJECT n_parent, ppropertyslot_number.NAME, 1)',
         '$base_find(S_first, BASE_PROPERTY (POBJECT n_parent) ppropertyslot_number.NAME, 1)',
