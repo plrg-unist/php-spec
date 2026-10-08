@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 360 closes normal request delegations, detaching real input owners before
+finally while retaining independent CV owners and shared store order. Delegated
+CURRENT is the physical value slot; consumed-cell history is tied to the object's
+own storage stage. Nested normal handlers retain inner cache/close pins and admit
+the authenticated queued outer source frame. Eight exact normals and 553 new
+strict premises pass at separate cuts; malformed actual handlers remain rejected.
+Original Unsupported/failed cuts stay zero. Abrupt terminal cleanup, parked/escaped
+storage and broader lifecycle work remain required.
+[Ledger](coverage/semantics/generator-request-delegation-review.json).
+
 Generator355 keeps one physical closed-storage pin through Closure/value/key/return
 release. Child callbacks retain weak Generator liveness and readable RETURN;
 consumed Closure/reference metadata adds no repeated owner. Existing257/303
@@ -15,7 +25,7 @@ reuse. Six exact normals and 784 new strict premises pass at `b62f360d7`; the tw
 actually affected maintained storage queues separately pass 209 at `d67773039`.
 Actual342 over `dc68616a3` passes strict compilation at `f78a1a06b`;
 reviewed current-parent composition preserves the separate source/state cuts.
-Original failures remain zero; the earlier349 11/663 retains its own cuts. Delegation, abrupt
+Original failures remain zero; the earlier349 11/663 retains its own cuts. Abrupt
 terminal cleanup, parked/escaped storage and nested ordinary-object RETURN reads
 remain required. [Ledger](coverage/semantics/generator-storage-pin-review.json).
 
