@@ -363,6 +363,39 @@ the first failure;
 relocation adds no execution credit. The earlier rich whole-source and full63
 literal runs remain unconfirmed zero credit.
 
+## Static API first-class callables
+
+Module331 models first-class `Fiber::getCurrent` and `Fiber::suspend` captures.
+The Closure keeps its exact capture source and selected method-name snapshot;
+class aliases, dynamic names, object-style input, clone and `__invoke` aliases
+preserve that selection. Static object-style input is nonowning and may retire.
+
+Direct calls own one temporary Closure and their genuine C argument buffer.
+Explicit `__invoke` calls retain the wrapper Closure and copied outer buffer as
+well as the inner call owner. Normal resume and injected throw release those owners
+in engine order, so an argument destructor can still observe the Closure.
+Direct Closure callbacks use a distinct C-root owner alongside the Fiber's raw
+callback; their immutable target pointer adds no owner. Admission authenticates
+source, selected kind, exact buffer/tail pairing and flat active/saved task trees,
+rejecting heap-identical substitutions and hidden runtime-owner markers.
+
+The [static-callable ledger](../../coverage/semantics/fiber-static-api-callables-review.json)
+keeps the ten normal originals at their separate private cuts, strict309 and
+source-reached author/independent checks. Maintained scripts create checked
+original fixtures and stop at the first failure. Wider API captures, binding and
+lifecycle consumers remain required; this cut does not close the rich whole-source,
+full63 or final offline validation gates.
+
+The actual317 composition over `e91fc6d6` passes strict compilation and
+initialization while preserving newer collector/source/GC guards. Earlier source
+and state cuts keep their original revisions and gain no renewed runtime credit.
+
+Engine routes are `zend_create_fake_closure`, `zend_closure_get_closure` and
+`zend_closure_internal_handler` in `Zend/zend_closures.c`,
+`zend_call_function`/`zend_call_known_fcc` in `Zend/zend_execute_API.c`, the
+ordinary dynamic/method call handlers in `Zend/zend_vm_def.h`, and the static API
+handlers and C callback entry in `Zend/zend_fibers.c`.
+
 ## Required follow-ons
 
 Five destruction control lists move with each VM stack: calls, releases, frames,
@@ -371,7 +404,7 @@ cleanup and property caches stay shared. Request scans, fatal cleanup, GC and
 suppressed `exit` in a destroyed Fiber remain required consumers.
 
 `getReturn` after graceful close without an actual return, request/fatal cleanup,
-wider core internal callback bodies, reference forwarding, API callable/FCC entry,
+wider core internal callback bodies, reference forwarding, wider API callable/FCC entry,
 `start` unpacking and switching during initialization/source loading remain
 required. The first transfer domain rejects active or saved constant/default and
 autoload initialization, and active Generator execution, including switches in
