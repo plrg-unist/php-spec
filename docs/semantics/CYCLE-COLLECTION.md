@@ -135,3 +135,6 @@ cuts retain their identities in the ledger. The actual318 parent composition
 passes strict compilation/initialization with298 modules and one fresh exact
 reporting-Fiber/handler original: nested collection stays busy0, masks restore,
 and the real cycle count1/weak retirement completes.
+The final additive304 publication preserves newer parameter receive/source,
+ArrayAccess reference/borrowed-Unset and literal-this emission schemas and passes
+the required combined compiler. These disjoint joins add no source/state renewal.

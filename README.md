@@ -456,7 +456,9 @@ target/pending guards, replacement batches and authenticated callbackless idle
 retirement. Thirteen exact originals and two independent strict-SL groups with
 78/68 premises pass at their recorded cuts. The actual318 parent passes strict
 298 compilation/initialization and one fresh reporting-Fiber/handler source,
-including nested busy GC0 and real count1/weak retirement. Larger exception-source 60s timeouts
+including nested busy GC0 and real count1/weak retirement. The final304 additive
+join preserves newer call/source schemas and passes combined compilation.
+Larger exception-source 60s timeouts
 remain separate from the compact trace/pending controls. Wider internal graphs,
 public idle-worker resumption, detached zero-owner guard retirement, automatic
 thresholds and wider freeing remain open.

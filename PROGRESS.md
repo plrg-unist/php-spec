@@ -87,7 +87,10 @@ source-less traces/scope and callbackless idle retirement. Thirteen exact normal
 and two strict-SL groups with 78/68 premises pass at separate cuts with 292 modules.
 The actual318 parent passes strict298 compilation/initialization and one fresh
 reporting-Fiber/handler original, preserving global busy0 through nested callbacks,
-mask restoration and real count1/weak retirement. The fresh explicit-INI source discriminates
+mask restoration and real count1/weak retirement. The final304 additive join
+preserves newer default-receive, Get/reference and literal-this source schemas
+and passes the required combined compiler without source/state renewal.
+The fresh explicit-INI source discriminates
 cached mask reuse. The two larger 60s model timeouts and native-only detached
 zero-owner path retain zero agreement. Wider internal graphs, idle-worker public
 resumption, automatic thresholds, resurrection and final request freeing remain
