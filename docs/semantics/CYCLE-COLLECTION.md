@@ -51,9 +51,13 @@ from the outer collector's pending error. Zero-owner targets use325's borrowed
 retention, including weak reacquisition followed by immediate ordinary release.
 Bound direct and C-root calls authenticate the real saved result tail that owns
 their Closure. Destructor visibility uses the internal `Fiber` API scope, and
-access errors retain that API's file, line and caller trace. Suspending inside
-this cached public callback remains explicitly Unsupported; it must retain the
-cache and live scan rather than take317's internal detach/replacement loop.
+access errors retain that API's file, line and caller trace. A callback may
+suspend while retaining this cache and live scan. Its parked VM authenticates the
+real suspend continuation and actual saved-frame/origin projections; reentry
+within the same live physical pass rebinds the fresh public API in the owning
+guard copies. An old pending guard error stays separate from a fresh injected
+error. Post-pass reentry and internal collector takeover remain explicit
+Unsupported boundaries;317 cannot overwrite the parked callback.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -146,8 +150,8 @@ under an `AT` wrapper. Historical snapshots cannot authorize arbitrary callbacks
 zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
-Explicit boundaries remain for wider internal lifetime graphs, suspension inside
-a cached public collector callback, active-pass failed close and wider
+Explicit boundaries remain for wider internal lifetime graphs, post-pass public
+callback reentry/internal takeover, active-pass failed close and wider
 callbackless close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
@@ -265,3 +269,17 @@ ownership through scan/guard entry and real exception identity. Both affected
 originals agree at `0df2d161e`/331; final336 over `6e107993a` compiles at `d04ff9c54`.
 Parse/fixture stops and the larger captured-source60s timeout retain zero affected
 credit; earlier cuts are unchanged and no offline rebuild is claimed.
+
+Cached callback suspension retains one exact normal source agreement at
+`f6dc79eba` and two independent strict-SL groups with 125/103 physical premises
+(runner 118/96, authored 115/93) at the recorded 5d7/0ffc fixture cuts. The groups
+check live caller versus parked VM authority, actual frame/result/origin views,
+sequence/copy/slot/source/post-pass forgeries, fresh captured caller owners,
+old 2/new 4 exception owners, one-step replay and exact normal continuations.
+The compact source keeps its new error in the final global reference cell with
+one owner; the old error, runner and capture retire. Final 341 over `dc68616a3`
+compiles at `9774f1efb`; the origin comparison factor and introduced parent rules
+are independently reviewed pointwise. Both captured source variants retain60s
+CLI timeouts with zero source agreement, including the final retry. Earlier
+state timeouts/incorrect final-retirement assertions retain zero affected credit.
+No old cuts are renewed and no offline rebuild is claimed.

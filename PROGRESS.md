@@ -48,17 +48,16 @@ reviewed Generator349, collector345, source350, trait347 and property/ownership
 interactions; earlier source/state cuts retain their inputs.
 [Start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json).
 
-Collector345 runs remaining marked destructors in the cached worker's retained
-physical interval during public resume/throw, preserving the outer collector
-cursor and pending exception. Borrowed zero-owner targets support real weak
-reacquisition. Captured APIs authenticate their owning saved caller; nonpublic
-destructor access uses `Fiber` scope and the actual public API error location.
-Two direct originals/274 historical physical premises and two affected
-originals/177 new premises retain separate cuts; one incorrect earlier scope
-premise is superseded. Final336 over `6e107993a` compiles at `d04ff9c54` with
-reviewed current-parent intersections. Retained timeouts and fixture stops have
-zero affected credit. Suspension inside a cached public callback remains required.
-[Ledger](coverage/semantics/cycle-collection-review.json).
+Collector345 preserves cached callbacks across suspension and genuine reentry
+within the same live physical pass. The parked VM authenticates its real suspend
+and saved-frame projections; reentry binds the fresh public API without detaching
+or adding an owner. One normal source and 228 independent physical premises pass
+at separate cuts, including captured old/new exception priority and exact full
+continuations. Both captured source variants retain 60s CLI timeouts/zero agreement;
+fixture stops remain zero affected credit. Final 341 over `dc68616a3` compiles at
+`9774f1efb`, with reviewed pointwise origin-cost and current-parent compatibility.
+Earlier345 cuts remain separate. Post-pass reentry/internal takeover and broader
+GC remain required. [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
@@ -449,9 +448,9 @@ and passes the required combined compiler without source/state renewal.
 The fresh explicit-INI source discriminates
 cached mask reuse. The two larger 60s model timeouts retain zero agreement.
 Module325 adds separately tested detached zero-owner retention, real reacquisition
-and active unowned-close retirement. Wider internal graphs, cached public callback
-suspension, automatic thresholds, resurrection and final request freeing remain
-required.
+and active unowned-close retirement. Wider internal graphs, post-pass public
+callback reentry/internal takeover, automatic thresholds, resurrection and final
+request freeing remain required.
 
 Undefined source operands293 resume genuine warnings with fixed null after
 handler writes, preserving direct empty-path errors and earlier computed-name

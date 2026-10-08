@@ -532,7 +532,7 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, suspension inside a public collector callback, automatic
+graphs, post-pass public callback reentry/internal takeover, automatic
 thresholds and wider freeing remain open. Module332 adds quiescent public idle
 resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
@@ -548,7 +548,12 @@ Zero-owner targets remain borrowed; real weak reacquisition can free them.
 Captured APIs retain their genuine caller owners, and protected/private access
 uses native `Fiber` scope. Four exact originals and separate274/177 reached
 premises pass; one earlier scope assertion is superseded. Final336 compilation
-preserves the accepted current parent. Public callback suspension remains required.
+preserves the accepted current parent. Cached callbacks now suspend and reenter
+within the same live physical pass, preserving the cache and rebinding the fresh
+public API. One normal source and 228 reached physical premises pass; captured
+old/new exception priority completes in the state checks while its source CLI
+retains a 60s timeout with zero agreement. Final 341 compilation preserves `dc68616a3`.
+Post-pass reentry and internal takeover remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

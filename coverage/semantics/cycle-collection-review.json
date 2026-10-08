@@ -226,7 +226,7 @@
   },
   "boundaries": [
     "Automatic threshold collection",
-    "Wider internal lifetime graphs and suspension inside a cached public collector callback",
+    "Wider internal lifetime graphs and post-pass public callback reentry/internal collector takeover",
     "Active-pass failed-finally and wider callbackless close-return contexts beyond the reviewed normal and failed quiescent tails",
     "Initially free non-destructor resurrection and new zero-owner destructor target after retrace",
     "Arbitrary synthetic producer reachability beyond local TEMP receipt consistency",
@@ -854,7 +854,7 @@
       "larger_captured_source": "gc-public-scan-21-source-xbw2pot5/report.json / shutdown-review-iv_jb0w8/report.json: originalc8ad source hit internal60s model timeout. Native6wki9vef passes; original remains selectable, excluded from default source target. Compact909e is a distinct accepted original.",
       "captured_fixture_roots": "shutdown-state-review-b5m_i4h9/report.json C-root row incorrectly asserted same heap after changing captured config OWNER. Corrected control expects real root difference and coherently forges RESULT/FINISH for same-heap rejection; only affected row reran.",
       "old_interval_preparation": "gc-active-idle-interval-review-preparation-20.json remains unexecuted/zero credit;345 uses distinct first-observed originals.",
-      "next_cached_suspension": "gc-public-scan-cached-suspend-original-22.json / collector-active-public-cached-callback-suspend-resume-22, SHA460f8ece112d934338cdbfc6dbcdcaa1eb05cb47eb52625e091e989c30564d5c, unexecuted/zero credit."
+      "next_cached_suspension": "Original22 was unexecuted at this21 cut. Its later first-native and normal agreement are recorded separately in cached_public_suspension345; no retroactive21 credit."
     },
     "recovery": [
       "python3 tests/semantics/cycle_collection_sources.py --match collector-active-idle-stale-interval-bare-resume-21",
@@ -862,6 +862,93 @@
       "python3 tests/semantics/cycle_collection_review.py --match collector-active-interval --exclude-match collector-active-interval-bound-core-throw-review-21",
       "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-public-scan-bound-core-caller-and-guard --case collector-public-scan-protected-destructor-uses-fiber-scope"
     ],
-    "boundaries": "Cached public callback suspension/reentry remains explicit Unsupported and required. Active-pass failed close, wider internal graphs, automatic thresholds, broader GC/WeakMap/request freeing and the fresh combined offline rebuild remain open. Paused returns verification is unchanged."
+    "boundaries": "Cached suspension was Unsupported at this cut; cached_public_suspension345 separately adds same-live-pass reentry. Post-pass reentry/internal takeover, active-pass failed close, wider graphs/thresholds/freeing and fresh offline rebuild remain required. Paused returns verification is unchanged."
+  },
+  "cached_public_suspension345": {
+    "status": "Independently reviewed same-live-pass suspension/reentry; one normal source and 228 reached physical premises PASS; final 341 compiler PASS; captured source CLI timeouts have zero agreement",
+    "scope": "Keep the real cached worker/guard/physical scan across public callback suspension. Authenticate the stored suspend VM and actual saved frame/result/origin projections, then rebind owning guard copies to the genuine fresh public API under the same live pass. Keep old guard pending and fresh injection owners separate. No internal detach, supplied history or extra owner.",
+    "test_root": ".tools/gc-quiescent-close-18",
+    "raw_root": ".tools/gc-quiescent-close-18/.tools",
+    "engine": [
+      "Zend/zend_gc.c::{gc_destructor_fiber,gc_call_destructors,gc_call_destructors_in_fiber}",
+      "Zend/zend_fibers.c::{zend_fiber_suspend,zend_fiber_resume,zend_fiber_delegate_transfer_result}"
+    ],
+    "normal_source": {
+      "revision": "f6dc79ebae34f19fcc49732def552eeeeaa12c26",
+      "modules": 336,
+      "wrapper": "gc-cached-public-22-source-dqb719rk/report.json",
+      "accepted_child": "shutdown-review-o73z_xpf/report.json",
+      "id": "collector-active-public-cached-callback-suspend-resume-22",
+      "native": "gc-collector-native-16-jz64vdm1/report.json",
+      "result": "PASS row in false aggregate; checked program/normal0, exact A|B:worker|paused|resumed||idle|2|END, empty stderr/no timeout."
+    },
+    "state_cuts": {
+      "revision": "5d7af83a8148168ba3b3197be6a5e1dd54dd5970",
+      "semantic_revision": "eb86201008b582e854c574010da9854d0c18dbc3",
+      "fixture_commit": "0ffc3d4b8a6492b4a0f8b73e92d8290465f5d6c7",
+      "wrappers": [
+        "gc-public-scan-state-review-21-_rfyxlq0/report.json",
+        "gc-public-scan-state-review-21-g8x7ltin/report.json"
+      ],
+      "accepted_rows": [
+        "shutdown-state-review-mvdjmywp/report.json parked row only",
+        "shutdown-state-review-xxbw300f/report.json"
+      ],
+      "physical_premises": [
+        125,
+        103
+      ],
+      "runner_assertions": [
+        118,
+        96
+      ],
+      "authored_checks": [
+        115,
+        93
+      ],
+      "result": "Parked PASS row in false aggregate and corrected fresh-C-root PASS, both true newline/exit0/no timeout/empty stderr. Real stored/frame/result-prefix and caller-origin/sequence/copy/END/slot/source/postpass negatives, old2/new4 owners, actual C-root RESULT/FINISH, replay and exact full continuations. Final global n reference cell owns new error once; old error/runner/capture retire."
+    },
+    "final_composition": {
+      "parent_revision": "dc68616a368d4f8114c8042844d0baee1545e426",
+      "tested_revision": "9774f1efb3b12b50f0d17d18849a2821dcb2fa96",
+      "modules": 341,
+      "origin_factor": "e2ff90940b93f60f8a88ac4615b10f3a8f65056c",
+      "compiler": "gc-cached-public-22-compiler-wj2oehvc/report.json",
+      "result": "Stable clean inputs/revision/status; algo3.522s/struct4.396s, real10,905,747/10,579,025-byte artifacts, exits0/empty stderr/reaped groups. Peer accepts pointwise scalar-origin/one-VM comparison and actual351/354/324/GEN/ARG/source/ownership seams. Earlier cuts retain their inputs."
+    },
+    "captured_native_and_source_timeouts": {
+      "native_reports": [
+        "gc-collector-native-16-6sos64oa/report.json",
+        "gc-collector-native-16-iojtw4_t/report.json"
+      ],
+      "ids": [
+        "collector-active-public-cached-core-old-pending-new-throw-review-22",
+        "collector-active-public-cached-core-two-identities-compact-review-22"
+      ],
+      "source_wrappers": [
+        "gc-cached-public-22-source-_7plkcb8/report.json",
+        "gc-cached-public-22-source-79ajb24s/report.json",
+        "gc-cached-public-22-source-gfcyeqex/report.json"
+      ],
+      "source_children": [
+        "shutdown-review-pbp9c419/report.json",
+        "shutdown-review-eojb46is/report.json",
+        "shutdown-review-iz0tr5vk/report.json"
+      ],
+      "result": "Native exact A|paused|new|old|2|END normal0; source CLI internal60s timeouts have zero agreement, including final9774 compact retry. The compact source normal full continuation/identity checks pass only in the separately recorded120s state group. Both originals remain selectable and are excluded from the default source target."
+    },
+    "preserved_zero_credit": [
+      "Initial SCAN dispatch and parked projection/source refusals: gc-cached-public-22-source-v2f30plo/report.json, gc-cached-public-22-source-bhe8aqar/report.json and gc-cached-public-22-source-dqb719rk/report.json affected companion rows; narrow diagnostics are not acceptance.",
+      "gc-cached-public-22-compiler-orb9hhly/report.json retained cons/otherwise setup stop; pure scalar factoring fixed it.",
+      "gc-public-scan-state-review-21-6xbgvd02 / shutdown-state-review-8inklx95 retained135-physical timeout; _rfyxlq0 fresh100-physical row had an incorrect final new-error retirement assertion. Both affected rows0.",
+      "Unexecuted original12f86 and post-pass preparations retain zero model/native credit."
+    ],
+    "validation": "LC_ALL=C/TZ=UTC/script encoding absent, jobs1; native30s/source60s/state120s/outer120s unchanged. Raw wrappers record commands, target binaries/profile, stable inputs/revision/status and reaped process groups.",
+    "recovery": [
+      "python3 tests/semantics/cycle_collection_sources.py --match collector-active-public-cached-callback-suspend-resume-22",
+      "python3 tests/semantics/cycle_collection_review.py --match collector-active-public-cached-core-two-identities-compact-review-22",
+      "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-public-callback-parked-vm-and-live-pass --case collector-public-callback-fresh-core-throw-keeps-old-pending"
+    ],
+    "boundaries": "Post-pass public reentry and internal collector takeover remain explicit Unsupported and required next work, alongside active-pass failed close, wider GC/lifetime graphs and fresh offline rebuild. No full-core or paused-returns credit."
   }
 }
