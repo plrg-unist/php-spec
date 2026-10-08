@@ -18,6 +18,7 @@ dec $gc_worker_public_raw_api(pstate) : pfiberapi?
 dec $gc_worker_public_captured_api_valid(pstate, pfiberapi) : bool
 dec $gc_worker_public_frames(pframe*, pgcguard, pgcguard) : pframe*
 dec $gc_worker_public_frame_view(pstate, pstate, pframe*) : bool
+dec $gc_worker_public_frame_result_view(pstate, pstate, pframe) : bool
 dec $gc_worker_public_parked(pstate, nat, pfiber) : bool
 dec $gc_worker_public_reentry_ready(pstate, pgcguard) : bool
 dec $gc_worker_public_reentry(pstate, pconfigcall, pvalue) : pstate
@@ -203,7 +204,13 @@ def $gc_worker_public_guard_live(S) = false -- otherwise
 def $gc_worker_public_frames(eps, pgcguard, pgcguard_new) = eps
 def $gc_worker_public_frames(pframe :: pframe_tail*, pgcguard, pgcguard_new) = pframe[.TODO = $gc_worker_pending_tasks(pframe.TODO, pgcguard, pgcguard_new)] :: $gc_worker_public_frames(pframe_tail*, pgcguard, pgcguard_new)
 def $gc_worker_public_frame_view(S_parked, S, eps) = false
-def $gc_worker_public_frame_view(S_parked, S, pframe :: pframe_tail*) = ($fiber_vm(S) = $fiber_vm($constant_frame_scope(S_parked, pframe, pframe_tail*)) \/ $gc_worker_public_frame_view(S_parked, S, pframe_tail*))
+def $gc_worker_public_frame_view(S_parked, S, pframe :: pframe_tail*) = ($fiber_vm(S) = $fiber_vm(S_scope) \/ $gc_worker_public_frame_result_view(S_scope, S, pframe) \/ $gc_worker_public_frame_view(S_parked, S, pframe_tail*))
+  -- if S_scope = $constant_frame_scope(S_parked, pframe, pframe_tail*)
+def $gc_worker_public_frame_result_view(S_scope, S, pframe) = true
+  -- if pframe.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if S_scope.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
+  -- if $fiber_vm(S) = $fiber_vm($call_after_origin(S_scope, DESTRUCTOR_RESULT pdestructorcall))
+def $gc_worker_public_frame_result_view(S_scope, S, pframe) = false -- otherwise
 def $fiber_suspend(S, pconfigcall, pvalue) = $fiber_suspend_save(S_parked, pconfigcall, pvalue)
   -- if $gc_worker_guard_at(S) = (pgcguard)
   -- if pgcguard.PUBLIC = (pgcpublic)
