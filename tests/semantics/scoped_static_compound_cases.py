@@ -313,6 +313,16 @@ class LeftDynamicAliasReview19 {
         return "a";
     }
 }
+class DynamicTypedFirstReview19 { public static int $value = 1; }
+class DynamicTypedSecondReview19 { public static int $value = 9; }
+class RightDynamicTypedReview19 {
+    public function __toString(): string {
+        global $class;
+        echo "T;";
+        $class = "DynamicTypedSecondReview19";
+        return "2";
+    }
+}
 $class = "DynamicAliasFirstReview19";
 $replacement = "changed";
 DynamicAliasFirstReview19::$value = new LeftDynamicAliasReview19();
@@ -320,9 +330,16 @@ $alias =& DynamicAliasFirstReview19::$value;
 $result = ($class::$value .= "b");
 echo "A:", DynamicAliasFirstReview19::$value,
      ";B:", DynamicAliasSecondReview19::$value,
-     ";O:", $alias, ";C:", $class, ";X:", $result, ";E;";
+     ";O:", $alias, ";C:", $class, ";X:", $result, ";";
+$class = "DynamicTypedFirstReview19";
+$typedAlias =& DynamicTypedFirstReview19::$value;
+$typedResult = ($class::$value .= new RightDynamicTypedReview19());
+echo "V:", DynamicTypedFirstReview19::$value, ";I:", DynamicTypedFirstReview19::$value === 12,
+     ";A:", $typedAlias, ";J:", $typedAlias === 12,
+     ";X:", $typedResult, ";K:", $typedResult === 12,
+     ";B:", DynamicTypedSecondReview19::$value, ";C:", $class, ";E;";
 ''',
-        'expected_stdout': 'L;A:changed;B:other;O:ab;C:DynamicAliasSecondReview19;X:ab;E;',
-        'discriminator': 'Dynamic selected ENTRY retains the originally referenced cell through class-CV and property-row rebinding; final raw backing and expression result follow that captured cell.',
+        'expected_stdout': 'L;A:changed;B:other;O:ab;C:DynamicAliasSecondReview19;X:ab;T;V:12;I:1;A:12;J:1;X:12;K:1;B:9;C:DynamicTypedSecondReview19;E;',
+        'discriminator': 'Dynamic selected ENTRY retains the originally referenced cell through class-CV and property-row rebinding; final raw backing and expression result follow that captured cell. A second dynamic selection keeps a captured typed-int REF, verifies 12 and returns its integer result after the RHS changes the class CV.',
     },
 ]
