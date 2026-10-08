@@ -14,6 +14,7 @@ dec $gc_worker_public_residual_pass(pstate) : bool
 dec $gc_worker_public_residual_context(pstate, pgcpublic) : bool
 dec $gc_worker_public_residual_attachment(pstate, pgcguard, pgcpublic) : bool
 dec $gc_worker_scan_cursor(pstate, nat) : bool
+dec $gc_worker_scan_position(pstate, pgcpublic) : bool
 dec $gc_worker_scan_valid(pstate, pgcpublic) : bool
 dec $gc_worker_scan_object(pstate, pgcslot) : nat?
 dec $gc_worker_scan_target(pstate, nat, nat) : (nat, nat)?
@@ -259,9 +260,17 @@ def $gc_worker_scan_cursor(S, n) = true
   -- if n = $(S.GC.SCAN.INDEX + 1)
   -- if $gc_worker_scan_target(S, S.GC.SCAN.INDEX, n) = eps
 def $gc_worker_scan_cursor(S, n) = false -- otherwise
+def $gc_worker_scan_position(S, pgcpublic) = (pgcpublic.INDEX = $(S.GC.SCAN.INDEX + 1))
+  -- if ~pgcpublic.RESIDUAL
+  -- if ~$gc_worker_api(pgcpublic.API)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.SCAN = eps
+  -- if pgcpublic.SOURCE =/= pgcplan.CALL[.PENDING = eps]
+def $gc_worker_scan_position(S, pgcpublic) = true -- otherwise
 def $gc_worker_scan_valid(S, pgcpublic) = true
   -- if S.TODO = [GC_WORKER_SCAN pgcpublic]
   -- if $gc_worker_public_context(S, pgcpublic)
+  -- if $gc_worker_scan_position(S, pgcpublic)
   -- if $fiber_at(S, pgcpublic.API.OBJECT) = (pfiber)
   -- if pfiber.GC = (pgcworker)
   -- if pgcworker.GUARD = eps
@@ -376,6 +385,7 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
 def $gc_worker_public_foreign_attachment(S, pgcguard) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if pgcguard.OBJECT <- pgcplan.CALLED
+  -- if pgcguard.INDEX = S.GC.SCAN.INDEX
   -- if (HOBJECT pgcguard.OBJECT) <- S.ALLOCATIONS
   -- if pgcguard.OBJECT <- S.DESTRUCTION.CALLED
 def $gc_worker_public_foreign_attachment(S, pgcguard) = true
