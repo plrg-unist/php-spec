@@ -13,6 +13,10 @@ ZERO = ['S_zero = $drive(S, 0)', 'S_zero.COMPLETION = BUDGET',
         'S_zero[.COMPLETION = NORMAL] = S']
 FINISH = ['S_done = $drive(S, 4000)', *review.DONE]
 
+def events(*pieces):
+    return 'S_done.EVENTS = [' + ', '.join('OUTPUT $ptascii(' + json.dumps(x) + ')' for x in pieces) + ']'
+
+
 CASES = {
     'array-nested-wait-authenticates-real-receiver-and-parent': {
         'source': SOURCES['author-fiber-array-nested-wait-and-class-static-selection'],
@@ -89,6 +93,7 @@ CASES = {
             '~$fiber_callers_valid(S_previous, (n_receiver), S_previous.FIBERCALLERS, eps)',
             '~$call_descriptors_valid(S_previous)',
             *ZERO, *FINISH,
+            events('1', '|', 'Y', '|', '1', '|', 'R', '|', '1', '|', '1', '|', '1', '|', '31'),
             '~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)',
         ],
     },
@@ -152,6 +157,7 @@ CASES = {
             'S_extra = S[.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*]',
             '$heap_graph(S_extra) = H', '~$config_invoke_valid(S_extra, pconfigcall)',
             '~$call_descriptors_valid(S_extra)', *ZERO, *FINISH,
+            events('W', '1', '1', '|', 'R', 'P', '|', '9', '|', 'Cannot call constructor twice', '|', '1', '|', '31', '|', 'Cannot call constructor twice', '|', 'Fiber::__construct(): Argument #1 ($callback) must be a valid callback, no array or string given', '|', '0'),
             '~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)',
         ],
     },

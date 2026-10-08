@@ -4,114 +4,167 @@
     "source": "<?php\nfunction mutateArraySelection19() {\n    global $pair, $target, $receiver, $method, $other, $weak;\n    $pair = null;\n    $target = null;\n    $receiver = $other;\n    $method = 'throw';\n    echo (int)($weak->get() !== null), '|';\n    return 7;\n}\n$target = new Fiber(static function () {\n    echo Fiber::suspend('Y'), '|';\n    return 17;\n});\n$other = new Fiber(static function () { echo 'X|'; return 99; });\n$weak = WeakReference::create($target);\n$receiver = $target;\n$method = 'ReSuMe';\n$pair = [&$receiver, &$method];\necho $target->start(), '|';\necho (int)($pair(value: mutateArraySelection19()) === null), '|';\necho (int)($weak->get() === null), '|', (int)$other->isStarted();\n",
     "source_sha256": "6a84c8f35f622640864ed89926d1ea7ec191207efbbdcde838f4989f4d6444bb",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Dynamic-call INIT dereferences both members once and retains its nonstatic receiver. Mutation and retirement during argument evaluation cannot redirect resume to another receiver or to throw."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Dynamic-call INIT dereferences both members once and retains its nonstatic receiver. Mutation and retirement during argument evaluation cannot redirect resume to another receiver or to throw.",
+    "native_stdout": "Y|1|7|1|1|0",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-argument-abrupt-releases-selected-receiver",
     "source": "<?php\nfunction dropArrayThenThrow19() {\n    global $pair, $weak;\n    $pair = null;\n    echo (int)($weak->get() !== null), '|';\n    throw new Exception('argument');\n}\n$target = new Fiber(static function () {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\n$pair = [$target, 'resume'];\necho $target->start(), '|';\nunset($target);\ntry { $pair(dropArrayThenThrow19()); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\necho (int)($weak->get() === null);\n",
     "source_sha256": "48e2d1d1b06f38d3bc8606b7ea5efa78b108445075c2844ae7809a261f96fac6",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "A pending nonstatic call retains one receiver after the source array retires. Argument failure releases that owner and force-closes its suspended target before the catch observes final weak liveness."
+    "native_status": "recorded",
+    "engine_derived_expectation": "A pending nonstatic call retains one receiver after the source array retires. Argument failure releases that owner and force-closes its suspended target before the catch observes final weak liveness.",
+    "native_stdout": "Y|1|F|argument|1",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-static-object-does-not-own-receiver",
     "source": "<?php\nfunction dropStaticArrayInput19() {\n    global $pair, $input, $weak;\n    $pair = null;\n    $input = null;\n    echo (int)($weak->get() === null), '|';\n    return 'V';\n}\n$input = new Fiber(static function () { echo 'X|'; return 99; });\n$weak = WeakReference::create($input);\n$pair = [$input, 'SuSpEnD'];\n$runner = new Fiber(static function () {\n    global $pair;\n    echo $pair(value: dropStaticArrayInput19()), '|';\n    return 23;\n});\necho $runner->start(), '|';\necho (int)($weak->get() === null), '|';\n$runner->resume('R');\necho $runner->getReturn();\n",
     "source_sha256": "033399fdc7de21cb8ff251e8cf2a6e5c9c37a982c1f0a5314628b9d73bc880a9",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "A static array call caches class scope, without a receiver owner. Retiring its array and input object during argument evaluation leaves the selected suspend handler callable."
+    "native_status": "recorded",
+    "engine_derived_expectation": "A static array call caches class scope, without a receiver owner. Retiring its array and input object during argument evaluation leaves the selected suspend handler callable.",
+    "native_stdout": "1|V|1|R|23",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-throw-keeps-original-identity-after-argument-mutation",
     "source": "<?php\nfunction mutateThrowArray19($error) {\n    global $pair;\n    $pair[1] = 'resume';\n    return $error;\n}\n$original = new Exception('injected');\n$target = new Fiber(static function () use ($original) {\n    try { Fiber::suspend('Y'); }\n    catch (Exception $caught) {\n        echo (int)($caught === $original), '|', $caught->getMessage(), '|';\n        return 27;\n    }\n    return 99;\n});\necho $target->start(), '|';\n$pair = [$target, 'ThRoW'];\necho (int)($pair(exception: mutateThrowArray19($original)) === null), '|';\necho $target->getReturn(), '|', $pair[1];\n",
     "source_sha256": "d31a4bffee601e54a1007c8c2d07ef2640099ac4020003bd0e630c185b9493dd",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Method selection precedes argument mutation of the array. The selected throw injects the original Exception object despite the mutable member subsequently naming resume."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Method selection precedes argument mutation of the array. The selected throw injects the original Exception object despite the mutable member subsequently naming resume.",
+    "native_stdout": "Y|1|injected|1|27|resume",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-selection-errors-precede-arguments",
     "source": "<?php\nfunction arrayArgumentEffect19() {\n    global $effects;\n    $effects++;\n    return 17;\n}\n$effects = 0;\n$target = new Fiber(static function () { echo 'X|'; return 19; });\n$pair = ['Fiber', 'resume'];\ntry { $pair(arrayArgumentEffect19()); }\ncatch (Error $error) { echo $error->getMessage(), '|'; }\n$pair = [$target, 'missing'];\ntry { $pair(arrayArgumentEffect19()); }\ncatch (Error $error) { echo $error->getMessage(), '|'; }\n$pair = ['x' => $target, 1 => 'getCurrent'];\ntry { $pair(arrayArgumentEffect19()); }\ncatch (Error $error) { echo $error->getMessage(), '|'; }\necho $effects, '|', (int)$target->isStarted();\n",
     "source_sha256": "153cf55f4a390f051260dd4996ef0f864783cfc2149018c3f3ea317b74a22611",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Nonstatic class calls, missing methods and malformed callback indices fail at dynamic-call INIT, before argument effects or callback execution."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Nonstatic class calls, missing methods and malformed callback indices fail at dynamic-call INIT, before argument effects or callback execution.",
+    "native_stdout": "Non-static method Fiber::resume() cannot be called statically|Call to undefined method Fiber::missing()|Array callback has to contain indices 0 and 1|0|0",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-resume-body-identity-and-source-trace",
     "source": "<?php\nfunction arrayResumeBody19() {\n    global $original;\n    Fiber::suspend('Y');\n    throw $original;\n}\n$original = new Exception('body');\n$target = new Fiber('arrayResumeBody19');\necho $target->start(), '|';\n$pair = [$target, 'resume'];\ntry { $pair(value: 'R'); }\ncatch (Exception $caught) {\n    echo (int)($caught === $original), '|', $caught->getMessage(), '|';\n    foreach ($caught->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\necho (int)$target->isTerminated();\n",
     "source_sha256": "f5640bb0c0298b60410304be4a67a873730b9c6dd5f580bf8277ff4198847d4c",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "An exception from a resumed body retains identity and real dynamic-array resume callsite frames, without an invented Closure invocation frame."
+    "native_status": "recorded",
+    "engine_derived_expectation": "The pre-created main Exception retains identity and an empty creation trace across an array-selected resume; the separate fresh-body-trace original checks actual waiting frames.",
+    "native_stdout": "Y|1|body|1",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-recursive-same-site-argument-calls",
     "source": "<?php\nfunction recursiveArrayResume19($depth) {\n    global $pair;\n    try { return $pair(value: $depth ? recursiveArrayResume19($depth - 1) : 'R'); }\n    catch (FiberError $error) {\n        echo $depth, ':', $error->getMessage(), '|';\n        return 'caught';\n    }\n}\n$target = new Fiber(static function () {\n    echo Fiber::suspend('Y'), '|';\n    return 17;\n});\n$pair = [$target, 'resume'];\necho $target->start(), '|';\nrecursiveArrayResume19(2);\necho $target->getReturn();\n",
     "source_sha256": "354f78d856e21201971835b1c8df4d34ee9b6192aca2cd697b8d9723d0012a9c",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Identical array selections at the same callsite coexist in recursive argument frames before any transfer. The innermost call resumes normally; outer calls reach their native FiberError after the target has terminated."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Identical array selections at the same callsite coexist in recursive argument frames before any transfer. The innermost call resumes normally; outer calls reach their native FiberError after the target has terminated.",
+    "native_stdout": "Y|R|1:Cannot resume a fiber that is not suspended|2:Cannot resume a fiber that is not suspended|17",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "author-fiber-array-nested-wait-and-class-static-selection",
     "source": "<?php\nfunction nestedArrayResumeBody19() {\n    $get = ['Fiber', 'getCurrent'];\n    $suspend = ['Fiber', 'suspend'];\n    echo (int)($get() !== null), '|';\n    echo $suspend(value: 'Y'), '|';\n    return 17;\n}\nfunction retireNestedArray19() {\n    $GLOBALS['pair'] = null;\n    unset($GLOBALS['target']);\n    echo (int)($GLOBALS['weak']->get() !== null), '|';\n    return 'R';\n}\n$target = new Fiber('nestedArrayResumeBody19');\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$pair = [$target, 'resume'];\n$parent = new Fiber(static function () {\n    global $pair;\n    echo (int)($pair(value: retireNestedArray19()) === null), '|';\n    echo (int)($GLOBALS['weak']->get() === null), '|';\n    return 31;\n});\necho (int)($parent->start() === null), '|', $parent->getReturn();\n",
     "source_sha256": "5a98019f224e2b15077316895eb7aae550a916165d42201120c0af9a867ef91a",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Real main/parent/target transfer keeps only the ordinary pending resume receiver after the original array retires; class-string static current/suspend retain no input receiver."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Real main/parent/target transfer keeps only the ordinary pending resume receiver after the original array retires; class-string static current/suspend retain no input receiver.",
+    "native_stdout": "1|Y|1|R|1|1|1|31",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "author-fiber-array-idle-collector-resume-and-throw",
     "source": "<?php\nclass ArrayIdle362 {\n    public $self;\n    function __construct() { $this->self = $this; }\n    function __destruct() {\n        $GLOBALS['worker'] = Fiber::getCurrent();\n        echo 'D|';\n    }\n}\n$request = new Fiber(static function () {\n    $cycle = new ArrayIdle362();\n    unset($cycle);\n    echo gc_collect_cycles(), '|';\n});\n$request->start();\nunset($request);\n$resume = [$worker, 'resume'];\n$throw = [$worker, 'throw'];\n$suspended = [$worker, 'isSuspended'];\nunset($worker);\necho (int)($resume(value: 123) === null), '|';\ntry { $throw(exception: new Exception('idle')); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\nunset($error);\necho (int)$suspended(), '|';\nunset($resume, $throw, $suspended);\necho 'END';\n",
     "source_sha256": "f3a6f6701fca6474298c14e14bfa324fc36412ebd1e5985030032f3cd8bff150",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Ordinary array resume/throw authenticates actual saved caller through the idle collector C loop and keeps one transferred receiver owner without any receipt root."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Ordinary array resume/throw authenticates actual saved caller through the idle collector C loop and keeps one transferred receiver owner without any receipt root.",
+    "native_stdout": "D|1|1|idle|1|END",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "author-fiber-array-constructor-warning-parse-and-ready-order",
     "source": "<?php\nclass ArrayCtorScope19 {\n    public static function callback() { echo 'B|'; }\n    public static function run() {\n        global $pair;\n        try { $pair(callback: retireArrayCtor19()); }\n        catch (FiberError $error) { echo $error->getMessage(), '|'; }\n    }\n}\nfunction retireArrayCtor19() {\n    $GLOBALS['pair'] = null;\n    unset($GLOBALS['target']);\n    return 'self::callback';\n}\n$target = new Fiber(static function () { echo 'T|'; return 17; });\n$weak = WeakReference::create($target);\n$pair = [$target, '__construct'];\n$runner = new Fiber(static function () { ArrayCtorScope19::run(); return 31; });\nset_error_handler(static function ($level, $message) {\n    echo 'W', (int)($level === 8192), (int)($GLOBALS['weak']->get() !== null), '|';\n    echo 'R', Fiber::suspend('P'), '|';\n    return true;\n});\necho $runner->start(), '|';\n$runner->resume(9);\nrestore_error_handler();\necho (int)($weak->get() === null), '|', $runner->getReturn(), '|';\n$other = new Fiber(static function () { return 23; });\n$ctor = [$other, '__construct'];\ntry { $ctor(callback: 'strlen'); }\ncatch (FiberError $error) { echo $error->getMessage(), '|'; }\ntry { $ctor(callback: 17); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; }\necho (int)$other->isStarted();\n",
     "source_sha256": "055748832a6e0251db8e6806beaf95b5d0eeed6d8886d0292bd5e2ad5a6a6efc",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "Array-selected constructor keeps exact callable-parser and parked warning continuation after selector retirement; callable validation precedes READY rejection, with no builtin body execution."
+    "native_status": "recorded",
+    "engine_derived_expectation": "Array-selected constructor keeps exact callable-parser and parked warning continuation after selector retirement; callable validation precedes READY rejection, with no builtin body execution.",
+    "native_stdout": "W11|RP|9|Cannot call constructor twice|1|31|Cannot call constructor twice|Fiber::__construct(): Argument #1 ($callback) must be a valid callback, no array or string given|0",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "author-fiber-array-unpacked-throw-after-selector-retirement",
     "source": "<?php\nfunction unpackedArrayInjection19() {\n    $GLOBALS['pair'] = null;\n    unset($GLOBALS['target']);\n    return ['exception' => $GLOBALS['original']];\n}\n$original = new Exception('injected');\n$target = new Fiber(static function () use ($original) {\n    try { Fiber::suspend('Y'); }\n    catch (Exception $caught) {\n        echo (int)($caught === $original), '|', $caught->getMessage(), '|';\n        return 27;\n    }\n    return 99;\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$pair = [$target, 'throw'];\necho (int)($pair(...unpackedArrayInjection19()) === null), '|';\necho (int)($weak->get() === null);\n",
     "source_sha256": "8f2407dc61a46340722fcfad73ec424ca0581fe864ae6a29be57078618b4c1d3",
     "expected_model": "normal",
-    "native_status": "unrun-awaiting-lease",
-    "engine_derived_expectation": "The CONFIG unpack continuation retains the snapshotted bound receiver after selector retirement, maps its named Throwable once, and injects exact identity before releasing the final receiver owner."
+    "native_status": "recorded",
+    "engine_derived_expectation": "The CONFIG unpack continuation retains the snapshotted bound receiver after selector retirement, maps its named Throwable once, and injects exact identity before releasing the final receiver owner.",
+    "native_stdout": "Y|1|injected|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-array-resume-fresh-body-trace",
+    "source": "<?php\nfunction arrayResumeFreshTrace19() {\n    Fiber::suspend('Y');\n    $GLOBALS['original'] = new Exception('body');\n    throw $GLOBALS['original'];\n}\n$original = null;\n$target = new Fiber('arrayResumeFreshTrace19');\necho $target->start(), '|';\n$pair = [$target, 'resume'];\ntry { $pair(value: 'R'); }\ncatch (Exception $caught) {\n    echo (int)($caught === $original), '|', $caught->getMessage(), '|';\n    foreach ($caught->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\necho (int)$target->isTerminated();\n",
+    "source_sha256": "832f2b5506f303e44303debda61f13dd5400b2420f39b8aa358c68903a338c87",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "An Exception created after the array-selected resume captures the actual waiting resume callsite and retains its assigned identity; original pre-created-body-Exception source remains separate.",
+    "native_stdout": "Y|1|body|arrayResumeFreshTrace19.00|resume.11|1",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-array-start-keeps-named-default-and-variadic-buffer",
     "source": "<?php\nfunction arrayStartBody19(int $value, $suffix = 'D', ...$rest) {\n    echo (int)($value === 7), '|', $suffix, '|', $rest['tag'], '|';\n    echo Fiber::suspend('Y'), '|';\n    return 29;\n}\n$target = new Fiber('arrayStartBody19');\n$pair = [$target, 'StArT'];\necho $pair(value: '7', tag: 'X'), '|';\n$resume = [$target, 'resume'];\necho (int)($resume(value: 'R') === null), '|';\n$get = [$target, 'getReturn'];\n$status = [$target, 'isTerminated'];\necho $get(), '|', (int)$status();\n",
     "source_sha256": "e11e52f40bccca1b2f039fea465ad3ad3c1a68d5c7934800e61a0332a3c1e60b",
     "expected_model": "unsupported",
-    "native_status": "unrun-awaiting-lease",
+    "native_status": "recorded",
     "engine_derived_expectation": "An array-selected start forwards its original named buffer to the user callback, preserving weak integer conversion, a default and a named variadic surplus. Return reads occur after defined return29.",
-    "unsupported_reason": "ordinary array Fiber start argument buffer"
+    "unsupported_reason": "ordinary array Fiber start argument buffer",
+    "native_stdout": "1|D|X|Y|R|1|29|1",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "boundary-fiber-array-first-class-conversion",
     "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$pair = [$target, 'isStarted'];\n$call = $pair(...);\necho (int)$call();\n",
     "source_sha256": "022a7d9f8d5a34242203dcdf325910c8b853cc160f0602282d8865141da17cd7",
     "expected_model": "unsupported",
-    "native_status": "unrun-awaiting-lease",
+    "native_status": "recorded",
     "engine_derived_expectation": "Ordinary internal-array FCC conversion remains a required separate consumer.",
-    "unsupported_reason": "array callable class, autoload or internal method lookup"
+    "unsupported_reason": "array callable class, autoload or internal method lookup",
+    "native_stdout": "0",
+    "native_stderr": "",
+    "native_exit": 0
   },
   {
     "id": "boundary-fiber-array-c-root-callback",
     "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$target->start();\n$runner = new Fiber([$target, 'getReturn']);\necho (int)($runner->start() === null), '|', $runner->getReturn();\n",
     "source_sha256": "bd54382232498e8c4daf72278f7584f9dc47d20805643ca40b415f10fb05e82c",
     "expected_model": "unsupported",
-    "native_status": "unrun-awaiting-lease",
+    "native_status": "recorded",
     "engine_derived_expectation": "Ordinary internal-array Fiber C-root callbacks remain a required separate consumer; target return17 is defined before callback selection.",
-    "unsupported_reason": "Fiber constructor internal callable body"
+    "unsupported_reason": "Fiber constructor internal callable body",
+    "native_stdout": "1|17",
+    "native_stderr": "",
+    "native_exit": 0
   }
 ]
