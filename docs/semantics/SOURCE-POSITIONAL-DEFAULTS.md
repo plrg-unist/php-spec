@@ -157,4 +157,12 @@ collector/Generator/Fiber predicates pass on `1060496af1`; the unchanged full
 retry still times out at host55. This establishes no speedup or whole-source agreement.
 The later305 join preserves collector317 and Generator321 and passes strict
 initialization on `ad5acdc4d`; the earlier lifecycle cut is not renewed.
+The private retained-node factor passes strict305,139 lifecycle predicates and
+the parent-child WeakReference original on `67fa589eb`. Its full retry still
+times out at host55 with zero agreement and no demonstrated speedup.
+The separate destructor preparation/waiting factor passes strict305,173 affected
+predicates and the WeakReference original on `5559f2c00`; its full retry still
+times out at host55.066 with empty streams and zero agreement.
+Their actual309 join retains current collector/caller hooks and passes strict
+initialization on `13bc4e931`; the earlier lifecycle/source cuts remain distinct.
 Whole retry composition and wider producers remain open.

@@ -102,6 +102,21 @@ The actual305 join preserves collector317 and Generator321 and passes strict
 initialization on `ad5acdc4d` in3.821s; earlier lifecycle/source cuts stay distinct.
 The current301 diagnostic measures297 completed GC bodies27.988s, with pruning
 alone26.283s (93.9%), then times out at host55 with zero agreement.
+The private retained-node factor passes strict305 initialization, GC42/GEN63/Fiber34
+and one parent-child WeakReference original on `67fa589eb`; exact public output
+`P:live|C:null|N|END` completes in9.078s. Its full retry still times out at host55
+with empty streams and zero agreement; this adds no demonstrated speedup.
+The separate destructor preparation/waiting factor passes strict305 initialization,
+110 source-reached/controlled branch and original-state fallback predicates plus
+GEN63 on `5559f2c00`; the WeakReference original again agrees in9.078s. The selected
+RHS Unmatch fallback is statically preserved. Its full retry still times out at
+host55.066 with empty streams and zero agreement. The maintained
+`destruction_prune_protocol.py` reproduces the corrected110 fixture; its original
+relation-premise elaboration stop earns no runtime credit.
+Both factors now join actual `bf1c0053a`/309, preserving current325/322/326/327
+root and caller hooks. Strict initialization passes on `13bc4e931` in3.769s.
+The earlier139/173/WeakReference cuts retain their own inputs; no source renewal
+or speedup is claimed.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
