@@ -233,7 +233,10 @@ $generator_from_record_valid(S_value,n_outer,pgenerator_value)
 $generator_storage_node_valid(S_value,n_outer)
 $weakref_get(S_value,n_weak) = POBJECT n_outer
 $heap_owners($heap_graph(S_value),HOBJECT n_outer) = 1
-$heap_owners($heap_graph(S_value),HOBJECT n_value) = 1
+S_value.CURRENT = (pcallcontext_value)
+pcallcontext_value.RECEIVER = (n_value)
+$heap_owners($heap_graph(S_value[.CURRENT = eps]),HOBJECT n_value) = 1
+$heap_owners($heap_graph(S_value),HOBJECT n_value) = 2
 S_value.OBJECTS[n_other] = GENERATOR pgenerator_other
 (HOBJECT n_other) <- S_value.ALLOCATIONS
 $generator_storage_for(S_value,n_other) = eps
