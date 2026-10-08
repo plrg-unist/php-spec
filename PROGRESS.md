@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+337 adds bound first-class `resume`/`throw`/defined `getReturn` and status methods.
+The Closure owns its selected Fiber; direct and explicit `__invoke` calls borrow
+that receiver while retaining their actual argument buffers and saved operation
+provenance. Strict318 initialization, nine normal originals and author65/independent403
+reached premises pass at the recorded private cuts. Two explicit start/C-root
+Unsupported controls earn zero agreement; earlier331 evidence is unchanged. A
+separate actual322 composition passes strict initialization, one collector
+original and115 independent premises: captured public resume/throw authenticate
+the genuine saved caller, preserve borrowed receiver roots and retire the idle
+cache on request completion. The
+[bound-callable ledger](coverage/semantics/fiber-bound-api-callables-review.json)
+retains these checks and required follow-ons.
+
 Collector338 admits failed last-owner close of a detached worker after collection.
 A throwing `finally` retires the one remaining private control owner while the
 real error stays in the caller's pending operation; a genuine prior exception

@@ -396,6 +396,35 @@ Engine routes are `zend_create_fake_closure`, `zend_closure_get_closure` and
 ordinary dynamic/method call handlers in `Zend/zend_vm_def.h`, and the static API
 handlers and C callback entry in `Zend/zend_fibers.c`.
 
+## Bound API first-class callables
+
+Module337 supports first-class `resume`, `throw`, `getReturn`, `isStarted`,
+`isSuspended`, `isRunning` and `isTerminated` captures. Dynamic method names,
+clone and `__invoke` aliases preserve the selected method and receiver. Loose
+Closure equality includes receiver identity. The fake Closure owns that Fiber;
+the CONFIG and waiting API frames borrow the receiver and own only their actual
+argument buffers. Explicit `__invoke` retains its separate outer Closure owner
+and copied buffer.
+
+Waiting resume/throw operations authenticate the selected Closure, receiver,
+kind, source, line and exact sent buffer against their genuine result tail.
+Nested saved callers retain that protocol. Direct and explicit invocation keep
+their distinct API/Closure trace frames, and last-capture retirement can close a
+suspended receiver. Public calls to the exposed idle collector authenticate their
+capture through the saved caller while the collector executes its C loop.
+The [bound-callable ledger](../../coverage/semantics/fiber-bound-api-callables-review.json)
+records strict318 initialization, nine new normal originals, explicit Unsupported
+controls and source-reached ownership/admission checks at their private cuts,
+separately from the actual322 compiler and collector interaction checks.
+Earlier331 evidence retains its original inputs.
+
+Bound `start` captures, constructor capture and bound C-root callback receivers
+remain required; the first and last have explicit source Unsupported controls.
+Undefined-result `getReturn` and paused return verification are not extended.
+Relevant engine routes also include `zend_create_closure_ex` and
+`zend_closure_compare` in `Zend/zend_closures.c`, and
+`zend_init_dynamic_call_object` in `Zend/zend_execute.c`.
+
 ## Required follow-ons
 
 Five destruction control lists move with each VM stack: calls, releases, frames,
