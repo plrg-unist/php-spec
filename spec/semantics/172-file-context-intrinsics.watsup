@@ -161,9 +161,9 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, eps, pvalue, porigin, z_
 dec $config_nodes(pconfigcall) : pnode*
 ;; PACKS are historical capture certificates; only real argument/receiver owners root values.
 def $config_nodes(pconfigcall) = $exit_owner_nodes(pconfigcall.OWNER) ++ $named_slots_roots(pconfigcall.SENT)
-  -- if ~$closure_static_api_kind(pconfigcall.KIND) /\ ~$weakref_static(pconfigcall.KIND)
+  -- if ~$closure_static_api_kind(pconfigcall.KIND) /\ ~$weakref_static(pconfigcall.KIND) /\ ~$fiber_capture_config_tag(pconfigcall)
 def $config_nodes(pconfigcall) = $named_slots_roots(pconfigcall.SENT)
-  -- if $closure_static_api_kind(pconfigcall.KIND) \/ $weakref_static(pconfigcall.KIND)
+  -- if $closure_static_api_kind(pconfigcall.KIND) \/ $weakref_static(pconfigcall.KIND) \/ $fiber_capture_config_tag(pconfigcall)
 def $task_nodes(CONFIG_ARGS pconfigcall) = $config_nodes(pconfigcall)
 def $task_nodes(CONFIG_SEND pconfigcall) = $config_nodes(pconfigcall)
 def $task_nodes(CONFIG_UNPACK_PREP pconfigcall) = $config_nodes(pconfigcall)
@@ -877,12 +877,19 @@ rule PhpStep/config-string-nul: S ~> $throwable_allocate(S_call, "ValueError", $
 dec $selected_task_nonce(ptask) : nat?
 def $selected_task_nonce(AT porigin ptask) = $selected_task_nonce(ptask)
 def $selected_task_nonce(CONFIG_ARGS pconfigcall) = pconfigcall.SELECTION
+  -- if ~$fiber_capture_config_tag(pconfigcall)
 def $selected_task_nonce(CONFIG_SEND pconfigcall) = pconfigcall.SELECTION
+  -- if ~$fiber_capture_config_tag(pconfigcall)
 def $selected_task_nonce(CONFIG_UNPACK_PREP pconfigcall) = pconfigcall.SELECTION
+  -- if ~$fiber_capture_config_tag(pconfigcall)
 def $selected_task_nonce(CONFIG_UNPACK_NEXT pconfigcall poperand n) = pconfigcall.SELECTION
+  -- if ~$fiber_capture_config_tag(pconfigcall)
 def $selected_task_nonce(CONFIG_INVOKE pconfigcall) = pconfigcall.SELECTION
+  -- if ~$fiber_capture_config_tag(pconfigcall)
 def $selected_task_nonce(CONFIG_INI_NULL_RESULT pconfigcall) = pconfigcall.SELECTION
+  -- if ~$fiber_capture_config_tag(pconfigcall)
 def $selected_task_nonce(CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) = pconfigcall.SELECTION
+  -- if ~$fiber_capture_config_tag(pconfigcall)
 def $selected_task_nonce(CHDIR_AWAIT pconfigcall n) = pconfigcall.SELECTION
 def $selected_task_nonce(ptask) = eps -- otherwise
 dec $selected_task_count(ptask*, nat) : nat

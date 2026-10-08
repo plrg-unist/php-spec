@@ -982,6 +982,12 @@ keeps distinct source cuts and independently accepted state checks, including
 a callback made by a GC destructor whose receiver has already retired.
 The [callback ledger](coverage/semantics/fiber-core-callbacks-review.json) separates
 bounded state checks from unconfirmed rich whole-source execution.
+Static `getCurrent`/`suspend` first-class Closures retain immutable source and
+method selection without owning an object-style static input. Direct calls,
+explicit `__invoke` and Fiber C-root callbacks preserve their distinct Closure
+and argument owners through normal resume and injected throw. The
+[static-callable ledger](coverage/semantics/fiber-static-api-callables-review.json)
+retains the private source/state cuts and remaining API/lifecycle boundaries.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

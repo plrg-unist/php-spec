@@ -180,6 +180,9 @@ test-semantics: build
 	python3 tests/semantics/fiber_callable_state.py
 	python3 tests/semantics/fiber_callable_review.py
 	python3 tests/semantics/fiber_callable_current_review.py
+	python3 tests/semantics/fiber_static_api_sources.py
+	python3 tests/semantics/fiber_static_api_state.py
+	python3 tests/semantics/fiber_static_api_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
