@@ -1,0 +1,31 @@
+{
+  "scope": "Exact retained composed default-cache retry through Generator and Fiber execution; source bytes and native tuple from the accepted ea58ac361/349 original. No full default-family or offline-build claim.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "composed_retry_generator_fiber_defaults",
+      "source": "<?php\nnamespace {\n    const ComposedFirst = static function () { return 'g1'; };\n    const ComposedSecond = static function () { return 'g2'; };\n    trait ComposedRetryLeft { public static function target() { return 'left'; } }\n    trait ComposedRetryRight { public static function target() { return 'right'; } }\n}\nnamespace ComposedRetry {\n    function take($a = [ComposedFirst, \\ComposedRetryLeft::target(...), ComposedFirst,\n                       ComposedSecond, \\ComposedRetryRight::target(...), ComposedSecond]) { return $a; }\n    function stream() {\n        try { take(); } catch (\\Exception $e) { echo 'X|'; }\n        $a = take();\n        yield $a;\n        return 'done';\n    }\n    $seen = 0;\n    set_error_handler(static function ($level, $message) use (&$seen) {\n        ++$seen;\n        echo 'H', $seen, '|';\n        if ($seen === 1) {\n            eval('namespace ComposedRetry; const ComposedFirst = static function () { return \"l1\"; };');\n        } elseif ($seen === 2) {\n            eval('namespace ComposedRetry; const ComposedSecond = static function () { return \"l2\"; };');\n            throw new \\Exception('stop');\n        }\n        return true;\n    });\n    $fiber = new \\Fiber(static function () {\n        $g = stream();\n        $a = $g->current();\n        echo $a[0] === ComposedFirst && $a[0] === $a[2] ? 'same:' : 'wrong:';\n        echo $a[3] === ComposedSecond && $a[3] === $a[5] ? 'same:' : 'wrong:';\n        echo $a[0](), ':', $a[4](), '|';\n        $g->next();\n        echo $g->getReturn(), '|';\n        return $a[3];\n    });\n    $fiber->start();\n    $returned = $fiber->getReturn();\n    echo $returned === ComposedSecond ? 'returned:' : 'wrong:';\n    echo $returned();\n}\n",
+      "source_sha256": "ec70fed1a408d811fe526d9be40bae378d757b96ac8e1843ab9d7e8172df9846",
+      "stdout_base64": "SDF8SDJ8WHxIM3xzYW1lOnNhbWU6bDE6cmlnaHR8ZG9uZXxyZXR1cm5lZDpsMg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-pruned-edges-current-19/.tools/full-default-retry-pruned-edges-v1/run-v1/report.json",
+      "native_raw_sha256": "f8a1118a3903b708dcb3628e9dfcc465f514e24c06c7d8240be40b53a94cf86a"
+    }
+  ]
+}

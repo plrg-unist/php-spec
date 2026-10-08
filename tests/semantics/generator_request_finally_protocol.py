@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genuine request-close frontiers, cache pins and required abrupt boundaries."""
+"""Normal request-close frontiers; fatal continuations are checked by363."""
 import os
 
 import generator_force_close_protocol as driver
@@ -11,7 +11,6 @@ CASES = {
     'request-global-reference-finally': author.CASES['reference-terminal-active-finally-required'],
     'request-store-cache-retained': peer.CASES['peer-request-store-close-retains-cache'],
     'request-handler-before-cache': peer.CASES['peer-request-handler-before-cache-retirement'],
-    **{name: (row[0], row[1], row[2]) for name, row in peer.CONTROLS.items()},
 }
 PREFIX = r'''
 dec $request_called_drop(nat*,nat) : nat*
@@ -57,8 +56,6 @@ def $request_finally_phase(S,22) = true
   -- if $exception_context_call(S,pcallcontext) = (pexceptioncall)
 def $request_finally_phase(S,23) = true
   -- if S.TODO = (GENERATOR_REQUEST_RESUME pgenclose) :: ptask*
-def $request_finally_phase(S,24) = true
-  -- if $generator_request_handler_abrupt(S)
 def $request_finally_phase(S,n) = false -- otherwise
 dec $request_finally_finished(pstate) : bool
 def $request_finally_finished(S) = (S.TODO = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE)
@@ -204,14 +201,6 @@ S_pending.DESTRUCTION.OPERATIONS = eps /\ S_pending.DESTRUCTION.FRAMES = eps
 $heap_owners($heap_graph(S_pending),HOBJECT n_generator) = 1
 $throwable_field(S_pending,n_exception,"message") = PSTRING $ptascii("new")
 '''.strip().splitlines()
-        if name == 'peer-request-uncaught-finally-required':
-            checks += ['S_budget = $drive_steps(S_pending,0)',
-                       'S_budget = S_pending[.COMPLETION = BUDGET]',
-                       'S_refused = $drive(S_pending,4096)',
-                       'S_refused = $drive(S_budget[.COMPLETION = NORMAL],4096)',
-                       'S_refused.COMPLETION = UNSUPPORTED "Generator request-close uncaught exception"',
-                       'S_refused.OBJECTS[n_generator] = GENERATOR pgenerator_pending']
-            return checks
         checks += seek('S_transfer', 'S_pending', 21) + valid('S_transfer')
         checks += r'''
 S_transfer.TODO = (THROW_SEARCH n_exception) :: (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: ptask_transfer*
@@ -228,15 +217,6 @@ $generator_request_resume_valid(S_transfer,pgenclose_transfer)
         checks += ['$heap_owners($heap_graph(S_bad_reordered_resume),HOBJECT n_generator) = 1',
                    '$heap_owners($heap_graph(S_bad_reordered_resume),HOBJECT n_exception) = $heap_owners(H_transfer,HOBJECT n_exception)']
         reject(checks, 'duplicate_resume', 'S_transfer[.TODO = (THROW_SEARCH n_exception) :: (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: ptask_transfer*]', 'S_transfer', same_heap=False)
-        if name == 'peer-request-handler-throw-required':
-            checks += seek('S_throw', 'S_transfer', 24) + valid('S_throw')
-            checks += ['S_budget = $drive_steps(S_throw,0)',
-                       'S_budget = S_throw[.COMPLETION = BUDGET]',
-                       'S_refused = $drive(S_throw,4096)',
-                       'S_refused = $drive(S_budget[.COMPLETION = NORMAL],4096)',
-                       'S_refused.COMPLETION = UNSUPPORTED "Generator request-close exception-handler failure"',
-                       'S_refused.OBJECTS[n_generator] = GENERATOR pgenerator_pending']
-            return checks
         checks += ['pgenerator_pending.VALUE = (POBJECT n_payload)',
                    '$heap_owners($heap_graph(S_transfer),HOBJECT n_payload) = 1']
         checks += seek('S_handler', 'S_transfer', 22) + valid('S_handler')
@@ -258,7 +238,7 @@ $generator_request_resume_valid(S_transfer,pgenclose_transfer)
 
 def main():
     driver.CASES = CASES
-    driver.NATIVE_ERROR_PREFIXES = {name: row[3] for name, row in peer.CONTROLS.items()}
+    driver.NATIVE_ERROR_PREFIXES = {}
     driver.PREFIX += PREFIX
     driver.assertions = assertions
     driver.source.WATCHED = author.WATCHED + [

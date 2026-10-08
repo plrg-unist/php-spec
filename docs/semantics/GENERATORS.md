@@ -94,8 +94,18 @@ queued source views remain distinct from actual handler contexts.
 [Eight originals and 553 reached premises](../../coverage/semantics/generator-request-delegation-review.json)
 retain separate cuts. Composition with 346 modules over `9cacdbf51` passes strict
 compilation at `4d867f6b0`; earlier source/state cuts retain their inputs.
-Abrupt terminal behavior, parked storage work, escaped
-reacquisition and nested ordinary-object RETURN reads remain required.
+Module 363 handles uncaught request-finally exceptions and throwing registered
+handlers. Normal custom rendering retains the Generator/cache and original handler
+exception, including live Weak lookup and registry changes. Reporting freezes
+before the reported exception's release; bailout then preserves the real abandoned
+carriers and marks later destructors called. C-root traces retain internal frames.
+[Seven exact fatal originals and 493 reached premises](../../coverage/semantics/generator-request-abrupt-review.json)
+retain separate cuts; the original refusals remain zero agreement. Actual 351 over
+`7c4a13bc1` passes strict compilation at `ba1c17c07`; current schema, storage and
+collector/source guards remain intact, without renewing earlier source/state cuts.
+Abrupt rendering or exception release, exception-owned child storage, nonrenderable
+message warnings, parked storage, escaped reacquisition and wider terminal cleanup
+remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and

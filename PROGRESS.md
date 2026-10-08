@@ -7,6 +7,34 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
+Actual close/cache owners survive normal rendering and handler-registry mutation;
+the reported exception releases after frozen emission and before bailout suppresses
+later destructors. Internal C-root trace rows preserve real function arguments.
+Seven exact php_error255 originals and 493 strict premises pass at separate cuts;
+original refusals, preparation stops and corrected trace/admission failures stay at zero.
+Abrupt rendering/release, message-warning conversion, parked/escaped storage and
+wider terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
+compilation at `ba1c17c07`, preserving current schema, storage and collector/source
+guards; private source/state cuts retain their own revisions.
+[Ledger](coverage/semantics/generator-request-abrupt-review.json).
+
+Module 364 converts simple Fiber API arrays to first-class Closures, including
+start and constructor methods. An independent ARRAY witness freezes selected
+members; the temporary bound receiver owner moves into the Closure, while static
+object inputs stay nonowning after retirement. Existing consumers retain named
+buffers, traces and last-RAW cleanup; duplicate conversion tasks fail admission.
+Strict compilation of 349 modules, nine exact normal originals at 1+8 cuts and
+261 independent plus 121 author premises pass. The live-static helper overlap is
+corrected with a disjoint bound guard and a fresh ordinary-static counterexample;
+the static-source failure and compiler/preparation/fixture stops retain zero
+affected credit. Ordinary array-selected start, raw array C-root callbacks,
+compound selectors and Fiber-start unpacking remain required.
+Actual350 over `f0ab3bcaa` passes strict compilation at `3ef6eb4e9`, preserving
+current collector/source/static and storage-table guards; private source/state
+cuts retain their inputs, with no earlier362/358 renewal.
+[Array-capture ledger](coverage/semantics/fiber-array-captures-review.json).
+
 362 selects ordinary callable arrays with simple Fiber API method names before
 argument evaluation. Frozen members survive selector retirement and REF mutation;
 one bound receiver owner transfers from CONFIG to its waiting API, while static
@@ -147,8 +175,25 @@ caller/old-slot authority. One normal source and 203 independent physical premis
 pass at separate b28/95fd+9765 cuts; captured source CLI 60s timeouts retain zero
 agreement. Final 345 over `4cd2eab3a` compiles at `0c23223f3`, preserving reviewed
 Fiber-factory/trait additions. One obsolete maintained post-pass refusal premise
-is superseded; earlier cuts are not renewed. Reentry during a different active pass,
-internal takeover and broader GC remain required.
+is superseded; earlier cuts are not renewed.
+A new internal collection now resumes the same parked callback with null and a
+real GC_WAIT caller. Frozen PLAN.SCAN preserves its old local suffix independently
+of the reset global scan; UNVISITED gives no DONE credit. Residual tags remain
+physical but do not seed retracing. One normal source at 9bc and 154 independent
+physical premises at 0f007+9c8246 pass, including original old-error identity,
+owner 2→1 and full request cleanup. Original/compact old-error CLI 60s timeouts retain
+zero agreement. Final 349 over `63786460e` compiles at `f1b0dea7a`, preserving
+reviewed SOURCE361, exact-state pruning graph reuse and dynamic ARG356.
+Quiescent public resume/throw now scans residual physical tags in the current
+global interval. A persistent mode keeps normalized callback slots under physical
+authority; BIRTH owns nothing and supplies no access scope. One compact throw
+source and 119 independent physical premises (66/53) pass at separate ed30 fixture
+cuts, including both original full continuations and error owner 3→2. The larger
+resume CLI retains its 60s timeout/zero agreement. Final 351 over `8e513981b`
+compiles at `3f2ff607d`, preserving reviewed GEN363/364/TRAIT/PROPS fields.
+Residual internal dispatch/
+overlap, repeated internal suspension, different-active-pass reentry and broader
+GC remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -558,7 +603,12 @@ blank-separator parse stop remains preserved, with zero runtime credit.
 Raw checks: `.tools/compiler-pruned-edges-19/.tools/pruned-edges-controls-v{1,2}`.
 Final 349-module composition at `9b69ebb2e` passes changed initialization in 4.323s.
 Raw final check: `.tools/compiler-pruned-edges-current-19/.tools/pruned-edges-current-controls-v1`.
-Its original retry remains UNRUN.
+The exact 1697-byte original at `ea58ac361`/349 now agrees with native PHP in
+54.832s at unchanged 45/55-second caps: normal, exit 0, exact 46-byte output and
+empty stderr, with stable inputs and reaped groups. Earlier timeouts stay preserved.
+Raw retry: `.tools/compiler-pruned-edges-current-19/.tools/full-default-retry-pruned-edges-v1/run-v1`.
+The source and tuple are retained in `compiler_composed_retry_cases.json`, wired
+through the existing runner into combined and offline checks; those runs remain pending.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
@@ -1023,13 +1073,21 @@ while safe class metadata remains readable. Five exact originals pass at
 GC-slot occupancy passes affected1 plus strict346 at `d91ef1ea4`. Three fresh
 groups pass 164/57/67 premises at that latter cut, covering exact typed detach,
 A/B chaining, actual355 RETURN-child ownership and genuine parked Fiber pins.
-Adapted earlier ordinary fixtures carry no new credit; private303 INSTANCE pins,
-STDINSTANCE storage and wider raw-payload/escape behavior remain required.
+Adapted earlier ordinary fixtures carry no new credit; direct private303 physical
+storage pins and wider raw-payload/escape behavior remain required.
 The 347-module join over `cd7d74529` passes strict initialization and one exact
 Iterator-child original at `5916e0e0b`. Its 113 shared premises at `9d007c3d4`
 preserve live Weak-result ownership of 2 and future-tail ownership of 1 after genuine
 destructor-result discard; added owners still reject queued close. The original
 shared failure/timeouts remain uncredited; prior359/360 campaigns are unchanged.
+Ordinary stdClass storage now uses the physical parent pin. Materialized tables
+transfer one HARRAY edge before real bucket cleanup; shared-table children survive
+parent retirement. Five exact originals pass at `c7e984676`; the disjoint dynamic
+tombstone validator repair passes affected2 and strict347 at `f064fd2c6`.
+New reached groups pass150/91/51 premises at `f064fd2c6`/`56d3b070b`/`2282b68da`,
+covering table ownership, B-before-A throws, early Weak and actual355 RETURN storage.
+Original baseline/fixture failures retain zero credit; prior campaigns are unchanged.
+The actual349 join over `013ca6d2b` passes strict initialization at `e7e74c6c9`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -1132,11 +1190,20 @@ the destination through nested calls, private shadows and reference rebinding.
 Six exact originals and private344 compiler/init pass at `45f32a157`;323 new
 reached premises retain separate144 at `b228479d6` and179 at `714465927` cuts.
 The unchanged earlier keyword Unsupported record retains zero agreement.
-Dynamic selectors, keyword scopes entered through Closure/fromCallable or other
-callable wrappers, wider borrowed lifetime and registered-handler missing-RHS
-continuations remain separate; paused return producers are unchanged. Actual347
-over `66160341f` passes algo/struct/init at `c2b0f283b`, with exact257/296/301/360
-parent review and no6/323 source/state renewal.
+Actual347 over `66160341f` passes algo/struct/init at `c2b0f283b`, with
+exact257/296/301/360 parent review and no6/323 source/state renewal.
+Dynamic class selectors now preserve the class resolved before RHS evaluation,
+including once-only helper/object selection and selector mutation during RHS or
+conversion. Captured references retain the original cell and typed result; scalar
+concatenation restores the ordinary base without a selected-entry event. Five
+exact originals and private344 compiler/init pass at `09034d789`;241 reached
+premises pass at `fc7727974`. The unchanged earlier dynamic Unsupported record
+retains zero agreement. Actual349 over COMP `ea58ac361` passes algo/struct/init
+at `bba0c15be`, with pointwise361/362 and same-state graph-factor review and
+no5/241 source/state renewal.
+Computed property names, keyword scopes entered through Closure/fromCallable or
+other callable wrappers, wider borrowed lifetime and registered-handler
+missing-RHS continuations remain separate; paused return producers are unchanged.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
@@ -2026,6 +2093,38 @@ at3.569/4.522s; the unchanged source1/39 cuts bridge with current INSTANCE stora
 scoped-static selection and Generator fields preserved. Raw compiler evidence is
 `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-1knav8u7`
 and `trait266-object-struct-xxwdsrqv` in the same directory.
+Retained `new static` now authenticates its saved caller/source scope and constructs
+the published called class. Deferred static fills keep the selected NEW certificate
+instead of resolving the keyword by spelling; corresponding typed-retirement checks
+are statically reviewed.
+At `ba08d2141`/347 over `b03c0d918`, strict algo/struct pass3.571/4.520s,
+one shutdown PHP-error tuple and40 supplied conditions plus6 setup clauses
+pass (59.412s). The genuine argument-entry checkpoint checks allocation order,
+completed table history, all four global validators and a forged fill certificate.
+Raw evidence under `.tools/trait-fcc-failed-target-current19/.tools/` is
+`method-runtime-qw3d9lht`, `closure-call-protocol-iw_iw2zf`,
+`trait266-object-algo-hv4l35mf` and `trait266-object-struct-ucfu1_fr`.
+The earlier genuine history failure `lqhiz3_8`, diagnostic `s0n7wcj2` and
+rejected fixture inputs retain zero agreement; no assertion was weakened.
+The reviewed349 composition `620c2dc38` over `07940bc4a` passes strict
+algo/struct at3.669/4.520s, preserving current SCAN, source, compound-static
+and Fiber fields. The unchanged source1/40 cuts bridge; raw compiler evidence
+is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-hw829us3`
+and `trait266-object-struct-h1twh_vj` in the same directory.
+Own/private retained SELF now uses the same explicit data-completion proof;
+equal method descriptors cannot substitute for successful data binding. At
+`45f4d56df`/349 over `cea25ed85`, strict algo/struct pass3.621/4.570s,
+one shutdown PHP-error tuple and44 supplied NEW/phase conditions plus6 setup
+clauses pass (28.059s), including fatal/unknown denials and all four validators.
+Raw evidence under the current19 `.tools/` directory is `method-runtime-wl909uqp`,
+`closure-call-protocol-4ip6lkrl`, `trait266-object-algo-neuz73kp` and
+`trait266-object-struct-mi7_5yec`. The imported fixup guard is equivalent;
+earlier source/state cuts keep their identities.
+The reviewed350 composition `55db5a21f` over `813af1719` passes strict
+algo/struct at3.719/4.621s; source1/44 bridge with current callback witnesses
+and stdClass storage preserved. Raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-jen_5u_i`
+and `trait266-object-struct-iqurkbph` in the same directory.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,

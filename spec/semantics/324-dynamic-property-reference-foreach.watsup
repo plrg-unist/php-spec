@@ -205,6 +205,10 @@ def $foreach_bind_plain_payload(S, ptbytes, n_source, z, POBJECT n_previous) = t
   -- if S.OBJECTS[n_previous] = INSTANCE porigin
   -- if $destructor_method(S, n_previous) = eps
   -- if $foreach_bind_children(S, ptbytes, n_source, z, HOBJECT n_previous)
+def $foreach_bind_plain_payload(S, ptbytes, n_source, z, POBJECT n_previous) = true
+  -- if $(n_previous < |S.OBJECTS|)
+  -- if S.OBJECTS[n_previous] = STDINSTANCE
+  -- if $foreach_bind_children(S, ptbytes, n_source, z, HOBJECT n_previous)
 def $foreach_bind_plain_payload(S, ptbytes, n_source, z, PARRAY n_previous) = $foreach_bind_children(S, ptbytes, n_source, z, HARRAY n_previous)
 def $foreach_bind_plain_payload(S, ptbytes, n_source, z, pvalue) = false -- otherwise
 dec $foreach_bind_payload_kind(pstate, pvalue) : bool

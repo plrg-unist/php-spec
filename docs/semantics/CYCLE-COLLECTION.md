@@ -60,9 +60,22 @@ error. After collection completes, quiescent public reentry authenticates that
 same parked VM and a fresh real caller. It requires an unmarked buffer, so the
 retained local interval can finish without callbacks even after old slots move.
 Retired caller metadata grants no current scope, owner or physical-slot authority;
-global scan state and nonce remain unchanged. Reentry during a different active
-pass and internal collector takeover remain explicit Unsupported boundaries;
-317 cannot overwrite the parked callback.
+global scan state and nonce remain unchanged.
+
+A new internal collection resumes that actual parked callback with null, using
+the genuine new GC_WAIT caller. Its frozen PLAN.SCAN records the authenticated
+old local suffix while the global scan resets for the new collection. Completion
+returns any old guard exception through the new collector's pending/free/retrace
+continuation. A still-marked target outside the frozen suffix is UNVISITED,
+contributes no DONE credit and stays physically buffered. Residual tags do not
+seed a later mark/scan; only the current plan's fresh tags are normalized when
+checking its producer snapshot. SCAN checks live-guard/receipt consistency, not
+universal authenticity of coherently rewritten completed producer history.
+The pinned release 8.5.10 executes this path despite matching debug assertions
+for !dtor_fiber_running and GC_IS_ROOT; the model preserves the observed tag
+instead of silently normalizing it. Residual-tag dispatch/overlap, repeated
+internal suspension and different-active-pass public reentry remain explicit
+Unsupported behavior and required work.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -303,4 +316,32 @@ incorrect request-final fixture assumptions and captured-source 60s CLI timeouts
 retain zero affected credit. The old maintained post-pass refusal premise is
 superseded without renewing the historical 228 cut. Final 345 over `4cd2eab3a`
 compiles at `0c23223f3`, preserving reviewed Fiber-factory/trait additions.
-Reentry during a different active pass and internal takeover remain required.
+The separate internal takeover cut has one exact normal source agreement at
+`9bc61e2bd` and 154 independent strict-SL physical premises (92/62; recorder 84/59,
+authored 81/56) at 0f007 with fixture 9c8246. Real trace/wait activation, old/local
+versus new/global intervals, live SCAN forgeries, frozen-position UNVISITED,
+residual planning/ingress, old error owner 2→1/previous-none and full original
+continuations pass. D stays uncalled/marked through free/retrace and becomes
+called/marked only at request cleanup. Original 4460 and compact f093 CLI 60s
+timeouts retain zero agreement; no old cuts are renewed. Final 349 over
+`63786460e` compiles at `f1b0dea7a` with reviewed SOURCE361, exact-state pruning
+graph reuse and dynamic ARG356 intersections. Its residual public dispatch
+boundary is extended by the separate cut below; earlier cuts remain unchanged.
+
+Quiescent public resume/throw now reloads the global interval and calls residual
+physical tags. RESIDUAL stays set after the last tag is normalized, so callback
+validation still requires its actual slot/cursor and fresh API. BIRTH is borrowed
+metadata without an owner or access scope; public access still uses Fiber scope.
+Already-called tags normalize without another callback. Internal takeover
+explicitly rebinds the mode to its real GC caller. One compact throw source agrees
+at `ed30c2cb4`; the larger resume CLI retains its 60s timeout/zero agreement.
+Independent strict-SL groups at separate ed30 fixture cuts, finalized as73c08 have 66/53 physical premises
+(recorder 63/50, authored 60/47), including both full original continuations,
+physical slot/end/source/sequence forgeries and error owner 3→2. The first resume
+PASS row remains inside a false aggregate; the corrected throw passes separately.
+Its mistaken caller-root fixture and aborted unchanged attempt retain zero
+affected credit. Residual internal dispatch/overlap, repeated internal suspension,
+different-active-pass reentry and whole larger-source completion remain required;
+no complete-GC or offline-rebuild claim is made.
+Final 351 over `8e513981b` compiles at `3f2ff607d`, preserving reviewed GEN363
+fatal/report/trace exclusions,364/ARRAY tasks and TRAIT/PROPS additions.
