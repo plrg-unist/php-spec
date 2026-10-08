@@ -165,6 +165,7 @@ rule PhpStep/throw-search-uncaught-override: S ~> $user_string_begin(S[.TODO = e
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
+  -- if ~$shutdown_render_throw_pending(S)
   -- if S.FRAMES = eps
   -- if $throwable_member(S, n)
   -- if $stringable_instance(S, n)
