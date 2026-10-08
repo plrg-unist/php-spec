@@ -7,6 +7,7 @@ dec $fiber_array_receiver_live(pstate, pfiberarray) : bool
 dec $fiber_array_source_valid(pstate, pfiberarray) : bool
 dec $fiber_array_config_matches(pfiberarray, pconfigcall) : bool
 dec $fiber_array_config_pair(ptask*, pconfigcall) : pfiberarray?
+dec $fiber_array_at_site(ptask, porigin) : bool
 dec $fiber_array_count(ptask*, porigin) : nat
 dec $fiber_array_selected(pstate, pfiberarray, pconfigcall) : bool
 dec $fiber_array_release_valid(pstate, pfiberarray) : bool
@@ -73,12 +74,14 @@ def $fiber_array_config_pair(ptask :: ptask_tail*, pconfigcall) = $fiber_array_c
 def $fiber_array_config_pair(ptask*, pconfigcall) = eps -- otherwise
 ;; A user argument frame has its own TODO; recursive calls at the same site
 ;; therefore retain independent receipts instead of sharing a global count.
+def $fiber_array_at_site(FIBER_ARRAY_RELEASE pfiberarray, porigin) = (pfiberarray.SITE = porigin)
+def $fiber_array_at_site(FIBER_ARRAY_RESULT pfiberarray pconfigcall, porigin) = (pfiberarray.SITE = porigin)
+def $fiber_array_at_site(ptask, porigin) = false -- otherwise
 def $fiber_array_count(eps, porigin) = 0
-def $fiber_array_count((FIBER_ARRAY_RELEASE pfiberarray) :: ptask*, porigin) = $(1 + $fiber_array_count(ptask*, porigin))
-  -- if pfiberarray.SITE = porigin
-def $fiber_array_count((FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask*, porigin) = $(1 + $fiber_array_count(ptask*, porigin))
-  -- if pfiberarray.SITE = porigin
-def $fiber_array_count(ptask :: ptask_tail*, porigin) = $fiber_array_count(ptask_tail*, porigin) -- otherwise
+def $fiber_array_count(ptask :: ptask_tail*, porigin) = $(1 + $fiber_array_count(ptask_tail*, porigin))
+  -- if $fiber_array_at_site(ptask, porigin)
+def $fiber_array_count(ptask :: ptask_tail*, porigin) = $fiber_array_count(ptask_tail*, porigin)
+  -- if ~$fiber_array_at_site(ptask, porigin)
 def $fiber_array_selected(S, pfiberarray, pconfigcall) = true
   -- if $fiber_array_source_valid(S, pfiberarray)
   -- if $fiber_array_config_matches(pfiberarray, pconfigcall)
