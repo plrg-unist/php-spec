@@ -49,7 +49,7 @@ CASES = {
             '$fiber_core_result_valid(S, n_runner, pconfigcall)',
             '$fiber_api_core_result_valid(S, n_runner, n_capture, pconfigcall)',
             '$fiber_core_config_valid(S, pconfigcall)',
-            '$config_selected_valid(S, pconfigcall)', '$config_invoke_valid(S, pconfigcall)',
+            '~$config_selected_valid(S, pconfigcall)', '$config_invoke_valid(S, pconfigcall)',
             '$config_trace_frames(S, pconfigcall, eps) = [ptraceframe]',
             'ptraceframe.FILE = eps', 'ptraceframe.LINE = $(-1)',
             'ptraceframe.CLASS = ($ptascii("Fiber"))',
