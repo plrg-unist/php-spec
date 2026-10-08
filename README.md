@@ -253,8 +253,10 @@ releases bound frames without entering body/finally, preserves immediate CV-hand
 ordering and releases a closed Generator's Closure before its caches.
 [Closed storage355](coverage/semantics/generator-storage-pin-review.json) keeps a
 physical pin and readable RETURN through child callbacks, then clears weak lookup.
-Delegating request close, abrupt terminal cleanup, parked/escaped storage and
-nested ordinary-object storage during RETURN reads remain required.
+[Request delegation](coverage/semantics/generator-request-delegation-review.json)
+detaches inputs before finally while preserving CV owners, shared store order,
+delegated cache lifetime and nested normal handlers. Abrupt terminal cleanup,
+parked/escaped storage and nested ordinary-object RETURN reads remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,

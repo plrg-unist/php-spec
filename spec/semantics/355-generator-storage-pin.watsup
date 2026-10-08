@@ -1,6 +1,7 @@
 ;; zend_objects_store_del gives free_obj a real refcount-one pin. Generator
 ;; storage releases one field at a time before std_dtor notifies weak targets.
 dec $generator_storage_slot(pgenerator, nat) : pnode*
+dec $generator_storage_value_shape(pgenerator) : bool
 dec $generator_storage_remaining(pgenerator, nat) : pnode*
 dec $generator_storage_tasks(ptask*) : pgenstorage*
 dec $generator_storage_task(ptask) : bool
@@ -21,9 +22,10 @@ dec $generator_storage_called(pstate, nat) : pstate
 dec $generator_storage_begin(pstate, nat) : pstate
 
 def $generator_storage_slot(pgenerator, 0) = $generator_closed_closure(pgenerator)
-def $generator_storage_slot(pgenerator, 1) = $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL)
+def $generator_storage_slot(pgenerator, 1) = $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL)
 def $generator_storage_slot(pgenerator, 2) = $generator_values_nodes(pgenerator.KEY)
 def $generator_storage_slot(pgenerator, 3) = $generator_values_nodes(pgenerator.RETURN)
+def $generator_storage_value_shape(pgenerator) = ($generator_close_current(pgenerator.DELEGATE) = eps \/ (pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps))
 def $generator_storage_remaining(pgenerator, n) = eps -- if $(n >= 4)
 def $generator_storage_remaining(pgenerator, n) = $generator_storage_slot(pgenerator, n) ++ $generator_storage_remaining(pgenerator, $(n + 1)) -- if $(n < 4)
 
@@ -72,9 +74,10 @@ def $generator_storage_history(S, pgenerator) = false -- otherwise
 def $generator_storage_basic(S, pgenstorage) = true
   -- if $(pgenstorage.OBJECT < |S.OBJECTS|) /\ HOBJECT pgenstorage.OBJECT <- S.ALLOCATIONS
   -- if S.OBJECTS[pgenstorage.OBJECT] = GENERATOR pgenerator
-  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps /\ $generator_from_input_of(pgenerator.DELEGATE) = eps /\ pgenerator.BORROWED = eps
   -- if $generator_close_function(S, pgenerator) /\ $generator_integer(pgenerator.INDEX)
   -- if $generator_storage_history(S, pgenerator) /\ $generator_cache_shape(S, pgenerator)
+  -- if $generator_storage_value_shape(pgenerator)
   -- if $access_generator_record_valid(S, pgenerator)
   -- if $(pgenstorage.NEXT <= 4)
   -- if $heap_subset($generator_storage_remaining(pgenerator, pgenstorage.NEXT), S.ALLOCATIONS)
@@ -106,7 +109,7 @@ def $generator_storage_valid(S, pgenstorage) = false -- otherwise
 
 def $generator_storage_node(S, n) = true
   -- if S.OBJECTS[n] = GENERATOR pgenerator
-  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ $generator_from_input_of(pgenerator.DELEGATE) = eps
 def $generator_storage_node(S, n) = false -- otherwise
 def $generator_storage_called(S, n) = S -- if n <- S.DESTRUCTION.CALLED
 def $generator_storage_called(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]] -- if ~(n <- S.DESTRUCTION.CALLED)

@@ -32,7 +32,7 @@ def $generator_prune(S, pnode_live*) = S
   -- if $generator_request_prune_ready(S)
 
 def $generator_request_frame_valid(S, pgenerator) = true
-  -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING]
   -- if $generator_record_valid(S, pgenerator)
   -- if pgenerator.FRAME = (pframe)
   -- if pframe.ORIGIN = (porigin)
@@ -57,7 +57,7 @@ def $generator_request_store_ready(S, n) = true
 def $generator_request_store_ready(S, n) = false -- otherwise
 def $generator_request_store_begin(S, n, n_handle) = $generator_close_prepare_store(S_queued, pgenrelease, n, (n_handle))
   -- if S.OBJECTS[n] = GENERATOR pgenerator
-  -- if pgenerator.PHASE = GENERATOR_PAUSED
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING]
   -- if pgenrelease = {JOBS eps, VALUE S.RESULT, BASE S.BASE, PENDING eps, COMPLETION NORMAL}
   -- if S_queued = S[.DESTRUCTION.INDEX = $(n_handle + 1)][.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: S.TODO]
 rule PhpStep/generator-request-store-close: S ~> $generator_request_store_begin(S, n, S.DESTRUCTION.INDEX)
