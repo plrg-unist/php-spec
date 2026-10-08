@@ -1167,7 +1167,7 @@ stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
 `b89e7e66d`; fresh104/89 premises at that same cut prove frame ownership, live9
 with its typed source, real NEXT advancement/detach and consumed-slot refusal.
 The old typed fixture is adapted statically with no renewed credit. Quiet reads,
-consumed or explicitly unset storage, mutation and escape remain required.
+consumed storage, mutation and escape remain required.
 The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
 Future initialized declared object/array reads now copy the live payload owner; ALIAS reads
 retain the referent without acquiring its wrapper. Native3 at `8bd90af79` precede
@@ -1182,8 +1182,15 @@ Native3 at `e9dd1a554` precede the unchanged inherited-model Unsupported baselin
 with zero agreement. Strict354, source3 and fresh123/141 premises pass at
 `3418d8268`, proving Error ownership during receiver release, continued cleanup,
 B/previousError chaining and atomic selected-reference binding. No earlier
-campaign is renewed; consumed and original PROP_UNSET slots remain required.
+campaign is renewed; consumed slots remain required.
 The actual355 join over `64b2fabca` passes strict initialization at `08dfc81ef`.
+Future explicitly unset typed properties now raise ordinary Error without a
+getter, using the actual dynamic-first release prefix to exclude consumed slots
+whose original/current UNSET images match. Native3 and the unchanged dynamic
+Unsupported baseline at `0824519ef` are separate from changed strict/source3 at
+`f43b28b47` and 142/147 reached premises at `bad93efed`. The resolved-default
+fixture correction preserves its original uncredited failure; no earlier
+campaign is renewed. Quiet/getter and untyped unset access remain required.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

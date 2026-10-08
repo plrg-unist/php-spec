@@ -925,7 +925,7 @@ cover pending exceptions, the Generator RETURN-child interaction and genuine
 Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
 adds one exact Iterator-child original and 113 reached premises; future
 destructor-tail validation applies the real result discard before owner checks.
-Consumed or explicitly unset property payload access and escaped reacquisition remain required.
+Consumed property storage and escaped reacquisition remain required.
 The same physical pin now covers ordinary stdClass storage. A materialized
 property table transfers its one HARRAY owner before bucket cleanup; shared tables
 keep their children after the parent retires. Five new exact originals and
@@ -946,8 +946,13 @@ Unvisited uninitialized typed properties now raise ordinary Error after visibili
 resolution, using the declaring class and source line. Three exact originals and
 123/141 reached premises cover inherited declarations, private denial, pending
 Error ownership, continued child cleanup and atomic selected-reference binding.
-Consumed and explicitly unset slots remain separate boundaries.
+Consumed slots remain a separate boundary.
 The actual355 composition passes strict initialization.
+Future explicitly unset typed slots now raise the same Error when no getter is
+present. Three exact originals and 142/147 reached premises distinguish actual
+dynamic-first cleanup order from physical slot indexes, retain visibility and
+alias detachment, and verify pending cleanup and atomic selected binding.
+Consumed slots, quiet/getter accesses and untyped unset reads remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
