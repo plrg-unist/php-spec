@@ -54,6 +54,20 @@ Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
 
+Source361 selects first INIT for a direct ECHO of a resolved named noarg
+nonbuiltin call without namespace fallback. Owned include/eval operands retire
+before invocation, allowing late function installation. A returned Stringable
+TMPVAR or REFERENCE keeps its original owner beside the cast pin until output;
+mutable references preserve returned bytes through an old-referent destructor
+exception before later referent cleanup and Throwable replacement. Borrowed CV
+release stays distinct. Ten exact originals retain eight rows at `4ea22120a` and
+two affected rows at `e51d0e343`, both private344;247 independent premises pass
+at the latter cut. Actual349 over CALLS362 `d46556cb0` passes strict compilation
+at `eb0ce479d` with reviewed ownership and source-history compatibility.
+Original early-free and admission failures and the corrected
+pre-call owner fixture retain zero affected credit. Wider calls and output producers
+remain required. [Ledger](coverage/semantics/source-direct-call-emission-review.json).
+
 Source357 selects INIT for a named noarg nonbuiltin key call in an ordinary
 CV-base DIM, directly under ECHO or before a literal property. Owned include/eval
 operands retire before the call; existing runtime keeps the base borrowed and the

@@ -85,6 +85,14 @@ lookup. Six exact originals and128 independent premises retain private341;
 actual343 passes strict compilation with reviewed Generator storage compatibility.
 Dynamic/builtin/argument/fallback calls and wider emissions remain required.
 
+[Direct named noarg ECHO calls](coverage/semantics/source-direct-call-emission-review.json)
+retire owned include/eval operands before INIT, including late function installation.
+Returned Stringable temporaries and reference wrappers survive until bytes are
+printed; a mutated referent can retire earlier without losing successful cast
+bytes to its pending exception. Ten exact originals and247 independent premises
+retain private344; actual349 passes strict compilation over CALLS362. Borrowed CVs
+keep their separate release path; wider call and output consumers remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
