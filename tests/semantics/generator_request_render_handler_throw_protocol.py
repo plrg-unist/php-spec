@@ -121,7 +121,10 @@ S_renderer.FRAMES = pframe_renderer :: pframe_renderer_tail*
 pframe_renderer.TODO = (STRINGIFY_RESULT n_new porigin_new 0) :: (GENERATOR_REQUEST_REPORT pgenfatal_render) :: (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (GENERATOR_REQUEST_RENDER_RETURN pgenfatal_parent n_old false) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_parent_tail*
 pgenfatal_render = pgenfatal_new[.METHOD = (porigin_new)]
 $terminal_string_frame_match(S_renderer,S_renderer.CURRENT,pframe_renderer,porigin_new)
-$heap_owners($heap_graph(S_renderer),HOBJECT n_new) = 2
+$call_context_roots(S_renderer.CURRENT) = [HOBJECT n_new]
+$task_nodes(STRINGIFY_RESULT n_new porigin_new 0) = [HOBJECT n_new]
+$task_nodes(GENERATOR_REQUEST_REPORT pgenfatal_render) = [HOBJECT n_new]
+$heap_owners($heap_graph(S_renderer),HOBJECT n_new) = 3
 $heap_owners($heap_graph(S_renderer),HOBJECT n_old) = 2
 $heap_owners($heap_graph(S_renderer),HOBJECT n_parent) = 1
 $heap_owners($heap_graph(S_renderer),HOBJECT n_generator) = 1
