@@ -4,7 +4,6 @@ import os
 
 import generator_request_finally_protocol as base
 import generator_request_delegation_instance_sources as source
-from reference_yield_protocol import valid
 
 driver = base.driver
 CASES = source.CASES
@@ -31,6 +30,11 @@ def $request_finally_phase(S,203) = true
   -- if S.OBJECTS[n_outer] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSING
 '''
+
+
+def valid(state):
+    return [f'$call_descriptors_valid({state})', f'$heap_valid($heap_graph({state}))',
+            f'$scope_codes_valid({state}, {state}.CODE)']
 
 
 def assertions(checked, path, directory, name):
