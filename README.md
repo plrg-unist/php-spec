@@ -481,6 +481,10 @@ resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
 Three new exact originals and two strict-SL groups with169 premises pass at
 separate cuts; the final315 current-parent join passes combined compilation.
+Normal last-owner close335 runs the detached worker's `finally` immediately
+and leaves its borrowed target for the next real collection/count1. Two exact
+originals and two independent reached groups (216 physical premises) retain their private cut; final319
+compilation preserves331/324. Failed-finally close remains required.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)

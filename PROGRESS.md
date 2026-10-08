@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Collector335 admits normal last-owner close of a detached worker after collection.
+Assigning null to its shared cell runs `finally` immediately; the worker retires
+and its borrowed zero-owner target waits for the next real collection/count1.
+Two exact normal originals and two independent strict-SL groups with100/116
+physical premises pass at the private317 cut. The final319 composition over
+`6fac6d270` preserves static Fiber331 and property324 fields/tasks/owners and
+passes combined compilation at `e12be6f67`. Failed-finally close remains open;
+earlier collector cuts keep their inputs. [Ledger](coverage/semantics/cycle-collection-review.json).
+
 331 adds source-authenticated static `getCurrent`/`suspend` first-class Closures
 with receiver-free capture, alias/clone history and distinct direct, `__invoke`
 and Fiber C-root owners through resume/throw cleanup. Independent sources and
@@ -68,12 +77,13 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
-WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332,
+WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335,
 Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 318 modules composed over
-`afd57f1e5`, retaining static Fiber API captures331. The ordered integration preserves
+with 319 modules composed over
+`6fac6d270`, retaining static Fiber API captures331 and physical property references324.
+The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
