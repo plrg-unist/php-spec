@@ -19,7 +19,6 @@ dec $generator_request_report_completion(pgenfatal) : pcompletion
 dec $generator_request_report_state(pstate, pgenfatal) : pstate
 dec $generator_request_report_text(pstate, pgenfatal) : preqbytes
 dec $generator_request_report_finish(pstate, pgenfatal) : pstate
-dec $generator_request_report_view(pstate, pgenfatal) : pstate
 dec $generator_request_report_snapshot_valid(pstate, pgenfatal) : bool
 dec $generator_request_report_kind(pstate, nat) : text
 dec $generator_request_report_snapshot(pstate, nat) : pobjectprops
@@ -166,9 +165,6 @@ def $generator_request_report_completion(pgenfatal) = UNCAUGHT pgenfatal.OBJECT 
 def $generator_request_report_completion(pgenfatal) = UNCAUGHT_RENDERED pgenfatal.OBJECT ptbytes -- if pgenfatal.TEXT = (ptbytes)
 def $generator_request_report_text(S, pgenfatal) = $throwable_chain_string(S, pgenfatal.OBJECT, eps) -- if pgenfatal.TEXT = eps
 def $generator_request_report_text(S, pgenfatal) = ptbytes -- if pgenfatal.TEXT = (ptbytes)
-def $generator_request_report_view(S, pgenfatal) = S[.OBJECTPROPS = $objectprops_set(S.OBJECTPROPS, pgenfatal.OBJECT, pobjectprops.SLOTS)]
-  -- if pgenfatal.REPORT = (pobjectprops)
-def $generator_request_report_view(S, pgenfatal) = S -- if pgenfatal.REPORT = eps
 def $generator_request_report_kind(S, n) = pthrowable.KIND
   -- if S.OBJECTS[n] = THROWABLE pthrowable
 def $generator_request_report_kind(S, n) = text_kind
@@ -190,15 +186,18 @@ def $generator_request_report_snapshot_valid(S, pgenfatal) = true
   -- if ppropertyslot_line = $throwable_slot(text_kind, "line", PINT z)
   -- if pgenfatal.METHOD =/= eps \/ $throwable_terminal_message_supported(pvalue_message)
 def $generator_request_report_snapshot_valid(S, pgenfatal) = false -- otherwise
-def $generator_request_report_frozen(S, pgenfatal) = REQUESTFATAL ($object_name(S, pgenfatal.OBJECT)) ($echo_value($throwable_field(S_view, pgenfatal.OBJECT, "message"))) z
+def $generator_request_report_frozen(S, pgenfatal) = REQUESTFATAL ($object_name(S, pgenfatal.OBJECT)) ($echo_value(pvalue_message)) z
   -- if pgenfatal.TEXT = eps
-  -- if S_view = $generator_request_report_view(S, pgenfatal)
-  -- if $throwable_field(S_view, pgenfatal.OBJECT, "line") = PINT z
+  -- if pgenfatal.REPORT = (pobjectprops)
+  -- if pobjectprops.SLOTS = [ppropertyslot_message, ppropertyslot_file, ppropertyslot_line]
+  -- if ppropertyslot_message.STATE = PROP_VALUE (DIRECT pvalue_message)
+  -- if ppropertyslot_line.STATE = PROP_VALUE (DIRECT (PINT z))
 def $generator_request_report_frozen(S, pgenfatal) = REQUESTFATAL ($object_name(S, pgenfatal.OBJECT)) ptbytes z
   -- if pgenfatal.TEXT = (ptbytes)
-  -- if S_view = $generator_request_report_view(S, pgenfatal)
-  -- if $throwable_field(S_view, pgenfatal.OBJECT, "line") = PINT z
-def $generator_request_report_state(S, pgenfatal) = $shutdown_freeze_marked($generator_request_report_view(S, pgenfatal)[.COMPLETION = $generator_request_report_completion(pgenfatal)][.TRACE = eps][.ERRORORIGIN = eps])
+  -- if pgenfatal.REPORT = (pobjectprops)
+  -- if pobjectprops.SLOTS = [ppropertyslot_message, ppropertyslot_file, ppropertyslot_line]
+  -- if ppropertyslot_line.STATE = PROP_VALUE (DIRECT (PINT z))
+def $generator_request_report_state(S, pgenfatal) = $shutdown_freeze_marked(S[.COMPLETION = $generator_request_report_completion(pgenfatal)][.TRACE = eps][.ERRORORIGIN = eps])
 def $generator_request_report_finish(S, pgenfatal) = $destructor_release_begin(S_report[.TODO = (GENERATOR_REQUEST_BAILOUT pgenfatal[.REPORT = ($generator_request_report_snapshot(S_cached, pgenfatal.OBJECT))][.FROZEN = S_report.COMPLETION]) :: ptask_tail*][.COMPLETION = NORMAL][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], [DESTRUCTION_VALUE (HOBJECT pgenfatal.OBJECT)])
   -- if S.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_original) :: ptask_tail*
   -- if pgenfatal[.TEXT = eps] = pgenfatal_original

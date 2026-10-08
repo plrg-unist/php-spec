@@ -47,12 +47,12 @@ def $request_finally_phase(S,311) = ($request_finally_phase(S,310) /\ S.REPORTIN
 def $request_finally_phase(S,320) = true
   -- if S.TODO = (GENERATOR_REQUEST_BAILOUT pgenfatal) :: ptask_tail*
   -- if S.CURRENT = eps /\ S.FRAMES = eps
+dec $request_fatal_stderr_event(pevent) : bool
 dec $request_fatal_stderr(pevent*) : preqbytes
 def $request_fatal_stderr(eps) = eps
 def $request_fatal_stderr((STDERR ptbytes) :: pevent_tail*) = ptbytes ++ $request_fatal_stderr(pevent_tail*)
 def $request_fatal_stderr(pevent :: pevent_tail*) = $request_fatal_stderr(pevent_tail*)
   -- if ~$request_fatal_stderr_event(pevent)
-dec $request_fatal_stderr_event(pevent) : bool
 def $request_fatal_stderr_event(STDERR ptbytes) = true
 def $request_fatal_stderr_event(pevent) = false -- otherwise
 '''
@@ -185,6 +185,7 @@ pgenfatal_bailout.SOURCE = pgenfatal_report.SOURCE
 pgenfatal_bailout.HANDLERS = pgenfatal_report.HANDLERS
 $task_nodes(GENERATOR_REQUEST_BAILOUT pgenfatal_bailout) = eps
 ~((HOBJECT n_exception) <- S_bailout.ALLOCATIONS)
+$objectprops_record_at(S_bailout.OBJECTPROPS,n_exception) = eps
 $heap_owners($heap_graph(S_bailout),HOBJECT n_exception) = 0
 $heap_owners($heap_graph(S_bailout),HOBJECT n_generator) = 1
 $heap_owners($heap_graph(S_bailout),HOBJECT n_payload) = 1
