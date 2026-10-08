@@ -106,6 +106,13 @@ The private retained-node factor passes strict305 initialization, GC42/GEN63/Fib
 and one parent-child WeakReference original on `67fa589eb`; exact public output
 `P:live|C:null|N|END` completes in9.078s. Its full retry still times out at host55
 with empty streams and zero agreement; this adds no demonstrated speedup.
+The separate destructor preparation/waiting factor passes strict305 initialization,
+110 source-reached/controlled branch and original-state fallback predicates plus
+GEN63 on `5559f2c00`; the WeakReference original again agrees in9.078s. The selected
+RHS Unmatch fallback is statically preserved. Its full retry still times out at
+host55.066 with empty streams and zero agreement. The maintained
+`destruction_prune_protocol.py` reproduces the corrected110 fixture; its original
+relation-premise elaboration stop earns no runtime credit.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

@@ -157,6 +157,7 @@ test-semantics: build
 	python3 tests/semantics/destructor_review.py
 	python3 tests/semantics/destructor_state.py
 	python3 tests/semantics/destructor_state_review.py
+	python3 tests/semantics/destruction_prune_protocol.py
 	python3 tests/semantics/eager_destructor_review.py
 	python3 tests/semantics/eager_destructor_state_review.py
 	python3 tests/semantics/eager_fatal_review.py
