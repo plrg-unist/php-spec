@@ -1868,6 +1868,27 @@ The reviewed EX/SOURCE336 composition `8b47bee97` over `b4f1e6175` passes strict
 algo/struct at3.469/4.420s (`trait266-object-algo-pemw9ni4`,
 `trait266-object-struct-bjiml5w8` under the publish evidence directory). Its
 GC.SCAN schema and caller/source fields are preserved; source1/59 bridge unchanged.
+Failed imported first targets distinguish successful data binding followed by abstract
+verification failure from a failure before method-scope fixup. Exact historical
+data replay selects the fixed C scope or the known unfixed trait scope; an unknown
+phase denies cached selection without substituting the later class's method.
+Only scratch replay reuses the authenticated direct FCC value. A live retained
+FCC can evaluate `self::class` for its failed lexical owner without publishing it.
+At `6f76ae9fd`/339, strict algo/struct pass3.719/4.570s, one shutdown PHP-error tuple
+and59 supplied conditions plus6 setup clauses pass (49.848s), including genuine
+static installation and all declaration/call/heap validators. Raw evidence under
+`.tools/trait-fcc-failed-target-current19/.tools/` is `method-runtime-fag72wcy`,
+`closure-call-protocol-2k36nias`, `trait266-object-algo-b1gh0tol` and
+`trait266-object-struct-izuh_dgb`. Earlier Unsupported/timeout/interpreter failures
+(`uh6igkol`, `xf7jjsk7`, `ppfvuqw4`) and the rejected synthetic own-root fixture
+`1f6_ozo9` retain zero agreement. The native-warning catalogue transcription was
+corrected from preserved raw stderr without repeating PHP. Callbacks after fixup
+but before the failure marker remain open.
+The reviewed344 composition `0db3c85b5` over `c527549353` passes strict algo/struct
+at3.619/4.420s; these source1/59 cuts bridge unchanged. Current GC/Fiber/source
+fields and static-compound selectors are preserved. Raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-nke5f48d`
+and `trait266-object-struct-elvmk9fw` in the same directory.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do broader differing-owner later births and

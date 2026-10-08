@@ -498,6 +498,83 @@ CASES['failed-first-target-followed-by-failed-later-import'] = {
     'checks': BOTH_FAILED,
 }
 
+FAILED_FIXUP_STAGE = ('S.TODO = (STATIC_INIT porigin_static) :: ptask_tail* '
+         '-- if S.CURRENT = (pcallcontext) '
+         '-- if pcallcontext.TARGET = CLOSURE_TARGET n_fcc '
+         '-- if pcallcontext.LEXICAL_CLASS = (porigin_c) '
+         '-- if $class_at(S.CLASSES, porigin_c) = (pclassdesc_c) '
+         '-- if pclassdesc_c.NAME = $ptascii("C") '
+         '-- if pcallcontext.CALLED_CLASS = (porigin_e) '
+         '-- if $class_at(S.CLASSES, porigin_e) = (pclassdesc_e) '
+         '-- if pclassdesc_e.NAME = $ptascii("E")')
+FAILED_FIXUP = [
+    '$call_current_valid(S)',
+    '$constant_callable_record(S.CONSTANTCLOSURES, n_fcc) = (pconstantclosure)',
+    '$constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure_first)',
+    '$trait_fcc_failed_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_c, pmethoddesc_unfixed))',
+    'pmethoddesc_unfixed.OWNER = porigin_u',
+    '$class_at(S.CLASSES, porigin_u) = (pclassdesc_u)',
+    '$class_named(S.CLASSNAMES, $ptascii("c")) = eps /\\ $class_named(S.CLASSNAMES, $ptascii("e")) = (porigin_e)',
+    '$closure_method_origin(S, pcallcontext.FUNCTION) = (pmethoddesc)',
+    'pmethoddesc = pmethoddesc_unfixed[.OWNER = porigin_c]',
+    '$trait_fcc_failed_fixup_at(S, pconstantclosure_first, pconstantclosure.PREFIX) = ((porigin_c, pmethoddesc))',
+    '$trait_fcc_failed_fixup_at(S, pconstantclosure_first, pconstantclosure_first.PREFIX) = eps',
+    '$trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_c, pmethoddesc_unfixed, pconstantclosure_first.PREFIX) = (pmethoddesc_unfixed)',
+    '$constant_callable_record_valid(S, pconstantclosure_first) /\\ ~(HOBJECT pconstantclosure_first.OBJECT <- S.ALLOCATIONS) /\\ $closure_scope_at(S.CLOSURESCOPES, pconstantclosure_first.OBJECT) = eps',
+    '$closure_scope_at(S.CLOSURESCOPES, n_fcc) = (pclosurescope)',
+    'pclassdesc_u.NAME = $ptascii("U") /\\ pclosurescope.LEXICAL = porigin_c /\\ pclosurescope.CALLED = porigin_e',
+    '$method_closure_scope_valid(S, pclosurescope)',
+    '$method_self_class_scope_valid(S, pclassdesc_c)',
+    '~$method_self_class_scope_valid(S[.CURRENT = (pcallcontext[.LEXICAL_CLASS = (porigin_u)])], pclassdesc_c)',
+    '~$method_self_class_scope_valid(S[.CURRENT = (pcallcontext[.TARGET = CLOSURE_TARGET pconstantclosure_first.OBJECT][.INSTANCE = (pconstantclosure_first.OBJECT)])], pclassdesc_c)',
+    '$lookup(S.ENV, $ptascii("v")) = (n_parameter)',
+    'S.STORE[n_parameter] = DEFINED (PINT 7)',
+    '$state_static_at(S, porigin_static) = eps',
+    '$trait_static_key(S, porigin_static) = TRAIT_ORIGIN porigin_c porigin_static $ptascii("m")',
+    'PhpStep: S ~> S_static',
+    'S_static.COMPLETION = NORMAL /\\ S_static.CURRENT = S.CURRENT',
+    '$state_static_at(S_static, porigin_static) = (n_static)',
+    '$lookup(S_static.ENV, $ptascii("n")) = (n_static) /\\ S_static.STORE[n_static] = DEFINED (PINT 0) /\\ $static_at(S_static.STATICS, TRAIT_ORIGIN porigin_c porigin_static $ptascii("m")) = (n_static)',
+    '$class_constant_state_valid(S_static)',
+    '$call_descriptors_valid(S_static)',
+    '$declaration_history_valid(S_static)',
+    '$heap_valid($heap_graph(S_static))',
+    '$trait_fcc_scope_owner(S, pmethoddesc, pconstantclosure.SITE, porigin_e, pclosurescope[.LEXICAL = porigin_u]) = eps',
+    '$trait_fcc_scope_owner(S, pmethoddesc, pconstantclosure.SITE, porigin_e, pclosurescope[.CALLED = porigin_c]) = eps',
+    '~$constant_callable_cached_method_access(S, pconstantclosure.SITE, porigin_e, pmethoddesc_unfixed)',
+    '$method_named(pclassdesc_e.METHODS, $ptascii("m")) = (pmethoddesc_e)',
+    'S_fresh = S[.OBJECTS = $object_set(S.OBJECTS, n_fcc, CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc_e.FUNCTION.ORIGIN pconstantclosure.SITE porigin_e eps))]',
+    '$trait_fcc_scope_owner(S_fresh, pmethoddesc_e, pconstantclosure.SITE, porigin_e, pclosurescope) = eps',
+    '~$method_self_class_scope_valid(S_fresh, pclassdesc_c)',
+    '$trait_fcc_scope_receipt(S, pconstantclosure[.PREFIX = pconstantclosure_first.PREFIX], pmethoddesc, pclosurescope) = eps',
+    '$trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((pconstantclosure_first.SITE, ptraitcachecause_first))',
+    'S_wrong_table = S[.CLASSCONSTANTHISTORY = [CCTRAITBIRTH pconstantclosure_first.OBJECT pconstantclosure_first.SITE ptraitcachecause_first[.TABLE = eps]] ++ S.CLASSCONSTANTHISTORY]',
+    '$trait_fcc_failed_fixup_at(S_wrong_table, pconstantclosure_first, pconstantclosure.PREFIX) = eps',
+    # Synthetic opposite-operand probes retain the genuine first demand/receipt.
+    '$ppproperty_desc_at(pclassdesc_u.PROPERTIES, $ptascii("x")) = (ppropertydesc_u)',
+    'S_before_fixup = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_u[.PROPERTIES = [ppropertydesc_u[.DEFAULT = PROP_LITERAL (PINT 0)]]])]',
+    '$trait_fcc_failed_header(S_before_fixup, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_c, pmethoddesc_unfixed))',
+    '$trait_fcc_failed_fixup_at(S_before_fixup, pconstantclosure_first, pconstantclosure.PREFIX) = ((porigin_c, pmethoddesc_unfixed))',
+    'S_unknown_phase = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_u[.PROPERTIES = [ppropertydesc_u[.DEFAULT = PROP_DEFERRED porigin_u]]])]',
+    '$trait_fcc_failed_header(S_unknown_phase, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_c, pmethoddesc_unfixed))',
+    '$trait_fcc_failed_fixup_at(S_unknown_phase, pconstantclosure_first, pconstantclosure.PREFIX) = eps',
+    '$constant_callable_method_cached_at(S_unknown_phase, pconstantclosure.SITE, pconstantclosure.PREFIX)',
+    '$constant_callable_method(S_unknown_phase, pconstantclosure.SITE, porigin_e, pconstantclosure.PREFIX) = eps',
+    '~$constant_callable_method_access(S_unknown_phase, pconstantclosure.SITE, porigin_e, pmethoddesc)',
+    '$default_cache_at(S.CLASSCONSTANTCACHE, pconstantclosure.DECL) = (pdefaultcache_e)',
+    'S_wrong_cache = S[.CLASSCONSTANTCACHE = S.CLASSCONSTANTCACHE ++ [pdefaultcache_e[.ORIGIN = pconstantclosure_first.DECL]]]',
+    '$trait_fcc_failed_fixup_at(S_wrong_cache, pconstantclosure_first, pconstantclosure.PREFIX) = eps',
+    'S_resurrect = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT pconstantclosure_first.OBJECT]]',
+    '$trait_fcc_failed_fixup_at(S_resurrect, pconstantclosure_first, pconstantclosure.PREFIX) = eps',
+    'S_wrong_abstract = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_c[.ABSTRACT = true])]',
+    '~$declaration_history_valid(S_wrong_abstract)',
+]
+CASES['failed-first-post-fixup-target-shutdown-default-and-static-identity'] = {
+    'source': SOURCES['failed-first-post-fixup-abstract-shutdown'],
+    'stage': FAILED_FIXUP_STAGE,
+    'checks': FAILED_FIXUP,
+}
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--match', default='')

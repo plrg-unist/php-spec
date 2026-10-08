@@ -269,6 +269,14 @@ after the authenticated first-owner failure, at the later birth prefix. Both
 owners retire; the first latent cache
 metadata remains distinct from live value/scope authority. One shutdown original
 and59 supplied rollback conditions pass, with6 setup clauses separate.
+After successful trait data binding and a later abstract-verification failure,
+the cached method has the failed class's fixed scope. Source-authenticated data
+replay distinguishes completed binding, a modeled data fatal and an unknown
+phase; an unknown phase cannot fall back to a fresh method. An imported first
+birth remains unfixed and retired. An authenticated later callable may report its
+failed lexical class's name without granting class publication or member lookup.
+One shutdown original and59 supplied phase/scope/default/static conditions pass,
+with6 setup clauses separate. Callbacks between fixup and failure remain open.
 Dependency fills in held/open compilation, broader differing-owner later births and
 wider failed-owner member/construction behavior retain explicit boundaries.
 Wider parameter-view full-source constructor, handler and variadic cases remain
