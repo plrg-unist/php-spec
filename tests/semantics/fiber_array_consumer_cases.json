@@ -80,6 +80,14 @@
     "engine_derived_expectation": "Array-selected constructor keeps exact callable-parser and parked warning continuation after selector retirement; callable validation precedes READY rejection, with no builtin body execution."
   },
   {
+    "id": "author-fiber-array-unpacked-throw-after-selector-retirement",
+    "source": "<?php\nfunction unpackedArrayInjection19() {\n    $GLOBALS['pair'] = null;\n    unset($GLOBALS['target']);\n    return ['exception' => $GLOBALS['original']];\n}\n$original = new Exception('injected');\n$target = new Fiber(static function () use ($original) {\n    try { Fiber::suspend('Y'); }\n    catch (Exception $caught) {\n        echo (int)($caught === $original), '|', $caught->getMessage(), '|';\n        return 27;\n    }\n    return 99;\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$pair = [$target, 'throw'];\necho (int)($pair(...unpackedArrayInjection19()) === null), '|';\necho (int)($weak->get() === null);\n",
+    "source_sha256": "8f2407dc61a46340722fcfad73ec424ca0581fe864ae6a29be57078618b4c1d3",
+    "expected_model": "normal",
+    "native_status": "unrun-awaiting-lease",
+    "engine_derived_expectation": "The CONFIG unpack continuation retains the snapshotted bound receiver after selector retirement, maps its named Throwable once, and injects exact identity before releasing the final receiver owner."
+  },
+  {
     "id": "peer-fiber-array-start-keeps-named-default-and-variadic-buffer",
     "source": "<?php\nfunction arrayStartBody19(int $value, $suffix = 'D', ...$rest) {\n    echo (int)($value === 7), '|', $suffix, '|', $rest['tag'], '|';\n    echo Fiber::suspend('Y'), '|';\n    return 29;\n}\n$target = new Fiber('arrayStartBody19');\n$pair = [$target, 'StArT'];\necho $pair(value: '7', tag: 'X'), '|';\n$resume = [$target, 'resume'];\necho (int)($resume(value: 'R') === null), '|';\n$get = [$target, 'getReturn'];\n$status = [$target, 'isTerminated'];\necho $get(), '|', (int)$status();\n",
     "source_sha256": "e11e52f40bccca1b2f039fea465ad3ad3c1a68d5c7934800e61a0332a3c1e60b",
