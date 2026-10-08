@@ -31,7 +31,7 @@ def $stringify_echo_operand(S, eps, porigin_parent, porigin_site, z, n) = false
 def $stringify_echo_operand(S, expression :: expression_tail*, porigin_parent, porigin_site, z, n) = true
   -- if $origin_child((porigin_parent), [PCINDEX n]) = (porigin_site)
   -- if $origin_node(S.SOURCES, porigin_site) = (expression)
-  -- if $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression) = z
+  -- if $echo_expression_line(S[.ORIGIN = (porigin_site)], expression) = z
 def $stringify_echo_operand(S, expression :: expression_tail*, porigin_parent, porigin_site, z, n) = $stringify_echo_operand(S, expression_tail*, porigin_parent, porigin_site, z, $(n + 1))
   -- if $origin_child((porigin_parent), [PCINDEX n]) =/= (porigin_site)
 def $stringify_echo_operand(S, expression*, porigin_parent, porigin_site, z, n) = false -- otherwise
