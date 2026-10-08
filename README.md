@@ -160,6 +160,15 @@ epochs. Deferred initializer ASTs convert with the live value. The original
 16 source/profile,194 state and12 transport cuts remain separate from later
 compiler source/state checks. Wider configuration remains required.
 
+Assertions now distinguish startup modes `-1`, `0` and `1` before compilation,
+including eval/include replay. Known direct calls capture normalized descriptions;
+dynamic and first-class calls keep ordinary argument evaluation. Twenty-five
+retained source/profile comparisons and 64 reached-state premises pass, including
+fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime mode
+updates, assertion options/callbacks, Stringable descriptions and wider expression
+export remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
+with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
+
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
 effective CAST/FAST_CONCAT/ROPE order, retaining fetched temporaries separately
 from live variables through Stringable and warning callbacks. Nine exact source

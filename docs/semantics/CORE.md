@@ -118,9 +118,11 @@ call omits argument evaluation when `zend.assertions` is zero or negative; a
 dynamic call still evaluates arguments before the intrinsic returns early. The
 compiler supplies an exported expression description for a one-argument direct
 call. Preserve this distinction, `AssertionError`/supplied throwable behavior,
-callback effects, and the deprecated `assert_options` controls. Source-backed
-assertion obligations remain pending; treating the API as an ordinary excluded
-library would hide these language effects.
+callback effects, and the deprecated `assert_options` controls. Module368 implements
+the three explicit startup modes, selected normalized descriptions, ordinary
+dynamic/FCC evaluation, description type-check priority and Throwable identity.
+Runtime mode changes, options/callbacks, Stringable descriptions, wider export
+and single named-description/unpack producers remain required core work.
 
 Each intrinsic follows the target's argument/type checks and exception propagation,
 including source-backed early-return cases such as disabled assertions.

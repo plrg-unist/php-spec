@@ -7,6 +7,23 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Assertions368 supplies early startup `-1`/`0`/`1` selection for main/eval/include
+and replay, resolved direct-call elision, pre-argument immutable descriptions,
+dynamic/FCC evaluation and description validation before truth. At `02f0d61c4`
+(350 modules), strict compilation, 25 exact native-profile source tuples and 64
+authentic state premises pass; fresh errors have code 1 and supplied Throwables
+retain identity. Independent quote7 at `45cdd2f92`, export17 at `85f098d5f` and
+startup18 retain separate cuts. Raw results are under
+`.tools/compiler-assertions-368-19/.tools/{method-runtime-itg9mwvs,assertion-state-v3,assertion-gate-v13,assertion-gate-v10,assertion-gate-v8,assertion-startup-v1}`;
+startup rejection classification is derived from unchanged recorded streams.
+Original compiler/receive failures remain preserved. Runtime INI updates,
+options/callbacks, Stringable descriptions and wider export/producer shapes remain
+required. Combined/offline catalogue wiring is prepared; its fresh run is pending.
+The actual 354-module composition over `fa0180918` passes strict initialization
+at `c24807fcd` (4.370 seconds); raw output is in
+`.tools/compiler-assertions-368-current-19/.tools/assertion-current-gate-v1`.
+Earlier private 350-module source/state/helper cuts retain their own identities.
+
 Module 367 executes ordinary simple Fiber-array `start`: immutable selection
 survives argument effects, and one receiver plus the original positional/named
 buffer transfer to the waiting API. Nonowning receipts remain valid after actual
