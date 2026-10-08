@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Request-close fatal originals; native forecasts remain provisional until run."""
+"""Request-close fatal originals with preserved baseline bytes and reasons."""
 import generator_force_close_review as driver
 
 
@@ -34,6 +34,8 @@ $wp=WeakReference::create($g->current());$keepPayload=&$wp;echo "C|";
 ''', b'C|FT1:1', 'Generator request-close uncaught exception', 255),
 }
 
+CASES = {name: (row[0], row[1], row[3]) for name, row in UNSUPPORTED.items()}
+
 NATIVE_ERROR_PREFIXES = {
     'peer-request-uncaught-finally-required': b'Fatal error: Uncaught Exception: new',
     'peer-request-handler-throw-required': b'Fatal error: Uncaught Exception: handler',
@@ -43,12 +45,14 @@ NATIVE_ERROR_PREFIXES = {
 
 
 def main():
-    driver.CASES = {}
+    driver.CASES = CASES
     driver.DECLARATIONS = {}
-    driver.UNSUPPORTED = UNSUPPORTED
+    driver.UNSUPPORTED = {}
+    driver.EXPECTED_STATUSES = {name: 'php_error' for name in CASES}
     driver.NATIVE_ERROR_PREFIXES = NATIVE_ERROR_PREFIXES
     driver.WATCHED += [
         'spec/semantics/152-throwable-runtime.watsup',
+        'spec/semantics/168-user-string-runtime.watsup',
         'spec/semantics/176-throwable-subclass-storage.watsup',
         'spec/semantics/222-exception-handlers.watsup',
         'spec/semantics/231-shutdown-functions.watsup',
@@ -59,6 +63,7 @@ def main():
         'spec/semantics/349-generator-request-fresh.watsup',
         'spec/semantics/355-generator-storage-pin.watsup',
         'spec/semantics/360-generator-request-delegation.watsup',
+        'spec/semantics/363-generator-request-abrupt.watsup',
         'tests/semantics/generator_request_abrupt_peer_sources.py',
     ]
     return driver.main()

@@ -113,6 +113,7 @@ syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
 syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase, pgeneratorfrom, pgeneratoraccess
 syntax pgenclosestage, pgenclose, pgenrelease, pgenstorage
+syntax pgenfatal = {SOURCE ptask, OBJECT nat, HANDLERS (pvalue?)*, METHOD porigin?, TEXT preqbytes?, REPORT pobjectprops?, FROZEN pcompletion}
 syntax ptask, pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
 syntax papiclass = { REQUESTED porigin, CALLED porigin, RECEIVER nat?, STRICT bool }
 syntax papiclassresult = API_CLASS papiclass | API_CLASS_INVALID ptbytes | API_CLASS_UNKNOWN text
@@ -246,6 +247,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | CALLABLE_STRING_RESULT ptask poperand nat nat int
   | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
   | GENERATOR_REQUEST_RESUME pgenclose
+  | GENERATOR_REQUEST_REPORT pgenfatal | GENERATOR_REQUEST_BAILOUT pgenfatal
   | DESTRUCTOR_OPERATION_EXIT pdestructionoperation
   | ACCESS_REFERENCE_VALUE_RESULT porigin poperand int
   | ACCESS_REFERENCE_VALUE_RELEASE paccess poperand

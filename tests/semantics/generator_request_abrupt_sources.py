@@ -35,6 +35,8 @@ $wp=WeakReference::create($g->current());$keepPayload=&$wp;echo "C|";
 ''', b'C|FE1:1', 'Generator request-close uncaught exception', 255),
 }
 
+CASES = {name: (row[0], row[1], row[3]) for name, row in UNSUPPORTED.items()}
+
 NATIVE_ERROR_PREFIXES = {
     'request-handler-fatal-abandons-cache-and-later-destructor': b'Fatal error: Uncaught Exception: handler',
     'request-handler-fatal-render-retains-original-exception': b'Fatal error: Uncaught rendered-handler',
@@ -43,9 +45,10 @@ NATIVE_ERROR_PREFIXES = {
 
 
 def main():
-    driver.CASES = {}
+    driver.CASES = CASES
     driver.DECLARATIONS = {}
-    driver.UNSUPPORTED = UNSUPPORTED
+    driver.UNSUPPORTED = {}
+    driver.EXPECTED_STATUSES = {name: "php_error" for name in CASES}
     driver.NATIVE_ERROR_PREFIXES = NATIVE_ERROR_PREFIXES
     driver.WATCHED += [
         'spec/semantics/152-throwable-runtime.watsup',
