@@ -62,19 +62,19 @@ dec $dupref_generator_without_frames(pframe*) : pframe*
 def $dupref_generator_job(DESTRUCTION_PROP_SOURCE pproptypesource n_cell) = true
 def $dupref_generator_job(pdestructionjob) = false -- otherwise
 def $dupref_generator_jobs(eps) = false
-def $dupref_generator_jobs(pdestructionjob :: pdestructionjob*) = ($dupref_generator_job(pdestructionjob) \/ $dupref_generator_jobs(pdestructionjob*))
+def $dupref_generator_jobs(pdestructionjob :: pdestructionjob_tail*) = ($dupref_generator_job(pdestructionjob) \/ $dupref_generator_jobs(pdestructionjob_tail*))
 def $dupref_generator_task(GENERATOR_CLOSE_RELEASE pgenrelease) = (pgenrelease)
   -- if $dupref_generator_jobs(pgenrelease.JOBS)
 def $dupref_generator_task(ptask) = eps -- otherwise
 def $dupref_generator_tasks(eps) = eps
-def $dupref_generator_tasks(ptask :: ptask*) = (pgenrelease)
+def $dupref_generator_tasks(ptask :: ptask_tail*) = (pgenrelease)
   -- if $dupref_generator_task(ptask) = (pgenrelease)
-def $dupref_generator_tasks(ptask :: ptask*) = $dupref_generator_tasks(ptask*)
+def $dupref_generator_tasks(ptask :: ptask_tail*) = $dupref_generator_tasks(ptask_tail*)
   -- if $dupref_generator_task(ptask) = eps
 def $dupref_generator_frames(eps) = eps
-def $dupref_generator_frames(pframe :: pframe*) = (pgenrelease)
+def $dupref_generator_frames(pframe :: pframe_tail*) = (pgenrelease)
   -- if $dupref_generator_tasks(pframe.TODO) = (pgenrelease)
-def $dupref_generator_frames(pframe :: pframe*) = $dupref_generator_frames(pframe*)
+def $dupref_generator_frames(pframe :: pframe_tail*) = $dupref_generator_frames(pframe_tail*)
   -- if $dupref_generator_tasks(pframe.TODO) = eps
 def $dupref_generator_release(ptask*, pframe*) = (pgenrelease)
   -- if $dupref_generator_tasks(ptask*) = (pgenrelease)
@@ -84,24 +84,24 @@ def $dupref_generator_plan_task(GENERATOR_CLOSE_DONE pgenclose) = (pgenclose)
 def $dupref_generator_plan_task(GENERATOR_CLOSE_ENTER pgenclose) = (pgenclose)
 def $dupref_generator_plan_task(ptask) = eps -- otherwise
 def $dupref_generator_plan_tasks(eps) = eps
-def $dupref_generator_plan_tasks(ptask :: ptask*) = (pgenclose)
+def $dupref_generator_plan_tasks(ptask :: ptask_tail*) = (pgenclose)
   -- if $dupref_generator_plan_task(ptask) = (pgenclose)
-def $dupref_generator_plan_tasks(ptask :: ptask*) = $dupref_generator_plan_tasks(ptask*)
+def $dupref_generator_plan_tasks(ptask :: ptask_tail*) = $dupref_generator_plan_tasks(ptask_tail*)
   -- if $dupref_generator_plan_task(ptask) = eps
 def $dupref_generator_plan_frames(eps) = eps
-def $dupref_generator_plan_frames(pframe :: pframe*) = (pgenclose)
+def $dupref_generator_plan_frames(pframe :: pframe_tail*) = (pgenclose)
   -- if $dupref_generator_plan_tasks(pframe.TODO) = (pgenclose)
-def $dupref_generator_plan_frames(pframe :: pframe*) = $dupref_generator_plan_frames(pframe*)
+def $dupref_generator_plan_frames(pframe :: pframe_tail*) = $dupref_generator_plan_frames(pframe_tail*)
   -- if $dupref_generator_plan_tasks(pframe.TODO) = eps
 def $dupref_generator_is_release(GENERATOR_CLOSE_RELEASE pgenrelease) = true
 def $dupref_generator_is_release(ptask) = false -- otherwise
 def $dupref_generator_without_tasks(eps) = eps
-def $dupref_generator_without_tasks(ptask :: ptask*) = $dupref_generator_without_tasks(ptask*)
+def $dupref_generator_without_tasks(ptask :: ptask_tail*) = $dupref_generator_without_tasks(ptask_tail*)
   -- if $dupref_generator_is_release(ptask)
-def $dupref_generator_without_tasks(ptask :: ptask*) = ptask :: $dupref_generator_without_tasks(ptask*)
+def $dupref_generator_without_tasks(ptask :: ptask_tail*) = ptask :: $dupref_generator_without_tasks(ptask_tail*)
   -- if ~$dupref_generator_is_release(ptask)
 def $dupref_generator_without_frames(eps) = eps
-def $dupref_generator_without_frames(pframe :: pframe*) = pframe[.TODO = $dupref_generator_without_tasks(pframe.TODO)] :: $dupref_generator_without_frames(pframe*)
+def $dupref_generator_without_frames(pframe :: pframe_tail*) = pframe[.TODO = $dupref_generator_without_tasks(pframe.TODO)] :: $dupref_generator_without_frames(pframe_tail*)
 dec $dupref_phase(pstate, nat) : bool
 def $dupref_phase(S, 0) = true
   -- if S.TODO = (FOREACH_NEXT n (HCELL n_receiver) statement porigin? z) :: ptask_tail*
