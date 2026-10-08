@@ -120,6 +120,8 @@ function &leaf328(){$next=2;yield new Payload328($next);yield $next;}
 $generator=leaf328();echo "C|",(int)($generator->current() instanceof Payload328),"|";
 $generator->next();echo $generator->current();
 ''', b'C|1|D|9', 0),
+    'promoted-reference-arrow-value-iteration': (
+        b'<?php\n$x=5;$f=fn&()=>yield $x;foreach($f() as $v){echo $v;}echo "Z";\n', b'5Z', 0),
 }
 
 DECLARATIONS = {
@@ -137,6 +139,8 @@ def main():
         'spec/semantics/99-reference-returns.watsup',
         'spec/semantics/118-arrows.watsup',
         'spec/semantics/207-error-handler-runtime.watsup',
+        'spec/semantics/236-eval-declaration-notices.watsup',
+        'spec/semantics/243-file-warning-continuations.watsup',
         'spec/semantics/270-eager-destructors.watsup',
         'spec/semantics/311-arrow-generators.watsup',
         'spec/semantics/321-yield-key-warning.watsup',
