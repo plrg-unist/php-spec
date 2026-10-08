@@ -6,6 +6,7 @@ dec $trait_fcc_failed_methods(pstate, pconstantclosure*) : pmethoddesc*
 dec $trait_fcc_failed_method_select(pstate, pconstantclosure*, (porigin, pmethoddesc, pmethoddesc)?) : pmethoddesc*
 dec $trait_fcc_retained_method_functions(pstate, pmethoddesc*) : pfunction*
 dec $trait_fcc_retained_function_add(pstate, pmethoddesc, pfunction*) : pfunction*
+dec $trait_fcc_failed_data_phase(pcompletion, porigin, pmethoddesc, pmethoddesc) : (porigin, pmethoddesc)?
 
 def $trait_fcc_failed_target(S, pconstantclosure) = ((ptraitcachecause.CLASS, pmethoddesc_copy, pmethoddesc))
   -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
@@ -25,6 +26,37 @@ def $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owne
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)
   -- if $trait_fcc_failed_target(S, pconstantclosure) = ((porigin_owner, pmethoddesc_copy, pmethoddesc))
 def $trait_fcc_failed_header(S, porigin_site) = eps -- otherwise
+
+;; Trait method scopes are fixed after data binding, before abstract/interface
+;; verification. Replay only that completed prefix after an authenticated failure.
+def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = $trait_fcc_failed_data_phase(S_data.COMPLETION, porigin_owner, pmethoddesc_copy, pmethoddesc)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
+  -- if porigin_owner = ptraitcachecause.CLASS
+  -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_owner, 0) = (n_failed)
+  -- if $(n_failed < n_prefix)
+  -- if pconstantclosure.PREFIX = n_failed
+  -- if $trait_fcc_failed_target(S, pconstantclosure) = ((porigin_owner, pmethoddesc_copy, pmethoddesc))
+  -- if pmethoddesc.OWNER =/= porigin_owner
+  -- if $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_methods, ptraitmethod*))
+  -- if S_before = S_methods[.CLASSCONSTANTCACHE = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin_owner, n_failed)][.TODO = [TRAIT_NOTICE_REPLAY porigin_owner n_failed ptraitcachecause.USERPREFIX]]
+  -- if $class_at(S_before.CLASSES, porigin_owner) = (pclassdesc_methods)
+  -- if $trait_fetch(S_before, $trait_plan(S_before, pclassdesc_methods).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if S_constants = $trait_data_constants(S_before, pclassdesc_methods, pclassdesc_traits*, eps)
+  -- if $class_at(S_constants.CLASSES, porigin_owner) = (pclassdesc_constants)
+  -- if S_data = $trait_data_properties(S_constants, pclassdesc_constants, pclassdesc_traits*, eps)
+def $trait_fcc_failed_data_phase(NORMAL, porigin_owner, pmethoddesc_copy, pmethoddesc) = ((porigin_owner, pmethoddesc_copy))
+def $trait_fcc_failed_data_phase(pcompletion, porigin_owner, pmethoddesc_copy, pmethoddesc) = ((porigin_owner, pmethoddesc))
+  -- if $iterator_notice_link_fatal(pcompletion)
+def $trait_fcc_failed_data_phase(REQUESTFATAL ptbytes_class ptbytes_message z, porigin_owner, pmethoddesc_copy, pmethoddesc) = ((porigin_owner, pmethoddesc))
+def $trait_fcc_failed_data_phase(pcompletion, porigin_owner, pmethoddesc_copy, pmethoddesc) = eps -- otherwise
+
+def $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, n_prefix) = (pmethoddesc)
+  -- if $(pconstantclosure_first.PREFIX <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
+  -- if ~$constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_first_owner)
+  -- if pmethoddesc_first.OWNER =/= porigin_first_owner
+  -- if $trait_fcc_failed_fixup_at(S, pconstantclosure_first, n_prefix) = ((porigin_first_owner, pmethoddesc))
+  -- if pmethoddesc = pmethoddesc_first \/ pmethoddesc = pmethoddesc_first[.OWNER = porigin_first_owner]
 
 ;; Ordinary descriptors win. Only missing imported origins are enumerated;
 ;; an existing own method keeps its canonical descriptor and source identity.
@@ -46,13 +78,20 @@ def $closure_method_origin(S, porigin) = (pmethoddesc)
 
 ;; The latent cache becomes usable after the authenticated failure row. It
 ;; never grants a value or a live scope to the retired first Closure itself.
+def $constant_callable_method_cached_at(S, porigin_site, n_prefix) = true
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((porigin_site, ptraitcachecause))
+  -- if $trait_failed_cache_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (n_failed)
+  -- if $(n_failed < n_prefix)
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, ptraitcachecause.CLASS, pmethoddesc))
 def $constant_callable_cached_method_at(S, porigin_site, n_prefix) = $trait_fcc_fixed_at_known(S, pconstantclosure, porigin_owner, pmethoddesc, n_prefix)
   -- if $trait_fcc_cached_header(S, porigin_site) = eps
   -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
   -- if $(n_prefix <= |S.DECLARATIONS|)
   -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_owner, 0) = (n_failed)
   -- if $(n_failed < n_prefix)
-def $constant_callable_cached_method_access(S, porigin_site, porigin_owner, pmethoddesc) = (pmethoddesc = pmethoddesc_first)
+def $constant_callable_cached_method_access(S, porigin_site, porigin_owner, pmethoddesc) = ($trait_fcc_fixed_at_known(S, pconstantclosure, porigin_first_owner, pmethoddesc_first, |S.DECLARATIONS|) = (pmethoddesc))
   -- if $trait_fcc_cached_header(S, porigin_site) = eps
   -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_first_owner, pmethoddesc_first))
   -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_first_owner, 0) = (n_failed)
