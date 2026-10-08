@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 374 unpacks arrays into ordinary method/array and captured START buffers.
+Per-pack named ordering, dereferenced value copies and nonowning completed history
+survive selector/pack retirement; copied C-root buffers authenticate their genuine
+outer API. Ordered unwind preserves active-pack, positional/EX(This)/named and
+direct Closure versus explicit invoke cleanup. Strict356, ten exact normals at
+9+1 cuts and 345 independent plus 296 author premises pass. Constant packs retain
+their genuine pool owner; a distinct dynamic-pack companion proves retired history.
+Initial elaboration/matching failures and pooled fixture assumptions retain zero
+affected credit. Traversable packs remain explicit Unsupported/zero agreement and
+required follow-on work; compound/lifecycle gaps and paused returns remain open.
+[Start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json).
+
+Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
+current physical collector, source-line, assertion and retained-method fields;
+private source/state cuts retain their inputs.
+
 Runtime assertion INI preserves raw initial/current bytes, modified/restore timing
 and the live numeric mode. Quiet quantities permit nonnegative updates; changes
 involving a negative mode warn before a frozen false completion on the handler's state.
@@ -310,9 +326,29 @@ and 93/78 independent physical premises complete both unchanged originals,
 including signed count1, D/E retirement and exact new/previous identities. Final
 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed abstract-method,
 typed freeing-read, raw Fiber-array tasks and ASSERTIONS additions. Both whole
-CLI 60s timeouts retain zero agreement. Overlap, repeated internal
-suspension, different-active-pass reentry, whole CLI completion and broader GC
-remain required.
+CLI 60s timeouts retain zero agreement.
+375 now detaches an internally suspended residual callback and starts a real
+replacement worker on the remaining physical suffix. The old guard pin and
+finally error stay in its actual saved VM; replacement pending is separate, and
+fresh-plan progress is unchanged until callbacks finish. Independent 92/105
+physical premises at separate `be1099c26` fixture cuts, finalized as `7e72ff341`,
+complete both unchanged originals, including count0 followed by later count1,
+distinct old/new errors and old-worker termination. Both whole CLI 60s timeouts
+retain zero agreement; the first error-state 120s cap retains zero affected credit.
+Final 357 over `b7419cbe1` compiles at `9ce39cd54`, preserving current assertions,
+private-constructor, storage, source and Generator cleanup changes.
+Last-cache-owner physical replacement now closes the actual suspended worker
+before starting its replacement. Normal close runs finally; failed close moves
+the real error into plan pending while the caller's outer error stays in FINALLY.
+Only the actual normal/failed private-control release tail gains storage/scoped
+admission. Independent 77/89 physical premises at separate `4227d8609` fixture
+cuts, finalized as `292b27847`, complete both unchanged originals, count1/weak
+retirement and exact new/previous identities. Both whole CLI 60s timeouts retain
+zero agreement; the first failed-state root-order premise has zero affected credit.
+Final 358 over `0059e0a9e` compiles at `0da2cdae7`, preserving both empty-PACKS API
+constructors and reviewed inherited-constructor/quiet-read behavior. Takeover
+resuspension, overlap, different-active-pass reentry, whole CLI completion and
+broader GC remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -1214,7 +1250,7 @@ stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
 `b89e7e66d`; fresh104/89 premises at that same cut prove frame ownership, live9
 with its typed source, real NEXT advancement/detach and consumed-slot refusal.
 The old typed fixture is adapted statically with no renewed credit. Quiet reads,
-consumed or explicitly unset storage, mutation and escape remain required.
+consumed storage, mutation and escape remain required.
 The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
 Future initialized declared object/array reads now copy the live payload owner; ALIAS reads
 retain the referent without acquiring its wrapper. Native3 at `8bd90af79` precede
@@ -1229,8 +1265,26 @@ Native3 at `e9dd1a554` precede the unchanged inherited-model Unsupported baselin
 with zero agreement. Strict354, source3 and fresh123/141 premises pass at
 `3418d8268`, proving Error ownership during receiver release, continued cleanup,
 B/previousError chaining and atomic selected-reference binding. No earlier
-campaign is renewed; consumed and original PROP_UNSET slots remain required.
+campaign is renewed; consumed slots remain required.
 The actual355 join over `64b2fabca` passes strict initialization at `08dfc81ef`.
+Future explicitly unset typed properties now raise ordinary Error without a
+getter, using the actual dynamic-first release prefix to exclude consumed slots
+whose original/current UNSET images match. Native3 and the unchanged dynamic
+Unsupported baseline at `0824519ef` are separate from changed strict/source3 at
+`f43b28b47` and 142/147 reached premises at `bad93efed`. The resolved-default
+fixture correction preserves its original uncredited failure; no earlier
+campaign is renewed. Wider quiet/getter and untyped unset access remain required.
+The actual356 join over `976a55232` passes strict initialization at `4b31fc1cc`.
+Future initialized declared values and typed INITIAL/UNSET slots now support
+quiet `isset`/`empty` and coalescing with ordinary visibility and no magic consumers. Terminal booleans add no payload owner;
+coalescing copies the dereferenced value. Native3 and the unchanged scalar
+Unsupported baseline at `ad8135241` remain separate from strict356/source3 and
+157/138 reached premises at `310e0fac6`. Actual receiver-release queues, unchanged
+borrowed owners, alias rebinding/type detach and kept-child survival pass without
+corrections. Earlier quiet assertions are adapted statically only; no campaign
+is renewed. The actual358 join over `77d86df730` passes strict initialization
+at `36df1d531` (4.663s); source3/295 retain their original changed cut.
+Consumed/missing slots and wider magic access remain required.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -2057,6 +2111,27 @@ Final356 projection `e65e35e2a` over `43890afab` passes strict algo/struct at
 3.869/4.871s, preserving current assertion/Generator fields and dispatch.
 Source2/34+20 bridge unchanged; raw publish19 compiler evidence is
 `.tools/trait266-object-algo-l1ao1xno` and `trait266-object-struct-qztdz26_`.
+Literal private constructor denial now precedes receiver compatibility even for
+an unrelated active object. At `f515fd26b`/356 over `976a55232`, strict algo/struct
+pass3.769/4.770s; one new normal original and24 genuine clauses plus6 setup pass
+(5.773s), including the live receiver, exact rejection/no argument effects and
+all four global validators. Current19 raw evidence is `method-runtime-seg05ujm`,
+`closure-call-protocol-2hk6y4ou`, `trait266-object-algo-c7g31qwq` and
+`trait266-object-struct-g7x1yycz`; original normal mismatch `2oh2ovm1` retains
+zero agreement. Prior constructor/protected/retained-FCC cuts are unchanged.
+Final356 projection `4366f4cae` over `02bff2460` passes strict algo/struct at
+3.769/4.823s, preserving current storage-release guards. Source1/24 bridge
+unchanged; publish19 raw compiler evidence is `trait266-object-algo-n0wtdaju`
+and `trait266-object-struct-prg8u30p` under its `.tools/` directory.
+Inherited private constructor errors now name the requested class while retaining
+the declaring-owner access proof. At `4c3ece53d`/357 over actual `cbdb9d10a`,
+strict algo/struct pass3.772/4.821s; one new normal original and28 supplied clauses
+plus6 setup pass (6.123s):26 genuine clauses cover inherited selection/rejection
+and all four globals, while2 helper-only clauses check the other Error consumer.
+Current19 raw evidence is `method-runtime-svn8anig`, `closure-call-protocol-66s2dn57`,
+`trait266-object-algo-zgrybsbw` and `trait266-object-struct-n2_844cu`;
+original normal mismatch `s0r3su65` retains zero agreement. Prior constructor
+cuts are not renewed; current375 collector/task fields remain preserved.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and

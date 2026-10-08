@@ -140,6 +140,7 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if pfiberapi.KIND = (pintrinsic)
   -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
   -- if pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*
   -- if $fiber_array_result_valid(S, pfiberarray, pconfigcall)
   -- if pconfigcall.KIND = pintrinsic /\ pconfigcall.OWNER = (pfiberapi.OBJECT)
@@ -151,6 +152,7 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
   -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
   -- if pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND) /\ pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if S.TODO = (FIBER_CONTINUE pfiberapi) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*
   -- if $fiber_array_result_valid(S, pfiberarray, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_FIBER_SUSPEND /\ pconfigcall.OWNER = eps

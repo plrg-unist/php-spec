@@ -389,3 +389,48 @@ reentry, whole CLI completion and broader GC remain required.
 Final 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed abstract
 method selection, typed freeing reads, raw Fiber-array tasks and ASSERTIONS.
 The original source/state cuts retain their inputs and counts.
+
+Internal residual callback suspension375 saves the actual callback VM and
+consumes its PUBLIC scan context while detaching the cache in the same step.
+The old guard keeps its receiver pin; the real finally error remains in the saved
+VM. Its later public
+completion observes the cache mismatch and terminates without scanning the
+replacement suffix. A real physical-replacement task owns the collector call
+and pending error, preserves fresh-plan INDEX/STEPS, and starts a new worker at
+the advanced global cursor. It scans physical tags, including residual targets
+outside fresh DTORS, before recording actual progress.
+
+At separate `be1099c26` fixture cuts finalized as `7e72ff341`, 92/105 independent
+physical premises (recorder 78/95, authored 75/92) complete both unchanged
+originals. They check real detachment/replacement, interval forgeries, distinct
+old-finally/replacement errors and later old-worker termination. The normal pass
+returns 0 while the old guard pins D; after D completes, a later collection returns
+1. The normal PASS remains inside the first false aggregate; the affected error
+group passes separately after removing duplicate checks. Its original 120s cap
+and both whole CLI 60s timeouts retain zero affected/agreement credit.
+Final 357 over `b7419cbe1` compiles at `9ce39cd54`, preserving reviewed assertion,
+private-constructor, typed freeing-read, source and Generator cleanup additions.
+At that cut, last-cache-owner release is Unsupported before mutation; the
+separate cut below extends it. Earlier cuts are unchanged.
+
+Last-cache-owner physical replacement now uses the real ordered cache release to
+close the actual detached worker before replacement starts. Normal close runs its
+finally and retires the two private control owners in order. Failed close releases
+the pending control copy when its finally throws, leaves one private release owner, and moves
+the real error into the actual plan pending slot. The caller's outer error remains
+in its real FINALLY continuation until ordinary chaining. The new retiring
+predicate admits only this actual terminated worker/sequence and ordered
+control/operation/worker/physical-replacement tail; it grants storage and scoped
+caller validity without a Throwable owner, catch authority or invented D progress.
+
+At separate `4227d8609` fixture cuts finalized as `292b27847`, 77/89 independent
+physical premises (recorder 63/71, authored 60/68) complete both unchanged
+originals. They check normal control2→1, failed control1 versus real plan pending,
+the outer FINALLY owner, same-heap source/sequence/pending forgeries, count1/weak
+retirement and exact new/previous identity. The normal PASS remains in a false
+aggregate; only the affected failed negative reruns after correcting root order.
+That fixture stop and both whole CLI 60s timeouts retain zero affected/agreement
+credit. Final 358 over `0059e0a9e` compiles at `0da2cdae7`, preserving empty PACKS
+in both actual API constructors, inherited-constructor diagnostics and quiet
+freeing reads. Takeover resuspension, overlap, different-pass reentry and whole
+CLI completion remain required.

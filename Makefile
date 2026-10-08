@@ -187,9 +187,9 @@ test-semantics: build
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
 	python3 tests/semantics/weak_reference_state_review.py
-	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces --exclude-match collector-residual-dtor-public-resume-preparation-25 --exclude-match collector-residual-dtor-next-internal-fiber-pass-preparation-26 --exclude-match collector-residual-dtor-next-main-pass-preparation-27
+	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces --exclude-match collector-residual-dtor-public-resume-preparation-25 --exclude-match collector-residual-dtor-next-internal-fiber-pass-preparation-26 --exclude-match collector-residual-dtor-next-main-pass-preparation-27 --exclude-match collector-residual-internal-callback-suspends-and-detaches-preparation-28 --exclude-match collector-residual-internal-suspension-releases-last-cache-owner-preparation-29
 	python3 tests/semantics/cycle_collection_state.py
-	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18 --exclude-match collector-detached-quiescent-throwing-fiber-prior-error-review-19 --exclude-match collector-active-interval-bound-core-throw-review-21 --exclude-match collector-active-public-cached-core-old-pending-new-throw-review-22 --exclude-match collector-active-public-cached-core-two-identities-compact-review-22 --exclude-match collector-public-postpass-core-old-pending-new-throw-review-23 --exclude-match collector-new-fiber-pass-keeps-parked-old-error-review-24 --exclude-match collector-internal-takeover-old-error-compact-preparation-24 --exclude-match collector-residual-dtor-next-internal-old-pending-review-preparation-26 --exclude-match collector-residual-dtor-main-old-pending-review-preparation-27
+	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18 --exclude-match collector-detached-quiescent-throwing-fiber-prior-error-review-19 --exclude-match collector-active-interval-bound-core-throw-review-21 --exclude-match collector-active-public-cached-core-old-pending-new-throw-review-22 --exclude-match collector-active-public-cached-core-two-identities-compact-review-22 --exclude-match collector-public-postpass-core-old-pending-new-throw-review-23 --exclude-match collector-new-fiber-pass-keeps-parked-old-error-review-24 --exclude-match collector-internal-takeover-old-error-compact-preparation-24 --exclude-match collector-residual-dtor-next-internal-old-pending-review-preparation-26 --exclude-match collector-residual-dtor-main-old-pending-review-preparation-27 --exclude-match collector-residual-internal-suspension-separates-replacement-error-review-preparation-28 --exclude-match collector-residual-last-owner-failed-finally-prior-error-review-preparation-29
 	python3 tests/semantics/cycle_collection_state_review.py --sl
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
@@ -389,6 +389,10 @@ test-semantics: build
 	python3 tests/semantics/instance_future_heap_read_protocol.py --group array
 	python3 tests/semantics/instance_future_initial_read_protocol.py --group inherited
 	python3 tests/semantics/instance_future_initial_read_protocol.py --group pending
+	python3 tests/semantics/instance_future_unset_read_protocol.py --group dynamic
+	python3 tests/semantics/instance_future_unset_read_protocol.py --group pending
+	python3 tests/semantics/instance_future_quiet_read_protocol.py --group borrowed
+	python3 tests/semantics/instance_future_quiet_read_protocol.py --group coalesce
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup

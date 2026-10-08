@@ -208,5 +208,57 @@
       "implicit_flush": "1",
       "zend.assertions": "1"
     }
+  },
+  {
+    "id": "private-constructor-unrelated-receiver-before-arguments",
+    "source": "<?php\nfunction argument() { echo \"ARG;\"; }\nclass A { private function __construct() { echo \"BODY;\"; } }\nclass B {\n    public function go() {\n        try { A::__construct(argument()); }\n        catch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\n    }\n}\necho \"PRE;\";\n(new B)->go();\necho \"POST;\";\n",
+    "source_sha256": "18949cd1eda1dcbffed1e22bc161d93dc69df07ad9c41ead3ab22858e8ee92d0",
+    "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-private-constructor-unrelated-receiver-before-arguments/command.json",
+    "native_raw_sha256": "34e4cbb4d92688abdb7d4550688c9f1e1da402832890a2f99aa15f89fb5b49f8",
+    "status": "normal",
+    "exit_status": 0,
+    "stdout_base64": "UFJFO0VSUk9SOkNhbm5vdCBjYWxsIHByaXZhdGUgQTo6X19jb25zdHJ1Y3QoKTtQT1NUOw==",
+    "stderr_template_base64": "",
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "private-constructor-inherited-requested-class-before-arguments",
+    "source": "<?php\nfunction argument() { echo \"ARG;\"; }\nclass A { private function __construct() { echo \"BODY;\"; } }\nclass B extends A {}\nclass D {\n    public function go() {\n        try { B::__construct(argument()); }\n        catch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\n    }\n}\necho \"PRE;\";\n(new D)->go();\necho \"POST;\";\n",
+    "source_sha256": "81a7e0bfd0db3fbb4b1cbec9edd1e9965c266f7b81dfa47ae3b9d4b7e9879444",
+    "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-private-constructor-inherited-requested-class-before-arguments/command.json",
+    "native_raw_sha256": "4e54feb10f026b8f1cd2e64529439a64cc3520a7efdd8c23887d2bc29fd61477",
+    "status": "normal",
+    "exit_status": 0,
+    "stdout_base64": "UFJFO0VSUk9SOkNhbm5vdCBjYWxsIHByaXZhdGUgQjo6X19jb25zdHJ1Y3QoKTtQT1NUOw==",
+    "stderr_template_base64": "",
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
   }
 ]

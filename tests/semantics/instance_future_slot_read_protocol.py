@@ -107,7 +107,7 @@ def controls():
         'S_bad_next = S_child[.FRAMES = pframe_owner[.TODO = $future_replace_stage(pframe_owner.TODO, pinstancestorage_bad)] :: pframe_tail*]',
         '~$instance_storage_state_valid(S_bad_next)',
         '$instance_storage_read_value(S_bad_next, n_parent, $ptascii("number")) = eps',
-        '$property_quiet(S_child, POBJECT n_parent, $ptascii("number"), 1).COMPLETION = UNSUPPORTED "freeing instance property access"',
+        '$property_quiet(S_child, POBJECT n_parent, $ptascii("number"), 1) = S_read_number',
         '$property_store_value(S_child, n_parent, $ptascii("number"), PINT 8, 1).COMPLETION = UNSUPPORTED "freeing instance property access"',
         '$property_reference_fetch_unshared(S_child, n_parent, $ptascii("number"), 1).COMPLETION = UNSUPPORTED "freeing instance property access"']
 

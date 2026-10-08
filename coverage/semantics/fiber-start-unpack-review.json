@@ -1,0 +1,224 @@
+{
+  "milestone": "374 Fiber START array unpacking",
+  "status": "partial; reviewed and integrated with the current core semantics",
+  "target": "PHP8.5.10 CLI NTS64; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "baseline": "64b2fabcaafb9693ded9a1027798773d3d4a03f2",
+  "semantic_code": "d39513ca8b3605b6ec57a24e22b8c606f19da2b4",
+  "scope": [
+    "Ordinary method/array and Closure START array packs copy dereferenced entries, reset named ordering per pack and reject duplicate names across the buffer.",
+    "Current cursor owns its pack. Completed PACKS are historical/nonowning; live or retired array histories authenticate actual START source and saved callers.",
+    "Copied FCC/RAW C-root START buffers use PACKSeps and authenticate the original outer API separately.",
+    "Unwind retires the active pack, positional values, EX(This), then named values. Direct Closure ownership releases after named values; explicit __invoke releases as EX(This)."
+  ],
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-start-unpack-sl-py3w4y1w/report.json",
+    "sha256": "d5e58de72b06f99168589f04cda3c02af28026a7f5177a053d467e4548b6751b",
+    "revision": "d39513ca8b3605b6ec57a24e22b8c606f19da2b4",
+    "accepted": {
+      "strict_modules": 356
+    }
+  },
+  "sources": {
+    "normal_agreements": 10,
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-start-unpack-source-5ywpqr7p/report.json",
+        "sha256": "44cb0cd38d1b06d1bcd9440a84cb2b7711d8bcb1dce9292c79331d4c82df1017",
+        "revision": "d39513ca8b3605b6ec57a24e22b8c606f19da2b4",
+        "accepted": {
+          "normal_agreements": 9
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-start-unpack-source-wiedgvdc/report.json",
+        "sha256": "b19df8a81b3940f7d8cdadab0f5bb6d0a910e1a8949c46d207ba6282e54193bf",
+        "revision": "353f426f26cdb76ef401d180eb75ee6fffa0728f",
+        "accepted": {
+          "normal_agreements": 1
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-start-unpack-source-ganus2e0/report.json",
+        "sha256": "8f91b8b216943c670cb04517c36824b6a48d0d3fef4fb2a1d02b3dc1ab7f2c2b",
+        "revision": "edfd0c0198ccba1bf41e5df13fd0c888f98f0bd6",
+        "accepted": {
+          "unsupported_controls": 1,
+          "normal_agreements": 0
+        }
+      }
+    ],
+    "cut_policy": "Nine originals retain d395 inputs; only the fresh dynamic-pack companion gains its own later agreement. Former348 unpack control gains agreement only here; its old Unsupported credit is unchanged. Traversable control has zero normal agreement."
+  },
+  "states": {
+    "independent_physical_premises": 345,
+    "author_physical_premises": 296,
+    "total_physical_premises": 641,
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-state-review-wvw1kzv0/report.json",
+        "sha256": "9172987bd589483d7071efc97eeca2c98d6890222c15b1c1d7472f94d37ad0e9",
+        "revision": "edfd0c0198ccba1bf41e5df13fd0c888f98f0bd6",
+        "accepted": {
+          "start-unpack-explicit-throw-transfers-closure-before-named-payload": 82
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-state-review-lw15kmb5/report.json",
+        "sha256": "186c9d5c0c8bcb732405cb3c594f5eba18ba5887f408e01f4a293e262e22b473",
+        "revision": "e8f0843a026708c07d96a10cca9c9e56096e0f50",
+        "accepted": {
+          "start-unpack-active-pack-keeps-sole-frozen-array-receiver": 131,
+          "start-unpack-explicit-wait-authenticates-retired-pack-history": 132
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-state-review-jwpokif3/report.json",
+        "sha256": "259dcbb83b97cbce2699b3bebeecc3cd1569f561be460d416fbd750efa03c139",
+        "revision": "e8f0843a026708c07d96a10cca9c9e56096e0f50",
+        "accepted": {
+          "start-unpack-positional-unwind-releases-payload-before-last-receiver": 97
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-state-review-3avy_ae9/report.json",
+        "sha256": "ee6935c1c7d03dae0a488286cce256b5fb5da6fe139c141b89874c7928e495e5",
+        "revision": "e8f0843a026708c07d96a10cca9c9e56096e0f50",
+        "accepted": {
+          "start-unpack-named-unwind-releases-last-receiver-before-payload": 77
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-state-review-_ik5ucom/report.json",
+        "sha256": "b73acb6fdee3fce339c95176af07c468e698fe91e00ab3dec0982512ae8c1581",
+        "revision": "e8f0843a026708c07d96a10cca9c9e56096e0f50",
+        "accepted": {
+          "start-unpack-core-copy-keeps-outer-pack-authority-only-in-outer-api": 122
+        }
+      }
+    ],
+    "count_policy": "Physical generated main premises include the five harness premises and embedded reached-stage clauses; failed prefixes are not passing groups."
+  },
+  "native_originals": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-native-19/report.json",
+      "sha256": "3007ebfefa790340e1019815627f3dc60bf58f4dfc1934706b3c42ea9f1e7409",
+      "revision": "64b2fabcaafb9693ded9a1027798773d3d4a03f2",
+      "accepted": {
+        "originals": 6
+      }
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-native-core-19/report.json",
+      "sha256": "3ce25e9327ec317f76cc28c4a3f603686aa09555f2a9d48449b0a1f56ac72588",
+      "revision": "64b2fabcaafb9693ded9a1027798773d3d4a03f2",
+      "accepted": {
+        "originals": 1
+      }
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-native-capture-19/report.json",
+      "sha256": "78677ee580a90f6fc1bdf64fdab3c1206fe71ad54f836f40ecb1819d18bad845",
+      "revision": "e93483790455bf6818551df1cf42fcb5bdd03d6f",
+      "accepted": {
+        "originals": 1
+      }
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-native-traversable-19/report.json",
+      "sha256": "0e9e1185a97bc3cd725602bb11c6e7e6bb0e7e573d435d31731182566c8afd9f",
+      "revision": "d39513ca8b3605b6ec57a24e22b8c606f19da2b4",
+      "accepted": {
+        "originals": 1
+      }
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-native-dynamic-19/report.json",
+      "sha256": "cc0090a4682f1110ea0920e067fcf88b869d99a1a4463a85cb4a14c8bd4ed950",
+      "revision": "edfd0c0198ccba1bf41e5df13fd0c888f98f0bd6",
+      "accepted": {
+        "originals": 1
+      }
+    }
+  ],
+  "reused_native": "/home/user/workspace/php-spec/.tools/calls-bound-start-review-19/report.json",
+  "semantic_inputs": {
+    "spec/semantics/281-fibers.watsup": "f5778dd5a503dfae0e86a1b1eea9ff916783102d7680bc5b4fdfc2bde6d7900a",
+    "spec/semantics/30-storage.watsup": "da4466822eae468aeb548906d7b95b2196bade1512bb7221db4793e33bcccb46",
+    "spec/semantics/313-fiber-core-callbacks.watsup": "23426722f33f33b1631ef99ea88ff690bb80d28d50c93e6b3c55b021387c9611",
+    "spec/semantics/317-collector-fibers.watsup": "f70f28d6bdf1679fad8421fe144a0a26ca1414822f8d6d751762fcc406b3505a",
+    "spec/semantics/331-fiber-static-callables.watsup": "cfe29040b73a8cdbf9bd1864cf37a57dbed7937f7298eddfa0bf456eb4b95c54",
+    "spec/semantics/332-collector-public-transfer.watsup": "b78b53dd0989ec4838ed8cd9921d3cd86a9e7c9ee35e6dc014dadf1a0418d783",
+    "spec/semantics/337-fiber-bound-callables.watsup": "89a4c680494bf5c47e18738669c53e5d7c8e251d1ce0d19ec7644ebffa251666",
+    "spec/semantics/341-fiber-bound-core-callables.watsup": "12ace029e44744f073f41ebabd0bc57107295cbf64994476062cf55d42e5de85",
+    "spec/semantics/345-collector-public-scan.watsup": "0c593b4678a79bd61b2473d6c436bfb94a01c7a55751e9cb2848807d99c038d6",
+    "spec/semantics/348-fiber-start-callables.watsup": "8a95575b6003a8d88770cd9f9a4cdbe05e6798e09499e8a17d23e3f9a5168672",
+    "spec/semantics/351-fiber-start-core-callables.watsup": "b88d67f52a98bf04234930b0fd7ce848397273389aa39373bab2ab67b895077e",
+    "spec/semantics/362-fiber-array-consumers.watsup": "4625fbf70acb09fb896846b54594f763bfcfa77921d517cb783393dc05fc52a2",
+    "spec/semantics/367-fiber-array-start.watsup": "870c8f3d128ae9a20937be0ee85de92bcb740f983f401830b6a801cca5e5f082",
+    "spec/semantics/370-fiber-array-core-callbacks.watsup": "69037d8bd1a23b6acd83b89111169afcf9290d2a927aa46d262645bb43e02e22",
+    "spec/semantics/374-fiber-start-unpack.watsup": "c42f32251d5ec38f61ac135dc22f293cc4418dddaf71ac9816c913d6296453c7"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_SEND_UNPACK (per-op named phase, COPY_DEREF, FREE_OP1)",
+    "vendor/php-src/Zend/zend_execute.c:cleanup_unfinished_calls (positional, EX(This), named, Closure cleanup)",
+    "vendor/php-src/Zend/zend_fibers.c:PHP_METHOD(Fiber,start) (original variadic/named forwarding)",
+    "spec/semantics/32-compiled-pools.watsup:$constants_nodes/$pools_nodes (constant pack owner)"
+  ],
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-start-unpack-sl-6yc8egk1/report.json",
+      "sha256": "6ec443f7705c3923d1407d1da1a9b13e08957b3c9a9f18c56f9d9704ec66743f",
+      "revision": "40033655f21992661c1b51d3571302e0aa14073f",
+      "accepted": "Elaboration stop: replay binding beside otherwise; no execution credit."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-start-unpack-source-s99fna2m/report.json",
+      "sha256": "4de63d614cd63098963f507f74f15da6dd545e9a7385862bc4dfe349dd531a3c",
+      "revision": "be3d61e65dcaa396982eea8190cfdc2865304236",
+      "accepted": "First source interpreter failure: repeated empty-option task matching; zero normal agreement."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-state-review-gqsvqixm/report.json",
+      "sha256": "0e41dcae0ef4749072810513efaf729e51e5b6e89092acd47b6b72a18af2a710",
+      "revision": "be3d61e65dcaa396982eea8190cfdc2865304236",
+      "accepted": "Diagnostic stopped at local task count; zero group credit."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-state-review-sj_c9wmv/report.json",
+      "sha256": "520971061c4c8ecb72fb745b67ede521111f67f535b55a55f33b008419c307ee",
+      "revision": "be3d61e65dcaa396982eea8190cfdc2865304236",
+      "accepted": "Diagnostic isolated PREP eps at_site false; zero group credit."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19/.tools/fiber-state-review-wvw1kzv0/report.json",
+      "sha256": "9172987bd589483d7071efc97eeca2c98d6890222c15b1c1d7472f94d37ad0e9",
+      "revision": "edfd0c0198ccba1bf41e5df13fd0c888f98f0bd6",
+      "accepted": "Active127 and saved132 stopped at pooled-array assumptions; both zero. Explicit82 passed and is credited separately above."
+    }
+  ],
+  "validation": {
+    "processes": "Serial jobs1; native75s; model100000steps/60s and host75s; state seek/finish4000 and host120s; strict120s. Actual argv, environment, identities, streams, exits and timeouts are retained in raw reports.",
+    "no_renewal": "Earlier370/367/364 source/state cuts and the nine d395 normals are not renewed by fixture, documentation or current-parent composition changes."
+  },
+  "recovery": {
+    "private_worktree": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-19",
+    "strict_script": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-strict-19.py",
+    "source_runner": "tests/semantics/fiber_start_unpack_sources.py --case ID --native-report PATH (exact selections/native reuse paths in reports above)",
+    "state_runner": "tests/semantics/fiber_start_unpack_{review,state}.py --case ID (exact accepted IDs above)"
+  },
+  "limits": [
+    "Traversable START unpacking is explicit Unsupported and required follow-on work; compound selectors and broader lifecycle consumers remain required.",
+    "Undefined-result getReturn and paused returns_verify are untouched. Original promotion Unsupported and unrelated builtin dependency failures retain their earlier zero credit.",
+    "Raw reports and original failures remain outside Git."
+  ],
+  "composition": {
+    "canonical_parent": "0f28f9d622d11f8252640c744317061c544641c6",
+    "tested_revision": "8b1b71064726e608d93c2671f5c36532561b8f2d",
+    "modules": 358,
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-unpack-current-19/.tools/fiber-start-unpack-sl-4r7_ms36/report.json",
+    "sha256": "d37814a893eb6cabc4ec9e1164631a0baeb0faae81c881d392afed23aa92e0ed",
+    "passed": true,
+    "interactions": "Current30 fields,375 physical collector and345 guards preserved; both375 fixed API constructors add PACKSeps. Retained-method142/347, noarg CV-ECHO361, ambient assertions368 and storage/report359/363 domains are disjoint.",
+    "cut_policy": "One strict current-parent composition only; ten normal and641 reached private premises retain their separate cuts. Only metadata/docs changed after the gate."
+  }
+}

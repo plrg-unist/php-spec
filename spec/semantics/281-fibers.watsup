@@ -450,7 +450,7 @@ def $fiber_resume_ready(S, pconfigcall) = false -- otherwise
 
 ;; start()'s outer variadic signature is by value regardless of the callback.
 ;; The positional buffer and ordered named hash are captured before switching.
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [FIBER_ARGS {SITE porigin, OBJECT n, INDEX 0, SENT {SLOTS eps, NAMED eps}, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [FIBER_ARGS {SITE porigin, OBJECT n, INDEX 0, SENT {SLOTS eps, NAMED eps}, LINE z, PACKS eps}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -469,9 +469,6 @@ def $fiber_start_sent(pfiberstart, pvalue, (ptbytes)) = pfiberstart[.INDEX = $(p
 rule PhpStep/fiber-start-argument: S ~> S[.TODO = [$at_task((porigin), EVAL expression), FIBER_SEND pfiberstart] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (FIBER_ARGS pfiberstart) :: ptask_tail*
   -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, false, ptbytes?, porigin, z))
-rule PhpStep/fiber-start-unpack: S ~> S[.COMPLETION = UNSUPPORTED "Fiber start outer unpacking"]
-  -- if S.TODO = (FIBER_ARGS pfiberstart) :: ptask_tail*
-  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, ptbytes?, porigin, z))
 rule PhpStep/fiber-start-send: S ~> S_read[.TODO = (FIBER_ARGS $fiber_start_sent(pfiberstart, pvalue, ptbytes?)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (FIBER_SEND pfiberstart) :: ptask_tail*
   -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, false, ptbytes?, porigin, z))
@@ -512,7 +509,7 @@ def $fiber_start(S, pfiberstart) = $fiber_activate(S, pfiberstart.OBJECT, pfiber
   -- if $fiber_at(S, pfiberstart.OBJECT) = (pfiber)
   -- if pfiber.STATUS = FIBER_INIT
   -- if $fiber_cache_valid(S, pfiberstart.OBJECT, pfiber)
-  -- if pfiberapi = {SITE pfiberstart.SITE, OBJECT pfiberstart.OBJECT, KIND eps, START (pfiberstart.SENT), SENT eps, LINE pfiberstart.LINE, SEQUENCE S.FIBERSEQ}
+  -- if pfiberapi = {SITE pfiberstart.SITE, OBJECT pfiberstart.OBJECT, KIND eps, START (pfiberstart.SENT), SENT eps, LINE pfiberstart.LINE, SEQUENCE S.FIBERSEQ, PACKS pfiberstart.PACKS}
 
 ;; VM transfers own the actual waiting API frame and resume exactly its tail.
 def $fiber_activate(S, n, pfiber, pfiberapi, true, pvalue) = $fiber_fresh_vm(S_next, n, pnamedargs)[.ACTIVEFIBER = (n)][.FIBERCALLERS = pfibercaller :: S.FIBERCALLERS][.FIBERSEQ = $(S.FIBERSEQ + 1)]
@@ -532,7 +529,7 @@ def $fiber_activate(S, n, pfiber, pfiberapi, false, pvalue) = $fiber_inject(S_ne
   -- if (pfiber_next, pfibervm_next) = $fiber_reactivate(pfiber, pfibervm, pfiberapi.SEQUENCE)
   -- if S_shared = $fiber_put(S_caller[.GLOBALTABLE = ($fiber_globals(S_caller))], n, pfiber_next)
   -- if S_next = $fiber_vm_restore(S_shared, pfibervm_next)
-def $fiber_resume(S, pconfigcall, pvalue) = $fiber_activate(S, n, pfiber, {SITE pconfigcall.SITE, OBJECT n, KIND (pconfigcall.KIND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE S.FIBERSEQ}, false, pvalue)
+def $fiber_resume(S, pconfigcall, pvalue) = $fiber_activate(S, n, pfiber, {SITE pconfigcall.SITE, OBJECT n, KIND (pconfigcall.KIND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE S.FIBERSEQ, PACKS eps}, false, pvalue)
   -- if pconfigcall.OWNER =/= S.GC.WORKER \/ S.GC.WORKER = eps
   -- if pconfigcall.OWNER = (n)
   -- if $fiber_at(S, n) = (pfiber)
@@ -548,7 +545,7 @@ def $fiber_suspend_save(S, pconfigcall, pvalue) = $fiber_back($fiber_put(S_saved
   -- if S.ACTIVEFIBER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if S.TODO = ptask :: ptask_tail*
-  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (INTRINSIC_FIBER_SUSPEND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE pfiber.SEQUENCE}
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (INTRINSIC_FIBER_SUSPEND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE pfiber.SEQUENCE, PACKS eps}
   -- if S_saved = S[.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $fiber_back(S, pvalue, false) = S_returned[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
@@ -789,7 +786,7 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if pfiberapi.START = (pnamedargs)
   -- if pfiberapi.SENT = eps
   -- if $fiber_method_site(S, pfiberapi.SITE, eps)
-  -- if $fiber_start_shape(S, pfiberapi.SITE, $intrinsic_extent(S, pfiberapi.SITE), pnamedargs)
+  -- if $fiber_start_shape(S, pfiberapi.SITE, $intrinsic_extent(S, pfiberapi.SITE), pnamedargs, pfiberapi.PACKS)
 def $fiber_api_valid(S, pfiberapi) = true
   -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
   -- if $call_line_valid(S, (pfiberapi.SITE), pfiberapi.LINE)
@@ -797,6 +794,7 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if pfiberapi.KIND = (pintrinsic)
   -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW, INTRINSIC_FIBER_SUSPEND]
   -- if pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if $fiber_site(S, pfiberapi.SITE, pintrinsic)
   -- if $fiber_fixed_buffer_valid(S, pfiberapi.SITE, pintrinsic, pfiberapi.SENT)
 def $fiber_api_valid(S, pfiberapi) = false -- otherwise
@@ -810,7 +808,7 @@ def $fiber_fixed_buffer_valid(S, porigin, pintrinsic, (pvalue)) = true
   -- if pintrinsic =/= INTRINSIC_FIBER_THROW \/ $class_instanceof(S, pvalue, $ptascii("Throwable"))
 def $fiber_fixed_buffer_valid(S, porigin, pintrinsic, pvalue?) = false -- otherwise
 def $intrinsic_extent(S, porigin) = n -- if $intrinsic_count(S, porigin) = (n)
-def $fiber_start_shape(S, porigin, n, pnamedargs) = $fiber_start_prefix(S, porigin, n, 0, pnamedargs)
+def $fiber_start_shape(S, porigin, n, pnamedargs, eps) = $fiber_start_prefix(S, porigin, n, 0, pnamedargs)
 def $fiber_start_prefix(S, porigin, 0, n_pos, pnamedargs) = (|pnamedargs.SLOTS| = n_pos /\ pnamedargs.NAMED = eps)
 def $fiber_start_prefix(S, porigin, n, n_pos, pnamedargs) = $fiber_start_prefix(S, porigin, $nabs($(n - 1)), n_pos, {SLOTS pnamedargs.SLOTS, NAMED pnamedargs.NAMED[0:$nabs($(|pnamedargs.NAMED| - 1))]})
   -- if $(n > 0)
@@ -831,7 +829,7 @@ def $fiber_start_valid(S, pfiberstart, b_pending) = true
   -- if $call_line_valid(S, (pfiberstart.SITE), pfiberstart.LINE)
   -- if $intrinsic_count(S, pfiberstart.SITE) = (n)
   -- if $(pfiberstart.INDEX <= n)
-  -- if $fiber_start_shape(S, pfiberstart.SITE, pfiberstart.INDEX, pfiberstart.SENT)
+  -- if $fiber_start_shape(S, pfiberstart.SITE, pfiberstart.INDEX, pfiberstart.SENT, pfiberstart.PACKS)
   -- if ~b_pending \/ $(pfiberstart.INDEX < n)
 def $fiber_start_valid(S, pfiberstart, b_pending) = false -- otherwise
 
