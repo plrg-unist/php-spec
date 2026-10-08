@@ -1,0 +1,16 @@
+;; Captured named references and updates retain their own finishing dispatch.
+dec $access_captured_consumer(ptask) : bool
+def $access_captured_consumer(UPDATE_PREP pupdate b z) = true
+def $access_captured_consumer(ptask) = $key_write_named_task(ptask) -- otherwise
+
+def $key_writer_valid(S, pkeywriter, ptask*) = true
+  -- if $access_captured_consumer(pkeywriter.TASK)
+  -- if pkeywriter.BASE = BASE_PLACE pkeywriter.TARGET (ELEMENT n pkey)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n < |S.ARRAYS|)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) =/= eps
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HARRAY n) > 0)
+  -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter[.TEMP = eps])
+  -- if $key_writer_base_source(S, pkeywriter)
+  -- if $key_write_rhs_source(S, pkeywriter)
+  -- if $key_write_temporary_valid(S, pkeywriter)
