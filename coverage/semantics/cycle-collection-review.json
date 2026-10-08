@@ -666,6 +666,12 @@
       "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-quiescent-failed-close-retires-one-control-before-main-error --case collector-quiescent-failed-close-scoped-caller-and-prior-error",
       "Preserved private wrapper: taskset -c 2 python3 .tools/run-gc-failed-collector-19.py compiler; exact command vectors and identities are in the reports. Raw artifacts stay outside Git."
     ],
-    "boundaries": "Active-pass failed close, wider callbackless close-return contexts, complete GC/WeakMap/request freeing and the fresh combined offline rebuild remain required. Earlier collector cuts retain their inputs."
+    "boundaries": "Active-pass failed close, wider callbackless close-return contexts, complete GC/WeakMap/request freeing and the fresh combined offline rebuild remain required. Earlier collector cuts retain their inputs.",
+    "publication_composition": {
+      "parent_revision": "0bb453754",
+      "merge_revision": "75270909782c0114d190405b9a8427cb8684ee46",
+      "modules": 322,
+      "result": "Clean merge preserves prior-array foreach payload/released-container guards. The338 originals have no foreach iterators or staged bind/release queues; new guards do not match their storage/owner/caller state. The tested9277/f89 compiler and earlier source/state cuts remain unchanged; no runtime renewal or offline rebuild is claimed."
+    }
   }
 }

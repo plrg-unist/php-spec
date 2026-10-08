@@ -14,6 +14,8 @@ keeps its identity. Two exact normal originals and two independent strict-SL
 groups with117/130 physical premises pass at separate private320 cuts. The
 322-module composition over `f89fbee745` passes combined compilation at
 `9277e334d`, preserving Generator328, source336 and reviewed ownership factors.
+Publication over `0bb453754` preserves the disjoint prior-array foreach guards;
+the tested compiler/source/state cuts remain unchanged.
 Active-pass failed close and wider close contexts remain required; earlier
 collector cuts retain their inputs. [Ledger](coverage/semantics/cycle-collection-review.json).
 
@@ -111,7 +113,7 @@ Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands29
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
 with 322 modules composed over
-`f89fbee745`, retaining static Fiber API captures331, physical property references324 and collector335/338.
+`0bb453754`, retaining static Fiber API captures331, physical property references324 and collector335/338.
 The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336.
 The property/clone composition passes strict SL290/compiler application0 at

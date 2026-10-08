@@ -496,7 +496,8 @@ private cut; final319 compilation preserves331/324. Failed close338 retires its
 one remaining private control owner while the real error stays pending in the
 caller, including genuine prior-exception identity through a saved caller.
 Two exact normal originals and two independent reached groups (247 physical
-premises) pass at separate private cuts; tested322 preserves328/336. Active-pass
+premises) pass at separate private cuts; tested322 preserves328/336 and publication
+preserves the disjoint prior-array foreach guards. Active-pass
 failed close and wider close contexts remain required.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default

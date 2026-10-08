@@ -222,6 +222,8 @@ control owner, real pending error, saved caller restoration, prior chain,
 same-heap source/sequence/mode/pending-slot forgeries, no Throwable authority,
 budget identity and complete continuations. The tested322 join over `f89fbee745`
 passes combined compilation at `9277e334d`, preserving328/336 and ownership factors.
+Publication over `0bb453754` preserves the disjoint prior-array foreach guards
+without renewing these cuts.
 The larger prior-chain source retains its60s model timeout with zero agreement
 and remains selectable; its reached continuation at the existing120s state cap
 is a separate result. Earlier335 and collector cuts are unchanged.
