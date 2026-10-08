@@ -86,5 +86,13 @@
     "native_stdout": "0",
     "native_stderr": "",
     "native_exit": 0
+  },
+  {
+    "id": "author-fiber-array-live-static-input-remains-borrowed",
+    "source": "<?php\n$input = new Fiber(static function () { echo 'X|'; return 99; });\n$weak = WeakReference::create($input);\n$current = [$input, 'getCurrent'];\necho (int)($current() === null), '|';\nunset($input);\necho (int)($current() === null), '|';\nunset($current);\necho (int)($weak->get() === null);\n",
+    "source_sha256": "9f2757ab3dd3abeaa02579fc3ee07d93833af6f16e2d8cc0c10cb46fa5ff52f0",
+    "expected_model": "normal",
+    "native_status": "unrun-awaiting-lease",
+    "engine_derived_expectation": "Ordinary static Fiber array calls remain valid while the historical selector input is live, including when only the source array owns it. Retiring the array releases that final owner; the static call adds none."
   }
 ]
