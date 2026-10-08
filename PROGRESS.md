@@ -2454,13 +2454,29 @@ validators. Raw evidence under current19 `.tools/` is `method-runtime-cl8ncs4a`,
 `trait266-object-struct-sa28i5sp`. The accepted-baseline mismatch `pynrj2xf`
 retains zero agreement; previous SELF/STATIC cuts are unchanged. Parent assertion,
 source, storage and collector fields remain intact. Wider failed-owner members
-and the larger parameter-view sources remain open.
+and broader mixed parameter-view contexts remain open.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
-Broader307 parameter-view full-source validation,
-including mixed, constructor/default, handler and variadic timeout originals,
-remains open, as do broader differing-owner later births and
-wider failed-owner member/construction behavior.
+Three previously open full parameter-view originals now agree with PHP at
+`d75312e09`/358 over `6ed4873bd`, with unchanged100000-step/45/55 limits and
+preserved native tuples: constructor/default rejection, error-handler reception
+and positional/named variadic Stringable conversion retain old/later/cloned scopes.
+Strict algo/struct pass3.869/4.971s. The coherent change combines the shared ARG
+ASCII lookup (`e9c62f818`), noncontextual/contextual property-comparison split and
+existing failed-header guard order. These preserve exact bytes, bool results and
+receipt authority. Unchanged97 ASCII equalities, contextual CASE28+6 and live/failed
+header24+12 controls bridge; they are not rerun or new coverage. Raw successful
+source results under current19 `.tools/` are `method-runtime-40mogpx6`,
+`method-runtime-e03mf3zz` and `method-runtime-xp95r2ob`; compiler results are
+`trait266-object-algo-mrwoqqar` and `trait266-object-struct-b53pcjvb`. The bounded
+causal trace `fcc-type-trace-wh6972lv` is diagnostic-only. Separate earlier costs
+(`juu9_a0t`, `26nefyt9`, `m2nj5bv3`, `zk_o28v9`) retain zero full agreement; no
+single-factor speedup is inferred across cuts. Final358 projection `a68e2939b` over
+`5fdc40d04` passes strict algo/struct3.869/4.820s, preserving current collector
+plan/cursor fields and the unchanged source3/control cuts. Raw compiler results
+under publish19 `.tools/` are `trait266-object-algo-8va4fp0i` and
+`trait266-object-struct-m308jcyl`. Broader mixed parameter-view contexts, differing-owner
+later births and wider failed-owner member/construction behavior remain open.
 Paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,

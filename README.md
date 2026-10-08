@@ -1100,8 +1100,11 @@ An authenticated retained `self::n(argument())` rejects the exact abstract metho
 arguments, using completed data binding and copied requirements. One shutdown
 original and41 supplied conditions plus6 setup clauses pass, including all four
 global validators; unknown phases stay Unsupported.
-Parameter-view full-source constructor,
-handler and variadic cases, broader differing-owner later births
+Three full parameter-view originals now agree with PHP at the original45/55 limits:
+constructor/default rejection, error-handler reception and positional/named variadic
+Stringable conversion preserve old, later and cloned scopes. Exact ASCII lookup and
+disjoint property/header guards reduce repeated source replay work without changing
+authority. Broader mixed parameter-view contexts, differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
 initializer contexts, held/open failed links and readonly
 storage remain

@@ -209,7 +209,43 @@
       "exit_status": 255,
       "stdout_base64": "UFJFO1NIVVQ7T1dOOkM6RTtFUlJPUjpDYW5ub3QgY2FsbCBhYnN0cmFjdCBtZXRob2QgQzo6bigpO0ZSRVNIOw==",
       "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEMgY29udGFpbnMgMSBhYnN0cmFjdCBtZXRob2QgYW5kIG11c3QgdGhlcmVmb3JlIGJlIGRlY2xhcmVkIGFic3RyYWN0IG9yIGltcGxlbWVudCB0aGUgcmVtYWluaW5nIG1ldGhvZCAoQzo6bikgaW4ge0ZJTEV9IG9uIGxpbmUgMjgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "trait-fcc-parameter-view-active-default-receipt-and-constructor",
+      "source": "<?php\ntrait T {\n    public static function m(self|string $v, object $box = new self(7)) {\n        static $n = 0;\n        echo self::class, \":\", static::class, \":\", ++$n, \":\",\n             $v instanceof C ? \"OBJ\" : \"TEXT\", \":\", $box instanceof C ? \"BOX;\" : \"X;\";\n    }\n    public const array Y = [self::m(...)];\n    public static array $x = self::Y;\n}\ntrait U { use T; }\nset_error_handler(static function () { return true; });\nclass C {\n    use U;\n    public static array $x = self::Y;\n    public function __construct(int $v) { echo \"CTOR:\", $v, \";\"; }\n    public function __toString(): string { echo \"S;\"; return \"x\"; }\n}\n$f = C::Y[0];\n$old = clone $f;\n$box = new C(9);\ntry { $f(new C(1)); }\ncatch (Error $ex) { echo $ex->getMessage(), \";\"; }\nclass E { use U; public static array $x = self::Y; }\n$g = E::Y[0];\n$g(new C(2));\n$old(new C(3), $box);\n",
+      "source_sha256": "e6a36a7915c8b0c5b7c0e3b5744d328612a27d98c0f9b87ecc2b39a4fb4afcad",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "Q1RPUjo5O0NUT1I6MTtTO0Nhbm5vdCBpbnN0YW50aWF0ZSB0cmFpdCBVO0NUT1I6MjtDVE9SOjc7QzpFOjE6T0JKOkJPWDtDVE9SOjM7UztVOkM6MjpURVhUOkJPWDs=",
+      "stdout_template_base64": "Q1RPUjo5O0NUT1I6MTtTO0Nhbm5vdCBpbnN0YW50aWF0ZSB0cmFpdCBVO0NUT1I6MjtDVE9SOjc7QzpFOjE6T0JKOkJPWDtDVE9SOjM7UztVOkM6MjpURVhUOkJPWDs=",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-selected-constructor-current/.tools/fcc-parameter-review18/parameter-constructor-interaction/runtime.command.json",
+      "native_raw_sha256": "60fc9fe486e41e0e4e7aba48b4ac3d0c8132648025222b81f3386633af23a8f1"
+    },
+    {
+      "id": "parameter-error-handler-receive-view",
+      "source": "<?php\ntrait T {\n    public static function h(self|int $number, string $message, string $file, int $line) {\n        echo self::class, \":\", static::class, \":\", $message, \";\";\n        return true;\n    }\n    public const array Y = [self::h(...)];\n    public static array $x = self::Y;\n}\ntrait U { use T; }\nset_error_handler(static function() { return true; });\nclass C { use U; public static array $x = self::Y; }\n$old = C::Y[0];\nset_error_handler($old);\ntrigger_error(\"OLD\", E_USER_NOTICE);\nset_error_handler(static function() { return true; });\nclass E { use U; public static array $x = self::Y; }\nset_error_handler(E::Y[0]);\ntrigger_error(\"LATER\", E_USER_NOTICE);\nset_error_handler(clone $old);\ntrigger_error(\"CLONE\", E_USER_NOTICE);\n",
+      "source_sha256": "1f794f17c898098eb55d0271dd712be4f826c3557529933677ff82716e7a51c3",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "VTpDOk9MRDtDOkU6TEFURVI7VTpDOkNMT05FOw==",
+      "stdout_template_base64": "VTpDOk9MRDtDOkU6TEFURVI7VTpDOkNMT05FOw==",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/fcc-parameter-review18/error-handler-receive-view/runtime.command.json",
+      "native_raw_sha256": "1b3978d37ce650597595ebdd0d597669285aad15845aab5ecffb85b77a4767a1"
+    },
+    {
+      "id": "parameter-variadic-stringable-receive-view",
+      "source": "<?php\ntrait T {\n    public static function m(self|string ...$values) {\n        echo self::class, \":\", static::class, \";\";\n        foreach ($values as $key => $value) { echo $key, \":\", $value instanceof C ? \"OBJ;\" : \"TEXT;\"; }\n    }\n    public const array Y = [self::m(...)];\n    public static array $x = self::Y;\n}\ntrait U { use T; }\nset_error_handler(static function() { return true; });\nclass C { use U; public static array $x = self::Y; public function __toString(): string { echo \"S;\"; return \"text\"; } }\n$old = C::Y[0];\n$object = new C;\n$old($object, named: $object);\nclass E { use U; public static array $x = self::Y; }\n(E::Y[0])($object, named: $object);\n(clone $old)($object, named: $object);\n",
+      "source_sha256": "15c4f3e9f48475243391076f92bc455ab1015b3bf216467a9a1a15f27a63c9e5",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UztTO1U6QzswOlRFWFQ7bmFtZWQ6VEVYVDtDOkU7MDpPQko7bmFtZWQ6T0JKO1M7UztVOkM7MDpURVhUO25hbWVkOlRFWFQ7",
+      "stdout_template_base64": "UztTO1U6QzswOlRFWFQ7bmFtZWQ6VEVYVDtDOkU7MDpPQko7bmFtZWQ6T0JKO1M7UztVOkM7MDpURVhUO25hbWVkOlRFWFQ7",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/fcc-parameter-review18/variadic-stringable-receive-view/runtime.command.json",
+      "native_raw_sha256": "01fdb59e4afa2104df7cb5714e144a1da7e24666ea58a2182a89bb50f2904985"
     }
   ],
-  "scope": "Focused FCC equal scope, failed-owner retirement, adaptations and retained first targets through later live/failed imports. A first-owner failure after completed data binding selects the fixed method scope for later cached calls while preserving the unfixed imported first birth. Parameter-view constructor/handler/variadic full-source cases and callbacks before the failure marker remain open. Retained new static constructs the published called class, preserving selected NEW certificates through deferred static fills."
+  "scope": "Focused FCC equal scope, failed-owner retirement, adaptations and retained first targets through later live/failed imports, with full constructor/default, handler and variadic parameter-view originals. A first-owner failure after completed data binding selects the fixed method scope for later cached calls while preserving the unfixed imported first birth. Callbacks before the failure marker and broader mixed parameter-view contexts remain open. Retained new static constructs the published called class, preserving selected NEW certificates through deferred static fills."
 }
