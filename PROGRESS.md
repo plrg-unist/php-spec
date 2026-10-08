@@ -18,6 +18,9 @@ Two C-root-start/outer-unpack controls and the separate original `is_int` builti
 dependency failure have zero agreement. That builtin remains required core work;
 a distinct fresh comparison original checks the same weak int receive.
 C-root `start`, constructor captures and broader adapters remain required.
+The actual333 composition over `05ef7bb9f` passes strict initialization with
+reviewed Generator/property/Throwable/ownership interactions; earlier source and
+state cuts retain their inputs.
 [Start-capture ledger](coverage/semantics/fiber-start-callables-review.json).
 
 Source343 adds Stringable ordinary computed-name CVs with a separate cast owner.
