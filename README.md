@@ -772,7 +772,10 @@ release visit, preserving constraints through earlier child callbacks and genuin
 Fiber suspension. Each queued marker owns only the existing slot cell. Six exact
 source agreements, including the two unchanged prior controls, and 151/84 reached
 premises retain separate cuts; the actual332 composition passes strict compilation.
-Private Generator-close typed-slot timing remains required.
+Private Generator cleanup now preserves the same per-slot timing in actual cleanup
+queues and parked Fiber VMs. Four further exact originals and 134/71 reached
+premises cover reversed slot order, two constraints on one cell, exception
+chaining, owner transfer and rejection of stale snapshots or duplicate queues.
 Released-CV mutation, raw retired-container reads, callback-capable previous
 reference wrappers and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;

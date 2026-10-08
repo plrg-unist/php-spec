@@ -735,8 +735,13 @@ originals at `77a17756c`, 151 reached premises at `cc326bf43` and 84 Fiber premi
 at `7573d02bb` retain separate cuts. They cover declaration order, two sources on
 one cell, pending exception chaining, exact detach ownership and resumed scoped
 Throwable validation against the actual live heap. The actual332 join at
-`108d07bb5` passes strict initialization; private Generator-close typed-slot timing
-remains required. Released-CV mutation, raw retired-container
+`108d07bb5` passes strict initialization. Private Generator-close queues now
+retain the same per-slot constraints without retaining the retired parent. Four
+exact normal originals and strict332 initialization pass at `5b26e3526`; 134/71
+reached premises at `edf7e7ec1` cover exact detach, ordinary cell-release transfer,
+pending A/B chains and genuine parked/restored Fiber ownership. Borrowed plan
+snapshots and duplicate queues provide no authority. Released-CV mutation, raw
+retired-container
 reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original
