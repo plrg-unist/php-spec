@@ -94,9 +94,18 @@ The composition with 337 modules over `ed1c8c6a2` passes strict compilation at
 earlier child destructor and detaches it at the genuine slot release: one new
 normal source and 79 strict premises, without renewing the private ten/584 cuts.
 
-Delegating request close, abrupt terminal cleanup and a real free-storage pin
-with late WeakReference notification remain required. In particular, cache reads
-during storage destructors are not covered; no full lifecycle claim.
+Module 355 retains the real free-storage pin for ordinary closed Generators.
+It transfers Closure, value/reference, key and return owners one slot at a time,
+keeping raw caches readable and the weak target live through child callbacks.
+Only the final sole-pin release retires the allocation and then the store handle.
+Pending Throwable ownership remains on the existing operation/frame; the same
+continuation works after an ordinary forced close.
+The [storage-pin ledger](../../coverage/semantics/generator-storage-pin-review.json)
+keeps six exact normal sources and 784 new strict premises at their own cut.
+
+Delegating request close, abrupt terminal cleanup, parked storage work and
+escaped reacquisition remain required. Nested ordinary-object storage during a
+RETURN read is a separate required lifetime frontier; no full lifecycle claim.
 
 Pinned authority is `vendor/php-src/Zend/zend_generators.c`, especially
 `zend_generator_dtor_storage` and `zend_generator_free_storage`, plus authored

@@ -13735,7 +13735,8 @@
         "spec/semantics/321-yield-key-warning.watsup",
         "spec/semantics/340-generator-request-finally.watsup",
         "spec/semantics/346-typed-property-slot-retirement.watsup",
-        "spec/semantics/349-generator-request-fresh.watsup"
+        "spec/semantics/349-generator-request-fresh.watsup",
+        "spec/semantics/355-generator-storage-pin.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_review_protocol.py",
@@ -13749,7 +13750,8 @@
         "tests/semantics/generator_request_retired_protocol.py",
         "tests/semantics/duplicate_property_reference_protocol.py",
         "tests/semantics/generator_request_fresh_protocol.py",
-        "tests/semantics/generator_storage_order_protocol.py"
+        "tests/semantics/generator_storage_order_protocol.py",
+        "tests/semantics/generator_storage_pin_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/generator_review.py",
@@ -13764,7 +13766,9 @@
         "tests/semantics/dynamic_property_warning_sources.py",
         "tests/semantics/generator_request_fresh_sources.py",
         "tests/semantics/generator_request_fresh_peer_sources.py",
-        "tests/semantics/generator_storage_order_sources.py"
+        "tests/semantics/generator_storage_order_sources.py",
+        "tests/semantics/generator_storage_pin_sources.py",
+        "tests/semantics/generator_storage_pin_peer_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
@@ -13775,9 +13779,10 @@
         "coverage/semantics/yield-key-warning-review.json",
         "coverage/semantics/generator-request-finally-review.json",
         "coverage/semantics/duplicate-property-reference-review.json",
-        "coverage/semantics/generator-fresh-store-review.json"
+        "coverage/semantics/generator-fresh-store-review.json",
+        "coverage/semantics/generator-storage-pin-review.json"
       ],
-      "review": "Generator280 natural completion is extended by303 ordinary last-owner forced close. Input/graph links release before pending finally; parameters, locals and raw caches preserve child order through actual frame/storage release. Independent40 normal and2 compiler agreements plus11 state groups/8 programs/569 setup-inclusive premises retain separate cuts in GENERATOR-FORCE-CLOSE.md. Five request/terminal controls earn zero agreement. General destructors, cyclic GC and request/terminal cleanup remain required. Module310 extends ordinary paused-Generator close to an active Fiber, preserving current identity and real parked owners. Author14 and independent12 normal source agreements, four precise required Unsupported controls with zero agreement, and eight genuine strict-SL programs/groups669 physical premises (318+351 including repeated setup) retain separate276-module cuts in GENERATOR-FIBER-CLOSE.md; independent final private publication review passes; canonical integration preserves later call/destruction/Fiber fields. Actual282 composition adds five distinct normal integration originals, two promoted normal close checks and a precise request Unsupported control with zero agreement. One genuine strict-SL frame-release program passes189 setup-inclusive premises for the real pending carrier, remaining owner, previous chain and live-state resumption. The existing ledger retains separate cuts and zero-credit discrepancies; pending eager releases without an operation/frame carrier remain required. Parked running Generators and switching finalizers remain required; no full-family closure. The321 cache-release interaction admits an uncalled cached destructor only through a genuine top operation/frame and release-only path to its exit. Local/caller pending exceptions merge before entry; replacements update the same Generator releases and caller exit. Other close stages and wider destructor lifetimes remain required. Module340 adds normal request paused-frame close, actual STORE pins, handler-before-cache delivery and borrowed zero-owner buckets cleared by real weak acquisition. 19 distinct normal originals and 692 physical strict-SL premises retain separate cuts; 85 required abrupt-control premises grant no observation agreement. Module349 adds fresh store frame teardown without body/finally entry, real Closure/frame owner transfer and immediate root CV-handler ordering. Ordinary CLOSED storage releases the Closure before caches while heap graph order stays unchanged. Ten distinct normal originals and 584 strict-SL premises retain private cuts and zero-credit failures. A real free_obj pin, late WeakReference notification/readable cache, delegating request close and wider terminal cleanup remain required; see generator-fresh-store-review.json. See generator-request-finally-review.json; prior cuts/failures retain their inputs. Private Generator-close INSTANCE children retain typed sources until each individual declared-slot release, including genuine parked Fiber queues; no retired parent owner is added. Four exact originals and134/71 reached premises bind separate cuts in duplicate-property-reference-review.json."
+      "review": "Generator280 natural completion is extended by303 ordinary last-owner forced close. Input/graph links release before pending finally; parameters, locals and raw caches preserve child order through actual frame/storage release. Independent40 normal and2 compiler agreements plus11 state groups/8 programs/569 setup-inclusive premises retain separate cuts in GENERATOR-FORCE-CLOSE.md. Five request/terminal controls earn zero agreement. General destructors, cyclic GC and request/terminal cleanup remain required. Module310 extends ordinary paused-Generator close to an active Fiber, preserving current identity and real parked owners. Author14 and independent12 normal source agreements, four precise required Unsupported controls with zero agreement, and eight genuine strict-SL programs/groups669 physical premises (318+351 including repeated setup) retain separate276-module cuts in GENERATOR-FIBER-CLOSE.md; independent final private publication review passes; canonical integration preserves later call/destruction/Fiber fields. Actual282 composition adds five distinct normal integration originals, two promoted normal close checks and a precise request Unsupported control with zero agreement. One genuine strict-SL frame-release program passes189 setup-inclusive premises for the real pending carrier, remaining owner, previous chain and live-state resumption. The existing ledger retains separate cuts and zero-credit discrepancies; pending eager releases without an operation/frame carrier remain required. Parked running Generators and switching finalizers remain required; no full-family closure. The321 cache-release interaction admits an uncalled cached destructor only through a genuine top operation/frame and release-only path to its exit. Local/caller pending exceptions merge before entry; replacements update the same Generator releases and caller exit. Other close stages and wider destructor lifetimes remain required. Module340 adds normal request paused-frame close, actual STORE pins, handler-before-cache delivery and borrowed zero-owner buckets cleared by real weak acquisition. 19 distinct normal originals and 692 physical strict-SL premises retain separate cuts; 85 required abrupt-control premises grant no observation agreement. Module349 adds fresh store frame teardown without body/finally entry, real Closure/frame owner transfer and immediate root CV-handler ordering. Ordinary CLOSED storage releases the Closure before caches while heap graph order stays unchanged. Ten distinct normal originals and 584 strict-SL premises retain private cuts and zero-credit failures. Module355 retains one physical CLOSED Generator free_obj pin through ordered slot release, late weak notification and readable RETURN, including pending child exceptions and the actual303 parent. Six distinct exact normals and 784 new strict premises retain their own cut in generator-storage-pin-review.json. The two affected maintained queue checks retain separate current evidence; old cuts are not renewed. Delegating request close, broader terminal cleanup, parked storage work, escaped reacquisition and nested ordinary-object storage during RETURN reads remain required; prior fresh cuts remain in generator-fresh-store-review.json. See generator-request-finally-review.json; prior cuts/failures retain their inputs. Private Generator-close INSTANCE children retain typed sources until each individual declared-slot release, including genuine parked Fiber queues; no retired parent owner is added. Four exact originals and134/71 reached premises bind separate cuts in duplicate-property-reference-review.json."
     },
     {
       "id": "resumable.generator-finally",
@@ -13790,7 +13795,8 @@
         "spec/semantics/303-generator-force-close.watsup",
         "spec/semantics/310-generator-fiber-close.watsup",
         "spec/semantics/340-generator-request-finally.watsup",
-        "spec/semantics/349-generator-request-fresh.watsup"
+        "spec/semantics/349-generator-request-fresh.watsup",
+        "spec/semantics/355-generator-storage-pin.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_review_protocol.py",
@@ -13801,7 +13807,8 @@
         "tests/semantics/generator_request_finally_protocol.py",
         "tests/semantics/generator_request_retired_protocol.py",
         "tests/semantics/generator_request_fresh_protocol.py",
-        "tests/semantics/generator_storage_order_protocol.py"
+        "tests/semantics/generator_storage_order_protocol.py",
+        "tests/semantics/generator_storage_pin_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/generator_review.py",
@@ -13813,7 +13820,9 @@
         "tests/semantics/generator_request_finally_peer_sources.py",
         "tests/semantics/generator_request_fresh_sources.py",
         "tests/semantics/generator_request_fresh_peer_sources.py",
-        "tests/semantics/generator_storage_order_sources.py"
+        "tests/semantics/generator_storage_order_sources.py",
+        "tests/semantics/generator_storage_pin_sources.py",
+        "tests/semantics/generator_storage_pin_peer_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
@@ -13821,9 +13830,10 @@
         "docs/semantics/GENERATOR-FIBER-CLOSE.md",
         "coverage/semantics/generator-fiber-close-review.json",
         "coverage/semantics/generator-request-finally-review.json",
-        "coverage/semantics/generator-fresh-store-review.json"
+        "coverage/semantics/generator-fresh-store-review.json",
+        "coverage/semantics/generator-storage-pin-review.json"
       ],
-      "review": "Generator303 runs source-owned pending finally on ordinary zero-owner close, bypassing unfinished body/catches and discarding already-entered return/throw/jump outcomes. New real throw/return retains outer control authority; pending caller exceptions chain only on actual escape. Forced yield/yield-from preserve distinct delayed operands, warning handlers, temporary release order and real scopes/traces. Source40normal/2compiler and11 groups/569 setup-inclusive premises close separately; request-end, terminal, GC and user-destructor paths remain required. Module310 extends ordinary paused-Generator close to an active Fiber, preserving current identity and real parked owners. Author14 and independent12 normal source agreements, four precise required Unsupported controls with zero agreement, and eight genuine strict-SL programs/groups669 physical premises (318+351 including repeated setup) retain separate276-module cuts in GENERATOR-FIBER-CLOSE.md; independent final private publication review passes; canonical integration preserves later call/destruction/Fiber fields. Actual282 composition adds five distinct normal integration originals, two promoted normal close checks and a precise request Unsupported control with zero agreement. One genuine strict-SL frame-release program passes189 setup-inclusive premises for the real pending carrier, remaining owner, previous chain and live-state resumption. The existing ledger retains separate cuts and zero-credit discrepancies; pending eager releases without an operation/frame carrier remain required. Parked running Generators and switching finalizers remain required; no full-family closure. Module340 adds normal request paused-frame close, actual STORE pins, handler-before-cache delivery and borrowed zero-owner buckets cleared by real weak acquisition. 19 distinct normal originals and 692 physical strict-SL premises retain separate cuts; 85 required abrupt-control premises grant no observation agreement. Module349 adds fresh store frame teardown without body/finally entry, real Closure/frame owner transfer and immediate root CV-handler ordering. Ordinary CLOSED storage releases the Closure before caches while heap graph order stays unchanged. Ten distinct normal originals and 584 strict-SL premises retain private cuts and zero-credit failures. A real free_obj pin, late WeakReference notification/readable cache, delegating request close and wider terminal cleanup remain required; see generator-fresh-store-review.json. See generator-request-finally-review.json; prior cuts/failures retain their inputs."
+      "review": "Generator303 runs source-owned pending finally on ordinary zero-owner close, bypassing unfinished body/catches and discarding already-entered return/throw/jump outcomes. New real throw/return retains outer control authority; pending caller exceptions chain only on actual escape. Forced yield/yield-from preserve distinct delayed operands, warning handlers, temporary release order and real scopes/traces. Source40normal/2compiler and11 groups/569 setup-inclusive premises close separately; request-end, terminal, GC and user-destructor paths remain required. Module310 extends ordinary paused-Generator close to an active Fiber, preserving current identity and real parked owners. Author14 and independent12 normal source agreements, four precise required Unsupported controls with zero agreement, and eight genuine strict-SL programs/groups669 physical premises (318+351 including repeated setup) retain separate276-module cuts in GENERATOR-FIBER-CLOSE.md; independent final private publication review passes; canonical integration preserves later call/destruction/Fiber fields. Actual282 composition adds five distinct normal integration originals, two promoted normal close checks and a precise request Unsupported control with zero agreement. One genuine strict-SL frame-release program passes189 setup-inclusive premises for the real pending carrier, remaining owner, previous chain and live-state resumption. The existing ledger retains separate cuts and zero-credit discrepancies; pending eager releases without an operation/frame carrier remain required. Parked running Generators and switching finalizers remain required; no full-family closure. Module340 adds normal request paused-frame close, actual STORE pins, handler-before-cache delivery and borrowed zero-owner buckets cleared by real weak acquisition. 19 distinct normal originals and 692 physical strict-SL premises retain separate cuts; 85 required abrupt-control premises grant no observation agreement. Module349 adds fresh store frame teardown without body/finally entry, real Closure/frame owner transfer and immediate root CV-handler ordering. Ordinary CLOSED storage releases the Closure before caches while heap graph order stays unchanged. Ten distinct normal originals and 584 strict-SL premises retain private cuts and zero-credit failures. Module355 retains one physical CLOSED Generator free_obj pin through ordered slot release, late weak notification and readable RETURN, including pending child exceptions and the actual303 parent. Six distinct exact normals and 784 new strict premises retain their own cut in generator-storage-pin-review.json. The two affected maintained queue checks retain separate current evidence; old cuts are not renewed. Delegating request close, broader terminal cleanup, parked storage work, escaped reacquisition and nested ordinary-object storage during RETURN reads remain required; prior fresh cuts remain in generator-fresh-store-review.json. See generator-request-finally-review.json; prior cuts/failures retain their inputs."
     },
     {
       "id": "resumable.Fiber-creation",

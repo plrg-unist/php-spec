@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator355 keeps one physical closed-storage pin through Closure/value/key/return
+release. Child callbacks retain weak Generator liveness and readable RETURN;
+consumed Closure/reference metadata adds no repeated owner. Existing257/303
+parents retain pending Throwable priority, with sole-pin retirement before handle
+reuse. Six exact normals and 784 new strict premises pass at `b62f360d7`; the two
+actually affected maintained storage queues separately pass 209 at `d67773039`.
+Original failures remain zero; the earlier349 11/663 retains its own cuts. Delegation, abrupt
+terminal cleanup, parked/escaped storage and nested ordinary-object RETURN reads
+remain required. [Ledger](coverage/semantics/generator-storage-pin-review.json).
+
 Collector345 runs remaining marked destructors in the cached worker's retained
 physical interval during public resume/throw, preserving the outer collector
 cursor and pending exception. Borrowed zero-owner targets support real weak

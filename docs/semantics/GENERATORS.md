@@ -83,9 +83,12 @@ agreement. Natural return/throw/finally cleanup remains distinct from forced clo
 Normal request cleanup340 uses real global/store owners and borrowed zero-owner
 buckets. Module349 also closes fresh store frames without running their bodies,
 preserves immediate CV-handler ordering, and releases a closed Generator's Closure before its
-caches. [Source and state cuts](../../coverage/semantics/generator-fresh-store-review.json)
-remain bounded: free-storage weak liveness, delegating request close and abrupt
-terminal behavior are still required.
+caches. Module355 retains a physical closed-Generator storage pin through those
+releases, preserving weak liveness, readable RETURN and pending child exceptions.
+[Storage-pin checks](../../coverage/semantics/generator-storage-pin-review.json)
+remain separate from the [fresh cuts](../../coverage/semantics/generator-fresh-store-review.json).
+Delegating request close, abrupt terminal behavior, parked storage work, escaped
+reacquisition and nested ordinary-object storage during RETURN reads remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and
