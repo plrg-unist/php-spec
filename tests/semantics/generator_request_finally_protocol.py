@@ -205,10 +205,16 @@ $throwable_field(S_pending,n_exception,"message") = PSTRING $ptascii("new")
 S_transfer.TODO = (THROW_SEARCH n_exception) :: (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: ptask_transfer*
 pgenclose_transfer.OBJECT = n_generator /\ pgenclose_transfer.PENDING = eps
 $generator_close_claims(S_transfer.TODO) = [n_generator]
-$heap_graph(S_transfer) = $heap_graph(S_pending)
+H_pending = $heap_graph(S_pending)
+H_transfer = $heap_graph(S_transfer)
+H_transfer.NODES = H_pending.NODES /\ H_transfer.EDGES = H_pending.EDGES
+$heap_owners(H_transfer,HOBJECT n_generator) = 1
+$heap_owners(H_transfer,HOBJECT n_exception) = $heap_owners(H_pending,HOBJECT n_exception)
 $generator_request_resume_valid(S_transfer,pgenclose_transfer)
 '''.strip().splitlines()
-        reject(checks, 'reordered_resume', 'S_transfer[.TODO = (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: (THROW_SEARCH n_exception) :: ptask_transfer*]', 'S_transfer')
+        reject(checks, 'reordered_resume', 'S_transfer[.TODO = (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: (THROW_SEARCH n_exception) :: ptask_transfer*]', 'S_transfer', same_heap=False)
+        checks += ['$heap_owners($heap_graph(S_bad_reordered_resume),HOBJECT n_generator) = 1',
+                   '$heap_owners($heap_graph(S_bad_reordered_resume),HOBJECT n_exception) = $heap_owners(H_transfer,HOBJECT n_exception)']
         reject(checks, 'duplicate_resume', 'S_transfer[.TODO = (THROW_SEARCH n_exception) :: (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: ptask_transfer*]', 'S_transfer', same_heap=False)
         if name == 'peer-request-handler-throw-required':
             checks += seek('S_throw', 'S_transfer', 24) + valid('S_throw')

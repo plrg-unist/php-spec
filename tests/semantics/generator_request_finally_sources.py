@@ -24,7 +24,7 @@ $value=7;$g=request340($value);echo "C|",$g->current(),"|";
     'request-resurrection-repeats-global-pass-once': (
         b'''<?php
 class Payload340{function __destruct(){echo "D";}}
-function request340(){try{yield new Payload340;}finally{echo "F";$GLOBALS["saved"]=$GLOBALS["w"]->get();$GLOBALS["again"]=1;}}
+function request340(){try{yield new Payload340;}finally{global $w;echo "F";$GLOBALS["saved"]=$w->get();$GLOBALS["again"]=1;}}
 $g=request340();$w=WeakReference::create($g);$wa=&$w;$g->current();echo "C|";
 ''', b'C|FD', 0),
 }
