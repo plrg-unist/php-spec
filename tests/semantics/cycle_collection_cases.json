@@ -223,5 +223,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-cached-public-reentry-during-different-main-pass-preparation-31",
+    "source": "<?php\n$w=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w;\n  if($this->k===0){echo 'A|',$w->resume(),'|';}\n  else{\n   echo Fiber::getCurrent()===$w?'B|':'bad-worker|';\n   echo Fiber::suspend('paused')==='public'?'B:public|':'B:other|';\n  }\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);\necho gc_collect_cycles(),'|';\nclass D {\n public $s;public $k;\n function __destruct(){\n  global $w;\n  if($this->k===0){echo 'D|';$w->resume('public');echo 'back|';}\n  else{echo Fiber::getCurrent()===$w?'E:worker|':'E:main|';}\n }\n}\n$d=new D;$d->s=$d;$d->k=0;\n$e=new D;$e->s=$e;$e->k=1;\nunset($d,$e);\necho 'next|',gc_collect_cycles(),'|';\necho $w->isSuspended()?'worker-idle|':'worker-other|';\necho 'END';\n",
+    "source_sha256": "63170231618d34bd3d893789516e83e84baf845fdd7a727803ec0e51a4236033",
+    "stdout": "A|B|paused|1|next|D|B:public|back|E:main|3|worker-idle|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
