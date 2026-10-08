@@ -7,20 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Module 367 executes ordinary simple Fiber-array `start`: immutable selection
-survives argument effects, and one receiver plus the original positional/named
-buffer transfer to the waiting API. Nonowning receipts remain valid after actual
-receiver retirement and keep recursive argument frames independent. Abrupt
-arguments release positional values, receiver, then extra named values in native
-order; body and entry exceptions preserve real `start` callsites. Strict 351, six
-exact normal originals at 5+1 cuts and 267 independent/160 author reached premises
-pass. The preimplementation Unsupported baseline retains zero agreement; earlier
-364/362 evidence is not renewed. Raw array C-root callbacks, compound selectors,
-Fiber-start unpacking and wider lifecycle consumers remain required.
-Actual352 over `262ab0c38` passes strict compilation at `c757a7e25`, preserving
-current source-line, property-read, trait and Generator/collector guards; private
-source/state cuts retain their own inputs.
-[Array-start ledger](coverage/semantics/fiber-array-start-review.json).
+Module 370 executes simple RAW Fiber API array C-root callbacks, including start
+and constructor. RAW owns current members; frozen caches and C handlers borrow
+the receiver, with separate original/copied buffers. Saved states and actual
+callers authenticate parked static, nested, collector and warning continuations.
+Strict 353, twelve exact normals at 6+6 cuts and 293 independent and 241 author reached
+premises pass. A narrow 296 fix admits nominal WeakReference argument/property
+types and names their diagnostics. The promoted-parameter original, initial
+compiler stop, typed-companion failure and fixture parse stop retain zero credit;
+the explicit-property companion is distinct. Compound selectors, start unpacking,
+promotion and broader lifecycle work remain required; paused returns stay excluded.
+[Raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json).
+
+367 ordinary simple array START retains six exact normals and 267/160 reached
+premises at their own cuts, with ordered positional/receiver/named unwind and
+real start exception sites. Actual 352 over `262ab0c38` passes strict compilation at `c757a7e25`;
+no earlier evidence is renewed. [Ledger](coverage/semantics/fiber-array-start-review.json).
 
 Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
 Actual close/cache owners survive normal rendering and handler-registry mutation;
