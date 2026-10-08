@@ -1078,9 +1078,16 @@ compiler/init pass atc4ed; a separate typed-reference conversion/rejection origi
 passes at163e. New368 reached premises pass ate148, including future-entry,
 foreign-cell and repeated-site history rejection. Actual344 over COMP `e1c3d4d618` passes algo/struct/init at `f0e03c885`,
 with pointwise353/354/355/357 and owner-factor review in the
-[ledger](coverage/semantics/static-compound-string-review.json). Dynamic selectors,
-self/parent/static class selectors, wider borrowed lifetime and registered-handler missing-RHS continuations
-remain separate; paused return producers are unchanged.
+[ledger](coverage/semantics/static-compound-string-review.json).
+Ordinary-method `self`, `parent` and `static` selectors now capture the actual
+lexical/called scope before callbacks; nonowning selected ENTRY history retains
+the destination through nested calls, private shadows and reference rebinding.
+Six exact originals and private344 compiler/init pass at `45f32a157`;323 new
+reached premises retain separate144 at `b228479d6` and179 at `714465927` cuts.
+The unchanged earlier keyword Unsupported record retains zero agreement.
+Dynamic selectors, Closure/fromCallable keyword scopes, wider borrowed lifetime
+and registered-handler missing-RHS continuations remain separate; paused return
+producers are unchanged. The final actual-parent compiler/init gate is pending.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace

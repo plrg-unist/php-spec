@@ -216,6 +216,9 @@ including typed final results and PHP's retained reference-type history. Twelve
 exact originals and368 reached premises cover live RHS reads, inherited slots,
 alias rebinding, reference history, temporary cleanup and access-error priority.
 The actual344 compiler/init gate retains its separate accepted record.
+Ordinary methods also retain `self`, `parent` and `static` selection through
+conversion and nested calls. Six further originals and323 reached premises cover
+lexical/called scope, private shadows and captured-reference rebinding.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
