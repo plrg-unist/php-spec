@@ -118,6 +118,11 @@
   },
   {
     "id": "collector-detached-quiescent-throwing-finally-assignment-close-18",
-    "source": "<?php\n$worker = null;\nclass HeldCollectorCycle {\n    public $self;\n    function __destruct() {\n        global $worker;\n        $worker = Fiber::getCurrent(); echo 'D|';\n        try { Fiber::suspend(); }\n        finally { $this->self = null; echo 'finally|'; throw new Exception('close'); }\n    }\n}\n$x = new HeldCollectorCycle; $x->self = $x;\n$targetWeak = WeakReference::create($x); unset($x);\n$collector = new Fiber(function () { echo 'first:', gc_collect_cycles(), '|'; });\n$collector->start(); unset($collector);\n$workerWeak = WeakReference::create($worker); echo 'held|';\ntry { $worker = null; }\ncatch (Throwable $e) { echo 'caught:', $e->getMessage(), '|'; }\nunset($e);\necho $workerWeak->get() === null ? 'worker-gone|' : 'worker-live|';\necho 'next:', gc_collect_cycles(), '|';\necho $targetWeak->get() === null ? 'target-gone|' : 'target-live|';\necho 'END';\n"
+    "source": "<?php\n$worker = null;\nclass HeldCollectorCycle {\n    public $self;\n    function __destruct() {\n        global $worker;\n        $worker = Fiber::getCurrent(); echo 'D|';\n        try { Fiber::suspend(); }\n        finally { $this->self = null; echo 'finally|'; throw new Exception('close'); }\n    }\n}\n$x = new HeldCollectorCycle; $x->self = $x;\n$targetWeak = WeakReference::create($x); unset($x);\n$collector = new Fiber(function () { echo 'first:', gc_collect_cycles(), '|'; });\n$collector->start(); unset($collector);\n$workerWeak = WeakReference::create($worker); echo 'held|';\ntry { $worker = null; }\ncatch (Throwable $e) { echo 'caught:', $e->getMessage(), '|'; }\nunset($e);\necho $workerWeak->get() === null ? 'worker-gone|' : 'worker-live|';\necho 'next:', gc_collect_cycles(), '|';\necho $targetWeak->get() === null ? 'target-gone|' : 'target-live|';\necho 'END';\n",
+    "source_sha256": "ced4c4aeb45288f886ae63a9cf00c345c83773d026b61b970425ebab3def63b9",
+    "stdout": "first:D|0|held|finally|caught:close|worker-gone|next:1|target-gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
