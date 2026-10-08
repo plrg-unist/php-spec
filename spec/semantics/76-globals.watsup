@@ -56,10 +56,15 @@ dec $global_bind_name(pstate, nat*) : pstate
 dec $global_missing(pstate, nat*, int) : pstate
 dec $global_read_name(pstate, nat*, int) : pstate
 def $global_read_local(S, n_name*, z) = $read_name(S, n_name*, z) -- if $this_name(n_name*) \/ $environment_blocked(S, n_name*)
+def $global_read_local(S, n_name*, z) = S[.COMPLETION = UNSUPPORTED "released foreach container payload read"]
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if $foreach_released_container_cell(S, n)
 def $global_read_local(S, n_name*, z) = S[.RESULT = KNOWN pvalue]
   -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = (n)
   -- if S.STORE[n] = DEFINED pvalue
+  -- if ~$foreach_released_container_cell(S, n)
 def $global_read_local(S, n_name*, z) = $global_missing(S, n_name*, z)
   -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = eps
