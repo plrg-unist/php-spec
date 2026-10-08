@@ -57,6 +57,7 @@ syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | 
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
   | CCUPDATENEW porigin pdynamicnew nat
+  | CCSTATICNEW porigin pdynamicnew nat | CCSTATICRETIRENEW porigin pdynamicnew nat nat
   | CCTRAITCACHE porigin ptraitcachecause
   | CCTRAITBIRTH nat porigin ptraitcachecause
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
@@ -128,6 +129,7 @@ syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIG
 syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
 syntax pnameread = { SITE porigin, NAME nat*, LINE int }
 syntax pnamestring = { READ pnameread, OBJECT nat, TAIL ptask* }
+syntax pechoresult = { TEMP poperand, OBJECT nat, SITE porigin, LINE int, TAIL ptask* }
 syntax pcompoundstring = { PLACE plocation, RIGHT poperand, SITE porigin, LINE int, CV bool, SELF bool, SELECTED nat? }
 syntax pclosurescope, pclosurebinding
 ;; The selecting callback is borrowed history, not a retained queue owner.
@@ -170,12 +172,12 @@ syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED n
 syntax hedge
 syntax hgraph
 syntax pgcvisit = GC_VISIT pnode bool
-syntax pgcprogress = GC_CALLED pnode | GC_SKIPPED pnode | GC_DETACHED pnode
+syntax pgcprogress = GC_CALLED pnode | GC_SKIPPED pnode | GC_DETACHED pnode | GC_UNVISITED pnode
 syntax pgcslot = GC_EMPTY | GC_ROOT pnode | GC_RETIRED nat | GC_BARE_ROOT nat | GC_DTOR_ROOT nat
 syntax pgcscan = {INDEX nat, END nat}
 syntax pgcpublic
 syntax pgccall = {NONCE nat, CALL pconfigcall, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, PASS nat, TOTAL nat, PENDING nat?}
-syntax pgcplan = {CALL pgccall, GRAPH hgraph, TABLES pobjecttable*, CALLED nat*, PROXIES hedge*, COUNTED pnode*, BUFFER pgcslot*, CANDIDATES pnode*, DTORS pnode*, FREESET pnode*, INDEX nat, STEPS pgcprogress*, DONE pnode*}
+syntax pgcplan = {CALL pgccall, GRAPH hgraph, TABLES pobjecttable*, CALLED nat*, PROXIES hedge*, COUNTED pnode*, BUFFER pgcslot*, CANDIDATES pnode*, DTORS pnode*, FREESET pnode*, SCAN pgcscan?, INDEX nat, STEPS pgcprogress*, DONE pnode*}
 syntax pgcguard = {WORKER nat, SOURCE pgccall, INDEX nat, OBJECT nat, PENDING nat?, PUBLIC pgcpublic?}
 syntax pgcworker = {BIRTH pgccall, GUARD pgcguard?}
 syntax pgc = {ENABLED bool, IMMUTABLE nat*, BUFFER pgcslot*, FREE nat*, NEXT nat, ACTIVE pgccall?, PLAN pgcplan?, WORKER nat?, SCAN pgcscan}
@@ -317,7 +319,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | METHOD_PREP phpType20 phpType7* bool bool int | METHOD_NAME poperand phpType7* int | METHOD_RESULT | CTOR_RESULT nat
   | INTERPOLATE_COLLECT porigin nat poperand* | INTERPOLATE_CAPTURE porigin nat poperand* | INTERPOLATE_NEXT pinterpolation | INTERPOLATE_CONVERT pinterpolation | INTERPOLATE_RESOLVE pinterpolation nat* | INTERPOLATE_ARRAY_RESULT pinterpolation poperand | INTERPOLATE_AFTER pinterpolation | INTERPOLATE_FINISH porigin
   | SOURCE_ARRAY_RESULT psourceoperand | SOURCE_READ_RESULT psourceoperand | SOURCE_NAME_RESULT psourceoperand int | SOURCE_STRING_RESULT psourceoperand nat | SOURCE_STRING_READY psourceoperand nat preqbytes | SOURCE_STRING_PENDING psourceoperand preqbytes nat | SOURCE_STRING_PROPAGATE psourceoperand preqbytes nat | SOURCE_OPERAND_FAST psourceoperand nat | SOURCE_FAST_FINISH psourceoperand nat | SOURCE_HELPER_RELEASE psourceoperand psourcehelper | SOURCE_HELPER_FINISH psourceoperand psourcehelper | SOURCE_OPERAND_RELEASE psourceoperand | SOURCE_OPERAND_ENTER psourceoperand nat | SOURCE_OPERAND_THROW psourceoperand nat
-  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
+  | BINARY_LEFT pbin expression int | BINARY_RIGHT pbin poperand int | UNARY punary int | STMT statement | EVAL expression | EMIT int | ECHO_CALL_RESULT pechoresult | ECHO_CALL_PENDING pechoresult preqbytes nat | STRINGIFY_RESULT nat porigin int | TERMINAL_STRING nat | PRINT_EMIT porigin int | CLONE_RESULT porigin int | NAME_READ int
   | WRITE_NAME nat* int | PREP_ASSIGN expression int | WRITE_DYNAMIC poperand int
   | REF_NAME nat* | REF_CAPTURE poperand int | REF_DYNAMIC poperand nat int | REF_DYNAMIC_CV poperand nat* int | PREP_REF expression int
   | ACQUIRE_CALL | ACQUIRE expression | ACQUIRE_DYNAMIC int | ACQUIRE_ARRAY int | UNSET expression | UNSET_DYNAMIC int

@@ -35,6 +35,7 @@ def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, 
 def $typed_given(S, POBJECT n) = $ptascii("stdClass")
   -- if S.OBJECTS[n] = STDINSTANCE
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $stdclass_cast_array(S, n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $cast_empty_object_value(S, PNULL) = true

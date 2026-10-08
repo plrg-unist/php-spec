@@ -92,9 +92,13 @@ separates its new originals from earlier compound checks.
 Ordinary-method `self`, `parent` and `static` selectors retain the actual method
 lexical/called class in nonowning ENTRY metadata before conversion. The final
 write uses that selection after nested callbacks; instance and scoped-parent
-forwarding preserve the same destination. Dynamic selectors, keyword scopes
-entered through Closure/fromCallable or other callable wrappers, and
-registered-handler missing-RHS continuations remain outside this slice.
+forwarding preserve the same destination. Dynamic class expressions resolve once
+before RHS evaluation and retain that class after selector mutation. Temporary
+object selectors retire before the RHS; the selected plain slot/reference and
+typed final result follow the same static store rules. Ordinary scalar concat
+restores its base without creating conversion history. Computed property names,
+keyword scopes entered through Closure/fromCallable or other callable wrappers,
+and registered-handler missing-RHS continuations remain outside this slice.
 
 All twelve nodes stop constant preparation without traversing their children;
 ordinary compilation then visits the target and RHS in order. Direct/literal

@@ -205,5 +205,10 @@ The `500a2cedc`/340 eager-edge original also reaches host55.045470 with empty
 streams and zero agreement.
 The `e1c3d4d61`/343 owner-order-carry original reaches host55.043267 with empty
 streams and zero agreement. Pure graph worklist pruning passes typed and genuine
-cascade controls at `a39876cbe`/343; its original retry remains UNRUN.
-Whole retry composition and wider producers remain open.
+cascade controls at `a39876cbe`/343; its `9cacdbf51`/345 original reaches host55.044761
+with empty streams and zero agreement. Same-state pruning-edge reuse passes
+typed and genuine frontiers at `738d2a3b1`/345. Its exact 1697-byte original at
+`ea58ac361`/349 agrees with native PHP in 54.832s at unchanged 45/55-second caps,
+with normal exit 0, exact output and empty stderr. The source and 46-byte tuple
+are retained in `tests/semantics/compiler_composed_retry_cases.json` for combined
+and offline checks; those runs and wider producers remain open.

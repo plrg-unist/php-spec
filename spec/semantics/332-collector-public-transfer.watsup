@@ -11,9 +11,11 @@ dec $gc_worker_public_scan_pass(pstate) : bool
 dec $gc_worker_public_task(pstate, pfiberapi) : ptask
 dec $gc_worker_public_api_valid(pstate, pfiberapi) : bool
 dec $gc_worker_public_source_api_valid(pstate, pfiberapi) : bool
+dec $gc_worker_public_dispatch_valid(pstate) : bool
 
 def $gc_worker_public_pass_valid(S) = true
   -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if $gc_worker_public_dispatch_valid(S)
 def $gc_worker_public_pass_valid(S) = false -- otherwise
 def $gc_worker_public_scan_pass(S) = false -- otherwise
 def $gc_worker_public_task(S, pfiberapi) = GC_WORKER_PUBLIC pfiberapi -- otherwise

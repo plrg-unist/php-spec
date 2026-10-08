@@ -221,3 +221,23 @@ six exact originals and128 independent premises at private341. Actual343 over
 `36ccc4520` passes strict compilation with reviewed Generator storage compatibility;
 relocation and the earlier cuts gain no renewed credit. Dynamic/builtin/argument/
 fallback calls, wider bases/consumers/emissions and providers remain required.
+
+Module361 selects first INIT for a direct ECHO of a named noarg nonbuiltin call
+without namespace fallback. Its exact AST/CODENAME/call line and completed image
+remain valid when operand retirement installs the function. Declaration history
+authenticates that implicit public destructor through the completed parent/child
+images, literal first top-level ECHO and fixed noarg named new operand, without a
+former-object root. Its local classifier uses the already authenticated images;
+the projected history prefix is not recompiled. Returned Stringable TMPVARs and reference wrappers retain their ECHO owner beside the cast pin.
+Successful bytes are emitted before freeing that temporary; a reference can
+change its referent during the cast, allowing the old receiver to retire first.
+If that retirement throws after a successful cast, a pending carrier owns the
+reference and Throwable until bytes are emitted, then performs ordinary cleanup
+and exception search. Consumed certificates do not reread retired owners.
+Borrowed CVs keep their existing release path. The [ledger](../../coverage/semantics/source-direct-call-emission-review.json)
+retains ten exact originals and247 independent premises at separate private344
+cuts; actual349 over published CALLS362 passes strict compilation without renewing
+those cuts. Original early-free/admission failures and the corrected pre-call owner
+fixture retain zero affected credit. Dynamic/builtin/argument/fallback calls, wider temporary and
+borrowed pending-output producers, wider implicit-destructor declaration causes,
+and final combined offline validation remain required.

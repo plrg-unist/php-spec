@@ -196,3 +196,22 @@ def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure) = false -- other
 def $trait_fcc_retained_new(S, pclassdesc, pconstantclosure, z) = $throw_scalar(S, "Error", $ptascii("Cannot instantiate abstract class ") ++ pclassdesc.NAME, z)
   -- if $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure)
 def $trait_fcc_retained_new(S, pclassdesc, pconstantclosure, z) = S[.COMPLETION = UNSUPPORTED "retained failed class construction"] -- otherwise
+
+;; A completed NEW certificate keeps its source/scope proof after the receiving
+;; Closure retires. Current minting separately compares the live caller evidence.
+def $dynamic_new_record_scope(S, pdynamicnew) = true
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
+  -- if $origin_node(S.SOURCES, pdynamicnew.SITE) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("static")
+  -- if pdynamicnew.CLOSURE = (CLOSURE_SCOPE pclosurescope)
+  -- if pdynamicnew.SCOPE = (pclosurescope.LEXICAL) /\ pdynamicnew.CALLED = (pclosurescope.CALLED)
+  -- if pclosurescope.CREATION = eps
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_static_selection_scope_method(S, $dynamic_new_scope_source(S, pdynamicnew), pclosurescope.LEXICAL) = eps
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure_first, pclosurescope.LEXICAL, pmethoddesc_first))
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
+  -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
+  -- if $dynamic_new_scope_source(S, pdynamicnew) = PORIGIN n_unit pcpath
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_source)
+  -- if $trait_source_same(pfunction_source, pmethoddesc.FUNCTION)
