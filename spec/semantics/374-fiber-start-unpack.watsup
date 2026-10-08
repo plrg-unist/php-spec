@@ -36,9 +36,7 @@ def $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, n_index, pnameda
   -- if $fiber_start_pack_source_valid(S, porigin, pconfigpack)
   -- if $fiber_start_pack_prefix(pnamedargs_prefix, pconfigpack.ITEMS, false) = (pnamedargs_next)
 def $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, n_index, pnamedargs_prefix, pconfigpack*) = eps -- otherwise
-def $fiber_start_shape(S, porigin, n_index, pnamedargs, pconfigpack :: pconfigpack_tail*) = true
-  -- if $fiber_start_source_replay(S, porigin, n_index, pnamedargs, 0, {SLOTS eps, NAMED eps}, pconfigpack :: pconfigpack_tail*) = ((pnamedargs, eps))
-def $fiber_start_shape(S, porigin, n_index, pnamedargs, pconfigpack :: pconfigpack_tail*) = false -- otherwise
+def $fiber_start_shape(S, porigin, n_index, pnamedargs, pconfigpack :: pconfigpack_tail*) = ($fiber_start_source_replay(S, porigin, n_index, pnamedargs, 0, {SLOTS eps, NAMED eps}, pconfigpack :: pconfigpack_tail*) = ((pnamedargs, eps)))
 
 ;; Replace only this pending task for the existing selected-call validators.
 ;; They still authenticate its receiver/Closure, source and owning result tail.
