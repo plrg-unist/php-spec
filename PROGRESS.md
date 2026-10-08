@@ -734,8 +734,8 @@ including parked Fiber queues, without retaining the retired parent. Six normal
 originals at `77a17756c`, 151 reached premises at `cc326bf43` and 84 Fiber premises
 at `7573d02bb` retain separate cuts. They cover declaration order, two sources on
 one cell, pending exception chaining, exact detach ownership and resumed scoped
-Throwable validation against the actual live heap. The actual331 join at
-`73067facd` passes strict initialization; private Generator-close typed-slot timing
+Throwable validation against the actual live heap. The actual332 join at
+`108d07bb5` passes strict initialization; private Generator-close typed-slot timing
 remains required. Released-CV mutation, raw retired-container
 reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
