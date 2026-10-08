@@ -772,14 +772,20 @@ def $gc_zero(S, H, pnode :: pnode_tail*) = $gc_zero_keep(H, pnode :: pnode_tail*
 def $gc_zero_keep(H, eps, pnode_keep*) = eps
 def $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*) = pnode :: $gc_zero_keep(H, pnode_tail*, pnode_keep*) -- if $heap_owners(H, pnode) = 0 /\ ~(pnode <- pnode_keep*)
 def $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*) = $gc_zero_keep(H, pnode_tail*, pnode_keep*) -- if $($heap_owners(H, pnode) > 0) \/ pnode <- pnode_keep*
+dec $gc_release_walk_keep(hgraph, pdestructionjob*, pnode*, pnode*) : pnode*
 def $gc_release_walk(S, H, eps, pnode_done*) = pnode_done*
 def $gc_release_walk(S, H, (DESTRUCTION_HANDLE n) :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H, pdestructionjob*, pnode_done* ++ [HOBJECT n])
-def $gc_release_walk(S, H, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H, pdestructionjob*, pnode_done*)
+def $gc_release_walk(S, H, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $gc_release_walk_keep(H, pdestructionjob_head :: pdestructionjob*, pnode_done*, pnode_keep*)
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
-  -- if ~(pnode <- H.NODES) \/ pnode <- $gc_keep(S) \/ $($heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) > 0)
-def $gc_release_walk(S, H, pdestructionjob_head :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)], $destruction_values($destruction_children(H.EDGES, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*, pnode_done*)
+  -- if pnode_keep* = $gc_keep(S)
+def $gc_release_walk_keep(H, eps, pnode_done*, pnode_keep*) = pnode_done*
+def $gc_release_walk_keep(H, (DESTRUCTION_HANDLE n) :: pdestructionjob*, pnode_done*, pnode_keep*) = $gc_release_walk_keep(H, pdestructionjob*, pnode_done* ++ [HOBJECT n], pnode_keep*)
+def $gc_release_walk_keep(H, pdestructionjob_head :: pdestructionjob*, pnode_done*, pnode_keep*) = $gc_release_walk_keep(H, pdestructionjob*, pnode_done*, pnode_keep*)
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
-  -- if pnode <- H.NODES /\ ~(pnode <- $gc_keep(S))
+  -- if ~(pnode <- H.NODES) \/ pnode <- pnode_keep* \/ $($heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) > 0)
+def $gc_release_walk_keep(H, pdestructionjob_head :: pdestructionjob*, pnode_done*, pnode_keep*) = $gc_release_walk_keep(H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)], $destruction_values($destruction_children(H.EDGES, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*, pnode_done*, pnode_keep*)
+  -- if $destruction_job_node(pdestructionjob_head) = (pnode)
+  -- if pnode <- H.NODES /\ ~(pnode <- pnode_keep*)
   -- if $heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) = 0
   -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
 def $gc_release_order(S, H) = $gc_release_walk(S, H, $destruction_values($gc_zero(S, H, H.NODES)), eps)
