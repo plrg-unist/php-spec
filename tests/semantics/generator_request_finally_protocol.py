@@ -64,12 +64,16 @@ dec $request_finally_finished(pstate) : bool
 def $request_finally_finished(S) = (S.TODO = eps /\ S.FRAMES = eps /\ S.DESTRUCTION.PHASE = DESTRUCTION_DONE)
 dec $request_finally_seek(pstate,nat,nat) : pstate
 def $request_finally_seek(S,n_phase,n) = S
-  -- if $request_finally_phase(S,n_phase)
+  -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
 def $request_finally_seek(S,n_phase,n) = S
-  -- if ~$request_finally_phase(S,n_phase)
-  -- if (S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET) \/ n = 0 \/ $request_finally_finished(S)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $request_finally_phase(S[.COMPLETION = NORMAL],n_phase)
+def $request_finally_seek(S,n_phase,n) = S
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if ~$request_finally_phase(S[.COMPLETION = NORMAL],n_phase)
+  -- if n = 0 \/ $request_finally_finished(S)
 def $request_finally_seek(S,n_phase,n) = $request_finally_seek($drive_steps(S[.COMPLETION = NORMAL],1),n_phase,$nabs($(n - 1)))
-  -- if ~$request_finally_phase(S,n_phase)
+  -- if ~$request_finally_phase(S[.COMPLETION = NORMAL],n_phase)
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
   -- if $(n > 0)
   -- if ~$request_finally_finished(S)
