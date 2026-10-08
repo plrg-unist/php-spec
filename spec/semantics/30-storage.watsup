@@ -57,6 +57,7 @@ syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | 
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
   | CCUPDATENEW porigin pdynamicnew nat
+  | CCSTATICNEW porigin pdynamicnew nat | CCSTATICRETIRENEW porigin pdynamicnew nat nat
   | CCTRAITCACHE porigin ptraitcachecause
   | CCTRAITBIRTH nat porigin ptraitcachecause
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
