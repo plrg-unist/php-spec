@@ -93,13 +93,20 @@ bytes to its pending exception. Ten exact originals and247 independent premises
 retain private344; actual349 passes strict compilation over CALLS362. Borrowed CVs
 keep their separate release path; wider call and output consumers remain required.
 
-[Direct ECHO with one CV argument](coverage/semantics/source-echo-cv-call-review.json)
+[Direct ECHO with one positional CV argument](coverage/semantics/source-echo-cv-call-review.json)
 retires the owned source operand at INIT5 before SEND8 reads the live CV.
 Returning warning handlers send fixed null; function, retirement and handler
 errors retain their priority. Returned temporary/reference owners preserve bytes
 after argument mutation, with conversion and final destruction at ECHO8. Nine
 exact originals and236 independent premises retain separate private349 cuts;
 actual351 passes strict compilation. Broader call shapes remain required.
+
+[Direct ECHO with one named CV argument](coverage/semantics/source-echo-named-cv-call-review.json)
+now keeps INIT5 before binding and CV demand. Known second-slot sends use ECHO8;
+late-bound names use ECHO7. Defaults, unknown-name priority and fixed-null warnings
+retain live handler writes. Returned temporary/reference owners keep bytes after
+argument mutation. Seven exact originals and204 independent premises retain private351; actual354
+passes strict compilation. Wider call shapes remain required.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed

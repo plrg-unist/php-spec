@@ -119,6 +119,17 @@ Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
 
+Direct ECHO now admits one named ordinary CV argument through361's existing
+certificate and owning output protocol. INIT5 precedes live SEND; known second-slot
+binding uses ECHO8, while late-bound names use7. Default holes, unknown-name errors
+before CV demand and fixed-null returning warnings retain their native order.
+Returned TMPVAR/HCELL values survive post-SEND argument mutation. Seven exact
+originals and204 independent premises (142 bindings/62 checks) retain `5baec287b`/351.
+Actual354 over `1c4c8f283` passes strict compilation with reviewed current-parent
+compatibility. The unchanged baseline's parent/cast lines and early destruction
+retain zero agreement. No new module or owner schema is added.
+[Ledger](coverage/semantics/source-echo-named-cv-call-review.json).
+
 SOURCE365 extends361 through a shared certificate for one ordinary positional
 CV argument. INIT5 precedes live SEND8; operand retirement can install the callee
 or replace the CV, while returning warnings send fixed null and earlier throws

@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Direct ECHO of a resolved named nonbuiltin call without namespace fallback, with one named ordinary CV argument. INIT5 precedes retirement-sensitive binding/CV demand; known second-slot SEND/ECHO8 and deferred SEND/ECHO7 retain defaults, warning/throw priority and existing TMPVAR/REFERENCE output owners.",
+  "implementation": [
+    "spec/semantics/361-source-direct-call-emission.watsup"
+  ],
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_call/zend_compile_args/zend_compile_echo",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_SEND_VAR/ZEND_SEND_VAR_EX/ZEND_ECHO"
+  ],
+  "private_artifacts": ".tools/include-echo-named-cv-call-private-19/.tools/echo-named-cv-call-originals-19",
+  "native": {
+    "report": "echo-named-cv-call-native-dsi3zt3k/report.json",
+    "sha256": "ab770aa5740cf3c6ad3b7ce76c9554e45da7d6f069def2729660ca5f4a5a2d6f",
+    "originals": 7,
+    "checked_guard_programs": 6,
+    "checked_eval_child": "Unique checked parent Scalar_String bytes equal the parse-eval input.",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "application_evaluations": 0,
+    "inputs_head_status_stable": true
+  },
+  "source_validation": {
+    "revision": "5baec287b2d64e61a9ce83272004aaddb9a67965",
+    "modules": 351,
+    "report": "echo-named-cv-call-source-run-tp554_6y/report.json",
+    "sha256": "c0454c6c08e5a8bd75fe189ab3e1cae2b5f2a42c574b65d243db33282c69bc88",
+    "originals": [
+      "known-second",
+      "late-second",
+      "unknown-name",
+      "argument-warning",
+      "argument-throw",
+      "retirement-throw",
+      "eval-reference"
+    ],
+    "application_evaluations": 7,
+    "exact_source_agreements": 7,
+    "strict_compiler_seconds": 4.295,
+    "inputs_head_status_stable": true,
+    "comparison": "Exact original stdout/stderr, accepted frontend/adapter, normal completion/exit0; all bounded processes fully reaped."
+  },
+  "independent_state": {
+    "revision": "5baec287b2d64e61a9ce83272004aaddb9a67965",
+    "modules": 351,
+    "report": ".tools/include-review-19-echo-named-cv-call/state-run-qesbir18/report.json",
+    "sha256": "b320a88192850c9248a348385f97c8d2be958569c693c5b5eb1e723a3f9395f5",
+    "groups": {
+      "entry": 83,
+      "argument": 58,
+      "result": 63
+    },
+    "physical_main_premises": 204,
+    "bindings": 142,
+    "boolean_checks": 62,
+    "application_evaluations": 3,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "scope": "Genuine late retirement/INIT5/NAMED_SEND7 with CV payload8; known descriptor8, slot2/default hole and six matching-image negatives; fixed-null and abrupt priority; line7 TMP 3→2→1 owners and independent returned HCELL after argument mutation, current/saved/line forgery rejection and consumed-source validation."
+  },
+  "current_composition": {
+    "canonical_parent": "1c4c8f283b0c3769b5711fed701f9053d825d0c1",
+    "revision": "8fb1addda551e5976711aec8c037fbc743f9a469",
+    "modules": 354,
+    "report": ".tools/include-echo-named-cv-call-current-19/.tools/echo-named-cv-call-current-19/echo-named-cv-call-current-compiler-s74juz_q/report.json",
+    "sha256": "cb2b6dcd0441aad5c10d71bb96a44a52593b25b546551343650f816b98acf106",
+    "strict_compiler_seconds": 4.372,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "compatibility": "Exact published354 manifest; sole semantic delta is unchanged frozen361. Assertions startup/compile mode, static compounds, Fiber-array start and current collector/trait/storage hooks preserve the ordinary source/name/ECHO owner path. Prior source/state cuts retain their inputs."
+  },
+  "preserved_zero_credit": [
+    "echo-named-cv-call-baseline-0csjro_g: missing finite file snapshot stopped before named entry;1 attempted application/0 agreements. Only baseline file facts/Unsupported exit handling were corrected.",
+    "echo-named-cv-call-baseline-s_8oc9zz: unchanged262ab/351 normal1 application/0 agreements; parentD15/castD5 and D-before-bytes differ from native childINIT5/castD7 and bytes-beforeD.",
+    "Reviewer state-run-t2mxhxyr and state-run-4hvyxdgx stop before evaluation,0 applications/accepted premises. Only record-list parentheses and pure recursive call-node classification changed; all204 assertions remain."
+  ],
+  "maintained_sources": {
+    "harness": "tests/semantics/source_stringable_retirement_sources.py",
+    "prefix": "echo-named-cv-call-",
+    "selectors": 7,
+    "php_files": 13,
+    "relocation": "Six children plus eval main are identical; six include mains change only two child-basename occurrences each. Prior selections are preserved and the new prefix is excluded from the old default.",
+    "renewed_applications_or_agreements": 0
+  },
+  "reproduction": {
+    "private_cwd": ".tools/include-echo-named-cv-call-private-19",
+    "native": "python3 .tools/echo-named-cv-call-originals-19/prepare-native.py",
+    "baseline": "python3 .tools/echo-named-cv-call-originals-19/run-baseline.py .tools/echo-named-cv-call-originals-19/echo-named-cv-call-native-dsi3zt3k/report.json",
+    "source": "python3 .tools/echo-named-cv-call-originals-19/run-source.py --native-report .tools/echo-named-cv-call-originals-19/echo-named-cv-call-native-dsi3zt3k/report.json",
+    "state_cwd": ".",
+    "state": "python3 .tools/include-review-19-echo-named-cv-call/run-state.py --source-report .tools/include-echo-named-cv-call-private-19/.tools/echo-named-cv-call-originals-19/echo-named-cv-call-source-run-tp554_6y/report.json",
+    "actual_cwd": ".tools/include-echo-named-cv-call-current-19",
+    "current_compiler": "python3 .tools/echo-named-cv-call-current-19/run-compiler.py 1c4c8f283b0c3769b5711fed701f9053d825d0c1",
+    "caps_seconds": {
+      "compiler": 300,
+      "source_cli": 60,
+      "source_outer": 90,
+      "state_group": 90
+    },
+    "jobs": 1,
+    "profile": "tests/semantics/profile.json, error_reporting30719/include_path.:; LC_ALL=C/TZ=UTC/PHP_SPEC_SCRIPT_ENCODING absent; strict SL cache=false/det=true."
+  },
+  "remaining": [
+    "Wider named/unpacked/multiple/effectful arguments, dynamic/fallback/builtin callees and wider output/source producers remain required.",
+    "Implicit-destructor publication retains literal first-top-level ECHO under195-preauthenticated images; no generic replay or ownership/schema change.",
+    "Final combined fresh offline rebuild remains required; copied tools establish no new portability claim, and user-paused return verification is unchanged."
+  ],
+  "reviewer": "include_review_19"
+}
