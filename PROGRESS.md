@@ -108,8 +108,15 @@ fixture stops remain zero affected credit. Final 343 over `e1c3d4d61` compiles a
 `bb74145c7`, preserving reviewed Generator storage, call-key source and eager
 owner-order changes; the earlier 341 compiler cut remains separate.
 Publication 344 over `2ed57ca8a` preserves the static-property change by review.
-Earlier345 cuts remain separate. Post-pass reentry/internal takeover and broader
-GC remain required. [Ledger](coverage/semantics/cycle-collection-review.json).
+Quiescent post-pass reentry separately admits the actual parked VM and fresh
+caller after collection completes, requiring no destructor tags and no retired
+caller/old-slot authority. One normal source and 203 independent physical premises
+pass at separate b28/95fd+9765 cuts; captured source CLI 60s timeouts retain zero
+agreement. Final 345 over `4cd2eab3a` compiles at `0c23223f3`, preserving reviewed
+Fiber-factory/trait additions. One obsolete maintained post-pass refusal premise
+is superseded; earlier cuts are not renewed. Reentry during a different active pass,
+internal takeover and broader GC remain required.
+[Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
@@ -512,8 +519,8 @@ and passes the required combined compiler without source/state renewal.
 The fresh explicit-INI source discriminates
 cached mask reuse. The two larger 60s model timeouts retain zero agreement.
 Module325 adds separately tested detached zero-owner retention, real reacquisition
-and active unowned-close retirement. Wider internal graphs, post-pass public
-callback reentry/internal takeover, automatic thresholds, resurrection and final
+and active unowned-close retirement. Wider internal graphs, callback reentry during
+a different active pass, internal takeover, automatic thresholds, resurrection and final
 request freeing remain required.
 
 Undefined source operands293 resume genuine warnings with fixed null after
