@@ -418,8 +418,19 @@ controls and source-reached ownership/admission checks at their private cuts,
 separately from the actual322 compiler and collector interaction checks.
 Earlier331 evidence retains its original inputs.
 
-Bound `start` captures, constructor capture and bound C-root callback receivers
-remain required; the first and last have explicit source Unsupported controls.
+Module341 admits these fixed captures as Fiber C-root callbacks. Their immutable
+RAW Closure determines CONFIG's receiver and selected Closure; the C result tail
+owns the call reference while waiting APIs borrow the receiver. Nested transfers
+and public idle collector calls authenticate the actual runner and outer caller
+chain. Callback retirement can force-close its last captured receiver before the
+original `start` argument destructor. C-root API trace frames have no file or line site;
+unknown named arguments fail at public `start` before handler entry.
+The [C-root ledger](../../coverage/semantics/fiber-bound-core-callables-review.json)
+retains its separate source/state cuts and the affected337 former Unsupported
+original. Earlier331/337 cuts are not renewed.
+
+Bound `start` captures, constructor capture and broader callable adapters remain
+required; `start` still has an explicit source Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and

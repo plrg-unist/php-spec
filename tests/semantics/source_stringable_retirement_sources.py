@@ -63,7 +63,15 @@ CASES = {'regular': 'deferred-regular.php',
          'missing-name-cv-local-scope': None,
          'missing-name-cv-warning-throw': None,
          'missing-name-cv-retirement': 'missing-name-cv-retirement-child.php',
-         'missing-name-cv-handler-false': None}
+         'missing-name-cv-handler-false': None,
+         'stringable-name-basic': None,
+         'stringable-name-mutation': None,
+         'stringable-name-cast-throw': None,
+         'stringable-name-handler-created': None,
+         'stringable-name-target-warning': None,
+         'stringable-name-destructor-throw': None,
+         'stringable-name-retirement': 'stringable-name-retirement-child.php',
+         'stringable-name-pending-missing-default': None}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -101,7 +109,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)

@@ -1,0 +1,90 @@
+;; An ordinary name CV is borrowed. STRINGIFY_RESULT supplies the engine's
+;; separate cast owner, which retires before the returned name is fetched.
+;; The source certificate and selected id survive CV mutation without rereads.
+def $computed_string_name_site(S, porigin, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprVariable (NExprVariable (BYTES text_name) metadata_name) metadata)
+  -- if $computed_cv_name_source(S, {SITE porigin, NAME $base64(text_name), LINE z})
+def $computed_string_name_site(S, porigin, z) = false -- otherwise
+dec $computed_string_name_valid(pstate, pnamestring) : bool
+def $computed_string_name_valid(S, pnamestring) = $computed_cv_name_valid(S, pnamestring.READ)
+dec $computed_string_name_plan(pstate) : pnamestring?
+def $computed_string_name_plan(S) = (pnamestring)
+  -- if S.TODO = (NAME_READ z) :: ptask_tail*
+  -- if ~$source_name_pending(S)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprVariable (NExprVariable (BYTES text_name) metadata_name) metadata)
+  -- if pnameread = {SITE porigin, NAME $base64(text_name), LINE z}
+  -- if $computed_cv_name_source(S, pnameread)
+  -- if ~$error_missing_operand(S, S.RESULT)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
+  -- if pnamestring = {READ pnameread, OBJECT n, TAIL ptask_tail*}
+def $computed_string_name_plan(S) = eps -- otherwise
+def $computed_string_name_pending(S) = ($computed_string_name_plan(S) =/= eps)
+rule PhpStep/computed-string-name-call: S ~> $user_string_begin(S_read, pnamestring.OBJECT, pnamestring.READ.SITE, pnamestring.READ.LINE, NAME_STRING_RESULT pnamestring, pnamestring.TAIL)
+  -- if $computed_string_name_plan(S) = (pnamestring)
+  -- if S_read = $resolve_at(S, S.RESULT, pnamestring.READ.LINE)
+
+def $stringify_source(S, porigin, z, NAME_STRING_RESULT pnamestring) = ($computed_string_name_valid(S, pnamestring) /\ porigin = pnamestring.READ.SITE /\ z = pnamestring.READ.LINE)
+def $stringify_source_consumer(NAME_STRING_RESULT pnamestring) = true
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin z) :: (NAME_STRING_RESULT pnamestring) :: ptask_tail*
+def $stringify_consumer_tail_valid(S, porigin, z, NAME_STRING_RESULT pnamestring, ptask_tail*) = ($stringify_source(S, porigin, z, NAME_STRING_RESULT pnamestring) /\ pnamestring.TAIL = ptask_tail*)
+def $stringify_consumer_receiver_valid(S, n, NAME_STRING_RESULT pnamestring) = (n = pnamestring.OBJECT)
+def $call_task_valid(S, NAME_STRING_RESULT pnamestring) = ($computed_string_name_valid(S, pnamestring) /\ $source_operand_suffix(S.TODO, NAME_STRING_RESULT pnamestring, pnamestring.TAIL))
+def $task_nodes(NAME_STRING_RESULT pnamestring) = eps
+
+;; Capture bytes before dropping the cast owner. Receiver metadata is no longer
+;; an owner and is never resolved through the potentially changed name CV.
+def $stringify_return_state(S, NAME_STRING_RESULT pnamestring, n_text*, ptask_tail*) = S[.TODO = (NAME_STRING_READY pnamestring n_text*) :: ptask_tail*][.RESULT = KNOWN (PSTRING n_text*)][.BASE = BASE_VALUE (KNOWN (PSTRING n_text*))]
+  -- if $call_task_valid(S, NAME_STRING_RESULT pnamestring)
+  -- if pnamestring.TAIL = ptask_tail*
+def $call_task_valid(S, NAME_STRING_READY pnamestring n_text*) = ($computed_string_name_valid(S, pnamestring) /\ $source_operand_suffix(S.TODO, NAME_STRING_READY pnamestring n_text*, pnamestring.TAIL))
+def $task_nodes(NAME_STRING_READY pnamestring n_text*) = eps
+dec $computed_string_name_target(pstate, pnamestring, preqbytes) : bool
+def $computed_string_name_target(S, pnamestring, n_text*) = $computed_name_source(S, pnamestring.READ[.NAME = n_text*])
+rule PhpStep/computed-string-name-ready: S ~> S[.TODO = (NAME_READ pnamestring.READ.LINE) :: ptask_tail*][.RESULT = KNOWN (PSTRING n_text*)][.BASE = BASE_VALUE (KNOWN (PSTRING n_text*))]
+  -- if S.TODO = (NAME_STRING_READY pnamestring n_text*) :: ptask_tail*
+  -- if $call_task_valid(S, NAME_STRING_READY pnamestring n_text*)
+  -- if $computed_string_name_target(S, pnamestring, n_text*)
+rule PhpStep/computed-string-name-special-target: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "special Stringable computed variable target"]
+  -- if S.TODO = (NAME_STRING_READY pnamestring n_text*) :: ptask_tail*
+  -- if $call_task_valid(S, NAME_STRING_READY pnamestring n_text*)
+  -- if ~$computed_string_name_target(S, pnamestring, n_text*)
+
+;; A successful cast can release its last owner and acquire an exception.
+;; FETCH_R still performs target lookup before checking that pending exception.
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (NAME_STRING_READY pnamestring n_text*) :: ptask_tail*) = S[.TODO = (NAME_STRING_PENDING pnamestring n_text* n_pending) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT pnamestring.OBJECT pnamestring.READ.SITE pnamestring.READ.LINE
+  -- if pdestructionoperation.ORIGIN = (pnamestring.READ.SITE)
+  -- if pdestructionoperation.VALUE = KNOWN (PSTRING n_text*)
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pnamestring.TAIL = ptask_tail*
+  -- if $computed_string_name_valid(S, pnamestring)
+  -- if $eval_compile_pending_object(S, THROWING n_pending)
+def $call_task_valid(S, NAME_STRING_PENDING pnamestring n_text* n_pending) = ($computed_string_name_valid(S, pnamestring) /\ $source_operand_suffix(S.TODO, NAME_STRING_PENDING pnamestring n_text* n_pending, pnamestring.TAIL) /\ $eval_compile_pending_object(S, THROWING n_pending))
+def $task_nodes(NAME_STRING_PENDING pnamestring n_text* n_pending) = [HOBJECT n_pending]
+dec $computed_string_name_pending_read(pstate, pnamestring, preqbytes) : pstate
+def $computed_string_name_pending_read(S, pnamestring, n_text*) = S[.RESULT = KNOWN PNULL][.ERRORFATALTRACE = eps]
+  -- if $error_missing_operand(S, VARIABLE n_text* pnamestring.READ.LINE)
+  -- if $error_handler_eligible(S, 2)
+def $computed_string_name_pending_read(S, pnamestring, n_text*) = $scope_read_name(S, eps, n_text*, pnamestring.READ.LINE)
+  -- if ~$error_missing_operand(S, VARIABLE n_text* pnamestring.READ.LINE) \/ ~$error_handler_eligible(S, 2)
+rule PhpStep/computed-string-name-pending: S ~> S_read[.TODO = (THROW_SEARCH n_pending) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (NAME_STRING_PENDING pnamestring n_text* n_pending) :: ptask_tail*
+  -- if $call_task_valid(S, NAME_STRING_PENDING pnamestring n_text* n_pending)
+  -- if $computed_string_name_target(S, pnamestring, n_text*)
+  -- if S_read = $computed_string_name_pending_read(S, pnamestring, n_text*)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/computed-string-name-pending-unsupported: S ~> S_read[.TODO = eps]
+  -- if S.TODO = (NAME_STRING_PENDING pnamestring n_text* n_pending) :: ptask_tail*
+  -- if $call_task_valid(S, NAME_STRING_PENDING pnamestring n_text* n_pending)
+  -- if $computed_string_name_target(S, pnamestring, n_text*)
+  -- if S_read = $computed_string_name_pending_read(S, pnamestring, n_text*)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/computed-string-name-pending-special: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "special Stringable computed variable target"]
+  -- if S.TODO = (NAME_STRING_PENDING pnamestring n_text* n_pending) :: ptask_tail*
+  -- if $call_task_valid(S, NAME_STRING_PENDING pnamestring n_text* n_pending)
+  -- if ~$computed_string_name_target(S, pnamestring, n_text*)

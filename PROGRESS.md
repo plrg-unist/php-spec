@@ -7,6 +7,30 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source343 adds Stringable ordinary computed-name CVs with a separate cast owner.
+Returned bytes survive receiver retirement before live target lookup; a pending
+destructor exception permits the default missing-target warning but suppresses
+an eligible registered handler. Eight exact originals and134 independent premises
+retain private `fdb6e4577`/325. Actual329 over `fe9ad60a9d` passes strict compilation
+at `890496dec`, with reviewed callable/trait/collector compatibility. Original
+fixture failures and diagnostic cuts retain zero affected credit.
+[Ledger](coverage/semantics/source-stringable-name-review.json).
+
+341 executes fixed bound API captures as Fiber C-root callbacks. Immutable RAW
+selection preserves the receiver, borrowed API ownership and genuine nested or
+idle collector caller chains. Last callback retirement can close its receiver
+before the original `start` argument destructor; C-root API traces have no file
+or line. Strict324 initialization, ten new normal originals plus one affected337
+former boundary, independent255 and author93 reached premises pass at separate
+recorded cuts. The narrow saved-root helper correction is covered by full-drive
+nested108 and collector93 checks; original failures retain zero credit.
+The actual328 composition over `175a197e9` passes strict initialization while
+preserving current collector342, method307, source339 and ownership factors;
+earlier source/state cuts retain their inputs.
+Bound `start`, constructor captures and broader adapters remain required;
+paused undefined-result verification is excluded. Earlier331/337 cuts are unchanged.
+[C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json).
+
 Collector342 admits public idle resume/throw during an active pass once every
 planned destructor is marked called. The real parked collector consumer remains
 busy; worker cache/mask and transient error ownership follow332. Two exact normal
@@ -31,7 +55,7 @@ The Closure owns its selected Fiber; direct and explicit `__invoke` calls borrow
 that receiver while retaining their actual argument buffers and saved operation
 provenance. Strict318 initialization, nine normal originals and author65/independent403
 reached premises pass at the recorded private cuts. Two explicit start/C-root
-Unsupported controls earn zero agreement; earlier331 evidence is unchanged. A
+Unsupported controls earn zero agreement at that cut; earlier331 evidence is unchanged. A
 separate actual322 composition passes strict initialization, one collector
 original and115 independent premises: captured public resume/throw authenticate
 the genuine saved caller, preserve borrowed receiver roots and retire the idle
@@ -51,17 +75,21 @@ the tested compiler/source/state cuts remain unchanged.
 Active-pass failed close and wider close contexts remain required; earlier
 collector cuts retain their inputs. [Ledger](coverage/semantics/cycle-collection-review.json).
 
-Generator328 adds source-owned reference-yield cells, value-API array snapshots
-and direct/inner-reference destructuring aliases. Notice/cleanup readback retains
-nonowning old-cache metadata and precise delegated exception reinjection.
-Private normal-source cuts remain separate; cache/warning690, delegation163,
-nonfinalizing request215, terminal-refusal40 and destructuring177 physical
-premises pass at their recorded inputs. The new minimal `9:9` original closes
-the preserved `1:1`/extra-Notice failure. Actual321 over `c38af3cf770` passes strict
-compilation at `c21e5ce52`, preserving336 and the reviewed39/301 owner factors.
-Active-finally request close remains required Unsupported with zero agreement;
-paused generic returns stay excluded.
-[Scope and retained cuts](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
+Generator 340 closes paused frames at normal request end through real reverse
+globals and ascending store handles. Registered normal handlers run before cache
+release; borrowed zero-owner buckets survive bare store decrements until genuine
+weak reacquisition restores ordinary release. 19 normal originals and 692 physical
+strict-SL premises retain separate private cuts; 85 premises assert required abrupt
+controls with zero observation agreement. Actual330 over `7a0f8044f` passes strict
+compilation at `1399d8a7e`, preserving source343, bound C-root and collector342
+behavior without renewing source/state cuts. The original observer mismatch stays
+zero credit. Fresh store close, delegating request close and wider terminal/free-storage paths
+remain required. [Scope and cuts](coverage/semantics/generator-request-finally-review.json).
+
+Generator328 reference caches, value snapshots and effective destructuring aliases
+retain their original source/state cuts and actual321 compiler. 340 promotes the
+identical active-finally original; its old refusal40 remains zero agreement.
+[Reference-yield scope](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
 
 Source336 adds one named ordinary CV argument to computed-name emission: INIT6
 precedes known FETCH8/property11, and unknown `Sent` binds Error7 before CV demand.
@@ -142,13 +170,13 @@ renewal. Earlier cuts retain their own tested parents.
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
 WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335/338/342,
-Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands293/298,
+Fiber291/302/308/313/322/341, Generator289/303/310/311/321/328/340 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 327 modules composed over
-`5f478ea6a`, retaining static/bound Fiber API captures331/337, physical property references324 and collector335/338/342.
+with 330 modules composed over
+`7a0f8044f`, retaining static/bound Fiber API captures331/337/341, physical property references324 and collector335/338/342.
 The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339.
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339/343.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -253,6 +281,21 @@ Composition over `b7ed1bea1`/326 preserves SOURCE339, TRAIT307 and ARG334
 by static review, without runtime renewal.
 Raw records: `.tools/compiler-fiber-protection-graph-19/.tools`
 (`fiber-protection-gate-v{1,2,3,4}` and `full-default-retry-protection-v1`).
+Pruning now carries its graph through GC selection, Fiber protection and
+destructor dispatch, retaining active and idle bare-root guards. Destructor
+preparation reuses the graph only for identical states; changed states take the
+original prepared-state path. Exact `74a8a11ca`/326 passes strict initialization
+and 41 independent fixture premises. Its first destructor78 check exposed an existing
+207 ordinary-handler/destructor validation overlap. The one-line fallback repair
+at `039abc623`/326 passes changed initialization and four fixtures with 78 destructor,
+69 protected Fiber, 40 active GC and 37 ordinary-handler domain premises.
+The original full source still times out at host 55.066 with empty streams and
+zero agreement; inputs are stable and groups reaped. No speedup or 231 credit follows.
+Final 330-module composition at `5ca56cf55` mirrors the new idle retired-bucket guard
+and passes changed initialization plus a genuine retirement fixture with 73 body /
+190 physical premises. Earlier 326 cuts stay separate. Raw failures and checks remain
+under `.tools/compiler-fiber-protection-current-19/.tools` (`prune-graph-controls-v{1,2,3}`
+and `full-default-retry-prune-graph-v1`) and `.tools/compiler-prune-graph-publication-19/.tools/prune-graph-gen330-controls-v1`.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
@@ -1534,10 +1577,35 @@ Raw artifacts are `trait266-object-algo-s6o6pssf`,
 `closure-call-protocol-08sz3xg1`, `closure-call-protocol-q5w3a8qt` and
 `fcc-access-review19/native-*` under the same current
 worktree's `.tools/`.
+Live concrete alias/visibility lookup now uses the exact source copy plan only
+when ordinary import lookup misses. At `6470366fa`, strict algo/struct pass3.469/4.322s;
+three normal source tuples and one genuine birth/default/static checkpoint with44
+supplied conditions plus6 setup clauses pass (18.696s). Cloned aliases share their
+canonical static cells while own methods and excluded originals keep distinct targets.
+Raw evidence is `.tools/trait-fcc-adaptations-current19/.tools/`:
+`method-runtime-rbmzbjug`, `closure-call-protocol-tb4117ep`,
+`trait266-object-algo-wqm4aoeh` and `trait266-object-struct-2n7pfvr6`.
+The reviewed327 composition at `1f6313f7e` over `e044ff7cb` passes strict
+algo/struct at3.369/4.220s without renewing those source/state cuts. Its raw
+compiler results are `trait266-object-algo-gtfakyej` and
+`trait266-object-struct-d2ofi_zz` in the same evidence directory.
+Later failed FCC imports retain the exact cached target of an already published
+first owner, with their own called class and source/collision prefix. At
+`494f6b34f`, strict algo/struct pass3.369/4.220s; one PHP-error source comparison
+and68 supplied conditions plus6 setup clauses pass (17.433s). The genuine C-to-E
+failure preserves C's live cache, retires E's owner and rejects a fresh E method,
+forged call scope/prefix/history and live resurrection. Raw evidence is under
+`.tools/trait-fcc-later-birth-current19/.tools/`: `method-runtime-ekmhst3r`,
+`closure-call-protocol-7846p_2q`, `trait266-object-algo-reoln7u9` and
+`trait266-object-struct-s86zgxqr`. A missing watched runner symlink stopped the
+first state invocation before numeric execution; that infrastructure failure is
+retained without semantic credit.
+These unchanged cuts bridge to the reviewed328 composition, preserving bound
+callback RAW/INPUT, caller ownership and source fields.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
-remains open, as do live
-adaptation lookup, differing-owner later births and executable failed-target reuse.
+remains open, as do broader differing-owner later births and
+executable failed-target reuse.
 Paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,

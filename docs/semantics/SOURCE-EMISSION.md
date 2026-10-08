@@ -107,7 +107,7 @@ resume retains later handler name/target writes. The noarg-call control remains
 327-positive and330-negative. Actual310 passes strict compilation; independently
 reviewed Fiber/collector/constructor parent paths are disjoint here. Earlier cuts
 and relocations gain no renewed credit. Module339 below adds undefined ordinary
-name CVs; conversion callbacks and wider producers remain required.
+name CVs;343 below adds ordinary Stringable CVs. Wider producers remain required.
 
 Module333 adds a resolved named user call with one positional ordinary CV
 argument as the computed name. INIT6 precedes argument lookup; DO_CALL retains6
@@ -152,6 +152,21 @@ missing/unset cells and include retirement before FETCH6/property8. The original
 fixture failures and diagnostic vectors earn zero affected credit. Actual324 over
 `6b51f811c` passes strict compilation at `e3d6a7c85`; independent review finds the
 introduced bound-Fiber, Generator, collector and array guards compatible without
-renewing earlier cuts. User Stringable
-and warning-producing name conversions keep their existing Unsupported boundaries;
-wider names, emissions and providers remain required.
+renewing earlier cuts.343 below adds ordinary Stringable name CVs. Warning-producing
+conversions and wider names, emissions and providers remain required.
+
+Module343 converts Stringable ordinary name CVs through a source-authenticated
+implicit call. STRINGIFY_RESULT owns the cast receiver; the new result/ready
+metadata does not. Captured returned bytes survive receiver destruction before
+lookup of the live caller target. A returning target-warning handler still
+resumes327's fixed null. When receiver retirement throws after a successful cast,
+FETCH_R performs target lookup before propagating that exception: the default
+missing-target warning remains observable, while an eligible registered handler
+and its fallback are suppressed. The [ledger](../../coverage/semantics/source-stringable-name-review.json)
+retains private325 strict compilation, eight exact originals and134 independent
+premises for selected calls, source/frame integrity, alias-delayed destruction,
+live targets and pending diagnostics. Fixture phase corrections retain all failed
+cuts with zero affected credit. Actual329 passes strict compilation with reviewed
+bound-Fiber/trait/collector compatibility, without renewing the private cuts.
+Special targets (`this`/auto-globals), warning-producing conversions and wider
+computed producers remain explicit dependencies.

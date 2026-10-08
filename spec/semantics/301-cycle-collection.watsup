@@ -118,10 +118,14 @@ dec $gc_worker_state_valid(pstate) : bool
 dec $gc_slot_node(pgcslot) : pnode?
 dec $gc_bare_keep(pstate) : pnode*
 dec $gc_transition_prepare(pstate) : pstate
+dec $generator_request_transition_prepare(pstate) : pstate
+dec $generator_request_retired_keep(pstate) : pnode*
 def $gc_slot_node(GC_ROOT pnode) = (pnode)
 def $gc_slot_node(pgcslot) = eps -- otherwise
 def $gc_bare_keep(S) = eps -- otherwise
 def $gc_transition_prepare(S) = S -- otherwise
+def $generator_request_transition_prepare(S) = S -- otherwise
+def $generator_request_retired_keep(S) = eps -- otherwise
 def $gc_parked_call_count(S, pgccall) = 0 -- otherwise
 def $gc_parked_plan_count(S, pgcplan) = 0 -- otherwise
 def $gc_snapshot_fresh(S, pgcplan) = $gc_fresh_tasks(S.TODO, pgcplan) -- otherwise
@@ -456,7 +460,7 @@ def $gc_consumed_decrements(S, S_next, pnode_decrements*) = $destruction_node_de
 def $gc_consumed_decrements(S, S_next, pnode*) = pnode* -- otherwise
 
 def $gc_transition(S, S_next) = $gc_transition_done(S, S_done, pgc_new)
-  -- if S_done = $prune_allocations($gc_transition_prepare(S_next))
+  -- if S_done = $prune_allocations($generator_request_transition_prepare($gc_transition_prepare(S_next)))
   -- if pgc_live = $gc_buffer_remove_nodes(S_done.GC, $destruction_nodes_delete(S.ALLOCATIONS, S_done.ALLOCATIONS))
   -- if pnode_removed* = $eager_removed($eager_owner_order(S), $machine_roots(S_done) ++ $eager_edge_nodes($heap_graph(S_done).EDGES))
   -- if pgc_new = $gc_decrements(S_done, pgc_live, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*))
@@ -751,9 +755,9 @@ def $gc_finish(S, pgccall) = S[.GC.ACTIVE = eps][.GC.PLAN = eps][.TODO = (THROW_
 
 ;; Bare GC_DELREF after dtor_obj differs from OBJ_RELEASE. Keep the exact
 ;; processed-prefix closure allocated until retrace without adding heap roots.
-def $gc_keep(S) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, $heap_graph(S).EDGES) ++ $gc_bare_keep(S)
+def $gc_keep(S) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, $heap_graph(S).EDGES) ++ $gc_bare_keep(S) ++ $generator_request_retired_keep(S)
   -- if S.GC.PLAN = (pgcplan)
-def $gc_keep(S) = $gc_bare_keep(S) -- otherwise
+def $gc_keep(S) = $gc_bare_keep(S) ++ $generator_request_retired_keep(S) -- otherwise
 def $gc_retained(H, eps, pnode_keep*) = eps
 def $gc_retained(H, pnode :: pnode_tail*, pnode_keep*) = pnode :: $gc_retained(H, pnode_tail*, pnode_keep*)
   -- if pnode <- pnode_keep* \/ $($heap_owners(H, pnode) > 0)
@@ -765,6 +769,7 @@ def $gc_prune_graph(H, pnode_keep*) = $gc_prune_graph(H[.NODES = pnode_live*], p
   -- if pnode_live* = $gc_retained(H, H.NODES, pnode_keep*)
   -- if pnode_live* =/= H.NODES
 def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
+def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
 dec $gc_zero_keep(hgraph, pnode*, pnode*) : pnode*
 dec $gc_zero_owners(hgraph, pnode, pnode*, pnode*, nat) : pnode*
 def $gc_zero(S, H, eps) = eps

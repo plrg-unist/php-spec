@@ -123,6 +123,7 @@ syntax pidentityread = { SITE porigin, OP pbin, LEFT nat*, LEFTLINE int, RIGHT n
 syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIGIN porigin?, RAW parray?, SENT poperand?, RECEIVED poperand? }
 syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
 syntax pnameread = { SITE porigin, NAME nat*, LINE int }
+syntax pnamestring = { READ pnameread, OBJECT nat, TAIL ptask* }
 syntax pclosurescope, pclosurebinding
 ;; The selecting callback is borrowed history, not a retained queue owner.
 syntax pcloneproducer = { SITE porigin, NAME ptbytes?, CLOSURE nat? }
@@ -160,7 +161,7 @@ syntax pdestructionfatal = {FRAME pframe, FRAMES pframe*, GLOBAL psymboltable, V
 syntax pgctemporary = {OPERAND poperand, PENDING bool}
 syntax pdestructionoperation = {VALUE poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, COMPLETION pcompletion, PENDING nat?, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, SOURCE ptask, CLEANUP pdestructioncleanup?, NOGC pgctemporary?}
 syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool, SITE porigin?, LINE int, RELEASE pdestructionrelease?, FRAME pdestructionframe?, OPERATION pdestructionoperation?, PENDING nat?}
-syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*, OPERATIONS pdestructionoperation*, CLEANUPS pdestructioncleanup*, ABANDONED pdestructioncleanup*, PROPCACHE (porigin, pobject)*}
+syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, RETIRED (nat, nat)*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*, OPERATIONS pdestructionoperation*, CLEANUPS pdestructioncleanup*, ABANDONED pdestructioncleanup*, PROPCACHE (porigin, pobject)*}
 syntax hedge
 syntax hgraph
 syntax pgcvisit = GC_VISIT pnode bool
@@ -236,6 +237,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | CALLABLE_SCALAR_RESULT ptask poperand pvalue int
   | CALLABLE_STRING_RESULT ptask poperand nat nat int
   | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
+  | GENERATOR_REQUEST_RESUME pgenclose
   | DESTRUCTOR_OPERATION_EXIT pdestructionoperation
   | ACCESS_REFERENCE_VALUE_RESULT porigin poperand int
   | ACCESS_REFERENCE_VALUE_RELEASE paccess poperand
@@ -251,6 +253,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | EXCEPTION_HANDLER_INVOKE pexceptioncall | EXCEPTION_HANDLER_ENTER pexceptioncall | EXCEPTION_HANDLER_RESULT pexceptioncall
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
   | GLOBAL_READ_RESULT pglobalread | NAME_READ_RESULT pnameread | NAME_CV_READ_RESULT pnameread
+  | NAME_STRING_RESULT pnamestring | NAME_STRING_READY pnamestring preqbytes | NAME_STRING_PENDING pnamestring preqbytes nat
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_APPEND int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | CONTAINER_WRITE_RESULT pcontainerwrite
@@ -361,7 +364,7 @@ syntax pfiber = { READY bool, CALL pconfigcall?, RAW pvalue, TARGET pcalltarget?
 syntax pfibercallable = { QUERY papiquery, METHOD porigin, NAME ptbytes, STATIC bool, BIRTH pdynamicnew?, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer? }
 syntax pgeneratorphase = GENERATOR_FRESH | GENERATOR_PAUSED | GENERATOR_RUNNING | GENERATOR_CLOSED | GENERATOR_DELEGATING | GENERATOR_CLOSING
 syntax pgenclosestage = CLOSE_QUEUED | CLOSE_BODY porigin | CLOSE_SCANNING | CLOSE_FLOW | CLOSE_FINISHED
-syntax pgenclose = { OBJECT nat, SITE porigin, CONTEXT pcallcontext, CALLER pcallcontext?, CALLSITE porigin?, STAGE pgenclosestage, NEXT nat, FRAME pframe?, PENDING nat? }
+syntax pgenclose = { OBJECT nat, SITE porigin, CONTEXT pcallcontext, CALLER pcallcontext?, CALLSITE porigin?, STAGE pgenclosestage, NEXT nat, FRAME pframe?, PENDING nat?, STORE nat? }
 syntax pgenrelease = { JOBS pdestructionjob*, VALUE poperand, BASE pbase, PENDING nat?, COMPLETION pcompletion }
 syntax pgeneratorborrowed = { VALUE poperand?, KEY pvalue? }
 syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom? }

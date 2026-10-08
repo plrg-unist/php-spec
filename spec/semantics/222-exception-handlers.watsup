@@ -187,7 +187,9 @@ def $throwable_marker(ERROR_HANDLER_RESULT perrorcall) = true -- if $exception_w
 def $exception_warning_resume(EXCEPTION_HANDLER_ENTER pexceptioncall) = true
 def $exception_warning_resume(ptask) = false -- otherwise
 def $exception_terminal_tail(S, eps) = true
-def $exception_terminal_tail(S, (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask*) = $exception_result_valid(S, pexceptioncall)
+dec $generator_request_handler_abrupt(pstate) : bool
+def $generator_request_handler_abrupt(S) = false -- otherwise
+def $exception_terminal_tail(S, (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask*) = ($exception_result_valid(S, pexceptioncall) /\ ~$generator_request_handler_abrupt(S))
 def $exception_terminal_tail(S, (ERROR_HANDLER_RESULT perrorcall) :: ptask*) = ($exception_warning_resume(perrorcall.RESUME) /\ $error_entered_call_valid(S, perrorcall))
 def $exception_terminal_tail(S, ptask*) = false -- otherwise
 def $exception_dispatch_ready(S) = true
