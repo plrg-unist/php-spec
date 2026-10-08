@@ -79,8 +79,24 @@ records 19 distinct normal originals and 692 physical strict-SL premises across
 separate cuts. 85 premises assert required abrupt controls and grant no observation
 agreement. The actual330 composition over `7a0f8044f` passes strict compilation
 at `1399d8a7e`; source/state cuts retain their own inputs. The original zero-owner
-observer mismatch and earlier fixture/source failures remain zero. Fresh/unstarted store close, delegating request close and
-wider terminal/free-storage behavior remain required; no full lifecycle claim.
+observer mismatch and earlier fixture/source failures remain zero.
+
+Module 349 closes fresh frames during the real store pass without entering body
+or finally. It releases bound cells and receivers in order, transfers the single
+Closure owner into closed storage, and retains the actual store pin through CV
+destructors. A normal exception handler runs before later CV release; admission
+preserves the existing root destructor and store continuations. Ordinary closed
+storage releases the Closure before value/reference, key and return caches,
+without changing heap graph traversal. The [fresh and storage ledger](../../coverage/semantics/generator-fresh-store-review.json)
+keeps original mismatches and separate source/state cuts.
+The composition with 337 modules over `ed1c8c6a2` passes strict compilation at
+`5dc524df4`. Its fresh typed-slot interaction retains the constraint through the
+earlier child destructor and detaches it at the genuine slot release: one new
+normal source and 79 strict premises, without renewing the private ten/584 cuts.
+
+Delegating request close, abrupt terminal cleanup and a real free-storage pin
+with late WeakReference notification remain required. In particular, cache reads
+during storage destructors are not covered; no full lifecycle claim.
 
 Pinned authority is `vendor/php-src/Zend/zend_generators.c`, especially
 `zend_generator_dtor_storage` and `zend_generator_free_storage`, plus authored

@@ -39,6 +39,7 @@ dec $generator_close_captures_valid(pstate, pnode*) : bool
 dec $generator_close_jobs_valid(pstate, pdestructionjob*) : bool
 dec $generator_close_enter_valid(pstate, pgenclose) : bool
 dec $generator_close_done_valid(pstate, pgenclose) : bool
+dec $generator_close_done_site(pstate, pgenerator, pgenclose) : bool
 dec $generator_close_frame_valid(pstate, pgenerator, pframe) : bool
 dec $generator_close_drop_claim(ptask*, nat, porigin) : ptask*
 dec $generator_close_claim(ptask) : nat*
@@ -124,7 +125,8 @@ def $generator_request_prune_ready(S) = false -- otherwise
 ;; Eager slot decrements enter this loop before the generic free_obj walk.
 ;; The outer release certificate remains borrowed, and its remaining slots
 ;; retain their real owners while the Generator runs its pending finalizers.
-def $generator_destructor_pending(S, pnode) = $generator_close_node(S, pnode)
+def $generator_destructor_pending(S, pnode) = true
+  -- if $generator_close_node(S, pnode)
 rule PhpStep/generator-destructor-release: S ~> $generator_close_begin_pending(S_unheld, [DESTRUCTION_VALUE pnode], $destructor_selected_pending(S_unheld, $destructor_selected_frame(S_unheld)))
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*
   -- if $destructor_release_valid(S, pdestructionrelease)
@@ -703,6 +705,7 @@ def $generator_close_enter_valid(S, pgenclose) = false -- otherwise
 def $generator_close_owner_valid(S, pgenclose) = (pgenclose.STORE = eps /\ $heap_owners($heap_graph(S)[.ROOTS = $destruction_node_delete($machine_roots(S), HOBJECT pgenclose.OBJECT)], HOBJECT pgenclose.OBJECT) = 0)
   -- if pgenclose.STORE = eps
 def $generator_close_request_valid(S, pgenclose) = true -- if pgenclose.STORE = eps
+def $generator_close_done_site(S, pgenerator, pgenclose) = $generator_close_site(S, pgenerator, pgenclose.SITE) -- otherwise
 def $generator_close_done_valid(S, pgenclose) = true
   -- if $generator_object(S, pgenclose.OBJECT) /\ (HOBJECT pgenclose.OBJECT <- S.ALLOCATIONS)
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
@@ -713,7 +716,7 @@ def $generator_close_done_valid(S, pgenclose) = true
   -- if $access_generator_close_valid(S, pgenclose)
   -- if (pgenerator.PHASE = GENERATOR_RUNNING /\ pgenclose.STAGE =/= CLOSE_QUEUED /\ pgenclose.STAGE =/= CLOSE_FINISHED) \/ (pgenerator.PHASE = GENERATOR_CLOSED /\ pgenclose.STAGE = CLOSE_FINISHED)
   -- if $generator_from_input_of(pgenerator.DELEGATE) = eps
-  -- if $generator_close_site(S, pgenerator, pgenclose.SITE)
+  -- if $generator_close_done_site(S, pgenerator, pgenclose)
   -- if $generator_close_pending_valid(S, pgenclose.PENDING)
   -- if $generator_close_request_valid(S, pgenclose)
 def $generator_close_done_valid(S, pgenclose) = false -- otherwise

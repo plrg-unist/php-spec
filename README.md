@@ -227,8 +227,11 @@ and natural return/unwind. [Last-owner close](docs/semantics/GENERATOR-FORCE-CLO
 runs pending finally bodies with real scopes, graph links and cached owners.
 Request 340 adds reverse-global and ascending-store close, handler-before-cache
 exception delivery and borrowed zero-owner store buckets. Genuine weak
-reacquisition restores ordinary release; fresh store and abrupt terminal cleanup
-remain required. [Retained cuts](coverage/semantics/generator-request-finally-review.json).
+reacquisition restores ordinary release. [Fresh store teardown349](coverage/semantics/generator-fresh-store-review.json)
+releases bound frames without entering body/finally, preserves immediate CV-handler
+ordering and releases a closed Generator's Closure before its caches. Free-storage weak liveness,
+delegating request close and abrupt terminal cleanup remain required.
+[Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
 including eager argument and frame cleanup with pending exception chains.
