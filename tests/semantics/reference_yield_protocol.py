@@ -21,6 +21,7 @@ WATCHED = driver.source.WATCHED + [
     'spec/semantics/99-reference-returns.watsup',
     'spec/semantics/118-arrows.watsup',
     'spec/semantics/207-error-handler-runtime.watsup',
+    'spec/semantics/243-file-warning-continuations.watsup',
     'spec/semantics/270-eager-destructors.watsup',
     'spec/semantics/296-weak-references.watsup',
     'spec/semantics/311-arrow-generators.watsup',
@@ -271,6 +272,10 @@ $generator_borrowed_readable(S_warning,n_generator,false)
 $generator_borrowed_readable(S_warning,n_generator,true)
 $generator_cached_value(S_warning,n_generator,false) = PINT 1
 $generator_cached_value(S_warning,n_generator,true) = PINT 8
+~$eval_wrapped_marker(ERROR_HANDLER_INVOKE perrorcall)
+~$eval_wrapped_marker(ERROR_HANDLER_RESULT perrorcall)
+$eval_wrapped_marker(ERROR_HANDLER_INVOKE perrorcall[.RESUME = FILE_WARNING_PHASE 0 0])
+$eval_wrapped_marker(ERROR_HANDLER_RESULT perrorcall[.RESUME = FILE_WARNING_PHASE 0 0])
 '''.strip().splitlines()
         borrow(checks, 'S_warning', 'pgenerator_warning', 'n_generator', '(KNOWN (PINT 1))', 'PINT 8')
         reject(checks, 'value_mixed', '$generator_set(S_warning,n_generator,pgenerator_warning[.VALUE = (PINT 1)])', 'S_warning')

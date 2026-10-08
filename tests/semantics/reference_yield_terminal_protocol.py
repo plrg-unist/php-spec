@@ -140,10 +140,10 @@ $call_task_valid(S_frame,RETURN_NULL)
                '~$call_descriptors_valid(S_bad_site)',
                '$call_entry_check(S_bad_site).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"']
     if name == 'delayed-cv-terminal-reference-cache':
-        checks += [r'pgenerator_request.VALUE = eps /\ pgenerator_request.REFCELL = (n_cell)',
+        checks += ['$lookup(S_frame.ENV,$ptascii("next")) = (n_cell)',
+                   r'pgenerator_request.VALUE = eps /\ pgenerator_request.REFCELL = (n_cell)',
                    'pgenerator_request.KEY = (PINT 1)',
-                   'S_request.STORE[n_cell] = DEFINED (PINT 2)',
-                   '$lookup(S_frame.ENV,$ptascii("next")) = (n_cell)']
+                   'S_request.STORE[n_cell] = DEFINED (PINT 2)']
     else:
         checks += [r'pgenerator_request.VALUE = (PINT 5) /\ pgenerator_request.REFCELL = eps',
                    'pgenerator_request.KEY = (PNULL)']
