@@ -210,6 +210,12 @@ self-CV fast path, and retains evaluated temporary/reference operands through
 the final store. Thirteen exact originals cover live rebinding, aliases, copied
 expression results and normal or throwing operand cleanup. The249 independent
 reached premises and current-composition gate retain separate records.
+[Named static-property Stringable compounds356](coverage/semantics/static-compound-string-review.json)
+preserve the initially selected plain slot or reference cell across callbacks,
+including typed final results and PHP's retained reference-type history. Twelve
+exact originals and368 reached premises cover live RHS reads, inherited slots,
+alias rebinding, reference history, temporary cleanup and access-error priority.
+The actual344 compiler/init gate retains its separate accepted record.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -766,7 +772,8 @@ native exceptions. Stringable `.=` retains the selected destination and restores
 the writer scope after callbacks. Private34 normal/eight compiler/350 reached
 checks retain their [cuts](coverage/semantics/instance-set-access-review.json);
 one actual Fiber source preserves the captured property across suspension.
-Readonly follow-ons/hooks, wider borrowed destination lifetime, static Stringable compounds
+Readonly follow-ons/hooks, wider borrowed destination lifetime and static
+Stringable compounds with wider selectors
 and broader temporary-return/callable/typed-reference consumers remain open.
 The ordinary [readonly slice294](docs/semantics/SOURCE-READONLY.md) adds first
 initialization, initialized write priority, detached object references and genuine
