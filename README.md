@@ -778,9 +778,14 @@ using class is published, with an exact collision receipt and cache owner. Faile
 imports retain dead receipts while retiring live owners; fatal trait links reserve
 their name before later binding, without publishing the failed class. First-target
 method FCCs also retain source-checked dead receipts after failed composition,
-reconstructing the exact trait method-copy plan and declaration prefix. Focused
+reconstructing the exact trait method-copy plan and declaration prefix. Immutable
+parameter TYPE views retain the callable's birth scope and canonical code, defaults,
+return contract and statics. Focused
 source2 and87 supplied strict-SL conditions cover retirement and equal lexical/called
-FCC scope, with12 setup clauses separate. Parameter-view full-source constructor,
+FCC scope, with12 setup clauses separate. The current322 composition passes strict
+compilation and a genuine active default/TYPE checkpoint with26 supplied conditions
+plus6 setup clauses; that checkpoint ends at the old-U constructor Error.
+Parameter-view full-source constructor,
 handler and variadic cases, live adaptations, later births reusing a different
 first target and executable reuse of a failed target remain open. Wider
 initializer contexts, held/open failed links and readonly

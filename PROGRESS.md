@@ -1461,8 +1461,16 @@ with12 setup clauses separate. Raw evidence is under the private
 `.tools/trait-selected-constructor-current/.tools/`: `closure-call-protocol-y5x1pwdf`,
 `closure-call-protocol-v81oh3gj`, `method-runtime-87l_y5f5` and `method-runtime-a2gromik`.
 The first failed source's recorder label is corrected from static rejection to
-runtime PHP error; its already completed duplicate adds no coverage. Current
-algo/struct gates pass at3.369/4.370s. Broader307 parameter-view full-source validation,
+runtime PHP error; its already completed duplicate adds no coverage. These focused
+cuts bridge to the reviewed current composition without renewal. Current322 at
+`4c03c177d` over `f89fbee74` passes strict algo/struct at3.369/4.270s and a genuine
+active DEFAULTRECEIVE/TYPE checkpoint with26 supplied conditions plus6 setup clauses
+at36.874s. It preserves canonical code/default/return/static identity and rejects a
+forged receive owner before the actual old-U constructor Error; no whole-source or
+unwind coverage is claimed. Current raw evidence is under
+`.tools/trait-fcc-parameters-composed-19/.tools/`: `trait266-object-algo-2riubhjo`,
+`trait266-object-struct-k27i1h7p` and `closure-call-protocol-yveph8_d`.
+Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do live
 adaptation lookup, differing-owner later births and executable failed-target reuse.
