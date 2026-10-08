@@ -1,14 +1,15 @@
 {
   "target": "PHP 8.5.10 CLI NTS64 profile30719",
-  "status": "partial; independently reviewed private cuts and actual318 composition accepted",
+  "status": "partial; independently reviewed prior-array retirement extension and actual321 join accepted",
   "semantic_cut": "3429f29ad",
   "tested_cut": "87f9b399a",
   "modules": 298,
-  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV object cleanup keeps its old raw value readable until atomic selected-reference installation on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal.",
+  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV object cleanup keeps its old raw value readable until atomic selected-reference installation on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw.",
   "admission": "Source AST, runtime line, iterator/cursor and selected physical address are checked. RELEASE recaptures the live selected slot; entered COMMIT may survive retired receiver storage while its selected HCELL remains real. Fresh false HOBJECT C-owner and selected-cell/source forgeries fail public admission. This bounded source/current-address check is not a historical reachability proof.",
   "engine": [
     "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_RW, ZEND_FE_FETCH_RW; selected Bucket promotion/ADDREF precedes previous target-CV destruction; receiver wrapper is dereferenced on each fetch",
-    "vendor/php-src/Zend/zend_hash.c: zend_hash_iterator_pos; physical cursor changes table on payload replacement"
+    "vendor/php-src/Zend/zend_hash.c: zend_hash_iterator_pos; physical cursor changes table on payload replacement",
+    "vendor/php-src/Zend/zend_hash.c: zend_array_destroy; ordered physical child zval destruction continues with a pending exception; Zend/zend_objects.c: zend_objects_destroy_object preserves/chains pending exceptions"
   ],
   "execution": "Project-local executables copied from accepted318 composition; identities retained in raw init records. Production SL_mode and numeric --sl; no fresh rebuild claim. LC_ALL=C/TZ=UTC; original file/cwd/profile, hashes, streams and commands retained per report.",
   "caps": "native30/modelCLI60/process90/numericSL120/outer420/jobs1 serial",
@@ -93,7 +94,7 @@
       "mutation of released foreach CV (same-value write, unset, promotion and rebind)",
       "foreach reference previous CV pointer lifetime (callback-capable array)"
     ],
-    "remaining": "Wider callback-capable container/wrapper retirement, binding-time exit/shutdown, nonordinary replacement objects and expired borrowed notice buckets remain required. Earlier318 handler-exit/duplicate-cast/expired-RHS boundaries retain their own cuts."
+    "remaining": "Released-CV mutation, raw dying-array reads, callback-capable previous reference wrappers and internal Generator/Fiber descendants, binding-time exit/shutdown, nonordinary replacement objects and expired borrowed notice buckets remain required. Earlier318 boundaries retain their own cuts."
   },
   "zero_credit": {
     "prior_cv_order": "duplicate-reference-binding-observation-counterexample1-attempt1: native old versus model new, bothnormal0; corrected by staged binding",
@@ -142,5 +143,70 @@
       "meaning": "Genuine GC_TRACE in the prior CV destructor; saved main COMMIT solely owns the selected reference while OLD remains raw-readable with a masked edge. VM save/restore, wrong-line refusal, zero/one-step resume and atomic final installation."
     },
     "review": "Independent properties_review_19 accepts the additive331 task/object/FCC schema seam, bytes correction and fresh source/state scope. Earlier24 source and288/491 state cuts retain their own identities; no renewal."
+  },
+  "prior_array": {
+    "parent": "6fac6d270",
+    "semantic_cut": "0efde17d8",
+    "modules": 318,
+    "raw_root": ".tools/properties-foreach-container19/.tools/",
+    "scope": "Plain prior-CV arrays with ordinary destructor-producing descendants. The existing release queue retires the array arena before callbacks; raw OLD stays PARRAY with its ownership edge masked. No dying payload dereference or internal Generator/Fiber close claim.",
+    "compiler": {
+      "cut": "ccafc5d65",
+      "raw": "container-current318-sl-init1-attempt1/report.json",
+      "passed": true,
+      "application_evaluations": 0,
+      "elapsed_seconds": 3.891
+    },
+    "sources": {
+      "cut": "ccafc5d65",
+      "raw": "dynamic-property-warning-source-hsjg69n2/report.json",
+      "normal_agreements": 6,
+      "selection": [
+        "review-container-mutate-selected19",
+        "review-container-nested19",
+        "review-container-shared-outer19",
+        "review-container-shared-reference19",
+        "review-container-two-throws19",
+        "review-container-first-throw19"
+      ],
+      "meaning": "Exact original native/public normal0 streams: selected x mutation, nested order, outer-array/shared-reference survivors, B/previous=A double throw and first-child throw with selected x deletion."
+    },
+    "reached": {
+      "cut": "368bed28a",
+      "groups": {
+        "container": 139,
+        "container-throw": 145
+      },
+      "raw": [
+        "duplicate-property-reference-yhzsjxxd/report.json",
+        "duplicate-property-reference-o6x6vs_n/report.json"
+      ],
+      "meaning": "Setup-inclusive premises; authentic A/B callbacks, future-child and entered-child owners, raw OLD mask, selected-cell sole root after x deletion, read/quiet/location/unset/snapshot refusal, wrapper/arena bounds, zero-budget and atomic bind before pending exception propagation. Native/model evaluations0."
+    },
+    "unsupported": {
+      "cut": "91303af45",
+      "raw": "dynamic-property-warning-boundary-7gc_k8df/report.json",
+      "case": "duplicate-reference-foreach-prior-callback-array18",
+      "reason": "registered builtin call",
+      "agreement_claim": false,
+      "meaning": "Original is_array bytes preserved. Builtin dispatch refuses before the GLOBALS argument fetch."
+    },
+    "preserved_failures": [
+      "duplicate-property-reference-j6ptnp_k: fixture parser stopped before evaluation on unparenthesized arena length; only affected state groups rerun after368bed28a.",
+      "dynamic-property-warning-boundary-ct2sn4rw: expected-reason mismatch; actual registered builtin call retained; only affected control rerun after91303af45."
+    ],
+    "review": "properties_review_19 independently accepts engine order, bounded admission/read guards, six frozen source expectations, fixture-only correction and source6/state284 reports. Historical24/288/491 and source1/state92 cuts remain separate, without renewal.",
+    "composition": {
+      "parent": "f89fbee74",
+      "cut": "be7edc9e2",
+      "modules": 321,
+      "compiler": {
+        "passed": true,
+        "raw": "container-current321-sl-init1-attempt1/report.json",
+        "application_evaluations": 0,
+        "elapsed_seconds": 4.006
+      },
+      "review": "Independent exact30/270/39 seam accepted. GEN REF/BORROWED tasks remain additive; generator-only value guard leaves FOREACH_BIND_RELEASE on the same default; retired-edge split preserves mask ownership. Prior source6/state284 cuts retain their identities."
+    }
   }
 }

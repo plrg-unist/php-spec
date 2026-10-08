@@ -18,8 +18,12 @@ def $find_name(S, n_name*, z, b) = $throw_scalar(S, "Error", [67,97,110,110,111,
   -- if $this_name(n_name*)
 def $find_name(S, n_name*, z, b) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if $environment_blocked(S, n_name*) /\ ~$this_name(n_name*)
+def $find_name(S, n_name*, z, b) = S[.COMPLETION = UNSUPPORTED "released foreach container payload read"]
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $foreach_released_container_name(S, n_name*)
 def $find_name(S, n_name*, z, b) = S[.LOCATION = plocation][.RESULT = KNOWN pvalue]
   -- if ~$environment_blocked(S, n_name*)
+  -- if ~$foreach_released_container_name(S, n_name*)
   -- if plocation = $find_location(S, n_name*)
   -- if $location_slot(S, plocation) = DEFINED pvalue
 def $find_name(S, n_name*, z, false) = S[.LOCATION = plocation][.RESULT = KNOWN PNULL]

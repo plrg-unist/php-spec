@@ -19,6 +19,8 @@ CASES = {
     'notice-owner':'reference-foreach-invalid-key-unset-receiver-key-observer18',
     'scalar-warning':'reference-foreach-scalar-handler-retirement18',
     'binding-gc':'duplicate-reference-foreach-binding-gc18',
+    'container':'review-container-mutate-selected19',
+    'container-throw':'review-container-first-throw19',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -101,6 +103,23 @@ def $dupref_phase(S, 12) = true
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
+def $dupref_phase(S, 13) = true
+  -- if S.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_tail*
+  -- if pforeachbind.VALUE = PARRAY n_array
+def $dupref_phase(S, 14) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
+  -- if pforeachbind.VALUE = PARRAY n_array
+  -- if $dupref_output(S.EVENTS) = $ptascii("A|")
+def $dupref_phase(S, 15) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
+  -- if pforeachbind.VALUE = PARRAY n_array
+  -- if $dupref_output(S.EVENTS) = $ptascii("A|B|")
 def $dupref_phase(S, n) = false -- otherwise
 dec $dupref_seek(pstate, nat, nat) : pstate
 def $dupref_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -496,6 +515,122 @@ def binding_gc_assertions(initial, expected):
         '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
 
 
+def container_assertions(initial, expected, pending):
+    clauses = ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_release', 13),
+        'S_release.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_release_tail*',
+        'pforeachbind.VALUE = PARRAY n_array',
+        'pforeachbind.NAME = $ptascii("value")', 'pforeachbind.KEY = $ptascii("x")',
+        'S_release.STORE[pforeachbind.OLD] = DEFINED (PARRAY n_array)',
+        '~(pforeachbind.OLD <- S_release.REFCELLS)',
+        '$node_children(S_release, HCELL pforeachbind.OLD) = [HARRAY n_array]',
+        '(HARRAY n_array) <- S_release.ALLOCATIONS',
+        '$heap_owners($heap_graph(S_release), HARRAY n_array) = 1',
+        'S_release.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_first)), ENTRY (KINT 1) (DIRECT (POBJECT n_second))]',
+        'n_first =/= n_second',
+        '$heap_owners($heap_graph(S_release), HOBJECT n_first) = 1',
+        '$heap_owners($heap_graph(S_release), HOBJECT n_second) = 1',
+        'S_release.STORE[pforeachbind.NEW] = DEFINED (PINT 2)',
+        '$heap_owners($heap_graph(S_release), HCELL pforeachbind.NEW) = 2',
+        '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)',
+        '$call_task_valid(S_release, FOREACH_BIND_RELEASE pforeachbind)',
+        'S_wrapper = S_release[.REFCELLS = pforeachbind.OLD :: S_release.REFCELLS]',
+        '$heap_valid($heap_graph(S_wrapper))',
+        '$foreach_bind_capture(S_wrapper, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
+        '~$call_task_valid(S_wrapper, FOREACH_BIND_RELEASE pforeachbind)',
+        'S_zero = $drive(S_release, 0)', 'S_zero.COMPLETION = BUDGET',
+        'S_zero[.COMPLETION = NORMAL] = S_release',
+        *seek('S_release', 'S_first', 14),
+        'S_first.CURRENT = (pcallcontext_first)',
+        '$destructor_context_call(pcallcontext_first, S_first.CURRENT, S_first.FRAMES) = (pdestructorcall_first)',
+        'pdestructorcall_first.OBJECT = n_first',
+        'pdestructorcall_first.OPERATION = (pdestructionoperation_first)',
+        'pdestructionoperation_first.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        'pdestructorcall_first.PENDING = eps',
+        'n_first <- S_first.DESTRUCTION.CALLED',
+        '~(n_second <- S_first.DESTRUCTION.CALLED)',
+        '$heap_owners($heap_graph(S_first), HOBJECT n_first) = 2',
+        '$heap_owners($heap_graph(S_first), HOBJECT n_second) = 1',
+        '~((HARRAY n_array) <- S_first.ALLOCATIONS)',
+        '$heap_owners($heap_graph(S_first), HARRAY n_array) = 0',
+        'S_first.STORE[pforeachbind.OLD] = DEFINED (PARRAY n_array)',
+        '$foreach_released_cell(S_first, pforeachbind.OLD)',
+        '$foreach_released_container_cell(S_first, pforeachbind.OLD)',
+        '$node_children(S_first, HCELL pforeachbind.OLD) = eps',
+        'S_first.STORE[pforeachbind.NEW] = DEFINED (PINT 2)',
+        '$heap_owners($heap_graph(S_first), HCELL pforeachbind.NEW) = 2',
+        '$foreach_bind_scope(S_first, pforeachbind, S_first.FRAMES) = (S_caller)',
+        '$lookup(S_caller.ENV, pforeachbind.NAME) = (pforeachbind.OLD)',
+        '$foreach_bind_body_valid(S_caller, pforeachbind)',
+        '$foreach_bind_address_valid(S_caller, pforeachbind)',
+        '~$foreach_bind_payload_kind(S_caller, PARRAY (|S_caller.ARRAYS|))']
+    for label, expression in [
+            ('read', '$read_name(S_caller, pforeachbind.NAME, pforeachbind.LINE)'),
+            ('global_read', '$global_read_name(S_first, pforeachbind.NAME, pforeachbind.LINE)'),
+            ('quiet', '$quiet_name(S_caller, pforeachbind.NAME)'),
+            ('global_quiet', '$global_quiet_name(S_first, pforeachbind.NAME)'),
+            ('location', '$location_name(S_caller, pforeachbind.NAME)'),
+            ('find', '$find_name(S_caller, pforeachbind.NAME, pforeachbind.LINE, false)'),
+            ('snapshot', '$globals_snapshot(S_first)')]:
+        clauses += [f'S_guard_{label} = '+expression,
+            f'S_guard_{label}.COMPLETION = UNSUPPORTED "released foreach container payload read"',
+            f'S_guard_{label}.STORE = S_first.STORE /\\ S_guard_{label}.ALLOCATIONS = S_first.ALLOCATIONS']
+    clauses += [*seek('S_first', 'S_second', 15),
+        'S_second.CURRENT = (pcallcontext_second)',
+        '$destructor_context_call(pcallcontext_second, S_second.CURRENT, S_second.FRAMES) = (pdestructorcall_second)',
+        'pdestructorcall_second.OBJECT = n_second',
+        'pdestructorcall_second.OPERATION = (pdestructionoperation_second)',
+        'pdestructionoperation_second.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        '~((HOBJECT n_first) <- S_second.ALLOCATIONS)',
+        '$heap_owners($heap_graph(S_second), HOBJECT n_first) = 0',
+        '$heap_owners($heap_graph(S_second), HOBJECT n_second) = 2',
+        'S_second.STORE[pforeachbind.OLD] = DEFINED (PARRAY n_array)',
+        '$node_children(S_second, HCELL pforeachbind.OLD) = eps',
+        'S_second.STORE[pforeachbind.NEW] = DEFINED (PINT 2)',
+        '$heap_owners($heap_graph(S_second), HCELL pforeachbind.NEW) = '+('1' if pending else '2')]
+    if pending:
+        clauses += ['pdestructorcall_second.PENDING = (n_pending)',
+            'pdestructionoperation_second.PENDING = (n_pending)',
+            '$throwable_live(S_second, n_pending)',
+            '$heap_owners($heap_graph(S_second), HOBJECT n_pending) = 1',
+            '$objectprops_at(S_second.OBJECTPROPS, pforeachbind.OBJECT) = (ppropertyslot_second*)',
+            '$property_slot_at(ppropertyslot_second*, $ptascii("x")) = (ppropertyslot_unset)',
+            'ppropertyslot_unset.STATE = PROP_UNSET']
+    else:
+        clauses += ['pdestructorcall_second.PENDING = eps',
+                    'pdestructionoperation_second.PENDING = eps']
+    clauses += [*seek('S_second', 'S_finish', 6),
+        'S_finish.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_finish_tail*',
+        'pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        '$foreach_bind_operation_source_valid(S_finish, pdestructionoperation, pforeachbind)',
+        '$eager_operation_source_valid(S_finish, pdestructionoperation)',
+        'S_finish.STORE[pforeachbind.OLD] = DEFINED (PARRAY n_array)',
+        '$node_children(S_finish, HCELL pforeachbind.OLD) = eps',
+        '~((HOBJECT n_second) <- S_finish.ALLOCATIONS)',
+        '$dupref_output(S_finish.EVENTS) = $ptascii("A|B|")',
+        'S_finish.STORE[pforeachbind.NEW] = DEFINED (PINT '+('2' if pending else '9')+')',
+        '$heap_owners($heap_graph(S_finish), HCELL pforeachbind.NEW) = '+('1' if pending else '2'),
+        'pdestructionoperation.PENDING = '+('(n_pending)' if pending else 'eps'),
+        'S_one_found = $drive_steps(S_finish, 1)',
+        'S_one_found.COMPLETION = BUDGET', 'S_one = S_one_found[.COMPLETION = NORMAL]',
+        *valid('S_one'),
+        '$lookup(S_one.ENV, pforeachbind.NAME) = (pforeachbind.NEW)',
+        'S_one.STORE[pforeachbind.OLD] = UNDEFINED',
+        '~$foreach_released_cell(S_one, pforeachbind.OLD)',
+        'S_one.STORE[pforeachbind.NEW] = DEFINED (PINT '+('2' if pending else '9')+')',
+        '$heap_owners($heap_graph(S_one), HCELL pforeachbind.NEW) = '+('1' if pending else '2'),
+        'S_one.DESTRUCTION.OPERATIONS = eps']
+    if pending:
+        clauses += ['S_one.TODO = (THROW_SEARCH n_pending) :: ptask_finish_tail*',
+            '$heap_owners($heap_graph(S_one), HOBJECT n_pending) = 1']
+    else:
+        clauses += ['S_one.TODO = ptask_finish_tail*']
+    return clauses+['S_done = $drive(S_one, 2048)',
+        r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
+        'S_done.ITERATORS = eps', 'S_done.DESTRUCTION.OPERATIONS = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -504,6 +639,7 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
+            container_assertions(initial, sources.EXPECTED[case], group=='container-throw') if group.startswith('container') else
             binding_gc_assertions(initial, sources.EXPECTED[case]) if group=='binding-gc' else
             scalar_warning_assertions(initial, sources.EXPECTED[case]) if group=='scalar-warning' else
             notice_owner_assertions(initial) if group=='notice-owner' else

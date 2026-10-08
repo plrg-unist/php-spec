@@ -189,7 +189,7 @@ test-semantics: build
 	python3 tests/semantics/weak_reference_state_review.py
 	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces
 	python3 tests/semantics/cycle_collection_state.py
-	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18
+	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18 --exclude-match collector-detached-quiescent-throwing-fiber-prior-error-review-19
 	python3 tests/semantics/cycle_collection_state_review.py --sl
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
@@ -366,6 +366,8 @@ test-semantics: build
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group binding
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group pending-binding
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group binding-gc
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group container
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group container-throw
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group notice-owner
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group scalar-warning

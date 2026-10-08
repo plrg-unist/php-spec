@@ -412,5 +412,23 @@
     "exit": 0,
     "status": "normal",
     "source_sha256": "93d4fe7d4b4edd181610b79878d3df42056873a937b985c2c5bf8f64db6e1a64"
+  },
+  {
+    "id": "collector-detached-quiescent-throwing-fiber-prior-error-review-19",
+    "source": "<?php\n$worker = null;\nclass HeldCollectorCycle {\n    public $self;\n    function __destruct() {\n        global $worker;\n        $worker = Fiber::getCurrent(); echo 'D|';\n        try { Fiber::suspend(); }\n        finally { $this->self = null; echo 'finally|'; throw new Exception('close'); }\n    }\n}\n$x = new HeldCollectorCycle; $x->self = $x;\n$targetWeak = WeakReference::create($x); unset($x);\n$collector = new Fiber(function () { echo 'first:', gc_collect_cycles(), '|'; });\n$collector->start(); unset($collector);\n$workerWeak = WeakReference::create($worker); echo 'held|';\n$closer = new Fiber(function () {\n    global $worker;\n    try { throw new Exception('outer'); }\n    finally { $worker = null; }\n});\ntry { $closer->start(); }\ncatch (Throwable $e) {\n    echo 'caught:', $e->getMessage(), ':', $e->getPrevious()->getMessage(), ':';\n    echo $e->getPrevious()->getPrevious() === null ? 'none|' : 'extra|';\n}\nunset($closer, $e);\necho $workerWeak->get() === null ? 'worker-gone|' : 'worker-live|';\necho 'next:', gc_collect_cycles(), '|';\necho $targetWeak->get() === null ? 'target-gone|' : 'target-live|';\necho 'END';\n",
+    "source_sha256": "15b3391d22e2d4ea49ff69e0d6d9a548e45ef68ef522d74c09c25271a52023ff",
+    "stdout": "first:D|0|held|finally|caught:close:outer:none|worker-gone|next:1|target-gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "collector-detached-quiescent-failed-fiber-prior-identity-review-19",
+    "source": "<?php\n$worker = null;\nclass FailedCollectorCycle {\n    public $self;\n    function __destruct() {\n        global $worker;\n        $worker = Fiber::getCurrent();\n        try { Fiber::suspend(); }\n        finally { $this->self = null; throw new Exception; }\n    }\n}\n$x = new FailedCollectorCycle; $x->self = $x;\n$target = WeakReference::create($x); unset($x);\n$collector = new Fiber(function () { gc_collect_cycles(); });\n$collector->start(); unset($collector);\n$weak = WeakReference::create($worker);\n$closer = new Fiber(function () {\n    global $worker;\n    $outer = new Exception;\n    try {\n        try { throw $outer; }\n        finally { $worker = null; }\n    } catch (Throwable $close) {\n        echo $close->getPrevious() === $outer ? 'prior|' : 'wrong|';\n    }\n});\n$closer->start(); unset($closer);\necho $weak->get() === null ? 'worker-gone|' : 'worker-live|';\necho gc_collect_cycles(), '|', $target->get() === null ? 'target-gone' : 'target-live';\n",
+    "source_sha256": "64bde6320a99ad4b71390e157959e673357fd2b766df98aa0b980bbdf20349fb",
+    "stdout": "prior|worker-gone|1|target-gone",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

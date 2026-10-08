@@ -42,7 +42,8 @@ rejections in separate cuts. Three exact Unsupported controls earn no agreement:
 IteratorAggregate stops at its earlier interface declaration contract, started
 force-close stops in this tested cut, and NaN handler changes to other raw
 value tags need payload history. The Aggregate control provides no acquisition
-guard execution evidence. Reference yields, complete destruction/GC and wider
+guard execution evidence. [Reference yields328](GENERATOR-REFERENCE-YIELDS.md)
+add live child caches and warning reinjection. Broader reference producers, complete destruction/GC and wider
 Generator call forms remain required; this milestone does not close core PHP.
 Ordinary last-owner forced close is now covered by
 [Module303](GENERATOR-FORCE-CLOSE.md); its shutdown/terminal/GC frontiers stay open.
