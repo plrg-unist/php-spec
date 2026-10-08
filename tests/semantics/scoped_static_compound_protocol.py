@@ -1,4 +1,4 @@
-"""Fresh method-selected static compound frontiers and retained selection guards."""
+"""Static compound frontiers and retained class-selection guards."""
 from error_handler_protocol import PREFIX
 
 CASES = [
@@ -240,10 +240,153 @@ $heap_graph(S_wrong_cell) = $heap_graph(S_alias_written)
     return checks + finish('S_alias_written', row['expected_stdout'])
 
 
+DYNAMIC_CASES = [
+    ('dynamic-base-and-scalar-restore', [
+        'dynamic-rhs-rebind-before-capture', 'dynamic-helper-string-once']),
+    ('dynamic-selected-reference-authority', [
+        'dynamic-captured-reference-rebind']),
+]
+
+DYNAMIC_EXTRA = r'''
+def $scoped_phase(S, 3) = true
+  -- if S.TODO = (COMPOUND_APPLY CONCAT (BASE_CLASS_STATIC porigin_root ptbytes) false z) :: ptask*
+  -- if S.ORIGIN = (porigin)
+  -- if $static_compound_dynamic_name(S, porigin) = (ptbytes)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $compiled_read(S, porigin_right) = (PSTRING $ptascii("y"))
+'''
+
+
+def dynamic_selection(state, suffix, class_name):
+    return [
+        f'$class_named({state}.CLASSNAMES, $ptlc($ptascii("{class_name}"))) = (porigin_{suffix})',
+        f'pstaticselection_{suffix}.ROOT = porigin_{suffix}',
+        f'pstaticselection_{suffix}.SCOPE = eps /\\ pstaticselection_{suffix}.CALLED = eps /\\ pstaticselection_{suffix}.CLOSURE = eps',
+        f'pstaticcompound_{suffix}.CLASS = porigin_{suffix}',
+        f'{state}.BASE = BASE_VALUE (KNOWN PNULL)',
+        f'$static_compound_dynamic_root({state}, pstaticcompound_{suffix}.DECL, pcompoundstring_{suffix}.SITE) = (porigin_{suffix})',
+    ]
+
+
+def dynamic_base(row, scalar_row):
+    checks = start('S_dynamic', row) + prep('S_dynamic', 'dynamic', '(POBJECT n_left_dynamic)')
+    checks += dynamic_selection('S_dynamic', 'dynamic', 'DynamicRhsFirstReview19')
+    checks += lines(r'''
+$class_named(S_dynamic.CLASSNAMES, $ptlc($ptascii("DynamicRhsSecondReview19"))) = (porigin_dynamic_other)
+S_dynamic_global = $global_table_view(S_dynamic)
+$lookup(S_dynamic_global.ENV, $ptascii("class")) = (n_class_cv)
+S_dynamic.STORE[n_class_cv] = DEFINED (PSTRING $ptascii("DynamicRhsSecondReview19"))
+pcompoundstring_dynamic.RIGHT = KNOWN (PSTRING $ptascii("b"))
+$task_nodes(COMPOUND_LIVE_PREP pcompoundstring_dynamic (POBJECT n_left_dynamic)) = eps
+~$class_static_selection_published([(porigin_dynamic_other,true)], pstaticselection_dynamic)
+''') + guards('S_dynamic')
+    checks += event_forgeries('S_dynamic', 'dynamic', [
+        ('root', '.ROOT = porigin_dynamic_other'),
+        ('scope', '.SCOPE = (porigin_dynamic)'),
+        ('called', '.CALLED = (porigin_dynamic)'),
+        ('site', '.SITE = pcompoundstring_dynamic.SITE'),
+    ])
+    checks += lines(r'''
+S_dynamic_cv = S_dynamic[.STORE[n_class_cv] = DEFINED (PSTRING $ptascii("DynamicRhsFirstReview19"))]
+$heap_graph(S_dynamic_cv) = $heap_graph(S_dynamic)
+$compound_live_source(S_dynamic_cv, pcompoundstring_dynamic)
+$static_compound_capture(S_dynamic_cv, pstaticcompound_dynamic.DECL, pcompoundstring_dynamic.SITE, pstaticcompound_dynamic.ENTRY) = (pstaticcompound_dynamic)
+S_dynamic_base = S_dynamic[.BASE = BASE_CLASS_STATIC porigin_dynamic_other $ptascii("value")]
+$static_compound_capture(S_dynamic_base, pstaticcompound_dynamic.DECL, pcompoundstring_dynamic.SITE, pstaticcompound_dynamic.ENTRY) = eps
+~$call_task_valid(S_dynamic_base, COMPOUND_LIVE_PREP pcompoundstring_dynamic (POBJECT n_left_dynamic))
+~$call_descriptors_valid(S_dynamic_base)
+''')
+    checks += finish('S_dynamic', row['expected_stdout'])
+    checks += start('S_helper', scalar_row)
+    checks += seek('S_scalar', 'S_helper', 3) + guards('S_scalar')
+    checks += lines(r'''
+S_scalar.TODO = (COMPOUND_APPLY CONCAT (BASE_CLASS_STATIC porigin_scalar ptbytes_scalar) false z_scalar) :: ptask_scalar*
+S_scalar.BASE = BASE_VALUE (KNOWN PNULL)
+S_scalar_after = $drive_steps(S_scalar, 1)
+S_scalar_after.COMPLETION = BUDGET
+S_scalar_after.BASE = S_scalar.BASE
+S_scalar_after.RESULT = KNOWN (PSTRING $ptascii("xy"))
+S_scalar_after.CLASSCONSTANTHISTORY = S_scalar.CLASSCONSTANTHISTORY
+$class_static_select(S_scalar_after, porigin_scalar, ptbytes_scalar) = (ppropertydesc_scalar)
+$class_static_at(S_scalar_after.CLASSSTATICS, ppropertydesc_scalar.ORIGIN) = (pclassstatic_scalar)
+pclassstatic_scalar.STATE = PROP_VALUE (DIRECT (PSTRING $ptascii("xy")))
+''') + guards('S_scalar_after')
+    return checks + ['S_scalar_clean = S_scalar_after[.COMPLETION = NORMAL]'] + finish('S_scalar_clean', scalar_row['expected_stdout'], resume=False)
+
+
+def dynamic_reference(row):
+    checks = start('S_dynamic_alias', row) + prep('S_dynamic_alias', 'dynamic_alias', '(POBJECT n_left_dynamic_alias)')
+    checks += dynamic_selection('S_dynamic_alias', 'dynamic_alias', 'DynamicAliasFirstReview19')
+    checks += lines(r'''
+pstaticcompound_dynamic_alias.CELL = (n_dynamic_old)
+~pstaticcompound_dynamic_alias.VERIFY
+S_dynamic_alias_global = $global_table_view(S_dynamic_alias)
+$lookup(S_dynamic_alias_global.ENV, $ptascii("alias")) = (n_dynamic_old)
+''') + guards('S_dynamic_alias')
+    checks += seek('S_dynamic_cast', 'S_dynamic_alias', 2) + lines(r'''
+S_dynamic_cast.TODO = (STRINGIFY_RESULT n_left_dynamic_alias pcompoundstring_dynamic_alias.SITE pcompoundstring_dynamic_alias.LINE) :: (COMPOUND_LIVE_LEFT pcompoundstring_dynamic_cast) :: ptask_dynamic_cast*
+pcompoundstring_dynamic_cast = pcompoundstring_dynamic_alias[.SELECTED = (n_left_dynamic_alias)]
+$class_static_at(S_dynamic_cast.CLASSSTATICS, pstaticcompound_dynamic_alias.DECL) = (pclassstatic_dynamic_rebound)
+pclassstatic_dynamic_rebound.STATE = PROP_VALUE (ALIAS n_dynamic_replacement)
+n_dynamic_replacement =/= n_dynamic_old
+n_dynamic_replacement <- S_dynamic_cast.REFCELLS
+(HCELL n_dynamic_replacement) <- S_dynamic_cast.ALLOCATIONS
+$compound_live_source(S_dynamic_cast, pcompoundstring_dynamic_cast)
+''') + guards('S_dynamic_cast')
+    for label, changed in [
+        ('cell', '.CELL = (n_dynamic_replacement)'),
+        ('verify', '.VERIFY = true'),
+    ]:
+        record = f'pcompoundstring_dynamic_bad_{label}'
+        bad = f'S_dynamic_bad_{label}'
+        checks += [
+            f'{record} = pcompoundstring_dynamic_cast[.PLACE = STATIC_COMPOUND pstaticcompound_dynamic_alias[{changed}]]',
+            f'{bad} = S_dynamic_cast[.TODO = (STRINGIFY_RESULT n_left_dynamic_alias pcompoundstring_dynamic_alias.SITE pcompoundstring_dynamic_alias.LINE) :: (COMPOUND_LIVE_LEFT {record}) :: ptask_dynamic_cast*]',
+            f'$heap_graph({bad}) = $heap_graph(S_dynamic_cast)',
+            f'$class_constant_history_valid({bad})',
+            f'~$compound_live_source({bad}, {record})',
+            f'~$call_descriptors_valid({bad})',
+        ]
+    checks += seek('S_dynamic_raw', 'S_dynamic_cast', 1) + lines(r'''
+S_dynamic_raw.STORE[n_dynamic_old] = DEFINED (PSTRING $ptascii("ab"))
+S_dynamic_raw.STORE[n_dynamic_replacement] = DEFINED (PSTRING $ptascii("changed"))
+S_dynamic_raw.REFCOERCIONS = [prefcoercion_dynamic]
+prefcoercion_dynamic.CELL = n_dynamic_old
+prefcoercion_dynamic.SITE = pcompoundstring_dynamic_alias.SITE
+$reference_coercion_row_valid(S_dynamic_raw, prefcoercion_dynamic)
+''') + guards('S_dynamic_raw')
+    checks += seek('S_dynamic_typed', 'S_dynamic_raw', 0)
+    checks += prep('S_dynamic_typed', 'dynamic_typed', '(PINT z_typed_left)')
+    checks += dynamic_selection('S_dynamic_typed', 'dynamic_typed', 'DynamicTypedFirstReview19')
+    checks += lines(r'''
+z_typed_left = 1
+pstaticcompound_dynamic_typed.CELL = (n_dynamic_typed)
+pstaticcompound_dynamic_typed.VERIFY
+pcompoundstring_dynamic_typed.RIGHT = KNOWN (POBJECT n_dynamic_right)
+''') + guards('S_dynamic_typed')
+    checks += seek('S_dynamic_verified', 'S_dynamic_typed', 1) + lines(r'''
+S_dynamic_verified.STORE[n_dynamic_typed] = DEFINED (PINT 12)
+S_dynamic_verified.RESULT = KNOWN (PINT 12)
+S_dynamic_verified.REFCOERCIONS = S_dynamic_raw.REFCOERCIONS
+$static_compound_source(S_dynamic_verified, pstaticcompound_dynamic_typed, pcompoundstring_dynamic_typed.SITE, pcompoundstring_dynamic_typed.LINE)
+''') + guards('S_dynamic_verified')
+    return checks + finish('S_dynamic_verified', row['expected_stdout'])
+
+CASES += DYNAMIC_CASES
+
+
 def render(name, sources):
-    checks = (lexical(sources[CASES[0][1][0]]) if name == CASES[0][0]
-              else nested(sources[CASES[1][1][0]]) + captured(sources[CASES[1][1][1]]))
-    text = EXTRA + PREFIX.replace('STAGE', '$scoped_phase(S, 0)')
+    if name == CASES[0][0]:
+        checks = lexical(sources[CASES[0][1][0]])
+    elif name == CASES[1][0]:
+        checks = nested(sources[CASES[1][1][0]]) + captured(sources[CASES[1][1][1]])
+    elif name == DYNAMIC_CASES[0][0]:
+        checks = dynamic_base(sources[DYNAMIC_CASES[0][1][0]], sources[DYNAMIC_CASES[0][1][1]])
+    elif name == DYNAMIC_CASES[1][0]:
+        checks = dynamic_reference(sources[DYNAMIC_CASES[1][1][0]])
+    else:
+        raise ValueError(name)
+    text = EXTRA + DYNAMIC_EXTRA + PREFIX.replace('STAGE', '$scoped_phase(S, 0)')
     text += '\ndec $main() : bool\ndef $main() = true\n'
     text += ''.join('  -- if ' + check + '\n' for check in checks)
     return text, checks
