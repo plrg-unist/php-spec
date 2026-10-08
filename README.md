@@ -253,8 +253,10 @@ releases bound frames without entering body/finally, preserves immediate CV-hand
 ordering and releases a closed Generator's Closure before its caches.
 [Closed storage355](coverage/semantics/generator-storage-pin-review.json) keeps a
 physical pin and readable RETURN through child callbacks, then clears weak lookup.
-Delegating request close, abrupt terminal cleanup, parked/escaped storage and
-nested ordinary-object storage during RETURN reads remain required.
+[Request delegation](coverage/semantics/generator-request-delegation-review.json)
+detaches inputs before finally while preserving CV owners, shared store order,
+delegated cache lifetime and nested normal handlers. Abrupt terminal cleanup,
+parked/escaped storage and nested ordinary-object RETURN reads remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -532,6 +534,8 @@ GC and eager-destruction consumers read the same observed state’s edges after
 its roots without rebuilding those roots.
 The driver carries an already successful original-state owner order into the
 following GC pass; failed or skipped destruction branches retain public fallbacks.
+Pure graph pruning counts owners once and removes zero-owner cascades through a
+worklist, preserving roots and the order and multiplicity of nodes and edges.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
@@ -551,7 +555,7 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, post-pass public callback reentry/internal takeover, automatic
+graphs, callback reentry during a different active pass, internal takeover, automatic
 thresholds and wider freeing remain open. Module332 adds quiescent public idle
 resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
@@ -573,7 +577,12 @@ public API. One normal source and 228 reached physical premises pass; captured
 old/new exception priority completes in the state checks while its source CLI
 retains a 60s timeout with zero agreement. Final 343 compilation preserves `e1c3d4d61`; publication on `2ed57ca8a`
 preserves the static-property change by review.
-Post-pass reentry and internal takeover remain required.
+Quiescent post-pass reentry now authenticates the parked VM and fresh caller
+without depending on retired caller metadata or old physical slots. An explicit
+no-destructor-tag check lets the retained scan finish safely. One normal source
+and 203 independent physical premises pass; the captured source retains its 60s
+CLI timeout/zero agreement. Final 345 compilation over `4cd2eab3a` passes.
+Reentry during a different active pass and internal takeover remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

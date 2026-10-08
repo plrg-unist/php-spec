@@ -1,0 +1,53 @@
+;; zend_generator_dtor_storage detaches input before finally. Delegated CURRENT
+;; is the physical value slot, retained until free_storage releases that slot.
+dec $generator_storage_current_records(pstate, pgeneratorfrom, pgenstorage*) : bool
+dec $generator_storage_current_record(pstate, pgeneratorfrom, pgenstorage) : bool
+dec $generator_request_context_tasks(pstate, pcallcontext, ptask*) : bool
+dec $generator_request_context_view(pstate, pcallcontext, pgenclose) : bool
+
+def $generator_storage_current_borrowed(S, pgeneratorfrom) = $generator_storage_current_records(S, pgeneratorfrom, $generator_storage_tasks(S.TODO) ++ $generator_storage_frames(S.FRAMES))
+def $generator_storage_current_records(S, pgeneratorfrom, eps) = false
+def $generator_storage_current_records(S, pgeneratorfrom, pgenstorage :: pgenstorage_tail*) = ($generator_storage_current_record(S, pgeneratorfrom, pgenstorage) \/ $generator_storage_current_records(S, pgeneratorfrom, pgenstorage_tail*))
+def $generator_storage_current_record(S, pgeneratorfrom, pgenstorage) = true
+  -- if $(pgenstorage.OBJECT < |S.OBJECTS|) /\ $(pgenstorage.NEXT >= 2)
+  -- if S.OBJECTS[pgenstorage.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom) /\ pgeneratorfrom.INPUT = eps
+  -- if pgeneratorfrom.CURRENT = (REFERENCE n)
+  -- if $(n < |S.STORE|) /\ n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED pvalue
+def $generator_storage_current_record(S, pgeneratorfrom, pgenstorage) = false -- otherwise
+
+;; Record equality cannot lend an unstaged object another object's consumed
+;; Closure/cell history. Its own physical cache edges must still be live.
+def $generator_storage_node_valid(S, n) = ($generator_storage_value_shape(pgenerator) /\ $heap_subset($generator_closed_closure(pgenerator) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)), S.ALLOCATIONS))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if $generator_storage_for(S, n) = eps
+
+;; Admission views of a queued outer frame retain the actual root handler tail.
+;; Only that exact source view is distinct from the live handler's C context.
+def $exception_context_source_view(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext) /\ pcallcontext.CALLSITE =/= eps
+  -- if S.FRAMES = [pframe_root]
+  -- if pframe_root.CONTEXT = eps /\ pframe_root.ORIGIN = eps /\ pframe_root.CONSTCONTEXT = eps
+  -- if pframe_root.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
+  -- if $generator_request_context_tasks(S, pcallcontext, ptask_tail*)
+def $generator_request_context_tasks(S, pcallcontext, eps) = false
+def $generator_request_context_tasks(S, pcallcontext, (GENERATOR_CLOSE_ENTER pgenclose) :: ptask_tail*) = ($generator_request_context_view(S, pcallcontext, pgenclose) \/ $generator_request_context_tasks(S, pcallcontext, ptask_tail*))
+def $generator_request_context_tasks(S, pcallcontext, ptask :: ptask_tail*) = $generator_request_context_tasks(S, pcallcontext, ptask_tail*)
+  -- if ~$generator_close_enter_task(ptask)
+def $generator_request_context_view(S, pcallcontext, pgenclose) = true
+  -- if $generator_object(S, pgenclose.OBJECT) /\ (HOBJECT pgenclose.OBJECT <- S.ALLOCATIONS)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSING /\ pgenerator.FRAME = eps
+  -- if $generator_from_input_of(pgenerator.DELEGATE) = eps
+  -- if pgenclose.STAGE = CLOSE_QUEUED /\ pgenclose.NEXT = 0
+  -- if $generator_close_site(S, pgenerator, pgenclose.SITE)
+  -- if $generator_from_code(S, pgenerator, pgenclose.SITE)
+  -- if pgenclose.FRAME = (pframe)
+  -- if pframe.CONTEXT = (pcallcontext) /\ pgenclose.CONTEXT = pcallcontext
+  -- if pcallcontext.FUNCTION = pgenerator.FUNCTION /\ pcallcontext.INSTANCE = pgenerator.CLOSURE
+  -- if pframe.ORIGIN = (pgenclose.SITE)
+  -- if pframe.TODO = (GENERATOR_FROM_NEXT pgenclose.OBJECT pgenclose.SITE) :: ptask_tail*
+  -- if S.TODO = pframe.TODO /\ pframe.LOCALS = ($active_table(S))
+  -- if S.HELD = pframe.HELD /\ S.BORROWEDREAD = pframe.BORROWEDREAD /\ S.OBJECTCAST = pframe.OBJECTCAST /\ S.CONSTCONTEXT = pframe.CONSTCONTEXT
+def $generator_request_context_view(S, pcallcontext, pgenclose) = false -- otherwise

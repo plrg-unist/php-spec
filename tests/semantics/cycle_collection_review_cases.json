@@ -493,5 +493,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-public-postpass-core-old-pending-new-throw-review-23",
+    "source": "<?php\n$w=null;$o=null;$n=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w,$o,$n;\n  if($this->k===0){\n   $o=new Exception;\n   echo 'A|',$w->throw($o),'|';\n  }else{\n   try{Fiber::suspend('paused');}\n   catch(Throwable $c){echo $c===$n?'new|':'bad-new|';}\n  }\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);\necho gc_collect_cycles(),'|';\n$n=new Exception;$r=new Fiber($w->throw(...));\ntry{$r->start($n);}\ncatch(Throwable $c){echo $c===$o?'old|':'bad-old|';}\necho 'END';\n",
+    "source_sha256": "673b47deefa08a7d41fc8f4dd17452cb50cf1a01bee0e9277198f2695990733a",
+    "stdout": "A|paused|1|new|old|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

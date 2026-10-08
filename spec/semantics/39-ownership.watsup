@@ -57,13 +57,76 @@ def $heap_live_edges((HEDGE pnode_from pnode_to) :: hedge_tail*, pnode*) = (HEDG
 def $heap_live_edges((HEDGE pnode_from pnode_to) :: hedge_tail*, pnode*) = $heap_live_edges(hedge_tail*, pnode*)
   -- if (~$heap_member(pnode_from, pnode*) \/ ~$heap_member(pnode_to, pnode*))
 
+syntax pheapprunecount = {NODE pnode, OWNERS nat}
+dec $heap_prune_init(pnode*) : pheapprunecount*
+dec $heap_prune_increment(pheapprunecount*, pnode) : pheapprunecount*
+dec $heap_prune_roots(pnode*, pheapprunecount*) : pheapprunecount*
+dec $heap_prune_edges(hedge*, pnode*, pheapprunecount*) : pheapprunecount*
+dec $heap_prune_zeros(pheapprunecount*) : pnode*
+dec $heap_prune_delete(pheapprunecount*, pnode) : pheapprunecount*
+dec $heap_prune_decrement(pheapprunecount*, pnode, pnode*) : (pheapprunecount*, pnode*)
+dec $heap_prune_children(hedge*, pnode, pheapprunecount*, pnode*) : (pheapprunecount*, pnode*)
+dec $heap_prune_count_nodes(pheapprunecount*) : pnode*
+dec $heap_prune_work(hgraph, pheapprunecount*, pnode*) : hgraph
+dec $heap_intersect(pnode*, pnode*) : pnode*
 dec $heap_prune(hgraph) : hgraph
 dec $heap_prune_retained(hgraph, pnode*) : hgraph
-def $heap_prune(H) = $heap_prune_retained(H, $heap_retained(H, H.NODES))
+;; Counts use distinct source identities; only final filtering touches node order.
+def $heap_prune(H) = $heap_prune_work(H, pheapprunecount*, $heap_prune_zeros(pheapprunecount*))
+  -- if pheapprunecount* = $heap_prune_edges(H.EDGES, H.NODES, $heap_prune_roots(H.ROOTS, $heap_prune_init(H.NODES)))
 def $heap_prune_retained(H, pnode*) = H[.EDGES = $heap_live_edges(H.EDGES, H.NODES)]
   -- if pnode* = H.NODES
 def $heap_prune_retained(H, pnode*) = $heap_prune(H[.NODES = pnode*])
   -- if pnode* =/= H.NODES
+
+def $heap_prune_init(eps) = eps
+def $heap_prune_init(pnode :: pnode_tail*) = $heap_prune_init(pnode_tail*)
+  -- if $heap_member(pnode, pnode_tail*)
+def $heap_prune_init(pnode :: pnode_tail*) = {NODE pnode, OWNERS 0} :: $heap_prune_init(pnode_tail*)
+  -- if ~$heap_member(pnode, pnode_tail*)
+def $heap_prune_increment(eps, pnode) = eps
+def $heap_prune_increment(pheapprunecount :: pheapprunecount_tail*, pnode) = pheapprunecount[.OWNERS = $(pheapprunecount.OWNERS + 1)] :: pheapprunecount_tail*
+  -- if pheapprunecount.NODE = pnode
+def $heap_prune_increment(pheapprunecount :: pheapprunecount_tail*, pnode) = pheapprunecount :: $heap_prune_increment(pheapprunecount_tail*, pnode)
+  -- if pheapprunecount.NODE =/= pnode
+def $heap_prune_roots(eps, pheapprunecount*) = pheapprunecount*
+def $heap_prune_roots(pnode :: pnode_tail*, pheapprunecount*) = $heap_prune_roots(pnode_tail*, $heap_prune_increment(pheapprunecount*, pnode))
+def $heap_prune_edges(eps, pnode_alloc*, pheapprunecount*) = pheapprunecount*
+def $heap_prune_edges((HEDGE pnode_from pnode_to) :: hedge_tail*, pnode_alloc*, pheapprunecount*) = $heap_prune_edges(hedge_tail*, pnode_alloc*, $heap_prune_increment(pheapprunecount*, pnode_to))
+  -- if $heap_member(pnode_from, pnode_alloc*)
+def $heap_prune_edges((HEDGE pnode_from pnode_to) :: hedge_tail*, pnode_alloc*, pheapprunecount*) = $heap_prune_edges(hedge_tail*, pnode_alloc*, pheapprunecount*)
+  -- if ~$heap_member(pnode_from, pnode_alloc*)
+def $heap_prune_zeros(eps) = eps
+def $heap_prune_zeros(pheapprunecount :: pheapprunecount_tail*) = pheapprunecount.NODE :: $heap_prune_zeros(pheapprunecount_tail*)
+  -- if pheapprunecount.OWNERS = 0
+def $heap_prune_zeros(pheapprunecount :: pheapprunecount_tail*) = $heap_prune_zeros(pheapprunecount_tail*)
+  -- if $(pheapprunecount.OWNERS > 0)
+def $heap_prune_delete(eps, pnode) = eps
+def $heap_prune_delete(pheapprunecount :: pheapprunecount_tail*, pnode) = pheapprunecount_tail*
+  -- if pheapprunecount.NODE = pnode
+def $heap_prune_delete(pheapprunecount :: pheapprunecount_tail*, pnode) = pheapprunecount :: $heap_prune_delete(pheapprunecount_tail*, pnode)
+  -- if pheapprunecount.NODE =/= pnode
+def $heap_prune_decrement(eps, pnode, pnode_work*) = (eps, pnode_work*)
+def $heap_prune_decrement(pheapprunecount :: pheapprunecount_tail*, pnode, pnode_work*) = (pheapprunecount[.OWNERS = 0] :: pheapprunecount_tail*, pnode :: pnode_work*)
+  -- if pheapprunecount.NODE = pnode
+  -- if pheapprunecount.OWNERS = 1
+def $heap_prune_decrement(pheapprunecount :: pheapprunecount_tail*, pnode, pnode_work*) = (pheapprunecount[.OWNERS = $nabs($(pheapprunecount.OWNERS - 1))] :: pheapprunecount_tail*, pnode_work*)
+  -- if pheapprunecount.NODE = pnode
+  -- if $(pheapprunecount.OWNERS > 1)
+def $heap_prune_decrement(pheapprunecount :: pheapprunecount_tail*, pnode, pnode_work*) = (pheapprunecount :: pheapprunecount_new*, pnode_new*)
+  -- if pheapprunecount.NODE =/= pnode
+  -- if (pheapprunecount_new*, pnode_new*) = $heap_prune_decrement(pheapprunecount_tail*, pnode, pnode_work*)
+def $heap_prune_children(eps, pnode, pheapprunecount*, pnode_work*) = (pheapprunecount*, pnode_work*)
+def $heap_prune_children((HEDGE pnode pnode_to) :: hedge_tail*, pnode, pheapprunecount*, pnode_work*) = $heap_prune_children(hedge_tail*, pnode, pheapprunecount_new*, pnode_new*)
+  -- if (pheapprunecount_new*, pnode_new*) = $heap_prune_decrement(pheapprunecount*, pnode_to, pnode_work*)
+def $heap_prune_children((HEDGE pnode_other pnode_to) :: hedge_tail*, pnode, pheapprunecount*, pnode_work*) = $heap_prune_children(hedge_tail*, pnode, pheapprunecount*, pnode_work*)
+  -- if pnode =/= pnode_other
+def $heap_prune_count_nodes(eps) = eps
+def $heap_prune_count_nodes(pheapprunecount :: pheapprunecount_tail*) = pheapprunecount.NODE :: $heap_prune_count_nodes(pheapprunecount_tail*)
+def $heap_prune_work(H, pheapprunecount*, eps) = H[.NODES = pnode_live*][.EDGES = $heap_live_edges(H.EDGES, pnode_live*)]
+  -- if pnode_live* = $heap_intersect(H.NODES, $heap_prune_count_nodes(pheapprunecount*))
+def $heap_prune_work(H, pheapprunecount*, pnode :: pnode_work*) = $heap_prune_work(H, pheapprunecount_new*, pnode_new*)
+  -- if (pheapprunecount_new*, pnode_new*) = $heap_prune_children(H.EDGES, pnode, $heap_prune_delete(pheapprunecount*, pnode), pnode_work*)
 
 ;; Collection is a separate pure graph operation, not a PHP GC trigger or a
 ;; gc_collect_cycles return-count implementation. Order preserves allocation IDs.
@@ -80,7 +143,6 @@ def $heap_children(pnode, (HEDGE pnode pnode_to) :: hedge_tail*) = pnode_to :: $
 def $heap_children(pnode, (HEDGE pnode_other pnode_to) :: hedge_tail*) = $heap_children(pnode, hedge_tail*)
   -- if pnode =/= pnode_other
 
-dec $heap_intersect(pnode*, pnode*) : pnode*
 def $heap_intersect(eps, pnode_seen*) = eps
 def $heap_intersect(pnode :: pnode_tail*, pnode_seen*) = pnode :: $heap_intersect(pnode_tail*, pnode_seen*)
   -- if $heap_member(pnode, pnode_seen*)
