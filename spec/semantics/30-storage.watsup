@@ -14,7 +14,8 @@ syntax pstringselection = { SITE porigin, INIT int, LINE int, REQUESTED porigin,
 syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin? }
 syntax pcallableaccess = { SITE porigin?, SCOPE porigin?, OBJECT bool, CREATION pmethodcapture? }
 syntax papiquery
-syntax pcalltarget = porigin | FIBER_REPORTING_TARGET | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool
+syntax pfibercallable
+syntax pcalltarget = porigin | FIBER_REPORTING_TARGET | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable
 syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
 syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass | PCCPRECISION pcpath int
@@ -346,6 +347,7 @@ syntax pfibercaller = { OBJECT nat, PREVIOUS nat?, VM pfibervm, API pfiberapi }
 ;; Internal object destruction has a distinct waiting C frame, with no API row.
 syntax pfiberclose = { OBJECT nat, PREVIOUS nat?, CALLERS nat, VM pfibervm, RELEASE pdestructionrelease, SUSPEND pfiberapi, EXIT nat, SEQUENCE nat }
 syntax pfiber = { READY bool, CALL pconfigcall?, RAW pvalue, TARGET pcalltarget?, BIRTH pdynamicnew?, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer?, ENTRY pnamedargs?, FINISH pfiberfinish?, GC pgcworker?, STATUS pfiberstatus, VM pfibervm?, VALUE pvalue, RETURNED bool, FAILED bool, GRACEFUL bool, SEQUENCE nat }
+syntax pfibercallable = { QUERY papiquery, METHOD porigin, NAME ptbytes, STATIC bool, BIRTH pdynamicnew?, CAPTURE pmethodcapture?, PRODUCER pshutdownproducer? }
 syntax pgeneratorphase = GENERATOR_FRESH | GENERATOR_PAUSED | GENERATOR_RUNNING | GENERATOR_CLOSED | GENERATOR_DELEGATING | GENERATOR_CLOSING
 syntax pgenclosestage = CLOSE_QUEUED | CLOSE_BODY porigin | CLOSE_SCANNING | CLOSE_FLOW | CLOSE_FINISHED
 syntax pgenclose = { OBJECT nat, SITE porigin, CONTEXT pcallcontext, CALLER pcallcontext?, CALLSITE porigin?, STAGE pgenclosestage, NEXT nat, FRAME pframe?, PENDING nat? }
