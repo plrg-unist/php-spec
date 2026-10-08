@@ -484,5 +484,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-active-public-cached-core-two-identities-compact-review-22",
+    "source": "<?php\n$w=null;$n=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w,$n;\n  if($this->k===0){\n   $e=new Exception;\n   echo 'A|',$w->throw($e),'|';\n   $n=new Exception;\n   $f=new Fiber($w->throw(...));\n   try{$f->start($n);}\n   catch(Throwable $c){echo $c===$e?'old|':'bad-old|';}\n  }else{\n   try{Fiber::suspend('paused');}\n   catch(Throwable $c){echo $c===$n?'new|':'bad-new|';}\n  }\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);\necho gc_collect_cycles(),'|END';\n",
+    "source_sha256": "466e09a9195bbc4b07e5b563c2b9daa8e248d75e10aa368e2b64c3b01abd95ad",
+    "stdout": "A|paused|new|old|2|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
