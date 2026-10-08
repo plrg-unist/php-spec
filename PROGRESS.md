@@ -26,11 +26,12 @@ their introduced seams are independently reviewed as compatible, with no source/
 renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
-The current source includes accepted ArrayAccess292/304/309, eager destruction270,
+The current source includes accepted ArrayAccess292/304/309/319, eager destruction270,
 WeakReference296, ordinary cycle collection301, Fiber291/302/308/313,
 Generator289/303/310/311 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
-and ordinary dynamic-property creation318, with 297 modules descended from
+and ordinary dynamic-property creation318 and defaults286/295/306/312,
+with302 modules descended from
 `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320.
 The property/clone composition passes strict SL290/compiler application0 at
@@ -39,8 +40,8 @@ f6b2cad34, two new exact normal originals and79 independent strict-SL premises a
 cuts below retain their original inputs.
 The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
-cuts retain their original inputs. Independently accepted private milestones286,
-290, 295, 297 and306 await ordered Git integration. Other private work covers299.
+cuts retain their original inputs. Independently accepted private milestones290
+and297 await ordered Git integration. Other private work covers299.
 Nonconstant source-emission314 is installed after Fiber308; literal auto-global316
 is integrated after reviewed current-parent composition.
 Held 279 and user-paused return verification stay set aside. Complete core and the
@@ -230,10 +231,10 @@ Set collects an unrelated cycle, readback returns old CELL25 after global
 rebinding to31, and later collection frees the returned child/count1.
 The [returned-child ledger](coverage/semantics/arrayaccess-returned-append-review.json)
 preserves eight sources/160 premises, separate lifetime/provider/compiler/warning
-cuts and zero-credit original failures. Wider producers, by-reference Get and
+cuts and zero-credit original failures. Wider producers, remaining reference-Get consumers and
 complete core remain open; paused return verification stays separate.
 
-Private ArrayAccess319 adds accepted untyped/mixed by-reference Get: implicit
+ArrayAccess319 adds accepted untyped/mixed by-reference Get: implicit
 callbacks demand their real result, R/IS dereference it, writable shared cells
 stay shared, and a genuine sole wrapper moves before receiver release. Direct
 DIM_OP owns the raw reference through Set without retaining its old referent.
@@ -246,8 +247,9 @@ keeps source, reached, compiler and original failures separate. Actual298 over
 ff1b passes full compilation, strict initialization and one new exact original:
 a genuine Fiber reporting warning handler suspends inside Get, then resumes
 the shared property CELL write while restoring main reporting. Parent318 fields
-are preserved; this source makes no dynamic-property runtime claim. Canonical
-integration is pending. Named reference sends, nested captured-row updates,
+are preserved; this source makes no dynamic-property runtime claim. Final302
+over b135 preserves new default receive fields and passes full algorithmic and
+structuring compilation. Named reference sends, nested captured-row updates,
 VALUE-return warning-handler producers and wider producers remain required;
 typed non-mixed return verification stays user-paused.
 
@@ -265,7 +267,7 @@ independent 793 premises pass across 13 recipes (1016 total), with 634 in AL and
 382 in strict SL.
 The [writable ledger](coverage/semantics/arrayaccess-write-review.json) records
 actual revision/diffs, original failures and excluded count-observer0; its
-core-language companion agrees. By-reference Get,
+core-language companion agrees. Remaining reference-Get consumers,
 wider memoized/property/GLOBALS producers and combined interface notice ordering
 remain required. Paused return validation remains separate. One fresh source at
 actual 38f + 292 / 274 agrees through array-include conversion287, private
@@ -1490,8 +1492,9 @@ failures and interrupted evidence.
   row/key owners. ArrayAccess284 adds the builtin contract and direct R/IS,
   isset/empty, Set/append and Unset calls. Writable292 adds direct compound and
   ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append,
-  and309 adds final simple append to returned children. By-reference Get, wider memoized ArrayAccess consumers
-  and combined Iterator/ArrayAccess notice ordering,
+  and309 adds final simple append to returned children. Module319 adds untyped/mixed
+  reference Get; named sends, nested captured-row updates, VALUE-return warning
+  handlers, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container

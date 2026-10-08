@@ -76,7 +76,7 @@ handlers are skipped by Zend's pending-exception call API; ineligible or absent
 handlers retain default reporting. Object concat skips method execution and keeps
 the pending error, so this branch uses no live Stringable return producer.
 
-Private module319 implements untyped/mixed by-reference Get on the accepted
+Module319 implements untyped/mixed by-reference Get on the accepted
 reference-return lane. Implicit Get always demands its result, including a
 discarded outer read. R/IS dereference the result; writable fetch preserves a
 shared real CELL and emits no indirect-modification Notice. A genuine sole
@@ -96,7 +96,8 @@ separate compiler/source/state cuts in the
 Actual298 also passes full compilation, strict initialization and one new exact
 Fiber-core warning/Get suspension original. Its real internal reporting tail
 survives the parked Get and resumed shared property write;318 fields remain
-intact without a dynamic-property runtime claim. Canonical integration is pending.
+intact without a dynamic-property runtime claim. Final302 over b135 preserves
+the new default receive fields and passes full algorithmic/structuring compilation.
 
 Wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess
 notice ordering remain required. Named reference sends and nested captured-row

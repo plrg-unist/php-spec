@@ -1,7 +1,7 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "module": "spec/semantics/319-arrayaccess-reference-get.watsup",
-  "decision": "Private scope and actual298 composition independently accepted; canonical integration pending",
+  "decision": "Untyped/mixed reference Get scope independently accepted for canonical integration at302",
   "semantic_revision": "986aded97894f4b3192da58190bd2f57a0a64dc6",
   "scope": [
     "Untyped/mixed implicit reference Get always demands a result",
@@ -221,7 +221,7 @@
     "vendor/php-src/Zend/zend_execute.c::zend_binary_assign_op_obj_dim",
     "vendor/php-src/Zend/zend_vm_def.h::ZEND_ASSIGN_REF"
   ],
-  "recovery_note": "Original report paths resolve under recovery_root; current_parent_join paths resolve under its own recovery_root, both from the canonical project. Raw inputs and streams stay ignored; maintained originals and renderers regenerate them with local tools.",
+  "recovery_note": "Original report paths resolve under recovery_root; current_parent_join and final_parent_join paths resolve under their own recovery_roots, all from the canonical project. Raw inputs and streams stay ignored; maintained originals and renderers regenerate them with local tools.",
   "current_parent_join": {
     "parent": "ff1b7a888ec27dde291ecef62b0b6633dd7772ed",
     "revision": "4428e4a38b02f99ba5c3e12fdb284f9b20bd1c92",
@@ -274,5 +274,31 @@
       }
     },
     "scope": "Genuine313 internal Fiber reporting continuation through warning/Get suspension; shared property CELL writes8. Parent318 fields preserved; no dynamic-property runtime claim. Earlier14/375 cuts retained without renewal."
+  },
+  "final_parent_join": {
+    "parent": "b13583577cdcab313e5296025dd19e3e9182a211",
+    "revision": "522b8f48c62a16a12d3992c8c51fbd3176089ad5",
+    "modules": 302,
+    "recovery_root": ".tools/arrayaccess-reference-get-current-parent-18",
+    "report": ".tools/arrayaccess-returned-append/actual-prepared-ziwdvcjg/report.json",
+    "command": "python3 tests/semantics/arrayaccess_returned_append_current_prepare.py",
+    "compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "compiler": {
+      "algo": {
+        "emitted_bytes": 10126883,
+        "seconds": 3.089
+      },
+      "struct": {
+        "emitted_bytes": 9737353,
+        "seconds": 3.897
+      }
+    },
+    "outcome": "Full algo/struct pass; physical stderr empty; exits0; all introduced319 helpers present",
+    "inputs_stable": true,
+    "closed_groups": 2,
+    "compiler_cap_seconds": 120,
+    "jobs": 1,
+    "compatibility": "Exact319 is preserved beside inherited DEFAULTRECEIVE/RECEIVES/USERPREFIX/PARAMETER* schemas and DIR/160 guards. Given-argument Get/handler contexts have neutral DEFAULTRECEIVE eps; independent review found no introduced runtime overlap. Earlier14/375 and actual298 source keep their own cuts without renewal.",
+    "scope": "Compiler/frontend/provider preparation only; no new source/init/reached execution credit"
   }
 }
