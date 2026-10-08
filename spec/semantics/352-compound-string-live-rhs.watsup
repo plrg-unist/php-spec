@@ -9,6 +9,7 @@ dec $compound_live_flags(pstate, pcompoundstring) : bool
 dec $compound_live_selected(pstate, pcompoundstring) : bool
 dec $compound_live_source(pstate, pcompoundstring) : bool
 dec $compound_live_valid(pstate, pcompoundstring) : bool
+dec $compound_live_initial_user(pstate, pcompoundstring, pvalue) : bool
 dec $compound_live_begin(pstate, pvalue, poperand, porigin, int) : pstate
 dec $compound_live_write(pstate, pcompoundstring, pvalue) : pstate
 
@@ -83,8 +84,14 @@ def $compound_live_source(S, pcompoundstring) = true
   -- if $compound_live_selected(S, pcompoundstring)
   -- if pcompoundstring.RIGHT = REFERENCE n
   -- if $compound_live_cv_name(S, pcompoundstring.SITE, [PCFIELD 1]) = eps
+  -- if $origin_child((pcompoundstring.SITE), [PCFIELD 1]) = (porigin_right)
+  -- if $compiled_read(S, porigin_right) = eps
 def $compound_live_source(S, pcompoundstring) = false -- otherwise
 def $compound_live_valid(S, pcompoundstring) = ($compound_live_source(S, pcompoundstring) /\ $heap_subset($operand_nodes(pcompoundstring.RIGHT), S.ALLOCATIONS) /\ $call_reference_operand_valid(S, pcompoundstring.RIGHT))
+def $compound_live_initial_user(S, pcompoundstring, pvalue_left) = ($user_string_value(S, pvalue_left) \/ $user_string_value(S_read, pvalue_right))
+  -- if S_read = $quiet_operand(S, pcompoundstring.RIGHT)
+  -- if S_read.RESULT = KNOWN pvalue_right
+def $compound_live_initial_user(S, pcompoundstring, pvalue_left) = false -- otherwise
 
 def $compound_live_begin(S, pvalue_left, poperand, porigin, z) = S[.TODO = (COMPOUND_LIVE_PREP {PLACE S.LOCATION, RIGHT poperand, SITE porigin, LINE z, CV $compound_live_destination_cv(S, S.LOCATION, porigin), SELF $compound_live_self(S, S.LOCATION, porigin, poperand), SELECTED eps} pvalue_left) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $compound_operand_value(S, CONCAT, pvalue_left, pvalue_right, poperand, z) = $compound_live_begin(S, pvalue_left, poperand, porigin, z)
@@ -111,7 +118,7 @@ def $stringify_consumer_tail_valid(S, porigin, z, COMPOUND_LIVE_LEFT pcompoundst
 def $stringify_consumer_tail_valid(S, porigin, z, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes, ptask*) = $stringify_source(S, porigin, z, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes)
 def $stringify_consumer_receiver_valid(S, n, COMPOUND_LIVE_LEFT pcompoundstring) = (pcompoundstring.SELECTED = (n))
 def $stringify_consumer_receiver_valid(S, n, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes) = (pcompoundstring.SELECTED = (n))
-def $call_task_valid(S, COMPOUND_LIVE_PREP pcompoundstring pvalue_left) = ($compound_live_valid(S, pcompoundstring) /\ pcompoundstring.SELECTED = eps /\ S.ORIGIN = (pcompoundstring.SITE) /\ $compound_string_initial_place(S, pcompoundstring.PLACE, pcompoundstring.SITE) /\ $location_slot(S, pcompoundstring.PLACE) = DEFINED pvalue_left /\ pcompoundstring.CV = $compound_live_destination_cv(S, pcompoundstring.PLACE, pcompoundstring.SITE) /\ pcompoundstring.SELF = $compound_live_self(S, pcompoundstring.PLACE, pcompoundstring.SITE, pcompoundstring.RIGHT))
+def $call_task_valid(S, COMPOUND_LIVE_PREP pcompoundstring pvalue_left) = ($compound_live_valid(S, pcompoundstring) /\ $compound_live_initial_user(S, pcompoundstring, pvalue_left) /\ pcompoundstring.SELECTED = eps /\ S.ORIGIN = (pcompoundstring.SITE) /\ $compound_string_initial_place(S, pcompoundstring.PLACE, pcompoundstring.SITE) /\ $location_slot(S, pcompoundstring.PLACE) = DEFINED pvalue_left /\ pcompoundstring.CV = $compound_live_destination_cv(S, pcompoundstring.PLACE, pcompoundstring.SITE) /\ pcompoundstring.SELF = $compound_live_self(S, pcompoundstring.PLACE, pcompoundstring.SITE, pcompoundstring.RIGHT))
 def $call_task_valid(S, COMPOUND_LIVE_LEFT pcompoundstring) = ($compound_live_valid(S, pcompoundstring) /\ S.ORIGIN = (pcompoundstring.SITE))
 def $call_task_valid(S, COMPOUND_LIVE_RIGHT pcompoundstring ptbytes) = ($compound_live_valid(S, pcompoundstring) /\ S.ORIGIN = (pcompoundstring.SITE))
 def $call_task_valid(S, COMPOUND_LIVE_RELEASE pcompoundstring) = ($compound_live_valid(S, pcompoundstring) /\ S.ORIGIN = (pcompoundstring.SITE))
