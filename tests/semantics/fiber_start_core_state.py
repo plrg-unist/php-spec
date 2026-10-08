@@ -77,7 +77,7 @@ CASES = {
             '$heap_graph(S_buffer) = H',
             '~$fiber_start_core_result_valid(S_buffer, n_outer, n_capture, pfiberstart_buffer)',
             '~$call_descriptors_valid(S_buffer)',
-            'S_extra = S[.TODO = [FIBER_START_CORE_INVOKE n_outer n_capture pfiberstart, FIBER_START_CORE_RESULT n_outer n_capture pfiberstart, ECHO_RESULT, FIBER_FINISH n_outer]]',
+            'S_extra = S[.TODO = [FIBER_START_CORE_INVOKE n_outer n_capture pfiberstart, FIBER_START_CORE_RESULT n_outer n_capture pfiberstart, DISCARD, FIBER_FINISH n_outer]]',
             '$heap_graph(S_extra) = H',
             '~$fiber_start_core_result_valid(S_extra, n_outer, n_capture, pfiberstart)',
             '~$call_descriptors_valid(S_extra)',
