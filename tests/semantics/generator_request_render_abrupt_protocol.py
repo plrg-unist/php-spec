@@ -105,9 +105,26 @@ ptask_parent_tail* = (GENERATOR_CLOSE_DONE pgenclose) :: ptask_finish*
 pgenclose = pgenclose_original[.PENDING = eps]
 ''')
     checks += fatal.lines(r'''
-S_inner_step = $drive_steps(S_abrupt,1)
-S_inner_step.COMPLETION = NORMAL \/ S_inner_step.COMPLETION = BUDGET
-S_inner = S_inner_step[.COMPLETION = NORMAL]
+S_receiver_step = $drive_steps(S_abrupt,1)
+S_receiver_step.COMPLETION = NORMAL \/ S_receiver_step.COMPLETION = BUDGET
+S_receiver = S_receiver_step[.COMPLETION = NORMAL]
+S_receiver.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_receiver) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_receiver) :: (GENERATOR_REQUEST_REPORT pgenfatal_inner) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_parent_tail*
+pdestructionrelease_receiver.JOBS = [DESTRUCTION_VALUE (HOBJECT n_parent)]
+pdestructionrelease_receiver.CALLER = eps /\ pdestructionrelease_receiver.ORIGIN = eps
+pdestructionoperation_receiver.SOURCE = THROW_SEARCH n_inner
+pdestructionoperation_receiver.CALLER = eps /\ pdestructionoperation_receiver.ORIGIN = eps
+pdestructionoperation_receiver.PENDING = eps
+S_receiver.ALLOCATIONS = S_abrupt.ALLOCATIONS
+$heap_graph(S_receiver).NODES = $heap_graph(S_abrupt).NODES
+$heap_graph(S_receiver).EDGES = $heap_graph(S_abrupt).EDGES
+$heap_owners($heap_graph(S_receiver),HOBJECT n_inner) = 1
+$heap_owners($heap_graph(S_receiver),HOBJECT n_parent) = 2
+$heap_owners($heap_graph(S_receiver),HOBJECT n_generator) = 1
+$heap_owners($heap_graph(S_receiver),HOBJECT n_payload) = 1
+''')
+    checks += fatal.normal_valid('S_receiver')
+    checks += base.seek('S_inner', 'S_receiver', 411)
+    checks += fatal.lines(r'''
 S_inner.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_inner) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_parent_tail*
 S_inner.ORIGIN = eps
 S_inner.ALLOCATIONS = S_abrupt.ALLOCATIONS
