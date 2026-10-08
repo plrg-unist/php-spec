@@ -672,8 +672,14 @@ Fiber cursor. Strict354 compilation/init and 171 independent physical premises
 complete both unchanged originals with count1, D/E retirement and exact exception
 priority. Final 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed
 trait, storage, raw Fiber-array and ASSERTIONS additions; both whole CLI 60s
-timeouts retain zero agreement. Overlap, repeated
-internal suspension, different-active-pass reentry and whole CLI completion remain
+timeouts retain zero agreement. An internal residual callback can now suspend,
+detach its actual guarded VM and let a fresh worker scan the remaining physical
+suffix. The old worker keeps its own pin/finally error and terminates after later
+public completion; replacement errors stay separate. Both original continuations
+pass 197 independent physical premises, including count0 before old completion
+and later count1. Both whole CLI 60s timeouts retain zero agreement. Final 357 over
+`b7419cbe1` compiles at `9ce39cd54`. Last-cache-owner close, repeated detached
+suspension, overlap, different-active-pass reentry and whole CLI completion remain
 required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

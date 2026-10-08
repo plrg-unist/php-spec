@@ -310,9 +310,19 @@ and 93/78 independent physical premises complete both unchanged originals,
 including signed count1, D/E retirement and exact new/previous identities. Final
 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed abstract-method,
 typed freeing-read, raw Fiber-array tasks and ASSERTIONS additions. Both whole
-CLI 60s timeouts retain zero agreement. Overlap, repeated internal
-suspension, different-active-pass reentry, whole CLI completion and broader GC
-remain required.
+CLI 60s timeouts retain zero agreement.
+375 now detaches an internally suspended residual callback and starts a real
+replacement worker on the remaining physical suffix. The old guard pin and
+finally error stay in its actual saved VM; replacement pending is separate, and
+fresh-plan progress is unchanged until callbacks finish. Independent 92/105
+physical premises at separate `be1099c26` fixture cuts, finalized as `7e72ff341`,
+complete both unchanged originals, including count0 followed by later count1,
+distinct old/new errors and old-worker termination. Both whole CLI 60s timeouts
+retain zero agreement; the first error-state 120s cap retains zero affected credit.
+Final 357 over `b7419cbe1` compiles at `9ce39cd54`, preserving current assertions,
+private-constructor, storage, source and Generator cleanup changes. Last-cache-owner
+close, repeated detached suspension, overlap, different-active-pass reentry,
+whole CLI completion and broader GC remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
