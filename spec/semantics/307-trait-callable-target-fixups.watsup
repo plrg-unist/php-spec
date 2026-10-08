@@ -30,6 +30,7 @@ dec $trait_fcc_scope_receipt(pstate, pconstantclosure, pmethoddesc, pclosurescop
 dec $trait_fcc_clone_scope(pstate, pconstantclosure*, pmethoddesc, pclosurescope) : porigin?
 dec $trait_fcc_scope_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
 dec $trait_fcc_target_name(pstate, pcalltarget) : preqbytes?
+dec $trait_fcc_receipt_composition(pstate, ptraitcachecause) : (pstate, ptraitmethod*, ptraitmethod*)?
 dec $trait_fcc_receipt_methods(pstate, ptraitcachecause) : (pstate, ptraitmethod*)?
 dec $trait_fcc_receipt_original(pmethoddesc*, porigin) : pmethoddesc?
 dec $trait_fcc_receipt_target(pmethoddesc, ptraitmethod*) : pmethoddesc?
@@ -61,7 +62,7 @@ def $trait_real_source(S, pclassconstantdesc) = true
 
 ;; A failed class restores its raw descriptors. Reconstruct the exact method
 ;; copies at the birth prefix, without entering constant/property evaluation.
-def $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_copy, ptraitmethod*))
+def $trait_fcc_receipt_composition(S, ptraitcachecause) = ((S_copy, ptraitmethod*, ptraitmethod_required*))
   -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX <= |S.USERCONSTANTS|)
   -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc)
   -- if pclassdesc.KIND = "class"
@@ -76,6 +77,9 @@ def $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_copy, ptraitmethod*))
   -- if S_methods.COMPLETION = NORMAL
   -- if pclassdesc_copy = pclassdesc_raw[.METHODS = pclassdesc_raw.METHODS ++ $trait_composed_methods(ptraitmethod*)]
   -- if S_copy = S_methods[.CLASSES = $trait_class_set(S_methods.CLASSES, pclassdesc_copy)]
+def $trait_fcc_receipt_composition(S, ptraitcachecause) = eps -- otherwise
+def $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_copy, ptraitmethod*))
+  -- if $trait_fcc_receipt_composition(S, ptraitcachecause) = ((S_copy, ptraitmethod*, ptraitmethod_required*))
 def $trait_fcc_receipt_methods(S, ptraitcachecause) = eps -- otherwise
 def $trait_fcc_receipt_original(eps, porigin) = eps
 def $trait_fcc_receipt_original(pmethoddesc :: pmethoddesc_tail*, porigin) = (pmethoddesc)

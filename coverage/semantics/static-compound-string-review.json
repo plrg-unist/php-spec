@@ -126,7 +126,7 @@
     "python3 tests/semantics/static_compound_string_state_run.py REACHED/manifest.json"
   ],
   "boundaries": [
-    "Computed/dynamic selectors and self/parent/static class selectors, plus wider borrowed destination lifetime, remain separate.",
+    "Computed/dynamic selectors, keyword scopes entered through Closure/fromCallable or other callable wrappers, and wider borrowed destination lifetime remain separate.",
     "A registered-handler missing direct RHS-CV warning still stops at the preexisting Unsupported producer-continuation boundary.",
     "Earlier334/344/352 evidence and paused typed/NULL/finally-sensitive return-producer lanes are unchanged."
   ],
@@ -143,5 +143,92 @@
     "report": "reached-run-o8nhp08a/report.json",
     "reason": "Renderer update tried to bind the selected receiver before its saved field was extracted; compiler stop corrected only in fixture.",
     "credit": 0
+  },
+  "scoped_selectors": {
+    "decision": "Accepted six exact ordinary-method keyword originals,323 independently reached premises and actual347 compiler/init with pointwise current-parent review",
+    "behavior": "self/parent/static capture the checked METHOD_TARGET, STATIC_METHOD_TARGET or SCOPED_TARGET lexical/called selection before callbacks; selected ENTRY metadata retains source authority without owners or caller copies.",
+    "raw_directory": ".tools/scoped-static-compound-19/.tools/scoped-static-compounds",
+    "preserved_counterexample": {
+      "revision": "2ed57ca8afe6a120ac0963a984139ebae7051a2a",
+      "report": "probe-03d2qtya/report.json",
+      "native_stdout": "L;V:aafter;R:after;X:aafter;D:changed;E;",
+      "model_status": "unsupported",
+      "model_stdout": "",
+      "reason": "user object string conversion",
+      "agreement_credit": 0
+    },
+    "native_controls": {
+      "revision": "2ed57ca8afe6a120ac0963a984139ebae7051a2a",
+      "report": "native-controls-cm1mh5bi/report.json",
+      "originals": 5,
+      "model_agreement_credit": 0
+    },
+    "sources_and_private_compiler_init": {
+      "revision": "45f32a1576906c033bb09acd26154c1b2b92829a",
+      "modules": 344,
+      "report": "run-l4n926lk/report.json",
+      "normal_originals": 6,
+      "algo_bytes": 10962682,
+      "struct_bytes": 10629167,
+      "strict_SL_initial_premises": 6,
+      "strict_SL_initial_seconds": 5.317,
+      "passed": true,
+      "inputs_stable": true,
+      "groups_reaped": true
+    },
+    "reached_cuts": [
+      {
+        "revision": "b228479d6d3922358cc23d18bb8b5d80ad320551",
+        "report": "reached-run-8v92ou6p/report.json",
+        "group": "lexical-and-called-selection",
+        "premises": 144,
+        "algo_bytes": 11016702,
+        "strict_SL_seconds": 40.853,
+        "passed": true,
+        "inputs_stable": true,
+        "groups_reaped": true
+      },
+      {
+        "revision": "7144659277d273997a3207c0775c4e64cadb78e3",
+        "report": "reached-run-qcac_uul/report.json",
+        "group": "nested-selection-and-captured-reference",
+        "premises": 179,
+        "algo_bytes": 11024814,
+        "strict_SL_seconds": 29.025,
+        "passed": true,
+        "inputs_stable": true,
+        "groups_reaped": true
+      }
+    ],
+    "preserved_zero_credit_stops": {
+      "run-zozil5a3/report.json": "New helper declaration followed its first creator call; compiler stopped before execution.",
+      "reached-run-w721h3al/report.json": "A fixture closure mutation had the wrong option payload type; compiler stopped before execution.",
+      "reached-run-8v92ou6p/report.json": "The second group reused an inner/outer bad-state binder; only its failed179 was retried, while144 remains accepted."
+    },
+    "reproduce_source": [
+      "python3 tests/semantics/scoped_static_compound_prepare.py",
+      "python3 tests/semantics/scoped_static_compound_run.py PREPARED/report.json"
+    ],
+    "reproduce_states": [
+      "python3 tests/semantics/scoped_static_compound_prepare.py scoped-inherited-self-parent-static scoped-nested-called-scope-reentry scoped-static-reference-rebind",
+      "python3 tests/semantics/scoped_static_compound_state_prepare.py PREPARED/report.json",
+      "python3 tests/semantics/scoped_static_compound_state_run.py REACHED/manifest.json"
+    ],
+    "current_composition": {
+      "parent": "66160341f000abe235fc9cb0c30e34dccfa70e16",
+      "tested_revision": "c2b0f283bdfac7b8240e389c74a01b75f7297871",
+      "modules": 347,
+      "raw_directory": ".tools/scoped-static-compound-current-19/.tools/scoped-static-compounds",
+      "report": "run-3l5os_15/report.json",
+      "algo_bytes": 11052390,
+      "struct_bytes": 10719325,
+      "strict_SL_initial_premises": 6,
+      "strict_SL_initial_seconds": 5.173,
+      "passed": true,
+      "inputs_stable": true,
+      "groups_reaped": true,
+      "peer_projection": "257 discarded-result proof view,296 staged Weak liveness,301 physical buffer occupancy and360 Generator source/CONST guards remain intact; selected ENTRY adds no owners or caller copies.",
+      "renewed_source_or_reached_credit": 0
+    }
   }
 }

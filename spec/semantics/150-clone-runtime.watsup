@@ -64,14 +64,18 @@ def $clone_scope(S, n_source, n_new) = S
 
 dec $clone_object(pstate, nat) : pstate
 def $clone_object(S, n_source) = $stdclass_clone(S, n_source)
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if S.OBJECTS[n_source] = STDINSTANCE
 def $clone_object(S, n_source) = $clone_plain(S, n_source)
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if $class_plain_instance(S, n_source)
   -- if S.OBJECTS[n_source] =/= STDINSTANCE
 def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if $object_body(S.OBJECTS[n_source]) = NAMEDCLOSURE porigin
   -- if n = |S.OBJECTS|
 def $clone_object(S, n_source) = $clone_statics($clone_captures($clone_scope(S_new, n_source, n), n, pitem*), n, pstaticcell*)
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if $object_body(S.OBJECTS[n_source]) = REALCLOSURE porigin pitem* pstaticcell*
   -- if n = |S.OBJECTS|
   -- if S_new = S[.OBJECTS = S.OBJECTS ++ [REALCLOSURE porigin eps eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
@@ -83,9 +87,11 @@ dec $weakref_object(pobject) : bool
 def $weakref_object(pobject) = false -- otherwise
 dec $clone_value(pstate, pvalue, int) : pstate
 def $clone_value(S, POBJECT n, z) = $clone_object(S, n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n) /\ ~$fiber_object(S.OBJECTS[n])
   -- if ~$weakref_object(S.OBJECTS[n])
 def $clone_value(S, POBJECT n, z) = $throw_scalar(S, "Error", $ptascii("Trying to clone an uncloneable object of class ") ++ $object_name(S, n), z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $throwable_object(S, n)
 def $clone_value(S, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("clone(): Argument #1 ($object) must be of type object, ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"), z)
   -- if ~$clone_is_object(pvalue)
@@ -152,6 +158,7 @@ def $pipe_name(S, preqbytes_original, preqbytes_lookup, preqbytes_fallback?, pva
   -- if S_prepared = $intrinsic_pipe(S, INTRINSIC_CLONE, pvalue, porigin, z_call, eps)
   -- if S_prepared.TODO = (CLONE_INVOKE pclonecall) :: ptask_tail*
 def $clone_object(S, n_source) = $intrinsic_firstclass(S, pintrinsic)
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if S.OBJECTS[n_source] = INTRINSICCLOSURE pintrinsic
 
 dec $clone_call_nodes(pclonecall) : pnode*
@@ -298,6 +305,7 @@ def $clone_receive(S, pclonecall) = $clone_object($hold_task_inputs(S), n)[.BASE
   -- if S.TODO = ptask :: ptask_tail*
 def $clone_receive(S, pclonecall) = S_cloned[.TODO = (CLONE_UPDATE pclonecall n_object n_array 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if ~$instance_storage_freeing(S, n)
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$throwable_object(S, n)
   -- if $clone_method(S, n) = eps

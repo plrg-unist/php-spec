@@ -15,13 +15,16 @@ or allocates a fresh wrapper after its predecessor retires. `get` copies a live
 target into the ordinary result owner. Discarding or saving that result uses the
 existing ordered release machinery.
 
-Object IDs never reuse. `get` therefore checks target allocation membership,
-without a second registry or a store-handle identity. Ordinary destruction keeps
-that membership during `__destruct` and resurrection. Ordinary object free removes
-it before outgoing properties retire, so a property child observes its parent's
-weak reference as null. Closed Generator storage355 retains its physical pin and
-weak target through Closure/cache release, then notifies on final retirement.
-Retired target IDs remain valid wrapper history.
+Object IDs never reuse. `get` checks target allocation and the actual ordinary
+INSTANCE storage359 stage, without a second registry or a store-handle identity.
+Ordinary `__destruct` and resurrection keep the target live. During ordinary
+free_obj, Weak notification precedes child release while one physical parent pin
+remains allocated, so `get` already returns null. Native notification clears its
+raw pointer; the model retains the nonowning semantic ID as borrowed history.
+Closed Generator storage355 instead retains its weak target through Closure/cache
+release and notifies on final retirement. The ordinary pin, saved Fiber and
+Generator RETURN-child checks are recorded in the
+[property lifetime review](../../coverage/semantics/duplicate-property-reference-review.json).
 
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the

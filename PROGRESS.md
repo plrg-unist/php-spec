@@ -968,6 +968,21 @@ and refusal of whole `$GLOBALS` snapshots or expired borrowed-reference reads.
 Shared wrappers and surviving payloads decline this staged path. Earlier source,
 compiler and state cuts remain separate. The actual341 join over `6848742a2`
 passes strict initialization at `ecd8e8745`.
+Ordinary INSTANCE free_obj now retains one physical parent pin while visiting
+property slots in release order; this supersedes immediate physical retirement
+in the ordinary descendant path. WeakReference is already null during children,
+while safe class metadata remains readable. Five exact originals pass at
+`56b323d89`; separate Weak/get repairs pass affected2 at `99e3902c6`, and physical
+GC-slot occupancy passes affected1 plus strict346 at `d91ef1ea4`. Three fresh
+groups pass 164/57/67 premises at that latter cut, covering exact typed detach,
+A/B chaining, actual355 RETURN-child ownership and genuine parked Fiber pins.
+Adapted earlier ordinary fixtures carry no new credit; private303 INSTANCE pins,
+STDINSTANCE storage and wider raw-payload/escape behavior remain required.
+The 347-module join over `cd7d74529` passes strict initialization and one exact
+Iterator-child original at `5916e0e0b`. Its 113 shared premises at `9d007c3d4`
+preserve live Weak-result ownership of 2 and future-tail ownership of 1 after genuine
+destructor-result discard; added owners still reject queued close. The original
+shared failure/timeouts remain uncredited; prior359/360 campaigns are unchanged.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -1063,9 +1078,18 @@ compiler/init pass atc4ed; a separate typed-reference conversion/rejection origi
 passes at163e. New368 reached premises pass ate148, including future-entry,
 foreign-cell and repeated-site history rejection. Actual344 over COMP `e1c3d4d618` passes algo/struct/init at `f0e03c885`,
 with pointwise353/354/355/357 and owner-factor review in the
-[ledger](coverage/semantics/static-compound-string-review.json). Dynamic selectors,
-self/parent/static class selectors, wider borrowed lifetime and registered-handler missing-RHS continuations
-remain separate; paused return producers are unchanged.
+[ledger](coverage/semantics/static-compound-string-review.json).
+Ordinary-method `self`, `parent` and `static` selectors now capture the actual
+lexical/called scope before callbacks; nonowning selected ENTRY history retains
+the destination through nested calls, private shadows and reference rebinding.
+Six exact originals and private344 compiler/init pass at `45f32a157`;323 new
+reached premises retain separate144 at `b228479d6` and179 at `714465927` cuts.
+The unchanged earlier keyword Unsupported record retains zero agreement.
+Dynamic selectors, keyword scopes entered through Closure/fromCallable or other
+callable wrappers, wider borrowed lifetime and registered-handler missing-RHS
+continuations remain separate; paused return producers are unchanged. Actual347
+over `66160341f` passes algo/struct/init at `c2b0f283b`, with exact257/296/301/360
+parent review and no6/323 source/state renewal.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
@@ -1942,6 +1966,21 @@ at3.619/4.420s; these source1/59 cuts bridge unchanged. Current GC/Fiber/source
 fields and static-compound selectors are preserved. Raw compiler evidence is
 `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-nke5f48d`
 and `trait266-object-struct-elvmk9fw` in the same directory.
+Retained `new self` now rejects an unresolved implicit abstract trait requirement
+before arguments or instance allocation, using the exact copied requirements and live FCC
+scope; unknown proof stays Unsupported. At `a18e91e3e`/345 over `4cd2eab3a`, strict
+algo/struct pass3.569/4.469s, one shutdown PHP-error tuple and39 supplied NEW
+conditions plus6 setup clauses pass (44.118s), including all four global validators.
+Raw evidence under `.tools/trait-fcc-failed-target-current19/.tools/` is
+`method-runtime-3w3ufl_3`, `closure-call-protocol-gbmre4ve`,
+`trait266-object-algo-umrooye4` and `trait266-object-struct-o_3sgnyc`.
+The reviewed347 composition `7bfa05c07` over `0ac26ef29` passes strict algo/struct
+at3.569/4.522s; the unchanged source1/39 cuts bridge with current INSTANCE storage,
+scoped-static selection and Generator fields preserved. Raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-1knav8u7`
+and `trait266-object-struct-xxwdsrqv` in the same directory.
+The failed class remains unpublished; parent/interface construction contracts,
+including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do broader differing-owner later births and
