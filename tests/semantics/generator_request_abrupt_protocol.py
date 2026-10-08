@@ -147,6 +147,8 @@ $heap_owners($heap_graph(S_renderer),HOBJECT n_generator) = 1
 $heap_owners($heap_graph(S_renderer),HOBJECT n_payload) = 1
 $request_fatal_stderr(S_renderer.EVENTS) = eps
 ''')
+        if name == 'request-fatal-custom-render':
+            reject(checks, 'renderer_method', 'S_renderer[.FRAMES = pframe_renderer[.TODO = (STRINGIFY_RESULT n_exception porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal_string[.METHOD = eps]) :: ptask_string_tail*] :: pframe_renderer_tail*]', 'S_renderer')
         checks += base.seek('S_lookup', 'S_renderer', 303) + normal_valid('S_lookup')
         checks += lines(r'''
 S_lookup.RESULT = KNOWN (POBJECT n_generator)

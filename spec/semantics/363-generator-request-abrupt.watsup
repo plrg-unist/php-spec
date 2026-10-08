@@ -161,6 +161,10 @@ def $generator_request_string_tail(S, n, porigin_method, (GENERATOR_REQUEST_REPO
   -- if pgenfatal.OBJECT = n /\ pgenfatal.METHOD = (porigin_method)
   -- if $generator_request_report_valid(S, pgenfatal)
 def $generator_request_string_tail(S, n, porigin_method, ptask*) = false -- otherwise
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = S_root
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_method 0) :: ptask_tail*
+  -- if S_root = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $generator_request_string_tail(S_root, n, porigin_method, ptask_tail*)
 def $terminal_string_site(S, porigin_method, 0) = true
   -- if $shutdown_task_scope(S)
   -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_method) 0) :: (STRINGIFY_RESULT n porigin_method 0) :: ptask_tail*
