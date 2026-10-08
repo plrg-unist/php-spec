@@ -1,0 +1,119 @@
+[
+  {
+    "id": "author-fiber-constructor-callable-strict-weak-called-class",
+    "source": "<?php\ndeclare(strict_types=1);\nclass FiberCallableBase322A {\n    public static function make() { return new Fiber('self::run'); }\n    public static function run(int $x) { echo get_called_class(), ':', $x, '|'; return $x + 1; }\n}\nclass FiberCallableChild322A extends FiberCallableBase322A {}\nset_error_handler(static function ($level) { echo $level, '|'; return true; });\n$f = FiberCallableChild322A::make();\n$f->start('7');\necho $f->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "76c07423a503ff99ff4676f0e03ff1cabecc5830dad180a841607088f6fa7d10",
+    "native_stdout": "8192|FiberCallableChild322A:7|8",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "author-fiber-constructor-callable-bound-maker-source-scope",
+    "source": "<?php\nclass FiberCallableBase322B {\n    public function maker() { return function () { return new Fiber('self::run'); }; }\n    public static function run() { echo get_called_class(), '|'; return 9; }\n}\nclass FiberCallableChild322B extends FiberCallableBase322B {}\nset_error_handler(static function () { echo 'D|'; return true; });\n$o = new FiberCallableBase322B;\n$maker = $o->maker();\n$maker = $maker->bindTo(null, FiberCallableChild322B::class);\n$f = $maker();\nunset($maker, $o);\n$f->start();\necho $f->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "efdac17af7e3eebc7fd4942e45fa54258da1ea8c70440a137e0bd9efe057d770",
+    "native_stdout": "D|FiberCallableChild322B|9",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "author-fiber-constructor-callable-dynamic-birth-static-keyword",
+    "source": "<?php\nclass FiberCallableBase322C {\n    public static function make() { $class = 'Fiber'; return new $class('static::run'); }\n    public static function run() { echo get_called_class(), '|'; return 12; }\n}\nclass FiberCallableChild322C extends FiberCallableBase322C {}\nset_error_handler(static function () { echo 'D|'; return true; });\n$f = FiberCallableChild322C::make();\n$f->start();\necho $f->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "1c984d8719bda4b2e407086ff9c6831a8b133e62a82fec3ff57005b993f025cd",
+    "native_stdout": "D|FiberCallableChild322C|12",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "private-self-string",
+    "source": "<?php\nset_error_handler(static function () { echo 'D|'; return true; });\nclass ScopedPrivate322 {\n    private static function task(int $value) { echo 'T', $value, '|'; return $value + 1; }\n    public static function make() { return new Fiber('self::task'); }\n}\n$fiber = ScopedPrivate322::make();\necho 'C|';\n$fiber->start(7);\necho $fiber->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "3319f139718162e94b8fd2cc1a3834cb338044ed02e2e3b3e3c7370db7e18073",
+    "native_stdout": "D|C|T7|8",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "parent-receiver-retirement",
+    "source": "<?php\nset_error_handler(static function () { echo 'D|'; return true; });\nclass ScopedParent322 {\n    protected function task(int $value) { echo 'P', $value, '|'; return $value + 10; }\n}\nclass ScopedReceiver322 extends ScopedParent322 {\n    public function make() { return new Fiber([$this, 'parent::task']); }\n    public function __destruct() { echo 'R', Fiber::getCurrent() !== null, '|'; }\n}\n$receiver = new ScopedReceiver322;\n$fiber = $receiver->make();\nunset($receiver);\necho 'K|';\n$fiber->start(3);\necho $fiber->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "77d4b18daa5fc07f14eb413a4935619d92d348d5beffad473ea07e6090aa6139",
+    "native_stdout": "D|K|P3|R1|13",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "aliased-class-and-method-cache",
+    "source": "<?php\nclass ScopedAliasOther322 {\n    public static function b() { echo 'WRONG|'; return 99; }\n}\nclass ScopedAlias322 {\n    private static function a() { echo 'A|'; return 1; }\n    private static function b() { echo 'B|'; return 2; }\n    public static function make(&$class, &$method) { return new Fiber([&$class, &$method]); }\n}\n$class = 'self';\n$method = 'a';\nset_error_handler(static function () use (&$class, &$method) {\n    echo 'D|'; $class = 'ScopedAliasOther322'; $method = 'b'; return true;\n});\n$fiber = ScopedAlias322::make($class, $method);\n$class = 'missing';\n$method = 'missing';\necho 'C|';\n$fiber->start();\necho $fiber->getReturn(), ':', $class, ':', $method;\nrestore_error_handler();\n",
+    "source_sha256": "8989d46e5351753c8e71dda0ba0b26f3375fe269a9e0808f4e147cbaca99d7e6",
+    "native_stdout": "D|C|B|2:missing:missing",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "deprecation-handler-throws",
+    "source": "<?php\nset_error_handler(static function () { echo 'D|'; throw new RuntimeException('selection-stop'); });\nclass ScopedThrow322 {\n    private static function task() { echo 'WRONG|'; }\n    public static function make() { return new Fiber('self::task'); }\n}\ntry { $fiber = ScopedThrow322::make(); echo 'WRONG|'; }\ncatch (RuntimeException $error) { echo 'E|', $error->getMessage(); }\nrestore_error_handler();\n",
+    "source_sha256": "41314edff4cd040cbe9dca82da9ba5f9e5f64a9bdafdaed3570ea5f0ace8810e",
+    "native_stdout": "D|E|selection-stop",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "deprecation-handler-suspends",
+    "source": "<?php\nset_error_handler(static function () {\n    echo 'D|'; Fiber::suspend('W'); echo 'H|'; return true;\n});\nclass ScopedSuspend322 {\n    private static function task() { echo 'T|'; return 11; }\n    public static function make() { return new Fiber('self::task'); }\n}\n$maker = new Fiber(static function () { return ScopedSuspend322::make(); });\necho $maker->start(), '|';\n$maker->resume();\n$fiber = $maker->getReturn();\n$fiber->start();\necho $fiber->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "239f43134f8f51fe59caa6e3771ea59eaf1eb8105e65e768d48a74165ac8c0ac",
+    "native_stdout": "D|W|H|T|11",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "repeated-constructor-warns-first",
+    "source": "<?php\n$fiber = new Fiber('error_reporting');\nset_error_handler(static function () { echo 'D|'; return true; });\nclass ScopedRepeat322 {\n    private static function task() { echo 'WRONG|'; }\n    public static function replace(Fiber $fiber) { $fiber->__construct('self::task'); }\n}\ntry { ScopedRepeat322::replace($fiber); }\ncatch (FiberError $error) { echo $error->getMessage(), '|'; }\n$fiber->start(19);\necho $fiber->getReturn(), ':', error_reporting(), ':', ini_get('error_reporting');\nrestore_error_handler();\n",
+    "source_sha256": "5d3952591c6a0308510adcaa7d612c6488d08bf5feafd9709d4f7ca6db919f89",
+    "native_stdout": "D|Cannot call constructor twice|30719:30719:19",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "outside-scope-rejection",
+    "source": "<?php\nset_error_handler(static function () { echo 'WRONG|'; return true; });\ntry { $fiber = new Fiber('self::task'); echo 'WRONG|'; }\ncatch (TypeError $error) { echo $error->getMessage(); }\nrestore_error_handler();\n",
+    "source_sha256": "66c694390182237d02f4f9da9997b78dac6bd5ed7b5a0ded7032f9f33b267fef",
+    "native_stdout": "Fiber::__construct(): Argument #1 ($callback) must be a valid callback, cannot access \"self\" when no class scope is active",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "retired-internal-method-maker",
+    "source": "<?php\nset_error_handler(static function () { echo 'D|'; return true; });\nclass ScopedInternalMaker322 {\n    private static function task() { echo 'I|'; return 17; }\n    public static function make() { return new Fiber('self::task'); }\n}\n$maker = new Fiber([ScopedInternalMaker322::class, 'make']);\n$maker->start();\n$fiber = $maker->getReturn();\nunset($maker);\necho 'K|';\n$fiber->start();\necho $fiber->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "02739629d2d0da5a55a407c373f1fae5ad03aa914b052e74907281ecfb2b2ce6",
+    "native_stdout": "D|K|I|17",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "retired-api-selected-maker",
+    "source": "<?php\nset_error_handler(static function () { echo 'D|'; return true; });\nclass ScopedApiMaker322 {\n    private static function task() { echo 'J|'; return 23; }\n    public static function make() { return new Fiber('self::task'); }\n    public static function outer() { return new Fiber('self::make'); }\n}\n$maker = ScopedApiMaker322::outer();\n$maker->start();\n$fiber = $maker->getReturn();\nunset($maker);\necho 'K|';\n$fiber->start();\necho $fiber->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "2c829a78fb48ee11999306c103ac12cbeaec08000647b0dd4ce7932c20584c90",
+    "native_stdout": "D|D|K|J|23",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  },
+  {
+    "id": "same-class-maker-this-snapshot",
+    "source": "<?php\nset_error_handler(static function () { echo 'D|'; return true; });\nclass ScopedThis322 {\n    public $value;\n    private function task() { echo 'T', $this->value, '|'; return $this->value; }\n    public function make() { return new Fiber('self::task'); }\n}\n$first = new ScopedThis322;\n$other = new ScopedThis322;\n$first->value = 11;\n$other->value = 22;\n$fiber = $first->make();\necho 'K|';\n$fiber->start();\necho $fiber->getReturn();\nrestore_error_handler();\n",
+    "source_sha256": "e50cbed2a784cc41e4af0cc96eed8b58b8e3ab50c71da2887c519d9ccd722a7f",
+    "native_stdout": "D|K|T11|11",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal"
+  }
+]
