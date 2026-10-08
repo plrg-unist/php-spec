@@ -1147,8 +1147,14 @@ records their separate checks. Captured `start` also runs as a Fiber C-root
 callback, preserving the original outer buffer and its separate handler copy.
 The [start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json)
 records genuine caller chains, source-free inner traces and callback retirement
-before the original argument destructor. Outer unpacking, constructor captures
-and broader callable adapters remain required.
+before the original argument destructor. Bound `__construct` captures now retain
+their immutable receiver through direct, explicit `__invoke` and C-root calls.
+Callable parsing, including deprecated selectors and suspended warning handlers,
+precedes repeated-constructor rejection. Known registered callbacks reach that
+rejection without executing their body. The
+[constructor-capture ledger](coverage/semantics/fiber-constructor-callables-review.json)
+records source/error traces, parser ownership and last-RAW retirement. Outer
+unpacking and broader callable adapters remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

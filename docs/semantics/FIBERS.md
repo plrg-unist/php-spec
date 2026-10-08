@@ -452,7 +452,21 @@ the original argument destructor. The
 [start C-root ledger](../../coverage/semantics/fiber-start-core-callables-review.json)
 keeps the new cuts and the earlier348 Unsupported observation distinct.
 
-Outer argument unpacking, constructor capture and broader callable adapters
+Module354 adds bound `__construct` captures through direct, explicit `__invoke`
+and C-root entry. Immutable receiver selection, clone/equality and the original
+callback survive rejected reinitialization. Callable parsing precedes the READY
+status error, including deprecated selectors whose handlers throw or suspend.
+Its query and warning continuations retain the exact adjacent capture owner;
+C-root calls retain their genuine RAW/result owners and copied argument buffer.
+Known valid registered callbacks can reach repeated-constructor rejection without
+executing or caching an unsupported library body. Explicit entered constructor
+and `__invoke` trace frames retain the real site and indexed arguments; pre-entry
+unknown names have neither frame. Static constructor capture raises the native
+nonstatic-method error. The
+[constructor-capture ledger](../../coverage/semantics/fiber-constructor-callables-review.json)
+keeps the original builtin failure and distinct accepted cuts.
+
+Outer argument unpacking and broader callable adapters
 remain required; outer unpacking retains an explicit Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and

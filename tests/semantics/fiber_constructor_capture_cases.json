@@ -1,0 +1,101 @@
+[
+  {
+    "id": "peer-fiber-ctor-capture-dynamic-clone-binding",
+    "source": "<?php\n$target = new Fiber(static function () { echo 'O|'; return 17; });\n$other = new Fiber(static function () { echo 'X|'; return 99; });\n$selected = $target;\n$name = '__CoNsTrUcT';\n$ctor = $selected->$name(...);\n$copy = clone $ctor;\n$otherCtor = $other->__construct(...);\necho (int)($copy == $ctor), (int)($copy === $ctor), (int)($copy == $otherCtor), '|';\n$selected = $other;\n$name = 'resume';\ntry { $copy(callback: static function () { echo 'B|'; return 53; }); }\ncatch (FiberError $error) { echo $error->getMessage(), '|'; }\necho (int)($target->start() === null), '|', $target->getReturn(), '|', (int)$other->isStarted();\n",
+    "source_sha256": "3729cfbecd96654da202e71ef86feb6b445ed6305b4dbdff1133a79312767055",
+    "expected_model": "normal",
+    "native_stdout": "100|Cannot call constructor twice|O|1|17|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-ctor-capture-invoke-invalid-callback-trace",
+    "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$ctor = $target->__construct(...);\ntry { $ctor->__invoke(callback: 17); }\ncatch (TypeError $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\necho (int)$target->isStarted();\n",
+    "source_sha256": "9ecc54cf78af80fbce386ca2a2f9ceb93917e30b1f2b215db2b37c5628cfb015",
+    "expected_model": "normal",
+    "native_stdout": "Fiber::__construct(): Argument #1 ($callback) must be a valid callback, no array or string given|__construct->11|__invoke->11|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-ctor-capture-keyword-warning-before-status",
+    "source": "<?php\nclass CtorCaptureScope19 {\n    public static function callback() { echo 'B|'; }\n    public static function run($ctor, $throw) {\n        set_error_handler(static function ($level, $message) use ($throw) {\n            echo 'W', (int)($level === 8192), (int)($GLOBALS['weak']->get() !== null), '|';\n            if ($throw) {\n                unset($GLOBALS['target'], $GLOBALS['ctor']);\n                throw new Exception('warning');\n            }\n            return true;\n        });\n        try {\n            if ($throw) { $ctor->__invoke('self::callback'); }\n            else { $ctor('self::callback'); }\n        }\n        catch (FiberError $error) { echo 'E|'; }\n        catch (Exception $error) { echo $error->getMessage(), '|'; }\n        restore_error_handler();\n    }\n}\n$target = new Fiber(static function () { return 17; });\n$weak = WeakReference::create($target);\n$ctor = $target->__construct(...);\n$weakCtor = WeakReference::create($ctor);\nCtorCaptureScope19::run($ctor, false);\nCtorCaptureScope19::run($ctor, true);\necho (int)($weak->get() === null), (int)($weakCtor->get() === null);\n",
+    "source_sha256": "c21f5ffd970661ee587820d0af16a3ed4822d0dc9947ea840052cad1d8c5ec06",
+    "expected_model": "normal",
+    "native_stdout": "W11|E|W11|warning|11",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-ctor-capture-core-named-errors-and-traces",
+    "source": "<?php\n$target = new Fiber(static function () { echo 'O|'; return 17; });\n$ctor = $target->__construct(...);\n$runner = new Fiber($ctor);\ntry { $runner->start(callback: static function () { echo 'B|'; }); }\ncatch (FiberError $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\n$second = new Fiber($ctor);\ntry { $second->start(wrong: static function () { echo 'X|'; }); }\ncatch (Error $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\necho (int)$target->isStarted(), (int)$runner->isTerminated(), (int)$second->isTerminated(), '|';\n$target->start();\necho $target->getReturn();\n",
+    "source_sha256": "4e7c81040a309cd5d57a5e173da9a83f3b86e3f3b26c2d4162b6ef1be1e7e870",
+    "expected_model": "normal",
+    "native_stdout": "Cannot call constructor twice|__construct->00|start->11|Unknown named parameter $wrong|start->11|011|O|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-ctor-capture-argument-throw-retires-selection",
+    "source": "<?php\nfunction throwCtorCaptureArgument19() {\n    unset($GLOBALS['target'], $GLOBALS['ctor']);\n    echo 'A|';\n    throw new Exception('argument');\n}\n$target = new Fiber(static function () { echo 'B|'; return 17; });\n$weak = WeakReference::create($target);\n$ctor = $target->__construct(...);\n$weakCtor = WeakReference::create($ctor);\ntry { $ctor(throwCtorCaptureArgument19()); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\nunset($error);\necho (int)($weak->get() === null), (int)($weakCtor->get() === null);\n",
+    "source_sha256": "95ae62ed968c14792ff4908c14b396e3746eba358d83a40de196ed3d5915a188",
+    "expected_model": "normal",
+    "native_stdout": "A|argument|11",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-ctor-capture-core-last-raw-error-retirement",
+    "source": "<?php\nclass CtorCaptureCallback19 {\n    public function __invoke() { echo 'B|'; }\n    public function __destruct() {\n        echo 'D', (int)($GLOBALS['weak']->get() === null), (int)($GLOBALS['weakCtor']->get() === null), '|';\n    }\n}\n$target = new Fiber(static function () {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; return 61; }\n});\n$target->start();\n$weak = WeakReference::create($target);\n$ctor = $target->__construct(...);\n$weakCtor = WeakReference::create($ctor);\n$runner = new Fiber($ctor);\nunset($ctor, $target);\ntry { $runner->start(new CtorCaptureCallback19()); }\ncatch (FiberError $error) { echo 'E|'; }\nunset($error);\necho (int)($weak->get() === null), (int)($weakCtor->get() === null), (int)$runner->isTerminated();\n",
+    "source_sha256": "14f01ce87072aef4efd63292c57d0900e97e53532a7713d8236f993f2e5626ee",
+    "expected_model": "normal",
+    "native_stdout": "F|E|D11|111",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-ctor-capture-static-selection-error",
+    "source": "<?php\ntry { $ctor = Fiber::__construct(...); echo 'B|'; }\ncatch (Error $error) { echo $error->getMessage(); }\n",
+    "source_sha256": "e9c67e9e037a735c8430683d1711fe49b95a2438282d6bb00d37442f52771e75",
+    "expected_model": "normal",
+    "native_stdout": "Non-static method Fiber::__construct() cannot be called statically",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-ctor-core-compound-warning-suspends",
+    "source": "<?php\nclass CtorCoreWarningBase19 {\n    public static function callback() { echo 'B|'; }\n}\nclass CtorCoreWarningChild19 extends CtorCoreWarningBase19 {}\n$target = new Fiber(static function () { echo 'T|'; return 17; });\n$weak = WeakReference::create($target);\n$ctor = $target->__construct(...);\n$weakCtor = WeakReference::create($ctor);\n$runner = new Fiber($ctor);\nunset($target, $ctor);\nset_error_handler(static function ($level, $message) {\n    echo 'W', (int)($level === 8192), (int)(Fiber::getCurrent() === $GLOBALS['runner']), '|';\n    echo 'R', Fiber::suspend('P'), '|';\n    return true;\n});\necho $runner->start(callback: [CtorCoreWarningChild19::class, 'CtorCoreWarningBase19::callback']), '|';\ntry { $runner->resume(9); }\ncatch (FiberError $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\nunset($error);\nrestore_error_handler();\necho (int)$runner->isTerminated(), (int)($weak->get() === null), (int)($weakCtor->get() === null);\n",
+    "source_sha256": "7044c48fc400831cb97b524af6401a055202ce5128a399b5c08397ff7e363661",
+    "expected_model": "normal",
+    "native_stdout": "W11|RP|9|Cannot call constructor twice|__construct->00|resume->11|111",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-ctor-ready-builtin-validation",
+    "source": "<?php\n$target = new Fiber(static function () { echo 'O|'; return 17; });\n$ctor = $target->__construct(...);\ntry { $ctor('strlen'); }\ncatch (FiberError $error) { echo 'D|', $error->getMessage(), '|'; }\ntry { $ctor->__invoke(callback: '\\STRLEN'); }\ncatch (FiberError $error) { echo 'I|', $error->getMessage(), '|'; }\n$runner = new Fiber($ctor);\ntry { $runner->start(callback: 'strLen'); }\ncatch (FiberError $error) { echo 'C|', $error->getMessage(), '|'; }\necho (int)$target->isStarted(), (int)$runner->isTerminated(), '|';\n$target->start();\necho $target->getReturn();\n",
+    "source_sha256": "f5570b5bdf63087a2c4fb35df963678f94d79a3afb49c94b2d3435f15c9c7a58",
+    "expected_model": "normal",
+    "native_stdout": "D|Cannot call constructor twice|I|Cannot call constructor twice|C|Cannot call constructor twice|01|O|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-ctor-capture-preentry-error-traces",
+    "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$ctor = $target->__construct(...);\ntry { $ctor(wrong: 17); }\ncatch (Error $error) {\n    echo 'D|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\ntry { $ctor->__invoke(wrong: 17); }\ncatch (Error $error) {\n    echo 'I|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\ntry { $ctor->__invoke(); }\ncatch (ArgumentCountError $error) {\n    echo 'M|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\necho (int)$target->isStarted();\n",
+    "source_sha256": "909eb54536dc6cffdebe09f6acc7395b3bf4053500f3ebb8b8c5dc693c82a3cf",
+    "expected_model": "normal",
+    "native_stdout": "D|Unknown named parameter $wrong|I|Unknown named parameter $wrong|M|Fiber::__construct() expects exactly 1 argument, 0 given|__construct->11|__invoke->11|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-ctor-capture-named-invoke-trace-arguments",
+    "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$ctor = $target->__construct(...);\ntry { $ctor->__invoke(callback: 17); }\ncatch (TypeError $error) {\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], ':';\n        foreach ($row['args'] as $key => $value) { echo $key, '=', $value, ';'; }\n        echo '|';\n    }\n}\necho (int)$target->isStarted();\n",
+    "source_sha256": "954e776e09dda8ca6ae78c83db63c44ac4af29983b8ef7fac30959306e706fd8",
+    "expected_model": "normal",
+    "native_stdout": "__construct:0=17;|__invoke:0=17;|0",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
