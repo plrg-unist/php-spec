@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
+Actual close/cache owners survive normal rendering and handler-registry mutation;
+the reported exception releases after frozen emission and before bailout suppresses
+later destructors. Internal C-root trace rows preserve real function arguments.
+Seven exact php_error255 originals and 493 strict premises pass at separate cuts;
+original refusals, preparation stops and corrected trace/admission failures stay at zero.
+Abrupt rendering/release, message-warning conversion, parked/escaped storage and
+wider terminal cleanup remain required. [Ledger](coverage/semantics/generator-request-abrupt-review.json).
+
 Module 364 converts simple Fiber API arrays to first-class Closures, including
 start and constructor methods. An independent ARRAY witness freezes selected
 members; the temporary bound receiver owner moves into the Closure, while static

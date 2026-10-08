@@ -2,6 +2,8 @@
 ;; Normal source exhaustion enters the real reverse-global/store passes.
 
 dec $generator_request_terminal(pstate) : bool
+dec $generator_request_fatal_ready(pstate) : bool
+def $generator_request_fatal_ready(S) = false -- otherwise
 dec $generator_request_store_ready(pstate, nat) : bool
 dec $generator_request_frame_valid(pstate, pgenerator) : bool
 dec $generator_request_store_begin(pstate, nat, nat) : pstate
@@ -132,6 +134,7 @@ def $generator_close_done(S, pgenclose) = S[.TODO = (THROW_SEARCH n) :: (GENERAT
 def $generator_close_done(S, pgenclose) = S[.COMPLETION = UNSUPPORTED "Generator request-close uncaught exception"]
   -- if $generator_request_done_pending(S, pgenclose)
   -- if S.EXCEPTIONHANDLER = eps
+  -- if ~$generator_request_fatal_ready(S)
 def $generator_request_resume_valid(S, pgenclose) = true
   -- if $generator_request_root(S)
   -- if pgenclose.STAGE = CLOSE_FINISHED /\ pgenclose.PENDING = eps
@@ -220,6 +223,7 @@ def $generator_request_retired_valid(S, (n_object, n_handle) :: (n_tail, n_handl
 def $generator_request_retired_valid(S, (n_object, n_handle)*, nat*) = false -- otherwise
 rule PhpStep/generator-request-handler-abrupt: S ~> S[.COMPLETION = UNSUPPORTED "Generator request-close exception-handler failure"]
   -- if $generator_request_handler_abrupt(S)
+  -- if ~$generator_request_fatal_ready(S)
 def $generator_request_handler_abrupt(S) = true
   -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_REQUEST_RESUME pgenclose) :: ptask*
   -- if $generator_request_resume_valid(S, pgenclose)
