@@ -1140,7 +1140,9 @@ conversion. Captured references retain the original cell and typed result; scala
 concatenation restores the ordinary base without a selected-entry event. Five
 exact originals and private344 compiler/init pass at `09034d789`;241 reached
 premises pass at `fc7727974`. The unchanged earlier dynamic Unsupported record
-retains zero agreement. Final current-parent compilation remains pending.
+retains zero agreement. Actual349 over COMP `ea58ac361` passes algo/struct/init
+at `bba0c15be`, with pointwise361/362 and same-state graph-factor review and
+no5/241 source/state renewal.
 Computed property names, keyword scopes entered through Closure/fromCallable or
 other callable wrappers, wider borrowed lifetime and registered-handler
 missing-RHS continuations remain separate; paused return producers are unchanged.
