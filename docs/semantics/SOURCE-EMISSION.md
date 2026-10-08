@@ -207,3 +207,17 @@ reviewed ARG/GEN/Fiber/current-allocation-edge compatibility, without renewing
 earlier cuts. Other receiver
 modes, missing/alias entries, readonly chains, strings, ArrayAccess and wider
 property diagnostics remain on their earlier paths and require further coverage.
+
+Module357 selects the first INIT of a resolved named noarg nonbuiltin key call
+without namespace fallback in an ordinary CV-base DIM, under ECHO or before a
+literal property. The exact call/outer compiler lines, CODENAME and completed
+source image authenticate the key-call origin rather than the later DIM/property.
+Owned include/eval operands retire before the key call. Existing DIM_PATH keeps
+the CV base borrowed: the callback can define an absent base or replace it and
+retire its old child before lookup, while the returned key remains fixed. The
+existing missing-key warning resume likewise retains null after handler writes.
+The [ledger](../../coverage/semantics/source-call-key-emission-review.json) records
+six exact originals and128 independent premises at private341. Actual343 over
+`36ccc4520` passes strict compilation with reviewed Generator storage compatibility;
+relocation and the earlier cuts gain no renewed credit. Dynamic/builtin/argument/
+fallback calls, wider bases/consumers/emissions and providers remain required.

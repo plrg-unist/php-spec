@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source357 selects INIT for a named noarg nonbuiltin key call in an ordinary
+CV-base DIM, directly under ECHO or before a literal property. Owned include/eval
+operands retire before the call; existing runtime keeps the base borrowed and the
+returned key fixed before live lookup. Six exact originals and128 independent
+premises pass at `d198116d0`/341. Actual343 over `36ccc4520` passes strict compilation
+at `3bfd78e2d` with reviewed Generator storage/ordinary destructor compatibility.
+Earlier source/state cuts retain their inputs; dynamic/builtin/argument/fallback
+calls and wider emissions remain required.
+[Ledger](coverage/semantics/source-call-key-emission-review.json).
+
 Generator355 keeps one physical closed-storage pin through Closure/value/key/return
 release. Child callbacks retain weak Generator liveness and readable RETURN;
 consumed Closure/reference metadata adds no repeated owner. Existing257/303

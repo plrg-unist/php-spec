@@ -78,6 +78,13 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [First dimension reads](coverage/semantics/source-dimension-emission-review.json) now retire owned include/eval operands at the key compiler line before reading an ordinary CV base and CV or literal key. A narrow writable array-property receiver separates the protected array; a later literal property warning resumes with fixed null. Seven exact originals and245 independent premises retain their private336 cuts; actual340 passes strict compilation. Wider emission and receiver forms remain required.
 
+[Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
+now retire owned include/eval operands at the first INIT line. The ordinary CV
+base stays borrowed through the call; the returned key is fixed before live base
+lookup. Six exact originals and128 independent premises retain private341;
+actual343 passes strict compilation with reviewed Generator storage compatibility.
+Dynamic/builtin/argument/fallback calls and wider emissions remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)

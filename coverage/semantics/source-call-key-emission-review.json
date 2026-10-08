@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Owned include/eval operand retirement before INIT for an ordinary CV-base DIM whose key is a named noarg nonbuiltin call without namespace fallback, directly under ECHO or before a literal property. Existing runtime retains the borrowed base through key evaluation and the returned key before live lookup.",
+  "implementation": [
+    "spec/semantics/357-source-call-key-emission.watsup"
+  ],
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_delayed_compile_dim/zend_compile_call/zend_compile_echo",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_FETCH_DIM_R"
+  ],
+  "native": {
+    "report": ".tools/include-call-key-emission-357-private-19/.tools/call-key-originals-19/call-key-native-w7dbgsah/report.json",
+    "sha256": "e866587d800fab285f678724d4bed9d45a15e973b3c3022e15f45f21a3db19da",
+    "revision": "6d38acecccf0ac52a9ea47fa33a292815409c8e6",
+    "originals": 6,
+    "checked_guard_programs": 6,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_head_status_stable": true
+  },
+  "source_validation": {
+    "report": ".tools/include-call-key-emission-357-private-19/.tools/call-key-originals-19/call-key-source-run-zeql0bt7/report.json",
+    "sha256": "558e7b19de0e66cb7779269ef4ffbbdb62032c27e5b02301df87b534c0d7cfdc",
+    "revision": "d198116d0d4841dc2c8ab25af7f732a35f5f4cb4",
+    "modules": 341,
+    "source_agreements": 6,
+    "application_evaluations": 6,
+    "strict_compiler_seconds": 4.216,
+    "accepted_rows": [
+      "borrowed-live",
+      "undefined-base",
+      "retirement-throw",
+      "property-live",
+      "missing-key",
+      "eval-live"
+    ],
+    "elapsed_seconds": [
+      19.438,
+      13.528,
+      14.279,
+      17.622,
+      22.257,
+      9.698
+    ],
+    "inputs_head_status_stable": true
+  },
+  "independent_state": {
+    "report": ".tools/include-review-19-call-key-emission/state-run-h5dehcbe/report.json",
+    "sha256": "024ca2961edbddf2e92038d68d034fa73cae2921d3628f96c2e18a358bd23517",
+    "revision": "d198116d0d4841dc2c8ab25af7f732a35f5f4cb4",
+    "modules": 341,
+    "groups": [
+      "entry",
+      "admission"
+    ],
+    "physical_main_premises": [
+      59,
+      69
+    ],
+    "total_physical_main_premises": 128,
+    "bindings": 78,
+    "boolean_checks": 50,
+    "application_evaluations": 2,
+    "source_agreements": 0,
+    "elapsed_seconds": [
+      30.039,
+      4.539
+    ],
+    "inputs_module_stats_head_status_stable": true,
+    "scope": "Real source entry/destructor/key-call/DIM_FETCH, actual nonowning DIM_PATH caller suffix, old child retirement and fixed returned key/live base; genuine matching-compiler call/paired-line/CODENAME/image and six negative shapes."
+  },
+  "current_composition": {
+    "report": ".tools/include-call-key-emission-357-actual-19/.tools/call-key-emission-actual-current-19/call-key-emission-actual-compiler-x1qphmrp/report.json",
+    "sha256": "09a07c11e4890eea20c65b6dad59c70ee484a87c0cd78d17fad31a7f4da000b2",
+    "canonical_parent": "36ccc452090494b1a87cba8e7f886e177228345d",
+    "revision": "3bfd78e2dc36ddbf7688e95d994f60c937a342b6",
+    "modules": 343,
+    "strict_compiler_seconds": 4.145,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "compatibility": "Exact published342 manifest prefix plus unchanged357; closed Generator storage hooks retain ordinary destructor fallbacks and do not replace source/call/DIM certificates. Earlier source/state cuts retain their inputs."
+  },
+  "preserved_failures": [],
+  "pre_execution_fixture_corrections": "Property descriptor expectation11 instead of12 and strengthened real caller suffix; no failed applications or renewed source credit.",
+  "maintained_sources": {
+    "harness": "tests/semantics/source_stringable_retirement_sources.py",
+    "selectors": [
+      "call-key-borrowed-live",
+      "call-key-undefined-base",
+      "call-key-retirement-throw",
+      "call-key-property-live",
+      "call-key-missing-key",
+      "call-key-eval-live"
+    ],
+    "relocation": "Eval main and five children are byte-identical; five include mains change only three child-basename occurrences each. Six selectors are excluded from default selection.",
+    "renewed_application_evaluations": 0,
+    "renewed_source_agreements": 0
+  },
+  "reproduction": {
+    "private_cwd": ".tools/include-call-key-emission-357-private-19",
+    "native": "python3 .tools/call-key-originals-19/prepare-native.py",
+    "source": "python3 .tools/call-key-originals-19/run-source.py --native-report .tools/call-key-originals-19/call-key-native-w7dbgsah/report.json",
+    "state": "python3 .tools/include-review-19-call-key-emission/run-state.py --source-report .tools/include-call-key-emission-357-private-19/.tools/call-key-originals-19/call-key-source-run-zeql0bt7/report.json",
+    "actual_cwd": ".tools/include-call-key-emission-357-actual-19",
+    "current_compiler": "python3 .tools/call-key-emission-actual-current-19/run-compiler.py 36ccc452090494b1a87cba8e7f886e177228345d",
+    "caps_seconds": {
+      "compiler": 300,
+      "source_cli": 60,
+      "source_outer": 90,
+      "state_group": 90
+    },
+    "jobs": 1,
+    "profile": {
+      "error_reporting": 30719,
+      "include_path": ".:",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "mode": "SL",
+      "cache": false,
+      "det": true
+    },
+    "state_cwd": "."
+  },
+  "remaining": [
+    "Dynamic/builtin/argument/fallback key calls, wider bases/consumers/emissions/providers and complete core remain required.",
+    "Final combined fresh offline rebuild remains required; paused returns verification is unchanged."
+  ],
+  "review": "include_review_19 independently accepts semantic/native/source/state/relocation scope, introduced current-parent compatibility and the final343 strict compiler; final publication reviewed separately."
+}
