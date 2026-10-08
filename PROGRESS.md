@@ -445,7 +445,19 @@ admitting a nonempty CV-cell release. Raw checks:
 `.tools/compiler-eager-observed-edges-19/.tools/eager-observed-edges-controls-v1`.
 Final 340-module composition at `6c1a89b38` passes changed initialization in 4.270s.
 Raw final check: `.tools/compiler-eager-observed-edges-current-19/.tools/eager-observed-edges-current-controls-v1`.
-Its original full retry remains UNRUN.
+The `500a2cedc`/340 original retry matches native output but the public model
+still reaches host 55.045470 with empty streams and zero agreement; inputs stay
+stable and the group is reaped, with no speedup or 231 credit. Raw retry:
+`.tools/compiler-eager-observed-edges-current-19/.tools/full-default-retry-eager-observed-edges-v1/run-v1`.
+The driver now carries the successfully evaluated original-state eager owner
+order into the following GC. Exact `8c889199c`/340 passes initialization, 66 typed
+physical/52 main and 102 reached physical/82 main premises. The real empty-slot
+STMT and later nonempty UNSET have an authenticated origin-entry step between them.
+The declaration stop and original 98-premise task-assumption failure remain preserved failures.
+Raw checks: `.tools/compiler-owner-order-carry-19/.tools/owner-order-carry-controls-v{1,2,3}`.
+Final 343-module composition at `4a96bad9a` passes changed initialization in 4.320s.
+Raw final check: `.tools/compiler-owner-order-carry-current-19/.tools/owner-order-carry-current-controls-v1`.
+Its original retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
