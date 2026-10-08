@@ -17,6 +17,9 @@ def $fiber_object(pobject) = false -- otherwise
 def $fiber_put(S, n, pfiber) = S[.OBJECTS = $object_set(S.OBJECTS, n, FIBER pfiber)]
 def $fiber_empty() = {READY false, CALL eps, RAW PNULL, TARGET eps, BIRTH eps, CAPTURE eps, PRODUCER eps, ENTRY eps, FINISH eps, GC eps, STATUS FIBER_INIT, VM eps, VALUE PNULL, RETURNED false, FAILED false, GRACEFUL false, SEQUENCE 0}
 def $object_name(S, n) = $ptascii("Fiber") -- if S.OBJECTS[n] = FIBER pfiber
+def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, $ptascii("Fiber"))
+  -- if S.OBJECTS[n] = FIBER pfiber
+def $typed_given(S, POBJECT n) = $ptascii("Fiber") -- if S.OBJECTS[n] = FIBER pfiber
 def $getclass_live_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
