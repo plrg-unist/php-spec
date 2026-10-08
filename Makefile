@@ -656,6 +656,9 @@ test-semantics: build
 	python3 tests/semantics/generator_request_delegation_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_peer_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_abrupt_sources.py --mode full
+	python3 tests/semantics/generator_request_abrupt_peer_sources.py --mode full
+	python3 tests/semantics/generator_request_abrupt_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl

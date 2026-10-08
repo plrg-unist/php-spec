@@ -259,8 +259,10 @@ ordering and releases a closed Generator's Closure before its caches.
 physical pin and readable RETURN through child callbacks, then clears weak lookup.
 [Request delegation](coverage/semantics/generator-request-delegation-review.json)
 detaches inputs before finally while preserving CV owners, shared store order,
-delegated cache lifetime and nested normal handlers. Abrupt terminal cleanup,
-parked/escaped storage and nested ordinary-object RETURN reads remain required.
+delegated cache lifetime and nested normal handlers. [Request fatal cleanup 363](coverage/semantics/generator-request-abrupt-review.json)
+retains Generator/cache owners through normal fatal rendering, releases the reported
+exception before bailout, then suppresses later destructors. Abrupt rendering or
+exception release, parked/escaped storage and broader terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,

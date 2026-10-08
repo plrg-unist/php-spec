@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
+Actual close/cache owners survive normal rendering and handler-registry mutation;
+the reported exception releases after frozen emission and before bailout suppresses
+later destructors. Internal C-root trace rows preserve real function arguments.
+Seven exact php_error255 originals and 493 strict premises pass at separate cuts;
+original refusals, preparation stops and corrected trace/admission failures stay at zero.
+Abrupt rendering/release, message-warning conversion, parked/escaped storage and
+wider terminal cleanup remain required. [Ledger](coverage/semantics/generator-request-abrupt-review.json).
+
 Module 360 closes normal request delegations, detaching real input owners before
 finally while retaining independent CV owners and shared store order. Delegated
 CURRENT is the physical value slot; consumed-cell history is tied to the object's
