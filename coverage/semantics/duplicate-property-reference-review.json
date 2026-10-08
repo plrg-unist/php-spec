@@ -1,6 +1,6 @@
 {
   "target": "PHP 8.5.10 CLI NTS64 profile30719",
-  "status": "partial; independently reviewed private semantic/source and affected491 cuts accepted",
+  "status": "partial; independently reviewed private cuts and actual318 composition accepted",
   "semantic_cut": "3429f29ad",
   "tested_cut": "87f9b399a",
   "modules": 298,
@@ -108,5 +108,39 @@
     "states": "python3 tests/semantics/duplicate_property_reference_protocol.py --group GROUP",
     "prepare": "Add --prepare-only for checked frontend/adapter preparation with numeric/native/model0",
     "contract": "Numeric strictSL requires true newline/exit0/empty stderr, stable input snapshots and closed checked workers. Reports retain exact original hashes, selections and commands."
+  },
+  "composition": {
+    "parent": "afd57f1e5",
+    "cut": "f643ed070",
+    "modules": 318,
+    "compiler": {
+      "passed": true,
+      "raw": ".tools/properties-duplicate-reference-composed18/.tools/duplicate-reference-current318-sl-init1-attempt1/report.json",
+      "elapsed_seconds": 4.057,
+      "application_evaluations": 0
+    },
+    "earlier_actual_init": {
+      "cut": "ddcf5427f",
+      "modules": 317,
+      "passed": true,
+      "raw": ".tools/properties-duplicate-reference-composed18/.tools/duplicate-reference-current317-sl-init1-attempt1/report.json"
+    },
+    "source": {
+      "case": "duplicate-reference-foreach-binding-gc18",
+      "cut": "bb165653a plus bytes-literal correction49f78ebb9",
+      "raw": ".tools/properties-duplicate-reference-composed18/.tools/dynamic-property-warning-source-f91vkqzc/report.json",
+      "normal_agreements": 1,
+      "stdout": "warning|old|0|x=2|12/absent|done",
+      "source_sha256": "3e7b607e36e87d2b1998eabf383fdd1e2d2dbf6afb87b1df4f39ce8f3e158549"
+    },
+    "reached": {
+      "cut": "f643ed070 plus maintained binding-gc fixture",
+      "group": "binding-gc",
+      "premises": 92,
+      "raw": ".tools/properties-duplicate-reference-composed18/.tools/duplicate-property-reference-bo5o6618/report.json",
+      "native_model_evaluations": 0,
+      "meaning": "Genuine GC_TRACE in the prior CV destructor; saved main COMMIT solely owns the selected reference while OLD remains raw-readable with a masked edge. VM save/restore, wrong-line refusal, zero/one-step resume and atomic final installation."
+    },
+    "review": "Independent properties_review_19 accepts the additive331 task/object/FCC schema seam, bytes correction and fresh source/state scope. Earlier24 source and288/491 state cuts retain their own identities; no renewal."
   }
 }

@@ -18,6 +18,7 @@ CASES = {
     'receiver-cleanup':'reference-foreach-receiver-cleanup-rebind18',
     'notice-owner':'reference-foreach-invalid-key-unset-receiver-key-observer18',
     'scalar-warning':'reference-foreach-scalar-handler-retirement18',
+    'binding-gc':'duplicate-reference-foreach-binding-gc18',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -94,6 +95,12 @@ def $dupref_phase(S, 10) = true
 def $dupref_phase(S, 11) = true
   -- if S.CURRENT = eps /\ S.FRAMES = eps
   -- if S.TODO = (FOREACH_SCALAR_END n n_cell porigin pvalue z) :: ptask_tail*
+def $dupref_phase(S, 12) = true
+  -- if S.TODO = (GC_TRACE pgccall) :: ptask_tail*
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
 def $dupref_phase(S, n) = false -- otherwise
 dec $dupref_seek(pstate, nat, nat) : pstate
 def $dupref_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -423,6 +430,72 @@ def scalar_warning_assertions(initial, expected):
         '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
 
 
+def binding_gc_assertions(initial, expected):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_release', 4),
+        'S_release.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_release_tail*',
+        'pforeachbind.VALUE = POBJECT n_previous',
+        'pforeachbind.NAME = $ptascii("value")',
+        '$node_children(S_release, HCELL pforeachbind.OLD) = [HOBJECT n_previous]',
+        *seek('S_release', 'S_gc', 12),
+        'S_gc.TODO = (GC_TRACE pgccall) :: ptask_gc_tail*',
+        'S_gc.GC.ACTIVE = (pgccall)',
+        '$gc_trace_valid(S_gc, pgccall)',
+        'S_gc.FRAMES = [pframe_saved]',
+        '$foreach_bind_scope(S_gc, pforeachbind, S_gc.FRAMES) = (S_caller)',
+        '$foreach_bind_body_valid(S_caller, pforeachbind)',
+        '$foreach_bind_address_valid(S_caller, pforeachbind)',
+        '$foreach_bind_operation_queued(pframe_saved.TODO, pforeachbind)',
+        '$foreach_bind_pending_frames(S_gc, pforeachbind.OLD, S_gc.FRAMES)',
+        '~$foreach_bind_pending_tasks(S_gc, pforeachbind.OLD, S_gc.TODO)',
+        '$foreach_released_cell(S_gc, pforeachbind.OLD)',
+        'S_gc.STORE[pforeachbind.OLD] = DEFINED (POBJECT n_previous)',
+        '$node_children(S_gc, HCELL pforeachbind.OLD) = eps',
+        'S_gc.STORE[pforeachbind.NEW] = DEFINED (PINT 2)',
+        '$heap_owners($heap_graph(S_gc), HCELL pforeachbind.NEW) = 1',
+        '(HCELL pforeachbind.NEW) <- $frames_roots(S_gc.FRAMES)',
+        '~((HCELL pforeachbind.NEW) <- $tasks_nodes(S_gc.TODO))',
+        '$task_nodes(FOREACH_BIND_COMMIT pforeachbind) = [HCELL pforeachbind.NEW]',
+        '$task_nodes(GC_TRACE pgccall) = eps',
+        'S_read = $global_read_name(S_gc, pforeachbind.NAME, pforeachbind.LINE)',
+        'S_read.COMPLETION = NORMAL', 'S_read.RESULT = KNOWN (POBJECT n_previous)',
+        'pfibervm = $fiber_vm(S_gc)',
+        '$foreach_bind_pending_vm(S_gc, pforeachbind.OLD, pfibervm)',
+        '(HCELL pforeachbind.NEW) <- $fiber_vm_nodes(pfibervm)',
+        'pfibervm.FRAMES = S_gc.FRAMES',
+        'pfibervm.DESTRUCTOROPERATIONS = S_gc.DESTRUCTION.OPERATIONS',
+        'S_restored = $fiber_vm_restore(S_gc, pfibervm)',
+        '$foreach_released_cell(S_restored, pforeachbind.OLD)',
+        '$node_children(S_restored, HCELL pforeachbind.OLD) = eps',
+        '$heap_owners($heap_graph(S_restored), HCELL pforeachbind.NEW) = 1',
+        'pforeachbind_bad = pforeachbind[.LINE = $(pforeachbind.LINE + 1)]',
+        '~$foreach_bind_body_valid(S_caller, pforeachbind_bad)',
+        '~$call_task_valid(S_caller, FOREACH_BIND_COMMIT pforeachbind_bad)',
+        'S_zero = $drive(S_gc, 0)', 'S_zero.COMPLETION = BUDGET',
+        'S_zero[.COMPLETION = NORMAL] = S_gc',
+        'S_one_found = $drive_steps(S_gc, 1)', 'S_one_found.COMPLETION = BUDGET',
+        'S_one = S_one_found[.COMPLETION = NORMAL]', *valid('S_one'),
+        '$foreach_released_cell(S_one, pforeachbind.OLD)',
+        '$node_children(S_one, HCELL pforeachbind.OLD) = eps',
+        '$heap_owners($heap_graph(S_one), HCELL pforeachbind.NEW) = 1',
+        *seek('S_one', 'S_finish', 6),
+        'S_finish.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_finish_tail*',
+        'pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        'pdestructionoperation.PENDING = eps',
+        '$foreach_bind_operation_source_valid(S_finish, pdestructionoperation, pforeachbind)',
+        '$dupref_output(S_finish.EVENTS) = $ptascii("warning|old|0|")',
+        'S_commit_found = $drive_steps(S_finish, 1)', 'S_commit_found.COMPLETION = BUDGET',
+        'S_commit = S_commit_found[.COMPLETION = NORMAL]', *valid('S_commit'),
+        '$lookup(S_commit.ENV, pforeachbind.NAME) = (pforeachbind.NEW)',
+        'S_commit.STORE[pforeachbind.OLD] = UNDEFINED',
+        '~$foreach_released_cell(S_commit, pforeachbind.OLD)',
+        'S_done = $drive(S_commit, 2048)',
+        r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
+        'S_done.ITERATORS = eps', 'S_done.DESTRUCTION.OPERATIONS = eps',
+        'S_done.GC.ACTIVE = eps', 'S_done.GC.PLAN = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -431,6 +504,7 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
+            binding_gc_assertions(initial, sources.EXPECTED[case]) if group=='binding-gc' else
             scalar_warning_assertions(initial, sources.EXPECTED[case]) if group=='scalar-warning' else
             notice_owner_assertions(initial) if group=='notice-owner' else
             receiver_cleanup_assertions(initial, sources.EXPECTED[case]) if group=='receiver-cleanup' else

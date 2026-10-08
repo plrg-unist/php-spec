@@ -706,6 +706,8 @@ cell across replacement, unset and object/array/scalar changes. Previous plain-C
 object destruction reads the old value before the selected reference is installed;
 normal and throwing cleanup preserve that reference. Late scalar warnings retain
 the iterator owner through callbacks and remove it on normal or abrupt completion.
+A fresh original and 92 reached premises cover explicit GC while the saved binding
+continuation retains its selected cell; the318 composition retains Fiber API captures.
 Released-CV mutation, wider callback-capable containers, binding-time exit and
 expired notice buckets remain explicit boundaries; full foreach coverage remains
 required.

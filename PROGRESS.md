@@ -72,8 +72,8 @@ WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332,
 Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with317 modules composed over
-`e91fc6d6d`. The ordered integration preserves
+with 318 modules composed over
+`afd57f1e5`, retaining static Fiber API captures331. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
@@ -531,8 +531,11 @@ replacement and object/array/scalar dispatch; late scalar warnings retain that
 owner until normal or abrupt iterator removal. Initial12 normals and288 reached
 premises retain their earlier cuts. The shared-receiver extension has12 additional
 exact normals at separate cuts, strict SL298 initialization and491 affected
-premises at87f9b399a. HOBJECT-owner forgeries fail public reference-foreach
-admission. Mutation of the released CV, callback-capable container retirement,
+premises at87f9b399a. The actual318 join at `f643ed070` passes strict
+initialization and 92 fresh GC/saved-COMMIT premises; one separately tested
+original collects during the previous CV destructor with exact normal output.
+The331 schema/FCC seam is independently reviewed; earlier cuts keep their inputs.
+HOBJECT-owner forgeries fail public reference-foreach admission. Mutation of the released CV, callback-capable container retirement,
 binding-time exit, nonordinary replacement objects and expired notice buckets
 remain explicit boundaries. Bounded source/current-address admission is not a
 historical reachability proof. The concise
