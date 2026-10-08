@@ -23,7 +23,6 @@ def $fiber_suspend(S, pconfigcall, pvalue) = $gc_worker_physical_suspend(S, pcon
   -- if $gc_worker_physical_suspend_ready(S)
 def $gc_worker_physical_suspend(S, pconfigcall) = $destructor_release_begin(S_detached, [DESTRUCTION_VALUE (HOBJECT n)])
   -- if S.ACTIVEFIBER = (n)
-  -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.GC = (pgcworker)
   -- if pgcworker.GUARD = (pgcguard)
@@ -39,9 +38,6 @@ def $gc_worker_physical_suspend(S, pconfigcall) = $destructor_release_begin(S_de
   -- if S_returned.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_return*
   -- if pgcscan = S_returned.GC.SCAN[.INDEX = $(S_returned.GC.SCAN.INDEX + 1)]
   -- if S_detached = S_returned[.GC.WORKER = eps][.GC.SCAN = pgcscan][.TODO = (GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_return*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
-def $gc_worker_physical_suspend(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "last-owner close during physical collector replacement"]
-  -- if S.ACTIVEFIBER = (n)
-  -- if $($heap_owners($heap_graph(S), HOBJECT n) <= 1)
 
 def $gc_task_consumer(GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan, pgccall) = 1 -- if pgcplan.CALL = pgccall
 def $gc_task_plan_consumer(GC_WORKER_PHYSICAL_REPLACE pgcplan_task pgcscan, pgcplan) = 1 -- if pgcplan_task = pgcplan
@@ -79,3 +75,44 @@ def $gc_worker_physical_start(S, pgcplan, pgcscan) = $gc_worker_internal_next(S_
 
 def $gc_worker_replacement_tasks((GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_tail*, pgcplan) = true
 def $gc_worker_replace_tasks((GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_tail*, pgcplan, pgcplan_new) = (GC_WORKER_PHYSICAL_REPLACE pgcplan_new pgcscan) :: ptask_tail*
+
+;; Cache release may close the detached worker before its replacement starts.
+;; Only the actual private-control release tail gains storage admission.
+dec $gc_worker_physical_retiring(pstate, nat) : bool
+dec $gc_worker_physical_retiring_mode(pstate, nat, pfiber, pdestructionrelease, pdestructionoperation, pgcplan) : bool
+def $gc_worker_physical_retiring(S, n_exit) = true
+  -- if $(n_exit < |S.OBJECTS|) /\ (HOBJECT n_exit) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_exit] = FIBERGRACEFUL n_worker n_sequence
+  -- if $(n_worker < n_exit) /\ $(n_sequence > 0) /\ $(n_sequence < S.FIBERSEQ)
+  -- if S.GC.WORKER =/= (n_worker)
+  -- if $fiber_at(S, n_worker) = (pfiber)
+  -- if pfiber.STATUS = FIBER_TERMINATED /\ pfiber.SEQUENCE = n_sequence
+  -- if pfiber.VALUE = PNULL /\ ~pfiber.RETURNED
+  -- if $fiber_record_valid(S, n_worker, pfiber)
+  -- if n_worker <- S.DESTRUCTION.CALLED
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_control) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (DESTRUCTOR_RELEASE pdestructionrelease_worker) :: (GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_tail*
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease_control :: pdestructionrelease_worker :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if pdestructionrelease_control.USER /\ $destructor_release_valid(S, pdestructionrelease_control)
+  -- if pdestructionrelease_worker.USER /\ $destructor_release_valid(S, pdestructionrelease_worker)
+  -- if pdestructionrelease_worker.JOBS = [DESTRUCTION_VALUE (HOBJECT n_worker)]
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if $gc_worker_physical_replace_valid(S, pgcplan, pgcscan)
+  -- if $gc_worker_physical_retiring_mode(S, n_exit, pfiber, pdestructionrelease_control, pdestructionoperation, pgcplan)
+def $gc_worker_physical_retiring(S, n_exit) = false -- otherwise
+def $gc_worker_physical_retiring_mode(S, n_exit, pfiber, pdestructionrelease, pdestructionoperation, pgcplan) = true
+  -- if pfiber.GRACEFUL /\ ~pfiber.FAILED
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_exit
+  -- if n_owners = $heap_count(HOBJECT n_exit, $destruction_job_nodes(pdestructionrelease.JOBS))
+  -- if $(n_owners > 0) /\ $heap_owners($heap_graph(S), HOBJECT n_exit) = n_owners
+def $gc_worker_physical_retiring_mode(S, n_exit, pfiber, pdestructionrelease, pdestructionoperation, pgcplan) = true
+  -- if pfiber.FAILED /\ ~pfiber.GRACEFUL
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_exit)]
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_error
+  -- if $throwable_member(S, n_error)
+  -- if pgcplan.CALL.PENDING = (n_error)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_exit) = 1
+def $gc_worker_physical_retiring_mode(S, n_exit, pfiber, pdestructionrelease, pdestructionoperation, pgcplan) = false -- otherwise
+def $gc_worker_graceful_retiring(S, n_exit) = true
+  -- if $gc_worker_physical_retiring(S, n_exit)

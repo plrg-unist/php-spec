@@ -556,5 +556,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-residual-last-owner-failed-finally-prior-error-review-preparation-29",
+    "source": "<?php\n$w=null;$v=null;$o=new Exception;$n=new Exception;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w;\n  if($this->k===0){$w->resume();}else{Fiber::suspend();}\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);gc_collect_cycles();\nclass D {\n public $s;\n function __destruct(){\n  global $v,$n;$v=WeakReference::create(Fiber::getCurrent());\n  try{Fiber::suspend();}finally{throw $n;}\n }\n}\n$t=new Fiber(function(){\n $d=new D;$d->s=$d;unset($d);gc_collect_cycles();\n});\n$t->start();\nclass E {\n public $s;\n function __destruct(){echo 'E|';}\n}\n$u=new Fiber(function()use($o){\n $e=new E;$e->s=$e;unset($e);\n try{throw $o;}finally{gc_collect_cycles();}\n});\n$w=null;\ntry{$u->start();}catch(Throwable $c){\n echo $c===$n?'new|':'bad-new|';\n echo $c->getPrevious()===$o?'old|':'bad-old|';\n}\necho $v->get()===null?'worker-gone|':'worker-held|';\necho 'END';\n",
+    "source_sha256": "55a9a93ecf76a7d197b58c1c353c70a97f3b574be9b02ce562c323df24594ad1",
+    "stdout": "E|new|old|worker-gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
