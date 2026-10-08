@@ -18,6 +18,9 @@ Strict342 initialization, ten exact normal originals at7+3 cuts and independent2
 plus author114 reached premises pass. The original trace mismatch and two fixture
 stops retain zero affected credit; native recorder preparation stopped before
 launch and is separate from the accepted ten-original native cut.
+The actual345 composition over `d5e07cef2` passes strict initialization, preserving
+current Generator/source/property/collector and trait target-reuse guards; earlier
+source/state cuts retain their inputs.
 Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
