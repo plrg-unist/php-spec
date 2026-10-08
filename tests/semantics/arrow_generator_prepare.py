@@ -41,14 +41,16 @@ DECLARATIONS = {
 }
 UNSUPPORTED = {
     'reference-arrow-yield': (b'<?php\n$x=5;$f=fn&()=>yield $x;foreach($f() as $v){echo $v;}echo "Z";\n', b'5Z', 'generator reference yields', 0),
-    'missing-key-handler-required': (b'<?php\nfunction warn($n,$m,$f,$l){echo "W",$l,"|";return true;}set_error_handler("warn");\n$f=fn()=>yield $missingKey=>4;\n$g=$f();echo "C|",$g->current(),":",(int)($g->key()===null),"|";$g->send(8);echo $g->getReturn();\n', b'C|W3|4:1|8', 'error-handler ingress requires a producer continuation', 0),
 }
+# The unchanged missing-key original is now a normal321 case in
+# yield_key_warning_prepare.py; its old Unsupported evidence keeps its own cut.
 WATCHED = driver.WATCHED + [
     'spec/semantics/95-typed-calls.watsup',
     'spec/semantics/117-arrow-compiler.watsup',
     'spec/semantics/118-arrows.watsup',
     'spec/semantics/310-generator-fiber-close.watsup',
     'spec/semantics/311-arrow-generators.watsup',
+    'spec/semantics/321-yield-key-warning.watsup',
     'tests/semantics/arrow_generator_prepare.py',
 ]
 

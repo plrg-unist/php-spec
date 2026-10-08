@@ -37,14 +37,16 @@ core-only companions replace its `var_dump` observer with language operations
 and add independent capture, scope, return and ownership witnesses.
 
 Ordinary YIELD value-CV warnings freeze null before reading a delayed key.
-Source/site/name/line and key shape authenticate the continuation. Handler throws
-skip this Generator's own body catch/finally, retain the cached key and transfer
-the same Throwable to its real resumer. The closed Generator owns its Closure
+Source/site/name/line and key shape authenticate the continuation. With a direct
+API resumer, handler throws skip this Generator's own body catch/finally, retain the cached key and
+transfer the same Throwable to its real resumer. The closed Generator owns its Closure
 before frame retirement; this matches `zend_generator_get_gc` and avoids freeing
 a last-owned Closure during the new throw shortcut. A pending exception in an
 already-entered finally is discarded without adding a previous link. Forced close
-is excluded from this warning ingress; a known-value key-CV warning remains
-Unsupported.
+is excluded from this warning ingress. [Module321](YIELD-KEY-WARNINGS.md) adds
+known-value key-CV warnings and distinguishes the genuine immediate delegated
+child resumer: that child's own catch/finally receives the same Throwable first.
+Its cached value and Closure retain their real owners through callbacks and close.
 
 Literal `$GLOBALS` keys require an array snapshot. The unchanged source uses
 explicit primitive request facts through the existing native FD198 provider and

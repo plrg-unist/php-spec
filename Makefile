@@ -605,6 +605,12 @@ test-semantics: build
 	python3 tests/semantics/arrow_generator_integration.py --mode full
 	python3 tests/semantics/arrow_generator_integration_protocol.py --mode check --sl
 	python3 tests/semantics/arrow_generator_cleanup_protocol.py --mode check --sl
+	python3 tests/semantics/yield_key_warning_prepare.py --mode full
+	python3 tests/semantics/yield_key_warning_review.py --mode full
+	python3 tests/semantics/yield_key_warning_protocol.py --mode check --sl
+	python3 tests/semantics/yield_key_release_protocol.py --mode check --sl
+	python3 tests/semantics/yield_key_identity_review.py --mode full
+	python3 tests/semantics/yield_key_identity_protocol.py --mode check --sl
 	python3 tests/semantics/iterator_declaration_notices.py
 	python3 tests/semantics/eval_declaration_notices_protocol.py
 	python3 tests/semantics/runtime_formatter_protocol.py

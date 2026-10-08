@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Integrated321 copies a known YIELD value before an ordinary missing
+key-CV warning, authenticates one object-specific partial-cache carrier and keeps
+null key/index/opcode-line behavior through callbacks. Actual child-resume markers
+select child catch/finally reinjection for KEY and311 VALUE warnings; direct API
+resumers preserve closed-cache ownership. A narrow303 release-only handoff moves
+cached destructor owners once and preserves replacement exception priority.
+Strict compiler295,27 exact normal observations and eight genuine reached groups
+with658 physical premises pass at their separate c102/7edf cuts. Actual
+`642659405`/304 composition passes strict compiler305 at `309c9b25f`, preserving
+accepted receive/source/ARG319/collector fields. Independent seam review requires
+no source/state renewal. Original failures and the older required close Unsupported
+retain zero credit.
+[Scope and results](docs/semantics/YIELD-KEY-WARNINGS.md).
+
 Arrow Generator311 is integrated; its frozen310/276 cut retains44 normal source
 agreements, nine compiler rejections and10 genuine strict-SL groups with987
 setup-inclusive premises retain separate cuts; two required Unsupported controls
@@ -28,10 +42,10 @@ renewal. Earlier cuts retain their own tested parents.
 
 The current source includes accepted ArrayAccess292/304/309/319, eager destruction270,
 WeakReference296, ordinary cycle collection301 and collector Fibers317,
-Fiber291/302/308/313, Generator289/303/310/311 and source operands293/298,
+Fiber291/302/308/313, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with304 modules descended from
+with305 modules descended from
 `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323.
 The property/clone composition passes strict SL290/compiler application0 at

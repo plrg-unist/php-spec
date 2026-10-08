@@ -27,6 +27,7 @@ dec $generator_increment(int) : int
 dec $generator_index(int, pvalue) : int
 dec $generator_yield_line(pstate, porigin) : int
 dec $generator_suspend(pstate, porigin, poperand?) : pstate
+dec $generator_yield_key_pending(pstate) : bool
 dec $generator_close_active(pstate) : bool
 dec $generator_values_nodes(pvalue?) : pnode*
 dec $generator_frame_nodes(pframe?) : pnode*
@@ -72,6 +73,7 @@ dec $generator_record_valid(pstate, pgenerator) : bool
 dec $generator_closure_valid(pstate, pgenerator) : bool
 dec $generator_objects_valid(pstate, pnode*) : bool
 dec $generator_node_valid(pstate, pnode) : bool
+dec $generator_yield_key_node_valid(pstate, nat) : bool
 dec $generator_object_valid(pstate, pobject) : bool
 dec $generator_finalizer_tasks(pstate, ptask*) : bool
 dec $generator_finalizer_task(pstate, ptask) : bool
@@ -408,6 +410,8 @@ rule PhpStep/generator-yield-suspend: S ~> $generator_suspend(S, porigin, popera
   -- if S.TODO = (GENERATOR_YIELD_STORE porigin poperand?) :: ptask_tail*
   -- if $generator_active(S)
   -- if ~$generator_close_active(S)
+  -- if ~$generator_yield_key_pending(S)
+def $generator_yield_key_pending(S) = false -- otherwise
 
 def $generator_values_nodes(eps) = eps
 def $generator_values_nodes((pvalue)) = $value_nodes(pvalue)
@@ -807,7 +811,8 @@ def $generator_record_valid(S, pgenerator) = true
 def $generator_record_valid(S, pgenerator) = false -- otherwise
 def $generator_objects_valid(S, eps) = true
 def $generator_objects_valid(S, pnode :: pnode_tail*) = ($generator_node_valid(S, pnode) /\ $generator_objects_valid(S, pnode_tail*))
-def $generator_node_valid(S, HOBJECT n) = $generator_object_valid(S, S.OBJECTS[n])
+def $generator_node_valid(S, HOBJECT n) = ($generator_object_valid(S, S.OBJECTS[n]) /\ $generator_yield_key_node_valid(S, n))
+def $generator_yield_key_node_valid(S, n) = true -- otherwise
 def $generator_node_valid(S, HARRAY n) = true
 def $generator_node_valid(S, HCELL n) = true
 def $generator_object_valid(S, GENERATOR pgenerator) = $generator_record_valid(S, pgenerator)

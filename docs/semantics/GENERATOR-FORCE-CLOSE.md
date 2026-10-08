@@ -25,6 +25,12 @@ priority over ordinary eager CV staging; a replacement exception returns to the
 outer release carrier, so later slots still release before propagation. Pending
 eager releases without an operation or frame carrier remain Unsupported.
 
+The [321 cache-release interaction](YIELD-KEY-WARNINGS.md) admits an uncalled
+cached destructor through an authenticated top carrier and release-only path to
+its exit. Local/caller pending exceptions merge before entry; replacements update
+the same Generator release and exit. Other close stages and wider user-destructor
+release remain required.
+
 Forced entry skips the unfinished body and its catches. Already-entered finally
 return/throw/break/goto outcomes release their held values in the actual caller
 before proceeding outwards. Normal finally completion skips the ordinary body
