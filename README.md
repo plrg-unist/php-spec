@@ -491,8 +491,13 @@ Three new exact originals and two strict-SL groups with169 premises pass at
 separate cuts; the final315 current-parent join passes combined compilation.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
-originals and two independent reached groups (216 physical premises) retain their private cut; final319
-compilation preserves331/324. Failed-finally close remains required.
+originals and two independent reached groups (216 physical premises) retain their
+private cut; final319 compilation preserves331/324. Failed close338 retires its
+one remaining private control owner while the real error stays pending in the
+caller, including genuine prior-exception identity through a saved caller.
+Two exact normal originals and two independent reached groups (247 physical
+premises) pass at separate private cuts; tested322 preserves328/336. Active-pass
+failed close and wider close contexts remain required.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)

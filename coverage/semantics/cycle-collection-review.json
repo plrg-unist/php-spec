@@ -561,7 +561,7 @@
     "native_only_zero335_credit": {
       "unset_alias_retains_worker": "gc-collector-native-16-kuprywld/report.json: first:D|0|held|worker-live|next:finally|2|target-gone|END; unset leaves the suspended destructor global alias live, so this is not a quiescent last-owner close.",
       "throwing_unset_alias": "gc-collector-native-16-21be2qrj/report.json: worker remains live until next GC; finally throws then native exits255. No335 agreement.",
-      "throwing_assignment": "gc-collector-native-16-ldxfaou5/report.json: immediate finally and caught:close, worker-gone, nextGC1/target-gone. Distinct failed-close admission remains required; native-only result."
+      "throwing_assignment": "gc-collector-native-16-ldxfaou5/report.json: immediate finally and caught:close, worker-gone, nextGC1/target-gone. Zero335 agreement; the distinct failed-close admission is tested separately by338 below."
     },
     "input_sha256": {
       "spec/semantics/335-collector-quiescent-close.watsup": "f1e8a670f90a9b243dff4ab8b0dfbeb0c541b3b8c236b959be01844c8555d979",
@@ -582,5 +582,90 @@
       "Preserved private wrapper: taskset -c 5 python3 .tools/run-gc-collector-18.py compiler; exact command vectors, runtime/compiler identities and environment are in the reports. Raw artifacts stay outside Git."
     ],
     "raw_root": ".tools/gc-quiescent-close-18/.tools"
+  },
+  "failed_quiescent_last_owner338": {
+    "status": "Independently accepted failed-close slice; tested322 combined compilation PASS",
+    "scope": "Quiescent last-owner close of a genuine detached callbackless collector worker whose finally throws. One destroy-frame private control owner retires through the authentic ordered tail while the real error remains in the actual caller PENDING slot. Storage and scoped caller admission only; no new owner, previous-control edge or Throwable authority.",
+    "test_root": ".tools/gc-quiescent-close-18",
+    "raw_root": ".tools/gc-quiescent-close-18/.tools",
+    "private_revision": "6ac146c2880471901375d62c261eb3d99cf6fa65",
+    "private_modules": 320,
+    "compiler_report": "gc-failed-collector-19-compiler-m935bevt/report.json",
+    "initializer_report": "gc-failed-collector-19-init-ucna44qi/report.json",
+    "source_cuts": [
+      {
+        "id": "collector-detached-quiescent-throwing-finally-assignment-close-18",
+        "tested_revision": "b88d1dee15cb00e1ce02ac52edd563e3d2b9d919",
+        "source_report": "shutdown-review-jmxrp5p1/report.json",
+        "stable_input_report": "gc-failed-collector-19-source-g57o9i4o/report.json",
+        "result": "PASS: checked program, normal0, exact stdout/empty stderr. Only this author row passes in the stable wrapper; its later large companion times out, so the wrapper as a whole is false.",
+        "native_report": "gc-collector-native-16-ldxfaou5/report.json",
+        "source_sha256": "ced4c4aeb45288f886ae63a9cf00c345c83773d026b61b970425ebab3def63b9"
+      },
+      {
+        "id": "collector-detached-quiescent-failed-fiber-prior-identity-review-19",
+        "tested_revision": "d26e9bdd22306fdbf7351620913cf843e059cf5d",
+        "source_report": "shutdown-review-u0ntme7l/report.json",
+        "stable_input_report": "gc-failed-collector-19-source-wcm5pn2q/report.json",
+        "result": "PASS: checked program, normal0, exact prior|worker-gone|1|target-gone and empty stderr. A genuine outer exception retains object identity through close inside a user Fiber and saved caller.",
+        "native_report": "gc-collector-native-16-y6o4fjzw/report.json",
+        "source_sha256": "64bde6320a99ad4b71390e157959e673357fd2b766df98aa0b980bbdf20349fb"
+      }
+    ],
+    "native_reuse": "Both preserved first-native originals retain exact source bytes, pinned runtime/profile/argv/raw streams. Neither observes file/cwd. No native-only observation receives model credit.",
+    "reached_revision": "b88d1dee15cb00e1ce02ac52edd563e3d2b9d919",
+    "state_fixture_commit": "324afa4c1",
+    "reached_report": "shutdown-state-review-e8x3xtmk/report.json",
+    "reached_input_report": "gc-failed-quiescent-close-state-review-19.json",
+    "physical_premises": [
+      117,
+      130
+    ],
+    "runner_declared_assertions": [
+      114,
+      127
+    ],
+    "authored_checks": [
+      111,
+      124
+    ],
+    "reached_scope": "Real error/FIBER_FINISH boundary and one-step caller restoration; one private control owner and one genuine pending-error owner, null failed worker, no previous-control edge, borrowed zero target and authentic saved caller view. Heap-identical wrong source/sequence/mode and caller PENDING-to-VALUE relocation reject. Private control is neither live Throwable, class member, pending error nor catch target. Normal335 stays false. Budget0 identity, one-step replay and complete exact-native continuations pass.",
+    "validation": "Compiler/init/source wrappers have stable inputs/revision/status. State wrapper has stable inputs/revision with its exact subsequently committed fixture; two explicit --sl groups return true newline/exit0/no timeout/empty stderr. LC_ALL=C, TZ=UTC, no PHP_SPEC_SCRIPT_ENCODING; inherited120s outer/state caps, source internal60s cap and jobs1 unchanged. Commands and runtime/compiler identities remain in raw reports. No old332/169 or335/216 renewal.",
+    "tested_composition": {
+      "parent_revision": "f89fbee745b6",
+      "tested_revision": "9277e334d38e49c56d4bbde9e4bca78a97f751be",
+      "modules": 322,
+      "compiler_report": "gc-failed-collector-19-compiler-wmkt3yfu/report.json",
+      "result": "Algorithm and structure artifacts present, exits0/no timeout/empty stderr, stable inputs/revision/status;3.399/4.283s. Only manifest conflicts were resolved;338 is byte-identical to the private tested source. Independent introduced-interaction review preserves Generator328/source336,39/301 factors and existing Fiber/property fields/tasks/owners. Earlier source/state cuts retain their identities; copied tools give no offline rebuild credit."
+    },
+    "preserved_failures": {
+      "fixture_preparation": "gc-failed-collector-19-source-i87w94jr/report.json stopped before model execution with missing source_sha256; b88d fixture correction adds the original hash/tuple only, zero credit for the setup stop.",
+      "large_prior_chain": "collector-detached-quiescent-throwing-fiber-prior-error-review-19 retains shutdown-review-klomb21j/report.json: internal60s model timeout, exit1/status timeout, zero source agreement. Native gc-collector-native-16-mqgxzko3/report.json passes. It remains selectable and is excluded from the default Makefile source target; its full120s reached-state continuation is a separate PASS."
+    },
+    "input_sha256": {
+      "spec/semantics/338-collector-quiescent-failed-close.watsup": "b64da788c6906fa8facf253a2172df6da8e4ca82aedab32faa1a4806e4c50089",
+      "tests/semantics/cycle_collection_cases.json": "8d77148d14d8e3f447cbead027a883756b52fa2c05695ae4ae183ee350821dea",
+      "tests/semantics/cycle_collection_review_cases.json": "6a6b5546ae676371720efb9e8278948ed01a7ddddf550874374f44a3f104361a",
+      "tests/semantics/cycle_collection_state_review.py": "ea184e0d02af2cd54b7a144c6551447ae06836a78d900266e01b0cb7d4f54186"
+    },
+    "report_sha256": {
+      "gc-failed-collector-19-compiler-m935bevt/report.json": "fc97334feebb8aa567f541bcb3e023618e53ad064152f388e853ab179d58144f",
+      "gc-failed-collector-19-init-ucna44qi/report.json": "12471b1551b8d083821a7198e1ea2319e1bfd692e39281afcb59eeb2250afb2f",
+      "gc-failed-collector-19-source-g57o9i4o/report.json": "35f978aac7b0e169b322d403d606c7d6ee2d9950ef9290279ed3b3363d6a5522",
+      "shutdown-review-jmxrp5p1/report.json": "b1c522232281a9ac30881f131711991f89d02b4d34fe32f02e159fcf7ea2e059",
+      "gc-failed-collector-19-source-wcm5pn2q/report.json": "80582aa953f9722edc12c26ae59de26f7e4df8f770eefea79ee2cd6e189a1b7a",
+      "shutdown-review-u0ntme7l/report.json": "196bd4278875679a37975df434794eccb574c933812284f564976a88a2b08ba7",
+      "shutdown-state-review-e8x3xtmk/report.json": "275739e84010141371defa43b5a8863c1409ebb1a35d12cdc77c4c6188fa2ffb",
+      "gc-failed-quiescent-close-state-review-19.json": "3f89770208f4b815b5787bce9d5af0355c706995e34bec021b5b8c8fdaddaf5b",
+      "gc-failed-collector-19-compiler-wmkt3yfu/report.json": "959727996148167a6104391a51059ccd8d5c05f772b86bbe6373e10a19680310",
+      "shutdown-review-klomb21j/report.json": "5aac41a95b27f8f0f3f24b407dcebe1a11ca4295e193762045bcc62c168b6870"
+    },
+    "recovery": [
+      "python3 tests/semantics/cycle_collection_sources.py --match collector-detached-quiescent-throwing-finally-assignment-close-18",
+      "python3 tests/semantics/cycle_collection_review.py --match collector-detached-quiescent-failed-fiber-prior-identity-review-19",
+      "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-quiescent-failed-close-retires-one-control-before-main-error --case collector-quiescent-failed-close-scoped-caller-and-prior-error",
+      "Preserved private wrapper: taskset -c 2 python3 .tools/run-gc-failed-collector-19.py compiler; exact command vectors and identities are in the reports. Raw artifacts stay outside Git."
+    ],
+    "boundaries": "Active-pass failed close, wider callbackless close-return contexts, complete GC/WeakMap/request freeing and the fresh combined offline rebuild remain required. Earlier collector cuts retain their inputs."
   }
 }

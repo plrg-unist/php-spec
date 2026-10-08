@@ -1,6 +1,6 @@
 # Explicit cycle collection
 
-Modules 301/317/325/332/335 implement a bounded ordinary-object/array collector on the pinned
+Modules 301/317/325/332/335/338 implement a bounded ordinary-object/array collector on the pinned
 PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
@@ -101,8 +101,17 @@ neither an owner nor catch/throw authority. Assigning null to the shared worker
 cell drops its last ordinary owner, so `finally` runs immediately and weak worker
 lookup clears. `unset` alone leaves the suspended destructor's global alias
 alive and does not exercise this close. The zero-owner target remains borrowed
-until the next real collection/count1. A throwing `finally` has a distinct
-failed-close control lifetime and remains required.
+until the next real collection/count1.
+
+Module338 admits the distinct failed-close tail after a throwing `finally` has
+dropped the pending graceful exception. The destroy frame retains one private
+control owner until return, while the real error belongs to the actual caller's
+pending operation. Admission requires the terminated failed worker with null
+value, the ordered control/operation/worker/operation tail, matching real-error
+source and caller pending slot, and the singleton control release. It extends
+only storage retirement and authentic saved caller admission. The private control
+gains no owner, previous-exception edge or PHP catch authority. A genuine prior
+exception follows ordinary exception chaining and retains its identity.
 
 All selected destructors run before the protected subgraph is freed. Collection
 retraces once after their effects, preserves once marks, and atomically disposes
@@ -118,14 +127,15 @@ zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
 Explicit boundaries remain for wider internal lifetime graphs, public idle-worker
-transfer during an active collection, failed-finally and wider callbackless
-close-return contexts,
+transfer during an active collection, active-pass failed close and wider
+callbackless close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
 Wider GC, WeakMap and final combined offline validation remain required.
 
 Engine sources: `Zend/zend_gc.c::{gc_call_destructors,gc_destructor_fiber}`,
-`Zend/zend_fibers.c::zend_fiber_object_destroy`, `Zend/zend_objects_API.c`,
+`Zend/zend_fibers.c::{zend_fiber_object_destroy,zend_fiber_execute}`,
+`Zend/zend_exceptions.c::zend_exception_set_previous`, `Zend/zend_objects_API.c`,
 `Zend/zend_objects.c`, `Zend/zend_weakrefs.c`, `Zend/zend_compile.c`,
 `Zend/zend_execute.h`, `Zend/zend_ast.c`, and
 `Zend/zend_vm_def.h::ZEND_FREE` with `Zend/zend_vm_gen.php::op1_free_op`.
@@ -204,3 +214,14 @@ HCELL/staged-binding owners. Earlier source/state cuts are unchanged.
 The original unset probes and throwing-finally assignment retain native-only
 results with zero335 agreement; the [ledger](../../coverage/semantics/cycle-collection-review.json)
 records their exact sources and recovery paths.
+
+Failed quiescent close338 passes private320 compilation/initialization, two exact
+normal originals at separate cuts and two independent strict-SL groups with117/130
+physical premises (runner declarations114/127). The groups check the one private
+control owner, real pending error, saved caller restoration, prior chain,
+same-heap source/sequence/mode/pending-slot forgeries, no Throwable authority,
+budget identity and complete continuations. The tested322 join over `f89fbee745`
+passes combined compilation at `9277e334d`, preserving328/336 and ownership factors.
+The larger prior-chain source retains its60s model timeout with zero agreement
+and remains selectable; its reached continuation at the existing120s state cap
+is a separate result. Earlier335 and collector cuts are unchanged.
