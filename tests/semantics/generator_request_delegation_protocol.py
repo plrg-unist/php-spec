@@ -257,6 +257,22 @@ $call_entry_check(S_copy).COMPLETION = UNSUPPORTED "invalid compiled function de
         checks += lines(r'''
 S_handler.CURRENT = (pcallcontext_handler)
 $exception_context_call(S_handler,pcallcontext_handler) = (pexceptioncall)
+S_handler.FRAMES = [pframe_handler_root]
+S_root = $constant_frame_scope(S_handler,pframe_handler_root,eps)
+pgenclose_outer.FRAME = (pframe_outer)
+pframe_outer.CONTEXT = (pcallcontext_outer)
+S_outer_view = $generator_frame_scope(S_root,pframe_outer)[.FRAMES = $save_frame(S_root).FRAMES]
+$exception_context_source_view(S_outer_view,pcallcontext_outer)
+$exception_context_call(S_outer_view,pcallcontext_outer) = eps
+$call_saved_context_valid(S_outer_view,pframe_outer)
+$generator_close_enter_valid(S_root,pgenclose_outer)
+S_bad_handler = S_handler[.CURRENT = (pcallcontext_handler[.TARGET = pcallcontext_outer.TARGET][.CALLSITE = pcallcontext_outer.CALLSITE])]
+S_bad_handler.CURRENT = (pcallcontext_bad_handler)
+~$exception_context_source_view(S_bad_handler,pcallcontext_bad_handler)
+$exception_context_call(S_bad_handler,pcallcontext_bad_handler) = (pexceptioncall)
+~$exception_context_valid(S_bad_handler,pcallcontext_bad_handler)
+$heap_graph(S_bad_handler) = $heap_graph(S_handler)
+~$call_descriptors_valid(S_bad_handler)
 $throwable_field(S_handler,pexceptioncall.OBJECT,"message") = PSTRING ($ptascii("inner"))
 S_handler.OBJECTS[n_inner] = GENERATOR pgenerator_inner_closed
 pgenerator_inner_closed.PHASE = GENERATOR_CLOSED /\ pgenerator_inner_closed.FRAME = eps
