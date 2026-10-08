@@ -85,6 +85,14 @@ lookup. Six exact originals and128 independent premises retain private341;
 actual343 passes strict compilation with reviewed Generator storage compatibility.
 Dynamic/builtin/argument/fallback calls and wider emissions remain required.
 
+[Direct named noarg ECHO calls](coverage/semantics/source-direct-call-emission-review.json)
+retire owned include/eval operands before INIT, including late function installation.
+Returned Stringable temporaries and reference wrappers survive until bytes are
+printed; a mutated referent can retire earlier without losing successful cast
+bytes to its pending exception. Ten exact originals and247 independent premises
+retain private344; actual349 passes strict compilation over CALLS362. Borrowed CVs
+keep their separate release path; wider call and output consumers remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -216,6 +224,15 @@ including typed final results and PHP's retained reference-type history. Twelve
 exact originals and368 reached premises cover live RHS reads, inherited slots,
 alias rebinding, reference history, temporary cleanup and access-error priority.
 The actual344 compiler/init gate retains its separate accepted record.
+Direct ordinary-method calls retain `self`, `parent` and `static` selection through
+conversion and nested calls. Six further originals and323 reached premises cover
+lexical/called scope, private shadows and captured-reference rebinding.
+The separate actual347 composition passes compilation and initialization.
+Dynamic class expressions now select the class once before RHS evaluation;
+callback changes to the selector preserve that destination. Five new exact
+originals and241 reached premises cover helper and temporary object selectors,
+scalar continuation, captured references and typed expression results.
+The separate actual349 composition passes compilation and initialization.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -536,6 +553,10 @@ The driver carries an already successful original-state owner order into the
 following GC pass; failed or skipped destruction branches retain public fallbacks.
 Pure graph pruning counts owners once and removes zero-owner cascades through a
 worklist, preserving roots and the order and multiplicity of nodes and edges.
+GC also reuses pruning's graph edges when pruning leaves the prepared state
+identical; changed states recompute their edges.
+The retained composed default/Generator/Fiber original agrees with native PHP;
+its catalogue is included in the combined semantic and offline checks.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
@@ -582,7 +603,13 @@ without depending on retired caller metadata or old physical slots. An explicit
 no-destructor-tag check lets the retained scan finish safely. One normal source
 and 203 independent physical premises pass; the captured source retains its 60s
 CLI timeout/zero agreement. Final 345 compilation over `4cd2eab3a` passes.
-Reentry during a different active pass and internal takeover remain required.
+A new internal collection now resumes the actual parked callback with null and
+keeps its retained local interval separate from the new global scan. The unvisited
+destructor target survives retracing and runs at request cleanup. One normal source
+and 154 independent physical premises pass; original and compact old-error CLI
+runs retain 60s timeouts/zero agreement. Final 349 over `63786460e` compiles.
+Residual-tag dispatch, repeated internal
+suspension and different-active-pass public reentry remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -929,6 +956,12 @@ If data binding succeeds before abstract verification fails, later cached calls
 use the fixed class scope while an imported first birth keeps its trait scope.
 One shutdown original and59 supplied phase/scope/static conditions pass, with6
 setup clauses separate; the failed class stays unpublished.
+A retained `new self` rejects an unresolved abstract trait requirement before
+arguments or instance allocation. One shutdown original and39 supplied conditions plus6
+setup clauses pass; this proof covers classes without parent/interface contracts.
+Retained `new static` constructs the published called class and enters arguments
+after allocation. One shutdown original and40 supplied conditions plus6 setup
+clauses pass, including durable selected-NEW static-fill history.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
@@ -1211,8 +1244,14 @@ bound captures own their receiver, while static object selectors add no owner.
 Direct, explicit `__invoke` and C-root consumers reuse the selected API protocol.
 Successful waiting calls retain their real API callsite in exception traces.
 The [factory ledger](coverage/semantics/fiber-from-callable-review.json) keeps
-distinct source and state cuts. Fiber-start argument unpacking, ordinary API
-callable arrays and effectful compound factory selectors remain required.
+distinct source and state cuts.
+Ordinary callable arrays with simple method names now select fixed bound and
+static Fiber APIs before argument evaluation. Frozen dereferenced members survive
+selector mutation or retirement; the pending call owns its bound receiver once, while static object
+selectors own none. Constructor callable parsing retains its real warning
+continuation and validation-before-status order. Fiber-start argument unpacking,
+array-selected start, array first-class conversion, array C-root callbacks and
+compound array or factory selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

@@ -137,10 +137,12 @@ def $call_selected_valid(S, ARRAY_METHOD_TARGET pcalltarget parrayselection, (po
   -- if $array_target_identity(S, pcalltarget, parrayselection)
 
 dec $array_dynamic_result(pstate, parrayresolution, porigin, int, int) : pstate
+dec $fiber_array_candidate(pstate, nat) : bool
 def $array_dynamic_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_call) = S[.TODO = $method_args_task(ARRAY_METHOD_TARGET ($scope_target_site(S, pcalltarget, porigin_site, false)) {SITE porigin_site, INIT z_init, LINE z_call, REQUESTED porigin_requested, NAME ptbytes}, $dynamic_arguments(S, porigin_site), (porigin_site), z_call) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
 def $array_dynamic_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_call) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_dynamic_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_call) = S[.COMPLETION = UNSUPPORTED text]
 def $array_dynamic(S, n, porigin_site, z_init, z_call) = $array_dynamic_result(S, $array_resolve(S, n, ARRAY_DISPATCH), porigin_site, z_init, z_call)
+  -- if ~$fiber_array_candidate(S, n)
 
 dec $array_capture_result(pstate, parrayresolution, porigin, int, int) : pstate
 def $array_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes, porigin_site, z_init, z_convert) = S[.TODO = (ARRAY_CONVERT ($scope_target_site(S, pcalltarget, porigin_site, true)) {SITE porigin_site, INIT z_init, LINE z_convert, REQUESTED porigin_requested, NAME ptbytes}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]

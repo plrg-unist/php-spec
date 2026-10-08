@@ -202,6 +202,7 @@ def $static_default_fill_event_for(S, pstaticdefaultcontext, n) = CCSTATICSELECT
 def $static_default_fill_event_for(S, pstaticdefaultcontext, n) = CCSTATIC pstaticdefaultcontext.DECL porigin n
   -- if $class_static_selection_at(S.TODO) = eps
   -- if pstaticdefaultcontext.ORIGIN = (porigin)
+  -- if ~$dynamic_new_table_selected(S, porigin)
 def $static_default_retire_event_for(S, pstaticdefaultcontext, n, n_cell) = CCSTATICRETIRESELECT pstaticdefaultcontext.DECL pstaticselection n n_cell
   -- if $class_static_selection_at(S.TODO) = (pstaticselection)
   -- if pstaticdefaultcontext.ORIGIN = (pstaticselection.SITE)
@@ -209,6 +210,7 @@ def $static_default_retire_event_for(S, pstaticdefaultcontext, n, n_cell) = CCST
 def $static_default_retire_event_for(S, pstaticdefaultcontext, n, n_cell) = CCSTATICRETIRE pstaticdefaultcontext.DECL porigin n n_cell
   -- if $class_static_selection_at(S.TODO) = eps
   -- if pstaticdefaultcontext.ORIGIN = (porigin)
+  -- if ~$dynamic_new_table_selected(S, porigin)
 def $class_constant_table_event(S, porigin, porigin_root, porigin_trigger, n) = CCUPDATESELECT porigin pstaticselection n
   -- if $class_static_selection_at(S.TODO) = (pstaticselection)
   -- if pstaticselection.ROOT = porigin_root /\ pstaticselection.SITE = porigin_trigger

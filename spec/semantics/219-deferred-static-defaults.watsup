@@ -143,7 +143,11 @@ def $static_default_first(porigin :: porigin_tail*, porigin_filled*) = (porigin)
   -- if ~(porigin <- porigin_filled*)
 def $static_default_first(porigin :: porigin_tail*, porigin_filled*) = $static_default_first(porigin_tail*, porigin_filled*)
   -- if porigin <- porigin_filled*
-def $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*) = true
+dec $static_default_history_fill_root(pstate, porigin, porigin, nat, porigin, (porigin, bool)*, porigin*, porigin*) : bool
+def $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*) = $static_default_history_fill_root(S, porigin, porigin_trigger, n, porigin_root, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*)
+  -- if $static_default_trigger_root(S, porigin_trigger) = (porigin_root)
+def $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*) = false -- otherwise
+def $static_default_history_fill_root(S, porigin, porigin_trigger, n, porigin_root, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*) = true
   -- if ~(porigin <- porigin_filled*)
   -- if $class_static_active_desc(S, S.CLASSNAMES, porigin) = (ppropertydesc)
   -- if ppropertydesc.DEFAULT = PROP_DEFERRED porigin_initializer
@@ -154,13 +158,12 @@ def $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, 
   -- if $static_default_first($static_default_origins(pclassdesc.PROPERTIES), porigin_filled*) = (porigin)
   -- if $class_constant_values_done($class_constant_layout(S, porigin_owner, |S.CLASSES|), porigin_cached*)
   -- if $class_constant_parent_done(S, porigin_owner, (porigin_flag, b_flag)*)
-  -- if $static_default_trigger_root(S, porigin_trigger) = (porigin_root)
   -- if $class_constant_flag((porigin_flag, b_flag)*, porigin_root) = (false)
   -- if $class_constant_parent_chain(S, porigin_root, porigin_owner, |S.CLASSES|)
   -- if $class_constant_history_trigger(S, porigin_trigger, n)
   -- if $class_static_at(S.CLASSSTATICS, porigin) = (pclassstatic)
   -- if ~$static_default_pending(pclassstatic.STATE)
-def $static_default_history_fill(S, porigin, porigin_trigger, n, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*) = false -- otherwise
+def $static_default_history_fill_root(S, porigin, porigin_trigger, n, porigin_root, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*) = false -- otherwise
 
 ;; Source selected roots and their owner table authenticate both update tasks
 ;; and saved evaluator contexts. The binder does not own another property value.

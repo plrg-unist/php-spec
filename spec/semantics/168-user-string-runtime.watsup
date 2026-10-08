@@ -306,8 +306,10 @@ def $user_string_begin(S, n, porigin_site, z, ptask_consumer, ptask_tail*) = S[.
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc)
 
+dec $call_echo_string_pending(pstate) : bool
 rule PhpStep/user-string-echo-call: S ~> $user_string_begin(S_read, n, porigin_site, z, EMIT z, ptask_tail*)
   -- if S.TODO = (EMIT z) :: ptask_tail*
+  -- if ~$call_echo_string_pending(S)
   -- if S.ORIGIN = (porigin_site)
   -- if $stringify_source(S, porigin_site, z, EMIT z)
   -- if S_read = $resolve(S, S.RESULT)

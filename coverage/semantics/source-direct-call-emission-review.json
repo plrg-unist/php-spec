@@ -1,0 +1,321 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Owned include/eval operand retirement before first INIT for direct ECHO of a named noarg nonbuiltin call without namespace fallback. Returned Stringable TMPVAR/REFERENCE ownership lasts through output; mutated reference referents preserve successful bytes through pending destructor exceptions before ordinary temporary cleanup. Borrowed CV release remains distinct. Implicit source-operand destructor publication uses a literal first top-level ECHO and fixed noarg named new operand under195 complete parent/child image authentication.",
+  "implementation": [
+    "spec/semantics/361-source-direct-call-emission.watsup",
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/168-user-string-runtime.watsup"
+  ],
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_echo/zend_compile_call",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ECHO",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_cast_object_tostring",
+    "vendor/php-src/Zend/zend_operators.c:zval_get_string_func"
+  ],
+  "native": {
+    "reports": [
+      {
+        "report": ".tools/include-direct-call-emission-361-private-19/.tools/direct-call-originals-19/direct-call-native-tq7vrw9p/report.json",
+        "sha256": "56e52ece765e4e110c5f120934dd7f91d20f70b9efec952a17449ab453e55467",
+        "revision": "4c9edf22713237277e027712196b26cf0377034a",
+        "originals": 7,
+        "inputs_head_status_stable": true
+      },
+      {
+        "report": ".tools/include-direct-call-emission-361-private-19/.tools/direct-call-originals-19/direct-call-extra-native-9_notm_8/report.json",
+        "sha256": "216c9be793a3e76c1d317c519d7f0c4733c0a88c1538969e9acd24a21c19accc",
+        "revision": "0bb10dbf3bf1205975d69f1fff375e093505fcf3",
+        "originals": 2,
+        "inputs_head_status_stable": true
+      },
+      {
+        "report": ".tools/include-direct-call-emission-361-private-19/.tools/direct-call-originals-19/direct-call-pending-native-tdvwxnsm/report.json",
+        "sha256": "1437df7093b13333476e760af4cc8423932ad33b87ed10c5a61a4337008a3e1f",
+        "revision": "0bb10dbf3bf1205975d69f1fff375e093505fcf3",
+        "originals": 1,
+        "inputs_head_status_stable": true
+      }
+    ],
+    "originals": 10,
+    "checked_guard_programs": 6,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "source_validation": {
+    "unique_originals": 10,
+    "accepted_source_agreements": 10,
+    "accepted_application_evaluations": 10,
+    "retained_cut": {
+      "report": ".tools/include-direct-call-emission-361-private-19/.tools/direct-call-originals-19/direct-call-source-run-udpnvnbr/report.json",
+      "sha256": "b923d646d4d6a1d90072e03f7a9548ab225eefb3a78f5df2feb43ace50b3ba4f",
+      "revision": "4ea22120a2f336993e0852d5f7890215cc61a164",
+      "modules": 344,
+      "strict_compiler_seconds": 4.337,
+      "accepted_rows": [
+        "result-warning",
+        "result-throw",
+        "retirement-throw",
+        "missing-function",
+        "baseline-lifetime",
+        "reference-live",
+        "cast-throw",
+        "reference-pending"
+      ],
+      "elapsed_seconds": [
+        25.495,
+        16.496,
+        13.767,
+        12.724,
+        12.747,
+        30.596,
+        18.686,
+        22.862
+      ],
+      "inputs_head_status_stable": true,
+      "retained_source_agreements": 8,
+      "original_recorded_source_agreements": 10,
+      "scope": "Only eight unaffected rows retain current credit after the declaration-history repair; original whole10 agreement remains recorded at its original input.",
+      "original_recorded_application_evaluations": 10,
+      "retained_application_evaluations": 8
+    },
+    "affected_cut": {
+      "report": ".tools/include-direct-call-emission-361-private-19/.tools/direct-call-originals-19/direct-call-history-source-run-hl4zau7f/report.json",
+      "sha256": "c599af492dbc90069aa0eb53024c47d9ebf9cb025425aa983e96b2586cc50792",
+      "revision": "e51d0e3433fa16617906d8d520ca3156526b0a37",
+      "modules": 344,
+      "application_evaluations": 2,
+      "source_agreements": 2,
+      "strict_compiler_seconds": 4.234,
+      "accepted_rows": [
+        "late-function",
+        "eval-live"
+      ],
+      "elapsed_seconds": [
+        13.01,
+        9.306
+      ],
+      "inputs_head_status_stable": true
+    },
+    "executed_applications_across_three_cuts": 14,
+    "superseded_affected_cut": {
+      "report": ".tools/include-direct-call-emission-361-private-19/.tools/direct-call-originals-19/direct-call-history-source-run-1wglvaso/report.json",
+      "sha256": "f1a7e03058b3b433d6e92aa704ed3c8cd77dc2a4cbd8b8855d7388389c182e12",
+      "revision": "20689662abe87d3fa98c981016a8935525c71d19",
+      "modules": 344,
+      "application_evaluations": 2,
+      "source_agreements": 2,
+      "current_accepted_credit": 0,
+      "scope": "Two whole-source agreements remain recorded at206; projected-prefix admission was still false and affected source rows were renewed after the surgical classifier correction."
+    }
+  },
+  "independent_state": {
+    "revision": "e51d0e3433fa16617906d8d520ca3156526b0a37",
+    "modules": 344,
+    "physical_main_premises": 247,
+    "bindings": 147,
+    "boolean_checks": 100,
+    "accepted_application_evaluations": 4,
+    "source_agreements": 0,
+    "accepted_cuts": [
+      {
+        "report": ".tools/include-review-19-echo-call-emission/state-run-3xjrdzp2/report.json",
+        "sha256": "0318bb5bea58197a6f1abfd65f934fa4be908fe1606bf4b1c390d37839c866c0",
+        "revision": "e51d0e3433fa16617906d8d520ca3156526b0a37",
+        "modules": 344,
+        "accepted_rows": [
+          {
+            "case": "entry",
+            "bindings": 50,
+            "checks": 27,
+            "physical_main_premises": 77,
+            "elapsed_seconds": 33.953
+          },
+          {
+            "case": "admission",
+            "bindings": 40,
+            "checks": 24,
+            "physical_main_premises": 64,
+            "elapsed_seconds": 4.424
+          }
+        ],
+        "accepted_application_evaluations": 2,
+        "whole_report_passed": false,
+        "original_recorded_application_evaluations": 3,
+        "inputs_module_stats_head_status_stable": true
+      },
+      {
+        "report": ".tools/include-review-19-echo-call-emission/state-run-6loeapc4/report.json",
+        "sha256": "47d7728f08bbd56e479d402e2c8f796bfb5493aaacb66d027c0eadc8d80cec69",
+        "revision": "e51d0e3433fa16617906d8d520ca3156526b0a37",
+        "modules": 344,
+        "accepted_rows": [
+          {
+            "case": "lifetime",
+            "bindings": 32,
+            "checks": 28,
+            "physical_main_premises": 60,
+            "elapsed_seconds": 53.755
+          }
+        ],
+        "accepted_application_evaluations": 1,
+        "whole_report_passed": true,
+        "original_recorded_application_evaluations": 1,
+        "inputs_module_stats_head_status_stable": true
+      },
+      {
+        "report": ".tools/include-review-19-echo-call-emission/state-run-jr6qqtgh/report.json",
+        "sha256": "a995d6a04c82c1bc7d22f408d4b0c06d46b4053ac8c14dda1b154792a8b4353c",
+        "revision": "e51d0e3433fa16617906d8d520ca3156526b0a37",
+        "modules": 344,
+        "accepted_rows": [
+          {
+            "case": "reference",
+            "bindings": 25,
+            "checks": 21,
+            "physical_main_premises": 46,
+            "elapsed_seconds": 38.154
+          }
+        ],
+        "accepted_application_evaluations": 1,
+        "whole_report_passed": true,
+        "original_recorded_application_evaluations": 1,
+        "inputs_module_stats_head_status_stable": true
+      }
+    ],
+    "scope": "Genuine first INIT/source image/class/caller and paired-forgery rejection; pre-call method receiver plus cast pin plus original ECHO owner, postreturn/pin-release order; borrowed CV contrast; mutable HCELL and pending bytes/Throwable/new:old cleanup. Only entry/admission rows retain credit from the overall-failed3xjrdzp2 report."
+  },
+  "current_composition": {
+    "canonical_parent": "d46556cb07b20f4259c34fc51346b304d42a5b9f",
+    "revision": "eb0ce479d54f82c76530fe38ca8d353145eb5339",
+    "modules": 349,
+    "report": ".tools/include-direct-call-emission-361-actual-19/.tools/direct-call-emission-current-19/direct-call-emission-current-compiler-yh6c_941/report.json",
+    "sha256": "fdba2f4a2d636d1799d7f8ee2d96a0c9107b892d239f4be48697009b6712e682",
+    "strict_compiler_seconds": 4.438,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "scope": "Exact published d465/348 prefix plus unchanged e51/361 and additive ownership hooks; retained source10/state247 cuts receive no renewed credit."
+  },
+  "preserved_failures": [
+    {
+      "report": ".tools/include-direct-call-emission-361-private-19/.tools/direct-call-originals-19/direct-call-baseline-c7np1j0j/report.json",
+      "sha256": "31d5e79c19cb7389fbf80b1ce541e2c606988dd30e5faaf929b4275b3445854b",
+      "revision": "4c9edf22713237277e027712196b26cf0377034a",
+      "modules": 343,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "cause": "Unchanged runtime releases a sole returned Stringable before ECHO: destructor warning precedes successful bytes, and destructor throw loses bytes. Borrowed CV contrast already agrees.",
+      "inputs_module_stats_head_status_stable": true
+    }
+  ],
+  "maintained_sources": {
+    "harness": "tests/semantics/source_stringable_retirement_sources.py",
+    "selectors": [
+      "echo-call-late-function",
+      "echo-call-result-warning",
+      "echo-call-result-throw",
+      "echo-call-retirement-throw",
+      "echo-call-missing-function",
+      "echo-call-eval-live",
+      "echo-call-baseline-lifetime",
+      "echo-call-reference-live",
+      "echo-call-cast-throw",
+      "echo-call-reference-pending"
+    ],
+    "relocation": "Eight include mains change only three child-basename occurrences each; eight children and eval/standalone mains are byte-identical. Ten explicit selectors are excluded from default selection.",
+    "renewed_application_evaluations": 0,
+    "renewed_source_agreements": 0
+  },
+  "reproduction": {
+    "private_cwd": ".tools/include-direct-call-emission-361-private-19",
+    "native": [
+      "python3 .tools/direct-call-originals-19/prepare-native.py",
+      "python3 .tools/direct-call-originals-19/prepare-reference-native.py",
+      "python3 .tools/direct-call-originals-19/prepare-pending-native.py"
+    ],
+    "source": "python3 .tools/direct-call-originals-19/run-source.py --native-report .tools/direct-call-originals-19/direct-call-native-tq7vrw9p/report.json --native-report .tools/direct-call-originals-19/direct-call-extra-native-9_notm_8/report.json --native-report .tools/direct-call-originals-19/direct-call-pending-native-tdvwxnsm/report.json",
+    "state_cwd": ".",
+    "state": "python3 .tools/include-review-19-echo-call-emission/run-state.py --source-report .tools/include-direct-call-emission-361-private-19/.tools/direct-call-originals-19/direct-call-history-source-run-hl4zau7f/report.json",
+    "actual_cwd": ".tools/include-direct-call-emission-361-actual-19",
+    "current_compiler": "python3 .tools/direct-call-emission-current-19/run-compiler.py d46556cb07b20f4259c34fc51346b304d42a5b9f",
+    "caps_seconds": {
+      "compiler": 300,
+      "source_cli": 60,
+      "source_outer": 90,
+      "state_group": 90
+    },
+    "jobs": 1,
+    "profile": {
+      "error_reporting": 30719,
+      "include_path": ".:",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "mode": "SL",
+      "cache": false,
+      "det": true
+    },
+    "affected_source": "python3 .tools/direct-call-originals-19/run-history-source.py --case late-function --case eval-live --native-report .tools/direct-call-originals-19/direct-call-native-tq7vrw9p/report.json"
+  },
+  "remaining": [
+    "Dynamic/builtin/argument/fallback calls, wider ECHO/output producers and borrowed-CV successful-cast pending exceptions remain required. Wider implicit-destructor publication causes remain required.",
+    "Final combined fresh offline rebuild remains required; user-paused returns verification is unchanged."
+  ],
+  "review": "Independent semantic/native/source/state/relocation, actual d465 compatibility and final five-path publication accepted by include_review_19.",
+  "preserved_state_failures": [
+    {
+      "report": ".tools/include-review-19-echo-call-emission/state-run-1ikm_dru/report.json",
+      "sha256": "61e5cff0e1ee13ac1eeac3bcbc2d7f382f7ed0265cd99bc1c697c8461077b39d",
+      "revision": "4ea22120a2f336993e0852d5f7890215cc61a164",
+      "affected_case": "entry",
+      "affected_application_evaluations": 1,
+      "affected_accepted_credit": 0,
+      "cause": "Genuine reached public admission rejected the implicit destructor publication cause before361 authenticated that producer.",
+      "inputs_module_stats_head_status_stable": true
+    },
+    {
+      "report": ".tools/include-review-19-echo-call-emission/state-run-l3ia36e3/report.json",
+      "sha256": "d68bdb960d5584f4af7d279c5151dda2fcc60bce049619b8dd065b75b12dbb92",
+      "revision": "20689662abe87d3fa98c981016a8935525c71d19",
+      "affected_case": "entry",
+      "affected_application_evaluations": 1,
+      "affected_accepted_credit": 0,
+      "cause": "Reached public admission still rejected206 because duplicate recompilation demanded CCLINK receipts absent from195 projected prefix.",
+      "inputs_module_stats_head_status_stable": true
+    },
+    {
+      "report": ".tools/include-review-19-echo-call-emission/state-run-3xjrdzp2/report.json",
+      "sha256": "0318bb5bea58197a6f1abfd65f934fa4be908fe1606bf4b1c390d37839c866c0",
+      "revision": "e51d0e3433fa16617906d8d520ca3156526b0a37",
+      "affected_case": "lifetime",
+      "affected_application_evaluations": 1,
+      "affected_accepted_credit": 0,
+      "cause": "Lifetime fixture omitted the canonical CALL_ARGS method-target owner: pre-call total is three; affected false retains zero credit.",
+      "inputs_module_stats_head_status_stable": true
+    }
+  ],
+  "preserved_diagnostics": {
+    "raw_directory": ".tools/include-review-19-echo-call-emission",
+    "reports": [
+      "entry-admission-vector-run-fkv2540e",
+      "entry-descriptor-vector-run-gk7xm3ph",
+      "entry-frontier-vector-run-1v6kamb_",
+      "entry-vector-run-d10nlvzg",
+      "entry206-class-history-run-04qmaycs",
+      "entry206-class-prefix-run-ei5i8khw",
+      "entry206-history-run-p2jg4u14",
+      "entry206-prefix-records-run-bjc0ytx0",
+      "entry206-prefix-run-ck08j0n_",
+      "entry206-prefix-scan-run-oa412l78",
+      "entry206-vector-run-f1wmkeky",
+      "lifetime-vector-run-opsci5xv"
+    ],
+    "accepted_credit": 0,
+    "scope": "Boolean vectors and narrow declaration-prefix probes only; the initial manual mirror omitted runtime PDRCLASS and was corrected diagnostically. No executable receipts were restored."
+  },
+  "fixture_notes": "Known-result lifetime pre-call assertion explicitly counts CALL_ARGS method target, STRINGIFY_RESULT pin and ECHO_CALL_RESULT temporary: three owners before call, two after return, one after cast-pin release."
+}

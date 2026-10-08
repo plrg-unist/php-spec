@@ -2,6 +2,12 @@
 ;; Collection plans and snapshots are borrowed. Only the current destructor's
 ;; extra collector ADDREF and a pending Throwable are real continuation owners.
 dec $gc_nodes(pgcslot*) : pnode*
+dec $gc_eligible_slot(pgcslot) : pnode*
+dec $gc_eligible_nodes(pgcslot*) : pnode*
+dec $gc_snapshot_slot(pgcslot, pnode*) : pgcslot
+dec $gc_snapshot_slots(pgcslot*, pnode*) : pgcslot*
+dec $gc_residual_overlap(pstate) : bool
+dec $gc_plan_scan_valid(pgcplan) : bool
 dec $gc_physical_nodes(pgcslot*) : pnode*
 dec $gc_slot_set(pgcslot*, nat, pgcslot) : pgcslot*
 dec $gc_slot_find(pgcslot*, pnode, nat) : nat?
@@ -469,15 +475,22 @@ def $gc_consumed_decrements(S, S_next, pnode_decrements*) = $destruction_node_de
   -- if pdestructionoperation[.NOGC = (pgctemporary[.PENDING = false])] <- S_next.DESTRUCTION.OPERATIONS
 def $gc_consumed_decrements(S, S_next, pnode*) = pnode* -- otherwise
 
+dec $gc_pruned_edges(pstate, pstate, hgraph) : hedge*
+def $gc_pruned_edges(S, S, H) = H.EDGES
+def $gc_pruned_edges(S_prepared, S_done, H) = $allocation_edges(S_done, S_done.ALLOCATIONS)
+  -- if S_prepared =/= S_done
+
 def $gc_transition(S, S_next) = $gc_transition_done(S, S_done, pgc_new)
-  -- if S_done = $prune_allocations($generator_request_transition_prepare($gc_transition_prepare(S_next)))
+  -- if S_prepared = $generator_request_transition_prepare($gc_transition_prepare(S_next))
+  -- if (S_done, H) = $prune_allocations_observed(S_prepared)
   -- if pgc_live = $gc_buffer_remove_nodes(S_done.GC, $destruction_nodes_delete(S.ALLOCATIONS, S_done.ALLOCATIONS))
-  -- if pnode_removed* = $eager_removed($eager_owner_order(S), $machine_roots(S_done) ++ $eager_edge_nodes($allocation_edges(S_done, S_done.ALLOCATIONS)))
+  -- if pnode_removed* = $eager_removed($eager_owner_order(S), $machine_roots(S_done) ++ $eager_edge_nodes($gc_pruned_edges(S_prepared, S_done, H)))
   -- if pgc_new = $gc_decrements(S_done, pgc_live, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*))
 def $gc_transition_owners(S, (S_next, OBSERVED_OWNER_ORDER pnode_owner*)) = $gc_transition_done(S, S_done, pgc_new)
-  -- if S_done = $prune_allocations($generator_request_transition_prepare($gc_transition_prepare(S_next)))
+  -- if S_prepared = $generator_request_transition_prepare($gc_transition_prepare(S_next))
+  -- if (S_done, H) = $prune_allocations_observed(S_prepared)
   -- if pgc_live = $gc_buffer_remove_nodes(S_done.GC, $destruction_nodes_delete(S.ALLOCATIONS, S_done.ALLOCATIONS))
-  -- if pnode_removed* = $eager_removed(pnode_owner*, $machine_roots(S_done) ++ $eager_edge_nodes($allocation_edges(S_done, S_done.ALLOCATIONS)))
+  -- if pnode_removed* = $eager_removed(pnode_owner*, $machine_roots(S_done) ++ $eager_edge_nodes($gc_pruned_edges(S_prepared, S_done, H)))
   -- if pgc_new = $gc_decrements(S_done, pgc_live, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*))
 
 def $gc_reverse(eps) = eps
@@ -521,16 +534,18 @@ def $gc_step_done((GC_CALLED pnode) :: pgcprogress*) = pnode :: $gc_step_done(pg
 def $gc_step_done((GC_SKIPPED pnode) :: pgcprogress*) = $gc_step_done(pgcprogress*)
 def $gc_tables_valid(S, eps, pnode*) = true
 def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobjecttable.OBJECT < |S.OBJECTS|) /\ $(pobjecttable.TABLE < |S.ARRAYS|) /\ (HOBJECT pobjecttable.OBJECT) <- pnode* /\ (HARRAY pobjecttable.TABLE) <- pnode* /\ $gc_tables_valid(S, pobjecttable_tail*, pnode*))
-def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, INDEX 0, STEPS eps, DONE eps}
+def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
   -- if H = $gc_graph(S)
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
-  -- if pgc_start = $gc_compact(S.GC[.BUFFER = $gc_unmarked_slots(S.GC.BUFFER)])
-  -- if pnode_white* = $gc_white(H, $gc_nodes(pgc_start.BUFFER))
-  -- if pgc_black_removed = $gc_compact($gc_buffer_drop_nodes(pgc_start, $destruction_nodes_delete($gc_physical_nodes(pgc_start.BUFFER), pnode_white*)))
-  -- if (pnode_visit*, pnode_counted*) = $gc_walk(H, hedge_proxy*, $gc_root_visits($gc_nodes(pgc_black_removed.BUFFER)), pnode_white*, eps, eps)
+  -- if pgc_start = $gc_compact(S.GC)
+  -- if pnode_white* = $gc_white(H, $gc_eligible_nodes(pgc_start.BUFFER))
+  -- if pnode_residual* = $destruction_nodes_delete($gc_nodes(pgc_start.BUFFER), $gc_eligible_nodes(pgc_start.BUFFER))
+  -- if pnode_black* = $destruction_nodes_delete($destruction_nodes_delete($gc_physical_nodes(pgc_start.BUFFER), pnode_residual*), pnode_white*)
+  -- if pgc_black_removed = $gc_compact($gc_buffer_drop_nodes(pgc_start, pnode_black*))
+  -- if (pnode_visit*, pnode_counted*) = $gc_walk(H, hedge_proxy*, $gc_root_visits($gc_eligible_nodes(pgc_black_removed.BUFFER)), pnode_white*, eps, eps)
   -- if pgc_white = $gc_buffer_add_nodes(pgc_black_removed, $gc_collectable(S, pnode_visit*, pnode_counted*))
   -- if pnode_candidates* = $gc_nodes(pgc_white.BUFFER)
-  -- if pnode_dtors* = $gc_uncalled(S, pnode_candidates*)
+  -- if pnode_dtors* = $gc_uncalled(S, $gc_eligible_nodes(pgc_white.BUFFER))
   -- if pnode_protected* = $heap_reach(pnode_dtors*, eps, H.EDGES)
   -- if pnode_free* = $destruction_nodes_delete(pnode_visit*, pnode_protected*)
 
@@ -565,7 +580,7 @@ def $gc_fresh_tasks((GC_DTORS pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.
 def $gc_fresh_tasks((GC_FREE pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.INDEX = 0
 def $gc_fresh_tasks((AT porigin ptask) :: ptask_tail*, pgcplan) = $gc_fresh_tasks(ptask :: ptask_tail*, pgcplan)
 def $gc_fresh_tasks(ptask*, pgcplan) = false -- otherwise
-def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S, pgcplan.CALL)) -- if $gc_snapshot_fresh(S, pgcplan)
+def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)], pgcplan.CALL)) -- if $gc_snapshot_fresh(S, pgcplan)
 def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_snapshot_fresh(S, pgcplan)
 def $gc_call_live(S, pgccall) = true
   -- if S.GC.ACTIVE = (pgccall) /\ $(pgccall.NONCE < S.GC.NEXT)
@@ -588,20 +603,21 @@ def $gc_done_prefix(S, pgcplan) = true
 def $gc_done_prefix(S, pgcplan) = false -- otherwise
 def $gc_plan_live(S, pgcplan) = true
   -- if S.GC.PLAN = (pgcplan) /\ $gc_call_live(S, pgcplan.CALL)
+  -- if $gc_plan_scan_valid(pgcplan)
   -- if $heap_valid(pgcplan.GRAPH) /\ $heap_unique(pgcplan.CANDIDATES)
   -- if pgcplan.CANDIDATES = $gc_nodes(pgcplan.BUFFER)
   -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
   -- if $heap_subset(pgcplan.CANDIDATES, pgcplan.GRAPH.NODES)
   -- if $destructor_unique(pgcplan.CALLED) /\ $destructor_numbers_valid(pgcplan.CALLED, |S.OBJECTS|)
   -- if $gc_called_subset(pgcplan.CALLED, S.DESTRUCTION.CALLED)
-  -- if pgcplan.DTORS = $gc_uncalled_snapshot(S, pgcplan.CANDIDATES, pgcplan.CALLED)
+  -- if pgcplan.DTORS = $gc_uncalled_snapshot(S, $gc_eligible_nodes(pgcplan.BUFFER), pgcplan.CALLED)
   -- if $heap_unique(pgcplan.FREESET) /\ $heap_subset(pgcplan.FREESET, pgcplan.GRAPH.NODES)
-  -- if pgcplan.FREESET = $destruction_nodes_delete($gc_visit(pgcplan.GRAPH, pgcplan.CANDIDATES, $gc_white(pgcplan.GRAPH, pgcplan.CANDIDATES), eps), $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
+  -- if pgcplan.FREESET = $destruction_nodes_delete($gc_visit(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)), eps), $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
   -- if pgcplan.PROXIES = $gc_proxy_edges(pgcplan.TABLES, pgcplan.GRAPH.NODES)
   -- if $gc_proxy_edges_valid(pgcplan.GRAPH, pgcplan.PROXIES)
   -- if $gc_snapshot_valid($gc_call_scope(S, pgcplan.CALL), pgcplan)
   -- if $($gc_plan_consumer_count(S.TODO, pgcplan) + $gc_plan_frame_count(S.FRAMES, pgcplan) + $gc_parked_plan_count(S, pgcplan)) = 1
-  -- if $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits(pgcplan.CANDIDATES), $gc_white(pgcplan.GRAPH, pgcplan.CANDIDATES), eps, eps) = (pnode_visit*, pgcplan.COUNTED)
+  -- if $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)), eps, eps) = (pnode_visit*, pgcplan.COUNTED)
   -- if $gc_done_prefix(S, pgcplan)
 def $gc_plan_live(S, pgcplan) = false -- otherwise
 def $gc_plan_valid(S, pgcplan) = ($gc_plan_live(S, pgcplan) /\ $gc_scope_valid(S, pgcplan.CALL))
@@ -696,16 +712,21 @@ def $call_task_valid(S, GC_DTOR_RETURN pgcplan n) = $gc_return_valid(S, pgcplan,
 def $gc_replace(S, pgcplan, ptask) = S[.GC.PLAN = (pgcplan)][.GC.ACTIVE = (pgcplan.CALL)][.TODO = ptask :: ptask_tail*]
   -- if S.TODO = ptask_old :: ptask_tail*
 def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "cycle collection of internal lifetime graph"]
+  -- if ~$gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if ~$gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES)) /\ pgcplan.CANDIDATES =/= eps
 def $gc_trace(S, pgccall) = $gc_fiber_trace(S, pgcplan)
+  -- if ~$gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER =/= eps /\ pgcplan.DTORS =/= eps
 def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps], pgcplan, GC_DTORS pgcplan)
+  -- if ~$gc_residual_overlap(S)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if pgcplan.CANDIDATES = eps \/ $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER = eps \/ pgcplan.DTORS = eps
+def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag shares an ordinary traced component"]
+  -- if $gc_residual_overlap(S)
 rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
   -- if S.TODO = (GC_TRACE pgccall) :: ptask*
   -- if $call_task_valid(S, GC_TRACE pgccall)
