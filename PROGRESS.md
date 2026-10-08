@@ -493,7 +493,10 @@ real receives and argument introspection. Twenty-three normal originals agree
 across `1a9577fbc`, `e24bc593f`, `44e1bf990` and `e79ff62bd`; three compiler
 rejections pass separately at `1a659fe82`. The
 [compound ledger](coverage/semantics/arrayaccess-stringable-compound-review.json)
-keeps the independent reached checks and current-parent compiler gate separate.
+keeps 341 earlier and 248 missing-key reached premises at their separate cuts.
+The composition of 325 modules over SOURCE339 `3691db3dd` passes full
+algorithmic/structuring compilation and six strict initialization checks at
+`7a7dd4faf`, without source/state renewal.
 The ordinary helper-base compiler repair preserves special builtin temporary
 rejection. Implicit Generator Get creation retains its existing deferred-scope
 boundary. Bare/fall-through NULL, finally-sensitive Notice ingress and wider

@@ -1,7 +1,7 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "module": "spec/semantics/334-arrayaccess-stringable-compounds.watsup",
-  "decision": "Independent source/reached review accepts the bounded334 behavior; actual-parent compiler/init gate pending",
+  "decision": "Independent source/reached review and actual-parent compiler/init accept the bounded334 behavior; complete ArrayAccess/core remains open",
   "semantic_revision": "e79ff62bd8b3a7505ef809203a78dfe0993ba8da",
   "behavior": [
     "Real Get, left conversion, live selected RHS conversion and Set retain the raw VALUE/CELL RV and genuine cast owners through callbacks and Fiber suspension.",
@@ -139,10 +139,10 @@
     }
   ],
   "current_composition": {
-    "parent": "3691db3dd",
+    "parent": "3691db3dd1d3386f1e3946cb253094ccae3523fb",
     "modules": 325,
     "evidence_root": ".tools/arrayaccess-stringable-current-19",
-    "status": "Pending final combined compiler/init; unchanged bounded334 semantics over reviewed SOURCE339 parent",
+    "status": "PASS full algorithmic/structuring compilation and strict-SL initialization",
     "known_boundary": {
       "revision": "02b711362",
       "report": ".tools/arrayaccess-stringable-compound/review-generator-get-ka_fdh1a/report.json",
@@ -150,7 +150,39 @@
       "model": "Unsupported generator creation through deferred call scope, before334 admission; stdout B;",
       "agreement_credit": 0,
       "classification": "Pre-existing280 implicit Generator creation boundary documented in GENERATORS.md, not a334 regression; no scope widening or fake producer certificate"
-    }
+    },
+    "revision": "7a7dd4faf5aaa4dfd03d55ac83f7768bb5005407",
+    "tree": "624daba6d212ed950f125d21e2d2b8657a0b122f",
+    "report": ".tools/arrayaccess-stringable-compound/reached-run-74rwz4ct/report.json",
+    "selection": [
+      "compiler-gates"
+    ],
+    "stages": {
+      "algo": {
+        "exit": 0,
+        "emitted_bytes": 10566841,
+        "seconds": 3.456
+      },
+      "struct": {
+        "exit": 0,
+        "emitted_bytes": 10227388,
+        "seconds": 4.306
+      }
+    },
+    "strict_SL_initial": {
+      "premises": 6,
+      "passed": true,
+      "seconds": 5.36
+    },
+    "inputs_stable": true,
+    "all_groups_reaped": true,
+    "source_or_reached_renewal": false,
+    "compatibility": [
+      "The exact325 join preserves all storage fields and adds only334 task constructors and KEYHOLE metadata; raw/cast owners still use ordinary task_nodes graph traversal.",
+      "324 suppresses released unmarked foreach cells;334 raw reference Get requires marked REFCELLS.328 cached reference cells use normal HCELL ownership; existing implicit Generator creation remains unsupported before334.",
+      "331/337 bound Fiber captures require different object kinds/tails;335/338 quiescent close guards require exact graceful/failed-control release carriers, distinct from ACCESS tasks.",
+      "336 named argument CV emission and339 NAME_CV_READ_RESULT require source-name tasks; they cannot match DIM/AssignOp or334 implicit Set preflight. Ordinary HOLES=eps dispatch is unchanged."
+    ]
   },
   "failures": [
     {
@@ -271,7 +303,8 @@
     "accepted": [
       "Raw Get carrier and cast/RHS/key/base ownership, staged conversion order and throws/Fiber suspension.",
       "Authentic pending keyhole source guards, saved receive/default metadata, required/variadic pre-entry error and fake callee trace.",
-      "Original failures and pre-existing implicit Generator creation boundary retain zero agreement credit."
+      "Original failures and pre-existing implicit Generator creation boundary retain zero agreement credit.",
+      "Actual SOURCE339/337/338 parent tasks, scope guards and ownership seams are disjoint; the recorded combined325 compiler/init gate passes without renewing original source/reached cuts."
     ],
     "scope": "No complete ArrayAccess or full-core claim; paused non-mixed typed/finally-sensitive return lanes unchanged."
   }
