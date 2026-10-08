@@ -58,10 +58,11 @@ CASES = {
             '$fiber_api_valid(S, pfiberapi)', '$gc_worker_public_valid(S, pfiberapi)',
             '$fiber_caller_wait(S, pfibercaller)', '$gc_state_valid(S)', *review.VALID,
             'pfiberapi_line = pfiberapi[.LINE = $(pfiberapi.LINE + 1)]',
+            'pconfigcall_line = pconfigcall[.LINE = pfiberapi_line.LINE]',
             'S_line = S[.TODO = [GC_WORKER_PUBLIC pfiberapi_line]]'
             '[.FIBERCALLERS = [pfibercaller[.API = pfiberapi_line]'
             '[.VM.TODO = (FIBER_WAIT pfiberapi_line) :: '
-            '(FIBER_CAPTURE_RESULT n_capture pconfigcall true) :: ptask_tail*]]]',
+            '(FIBER_CAPTURE_RESULT n_capture pconfigcall_line true) :: ptask_tail*]]]',
             '$heap_graph(S_line) = $heap_graph(S)',
             '~$fiber_api_valid(S_line, pfiberapi_line)',
             '~$gc_worker_public_valid(S_line, pfiberapi_line)',
