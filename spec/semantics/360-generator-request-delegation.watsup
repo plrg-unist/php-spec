@@ -1,0 +1,22 @@
+;; zend_generator_dtor_storage detaches input before finally. Delegated CURRENT
+;; is the physical value slot, retained until free_storage releases that slot.
+dec $generator_storage_current_records(pstate, pgeneratorfrom, pgenstorage*) : bool
+dec $generator_storage_current_record(pstate, pgeneratorfrom, pgenstorage) : bool
+
+def $generator_storage_current_borrowed(S, pgeneratorfrom) = $generator_storage_current_records(S, pgeneratorfrom, $generator_storage_tasks(S.TODO) ++ $generator_storage_frames(S.FRAMES))
+def $generator_storage_current_records(S, pgeneratorfrom, eps) = false
+def $generator_storage_current_records(S, pgeneratorfrom, pgenstorage :: pgenstorage_tail*) = ($generator_storage_current_record(S, pgeneratorfrom, pgenstorage) \/ $generator_storage_current_records(S, pgeneratorfrom, pgenstorage_tail*))
+def $generator_storage_current_record(S, pgeneratorfrom, pgenstorage) = true
+  -- if $(pgenstorage.OBJECT < |S.OBJECTS|) /\ $(pgenstorage.NEXT >= 2)
+  -- if S.OBJECTS[pgenstorage.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom) /\ pgeneratorfrom.INPUT = eps
+  -- if pgeneratorfrom.CURRENT = (REFERENCE n)
+  -- if $(n < |S.STORE|) /\ n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED pvalue
+def $generator_storage_current_record(S, pgeneratorfrom, pgenstorage) = false -- otherwise
+
+;; Record equality cannot lend an unstaged object another object's consumed
+;; Closure/cell history. Its own physical cache edges must still be live.
+def $generator_storage_node_valid(S, n) = ($generator_storage_value_shape(pgenerator) /\ $heap_subset($generator_closed_closure(pgenerator) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)), S.ALLOCATIONS))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if $generator_storage_for(S, n) = eps

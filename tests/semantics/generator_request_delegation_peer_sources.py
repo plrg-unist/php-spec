@@ -30,6 +30,15 @@ function outerPeerRequest($inner,$label){try{yield from $inner;}finally{echo $la
 $inner=innerPeerRequest();$innerAlias=&$inner;$a=outerPeerRequest($inner,"A");$aa=&$a;
 $b=outerPeerRequest($inner,"B");$bb=&$b;echo "C|",$a->current(),":",$b->current(),"|";
 ''', b'C|7:7|IAB', 0),
+    'peer-request-delegate-inner-handler-cache-before-outer': (
+        b'''<?php
+class PayloadPeerRequest{function __destruct(){echo "D";}}
+function caughtPeerRequest($e){echo "H";}
+set_exception_handler("caughtPeerRequest");
+function innerPeerRequest(){try{yield new PayloadPeerRequest;}finally{echo "I";throw new Exception("inner");}}
+function outerPeerRequest(){try{yield from innerPeerRequest();}finally{echo "O";}}
+$g=outerPeerRequest();$g->current();echo "C|";
+''', b'C|IHDO', 0),
 }
 
 
@@ -49,6 +58,7 @@ def main():
         'spec/semantics/340-generator-request-finally.watsup',
         'spec/semantics/349-generator-request-fresh.watsup',
         'spec/semantics/355-generator-storage-pin.watsup',
+        'spec/semantics/360-generator-request-delegation.watsup',
         'tests/semantics/generator_request_delegation_peer_sources.py',
     ]
     return driver.main()

@@ -25,6 +25,16 @@ function __destruct(){echo "I";}
 function iteratorRequest360(){try{yield from new IteratorRequest360;}finally{echo "O";}}
 $g=iteratorRequest360();$g->current();$wg=WeakReference::create($g);$wa=&$wg;echo "C|";
 ''', b'C|IOD1:1', 0),
+    'request-reference-current-keeps-closure-before-value': (
+        b'''<?php
+class CaptureRequest360{function __destruct(){global $wg;echo "C",(int)($wg->get()!==null);}}
+class ValueRequest360{function __destruct(){global $wg;$local=$wg->get();echo "D",(int)($local!==null),":",(int)($local->current()===null);}}
+function payloadRequest360(){$v=new ValueRequest360;return [&$v];}
+function sentinelRequest360(){yield 0;}
+$other=sentinelRequest360();$other->current();$other->next();
+$cap=new CaptureRequest360;$fn=function()use(&$cap){try{yield from payloadRequest360();}finally{echo "O";}};
+$g=$fn();$g->current();$wg=WeakReference::create($g);$wa=&$wg;unset($fn,$cap);echo "C|";
+''', b'C|OC1D1:1', 0),
 }
 
 
@@ -44,6 +54,7 @@ def main():
         'spec/semantics/340-generator-request-finally.watsup',
         'spec/semantics/349-generator-request-fresh.watsup',
         'spec/semantics/355-generator-storage-pin.watsup',
+        'spec/semantics/360-generator-request-delegation.watsup',
         'tests/semantics/generator_request_delegation_sources.py',
     ]
     return driver.main()
