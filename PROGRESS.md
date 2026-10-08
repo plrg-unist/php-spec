@@ -475,6 +475,20 @@ earlier307 source/reached cut remains separate. Finally-sensitive Notice ingress
 bare/fall-through NULL, handler exit and wider producers remain open; typed
 non-mixed return verification stays user-paused.
 
+ArrayAccess334 stages real Get, left Stringable conversion, live RHS conversion
+and Set while retaining the raw RV/CELL and each genuine cast/key/base owner.
+An initially defined key unset by a conversion retains its absent C-call slot:
+required and variadic Set reject before entry, while scalar and NEW defaults use
+real receives and argument introspection. Twenty-three normal originals agree
+across `1a9577fbc`, `e24bc593f`, `44e1bf990` and `e79ff62bd`; three compiler
+rejections pass separately at `1a659fe82`. The
+[compound ledger](coverage/semantics/arrayaccess-stringable-compound-review.json)
+keeps the independent reached checks and current-parent compiler gate separate.
+The ordinary helper-base compiler repair preserves special builtin temporary
+rejection. Implicit Generator Get creation retains its existing deferred-scope
+boundary. Bare/fall-through NULL, finally-sensitive Notice ingress and wider
+producers remain open; non-mixed typed return verification remains user-paused.
+
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
 reference consumers. Defined key/RHS CVs remain live across compound Get;
@@ -1778,7 +1792,8 @@ failures and interrupted evidence.
   ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append,
   and309 adds final simple append to returned children. Module319 adds untyped/mixed
   reference Get;326 adds named sends and nested captured-row updates, and329
-  adds VALUE-return Notice callbacks. Finally-sensitive Notice ingress, bare/fall-through
+  adds VALUE-return Notice callbacks;334 adds real Stringable DIM_OP conversions
+  and callback-unset key receives. Finally-sensitive Notice ingress, bare/fall-through
   NULL, handler exit, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.

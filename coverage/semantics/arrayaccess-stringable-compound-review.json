@@ -1,0 +1,278 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "module": "spec/semantics/334-arrayaccess-stringable-compounds.watsup",
+  "decision": "Independent source/reached review accepts the bounded334 behavior; actual-parent compiler/init gate pending",
+  "semantic_revision": "e79ff62bd8b3a7505ef809203a78dfe0993ba8da",
+  "behavior": [
+    "Real Get, left conversion, live selected RHS conversion and Set retain the raw VALUE/CELL RV and genuine cast owners through callbacks and Fiber suspension.",
+    "Set handler key/receiver copies retire before RV, OP_DATA, outer receiver, computed key and computed base, including conversion/Set throws and replacement exceptions.",
+    "A callback-unset initially defined key stays an absent C-call argument. Required/variadic Set throw before entry; scalar/NEW defaults use authentic receive machinery and argument introspection.",
+    "Ordinary helper-call DIM_OP bases compile in read mode; direct calls, special builtin results and scalar temporaries keep their native compile rejection."
+  ],
+  "source_routes": {
+    "vendor/php-src/Zend/zend_execute.c": [
+      "zend_binary_assign_op_obj_dim",
+      "zend_handle_undef_args",
+      "start_fake_frame"
+    ],
+    "vendor/php-src/Zend/zend_execute_API.c": [
+      "zend_call_function"
+    ],
+    "vendor/php-src/Zend/zend_operators.c": [
+      "concat_function"
+    ],
+    "vendor/php-src/Zend/zend_compile.c": [
+      "zend_delayed_compile_dim",
+      "zend_separate_if_call_and_write"
+    ],
+    "vendor/php-src/Zend/zend_object_handlers.c": [
+      "zend_std_read_dimension",
+      "zend_std_write_dimension"
+    ]
+  },
+  "sources": {
+    "normal_originals": 23,
+    "cuts": [
+      {
+        "revision": "1a9577fbc34a4a61e4437f4830521a2ca9a71e82",
+        "report": ".tools/arrayaccess-stringable-compound/run-ewjgcwf5/report.json",
+        "normal_sources": 17,
+        "selection": [
+          "compound-reference-referent-replaced-during-set",
+          "compound-reference-old-cell-retained-after-name-rebind",
+          "left-stringable-write-and-current-rhs-conversion",
+          "left-stringable-rebind-keeps-old-get-cell",
+          "rhs-cv-stringable-write-retires-before-set",
+          "computed-rhs-stringable-keeps-op-data-owner-through-set",
+          "left-conversion-throw-skips-set-and-retires-rv-before-receiver",
+          "set-throw-keeps-rebound-get-cell-until-rv-release",
+          "stringable-cast-owner-survives-fiber-park-after-cell-write",
+          "byvalue-get-rv-retires-before-computed-rhs-and-receiver",
+          "right-conversion-throw-retires-get-rv-before-op-data-and-receiver",
+          "set-key-cv-is-sampled-after-both-stringable-conversions",
+          "plain-concat-control-retains-computed-result-after-set-mutations",
+          "get-throw-retains-original-replacement-error-priority",
+          "cast-receiver-destructor-throw-preserves-pending-exception",
+          "computed-key-normal-opcode-owner-order",
+          "computed-key-right-conversion-throw-owner-order"
+        ],
+        "status": "Credited passing subset; original later failure retained",
+        "inputs_stable": true,
+        "all_groups_reaped": true
+      },
+      {
+        "revision": "e24bc593fe6b316d4ec0ce213c7927a811c0cb0b",
+        "report": ".tools/arrayaccess-stringable-compound/run-cuzr83rp/report.json",
+        "normal_sources": 2,
+        "selection": [
+          "computed-base-owner-survives-through-final-computed-key-release",
+          "set-key-copy-retires-before-rv-when-original-cv-is-unset"
+        ],
+        "status": "PASS",
+        "inputs_stable": true,
+        "all_groups_reaped": true
+      },
+      {
+        "revision": "44e1bf99046eda08549baacd5f865a47c66a0061",
+        "report": ".tools/arrayaccess-stringable-compound/run-etn5uobp/report.json",
+        "normal_sources": 2,
+        "selection": [
+          "stringable-key-unset-required-set-argument",
+          "stringable-key-unset-optional-set-default"
+        ],
+        "status": "Credited passing subset; original later failure retained",
+        "inputs_stable": true,
+        "all_groups_reaped": true
+      },
+      {
+        "revision": "e79ff62bd8b3a7505ef809203a78dfe0993ba8da",
+        "report": ".tools/arrayaccess-stringable-compound/run-wx1gcwao/report.json",
+        "normal_sources": 2,
+        "selection": [
+          "stringable-key-unset-new-set-default-argview",
+          "stringable-key-unset-variadic-set-fake-frame"
+        ],
+        "status": "PASS",
+        "inputs_stable": true,
+        "all_groups_reaped": true
+      }
+    ],
+    "compatibility": "The builtin PPRW rejection does not affect the ordinary helper. New hole rules require an initially defined CV absent before Set; earlier key-present sources and reached states retain their tested cuts. The218 exclusion affects only nonempty ArrayAccess holes, leaving normal empty-hole dispatch unchanged."
+  },
+  "compiler_negatives": {
+    "revision": "1a659fe8213a26d5c7c15b7f2d447a2e9a332cdf",
+    "report": ".tools/arrayaccess-stringable-compound/reached-run-36chnph5/report.json",
+    "selection": [
+      "direct-call-update",
+      "builtin-result-update",
+      "scalar-temporary-update"
+    ],
+    "exact_native_model_rejections": 3,
+    "status": "Passing subset; subsequent reached-fixture compiler failure preserved"
+  },
+  "reached": [
+    {
+      "revision": "6a6c17eb977306d89bc35a3808101b5de7095756",
+      "report": ".tools/arrayaccess-stringable-compound/reached-run-o609cuwl/report.json",
+      "groups": {
+        "reference-carrier-admission": 80,
+        "left-write-and-current-rhs": 98,
+        "cast-owner-in-parked-fiber": 92,
+        "computed-key-and-base-owner-order": 71
+      },
+      "premises": 341,
+      "passed": true,
+      "inputs_stable": true,
+      "all_groups_reaped": true
+    },
+    {
+      "revision": "5f9f5de3bf4cecf027bd6fb7cf7091018e58c47b",
+      "report": ".tools/arrayaccess-stringable-compound/reached-run-dt92s7vt/report.json",
+      "groups": {
+        "undefined-key-required-preflight": 114,
+        "undefined-key-new-default-owner": 134
+      },
+      "premises": 248,
+      "passed": true,
+      "inputs_stable": true,
+      "all_groups_reaped": true
+    }
+  ],
+  "current_composition": {
+    "parent": "6b51f811c7c1c6975356687a96b95e2516f91044",
+    "modules": 324,
+    "evidence_root": ".tools/arrayaccess-stringable-current-19",
+    "status": "Pending full compiler/init after independent actual-seam review",
+    "known_boundary": {
+      "revision": "02b711362",
+      "report": ".tools/arrayaccess-stringable-compound/review-generator-get-ka_fdh1a/report.json",
+      "native": "normal0: B;X:Object of class Generator could not be converted to string;E;",
+      "model": "Unsupported generator creation through deferred call scope, before334 admission; stdout B;",
+      "agreement_credit": 0,
+      "classification": "Pre-existing280 implicit Generator creation boundary documented in GENERATORS.md, not a334 regression; no scope widening or fake producer certificate"
+    }
+  },
+  "failures": [
+    {
+      "reports": [
+        ".tools/arrayaccess-stringable-compound/run-zt6a9bhv/report.json"
+      ],
+      "kind": "Optional byte binder compiler stop, exit0/165 bytes; no runtime credit",
+      "repair": "1a9577fbc"
+    },
+    {
+      "reports": [
+        ".tools/arrayaccess-stringable-compound/run-ewjgcwf5/report.json"
+      ],
+      "kind": "Source18 ordinary helper DIM_OP base Unsupported before execution; source19 unrun at that cut",
+      "repair": "e24bc593f"
+    },
+    {
+      "reports": [
+        ".tools/arrayaccess-stringable-compound/reached-run-36chnph5/report.json"
+      ],
+      "kind": "Reached fixture missing parentheses around REFERENCE bound, exit0/219 bytes; no reached credit",
+      "repair": "6a6c17eb9"
+    },
+    {
+      "reports": [
+        ".tools/arrayaccess-stringable-compound/review-key-unset-_a8s34bu/report.json"
+      ],
+      "kind": "Native required Set rejects missing key and optional Set supplies fallback; model incorrectly passed null",
+      "repair": "ada03e524/e79ff62bd"
+    },
+    {
+      "reports": [
+        ".tools/arrayaccess-stringable-compound/run-73idi1g9/report.json",
+        ".tools/arrayaccess-stringable-compound/run-x7otw3kl/report.json",
+        ".tools/arrayaccess-stringable-compound/run-brev8ju1/report.json"
+      ],
+      "kind": "New hole declaration order, missing record field and manual trace tuple compiler stops; no runtime credit",
+      "repair": "7514beffb/3c6456946/44e1bf990"
+    },
+    {
+      "reports": [
+        ".tools/arrayaccess-stringable-compound/run-etn5uobp/report.json"
+      ],
+      "kind": "NEW default exposed overlapping false/true argument-source validation; variadic source unrun at that cut",
+      "repair": "e79ff62bd excludes nonempty implicit access holes from ordinary argument-source rules"
+    }
+  ],
+  "runtime_inputs": {
+    ".tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712
+    },
+    ".tools/php-file.so": {
+      "sha256": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "bytes": 26944
+    },
+    "_build/default/adapter/main.exe": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976
+    },
+    ".tools/spectec/bin/p4spectec": {
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "bytes": 32150944
+    },
+    "tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "bytes": 28628992
+    }
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cwd": "/home/user/workspace/php-spec/.tools/arrayaccess-reference-get-stringable-18",
+    "PHP_SPEC_SCRIPT_ENCODING_removed": true
+  },
+  "caps": {
+    "compiler": 120,
+    "strict_SL_initial": 120,
+    "native": 45,
+    "CLI": 60,
+    "outer": 90,
+    "steps": 100000,
+    "source_phase": 480,
+    "strict_SL": 300
+  },
+  "jobs": 1,
+  "recovery_root": ".tools/arrayaccess-reference-get-stringable-18",
+  "commands": [
+    "python3 tests/semantics/arrayaccess_stringable_compound_prepare.py [source ids]",
+    "python3 tests/semantics/arrayaccess_stringable_compound_run.py <prepared/report.json> [source ids]",
+    "python3 tests/semantics/arrayaccess_stringable_compound_state_prepare.py <prepared/report.json>",
+    "python3 tests/semantics/arrayaccess_stringable_compound_state_run.py <manifest.json> [compiler-gates or reached group ids]"
+  ],
+  "remaining": [
+    "Bare/fall-through NULL and finally-sensitive reference-Get Notice ingress remain unaccepted; handler exit and wider producers remain open.",
+    "Implicit Generator Get creation retains the existing deferred-call-scope boundary before334 conversion; wider producer support remains open.",
+    "Non-mixed typed return verification remains user-paused.",
+    "Complete core semantics and a fresh combined copied-path offline rebuild remain required."
+  ],
+  "reached_premises": 589,
+  "review": {
+    "reviewer": "arguments_review_19",
+    "accepted": [
+      "Raw Get carrier and cast/RHS/key/base ownership, staged conversion order and throws/Fiber suspension.",
+      "Authentic pending keyhole source guards, saved receive/default metadata, required/variadic pre-entry error and fake callee trace.",
+      "Original failures and pre-existing implicit Generator creation boundary retain zero agreement credit."
+    ],
+    "scope": "No complete ArrayAccess or full-core claim; paused non-mixed typed/finally-sensitive return lanes unchanged."
+  }
+}

@@ -408,9 +408,18 @@ original and64 strict-SL premises also preserve readback across Fiber suspension
 and a paused Generator finalizer. The canonical292 GC interaction retains
 a cyclic returned child across collection inside Set, reads the old RHS cell
 after a collector destructor rebinds its global name, and frees the child on the
-next collection. By-reference Get, wider
-memoized/property/GLOBALS consumers and combined Iterator/ArrayAccess notice
-ordering remain required.
+next collection. Untyped/mixed reference Get and its named/nested consumers are
+implemented; wider memoized/property/GLOBALS consumers and combined
+Iterator/ArrayAccess notice ordering remain required.
+
+[Stringable ArrayAccess compounds](coverage/semantics/arrayaccess-stringable-compound-review.json)
+convert the left and live RHS through ordinary callbacks before Set, retaining
+the raw Get result and exact key/base cleanup order through throws and Fiber
+parking. An initially defined key unset by a callback remains a missing C-call
+argument, so Set receives its real default or throws before entry. Twenty-three
+normal originals agree across retained private cuts; compiler negatives and
+independent reached states are recorded separately. Complete
+ArrayAccess behavior and the combined offline rebuild remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument

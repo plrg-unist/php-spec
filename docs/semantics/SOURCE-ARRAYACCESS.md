@@ -93,6 +93,31 @@ conversion temporary retain the selected table. The prefix adds no owner.
 Fourteen exact normal originals and six strict-SL recipes/375 premises retain
 separate compiler/source/state cuts in the
 [reference-Get ledger](../../coverage/semantics/arrayaccess-reference-get-review.json).
+
+Module334 stages compound concatenation through the real Get, left conversion,
+live selected RHS conversion and Set. The raw Get VALUE or CELL stays owned
+through Set; it does not keep a stale referent alive after callback writes.
+Stringable casts retain their own receiver through callbacks and Fiber parking.
+Set samples a defined key CV after both conversions; a key already missing at
+initial demand keeps its captured null. If a callback unsets an initially defined
+key CV, the C-call argument remains absent. Required and variadic Set throw before
+body entry, with a genuine callee error frame; optional scalar and NEW defaults
+fill the slot before receives. Argument introspection sees both completed slots.
+The expression returns the computed concatenated string.
+
+The std Set handler releases its copied key and receiver first. The VM then
+releases the raw RV, computed RHS, outer receiver, computed key and computed base
+in order. Conversion/Set throws preserve the corresponding owner release and
+replacement-exception behavior. Ordinary helper calls can supply compound
+dimension bases; special builtin temporary results remain compiler errors.
+The [Stringable compound ledger](../../coverage/semantics/arrayaccess-stringable-compound-review.json)
+keeps the 23 normal original-source agreements, compiler negatives and independent
+reached-state checks at their separate cuts. Bare/fall-through NULL and
+finally-sensitive reference-Get Notices remain unaccepted; non-mixed typed return
+verification remains user-paused.
+Implicit Generator Get creation still stops at module280's existing deferred-call
+scope boundary, before334 conversion. The actual328 interaction remains
+Unsupported and receives no original-source agreement credit.
 Actual298 also passes full compilation, strict initialization and one new exact
 Fiber-core warning/Get suspension original. Its real internal reporting tail
 survives the parked Get and resumed shared property write;318 fields remain
@@ -125,8 +150,8 @@ Final314 over `2a2f69a71` passes full algorithmic/structuring compilation at
 constructor and pruning fields; the earlier307 source/reached cut stays separate
 without execution renewal.
 
-Wider memoized/property/GLOBALS producers, combined Iterator/ArrayAccess notice
-ordering and live Stringable DIM_OP remain required. Finally-sensitive Notice
+Wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess notice
+ordering remain required. Finally-sensitive Notice
 ingress, bare/fall-through NULL and handler exit remain open. Typed non-mixed Get stops
 explicitly before the user-paused return verification; no typed body validation
 is claimed.
