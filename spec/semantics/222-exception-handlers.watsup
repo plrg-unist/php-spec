@@ -23,6 +23,7 @@ dec $exception_result_valid(pstate, pexceptioncall) : bool
 dec $exception_handler_enter(pstate, pexceptioncall, poperand) : pstate
 dec $exception_reference_warning(pstate, pexceptioncall) : ptbytes
 dec $exception_context_current(pstate, pcallcontext) : pexceptioncall?
+dec $exception_context_source_view(pstate, pcallcontext) : bool
 dec $exception_context_saved_head(pcallcontext, pframe*) : pexceptioncall?
 dec $exception_context_saved(pcallcontext, pframe*) : pexceptioncall?
 dec $exception_context_call(pstate, pcallcontext) : pexceptioncall?
@@ -296,10 +297,12 @@ def $api_warning_event(S, papiquery, ptbytes) = DIAGNOSTIC_INTERNAL "Deprecated"
   -- if $error_call_valid(S, perrorcall)
 
 ;; Current and nested saved calls authenticate against the real global C anchor.
+def $exception_context_source_view(S, pcallcontext) = false -- otherwise
 def $exception_context_current(S, pcallcontext) = (pexceptioncall)
   -- if S.CURRENT = (pcallcontext)
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
+  -- if ~$exception_context_source_view(S, pcallcontext)
 def $exception_context_current(S, pcallcontext) = eps -- otherwise
 def $exception_context_saved_head(pcallcontext, pframe :: pframe_caller :: pframe_tail*) = (pexceptioncall)
   -- if pframe.CONTEXT = (pcallcontext)

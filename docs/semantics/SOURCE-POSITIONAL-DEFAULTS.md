@@ -203,4 +203,7 @@ source-step controls. The combined302/301 original at `ea7cf0a34`/339 still reac
 host55.045625 with empty streams and zero agreement; no speedup or231 credit follows.
 The `500a2cedc`/340 eager-edge original also reaches host55.045470 with empty
 streams and zero agreement.
+The `e1c3d4d61`/343 owner-order-carry original reaches host55.043267 with empty
+streams and zero agreement. Pure graph worklist pruning passes typed and genuine
+cascade controls at `a39876cbe`/343; its original retry remains UNRUN.
 Whole retry composition and wider producers remain open.

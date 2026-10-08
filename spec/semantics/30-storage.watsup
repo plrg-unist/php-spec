@@ -53,6 +53,7 @@ syntax pdynamicnew
 syntax ptraitcachecause
 syntax pstaticselection = { SITE porigin, ROOT porigin, SCOPE porigin?, CALLED porigin?, CLOSURE pclosureevidence? }
 syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | CCUPDATE porigin porigin porigin nat | CCSTATIC porigin porigin nat | CCSTATICRETIRE porigin porigin nat nat | CCCOMPOUNDENTER pstaticcompound porigin int nat | CCCOMPOUNDRETIRE pstaticcompound nat porigin int nat | CCCOMPOUNDWRITE pstaticcompound porigin int ptbytes nat
+  | CCCOMPOUNDSELECT pstaticcompound pstaticselection porigin int nat
   | CCSTATICSELECT porigin pstaticselection nat | CCSTATICRETIRESELECT porigin pstaticselection nat nat | CCUPDATESELECT porigin pstaticselection nat
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
   | CCUPDATENEW porigin pdynamicnew nat
@@ -222,6 +223,7 @@ syntax pordinaryinternal = {SOURCE pctorcall, CALL pctorcall, INDEX nat, VALUES 
 syntax pconstantlookup = { ORIGIN porigin, SITE porigin, DECL porigin, PREFIX nat }
 syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass, LOOKUP pconstantlookup? }
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
+syntax pinstancestorage = { OBJECT nat, HANDLE nat, SLOTS ppropertyslot*, NEXT nat, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool }
 syntax pforeachbind = { SITE porigin, FOREACH porigin, ITERATOR nat, OBJECT nat, OWNER pnode, POSITION nat, KEY ptbytes, NAME ptbytes, OLD nat, WRAPPER nat?, VALUE pvalue, NEW nat, CALLER pcallcontext?, CONSTCONTEXT pconstantcontext?, LINE int }
 syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
@@ -231,7 +233,7 @@ syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedarg
 syntax pgcpublic = {API pfiberapi, SOURCE pgccall, INDEX nat, END nat, PENDING nat?}
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
-syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
+syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | GC_WORKER_SCAN pgcpublic | GC_WORKER_PUBLIC pfiberapi | GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat | GC_WORKER_WAIT nat pgcplan | GC_WORKER_REPLACE pgcplan | GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat | GC_FREE pgcplan | FIBER_CORE_RESULT nat pconfigcall | FIBER_API_CORE_RESULT nat nat pconfigcall | FIBER_CAPTURE_RELEASE nat porigin | FIBER_CAPTURE_RESULT nat pconfigcall bool | FIBER_START_CAPTURE_ARGS nat pfiberstart | FIBER_START_CAPTURE_SEND nat pfiberstart | FIBER_START_CAPTURE_RESULT nat pfiberstart bool | FIBER_START_CORE_INVOKE nat nat pfiberstart | FIBER_START_CORE_RESULT nat nat pfiberstart | FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_YIELD_KEY nat porigin int | GENERATOR_YIELD_REF_FETCH porigin poperand? | GENERATOR_YIELD_REF_NOTICE nat porigin poperand? pvalue int | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
   | GENERATOR_CLOSE_RELEASE pgenrelease | GENERATOR_CLOSE_ENTER pgenclose | GENERATOR_CLOSE_DONE pgenclose | GENERATOR_CLOSE_SCAN nat porigin | GENERATOR_CLOSE_FINALLY porigin | GENERATOR_CLOSE_FROM porigin
   | GENERATOR_STORAGE_STEP pgenstorage
@@ -533,6 +535,8 @@ dec $property_entries(ppropertyslot*) : pentry*
 dec $property_next(pstate, nat, ppropertyslot*, nat, nat) : (ptbytes, pitem, nat)?
 dec $property_slots_valid(pstate, ppropertydesc*, ppropertyslot*) : bool
 dec $property_state_valid(pstate) : bool
+dec $instance_storage_freeing(pstate, nat) : bool
+dec $instance_storage_state_valid(pstate) : bool
 dec $proprefs_valid(pstate) : bool
 dec $nullsafe_base_phase_valid(pstate) : bool
 dec $propref_slots_covered(pstate, pobjectprops*) : bool

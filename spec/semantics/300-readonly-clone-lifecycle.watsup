@@ -216,13 +216,16 @@ def $call_task_valid(S, CLONE_CALLBACK_ENTER pcloneoperation) = ($clone_callback
 def $call_task_valid(S, CLONE_CALLBACK_RESULT pcloneoperation) = ($clone_callback_live(S, pcloneoperation) /\ $clone_maker_at(S.CLONEMAKERS, pcloneoperation.TARGET) = ($clone_producer_receipt(pcloneoperation)))
 
 def $clone_lifecycle_start(S, n_source, porigin_site, z, eps) = $method_denied(S, pmethoddesc, pmethoddesc.NAME, $method_current_scope(S), false, z)
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if $clone_method(S, n_source) = (pmethoddesc)
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
 def $clone_lifecycle_start(S, n_source, porigin_site, z, (pclonecall)) = $clone_error(S, pclonecall, "Error", $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(pmethoddesc.NAME) ++ $ptascii("()") ++ $method_scope_suffix(S, $method_current_scope(S)))
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if $clone_method(S, n_source) = (pmethoddesc)
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 def $clone_lifecycle_start(S, n_source, porigin_site, z, pclonecall?) = S_copied[.TODO = (CLONE_CALLBACK_ENTER pcloneoperation) :: ptask_tail*][.CLONES = {OPERATION pcloneoperation, PHASE CLONE_CALLBACK, AVAILABLE $clone_readonly_keys(S_copied, n_target), REVISIONS $clone_revisions_start($clone_readonly_keys(S_copied, n_target))} :: S_copied.CLONES][.HELD = S.HELD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if $clone_method(S, n_source) = (pmethoddesc)
   -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if S.TODO = ptask :: ptask_tail*
@@ -239,6 +242,7 @@ def $clone_receive(S, pclonecall) = $clone_lifecycle_start(S, n_source, pcloneca
   -- if $clone_method(S, n_source) =/= eps
 def $clone_receive(S, pclonecall) = $clone_readonly_start(S_copied[.HELD = S.HELD], pcloneoperation, n_array, ptask_tail*)
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n_source)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if $clone_method(S, n_source) = eps
   -- if $clone_readonly_updates(S, n_source)
   -- if S.ARRAYS[n_array].ITEMS =/= eps
@@ -248,6 +252,7 @@ def $clone_receive(S, pclonecall) = $clone_readonly_start(S_copied[.HELD = S.HEL
   -- if pcloneoperation = {SITE pclonecall.SITE, LINE pclonecall.LINE, SOURCE n_source, TARGET n_target, INPUT eps, CALL (pclonecall), SCOPE $method_current_scope(S)}
 def $clone_receive(S, pclonecall) = $clone_object($hold_task_inputs(S), n_source)[.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
   -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n_source)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if ~$instance_storage_freeing(S, n_source)
   -- if $clone_method(S, n_source) = eps
   -- if $clone_readonly_updates(S, n_source)
   -- if S.ARRAYS[n_array].ITEMS = eps

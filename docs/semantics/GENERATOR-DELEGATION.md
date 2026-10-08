@@ -45,8 +45,15 @@ value tags need payload history. The Aggregate control provides no acquisition
 guard execution evidence. [Reference yields328](GENERATOR-REFERENCE-YIELDS.md)
 add live child caches and warning reinjection. Broader reference producers, complete destruction/GC and wider
 Generator call forms remain required; this milestone does not close core PHP.
-Ordinary last-owner forced close is now covered by
-[Module303](GENERATOR-FORCE-CLOSE.md); its shutdown/terminal/GC frontiers stay open.
+Ordinary last-owner forced close is covered by [Module303](GENERATOR-FORCE-CLOSE.md).
+Module 360 adds normal request close with actual input detachment before finally,
+independent CV owners, shared Generator store order and physical delegated cache
+release. A consumed CURRENT reference borrows only its own authenticated storage
+stage; copying that payload to a real unstaged Generator is rejected. Nested normal
+exception handlers preserve both close claims and inner cache lifetime.
+[The new ledger](../../coverage/semantics/generator-request-delegation-review.json)
+records eight originals and 553 reached premises separately from earlier cuts.
+Abrupt terminal cleanup, parked/escaped storage and wider GC remain required.
 
 The source cuts are `generator-delegation-review-l1z91u_r` (5), `lxz1qh12` (19),
 `xv0889dc` (10), `ikge9tqx` (8), `ger2ks_r` (4 compiler), `otx8ejdq` (7), and
