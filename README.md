@@ -76,6 +76,8 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [Array-valued ordinary computed-name CVs](coverage/semantics/source-array-name-review.json) now resume warning handlers with fixed `Array` bytes before live target lookup. Borrowed array children can retire inside the handler; handler and child exceptions abort the fetch. Seven exact originals and117 independent premises retain private331; actual335 passes strict compilation. Wider producers remain required.
 
+[First dimension reads](coverage/semantics/source-dimension-emission-review.json) now retire owned include/eval operands at the key compiler line before reading an ordinary CV base and CV or literal key. A narrow writable array-property receiver separates the protected array; a later literal property warning resumes with fixed null. Seven exact originals and245 independent premises retain their private336 cuts; actual340 passes strict compilation. Wider emission and receiver forms remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -195,6 +197,12 @@ current scalar/array locations, preserving copied results and diagnostic order;
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
+[Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
+reads a defined RHS CV after the left conversion, preserves the non-reference
+self-CV fast path, and retains evaluated temporary/reference operands through
+the final store. Thirteen exact originals cover live rebinding, aliases, copied
+expression results and normal or throwing operand cleanup. The249 independent
+reached premises and current-composition gate retain separate records.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -503,6 +511,8 @@ Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
 Keep and release scans also reuse the carried graph, including detached and
 retired buckets; public helpers retain their behavior for modified graphs.
+GC and eager-destruction consumers read the same observed state’s edges after
+its roots without rebuilding those roots.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
@@ -1133,8 +1143,12 @@ Bound `start` captures forward the original positional/named buffer through
 direct and explicit `__invoke` entry, retaining the selected receiver through
 argument effects and cleanup. The
 [start-capture ledger](coverage/semantics/fiber-start-callables-review.json)
-records their separate checks. C-root `start`, outer unpacking and constructor
-captures remain required.
+records their separate checks. Captured `start` also runs as a Fiber C-root
+callback, preserving the original outer buffer and its separate handler copy.
+The [start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json)
+records genuine caller chains, source-free inner traces and callback retirement
+before the original argument destructor. Outer unpacking, constructor captures
+and broader callable adapters remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 
