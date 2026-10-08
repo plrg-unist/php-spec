@@ -7,6 +7,10 @@ dec $foreach_warning(pstate, pvalue, int) : pstate
 def $foreach_warning(S, pvalue, z) = $diagnostic(S, "Warning", [102,111,114,101,97,99,104,40,41,32,97,114,103,117,109,101,110,116,32,109,117,115,116,32,98,101,32,111,102,32,116,121,112,101,32,97,114,114,97,121,124,111,98,106,101,99,116,44,32] ++ $unpack_type_bytes(pvalue) ++ [32,103,105,118,101,110], z)
 
 dec $foreach_reference_at(pstate, plocation, pvalue) : pstate
+dec $foreach_reference_value(pstate, pvalue) : bool
+def $foreach_reference_value(S, PARRAY n) = true
+def $foreach_reference_value(S, POBJECT n) = ($class_plain_instance(S, n) /\ ~$useriter_instance(S, n))
+def $foreach_reference_value(S, pvalue) = false -- otherwise
 def $foreach_reference_at(S, ROOT n, pvalue) = $reference_cell(S, n)[.CELL = n]
 def $foreach_reference_at(S, ELEMENT n pkey, pvalue) = $element_reference(S, n, pkey)
 def $foreach_reference_at(S, NOWHERE, pvalue) = $reference_cell(S[.STORE = S.STORE ++ [DEFINED pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL n]], n)[.CELL = n]
@@ -37,13 +41,21 @@ def $foreach_start(S, statement, plocation, false, z) = S_marked[.TODO = (FOREAC
   -- if ~$useriter_instance(S, n_object)
   -- if n_iterator = S.NEXTITER
   -- if S_marked = $object_foreach_reset(S, n_object)
-def $foreach_start(S, statement, plocation, true, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HOBJECT n_object) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [OBJECTITER n_iterator n_object 0 true]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $foreach_start(S, statement, plocation, true, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HCELL n_cell) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S_marked.ITERATORS ++ [OBJECTITER n_iterator n_object 0 true]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object)
   -- if ~$useriter_instance(S, n_object)
   -- if n_iterator = S.NEXTITER
-  -- if S_marked = $object_foreach_reset(S, n_object)
+  -- if S_ref = $foreach_reference_at(S, plocation, POBJECT n_object)
+  -- if S_ref.COMPLETION = NORMAL
+  -- if n_cell = S_ref.CELL
+  -- if S_marked = $object_foreach_reset(S_ref, n_object)
+def $foreach_start(S, statement, plocation, true, z) = S_ref
+  -- if S.RESULT = KNOWN (POBJECT n_object)
+  -- if $class_plain_instance(S, n_object) /\ ~$useriter_instance(S, n_object)
+  -- if S_ref = $foreach_reference_at(S, plocation, POBJECT n_object)
+  -- if S_ref.COMPLETION =/= NORMAL
 def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (POBJECT n_object)
@@ -101,14 +113,15 @@ rule PhpStep/foreach-cv-array: S ~> $foreach_start(S_cell, statement, ROOT S_cel
   -- if S.TODO = (FOREACH_CV statement n_name* z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PARRAY n_array)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $foreach_reference_value(S_read, pvalue)
   -- if S_cell = $ensure(S_read, n_name*)
 rule PhpStep/foreach-cv-scalar: S ~> $foreach_start(S_read, statement, NOWHERE, true, z)
   -- if S.TODO = (FOREACH_CV statement n_name* z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
-  -- if ~$is_array_value(pvalue)
+  -- if ~$foreach_reference_value(S_read, pvalue)
 rule PhpStep/foreach-cv-abrupt: S ~> S_read
   -- if S.TODO = (FOREACH_CV statement n_name* z) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)

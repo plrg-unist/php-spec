@@ -367,9 +367,9 @@ def $iterator_remove((OBJECTKEYITER n n_object n_position b_ref n_table n_serial
 def $iterator_remove((OBJECTKEYITER n_other n_object n_position b_ref n_table n_serial) :: piterator_tail*, n) = (OBJECTKEYITER n_other n_object n_position b_ref n_table n_serial) :: $iterator_remove(piterator_tail*, n)
   -- if n_other =/= n
 def $iterators_prune((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, pnode*) = (OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: $iterators_prune(piterator_tail*, pnode*)
-  -- if $heap_member(HOBJECT n_object, pnode*)
+  -- if b_ref \/ $heap_member(HOBJECT n_object, pnode*)
 def $iterators_prune((OBJECTKEYITER n n_object n_position b_ref n_table n_serial) :: piterator_tail*, pnode*) = $iterators_prune(piterator_tail*, pnode*)
-  -- if ~$heap_member(HOBJECT n_object, pnode*)
+  -- if ~b_ref /\ ~$heap_member(HOBJECT n_object, pnode*)
 def $error_task_iterator(OBJECT_FOREACH_KEY pobjectforeach) = [pobjectforeach.ITERATOR]
 def $error_task_iterator(ERROR_HANDLER_INVOKE perrorcall) = $error_task_iterator(perrorcall.RESUME)
 def $error_task_iterator(ERROR_HANDLER_RESULT perrorcall) = $error_task_iterator(perrorcall.RESUME)
@@ -413,6 +413,11 @@ def $object_foreach_reset(S, n) = $objectprops_mark($object_table_materialize($o
   -- if S.OBJECTS[n] = STDINSTANCE
 def $object_foreach_reset(S, n) = $objectprops_mark(S, n)
   -- if S.OBJECTS[n] =/= STDINSTANCE
+dec $object_foreach_select(pstate, nat) : pstate
+def $object_foreach_select(S, n) = $objectprops_mark($object_table_materialize(S, n), n)
+  -- if S.OBJECTS[n] = STDINSTANCE
+def $object_foreach_select(S, n) = $objectprops_mark(S, n)
+  -- if S.OBJECTS[n] =/= STDINSTANCE
 
 dec $object_foreach_key_used(statement) : bool
 def $object_foreach_key_used(NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) = (phpType5 =/= ABSENT)
@@ -424,8 +429,12 @@ def $object_foreach_notice(statement, ptbytes) = preqbytes_notice?
 def $object_foreach_notice(statement, ptbytes) = eps
   -- if ~$object_foreach_key_used(statement)
 
+dec $object_foreach_owner(pstate, nat, nat) : pnode
+def $object_foreach_owner(S, n, n_object) = pnode
+  -- if S.TODO = (FOREACH_NEXT n pnode statement porigin? z) :: ptask*
+def $object_foreach_owner(S, n, n_object) = HOBJECT n_object -- otherwise
 dec $object_foreach_deliver(pstate, nat, nat, statement, int, ptbytes, poperand, bool) : pstate
-def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $foreach_body(S, n, HOBJECT n_object, statement, z, KSTRING preqbytes, poperand, b_ref)
+def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $foreach_body(S, n, $object_foreach_owner(S, n, n_object), statement, z, KSTRING preqbytes, poperand, b_ref)
   -- if $object_foreach_notice(statement, ptbytes) = eps
   -- if (preqbytes_notice?, preqbytes) = $object_member_name(ptbytes)
 def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_ref) = $error_dispatch(S[.ITERATORS = $object_key_mark(S.ITERATORS, n, n_table, n_serial)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, preqbytes_warning, z, DIAGNOSTIC "Notice" preqbytes_warning z, OBJECT_FOREACH_KEY pobjectforeach)
@@ -435,7 +444,7 @@ def $object_foreach_deliver(S, n, n_object, statement, z, ptbytes, poperand, b_r
   -- if $object_table_at(S.OBJECTTABLES, n_object) = (n_table)
   -- if $position_lookup(S.ARRAYS[n_table].POSITIONS, KSTRING ptbytes) = (n_serial)
   -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position b_ref)
-  -- if pobjectforeach = {SITE porigin, LINE z, OBJECT n_object, ITERATOR n, POSITION n_position, TABLE n_table, SERIAL n_serial, KEY ptbytes, REF b_ref}
+  -- if pobjectforeach = {SITE porigin, LINE z, OBJECT n_object, OWNER $object_foreach_owner(S, n, n_object), ITERATOR n, POSITION n_position, TABLE n_table, SERIAL n_serial, KEY ptbytes, REF b_ref}
 
 dec $property_foreach_selected_reference(pstate, nat, nat, ptbytes, int) : pstate
 def $object_foreach_fetch(S, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, false) = $object_foreach_deliver(S[.ORIGIN = porigin?][.ITERATORS = $iterator_set(S.ITERATORS, OBJECTITER n n_object n_next false)], n, n_object, statement, z, $property_visible_name(S, n_object, ptbytes), KNOWN $entry_read_value(S, pitem), false)
@@ -474,6 +483,29 @@ def $object_foreach_serial_valid(S, pobjectforeach) = true
   -- if $position_lookup(S.ARRAYS[pobjectforeach.TABLE].POSITIONS, KSTRING pobjectforeach.KEY) = eps
 def $object_foreach_serial_valid(S, pobjectforeach) = false -- otherwise
 dec $object_foreach_valid(pstate, pobjectforeach) : bool
+dec $object_foreach_owner_valid(pstate, pobjectforeach) : bool
+def $object_foreach_owner_valid(S, pobjectforeach) = ((HOBJECT pobjectforeach.OBJECT) <- S.ALLOCATIONS)
+  -- if pobjectforeach.OWNER = HOBJECT pobjectforeach.OBJECT
+  -- if ~pobjectforeach.REF
+def $object_foreach_owner_valid(S, pobjectforeach) = true
+  -- if pobjectforeach.REF
+  -- if pobjectforeach.OWNER = HCELL n
+  -- if (HCELL n) <- S.ALLOCATIONS /\ n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED pvalue
+def $object_foreach_owner_valid(S, pobjectforeach) = false -- otherwise
+dec $object_foreach_selected_valid(pstate, pobjectforeach) : bool
+def $object_foreach_selected_valid(S, pobjectforeach) = true
+  -- if (HOBJECT pobjectforeach.OBJECT) <- S.ALLOCATIONS
+  -- if $objectprops_record_at(S.OBJECTPROPS, pobjectforeach.OBJECT) = (pobjectprops)
+  -- if $(pobjectforeach.POSITION > 0) /\ $(pobjectforeach.POSITION <= |pobjectprops.SLOTS|)
+  -- if pobjectprops.SLOTS[$nabs($(pobjectforeach.POSITION - 1))].NAME = pobjectforeach.KEY
+def $object_foreach_selected_valid(S, pobjectforeach) = true
+  -- if ~((HOBJECT pobjectforeach.OBJECT) <- S.ALLOCATIONS)
+  -- if pobjectforeach.OWNER = HCELL n_receiver
+  -- if S.STORE[n_receiver] = DEFINED pvalue
+  -- if pvalue =/= POBJECT pobjectforeach.OBJECT
+  -- if $(pobjectforeach.POSITION > 0)
+def $object_foreach_selected_valid(S, pobjectforeach) = false -- otherwise
 def $object_foreach_valid(S, pobjectforeach) = true
   -- if S.ORIGIN = (pobjectforeach.SITE)
   -- if $origin_node(S.SOURCES, pobjectforeach.SITE) = (statement)
@@ -483,11 +515,8 @@ def $object_foreach_valid(S, pobjectforeach) = true
   -- if pobjectforeach.LINE = $runtime_line(S, [PCFIELD 0], expression)
   -- if $(pobjectforeach.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pobjectforeach.OBJECT] = STDINSTANCE
-  -- if (HOBJECT pobjectforeach.OBJECT) <- S.ALLOCATIONS
-  -- if $objectprops_record_at(S.OBJECTPROPS, pobjectforeach.OBJECT) = (pobjectprops)
-  -- if $(pobjectforeach.POSITION > 0)
-  -- if $(pobjectforeach.POSITION <= |pobjectprops.SLOTS|)
-  -- if pobjectprops.SLOTS[$nabs($(pobjectforeach.POSITION - 1))].NAME = pobjectforeach.KEY
+  -- if $object_foreach_owner_valid(S, pobjectforeach)
+  -- if $object_foreach_selected_valid(S, pobjectforeach)
   -- if $(pobjectforeach.TABLE < |S.ARRAYS|)
   -- if $(pobjectforeach.SERIAL < S.ARRAYS[pobjectforeach.TABLE].SERIAL)
   -- if $object_foreach_serial_valid(S, pobjectforeach)
@@ -496,7 +525,7 @@ def $object_foreach_valid(S, pobjectforeach) = true
   -- if $iterator_lookup(S.ITERATORS, pobjectforeach.ITERATOR) = (OBJECTKEYITER pobjectforeach.ITERATOR pobjectforeach.OBJECT pobjectforeach.POSITION pobjectforeach.REF pobjectforeach.TABLE pobjectforeach.SERIAL)
   -- if $object_foreach_tasks_count(S.TODO, pobjectforeach.ITERATOR) = 1
 def $object_foreach_valid(S, pobjectforeach) = false -- otherwise
-def $task_nodes(OBJECT_FOREACH_KEY pobjectforeach) = [HOBJECT pobjectforeach.OBJECT]
+def $task_nodes(OBJECT_FOREACH_KEY pobjectforeach) = [pobjectforeach.OWNER]
 def $call_task_valid(S, OBJECT_FOREACH_KEY pobjectforeach) = $object_foreach_valid(S, pobjectforeach)
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = OBJECT_FOREACH_KEY pobjectforeach
@@ -517,14 +546,14 @@ def $object_foreach_bucket(S, pobjectforeach) = (UNINITIALIZED)
   -- if (HARRAY pobjectforeach.TABLE) <- S.ALLOCATIONS
   -- if $position_lookup(S.ARRAYS[pobjectforeach.TABLE].POSITIONS, KSTRING pobjectforeach.KEY) =/= (pobjectforeach.SERIAL)
 def $object_foreach_bucket(S, pobjectforeach) = eps -- otherwise
-rule PhpStep/object-foreach-key-result: S ~> $foreach_body(S[.ITERATORS = $object_key_restore(S.ITERATORS, pobjectforeach.ITERATOR)], pobjectforeach.ITERATOR, HOBJECT pobjectforeach.OBJECT, statement, pobjectforeach.LINE, KSTRING preqbytes, KNOWN $entry_read_value(S, pitem), false)
+rule PhpStep/object-foreach-key-result: S ~> $foreach_body(S[.ITERATORS = $object_key_restore(S.ITERATORS, pobjectforeach.ITERATOR)], pobjectforeach.ITERATOR, pobjectforeach.OWNER, statement, pobjectforeach.LINE, KSTRING preqbytes, KNOWN $entry_read_value(S, pitem), false)
   -- if S.TODO = (OBJECT_FOREACH_KEY pobjectforeach) :: ptask_tail*
   -- if $object_foreach_valid(S, pobjectforeach)
   -- if ~pobjectforeach.REF
   -- if $origin_node(S.SOURCES, pobjectforeach.SITE) = (statement)
   -- if (preqbytes_notice?, preqbytes) = $object_member_name(pobjectforeach.KEY)
   -- if $object_foreach_bucket(S, pobjectforeach) = (pitem)
-rule PhpStep/object-foreach-key-reference: S ~> $foreach_body(S_ref[.ITERATORS = $object_key_restore(S_ref.ITERATORS, pobjectforeach.ITERATOR)], pobjectforeach.ITERATOR, HOBJECT pobjectforeach.OBJECT, statement, pobjectforeach.LINE, KSTRING preqbytes, REFERENCE S_ref.CELL, true)
+rule PhpStep/object-foreach-key-reference: S ~> $foreach_body(S_ref[.ITERATORS = $object_key_restore(S_ref.ITERATORS, pobjectforeach.ITERATOR)], pobjectforeach.ITERATOR, pobjectforeach.OWNER, statement, pobjectforeach.LINE, KSTRING preqbytes, REFERENCE S_ref.CELL, true)
   -- if S.TODO = (OBJECT_FOREACH_KEY pobjectforeach) :: ptask_tail*
   -- if $object_foreach_valid(S, pobjectforeach)
   -- if pobjectforeach.REF

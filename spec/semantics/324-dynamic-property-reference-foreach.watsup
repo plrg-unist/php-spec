@@ -47,22 +47,74 @@ def $property_foreach_selected_reference(S, n, n_next, ptbytes, z) = S_ref[.OBJE
   -- if n_tail = $nabs($(|ppropertyslot_all*| - n_next))
   -- if ppropertyslot_new* = ppropertyslot_all*[0:n_selected] ++ [ppropertyslot[.STATE = PROP_VALUE (ALIAS n_cell)]] ++ ppropertyslot_all*[n_next:n_tail]
 
+;; The iterator owns the original wrapper. Payload writes switch tables;
+;; unsetting and recreating the receiver name leaves this wrapper untouched.
+dec $foreach_reference_iterator(piterator) : bool
+def $foreach_reference_iterator(ITERATOR n n_array true pcursor*) = true
+def $foreach_reference_iterator(OBJECTITER n n_object n_position true) = true
+def $foreach_reference_iterator(piterator) = false -- otherwise
+dec $foreach_object_selected(pstate, nat, nat) : bool
+def $foreach_object_selected(S, n, n_object) = true
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position true)
+def $foreach_object_selected(S, n, n_object) = false -- otherwise
+def $foreach_select(S, n, HCELL n_cell, z) = S
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if $foreach_object_selected(S, n, n_object)
+def $foreach_select(S, n, HCELL n_cell, z) = S_marked[.ITERATORS = $iterator_set(S_marked.ITERATORS, OBJECTITER n n_object 0 true)]
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if $class_plain_instance(S, n_object)
+  -- if $iterator_lookup(S.ITERATORS, n) = (piterator)
+  -- if $foreach_reference_iterator(piterator)
+  -- if ~$foreach_object_selected(S, n, n_object)
+  -- if S_marked = $object_foreach_select(S, n_object)
+def $foreach_select(S, n, HCELL n_cell, z) = S_array[.ITERATORS = $iterator_set(S_array.ITERATORS, ITERATOR n n_array true ([CURSOR n_array 0]))][.RESULT = KNOWN PNULL]
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_original)
+  -- if $iterator_lookup(S.ITERATORS, n) = (OBJECTITER n n_object n_position true)
+  -- if S_array = $location_array(S, ROOT n_cell, z)
+  -- if S_array.RESULT = KNOWN (PARRAY n_array)
+
+rule PhpStep/foreach-fetch-reference-object-end: S ~> $foreach_finish(S_selected, n)
+  -- if S.TODO = (FOREACH_NEXT n (HCELL n_cell) statement porigin? z) :: ptask_tail*
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if $class_plain_instance(S, n_object)
+  -- if S_selected = $foreach_select(S[.ORIGIN = porigin?], n, HCELL n_cell, z)
+  -- if $iterator_lookup(S_selected.ITERATORS, n) = (OBJECTITER n n_object n_position true)
+  -- if $objectprops_at(S_selected.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if $property_next(S_selected, n_object, ppropertyslot*, n_position, 0) = eps
+rule PhpStep/foreach-fetch-reference-object: S ~> $object_foreach_fetch(S_selected, n, n_object, statement, porigin?, z, ptbytes, pitem, n_next, true)
+  -- if S.TODO = (FOREACH_NEXT n (HCELL n_cell) statement porigin? z) :: ptask_tail*
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if $class_plain_instance(S, n_object)
+  -- if S_selected = $foreach_select(S[.ORIGIN = porigin?], n, HCELL n_cell, z)
+  -- if $iterator_lookup(S_selected.ITERATORS, n) = (OBJECTITER n n_object n_position true)
+  -- if $objectprops_at(S_selected.OBJECTPROPS, n_object) = (ppropertyslot*)
+  -- if $property_next(S_selected, n_object, ppropertyslot*, n_position, 0) = (ptbytes, pitem, n_next)
+rule PhpStep/foreach-fetch-reference-replacement-kind: S ~> S[.COMPLETION = UNSUPPORTED "reference foreach replacement object kind"]
+  -- if S.TODO = (FOREACH_NEXT n (HCELL n_cell) statement porigin? z) :: ptask_tail*
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if ~$class_plain_instance(S, n_object)
+
 ;; FE_FETCH_RW owns the selected wrapper before dropping the previous CV, but
 ;; installs that wrapper only after the old value's destructor has returned.
 ;; The old CV bits are borrowed during this interval, not an extra value owner.
-dec $foreach_bind_source(pstate, ptbytes, int, ptask*) : (nat, nat, porigin)?
-dec $foreach_bind_source_task(pstate, ptbytes, int, ptask) : (nat, nat, porigin)?
-def $foreach_bind_source_task(S, ptbytes, z, FOREACH_NEXT n_iterator (HOBJECT n_object) statement (porigin) z_foreach) = ((n_iterator, n_object, porigin))
+dec $foreach_bind_source(pstate, ptbytes, int, ptask*) : (nat, nat, porigin, pnode)?
+dec $foreach_bind_source_task(pstate, ptbytes, int, ptask) : (nat, nat, porigin, pnode)?
+dec $foreach_bind_owner_valid(pstate, pnode, nat) : bool
+def $foreach_bind_owner_valid(S, HOBJECT n, n) = ((HOBJECT n) <- S.ALLOCATIONS)
+def $foreach_bind_owner_valid(S, HCELL n, n_object) = ((HCELL n) <- S.ALLOCATIONS /\ n <- S.REFCELLS)
+def $foreach_bind_owner_valid(S, pnode, n) = false -- otherwise
+def $foreach_bind_source_task(S, ptbytes, z, FOREACH_NEXT n_iterator pnode statement (porigin) z_foreach) = ((n_iterator, n_object, porigin, pnode))
   -- if statement = NStmtForeach expression_iterable phpType5 (BOOLEAN true) (NExprVariable phpType32 metadata_target) phpType23 (BOOLEAN false) metadata
   -- if $cv_name(phpType32) = (ptbytes)
   -- if $origin_node(S.SOURCES, porigin) = (statement)
   -- if $iterator_lookup(S.ITERATORS, n_iterator) = (OBJECTITER n_iterator n_object n_position true)
+  -- if $foreach_bind_owner_valid(S, pnode, n_object)
   -- if S.ORIGIN = $origin_child((porigin), [PCFIELD 3])
   -- if z = $runtime_line(S, eps, NExprVariable phpType32 metadata_target)
 def $foreach_bind_source_task(S, ptbytes, z, ptask) = eps -- otherwise
 def $foreach_bind_source(S, ptbytes, z, eps) = eps
-def $foreach_bind_source(S, ptbytes, z, ptask :: ptask_tail*) = (n_iterator, n_object, porigin)
-  -- if $foreach_bind_source_task(S, ptbytes, z, ptask) = (n_iterator, n_object, porigin)
+def $foreach_bind_source(S, ptbytes, z, ptask :: ptask_tail*) = (n_iterator, n_object, porigin, pnode)
+  -- if $foreach_bind_source_task(S, ptbytes, z, ptask) = (n_iterator, n_object, porigin, pnode)
 def $foreach_bind_source(S, ptbytes, z, ptask :: ptask_tail*) = $foreach_bind_source(S, ptbytes, z, ptask_tail*)
   -- if $foreach_bind_source_task(S, ptbytes, z, ptask) = eps
 
@@ -72,7 +124,7 @@ def $foreach_bind_view(S) = S -- if ~$scope_global(S, eps)
 
 dec $foreach_bind_capture(pstate, ptbytes, nat, int) : pforeachbind?
 def $foreach_bind_capture(S, ptbytes, n_source, z) = (pforeachbind)
-  -- if $foreach_bind_source(S, ptbytes, z, S.TODO) = (n_iterator, n_object, porigin_foreach)
+  -- if $foreach_bind_source(S, ptbytes, z, S.TODO) = (n_iterator, n_object, porigin_foreach, pnode)
   -- if S.ORIGIN = (porigin)
   -- if ~$environment_blocked(S, ptbytes)
   -- if S_view = $foreach_bind_view(S)
@@ -90,7 +142,7 @@ def $foreach_bind_capture(S, ptbytes, n_source, z) = (pforeachbind)
   -- if ppropertyslot = ppropertyslot_all*[$nabs($(n_position - 1))]
   -- if $property_foreach_selected_slot(S, n_object, n_position, ppropertyslot.NAME) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_source)
-  -- if pforeachbind = {SITE porigin, FOREACH porigin_foreach, ITERATOR n_iterator, OBJECT n_object, POSITION n_position, KEY ppropertyslot.NAME, NAME ptbytes, OLD n_old, VALUE POBJECT n_previous, NEW n_source, CALLER S.CURRENT, CONSTCONTEXT S.CONSTCONTEXT, LINE z}
+  -- if pforeachbind = {SITE porigin, FOREACH porigin_foreach, ITERATOR n_iterator, OBJECT n_object, OWNER pnode, POSITION n_position, KEY ppropertyslot.NAME, NAME ptbytes, OLD n_old, VALUE POBJECT n_previous, NEW n_source, CALLER S.CURRENT, CONSTCONTEXT S.CONSTCONTEXT, LINE z}
 def $foreach_bind_capture(S, ptbytes, n_source, z) = eps -- otherwise
 
 ;; A container or expired wrapper needs a raw payload only if its retirement
@@ -117,10 +169,23 @@ def $foreach_bind_name(S, ptbytes, n_source, z) = $scope_bind_name(S[.CELL = n_s
   -- if $foreach_bind_capture(S, ptbytes, n_source, z) = eps
   -- if ~$foreach_bind_prior_unsupported(S, ptbytes, n_source, z)
 
+dec $foreach_bind_selected_valid(pstate, pforeachbind) : bool
+def $foreach_bind_selected_valid(S, pforeachbind) = true
+  -- if (HOBJECT pforeachbind.OBJECT) <- S.ALLOCATIONS
+  -- if $objectprops_at(S.OBJECTPROPS, pforeachbind.OBJECT) = (ppropertyslot_all*)
+  -- if $(pforeachbind.POSITION > 0) /\ $(pforeachbind.POSITION <= |ppropertyslot_all*|)
+  -- if ppropertyslot_all*[$nabs($(pforeachbind.POSITION - 1))].NAME = pforeachbind.KEY
+def $foreach_bind_selected_valid(S, pforeachbind) = true
+  -- if ~((HOBJECT pforeachbind.OBJECT) <- S.ALLOCATIONS)
+  -- if pforeachbind.OWNER = HCELL n_receiver
+  -- if S.STORE[n_receiver] = DEFINED pvalue
+  -- if pvalue =/= POBJECT pforeachbind.OBJECT
+  -- if $(pforeachbind.POSITION > 0)
+def $foreach_bind_selected_valid(S, pforeachbind) = false -- otherwise
 dec $foreach_bind_body_valid(pstate, pforeachbind) : bool
 def $foreach_bind_body_valid(S, pforeachbind) = true
   -- if S.ORIGIN = (pforeachbind.SITE) /\ S.CURRENT = pforeachbind.CALLER /\ S.CONSTCONTEXT = pforeachbind.CONSTCONTEXT
-  -- if $foreach_bind_source(S, pforeachbind.NAME, pforeachbind.LINE, S.TODO) = (pforeachbind.ITERATOR, pforeachbind.OBJECT, pforeachbind.FOREACH)
+  -- if $foreach_bind_source(S, pforeachbind.NAME, pforeachbind.LINE, S.TODO) = (pforeachbind.ITERATOR, pforeachbind.OBJECT, pforeachbind.FOREACH, pforeachbind.OWNER)
   -- if $(pforeachbind.OLD < |S.STORE|) /\ $(pforeachbind.NEW < |S.STORE|)
   -- if pforeachbind.OLD =/= pforeachbind.NEW /\ ~(pforeachbind.OLD <- S.REFCELLS)
   -- if pforeachbind.VALUE = POBJECT n_previous
@@ -129,9 +194,7 @@ def $foreach_bind_body_valid(S, pforeachbind) = true
   -- if (HCELL pforeachbind.NEW) <- S.ALLOCATIONS /\ pforeachbind.NEW <- S.REFCELLS
   -- if S.STORE[pforeachbind.NEW] = DEFINED pvalue
   -- if $iterator_lookup(S.ITERATORS, pforeachbind.ITERATOR) = (OBJECTITER pforeachbind.ITERATOR pforeachbind.OBJECT pforeachbind.POSITION true)
-  -- if $objectprops_at(S.OBJECTPROPS, pforeachbind.OBJECT) = (ppropertyslot_all*)
-  -- if $(pforeachbind.POSITION > 0) /\ $(pforeachbind.POSITION <= |ppropertyslot_all*|)
-  -- if ppropertyslot_all*[$nabs($(pforeachbind.POSITION - 1))].NAME = pforeachbind.KEY
+  -- if $foreach_bind_selected_valid(S, pforeachbind)
 def $foreach_bind_body_valid(S, pforeachbind) = false -- otherwise
 dec $foreach_bind_address_valid(pstate, pforeachbind) : bool
 def $foreach_bind_address_valid(S, pforeachbind) = ($lookup(S_view.ENV, pforeachbind.NAME) = (pforeachbind.OLD))
