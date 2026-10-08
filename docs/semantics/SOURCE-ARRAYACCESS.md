@@ -105,7 +105,7 @@ body entry, with a genuine callee error frame; optional scalar and NEW defaults
 fill the slot before receives. Argument introspection sees both completed slots.
 The expression returns the computed concatenated string.
 
-The std Set handler releases its copied key and receiver first. The VM then
+The std Set handler releases its receiver and key copies first. The VM then
 releases the raw RV, computed RHS, outer receiver, computed key and computed base
 in order. Conversion/Set throws preserve the corresponding owner release and
 replacement-exception behavior. Ordinary helper calls can supply compound
