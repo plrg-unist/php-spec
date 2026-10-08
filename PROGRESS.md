@@ -51,13 +51,13 @@ their introduced seams are independently reviewed as compatible, with no source/
 renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
-The current source includes accepted ArrayAccess292/304/309/319/326, eager destruction270,
+The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
 WeakReference296, ordinary cycle collection301 and collector Fibers317/325,
 Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with313 modules composed over
-`064d382d0764`. The ordered integration preserves
+with314 modules composed over
+`2a2f69a71e07`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
@@ -339,7 +339,7 @@ the shared property CELL write while restoring main reporting. Parent318 fields
 are preserved; this source makes no dynamic-property runtime claim. Final302
 over b135 preserves new default receive fields and passes full algorithmic and
 structuring compilation. Module326 adds named sends and nested captured-row
-updates below; private329 adds VALUE-return Notice callbacks. Wider producers remain required;
+updates below;329 adds VALUE-return Notice callbacks. Wider producers remain required;
 typed non-mixed return verification stays user-paused.
 
 Integrated ArrayAccess326 admits captured live ELEMENT rows for named reference
@@ -350,11 +350,11 @@ duplicate rejection before promotion, copy/shared-cell behavior and resumption.
 The [consumer ledger](coverage/semantics/arrayaccess-reference-consumers-review.json)
 keeps this303 cut separate. Final306 over `40e3c4fcc` passes full algorithmic
 and structuring compilation at `46c624e89`; independent seam review requires no
-source/state renewal. Private329 adds VALUE-return Notice callbacks below;
+source/state renewal. Module329 adds VALUE-return Notice callbacks below;
 wider Get behavior remains open. Typed non-mixed
 return verification stays user-paused.
 
-Private ArrayAccess329 stages the RETURN_REF_VALUE Notice for genuine untyped/mixed
+ArrayAccess329 stages the RETURN_REF_VALUE Notice for genuine untyped/mixed
 reference Get. The computed operand survives ordinary handler return, throw or
 Fiber suspension without a pre-Notice cell write or saved referent owner. Throw
 materialization bypasses Get's inner catch, retains the real RV through local
@@ -363,7 +363,9 @@ retires before the returned value. Nine new exact normal originals and four
 genuine strict-SL groups/401 premises pass at `13e29b78d`/307. The
 [producer ledger](coverage/semantics/arrayaccess-reference-value-review.json)
 preserves both compiler-only failures and the corrected native rebind forecast.
-Actual-parent composition is pending. Finally-sensitive Notice ingress,
+Final314 over `2a2f69a71` passes full algorithmic/structuring compilation at
+`e87987ebc`, preserving current trait, constructor and pruning fields. The
+earlier307 source/reached cut remains separate. Finally-sensitive Notice ingress,
 bare/fall-through NULL, handler exit and wider producers remain open; typed
 non-mixed return verification stays user-paused.
 
@@ -1640,7 +1642,7 @@ failures and interrupted evidence.
   isset/empty, Set/append and Unset calls. Writable292 adds direct compound and
   ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append,
   and309 adds final simple append to returned children. Module319 adds untyped/mixed
-  reference Get;326 adds named sends and nested captured-row updates, and private329
+  reference Get;326 adds named sends and nested captured-row updates, and329
   adds VALUE-return Notice callbacks. Finally-sensitive Notice ingress, bare/fall-through
   NULL, handler exit, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable

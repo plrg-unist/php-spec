@@ -110,7 +110,7 @@ Final306 over `40e3c4fcc` passes full algorithmic/structuring compilation at
 `46c624e89`. Independent review preserves current ECHO/collector/pruning fields
 and requires no source/state renewal; the303 source/reached cut remains separate.
 
-Private module329 adds an authenticated RETURN_REF_VALUE Notice continuation
+Module329 adds an authenticated RETURN_REF_VALUE Notice continuation
 for genuine untyped/mixed implicit reference Get. Only the raw computed operand
 owns the RV through the handler; it is materialized once without a same-cell
 write or saved referent owner. A throwing handler leaves Get before its inner
@@ -120,7 +120,10 @@ retirement. The later holder authenticates borrowed source metadata after the
 receiver is freed and accepts only a live real REFERENCE. Nine exact normal
 originals and four strict-SL groups/401 premises pass at the separate307 cut in
 the [producer ledger](../../coverage/semantics/arrayaccess-reference-value-review.json).
-Actual-parent composition remains pending.
+Final314 over `2a2f69a71` passes full algorithmic/structuring compilation at
+`e87987ebc`. Independent compatibility review preserves current trait,
+constructor and pruning fields; the earlier307 source/reached cut stays separate
+without execution renewal.
 
 Wider memoized/property/GLOBALS producers, combined Iterator/ArrayAccess notice
 ordering and live Stringable DIM_OP remain required. Finally-sensitive Notice
