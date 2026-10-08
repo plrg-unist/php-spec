@@ -1,6 +1,6 @@
 ;; Zend/zend_weakrefs.c retains a raw referent, with one live wrapper per object.
-;; Semantic object IDs never reuse. Membership becomes false at actual free entry,
-;; before outgoing properties retire; destructor entry and resurrection keep it.
+;; Semantic IDs retain nonowning target history. Ordinary std_dtor notification
+;; hides an actual INSTANCE storage pin before its physical allocation retires.
 dec $weakref_at(pstate, nat) : pobject?
 def $weakref_at(S, n) = (WEAKREFERENCE n_target?)
   -- if $(n < |S.OBJECTS|)
@@ -41,6 +41,7 @@ def $weakref_create(S, n_target) = $weakref_done(S[.OBJECTS = S.OBJECTS ++ [WEAK
 dec $weakref_get(pstate, nat) : pvalue
 def $weakref_get(S, n) = POBJECT n_target
   -- if $weakref_at(S, n) = (WEAKREFERENCE (n_target))
+  -- if ~$instance_storage_freeing(S, n_target)
   -- if (HOBJECT n_target) <- S.ALLOCATIONS
 def $weakref_get(S, n) = PNULL -- otherwise
 def $weakref_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]

@@ -20,7 +20,6 @@ dec $instance_storage_tail(ptask*, pinstancestorage) : ptask*?
 dec $instance_storage_parent(pstate, pinstancestorage, ptask*) : bool
 dec $instance_storage_valid(pstate, pinstancestorage) : bool
 dec $instance_storage_node(pstate, nat) : bool
-dec $instance_storage_weak(pobject*, nat) : pobject*
 dec $instance_storage_called(pstate, nat) : pstate
 dec $instance_storage_begin(pstate, nat) : pstate
 dec $instance_storage_transfer(pstate, pinstancestorage, ptask*) : pstate
@@ -94,7 +93,6 @@ def $instance_storage_basic(S, pinstancestorage) = true
   -- if $(pinstancestorage.HANDLE > 0) /\ $(pinstancestorage.HANDLE < S.DESTRUCTION.NEXT)
   -- if ~(pinstancestorage.HANDLE <- S.DESTRUCTION.FREE)
   -- if pinstancestorage.OBJECT <- S.DESTRUCTION.CALLED
-  -- if $instance_storage_weak(S.OBJECTS, pinstancestorage.OBJECT) = S.OBJECTS
 def $instance_storage_basic(S, pinstancestorage) = false -- otherwise
 def $instance_storage_basics(S, eps) = true
 def $instance_storage_basics(S, pinstancestorage :: pinstancestorage_tail*) = ($instance_storage_basic(S, pinstancestorage) /\ $instance_storage_basics(S, pinstancestorage_tail*))
@@ -118,13 +116,9 @@ def $instance_storage_valid(S, pinstancestorage) = true
   -- if $instance_storage_parent(S, pinstancestorage, ptask*)
 def $instance_storage_valid(S, pinstancestorage) = false -- otherwise
 
-def $instance_storage_weak(eps, n) = eps
-def $instance_storage_weak((WEAKREFERENCE (n)) :: pobject*, n) = (WEAKREFERENCE eps) :: $instance_storage_weak(pobject*, n)
-def $instance_storage_weak(pobject :: pobject_tail*, n) = pobject :: $instance_storage_weak(pobject_tail*, n)
-  -- if pobject =/= WEAKREFERENCE (n)
 def $instance_storage_called(S, n) = S -- if n <- S.DESTRUCTION.CALLED
 def $instance_storage_called(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]] -- if ~(n <- S.DESTRUCTION.CALLED)
-def $instance_storage_begin(S, n) = $gc_store_retire($instance_storage_called(S[.OBJECTS = $instance_storage_weak(S.OBJECTS, n)][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], SLOTS ppropertyslot*, NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n), HOBJECT n)
+def $instance_storage_begin(S, n) = $gc_store_retire($instance_storage_called(S[.TODO = (INSTANCE_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], SLOTS ppropertyslot*, NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n), HOBJECT n)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $instance_storage_begin(S, n)
   -- if $instance_storage_node(S, n)
