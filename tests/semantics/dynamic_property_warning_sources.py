@@ -34,7 +34,12 @@ CASES = {
     'duplicate-reference-foreach-binding-destructor18': b"<?php\nclass DuplicateReferenceForeachBindingObject18 {}\nclass DuplicateReferenceForeachBindingDestructor18 {\n    public function __destruct() {\n        echo 'drop|';\n        unset($GLOBALS['object']->x);\n        unset($GLOBALS['object']->x);\n    }\n}\n$object = new DuplicateReferenceForeachBindingObject18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\n$value = new DuplicateReferenceForeachBindingDestructor18();\nforeach ($object as $key => &$value) {\n    echo $key, '=', $value, '|';\n    $value = 12;\n}\necho $value, '/';\necho isset($object->x) ? 'present|' : 'absent|';\nunset($value);\necho 'done';\n",
     'duplicate-reference-foreach-readonly18': b"<?php\nclass DuplicateReferenceForeachReadonly18 {\n    public readonly int $locked;\n    public function __construct() { $this->locked = 3; }\n}\n$object = new DuplicateReferenceForeachReadonly18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\ntry {\n    foreach ($object as $key => &$value) { echo 'unexpected|'; }\n} catch (Error $error) {\n    echo 'readonly|';\n}\nforeach ($object as $key => $value) { echo $key, '=', $value, '|'; }\necho 'done';\n",
     'duplicate-reference-foreach-typed-setter18': b"<?php\nclass DuplicateReferenceForeachTypedSetter18 {\n    public protected(set) int $sealed = 3;\n}\n$object = new DuplicateReferenceForeachTypedSetter18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\nforeach ($object as $key => &$value) {\n    if ($key === 'sealed') {\n        try { $value = 'bad'; } catch (TypeError $error) { echo 'typed|'; }\n    }\n    $value = $value + 10;\n}\nunset($value);\nforeach ($object as $key => $value) { echo $key, '=', $value, '|'; }\necho $object->sealed, '/', $object->x, '|done';\n",
+    'duplicate-reference-foreach-binding-observation18': b"<?php\nclass DuplicateReferenceForeachBindingObservationObject18 {}\nclass DuplicateReferenceForeachBindingObservationDestructor18 {\n    public function __destruct() {\n        echo $GLOBALS['value'] instanceof DuplicateReferenceForeachBindingObservationDestructor18 ? 'old|' : 'new|';\n        unset($GLOBALS['object']->x);\n        unset($GLOBALS['object']->x);\n    }\n}\n$object = new DuplicateReferenceForeachBindingObservationObject18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\n$value = new DuplicateReferenceForeachBindingObservationDestructor18();\nforeach ($object as $key => &$value) {\n    echo $key, '=', $value, '|';\n    $value = 12;\n}\necho $value, '/';\necho isset($object->x) ? 'present|' : 'absent|';\nunset($value);\necho 'done';\n",
+    'duplicate-reference-foreach-binding-throw18': b"<?php\nclass DuplicateReferenceForeachBindingThrowObject18 {}\nclass DuplicateReferenceForeachBindingThrowDestructor18 {\n    public function __destruct() {\n        echo $GLOBALS['value'] instanceof DuplicateReferenceForeachBindingThrowDestructor18 ? 'old|' : 'new|';\n        unset($GLOBALS['object']->x);\n        unset($GLOBALS['object']->x);\n        throw new Exception('bind-stop');\n    }\n}\n$object = new DuplicateReferenceForeachBindingThrowObject18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\n$value = new DuplicateReferenceForeachBindingThrowDestructor18();\ntry {\n    foreach ($object as $key => &$value) { echo 'unexpected|'; }\n} catch (Exception $error) {\n    echo 'caught=', $value, '|', $error->getMessage(), '|';\n}\necho isset($object->x) ? 'present|' : 'absent|';\nunset($value);\necho 'done';\n",
+    'duplicate-reference-foreach-shared-prior-wrapper18': b"<?php\nclass DuplicateReferenceForeachSharedPriorWrapper18 {}\nclass DuplicateReferenceForeachSharedPriorWrapperValue18 {\n    public function __destruct() { echo 'drop|'; }\n}\n$object = new DuplicateReferenceForeachSharedPriorWrapper18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\n$anchor = new DuplicateReferenceForeachSharedPriorWrapperValue18();\n$value =& $anchor;\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\nunset($value);\necho 'retained|';\nunset($anchor);\necho 'done';\n",
+    'duplicate-reference-foreach-binding-escape18': b"<?php\nclass DuplicateReferenceForeachBindingEscapeObject18 {}\nclass DuplicateReferenceForeachBindingEscapeDestructor18 {\n    public function __destruct() {\n        echo $GLOBALS['value'] instanceof DuplicateReferenceForeachBindingEscapeDestructor18 ? 'old|' : 'new|';\n        $GLOBALS['saved'] = $GLOBALS['value'];\n        unset($GLOBALS['object']->x);\n        unset($GLOBALS['object']->x);\n    }\n}\n$object = new DuplicateReferenceForeachBindingEscapeObject18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\n$value = new DuplicateReferenceForeachBindingEscapeDestructor18();\nforeach ($object as $key => &$value) {\n    echo $key, '=', $value, '|';\n    $value = 12;\n}\necho $saved instanceof DuplicateReferenceForeachBindingEscapeDestructor18 ? 'saved|' : 'lost|';\necho $value, '/';\necho isset($object->x) ? 'present|' : 'absent|';\nunset($value, $saved);\necho 'done';\n",
 }
+
 EXPECTED = {
     'dynamic-reentry-table': 'warning|x=2|x=7|7|done',
     'dynamic-borrowed-rhs': 'warning|9|9|9|done',
@@ -58,7 +63,12 @@ EXPECTED = {
     'duplicate-reference-foreach-binding-destructor18': 'warning|drop|x=2|12/absent|done',
     'duplicate-reference-foreach-readonly18': 'warning|readonly|locked=3|x=2|x=7|done',
     'duplicate-reference-foreach-typed-setter18': 'warning|typed|sealed=13|x=12|x=17|13/17|done',
+    'duplicate-reference-foreach-binding-observation18': 'warning|old|x=2|12/absent|done',
+    'duplicate-reference-foreach-binding-throw18': 'warning|old|caught=2|bind-stop|absent|done',
+    'duplicate-reference-foreach-shared-prior-wrapper18': 'warning|x=2|x=7|retained|drop|done',
+    'duplicate-reference-foreach-binding-escape18': 'warning|old|x=2|saved|12/absent|done',
 }
+
 BOUNDARIES = {
     'dynamic-handler-exit-shutdown': (
         b"<?php\nclass DynamicHandlerExitShutdown18 {}\n$object = new DynamicHandlerExitShutdown18();\nregister_shutdown_function(function() use ($object) {\n    echo isset($object->x) ? 'inserted|' : 'absent|';\n});\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|';\n    exit(0);\n});\n$object->x = 7;\necho 'unreachable|';\n",
@@ -69,6 +79,7 @@ BOUNDARIES = {
     'dynamic-plain-rhs-unset': (
         b"<?php\nclass DynamicPlainRhsUnset18 {}\n$object = new DynamicPlainRhsUnset18();\n$rhs = 7;\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|';\n    unset($GLOBALS['rhs']);\n    return true;\n});\n$object->x = $rhs;\nrestore_error_handler();\necho isset($object->x) ? 'set|' : 'unset|';\nforeach ($object as $key => $value) {\n    echo $key, '=', $value, '|';\n}\necho 'done';\n",
         'dynamic property warning RHS pointer lifetime or undefined CV'),
+    'duplicate-reference-foreach-binding-exit18': (b"<?php\nclass DuplicateReferenceForeachBindingExitObject18 {}\nclass DuplicateReferenceForeachBindingExitDestructor18 {\n    public function __destruct() {\n        echo $GLOBALS['value'] instanceof DuplicateReferenceForeachBindingExitDestructor18 ? 'old|' : 'new|';\n        unset($GLOBALS['object']->x);\n        unset($GLOBALS['object']->x);\n        exit(0);\n    }\n}\n$object = new DuplicateReferenceForeachBindingExitObject18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\nregister_shutdown_function(function() {\n    echo 'shutdown=', $GLOBALS['value'], '|';\n    echo isset($GLOBALS['object']->x) ? 'present|' : 'absent|';\n    echo 'done';\n});\n$value = new DuplicateReferenceForeachBindingExitDestructor18();\nforeach ($object as $key => &$value) { echo 'unexpected|'; }\necho 'unreachable|';\n", 'foreach reference binding exit continuation'),
 }
 
 
@@ -89,7 +100,7 @@ def prepare(directory, source):
         if frontend: frontend.close()
 
 
-def boundary(directory, source, reason):
+def boundary(directory, source, reason, expected_stdout=b'warning|'):
     result = cross.invoke.process([str(ROOT/'bin/php-semantics'), str(source),
         '--steps', '100000', '--timeout', '60'], directory/'model', 90, directory)
     assert result.returncode == 1 and not result.stderr
@@ -97,7 +108,7 @@ def boundary(directory, source, reason):
     assert outcome['frontend'] == 'accepted' and outcome['checked'] == 'program'
     assert outcome['status'] == 'unsupported' and outcome['reason'] == reason
     assert outcome['exit_status'] is None and outcome['diagnostic'] is None
-    assert base64.b64decode(outcome['stdout'], validate=True) == b'warning|'
+    assert base64.b64decode(outcome['stdout'], validate=True) == expected_stdout
     assert not base64.b64decode(outcome['stderr'], validate=True)
     return {'status':outcome['status'], 'reason':reason, 'agreement_claim':False}
 
@@ -126,7 +137,8 @@ def main():
             row = {'case':name, 'source_sha256':cross.invoke.sha(source), 'completed':False}
             report['records'].append(row)
             if args.mode=='prepare': row['outcome'] = prepare(directory, source)
-            elif args.mode=='boundary': row['outcome'] = boundary(directory, source, BOUNDARIES[name][1])
+            elif args.mode=='boundary': row['outcome'] = boundary(directory, source, BOUNDARIES[name][1],
+                b'warning|old|' if name=='duplicate-reference-foreach-binding-exit18' else b'warning|')
             else: row['outcome'] = cross.source(
                 {'abrupt':False, 'expected_exit_status':0, 'expected_stdout':EXPECTED[name]}, directory, source)
             assert cross.snapshot(None)==before
