@@ -98,6 +98,7 @@ rule PhpStep/name-read-this: S ~> S_name[.TODO = ptask_tail*][.RESULT = KNOWN (P
   -- if $this_name($echo_value(pvalue))
   -- if $this_receiver(S_name) = (n)
 dec $source_name_pending(pstate) : bool
+dec $computed_string_name_pending(pstate) : bool
 rule PhpStep/name-read: S ~> S_read[.TODO = ptask_tail*]
   -- if S.TODO = (NAME_READ z) :: ptask_tail*
   -- if ~$source_name_pending(S)
@@ -108,6 +109,7 @@ rule PhpStep/name-read: S ~> S_read[.TODO = ptask_tail*]
   -- if S_read = $scope_read_name(S_name, eps, $echo_value(pvalue), z)
 rule PhpStep/name-read-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (NAME_READ z) :: ptask_tail*
+  -- if ~$computed_string_name_pending(S)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION =/= NORMAL
 rule PhpStep/emit: S ~> S_text[.TODO = ptask_tail*][.EVENTS = S_text.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN PNULL]

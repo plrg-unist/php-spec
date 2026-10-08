@@ -123,6 +123,7 @@ syntax pidentityread = { SITE porigin, OP pbin, LEFT nat*, LEFTLINE int, RIGHT n
 syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIGIN porigin?, RAW parray?, SENT poperand?, RECEIVED poperand? }
 syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
 syntax pnameread = { SITE porigin, NAME nat*, LINE int }
+syntax pnamestring = { READ pnameread, OBJECT nat, TAIL ptask* }
 syntax pclosurescope, pclosurebinding
 ;; The selecting callback is borrowed history, not a retained queue owner.
 syntax pcloneproducer = { SITE porigin, NAME ptbytes?, CLOSURE nat? }
@@ -248,6 +249,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | EXCEPTION_HANDLER_INVOKE pexceptioncall | EXCEPTION_HANDLER_ENTER pexceptioncall | EXCEPTION_HANDLER_RESULT pexceptioncall
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
   | GLOBAL_READ_RESULT pglobalread | NAME_READ_RESULT pnameread | NAME_CV_READ_RESULT pnameread
+  | NAME_STRING_RESULT pnamestring | NAME_STRING_READY pnamestring preqbytes | NAME_STRING_PENDING pnamestring preqbytes nat
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_APPEND int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
   | CONTAINER_WRITE_RESULT pcontainerwrite
