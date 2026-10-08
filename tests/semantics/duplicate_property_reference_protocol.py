@@ -563,7 +563,7 @@ def container_assertions(initial, expected, pending):
         '$lookup(S_caller.ENV, pforeachbind.NAME) = (pforeachbind.OLD)',
         '$foreach_bind_body_valid(S_caller, pforeachbind)',
         '$foreach_bind_address_valid(S_caller, pforeachbind)',
-        '~$foreach_bind_payload_kind(S_caller, PARRAY |S_caller.ARRAYS|)']
+        '~$foreach_bind_payload_kind(S_caller, PARRAY (|S_caller.ARRAYS|))']
     for label, expression in [
             ('read', '$read_name(S_caller, pforeachbind.NAME, pforeachbind.LINE)'),
             ('global_read', '$global_read_name(S_first, pforeachbind.NAME, pforeachbind.LINE)'),
