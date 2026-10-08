@@ -30,6 +30,8 @@ dec $eager_operation_destination(pstate, pstate) : pstate
 dec $eager_live_slots(pstate, pnode*) : pnode*
 dec $eager_written_task(ptask) : bool
 dec $eager_operation_begin(pstate, pstate, ptask, pnode*) : pstate
+dec $eager_operation_source(pstate, ptask) : ptask
+def $eager_operation_source(S, ptask) = ptask -- otherwise
 dec $gc_operation_temporary(pstate, ptask, pnode*) : pgctemporary?
 dec $gc_operation_jobs(pdestructionoperation, pnode*) : pdestructionjob*
 dec $gc_operation_metadata_valid(pstate, pdestructionoperation) : bool
@@ -305,7 +307,7 @@ def $eager_operation_value(S) = KNOWN PNULL -- if $eager_operation_pending(S) =/
 def $eager_operation_value(S) = S.RESULT -- otherwise
 def $eager_operation_begin(S, S_source, ptask, pnode*) = $destructor_release_begin(S_marked[.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.DESTRUCTION.OPERATIONS = pdestructionoperation :: S_marked.DESTRUCTION.OPERATIONS][.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: $eager_operation_tail(S)], $gc_operation_jobs(pdestructionoperation, pnode*))
   -- if S_marked = $eager_cleanup_hold($request_fatal_state($destruction_store_new(S)), $eager_cleanup_for(S_source, ptask))
-  -- if pdestructionoperation = {VALUE $eager_operation_value(S), BASE S.BASE, CELL S.CELL, KEY S.KEY, LOCATION S.LOCATION, COMPLETION S.COMPLETION, PENDING $eager_operation_pending(S), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, SOURCE ptask, CLEANUP $eager_cleanup_for(S_source, ptask), NOGC $gc_operation_temporary(S_source, ptask, pnode*)}
+  -- if pdestructionoperation = {VALUE $eager_operation_value(S), BASE S.BASE, CELL S.CELL, KEY S.KEY, LOCATION S.LOCATION, COMPLETION S.COMPLETION, PENDING $eager_operation_pending(S), CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, SOURCE $eager_operation_source(S_source, ptask), CLEANUP $eager_cleanup_for(S_source, ptask), NOGC $gc_operation_temporary(S_source, ptask, pnode*)}
 
 def $destructor_operation_at(pcallcontext?, porigin?, eps) = eps
 def $destructor_operation_at(pcallcontext?, porigin?, pdestructionoperation :: pdestructionoperation_tail*) = (pdestructionoperation)
