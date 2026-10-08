@@ -108,6 +108,8 @@ CASES = {
             '$fiber_capture_config_tag(pconfigcall)',
             'pconfigcall.KIND = INTRINSIC_FIBER_RESUME',
             'pconfigcall.SELECTION = (n_capture)', 'pfibercaller.API.START = eps',
+            'pconfigcall.OWNER = (pfibercaller.API.OBJECT)',
+            'pfibercaller.API.KIND = (pconfigcall.KIND)',
             'pfibercaller.API.SITE = pconfigcall.SITE',
             'pfibercaller.API.LINE = pconfigcall.LINE',
             'pfibercaller.API.SENT = $fiber_config_sent(pconfigcall)',
