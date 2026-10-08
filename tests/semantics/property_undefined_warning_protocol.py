@@ -40,6 +40,8 @@ def $undefined_warning_phase(S, 12) = true
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask*
   -- if pforeachbind.VALUE = POBJECT n
   -- if $object_name(S, n) = $ptascii("UndefinedPendingParent377")
+def $undefined_warning_phase(S, 20) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: (DIM_FETCH z) :: ptask*
 def $undefined_warning_phase(S, n) = false -- otherwise
 dec $undefined_warning_seek(pstate, nat, nat) : pstate
 def $undefined_warning_seek(S, n_phase, n) = S
@@ -167,6 +169,21 @@ def lifetime_assertions(run, expected, borrowed):
             'S_read.DESTRUCTION.OPERATIONS = S_resume.DESTRUCTION.OPERATIONS']
     else:
         checks += [
+            *seek('S_initial', 'S_prep', 20),
+            'S_prep.RESULT = KNOWN (POBJECT n_receiver)',
+            '~$property_undefined_reference_receiver(S_prep)',
+            'S_plain = S_prep[.RESULT = VARIABLE $ptascii("receiver") z]',
+            '~$property_undefined_reference_receiver(S_plain)',
+            # Constructed raw-reference guard, not an observed ref-return run.
+            'S_reference = $reference_cell(S_prep, n_cell)[.RESULT = REFERENCE n_cell]',
+            'S_reference.STORE[n_cell] = DEFINED (POBJECT n_receiver)',
+            '(HCELL n_cell) <- S_reference.ALLOCATIONS',
+            '$property_undefined_reference_receiver(S_reference)',
+            'PhpStep: S_reference ~> S_reference_stop',
+            'S_reference_stop = S_reference[.COMPLETION = UNSUPPORTED "undefined property reference receiver lifetime"]',
+            'S_no_handler = S_reference[.ERRORHANDLER.CALLBACK = eps]',
+            r'~($error_handler_eligible(S_no_handler, 2) \/ $eval_compile_recorded_error(S_no_handler, 2))',
+            '~$property_undefined_reference_receiver(S_no_handler)',
             '$machine_base_roots(S_before) = [HOBJECT n_receiver]',
             '$eager_base_inputs(S_before, DIM_FETCH z) = [HOBJECT n_receiver]',
             '$task_nodes(PROPERTY_UNDEFINED_RESULT ppropertywarning) = [HOBJECT n_receiver]',

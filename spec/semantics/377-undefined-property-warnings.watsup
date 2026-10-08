@@ -98,6 +98,19 @@ def $property_undefined_read_plan(S) = (ppropertywarning)
 def $machine_base_roots(S) = eps
   -- if $property_undefined_read_plan(S) = (ppropertywarning)
   -- if ppropertywarning.BORROWED
+;; IS_VAR may retain a reference wrapper rather than a fixed payload owner.
+;; Keep that required ownership protocol explicit before resolve_at erases it.
+def $property_undefined_reference_receiver(S) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if $error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)
+  -- if S.RESULT = REFERENCE n
+  -- if $(n < |S.STORE|)
+  -- if n <- S.REFCELLS /\ (HCELL n) <- S.ALLOCATIONS
+  -- if S.STORE[n] = DEFINED (POBJECT n_receiver)
+  -- if $property_undefined_read_plan(S[.TODO = (DIM_FETCH z) :: ptask_tail*][.BASE = BASE_PROPERTY (POBJECT n_receiver) $base64(text)]) = (ppropertywarning)
+  -- if ~ppropertywarning.BORROWED
+rule PhpStep/property-undefined-reference-receiver: S ~> S[.COMPLETION = UNSUPPORTED "undefined property reference receiver lifetime"]
+  -- if $property_undefined_reference_receiver(S)
 dec $property_undefined_read_message(pstate, ppropertywarning) : preqbytes
 def $property_undefined_read_message(S, ppropertywarning) = $ptascii("Undefined property: ") ++ $object_name(S, ppropertywarning.OBJECT) ++ $ptascii("::$") ++ $c_string(ppropertywarning.READ.NAME)
 def $property_undefined_read_begin(S, ppropertywarning) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $property_undefined_read_message(S, ppropertywarning), ppropertywarning.READ.LINE, DIAGNOSTIC "Warning" $property_undefined_read_message(S, ppropertywarning) ppropertywarning.READ.LINE, PROPERTY_UNDEFINED_RESULT ppropertywarning)
