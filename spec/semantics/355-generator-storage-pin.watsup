@@ -105,9 +105,8 @@ def $generator_storage_called(S, n) = S -- if n <- S.DESTRUCTION.CALLED
 def $generator_storage_called(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]] -- if ~(n <- S.DESTRUCTION.CALLED)
 def $generator_storage_begin(S, n) = $generator_storage_called(S[.TODO = (GENERATOR_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $generator_storage_begin(S, n) -- if $generator_storage_node(S, n)
-def $generator_close_storage_free(S, HOBJECT n, pgenrelease) = $generator_storage_begin(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*], n)
+def $generator_close_storage_free(S, HOBJECT n, pgenrelease, ptask*) = $generator_storage_begin(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*], n)
   -- if $generator_storage_node(S, n)
-  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_old) :: ptask*
 def $call_task_valid(S, GENERATOR_STORAGE_STEP pgenstorage) = $generator_storage_valid(S, pgenstorage)
 def $task_nodes(GENERATOR_STORAGE_STEP pgenstorage) = [HOBJECT pgenstorage.OBJECT]
 def $eager_explicit_task(GENERATOR_STORAGE_STEP pgenstorage) = true
