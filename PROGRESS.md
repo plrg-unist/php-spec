@@ -1694,6 +1694,19 @@ at3.519/4.370s (`trait266-object-algo-l0tbn4ov`,
 `trait266-object-struct-npafxy47` in the same publish evidence directory).
 Typed-property retirement and bound Fiber-start ownership remain unchanged;
 the source/state cuts bridge without renewal.
+Later failed imports also authenticate the first target after its owner failed,
+at the later birth prefix while retaining the published-owner path. Both
+Closure records stay dead and neither failed class is published. At `070170525`,
+strict algo/struct pass3.519/4.371s; one shutdown PHP-error tuple and59 supplied
+rollback conditions plus6 setup clauses pass (29.959s), including declaration,
+call and heap validation and source/prefix/called/resurrection inverses.
+Raw evidence is `.tools/trait-fcc-failed-target-current19/.tools/`:
+`method-runtime-49mdsmg6`, `closure-call-protocol-a6halclw`,
+`trait266-object-algo-eolich9z` and `trait266-object-struct-je7sw7n_`.
+The reviewed EX/SOURCE336 composition `8b47bee97` over `b4f1e6175` passes strict
+algo/struct at3.469/4.420s (`trait266-object-algo-pemw9ni4`,
+`trait266-object-struct-bjiml5w8` under the publish evidence directory). Its
+GC.SCAN schema and caller/source fields are preserved; source1/59 bridge unchanged.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do broader differing-owner later births and

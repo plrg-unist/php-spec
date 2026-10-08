@@ -851,6 +851,9 @@ publishing the failed class or reviving its retired Closure. Three shutdown
 originals cover imported, own/private and missing-alias targets, literal defaults
 and clone-shared statics;115 supplied checkpoint conditions pass, with12 setup
 clauses separate.
+A later failed import also retains a dead receipt when the first owner failed;
+one shutdown original and59 supplied rollback conditions pass, with6 setup
+clauses separate.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
