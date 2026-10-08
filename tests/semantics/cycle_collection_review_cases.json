@@ -421,5 +421,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-detached-quiescent-failed-fiber-prior-identity-review-19",
+    "source": "<?php\n$worker = null;\nclass FailedCollectorCycle {\n    public $self;\n    function __destruct() {\n        global $worker;\n        $worker = Fiber::getCurrent();\n        try { Fiber::suspend(); }\n        finally { $this->self = null; throw new Exception; }\n    }\n}\n$x = new FailedCollectorCycle; $x->self = $x;\n$target = WeakReference::create($x); unset($x);\n$collector = new Fiber(function () { gc_collect_cycles(); });\n$collector->start(); unset($collector);\n$weak = WeakReference::create($worker);\n$closer = new Fiber(function () {\n    global $worker;\n    $outer = new Exception;\n    try {\n        try { throw $outer; }\n        finally { $worker = null; }\n    } catch (Throwable $close) {\n        echo $close->getPrevious() === $outer ? 'prior|' : 'wrong|';\n    }\n});\n$closer->start(); unset($closer);\necho $weak->get() === null ? 'worker-gone|' : 'worker-live|';\necho gc_collect_cycles(), '|', $target->get() === null ? 'target-gone' : 'target-live';\n",
+    "source_sha256": "64bde6320a99ad4b71390e157959e673357fd2b766df98aa0b980bbdf20349fb",
+    "stdout": "prior|worker-gone|1|target-gone",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
