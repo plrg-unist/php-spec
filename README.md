@@ -933,6 +933,9 @@ If data binding succeeds before abstract verification fails, later cached calls
 use the fixed class scope while an imported first birth keeps its trait scope.
 One shutdown original and59 supplied phase/scope/static conditions pass, with6
 setup clauses separate; the failed class stays unpublished.
+A retained `new self` rejects an unresolved abstract trait requirement before
+arguments or instance allocation. One shutdown original and39 supplied conditions plus6
+setup clauses pass; this proof covers classes without parent/interface contracts.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider

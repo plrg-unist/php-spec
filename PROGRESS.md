@@ -1966,6 +1966,21 @@ at3.619/4.420s; these source1/59 cuts bridge unchanged. Current GC/Fiber/source
 fields and static-compound selectors are preserved. Raw compiler evidence is
 `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-nke5f48d`
 and `trait266-object-struct-elvmk9fw` in the same directory.
+Retained `new self` now rejects an unresolved implicit abstract trait requirement
+before arguments or instance allocation, using the exact copied requirements and live FCC
+scope; unknown proof stays Unsupported. At `a18e91e3e`/345 over `4cd2eab3a`, strict
+algo/struct pass3.569/4.469s, one shutdown PHP-error tuple and39 supplied NEW
+conditions plus6 setup clauses pass (44.118s), including all four global validators.
+Raw evidence under `.tools/trait-fcc-failed-target-current19/.tools/` is
+`method-runtime-3w3ufl_3`, `closure-call-protocol-gbmre4ve`,
+`trait266-object-algo-umrooye4` and `trait266-object-struct-o_3sgnyc`.
+The reviewed347 composition `7bfa05c07` over `0ac26ef29` passes strict algo/struct
+at3.569/4.522s; the unchanged source1/39 cuts bridge with current INSTANCE storage,
+scoped-static selection and Generator fields preserved. Raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-1knav8u7`
+and `trait266-object-struct-xxwdsrqv` in the same directory.
+The failed class remains unpublished; parent/interface construction contracts,
+including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do broader differing-owner later births and
