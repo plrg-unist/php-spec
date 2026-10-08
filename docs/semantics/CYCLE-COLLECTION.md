@@ -56,8 +56,13 @@ suspend while retaining this cache and live scan. Its parked VM authenticates th
 real suspend continuation and actual saved-frame/origin projections; reentry
 within the same live physical pass rebinds the fresh public API in the owning
 guard copies. An old pending guard error stays separate from a fresh injected
-error. Post-pass reentry and internal collector takeover remain explicit
-Unsupported boundaries;317 cannot overwrite the parked callback.
+error. After collection completes, quiescent public reentry authenticates that
+same parked VM and a fresh real caller. It requires an unmarked buffer, so the
+retained local interval can finish without callbacks even after old slots move.
+Retired caller metadata grants no current scope, owner or physical-slot authority;
+global scan state and nonce remain unchanged. Reentry during a different active
+pass and internal collector takeover remain explicit Unsupported boundaries;
+317 cannot overwrite the parked callback.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -150,8 +155,8 @@ under an `AT` wrapper. Historical snapshots cannot authorize arbitrary callbacks
 zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
-Explicit boundaries remain for wider internal lifetime graphs, post-pass public
-callback reentry/internal takeover, active-pass failed close and wider
+Explicit boundaries remain for wider internal lifetime graphs, callback reentry
+during a different active pass/internal takeover, active-pass failed close and wider
 callbackless close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
@@ -248,7 +253,7 @@ budget identity and complete continuations. The tested322 join over `f89fbee745`
 passes combined compilation at `9277e334d`, preserving328/336 and ownership factors.
 Publication over `0bb453754` preserves the disjoint prior-array foreach guards
 without renewing these cuts.
-The larger prior-chain source retains its60s model timeout with zero agreement
+The larger prior-chain source retains its 60s model timeout with zero agreement
 and remains selectable; its reached continuation at the existing120s state cap
 is a separate result. Earlier335 and collector cuts are unchanged.
 
@@ -267,7 +272,7 @@ is superseded by a native protected-access discriminator and76 new premises.
 A compact bound-C-root original and101 new premises check actual captured caller
 ownership through scan/guard entry and real exception identity. Both affected
 originals agree at `0df2d161e`/331; final336 over `6e107993a` compiles at `d04ff9c54`.
-Parse/fixture stops and the larger captured-source60s timeout retain zero affected
+Parse/fixture stops and the larger captured-source 60s timeout retain zero affected
 credit; earlier cuts are unchanged and no offline rebuild is claimed.
 
 Cached callback suspension retains one exact normal source agreement at
@@ -284,3 +289,18 @@ changes are independently reviewed pointwise. Both captured source variants reta
 CLI timeouts with zero source agreement, including the final retry. Earlier
 state timeouts/incorrect final-retirement assertions retain zero affected credit.
 No old cuts are renewed and no offline rebuild is claimed.
+
+Quiescent post-pass reentry retains one exact normal source agreement at
+`b28a5c47b` and 203 independent strict-SL physical premises (101/102; runner 92/93,
+authored 89/90) at 95fd with fixture 9765. These check real caller retirement,
+stored VM/CONTINUE, no-tag forgeries, harmless buffer/scan relocation, fresh
+C-root ownership, old 2/new 4 errors, replay and exact normal continuations.
+Request cleanup gracefully terminates the idle worker; B remains a called
+self-cycle with one owner, while global error reference cells retain their real
+owners and the direct-global runner/capture retire. The main PASS row remains
+inside a false aggregate; the corrected core group passes separately. Earlier
+incorrect request-final fixture assumptions and captured-source 60s CLI timeouts
+retain zero affected credit. The old maintained post-pass refusal premise is
+superseded without renewing the historical 228 cut. Final 345 over `4cd2eab3a`
+compiles at `0c23223f3`, preserving reviewed Fiber-factory/trait additions.
+Reentry during a different active pass and internal takeover remain required.
