@@ -34,10 +34,9 @@ def $ctor_pair_target(S, ERROR_HANDLER_RESULT perrorcall) = $ctor_pair_target(S,
 def $ctor_pair_target(S, ERROR_HANDLER_CLEAN perrorcall) = $ctor_pair_target(S, perrorcall.RESUME)
   -- if $call_task_valid(S, ERROR_HANDLER_CLEAN perrorcall)
 dec $fiber_ctor_result_pending(pstate, nat, ptask*) : bool
-def $fiber_ctor_result_pending(S, n, ptask :: (CTOR_RESULT n) :: ptask_tail*) = true
-  -- if $ctor_pair_target(S, ptask) = (n)
-def $fiber_ctor_result_pending(S, n, ptask :: ptask_tail*) = $fiber_ctor_result_pending(S, n, ptask_tail*) -- otherwise
 def $fiber_ctor_result_pending(S, n, eps) = false
+def $fiber_ctor_result_pending(S, n, [ptask]) = false
+def $fiber_ctor_result_pending(S, n, ptask :: ptask_next :: ptask_tail*) = (($ctor_pair_target(S, ptask) = (n) /\ ptask_next = CTOR_RESULT n) \/ $fiber_ctor_result_pending(S, n, ptask_next :: ptask_tail*))
 dec $fiber_ctor_result_owner(pstate, nat, pfiber) : bool
 def $fiber_ctor_result_owner(S, n, pfiber) = $fiber_ctor_result_pending(S, n, S.TODO)
   -- if ~pfiber.READY
