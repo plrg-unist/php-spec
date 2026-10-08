@@ -46,9 +46,9 @@ S_release.OBJECTS[n_generator] = GENERATOR pgenerator
 pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
 pgenerator.CLOSURE = (n_closure)
 pgenerator.RETURN = (POBJECT n_value)
-pgenerator.VALUE = (PLONG 1)
+pgenerator.VALUE = (PINT 1)
 pgenerator.REFCELL = eps
-pgenerator.KEY = (PLONG 0)
+pgenerator.KEY = (PINT 0)
 $node_children(S_release,HOBJECT n_generator) = [HOBJECT n_value,HOBJECT n_closure]
 $node_children(S_release,HOBJECT n_closure) = [HCELL n_capture]
 n_capture <- S_release.REFCELLS
