@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source353 selects the first ordinary CV-base DIM read before ECHO or a literal
+property, using the key compiler line before live base/key lookup. The affected
+writable array-property receiver now separates its table; the later literal
+null-property warning has an authenticated fixed-null resume. Seven exact originals
+and245 independent premises retain separate private336 cuts. Actual340 over
+`ea7cf0a34` passes strict compilation at `7ff6d34c3`; current ARG/GEN/Fiber/collector
+interactions are independently reviewed. Original source failures, fixture stops
+and the receiver frontier false/vector retain zero affected credit. Wider emission
+and receiver forms remain required.
+[Ledger](coverage/semantics/source-dimension-emission-review.json).
+
 351 executes captured `start` as a Fiber C-root callback. Immutable RAW selection
 and genuine outer caller chains preserve separate original/copied argument
 buffers, RAW/result Closure owners and borrowed API receivers. Inner traces have

@@ -186,3 +186,24 @@ FETCH6. The original fixture elaboration stop has zero evaluation credit. Actual
 over `94e3593e6` passes strict compilation with reviewed current-H, Generator,
 property, trait and Fiber compatibility. Relocation and earlier cuts gain no renewed
 credit; wider name producers, special forms and emissions remain required.
+
+Module353 selects an ordinary CV-base dimension read with an ordinary CV or plain
+int/string literal key, directly under ECHO or before a literal property. Vendored
+`zend_delayed_compile_dim` emits FETCH_DIM_R at the key compiler line; the original
+AST, exact operand descriptors and completed image authenticate selection without
+reading the base/key. Owned include/eval operands retire before that lookup, even
+when the live base would be ArrayAccess or retirement throws.
+The affected nested property writer follows `zend_delayed_compile_prop`'s writable
+DIM mode: direct CV/fixed-global array roots with quiet int/string keys selecting
+existing DIRECT object entries separate through ordinary location acquisition.
+This can leave the interrupted key-warning read with only its protected old table,
+so it returns null; an extra ordinary owner keeps that table readable. A subsequent
+literal property-on-null warning carries a nonowning source/name/line certificate
+and resumes with fixed null after handler writes. The [ledger](../../coverage/semantics/source-dimension-emission-review.json)
+retains seven exact sources and245 independent premises across private336 cuts.
+The COW disagreement, missing-producer stop and fixture failures/vector retain
+zero affected credit. Actual340 over `ea7cf0a34` passes strict compilation with
+reviewed ARG/GEN/Fiber/current-allocation-edge compatibility, without renewing
+earlier cuts. Other receiver
+modes, missing/alias entries, readonly chains, strings, ArrayAccess and wider
+property diagnostics remain on their earlier paths and require further coverage.
