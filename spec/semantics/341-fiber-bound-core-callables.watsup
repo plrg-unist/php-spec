@@ -20,6 +20,7 @@ def $fiber_caller_api_nodes(pfibercaller) = $fiber_value_nodes(pfiberapi.SENT)
   -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
   -- if pconfigcall.OWNER = (pfiberapi.OBJECT) /\ pconfigcall.SELECTION = (n_capture)
   -- if pfiberapi.KIND = (pconfigcall.KIND) /\ pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
   -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
 
@@ -30,6 +31,7 @@ def $fiber_bound_core_call(S, pfiberapi) = (pconfigcall)
   -- if pfiberapi.KIND = (pintrinsic)
   -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
   -- if pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if S.TODO = [FIBER_WAIT pfiberapi, FIBER_API_CORE_RESULT n_runner n_capture pconfigcall, FIBER_FINISH n_runner]
   -- if $fiber_api_core_result_valid(S, n_runner, n_capture, pconfigcall)
   -- if pconfigcall.KIND = pintrinsic /\ pconfigcall.OWNER = (pfiberapi.OBJECT)

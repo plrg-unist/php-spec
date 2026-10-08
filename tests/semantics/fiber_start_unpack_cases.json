@@ -78,6 +78,17 @@
     "oracle_status": "native-confirmed-model-unrun"
   },
   {
+    "id": "peer-fiber-start-unpack-direct-and-explicit-capture-abrupt-named-order",
+    "source": "<?php\nclass StartUnpackCapturePayload374 {\n    private WeakReference $target;\n    public function __construct(WeakReference $target) { $this->target = $target; }\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\nfunction startUnpackCapturePark374() {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; }\n}\nfunction startUnpackCapturePack374() {\n    global $target, $start, $weak;\n    $target = null;\n    $start = null;\n    echo 'P|';\n    return ['value' => new StartUnpackCapturePayload374($weak)];\n}\nfunction startUnpackCaptureThrow374() { throw new RuntimeException('pack'); }\n$target = new Fiber('startUnpackCapturePark374');\n$target->start();\n$weak = WeakReference::create($target);\n$start = $target->start(...);\ntry { $start(...startUnpackCapturePack374(), ...startUnpackCaptureThrow374()); }\ncatch (RuntimeException $error) { echo 'C|', (int)($weak->get() === null), '|'; }\nunset($error);\n$target = new Fiber('startUnpackCapturePark374');\n$target->start();\n$weak = WeakReference::create($target);\n$start = $target->start(...);\ntry { $start->__invoke(...startUnpackCapturePack374(), ...startUnpackCaptureThrow374()); }\ncatch (RuntimeException $error) { echo 'C|', (int)($weak->get() === null), '|END'; }\n",
+    "source_sha256": "56f8997948d681d8ce5e2e2b598d089a39010e81065c3cac3f5561afee0458e8",
+    "engine_derived_expectation": "cleanup_unfinished_calls releases ordinary EX(This) before extra named parameters but the direct call Closure function owner after named parameters. Before the handler enters, explicit Closure::__invoke and direct FCC calls therefore need distinct ordering of last Closure/receiver retirement versus named payload destruction. Exact stdout awaits pinned native validation.",
+    "native_stdout": "P|D0|F|C|1|P|F|D1|C|1|END",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
     "id": "peer-bound-start-dynamic-capture-named-unpack-selection",
     "source": "<?php\n$original = new Fiber(static function ($value) {\n    echo 'O', (int)($value === $GLOBALS['other']), '|';\n    Fiber::suspend('Y');\n    return 47;\n});\n$other = new Fiber(static function () { echo 'X|'; return 53; });\n$selected = $original;\n$method = 'StArT';\n$start = $selected->$method(...);\n$method = 'resume';\necho $start(...['value' => ($selected = $other)]), '|';\necho (int)$original->isStarted(), (int)$other->isStarted(), (int)($selected === $other), '|';\n$original->resume();\necho $original->getReturn();\n",
     "source_sha256": "b3c0e01d899b603c811635909e394372a26194618fed17d3ae671bc6e86dc41f",

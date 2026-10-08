@@ -420,7 +420,7 @@ def $fiber_suspend(S, pconfigcall, pvalue) = $fiber_suspend_save(S_parked, pconf
   -- if pgcguard.PUBLIC = (pgcpublic)
   -- if ~$gc_worker_api(pgcpublic.API)
   -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
-  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT pgcguard.WORKER, KIND (INTRINSIC_FIBER_SUSPEND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE pfiber.SEQUENCE}
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT pgcguard.WORKER, KIND (INTRINSIC_FIBER_SUSPEND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE pfiber.SEQUENCE, PACKS eps}
   -- if pgcguard_new = pgcguard[.PUBLIC = (pgcpublic[.API = pfiberapi])]
   -- if S_parked = $gc_worker_put_guard(S[.TODO = $gc_worker_pending_tasks(S.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(S.FRAMES, pgcguard, pgcguard_new)], pgcguard.WORKER, (pgcguard_new))
 
@@ -514,7 +514,7 @@ def $gc_worker_public_reentry(S, pconfigcall, pvalue) = $fiber_activate(S_bound,
   -- if $gc_worker_public_reentry_ready(S, pgcguard)
   -- if pgcguard.PUBLIC = (pgcpublic)
   -- if pfiber.VM = (pfibervm)
-  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (pconfigcall.KIND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE S.FIBERSEQ}
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (pconfigcall.KIND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE S.FIBERSEQ, PACKS eps}
   -- if pgcguard_new = pgcguard[.PUBLIC = (pgcpublic[.API = pfiberapi])]
   -- if pfibervm_bound = pfibervm[.TODO = $gc_worker_pending_tasks(pfibervm.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(pfibervm.FRAMES, pgcguard, pgcguard_new)]
   -- if pfiber_bound = pfiber[.GC = (pgcworker[.GUARD = (pgcguard_new)])][.VM = (pfibervm_bound)]
@@ -556,7 +556,7 @@ def $gc_worker_residual_start(S, pgcplan) = $gc_worker_internal_next(S_active, p
   -- if $fiber_at(S, n) = (pfiber)
   -- if pgcplan_next = pgcplan[.CALL.PENDING = eps]
   -- if S_caller = $gc_replace($gc_worker_start_buffer(S, pgcplan_next, true), pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
-  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ}
+  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ, PACKS eps}
   -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
   -- if pgcpublic = {API pfiberapi, SOURCE pgcplan_next.CALL, INDEX S_caller.GC.SCAN.INDEX, END S_caller.GC.SCAN.END, PENDING pgcplan.CALL.PENDING, RESIDUAL true}
   -- if S_running = $fiber_put(S_caller, n, pfiber[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = pfiberapi.SEQUENCE])
@@ -582,7 +582,7 @@ def $gc_worker_takeover(S, pgcplan) = $gc_worker_start_vm(S_running, n, pfiber_b
   -- if pfiber.VM = (pfibervm)
   -- if pgcplan_next = pgcplan[.SCAN = ({INDEX $(pgcguard.INDEX + 1), END pgcpublic.END})]
   -- if S_caller = $gc_replace($gc_worker_start_buffer(S, pgcplan_next, true), pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
-  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ}
+  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ, PACKS eps}
   -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
   -- if pgcguard_new = pgcguard[.SOURCE = pgcplan.CALL[.PENDING = eps]][.PUBLIC = (pgcpublic[.API = pfiberapi][.SOURCE = pgcplan.CALL[.PENDING = eps]][.RESIDUAL = false])]
   -- if pfibervm_bound = pfibervm[.TODO = $gc_worker_pending_tasks(pfibervm.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(pfibervm.FRAMES, pgcguard, pgcguard_new)]
