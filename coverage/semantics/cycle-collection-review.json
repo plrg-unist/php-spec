@@ -1,7 +1,7 @@
 {
   "version": 1,
   "target": "PHP8.5.10 CLI NTS64, error_reporting30719",
-  "scope": "Independently accepted bounded explicit ordinary-object/array collection with separate actual286/290 parent compositions; wider GC and complete core remain open.",
+  "scope": "Independently accepted bounded ordinary collection301 and private hidden collector-Fiber317; separate parent compositions retain their cuts. Wider GC and complete core remain open.",
   "accepted_prerequisites": {
     "eager270_source_sha256": "d85fc9f4f1df452d90fc3f7be8a6b198cfdc9bc0e7a7524fceb51fb427aad908",
     "weak296_source_patch_sha256": "2d86a99f0acd6b7a2faef4fddc0802971f30e2a5cb307a921db0feee07875aef",
@@ -226,7 +226,8 @@
   },
   "boundaries": [
     "Automatic threshold collection",
-    "Internal lifetime graphs and collector-Fiber transfer",
+    "Wider internal lifetime graphs and public resumption of an idle cached collector worker",
+    "Detached bare guard decrement leaving an allocated zero-owner target",
     "Initially free non-destructor resurrection and new zero-owner destructor target after retrace",
     "Arbitrary synthetic producer reachability beyond local TEMP receipt consistency",
     "Final canonical composition after the remaining accepted integrations",
@@ -309,5 +310,77 @@
     "source_stdout": "own|live|D|D|2|gone|0|END",
     "result": "Exact normal0 native/model tuple, empty stderr, model exit0/no timeout; first native exit0/no timeout/group_after empty, reused without another engine execution.",
     "recovery": "python3 tests/semantics/cycle_collection_sources.py --match readonly-clone-reinitialized-self-slots-remain-real-cycles"
+  },
+  "collector_fiber317": {
+    "status": "independently accepted bounded private slice; current-parent composition pending",
+    "test_root": ".tools/gc-fiber-current317-18",
+    "implementation_revision": "0f18443d217c33d81dc2ef081d795488e4752caf",
+    "modules": 292,
+    "scope": "Actual internal Fiber identity/cache, one cache owner, real parked collecting caller, global busy admission, detached target/pending guards, replacement batches, ordinary force-close, source-less trace/scope and authenticated idle request retirement.",
+    "compiler_report": ".tools/gc-collector-18-compiler-31kxi89n/report.json",
+    "initializer_report": ".tools/gc-collector-18-init-dnvhenly/report.json",
+    "initializer_revision": "a48865152",
+    "exact_normal_originals": 13,
+    "source_campaigns": [
+      {
+        "revision": "88db00c5c",
+        "report": ".tools/gc-collector-18-source-r0qlsix2/report.json",
+        "accepted_sources": 3
+      },
+      {
+        "revision": "88db00c5c",
+        "report": ".tools/gc-collector-18-source-qse8q_kg/report.json",
+        "accepted_sources": 3
+      },
+      {
+        "revision": "6fdab57ee",
+        "report": ".tools/gc-collector-18-source-i36k1ocf/report.json",
+        "accepted_sources": 6
+      },
+      {
+        "revision": "a725055fd",
+        "report": ".tools/gc-collector-18-source-5t_hq9m2/report.json",
+        "accepted_sources": 1
+      }
+    ],
+    "native_reuse": "Each source gate reuses its preserved first observation under .tools/gc-fiber-current-16/.tools/gc-collector-native-16-*/report.json, on the pinned local runtime/profile. Original argv/cwd/streams are retained; no file/cwd observations are made by these sources.",
+    "reached_groups": [
+      {
+        "id": "collector-cached-vm-keeps-reporting-and-one-parked-pass",
+        "revision": "1227f17bd",
+        "report": ".tools/shutdown-state-review-ut6_sxba/report.json",
+        "physical_premises": 78,
+        "scope": "Worker mask0/shared INI30719, one cache owner and one parked pass consumer, restored-view counts, heap-identical API/duplicate-consumer/birth negatives, budget replay and real callbackless retirement."
+      },
+      {
+        "id": "collector-detached-guard-outlives-its-real-caller",
+        "revision": "0f18443d2",
+        "report": ".tools/shutdown-state-review-8xcym02q/report.json",
+        "physical_premises": 68,
+        "scope": "Retired real caller/weak null, real guard ownership, exact saved empty-table C root, forged PHP origin/future guard rejection, budget replay and actual target retirement."
+      }
+    ],
+    "compatibility": "The new0f saved-frame clause admits only an authentic guarded C root; cached states have no such frame. Earlier13 source cuts and unchanged initialization retain their original identities. Metadata adds no execution or rebuild credit.",
+    "preserved_zero_agreement": {
+      "full_three_throw_trace": ".tools/shutdown-review-bko9f6bw/report.json;60s model timeout",
+      "full_detached_pending_chain": ".tools/shutdown-review-pb6wldvc/report.json;60s model timeout",
+      "overlapping_source_site_failure": ".tools/gc-collector-18-source-eatqswqx/report.json",
+      "first_compiler_diagnostics": [
+        ".tools/gc-collector-18-compiler-hv2hvu99/report.json",
+        ".tools/gc-collector-18-compiler-epv0yn6a/report.json",
+        ".tools/gc-collector-18-compiler-z8vk5q5g/report.json",
+        ".tools/gc-collector-18-compiler-ipetosex/report.json"
+      ],
+      "nondiscriminating_ini_fixture": ".tools/shutdown-state-review-b0upity_/report.json",
+      "live_lookup_after_real_retirement_fixture": ".tools/shutdown-state-review-sbmrj01h/report.json",
+      "missing_saved_c_root_admission": ".tools/shutdown-state-review-ut6_sxba/report.json;cached PASS retained, detached failure separate",
+      "bare_zero_owner_native_only": ".tools/gc-fiber-current-16/.tools/gc-collector-native-16-q85vve54/report.json;current Unsupported, no model agreement"
+    },
+    "default_selection": "The two full model timeouts remain explicit selections and are excluded by the Makefile. Compact trace/pending controls have distinct agreements. The original reporting source is retained, but the fresh explicit-INI original alone discriminates saved-mask reuse.",
+    "recovery": [
+      "python3 tests/semantics/cycle_collection_sources.py --start-at collector-worker-identity-and-idle-reuse --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces",
+      "python3 tests/semantics/cycle_collection_review.py --start-at collector-detached-reentry-review-18 --exclude-match collector-detached-pending-review-18",
+      "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-cached-vm-keeps-reporting-and-one-parked-pass --case collector-detached-guard-outlives-its-real-caller"
+    ]
   }
 }

@@ -124,3 +124,11 @@ The larger three-throw collector trace and detached pending-chain originals
 retain their 60s model timeouts with zero agreement. They remain explicitly
 selectable and are excluded from the default Makefile targets; compact controls
 separately exercise the internal trace and detached previous-exception chain.
+
+At the recorded private module 317 cuts, thirteen exact normal source originals and two
+independent strict-SL groups with 78/68 physical premises pass. A fresh explicit-INI
+original distinguishes the cached mask from changed shared INI; the earlier
+reporting original remains a separate observation. The held-guard group also
+checks admission of the real saved C root after its original caller retires.
+Compilation with 292 modules passes; earlier source, cached-state and initialization
+cuts retain their identities in the ledger. Current-parent composition is pending.

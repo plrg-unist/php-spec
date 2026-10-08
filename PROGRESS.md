@@ -81,8 +81,15 @@ strict291 compilation/initialization and one new exact readonly self-clone/GC
 original: both real cycles are weakly observable until two destructors/count2,
 then both retire and a second collection returns0. The
 [ledger](coverage/semantics/cycle-collection-review.json) retains each distinct
-cut. Hidden collector-Fiber transfer/lifecycle317, internal graphs, automatic
-thresholds, wider resurrection and final request freeing remain required.
+cut. Independently accepted private module 317 adds the actual collector-Fiber cache,
+global parked collection, detached target/pending guards, replacement batches,
+source-less traces/scope and callbackless idle retirement. Thirteen exact normals
+and two strict-SL groups with 78/68 premises pass at separate cuts with 292 modules;
+current-parent composition is pending. The fresh explicit-INI source discriminates
+cached mask reuse. The two larger 60s model timeouts and native-only detached
+zero-owner path retain zero agreement. Wider internal graphs, idle-worker public
+resumption, automatic thresholds, resurrection and final request freeing remain
+required.
 
 Undefined source operands293 resume genuine warnings with fixed null after
 handler writes, preserving direct empty-path errors and earlier computed-name
