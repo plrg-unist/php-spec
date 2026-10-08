@@ -91,4 +91,7 @@ with null after a handler defines the target; genuine handler identity and
 heap-identical source/line forgeries are checked. Source-keyword293, this,
 auto-global/global and no-handler paths retain their protocols. Six excluded
 admission shapes, the original missing-name Unsupported and two fixture stops
-remain distinct. Relocations earn no execution credit; actual integration is pending.
+remain distinct. Actual307 preserves the accepted collector/Generator/ArrayAccess
+fields and passes strict compilation. Independent review finds their introduced
+selectors disjoint from the name call and warning continuation. Earlier source/state
+cuts and relocations gain no renewed execution credit.

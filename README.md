@@ -62,7 +62,7 @@ Literal `$GLOBALS` first FETCH is integrated with a separately reviewed [private
 
 Literal `$this` first FETCH is integrated with a separately reviewed [private297 cut](coverage/semantics/source-this-emission-review.json): four exact originals retain method/private scope and retirement before the missing-instance error, with70 independent premises and9 affected classification checks. Actual303 passes strict compilation with independently reviewed property/default/argument compatibility; earlier source/state cuts retain their inputs.
 
-Computed variable names from resolved no-argument user calls have a reviewed [private304 cut](coverage/semantics/source-computed-emission-review.json): operand retirement exposes INIT6 before helper/FETCH/property execution, with four exact originals across separate cuts and188 independent premises. Missing-name warning callbacks retain their writes while the interrupted read returns null. Actual-parent integration remains pending.
+Computed variable names from resolved no-argument user calls have a reviewed [private304 cut](coverage/semantics/source-computed-emission-review.json): operand retirement exposes INIT6 before helper/FETCH/property execution, with four exact originals across separate cuts and188 independent premises. Missing-name warning callbacks retain their writes while the interrupted read returns null. Actual307 passes strict compilation with independently reviewed collector/Generator/ArrayAccess compatibility; earlier source/state results retain their inputs.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed

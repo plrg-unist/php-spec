@@ -45,9 +45,9 @@ WeakReference296, ordinary cycle collection301 and collector Fibers317,
 Fiber291/302/308/313, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with306 modules descended from
-`38f1dfaa045f`. The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323.
+with307 modules descended from
+`ee2c9eb1f0fd`. The ordered integration preserves
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -170,12 +170,13 @@ passes strict compilation with reviewed property/default/argument compatibility.
 Relocations and the actual join add no source/state credit; broader emissions remain required.
 
 [Computed-name emission327](coverage/semantics/source-computed-emission-review.json)
-is independently accepted at private304: an owned operand retires at INIT6 before
+is integrated: an owned operand retires at INIT6 before
 the resolved no-argument helper and later FETCH6/property8 execute. Three exact originals
 retain their first cut; the corrected missing-name original passes separately.
 The new warning producer resumes with null after handler writes, with188 independent
 entry/admission/pending-handler premises. Original Unsupported and two fixture
-stops retain zero affected credit; actual integration and broader names remain required.
+stops retain zero affected credit. Actual307 passes strict compilation with reviewed
+collector/Generator/ArrayAccess compatibility; broader names remain required.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
