@@ -78,3 +78,17 @@ INSTANCE fixture false has zero accepted credit; previous72 is preparation-only.
 Actual303 passes strict compilation while retaining property warnings318, current
 default/source/DIR rules and ArrayAccess319. Their introduced paths are independently
 reviewed as disjoint here. Private source/state cuts and relocations gain no renewed credit.
+
+Module327 selects INIT for a computed variable name supplied by a resolved
+no-argument named user call, before FETCH_R/ECHO or a literal property read.
+Original AST, CODENAME without fallback, call/variable CODEEXPR lines and effects
+certify selection; helper execution and the returned name remain runtime work.
+Its [ledger](../../coverage/semantics/source-computed-emission-review.json) retains
+private304 source3 and the corrected missing-name source1 as separate cuts,
+plus188 independent premises. INIT6/FETCH6/property8 and later warning6 agree.
+The new nonowning NAME_READ_RESULT captures ordinary name/site/line and resumes
+with null after a handler defines the target; genuine handler identity and
+heap-identical source/line forgeries are checked. Source-keyword293, this,
+auto-global/global and no-handler paths retain their protocols. Six excluded
+admission shapes, the original missing-name Unsupported and two fixture stops
+remain distinct. Relocations earn no execution credit; actual integration is pending.

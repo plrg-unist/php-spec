@@ -169,6 +169,14 @@ checks; the initial INSTANCE fixture false has zero accepted credit. Actual303
 passes strict compilation with reviewed property/default/argument compatibility.
 Relocations and the actual join add no source/state credit; broader emissions remain required.
 
+[Computed-name emission327](coverage/semantics/source-computed-emission-review.json)
+is independently accepted at private304: an owned operand retires at INIT6 before
+the resolved no-argument helper and later FETCH6/property8 execute. Three exact originals
+retain their first cut; the corrected missing-name original passes separately.
+The new warning producer resumes with null after handler writes, with188 independent
+entry/admission/pending-handler premises. Original Unsupported and two fixture
+stops retain zero affected credit; actual integration and broader names remain required.
+
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
 The accepted private52 normal/four compiler agreements and618 reached premises,
