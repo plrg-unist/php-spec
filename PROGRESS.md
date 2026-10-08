@@ -15,6 +15,9 @@ or line. Strict324 initialization, ten new normal originals plus one affected337
 former boundary, independent255 and author93 reached premises pass at separate
 recorded cuts. The narrow saved-root helper correction is covered by full-drive
 nested108 and collector93 checks; original failures retain zero credit.
+The actual328 composition over `175a197e9` passes strict initialization while
+preserving current collector342, method307, source339 and ownership factors;
+earlier source/state cuts retain their inputs.
 Bound `start`, constructor captures and broader adapters remain required;
 paused undefined-result verification is excluded. Earlier331/337 cuts are unchanged.
 [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json).
