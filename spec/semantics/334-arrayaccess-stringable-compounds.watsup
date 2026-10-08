@@ -137,7 +137,9 @@ def $access_set_variadic_hole_error(S, paccess, pfunction) = $throwable_allocate
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, paccess.SITE), LINE paccess.LINE, FUNCTION pmethoddesc.NAME, CLASS (pclassdesc.NAME), TYPE ($ptascii("->")), ARGS $trace_indexed_args([PNULL, paccess.VALUE], 0), HASARGS true}
 
-def $access_set_hole_context(S, pcallcontext) = ($access_context(S, pcallcontext) /\ pcallcontext.HOLES = [0])
+def $access_set_hole_context(S, pcallcontext) = $access_context(S, pcallcontext)
+  -- if pcallcontext.HOLES = [0]
+def $access_set_hole_context(S, pcallcontext) = false -- otherwise
 def $named_call_shape(S, pcalltarget, (porigin)) = {SLOTS ([NAMED_HOLE, NAMED_SENT (KNOWN PNULL)]), NAMED eps}
   -- if S.CURRENT = (pcallcontext)
   -- if $context_target(pcallcontext) = pcalltarget

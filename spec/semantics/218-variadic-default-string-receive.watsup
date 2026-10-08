@@ -16,12 +16,14 @@ dec $call_holes_source_valid(pstate, pcallcontext, pfunction) : bool
 def $call_holes_source_valid(S, pcallcontext, pfunction) = true
   -- if $call_unpack_site(S, pcallcontext.CALLSITE) \/ pcallcontext.WRAPPER =/= eps
   -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
+  -- if pcallcontext.HOLES = eps \/ ~$access_context_kind(S, pcallcontext)
 def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES = eps)
   -- if $stringify_context_kind(S, pcallcontext) \/ $error_context_kind(S, pcallcontext)
 def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES = $named_holes(pnamedargs.SLOTS[0:n_fixed], 0))
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
   -- if pcallcontext.WRAPPER = eps
   -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
+  -- if pcallcontext.HOLES = eps \/ ~$access_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $call_argument_source(S, porigin_site) = PCALLARGUMENTS phpType7* n_field
   -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
@@ -30,6 +32,7 @@ def $call_holes_source_valid(S, pcallcontext, pfunction) = (pcallcontext.HOLES =
   -- if ~$call_unpack_site(S, pcallcontext.CALLSITE)
   -- if pcallcontext.WRAPPER = eps
   -- if ~$stringify_context_kind(S, pcallcontext) /\ ~$error_context_kind(S, pcallcontext)
+  -- if pcallcontext.HOLES = eps \/ ~$access_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (porigin_site)
   -- if $call_argument_source(S, porigin_site) = PCALLNOARGUMENTS
 def $call_holes_source_valid(S, pcallcontext, pfunction) = false -- otherwise
