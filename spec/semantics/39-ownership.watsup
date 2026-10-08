@@ -56,10 +56,11 @@ def $heap_live_edges((HEDGE pnode_from pnode_to) :: hedge_tail*, pnode*) = $heap
   -- if (~$heap_member(pnode_from, pnode*) \/ ~$heap_member(pnode_to, pnode*))
 
 dec $heap_prune(hgraph) : hgraph
-def $heap_prune(H) = H[.EDGES = $heap_live_edges(H.EDGES, H.NODES)]
-  -- if $heap_retained(H, H.NODES) = H.NODES
-def $heap_prune(H) = $heap_prune(H[.NODES = pnode*])
-  -- if pnode* = $heap_retained(H, H.NODES)
+dec $heap_prune_retained(hgraph, pnode*) : hgraph
+def $heap_prune(H) = $heap_prune_retained(H, $heap_retained(H, H.NODES))
+def $heap_prune_retained(H, pnode*) = H[.EDGES = $heap_live_edges(H.EDGES, H.NODES)]
+  -- if pnode* = H.NODES
+def $heap_prune_retained(H, pnode*) = $heap_prune(H[.NODES = pnode*])
   -- if pnode* =/= H.NODES
 
 ;; Collection is a separate pure graph operation, not a PHP GC trigger or a
