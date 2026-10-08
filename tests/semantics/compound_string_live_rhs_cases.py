@@ -267,4 +267,48 @@ echo "R:", $target, ";K:", $alias, ";E;";
         'expected_stdout': 'L;V:ab;A:changed;L;R:changed;K:ab;E;',
         'discriminator': 'An initially plain destination CV detaches a late alias at final store; an initially referenced destination writes its original cell after the caller CV is rebound.',
     },
+    {
+        'id': 'compound-concat-rhs-temp-throw-cleanup',
+        'source': '''<?php
+class ThrowingLeftTmpReview19 {
+    public function __toString(): string {
+        global $leftError;
+        echo "L1;";
+        throw $leftError;
+    }
+    public function __destruct() { echo "D:left1;"; }
+}
+class SkippedRightTmpReview19 {
+    public function __toString(): string { echo "wrongR1;"; return "r"; }
+    public function __destruct() { echo "D:right1;"; }
+}
+class PlainLeftTmpReview19 {
+    public function __toString(): string { echo "L2;"; return "a"; }
+    public function __destruct() { echo "D:left2;"; }
+}
+class ThrowingRightTmpReview19 {
+    public function __toString(): string {
+        global $rightError;
+        echo "R2;";
+        throw $rightError;
+    }
+    public function __destruct() { echo "D:right2;"; }
+}
+function skippedRightTmpReview19() { echo "Q1;"; return new SkippedRightTmpReview19(); }
+function throwingRightTmpReview19() { echo "Q2;"; return new ThrowingRightTmpReview19(); }
+$leftError = new Exception('left');
+$rightError = new Exception('right');
+$target = new ThrowingLeftTmpReview19();
+try { $target .= skippedRightTmpReview19(); }
+catch (Exception $error) { echo "X:", $error->getMessage(), ";"; }
+unset($target, $error);
+$target = new PlainLeftTmpReview19();
+try { $target .= throwingRightTmpReview19(); }
+catch (Exception $error) { echo "X:", $error->getMessage(), ";"; }
+unset($target, $error);
+echo "E;";
+''',
+        'expected_stdout': 'Q1;L1;D:right1;X:left;D:left1;Q2;L2;R2;D:right2;X:right;D:left2;E;',
+        'discriminator': 'Either conversion failure frees the copied RHS TMP before the catch, preserves the unwritten LHS object, and does not run a skipped RHS conversion. Exceptions were created before any operand objects.',
+    },
 ]
