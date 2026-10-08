@@ -38,6 +38,13 @@ def $get_phase(S, 5) = true
   -- if pgenclose.STAGE = CLOSE_FINISHED
   -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.ACCESS =/= eps
+def $get_phase(S, 6) = true
+  -- if S.TODO = (ACCESS_RESULT paccess) :: ptask*
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+  -- if pgenerator.ACCESS =/= eps
 def $get_phase(S, n) = false -- otherwise
 dec $get_seek(pstate, nat, nat) : pstate
 def $get_seek(S, n_phase, n) = S
@@ -114,7 +121,15 @@ $heap_graph(S_bad_live) = $heap_graph(S)
 $access_generator_capture(S_bad_live, pcallcontext) = eps
 $outputs(S.EVENTS) = eps
 n_gen = |S.OBJECTS|
-PhpStep: S ~> S_created
+PhpStep: S ~> S_allocated
+S_allocated.OBJECTS[n_gen] = GENERATOR pgenerator
+pgenerator.PHASE = GENERATOR_FRESH
+pgenerator.ACCESS = (pgeneratoraccess)
+S_allocated.RESULT = KNOWN PNULL
+S_allocated.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_creation) :: (DESTRUCTOR_FRAME_EXIT pdestructionframe_creation) :: (ACCESS_RESULT paccess) :: ptask_caller*
+pdestructionframe_creation.VALUE = KNOWN (POBJECT n_gen)
+'''.strip().splitlines() + guards('S') + guards('S_allocated')
+    checks += seek('S_created', 'S_allocated', 6) + r'''
 S_created.RESULT = KNOWN (POBJECT n_gen)
 S_created.OBJECTS[n_gen] = GENERATOR pgenerator
 pgenerator.PHASE = GENERATOR_FRESH
@@ -139,7 +154,7 @@ S_created.STORE[n_other_cell] = DEFINED (POBJECT n_other)
 n_other =/= n_box
 S_created.OBJECTS[n_other] = S_created.OBJECTS[n_box]
 (HOBJECT n_other) <- S_created.ALLOCATIONS
-'''.strip().splitlines() + guards('S') + guards('S_created') + guards('S_view')
+'''.strip().splitlines() + guards('S_created') + guards('S_view')
     checks += certificate_forgeries('S_created', 'pgenerator', 'pgeneratoraccess', 'pcallcontext', 'fresh', 'n_other')
     checks += seek('S_escape', 'S_created', 0) + r'''
 S_escape.OBJECTS[n_gen] = GENERATOR pgenerator
