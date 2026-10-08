@@ -177,12 +177,12 @@ def $gc_slot_find(pgcslot :: pgcslot_tail*, pnode, n) = $gc_slot_find(pgcslot_ta
 def $gc_retired_find(eps, n_object, n) = eps
 def $gc_retired_find((GC_RETIRED n_object) :: pgcslot*, n_object, n) = (n)
 def $gc_retired_find(pgcslot :: pgcslot_tail*, n_object, n) = $gc_retired_find(pgcslot_tail*, n_object, $(n + 1)) -- if pgcslot =/= GC_RETIRED n_object
-def $gc_buffer_add(pgc, pnode) = pgc -- if $gc_slot_find(pgc.BUFFER, pnode, 0) =/= eps
+def $gc_buffer_add(pgc, pnode) = pgc -- if pnode <- $gc_physical_nodes(pgc.BUFFER)
 def $gc_buffer_add(pgc, pnode) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_ROOT pnode)][.FREE = nat*]
-  -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps
+  -- if ~(pnode <- $gc_physical_nodes(pgc.BUFFER))
   -- if pgc.FREE = n :: nat*
 def $gc_buffer_add(pgc, pnode) = pgc[.BUFFER = pgc.BUFFER ++ [GC_ROOT pnode]]
-  -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps /\ pgc.FREE = eps
+  -- if ~(pnode <- $gc_physical_nodes(pgc.BUFFER)) /\ pgc.FREE = eps
 def $gc_buffer_remove(pgc, pnode) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_EMPTY)][.FREE = n :: pgc.FREE]
   -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = (n)
 def $gc_buffer_remove(pgc, pnode) = pgc -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps

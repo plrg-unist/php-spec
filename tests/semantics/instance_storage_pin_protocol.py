@@ -187,6 +187,11 @@ def typed_assertions(initial, expected):
         '$heap_owners($heap_graph(S_first), HOBJECT n_parent) = 1',
         '$node_children(S_first, HOBJECT n_parent) = [HCELL n_cell, HOBJECT n_second]',
         '$propref_source_valid(S_first, n_cell, pproptypesource)',
+        '$gc_retired_find(S_first.GC.BUFFER, n_parent, 0) = (n_buffer)',
+        '$gc_slot_find(S_first.GC.BUFFER, HOBJECT n_parent, 0) = eps',
+        '$gc_buffer_add(S_first.GC, HOBJECT n_parent) = S_first.GC',
+        'S_gc_duplicate = S_first[.GC.BUFFER = S_first.GC.BUFFER ++ [GC_ROOT (HOBJECT n_parent)]]',
+        '~$gc_buffer_valid(S_gc_duplicate, S_gc_duplicate.GC)',
         'S_replay = S_first[.OBJECTPROPS = $objectprops_set(S_first.OBJECTPROPS, n_parent, pinstancestorage.SLOTS)]',
         '~$instance_storage_basic(S_replay, pinstancestorage[.NEXT = 1])']
     for call in [
