@@ -168,9 +168,10 @@ def $entries_nodes((ENTRY pkey pitem) :: pentry_tail*) = $item_nodes(pitem) ++ $
 
 dec $node_children(pstate, pnode) : pnode*
 def $node_children(S, HCELL n) = eps
-  -- if S.STORE[n] = UNDEFINED
+  -- if S.STORE[n] = UNDEFINED \/ $foreach_released_cell(S, n)
 def $node_children(S, HCELL n) = $value_nodes(pvalue)
   -- if S.STORE[n] = DEFINED pvalue
+  -- if ~$foreach_released_cell(S, n)
 def $node_children(S, HARRAY n) = $entries_nodes(S.ARRAYS[n].ITEMS)
 
 dec $node_edges(pnode, pnode*) : hedge*

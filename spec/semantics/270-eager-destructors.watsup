@@ -43,6 +43,8 @@ dec $destructor_operation_valid(pstate, pdestructionoperation) : bool
 dec $destructor_operation_live(pstate, pdestructionoperation) : bool
 dec $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation) : ptask*
 dec $destructor_operation_finish(pstate, pdestructionoperation) : pstate
+dec $destructor_operation_postfinish(pstate, pdestructionoperation) : pstate
+def $destructor_operation_postfinish(S, pdestructionoperation) = S -- otherwise
 dec $destructor_pending_finish(pstate, pdestructionoperation, nat, ptask*) : pstate
 
 dec $eager_operation_internal(pstate) : bool
@@ -320,12 +322,12 @@ rule PhpStep/destructor-operation-finish: S ~> $destructor_operation_finish(S, p
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
   -- if $destructor_operation_valid(S, pdestructionoperation)
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
-def $destructor_operation_finish(S, pdestructionoperation) = S_done
+def $destructor_operation_finish(S, pdestructionoperation) = $destructor_operation_postfinish(S_done, pdestructionoperation)
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.PENDING = eps
   -- if S_done = $eager_cleanup_finish(S, pdestructionoperation)[.TODO = ptask_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = pdestructionoperation.COMPLETION]
-def $destructor_operation_finish(S, pdestructionoperation) = $destructor_pending_finish($eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*], pdestructionoperation, n, ptask_tail*)
+def $destructor_operation_finish(S, pdestructionoperation) = $destructor_operation_postfinish($destructor_pending_finish($eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*], pdestructionoperation, n, ptask_tail*), pdestructionoperation)
   -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
   -- if pdestructionoperation.PENDING = (n)

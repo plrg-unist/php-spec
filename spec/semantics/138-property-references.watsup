@@ -149,7 +149,10 @@ def $reference_coercion_value(S, n_cell, PSTRING n_text*) = true
   -- if $reference_coercion_row_valid(S, prefcoercion)
 def $reference_coercion_value(S, n_cell, pvalue) = false -- otherwise
 def $reference_coercion_clear(S, n_cell) = S[.REFCOERCIONS = $reference_coercion_remove(S.REFCOERCIONS, n_cell)]
+def $reference_coercion_store(S, n_cell, pslot) = S[.COMPLETION = UNSUPPORTED "mutation of released foreach CV"]
+  -- if $foreach_released_cell(S, n_cell)
 def $reference_coercion_store(S, n_cell, pslot) = $parameter_backing_clear($container_init_clear($reference_coercion_clear(S, n_cell), n_cell), n_cell)[.STORE = $set_cell(S.STORE, n_cell, pslot)]
+  -- if ~$foreach_released_cell(S, n_cell)
 def $reference_coercions_prune(eps, pnode*) = eps
 def $reference_coercions_prune(prefcoercion :: prefcoercion_tail*, pnode*) = prefcoercion :: $reference_coercions_prune(prefcoercion_tail*, pnode*)
   -- if (HCELL prefcoercion.CELL) <- pnode*
