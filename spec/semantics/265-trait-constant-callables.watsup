@@ -25,7 +25,7 @@ def $class_constant_callable_receipt_owner(S, pconstantclosure) = (pclassconstan
   -- if $(pconstantclosure.OBJECT < |S.OBJECTS|) /\ $(pconstantclosure.PREFIX <= |S.DECLARATIONS|)
   -- if $class_constant_origin(S.CLASSES, pconstantclosure.DECL) = (pclassconstantdesc)
   -- if ~pclassconstantdesc.FOLDED
-  -- if $constant_callable_published(S.DECLARATIONS[0:pconstantclosure.PREFIX], pclassconstantdesc.OWNER)
+  -- if $constant_callable_owner_valid(S, pconstantclosure, pclassconstantdesc.OWNER)
   -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
   -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
   -- if $constant_callable_form(pcnode)

@@ -1,0 +1,200 @@
+;; A composing class may bind a referenced REAL Closure before publication.
+;; The marker borrows the collision cause; cache values alone own the objects.
+dec $trait_real_form(pcnode) : bool
+dec $trait_real_nodes(pstate, porigin, nat, pcoccurrence*) : bool
+dec $trait_real_source(pstate, pclassconstantdesc) : bool
+dec $trait_real_cause(pstate, ptraitcachecause) : pclassconstantdesc?
+dec $trait_real_marker(ptask) : bool
+dec $trait_real_pending(pstate, ptraitcachecause) : bool
+dec $trait_real_context(pstate, ptraitcachecause, pclassconstantcontext) : bool
+dec $trait_real_active(pstate, ptraitcachecause) : bool
+dec $trait_real_complete(pstate, ptraitcachecause) : bool
+dec $trait_real_published(pstate, ptraitcachecause) : bool
+dec $trait_real_authority(pstate, ptraitcachecause) : bool
+dec $trait_real_birth_event(pclassconstantevent) : (nat, porigin, ptraitcachecause)?
+dec $trait_real_birth_at(pclassconstantevent*, nat) : (porigin, ptraitcachecause)?
+dec $trait_real_birth_owner(pstate, pconstantclosure) : porigin?
+
+def $trait_real_form(NExprClosure (SEQUENCE eps) (BOOLEAN true) phpType4_ref phpType16 (SEQUENCE eps) phpType18 phpType23 metadata) = true
+def $trait_real_form(pcnode) = false -- otherwise
+def $trait_real_nodes(S, porigin_root, n, eps) = true
+def $trait_real_nodes(S, porigin_root, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $trait_real_nodes(S, porigin_root, n, pcoccurrence*)
+  -- if ~$constant_callable_path(S, PORIGIN n pcpath, porigin_root) \/ ~$constant_callable_form(pcnode) \/ $trait_real_form(pcnode)
+def $trait_real_nodes(S, porigin_root, n, pcoccurrence*) = false -- otherwise
+def $trait_real_source(S, pclassconstantdesc) = true
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n pcpath
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $trait_cache_object_source(S, pclassconstantdesc)
+  -- if $trait_real_nodes(S, pclassconstantdesc.INITIALIZER, n, pcunit.OCCURRENCES)
+def $trait_real_source(S, pclassconstantdesc) = false -- otherwise
+
+;; Reconstruct the full selected declaration at the original collision point.
+;; The using owner was absent from that prefix even after it becomes public.
+def $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS|)
+  -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if ~$constant_callable_published(S.DECLARATIONS[0:ptraitcachecause.PREFIX], ptraitcachecause.CLASS)
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = ptraitcachecause.CLASS /\ ~pclassconstantdesc.FOLDED
+  -- if $class_constant_origin(S.CLASSES, pclassconstantdesc.ORIGIN) = (pclassconstantdesc)
+  -- if $trait_real_source(S, pclassconstantdesc)
+def $trait_real_cause(S, ptraitcachecause) = eps -- otherwise
+def $trait_real_dependency(S, pclassconstantdesc, ptraitcachecause) = true
+  -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:ptraitcachecause.PREFIX], pclassconstantdesc.OWNER)
+def $trait_real_dependency(S, pclassconstantdesc, ptraitcachecause) = true
+  -- if $(ptraitcachecause.PREFIX = |S.DECLARATIONS|)
+  -- if ~$constant_callable_published(S.DECLARATIONS, pclassconstantdesc.OWNER)
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+def $trait_real_dependency(S, pclassconstantdesc, ptraitcachecause) = false -- otherwise
+def $trait_real_begin(S, pclassconstantdesc, ptraitcachecause) = S
+  -- if $constant_callable_published(S.DECLARATIONS, pclassconstantdesc.OWNER)
+def $trait_real_begin(S, pclassconstantdesc, ptraitcachecause) = S[.TODO = [TRAIT_OBJECT_COMPARISON ptraitcachecause]]
+  -- if ~$constant_callable_published(S.DECLARATIONS, pclassconstantdesc.OWNER)
+  -- if $trait_real_dependency(S, pclassconstantdesc, ptraitcachecause)
+
+def $trait_real_marker(TRAIT_OBJECT_COMPARISON ptraitcachecause) = true
+def $trait_real_marker(ptask) = false -- otherwise
+def $trait_real_markers(eps) = eps
+def $trait_real_markers((TRAIT_OBJECT_COMPARISON ptraitcachecause) :: ptask*) = ptraitcachecause :: $trait_real_markers(ptask*)
+def $trait_real_markers(ptask :: ptask_tail*) = $trait_real_markers(ptask_tail*)
+  -- if ~$trait_real_marker(ptask)
+def $trait_real_pending(S, ptraitcachecause) = true
+  -- if $trait_real_markers(S.TODO) = [ptraitcachecause]
+  -- if ptraitcachecause.PREFIX = |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX = |S.USERCONSTANTS|
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = eps
+def $trait_real_pending(S, ptraitcachecause) = false -- otherwise
+def $trait_real_context(S, ptraitcachecause, pclassconstantcontext) = true
+  -- if $trait_real_pending(S, ptraitcachecause)
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN /\ pclassconstantcontext.PREVIOUS = eps
+  -- if n_lookups = |ptraitcachecause.LOOKUPS|
+  -- if $(n_lookups > 0)
+  -- if porigin_site = ptraitcachecause.LOOKUPS[$nabs($(n_lookups - 1))]
+  -- if pclassconstantcontext.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $pfclass_constant_member(phpType20, eps) = (pclassconstantdesc.NAME)
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_FETCH (KNOWN (PSTRING pclassconstantdesc.OWNERNAME)) pclassconstantdesc.NAME
+  -- if pclassconstantcontext.LINE = $expression_line(NExprClassConstFetch phpType19 phpType20 metadata)
+def $trait_real_context(S, ptraitcachecause, pclassconstantcontext) = false -- otherwise
+def $trait_real_active(S, ptraitcachecause) = true
+  -- if S.CLASSCONSTANTINIT = [pclassconstantcontext]
+  -- if $trait_real_context(S, ptraitcachecause, pclassconstantcontext)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pclassconstantcontext.DECL /\ pconstantcontext.LINE = pclassconstantcontext.LINE
+  -- if $class_constant_bindings(S.TODO) = [pclassconstantcontext.DECL]
+def $trait_real_active(S, ptraitcachecause) = false -- otherwise
+def $trait_real_complete(S, ptraitcachecause) = true
+  -- if S.TODO = [TRAIT_OBJECT_COMPARISON ptraitcachecause]
+  -- if S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps
+  -- if $trait_real_pending(S, ptraitcachecause)
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $trait_cache_event_at(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (ptraitcachecause)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if S.RESULT = KNOWN pdefaultcache.VALUE
+def $trait_real_complete(S, ptraitcachecause) = false -- otherwise
+def $trait_real_published(S, ptraitcachecause) = true
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)
+  -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (ptraitcachecause.CLASS)
+def $trait_real_published(S, ptraitcachecause) = false -- otherwise
+def $trait_real_authority(S, ptraitcachecause) = ($trait_real_active(S, ptraitcachecause) \/ $trait_real_complete(S, ptraitcachecause) \/ $trait_real_published(S, ptraitcachecause))
+def $trait_real_failure_memory(F, S) = F.MEMORY
+  -- if $trait_real_markers(S.TODO) =/= eps
+def $trait_real_failure_memory(F, S) = $trait_cache_object_restore(F, S)
+  -- if $trait_real_markers(S.TODO) = eps
+def $trait_real_tasks_done(S, ptraitcachecause) = true -- if S.TODO = eps
+def $trait_real_tasks_done(S, ptraitcachecause) = $trait_real_complete(S, ptraitcachecause)
+  -- if S.TODO =/= eps
+
+def $class_constant_stack_owner(S, pclassconstantdesc) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = (pclassconstantdesc.OWNER)
+def $class_constant_stack_owner(S, pclassconstantdesc) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = eps
+  -- if $trait_real_markers(S.TODO) = [ptraitcachecause]
+  -- if $trait_real_active(S, ptraitcachecause)
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+def $class_constant_stack_owner(S, pclassconstantdesc) = false -- otherwise
+def $class_constant_selection_valid(S, pclassconstantcontext) = true
+  -- if $trait_real_markers(S.TODO) = [ptraitcachecause]
+  -- if $trait_real_context(S, ptraitcachecause, pclassconstantcontext)
+  -- if S.ORIGIN = pclassconstantcontext.ORIGIN
+;; Task traversal restores a binder context before visiting its borrowed tail.
+;; Actual birth authority separately requires the live binder or filled cache.
+def $call_task_valid(S, TRAIT_OBJECT_COMPARISON ptraitcachecause) = ($trait_real_pending(S, ptraitcachecause) /\ (S.CLASSCONSTANTINIT = eps \/ $trait_real_active(S, ptraitcachecause)))
+
+;; A receipt keeps its genuine creation prefix and full importing declaration.
+;; This source header never calls birth/scope/record validation recursively.
+def $trait_real_birth_event(CCTRAITBIRTH n porigin ptraitcachecause) = ((n, porigin, ptraitcachecause))
+def $trait_real_birth_event(pclassconstantevent) = eps -- otherwise
+def $trait_real_birth_at(eps, n) = eps
+def $trait_real_birth_at(pclassconstantevent :: pclassconstantevent_tail*, n) = ((porigin, ptraitcachecause))
+  -- if $trait_real_birth_event(pclassconstantevent) = ((n, porigin, ptraitcachecause))
+def $trait_real_birth_at(pclassconstantevent :: pclassconstantevent_tail*, n) = $trait_real_birth_at(pclassconstantevent_tail*, n)
+  -- if $trait_real_birth_event(pclassconstantevent) = eps
+def $trait_real_birth_at(pclassconstantevent :: pclassconstantevent_tail*, n) = $trait_real_birth_at(pclassconstantevent_tail*, n)
+  -- if $trait_real_birth_event(pclassconstantevent) = ((n_other, porigin, ptraitcachecause))
+  -- if n_other =/= n
+def $trait_real_stamp(S, n, porigin_site, porigin_decl, n_prefix) = S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCTRAITBIRTH n porigin_site ptraitcachecause]]
+  -- if $trait_real_markers(S.TODO) = [ptraitcachecause]
+  -- if ptraitcachecause.PREFIX = n_prefix
+  -- if $trait_real_active(S, ptraitcachecause)
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl
+  -- if $constant_callable_context(S, porigin_site) = ((porigin_decl, pclassconstantdesc.OWNER))
+  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
+  -- if $trait_real_form(pcnode)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n) = eps
+def $trait_real_stamp(S, n, porigin_site, porigin_decl, n_prefix) = S -- otherwise
+def $trait_real_birth_owner(S, pconstantclosure) = (pclassconstantdesc.OWNER)
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
+  -- if pconstantclosure.PREFIX = ptraitcachecause.PREFIX
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pconstantclosure.DECL = pclassconstantdesc.ORIGIN
+  -- if $trait_real_authority(S, ptraitcachecause)
+  -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
+  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
+  -- if $trait_real_form(pcnode)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (REALCLOSURE pconstantclosure.SITE eps pstaticcell*)
+  -- if $function_at(S.CLOSURETEMPLATES, pconstantclosure.SITE) = (pfunction)
+  -- if $closure_lexicals(pfunction.CODE.EXPRESSIONS) = eps
+def $trait_real_birth_owner(S, pconstantclosure) = eps -- otherwise
+def $constant_callable_owner_valid(S, pconstantclosure, porigin_owner) = true
+  -- if $(pconstantclosure.PREFIX <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:pconstantclosure.PREFIX], porigin_owner)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = eps
+def $constant_callable_owner_valid(S, pconstantclosure, porigin_owner) = true
+  -- if $(pconstantclosure.PREFIX <= |S.DECLARATIONS|)
+  -- if ~$constant_callable_published(S.DECLARATIONS[0:pconstantclosure.PREFIX], porigin_owner)
+  -- if $trait_real_birth_owner(S, pconstantclosure) = (porigin_owner)
+def $constant_callable_owner_valid(S, pconstantclosure, porigin_owner) = false -- otherwise
+def $trait_real_cache_owner(S, pclassconstantdesc, n_prefix) = true
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], pclassconstantdesc.OWNER)
+def $trait_real_cache_owner(S, pclassconstantdesc, n_prefix) = true
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if ~$constant_callable_published(S.DECLARATIONS[0:n_prefix], pclassconstantdesc.OWNER)
+  -- if $trait_cache_event_at(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (ptraitcachecause)
+  -- if ptraitcachecause.PREFIX = n_prefix
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $trait_real_authority(S, ptraitcachecause)
+def $trait_real_cache_owner(S, pclassconstantdesc, n_prefix) = false -- otherwise
+def $closure_scope_row_valid(S, pclosurescope) = true
+  -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if HOBJECT pclosurescope.OBJECT <- S.ALLOCATIONS
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, pclosurescope.OBJECT) = (pconstantclosure)
+  -- if $trait_real_birth_owner(S, pconstantclosure) = (pclosurescope.CALLED)
+  -- if pclosurescope.LEXICAL = pclosurescope.CALLED
+  -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
+def $class_constant_history_fills(S, (CCTRAITBIRTH n porigin_site ptraitcachecause) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, ptraitcachecause.PREFIX)
+  -- if $(n_previous <= ptraitcachecause.PREFIX /\ ptraitcachecause.PREFIX <= |S.DECLARATIONS|)
+  -- if $trait_real_birth_at(pclassconstantevent*, n) = eps
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site /\ pconstantclosure.PREFIX = ptraitcachecause.PREFIX
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n) = ((porigin_site, ptraitcachecause))
+  -- if $trait_real_birth_owner(S, pconstantclosure) = (ptraitcachecause.CLASS)

@@ -1,0 +1,174 @@
+;; A fatal trait bailout leaves Zend's unlinked class-table bucket occupied.
+;; This source history reserves only the name; ordinary lookup still misses.
+dec $failed_class_item(pdeclaration) : porigin?
+dec $failed_class_count(pdeclaration*, porigin) : nat
+dec $failed_class_index(pdeclaration*, porigin, nat) : nat?
+dec $failed_class_header(pstate, pdeclaration, preqbytes) : pclassdesc?
+dec $failed_class_from(pstate, pdeclaration*, preqbytes) : pclassdesc?
+dec $failed_class_reserved(pstate, preqbytes) : pclassdesc?
+dec $failed_class_cacheless(pstate, pstate, pclassdesc) : bool
+dec $failed_class_report_origin(pstate) : porigin?
+dec $failed_class_message(pstate, pclassdesc) : preqbytes
+dec $failed_class_file_stop(pstate, pfilecontext, ppstate) : bool
+
+def $failed_class_item(PDRTRAITCACHEFAIL porigin pdeclcause) = (porigin)
+def $failed_class_item(PDRTRAITFAIL porigin pdeclcause) = (porigin)
+def $failed_class_item(PDRCLASSFATAL porigin pdeclcause) = (porigin)
+def $failed_class_item(pdeclaration) = eps -- otherwise
+def $failed_class_count(eps, porigin) = 0
+def $failed_class_count(pdeclaration :: pdeclaration_tail*, porigin) = $($failed_class_count(pdeclaration_tail*, porigin) + 1)
+  -- if $failed_class_item(pdeclaration) = (porigin)
+def $failed_class_count(pdeclaration :: pdeclaration_tail*, porigin) = $failed_class_count(pdeclaration_tail*, porigin)
+  -- if $failed_class_item(pdeclaration) =/= (porigin)
+def $failed_class_index(eps, porigin, n) = eps
+def $failed_class_index(pdeclaration :: pdeclaration_tail*, porigin, n) = (n)
+  -- if $failed_class_item(pdeclaration) = (porigin)
+def $failed_class_index(pdeclaration :: pdeclaration_tail*, porigin, n) = $failed_class_index(pdeclaration_tail*, porigin, $(n + 1))
+  -- if $failed_class_item(pdeclaration) =/= (porigin)
+
+;; The complete declaration replay validates the row's source cause and fatal.
+;; This local header never derives permission from a future compiled descriptor.
+def $failed_class_header(S, pdeclaration, ptbytes) = (pclassdesc)
+  -- if pdeclaration <- S.DECLARATIONS
+  -- if $failed_class_item(pdeclaration) = (porigin)
+  -- if $failed_class_count(S.DECLARATIONS, porigin) = 1
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $ptlc(pclassdesc.NAME) = $ptlc(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, porigin, 0) = eps
+  -- if $trait_plan(S, pclassdesc).TRAITS =/= eps
+  -- if $failed_class_index(S.DECLARATIONS, porigin, 0) = (n_prefix)
+  -- if $failed_class_reserved(S[.DECLARATIONS = S.DECLARATIONS[0:n_prefix]], ptbytes) = eps
+def $failed_class_header(S, pdeclaration, ptbytes) = eps -- otherwise
+def $failed_class_from(S, eps, ptbytes) = eps
+def $failed_class_from(S, pdeclaration :: pdeclaration_tail*, ptbytes) = (pclassdesc)
+  -- if $failed_class_header(S, pdeclaration, ptbytes) = (pclassdesc)
+def $failed_class_from(S, pdeclaration :: pdeclaration_tail*, ptbytes) = $failed_class_from(S, pdeclaration_tail*, ptbytes)
+  -- if $failed_class_header(S, pdeclaration, ptbytes) = eps
+def $failed_class_reserved(S, ptbytes) = $failed_class_from(S, S.DECLARATIONS, ptbytes)
+def $failed_class_pending(S, pclassdesc) = (S.COMPLETION = NORMAL /\ $failed_class_reserved(S, pclassdesc.NAME) =/= eps)
+
+;; All class-table declaration kinds encounter the occupied bucket before
+;; parent lookup or trait composition. The diagnostic keeps the old spelling.
+def $failed_class_message(S, pclassdesc) = $ptascii("Cannot redeclare ") ++ $ptascii(pclassdesc.KIND) ++ [32] ++ pclassdesc.NAME ++ $ptascii(" (previously declared in ") ++ $call_sourcefile(S.FILES, pclassdesc.ORIGIN) ++ [58] ++ $ntunsigned(pclassdesc.LINE) ++ [41]
+def $activate_class_body(S, pclassdesc) = $pil_method_fatal(S, pclassdesc.ORIGIN, $failed_class_message(S, pclassdesc_old), pclassdesc.LINE)
+  -- if S.COMPLETION = NORMAL
+  -- if $failed_class_reserved(S, pclassdesc.NAME) = (pclassdesc_old)
+
+;; Cache-bearing failures already own an authenticated274/297 row. Cacheless
+;; fatal composition needs a separate producer; a returning Error earns none.
+def $failed_class_cacheless(S, S_result, pclassdesc) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $eval_compile_fatal_current(S) = eps
+  -- if $declaration_open(S.DECLARATIONS) = eps
+  -- if ~$declaration_early(S.DECLARATIONS, pclassdesc.ORIGIN, PPCLASS)
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $trait_plan(S, pclassdesc).TRAITS =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if $failed_class_reserved(S, pclassdesc.NAME) = eps
+  -- if $runtime_class_replay_fatal(S, S_result, pclassdesc)
+  -- if $runtime_class_rollback(S, S_result)
+  -- if S_result.CLASSSTATICS = S.CLASSSTATICS
+  -- if S_result.DECLARATIONS = S.DECLARATIONS
+  -- if S_result.CLASSCONSTANTCACHE = S.CLASSCONSTANTCACHE
+  -- if S_result.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY
+def $failed_class_cacheless(S, S_result, pclassdesc) = false -- otherwise
+def $runtime_class_link_result(S, S_result, pclassdesc) = S_result[.DECLARATIONS = S.DECLARATIONS ++ [PDRTRAITFAIL pclassdesc.ORIGIN $declaration_cause(S)]]
+  -- if S.ORIGIN = (pclassdesc.ORIGIN)
+  -- if $failed_class_cacheless(S, S_result, pclassdesc)
+
+def $declaration_history_fold(S, S_prefix, (n, P)*, (PDRTRAITFAIL porigin pdeclcause) :: pdeclaration*, n_next) = $declaration_history_fold(S, $eval_compile_history_carry(S_prefix, S_failed[.COMPLETION = NORMAL][.TODO = eps][.DECLARATIONS = S_prefix.DECLARATIONS ++ [PDRTRAITFAIL porigin pdeclcause]]), (n, P)*, pdeclaration*, n_next)
+  -- if $declaration_cause_valid(S_prefix, porigin, pdeclcause)
+  -- if $class_at(S_prefix.CLASSES, porigin) = (pclassdesc)
+  -- if S_failed = $activate_class_body(S_prefix[.COMPLETION = NORMAL], pclassdesc)
+  -- if $failed_class_cacheless(S_prefix[.COMPLETION = NORMAL], S_failed, pclassdesc)
+
+;; At the genuine fatal producer boundary the failure row is mandatory.
+def $failed_class_report_origin(S) = (porigin)
+  -- if $runtime_class_report_origin(S) = eps
+  -- if $declaration_open(S.DECLARATIONS) = eps
+  -- if S.ORIGIN = (porigin)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if ~$class_internal(pclassdesc.NAME)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $trait_plan(S, pclassdesc).TRAITS =/= eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if $failed_class_reserved(S, pclassdesc.NAME) = eps \/ $failed_class_reserved(S, pclassdesc.NAME) = (pclassdesc)
+  -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
+  -- if $runtime_class_replay_fatal(S, S, pclassdesc)
+def $failed_class_report_origin(S) = eps -- otherwise
+def $runtime_class_report_valid(S) = ($failed_class_count(S.DECLARATIONS, porigin) = 1)
+  -- if $failed_class_report_origin(S) = (porigin)
+
+;; Early file binding reports while compile_file's authentic parse context is
+;; still live. Borrow its running phase solely to construct the include frame.
+def $failed_class_file_stop(S, pfilecontext, P) = true
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.PHASE = FILE_PARSE_WAIT /\ pfilecontext.OWNER = |S.FRAMES|
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if S.ORIGIN = (pfilecontext.SITE)
+  -- if S.FILESEQ = $(pfilecontext.NONCE + 1)
+  -- if $file_site_valid(S, pfilecontext.SITE, $file_site_line(S, pfilecontext.SITE), pfilecontext.KIND)
+  -- if pfilecontext.CALLER = $call_sourcefile(S.FILES, pfilecontext.SITE)
+  -- if pfilecontext.LEXICAL_CLASS = $eval_class_origin(S)
+  -- if S.FILECWD = (pfilecontext.CWD) /\ $file_include_path(S.FILEINCLUDEPATH) = (pfilecontext.INCLUDEPATH)
+  -- if $file_binding_at(S.FILEBINDINGS, n_unit) = (pfilebinding)
+  -- if pfilebinding.SITE = pfilecontext.SITE /\ pfilebinding.KIND = pfilecontext.KIND /\ pfilebinding.CLASS = pfilecontext.LEXICAL_CLASS
+  -- if pfilebinding.REQUESTED = pfilecontext.REQUESTED /\ (pfilebinding.RESOLVED) = pfilecontext.RESOLVED /\ (pfilebinding.OPENED) = pfilecontext.OPENED /\ (pfilebinding.BYTES) = pfilecontext.BYTES
+  -- if $call_sourcefile(S.FILES, PORIGIN n_unit eps) = pfilebinding.OPENED
+  -- if P.FOLD.SOURCE.ID = n_unit
+  -- if $source_unit(S.SOURCES, n_unit) = (P.FOLD.SOURCE)
+  -- if n = |S.DECLARATIONS|
+  -- if $(n > 0)
+  -- if S.DECLARATIONS[$nabs($(n - 1))] = PDEXIT n_unit (PCSLINK n_checkpoint)
+  -- if $(n_checkpoint < |P.PUBLICATIONS|)
+  -- if P.PUBLICATIONS[n_checkpoint] = PPCP porigin_new n_diagnostics PPCLASS
+  -- if porigin_new = PORIGIN n_unit pcpath_new
+  -- if $class_at(P.INSTALLED.CLASSES, porigin_new) = (pclassdesc_new)
+  -- if $class_at(S.CLASSES, porigin_new) = (pclassdesc_new)
+  -- if $failed_class_reserved(S, pclassdesc_new.NAME) = (pclassdesc_old)
+  -- if S.COMPLETION = STATICBYTES ($failed_class_message(S, pclassdesc_old)) pclassdesc_new.LINE
+  -- if S.ERRORORIGIN = (PORIGIN n_unit eps)
+def $failed_class_file_stop(S, pfilecontext, P) = false -- otherwise
+def $file_compile_stop_trace(S, pfilecontext, P) = $eval_exception_trace(S[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN] :: pfilecontext_tail*])
+  -- if $failed_class_file_stop(S, pfilecontext, P)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+
+;; Internal shutdown entry has no user callsite. Its consumed, registered
+;; target and source registration authenticate the final historical return edge.
+dec $declaration_shutdown_callback(pstate, porigin, pshutdownentry*) : pshutdownentry?
+dec $declaration_shutdown_from(pstate, porigin, pshutdownentry*, nat) : pshutdownentry?
+def $declaration_shutdown_callback(S, porigin_function, pshutdownentry*) = $declaration_shutdown_from(S, porigin_function, pshutdownentry*, 0)
+  -- if pshutdownentry* = S.SHUTDOWN.ENTRIES
+  -- if S.SHUTDOWN.PHASE = SHUTDOWN_RUNNING \/ S.SHUTDOWN.PHASE = SHUTDOWN_DONE
+def $declaration_shutdown_callback(S, porigin_function, pshutdownentry*) = eps -- otherwise
+def $declaration_shutdown_from(S, porigin_function, eps, n_index) = eps
+dec $declaration_shutdown_match(pstate, porigin, pshutdownentry, nat) : bool
+def $declaration_shutdown_match(S, porigin_function, pshutdownentry, n_index) = true
+  -- if $(n_index <= S.SHUTDOWN.INDEX /\ n_index < |S.SHUTDOWN.ENTRIES|)
+  -- if S.SHUTDOWN.ENTRIES[n_index] = pshutdownentry
+  -- if $shutdown_entry_valid(S, pshutdownentry)
+  -- if $target_lexical_class(S, pshutdownentry.TARGET) = eps
+  -- if $target_called_class(S, pshutdownentry.TARGET) = eps
+  -- if $target_function(S, pshutdownentry.TARGET) = (pfunction)
+  -- if pfunction.ORIGIN = porigin_function
+def $declaration_shutdown_match(S, porigin_function, pshutdownentry, n_index) = false -- otherwise
+def $declaration_shutdown_from(S, porigin_function, pshutdownentry :: pshutdownentry_tail*, n_index) = (pshutdownentry)
+  -- if $declaration_shutdown_match(S, porigin_function, pshutdownentry, n_index)
+def $declaration_shutdown_from(S, porigin_function, pshutdownentry :: pshutdownentry_tail*, n_index) = $declaration_shutdown_from(S, porigin_function, pshutdownentry_tail*, $(n_index + 1))
+  -- if ~$declaration_shutdown_match(S, porigin_function, pshutdownentry, n_index)
+
+def $declaration_cause_walk(S, PORIGIN n_site pcpath, (porigin_function, eps, eps, eps) :: eps, n_unit, b_unit, n, eps, n_call) = $declaration_cause_walk(S, pshutdownentry.CALL.SITE, eps, n_unit, b_unit, $nabs($(n - 1)), eps, $(n_call + 1))
+  -- if $(n > 0)
+  -- if $declaration_cause_owner(S, PORIGIN n_site pcpath) = (pfunction)
+  -- if $function_at($all_functions(S), porigin_function) = (pfunction_selected)
+  -- if $trait_source_same(pfunction, pfunction_selected)
+  -- if $declaration_callable_available(S, pfunction_selected, n)
+  -- if $declaration_shutdown_callback(S, porigin_function, S.SHUTDOWN.ENTRIES) = (pshutdownentry)

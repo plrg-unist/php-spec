@@ -34,6 +34,12 @@ dec $trait_cache_notice_item(pstate, pclassconstantevent, porigin, nat) : pdefau
 dec $trait_cache_object_source(pstate, pclassconstantdesc) : bool
 dec $trait_cache_object_nodes(pstate, porigin, nat, pcoccurrence*) : bool
 dec $trait_cache_object_read(pfstate, pcpath, pclassconstantdesc, int) : pfstate
+dec $trait_real_dependency(pstate, pclassconstantdesc, ptraitcachecause) : bool
+dec $trait_real_begin(pstate, pclassconstantdesc, ptraitcachecause) : pstate
+dec $trait_real_tasks_done(pstate, ptraitcachecause) : bool
+dec $trait_real_markers(ptask*) : ptraitcachecause*
+dec $trait_real_cache_owner(pstate, pclassconstantdesc, nat) : bool
+dec $trait_real_failure_memory(pfstate, pstate) : pstate
 dec $trait_cache_object_steps(pfstate, pcpath, pclassconstantdesc, int, pstate, ptraitcachecause) : pfstate
 dec $trait_cache_object_step(pstate, ptraitcachecause) : pstate
 dec $trait_cache_object_bind(pstate, ptraitcachecause) : pstate
@@ -41,6 +47,7 @@ dec $trait_cache_object_binding(ptask*) : bool
 dec $trait_cache_object_type_error(pstate) : bool
 dec $trait_cache_object_resume(pfstate, pcpath, pclassconstantdesc, int, pstate, pstate, ptraitcachecause) : pfstate
 dec $trait_cache_object_scalar_error(pcompletion) : bool
+dec $trait_cache_object_error_allowed(pstate, ptraitcachecause) : bool
 dec $trait_cache_object_failure_context(pstate, pstate) : pstate
 dec $trait_collision_trace(pfstate, porigin, int) : ptraceframe*
 dec $trait_cache_object_demand(pfstate, pcpath, pstate, pstate, ptraitcachecause) : (porigin, int, ptraceframe*)?
@@ -289,9 +296,9 @@ def $trait_cache_object_read(F, pcpath, pclassconstantdesc, z) = $trait_cache_ob
   -- if n_user = |F.MEMORY.USERCONSTANTS|
   -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS porigin_lookups*, PREFIX n_prefix, USERPREFIX n_user}
   -- if $trait_cache_cause_selected(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
-  -- if $constant_callable_published(F.MEMORY.DECLARATIONS, pclassconstantdesc.OWNER)
+  -- if $trait_real_dependency(F.MEMORY, pclassconstantdesc, ptraitcachecause)
   -- if F.MEMORY.CLASSCONSTANTINIT = eps
-  -- if S_base = F.MEMORY[.TODO = eps][.CONSTCONTEXT = eps][.ORIGIN = (porigin_site)]
+  -- if S_base = $trait_real_begin(F.MEMORY[.TODO = eps][.CONSTCONTEXT = eps][.ORIGIN = (porigin_site)], pclassconstantdesc, ptraitcachecause)
   -- if S_start = $class_constant_begin(S_base, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING pclassdesc_requested.NAME)) ptbytes_member, $class_constant_message_class(S_base, pclassdesc_requested, pclassdesc_requested.NAME), z)
 def $trait_cache_object_read(F, pcpath, pclassconstantdesc, z) = F[.VALUE = eps][.MEMORY = F.MEMORY[.COMPLETION = UNSUPPORTED "unpublished trait object dependency initializer"]] -- otherwise
 
@@ -320,7 +327,7 @@ def $trait_cache_object_bind(S, ptraitcachecause) = $class_constant_result($clas
   -- if $trait_cache_object_lookups(S.CLASSCONSTANTINIT, ptraitcachecause.LOOKUPS) = (porigin_lookups*)
   -- if ptraitcachecause_selected = ptraitcachecause[.LOOKUPS = porigin_lookups*]
   -- if $trait_cache_cause_selected(S_value, ptraitcachecause_selected) = (pclassconstantdesc)
-  -- if $constant_callable_published(S_value.DECLARATIONS[0:ptraitcachecause.PREFIX], pclassconstantdesc.OWNER)
+  -- if $trait_real_dependency(S_value, pclassconstantdesc, ptraitcachecause_selected)
   -- if S_cached = S_value[.CLASSCONSTANTCACHE = S_value.CLASSCONSTANTCACHE ++ [{ORIGIN porigin, VALUE pvalue, CLASS pvalueclass}]][.CLASSCONSTANTHISTORY = S_value.CLASSCONSTANTHISTORY ++ [CCTRAITCACHE porigin ptraitcachecause_selected]]
   -- if $trait_cache_bound_value(S_cached, pclassconstantdesc, pvalueclass, ptraitcachecause.PREFIX)
 def $trait_cache_object_bind(S, ptraitcachecause) = S[.COMPLETION = UNSUPPORTED "uncertified public trait object dependency binding"] -- otherwise
@@ -343,6 +350,9 @@ def $trait_cache_object_step(S, ptraitcachecause) = S_next
 
 def $trait_cache_object_event(porigin_owner, porigin, DIAGNOSTIC_SOURCE n text ptbytes z) = $trait_record_event(porigin_owner, porigin, DIAGNOSTIC text ptbytes z)
   -- if $origin_source(porigin_owner) = PORIGIN n pcpath
+def $trait_cache_object_event(porigin_owner, PORIGIN n pcpath, DIAGNOSTIC_SOURCE n text ptbytes z) = $trait_record_event(porigin_owner, PORIGIN n pcpath, DIAGNOSTIC text ptbytes z)
+  -- if $origin_source(porigin_owner) = PORIGIN n_owner pcpath_owner
+  -- if n_owner =/= n
 def $trait_cache_object_event(porigin_owner, porigin, pevent) = $trait_record_event(porigin_owner, porigin, pevent) -- otherwise
 def $trait_cache_object_events(porigin_owner, porigin, eps) = (eps)
 def $trait_cache_object_events(porigin_owner, porigin, pevent :: pevent_tail*) = (pfdiagnostic :: pfdiagnostic_tail*)
@@ -352,7 +362,8 @@ def $trait_cache_object_events(porigin_owner, porigin, pevent*) = eps -- otherwi
 def $trait_cache_object_restore(F, S) = S[.TODO = F.MEMORY.TODO][.ORIGIN = F.MEMORY.ORIGIN][.CONSTCONTEXT = F.MEMORY.CONSTCONTEXT][.CLASSCONSTANTINIT = F.MEMORY.CLASSCONSTANTINIT][.RESULT = F.MEMORY.RESULT][.BASE = F.MEMORY.BASE][.HELD = F.MEMORY.HELD][.EVENTS = F.MEMORY.EVENTS]
 def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = $pfclass_constant_value(F[.MEMORY = $trait_cache_object_restore(F, S)], pcpath, pdefaultcache.VALUE, (pdefaultcache.CLASS), z)
   -- if S.COMPLETION = NORMAL
-  -- if S.TODO = eps /\ S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps
+  -- if $trait_real_tasks_done(S, ptraitcachecause)
+  -- if S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
 def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = $trait_cache_object_resume(F[.RECORDED = F.RECORDED ++ pfdiagnostic*], pcpath, pclassconstantdesc, z, S, S_next[.EVENTS = eps], ptraitcachecause)
   -- if S.COMPLETION = NORMAL /\ S.TODO =/= eps
@@ -363,7 +374,7 @@ def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcacheca
   -- if $constant_callable_path(S, porigin_site, pclassconstantdesc_active.INITIALIZER) \/ $trait_cache_object_binding(S.TODO) \/ (porigin_site) = pclassconstantcontext.ORIGIN \/ porigin_site = pclassconstantdesc_active.ORIGIN
   -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
   -- if $trait_cache_object_events(pclassconstantdesc_active.OWNER, porigin_site, S_next.EVENTS) = (pfdiagnostic*)
-def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_cache_object_restore(F, S)[.COMPLETION = UNSUPPORTED "public trait object dependency evaluation"]] -- otherwise
+def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_real_failure_memory(F, S)[.COMPLETION = UNSUPPORTED "public trait object dependency evaluation"]] -- otherwise
 
 ;; Sample the same continuation used by ordinary Throwable allocation. Its
 ;; actual fields supply the later default renderer; the first object and failed
@@ -412,7 +423,7 @@ def $trait_cache_object_demand(F, pcpath, S, S_next, ptraitcachecause) = ((pfrec
   -- if n_user = |F.MEMORY.USERCONSTANTS|
   -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS porigin_lookups*, PREFIX n_prefix, USERPREFIX n_user}
   -- if $trait_cache_cause_selected(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
-  -- if $constant_callable_published(F.MEMORY.DECLARATIONS, pclassconstantdesc.OWNER)
+  -- if $trait_real_dependency(F.MEMORY, pclassconstantdesc, ptraitcachecause)
   -- if S.SOURCES = F.MEMORY.SOURCES /\ S.CODE = F.MEMORY.CODE /\ S.FILES = F.MEMORY.FILES
   -- if S.CLASSES = F.MEMORY.CLASSES /\ S.CLASSNAMES = F.MEMORY.CLASSNAMES /\ S.DECLARATIONS = F.MEMORY.DECLARATIONS
   -- if $class_constant_active(S) /\ $trait_cache_object_type_error(S)
@@ -430,6 +441,7 @@ def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptra
   -- if S_next.COMPLETION = NORMAL
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = S_pruned[.HELD = S_restored.HELD]]
   -- if $trait_recording(F, pcpath)
+  -- if $trait_cache_object_error_allowed(S, ptraitcachecause)
   -- if $trait_cache_object_scalar_error(S_next.COMPLETION)
   -- if S_failure = $trait_cache_object_failure_context(S, S_next)
   -- if (S_throw, ptraceframe*) = $trait_cache_object_exception(F, pcpath, S, S_failure, ptraitcachecause)
@@ -443,6 +455,10 @@ def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptra
   ;; Dispatch is isolated, but the outside registry still owns its callbacks.
   -- if pnode_registry* = $error_handler_roots(S_external.ERRORHANDLER) ++ $error_handler_stack_roots(S_external.ERRORHANDLERS)
   -- if S_pruned = $prune_allocations(S_restored[.HELD = S_restored.HELD ++ pnode_registry*])
+def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = F.MEMORY[.COMPLETION = UNSUPPORTED "unpublished trait callable initializer exception"]]
+  -- if S_next.COMPLETION =/= NORMAL
+  -- if ~$trait_cache_object_scalar_error(S_next.COMPLETION)
+  -- if $trait_real_markers(S.TODO) =/= eps
 def $trait_cache_object_resume(F, pcpath, pclassconstantdesc, z, S, S_next, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_cache_object_restore(F, S_next)[.COMPLETION = UNSUPPORTED "public trait object dependency exception"]] -- otherwise
 
 def $trait_comparison_memory(ptraitdatavalue_left, TRAITVALUE S pvalue pfdiagnostic*) = (S)
@@ -451,10 +467,6 @@ def $trait_comparison_memory(TRAITVALUE S pvalue pfdiagnostic*, TRAITUNINITIALIZ
 def $trait_comparison_memory(ptraitdatavalue_left, ptraitdatavalue_right) = eps -- otherwise
 def $trait_cache_transfer(S, (S_memory)) = $prune_allocations(S[.ARRAYS = S_memory.ARRAYS][.OBJECTS = S_memory.OBJECTS][.OBJECTPROPS = S_memory.OBJECTPROPS][.CLOSURESCOPES = S_memory.CLOSURESCOPES][.CONSTANTCLOSURES = S_memory.CONSTANTCLOSURES][.ALLOCATIONS = S_memory.ALLOCATIONS][.CLASSCONSTANTCACHE = S_memory.CLASSCONSTANTCACHE][.CLASSCONSTANTHISTORY = S_memory.CLASSCONSTANTHISTORY])
 def $trait_cache_transfer(S, eps) = S
-def $trait_cache_new_events(eps) = false
-def $trait_cache_new_events((CCTRAITCACHE porigin ptraitcachecause) :: pclassconstantevent*) = true
-def $trait_cache_new_events(pclassconstantevent :: pclassconstantevent_tail*) = $trait_cache_new_events(pclassconstantevent_tail*)
-  -- if $trait_cache_event(pclassconstantevent) = eps
 def $trait_cache_failed(S, S_result) = true
   -- if $(|S.CLASSCONSTANTHISTORY| <= |S_result.CLASSCONSTANTHISTORY|)
   -- if S_result.CLASSCONSTANTHISTORY[0:|S.CLASSCONSTANTHISTORY|] = S.CLASSCONSTANTHISTORY
@@ -514,7 +526,7 @@ def $trait_cache_bound_value(S, pclassconstantdesc, pvalueclass, n_prefix) = tru
 def $trait_cache_bound_value(S, pclassconstantdesc, pvalueclass, n_prefix) = $constant_callable_flow(S, pclassconstantdesc.INITIALIZER, pclassconstantdesc.OWNER, pvalueclass, n_prefix, eps)
   -- if ~$trait_cache_value_class(pvalueclass)
   -- if $(n_prefix <= |S.DECLARATIONS|)
-  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], pclassconstantdesc.OWNER)
+  -- if $trait_real_cache_owner(S, pclassconstantdesc, n_prefix)
 def $trait_cache_bound_value(S, pclassconstantdesc, pvalueclass, n_prefix) = false -- otherwise
 
 ;; Source-derived dynamic keys use the same captured declaration/user prefix
@@ -531,7 +543,7 @@ def $trait_cache_flow_event(S, CCTRAITCACHE porigin_decl ptraitcachecause, porig
   -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin_decl /\ pclassconstantdesc.OWNER = porigin_owner
   -- if $class_constant_origin(S.CLASSES, porigin_decl) = (pclassconstantdesc)
-  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_owner)
+  -- if $trait_real_cache_owner(S, pclassconstantdesc, n_prefix)
   -- if $constant_callable_path(S, porigin_site, pclassconstantdesc.INITIALIZER)
 def $trait_cache_flow_event(S, pclassconstantevent, porigin_site, porigin_owner, n_prefix) = eps -- otherwise
 

@@ -1,0 +1,93 @@
+;; Failed composing-owner REAL births retain nonowning source receipts. Their
+;; cache owners retire; a failed-class row authenticates only dead objects.
+dec $trait_real_receipt_source(pstate, pconstantclosure, ptraitcachecause) : pclassconstantdesc?
+dec $trait_real_retired_receipt(pstate, pconstantclosure) : pclassconstantdesc?
+dec $trait_real_failed_bound(pstate, pclassconstantdesc, pvalueclass, ptraitcachecause) : bool
+
+def $trait_cache_object_error_allowed(S, ptraitcachecause) = true
+  -- if $trait_real_markers(S.TODO) = eps
+def $trait_cache_object_error_allowed(S, ptraitcachecause) = true
+  -- if $trait_real_active(S, ptraitcachecause)
+def $trait_cache_object_error_allowed(S, ptraitcachecause) = false -- otherwise
+
+def $trait_real_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if pconstantclosure.PREFIX = ptraitcachecause.PREFIX
+  -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS|)
+  -- if ~$constant_callable_published(S.DECLARATIONS[0:ptraitcachecause.PREFIX], ptraitcachecause.CLASS)
+  -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = ptraitcachecause.CLASS /\ ~pclassconstantdesc.FOLDED
+  -- if pconstantclosure.DECL = pclassconstantdesc.ORIGIN
+  -- if $trait_real_source(S, pclassconstantdesc)
+  -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
+  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
+  -- if $trait_real_form(pcnode)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (REALCLOSURE pconstantclosure.SITE eps pstaticcell*)
+  -- if $function_at(S.CLOSURETEMPLATES, pconstantclosure.SITE) = (pfunction)
+  -- if $closure_lexicals(pfunction.CODE.EXPRESSIONS) = eps
+def $trait_real_receipt_source(S, pconstantclosure, ptraitcachecause) = eps -- otherwise
+
+def $trait_real_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
+  -- if ~(HOBJECT pconstantclosure.OBJECT <- S.ALLOCATIONS)
+  -- if $closure_scope_at(S.CLOSURESCOPES, pconstantclosure.OBJECT) = eps
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
+  -- if $trait_real_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
+  -- if $trait_failed_cache_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = eps
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $trait_cache_event_at(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = eps
+def $trait_real_retired_receipt(S, pconstantclosure) = eps -- otherwise
+def $trait_real_birth_owner(S, pconstantclosure) = (pclassconstantdesc.OWNER)
+  -- if $trait_real_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
+def $constant_callable_record_valid(S, pconstantclosure) = true
+  -- if $trait_real_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
+  -- if $constant_callable_birth_valid(S, pconstantclosure, pclassconstantdesc.OWNER)
+
+;; Before rollback, replay the completed marked cache for its value proof.
+;; This borrowed snapshot does not publish the owner or grant live final scope.
+def $trait_real_failed_bound(S, pclassconstantdesc, pvalueclass, ptraitcachecause) = true
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if $trait_cache_event_at(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (ptraitcachecause)
+  -- if S_marked = S[.TODO = [TRAIT_OBJECT_COMPARISON ptraitcachecause]][.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN pdefaultcache.VALUE]
+  -- if $trait_real_complete(S_marked, ptraitcachecause)
+  -- if pdefaultcache.CLASS = pvalueclass
+  -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S_marked.ALLOCATIONS)
+  -- if $constant_value_class_valid(S_marked, pdefaultcache.VALUE, pvalueclass)
+  -- if $class_constant_runtime_type(S_marked, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
+  -- if $trait_cache_bound_value(S_marked, pclassconstantdesc, pvalueclass, ptraitcachecause.PREFIX)
+def $trait_real_failed_bound(S, pclassconstantdesc, pvalueclass, ptraitcachecause) = false -- otherwise
+def $trait_failed_cache_bound(S, pclassconstantdesc, pvalueclass, ptraitcachecause) = true
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if pdefaultcache.CLASS = pvalueclass
+  -- if $heap_subset($value_nodes(pdefaultcache.VALUE), S.ALLOCATIONS)
+  -- if $constant_value_class_valid(S, pdefaultcache.VALUE, pvalueclass)
+  -- if $class_constant_runtime_type(S, pclassconstantdesc.TYPE, pdefaultcache.VALUE)
+  -- if $trait_cache_bound_value(S, pclassconstantdesc, pvalueclass, ptraitcachecause.PREFIX)
+def $trait_failed_cache_bound(S, pclassconstantdesc, pvalueclass, ptraitcachecause) = true
+  -- if $trait_real_failed_bound(S, pclassconstantdesc, pvalueclass, ptraitcachecause)
+def $trait_failed_cache_bound(S, pclassconstantdesc, pvalueclass, ptraitcachecause) = false -- otherwise
+
+def $trait_cache_new_events(eps) = false
+def $trait_cache_new_events((CCTRAITCACHE porigin ptraitcachecause) :: pclassconstantevent*) = true
+def $trait_cache_new_events((CCTRAITBIRTH n porigin_site ptraitcachecause) :: pclassconstantevent*) = true
+def $trait_cache_new_events(pclassconstantevent :: pclassconstantevent_tail*) = $trait_cache_new_events(pclassconstantevent_tail*)
+  -- if $trait_cache_event(pclassconstantevent) = eps /\ $trait_real_birth_event(pclassconstantevent) = eps
+def $trait_failed_cache_class(S, S_result) = (ptraitcachecause.CLASS)
+  -- if $(|S.CLASSCONSTANTHISTORY| < |S_result.CLASSCONSTANTHISTORY|)
+  -- if S_result.CLASSCONSTANTHISTORY[0:|S.CLASSCONSTANTHISTORY|] = S.CLASSCONSTANTHISTORY
+  -- if S_result.CLASSCONSTANTHISTORY[|S.CLASSCONSTANTHISTORY|] = CCTRAITBIRTH n porigin_site ptraitcachecause
+def $trait_failed_cache_items(S, S_result, (CCTRAITBIRTH n porigin_site ptraitcachecause) :: pclassconstantevent*, pdefaultcache*, porigin_class) = $trait_failed_cache_items(S, S_result, pclassconstantevent*, pdefaultcache*, porigin_class)
+  -- if ptraitcachecause.CLASS = porigin_class /\ ptraitcachecause.PREFIX = |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX = |S.USERCONSTANTS|
+  -- if $(|S.OBJECTS| <= n /\ n < |S_result.OBJECTS|)
+  -- if $trait_real_birth_at(pclassconstantevent*, n) = eps
+  -- if $constant_callable_record(S_result.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site
+  -- if $trait_real_birth_at(S_result.CLASSCONSTANTHISTORY, n) = ((porigin_site, ptraitcachecause))
+  -- if $trait_real_receipt_source(S_result, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
+  -- if $trait_real_cause(S_result, ptraitcachecause) = (pclassconstantdesc)
+def $trait_failed_cache_events(S, (CCTRAITBIRTH n porigin_site ptraitcachecause) :: pclassconstantevent*) = (CCTRAITBIRTH n porigin_site ptraitcachecause) :: $trait_failed_cache_events(S, pclassconstantevent*)

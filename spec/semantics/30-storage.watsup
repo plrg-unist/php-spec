@@ -56,6 +56,7 @@ syntax pclassconstantevent = CCLINK porigin nat | CCCACHE porigin porigin nat | 
   | CCINSTANCE porigin porigin porigin porigin pstaticselection? nat
   | CCUPDATENEW porigin pdynamicnew nat
   | CCTRAITCACHE porigin ptraitcachecause
+  | CCTRAITBIRTH nat porigin ptraitcachecause
 syntax pclassconstantflags = CCFLAGS (porigin, bool)* porigin* | CCBAD
 syntax pclassconstantdesc = { ORIGIN porigin, OWNER porigin, OWNERNAME ptbytes, NAME ptbytes, VISIBILITY ppropertyvisibility, FINAL bool, TYPE ptbranch*, INITIALIZER porigin, FOLDED bool, LINE nat }
 syntax ptraitcachecause = { CLASS porigin, ROOT porigin, TABLE pclassconstantdesc*, LOOKUPS porigin*, PREFIX nat, USERPREFIX nat }
@@ -283,6 +284,7 @@ syntax ptask = GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat
   | DIM_PREP expression | DIM_NAME int | DIM_CAPTURE | DIM_INDEX expression int | DIM_PATH pbase int | DIM_FETCH int
   | NULLSAFE_DIM_PREP expression bool | NULLSAFE_DIM_INDEX expression int bool | NULLSAFE_PROP_PREP phpType20 int bool | NULLSAFE_CHECK phpType20 int bool | NULLSAFE_PROPERTY_NAME pvalue int
   | CLASS_CONST_CLASS phpType19 phpType20 int | CLASS_CONST_MEMBER phpType19 poperand int | CLASS_CONST_CAPTURE porigin poperand int | CLASS_CONST_BIND porigin
+  | TRAIT_OBJECT_COMPARISON ptraitcachecause
   | STATIC_DEFAULT_UPDATE porigin int | STATIC_DEFAULT_BIND pstaticdefaultcontext
   | INSTANCE_DEFAULT_UPDATE porigin porigin int | INSTANCE_DEFAULT_BIND porigin pstaticdefaultcontext
   | CLASS_CONST_TABLE_UPDATE porigin int | CLASS_CONST_UPDATE porigin int | CLASS_CONST_CONSTRUCT ptbytes phpType7* bool int | CLASS_CONST_STATIC poperand ptbytes int
@@ -361,7 +363,7 @@ syntax pobject = WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | GEN
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
-syntax pdeclaration = PDENTER nat porigin? int | PDENTERPRECISION nat porigin? int int | PDECLASS nat porigin | PDEFUNCTION nat porigin | PDRCLASS porigin pdeclcause | PDRFUNCTION porigin pdeclcause | PDRCLASSFATAL porigin pdeclcause | PDRTRAITCACHEFAIL porigin pdeclcause | PDCOMPILEWARNING pldiagnostic | PDEVALPAUSE nat nat nat pdeclnoticeitem* | PDEVALRESUME nat int | PDEVALRESUMEPRECISION nat int int | PDEVALFATALNOTICES nat pdeclnoticeitem* | PDEXIT nat pcompilestop
+syntax pdeclaration = PDENTER nat porigin? int | PDENTERPRECISION nat porigin? int int | PDECLASS nat porigin | PDEFUNCTION nat porigin | PDRCLASS porigin pdeclcause | PDRFUNCTION porigin pdeclcause | PDRCLASSFATAL porigin pdeclcause | PDRTRAITCACHEFAIL porigin pdeclcause | PDRTRAITFAIL porigin pdeclcause | PDCOMPILEWARNING pldiagnostic | PDEVALPAUSE nat nat nat pdeclnoticeitem* | PDEVALRESUME nat int | PDEVALRESUMEPRECISION nat int int | PDEVALFATALNOTICES nat pdeclnoticeitem* | PDEXIT nat pcompilestop
 dec $object_body(pobject) : pobject
 
 syntax preceiveedge = { FRONTIER preceivefrontier, HANDLER porigin }

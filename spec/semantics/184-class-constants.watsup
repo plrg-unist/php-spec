@@ -551,12 +551,13 @@ def $class_constant_trigger(NExprNew phpType28 phpType6 metadata) = true
 def $class_constant_trigger(NExprStaticPropertyFetch phpType19 phpType31 metadata) = true
 def $class_constant_trigger(expression) = false -- otherwise
 
+dec $class_constant_stack_owner(pstate, pclassconstantdesc) : bool
 dec $class_constant_stack_valid(pstate, pclassconstantcontext*) : bool
 def $class_constant_stack_valid(S, eps) = true
 def $class_constant_stack_valid(S, pclassconstantcontext :: pclassconstantcontext_tail*) = true
   -- if $class_constant_origin(S.CLASSES, pclassconstantcontext.DECL) = (pclassconstantdesc)
   -- if ~pclassconstantdesc.FOLDED
-  -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = (pclassconstantdesc.OWNER)
+  -- if $class_constant_stack_owner(S, pclassconstantdesc)
   -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
   -- if ~$class_constant_protected(pclassconstantcontext.SELECTION, pclassconstantcontext.PREVIOUS) \/ ~$class_constant_visited(pclassconstantcontext_tail*, pclassconstantdesc.ORIGIN)
   -- if S_prev = $class_constant_restore(S, pclassconstantcontext, pclassconstantcontext_tail*)

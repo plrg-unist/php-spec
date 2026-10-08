@@ -13,6 +13,8 @@ dec $constant_callable_context(pstate, porigin) : (porigin, porigin)?
 dec $constant_callable_record(pconstantclosure*, nat) : pconstantclosure?
 dec $constant_callable_first(pconstantclosure*, porigin) : pconstantclosure?
 dec $constant_callable_stamp(pstate, nat, porigin, nat) : pstate
+dec $trait_real_stamp(pstate, nat, porigin, porigin, nat) : pstate
+dec $constant_callable_owner_valid(pstate, pconstantclosure, porigin) : bool
 dec $constant_callable_record_valid(pstate, pconstantclosure) : bool
 dec $constant_callable_identity_valid(pstate, nat, porigin) : bool
 dec $constant_callable_birth_valid(pstate, pconstantclosure, porigin) : bool
@@ -162,8 +164,9 @@ def $constant_callable_creation_prefix(S, porigin) = |S.DECLARATIONS|
   -- if $property_callable_initializer(S, porigin) \/ $constant_callable_imported_context(S, porigin) \/ $parameter_callable_active(S, porigin)
 def $constant_callable_creation_prefix(S, porigin) = $constant_callable_prefix(S, porigin)
   -- if ~$property_callable_initializer(S, porigin) /\ ~$constant_callable_imported_context(S, porigin) /\ ~$parameter_callable_active(S, porigin)
-def $constant_callable_stamp(S, n, porigin, n_prefix) = S[.OBJECTS = $object_set(S.OBJECTS, n, CONSTANTCLOSURE porigin S.OBJECTS[n])][.CONSTANTCLOSURES = S.CONSTANTCLOSURES ++ [{OBJECT n, SITE porigin, DECL porigin_decl, PREFIX n_prefix}]]
+def $constant_callable_stamp(S, n, porigin, n_prefix) = $trait_real_stamp(S_stamped, n, porigin, porigin_decl, n_prefix)
   -- if $constant_callable_context(S, porigin) = ((porigin_decl, porigin_owner))
+  -- if S_stamped = S[.OBJECTS = $object_set(S.OBJECTS, n, CONSTANTCLOSURE porigin S.OBJECTS[n])][.CONSTANTCLOSURES = S.CONSTANTCLOSURES ++ [{OBJECT n, SITE porigin, DECL porigin_decl, PREFIX n_prefix}]]
 
 def $constant_callable_class_event(PDECLASS n porigin) = (porigin)
 def $constant_callable_class_event(PDRCLASS porigin pdeclcause) = (porigin)
@@ -369,7 +372,7 @@ def $constant_callable_record_valid(S, pconstantclosure) = true
   -- if $(pconstantclosure.OBJECT < |S.OBJECTS|) /\ $(pconstantclosure.PREFIX <= |S.DECLARATIONS|)
   -- if $class_constant_origin(S.CLASSES, pconstantclosure.DECL) = (pclassconstantdesc)
   -- if ~pclassconstantdesc.FOLDED
-  -- if $constant_callable_published(S.DECLARATIONS[0:pconstantclosure.PREFIX], pclassconstantdesc.OWNER)
+  -- if $constant_callable_owner_valid(S, pconstantclosure, pclassconstantdesc.OWNER)
   -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
   -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
   -- if $constant_callable_form(pcnode)
