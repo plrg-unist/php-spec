@@ -1561,9 +1561,22 @@ The reviewed327 composition at `1f6313f7e` over `e044ff7cb` passes strict
 algo/struct at3.369/4.220s without renewing those source/state cuts. Its raw
 compiler results are `trait266-object-algo-gtfakyej` and
 `trait266-object-struct-d2ofi_zz` in the same evidence directory.
+Later failed FCC imports retain the exact cached target of an already published
+first owner, with their own called class and source/collision prefix. At
+`494f6b34f`, strict algo/struct pass3.369/4.220s; one PHP-error source comparison
+and68 supplied conditions plus6 setup clauses pass (17.433s). The genuine C-to-E
+failure preserves C's live cache, retires E's owner and rejects a fresh E method,
+forged call scope/prefix/history and live resurrection. Raw evidence is under
+`.tools/trait-fcc-later-birth-current19/.tools/`: `method-runtime-ekmhst3r`,
+`closure-call-protocol-7846p_2q`, `trait266-object-algo-reoln7u9` and
+`trait266-object-struct-s86zgxqr`. A missing watched runner symlink stopped the
+first state invocation before numeric execution; that infrastructure failure is
+retained without semantic credit.
+These unchanged cuts bridge to the reviewed328 composition, preserving bound
+callback RAW/INPUT, caller ownership and source fields.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
-remains open, as do differing-owner later births and
+remains open, as do broader differing-owner later births and
 executable failed-target reuse.
 Paused return work is excluded.
 

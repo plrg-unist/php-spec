@@ -253,7 +253,11 @@ Live concrete FCC aliases and visibility changes recover the exact adapted copy
 after ordinary lookup misses, including aliases of an excluded method and aliases
 retained beside a using class's own override. Birth scope, defaults and canonical
 class/alias static cells are preserved.
-Dependency fills in held/open compilation, differing-owner later births and
+Later failed imports authenticate the already published first owner's cached
+method at the new birth prefix. A different own method is never substituted;
+the later owner retires while the first cache remains live. One PHP-error source
+and68 supplied retirement conditions pass, with6 setup clauses separate.
+Dependency fills in held/open compilation, broader differing-owner later births and
 executable failed-target reuse retain explicit boundaries.
 Wider parameter-view full-source constructor, handler and variadic cases remain
 unvalidated obligations.
