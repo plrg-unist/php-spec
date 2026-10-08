@@ -359,6 +359,8 @@ def $trait_cache_object_events(porigin_owner, porigin, pevent :: pevent_tail*) =
   -- if $trait_cache_object_event(porigin_owner, porigin, pevent) = (pfdiagnostic)
   -- if $trait_cache_object_events(porigin_owner, porigin, pevent_tail*) = (pfdiagnostic_tail*)
 def $trait_cache_object_events(porigin_owner, porigin, pevent*) = eps -- otherwise
+dec $trait_cache_object_replay_events(pfstate, pstate, pstate, ptraitcachecause, porigin) : pevent*
+def $trait_cache_object_replay_events(F, S, S_next, ptraitcachecause, porigin_site) = S_next.EVENTS -- otherwise
 def $trait_cache_object_restore(F, S) = S[.TODO = F.MEMORY.TODO][.ORIGIN = F.MEMORY.ORIGIN][.CONSTCONTEXT = F.MEMORY.CONSTCONTEXT][.CLASSCONSTANTINIT = F.MEMORY.CLASSCONSTANTINIT][.RESULT = F.MEMORY.RESULT][.BASE = F.MEMORY.BASE][.HELD = F.MEMORY.HELD][.EVENTS = F.MEMORY.EVENTS]
 def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = $pfclass_constant_value(F[.MEMORY = $trait_cache_object_restore(F, S)], pcpath, pdefaultcache.VALUE, (pdefaultcache.CLASS), z)
   -- if S.COMPLETION = NORMAL
@@ -373,7 +375,7 @@ def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcacheca
   -- if $class_constant_active(S)
   -- if $constant_callable_path(S, porigin_site, pclassconstantdesc_active.INITIALIZER) \/ $trait_cache_object_binding(S.TODO) \/ (porigin_site) = pclassconstantcontext.ORIGIN \/ porigin_site = pclassconstantdesc_active.ORIGIN
   -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
-  -- if $trait_cache_object_events(pclassconstantdesc_active.OWNER, porigin_site, S_next.EVENTS) = (pfdiagnostic*)
+  -- if $trait_cache_object_events(pclassconstantdesc_active.OWNER, porigin_site, $trait_cache_object_replay_events(F, S, S_next, ptraitcachecause, porigin_site)) = (pfdiagnostic*)
 def $trait_cache_object_steps(F, pcpath, pclassconstantdesc, z, S, ptraitcachecause) = F[.VALUE = eps][.MEMORY = $trait_real_failure_memory(F, S)[.COMPLETION = UNSUPPORTED "public trait object dependency evaluation"]] -- otherwise
 
 ;; Sample the same continuation used by ordinary Throwable allocation. Its
