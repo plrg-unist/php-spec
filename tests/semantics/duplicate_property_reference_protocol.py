@@ -16,7 +16,7 @@ CASES = {
     'binding':'duplicate-reference-foreach-binding-observation18',
     'pending-binding':'duplicate-reference-foreach-binding-throw18',
     'receiver-cleanup':'reference-foreach-receiver-cleanup-rebind18',
-    'notice-owner':'reference-foreach-invalid-key-unset-receiver18',
+    'notice-owner':'reference-foreach-invalid-key-unset-receiver-key-observer18',
     'scalar-warning':'reference-foreach-scalar-handler-retirement18',
 }
 PREFIX = r'''
