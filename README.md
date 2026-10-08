@@ -696,9 +696,21 @@ order. Receiver retirement stays latched across destructor resurrection; unused
 and used assignment results retain different cleanup lifetimes. Its
 [review](coverage/semantics/dynamic-property-warning-review.json) keeps the private
 source/state cuts and current 297-module GC/cleanup interaction separate. Handler exit,
-array casts/reference foreach over duplicate buckets and expired or undefined RHS
-pointers remain explicit Unsupported boundaries; computed names and wider writes
-remain required.
+array casts over duplicate buckets and expired or undefined RHS pointers remain
+explicit Unsupported boundaries; computed names and wider writes remain required.
+
+[Physical property references324](coverage/semantics/duplicate-property-reference-review.json)
+select each duplicate bucket independently while preserving declared readonly/type
+checks and latest named access. Reference foreach retains the actual shared receiver
+cell across replacement, unset and object/array/scalar changes. Previous plain-CV
+object destruction reads the old value before the selected reference is installed;
+normal and throwing cleanup preserve that reference. Late scalar warnings retain
+the iterator owner through callbacks and remove it on normal or abrupt completion.
+A fresh original and 92 reached premises cover explicit GC while the saved binding
+continuation retains its selected cell; the318 composition retains Fiber API captures.
+Released-CV mutation, wider callback-capable containers, binding-time exit and
+expired notice buckets remain explicit boundaries; full foreach coverage remains
+required.
 
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference

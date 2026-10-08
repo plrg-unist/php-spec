@@ -4030,7 +4030,9 @@
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
         "spec/semantics/154-property-visibility-runtime.watsup",
-        "spec/semantics/261-object-casts.watsup"
+        "spec/semantics/261-object-casts.watsup",
+        "spec/semantics/129-goto-runtime.watsup",
+        "spec/semantics/324-dynamic-property-reference-foreach.watsup"
       ],
       "source_tests": [
         "tests/semantics/foreach_compiler.py",
@@ -4049,9 +4051,11 @@
         "tests/semantics/property_private_protocol.py",
         "tests/semantics/private_property_scope_protocol.py",
         "tests/semantics/object_cast_sources.py",
-        "tests/semantics/object_cast_protocol.py"
+        "tests/semantics/object_cast_protocol.py",
+        "tests/semantics/dynamic_property_warning_sources.py",
+        "tests/semantics/duplicate_property_reference_protocol.py"
       ],
-      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required."
+      "review": "Array traversal history is in foreach-runtime-review.json. Public-object by-value traversal uses live property slots (properties-review.json); by-reference traversal preserves slot/cell aliases and typed sources (property-references-review.json). Traversable callbacks and remaining contexts remain open. Protected property consumers and shared property-reference/coalescing/direct-$this foreach prerequisites are covered by property-visibility-review.json; remaining magic/static/readonly dependencies stay open. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module261 adds bounded stdClass scalar/nonempty-array casts, shared-table COW/clone/array round trips, NaN operand-location callbacks and NUL-key foreach continuations. Thirteen full source comparisons and208 state premises retain distinct cuts in object-casts-review.json; expired-pointer originals and a longer companion timeout stay zero agreement. Wider consumers/lifecycle remain required. Module324 selects physical duplicate dynamic buckets independently, retaining declared readonly/type checks and latest named access. Previous plain-CV object cleanup reads the released raw slot before atomic normal/throw reference installation. Reference traversal owns the actual shared receiver HCELL through alias writes, unset/recreate and object/array/scalar table changes; late scalar warning callbacks preserve that owner and normal/abrupt iterator removal. Initial12 normals/288 premises and added12 normals/current491 premises keep separate cuts with strictSL298. Released-CV mutation, wider callback-capable containers, binding-time exit, nonordinary replacement objects and expired borrowed notice buckets remain explicit boundaries; source/current-address admission does not prove historical reachability. See duplicate-property-reference-review.json."
     },
     {
       "node": "Stmt_Function",
@@ -7433,19 +7437,25 @@
       "implementation": [
         "spec/semantics/67-foreach-compiler.watsup",
         "spec/semantics/68-array-cursors.watsup",
-        "spec/semantics/69-foreach-control.watsup"
+        "spec/semantics/69-foreach-control.watsup",
+        "spec/semantics/129-goto-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup",
+        "spec/semantics/324-dynamic-property-reference-foreach.watsup"
       ],
       "helper_tests": [
         "tests/semantics/foreach.py"
       ],
       "source_tests": [
-        "tests/semantics/foreach.py"
+        "tests/semantics/foreach.py",
+        "tests/semantics/dynamic_property_warning_sources.py",
+        "tests/semantics/duplicate_property_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
-        "coverage/semantics/foreach-runtime-review.json"
+        "coverage/semantics/foreach-runtime-review.json",
+        "coverage/semantics/duplicate-property-reference-review.json"
       ],
-      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; public-object by-reference traversal is now bounded in property-references-review.json; Traversable callbacks, remaining frame/return and header/nullsafe contexts remain required. See foreach-runtime-review.json.",
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; public-object by-reference traversal is now bounded in property-references-review.json; Traversable callbacks, remaining frame/return and header/nullsafe contexts remain required. See foreach-runtime-review.json. Module324 selects physical duplicate dynamic buckets independently, retaining declared readonly/type checks and latest named access. Previous plain-CV object cleanup reads the released raw slot before atomic normal/throw reference installation. Reference traversal owns the actual shared receiver HCELL through alias writes, unset/recreate and object/array/scalar table changes; late scalar warning callbacks preserve that owner and normal/abrupt iterator removal. Initial12 normals/288 premises and added12 normals/current491 premises keep separate cuts with strictSL298. Released-CV mutation, wider callback-capable containers, binding-time exit, nonordinary replacement objects and expired borrowed notice buckets remain explicit boundaries; source/current-address admission does not prove historical reachability. See duplicate-property-reference-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-reference-mutation.php"
       ]
@@ -7459,7 +7469,10 @@
         "spec/semantics/67-foreach-compiler.watsup",
         "spec/semantics/68-array-cursors.watsup",
         "spec/semantics/69-foreach-control.watsup",
-        "spec/semantics/136-property-runtime.watsup"
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/129-goto-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup",
+        "spec/semantics/324-dynamic-property-reference-foreach.watsup"
       ],
       "helper_tests": [
         "tests/semantics/foreach.py"
@@ -7467,14 +7480,17 @@
       "source_tests": [
         "tests/semantics/foreach.py",
         "tests/semantics/properties.py",
-        "tests/semantics/properties_task_protocol.py"
+        "tests/semantics/properties_task_protocol.py",
+        "tests/semantics/dynamic_property_warning_sources.py",
+        "tests/semantics/duplicate_property_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "coverage/semantics/foreach-runtime-review.json",
-        "coverage/semantics/properties-review.json"
+        "coverage/semantics/properties-review.json",
+        "coverage/semantics/duplicate-property-reference-review.json"
       ],
-      "review": "Array mutation cases remain in foreach-runtime-review.json. Public-object by-value cursor now observes later value updates and deletion/reinsertion order (properties-review.json); by-reference object traversal remains open.",
+      "review": "Array mutation cases remain in foreach-runtime-review.json. Public-object by-value cursor now observes later value updates and deletion/reinsertion order (properties-review.json); Wider by-reference object contexts remain required. Module324 selects physical duplicate dynamic buckets independently, retaining declared readonly/type checks and latest named access. Previous plain-CV object cleanup reads the released raw slot before atomic normal/throw reference installation. Reference traversal owns the actual shared receiver HCELL through alias writes, unset/recreate and object/array/scalar table changes; late scalar warning callbacks preserve that owner and normal/abrupt iterator removal. Initial12 normals/288 premises and added12 normals/current491 premises keep separate cuts with strictSL298. Released-CV mutation, wider callback-capable containers, binding-time exit, nonordinary replacement objects and expired borrowed notice buckets remain explicit boundaries; source/current-address admission does not prove historical reachability. See duplicate-property-reference-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-value-mutation.php",
         "tests/semantics/conformance/foreach-reference-mutation.php"
@@ -10954,7 +10970,10 @@
         "spec/semantics/136-property-runtime.watsup",
         "spec/semantics/153-property-visibility-compiler.watsup",
         "spec/semantics/154-property-visibility-runtime.watsup",
-        "spec/semantics/318-dynamic-property-warnings.watsup"
+        "spec/semantics/318-dynamic-property-warnings.watsup",
+        "spec/semantics/129-goto-runtime.watsup",
+        "spec/semantics/261-object-casts.watsup",
+        "spec/semantics/324-dynamic-property-reference-foreach.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
@@ -10970,7 +10989,8 @@
         "tests/semantics/property_private_protocol.py",
         "tests/semantics/private_property_scope_protocol.py",
         "tests/semantics/dynamic_property_warning_sources.py",
-        "tests/semantics/dynamic_property_warning_protocol.py"
+        "tests/semantics/dynamic_property_warning_protocol.py",
+        "tests/semantics/duplicate_property_reference_protocol.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
@@ -10979,9 +10999,10 @@
         "coverage/semantics/property-visibility-review.json",
         "coverage/semantics/property-private-review.json",
         "vendor/php-src/Zend/zend_vm_def.h",
-        "coverage/semantics/dynamic-property-warning-review.json"
+        "coverage/semantics/dynamic-property-warning-review.json",
+        "coverage/semantics/duplicate-property-reference-review.json"
       ],
-      "review": "Dynamic names use the shared slot store and source-class deprecation. Raw leading-NUL access cannot address mangled protected keys; embedded NUL keeps full-byte identity while diagnostic display truncates. Inherited-private dynamic fallback is implemented; magic access remains open. See properties-review.json and property-visibility-review.json. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module318 resumes eligible user warnings for ordinary literal simple-assignment creation, preserving receiver C ownership, retirement across resurrection, plain CV versus old reference/TMP RHS selection, throw continuation, duplicate physical buckets and used/unused result cleanup. Fifteen private normal originals retain separate cuts; actual297 adds one GC-protected original and69/98 reached premises. Handler exit, duplicate array casts/reference foreach and expired or undefined RHS pointers remain explicit Unsupported boundaries. Computed names and wider writes remain required; see dynamic-property-warning-review.json."
+      "review": "Dynamic names use the shared slot store and source-class deprecation. Raw leading-NUL access cannot address mangled protected keys; embedded NUL keeps full-byte identity while diagnostic display truncates. Inherited-private dynamic fallback is implemented; magic access remains open. See properties-review.json and property-visibility-review.json. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module318 resumes eligible user warnings for ordinary literal simple-assignment creation, preserving receiver C ownership, retirement across resurrection, plain CV versus old reference/TMP RHS selection, throw continuation, duplicate physical buckets and used/unused result cleanup. Fifteen private normal originals retain separate cuts; actual297 adds one GC-protected original and69/98 reached premises. At the318 cut, handler exit, duplicate array casts/reference foreach and expired or undefined RHS pointers remain explicit Unsupported boundaries. Computed names and wider writes remain required; see dynamic-property-warning-review.json. Module324 selects physical duplicate dynamic buckets independently, retaining declared readonly/type checks and latest named access. Previous plain-CV object cleanup reads the released raw slot before atomic normal/throw reference installation. Reference traversal owns the actual shared receiver HCELL through alias writes, unset/recreate and object/array/scalar table changes; late scalar warning callbacks preserve that owner and normal/abrupt iterator removal. Initial12 normals/288 premises and added12 normals/current491 premises keep separate cuts with strictSL298. Released-CV mutation, wider callback-capable containers, binding-time exit, nonordinary replacement objects and expired borrowed notice buckets remain explicit boundaries; source/current-address admission does not prove historical reachability. See duplicate-property-reference-review.json."
     },
     {
       "id": "properties.promotion",
