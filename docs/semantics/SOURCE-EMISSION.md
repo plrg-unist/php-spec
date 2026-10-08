@@ -152,8 +152,8 @@ missing/unset cells and include retirement before FETCH6/property8. The original
 fixture failures and diagnostic vectors earn zero affected credit. Actual324 over
 `6b51f811c` passes strict compilation at `e3d6a7c85`; independent review finds the
 introduced bound-Fiber, Generator, collector and array guards compatible without
-renewing earlier cuts.343 below adds ordinary Stringable name CVs. Warning-producing
-conversions and wider names, emissions and providers remain required.
+renewing earlier cuts.343 and350 below add ordinary Stringable/array name CVs.
+Wider names, emissions and providers remain required.
 
 Module343 converts Stringable ordinary name CVs through a source-authenticated
 implicit call. STRINGIFY_RESULT owns the cast receiver; the new result/ready
@@ -168,5 +168,21 @@ premises for selected calls, source/frame integrity, alias-delayed destruction,
 live targets and pending diagnostics. Fixture phase corrections retain all failed
 cuts with zero affected credit. Actual329 passes strict compilation with reviewed
 bound-Fiber/trait/collector compatibility, without renewing the private cuts.
-Special targets (`this`/auto-globals), warning-producing conversions and wider
-computed producers remain explicit dependencies.
+350 below adds ordinary array-name warnings. Special targets (`this`/auto-globals)
+and wider computed producers remain explicit dependencies.
+
+Module350 stages the array-to-string warning for an ordinary name CV through the
+existing error dispatcher. NAME_ARRAY_RESULT carries only its authenticated
+source/name/line and owns no array: replacing the CV can retire its children inside
+the handler. A normal return fixes the name to `Array`, including replacement with
+a Stringable object, then reads the live target. Later missing-target warnings
+retain327's fixed null. Vendored `__zval_get_string_func` returns NULL after a
+throwing try conversion, so handler/child exceptions abort before FETCH;343's
+successful-cast pending-exception path does not apply.
+The [ledger](../../coverage/semantics/source-array-name-review.json) retains seven
+exact originals and117 independent premises at private331, including local/fallback,
+339-created arrays, borrowed child lifetime, source/frame forgeries and retirement
+FETCH6. The original fixture elaboration stop has zero evaluation credit. Actual335
+over `94e3593e6` passes strict compilation with reviewed current-H, Generator,
+property, trait and Fiber compatibility. Relocation and earlier cuts gain no renewed
+credit; wider name producers, special forms and emissions remain required.

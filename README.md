@@ -74,6 +74,8 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [Stringable ordinary computed-name CVs](coverage/semantics/source-stringable-name-review.json) now keep returned name bytes through cast-receiver retirement, then read the live target. Destructor exceptions retain the default missing-target warning while suppressing an eligible registered handler. Eight exact originals and134 independent premises retain private325; actual329 passes strict compilation with reviewed current-parent compatibility. Special targets and wider producers remain required.
 
+[Array-valued ordinary computed-name CVs](coverage/semantics/source-array-name-review.json) now resume warning handlers with fixed `Array` bytes before live target lookup. Borrowed array children can retire inside the handler; handler and child exceptions abort the fetch. Seven exact originals and117 independent premises retain private331; actual335 passes strict compilation. Wider producers remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -493,9 +495,13 @@ source; earlier cuts retain their inputs.
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+An evaluated false close predicate now skips total graph owner scans.
 Pruning carries that graph through GC selection and destructor dispatch, with
-reuse only when destructor preparation leaves the state identical. Authenticated
-specialized call contexts take precedence over ordinary error handler validation.
+reuse only when destructor preparation leaves the state identical.
+Keep and release scans also reuse the carried graph, including detached and
+retired buckets; public helpers retain their behavior for modified graphs.
+Authenticated specialized call contexts take precedence over ordinary error
+handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
 from the new captured-source/66-premise and readonly-clone/GC compositions.
 The earlier 291-module strict compiler/initialization and readonly clone original pass;
@@ -513,7 +519,7 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, public idle-worker transfer with uncalled pass destructors, automatic
+graphs, suspension inside a public collector callback, automatic
 thresholds and wider freeing remain open. Module332 adds quiescent public idle
 resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
@@ -523,7 +529,13 @@ Module342 admits idle public resume/throw during an active pass after all planne
 destructors are marked called: the pass stays busy, masks restore and injected
 errors retain identity without remaining in the worker. Two exact originals and
 265 independent physical premises retain private323; final327 compilation
-preserves337/339/307/334/302. Remaining-dtor stale-interval transfer is still required.
+preserves337/339/307/334/302. Module345 now scans the retained physical interval
+and runs remaining marked destructors without advancing the outer collection.
+Zero-owner targets remain borrowed; real weak reacquisition can free them.
+Captured APIs retain their genuine caller owners, and protected/private access
+uses native `Fiber` scope. Four exact originals and separate274/177 reached
+premises pass; one earlier scope assertion is superseded. Final336 compilation
+preserves the accepted current parent. Public callback suspension remains required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -838,9 +850,17 @@ birth/default/static conditions pass, with6 setup clauses separate.
 Later failed imports preserve a published first owner's cached method even when
 their own method differs; one PHP-error source comparison and68 supplied retirement
 conditions pass, with6 setup clauses separate.
+Failed first-owner targets also remain callable through later imports, without
+publishing the failed class or reviving its retired Closure. Three shutdown
+originals cover imported, own/private and missing-alias targets, literal defaults
+and clone-shared statics;115 supplied checkpoint conditions pass, with12 setup
+clauses separate.
+A later failed import also retains a dead receipt when the first owner failed;
+one shutdown original and59 supplied rollback conditions pass, with6 setup
+clauses separate.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
-and executable reuse of a failed target remain open. Wider
+and wider failed-owner member/construction behavior remain open. Wider
 initializer contexts, held/open failed links and readonly
 storage remain
 required. The current313 join passes strict compilation, one fresh REAL/constructor
@@ -1098,7 +1118,12 @@ records the new originals and reached checks, including saved calls to the idle
 collector Fiber. Fixed bound API captures also execute as Fiber C-root callbacks:
 the [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json)
 records borrowed receivers and callback retirement before original start arguments.
-Bound `start` and constructor captures remain required.
+Bound `start` captures forward the original positional/named buffer through
+direct and explicit `__invoke` entry, retaining the selected receiver through
+argument effects and cleanup. The
+[start-capture ledger](coverage/semantics/fiber-start-callables-review.json)
+records their separate checks. C-root `start`, outer unpacking and constructor
+captures remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

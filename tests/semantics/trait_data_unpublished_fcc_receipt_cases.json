@@ -77,6 +77,50 @@
       "exit_status": 255,
       "stdout_base64": "UFJFOw==",
       "stderr_template_base64": "RmF0YWwgZXJyb3I6IEUgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEUuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMTQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "failed-first-shutdown",
+      "source": "<?php\ntrait T {\n    public static function m($v = 7) {\n        static $n = 0;\n        echo \"T:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static $x = self::Y;\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    $f();\n    $g = clone $f;\n    $g();\n    E::m();\n});\necho \"PRE;\";\nclass C { use U; public static $x = 0; }\necho \"POST;\";\n",
+      "source_sha256": "74af87b8164f016e45f4eb2ae017fc09d22b4464da15ef70fa2208e461878336",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-target-review19/native-failed-first-shutdown/command.json",
+      "native_raw_sha256": "f0fee7f180a9b5de5a1e76b54735a625dfab98ee0d1255d652769662a9ffdab8",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7VDpVOkU6NzoxO1Q6VTpFOjc6MjtGUkVTSDs=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6Om0gaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDcKRmF0YWwgZXJyb3I6IEMgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMjUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "failed-first-own-target-shutdown",
+      "source": "<?php\ntrait T {\n    public static function m($v = 7) { echo \"T;\"; }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static $x = self::Y;\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    $f();\n    $g = clone $f;\n    $g();\n    E::m();\n});\necho \"PRE;\";\nclass C {\n    use U;\n    public static $x = 0;\n    private static function m($v = 11) {\n        static $n = 0;\n        echo \"OWN:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n}\necho \"POST;\";\n",
+      "source_sha256": "09efe5e7a850a4b08c434f36834cc5e133fa53b554580299d175db489e78c58d",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-target-review19/native-failed-first-own-target-shutdown/command.json",
+      "native_raw_sha256": "f8d73975b6a10e54e73cd0d972a4578bdc400df2f89c071f014eab8db7945af2",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7T1dOOkM6RToxMToxO09XTjpDOkU6MTE6MjtGUkVTSDs=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMjIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "failed-first-alias-target-shutdown",
+      "source": "<?php\ntrait T {\n    public static function m($v = 7) {\n        static $n = 0;\n        echo \"ALIAS:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n    public const Y = self::q(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    $f();\n    $g = clone $f;\n    $g();\n    E::m();\n});\necho \"PRE;\";\nclass C {\n    use U { m as q; }\n    public static $x = 0;\n}\necho \"POST;\";\n",
+      "source_sha256": "6b8310ad1350e324996924332179fdf0b3b915debe59526ad62d97444de70ba8",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-target-review19/native-failed-first-alias-target-shutdown/command.json",
+      "native_raw_sha256": "9e3a84a944fe54f12eb9576e03595c00bac45a33df0519b5b09716bc15eb9906",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7QUxJQVM6VTpFOjc6MTtBTElBUzpVOkU6NzoyO0ZSRVNIOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6OnEgaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDcKRmF0YWwgZXJyb3I6IEMgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMjQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "failed-first-target-failed-later-import",
+      "source": "<?php\ntrait T {\n    public static function m() { echo \"T;\"; }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static $x = 1;\n        public static function m() { echo \"E;\"; }\n    }\n    echo \"AFTER;\";\n});\necho \"PRE;\";\nclass C { use U; public static $x = 0; }\necho \"POST;\";\n",
+      "source_sha256": "4f4fa18b2d98ab6bf369752b99f09c370093339f510936b12598fce22964ec85",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-later-review19/native-failed-first-target-failed-later-import/command.json",
+      "native_raw_sha256": "58b3a356553bc8a2cad6c76a869dc8bd2484dcfda02533dd4a641567a16f1126",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6Om0gaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDQKRmF0YWwgZXJyb3I6IEMgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMTgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQpGYXRhbCBlcnJvcjogRSBhbmQgVSBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgRS4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxMApTdGFjayB0cmFjZToKIzAgW2ludGVybmFsIGZ1bmN0aW9uXToge2Nsb3N1cmU6e0ZJTEV9Ojh9KCkKIzEge21haW59Cg=="
     }
   ],
   "scope": "Focused earliest-source-target FCC failed-owner retirement and own-method equal lexical/called scope. Parameter-view constructor/handler/variadic full-source cases remain open. Later failed imports preserve an authenticated published first owner target."
