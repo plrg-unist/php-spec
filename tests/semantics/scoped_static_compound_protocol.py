@@ -481,6 +481,7 @@ $task_nodes(COMPOUND_STATIC_NAME pcomputedcompound_cold) = [HOBJECT n_cold_rhs]
 (HOBJECT n_cold_rhs) <- S_cold_name.ALLOCATIONS
 $computed_static_name_compatible(S_cold_name, pcomputedcompound_cold.SITE, $ptascii("value"))
 ~$computed_static_name_compatible(S_cold_name, pcomputedcompound_cold.SITE, $ptascii("other"))
+$scoped_selector_class(S_cold_name, pcomputedcompound_cold.CLASS) = (porigin_cold)
 ptask_cold_work* = $class_constant_static_work(S_cold_name, pcomputedcompound_cold.CLASS, $ptascii("value"), pcomputedcompound_cold.LINE)
 ptask_cold_work* =/= eps
 S_cold_queued_step = $drive_steps(S_cold_name, 1)
