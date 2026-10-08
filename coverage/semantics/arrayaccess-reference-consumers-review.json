@@ -1,7 +1,7 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "module": "spec/semantics/326-arrayaccess-reference-consumers.watsup",
-  "decision": "Private scope independently accepted; actual-parent composition pending",
+  "decision": "Independently accepted and integrated; prior source/reached cut preserved separately",
   "revision": "0f0045dc5d52705af85da7c1e7851de3cea95b8c",
   "parent": "fe2278d3403e8d7015f937ac1d2b0438e64fb494",
   "modules": 303,
@@ -122,7 +122,6 @@
   "independent_review": "arguments_review_18 independently accepted source, semantics, fixtures and physical streams; no reviewer actor",
   "failures_zero_credit": [],
   "remaining": [
-    "Current-parent integration",
     "Mixed/untyped VALUE-return Get Notice-handler continuation",
     "Stringable/wider producers and complete core",
     "Typed non-mixed reference return verification remains user-paused"
@@ -132,5 +131,25 @@
     "vendor/php-src/Zend/zend_vm_def.h::ZEND_SEND_FUNC_ARG",
     "vendor/php-src/Zend/zend_vm_def.h::ZEND_PRE_INC/ZEND_POST_INC"
   ],
-  "recovery_note": "Report paths resolve within recovery_root from canonical project; raw inputs and streams remain ignored. Maintained originals/renderers regenerate them with local tools; no319 source/state renewal."
+  "recovery_note": "All report paths resolve within recovery_root from canonical project. Private source/reached revision remains on arguments/byref-get-consumers326-private-18; current compiler has its separate306 cut. Raw inputs and streams remain ignored; maintained originals/renderers regenerate them with local tools. No319 or old326 source/state renewal.",
+  "current_parent_composition": {
+    "revision": "46c624e897f4637fa2f87789e5ffe93511d18a46",
+    "parent": "40e3c4fcce9e8adb7240a8640d9504548e8b33a7",
+    "modules": 306,
+    "report": ".tools/arrayaccess-returned-append/actual-prepared-cq4wq5jy/report.json",
+    "command": "python3 tests/semantics/arrayaccess_returned_append_current_prepare.py",
+    "compiler": {
+      "algo": {
+        "emitted_bytes": 10213050,
+        "seconds": 3.166
+      },
+      "struct": {
+        "emitted_bytes": 9835229,
+        "seconds": 4.02
+      }
+    },
+    "scope": "Full current306 algorithmic/structuring compiler and frontend/provider preparation only; no source/init/state renewal",
+    "compatibility": "Exact16-line326 and registration preserve current323 ECHO,317 collector/GC.WORKER/pfiber.GC and39 pruning seams; independent review found no runtime overlap requiring old-gate renewal",
+    "outcome": "Both full emissions contain access_captured_consumer; physical stderr empty, exits0, stable clean inputs,120 cap/jobs1; both producer groups closed"
+  }
 }

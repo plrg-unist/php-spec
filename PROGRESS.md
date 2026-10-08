@@ -40,12 +40,12 @@ their introduced seams are independently reviewed as compatible, with no source/
 renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
-The current source includes accepted ArrayAccess292/304/309/319, eager destruction270,
+The current source includes accepted ArrayAccess292/304/309/319/326, eager destruction270,
 WeakReference296, ordinary cycle collection301 and collector Fibers317,
 Fiber291/302/308/313, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with305 modules descended from
+with306 modules descended from
 `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323.
 The property/clone composition passes strict SL290/compiler application0 at
@@ -292,17 +292,19 @@ a genuine Fiber reporting warning handler suspends inside Get, then resumes
 the shared property CELL write while restoring main reporting. Parent318 fields
 are preserved; this source makes no dynamic-property runtime claim. Final302
 over b135 preserves new default receive fields and passes full algorithmic and
-structuring compilation. Named reference sends, nested captured-row updates,
-VALUE-return warning-handler producers and wider producers remain required;
+structuring compilation. Module326 adds named sends and nested captured-row
+updates below. VALUE-return warning-handler producers and wider producers remain required;
 typed non-mixed return verification stays user-paused.
 
-Private ArrayAccess326 admits captured live ELEMENT rows for named reference
+Integrated ArrayAccess326 admits captured live ELEMENT rows for named reference
 sends and nested pre/post updates. Exact source/writer/RHS/temp guards preserve
 name-check priority and existing finishing dispatch. Six new exact normal
 originals and three genuine strict-SL groups/246 premises cover named promotion,
 duplicate rejection before promotion, copy/shared-cell behavior and resumption.
 The [consumer ledger](coverage/semantics/arrayaccess-reference-consumers-review.json)
-keeps this303 cut separate; actual-parent composition is pending. VALUE-return
+keeps this303 cut separate. Final306 over `40e3c4fcc` passes full algorithmic
+and structuring compilation at `46c624e89`; independent seam review requires no
+source/state renewal. VALUE-return
 Notice-handler producers and wider Get behavior remain open; typed non-mixed
 return verification stays user-paused.
 
@@ -1546,8 +1548,8 @@ failures and interrupted evidence.
   isset/empty, Set/append and Unset calls. Writable292 adds direct compound and
   ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append,
   and309 adds final simple append to returned children. Module319 adds untyped/mixed
-  reference Get; named sends, nested captured-row updates, VALUE-return warning
-  handlers, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
+  reference Get;326 adds named sends and nested captured-row updates. VALUE-return
+  warning handlers, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container

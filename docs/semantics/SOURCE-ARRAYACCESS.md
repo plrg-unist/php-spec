@@ -99,14 +99,16 @@ survives the parked Get and resumed shared property write;318 fields remain
 intact without a dynamic-property runtime claim. Final302 over b135 preserves
 the new default receive fields and passes full algorithmic/structuring compilation.
 
-Private module326 adds the captured-row consumer certificate for named
+Module326 adds the captured-row consumer certificate for named
 reference sends and nested pre/post updates. The allocated live ELEMENT row
 and exact source/writer/RHS/temp checks retain named-check priority, post-update
 results and COW/shared aliases; broad reference-task dispatch is unchanged.
 Six new exact normal originals and three strict-SL groups/246 premises pass at
 the separate303 cut in the
 [consumer ledger](../../coverage/semantics/arrayaccess-reference-consumers-review.json).
-Actual-parent composition remains pending.
+Final306 over `40e3c4fcc` passes full algorithmic/structuring compilation at
+`46c624e89`. Independent review preserves current ECHO/collector/pruning fields
+and requires no source/state renewal; the303 source/reached cut remains separate.
 
 Wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess
 notice ordering remain required. VALUE-return Get warning-handler
