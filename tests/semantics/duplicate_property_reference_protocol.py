@@ -55,6 +55,7 @@ def $dupref_phase(S, 4) = true
   -- if S.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_tail*
 def $dupref_phase(S, 5) = true
   -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_operation_for(S) = eps
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
