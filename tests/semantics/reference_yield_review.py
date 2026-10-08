@@ -164,7 +164,17 @@ def main():
     driver.DECLARATIONS = {}
     driver.UNSUPPORTED = {}
     driver.REQUEST_CASES = {'globals-fetch-uses-reference-to-snapshot-without-notice'}
-    driver.WATCHED += ['tests/semantics/reference_yield_review.py']
+    driver.WATCHED += [
+        'spec/semantics/97-call-reference-acquisition.watsup',
+        'spec/semantics/99-reference-returns.watsup',
+        'spec/semantics/118-arrows.watsup',
+        'spec/semantics/207-error-handler-runtime.watsup',
+        'spec/semantics/270-eager-destructors.watsup',
+        'spec/semantics/311-arrow-generators.watsup',
+        'spec/semantics/321-yield-key-warning.watsup',
+        'spec/semantics/328-generator-reference-yields.watsup',
+        'tests/semantics/reference_yield_review.py',
+    ]
     return driver.main()
 
 
