@@ -567,7 +567,12 @@ blank-separator parse stop remains preserved, with zero runtime credit.
 Raw checks: `.tools/compiler-pruned-edges-19/.tools/pruned-edges-controls-v{1,2}`.
 Final 349-module composition at `9b69ebb2e` passes changed initialization in 4.323s.
 Raw final check: `.tools/compiler-pruned-edges-current-19/.tools/pruned-edges-current-controls-v1`.
-Its original retry remains UNRUN.
+The exact 1697-byte original at `ea58ac361`/349 now agrees with native PHP in
+54.832s at unchanged 45/55-second caps: normal, exit 0, exact 46-byte output and
+empty stderr, with stable inputs and reaped groups. Earlier timeouts stay preserved.
+Raw retry: `.tools/compiler-pruned-edges-current-19/.tools/full-default-retry-pruned-edges-v1/run-v1`.
+The source and tuple are retained in `compiler_composed_retry_cases.json`, wired
+through the existing runner into combined and offline checks; those runs remain pending.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

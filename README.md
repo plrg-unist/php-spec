@@ -555,6 +555,8 @@ Pure graph pruning counts owners once and removes zero-owner cascades through a
 worklist, preserving roots and the order and multiplicity of nodes and edges.
 GC also reuses pruning's graph edges when pruning leaves the prepared state
 identical; changed states recompute their edges.
+The retained composed default/Generator/Fiber original agrees with native PHP;
+its catalogue is included in the combined semantic and offline checks.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate

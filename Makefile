@@ -485,6 +485,7 @@ test-semantics: build
 	python3 tests/semantics/method_compiler.py
 	python3 tests/semantics/method_runtime.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/compiler_publication_protocol.py
 	python3 tests/semantics/compiler_method_modifier_guards.py
 	python3 tests/semantics/compiler_ini_publication_guards.py
