@@ -887,6 +887,7 @@ property table transfers its one HARRAY owner before bucket cleanup; shared tabl
 keep their children after the parent retires. Five new exact originals and
 150/91/51 reached premises cover deletion/reinsertion order, exception chaining,
 early Weak notification and the Generator RETURN-child interaction at separate cuts.
+The actual349 composition passes strict compilation.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;

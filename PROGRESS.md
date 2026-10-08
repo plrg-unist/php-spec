@@ -1051,6 +1051,7 @@ tombstone validator repair passes affected2 and strict347 at `f064fd2c6`.
 New reached groups pass150/91/51 premises at `f064fd2c6`/`56d3b070b`/`2282b68da`,
 covering table ownership, B-before-A throws, early Weak and actual355 RETURN storage.
 Original baseline/fixture failures retain zero credit; prior campaigns are unchanged.
+The actual349 join over `013ca6d2b` passes strict initialization at `e7e74c6c9`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
