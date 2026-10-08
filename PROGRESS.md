@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+348 executes bound `start` first-class captures directly and through explicit
+`__invoke`. Immutable receiver selection and original positional/named buffers
+survive argument effects, nested same-Closure calls, weak callback receives and
+cleanup. Waiting calls borrow the receiver from the Closure; explicit invocation
+keeps its extra Closure owner and copied buffer. Status and entry errors retain
+actual start callsites. Strict329 initialization, ten normal originals and
+independent186/author96 reached premises pass at the recorded private cuts.
+Two C-root-start/outer-unpack controls and the separate original `is_int` builtin
+dependency failure have zero agreement. That builtin remains required core work;
+a distinct fresh comparison original checks the same weak int receive.
+C-root `start`, constructor captures and broader adapters remain required.
+[Start-capture ledger](coverage/semantics/fiber-start-callables-review.json).
+
 341 executes fixed bound API captures as Fiber C-root callbacks. Immutable RAW
 selection preserves the receiver, borrowed API ownership and genuine nested or
 idle collector caller chains. Last callback retirement can close its receiver
@@ -18,7 +31,7 @@ nested108 and collector93 checks; original failures retain zero credit.
 The actual328 composition over `175a197e9` passes strict initialization while
 preserving current collector342, method307, source339 and ownership factors;
 earlier source/state cuts retain their inputs.
-Bound `start`, constructor captures and broader adapters remain required;
+C-root `start`, constructor captures and broader adapters remain required;
 paused undefined-result verification is excluded. Earlier331/337 cuts are unchanged.
 [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json).
 
