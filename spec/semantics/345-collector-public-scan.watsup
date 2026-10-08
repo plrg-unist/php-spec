@@ -1,0 +1,161 @@
+;; gc_destructor_fiber reloads its retained physical interval after an idle
+;; public transfer. The main collector keeps its own cursor and pending error.
+;; DTOR_GARBAGE is a slot tag, not a new owner or an old object-identity list.
+dec $gc_unmarked_slot(pgcslot) : pgcslot
+dec $gc_dtor_slot(pgcslot, pnode*) : bool
+dec $gc_dtor_tag_valid(pstate, nat) : bool
+dec $gc_scan_clear(pgcslot*, nat, nat, nat) : pgcslot*
+dec $gc_worker_public_error(pfiberapi) : nat?
+dec $gc_worker_public_context(pstate, pgcpublic) : bool
+dec $gc_worker_scan_cursor(pstate, nat) : bool
+dec $gc_worker_scan_valid(pstate, pgcpublic) : bool
+dec $gc_worker_scan_object(pstate, pgcslot) : nat?
+dec $gc_worker_scan_target(pstate, nat, nat) : (nat, nat)?
+dec $gc_worker_scan_enter(pstate, pgcpublic, nat, nat) : pstate
+dec $gc_worker_scan_finish(pstate, pgcpublic) : pstate
+dec $gc_worker_public_keep(pstate, nat) : pstate
+
+def $gc_slot_node(GC_DTOR_ROOT n) = (HOBJECT n)
+def $gc_nodes((GC_DTOR_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_nodes(pgcslot*)
+def $gc_physical_nodes((GC_DTOR_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_physical_nodes(pgcslot*)
+def $gc_compact_slots((GC_DTOR_ROOT n) :: pgcslot*) = (GC_DTOR_ROOT n) :: $gc_compact_slots(pgcslot*)
+def $gc_compact_back((GC_DTOR_ROOT n) :: pgcslot*) = (GC_DTOR_ROOT n) :: $gc_compact_slots($gc_slot_reverse(pgcslot*))
+def $gc_dtor_tag_valid(S, n_object) = true
+  -- if S.GC.PLAN = (pgcplan)
+  -- if (HOBJECT n_object) <- pgcplan.DTORS
+def $gc_dtor_tag_valid(S, n_object) = false -- otherwise
+def $gc_slots_valid(S, (GC_DTOR_ROOT n_object) :: pgcslot*, nat*, n) = (~(n <- nat*) /\ (HOBJECT n_object) <- S.ALLOCATIONS /\ $gc_possible_root(S, HOBJECT n_object) /\ $gc_dtor_tag_valid(S, n_object) /\ $gc_slots_valid(S, pgcslot*, nat*, $(n + 1)))
+def $gc_mark_dtors(eps, pnode*) = eps
+def $gc_mark_dtors((GC_ROOT (HOBJECT n)) :: pgcslot*, pnode*) = (GC_DTOR_ROOT n) :: $gc_mark_dtors(pgcslot*, pnode*)
+  -- if (HOBJECT n) <- pnode*
+def $gc_mark_dtors(pgcslot :: pgcslot_tail*, pnode*) = pgcslot :: $gc_mark_dtors(pgcslot_tail*, pnode*)
+  -- if ~$gc_dtor_slot(pgcslot, pnode*)
+def $gc_dtor_slot(GC_ROOT (HOBJECT n), pnode*) = ((HOBJECT n) <- pnode*)
+def $gc_dtor_slot(pgcslot, pnode*) = false -- otherwise
+def $gc_unmarked_slot(GC_DTOR_ROOT n) = GC_ROOT (HOBJECT n)
+def $gc_unmarked_slot(pgcslot) = pgcslot -- otherwise
+def $gc_unmarked_slots(eps) = eps
+def $gc_unmarked_slots(pgcslot :: pgcslot_tail*) = $gc_unmarked_slot(pgcslot) :: $gc_unmarked_slots(pgcslot_tail*)
+def $gc_marked(S, pnode) = true
+  -- if $gc_slot_find(S.GC.BUFFER, pnode, 0) = (n)
+  -- if S.GC.BUFFER[n] = GC_DTOR_ROOT n_object
+  -- if pnode = HOBJECT n_object
+def $gc_marked(S, pnode) = false -- otherwise
+def $gc_unmark(S, pnode) = S[.GC.BUFFER = $gc_slot_set(S.GC.BUFFER, n, GC_ROOT pnode)]
+  -- if $gc_slot_find(S.GC.BUFFER, pnode, 0) = (n)
+  -- if S.GC.BUFFER[n] = GC_DTOR_ROOT n_object
+  -- if pnode = HOBJECT n_object
+def $gc_unmark(S, pnode) = S -- otherwise
+def $gc_scan_clear(eps, n_start, n_end, n) = eps
+def $gc_scan_clear(pgcslot :: pgcslot_tail*, n_start, n_end, n) = $gc_unmarked_slot(pgcslot) :: $gc_scan_clear(pgcslot_tail*, n_start, n_end, $(n + 1))
+  -- if $(n_start <= n) /\ $(n < n_end)
+def $gc_scan_clear(pgcslot :: pgcslot_tail*, n_start, n_end, n) = pgcslot :: $gc_scan_clear(pgcslot_tail*, n_start, n_end, $(n + 1))
+  -- if $(n < n_start) \/ $(n >= n_end)
+
+def $gc_worker_public_scan_pass(S) = true
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if $gc_uncalled(S, pgcplan.DTORS) =/= eps
+def $gc_worker_public_error(pfiberapi) = eps -- if pfiberapi.KIND = (INTRINSIC_FIBER_RESUME)
+def $gc_worker_public_error(pfiberapi) = (n)
+  -- if pfiberapi.KIND = (INTRINSIC_FIBER_THROW)
+  -- if pfiberapi.SENT = (POBJECT n)
+def $gc_worker_public_task(S, pfiberapi) = GC_WORKER_SCAN {API pfiberapi, SOURCE pgcplan.CALL[.PENDING = eps], INDEX S.GC.SCAN.INDEX, END S.GC.SCAN.END, PENDING $gc_worker_public_error(pfiberapi)}
+  -- if $gc_worker_public_scan_pass(S)
+  -- if S.GC.PLAN = (pgcplan)
+
+def $gc_worker_public_context(S, pgcpublic) = true
+  -- if $gc_worker_public_api_valid(S, pgcpublic.API)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
+  -- if pgcpublic.END = S.GC.SCAN.END
+  -- if $(pgcpublic.INDEX <= pgcpublic.END)
+  -- if $gc_worker_scan_cursor(S, pgcpublic.INDEX)
+  -- if $destructor_pending_valid(S, pgcpublic.PENDING)
+def $gc_worker_public_context(S, pgcpublic) = false -- otherwise
+def $gc_worker_scan_cursor(S, n) = true -- if n = S.GC.SCAN.INDEX
+def $gc_worker_scan_cursor(S, n) = true
+  -- if n = $(S.GC.SCAN.INDEX + 1)
+  -- if $gc_worker_scan_target(S, S.GC.SCAN.INDEX, n) = eps
+def $gc_worker_scan_cursor(S, n) = false -- otherwise
+def $gc_worker_scan_valid(S, pgcpublic) = true
+  -- if S.TODO = [GC_WORKER_SCAN pgcpublic]
+  -- if $gc_worker_public_context(S, pgcpublic)
+  -- if $fiber_at(S, pgcpublic.API.OBJECT) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.ORIGIN = eps
+  -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+def $gc_worker_scan_valid(S, pgcpublic) = false -- otherwise
+def $call_task_valid(S, GC_WORKER_SCAN pgcpublic) = $gc_worker_scan_valid(S, pgcpublic)
+def $task_nodes(GC_WORKER_SCAN pgcpublic) = $instance_roots(pgcpublic.PENDING)
+def $eager_explicit_task(GC_WORKER_SCAN pgcpublic) = true
+
+def $gc_worker_scan_object(S, GC_DTOR_ROOT n) = (n)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if (HOBJECT n) <- pgcplan.DTORS /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $destructor_uncalled_node(S, HOBJECT n)
+def $gc_worker_scan_object(S, pgcslot) = eps -- otherwise
+def $gc_worker_scan_target(S, n, n_end) = eps
+  -- if $(n >= n_end) \/ $(n >= |S.GC.BUFFER|)
+def $gc_worker_scan_target(S, n, n_end) = ((n, n_object))
+  -- if $(n < n_end) /\ $(n < |S.GC.BUFFER|)
+  -- if $gc_worker_scan_object(S, S.GC.BUFFER[n]) = (n_object)
+def $gc_worker_scan_target(S, n, n_end) = $gc_worker_scan_target(S, $(n + 1), n_end)
+  -- if $(n < n_end) /\ $(n < |S.GC.BUFFER|)
+  -- if $gc_worker_scan_object(S, S.GC.BUFFER[n]) = eps
+rule PhpStep/gc-worker-public-scan-enter: S ~> $gc_worker_scan_enter(S, pgcpublic, n_slot, n_object)
+  -- if S.TODO = [GC_WORKER_SCAN pgcpublic]
+  -- if $gc_worker_scan_valid(S, pgcpublic)
+  -- if $gc_worker_scan_target(S, pgcpublic.INDEX, pgcpublic.END) = ((n_slot, n_object))
+def $gc_worker_scan_enter(S, pgcpublic, n_slot, n_object) = $destructor_select(S_guarded, n_object, false, eps)
+  -- if pgcpublic_next = pgcpublic[.INDEX = n_slot][.PENDING = eps]
+  -- if pgcguard = {WORKER pgcpublic.API.OBJECT, SOURCE pgcpublic.SOURCE, INDEX n_slot, OBJECT n_object, PENDING pgcpublic.PENDING, PUBLIC (pgcpublic_next)}
+  -- if S_scan = S[.GC.SCAN.INDEX = n_slot][.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, pgcpublic.INDEX, $(n_slot + 1), 0)]
+  -- if S_guarded = $gc_worker_put_guard(S_scan[.TODO = [GC_WORKER_GUARD pgcguard, FIBER_FINISH pgcguard.WORKER]], pgcguard.WORKER, (pgcguard))
+def $gc_worker_guard_attachment(S, pgcguard) = true
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if $gc_worker_public_context(S, pgcpublic)
+  -- if pgcpublic.PENDING = eps
+  -- if pgcguard.WORKER = pgcpublic.API.OBJECT
+  -- if pgcguard.SOURCE = pgcpublic.SOURCE
+  -- if pgcguard.INDEX = pgcpublic.INDEX /\ pgcguard.INDEX = S.GC.SCAN.INDEX
+  -- if $(pgcguard.INDEX < pgcpublic.END)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
+  -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
+def $gc_worker_guard_scope(S, pgcguard) = $gc_worker_scope(pfibercaller.VM.CURRENT)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.API = pgcpublic.API
+def $gc_worker_guard_done(S, pgcguard) = $gc_worker_public_keep(S_scan, pgcguard.OBJECT)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
+  -- if S_scan = S_dropped[.TODO = [GC_WORKER_SCAN pgcpublic[.INDEX = $(pgcguard.INDEX + 1)][.PENDING = pgcguard.PENDING]]]
+def $gc_worker_public_keep(S, n_object) = $gc_bare_record(S, n_object)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
+  -- if $gc_ordinary_node(S, HOBJECT n_object)
+def $gc_worker_public_keep(S, n_object) = S
+  -- if $($heap_owners($heap_graph(S), HOBJECT n_object) > 0)
+
+rule PhpStep/gc-worker-public-scan-idle: S ~> $gc_worker_scan_finish(S, pgcpublic)
+  -- if S.TODO = [GC_WORKER_SCAN pgcpublic]
+  -- if $gc_worker_scan_valid(S, pgcpublic)
+  -- if $gc_worker_scan_target(S, pgcpublic.INDEX, pgcpublic.END) = eps
+def $gc_worker_scan_finish(S, pgcpublic) = $fiber_back($gc_worker_public_suspend(S_clear, pgcpublic.API), PNULL, false)
+  -- if pgcpublic.PENDING = eps
+  -- if S_clear = S[.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, pgcpublic.INDEX, pgcpublic.END, 0)]
+def $gc_worker_scan_finish(S, pgcpublic) = $fiber_back($gc_worker_public_suspend(S_clear, pgcpublic.API), POBJECT n_error, true)
+  -- if pgcpublic.PENDING = (n_error)
+  -- if S_clear = S[.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, pgcpublic.INDEX, pgcpublic.END, 0)]
+
+;; Main -> public resume has no gc_call_destructors_in_fiber return loop, so
+;; a PHP suspension here must never take the ordinary317 detach path.
+def $gc_worker_public_guard_live(S) = true
+  -- if $gc_worker_guard_at(S) = (pgcguard)
+  -- if pgcguard.PUBLIC =/= eps
+def $gc_worker_public_guard_live(S) = false -- otherwise
+def $fiber_suspend(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "suspension inside a public collector scan callback"]
+  -- if $gc_worker_public_guard_live(S)

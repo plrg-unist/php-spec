@@ -45,6 +45,7 @@ dec $gc_caller_scope(pstate, pfibercaller*, pgccall) : pstate?
 dec $gc_close_scope(pstate, pfiberclose*, pgccall) : pstate?
 dec $gc_worker_scope(pcallcontext?) : porigin?
 dec $gc_worker_start_buffer(pstate, pgcplan, bool) : pstate
+dec $gc_worker_guard_scope(pstate, pgcguard) : porigin?
 
 ;; Restored VM views exclude their borrowed parked copy. Only TODO/FRAMES,
 ;; never destructor histories or PLAN itself, authenticate the global pass.
@@ -330,20 +331,20 @@ def $gc_worker_cached(S, pgccall) = $destruction_store_new(S[.OBJECTS = S.OBJECT
 def $gc_worker_cached(S, pgccall) = S -- if S.GC.WORKER =/= eps
 def $gc_worker_start_plan(S, pgcplan, true) = $gc_plan(S, pgcplan.CALL)
 def $gc_worker_start_plan(S, pgcplan, false) = pgcplan
-def $gc_worker_start_buffer(S, pgcplan, true) = S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps]
+def $gc_worker_start_buffer(S, pgcplan, true) = S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps][.GC.SCAN = {INDEX 0, END |pgcplan.BUFFER|}]
 def $gc_worker_start_buffer(S, pgcplan, false) = S
 def $gc_fiber_trace(S, pgcplan) = $gc_worker_start(S, pgcplan, true)
   -- if $fiber_transfer_domain(S)
 def $gc_fiber_trace(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "collector Fiber transfer during an initializer, source loader or Generator continuation"]
   -- if ~$fiber_transfer_domain(S)
 
-rule PhpStep/gc-worker-skip: S ~> $gc_worker_plan_set(S, pgcplan_next)
+rule PhpStep/gc-worker-skip: S ~> $gc_worker_plan_set($gc_unmark(S, pnode), pgcplan_next)
   -- if S.TODO = [GC_WORKER_RUN n]
   -- if $gc_worker_run_valid(S, n)
   -- if S.GC.PLAN = (pgcplan)
   -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pnode = pgcplan.DTORS[pgcplan.INDEX]
-  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode)
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode) \/ ~$gc_marked(S, pnode)
   -- if pgcplan_next = pgcplan[.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_SKIPPED pnode]]
 rule PhpStep/gc-worker-enter: S ~> $gc_worker_enter(S, n, pgcplan, n_object)
   -- if S.TODO = [GC_WORKER_RUN n]
@@ -353,9 +354,11 @@ rule PhpStep/gc-worker-enter: S ~> $gc_worker_enter(S, n, pgcplan, n_object)
   -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n_object
   -- if (HOBJECT n_object) <- S.ALLOCATIONS
   -- if $destructor_uncalled_node(S, HOBJECT n_object)
+  -- if $gc_marked(S, HOBJECT n_object)
 def $gc_worker_enter(S, n, pgcplan, n_object) = $destructor_select(S_guarded, n_object, false, eps)
-  -- if pgcguard = {WORKER n, SOURCE pgcplan.CALL[.PENDING = eps], INDEX pgcplan.INDEX, OBJECT n_object, PENDING pgcplan.CALL.PENDING}
-  -- if S_moved = $gc_worker_plan_set(S, pgcplan[.CALL.PENDING = eps])
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n_object, 0) = (n_slot)
+  -- if pgcguard = {WORKER n, SOURCE pgcplan.CALL[.PENDING = eps], INDEX pgcplan.INDEX, OBJECT n_object, PENDING pgcplan.CALL.PENDING, PUBLIC eps}
+  -- if S_moved = $gc_worker_plan_set($gc_unmark(S, HOBJECT n_object)[.GC.SCAN.INDEX = n_slot], pgcplan[.CALL.PENDING = eps])
   -- if S_guarded = $gc_worker_put_guard(S_moved[.TODO = [GC_WORKER_GUARD pgcguard, FIBER_FINISH n]], n, (pgcguard))
 rule PhpStep/gc-worker-idle: S ~> $gc_worker_idle(S, n, pgcplan)
   -- if S.TODO = [GC_WORKER_RUN n]
@@ -429,6 +432,7 @@ def $gc_worker_base_frame(S, pframe) = false -- otherwise
 def $call_saved_context_valid(S, pframe) = true -- if $gc_worker_base_frame(S, pframe)
 
 def $gc_worker_guard_attachment(S, pgcguard) = true
+  -- if pgcguard.PUBLIC = eps
   -- if S.GC.WORKER = (pgcguard.WORKER)
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
@@ -436,7 +440,7 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if pgcplan.INDEX = pgcguard.INDEX
   -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT pgcguard.OBJECT
-def $gc_worker_guard_attachment(S, pgcguard) = true -- if S.GC.WORKER =/= (pgcguard.WORKER)
+def $gc_worker_guard_attachment(S, pgcguard) = true -- if pgcguard.PUBLIC = eps /\ S.GC.WORKER =/= (pgcguard.WORKER)
 def $gc_worker_guard_attachment(S, pgcguard) = false -- otherwise
 def $call_task_valid(S, GC_WORKER_GUARD pgcguard) = $gc_worker_guard_valid(S, pgcguard)
 def $destructor_leaf_valid(S, pdestructorcall) = true
@@ -454,9 +458,11 @@ def $gc_source(S) = true
 def $destructor_tail_pending((GC_WORKER_GUARD pgcguard) :: ptask_tail*) = pgcguard.PENDING
 def $gc_worker_scope(eps) = eps
 def $gc_worker_scope((pcallcontext)) = pcallcontext.LEXICAL_CLASS
-def $destructor_access_scope(S) = $gc_worker_scope(pgcguard.SOURCE.CALLER)
+def $destructor_access_scope(S) = $gc_worker_guard_scope(S, pgcguard)
   -- if S.CURRENT = eps
   -- if $gc_worker_guard_at(S) = (pgcguard)
+def $gc_worker_guard_scope(S, pgcguard) = $gc_worker_scope(pgcguard.SOURCE.CALLER)
+  -- if pgcguard.PUBLIC = eps
 
 def $gc_worker_pending_tasks(eps, pgcguard, pgcguard_new) = eps
 def $gc_worker_pending_tasks((GC_WORKER_GUARD pgcguard) :: ptask_tail*, pgcguard, pgcguard_new) = (GC_WORKER_GUARD pgcguard_new) :: ptask_tail*
@@ -480,19 +486,23 @@ rule PhpStep/gc-worker-guard-return: S ~> $gc_worker_guard_done(S, pgcguard)
 def $gc_worker_guard_drop(S, pgcguard) = $gc_worker_put_guard(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgcguard.WORKER, eps)
   -- if S.TODO = (GC_WORKER_GUARD pgcguard) :: ptask_tail*
 def $gc_worker_guard_done(S, pgcguard) = $gc_worker_plan_set($gc_worker_guard_drop(S, pgcguard)[.TODO = [GC_WORKER_RUN pgcguard.WORKER]], pgcplan_next)
+  -- if pgcguard.PUBLIC = eps
   -- if S.GC.WORKER = (pgcguard.WORKER)
   -- if S.GC.PLAN = (pgcplan)
   -- if pgcplan_next = pgcplan[.CALL.PENDING = pgcguard.PENDING][.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_CALLED (HOBJECT pgcguard.OBJECT)]][.DONE = pgcplan.DONE ++ [HOBJECT pgcguard.OBJECT]]
 def $gc_worker_guard_done(S, pgcguard) = $gc_worker_guard_zero(S, pgcguard)
+  -- if pgcguard.PUBLIC = eps
   -- if S.GC.WORKER =/= (pgcguard.WORKER)
   -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
   -- if $heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) = 0
 def $gc_worker_guard_done(S, pgcguard) = S_dropped[.GC = $gc_buffer_add(S_dropped.GC, HOBJECT pgcguard.OBJECT)]
+  -- if pgcguard.PUBLIC = eps
   -- if S.GC.WORKER =/= (pgcguard.WORKER)
   -- if pgcguard.PENDING = eps
   -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
   -- if $($heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) > 0)
 def $gc_worker_guard_done(S, pgcguard) = S_dropped[.GC = $gc_buffer_add(S_dropped.GC, HOBJECT pgcguard.OBJECT)][.TODO = (THROW_SEARCH n_error) :: S_dropped.TODO]
+  -- if pgcguard.PUBLIC = eps
   -- if S.GC.WORKER =/= (pgcguard.WORKER)
   -- if pgcguard.PENDING = (n_error)
   -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
@@ -512,10 +522,11 @@ def $gc_worker_detach(S, n, pgcplan) = $destructor_release_begin(S_detached, [DE
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.GC = (pgcworker)
   -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcguard.PUBLIC = eps
   -- if pgcplan_next = pgcplan[.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_DETACHED (HOBJECT pgcguard.OBJECT)]]
   -- if S_returned = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
   -- if S_returned.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_tail*
-  -- if S_detached = S_returned[.GC.WORKER = eps][.GC.PLAN = (pgcplan_next)][.GC.ACTIVE = (pgcplan_next.CALL)][.TODO = (GC_WORKER_REPLACE pgcplan_next) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if S_detached = S_returned[.GC.WORKER = eps][.GC.SCAN.INDEX = $(S_returned.GC.SCAN.INDEX + 1)][.GC.PLAN = (pgcplan_next)][.GC.ACTIVE = (pgcplan_next.CALL)][.TODO = (GC_WORKER_REPLACE pgcplan_next) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
 def $gc_steps_valid(S, (HOBJECT n) :: pnode*, (GC_DETACHED (HOBJECT n)) :: pgcprogress*) = (n <- S.DESTRUCTION.CALLED /\ $gc_steps_valid(S, pnode*, pgcprogress*))
 def $gc_step_done((GC_DETACHED pnode) :: pgcprogress*) = $gc_step_done(pgcprogress*)
 def $call_task_valid(S, GC_WORKER_REPLACE pgcplan) = ($gc_plan_valid(S, pgcplan) /\ S.GC.WORKER = eps /\ $(pgcplan.INDEX > 0))

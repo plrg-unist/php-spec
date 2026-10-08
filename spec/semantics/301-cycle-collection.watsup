@@ -118,6 +118,10 @@ dec $gc_worker_state_valid(pstate) : bool
 dec $gc_slot_node(pgcslot) : pnode?
 dec $gc_bare_keep(pstate) : pnode*
 dec $gc_transition_prepare(pstate) : pstate
+dec $gc_mark_dtors(pgcslot*, pnode*) : pgcslot*
+dec $gc_unmarked_slots(pgcslot*) : pgcslot*
+dec $gc_marked(pstate, pnode) : bool
+dec $gc_unmark(pstate, pnode) : pstate
 def $gc_slot_node(GC_ROOT pnode) = (pnode)
 def $gc_slot_node(pgcslot) = eps -- otherwise
 def $gc_bare_keep(S) = eps -- otherwise
@@ -495,7 +499,7 @@ def $gc_uncalled_snapshot(S, (HARRAY n) :: pnode*, nat*) = $gc_uncalled_snapshot
 def $gc_steps_valid(S, eps, eps) = true
 def $gc_steps_valid(S, (HOBJECT n) :: pnode*, (GC_CALLED (HOBJECT n)) :: pgcprogress*) = (n <- S.DESTRUCTION.CALLED /\ $gc_steps_valid(S, pnode*, pgcprogress*))
 def $gc_steps_valid(S, pnode :: pnode_tail*, (GC_SKIPPED pnode) :: pgcprogress*) = $gc_steps_valid(S, pnode_tail*, pgcprogress*)
-  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode)
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode) \/ ~$gc_marked(S, pnode)
 def $gc_steps_valid(S, pnode*, pgcprogress*) = false -- otherwise
 def $gc_step_done(eps) = eps
 def $gc_step_done((GC_CALLED pnode) :: pgcprogress*) = pnode :: $gc_step_done(pgcprogress*)
@@ -505,7 +509,7 @@ def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobject
 def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, INDEX 0, STEPS eps, DONE eps}
   -- if H = $gc_graph(S)
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
-  -- if pgc_start = $gc_compact(S.GC)
+  -- if pgc_start = $gc_compact(S.GC[.BUFFER = $gc_unmarked_slots(S.GC.BUFFER)])
   -- if pnode_white* = $gc_white(H, $gc_nodes(pgc_start.BUFFER))
   -- if pgc_black_removed = $gc_compact($gc_buffer_drop_nodes(pgc_start, $destruction_nodes_delete($gc_physical_nodes(pgc_start.BUFFER), pnode_white*)))
   -- if (pnode_visit*, pnode_counted*) = $gc_walk(H, hedge_proxy*, $gc_root_visits($gc_nodes(pgc_black_removed.BUFFER)), pnode_white*, eps, eps)
@@ -634,7 +638,7 @@ def $gc_active_valid(S) = $gc_call_live(S, pgccall)
 def $gc_active_valid(S) = $gc_plan_live(S, pgcplan)
   -- if S.GC.PLAN = (pgcplan)
 def $gc_active_valid(S) = false -- otherwise
-def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S))
+def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S) /\ $(S.GC.SCAN.INDEX <= S.GC.SCAN.END))
 
 def $gc_simple_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
 def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PBOOL S.GC.ENABLED) -- if pconfigcall.KIND = INTRINSIC_GC_ENABLED
@@ -683,7 +687,7 @@ def $gc_trace(S, pgccall) = $gc_fiber_trace(S, pgcplan)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER =/= eps /\ pgcplan.DTORS =/= eps
-def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan, GC_DTORS pgcplan)
+def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps], pgcplan, GC_DTORS pgcplan)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if pgcplan.CANDIDATES = eps \/ $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER = eps \/ pgcplan.DTORS = eps
@@ -693,18 +697,18 @@ rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
 rule PhpStep/gc-dtors-done: S ~> S[.TODO = (GC_FREE pgcplan) :: ptask*]
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ pgcplan.INDEX = |pgcplan.DTORS|
-rule PhpStep/gc-dtor-skip: S ~> $gc_replace(S, pgcplan_next, GC_DTORS pgcplan_next)
+rule PhpStep/gc-dtor-skip: S ~> $gc_replace($gc_unmark(S, pnode), pgcplan_next, GC_DTORS pgcplan_next)
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pnode = pgcplan.DTORS[pgcplan.INDEX]
-  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode)
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode) \/ ~$gc_marked(S, pnode)
   -- if pgcplan_next = pgcplan[.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_SKIPPED pnode]]
 rule PhpStep/gc-dtor-enter: S ~> $gc_dtor_begin(S, pgcplan, n)
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
-  -- if (HOBJECT n) <- S.ALLOCATIONS /\ $destructor_uncalled_node(S, HOBJECT n)
-def $gc_dtor_begin(S, pgcplan, n) = $destructor_select(S[.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*], n, false, eps)
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ $destructor_uncalled_node(S, HOBJECT n) /\ $gc_marked(S, HOBJECT n)
+def $gc_dtor_begin(S, pgcplan, n) = $destructor_select($gc_unmark(S, HOBJECT n)[.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*], n, false, eps)
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
 rule PhpStep/gc-dtor-return: S ~> $gc_dtor_done(S, pgcplan, n)
   -- if S.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*
