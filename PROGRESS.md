@@ -1096,6 +1096,7 @@ stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
 with its typed source, real NEXT advancement/detach and consumed-slot refusal.
 The old typed fixture is adapted statically with no renewed credit. Quiet/heap
 payloads, uninitialized/consumed storage, mutation and escape remain required.
+The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

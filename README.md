@@ -899,7 +899,7 @@ Initialized declared scalar properties that cleanup has not yet visited now read
 through the actual parent carrier and current slot, with ordinary visibility checks.
 Three exact originals and104/89 reached premises cover live typed aliases,
 consumed-slot refusal and genuine owner/slot boundaries; quiet, heap-backed and
-mutating accesses remain required.
+mutating accesses remain required. The actual351 composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
