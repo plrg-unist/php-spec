@@ -380,7 +380,7 @@ $generator_reference_notice_frames(S_notice.FRAMES) = eps
             checks += cache_owner('S_wrapped', 'pgenerator_wrapped', 'n_generator', 'n_cell')
             previous = 'S_wrapped'
         else:
-            checks += ['poperand_key? = (poperand_key)', '$generator_yield_key_operand(S_notice,porigin) = (poperand_key)']
+            checks += ['poperand_key? = (poperand_present_key)', '$generator_yield_key_operand(S_notice,porigin) = (poperand_present_key)']
             checks += seek('S_catch', 'S_notice', 9) + valid('S_catch')
             checks += ['S_catch.TODO = (CATCH_BIND porigin_catch n_index n_throwable) :: ptask_catch_tail*',
                        '$trace_slot(S_catch,S_catch.ENV,$ptascii("error")) = POBJECT n_throwable',
