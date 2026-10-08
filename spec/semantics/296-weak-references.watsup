@@ -12,6 +12,10 @@ def $object_name(S, n) = $ptascii("WeakReference") -- if S.OBJECTS[n] = WEAKREFE
 def $getclass_live_object(S, n) = true -- if $weakref_at(S, n) =/= eps
 def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("weakreference"))
   -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, $ptascii("WeakReference"))
+  -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
+def $typed_given(S, POBJECT n) = $ptascii("WeakReference")
+  -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
 def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = WEAKREFERENCE n_target?
 def $weakref_pair(S, n_left, n_right) = true
   -- if S.OBJECTS[n_left] = WEAKREFERENCE n_target_left?
