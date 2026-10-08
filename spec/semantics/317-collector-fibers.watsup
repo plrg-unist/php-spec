@@ -581,6 +581,12 @@ def $gc_worker_graceful_retiring(S, n_exit) = true
   -- if $(n_owners > 0) /\ $heap_owners($heap_graph(S), HOBJECT n_exit) = n_owners
 def $gc_worker_graceful_retiring(S, n_exit) = false -- otherwise
 def $fiber_graceful_retiring(S, n_exit) = true -- if $gc_worker_graceful_retiring(S, n_exit)
+def $closure_live_node_scoped_valid(S_live, S, HOBJECT n_exit) = true
+  -- if $(n_exit < |S.OBJECTS|) /\ (HOBJECT n_exit) <- S.ALLOCATIONS
+  -- if $(n_exit < |S_live.OBJECTS|)
+  -- if S.OBJECTS[n_exit] = FIBERGRACEFUL n_worker n_sequence
+  -- if S_live.OBJECTS[n_exit] = S.OBJECTS[n_exit]
+  -- if $gc_worker_graceful_retiring(S_live, n_exit)
 
 def $destructor_trace_suffix(S, pcallcontext) = [{FILE eps, LINE $(-1), FUNCTION $ptascii("gc_destructor_fiber"), CLASS eps, TYPE eps, ARGS eps, HASARGS true}]
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
