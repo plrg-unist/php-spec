@@ -474,6 +474,11 @@ def $gc_transition(S, S_next) = $gc_transition_done(S, S_done, pgc_new)
   -- if pgc_live = $gc_buffer_remove_nodes(S_done.GC, $destruction_nodes_delete(S.ALLOCATIONS, S_done.ALLOCATIONS))
   -- if pnode_removed* = $eager_removed($eager_owner_order(S), $machine_roots(S_done) ++ $eager_edge_nodes($allocation_edges(S_done, S_done.ALLOCATIONS)))
   -- if pgc_new = $gc_decrements(S_done, pgc_live, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*))
+def $gc_transition_owners(S, (S_next, OBSERVED_OWNER_ORDER pnode_owner*)) = $gc_transition_done(S, S_done, pgc_new)
+  -- if S_done = $prune_allocations($generator_request_transition_prepare($gc_transition_prepare(S_next)))
+  -- if pgc_live = $gc_buffer_remove_nodes(S_done.GC, $destruction_nodes_delete(S.ALLOCATIONS, S_done.ALLOCATIONS))
+  -- if pnode_removed* = $eager_removed(pnode_owner*, $machine_roots(S_done) ++ $eager_edge_nodes($allocation_edges(S_done, S_done.ALLOCATIONS)))
+  -- if pgc_new = $gc_decrements(S_done, pgc_live, $gc_same_location(S, S_next) ++ $gc_consumed_decrements(S, S_done, pnode_removed*))
 
 def $gc_reverse(eps) = eps
 def $gc_reverse(pnode :: pnode_tail*) = $gc_reverse(pnode_tail*) ++ [pnode]

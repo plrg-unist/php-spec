@@ -524,6 +524,8 @@ Keep and release scans also reuse the carried graph, including detached and
 retired buckets; public helpers retain their behavior for modified graphs.
 GC and eager-destruction consumers read the same observed state’s edges after
 its roots without rebuilding those roots.
+The driver carries an already successful original-state owner order into the
+following GC pass; failed or skipped destruction branches retain public fallbacks.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate

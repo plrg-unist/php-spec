@@ -23,6 +23,8 @@ dec $eager_assignment_source(pcnode) : bool
 dec $eager_property_finish_task(ptask) : bool
 dec $eager_removed(pnode*, pnode*) : pnode*
 dec $eager_slots(pstate, pstate) : pnode*
+dec $eager_slots_owners(pstate, pstate, pnode*) : pnode*
+dec $eager_operation_owners(pstate, pstate, pstate, ptask, pnode*, pnode*) : (pstate, pownerobservation)
 dec $eager_unused_assignment(pstate, pstate) : bool
 dec $eager_operation_destination(pstate, pstate) : pstate
 dec $eager_live_slots(pstate, pnode*) : pnode*
@@ -236,7 +238,8 @@ def $eager_removed(pnode :: pnode_old*, pnode_new*) = $eager_removed(pnode_old*,
   -- if pnode <- pnode_new*
 def $eager_removed(pnode :: pnode_old*, pnode_new*) = pnode :: $eager_removed(pnode_old*, pnode_new*)
   -- if ~(pnode <- pnode_new*)
-def $eager_slots(S, S_next) = $eager_live_slots(S_next, $eager_removed($eager_owner_order(S), $machine_roots(S_next) ++ $eager_edge_nodes($allocation_edges(S_next, S_next.ALLOCATIONS)))) ++ $eager_property_pending_nodes(S, S_next)
+def $eager_slots(S, S_next) = $eager_slots_owners(S, S_next, $eager_owner_order(S))
+def $eager_slots_owners(S, S_next, pnode_owner*) = $eager_live_slots(S_next, $eager_removed(pnode_owner*, $machine_roots(S_next) ++ $eager_edge_nodes($allocation_edges(S_next, S_next.ALLOCATIONS)))) ++ $eager_property_pending_nodes(S, S_next)
 def $eager_live_slots(S, eps) = eps
 def $eager_live_slots(S, pnode :: pnode_tail*) = pnode :: $eager_live_slots(S, pnode_tail*) -- if pnode <- S.ALLOCATIONS
 def $eager_live_slots(S, pnode :: pnode_tail*) = $eager_live_slots(S, pnode_tail*) -- if ~(pnode <- S.ALLOCATIONS)
@@ -254,12 +257,15 @@ def $eager_unused_assignment(S, S_next) = true
   -- if $destructor_return_discarded(S_next.TODO)
 def $eager_unused_assignment(S, S_next) = false -- otherwise
 
-def $destruction_transition(S, S_next) = $eager_fatal_begin(S, S_next)
+def $destruction_transition(S, S_next) = S_out
+  -- if (S_out, pownerobservation) = $destruction_transition_owners(S, S_next)
+;; Carry only the already successful owner order of the original state.
+def $destruction_transition_owners(S, S_next) = ($eager_fatal_begin(S, S_next), NO_OWNER_ORDER)
   -- if $eager_fatal_ready(S, S_next.COMPLETION)
-def $destruction_transition(S, S_next) = $eager_bailout_transfer(S, S_next, ptask)
+def $destruction_transition_owners(S, S_next) = ($eager_bailout_transfer(S, S_next, ptask), NO_OWNER_ORDER)
   -- if ~$eager_fatal_ready(S, S_next.COMPLETION)
   -- if $eager_bailout_source(S) = (ptask)
-def $destruction_transition(S, S_next) = $eager_operation_begin(S_out, S, ptask, pnode*)
+def $destruction_transition_owners(S, S_next) = $eager_operation_owners(S, S_next, S_out, ptask, pnode*, pnode_owner*)
   -- if ~$eager_fatal_ready(S, S_next.COMPLETION)
   -- if $eager_bailout_source(S) = eps
   -- if $destructor_operational(S_next)
@@ -267,10 +273,13 @@ def $destruction_transition(S, S_next) = $eager_operation_begin(S_out, S, ptask,
   -- if ~$eager_explicit_task(ptask)
   -- if S_next.COMPLETION =/= BUDGET /\ S_next.COMPLETION =/= SOURCE_PENDING /\ ~$destructor_unsupported(S_next.COMPLETION)
   -- if S_out = $eager_operation_destination(S, S_next)
-  -- if pnode* = $eager_slots(S, S_out)
-  -- if pnode* =/= eps
-def $destruction_transition(S, S_next) = $eager_operation_destination(S, S_next)
+  -- if pnode_owner* = $eager_owner_order(S)
+  -- if pnode* = $eager_slots_owners(S, S_out, pnode_owner*)
+def $destruction_transition_owners(S, S_next) = ($eager_operation_destination(S, S_next), NO_OWNER_ORDER)
   -- otherwise
+def $eager_operation_owners(S, S_next, S_out, ptask, eps, pnode_owner*) = ($eager_operation_destination(S, S_next), OBSERVED_OWNER_ORDER pnode_owner*)
+def $eager_operation_owners(S, S_next, S_out, ptask, pnode*, pnode_owner*) = ($eager_operation_begin(S_out, S, ptask, pnode*), OBSERVED_OWNER_ORDER pnode_owner*)
+  -- if pnode* =/= eps
 def $eager_destination_value(S, S_next) = S_next[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $eager_unused_assignment(S, S_next)
 def $eager_destination_value(S, S_next) = S_next[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
