@@ -91,7 +91,17 @@ CASES = {'regular': 'deferred-regular.php',
          'call-key-retirement-throw': 'call-key-retirement-throw-child.php',
          'call-key-property-live': 'call-key-property-live-child.php',
          'call-key-missing-key': 'call-key-missing-key-child.php',
-         'call-key-eval-live': None}
+         'call-key-eval-live': None,
+         'echo-call-late-function': 'echo-call-late-function-child.php',
+         'echo-call-result-warning': 'echo-call-result-warning-child.php',
+         'echo-call-result-throw': 'echo-call-result-throw-child.php',
+         'echo-call-retirement-throw': 'echo-call-retirement-throw-child.php',
+         'echo-call-missing-function': 'echo-call-missing-function-child.php',
+         'echo-call-eval-live': None,
+         'echo-call-baseline-lifetime': None,
+         'echo-call-reference-live': 'echo-call-reference-live-child.php',
+         'echo-call-cast-throw': 'echo-call-cast-throw-child.php',
+         'echo-call-reference-pending': 'echo-call-reference-pending-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -129,7 +139,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)
