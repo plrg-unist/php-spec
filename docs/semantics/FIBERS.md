@@ -519,9 +519,20 @@ its target before original argument destruction. The
 [raw-array ledger](../../coverage/semantics/fiber-array-core-callbacks-review.json)
 keeps the new source/state cuts and earlier Unsupported baseline separate.
 
-Fiber-start argument unpacking and compound array
-or factory selectors remain required; start unpacking
-retains an explicit Unsupported control.
+Module 374 unpacks arrays into the original START buffer for ordinary methods,
+ordinary callable arrays and captured calls. A live cursor owns the current pack;
+frozen dereferenced entries and completed pack history own nothing. Each pack
+resets positional-after-named detection, while duplicate names span the buffer.
+Saved APIs authenticate historical packs after their arrays retire. Copied
+C-root START buffers retain no pack witness; the genuine outer API retains it.
+Abrupt cleanup retires the active pack first, then positional values, EX(This),
+and named values from the unfinished call. Direct
+Closure calls release their Closure after named values; explicit `__invoke`
+releases it as EX(This). Pack errors retain their actual pre-entry trace.
+The [start-unpack ledger](../../coverage/semantics/fiber-start-unpack-review.json)
+keeps these new checks separate from earlier captures and callback consumers.
+Traversable unpacking and compound array or factory selectors remain required;
+Traversable START packs retain an explicit Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and
@@ -536,7 +547,7 @@ suppressed `exit` in a destroyed Fiber remain required consumers.
 
 `getReturn` after graceful close without an actual return, request/fatal cleanup,
 wider core internal callback bodies, reference forwarding, wider API callable/FCC entry,
-`start` unpacking and switching during initialization/source loading remain
+Traversable `start` unpacking and switching during initialization/source loading remain
 required. The first transfer domain rejects active or saved constant/default and
 autoload initialization, and active Generator execution, including switches in
 their helper calls. Their shared pending flags and parked ownership remain

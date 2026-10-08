@@ -31,7 +31,7 @@ def $gc_worker_physical_suspend(S, pconfigcall) = $destructor_release_begin(S_de
   -- if pgcguard_new = pgcguard[.PUBLIC = eps]
   -- if S_plain = $gc_worker_put_guard(S[.TODO = $gc_worker_pending_tasks(S.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(S.FRAMES, pgcguard, pgcguard_new)], n, (pgcguard_new))
   -- if S_plain.TODO = ptask :: ptask_tail*
-  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (INTRINSIC_FIBER_SUSPEND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE pfiber.SEQUENCE}
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (INTRINSIC_FIBER_SUSPEND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE pfiber.SEQUENCE, PACKS eps}
   -- if S_saved = S_plain[.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_suspended = $fiber_put(S_saved, n, pfiber[.GC = (pgcworker[.GUARD = (pgcguard_new)])][.STATUS = FIBER_SUSPENDED][.VM = ($fiber_vm(S_saved))])
   -- if S_returned = $fiber_vm_restore(S_suspended, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
@@ -67,7 +67,7 @@ def $gc_worker_physical_start(S, pgcplan, pgcscan) = $gc_worker_internal_next(S_
   -- if $fiber_at(S_cached, n) = (pfiber)
   -- if pgcplan_next = pgcplan[.CALL.PENDING = eps]
   -- if S_caller = $gc_replace(S_cached, pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
-  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ}
+  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ, PACKS eps}
   -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
   -- if pgcpublic = {API pfiberapi, SOURCE pgcplan_next.CALL, INDEX pgcscan.INDEX, END pgcscan.END, PENDING pgcplan.CALL.PENDING, RESIDUAL true}
   -- if S_running = $fiber_put(S_caller, n, pfiber[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = pfiberapi.SEQUENCE])

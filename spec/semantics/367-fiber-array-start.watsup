@@ -15,7 +15,7 @@ def $fiber_array_new(S, n, porigin, z_init, z_call) = S[.TODO = [FIBER_ARGS pfib
   -- if pentry* = $fiber_factory_items(S, PARRAY n)
   -- if $fiber_factory_selection(S, PARRAY n, pentry*) = ((INTRINSIC_FIBER_START, ptbytes, (n_input)))
   -- if pfiberarray = {SITE porigin, INIT z_init, LINE z_call, ARRAY n, ITEMS pentry*, KIND INTRINSIC_FIBER_START, NAME ptbytes, INPUT (n_input)}
-  -- if pfiberstart = {SITE porigin, OBJECT n_input, INDEX 0, SENT {SLOTS eps, NAMED eps}, LINE z_call}
+  -- if pfiberstart = {SITE porigin, OBJECT n_input, INDEX 0, SENT {SLOTS eps, NAMED eps}, LINE z_call, PACKS eps}
 def $fiber_array_start_source_valid(S, pfiberarray) = true
   -- if pfiberarray.KIND = INTRINSIC_FIBER_START
   -- if $fiber_array_site_valid(S, pfiberarray)
@@ -45,7 +45,7 @@ def $fiber_array_start_buffer_valid(S, pfiberarray, pfiberstart) = true
   -- if S.ORIGIN = (pfiberstart.SITE)
   -- if $intrinsic_count(S, pfiberstart.SITE) = (n_count)
   -- if $(pfiberstart.INDEX <= n_count)
-  -- if $fiber_start_shape(S, pfiberstart.SITE, pfiberstart.INDEX, pfiberstart.SENT)
+  -- if $fiber_start_shape(S, pfiberstart.SITE, pfiberstart.INDEX, pfiberstart.SENT, pfiberstart.PACKS)
   -- if $fiber_array_count(S.TODO, pfiberarray.SITE) = 1
   -- if $generator_flat_tasks(S.TODO)
 def $fiber_array_start_buffer_valid(S, pfiberarray, pfiberstart) = false -- otherwise
@@ -100,6 +100,7 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if pfiberapi.OBJECT = pfiberstart.OBJECT
   -- if pfiberapi.SITE = pfiberstart.SITE /\ pfiberapi.LINE = pfiberstart.LINE
   -- if pfiberapi.START = (pfiberstart.SENT)
+  -- if pfiberapi.PACKS = pfiberstart.PACKS
 
 ;; Zend releases positional args, then EX(This), then extra named args.
 ;; Moving those slots to an ordered release queue preserves every owner.

@@ -962,7 +962,7 @@ The actual349 composition passes strict compilation.
 Initialized declared scalar properties that cleanup has not yet visited now read
 through the actual parent carrier and current slot, with ordinary visibility checks.
 Three exact originals and104/89 reached premises cover live typed aliases,
-consumed-slot refusal and genuine owner/slot boundaries; quiet and
+consumed-slot refusal and genuine owner/slot boundaries; wider quiet and
 mutating accesses remain required. The actual351 composition passes strict initialization.
 Future initialized declared object and array reads now acquire the copied payload owner, dereferencing
 property aliases without retaining their wrapper. Three further originals and
@@ -979,8 +979,15 @@ Future explicitly unset typed slots now raise the same Error when no getter is
 present. Three exact originals and 142/147 reached premises distinguish actual
 dynamic-first cleanup order from physical slot indexes, retain visibility and
 alias detachment, and verify pending cleanup and atomic selected binding.
-Consumed slots, quiet/getter accesses and untyped unset reads remain required.
+Consumed slots, wider quiet/getter accesses and untyped unset reads remain required.
 The actual356 composition passes strict initialization.
+Future initialized declared values and typed INITIAL/UNSET slots now support
+quiet `isset`, `empty` and `??` without magic consumers. Terminal probes borrow
+their payload; coalescing copies the live referent. Three originals cover private,
+null and typed INITIAL/UNSET results; 157/138 reached premises prove unchanged
+heap owners, alias rebinding/type detach and kept-child survival.
+The actual358 composition passes strict initialization.
+Consumed/missing storage and wider magic accesses remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -998,12 +1005,9 @@ execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
 Ordinary abstract scoped calls reject before arguments, and inaccessible concrete
 nonstatic methods report access errors before missing-receiver errors. Literal
-constructor calls retain their separate opcode dispatch, checking private denial
-before receiver compatibility. That further case passes one original and24
-genuine checks plus6 setup. The preceding two cases pass
-two normal originals and54 supplied checks plus12 setup clauses (40 genuine
-clauses and14 helper-only clauses covering flag/source probes); prior abstract-call
-evidence remains separate.
+constructor calls retain separate opcode dispatch: private denial precedes
+receiver compatibility, and inherited private constructor errors name the requested
+class.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work
@@ -1386,8 +1390,15 @@ Copied C arguments remain separate from the original outer start buffer. Saved
 Fiber states and actual callers authenticate nested, parked static and idle
 collector continuations. Inner API trace frames have no file or line site. The
 [raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json)
-records these distinct checks. Compound selectors and Fiber-start argument
-unpacking remain required.
+records these distinct checks. Array unpacking now forwards copied, dereferenced
+values through ordinary, array-selected and captured `start` calls. Each pack
+resets named-key ordering; completed pack history authenticates the original
+buffer after its arrays retire. C-root forwarding separately authenticates the
+genuine outer API.
+Abrupt cleanup preserves positional/receiver/named order and the distinct direct
+Closure versus explicit `__invoke` owner order. The
+[start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json) records
+these checks. Traversable packs and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

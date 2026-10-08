@@ -77,7 +77,7 @@ def dynamic_assertions(initial, expected):
         '$instance_storage_unset_desc(S_bad, n_parent, ptbytes_key) = eps',
         '$instance_storage_unset_desc(S_before, n_parent, $ptascii("dynamic")) = eps',
         '$property_read(S_before, POBJECT n_parent, $ptascii("dynamic"), z).COMPLETION = UNSUPPORTED "freeing instance property access"',
-        '$property_quiet(S_before, POBJECT n_parent, ptbytes_key, z).COMPLETION = UNSUPPORTED "freeing instance property access"',
+        '$property_quiet(S_before, POBJECT n_parent, ptbytes_key, z) = S_before[.RESULT = KNOWN PNULL]',
         '$property_reference_fetch_unshared(S_before, n_parent, ptbytes_key, z).COMPLETION = UNSUPPORTED "freeing instance property access"',
         # Guard-only forged method metadata; no getter body is executed.
         'S_before.OBJECTS[n_parent] = INSTANCE porigin_parent',

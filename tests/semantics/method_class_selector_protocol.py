@@ -510,5 +510,59 @@ CASES['private-constructor-unrelated-receiver-before-arguments'] = {
     'checks': PRIVATE_CTOR_UNRELATED,
 }
 
+PRIVATE_CTOR_INHERITED_STAGE = ('S.TODO = (SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) phpType7* z) :: ptask_tail* -- if $ptlc($base64(text_class)) = '
+ '$ptascii("b") -- if $ptlc($base64(text_method)) = $ptascii("__construct") -- if S.ORIGIN = '
+ '(porigin_site) -- if S.CURRENT = (pcallcontext) -- if pcallcontext.RECEIVER = (n_receiver) -- if '
+ '$class_named(S.CLASSNAMES, $ptascii("d")) = (porigin_d) -- if $class_named(S.CLASSNAMES, '
+ '$ptascii("b")) = (porigin_b) -- if $class_at(S.CLASSES, porigin_b) = (pclassdesc_b) -- if '
+ '$class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a) -- if $class_at(S.CLASSES, porigin_a) = '
+ '(pclassdesc_a)')
+# First26 clauses are genuine; final2 directly probe the other error-text consumer.
+# The helper probe makes no valid-receiver source/state claim.
+PRIVATE_CTOR_INHERITED = ['$scoped_class_task(S, NName (BYTES text_class) metadata_class, NIdentifier (BYTES text_method) '
+ 'metadata_method, phpType7*, z)',
+ '$call_task_valid(S, SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) phpType7* z)',
+ 'pclassdesc_b.NAME = $ptascii("B") /\\ pclassdesc_b.KIND = "class" /\\ ~pclassdesc_b.ABSTRACT',
+ '$scoped_source_name(S, NName (BYTES text_class) metadata_class) = (pclassdesc_b.NAME)',
+ '$method_named(pclassdesc_a.METHODS, $ptascii("__construct")) = (pmethoddesc_ctor)',
+ 'pmethoddesc_ctor.OWNER = porigin_a /\\ ~pmethoddesc_ctor.ABSTRACT /\\ ~pmethoddesc_ctor.STATIC '
+ '/\\ pmethoddesc_ctor.VISIBILITY = PROPERTY_PRIVATE',
+ '$class_link_at(S.LINKEDPARENTS, porigin_b) = (SOURCE_PARENT porigin_a)',
+ '$effective_method(S, porigin_b, $ptascii("__construct"), |S.CLASSES|) = (pmethoddesc_ctor)',
+ '~$method_accessible(S, pmethoddesc_ctor, (porigin_d))',
+ '$scoped_ctor_arm(S)',
+ 'pcallcontext.LEXICAL_CLASS = (porigin_d) /\\ pcallcontext.CALLED_CLASS = (porigin_d)',
+ 'S.OBJECTS[n_receiver] = INSTANCE porigin_d /\\ (HOBJECT n_receiver) <- S.ALLOCATIONS',
+ '~$scoped_receiver_valid(S, porigin_b, pmethoddesc_ctor, (n_receiver))',
+ '$scoped_ctor_private_denied(S, pmethoddesc_ctor, (n_receiver))',
+ 'phpType7* = (NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument) '
+ ':: phpType7_tail*',
+ 'phpType7_tail* = eps',
+ '$origin_node(S.SOURCES, porigin_site) = (NExprStaticCall (NName (BYTES text_class) '
+ 'metadata_class) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) '
+ 'metadata_call)',
+ '$call_current_valid(S)',
+ 'PhpStep: S ~> S_rejected',
+ 'S_rejected.COMPLETION = THROWN "Error" $ptascii("Cannot call private B::__construct()") z',
+ 'S_rejected.TODO = eps /\\ S_rejected.CURRENT = S.CURRENT',
+ 'S_rejected.OBJECTS = S.OBJECTS /\\ S_rejected.ALLOCATIONS = S.ALLOCATIONS /\\ S_rejected.EVENTS '
+ '= S.EVENTS',
+ '$class_constant_state_valid(S_rejected)',
+ '$call_descriptors_valid(S_rejected)',
+ '$declaration_history_valid(S_rejected)',
+ '$heap_valid($heap_graph(S_rejected))',
+ 'S_access = $scoped_select_access(S, NName (BYTES text_class) metadata_class, porigin_b, '
+ 'pmethoddesc_ctor, porigin_d, (n_receiver), KNOWN (PSTRING pclassdesc_b.NAME), '
+ '$ptascii("__construct"), phpType7*, z)',
+ 'S_access.COMPLETION = THROWN "Error" $ptascii("Cannot call private B::__construct()") z /\\ '
+ 'S_access.TODO = eps']
+CASES['private-constructor-inherited-requested-class-before-arguments'] = {
+    'source': SOURCES['private-constructor-inherited-requested-class-before-arguments'],
+    'stage': PRIVATE_CTOR_INHERITED_STAGE,
+    'checks': PRIVATE_CTOR_INHERITED,
+}
+
 if __name__ == '__main__':
     protocol.run(CASES, (Path(__file__), CATALOGUE))

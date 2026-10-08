@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 374 unpacks arrays into ordinary method/array and captured START buffers.
+Per-pack named ordering, dereferenced value copies and nonowning completed history
+survive selector/pack retirement; copied C-root buffers authenticate their genuine
+outer API. Ordered unwind preserves active-pack, positional/EX(This)/named and
+direct Closure versus explicit invoke cleanup. Strict356, ten exact normals at
+9+1 cuts and 345 independent plus 296 author premises pass. Constant packs retain
+their genuine pool owner; a distinct dynamic-pack companion proves retired history.
+Initial elaboration/matching failures and pooled fixture assumptions retain zero
+affected credit. Traversable packs remain explicit Unsupported/zero agreement and
+required follow-on work; compound/lifecycle gaps and paused returns remain open.
+[Start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json).
+
+Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
+current physical collector, source-line, assertion and retained-method fields;
+private source/state cuts retain their inputs.
+
 Runtime assertion INI preserves raw initial/current bytes, modified/restore timing
 and the live numeric mode. Quiet quantities permit nonnegative updates; changes
 involving a negative mode warn before a frozen false completion on the handler's state.
@@ -1247,8 +1263,18 @@ whose original/current UNSET images match. Native3 and the unchanged dynamic
 Unsupported baseline at `0824519ef` are separate from changed strict/source3 at
 `f43b28b47` and 142/147 reached premises at `bad93efed`. The resolved-default
 fixture correction preserves its original uncredited failure; no earlier
-campaign is renewed. Quiet/getter and untyped unset access remain required.
+campaign is renewed. Wider quiet/getter and untyped unset access remain required.
 The actual356 join over `976a55232` passes strict initialization at `4b31fc1cc`.
+Future initialized declared values and typed INITIAL/UNSET slots now support
+quiet `isset`/`empty` and coalescing with ordinary visibility and no magic consumers. Terminal booleans add no payload owner;
+coalescing copies the dereferenced value. Native3 and the unchanged scalar
+Unsupported baseline at `ad8135241` remain separate from strict356/source3 and
+157/138 reached premises at `310e0fac6`. Actual receiver-release queues, unchanged
+borrowed owners, alias rebinding/type detach and kept-child survival pass without
+corrections. Earlier quiet assertions are adapted statically only; no campaign
+is renewed. The actual358 join over `77d86df730` passes strict initialization
+at `36df1d531` (4.663s); source3/295 retain their original changed cut.
+Consumed/missing slots and wider magic access remain required.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -2087,6 +2113,15 @@ Final356 projection `4366f4cae` over `02bff2460` passes strict algo/struct at
 3.769/4.823s, preserving current storage-release guards. Source1/24 bridge
 unchanged; publish19 raw compiler evidence is `trait266-object-algo-n0wtdaju`
 and `trait266-object-struct-prg8u30p` under its `.tools/` directory.
+Inherited private constructor errors now name the requested class while retaining
+the declaring-owner access proof. At `4c3ece53d`/357 over actual `cbdb9d10a`,
+strict algo/struct pass3.772/4.821s; one new normal original and28 supplied clauses
+plus6 setup pass (6.123s):26 genuine clauses cover inherited selection/rejection
+and all four globals, while2 helper-only clauses check the other Error consumer.
+Current19 raw evidence is `method-runtime-svn8anig`, `closure-call-protocol-66s2dn57`,
+`trait266-object-algo-zgrybsbw` and `trait266-object-struct-n2_844cu`;
+original normal mismatch `s0r3su65` retains zero agreement. Prior constructor
+cuts are not renewed; current375 collector/task fields remain preserved.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and

@@ -180,7 +180,7 @@ def controls():
         '$property_read(S_unset, POBJECT n_parent, ptbytes_key, z).COMPLETION = THROWN "Error" ptbytes_message z',
         '$instance_storage_initial_desc(S_before, n_parent, $ptascii("first")) = eps',
         '$property_read(S_before, POBJECT n_parent, $ptascii("first"), z).COMPLETION = UNSUPPORTED "freeing instance property access"',
-        '$property_quiet(S_before, POBJECT n_parent, ptbytes_key, z).COMPLETION = UNSUPPORTED "freeing instance property access"',
+        '$property_quiet(S_before, POBJECT n_parent, ptbytes_key, z) = S_before[.RESULT = KNOWN PNULL]',
         '$property_reference_fetch_unshared(S_before, n_parent, ptbytes_key, z).COMPLETION = UNSUPPORTED "freeing instance property access"']
 
 

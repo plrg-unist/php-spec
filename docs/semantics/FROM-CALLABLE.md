@@ -42,6 +42,9 @@ Fiber API direct, explicit `__invoke` and C-root behavior. The
 tracks these checks. Ordinary fixed Fiber API callable arrays with simple method
 names use module362's separate dynamic-call protocol; module 367 forwards the
 original positional or named buffer for ordinary array-selected `start`.
+Module 374 adds array unpacking across ordinary and captured START consumers,
+with historical copied pack entries and the genuine outer API retained through
+C-root forwarding; Traversable START packs remain required.
 Module 370 executes simple raw Fiber API arrays as C-root callbacks. The Fiber
 retains the original array, while its frozen receiver cache remains borrowed;
 this differs from an owning Closure capture and ordinary array INIT.
