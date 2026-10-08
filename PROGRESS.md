@@ -17,6 +17,9 @@ recorded private cuts. The original compiler/source stops, diagnostic prefixes
 and author fixture elaboration stop retain zero agreement or state-group credit.
 The affected348 C-root control gains agreement only at351; outer unpacking,
 constructor captures, broader adapters and lifecycle consumers remain required.
+The actual338 composition over `b2fb07e1d` passes strict initialization with
+reviewed Generator349, collector345, source350, trait347 and property/ownership
+interactions; earlier source/state cuts retain their inputs.
 [Start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json).
 
 Collector345 runs remaining marked destructors in the cached worker's retained
