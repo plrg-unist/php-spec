@@ -113,7 +113,7 @@ def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassco
   -- if $method_named(pclassdesc_copy.METHODS, $ptlc(ptbytes_method)) = (pmethoddesc_copy)
   -- if $trait_fcc_receipt_target(pmethoddesc_copy, ptraitmethod*) = (pmethoddesc)
   -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
-  -- if $method_accessible(S_copy, pmethoddesc_copy, (ptraitcachecause.CLASS))
+  -- if $method_accessible(S_copy, pmethoddesc, (ptraitcachecause.CLASS))
   -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE ptraitcachecause.CLASS eps)
 def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = eps -- otherwise
 def $trait_real_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
