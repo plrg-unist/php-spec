@@ -721,6 +721,10 @@ def $config_string_child_site(S, porigin_child, z) = true
   -- if z = passertoption.CALL.LINE
   -- if $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
 def $config_string_child_site(S, porigin_child, z) = true
+  -- if S.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
+  -- if z = passertoption.CALL.LINE
+  -- if $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
+def $config_string_child_site(S, porigin_child, z) = true
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
   -- if z = passertoption.CALL.LINE
