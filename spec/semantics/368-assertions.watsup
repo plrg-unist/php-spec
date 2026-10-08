@@ -960,6 +960,11 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
 def $error_read_discard(S, ASSERT_FAILURE_WARNING passertfailure) = S[.COMPLETION = UNSUPPORTED "assertion bail after throwing warning handler"] -- if S.ASSERTBAIL.VALUE
 def $error_read_discard(S, ASSERT_FAILURE_WARNING passertfailure) = S -- if ~S.ASSERTBAIL.VALUE
+def $error_context_trigger(S, pcallcontext) = (passertfailure.CALL)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ASSERT_FAILURE_WARNING passertfailure
+def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands($assertion_trace_call(S, pconfigcall).SENT))
+  -- if pconfigcall.KIND = INTRINSIC_ASSERT
 
 def $assertion_pending_valid(S, eps) = true
 def $assertion_pending_valid(S, (n)) = $throwable_live(S, n)
