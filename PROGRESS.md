@@ -175,6 +175,14 @@ passes strict compilation with reviewed Generator/collector/scoped-method and
 assertion-state compatibility. Original
 baseline mismatches and nondeterministic replay failures retain zero agreement.
 No module, task or owner schema is added; wider callee/argument forms remain open.
+The one-positional-CV increment now preserves independent INIT5/call7/SEND-ECHO9,
+selected targets across returning/throwing argument warnings, silent missing
+by-reference cells and existing returned TMPVAR/HCELL output ownership. A narrow
+nonowning discard source keeps SEND9 destruction distinct from ordinary body
+throw7. Nine fresh exact originals retain two rows at20cd and seven at491e;
+independent231 premises (153 bindings/78 checks) pass at491e/private356.
+Actual358 over478710ea passes strict compilation with reviewed Fiber/collector
+and storage seams. Earlier9/277 retain their cuts; wider call shapes remain open.
 [Ledger](coverage/semantics/source-echo-dynamic-cv-call-review.json).
 
 Direct ECHO now admits one named ordinary CV argument through361's existing

@@ -116,6 +116,11 @@ and ECHO lines remain distinct. A returned cast can publish a function and survi
 later eval history replay. Nine exact originals retain their private354 cuts;
 independent277 premises pass. Actual356 passes strict compilation. Wider callee
 and argument producers remain required.
+The one-positional-CV increment preserves selected targets across SEND warnings,
+with INIT5/call7/SEND-ECHO9 and existing temporary/reference output owners.
+Throwing SEND handlers retire the invoker at9; ordinary body throws retire it at7.
+Nine fresh exact originals and231 independent premises pass; actual358 passes
+strict compilation. Wider callees/arguments remain required.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
