@@ -907,6 +907,8 @@ expression-result original and249 new reached premises pass at7c15. The
 current-parent gate retains its separate cut in the
 [ledger](coverage/semantics/compound-string-live-rhs-review.json). Earlier334/344
 evidence is unchanged; static compounds and wider borrowed destinations remain open.
+Actual339 over CALLS351 `fd432561f` passes algo/struct/init at `0b0bd4336`,
+with independent pointwise parent review and no13/249 source/state renewal.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
