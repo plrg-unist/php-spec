@@ -90,7 +90,8 @@ CASES = {
             'S.STORE[n_pair_cell] = DEFINED PNULL',
             '~((HARRAY n_selector) <- S.ALLOCATIONS)',
             'H = $heap_graph(S)', '$heap_owners(H, HARRAY n_selector) = 0',
-            '$heap_owners(H, HARRAY n_pack) = 1',
+            '$heap_owners(H, HARRAY n_pack) = 2',
+            '$heap_count(HARRAY n_pack, $pools_nodes(S.POOLS)) = 1',
             '$heap_owners(H, HOBJECT n_receiver) = 1',
             '$task_nodes(FIBER_UNPACK_NEXT eps pfiberstart poperand n_cursor) = '
             '[HOBJECT n_receiver, HARRAY n_pack]',
@@ -121,16 +122,19 @@ CASES = {
             'pfiberstart_one.SENT.NAMED = [($ptascii("value"), KNOWN (PSTRING ($ptascii("7"))))]',
             '$fiber_start_unpack_valid(S_one, eps, pfiberstart_one, poperand, 1)',
             '$heap_owners($heap_graph(S_one), HOBJECT n_receiver) = 1',
-            '$heap_owners($heap_graph(S_one), HARRAY n_pack) = 1',
+            '$heap_owners($heap_graph(S_one), HARRAY n_pack) = 2',
+            'S_one.POOLS = S.POOLS',
             '$call_descriptors_valid(S_one)', '$heap_valid($heap_graph(S_one))',
             *FINISH,
             events('P|', '7', '|', 'D', '|', 'X', '|', 'F|', 'Y', '|', '1', '|', '0'),
             '~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)',
-            '~((HARRAY n_pack) <- S_done.ALLOCATIONS)',
+            '(HARRAY n_pack) <- S_done.ALLOCATIONS',
+            '$heap_owners($heap_graph(S_done), HARRAY n_pack) = 1',
+            '$heap_count(HARRAY n_pack, $pools_nodes(S_done.POOLS)) = 1',
         ],
     },
     'start-unpack-explicit-wait-authenticates-retired-pack-history': {
-        'source': SOURCES['peer-fiber-fcc-start-unpack-retires-capture-keeps-named-buffer'],
+        'source': SOURCES['peer-fiber-fcc-start-unpack-dynamic-pack-retired-history'],
         'stage': ('S.FIBERCALLERS = [pfibercaller] '
                   '-- if pfiberapi = pfibercaller.API '
                   '-- if pfibercaller.VM.TODO = (FIBER_WAIT pfiberapi) :: '

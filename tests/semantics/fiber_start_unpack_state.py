@@ -167,7 +167,7 @@ CASES = {
             'pfibercaller.API.PACKS = [pconfigpack]', 'pconfigpack.INDEX = 0',
             'pconfigpack.ITEMS = [ENTRY (KSTRING ($ptascii("value"))) (DIRECT (PSTRING ($ptascii("7")))), '
             'ENTRY (KSTRING ($ptascii("tail"))) (DIRECT (PSTRING ($ptascii("X"))))]',
-            '~((HARRAY pconfigpack.ARRAY) <- S.ALLOCATIONS)',
+            '(HARRAY pconfigpack.ARRAY) <- S.ALLOCATIONS',
             '$intrinsic_count(S, pfiberstart.SITE) = (1)',
             'pfibercaller.VM.TODO = (FIBER_WAIT pfibercaller.API) :: ptask_outer*',
             'S_outer = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = eps][.FIBERCALLERS = eps]',
@@ -190,7 +190,8 @@ CASES = {
             'S.STORE[n_runner_cell] = DEFINED (POBJECT n_runner)',
             'H = $heap_graph(S)', '$heap_owners(H, HOBJECT n_capture) = 3',
             '$heap_owners(H, HOBJECT n_target) = 2', '$heap_owners(H, HOBJECT n_runner) = 2',
-            '$heap_owners(H, HARRAY pconfigpack.ARRAY) = 0', *review.VALID,
+            '$heap_owners(H, HARRAY pconfigpack.ARRAY) = 1',
+            '$heap_count(HARRAY pconfigpack.ARRAY, $pools_nodes(S.POOLS)) = 1', *review.VALID,
             *outer_pack('missing', 'eps'),
             *outer_pack('duplicate', '[pconfigpack, pconfigpack]'),
             *outer_pack('line', '[pconfigpack[.LINE = $(pconfigpack.LINE + 1)]]'),
