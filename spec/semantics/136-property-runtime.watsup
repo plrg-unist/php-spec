@@ -9,6 +9,8 @@ dec $property_reference_copy(pstate, nat, ptbytes) : pstate
 dec $property_reference_slot(pstate, nat, ptbytes, int) : pstate
 dec $property_reference_target_check(pstate, nat, ptbytes, int) : pstate
 dec $property_foreach_reference(pstate, nat, ptbytes, int) : pstate
+dec $property_duplicate_table(pstate, nat) : bool
+dec $property_slot_named(ppropertyslot*, ptbytes) : bool
 ;; Class descriptors are source facts; each owned object has mutable slots.
 dec $property_replace(ppropertydesc*, ppropertydesc) : ppropertydesc*
 def $property_replace(eps, ppropertydesc) = [ppropertydesc]
@@ -104,6 +106,12 @@ def $property_slot_at(ppropertyslot :: ppropertyslot_tail*, ptbytes) = (ppropert
   -- if ppropertyslot.NAME = ptbytes
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if ~$property_slot_named(ppropertyslot_tail*, ptbytes)
+def $property_slot_at(ppropertyslot :: ppropertyslot_tail*, ptbytes) = $property_slot_at(ppropertyslot_tail*, ptbytes)
+  -- if ppropertyslot.NAME = ptbytes
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if $property_slot_named(ppropertyslot_tail*, ptbytes)
 def $property_slot_at(ppropertyslot :: ppropertyslot_tail*, ptbytes) = $property_slot_at(ppropertyslot_tail*, ptbytes)
   -- if ppropertyslot.NAME =/= ptbytes
 def $property_desc_at(eps, ptbytes) = eps
@@ -135,6 +143,12 @@ def $property_slot_set(ppropertyslot :: ppropertyslot_tail*, ptbytes, ppropstate
   -- if ppropertyslot.NAME = ptbytes
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if ~$property_slot_named(ppropertyslot_tail*, ptbytes)
+def $property_slot_set(ppropertyslot :: ppropertyslot_tail*, ptbytes, ppropstate) = ppropertyslot :: $property_slot_set(ppropertyslot_tail*, ptbytes, ppropstate)
+  -- if ppropertyslot.NAME = ptbytes
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE pitem
+  -- if $property_slot_named(ppropertyslot_tail*, ptbytes)
 def $property_slot_set(ppropertyslot :: ppropertyslot_tail*, ptbytes, ppropstate) = ppropertyslot :: $property_slot_set(ppropertyslot_tail*, ptbytes, ppropstate)
   -- if ppropertyslot.NAME =/= ptbytes
 dec $objectprops_set(pobjectprops*, nat, ppropertyslot*) : pobjectprops*
@@ -234,7 +248,6 @@ def $property_slots_valid(S, eps, ppropertyslot :: ppropertyslot_tail*) = $prope
   -- if ~$property_bad_name(ppropertyslot.NAME)
 def $property_slots_valid(S, ppropertydesc :: ppropertydesc_tail*, ppropertyslot :: ppropertyslot_tail*) = ($property_slot_valid(S, ppropertydesc, ppropertyslot) /\ $property_slots_valid(S, ppropertydesc_tail*, ppropertyslot_tail*))
 def $property_slots_valid(S, ppropertydesc*, ppropertyslot*) = false -- otherwise
-dec $property_slot_named(ppropertyslot*, ptbytes) : bool
 def $property_slot_named(eps, ptbytes) = false
 def $property_slot_named(ppropertyslot :: ppropertyslot_tail*, ptbytes) = $property_slot_named(ppropertyslot_tail*, ptbytes)
   -- if ppropertyslot.DECL = eps
@@ -249,12 +262,24 @@ def $property_slot_named(ppropertyslot :: ppropertyslot_tail*, ptbytes) = true
   -- if ppropertyslot.STATE = PROP_VALUE pitem
 def $property_slot_named(ppropertyslot :: ppropertyslot_tail*, ptbytes) = $property_slot_named(ppropertyslot_tail*, ptbytes)
   -- if ppropertyslot.NAME =/= ptbytes
-dec $property_unique_names(ppropertyslot*) : bool
 def $property_unique_names(eps) = true
 def $property_unique_names(ppropertyslot :: ppropertyslot_tail*) = $property_unique_names(ppropertyslot_tail*)
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
 def $property_unique_names(ppropertyslot :: ppropertyslot_tail*) = (~$property_slot_named(ppropertyslot_tail*, ppropertyslot.NAME) /\ $property_unique_names(ppropertyslot_tail*))
+;; Reentrant zend_hash_add_new can leave two live dynamic buckets. Declared
+;; slots still have unique keys; stdClass keeps its shared-table invariant.
+dec $property_declared_names(ppropertyslot*) : bool
+def $property_declared_names(eps) = true
+def $property_declared_names(ppropertyslot :: ppropertyslot_tail*) = $property_declared_names(ppropertyslot_tail*)
+  -- if ppropertyslot.DECL = eps
+def $property_declared_names(ppropertyslot :: ppropertyslot_tail*) = (~$property_slot_named(ppropertyslot_tail*, ppropertyslot.NAME) /\ $property_declared_names(ppropertyslot_tail*))
+  -- if ppropertyslot.DECL = (ppropertyid)
+dec $property_instance_names(pstate, porigin, ppropertyslot*) : bool
+def $property_instance_names(S, porigin, ppropertyslot*) = $property_unique_names(ppropertyslot*)
+  -- if $class_origin_matches(S, porigin, $ptascii("stdClass"), |S.CLASSES|)
+def $property_instance_names(S, porigin, ppropertyslot*) = $property_declared_names(ppropertyslot*)
+  -- if ~$class_origin_matches(S, porigin, $ptascii("stdClass"), |S.CLASSES|)
 dec $property_dynamic_name_allowed(pstate, porigin, ptbytes) : bool
 dec $property_dynamic_no_shadow(pstate, porigin, ppropertyslot*) : bool
 def $property_dynamic_no_shadow(S, porigin, eps) = true
@@ -270,13 +295,13 @@ def $property_has_dynamic(ppropertyslot :: ppropertyslot_tail*) = $property_has_
   -- if ppropertyslot.DECL = (ppropertyid)
 dec $objectprops_valid(pstate, pobjectprops*) : bool
 def $objectprops_valid(S, eps) = true
-def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ $property_unique_names(pobjectprops.SLOTS) /\ $property_dynamic_no_shadow(S, porigin, pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ (pobjectprops.MATERIALIZED /\ ~pclassdesc.READONLY)) /\ $objectprops_valid(S, pobjectprops_tail*))
+def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ $property_instance_names(S, porigin, pobjectprops.SLOTS) /\ $property_dynamic_no_shadow(S, porigin, pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ (pobjectprops.MATERIALIZED /\ ~pclassdesc.READONLY)) /\ $objectprops_valid(S, pobjectprops_tail*))
   -- if $(pobjectprops.OBJECT < |S.OBJECTS|)
   -- if $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps
   -- if S.OBJECTS[pobjectprops.OBJECT] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
-def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ $property_unique_names(pobjectprops.SLOTS) /\ $property_dynamic_no_shadow(S, porigin, pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ (pobjectprops.MATERIALIZED /\ ~pclassdesc.READONLY)) /\ $throwable_instance_slots_valid(S, pobjectprops.OBJECT, porigin, text_kind) /\ $objectprops_valid(S, pobjectprops_tail*))
+def $objectprops_valid(S, pobjectprops :: pobjectprops_tail*) = ($property_slots_valid(S, $property_layout(S, porigin, |S.CLASSES|), pobjectprops.SLOTS) /\ $property_instance_names(S, porigin, pobjectprops.SLOTS) /\ $property_dynamic_no_shadow(S, porigin, pobjectprops.SLOTS) /\ (~$property_has_dynamic(pobjectprops.SLOTS) \/ (pobjectprops.MATERIALIZED /\ ~pclassdesc.READONLY)) /\ $throwable_instance_slots_valid(S, pobjectprops.OBJECT, porigin, text_kind) /\ $objectprops_valid(S, pobjectprops_tail*))
   -- if $(pobjectprops.OBJECT < |S.OBJECTS|)
   -- if $objectprops_at(pobjectprops_tail*, pobjectprops.OBJECT) = eps
   -- if S.OBJECTS[pobjectprops.OBJECT] = INSTANCE porigin
