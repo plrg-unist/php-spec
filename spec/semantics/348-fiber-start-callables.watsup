@@ -27,10 +27,6 @@ def $named_closure_same(S, n_left, n_right) = true
   -- if pfibercapture_left.KIND = INTRINSIC_FIBER_START
   -- if pfibercapture_right.KIND = INTRINSIC_FIBER_START
   -- if pfibercapture_left.INPUT = pfibercapture_right.INPUT
-def $fiber_callback_resolution(S, POBJECT n) = HANDLERUNKNOWN "Fiber start capture callback"
-  -- if $fiber_capture_live(S, n)
-  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
-  -- if pfibercapture.KIND = INTRINSIC_FIBER_START
 
 dec $fiber_start_capture_prepare(pstate, nat, porigin, int, bool) : pstate
 def $fiber_capture_prepare(S, n, porigin, z, b_pop) = $fiber_start_capture_prepare(S, n, porigin, z, b_pop)

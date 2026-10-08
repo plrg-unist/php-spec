@@ -1,0 +1,232 @@
+{
+  "milestone": 351,
+  "status": "independently-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline": "86e7f6ccbd80030936498365701e02af81b50765",
+  "semantic_code": "6ee41bbb43fafa00880da542fff88ffe34d31136",
+  "modules": 334,
+  "scope": [
+    "Captured start executes as a Fiber C-root callback with immutable RAW receiver and cached target selection.",
+    "RAW and the result tail each own the Closure. The outer start owns the original buffer, the C handler owns its copy, and waiting inner APIs borrow the receiver without retaining another copied buffer.",
+    "Actual outer start buffers, runner headers, sites and caller chains authenticate both initial and saved core continuations; marker deletion cannot fall back to ordinary start admission.",
+    "Inner start traces have no file or line site; outer frames retain the real callsite. Status, target-entry names, body exception identity and pre-entry argument unwind retain their actual continuations.",
+    "Last RAW retirement can release the Closure and receiver before the original argument destructor. Shared-capture nested direct calls retain distinct source-site ownership."
+  ],
+  "compiler": {
+    "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-sl-f6v4jef4/report.json",
+    "sha256": "196cd2679ff0189f34bb5ec13467ae8b1f767c08c854eca0e44bf6e853b74ef6",
+    "revision": "6ee41bbb43fafa00880da542fff88ffe34d31136",
+    "passed": true,
+    "modules": 334,
+    "mode": "SL",
+    "initialization": true,
+    "inputs_stable": true
+  },
+  "sources": {
+    "normal_agreements": 10,
+    "new_normal_originals": 9,
+    "affected_former_unsupported_originals": 1,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-source-sn70eyry/report.json",
+        "sha256": "7ff3ac19e74634fb8771d157ffd52bc83468b782f1ff1c7d2cf1ef69f9d63e5b",
+        "revision": "6ee41bbb43fafa00880da542fff88ffe34d31136",
+        "passed": true,
+        "normal_agreements": 1,
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-source-_vr1dm79/report.json",
+        "sha256": "dfd3c7758e1e06641fe7b04d7c2658db986175bad01c7f2de465d498bdb4d63f",
+        "revision": "6ee41bbb43fafa00880da542fff88ffe34d31136",
+        "passed": true,
+        "normal_agreements": 8,
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-source-vqehfbag/report.json",
+        "sha256": "d2e2608b0337f125a99a09dcd0d38d066d086fb225d4e2fca823f9e49ca7c37e",
+        "revision": "0707bd1102439cdb908c794e588988ee7740407a",
+        "passed": true,
+        "normal_agreements": 1,
+        "inputs_stable": true,
+        "head_stable": true
+      }
+    ]
+  },
+  "states": {
+    "independent_groups": 2,
+    "independent_premises": 228,
+    "author_groups": 1,
+    "author_premises": 107,
+    "premises_include_five_setup_clauses_per_group": true,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-state-review-jcxel3p2/report.json",
+        "sha256": "941141345509ca1accaa3fb294049a5df54dc680f80b05b93e8a12fbed8bef34",
+        "revision": "0707bd1102439cdb908c794e588988ee7740407a",
+        "passed": true,
+        "group": "start-core-real-parent-keeps-raw-binding-and-caller-chain",
+        "role": "independent",
+        "premises": 134,
+        "source_sha256": "04d939319dab703c183a047ca8c289e0f72180526049e1cfb5f6a7d63dd7faf2"
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-state-review-syleqsub/report.json",
+        "sha256": "d9ab9df8bb74f80daae76891887326781d8e6dadac8509c580d75548ac320224",
+        "revision": "0707bd1102439cdb908c794e588988ee7740407a",
+        "passed": true,
+        "group": "start-core-last-raw-retires-before-original-payload",
+        "role": "independent",
+        "premises": 94,
+        "source_sha256": "d990ce2f9901a050679eb221d0cfbf617e53bf473870e19bcf75d14625fd7769"
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-state-review-6yk3p05l/report.json",
+        "sha256": "9a6f6cab204efbcec73eb92fb5303628508dfc054398aac3dbc9dea077255afc",
+        "revision": "8401a6ff0b57cd0753fcfdba4152f0c2e0b6a07f",
+        "passed": true,
+        "group": "bound-start-core-preinvoke-keeps-cache-and-copied-named-buffer",
+        "role": "author",
+        "premises": 107,
+        "source_sha256": "55ebaccfb0ba58c1f874ed20a31b1ac4e1ddd027aa88c93da343886ce48d0a22"
+      }
+    ]
+  },
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "d2b82d223396685f36bc19ef591203b4606e96b1236a2dac98264cb0090b4d40",
+    "spec/semantics/281-fibers.watsup": "f851353e45a1a6b8bcfc88a65cec5fc255fd1f4781029beeaba146108c857fc8",
+    "spec/semantics/348-fiber-start-callables.watsup": "b2ff449be28212d8e3d42f7244b0fa74ff182f4b63bbc0d04d7044514d3e8609",
+    "spec/semantics/351-fiber-start-core-callables.watsup": "2e9ae92df574966af317e611fbade7507bdfc2ab8405f3f0a01d9322ecf4ef52"
+  },
+  "failures": [
+    {
+      "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-sl-1pld59m4/report.json",
+      "sha256": "183a962da311c87f26ca085485148643c10fef1f58ea06c38bc9ef9a19bbf05c",
+      "revision": "7f68459931672efb1a54ef36c889c1031e480564",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Actor predicate declaration followed its use in281; fd9b39624 moved only the declaration before that use."
+    },
+    {
+      "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-source-6phgvbn9/report.json",
+      "sha256": "c662d2b1d6f09149c9b6b5da68b2f86a762f52f4f7c9fd6d6ef423bae8d60d23",
+      "revision": "2c76f418f2f9315ca1a31290de7e90bff1219120",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "The genuine first C-root entry stopped despite passing constructor and ENTER prerequisites.6ee41bbb4 split the exact head/singleton-tail match and bound the outer API locally; the affected original then passed."
+    },
+    {
+      "path": ".tools/calls-fiber-start-core-19/.tools/fiber-state-review-vtdeiuc4/report.json",
+      "sha256": "7886441f1a3f80bfec7b6a6d645d7cd1f7644f694bef5c9ef1d121d722371281",
+      "revision": "0707bd1102439cdb908c794e588988ee7740407a",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "The author fixture used undeclared ECHO_RESULT in an extra-task forgery.8401a6ff0 replaced it with existing flat nonowning DISCARD; only the affected107 group was rerun."
+    }
+  ],
+  "diagnostics": {
+    "agreement_credit": 0,
+    "state_group_credit": 0,
+    "note": "Constructor and ENTER premise prefixes establish prerequisites only. Failed parsing/steps and successful diagnostic prefixes are not whole-source agreements or accepted state groups.",
+    "reports": [
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-state-review-c107v6nm/report.json",
+        "sha256": "ddf6822623516b85738ee12ccb6f25a7b8504a2bd6b86acbb4bf10feb01f403d"
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-stop-32t7ozyf/report.json",
+        "sha256": "167cfe88cf06e2f9f217f3a2c98e1809b7b817daa39114c30495facf9fc83a48"
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-stop-wk7aci5r/report.json",
+        "sha256": "14cd0da7009baad2be17e0db2212e4bd6dd22d65f4130fe5c3f517bd030fae72"
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-state-review-32jct8t8/report.json",
+        "sha256": "7a2e50929cac1013bc67f124df3c5d0db27564378d4525def02351fb6a47333c"
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-state-review-wn_otuw2/report.json",
+        "sha256": "18ad3b920228b07aa58f5dbf3a3d59c1a80640dfbfaab6826986785133a01ccf"
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-enter-_wrintzr/report.json",
+        "sha256": "68f45e47128751a79e15d481f4120a83673169a7f451f793ad9de9463da8ee9b"
+      },
+      {
+        "path": ".tools/calls-fiber-start-core-19/.tools/fiber-start-core-enter-rcn8cf17/report.json",
+        "sha256": "2e6390dc317e95294a33ed50d0857432c9aa6980462f2861f0f9b87a32b1155f"
+      }
+    ]
+  },
+  "identity": {
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "determinism_checks": true,
+      "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+      "ocaml": "5.1.0"
+    },
+    "runtime": {
+      "version": "8.5.10",
+      "sapi": "cli",
+      "int_size": 8,
+      "zts": false,
+      "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+      "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "executables": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+      "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "source_budgets": {
+      "steps": 100000,
+      "model_seconds": 60,
+      "process_seconds": 75
+    },
+    "state_budgets": {
+      "seek_steps": 4000,
+      "finish_steps": 4000,
+      "process_seconds": 120
+    }
+  },
+  "recovery": {
+    "worktree": ".tools/calls-fiber-start-core-19",
+    "branch": "calls/fiber-start-core-19",
+    "source_command": "python3 tests/semantics/fiber_start_core_sources.py --case <recorded original>",
+    "independent_command": "python3 tests/semantics/fiber_start_core_review.py --case <recorded group>",
+    "author_command": "python3 tests/semantics/fiber_start_core_state.py",
+    "compiler_command": "python3 .tools/fiber-start-core-prep-19/compile.py",
+    "raw_reports": "Paths are relative to canonical php-spec; generated checks, original source bytes, exact argv and streams remain outside Git."
+  },
+  "limits": [
+    "The affected348 C-root-start original is supported at351 only; its earlier Unsupported observation and all348 source/state cuts retain their original inputs and credit.",
+    "Outer argument unpacking, constructor captures, broader callable adapters and remaining lifecycle consumers are required. Paused undefined-result/getReturn and returns verification are excluded.",
+    "The ten source agreements and335 physical premises are at distinct recorded cuts; diagnostic prefix passes provide no additional agreement or state-group credit."
+  ]
+}
