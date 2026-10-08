@@ -102,8 +102,8 @@ CASES = {
             'OUTPUT $ptascii("|"), OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), '
             'OUTPUT $ptascii("idle"), OUTPUT $ptascii("|"), '
             'OUTPUT $ptascii("1"), OUTPUT $ptascii("|"), OUTPUT $ptascii("END")]',
-            'S_done.GC.WORKER = (pfiberapi.OBJECT)',
-            '$heap_owners($heap_graph(S_done), HOBJECT pfiberapi.OBJECT) = 1',
+            'S_done.GC.WORKER = eps',
+            '~((HOBJECT pfiberapi.OBJECT) <- S_done.ALLOCATIONS)',
             '~((HOBJECT n_capture) <- S_done.ALLOCATIONS)',
             '~((HOBJECT n_error) <- S_done.ALLOCATIONS)',
         ],
