@@ -111,7 +111,9 @@ At request C root with no current exception handler, a throwing custom renderer
 reports and releases its builtin inner Throwable before bailout abandons the
 original report and Generator/cache owners. Three exact fatal originals and 527
 reached premises retain separate cuts, including the real receiver decrement,
-handler exception retention and reporting mutation after emission. Live-handler or
+handler exception retention and reporting mutation after emission. Actual 356 over
+`2b98ff468` passes strict compilation at `72d5f7353`, preserving current fields;
+private source/state cuts retain their own inputs. Live-handler or
 deeper custom rendering, abrupt exception release, message warnings, parked or
 escaped storage and generic terminal cleanup remain required.
 
