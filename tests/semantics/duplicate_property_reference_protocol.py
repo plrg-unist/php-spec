@@ -833,7 +833,7 @@ def typed_slot_fiber_assertions(initial, expected):
         '$lookup(S_parked.ENV, $ptascii("fiber")) = (n_cv)',
         'S_parked.STORE[n_cv] = DEFINED (POBJECT n_fiber)',
         '$fiber_at(S_parked, n_fiber) = (pfiber)',
-        'pfiber.STATUS = FIBER_SUSPENDED /\\ pfiber.VM = (pfibervm)',
+        'pfiber.STATUS = FIBER_SUSPENDED', 'pfiber.VM = (pfibervm)',
         'S_parked.DESTRUCTION.RELEASES = eps',
         'pfibervm.DESTRUCTORRELEASES = pdestructionrelease :: pdestructionrelease_tail*',
         'pdestructionrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob_tail*',
