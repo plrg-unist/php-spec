@@ -26,8 +26,11 @@ Generator 363 handles uncaught request-finally and throwing-handler fatal cleanu
 Actual close/cache owners survive normal rendering and handler-registry mutation;
 the reported exception releases after frozen emission and before bailout suppresses
 later destructors. Internal C-root trace rows preserve real function arguments.
-Seven exact php_error255 originals and 493 strict premises pass at separate cuts;
-original refusals, preparation stops and corrected trace/admission failures stay at zero.
+Seven exact php_error255 originals and 493 strict premises pass at separate cuts.
+Normal post-report stdClass and ordinary child storage add one exact fatal original
+and 161 premises, preserving real pins and excluding consumed prefixes only from
+the future validation view. Earlier seven/493 cuts retain their own inputs.
+Original refusals, preparation stops and corrected trace/admission failures stay at zero.
 Abrupt rendering/release, message-warning conversion, parked/escaped storage and
 wider terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
