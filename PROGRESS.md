@@ -87,6 +87,10 @@ and all groups are reaped; raw records are under
 `.tools/compiler-defaults-pruning-18/.tools/pruning-current-v1`.
 Its unchanged full retry again times out at host55 with empty streams and zero
 agreement. No speedup, whole-retry agreement or offline rebuild is claimed.
+The actual305 join preserves collector317 and Generator321 and passes strict
+initialization on `ad5acdc4d` in3.821s; earlier lifecycle/source cuts stay distinct.
+The current301 diagnostic measures297 completed GC bodies27.988s, with pruning
+alone26.283s (93.9%), then times out at host55 with zero agreement.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

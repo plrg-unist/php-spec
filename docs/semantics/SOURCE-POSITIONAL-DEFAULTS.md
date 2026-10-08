@@ -155,4 +155,6 @@ The separate pruning factor computes the same pure live-node list once before
 the unchanged Generator/Fiber guards. Strict301 initialization and123 affected
 collector/Generator/Fiber predicates pass on `1060496af1`; the unchanged full
 retry still times out at host55. This establishes no speedup or whole-source agreement.
+The later305 join preserves collector317 and Generator321 and passes strict
+initialization on `ad5acdc4d`; the earlier lifecycle cut is not renewed.
 Whole retry composition and wider producers remain open.
