@@ -25,6 +25,27 @@ dec $generator_request_report_snapshot(pstate, nat) : pobjectprops
 dec $generator_request_report_frozen(pstate, pgenfatal) : pcompletion
 dec $generator_request_string_tail(pstate, nat, porigin, ptask*) : bool
 dec $generator_request_report_abrupt(pstate) : bool
+dec $generator_request_close_trace(pstate, pcallcontext) : bool
+
+;; Request dtor_obj resumes the Generator from C with no execute_data caller.
+;; Its saved creation context remains source authority, not a trace callsite.
+def $generator_request_close_trace(S, pcallcontext) = true
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask_tail*
+  -- if pgenclose.CONTEXT = pcallcontext
+  -- if pgenclose.CALLER = eps /\ pgenclose.CALLSITE = eps
+  -- if S_root = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if $generator_request_root(S_root)
+  -- if $generator_close_done_valid(S_root, pgenclose)
+def $generator_request_close_trace(S, pcallcontext) = false -- otherwise
+def $generator_context_trace_kind(S, pcallcontext) = true
+  -- if $generator_request_close_trace(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS ($trace_indexed_args(pvalue*, 0) ++ $trace_named_args(S, pcallcontext.NAMED)), HASARGS true}]
+  -- if $generator_request_close_trace(S, pcallcontext)
+  -- if ~$closure_call_target($context_target(pcallcontext))
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
 
 ;; Preserve only the original handler lookup view. The retained actual tail
 ;; authenticates the transfer after the reported exception has been released.

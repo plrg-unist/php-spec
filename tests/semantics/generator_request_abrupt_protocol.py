@@ -116,6 +116,14 @@ ptask_report_tail* = (GENERATOR_CLOSE_DONE pgenclose_report) :: ptask_finish*
 pgenclose_report = pgenclose_original[.PENDING = eps]
 $generator_close_done_valid(S_report,pgenclose_report)
 ''')
+    if release:
+        checks += lines(r'''
+$throwable_field(S_report,n_exception,"trace") = PARRAY n_release_trace
+$entry_lookup(S_report.ARRAYS[n_release_trace].ITEMS,KINT 0) = (DIRECT (PARRAY n_release_trace_frame))
+$entry_lookup(S_report.ARRAYS[n_release_trace_frame].ITEMS,KSTRING $ptascii("function")) = (DIRECT (PSTRING $ptascii("requestReleaseFatal")))
+$entry_lookup(S_report.ARRAYS[n_release_trace_frame].ITEMS,KSTRING $ptascii("file")) = eps
+$entry_lookup(S_report.ARRAYS[n_release_trace_frame].ITEMS,KSTRING $ptascii("line")) = eps
+''')
     wrong_source = ('GENERATOR_CLOSE_DONE pgenclose_report' if handler else 'THROW_SEARCH n_exception')
     reject(checks, 'source', 'S_report[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_report[.SOURCE = '
            + wrong_source + ']) :: ptask_report_tail*]', 'S_report')
