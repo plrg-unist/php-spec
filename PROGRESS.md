@@ -136,6 +136,12 @@ Its full retry still times out at55.046 with empty streams and zero agreement;
 inputs are stable and groups reaped, with no demonstrated speedup or231 credit.
 The actual314 join preserves TRAIT290/297/299, CV330 and ARG329 handoff fields;
 strict initialization passes on `1a148ff63` in3.871s. The309 cuts stay distinct.
+The separate release-walk keep reuse passes strict314, DONE44/ACTIVE77 direct
+walk predicates and the WeakReference original on `cd2f2a355`; its full retry
+still hits55.065 with empty streams and zero agreement. Empty/HANDLE and fallback
+domains are statically preserved, with no demonstrated speedup or231 credit.
+The actual316 join retains332/333 roots/source fields and passes strict
+initialization on `1e95f04a8` in3.870s; earlier314 runtime cuts stay distinct.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
