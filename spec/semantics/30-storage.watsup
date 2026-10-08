@@ -106,7 +106,8 @@ syntax pargcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, 
 ;; Completed unpack certificates borrow values from SENT, never heap owners.
 syntax pconfigpack = { INDEX nat, SITE porigin, LINE int, ARRAY nat, ITEMS pentry* }
 syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
-syntax pfibercapture = { SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT nat? }
+syntax pfiberfactory = { CALL pconfigcall, ITEMS pentry* }
+syntax pfibercapture = { SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT nat?, FACTORY pfiberfactory? }
 ;; Zend retains the raw callable, not the registration-time function cache.
 syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
