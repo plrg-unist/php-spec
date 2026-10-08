@@ -998,9 +998,10 @@ Parent/interface construction contracts remain open.
 Retained trait-scoped `new self` rejects the published trait before arguments,
 with a valid pending NEW certificate. One shutdown original and37 supplied
 conditions plus6 setup clauses pass.
-Retained `new static` constructs the published called class and enters arguments
-after allocation. One shutdown original and40 supplied conditions plus6 setup
-clauses pass, including durable selected-NEW static-fill history.
+Retained `new static` constructs the published called class from failed-class or
+published-trait scope, entering arguments after allocation. Two shutdown originals
+and80 supplied conditions plus12 setup clauses pass at separate cuts, including
+durable selected-NEW static-fill history.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider

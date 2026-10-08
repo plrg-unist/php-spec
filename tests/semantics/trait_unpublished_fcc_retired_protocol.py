@@ -907,6 +907,76 @@ CASES['failed-first-unfixed-trait-self-new-before-arguments'] = {
     'checks': UNFIXED_TRAIT_SELF_NEW,
 }
 
+UNFIXED_TRAIT_STATIC_NEW_STAGE = ('S.TODO = (NOCTOR_ARGS pnoctorcall) :: (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail* -- if '
+ 'pnoctorcall.INDEX = 0 -- if S.CURRENT = (pcallcontext) -- if pcallcontext.TARGET = '
+ 'CLOSURE_TARGET n_fcc -- if pcallcontext.LEXICAL_CLASS = (porigin_u) -- if $class_at(S.CLASSES, '
+ 'porigin_u) = (pclassdesc_u) -- if pclassdesc_u.NAME = $ptascii("U") -- if '
+ 'pcallcontext.CALLED_CLASS = (porigin_e) -- if $class_at(S.CLASSES, porigin_e) = (pclassdesc_e) '
+ '-- if pclassdesc_e.NAME = $ptascii("E")')
+UNFIXED_TRAIT_STATIC_NEW = ['$call_current_valid(S)',
+ '$constant_callable_record(S.CONSTANTCLOSURES, n_fcc) = (pconstantclosure)',
+ '$trait_fcc_failed_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_c, '
+ 'pmethoddesc_unfixed))',
+ '$constant_callable_record_valid(S, pconstantclosure_first) /\\ ~(HOBJECT '
+ 'pconstantclosure_first.OBJECT <- S.ALLOCATIONS) /\\ $closure_scope_at(S.CLOSURESCOPES, '
+ 'pconstantclosure_first.OBJECT) = eps',
+ '$class_named(S.CLASSNAMES, $ptascii("u")) = (porigin_u) /\\ $class_named(S.CLASSNAMES, '
+ '$ptascii("c")) = eps /\\ $class_named(S.CLASSNAMES, $ptascii("e")) = (porigin_e)',
+ '$closure_scope_at(S.CLOSURESCOPES, n_fcc) = (pclosurescope)',
+ 'pdynamicnew.CLOSURE = (CLOSURE_SCOPE pclosurescope) /\\ pdynamicnew.SCOPE = (porigin_u) /\\ '
+ 'pdynamicnew.CALLED = (porigin_e)',
+ '$class_static_selection_scope_method(S, $dynamic_new_scope_source(S, pdynamicnew), porigin_u) = '
+ '(pmethoddesc_scope)',
+ 'pmethoddesc_scope.FUNCTION.ORIGIN =/= pcallcontext.FUNCTION /\\ pmethoddesc_unfixed.OWNER = '
+ 'porigin_u /\\ pclassdesc_u.KIND = "trait"',
+ '$ordinary_keyword_new_site(S, pdynamicnew.SITE)',
+ '$dynamic_new_record_scope(S, pdynamicnew)',
+ '$dynamic_new_record_valid(S, pdynamicnew)',
+ '$dynamic_new_valid(S, pdynamicnew)',
+ 'pnoctorcall.SITE = pdynamicnew.SITE /\\ pnoctorcall.CLASS = pclassdesc_e.NAME /\\ '
+ 'pnoctorcall.SENT = eps',
+ 'S.OBJECTS[pnoctorcall.OBJECT] = INSTANCE porigin_e /\\ HOBJECT pnoctorcall.OBJECT <- '
+ 'S.ALLOCATIONS',
+ 'HOBJECT pnoctorcall.OBJECT <- $task_nodes(NOCTOR_ARGS pnoctorcall)',
+ '$call_task_valid(S, NOCTOR_ARGS pnoctorcall)',
+ '$class_constant_table_done(S, porigin_e)',
+ '(CCUPDATENEW porigin_e pdynamicnew $(|S.DECLARATIONS|)) <- S.CLASSCONSTANTHISTORY',
+ '$ppproperty_desc_at(pclassdesc_e.PROPERTIES, $ptascii("x")) = (ppropertydesc_x)',
+ 'ppropertydesc_x.ORIGIN = porigin_x',
+ 'n_fill = $nabs($(|S.CLASSCONSTANTHISTORY| - 2))',
+ 'S.CLASSCONSTANTHISTORY[n_fill] = CCSTATICNEW porigin_x pdynamicnew $(|S.DECLARATIONS|)',
+ '$class_constant_history_fold(S, S.CLASSCONSTANTHISTORY[0:n_fill] ++ [CCSTATICNEW porigin_x '
+ 'pdynamicnew[.CALLED = (porigin_c)] $(|S.DECLARATIONS|)] ++ S.CLASSCONSTANTHISTORY[$nabs($(n_fill '
+ '+ 1)):1], eps, eps, 0) = CCBAD',
+ 'pnoctorcall.ARGUMENTS = (NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: '
+ 'phpType7_tail*',
+ 'PhpStep: S ~> S_argument',
+ 'S_argument.COMPLETION = NORMAL /\\ S_argument.CURRENT = S.CURRENT',
+ 'S_argument.TODO = [$at_task($noctor_arg_origin(pnoctorcall), EVAL expression), NOCTOR_SEND '
+ 'pnoctorcall[.ARGUMENTS = phpType7_tail*], DYNAMIC_NEW_FINISH pdynamicnew] ++ ptask_tail*',
+ 'S_argument.OBJECTS = S.OBJECTS /\\ S_argument.ALLOCATIONS = S.ALLOCATIONS /\\ S_argument.EVENTS '
+ '= S.EVENTS',
+ '$class_constant_state_valid(S_argument)',
+ '$call_descriptors_valid(S_argument)',
+ '$declaration_history_valid(S_argument)',
+ '$heap_valid($heap_graph(S_argument))',
+ '~$dynamic_new_record_scope(S, pdynamicnew[.CALLED = (porigin_c)][.CLOSURE = (CLOSURE_SCOPE '
+ 'pclosurescope[.CALLED = porigin_c])])',
+ '~$dynamic_new_record_scope(S, pdynamicnew[.SITE = pconstantclosure_first.SITE])',
+ '~$dynamic_new_record_scope(S, pdynamicnew[.SCOPE = (porigin_c)][.CLOSURE = (CLOSURE_SCOPE '
+ 'pclosurescope[.LEXICAL = porigin_c])])',
+ '~$dynamic_new_record_scope(S, pdynamicnew[.CLOSURE = (CLOSURE_SCOPE pclosurescope[.OBJECT = '
+ 'pconstantclosure_first.OBJECT])])',
+ '$method_named(pclassdesc_e.METHODS, $ptascii("m")) = (pmethoddesc_fresh)',
+ 'S_fresh = S[.OBJECTS = $object_set(S.OBJECTS, n_fcc, CONSTANTCLOSURE pconstantclosure.SITE '
+ '(METHODCLOSURE pmethoddesc_fresh.FUNCTION.ORIGIN pconstantclosure.SITE porigin_e eps))]',
+ '~$dynamic_new_record_scope(S_fresh, pdynamicnew)']
+CASES['failed-first-unfixed-trait-static-new-published-called-class'] = {
+    'source': SOURCES['failed-first-pre-data-unfixed-trait-static-new'],
+    'stage': UNFIXED_TRAIT_STATIC_NEW_STAGE,
+    'checks': UNFIXED_TRAIT_STATIC_NEW,
+}
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--match', default='')

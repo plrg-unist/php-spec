@@ -2200,6 +2200,19 @@ at3.669/4.573s, preserving GEN request-fatal tasks and EX residual-GC fields.
 Private source1/39 and source1/37 cuts bridge unchanged. Raw compiler evidence
 is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-ucz93eec`
 and `trait266-object-struct-1edjhak2` in the same directory.
+Old trait-scoped STATIC now preserves the selected called class despite raw
+trait-method/canonical-copy origin differences. At `2cc1fbb87`/351 over
+`9782fbb4e`, strict algo/struct pass3.671/4.570s, one shutdown PHP-error tuple
+and40 supplied NEW/allocation/history conditions plus6 setup clauses pass
+(59.013s), including all four validators and malformed-certificate rejection.
+Raw evidence under current19 `.tools/` is `method-runtime-o8ztu9z_`,
+`closure-call-protocol-3yzz1hul`, `trait266-object-algo-mkqwx_04` and
+`trait266-object-struct-wdvmpr1n`; previous SELF/STATIC cuts are unchanged.
+The reviewed353 projection `ea6b5b5c2` over `54589b343` passes strict
+algo/struct at3.719/4.721s, preserving computed-static, Generator and source
+consumers; the private source1/40 cut bridges unchanged. Raw compiler evidence
+is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-5o1ambud`
+and `trait266-object-struct-ifvl6gz9` in the same directory.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,
