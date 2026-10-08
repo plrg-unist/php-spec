@@ -45,19 +45,24 @@ is integrated after reviewed current-parent composition.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
 
-Private default composition over canonical `7609ad03a` preserves ARG309, PROP
-and GC301 fields and adds286/295/306/312 (296 modules). Strict initialization,
-73 eval/saved budget and ownership predicates and persistent wrong-id/valid/replay
-controls pass. The earlier 227 Generator/Fiber default-state predicates keep
-their distinct old290 cut; the new231 remain UNRUN. The unchanged full retry
-original still times out at host55 with zero agreement. Exact request-stage
-timing certifies the second response true and compiles it quickly. The following
-bounded trace completes throw/catch/new receive/bind, then times out inside GC:
-293 completed GC transitions take27.843s versus294 execution steps5.491s.
-The active-directory versus parked-VM projection fix passes strict296 compile,
-one exact real Stringable/Fiber chdir source and73 owner/log/marker controls.
-The original72 fixture elaboration stop retains zero runtime credit. No canonical
-integration, whole-default source agreement or offline rebuild is claimed.
+Private default composition adds286/295/306/312 over actual canonical296,
+preserving ARG309/316, property, clone, GC301 and shared source hooks (300 modules).
+Exact `279839ac4` passes strict initialization and one fresh native/public original:
+two default warning frontiers retain GLOBALS snapshots and storage/readback,
+with exact `ArrayArrayg:g:l2:A:B` in29.546s at unchanged45/55 caps. Its omitted-request
+Unsupported remains zero; the corrected gate uses matched explicit CLI facts.
+Raw records are under `.tools/compiler-defaults-publication-18/.tools/defaults-publication/compact-gate-v{1,2}`.
+The genuine current107 prefix/source-origin/refusal/retirement predicates pass
+on `b50d4062e` in33.911s; their original request parse and nat-cast elaboration
+stops keep zero runtime credit (`compact-controls-v{1,2,3}` in the same directory).
+The later812 terminal-seek harness correction changes no tested semantic input.
+Current296 eval31/saved42 plus persistent wrong-id/valid/replay controls and
+Stringable/Fiber chdir with73 owner/log/marker predicates keep their distinct cuts.
+Earlier old290/v5 Generator/Fiber default227 remain accepted; new231 remain UNRUN.
+The full retry original still times out at host55 with zero agreement. A bounded
+trace completes throw/catch/new receive/bind before GC:293 completed GC transitions
+take27.843s versus294 execution steps5.491s. The separate39 compute-once candidate
+has static owner review only. No whole-retry agreement or offline rebuild is claimed.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

@@ -127,16 +127,25 @@ Accepted on exact909/e25eb2b9: code1fce6586, compiler2b247d81, runtime8151b96d a
 The [compiler contract](DEFAULT-PARAMETER-COMPILER.md) specifies source projection;
 the [successor handoff](DEFAULTS-REVIEWER-HANDOFF.md) retains remaining obligations.
 
-The private actual-parent296 composition preserves current property, clone,
-ArrayAccess and collector state. Its scoped parked-VM source checks authenticate
-live eval/class contexts and exclude saved loader markers; file contexts are
-cleared only in the validation view. The original v5 cut passes120 live and107
-retry predicates. Later compute-once bind/response changes retain those results
-as historical evidence; their231 default predicates remain UNRUN. Current
-eval31/saved42 predicates and a separate persistent public response gate pass,
-while the full retry source still exceeds host55.
-A genuine Stringable chdir inside an active Fiber now agrees with native PHP,
-and73 live owner/log plus parked marker controls pass; SOURCEPENDING is empty
-on that lane. The original72 elaboration stop stays zero. The separate default
-retry trace passes throw/catch/new receive/bind before timing out in GC and earns
-zero source agreement. Full default composition and wider producers remain open.
+The private actual-parent300 join preserves current property, clone, ArrayAccess,
+collector and source hooks, appending only accepted286/295/306/312. Strict
+initialization and one fresh two-frontier GLOBALS snapshot/storage original pass
+on `279839ac4`: exact `ArrayArrayg:g:l2:A:B`, normal completion, exit0 and empty
+stderr. Explicit CLI request facts correct only the original omitted-request
+Unsupported; that failure keeps zero agreement. This source does not exercise
+temporary Stringable first-emission cleanup.
+Current107 reached predicates additionally preserve exact prefixes1/2/3, reject
+generic-valid future/stale reads before binding and finish the original with
+closed receives and empty default cache. Their initial parse/elaboration stops
+keep zero runtime credit; only the corrected fixture passes.
+
+The scoped parked-VM source checks authenticate live eval/class/directory state,
+clear loader contexts only in the validation view and exclude saved markers.
+The genuine Stringable/Fiber chdir source and73 owner/log/marker controls retain
+their296 cut; SOURCEPENDING is empty on that lane. The original72 elaboration
+stop stays zero. The old v5 cut passes120 live and107 retry predicates. Current
+eval31/saved42 and a separate persistent public response gate pass on their296
+cut; new231 default controls remain UNRUN and their91 candidate is excluded from
+this join. The full retry source still exceeds host55. Its bounded trace passes
+throw/catch/new receive/bind before timing out in GC and earns zero agreement.
+Whole retry composition and wider producers remain open.
