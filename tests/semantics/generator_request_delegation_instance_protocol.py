@@ -99,6 +99,8 @@ $close_outputs(S_enter.EVENTS) = $ptascii("C|ID1:1")
 
 
 def main():
+    process = driver.driver.process
+    driver.driver.process = lambda argv, path, seconds, root: process(argv, path, min(seconds, 120), root)
     base.CASES = CASES
     driver.CASES = CASES
     driver.PREFIX += base.PREFIX + PREFIX
