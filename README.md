@@ -465,10 +465,14 @@ retirement. Thirteen exact originals and two independent strict-SL groups with
 298 compilation/initialization and one fresh reporting-Fiber/handler source,
 including nested busy GC0 and real count1/weak retirement. The final304 additive
 join preserves newer call/source schemas and passes combined compilation.
-Larger exception-source 60s timeouts
-remain separate from the compact trace/pending controls. Wider internal graphs,
-public idle-worker resumption, detached zero-owner guard retirement, automatic
-thresholds and wider freeing remain open.
+Collector325 keeps detached zero-owner targets and outgoing children without
+adding owners; real weak reacquisition restores ordinary release. Three exact
+originals/85 reached premises retain their private cuts. A fresh active
+unowned-close original and117 reached premises separately check same-pass count1,
+real private-control retirement and saved caller admission. Larger exception-source
+60s timeouts remain separate from compact trace/pending controls. Wider internal
+graphs, public idle-worker resumption, automatic thresholds and wider freeing
+remain open.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
