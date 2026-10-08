@@ -17,6 +17,10 @@ dec $static_compound_write_event(pclassconstantevent, prefcoercion) : bool
 dec $static_compound_write_seen(pclassconstantevent*, prefcoercion) : bool
 dec $static_compound_unchecked(pstate, pstaticcompound, porigin, int, ptbytes) : pstate
 dec $static_compound_store(pstate, pstaticcompound, porigin, int, pvalue) : pstate
+dec $static_compound_method_target(pcalltarget) : bool
+dec $static_compound_scoped_selection(pstate, ppropertyid, porigin) : (pstaticselection, ppropertydesc)?
+dec $static_compound_selected_descriptor(pstate, pstaticcompound, pstaticselection, porigin) : ppropertydesc?
+dec $static_compound_enter_event(pstate, pstaticcompound, porigin, int) : pclassconstantevent
 
 def $static_compound_selection(S, ppropertyid, porigin) = ((porigin_class, ppropertydesc))
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 (NVarLikeIdentifier (BYTES text) metadata_name) metadata_property) expression_right metadata)
@@ -220,10 +224,6 @@ def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = $write_cell
 def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = S[.COMPLETION = UNSUPPORTED "static compound storage integrity"] -- otherwise
 
 ;; Keyword selectors retain checked method scope independently of callbacks.
-dec $static_compound_method_target(pcalltarget) : bool
-dec $static_compound_scoped_selection(pstate, ppropertyid, porigin) : (pstaticselection, ppropertydesc)?
-dec $static_compound_selected_descriptor(pstate, pstaticcompound, pstaticselection, porigin) : ppropertydesc?
-dec $static_compound_enter_event(pstate, pstaticcompound, porigin, int) : pclassconstantevent
 
 def $static_compound_method_target(METHOD_TARGET n porigin) = true
 def $static_compound_method_target(STATIC_METHOD_TARGET porigin_class porigin) = true
