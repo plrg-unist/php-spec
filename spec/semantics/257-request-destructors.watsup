@@ -470,7 +470,9 @@ dec $weakref_pending_carrier(pstate, pnode) : bool
 def $weakref_pending_carrier(S, pnode) = false -- otherwise
 dec $destruction_child_jobs(pstate, pnode) : pdestructionjob*
 def $destruction_child_jobs(S, pnode) = $destruction_values($node_children(S, pnode)) -- otherwise
-def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replace($gc_store_retire(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, pnode)], pnode), pdestructionrelease[.JOBS = $destruction_child_jobs(S, pnode) ++ $destruction_free_job(pnode) ++ pdestructionrelease.JOBS])
+dec $destruction_storage_free(pstate, pnode, pdestructionrelease) : pstate
+def $destruction_storage_free(S, pnode, pdestructionrelease) = $destructor_release_replace($gc_store_retire(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, pnode)], pnode), pdestructionrelease[.JOBS = $destruction_child_jobs(S, pnode) ++ $destruction_free_job(pnode) ++ pdestructionrelease.JOBS]) -- otherwise
+def $destructor_free(S, pnode, pdestructionrelease) = $destruction_storage_free(S, pnode, pdestructionrelease)
   -- if ~$weakref_pending_carrier(S, pnode)
 
 def $destructor_select(S, n, b_store, pdestructionrelease?) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS][.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: S.TODO]

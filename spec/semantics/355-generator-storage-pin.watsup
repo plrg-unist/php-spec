@@ -1,0 +1,141 @@
+;; zend_objects_store_del gives free_obj a real refcount-one pin. Generator
+;; storage releases one field at a time before std_dtor notifies weak targets.
+dec $generator_storage_slot(pgenerator, nat) : pnode*
+dec $generator_storage_remaining(pgenerator, nat) : pnode*
+dec $generator_storage_tasks(ptask*) : pgenstorage*
+dec $generator_storage_frames(pframe*) : pgenstorage*
+dec $generator_storage_select(pgenstorage*, nat) : pgenstorage?
+dec $generator_storage_for(pstate, nat) : pgenstorage?
+dec $generator_storage_record(pstate, pgenerator) : pgenstorage?
+dec $generator_storage_record_at(pstate, pgenerator, pgenstorage*) : pgenstorage?
+dec $generator_storage_history(pstate, pgenerator) : bool
+dec $generator_storage_basic(pstate, pgenstorage) : bool
+dec $generator_storage_basics(pstate, pgenstorage*) : bool
+dec $generator_storage_ids(pgenstorage*) : nat*
+dec $generator_storage_tail(ptask*, pgenstorage) : ptask*?
+dec $generator_storage_parent(pstate, pgenstorage, ptask*) : bool
+dec $generator_storage_valid(pstate, pgenstorage) : bool
+dec $generator_storage_node(pstate, nat) : bool
+dec $generator_storage_called(pstate, nat) : pstate
+dec $generator_storage_begin(pstate, nat) : pstate
+
+def $generator_storage_slot(pgenerator, 0) = $generator_closed_closure(pgenerator)
+def $generator_storage_slot(pgenerator, 1) = $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL)
+def $generator_storage_slot(pgenerator, 2) = $generator_values_nodes(pgenerator.KEY)
+def $generator_storage_slot(pgenerator, 3) = $generator_values_nodes(pgenerator.RETURN)
+def $generator_storage_remaining(pgenerator, n) = eps -- if $(n >= 4)
+def $generator_storage_remaining(pgenerator, n) = $generator_storage_slot(pgenerator, n) ++ $generator_storage_remaining(pgenerator, $(n + 1)) -- if $(n < 4)
+
+def $generator_storage_tasks(eps) = eps
+def $generator_storage_tasks((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*) = pgenstorage :: $generator_storage_tasks(ptask*)
+def $generator_storage_tasks(ptask :: ptask_tail*) = $generator_storage_tasks(ptask_tail*) -- otherwise
+def $generator_storage_frames(eps) = eps
+def $generator_storage_frames(pframe :: pframe_tail*) = $generator_storage_tasks(pframe.TODO) ++ $generator_storage_frames(pframe_tail*)
+def $generator_storage_select(eps, n) = eps
+def $generator_storage_select(pgenstorage :: pgenstorage_tail*, n) = (pgenstorage) -- if pgenstorage.OBJECT = n
+def $generator_storage_select(pgenstorage :: pgenstorage_tail*, n) = $generator_storage_select(pgenstorage_tail*, n) -- if pgenstorage.OBJECT =/= n
+def $generator_storage_for(S, n) = $generator_storage_select($generator_storage_tasks(S.TODO) ++ $generator_storage_frames(S.FRAMES), n)
+def $generator_storage_record(S, pgenerator) = $generator_storage_record_at(S, pgenerator, $generator_storage_tasks(S.TODO) ++ $generator_storage_frames(S.FRAMES))
+def $generator_storage_record_at(S, pgenerator, eps) = eps
+def $generator_storage_record_at(S, pgenerator, pgenstorage :: pgenstorage_tail*) = (pgenstorage)
+  -- if $(pgenstorage.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pgenstorage.OBJECT] = GENERATOR pgenerator
+def $generator_storage_record_at(S, pgenerator, pgenstorage :: pgenstorage_tail*) = $generator_storage_record_at(S, pgenerator, pgenstorage_tail*) -- otherwise
+def $generator_storage_active(S, n) = true -- if $generator_storage_for(S, n) = (pgenstorage)
+def $node_children(S, HOBJECT n) = $generator_storage_remaining(pgenerator, pgenstorage.NEXT)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if $generator_storage_for(S, n) = (pgenstorage)
+
+;; Consumed fields are raw readable metadata, not repeated physical owners.
+def $generator_storage_closure_borrowed(S, pgenerator) = true
+  -- if $generator_storage_record(S, pgenerator) = (pgenstorage)
+  -- if $(pgenstorage.NEXT >= 1)
+def $generator_storage_reference_borrowed(S, pgenerator, n) = true
+  -- if $generator_storage_record(S, pgenerator) = (pgenstorage)
+  -- if $(pgenstorage.NEXT >= 2)
+  -- if $(n < |S.STORE|) /\ n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED pvalue
+def $generator_storage_history(S, pgenerator) = ($function_at(S.CLOSURETEMPLATES, pgenerator.FUNCTION) = eps) -- if pgenerator.CLOSURE = eps
+def $generator_storage_history(S, pgenerator) = true
+  -- if pgenerator.CLOSURE = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if pfunction.ORIGIN = pgenerator.FUNCTION
+def $generator_storage_history(S, pgenerator) = false -- otherwise
+def $generator_storage_basic(S, pgenstorage) = true
+  -- if $(pgenstorage.OBJECT < |S.OBJECTS|) /\ HOBJECT pgenstorage.OBJECT <- S.ALLOCATIONS
+  -- if S.OBJECTS[pgenstorage.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.BORROWED = eps
+  -- if $generator_close_function(S, pgenerator) /\ $generator_integer(pgenerator.INDEX)
+  -- if $generator_storage_history(S, pgenerator) /\ $generator_cache_shape(S, pgenerator)
+  -- if $access_generator_record_valid(S, pgenerator)
+  -- if $(pgenstorage.NEXT <= 4)
+  -- if $heap_subset($generator_storage_remaining(pgenerator, pgenstorage.NEXT), S.ALLOCATIONS)
+  -- if $(pgenstorage.OBJECT < |S.DESTRUCTION.HANDLES|)
+  -- if S.DESTRUCTION.HANDLES[pgenstorage.OBJECT] = pgenstorage.HANDLE
+  -- if $(pgenstorage.HANDLE > 0) /\ $(pgenstorage.HANDLE < S.DESTRUCTION.NEXT)
+  -- if ~(pgenstorage.HANDLE <- S.DESTRUCTION.FREE) /\ pgenstorage.OBJECT <- S.DESTRUCTION.CALLED
+def $generator_storage_basic(S, pgenstorage) = false -- otherwise
+def $generator_storage_basics(S, eps) = true
+def $generator_storage_basics(S, pgenstorage :: pgenstorage_tail*) = ($generator_storage_basic(S, pgenstorage) /\ $generator_storage_basics(S, pgenstorage_tail*))
+def $generator_storage_ids(eps) = eps
+def $generator_storage_ids(pgenstorage :: pgenstorage_tail*) = pgenstorage.OBJECT :: $generator_storage_ids(pgenstorage_tail*)
+def $generator_storage_state_valid(S) = ($destructor_unique($generator_storage_ids(pgenstorage*)) /\ $generator_storage_basics(S, pgenstorage*))
+  -- if pgenstorage* = $generator_storage_tasks(S.TODO) ++ $generator_storage_frames(S.FRAMES)
+def $generator_storage_tail(eps, pgenstorage) = eps
+def $generator_storage_tail((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*, pgenstorage) = (ptask*)
+def $generator_storage_tail(ptask :: ptask_tail*, pgenstorage) = $generator_storage_tail(ptask_tail*, pgenstorage) -- otherwise
+def $generator_storage_parent(S, pgenstorage, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = ($destructor_release_valid(S, pdestructionrelease) /\ pgenstorage.USER = pdestructionrelease.USER)
+def $generator_storage_parent(S, pgenstorage, (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*) = $generator_close_release_valid(S, pgenrelease)
+def $generator_storage_parent(S, pgenstorage, ptask*) = false -- otherwise
+def $generator_storage_valid(S, pgenstorage) = true
+  -- if $generator_storage_basic(S, pgenstorage)
+  -- if $generator_storage_for(S, pgenstorage.OBJECT) = (pgenstorage)
+  -- if S.CURRENT = pgenstorage.CALLER /\ S.ORIGIN = pgenstorage.ORIGIN /\ S.CONSTCONTEXT = pgenstorage.CONSTCONTEXT
+  -- if pgenstorage.USER = $destructor_user_source(S)
+  -- if $generator_storage_tail(S.TODO, pgenstorage) = (ptask*)
+  -- if $generator_storage_parent(S, pgenstorage, ptask*)
+def $generator_storage_valid(S, pgenstorage) = false -- otherwise
+
+def $generator_storage_node(S, n) = true
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.DELEGATE = eps
+def $generator_storage_node(S, n) = false -- otherwise
+def $generator_storage_called(S, n) = S -- if n <- S.DESTRUCTION.CALLED
+def $generator_storage_called(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]] -- if ~(n <- S.DESTRUCTION.CALLED)
+def $generator_storage_begin(S, n) = $generator_storage_called(S[.TODO = (GENERATOR_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n)
+def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $generator_storage_begin(S, n) -- if $generator_storage_node(S, n)
+def $generator_close_storage_free(S, HOBJECT n, pgenrelease) = $generator_storage_begin(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*], n)
+  -- if $generator_storage_node(S, n)
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_old) :: ptask*
+def $call_task_valid(S, GENERATOR_STORAGE_STEP pgenstorage) = $generator_storage_valid(S, pgenstorage)
+def $task_nodes(GENERATOR_STORAGE_STEP pgenstorage) = [HOBJECT pgenstorage.OBJECT]
+def $eager_explicit_task(GENERATOR_STORAGE_STEP pgenstorage) = true
+def $generator_internal_task(GENERATOR_STORAGE_STEP pgenstorage) = true
+rule PhpStep/generator-storage-field: S ~> $destructor_release_begin(S[.TODO = (GENERATOR_STORAGE_STEP pgenstorage[.NEXT = $(pgenstorage.NEXT + 1)]) :: ptask*], $destruction_values($generator_storage_slot(pgenerator, pgenstorage.NEXT)))
+  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
+  -- if $generator_storage_valid(S, pgenstorage)
+  -- if $(pgenstorage.NEXT < 4)
+  -- if S.OBJECTS[pgenstorage.OBJECT] = GENERATOR pgenerator
+rule PhpStep/generator-storage-finish: S ~> $destructor_release_begin($gc_store_retire(S[.TODO = ptask*][.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT pgenstorage.OBJECT)], HOBJECT pgenstorage.OBJECT), [DESTRUCTION_HANDLE pgenstorage.OBJECT])
+  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
+  -- if $generator_storage_valid(S, pgenstorage)
+  -- if pgenstorage.NEXT = 4
+  -- if $heap_owners($heap_graph(S), HOBJECT pgenstorage.OBJECT) = 1
+rule PhpStep/generator-storage-escaped: S ~> S[.COMPLETION = UNSUPPORTED "Generator free_storage escaped reacquisition"]
+  -- if S.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*
+  -- if $generator_storage_valid(S, pgenstorage)
+  -- if pgenstorage.NEXT = 4
+  -- if $($heap_owners($heap_graph(S), HOBJECT pgenstorage.OBJECT) > 1)
+
+;; Keep pending Throwables on the existing operation/frame, across this pin.
+def $destructor_operation_tasks((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*, pdestructionoperation, pdestructionoperation_new) = (GENERATOR_STORAGE_STEP pgenstorage) :: $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation_new)
+def $destructor_frame_tasks((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*, pdestructionframe, pdestructionframe_new) = (GENERATOR_STORAGE_STEP pgenstorage) :: $destructor_frame_tasks(ptask*, pdestructionframe, pdestructionframe_new)
+def $destructor_release_frame((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*, pdestructionframe) = $destructor_release_frame(ptask*, pdestructionframe)
+def $destructor_tail_pending((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*) = $destructor_tail_pending(ptask*)
+def $destructor_call_tail((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*, pdestructorcall) = $destructor_call_tail(ptask*, pdestructorcall)
+def $generator_close_destructor_tasks(S, (GENERATOR_STORAGE_STEP pgenstorage) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(S, ptask*, n_local?, n_caller?, ptask_exit)
+  -- if $generator_storage_valid(S, pgenstorage)
+def $generator_request_tail_task(GENERATOR_STORAGE_STEP pgenstorage) = true
+  -- if ~pgenstorage.USER /\ pgenstorage.CALLER = eps /\ pgenstorage.ORIGIN = eps /\ pgenstorage.CONSTCONTEXT = eps
+def $generator_storage_transfer(S) = ($generator_storage_tasks(S.TODO) = eps /\ $generator_storage_frames(S.FRAMES) = eps)
