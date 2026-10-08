@@ -370,8 +370,8 @@ def $generator_request_render_dispatch_ready(S) = true
 def $generator_request_render_dispatch_ready(S) = false -- otherwise
 rule PhpStep/generator-request-render-handler: S ~> S[.TODO = (EXCEPTION_HANDLER_INVOKE {OBJECT n, CALLBACK pvalue, TARGET eps, ORIGIN (porigin_method), RAW $exception_snapshot(S, pvalue), SENT eps, RECEIVED eps}) :: (GENERATOR_REQUEST_RENDER_RETURN pgenfatal n false) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*][.EXCEPTIONHANDLERS = (pvalue) :: S.EXCEPTIONHANDLERS][.EXCEPTIONHANDLER = eps][.ORIGIN = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $generator_request_render_dispatch_ready(S)
-  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT pgenfatal.OBJECT porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
-  -- if pgenfatal.METHOD = (porigin_method)
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT n_parent porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
+  -- if pgenfatal.OBJECT = n_parent /\ pgenfatal.METHOD = (porigin_method)
   -- if S.EXCEPTIONHANDLER = (pvalue)
 
 ;; These queries also run during heap-edge discovery. Every guard is structural;
