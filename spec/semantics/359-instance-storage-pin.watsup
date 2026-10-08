@@ -133,8 +133,9 @@ def $task_nodes(INSTANCE_STORAGE_STEP pinstancestorage) = [HOBJECT pinstancestor
 def $eager_explicit_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
 def $generator_internal_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
 
-def $instance_storage_cleared(ppropertyslot*, n) = ppropertyslot*[0:n] ++ [ppropertyslot[.STATE = PROP_UNSET]] ++ ppropertyslot*[$(n + 1):n_tail]
+def $instance_storage_cleared(ppropertyslot*, n) = ppropertyslot*[0:n] ++ [ppropertyslot[.STATE = PROP_UNSET]] ++ ppropertyslot*[n_next:n_tail]
   -- if ppropertyslot = ppropertyslot*[n]
+  -- if n_next = $(n + 1)
   -- if n_tail = $nabs($(|ppropertyslot*| - n - 1))
 def $instance_storage_transfer(S, pinstancestorage, ptask*) = $destructor_release_begin(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, pinstancestorage.OBJECT, $instance_storage_cleared(ppropertyslot*, n_slot))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = $(pinstancestorage.NEXT + 1)]) :: ptask*], $destruction_values($property_slot_nodes([ppropertyslot])))
   -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = (ppropertyslot*)
