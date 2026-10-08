@@ -1,0 +1,96 @@
+;; DIM_OP owns its raw Get RV until after Set. Object casts add only their
+;; STRINGIFY_RESULT owner; the referent is not copied across a reference Get.
+dec $access_string_source(pstate, paccess, poperand) : bool
+dec $access_string_begin(pstate, paccess, poperand) : pstate
+dec $access_string_value(pstate, paccess, poperand, ptbytes?) : pstate
+dec $access_string_finish(pstate, paccess, poperand, ptbytes?, ptbytes, ptask*) : pstate
+dec $access_string_set(pstate, paccess, poperand, ptbytes) : pstate
+dec $access_string_set_operand(paccess) : poperand?
+dec $access_string_nodes(paccess, poperand) : pnode*
+
+def $access_string_source(S, paccess, KNOWN pvalue) = true
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")
+  -- if $access_valid(S, paccess)
+  -- if paccess.OBJECT = (n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("offsetGet"), |S.CLASSES|) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+def $access_string_source(S, paccess, REFERENCE n) = true
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")
+  -- if $access_valid(S, paccess)
+  -- if $access_reference_get(S, paccess)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+def $access_string_source(S, paccess, poperand) = false -- otherwise
+
+def $access_string_begin(S, paccess, poperand) = S[.TODO = (ACCESS_STRING_PREP paccess poperand eps) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
+def $access_compound_result(S, paccess, pvalue) = $access_string_begin(S, paccess, KNOWN pvalue)
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
+def $access_reference_compound(S, paccess, n) = $access_string_begin(S, paccess, REFERENCE n)
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL
+
+def $access_string_value(S, paccess, poperand, eps) = $quiet_operand(S, poperand)
+def $access_string_value(S, paccess, poperand, (ptbytes)) = $quiet_operand(S, paccess.SELECTED)
+def $access_string_finish(S, paccess, poperand, eps, ptbytes, ptask_tail*) = S[.TODO = (ACCESS_STRING_PREP paccess poperand (ptbytes)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $access_string_finish(S, paccess, poperand, (ptbytes_left), ptbytes_right, ptask_tail*) = $access_string_set(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], paccess, poperand, ptbytes_left ++ ptbytes_right)
+def $access_string_set(S, paccess, KNOWN pvalue, ptbytes) = $access_compound_set(S, paccess[.MODE = ACCESS_COMPOUND CONCAT pvalue][.VALUE = PSTRING ptbytes][.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+def $access_string_set(S, paccess, REFERENCE n, ptbytes) = $access_compound_set(S, paccess[.MODE = ACCESS_REFERENCE_COMPOUND CONCAT n][.VALUE = PSTRING ptbytes][.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+
+;; std_write_dimension releases its own receiver/key copies first. The VM then
+;; retires rv, OP_DATA, the outer receiver, OP2 key and finally OP1 base.
+def $access_string_set_operand(paccess) = (KNOWN pvalue)
+  -- if paccess.MODE = ACCESS_COMPOUND CONCAT pvalue
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
+def $access_string_set_operand(paccess) = (REFERENCE n)
+  -- if paccess.MODE = ACCESS_REFERENCE_COMPOUND CONCAT n
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
+def $access_string_set_operand(paccess) = eps -- otherwise
+def $access_roots(paccess, b_inner) = $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner) ++ $access_string_nodes(paccess, poperand)
+  -- if $access_string_set_operand(paccess) = (poperand)
+def $access_string_nodes(paccess, poperand) = $operand_nodes(poperand) ++ $value_nodes(paccess.VALUE) ++ $operand_nodes(paccess.RHS) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $operand_nodes(paccess.INPUT) ++ $base_nodes(paccess.BASE)
+  -- if ~$access_write_task(paccess.TASK)
+  -- if ~$access_finish_task(paccess.TASK)
+def $access_string_nodes(paccess, poperand) = $operand_nodes(poperand) ++ $value_nodes(paccess.VALUE) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) -- otherwise
+def $task_nodes(ACCESS_STRING_PREP paccess poperand ptbytes?) = $access_string_nodes(paccess, poperand)
+def $task_nodes(ACCESS_STRING_RESULT paccess poperand ptbytes? n) = $access_string_nodes(paccess, poperand)
+def $call_task_valid(S, ACCESS_STRING_PREP paccess poperand ptbytes?) = $access_string_source(S, paccess, poperand)
+def $call_task_valid(S, ACCESS_STRING_RESULT paccess poperand ptbytes? n) = ($access_string_source(S, paccess, poperand) /\ $(n < |S.OBJECTS|))
+
+def $stringify_source(S, porigin_site, z, ACCESS_STRING_RESULT paccess poperand ptbytes? n) = ($access_string_source(S, paccess, poperand) /\ porigin_site = paccess.SITE /\ z = paccess.LINE)
+def $stringify_source_consumer(ACCESS_STRING_RESULT paccess poperand ptbytes? n) = true
+def $stringify_consumer_tail_valid(S, porigin_site, z, ACCESS_STRING_RESULT paccess poperand ptbytes? n, ptask_tail*) = $stringify_source(S, porigin_site, z, ACCESS_STRING_RESULT paccess poperand ptbytes? n)
+def $stringify_consumer_receiver_valid(S, n, ACCESS_STRING_RESULT paccess poperand ptbytes? n_selected) = (n = n_selected)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_site z) :: (ACCESS_STRING_RESULT paccess poperand ptbytes? n_selected) :: ptask_tail*
+
+rule PhpStep/access-string-call: S ~> $user_string_begin(S_value[.ORIGIN = (paccess.SITE)], n, paccess.SITE, paccess.LINE, ACCESS_STRING_RESULT paccess poperand ptbytes? n, ptask_tail*)
+  -- if S.TODO = (ACCESS_STRING_PREP paccess poperand ptbytes?) :: ptask_tail*
+  -- if $access_string_source(S, paccess, poperand)
+  -- if S_value = $access_string_value(S, paccess, poperand, ptbytes?)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_value, n)
+rule PhpStep/access-string-plain: S ~> $access_string_finish(S_string, paccess, poperand, ptbytes?, ptbytes, ptask_tail*)
+  -- if S.TODO = (ACCESS_STRING_PREP paccess poperand ptbytes?) :: ptask_tail*
+  -- if $access_string_source(S, paccess, poperand)
+  -- if S_value = $access_string_value(S, paccess, poperand, ptbytes?)
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_value, pvalue)
+  -- if S_string = $stringify(S_value, pvalue, paccess.LINE)
+  -- if S_string.COMPLETION = NORMAL
+  -- if S_string.RESULT = KNOWN (PSTRING ptbytes)
+rule PhpStep/access-string-abrupt: S ~> S_string
+  -- if S.TODO = (ACCESS_STRING_PREP paccess poperand ptbytes?) :: ptask_tail*
+  -- if $access_string_source(S, paccess, poperand)
+  -- if S_value = $access_string_value(S, paccess, poperand, ptbytes?)
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$user_string_value(S_value, pvalue)
+  -- if S_string = $stringify(S_value, pvalue, paccess.LINE)
+  -- if S_string.COMPLETION =/= NORMAL
+rule PhpStep/access-string-result: S ~> $access_string_finish(S, paccess, poperand, ptbytes?, ptbytes, ptask_tail*)
+  -- if S.TODO = (ACCESS_STRING_RESULT paccess poperand ptbytes? n) :: ptask_tail*
+  -- if $call_task_valid(S, ACCESS_STRING_RESULT paccess poperand ptbytes? n)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)

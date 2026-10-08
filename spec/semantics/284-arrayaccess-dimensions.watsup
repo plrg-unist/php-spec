@@ -425,7 +425,7 @@ rule PhpStep/access-unset-false-resume: S ~> $key_read_done(S, PNULL)
   -- if paccess.PHASE = ACCESS_UNSET_FALSE
   -- if $access_valid(S, paccess)
 
-def $access_roots(paccess, b_inner) = $access_operand_roots(paccess) ++ $access_extra_roots(paccess) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner)
+def $access_roots(paccess, b_inner) = $access_operand_roots(paccess) ++ $access_extra_roots(paccess) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner) -- otherwise
 def $access_object_roots((n), true) = [HOBJECT n]
 def $access_object_roots(n?, b) = eps -- otherwise
 def $access_offset_roots(pvalue, true) = $value_nodes(pvalue)

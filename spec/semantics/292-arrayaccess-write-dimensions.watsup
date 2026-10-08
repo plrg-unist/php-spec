@@ -94,6 +94,7 @@ def $access_binary_state(S, paccess, pvalue_left) = S[.TODO = ptask_tail*][.RESU
   -- if S.TODO = ptask :: ptask_tail*
 def $access_compound_result(S, paccess, pvalue_left) = $access_compound_set(S_binary[.TODO = S.TODO][.HELD = S.HELD][.RESULT = KNOWN PNULL], paccess[.MODE = ACCESS_COMPOUND pbin pvalue_left][.VALUE = pvalue_result][.PHASE = ACCESS_CALL $ptascii("offsetSet")])
   -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if pbin =/= CONCAT
   -- if S_work = $access_binary_state(S, paccess, pvalue_left)
   -- if S_rhs = $quiet_operand(S_work, paccess.SELECTED)
   -- if S_rhs.RESULT = KNOWN pvalue_right
@@ -102,6 +103,7 @@ def $access_compound_result(S, paccess, pvalue_left) = $access_compound_set(S_bi
   -- if S_binary.RESULT = KNOWN pvalue_result
 def $access_compound_result(S, paccess, pvalue_left) = S_binary[.HELD = S.HELD]
   -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if pbin =/= CONCAT
   -- if S_work = $access_binary_state(S, paccess, pvalue_left)
   -- if S_rhs = $quiet_operand(S_work, paccess.SELECTED)
   -- if S_rhs.RESULT = KNOWN pvalue_right

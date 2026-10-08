@@ -239,6 +239,8 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | DESTRUCTOR_OPERATION_EXIT pdestructionoperation
   | ACCESS_REFERENCE_VALUE_RESULT porigin poperand int
   | ACCESS_REFERENCE_VALUE_RELEASE paccess poperand
+  | ACCESS_STRING_PREP paccess poperand ptbytes?
+  | ACCESS_STRING_RESULT paccess poperand ptbytes? nat
   | DESTRUCTOR_PREQUEUE pcompletion | EXCEPTION_HANDLER_CLEAN pexceptioncall bool | ERROR_HANDLER_CLEAN perrorcall
   | DESTRUCTOR_FATAL pdestructionfatal
   | SHUTDOWN_RENDER pshutdownrender | SHUTDOWN_SEND nat nat poperand* | SHUTDOWN_REFERENCE nat nat poperand* | SHUTDOWN_ENTER nat poperand* | SHUTDOWN_RESULT nat poperand*
