@@ -136,11 +136,11 @@ def $goto_foreach_task(ptask) = false -- otherwise
 def $goto_marker_valid(S, LOOP_NEXT statement (porigin)) = ($origin_node(S.SOURCES, porigin) = (statement) /\ $goto_loop_statement(statement))
 def $goto_foreach_owner_valid(S, (ITERATOR n n_array b pcursor*), HARRAY n_owner) = (~b /\ n_array = n_owner)
 def $goto_foreach_owner_valid(S, (ITERATOR n n_array b pcursor*), HCELL n_cell) = (b /\ (HCELL n_cell <- S.ALLOCATIONS))
-def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HOBJECT n_object) = ((HOBJECT n_object) <- S.ALLOCATIONS /\ ~$useriter_instance(S, n_object))
+def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HOBJECT n_object) = (~b_ref /\ (HOBJECT n_object) <- S.ALLOCATIONS /\ ~$useriter_instance(S, n_object))
 def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HOBJECT n_owner) = false
   -- if n_object =/= n_owner
 def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HARRAY n_owner) = false
-def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HCELL n_owner) = false
+def $goto_foreach_owner_valid(S, (OBJECTITER n n_object n_position b_ref), HCELL n_owner) = (b_ref /\ (HCELL n_owner) <- S.ALLOCATIONS /\ n_owner <- S.REFCELLS /\ $(n_owner < |S.STORE|) /\ S.STORE[n_owner] =/= UNDEFINED)
 def $goto_foreach_owner_valid(S, (ITERATOR n n_array b pcursor*), HOBJECT n_object) = false
 def $goto_foreach_owner_valid(S, eps, pnode) = false
 def $goto_foreach_line_valid(S, NStmtForeach expression_iterable phpType5 phpType4 expression_value phpType23 phpType4_else metadata, porigin, z) = ($runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression_iterable) = z)

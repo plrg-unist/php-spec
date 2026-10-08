@@ -359,6 +359,12 @@ test-semantics: build
 	python3 tests/semantics/dynamic_property_warning_protocol.py --group temporary-cleanup
 	python3 tests/semantics/dynamic_property_warning_protocol.py --group gc-protected
 	python3 tests/semantics/dynamic_property_warning_protocol.py --group exit
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group physical
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group binding
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group pending-binding
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group notice-owner
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group scalar-warning
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind normal
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind compiler
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind composition
