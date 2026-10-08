@@ -120,6 +120,8 @@ EXPECTED = {
 }
 
 BOUNDARIES = {
+    'review-descendant-typed-source19': (b"<?php\nclass ReviewTypedDescendantReceiver19 { public $x = 2; public $y = 3; }\nclass ReviewTypedDescendantHolder19 { public int $number; }\nclass ReviewTypedDescendantChild19 { public function __destruct() {\n    echo 'B|';\n    try { $GLOBALS['r'] = 'bad'; echo 'bad|'; }\n    catch (TypeError $error) { echo 'type|'; }\n} }\n$object = new ReviewTypedDescendantReceiver19();\n$r = 7;\n$value = new ReviewTypedDescendantHolder19();\n$value->number =& $r;\n$dynamic = new ReviewTypedDescendantChild19();\n@$value->dynamic = $dynamic;\nunset($dynamic);\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\n$r = 'free';\necho $r, '/', $value, '|done';\n", 'foreach reference previous CV pointer lifetime', b'', b'B|type|x=2|y=3|free/3|done'),
+    'review-descendant-nested-typed-source19': (b"<?php\nclass ReviewTypedDescendantReceiver19 { public $x = 2; public $y = 3; }\nclass ReviewTypedDescendantOuter19 { public $nested; }\nclass ReviewTypedDescendantHolder19 { public int $number; }\nclass ReviewTypedDescendantChild19 { public function __destruct() {\n    echo 'B|';\n    try { $GLOBALS['r'] = 'bad'; echo 'bad|'; }\n    catch (TypeError $error) { echo 'type|'; }\n} }\n$object = new ReviewTypedDescendantReceiver19();\n$r = 7;\n$typed = new ReviewTypedDescendantHolder19();\n$typed->number =& $r;\n$dynamic = new ReviewTypedDescendantChild19();\n@$typed->dynamic = $dynamic;\nunset($dynamic);\n$value = new ReviewTypedDescendantOuter19();\n$value->nested = $typed;\nunset($typed);\nforeach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\n$r = 'free';\necho $r, '/', $value, '|done';\n", 'foreach reference previous CV pointer lifetime', b'', b'B|type|x=2|y=3|free/3|done'),
     'dynamic-handler-exit-shutdown': (
         b"<?php\nclass DynamicHandlerExitShutdown18 {}\n$object = new DynamicHandlerExitShutdown18();\nregister_shutdown_function(function() use ($object) {\n    echo isset($object->x) ? 'inserted|' : 'absent|';\n});\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'warning|';\n    exit(0);\n});\n$object->x = 7;\necho 'unreachable|';\n",
         'dynamic property warning exit continuation'),
@@ -155,7 +157,11 @@ def prepare(directory, source):
         if frontend: frontend.close()
 
 
-def boundary(directory, source, reason, expected_stdout=b'warning|'):
+def boundary(directory, source, reason, expected_stdout=b'warning|', native_stdout=None):
+    if native_stdout is not None:
+        observed = cross.invoke.process([str(ROOT/'.tools/php/bin/php'), '-n', *cross.invoke.types.FLAGS, str(source)],
+                                        directory/'native', 30, directory)
+        assert observed.returncode == 0 and observed.stdout == native_stdout and not observed.stderr
     result = cross.invoke.process([str(ROOT/'bin/php-semantics'), str(source),
         '--steps', '100000', '--timeout', '60'], directory/'model', 90, directory)
     assert result.returncode == 1 and not result.stderr
@@ -165,7 +171,10 @@ def boundary(directory, source, reason, expected_stdout=b'warning|'):
     assert outcome['exit_status'] is None and outcome['diagnostic'] is None
     assert base64.b64decode(outcome['stdout'], validate=True) == expected_stdout
     assert not base64.b64decode(outcome['stderr'], validate=True)
-    return {'status':outcome['status'], 'reason':reason, 'agreement_claim':False}
+    result = {'status':outcome['status'], 'reason':reason, 'agreement_claim':False}
+    if native_stdout is not None:
+        result['native_observation'] = {'exit_status':0, 'stdout':native_stdout.decode()}
+    return result
 
 
 def main():
@@ -193,8 +202,9 @@ def main():
             report['records'].append(row)
             if args.mode=='prepare': row['outcome'] = prepare(directory, source)
             elif args.mode=='boundary': row['outcome'] = boundary(directory, source, BOUNDARIES[name][1],
-                BOUNDARIES[name][2] if len(BOUNDARIES[name])==3 else
-                (b'warning|old|' if name=='duplicate-reference-foreach-binding-exit18' else b'warning|'))
+                BOUNDARIES[name][2] if len(BOUNDARIES[name])>=3 else
+                (b'warning|old|' if name=='duplicate-reference-foreach-binding-exit18' else b'warning|'),
+                BOUNDARIES[name][3] if len(BOUNDARIES[name])==4 else None)
             else: row['outcome'] = cross.source(
                 {'abrupt':False, 'expected_exit_status':0, 'expected_stdout':EXPECTED[name]}, directory, source)
             assert cross.snapshot(None)==before

@@ -23,6 +23,7 @@ CASES = {
     'container-throw':'review-container-first-throw19',
     'descendants':'review-descendant-order19',
     'descendants-throw':'review-descendant-two-throws19',
+    'descendants-guard':'review-descendant-order19',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -685,6 +686,21 @@ def container_assertions(initial, expected, pending, descendants=False):
         '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
 
 
+def descendant_guard_assertions(initial):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_release', 16),
+        'S_release.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_release_tail*',
+        'pforeachbind.VALUE = POBJECT n_previous',
+        'S_release.PROPREFS = eps',
+        'S_bound = $scope_bind_name(S_release[.CELL = pforeachbind.NEW], eps, pforeachbind.NAME, pforeachbind.LINE)',
+        'S_bound.COMPLETION = NORMAL',
+        'pnode_retired* = $destruction_release_walk($heap_graph(S_bound), $destruction_values([HCELL pforeachbind.OLD]), eps)',
+        '(HOBJECT n_previous) <- pnode_retired*',
+        '~$foreach_bind_retired_types(S_release.PROPREFS, pnode_retired*)',
+        '$foreach_bind_children(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE, HOBJECT n_previous)',
+        '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)']
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -694,6 +710,7 @@ def prepare(directory, group):
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
             container_assertions(initial, sources.EXPECTED[case], group=='container-throw') if group.startswith('container') else
+            descendant_guard_assertions(initial) if group=='descendants-guard' else
             container_assertions(initial, sources.EXPECTED[case], group=='descendants-throw', True) if group.startswith('descendants') else
             binding_gc_assertions(initial, sources.EXPECTED[case]) if group=='binding-gc' else
             scalar_warning_assertions(initial, sources.EXPECTED[case]) if group=='scalar-warning' else

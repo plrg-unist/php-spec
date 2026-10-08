@@ -176,6 +176,16 @@ dec $foreach_bind_prior_unsupported(pstate, ptbytes, nat, int) : bool
 dec $foreach_bind_internal_nodes(pstate, pnode*) : bool
 def $foreach_bind_internal_nodes(S, eps) = false
 def $foreach_bind_internal_nodes(S, pnode :: pnode_tail*) = ($internal_destructor_pending(S, pnode) \/ $foreach_bind_internal_nodes(S, pnode_tail*))
+;; Per-slot typed-source detachment during child callbacks is still required.
+dec $foreach_bind_source_retired(pproptypesource, pnode*) : bool
+def $foreach_bind_source_retired(OBJECT_PROP_SOURCE n ptbytes ppropertyid, pnode*) = ((HOBJECT n) <- pnode*)
+def $foreach_bind_source_retired(pproptypesource, pnode*) = false -- otherwise
+dec $foreach_bind_sources_retired(pproptypesource*, pnode*) : bool
+def $foreach_bind_sources_retired(eps, pnode*) = false
+def $foreach_bind_sources_retired(pproptypesource :: pproptypesource_tail*, pnode*) = ($foreach_bind_source_retired(pproptypesource, pnode*) \/ $foreach_bind_sources_retired(pproptypesource_tail*, pnode*))
+dec $foreach_bind_retired_types(ppropref*, pnode*) : bool
+def $foreach_bind_retired_types(eps, pnode*) = false
+def $foreach_bind_retired_types(ppropref :: ppropref_tail*, pnode*) = ($foreach_bind_sources_retired(ppropref.SOURCES, pnode*) \/ $foreach_bind_retired_types(ppropref_tail*, pnode*))
 dec $foreach_bind_children(pstate, ptbytes, nat, int, pnode) : bool
 def $foreach_bind_children(S, ptbytes, n_source, z, pnode) = true
   -- if pnode <- S.ALLOCATIONS
@@ -186,6 +196,7 @@ def $foreach_bind_children(S, ptbytes, n_source, z, pnode) = true
   -- if pnode_retired* = $destruction_release_walk($heap_graph(S_bound), $destruction_values([HCELL n_old]), eps)
   -- if $destructor_waiting(S, pnode_retired*)
   -- if ~$foreach_bind_internal_nodes(S, pnode_retired*)
+  -- if ~$foreach_bind_retired_types(S.PROPREFS, pnode_retired*)
 def $foreach_bind_children(S, ptbytes, n_source, z, pnode) = false -- otherwise
 dec $foreach_bind_plain_payload(pstate, ptbytes, nat, int, pvalue) : bool
 def $foreach_bind_plain_payload(S, ptbytes, n_source, z, POBJECT n_previous) = ((HOBJECT n_previous) <- S.ALLOCATIONS /\ ~(n_previous <- S.DESTRUCTION.CALLED))
