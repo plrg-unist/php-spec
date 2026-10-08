@@ -457,5 +457,23 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-active-interval-bound-core-throw-compact-review-21",
+    "source": "<?php\n$w = null;\nclass S345 {\n    public $s;\n    function __destruct() { global $w; $w = Fiber::getCurrent(); }\n}\n$seed = new Fiber(function () {\n    $a = new S345; $a->s = $a;\n    $b = new S345; $b->s = $b;\n    unset($a, $b); gc_collect_cycles();\n});\n$seed->start(); unset($seed);\nclass C345 {\n    public $s; public $k;\n    function __destruct() {\n        global $w;\n        if ($this->k === 0) {\n            $e = new Exception('i');\n            $r = new Fiber($w->throw(...));\n            try { $r->start($e); }\n            catch (Throwable $c) { echo $c === $e ? 'same|' : 'wrong|'; }\n        } else {\n            echo Fiber::getCurrent() === $w ? 'B:worker|' : 'B:main|';\n        }\n    }\n}\n$a = new C345; $a->s = $a; $a->k = 0;\n$b = new C345; $b->s = $b; $b->k = 1;\nunset($a, $b);\necho gc_collect_cycles(), '|END';\n",
+    "source_sha256": "909e421fc44242414734345245ed97e9f5fe1bda699b1d424e1076c55dff8183",
+    "stdout": "B:worker|same|2|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "collector-active-interval-protected-api-scope-review-21",
+    "source": "<?php\n$workerScope345 = null;\nclass ScopeSeed345 {\n    public $self;\n    function __construct() { $this->self = $this; }\n    function __destruct() { global $workerScope345; $workerScope345 = Fiber::getCurrent(); }\n}\n$seed = new Fiber(function () {\n    $a = new ScopeSeed345; $b = new ScopeSeed345;\n    unset($a, $b); gc_collect_cycles();\n});\n$seed->start(); unset($seed);\nclass ScopeBase345 {\n    public $self;\n    function __construct() { $this->self = $this; }\n    protected function __destruct() { echo 'B-entered|'; }\n    static function make() { return new self; }\n}\nclass ScopeCaller345 extends ScopeBase345 {\n    public function __destruct() {\n        global $workerScope345;\n        echo 'A|';\n        try { $workerScope345->resume(); }\n        catch (Throwable $caught) { echo $caught->getMessage(), '|'; }\n        echo $workerScope345->isSuspended() ? 'idle|' : 'bad|';\n    }\n}\n$a = new ScopeCaller345; $b = ScopeBase345::make();\nunset($a, $b);\necho gc_collect_cycles(), '|END';\n",
+    "source_sha256": "5e04ef9f19cb01e2b1e5da86097842bbd9877677d8cb23746d3996e465443447",
+    "stdout": "A|Call to protected ScopeBase345::__destruct() from scope Fiber|idle|2|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
