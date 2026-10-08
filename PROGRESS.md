@@ -7,6 +7,28 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source357 selects INIT for a named noarg nonbuiltin key call in an ordinary
+CV-base DIM, directly under ECHO or before a literal property. Owned include/eval
+operands retire before the call; existing runtime keeps the base borrowed and the
+returned key fixed before live lookup. Six exact originals and128 independent
+premises pass at `d198116d0`/341. Actual343 over `36ccc4520` passes strict compilation
+at `3bfd78e2d` with reviewed Generator storage/ordinary destructor compatibility.
+Earlier source/state cuts retain their inputs; dynamic/builtin/argument/fallback
+calls and wider emissions remain required.
+[Ledger](coverage/semantics/source-call-key-emission-review.json).
+
+Generator355 keeps one physical closed-storage pin through Closure/value/key/return
+release. Child callbacks retain weak Generator liveness and readable RETURN;
+consumed Closure/reference metadata adds no repeated owner. Existing257/303
+parents retain pending Throwable priority, with sole-pin retirement before handle
+reuse. Six exact normals and 784 new strict premises pass at `b62f360d7`; the two
+actually affected maintained storage queues separately pass 209 at `d67773039`.
+Actual342 over `dc68616a3` passes strict compilation at `f78a1a06b`;
+reviewed current-parent composition preserves the separate source/state cuts.
+Original failures remain zero; the earlier349 11/663 retains its own cuts. Delegation, abrupt
+terminal cleanup, parked/escaped storage and nested ordinary-object RETURN reads
+remain required. [Ledger](coverage/semantics/generator-storage-pin-review.json).
+
 354 executes bound `__construct` captures directly, through explicit `__invoke`
 and as Fiber C-root callbacks. Immutable receivers and real parser/warning
 continuations preserve validation-before-status ordering, handler suspension and

@@ -64,8 +64,13 @@ $heap_owners($heap_graph(S_unheld),HOBJECT n_generator) = 0
 S_freed_budget = $drive_steps(S_release,1)
 S_freed_budget.COMPLETION = BUDGET
 S_freed = S_freed_budget[.COMPLETION = NORMAL]
-S_freed.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_freed) :: ptask_tail*
-pdestructionrelease_freed.JOBS = [DESTRUCTION_VALUE (HOBJECT n_closure),DESTRUCTION_VALUE (HOBJECT n_value),DESTRUCTION_HANDLE n_generator] ++ pdestructionjob_tail*
+S_freed.TODO = (GENERATOR_STORAGE_STEP pgenstorage) :: (DESTRUCTOR_RELEASE pdestructionrelease[.JOBS = pdestructionjob_tail*]) :: ptask_tail*
+pgenstorage.OBJECT = n_generator /\ pgenstorage.NEXT = 0
+pgenstorage.USER
+$generator_storage_valid(S_freed,pgenstorage)
+(HOBJECT n_generator) <- S_freed.ALLOCATIONS
+$heap_owners($heap_graph(S_freed),HOBJECT n_generator) = 1
+$node_children(S_freed,HOBJECT n_generator) = [HOBJECT n_closure,HOBJECT n_value]
 $close_outputs(S_freed.EVENTS) = $ptascii("C|")
 $heap_owners($heap_graph(S_freed),HOBJECT n_closure) = 1
 $heap_owners($heap_graph(S_freed),HOBJECT n_value) = 1
@@ -117,11 +122,13 @@ def main():
     driver.source.WATCHED = source.driver.WATCHED + [
         'spec/semantics/222-exception-handlers.watsup',
         'spec/semantics/270-eager-destructors.watsup',
+        'spec/semantics/281-fibers.watsup',
         'spec/semantics/296-weak-references.watsup',
         'spec/semantics/328-generator-reference-yields.watsup',
         'spec/semantics/340-generator-request-finally.watsup',
         'spec/semantics/346-typed-property-slot-retirement.watsup',
         'spec/semantics/349-generator-request-fresh.watsup',
+        'spec/semantics/355-generator-storage-pin.watsup',
         'tests/semantics/generator_request_finally_protocol.py',
         'tests/semantics/generator_request_fresh_peer_sources.py',
         'tests/semantics/generator_storage_order_sources.py',

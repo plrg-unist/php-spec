@@ -110,7 +110,7 @@ syntax pfibercapture = { SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT nat?
 syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
 syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase, pgeneratorfrom, pgeneratoraccess
-syntax pgenclosestage, pgenclose, pgenrelease
+syntax pgenclosestage, pgenclose, pgenrelease, pgenstorage
 syntax ptask, pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
 syntax papiclass = { REQUESTED porigin, CALLED porigin, RECEIVER nat?, STRICT bool }
 syntax papiclassresult = API_CLASS papiclass | API_CLASS_INVALID ptbytes | API_CLASS_UNKNOWN text
@@ -231,6 +231,7 @@ syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, 
 syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | GC_WORKER_SCAN pgcpublic | GC_WORKER_PUBLIC pfiberapi | GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat | GC_WORKER_WAIT nat pgcplan | GC_WORKER_REPLACE pgcplan | GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat | GC_FREE pgcplan | FIBER_CORE_RESULT nat pconfigcall | FIBER_API_CORE_RESULT nat nat pconfigcall | FIBER_CAPTURE_RELEASE nat porigin | FIBER_CAPTURE_RESULT nat pconfigcall bool | FIBER_START_CAPTURE_ARGS nat pfiberstart | FIBER_START_CAPTURE_SEND nat pfiberstart | FIBER_START_CAPTURE_RESULT nat pfiberstart bool | FIBER_START_CORE_INVOKE nat nat pfiberstart | FIBER_START_CORE_RESULT nat nat pfiberstart | FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_YIELD_KEY nat porigin int | GENERATOR_YIELD_REF_FETCH porigin poperand? | GENERATOR_YIELD_REF_NOTICE nat porigin poperand? pvalue int | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
   | GENERATOR_CLOSE_RELEASE pgenrelease | GENERATOR_CLOSE_ENTER pgenclose | GENERATOR_CLOSE_DONE pgenclose | GENERATOR_CLOSE_SCAN nat porigin | GENERATOR_CLOSE_FINALLY porigin | GENERATOR_CLOSE_FROM porigin
+  | GENERATOR_STORAGE_STEP pgenstorage
   | COMPOUND_STRING_PREP plocation pvalue pvalue porigin int | COMPOUND_STRING_LEFT plocation pvalue porigin int | COMPOUND_STRING_RIGHT plocation ptbytes porigin int
   | COMPOUND_LIVE_PREP pcompoundstring pvalue | COMPOUND_LIVE_LEFT pcompoundstring | COMPOUND_LIVE_RIGHT pcompoundstring ptbytes | COMPOUND_LIVE_RELEASE pcompoundstring | COMPOUND_LIVE_DONE pcompoundstring
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
@@ -371,6 +372,7 @@ syntax pgeneratorphase = GENERATOR_FRESH | GENERATOR_PAUSED | GENERATOR_RUNNING 
 syntax pgenclosestage = CLOSE_QUEUED | CLOSE_BODY porigin | CLOSE_SCANNING | CLOSE_FLOW | CLOSE_FINISHED
 syntax pgenclose = { OBJECT nat, SITE porigin, CONTEXT pcallcontext, CALLER pcallcontext?, CALLSITE porigin?, STAGE pgenclosestage, NEXT nat, FRAME pframe?, PENDING nat?, STORE nat? }
 syntax pgenrelease = { JOBS pdestructionjob*, VALUE poperand, BASE pbase, PENDING nat?, COMPLETION pcompletion }
+syntax pgenstorage = { OBJECT nat, HANDLE nat, NEXT nat, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool }
 syntax pgeneratorborrowed = { VALUE poperand?, KEY pvalue? }
 syntax pgeneratoraccess = { TARGET pcalltarget, SITE porigin, LINE int }
 syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom?, ACCESS pgeneratoraccess? }

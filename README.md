@@ -78,6 +78,13 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [First dimension reads](coverage/semantics/source-dimension-emission-review.json) now retire owned include/eval operands at the key compiler line before reading an ordinary CV base and CV or literal key. A narrow writable array-property receiver separates the protected array; a later literal property warning resumes with fixed null. Seven exact originals and245 independent premises retain their private336 cuts; actual340 passes strict compilation. Wider emission and receiver forms remain required.
 
+[Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
+now retire owned include/eval operands at the first INIT line. The ordinary CV
+base stays borrowed through the call; the returned key is fixed before live base
+lookup. Six exact originals and128 independent premises retain private341;
+actual343 passes strict compilation with reviewed Generator storage compatibility.
+Dynamic/builtin/argument/fallback calls and wider emissions remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -237,8 +244,11 @@ Request 340 adds reverse-global and ascending-store close, handler-before-cache
 exception delivery and borrowed zero-owner store buckets. Genuine weak
 reacquisition restores ordinary release. [Fresh store teardown349](coverage/semantics/generator-fresh-store-review.json)
 releases bound frames without entering body/finally, preserves immediate CV-handler
-ordering and releases a closed Generator's Closure before its caches. Free-storage weak liveness,
-delegating request close and abrupt terminal cleanup remain required.
+ordering and releases a closed Generator's Closure before its caches.
+[Closed storage355](coverage/semantics/generator-storage-pin-review.json) keeps a
+physical pin and readable RETURN through child callbacks, then clears weak lookup.
+Delegating request close, abrupt terminal cleanup, parked/escaped storage and
+nested ordinary-object storage during RETURN reads remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -495,7 +505,8 @@ Full core and a fresh combined offline rebuild remain required.
 
 [WeakReference 296](docs/semantics/WEAK-REFERENCES.md) memoizes live wrappers without
 owning their targets. `get` returns a strong result; resurrection keeps the target
-live, and actual free clears weak lookup before child destruction. Twenty-one
+live. Ordinary object free clears weak lookup before property children; Generator
+storage notifies after its Closure/cache releases. Twenty-one
 exact sources and nine reached cuts (344 physical premises) pass; five Unsupported
 controls earn zero agreement. Pending-carrier unwind, deferred construction,
 wider consumers and WeakMap remain required. Canonical292/304

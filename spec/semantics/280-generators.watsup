@@ -86,6 +86,14 @@ dec $generator_frame_valid(pstate, pgenerator, pframe) : bool
 dec $generator_integer(int) : bool
 dec $generator_record_valid(pstate, pgenerator) : bool
 dec $generator_closure_valid(pstate, pgenerator) : bool
+dec $generator_storage_active(pstate, nat) : bool
+dec $generator_storage_closure_borrowed(pstate, pgenerator) : bool
+dec $generator_storage_reference_borrowed(pstate, pgenerator, nat) : bool
+dec $generator_storage_state_valid(pstate) : bool
+def $generator_storage_active(S, n) = false -- otherwise
+def $generator_storage_closure_borrowed(S, pgenerator) = false -- otherwise
+def $generator_storage_reference_borrowed(S, pgenerator, n) = false -- otherwise
+def $generator_storage_state_valid(S) = true -- otherwise
 dec $generator_objects_valid(pstate, pnode*) : bool
 dec $generator_node_valid(pstate, pnode) : bool
 dec $generator_yield_key_node_valid(pstate, nat) : bool
@@ -440,6 +448,7 @@ def $generator_closed_closure(pgenerator) = $instance_roots(pgenerator.CLOSURE) 
 def $generator_closed_closure(pgenerator) = eps -- if pgenerator.PHASE =/= GENERATOR_CLOSED
 def $node_children(S, HOBJECT n) = $generator_frame_nodes(pgenerator.FRAME) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_closed_closure(pgenerator) ++ $generator_from_nodes(pgenerator.DELEGATE)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if ~$generator_storage_active(S, n)
 def $object_name(S, n) = $ptascii("Generator") -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $getclass_live_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -788,7 +797,7 @@ def $generator_closure_valid(S, pgenerator) = ($function_at(S.CLOSURETEMPLATES, 
   -- if pgenerator.CLOSURE = eps
 def $generator_closure_valid(S, pgenerator) = true
   -- if pgenerator.CLOSURE = (n)
-  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if (HOBJECT n) <- S.ALLOCATIONS \/ $generator_storage_closure_borrowed(S, pgenerator)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
   -- if pfunction.ORIGIN = pgenerator.FUNCTION
 def $generator_closure_valid(S, pgenerator) = false -- otherwise
@@ -845,7 +854,7 @@ def $generator_object_valid(S, GENERATOR pgenerator) = ($generator_record_valid(
 def $generator_object_valid(S, pobject) = true -- otherwise
 dec $generator_close_state_valid(pstate) : bool
 def $generator_close_state_valid(S) = true -- otherwise
-def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_search_valid(S, S.TODO) /\ $generator_flat_frames(S.FRAMES) /\ $generator_from_state_valid(S) /\ $generator_close_state_valid(S))
+def $generator_state_valid(S) = ($generator_objects_valid(S, S.ALLOCATIONS) /\ $generator_owners_valid(S) /\ $generator_cursor_owners_valid(S) /\ $generator_flat_tasks(S.TODO) /\ $generator_search_valid(S, S.TODO) /\ $generator_flat_frames(S.FRAMES) /\ $generator_from_state_valid(S) /\ $generator_close_state_valid(S) /\ $generator_storage_state_valid(S))
 ;; These object-domain walkers leave Generator payload authentication to the
 ;; mandatory generator_state_valid conjunct of public call admission.
 def $closure_live_object_valid(S, n) = true

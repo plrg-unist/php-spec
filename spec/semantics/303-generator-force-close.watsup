@@ -16,6 +16,7 @@ dec $generator_destructor_request_ready(pstate, pdestructionrelease, pnode) : bo
 dec $generator_close_merge(pstate, nat?, nat?) : (pstate, nat?)
 dec $generator_close_children(pstate, pnode) : pnode*
 dec $generator_close_child_jobs(pstate, pnode) : pdestructionjob*
+dec $generator_close_storage_free(pstate, pnode, pgenrelease, ptask*) : pstate
 dec $generator_close_prepare(pstate, pgenrelease, nat) : pstate
 dec $generator_close_prepare_store(pstate, pgenrelease, nat, nat?) : pstate
 dec $generator_request_prune_ready(pstate) : bool
@@ -306,13 +307,14 @@ def $generator_close_release(S, pgenrelease) = S[.COMPLETION = UNSUPPORTED "ordi
   -- if ~$generator_close_node(S, pnode)
   -- if $destructor_uncalled_node(S, pnode)
   -- if ~$generator_close_destructor_ready(S, pgenrelease)
-def $generator_close_release(S, pgenrelease) = $prune_live(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = $generator_close_child_jobs(S, pnode) ++ $destruction_free_job(pnode) ++ pdestructionjob*]) :: ptask*], $destruction_node_delete(S.ALLOCATIONS, pnode))
+def $generator_close_release(S, pgenrelease) = $generator_close_storage_free(S, pnode, pgenrelease[.JOBS = pdestructionjob*], ptask*)
   -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
   -- if pgenrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
   -- if pnode <- S.ALLOCATIONS
   -- if $heap_owners($heap_graph(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*]), pnode) = 0
   -- if ~$generator_close_node(S, pnode)
   -- if ~$destructor_uncalled_node(S, pnode)
+def $generator_close_storage_free(S, pnode, pgenrelease, ptask*) = $prune_live(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = $generator_close_child_jobs(S, pnode) ++ $destruction_free_job(pnode) ++ pgenrelease.JOBS]) :: ptask*], $destruction_node_delete(S.ALLOCATIONS, pnode)) -- otherwise
 rule PhpStep/generator-close-release: S ~> $generator_close_release(S, pgenrelease)
   -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
 

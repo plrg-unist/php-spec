@@ -645,6 +645,9 @@ test-semantics: build
 	python3 tests/semantics/generator_fresh_typed_slot_join_sources.py --mode full
 	python3 tests/semantics/generator_fresh_typed_slot_join_protocol.py --mode check --sl
 	python3 tests/semantics/generator_storage_order_protocol.py --mode check --sl
+	python3 tests/semantics/generator_storage_pin_sources.py --mode full
+	python3 tests/semantics/generator_storage_pin_peer_sources.py --mode full
+	python3 tests/semantics/generator_storage_pin_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl

@@ -287,7 +287,7 @@ def $generator_reference_nodes(eps) = eps
 def $generator_reference_nodes((n)) = [HCELL n]
 def $generator_reference_valid(S, GENERATOR pgenerator) = (~$generator_reference_producer(S, pgenerator) \/ pgenerator.DELEGATE = eps)
   -- if pgenerator.REFCELL = eps
-def $generator_reference_valid(S, GENERATOR pgenerator) = ($generator_reference_producer(S, pgenerator) /\ pgenerator.VALUE = eps /\ pgenerator.DELEGATE = eps /\ $call_reference_operand_valid(S, REFERENCE n))
+def $generator_reference_valid(S, GENERATOR pgenerator) = ($generator_reference_producer(S, pgenerator) /\ pgenerator.VALUE = eps /\ pgenerator.DELEGATE = eps /\ ($call_reference_operand_valid(S, REFERENCE n) \/ $generator_storage_reference_borrowed(S, pgenerator, n)))
   -- if pgenerator.REFCELL = (n)
 def $generator_reference_valid(S, pobject) = true -- otherwise
 def $generator_from_raw(S, n, n_depth) = (REFERENCE n_cell)
