@@ -355,9 +355,11 @@ def $closure_live_object_valid(S, n) = false -- otherwise
 dec $closure_live_node_valid(pstate, pnode) : bool
 def $closure_live_node_valid(S, HOBJECT n) = $closure_live_object_valid(S, n)
 def $closure_live_node_valid(S, pnode) = true -- otherwise
-dec $closure_live_nodes_valid(pstate, pnode*) : bool
-def $closure_live_nodes_valid(S, eps) = true
-def $closure_live_nodes_valid(S, pnode :: pnode_tail*) = ($closure_live_node_valid(S, pnode) /\ $closure_live_nodes_valid(S, pnode_tail*))
+dec $closure_live_node_scoped_valid(pstate, pstate, pnode) : bool
+dec $closure_live_nodes_scoped_valid(pstate, pstate, pnode*) : bool
+def $closure_live_node_scoped_valid(S_live, S, pnode) = $closure_live_node_valid(S, pnode) -- otherwise
+def $closure_live_nodes_scoped_valid(S_live, S, eps) = true
+def $closure_live_nodes_scoped_valid(S_live, S, pnode :: pnode_tail*) = ($closure_live_node_scoped_valid(S_live, S, pnode) /\ $closure_live_nodes_scoped_valid(S_live, S, pnode_tail*))
 
 
 dec $closure_creation_owners(pfunction*, porigin) : porigin*
@@ -629,11 +631,12 @@ def $call_task_valid(S, CLOSURE_RECEIVE porigin n_slot) = $closure_receive_valid
 dec $clone_static_sources(pstate, pnode*) : pstaticcell*
 dec $clone_statics_compatible(pstaticcell*) : bool
 
-def $closure_state_valid(S) = true
+def $closure_state_valid(S) = $closure_state_scoped_valid(S, S)
+def $closure_state_scoped_valid(S_live, S) = true
   -- if $closure_template_origins_valid(S, S.CLOSURETEMPLATES)
-  -- if $closure_live_nodes_valid(S, S.ALLOCATIONS)
+  -- if $closure_live_nodes_scoped_valid(S_live, S, S.ALLOCATIONS)
   -- if $closure_scope_rows_valid(S, S.CLOSURESCOPES)
   -- if $closure_bindings_valid(S, S.CLOSUREBINDINGS)
   -- if $closure_scope_complete(S, S.ALLOCATIONS)
   -- if $clone_statics_compatible(S.STATICS ++ $clone_static_sources(S, S.ALLOCATIONS))
-def $closure_state_valid(S) = false -- otherwise
+def $closure_state_scoped_valid(S_live, S) = false -- otherwise

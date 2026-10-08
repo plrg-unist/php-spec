@@ -6,6 +6,7 @@ dec $startup_state_valid(pstate) : bool
 dec $display_state_valid(pstate) : bool
 dec $precision_state_valid(pstate) : bool
 dec $closure_state_valid(pstate) : bool
+dec $closure_state_scoped_valid(pstate, pstate) : bool
 dec $dynamic_unit_code_valid(ppstate, pcode) : bool
 dec $dynamic_result_valid(pstate) : bool
 dec $unpack_unit_code_valid(ppstate, pcode) : bool
@@ -429,7 +430,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $constant_context_valid(S)
   -- if $default_caches_valid(S, S.DEFAULTCACHE)
   -- if $static_cells_valid(S, S.STATICS)
-  -- if $closure_state_valid(S)
+  -- if $closure_state_scoped_valid(S_live, S)
 def $call_descriptors_scoped_valid(S_live, S) = false -- otherwise
 
 dec $call_entry_scope_checked(pstate, bool) : pstate
