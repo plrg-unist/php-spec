@@ -759,9 +759,12 @@ Six new originals and 284 reached premises check shared owners, selected-propert
 mutation/deletion and exception chaining. Ordinary previous objects without their
 own destructor now release dynamic children before declared children; four new
 originals and 313 reached premises cover shared owners, retirement and throwing
-cleanup. Retiring typed property sources remain excluded: two native controls
-observe constraints during dynamic callbacks and their removal after retirement.
-The engine detaches sources at each declared slot; implementing this is required next.
+cleanup. Module346 now detaches typed reference sources at each declared slot's
+release visit, preserving constraints through earlier child callbacks and genuine
+Fiber suspension. Each queued marker owns only the existing slot cell. Six exact
+source agreements, including the two unchanged prior controls, and 151/84 reached
+premises retain separate cuts; the actual331 composition passes strict compilation.
+Private Generator-close typed-slot timing remains required.
 Released-CV mutation, raw retired-container reads, callback-capable previous
 reference wrappers and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;

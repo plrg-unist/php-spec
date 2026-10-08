@@ -713,8 +713,15 @@ own destructor now release dynamic children before declared children. Four exact
 originals and 152/161 reached premises at `531145bb4` cover shared owners, retired
 OLD masking and atomic binding with B/previous=A. At `95899634d`, strict initialization
 and 19 fresh guard premises pass; two native observations retain explicit Unsupported
-and zero agreement for direct/nested retiring typed sources. Per-slot typed-source
-detachment is the required next behavior. Released-CV mutation, raw retired-container
+and zero agreement for direct/nested retiring typed sources at that cut.
+Module346 now keeps each typed source until its actual declared-slot release visit,
+including parked Fiber queues, without retaining the retired parent. Six normal
+originals at `77a17756c`, 151 reached premises at `cc326bf43` and 84 Fiber premises
+at `7573d02bb` retain separate cuts. They cover declaration order, two sources on
+one cell, pending exception chaining, exact detach ownership and resumed scoped
+Throwable validation against the actual live heap. The actual331 join at
+`73067facd` passes strict initialization; private Generator-close typed-slot timing
+remains required. Released-CV mutation, raw retired-container
 reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original
