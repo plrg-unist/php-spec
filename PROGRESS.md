@@ -12,12 +12,12 @@ globals and ascending store handles. Registered normal handlers run before cache
 release; borrowed zero-owner buckets survive bare store decrements until genuine
 weak reacquisition restores ordinary release. 19 normal originals and 692 physical
 strict-SL premises retain separate private cuts; 85 premises assert required abrupt
-controls with zero observation agreement. The original observer mismatch stays0.
+controls with zero observation agreement. The original observer mismatch stays zero credit.
 Fresh store close, delegating request close and wider terminal/free-storage paths
 remain required. [Scope and cuts](coverage/semantics/generator-request-finally-review.json).
 
 Generator328 reference caches, value snapshots and effective destructuring aliases
-retain their original source/state cuts and actual321 compiler.340 promotes the
+retain their original source/state cuts and actual321 compiler. 340 promotes the
 identical active-finally original; its old refusal40 remains zero agreement.
 [Reference-yield scope](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
 

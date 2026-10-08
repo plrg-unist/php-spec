@@ -118,7 +118,7 @@ rebuild or final combined-core credit. Canonical integration preserves the newer
 eager-destruction and Fiber clauses; the bounded actual282 composition passes the
 [introduced compiler, source and state checks](GENERATOR-FIBER-CLOSE.md).
 Original Unsupported observations for the two now-admitted last-owner sources
-remain in their earlier cuts.340 separately promotes the byte-identical request
+remain in their earlier cuts. 340 separately promotes the byte-identical request
 and self-cache-cycle originals; their old Unsupported observations stay zero.
 
 `python3 tests/semantics/generator_force_close_review.py --select graph-temporary-child`
