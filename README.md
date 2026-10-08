@@ -216,6 +216,10 @@ including typed final results and PHP's retained reference-type history. Twelve
 exact originals and368 reached premises cover live RHS reads, inherited slots,
 alias rebinding, reference history, temporary cleanup and access-error priority.
 The actual344 compiler/init gate retains its separate accepted record.
+Direct ordinary-method calls retain `self`, `parent` and `static` selection through
+conversion and nested calls. Six further originals and323 reached premises cover
+lexical/called scope, private shadows and captured-reference rebinding.
+The separate actual347 composition passes compilation and initialization.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -253,8 +257,10 @@ releases bound frames without entering body/finally, preserves immediate CV-hand
 ordering and releases a closed Generator's Closure before its caches.
 [Closed storage355](coverage/semantics/generator-storage-pin-review.json) keeps a
 physical pin and readable RETURN through child callbacks, then clears weak lookup.
-Delegating request close, abrupt terminal cleanup, parked/escaped storage and
-nested ordinary-object storage during RETURN reads remain required.
+[Request delegation](coverage/semantics/generator-request-delegation-review.json)
+detaches inputs before finally while preserving CV owners, shared store order,
+delegated cache lifetime and nested normal handlers. Abrupt terminal cleanup,
+parked/escaped storage and nested ordinary-object RETURN reads remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -532,6 +538,8 @@ GC and eager-destruction consumers read the same observed state’s edges after
 its roots without rebuilding those roots.
 The driver carries an already successful original-state owner order into the
 following GC pass; failed or skipped destruction branches retain public fallbacks.
+Pure graph pruning counts owners once and removes zero-owner cascades through a
+worklist, preserving roots and the order and multiplicity of nodes and edges.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
@@ -551,7 +559,7 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, post-pass public callback reentry/internal takeover, automatic
+graphs, callback reentry during a different active pass, internal takeover, automatic
 thresholds and wider freeing remain open. Module332 adds quiescent public idle
 resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
@@ -573,7 +581,12 @@ public API. One normal source and 228 reached physical premises pass; captured
 old/new exception priority completes in the state checks while its source CLI
 retains a 60s timeout with zero agreement. Final 343 compilation preserves `e1c3d4d61`; publication on `2ed57ca8a`
 preserves the static-property change by review.
-Post-pass reentry and internal takeover remain required.
+Quiescent post-pass reentry now authenticates the parked VM and fresh caller
+without depending on retired caller metadata or old physical slots. An explicit
+no-destructor-tag check lets the retained scan finish safely. One normal source
+and 203 independent physical premises pass; the captured source retains its 60s
+CLI timeout/zero agreement. Final 345 compilation over `4cd2eab3a` passes.
+Reentry during a different active pass and internal takeover remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -837,6 +850,15 @@ cover shared wrappers, typed descendants, exception chaining and expired-pointer
 refusals at separate cuts; the actual341 composition passes strict compilation.
 Whole `$GLOBALS` snapshots during wrapper retirement
 remain Unsupported.
+Ordinary INSTANCE storage359 now keeps one physical parent pin through ordered
+property release. WeakReference already returns null during child callbacks, while
+safe class metadata remains readable; each slot transfers its owner and detaches
+its type source exactly once. Five new originals and 164/57/67 reached premises
+cover pending exceptions, the Generator RETURN-child interaction and genuine
+Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
+adds one exact Iterator-child original and 113 reached premises; future
+destructor-tail validation applies the real result discard before owner checks.
+Raw property payload access and escaped reacquisition remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -911,6 +933,9 @@ If data binding succeeds before abstract verification fails, later cached calls
 use the fixed class scope while an imported first birth keeps its trait scope.
 One shutdown original and59 supplied phase/scope/static conditions pass, with6
 setup clauses separate; the failed class stays unpublished.
+A retained `new self` rejects an unresolved abstract trait requirement before
+arguments or instance allocation. One shutdown original and39 supplied conditions plus6
+setup clauses pass; this proof covers classes without parent/interface contracts.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider

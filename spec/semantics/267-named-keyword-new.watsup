@@ -71,15 +71,27 @@ def $keyword_new_entry_source(S, porigin, porigin_scope?) = porigin -- otherwise
 def $dynamic_new_scope_source(S, pdynamicnew) = $keyword_new_entry_source(S, pdynamicnew.SITE, pdynamicnew.SCOPE)
   -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
 
+dec $trait_fcc_retained_new_scope(pstate, porigin) : (pclassdesc, pconstantclosure)?
+def $trait_fcc_retained_new_scope(S, porigin) = eps -- otherwise
+dec $trait_fcc_retained_new(pstate, pclassdesc, pconstantclosure, int) : pstate
+
 rule PhpStep/named-keyword-new-selected: S ~> $dynamic_new_start(S[.TODO = (DYNAMIC_NEW_FINISH pdynamicnew) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pdynamicnew, phpType7*)
   -- if S.TODO = (EVAL (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $ordinary_keyword_new_site(S, PORIGIN n pcpath)
+  -- if $trait_fcc_retained_new_scope(S, PORIGIN n pcpath) = eps
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
   -- if $scoped_source_name(S, NName (BYTES text) metadata_name) = (ptbytes)
   -- if ~$internal_new_forbidden(ptbytes)
   -- if pdynamicnew = $dynamic_new_record(S, PORIGIN n pcpath, PSTRING $ptlc($base64(text)), ptbytes, z, z)
+rule PhpStep/named-keyword-new-retained: S ~> $trait_fcc_retained_new(S[.TODO = ptask_tail*], pclassdesc, pconstantclosure, z)
+  -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $ordinary_keyword_new_site(S, PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $trait_fcc_retained_new_scope(S, PORIGIN n pcpath) = ((pclassdesc, pconstantclosure))
 rule PhpStep/named-keyword-new-forbidden: S ~> $new_class(S[.TODO = ptask_tail*], ptbytes, z)
   -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (PORIGIN n pcpath)

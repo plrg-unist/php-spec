@@ -151,5 +151,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-public-postpass-cached-callback-resume-23",
+    "source": "<?php\n$w=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w;\n  if($this->k===0){echo 'A|',$w->resume(),'|';}\n  else{\n   echo Fiber::getCurrent()===$w?'B|':'bad-worker|';\n   echo Fiber::suspend('paused')==='again'?'resumed|':'bad-value|';\n  }\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);\necho gc_collect_cycles(),'|';\necho $w->resume('again')===null?'idle|':'bad-result|';\necho 'END';\n",
+    "source_sha256": "e21edbf5cd63879424efbc1f526f61dc1950c0c8d131e4867380cf42ae269edb",
+    "stdout": "A|B|paused|1|resumed|idle|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

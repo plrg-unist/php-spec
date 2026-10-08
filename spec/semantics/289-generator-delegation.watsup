@@ -34,6 +34,7 @@ dec $generator_from_invalid_child(pstate, nat, pvalue) : bool
 dec $generator_from_aggregate(pstate, pvalue) : bool
 dec $generator_from_cache_valid(pstate, pgeneratorfrom) : bool
 dec $generator_from_cached_operand(pstate, poperand?) : bool
+dec $generator_storage_current_borrowed(pstate, pgeneratorfrom) : bool
 dec $generator_from_owner(pstate, nat, porigin) : bool
 dec $generator_from_source_context(pstate, porigin) : bool
 dec $generator_from_callback_valid(pstate, nat, porigin, text) : bool
@@ -464,7 +465,8 @@ def $generator_from_cached_operand(S, eps) = true
 def $generator_from_cached_operand(S, (KNOWN pvalue)) = $call_reference_operand_valid(S, KNOWN pvalue)
 def $generator_from_cached_operand(S, (REFERENCE n)) = $call_reference_operand_valid(S, REFERENCE n)
 def $generator_from_cached_operand(S, poperand?) = false -- otherwise
-def $generator_from_cache_valid(S, pgeneratorfrom) = ($generator_from_cached_operand(S, pgeneratorfrom.CURRENT) /\ $generator_from_optional_input(S, pgeneratorfrom.INPUT))
+def $generator_storage_current_borrowed(S, pgeneratorfrom) = false -- otherwise
+def $generator_from_cache_valid(S, pgeneratorfrom) = (($generator_from_cached_operand(S, pgeneratorfrom.CURRENT) \/ $generator_storage_current_borrowed(S, pgeneratorfrom)) /\ $generator_from_optional_input(S, pgeneratorfrom.INPUT))
 def $generator_from_optional_input(S, eps) = true
 def $generator_from_optional_input(S, (PARRAY n)) = (HARRAY n <- S.ALLOCATIONS)
 def $generator_from_optional_input(S, (POBJECT n)) = ((HOBJECT n <- S.ALLOCATIONS) /\ ($generator_object(S, n) \/ $useriter_instance(S, n)))

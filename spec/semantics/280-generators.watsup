@@ -90,10 +90,12 @@ dec $generator_storage_active(pstate, nat) : bool
 dec $generator_storage_closure_borrowed(pstate, pgenerator) : bool
 dec $generator_storage_reference_borrowed(pstate, pgenerator, nat) : bool
 dec $generator_storage_state_valid(pstate) : bool
+dec $generator_storage_node_valid(pstate, nat) : bool
 def $generator_storage_active(S, n) = false -- otherwise
 def $generator_storage_closure_borrowed(S, pgenerator) = false -- otherwise
 def $generator_storage_reference_borrowed(S, pgenerator, n) = false -- otherwise
 def $generator_storage_state_valid(S) = true -- otherwise
+def $generator_storage_node_valid(S, n) = true -- otherwise
 dec $generator_objects_valid(pstate, pnode*) : bool
 dec $generator_node_valid(pstate, pnode) : bool
 dec $generator_yield_key_node_valid(pstate, nat) : bool
@@ -846,7 +848,7 @@ def $generator_record_valid(S, pgenerator) = true
 def $generator_record_valid(S, pgenerator) = false -- otherwise
 def $generator_objects_valid(S, eps) = true
 def $generator_objects_valid(S, pnode :: pnode_tail*) = ($generator_node_valid(S, pnode) /\ $generator_objects_valid(S, pnode_tail*))
-def $generator_node_valid(S, HOBJECT n) = ($generator_object_valid(S, S.OBJECTS[n]) /\ $generator_reference_valid(S, S.OBJECTS[n]) /\ $generator_borrowed_node_valid(S, n) /\ $generator_yield_key_node_valid(S, n))
+def $generator_node_valid(S, HOBJECT n) = ($generator_object_valid(S, S.OBJECTS[n]) /\ $generator_reference_valid(S, S.OBJECTS[n]) /\ $generator_borrowed_node_valid(S, n) /\ $generator_yield_key_node_valid(S, n) /\ $generator_storage_node_valid(S, n))
 def $generator_yield_key_node_valid(S, n) = true -- otherwise
 def $generator_node_valid(S, HARRAY n) = true
 def $generator_node_valid(S, HCELL n) = true
