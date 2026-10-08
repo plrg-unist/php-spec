@@ -3,9 +3,9 @@
 ;; inherits the post-argument compiler line. The returned name stays runtime
 ;; work; these source/compiler certificates never read the current argument.
 dec $source_emission_argument_call(pstate, nat, pcpath, expression) : porigin?
-def $source_emission_argument_call(S, n, pcpath, NExprVariable (NExprFuncCall name (SEQUENCE [(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)]) metadata_call) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (NExprFuncCall name (SEQUENCE [(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)]) metadata_call) metadata)
-  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], NExprFuncCall name (SEQUENCE [(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)]) metadata_call) = eps
+def $source_emission_argument_call(S, n, pcpath, NExprVariable (NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) metadata)
+  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = eps
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
   -- if ~$pfunction_builtin(ptbytes_name)
