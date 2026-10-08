@@ -73,7 +73,7 @@ rule PhpStep/access-string-call: S ~> $user_string_begin(S_value[.ORIGIN = (pacc
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN (POBJECT n)
   -- if $stringable_instance(S_value, n)
-rule PhpStep/access-string-plain: S ~> $access_string_finish(S_string, paccess, poperand, ptbytes?, ptbytes, ptask_tail*)
+rule PhpStep/access-string-plain: S ~> $access_string_finish(S_string, paccess, poperand, ptbytes?, ptbytes_result, ptask_tail*)
   -- if S.TODO = (ACCESS_STRING_PREP paccess poperand ptbytes?) :: ptask_tail*
   -- if $access_string_source(S, paccess, poperand)
   -- if S_value = $access_string_value(S, paccess, poperand, ptbytes?)
@@ -81,7 +81,7 @@ rule PhpStep/access-string-plain: S ~> $access_string_finish(S_string, paccess, 
   -- if ~$user_string_value(S_value, pvalue)
   -- if S_string = $stringify(S_value, pvalue, paccess.LINE)
   -- if S_string.COMPLETION = NORMAL
-  -- if S_string.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_string.RESULT = KNOWN (PSTRING ptbytes_result)
 rule PhpStep/access-string-abrupt: S ~> S_string
   -- if S.TODO = (ACCESS_STRING_PREP paccess poperand ptbytes?) :: ptask_tail*
   -- if $access_string_source(S, paccess, poperand)
@@ -90,7 +90,7 @@ rule PhpStep/access-string-abrupt: S ~> S_string
   -- if ~$user_string_value(S_value, pvalue)
   -- if S_string = $stringify(S_value, pvalue, paccess.LINE)
   -- if S_string.COMPLETION =/= NORMAL
-rule PhpStep/access-string-result: S ~> $access_string_finish(S, paccess, poperand, ptbytes?, ptbytes, ptask_tail*)
+rule PhpStep/access-string-result: S ~> $access_string_finish(S, paccess, poperand, ptbytes?, ptbytes_result, ptask_tail*)
   -- if S.TODO = (ACCESS_STRING_RESULT paccess poperand ptbytes? n) :: ptask_tail*
   -- if $call_task_valid(S, ACCESS_STRING_RESULT paccess poperand ptbytes? n)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes_result)
