@@ -16,6 +16,7 @@ dec $trait_fcc_cause_at(pstate, porigin, porigin, nat) : ptraitcachecause?
 dec $trait_fcc_import_one(pstate, pclassdesc, pmethoddesc, pclassdesc, nat) : pmethoddesc?
 dec $trait_fcc_import_source(pstate, pclassdesc, pmethoddesc, pclassdesc*, nat) : pmethoddesc?
 dec $trait_fcc_adapted(pstate, pclassdesc, pmethoddesc, nat) : pmethoddesc?
+dec $trait_fcc_import_selected(pstate, pclassdesc, pmethoddesc, nat, pmethoddesc?) : pmethoddesc?
 dec $trait_fcc_unfixed(pstate, porigin, ptbytes, nat) : pmethoddesc?
 dec $trait_fcc_cached_header(pstate, porigin) : (pconstantclosure, porigin, pmethoddesc)?
 dec $trait_fcc_fixed_at_known(pstate, pconstantclosure, porigin, pmethoddesc, nat) : pmethoddesc?
@@ -274,24 +275,18 @@ def $trait_fcc_adapted(S, pclassdesc, pmethoddesc, n_prefix) = (pmethoddesc_unfi
   -- if S_methods.COMPLETION = NORMAL
   -- if $trait_fcc_receipt_target(pmethoddesc, ptraitmethod*) = (pmethoddesc_unfixed)
 def $trait_fcc_adapted(S, pclassdesc, pmethoddesc, n_prefix) = eps -- otherwise
+def $trait_fcc_import_selected(S, pclassdesc, pmethoddesc, n_prefix, (pmethoddesc_unfixed)) = (pmethoddesc_unfixed)
+def $trait_fcc_import_selected(S, pclassdesc, pmethoddesc, n_prefix, eps) = $trait_fcc_adapted(S, pclassdesc, pmethoddesc, n_prefix)
 def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = (pmethoddesc)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if $method_named(pclassdesc.METHODS, ptbytes_method) = (pmethoddesc)
   -- if pmethoddesc.OWNER = porigin_owner
   -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
-def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = (pmethoddesc_unfixed)
+def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = $trait_fcc_import_selected(S, pclassdesc, pmethoddesc, n_prefix, $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_traits*, n_prefix))
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if $method_named(pclassdesc.METHODS, ptbytes_method) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
   -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
-  -- if $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_traits*, n_prefix) = (pmethoddesc_unfixed)
-def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = (pmethoddesc_unfixed)
-  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
-  -- if $method_named(pclassdesc.METHODS, ptbytes_method) = (pmethoddesc)
-  -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
-  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
-  -- if $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_traits*, n_prefix) = eps
-  -- if $trait_fcc_adapted(S, pclassdesc, pmethoddesc, n_prefix) = (pmethoddesc_unfixed)
 def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = eps -- otherwise
 def $constant_callable_method_selected(S, porigin_site, porigin_owner, porigin_owner, n_prefix, ptbytes_method) = $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix)
   -- if $trait_fcc_cause_at(S, porigin_site, porigin_owner, n_prefix) =/= eps
