@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 374 unpacks arrays into ordinary method/array and captured START buffers.
+Per-pack named ordering, dereferenced value copies and nonowning completed history
+survive selector/pack retirement; copied C-root buffers authenticate their genuine
+outer API. Ordered unwind preserves active-pack, positional/EX(This)/named and
+direct Closure versus explicit invoke cleanup. Strict356, ten exact normals at
+9+1 cuts and 345 independent plus 296 author premises pass. Constant packs retain
+their genuine pool owner; a distinct dynamic-pack companion proves retired history.
+Initial elaboration/matching failures and pooled fixture assumptions retain zero
+affected credit. Traversable packs remain explicit Unsupported/zero agreement and
+required follow-on work; compound/lifecycle gaps and paused returns remain open.
+[Start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json).
+
+Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
+current physical collector, source-line, assertion and retained-method fields;
+private source/state cuts retain their inputs.
+
 Runtime assertion INI preserves raw initial/current bytes, modified/restore timing
 and the live numeric mode. Quiet quantities permit nonnegative updates; changes
 involving a negative mode warn before a frozen false completion on the handler's state.

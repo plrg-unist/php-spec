@@ -1383,8 +1383,15 @@ Copied C arguments remain separate from the original outer start buffer. Saved
 Fiber states and actual callers authenticate nested, parked static and idle
 collector continuations. Inner API trace frames have no file or line site. The
 [raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json)
-records these distinct checks. Compound selectors and Fiber-start argument
-unpacking remain required.
+records these distinct checks. Array unpacking now forwards copied, dereferenced
+values through ordinary, array-selected and captured `start` calls. Each pack
+resets named-key ordering; completed pack history authenticates the original
+buffer after its arrays retire. C-root forwarding separately authenticates the
+genuine outer API.
+Abrupt cleanup preserves positional/receiver/named order and the distinct direct
+Closure versus explicit `__invoke` owner order. The
+[start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json) records
+these checks. Traversable packs and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 
