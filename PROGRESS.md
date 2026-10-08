@@ -7,6 +7,29 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source339 adds the missing ordinary name-CV warning before computed FETCH.
+Returning handlers change the live caller CV used for conversion; absent/unset
+CVs quietly become null, while a later missing-target warning keeps fixed null.
+Seven exact originals and171 independent premises pass at private `bf7bcb3da`/321,
+including local/global isolation, fallback, throw priority and authentic include
+retirement/FETCH6. The actual324 composition over `6b51f811c` passes strict
+compilation at `e3d6a7c85` with reviewed bound-Fiber/Generator/collector/array
+compatibility. Original fixture failures and diagnostic vectors retain zero
+affected credit. [Ledger](coverage/semantics/source-missing-name-cv-review.json).
+
+337 adds bound first-class `resume`/`throw`/defined `getReturn` and status methods.
+The Closure owns its selected Fiber; direct and explicit `__invoke` calls borrow
+that receiver while retaining their actual argument buffers and saved operation
+provenance. Strict318 initialization, nine normal originals and author65/independent403
+reached premises pass at the recorded private cuts. Two explicit start/C-root
+Unsupported controls earn zero agreement; earlier331 evidence is unchanged. A
+separate actual322 composition passes strict initialization, one collector
+original and115 independent premises: captured public resume/throw authenticate
+the genuine saved caller, preserve borrowed receiver roots and retire the idle
+cache on request completion. The
+[bound-callable ledger](coverage/semantics/fiber-bound-api-callables-review.json)
+retains these checks and required follow-ons.
+
 Collector338 admits failed last-owner close of a detached worker after collection.
 A throwing `finally` retires the one remaining private control owner while the
 real error stays in the caller's pending operation; a genuine prior exception
@@ -112,10 +135,10 @@ WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/3
 Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 322 modules composed over
-`0bb453754`, retaining static Fiber API captures331, physical property references324 and collector335/338.
+with 324 modules composed over
+`6b51f811c`, retaining static/bound Fiber API captures331/337, physical property references324 and collector335/338.
 The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336.
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -461,6 +484,26 @@ Final314 over `2a2f69a71` passes full algorithmic/structuring compilation at
 earlier307 source/reached cut remains separate. Finally-sensitive Notice ingress,
 bare/fall-through NULL, handler exit and wider producers remain open; typed
 non-mixed return verification stays user-paused.
+
+ArrayAccess334 stages real Get, left Stringable conversion, live RHS conversion
+and Set while retaining the raw RV/CELL and each genuine cast/key/base owner.
+An initially defined key unset by a conversion retains its absent C-call slot:
+required and variadic Set reject before entry, while scalar and NEW defaults use
+real receives and argument introspection. Twenty-three normal originals agree
+across `1a9577fbc`, `e24bc593f`, `44e1bf990` and `e79ff62bd`; three compiler
+rejections pass separately at `1a659fe82`. The
+[compound ledger](coverage/semantics/arrayaccess-stringable-compound-review.json)
+keeps 341 earlier and 248 missing-key reached premises at their separate cuts.
+The composition of 325 modules over SOURCE339 `3691db3dd` passes full
+algorithmic/structuring compilation and six strict initialization checks at
+`7a7dd4faf`, without source/state renewal.
+The final composition of 326 modules over TRAIT307 `55c2eab0c` preserves its
+TYPE/default/FCC source guards by independent pointwise review; the 325-module
+compiler cut remains separate.
+The ordinary helper-base compiler repair preserves special builtin temporary
+rejection. Implicit Generator Get creation retains its existing deferred-scope
+boundary. Bare/fall-through NULL, finally-sensitive Notice ingress and wider
+producers remain open; non-mixed typed return verification remains user-paused.
 
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
@@ -1429,8 +1472,39 @@ strict algo/struct and one new pinned REAL/default-constructor original, with ex
 passes46 supplied conditions plus6 terminal-aware setup clauses: actual REAL
 birth/cache/receipt, selected constructor7 allocation and capture retirement with
 the REAL authority still live. The current constructor/default/Generator/Fiber/source
-fields are retained. Unaccepted307 parameter views and its full mixed, handler and
-variadic timeout originals remain private and open; paused return work is excluded.
+fields are retained. Module307 now reconstructs exact source method copies at the
+first target's declaration prefix to validate failed FCC births after rollback.
+Dead receipts and pure history replay preserve the first target without publishing
+its owner or admitting a live callable. Focused source2 retain exact output/error
+bytes and exits; strict-SL failed-import53 and equal-scope34 supplied conditions pass,
+with12 setup clauses separate. Raw evidence is under the private
+`.tools/trait-selected-constructor-current/.tools/`: `closure-call-protocol-y5x1pwdf`,
+`closure-call-protocol-v81oh3gj`, `method-runtime-87l_y5f5` and `method-runtime-a2gromik`.
+The first failed source's recorder label is corrected from static rejection to
+runtime PHP error; its already completed duplicate adds no coverage. These focused
+cuts bridge to the reviewed current composition without renewal. The322 cut at
+`4c03c177d` over `f89fbee74` passes strict algo/struct at3.369/4.270s and a genuine
+active DEFAULTRECEIVE/TYPE checkpoint with26 supplied conditions plus6 setup clauses
+at36.874s. It preserves canonical code/default/return/static identity and rejects a
+forged receive owner before the actual old-U constructor Error; no whole-source or
+unwind coverage is claimed. Current raw evidence is under
+`.tools/trait-fcc-parameters-composed-19/.tools/`: `trait266-object-algo-2riubhjo`,
+`trait266-object-struct-k27i1h7p` and `closure-call-protocol-yveph8_d`.
+The323 composition over EX338 tightens receipt access to the unfixed exporting
+trait's scope. At `77d34fc10`, strict algo/struct pass3.419/4.370s and private/protected
+forbidden-receipt checks pass68 supplied conditions plus12 setup clauses. Their native
+originals confirm access Errors before the property fatal; they add no source-agreement
+credit. The affected public failed-birth53 conditions plus6 setup clauses pass11.734s.
+Raw artifacts are `trait266-object-algo-s6o6pssf`,
+`trait266-object-struct-n4p5pbmw`, `closure-call-protocol-10bjo22b`,
+`closure-call-protocol-08sz3xg1`, `closure-call-protocol-q5w3a8qt` and
+`fcc-access-review19/native-*` under the same current
+worktree's `.tools/`.
+Broader307 parameter-view full-source validation,
+including mixed, constructor/default, handler and variadic timeout originals,
+remains open, as do live
+adaptation lookup, differing-owner later births and executable failed-target reuse.
+Paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
@@ -1765,7 +1839,8 @@ failures and interrupted evidence.
   ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append,
   and309 adds final simple append to returned children. Module319 adds untyped/mixed
   reference Get;326 adds named sends and nested captured-row updates, and329
-  adds VALUE-return Notice callbacks. Finally-sensitive Notice ingress, bare/fall-through
+  adds VALUE-return Notice callbacks;334 adds real Stringable DIM_OP conversions
+  and callback-unset key receives. Finally-sensitive Notice ingress, bare/fall-through
   NULL, handler exit, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.

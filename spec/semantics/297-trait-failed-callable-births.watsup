@@ -33,6 +33,8 @@ def $trait_real_receipt_source(S, pconstantclosure, ptraitcachecause) = eps -- o
 def $trait_real_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
   -- if ~(HOBJECT pconstantclosure.OBJECT <- S.ALLOCATIONS)
   -- if $closure_scope_at(S.CLOSURESCOPES, pconstantclosure.OBJECT) = eps
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (REALCLOSURE pconstantclosure.SITE eps pstaticcell*)
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
   -- if $trait_real_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
   -- if $trait_failed_cache_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)

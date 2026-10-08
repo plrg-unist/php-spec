@@ -68,20 +68,20 @@ def $api_receive_index(S, TYPE_RECEIVE porigin n) = n
 def $api_receive_index(S, CALLABLE_DEFAULT_RECEIVE porigin n) = n
 def $api_receive_index(S, ptask) = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if $api_variadic_task(ptask)
-  -- if $function_at($all_functions(S), $api_receive_function(ptask)) = (pfunction)
+  -- if $receiving_function(S, $api_receive_function(ptask)) = (pfunction)
 dec $api_receive_operand(pstate, ptask) : poperand
 def $api_receive_operand(S, TYPE_RECEIVE porigin n) = REFERENCE n_cell
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if pfunction.SIGNATURE.PARAMETERS[n].BYREF
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if n_cell <- S.REFCELLS
 def $api_receive_operand(S, TYPE_RECEIVE porigin n) = KNOWN pvalue
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if ~pfunction.SIGNATURE.PARAMETERS[n].BYREF \/ ~(n_cell <- S.REFCELLS)
   -- if S.STORE[n_cell] = DEFINED pvalue
 def $api_receive_operand(S, CALLABLE_DEFAULT_RECEIVE porigin n) = KNOWN pvalue
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
 def $api_receive_operand(S, VARIADIC_RECEIVE porigin n_arg) = pcallcontext.EXTRA[n_element]
@@ -96,7 +96,7 @@ def $api_receive_stage(S, CALLABLE_DEFAULT_RECEIVE porigin n) = true
   -- if S.CONSTCONTEXT = eps
   -- if $typed_receive_valid(S[.TODO = [TYPE_RECEIVE porigin n]], porigin, n)
   -- if $fixed_parameter_defaulted(S, n)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if S.CURRENT = (pcallcontext)
   -- if pdefault.KIND = PDDEFERRED \/ n <- pcallcontext.HOLES
@@ -118,7 +118,7 @@ def $api_variadic_candidate(S) = true
   -- if S.TODO = [ptask]
   -- if $api_variadic_task(ptask)
   -- if $api_receive_stage(S, ptask)
-  -- if $function_at($all_functions(S), $api_receive_function(ptask)) = (pfunction)
+  -- if $receiving_function(S, $api_receive_function(ptask)) = (pfunction)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[$api_receive_index(S, ptask)]
   -- if $receive_string_operand_mode(psparam, $api_receive_operand(S, ptask))
   -- if $api_receive_needed(S, psparam, $variadic_operand_value(S, $api_receive_operand(S, ptask)))
@@ -146,7 +146,7 @@ def $api_receive_operand_valid(S, papiquery) = true
 def $api_receive_operand_valid(S, papiquery) = false -- otherwise
 def $api_source_valid(S, papiquery) = true
   -- if $api_receive_stage(S, papiquery.SOURCE)
-  -- if $function_at($all_functions(S), $api_receive_function(papiquery.SOURCE)) = (pfunction)
+  -- if $receiving_function(S, $api_receive_function(papiquery.SOURCE)) = (pfunction)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[$api_receive_index(S, papiquery.SOURCE)]
   -- if "callable" <- $ptmasks(psparam.TYPE)
   -- if ~$typed_exact(psparam.TYPE, papiquery.VALUE)
@@ -156,13 +156,13 @@ def $call_task_valid(S, CALLABLE_DEFAULT_RECEIVE porigin n) = $api_receive_stage
 
 dec $api_receive_finish(pstate, ptask, pvalue) : pstate
 def $api_receive_finish(S, TYPE_RECEIVE porigin n, pvalue) = $default_store(S, pfunction, n, pvalue)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
 def $api_receive_finish(S, CALLABLE_DEFAULT_RECEIVE porigin n, pvalue) = $default_store(S, pfunction, n, pvalue)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
 def $api_receive_finish(S, VARIADIC_RECEIVE porigin n_arg, pvalue) = $variadic_insert(S, pfunction, n_arg, $api_receive_operand(S, VARIADIC_RECEIVE porigin n_arg), pvalue)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
 def $api_receive_finish(S, NAMED_VARIADIC_RECEIVE porigin n, pvalue) = $named_variadic_insert(S, pfunction, n, $api_receive_operand(S, NAMED_VARIADIC_RECEIVE porigin n), pvalue)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
 def $api_finish(S, CALLABLE_DEFAULT_RECEIVE porigin n, pvalue, HANDLERRESOLVED pcalltarget) = $api_receive_finish(S, CALLABLE_DEFAULT_RECEIVE porigin n, $variadic_operand_value(S, $api_receive_operand(S, CALLABLE_DEFAULT_RECEIVE porigin n)))
 def $api_finish(S, ptask, pvalue, HANDLERRESOLVED pcalltarget) = $api_receive_finish(S, ptask, $variadic_operand_value(S, $api_receive_operand(S, ptask)))
   -- if $api_variadic_task(ptask)
@@ -189,7 +189,7 @@ def $api_finish(S, ptask, pvalue, HANDLERINVALID ptbytes) = $api_fallback_reject
 ;; live alias can support a borrowed retired container after byref replacement.
 dec $api_receive_reference(pstate, ptask) : nat?
 def $api_receive_reference(S, TYPE_RECEIVE porigin n) = (n_cell)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if pfunction.SIGNATURE.PARAMETERS[n].BYREF
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
 def $api_receive_reference(S, ptask) = (n_cell)
@@ -238,7 +238,7 @@ dec $api_fallback_stage(pstate, ptask) : bool
 def $api_fallback_stage(S, TYPE_RECEIVE porigin n) = true
   -- if $typed_receive_valid(S[.TODO = [TYPE_RECEIVE porigin n]], porigin, n)
   -- if $fixed_parameter_supplied(S, n)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED pvalue
@@ -249,7 +249,7 @@ dec $api_fallback_task(ptask) : bool
 def $api_fallback_task(ptask) = ($api_fixed_receive(ptask) \/ $api_variadic_task(ptask))
 dec $api_fallback_parameter(pstate, ptask) : psparam
 def $api_fallback_parameter(S, ptask) = pfunction.SIGNATURE.PARAMETERS[$api_receive_index(S, ptask)]
-  -- if $function_at($all_functions(S), $api_receive_function(ptask)) = (pfunction)
+  -- if $receiving_function(S, $api_receive_function(ptask)) = (pfunction)
 dec $api_fallback_conversion(pstate, ptask) : ptypeconversion
 def $api_fallback_conversion(S, ptask) = $api_scalar_conversion(S, $api_fallback_parameter(S, ptask), $variadic_operand_value(S, $api_receive_operand(S, ptask)))
   -- if $api_fixed_receive(ptask)
@@ -286,7 +286,7 @@ def $api_fallback_reject(S, ptask) = S_value
   -- if S_value.COMPLETION =/= NORMAL
 def $api_fallback_reject(S, ptask) = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Argument #") ++ $ntunsigned($($api_variadic_number(S, ptask) + 1)) ++ $call_parameter_name(psparam) ++ $ptascii(" must be of type ") ++ $pttypename(psparam.TYPE) ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given") ++ $wrapper_called_suffix(S, pcallcontext), $api_source_line(S, ptask))
   -- if $api_fallback_conversion(S, ptask) = TYPEREJECT
-  -- if $function_at($all_functions(S), $api_receive_function(ptask)) = (pfunction)
+  -- if $receiving_function(S, $api_receive_function(ptask)) = (pfunction)
   -- if psparam = $api_fallback_parameter(S, ptask)
   -- if pvalue = $variadic_operand_value(S, $api_receive_operand(S, ptask))
   -- if S.CURRENT = (pcallcontext)
