@@ -66,6 +66,8 @@ Computed variable names from resolved no-argument user calls have a reviewed [pr
 
 Ordinary CV-computed names have a reviewed [private308 cut](coverage/semantics/source-cv-name-emission-review.json): the outer FETCH6 precedes a later property8, with four exact originals and174 independent premises. Retirement changes the live name before lookup; handler name/target writes survive fixed-null resume. Actual310 passes strict compilation with reviewed Fiber/collector/constructor compatibility; earlier source/state results keep their inputs.
 
+Computed names from a resolved user call with one ordinary CV argument have a reviewed [private311 cut](coverage/semantics/source-call-argument-emission-review.json): operand retirement uses the INIT6 location before argument lookup, while outer FETCH7 precedes property10. Five exact originals and275 independent premises preserve live argument reads and fixed-null argument/target warning resumes after handler writes. The initial parser stop and wrong argument-certificate trace retain zero affected credit; final shared-parent composition remains pending.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)

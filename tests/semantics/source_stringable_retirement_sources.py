@@ -45,7 +45,12 @@ CASES = {'regular': 'deferred-regular.php',
          'cv-name-direct': 'cv-name-direct-child.php',
          'cv-name-property': 'cv-name-property-child.php',
          'cv-name-property-nonthrow': 'cv-name-property-nonthrow-child.php',
-         'cv-name-missing-nonthrow': 'cv-name-missing-nonthrow-child.php'}
+         'cv-name-missing-nonthrow': 'cv-name-missing-nonthrow-child.php',
+         'call-argument-direct': 'call-argument-direct-child.php',
+         'call-argument-property': 'call-argument-property-child.php',
+         'call-argument-property-nonthrow': 'call-argument-property-nonthrow-child.php',
+         'call-argument-argument-missing-nonthrow': 'call-argument-argument-missing-nonthrow-child.php',
+         'call-argument-target-missing-nonthrow': 'call-argument-target-missing-nonthrow-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -83,7 +88,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)

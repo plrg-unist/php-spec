@@ -232,6 +232,14 @@ name/target writes. Genuine entry/warning/identity controls pass174 premises.
 Actual310 passes strict compilation with reviewed Fiber/collector/constructor compatibility.
 Earlier cuts and relocations gain no renewed credit; broader names remain required.
 
+[One-argument computed-name emission333](coverage/semantics/source-call-argument-emission-review.json)
+passes its private311 cut: operand retirement uses INIT6 before argument lookup,
+and outer FETCH7 precedes property10. Five exact originals and275 independent
+entry/warning/identity/admission premises retain live CV reads and handler writes
+with fixed-null argument/target resumes. The parser stop and incorrect CODEARG
+origin mismatch have zero affected credit. Final shared-parent composition is pending;
+earlier noarg/CV cuts and relocations gain no renewed credit.
+
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
 The accepted private52 normal/four compiler agreements and618 reached premises,

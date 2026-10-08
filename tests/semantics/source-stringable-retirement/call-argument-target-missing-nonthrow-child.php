@@ -1,0 +1,11 @@
+<?php
+function source_argument_ready_333() { global $target333, $arg333; $target333 = 'ready'; $arg333 = 'missing333'; }
+function source_name_333($sent) { echo 'NAME:', ($sent === null ? 'NULL' : $sent), '|'; return ($sent === null ? 'target333' : $sent); }
+echo
+    ${
+        source_name_333(
+            $arg333
+        )
+    };
+echo 'BODY|';
+return 52;

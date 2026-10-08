@@ -108,3 +108,16 @@ resume retains later handler name/target writes. The noarg-call control remains
 reviewed Fiber/collector/constructor parent paths are disjoint here. Earlier cuts
 and relocations gain no renewed credit. Undefined name CV/conversion variants
 and wider producers remain required.
+
+Module333 adds a resolved named user call with one positional ordinary CV
+argument as the computed name. INIT6 precedes argument lookup; DO_CALL retains6
+while outer FETCH inherits argument7 before property10. Exact NArg/CV AST,
+CODENAME, call/argument/outer CODEEXPR and effects certify selection without
+reading the live argument. Ordinary by-value CV compilation emits no CODEARG.
+The [ledger](../../coverage/semantics/source-call-argument-emission-review.json)
+retains private311 source5 and275 independent entry, target-warning and
+argument/fallback/admission premises. Existing213 argument and327 computed-name
+continuations freeze null while retaining handler writes; the narrow runtime-line
+helper preserves noarg/CV defaults. The original parser stop and wrong-CODEARG
+trace remain separate with zero affected credit. Final shared-parent composition
+is pending; wider argument forms and providers remain required.

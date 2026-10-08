@@ -1,0 +1,263 @@
+{
+  "scope": "A resolved named user call with one positional ordinary CV argument selects INIT before argument lookup, then outer computed FETCH at the post-argument line before ECHO/literal property read. Existing argument and computed-name warning continuations retain fixed null after handler writes. Partial core.",
+  "status": "independently_accepted_private_current_parent_join_pending",
+  "parent_revision": "064d382d07645a1b05b3e238daf7cc44d3b33aef",
+  "tested_revision": "e433d281041ef205dcde3f39e1fd0e0f1df73e1b",
+  "modules": 311,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "compiler_pin": "da36ac3c434cd291940293a63da64544307730a3",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1",
+    "include_path": ".:"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "source": {
+    "raw": "/home/user/workspace/php-spec/.tools/include-call-argument-333-private-18/.tools/call-argument-originals-18/call-argument-source-run-37af_45l/report.json",
+    "native_raw": "/home/user/workspace/php-spec/.tools/include-call-argument-333-private-18/.tools/call-argument-originals-18/call-argument-native-c2p4qe2z/report.json",
+    "command": "python3 .tools/call-argument-originals-18/run-call-argument-333.py .tools/call-argument-originals-18/call-argument-native-c2p4qe2z",
+    "compiler": {
+      "exit": 0,
+      "elapsed": 3.795698404312134,
+      "timeout": false,
+      "group_after": [],
+      "cap_seconds": 300
+    },
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "source_agreements": 5,
+    "application_evaluations": 5,
+    "rows": [
+      {
+        "case": "direct",
+        "process": {
+          "exit": 0,
+          "elapsed": 33.63155126571655,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "stdout_equal": true,
+        "stderr_equal": true
+      },
+      {
+        "case": "property",
+        "process": {
+          "exit": 0,
+          "elapsed": 37.75871014595032,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "stdout_equal": true,
+        "stderr_equal": true
+      },
+      {
+        "case": "property-nonthrow",
+        "process": {
+          "exit": 0,
+          "elapsed": 37.23007416725159,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "stdout_equal": true,
+        "stderr_equal": true
+      },
+      {
+        "case": "argument-missing-nonthrow",
+        "process": {
+          "exit": 0,
+          "elapsed": 33.00686955451965,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "stdout_equal": true,
+        "stderr_equal": true
+      },
+      {
+        "case": "target-missing-nonthrow",
+        "process": {
+          "exit": 0,
+          "elapsed": 35.59870886802673,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        },
+        "status": "normal",
+        "stdout_equal": true,
+        "stderr_equal": true
+      }
+    ],
+    "freeze": {
+      "inputs_stable": true,
+      "head_stable": true,
+      "status_stable": true
+    },
+    "scope": "Owned-source retirement uses INIT6 before the ordinary argument CV is read; the early-child callback changes its live value. Throwing retirement suppresses helper/child work; returning retirement reaches helper then outer FETCH7/property10. Missing argument and target warnings remain at7; handler-defined argument/target writes survive while each interrupted read supplies null."
+  },
+  "maintained": {
+    "commands": [
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case call-argument-direct",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case call-argument-property",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case call-argument-property-nonthrow",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case call-argument-argument-missing-nonthrow",
+      "python3 tests/semantics/source_stringable_retirement_sources.py --case call-argument-target-missing-nonthrow"
+    ],
+    "relocation_application_evaluations": 0,
+    "source_agreements": 0,
+    "scope": "Five pairs relocate only three main child-basename occurrences; children are unchanged. Five explicit call-argument selectors/default exclusion preserve existing profiles and earlier selections."
+  },
+  "original_failures": [
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-call-argument-333-private-18/.tools/call-argument-originals-18/call-argument-source-run-mrd2xvcl/report.json",
+      "tested_revision": "5b86e40478331e1b2f569a8851ed028b6923ac71",
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "rows": [
+        {
+          "case": "compile",
+          "passed": false,
+          "process": {
+            "exit": 1,
+            "elapsed": 0.24345159530639648,
+            "timeout": false,
+            "group_after": [],
+            "cap_seconds": 300
+          }
+        }
+      ],
+      "scope": "Initial constructor-list syntax stop before execution; parentheses-only module syntax correction. No application or source credit."
+    },
+    {
+      "raw": "/home/user/workspace/php-spec/.tools/include-call-argument-333-private-18/.tools/call-argument-originals-18/call-argument-source-run-w9ef3h6h/report.json",
+      "tested_revision": "21748345c146b89ba17af800fca5b36811eaa749",
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "rows": [
+        {
+          "case": "compile",
+          "passed": true,
+          "process": {
+            "exit": 0,
+            "elapsed": 3.8088643550872803,
+            "timeout": false,
+            "group_after": [],
+            "cap_seconds": 300
+          }
+        },
+        {
+          "case": "direct",
+          "passed": false,
+          "process": {
+            "exit": 0,
+            "elapsed": 33.00571846961975,
+            "timeout": false,
+            "group_after": [],
+            "cap_seconds": 90
+          }
+        }
+      ],
+      "scope": "Initial incorrect CODEARG guard rejected genuine PPR argument compilation, yielding destructor main21 instead of child INIT6. Strict compilation passed, but the one direct comparison has zero source agreement; other four originals were unattempted. The fix removes only that false guard."
+    }
+  ],
+  "engine_symbols": [
+    "Zend/zend_compile.c::zend_compile_call",
+    "Zend/zend_compile.c::zend_compile_args",
+    "Zend/zend_compile.c::zend_compile_call_common",
+    "Zend/zend_compile.c::zend_compile_simple_var_no_cv",
+    "Zend/zend_compile.c::zend_delayed_compile_prop",
+    "Zend/zend_vm_def.h::ZEND_INCLUDE_OR_EVAL",
+    "Zend/zend_vm_def.h::zend_fetch_var_address_helper"
+  ],
+  "remaining": [
+    "Wider argument forms, names/property identifiers/first emissions and providers",
+    "Complete core and final combined fresh copied-path offline rebuild"
+  ],
+  "state": {
+    "tested_revision": "e433d281041ef205dcde3f39e1fd0e0f1df73e1b",
+    "raw": "/home/user/workspace/php-spec/.tools/include-review-18-call-argument/call-argument-state-run-a8bvn6x0/report.json",
+    "command": "python3 .tools/include-review-18-call-argument/run-state.py --source-report .tools/include-call-argument-333-private-18/.tools/call-argument-originals-18/call-argument-source-run-37af_45l/report.json",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "accepted_physical_premises": 275,
+    "application_evaluations": 3,
+    "source_agreements": 0,
+    "rows": [
+      {
+        "case": "entry",
+        "binding_premises": 44,
+        "check_premises": 35,
+        "physical_premises": 79,
+        "observed": "true\n",
+        "process": {
+          "exit": 0,
+          "elapsed": 27.489423036575317,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        }
+      },
+      {
+        "case": "target",
+        "binding_premises": 37,
+        "check_premises": 32,
+        "physical_premises": 69,
+        "observed": "true\n",
+        "process": {
+          "exit": 0,
+          "elapsed": 50.83793616294861,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        }
+      },
+      {
+        "case": "argument",
+        "binding_premises": 69,
+        "check_premises": 58,
+        "physical_premises": 127,
+        "observed": "true\n",
+        "process": {
+          "exit": 0,
+          "elapsed": 47.28247809410095,
+          "timeout": false,
+          "group_after": [],
+          "cap_seconds": 90
+        }
+      }
+    ],
+    "freeze": {
+      "inputs_stable": true,
+      "module_stats_stable": true,
+      "head_stable": true,
+      "status_stable": true
+    },
+    "scope": "Genuine property MAIN entry authenticates INIT6 before argument/outer FETCH7/property10, source owners and callsite; six same-heap name/line/image/owner forgeries reject. Target warning freezes missing333 and original outer line7, with SITE/LINE and current/saved handler identity refusals; writes survive fixed-null resume. Argument CALL_SEND captures its selected target and null despite handler-defined CV, with task/line/current/saved identity refusals and actual null send. Six AST-only admission controls and evaluated noarg/CV line fallbacks preserve327/330 behavior; these bodies earn no source agreement."
+  }
+}
