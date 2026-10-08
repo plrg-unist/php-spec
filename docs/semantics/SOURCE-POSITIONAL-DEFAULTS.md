@@ -151,4 +151,8 @@ eval31/saved42 and a separate persistent public response gate pass on their296
 cut; new231 default controls remain UNRUN and their91 candidate is excluded from
 this join. The full retry source still exceeds host55. Its bounded trace passes
 throw/catch/new receive/bind before timing out in GC and earns zero agreement.
+The separate pruning factor computes the same pure live-node list once before
+the unchanged Generator/Fiber guards. Strict301 initialization and123 affected
+collector/Generator/Fiber predicates pass on `1060496af1`; the unchanged full
+retry still times out at host55. This establishes no speedup or whole-source agreement.
 Whole retry composition and wider producers remain open.

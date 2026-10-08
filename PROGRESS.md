@@ -67,7 +67,12 @@ Earlier old290/v5 Generator/Fiber default227 remain accepted; new231 remain UNRU
 The full retry original still times out at host55 with zero agreement. A bounded
 trace completes throw/catch/new receive/bind before GC:293 completed GC transitions
 take27.843s versus294 execution steps5.491s. The separate39 compute-once candidate
-has static owner review only. No whole-retry agreement or offline rebuild is claimed.
+preserves pruning guards and partiality and passes strict301 initialization plus
+GC42/Generator47/Fiber34 lifecycle predicates on `1060496af1`. Inputs stay stable
+and all groups are reaped; raw records are under
+`.tools/compiler-defaults-pruning-18/.tools/pruning-current-v1`.
+Its unchanged full retry again times out at host55 with empty streams and zero
+agreement. No speedup, whole-retry agreement or offline rebuild is claimed.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
