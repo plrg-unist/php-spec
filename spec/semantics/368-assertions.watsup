@@ -950,7 +950,8 @@ def $assertion_warning_text(PSTRING preqbytes) = $c_string(preqbytes) ++ $ptasci
 def $assertion_policy_finish(S, passertfailure) = $assertion_options_return(S, PBOOL false)
   -- if ~S.ASSERTBAIL.VALUE /\ passertfailure.PENDING = eps
 def $assertion_policy_finish(S, passertfailure) = S[.COMPLETION = THROWING n]
-  -- if ~S.ASSERTBAIL.VALUE /\ passertfailure.PENDING = (n)
+  -- if ~S.ASSERTBAIL.VALUE
+  -- if passertfailure.PENDING = (n)
 def $assertion_policy_finish(S, passertfailure) = S[.COMPLETION = EXITED 0][.TODO = eps][.ORIGIN = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.ASSERTBAIL.VALUE /\ passertfailure.PENDING = eps
 def $assertion_policy_finish(S, passertfailure) = S[.COMPLETION = UNSUPPORTED "assertion bail with pending callback exception"]
