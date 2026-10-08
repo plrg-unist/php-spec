@@ -192,7 +192,9 @@ $request_fatal_stderr(S_bailout.EVENTS) =/= eps
 $generator_request_report_frozen(S_bailout,pgenfatal_bailout) = pgenfatal_bailout.FROZEN
 ''')
     if handler:
-        checks += ['$throwable_live(S_bailout,n_old)',
+        checks += ['~((HARRAY n_trace) <- S_bailout.ALLOCATIONS)',
+                   '~((HARRAY n_trace_args) <- S_bailout.ALLOCATIONS)',
+                   '$throwable_live(S_bailout,n_old)',
                    '$heap_owners($heap_graph(S_bailout),HOBJECT n_old) = 1',
                    '$generator_request_resume_valid(S_bailout,pgenclose_report)']
     reject(checks, 'frozen_report', 'S_bailout[.TODO = (GENERATOR_REQUEST_BAILOUT pgenfatal_bailout[.FROZEN = REQUESTFATAL $ptascii("Exception") $ptascii("forged") 0]) :: ptask_bailout_tail*]', 'S_bailout')
