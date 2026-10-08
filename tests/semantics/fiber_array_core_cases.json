@@ -66,6 +66,17 @@
     "native_exit": 0
   },
   {
+    "id": "author-weak-reference-nominal-parameter-property-and-dead-referent",
+    "source": "<?php\nfunction rawCoreWeakTyped370(WeakReference $value) { echo 'T'; }\nfunction rawCoreWeakNullable370(?WeakReference $value) { echo (int)($value === null); }\nfunction rawCoreWeakWrong370(int $value) { echo 'UNREACHED'; }\nclass RawCoreWeakHolder370 { public WeakReference $value; }\n$target = new stdClass();\n$weak = WeakReference::create($target);\n$alias =& $weak;\n$holder = new RawCoreWeakHolder370();\nrawCoreWeakTyped370($alias);\n$holder->value = $alias;\necho (int)($holder->value === $weak), '|';\ntry { rawCoreWeakTyped370($target); }\ncatch (TypeError $error) { echo 'P|'; }\ntry { $holder->value = null; }\ncatch (TypeError $error) { echo 'N|'; }\ntry { $holder->value = 17; }\ncatch (TypeError $error) { echo 'S|'; }\nrawCoreWeakNullable370(null);\necho '|';\nunset($target);\necho (int)($weak->get() === null), '|';\nrawCoreWeakTyped370($alias);\necho '|';\ntry { rawCoreWeakWrong370($weak); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; }\necho (int)($holder->value === $weak), '|END';\n",
+    "source_sha256": "9cf7c7646d95c2311886b7d629ce1f184ccca5fb7748a527d4b30c381a568478",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "A genuine WeakReference satisfies nominal parameter and property types through an alias before and after referent retirement; null/scalar/other-object rejection preserves the old property, nullable receives accept null, and wrong-int diagnostics name WeakReference.",
+    "native_stdout": "T1|P|N|S|1|1|T|rawCoreWeakWrong370(): Argument #1 ($value) must be of type int, WeakReference given, called in /home/user/workspace/php-spec/.tools/calls-fiber-array-core-native-types-19/author-weak-reference-nominal-parameter-property-and-dead-referent/source.php on line 25|1|END",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
     "id": "peer-fiber-raw-array-last-member-explicit-property-before-original-start-argument",
     "source": "<?php\nclass RawArrayLastPayload19 {\n    private WeakReference $target;\n    public function __construct(WeakReference $target) { $this->target = $target; }\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\n$target = new Fiber(static function () {\n    try {\n        echo 'B|';\n        Fiber::suspend('Y');\n        Fiber::suspend('Z');\n    } finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$runner = new Fiber([$target, 'ReSuMe']);\nunset($target);\necho $runner->start(new RawArrayLastPayload19($weak)), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null), '|', (int)$runner->isTerminated();\n",
     "source_sha256": "3420c7c0dfa20c40fd35888fdda959111e9b51535f672c801bad0c987322c0e9",

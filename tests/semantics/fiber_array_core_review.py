@@ -181,6 +181,18 @@ CASES = {
             'pfibercapture_resume.KIND = INTRINSIC_FIBER_RESUME',
             'pfibercapture_resume.INPUT = (n_runner)',
             '$node_children(S, HOBJECT n_resume) = [HOBJECT n_runner]',
+            '$lookup(S.ENV, $ptascii("weak")) = (n_weak_cell)',
+            'S.STORE[n_weak_cell] = DEFINED (POBJECT n_weak)',
+            'S.OBJECTS[n_weak] = WEAKREFERENCE (n_input)',
+            '$node_children(S, HOBJECT n_weak) = eps',
+            '$typed_object_exact(S, [(PTBRANCH ([(PTCLASS ($ptascii("WeakReference")))]))], POBJECT n_weak)',
+            '$typed_object_exact(S, [(PTBRANCH ([(PTCLASS ($ptascii("wEaKrEfErEnCe")))]))], POBJECT n_weak)',
+            '$typed_object_exact(S, [(PTBRANCH ([(PTCLASS ($ptascii("Exception")))])), '
+            '(PTBRANCH ([(PTCLASS ($ptascii("WeakReference")))]))], POBJECT n_weak)',
+            '~$typed_object_exact(S, [(PTBRANCH ([(PTCLASS ($ptascii("Fiber")))]))], POBJECT n_weak)',
+            '~$typed_object_exact(S, [(PTBRANCH ([(PTCLASS ($ptascii("WeakReference"))), '
+            '(PTCLASS ($ptascii("Stringable")))]))], POBJECT n_weak)',
+            '$typed_given(S, POBJECT n_weak) = $ptascii("WeakReference")',
             'pfiber_runner.VM = (pfibervm)', '~pfibervm.GLOBAL',
             'pfibervm.CURRENT = eps', 'pfibervm.FRAMES = eps',
             'pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: '
