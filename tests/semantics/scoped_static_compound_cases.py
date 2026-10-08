@@ -302,8 +302,8 @@ echo "A:", DynamicObjectFirstReview19::$value,
     {
         'id': 'dynamic-captured-reference-rebind',
         'source': '''<?php
-class DynamicAliasFirstReview19 { public static mixed $value; }
-class DynamicAliasSecondReview19 { public static mixed $value = "other"; }
+class DynamicAliasFirstReview19 { public static $value; }
+class DynamicAliasSecondReview19 { public static $value = "other"; }
 class LeftDynamicAliasReview19 {
     public function __toString(): string {
         global $class, $replacement;
