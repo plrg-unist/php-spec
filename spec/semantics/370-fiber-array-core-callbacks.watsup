@@ -99,6 +99,7 @@ def $fiber_caller_api_nodes(pfibercaller) = $fiber_value_nodes(pfiberapi.SENT)
   -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
   -- if pconfigcall.OWNER = (pfiberapi.OBJECT) /\ pconfigcall.SELECTION = (n_runner)
   -- if pfiberapi.KIND = (pconfigcall.KIND) /\ pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
   -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
 def $fiber_raw_core_call(S, pfiberapi) = (pconfigcall)
@@ -112,6 +113,7 @@ def $fiber_raw_core_call(S, pfiberapi) = (pconfigcall)
   -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
   -- if pconfigcall.OWNER = (pfiberapi.OBJECT) /\ pconfigcall.SELECTION = (n_runner)
   -- if pfiberapi.KIND = (pconfigcall.KIND) /\ pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
   -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
   -- if $config_slots_valid(S, pconfigcall.SENT)
@@ -151,7 +153,7 @@ rule PhpStep/fiber-array-core-start-enter: S ~> S[.TODO = [FIBER_ARRAY_CORE_STAR
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
   -- if pfiberapi_outer = pfibercaller.API
   -- if n_count = $(|pnamedargs.SLOTS| + |pnamedargs.NAMED|)
-  -- if pfiberstart = {SITE pfiberapi_outer.SITE, OBJECT n_receiver, INDEX n_count, SENT pnamedargs, LINE pfiberapi_outer.LINE}
+  -- if pfiberstart = {SITE pfiberapi_outer.SITE, OBJECT n_receiver, INDEX n_count, SENT pnamedargs, LINE pfiberapi_outer.LINE, PACKS eps}
 def $fiber_raw_start_tasks(S, n_runner, pfiberstart) = true
   -- if S.TODO = (FIBER_ARRAY_CORE_START_INVOKE n_runner pfiberstart) :: (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
   -- if ptask_tail* = [FIBER_FINISH n_runner]
@@ -163,6 +165,7 @@ def $fiber_raw_start_tasks(S, n_runner, pfiberstart) = true
   -- if ptask_tail* = [FIBER_FINISH n_runner]
   -- if pfiberapi.KIND = eps /\ pfiberapi.SENT = eps
   -- if pfiberapi.START = (pfiberstart.SENT)
+  -- if pfiberapi.PACKS = pfiberstart.PACKS
   -- if pfiberapi.OBJECT = pfiberstart.OBJECT
   -- if pfiberapi.SITE = pfiberstart.SITE /\ pfiberapi.LINE = pfiberstart.LINE
 def $fiber_raw_start_tasks(S, n_runner, pfiberstart) = true
@@ -182,6 +185,7 @@ def $fiber_raw_start_valid(S, n_runner, pfiberstart) = true
   -- if $fiber_raw_receiver_live(S, pfiberrawapi)
   -- if pfiber.ENTRY = (pfiberstart.SENT)
   -- if pfiberstart.INDEX = $(|pfiberstart.SENT.SLOTS| + |pfiberstart.SENT.NAMED|)
+  -- if pfiberstart.PACKS = eps
   -- if $fiber_cache_valid(S, n_runner, pfiber)
   -- if $fiber_raw_start_tasks(S, n_runner, pfiberstart)
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
@@ -210,6 +214,7 @@ def $fiber_caller_api_nodes(pfibercaller) = $named_slots_roots(pfiberstart.SENT.
   -- if ptask_tail* = [FIBER_FINISH n_runner]
   -- if pfiberapi.KIND = eps /\ pfiberapi.SENT = eps
   -- if pfiberapi.START = (pfiberstart.SENT)
+  -- if pfiberapi.PACKS = pfiberstart.PACKS
   -- if pfiberapi.OBJECT = pfiberstart.OBJECT
   -- if pfiberapi.SITE = pfiberstart.SITE /\ pfiberapi.LINE = pfiberstart.LINE
 def $fiber_api_valid(S, pfiberapi) = true -- if $fiber_raw_start_wait_valid(S, pfiberapi)

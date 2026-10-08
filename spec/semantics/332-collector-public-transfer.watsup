@@ -40,7 +40,7 @@ def $gc_worker_public_resume(S, pconfigcall, pvalue) = S_next[.ACTIVEFIBER = (n)
   -- if pconfigcall.OWNER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.VM = (pfibervm)
-  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (pconfigcall.KIND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE S.FIBERSEQ}
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (pconfigcall.KIND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE S.FIBERSEQ, PACKS eps}
   -- if S.TODO = ptask :: ptask_tail*
   -- if S_caller = S[.TODO = (FIBER_WAIT pfiberapi) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pfibercaller = {OBJECT n, PREVIOUS S.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}

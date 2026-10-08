@@ -41,6 +41,7 @@ def $fiber_caller_api_nodes(pfibercaller) = $fiber_value_nodes(pfibercaller.API.
   -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
   -- if pconfigcall.OWNER = (pfibercaller.API.OBJECT) /\ pconfigcall.SELECTION = (n)
   -- if pfibercaller.API.KIND = (pconfigcall.KIND) /\ pfibercaller.API.START = eps
+  -- if pfibercaller.API.PACKS = eps
   -- if pfibercaller.API.SITE = pconfigcall.SITE /\ pfibercaller.API.LINE = pconfigcall.LINE
   -- if pfibercaller.API.SENT = $fiber_config_sent(pconfigcall)
 def $fiber_api_valid(S, pfiberapi) = true
@@ -49,6 +50,7 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if pfiberapi.KIND = (pintrinsic)
   -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
   -- if pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
   -- if $fiber_capture_result_valid(S, n, pconfigcall, b)
   -- if pconfigcall.KIND = pintrinsic /\ pconfigcall.OWNER = (pfiberapi.OBJECT)

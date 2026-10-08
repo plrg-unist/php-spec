@@ -253,10 +253,12 @@ def $fiber_caller_wait(S, pfibercaller) = true
   -- if pfibercaller.API.SITE = pgcplan.CALL.CALL.SITE
   -- if pfibercaller.API.LINE = pgcplan.CALL.CALL.LINE
   -- if pfibercaller.API.START = eps
+  -- if pfibercaller.API.PACKS = eps
   -- if pfibercaller.API.SENT = eps
 def $fiber_api_valid(S, pfiberapi) = true
   -- if $gc_worker_api(pfiberapi)
   -- if pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if pfiberapi.SENT = eps
   -- if $(pfiberapi.SEQUENCE > 0)
   -- if $(pfiberapi.SEQUENCE < S.FIBERSEQ)
@@ -320,7 +322,7 @@ def $gc_worker_start(S, pgcplan, b_fresh) = $gc_worker_start_vm(S_running, n, pf
   -- if pgcworker.GUARD = eps
   -- if pgcplan_next = $gc_worker_start_plan(S_cached, pgcplan, b_fresh)
   -- if S_caller = $gc_replace($gc_worker_start_buffer(S_cached, pgcplan_next, b_fresh), pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
-  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ}
+  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ, PACKS eps}
   -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
   -- if S_running = $fiber_put(S_caller, n, pfiber[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = pfiberapi.SEQUENCE])
 def $gc_worker_start_vm(S, n, pfiber) = $fiber_fresh_vm(S, n, {SLOTS eps, NAMED eps})

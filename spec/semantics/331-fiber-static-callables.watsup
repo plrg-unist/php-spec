@@ -240,6 +240,7 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
   -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
   -- if pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND) /\ pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if S.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*
   -- if ptask_tail* = (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask*
   -- if $fiber_capture_result_valid(S, n, pconfigcall, b)
@@ -308,6 +309,7 @@ def $call_task_valid(S, FIBER_API_CORE_RESULT n n_capture pconfigcall) = $fiber_
 def $fiber_api_valid(S, pfiberapi) = true
   -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
   -- if pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND) /\ pfiberapi.START = eps
+  -- if pfiberapi.PACKS = eps
   -- if S.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*
   -- if $fiber_core_tail(ptask_tail*) = ((pfiberapi.OBJECT, pconfigcall))
   -- if $fiber_core_result_valid(S, pfiberapi.OBJECT, pconfigcall)

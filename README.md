@@ -672,8 +672,14 @@ Fiber cursor. Strict354 compilation/init and 171 independent physical premises
 complete both unchanged originals with count1, D/E retirement and exact exception
 priority. Final 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed
 trait, storage, raw Fiber-array and ASSERTIONS additions; both whole CLI 60s
-timeouts retain zero agreement. Overlap, repeated
-internal suspension, different-active-pass reentry and whole CLI completion remain
+timeouts retain zero agreement. An internal residual callback can now suspend,
+detach its actual guarded VM and let a fresh worker scan the remaining physical
+suffix. The old worker keeps its own pin/finally error and terminates after later
+public completion; replacement errors stay separate. Both original continuations
+pass 197 independent physical premises, including count0 before old completion
+and later count1. Both whole CLI 60s timeouts retain zero agreement. Final 357 over
+`b7419cbe1` compiles at `9ce39cd54`. Last-cache-owner close, repeated detached
+suspension, overlap, different-active-pass reentry and whole CLI completion remain
 required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
@@ -998,10 +1004,9 @@ execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
 Ordinary abstract scoped calls reject before arguments, and inaccessible concrete
 nonstatic methods report access errors before missing-receiver errors. Literal
-constructor calls retain their separate opcode dispatch. The latter two cases pass
-two normal originals and54 supplied checks plus12 setup clauses (40 genuine
-clauses and14 helper-only clauses covering flag/source probes); prior abstract-call
-evidence remains separate.
+constructor calls retain separate opcode dispatch: private denial precedes
+receiver compatibility, and inherited private constructor errors name the requested
+class.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work
@@ -1384,8 +1389,15 @@ Copied C arguments remain separate from the original outer start buffer. Saved
 Fiber states and actual callers authenticate nested, parked static and idle
 collector continuations. Inner API trace frames have no file or line site. The
 [raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json)
-records these distinct checks. Compound selectors and Fiber-start argument
-unpacking remain required.
+records these distinct checks. Array unpacking now forwards copied, dereferenced
+values through ordinary, array-selected and captured `start` calls. Each pack
+resets named-key ordering; completed pack history authenticates the original
+buffer after its arrays retire. C-root forwarding separately authenticates the
+genuine outer API.
+Abrupt cleanup preserves positional/receiver/named order and the distinct direct
+Closure versus explicit `__invoke` owner order. The
+[start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json) records
+these checks. Traversable packs and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

@@ -112,6 +112,7 @@ def $fiber_core_start_valid(S, n, pconfigcall) = true -- if S.FIBERCALLERS = eps
 def $fiber_core_start_valid(S, n, pconfigcall) = true
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
   -- if pfibercaller.OBJECT = n /\ pfibercaller.API.START = eps
+  -- if pfibercaller.API.PACKS = eps
 def $fiber_core_start_valid(S, n, pconfigcall) = false -- otherwise
 def $fiber_core_result_valid(S, n, pconfigcall) = true
   -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
