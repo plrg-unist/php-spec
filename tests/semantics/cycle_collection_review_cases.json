@@ -367,5 +367,32 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-idle-public-resume-keeps-cache-and-unmarked-cycle",
+    "source": "<?php\nclass IdleResume332 {\n    public $self;\n    public $kind;\n    public function __construct($kind) { $this->self = $this; $this->kind = $kind; }\n    public function __destruct() {\n        global $worker;\n        if ($this->kind === 0) {\n            $worker = Fiber::getCurrent();\n            ini_set(\"error_reporting\", \"0\");\n            echo \"first-dtor|\";\n        } else {\n            echo Fiber::getCurrent() === $worker ? \"same|\" : \"different|\";\n            echo error_reporting(), \"|\";\n        }\n    }\n}\n$request = new Fiber(function () {\n    $a = new IdleResume332(0);\n    unset($a);\n    echo \"first:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\nini_set(\"error_reporting\", \"30719\");\n$a = new IdleResume332(1);\n$weak = WeakReference::create($a);\nunset($a);\necho $worker->resume(123) === null ? \"null|\" : \"value|\";\necho $worker->isSuspended() ? \"suspended|\" : \"other|\";\necho $weak->get() === null ? \"gone|\" : \"live|\";\necho error_reporting(), \"|\";\n$later = new Fiber(function () { echo \"later:\", gc_collect_cycles(), \"|\"; });\n$later->start();\necho $weak->get() === null ? \"gone|\" : \"live|\";\necho \"END\";\n",
+    "source_sha256": "42f4bde2f6ef4e2941709039c329ac1bca509829d2f7eb45227d256f60e7a738",
+    "stdout": "first:first-dtor|1|null|suspended|live|30719|later:same|0|1|gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "collector-idle-public-throw-delivers-without-worker-termination",
+    "source": "<?php\nclass IdleThrow332 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $worker;\n        $current = Fiber::getCurrent();\n        echo isset($worker) ? ($current === $worker ? \"same|\" : \"different|\") : \"first-dtor|\";\n        $worker = $current;\n    }\n}\n$request = new Fiber(function () {\n    $a = new IdleThrow332();\n    unset($a);\n    echo \"first:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\n$error = new Exception(\"idle\");\ntry {\n    $worker->throw($error);\n    echo \"returned|\";\n} catch (Exception $caught) {\n    echo $caught === $error ? \"caught-same|\" : \"caught-other|\";\n}\necho $worker->isSuspended() ? \"suspended|\" : \"other|\";\necho $worker->isTerminated() ? \"terminated|\" : \"alive|\";\n$later = new Fiber(function () {\n    $a = new IdleThrow332();\n    unset($a);\n    echo \"later:\", gc_collect_cycles(), \"|\";\n});\n$later->start();\necho \"END\";\n",
+    "source_sha256": "fa2f20ba7e13e7dcca952dd9a8c9d40d47c7a7fdf2c08f564b760e31b4095666",
+    "stdout": "first:first-dtor|1|caught-same|suspended|alive|later:same|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "collector-idle-public-throw-clears-global-exception-review-18",
+    "source": "<?php\nclass IdleWeak332 {\n    public $self;\n    function __construct() { $this->self = $this; }\n    function __destruct() {\n        $GLOBALS['idle332'] = Fiber::getCurrent();\n        echo 'D|';\n    }\n}\n$caller = new Fiber(function () {\n    $cycle = new IdleWeak332();\n    unset($cycle);\n    echo 'first:', gc_collect_cycles(), '|';\n});\n$caller->start();\nunset($caller);\n$worker = $GLOBALS['idle332'];\n$weak = null;\ntry { $worker->throw(new Exception('idle')); }\ncatch (Exception $error) {\n    $weak = WeakReference::create($error);\n    echo $worker->isSuspended() ? 'suspended|' : 'other|';\n    echo $worker->isTerminated() ? 'terminated|' : 'live|';\n    echo $error->getMessage(), '|';\n}\nunset($error);\necho $weak !== null && $weak->get() === null ? 'gone|' : 'retained|';\n$next = new Fiber(function () use ($worker) {\n    $cycle = new IdleWeak332();\n    unset($cycle);\n    echo 'next:', gc_collect_cycles(), '|';\n    echo $GLOBALS['idle332'] === $worker ? 'same|' : 'changed|';\n});\n$next->start();\nunset($next);\necho 'END';\n",
+    "source_sha256": "a3d9326208833a422b60c7a3b90f9c043b3aee4604a3ff1bb21700eab84a5272",
+    "stdout": "first:D|1|suspended|live|idle|gone|next:D|1|same|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

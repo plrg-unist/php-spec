@@ -1,0 +1,74 @@
+;; An exposed idle collector uses its real suspended C loop. With no active
+;; pass there are no DTOR_GARBAGE slots: resume discards its delivered value,
+;; then suspends again. An injected exception stays global, reaching the API
+;; caller without terminating the worker or entering a PHP callback.
+dec $gc_worker_public_ready(pstate, pconfigcall) : bool
+dec $gc_worker_public_valid(pstate, pfiberapi) : bool
+dec $gc_worker_public_suspend(pstate, pfiberapi) : pstate
+dec $gc_worker_public_step(pstate, pfiberapi) : pstate
+
+def $gc_worker_public_ready(S, pconfigcall) = true
+  -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if S.GC.WORKER = pconfigcall.OWNER
+  -- if S.GC.WORKER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $fiber_record_valid(S, n, pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+  -- if pfiber.VM = (pfibervm)
+  -- if pfibervm.TODO = [GC_WORKER_IDLE n]
+def $gc_worker_public_ready(S, pconfigcall) = false -- otherwise
+
+def $gc_worker_public_resume(S, pconfigcall, pvalue) = S_next[.ACTIVEFIBER = (n)][.FIBERCALLERS = pfibercaller :: S.FIBERCALLERS][.FIBERSEQ = $(S.FIBERSEQ + 1)][.TODO = [GC_WORKER_PUBLIC pfiberapi]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $gc_worker_public_ready(S, pconfigcall)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.VM = (pfibervm)
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (pconfigcall.KIND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE S.FIBERSEQ}
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_caller = S[.TODO = (FIBER_WAIT pfiberapi) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pfibercaller = {OBJECT n, PREVIOUS S.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
+  -- if (pfiber_next, pfibervm_next) = $fiber_reactivate(pfiber, pfibervm, pfiberapi.SEQUENCE)
+  -- if S_shared = $fiber_put(S_caller[.GLOBALTABLE = ($fiber_globals(S_caller))], n, pfiber_next)
+  -- if S_next = $fiber_vm_restore(S_shared, pfibervm_next)
+
+def $gc_worker_public_valid(S, pfiberapi) = true
+  -- if S.TODO = [GC_WORKER_PUBLIC pfiberapi]
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if S.ACTIVEFIBER = (pfiberapi.OBJECT) /\ S.GC.WORKER = S.ACTIVEFIBER
+  -- if pfiberapi.KIND = (pintrinsic)
+  -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if $fiber_api_valid(S, pfiberapi)
+  -- if $fiber_at(S, pfiberapi.OBJECT) = (pfiber)
+  -- if $gc_worker_cache_valid(S, pfiberapi.OBJECT, pfiber)
+  -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.VM = eps
+  -- if pfiber.SEQUENCE = pfiberapi.SEQUENCE
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = pfiberapi.OBJECT /\ pfibercaller.API = pfiberapi
+  -- if $fiber_caller_wait(S, pfibercaller)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.ORIGIN = eps
+  -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+def $gc_worker_public_valid(S, pfiberapi) = false -- otherwise
+def $call_task_valid(S, GC_WORKER_PUBLIC pfiberapi) = $gc_worker_public_valid(S, pfiberapi)
+def $task_nodes(GC_WORKER_PUBLIC pfiberapi) = [HOBJECT n]
+  -- if pfiberapi.KIND = (INTRINSIC_FIBER_THROW)
+  -- if pfiberapi.SENT = (POBJECT n)
+def $task_nodes(GC_WORKER_PUBLIC pfiberapi) = eps -- if pfiberapi.KIND = (INTRINSIC_FIBER_RESUME)
+def $eager_explicit_task(GC_WORKER_PUBLIC pfiberapi) = true
+
+def $gc_worker_public_suspend(S, pfiberapi) = $fiber_put(S_idle, pfiberapi.OBJECT, pfiber[.STATUS = FIBER_SUSPENDED][.VM = ($fiber_vm(S_idle))])
+  -- if $fiber_at(S, pfiberapi.OBJECT) = (pfiber)
+  -- if S_idle = S[.TODO = [GC_WORKER_IDLE pfiberapi.OBJECT]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $gc_worker_public_step(S, pfiberapi) = $fiber_back($gc_worker_public_suspend(S, pfiberapi), PNULL, false)
+  -- if pfiberapi.KIND = (INTRINSIC_FIBER_RESUME)
+def $gc_worker_public_step(S, pfiberapi) = $fiber_back($gc_worker_public_suspend(S, pfiberapi), POBJECT n, true)
+  -- if pfiberapi.KIND = (INTRINSIC_FIBER_THROW)
+  -- if pfiberapi.SENT = (POBJECT n)
+  -- if $throwable_member(S, n)
+rule PhpStep/gc-worker-public-idle: S ~> $gc_worker_public_step(S, pfiberapi)
+  -- if S.TODO = [GC_WORKER_PUBLIC pfiberapi]
+  -- if $gc_worker_public_valid(S, pfiberapi)
