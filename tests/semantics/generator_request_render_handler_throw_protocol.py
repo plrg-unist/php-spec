@@ -184,10 +184,15 @@ $request_fatal_stderr(S_bailout.EVENTS) =/= eps
 S_bailout_future = $call_after_origin(S_bailout,GENERATOR_REQUEST_BAILOUT pgenfatal_bailout)
 S_bailout_future.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (GENERATOR_REQUEST_RENDER_RETURN pgenfatal_parent n_old false) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_parent_tail*
 $call_tasks_valid(S_bailout_future,S_bailout_future.TODO)
-S_stopped = $drive_steps(S_report,0)
-S_stopped = S_report[.COMPLETION = BUDGET]
-S_resumed = $drive(S_stopped[.COMPLETION = NORMAL],4096)
-S_direct = $drive(S_report,4096)
+''')
+    replay_start = 'S_bailout' if release else 'S_report'
+    checks += [
+        f'S_stopped = $drive_steps({replay_start},0)',
+        f'S_stopped = {replay_start}[.COMPLETION = BUDGET]',
+        'S_resumed = $drive(S_stopped[.COMPLETION = NORMAL],4096)',
+        f'S_direct = $drive({replay_start},4096)',
+    ]
+    checks += fatal.lines(r'''
 S_resumed = S_direct
 S_resumed.COMPLETION = pgenfatal_bailout.FROZEN
 S_resumed.TODO = eps /\ S_resumed.FRAMES = eps
