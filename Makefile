@@ -377,6 +377,11 @@ test-semantics: build
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group generator-typed-slot-fiber
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group wrapper
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group wrapper-array
+	python3 tests/semantics/instance_storage_pin_protocol.py --group typed
+	python3 tests/semantics/instance_storage_pin_protocol.py --group generator
+	python3 tests/semantics/instance_storage_pin_protocol.py --group fiber
+	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
+	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group notice-owner
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group scalar-warning
@@ -648,6 +653,9 @@ test-semantics: build
 	python3 tests/semantics/generator_storage_pin_sources.py --mode full
 	python3 tests/semantics/generator_storage_pin_peer_sources.py --mode full
 	python3 tests/semantics/generator_storage_pin_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_delegation_sources.py --mode full
+	python3 tests/semantics/generator_request_delegation_peer_sources.py --mode full
+	python3 tests/semantics/generator_request_delegation_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl

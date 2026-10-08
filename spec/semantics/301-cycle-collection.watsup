@@ -183,12 +183,12 @@ def $gc_slot_find(pgcslot :: pgcslot_tail*, pnode, n) = $gc_slot_find(pgcslot_ta
 def $gc_retired_find(eps, n_object, n) = eps
 def $gc_retired_find((GC_RETIRED n_object) :: pgcslot*, n_object, n) = (n)
 def $gc_retired_find(pgcslot :: pgcslot_tail*, n_object, n) = $gc_retired_find(pgcslot_tail*, n_object, $(n + 1)) -- if pgcslot =/= GC_RETIRED n_object
-def $gc_buffer_add(pgc, pnode) = pgc -- if $gc_slot_find(pgc.BUFFER, pnode, 0) =/= eps
+def $gc_buffer_add(pgc, pnode) = pgc -- if pnode <- $gc_physical_nodes(pgc.BUFFER)
 def $gc_buffer_add(pgc, pnode) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_ROOT pnode)][.FREE = nat*]
-  -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps
+  -- if ~(pnode <- $gc_physical_nodes(pgc.BUFFER))
   -- if pgc.FREE = n :: nat*
 def $gc_buffer_add(pgc, pnode) = pgc[.BUFFER = pgc.BUFFER ++ [GC_ROOT pnode]]
-  -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps /\ pgc.FREE = eps
+  -- if ~(pnode <- $gc_physical_nodes(pgc.BUFFER)) /\ pgc.FREE = eps
 def $gc_buffer_remove(pgc, pnode) = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_EMPTY)][.FREE = n :: pgc.FREE]
   -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = (n)
 def $gc_buffer_remove(pgc, pnode) = pgc -- if $gc_slot_find(pgc.BUFFER, pnode, 0) = eps
@@ -647,7 +647,7 @@ def $gc_handle_callers(S, pfibercaller :: pfibercaller_tail*, n) = $($gc_handle_
 def $gc_handle_closers(S, eps, n) = 0
 def $gc_handle_closers(S, pfiberclose :: pfiberclose_tail*, n) = $($gc_handle_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS, n) + $gc_handle_closers(S, pfiberclose_tail*, n))
 def $gc_handle_all(S, n) = $($gc_handle_tasks(S, S.TODO, n) + $gc_handle_frames(S, S.FRAMES, n) + $gc_handle_fibers(S, S.ALLOCATIONS, n) + $gc_handle_callers(S, S.FIBERCALLERS, n) + $gc_handle_closers(S, S.FIBERCLOSERS, n))
-def $gc_retired_valid(S, n) = ($destructor_jobs_valid(S, [DESTRUCTION_HANDLE n]) /\ $gc_handle_all(S, n) = 1)
+def $gc_retired_valid(S, n) = ($destructor_jobs_valid(S, [DESTRUCTION_HANDLE n]) /\ $gc_handle_all(S, n) = 1) -- otherwise
 def $gc_buffer_unique(pgcslot*) = $heap_unique($gc_physical_nodes(pgcslot*))
 def $gc_slots_valid(S, eps, nat*, n) = true
 def $gc_slots_valid(S, GC_EMPTY :: pgcslot*, nat*, n) = (n <- nat* /\ $gc_slots_valid(S, pgcslot*, nat*, $(n + 1)))

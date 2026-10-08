@@ -31,12 +31,15 @@ def $cast_value(S, CASTARRAY, PARRAY n, z) = S[.RESULT = KNOWN (PARRAY n)]
 def $cast_value(S, CASTARRAY, PNULL, z) = $allocate_immutable_empty(S)
 def $cast_value(S, CASTARRAY, PUNDEFINED, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) UNINITIALIZED]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array($objectprops_mark(S, n), $property_cast_array(ppropertyslot*))
+  -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
   -- if $property_unique_names(ppropertyslot*)
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
+  -- if ~$instance_storage_freeing(S, n)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
+  -- if ~$instance_storage_freeing(S, n)
   -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
 def $cast_value(S, CASTARRAY, pvalue, z) = $allocate_array($cast_array_notice(S, pvalue, z), {ITEMS ([ENTRY (KINT 0) (DIRECT pvalue)]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if ~($is_array_value(pvalue) \/ pvalue = PNULL \/ $cast_object_value(pvalue))

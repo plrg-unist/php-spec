@@ -87,8 +87,15 @@ caches. Module355 retains a physical closed-Generator storage pin through those
 releases, preserving weak liveness, readable RETURN and pending child exceptions.
 [Storage-pin checks](../../coverage/semantics/generator-storage-pin-review.json)
 remain separate from the [fresh cuts](../../coverage/semantics/generator-fresh-store-review.json).
-Delegating request close, abrupt terminal behavior, parked storage work, escaped
-reacquisition and nested ordinary-object storage during RETURN reads remain required.
+Module 360 extends normal request close to delegated inputs, preserving input-before-finally
+order, independent CV owners, shared store order and the physical CURRENT cache slot.
+Nested normal handlers keep the genuine inner/outer close claims and cache owners;
+queued source views remain distinct from actual handler contexts.
+[Eight originals and 553 reached premises](../../coverage/semantics/generator-request-delegation-review.json)
+retain separate cuts. Composition with 346 modules over `9cacdbf51` passes strict
+compilation at `4d867f6b0`; earlier source/state cuts retain their inputs.
+Abrupt terminal behavior, parked storage work, escaped
+reacquisition and nested ordinary-object RETURN reads remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and

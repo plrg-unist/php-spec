@@ -163,7 +163,7 @@ def $generator_destructor_request_ready(S, pdestructionrelease, HOBJECT n) = tru
   -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob_tail*])
   -- if $heap_owners($heap_graph(S_unheld), HOBJECT n) = 0
   -- if S.OBJECTS[n] = GENERATOR pgenerator
-  -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.DELEGATE = eps
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING]
   -- if $generator_record_valid(S, pgenerator)
   -- if pgenerator.FRAME = (pframe)
   -- if pframe.ORIGIN = (porigin)

@@ -1,6 +1,6 @@
 ;; Six-value comparison. Sources: zend_operators.c:2260-2468,
 ;; 3421-3498 and zend_hash.c:3104-3236. Callback/object comparisons are separate.
-syntax porder = ORDER int | ORDERRECURSIVE
+syntax porder = ORDER int | ORDERRECURSIVE | ORDERUNSUPPORTED text
 
 ;; The scanner overflows after twenty significant integer-prefix digits, before
 ;; inspecting a decimal/exponent suffix. Rescaling does not erase this provenance.
@@ -235,10 +235,12 @@ def $value_order(S, PARRAY n_left, PARRAY n_right, pnode_seen*) = $entries_order
   -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
 def $value_order(S, POBJECT n, POBJECT n, pnode_seen*) = ORDER 0
 def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERRECURSIVE
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
   -- if (HOBJECT n_left) <- pnode_seen*
 def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = $property_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*)
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~((HOBJECT n_left) <- pnode_seen*)
@@ -247,6 +249,7 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = $property_or
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDER $compare_int($property_hash_count(ppropertyslot_left*), $property_hash_count(ppropertyslot_right*))
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~((HOBJECT n_left) <- pnode_seen*)
@@ -255,6 +258,7 @@ def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDER $compa
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
   -- if $property_hash_count(ppropertyslot_left*) =/= $property_hash_count(ppropertyslot_right*)
 def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = $property_hash_order(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*)
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~((HOBJECT n_left) <- pnode_seen*)
@@ -359,6 +363,7 @@ def $value_order_effect(S, PARRAY n_left, PARRAY n_right, pnode_seen*, z) = $ent
   -- if ~((HARRAY n_left) <- pnode_seen*)
   -- if |S.ARRAYS[n_left].ITEMS| = |S.ARRAYS[n_right].ITEMS|
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $property_order_effect(S, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*, z)
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~((HOBJECT n_left) <- pnode_seen*)
@@ -367,6 +372,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $p
   -- if $objectprops_at(S.OBJECTPROPS, n_left) = (ppropertyslot_left*)
   -- if $objectprops_at(S.OBJECTPROPS, n_right) = (ppropertyslot_right*)
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = (S_marked, ORDER $compare_int($property_hash_count(ppropertyslot_left*), $property_hash_count(ppropertyslot_right*)))
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~((HOBJECT n_left) <- pnode_seen*)
@@ -376,6 +382,7 @@ def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = (S
   -- if $property_hash_count(ppropertyslot_left*) =/= $property_hash_count(ppropertyslot_right*)
   -- if S_marked = $objectprops_mark($objectprops_mark(S, n_left), n_right)
 def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = $property_hash_order_effect(S_marked, ppropertyslot_left*, ppropertyslot_right*, (HOBJECT n_left) :: pnode_seen*, z)
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
   -- if n_left =/= n_right
   -- if $empty_instance_same(S, n_left, n_right)
   -- if ~((HOBJECT n_left) <- pnode_seen*)
