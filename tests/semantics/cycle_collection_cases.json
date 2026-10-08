@@ -124,5 +124,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-active-idle-resume-with-no-remaining-dtor-20",
+    "source": "<?php\nclass ActiveIdle342 {\n    public $self;\n    public $kind;\n    function __construct($kind) { $this->self = $this; $this->kind = $kind; }\n    function __destruct() {\n        global $worker;\n        if ($this->kind === 0) {\n            $worker = Fiber::getCurrent();\n            echo 'seed|';\n            return;\n        }\n        echo Fiber::getCurrent() === null ? 'main|' : 'other|';\n        echo $worker->resume(123) === null ? 'null|' : 'value|';\n        echo $worker->isSuspended() ? 'idle|' : 'bad|';\n        echo 'busy:', gc_collect_cycles(), '|';\n    }\n}\n$seed = new Fiber(function () {\n    $cycle = new ActiveIdle342(0);\n    unset($cycle);\n    echo 'seed:', gc_collect_cycles(), '|';\n});\n$seed->start();\nunset($seed);\n$cycle = new ActiveIdle342(1);\n$weak = WeakReference::create($cycle);\nunset($cycle);\necho 'main:', gc_collect_cycles(), '|';\necho $weak->get() === null ? 'gone|' : 'live|';\necho 'END';\n",
+    "source_sha256": "3b61d4a71c0394fee41094a8288be3bd72711f55ee2eba0e7d9defd828bd6981",
+    "stdout": "seed:seed|1|main:main|null|idle|busy:0|1|gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
