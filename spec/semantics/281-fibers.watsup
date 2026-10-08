@@ -767,6 +767,7 @@ def $fiber_trace_type(pintrinsic) = $ptascii("->") -- if ~$fiber_static(pintrins
 ;; Each start/resume/throw activation consumes one global sequence number. A suspended continuation
 ;; must name its own last transfer, so a stale saved stack cannot be replayed.
 def $fiber_api_valid(S, pfiberapi) = true
+  -- if ~$fiber_start_core_actor(S)
   -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
   -- if $call_line_valid(S, (pfiberapi.SITE), pfiberapi.LINE)
   -- if $fiber_at(S, pfiberapi.OBJECT) = (pfiber)
