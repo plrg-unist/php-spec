@@ -71,8 +71,9 @@ CASES = {
             'S.FIBERCALLERS = [pfibercaller_outer]',
             'pfibercaller_outer.OBJECT = n_runner', 'pfibercaller_outer.PREVIOUS = eps',
             'pfibercaller_outer.API.KIND = eps',
-            'pfibercaller_outer.API.START = ({SLOTS eps, '
-            'NAMED [($ptascii("value"), KNOWN (PSTRING ($ptascii("R"))))]})',
+            'pfibercaller_outer.API.START = (pnamedargs_outer)',
+            'pnamedargs_outer.SLOTS = eps',
+            'pnamedargs_outer.NAMED = [($ptascii("value"), KNOWN (PSTRING ($ptascii("R"))))]',
             'pfibercaller_outer.API.SITE = pconfigcall.SITE',
             'pfibercaller_outer.API.LINE = pconfigcall.LINE',
             'pfiberapi_outer = pfibercaller_outer.API',

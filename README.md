@@ -571,6 +571,8 @@ controls earn zero agreement. Pending-carrier unwind, deferred construction,
 wider consumers and WeakMap remain required. Canonical292/304
 composition separately passes strict277 initialization and one exact weak lifetime
 source; earlier cuts retain their inputs.
+Wrappers also satisfy nominal `WeakReference` argument and property types after
+their referent retires; diagnostics retain the actual internal class name.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
@@ -1326,8 +1328,15 @@ Simple Fiber API arrays also convert to first-class Closures. A distinct source
 witness freezes the selected members; the temporary bound receiver owner moves
 into the Closure, while static selectors add none. Clone/equality and direct,
 explicit `__invoke` or C-root calls reuse the existing API protocols, including
-start and constructor captures. Raw array C-root callbacks, compound selectors
-and Fiber-start argument unpacking remain required.
+start and constructor captures. Simple raw Fiber API arrays also run as C-root
+callbacks, including start and constructor methods. RAW owns its current array
+members; the frozen receiver cache and C result tails add no receiver owner.
+Copied C arguments remain separate from the original outer start buffer. Saved
+Fiber states and actual callers authenticate nested, parked static and idle
+collector continuations. Inner API trace frames have no file or line site. The
+[raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json)
+records these distinct checks. Compound selectors and Fiber-start argument
+unpacking remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 
