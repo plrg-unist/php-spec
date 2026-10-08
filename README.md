@@ -58,6 +58,10 @@ passes strict compilation, an exact source original and 49 reached premises.
 
 Literal auto-global first FETCH has a separate [private278 cut](coverage/semantics/source-autoglobal-emission-review.json): two explicit-request originals, independent90 source/retirement premises and new maintained72 classification premises. A separate cc397-parent291 readonly-clone join passes one exact original and64 independent premises. The actual293 join passes compilation, the same exact original and47 focused collector/source-retirement premises. Broader first emissions remain required.
 
+Literal `$GLOBALS` first FETCH is integrated with a separately reviewed [private294 cut](coverage/semantics/source-globals-emission-review.json): four exact originals preserve later coercion/property warnings, and67 independent premises retain authentic lines, global tables and snapshot timing. Actual296 passes strict compilation with independently reviewed Arrow/Fiber compatibility; earlier source/state credit stays separate.
+
+Literal `$this` first FETCH is integrated with a separately reviewed [private297 cut](coverage/semantics/source-this-emission-review.json): four exact originals retain method/private scope and retirement before the missing-instance error, with70 independent premises and9 affected classification checks. Actual303 passes strict compilation with independently reviewed property/default/argument compatibility; earlier source/state cuts retain their inputs.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -654,11 +658,23 @@ preserving borrowed versus actual temporary/intrinsic input owners. Its separate
 second window, captured conversions and write revisions. A separate dynamic/FCC
 selection follow-on has 20 distinct source agreements, 665 clauses across seven
 reached-state groups and a passing compiler gate at recorded cuts. Pending-candidate
-identity admission remains open. The current290 composition separately passes
+identity admission remains open. The earlier290 composition separately passes
 two exact originals and79 reached premises for private clone makers and live
 clone windows during Generator/Fiber close. Last-owner destination
 release, Deprecated method dispatch and promotion remain required. The new reference controls supersede one historical288 internal assertion
 without renewing the other accepted gates.
+
+Ordinary literal dynamic-property creation in module 318 resumes eligible warning handlers,
+including throws with a surviving receiver, live CV/reference RHS selection and
+same-key reentry. Physical duplicate buckets retain native lookup and foreach
+order. Receiver retirement stays latched across destructor resurrection; unused
+and used assignment results retain different cleanup lifetimes. Its
+[review](coverage/semantics/dynamic-property-warning-review.json) keeps the private
+source/state cuts and current 297-module GC/cleanup interaction separate. Handler exit,
+array casts/reference foreach over duplicate buckets and expired or undefined RHS
+pointers remain explicit Unsupported boundaries; computed names and wider writes
+remain required.
+
 Simple typed property assignment converts its declaration
 before shared alias checks; compound alias updates keep the generic reference
 route. Typed object conversion remains a separate consumer.
@@ -854,6 +870,32 @@ and 174 reached premises pass at separate cuts; one actual generator interaction
 preserves eager default creation before suspension. Global-constant AST NEW
 autoload and wider class-link consumers remain required. Default `spl_autoload`
 filesystem search stays excluded.
+[Private parameter callable defaults286](docs/semantics/SOURCE-POSITIONAL-DEFAULTS.md)
+create fresh static Closures/FCCs using the authentic receive scope and cached
+physical FCC target. Nonowning receipts survive maker retirement and ordinary
+clone/static writes. Eleven normal sources, two compiler rejections and 504
+state premises retain separate cuts; one body-autoload interaction preserves
+ordinary private-constructor argument suppression.
+Private parameter aliases295 preserve borrowed global/cached class-constant
+identity, statics and donor permission through direct mixed arrays and selected
+compiled ternaries. Eight normal sources and640 reached checks retain separate
+AL367/SL273 cuts. Global aliases require callback-free initializers and quiet
+values/facts; its historical six Unsupported boundaries earn zero agreement. Broader effectful read/registration causality, transformed producers and full
+core remain required; canonical integration is pending.
+Private parameter alias causality306 preserves callback reads and registrations
+through genuine receive generations, nested reentry, retries and deprecated-value
+capture. Ten normal originals,15 genuine state groups/1170 premises and37 existing
+reporting checks pass at distinct cuts. At the306 cut five controls rejected
+unsupported routes with zero native agreement;312 adds bounded multiple frontiers.
+Wider effectful producers remain required.
+Current295 dispatch retains eight quiet originals/two object controls;306 replaces
+its four former causal Unsupported fixtures without changing archival checks.
+Private multiple-frontier defaults312 preserve intermediate reads across distinct
+callbacks, partial cache retry, nested cache warming and deprecated pre-shadowing.
+Eight exact normal originals and eight genuine state groups/761 premises pass;
+the strict compiler277 gate retains its separate cut. Current306 dispatch delegates
+its former two-frontier control to312. Parked Fibers, object/null-key/outside-eval
+producers and wider initializer forms remain required; integration is pending.
 [Object and closure cloning](docs/semantics/SOURCE-CLONE.md) preserves shallow
 copying, live aliases and closure receiver/static ownership. Callable cloning
 binds named/unpacked arguments and applies weak property updates in order.
@@ -893,6 +935,10 @@ shared globals and handlers, cached callbacks and original C argument buffers.
 Ordinary force-close and callback retirement preserve captured destructor stacks,
 pending exceptions and already stored returns. Protected cleanup after an actual
 return retains the earlier real exception and restored reporting/handler behavior.
+Internal `error_reporting` callbacks retain weak C receives, owned arguments,
+warning producers and real resumer/destructor traces through handler suspension.
+The [callback ledger](coverage/semantics/fiber-core-callbacks-review.json) separates
+bounded state checks from unconfirmed rich whole-source execution.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

@@ -38,24 +38,48 @@ their introduced seams are independently reviewed as compatible, with no source/
 renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
-The canonical source includes accepted ArrayAccess292/304/309, eager destruction270,
-WeakReference296, ordinary cycle collection301, Fiber291/302/308,
+The current source includes accepted ArrayAccess292/304/309/319, eager destruction270,
+WeakReference296, ordinary cycle collection301, Fiber291/302/308/313,
 Generator289/303/310/311 and source operands293/298,
-plus instance/readonly properties288/294 and clone300/305 with cached maker selection,
-with294 modules descended from `38f1dfaa045f`. The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316.
+plus instance/readonly properties288/294, clone300/305 with cached maker selection
+and ordinary dynamic-property creation318 and defaults286/295/306/312,
+with303 modules descended from
+`38f1dfaa045f`. The ordered integration preserves
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
 cuts below retain their original inputs.
 The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
-cuts retain their original inputs. Independently accepted private milestones286,
-290, 295, 297 and306 await ordered Git integration. Other private work covers299.
+cuts retain their original inputs. Independently accepted private milestones290
+and297 await ordered Git integration. Other private work covers299.
 Nonconstant source-emission314 is installed after Fiber308; literal auto-global316
 is integrated after reviewed current-parent composition.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
+
+Default composition adds286/295/306/312 over actual canonical296,
+preserving ARG309/316, property, clone, GC301 and shared source hooks (300 modules).
+Exact `279839ac4` passes strict initialization and one fresh native/public original:
+two default warning frontiers retain GLOBALS snapshots and storage/readback,
+with exact `ArrayArrayg:g:l2:A:B` in29.546s at unchanged45/55 caps. Its omitted-request
+Unsupported remains zero; the corrected gate uses matched explicit CLI facts.
+Raw records are under `.tools/compiler-defaults-publication-18/.tools/defaults-publication/compact-gate-v{1,2}`.
+The genuine current107 prefix/source-origin/refusal/retirement predicates pass
+on `b50d4062e` in33.911s; their original request parse and nat-cast elaboration
+stops keep zero runtime credit (`compact-controls-v{1,2,3}` in the same directory).
+The later812 terminal-seek harness correction changes no tested semantic input.
+The final301 join over `ff1b7a888` preserves accepted property warnings318 and
+passes strict initialization on `3b6a92f2f` in3.769s. Independent review found no
+introduced runtime overlap; earlier source/state cuts retain their own inputs.
+Current296 eval31/saved42 plus persistent wrong-id/valid/replay controls and
+Stringable/Fiber chdir with73 owner/log/marker predicates keep their distinct cuts.
+Earlier old290/v5 Generator/Fiber default227 remain accepted; new231 remain UNRUN.
+The full retry original still times out at host55 with zero agreement. A bounded
+trace completes throw/catch/new receive/bind before GC:293 completed GC transitions
+take27.843s versus294 execution steps5.491s. The separate39 compute-once candidate
+has static owner review only. No whole-retry agreement or offline rebuild is claimed.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
@@ -107,6 +131,21 @@ strict293 initialization, the same exact original and independent47 source/GC/pu
 premises, including a heap-identical forged NOGC receipt. Earlier cuts retain
 their own inputs; wider emissions remain required.
 
+[Literal GLOBALS emission320](coverage/semantics/source-globals-emission-review.json)
+is integrated: FETCH5 precedes later direct Array Warning5 or property-on-array
+Warning6; parenthesized entry retains FETCH6/property8 and snapshot timing.
+Private294 source4/67 premises retain their inputs. Actual296 passes strict
+compilation with reviewed Arrow/Fiber compatibility and no renewed source/state
+credit. Relocations add no execution credit; broader first emissions remain required.
+
+[Literal this emission323](coverage/semantics/source-this-emission-review.json)
+is integrated: FETCH5 precedes child work or the later
+missing-instance Error5, while a method include retains its receiver/private scope.
+Private297 retains four exact originals,70 independent premises and9 affected guard
+checks; the initial INSTANCE fixture false has zero accepted credit. Actual303
+passes strict compilation with reviewed property/default/argument compatibility.
+Relocations and the actual join add no source/state credit; broader emissions remain required.
+
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
 The accepted private52 normal/four compiler agreements and618 reached premises,
@@ -151,8 +190,9 @@ initialization, one exact defined-result original and two reached strict-SL
 groups/113 premises. The final GEN/include parent `ed7f23c67` composition passes
 strict-SL 285 initialization, the same exact original and two groups/113 premises
 on tested transfer `68b9ec4c4`. Earlier cuts retain their own evidence.
-The original verbose-source timeout and ordinary dynamic-property warning gap
-remain required; undefined-result engine verification remains held.
+The original verbose-source timeout retains zero agreement. CALLS308's dynamic
+property warning retains Unsupported at its original cut; no result is renewed.
+Undefined-result engine verification remains held.
 
 Ordinary eager destruction270 releases consumed slots in native order, retaining
 pending owners through callbacks, throws and resurrection. MAIN preserves source
@@ -211,8 +251,27 @@ Set collects an unrelated cycle, readback returns old CELL25 after global
 rebinding to31, and later collection frees the returned child/count1.
 The [returned-child ledger](coverage/semantics/arrayaccess-returned-append-review.json)
 preserves eight sources/160 premises, separate lifetime/provider/compiler/warning
-cuts and zero-credit original failures. Wider producers, by-reference Get and
+cuts and zero-credit original failures. Wider producers, remaining reference-Get consumers and
 complete core remain open; paused return verification stays separate.
+
+ArrayAccess319 adds accepted untyped/mixed by-reference Get: implicit
+callbacks demand their real result, R/IS dereference it, writable shared cells
+stay shared, and a genuine sole wrapper moves before receiver release. Direct
+DIM_OP owns the raw reference through Set without retaining its old referent.
+Final nested reference acquisition and borrowed Unset source prefixes preserve
+parent release and callback retirement. Fourteen normal originals agree across
+explicit cuts; six strict-SL recipes/375 premises cover demand, wrapper move,
+sharing, raw compound/throw cleanup, captured rows and retired-parent Unset.
+The [reference-Get ledger](coverage/semantics/arrayaccess-reference-get-review.json)
+keeps source, reached, compiler and original failures separate. Actual298 over
+ff1b passes full compilation, strict initialization and one new exact original:
+a genuine Fiber reporting warning handler suspends inside Get, then resumes
+the shared property CELL write while restoring main reporting. Parent318 fields
+are preserved; this source makes no dynamic-property runtime claim. Final302
+over b135 preserves new default receive fields and passes full algorithmic and
+structuring compilation. Named reference sends, nested captured-row updates,
+VALUE-return warning-handler producers and wider producers remain required;
+typed non-mixed return verification stays user-paused.
 
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
@@ -228,13 +287,67 @@ independent 793 premises pass across 13 recipes (1016 total), with 634 in AL and
 382 in strict SL.
 The [writable ledger](coverage/semantics/arrayaccess-write-review.json) records
 actual revision/diffs, original failures and excluded count-observer0; its
-core-language companion agrees. By-reference Get,
+core-language companion agrees. Remaining reference-Get consumers,
 wider memoized/property/GLOBALS producers and combined interface notice ordering
 remain required. Paused return validation remains separate. One fresh source at
 actual 38f + 292 / 274 agrees through array-include conversion287, private
 Owner/Child warning selection and live GLOBALS RHS rebinding; algorithmic,
 structuring and loader checks pass. The original missing-provider input failure
 retains zero agreement.
+Private multiple-frontier defaults312 retain genuine handler/eval cuts for each
+source effect, exact intermediate read prefixes, partial FCC-cache retry and
+nested warming. Eight exact normals pass across retained cold v1 and seven v3
+sources; native seven preliminary plus minimized warm v3 preserve exact tuples.
+Strict277 at v2 and all eight genuine state groups/761 premises at v3 pass.
+The two original warm host55 timeouts and actual all-true bind diagnostic retain
+zero agreement credit. Catalogue133 preserves prior125. Current306 dispatch
+delegates only its old two-frontier boundary to312; archival data stays unchanged.
+The [ledger](coverage/semantics/deferred-static-defaults-review.json) records cuts.
+Independent review accepts the bounded milestone; canonical integration is pending.
+No actor or canonical writer is held.
+Parked Fibers, object/null-key/outside-eval and wider producers remain required.
+
+Private parameter alias causality306 preserves callback reads, retries, nested
+reentry and captured deprecated values through dense nonowning receive births
+and source-derived parent/frontier/eval cuts. Ten exact normal originals pass
+across v9/v10. Strict SL276, all15 genuine state groups/1170 premises and the
+37-check reporting interface pass on distinct cuts: prefix134 at v10, five555
+at v11 and nine481 at v13. At that cut five controls rejected multiemitter,
+parked Fiber, object/null-key and outside-eval routes with zero native agreement;
+312 above supplies the bounded multiemitter paths. Catalogue125 preserves prior115.
+The [ledger](coverage/semantics/deferred-static-defaults-review.json) retains
+original failures, runtime identities and concise recovery. Independent review
+accepts this bounded increment; canonical integration is pending. No numeric
+actor or writer lease is held.
+
+Private parameter aliases295 preserve borrowed global/cached class-constant
+Closure identity, statics and donor body permission without adding owners.
+Direct mixed-array defaults and selected compiled ternaries now have genuine
+source/state witnesses. Eight normal originals and640 reached checks over14
+originals pass on the dirty d39d cut:367 AL plus273 strict SL at identical120s
+caps. Six historical effectful/object boundaries rejected explicitly and earned
+zero native agreement. The unchanged private42 passes SL after its retained AL timeout.
+[The ledger](coverage/semantics/deferred-static-defaults-review.json) binds actual
+module/runtime hashes and distinct failed/corrected cuts. Global alias admission
+is bounded to callback-free initializers and quiet values/facts. The306 slice
+above adds bounded effectful read/registration causality;312 adds bounded multiple
+emitters. Suspended Fibers and wider producers remain open. Historical
+catalogue115 and protocol sources retain exact native bytes. Canonical
+integration is pending.
+
+Private parameter callable defaults286 allocate fresh static/no-use Closures and
+fixed FCCs from genuine deferred `NParam` receives. REAL scope follows the
+receiving lexical class; physical FCC targets stay cached while called classes
+remain fresh. Immutable nonowning unscoped evidence survives maker retirement;
+plain clones retain earlier permission without acquiring receipts. Nine normal
+and two compiler originals pass at0f90; two new originals and one affected replay
+pass atd39d. Earlier mixed342 and affected/new162 state premises retain distinct
+cuts, including retired rebound-maker and coherent wrapper-erasure controls.
+The separate actual285 Closure-body autoload source passes atd39d: private
+constructor access rejects before nested argument effects. All274 production
+modules pass the public SL path. The [ledger](coverage/semantics/deferred-static-defaults-review.json)
+preserves original failures and the wider producer obligations beyond295.
+Independent review accepts these gates; Canonical integration is pending.
 
 The integrated dynamic/FCC clone maker follow-on was validated from frozen305
 commit367e581df. Live clone calls capture the selected name before arguments;
@@ -256,9 +369,23 @@ pending-candidate identity rewrites remain an admission boundary. The
 preserves original failures, scoped repairs and regeneration commands.
 Accepted305 semantic inputs and all earlier cuts remain unchanged. Its directly
 affected private shutdown companion now agrees exactly at367e581df and is
-published at a2cab39d0. Dynamic-property warning ingress needs an
-owned callback continuation and real destination lifetime; its preserved CALLS308
-source remains Unsupported with zero agreement.
+published at a2cab39d0. Its preserved CALLS308 warning original retains its
+historical Unsupported cut with zero agreement.
+
+Ordinary dynamic-property creation318 now resumes eligible callbacks for literal
+simple assignments. The real warning owner protects the destination, then its
+retirement decision survives destructor resurrection. Late plain CVs, old
+reference payloads and owned RHS temporaries retain distinct behavior; same-key
+reentry appends physical buckets with latest lookup and ordered value foreach.
+Unused results release before receiver cleanup, while used results retain a copy.
+Fifteen private exact normals retain separate cuts; initial 297, changed 498 and
+cleanup 98 reached premises are not one campaign. The 297-module composition at
+`078ecb2f8` passes strict initialization, one new exact GC/resurrection source and 69/98
+GC/cleanup premises. Four explicit Unsupported boundaries cover handler exit,
+duplicate casts/reference foreach and expired or undefined RHS pointers.
+Computed names, wider writes and full-family closure remain required. The
+[review](coverage/semantics/dynamic-property-warning-review.json) retains original
+failures, commands and cuts; no historical clone campaign is renewed.
 
 The actual290 composition preserves ordinary borrowed eager-cleanup certificates
 and authenticates live clone windows in the existing saved Fiber-close VM without
@@ -383,6 +510,17 @@ Module 308 adds protected cleanup after an actual return; the body-undefined
 case remains Unsupported and its engine witness is held. The required internal/reference
 callbacks, API entry, unpacking, initializer switching, request/fatal cleanup and
 GC remain open. Full core stays open; returns verification remains paused.
+
+Fiber313 supports cached string `error_reporting` callbacks with weak C receives,
+owned arguments and an authenticated borrowed result tail. Handler suspension and
+receiver retirement retain warning producers, resumer traces and internal scope.
+The latest294-parent join preserves GC, returned-child append, source emission and
+Arrow rules; strict295 compilation and one new explicit-request GC/autoglobal-eval
+original pass independent review. The [ledger](coverage/semantics/fiber-core-callbacks-review.json)
+preserves prior source/state cuts and separates bounded public checks from the
+unconfirmed rich whole-source/full63 runs. Wider internal/FCC/reference callbacks,
+initialization, request/fatal/GC consumers and complete core remain required;
+the final fresh offline rebuild is outstanding and returns verification stays paused.
 
 Generator280 creates object-owned suspended frames after eager ordinary receives.
 Value yields, literal iterator methods, `getReturn` and value foreach retain
@@ -1374,8 +1512,9 @@ failures and interrupted evidence.
   row/key owners. ArrayAccess284 adds the builtin contract and direct R/IS,
   isset/empty, Set/append and Unset calls. Writable292 adds direct compound and
   ordinary nested W/RW/Unset Get; append304 adds intermediate and compound append,
-  and309 adds final simple append to returned children. By-reference Get, wider memoized ArrayAccess consumers
-  and combined Iterator/ArrayAccess notice ordering,
+  and309 adds final simple append to returned children. Module319 adds untyped/mixed
+  reference Get; named sends, nested captured-row updates, VALUE-return warning
+  handlers, wider memoized consumers and combined Iterator/ArrayAccess notice ordering,
   initial string/ordinary-object reads, wider variable/property bases and writable
   memoized/unset/append containers stay open.
   Wider memoized and GLOBALS quiet/unset consumers, wider key/object/container

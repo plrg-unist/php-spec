@@ -1,0 +1,133 @@
+;; Borrowed parameter callable values keep the donor's identity and permission.
+;; Global aliases currently require a callback-free initializer and the current
+;; registry at transfer. Effectful historical reads await a genuine causal cut.
+dec $parameter_callable_quiet_class(pvalueclass) : bool
+dec $parameter_callable_quiet_entries((pkey, pvalueclass)*) : bool
+dec $parameter_callable_quiet_facts(pconstantfact*) : bool
+def $parameter_callable_quiet_class(PVSCALAR) = true
+def $parameter_callable_quiet_class(PVSTRING b) = true
+def $parameter_callable_quiet_class(PVCLOSURE n_object porigin_site) = true
+def $parameter_callable_quiet_class(PVARRAY b (pkey, pvalueclass)*) = $parameter_callable_quiet_entries((pkey, pvalueclass)*)
+def $parameter_callable_quiet_class(pvalueclass) = false -- otherwise
+def $parameter_callable_quiet_entries(eps) = true
+def $parameter_callable_quiet_entries((pkey, pvalueclass) :: (pkey_tail, pvalueclass_tail)*) = ($parameter_callable_quiet_class(pvalueclass) /\ $parameter_callable_quiet_entries((pkey_tail, pvalueclass_tail)*))
+def $parameter_callable_quiet_facts(eps) = true
+def $parameter_callable_quiet_facts(pconstantfact :: pconstantfact_tail*) = ($parameter_callable_quiet_class(pconstantfact.CLASS) /\ $parameter_callable_quiet_facts(pconstantfact_tail*))
+
+dec $parameter_callable_quiet_source(pstate, porigin, porigin*) : bool
+dec $parameter_callable_quiet_source_at(pstate, porigin, porigin*) : bool
+dec $parameter_callable_quiet_leaf(pcnode) : bool
+dec $parameter_callable_quiet_key(pstate, porigin, phpType5) : bool
+dec $parameter_callable_quiet_key_value(pvalue?) : bool
+dec $parameter_callable_quiet_items(pstate, porigin, nat, phpType13*, porigin*) : bool
+def $parameter_callable_quiet_source(S, porigin_site, porigin_seen*) = $parameter_callable_quiet_source_at(S, porigin_site, porigin_seen* ++ [porigin_site])
+  -- if ~(porigin_site <- porigin_seen*)
+  -- if $compiled_effects(S, porigin_site) = eps
+  -- if $deprecated_constant_source(S, porigin_site, 0) = eps
+def $parameter_callable_quiet_source(S, porigin_site, porigin_seen*) = false -- otherwise
+def $parameter_callable_quiet_source_at(S, porigin_site, porigin_seen*) = $parameter_callable_quiet_source(S, porigin_target, porigin_seen*)
+  -- if $compiled_redirect(S, porigin_site) = ((porigin_target, expression, false, z))
+  -- if $redirect_effect_tasks(S, porigin_site, porigin_target) = eps
+def $parameter_callable_quiet_source_at(S, porigin_site, porigin_seen*) = true
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
+  -- if $parameter_callable_quiet_leaf(pcnode)
+def $parameter_callable_quiet_source_at(S, porigin_site, porigin_seen*) = true
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprConstFetch name metadata)
+  -- if $global_constant_alias(S, S.USERCONSTANTS, porigin_site) = (puserconstant)
+def $parameter_callable_quiet_source_at(S, porigin_site, porigin_seen*) = $parameter_callable_quiet_items(S, porigin_site, 0, phpType13*, porigin_seen*)
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprArray (SEQUENCE phpType13*) metadata)
+def $parameter_callable_quiet_source_at(S, porigin_site, porigin_seen*) = false -- otherwise
+def $parameter_callable_quiet_leaf(NScalarInt phpType24 metadata) = true
+def $parameter_callable_quiet_leaf(NScalarFloat phpType41 metadata) = true
+def $parameter_callable_quiet_leaf(NScalarString phpType33 metadata) = true
+def $parameter_callable_quiet_leaf(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = ($ptlc($base64(text)) <- [$ptascii("true"), $ptascii("false"), $ptascii("null")])
+def $parameter_callable_quiet_leaf(NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata) = $constant_callable_form(NExprClosure phpType14 phpType4_static phpType4_ref phpType16 phpType21 phpType18 phpType23 metadata)
+def $parameter_callable_quiet_leaf(NExprFuncCall phpType19 phpType6 metadata) = $constant_callable_form(NExprFuncCall phpType19 phpType6 metadata)
+def $parameter_callable_quiet_leaf(pcnode) = false -- otherwise
+def $parameter_callable_quiet_key(S, porigin_item, ABSENT) = true
+def $parameter_callable_quiet_key(S, porigin_item, expression) = $parameter_callable_quiet_key_value($compiled_read(S, porigin_key))
+  -- if porigin_key = $constant_child(porigin_item, [PCFIELD 0])
+  -- if $compiled_effects(S, porigin_key) = eps
+  -- if $deprecated_constant_source(S, porigin_key, 0) = eps
+def $parameter_callable_quiet_key(S, porigin_item, phpType5) = false -- otherwise
+def $parameter_callable_quiet_key_value((PINT i)) = true
+def $parameter_callable_quiet_key_value((PSTRING n*)) = true
+def $parameter_callable_quiet_key_value((PBOOL b)) = true
+def $parameter_callable_quiet_key_value(pvalue?) = false -- otherwise
+def $parameter_callable_quiet_items(S, porigin_array, n_index, eps, porigin_seen*) = true
+def $parameter_callable_quiet_items(S, porigin_array, n_index, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, porigin_seen*) = ($parameter_callable_quiet_key(S, porigin_item, phpType5) /\ $parameter_callable_quiet_source(S, $constant_child(porigin_item, [PCFIELD 1]), porigin_seen*) /\ $parameter_callable_quiet_items(S, porigin_array, $(n_index + 1), phpType13*, porigin_seen*))
+  -- if porigin_item = $constant_child(porigin_array, [PCFIELD 0, PCINDEX n_index])
+def $parameter_callable_quiet_items(S, porigin_array, n_index, phpType13*, porigin_seen*) = false -- otherwise
+
+dec $parameter_callable_lookup_required(pstate, porigin, pconstantfact) : bool
+def $parameter_callable_lookup_required(S, porigin_parameter, pconstantfact) = true
+  -- if $origin_node(S.SOURCES, porigin_parameter) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 expression phpType37 metadata_parameter)
+  -- if $constant_expression_below(S, porigin_parameter, pconstantfact.ORIGIN)
+  -- if $parameter_callable_class(pconstantfact.CLASS)
+  -- if $compiled_redirect(S, pconstantfact.ORIGIN) = eps
+  -- if $origin_node(S.SOURCES, pconstantfact.ORIGIN) = (NExprConstFetch name metadata)
+def $parameter_callable_lookup_required(S, porigin_parameter, pconstantfact) = false -- otherwise
+def $global_constant_lookup_required(S, porigin_parameter, pconstantfact) = true
+  -- if $parameter_callable_lookup_required(S, porigin_parameter, pconstantfact)
+
+def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = ({ORIGIN porigin_parameter, SITE porigin_site, DECL puserconstant.ORIGIN, PREFIX n_constants})
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if porigin_parameter = pconstantcontext.ORIGIN
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $constant_expression_root(S, porigin_parameter) = (porigin_initializer)
+  -- if $default_origin_at(pfunction.DEFAULTS, porigin_initializer) = (pdefault)
+  -- if $default_context_valid(S, pconstantcontext)
+  -- if $call_current_valid(S)
+  -- if $parameter_callable_function_published(S, pfunction, |S.DECLARATIONS|)
+  -- if $constant_bindings(S, S.TODO) = [porigin_parameter]
+  -- if S.TODO = (CONSTANT_OBSERVE porigin_site) :: ptask_tail*
+  -- if S.RESULT = KNOWN pvalue
+  -- if $constant_expression_below(S, porigin_parameter, porigin_site)
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $parameter_callable_class(pvalueclass)
+  -- if $global_constant_alias(S, S.USERCONSTANTS, porigin_site) = (puserconstant)
+  -- if pvalueclass = puserconstant.CLASS
+  -- if $constant_value_class_valid(S, pvalue, pvalueclass)
+  -- if n_constants = |S.USERCONSTANTS|
+
+;; Static fact validation does not recurse into the active receive validator.
+def $global_constant_lookup_valid(S, porigin_parameter, pconstantfact, puserconstant_prior*) = true
+  -- if $parameter_callable_lookup_required(S, porigin_parameter, pconstantfact)
+  -- if $constant_expression_root(S, porigin_parameter) = (porigin_initializer)
+  -- if $default_function_at($all_functions(S), porigin_initializer) = (pfunction)
+  -- if $default_origin_at(pfunction.DEFAULTS, porigin_initializer) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if porigin_parameter = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $parameter_callable_function_published(S, pfunction, |S.DECLARATIONS|)
+  -- if $compiled_read(S, porigin_initializer) = eps
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if pconstantlookup.ORIGIN = porigin_parameter /\ pconstantlookup.SITE = pconstantfact.ORIGIN
+  -- if $(pconstantlookup.PREFIX <= |puserconstant_prior*|)
+  -- if $global_constant_alias(S, puserconstant_prior*[0:pconstantlookup.PREFIX], pconstantfact.ORIGIN) = (puserconstant)
+  -- if pconstantlookup.DECL = puserconstant.ORIGIN
+  -- if pconstantfact.CLASS = puserconstant.CLASS
+  -- if pconstantfact.VALUE = eps
+  -- if $constant_fact_value_valid(pconstantfact)
+
+def $parameter_callable_flow_at(S, pfunction, n_index, porigin_site, porigin_scope?, pvalueclass, porigin_seen*) = true
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $parameter_callable_class(pvalueclass)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = $default_parameter_origin(S, pfunction.ORIGIN, n_index)
+  -- if $default_at(pfunction.DEFAULTS, n_index) = (pdefault)
+  -- if $parameter_callable_quiet_source(S, pdefault.ORIGIN, eps)
+  -- if $parameter_callable_quiet_class(pvalueclass)
+  -- if $parameter_callable_quiet_facts(pconstantcontext.FACTS)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_site) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if pconstantlookup.PREFIX = |S.USERCONSTANTS|
+  -- if $global_constant_lookup_valid(S, pconstantcontext.ORIGIN, pconstantfact, S.USERCONSTANTS)
+def $parameter_callable_flow_at(S, pfunction, n_index, porigin_site, porigin_scope?, pvalueclass, porigin_seen*) = $constant_callable_alias_flow(S, pclassconstantdesc, pvalueclass, |S.DECLARATIONS|, porigin_seen*)
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $parameter_callable_class(pvalueclass)
+  -- if $global_constant_class_alias(S, porigin_site, porigin_scope?) = (pclassconstantdesc)

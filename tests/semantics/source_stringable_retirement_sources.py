@@ -28,7 +28,15 @@ CASES = {'regular': 'deferred-regular.php',
          'expression-cycle-direct': 'generator-expression-child.php',
          'autoglobal-direct': 'autoglobal-direct-child.php',
          'autoglobal-property': 'autoglobal-property-child.php',
-         'autoglobal-readonly-clone': 'autoglobal-readonly-clone-child.php'}
+         'autoglobal-readonly-clone': 'autoglobal-readonly-clone-child.php',
+         'globals-direct': 'globals-direct-child.php',
+         'globals-property': 'globals-property-child.php',
+         'globals-direct-nonthrow': 'globals-direct-nonthrow-child.php',
+         'globals-property-nonthrow': 'globals-property-nonthrow-child.php',
+         'this-direct': 'this-direct-child.php',
+         'this-property': 'this-property-child.php',
+         'this-property-nonthrow': 'this-property-nonthrow-child.php',
+         'this-no-instance-property-nonthrow': 'this-no-instance-property-nonthrow-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -66,7 +74,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)
@@ -78,7 +86,7 @@ def main():
                ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
                ROOT / '.tools/php-file.so', ROOT / 'tests/semantics/profile.json',
                ROOT / 'tests/semantics/error_handler_run.py', Path(__file__)]
-    if any(name.startswith('autoglobal-') for name in selected):
+    if any(name.startswith(('autoglobal-', 'globals-')) for name in selected):
         watched += [ROOT / '.tools/request-clock.so', ROOT / 'native/request_clock.c']
     for name in selected:
         watched.append(SOURCES / (name + '.php'))
@@ -90,7 +98,7 @@ def main():
     git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
     revision, status = git('rev-parse', 'HEAD'), git('status', '--short')
     profile = dict(json.loads((ROOT / 'tests/semantics/profile.json').read_bytes()), include_path='.:')
-    if any(name.startswith('autoglobal-') for name in selected):
+    if any(name.startswith(('autoglobal-', 'globals-')) for name in selected):
         profile.update(variables_order='EGPCS', auto_globals_jit='1')
     flags = [arg for key, value in profile.items() for arg in ('-d', key + '=' + value)]
     report = {'revision': revision, 'working_tree_status': status, 'semantic_root': str(semantic),
@@ -109,7 +117,7 @@ def main():
             model_args = source_inputs(directory, source, provider)
             native_command = [str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(source)]
             request = None
-            if name.startswith('autoglobal-'):
+            if name.startswith(('autoglobal-', 'globals-')):
                 request = {'env': [[b64(b'LC_ALL'), b64(b'C')], [b64(b'TZ'), b64(b'UTC')]],
                            'argv': [b64(bytes(source))], 'file': b64(bytes(source)), 'cwd': b64(bytes(ROOT)),
                            'seconds': '1700000000', 'microseconds': 125000, 'variables': b64(b'EGPCS'), 'jit': True}

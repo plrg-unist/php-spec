@@ -50,12 +50,20 @@ def $class_constant_callable_cached_function(S, porigin_site) = (pfunction)
 def $class_constant_callable_cached_function(S, porigin_site) = eps -- otherwise
 def $constant_callable_cached_method(S, porigin_site) = (pmethoddesc)
   -- if $property_callable_cached_method(S, porigin_site) = (pmethoddesc)
-def $constant_callable_cached_method(S, porigin_site) = $class_constant_callable_cached_method(S, porigin_site)
+def $constant_callable_cached_method(S, porigin_site) = (pmethoddesc)
   -- if $property_callable_cached_method(S, porigin_site) = eps
+  -- if $class_constant_callable_cached_method(S, porigin_site) = (pmethoddesc)
+def $constant_callable_cached_method(S, porigin_site) = $parameter_callable_cached_method(S, porigin_site)
+  -- if $property_callable_cached_method(S, porigin_site) = eps
+  -- if $class_constant_callable_cached_method(S, porigin_site) = eps
 def $constant_callable_cached_function(S, porigin_site) = (pfunction)
   -- if $property_callable_cached_function(S, porigin_site) = (pfunction)
-def $constant_callable_cached_function(S, porigin_site) = $class_constant_callable_cached_function(S, porigin_site)
+def $constant_callable_cached_function(S, porigin_site) = (pfunction)
   -- if $property_callable_cached_function(S, porigin_site) = eps
+  -- if $class_constant_callable_cached_function(S, porigin_site) = (pfunction)
+def $constant_callable_cached_function(S, porigin_site) = $parameter_callable_cached_function(S, porigin_site)
+  -- if $property_callable_cached_function(S, porigin_site) = eps
+  -- if $class_constant_callable_cached_function(S, porigin_site) = eps
 
 dec $class_constant_callable_method_receipt_owner(pstate, pconstantclosure, pmethoddesc, porigin, porigin) : porigin?
 def $class_constant_callable_method_receipt_owner(S, pconstantclosure, pmethoddesc, porigin_site, porigin_requested) = (porigin_owner)

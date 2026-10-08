@@ -345,13 +345,22 @@ def run(cases=None, extra_inputs=()):
             'def $stage(S) = true -- if ' + case['stage'] + '\n'
             'def $stage(S) = false -- otherwise\n'
             'dec $seek(pstate, nat) : pstate\n'
-            'def $seek(S, n) = S -- if $stage(S)\n'
+            'def $seek(S, n) = S '
+            '-- if S.COMPLETION =/= NORMAL /\\ S.COMPLETION =/= BUDGET\n'
+            'def $seek(S, n) = S -- if $stage(S) '
+            '-- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
+            'def $seek(S, 0) = S -- if ~$stage(S) '
+            '-- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
             'def $seek(S, n) = $seek($drive_steps(S[.COMPLETION = NORMAL], 1), $nabs($(n - 1))) '
-            '-- if ~$stage(S) -- if $(n > 0)\n'
+            '-- if ~$stage(S) -- if $(n > 0) '
+            '-- if S.COMPLETION = NORMAL \\/ S.COMPLETION = BUDGET\n'
             'dec $main() : bool\ndef $main() = true\n'
             '  -- if S_initial = $php_run(' + checked['fixture'] + ', 0, '
             + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')\n'
-            '  -- if S = $seek(S_initial[.COMPLETION = NORMAL], 2000)[.COMPLETION = NORMAL]\n'
+            '  -- if S_initial.COMPLETION = NORMAL \\/ S_initial.COMPLETION = BUDGET\n'
+            '  -- if S_found = $seek(S_initial, 2000)\n'
+            '  -- if S_found.COMPLETION = NORMAL \\/ S_found.COMPLETION = BUDGET\n'
+            '  -- if S = S_found[.COMPLETION = NORMAL]\n'
             '  -- if ' + case['stage'] + '\n'
             + ''.join('  -- ' + ('' if clause.startswith('PhpStep:') else 'if ') + clause + '\n' for clause in case['checks']))
         result = subprocess.run([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'),
@@ -361,7 +370,7 @@ def run(cases=None, extra_inputs=()):
         (directory / 'stderr').write_text(result.stderr)
         passed = result.returncode == 0 and result.stdout == 'true\n' and not result.stderr
         records.append({'id': name, 'source_sha256': digest(source),
-                        'assertions': len(case['checks']) + 3, 'pass': passed})
+                        'assertions': len(case['checks']) + 6, 'pass': passed})
         print(name, passed, flush=True)
         if not passed:
             print(result.stderr[-2500:], flush=True)

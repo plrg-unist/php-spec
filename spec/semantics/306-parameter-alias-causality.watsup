@@ -1,0 +1,525 @@
+;; A receive id belongs to the actual callee until binding or frame departure.
+;; Births and registration progress are nonowning; old callable receipts retain
+;; their existing authority independently of this active receive lifetime.
+syntax preceiveorder = { LEAVES porigin*, EFFECTS porigin* }
+dec $parameter_receive_order(pstate, preceivebirth, porigin, porigin?, porigin*) : preceiveorder?
+dec $parameter_receive_frontier(ptask) : preceivefrontier?
+dec $parameter_receive_frontier_site(preceivefrontier) : porigin?
+dec $parameter_receive_frontier_valid(pstate, preceivebirth, porigin?, preceivefrontier) : bool
+dec $parameter_receive_owner(pcallcontext?) : nat?
+dec $parameter_receive_parent(pframe*) : nat?
+dec $parameter_receive_parent_index(pstate, pframe*, nat) : nat?
+dec $parameter_receive_parent_edge(pstate, pframe*) : preceiveedge?
+dec $parameter_receive_birth(pstate, nat) : preceivebirth?
+dec $parameter_receive_latest(preceivebirth*, nat?, nat, nat?) : nat?
+dec $parameter_receive_close(pstate, nat) : pstate
+def $parameter_receive_owner((pcallcontext)) = (preceiveowner.ID)
+  -- if pcallcontext.DEFAULTRECEIVE = (preceiveowner)
+def $parameter_receive_owner((pcallcontext)) = eps
+  -- if pcallcontext.DEFAULTRECEIVE = eps
+def $parameter_receive_owner(eps) = eps
+def $parameter_receive_parent(eps) = eps
+def $parameter_receive_parent(pframe :: pframe_tail*) = (n)
+  -- if $parameter_receive_owner(pframe.CONTEXT) = (n)
+def $parameter_receive_parent(pframe :: pframe_tail*) = $parameter_receive_parent(pframe_tail*)
+  -- if $parameter_receive_owner(pframe.CONTEXT) = eps
+def $parameter_receive_parent_index(S, eps, n_index) = eps
+def $parameter_receive_parent_index(S, pframe :: pframe_tail*, n_index) = (n_index)
+  -- if $parameter_receive_owner(pframe.CONTEXT) =/= eps
+def $parameter_receive_parent_index(S, pframe :: pframe_tail*, n_index) = $parameter_receive_parent_index(S, pframe_tail*, $(n_index + |$declaration_context(S, pframe.CONTEXT)|))
+  -- if $parameter_receive_owner(pframe.CONTEXT) = eps
+def $parameter_receive_parent_edge(S, eps) = eps
+def $parameter_receive_parent_edge(S, pframe :: pframe_tail*) = ({FRONTIER preceivefrontier, HANDLER pfunction.ORIGIN})
+  -- if $parameter_receive_owner(pframe.CONTEXT) =/= eps
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $parameter_receive_frontier(perrorcall.RESUME) = (preceivefrontier)
+  -- if perrorcall.TARGET = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+def $parameter_receive_parent_edge(S, pframe :: pframe_tail*) = $parameter_receive_parent_edge(S, pframe_tail*)
+  -- if $parameter_receive_owner(pframe.CONTEXT) = eps
+def $parameter_receive_parent_edge(S, pframe*) = eps -- otherwise
+def $parameter_receive_birth(S, n) = (S.PARAMETERRECEIVES[$nabs($(n - 1))])
+  -- if $(n > 0) /\ $(n <= |S.PARAMETERRECEIVES|)
+def $parameter_receive_birth(S, n) = eps -- otherwise
+def $parameter_receive_latest(eps, n_parent?, n, n_latest?) = n_latest?
+def $parameter_receive_latest(preceivebirth :: preceivebirth_tail*, n_parent?, n, n_latest?) = $parameter_receive_latest(preceivebirth_tail*, n_parent?, $(n + 1), (n))
+  -- if preceivebirth.PARENT = n_parent?
+def $parameter_receive_latest(preceivebirth :: preceivebirth_tail*, n_parent?, n, n_latest?) = $parameter_receive_latest(preceivebirth_tail*, n_parent?, $(n + 1), n_latest?)
+  -- if preceivebirth.PARENT =/= n_parent?
+
+def $parameter_receive_entry_valid(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.DEFAULTRECEIVE = eps
+  -- if $call_current_valid(S)
+def $parameter_receive_entry_valid(S) = false -- otherwise
+
+def $parameter_receive_begin(S, porigin) = S[.PARAMETERSEQ = n][.PARAMETERRECEIVES = S.PARAMETERRECEIVES ++ [{ORIGIN porigin, FUNCTION pcallcontext.FUNCTION, CALLSITE pcallcontext.CALLSITE, PARENT $parameter_receive_parent(S.FRAMES), PARENTINDEX $parameter_receive_parent_index(S, S.FRAMES, |$declaration_context(S, S.CURRENT)|), PARENTEDGE $parameter_receive_parent_edge(S, S.FRAMES), CAUSE $declaration_cause(S), PREFIX (|S.USERCONSTANTS|), PUBLICATION (|S.DECLARATIONS|), ACTIVE true}]][.CURRENT = (pcallcontext[.DEFAULTRECEIVE = ({ID n, PREFIX (|S.USERCONSTANTS|), PUBLICATION (|S.DECLARATIONS|)})])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.DEFAULTRECEIVE = eps
+  -- if n = $(S.PARAMETERSEQ + 1)
+def $parameter_receive_begin(S, porigin) = S -- otherwise
+def $parameter_receive_close(S, n) = S[.PARAMETERRECEIVES = S.PARAMETERRECEIVES[0:$nabs($(n - 1))] ++ [preceivebirth[.ACTIVE = false]] ++ S.PARAMETERRECEIVES[n:$nabs($(|S.PARAMETERRECEIVES| - n))]]
+  -- if $parameter_receive_birth(S, n) = (preceivebirth)
+def $parameter_receive_close(S, n) = S -- otherwise
+def $parameter_receive_end(S) = $parameter_receive_close(S[.CURRENT = (pcallcontext[.DEFAULTRECEIVE = eps])], n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $parameter_receive_owner((pcallcontext)) = (n)
+def $parameter_receive_end(S) = S -- otherwise
+;; This is applied only to the raw restored branch. Deferred releases which
+;; return the old callee state keep its receive alive until actual restoration.
+def $parameter_receive_restored(S_before, S_after) = $parameter_receive_close(S_after, n)
+  -- if $parameter_receive_owner(S_before.CURRENT) = (n)
+  -- if $parameter_receive_owner(S_after.CURRENT) =/= (n)
+def $parameter_receive_restored(S_before, S_after) = S_after -- otherwise
+
+dec $parameter_receive_source_valid(pstate, preceivebirth) : bool
+dec $parameter_receive_site_valid(pstate, porigin?) : bool
+dec $parameter_receive_parent_valid(nat, nat?) : bool
+dec $parameter_receive_parent_source(pstate, preceivebirth) : bool
+dec $parameter_receive_parent_route(pstate, preceivebirth, preceivebirth, nat) : bool
+dec $parameter_receive_source_chain(pstate, (porigin, porigin?, porigin?, porigin?)*) : bool
+def $parameter_receive_site_valid(S, eps) = true
+def $parameter_receive_site_valid(S, (porigin)) = ($origin_node(S.SOURCES, porigin) =/= eps)
+def $parameter_receive_parent_valid(n, eps) = true
+def $parameter_receive_parent_valid(n, (n_parent)) = ($(n_parent > 0) /\ $(n_parent < n))
+def $parameter_receive_source_chain(S, [(porigin_function, porigin_site?, porigin_scope?, porigin_called?)]) = true
+def $parameter_receive_source_chain(S, (porigin_function, porigin_site_option?, porigin_scope?, porigin_called?) :: (porigin_parent, porigin_parent_site?, porigin_parent_scope?, porigin_parent_called?) :: (porigin_tail, porigin_tail_site?, porigin_tail_scope?, porigin_tail_called?)*) = true
+  -- if porigin_site_option? = (porigin_site)
+  -- if $function_at($all_functions(S), porigin_parent) = (pfunction_parent)
+  -- if $origin_source(porigin_site) = PORIGIN n_unit pcpath_site
+  -- if pfunction_parent.CODE.UNIT = n_unit
+  -- if $code_expression(pfunction_parent.CODE.EXPRESSIONS, pcpath_site) =/= eps
+  -- if $parameter_receive_source_chain(S, (porigin_parent, porigin_parent_site?, porigin_parent_scope?, porigin_parent_called?) :: (porigin_tail, porigin_tail_site?, porigin_tail_scope?, porigin_tail_called?)*)
+def $parameter_receive_source_chain(S, (porigin_tail, porigin_tail_site?, porigin_tail_scope?, porigin_tail_called?)*) = false -- otherwise
+def $parameter_receive_parent_route(S, preceivebirth, preceivebirth_parent, n_index) = $parameter_receive_source_chain(S, preceivebirth.CAUSE.CALLS[0:$nabs($(n_index + 1))])
+  -- if preceivebirth.PARENTEDGE = eps
+def $parameter_receive_parent_route(S, preceivebirth, preceivebirth_parent, n_index) = true
+  -- if preceivebirth.PARENTEDGE = (preceiveedge)
+  -- if $parameter_receive_source_chain(S, preceivebirth.CAUSE.CALLS[0:n_index])
+  -- if $parameter_receive_frontier_site(preceiveedge.FRONTIER) = (porigin_site)
+  -- if preceivebirth.CAUSE.CALLS[$nabs($(n_index - 1))] = (preceiveedge.HANDLER, porigin_handler_site?, porigin_handler_scope?, porigin_handler_called?)
+  -- if porigin_handler_site? = $parameter_receive_frontier_site(preceiveedge.FRONTIER)
+  -- if preceivebirth.CAUSE.CALLS[n_index] = (preceivebirth_parent.FUNCTION, preceivebirth_parent.CALLSITE, porigin_scope?, porigin_called?)
+  -- if $constant_expression_root(S, preceivebirth_parent.ORIGIN) = (porigin_initializer)
+  -- if $parameter_receive_order(S, preceivebirth_parent, porigin_initializer, porigin_scope?, eps) = (preceiveorder)
+  -- if preceiveorder.EFFECTS = [porigin_site]
+  -- if $parameter_receive_frontier_valid(S, preceivebirth_parent, porigin_scope?, preceiveedge.FRONTIER)
+def $parameter_receive_parent_route(S, preceivebirth, preceivebirth_parent, n_index) = false -- otherwise
+def $parameter_receive_parent_source(S, preceivebirth) = true
+  -- if preceivebirth.PARENT = eps /\ preceivebirth.PARENTINDEX = eps /\ preceivebirth.PARENTEDGE = eps
+def $parameter_receive_parent_source(S, preceivebirth) = true
+  -- if preceivebirth.PARENT = (n_parent)
+  -- if preceivebirth.PARENTINDEX = (n_index)
+  -- if $(n_index > 0) /\ $(n_index < |preceivebirth.CAUSE.CALLS|)
+  -- if $parameter_receive_birth(S, n_parent) = (preceivebirth_parent)
+  -- if preceivebirth.CAUSE.CALLS[n_index] = (preceivebirth_parent.FUNCTION, preceivebirth_parent.CALLSITE, porigin_scope?, porigin_called?)
+  -- if $parameter_receive_parent_route(S, preceivebirth, preceivebirth_parent, n_index)
+def $parameter_receive_parent_source(S, preceivebirth) = false -- otherwise
+def $parameter_receive_source_valid(S, preceivebirth) = true
+  -- if |preceivebirth.CAUSE.CALLS| =/= 0
+  -- if preceivebirth.CAUSE.CALLS[0] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, porigin_entry_scope?, porigin_entry_called?)
+  -- if $parameter_receive_parent_source(S, preceivebirth)
+  -- if $function_at($all_functions(S), preceivebirth.FUNCTION) = (pfunction)
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if $default_origin_at(pfunction.DEFAULTS, porigin_initializer) = (pdefault)
+  -- if pdefault.KIND = PDDEFERRED
+  -- if preceivebirth.ORIGIN = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $parameter_receive_site_valid(S, preceivebirth.CALLSITE)
+def $parameter_receive_source_valid(S, preceivebirth) = false -- otherwise
+def $parameter_receive_context_valid(S, eps) = true
+def $parameter_receive_context_valid(S, (pcallcontext)) = true
+  -- if pcallcontext.DEFAULTRECEIVE = eps
+def $parameter_receive_context_valid(S, (pcallcontext)) = true
+  -- if $parameter_receive_owner((pcallcontext)) = (n)
+  -- if $parameter_receive_birth(S, n) = (preceivebirth)
+  -- if preceivebirth.ACTIVE
+  -- if pcallcontext.DEFAULTRECEIVE = (preceiveowner)
+  -- if preceivebirth.PREFIX = preceiveowner.PREFIX /\ preceivebirth.PUBLICATION = preceiveowner.PUBLICATION
+  -- if preceivebirth.FUNCTION = pcallcontext.FUNCTION /\ preceivebirth.CALLSITE = pcallcontext.CALLSITE
+  -- if preceivebirth.CAUSE.CALLS[0] = (pcallcontext.FUNCTION, pcallcontext.CALLSITE, pcallcontext.LEXICAL_CLASS, pcallcontext.CALLED_CLASS)
+  -- if preceivebirth.PARENT = $parameter_receive_parent(S.FRAMES)
+  -- if preceivebirth.PARENTINDEX = $parameter_receive_parent_index(S, S.FRAMES, |$declaration_context(S, (pcallcontext))|)
+  -- if preceivebirth.PARENTEDGE = $parameter_receive_parent_edge(S, S.FRAMES)
+  -- if $parameter_receive_latest(S.PARAMETERRECEIVES, preceivebirth.PARENT, 1, eps) = (n)
+  -- if $parameter_receive_source_valid(S, preceivebirth)
+def $parameter_receive_context_valid(S, pcallcontext?) = false -- otherwise
+def $parameter_receive_default_valid(S, pconstantcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $parameter_receive_owner((pcallcontext)) = (n)
+  -- if $parameter_receive_birth(S, n) = (preceivebirth)
+  -- if preceivebirth.ORIGIN = pconstantcontext.ORIGIN
+  -- if $parameter_receive_context_valid(S, (pcallcontext))
+def $parameter_receive_default_valid(S, pconstantcontext) = false -- otherwise
+
+dec $parameter_receive_context_ids(pcallcontext?) : nat*
+dec $parameter_receive_frame_ids(pframe*) : nat*
+dec $parameter_receive_vm_ids(pfibervm) : nat*
+dec $parameter_receive_fiber_ids(pfibercaller*) : nat*
+dec $parameter_receive_node_ids(pstate, pnode) : nat*
+dec $parameter_receive_object_ids(pstate, pnode*) : nat*
+dec $parameter_receive_births_valid(pstate, preceivebirth*, nat, nat*) : bool
+dec $parameter_receive_ids_valid(pstate, nat*) : bool
+dec $parameter_receive_owned_frames_valid(pstate, pframe*) : bool
+def $parameter_receive_context_ids(pcallcontext?) = [n]
+  -- if $parameter_receive_owner(pcallcontext?) = (n)
+def $parameter_receive_context_ids(pcallcontext?) = eps -- otherwise
+def $parameter_receive_frame_ids(eps) = eps
+def $parameter_receive_frame_ids(pframe :: pframe_tail*) = $parameter_receive_context_ids(pframe.CONTEXT) ++ $parameter_receive_frame_ids(pframe_tail*)
+def $parameter_receive_vm_ids(pfibervm) = $parameter_receive_context_ids(pfibervm.CURRENT) ++ $parameter_receive_frame_ids(pfibervm.FRAMES)
+def $parameter_receive_fiber_ids(eps) = eps
+def $parameter_receive_fiber_ids(pfibercaller :: pfibercaller_tail*) = $parameter_receive_vm_ids(pfibercaller.VM) ++ $parameter_receive_fiber_ids(pfibercaller_tail*)
+def $parameter_receive_node_ids(S, HOBJECT n) = $parameter_receive_vm_ids(pfibervm)
+  -- if $object_body(S.OBJECTS[n]) = FIBER pfiber
+  -- if pfiber.VM = (pfibervm)
+def $parameter_receive_node_ids(S, HOBJECT n) = $parameter_receive_context_ids(pframe.CONTEXT)
+  -- if $object_body(S.OBJECTS[n]) = GENERATOR pgenerator
+  -- if pgenerator.FRAME = (pframe)
+def $parameter_receive_node_ids(S, pnode) = eps -- otherwise
+def $parameter_receive_object_ids(S, eps) = eps
+def $parameter_receive_object_ids(S, pnode :: pnode_tail*) = $parameter_receive_node_ids(S, pnode) ++ $parameter_receive_object_ids(S, pnode_tail*)
+def $parameter_receive_ids_valid(S, eps) = true
+def $parameter_receive_ids_valid(S, n :: n_tail*) = true
+  -- if $parameter_receive_birth(S, n) = (preceivebirth)
+  -- if preceivebirth.ACTIVE
+  -- if ~(n <- n_tail*)
+  -- if $parameter_receive_ids_valid(S, n_tail*)
+def $parameter_receive_ids_valid(S, n*) = false -- otherwise
+def $parameter_receive_births_valid(S, eps, n, n_owner*) = true
+def $parameter_receive_births_valid(S, preceivebirth :: preceivebirth_tail*, n, n_owner*) = true
+  -- if $parameter_receive_source_valid(S, preceivebirth)
+  -- if $(preceivebirth.PREFIX <= |S.USERCONSTANTS|) /\ $(preceivebirth.PUBLICATION <= |S.DECLARATIONS|)
+  -- if $parameter_receive_parent_valid(n, preceivebirth.PARENT)
+  -- if preceivebirth.ACTIVE = (n <- n_owner*)
+  -- if $parameter_receive_births_valid(S, preceivebirth_tail*, $(n + 1), n_owner*)
+def $parameter_receive_births_valid(S, preceivebirth*, n, n_owner*) = false -- otherwise
+def $parameter_receive_owned_frames_valid(S, eps) = true
+def $parameter_receive_owned_frames_valid(S, pframe :: pframe_tail*) = ($parameter_receive_context_valid(S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*], pframe.CONTEXT) /\ $parameter_receive_owned_frames_valid(S, pframe_tail*))
+def $parameter_receive_state_valid(S) = true
+  -- if $parameter_receive_context_valid(S, S.CURRENT)
+  -- if $parameter_receive_owned_frames_valid(S, S.FRAMES)
+  -- if S.PARAMETERSEQ = |S.PARAMETERRECEIVES|
+  -- if n_owner* = $parameter_receive_context_ids(S.CURRENT) ++ $parameter_receive_frame_ids(S.FRAMES) ++ $parameter_receive_fiber_ids(S.FIBERCALLERS) ++ $parameter_receive_object_ids(S, S.ALLOCATIONS)
+  -- if $parameter_receive_ids_valid(S, n_owner*)
+  -- if $parameter_receive_births_valid(S, S.PARAMETERRECEIVES, 1, n_owner*)
+def $parameter_receive_state_valid(S) = false -- otherwise
+
+;; Evaluation order is derived only for regular arrays with quiet fixed keys.
+;; A single potential callback leaf bounds all historical global reads in this
+;; first causal slice. Unknown paths, object facts and multiple emitters reject.
+dec $parameter_receive_named_entry(pstate, preceivebirth) : bool
+def $parameter_receive_named_entry(S, preceivebirth) = true
+  -- if $function_at(S.FUNCTIONS, preceivebirth.FUNCTION) = (pfunction)
+  -- if $call_selected_valid(S, pfunction.ORIGIN, preceivebirth.CALLSITE)
+  -- if $parameter_callable_function_published(S, pfunction, preceivebirth.PUBLICATION)
+def $parameter_receive_named_entry(S, preceivebirth) = false -- otherwise
+dec $parameter_receive_raw_trait(pstate, preceivebirth, porigin, porigin?) : bool
+dec $parameter_receive_order_at(pstate, preceivebirth, porigin, porigin?, porigin*) : preceiveorder?
+dec $parameter_receive_order_items(pstate, preceivebirth, porigin, porigin?, nat, phpType13*, porigin*) : preceiveorder?
+def $parameter_receive_raw_trait(S, preceivebirth, porigin_site, porigin_scope?) = true
+  -- if $constant_callable_method_site(S, porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
+  -- if $global_constant_unscoped_class_name(S, porigin_site, phpType19) = (ptbytes_class)
+  -- if $global_constant_method(S, porigin_site, porigin_scope?, preceivebirth.PUBLICATION) = ((pmethoddesc, porigin_called))
+  -- if $global_constant_method_trait(S, pmethoddesc)
+  -- if $method_accessible(S, pmethoddesc, porigin_scope?) /\ pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+def $parameter_receive_raw_trait(S, preceivebirth, porigin_site, porigin_scope?) = false -- otherwise
+def $parameter_receive_order(S, preceivebirth, porigin_site, porigin_scope?, porigin_seen*) = $parameter_receive_order_at(S, preceivebirth, porigin_site, porigin_scope?, porigin_seen* ++ [porigin_site])
+  -- if ~(porigin_site <- porigin_seen*)
+  -- if $compiled_effects(S, porigin_site) = eps
+def $parameter_receive_order(S, preceivebirth, porigin_site, porigin_scope?, porigin_seen*) = eps -- otherwise
+def $parameter_receive_order_at(S, preceivebirth, porigin_site, porigin_scope?, porigin_seen*) = $parameter_receive_order(S, preceivebirth, porigin_target, porigin_scope?, porigin_seen*)
+  -- if $compiled_redirect(S, porigin_site) = ((porigin_target, expression, false, z))
+  -- if $redirect_effect_tasks(S, porigin_site, porigin_target) = eps
+def $parameter_receive_order_at(S, preceivebirth, porigin_site, porigin_scope?, porigin_seen*) = ({LEAVES ([porigin_site]), EFFECTS ([porigin_site])})
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $parameter_receive_raw_trait(S, preceivebirth, porigin_site, porigin_scope?) \/ $deprecated_constant_source(S, porigin_site, 0) =/= eps
+def $parameter_receive_order_at(S, preceivebirth, porigin_site, porigin_scope?, porigin_seen*) = ({LEAVES ([porigin_site]), EFFECTS eps})
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $deprecated_constant_source(S, porigin_site, 0) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
+  -- if $parameter_callable_quiet_leaf(pcnode) \/ $global_constant_alias(S, S.USERCONSTANTS, porigin_site) =/= eps
+def $parameter_receive_order_at(S, preceivebirth, porigin_site, porigin_scope?, porigin_seen*) = $parameter_receive_order_items(S, preceivebirth, porigin_site, porigin_scope?, 0, phpType13*, porigin_seen*)
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprArray (SEQUENCE phpType13*) metadata)
+def $parameter_receive_order_at(S, preceivebirth, porigin_site, porigin_scope?, porigin_seen*) = eps -- otherwise
+def $parameter_receive_order_items(S, preceivebirth, porigin_array, porigin_scope?, n_index, eps, porigin_seen*) = ({LEAVES eps, EFFECTS eps})
+def $parameter_receive_order_items(S, preceivebirth, porigin_array, porigin_scope?, n_index, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, porigin_seen*) = ({LEAVES (preceiveorder_head.LEAVES ++ preceiveorder_tail.LEAVES), EFFECTS (preceiveorder_head.EFFECTS ++ preceiveorder_tail.EFFECTS)})
+  -- if porigin_item = $constant_child(porigin_array, [PCFIELD 0, PCINDEX n_index])
+  -- if $parameter_callable_quiet_key(S, porigin_item, phpType5)
+  -- if $parameter_receive_order(S, preceivebirth, $constant_child(porigin_item, [PCFIELD 1]), porigin_scope?, porigin_seen*) = (preceiveorder_head)
+  -- if $parameter_receive_order_items(S, preceivebirth, porigin_array, porigin_scope?, $(n_index + 1), phpType13*, porigin_seen*) = (preceiveorder_tail)
+def $parameter_receive_order_items(S, preceivebirth, porigin_array, porigin_scope?, n_index, phpType13*, porigin_seen*) = eps -- otherwise
+
+def $parameter_receive_frontier(PARAMETER_CONSTANT_METHOD_RESUME porigin_site porigin_function porigin_called n_prefix) = (RECEIVE_METHOD porigin_site porigin_function porigin_called n_prefix)
+def $parameter_receive_frontier(DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) = (RECEIVE_DEPRECATED pdeprecatedconstant)
+def $parameter_receive_frontier(ptask) = eps -- otherwise
+def $parameter_receive_frontier_site(RECEIVE_METHOD porigin_site porigin_function porigin_called n_prefix) = (porigin_site)
+def $parameter_receive_frontier_site(RECEIVE_DEPRECATED pdeprecatedconstant) = (pdeprecatedconstant.SITE)
+;; Static source/publication checks avoid default_context_valid and its FACTS
+;; recursion. The actual ERROR_HANDLER_RESULT task authenticates capture time.
+def $parameter_receive_frontier_valid(S, preceivebirth, porigin_scope?, RECEIVE_METHOD porigin_site porigin_function porigin_called n_prefix) = true
+  -- if $(preceivebirth.PUBLICATION <= n_prefix) /\ $(n_prefix <= |S.DECLARATIONS|)
+  -- if $parameter_receive_raw_trait(S, preceivebirth, porigin_site, porigin_scope?)
+  -- if $function_at($all_functions(S), preceivebirth.FUNCTION) = (pfunction)
+  -- if $parameter_callable_function_published(S, pfunction, n_prefix)
+  -- if $global_constant_scope_published(S.DECLARATIONS[0:n_prefix], porigin_scope?)
+  -- if $global_constant_method(S, porigin_site, porigin_scope?, n_prefix) = ((pmethoddesc, porigin_called))
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_function
+  -- if $method_accessible(S, pmethoddesc, porigin_scope?) /\ pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $global_constant_method_trait(S, pmethoddesc)
+def $parameter_receive_frontier_valid(S, preceivebirth, porigin_scope?, RECEIVE_DEPRECATED pdeprecatedconstant) = true
+  -- if $(preceivebirth.PREFIX <= pdeprecatedconstant.PREFIX) /\ $(pdeprecatedconstant.PREFIX <= |S.USERCONSTANTS|)
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if $function_at($all_functions(S), preceivebirth.FUNCTION) = (pfunction)
+  -- if $default_origin_at(pfunction.DEFAULTS, porigin_initializer) = (pdefault)
+  -- if pconstantcontext = {ORIGIN preceivebirth.ORIGIN, LINE $default_parameter_line(S, pfunction.ORIGIN, pdefault.INDEX), FACTS eps}
+  -- if $deprecated_constant_source(S[.CONSTCONTEXT = (pconstantcontext)], pdeprecatedconstant.SITE, pdeprecatedconstant.PREFIX) = (pdeprecatedconstant.LINE)
+def $parameter_receive_frontier_valid(S, preceivebirth, porigin_scope?, preceivefrontier) = false -- otherwise
+
+;; Each successful append captures the real suspended callback frontier once.
+;; These source/id records contain no retained PHP values or heap owners.
+dec $parameter_receive_capture(pstate, pframe, pframe*, pdeclcause, nat) : preceivecut*
+dec $parameter_receive_registration_frames(pstate, pframe*, pdeclcause, nat) : preceivecut*
+def $parameter_receive_capture(S, pframe, pframe_tail*, pdeclcause, n_index) = [{OWNER n_owner, INDEX n_index, FRONTIER preceivefrontier, CAUSE pdeclcause}]
+  -- if $parameter_receive_owner(pframe.CONTEXT) = (n_owner)
+  -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if pframe.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = preceivebirth.ORIGIN
+  -- if pframe.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if $parameter_receive_frontier(perrorcall.RESUME) = (preceivefrontier)
+  -- if $parameter_receive_frontier_site(preceivefrontier) = (porigin_site)
+  -- if perrorcall.SITE = porigin_site /\ perrorcall.LEVEL = 8192
+  -- if perrorcall.TARGET = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction_handler)
+  -- if n_index = 1 /\ $(n_index < |pdeclcause.CALLS|)
+  -- if pdeclcause.CALLS[$nabs($(n_index - 1))] = (pfunction_handler.ORIGIN, porigin_handler_site?, porigin_handler_scope?, porigin_handler_called?)
+  -- if porigin_handler_site? = $parameter_receive_frontier_site(preceivefrontier)
+  -- if pdeclcause.CALLS[n_index] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, eps, eps)
+  -- if porigin_scope? = eps
+  -- if S_receive = $constant_frame_view(S, pframe, pframe_tail*)
+  -- if $parameter_receive_default_valid(S_receive, pconstantcontext)
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if $parameter_receive_order(S_receive, preceivebirth, porigin_initializer, porigin_scope?, eps) = (preceiveorder)
+  -- if preceiveorder.EFFECTS = [porigin_site]
+  -- if $parameter_receive_frontier_valid(S_receive, preceivebirth, porigin_scope?, preceivefrontier)
+def $parameter_receive_capture(S, pframe, pframe_tail*, pdeclcause, n_index) = eps -- otherwise
+def $parameter_receive_registration_frames(S, eps, pdeclcause, n_index) = eps
+def $parameter_receive_registration_frames(S, pframe :: pframe_tail*, pdeclcause, n_index) = $parameter_receive_capture(S, pframe, pframe_tail*, pdeclcause, n_index) ++ $parameter_receive_registration_frames(S, pframe_tail*, pdeclcause, $(n_index + |$declaration_context(S, pframe.CONTEXT)|))
+def $parameter_receive_registration(S) = $parameter_receive_registration_frames(S, S.FRAMES, $declaration_cause(S), |$declaration_context(S, S.CURRENT)|)
+
+dec $parameter_receive_cut_owners(preceivecut*) : nat*
+dec $parameter_receive_cut_at(preceivecut*, nat) : preceivecut?
+dec $parameter_receive_cut_source(pstate, preceivecut) : bool
+dec $parameter_receive_ingress_cuts(pstate, porigin, nat, preceivecut*) : bool
+dec $parameter_receive_ingress_prefix(pevalbinding*, nat, nat) : nat
+dec $parameter_receive_producer(pstate, puserconstant, nat) : preceivecut?
+dec $parameter_receive_donor_source(pstate, puserconstant) : bool
+dec $parameter_receive_cut_valid(pstate, preceivebirth, porigin, puserconstant, preceivecut) : bool
+dec $parameter_receive_registrations_valid(pstate, preceivebirth, nat, porigin, puserconstant*, nat) : bool
+def $parameter_receive_cut_owners(eps) = eps
+def $parameter_receive_cut_owners(preceivecut :: preceivecut_tail*) = preceivecut.OWNER :: $parameter_receive_cut_owners(preceivecut_tail*)
+def $parameter_receive_cut_at(eps, n_owner) = eps
+def $parameter_receive_cut_at(preceivecut :: preceivecut_tail*, n_owner) = (preceivecut)
+  -- if preceivecut.OWNER = n_owner
+  -- if ~(n_owner <- $parameter_receive_cut_owners(preceivecut_tail*))
+def $parameter_receive_cut_at(preceivecut :: preceivecut_tail*, n_owner) = $parameter_receive_cut_at(preceivecut_tail*, n_owner)
+  -- if preceivecut.OWNER =/= n_owner
+def $parameter_receive_cut_at(preceivecut*, n_owner) = eps -- otherwise
+def $parameter_receive_cut_source(S, preceivecut) = true
+  -- if $parameter_receive_birth(S, preceivecut.OWNER) = (preceivebirth)
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if preceivecut.INDEX = 1 /\ $(preceivecut.INDEX < |preceivecut.CAUSE.CALLS|)
+  -- if preceivecut.CAUSE.CALLS[preceivecut.INDEX] = (preceivebirth.FUNCTION, preceivebirth.CALLSITE, eps, eps)
+  -- if porigin_scope? = eps
+  -- if preceivecut.CAUSE.CALLS[$nabs($(preceivecut.INDEX - 1))] = (porigin_handler, porigin_handler_site?, porigin_handler_scope?, porigin_handler_called?)
+  -- if $function_at($all_functions(S), porigin_handler) = (pfunction_handler)
+  -- if $parameter_receive_frontier_site(preceivecut.FRONTIER) = (porigin_site)
+  -- if porigin_handler_site? = $parameter_receive_frontier_site(preceivecut.FRONTIER)
+  -- if $parameter_receive_frontier_valid(S, preceivebirth, porigin_scope?, preceivecut.FRONTIER)
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if $parameter_receive_order(S, preceivebirth, porigin_initializer, porigin_scope?, eps) = (preceiveorder)
+  -- if preceiveorder.EFFECTS = [porigin_site]
+  -- if preceivecut.CAUSE.AUTOLOAD = eps
+def $parameter_receive_cut_source(S, preceivecut) = false -- otherwise
+;; The checked eval request records its actual producer before the new source
+;; unit exists. Its CALLS/frontier remain exact when that unit later publishes.
+def $parameter_receive_ingress_cuts(S, porigin_eval, n_prefix, eps) = true
+def $parameter_receive_ingress_cuts(S, porigin_eval, n_prefix, preceivecut :: preceivecut_tail*) = true
+  -- if ~(preceivecut.OWNER <- $parameter_receive_cut_owners(preceivecut_tail*))
+  -- if $parameter_receive_cut_source(S, preceivecut)
+  -- if $parameter_receive_birth(S, preceivecut.OWNER) = (preceivebirth)
+  -- if $(preceivebirth.PREFIX <= n_prefix)
+  -- if $source_unit(S.SOURCES, preceivecut.CAUSE.UNIT) =/= eps
+  -- if preceivecut.CAUSE.CALLS[0] = (porigin_handler, porigin_handler_site?, porigin_handler_scope?, porigin_handler_called?)
+  -- if $function_at($all_functions(S), porigin_handler) = (pfunction_handler)
+  -- if porigin_eval = PORIGIN n_handler pcpath_eval
+  -- if pfunction_handler.CODE.UNIT = n_handler
+  -- if $code_expression(pfunction_handler.CODE.EXPRESSIONS, pcpath_eval) =/= eps
+  -- if $parameter_receive_ingress_cuts(S, porigin_eval, n_prefix, preceivecut_tail*)
+def $parameter_receive_ingress_cuts(S, porigin_eval, n_prefix, preceivecut*) = false -- otherwise
+def $parameter_receive_ingress_valid(S, pevalbinding) = ($(pevalbinding.USERPREFIX <= |S.USERCONSTANTS|) /\ $parameter_receive_ingress_cuts(S, pevalbinding.SITE, pevalbinding.USERPREFIX, pevalbinding.RECEIVES))
+def $parameter_receive_ingress_prefix(eps, n_owner, n_prefix) = n_prefix
+def $parameter_receive_ingress_prefix(pevalbinding :: pevalbinding_tail*, n_owner, n_prefix) = $parameter_receive_ingress_prefix(pevalbinding_tail*, n_owner, pevalbinding.USERPREFIX)
+  -- if $parameter_receive_cut_at(pevalbinding.RECEIVES, n_owner) =/= eps
+  -- if $(pevalbinding.USERPREFIX < n_prefix)
+def $parameter_receive_ingress_prefix(pevalbinding :: pevalbinding_tail*, n_owner, n_prefix) = $parameter_receive_ingress_prefix(pevalbinding_tail*, n_owner, n_prefix)
+  -- if $parameter_receive_cut_at(pevalbinding.RECEIVES, n_owner) =/= eps
+  -- if $(pevalbinding.USERPREFIX >= n_prefix)
+def $parameter_receive_ingress_prefix(pevalbinding :: pevalbinding_tail*, n_owner, n_prefix) = $parameter_receive_ingress_prefix(pevalbinding_tail*, n_owner, n_prefix)
+  -- if $parameter_receive_cut_at(pevalbinding.RECEIVES, n_owner) = eps
+def $parameter_receive_producer(S, puserconstant, n_owner) = $parameter_receive_cut_at(pevalbinding.RECEIVES, n_owner)
+  -- if puserconstant.ORIGIN = PORIGIN n_unit pcpath_declaration
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = (pevalbinding)
+def $parameter_receive_producer(S, puserconstant, n_owner) = eps -- otherwise
+def $parameter_receive_cut_valid(S, preceivebirth, porigin_site, puserconstant, preceivecut) = true
+  -- if $parameter_receive_birth(S, preceivecut.OWNER) = (preceivebirth)
+  -- if $parameter_receive_cut_source(S, preceivecut)
+  -- if $parameter_receive_frontier_site(preceivecut.FRONTIER) = (porigin_site)
+  -- if puserconstant.ORIGIN = PORIGIN n_unit pcpath_declaration
+  -- if preceivecut.CAUSE.UNIT = n_unit
+  -- if $eval_binding_at(S.EVALBINDINGS, n_unit) = (pevalbinding)
+  -- if $parameter_receive_cut_at(pevalbinding.RECEIVES, preceivecut.OWNER) = (preceivecut_ingress)
+  -- if preceivecut.INDEX = preceivecut_ingress.INDEX /\ preceivecut.FRONTIER = preceivecut_ingress.FRONTIER
+  -- if preceivecut.CAUSE.CALLS = preceivecut_ingress.CAUSE.CALLS /\ preceivecut.CAUSE.AUTOLOAD = preceivecut_ingress.CAUSE.AUTOLOAD
+  -- if $parameter_receive_ingress_valid(S, pevalbinding)
+  -- if preceivecut.CAUSE.CALLS[0] = (porigin_register, porigin_register_site?, porigin_register_scope?, porigin_register_called?)
+  -- if $function_at($all_functions(S), porigin_register) = (pfunction_register)
+  -- if pevalbinding.SITE = PORIGIN n_register pcpath_register
+  -- if pfunction_register.CODE.UNIT = n_register
+  -- if $code_expression(pfunction_register.CODE.EXPRESSIONS, pcpath_register) =/= eps
+def $parameter_receive_cut_valid(S, preceivebirth, porigin_site, puserconstant, preceivecut) = false -- otherwise
+;; Eval-origin donors in this causal slice require their installed producer's
+;; real ingress. Erasing both row and binding cuts cannot turn it into a quiet
+;; pre-entry publication. Other eval/file publication routes remain open.
+def $parameter_receive_donor_source(S, puserconstant) = true
+  -- if puserconstant.ORIGIN = PORIGIN 0 pcpath_declaration
+def $parameter_receive_donor_source(S, puserconstant) = true
+  -- if puserconstant.ORIGIN = PORIGIN n_unit pcpath_declaration
+  -- if $(n_unit > 0)
+  -- if puserconstant.RECEIVES = [preceivecut]
+  -- if $parameter_receive_birth(S, preceivecut.OWNER) = (preceivebirth)
+  -- if $parameter_receive_frontier_site(preceivecut.FRONTIER) = (porigin_site)
+  -- if $parameter_receive_cut_valid(S, preceivebirth, porigin_site, puserconstant, preceivecut)
+def $parameter_receive_donor_source(S, puserconstant) = false -- otherwise
+def $parameter_receive_registrations_valid(S, preceivebirth, n_owner, porigin_site, eps, n_prefix) = true
+def $parameter_receive_registrations_valid(S, preceivebirth, n_owner, porigin_site, puserconstant :: puserconstant_tail*, n_prefix) = true
+  -- if $parameter_receive_producer(S, puserconstant, n_owner) =/= eps
+  -- if $(preceivebirth.PREFIX <= n_prefix)
+  -- if $parameter_receive_cut_at(puserconstant.RECEIVES, n_owner) = (preceivecut)
+  -- if $parameter_receive_cut_valid(S, preceivebirth, porigin_site, puserconstant, preceivecut)
+  -- if $parameter_receive_registrations_valid(S, preceivebirth, n_owner, porigin_site, puserconstant_tail*, $(n_prefix + 1))
+def $parameter_receive_registrations_valid(S, preceivebirth, n_owner, porigin_site, puserconstant :: puserconstant_tail*, n_prefix) = $parameter_receive_registrations_valid(S, preceivebirth, n_owner, porigin_site, puserconstant_tail*, $(n_prefix + 1))
+  -- if $parameter_receive_producer(S, puserconstant, n_owner) = eps
+  -- if $(n_prefix < preceivebirth.PREFIX)
+  -- if $parameter_receive_cut_at(puserconstant.RECEIVES, n_owner) = eps
+def $parameter_receive_registrations_valid(S, preceivebirth, n_owner, porigin_site, puserconstant*, n_prefix) = false -- otherwise
+
+dec $parameter_receive_before(porigin*, porigin, porigin) : bool
+dec $parameter_receive_lookup_prefix(preceivebirth, preceiveorder, porigin, porigin, nat) : nat
+dec $parameter_receive_facts_valid(pstate, preceivebirth, preceiveorder, porigin, pconstantfact*) : bool
+def $parameter_receive_before(eps, porigin_left, porigin_right) = false
+def $parameter_receive_before(porigin :: porigin_tail*, porigin_left, porigin_right) = true
+  -- if porigin = porigin_left
+  -- if porigin_right <- porigin_tail*
+def $parameter_receive_before(porigin :: porigin_tail*, porigin_left, porigin_right) = $parameter_receive_before(porigin_tail*, porigin_left, porigin_right)
+  -- if porigin =/= porigin_left
+def $parameter_receive_before(porigin*, porigin_left, porigin_right) = false -- otherwise
+def $parameter_receive_lookup_prefix(preceivebirth, preceiveorder, porigin_site, porigin_effect, n_current) = preceivebirth.PREFIX
+  -- if $parameter_receive_before(preceiveorder.LEAVES, porigin_site, porigin_effect)
+def $parameter_receive_lookup_prefix(preceivebirth, preceiveorder, porigin_site, porigin_effect, n_current) = n_current -- otherwise
+def $parameter_receive_facts_valid(S, preceivebirth, preceiveorder, porigin_effect, eps) = true
+def $parameter_receive_facts_valid(S, preceivebirth, preceiveorder, porigin_effect, pconstantfact :: pconstantfact_tail*) = true
+  -- if pconstantfact.LOOKUP = (pconstantlookup)
+  -- if pconstantlookup.ORIGIN = preceivebirth.ORIGIN /\ pconstantlookup.SITE = pconstantfact.ORIGIN
+  -- if pconstantfact.ORIGIN <- preceiveorder.LEAVES
+  -- if pconstantlookup.PREFIX = $parameter_receive_lookup_prefix(preceivebirth, preceiveorder, pconstantfact.ORIGIN, porigin_effect, |S.USERCONSTANTS|)
+  -- if $global_constant_lookup_valid(S, preceivebirth.ORIGIN, pconstantfact, S.USERCONSTANTS)
+  -- if $global_constant_alias(S, S.USERCONSTANTS[0:pconstantlookup.PREFIX], pconstantfact.ORIGIN) = (puserconstant)
+  -- if $parameter_receive_donor_source(S, puserconstant)
+  -- if $parameter_receive_facts_valid(S, preceivebirth, preceiveorder, porigin_effect, pconstantfact_tail*)
+def $parameter_receive_facts_valid(S, preceivebirth, preceiveorder, porigin_effect, pconstantfact :: pconstantfact_tail*) = $parameter_receive_facts_valid(S, preceivebirth, preceiveorder, porigin_effect, pconstantfact_tail*)
+  -- if pconstantfact.LOOKUP = eps
+def $parameter_receive_facts_valid(S, preceivebirth, preceiveorder, porigin_effect, pconstantfact*) = false -- otherwise
+
+;; A deprecated fetch returns its captured builtin value even if the callback
+;; publishes a scalar shadow. Bind that fact to the actual received payload.
+dec $parameter_receive_payload(pstate, porigin, pvalue, porigin, porigin*) : pvalue?
+dec $parameter_receive_payload_at(pstate, porigin, pvalue, porigin, porigin*) : pvalue?
+dec $parameter_receive_payload_items(pstate, porigin, nat, phpType13*, pentry*, int, porigin, porigin*) : pvalue?
+dec $parameter_receive_effect_value(pstate, preceivebirth, porigin) : bool
+def $parameter_receive_payload(S, porigin_root, pvalue, porigin_leaf, porigin_seen*) = $parameter_receive_payload_at(S, porigin_root, pvalue, porigin_leaf, porigin_seen* ++ [porigin_root])
+  -- if ~(porigin_root <- porigin_seen*)
+def $parameter_receive_payload(S, porigin_root, pvalue, porigin_leaf, porigin_seen*) = eps -- otherwise
+def $parameter_receive_payload_at(S, porigin_root, pvalue, porigin_root, porigin_seen*) = (pvalue)
+def $parameter_receive_payload_at(S, porigin_root, pvalue, porigin_leaf, porigin_seen*) = $parameter_receive_payload(S, porigin_target, pvalue, porigin_leaf, porigin_seen*)
+  -- if porigin_root =/= porigin_leaf
+  -- if $compiled_redirect(S, porigin_root) = ((porigin_target, expression, false, z))
+def $parameter_receive_payload_at(S, porigin_root, PARRAY n, porigin_leaf, porigin_seen*) = $parameter_receive_payload_items(S, porigin_root, 0, phpType13*, S.ARRAYS[n].ITEMS, $(-9223372036854775808), porigin_leaf, porigin_seen*)
+  -- if porigin_root =/= porigin_leaf
+  -- if $compiled_redirect(S, porigin_root) = eps
+  -- if $origin_node(S.SOURCES, porigin_root) = (NExprArray (SEQUENCE phpType13*) metadata)
+  -- if $(n < |S.ARRAYS|) /\ HARRAY n <- S.ALLOCATIONS
+def $parameter_receive_payload_at(S, porigin_root, pvalue, porigin_leaf, porigin_seen*) = eps -- otherwise
+def $parameter_receive_payload_items(S, porigin_array, n_index, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, (ENTRY pkey pitem) :: pentry_tail*, i, porigin_leaf, porigin_seen*) = (pvalue)
+  -- if porigin_item = $constant_child(porigin_array, [PCFIELD 0, PCINDEX n_index])
+  -- if $constant_callable_flow_key(S, porigin_item, phpType5, i) = (pkey)
+  -- if $parameter_receive_payload(S, $constant_child(porigin_item, [PCFIELD 1]), $entry_value(S, pitem), porigin_leaf, porigin_seen*) = (pvalue)
+def $parameter_receive_payload_items(S, porigin_array, n_index, (NArrayItem phpType5 expression (BOOLEAN false) (BOOLEAN false) metadata) :: phpType13*, (ENTRY pkey pitem) :: pentry_tail*, i, porigin_leaf, porigin_seen*) = $parameter_receive_payload_items(S, porigin_array, $(n_index + 1), phpType13*, pentry_tail*, $next_history(i, pkey), porigin_leaf, porigin_seen*)
+  -- if porigin_item = $constant_child(porigin_array, [PCFIELD 0, PCINDEX n_index])
+  -- if $constant_callable_flow_key(S, porigin_item, phpType5, i) = (pkey)
+  -- if $parameter_receive_payload(S, $constant_child(porigin_item, [PCFIELD 1]), $entry_value(S, pitem), porigin_leaf, porigin_seen*) = eps
+def $parameter_receive_payload_items(S, porigin_array, n_index, phpType13*, pentry*, i, porigin_leaf, porigin_seen*) = eps -- otherwise
+def $parameter_receive_effect_value(S, preceivebirth, porigin_effect) = true
+  -- if $deprecated_constant_source(S, porigin_effect, preceivebirth.PREFIX) =/= eps
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_effect) = (pconstantfact)
+  -- if pconstantfact.VALUE = (PINT 2048) /\ pconstantfact.CLASS = PVSCALAR /\ pconstantfact.LOOKUP = eps
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $parameter_receive_payload(S, porigin_initializer, pvalue, porigin_effect, eps) = (PINT 2048)
+def $parameter_receive_effect_value(S, preceivebirth, porigin_effect) = true
+  -- if $deprecated_constant_source(S, porigin_effect, preceivebirth.PREFIX) = eps
+  -- if $deprecated_constant_source(S, porigin_effect, 0) = eps
+def $parameter_receive_effect_value(S, preceivebirth, porigin_effect) = true
+  -- if $deprecated_constant_source(S, porigin_effect, preceivebirth.PREFIX) = eps
+  -- if $deprecated_constant_source(S, porigin_effect, 0) =/= eps
+  -- if $global_constant_alias(S, S.USERCONSTANTS[0:preceivebirth.PREFIX], porigin_effect) = (puserconstant)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_effect) = (pconstantfact)
+  -- if pconstantfact.VALUE = (puserconstant.VALUE)
+  -- if pconstantfact.CLASS = puserconstant.CLASS
+  -- if $constant_expression_root(S, preceivebirth.ORIGIN) = (porigin_initializer)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $parameter_receive_payload(S, porigin_initializer, pvalue, porigin_effect, eps) = (puserconstant.VALUE)
+def $parameter_receive_effect_value(S, preceivebirth, porigin_effect) = true
+  -- if $deprecated_constant_source(S, porigin_effect, preceivebirth.PREFIX) = eps
+  -- if $deprecated_constant_source(S, porigin_effect, 0) =/= eps
+  -- if $global_constant_alias(S, S.USERCONSTANTS[0:preceivebirth.PREFIX], porigin_effect) = (puserconstant)
+  -- if $parameter_callable_class(puserconstant.CLASS)
+def $parameter_receive_effect_value(S, preceivebirth, porigin_effect) = false -- otherwise
+
+;; The added branch admits genuine historical aliases; quiet295 stays frozen.
+def $parameter_callable_flow_at(S, pfunction, n_index, porigin_site, porigin_scope?, pvalueclass, porigin_seen*) = true
+  -- if $compiled_redirect(S, porigin_site) = eps
+  -- if $parameter_callable_class(pvalueclass) /\ $parameter_callable_quiet_class(pvalueclass)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.LEXICAL_CLASS = eps /\ pcallcontext.CALLED_CLASS = eps
+  -- if porigin_scope? = eps
+  -- if $parameter_receive_owner((pcallcontext)) = (n_owner)
+  -- if $parameter_receive_birth(S, n_owner) = (preceivebirth)
+  -- if $parameter_receive_named_entry(S, preceivebirth)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = $default_parameter_origin(S, pfunction.ORIGIN, n_index)
+  -- if $parameter_receive_default_valid(S, pconstantcontext)
+  -- if $parameter_receive_state_valid(S)
+  -- if $default_at(pfunction.DEFAULTS, n_index) = (pdefault)
+  -- if $parameter_receive_order(S, preceivebirth, pdefault.ORIGIN, porigin_scope?, eps) = (preceiveorder)
+  -- if preceiveorder.EFFECTS = [porigin_effect]
+  -- if $parameter_callable_quiet_facts(pconstantcontext.FACTS)
+  -- if preceivebirth.PREFIX = $parameter_receive_ingress_prefix(S.EVALBINDINGS, n_owner, |S.USERCONSTANTS|)
+  -- if $parameter_receive_registrations_valid(S, preceivebirth, n_owner, porigin_effect, S.USERCONSTANTS, 0)
+  -- if $parameter_receive_facts_valid(S, preceivebirth, preceiveorder, porigin_effect, pconstantcontext.FACTS)
+  -- if $parameter_receive_effect_value(S, preceivebirth, porigin_effect)
+  -- if $constant_fact_at(pconstantcontext.FACTS, porigin_site) = (pconstantfact)
+  -- if pconstantfact.CLASS = pvalueclass /\ pconstantfact.LOOKUP =/= eps

@@ -1,0 +1,136 @@
+;; read_dimension always supplies a result zval to an implicit offsetGet call.
+;; This demand is independent of whether the surrounding expression is used.
+dec $access_reference_get(pstate, paccess) : bool
+dec $access_reference_mode(paccessmode) : bool
+dec $access_reference_fetch(pstate, paccess, nat) : pstate
+dec $access_reference_cell(pstate, nat, nat) : pstate
+dec $access_reference_unwrap(nat*, nat) : nat*
+dec $access_reference_compound(pstate, paccess, nat) : pstate
+dec $access_reference_binary(pstate, paccess, nat) : pstate
+dec $access_unset_captured(pbase) : bool
+
+;; Typed non-mixed Get verification remains on the user-paused return lane.
+def $access_reference_signature(pssignature) = (pssignature.RETURNS = eps \/ "mixed" <- $ptmasks(pssignature.RETURNS))
+
+def $access_call(S, paccess, ptbytes) = S[.TODO = (CALL_ARGS (METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN) eps (|poperand*|) poperand* (paccess.SITE) paccess.LINE) :: (ACCESS_RESULT paccess[.PHASE = ACCESS_CALL ptbytes]) :: ptask_tail*][.ORIGIN = (paccess.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ptbytes = $ptascii("offsetGet")
+  -- if paccess.OBJECT = (n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, ptbytes, |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $access_reference_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if poperand* = $access_arguments(paccess)
+  -- if S.TODO = ptask :: ptask_tail*
+
+def $reference_callback_used(S, pcallcontext) = (true)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (ACCESS_RESULT paccess) :: ptask*
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")
+  -- if $access_frame(S, pcallcontext, pframe)
+
+def $access_reference_get(S, paccess) = true
+  -- if paccess.OBJECT = (n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $effective_method(S, porigin_class, $ptascii("offsetGet"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if $access_reference_signature(pmethoddesc.FUNCTION.SIGNATURE)
+def $access_reference_get(S, paccess) = false -- otherwise
+
+def $access_reference_mode(ACCESS_FETCH b_unset b_rw) = true
+def $access_reference_mode(paccessmode) = $access_compound_mode(paccessmode) -- otherwise
+
+def $access_reference_result_pending(S) = true
+  -- if S.TODO = (ACCESS_RESULT paccess) :: ptask*
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")
+  -- if $access_reference_get(S, paccess)
+  -- if S.RESULT = REFERENCE n
+  -- if $access_reference_mode(paccess.MODE)
+def $access_reference_result_pending(S) = false -- otherwise
+
+;; A shared writable return stays a real reference. ZVAL_UNREF moves a sole
+;; reference's value into its existing owned VAR without a referent decrement.
+def $access_reference_unwrap(eps, n) = eps
+def $access_reference_unwrap(n :: n_tail*, n) = $access_reference_unwrap(n_tail*, n)
+def $access_reference_unwrap(n_head :: n_tail*, n) = n_head :: $access_reference_unwrap(n_tail*, n)
+  -- if n_head =/= n
+def $access_reference_cell(S, n, 1) = S[.REFCELLS = $access_reference_unwrap(S.REFCELLS, n)]
+def $access_reference_cell(S, n, n_count) = S -- if $(n_count > 1)
+def $access_reference_fetch(S, paccess, n) = S_cell[.TODO = $access_cut_tasks(ptask_tail*, paccess.TARGET, BASE_RETURNED paccess.TARGET n)][.ORIGIN = (paccess.TARGET)][.LOCATION = ROOT n][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_cell = $access_reference_cell(S, n, $heap_owners($heap_prune($heap_graph(S)), HCELL n))
+rule PhpStep/access-reference-fetch: S ~> $access_reference_fetch(S, paccess, n)
+  -- if S.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
+  -- if paccess.MODE = ACCESS_FETCH b_unset b_rw
+  -- if $access_reference_result_pending(S)
+  -- if $access_valid(S, paccess)
+  -- if $access_reference_get(S, paccess)
+  -- if S.RESULT = REFERENCE n
+  -- if $call_reference_operand_valid(S, S.RESULT)
+
+;; A final reference fetch can release its returned parent and leave an
+;; authenticated INDIRECT row. Reference consumers store no base in TASK.
+def $key_writer_valid(S, pkeywriter, ptask*) = true
+  -- if $key_write_reference_task(pkeywriter.TASK)
+  -- if pkeywriter.BASE = BASE_PLACE pkeywriter.TARGET (ELEMENT n pkey)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if $(n < |S.ARRAYS|)
+  -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) =/= eps
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HARRAY n) > 0)
+  -- if $key_write_writer(S, pkeywriter.SITE, pkeywriter.TASK, pkeywriter.BASE, pkeywriter.RHS) = (pkeywriter[.TEMP = eps])
+  -- if $key_writer_base_source(S, pkeywriter)
+  -- if $key_write_rhs_source(S, pkeywriter)
+  -- if $key_write_temporary_valid(S, pkeywriter)
+
+;; Unset's source prefix is borrowed metadata after the child table is
+;; captured. A warning callback may retire its parent or remove that row.
+def $access_unset_captured(BASE_PLACE porigin (ELEMENT n pkey)) = true
+def $access_unset_captured(BASE_DIM pbase poperand z) = $access_unset_captured(pbase)
+def $access_unset_captured(pbase) = false -- otherwise
+def $key_unset_source(S, porigin, pbase) = true
+  -- if $access_unset_captured(pbase)
+  -- if porigin = PORIGIN n pcpath
+  -- if $key_unset_parent(pcpath) = (pcpath_parent)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NStmtUnset phpType25 metadata)
+  -- if $key_write_base_source(S, porigin, pbase)
+
+;; DIM_OP keeps the raw reference through its operator and Set. Capturing the
+;; old referent as another value owner would delay destruction after a Set write.
+def $access_compound_mode(ACCESS_REFERENCE_COMPOUND pbin n) = true
+def $access_extra_roots(paccess) = [HCELL n] ++ $value_nodes(paccess.VALUE)
+  -- if paccess.MODE = ACCESS_REFERENCE_COMPOUND pbin n
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
+def $access_source(S, paccess) = true
+  -- if paccess.MODE = ACCESS_REFERENCE_COMPOUND pbin n
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetSet")
+  -- if $access_reference_get(S, paccess)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if $access_source(S, paccess[.MODE = ACCESS_COMPOUND pbin PNULL])
+
+def $access_reference_binary(S, paccess, n) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.HELD = S.HELD ++ $access_operand_roots(paccess) ++ $access_object_roots(paccess.OBJECT, true) ++ [HCELL n]]
+  -- if S.TODO = ptask :: ptask_tail*
+def $access_reference_compound(S, paccess, n) = $access_compound_set(S_binary[.TODO = S.TODO][.HELD = S.HELD][.RESULT = KNOWN PNULL], paccess[.MODE = ACCESS_REFERENCE_COMPOUND pbin n][.VALUE = pvalue_result][.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if S_work = $access_reference_binary(S, paccess, n)
+  -- if S_work.STORE[n] = DEFINED pvalue_left
+  -- if S_rhs = $quiet_operand(S_work, paccess.SELECTED)
+  -- if S_rhs.RESULT = KNOWN pvalue_right
+  -- if S_binary = $binary_apply(S_rhs[.RESULT = KNOWN PNULL], pbin, pvalue_left, pvalue_right, paccess.LINE)
+  -- if S_binary.COMPLETION = NORMAL
+  -- if S_binary.RESULT = KNOWN pvalue_result
+def $access_reference_compound(S, paccess, n) = S_binary[.HELD = S.HELD]
+  -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if S_work = $access_reference_binary(S, paccess, n)
+  -- if S_work.STORE[n] = DEFINED pvalue_left
+  -- if S_rhs = $quiet_operand(S_work, paccess.SELECTED)
+  -- if S_rhs.RESULT = KNOWN pvalue_right
+  -- if S_binary = $binary_apply(S_rhs[.RESULT = KNOWN PNULL], pbin, pvalue_left, pvalue_right, paccess.LINE)
+  -- if S_binary.COMPLETION =/= NORMAL
+rule PhpStep/access-reference-compound: S ~> $access_reference_compound(S, paccess, n)
+  -- if S.TODO = (ACCESS_RESULT paccess) :: ptask_tail*
+  -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if $access_reference_result_pending(S)
+  -- if $access_valid(S, paccess)
+  -- if $access_reference_get(S, paccess)
+  -- if S.RESULT = REFERENCE n
+  -- if $call_reference_operand_valid(S, S.RESULT)

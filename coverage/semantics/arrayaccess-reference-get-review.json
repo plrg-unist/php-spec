@@ -1,0 +1,304 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "module": "spec/semantics/319-arrayaccess-reference-get.watsup",
+  "decision": "Untyped/mixed reference Get scope independently accepted for canonical integration at302",
+  "semantic_revision": "986aded97894f4b3192da58190bd2f57a0a64dc6",
+  "scope": [
+    "Untyped/mixed implicit reference Get always demands a result",
+    "R/IS dereference; writable shared CELL retained and genuine sole wrapper moved before receiver release",
+    "Raw DIM_OP reference owned through Set without a stale referent owner",
+    "Authenticated final reference rows and borrowed Unset source metadata"
+  ],
+  "sources": {
+    "unique_normal": 14,
+    "cuts": [
+      {
+        "revision": "1ebb89a1c5b3fc9085c1a74950c2916f9093b1d6",
+        "report": ".tools/arrayaccess-reference-get/run-99_ce3yl/report.json",
+        "selection": [
+          "mixed-get-quiet-copy-and-unused-demand",
+          "mixed-get-keeps-property-reference-cell",
+          "compound-rebound-reference-retires-before-catch",
+          "reference-sharing-tested-before-receiver-retirement"
+        ],
+        "models_seconds": {
+          "mixed-get-quiet-copy-and-unused-demand": 14.836,
+          "mixed-get-keeps-property-reference-cell": 10.946,
+          "compound-rebound-reference-retires-before-catch": 13.744,
+          "reference-sharing-tested-before-receiver-retirement": 10.643
+        }
+      },
+      {
+        "revision": "986aded97894f4b3192da58190bd2f57a0a64dc6",
+        "report": ".tools/arrayaccess-reference-get/run-bwjt7_9j/report.json",
+        "selection": [
+          "shared-get-copy-and-nested-alias",
+          "get-rebinds-name-but-returns-old-cell",
+          "sole-reference-direct-target-still-invalid",
+          "compound-new-result-and-updates-share-cell",
+          "compound-reference-array-replaced-during-set",
+          "compound-reference-array-retained-after-name-rebind",
+          "sole-reference-false-w-fetch-unwraps",
+          "shared-reference-false-w-fetch-preserved",
+          "reference-argument-keeps-captured-returned-row",
+          "unset-keeps-captured-child-after-parent-retirement"
+        ],
+        "models_seconds": {
+          "shared-get-copy-and-nested-alias": 14.108,
+          "get-rebinds-name-but-returns-old-cell": 10.105,
+          "sole-reference-direct-target-still-invalid": 8.881,
+          "compound-new-result-and-updates-share-cell": 10.915,
+          "compound-reference-array-replaced-during-set": 11.4,
+          "compound-reference-array-retained-after-name-rebind": 11.773,
+          "sole-reference-false-w-fetch-unwraps": 9.883,
+          "shared-reference-false-w-fetch-preserved": 10.071,
+          "reference-argument-keeps-captured-returned-row": 9.15,
+          "unset-keeps-captured-child-after-parent-retirement": 11.453
+        }
+      }
+    ]
+  },
+  "recovery_root": ".tools/arrayaccess-reference-get-current-18",
+  "commands": [
+    "python3 -B tests/semantics/arrayaccess_reference_get_prepare.py",
+    "python3 -B tests/semantics/arrayaccess_reference_get_run.py <prepared-report> [source-id ...]",
+    "python3 -B tests/semantics/arrayaccess_reference_get_reached_prepare.py <prepared-report>",
+    "python3 -B tests/semantics/arrayaccess_reference_get_reached_run.py <manifest> [recipe-id ...]"
+  ],
+  "caps": {
+    "compiler": 120,
+    "strict_SL_initial": 120,
+    "native": 45,
+    "CLI": 60,
+    "outer": 90,
+    "steps": 100000,
+    "source_phase": 480
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "cwd": "/home/user/workspace/php-spec/.tools/arrayaccess-reference-get-current-18",
+    "PHP_SPEC_SCRIPT_ENCODING_removed": true
+  },
+  "runtime_inputs": {
+    ".tools/php/bin/php": {
+      "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      "bytes": 49551712,
+      "mode": 493,
+      "uid": 1001,
+      "gid": 1001
+    },
+    "_build/default/adapter/main.exe": {
+      "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "bytes": 29115976,
+      "mode": 365,
+      "uid": 1001,
+      "gid": 1001
+    },
+    ".tools/spectec/bin/p4spectec": {
+      "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+      "bytes": 32150944,
+      "mode": 493,
+      "uid": 1001,
+      "gid": 1001
+    },
+    "tests/semantics/_build/default/numeric_runner.exe": {
+      "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "bytes": 28628992,
+      "mode": 365,
+      "uid": 1001,
+      "gid": 1001
+    }
+  },
+  "failures_zero_credit": [
+    {
+      "report": ".tools/arrayaccess-reference-get/run-6syj44us/report.json",
+      "kind": "compiler disjunctive-pattern binding failure; corrected only executable mode predicate"
+    },
+    {
+      "report": ".tools/arrayaccess-reference-get/run-99_ce3yl/report.json",
+      "kind": "later nested-reference source failure; prior4 exact rows retained separately"
+    },
+    {
+      "report": ".tools/arrayaccess-reference-get/run-6y3hhknl/report.json",
+      "kind": "later borrowed Unset source failure; source metadata corrected without lifetime changes"
+    },
+    {
+      "report": ".tools/arrayaccess-reference-get/reached-run-ogmut1c0/report.json",
+      "kind": "compound fixture parse error; prior3 strict-SL groups retained separately"
+    }
+  ],
+  "remaining": [
+    "Typed non-mixed reference-return verification remains user-paused",
+    "Named reference sends and nested pre/post captured-row consumers",
+    "VALUE-return Get warning-handler continuation",
+    "Stringable DIM_OP and wider property/GLOBALS/memoized producers; complete core remains open"
+  ],
+  "reached": {
+    "recipes": 6,
+    "physical_premises": 375,
+    "revision": "986aded97894f4b3192da58190bd2f57a0a64dc6",
+    "cuts": [
+      {
+        "report": ".tools/arrayaccess-reference-get/reached-run-ogmut1c0/report.json",
+        "credited": [
+          {
+            "id": "discarded-get-demand",
+            "premises": 44,
+            "seconds": 20.288
+          },
+          {
+            "id": "sole-w-reference-move",
+            "premises": 50,
+            "seconds": 24.74
+          },
+          {
+            "id": "shared-w-reference-preserved",
+            "premises": 49,
+            "seconds": 25.357
+          }
+        ],
+        "overall_report_passed": false,
+        "reason": "later compound fixture parse error; accepted preceding streams retained"
+      },
+      {
+        "report": ".tools/arrayaccess-reference-get/reached-run-clrjg0n6/report.json",
+        "credited": [
+          {
+            "id": "raw-compound-carrier-and-throw",
+            "premises": 80,
+            "seconds": 64.987
+          },
+          {
+            "id": "nested-reference-acquisition-row",
+            "premises": 70,
+            "seconds": 27.771
+          },
+          {
+            "id": "unset-retired-parent-source",
+            "premises": 82,
+            "seconds": 37.928
+          }
+        ],
+        "overall_report_passed": true
+      }
+    ],
+    "mode": "strict SL",
+    "cache": false,
+    "deterministic": true,
+    "jobs": 1,
+    "compiler_cap_seconds": 120,
+    "execution_cap_seconds": 300
+  },
+  "compiler_initial": {
+    "revision": "986aded97894f4b3192da58190bd2f57a0a64dc6",
+    "report": ".tools/arrayaccess-reference-get/run-bwjt7_9j/report.json",
+    "algo_emitted_bytes": 9863445,
+    "struct_emitted_bytes": 9469107,
+    "initial_premises": 6,
+    "initial_seconds": 5.31
+  },
+  "independent_review": "arguments_review_18: semantic/source/fixture correctness and exact raw gates independently accepted; no reviewer execution actor",
+  "source_cut_compatibility": "The later captured-row and Unset admission changes apply to final reference-consumer or borrowed Unset carriers; prior4 author originals use neither new carrier. Their source bytes and Get/compound/unwrap semantics remain unchanged; no renewed execution credit.",
+  "source_references": [
+    "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_dimension",
+    "vendor/php-src/Zend/zend_execute.c::zend_fetch_dimension_address",
+    "vendor/php-src/Zend/zend_execute.c::zend_binary_assign_op_obj_dim",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_ASSIGN_REF"
+  ],
+  "recovery_note": "Original report paths resolve under recovery_root; current_parent_join and final_parent_join paths resolve under their own recovery_roots, all from the canonical project. Raw inputs and streams stay ignored; maintained originals and renderers regenerate them with local tools.",
+  "current_parent_join": {
+    "parent": "ff1b7a888ec27dde291ecef62b0b6633dd7772ed",
+    "revision": "4428e4a38b02f99ba5c3e12fdb284f9b20bd1c92",
+    "modules": 298,
+    "recovery_root": ".tools/arrayaccess-reference-get-current-parent-18",
+    "preparation": ".tools/arrayaccess-reference-get/prepared-t1pactok/report.json",
+    "report": ".tools/arrayaccess-reference-get/run-8uj_gsc1/report.json",
+    "commands": [
+      "python3 tests/semantics/arrayaccess_reference_get_prepare.py reference-get-parks-in-fiber-core-warning-handler",
+      "python3 tests/semantics/arrayaccess_reference_get_run.py .tools/arrayaccess-reference-get/prepared-t1pactok/report.json reference-get-parks-in-fiber-core-warning-handler"
+    ],
+    "compiler": {
+      "algo": {
+        "emitted_bytes": 9931608,
+        "seconds": 3.074
+      },
+      "struct": {
+        "emitted_bytes": 9540684,
+        "seconds": 3.969
+      }
+    },
+    "initial": {
+      "premises": 6,
+      "seconds": 5.069
+    },
+    "new_normal_originals": 1,
+    "source": "reference-get-parks-in-fiber-core-warning-handler",
+    "stdout": "A:H:8192;G;parked;E:8;F:30719;R:30719;",
+    "model_seconds": 17.12,
+    "outcome": "Native/model exact normal; physical stderr empty; all producer exits0",
+    "inputs_stable": true,
+    "closed_groups": 5,
+    "profile_and_caps": "Unchanged profile30719 and compiler/init120, native45, CLI60/outer90, 100000 steps, jobs1",
+    "runtime_inputs": {
+      ".tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "bytes": 49551712
+      },
+      ".tools/spectec/bin/p4spectec": {
+        "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+        "bytes": 32150944
+      },
+      "_build/default/adapter/main.exe": {
+        "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+        "bytes": 29115976
+      },
+      "tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+        "bytes": 28628992
+      }
+    },
+    "scope": "Genuine313 internal Fiber reporting continuation through warning/Get suspension; shared property CELL writes8. Parent318 fields preserved; no dynamic-property runtime claim. Earlier14/375 cuts retained without renewal."
+  },
+  "final_parent_join": {
+    "parent": "b13583577cdcab313e5296025dd19e3e9182a211",
+    "revision": "522b8f48c62a16a12d3992c8c51fbd3176089ad5",
+    "modules": 302,
+    "recovery_root": ".tools/arrayaccess-reference-get-current-parent-18",
+    "report": ".tools/arrayaccess-returned-append/actual-prepared-ziwdvcjg/report.json",
+    "command": "python3 tests/semantics/arrayaccess_returned_append_current_prepare.py",
+    "compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "compiler": {
+      "algo": {
+        "emitted_bytes": 10126883,
+        "seconds": 3.089
+      },
+      "struct": {
+        "emitted_bytes": 9737353,
+        "seconds": 3.897
+      }
+    },
+    "outcome": "Full algo/struct pass; physical stderr empty; exits0; all introduced319 helpers present",
+    "inputs_stable": true,
+    "closed_groups": 2,
+    "compiler_cap_seconds": 120,
+    "jobs": 1,
+    "compatibility": "Exact319 is preserved beside inherited DEFAULTRECEIVE/RECEIVES/USERPREFIX/PARAMETER* schemas and DIR/160 guards. Given-argument Get/handler contexts have neutral DEFAULTRECEIVE eps; independent review found no introduced runtime overlap. Earlier14/375 and actual298 source keep their own cuts without renewal.",
+    "scope": "Compiler/frontend/provider preparation only; no new source/init/reached execution credit"
+  }
+}

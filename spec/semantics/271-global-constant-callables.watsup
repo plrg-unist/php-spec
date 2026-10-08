@@ -350,6 +350,7 @@ def $global_constant_observation_lookup(S, porigin_site, pvalue, pvalueclass) = 
 dec $global_constant_lookup_valid(pstate, porigin, pconstantfact, puserconstant*) : bool
 def $global_constant_lookup_valid(S, porigin_decl, pconstantfact, puserconstant_prior*) = true
   -- if porigin_decl = PORIGIN n_unit pcpath_decl
+  -- if $global_constant_declaration_source(S.SOURCES, porigin_decl)
   -- if $global_constant_lookup_required(S, porigin_decl, pconstantfact)
   -- if $constant_declaration(S, porigin_decl) = ((preqbytes, z))
   -- if $declaration_entered(S.DECLARATIONS, n_unit)

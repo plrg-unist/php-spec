@@ -5,6 +5,7 @@ dec $cast_truth_kind(pvalue) : bool
 dec $cast_truth_int(pstate, pvalue) : int
 dec $cast_object_value(pvalue) : bool
 dec $cast_empty_object_value(pstate, pvalue) : bool
+dec $property_unique_names(ppropertyslot*) : bool
 
 ;; Explicit casts over the six current value kinds; object conversion needs the
 ;; object model. The compiler owns constant-cast eligibility and source timing.
@@ -32,6 +33,7 @@ def $cast_value(S, CASTARRAY, PUNDEFINED, z) = $allocate_array(S, {ITEMS ([ENTRY
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array($objectprops_mark(S, n), $property_cast_array(ppropertyslot*))
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_unique_names(ppropertyslot*)
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*
 def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})

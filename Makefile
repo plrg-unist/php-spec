@@ -118,6 +118,10 @@ test-semantics: build
 	python3 tests/semantics/global_constant_callable_protocol.py
 	python3 tests/semantics/global_constant_prebind_protocol.py
 	python3 tests/semantics/global_constant_objects_protocol.py
+	python3 tests/semantics/parameter_constant_callable_protocol.py
+	python3 tests/semantics/parameter_callable_alias_protocol.py
+	python3 tests/semantics/parameter_alias_causality_protocol.py
+	python3 tests/semantics/parameter_multiple_frontier_protocol.py
 	python3 tests/semantics/default_parameter_compiler.py
 	python3 tests/semantics/default_parameters.py
 	python3 tests/semantics/default_parameter_protocol.py
@@ -166,6 +170,11 @@ test-semantics: build
 	python3 tests/semantics/fiber_ordinary_review.py
 	python3 tests/semantics/fiber_protected_state.py
 	python3 tests/semantics/fiber_protected_review.py
+	python3 tests/semantics/fiber_core_state.py
+	python3 tests/semantics/fiber_core_review.py
+	python3 tests/semantics/fiber_core_integration_protocol.py
+	python3 tests/semantics/fiber_core_file_review.py
+	python3 tests/semantics/fiber_core_latest_sources.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -335,6 +344,16 @@ test-semantics: build
 	python3 tests/semantics/instance_set_access_protocol.py --group alias
 	python3 tests/semantics/instance_set_access_protocol.py --group cv
 	python3 tests/semantics/instance_set_access_protocol.py --group recursive
+	python3 tests/semantics/dynamic_property_warning_sources.py source
+	python3 tests/semantics/dynamic_property_warning_sources.py boundary
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group reentry
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group retirement
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group pending
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group resurrection
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group pending-resurrection
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group temporary-cleanup
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group gc-protected
+	python3 tests/semantics/dynamic_property_warning_protocol.py --group exit
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind normal
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind compiler
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind composition
@@ -542,6 +561,7 @@ test-semantics: build
 	python3 tests/semantics/include_mutable_protocol.py
 	python3 tests/semantics/include_ini_prefix_protocol.py
 	python3 tests/semantics/include_chdir_protocol.py
+	python3 tests/semantics/fiber_chdir_scope_protocol.py
 	python3 tests/semantics/include_chdir_pipe_protocol.py
 	python3 tests/semantics/include_chdir_warning_protocol.py
 	python3 tests/semantics/include_chdir_adapter_protocol.py

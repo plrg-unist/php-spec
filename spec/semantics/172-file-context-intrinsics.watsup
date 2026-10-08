@@ -313,11 +313,13 @@ def $config_missing(eps, n) = eps
 def $config_missing(NAMED_HOLE :: pnamedslot*, n) = (n)
 def $config_missing((NAMED_SENT poperand) :: pnamedslot*, n) = $config_missing(pnamedslot*, $(n + 1))
 dec $config_method_receiver(pstate, pconfigcall) : bool
+dec $fiber_core_config(pstate, pconfigcall) : bool
+dec $fiber_core_config_valid(pstate, pconfigcall) : bool
 def $config_method_receiver(S, pconfigcall) = true
   -- if pconfigcall.OWNER = (n)
   -- if $exit_method_site(S, pconfigcall.SITE)
 def $config_method_receiver(S, pconfigcall) = false -- otherwise
-def $config_strict(S, pconfigcall) = false -- if $config_method_receiver(S, pconfigcall)
+def $config_strict(S, pconfigcall) = false -- if $config_method_receiver(S, pconfigcall) \/ $fiber_core_config(S, pconfigcall)
 def $config_strict(S, pconfigcall) = $exit_strict(S, pconfigcall.SITE) -- otherwise
 dec $config_conversion(pstate, pconfigcall, pvalue) : ptypeconversion
 def $config_conversion(S, pconfigcall, PSTRING n*) = TYPEVALUE (PSTRING n*)
@@ -345,6 +347,7 @@ def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_in
   -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue_original*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
   -- if ~$config_method_receiver(S, pconfigcall)
+  -- if ~$fiber_core_config(S, pconfigcall)
   -- if pconfigcall.KIND =/= INTRINSIC_FROM_CALLABLE /\ pconfigcall.KIND =/= INTRINSIC_CLOSURE_CURRENT /\ ~$closure_bind_kind(pconfigcall.KIND) /\ ~$fiber_kind(pconfigcall.KIND) /\ ~$weakref_kind(pconfigcall.KIND)
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $config_error(pstate, pconfigcall, text, preqbytes) : pstate
@@ -1120,7 +1123,7 @@ def $config_pending_valid(S, pconfigcall, b) = false -- otherwise
 def $call_task_valid(S, CONFIG_ARGS pconfigcall) = ($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall))
 def $call_task_valid(S, CONFIG_SEND pconfigcall) = $config_pending_valid(S, pconfigcall, false)
 def $call_task_valid(S, CONFIG_UNPACK_PREP pconfigcall) = $config_pending_valid(S, pconfigcall, true)
-def $config_invoke_valid(S, pconfigcall) = ($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall) /\ $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX))
+def $config_invoke_valid(S, pconfigcall) = (($config_call_valid(S, pconfigcall) /\ $config_sent_shape(S, pconfigcall) /\ $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)) \/ $fiber_core_config_valid(S, pconfigcall))
 def $call_task_valid(S, CONFIG_INVOKE pconfigcall) = $config_invoke_valid(S, pconfigcall)
 def $call_task_valid(S, CONFIG_INI_NULL_RESULT pconfigcall) = $config_ini_null_valid(S, pconfigcall)
 def $call_task_valid(S, CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) = $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)

@@ -52,3 +52,29 @@ retains returned-child ArrayAccess309 and collector301, passing strict compilati
 the same exact original and47 focused source-retirement/GC/public premises. A
 heap-identical DISCARD-only NOGC receipt on genuine SOURCE_ENTER is rejected;
 earlier suites keep their original inputs and execution credit.
+
+Module320 adds literal `$GLOBALS` FETCH_GLOBALS selection before direct ECHO or a
+literal property read. It authenticates the actual AST, certified variable line
+and completed compiler image, without requiring an ordinary global scope marker.
+Snapshot creation and later warning/coercion remain runtime work. The
+[separate ledger](../../coverage/semantics/source-globals-emission-review.json)
+records private294 strict compilation, four exact originals and independent67
+premises. Parenthesized property FETCH6/property8 reaches first destruction with
+no child snapshot; heap-identical line/scope-marker forgeries reject public entry.
+Returning destructors preserve direct Array Warning5 and property-on-array
+Warning6. Actual296 retains Arrow311/Fiber313 and passes strict compilation with
+independently reviewed introduced compatibility; private source/state cuts keep
+their inputs. Relocations earn no renewed credit; broader emissions remain required.
+
+Module323 adds literal `$this` FETCH_THIS before direct ECHO or a literal property
+read in separately compiled nested code. Selection authenticates the original AST,
+certified receiver/variable line and complete image, independently of runtime
+instance existence. The [ledger](../../coverage/semantics/source-this-emission-review.json)
+retains private297 strict compilation, four exact originals,70 independent premises
+and9 newly affected maintained checks. Genuine method/private scope permits the
+later property read; absent-instance retirement precedes Error5. Parenthesized
+FETCH6/property8 and same-heap line/scope counterexamples pass. The initial wrong
+INSTANCE fixture false has zero accepted credit; previous72 is preparation-only.
+Actual303 passes strict compilation while retaining property warnings318, current
+default/source/DIR rules and ArrayAccess319. Their introduced paths are independently
+reviewed as disjoint here. Private source/state cuts and relocations gain no renewed credit.

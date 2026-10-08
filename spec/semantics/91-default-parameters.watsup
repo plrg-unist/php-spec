@@ -1,5 +1,10 @@
 dec $typed_default_store(pstate, pfunction, nat, pvalue) : pstate
+dec $parameter_receive_entry_valid(pstate) : bool
+dec $parameter_receive_begin(pstate, porigin) : pstate
+dec $parameter_receive_end(pstate) : pstate
+dec $parameter_receive_default_valid(pstate, pconstantcontext) : bool
 dec $typed_stored_default(psdefault, pvalue) : pvalue
+dec $parameter_default_transfer_valid(pstate, pfunction, nat, pvalue, pvalueclass) : bool
 ;; Omitted positional receives use the actual callee and the shared expression
 ;; machine. Cache entries own values; allocation classes never own heap nodes.
 dec $default_at(pdefault*, nat) : pdefault?
@@ -98,7 +103,7 @@ rule PhpStep/default-cached: S ~> $typed_default_store(S, pfunction, n, pdefault
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
   -- if ~$default_scope_dependent(S, pdefault.ORIGIN)
-rule PhpStep/default-evaluate: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_param, LINE $default_parameter_line(S, porigin, n), FACTS eps})][.ORIGIN = (porigin_param)][.TODO = [AT pdefault.ORIGIN (EVAL expression), DEFAULT_BIND porigin n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/default-evaluate: S ~> $parameter_receive_begin(S, porigin_param)[.CONSTCONTEXT = ({ORIGIN porigin_param, LINE $default_parameter_line(S, porigin, n), FACTS eps})][.ORIGIN = (porigin_param)][.TODO = [AT pdefault.ORIGIN (EVAL expression), DEFAULT_BIND porigin n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $function_at($all_functions(S), porigin) = (pfunction)
@@ -107,7 +112,8 @@ rule PhpStep/default-evaluate: S ~> S[.CONSTCONTEXT = ({ORIGIN porigin_param, LI
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
   -- if $origin_node(S.SOURCES, pdefault.ORIGIN) = (expression)
   -- if porigin_param = $default_parameter_origin(S, porigin, n)
-rule PhpStep/default-bind: S ~> $typed_default_store($default_cache_value(S_value[.CONSTCONTEXT = eps], pdefault.ORIGIN, pvalue, pvalueclass), pfunction, n, pvalue)
+  -- if $parameter_receive_entry_valid(S)
+rule PhpStep/default-bind: S ~> $typed_default_store($default_cache_value($parameter_receive_end(S_value)[.CONSTCONTEXT = eps], pdefault.ORIGIN, pvalue, pvalueclass), pfunction, n, pvalue)
   -- if S.TODO = (DEFAULT_BIND porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $function_at($all_functions(S), porigin) = (pfunction)
@@ -116,6 +122,17 @@ rule PhpStep/default-bind: S ~> $typed_default_store($default_cache_value(S_valu
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
   -- if pvalueclass = $constant_class(S_value, pdefault.ORIGIN)
+  -- if $parameter_default_transfer_valid(S_value, pfunction, n, pvalue, pvalueclass)
+rule PhpStep/default-bind-transfer: S ~> S_value[.COMPLETION = UNSUPPORTED "uncertified parameter callable default transfer"]
+  -- if S.TODO = (DEFAULT_BIND porigin n) :: ptask_tail*
+  -- if ptask_tail* = eps
+  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
+  -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if pvalueclass = $constant_class(S_value, pdefault.ORIGIN)
+  -- if ~$parameter_default_transfer_valid(S_value, pfunction, n, pvalue, pvalueclass)
 rule PhpStep/default-bind-abrupt: S ~> S_value
   -- if S.TODO = (DEFAULT_BIND porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
@@ -225,9 +242,10 @@ def $default_bind_task_valid(S, porigin, n) = true
   -- if S.ORIGIN = ($default_parameter_origin(S, porigin, n))
 def $default_bind_task_valid(S, porigin, n) = false -- otherwise
 def $constant_binding(S, DEFAULT_BIND porigin n) = [$default_parameter_origin(S, porigin, n)]
-def $call_after_origin(S, DEFAULT_BIND porigin n) = S[.CONSTCONTEXT = eps][.ORIGIN = (porigin)]
-def $return_discard(S, DEFAULT_BIND porigin n) = S[.CONSTCONTEXT = eps][.ORIGIN = (porigin)]
+def $call_after_origin(S, DEFAULT_BIND porigin n) = $parameter_receive_end(S)[.CONSTCONTEXT = eps][.ORIGIN = (porigin)]
+def $return_discard(S, DEFAULT_BIND porigin n) = $parameter_receive_end(S)[.CONSTCONTEXT = eps][.ORIGIN = (porigin)]
 def $default_context_valid(S, pconstantcontext) = true
+  -- if $parameter_receive_default_valid(S, pconstantcontext)
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if $constant_expression_root(S, pconstantcontext.ORIGIN) = (porigin)

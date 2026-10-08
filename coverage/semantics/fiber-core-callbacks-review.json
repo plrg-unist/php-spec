@@ -1,0 +1,493 @@
+{
+  "scope": "First core internal Fiber callback: cached string error_reporting, weak C receives, argument mapping/ownership, reporting handler suspension and receiver-retirement provenance. Wider internal/FCC/reference/lifecycle behavior remains partial.",
+  "source_revision": "3e7c8f2cbd75e2bc57ef2767d67cf735c2dd96bb",
+  "parent_revision": "9dd9ca8b399cec1cbed27927765d9cb0464cd4ca",
+  "modules": 280,
+  "implementation": {
+    "spec/semantics/30-storage.watsup": "2b7db2dd3deed3dfa6c23b3d6738ab9277cdc2f7178e875f2c5056263eb1499e",
+    "spec/semantics/172-file-context-intrinsics.watsup": "033e3627dd126ddc4b8656be3400778f99c63f16e0e1c6f6be3c43f76b8d4842",
+    "spec/semantics/257-request-destructors.watsup": "362af7f999535082c3e852ccf18fda433c671aa071978d6b8588d3bc8b7fe30d",
+    "spec/semantics/281-fibers.watsup": "5cd6fda8cf6b5f528fbc0f4f222f94b1e3684590bdf9e78307bf69d9b79f61d5",
+    "spec/semantics/313-fiber-core-callbacks.watsup": "3bb883a8054897ebbc9e594a6c9665ba8fe580d1e403cc9ef12ba9cb0d0f48c3",
+    "spec/semantics/modules.json": "6a791ee16371cfd133e04371f49ca25cc7b6fd774a368d2983cd97e87c04c7c4"
+  },
+  "compiler": {
+    "report": "fiber-core-callbacks-sl-qy5p6ztb/report.json",
+    "mode": "SL",
+    "exit": 0,
+    "timeout": false,
+    "jobs": 1,
+    "process_seconds": 120
+  },
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "determinism_checks": true
+  },
+  "commands": {
+    "source": "python3 .tools/fiber-core-review-prep-17/source.py --case CASE (specific catalogs remain in each raw report input list)",
+    "author": "python3 .tools/fiber-core-author-prep-16/state.py --case CASE",
+    "independent": "python3 .tools/fiber-core-state-review-prep-17/check.py --case CASE"
+  },
+  "budgets": {
+    "source_model_seconds": 60,
+    "source_process_seconds": 75,
+    "source_steps": 100000,
+    "state_process_seconds": 120,
+    "state_seek_steps": 4000,
+    "state_finish_steps": 4000,
+    "jobs": 1
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "source_profile": "tests/semantics/profile.json",
+    "script_encoding_override": "removed"
+  },
+  "source_evidence": [
+    {
+      "case": "review-fiber-core-reporting-arity-before-type",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-xeewq_qx/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-equal-mask-keeps-raw-ini",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-1v68qkca/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-long-mask-truncation-and-equality",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-cvgz2hxg/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-lossy-handler-mutates-old-and-trace",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-0l_pl5ti/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-lossy-handler-suspends-before-old-sample",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-zt5we1jt/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-lossy-handler-throws-before-write",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-vxhafpy_/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-named-duplicate-before-c-frame",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-88orq1tn/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-named-weak-receive",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-6zm5ettw/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-query-null-casefold",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-gqtewhx_/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-static-replacement-private-handler-fiber-scope",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-71ofk4zu/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-static-replacement-retires-handler-before-old-sample",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-b83tmkag/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-strict-source-weak-receive",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-2n46yk4_/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-suppressed-start-uses-ini",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-h7srteku/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-suspended-handler-throw-resumer-trace",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-q484g2qf/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-type-error-no-callsite-prefix",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-kt97rc1u/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-unknown-name-before-arity-and-type",
+      "revision": "666a7f594a5fb807e10be0f1698527dedeb11806",
+      "report": "fiber-review-ec8gulxw/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-focused-public-handler-destructor-c-trace",
+      "revision": "bd6834396f7975ff21f4513cdb5a7d0ba8972f16",
+      "report": "fiber-review-epyqfxjz/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-strict-handler-source-remains-strict",
+      "revision": "3e7c8f2cbd75e2bc57ef2767d67cf735c2dd96bb",
+      "report": "fiber-review-tikygnlk/report.json",
+      "normal_agreement": 1
+    },
+    {
+      "case": "review-fiber-core-reporting-handler-receiver-retires-before-old-sample",
+      "revision": "3e7c8f2cbd75e2bc57ef2767d67cf735c2dd96bb",
+      "report": "fiber-review-uuz06iny/report.json",
+      "normal_agreement": 1
+    }
+  ],
+  "normal_originals": 19,
+  "author_states": [
+    {
+      "case": "defined-c-result-precedes-fiber-result-store",
+      "report": "fiber-state-review-nhrpkiwc/report.json",
+      "assertions": 75,
+      "exit": 0,
+      "timeout": false,
+      "result": "true; empty stderr"
+    },
+    {
+      "case": "unknown-name-fails-before-entered-c-arity-and-type",
+      "report": "fiber-state-review-zv6qs62h/report.json",
+      "assertions": 56,
+      "exit": 0,
+      "timeout": false,
+      "result": "true; empty stderr"
+    }
+  ],
+  "author_assertions": 131,
+  "independent_states": [
+    {
+      "case": "core-config-copied-array-owner-and-borrowed-tail",
+      "report": "fiber-state-review-5rohq92k/report.json",
+      "assertions": 61,
+      "exit": 0,
+      "timeout": false,
+      "result": "true; empty stderr"
+    },
+    {
+      "case": "strict-user-handler-config-is-distinct-from-weak-core-c",
+      "report": "fiber-state-review-hwyq_lel/report.json",
+      "assertions": 51,
+      "exit": 0,
+      "timeout": false,
+      "result": "true; empty stderr"
+    },
+    {
+      "case": "suspended-handler-keeps-c-producer-after-start-buffer-returns",
+      "report": "fiber-state-review-5nei2pcs/report.json",
+      "assertions": 58,
+      "exit": 0,
+      "timeout": false,
+      "result": "true; empty stderr"
+    },
+    {
+      "case": "resumed-handler-trace-uses-resume-but-warning-keeps-start",
+      "report": "fiber-state-review-beec2ztw/report.json",
+      "assertions": 45,
+      "exit": 0,
+      "timeout": false,
+      "result": "true; empty stderr"
+    },
+    {
+      "case": "private-handler-retirement-error-is-c-root-not-user-scope",
+      "report": "fiber-state-review-kziu7v6b/report.json",
+      "assertions": 52,
+      "exit": 0,
+      "timeout": false,
+      "result": "true; empty stderr"
+    }
+  ],
+  "independent_assertions": 267,
+  "public_destructor": {
+    "whole_source_report": "fiber-review-0t55ibeu/report.json",
+    "whole_source_agreement": 0,
+    "whole_source_status": "timeout; unconfirmed",
+    "logical_assertions": 63,
+    "bounded_cuts": [
+      {
+        "case": "public-destructor-real-c-trace-and-owner-projections",
+        "report": "fiber-state-review-_v48k4aj/report.json",
+        "assertions": 32,
+        "exit": 0,
+        "timeout": false,
+        "result": "true; empty stderr"
+      },
+      {
+        "case": "public-destructor-missing-core-tail-rejects",
+        "report": "fiber-state-review-s3ohbxp_/report.json",
+        "assertions": 15,
+        "exit": 0,
+        "timeout": false,
+        "result": "true; empty stderr"
+      },
+      {
+        "case": "public-destructor-missing-saved-origin-rejects",
+        "report": "fiber-state-review-q0yya8v2/report.json",
+        "assertions": 12,
+        "exit": 0,
+        "timeout": false,
+        "result": "true; empty stderr"
+      },
+      {
+        "case": "public-destructor-forged-callsite-rejects",
+        "report": "fiber-state-review-b07yqvnj/report.json",
+        "assertions": 13,
+        "exit": 0,
+        "timeout": false,
+        "result": "true; empty stderr"
+      },
+      {
+        "case": "public-destructor-core-fields-current-and-frame-admission",
+        "report": "fiber-state-review-1rymd822/report.json",
+        "assertions": 14,
+        "exit": 0,
+        "timeout": false,
+        "result": "true; empty stderr"
+      },
+      {
+        "case": "public-destructor-descriptor-and-heap-admission",
+        "report": "fiber-state-review-1er53i_a/report.json",
+        "assertions": 8,
+        "exit": 0,
+        "timeout": false,
+        "result": "true; empty stderr"
+      },
+      {
+        "case": "public-destructor-rich-body-scope-code-admission",
+        "report": "fiber-state-review-egdyycrn/report.json",
+        "assertions": 7,
+        "exit": 0,
+        "timeout": false,
+        "result": "true; empty stderr"
+      },
+      {
+        "case": "public-destructor-guarded-zero-transition-preserves-budget-state",
+        "report": "fiber-state-review-1qt7t033/report.json",
+        "assertions": 10,
+        "exit": 0,
+        "timeout": false,
+        "result": "true; empty stderr"
+      }
+    ],
+    "executed_original_clauses": "0..54",
+    "derived_original_clauses": "55..57",
+    "derivation": "Executed descriptor/heap and scope-code admission makes84 $call_entry_check(S)=S. With actual $drive_steps(S,0) returning exactly S[.COMPLETION=BUDGET],40 $drive/$drive_checked composition derives literal $drive(S,0) and its two budget observations. This is not a literal whole-fixture execution.",
+    "literal_drive_execution": "unconfirmed; timeout; zero credit"
+  },
+  "original_failures_zero_credit": [
+    {
+      "report": "fiber-review-2a1ifn2k/report.json",
+      "reason": "nonstatic replacement retains its receiver; initial retirement prediction was wrong; corrected static-replacement source is distinct"
+    },
+    {
+      "report": "fiber-state-review-7g9jtz0p/report.json",
+      "reason": "fixture queried live Fiber after final request freeing; corrected arena projection adds explicit allocation absence"
+    },
+    {
+      "report": "fiber-state-review-b8zkgqk1/report.json",
+      "reason": "one-step fixture expected consumed FIBER_ENTER task"
+    },
+    {
+      "report": "fiber-state-review-bisd6zku/report.json",
+      "reason": "fixture omitted genuine shared global cell array owner"
+    },
+    {
+      "report": "fiber-state-review-yu20agf4/report.json",
+      "reason": "forged ENTRY record needed list grouping; fixture syntax failed before execution"
+    },
+    {
+      "report": "fiber-state-review-vlgipl7r/report.json",
+      "reason": "fixture selected earlier handler query rather than later resumed setter"
+    },
+    {
+      "report": "fiber-state-review-uteww94l/report.json",
+      "reason": "full63 reached fixture timed out; unconfirmed; zero credit"
+    },
+    {
+      "report": "fiber-state-review-jf0sn3l7/report.json",
+      "reason": "literal drive(S,0) budget9 timed out; timeout dominates process exit0; zero credit"
+    },
+    {
+      "report": "fiber-state-review-jgrvgvii/report.json",
+      "reason": "equivalent once-seek budget9 timed out; unconfirmed; zero credit"
+    }
+  ],
+  "review": {
+    "reviewer": "calls_review_18",
+    "decision": "accepted bounded implementation and maintained fixtures; original failures and unconfirmed whole executions retain zero credit"
+  },
+  "raw_root": ".tools/calls-fiber-core-16/.tools (relative to the canonical project)",
+  "recovery": "Read named report.json files at raw_root for exact commands, original bytes, input/runtime/compiler fingerprints, stdout/stderr and process outcomes. Large raw artifacts remain ignored; maintained relocation receives no renewed execution credit.",
+  "remaining": [
+    "Rich public-destructor whole-source model and literal full63 execution remain unconfirmed",
+    "Wider internal callback/FCC/reference APIs and initialization/request/fatal/GC consumers",
+    "Complete core and final combined fresh offline rebuild; returns verification remains user-paused"
+  ],
+  "current_parent": {
+    "parent_revision": "cc397adf6eb85622735e663f109fa6a6ddb7de54",
+    "source_revision": "dda4e9e655c25d9ca6df2d89cf0693b7e9228cda",
+    "source_composition_revision": "9bb4c467bc6b57affa51a8772c53b743654ccbd8",
+    "modules": 291,
+    "adaptation": "Preserve current protected Fiber finish/Generator/clone fields and module order; specialized313 records genuine clone consumer birth before cache installation. Shared84/281 admission checks active eval/class publication on the live state and parked VM tasks/frames with EVALCONTEXTS/FILECONTEXTS empty; source_pending_state_valid on the saved view and all other current local guards remain unchanged.",
+    "compiler": {
+      "report": "fiber-core-current-parent-sl-k5_ffhv3/report.json",
+      "mode": "SL",
+      "exit": 0,
+      "timeout": false,
+      "process_seconds": 120,
+      "jobs": 1
+    },
+    "source_evidence": [
+      {
+        "case": "review-fiber-core-reporting-current-parent-stringable-eval-cv-emission",
+        "source_sha256": "f0f2c395fdfc13ccee32ace3b0c206c65c6834307fc16466ab776e8da3d2306a",
+        "report": "fiber-review-8_ge7557/report.json",
+        "normal_agreement": 1
+      },
+      {
+        "case": "review-fiber-core-reporting-current-parent-clone-born-cache",
+        "source_sha256": "3eab51e08a753af1c69f1756baff49679216f60dcd4ab6e77a856d9c4191f75a",
+        "report": "fiber-review-u594f0jj/report.json",
+        "normal_agreement": 1
+      },
+      {
+        "case": "review-fiber-core-reporting-current-parent-parked-file-markers",
+        "source_sha256": "d009a495baf9eb70392feb8f5d1694d70054da8fb1b81cbd82e45c941293bd1b",
+        "report": "fiber-core-file-review-0dymppir/source-report.json",
+        "normal_agreement": 1,
+        "description": "Identical original native/model source with required finite real file path/byte snapshot; exact FM. State recipes retain separate primitive facts/cuts."
+      }
+    ],
+    "genuine_protocols": [
+      {
+        "case": "current-parent-authentic-eval-and-borrowed-core-result",
+        "report": "fiber-core-parent-protocol-xmpll1b5/report.json",
+        "recorded_premises": 97,
+        "passed": true,
+        "mode": "SL",
+        "exit": 0,
+        "timeout": false,
+        "description": "Exact checked eval child reaches authentic parser-wait OWNER and SOURCE_OPERAND_ENTER, then borrowed C result; live OWNER and source OWNER/tail forgeries plus parked direct/hidden eval markers reject. Frame guard is a helper control because saved main has no frame. All37 original C-result checks, literal zero-budget identity and one-step result tail retained. SOURCEPENDING=eps is explicit: no nonempty fast/helper pending-exception credit."
+      },
+      {
+        "case": "current-parent-running-file-parked-markers",
+        "report": "fiber-core-file-review-sejimlvm/report.json",
+        "recorded_premises": 47,
+        "passed": true,
+        "mode": "SL",
+        "exit": 0,
+        "timeout": false,
+        "description": "Real checked file/provider responses reach FILE_UNIT_RUN with genuine user-function parked frame. Direct FILE_END is inserted after the authentic FIBER_WAIT head; parked frame FILE_END preserves the real frame. Exact eval-only VM predicate admits both; repaired VM/public admission rejects with identical heap, plus hidden CHOOSE marker. This is a VM predicate counterfactual on the repaired reached state, not old full-chain execution.",
+        "earlier_cut": {
+          "report": "fiber-core-file-review-0dymppir/report.json",
+          "recorded_premises": 46,
+          "scope": "Direct control replaced the parked FIBER_WAIT head, so its old full chain already rejected that head. Genuine frame witness remains discriminating; earlier46 receives no head-preserving/full-old-chain claim."
+        }
+      }
+    ],
+    "zero_credit_failures": [
+      {
+        "artifact": "fiber-review-d9l581a_/report.json",
+        "revision": "9bb4c467b",
+        "reason": "Original Stringable-eval/reporting source native passes; model Unsupported invalid eval parser response after S|; no agreement."
+      },
+      {
+        "artifact": "fiber-core-current-parent-sl-3ms0qswe/setup-error.txt",
+        "reason": "Wrong recorder import arity stopped compiler setup before actor launch; no credit."
+      },
+      {
+        "artifact": "fiber-review-qoow1p85/setup-failure.json",
+        "reason": "Independent file-source wrapper lacked exact source hash before native/model actors; source unchanged; no credit."
+      },
+      {
+        "artifact": "fiber-review-5_lveuod/report.json",
+        "reason": "Generic Fiber source invocation omitted required finite file snapshot/cwd; native FM but model Unsupported fixed-cwd provider requirement; zero agreement. Corrected only affected invocation, identical source/child/provider bytes."
+      }
+    ],
+    "review": {
+      "reviewer": "calls_review_18",
+      "decision": "Accepted source adaptation, changed compiler, three original agreements, genuine eval97/file47 protocols and maintained ledger/docs/fixtures; relocation adds no new execution credit."
+    },
+    "raw_root": ".tools/calls-fiber-core-current-parent-18/.tools (relative to canonical project)",
+    "recovery": "Original source.py --case CASE and protocol.py remain under fiber-core-parent-prep-18; file builder is fiber-core-file-review-prep-18/check.py --prepared RAW. Maintained fiber_core_integration_protocol.py and fiber_core_file_review.py recreate checked child/provider inputs without raw operational dependencies. Relocation adds no execution credit; earlier19/131/267 and bounded public cuts retain original cuts."
+  },
+  "latest_parent": {
+    "parent_revision": "892d8b187b0e7f751e87905b41d06727912cf48b",
+    "source_revision": "565e1f01bd05e5ffcad404d9a4f9cf8627b87eb5",
+    "modules": 295,
+    "adaptation": "Only six313 source files compose onto actual294; canonical84/281 scoped eval/file bridge is retained, with current GC301 state/operation fields and exclusions, ArrayAccess309 returned-child append, source316, Arrow311 and protected Fiber finish unchanged. Specialized constructor retains accepted genuine clone-consumer birth recording. Earlier evidence keeps its own tested inputs.",
+    "compiler": {
+      "report": "fiber-core-latest-sl-lvaecuc_/report.json",
+      "mode": "SL",
+      "exit": 0,
+      "timeout": false,
+      "process_seconds": 120,
+      "jobs": 1
+    },
+    "source_evidence": {
+      "case": "review-fiber-core-reporting-latest-parent-array-cycle-autoglobal-eval",
+      "source_sha256": "8f006b5c36360b9ec1eedfaac122e8de819cf6ab56f4027624184feeca7e9fbc",
+      "report": "fiber-core-latest-source-vvfmc1u9/report.json",
+      "normal_agreement": 1,
+      "stdout": "1|S|D|E|19:30719:2",
+      "description": "Ordinary array-cycle GC without destructor transfer precedes actual Stringable retirement and a literal autoglobal eval child, under the borrowed reporting C root. Fresh native/model normal exits0 and empty stderr; genuine request provider supplies only primitive CLI facts, not precomputed globals or PHP results.",
+      "profile_extensions": {
+        "include_path": ".:",
+        "variables_order": "EGPCS",
+        "auto_globals_jit": "1"
+      },
+      "request_facts": "LC_ALL=C,TZ=UTC; exact source argv/file and actual runner cwd; clock1700000000/125000; EGPCS/JIT1. Native FD198 PHPRQ001+request-clock.so and model --request-context share these facts. Model startup reporting30719/include_path.: match native flags.",
+      "budgets": {
+        "steps": 100000,
+        "model_seconds": 60,
+        "process_seconds": 75,
+        "jobs": 1
+      }
+    },
+    "preliminary_native_only": {
+      "report": ".tools/calls-fiber-core-current-parent-18/.tools/fiber-review-8o93nmto/report.json",
+      "normal_agreements": 0,
+      "scope": "Same original native output under ordinary profile; not reused as the explicit-request witness."
+    },
+    "zero_credit_failures": [
+      {
+        "report": "fiber-review-j2lkqke6/report.json",
+        "reason": "Generic Fiber invocation omitted required request context: model Unsupported request environment variable before output; zero agreement. Corrected only the same original invocation with existing primitive request provider; source565 unchanged."
+      }
+    ],
+    "review": {
+      "reviewer": "calls_review_18",
+      "decision": "Accepted exact latest-parent six-file semantic join, strict295 compiler, fresh source/provider invocation and actual normal agreement; maintained fixtures and concise publication independently accepted. No unrelated semantic renewal required."
+    },
+    "raw_root": ".tools/calls-fiber-core-latest-parent-18/.tools (relative to canonical project)",
+    "recovery": "python3 tests/semantics/fiber_core_latest_sources.py recreates exact8f source and truthful native/model request inputs, with unchanged60/75 source caps and first-failure stop. Raw reports retain exact commands, input/runtime fingerprints and process streams. Reused tool binaries do not establish the required final fresh offline rebuild."
+  }
+}

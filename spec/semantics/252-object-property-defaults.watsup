@@ -2,8 +2,10 @@
 ;; Templates own their values; creation records borrow source/object identities.
 def $ppconstant_callable_initializer(P) = true
   -- if $ppclass_constant_initializer(P)
+  -- if ~$ppparameter_callable_initializer(P)
 def $ppconstant_callable_initializer(P) = true
   -- if ~$ppclass_constant_initializer(P)
+  -- if ~$ppparameter_callable_initializer(P)
   -- if P.CLASSCONTEXT = (ptcontext)
   -- if ptcontext.POSITION = PTPROPERTY
   -- if P.FOLD.DEFAULT /\ P.FOLD.CONSTANT

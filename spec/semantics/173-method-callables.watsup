@@ -396,10 +396,12 @@ dec $method_capture_live(pstate, pmethoddesc, porigin, porigin, pclosurescope) :
 dec $property_callable_method_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
 dec $class_constant_callable_method_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
 dec $global_constant_method_live(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
+dec $parameter_callable_method_live(pstate, pmethoddesc, porigin, porigin, pclosurescope) : bool
 def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = $method_capture_in_scope(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope, $closure_source_class(S, porigin_site), eps)
   -- if $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps
   -- if $class_constant_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps
   -- if ~$global_constant_method_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope)
+  -- if ~$parameter_callable_source_site(S, porigin_site)
 def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
   -- if $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
 def $method_capture_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = true
@@ -424,7 +426,7 @@ def $closure_scope_row_valid(S, pclosurescope) = true
   -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc_owner)
   -- if $class_at(S.CLASSES, pclosurescope.CALLED) = (pclassdesc_called)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (pclosurescope.CALLED)
-  -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc_owner.NAME, |S.CLASSES|) \/ $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps \/ $class_constant_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps
+  -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc_owner.NAME, |S.CLASSES|) \/ $property_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps \/ $class_constant_callable_method_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps \/ $parameter_callable_method_live(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope)
   -- if $method_capture_receiver_valid(S, pmethoddesc, pclosurescope)
 def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)

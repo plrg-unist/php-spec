@@ -26,7 +26,7 @@ CHECKS = [
     '|$stringify(S, PFLOAT 9221120237041090560, 1).EVENTS| = 1',
     'porigin = PORIGIN 0 eps',
     'n_const* = [88]',
-    'puserconstant = {NAME n_const*, ORIGIN porigin, VALUE PINT 1, CLASS PVSCALAR, READS eps}',
+    'puserconstant = {NAME n_const*, ORIGIN porigin, VALUE PINT 1, CLASS PVSCALAR, READS eps, RECEIVES eps}',
     'S_const = S[.USERCONSTANTS = [puserconstant]]',
     '$constant_activate(S_const[.REPORTING = 4437], porigin, [88], PINT 2, PVSCALAR, eps, 1).EVENTS = eps',
     '|$constant_activate(S_const, porigin, [88], PINT 2, PVSCALAR, eps, 1).EVENTS| = 1',

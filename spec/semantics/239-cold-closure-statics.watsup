@@ -64,6 +64,7 @@ def $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosure
 def $closure_creator_valid(S, porigin, pclosurescope, pclosurecreation, pclosurecreator) = false -- otherwise
 dec $closure_scope_original_classes(pstate, porigin, pclosurescope) : bool
 def $closure_scope_original_classes(S, porigin, pclosurescope) = true
+  -- if ~$parameter_callable_source_site(S, porigin)
   -- if $trait_closure_source_matches(S, porigin, pclosurescope.LEXICAL)
   -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
   -- if $class_origin_matches(S, pclosurescope.CALLED, pclassdesc.NAME, |S.CLASSES|)
