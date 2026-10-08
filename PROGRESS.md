@@ -1085,9 +1085,10 @@ the destination through nested calls, private shadows and reference rebinding.
 Six exact originals and private344 compiler/init pass at `45f32a157`;323 new
 reached premises retain separate144 at `b228479d6` and179 at `714465927` cuts.
 The unchanged earlier keyword Unsupported record retains zero agreement.
-Dynamic selectors, Closure/fromCallable keyword scopes, wider borrowed lifetime
-and registered-handler missing-RHS continuations remain separate; paused return
-producers are unchanged. The final actual-parent compiler/init gate is pending.
+Dynamic selectors, keyword scopes entered through Closure/fromCallable or other
+callable wrappers, wider borrowed lifetime and registered-handler missing-RHS
+continuations remain separate; paused return producers are unchanged. The final347
+compiler/init gate over `66160341f` is pending.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace

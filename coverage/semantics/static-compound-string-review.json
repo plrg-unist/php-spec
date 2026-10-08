@@ -126,7 +126,7 @@
     "python3 tests/semantics/static_compound_string_state_run.py REACHED/manifest.json"
   ],
   "boundaries": [
-    "Computed/dynamic selectors, Closure/fromCallable keyword scopes and wider borrowed destination lifetime remain separate.",
+    "Computed/dynamic selectors, keyword scopes entered through Closure/fromCallable or other callable wrappers, and wider borrowed destination lifetime remain separate.",
     "A registered-handler missing direct RHS-CV warning still stops at the preexisting Unsupported producer-continuation boundary.",
     "Earlier334/344/352 evidence and paused typed/NULL/finally-sensitive return-producer lanes are unchanged."
   ],
@@ -213,6 +213,11 @@
       "python3 tests/semantics/scoped_static_compound_prepare.py scoped-inherited-self-parent-static scoped-nested-called-scope-reentry scoped-static-reference-rebind",
       "python3 tests/semantics/scoped_static_compound_state_prepare.py PREPARED/report.json",
       "python3 tests/semantics/scoped_static_compound_state_run.py REACHED/manifest.json"
-    ]
+    ],
+    "current_composition": {
+      "parent": "66160341f000abe235fc9cb0c30e34dccfa70e16",
+      "modules": 347,
+      "status": "final compiler/init pending"
+    }
   }
 }
