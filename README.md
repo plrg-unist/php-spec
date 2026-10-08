@@ -429,6 +429,14 @@ normal originals agree across retained private cuts; compiler negatives and
 independent reached states are recorded separately. Complete
 ArrayAccess behavior and the combined offline rebuild remain required.
 
+[Implicit Generator Get](coverage/semantics/arrayaccess-generator-get-review.json)
+creates an unstarted Generator for mixed/untyped `offsetGet`, including reference
+Generator declarations. Its real frame owns the received key and receiver;
+nonowning call-site evidence survives escape, resume and ordinary close.
+Finished close cleanup preserves the caller's pending exception through key and
+receiver destructors. Seven maintained originals and423 independent premises pass
+at separate private cuts. Actual331 compilation and initialization pass separately.
+
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
 after `finally`. Nested restore/replacement, callback throws, internal by-reference
@@ -485,6 +493,9 @@ source; earlier cuts retain their inputs.
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Pruning carries that graph through GC selection and destructor dispatch, with
+reuse only when destructor preparation leaves the state identical. Authenticated
+specialized call contexts take precedence over ordinary error handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
 from the new captured-source/66-premise and readonly-clone/GC compositions.
 The earlier 291-module strict compiler/initialization and readonly clone original pass;
@@ -756,9 +767,12 @@ Six new originals and 284 reached premises check shared owners, selected-propert
 mutation/deletion and exception chaining. Ordinary previous objects without their
 own destructor now release dynamic children before declared children; four new
 originals and 313 reached premises cover shared owners, retirement and throwing
-cleanup. Retiring typed property sources remain excluded: two native controls
-observe constraints during dynamic callbacks and their removal after retirement.
-The engine detaches sources at each declared slot; implementing this is required next.
+cleanup. Module346 now detaches typed reference sources at each declared slot's
+release visit, preserving constraints through earlier child callbacks and genuine
+Fiber suspension. Each queued marker owns only the existing slot cell. Six exact
+source agreements, including the two unchanged prior controls, and 151/84 reached
+premises retain separate cuts; the actual332 composition passes strict compilation.
+Private Generator-close typed-slot timing remains required.
 Released-CV mutation, raw retired-container reads, callback-capable previous
 reference wrappers and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;

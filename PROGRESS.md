@@ -281,6 +281,21 @@ Composition over `b7ed1bea1`/326 preserves SOURCE339, TRAIT307 and ARG334
 by static review, without runtime renewal.
 Raw records: `.tools/compiler-fiber-protection-graph-19/.tools`
 (`fiber-protection-gate-v{1,2,3,4}` and `full-default-retry-protection-v1`).
+Pruning now carries its graph through GC selection, Fiber protection and
+destructor dispatch, retaining active and idle bare-root guards. Destructor
+preparation reuses the graph only for identical states; changed states take the
+original prepared-state path. Exact `74a8a11ca`/326 passes strict initialization
+and 41 independent fixture premises. Its first destructor78 check exposed an existing
+207 ordinary-handler/destructor validation overlap. The one-line fallback repair
+at `039abc623`/326 passes changed initialization and four fixtures with 78 destructor,
+69 protected Fiber, 40 active GC and 37 ordinary-handler domain premises.
+The original full source still times out at host 55.066 with empty streams and
+zero agreement; inputs are stable and groups reaped. No speedup or 231 credit follows.
+Final 330-module composition at `5ca56cf55` mirrors the new idle retired-bucket guard
+and passes changed initialization plus a genuine retirement fixture with 73 body /
+190 physical premises. Earlier 326 cuts stay separate. Raw failures and checks remain
+under `.tools/compiler-fiber-protection-current-19/.tools` (`prune-graph-controls-v{1,2,3}`
+and `full-default-retry-prune-graph-v1`) and `.tools/compiler-prune-graph-publication-19/.tools/prune-graph-gen330-controls-v1`.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
@@ -556,9 +571,24 @@ The final composition of 326 modules over TRAIT307 `55c2eab0c` preserves its
 TYPE/default/FCC source guards by independent pointwise review; the 325-module
 compiler cut remains separate.
 The ordinary helper-base compiler repair preserves special builtin temporary
-rejection. Implicit Generator Get creation retains its existing deferred-scope
-boundary. Bare/fall-through NULL, finally-sensitive Notice ingress and wider
+rejection. The deferred Generator Get control at this334 cut remains zero-credit;
+module344 below records the later repair. Bare/fall-through NULL, finally-sensitive
+Notice ingress and wider
 producers remain open; non-mixed typed return verification remains user-paused.
+
+ArrayAccess344 creates mixed/untyped implicit Generator Get results without
+starting their body, including reference-yield declarations. A nonowning
+TARGET/SITE/LINE certificate preserves exact Get scope after its emitter returns;
+actual frames and received arguments retain every heap owner. Ordinary last-owner
+close reaches the real caller carrier through an authenticated finished marker,
+including destructor replacement of a pending finally exception. Seven maintained
+normal originals pass across `dc27aa3e1`, `09ec7db36` and `3ff67878e`; the unchanged
+334 Unsupported original has a separate new positive cut. Full327 compilation and
+six initialization premises pass at `09ec7db36`. Independent423 reached premises
+pass at `4e3062ac4`; actual331 algo/struct and initialization over `d811717a0`
+pass separately at `f2d3c6d29`, with reviewed request/name/graph-carry interactions.
+No earlier334 evidence is renewed.
+Typed non-mixed producers and the other paused return lanes remain unchanged.
 
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
@@ -698,8 +728,15 @@ own destructor now release dynamic children before declared children. Four exact
 originals and 152/161 reached premises at `531145bb4` cover shared owners, retired
 OLD masking and atomic binding with B/previous=A. At `95899634d`, strict initialization
 and 19 fresh guard premises pass; two native observations retain explicit Unsupported
-and zero agreement for direct/nested retiring typed sources. Per-slot typed-source
-detachment is the required next behavior. Released-CV mutation, raw retired-container
+and zero agreement for direct/nested retiring typed sources at that cut.
+Module346 now keeps each typed source until its actual declared-slot release visit,
+including parked Fiber queues, without retaining the retired parent. Six normal
+originals at `77a17756c`, 151 reached premises at `cc326bf43` and 84 Fiber premises
+at `7573d02bb` retain separate cuts. They cover declaration order, two sources on
+one cell, pending exception chaining, exact detach ownership and resumed scoped
+Throwable validation against the actual live heap. The actual332 join at
+`108d07bb5` passes strict initialization; private Generator-close typed-slot timing
+remains required. Released-CV mutation, raw retired-container
 reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original

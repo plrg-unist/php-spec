@@ -231,8 +231,11 @@ def $fiber_protected_retired_graph_node(S, H, pnode, pnode_live*) = false -- oth
 def $fiber_protected_retired_node(S, HOBJECT n, pnode_live*) = (~((HOBJECT n) <- pnode_live*) /\ $heap_owners($heap_graph(S), HOBJECT n) = 0 /\ $fiber_close_blocked(S, n))
 def $fiber_protected_retired_node(S, pnode, pnode_live*) = false -- otherwise
 def $fiber_prune_protected(S, pnode_live*) = $fiber_protected_retired(S, S.ALLOCATIONS, pnode_live*)
+def $fiber_prune_protected_graph(S, H, pnode_live*) = $fiber_protected_retired_graph(S, H, S.ALLOCATIONS, pnode_live*)
 def $fiber_prune(S, pnode_live*) = S[.COMPLETION = UNSUPPORTED "force-closing ordinary Fiber cleanup with a protected real exception"]
   -- if $fiber_prune_protected(S, pnode_live*)
+def $fiber_prune_graph(S, H, pnode_live*) = S[.COMPLETION = UNSUPPORTED "force-closing ordinary Fiber cleanup with a protected real exception"]
+  -- if $fiber_prune_protected_graph(S, H, pnode_live*)
 
 ;; A filtered close control remains owned by the real ordered release. This
 ;; admission is storage-only; neither catch nor pending authority is extended.

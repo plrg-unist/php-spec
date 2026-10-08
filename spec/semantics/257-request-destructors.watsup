@@ -79,6 +79,9 @@ def $destruction_children((HEDGE pnode_other pnode_child) :: hedge*, pnode) = $d
 def $destruction_values(eps) = eps
 def $destruction_values(pnode :: pnode_tail*) = (DESTRUCTION_VALUE pnode) :: $destruction_values(pnode_tail*)
 dec $destruction_job_node(pdestructionjob) : pnode?
+dec $destruction_plain_job(pdestructionjob) : bool
+def $destruction_plain_job(DESTRUCTION_PROP_SOURCE pproptypesource n_cell) = false
+def $destruction_plain_job(pdestructionjob) = true -- otherwise
 def $destruction_job_node(DESTRUCTION_VALUE pnode) = (pnode)
 def $destruction_job_node(DESTRUCTION_TEMP pnode) = (pnode)
 def $destruction_job_node(DESTRUCTION_HANDLE n) = eps
@@ -242,6 +245,14 @@ syntax pdestructionprunecase = PRUNE_KEEP_UNSUPPORTED | PRUNE_REFUSE_RELEASE | P
 dec $destruction_prune_case(pstate, pnode*) : pdestructionprunecase
 dec $destruction_prune_waiting_case(pstate, bool) : pdestructionprunecase
 dec $destruction_prune_case_result(pstate, pnode*, pdestructionprunecase) : pstate
+dec $destruction_prune_case_graph_result(pstate, hgraph, pnode*, pdestructionprunecase) : pstate
+dec $destruction_prune_prepared_graph(pstate, hgraph, pnode*, pdestructionprunecase, bool) : pstate
+;; Preparation may change guarded virtual roots; reuse only the identical state.
+def $destruction_prune_graph(S, H, pnode_live*) = $destruction_prune_prepared_graph(S_new, H, pnode_live*, pdestructionprunecase, (S_new = S))
+  -- if S_new = $request_fatal_state($destruction_store_new(S))
+  -- if pdestructionprunecase = $destruction_prune_case(S_new, pnode_live*)
+def $destruction_prune_prepared_graph(S, H, pnode_live*, pdestructionprunecase, true) = $destruction_prune_case_graph_result(S, H, pnode_live*, pdestructionprunecase)
+def $destruction_prune_prepared_graph(S, H, pnode_live*, pdestructionprunecase, false) = $destruction_prune_case_result(S, pnode_live*, pdestructionprunecase)
 def $destruction_prune(S, pnode_live*) = $destruction_prune_case_result(S_new, pnode_live*, pdestructionprunecase)
   -- if S_new = $request_fatal_state($destruction_store_new(S))
   -- if pdestructionprunecase = $destruction_prune_case(S_new, pnode_live*)
@@ -260,6 +271,10 @@ def $destruction_prune_case_result(S, pnode_live*, PRUNE_KEEP_UNSUPPORTED) = S
 def $destruction_prune_case_result(S, pnode_live*, PRUNE_REFUSE_RELEASE) = S[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
 def $destruction_prune_case_result(S, pnode_live*, PRUNE_BEGIN_RELEASE) = $destructor_release_begin(S, $destruction_values($gc_zero(S, $heap_graph(S), S.ALLOCATIONS)))
 def $destruction_prune_case_result(S, pnode_live*, PRUNE_DROP_STORE) = $prune_live($destruction_store_drop(S, $gc_release_order(S, $heap_graph(S))), pnode_live*)
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_KEEP_UNSUPPORTED) = S
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_REFUSE_RELEASE) = S[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_BEGIN_RELEASE) = $destructor_release_begin(S, $destruction_values($gc_zero(S, H, S.ALLOCATIONS)))
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_DROP_STORE) = $prune_live($destruction_store_drop(S, $gc_release_order(S, H)), pnode_live*)
 
 def $destructor_ready(S) = true
   -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
@@ -386,6 +401,7 @@ def $destructor_release_replace(S, pdestructionrelease) = $gc_release_consumed(S
   -- if S.DESTRUCTION.RELEASES = pdestructionrelease_old :: pdestructionrelease_tail*
 def $destructor_jobs_valid(S, eps) = true
 def $destructor_jobs_valid(S, pdestructionjob_head :: pdestructionjob*) = (pnode <- S.ALLOCATIONS /\ $destructor_jobs_valid(S, pdestructionjob*))
+  -- if $destruction_plain_job(pdestructionjob_head)
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
 def $destructor_jobs_valid(S, (DESTRUCTION_HANDLE n) :: pdestructionjob*) = true
   -- if $(n < |S.DESTRUCTION.HANDLES|)
@@ -412,6 +428,7 @@ rule PhpStep/destructor-release-shared: S ~> S_next
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_plain_job(pdestructionjob_head)
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $($heap_owners($heap_graph(S_next), pnode) > 0)
@@ -436,6 +453,7 @@ rule PhpStep/destructor-release-free: S ~> $destructor_free(S_next, pnode, pdest
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
   -- if $destructor_release_valid(S, pdestructionrelease)
   -- if pdestructionrelease.JOBS = pdestructionjob_head :: pdestructionjob*
+  -- if $destruction_plain_job(pdestructionjob_head)
   -- if $destruction_job_node(pdestructionjob_head) = (pnode)
   -- if S_next = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob*])
   -- if $heap_owners($heap_graph(S_next), pnode) = 0
@@ -446,7 +464,9 @@ def $destructor_uncalled_node(S, HOBJECT n) = (~(n <- S.DESTRUCTION.CALLED) /\ (
 def $destructor_uncalled_node(S, pnode) = false -- otherwise
 dec $weakref_pending_carrier(pstate, pnode) : bool
 def $weakref_pending_carrier(S, pnode) = false -- otherwise
-def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replace($gc_store_retire(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, pnode)], pnode), pdestructionrelease[.JOBS = $destruction_values($node_children(S, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionrelease.JOBS])
+dec $destruction_child_jobs(pstate, pnode) : pdestructionjob*
+def $destruction_child_jobs(S, pnode) = $destruction_values($node_children(S, pnode)) -- otherwise
+def $destructor_free(S, pnode, pdestructionrelease) = $destructor_release_replace($gc_store_retire(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, pnode)], pnode), pdestructionrelease[.JOBS = $destruction_child_jobs(S, pnode) ++ $destruction_free_job(pnode) ++ pdestructionrelease.JOBS])
   -- if ~$weakref_pending_carrier(S, pnode)
 
 def $destructor_select(S, n, b_store, pdestructionrelease?) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS][.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: S.TODO]

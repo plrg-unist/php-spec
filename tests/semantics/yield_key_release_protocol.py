@@ -72,7 +72,7 @@ S_no_carrier = S_release[.DESTRUCTION.OPERATIONS = eps]
 $heap_graph(S_no_carrier) = $heap_graph(S_release)
 ~$generator_close_destructor_ready(S_no_carrier,pgenrelease)
 $generator_close_release(S_no_carrier,pgenrelease).COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"
-~$generator_close_destructor_tasks([CHOOSE ([DESTRUCTOR_OPERATION_EXIT pdestructionoperation]) eps 0],pgenrelease.PENDING,pdestructionoperation.PENDING,DESTRUCTOR_OPERATION_EXIT pdestructionoperation)
+~$generator_close_destructor_tasks(S_release,[CHOOSE ([DESTRUCTOR_OPERATION_EXIT pdestructionoperation]) eps 0],pgenrelease.PENDING,pdestructionoperation.PENDING,DESTRUCTOR_OPERATION_EXIT pdestructionoperation)
 ~$generator_close_destructor_ready(S_release[.TODO = [GENERATOR_CLOSE_RELEASE pgenrelease]],pgenrelease)
 '''.strip().splitlines()
     checks += r'''

@@ -18,7 +18,7 @@ def $access_string_source(S, paccess, KNOWN pvalue) = true
   -- if paccess.OBJECT = (n)
   -- if S.OBJECTS[n] = INSTANCE porigin_class
   -- if $effective_method(S, porigin_class, $ptascii("offsetGet"), |S.CLASSES|) = (pmethoddesc)
-  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF
+  -- if ~pmethoddesc.FUNCTION.SIGNATURE.BYREF \/ $function_generator(S, pmethoddesc.FUNCTION)
   -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
 def $access_string_source(S, paccess, REFERENCE n) = true
   -- if paccess.MODE = ACCESS_COMPOUND CONCAT PNULL

@@ -24,6 +24,8 @@ CASES = {
     'descendants':'review-descendant-order19',
     'descendants-throw':'review-descendant-two-throws19',
     'descendants-guard':'review-descendant-order19',
+    'typed-slot':'review-typed-slot-two-sources-throw19',
+    'typed-slot-fiber':'review-typed-slot-fiber19',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -141,6 +143,18 @@ def $dupref_phase(S, 17) = $dupref_descendant_phase(S, $ptascii("B|"))
 def $dupref_phase(S, 18) = $dupref_descendant_phase(S, $ptascii("B|A|"))
 def $dupref_phase(S, 19) = $dupref_descendant_phase(S, $ptascii("A|"))
 def $dupref_phase(S, 20) = $dupref_descendant_phase(S, $ptascii("A|B|"))
+def $dupref_phase(S, 21) = $dupref_descendant_phase(S, $ptascii("A|"))
+def $dupref_phase(S, 22) = true
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob*
+def $dupref_phase(S, 24) = true
+  -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $dupref_output(S.EVENTS) = $ptascii("A|")
+  -- if $lookup(S.ENV, $ptascii("fiber")) = (n_cv)
+  -- if S.STORE[n_cv] = DEFINED (POBJECT n_fiber)
+  -- if $fiber_at(S, n_fiber) = (pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+def $dupref_phase(S, 27) = $dupref_descendant_phase(S, $ptascii("A|B|type|"))
 def $dupref_phase(S, n) = false -- otherwise
 dec $dupref_seek(pstate, nat, nat) : pstate
 def $dupref_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -701,6 +715,188 @@ def descendant_guard_assertions(initial):
         '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)']
 
 
+def typed_slot_assertions(initial, expected):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_release', 16),
+        'S_release.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_release_tail*',
+        'pforeachbind.VALUE = POBJECT n_previous',
+        'S_release.PROPREFS = [{CELL n_cell, SOURCES ([pproptypesource_second, pproptypesource_first])}]',
+        'pproptypesource_first = OBJECT_PROP_SOURCE n_previous $ptascii("first") ppropertyid_first',
+        'pproptypesource_second = OBJECT_PROP_SOURCE n_previous $ptascii("second") ppropertyid_second',
+        'pproptypesource_first =/= pproptypesource_second',
+        '$heap_owners($heap_graph(S_release), HCELL n_cell) = 3',
+        '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)',
+        *seek('S_release', 'S_child', 21),
+        'S_child.CURRENT = (pcallcontext)',
+        '$destructor_context_call(pcallcontext, S_child.CURRENT, S_child.FRAMES) = (pdestructorcall)',
+        'pdestructorcall.RELEASE = (pdestructionrelease_saved)',
+        'pdestructorcall.OPERATION = (pdestructionoperation)',
+        'pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        'S_child.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*',
+        'pdestructionrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell) :: pdestructionjob_tail*',
+        '(DESTRUCTION_PROP_SOURCE pproptypesource_second n_cell) <- pdestructionjob_tail*',
+        '(DESTRUCTION_HANDLE n_previous) <- pdestructionjob_tail*',
+        '(DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell) <- pdestructionrelease_saved.JOBS',
+        '$property_release_owners(pdestructionrelease, S_child.TODO, S_child.FRAMES) = 1',
+        '$gc_release_metadata_valid(S_child, pdestructionrelease)',
+        '$destructor_jobs_valid(S_child, pdestructionrelease.JOBS)',
+        '$propref_source_valid(S_child, n_cell, pproptypesource_first)',
+        '$propref_source_valid(S_child, n_cell, pproptypesource_second)',
+        '$heap_owners($heap_graph(S_child), HCELL n_cell) = 3',
+        '~((HOBJECT n_previous) <- S_child.ALLOCATIONS)',
+        'S_child.STORE[pforeachbind.OLD] = DEFINED (POBJECT n_previous)',
+        '$node_children(S_child, HCELL pforeachbind.OLD) = eps',
+        'S_stale = S_child[.DESTRUCTION.RELEASES = eps]',
+        'S_stale.DESTRUCTION.CALLS = S_child.DESTRUCTION.CALLS',
+        '~$propref_source_queued(S_stale, n_cell, pproptypesource_first)',
+        '~$proprefs_valid(S_stale)',
+        'S_duplicate = S_child[.DESTRUCTION.RELEASES = pdestructionrelease :: S_child.DESTRUCTION.RELEASES]',
+        '~$propref_source_queued(S_duplicate, n_cell, pproptypesource_first)',
+        '~$destructor_jobs_valid(S_duplicate, pdestructionrelease.JOBS)',
+        'S_owner_duplicate = S_child[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: S_child.TODO]',
+        '$property_release_owners(pdestructionrelease, S_owner_duplicate.TODO, S_owner_duplicate.FRAMES) = 2',
+        '~$propref_source_queued(S_owner_duplicate, n_cell, pproptypesource_first)',
+        '~$destructor_jobs_valid(S_owner_duplicate, pdestructionrelease.JOBS)',
+        '~$destructor_jobs_valid(S_child, (DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell) :: pdestructionrelease.JOBS)',
+        '~$destructor_jobs_valid(S_child, [DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell])',
+        '~$destructor_jobs_valid(S_child, (DESTRUCTION_PROP_SOURCE (CLASS_PROP_SOURCE ppropertyid_first) n_cell) :: pdestructionjob_tail*)',
+        '~$destructor_jobs_valid(S_child, (DESTRUCTION_PROP_SOURCE pproptypesource_first (|S_child.STORE|)) :: pdestructionjob_tail*)',
+        'n_handle = S_child.DESTRUCTION.HANDLES[n_previous]',
+        'S_free = S_child[.DESTRUCTION.FREE = n_handle :: S_child.DESTRUCTION.FREE]',
+        '~$property_retired_source_valid(S_free, n_cell, pproptypesource_first)',
+        '~$propref_source_queued(S_free, n_cell, pproptypesource_first)',
+        *seek('S_child', 'S_first', 22),
+        'S_first.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_first) :: ptask_first_tail*',
+        'pdestructionrelease_first.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell) :: pdestructionjob_first_tail*',
+        'S_first.DESTRUCTION.OPERATIONS = pdestructionoperation_first :: pdestructionoperation_tail*',
+        'pdestructionoperation_first.PENDING = (n_pending)',
+        '$throwable_live(S_first, n_pending)',
+        'S_two_todo = S_first[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_first) :: S_first.TODO]',
+        '~$propref_source_queued(S_two_todo, n_cell, pproptypesource_first)',
+        'S_zero = $drive_steps(S_first, 0)',
+        'S_zero.COMPLETION = BUDGET',
+        'S_zero.TODO = S_first.TODO /\\ S_zero.PROPREFS = S_first.PROPREFS',
+        'S_one_found = $drive_steps(S_first, 1)',
+        'S_one_found.COMPLETION = BUDGET',
+        'S_one = S_one_found[.COMPLETION = NORMAL]', *valid('S_one'),
+        'S_one.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_one) :: ptask_first_tail*',
+        'pdestructionrelease_one.JOBS = (DESTRUCTION_VALUE (HCELL n_cell)) :: pdestructionjob_first_tail*',
+        'S_one.PROPREFS = [{CELL n_cell, SOURCES ([pproptypesource_second])}]',
+        '~$propref_source_valid(S_one, n_cell, pproptypesource_first)',
+        '$propref_source_valid(S_one, n_cell, pproptypesource_second)',
+        '$heap_owners($heap_graph(S_one), HCELL n_cell) = 3',
+        'S_value_found = $drive_steps(S_one, 1)',
+        'S_value_found.COMPLETION = BUDGET',
+        'S_value = S_value_found[.COMPLETION = NORMAL]', *valid('S_value'),
+        '$heap_owners($heap_graph(S_value), HCELL n_cell) = 2',
+        *seek('S_value', 'S_second_child', 27),
+        'S_second_child.CURRENT = (pcallcontext_second)',
+        '$destructor_context_call(pcallcontext_second, S_second_child.CURRENT, S_second_child.FRAMES) = (pdestructorcall_second)',
+        'pdestructorcall_second.PENDING = (n_pending)',
+        'S_second_child.PROPREFS = [{CELL n_cell, SOURCES ([pproptypesource_second])}]',
+        '$propref_source_valid(S_second_child, n_cell, pproptypesource_second)',
+        'S_second_child.STORE[n_cell] = DEFINED (PINT 7)',
+        *seek('S_second_child', 'S_second', 22),
+        'S_second.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_second) :: ptask_second_tail*',
+        'pdestructionrelease_second.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource_second n_cell) :: pdestructionjob_second_tail*',
+        'S_second.DESTRUCTION.OPERATIONS = pdestructionoperation_second :: pdestructionoperation_tail*',
+        'pdestructionoperation_second.PENDING = (n_final)',
+        'n_final =/= n_pending',
+        '$throwable_previous_id(S_second, n_final) = (n_pending)',
+        'S_detached_found = $drive_steps(S_second, 1)',
+        'S_detached_found.COMPLETION = BUDGET',
+        'S_detached = S_detached_found[.COMPLETION = NORMAL]', *valid('S_detached'),
+        'S_detached.PROPREFS = eps',
+        '$heap_owners($heap_graph(S_detached), HCELL n_cell) = 2',
+        '~$propref_source_valid(S_detached, n_cell, pproptypesource_second)',
+        'S_forged = S_detached[.PROPREFS = S_second.PROPREFS]',
+        '~$proprefs_valid(S_forged)',
+        *seek('S_detached', 'S_finish', 6),
+        'S_finish.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_finish) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_finish_tail*',
+        'pdestructionoperation_finish.PENDING = (n_final)',
+        'S_finish.PROPREFS = eps',
+        '$heap_owners($heap_graph(S_finish), HCELL n_cell) = 1',
+        'S_bound_found = $drive_steps(S_finish, 1)',
+        'S_bound_found.COMPLETION = BUDGET',
+        'S_bound = S_bound_found[.COMPLETION = NORMAL]', *valid('S_bound'),
+        '$lookup(S_bound.ENV, pforeachbind.NAME) = (pforeachbind.NEW)',
+        'S_bound.STORE[pforeachbind.NEW] = DEFINED (PINT 2)',
+        'S_bound.TODO = (THROW_SEARCH n_final) :: ptask_finish_tail*',
+        'S_done = $drive(S_bound, 2048)',
+        'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.FRAMES = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+
+
+def typed_slot_fiber_assertions(initial, expected):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_parked', 24),
+        '$lookup(S_parked.ENV, $ptascii("fiber")) = (n_cv)',
+        'S_parked.STORE[n_cv] = DEFINED (POBJECT n_fiber)',
+        '$fiber_at(S_parked, n_fiber) = (pfiber)',
+        'pfiber.STATUS = FIBER_SUSPENDED', 'pfiber.VM = (pfibervm)',
+        'pfibervm.DESTRUCTORRELEASES = pdestructionrelease :: pdestructionrelease_tail*',
+        'pdestructionrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob_tail*',
+        'pproptypesource = OBJECT_PROP_SOURCE n_previous $ptascii("number") ppropertyid',
+        '$property_source_queues($property_release_records(S_parked.DESTRUCTION.RELEASES, S_parked.TODO, S_parked.FRAMES, eps), n_cell, pproptypesource) = 0',
+        '(DESTRUCTION_HANDLE n_previous) <- pdestructionjob_tail*',
+        '$property_release_owners(pdestructionrelease, pfibervm.TODO, pfibervm.FRAMES) = 1',
+        '$propref_source_valid(S_parked, n_cell, pproptypesource)',
+        '$propref_source_queued(S_parked, n_cell, pproptypesource)',
+        '~((HOBJECT n_previous) <- S_parked.ALLOCATIONS)',
+        'S_vm = $fiber_vm_restore(S_parked, pfibervm)[.ACTIVEFIBER = (n_fiber)]',
+        '$property_source_queues($property_release_queues(S_vm), n_cell, pproptypesource) = 1',
+        '$propref_source_valid(S_vm, n_cell, pproptypesource)',
+        '$heap_valid($heap_graph(S_vm))',
+        'pfibervm_bad = pfibervm[.DESTRUCTORRELEASES = eps]',
+        'S_stale = $fiber_put(S_parked, n_fiber, pfiber[.VM = (pfibervm_bad)])',
+        'pfibervm_bad.DESTRUCTORCALLS = pfibervm.DESTRUCTORCALLS',
+        '~$propref_source_valid(S_stale, n_cell, pproptypesource)',
+        '~$proprefs_valid(S_stale)',
+        'pfibervm_duplicate = pfibervm[.DESTRUCTORRELEASES = pdestructionrelease :: pfibervm.DESTRUCTORRELEASES]',
+        'S_duplicate = $fiber_put(S_parked, n_fiber, pfiber[.VM = (pfibervm_duplicate)])',
+        '~$propref_source_queued(S_duplicate, n_cell, pproptypesource)',
+        'S_two_vms = S_parked[.OBJECTS = S_parked.OBJECTS ++ [FIBER pfiber]][.ALLOCATIONS = S_parked.ALLOCATIONS ++ [HOBJECT (|S_parked.OBJECTS|)]]',
+        '$property_source_queues($property_release_queues(S_two_vms), n_cell, pproptypesource) = 2',
+        '~$propref_source_queued(S_two_vms, n_cell, pproptypesource)',
+        'S_zero = $drive_steps(S_parked, 0)',
+        'S_zero.COMPLETION = BUDGET /\\ S_zero.OBJECTS = S_parked.OBJECTS /\\ S_zero.PROPREFS = S_parked.PROPREFS',
+        *seek('S_parked', 'S_slot', 22),
+        'S_slot.ACTIVEFIBER = (n_fiber)',
+        '$dupref_output(S_slot.EVENTS) = $ptascii("A|type|back|")',
+        'S_slot.FIBERCALLERS = pfibercaller :: pfibercaller_tail*',
+        'S_caller = $fiber_vm_restore(S_slot, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]',
+        '$lookup(S_caller.ENV, $ptascii("error")) = (n_error_cv)',
+        'S_caller.STORE[n_error_cv] = DEFINED (POBJECT n_error)',
+        'S_caller.OBJECTS[n_error] = THROWABLE pthrowable',
+        '~$heap_valid($heap_graph(S_caller))',
+        '$closure_live_node_scoped_valid(S_slot, S_caller, HOBJECT n_error)',
+        'S_bad_metadata = S_caller[.OBJECTS[n_error] = THROWABLE pthrowable[.FILEORIGIN = eps]]',
+        '~$closure_live_node_scoped_valid(S_slot, S_bad_metadata, HOBJECT n_error)',
+        'S_bad_metadata_live = S_slot[.OBJECTS[n_error] = THROWABLE pthrowable[.FILEORIGIN = eps]]',
+        '$heap_valid($heap_graph(S_bad_metadata_live))',
+        '~$closure_live_node_scoped_valid(S_bad_metadata_live, S_bad_metadata, HOBJECT n_error)',
+        'S_bad_heap = S_slot[.ALLOCATIONS = $destruction_node_delete(S_slot.ALLOCATIONS, HOBJECT n_fiber)]',
+        '~$heap_valid($heap_graph(S_bad_heap))',
+        '~$closure_live_node_scoped_valid(S_bad_heap, S_caller, HOBJECT n_error)',
+        'S_stale_error = S_slot[.ALLOCATIONS = $destruction_node_delete(S_slot.ALLOCATIONS, HOBJECT n_error)]',
+        '~$closure_live_node_scoped_valid(S_stale_error, S_caller, HOBJECT n_error)',
+        'S_slot.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_slot) :: ptask_slot_tail*',
+        'pdestructionrelease_slot.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob_slot_tail*',
+        '$propref_source_valid(S_slot, n_cell, pproptypesource)',
+        'S_one_found = $drive_steps(S_slot, 1)',
+        'S_one_found.COMPLETION = BUDGET',
+        'S_one = S_one_found[.COMPLETION = NORMAL]', *valid('S_one'),
+        'S_one.PROPREFS = eps',
+        'S_one.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_one) :: ptask_slot_tail*',
+        'pdestructionrelease_one.JOBS = (DESTRUCTION_VALUE (HCELL n_cell)) :: pdestructionjob_slot_tail*',
+        '~$propref_source_valid(S_one, n_cell, pproptypesource)',
+        '$heap_owners($heap_graph(S_one), HCELL n_cell) = $heap_owners($heap_graph(S_slot), HCELL n_cell)',
+        'S_done = $drive(S_one, 2048)',
+        'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.ACTIVEFIBER = eps',
+        'S_done.PROPREFS = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -709,6 +905,8 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
+            typed_slot_assertions(initial, sources.EXPECTED[case]) if group=='typed-slot' else
+            typed_slot_fiber_assertions(initial, sources.EXPECTED[case]) if group=='typed-slot-fiber' else
             container_assertions(initial, sources.EXPECTED[case], group=='container-throw') if group.startswith('container') else
             descendant_guard_assertions(initial) if group=='descendants-guard' else
             container_assertions(initial, sources.EXPECTED[case], group=='descendants-throw', True) if group.startswith('descendants') else

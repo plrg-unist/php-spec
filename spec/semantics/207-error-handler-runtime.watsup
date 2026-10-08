@@ -442,7 +442,7 @@ def $error_context_receiving_function(S, pcallcontext) = (pfunction)
   -- if |pcallcontext.EXTRA| = $(4 - n_received)
   -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
 def $error_context_receiving_function(S, pcallcontext) = eps -- otherwise
-def $error_context_valid(S, pcallcontext) = ($error_context_receiving_function(S, pcallcontext) =/= eps)
+def $error_context_valid(S, pcallcontext) = ($error_context_receiving_function(S, pcallcontext) =/= eps) -- otherwise
 ;; Handler arguments come from Zend's four-value dispatch, not source call args.
 def $named_receives_ready(S, pfunction) = true
   -- if S.CURRENT = (pcallcontext)

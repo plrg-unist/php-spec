@@ -200,7 +200,7 @@ def $generator_set(S, n, pgenerator) = S[.OBJECTS = $object_set(S.OBJECTS, n, GE
 def $generator_frame(S, ptask*) = {SILENCES S.SILENCES, LOCALS ($active_table(S)), TODO ptask*, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT}
 def $generator_install(S, pframe) = $set_active_table(S[.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if pframe.LOCALS = (psymboltable)
-def $generator_create(S, pfunction) = $restore_frame(S[.OBJECTS = S.OBJECTS ++ [GENERATOR {FUNCTION pfunction.ORIGIN, FRAME ($generator_frame(S, $function_body_tasks(S, pfunction))), PHASE GENERATOR_FRESH, FIRST false, INDEX $(-1), VALUE eps, REFCELL eps, KEY eps, BORROWED eps, RETURN eps, CLOSURE pcallcontext.INSTANCE, DELEGATE eps}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
+def $generator_create(S, pfunction) = $restore_frame(S[.OBJECTS = S.OBJECTS ++ [GENERATOR {FUNCTION pfunction.ORIGIN, FRAME ($generator_frame(S, $function_body_tasks(S, pfunction))), PHASE GENERATOR_FRESH, FIRST false, INDEX $(-1), VALUE eps, REFCELL eps, KEY eps, BORROWED eps, RETURN eps, CLOSURE pcallcontext.INSTANCE, DELEGATE eps, ACCESS $access_generator_capture(S, pcallcontext)}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
   -- if n = |S.OBJECTS|
   -- if S.CURRENT = (pcallcontext)
 rule PhpStep/generator-create: S ~> $generator_create(S, pfunction)
@@ -216,7 +216,7 @@ rule PhpStep/generator-create-scope-unsupported: S ~> S[.TODO = eps][.COMPLETION
 
 ;; Ordinary creation permission follows its original source caller. Changed
 ;; Closure scopes and implicit protocol calls need their own retained proof.
-def $generator_creation_supported(S, pcallcontext) = (~$autoload_context_kind(S, pcallcontext) /\ $generator_creation_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE))
+def $generator_creation_supported(S, pcallcontext) = (~$autoload_context_kind(S, pcallcontext) /\ ($generator_creation_target(S, pcallcontext.TARGET, pcallcontext.CALLSITE) \/ $access_generator_creation(S, pcallcontext)))
 def $generator_creation_target(S, porigin, porigin_site?) = $call_selected_valid(S, porigin, porigin_site?)
 def $generator_creation_target(S, CLOSURE_TARGET n, porigin_site?) = $call_selected_valid(S, CLOSURE_TARGET n, porigin_site?)
 def $generator_creation_target(S, METHOD_TARGET n porigin, porigin_site?) = $generator_creation_method(S, porigin, porigin_site?)
@@ -841,7 +841,7 @@ def $generator_node_valid(S, HOBJECT n) = ($generator_object_valid(S, S.OBJECTS[
 def $generator_yield_key_node_valid(S, n) = true -- otherwise
 def $generator_node_valid(S, HARRAY n) = true
 def $generator_node_valid(S, HCELL n) = true
-def $generator_object_valid(S, GENERATOR pgenerator) = $generator_record_valid(S, pgenerator)
+def $generator_object_valid(S, GENERATOR pgenerator) = ($generator_record_valid(S, pgenerator) /\ $access_generator_record_valid(S, pgenerator))
 def $generator_object_valid(S, pobject) = true -- otherwise
 dec $generator_close_state_valid(pstate) : bool
 def $generator_close_state_valid(S) = true -- otherwise

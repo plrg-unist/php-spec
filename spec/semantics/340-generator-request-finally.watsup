@@ -192,6 +192,9 @@ def $generator_request_retired_keep(S) = $heap_reach($generator_request_retired_
 def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES
   -- if S.GC.ACTIVE = eps /\ $gc_bare_nodes(S.GC.BUFFER) = eps
   -- if S.DESTRUCTION.RETIRED =/= eps
+def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep(S)).NODES
+  -- if S.GC.ACTIVE = eps /\ $gc_bare_nodes(S.GC.BUFFER) = eps
+  -- if S.DESTRUCTION.RETIRED =/= eps
 def $generator_request_retired_filter(S, eps) = eps
 def $generator_request_retired_filter(S, (n_object, n_handle) :: (n_tail, n_handle_tail)*) = (n_object, n_handle) :: $generator_request_retired_filter(S, (n_tail, n_handle_tail)*)
   -- if (HOBJECT n_object) <- S.ALLOCATIONS

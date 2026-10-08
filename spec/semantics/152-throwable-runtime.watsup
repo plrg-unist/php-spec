@@ -74,7 +74,8 @@ def $completion_roots(UNCAUGHT_RENDERED n preqbytes) = [HOBJECT n]
 def $completion_roots(pcompletion) = eps -- otherwise
 def $task_nodes(THROW_SEARCH n) = [HOBJECT n]
 def $task_nodes(CATCH_BIND porigin n_index n) = [HOBJECT n]
-def $closure_live_object_valid(S, n) = true
+dec $throwable_object_image_valid(pstate, nat) : bool
+def $throwable_object_image_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = THROWABLE pthrowable
@@ -83,7 +84,23 @@ def $closure_live_object_valid(S, n) = true
   -- if pthrowable.FILEORIGIN = (porigin)
   -- if pthrowable.KIND = "ErrorException" \/ $throwable_field(S, n, "file") = PSTRING $call_sourcefile(S.FILES, porigin)
   -- if $throwable_source_origin_valid(S, n, pthrowable)
+def $throwable_object_image_valid(S, n) = false -- otherwise
+def $closure_live_object_valid(S, n) = true
+  -- if $throwable_object_image_valid(S, n)
   -- if $heap_valid($heap_graph(S))
+;; A restored caller has its own control but shares the actual live heap.
+dec $throwable_scoped_object_valid(pstate, pstate, nat) : bool
+def $throwable_scoped_object_valid(S_live, S, n) = true
+  -- if $(n < |S_live.OBJECTS|) /\ $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S_live.ALLOCATIONS
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+  -- if S_live.OBJECTS[n] = THROWABLE pthrowable
+  -- if $throwable_object_image_valid(S, n)
+  -- if $heap_valid($heap_graph(S_live))
+def $throwable_scoped_object_valid(S_live, S, n) = false -- otherwise
+def $closure_live_node_scoped_valid(S_live, S, HOBJECT n) = $throwable_scoped_object_valid(S_live, S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
 
 ;; Allocation snapshots the failing frame before any owner is discarded.
 dec $throwable_allocate_at(pstate, text, preqbytes, porigin, int, ptraceframe*) : pstate
