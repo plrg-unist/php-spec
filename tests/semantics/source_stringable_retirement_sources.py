@@ -126,7 +126,15 @@ CASES = {'regular': 'deferred-regular.php',
          'echo-dynamic-cv-call-retirement-throw': 'echo-dynamic-cv-call-retirement-throw-child.php',
          'echo-dynamic-cv-call-eval-reference': None,
          'echo-dynamic-cv-call-baseline-lifetime': None,
-         'echo-dynamic-cv-call-cast-declaration': 'echo-dynamic-cv-call-cast-declaration-child.php'}
+         'echo-dynamic-cv-call-cast-declaration': 'echo-dynamic-cv-call-cast-declaration-child.php',
+         'echo-dynamic-cv-argument-live-target': 'echo-dynamic-cv-argument-live-target-child.php',
+         'echo-dynamic-cv-argument-target-pin': 'echo-dynamic-cv-argument-target-pin-child.php',
+         'echo-dynamic-cv-argument-argument-throw': 'echo-dynamic-cv-argument-argument-throw-child.php',
+         'echo-dynamic-cv-argument-undefined-callee': 'echo-dynamic-cv-argument-undefined-callee-child.php',
+         'echo-dynamic-cv-argument-absent-function': 'echo-dynamic-cv-argument-absent-function-child.php',
+         'echo-dynamic-cv-argument-retirement-throw': 'echo-dynamic-cv-argument-retirement-throw-child.php',
+         'echo-dynamic-cv-argument-eval-reference': None,
+         'echo-dynamic-cv-argument-baseline-lifetime': None}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -164,7 +172,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-', 'echo-cv-call-', 'echo-named-cv-call-', 'echo-dynamic-cv-call-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-', 'echo-cv-call-', 'echo-named-cv-call-', 'echo-dynamic-cv-call-', 'echo-dynamic-cv-argument-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)
