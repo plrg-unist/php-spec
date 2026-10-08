@@ -1238,6 +1238,7 @@ Unsupported baseline at `0824519ef` are separate from changed strict/source3 at
 `f43b28b47` and 142/147 reached premises at `bad93efed`. The resolved-default
 fixture correction preserves its original uncredited failure; no earlier
 campaign is renewed. Quiet/getter and untyped unset access remain required.
+The actual356 join over `976a55232` passes strict initialization at `4b31fc1cc`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

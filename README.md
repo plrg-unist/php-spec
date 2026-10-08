@@ -974,6 +974,7 @@ present. Three exact originals and 142/147 reached premises distinguish actual
 dynamic-first cleanup order from physical slot indexes, retain visibility and
 alias detachment, and verify pending cleanup and atomic selected binding.
 Consumed slots, quiet/getter accesses and untyped unset reads remain required.
+The actual356 composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
