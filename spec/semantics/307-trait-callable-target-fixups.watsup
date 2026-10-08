@@ -21,6 +21,7 @@ dec $trait_fcc_unfixed(pstate, porigin, ptbytes, nat) : pmethoddesc?
 dec $trait_fcc_cached_header(pstate, porigin) : (pconstantclosure, porigin, pmethoddesc)?
 dec $trait_fcc_source_header_at(pstate, porigin, nat) : (pconstantclosure, porigin, pmethoddesc)?
 dec $trait_fcc_fixed_at_known(pstate, pconstantclosure, porigin, pmethoddesc, nat) : pmethoddesc?
+dec $trait_fcc_failed_fixup_at(pstate, pconstantclosure, nat) : (porigin, pmethoddesc)?
 dec $trait_fcc_deprecation(pstate, pmethoddesc) : preqbytes?
 dec $trait_fcc_snapshot(pstate, pconstantclosure) : pmethoddesc?
 dec $trait_fcc_snapshot_first_known(pstate, pconstantclosure, porigin, pmethoddesc) : pmethoddesc?
@@ -331,11 +332,13 @@ def $trait_fcc_cached_header(S, porigin_site) = eps -- otherwise
 def $class_constant_callable_cached_method_receipt(S, pconstantclosure) = (pmethoddesc)
   -- if $trait_fcc_cached_header(S, pconstantclosure.SITE) = ((pconstantclosure, porigin_owner, pmethoddesc))
 
-;; A historical query before the first owner's publication sees its old
-;; scope. Only that owner's actual publication fixes the shared cached target.
+;; Publication or a source-rederived completed binding fixes the shared target.
+;; The first Closure still keeps its original scope at the birth prefix.
+def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = eps -- otherwise
 def $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, n_prefix) = (pmethoddesc_first)
   -- if $(pconstantclosure_first.PREFIX <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
   -- if ~$constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_first_owner)
+  -- if pmethoddesc_first.OWNER = porigin_first_owner \/ $trait_failed_cache_index(S.DECLARATIONS[0:n_prefix], porigin_first_owner, 0) = eps
 def $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, n_prefix) = (pmethoddesc_first)
   -- if $(pconstantclosure_first.PREFIX <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
   -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_first_owner)

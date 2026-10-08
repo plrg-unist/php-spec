@@ -1468,6 +1468,8 @@ rule PhpStep/constant-classname: S ~> $constant_classname(S[.TODO = ptask_tail*]
   -- if $pfclassname_keyword(phpType19) <- [$ptascii("self"), $ptascii("parent")]
   -- if $pfclassname_member(phpType20)
   -- if $method_source_task(S, NExprClassConstFetch phpType19 phpType20 metadata)
+dec $method_self_class_scope_valid(pstate, pclassdesc) : bool
+def $method_self_class_scope_valid(S, pclassdesc) = ($class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)) -- otherwise
 rule PhpStep/method-self-class: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S.TODO = (EVAL (NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)) :: ptask_tail*
   -- if S.CONSTCONTEXT = eps
@@ -1476,7 +1478,7 @@ rule PhpStep/method-self-class: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PST
   -- if $method_source_task(S, NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)
   -- if $method_current_scope(S) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $method_self_class_scope_valid(S, pclassdesc)
 def $call_task_valid(S, EVAL (NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)) = true
   -- if S.CONSTCONTEXT = eps
   -- if $pfclassname_keyword(phpType19) = $ptascii("self")
@@ -1484,7 +1486,7 @@ def $call_task_valid(S, EVAL (NExprClassConstFetch phpType19 (NIdentifier (BYTES
   -- if $method_source_task(S, NExprClassConstFetch phpType19 (NIdentifier (BYTES text_member) metadata_member) metadata)
   -- if $method_current_scope(S) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
-  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $method_self_class_scope_valid(S, pclassdesc)
 def $call_task_valid(S, EVAL (NExprClassConstFetch phpType19 phpType20 metadata)) = $method_source_task(S, NExprClassConstFetch phpType19 phpType20 metadata)
   -- if S.CONSTCONTEXT =/= eps
   -- if $pfclassname_keyword(phpType19) <- [$ptascii("self"), $ptascii("parent")]

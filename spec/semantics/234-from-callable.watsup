@@ -6,6 +6,7 @@ dec $from_static_class(pstate, porigin, phpType19) : bool
 dec $from_start(pstate, porigin, nat?, int) : pstate
 dec $from_identity(pstate, pvalue) : nat?
 dec $from_receive(pstate, pconfigcall, pvalue) : pstate
+dec $fiber_factory_candidate(pstate, pvalue) : bool
 dec $from_finish(pstate, pconfigcall, pvalue, phandlerresolution) : pstate
 dec $from_done(pstate, nat) : pstate
 dec $from_method(pstate, papiquery, porigin, ptbytes, bool, bool) : pfrommethod
@@ -147,6 +148,7 @@ def $from_done(S, n) = S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE
 def $from_receive(S, pconfigcall, pvalue) = $from_done(S, n)
   -- if $from_identity(S, pvalue) = (n)
 def $from_receive(S, pconfigcall, PARRAY n) = $api_begin(S, CONFIG_INVOKE pconfigcall, PARRAY n)
+  -- if ~$fiber_factory_candidate(S, PARRAY n)
   -- if $from_identity(S, PARRAY n) = eps
   -- if $typed_callback_array(S, n)
   -- if $error_handler_array_invalid(S, n) = eps
@@ -155,6 +157,7 @@ def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done(S[.OBJECTS = S.OB
   -- if $from_getter(S, n_array) = ((n_receiver, pgettermethod, text_base))
   -- if n = |S.OBJECTS|
 def $from_receive(S, pconfigcall, PSTRING ptbytes) = $api_begin(S, CONFIG_INVOKE pconfigcall, PSTRING ptbytes)
+  -- if ~$fiber_factory_candidate(S, PSTRING ptbytes)
   -- if ~$typed_registered(S, ptbytes)
   -- if $method_string_parts(ptbytes) =/= eps
 def $from_receive(S, pconfigcall, PSTRING ptbytes) = $from_done(S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)

@@ -466,8 +466,21 @@ nonstatic-method error. The
 [constructor-capture ledger](../../coverage/semantics/fiber-constructor-callables-review.json)
 keeps the original builtin failure and distinct accepted cuts.
 
-Outer argument unpacking and broader callable adapters
-remain required; outer unpacking retains an explicit Unsupported control.
+Module358 selects Fiber APIs through `Closure::fromCallable` with simple method
+arrays or static class-method strings. Dereferenced callback members freeze the
+selected receiver and method; the completed factory call authenticates source,
+line, arity and unpack history without rereading retired arrays. Historical
+factory owners add no roots. Bound captures own their receiver once, while
+static object-style selectors remain valid after that object retires. Clone,
+equality and direct, explicit `__invoke` or C-root calls reuse their existing
+API protocols. Successful waiting resume/throw frames retain the real callsite,
+independently from handler-entry error formatting.
+The [factory ledger](../../coverage/semantics/fiber-from-callable-review.json)
+keeps the new checks and original trace failure at their distinct cuts.
+
+Fiber-start argument unpacking, ordinary API callable arrays and effectful compound
+factory selectors remain required; start unpacking retains an explicit
+Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and
