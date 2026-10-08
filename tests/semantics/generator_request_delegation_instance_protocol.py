@@ -115,7 +115,7 @@ $instance_storage_for(S_enter,n_iterator) = eps
 $heap_owners($heap_graph(S_enter),HOBJECT n_outer) = 1
 $close_outputs(S_enter.EVENTS) = $ptascii("C|ID1:1")
 '''.strip().splitlines()
-    base.finish(checks, 'S_weak_result', name)
+    base.finish(checks, 'S_enter', name)
     checks += ['~((HOBJECT n_outer) <- S_resumed.ALLOCATIONS)',
                '$weakref_get(S_resumed,n_wg) = PNULL']
     return checks
