@@ -44,3 +44,8 @@ def $generator_request_fresh_closed(pgenerator) = false -- otherwise
 def $generator_close_done_site(S, pgenerator, pgenclose) = (pgenclose.SITE = pgenerator.FUNCTION /\ pgenclose.STAGE = CLOSE_FINISHED /\ pgenclose.NEXT = 0 /\ $generator_close_function(S, pgenerator))
   -- if pgenclose.STORE =/= eps
   -- if $generator_request_fresh_closed(pgenerator)
+
+;; free_storage releases the closed Closure before the cached zvals.
+def $destruction_child_jobs(S, HOBJECT n) = $destruction_values($generator_close_children(S, HOBJECT n))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
