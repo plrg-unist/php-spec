@@ -1640,10 +1640,29 @@ first state invocation before numeric execution; that infrastructure failure is
 retained without semantic credit.
 These unchanged cuts bridge to the reviewed328 composition, preserving bound
 callback RAW/INPUT, caller ownership and source fields.
+Module347 retains exact first-failure method metadata for later genuine FCCs,
+without restoring the failed class's imports, publication or retired live value.
+Three shutdown originals cover an imported target, an own/private target and an
+alias absent from the later published class, preserving literal defaults and
+clone-shared static cells. The imported tuple passes at `6985967dc`; the own tuple
+and69 supplied conditions plus6 setup clauses pass at `297715fb6` (29.446s), after
+prefix-aware cache dispatch and the shared `039abc623` handler-context fallback.
+Raw evidence is under `.tools/trait-fcc-failed-target-current19/.tools/`:
+`method-runtime-w4gfa3m7`, `method-runtime-j2l114gl` and
+`closure-call-protocol-v8z8eaza`. The original own/state failures and alias failure
+`method-runtime-q6upsv1_` remain preserved with zero agreement credit.
+At the reviewed332 composition `f19c12d66` over `9d1956cd5`, strict algo/struct
+pass3.419/4.370s; the alias tuple and46 supplied ordinary-receipt/scope conditions
+plus6 setup clauses pass (23.352s), including declaration, call and heap validators.
+Raw evidence is `.tools/trait-fcc-failed-target-publish19/.tools/`:
+`method-runtime-yzmgrx7y`, `closure-call-protocol-9bii28x9`,
+`trait266-object-algo-txlrnwr9` and `trait266-object-struct-zc6hpeu2`.
+The earlier source2/69 cuts bridge unchanged; current source, Generator,
+ArrayAccess-certificate and pruning-graph fields are preserved.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do broader differing-owner later births and
-executable failed-target reuse.
+wider failed-owner member/construction behavior.
 Paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,

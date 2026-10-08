@@ -835,9 +835,14 @@ birth/default/static conditions pass, with6 setup clauses separate.
 Later failed imports preserve a published first owner's cached method even when
 their own method differs; one PHP-error source comparison and68 supplied retirement
 conditions pass, with6 setup clauses separate.
+Failed first-owner targets also remain callable through later imports, without
+publishing the failed class or reviving its retired Closure. Three shutdown
+originals cover imported, own/private and missing-alias targets, literal defaults
+and clone-shared statics;115 supplied checkpoint conditions pass, with12 setup
+clauses separate.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
-and executable reuse of a failed target remain open. Wider
+and wider failed-owner member/construction behavior remain open. Wider
 initializer contexts, held/open failed links and readonly
 storage remain
 required. The current313 join passes strict compilation, one fresh REAL/constructor
