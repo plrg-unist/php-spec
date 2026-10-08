@@ -1,0 +1,44 @@
+;; zend_generator_dtor_storage closes an unstarted execute_data without running
+;; body or finally. The real STORE pin remains until all bound CVs are released.
+
+dec $generator_request_fresh_any(pstate, pnode*) : bool
+dec $generator_request_fresh_closed(pgenerator) : bool
+
+def $generator_request_fresh_any(S, eps) = false
+def $generator_request_fresh_any(S, (HOBJECT n) :: pnode*) = true
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+def $generator_request_fresh_any(S, pnode :: pnode_tail*) = $generator_request_fresh_any(S, pnode_tail*) -- otherwise
+def $generator_request_operational(S) = true
+  -- if $generator_request_terminal(S)
+  -- if $generator_request_fresh_any(S, S.ALLOCATIONS)
+def $generator_request_frame_valid(S, pgenerator) = true
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+  -- if $generator_record_valid(S, pgenerator)
+def $generator_destructor_pending(S, HOBJECT n) = true
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_STORE
+  -- if S.TODO = [DESTRUCTOR_STORE]
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+
+def $generator_request_store_begin(S, n, n_handle) = $generator_close_begin_pending(S_closed, $destruction_values(pnode*), eps)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pgenerator_closed = pgenerator[.FRAME = eps][.PHASE = GENERATOR_CLOSED]
+  -- if pnode* = $destruction_nodes_delete($generator_close_frame_nodes(S, pframe), $generator_closed_closure(pgenerator_closed))
+  -- if pgenclose = {OBJECT n, SITE pgenerator.FUNCTION, CONTEXT pcallcontext, CALLER eps, CALLSITE eps, STAGE CLOSE_FINISHED, NEXT 0, FRAME eps, PENDING eps, STORE (n_handle)}
+  -- if S_closed = $generator_set(S[.DESTRUCTION.INDEX = $(n_handle + 1)][.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: S.TODO], n, pgenerator_closed)
+
+;; The untouched creation state certifies a function site, not an executed yield.
+;; Ordinary paused close continues to require its original source yield site.
+def $generator_request_fresh_closed(pgenerator) = true
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
+  -- if ~pgenerator.FIRST /\ pgenerator.INDEX = $(-1)
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps /\ pgenerator.KEY = eps
+  -- if pgenerator.BORROWED = eps /\ pgenerator.RETURN = eps /\ pgenerator.DELEGATE = eps
+def $generator_request_fresh_closed(pgenerator) = false -- otherwise
+def $generator_close_done_site(S, pgenerator, pgenclose) = (pgenclose.SITE = pgenerator.FUNCTION /\ pgenclose.STAGE = CLOSE_FINISHED /\ pgenclose.NEXT = 0 /\ $generator_close_function(S, pgenerator))
+  -- if pgenclose.STORE =/= eps
+  -- if $generator_request_fresh_closed(pgenerator)
