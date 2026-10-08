@@ -117,6 +117,27 @@ def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassco
   -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
   -- if $method_accessible(S_copy, pmethoddesc, (ptraitcachecause.CLASS))
   -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE ptraitcachecause.CLASS eps)
+;; A later import uses the already selected target, even when its own method
+;; differs. Only a first owner published at this birth prefix is admitted here.
+def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure_first)
+  -- if pconstantclosure_first.DECL =/= pconstantclosure.DECL
+  -- if $(pconstantclosure_first.OBJECT < pconstantclosure.OBJECT)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
+  -- if pconstantclosure.PREFIX = ptraitcachecause.PREFIX
+  -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS|)
+  -- if ~$constant_callable_published(S.DECLARATIONS[0:ptraitcachecause.PREFIX], ptraitcachecause.CLASS)
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = ptraitcachecause.CLASS /\ ~pclassconstantdesc.FOLDED
+  -- if pconstantclosure.DECL = pclassconstantdesc.ORIGIN
+  -- if $trait_fcc_source(S, pclassconstantdesc)
+  -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
+  -- if $trait_fcc_cached_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_first_owner, pmethoddesc_first))
+  -- if porigin_first_owner =/= ptraitcachecause.CLASS
+  -- if $constant_callable_published(S.DECLARATIONS[0:ptraitcachecause.PREFIX], porigin_first_owner)
+  -- if $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, ptraitcachecause.PREFIX) = (pmethoddesc)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE ptraitcachecause.CLASS eps)
 def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = eps -- otherwise
 def $trait_real_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
   -- if $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
@@ -214,7 +235,6 @@ def $trait_fcc_replay_birth(S, CCTRAITBIRTH n porigin_site ptraitcachecause) = [
 def $trait_fcc_replay_birth(S, CCTRAITBIRTH n porigin_site ptraitcachecause) = [CCTRAITBIRTH n porigin_site ptraitcachecause]
   -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
   -- if pconstantclosure.SITE = porigin_site
-  -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n) = ((porigin_site, ptraitcachecause))
   -- if $trait_fcc_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
 def $trait_fcc_replay_birth(S, pclassconstantevent) = eps -- otherwise

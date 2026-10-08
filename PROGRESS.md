@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+341 executes fixed bound API captures as Fiber C-root callbacks. Immutable RAW
+selection preserves the receiver, borrowed API ownership and genuine nested or
+idle collector caller chains. Last callback retirement can close its receiver
+before the original `start` argument destructor; C-root API traces have no file
+or line. Strict324 initialization, ten new normal originals plus one affected337
+former boundary, independent255 and author93 reached premises pass at separate
+recorded cuts. The narrow saved-root helper correction is covered by full-drive
+nested108 and collector93 checks; original failures retain zero credit.
+The actual328 composition over `175a197e9` passes strict initialization while
+preserving current collector342, method307, source339 and ownership factors;
+earlier source/state cuts retain their inputs.
+Bound `start`, constructor captures and broader adapters remain required;
+paused undefined-result verification is excluded. Earlier331/337 cuts are unchanged.
+[C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json).
+
 Collector342 admits public idle resume/throw during an active pass once every
 planned destructor is marked called. The real parked collector consumer remains
 busy; worker cache/mask and transient error ownership follow332. Two exact normal
@@ -31,7 +46,7 @@ The Closure owns its selected Fiber; direct and explicit `__invoke` calls borrow
 that receiver while retaining their actual argument buffers and saved operation
 provenance. Strict318 initialization, nine normal originals and author65/independent403
 reached premises pass at the recorded private cuts. Two explicit start/C-root
-Unsupported controls earn zero agreement; earlier331 evidence is unchanged. A
+Unsupported controls earn zero agreement at that cut; earlier331 evidence is unchanged. A
 separate actual322 composition passes strict initialization, one collector
 original and115 independent premises: captured public resume/throw authenticate
 the genuine saved caller, preserve borrowed receiver roots and retire the idle
@@ -1546,9 +1561,22 @@ The reviewed327 composition at `1f6313f7e` over `e044ff7cb` passes strict
 algo/struct at3.369/4.220s without renewing those source/state cuts. Its raw
 compiler results are `trait266-object-algo-gtfakyej` and
 `trait266-object-struct-d2ofi_zz` in the same evidence directory.
+Later failed FCC imports retain the exact cached target of an already published
+first owner, with their own called class and source/collision prefix. At
+`494f6b34f`, strict algo/struct pass3.369/4.220s; one PHP-error source comparison
+and68 supplied conditions plus6 setup clauses pass (17.433s). The genuine C-to-E
+failure preserves C's live cache, retires E's owner and rejects a fresh E method,
+forged call scope/prefix/history and live resurrection. Raw evidence is under
+`.tools/trait-fcc-later-birth-current19/.tools/`: `method-runtime-ekmhst3r`,
+`closure-call-protocol-7846p_2q`, `trait266-object-algo-reoln7u9` and
+`trait266-object-struct-s86zgxqr`. A missing watched runner symlink stopped the
+first state invocation before numeric execution; that infrastructure failure is
+retained without semantic credit.
+These unchanged cuts bridge to the reviewed328 composition, preserving bound
+callback RAW/INPUT, caller ownership and source fields.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
-remains open, as do differing-owner later births and
+remains open, as do broader differing-owner later births and
 executable failed-target reuse.
 Paused return work is excluded.
 

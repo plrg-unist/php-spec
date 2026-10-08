@@ -812,8 +812,11 @@ plus6 setup clauses; that checkpoint ends at the old-U constructor Error.
 Live concrete aliases and visibility adaptations preserve the exact selected body,
 default and alias static cells. Three normal source comparisons and44 supplied
 birth/default/static conditions pass, with6 setup clauses separate.
+Later failed imports preserve a published first owner's cached method even when
+their own method differs; one PHP-error source comparison and68 supplied retirement
+conditions pass, with6 setup clauses separate.
 Parameter-view full-source constructor,
-handler and variadic cases, differing-owner later births
+handler and variadic cases, broader differing-owner later births
 and executable reuse of a failed target remain open. Wider
 initializer contexts, held/open failed links and readonly
 storage remain
@@ -1069,8 +1072,10 @@ selected Fiber. Calls borrow its receiver from the Closure and preserve distinct
 direct and `__invoke` buffers through nested transfers and retirement. The
 [bound-callable ledger](coverage/semantics/fiber-bound-api-callables-review.json)
 records the new originals and reached checks, including saved calls to the idle
-collector Fiber. Bound `start` captures and C-root
-callback receivers remain required.
+collector Fiber. Fixed bound API captures also execute as Fiber C-root callbacks:
+the [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json)
+records borrowed receivers and callback retirement before original start arguments.
+Bound `start` and constructor captures remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 
