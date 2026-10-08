@@ -133,6 +133,7 @@ def $echo_source_destructor_selection(S, pmethoddesc, porigin_called, PORIGIN n 
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
 def $echo_source_destructor_selection(S, pmethoddesc, porigin_called, porigin_site) = false -- otherwise
 def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $dynamic_fixed_name(S, porigin_site) =/= eps
   -- if $echo_source_destructor_selection(S, pmethoddesc, porigin_called, porigin_site)
 
 dec $echo_call_site_valid(pstate, porigin, int) : bool
