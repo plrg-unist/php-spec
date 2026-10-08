@@ -358,5 +358,14 @@
     "exit": 0,
     "status": "normal",
     "source_sha256": "cf261e5fd31aadde9054388d675231014d4acd99d4a1fbeeb073a5e5056bba6a"
+  },
+  {
+    "id": "collector-unowned-zero-guard-current-pass-review-18",
+    "source": "<?php\nclass UnownedBare325 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $weakWorker;\n        echo \"D|\";\n        try {\n            $weakWorker = WeakReference::create(Fiber::getCurrent());\n            Fiber::suspend();\n            echo \"unreachable|\";\n        } finally {\n            $this->self = null;\n            echo \"finally|\";\n        }\n    }\n}\n$request = new Fiber(function () {\n    global $weakTarget;\n    $a = new UnownedBare325();\n    $weakTarget = WeakReference::create($a);\n    unset($a);\n    echo \"collect:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\necho $weakWorker->get() === null ? \"worker-gone|\" : \"worker-live|\";\necho $weakTarget->get() === null ? \"target-gone|\" : \"target-live|\";\necho \"last:\", gc_collect_cycles(), \"|END\";\n",
+    "source_sha256": "883546e0403edbf239a2e3fa842a0a2ac4c03cbadff063d62c8c9e7d676475d5",
+    "stdout": "collect:D|finally|1|worker-gone|target-gone|last:0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
