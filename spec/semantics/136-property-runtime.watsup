@@ -331,7 +331,7 @@ def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_comp
 def $property_live_complete(S, (HCELL n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
 def $property_live_complete(S, (HARRAY n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
 def $property_live_complete(S, pnode*) = false -- otherwise
-def $property_state_valid(S) = ($instance_default_state_valid(S) /\ $reference_coercions_valid(S) /\ $container_inits_valid(S) /\ $parameter_backings_valid(S) /\ $objectprops_valid(S, S.OBJECTPROPS) /\ $property_live_complete(S, S.ALLOCATIONS) /\ $proprefs_valid(S) /\ $propref_slots_covered(S, S.OBJECTPROPS))
+def $property_state_valid(S) = ($instance_storage_state_valid(S) /\ $instance_default_state_valid(S) /\ $reference_coercions_valid(S) /\ $container_inits_valid(S) /\ $parameter_backings_valid(S) /\ $objectprops_valid(S, S.OBJECTPROPS) /\ $property_live_complete(S, S.ALLOCATIONS) /\ $proprefs_valid(S) /\ $propref_slots_covered(S, S.OBJECTPROPS))
 
 dec $internal_property_write(pstate) : bool
 dec $property_strict(pstate) : bool
@@ -342,10 +342,12 @@ def $property_strict(S) = pcode.STRICT
 def $property_strict(S) = false -- otherwise
 dec $property_read_key(pstate, pvalue, ptbytes, int) : pstate
 def $property_read_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_read_value(S, pitem)]
+  -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
 def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
@@ -353,9 +355,11 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $pt
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.TYPE =/= eps
 def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)[.RESULT = KNOWN PNULL]
+  -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
 def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)[.RESULT = KNOWN PNULL]
+  -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_UNSET
@@ -363,6 +367,7 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $pt
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
   -- if ppropertydesc.TYPE = eps
 def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Closure property read"]
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$class_plain_instance(S, n)
   -- if ~$throwable_object(S, n)
 def $property_read_key(S, pvalue, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Attempt to read property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $unpack_type_bytes(pvalue), z)[.RESULT = KNOWN PNULL]
@@ -370,6 +375,7 @@ def $property_read_key(S, pvalue, ptbytes, z) = $diagnostic(S, "Warning", $ptasc
 
 dec $property_quiet_key(pstate, pvalue, ptbytes, int) : pstate
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_value(S, pitem)]
+  -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE pitem
@@ -389,8 +395,10 @@ dec $property_unset_indirect_check(pstate, nat, ptbytes, int) : pstate
 def $property_unset_indirect_check(S, n, ptbytes, z) = S -- otherwise
 def $property_reference_check(S, n, ptbytes, z) = $property_instance_indirect_check(S, n, ptbytes, true, z)
 def $property_store_key(S, n, ptbytes, pvalue, z) = $property_set_check(S, n, ptbytes, $ptascii("modify"), z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $property_set_denied(S, n, ptbytes)
 def $property_store_key(S, n, ptbytes, pvalue, z) = $object_table_sync($property_store_key_unshared($object_table_write(S, n), n, ptbytes, pvalue, z), n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_set_denied(S, n, ptbytes)
 ;; Declared types convert before the live alias checks its other type sources.
 def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $write_cell_checked(S, n_cell, pvalue, z)
@@ -503,32 +511,41 @@ def $isset_base(S, BASE_PROPERTY pvalue ptbytes, b, z) = S[.RESULT = KNOWN (PBOO
 def $isset_base(S, BASE_PROPERTY pvalue ptbytes, b, z) = $isset_simple(S, BASE_PROPERTY pvalue ptbytes, b, z)
   -- if ~$stdclass_raw_undefined(S, pvalue, ptbytes)
 def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_instance_indirect_check($object_table_write(S, n)[.LOCATION = PROPERTY n ptbytes_key], n, ptbytes_key, true, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $class_plain_instance(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_access_error(S, n, ptbytes, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $class_plain_instance(S, n)
   -- if ~$property_accessible(S, n, ptbytes)
 def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.COMPLETION = UNSUPPORTED "Closure property write"]
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$class_plain_instance(S, n)
   -- if ~$throwable_object(S, n)
 def $base_acquire(S, BASE_PROPERTY pvalue ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Attempt to modify property \"") ++ $c_string(ptbytes) ++ $ptascii("\" on ") ++ $typed_given(S, pvalue), z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 def $location_write(S, PROPERTY n ptbytes, pvalue) = $property_set_check(S, n, ptbytes, $ptascii("modify"), $property_current_line(S))
+  -- if ~$instance_storage_freeing(S, n)
   -- if $property_set_denied(S, n, ptbytes)
 def $location_write(S, PROPERTY n ptbytes, pvalue) = $write_cell_checked(S, n_cell, pvalue, $property_current_line(S))
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_set_denied(S, n, ptbytes)
   -- if $update_alias_cell(S, PROPERTY n ptbytes) = (n_cell)
 def $location_write(S, PROPERTY n ptbytes, pvalue) = $property_store_key(S, n, ptbytes, pvalue, $property_current_line(S))
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_set_denied(S, n, ptbytes)
   -- if $update_alias_cell(S, PROPERTY n ptbytes) = eps
 def $location_reference(S, PROPERTY n ptbytes) = false
 def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = $property_unset_indirect_check($property_quiet_key($object_table_write(S, n)[.LOCATION = PROPERTY n ptbytes_key], POBJECT n, ptbytes_key, z), n, ptbytes_key, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $class_plain_instance(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.LOCATION = NOWHERE][.RESULT = KNOWN PNULL]
+  -- if ~$instance_storage_freeing(S, n)
   -- if $class_plain_instance(S, n)
   -- if ~$property_accessible(S, n, ptbytes)
 def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.RESULT = KNOWN PNULL]
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$class_plain_instance(S, n)
   -- if ~$throwable_object(S, n)
 def $base_find(S, BASE_PROPERTY pvalue ptbytes, z) = S[.RESULT = KNOWN PNULL]
@@ -553,16 +570,20 @@ def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = $throw_scalar(
 dec $property_unset_key(pstate, pvalue, ptbytes, int) : pstate
 dec $property_unset_key_unshared(pstate, pvalue, ptbytes, int) : pstate
 def $property_unset_key(S, POBJECT n, ptbytes, z) = $property_set_check(S, n, ptbytes, $ptascii("unset"), z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $property_set_denied(S, n, ptbytes)
 def $property_unset_key(S, POBJECT n, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_value(S, POBJECT n), POBJECT n, ptbytes, z), POBJECT n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_set_denied(S, n, ptbytes)
 def $property_unset_key(S, pvalue, ptbytes, z) = $object_table_sync_value($property_unset_key_unshared($object_table_write_value(S, pvalue), pvalue, ptbytes, z), pvalue) -- otherwise
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = $clone_unset_committed(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL], n, ptbytes, ppropertyslot.STATE)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = (ppropertyid)
   -- if S_detached = $propref_detach_slot(S, n, ppropertyslot)
 def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = $clone_unset_committed(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, n, $property_slot_set(pobjectprops.SLOTS, ptbytes, PROP_UNSET))][.RESULT = KNOWN PNULL], n, ptbytes, ppropertyslot.STATE)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.DECL = eps

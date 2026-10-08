@@ -32,8 +32,10 @@ def $weakref_find(S, (HARRAY n) :: pnode_tail*, n_target) = $weakref_find(S, pno
 dec $weakref_done(pstate, pvalue) : pstate
 dec $weakref_create(pstate, nat) : pstate
 def $weakref_create(S, n_target) = $weakref_done(S, POBJECT n)
+  -- if ~$instance_storage_freeing(S, n_target)
   -- if $weakref_find(S, S.ALLOCATIONS, n_target) = (n)
 def $weakref_create(S, n_target) = $weakref_done(S[.OBJECTS = S.OBJECTS ++ [WEAKREFERENCE (n_target)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], POBJECT n)
+  -- if ~$instance_storage_freeing(S, n_target)
   -- if $weakref_find(S, S.ALLOCATIONS, n_target) = eps
   -- if n = |S.OBJECTS|
 dec $weakref_get(pstate, nat) : pvalue

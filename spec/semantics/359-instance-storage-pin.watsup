@@ -1,0 +1,216 @@
+;; zend_objects_store_del invalidates the store handle, then gives free_obj a
+;; physical refcount-one pin. std_dtor notifies WeakReference before its slots.
+dec $instance_storage_task(ptask) : pinstancestorage?
+dec $instance_storage_tasks(ptask*) : pinstancestorage*
+dec $instance_storage_frames(pframe*) : pinstancestorage*
+dec $instance_storage_vm(pstate, pfibervm, nat?) : pinstancestorage*
+dec $instance_storage_object(pstate, pnode) : pinstancestorage*
+dec $instance_storage_objects(pstate, pnode*) : pinstancestorage*
+dec $instance_storage_callers(pstate, pfibercaller*) : pinstancestorage*
+dec $instance_storage_closers(pstate, pfiberclose*) : pinstancestorage*
+dec $instance_storage_all(pstate) : pinstancestorage*
+dec $instance_storage_select(pinstancestorage*, nat) : pinstancestorage?
+dec $instance_storage_for(pstate, nat) : pinstancestorage?
+dec $instance_storage_order(ppropertyslot*, bool, nat) : nat*
+dec $instance_storage_image(ppropertyslot*, ppropertyslot*, nat*, nat) : bool
+dec $instance_storage_basic(pstate, pinstancestorage) : bool
+dec $instance_storage_basics(pstate, pinstancestorage*) : bool
+dec $instance_storage_ids(pinstancestorage*) : nat*
+dec $instance_storage_tail(ptask*, pinstancestorage) : ptask*?
+dec $instance_storage_parent(pstate, pinstancestorage, ptask*) : bool
+dec $instance_storage_valid(pstate, pinstancestorage) : bool
+dec $instance_storage_node(pstate, nat) : bool
+dec $instance_storage_weak(pobject*, nat) : pobject*
+dec $instance_storage_called(pstate, nat) : pstate
+dec $instance_storage_begin(pstate, nat) : pstate
+dec $instance_storage_transfer(pstate, pinstancestorage, ptask*) : pstate
+dec $instance_storage_cleared(ppropertyslot*, nat) : ppropertyslot*
+
+def $instance_storage_task(INSTANCE_STORAGE_STEP pinstancestorage) = (pinstancestorage)
+def $instance_storage_task(AT porigin ptask) = $instance_storage_task(ptask)
+def $instance_storage_task(ptask) = eps -- otherwise
+def $instance_storage_tasks(eps) = eps
+def $instance_storage_tasks(ptask :: ptask_tail*) = pinstancestorage :: $instance_storage_tasks(ptask_tail*)
+  -- if $instance_storage_task(ptask) = (pinstancestorage)
+def $instance_storage_tasks(ptask :: ptask_tail*) = $instance_storage_tasks(ptask_tail*)
+  -- if $instance_storage_task(ptask) = eps
+def $instance_storage_frames(eps) = eps
+def $instance_storage_frames(pframe :: pframe_tail*) = $instance_storage_tasks(pframe.TODO) ++ $instance_storage_frames(pframe_tail*)
+def $instance_storage_vm(S, pfibervm, n_active?) = $instance_storage_tasks(pfibervm.TODO) ++ $instance_storage_frames(pfibervm.FRAMES)
+  -- if n_active? =/= S.ACTIVEFIBER
+def $instance_storage_vm(S, pfibervm, n_active?) = eps -- otherwise
+def $instance_storage_object(S, HOBJECT n) = $instance_storage_vm(S, pfibervm, (n))
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+def $instance_storage_object(S, pnode) = eps -- otherwise
+def $instance_storage_objects(S, eps) = eps
+def $instance_storage_objects(S, pnode :: pnode_tail*) = $instance_storage_object(S, pnode) ++ $instance_storage_objects(S, pnode_tail*)
+def $instance_storage_callers(S, eps) = eps
+def $instance_storage_callers(S, pfibercaller :: pfibercaller_tail*) = $instance_storage_vm(S, pfibercaller.VM, pfibercaller.PREVIOUS) ++ $instance_storage_callers(S, pfibercaller_tail*)
+def $instance_storage_closers(S, eps) = eps
+def $instance_storage_closers(S, pfiberclose :: pfiberclose_tail*) = $instance_storage_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS) ++ $instance_storage_closers(S, pfiberclose_tail*)
+def $instance_storage_all(S) = $instance_storage_tasks(S.TODO) ++ $instance_storage_frames(S.FRAMES) ++ $instance_storage_objects(S, S.ALLOCATIONS) ++ $instance_storage_callers(S, S.FIBERCALLERS) ++ $instance_storage_closers(S, S.FIBERCLOSERS)
+def $instance_storage_select(eps, n) = eps
+def $instance_storage_select(pinstancestorage :: pinstancestorage_tail*, n) = (pinstancestorage)
+  -- if pinstancestorage.OBJECT = n
+def $instance_storage_select(pinstancestorage :: pinstancestorage_tail*, n) = $instance_storage_select(pinstancestorage_tail*, n)
+  -- if pinstancestorage.OBJECT =/= n
+def $instance_storage_for(S, n) = $instance_storage_select($instance_storage_all(S), n)
+def $instance_storage_freeing(S, n) = true -- if $instance_storage_for(S, n) =/= eps
+
+;; Slot metadata is borrowed. Only unvisited slots own their ordinary edges;
+;; a visit clears one logical slot while transferring that same owner to release.
+def $instance_storage_order(eps, b, n) = eps
+def $instance_storage_order(ppropertyslot :: ppropertyslot_tail*, b, n) = n :: $instance_storage_order(ppropertyslot_tail*, b, $(n + 1))
+  -- if (ppropertyslot.DECL = eps) = b
+def $instance_storage_order(ppropertyslot :: ppropertyslot_tail*, b, n) = $instance_storage_order(ppropertyslot_tail*, b, $(n + 1))
+  -- if (ppropertyslot.DECL = eps) =/= b
+def $instance_storage_image(eps, eps, nat*, n) = true
+def $instance_storage_image(ppropertyslot :: ppropertyslot_tail*, ppropertyslot_original :: ppropertyslot_original_tail*, nat*, n) = $instance_storage_image(ppropertyslot_tail*, ppropertyslot_original_tail*, nat*, $(n + 1))
+  -- if n <- nat*
+  -- if ppropertyslot = ppropertyslot_original[.STATE = PROP_UNSET]
+def $instance_storage_image(ppropertyslot :: ppropertyslot_tail*, ppropertyslot_original :: ppropertyslot_original_tail*, nat*, n) = $instance_storage_image(ppropertyslot_tail*, ppropertyslot_original_tail*, nat*, $(n + 1))
+  -- if ~(n <- nat*)
+  -- if ppropertyslot = ppropertyslot_original
+def $instance_storage_image(ppropertyslot*, ppropertyslot_original*, nat*, n) = false -- otherwise
+
+def $instance_storage_node(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+def $instance_storage_node(S, n) = false -- otherwise
+def $instance_storage_basic(S, pinstancestorage) = true
+  -- if $instance_storage_node(S, pinstancestorage.OBJECT)
+  -- if (HOBJECT pinstancestorage.OBJECT) <- S.ALLOCATIONS
+  -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = (ppropertyslot*)
+  -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
+  -- if $(pinstancestorage.NEXT <= |nat_order*|)
+  -- if $instance_storage_image(ppropertyslot*, pinstancestorage.SLOTS, nat_order*[0:pinstancestorage.NEXT], 0)
+  -- if $(pinstancestorage.OBJECT < |S.DESTRUCTION.HANDLES|)
+  -- if S.DESTRUCTION.HANDLES[pinstancestorage.OBJECT] = pinstancestorage.HANDLE
+  -- if $(pinstancestorage.HANDLE > 0) /\ $(pinstancestorage.HANDLE < S.DESTRUCTION.NEXT)
+  -- if ~(pinstancestorage.HANDLE <- S.DESTRUCTION.FREE)
+  -- if pinstancestorage.OBJECT <- S.DESTRUCTION.CALLED
+  -- if $instance_storage_weak(S.OBJECTS, pinstancestorage.OBJECT) = S.OBJECTS
+def $instance_storage_basic(S, pinstancestorage) = false -- otherwise
+def $instance_storage_basics(S, eps) = true
+def $instance_storage_basics(S, pinstancestorage :: pinstancestorage_tail*) = ($instance_storage_basic(S, pinstancestorage) /\ $instance_storage_basics(S, pinstancestorage_tail*))
+def $instance_storage_ids(eps) = eps
+def $instance_storage_ids(pinstancestorage :: pinstancestorage_tail*) = pinstancestorage.OBJECT :: $instance_storage_ids(pinstancestorage_tail*)
+def $instance_storage_state_valid(S) = ($destructor_unique($instance_storage_ids(pinstancestorage*)) /\ $instance_storage_basics(S, pinstancestorage*))
+  -- if pinstancestorage* = $instance_storage_all(S)
+def $instance_storage_tail(eps, pinstancestorage) = eps
+def $instance_storage_tail((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*, pinstancestorage) = (ptask*)
+def $instance_storage_tail(ptask :: ptask_tail*, pinstancestorage) = $instance_storage_tail(ptask_tail*, pinstancestorage)
+  -- if ptask =/= INSTANCE_STORAGE_STEP pinstancestorage
+def $instance_storage_parent(S, pinstancestorage, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = ($destructor_release_valid(S, pdestructionrelease) /\ pinstancestorage.USER = pdestructionrelease.USER)
+def $instance_storage_parent(S, pinstancestorage, ptask*) = false -- otherwise
+def $instance_storage_valid(S, pinstancestorage) = true
+  -- if $instance_storage_basic(S, pinstancestorage)
+  -- if $instance_storage_for(S, pinstancestorage.OBJECT) = (pinstancestorage)
+  -- if $instance_storage_state_valid(S)
+  -- if S.CURRENT = pinstancestorage.CALLER /\ S.ORIGIN = pinstancestorage.ORIGIN /\ S.CONSTCONTEXT = pinstancestorage.CONSTCONTEXT
+  -- if pinstancestorage.USER = $destructor_user_source(S)
+  -- if $instance_storage_tail(S.TODO, pinstancestorage) = (ptask*)
+  -- if $instance_storage_parent(S, pinstancestorage, ptask*)
+def $instance_storage_valid(S, pinstancestorage) = false -- otherwise
+
+def $instance_storage_weak(eps, n) = eps
+def $instance_storage_weak((WEAKREFERENCE (n)) :: pobject*, n) = (WEAKREFERENCE eps) :: $instance_storage_weak(pobject*, n)
+def $instance_storage_weak(pobject :: pobject_tail*, n) = pobject :: $instance_storage_weak(pobject_tail*, n)
+  -- if pobject =/= WEAKREFERENCE (n)
+def $instance_storage_called(S, n) = S -- if n <- S.DESTRUCTION.CALLED
+def $instance_storage_called(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]] -- if ~(n <- S.DESTRUCTION.CALLED)
+def $instance_storage_begin(S, n) = $gc_store_retire($instance_storage_called(S[.OBJECTS = $instance_storage_weak(S.OBJECTS, n)][.TODO = (INSTANCE_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], SLOTS ppropertyslot*, NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n), HOBJECT n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $instance_storage_begin(S, n)
+  -- if $instance_storage_node(S, n)
+def $call_task_valid(S, INSTANCE_STORAGE_STEP pinstancestorage) = $instance_storage_valid(S, pinstancestorage)
+def $task_nodes(INSTANCE_STORAGE_STEP pinstancestorage) = [HOBJECT pinstancestorage.OBJECT]
+def $eager_explicit_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
+def $generator_internal_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
+
+def $instance_storage_cleared(ppropertyslot*, n) = ppropertyslot*[0:n] ++ [ppropertyslot[.STATE = PROP_UNSET]] ++ ppropertyslot*[$(n + 1):n_tail]
+  -- if ppropertyslot = ppropertyslot*[n]
+  -- if n_tail = $nabs($(|ppropertyslot*| - n - 1))
+def $instance_storage_transfer(S, pinstancestorage, ptask*) = $destructor_release_begin(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, pinstancestorage.OBJECT, $instance_storage_cleared(ppropertyslot*, n_slot))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = $(pinstancestorage.NEXT + 1)]) :: ptask*], $destruction_values($property_slot_nodes([ppropertyslot])))
+  -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = (ppropertyslot*)
+  -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
+  -- if n_slot = nat_order*[pinstancestorage.NEXT]
+  -- if ppropertyslot = ppropertyslot*[n_slot]
+  -- if S_detached = $propref_detach_slot(S, pinstancestorage.OBJECT, ppropertyslot)
+rule PhpStep/instance-storage-slot: S ~> $instance_storage_transfer(S, pinstancestorage, ptask*)
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if $(pinstancestorage.NEXT < |pinstancestorage.SLOTS|)
+rule PhpStep/instance-storage-finish: S ~> $destructor_release_begin(S[.TODO = ptask*][.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS, HOBJECT pinstancestorage.OBJECT)], [DESTRUCTION_HANDLE pinstancestorage.OBJECT])
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NEXT = |pinstancestorage.SLOTS|
+  -- if $heap_owners($heap_graph(S), HOBJECT pinstancestorage.OBJECT) = 1
+rule PhpStep/instance-storage-escaped: S ~> S[.COMPLETION = UNSUPPORTED "freeing instance escaped reacquisition"]
+  -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NEXT = |pinstancestorage.SLOTS|
+  -- if $($heap_owners($heap_graph(S), HOBJECT pinstancestorage.OBJECT) > 1)
+
+;; The logical buffer/store retirement precedes physical storage retirement.
+def $gc_handle_task(S, INSTANCE_STORAGE_STEP pinstancestorage, n) = 1
+  -- if pinstancestorage.OBJECT = n
+  -- if $instance_storage_basic(S, pinstancestorage)
+def $gc_retired_valid(S, n) = true
+  -- if $instance_storage_for(S, n) = (pinstancestorage)
+  -- if $instance_storage_basic(S, pinstancestorage)
+  -- if $instance_storage_state_valid(S)
+  -- if $gc_handle_all(S, n) = 1
+
+;; Transparent markers retain the existing pending Throwable and actual caller.
+def $destructor_operation_tasks((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*, pdestructionoperation, pdestructionoperation_new) = (INSTANCE_STORAGE_STEP pinstancestorage) :: $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation_new)
+def $destructor_frame_tasks((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*, pdestructionframe, pdestructionframe_new) = (INSTANCE_STORAGE_STEP pinstancestorage) :: $destructor_frame_tasks(ptask*, pdestructionframe, pdestructionframe_new)
+def $destructor_release_frame((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*, pdestructionframe) = $destructor_release_frame(ptask*, pdestructionframe)
+def $destructor_tail_pending((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*) = $destructor_tail_pending(ptask*)
+def $destructor_call_tail((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*, pdestructorcall) = $destructor_call_tail(ptask*, pdestructorcall)
+def $generator_close_destructor_tasks(S, (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(S, ptask*, n_local?, n_caller?, ptask_exit)
+  -- if $instance_storage_valid(S, pinstancestorage)
+def $generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
+  -- if ~pinstancestorage.USER /\ pinstancestorage.CALLER = eps /\ pinstancestorage.ORIGIN = eps /\ pinstancestorage.CONSTCONTEXT = eps
+
+;; Metadata-only class/identity reads are safe during free_obj. Consumed native
+;; property zvals are raw storage, so structural payload access stays explicit.
+def $property_read(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_quiet(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_store_value(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_store_key(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_unset(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_unset_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $base_acquire(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $base_find(S, BASE_PROPERTY (POBJECT n) ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $location_write(S, PROPERTY n ptbytes, pvalue) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_bind_prepare(S, n_object, ptbytes, n_cell, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n_object)
+def $property_bind_commit(S, n_object, ptbytes, n_cell) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n_object)
+def $property_reference_fetch(S, n_object, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n_object)
+def $property_reference_fetch_unshared(S, n_object, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n_object)
+def $clone_object(S, n_source) = S[.COMPLETION = UNSUPPORTED "freeing instance clone"] -- if $instance_storage_freeing(S, n_source)
+def $clone_value(S, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "freeing instance clone"] -- if $instance_storage_freeing(S, n)
+def $clone_receive(S, pclonecall) = S[.COMPLETION = UNSUPPORTED "freeing instance clone"]
+  -- if pclonecall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN (PARRAY n_array))]
+  -- if $instance_storage_freeing(S, n)
+  -- if $clone_method(S, n) = eps
+def $clone_lifecycle_start(S, n_source, porigin_site, z, pclonecall?) = S[.COMPLETION = UNSUPPORTED "freeing instance clone"] -- if $instance_storage_freeing(S, n_source)
+def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "freeing instance array cast"] -- if $instance_storage_freeing(S, n)
+def $object_foreach_reset(S, n) = S[.COMPLETION = UNSUPPORTED "freeing instance foreach"] -- if $instance_storage_freeing(S, n)
+def $object_foreach_select(S, n) = S[.COMPLETION = UNSUPPORTED "freeing instance foreach"] -- if $instance_storage_freeing(S, n)
+def $weakref_create(S, n_target) = S[.COMPLETION = UNSUPPORTED "freeing instance new weak reference"] -- if $instance_storage_freeing(S, n_target)
+def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERUNSUPPORTED "freeing instance structural comparison"
+  -- if n_left =/= n_right
+  -- if $instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right)
+def $value_order_effect(S, POBJECT n_left, POBJECT n_right, pnode_seen*, z) = (S, ORDERUNSUPPORTED "freeing instance structural comparison")
+  -- if n_left =/= n_right
+  -- if $instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right)
+def $comparison_result(S, pbin, ORDERUNSUPPORTED text, z) = S[.COMPLETION = UNSUPPORTED text]

@@ -349,13 +349,16 @@ rule PhpStep/destructor-global-store: S ~> S[.DESTRUCTION.PHASE = DESTRUCTION_ST
 
 ;; Object-store handles are reused before this pass; reuse stops during it. The
 ;; live upper bound grows when a destructor creates another object.
+def $instance_storage_freeing(S, n) = false -- otherwise
+def $instance_storage_state_valid(S) = true -- otherwise
 def $destructor_handle(S, n_handle, n) = (n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $(n < |S.DESTRUCTION.HANDLES|)
   -- if S.DESTRUCTION.HANDLES[n] = n_handle
   -- if (HOBJECT n) <- S.ALLOCATIONS
 def $destructor_handle(S, n_handle, n) = $destructor_handle(S, n_handle, $(n + 1))
   -- if $(n < |S.DESTRUCTION.HANDLES|)
-  -- if S.DESTRUCTION.HANDLES[n] =/= n_handle \/ ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if S.DESTRUCTION.HANDLES[n] =/= n_handle \/ ~((HOBJECT n) <- S.ALLOCATIONS) \/ $instance_storage_freeing(S, n)
 def $destructor_handle(S, n_handle, n) = eps -- if $(n >= |S.DESTRUCTION.HANDLES|)
 def $call_task_valid(S, DESTRUCTOR_STORE) = ($shutdown_task_scope(S) /\ S.ORIGIN = eps /\ S.DESTRUCTION.PHASE = DESTRUCTION_STORE /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.CALLS = eps /\ $(S.DESTRUCTION.INDEX >= 1) /\ $(S.DESTRUCTION.INDEX <= S.DESTRUCTION.NEXT))
 rule PhpStep/destructor-store-call: S ~> $destructor_select(S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)], n, true, eps)
