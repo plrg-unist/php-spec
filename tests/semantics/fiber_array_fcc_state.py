@@ -52,7 +52,7 @@ CASES = {
             '$entry_value(S, ALIAS n_method_cell) = PSTRING ($ptascii("getCurrent"))',
             '~((HARRAY n_callback) <- S.ALLOCATIONS)',
             '~((HOBJECT n_input) <- S.ALLOCATIONS)', '$fiber_at(S, n_input) = eps',
-            'n_runner =/= n_input', 'n_input < n_capture',
+            'n_runner =/= n_input', '$(n_input < n_capture)',
             'pconfigcall.OWNER = (n_capture)', 'pconfigcall.INDEX = 1',
             'pconfigcall.NAMED', 'pconfigcall.PACKS = eps',
             'pconfigcall.SENT = [NAMED_SENT (KNOWN (PSTRING ($ptascii("V"))))]',
