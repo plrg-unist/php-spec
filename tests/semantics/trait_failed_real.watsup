@@ -1,0 +1,5 @@
+;; Pause the actual trait activation immediately before its rollback wrapper.
+dec $review_trait_real_failed_link(pstate, pclassdesc) : pstate
+def $review_trait_real_failed_link(S, pclassdesc) = $trait_fetched(S, pclassdesc, ptraitplan, $trait_fetch(S, ptraitplan.TRAITS, eps))
+  -- if $trait_needs_binding(S, pclassdesc)
+  -- if ptraitplan = $trait_plan(S, pclassdesc)

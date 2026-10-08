@@ -1,0 +1,33 @@
+{
+  "scope": "New actual38f/MODULE287 interaction: composing REAL cache scope through live Array eval warning and parser rejection. Native original is pinned; model gate recorded separately.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "unpublished-real-caches-keep-scope-through-array-eval-warning",
+      "source": "<?php\ntrait T{public const Y=[static function(){try{eval([]);}catch(ParseError $e){echo \"P;\";}echo self::class,\":\",static::class,\";\";},E_STRICT][0];public static $x=self::Y;}\nset_error_handler(static function($n){echo $n===8192?\"D;\":\"W;\";return true;});echo \"PRE;\";\nclass C{use T;public static $x=self::Y;}\n(C::$x)();\nclass E{use T;public static $x=self::Y;}\n(E::$x)();(C::Y)();\n",
+      "source_sha256": "a0532c4dca2fb42857fa6a014b1bfb80b7c5dc951c7c4a0d1861d8abbc031aef",
+      "status": "normal",
+      "stdout_base64": "UFJFO0Q7VztQO0M6QztEO1c7UDtFOkU7VztQO0M6Qzs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/trait290-287-native-yu6rjl32/report.json",
+      "native_raw_sha256": "9b16448cdd82e9ff971dfbb12a4b33696c5f3f14682083b6ec75e3d951f41a5a"
+    }
+  ]
+}

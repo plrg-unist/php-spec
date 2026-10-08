@@ -1,0 +1,38 @@
+;; Test-only observation of the actual184/266 initializer steps inside238.
+;; Constants are first composed by238; no fixture manufactures a Closure.
+dec $review_trait_real_start(pfstate, pcpath, pclassconstantdesc, int) : (pstate, ptraitcachecause)?
+def $review_trait_real_start(F, pcpath, pclassconstantdesc, z) = ((S_start, ptraitcachecause))
+  -- if F.RECORD = (pfrecorder)
+  -- if $trait_recording(F, pcpath)
+  -- if $trait_fold_owner(F) = (porigin_owner)
+  -- if porigin_site = PORIGIN F.SOURCE.ID pcpath
+  -- if $origin_node(F.MEMORY.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $trait_cache_requested(F.MEMORY, porigin_owner, phpType19, porigin_site) = (porigin_requested)
+  -- if $class_at(F.MEMORY.CLASSES, porigin_requested) = (pclassdesc_requested)
+  -- if $pfclass_constant_member(phpType20, eps) = (ptbytes_member)
+  -- if porigin_lookups* = F.LOOKUPS ++ [porigin_site]
+  -- if n_prefix = |F.MEMORY.DECLARATIONS|
+  -- if n_user = |F.MEMORY.USERCONSTANTS|
+  -- if ptraitcachecause = {CLASS pfrecorder.CLASS, ROOT pfrecorder.ROOT, TABLE pfrecorder.TABLE, LOOKUPS porigin_lookups*, PREFIX n_prefix, USERPREFIX n_user}
+  -- if $trait_real_cause(F.MEMORY, ptraitcachecause) = (pclassconstantdesc)
+  -- if F.MEMORY.CLASSCONSTANTINIT = eps
+  -- if S_base = $trait_real_begin(F.MEMORY[.TODO = eps][.CONSTCONTEXT = eps][.ORIGIN = (porigin_site)], pclassconstantdesc, ptraitcachecause)
+  -- if S_start = $class_constant_begin(S_base, pclassconstantdesc, CLASS_CONST_FETCH (KNOWN (PSTRING pclassdesc_requested.NAME)) ptbytes_member, $class_constant_message_class(S_base, pclassdesc_requested, pclassdesc_requested.NAME), z)
+
+dec $review_trait_real_birth(pstate, ptraitcachecause, nat, nat) : pstate
+def $review_trait_real_birth(S, ptraitcachecause, n_object, n) = S
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n_object) =/= eps
+def $review_trait_real_birth(S, ptraitcachecause, n_object, n) = $review_trait_real_birth(S_next[.EVENTS = eps], ptraitcachecause, n_object, $nabs($(n - 1)))
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n_object) = eps
+  -- if $(n > 0)
+  -- if S.COMPLETION = NORMAL /\ $class_constant_active(S)
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+
+dec $review_trait_real_complete(pstate, ptraitcachecause, nat) : pstate
+def $review_trait_real_complete(S, ptraitcachecause, n) = S
+  -- if $trait_real_complete(S, ptraitcachecause)
+def $review_trait_real_complete(S, ptraitcachecause, n) = $review_trait_real_complete(S_next[.EVENTS = eps], ptraitcachecause, $nabs($(n - 1)))
+  -- if ~$trait_real_complete(S, ptraitcachecause)
+  -- if $(n > 0)
+  -- if S.COMPLETION = NORMAL /\ $class_constant_active(S)
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)

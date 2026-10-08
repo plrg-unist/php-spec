@@ -1,0 +1,31 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "real-trait-cache-keeps-constructor-scope-after-capture-release",
+      "source": "<?php\ntrait T {\n    public const Y = [static function () { echo self::class, \":\", static::class, \";\"; }, E_STRICT][0];\n    public static $x = self::Y;\n    public static function m(object $v = new self(7)) {\n        echo self::class, \":\", static::class, \":\", $v instanceof C ? \"C\" : \"X\", \";\";\n    }\n}\nset_error_handler(function () { echo \"H;\"; return true; });\nclass C {\n    use T;\n    public static $x = self::Y;\n    public function __construct(int $v) { echo \"CTOR:\", $v, \";\"; }\n}\n$f = C::m(...);\necho \"CALL;\";\n$f();\nunset($f);\necho \"AFTER;\";\n(C::$x)();\n",
+      "source_sha256": "cf4a5c524fa31ec4df39de7bbea9b1c567d963bb2d8b6abe6e57deb64f507bc1",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "SDtDQUxMO0NUT1I6NztDOkM6QztBRlRFUjtDOkM7",
+      "stdout_template_base64": "SDtDQUxMO0NUT1I6NztDOkM6QztBRlRFUjtDOkM7",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-selected-constructor-current/.tools/fcc-parameter-review18/real-constructor-interaction/runtime.command.json",
+      "native_raw_sha256": "769f73715a0150260c7e76d44b21954dede005c4f91e8d2066f94cc289b80a01"
+    }
+  ]
+}

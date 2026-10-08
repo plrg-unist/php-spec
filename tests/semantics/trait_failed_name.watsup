@@ -1,0 +1,19 @@
+;; Seek the actual source declaration, including the real shutdown path.
+dec $review_failed_name_at(pstate, preqbytes) : bool
+dec $review_failed_name_statement(pstate, preqbytes, nat) : pstate?
+def $review_failed_name_statement(S, ptbytes, n) = $review_failed_name_statement(S[.COMPLETION = NORMAL], ptbytes, n)
+  -- if S.COMPLETION = BUDGET
+def $review_failed_name_at(S, ptbytes) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STMT statement) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.NAME = ptbytes
+def $review_failed_name_at(S, ptbytes) = false -- otherwise
+def $review_failed_name_statement(S, ptbytes, n) = (S)
+  -- if $review_failed_name_at(S, ptbytes)
+def $review_failed_name_statement(S, ptbytes, n) = $review_failed_name_statement($drive_steps(S, 1), ptbytes, $nabs($(n - 1)))
+  -- if S.COMPLETION =/= BUDGET
+  -- if ~$review_failed_name_at(S, ptbytes) /\ $(n > 0)
+def $review_failed_name_statement(S, ptbytes, n) = eps -- otherwise

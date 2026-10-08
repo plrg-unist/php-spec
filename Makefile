@@ -544,6 +544,22 @@ test-semantics: build
 	python3 tests/semantics/trait_public_object_initializer_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_public_object_initializer_file_review_cases.json
 	python3 tests/semantics/trait_public_object_demand_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_unpublished_real_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_unpublished_real_review_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_unpublished_real_parent_cases.json
+	python3 tests/semantics/trait_unpublished_real_protocol.py
+	python3 tests/semantics/trait_unpublished_real_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_real_cases.json
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_failed_real_review_cases.json
+	python3 tests/semantics/trait_failed_real_protocol.py
+	python3 tests/semantics/trait_failed_real_review_protocol.py
+	python3 tests/semantics/trait_failed_real_crossfile_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_failed_name_cases.json
+	python3 tests/semantics/trait_failed_name_protocol.py
+	python3 tests/semantics/trait_failed_name_review_protocol.py
+	python3 tests/semantics/trait_failed_name_early_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_real_constructor_interaction_cases.json
+	python3 tests/semantics/trait_real_constructor_interaction_protocol.py
 	python3 tests/semantics/eval_execution.py
 	python3 tests/semantics/eval_protocol.py
 	python3 tests/semantics/eval_class_scope_protocol.py

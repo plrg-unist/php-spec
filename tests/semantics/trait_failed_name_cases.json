@@ -1,0 +1,140 @@
+{
+  "scope": "Native-only next failed-name reservation originals; no model agreement yet. Includes early-bound child declaration as a distinct required path until supported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "casefold-hard",
+      "source": "<?php\nregister_shutdown_function(static function(){echo \"S;\";try{new c;}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}class c{}echo \"LATE;\";});\ntrait T{public const array Y=[static function(){echo \"OLD;\";},E_STRICT];public static array $x=[0];}\necho \"PRE;\";\nclass C{use T;public static array $x=self::Y;}\necho \"POST;\";\n",
+      "source_sha256": "dab4e0b9a978ad4165f377a7911efcbad5d78f6f6c2015cc86268c32311efe67",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiYyIgbm90IGZvdW5kOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQpGYXRhbCBlcnJvcjogQ2Fubm90IHJlZGVjbGFyZSBjbGFzcyBDIChwcmV2aW91c2x5IGRlY2xhcmVkIGluIHtGSUxFfTo1KSBpbiB7RklMRX0gb24gbGluZSAyClN0YWNrIHRyYWNlOgojMCBbaW50ZXJuYWwgZnVuY3Rpb25dOiB7Y2xvc3VyZTp7RklMRX06Mn0oKQojMSB7bWFpbn0K",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/casefold-hard.native-report.json",
+      "native_raw_sha256": "89506a8a43becf0768013baf2cd1722ad9c601014553fb33dfec4c05134ed5b2"
+    },
+    {
+      "id": "namespace-typed",
+      "source": "<?php\nnamespace Ns;\nregister_shutdown_function(static function(){echo \"S;\";try{new \\nS\\C;}catch(\\Error $e){echo \"M:\",$e->getMessage(),\";\";}class c{}echo \"LATE;\";});\ntrait T{public const int Y=[static function(){echo \"OLD;\";},E_STRICT][0];public static $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static $x=self::Y;}\necho \"POST;\";\n",
+      "source_sha256": "d3e8c2f181520c8a6191d59c5d4c70a841cc8a48697e6ae8025c33f152741e44",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiblNcQyIgbm90IGZvdW5kOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA0Cldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBDbG9zdXJlIHRvIGNsYXNzIGNvbnN0YW50IE5zXEM6Olkgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA2CkZhdGFsIGVycm9yOiBOc1xDIGFuZCBOc1xUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBOc1xDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDYKRmF0YWwgZXJyb3I6IENhbm5vdCByZWRlY2xhcmUgY2xhc3MgTnNcQyAocHJldmlvdXNseSBkZWNsYXJlZCBpbiB7RklMRX06NikgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAgW2ludGVybmFsIGZ1bmN0aW9uXToge2Nsb3N1cmU6e0ZJTEV9OjN9KCkKIzEge21haW59Cg==",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/namespace-typed.native-report.json",
+      "native_raw_sha256": "a4a82ffd0054eca1b511c189569414b754f9cb3947f7f321727a2d1a3204de2a"
+    },
+    {
+      "id": "include-redeclare",
+      "source": "<?php\ninclude __DIR__.\"/source-trait.php\";\nregister_shutdown_function(static function(){echo \"S;\";try{new C;}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}include __DIR__.\"/source-c-repeat.php\";echo \"LATE;\";});\necho \"PRE;\";\nclass C{use T;public static array $x=self::Y;}\necho \"POST;\";\n",
+      "source_sha256": "a8b5c04c4c0a5ad8fb2d002034a947ae48184f6053ea8994bc872c1cd35cb423",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiQyIgbm90IGZvdW5kOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQpGYXRhbCBlcnJvcjogQ2Fubm90IHJlZGVjbGFyZSBjbGFzcyBDIChwcmV2aW91c2x5IGRlY2xhcmVkIGluIHtGSUxFfTo1KSBpbiB7RklMRTpzb3VyY2UtYy1yZXBlYXQucGhwfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgzKTogaW5jbHVkZSgpCiMxIFtpbnRlcm5hbCBmdW5jdGlvbl06IHtjbG9zdXJlOntGSUxFfTozfSgpCiMyIHttYWlufQo=",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/include-redeclare.native-report.json",
+      "native_raw_sha256": "d8236384e9c55a3f6e3562053594408536fac78c908895e5098ad6316f1caac6",
+      "files": [
+        {
+          "name": "source-trait.php",
+          "source": "<?php\ntrait T{\npublic const array Y=[static function(){echo \"OLD;\";},E_STRICT];\npublic static array $x=[0];\n}\n",
+          "source_sha256": "baa7155ccac1e16778602e71fac90d1ead3d6f656545bef69e3e443fb97e8238"
+        },
+        {
+          "name": "source-c-repeat.php",
+          "source": "<?php\nclass c{}\necho \"CHILD;\";\n",
+          "source_sha256": "94c161a94badc398e41f033f97b7697605b607612e2c3c8cab8c67c715ee56be"
+        }
+      ]
+    },
+    {
+      "id": "distinct-namespace",
+      "source": "<?php\nnamespace B{function fill(){class C{}echo \"B:\",get_class(new C),\";\";}}\nnamespace A{\nregister_shutdown_function(static function(){echo \"S;\";try{new C;}catch(\\Error $e){echo \"M:\",$e->getMessage(),\";\";}\\B\\fill();});\ntrait T{public const array Y=[static function(){echo \"OLD;\";},E_STRICT];public static array $x=[0];}\necho \"PRE;\";\nclass C{use T;public static array $x=self::Y;}\necho \"POST;\";\n}\n",
+      "source_sha256": "0def99f951c440ded9b3bfc418749215cb19c9ab30b947dddcf394e2ca3e53a7",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiQVxDIiBub3QgZm91bmQ7QjpCXEM7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA1CkZhdGFsIGVycm9yOiBBXEMgYW5kIEFcVCBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQVxDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/distinct-namespace.native-report.json",
+      "native_raw_sha256": "df872467a3b914723c3283447c9852210f0cae3c99219bc485f27064f2c38f23"
+    },
+    {
+      "id": "cacheless-reservation",
+      "source": "<?php\nregister_shutdown_function(static function(){echo \"S;\";try{new C;}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}class c{}echo \"LATE;\";});\ntrait T{public static $x=1;}\necho \"PRE;\";\nclass C{use T;public static $x=2;}\necho \"POST;\";\n",
+      "source_sha256": "29b19c94266407023f6908c3191d8bd8635c54dc6beb6dc839b7f03b6fc5d846",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiQyIgbm90IGZvdW5kOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59CkZhdGFsIGVycm9yOiBDYW5ub3QgcmVkZWNsYXJlIGNsYXNzIEMgKHByZXZpb3VzbHkgZGVjbGFyZWQgaW4ge0ZJTEV9OjUpIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIFtpbnRlcm5hbCBmdW5jdGlvbl06IHtjbG9zdXJlOntGSUxFfToyfSgpCiMxIHttYWlufQo=",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/cacheless-reservation.native-report.json",
+      "native_raw_sha256": "fa885e8a01391d56357b6e687921bda783990dea10372bb5928cee43e544a7ee"
+    },
+    {
+      "id": "catchable-link-cleanup",
+      "source": "<?php\nfunction fail_link(){class C extends MissingParent{}}\nfunction retry_link(){class c{}echo \"LATE:\",get_class(new C),\";\";}\necho \"PRE;\";\ntry{fail_link();}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}\nretry_link();\n",
+      "source_sha256": "44a41446f469306549f18577491a04491d20d144fb6a8c8f47f9c22f76a7b766",
+      "status": "normal",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO006Q2xhc3MgIk1pc3NpbmdQYXJlbnQiIG5vdCBmb3VuZDtMQVRFOmM7",
+      "stderr_template_base64": "",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/catchable-link-cleanup.native-report.json",
+      "native_raw_sha256": "053eabc08f55319fa81c18b6f365f3890b5c659cfb12e8f752896a40cc2d6ad7"
+    },
+    {
+      "id": "cross-kind-redeclare",
+      "source": "<?php\nregister_shutdown_function(static function(){echo \"S;\";try{new c;}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}trait c{}echo \"LATE;\";});\ntrait T{public static $x=1;}\necho \"PRE;\";\nclass C{use T;public static $x=2;}\necho \"POST;\";\n",
+      "source_sha256": "f2e3b74803a4267b7f0a8f51aacb34041d981d3dfc5d2f8203e7843ac13591e0",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiYyIgbm90IGZvdW5kOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59CkZhdGFsIGVycm9yOiBDYW5ub3QgcmVkZWNsYXJlIGNsYXNzIEMgKHByZXZpb3VzbHkgZGVjbGFyZWQgaW4ge0ZJTEV9OjUpIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIFtpbnRlcm5hbCBmdW5jdGlvbl06IHtjbG9zdXJlOntGSUxFfToyfSgpCiMxIHttYWlufQo=",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/cross-kind-redeclare.native-report.json",
+      "native_raw_sha256": "aeb05526ea9264b52dcb6765aeae3a01dc610e1d22babc72955135b4dc2b8b7f"
+    },
+    {
+      "id": "binding-priority",
+      "source": "<?php\nregister_shutdown_function(static function(){echo \"S;\";class c{use U;public static $x=[E_STRICT];}echo \"LATE;\";});\ntrait T{public static $x=1;}\ntrait U{public static $x=[E_STRICT];}\necho \"PRE;\";\nclass C{use T;public static $x=2;}\necho \"POST;\";\n",
+      "source_sha256": "162894752e86f9f0b40c942e4adbc5eb0bdb3311fef80c3a67097047441d5f92",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNgpTdGFjayB0cmFjZToKIzAge21haW59CkZhdGFsIGVycm9yOiBDYW5ub3QgcmVkZWNsYXJlIGNsYXNzIEMgKHByZXZpb3VzbHkgZGVjbGFyZWQgaW4ge0ZJTEV9OjYpIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIFtpbnRlcm5hbCBmdW5jdGlvbl06IHtjbG9zdXJlOntGSUxFfToyfSgpCiMxIHttYWlufQo=",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/binding-priority.native-report.json",
+      "native_raw_sha256": "487d080305aa82f4016ddfde1438841a0380d7015b1e45d90c50fec20173da1d"
+    },
+    {
+      "id": "autoload-priority",
+      "source": "<?php\nspl_autoload_register(static function($name){echo \"AUTO:\",$name,\";\";});\nregister_shutdown_function(static function(){echo \"S;\";class c extends MissingParent{}echo \"LATE;\";});\ntrait T{public static $x=1;}\necho \"PRE;\";\nclass C{use T;public static $x=2;}\necho \"POST;\";\n",
+      "source_sha256": "a0e07a56a5d538d82f2bc0b13fbef553695ec04887dc6f2ce5815f22016214b6",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgNgpTdGFjayB0cmFjZToKIzAge21haW59CkZhdGFsIGVycm9yOiBDYW5ub3QgcmVkZWNsYXJlIGNsYXNzIEMgKHByZXZpb3VzbHkgZGVjbGFyZWQgaW4ge0ZJTEV9OjYpIGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIFtpbnRlcm5hbCBmdW5jdGlvbl06IHtjbG9zdXJlOntGSUxFfTozfSgpCiMxIHttYWlufQo=",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/failed-name-review15/autoload-priority.native-report.json",
+      "native_raw_sha256": "c69427146671531a2f01173c8b84e79b846886eb805f71aa3730ea57a277f6a1"
+    }
+  ]
+}

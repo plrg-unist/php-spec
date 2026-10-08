@@ -56,8 +56,8 @@ WeakReference296, ordinary cycle collection301 and collector Fibers317/325,
 Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with310 modules composed over
-`cf0cc541515e`. The ordered integration preserves
+with313 modules composed over
+`064d382d0764`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
@@ -65,8 +65,10 @@ f6b2cad34, two new exact normal originals and79 independent strict-SL premises a
 cuts below retain their original inputs.
 The preceding 284-module cut passes strict compilation, one exact source original and
 49 reached premises during active nested Generator delegation. Earlier accepted
-cuts retain their original inputs. Independently accepted private milestones290
-and297 await ordered Git integration. Other private work covers299.
+cuts retain their original inputs. Accepted290/297/299 add composing-owner REAL
+births, dead failure receipts and fatal trait class-name reservation. Their actual313
+join passes strict compilation and one fresh REAL/constructor/capture-retirement
+source with46 supplied reached conditions; earlier cuts retain their identities.
 Nonconstant source-emission314 is installed after Fiber308; literal auto-global316
 is integrated after reviewed current-parent composition.
 Held 279 and user-paused return verification stay set aside. Complete core and the
@@ -1277,8 +1279,21 @@ generated setup checks separate. The retained handler graph survives scratch cle
 Cross-file constant collision typed demand now preserves the executing class file,
 physical fetch line and genuine constant-expression frame. Two PHP-error comparisons
 and one reached group/139 supplied conditions pass, with five service/setup checks
-separate. Wider initializer contexts and unpublished-owner births remain required.
+separate. Wider initializer contexts and unpublished-owner FCC births remain required.
 Traits stay partial.
+
+Modules290/297/299 preserve source/collision/prefix authority for unpublished REAL
+Closure births, retire failed import owners while retaining only dead receipts,
+and reserve the earliest fatal trait class name before later binding or autoload.
+Returning link Errors permit retry. Original author/reviewer cuts and failures stay
+separate in the collision ledger. Actual313 at `cc9411c1e` over310/`064d382d` passes
+strict algo/struct and one new pinned REAL/default-constructor original, with exact
+`H;CALL;CTOR:7;C:C:C;AFTER;C:C;` at unchanged45/55 limits. One genuine strict-SL group
+passes46 supplied conditions plus6 terminal-aware setup clauses: actual REAL
+birth/cache/receipt, selected constructor7 allocation and capture retirement with
+the REAL authority still live. The current constructor/default/Generator/Fiber/source
+fields are retained. Unaccepted307 parameter views and its full mixed, handler and
+variadic timeout originals remain private and open; paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

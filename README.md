@@ -730,10 +730,17 @@ receipts and cache owners through successful and failed composition; array keys
 and duplicate-key selection keep source-derived proofs. Errors inside those
 initializers preserve actual Throwable fields and demand traces, retire failed
 temporary owners and keep completed nested caches. Cross-file typed constant
-demand retains the composing file, physical fetch line and expression frame. Wider
-initializer contexts, unpublished-owner births, held/open failed links and readonly
+demand retains the composing file, physical fetch line and expression frame.
+Static, capture-free REAL Closure dependencies can also be created before the
+using class is published, with an exact collision receipt and cache owner. Failed
+imports retain dead receipts while retiring live owners; fatal trait links reserve
+their name before later binding, without publishing the failed class. Wider
+initializer contexts, unpublished-owner FCC births, held/open failed links and readonly
 storage remain
-required. A bounded
+required. The current313 join passes strict compilation, one fresh REAL/constructor
+source agreement and46 source-reached conditions plus6 setup clauses, including
+actual capture retirement with live REAL cache authority. Earlier source/state
+cuts stay separate. A bounded
 [selector repair](coverage/semantics/method-class-selector-review.json) preserves
 static class identity after object retirement. Its installed author and independent
 gates each pass two sources and one finite CONFIG stage/26 assertions. Rebound

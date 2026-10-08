@@ -1,7 +1,7 @@
 # Source trait composition
 
-Modules 228, 238, 254, 259, 266 and 274 compile, link and access source traits under
-pinned PHP 8.5.10.
+Modules 228, 238, 254, 259, 266, 274, 290, 297 and 299 compile, link and access source
+traits under pinned PHP 8.5.10.
 A using class overrides trait methods; trait methods override inherited methods.
 Nested uses, duplicate imports, `insteadof`, aliases, visibility changes and final
 adaptations preserve Zend's method selection and diagnostics. Abstract trait
@@ -116,6 +116,23 @@ later static writes retain copy-on-write. Source-owned collision tables, lookup 
 authenticate these fills without making an unlinked composing class public.
 Only already-inserted constants are available before parent inheritance.
 
+Module290 also creates a static, capture-free REAL Closure for a constant owned
+by the unpublished composing class. Its borrowed collision marker checks the
+exact source, table, lookup chain and declaration/user prefixes. A nonowning birth
+receipt keeps that original prefix and lexical/called scope after publication;
+the completed cache owns the Closure. Module297 retires failed import owners while
+retaining source-authenticated dead receipts and already-published dependency
+caches. Dead receipts grant no live Closure or class lookup authority.
+Module299 reserves the earliest case-folded class name after a fatal trait link,
+without publishing the class. Later declarations reject before parent autoload
+or trait/default evaluation; returning link Errors permit retry. An early include
+collision retains its physical declaration lines and genuine include frame.
+The actual313 join at `cc9411c1e` over `064d382d` passes strict compilation,
+one fresh REAL/default-constructor source and46 supplied reached conditions (6 setup).
+The genuine selected constructor allocates its args7 object; releasing the ordinary
+method capture leaves the separate REAL cache, birth receipt and history valid.
+Earlier accepted290/297/299 source/state cuts remain separate in the collision ledger.
+
 Already-published Closure/FCC dependencies use the real class-constant initializer
 and binder. Full declaring identities, callable receipts and source transfer proofs
 authenticate their values; cache roots retain objects together with their scope and
@@ -131,7 +148,7 @@ expression and array-key failures retain their ordinary authenticated continuati
 Actual Throwable fields and trace supply the later default report. Cleanup releases
 failed initializer/Throwable owners while retaining completed nested caches and
 the outside handler registry's captured graph; scratch handler dispatch stays
-isolated. Further initializer contexts, unpublished-owner births and wider object
+isolated. Further initializer contexts, unpublished-owner FCC births and wider object
 transfers remain required.
 
 Module 274 stops supported collision expressions at the first endogenous Error,
@@ -224,9 +241,9 @@ reached conditions; five multi-file service/setup checks are separate. Source an
 declaration-image mutations cannot borrow a foreign diagnostic context.
 Other native preparations remain uncredited until implemented.
 
-Dependency fills in held/open compilation and unpublished-owner object creation
-keep explicit Unsupported boundaries. Further callable initializer contexts remain
-unvalidated obligations.
+Dependency fills in held/open compilation and unpublished-owner FCC creation
+keep explicit Unsupported boundaries. Wider callable initializer contexts remain
+unvalidated obligations; the separate private307 work is not installed here.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

@@ -1,0 +1,19 @@
+{
+  "scope": "Source-pinned direct unpublished composing-owner REAL Closure cache; only success is selected. FCC and failed births remain separate required controls.",
+  "native_profile": "Pinned PHP8.5.10 CLI NTS64; exact project baseline profile.",
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "composing-imports-create-distinct-real-closure-caches",
+      "source": "<?php\ntrait T{public const Y=[static function(){echo self::class,\":\",static::class,\";\";},E_STRICT][0];public static $x=self::Y;}\nset_error_handler(function(){echo \"H;\";return true;});echo \"PRE;\";\nclass C{use T;public static $x=self::Y;}\necho \"C;\";echo C::$x===C::Y?\"Y;\":\"N;\";(C::$x)();\nclass E{use T;public static $x=self::Y;}\necho \"E;\";echo E::$x===E::Y?\"Y;\":\"N;\";(E::$x)();(C::Y)();\n",
+      "source_sha256": "d2171237b2fd4382c02b7c83fedffeb619a527ff94a2eb9e3e64965cc55dfaea",
+      "status": "normal",
+      "stdout_base64": "UFJFO0g7QztZO0M6QztIO0U7WTtFOkU7QzpDOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "native_lint_exit": 0,
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/trait-unpublished-object-native266-tc1j08z2/report.json",
+      "native_raw_sha256": "e172708b3b666cb25f623ed7c9d21fdd36496e79725f85eb271fdc23db423009"
+    }
+  ]
+}

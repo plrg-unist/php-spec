@@ -1,0 +1,88 @@
+{
+  "scope": "Fresh unpublished REAL failure, nested public cache, typed binder and outer-fatal controls; native only until the new model gates pass.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_hash_input": "runtime.stdout concatenated with runtime.stderr",
+  "cases": [
+    {
+      "id": "throw-published-cache",
+      "source": "<?php\nclass P{public const Z=static function(){echo __CLASS__,\":\",self::class,\":\",static::class,\";\";};}\nclass Box{public $tag=\"held\";}\n$box=new Box;\nset_error_handler(static function()use($box){echo \"H:\",$box->tag,\";\";return true;});\nunset($box);\nregister_shutdown_function(static function(){echo \"S;\";try{new C;}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}(P::Z)();});\ntrait T{public const Y=[static function(){echo \"C;\";},E_STRICT,1/0][0];public static $x=[P::Z,self::Y];}\necho \"PRE;\";\nclass C{use T;public static $x=[P::Z,self::Y];}\necho \"POST;\";\n",
+      "source_sha256": "e7aa6056b5bb1bb36687a4d34d8773118d0b2576a39846398fd6630ef33b68f0",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiQyIgbm90IGZvdW5kO1A6UDpQOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA4Cldhcm5pbmc6IFVuY2F1Z2h0IERpdmlzaW9uQnlaZXJvRXJyb3I6IERpdmlzaW9uIGJ5IHplcm8gaW4ge0ZJTEV9OjgKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSgxMCk6IFtjb25zdGFudCBleHByZXNzaW9uXSgpCiMxIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA4CkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDEwCg==",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/module297-review15/throw-published-cache.native-report.json",
+      "native_raw_sha256": "a199f4cb277a9f0931375efe144de3de72537c1fdaade94fa1a8117267551c1f"
+    },
+    {
+      "id": "typed-real-birth",
+      "source": "<?php\nregister_shutdown_function(static function(){echo \"S;\";try{new C;}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}});\ntrait T{public const int Y=[static function(){echo \"C;\";},E_STRICT][0];public static $x=self::Y;}\necho \"PRE;\";\nclass C{use T;public static $x=self::Y;}\necho \"POST;\";\n",
+      "source_sha256": "c53f3d5178f8744178b6106b0f49aff60d757166b319378616d1af691d26bfc8",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiQyIgbm90IGZvdW5kOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBDbG9zdXJlIHRvIGNsYXNzIGNvbnN0YW50IEM6Olkgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQogIHRocm93biBpbiB7RklMRX0gb24gbGluZSA1CkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDUK",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/module297-review15/typed-real-birth.native-report.json",
+      "native_raw_sha256": "06d686f13d482ef52d01ebb793e1cfbf7d91b4d0ab4545f6d59d65a7e02705e9"
+    },
+    {
+      "id": "outer-published-cache",
+      "source": "<?php\nclass P{public const Z=static function(){echo __CLASS__,\":\",self::class,\":\",static::class,\";\";};}\nregister_shutdown_function(static function(){echo \"S;\";try{new C;}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}(P::Z)();});\ntrait T{public const array Y=[static function(){echo \"C;\";},E_STRICT];public static array $x=[P::Z,0];}\necho \"PRE;\";\nclass C{use T;public static array $x=[P::Z,self::Y];}\necho \"POST;\";\n",
+      "source_sha256": "f9614ade89784c6a0dc1166fd870a1594a24ece38ceab78f15f38329e429ea05",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiQyIgbm90IGZvdW5kO1A6UDpQOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSA0CkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/module297-review15/outer-published-cache.native-report.json",
+      "native_raw_sha256": "65fb101ddaca4d0208adf7691397f4a825993555e641aff42d88e1de1cbf2c6c"
+    },
+    {
+      "id": "late-published-cache",
+      "source": "<?php\nclass P{public const Z=static function(){echo __CLASS__,\":\",self::class,\":\",static::class,\";\";};}\ntrait T{public const array Y=[static function(){echo self::class,\":\",static::class,\";\";},E_STRICT];public static array $x=[P::Z,0];}\nclass E{use T;}\nregister_shutdown_function(static function(){echo \"S;\";try{new C;}catch(Error $e){echo \"M:\",$e->getMessage(),\";\";}(E::Y[0])();(P::Z)();});\necho \"PRE;\";\nclass C{use T;public static array $x=[P::Z,self::Y];}\necho \"POST;\";\n",
+      "source_sha256": "5fb434a8f820a321caf22425f5298960647e4799415d5db1c890a83d5deff8a3",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7TTpDbGFzcyAiQyIgbm90IGZvdW5kO0U6RTtQOlA6UDs=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDIGFuZCBUIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQpEZXByZWNhdGVkOiBDb25zdGFudCBFX1NUUklDVCBpcyBkZXByZWNhdGVkIHNpbmNlIDguNCwgdGhlIGVycm9yIGxldmVsIHdhcyByZW1vdmVkIGluIHtGSUxFfSBvbiBsaW5lIDMK",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/module297-review15/late-published-cache.native-report.json",
+      "native_raw_sha256": "c16d34068744ee9097e52d1c6bf21a4b2eeb40a56f14c28e7eed4a6b40bcf849"
+    },
+    {
+      "id": "crossfile-c-real-type",
+      "source": "<?php\ninclude __DIR__.\"/trait-real-type.php\";\nregister_shutdown_function(static function(){echo \"S;\";});\necho \"PRE;\";\n\nclass C{use T;public const K=1;}\necho \"POST;\";\n",
+      "source_sha256": "ec0e8bb2c60d59da35f525a37ea69a46c30a77b21c95c2e2845337be4e122372",
+      "status": "php_error",
+      "exit_status": 255,
+      "native_lint_exit": 0,
+      "stdout_base64": "UFJFO1M7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ29uc3RhbnQgRV9TVFJJQ1QgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjQsIHRoZSBlcnJvciBsZXZlbCB3YXMgcmVtb3ZlZCBpbiB7RklMRX0gb24gbGluZSAzCldhcm5pbmc6IFVuY2F1Z2h0IFR5cGVFcnJvcjogQ2Fubm90IGFzc2lnbiBDbG9zdXJlIHRvIGNsYXNzIGNvbnN0YW50IEM6Olkgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9OjkKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg2KTogW2NvbnN0YW50IGV4cHJlc3Npb25dKCkKIzEge21haW59CiAgdGhyb3duIGluIHtGSUxFfSBvbiBsaW5lIDkKRmF0YWwgZXJyb3I6IEMgYW5kIFQgZGVmaW5lIHRoZSBzYW1lIGNvbnN0YW50IChLKSBpbiB0aGUgY29tcG9zaXRpb24gb2YgQy4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSA2Cg==",
+      "files": [
+        {
+          "name": "trait-real-type.php",
+          "source": "<?php\ntrait T{\npublic const int Y=[static function(){echo \"C;\";},E_STRICT][0];\n\n\n\n\n\npublic const K=self::Y;\n}\n",
+          "source_sha256": "8d8bc4ef5031934cd72d997d15e3c992b10059b1161d3433692807226a9d52a9"
+        }
+      ],
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-callable-init-errors-266/.tools/module297-review15/crossfile-c-real-type.native-report.json",
+      "native_raw_sha256": "ae6d714293cbc5c6b66934e1f9b173f2bbdfb1b5b146207c7836f441dda3c489"
+    }
+  ]
+}

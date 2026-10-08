@@ -1,0 +1,12 @@
+;; Observe the genuine failing184/266 step without translating its exception.
+dec $review_trait_real_failure(pstate, ptraitcachecause, nat) : (pstate, pstate)?
+def $review_trait_real_failure(S, ptraitcachecause, n) = ((S, S_next))
+  -- if $(n > 0)
+  -- if S.COMPLETION = NORMAL /\ $class_constant_active(S)
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+  -- if S_next.COMPLETION =/= NORMAL
+def $review_trait_real_failure(S, ptraitcachecause, n) = $review_trait_real_failure(S_next[.EVENTS = eps], ptraitcachecause, $nabs($(n - 1)))
+  -- if $(n > 0)
+  -- if S.COMPLETION = NORMAL /\ $class_constant_active(S)
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+  -- if S_next.COMPLETION = NORMAL

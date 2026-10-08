@@ -1,0 +1,11 @@
+;; Observe the first genuine initializer diagnostic before266 translates it.
+dec $review_trait_real_notice(pstate, ptraitcachecause, nat) : (pstate, pstate)?
+def $review_trait_real_notice(S, ptraitcachecause, n) = ((S, S_next))
+  -- if $(n > 0) /\ S.COMPLETION = NORMAL /\ $class_constant_active(S)
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+  -- if S_next.EVENTS =/= eps
+def $review_trait_real_notice(S, ptraitcachecause, n) = $review_trait_real_notice(S_next, ptraitcachecause, $nabs($(n - 1)))
+  -- if $(n > 0) /\ S.COMPLETION = NORMAL /\ $class_constant_active(S)
+  -- if S_next = $trait_cache_object_step(S, ptraitcachecause)
+  -- if S_next.EVENTS = eps /\ S_next.COMPLETION = NORMAL
+def $review_trait_real_notice(S, ptraitcachecause, n) = eps -- otherwise
