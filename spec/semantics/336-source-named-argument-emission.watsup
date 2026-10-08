@@ -1,0 +1,48 @@
+;; A resolved user call emits INIT before reading its single named ordinary CV
+;; argument. Known fixed names use the value line; deferred names use the label
+;; line. The later computed FETCH_R inherits that authenticated compiler line.
+;; Name binding and the argument value remain runtime work before DO_CALL.
+dec $source_emission_named_call(pstate, nat, pcpath, expression) : porigin?
+def $source_emission_named_call(S, n, pcpath, NExprVariable (NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) metadata)
+  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = eps
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_call, false))
+  -- if $(z_call > 0)
+  -- if z_call = $source_line(metadata_call)
+  -- if pcpath_argument = pcpath ++ [PCFIELD 0, PCFIELD 1, PCINDEX 0, PCFIELD 1]
+  -- if $source_emission_cv(S, n, pcpath_argument, NExprVariable (BYTES text_argument) metadata_value)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_argument) = ((z_argument, false))
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_argument, false))
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_named_call(S, n, pcpath, expression) = eps -- otherwise
+
+def $source_echo_emission_origin(S, n, pcpath, expression) = (porigin)
+  -- if $source_emission_named_call(S, n, pcpath, expression) = (porigin)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (porigin)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_named_call(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (porigin)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if z_property = $source_line(metadata_property)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+
+;; Preserve333 positional and40 CV/noarg line selection. Named arguments use
+;; their completed compiler descriptor rather than the earlier INIT/DO_CALL line.
+def $dynamic_name_line(S, expression) = $runtime_line(S, eps, NExprVariable expression metadata)
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable expression metadata)
+  -- if $source_emission_named_call(S, n, pcpath, NExprVariable expression metadata) = (porigin_call)
+
+;; Reuse327's captured target name/fixed-null resume. Named-slot errors precede
+;; CV lookup; genuine by-value warnings retain213's separate NAMED_SEND plan.
+def $computed_name_source(S, pnameread) = true
+  -- if pnameread.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (expression)
+  -- if $source_emission_named_call(S, n, pcpath, expression) = (porigin_call)
+  -- if $code_expression_at_source(S, pnameread.SITE, eps) = (pnameread.LINE)
+  -- if ~$scope_global(S[.ORIGIN = (pnameread.SITE)], eps)
+  -- if ~$this_name(pnameread.NAME) /\ ~$psautoglobal(pnameread.NAME)
