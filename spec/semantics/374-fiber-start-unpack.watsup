@@ -44,16 +44,20 @@ dec $fiber_start_unpack_args(nat?, pfiberstart) : ptask
 def $fiber_start_unpack_args(eps, pfiberstart) = FIBER_ARGS pfiberstart
 def $fiber_start_unpack_args((n), pfiberstart) = FIBER_START_CAPTURE_ARGS n pfiberstart
 dec $fiber_start_unpack_task(ptask, nat?, pfiberstart) : bool
-def $fiber_start_unpack_task(FIBER_UNPACK_PREP n? pfiberstart, n?, pfiberstart) = true
-def $fiber_start_unpack_task(FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor, n?, pfiberstart) = true
+def $fiber_start_unpack_task(FIBER_UNPACK_PREP eps pfiberstart, eps, pfiberstart) = true
+def $fiber_start_unpack_task(FIBER_UNPACK_PREP (n) pfiberstart, (n), pfiberstart) = true
+def $fiber_start_unpack_task(FIBER_UNPACK_NEXT eps pfiberstart poperand n_cursor, eps, pfiberstart) = true
+def $fiber_start_unpack_task(FIBER_UNPACK_NEXT (n) pfiberstart poperand n_cursor, (n), pfiberstart) = true
 def $fiber_start_unpack_task(ptask, n?, pfiberstart) = false -- otherwise
 dec $fiber_start_unpack_at_site(ptask, nat?, porigin) : bool
 def $fiber_start_unpack_at_site(FIBER_ARGS pfiberstart, eps, porigin) = (pfiberstart.SITE = porigin)
 def $fiber_start_unpack_at_site(FIBER_SEND pfiberstart, eps, porigin) = (pfiberstart.SITE = porigin)
 def $fiber_start_unpack_at_site(FIBER_START_CAPTURE_ARGS n pfiberstart, (n), porigin) = (pfiberstart.SITE = porigin)
 def $fiber_start_unpack_at_site(FIBER_START_CAPTURE_SEND n pfiberstart, (n), porigin) = (pfiberstart.SITE = porigin)
-def $fiber_start_unpack_at_site(FIBER_UNPACK_PREP n? pfiberstart, n?, porigin) = (pfiberstart.SITE = porigin)
-def $fiber_start_unpack_at_site(FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor, n?, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_UNPACK_PREP eps pfiberstart, eps, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_UNPACK_PREP (n) pfiberstart, (n), porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_UNPACK_NEXT eps pfiberstart poperand n_cursor, eps, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_UNPACK_NEXT (n) pfiberstart poperand n_cursor, (n), porigin) = (pfiberstart.SITE = porigin)
 def $fiber_start_unpack_at_site(ptask, n?, porigin) = false -- otherwise
 dec $fiber_start_unpack_count(ptask*, nat?, porigin) : nat
 def $fiber_start_unpack_count(eps, n?, porigin) = 0
