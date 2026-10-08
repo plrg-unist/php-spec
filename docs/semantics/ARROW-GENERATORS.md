@@ -21,8 +21,9 @@ inside an active Fiber. Nested arrows and Closures classify their own yields;
 they do not turn their enclosing arrow into a Generator.
 
 The change removes the obsolete arrow body exclusion and adds a compiler helper;
-runtime returns reuse accepted95/118/280. Reference yields remain required and
-stop explicitly. A reference arrow containing `yield from` retains the native
+runtime returns reuse accepted95/118/280. [Reference yields328](GENERATOR-REFERENCE-YIELDS.md)
+extend this path while preserving the original reference signature and capture
+snapshot. A reference arrow containing `yield from` retains the native
 compiler rejection. Its diagnostic uses the operand's Zend AST line, including
 multiline operands. Wider Generator creation scopes, dynamic/nullsafe and named/
 unpacked API forms, IteratorAggregate, parked running Generators, switching

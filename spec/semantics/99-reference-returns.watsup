@@ -49,6 +49,7 @@ def $reference_returning(S) = pfunction.SIGNATURE.BYREF
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if ~$eval_top_level(S)
   -- if ~$generator_active(S)
+  -- if ~$function_generator(S, pfunction)
 def $reference_returning(S) = false -- otherwise
 
 def $reference_empty_task(S, z) = RETURN_REF_NULL z -- if $reference_returning(S)

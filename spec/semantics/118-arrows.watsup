@@ -50,16 +50,18 @@ def $arrow_tasks(pfunction, expression, z) = [$at_task((PORIGIN n pfunction.BODY
 def $arrow_tasks(pfunction, expression, z) = [$at_task((PORIGIN n pfunction.BODY), EVAL expression), RETURN_VALUE z]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if ~("never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
-  -- if ~pfunction.SIGNATURE.BYREF
+  -- if ~pfunction.SIGNATURE.BYREF \/ $generator_syntax(expression)
 def $arrow_tasks(pfunction, expression, z) = [$at_task((PORIGIN n pfunction.BODY), DIM_PREP expression), RETURN_REF_FETCH z]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if ~("never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
   -- if pfunction.SIGNATURE.BYREF
+  -- if ~$generator_syntax(expression)
   -- if $call_reference_variable(expression)
 def $arrow_tasks(pfunction, expression, z) = [$at_task((PORIGIN n pfunction.BODY), EVAL expression), RETURN_REF_VALUE z]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if ~("never" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
   -- if pfunction.SIGNATURE.BYREF
+  -- if ~$generator_syntax(expression)
   -- if ~$call_reference_variable(expression)
 def $closure_body(S, pfunction) = $arrow_tasks(pfunction, expression, z)
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)

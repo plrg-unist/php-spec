@@ -12,6 +12,7 @@ dec $generator_close_release(pstate, pgenrelease) : pstate
 dec $generator_close_release_end(pstate, pgenrelease) : pstate
 dec $generator_destructor_tail(ptask*) : bool
 dec $generator_destructor_finish(pstate, nat) : pstate
+dec $generator_destructor_request_ready(pstate, pdestructionrelease, pnode) : bool
 dec $generator_close_merge(pstate, nat?, nat?) : (pstate, nat?)
 dec $generator_close_children(pstate, pnode) : pnode*
 dec $generator_close_prepare(pstate, pgenrelease, nat) : pstate
@@ -133,6 +134,39 @@ rule PhpStep/generator-destructor-request: S ~> S[.COMPLETION = UNSUPPORTED "Gen
   -- if $heap_owners($heap_graph(S_unheld), pnode) = 0
   -- if $generator_destructor_pending(S_unheld, pnode)
   -- if ~pdestructionrelease.USER \/ $destructor_active(S)
+  -- if ~$generator_destructor_request_ready(S, pdestructionrelease, pnode)
+;; The global release has no USER body to resume when this genuine paused
+;; frame has no active finally. Keep its request carrier and physical owner.
+def $generator_destructor_request_ready(S, pdestructionrelease, HOBJECT n) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = [DESTRUCTOR_RELEASE pdestructionrelease, DESTRUCTOR_GLOBALS]
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease :: pdestructionrelease_tail*
+  -- if $destructor_release_valid(S, pdestructionrelease) /\ ~pdestructionrelease.USER
+  -- if S.DESTRUCTION.PHASE = DESTRUCTION_GLOBALS
+  -- if $shutdown_task_scope(S) /\ S.ORIGIN = eps /\ S.ACTIVEFIBER = eps
+  -- if S_globals = S[.TODO = [DESTRUCTOR_GLOBALS]][.DESTRUCTION.RELEASES = pdestructionrelease_tail*]
+  -- if $call_task_valid(S_globals, DESTRUCTOR_GLOBALS)
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionjob_tail*
+  -- if $heap_owners($heap_graph(S), HOBJECT n) = 1
+  -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob_tail*])
+  -- if $heap_owners($heap_graph(S_unheld), HOBJECT n) = 0
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED /\ pgenerator.DELEGATE = eps
+  -- if $generator_record_valid(S, pgenerator)
+  -- if pgenerator.FRAME = (pframe)
+  -- if pframe.ORIGIN = (porigin)
+  -- if $generator_close_site(S, pgenerator, porigin)
+  -- if $generator_close_frame_valid(S, pgenerator, pframe)
+  -- if ~$generator_finalizer_frame(S, pgenerator.FRAME)
+  -- if $generator_close_regions(S, porigin) = eps
+  -- if $generator_close_plan_valid($generator_frame_scope(S, pframe), porigin, pframe.TODO, 0)
+  -- if $generator_close_original_tasks_valid($generator_frame_scope(S, pframe), porigin, pframe.TODO)
+def $generator_destructor_request_ready(S, pdestructionrelease, pnode) = false -- otherwise
+rule PhpStep/generator-destructor-request-close: S ~> $generator_close_begin_pending(S_unheld, [DESTRUCTION_VALUE (HOBJECT n)], eps)
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
+  -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionjob_tail*
+  -- if $generator_destructor_request_ready(S, pdestructionrelease, HOBJECT n)
+  -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob_tail*])
 def $generator_destructor_tail((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = true
 def $generator_destructor_tail(ptask*) = false -- otherwise
 def $generator_destructor_finish(S, n) = S[.TODO = $destructor_operation_tasks(S.TODO, pdestructionoperation, pdestructionoperation_new)][.DESTRUCTION.OPERATIONS = pdestructionoperation_new :: pdestructionoperation_tail*]
@@ -178,10 +212,10 @@ def $generator_close_tail((GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = true
 def $generator_close_tail((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*) = true
 def $generator_close_tail(ptask*) = false -- otherwise
 
-def $generator_close_children(S, HOBJECT n) = $generator_closed_closure(pgenerator) ++ $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN)
+def $generator_close_children(S, HOBJECT n) = $generator_closed_closure(pgenerator) ++ $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
-def $generator_close_children(S, HOBJECT n) = $generator_close_frame_nodes(S, pframe) ++ $generator_closed_closure(pgenerator) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_from_nodes(pgenerator.DELEGATE)
+def $generator_close_children(S, HOBJECT n) = $generator_close_frame_nodes(S, pframe) ++ $generator_closed_closure(pgenerator) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_from_nodes(pgenerator.DELEGATE)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_FRESH
   -- if pgenerator.FRAME = (pframe)

@@ -123,3 +123,17 @@ trace remain separate with zero affected credit. Actual316 passes strict
 compilation with reviewed trait/ArrayAccess/collector compatibility. Earlier
 source/state cuts and relocations gain no renewed credit; wider argument forms
 and providers remain required.
+
+Module336 adds the corresponding single named ordinary CV argument. Its completed
+compiler descriptors select INIT6 before lookup, then known fixed-name FETCH8
+before property11; a deferred unknown `Sent` name uses binding/Error7 before the
+missing CV can warn. No argument value is read during entry selection. Existing
+213 NAMED_SEND and327 computed-name continuations retain handler writes while
+resuming the interrupted read with null, including second-slot binding/default holes.
+The [ledger](../../coverage/semantics/source-named-argument-emission-review.json)
+retains six exact originals and325 independent premises at private317. The failed
+fixture conflated deferred VARIABLE metadata8 with compiled binding7; its sole
+expectation correction leaves the semantics unchanged and earns no original credit.
+Actual320 preserves331/324/335 and passes strict compilation with reviewed disjoint
+selectors. Earlier cuts and relocations gain no renewed credit; wider argument forms,
+computed producers, first emissions and providers remain required.

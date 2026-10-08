@@ -227,7 +227,7 @@
   "boundaries": [
     "Automatic threshold collection",
     "Wider internal lifetime graphs and public idle-worker transfer during an active collection",
-    "Wider callbackless close-return contexts beyond the authentic active replacement tail",
+    "Failed-finally and wider callbackless close-return contexts beyond the authentic active or normal quiescent release tails",
     "Initially free non-destructor resurrection and new zero-owner destructor target after retrace",
     "Arbitrary synthetic producer reachability beyond local TEMP receipt consistency",
     "Final canonical composition after the remaining accepted integrations",
@@ -518,5 +518,69 @@
       "python3 tests/semantics/cycle_collection_review.py --match collector-idle-public-",
       "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-public-idle-resume-preserves-cache-and-unmarked-cycle --case collector-public-idle-throw-has-only-transient-global-error"
     ]
+  },
+  "quiescent_last_owner335": {
+    "status": "Independently accepted normal-close slice; final319 combined compilation PASS",
+    "scope": "Quiescent normal last-owner close of a genuine detached callbackless collector worker. Authentic control/operation/worker release tail and real private owners permit storage retirement and saved caller admission only; no new owner, producer history, or Throwable authority.",
+    "test_root": ".tools/gc-quiescent-close-18",
+    "private_revision": "0b789477192a0655383cc198acfb4f945a7a82df",
+    "state_fixture_commit": "cccaa09d0",
+    "private_modules": 317,
+    "compiler_report": "gc-collector-18-compiler-y4i8x0_f/report.json",
+    "initializer_report": "gc-collector-18-init-r029cok2/report.json",
+    "source_report": "gc-collector-18-source-a77geves/report.json",
+    "exact_normal_originals": 2,
+    "source_ids": [
+      "collector-detached-quiescent-last-owner-assignment-review-18",
+      "collector-detached-quiescent-fiber-last-owner-close-18"
+    ],
+    "native_reuse": "Preserved first-native reports gc-collector-native-16-i8nok8gu and gc-collector-native-16-v9uuohl6 under the private .tools directory. Source bytes/runtime/profile/argv/raw streams are retained; these originals do not observe file/cwd. Both checked-program model results are normal0 with exact stdout/empty stderr.",
+    "reached_report": "shutdown-state-review-jtjy1j_d/report.json",
+    "reached_input_report": "gc-quiescent-close-state-review-19.json",
+    "physical_premises": [
+      100,
+      116
+    ],
+    "runner_declared_assertions": [
+      97,
+      113
+    ],
+    "authored_checks": [
+      94,
+      110
+    ],
+    "reached_scope": "Genuine normal control retirement after one real step; two private release owners, target borrowed at zero owners, cache and no active plan; actual caller restoration and scoped admission. Same-heap source/sequence/split/failed/abrupt controls reject. Private control is neither live Throwable nor PHP class member. Budget0 identity, one-step replay and complete exact-native continuations pass.",
+    "validation": "Compiler/init/source wrappers have stable inputs/revision/status. State wrapper has stable inputs/revision; two explicit --sl groups return true newline/exit0/no timeout/empty stderr. Inherited caps and jobs1 unchanged; no old332/169 renewal.",
+    "final_composition": {
+      "parent_revision": "6fac6d270",
+      "tested_revision": "e12be6f67e1a8c8c767c135c8a23aaf63a3ea0f2",
+      "modules": 319,
+      "compiler_report": "gc-collector-18-compiler-rmz49d8j/report.json",
+      "result": "Algorithm and structure artifacts present, exits0/no timeout/empty stderr, stable inputs/revision/status. Independent interaction review preserves static Fiber331 tags and324 HCELL/staged-binding fields/tasks/owners. Only manifest conflicts were resolved;317/335 remain identical to the private tested sources. Earlier source/state cuts retain their identities; copied tools give no offline rebuild credit."
+    },
+    "native_only_zero335_credit": {
+      "unset_alias_retains_worker": "gc-collector-native-16-kuprywld/report.json: first:D|0|held|worker-live|next:finally|2|target-gone|END; unset leaves the suspended destructor global alias live, so this is not a quiescent last-owner close.",
+      "throwing_unset_alias": "gc-collector-native-16-21be2qrj/report.json: worker remains live until next GC; finally throws then native exits255. No335 agreement.",
+      "throwing_assignment": "gc-collector-native-16-ldxfaou5/report.json: immediate finally and caught:close, worker-gone, nextGC1/target-gone. Distinct failed-close admission remains required; native-only result."
+    },
+    "input_sha256": {
+      "spec/semantics/335-collector-quiescent-close.watsup": "f1e8a670f90a9b243dff4ab8b0dfbeb0c541b3b8c236b959be01844c8555d979",
+      "tests/semantics/cycle_collection_review_cases.json": "9730daa94f2be396e72d877ac7e5febe5d85fb5f4d79c155db7fa762e25afd6e",
+      "tests/semantics/cycle_collection_state_review.py": "13e8ba61b30343284d7f6ad54d4fb96c49f8d6642e79515d669813c1df5118b2"
+    },
+    "report_sha256": {
+      "gc-collector-18-compiler-y4i8x0_f/report.json": "dfb77da99f4c2cc8a34402d7a148e59c0b2c2a36fe0573778d2540247560438b",
+      "gc-collector-18-init-r029cok2/report.json": "c23bb684e3e00b8a7f1daded6d5742b2bb44e594c8c6052ac476cc972c021a60",
+      "gc-collector-18-source-a77geves/report.json": "09277153435b75ad978da30b04097e23304ce9ddbbfbe2bdf8a72791643fdcc8",
+      "shutdown-state-review-jtjy1j_d/report.json": "f45768bc1e68459523605efe84293a1981b1a8bb5ea08f431b347c0145b985a6",
+      "gc-quiescent-close-state-review-19.json": "270beeebe50b4d4f772e76e1391ce578b4cbf55ee6e6726338a14aeebf0460e8",
+      "gc-collector-18-compiler-rmz49d8j/report.json": "3721ec5638dc24f010988ccde041e5575bc8f94eacbfc23fc6d1eb35bdcc4258"
+    },
+    "recovery": [
+      "python3 tests/semantics/cycle_collection_review.py --match collector-detached-quiescent-",
+      "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-quiescent-close-retiring-control-at-main-release --case collector-quiescent-close-retiring-control-in-saved-main-view",
+      "Preserved private wrapper: taskset -c 5 python3 .tools/run-gc-collector-18.py compiler; exact command vectors, runtime/compiler identities and environment are in the reports. Raw artifacts stay outside Git."
+    ],
+    "raw_root": ".tools/gc-quiescent-close-18/.tools"
   }
 }
