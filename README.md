@@ -532,6 +532,8 @@ GC and eager-destruction consumers read the same observed state’s edges after
 its roots without rebuilding those roots.
 The driver carries an already successful original-state owner order into the
 following GC pass; failed or skipped destruction branches retain public fallbacks.
+Pure graph pruning counts owners once and removes zero-owner cascades through a
+worklist, preserving roots and the order and multiplicity of nodes and edges.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate

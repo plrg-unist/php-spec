@@ -483,6 +483,21 @@ The declaration stop and original 98-premise task-assumption failure remain pres
 Raw checks: `.tools/compiler-owner-order-carry-19/.tools/owner-order-carry-controls-v{1,2,3}`.
 Final 343-module composition at `4a96bad9a` passes changed initialization in 4.320s.
 Raw final check: `.tools/compiler-owner-order-carry-current-19/.tools/owner-order-carry-current-controls-v1`.
+The `e1c3d4d61`/343 original retry matches native output but reaches host 55.043267
+with empty streams and zero agreement. Inputs stay stable and the group is reaped;
+no speedup or 231 credit follows. Raw retry:
+`.tools/compiler-owner-order-carry-current-19/.tools/full-default-retry-owner-order-carry-v1/run-v1`.
+Pure graph pruning now counts distinct node identities, root/edge multiplicities
+and removes zero-owner cascades through a worklist. Final filtering preserves
+roots and original node/edge order and duplicates, including arbitrary finite typed
+graphs with dead sources or absent targets. Exact `a39876cbe`/343 passes strict
+initialization in 4.273s, independent 54 physical/33 main premises comparing 512
+graph variants in 4.472s, and 54 reached physical/44 main premises in 4.973s.
+The real post-UNSET cell/object cascade requires successive old pruning rounds
+and matches the new graph and public pruning results. Raw checks:
+`.tools/compiler-heap-prune-worklist-19/.tools/heap-prune-worklist-controls-v1`.
+Final 345-module composition at `8ed6d5bcb` passes changed initialization in 4.272s.
+Raw final check: `.tools/compiler-heap-prune-worklist-current-19/.tools/heap-prune-worklist-current-controls-v1`.
 Its original retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
