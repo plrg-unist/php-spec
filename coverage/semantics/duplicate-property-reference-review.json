@@ -4,7 +4,7 @@
   "semantic_cut": "3429f29ad",
   "tested_cut": "87f9b399a",
   "modules": 298,
-  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws. Ordinary DESTRUCTOR_RELEASE now preserves a physical INSTANCE free_obj pin and unvisited slot edges until their individual transfer; early Weak notification and safe class metadata reads are distinct from physical retirement. Ordinary stdClass storage now retains the same physical parent pin; a materialized property table transfers one HARRAY edge before unique bucket cleanup or shared-table decrement. Initialized future declared scalar reads now use the current slot under the actual unique INSTANCE storage carrier and preserve ordinary visibility; consumed and heap-backed payload access stays explicit.",
+  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws. Ordinary DESTRUCTOR_RELEASE now preserves a physical INSTANCE free_obj pin and unvisited slot edges until their individual transfer; early Weak notification and safe class metadata reads are distinct from physical retirement. Ordinary stdClass storage now retains the same physical parent pin; a materialized property table transfers one HARRAY edge before unique bucket cleanup or shared-table decrement. Initialized future declared scalar/object/array reads use the current slot under the actual unique INSTANCE storage carrier and preserve ordinary visibility. Heap results own the copied payload through actual eager receiver release; ALIAS reads retain its referent without acquiring the wrapper. Consumed/uninitialized storage, quiet reads and already-freeing ordinary object targets remain explicit boundaries.",
   "admission": "Source AST, runtime line, iterator/cursor and selected physical address are checked. RELEASE recaptures the live selected slot; entered COMMIT may survive retired receiver storage while its selected HCELL remains real. Fresh false HOBJECT C-owner and selected-cell/source forgeries fail public admission. This bounded source/current-address check is not a historical reachability proof.",
   "engine": [
     "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_RW, ZEND_FE_FETCH_RW; selected Bucket promotion/ADDREF precedes previous target-CV destruction; receiver wrapper is dereferenced on each fetch",
@@ -763,5 +763,59 @@
       "application_evaluations": 0,
       "meaning": "Exact GEN363, EX residual-worker and TRAIT347 parent seams independently reviewed; source3 and193 premises retain their b89e cut without renewal."
     }
+  },
+  "ordinary_instance_future_heap_reads": {
+    "parent": "760771d9dc6c94228b37c8d4d5650a083a2170f2",
+    "raw_root": ".tools/properties-instance-future-heap-read19/.tools/",
+    "scope": "Initialized unvisited declared DIRECT/ALIAS object and array reads. Arena bounds and actual allocation certify the copied payload; an already-freeing ordinary object target is refused. Existing unique real carrier, current slot image, declared type and visibility proof remains intact. No new schema, module or synthetic owner.",
+    "engine": [
+      "Zend/zend_vm_def.h: ZEND_FETCH_OBJ_R copies the initialized property through ZVAL_COPY_DEREF, then frees the receiver temporary",
+      "Zend/zend_types.h: ZVAL_COPY_DEREF adds one payload reference after dereferencing an existing wrapper, without retaining that wrapper",
+      "Zend/zend_objects.c: zend_object_std_dtor visits declared slots in order and detaches each typed source at its actual visit"
+    ],
+    "native_first": {
+      "cut": "8bd90af79/351",
+      "raw": "instance-future-heap-native-first19-9emp00_9/report.json",
+      "observations": 3,
+      "model_evaluations": 0
+    },
+    "preserved_baseline": {
+      "cut": "8bd90af79/351",
+      "raw": "instance-future-heap-baseline19-zxousf_x/report.json",
+      "status": "unsupported",
+      "reason": "freeing instance property access",
+      "stdout": "C|A|",
+      "normal_agreements": 0
+    },
+    "changed_cut": "756c4673b775716fdcbd67c19e8cd0fd1636b9e9/351",
+    "compiler": {
+      "raw": "instance-future-heap-current351-sl-init1-attempt1/report.json",
+      "passed": true,
+      "elapsed_seconds": 4.372,
+      "application_evaluations": 0
+    },
+    "sources": {
+      "raw": "dynamic-property-warning-source-cwf16pso/report.json",
+      "normal_agreements": 3,
+      "meaning": "Kept direct object, nullable typed ALIAS referent copied before rebinding to null, and typed array copy-on-write with an embedded child. All exact source bytes retain their native-first hashes.",
+      "sha256": {
+        "review-instance-future-heap-object19": "53cdc33d2bdbb00f92a990dd8fd61ee342bbff8499028f995395b81e0c83960b",
+        "review-instance-future-heap-alias19": "fab221200ee03ca8c982bae8fba7019dd63dfcd52e9e32f8a35750ad0d71fb35",
+        "review-instance-future-heap-array-cow19": "495115c0543f235d12ba7210f6eaba180a60d8b41fde091b9441cfb16461811e"
+      }
+    },
+    "reached": {
+      "alias": {
+        "premises": 136,
+        "raw": "instance-future-heap-uxspxzb3/report.json"
+      },
+      "array": {
+        "premises": 134,
+        "raw": "instance-future-heap-3xax0rit/report.json"
+      },
+      "meaning": "270 setup-inclusive premises. Actual DIM_FETCH transfers the copied payload into an owning operation VALUE while a real release holds the receiver; shared decrement, empty-release pop and EXIT restore genuine RESULT ownership. ALIAS HCELL owners stay2 while payload1 becomes2, then kept1 survives rebinding and type detach. COW tables own one edge each with child2, then parent retirement leaves copied table/child1 until explicit unset. Missing/duplicate carriers, absent/out-of-arena/freeing targets and quiet/reference refusals are constructed controls. Native/public-CLI evaluations0; the SL model fixture evaluates these premises at120/jobs1."
+    },
+    "review": "properties_review_19 independently accepted source bytes/native observations, explicit baseline, exact helper, genuine four-stage copy ownership and all raw compiler/source3/state270 outcomes. Older scalar/descendant fixtures are adapted statically only, with no historical renewal; preparation-only records carry0.",
+    "remaining": "Quiet/uninitialized future reads, consumed native storage, already-freeing target reacquisition, raw parent mutation/reference acquisition, escape, direct private303 physical pins and wider pointer consumers remain required."
   }
 }

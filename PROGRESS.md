@@ -1094,9 +1094,15 @@ Native3 at `8488dbc53` establish safe reads; the unchanged scalar model baseline
 stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
 `b89e7e66d`; fresh104/89 premises at that same cut prove frame ownership, live9
 with its typed source, real NEXT advancement/detach and consumed-slot refusal.
-The old typed fixture is adapted statically with no renewed credit. Quiet/heap
-payloads, uninitialized/consumed storage, mutation and escape remain required.
+The old typed fixture is adapted statically with no renewed credit. Quiet reads,
+uninitialized/consumed storage, mutation and escape remain required.
 The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
+Future initialized declared object/array reads now copy the live payload owner; ALIAS reads
+retain the referent without acquiring its wrapper. Native3 at `8bd90af79` precede
+an explicit unchanged-model Unsupported control with zero agreement. Strict351,
+source3 and fresh136/134 premises pass at `756c4673b`, covering actual captured
+VALUE/result transfer, nullable alias rebinding/type detach and array COW/child
+survival through parent retirement. Earlier fixtures are adapted statically only.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
