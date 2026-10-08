@@ -614,16 +614,6 @@ def $config_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigi
   -- if z = passertoption.CALL.LINE
   -- if $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
   -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_child)
-def $config_string_context_line_valid(S, pcallcontext) = true
-  -- if $stringify_context_kind(S, pcallcontext)
-  -- if pcallcontext.CALLSITE = (porigin_child)
-  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
-  -- if S.FRAMES = pframe :: pframe_tail*
-  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
-  -- if pcallcontext.LINE = z /\ z = passertoption.CALL.LINE
-  -- if $stringify_entered(S, S.CURRENT, S.FRAMES, METHOD_TARGET n porigin_method, porigin_child)
-  -- if $assertion_option_string_valid($constant_frame_scope(S, pframe, pframe_tail*), passertoption, n, porigin_child, z_child)
-
 def $error_call_valid(S, perrorcall) = true
   -- if S.ORIGIN = (perrorcall.SITE)
   -- if perrorcall.RESUME = ASSERT_OPTIONS_READY pconfigcall
