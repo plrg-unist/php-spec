@@ -882,6 +882,11 @@ Fiber suspension, with distinct source and repair cuts in the review. The compos
 adds one exact Iterator-child original and 113 reached premises; future
 destructor-tail validation applies the real result discard before owner checks.
 Raw property payload access and escaped reacquisition remain required.
+The same physical pin now covers ordinary stdClass storage. A materialized
+property table transfers its one HARRAY owner before bucket cleanup; shared tables
+keep their children after the parent retires. Five new exact originals and
+150/91/51 reached premises cover deletion/reinsertion order, exception chaining,
+early Weak notification and the Generator RETURN-child interaction at separate cuts.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;

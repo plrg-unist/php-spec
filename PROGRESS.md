@@ -1037,13 +1037,20 @@ while safe class metadata remains readable. Five exact originals pass at
 GC-slot occupancy passes affected1 plus strict346 at `d91ef1ea4`. Three fresh
 groups pass 164/57/67 premises at that latter cut, covering exact typed detach,
 A/B chaining, actual355 RETURN-child ownership and genuine parked Fiber pins.
-Adapted earlier ordinary fixtures carry no new credit; private303 INSTANCE pins,
-STDINSTANCE storage and wider raw-payload/escape behavior remain required.
+Adapted earlier ordinary fixtures carry no new credit; direct private303 physical
+storage pins and wider raw-payload/escape behavior remain required.
 The 347-module join over `cd7d74529` passes strict initialization and one exact
 Iterator-child original at `5916e0e0b`. Its 113 shared premises at `9d007c3d4`
 preserve live Weak-result ownership of 2 and future-tail ownership of 1 after genuine
 destructor-result discard; added owners still reject queued close. The original
 shared failure/timeouts remain uncredited; prior359/360 campaigns are unchanged.
+Ordinary stdClass storage now uses the physical parent pin. Materialized tables
+transfer one HARRAY edge before real bucket cleanup; shared-table children survive
+parent retirement. Five exact originals pass at `c7e984676`; the disjoint dynamic
+tombstone validator repair passes affected2 and strict347 at `f064fd2c6`.
+New reached groups pass150/91/51 premises at `f064fd2c6`/`56d3b070b`/`2282b68da`,
+covering table ownership, B-before-A throws, early Weak and actual355 RETURN storage.
+Original baseline/fixture failures retain zero credit; prior campaigns are unchanged.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
