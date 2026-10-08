@@ -215,13 +215,15 @@ def $foreach_bind_payload_kind(S, pvalue) = false -- otherwise
 ;; A singleton wrapper expires before its payload callback. Keep the physical
 ;; CV address in fresh plain storage, distinct from that released heap wrapper.
 dec $foreach_bind_old(pstate, nat) : (nat, nat?)?
-def $foreach_bind_old(S, n) = ((n, eps))
+def $foreach_bind_old(S, n) = ((n, n_wrapper?))
   -- if ~(n <- S.REFCELLS)
-def $foreach_bind_old(S, n) = ((|S.STORE|, (n)))
+  -- if n_wrapper? = eps
+def $foreach_bind_old(S, n) = ((|S.STORE|, n_wrapper?))
   -- if n <- S.REFCELLS
   -- if (HCELL n) <- S.ALLOCATIONS
   -- if $heap_owners($heap_graph(S), HCELL n) = 1
   -- if $propref_at(S.PROPREFS, n) = eps
+  -- if n_wrapper? = (n)
 def $foreach_bind_old(S, n) = eps -- otherwise
 
 dec $foreach_bind_capture(pstate, ptbytes, nat, int) : pforeachbind?
