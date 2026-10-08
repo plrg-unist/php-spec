@@ -520,5 +520,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-residual-dtor-public-throw-identity-compact-review-25",
+    "source": "<?php\n$w=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w;\n  if($this->k===0){$w->resume();}\n  else{\n   Fiber::suspend('paused');\n  }\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);\ngc_collect_cycles();\nclass D {\n public $s;\n function __destruct(){global $w;echo Fiber::getCurrent()===$w?'D:cached|':'D:other|';}\n}\n$t=new Fiber(function(){\n $d=new D;$d->s=$d;unset($d);\n gc_collect_cycles();\n});\n$t->start();\n$e=new Exception;\ntry{$w->throw($e);}\ncatch(Throwable $c){echo $c===$e?'same|':'bad-error|';}\necho 'END';\n",
+    "source_sha256": "1105ccac58d8b1713737d050b0d69148b1f60d86982a3c0dba2493c11e9d10af",
+    "stdout": "D:cached|same|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
