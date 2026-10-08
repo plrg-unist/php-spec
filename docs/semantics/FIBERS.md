@@ -349,11 +349,19 @@ RuntimeException kind/parent/base/constructor mappings.
 
 The [constructor ledger](../../coverage/semantics/fiber-callable-constructors-review.json)
 records thirteen normal originals at separate source cuts and strict296/three
-author/seven independent groups at the corrected descriptor cut. Canonical
-integration remains pending. Maintained source/state scripts preserve
-the checked original fixtures and stop at the first failure; relocation adds no
-execution credit. The earlier rich whole-source and full63 literal runs remain
-unconfirmed zero credit.
+author/seven independent groups at the corrected descriptor cut. A separate
+305-parent composition passes strict306, one exact collector-destructor source
+and92 independent reached premises. The receiver has retired before the child
+starts; its arena identity authenticates the private static callback through pure
+maker history, with no receiver owner added. GC runs in main and creates no
+collector worker. Heap-identical producer/source substitutions are rejected;
+zero/one-step entry and defined18 completion preserve the actual C buffer.
+The final307-parent join preserves ArrayAccess326 and computed-name327 guards
+and passes strict308 compilation. Earlier runtime cuts retain their revisions.
+Maintained source/state scripts preserve checked original fixtures and stop at
+the first failure;
+relocation adds no execution credit. The earlier rich whole-source and full63
+literal runs remain unconfirmed zero credit.
 
 ## Required follow-ons
 

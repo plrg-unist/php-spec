@@ -955,7 +955,8 @@ arrays) now use the effectful callable resolver. Warning callbacks can mutate,
 throw or suspend before the repeated-constructor check. Cached scope and maker
 receipts survive reference changes and maker retirement without extra heap owners.
 The [constructor ledger](coverage/semantics/fiber-callable-constructors-review.json)
-keeps distinct source cuts and independently accepted state checks.
+keeps distinct source cuts and independently accepted state checks, including
+a callback made by a GC destructor whose receiver has already retired.
 The [callback ledger](coverage/semantics/fiber-core-callbacks-review.json) separates
 bounded state checks from unconfirmed rich whole-source execution.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
