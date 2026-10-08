@@ -70,6 +70,8 @@ dec $gc_dtor_anchor(pstate, pdestructorcall) : (pgcplan, nat)?
 dec $gc_dtor_anchor_tasks(ptask*, nat) : (pgcplan, nat)?
 dec $gc_dtor_anchor_frames(pframe*, nat) : (pgcplan, nat)?
 dec $gc_keep(pstate) : pnode*
+;; Carried prune callers supply H = heap_graph(S).
+dec $gc_keep_graph(pstate, hgraph) : pnode*
 dec $gc_retained(hgraph, pnode*, pnode*) : pnode*
 dec $gc_prune_graph(hgraph, pnode*) : hgraph
 dec $gc_release_walk(pstate, hgraph, pdestructionjob*, pnode*) : pnode*
@@ -117,15 +119,19 @@ dec $gc_snapshot_fresh(pstate, pgcplan) : bool
 dec $gc_worker_state_valid(pstate) : bool
 dec $gc_slot_node(pgcslot) : pnode?
 dec $gc_bare_keep(pstate) : pnode*
+dec $gc_bare_keep_graph(pstate, hgraph) : pnode*
 dec $gc_transition_prepare(pstate) : pstate
 dec $generator_request_transition_prepare(pstate) : pstate
 dec $generator_request_retired_keep(pstate) : pnode*
+dec $generator_request_retired_keep_graph(pstate, hgraph) : pnode*
 def $gc_slot_node(GC_ROOT pnode) = (pnode)
 def $gc_slot_node(pgcslot) = eps -- otherwise
 def $gc_bare_keep(S) = eps -- otherwise
+def $gc_bare_keep_graph(S, H) = eps -- otherwise
 def $gc_transition_prepare(S) = S -- otherwise
 def $generator_request_transition_prepare(S) = S -- otherwise
 def $generator_request_retired_keep(S) = eps -- otherwise
+def $generator_request_retired_keep_graph(S, H) = eps -- otherwise
 def $gc_parked_call_count(S, pgccall) = 0 -- otherwise
 def $gc_parked_plan_count(S, pgcplan) = 0 -- otherwise
 def $gc_snapshot_fresh(S, pgcplan) = $gc_fresh_tasks(S.TODO, pgcplan) -- otherwise
@@ -758,6 +764,9 @@ def $gc_finish(S, pgccall) = S[.GC.ACTIVE = eps][.GC.PLAN = eps][.TODO = (THROW_
 def $gc_keep(S) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, $heap_graph(S).EDGES) ++ $gc_bare_keep(S) ++ $generator_request_retired_keep(S)
   -- if S.GC.PLAN = (pgcplan)
 def $gc_keep(S) = $gc_bare_keep(S) ++ $generator_request_retired_keep(S) -- otherwise
+def $gc_keep_graph(S, H) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, H.EDGES) ++ $gc_bare_keep_graph(S, H) ++ $generator_request_retired_keep_graph(S, H)
+  -- if S.GC.PLAN = (pgcplan)
+def $gc_keep_graph(S, H) = $gc_bare_keep_graph(S, H) ++ $generator_request_retired_keep_graph(S, H) -- otherwise
 def $gc_retained(H, eps, pnode_keep*) = eps
 def $gc_retained(H, pnode :: pnode_tail*, pnode_keep*) = pnode :: $gc_retained(H, pnode_tail*, pnode_keep*)
   -- if pnode <- pnode_keep* \/ $($heap_owners(H, pnode) > 0)
@@ -769,12 +778,15 @@ def $gc_prune_graph(H, pnode_keep*) = $gc_prune_graph(H[.NODES = pnode_live*], p
   -- if pnode_live* = $gc_retained(H, H.NODES, pnode_keep*)
   -- if pnode_live* =/= H.NODES
 def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
-def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
+def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep_graph(S, H)).NODES -- if S.GC.ACTIVE =/= eps
 dec $gc_zero_keep(hgraph, pnode*, pnode*) : pnode*
 dec $gc_zero_owners(hgraph, pnode, pnode*, pnode*, nat) : pnode*
 def $gc_zero(S, H, eps) = eps
 def $gc_zero(S, H, pnode :: pnode_tail*) = $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*)
   -- if pnode_keep* = $gc_keep(S)
+def $gc_zero_graph(S, H, eps) = eps
+def $gc_zero_graph(S, H, pnode :: pnode_tail*) = $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*)
+  -- if pnode_keep* = $gc_keep_graph(S, H)
 def $gc_zero_keep(H, eps, pnode_keep*) = eps
 def $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*) = $gc_zero_owners(H, pnode, pnode_tail*, pnode_keep*, n_owners)
   -- if n_owners = $heap_owners(H, pnode)
@@ -797,6 +809,10 @@ def $gc_release_walk_keep(H, pdestructionjob_head :: pdestructionjob*, pnode_don
   -- if $heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) = 0
   -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
 def $gc_release_order(S, H) = $gc_release_walk(S, H, $destruction_values($gc_zero(S, H, H.NODES)), eps)
+def $gc_release_order_graph(S, H) = eps -- if H.NODES = eps
+def $gc_release_order_graph(S, H) = $gc_release_walk_keep(H, $destruction_values($gc_zero_keep(H, H.NODES, pnode_keep*)), eps, pnode_keep*)
+  -- if H.NODES =/= eps
+  -- if pnode_keep* = $gc_keep_graph(S, H)
 
 def $gc_dtor_anchor_tasks((GC_DTOR_RETURN pgcplan n) :: ptask*, n) = ((pgcplan, n))
 def $gc_dtor_anchor_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, n) = $gc_dtor_anchor_tasks(ptask*, n)

@@ -494,8 +494,11 @@ object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
 Pruning carries that graph through GC selection and destructor dispatch, with
-reuse only when destructor preparation leaves the state identical. Authenticated
-specialized call contexts take precedence over ordinary error handler validation.
+reuse only when destructor preparation leaves the state identical.
+Keep and release scans also reuse the carried graph, including detached and
+retired buckets; public helpers retain their behavior for modified graphs.
+Authenticated specialized call contexts take precedence over ordinary error
+handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
 from the new captured-source/66-premise and readonly-clone/GC compositions.
 The earlier 291-module strict compiler/initialization and readonly clone original pass;

@@ -312,6 +312,16 @@ and passes changed initialization plus a genuine retirement fixture with 73 body
 190 physical premises. Earlier 326 cuts stay separate. Raw failures and checks remain
 under `.tools/compiler-fiber-protection-current-19/.tools` (`prune-graph-controls-v{1,2,3}`
 and `full-default-retry-prune-graph-v1`) and `.tools/compiler-prune-graph-publication-19/.tools/prune-graph-gen330-controls-v1`.
+Known-current graph reuse now covers keep, zero and release scans, avoiding
+rebuilding the graph inside bare/retired retention. Exact `c09806280`/330 passes
+strict initialization, 52 independent premises and reached DONE51, bare62,
+destructor82 and retired193 physical premises (38/50/76 body premises for
+DONE/bare/retired). Public modified-graph helpers and changed-preparation paths
+stay intact. Raw checks: `.tools/compiler-prune-graph-publication-19/.tools/prune-graph-keep-controls-v1`.
+Final 334-module composition at `989e6bb09` passes changed initialization in
+4.222s; its earlier 330 fixture identities stay separate. Raw final check:
+`.tools/compiler-prune-keep-current-19/.tools/prune-keep-current-controls-v1`.
+The new factor's original full-source retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
