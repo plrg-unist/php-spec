@@ -102,6 +102,10 @@ The actual305 join preserves collector317 and Generator321 and passes strict
 initialization on `ad5acdc4d` in3.821s; earlier lifecycle/source cuts stay distinct.
 The current301 diagnostic measures297 completed GC bodies27.988s, with pruning
 alone26.283s (93.9%), then times out at host55 with zero agreement.
+The private retained-node factor passes strict305 initialization, GC42/GEN63/Fiber34
+and one parent-child WeakReference original on `67fa589eb`; exact public output
+`P:live|C:null|N|END` completes in9.078s. Its full retry still times out at host55
+with empty streams and zero agreement; this adds no demonstrated speedup.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
