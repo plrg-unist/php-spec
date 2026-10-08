@@ -290,7 +290,7 @@ def generator_assertions(initial, expected):
         '$heap_owners($heap_graph(S_leaf), HOBJECT n_parent) = 1',
         '$heap_owners($heap_graph(S_leaf), HOBJECT n_generator) = 1',
         '$weakref_get(S_leaf, n_weak_parent) = PNULL',
-        '$generator_at(S_leaf, n_generator) = (pgenerator)',
+        'S_leaf.OBJECTS[n_generator] = GENERATOR pgenerator',
         'pgenerator.RETURN = (POBJECT n_parent)',
         '$generator_storage_for(S_leaf, n_generator) = (pgenstorage)',
         'pgenstorage.NEXT = 4',
