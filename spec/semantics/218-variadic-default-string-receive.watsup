@@ -194,9 +194,9 @@ def $constant_fact_truth(pconstantfact) = (true)
 def $variadic_conversion(S, psparam, poperand) = TYPEREJECT
   -- if psparam.BYREF
   -- if $typed_reference_operand_source(S, poperand)
-  -- if $typed_conversion_at(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S)) = TYPEDEPENDENT "user object string conversion"
-def $variadic_conversion(S, psparam, poperand) = $typed_reference_conversion(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S), (psparam.BYREF /\ $typed_reference_operand_source(S, poperand)))
-  -- if ~psparam.BYREF \/ ~$typed_reference_operand_source(S, poperand) \/ $typed_conversion_at(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S)) =/= TYPEDEPENDENT "user object string conversion"
+  -- if $typed_parameter_conversion_at(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S)) = TYPEDEPENDENT "user object string conversion"
+def $variadic_conversion(S, psparam, poperand) = $typed_parameter_reference_conversion(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S), (psparam.BYREF /\ $typed_reference_operand_source(S, poperand)))
+  -- if ~psparam.BYREF \/ ~$typed_reference_operand_source(S, poperand) \/ $typed_parameter_conversion_at(S, psparam.TYPE, $variadic_operand_value(S, poperand), $typed_caller_strict(S)) =/= TYPEDEPENDENT "user object string conversion"
 
 dec $variadic_string_from(pstate, pfunction, nat, bool, poperand) : pvariadicstring?
 def $variadic_string_from(S, pfunction, n_element, b_named, poperand) = (pvariadicstring)
@@ -215,7 +215,7 @@ def $variadic_string_selected(S) = $variadic_string_from(S, pfunction, n_element
   -- if $variadic_receive_valid(S, porigin, n_arg)
   -- if S.CURRENT = (pcallcontext)
   -- if $(n_arg < pcallcontext.ARGC)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if n_element = $(n_arg - n_fixed)
 def $variadic_string_selected(S) = $variadic_string_from(S, pfunction, n_element, true, poperand)
@@ -224,7 +224,7 @@ def $variadic_string_selected(S) = $variadic_string_from(S, pfunction, n_element
   -- if $named_tail_valid(S, porigin, n_element)
   -- if S.CURRENT = (pcallcontext)
   -- if $(n_element < |pcallcontext.NAMED|)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if (ptbytes, poperand) = pcallcontext.NAMED[n_element]
 def $variadic_string_selected(S) = eps -- otherwise
 def $variadic_string_candidate(S) = ($variadic_string_selected(S) =/= eps)
@@ -311,18 +311,18 @@ dec $receive_string_operand_valid(pstate, pvariadicstring) : bool
 dec $receive_string_record_valid(pstate, ptask) : bool
 def $receive_string_record_valid(S, DEFAULT_STRING_RESULT pparameterstring) = true
   -- if $parameter_string_record_valid(S, pparameterstring)
-  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+  -- if $receiving_function(S, pparameterstring.FUNCTION) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, pparameterstring.INDEX) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if pdefault.ORIGIN = $constant_child($default_parameter_origin(S, pfunction.ORIGIN, pparameterstring.INDEX), [PCFIELD 6])
 def $receive_string_record_valid(S, VARIADIC_STRING_RESULT pvariadicstring) = true
-  -- if $function_at($all_functions(S), pvariadicstring.FUNCTION) = (pfunction)
+  -- if $receiving_function(S, pvariadicstring.FUNCTION) = (pfunction)
   -- if pvariadicstring.INDEX = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if $(pvariadicstring.INDEX < |pfunction.SIGNATURE.PARAMETERS|)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[pvariadicstring.INDEX]
   -- if psparam.VARIADIC
   -- if $receive_string_operand_mode(psparam, pvariadicstring.OPERAND)
-  -- if $user_string_coercion(S, psparam.TYPE, POBJECT pvariadicstring.OBJECT, false)
+  -- if $typed_parameter_conversion_at(S, psparam.TYPE, POBJECT pvariadicstring.OBJECT, false) = TYPEDEPENDENT "user object string conversion"
   -- if pvariadicstring.LINE = $default_parameter_line(S, pvariadicstring.FUNCTION, pvariadicstring.INDEX)
   -- if $parameter_string_site_valid(S, $default_parameter_origin(S, pvariadicstring.FUNCTION, pvariadicstring.INDEX), pvariadicstring.LINE)
   -- if $receive_string_operand_valid(S, pvariadicstring)
@@ -342,7 +342,7 @@ def $receive_string_current(S, DEFAULT_STRING_RESULT pparameterstring) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = pparameterstring.FUNCTION
   -- if $fixed_parameter_defaulted(S, pparameterstring.INDEX)
-  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+  -- if $receiving_function(S, pparameterstring.FUNCTION) = (pfunction)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[pparameterstring.INDEX].NAME) = (pparameterstring.CELL)
   -- if S.ORIGIN = ($default_parameter_origin(S, pparameterstring.FUNCTION, pparameterstring.INDEX))
   -- if ~$typed_caller_strict(S)
@@ -469,10 +469,10 @@ rule PhpStep/variadic-string-begin: S ~> $user_string_begin(S[.ORIGIN = (porigin
 dec $variadic_string_finish(pstate, pvariadicstring, pvalue) : pstate
 def $variadic_string_finish(S, pvariadicstring, pvalue) = $variadic_insert(S, pfunction, $(pvariadicstring.INDEX + pvariadicstring.ELEMENT), pvariadicstring.OPERAND, pvalue)
   -- if ~pvariadicstring.NAMED
-  -- if $function_at($all_functions(S), pvariadicstring.FUNCTION) = (pfunction)
+  -- if $receiving_function(S, pvariadicstring.FUNCTION) = (pfunction)
 def $variadic_string_finish(S, pvariadicstring, pvalue) = $named_variadic_insert(S, pfunction, pvariadicstring.ELEMENT, pvariadicstring.OPERAND, pvalue)
   -- if pvariadicstring.NAMED
-  -- if $function_at($all_functions(S), pvariadicstring.FUNCTION) = (pfunction)
+  -- if $receiving_function(S, pvariadicstring.FUNCTION) = (pfunction)
 rule PhpStep/variadic-string-value: S ~> $variadic_string_finish(S, pvariadicstring, PSTRING ptbytes)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [VARIADIC_STRING_RESULT pvariadicstring]
@@ -500,7 +500,7 @@ rule PhpStep/default-string-store: S ~> S_store[.TODO = $default_next(S_store, p
   -- if S.TODO = [DEFAULT_STRING_RESULT pparameterstring]
   -- if $receive_string_scope_valid(S, DEFAULT_STRING_RESULT pparameterstring)
   -- if S.RESULT = KNOWN (PSTRING ptbytes)
-  -- if $function_at($all_functions(S), pparameterstring.FUNCTION) = (pfunction)
+  -- if $receiving_function(S, pparameterstring.FUNCTION) = (pfunction)
   -- if S_store = $receive_string_store(S, DEFAULT_STRING_RESULT pparameterstring, pparameterstring.CELL, ptbytes)
   -- if S_store.COMPLETION = NORMAL
 rule PhpStep/default-string-store-abrupt: S ~> S_store

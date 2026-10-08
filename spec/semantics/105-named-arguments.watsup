@@ -194,20 +194,20 @@ rule PhpStep/named-preflight-done: S ~> $call_arity(S, pfunction, pcallcontext.A
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $(n >= pcallcontext.ARGC) \/ $(n >= |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
 rule PhpStep/named-preflight-supplied: S ~> S[.TODO = [NAMED_PREFLIGHT porigin $(n + 1)]]
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if $named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
-rule PhpStep/named-preflight-required: S ~> $throw_scalar(S, "ArgumentCountError", pfunction.NAME ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ pfunction.SIGNATURE.PARAMETERS[n].NAME ++ $ptascii(") not passed"), $default_parameter_line(S, porigin, n))
+rule PhpStep/named-preflight-required: S ~> $throw_scalar(S, "ArgumentCountError", $call_function_name(S, pfunction) ++ $ptascii("(): Argument #") ++ $ntunsigned($(n + 1)) ++ $ptascii(" ($") ++ pfunction.SIGNATURE.PARAMETERS[n].NAME ++ $ptascii(") not passed"), $default_parameter_line(S, porigin, n))
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
   -- if $default_at(pfunction.DEFAULTS, n) = eps
@@ -215,7 +215,7 @@ rule PhpStep/named-preflight-stored: S ~> $named_hole_store(S, pfunction, n, $ty
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
@@ -225,7 +225,7 @@ rule PhpStep/named-preflight-cached: S ~> $named_hole_store(S, pfunction, n, pde
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
@@ -236,7 +236,7 @@ rule PhpStep/named-preflight-evaluate: S ~> $parameter_receive_begin(S, porigin_
   -- if S.TODO = (NAMED_PREFLIGHT porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $(n < pcallcontext.ARGC) /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
@@ -248,7 +248,7 @@ rule PhpStep/named-preflight-evaluate: S ~> $parameter_receive_begin(S, porigin_
 rule PhpStep/named-default-bind: S ~> $named_hole_store($default_cache_value($parameter_receive_end(S_value)[.CONSTCONTEXT = eps], pdefault.ORIGIN, pvalue, pvalueclass), pfunction, n, pvalue)
   -- if S.TODO = (NAMED_DEFAULT_BIND porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
   -- if S_value.COMPLETION = NORMAL
@@ -277,7 +277,7 @@ def $named_default_task_valid(S, porigin, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = porigin
   -- if $(n < pcallcontext.ARGC)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if ~$named_defined(S, pfunction.SIGNATURE.PARAMETERS[n].NAME)
 def $named_default_task_valid(S, porigin, n) = false -- otherwise
@@ -331,7 +331,7 @@ rule PhpStep/named-tail-receive: S ~> $named_receive(S, pfunction, n)
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
   -- if $(n < |pcallcontext.NAMED|)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if ~$variadic_string_candidate(S)
   -- if ~$api_variadic_candidate(S)
 rule PhpStep/named-tail-done: S ~> S[.TODO = $function_tasks(S, pfunction)]
@@ -339,7 +339,7 @@ rule PhpStep/named-tail-done: S ~> S[.TODO = $function_tasks(S, pfunction)]
   -- if ptask_tail* = eps
   -- if S.CURRENT = (pcallcontext)
   -- if n = |pcallcontext.NAMED|
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
 
 ;; Current context extent and names come from the selected checked call.
 dec $named_shape(psparam*, phpType7*, nat, pnamedargs) : pnamedargs
@@ -414,7 +414,7 @@ def $named_preflight_stage(S, porigin, n) = true
   -- if pcallcontext.FUNCTION = porigin
   -- if $call_selected_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if $named_call_valid(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if pcallcontext.CALLSITE = (porigin_call)
   -- if $call_argument_source(S, porigin_call) = PCALLARGUMENTS phpType7* n_field
   -- if $named_present(phpType7*)
@@ -462,7 +462,7 @@ def $named_bind_valid(S, porigin, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pnamedargs = $named_call_shape(S, $context_target(pcallcontext), pcallcontext.CALLSITE)
   -- if $named_slot_at(pnamedargs.SLOTS, n) = NAMED_HOLE
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
@@ -513,7 +513,7 @@ def $named_tail_valid(S, porigin, n) = true
   -- if S.TODO = (NAMED_VARIADIC_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $variadic_stage(S, porigin)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.NAMED =/= eps
   -- if $(n <= |pcallcontext.NAMED|)

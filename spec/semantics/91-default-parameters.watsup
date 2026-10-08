@@ -91,14 +91,14 @@ def $default_store(S, pfunction, n, pvalue) = $write_name(S, psparam.NAME, pvalu
 rule PhpStep/default-stored: S ~> $default_store(S, pfunction, n, $typed_stored_default(pfunction.SIGNATURE.PARAMETERS[n].DEFAULT, pvalue))
   -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDSTORED
   -- if $compiled_read(S, pdefault.ORIGIN) = (pvalue)
 rule PhpStep/default-cached: S ~> $typed_default_store(S, pfunction, n, pdefaultcache.VALUE)
   -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = (pdefaultcache)
@@ -106,7 +106,7 @@ rule PhpStep/default-cached: S ~> $typed_default_store(S, pfunction, n, pdefault
 rule PhpStep/default-evaluate: S ~> $parameter_receive_begin(S, porigin_param)[.CONSTCONTEXT = ({ORIGIN porigin_param, LINE $default_parameter_line(S, porigin, n), FACTS eps})][.ORIGIN = (porigin_param)][.TODO = [AT pdefault.ORIGIN (EVAL expression), DEFAULT_BIND porigin n]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (DEFAULT_RECEIVE porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps
@@ -116,7 +116,7 @@ rule PhpStep/default-evaluate: S ~> $parameter_receive_begin(S, porigin_param)[.
 rule PhpStep/default-bind: S ~> $typed_default_store($default_cache_value($parameter_receive_end(S_value)[.CONSTCONTEXT = eps], pdefault.ORIGIN, pvalue, pvalueclass), pfunction, n, pvalue)
   -- if S.TODO = (DEFAULT_BIND porigin n) :: ptask_tail*
   -- if ptask_tail* = eps
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if S_value = $resolve_at(S, S.RESULT, $default_parameter_line(S, porigin, n))
   -- if S_value.COMPLETION = NORMAL
@@ -213,7 +213,7 @@ dec $default_task_valid(pstate, porigin, nat) : bool
 def $default_task_valid(S, porigin, n) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = porigin
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if $(n >= pcallcontext.ARGC)
   -- if $default_received_slots(S, pfunction.SIGNATURE.PARAMETERS, n)
@@ -235,7 +235,7 @@ def $call_task_valid(S, DEFAULT_BIND porigin n) = $default_bind_task_valid(S, po
 def $default_bind_task_valid(S, porigin, n) = true
   -- if $default_final_task(S.TODO, DEFAULT_BIND porigin n)
   -- if $default_task_valid(S, porigin, n)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if pdefault.KIND = PDDEFERRED
   -- if $default_cache_at(S.DEFAULTCACHE, pdefault.ORIGIN) = eps

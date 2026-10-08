@@ -130,7 +130,7 @@ def $api_receive_candidate(S) = true
   -- if S.TODO = [TYPE_RECEIVE porigin n]
   -- if S.CURRENT = (pcallcontext)
   -- if $fixed_parameter_supplied(S, n)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
   -- if $lookup(S.ENV, psparam.NAME) = (n_cell)
@@ -148,7 +148,7 @@ def $api_source_line(S, TYPE_RECEIVE porigin n) = $default_parameter_line(S, por
 def $api_source_line(S, CONFIG_INVOKE pconfigcall) = pconfigcall.LINE
 def $api_source_line(S, ERROR_HANDLER_INVOKE perrorcall) = perrorcall.LINE
 def $api_string_item(S, TYPE_RECEIVE porigin n, ptbytes) = ALIAS n_cell
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if pfunction.SIGNATURE.PARAMETERS[n].BYREF
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
 def $api_string_item(S, ptask, ptbytes) = DIRECT (PSTRING ptbytes) -- otherwise
@@ -309,7 +309,7 @@ def $api_method_result(S, papiquery, ptbytes) = HANDLERINVALID ($ptascii("class 
 def $api_method_result(S, papiquery, ptbytes) = HANDLERUNKNOWN "magic API callable method" -- otherwise
 
 def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERRESOLVED pcalltarget) = $default_store(S, pfunction, n, pvalue_live)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue_live
 def $api_finish(S, TYPE_RECEIVE porigin n, pvalue, HANDLERINVALID ptbytes) = $api_receive_reject(S, porigin, n)
@@ -343,7 +343,7 @@ def $api_receive_reject(S, porigin, n) = $api_fallback_reject(S, TYPE_RECEIVE po
 rule PhpStep/api-callable-receive: S ~> $api_begin(S, TYPE_RECEIVE porigin n, pvalue)
   -- if $api_receive_candidate(S)
   -- if S.TODO = [TYPE_RECEIVE porigin n]
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
 rule PhpStep/api-callable-register: S ~> $api_begin(S, CONFIG_INVOKE pconfigcall, $error_api_value(pconfigcall, 0, PNULL))
@@ -452,7 +452,7 @@ def $api_source_valid(S, papiquery) = true
   -- if $typed_receive_valid(S[.TODO = [papiquery.SOURCE]], porigin, n)
   -- if S.CURRENT = (pcallcontext)
   -- if $fixed_parameter_supplied(S, n)
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
   -- if "callable" <- $ptmasks(psparam.TYPE)
   -- if ~$typed_exact(psparam.TYPE, papiquery.VALUE)

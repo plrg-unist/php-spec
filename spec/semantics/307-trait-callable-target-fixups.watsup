@@ -1,0 +1,417 @@
+;; An AST caches a method target, while each fake Closure copies its current
+;; function scope. Trait linking fixes the target after the old Closure is born.
+dec $trait_fcc_form(pcnode) : bool
+dec $trait_fcc_nodes(pstate, porigin, nat, pcoccurrence*) : bool
+dec $trait_fcc_contains(pstate, porigin, nat, pcoccurrence*) : bool
+dec $trait_fcc_source(pstate, pclassconstantdesc) : bool
+dec $trait_fcc_pending_known(pstate, ptraitcachecause, pclassconstantdesc) : bool
+dec $trait_fcc_active_known(pstate, ptraitcachecause, pclassconstantdesc) : bool
+dec $trait_fcc_authority_known(pstate, ptraitcachecause, pclassconstantdesc) : bool
+dec $trait_fcc_birth_owner(pstate, pconstantclosure) : porigin?
+dec $trait_fcc_replay_birth(pstate, pclassconstantevent) : pclassconstantevent*
+dec $trait_fcc_replay_births(pstate, pclassconstantevent*) : pclassconstantevent*
+dec $trait_fcc_receipt_cause(pstate, pconstantclosure, porigin, porigin, nat) : ptraitcachecause?
+dec $trait_fcc_history_cause(pstate, pconstantclosure*, porigin, porigin, nat) : ptraitcachecause?
+dec $trait_fcc_cause_at(pstate, porigin, porigin, nat) : ptraitcachecause?
+dec $trait_fcc_import_one(pstate, pclassdesc, pmethoddesc, pclassdesc, nat) : pmethoddesc?
+dec $trait_fcc_import_source(pstate, pclassdesc, pmethoddesc, pclassdesc*, nat) : pmethoddesc?
+dec $trait_fcc_unfixed(pstate, porigin, ptbytes, nat) : pmethoddesc?
+dec $trait_fcc_cached_header(pstate, porigin) : (pconstantclosure, porigin, pmethoddesc)?
+dec $trait_fcc_fixed_at_known(pstate, pconstantclosure, porigin, pmethoddesc, nat) : pmethoddesc?
+dec $trait_fcc_deprecation(pstate, pmethoddesc) : preqbytes?
+dec $trait_fcc_snapshot(pstate, pconstantclosure) : pmethoddesc?
+dec $trait_fcc_snapshot_first_known(pstate, pconstantclosure, porigin, pmethoddesc) : pmethoddesc?
+dec $trait_fcc_snapshot_ordinary(pstate, pconstantclosure) : pmethoddesc?
+dec $trait_fcc_scope_receipt(pstate, pconstantclosure, pmethoddesc, pclosurescope) : porigin?
+dec $trait_fcc_clone_scope(pstate, pconstantclosure*, pmethoddesc, pclosurescope) : porigin?
+dec $trait_fcc_scope_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
+dec $trait_fcc_target_name(pstate, pcalltarget) : preqbytes?
+
+def $trait_fcc_form(NExprStaticCall (NName (BYTES text) metadata_name) phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = true
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if $constant_callable_method_name(phpType20) =/= eps
+def $trait_fcc_form(pcnode) = false -- otherwise
+def $trait_fcc_nodes(S, porigin_root, n, eps) = true
+def $trait_fcc_nodes(S, porigin_root, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $trait_fcc_nodes(S, porigin_root, n, pcoccurrence*)
+  -- if ~$constant_callable_path(S, PORIGIN n pcpath, porigin_root) \/ ~$constant_callable_form(pcnode) \/ $trait_real_form(pcnode) \/ $trait_fcc_form(pcnode)
+def $trait_fcc_nodes(S, porigin_root, n, pcoccurrence*) = false -- otherwise
+def $trait_fcc_contains(S, porigin_root, n, eps) = false
+def $trait_fcc_contains(S, porigin_root, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = true
+  -- if $constant_callable_path(S, PORIGIN n pcpath, porigin_root) /\ $trait_fcc_form(pcnode)
+def $trait_fcc_contains(S, porigin_root, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = $trait_fcc_contains(S, porigin_root, n, pcoccurrence*)
+  -- if ~$constant_callable_path(S, PORIGIN n pcpath, porigin_root) \/ ~$trait_fcc_form(pcnode)
+def $trait_fcc_source(S, pclassconstantdesc) = true
+  -- if pclassconstantdesc.INITIALIZER = PORIGIN n pcpath
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $trait_cache_object_source(S, pclassconstantdesc)
+  -- if $trait_fcc_nodes(S, pclassconstantdesc.INITIALIZER, n, pcunit.OCCURRENCES)
+  -- if $trait_fcc_contains(S, pclassconstantdesc.INITIALIZER, n, pcunit.OCCURRENCES)
+def $trait_fcc_source(S, pclassconstantdesc) = false -- otherwise
+def $trait_real_source(S, pclassconstantdesc) = true
+  -- if $trait_fcc_source(S, pclassconstantdesc)
+
+;; The same collision marker authenticates the unpublished initializer. The
+;; receipt remains nonowning and keeps the actual pre-publication birth prefix.
+def $trait_real_stamp(S, n, porigin_site, porigin_decl, n_prefix) = S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCTRAITBIRTH n porigin_site ptraitcachecause]]
+  -- if $trait_real_markers(S.TODO) = [ptraitcachecause]
+  -- if ptraitcachecause.PREFIX = n_prefix
+  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
+  -- if $trait_fcc_form(pcnode)
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $trait_fcc_active_known(S, ptraitcachecause, pclassconstantdesc)
+  -- if pclassconstantdesc.ORIGIN = porigin_decl
+  -- if $constant_callable_context(S, porigin_site) = ((porigin_decl, pclassconstantdesc.OWNER))
+  -- if S.OBJECTS[n] = CONSTANTCLOSURE porigin_site (METHODCLOSURE porigin_method porigin_site pclassconstantdesc.OWNER eps)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n) = eps
+
+;; The caller has already reconstructed this descriptor from the full cause.
+;; Reuse it through the same active, completed and published authority guards.
+def $trait_fcc_pending_known(S, ptraitcachecause, pclassconstantdesc) = true
+  -- if $trait_real_markers(S.TODO) = [ptraitcachecause]
+  -- if ptraitcachecause.PREFIX = |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX = |S.USERCONSTANTS|
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = eps
+def $trait_fcc_pending_known(S, ptraitcachecause, pclassconstantdesc) = false -- otherwise
+def $trait_fcc_active_known(S, ptraitcachecause, pclassconstantdesc) = true
+  -- if $trait_fcc_pending_known(S, ptraitcachecause, pclassconstantdesc)
+  -- if S.CLASSCONSTANTINIT = [pclassconstantcontext]
+  -- if pclassconstantcontext.DECL = pclassconstantdesc.ORIGIN /\ pclassconstantcontext.PREVIOUS = eps
+  -- if n_lookups = |ptraitcachecause.LOOKUPS|
+  -- if $(n_lookups > 0)
+  -- if porigin_site = ptraitcachecause.LOOKUPS[$nabs($(n_lookups - 1))]
+  -- if pclassconstantcontext.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if $pfclass_constant_member(phpType20, eps) = (pclassconstantdesc.NAME)
+  -- if pclassconstantcontext.SELECTION = CLASS_CONST_FETCH (KNOWN (PSTRING pclassconstantdesc.OWNERNAME)) pclassconstantdesc.NAME
+  -- if pclassconstantcontext.LINE = $expression_line(NExprClassConstFetch phpType19 phpType20 metadata)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if pconstantcontext.ORIGIN = pclassconstantcontext.DECL /\ pconstantcontext.LINE = pclassconstantcontext.LINE
+  -- if $class_constant_bindings(S.TODO) = [pclassconstantcontext.DECL]
+def $trait_fcc_active_known(S, ptraitcachecause, pclassconstantdesc) = false -- otherwise
+def $trait_fcc_authority_known(S, ptraitcachecause, pclassconstantdesc) = true
+  -- if $trait_fcc_active_known(S, ptraitcachecause, pclassconstantdesc)
+def $trait_fcc_authority_known(S, ptraitcachecause, pclassconstantdesc) = true
+  -- if S.TODO = [TRAIT_OBJECT_COMPARISON ptraitcachecause]
+  -- if S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps
+  -- if $trait_fcc_pending_known(S, ptraitcachecause, pclassconstantdesc)
+  -- if $trait_cache_event_at(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = (ptraitcachecause)
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = (pdefaultcache)
+  -- if S.RESULT = KNOWN pdefaultcache.VALUE
+def $trait_fcc_authority_known(S, ptraitcachecause, pclassconstantdesc) = true
+  -- if $trait_real_published(S, ptraitcachecause)
+def $trait_fcc_authority_known(S, ptraitcachecause, pclassconstantdesc) = false -- otherwise
+def $trait_fcc_birth_owner(S, pconstantclosure) = (pclassconstantdesc.OWNER)
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
+  -- if pconstantclosure.PREFIX = ptraitcachecause.PREFIX
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE porigin_method pconstantclosure.SITE ptraitcachecause.CLASS eps)
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pconstantclosure.DECL = pclassconstantdesc.ORIGIN
+  -- if $trait_fcc_authority_known(S, ptraitcachecause, pclassconstantdesc)
+  -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
+  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
+  -- if $trait_fcc_form(pcnode)
+def $trait_fcc_birth_owner(S, pconstantclosure) = eps -- otherwise
+def $trait_real_birth_owner(S, pconstantclosure) = (porigin_owner)
+  -- if $trait_fcc_birth_owner(S, pconstantclosure) = (porigin_owner)
+
+;; Source history replays the first target's nonowning birth header. It still
+;; reconstructs every class and rederives the target at the consuming prefix.
+def $trait_fcc_replay_birth(S, CCTRAITBIRTH n porigin_site ptraitcachecause) = [CCTRAITBIRTH n porigin_site ptraitcachecause]
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n) = ((porigin_site, ptraitcachecause))
+  -- if $trait_fcc_birth_owner(S, pconstantclosure) = (ptraitcachecause.CLASS)
+def $trait_fcc_replay_birth(S, pclassconstantevent) = eps -- otherwise
+def $trait_fcc_replay_births(S, eps) = eps
+def $trait_fcc_replay_births(S, pclassconstantevent :: pclassconstantevent_tail*) = $trait_fcc_replay_birth(S, pclassconstantevent) ++ $trait_fcc_replay_births(S, pclassconstantevent_tail*)
+def $declaration_replay_receipts(S) = $trait_fcc_replay_births(S, S.CLASSCONSTANTHISTORY)
+
+def $trait_fcc_receipt_cause(S, pconstantclosure, porigin_site, porigin_owner, n_prefix) = (ptraitcachecause)
+  -- if pconstantclosure.SITE = porigin_site /\ pconstantclosure.PREFIX = n_prefix
+  -- if $trait_fcc_birth_owner(S, pconstantclosure) = (porigin_owner)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((porigin_site, ptraitcachecause))
+def $trait_fcc_receipt_cause(S, pconstantclosure, porigin_site, porigin_owner, n_prefix) = eps -- otherwise
+def $trait_fcc_history_cause(S, eps, porigin_site, porigin_owner, n_prefix) = eps
+def $trait_fcc_history_cause(S, pconstantclosure :: pconstantclosure_tail*, porigin_site, porigin_owner, n_prefix) = (ptraitcachecause)
+  -- if $trait_fcc_receipt_cause(S, pconstantclosure, porigin_site, porigin_owner, n_prefix) = (ptraitcachecause)
+def $trait_fcc_history_cause(S, pconstantclosure :: pconstantclosure_tail*, porigin_site, porigin_owner, n_prefix) = $trait_fcc_history_cause(S, pconstantclosure_tail*, porigin_site, porigin_owner, n_prefix)
+  -- if $trait_fcc_receipt_cause(S, pconstantclosure, porigin_site, porigin_owner, n_prefix) = eps
+def $trait_fcc_cause_at(S, porigin_site, porigin_owner, n_prefix) = (ptraitcachecause)
+  -- if $trait_real_markers(S.TODO) = [ptraitcachecause]
+  -- if ptraitcachecause.PREFIX = n_prefix
+  -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if $trait_fcc_active_known(S, ptraitcachecause, pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = porigin_owner
+  -- if $constant_callable_path(S, porigin_site, pclassconstantdesc.INITIALIZER)
+  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
+  -- if $trait_fcc_form(pcnode)
+def $trait_fcc_cause_at(S, porigin_site, porigin_owner, n_prefix) = $trait_fcc_history_cause(S, S.CONSTANTCLOSURES, porigin_site, porigin_owner, n_prefix) -- otherwise
+def $constant_callable_method_class(S, porigin_site, porigin_owner, n_prefix) = (porigin_owner)
+  -- if $trait_fcc_cause_at(S, porigin_site, porigin_owner, n_prefix) =/= eps
+
+;; The composition table holds the eventual class method. Before fixup a
+;; copied trait method still has its direct using trait's function scope.
+def $trait_fcc_import_one(S, pclassdesc, pmethoddesc, pclassdesc_trait, n_prefix) = (pmethoddesc[.OWNER = pmethoddesc_trait.OWNER])
+  -- if pclassdesc_trait.KIND = "trait"
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], pclassdesc_trait.ORIGIN)
+  -- if $method_named(pclassdesc_trait.METHODS, $ptlc(pmethoddesc.NAME)) = (pmethoddesc_trait)
+  -- if $trait_import(pclassdesc, pmethoddesc_trait, pmethoddesc.NAME) = pmethoddesc
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = pmethoddesc_trait.FUNCTION.SIGNATURE.RETURNS
+  -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF = pmethoddesc_trait.FUNCTION.SIGNATURE.BYREF
+def $trait_fcc_import_one(S, pclassdesc, pmethoddesc, pclassdesc_trait, n_prefix) = eps -- otherwise
+def $trait_fcc_import_source(S, pclassdesc, pmethoddesc, eps, n_prefix) = eps
+def $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_trait :: pclassdesc_trait_tail*, n_prefix) = (pmethoddesc_trait)
+  -- if $trait_fcc_import_one(S, pclassdesc, pmethoddesc, pclassdesc_trait, n_prefix) = (pmethoddesc_trait)
+def $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_trait :: pclassdesc_trait_tail*, n_prefix) = $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_trait_tail*, n_prefix)
+  -- if $trait_fcc_import_one(S, pclassdesc, pmethoddesc, pclassdesc_trait, n_prefix) = eps
+def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $method_named(pclassdesc.METHODS, ptbytes_method) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_owner
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
+def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_traits*, n_prefix)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $method_named(pclassdesc.METHODS, ptbytes_method) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = eps -- otherwise
+def $constant_callable_method_selected(S, porigin_site, porigin_owner, porigin_owner, n_prefix, ptbytes_method) = $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix)
+  -- if $trait_fcc_cause_at(S, porigin_site, porigin_owner, n_prefix) =/= eps
+
+;; The exact first birth already proves the source and collision cause. Reuse
+;; that proof without repeating the generic fresh-target lookup path.
+def $trait_fcc_cached_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)
+  -- if $trait_fcc_birth_owner(S, pconstantclosure) = (porigin_owner)
+  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
+  -- if $constant_callable_method_name(phpType20) = (ptbytes_method)
+  -- if $trait_fcc_unfixed(S, porigin_owner, $ptlc(ptbytes_method), pconstantclosure.PREFIX) = (pmethoddesc)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE porigin_owner eps)
+  -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $method_accessible(S, pmethoddesc, (porigin_owner))
+def $trait_fcc_cached_header(S, porigin_site) = eps -- otherwise
+def $class_constant_callable_cached_method_receipt(S, pconstantclosure) = (pmethoddesc)
+  -- if $trait_fcc_cached_header(S, pconstantclosure.SITE) = ((pconstantclosure, porigin_owner, pmethoddesc))
+
+;; A historical query before the first owner's publication sees its old
+;; scope. Only that owner's actual publication fixes the shared cached target.
+def $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, n_prefix) = (pmethoddesc_first)
+  -- if $(pconstantclosure_first.PREFIX <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
+  -- if ~$constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_first_owner)
+def $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, n_prefix) = (pmethoddesc_first)
+  -- if $(pconstantclosure_first.PREFIX <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_first_owner)
+  -- if pmethoddesc_first.OWNER = porigin_first_owner
+def $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, n_prefix) = (pmethoddesc_fixed)
+  -- if $(pconstantclosure_first.PREFIX <= n_prefix /\ n_prefix <= |S.DECLARATIONS|)
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_first_owner)
+  -- if pmethoddesc_first.OWNER =/= porigin_first_owner
+  -- if $class_at(S.CLASSES, porigin_first_owner) = (pclassdesc_first)
+  -- if $method_named(pclassdesc_first.METHODS, $ptlc(pmethoddesc_first.NAME)) = (pmethoddesc_fixed)
+  -- if pmethoddesc_fixed = pmethoddesc_first[.OWNER = porigin_first_owner]
+def $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, n_prefix) = eps -- otherwise
+def $constant_callable_cached_method_at(S, porigin_site, n_prefix) = $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, n_prefix)
+  -- if $trait_fcc_cached_header(S, porigin_site) = ((pconstantclosure_first, porigin_first_owner, pmethoddesc_first))
+def $constant_callable_cached_method_access(S, porigin_site, porigin_owner, pmethoddesc) = (pmethoddesc = pmethoddesc_first \/ $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, |S.DECLARATIONS|) = (pmethoddesc))
+  -- if $trait_fcc_cached_header(S, porigin_site) = ((pconstantclosure_first, porigin_first_owner, pmethoddesc_first))
+
+;; The scratch initializer records the uncached trait warning. The ordinary
+;; comparison queue delivers it only after the class and its cache publish.
+def $trait_fcc_deprecation(S, pmethoddesc) = ($ptascii("Calling static trait method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii(" is deprecated, it should only be called on a class using the trait"))
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+def $trait_fcc_deprecation(S, pmethoddesc) = eps -- otherwise
+def $constant_callable_method_result(S, S_result, porigin_site, pmethoddesc) = S_result[.EVENTS = S_result.EVENTS ++ [DIAGNOSTIC_SOURCE n "Deprecated" ptbytes $expression_line(expression)]]
+  -- if $constant_callable_context(S, porigin_site) = ((porigin_decl, porigin_owner))
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = eps
+  -- if $trait_fcc_cause_at(S, porigin_site, porigin_owner, |S.DECLARATIONS|) =/= eps
+  -- if $trait_fcc_deprecation(S, pmethoddesc) = (ptbytes)
+  -- if porigin_site = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+
+;; Notice admission repeats the source fold with its original cache prefix.
+;; Its inert marker permits only the authentic first birth's recorded event.
+dec $trait_notice_replay_task(ptask) : bool
+dec $trait_notice_replay_markers(ptask*) : (porigin, nat, nat)*
+def $trait_notice_replay_task(TRAIT_NOTICE_REPLAY porigin n_prefix n_user) = true
+def $trait_notice_replay_task(ptask) = false -- otherwise
+def $trait_notice_replay_markers(eps) = eps
+def $trait_notice_replay_markers((TRAIT_NOTICE_REPLAY porigin n_prefix n_user) :: ptask*) = (porigin, n_prefix, n_user) :: $trait_notice_replay_markers(ptask*)
+def $trait_notice_replay_markers(ptask :: ptask_tail*) = $trait_notice_replay_markers(ptask_tail*)
+  -- if ~$trait_notice_replay_task(ptask)
+def $trait_cache_object_replay_events(F, S, S_next, ptraitcachecause, porigin_site) = [DIAGNOSTIC_SOURCE n "Deprecated" ptbytes $expression_line(expression)]
+  -- if S_next.EVENTS = eps
+  -- if F.EXTERNAL = (S_external)
+  -- if F.RECORD = (pfrecorder)
+  -- if $trait_notice_replay_markers(S_external.TODO) = [(pfrecorder.CLASS, ptraitcachecause.PREFIX, ptraitcachecause.USERPREFIX)]
+  -- if ptraitcachecause.CLASS = pfrecorder.CLASS /\ ptraitcachecause.ROOT = pfrecorder.ROOT /\ ptraitcachecause.TABLE = pfrecorder.TABLE
+  -- if ptraitcachecause.PREFIX = |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX = |S.USERCONSTANTS|
+  -- if S.TODO = (EVAL expression) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (expression)
+  -- if $trait_fcc_form(expression)
+  -- if porigin_site = PORIGIN n pcpath
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure_first)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((porigin_site, ptraitcachecause))
+  -- if $constant_callable_context(S, porigin_site) = ((pconstantclosure_first.DECL, ptraitcachecause.CLASS))
+  -- if $class_constant_callable_cached_method_receipt(S, pconstantclosure_first) = (pmethoddesc)
+  -- if $trait_fcc_deprecation(S, pmethoddesc) = (ptbytes)
+  -- if n_object = |S.OBJECTS|
+  -- if $(n_object < |S_next.OBJECTS|)
+  -- if S_next.OBJECTS[n_object] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site ptraitcachecause.CLASS eps)
+  -- if $trait_real_birth_at(S_next.CLASSCONSTANTHISTORY, n_object) = ((porigin_site, ptraitcachecause))
+
+;; The fake Closure keeps the copied class function and its birth-time scope.
+;; Rewritten trait signatures need a separate immutable function view.
+def $trait_fcc_snapshot_first_known(S, pconstantclosure, porigin_owner, pmethoddesc_first) = (pmethoddesc)
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if $trait_fcc_fixed_at_known(S, pconstantclosure, porigin_owner, pmethoddesc_first, pconstantclosure.PREFIX) = (pmethoddesc)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE porigin_owner eps)
+  -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+def $trait_fcc_snapshot_first_known(S, pconstantclosure, porigin_owner, pmethoddesc_first) = eps -- otherwise
+def $trait_fcc_snapshot(S, pconstantclosure) = $trait_fcc_snapshot_first_known(S, pconstantclosure, porigin_owner, pmethoddesc_first)
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure)
+  -- if $trait_fcc_cached_header(S, pconstantclosure.SITE) = ((pconstantclosure, porigin_owner, pmethoddesc_first))
+def $trait_fcc_snapshot(S, pconstantclosure) = $trait_fcc_snapshot_ordinary(S, pconstantclosure) -- otherwise
+def $trait_fcc_snapshot_ordinary(S, pconstantclosure) = (pmethoddesc)
+  -- if $trait_fcc_birth_owner(S, pconstantclosure) = (porigin_owner)
+  -- if $constant_callable_cached_method_at(S, pconstantclosure.SITE, pconstantclosure.PREFIX) = (pmethoddesc)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE porigin_owner eps)
+  -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+def $trait_fcc_snapshot_ordinary(S, pconstantclosure) = eps -- otherwise
+def $trait_fcc_scope_receipt(S, pconstantclosure, pmethoddesc, pclosurescope) = (porigin_owner)
+  -- if $trait_fcc_snapshot(S, pconstantclosure) = (pmethoddesc_birth)
+  -- if $class_constant_origin(S.CLASSES, pconstantclosure.DECL) = (pclassconstantdesc)
+  -- if porigin_owner = pclassconstantdesc.OWNER
+  -- if $class_method_origin(S.CLASSES, pmethoddesc_birth.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if pmethoddesc = pmethoddesc_birth[.OWNER = pmethoddesc.OWNER]
+  -- if pclosurescope.LEXICAL = pmethoddesc_birth.OWNER /\ pclosurescope.CALLED = porigin_owner
+  -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
+def $trait_fcc_scope_receipt(S, pconstantclosure, pmethoddesc, pclosurescope) = eps -- otherwise
+def $trait_fcc_clone_scope(S, eps, pmethoddesc, pclosurescope) = eps
+def $trait_fcc_clone_scope(S, pconstantclosure :: pconstantclosure_tail*, pmethoddesc, pclosurescope) = (porigin_owner)
+  -- if $(pconstantclosure.OBJECT < pclosurescope.OBJECT)
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pclosurescope.OBJECT] = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE pclosurescope.CALLED eps
+  -- if $trait_fcc_scope_receipt(S, pconstantclosure, pmethoddesc, pclosurescope) = (porigin_owner)
+def $trait_fcc_clone_scope(S, pconstantclosure :: pconstantclosure_tail*, pmethoddesc, pclosurescope) = $trait_fcc_clone_scope(S, pconstantclosure_tail*, pmethoddesc, pclosurescope)
+  -- if $(pconstantclosure.OBJECT >= pclosurescope.OBJECT) \/ $(pclosurescope.OBJECT >= |S.OBJECTS|) \/ S.OBJECTS[pclosurescope.OBJECT] =/= METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE pclosurescope.CALLED eps \/ $trait_fcc_scope_receipt(S, pconstantclosure, pmethoddesc, pclosurescope) = eps
+def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pclosurescope.OBJECT] = CONSTANTCLOSURE porigin_site (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps)
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, pclosurescope.OBJECT) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site
+  -- if $trait_fcc_scope_receipt(S, pconstantclosure, pmethoddesc, pclosurescope) = (porigin_requested)
+def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pclosurescope.OBJECT] = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps
+  -- if $trait_fcc_clone_scope(S, S.CONSTANTCLOSURES, pmethoddesc, pclosurescope) = (porigin_requested)
+def $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = eps -- otherwise
+def $class_constant_callable_method_history_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
+  -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_owner)
+def $method_closure_scope_valid(S, pclosurescope) = true
+  -- if HOBJECT pclosurescope.OBJECT <- S.ALLOCATIONS
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps
+
+;; Only parameter types resolve against the authenticated copied scope. The
+;; canonical function, defaults, return contract and static key stay unchanged.
+dec $trait_fcc_parameter_function(pstate, nat, pmethoddesc) : pfunction?
+def $trait_fcc_parameter_function(S, n, pmethoddesc) = (pmethoddesc.FUNCTION[.SIGNATURE = pmethoddesc.FUNCTION.SIGNATURE[.PARAMETERS = $trait_type_parameters(pmethoddesc_source.FUNCTION.SIGNATURE.PARAMETERS, pclassdesc_lexical.NAME, pclassdesc_lexical.PARENT)]])
+  -- if $(n < |S.OBJECTS|)
+  -- if HOBJECT n <- S.ALLOCATIONS
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN porigin_site porigin_requested eps
+  -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "class"
+  -- if $class_method_origin(S.CLASSES, $origin_source(porigin_source)) = (pmethoddesc_source)
+  -- if $class_at(S.CLASSES, pmethoddesc_source.OWNER) = (pclassdesc_source)
+  -- if pclassdesc_source.KIND = "trait"
+  -- if $trait_type_parameters(pmethoddesc_source.FUNCTION.SIGNATURE.PARAMETERS, eps, (eps)) =/= pmethoddesc_source.FUNCTION.SIGNATURE.PARAMETERS
+  -- if pmethoddesc.FUNCTION.SIGNATURE.PARAMETERS = $trait_type_parameters(pmethoddesc_source.FUNCTION.SIGNATURE.PARAMETERS, pclassdesc_owner.NAME, pclassdesc_owner.PARENT)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = pmethoddesc_source.FUNCTION.SIGNATURE.RETURNS
+  -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF = pmethoddesc_source.FUNCTION.SIGNATURE.BYREF
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc_lexical)
+  -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps
+def $trait_fcc_parameter_function(S, n, pmethoddesc) = eps -- otherwise
+def $method_closure_functions(S, n, pmethoddesc) = (pmethoddesc.FUNCTION, pfunction_view)
+  -- if $trait_fcc_parameter_function(S, n, pmethoddesc) = (pfunction_view)
+
+;; An unresolved parent remains a runtime lookup, rather than a class name.
+;; Admission checks the same supported shape with only that parameter atom
+;; neutralized; exact source and receipt selection still determine the view.
+dec $trait_fcc_parameter_supported(pstate, pclosurescope*, pfunction) : bool
+dec $trait_fcc_parameter_support_one(pstate, pclosurescope, pfunction) : bool
+def $trait_fcc_parameter_supported(S, eps, pfunction) = false
+def $trait_fcc_parameter_supported(S, pclosurescope :: pclosurescope_tail*, pfunction) = ($trait_fcc_parameter_support_one(S, pclosurescope, pfunction) \/ $trait_fcc_parameter_supported(S, pclosurescope_tail*, pfunction))
+def $trait_fcc_parameter_support_one(S, pclosurescope, pfunction) = true
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $trait_fcc_parameter_function(S, pclosurescope.OBJECT, pmethoddesc) = (pfunction)
+def $trait_fcc_parameter_support_one(S, pclosurescope, pfunction) = false -- otherwise
+def $call_supported_signature(S, pfunction) = true
+  -- if ~$ppsupported_signature(pfunction.SIGNATURE)
+  -- if $ppsupported_signature(pfunction.SIGNATURE[.PARAMETERS = $trait_type_parameters(pfunction.SIGNATURE.PARAMETERS, eps, (eps))])
+  -- if $trait_fcc_parameter_supported(S, S.CLOSURESCOPES, pfunction)
+
+;; Scalar masks return before complex lookup. Object branches and intersection
+;; atoms retain source order, including an earlier matching class alternative.
+dec $trait_fcc_parameter_atoms(pstate, ptatom*, pvalue) : bool?
+dec $trait_fcc_parameter_branches(pstate, ptbranch*, pvalue) : bool?
+dec $trait_fcc_parameter_parent_fatal(pstate, ptbranch*, pvalue) : bool
+def $trait_fcc_parameter_atoms(S, eps, pvalue) = (true)
+def $trait_fcc_parameter_atoms(S, PTPARENT :: ptatom*, pvalue) = eps
+def $trait_fcc_parameter_atoms(S, (PTCLASS ptbytes) :: ptatom*, pvalue) = $trait_fcc_parameter_atoms(S, ptatom*, pvalue)
+  -- if $typed_object_exact(S, [PTBRANCH ([PTCLASS ptbytes])], pvalue)
+def $trait_fcc_parameter_atoms(S, ptatom*, pvalue) = (false) -- otherwise
+def $trait_fcc_parameter_branches(S, eps, pvalue) = (false)
+def $trait_fcc_parameter_branches(S, (PTBRANCH ptatom*) :: ptbranch*, pvalue) = (true)
+  -- if $trait_fcc_parameter_atoms(S, ptatom*, pvalue) = (true)
+def $trait_fcc_parameter_branches(S, (PTBRANCH ptatom*) :: ptbranch*, pvalue) = eps
+  -- if $trait_fcc_parameter_atoms(S, ptatom*, pvalue) = eps
+def $trait_fcc_parameter_branches(S, (PTBRANCH ptatom*) :: ptbranch*, pvalue) = $trait_fcc_parameter_branches(S, ptbranch*, pvalue)
+  -- if $trait_fcc_parameter_atoms(S, ptatom*, pvalue) = (false)
+def $trait_fcc_parameter_parent_fatal(S, ptbranch*, POBJECT n) = true
+  -- if ~$typed_exact(ptbranch*, POBJECT n)
+  -- if $trait_fcc_parameter_branches(S, ptbranch*, POBJECT n) = eps
+def $trait_fcc_parameter_parent_fatal(S, ptbranch*, pvalue) = false -- otherwise
+def $typed_parameter_conversion_at(S, ptbranch*, pvalue, b) = TYPEDEPENDENT "parameter parent scope has no parent"
+  -- if $trait_fcc_parameter_parent_fatal(S, ptbranch*, pvalue)
+def $typed_parameter_reference_conversion(S, ptbranch*, pvalue, b_strict, b_source) = TYPEDEPENDENT "parameter parent scope has no parent"
+  -- if $trait_fcc_parameter_parent_fatal(S, ptbranch*, pvalue)
+def $typed_parameter_apply(S, TYPEDEPENDENT "parameter parent scope has no parent", z) = S[.COMPLETION = FATAL ($ptascii("Cannot access \"parent\" when current class scope has no parent")) z][.ERRORORIGIN = ($origin_source(pcallcontext.FUNCTION))][.TRACE = $eval_exception_trace(S)]
+  -- if S.CURRENT = (pcallcontext)
+
+;; Parameter diagnostics name the copied scope, while the immutable function
+;; descriptor and its shared static storage retain their class identity.
+def $trait_fcc_target_name(S, CLOSURE_TARGET n) = (pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME)
+  -- if $(n < |S.OBJECTS|)
+  -- if HOBJECT n <- S.ALLOCATIONS
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
+def $trait_fcc_target_name(S, pcalltarget) = eps -- otherwise
+def $call_function_name(S, pfunction) = preqbytes
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $method_closure_functions(S, n, pmethoddesc) = (pfunction_base, pfunction_view)
+  -- if pfunction = pfunction_base \/ pfunction = pfunction_view
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.INSTANCE = (n)
+  -- if pcallcontext.LEXICAL_CLASS = $target_lexical_class(S, CLOSURE_TARGET n)
+  -- if pcallcontext.CALLED_CLASS = $target_called_class(S, CLOSURE_TARGET n)
+  -- if $trait_fcc_target_name(S, CLOSURE_TARGET n) = (preqbytes)
+def $wrapper_send_name(S, CLOSURE_TARGET n, porigin?, preqbytes_original) = preqbytes
+  -- if ~$wrapper_site(S, CLOSURE_TARGET n, porigin?)
+  -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
+  -- if preqbytes_original = pfunction.NAME
+  -- if $trait_fcc_target_name(S, CLOSURE_TARGET n) = (preqbytes)
