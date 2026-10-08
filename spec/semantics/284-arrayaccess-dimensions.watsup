@@ -51,6 +51,7 @@ dec $access_call_phase(paccessphase) : bool
 dec $access_method_selected(pstate, paccess, pcalltarget) : bool
 dec $access_pending(pstate, pcalltarget, porigin) : bool
 dec $access_frame(pstate, pcallcontext, pframe) : bool
+dec $access_holes(paccess) : nat*
 dec $access_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
 dec $access_marker(pframe) : bool
 dec $access_known_base(pbase) : bool
@@ -186,10 +187,10 @@ def $access_dimension_pending(S) = true
   -- if $access_instance(S, pvalue)
 def $access_dimension_pending(S) = false -- otherwise
 
-def $access_record(S, porigin_target, z, paccessmode, pbase, poperand_key, poperand_rhs, ptask, n?, b) = {SITE porigin, TARGET porigin_target, LINE z, KEYLINE z_key, MODE paccessmode, BASE pbase, INPUT poperand_key, RHS poperand_rhs, SELECTED KNOWN PNULL, OBJECT n?, OFFSET PNULL, VALUE PNULL, LATCH false, OUTER b, TASK ptask, PHASE ACCESS_KEY_CV eps}
+def $access_record(S, porigin_target, z, paccessmode, pbase, poperand_key, poperand_rhs, ptask, n?, b) = {SITE porigin, TARGET porigin_target, LINE z, KEYLINE z_key, MODE paccessmode, BASE pbase, INPUT poperand_key, RHS poperand_rhs, SELECTED KNOWN PNULL, OBJECT n?, OFFSET PNULL, VALUE PNULL, LATCH false, KEYHOLE false, OUTER b, TASK ptask, PHASE ACCESS_KEY_CV eps}
   -- if S.ORIGIN = (porigin)
   -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = (z_key)
-def $access_record(S, porigin_target, z, paccessmode, pbase, poperand_key, poperand_rhs, ptask, n?, b) = {SITE porigin, TARGET porigin_target, LINE z, KEYLINE z, MODE paccessmode, BASE pbase, INPUT poperand_key, RHS poperand_rhs, SELECTED KNOWN PNULL, OBJECT n?, OFFSET PNULL, VALUE PNULL, LATCH false, OUTER b, TASK ptask, PHASE ACCESS_KEY_CV eps}
+def $access_record(S, porigin_target, z, paccessmode, pbase, poperand_key, poperand_rhs, ptask, n?, b) = {SITE porigin, TARGET porigin_target, LINE z, KEYLINE z, MODE paccessmode, BASE pbase, INPUT poperand_key, RHS poperand_rhs, SELECTED KNOWN PNULL, OBJECT n?, OFFSET PNULL, VALUE PNULL, LATCH false, KEYHOLE false, OUTER b, TASK ptask, PHASE ACCESS_KEY_CV eps}
   -- if S.ORIGIN = (porigin)
   -- if $code_expression_at_source(S, porigin_target, [PCFIELD 1]) = eps
 
@@ -425,7 +426,7 @@ rule PhpStep/access-unset-false-resume: S ~> $key_read_done(S, PNULL)
   -- if paccess.PHASE = ACCESS_UNSET_FALSE
   -- if $access_valid(S, paccess)
 
-def $access_roots(paccess, b_inner) = $access_operand_roots(paccess) ++ $access_extra_roots(paccess) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner)
+def $access_roots(paccess, b_inner) = $access_operand_roots(paccess) ++ $access_extra_roots(paccess) ++ $access_object_roots(paccess.OBJECT, paccess.OUTER) ++ $access_object_roots(paccess.OBJECT, b_inner) ++ $access_offset_roots(paccess.OFFSET, b_inner) -- otherwise
 def $access_object_roots((n), true) = [HOBJECT n]
 def $access_object_roots(n?, b) = eps -- otherwise
 def $access_offset_roots(pvalue, true) = $value_nodes(pvalue)
@@ -528,6 +529,8 @@ def $access_phase(paccess) = false -- otherwise
 
 def $access_capture_valid(paccess) = (paccess.OFFSET = PNULL /\ $access_cv_operand(paccess.INPUT))
   -- if paccess.LATCH
+def $access_capture_valid(paccess) = (paccess.OFFSET = PNULL /\ $access_cv_operand(paccess.INPUT) /\ $access_compound_mode(paccess.MODE) /\ paccess.PHASE = ACCESS_CALL $ptascii("offsetSet"))
+  -- if ~paccess.LATCH /\ paccess.KEYHOLE
 def $access_capture_valid(paccess) = (paccess.OFFSET = pvalue)
   -- if ~paccess.LATCH
   -- if $access_call_phase(paccess.PHASE) \/ $access_truth_phase(paccess.PHASE)
@@ -555,6 +558,7 @@ def $access_valid(S, paccess) = true
   -- if $access_capture_valid(paccess)
   -- if $access_selected_valid(paccess)
   -- if $access_compound_selected(paccess)
+  -- if ~paccess.KEYHOLE \/ ~paccess.LATCH
   -- if $access_borrowed_selected(S, paccess)
   -- if ~paccess.OUTER \/ paccess.OBJECT =/= eps
   -- if ~($access_call_phase(paccess.PHASE) \/ $access_truth_phase(paccess.PHASE)) \/ paccess.OBJECT =/= eps
@@ -620,6 +624,7 @@ def $access_pending(S, pcalltarget, porigin) = true
   -- if paccess.LINE = z
   -- if n = |poperand*|
   -- if poperand* = $access_arguments(paccess)
+  -- if ~paccess.KEYHOLE
   -- if $access_valid(S, paccess)
   -- if $access_method_selected(S, paccess, pcalltarget)
 def $access_pending(S, pcalltarget, porigin) = false -- otherwise
@@ -640,6 +645,7 @@ def $access_frame(S, pcallcontext, pframe) = true
   -- if $access_valid(S_view, paccess)
   -- if $access_method_selected(S, paccess, $context_target(pcallcontext))
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+  -- if pcallcontext.HOLES = $access_holes(paccess)
   -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if |pcallcontext.EXTRA| = $(pcallcontext.ARGC - n_received)
   -- if $call_sent_operands_valid(S, $context_target(pcallcontext), n_received, pcallcontext.EXTRA)
@@ -700,7 +706,7 @@ def $access_context_node(pcnode, ptbytes) = false -- otherwise
 ;; This terminal is reached from the scalar helper only after its key U. It has
 ;; no VM receiver pin; std_has_dimension supplies the sole handler protection.
 def $access_container(S, pcontainerread, n) = $access_call(S, paccess, $ptascii("offsetExists"))
-  -- if paccess = {SITE pcontainerread.READ.SITE, TARGET pcontainerread.READ.SITE, LINE pcontainerread.READ.LINE, KEYLINE pcontainerread.READ.LINE, MODE ACCESS_READ pcontainerread.READ.MODE, BASE pcontainerread.READ.OWNERS, INPUT pcontainerread.READ.INPUT, RHS KNOWN PNULL, SELECTED pcontainerread.SELECTED, OBJECT (n), OFFSET pcontainerread.READ.VALUE, VALUE PNULL, LATCH (pcontainerread.READ.PHASE = KEY_CV), OUTER false, TASK KEY_READ_DIM pcontainerread.READ.INPUT pcontainerread.READ.LINE pcontainerread.READ.MODE, PHASE ACCESS_CALL $ptascii("offsetExists")}
+  -- if paccess = {SITE pcontainerread.READ.SITE, TARGET pcontainerread.READ.SITE, LINE pcontainerread.READ.LINE, KEYLINE pcontainerread.READ.LINE, MODE ACCESS_READ pcontainerread.READ.MODE, BASE pcontainerread.READ.OWNERS, INPUT pcontainerread.READ.INPUT, RHS KNOWN PNULL, SELECTED pcontainerread.SELECTED, OBJECT (n), OFFSET pcontainerread.READ.VALUE, VALUE PNULL, LATCH (pcontainerread.READ.PHASE = KEY_CV), KEYHOLE false, OUTER false, TASK KEY_READ_DIM pcontainerread.READ.INPUT pcontainerread.READ.LINE pcontainerread.READ.MODE, PHASE ACCESS_CALL $ptascii("offsetExists")}
 
 def $access_cv_operand(VARIABLE n_name* z) = true
 def $access_cv_operand(poperand) = false -- otherwise

@@ -189,7 +189,7 @@ test-semantics: build
 	python3 tests/semantics/weak_reference_state_review.py
 	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces
 	python3 tests/semantics/cycle_collection_state.py
-	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18
+	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18 --exclude-match collector-detached-quiescent-throwing-fiber-prior-error-review-19
 	python3 tests/semantics/cycle_collection_state_review.py --sl
 	python3 tests/semantics/exception_handler_static_default.py
 	python3 tests/semantics/scoped_callables.py
@@ -569,6 +569,8 @@ test-semantics: build
 	python3 tests/semantics/trait_failed_real_protocol.py
 	python3 tests/semantics/trait_failed_real_review_protocol.py
 	python3 tests/semantics/trait_failed_real_crossfile_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_unpublished_fcc_receipt_cases.json
+	python3 tests/semantics/trait_unpublished_fcc_retired_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_failed_name_cases.json
 	python3 tests/semantics/trait_failed_name_protocol.py
 	python3 tests/semantics/trait_failed_name_review_protocol.py

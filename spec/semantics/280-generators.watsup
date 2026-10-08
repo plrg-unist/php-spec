@@ -722,7 +722,7 @@ def $generator_yield_site(S, porigin) = false -- otherwise
 def $generator_create_valid(S, porigin) = true
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.FUNCTION = porigin
-  -- if $function_at($all_functions(S), porigin) = (pfunction)
+  -- if $receiving_function(S, porigin) = (pfunction)
   -- if $function_generator(S, pfunction)
   -- if $named_receives_ready(S, pfunction)
 def $generator_create_valid(S, porigin) = false -- otherwise

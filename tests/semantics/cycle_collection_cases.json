@@ -115,5 +115,23 @@
     "exit": 0,
     "status": "normal",
     "source_sha256": "724c1804057d20e62eaf432005530872722ab00f1133fe1c6a3d7fe70500bdb0"
+  },
+  {
+    "id": "collector-detached-quiescent-throwing-finally-assignment-close-18",
+    "source": "<?php\n$worker = null;\nclass HeldCollectorCycle {\n    public $self;\n    function __destruct() {\n        global $worker;\n        $worker = Fiber::getCurrent(); echo 'D|';\n        try { Fiber::suspend(); }\n        finally { $this->self = null; echo 'finally|'; throw new Exception('close'); }\n    }\n}\n$x = new HeldCollectorCycle; $x->self = $x;\n$targetWeak = WeakReference::create($x); unset($x);\n$collector = new Fiber(function () { echo 'first:', gc_collect_cycles(), '|'; });\n$collector->start(); unset($collector);\n$workerWeak = WeakReference::create($worker); echo 'held|';\ntry { $worker = null; }\ncatch (Throwable $e) { echo 'caught:', $e->getMessage(), '|'; }\nunset($e);\necho $workerWeak->get() === null ? 'worker-gone|' : 'worker-live|';\necho 'next:', gc_collect_cycles(), '|';\necho $targetWeak->get() === null ? 'target-gone|' : 'target-live|';\necho 'END';\n",
+    "source_sha256": "ced4c4aeb45288f886ae63a9cf00c345c83773d026b61b970425ebab3def63b9",
+    "stdout": "first:D|0|held|finally|caught:close|worker-gone|next:1|target-gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
+  },
+  {
+    "id": "collector-active-idle-resume-with-no-remaining-dtor-20",
+    "source": "<?php\nclass ActiveIdle342 {\n    public $self;\n    public $kind;\n    function __construct($kind) { $this->self = $this; $this->kind = $kind; }\n    function __destruct() {\n        global $worker;\n        if ($this->kind === 0) {\n            $worker = Fiber::getCurrent();\n            echo 'seed|';\n            return;\n        }\n        echo Fiber::getCurrent() === null ? 'main|' : 'other|';\n        echo $worker->resume(123) === null ? 'null|' : 'value|';\n        echo $worker->isSuspended() ? 'idle|' : 'bad|';\n        echo 'busy:', gc_collect_cycles(), '|';\n    }\n}\n$seed = new Fiber(function () {\n    $cycle = new ActiveIdle342(0);\n    unset($cycle);\n    echo 'seed:', gc_collect_cycles(), '|';\n});\n$seed->start();\nunset($seed);\n$cycle = new ActiveIdle342(1);\n$weak = WeakReference::create($cycle);\nunset($cycle);\necho 'main:', gc_collect_cycles(), '|';\necho $weak->get() === null ? 'gone|' : 'live|';\necho 'END';\n",
+    "source_sha256": "3b61d4a71c0394fee41094a8288be3bd72711f55ee2eba0e7d9defd828bd6981",
+    "stdout": "seed:seed|1|main:main|null|idle|busy:0|1|gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

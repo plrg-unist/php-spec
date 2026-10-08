@@ -1,0 +1,173 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendored tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "scope": "Undefined ordinary CV used as a computed variable name: first warning, live caller CV reread, quiet missing/unset null, then conversion and target FETCH. Later target warnings retain fixed null.",
+  "engine_evidence": [
+    "Zend/zend_compile.c::zend_compile_simple_var_no_cv emits FETCH_R after compiling its name CV.",
+    "Zend/zend_vm_gen.php supplies EX_VAR(opline->op1.var) for GET_OP1_ZVAL_PTR_UNDEF on a CV.",
+    "Zend/zend_vm_def.h::zend_fetch_var_address_helper ignores ZVAL_UNDEFINED_OP1 return, then converts the original CV pointer; handler-name disproves a fixed-null first-name forecast.",
+    "The same helper returns EG(uninitialized_zval) for a missing target even after handler writes; second-warning distinguishes the phases."
+  ],
+  "private_cut": {
+    "revision": "bf7bcb3da7c5a16d37ce8dff19af844e813990cc",
+    "modules": 321,
+    "semantic_inputs_sha256": {
+      "spec/semantics/30-storage.watsup": "48f9a4fa1033f4d1697f01875c1c4cc17f05e08b04ad2f01707de441850de899",
+      "spec/semantics/207-error-handler-runtime.watsup": "ade387565f298de10e47d1c3cc39ec3195094369a739b815e857957a57c71354",
+      "spec/semantics/327-source-computed-emission.watsup": "3dd8822a011a85f2cda2752f9f8c851b4f06f839a7e820235742314704427e9f",
+      "spec/semantics/339-missing-computed-cv-name.watsup": "778a719485dde08bf4a72675ea775b47133eb5ed15ce4cd04041961102df8868",
+      "spec/semantics/modules.json": "0ddbf963753f84c5e5563713345190e3de94421634b5c11c63b976ba1523211e"
+    },
+    "binary_sha256": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/cprefix-compiler/compiler": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+      "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+    },
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "jobs": 1
+    },
+    "strict_compiler": {
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "cap_seconds": 300,
+      "elapsed_seconds": 4.057093620300293,
+      "application_evaluations": 0
+    },
+    "source": {
+      "record": ".tools/include-missing-name-cv-339-private-19/.tools/missing-name-cv-originals-19/missing-name-cv-source-run-cehxapwn/report.json",
+      "record_sha256": "b69712c7056da8486c7102768c0bb52da8ff5da2c6725d598cb5322129bdb638",
+      "passed": true,
+      "selected": [
+        "handler-name",
+        "handler-empty",
+        "second-warning",
+        "local-scope",
+        "warning-throw",
+        "retirement",
+        "handler-false"
+      ],
+      "application_evaluations": 7,
+      "source_agreements": 7,
+      "comparison": "Original stdout/stderr bytes, accepted checked program, normal/exit0, empty process stderr; CLI60/outer90 seconds, serial jobs1.",
+      "stability": "Inputs/head/status stable; all processes reaped with no timeout.",
+      "native_records": [
+        ".tools/include-missing-name-cv-339-private-19/.tools/missing-name-cv-originals-19/missing-name-cv-native-ap8wweyd/report.json",
+        ".tools/include-missing-name-cv-339-private-19/.tools/missing-name-cv-originals-19/missing-name-cv-native-extra-yo_mppsr/report.json"
+      ],
+      "native_bridge": "Original bytes/runtime/profile are unchanged. Native5 records input stability only; native extra2 and source7 additionally record head/status stability."
+    },
+    "independent_state": {
+      "record": ".tools/include-review-19-missing-name-cv/state-run-4kc2he4h/report.json",
+      "record_sha256": "3bbaada6454175812296f7cb3ee06c479f2fa349137e1c21f0fca5b0410bad56",
+      "passed": true,
+      "mode": "SL",
+      "cache": false,
+      "det": true,
+      "groups": [
+        {
+          "id": "live",
+          "physical_main_premises": 72,
+          "bindings": 36,
+          "checks": 36,
+          "elapsed_seconds": 7.940171957015991
+        },
+        {
+          "id": "second",
+          "physical_main_premises": 57,
+          "bindings": 37,
+          "checks": 20,
+          "elapsed_seconds": 6.9863667488098145
+        },
+        {
+          "id": "local",
+          "physical_main_premises": 42,
+          "bindings": 23,
+          "checks": 19,
+          "elapsed_seconds": 7.412979364395142
+        }
+      ],
+      "physical_main_premises": 171,
+      "application_evaluations": 3,
+      "source_agreements": 0,
+      "scope": "Genuine reached first/second warning and handler frames, source/line/name/current/saved forgeries, live/missing/UNDEFINED/unset rereads, preserved name operand, local/global isolation.",
+      "stability": "Inputs/module_stats/head/status stable; normal true, empty stderr and reaped, cap90 seconds each, serial jobs1."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "record": ".tools/include-review-19-missing-name-cv/state-run-sfrr84kj/report.json",
+      "result": "live72 false; other groups unrun. The fixture expected error_context_anchor to reject CURRENT.CALLSITE, whose check belongs to error_context_valid.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-missing-name-cv/live-debug-run-_6fetohc/report.json",
+      "result": "Only check21 false among36; diagnostic only.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-missing-name-cv/state-run-o78mq53z/report.json",
+      "result": "Intermediate live72 passed; second57 false; local42 unrun. Synthetic target write overwrote RESULT. Final171 preserves RESULT there and in the strengthened defined-VARIABLE control.",
+      "accepted_premises": 0
+    },
+    {
+      "record": ".tools/include-review-19-missing-name-cv/second-debug-run-inxrdztt/report.json",
+      "result": "Only check19 false among20; diagnostic only.",
+      "accepted_premises": 0
+    }
+  ],
+  "actual_composition": {
+    "canonical_parent": "6b51f811c7c1c6975356687a96b95e2516f91044",
+    "revision": "e3d6a7c8508a629413265075d570c70ba67d11b9",
+    "modules": 324,
+    "manifest": "Exact canonical323 prefix followed by unchanged339.",
+    "record": ".tools/include-missing-name-cv-339-actual-19/.tools/missing-name-cv-actual-current-19/missing-name-cv-actual-compiler-11ku51nr/report.json",
+    "record_sha256": "f5d3903a443aab3361497ab5b0667e88614d86a9e31f7baf1baa109d27ee83d9",
+    "passed": true,
+    "elapsed_seconds": 4.033297300338745,
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "stability": "Inputs/module_stats/head/status stable; empty stderr, no timeout and fully reaped.",
+    "independent_compatibility": "Bound Fiber337 selectors/receivers/tasks, Generator328 YIELD/ownership tasks and failed collector338 tails are absent here. Prior-array guards preserve released-array Unsupported; COMP retains the shared wrapper definition. Ordinary warning scope restoration is unchanged.",
+    "retained_credit": "Private source7/state171 keep bf7/321; no accepted330/336 or other historical source/state cut is renewed."
+  },
+  "publication": {
+    "fixture_revision": "7227368b4d16f5e89f7cb83f9897ec4c3b7ce1e4",
+    "path": "tests/semantics/source-stringable-retirement/missing-name-cv-*.php",
+    "relocation": "Six mains and the child are byte-identical; retirement main changes only three exact child-basename literals. Seven explicit selectors are excluded from the old default selection.",
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "reproduction": {
+    "private_source_cwd": ".tools/include-missing-name-cv-339-private-19",
+    "private_source_command": "python3 .tools/missing-name-cv-originals-19/run-source.py",
+    "state_command": "python3 .tools/include-review-19-missing-name-cv/run-state.py --source-report .tools/include-missing-name-cv-339-private-19/.tools/missing-name-cv-originals-19/missing-name-cv-source-run-cehxapwn/report.json",
+    "current_compiler_cwd": ".tools/include-missing-name-cv-339-actual-19",
+    "current_compiler_command": "python3 .tools/missing-name-cv-actual-current-19/run-compiler.py 6b51f811c7c1c6975356687a96b95e2516f91044",
+    "maintained_source_command": "python3 tests/semantics/source_stringable_retirement_sources.py --case missing-name-cv-retirement",
+    "raw_artifacts": "Ignored .tools paths above; no raw execution archive is tracked in Git."
+  },
+  "remaining": "User Stringable and warning-producing name conversions retain existing Unsupported boundaries. Compiler-global/auto-global name producers, broader computed producers/emissions/providers and full core remain open. No family status closes."
+}

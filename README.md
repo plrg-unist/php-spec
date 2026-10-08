@@ -70,6 +70,8 @@ Computed names from a resolved user call with one positional ordinary CV argumen
 
 One named ordinary CV argument now retains INIT6 before known FETCH8/property11 and unknown-name Error7 before CV demand. [Six exact originals and325 independent premises](coverage/semantics/source-named-argument-emission-review.json) preserve second-slot binding, default holes and fixed-null warning resumes. Actual320 passes strict compilation with reviewed Fiber/property/collector compatibility; earlier cuts retain their inputs.
 
+An undefined ordinary CV used as a computed variable name now warns before conversion, then reads the live caller CV after the handler returns. [Seven exact originals and171 independent premises](coverage/semantics/source-missing-name-cv-review.json) retain private321, including local scope, handler-false fallback, throw priority and include retirement. A later missing-target warning still returns null after handler writes. Actual324 passes strict compilation with reviewed bound-Fiber/Generator/collector/array compatibility; wider conversion callbacks remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -408,9 +410,18 @@ original and64 strict-SL premises also preserve readback across Fiber suspension
 and a paused Generator finalizer. The canonical292 GC interaction retains
 a cyclic returned child across collection inside Set, reads the old RHS cell
 after a collector destructor rebinds its global name, and frees the child on the
-next collection. By-reference Get, wider
-memoized/property/GLOBALS consumers and combined Iterator/ArrayAccess notice
-ordering remain required.
+next collection. Untyped/mixed reference Get and its named/nested consumers are
+implemented; wider memoized/property/GLOBALS consumers and combined
+Iterator/ArrayAccess notice ordering remain required.
+
+[Stringable ArrayAccess compounds](coverage/semantics/arrayaccess-stringable-compound-review.json)
+convert the left and live RHS through ordinary callbacks before Set, retaining
+the raw Get result and exact key/base cleanup order through throws and Fiber
+parking. An initially defined key unset by a callback remains a missing C-call
+argument, so Set receives its real default or throws before entry. Twenty-three
+normal originals agree across retained private cuts; compiler negatives and
+independent reached states are recorded separately. Complete
+ArrayAccess behavior and the combined offline rebuild remain required.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
@@ -466,7 +477,9 @@ source; earlier cuts retain their inputs.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
-retirement. Its retained30-source/606-premise and private3/45 cuts remain separate
+retirement. Fiber protection scans reuse one graph within an unchanged state,
+preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Its retained30-source/606-premise and private3/45 cuts remain separate
 from the new captured-source/66-premise and readonly-clone/GC compositions.
 The earlier 291-module strict compiler/initialization and readonly clone original pass;
 the larger nested-Generator source retains a zero-credit 90s timeout.
@@ -491,8 +504,14 @@ Three new exact originals and two strict-SL groups with169 premises pass at
 separate cuts; the final315 current-parent join passes combined compilation.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
-originals and two independent reached groups (216 physical premises) retain their private cut; final319
-compilation preserves331/324. Failed-finally close remains required.
+originals and two independent reached groups (216 physical premises) retain their
+private cut; final319 compilation preserves331/324. Failed close338 retires its
+one remaining private control owner while the real error stays pending in the
+caller, including genuine prior-exception identity through a saved caller.
+Two exact normal originals and two independent reached groups (247 physical
+premises) pass at separate private cuts; tested322 preserves328/336 and publication
+preserves the disjoint prior-array foreach guards. Active-pass
+failed close and wider close contexts remain required.
 
 [Parameter phase correction](docs/semantics/PARAMETER-PHASE.md) now sends variadic-default
 and void-parameter sources through the existing static compiler; [review](coverage/semantics/parameter-phase-review.json)
@@ -774,8 +793,21 @@ demand retains the composing file, physical fetch line and expression frame.
 Static, capture-free REAL Closure dependencies can also be created before the
 using class is published, with an exact collision receipt and cache owner. Failed
 imports retain dead receipts while retiring live owners; fatal trait links reserve
-their name before later binding, without publishing the failed class. Wider
-initializer contexts, unpublished-owner FCC births, held/open failed links and readonly
+their name before later binding, without publishing the failed class. First-target
+method FCCs also retain source-checked dead receipts after failed composition,
+reconstructing the exact trait method-copy plan and declaration prefix. Immutable
+parameter TYPE views retain the callable's birth scope and canonical code, defaults,
+return contract and statics. Receipt access uses the unfixed exporting-trait scope;
+68 supplied private/protected forgery checks pass, with12 setup clauses separate.
+Focused
+source2 and87 supplied strict-SL conditions cover retirement and equal lexical/called
+FCC scope, with12 setup clauses separate. The reviewed322 composition passes strict
+compilation and a genuine active default/TYPE checkpoint with26 supplied conditions
+plus6 setup clauses; that checkpoint ends at the old-U constructor Error.
+Parameter-view full-source constructor,
+handler and variadic cases, live adaptations, later births reusing a different
+first target and executable reuse of a failed target remain open. Wider
+initializer contexts, held/open failed links and readonly
 storage remain
 required. The current313 join passes strict compilation, one fresh REAL/constructor
 source agreement and46 source-reached conditions plus6 setup clauses, including
@@ -1024,6 +1056,13 @@ explicit `__invoke` and Fiber C-root callbacks preserve their distinct Closure
 and argument owners through normal resume and injected throw. The
 [static-callable ledger](coverage/semantics/fiber-static-api-callables-review.json)
 retains the private source/state cuts and remaining API/lifecycle boundaries.
+Bound first-class `resume`, `throw`, `getReturn` and status methods retain their
+selected Fiber. Calls borrow its receiver from the Closure and preserve distinct
+direct and `__invoke` buffers through nested transfers and retirement. The
+[bound-callable ledger](coverage/semantics/fiber-bound-api-callables-review.json)
+records the new originals and reached checks, including saved calls to the idle
+collector Fiber. Bound `start` captures and C-root
+callback receivers remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

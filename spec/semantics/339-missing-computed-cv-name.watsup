@@ -1,0 +1,50 @@
+;; FETCH_R keeps the actual CV pointer when warning about an undefined name
+;; operand. Unlike SEND_VAR, its ignored warning-helper return does not freeze
+;; null: conversion reads that same caller CV after the callback returns.
+dec $computed_cv_name_source(pstate, pnameread) : bool
+def $computed_cv_name_source(S, pnameread) = true
+  -- if pnameread.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (NExprVariable (NExprVariable (BYTES text_name) metadata_name) metadata)
+  -- if $source_emission_computed_cv(S, n, pcpath, NExprVariable (NExprVariable (BYTES text_name) metadata_name) metadata) = (pnameread.SITE)
+  -- if pnameread.NAME = $base64(text_name)
+  -- if $code_expression_at_source(S, pnameread.SITE, [PCFIELD 0]) = (pnameread.LINE)
+  -- if $code_expression_at_source(S, pnameread.SITE, eps) = (pnameread.LINE)
+  -- if ~$scope_global(S[.ORIGIN = (pnameread.SITE)], eps)
+  -- if ~$scope_global(S[.ORIGIN = (pnameread.SITE)], [PCFIELD 0])
+def $computed_cv_name_source(S, pnameread) = false -- otherwise
+def $computed_cv_name_plan(S) = (pnameread)
+  -- if S.TODO = (NAME_READ z) :: ptask_tail*
+  -- if ~$source_name_pending(S)
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = VARIABLE n_name* z
+  -- if pnameread = {SITE porigin, NAME n_name*, LINE z}
+  -- if $computed_cv_name_source(S, pnameread)
+  -- if $error_missing_operand(S, S.RESULT)
+def $computed_cv_name_plan(S) = eps -- otherwise
+def $computed_cv_name_begin(S, pnameread) = $error_dispatch(S, 2, $ptascii("Undefined variable $") ++ pnameread.NAME, pnameread.LINE, WARNING pnameread.NAME pnameread.LINE, NAME_CV_READ_RESULT pnameread)
+  -- if $computed_cv_name_plan(S) = (pnameread)
+dec $computed_cv_name_valid(pstate, pnameread) : bool
+def $computed_cv_name_valid(S, pnameread) = (S.ORIGIN = (pnameread.SITE) /\ $computed_cv_name_source(S, pnameread))
+def $call_task_valid(S, NAME_CV_READ_RESULT pnameread) = $computed_cv_name_valid(S, pnameread)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = NAME_CV_READ_RESULT pnameread
+  -- if $computed_cv_name_valid(S, pnameread)
+  -- if perrorcall.SITE = pnameread.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pnameread.LINE
+  -- if perrorcall.MESSAGE = $ptascii("Undefined variable $") ++ pnameread.NAME
+  -- if perrorcall.EVENT = WARNING pnameread.NAME pnameread.LINE
+
+;; The handler's caller frame has already been restored. Reread its CV quietly,
+;; including an absent/unset CV, then convert and fetch the target once. A later
+;; missing-target warning still uses327's separate fixed-null continuation.
+dec $computed_cv_name_reread(pstate, pnameread) : pstate
+def $computed_cv_name_reread(S, pnameread) = S[.RESULT = KNOWN PNULL]
+  -- if $error_missing_operand(S, VARIABLE pnameread.NAME pnameread.LINE)
+def $computed_cv_name_reread(S, pnameread) = $scope_read_name(S, [PCFIELD 0], pnameread.NAME, pnameread.LINE)
+  -- if ~$error_missing_operand(S, VARIABLE pnameread.NAME pnameread.LINE)
+rule PhpStep/computed-cv-name-warning-resume: S ~> S_read[.TODO = (NAME_READ pnameread.LINE) :: ptask_tail*]
+  -- if S.TODO = (NAME_CV_READ_RESULT pnameread) :: ptask_tail*
+  -- if $computed_cv_name_valid(S, pnameread)
+  -- if S_read = $computed_cv_name_reread(S, pnameread)
+def $task_nodes(NAME_CV_READ_RESULT pnameread) = eps

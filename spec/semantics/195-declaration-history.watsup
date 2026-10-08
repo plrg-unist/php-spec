@@ -43,6 +43,8 @@ def $declaration_entry_site(pdeclaration :: pdeclaration_tail*, n) = $declaratio
 
 dec $declaration_history_seed(pstate) : pstate
 def $declaration_history_seed(S) = S[.SOURCEPENDING = eps][.CLASSNAMES = eps][.CALLABLES = eps][.CLASSSTATICS = eps][.LINKEDPARENTS = eps][.LINKEDINTERFACES = eps][.DECLARATIONS = eps][.CLASSCONSTANTHISTORY = eps][.CLASSCONSTANTCACHE = eps][.CLASSCONSTANTINIT = eps][.EVENTS = eps][.COMPLETION = NORMAL][.TODO = eps][.ERRORORIGIN = eps][.TRACE = eps][.CURRENT = eps][.FRAMES = eps][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.SILENCES = eps][.CONSTCONTEXT = eps][.DEFAULTCACHE = eps]
+dec $declaration_replay_receipts(pstate) : pclassconstantevent*
+def $declaration_replay_receipts(S) = eps -- otherwise
 
 dec $declaration_registries_equal(pstate, pstate) : bool
 def $declaration_registries_equal(S, S_prefix) = (S.CLASSNAMES = S_prefix.CLASSNAMES /\ S.CALLABLES = S_prefix.CALLABLES /\ S.LINKEDPARENTS = S_prefix.LINKEDPARENTS /\ S.LINKEDINTERFACES = S_prefix.LINKEDINTERFACES)
@@ -190,7 +192,7 @@ def $declaration_history_fold(S, S_prefix, (n, P)*, pdeclaration*, n_next) = fal
 
 dec $runtime_class_report_valid(pstate) : bool
 def $runtime_class_report_valid(S) = true -- otherwise
-def $declaration_history_valid(S) = $declaration_history_fold(S, $declaration_history_seed(S[.CLASSES = $declaration_image_classes((n, P)*)]), (n, P)*, S.DECLARATIONS, 0)
+def $declaration_history_valid(S) = $declaration_history_fold(S, $declaration_history_seed(S[.CLASSES = $declaration_image_classes((n, P)*)])[.CLASSCONSTANTHISTORY = $declaration_replay_receipts(S)], (n, P)*, S.DECLARATIONS, 0)
   -- if $declaration_files_entered(S.DECLARATIONS, S.FILES)
   -- if $declaration_images(S, S.SOURCES) = DECLIMAGES (n, P)*
   -- if S.FUNCTIONS = $declaration_image_functions((n, P)*)

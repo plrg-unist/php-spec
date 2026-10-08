@@ -111,6 +111,7 @@ def $access_reference_binary(S, paccess, n) = S[.TODO = ptask_tail*][.RESULT = K
   -- if S.TODO = ptask :: ptask_tail*
 def $access_reference_compound(S, paccess, n) = $access_compound_set(S_binary[.TODO = S.TODO][.HELD = S.HELD][.RESULT = KNOWN PNULL], paccess[.MODE = ACCESS_REFERENCE_COMPOUND pbin n][.VALUE = pvalue_result][.PHASE = ACCESS_CALL $ptascii("offsetSet")])
   -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if pbin =/= CONCAT
   -- if S_work = $access_reference_binary(S, paccess, n)
   -- if S_work.STORE[n] = DEFINED pvalue_left
   -- if S_rhs = $quiet_operand(S_work, paccess.SELECTED)
@@ -120,6 +121,7 @@ def $access_reference_compound(S, paccess, n) = $access_compound_set(S_binary[.T
   -- if S_binary.RESULT = KNOWN pvalue_result
 def $access_reference_compound(S, paccess, n) = S_binary[.HELD = S.HELD]
   -- if paccess.MODE = ACCESS_COMPOUND pbin PNULL
+  -- if pbin =/= CONCAT
   -- if S_work = $access_reference_binary(S, paccess, n)
   -- if S_work.STORE[n] = DEFINED pvalue_left
   -- if S_rhs = $quiet_operand(S_work, paccess.SELECTED)

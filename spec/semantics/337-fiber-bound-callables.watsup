@@ -1,0 +1,79 @@
+;; Fixed instance API fake Closures retain the selected Fiber as this_ptr.
+;; start's variadic buffer and constructor callback parsing are separate protocols.
+def $fiber_bound_kind(pintrinsic) = (pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW, INTRINSIC_FIBER_RETURN, INTRINSIC_FIBER_STARTED, INTRINSIC_FIBER_SUSPENDED, INTRINSIC_FIBER_RUNNING, INTRINSIC_FIBER_TERMINATED])
+def $fiber_bound_name(ptbytes) = $fiber_bound_kind(pintrinsic)
+  -- if $fiber_method(ptbytes) = (pintrinsic)
+def $fiber_bound_name(ptbytes) = false -- otherwise
+def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if $fiber_bound_kind(pfibercapture.KIND)
+  -- if $fiber_method(pfibercapture.NAME) = (pfibercapture.KIND)
+  -- if pfibercapture.INPUT = (n)
+  -- if $fiber_at(S, n) =/= eps
+  -- if $origin_node(S.SOURCES, pfibercapture.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptlc(pfibercapture.NAME))
+  -- if $ppfirstclass(phpType7*)
+def $fiber_capture_owner(pfibercapture, n) = pfibercapture.INPUT
+  -- if $fiber_bound_kind(pfibercapture.KIND)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $fiber_capture_new(S_read, pintrinsic, ptbytes, (n))
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $fiber_at(S_read, n) =/= eps
+  -- if $fiber_method(ptbytes) = (pintrinsic)
+  -- if $fiber_bound_kind(pintrinsic) /\ $ppfirstclass(phpType7*)
+def $node_children(S, HOBJECT n) = [HOBJECT n_receiver]
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_bound_kind(pfibercapture.KIND)
+  -- if pfibercapture.INPUT = (n_receiver)
+def $named_closure_same(S, n_left, n_right) = true
+  -- if S.OBJECTS[n_left] = FIBERAPICLOSURE pfibercapture_left
+  -- if S.OBJECTS[n_right] = FIBERAPICLOSURE pfibercapture_right
+  -- if $fiber_bound_kind(pfibercapture_left.KIND)
+  -- if pfibercapture_left.KIND = pfibercapture_right.KIND
+  -- if pfibercapture_left.INPUT = pfibercapture_right.INPUT
+
+;; An instance API cannot enter the receiver-free C-root configuration used by331.
+def $fiber_callback_resolution(S, POBJECT n) = HANDLERUNKNOWN "bound Fiber API callback receiver"
+  -- if $fiber_capture_live(S, n)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_bound_kind(pfibercapture.KIND)
+
+;; The waiting API owns its sent buffer and borrows this_ptr from the Closure.
+;; Its following result marker owns that Closure. Authenticate both as one call.
+def $fiber_caller_api_nodes(pfibercaller) = $fiber_value_nodes(pfibercaller.API.SENT)
+  -- if pfibercaller.VM.TODO = (FIBER_WAIT pfibercaller.API) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if pconfigcall.OWNER = (pfibercaller.API.OBJECT) /\ pconfigcall.SELECTION = (n)
+  -- if pfibercaller.API.KIND = (pconfigcall.KIND) /\ pfibercaller.API.START = eps
+  -- if pfibercaller.API.SITE = pconfigcall.SITE /\ pfibercaller.API.LINE = pconfigcall.LINE
+  -- if pfibercaller.API.SENT = $fiber_config_sent(pconfigcall)
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if pfiberapi.KIND = (pintrinsic)
+  -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if pfiberapi.START = eps
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
+  -- if $fiber_capture_result_valid(S, n, pconfigcall, b)
+  -- if pconfigcall.KIND = pintrinsic /\ pconfigcall.OWNER = (pfiberapi.OBJECT)
+  -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
+  -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
+  -- if $config_slots_valid(S, pconfigcall.SENT)
+  -- if pintrinsic =/= INTRINSIC_FIBER_THROW \/ $class_instanceof(S, $fiber_config_value(pconfigcall), $ptascii("Throwable"))
+def $fiber_caller_api_trace(S, pfiberapi) = $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if $fiber_bound_kind(pconfigcall.KIND)
+  -- if $fiber_capture_result_valid(S, n, pconfigcall, b)
+
+;; The idle collector executes its public API in a C loop. Authenticate its
+;; captured call through the actual saved caller, where the owning tail lives.
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if S.TODO = [GC_WORKER_PUBLIC pfiberapi]
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.API = pfiberapi /\ pfibercaller.OBJECT = pfiberapi.OBJECT
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if S_caller.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
+  -- if $fiber_bound_kind(pconfigcall.KIND)
+  -- if $fiber_api_valid(S_caller, pfiberapi)

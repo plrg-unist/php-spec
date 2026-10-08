@@ -21,6 +21,8 @@ dec $fiber_resequence_frames(pframe*, pfiberfinish, pfiberfinish) : pframe*
 dec $fiber_ordinary_kind_valid(pstate, pfiberfinish, bool) : bool
 dec $fiber_protected_retired(pstate, pnode*, pnode*) : bool
 dec $fiber_protected_retired_node(pstate, pnode, pnode*) : bool
+dec $fiber_protected_retired_graph(pstate, hgraph, pnode*, pnode*) : bool
+dec $fiber_protected_retired_graph_node(pstate, hgraph, pnode, pnode*) : bool
 
 def $fiber_ordinary_cleanup(S, n) = true
   -- if S.ACTIVEFIBER = (n)
@@ -217,7 +219,15 @@ def $internal_destructor_enter(S, HOBJECT n, pdestructionrelease) = S[.COMPLETIO
   -- if $fiber_transfer_domain(S)
   -- if $fiber_close_blocked(S, n)
 def $fiber_protected_retired(S, eps, pnode_live*) = false
-def $fiber_protected_retired(S, pnode :: pnode_tail*, pnode_live*) = ($fiber_protected_retired_node(S, pnode, pnode_live*) \/ $fiber_protected_retired(S, pnode_tail*, pnode_live*))
+def $fiber_protected_retired(S, (HCELL n) :: pnode_tail*, pnode_live*) = $fiber_protected_retired(S, pnode_tail*, pnode_live*)
+def $fiber_protected_retired(S, (HARRAY n) :: pnode_tail*, pnode_live*) = $fiber_protected_retired(S, pnode_tail*, pnode_live*)
+def $fiber_protected_retired(S, (HOBJECT n) :: pnode_tail*, pnode_live*) = $fiber_protected_retired_graph(S, H, (HOBJECT n) :: pnode_tail*, pnode_live*)
+  -- if H = $heap_graph(S)
+def $fiber_protected_retired(S, pnode*, pnode_live*) = false -- otherwise
+def $fiber_protected_retired_graph(S, H, eps, pnode_live*) = false
+def $fiber_protected_retired_graph(S, H, pnode :: pnode_tail*, pnode_live*) = ($fiber_protected_retired_graph_node(S, H, pnode, pnode_live*) \/ $fiber_protected_retired_graph(S, H, pnode_tail*, pnode_live*))
+def $fiber_protected_retired_graph_node(S, H, HOBJECT n, pnode_live*) = (~((HOBJECT n) <- pnode_live*) /\ $heap_owners(H, HOBJECT n) = 0 /\ $fiber_close_blocked(S, n))
+def $fiber_protected_retired_graph_node(S, H, pnode, pnode_live*) = false -- otherwise
 def $fiber_protected_retired_node(S, HOBJECT n, pnode_live*) = (~((HOBJECT n) <- pnode_live*) /\ $heap_owners($heap_graph(S), HOBJECT n) = 0 /\ $fiber_close_blocked(S, n))
 def $fiber_protected_retired_node(S, pnode, pnode_live*) = false -- otherwise
 def $fiber_prune_protected(S, pnode_live*) = $fiber_protected_retired(S, S.ALLOCATIONS, pnode_live*)

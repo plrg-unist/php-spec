@@ -1,6 +1,6 @@
 # Source trait composition
 
-Modules 228, 238, 254, 259, 266, 274, 290, 297 and 299 compile, link and access source
+Modules 228, 238, 254, 259, 266, 274, 290, 297, 299 and 307 compile, link and access source
 traits under pinned PHP 8.5.10.
 A using class overrides trait methods; trait methods override inherited methods.
 Nested uses, duplicate imports, `insteadof`, aliases, visibility changes and final
@@ -241,9 +241,18 @@ reached conditions; five multi-file service/setup checks are separate. Source an
 declaration-image mutations cannot borrow a foreign diagnostic context.
 Other native preparations remain uncredited until implemented.
 
-Dependency fills in held/open compilation and unpublished-owner FCC creation
-keep explicit Unsupported boundaries. Wider callable initializer contexts remain
-unvalidated obligations; the separate private307 work is not installed here.
+Module307 preserves unpublished FCC targets and their birth-time parameter scope
+through method fixup, with canonical code, defaults, returns and statics unchanged.
+Failed first-target imports retain source-authenticated dead receipts through exact
+method-copy reconstruction and history replay. Access uses the unfixed exporting
+trait's scope, so a private/protected copy cannot authenticate a forbidden FCC birth.
+Focused source2 and87 supplied
+conditions cover failed retirement and equal lexical/called scope; the current
+default/TYPE checkpoint stops at the genuine old-U constructor Error.
+Dependency fills in held/open compilation, live FCC adaptations, differing-owner
+later births and executable failed-target reuse retain explicit boundaries.
+Wider parameter-view full-source constructor, handler and variadic cases remain
+unvalidated obligations.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

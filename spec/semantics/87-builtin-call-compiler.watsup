@@ -1,6 +1,6 @@
 ;; Pinned special call lowering determines whether a call can be a write base.
 ;; These are compiler facts only. No builtin body is executed here. Frameless
-;; calls and chr/ord special lowering require BP_VAR_R and do not apply to PPW.
+;; calls and chr/ord special lowering require BP_VAR_R and do not apply to W/RW.
 dec $ppwrite_call(ppstate, pcpath, expression, ppmode) : ppstate
 dec $ppbuiltin_arguments(phpType7*) : expression*?
 dec $ppbuiltin_tmp(ppstate, pcpath, ptbytes, expression*) : bool
@@ -23,8 +23,9 @@ dec $ppbuiltin_placeholder_add(nat?) : nat?
 dec $ppbuiltin_slice(ppstate, expression, expression) : bool
 
 def $ppdimension_base(P, pcpath, expression, ppmode) = $ppwrite_call($ppexpr(P, pcpath, expression, $ppbasemode(expression, ppmode)), pcpath, expression, ppmode)
-def $ppwrite_call(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, PPW) = $ppcheck(P, $context_error("Cannot use result of built-in function in write context", $ppbuiltin_errorline(P, pcpath, $ptlc(pnreference.RESOLVED), expression*, $psline(metadata))))
+def $ppwrite_call(P, pcpath, NExprFuncCall name (SEQUENCE phpType7*) metadata, ppmode) = $ppcheck(P, $context_error("Cannot use result of built-in function in write context", $ppbuiltin_errorline(P, pcpath, $ptlc(pnreference.RESOLVED), expression*, $psline(metadata))))
   -- if P.COMPLETION = PPCNORMAL
+  -- if ppmode = PPW \/ ppmode = PPRW
   -- if $pnresolve(P.ENV, PLFUNCTION, name) = PNRESOLVED pnreference
   -- if pnreference.FALLBACK = eps
   -- if $pfunction_builtin(pnreference.RESOLVED)

@@ -45,6 +45,7 @@ def $computed_name_source(S, pnameread) = false -- otherwise
 def $computed_name_plan(S) = (pnameread)
   -- if S.TODO = (NAME_READ z) :: ptask_tail*
   -- if ~$source_name_pending(S)
+  -- if ~$error_missing_operand(S, S.RESULT)
   -- if S.ORIGIN = (porigin)
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 0], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL

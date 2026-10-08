@@ -55,6 +55,10 @@ def $fiber_vm_globals(S, pfibervm) = eps -- if pfibervm.GLOBAL
 def $fiber_vm_globals(S, pfibervm) = ($fiber_globals(S)) -- if ~pfibervm.GLOBAL
 def $fiber_vm_restore(S, pfibervm) = $set_active_table(S[.GLOBALTABLE = $fiber_vm_globals(S, pfibervm)][.TODO = pfibervm.TODO][.ORIGIN = pfibervm.ORIGIN][.CURRENT = pfibervm.CURRENT][.FRAMES = pfibervm.FRAMES][.DESTRUCTION.CALLS = pfibervm.DESTRUCTORCALLS][.DESTRUCTION.RELEASES = pfibervm.DESTRUCTORRELEASES][.DESTRUCTION.FRAMES = pfibervm.DESTRUCTORFRAMES][.DESTRUCTION.OPERATIONS = pfibervm.DESTRUCTOROPERATIONS][.DESTRUCTION.CLEANUPS = pfibervm.DESTRUCTORCLEANUPS][.HELD = pfibervm.HELD][.RESULT = pfibervm.RESULT][.BASE = pfibervm.BASE][.CELL = pfibervm.CELL][.KEY = pfibervm.KEY][.LOCATION = pfibervm.LOCATION][.REPORTING = pfibervm.REPORTING][.SILENCES = pfibervm.SILENCES][.BORROWEDREAD = pfibervm.BORROWEDREAD][.OBJECTCAST = pfibervm.OBJECTCAST][.CONSTCONTEXT = pfibervm.CONSTCONTEXT][.TRACE = pfibervm.TRACE][.ERRORFATALTRACE = pfibervm.ERRORFATALTRACE][.ERRORORIGIN = pfibervm.ERRORORIGIN], $fiber_vm_table(S, pfibervm))
 def $fiber_fresh_vm(S, n, pnamedargs) = $set_active_table(S[.GLOBALTABLE = ($fiber_globals(S))][.TODO = [FIBER_ENTER n pnamedargs, FIBER_FINISH n]][.ORIGIN = eps][.CURRENT = eps][.FRAMES = eps][.DESTRUCTION.CALLS = eps][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.FRAMES = eps][.DESTRUCTION.OPERATIONS = eps][.DESTRUCTION.CLEANUPS = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.CELL = 0][.KEY = KINT 0][.LOCATION = ROOT 0][.REPORTING = $reporting_ini_mask(S.REPORTINGINI)][.SILENCES = eps][.BORROWEDREAD = eps][.OBJECTCAST = eps][.CONSTCONTEXT = eps][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps], $empty_table())
+dec $fiber_bound_kind(pintrinsic) : bool
+dec $fiber_bound_name(ptbytes) : bool
+dec $fiber_caller_api_trace(pstate, pfiberapi) : ptraceframe*
+dec $fiber_caller_api_nodes(pfibercaller) : pnode*
 dec $fiber_transfer_context(pstate, pcallcontext?) : bool
 dec $fiber_transfer_frames(pstate, pframe*) : bool
 dec $fiber_transfer_reason(pstate) : text
@@ -191,7 +195,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UN
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $fiber_at(S_read, n) =/= eps
   -- if $ppfirstclass(phpType7*)
-  -- if ~$fiber_static_name(ptbytes)
+  -- if ~$fiber_static_name(ptbytes) /\ ~$fiber_bound_name(ptbytes)
 def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $fiber_start_config(S, pintrinsic, eps, z, true)
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("fiber")
   -- if $fiber_method(ptbytes) = (pintrinsic)
@@ -671,7 +675,8 @@ def $fiber_marker(ptask) = false -- otherwise
 def $fiber_api_nodes(pfiberapi) = [HOBJECT pfiberapi.OBJECT] ++ $wrapper_roots(pfiberapi.START) ++ $fiber_value_nodes(pfiberapi.SENT)
   -- if ~$gc_worker_api(pfiberapi)
 def $fiber_api_nodes(pfiberapi) = eps -- if $gc_worker_api(pfiberapi)
-def $fiber_caller_nodes(pfibercaller :: pfibercaller_tail*) = $fiber_api_nodes(pfibercaller.API) ++ $fiber_vm_nodes(pfibercaller.VM) ++ $fiber_caller_nodes(pfibercaller_tail*)
+def $fiber_caller_api_nodes(pfibercaller) = $fiber_api_nodes(pfibercaller.API) -- otherwise
+def $fiber_caller_nodes(pfibercaller :: pfibercaller_tail*) = $fiber_caller_api_nodes(pfibercaller) ++ $fiber_vm_nodes(pfibercaller.VM) ++ $fiber_caller_nodes(pfibercaller_tail*)
 def $task_nodes(FIBER_ARGS pfiberstart) = [HOBJECT pfiberstart.OBJECT] ++ $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
 def $task_nodes(FIBER_SEND pfiberstart) = [HOBJECT pfiberstart.OBJECT] ++ $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
 def $task_nodes(FIBER_ENTER n pnamedargs) = eps
@@ -981,7 +986,8 @@ def $fiber_api_trace_args(S, pfiberapi) = $trace_indexed_args($trace_extra(S, $n
 def $fiber_api_trace_args(S, pfiberapi) = [(KINT 0, pvalue)] -- if pfiberapi.SENT = (pvalue)
 def $fiber_api_trace_args(S, pfiberapi) = eps -- otherwise
 def $fiber_caller_trace(S) = eps -- if S.FIBERCALLERS = eps \/ $fiber_close_boundary(S)
-def $fiber_caller_trace(S) = [$fiber_api_trace(S, pfibercaller.API)] ++ $eval_exception_trace_from(S_caller, eps)
+def $fiber_caller_api_trace(S, pfiberapi) = [$fiber_api_trace(S, pfiberapi)] -- otherwise
+def $fiber_caller_trace(S) = $fiber_caller_api_trace(S_caller, pfibercaller.API) ++ $eval_exception_trace_from(S_caller, eps)
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
   -- if ~$fiber_close_boundary(S) /\ ~$gc_worker_api(pfibercaller.API)
   -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
