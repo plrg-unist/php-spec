@@ -1,0 +1,307 @@
+{
+  "scope": "Source-authenticated first-class Fiber::getCurrent/Fiber::suspend Closures through direct, explicit __invoke and Fiber C-root entry, with static-input history and actual Closure/argument ownership.",
+  "base_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+  "source_revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+  "modules": 309,
+  "implementation": [
+    "spec/semantics/331-fiber-static-callables.watsup",
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/172-file-context-intrinsics.watsup",
+    "spec/semantics/281-fibers.watsup",
+    "spec/semantics/313-fiber-core-callbacks.watsup",
+    "spec/semantics/142-method-runtime.watsup"
+  ],
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "extensions": [
+      "Core",
+      "date",
+      "pcre",
+      "ctype",
+      "hash",
+      "json",
+      "lexbor",
+      "mbstring",
+      "Zend OPcache",
+      "random",
+      "Reflection",
+      "uri",
+      "SPL",
+      "tokenizer",
+      "standard"
+    ],
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "budgets": {
+    "source_steps": 100000,
+    "source_model_seconds": 60,
+    "source_process_seconds": 75,
+    "native_process_seconds": 75,
+    "state_seek_steps": 4000,
+    "state_finish_steps": 4000,
+    "state_process_seconds": 120,
+    "strict_process_seconds": 120
+  },
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "encountered_determinism_checks": true,
+    "spectec_source_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "accepted_final_strict": ".tools/fiber-static-api-sl-5tm8cdfy/report.json"
+  },
+  "sources": {
+    "distinct_normal_agreements": 10,
+    "records": [
+      {
+        "id": "author-static-alias-casefold-unpack",
+        "source_sha256": "78e8813cfe1973cfec01bbd21df391d30c63359f3df83a873fc4830c057cc7f3",
+        "native_revision": "a76d563bde3dddef109211f594402e1f1d5a4e2f",
+        "native_report": ".tools/fiber-review-_rtv3ykl/report.json",
+        "model_revision": "4abcf930d243456381ccf18d35d1e758fb08a621",
+        "model_report": ".tools/fiber-static-api-source-8v7nlfcv/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-current-clone-invoke-alias",
+        "source_sha256": "53b518e2a4bc4babc59f23fe5a5a1d7b41aa0ada79de8944bab732c03de81584",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-uyxpb5y6/report.json",
+        "model_revision": "4abcf930d243456381ccf18d35d1e758fb08a621",
+        "model_report": ".tools/fiber-static-api-source-8v7nlfcv/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-dynamic-name-retired-input",
+        "source_sha256": "bd552e3da4d826a66469d0e1d904529424984daffa122be2b9fff329965df81f",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-s9ohq3nz/report.json",
+        "model_revision": "4abcf930d243456381ccf18d35d1e758fb08a621",
+        "model_report": ".tools/fiber-static-api-source-8v7nlfcv/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-direct-temporary-suspend-lifetime",
+        "source_sha256": "ec5acd3190e4b78d577fc0d7c9fa3382675cb7c53c90ccd099478c44ff86abcb",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-qh43l4ud/report.json",
+        "model_revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "model_report": ".tools/fiber-static-api-source-d84bw72g/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-invoke-suspend-throw-lifetime",
+        "source_sha256": "47a65a7359bf5b91e630f856f40c684ebbace7598f091a9fad574dbca39f4580",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-ntga_fi2/report.json",
+        "model_revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "model_report": ".tools/fiber-static-api-source-d84bw72g/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-arity-names-and-outside-context",
+        "source_sha256": "b61d40d18b70af9814191283113a1cbe23946917a672204308bdcf24780d31c1",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-75kmr6o9/report.json",
+        "model_revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "model_report": ".tools/fiber-static-api-source-d84bw72g/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-current-c-root-callback",
+        "source_sha256": "1299d6a4bb902567ff66f19260fd167170b4dbe47922bee8422d66925f7e04f4",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-rnakfhrj/report.json",
+        "model_revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "model_report": ".tools/fiber-static-api-source-d84bw72g/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-suspend-c-root-named-resume-lifetime",
+        "source_sha256": "6d95e36830bd6b0fc0d0d49b0dbbfe8740971a6351779563b63dcb7cd2b15c8e",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-dxdevbql/report.json",
+        "model_revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "model_report": ".tools/fiber-static-api-source-d84bw72g/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-suspend-c-root-throw-lifetime",
+        "source_sha256": "f2d5c05a1663a13d5d238c313743bbe9cb336d5ac47fbf6549f4ed2716977830",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-500k2xet/report.json",
+        "model_revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "model_report": ".tools/fiber-static-api-source-d84bw72g/report.json",
+        "normal_agreement": true
+      },
+      {
+        "id": "peer-static-current-c-root-arity-release",
+        "source_sha256": "b3fc14a41b6dda164a215e8c3f64d06a0dd094226ebd0a254f71e73363235412",
+        "native_revision": "cd624aeef74cd92468e1df70f2893d53a0831721",
+        "native_report": ".tools/fiber-review-o_0h7_js/report.json",
+        "model_revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "model_report": ".tools/fiber-static-api-source-d84bw72g/report.json",
+        "normal_agreement": true
+      }
+    ],
+    "policy": "First three retain4abcf930d; affected temporary-suspend and six previously unrun originals pass at144157f9a. Earlier native observations are reused byte-for-byte; no old322 execution renewal."
+  },
+  "state": {
+    "author_conditions": 171,
+    "independent_conditions": 793,
+    "total_conditions": 964,
+    "records": [
+      {
+        "id": "class-alias-dynamic-casefold-empty-unpack-selection",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 90,
+        "source_sha256": "78e8813cfe1973cfec01bbd21df391d30c63359f3df83a873fc4830c057cc7f3",
+        "report": ".tools/fiber-state-review-o39f9hbk/report.json",
+        "passed": true
+      },
+      {
+        "id": "named-unpack-suspend-preserves-selected-closure-and-c-buffer",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 81,
+        "source_sha256": "78e8813cfe1973cfec01bbd21df391d30c63359f3df83a873fc4830c057cc7f3",
+        "report": ".tools/fiber-state-review-1hoci0za/report.json",
+        "passed": true
+      },
+      {
+        "id": "clone-and-invoke-alias-retain-frozen-static-capture",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 100,
+        "source_sha256": "53b518e2a4bc4babc59f23fe5a5a1d7b41aa0ada79de8944bab732c03de81584",
+        "report": ".tools/fiber-state-review-kxz9tzp7/report.json",
+        "passed": true
+      },
+      {
+        "id": "dynamic-static-capture-outlives-borrowed-input-fiber",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 84,
+        "source_sha256": "bd552e3da4d826a66469d0e1d904529424984daffa122be2b9fff329965df81f",
+        "report": ".tools/fiber-state-review-imhxfcbq/report.json",
+        "passed": true
+      },
+      {
+        "id": "direct-temporary-suspend-owner-survives-argument-destructor",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 99,
+        "source_sha256": "ec5acd3190e4b78d577fc0d7c9fa3382675cb7c53c90ccd099478c44ff86abcb",
+        "report": ".tools/fiber-state-review-c_1gsyj9/report.json",
+        "passed": true
+      },
+      {
+        "id": "explicit-invoke-owns-two-call-buffers-through-injected-throw",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 99,
+        "source_sha256": "47a65a7359bf5b91e630f856f40c684ebbace7598f091a9fad574dbca39f4580",
+        "report": ".tools/fiber-state-review-kvtg494j/report.json",
+        "passed": true
+      },
+      {
+        "id": "getcurrent-c-root-holds-raw-and-real-c-closure-owner",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 97,
+        "source_sha256": "1299d6a4bb902567ff66f19260fd167170b4dbe47922bee8422d66925f7e04f4",
+        "report": ".tools/fiber-state-review-sceyh1bb/report.json",
+        "passed": true
+      },
+      {
+        "id": "named-suspend-c-root-borrows-final-config-and-resumes-once",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 118,
+        "source_sha256": "6d95e36830bd6b0fc0d0d49b0dbbfe8740971a6351779563b63dcb7cd2b15c8e",
+        "report": ".tools/fiber-state-review-jcpn64ps/report.json",
+        "passed": true
+      },
+      {
+        "id": "suspend-c-root-injected-throw-releases-owned-closure-tail",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 117,
+        "source_sha256": "f2d5c05a1663a13d5d238c313743bbe9cb336d5ac47fbf6549f4ed2716977830",
+        "report": ".tools/fiber-state-review-8p1vn38d/report.json",
+        "passed": true
+      },
+      {
+        "id": "getcurrent-c-root-arity-error-retains-argument-after-closure-retirement",
+        "revision": "144157f9a9424b9b72b09498e5ad9dc777ef58ba",
+        "conditions": 79,
+        "source_sha256": "b3fc14a41b6dda164a215e8c3f64d06a0dd094226ebd0a254f71e73363235412",
+        "report": ".tools/fiber-state-review-f2jp39uv/report.json",
+        "passed": true
+      }
+    ],
+    "count_contract": "Harness-reported setup-inclusive conditions; inline stage predicates are not recounted as physical exact clauses."
+  },
+  "zero_credit_failures": [
+    {
+      "report": ".tools/fiber-review-kbeizcn2/report.json",
+      "kind": "native prediction mismatch",
+      "correction": "Only ninth expected output changed from D1|A|1 to actual A|1D0|. The caught global Throwable trace keeps the argument after callback Closure retirement; source bytes unchanged."
+    },
+    {
+      "report": ".tools/fiber-static-api-sl-y77gflaw/report.json",
+      "kind": "SL elaboration",
+      "correction": "Ordered RAW binding before TARGET equality."
+    },
+    {
+      "report": ".tools/fiber-static-api-sl-yd7zs9jf/report.json",
+      "kind": "SL elaboration",
+      "correction": "Bind RELEASE origin before comparing it with cfg.SITE."
+    },
+    {
+      "report": ".tools/fiber-static-api-source-0zyxko6x/report.json",
+      "kind": "model interpreter_failure",
+      "correction": "Exclude registered builtin Fiber from142 user-class-not-found path, retaining281 dynamic class admission."
+    },
+    {
+      "report": ".tools/fiber-static-api-source-8v7nlfcv/report.json",
+      "id": "peer-static-direct-temporary-suspend-lifetime",
+      "kind": "model interpreter_failure",
+      "correction": "Remove duplicate331 Closure type clauses; existing95 dispatch through live closure_callable remains authoritative."
+    }
+  ],
+  "review": {
+    "semantic": "independently accepted code, ten original source agreements and all source-reached author/independent groups",
+    "publication": "independently accepted",
+    "canonical_integration": "independently accepted actual-parent composition; reviewed for integration"
+  },
+  "remaining": [
+    "Bound or other Fiber API captures, array Closure/__invoke constructor adapter and additional callable consumers.",
+    "Binding/call restrictions and broader lifecycle/source-initialization switching.",
+    "Existing313 rich whole-source and literal full63 remain unconfirmed zero credit; see fiber-core-callbacks-review.json.",
+    "Complete core and final combined fresh offline rebuild remain required. Undefined-result verification remains user-paused."
+  ],
+  "recovery": {
+    "raw_root": ".tools/calls-fiber-static-api-18/.tools",
+    "sources": "python3 tests/semantics/fiber_static_api_sources.py [--case CASE] [--native-report EXACT_REPORT]",
+    "author": "python3 tests/semantics/fiber_static_api_state.py [--case CASE]",
+    "independent": "python3 tests/semantics/fiber_static_api_review.py [--case CASE]",
+    "policy": "Defaults build checked original fixtures, run serially and stop at first failure. Maintained tests need no preserved raw artifact to execute. Relocation/metadata edits earn no renewed runtime credit."
+  },
+  "current_parent": {
+    "parent_revision": "e91fc6d6dd032125f558c6143b929bf73c5496d1",
+    "source_revision": "32c5c7a9f60d4448128db734587e509e72c8b196",
+    "modules": 317,
+    "strict_report": ".tools/fiber-static-api-sl-iwzdovt5/report.json",
+    "raw_root": ".tools/calls-fiber-static-api-current-18/.tools",
+    "strict_passed": true,
+    "compatibility": "Independently accepted: current GC_WORKER_PUBLIC/shared fields and316 imports retained;332 idle-worker APIs and333 source/CV certificates are disjoint from static captured CURRENT/SUSPEND;301 factors keep sampling on unchanged S and preserves real tail roots. No concrete new runtime seam requires older source/state renewal.",
+    "review": {
+      "source_freeze": "accepted",
+      "publication": "independently accepted"
+    },
+    "runtime_credit": "Earlier ten normal originals and964 conditions retain their exact private cuts. Current317 gate is combined compiler/init only; no old runtime renewal or complete-core/offline claim."
+  }
+}
