@@ -233,6 +233,20 @@ preserves eight sources/160 premises, separate lifetime/provider/compiler/warnin
 cuts and zero-credit original failures. Wider producers, by-reference Get and
 complete core remain open; paused return verification stays separate.
 
+Private ArrayAccess319 adds accepted untyped/mixed by-reference Get: implicit
+callbacks demand their real result, R/IS dereference it, writable shared cells
+stay shared, and a genuine sole wrapper moves before receiver release. Direct
+DIM_OP owns the raw reference through Set without retaining its old referent.
+Final nested reference acquisition and borrowed Unset source prefixes preserve
+parent release and callback retirement. Fourteen normal originals agree across
+explicit cuts; six strict-SL recipes/375 premises cover demand, wrapper move,
+sharing, raw compound/throw cleanup, captured rows and retired-parent Unset.
+The [reference-Get ledger](coverage/semantics/arrayaccess-reference-get-review.json)
+keeps source, reached, compiler and original failures separate. Canonical-parent
+composition is pending. Named reference sends, nested captured-row updates,
+VALUE-return warning-handler producers and wider producers remain required;
+typed non-mixed return verification stays user-paused.
+
 ArrayAccess292 now handles ordinary by-value compound Get/operator/Set and
 writable Get temporaries through nested W/RW/Unset, pre/post updates and by-value
 reference consumers. Defined key/RHS CVs remain live across compound Get;

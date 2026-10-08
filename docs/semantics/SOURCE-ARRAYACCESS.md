@@ -76,10 +76,31 @@ handlers are skipped by Zend's pending-exception call API; ineligible or absent
 handlers retain default reporting. Object concat skips method execution and keeps
 the pending error, so this branch uses no live Stringable return producer.
 
-Wider memoized/property/GLOBALS ArrayAccess producers, by-reference Get results
-and combined Iterator/ArrayAccess declaration ordering
-remain required core work. Newly reachable unsupported paths stop explicitly.
-By-reference Get stays separate from the user-paused return verification.
+Private module319 implements untyped/mixed by-reference Get on the accepted
+reference-return lane. Implicit Get always demands its result, including a
+discarded outer read. R/IS dereference the result; writable fetch preserves a
+shared real CELL and emits no indirect-modification Notice. A genuine sole
+reference moves into its existing owned VAR before receiver release, preserving
+STORE, allocations and GC state. Direct DIM_OP retains the raw CELL through Set
+and owns only that CELL plus the computed result, so replacing the referent can
+retire its old objects inside Set. Direct ASSIGN_REF destinations remain invalid;
+nested real rows can be acquired by reference or sent to reference parameters.
+
+A final live row's reference-consumer certificate requires its allocated table,
+key and source guards. Unset's captured parent prefix is borrowed source metadata:
+a float-key warning callback can retire that parent while the child alias and
+conversion temporary retain the selected table. The prefix adds no owner.
+Fourteen exact normal originals and six strict-SL recipes/375 premises retain
+separate compiler/source/state cuts in the
+[reference-Get ledger](../../coverage/semantics/arrayaccess-reference-get-review.json).
+Canonical-parent integration remains pending.
+
+Wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess
+notice ordering remain required. Named reference sends and nested captured-row
+updates still need consumer certificates. VALUE-return Get warning-handler
+continuations and live Stringable DIM_OP remain open. Typed non-mixed Get stops
+explicitly before the user-paused return verification; no typed body validation
+is claimed.
 
 Author13 agreements comprise six normal originals, two declaration errors and
 five independent controls at9d. Independent20 retains those same five and adds
