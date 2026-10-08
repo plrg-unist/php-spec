@@ -29,6 +29,7 @@ dec $generator_close_queued_skip(pstate, pgenclose, ptask, ptask*) : pstate
 dec $generator_close_finally_enter(pstate, porigin, ptask*) : pstate
 dec $generator_close_end(pstate, nat, porigin) : pstate
 dec $generator_close_done(pstate, pgenclose) : pstate
+dec $generator_close_release_claim(pstate, pgenclose) : pstate
 dec $generator_close_saved(pstate, pcallcontext?, pframe*) : pgenclose?
 dec $generator_close_context_tasks(pcallcontext, ptask*) : bool
 dec $generator_close_context_frames(pcallcontext, pframe*) : bool
@@ -523,10 +524,12 @@ def $generator_return(S, KNOWN pvalue) = $restore_frame($generator_set(S[.TODO =
 def $generator_frame_release(S_before, S_after) = $generator_set(S_after[.TODO = $generator_close_finished(S_after.TODO)], pgenclose.OBJECT, pgenerator[.PHASE = GENERATOR_CLOSED])
   -- if $generator_close_saved(S_before, S_before.CURRENT, S_before.FRAMES) = (pgenclose)
   -- if S_before.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
-def $generator_close_done(S, pgenclose) = $generator_close_begin_pending(S[.TODO = ptask*], [DESTRUCTION_VALUE (HOBJECT pgenclose.OBJECT)], pgenclose.PENDING)
+def $generator_close_done(S, pgenclose) = $generator_close_release_claim(S[.TODO = ptask*], pgenclose)
   -- if S.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
   -- if ~$generator_request_done_pending(S, pgenclose)
 def $generator_request_done_pending(S, pgenclose) = false -- otherwise
+def $generator_close_release_claim(S, pgenclose) = $generator_close_begin_pending(S, [DESTRUCTION_VALUE (HOBJECT pgenclose.OBJECT)], pgenclose.PENDING)
+  -- if pgenclose.STORE = eps
 rule PhpStep/generator-close-done: S ~> $generator_close_done(S, pgenclose)
   -- if S.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
 def $generator_close_frame_pending(S, S_new) = (~$generator_close_terminal_tasks(S.TODO) /\ ($generator_close_saved(S, S.CURRENT, S.FRAMES) =/= eps \/ $generator_close_dead(S_new, S_new.ALLOCATIONS, $heap_prune($destructor_frame_graph(S, S_new)).NODES)))

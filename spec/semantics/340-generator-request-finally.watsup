@@ -14,6 +14,9 @@ dec $generator_request_resume_valid(pstate, pgenclose) : bool
 dec $generator_request_resume_position(ptask*, pgenclose) : bool
 dec $generator_request_resume_plain(ptask*, pgenclose) : bool
 dec $generator_request_finish_tail(ptask*) : bool
+dec $generator_request_retired_valid(pstate, (nat, nat)*, nat*) : bool
+dec $generator_request_retired_nodes((nat, nat)*) : pnode*
+dec $generator_request_retired_filter(pstate, (nat, nat)*) : (nat, nat)*
 
 def $generator_request_terminal(S) = (S.COMPLETION = NORMAL /\ S.TODO = eps /\ S.FRAMES = eps /\ S.CURRENT = eps /\ S.CONSTCONTEXT = eps /\ S.ACTIVEFIBER = eps /\ ~S.COMPILESTOP /\ S.DESTRUCTION.PHASE = DESTRUCTION_PENDING /\ S.SHUTDOWN.PHASE <- [SHUTDOWN_PENDING, SHUTDOWN_DONE])
 def $generator_request_operational(S) = true
@@ -159,9 +162,51 @@ def $generator_close_claim(GENERATOR_REQUEST_RESUME pgenclose) = [pgenclose.OBJE
 def $generator_internal_task(GENERATOR_REQUEST_RESUME pgenclose) = true
 def $exception_terminal_tail(S, (GENERATOR_REQUEST_RESUME pgenclose) :: ptask*) = (S.EXCEPTIONHANDLER =/= eps /\ $generator_request_resume_valid(S, pgenclose))
 def $throwable_marker(GENERATOR_REQUEST_RESUME pgenclose) = true
-rule PhpStep/generator-request-resume: S ~> $generator_close_begin_pending(S[.TODO = ptask*], [DESTRUCTION_VALUE (HOBJECT pgenclose.OBJECT)], eps)
+rule PhpStep/generator-request-resume: S ~> $generator_close_release_claim(S[.TODO = ptask*], pgenclose)
   -- if S.TODO = (GENERATOR_REQUEST_RESUME pgenclose) :: ptask*
   -- if $generator_request_resume_valid(S, pgenclose)
+
+;; Object-store dtor_obj ends with bare GC_DELREF, not OBJ_RELEASE. A zero-ref
+;; bucket and its cache remain allocated until real acquisition or storage free.
+;; RETIRED authenticates that bucket; it contributes no physical heap root.
+def $generator_close_release_claim(S, pgenclose) = S
+  -- if pgenclose.STORE = (n_handle)
+  -- if pgenclose.PENDING = eps
+  -- if $generator_request_store_valid(S, pgenclose)
+  -- if $($heap_owners($heap_graph(S), HOBJECT pgenclose.OBJECT) > 0)
+def $generator_close_release_claim(S, pgenclose) = S[.DESTRUCTION.RETIRED = S.DESTRUCTION.RETIRED ++ [(pgenclose.OBJECT, n_handle)]]
+  -- if pgenclose.STORE = (n_handle)
+  -- if pgenclose.PENDING = eps
+  -- if $generator_request_store_valid(S, pgenclose)
+  -- if $heap_owners($heap_graph(S), HOBJECT pgenclose.OBJECT) = 0
+def $generator_request_retired_nodes(eps) = eps
+def $generator_request_retired_nodes((n_object, n_handle) :: (n_tail, n_handle_tail)*) = (HOBJECT n_object) :: $generator_request_retired_nodes((n_tail, n_handle_tail)*)
+def $generator_request_retired_keep(S) = $heap_reach($generator_request_retired_nodes(S.DESTRUCTION.RETIRED), eps, $heap_graph(S).EDGES)
+  -- if S.DESTRUCTION.RETIRED =/= eps
+def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES
+  -- if S.GC.ACTIVE = eps /\ $gc_bare_nodes(S.GC.BUFFER) = eps
+  -- if S.DESTRUCTION.RETIRED =/= eps
+def $generator_request_retired_filter(S, eps) = eps
+def $generator_request_retired_filter(S, (n_object, n_handle) :: (n_tail, n_handle_tail)*) = (n_object, n_handle) :: $generator_request_retired_filter(S, (n_tail, n_handle_tail)*)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
+def $generator_request_retired_filter(S, (n_object, n_handle) :: (n_tail, n_handle_tail)*) = $generator_request_retired_filter(S, (n_tail, n_handle_tail)*)
+  -- if ~((HOBJECT n_object) <- S.ALLOCATIONS) \/ $($heap_owners($heap_graph(S), HOBJECT n_object) > 0)
+def $generator_request_transition_prepare(S) = S[.DESTRUCTION.RETIRED = $generator_request_retired_filter(S, S.DESTRUCTION.RETIRED)]
+  -- if S.DESTRUCTION.RETIRED =/= eps
+def $generator_request_retired_state_valid(S) = $generator_request_retired_valid(S, S.DESTRUCTION.RETIRED, eps)
+  -- if S.DESTRUCTION.RETIRED =/= eps
+def $generator_request_retired_valid(S, eps, nat*) = true
+def $generator_request_retired_valid(S, (n_object, n_handle) :: (n_tail, n_handle_tail)*, nat*) = true
+  -- if S.DESTRUCTION.PHASE <- [DESTRUCTION_STORE, DESTRUCTION_DONE]
+  -- if S.DESTRUCTION.NOREUSE /\ $(n_handle < S.DESTRUCTION.INDEX)
+  -- if n_object <- S.DESTRUCTION.CALLED /\ ~(n_object <- nat*)
+  -- if $destructor_handle(S, n_handle, 0) = (n_object)
+  -- if S.OBJECTS[n_object] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
+  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
+  -- if $generator_request_retired_valid(S, (n_tail, n_handle_tail)*, n_object :: nat*)
+def $generator_request_retired_valid(S, (n_object, n_handle)*, nat*) = false -- otherwise
 rule PhpStep/generator-request-handler-abrupt: S ~> S[.COMPLETION = UNSUPPORTED "Generator request-close exception-handler failure"]
   -- if $generator_request_handler_abrupt(S)
 def $generator_request_handler_abrupt(S) = true

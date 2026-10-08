@@ -160,7 +160,7 @@ syntax pdestructionfatal = {FRAME pframe, FRAMES pframe*, GLOBAL psymboltable, V
 syntax pgctemporary = {OPERAND poperand, PENDING bool}
 syntax pdestructionoperation = {VALUE poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, COMPLETION pcompletion, PENDING nat?, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, SOURCE ptask, CLEANUP pdestructioncleanup?, NOGC pgctemporary?}
 syntax pdestructorcall = {OBJECT nat, TARGET pcalltarget, STORE bool, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, USER bool, SITE porigin?, LINE int, RELEASE pdestructionrelease?, FRAME pdestructionframe?, OPERATION pdestructionoperation?, PENDING nat?}
-syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*, OPERATIONS pdestructionoperation*, CLEANUPS pdestructioncleanup*, ABANDONED pdestructioncleanup*, PROPCACHE (porigin, pobject)*}
+syntax pdestruction = {HANDLES nat*, FREE nat*, NEXT nat, NOREUSE bool, CALLED nat*, RETIRED (nat, nat)*, PHASE pdestructionphase, NAMES nat**, PASS nat**, COUNT nat, INDEX nat, COMPLETION pcompletion, RELEASES pdestructionrelease*, CALLS pdestructorcall*, FRAMES pdestructionframe*, OPERATIONS pdestructionoperation*, CLEANUPS pdestructioncleanup*, ABANDONED pdestructioncleanup*, PROPCACHE (porigin, pobject)*}
 syntax hedge
 syntax hgraph
 syntax pgcvisit = GC_VISIT pnode bool

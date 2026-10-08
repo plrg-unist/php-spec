@@ -245,6 +245,7 @@ WATCHED = [
     "spec/semantics/80-call-control.watsup",
     "spec/semantics/148-core-intrinsics.watsup", "spec/semantics/257-request-destructors.watsup",
     "spec/semantics/280-generators.watsup", "spec/semantics/289-generator-delegation.watsup",
+    "spec/semantics/301-cycle-collection.watsup",
     "spec/semantics/303-generator-force-close.watsup", "spec/semantics/modules.json",
     "tests/semantics/profile.json", "bin/php-semantics", "_build/default/adapter/main.exe",
     "tests/semantics/generator_force_close_review.py", "tests/semantics/generator_review.py",

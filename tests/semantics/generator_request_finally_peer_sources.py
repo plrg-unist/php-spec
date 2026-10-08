@@ -57,6 +57,25 @@ function request340(){try{$self=yield 1;yield new Payload340;}finally{echo "F";}
 $g=request340();$g->current();$g->send($g);$w=WeakReference::create($g);$wa=&$w;
 unset($g);$observer=new Observer340;$oa=&$observer;echo "C|";
 ''', b'C|FDP1:0:1', 0),
+    'peer-request-store-reacquisition-later-release-frees-bucket': (
+        b'''<?php
+class Payload340{function __destruct(){echo "D";}}
+class Observer340{function __destruct(){global $w;$h=$w->get();echo "P",(int)($h!==null);if($h!==null){echo ":",(int)$h->valid(),":",(int)($h->current()===null);}}}
+class Later340{function __destruct(){global $w;echo "Q",(int)($w->get()===null);}}
+function request340(){try{$self=yield 1;yield new Payload340;}finally{echo "F";}}
+$g=request340();$g->current();$g->send($g);$w=WeakReference::create($g);$wa=&$w;
+unset($g);$observer=new Observer340;$oa=&$observer;$later=new Later340;$la=&$later;echo "C|";
+''', b'C|FDP1:0:1Q1', 0),
+    'peer-request-handler-resume-keeps-zero-owner-bucket': (
+        b'''<?php
+class Payload340{function __destruct(){echo "D";}}
+class Observer340{function __destruct(){global $w;$h=$w->get();echo "P",(int)($h!==null);if($h!==null){echo ":",(int)$h->valid(),":",(int)($h->current()===null);}}}
+function caught340($e){echo "H";}
+set_exception_handler("caught340");
+function request340(){try{$self=yield 1;yield new Payload340;}finally{echo "F";throw new Exception("new");}}
+$g=request340();$g->current();$g->send($g);$w=WeakReference::create($g);$wa=&$w;
+unset($g);$observer=new Observer340;$oa=&$observer;echo "C|";
+''', b'C|FHDP1:0:1', 0),
 }
 
 UNSUPPORTED = {
