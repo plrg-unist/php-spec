@@ -26,6 +26,11 @@ dec $trait_fcc_scope_receipt(pstate, pconstantclosure, pmethoddesc, pclosurescop
 dec $trait_fcc_clone_scope(pstate, pconstantclosure*, pmethoddesc, pclosurescope) : porigin?
 dec $trait_fcc_scope_owner(pstate, pmethoddesc, porigin, porigin, pclosurescope) : porigin?
 dec $trait_fcc_target_name(pstate, pcalltarget) : preqbytes?
+dec $trait_fcc_receipt_methods(pstate, ptraitcachecause) : (pstate, ptraitmethod*)?
+dec $trait_fcc_receipt_original(pmethoddesc*, porigin) : pmethoddesc?
+dec $trait_fcc_receipt_target(pmethoddesc, ptraitmethod*) : pmethoddesc?
+dec $trait_fcc_receipt_source(pstate, pconstantclosure, ptraitcachecause) : pclassconstantdesc?
+dec $trait_fcc_retired_receipt(pstate, pconstantclosure) : pclassconstantdesc?
 
 def $trait_fcc_form(NExprStaticCall (NName (BYTES text) metadata_name) phpType20 (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata) = true
   -- if $ptlc($base64(text)) = $ptascii("self")
@@ -49,6 +54,88 @@ def $trait_fcc_source(S, pclassconstantdesc) = true
 def $trait_fcc_source(S, pclassconstantdesc) = false -- otherwise
 def $trait_real_source(S, pclassconstantdesc) = true
   -- if $trait_fcc_source(S, pclassconstantdesc)
+
+;; A failed class restores its raw descriptors. Reconstruct the exact method
+;; copies at the birth prefix, without entering constant/property evaluation.
+def $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_copy, ptraitmethod*))
+  -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS| /\ ptraitcachecause.USERPREFIX <= |S.USERCONSTANTS|)
+  -- if $class_at(S.CLASSES, ptraitcachecause.CLASS) = (pclassdesc)
+  -- if pclassdesc.KIND = "class"
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if pclassdesc_raw = pclassdesc[.PROPERTIES = $trait_notice_own_properties(pclassdesc.PROPERTIES)][.CONSTANTS = $trait_notice_own_constants(pclassdesc.CONSTANTS)][.METHODS = $trait_notice_own_methods(pclassdesc.METHODS, pclassdesc.ORIGIN)]
+  -- if S_prefix = $trait_cache_preinherit(S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_raw)][.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:ptraitcachecause.PREFIX])][.DECLARATIONS = S.DECLARATIONS[0:ptraitcachecause.PREFIX]][.USERCONSTANTS = S.USERCONSTANTS[0:ptraitcachecause.USERPREFIX]][.TODO = eps][.COMPLETION = NORMAL], pclassdesc.ORIGIN)
+  -- if ptraitplan = $trait_plan(S_prefix, pclassdesc_raw)
+  -- if $trait_fetch(S_prefix, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $trait_exclusions(S_prefix, pclassdesc_raw, pclassdesc_traits*, ptraitplan.PRECEDENCES, eps) = TRAITEXCLUSIONS (ptbytes_trait, ptbytes_method)*
+  -- if $trait_aliases(S_prefix, pclassdesc_raw, pclassdesc_traits*, ptraitplan.ALIASES, eps) = TRAITALIASES ptraitalias*
+  -- if $trait_copy_traits(pclassdesc_raw, pclassdesc_traits*, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S_prefix eps eps) = TRAITCOMPOSE S_methods ptraitmethod* ptraitmethod_required*
+  -- if S_methods.COMPLETION = NORMAL
+  -- if pclassdesc_copy = pclassdesc_raw[.METHODS = pclassdesc_raw.METHODS ++ $trait_composed_methods(ptraitmethod*)]
+  -- if S_copy = S_methods[.CLASSES = $trait_class_set(S_methods.CLASSES, pclassdesc_copy)]
+def $trait_fcc_receipt_methods(S, ptraitcachecause) = eps -- otherwise
+def $trait_fcc_receipt_original(eps, porigin) = eps
+def $trait_fcc_receipt_original(pmethoddesc :: pmethoddesc_tail*, porigin) = (pmethoddesc)
+  -- if $origin_source(pmethoddesc.FUNCTION.ORIGIN) = porigin
+def $trait_fcc_receipt_original(pmethoddesc :: pmethoddesc_tail*, porigin) = $trait_fcc_receipt_original(pmethoddesc_tail*, porigin)
+  -- if $origin_source(pmethoddesc.FUNCTION.ORIGIN) =/= porigin
+def $trait_fcc_receipt_target(pmethoddesc, ptraitmethod*) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
+def $trait_fcc_receipt_target(pmethoddesc, (TRAITMETHOD pclassdesc_trait pmethoddesc) :: ptraitmethod*) = (pmethoddesc[.OWNER = pclassdesc_trait.ORIGIN])
+  -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
+  -- if $trait_fcc_receipt_original(pclassdesc_trait.METHODS, $origin_source(porigin_source)) = (pmethoddesc_original)
+  -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = pmethoddesc_original.FUNCTION.SIGNATURE.RETURNS
+  -- if pmethoddesc.FUNCTION.SIGNATURE.BYREF = pmethoddesc_original.FUNCTION.SIGNATURE.BYREF
+def $trait_fcc_receipt_target(pmethoddesc, (TRAITMETHOD pclassdesc_trait pmethoddesc_other) :: ptraitmethod*) = $trait_fcc_receipt_target(pmethoddesc, ptraitmethod*)
+  -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
+  -- if pmethoddesc =/= pmethoddesc_other
+def $trait_fcc_receipt_target(pmethoddesc, ptraitmethod*) = eps -- otherwise
+def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure_first)
+  -- if $(pconstantclosure_first.OBJECT <= pconstantclosure.OBJECT)
+  -- if pconstantclosure_first.DECL = pconstantclosure.DECL /\ pconstantclosure_first.PREFIX = pconstantclosure.PREFIX
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
+  -- if S.OBJECTS[pconstantclosure_first.OBJECT] = S.OBJECTS[pconstantclosure.OBJECT]
+  -- if pconstantclosure.PREFIX = ptraitcachecause.PREFIX
+  -- if $(ptraitcachecause.PREFIX <= |S.DECLARATIONS|)
+  -- if ~$constant_callable_published(S.DECLARATIONS[0:ptraitcachecause.PREFIX], ptraitcachecause.CLASS)
+  -- if $trait_cache_cause_selected(S, ptraitcachecause) = (pclassconstantdesc)
+  -- if pclassconstantdesc.OWNER = ptraitcachecause.CLASS /\ ~pclassconstantdesc.FOLDED
+  -- if pconstantclosure.DECL = pclassconstantdesc.ORIGIN
+  -- if $trait_fcc_source(S, pclassconstantdesc)
+  -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
+  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
+  -- if $trait_fcc_form(pcnode)
+  -- if pcnode = NExprStaticCall phpType19 phpType20 phpType6 metadata
+  -- if $constant_callable_method_name(phpType20) = (ptbytes_method)
+  -- if $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_copy, ptraitmethod*))
+  -- if $class_at(S_copy.CLASSES, ptraitcachecause.CLASS) = (pclassdesc_copy)
+  -- if $method_named(pclassdesc_copy.METHODS, $ptlc(ptbytes_method)) = (pmethoddesc_copy)
+  -- if $trait_fcc_receipt_target(pmethoddesc_copy, ptraitmethod*) = (pmethoddesc)
+  -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $method_accessible(S_copy, pmethoddesc_copy, (ptraitcachecause.CLASS))
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE ptraitcachecause.CLASS eps)
+def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = eps -- otherwise
+def $trait_real_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
+  -- if $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
+
+;; The retained header certifies a dead object only. It grants no live scope,
+;; published class, cached method target or executable function descriptor.
+def $trait_fcc_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
+  -- if ~(HOBJECT pconstantclosure.OBJECT <- S.ALLOCATIONS)
+  -- if $closure_scope_at(S.CLOSURESCOPES, pconstantclosure.OBJECT) = eps
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
+  -- if $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
+  -- if $trait_failed_cache_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = (ptraitcachecause.PREFIX)
+  -- if $iterator_notice_publication_index(S.DECLARATIONS, ptraitcachecause.CLASS, 0) = eps
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassconstantdesc.OWNERNAME)) = eps
+  -- if $default_cache_at(S.CLASSCONSTANTCACHE, pclassconstantdesc.ORIGIN) = eps
+  -- if $trait_cache_event_at(S.CLASSCONSTANTHISTORY, pclassconstantdesc.ORIGIN) = eps
+def $trait_fcc_retired_receipt(S, pconstantclosure) = eps -- otherwise
+def $constant_callable_record_valid(S, pconstantclosure) = true
+  -- if $trait_fcc_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
+def $trait_real_birth_owner(S, pconstantclosure) = (pclassconstantdesc.OWNER)
+  -- if $trait_fcc_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
 
 ;; The same collision marker authenticates the unpublished initializer. The
 ;; receipt remains nonowning and keeps the actual pre-publication birth prefix.
@@ -122,6 +209,12 @@ def $trait_fcc_replay_birth(S, CCTRAITBIRTH n porigin_site ptraitcachecause) = [
   -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n) = ((porigin_site, ptraitcachecause))
   -- if $trait_fcc_birth_owner(S, pconstantclosure) = (ptraitcachecause.CLASS)
+def $trait_fcc_replay_birth(S, CCTRAITBIRTH n porigin_site ptraitcachecause) = [CCTRAITBIRTH n porigin_site ptraitcachecause]
+  -- if $constant_callable_record(S.CONSTANTCLOSURES, n) = (pconstantclosure)
+  -- if pconstantclosure.SITE = porigin_site
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n) = ((porigin_site, ptraitcachecause))
+  -- if $trait_fcc_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
 def $trait_fcc_replay_birth(S, pclassconstantevent) = eps -- otherwise
 def $trait_fcc_replay_births(S, eps) = eps
 def $trait_fcc_replay_births(S, pclassconstantevent :: pclassconstantevent_tail*) = $trait_fcc_replay_birth(S, pclassconstantevent) ++ $trait_fcc_replay_births(S, pclassconstantevent_tail*)

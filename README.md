@@ -776,8 +776,14 @@ demand retains the composing file, physical fetch line and expression frame.
 Static, capture-free REAL Closure dependencies can also be created before the
 using class is published, with an exact collision receipt and cache owner. Failed
 imports retain dead receipts while retiring live owners; fatal trait links reserve
-their name before later binding, without publishing the failed class. Wider
-initializer contexts, unpublished-owner FCC births, held/open failed links and readonly
+their name before later binding, without publishing the failed class. First-target
+method FCCs also retain source-checked dead receipts after failed composition,
+reconstructing the exact trait method-copy plan and declaration prefix. Focused
+source2 and87 supplied strict-SL conditions cover retirement and equal lexical/called
+FCC scope, with12 setup clauses separate. Parameter-view full-source constructor,
+handler and variadic cases, live adaptations, later births reusing a different
+first target and executable reuse of a failed target remain open. Wider
+initializer contexts, held/open failed links and readonly
 storage remain
 required. The current313 join passes strict compilation, one fresh REAL/constructor
 source agreement and46 source-reached conditions plus6 setup clauses, including

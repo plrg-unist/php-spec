@@ -1452,8 +1452,21 @@ strict algo/struct and one new pinned REAL/default-constructor original, with ex
 passes46 supplied conditions plus6 terminal-aware setup clauses: actual REAL
 birth/cache/receipt, selected constructor7 allocation and capture retirement with
 the REAL authority still live. The current constructor/default/Generator/Fiber/source
-fields are retained. Unaccepted307 parameter views and its full mixed, handler and
-variadic timeout originals remain private and open; paused return work is excluded.
+fields are retained. Module307 now reconstructs exact source method copies at the
+first target's declaration prefix to validate failed FCC births after rollback.
+Dead receipts and pure history replay preserve the first target without publishing
+its owner or admitting a live callable. Focused source2 retain exact output/error
+bytes and exits; strict-SL failed-import53 and equal-scope34 supplied conditions pass,
+with12 setup clauses separate. Raw evidence is under the private
+`.tools/trait-selected-constructor-current/.tools/`: `closure-call-protocol-y5x1pwdf`,
+`closure-call-protocol-v81oh3gj`, `method-runtime-87l_y5f5` and `method-runtime-a2gromik`.
+The first failed source's recorder label is corrected from static rejection to
+runtime PHP error; its already completed duplicate adds no coverage. Current
+algo/struct gates pass at3.369/4.370s. Broader307 parameter-view full-source validation,
+including mixed, constructor/default, handler and variadic timeout originals,
+remains open, as do live
+adaptation lookup, differing-owner later births and executable failed-target reuse.
+Paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the
