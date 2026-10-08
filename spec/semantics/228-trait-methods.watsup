@@ -839,18 +839,18 @@ def $declaration_service_scope(S, PORIGIN n_unit pcpath, (porigin_scope)) = $tra
   -- if pclassdesc.KIND = "trait"
   -- if porigin_scope =/= pmethoddesc.OWNER
 
-;; Direct calls to a trait warn after method resolution and before sends. The
-;; same continuation handles captures once, and resumes only if the handler does.
+;; Access and abstractness precede sends for every method owner. Direct trait
+;; calls then warn once, resuming the same call or capture if the handler does.
 def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
   -- if pclassdesc.KIND =/= "trait"
+  -- if ~pmethoddesc.ABSTRACT
 def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $method_denied(S, pmethoddesc, ptbytes, $method_current_scope(S), false, z)[.TODO = eps]
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
-  -- if pclassdesc.KIND = "trait"
+  -- if pclassdesc.KIND = "trait" \/ pmethoddesc.ABSTRACT
   -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
 def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Cannot call abstract method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"), z)[.TODO = eps]
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
-  -- if pclassdesc.KIND = "trait"
   -- if $method_accessible(S, pmethoddesc, $method_current_scope(S))
   -- if pmethoddesc.ABSTRACT
 def $scoped_select_found(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = S[.TODO = (TRAIT_METHOD_PHASE {SITE porigin_site, CLASS phpType19, REQUESTED porigin_requested, FUNCTION pmethoddesc.FUNCTION.ORIGIN, SELECTOR poperand_selector, METHOD ptbytes, ARGUMENTS phpType7*, LINE z} 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
