@@ -77,8 +77,9 @@ runs first; this metadata adds no heap root or collector-buffer tag.
 The [request ledger](../../coverage/semantics/generator-request-finally-review.json)
 records 19 distinct normal originals and 692 physical strict-SL premises across
 separate cuts. 85 premises assert required abrupt controls and grant no observation
-agreement. The original zero-owner observer mismatch and earlier fixture/source
-failures remain zero. Fresh/unstarted store close, delegating request close and
+agreement. The actual330 composition over `7a0f8044f` passes strict compilation
+at `1399d8a7e`; source/state cuts retain their own inputs. The original zero-owner
+observer mismatch and earlier fixture/source failures remain zero. Fresh/unstarted store close, delegating request close and
 wider terminal/free-storage behavior remain required; no full lifecycle claim.
 
 Pinned authority is `vendor/php-src/Zend/zend_generators.c`, especially

@@ -80,8 +80,10 @@ globals and ascending store handles. Registered normal handlers run before cache
 release; borrowed zero-owner buckets survive bare store decrements until genuine
 weak reacquisition restores ordinary release. 19 normal originals and 692 physical
 strict-SL premises retain separate private cuts; 85 premises assert required abrupt
-controls with zero observation agreement. The original observer mismatch stays zero credit.
-Fresh store close, delegating request close and wider terminal/free-storage paths
+controls with zero observation agreement. Actual330 over `7a0f8044f` passes strict
+compilation at `1399d8a7e`, preserving source343, bound C-root and collector342
+behavior without renewing source/state cuts. The original observer mismatch stays
+zero credit. Fresh store close, delegating request close and wider terminal/free-storage paths
 remain required. [Scope and cuts](coverage/semantics/generator-request-finally-review.json).
 
 Generator328 reference caches, value snapshots and effective destructuring aliases
@@ -168,13 +170,13 @@ renewal. Earlier cuts retain their own tested parents.
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
 WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335/338/342,
-Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands293/298,
+Fiber291/302/308/313/322/341, Generator289/303/310/311/321/328/340 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 327 modules composed over
-`5f478ea6a`, retaining static/bound Fiber API captures331/337, physical property references324 and collector335/338/342.
+with 330 modules composed over
+`7a0f8044f`, retaining static/bound Fiber API captures331/337/341, physical property references324 and collector335/338/342.
 The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339.
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339/343.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
