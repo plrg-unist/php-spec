@@ -155,6 +155,9 @@ def $eager_explicit_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $eager_explicit_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
+def $call_after_origin(S, THROW_SEARCH n) = S[.TODO = ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $generator_request_report_abrupt(S)
 def $call_after_origin(S, GENERATOR_REQUEST_REPORT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = (porigin_method)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pgenfatal.SOURCE = STRINGIFY_RESULT n_parent porigin_method 0
   -- if $generator_request_fatal_tail(S.TODO, pgenfatal) = (ptask_tail*)
