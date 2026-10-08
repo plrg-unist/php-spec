@@ -135,7 +135,8 @@ def $eager_explicit_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
 def $call_after_origin(S, GENERATOR_REQUEST_REPORT pgenfatal) = S[.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $call_after_origin(S, GENERATOR_REQUEST_BAILOUT pgenfatal) = S[.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $call_after_origin(S, GENERATOR_REQUEST_BAILOUT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $generator_request_bailout_tail(S.TODO, pgenfatal) = (ptask_tail*)
 def $generator_request_tail_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $generator_request_tail_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
 def $generator_request_tail_task(STRINGIFY_RESULT n porigin 0) = true

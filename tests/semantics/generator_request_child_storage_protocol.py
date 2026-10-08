@@ -74,6 +74,9 @@ $generator_request_bailout_tail(S_storage.TODO,pgenfatal_bailout) = (ptask_repor
 $generator_request_bailout_at(S_storage.TODO) = (pgenfatal_bailout)
 $generator_request_bailout_valid(S_storage,pgenfatal_bailout)
 $generator_request_resume_valid(S_storage,pgenclose)
+S_future_scope = $call_after_origin($call_after_origin(S_storage,DESTRUCTOR_RELEASE pdestructionrelease),GENERATOR_REQUEST_BAILOUT pgenfatal_bailout)
+S_future_scope.TODO = ptask_report_tail*
+$call_tasks_valid(S_future_scope,ptask_report_tail*)
 ''')
     checks += fatal.normal_valid('S_storage')
     checks += fatal.lines(r'''
