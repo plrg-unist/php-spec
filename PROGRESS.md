@@ -1237,8 +1237,16 @@ whose original/current UNSET images match. Native3 and the unchanged dynamic
 Unsupported baseline at `0824519ef` are separate from changed strict/source3 at
 `f43b28b47` and 142/147 reached premises at `bad93efed`. The resolved-default
 fixture correction preserves its original uncredited failure; no earlier
-campaign is renewed. Quiet/getter and untyped unset access remain required.
+campaign is renewed. Wider quiet/getter and untyped unset access remain required.
 The actual356 join over `976a55232` passes strict initialization at `4b31fc1cc`.
+Future initialized declared values and typed INITIAL/UNSET slots now support
+quiet `isset`/`empty` and coalescing with ordinary visibility and no magic consumers. Terminal booleans add no payload owner;
+coalescing copies the dereferenced value. Native3 and the unchanged scalar
+Unsupported baseline at `ad8135241` remain separate from strict356/source3 and
+157/138 reached premises at `310e0fac6`. Actual receiver-release queues, unchanged
+borrowed owners, alias rebinding/type detach and kept-child survival pass without
+corrections. Earlier quiet assertions are adapted statically only; no campaign
+is renewed. Consumed/missing slots and wider magic access remain required.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

@@ -956,7 +956,7 @@ The actual349 composition passes strict compilation.
 Initialized declared scalar properties that cleanup has not yet visited now read
 through the actual parent carrier and current slot, with ordinary visibility checks.
 Three exact originals and104/89 reached premises cover live typed aliases,
-consumed-slot refusal and genuine owner/slot boundaries; quiet and
+consumed-slot refusal and genuine owner/slot boundaries; wider quiet and
 mutating accesses remain required. The actual351 composition passes strict initialization.
 Future initialized declared object and array reads now acquire the copied payload owner, dereferencing
 property aliases without retaining their wrapper. Three further originals and
@@ -973,8 +973,14 @@ Future explicitly unset typed slots now raise the same Error when no getter is
 present. Three exact originals and 142/147 reached premises distinguish actual
 dynamic-first cleanup order from physical slot indexes, retain visibility and
 alias detachment, and verify pending cleanup and atomic selected binding.
-Consumed slots, quiet/getter accesses and untyped unset reads remain required.
+Consumed slots, wider quiet/getter accesses and untyped unset reads remain required.
 The actual356 composition passes strict initialization.
+Future initialized declared values and typed INITIAL/UNSET slots now support
+quiet `isset`, `empty` and `??` without magic consumers. Terminal probes borrow
+their payload; coalescing copies the live referent. Three originals cover private,
+null and typed INITIAL/UNSET results; 157/138 reached premises prove unchanged
+heap owners, alias rebinding/type detach and kept-child survival.
+Consumed/missing storage and wider magic accesses remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
