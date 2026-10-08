@@ -119,6 +119,12 @@ Both factors now join actual `bf1c0053a`/309, preserving current325/322/326/327
 root and caller hooks. Strict initialization passes on `13bc4e931` in3.769s.
 The earlier139/173/WeakReference cuts retain their own inputs; no source renewal
 or speedup is claimed.
+The nonempty zero-owner scan now computes its unchanged GC keep list once.
+Private `7d0ed7543`/309 passes strict initialization, processed-DONE43 and
+active-bare75 direct keep/retirement predicates, and the exact WeakReference
+original in9.279s. Empty-scan and Unmatch/Runtime domains are statically reviewed.
+Its full retry still times out at55.046 with empty streams and zero agreement;
+inputs are stable and groups reaped, with no demonstrated speedup or231 credit.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

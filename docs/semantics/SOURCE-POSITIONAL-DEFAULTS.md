@@ -165,4 +165,9 @@ predicates and the WeakReference original on `5559f2c00`; its full retry still
 times out at host55.066 with empty streams and zero agreement.
 Their actual309 join retains current collector/caller hooks and passes strict
 initialization on `13bc4e931`; the earlier lifecycle/source cuts remain distinct.
+The nonempty GC zero-owner scan computes the same keep list once on
+`7d0ed7543`/309. Strict initialization, processed-DONE43/active-bare75 predicates
+and the exact WeakReference original pass; empty-scan and fallback domains are
+statically reviewed. Its full retry still hits55.046 with empty streams and
+zero agreement, so no speedup or current231 credit follows.
 Whole retry composition and wider producers remain open.
