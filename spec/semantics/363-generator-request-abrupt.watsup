@@ -122,6 +122,16 @@ def $generator_request_fatal_tail((STRINGIFY_RESULT n porigin 0) :: (GENERATOR_R
   -- if pgenfatal.OBJECT = n /\ pgenfatal.METHOD = (porigin)
 def $generator_request_fatal_tail((CALL_ARGS (METHOD_TARGET n porigin) eps 0 eps (porigin) 0) :: (STRINGIFY_RESULT n porigin 0) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*, pgenfatal) = (ptask_tail*)
   -- if pgenfatal.OBJECT = n /\ pgenfatal.METHOD = (porigin)
+def $generator_request_fatal_tail((DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*, pgenfatal) = (ptask_tail*)
+  -- if pgenfatal.SOURCE = STRINGIFY_RESULT n_parent porigin_method 0
+  -- if pdestructionrelease.CALLER = eps /\ pdestructionrelease.ORIGIN = eps /\ pdestructionrelease.CONSTCONTEXT = eps /\ ~pdestructionrelease.USER
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_parent)] \/ pdestructionrelease.JOBS = eps
+  -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH pgenfatal.OBJECT /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
+def $generator_request_fatal_tail((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*, pgenfatal) = (ptask_tail*)
+  -- if pgenfatal.SOURCE = STRINGIFY_RESULT n_parent porigin_method 0
+  -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH pgenfatal.OBJECT /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
 def $generator_request_fatal_tail(ptask*, pgenfatal) = eps -- otherwise
 def $generator_request_report_at((GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*) = (pgenfatal)
 def $generator_request_report_at((STRINGIFY_RESULT n porigin 0) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*) = (pgenfatal)

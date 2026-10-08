@@ -114,6 +114,7 @@ pdestructionrelease_receiver.CALLER = eps /\ pdestructionrelease_receiver.ORIGIN
 pdestructionoperation_receiver.SOURCE = THROW_SEARCH n_inner
 pdestructionoperation_receiver.CALLER = eps /\ pdestructionoperation_receiver.ORIGIN = eps
 pdestructionoperation_receiver.PENDING = eps
+S_receiver.DESTRUCTION.OPERATIONS = pdestructionoperation_receiver :: pdestructionoperation_receiver_tail*
 S_receiver.ALLOCATIONS = S_abrupt.ALLOCATIONS
 $heap_graph(S_receiver).NODES = $heap_graph(S_abrupt).NODES
 $heap_graph(S_receiver).EDGES = $heap_graph(S_abrupt).EDGES
@@ -123,6 +124,17 @@ $heap_owners($heap_graph(S_receiver),HOBJECT n_generator) = 1
 $heap_owners($heap_graph(S_receiver),HOBJECT n_payload) = 1
 ''')
     checks += fatal.normal_valid('S_receiver')
+    if not release and not handler:
+        checks += fatal.lines(r'''
+pdestructionoperation_wrong = pdestructionoperation_receiver[.SOURCE = THROW_SEARCH n_parent]
+S_bad_receiver_source = S_receiver[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_receiver) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_wrong) :: (GENERATOR_REQUEST_REPORT pgenfatal_inner) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_parent_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_wrong :: pdestructionoperation_receiver_tail*]
+$destructor_operation_valid(S_bad_receiver_source,pdestructionoperation_wrong)
+$generator_request_fatal_tail(S_bad_receiver_source.TODO,pgenfatal_inner) = eps
+$heap_graph(S_bad_receiver_source) = $heap_graph(S_receiver)
+$heap_valid($heap_graph(S_bad_receiver_source))
+~$call_descriptors_valid(S_bad_receiver_source)
+$call_entry_check(S_bad_receiver_source).COMPLETION = UNSUPPORTED "invalid compiled function descriptor"
+''')
     checks += base.seek('S_inner', 'S_receiver', 411)
     checks += fatal.lines(r'''
 S_inner.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_inner) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_parent_tail*
