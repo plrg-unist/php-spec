@@ -7,6 +7,7 @@ dec $gc_dtor_tag_valid(pstate, nat) : bool
 dec $gc_scan_clear(pgcslot*, nat, nat, nat) : pgcslot*
 dec $gc_worker_public_error(pfiberapi) : nat?
 dec $gc_worker_public_context(pstate, pgcpublic) : bool
+dec $gc_worker_public_pass_context(pstate, pgcpublic) : bool
 dec $gc_worker_scan_cursor(pstate, nat) : bool
 dec $gc_worker_scan_valid(pstate, pgcpublic) : bool
 dec $gc_worker_scan_object(pstate, pgcslot) : nat?
@@ -23,6 +24,7 @@ dec $gc_worker_public_origin_task(porigin?, ptask) : bool
 dec $gc_worker_public_frame_view(pstate, pstate, pframe*) : bool
 dec $gc_worker_public_frame_result_view(pstate, pstate, pframe) : bool
 dec $gc_worker_public_parked(pstate, nat, pfiber) : bool
+dec $gc_worker_public_quiescent(pstate) : bool
 dec $gc_worker_public_reentry_ready(pstate, pgcguard) : bool
 dec $gc_worker_public_reentry(pstate, pconfigcall, pvalue) : pstate
 
@@ -75,6 +77,10 @@ def $gc_unmarked_slot(GC_DTOR_ROOT n) = GC_ROOT (HOBJECT n)
 def $gc_unmarked_slot(pgcslot) = pgcslot -- otherwise
 def $gc_unmarked_slots(eps) = eps
 def $gc_unmarked_slots(pgcslot :: pgcslot_tail*) = $gc_unmarked_slot(pgcslot) :: $gc_unmarked_slots(pgcslot_tail*)
+def $gc_worker_public_quiescent(S) = true
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if S.GC.BUFFER = $gc_unmarked_slots(S.GC.BUFFER)
+def $gc_worker_public_quiescent(S) = false -- otherwise
 def $gc_marked(S, pnode) = true
   -- if $gc_slot_find(S.GC.BUFFER, pnode, 0) = (n)
   -- if S.GC.BUFFER[n] = GC_DTOR_ROOT n_object
@@ -103,8 +109,10 @@ def $gc_worker_public_task(S, pfiberapi) = GC_WORKER_SCAN {API pfiberapi, SOURCE
   -- if $gc_worker_public_scan_pass(S)
   -- if S.GC.PLAN = (pgcplan)
 
-def $gc_worker_public_context(S, pgcpublic) = true
+def $gc_worker_public_context(S, pgcpublic) = $gc_worker_public_pass_context(S, pgcpublic)
   -- if $gc_worker_public_api_valid(S, pgcpublic.API)
+def $gc_worker_public_context(S, pgcpublic) = false -- otherwise
+def $gc_worker_public_pass_context(S, pgcpublic) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
   -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
@@ -112,7 +120,11 @@ def $gc_worker_public_context(S, pgcpublic) = true
   -- if $(pgcpublic.INDEX <= pgcpublic.END)
   -- if $gc_worker_scan_cursor(S, pgcpublic.INDEX)
   -- if $destructor_pending_valid(S, pgcpublic.PENDING)
-def $gc_worker_public_context(S, pgcpublic) = false -- otherwise
+def $gc_worker_public_pass_context(S, pgcpublic) = true
+  -- if $gc_worker_public_quiescent(S)
+  -- if $(pgcpublic.INDEX <= pgcpublic.END)
+  -- if $destructor_pending_valid(S, pgcpublic.PENDING)
+def $gc_worker_public_pass_context(S, pgcpublic) = false -- otherwise
 def $gc_worker_scan_cursor(S, n) = true -- if n = S.GC.SCAN.INDEX
 def $gc_worker_scan_cursor(S, n) = true
   -- if n = $(S.GC.SCAN.INDEX + 1)
@@ -166,6 +178,14 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
   -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
+def $gc_worker_guard_attachment(S, pgcguard) = true
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if $gc_worker_public_context(S, pgcpublic)
+  -- if pgcpublic.PENDING = eps
+  -- if pgcguard.WORKER = pgcpublic.API.OBJECT
+  -- if pgcguard.SOURCE = pgcpublic.SOURCE /\ pgcguard.INDEX = pgcpublic.INDEX
+  -- if $(pgcguard.INDEX < pgcpublic.END)
 ;; zend_get_executed_scope stops at the internal Fiber::resume/throw frame.
 ;; Its builtin class has no user-class origin and grants no nonpublic access.
 def $gc_worker_guard_scope(S, pgcguard) = eps -- if pgcguard.PUBLIC =/= eps
@@ -268,9 +288,9 @@ def $gc_worker_public_parked(S, n, pfiber) = false -- otherwise
 def $fiber_record_valid(S, n, pfiber) = true
   -- if $gc_worker_public_parked(S, n, pfiber)
 
-;; Reentry before the collecting caller returns uses the same genuine plan
-;; and physical target. Later passes may move/reuse slots and need their own
-;; continuation admission; do not reuse a historical plan as live authority.
+;; A live pass still authenticates its physical target. After it completes,
+;; the actual parked callback supplies authority; old slots and SOURCE are
+;; borrowed metadata, and the retained interval contains no marked callback.
 def $gc_worker_public_reentry_ready(S, pgcguard) = true
   -- if S.GC.WORKER = (pgcguard.WORKER)
   -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
@@ -286,6 +306,13 @@ def $gc_worker_public_reentry_ready(S, pgcguard) = true
   -- if (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
   -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
+def $gc_worker_public_reentry_ready(S, pgcguard) = true
+  -- if $gc_worker_public_quiescent(S)
+  -- if S.GC.WORKER = (pgcguard.WORKER)
+  -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if $gc_worker_public_parked(S, pgcguard.WORKER, pfiber)
 def $gc_worker_public_reentry_ready(S, pgcguard) = false -- otherwise
 def $gc_worker_public_resume(S, pconfigcall, pvalue) = $gc_worker_public_reentry(S, pconfigcall, pvalue)
   -- if pconfigcall.OWNER = (n)

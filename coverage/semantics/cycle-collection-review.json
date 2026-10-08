@@ -226,7 +226,7 @@
   },
   "boundaries": [
     "Automatic threshold collection",
-    "Wider internal lifetime graphs and post-pass public callback reentry/internal collector takeover",
+    "Wider internal lifetime graphs and different-active-pass public callback reentry/internal collector takeover",
     "Active-pass failed-finally and wider callbackless close-return contexts beyond the reviewed normal and failed quiescent tails",
     "Initially free non-destructor resurrection and new zero-owner destructor target after retrace",
     "Arbitrary synthetic producer reachability beyond local TEMP receipt consistency",
@@ -955,12 +955,97 @@
       "python3 tests/semantics/cycle_collection_review.py --match collector-active-public-cached-core-two-identities-compact-review-22",
       "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-public-callback-parked-vm-and-live-pass --case collector-public-callback-fresh-core-throw-keeps-old-pending"
     ],
-    "boundaries": "Post-pass public reentry and internal collector takeover remain explicit Unsupported and required next work, alongside active-pass failed close, wider GC/lifetime graphs and fresh offline rebuild. No full-core or paused-returns credit.",
+    "boundaries": "Post-pass public reentry was Unsupported at this cut; quiescent_postpass345 separately enables genuine no-tag quiescence and supersedes one maintained S_later refusal premise without renewing this228 cut. Different-active-pass reentry/internal takeover, active-pass failed close, wider GC/lifetime graphs and fresh offline rebuild remain required. No full-core or paused-returns credit.",
     "publication_parent": {
       "parent_revision": "2ed57ca8afe6a120ac0963a984139ebae7051a2a",
       "semantic_join_revision": "0f3a59a79400b32f7967ecbdc664f141cdd7f553",
       "modules": 344,
       "validation": "Independent static intersection review only.356 requires class-static concatenation or resulting STATIC_COMPOUND/CCCOMPOUND/COMPOUND_CLASS_PROP_SOURCE records, absent from both sources and parked VMs. New metadata owns nothing;317/345/281 are unchanged versus tested bb741. The343 compiler and earlier source/state cuts retain their original inputs; no second compiler or runtime renewal."
     }
-  }
+  },
+    "quiescent_postpass345": {
+      "status": "Independently reviewed quiescent post-pass reentry; one normal source and203 reached physical premises PASS; final345 compiler PASS; captured source CLI timeout has zero agreement",
+      "scope": "Authenticate actual parked VM/CONTINUE and genuine fresh public API after the original pass completes. Require ACTIVE/PLAN absent and no GC_DTOR_ROOT tags; the retained local scan finishes without old-slot/global-scan equality. Retired SOURCE grants no fresh caller scope, owner or slot authority. Preserve current SCAN/NEXT and distinct old-guard/fresh-injection errors.",
+      "test_root": ".tools/gc-quiescent-close-18",
+      "raw_root": ".tools/gc-quiescent-close-18/.tools",
+      "engine": [
+        "Zend/zend_gc.c::{gc_call_destructors,gc_destructor_fiber}",
+        "Zend/zend_fibers.c::{zend_fiber_suspend,zend_fiber_resume,zend_fiber_delegate_transfer_result}"
+      ],
+      "normal_source": {
+        "revision": "b28a5c47b4da9f8116d74564b4c7b982a6fa3589",
+        "modules": 344,
+        "id": "collector-public-postpass-cached-callback-resume-23",
+        "source_sha256": "e21edbf5cd63879424efbc1f526f61dc1950c0c8d131e4867380cf42ae269edb",
+        "native": "gc-collector-native-16-c9d2xobz/report.json",
+        "wrapper": "gc-public-postpass-23-source-ul32jvu6/report.json",
+        "accepted_child": "shutdown-review-tnvm65m1/report.json",
+        "result": "PASS row in false aggregate; checked program/normal0, exact A|B|paused|1|resumed|idle|END and OUTPUT events, empty stderr/no timeout,51.447s."
+      },
+      "state_cuts": {
+        "revision": "95fd7fc6325719e3fa6e0a77807995220c7b1057",
+        "modules": 344,
+        "fixture_commit": "9765f81838d10ce4c3f748f703e086bce994aad4",
+        "ids": [
+          "collector-public-postpass-resume-authenticates-parked-callback",
+          "collector-public-postpass-core-throw-retains-original-error"
+        ],
+        "wrappers": [
+          "gc-public-scan-state-review-21-68s70c25/report.json",
+          "gc-public-scan-state-review-21-xvnaeiem/report.json"
+        ],
+        "accepted_rows": [
+          "shutdown-state-review-5jesklfc/report.json main row only",
+          "shutdown-state-review-adzet9fj/report.json"
+        ],
+        "physical_premises": [
+          101,
+          102
+        ],
+        "runner_assertions": [
+          92,
+          93
+        ],
+        "authored_checks": [
+          89,
+          90
+        ],
+        "result": "Main PASS row in false aggregate; corrected core group PASS separately106.591s. Both true newline/exit0/no timeout/empty stderr. Real A retirement, stored VM/CONTINUE, no-tag/copy forgeries, harmless physical-buffer/global-SCAN relocation, fresh caller/core RESULT/FINISH, old2/new4 error owners, previous-none, one-step and full exact continuations pass. Final B is a called self-cycle owner1; global old/new errors have owners2/1; runner/capture retire and cached worker ends graceful/terminated with GC/VM absent. One maintained old S_later refusal becomes positive; historical228 evidence remains separate."
+      },
+      "captured_native_and_source_timeout": {
+        "id": "collector-public-postpass-core-old-pending-new-throw-review-23",
+        "source_sha256": "673b47deefa08a7d41fc8f4dd17452cb50cf1a01bee0e9277198f2695990733a",
+        "native": "gc-collector-native-16-w85jtimx/report.json",
+        "source_wrapper": "gc-public-postpass-23-source-ul32jvu6/report.json",
+        "source_child": "shutdown-review-69mjtz7a/report.json",
+        "result": "Native exact A|paused|1|new|old|END normal0/empty stderr. Source CLI internal60s timeout has zero agreement; outer65.263s/no timeout/reaped groups. Full normal continuation and exact identities pass only in the distinct120s state group. Original remains selectable and is excluded from the default source target."
+      },
+      "compilation": {
+        "initial_revision": "7f121335910a5f0d6345567f313b0367dd0c13f4",
+        "initial_compiler": "gc-public-postpass-23-compiler-bpy955_u/report.json",
+        "strict_init": "gc-public-postpass-23-init-8na1ccei/report.json",
+        "factored_compiler": "gc-public-postpass-23-compiler-4gudxwr6/report.json",
+        "factor": "b28 evaluates public API once first, preserving its partiality; a total pass-context helper retains live/quiescent checks. The attachment drops only duplicate no-tag work already proved by context. No owner/VM/source authority change."
+      },
+      "final_composition": {
+        "parent_revision": "4cd2eab3a49e963ab420908038945ce789dca6df",
+        "tested_revision": "0c23223f39a2f18a2eeea7645c7c69b50c3e91a8",
+        "modules": 345,
+        "compiler": "gc-public-postpass-23-compiler-dmkutgab/report.json",
+        "result": "Stable clean inputs/revision/status; algo3.524s/struct4.414s, real10,986,528/10,659,393-byte syntax artifacts, exits0/no timeout/empty stderr/reaped groups. Actual-parent review preserves FACTORYeps bound THROW, real CORE_RESULT caller ownership and disjoint trait receipts;345 is unchanged versus b28. Earlier source/state cuts retain their inputs."
+      },
+      "preserved_zero_credit": [
+        "Initial7f source wrappers kqtgpm59/nx2cdm15 and e1q6ott4/_e2nd6k6 retain internal60s timeouts. Cost factor justified affected new-source retry; no old22/native renewal.",
+        "gc-public-scan-state-review-21-r60w9mm4 / shutdown-state-review-q0wki2rc:98-physical main row failed only the incorrect request-final idle-worker expectation;0 affected credit.",
+        "gc-public-scan-state-review-21-68s70c25 / shutdown-state-review-5jesklfc:103-physical core row failed only incorrect request-final runner retention;0 affected credit. Only corrected core reran; main PASS is retained.",
+        "Actor-free internal-takeover preparations24 remain unobserved/unexecuted with zero native/model credit."
+      ],
+      "validation": "LC_ALL=C/TZ=UTC/script encoding absent, jobs1; pinned localPHP8.5.10, native30s/source60s/state120s/outer120s unchanged. Raw reports retain exact commands/binary/profile/input hashes, stable input/revision/status and reaped groups. Source agreement1 is distinct from203 physical state premises and captured CLI0.",
+      "recovery": [
+        "python3 tests/semantics/cycle_collection_sources.py --match collector-public-postpass-cached-callback-resume-23",
+        "python3 tests/semantics/cycle_collection_review.py --match collector-public-postpass-core-old-pending-new-throw-review-23",
+        "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-public-postpass-resume-authenticates-parked-callback --case collector-public-postpass-core-throw-retains-original-error"
+      ],
+      "boundaries": "Different-active-pass public reentry and new internal collector takeover remain Unsupported and required. Active-pass failed close, broader GC/lifetime graphs, thresholds/freeing and fresh offline rebuild remain required. No full-core or paused-returns credit."
+    }
 }

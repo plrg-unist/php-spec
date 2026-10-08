@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 360 closes normal request delegations, detaching real input owners before
+finally while retaining independent CV owners and shared store order. Delegated
+CURRENT is the physical value slot; consumed-cell history is tied to the object's
+own storage stage. Nested normal handlers retain inner cache/close pins and admit
+the authenticated queued outer source frame. Eight exact normals and 553 new
+strict premises pass at separate cuts; malformed actual handlers remain rejected.
+Composition with 346 modules over `9cacdbf51` passes strict compilation at
+`4d867f6b0`, preserving current ownership/source/Fiber/collector semantics;
+earlier source/state cuts retain their inputs.
+Original Unsupported/failed cuts stay zero. Abrupt terminal cleanup, parked/escaped
+storage and broader lifecycle work remain required.
+[Ledger](coverage/semantics/generator-request-delegation-review.json).
+
 358 selects simple Fiber API method arrays and static class-method strings
 through `Closure::fromCallable`, including named and unpacked factory arguments.
 Frozen members and completed factory history survive callback-array mutation,
@@ -43,7 +56,7 @@ reuse. Six exact normals and 784 new strict premises pass at `b62f360d7`; the tw
 actually affected maintained storage queues separately pass 209 at `d67773039`.
 Actual342 over `dc68616a3` passes strict compilation at `f78a1a06b`;
 reviewed current-parent composition preserves the separate source/state cuts.
-Original failures remain zero; the earlier349 11/663 retains its own cuts. Delegation, abrupt
+Original failures remain zero; the earlier349 11/663 retains its own cuts. Abrupt
 terminal cleanup, parked/escaped storage and nested ordinary-object RETURN reads
 remain required. [Ledger](coverage/semantics/generator-storage-pin-review.json).
 
@@ -98,8 +111,15 @@ fixture stops remain zero affected credit. Final 343 over `e1c3d4d61` compiles a
 `bb74145c7`, preserving reviewed Generator storage, call-key source and eager
 owner-order changes; the earlier 341 compiler cut remains separate.
 Publication 344 over `2ed57ca8a` preserves the static-property change by review.
-Earlier345 cuts remain separate. Post-pass reentry/internal takeover and broader
-GC remain required. [Ledger](coverage/semantics/cycle-collection-review.json).
+Quiescent post-pass reentry separately admits the actual parked VM and fresh
+caller after collection completes, requiring no destructor tags and no retired
+caller/old-slot authority. One normal source and 203 independent physical premises
+pass at separate b28/95fd+9765 cuts; captured source CLI 60s timeouts retain zero
+agreement. Final 345 over `4cd2eab3a` compiles at `0c23223f3`, preserving reviewed
+Fiber-factory/trait additions. One obsolete maintained post-pass refusal premise
+is superseded; earlier cuts are not renewed. Reentry during a different active pass,
+internal takeover and broader GC remain required.
+[Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
@@ -476,6 +496,21 @@ The declaration stop and original 98-premise task-assumption failure remain pres
 Raw checks: `.tools/compiler-owner-order-carry-19/.tools/owner-order-carry-controls-v{1,2,3}`.
 Final 343-module composition at `4a96bad9a` passes changed initialization in 4.320s.
 Raw final check: `.tools/compiler-owner-order-carry-current-19/.tools/owner-order-carry-current-controls-v1`.
+The `e1c3d4d61`/343 original retry matches native output but reaches host 55.043267
+with empty streams and zero agreement. Inputs stay stable and the group is reaped;
+no speedup or 231 credit follows. Raw retry:
+`.tools/compiler-owner-order-carry-current-19/.tools/full-default-retry-owner-order-carry-v1/run-v1`.
+Pure graph pruning now counts distinct node identities, root/edge multiplicities
+and removes zero-owner cascades through a worklist. Final filtering preserves
+roots and original node/edge order and duplicates, including arbitrary finite typed
+graphs with dead sources or absent targets. Exact `a39876cbe`/343 passes strict
+initialization in 4.273s, independent 54 physical/33 main premises comparing 512
+graph variants in 4.472s, and 54 reached physical/44 main premises in 4.973s.
+The real post-UNSET cell/object cascade requires successive old pruning rounds
+and matches the new graph and public pruning results. Raw checks:
+`.tools/compiler-heap-prune-worklist-19/.tools/heap-prune-worklist-controls-v1`.
+Final 345-module composition at `8ed6d5bcb` passes changed initialization in 4.272s.
+Raw final check: `.tools/compiler-heap-prune-worklist-current-19/.tools/heap-prune-worklist-current-controls-v1`.
 Its original retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
@@ -502,8 +537,8 @@ and passes the required combined compiler without source/state renewal.
 The fresh explicit-INI source discriminates
 cached mask reuse. The two larger 60s model timeouts retain zero agreement.
 Module325 adds separately tested detached zero-owner retention, real reacquisition
-and active unowned-close retirement. Wider internal graphs, post-pass public
-callback reentry/internal takeover, automatic thresholds, resurrection and final
+and active unowned-close retirement. Wider internal graphs, callback reentry during
+a different active pass, internal takeover, automatic thresholds, resurrection and final
 request freeing remain required.
 
 Undefined source operands293 resume genuine warnings with fixed null after
