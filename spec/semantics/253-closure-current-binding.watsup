@@ -231,11 +231,11 @@ def $fake_bind_static(S, n) = $fake_bind_static($fake_bind_history(S, pboundfake
 def $fake_bind_static(S, n) = pmethoddesc.STATIC
   -- if ~$bound_fake_object(S, n)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
-  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $closure_method_origin(S, pfunction.ORIGIN) = (pmethoddesc)
 def $fake_bind_static(S, n) = false
   -- if ~$bound_fake_object(S, n)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
-  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = eps
+  -- if $closure_method_origin(S, pfunction.ORIGIN) = eps
 def $fake_bind_static(S, n) = false
   -- if ~$bound_fake_object(S, n)
   -- if $target_function(S, CLOSURE_TARGET n) = eps
@@ -569,11 +569,11 @@ def $fake_bind_name(S, n) = $intrinsic_name(pintrinsic)
 def $fake_bind_name(S, n) = pmethoddesc.NAME
   -- if ~$bound_fake_object(S, n)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
-  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $closure_method_origin(S, pfunction.ORIGIN) = (pmethoddesc)
 def $fake_bind_name(S, n) = pfunction.NAME
   -- if ~$bound_fake_object(S, n)
   -- if $target_function(S, CLOSURE_TARGET n) = (pfunction)
-  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = eps
+  -- if $closure_method_origin(S, pfunction.ORIGIN) = eps
 def $fake_bind_warning_message(S, n_source, (n_receiver), pbindscope) = ($ptascii("Cannot bind an instance to a static closure, this will be an error in PHP 9"))
   -- if $fake_bind_static(S, n_source)
 def $fake_bind_warning_message(S, n_source, (n_receiver), pbindscope) = ($ptascii("Cannot bind method ") ++ $bind_scope_name(S, pbindscope_source) ++ $ptascii("::") ++ $fake_bind_name(S, n_source) ++ $ptascii("() to object of class ") ++ $object_name(S, n_receiver) ++ $ptascii(", this will be an error in PHP 9"))

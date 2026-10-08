@@ -416,7 +416,7 @@ def $trait_fcc_scope_receipt(S, pconstantclosure, pmethoddesc, pclosurescope) = 
   -- if $trait_fcc_snapshot(S, pconstantclosure) = (pmethoddesc_birth)
   -- if $class_constant_origin(S.CLASSES, pconstantclosure.DECL) = (pclassconstantdesc)
   -- if porigin_owner = pclassconstantdesc.OWNER
-  -- if $class_method_origin(S.CLASSES, pmethoddesc_birth.FUNCTION.ORIGIN) = (pmethoddesc)
+  -- if $closure_method_origin(S, pmethoddesc_birth.FUNCTION.ORIGIN) = (pmethoddesc)
   -- if pmethoddesc = pmethoddesc_birth[.OWNER = pmethoddesc.OWNER]
   -- if pclosurescope.LEXICAL = pmethoddesc_birth.OWNER /\ pclosurescope.CALLED = porigin_owner
   -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
@@ -446,7 +446,7 @@ def $method_closure_scope_valid(S, pclosurescope) = true
   -- if HOBJECT pclosurescope.OBJECT <- S.ALLOCATIONS
   -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
-  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
   -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps
 
 ;; Only parameter types resolve against the authenticated copied scope. The
@@ -483,7 +483,7 @@ def $trait_fcc_parameter_supported(S, pclosurescope :: pclosurescope_tail*, pfun
 def $trait_fcc_parameter_support_one(S, pclosurescope, pfunction) = true
   -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
-  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
   -- if $trait_fcc_parameter_function(S, pclosurescope.OBJECT, pmethoddesc) = (pfunction)
 def $trait_fcc_parameter_support_one(S, pclosurescope, pfunction) = false -- otherwise
 def $call_supported_signature(S, pfunction) = true
@@ -525,7 +525,7 @@ def $trait_fcc_target_name(S, CLOSURE_TARGET n) = (pclassdesc.NAME ++ $ptascii("
   -- if $(n < |S.OBJECTS|)
   -- if HOBJECT n <- S.ALLOCATIONS
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
-  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
   -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) =/= eps
   -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
@@ -535,7 +535,7 @@ def $call_function_name(S, pfunction) = preqbytes
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
-  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
   -- if $method_closure_functions(S, n, pmethoddesc) = (pfunction_base, pfunction_view)
   -- if pfunction = pfunction_base \/ pfunction = pfunction_view
   -- if pcallcontext.FUNCTION = pfunction.ORIGIN /\ pcallcontext.INSTANCE = (n)
