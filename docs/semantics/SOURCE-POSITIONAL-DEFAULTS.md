@@ -127,7 +127,7 @@ Accepted on exact909/e25eb2b9: code1fce6586, compiler2b247d81, runtime8151b96d a
 The [compiler contract](DEFAULT-PARAMETER-COMPILER.md) specifies source projection;
 the [successor handoff](DEFAULTS-REVIEWER-HANDOFF.md) retains remaining obligations.
 
-The private actual-parent300 join preserves current property, clone, ArrayAccess,
+The actual-parent300 join preserves current property, clone, ArrayAccess,
 collector and source hooks, appending only accepted286/295/306/312. Strict
 initialization and one fresh two-frontier GLOBALS snapshot/storage original pass
 on `279839ac4`: exact `ArrayArrayg:g:l2:A:B`, normal completion, exit0 and empty
@@ -138,6 +138,9 @@ Current107 reached predicates additionally preserve exact prefixes1/2/3, reject
 generic-valid future/stale reads before binding and finish the original with
 closed receives and empty default cache. Their initial parse/elaboration stops
 keep zero runtime credit; only the corrected fixture passes.
+The final301 join over canonical `ff1b7a888` retains property warning318 and
+passes strict initialization on `3b6a92f2f`; its disjoint field/task updates add
+no refreshed execution credit to the accepted source/107 cuts.
 
 The scoped parked-VM source checks authenticate live eval/class/directory state,
 clear loader contexts only in the validation view and exclude saved markers.

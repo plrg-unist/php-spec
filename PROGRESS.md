@@ -46,7 +46,7 @@ is integrated after reviewed current-parent composition.
 Held 279 and user-paused return verification stay set aside. Complete core and the
 final combined, fresh offline rebuild remain required.
 
-Private default composition adds286/295/306/312 over actual canonical296,
+Default composition adds286/295/306/312 over actual canonical296,
 preserving ARG309/316, property, clone, GC301 and shared source hooks (300 modules).
 Exact `279839ac4` passes strict initialization and one fresh native/public original:
 two default warning frontiers retain GLOBALS snapshots and storage/readback,
@@ -57,6 +57,9 @@ The genuine current107 prefix/source-origin/refusal/retirement predicates pass
 on `b50d4062e` in33.911s; their original request parse and nat-cast elaboration
 stops keep zero runtime credit (`compact-controls-v{1,2,3}` in the same directory).
 The later812 terminal-seek harness correction changes no tested semantic input.
+The final301 join over `ff1b7a888` preserves accepted property warnings318 and
+passes strict initialization on `3b6a92f2f` in3.769s. Independent review found no
+introduced runtime overlap; earlier source/state cuts retain their own inputs.
 Current296 eval31/saved42 plus persistent wrong-id/valid/replay controls and
 Stringable/Fiber chdir with73 owner/log/marker predicates keep their distinct cuts.
 Earlier old290/v5 Generator/Fiber default227 remain accepted; new231 remain UNRUN.
