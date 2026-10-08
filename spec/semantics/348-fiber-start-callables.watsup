@@ -148,7 +148,10 @@ def $fiber_start_capture_invoke(S, pfiberstart, b) = $throwable_allocate_at(S_st
   -- if S_started.COMPLETION = THROWN text ptbytes z
 def $fiber_start_capture_invoke(S, pfiberstart, b) = S_started
   -- if S_started = $fiber_start(S, pfiberstart)
-  -- if S_started.COMPLETION = NORMAL \/ S_started.COMPLETION = UNSUPPORTED text
+  -- if S_started.COMPLETION = NORMAL
+def $fiber_start_capture_invoke(S, pfiberstart, b) = S_started
+  -- if S_started = $fiber_start(S, pfiberstart)
+  -- if S_started.COMPLETION = UNSUPPORTED text
 rule PhpStep/fiber-start-capture-invoke: S ~> $fiber_start_capture_invoke(S, pfiberstart, b)
   -- if S.TODO = (FIBER_START_CAPTURE_ARGS n pfiberstart) :: (FIBER_START_CAPTURE_RESULT n pfiberstart b) :: ptask_tail*
   -- if $fiber_start_capture_result_valid(S, n, pfiberstart, b)
