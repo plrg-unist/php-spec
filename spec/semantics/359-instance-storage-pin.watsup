@@ -133,16 +133,16 @@ def $task_nodes(INSTANCE_STORAGE_STEP pinstancestorage) = [HOBJECT pinstancestor
 def $eager_explicit_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
 def $generator_internal_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
 
-def $instance_storage_cleared(ppropertyslot*, n) = ppropertyslot*[0:n] ++ [ppropertyslot[.STATE = PROP_UNSET]] ++ ppropertyslot*[n_next:n_tail]
-  -- if ppropertyslot = ppropertyslot*[n]
+def $instance_storage_cleared(ppropertyslot*, n) = ppropertyslot*[0:n] ++ [ppropertyslot_selected[.STATE = PROP_UNSET]] ++ ppropertyslot*[n_next:n_tail]
+  -- if ppropertyslot_selected = ppropertyslot*[n]
   -- if n_next = $(n + 1)
   -- if n_tail = $nabs($(|ppropertyslot*| - n - 1))
-def $instance_storage_transfer(S, pinstancestorage, ptask*) = $destructor_release_begin(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, pinstancestorage.OBJECT, $instance_storage_cleared(ppropertyslot*, n_slot))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = $(pinstancestorage.NEXT + 1)]) :: ptask*], $destruction_values($property_slot_nodes([ppropertyslot])))
-  -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = (ppropertyslot*)
+def $instance_storage_transfer(S, pinstancestorage, ptask*) = $destructor_release_begin(S_detached[.OBJECTPROPS = $objectprops_set(S_detached.OBJECTPROPS, pinstancestorage.OBJECT, $instance_storage_cleared(ppropertyslot_all*, n_slot))][.TODO = (INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = $(pinstancestorage.NEXT + 1)]) :: ptask*], $destruction_values($property_slot_nodes([ppropertyslot_selected])))
+  -- if $objectprops_at(S.OBJECTPROPS, pinstancestorage.OBJECT) = (ppropertyslot_all*)
   -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
   -- if n_slot = nat_order*[pinstancestorage.NEXT]
-  -- if ppropertyslot = ppropertyslot*[n_slot]
-  -- if S_detached = $propref_detach_slot(S, pinstancestorage.OBJECT, ppropertyslot)
+  -- if ppropertyslot_selected = ppropertyslot_all*[n_slot]
+  -- if S_detached = $propref_detach_slot(S, pinstancestorage.OBJECT, ppropertyslot_selected)
 rule PhpStep/instance-storage-slot: S ~> $instance_storage_transfer(S, pinstancestorage, ptask*)
   -- if S.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*
   -- if $instance_storage_valid(S, pinstancestorage)
