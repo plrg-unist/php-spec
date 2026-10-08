@@ -41,6 +41,10 @@ echo get_class($g),"|",(int)($w->get()===$g),"|",$g->current(),"|";
 $g->next();echo get_class($g),"|",(int)($w->get()===$g),"|";
 unset($g);echo (int)($w->get()===null);
 ''', b'Generator|1|7|Generator|1|1', 0),
+    'request-legacy-terminal-global': (
+        driver.UNSUPPORTED['request-end-required'][0], b'1ZF', 0),
+    'request-legacy-self-cache-cycle': (
+        driver.UNSUPPORTED['self-cache-cycle-required'][0], b'12ZF', 0),
 }
 
 WATCHED = driver.WATCHED + [

@@ -49,6 +49,14 @@ set_exception_handler("caught340");
 function request340(){try{try{throw new Exception("old");}finally{echo "A";yield 1;echo "X";}}finally{echo "O";throw new Exception("new");}}
 $g=request340();echo "C|",$g->current(),"|";
 ''', b'C|A1|Onew:N', 0),
+    'peer-request-store-zero-owner-bucket-remains-live': (
+        b'''<?php
+class Payload340{function __destruct(){echo "D";}}
+class Observer340{function __destruct(){global $w;$h=$w->get();echo "P",(int)($h!==null);if($h!==null){echo ":",(int)$h->valid(),":",(int)($h->current()===null);}}}
+function request340(){try{$self=yield 1;yield new Payload340;}finally{echo "F";}}
+$g=request340();$g->current();$g->send($g);$w=WeakReference::create($g);$wa=&$w;
+unset($g);$observer=new Observer340;$oa=&$observer;echo "C|";
+''', b'C|FDP1:0:1', 0),
 }
 
 UNSUPPORTED = {
