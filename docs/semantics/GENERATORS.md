@@ -119,6 +119,8 @@ The invalid-return warning runs before fatal reporting reads the live original c
 callbacks receive Unknown/line0 and can refresh it through `parent::__toString()`.
 Three fatal originals and 611 reached premises validate the real handler/destructor
 pins, transient Weak owners, warning delivery, cache mutation and replay at separate cuts.
+Actual 358 over `b721887ce` passes strict compilation at `00536106a`; current
+source/argument/storage fields remain intact and private 3/611 retain their inputs.
 Throwing callbacks, deeper custom rendering, abrupt exception release, message warnings, parked or
 escaped storage and generic terminal cleanup remain required.
 

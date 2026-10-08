@@ -96,6 +96,8 @@ A renderer-installed handler returning normally adds three exact fatal originals
 and 611 reached premises: inner release precedes handler restoration, warning callbacks
 receive Unknown/line0, and fatal reporting reads the original live cached string.
 Real pins/transient Weak owners, actual-head refusal and budget replay pass.
+Actual 358 over `b721887ce` passes strict compilation at `00536106a`, preserving
+current source/argument/storage fields; private 3/611 retain their own inputs.
 Throwing callbacks/deeper rendering, abrupt exception release, message warnings,
 parked/escaped storage and generic terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
