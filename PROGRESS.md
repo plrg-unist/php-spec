@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 364 converts simple Fiber API arrays to first-class Closures, including start and
+constructor methods. An independent ARRAY witness freezes selected members;
+the temporary bound receiver owner moves into the Closure, while static object
+inputs stay nonowning after retirement. Existing capture consumers retain named
+buffers, traces and last-RAW cleanup; duplicate conversion tasks fail admission.
+Strict compilation of 349 modules, nine exact normal originals at 1+8 cuts and
+261 independent plus 121 author premises pass. The original live-static helper overlap is corrected with
+a disjoint bound guard and a fresh ordinary-static counterexample; the static-source failure,
+compiler stop, preparation stop and fixture failure retain zero affected credit. Ordinary array-selected start,
+raw array C-root callbacks, compound selectors and Fiber-start unpacking remain
+required. Earlier 362/358 evidence retains its inputs.
+[Array-capture ledger](coverage/semantics/fiber-array-captures-review.json).
+
 362 selects ordinary callable arrays with simple Fiber API method names before
 argument evaluation. Frozen members survive selector retirement and REF mutation;
 one bound receiver owner transfers from CONFIG to its waiting API, while static
