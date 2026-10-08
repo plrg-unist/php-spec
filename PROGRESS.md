@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 370 executes simple RAW Fiber API array C-root callbacks, including start
+and constructor. RAW owns current members; frozen caches and C handlers borrow
+the receiver, with separate original/copied buffers. Saved states and actual
+callers authenticate parked static, nested, collector and warning continuations.
+Strict 353, twelve exact normals at 6+6 cuts and 293 independent plus 241 author
+reached premises pass. A narrow 296 fix admits nominal WeakReference argument/property
+types and names their diagnostics. The promoted-parameter original, initial
+compiler stop, typed-companion failure and fixture parse stop retain zero credit;
+the explicit-property companion is distinct. Compound selectors, start unpacking,
+promotion and broader lifecycle work remain required; paused returns stay excluded.
+Actual 355 over `aa8ebb4d1` passes strict compilation at `cb42ba678`, preserving
+current startup/source/collector and retained-method guards; private source/state
+cuts retain their inputs. [Raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json).
+
 Assertions368 supplies early startup `-1`/`0`/`1` selection for main/eval/include
 and replay, resolved direct-call elision, pre-argument immutable descriptions,
 dynamic/FCC evaluation and description validation before truth. At `02f0d61c4`
@@ -24,20 +38,10 @@ at `c24807fcd` (4.370 seconds); raw output is in
 `.tools/compiler-assertions-368-current-19/.tools/assertion-current-gate-v1`.
 Earlier private 350-module source/state/helper cuts retain their own identities.
 
-Module 367 executes ordinary simple Fiber-array `start`: immutable selection
-survives argument effects, and one receiver plus the original positional/named
-buffer transfer to the waiting API. Nonowning receipts remain valid after actual
-receiver retirement and keep recursive argument frames independent. Abrupt
-arguments release positional values, receiver, then extra named values in native
-order; body and entry exceptions preserve real `start` callsites. Strict 351, six
-exact normal originals at 5+1 cuts and 267 independent/160 author reached premises
-pass. The preimplementation Unsupported baseline retains zero agreement; earlier
-364/362 evidence is not renewed. Raw array C-root callbacks, compound selectors,
-Fiber-start unpacking and wider lifecycle consumers remain required.
-Actual352 over `262ab0c38` passes strict compilation at `c757a7e25`, preserving
-current source-line, property-read, trait and Generator/collector guards; private
-source/state cuts retain their own inputs.
-[Array-start ledger](coverage/semantics/fiber-array-start-review.json).
+367 ordinary simple array START retains six exact normals and 267/160 reached
+premises at their own cuts, with ordered positional/receiver/named unwind and
+real start exception sites. Actual 352 over `262ab0c38` passes strict compilation
+at `c757a7e25`; no earlier evidence is renewed. [Ledger](coverage/semantics/fiber-array-start-review.json).
 
 Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
 Actual close/cache owners survive normal rendering and handler-registry mutation;
@@ -1170,7 +1174,7 @@ stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
 `b89e7e66d`; fresh104/89 premises at that same cut prove frame ownership, live9
 with its typed source, real NEXT advancement/detach and consumed-slot refusal.
 The old typed fixture is adapted statically with no renewed credit. Quiet reads,
-uninitialized/consumed storage, mutation and escape remain required.
+consumed or explicitly unset storage, mutation and escape remain required.
 The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
 Future initialized declared object/array reads now copy the live payload owner; ALIAS reads
 retain the referent without acquiring its wrapper. Native3 at `8bd90af79` precede
@@ -1179,6 +1183,14 @@ source3 and fresh136/134 premises pass at `756c4673b`, covering actual captured
 VALUE/result transfer, nullable alias rebinding/type detach and array COW/child
 survival through parent retirement. Earlier fixtures are adapted statically only.
 The actual353 join over `26134d7a0` passes strict initialization at `8469aa86e`.
+Unvisited typed PROP_INITIAL reads now raise ordinary Error after visibility
+resolution, retaining declaring-class identity and actual source metadata.
+Native3 at `e9dd1a554` precede the unchanged inherited-model Unsupported baseline
+with zero agreement. Strict354, source3 and fresh123/141 premises pass at
+`3418d8268`, proving Error ownership during receiver release, continued cleanup,
+B/previousError chaining and atomic selected-reference binding. No earlier
+campaign is renewed; consumed and original PROP_UNSET slots remain required.
+The actual355 join over `64b2fabca` passes strict initialization at `08dfc81ef`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -1972,6 +1984,23 @@ original failures. Actual227/232/239 composition adds nine source comparisons an
 127 state premises at separate cutoffs: saved default constructors, cold selected
 references, physical interface diagnostic files and imported-maker Closure scope.
 Accepted233/237 routes remain preserved; the method checkpoint remains partial.
+Ordinary class-owned abstract scoped calls now reject before argument evaluation,
+with access errors preceding abstract rejection and concrete/trait-warning dispatch
+unchanged. At `a962cef07`/354 over `aa8ebb4d1`, strict algo/struct pass3.719/4.673s,
+one normal source and24 supplied clauses plus6 setup pass (5.220s). Nineteen
+clauses check the genuine rejection and all four validators; five helper-only
+clauses check access/nonstatic priority and concrete dispatch. Raw evidence
+under current19 `.tools/` is `method-runtime-ciqhcicl`,
+`closure-call-protocol-98d5klby`, `trait266-object-algo-u5b6vb34` and
+`trait266-object-struct-e68x39kk`; baseline interpreter failure `4rvh0zjs`
+retains zero agreement. Source-profile recording now preserves legacy argv/text
+metadata and merges dictionary profiles; five representation checks pass without
+semantic reruns. Wider method/core obligations remain open.
+The reviewed355 projection `da11ceff4` over `035bbe2de` passes strict
+algo/struct at3.719/4.823s, preserving current storage and bound-constructor targets.
+Source1/24 bridge unchanged; raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-vgui9wdk`
+and `trait266-object-struct-p9t_dgxh` in the same directory.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and

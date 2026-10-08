@@ -571,6 +571,8 @@ controls earn zero agreement. Pending-carrier unwind, deferred construction,
 wider consumers and WeakMap remain required. Canonical292/304
 composition separately passes strict277 initialization and one exact weak lifetime
 source; earlier cuts retain their inputs.
+Wrappers also satisfy nominal `WeakReference` argument and property types after
+their referent retires; diagnostics retain the actual internal class name.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
@@ -928,7 +930,7 @@ cover pending exceptions, the Generator RETURN-child interaction and genuine
 Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
 adds one exact Iterator-child original and 113 reached premises; future
 destructor-tail validation applies the real result discard before owner checks.
-Consumed or uninitialized property payload access and escaped reacquisition remain required.
+Consumed or explicitly unset property payload access and escaped reacquisition remain required.
 The same physical pin now covers ordinary stdClass storage. A materialized
 property table transfers its one HARRAY owner before bucket cleanup; shared tables
 keep their children after the parent retires. Five new exact originals and
@@ -945,6 +947,12 @@ property aliases without retaining their wrapper. Three further originals and
 136/134 reached premises cover alias rebinding, array copy-on-write and kept
 children surviving parent retirement until explicit release. The actual353
 composition passes strict initialization.
+Unvisited uninitialized typed properties now raise ordinary Error after visibility
+resolution, using the declaring class and source line. Three exact originals and
+123/141 reached premises cover inherited declarations, private denial, pending
+Error ownership, continued child cleanup and atomic selected-reference binding.
+Consumed and explicitly unset slots remain separate boundaries.
+The actual355 composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -960,6 +968,8 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
+Abstract scoped calls reject before arguments while retaining access-error priority;
+one normal source and24 supplied checks plus6 setup clauses pass.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work
@@ -1335,8 +1345,15 @@ Simple Fiber API arrays also convert to first-class Closures. A distinct source
 witness freezes the selected members; the temporary bound receiver owner moves
 into the Closure, while static selectors add none. Clone/equality and direct,
 explicit `__invoke` or C-root calls reuse the existing API protocols, including
-start and constructor captures. Raw array C-root callbacks, compound selectors
-and Fiber-start argument unpacking remain required.
+start and constructor captures. Simple raw Fiber API arrays also run as C-root
+callbacks, including start and constructor methods. RAW owns its current array
+members; the frozen receiver cache and C result tails add no receiver owner.
+Copied C arguments remain separate from the original outer start buffer. Saved
+Fiber states and actual callers authenticate nested, parked static and idle
+collector continuations. Inner API trace frames have no file or line site. The
+[raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json)
+records these distinct checks. Compound selectors and Fiber-start argument
+unpacking remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

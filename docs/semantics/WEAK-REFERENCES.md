@@ -15,6 +15,11 @@ or allocates a fresh wrapper after its predecessor retires. `get` copies a live
 target into the ordinary result owner. Discarding or saving that result uses the
 existing ordered release machinery.
 
+Wrappers satisfy nominal `WeakReference` argument and property types independently
+of referent lifetime; rejected receives name the actual internal class.
+The [raw Fiber-array review](../../coverage/semantics/fiber-array-core-callbacks-review.json)
+records the separate nominal-type source and reached checks.
+
 Object IDs never reuse. `get` checks target allocation and the actual ordinary
 INSTANCE/stdClass storage359 stage, without a second registry or a store-handle identity.
 Ordinary `__destruct` and resurrection keep the target live. During ordinary

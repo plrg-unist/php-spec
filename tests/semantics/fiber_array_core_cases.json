@@ -1,0 +1,146 @@
+[
+  {
+    "id": "peer-fiber-raw-array-cow-retains-original-bound-target",
+    "source": "<?php\n$target = new Fiber(static function () {\n    echo Fiber::suspend('Y'), '|';\n    return 17;\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$other = new Fiber(static function () { echo 'UNREACHED|'; return 99; });\n$pair = [$target, 'ReSuMe'];\n$runner = new Fiber($pair);\n$pair[0] = $other;\n$pair[1] = 'throw';\nunset($target, $pair);\necho (int)($weak->get() !== null), '|';\necho (int)($runner->start(value: 'R') === null), '|';\necho (int)($weak->get() === null), '|', (int)$runner->isTerminated(), '|';\necho (int)($runner->getReturn() === null), '|', (int)$other->isStarted();\n",
+    "source_sha256": "f4f06eeee6d742d8826bc2d2ac57a1019fae33f23735f59f1047c053843690ae",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Constructor callback selection keeps the original plain-array snapshot through external COW writes and selector retirement. RAW owns its array and bound member; after the callback finishes, its last target owner retires. All getReturn reads follow normal termination.",
+    "native_stdout": "Y|1|R|1|1|1|1|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-raw-array-reference-members-use-borrowed-frozen-cache",
+    "source": "<?php\n$target = new Fiber(static function () {\n    echo Fiber::suspend('Y'), '|';\n    return 17;\n});\necho $target->start(), '|';\n$other = new Fiber(static function () { echo 'UNREACHED|'; return 99; });\n$receiver = $target;\n$method = 'ReSuMe';\n$pair = [&$receiver, &$method];\n$runner = new Fiber($pair);\n$receiver = $other;\n$method = 'throw';\n$pair = null;\necho (int)($runner->start(value: 'R') === null), '|';\necho $target->getReturn(), '|', (int)$other->isStarted(), '|';\necho (int)($runner->getReturn() === null);\n",
+    "source_sha256": "479d72fe1d61adcbc3aa9814b1b7114b37ba6e18c58988d9530e24d0a7057efa",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Constructor fci_cache freezes the selected method and receiver before member-reference mutation. The original selected target deliberately remains owned by its main variable: the engine cache itself is borrowed, while RAW now owns the changed receiver reference. No dangling cached receiver is invoked.",
+    "native_stdout": "Y|R|1|17|0|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-raw-array-static-object-is-owned-only-through-raw-array",
+    "source": "<?php\n$input = new Fiber(static function () { echo 'UNREACHED|'; return 13; });\n$weak = WeakReference::create($input);\n$pair = [$input, 'SuSpEnD'];\n$runner = new Fiber($pair);\nunset($input, $pair);\necho (int)($weak->get() !== null), '|';\necho $runner->start(value: 'V'), '|';\necho (int)($weak->get() !== null), '|';\necho (int)($runner->resume('R') === null), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "fb2349f69f5deff7ae06ad422a0c21480a7a4f49e3e1c471fc070797234d530c",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Static Fiber::suspend selects the actual runner, but RAW is the original callback array and therefore still owns its object-style input until callback retirement. The callback cache and API add no input owner; normal resume finishes with defined return R.",
+    "native_stdout": "1|V|1|1|R|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-raw-array-start-named-buffer-and-real-parent",
+    "source": "<?php\nfunction rawArrayStartBody(int $value, $suffix = 'D', ...$tail) {\n    global $target;\n    echo $value, '|', $suffix, '|', $tail['tag'], '|';\n    echo (int)(Fiber::getCurrent() === $target), '|';\n    echo Fiber::suspend('Y'), '|';\n    return 29;\n}\n$target = new Fiber('rawArrayStartBody');\n$runner = new Fiber([$target, 'StArT']);\n$parent = new Fiber(static function () use ($runner) {\n    echo 'P|';\n    echo (int)($runner->start(value: '7', tag: 'X') === null), '|';\n    return 19;\n});\n$parent->start();\necho $runner->getReturn(), '|', (int)$runner->isTerminated(), '|';\necho (int)($target->resume('R') === null), '|';\necho $target->getReturn(), '|', $parent->getReturn();\n",
+    "source_sha256": "2afd5dd0113451adc43be77c08c3f8a2014deb37a51c330b485c663f62a340b8",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Original named/default/variadic forwarding crosses a real main-parent-runner-target chain. The root START callback returns its target suspension value into the runner return store; the outer start returns null. All return reads follow defined completion.",
+    "native_stdout": "P|7|D|X|1|1|Y|1|R|1|29|19",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-raw-array-constructor-warning-parks-real-root",
+    "source": "<?php\nclass RawArrayCtorBase {\n    public static function callback() { echo 'UNREACHED|'; return 11; }\n}\nclass RawArrayCtorChild extends RawArrayCtorBase {}\n$target = new Fiber(static function () { echo 'UNREACHED|'; return 17; });\n$weak = WeakReference::create($target);\n$pair = [$target, '__construct'];\n$runner = new Fiber($pair);\nunset($target, $pair);\nset_error_handler(static function ($level, $message) {\n    echo 'W', (int)($level === 8192), (int)(Fiber::getCurrent() === $GLOBALS['runner']), '|';\n    echo 'R', Fiber::suspend('P'), '|';\n    return true;\n});\necho $runner->start(callback: [RawArrayCtorChild::class, 'RawArrayCtorBase::callback']), '|';\ntry { $runner->resume(9); }\ncatch (FiberError $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\nunset($error);\nrestore_error_handler();\necho (int)$runner->isTerminated(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "19098c9812e2e9b7ba342c56bf7d34eef31a62c951b265da276c367bf066b438",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "The RAW array retains the last constructor receiver through deprecated compound callback parsing and a suspended warning handler. Resuming authentic parser continuation rejects repeated construction, with real root/API traces; neither callback body executes and no failed return is read.",
+    "native_stdout": "W11|RP|9|Cannot call constructor twice|__construct.00|resume.11|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-raw-array-throw-identity-and-defined-core-get-return",
+    "source": "<?php\nfunction rawArrayThrowBody() {\n    global $original;\n    try { Fiber::suspend('Y'); }\n    catch (Exception $caught) {\n        echo (int)($caught === $original), '|', $caught->getMessage(), '|';\n        return 37;\n    }\n}\n$target = new Fiber('rawArrayThrowBody');\necho $target->start(), '|';\n$original = new Exception('X');\n$runner = new Fiber([$target, 'ThRoW']);\necho (int)($runner->start(exception: $original) === null), '|';\necho (int)($runner->getReturn() === null), '|';\n$get = new Fiber([$target, 'GeTrEtUrN']);\necho (int)($get->start() === null), '|', $get->getReturn(), '|';\n$status = new Fiber([$target, 'IsTeRmInAtEd']);\necho (int)($status->start() === null), '|', (int)$status->getReturn();\n",
+    "source_sha256": "a29b9c04d6ca8b5438ac542c3c336d68f5cacb75f384893d5d733055a89daabe",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "The raw bound throw callback injects the original Throwable into the actual suspended target. Later raw getReturn and status callbacks consume only the safely defined return37 and terminated state.",
+    "native_stdout": "Y|1|X|1|1|1|37|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-weak-reference-nominal-parameter-property-and-dead-referent",
+    "source": "<?php\nfunction rawCoreWeakTyped370(WeakReference $value) { echo 'T'; }\nfunction rawCoreWeakNullable370(?WeakReference $value) { echo (int)($value === null); }\nfunction rawCoreWeakWrong370(int $value) { echo 'UNREACHED'; }\nclass RawCoreWeakHolder370 { public WeakReference $value; }\n$target = new stdClass();\n$weak = WeakReference::create($target);\n$alias =& $weak;\n$holder = new RawCoreWeakHolder370();\nrawCoreWeakTyped370($alias);\n$holder->value = $alias;\necho (int)($holder->value === $weak), '|';\ntry { rawCoreWeakTyped370($target); }\ncatch (TypeError $error) { echo 'P|'; }\ntry { $holder->value = null; }\ncatch (TypeError $error) { echo 'N|'; }\ntry { $holder->value = 17; }\ncatch (TypeError $error) { echo 'S|'; }\nrawCoreWeakNullable370(null);\necho '|';\nunset($target);\necho (int)($weak->get() === null), '|';\nrawCoreWeakTyped370($alias);\necho '|';\ntry { rawCoreWeakWrong370($weak); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; }\necho (int)($holder->value === $weak), '|END';\n",
+    "source_sha256": "9cf7c7646d95c2311886b7d629ce1f184ccca5fb7748a527d4b30c381a568478",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "A genuine WeakReference satisfies nominal parameter and property types through an alias before and after referent retirement; null/scalar/other-object rejection preserves the old property, nullable receives accept null, and wrong-int diagnostics name WeakReference.",
+    "native_stdout": "T1|P|N|S|1|1|T|rawCoreWeakWrong370(): Argument #1 ($value) must be of type int, WeakReference given, called in /home/user/workspace/php-spec/.tools/calls-fiber-array-core-native-types-19/author-weak-reference-nominal-parameter-property-and-dead-referent/source.php on line 25|1|END",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-raw-array-last-member-explicit-property-before-original-start-argument",
+    "source": "<?php\nclass RawArrayLastPayload19 {\n    private WeakReference $target;\n    public function __construct(WeakReference $target) { $this->target = $target; }\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\n$target = new Fiber(static function () {\n    try {\n        echo 'B|';\n        Fiber::suspend('Y');\n        Fiber::suspend('Z');\n    } finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$runner = new Fiber([$target, 'ReSuMe']);\nunset($target);\necho $runner->start(new RawArrayLastPayload19($weak)), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null), '|', (int)$runner->isTerminated();\n",
+    "source_sha256": "3420c7c0dfa20c40fd35888fdda959111e9b51535f672c801bad0c987322c0e9",
+    "expected_model": "normal",
+    "engine_derived_expectation": "Distinct explicit-property companion to the preserved promotion boundary: the same typed property, typed constructor receive, destructor and call operations observe last RAW force-close before original start-argument retirement.",
+    "native_status": "recorded",
+    "native_stdout": "B|Y|F|D1||Z|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-raw-array-last-member-closes-before-original-start-argument",
+    "source": "<?php\nclass RawArrayLastPayload19 {\n    public function __construct(private WeakReference $target) {}\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\n$target = new Fiber(static function () {\n    try {\n        echo 'B|';\n        Fiber::suspend('Y');\n        Fiber::suspend('Z');\n    } finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$runner = new Fiber([$target, 'ReSuMe']);\nunset($target);\necho $runner->start(new RawArrayLastPayload19($weak)), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null), '|', (int)$runner->isTerminated();\n",
+    "source_sha256": "9b8516c5bd1812868e7a8e3a21f6243ca861efa5433f0ce613cd1693feedb9ad",
+    "expected_model": "unsupported",
+    "native_status": "recorded",
+    "engine_derived_expectation": "The RAW callback array is the sole selected target owner. Its resume callback returns the second suspension value normally; RAW retirement then force-closes the target before the outer original start-argument payload retires. The runner has a defined normal result; no target getReturn follows force-close. The original promoted parameter remains an unsupported required core dependency, with zero whole-program agreement.",
+    "native_stdout": "B|Y|F|D1||Z|1|1",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "parameter attributes, promotion or hooks"
+  },
+  {
+    "id": "peer-fiber-raw-static-array-keeps-history-across-array-start-and-captured-resume",
+    "source": "<?php\n$input = new Fiber(static function () { echo 'UNREACHED|'; return 13; });\n$weak = WeakReference::create($input);\n$runner = new Fiber([$input, 'SuSpEnD']);\n$start = [$runner, 'StArT'];\n$resume = $runner->resume(...);\nunset($input);\necho (int)($weak->get() !== null), '|';\necho $start(value: 'V'), '|';\necho (int)($weak->get() !== null), '|';\nunset($start);\necho (int)($resume(value: 'R') === null), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "8953fe9d7bb3fe755403402e2372237b18c2fc6cc9435e8ca8bc5af264c21103",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "The original inner C-root suspend has a dynamic ordinary-array START site; its suspended VM has no active outer caller. A later captured resume uses a different source site while preserving original core call metadata. RAW alone owns the object-style static input; the runner returns R normally before its defined getReturn.",
+    "native_stdout": "1|V|1|1|R|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-raw-array-cached-collector-resume-and-throw",
+    "source": "<?php\nclass RawCoreIdleCollector {\n    public $self;\n    function __construct() { $this->self = $this; }\n    function __destruct() {\n        $GLOBALS['worker'] = Fiber::getCurrent();\n        echo 'D|';\n    }\n}\n$request = new Fiber(static function () {\n    $cycle = new RawCoreIdleCollector();\n    unset($cycle);\n    echo gc_collect_cycles(), '|';\n});\n$request->start();\nunset($request);\n$resume = new Fiber([$worker, 'resume']);\n$throw = new Fiber([$worker, 'throw']);\n$suspended = new Fiber([$worker, 'isSuspended']);\nunset($worker);\necho (int)($resume->start(value: 123) === null), '|';\ntry { $throw->start(exception: new Exception('idle')); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\nunset($error);\n$suspended->start();\necho (int)$suspended->getReturn(), '|';\nunset($resume, $throw, $suspended);\necho 'END';\n",
+    "source_sha256": "49aaaaa6961998573628fb77f67914f954b0e75ffc424fe9bc9022bb592a1bf6",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "RAW arrays retain the exposed idle collector worker while selected resume/throw handlers borrow it. Successful public returns and a caught throw must return the worker to idle; only the normally completed status runner return is read.",
+    "native_stdout": "D|1|1|idle|1|END",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-raw-array-body-failure-identity-and-start-error-traces",
+    "source": "<?php\nfunction rawArrayResumeFailure370() {\n    global $resumeOriginal;\n    Fiber::suspend('Y');\n    $resumeOriginal = new Exception('resume-body');\n    throw $resumeOriginal;\n}\n$target = new Fiber('rawArrayResumeFailure370');\necho $target->start(), '|';\n$runner = new Fiber([$target, 'resume']);\ntry { $runner->start('R'); }\ncatch (Exception $error) {\n    echo (int)($error === $resumeOriginal), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\necho (int)$runner->isTerminated(), '|', (int)$target->isTerminated(), '|';\nfunction rawArrayStartFailure370($value) {\n    global $startOriginal;\n    $startOriginal = new Exception('start-body');\n    throw $startOriginal;\n}\n$startTarget = new Fiber('rawArrayStartFailure370');\n$startRunner = new Fiber([$startTarget, 'StArT']);\ntry { $startRunner->start(value: 'V'); }\ncatch (Exception $error) {\n    echo (int)($error === $startOriginal), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\necho (int)$startRunner->isTerminated(), '|', (int)$startTarget->isTerminated(), '|';\n$repeat = new Fiber([$startTarget, 'start']);\ntry { $repeat->start(value: 'A'); }\ncatch (FiberError $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\necho (int)$repeat->isTerminated();\n",
+    "source_sha256": "8d891bd76f9ff31d1eb0b30228dcc59e180d9ab341bcec1dc186e3075bfbd72a",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "Fixed RAW resume body failure and RAW START body failure preserve the original Throwable, genuine source-less C handler frame, actual public start suffix and terminated states. A distinct repeated START exercises preflight failure and nonowning result cleanup. No failed getReturn is read.",
+    "native_stdout": "Y|1|rawArrayResumeFailure370.00|resume.00|start.11|1|1|1|rawArrayStartFailure370.00|start.00|start.11|1|1|Cannot start a fiber that has already been started|start.00|start.11|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "boundary-fiber-array-c-root-callback",
+    "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$target->start();\n$runner = new Fiber([$target, 'getReturn']);\necho (int)($runner->start() === null), '|', $runner->getReturn();\n",
+    "source_sha256": "bd54382232498e8c4daf72278f7584f9dc47d20805643ca40b415f10fb05e82c",
+    "expected_model": "normal",
+    "native_status": "recorded",
+    "engine_derived_expectation": "The RAW getReturn callback consumes the target return17 after normal termination; its cached receiver is borrowed from the retained callback array.",
+    "native_stdout": "1|17",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
