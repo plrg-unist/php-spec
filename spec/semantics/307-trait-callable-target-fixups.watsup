@@ -19,6 +19,7 @@ dec $trait_fcc_adapted(pstate, pclassdesc, pmethoddesc, nat) : pmethoddesc?
 dec $trait_fcc_import_selected(pstate, pclassdesc, pmethoddesc, nat, pmethoddesc?) : pmethoddesc?
 dec $trait_fcc_unfixed(pstate, porigin, ptbytes, nat) : pmethoddesc?
 dec $trait_fcc_cached_header(pstate, porigin) : (pconstantclosure, porigin, pmethoddesc)?
+dec $trait_fcc_source_header_at(pstate, porigin, nat) : (pconstantclosure, porigin, pmethoddesc)?
 dec $trait_fcc_fixed_at_known(pstate, pconstantclosure, porigin, pmethoddesc, nat) : pmethoddesc?
 dec $trait_fcc_deprecation(pstate, pmethoddesc) : preqbytes?
 dec $trait_fcc_snapshot(pstate, pconstantclosure) : pmethoddesc?
@@ -118,7 +119,12 @@ def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassco
   -- if $method_accessible(S_copy, pmethoddesc, (ptraitcachecause.CLASS))
   -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE ptraitcachecause.CLASS eps)
 ;; A later import uses the already selected target, even when its own method
-;; differs. Only a first owner published at this birth prefix is admitted here.
+;; differs. Its first cache must be authenticated at this birth prefix.
+def $trait_fcc_source_header_at(S, porigin_site, n_prefix) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $trait_fcc_cached_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $constant_callable_published(S.DECLARATIONS[0:n_prefix], porigin_owner)
+def $trait_fcc_source_header_at(S, porigin_site, n_prefix) = eps -- otherwise
 def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassconstantdesc)
   -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
   -- if $constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure_first)
@@ -133,9 +139,8 @@ def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = (pclassco
   -- if pconstantclosure.DECL = pclassconstantdesc.ORIGIN
   -- if $trait_fcc_source(S, pclassconstantdesc)
   -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
-  -- if $trait_fcc_cached_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_first_owner, pmethoddesc_first))
+  -- if $trait_fcc_source_header_at(S, pconstantclosure.SITE, ptraitcachecause.PREFIX) = ((pconstantclosure_first, porigin_first_owner, pmethoddesc_first))
   -- if porigin_first_owner =/= ptraitcachecause.CLASS
-  -- if $constant_callable_published(S.DECLARATIONS[0:ptraitcachecause.PREFIX], porigin_first_owner)
   -- if $trait_fcc_fixed_at_known(S, pconstantclosure_first, porigin_first_owner, pmethoddesc_first, ptraitcachecause.PREFIX) = (pmethoddesc)
   -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE ptraitcachecause.CLASS eps)
 def $trait_fcc_receipt_source(S, pconstantclosure, ptraitcachecause) = eps -- otherwise
