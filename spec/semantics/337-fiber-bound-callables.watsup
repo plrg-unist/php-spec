@@ -5,6 +5,7 @@ def $fiber_bound_name(ptbytes) = $fiber_bound_kind(pintrinsic)
   -- if $fiber_method(ptbytes) = (pintrinsic)
 def $fiber_bound_name(ptbytes) = false -- otherwise
 def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if pfibercapture.FACTORY = eps
   -- if $fiber_bound_kind(pfibercapture.KIND)
   -- if $fiber_method(pfibercapture.NAME) = (pfibercapture.KIND)
   -- if pfibercapture.INPUT = (n)
@@ -55,11 +56,13 @@ def $fiber_api_valid(S, pfiberapi) = true
   -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
   -- if $config_slots_valid(S, pconfigcall.SENT)
   -- if pintrinsic =/= INTRINSIC_FIBER_THROW \/ $class_instanceof(S, $fiber_config_value(pconfigcall), $ptascii("Throwable"))
-def $fiber_caller_api_trace(S, pfiberapi) = $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))
+;; A successful switch links its API frame back to the real caller site.
+def $fiber_caller_api_trace(S, pfiberapi) = ptraceframe[.FILE = $call_sourcefile(S.FILES, pconfigcall.SITE)][.LINE = pconfigcall.LINE] :: ptraceframe_tail*
   -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
   -- if $fiber_capture_config_tag(pconfigcall)
   -- if $fiber_bound_kind(pconfigcall.KIND)
   -- if $fiber_capture_result_valid(S, n, pconfigcall, b)
+  -- if $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))) = ptraceframe :: ptraceframe_tail*
 
 ;; The idle collector executes its public API in a C loop. Authenticate its
 ;; captured call through the actual saved caller, where the owning tail lives.

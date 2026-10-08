@@ -210,6 +210,12 @@ self-CV fast path, and retains evaluated temporary/reference operands through
 the final store. Thirteen exact originals cover live rebinding, aliases, copied
 expression results and normal or throwing operand cleanup. The249 independent
 reached premises and current-composition gate retain separate records.
+[Named static-property Stringable compounds356](coverage/semantics/static-compound-string-review.json)
+preserve the initially selected plain slot or reference cell across callbacks,
+including typed final results and PHP's retained reference-type history. Twelve
+exact originals and368 reached premises cover live RHS reads, inherited slots,
+alias rebinding, reference history, temporary cleanup and access-error priority.
+The actual344 compiler/init gate retains its separate accepted record.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -524,6 +530,8 @@ Keep and release scans also reuse the carried graph, including detached and
 retired buckets; public helpers retain their behavior for modified graphs.
 GC and eager-destruction consumers read the same observed state’s edges after
 its roots without rebuilding those roots.
+The driver carries an already successful original-state owner order into the
+following GC pass; failed or skipped destruction branches retain public fallbacks.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
@@ -543,7 +551,7 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, suspension inside a public collector callback, automatic
+graphs, post-pass public callback reentry/internal takeover, automatic
 thresholds and wider freeing remain open. Module332 adds quiescent public idle
 resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
@@ -559,7 +567,13 @@ Zero-owner targets remain borrowed; real weak reacquisition can free them.
 Captured APIs retain their genuine caller owners, and protected/private access
 uses native `Fiber` scope. Four exact originals and separate274/177 reached
 premises pass; one earlier scope assertion is superseded. Final336 compilation
-preserves the accepted current parent. Public callback suspension remains required.
+preserves the accepted current parent. Cached callbacks now suspend and reenter
+within the same live physical pass, preserving the cache and rebinding the fresh
+public API. One normal source and 228 reached physical premises pass; captured
+old/new exception priority completes in the state checks while its source CLI
+retains a 60s timeout with zero agreement. Final 343 compilation preserves `e1c3d4d61`; publication on `2ed57ca8a`
+preserves the static-property change by review.
+Post-pass reentry and internal takeover remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -759,7 +773,8 @@ native exceptions. Stringable `.=` retains the selected destination and restores
 the writer scope after callbacks. Private34 normal/eight compiler/350 reached
 checks retain their [cuts](coverage/semantics/instance-set-access-review.json);
 one actual Fiber source preserves the captured property across suspension.
-Readonly follow-ons/hooks, wider borrowed destination lifetime, static Stringable compounds
+Readonly follow-ons/hooks, wider borrowed destination lifetime and static
+Stringable compounds with wider selectors
 and broader temporary-return/callable/typed-reference consumers remain open.
 The ordinary [readonly slice294](docs/semantics/SOURCE-READONLY.md) adds first
 initialization, initialized write priority, detached object references and genuine
@@ -892,6 +907,10 @@ clauses separate.
 A later failed import also retains a dead receipt when the first owner failed;
 one shutdown original and59 supplied rollback conditions pass, with6 setup
 clauses separate.
+If data binding succeeds before abstract verification fails, later cached calls
+use the fixed class scope while an imported first birth keeps its trait scope.
+One shutdown original and59 supplied phase/scope/static conditions pass, with6
+setup clauses separate; the failed class stays unpublished.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
@@ -1166,8 +1185,16 @@ Callable parsing, including deprecated selectors and suspended warning handlers,
 precedes repeated-constructor rejection. Known registered callbacks reach that
 rejection without executing their body. The
 [constructor-capture ledger](coverage/semantics/fiber-constructor-callables-review.json)
-records source/error traces, parser ownership and last-RAW retirement. Outer
-unpacking and broader callable adapters remain required.
+records source/error traces, parser ownership and last-RAW retirement.
+`Closure::fromCallable` now selects Fiber APIs from simple method arrays and
+static class-method strings. Frozen callback members and completed factory
+arguments authenticate the capture after arrays or the factory owner retire;
+bound captures own their receiver, while static object selectors add no owner.
+Direct, explicit `__invoke` and C-root consumers reuse the selected API protocol.
+Successful waiting calls retain their real API callsite in exception traces.
+The [factory ledger](coverage/semantics/fiber-from-callable-review.json) keeps
+distinct source and state cuts. Fiber-start argument unpacking, ordinary API
+callable arrays and effectful compound factory selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

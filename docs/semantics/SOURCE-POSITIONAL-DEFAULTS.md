@@ -201,4 +201,6 @@ false-frontier controls; its standalone original retry remains UNRUN.
 Same-state GC edge consumption at `c0cbdd69b`/336 passes typed and admitted
 source-step controls. The combined302/301 original at `ea7cf0a34`/339 still reaches
 host55.045625 with empty streams and zero agreement; no speedup or231 credit follows.
+The `500a2cedc`/340 eager-edge original also reaches host55.045470 with empty
+streams and zero agreement.
 Whole retry composition and wider producers remain open.

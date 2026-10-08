@@ -10,6 +10,7 @@ dec $fiber_capture_input_before(nat?, nat) : bool
 def $fiber_capture_input_before(eps, n) = true
 def $fiber_capture_input_before((n_input), n) = $(n_input < n)
 def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if pfibercapture.FACTORY = eps
   -- if $fiber_static(pfibercapture.KIND)
   -- if $fiber_method(pfibercapture.NAME) = (pfibercapture.KIND)
   -- if pfibercapture.INPUT = eps
@@ -18,6 +19,7 @@ def $fiber_capture_source_valid(S, pfibercapture) = true
   -- if $method_source_name(phpType20, $ptlc(pfibercapture.NAME))
   -- if $ppfirstclass(phpType7*)
 def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if pfibercapture.FACTORY = eps
   -- if $fiber_static(pfibercapture.KIND)
   -- if $fiber_method(pfibercapture.NAME) = (pfibercapture.KIND)
   -- if pfibercapture.INPUT = (n)
@@ -40,7 +42,7 @@ def $fiber_capture_new(S, pintrinsic, ptbytes, n_input?) = S[.OBJECTS = S.OBJECT
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = ptask :: ptask_tail*
   -- if n = |S.OBJECTS|
-  -- if pfibercapture = {SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT n_input?}
+  -- if pfibercapture = {SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT n_input?, FACTORY eps}
   -- if $fiber_capture_source_valid(S, pfibercapture)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $fiber_capture_new(S_read, pintrinsic, ptbytes, (n))
   -- if S_read = $resolve_at(S, poperand, z)

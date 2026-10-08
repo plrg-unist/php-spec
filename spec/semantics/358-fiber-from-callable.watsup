@@ -1,0 +1,88 @@
+;; Factory selection freezes callback members, not the mutable source array.
+;; CALL and ITEMS are historical metadata; only bound INPUT owns a receiver.
+dec $fiber_factory_items(pstate, pvalue) : pentry*
+dec $fiber_factory_members(pstate, pvalue, pentry*) : (pvalue, ptbytes)?
+dec $fiber_factory_receiver(pstate, pvalue) : bool
+dec $fiber_factory_method(ptbytes) : pintrinsic?
+dec $fiber_factory_selection(pstate, pvalue, pentry*) : (pintrinsic, ptbytes, nat?)?
+dec $fiber_factory_error(pstate, pvalue, pentry*) : ptbytes?
+dec $fiber_factory_new(pstate, pconfigcall, pvalue, pentry*) : pstate
+
+def $fiber_factory_items(S, PARRAY n) = $config_pack_capture(S, S.ARRAYS[n].ITEMS)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+def $fiber_factory_items(S, pvalue) = eps -- otherwise
+def $fiber_factory_members(S, PSTRING ptbytes, eps) = ((PSTRING ptbytes_class, ptbytes_method))
+  -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
+def $fiber_factory_members(S, PARRAY n, pentry*) = ((pvalue, ptbytes))
+  -- if $(n < |S.ARRAYS|)
+  -- if |pentry*| = 2
+  -- if $config_pack_items_valid(pentry*)
+  -- if $entry_lookup(pentry*, KINT 0) = (DIRECT pvalue)
+  -- if $entry_lookup(pentry*, KINT 1) = (DIRECT (PSTRING ptbytes))
+def $fiber_factory_members(S, pvalue, pentry*) = eps -- otherwise
+def $fiber_factory_receiver(S, PSTRING ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("fiber"))
+def $fiber_factory_receiver(S, POBJECT n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FIBER pfiber
+def $fiber_factory_receiver(S, pvalue) = false -- otherwise
+def $fiber_factory_candidate(S, pvalue) = true
+  -- if $fiber_factory_members(S, pvalue, $fiber_factory_items(S, pvalue)) = ((pvalue_receiver, ptbytes))
+  -- if $fiber_factory_receiver(S, pvalue_receiver)
+  -- if ~$typed_callable_method(ptbytes, false, false)
+def $fiber_factory_candidate(S, pvalue) = false -- otherwise
+def $fiber_factory_method(ptbytes) = (INTRINSIC_FIBER_START) -- if $ptlc(ptbytes) = $ptascii("start")
+def $fiber_factory_method(ptbytes) = $fiber_method(ptbytes) -- otherwise
+
+def $fiber_factory_selection(S, pvalue, pentry*) = ((pintrinsic, ptbytes, eps))
+  -- if $fiber_factory_members(S, pvalue, pentry*) = ((PSTRING ptbytes_class, ptbytes))
+  -- if $fiber_factory_receiver(S, PSTRING ptbytes_class)
+  -- if $fiber_factory_method(ptbytes) = (pintrinsic)
+  -- if $fiber_static(pintrinsic)
+def $fiber_factory_selection(S, pvalue, pentry*) = ((pintrinsic, ptbytes, n_input?))
+  -- if $fiber_factory_members(S, pvalue, pentry*) = ((POBJECT n, ptbytes))
+  -- if $fiber_factory_receiver(S, POBJECT n)
+  -- if $fiber_factory_method(ptbytes) = (pintrinsic)
+  -- if n_input? = (n)
+  -- if $fiber_static(pintrinsic) \/ $fiber_at(S, n) =/= eps
+def $fiber_factory_selection(S, pvalue, pentry*) = eps -- otherwise
+def $fiber_factory_error(S, pvalue, pentry*) = ($ptascii("class Fiber does not have a method \"") ++ $c_string(ptbytes) ++ [34])
+  -- if $fiber_factory_members(S, pvalue, pentry*) = ((pvalue_receiver, ptbytes))
+  -- if $fiber_factory_receiver(S, pvalue_receiver)
+  -- if $fiber_factory_method(ptbytes) = eps
+def $fiber_factory_error(S, pvalue, pentry*) = ($ptascii("non-static method Fiber::") ++ $fiber_method_name(pintrinsic) ++ $ptascii("() cannot be called statically"))
+  -- if $fiber_factory_members(S, pvalue, pentry*) = ((PSTRING ptbytes_class, ptbytes))
+  -- if $fiber_factory_receiver(S, PSTRING ptbytes_class)
+  -- if $fiber_factory_method(ptbytes) = (pintrinsic)
+  -- if ~$fiber_static(pintrinsic)
+def $fiber_factory_error(S, pvalue, pentry*) = eps -- otherwise
+
+def $from_receive(S, pconfigcall, pvalue) = $fiber_factory_new(S, pconfigcall, pvalue, $fiber_factory_items(S, pvalue))
+  -- if $fiber_factory_candidate(S, pvalue)
+  -- if $fiber_factory_selection(S, pvalue, $fiber_factory_items(S, pvalue)) =/= eps
+def $from_receive(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("Failed to create closure from callable: ") ++ ptbytes)
+  -- if $fiber_factory_candidate(S, pvalue)
+  -- if $fiber_factory_error(S, pvalue, $fiber_factory_items(S, pvalue)) = (ptbytes)
+def $fiber_factory_new(S, pconfigcall, pvalue, pentry*) = $from_done(S[.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $fiber_factory_selection(S, pvalue, pentry*) = ((pintrinsic, ptbytes, n_input?))
+  -- if n = |S.OBJECTS|
+  -- if pfiberfactory = {CALL pconfigcall, ITEMS pentry*}
+  -- if pfibercapture = {SITE pconfigcall.SITE, KIND pintrinsic, NAME ptbytes, INPUT n_input?, FACTORY (pfiberfactory)}
+  -- if $fiber_capture_source_valid(S, pfibercapture)
+
+def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if pfibercapture.FACTORY = (pfiberfactory)
+  -- if pconfigcall = pfiberfactory.CALL
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if pconfigcall.SITE = pfibercapture.SITE
+  -- if $config_selected_valid(S, pconfigcall)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
+  -- if $config_sent_shape(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $fiber_factory_members(S, pvalue, pfiberfactory.ITEMS) = ((pvalue_receiver, ptbytes))
+  -- if ~$typed_callable_method(ptbytes, false, false)
+  -- if $fiber_factory_selection(S, pvalue, pfiberfactory.ITEMS) = ((pfibercapture.KIND, pfibercapture.NAME, pfibercapture.INPUT))

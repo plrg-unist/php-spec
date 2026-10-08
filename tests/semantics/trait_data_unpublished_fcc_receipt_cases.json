@@ -121,7 +121,18 @@
       "exit_status": 255,
       "stdout_base64": "UFJFO1NIVVQ7",
       "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6Om0gaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDQKRmF0YWwgZXJyb3I6IEMgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMTgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQpGYXRhbCBlcnJvcjogRSBhbmQgVSBkZWZpbmUgdGhlIHNhbWUgcHJvcGVydHkgKCR4KSBpbiB0aGUgY29tcG9zaXRpb24gb2YgRS4gSG93ZXZlciwgdGhlIGRlZmluaXRpb24gZGlmZmVycyBhbmQgaXMgY29uc2lkZXJlZCBpbmNvbXBhdGlibGUuIENsYXNzIHdhcyBjb21wb3NlZCBpbiB7RklMRX0gb24gbGluZSAxMApTdGFjayB0cmFjZToKIzAgW2ludGVybmFsIGZ1bmN0aW9uXToge2Nsb3N1cmU6e0ZJTEV9Ojh9KCkKIzEge21haW59Cg=="
+    },
+    {
+      "id": "failed-first-post-fixup-abstract-shutdown",
+      "source": "<?php\ntrait T {\n    abstract public static function n();\n    public static function m($v = 7) {\n        static $n = 0;\n        echo \"T:\", self::class, \":\", static::class, \":\", $v, \":\", ++$n, \";\";\n    }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static $x = self::Y;\n        public static function n() {}\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    $f();\n    $g = clone $f;\n    $g();\n    E::m();\n});\necho \"PRE;\";\nclass C { use U; public static $x = self::Y; }\necho \"POST;\";\n",
+      "source_sha256": "473366a469e050ca07a575679888e9cd42ad9594f40367ecc7b3de94a9a8c8c2",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-failed-first-post-fixup-abstract-shutdown/command.json",
+      "native_raw_sha256": "360b9d1fa2c6a9d28f5aacc032d47e34382a1055894c8c3cf679729fb22aa2b1",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7VDpDOkU6NzoxO1Q6QzpFOjc6MjtGUkVTSDs=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6Om0gaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDgKRmF0YWwgZXJyb3I6IENsYXNzIEMgY29udGFpbnMgMSBhYnN0cmFjdCBtZXRob2QgYW5kIG11c3QgdGhlcmVmb3JlIGJlIGRlY2xhcmVkIGFic3RyYWN0IG9yIGltcGxlbWVudCB0aGUgcmVtYWluaW5nIG1ldGhvZCAoQzo6bikgaW4ge0ZJTEV9IG9uIGxpbmUgMjcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
     }
   ],
-  "scope": "Focused earliest-source-target FCC failed-owner retirement and own-method equal lexical/called scope. Parameter-view constructor/handler/variadic full-source cases remain open. Later failed imports preserve an authenticated published first owner target."
+  "scope": "Focused FCC equal scope, failed-owner retirement, adaptations and retained first targets through later live/failed imports. A first-owner failure after completed data binding selects the fixed method scope for later cached calls while preserving the unfixed imported first birth. Parameter-view constructor/handler/variadic full-source cases and callbacks before the failure marker remain open."
 }

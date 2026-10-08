@@ -77,8 +77,18 @@ before conversion: a later reference alias does not change whether the final
 write detaches the CV slot or writes the originally dereferenced reference cell.
 The expression returns the combined string value independently of later writes.
 The [focused evidence](../../coverage/semantics/compound-string-live-rhs-review.json)
-also checks cleanup when either cast throws. Static properties and broader
-borrowed destination retirement retain their separate boundaries.
+also checks cleanup when either cast throws. Broader borrowed destination retirement
+retains its separate boundary.
+
+Literal named-class/static-property `.=` also retains the destination selected
+before conversion. A plain slot detaches an alias created during a callback; an
+initial reference writes its original cell after rebinding. Typed nonstring stores
+verify the final value and return that converted result. Initial-string fast paths
+skip that verification, preserving actual late type sources and retained constraints
+on detached aliases. Source-bound history records certify these facts without
+adding owners. The [static evidence](../../coverage/semantics/static-compound-string-review.json)
+separates its new originals from earlier compound checks. Dynamic selectors, self/parent/static class selectors and registered-handler
+missing-RHS continuations remain outside this slice.
 
 All twelve nodes stop constant preparation without traversing their children;
 ordinary compilation then visits the target and RHS in order. Direct/literal

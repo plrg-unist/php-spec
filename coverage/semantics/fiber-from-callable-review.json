@@ -1,0 +1,204 @@
+{
+  "milestone": 358,
+  "status": "independently-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline": "6848742a23e9fa81aa671790a106786b5f899baa",
+  "modules": 342,
+  "semantic_code": "4719c1173aa49d1f6fc243095e66f3fb218eaa38",
+  "scope": [
+    "Closure::fromCallable selects simple Fiber method arrays and static class-method strings, including named and unpacked factory arguments. Existing Closure identity is unchanged.",
+    "Dereferenced member snapshots and completed factory-call history preserve receiver/method selection after array mutation, array retirement and factory-owner retirement. Historical metadata adds no roots; bound INPUT owns its receiver and static object selectors own none.",
+    "Clone/equality and direct, explicit __invoke or Fiber C-root consumers reuse the API protocols. Saved successful resume/throw calls retain real API sites in traces; entry-error formatting and C-root trace sites are unchanged."
+  ],
+  "compiler": [
+    {
+      "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-from-callable-sl-7zx5osnn/report.json",
+      "sha256": "7786af3564bc9a1f56cf36a99c7adaca3ca52cc6c9ded3030ff52ebd5d709444",
+      "revision": "9aedf51e284140a8e48519a7ec45f06e4b33bcf1",
+      "passed": true,
+      "modules": 342
+    },
+    {
+      "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-from-callable-sl-u5f3jar5/report.json",
+      "sha256": "4ce6ed8110b838cc20b353255e95491b964fbd3e2b392b253b07b5c332024f70",
+      "revision": "4719c1173aa49d1f6fc243095e66f3fb218eaa38",
+      "passed": true,
+      "modules": 342
+    }
+  ],
+  "sources": {
+    "normal_agreements": 10,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-from-callable-source-34cf4goz/report.json",
+        "sha256": "8775f3832ab2a2375c1e8209d25d0b805c709956290e711252adea75132a7ea6",
+        "revision": "4c45991a74d8e2d0474aa4cb22188685c510ee8d",
+        "passed": false,
+        "normal_agreements": 7,
+        "scope": "Only the seven passing peer originals. Campaign stops at the following author trace mismatch; that original earns zero."
+      },
+      {
+        "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-from-callable-source-ct0zvk70/report.json",
+        "sha256": "9e04ce52fc7a49199c0620ffb038278aa63c3cd0ea0ed3c6db5e473093b3cd19",
+        "revision": "4719c1173aa49d1f6fc243095e66f3fb218eaa38",
+        "passed": true,
+        "normal_agreements": 3,
+        "scope": "Affected trace original and two previously unrun author originals after the waiting-only correction."
+      }
+    ],
+    "cut_policy": "Seven originals retain their first inputs; only the affected trace original and unrun sources execute after the correction. No354/351 or earlier family renewal."
+  },
+  "states": {
+    "independent_groups": 3,
+    "independent_premises": 288,
+    "author_groups": 1,
+    "author_premises": 114,
+    "premises_include_five_setup_clauses_per_group": true,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-state-review-mc6d8sos/report.json",
+        "sha256": "516d1aae98a97928d0d0d0d59fdb5f5ce899f7e37fb3e2f656520d867a7a547b",
+        "revision": "b1bc3e9b9cc590e9ae017413f2d5919084604259",
+        "passed": true,
+        "role": "independent",
+        "premises": 55,
+        "harness_assertions": 52,
+        "group": "factory-wait-trace-keeps-real-resume-and-invoke-sites",
+        "source_sha256": "a3e0ec458c5bf5603666c7bb090bb11d15aaac4f9ed9c9454107251c084347e9"
+      },
+      {
+        "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-state-review-4ihovxd8/report.json",
+        "sha256": "a908d44e8ceeded31c4d1164a3a95515d4a47e58cdf61f3fa8f2f73024319516",
+        "revision": "9ab629699107de0f86a966e6e6cc3e07debbcff6",
+        "passed": true,
+        "role": "independent",
+        "premises": 124,
+        "harness_assertions": 121,
+        "group": "factory-resume-freezes-members-after-history-retires",
+        "source_sha256": "8ea3acbc185002bb597f60e216c01d8fe720e688303360485e1587905855c1e3"
+      },
+      {
+        "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-state-review-4j3gik6y/report.json",
+        "sha256": "2d3c8c45982c23c021d37c218cda1a3b8ee8e54e1e0850a67b88ba79bd740a32",
+        "revision": "9ab629699107de0f86a966e6e6cc3e07debbcff6",
+        "passed": true,
+        "role": "independent",
+        "premises": 109,
+        "harness_assertions": 106,
+        "group": "factory-core-last-raw-keeps-one-receiver-edge",
+        "source_sha256": "2b945f6fd639ad62b30748952c27f41fc5c0a75f3f9edb0e236fec61e1240d6e"
+      },
+      {
+        "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-state-review-11o3gdsb/report.json",
+        "sha256": "36ce70e05dba7ff5d4ed774ec36a747d5d8aeae555f6009c0864027563889577",
+        "revision": "07cd8579000909ba3a4bbd4b32acdc220b3b41fa",
+        "passed": true,
+        "role": "author",
+        "premises": 114,
+        "harness_assertions": 112,
+        "group": "factory-throw-keeps-retired-array-selection-and-real-injection",
+        "source_sha256": "202040934f5cc7ec1405df6f5a10cb7753b89fde20e4eee8ae49a9ad7127f5e8"
+      }
+    ]
+  },
+  "failures": [
+    {
+      "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-from-callable-source-34cf4goz/report.json",
+      "sha256": "8775f3832ab2a2375c1e8209d25d0b805c709956290e711252adea75132a7ea6",
+      "revision": "4c45991a74d8e2d0474aa4cb22188685c510ee8d",
+      "passed": false,
+      "failed_original": "author-fiber-from-resume-body-identity-trace",
+      "agreement_credit_for_failed_original": 0,
+      "reason": "Normal model completion emitted resume00 rather than native resume11 in a saved explicit-invoke waiting frame; the exact original passes only after the337 correction. Seven earlier passing rows retain their separate credit."
+    },
+    {
+      "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-state-review-6e_7_bya/report.json",
+      "sha256": "bef26067c65a6d399079e4f58c4a71b1c20a570c8c97d67434aba978a12aab51",
+      "revision": "b1bc3e9b9cc590e9ae017413f2d5919084604259",
+      "passed": false,
+      "state_group_credit": 0,
+      "reason": "Fixture elaboration stopped on undeclared pconfig_factory before execution; renamed the local variable to typed pconfigcall_factory and reran only the affected group."
+    },
+    {
+      "path": ".tools/calls-fiber-from-callable-19/.tools/fiber-state-review-ksd8bito/report.json",
+      "sha256": "92f3e12f9c24e92caaaa49572c8a7a3fdc0536199f4b5dde55c07c79ffaf7e89",
+      "revision": "9ab629699107de0f86a966e6e6cc3e07debbcff6",
+      "passed": false,
+      "state_group_credit": 0,
+      "reason": "Fixture parsing stopped on an inline PARRAY cardinality expression before execution; one explicit nat binding preserves the intended invalid identity, then only the affected114 group reran."
+    }
+  ],
+  "native_originals": {
+    "path": ".tools/calls-fiber-from-callable-native-19-v2/report.json",
+    "sha256": "1784c992b06df94fbc3feccdf46fe51aaf01bfc562cebe7a35a64918f8d12943",
+    "revision": "72cf1a27028726790234ed0674230a0bbcd7e5d9",
+    "passed": true,
+    "originals": 10
+  },
+  "preparation_stop": {
+    "path": ".tools/calls-fiber-from-callable-native-19/report.json",
+    "sha256": "282d6b1aa17bf59c6e993623983fb0ea59eaf8fe21b2bb81848c4070d91f9346",
+    "revision": "72cf1a270",
+    "passed": false,
+    "native_runs": 0,
+    "model_runs": 0,
+    "reason": "Missing private pinned-PHP symlink stopped recorder preparation before Popen. Exact attempted source remains preserved; fresh native10 ran after provisioning."
+  },
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "0dea7e878728321a7fee301b2fca5cb3a5b614e9f5d30b04abda15110aa39b55",
+    "spec/semantics/234-from-callable.watsup": "405cc8d4893da420ef9aa5c9a87cb0fa0573b71db115427ec5c80a0c55e4dbf8",
+    "spec/semantics/331-fiber-static-callables.watsup": "db89ec1be366f9e06c75b58892f4989e6f8e914d5bcbb40214472d94e200161e",
+    "spec/semantics/337-fiber-bound-callables.watsup": "06cb98a2983a654117347c631b696e237f7670111fce823626fe8e1a40fdc1cc",
+    "spec/semantics/348-fiber-start-callables.watsup": "0d5b7cd8cf56a0552fd165a186fa237b64bc1078d964e0af81ae76183905d323",
+    "spec/semantics/358-fiber-from-callable.watsup": "16a5b3f45cd8a8d77de7fc2ba6bb0aabb365ce2de6f596860dd2cd752acfcedb"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_closures.c: fromCallable lookup, fake Closure creation, __invoke forwarding, receiver ownership and equality.",
+    "vendor/php-src/Zend/zend_API.c: callable receiver/class/method selection.",
+    "vendor/php-src/Zend/zend_fibers.c981/1009 and Zend/zend_builtin_functions.c2090ff: real saved execute-data links and waiting API trace sites."
+  ],
+  "validation": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "budgets": {
+      "source_steps": 100000,
+      "source_model_seconds": 60,
+      "source_process_seconds": 75,
+      "state_seek_steps": 4000,
+      "state_finish_steps": 4000,
+      "state_process_seconds": 120,
+      "compiler_process_seconds": 120
+    }
+  },
+  "recovery": [
+    "Raw private reports, exact sources, argv, streams and generated fixtures remain under .tools/calls-fiber-from-callable-19/.tools; the native originals/preparation record remain in the external directories above.",
+    "Use fiber_from_callable_sources.py --case with the matching --native-report; peer groups use fiber_from_callable_review.py --case and the author group uses fiber_from_callable_state.py. Compiler check.watsup and commands remain beside each strict report.",
+    "Actual-parent strict report and check.watsup remain under .tools/calls-fiber-from-callable-current-19/.tools. Metadata-only composition changes do not renew private cuts."
+  ],
+  "limits": [
+    "Ordinary Fiber API callable-array invocation, effectful compound factory selectors, Fiber-start argument unpacking, wider library bodies and lifecycle consumers remain required core work.",
+    "Undefined-result getReturn and paused return verification are excluded. Focused agreement does not establish complete PHP semantics."
+  ],
+  "composition": {
+    "parent": "d5e07cef26405d1d621c3a2d53d2a2c5e2df59b1",
+    "tested_revision": "3909c0991bb09dc370ac2f21cac14bcbed4119d3",
+    "modules": 345,
+    "compiler": {
+      "path": ".tools/calls-fiber-from-callable-current-19/.tools/fiber-from-callable-sl-3300au6t/report.json",
+      "sha256": "3b355b7de4e286692e740049ec37904cf524ec7906f6f3a925be0b0b31dea8c7",
+      "passed": true,
+      "inputs_stable": true
+    },
+    "review": "Exact canonical344 manifest prefix plus358 once. The five authored non-schema modules match accepted private production;30 preserves current fields and adds only the factory record/FACTORY field. Current Generator355, compound356, source357, collector345, generic ownership and trait142/212/307/347 guards are preserved and independently reviewed. No source/state renewal."
+  }
+}

@@ -1,0 +1,99 @@
+[
+  {
+    "id": "peer-fiber-from-callable-frozen-pair-retired-factory",
+    "source": "<?php\n$target = new Fiber(static function () {\n    echo 'T|';\n    echo Fiber::suspend('Y'), '|';\n    return 17;\n});\n$other = new Fiber(static function () { echo 'X|'; return 99; });\n$pair = [$target, 'ReSuMe'];\n$maker = static function () {};\n$weakMaker = WeakReference::create($maker);\n$factoryName = 'fromCallable';\n$resume = $maker->$factoryName(callback: $pair);\n$copy = clone $resume;\n$fcc = $target->resume(...);\n$get = Closure::fromCallable([$target, 'getReturn']);\n$status = Closure::fromCallable([$target, 'isSuspended']);\n$weakTarget = WeakReference::create($target);\necho (int)($resume == $fcc), (int)($resume === $fcc), (int)($copy == $resume), '|';\n$pair[0] = $other;\n$pair[1] = 'throw';\n$factoryName = 'missing';\nunset($maker, $pair);\necho (int)($weakMaker->get() === null), '|';\necho $target->start(), '|', (int)$status(), '|';\necho (int)($copy(value: 'R') === null), '|', $get(), '|';\nunset($target, $resume, $copy, $fcc, $get, $status);\necho (int)($weakTarget->get() === null);\n",
+    "source_sha256": "8ea3acbc185002bb597f60e216c01d8fe720e688303360485e1587905855c1e3",
+    "expected_model": "normal",
+    "engine_derived_expectation": "The fake Closure freezes receiver and method at factory completion. Later array/name mutation and retirement of the Closure used to call the static factory cannot change its target or invalidate source authority. Clone/FCC equality ignores creation history; bound INPUT is the sole receiver edge.",
+    "native_stdout": "101|1|T|Y|1|R|1|17|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-from-callable-start-named-invoke-and-core",
+    "source": "<?php\nfunction factoryStartCallback19(int $value, $suffix = 'D', ...$rest) {\n    echo (int)($value === 7), '|', $suffix, '|', $rest['tag'], '|';\n    return 29;\n}\n$first = new Fiber('factoryStartCallback19');\n$start = Closure::fromCallable([$first, 'StArT']);\necho (int)($start->__invoke(value: '7', tag: 'X') === null), '|', $first->getReturn(), '|';\n$second = new Fiber('factoryStartCallback19');\n$runner = new Fiber(Closure::fromCallable([$second, 'start']));\necho (int)($runner->start(value: '7', tag: 'Y') === null), '|';\necho (int)$runner->isTerminated(), '|', $second->getReturn();\n",
+    "source_sha256": "25e3c3d10ba21f947f0ad285ee4a8a8d968f77fcabdffe0484641f6e6d14a9d6",
+    "expected_model": "normal",
+    "engine_derived_expectation": "A factory-selected start forwards original named variadic arguments through explicit invocation and a C-root callback. Weak int conversion, default and named surplus retain existing start semantics; defined target returns are 29.",
+    "native_stdout": "1|D|X|1|29|1|D|Y|1|1|29",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-from-callable-core-last-raw-retirement",
+    "source": "<?php\nclass FactoryResumePayload19 {\n    public function __destruct() {\n        echo 'D', (int)($GLOBALS['weakTarget']->get() === null), (int)($GLOBALS['weakCapture']->get() === null), '|';\n    }\n}\n$target = new Fiber(static function () {\n    try {\n        Fiber::suspend('Y');\n        echo 'B|';\n        Fiber::suspend('Z');\n    }\n    finally { echo 'F|'; }\n    return 17;\n});\n$target->start();\n$weakTarget = WeakReference::create($target);\n$resume = Closure::fromCallable([$target, 'resume']);\n$weakCapture = WeakReference::create($resume);\n$runner = new Fiber($resume);\nunset($target, $resume);\necho $runner->start(new FactoryResumePayload19()), '|';\necho (int)($weakTarget->get() === null), (int)($weakCapture->get() === null), (int)$runner->isTerminated();\n",
+    "source_sha256": "2b945f6fd639ad62b30748952c27f41fc5c0a75f3f9edb0e236fec61e1240d6e",
+    "expected_model": "normal",
+    "engine_derived_expectation": "The callback RAW plus fake-call result hold the selected Closure through resume. Retiring the last capture forces target cleanup while the original runner argument remains separately owned, preserving the native destructor ordering.",
+    "native_stdout": "B|F|D11||111",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-from-callable-static-object-nonownership",
+    "source": "<?php\n$receiver = new Fiber(static function () { return 17; });\n$weak = WeakReference::create($receiver);\n$string = Closure::fromCallable('Fiber::getCurrent');\n$class = Closure::fromCallable(['Fiber', 'GeTcUrReNt']);\n$object = Closure::fromCallable([$receiver, 'getCurrent']);\n$fcc = Fiber::getCurrent(...);\nunset($receiver);\necho (int)($weak->get() === null), (int)($string == $class), (int)($class == $object), (int)($object == $fcc), '|';\necho (int)($string() === null), (int)($class->__invoke() === null), (int)($object() === null), '|';\n$probe = new Fiber($string);\necho (int)($probe->start() === null), (int)($probe->getReturn() === $probe);\n",
+    "source_sha256": "9d6ba2489fe0c94513edaee661d65e87f9d0dea1a5370a64488d0f804b187716",
+    "expected_model": "normal",
+    "engine_derived_expectation": "String, class-array and object-array selection cache the same static getCurrent handler. A static fake Closure owns no object receiver; retiring the input object must not invalidate the completed factory selection. C-root getCurrent returns the genuine active probe.",
+    "native_stdout": "1111|111|11",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-from-callable-static-suspend-nested-and-core",
+    "source": "<?php\n$suspend = Closure::fromCallable(['Fiber', 'SuSpEnD']);\n$current = Closure::fromCallable('Fiber::getCurrent');\n$target = new Fiber(static function () use ($suspend, $current) {\n    echo (int)($current() === $GLOBALS['target']), '|';\n    echo $suspend->__invoke(value: 'Y'), '|';\n    return 13;\n});\necho $target->start(), '|';\necho (int)($target->resume('R') === null), '|', $target->getReturn(), '|';\n$runner = new Fiber($suspend);\necho $runner->start(value: 'C'), '|';\necho (int)($runner->resume('V') === null), '|', $runner->getReturn();\n",
+    "source_sha256": "c1a7fc2a7f6a11bea2b6c3870e7b3f03485008083117f9981b8ac49c4a297925",
+    "expected_model": "normal",
+    "engine_derived_expectation": "Static suspend/current factory captures preserve actual nested identity, explicit invocation resume value and C-root suspension. The reads of getReturn occur only after defined returns 13 and V.",
+    "native_stdout": "1|Y|R|1|13|C|1|V",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-from-callable-constructor-parse-and-trace",
+    "source": "<?php\n$target = new Fiber(static function () { echo 'O|'; return 17; });\n$ctor = Closure::fromCallable([$target, '__CoNsTrUcT']);\ntry { $ctor(callback: 17); }\ncatch (TypeError $error) {\n    echo 'D|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\ntry { $ctor->__invoke(callback: 'strlen'); }\ncatch (FiberError $error) {\n    echo 'I|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\necho (int)$target->isStarted(), '|';\n$target->start();\necho $target->getReturn();\n",
+    "source_sha256": "c7b9e5921d0a8381abd0d10816bb7309b1419a4d49c1a2cefee291d9b828796d",
+    "expected_model": "normal",
+    "engine_derived_expectation": "Factory construction does not invoke the Fiber constructor. Invalid callback parsing precedes status; a known valid builtin callback reaches repeated-constructor rejection without executing its body. Entered direct and explicit traces preserve actual callsites.",
+    "native_stdout": "D|Fiber::__construct(): Argument #1 ($callback) must be a valid callback, no array or string given|__construct->11|I|Cannot call constructor twice|__construct->11|__invoke->11|0|O|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-from-callable-factory-errors-and-argument-unwind",
+    "source": "<?php\nfunction throwFactoryArgument19() {\n    unset($GLOBALS['owner']);\n    echo 'A|';\n    throw new Exception('factory-argument');\n}\n$owner = new Fiber(static function () { echo 'B|'; return 17; });\n$weak = WeakReference::create($owner);\ntry { Closure::fromCallable(throwFactoryArgument19()); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\nunset($error);\necho (int)($weak->get() === null), '|';\n$owner = new Fiber(static function () { echo 'X|'; return 19; });\ntry { Closure::fromCallable(['Fiber', 'resume']); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; }\ntry { Closure::fromCallable([$owner, 'missing']); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; }\ntry { Closure::fromCallable([$owner, 'resume', 17]); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; }\necho (int)$owner->isStarted();\n",
+    "source_sha256": "c267d33b6844c2d5fa696ba4cab45aefea631aa909fcd8e99c13a602178fff08",
+    "expected_model": "normal",
+    "engine_derived_expectation": "Argument exceptions abort factory selection and release argument-stage ownership. Nonstatic class selectors, missing Fiber methods and malformed arrays fail during callable parsing, before any Fiber callback is executed.",
+    "native_stdout": "A|factory-argument|1|Failed to create closure from callable: non-static method Fiber::resume() cannot be called statically|Failed to create closure from callable: class Fiber does not have a method \"missing\"|Failed to create closure from callable: array callback must have exactly two members|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-from-resume-body-identity-trace",
+    "source": "<?php\nfunction fromFiberResumeBody19() {\n    Fiber::suspend('Y');\n    $error = new Exception('body');\n    $GLOBALS['bodyError'] = $error;\n    throw $error;\n}\n$target = new Fiber('fromFiberResumeBody19');\n$other = new Fiber(static function () { return 91; });\n$target->start();\n$name = 'ReSuMe';\n$pair = [$target, &$name];\n$resume = Closure::fromCallable(callback: $pair);\n$name = 'throw';\n$pair[0] = $other;\nunset($pair);\ntry { $resume->__invoke(value: 17); }\ncatch (Exception $error) {\n    echo (int)($error === $GLOBALS['bodyError']), '|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], isset($row['type']) ? $row['type'] : '.', (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\necho (int)$target->isTerminated(), (int)$other->isStarted();\n",
+    "source_sha256": "a3e0ec458c5bf5603666c7bb090bb11d15aaac4f9ed9c9454107251c084347e9",
+    "expected_model": "normal",
+    "native_stdout": "1|body|fromFiberResumeBody19.00|resume->11|__invoke->11|10",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-from-throw-injects-original",
+    "source": "<?php\nfunction fromFiberThrowBody19() {\n    try { Fiber::suspend('Y'); }\n    catch (Exception $error) {\n        echo (int)($error === $GLOBALS['injected']), '|', $error->getMessage(), '|';\n        return 27;\n    }\n    return 31;\n}\n$target = new Fiber('fromFiberThrowBody19');\n$target->start();\n$pair = [$target, 'ThRoW'];\n$throw = Closure::fromCallable($pair);\n$pair[1] = 'resume';\nunset($pair);\n$injected = new Exception('injected');\necho (int)($throw(exception: $injected) === null), '|', $target->getReturn(), '|', (int)$target->isTerminated();\n",
+    "source_sha256": "3e3d27609abb728beecc216c5d18cb6ef9aca523a9618a86e389853932e434fe",
+    "expected_model": "normal",
+    "native_stdout": "1|injected|1|27|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-from-unpacked-throw-injects-original",
+    "source": "<?php\nfunction fromFiberThrowBody19() {\n    try { Fiber::suspend('Y'); }\n    catch (Exception $error) {\n        echo (int)($error === $GLOBALS['injected']), '|', $error->getMessage(), '|';\n        return 27;\n    }\n    return 31;\n}\n$target = new Fiber('fromFiberThrowBody19');\n$target->start();\n$pair = [$target, 'ThRoW'];\n$pack = ['callback' => $pair];\n$throw = Closure::fromCallable(...$pack);\nunset($pack);\n$pair[1] = 'resume';\nunset($pair);\n$injected = new Exception('injected');\necho (int)($throw(exception: $injected) === null), '|', $target->getReturn(), '|', (int)$target->isTerminated();\n",
+    "source_sha256": "202040934f5cc7ec1405df6f5a10cb7753b89fde20e4eee8ae49a9ad7127f5e8",
+    "expected_model": "normal",
+    "native_stdout": "1|injected|1|27|1",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
