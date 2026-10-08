@@ -114,8 +114,8 @@ syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
 syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase, pgeneratorfrom, pgeneratoraccess
 syntax pgenclosestage, pgenclose, pgenrelease, pgenstorage
-syntax pgenfatal = {SOURCE ptask, OBJECT nat, HANDLERS (pvalue?)*, METHOD porigin?, TEXT preqbytes?, REPORT pobjectprops?, FROZEN pcompletion}
 syntax ptask, pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
+syntax pgenfatal = {SOURCE ptask, OBJECT nat, HANDLERS (pvalue?)*, METHOD porigin?, TEXT preqbytes?, REPORT pobjectprops?, FROZEN pcompletion}
 syntax papiclass = { REQUESTED porigin, CALLED porigin, RECEIVER nat?, STRICT bool }
 syntax papiclassresult = API_CLASS papiclass | API_CLASS_INVALID ptbytes | API_CLASS_UNKNOWN text
 ;; SOURCE owns its existing operands; the selecting-frame snapshot and live
