@@ -355,6 +355,7 @@ test-semantics: build
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group pending-binding
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group notice-owner
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group scalar-warning
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind normal
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind compiler
 	python3 tests/semantics/readonly_lifecycle_sources.py --kind composition

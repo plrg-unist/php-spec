@@ -17,6 +17,7 @@ CASES = {
     'pending-binding':'duplicate-reference-foreach-binding-throw18',
     'receiver-cleanup':'reference-foreach-receiver-cleanup-rebind18',
     'notice-owner':'reference-foreach-invalid-key-unset-receiver18',
+    'scalar-warning':'reference-foreach-scalar-handler-retirement18',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -85,6 +86,14 @@ def $dupref_phase(S, 9) = true
   -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
   -- if perrorcall.TARGET = eps
   -- if perrorcall.RESUME = OBJECT_FOREACH_KEY pobjectforeach
+def $dupref_phase(S, 10) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*
+  -- if perrorcall.TARGET = eps
+  -- if perrorcall.RESUME = FOREACH_SCALAR_END n n_cell porigin pvalue z
+def $dupref_phase(S, 11) = true
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.TODO = (FOREACH_SCALAR_END n n_cell porigin pvalue z) :: ptask_tail*
 def $dupref_phase(S, n) = false -- otherwise
 dec $dupref_seek(pstate, nat, nat) : pstate
 def $dupref_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -347,6 +356,65 @@ def notice_owner_assertions(initial):
         'S_rejected.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"']
 
 
+def scalar_warning_assertions(initial, expected):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_notice', 10),
+        'S_notice.TODO = (ERROR_HANDLER_INVOKE perrorcall) :: ptask_notice_tail*',
+        'perrorcall.RESUME = FOREACH_SCALAR_END n_iterator n_receiver porigin (PINT 7) z',
+        '$lookup(S_notice.ENV, $ptascii("object")) = (n_receiver)',
+        'n_receiver <- S_notice.REFCELLS',
+        'S_notice.STORE[n_receiver] = DEFINED (PINT 7)',
+        '$heap_owners($heap_graph(S_notice), HCELL n_receiver) = 2',
+        '$iterator_lookup(S_notice.ITERATORS, n_iterator) = (OBJECTITER n_iterator n_previous 1 true)',
+        '~((HOBJECT n_previous) <- S_notice.ALLOCATIONS)',
+        '$task_nodes(perrorcall.RESUME) = [HCELL n_receiver]',
+        '$error_task_iterator(perrorcall.RESUME) = [n_iterator]',
+        '$foreach_scalar_valid(S_notice, n_iterator, n_receiver, porigin, PINT 7, z)',
+        '$error_call_valid(S_notice, perrorcall)',
+        'perrorcall.LEVEL = 2',
+        'perrorcall.MESSAGE = $ptascii("foreach() argument must be of type array|object, int given")',
+        '$dupref_output(S_notice.EVENTS) = $ptascii("x=1|receiver-drop|")',
+        'S_notice_zero = $drive(S_notice, 0)',
+        'S_notice_zero.COMPLETION = BUDGET',
+        'S_notice_zero[.COMPLETION = NORMAL] = S_notice',
+        'ptask_bad = FOREACH_SCALAR_END n_iterator n_receiver porigin (PINT 8) z',
+        '$foreach_scalar_valid(S_notice, n_iterator, n_receiver, porigin, PINT 8, z)',
+        'perrorcall_bad = perrorcall[.RESUME = ptask_bad]',
+        'S_bad = S_notice[.TODO = (ERROR_HANDLER_INVOKE perrorcall_bad) :: ptask_notice_tail*]',
+        '$heap_valid($heap_graph(S_bad))',
+        '~$error_call_valid(S_bad, perrorcall_bad)',
+        '~$call_descriptors_valid(S_bad)',
+        'S_rejected = $drive(S_bad, 0)',
+        'S_rejected.COMPLETION = UNSUPPORTED "invalid compiled function descriptor"',
+        *seek('S_notice', 'S_end', 11),
+        'S_end.TODO = (FOREACH_SCALAR_END n_iterator n_receiver porigin (PINT 7) z) :: ptask_end_tail*',
+        '$lookup(S_end.ENV, $ptascii("object")) = eps',
+        'S_end.STORE[n_receiver] = DEFINED (POBJECT n_replacement)',
+        'n_replacement =/= n_previous',
+        '(HOBJECT n_replacement) <- S_end.ALLOCATIONS',
+        '$heap_owners($heap_graph(S_end), HCELL n_receiver) = 1',
+        '$heap_owners($heap_graph(S_end), HOBJECT n_replacement) = 1',
+        '$task_nodes(FOREACH_SCALAR_END n_iterator n_receiver porigin (PINT 7) z) = [HCELL n_receiver]',
+        '$foreach_scalar_valid(S_end, n_iterator, n_receiver, porigin, PINT 7, z)',
+        '$iterator_lookup(S_end.ITERATORS, n_iterator) = (OBJECTITER n_iterator n_previous 1 true)',
+        '$dupref_output(S_end.EVENTS) = $ptascii("x=1|receiver-drop|level|captured|")',
+        'S_discarded = $error_read_discard(S_end, FOREACH_SCALAR_END n_iterator n_receiver porigin (PINT 7) z)',
+        'S_discarded.ITERATORS = eps',
+        'S_discarded.STORE = S_end.STORE',
+        'S_end_zero = $drive(S_end, 0)',
+        'S_end_zero.COMPLETION = BUDGET',
+        'S_end_zero[.COMPLETION = NORMAL] = S_end',
+        'S_one_found = $drive_steps(S_end, 1)',
+        'S_one_found.COMPLETION = BUDGET',
+        'S_one = S_one_found[.COMPLETION = NORMAL]', *valid('S_one'),
+        'S_one.ITERATORS = eps',
+        'S_done = $drive(S_one, 2048)',
+        r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
+        'S_done.ITERATORS = eps', 'S_done.DESTRUCTION.OPERATIONS = eps',
+        '$lookup(S_done.ENV, $ptascii("object")) = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -355,6 +423,7 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
+            scalar_warning_assertions(initial, sources.EXPECTED[case]) if group=='scalar-warning' else
             notice_owner_assertions(initial) if group=='notice-owner' else
             receiver_cleanup_assertions(initial, sources.EXPECTED[case]) if group=='receiver-cleanup' else
             binding_assertions(initial, sources.EXPECTED[case], group=='pending-binding'))

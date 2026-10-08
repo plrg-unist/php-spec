@@ -50,6 +50,8 @@ CASES = {
     'reference-foreach-invalid-key-unset-receiver18': b'<?php\n$object = (object) ["\\0" => 2, \'x\' => 3];\nset_error_handler(function($level, $message, $file, $line) {\n    echo \'notice|\';\n    unset($GLOBALS[\'object\']);\n    return true;\n});\n$value = 0;\nforeach ($object as $key => &$value) {\n    echo strlen($key), \'=\', $value, \'|\';\n}\necho $value, \'|done\';\n',
     'reference-foreach-late-shared-table18': b"<?php\nclass SharedTablePreviousReceiver18 { public $x = 1; }\n$array = [];\n$array['z'] = 3;\n$replacement = (object) $array;\n$object = new SharedTablePreviousReceiver18();\n$value = 0;\nforeach ($object as $key => &$value) {\n    echo $key, '=', $value, '|';\n    if ($key === 'x') { $object = $replacement; }\n    $value = $value + 10;\n}\nunset($value);\necho $array['z'], '/', $replacement->z, '|done';\n",
     'reference-foreach-invalid-key-retained-table18': b'<?php\n$object = (object) ["\\0" => 2];\nset_error_handler(function($level, $message, $file, $line) {\n    echo \'notice|\';\n    $GLOBALS[\'held\'] = (array) $GLOBALS[\'object\'];\n    $GLOBALS[\'object\'] = (object) [\'z\' => 4];\n    return true;\n});\n$value = 0;\nforeach ($object as $key => &$value) {\n    echo strlen($key), \'=\', $value, \'|\';\n    $value = $value + 10;\n}\nunset($value);\necho $held["\\0"], \'/\', $object->z, \'|done\';\n',
+    'reference-foreach-scalar-handler-retirement18': b"<?php\nclass ScalarWarningPreviousReceiver18 {\n    public $x = 1;\n    public $y = 2;\n    public function __destruct() { echo 'receiver-drop|'; }\n}\nclass ScalarWarningReplacementReceiver18 {\n    public $z = 3;\n    public function __destruct() { echo 'replacement-drop|'; }\n}\nset_error_handler(function($level, $message, $file, $line) {\n    echo $level === 2 ? 'level|' : 'wrong-level|';\n    echo $message === 'foreach() argument must be of type array|object, int given' ? 'captured|' : 'wrong-message|';\n    $GLOBALS['object'] = new ScalarWarningReplacementReceiver18();\n    unset($GLOBALS['object']);\n    return true;\n});\n$object = new ScalarWarningPreviousReceiver18();\n$value = 0;\nforeach ($object as $key => &$value) {\n    echo $key, '=', $value, '|';\n    if ($key === 'x') { $object = 7; }\n}\necho $value, '/';\necho isset($object) ? 'present|' : 'absent|';\necho 'done';\n",
+    'reference-foreach-scalar-handler-throw18': b"<?php\nclass ScalarWarningThrowReceiver18 {\n    public $x = 1;\n    public $y = 2;\n    public function __destruct() { echo 'receiver-drop|'; }\n}\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'fetch-warning|';\n    throw new Exception('scalar-stop');\n});\n$object = new ScalarWarningThrowReceiver18();\n$value = 0;\ntry {\n    foreach ($object as $key => &$value) {\n        echo $key, '=', $value, '|';\n        if ($key === 'x') { $object = 7; }\n    }\n} catch (Exception $error) {\n    echo 'caught=', $error->getMessage(), '|';\n}\necho $value, '|done';\n",
 }
 
 EXPECTED = {
@@ -91,6 +93,8 @@ EXPECTED = {
     'reference-foreach-invalid-key-unset-receiver18': 'notice|1=2|1=3|3|done',
     'reference-foreach-late-shared-table18': 'x=1|z=3|13/13|done',
     'reference-foreach-invalid-key-retained-table18': 'notice|1=2|1=4|12/14|done',
+    'reference-foreach-scalar-handler-retirement18': 'x=1|receiver-drop|level|captured|replacement-drop|1/absent|done',
+    'reference-foreach-scalar-handler-throw18': 'x=1|receiver-drop|fetch-warning|caught=scalar-stop|1|done',
 }
 
 BOUNDARIES = {
