@@ -487,6 +487,16 @@ static object selectors own none and suspend names the actual running Fiber.
 Recursive argument frames keep independent receipts at the same source site.
 Constructor parsing preserves its exact callable-query and warning continuation.
 
+Module 367 executes ordinary array-selected `start` with its frozen receiver and
+original positional or named buffer. The pending call owns both once, and its
+waiting API takes those owners. Nonowning receipts authenticate the actual source
+and saved caller after selector retirement; completed selection stays valid after
+receiver retirement. Recursive argument frames keep separate receipts. Abrupt cleanup transfers owners
+to the existing release queue in positional-values, receiver, extra-named-values
+order. Body and entry errors retain the real `start` callsite.
+The [array-start ledger](../../coverage/semantics/fiber-array-start-review.json)
+records six exact originals and 267 independent plus 160 author premises.
+
 Module 364 converts simple Fiber API arrays to first-class Closures, including
 start and constructor methods. Its ARRAY witness authenticates the actual dynamic
 FCC source, INIT/conversion lines and dereferenced member snapshot; factory and
@@ -496,8 +506,8 @@ retirement. Existing clone/equality, direct, explicit invoke and C-root protocol
 preserve their buffers, traces and callback cleanup. Live-static and bound receiver
 checks are disjoint; duplicate conversion tasks fail local admission.
 
-Fiber-start argument unpacking, ordinary array-selected start, raw array C-root
-callbacks and compound array or factory selectors remain required; start unpacking
+Fiber-start argument unpacking, raw array C-root callbacks and compound array
+or factory selectors remain required; start unpacking
 retains an explicit Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and

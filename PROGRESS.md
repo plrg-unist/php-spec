@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 367 executes ordinary simple Fiber-array `start`: immutable selection
+survives argument effects, and one receiver plus the original positional/named
+buffer transfer to the waiting API. Nonowning receipts remain valid after actual
+receiver retirement and keep recursive argument frames independent. Abrupt
+arguments release positional values, receiver, then extra named values in native
+order; body and entry exceptions preserve real `start` callsites. Strict 351, six
+exact normal originals at 5+1 cuts and 267 independent/160 author reached premises
+pass. The preimplementation Unsupported baseline retains zero agreement; earlier
+364/362 evidence is not renewed. Raw array C-root callbacks, compound selectors,
+Fiber-start unpacking and wider lifecycle consumers remain required.
+[Array-start ledger](coverage/semantics/fiber-array-start-review.json).
+
 Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
 Actual close/cache owners survive normal rendering and handler-registry mutation;
 the reported exception releases after frozen emission and before bailout suppresses

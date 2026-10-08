@@ -1264,12 +1264,20 @@ static Fiber APIs before argument evaluation. Frozen dereferenced members surviv
 selector mutation or retirement; the pending call owns its bound receiver once,
 while static object selectors own none. Constructor callable parsing retains its
 real warning continuation and validation-before-status order.
+Ordinary array-selected `start` also freezes its receiver before arguments and
+forwards the original positional or named buffer. Nonowning receipts authenticate
+source and saved callers; completed selection stays valid after receiver retirement.
+Throwing arguments release
+positional values, the receiver, then extra named values in Zend order; recursive
+argument frames and body exceptions keep their real callsites.
+The [array-start ledger](coverage/semantics/fiber-array-start-review.json) records
+six exact originals and 427 reached premises at their separate cuts.
 Simple Fiber API arrays also convert to first-class Closures. A distinct source
 witness freezes the selected members; the temporary bound receiver owner moves
 into the Closure, while static selectors add none. Clone/equality and direct,
 explicit `__invoke` or C-root calls reuse the existing API protocols, including
-start and constructor captures. Ordinary array-selected start, raw array C-root
-callbacks, compound selectors and Fiber-start argument unpacking remain required.
+start and constructor captures. Raw array C-root callbacks, compound selectors
+and Fiber-start argument unpacking remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

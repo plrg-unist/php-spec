@@ -1,0 +1,159 @@
+{
+  "milestone": 367,
+  "status": "independently-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline": "813af17199d73bf5cf0203f8164710b7734bc333",
+  "modules": 351,
+  "semantic_code": "0975011c04de220002c953b21ef2146f105bb3c8",
+  "scope": [
+    "Ordinary callable arrays with simple Fiber start method names freeze receiver and method before arguments. One bound receiver and the original positional/named buffer transfer from pending call to waiting API.",
+    "Nonowning source receipts survive selector and completed receiver retirement; local counts admit recursive argument frames at one source site. Genuine source, raw-buffer and saved-parent checks reject tested coherent provenance forgeries.",
+    "Abrupt pending arguments transfer their owners into the existing release queue in positional-values, receiver, extra-named-values order. Body and target-entry errors preserve actual start callsites."
+  ],
+  "compiler": {
+    "path": ".tools/calls-fiber-array-start-19/.tools/fiber-array-start-sl-d6a45bvl/report.json",
+    "sha256": "8b61aa3a9a5264b09e6950b768326d51d1c85b805ac93062b508eccac0c3113c",
+    "revision": "0975011c04de220002c953b21ef2146f105bb3c8",
+    "passed": true,
+    "modules": 351
+  },
+  "sources": {
+    "normal_agreements": 6,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-array-start-19/.tools/fiber-array-start-source-7ztt9x1c/report.json",
+        "sha256": "ba22d508b3d7cf6fa9ddb179181621f40eda1d68471244018ff482bb1ca8acd8",
+        "revision": "0975011c04de220002c953b21ef2146f105bb3c8",
+        "passed": true,
+        "normal_agreements": 5
+      },
+      {
+        "path": ".tools/calls-fiber-array-start-19/.tools/fiber-array-start-source-ud01l8xe/report.json",
+        "sha256": "3b0a178a48b310afc37007aa14949b99bbdff4343cd60532f491eed99bd74e7a",
+        "revision": "b10af13c23725172d894868e721f9d18da8f6d1b",
+        "passed": true,
+        "normal_agreements": 1
+      }
+    ],
+    "cut_policy": "Five originals retain the first production cut. A distinct sixth original covers a RESULT body throw after last-receiver retirement plus target-entry errors; production is unchanged and earlier source/state evidence is not renewed."
+  },
+  "states": {
+    "independent_premises": 267,
+    "author_premises": 160,
+    "physical_premises": 427,
+    "premises_include_five_setup_clauses_per_group": true,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-array-start-19/.tools/fiber-state-review-ko6y7yem/report.json",
+        "sha256": "0bc110293f3389ee564cad8e9b8ee5a9dc9065d934e87ce7ab69a6942c25740d",
+        "revision": "cf0f98571825a49c7ef65043a80d06b0452e078f",
+        "passed": true,
+        "role": "independent",
+        "groups": 2,
+        "physical_premises": 267,
+        "harness_assertions": [
+          141,
+          120
+        ]
+      },
+      {
+        "path": ".tools/calls-fiber-array-start-19/.tools/fiber-state-review-zye1ye94/report.json",
+        "sha256": "665fad9b9ae22ef221294885a01b550eb3e38d469b633695995e28f62ff85cdf",
+        "revision": "cf0f98571825a49c7ef65043a80d06b0452e078f",
+        "passed": true,
+        "role": "author",
+        "groups": 1,
+        "physical_premises": 91,
+        "harness_assertions": [
+          89
+        ]
+      },
+      {
+        "path": ".tools/calls-fiber-array-start-19/.tools/fiber-state-review-90qg0e5n/report.json",
+        "sha256": "f7430b8070a5b0724fea3d1f87149e7ab6fc0e076314a293e91af56b49892280",
+        "revision": "cf0f98571825a49c7ef65043a80d06b0452e078f",
+        "passed": true,
+        "role": "author",
+        "groups": 1,
+        "physical_premises": 69,
+        "harness_assertions": [
+          67
+        ]
+      }
+    ]
+  },
+  "initial_boundary": {
+    "path": ".tools/calls-fiber-array-fcc-current-19/.tools/fiber-array-consumer-source-kneifwup/report.json",
+    "sha256": "b87c127c19819a056f5d549d0102461096e7fe6f3c144898243892c0c18844e3",
+    "revision": "813af17199d73bf5cf0203f8164710b7734bc333",
+    "passed": true,
+    "agreement_credit": 0,
+    "reason": "The unchanged named-start original is Unsupported before367; the prior native tuple is reused byte-identically. This is not a renewed362 agreement."
+  },
+  "native_originals": [
+    {
+      "path": ".tools/calls-fiber-array-start-native-19/report.json",
+      "sha256": "e9b406c1458793ced67fdeb6eeae6628162ca0cf63629c222daa8d85e97544a7",
+      "revision": "813af17199d73bf5cf0203f8164710b7734bc333",
+      "passed": true,
+      "originals": 4
+    },
+    {
+      "path": ".tools/calls-fiber-array-native-19/report.json",
+      "sha256": "0b68fcd5476951b694a5d71753631393227f4675172c429a52bc6ff1c37f0f44",
+      "revision": "a708f9540cc1de4c3558e9ad399810bd84b73ac1",
+      "passed": true,
+      "reused_id": "peer-fiber-array-start-keeps-named-default-and-variadic-buffer",
+      "native_reruns": 0
+    },
+    {
+      "path": ".tools/calls-fiber-array-start-native-throw-19/report.json",
+      "sha256": "1f0851f625fe425d77d68721358abc7014117312c71fb67b864c079ffcb78d8a",
+      "revision": "cf0f98571825a49c7ef65043a80d06b0452e078f",
+      "passed": true,
+      "originals": 1
+    }
+  ],
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "69b3f6bd7c5e1a488c6821393e6cbb2d43b64bed4bee2337d7d0900546b8aa7b",
+    "spec/semantics/281-fibers.watsup": "c090dfcea69c56213af222c31b8d3b4c111c876e9a24966fe30b34dfbc2a2ce0",
+    "spec/semantics/362-fiber-array-consumers.watsup": "95162416c955930022a4242bf1c574a19cf6e4ae73dce805386851c92f86d827",
+    "spec/semantics/367-fiber-array-start.watsup": "5f9cc4c39edd27b21a2fabe03d7f5e5d5208cff3736fedfaa1fe1e26946e07c0"
+  },
+  "engine_basis": [
+    "Zend/zend_execute.c zend_init_dynamic_call_array freezes dereferenced members and adds the selected nonstatic EX(This) owner before arguments.",
+    "Zend/zend_execute.c cleanup_unfinished_calls frees positional arguments, EX(This), then extra named arguments; retained destruction jobs preserve that order.",
+    "Zend/zend_fibers.c Fiber::start forwards the original positional/named buffer and links the actual caller execute_data into the switched stack."
+  ],
+  "validation": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "budgets": {
+      "source_steps": 100000,
+      "source_model_seconds": 60,
+      "source_process_seconds": 75,
+      "state_seek_steps": 4000,
+      "state_finish_steps": 4000,
+      "state_process_seconds": 120,
+      "compiler_process_seconds": 120
+    }
+  },
+  "recovery": [
+    "Raw originals, generated checks, actual argv, streams and full tested input identities remain outside Git at the report paths. Source checks use fiber_array_start_sources.py --case with the matching --native-report; reached groups use fiber_array_start_review.py or fiber_array_start_state.py --case. Strict check.watsup and argv remain beside the compiler report.",
+    "Metadata and pointwise current-parent composition retain these private cuts; earlier362/364 and other accepted families receive no renewed credit."
+  ],
+  "limits": [
+    "Raw array C-root callbacks, compound array/factory selectors, Fiber-start argument unpacking and broader lifecycle/library consumers remain required core work.",
+    "Undefined-result getReturn and paused return verification are not extended. These focused agreements do not establish complete PHP semantics; no engine divergence is introduced."
+  ]
+}
