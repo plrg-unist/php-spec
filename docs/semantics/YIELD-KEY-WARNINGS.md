@@ -61,7 +61,7 @@ other close-stage destructors, cyclic/request/terminal cleanup and wider
 Generator/Fiber lifetimes remain required. Paused generic returns are excluded.
 This slice does not establish complete Generator or core semantics.
 
-The reviewed private295-module cut passes strict compilation,27 exact normal
+The reviewed295-module cut passes strict compilation,27 exact normal
 source observations and eight genuine reached groups with658 physical
 setup-inclusive premises. These include23 new originals, one promoted historical
 Unsupported original and three affected earlier normal originals. The ledger
@@ -69,5 +69,8 @@ keeps the c102 warning and7edf cleanup cuts separate, including the first three
 successful records of a packet whose fourth source initially failed. The required
 older close Unsupported and original fixture failures earn zero agreement.
 [Results and recovery](../../coverage/semantics/yield-key-warning-review.json)
-record the unchanged inputs and bounded control claims. Actual-current-parent
-composition remains required before canonical publication.
+record the unchanged inputs and bounded control claims. Module321 is integrated
+over actual `642659405`/304 at `309c9b25f`/305: strict compilation passes with
+9,833,849 bytes of complete output. Independent review preserves current
+receive/source/ARG319/collector fields and exact accepted Generator rules; this
+composition adds zero source observations or reached premises.
