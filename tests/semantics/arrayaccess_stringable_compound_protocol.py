@@ -315,6 +315,10 @@ S_no_hole = S_enter[.CURRENT = (pcallcontext[.HOLES = eps])]
 $heap_graph(S_no_hole) = $heap_graph(S_enter)
 $heap_valid($heap_graph(S_no_hole))
 ~$call_descriptors_valid(S_no_hole)
+S_wrong_hole = S_enter[.CURRENT = (pcallcontext[.HOLES = [1]])]
+$heap_graph(S_wrong_hole) = $heap_graph(S_enter)
+~$call_holes_valid(S_wrong_hole, pcallcontext[.HOLES = [1]])
+~$call_descriptors_valid(S_wrong_hole)
 S_no_source = S_enter[.FRAMES = pframe[.TODO = (ACCESS_RESULT paccess[.KEYHOLE = false]) :: ptask_tail*] :: pframe_tail*]
 $heap_graph(S_no_source) = $heap_graph(S_enter)
 ~$call_descriptors_valid(S_no_source)
