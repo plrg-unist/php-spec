@@ -957,6 +957,9 @@ setup clauses separate; the failed class stays unpublished.
 A retained `new self` rejects an unresolved abstract trait requirement before
 arguments or instance allocation. One shutdown original and39 supplied conditions plus6
 setup clauses pass; this proof covers classes without parent/interface contracts.
+Retained `new static` constructs the published called class and enters arguments
+after allocation. One shutdown original and40 supplied conditions plus6 setup
+clauses pass, including durable selected-NEW static-fill history.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider

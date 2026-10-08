@@ -281,7 +281,12 @@ A retained `new self` now proves an unresolved implicit abstract trait requireme
 from the exact copied requirements and rejects construction before arguments.
 The failed class stays unpublished, and an unknown proof stays Unsupported.
 One shutdown PHP-error original and39 supplied NEW conditions plus6 setup clauses
-pass. Parent/interface contracts, including implicit Stringable, remain required.
+pass. Retained `new static` constructs the published called class using its exact
+saved scope/source proof; deferred static fills retain that NEW selection in durable
+history. One shutdown PHP-error original and40 supplied argument-entry/history
+conditions plus6 setup clauses pass, including all four global validators and a
+forged certificate rejection. The failed class gains no publication or member lookup
+authority. Parent/interface contracts, including implicit Stringable, remain required.
 Dependency fills in held/open compilation, broader differing-owner later births and
 wider failed-owner member/construction behavior retain explicit boundaries.
 Wider parameter-view full-source constructor, handler and variadic cases remain

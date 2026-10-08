@@ -2044,6 +2044,24 @@ at3.569/4.522s; the unchanged source1/39 cuts bridge with current INSTANCE stora
 scoped-static selection and Generator fields preserved. Raw compiler evidence is
 `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-1knav8u7`
 and `trait266-object-struct-xxwdsrqv` in the same directory.
+Retained `new static` now authenticates its saved caller/source scope and constructs
+the published called class. Deferred static fills keep the selected NEW certificate
+instead of resolving the keyword by spelling; corresponding typed-retirement checks
+are statically reviewed.
+At `ba08d2141`/347 over `b03c0d918`, strict algo/struct pass3.571/4.520s,
+one shutdown PHP-error tuple and40 supplied conditions plus6 setup clauses
+pass (59.412s). The genuine argument-entry checkpoint checks allocation order,
+completed table history, all four global validators and a forged fill certificate.
+Raw evidence under `.tools/trait-fcc-failed-target-current19/.tools/` is
+`method-runtime-qw3d9lht`, `closure-call-protocol-iw_iw2zf`,
+`trait266-object-algo-hv4l35mf` and `trait266-object-struct-ucfu1_fr`.
+The earlier genuine history failure `lqhiz3_8`, diagnostic `s0n7wcj2` and
+rejected fixture inputs retain zero agreement; no assertion was weakened.
+The reviewed349 composition `620c2dc38` over `07940bc4a` passes strict
+algo/struct at3.669/4.520s, preserving current SCAN, source, compound-static
+and Fiber fields. The unchanged source1/40 cuts bridge; raw compiler evidence
+is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-hw829us3`
+and `trait266-object-struct-h1twh_vj` in the same directory.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,
