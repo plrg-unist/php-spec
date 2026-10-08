@@ -585,7 +585,8 @@ including destructor replacement of a pending finally exception. Seven maintaine
 normal originals pass across `dc27aa3e1`, `09ec7db36` and `3ff67878e`; the unchanged
 334 Unsupported original has a separate new positive cut. Full327 compilation and
 six initialization premises pass at `09ec7db36`. Independent423 reached premises
-pass at `4e3062ac4`; actual331 compiler/init over `d811717a0` is pending.
+pass at `4e3062ac4`; actual331 algo/struct and initialization over `d811717a0`
+pass separately at `f2d3c6d29`, with reviewed request/name/graph-carry interactions.
 No earlier334 evidence is renewed.
 Typed non-mixed producers and the other paused return lanes remain unchanged.
 

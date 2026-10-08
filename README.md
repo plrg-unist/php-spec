@@ -435,7 +435,7 @@ Generator declarations. Its real frame owns the received key and receiver;
 nonowning call-site evidence survives escape, resume and ordinary close.
 Finished close cleanup preserves the caller's pending exception through key and
 receiver destructors. Seven maintained originals and423 independent premises pass
-at separate private cuts; the current composition keeps its own evidence.
+at separate private cuts. Actual331 compilation and initialization pass separately.
 
 [Source exception handlers](docs/semantics/SOURCE-EXCEPTION-HANDLERS.md) retain raw
 nullable stacks and dispatch an uncaught Throwable with one authentic argument
