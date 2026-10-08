@@ -170,7 +170,7 @@ def binding_assertions(initial, expected, pending):
                           ('cell', '[.NEW = n_receiver_cell]')]:
         if label=='cell':
             clauses += ['$lookup(S_release.ENV, $ptascii("object")) = (n_receiver_cell)',
-                        'n_receiver_cell =/= pforeachbind.NEW', 'n_receiver_cell <- S_release.REFCELLS']
+                        'n_receiver_cell =/= pforeachbind.NEW', '~(n_receiver_cell <- S_release.REFCELLS)']
         clauses += [f'pforeachbind_bad_{label} = pforeachbind'+change,
             f'S_bad_{label} = S_release[.TODO = (FOREACH_BIND_RELEASE pforeachbind_bad_{label}) :: ptask_release_tail*]',
             f'$heap_valid($heap_graph(S_bad_{label}))',
