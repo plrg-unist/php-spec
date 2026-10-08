@@ -92,7 +92,13 @@ Generator/cache/EHR carriers are abandoned. Structural future projections avoid
 heap-query recursion; full admission and malformed producer rejection remain intact.
 Actual 356 over `2b98ff468` passes strict compilation at `72d5f7353`;
 private source/state cuts retain their own inputs.
-Live-handler/deeper rendering, abrupt exception release, message warnings,
+A renderer-installed handler returning normally adds three exact fatal originals
+and 611 reached premises: inner release precedes handler restoration, warning callbacks
+receive Unknown/line0, and fatal reporting reads the original live cached string.
+Real pins/transient Weak owners, actual-head refusal and budget replay pass.
+Actual 358 over `b721887ce` passes strict compilation at `00536106a`, preserving
+current source/argument/storage fields; private 3/611 retain their own inputs.
+Throwing callbacks/deeper rendering, abrupt exception release, message warnings,
 parked/escaped storage and generic terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
 guards; private source/state cuts retain their own revisions.
@@ -175,6 +181,14 @@ passes strict compilation with reviewed Generator/collector/scoped-method and
 assertion-state compatibility. Original
 baseline mismatches and nondeterministic replay failures retain zero agreement.
 No module, task or owner schema is added; wider callee/argument forms remain open.
+The one-positional-CV increment now preserves independent INIT5/call7/SEND-ECHO9,
+selected targets across returning/throwing argument warnings, silent missing
+by-reference cells and existing returned TMPVAR/HCELL output ownership. A narrow
+nonowning discard source keeps SEND9 destruction distinct from ordinary body
+throw7. Nine fresh exact originals retain two rows at20cd and seven at491e;
+independent231 premises (153 bindings/78 checks) pass at491e/private356.
+Actual358 over478710ea passes strict compilation with reviewed Fiber/collector
+and storage seams. Earlier9/277 retain their cuts; wider call shapes remain open.
 [Ledger](coverage/semantics/source-echo-dynamic-cv-call-review.json).
 
 Direct ECHO now admits one named ordinary CV argument through361's existing

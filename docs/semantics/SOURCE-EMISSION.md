@@ -287,3 +287,17 @@ nine exact originals and277 independent premises at their private354 cuts.
 Actual356 over `5107cc589` passes strict compilation with reviewed current-parent
 compatibility. Wider callee and
 argument producers, emissions and the final combined offline rebuild remain required.
+
+One ordinary positional CV argument is also admitted through that dynamic callee.
+The complete source certificate keeps INIT5, callable7 and SEND/ECHO9 separate;
+the selected callee is not read again. Existing SEND rules preserve selected targets
+and fixed null across handler writes, or silently create a missing by-reference
+cell. Returned TMPVAR/independent reference owners preserve bytes at ECHO9.
+A default-preserving eager-operation selector retains the authenticated discarded
+ERROR_READ_RESULT as nonowning source metadata only for a throwing SEND warning.
+Consumed source/line guards recover9 without a live receiver/CV lookup; an ordinary
+callee-body throw keeps7. Nine fresh exact originals retain two20cd and seven491
+rows;231 independent premises (153 bindings/78 checks) pass at491/private356.
+Actual358 over478710ea passes strict compilation with reviewed current seams.
+Wider callees/arguments and full-core/offline validation remain required; the
+earlier noarg9/277 cuts are unchanged.

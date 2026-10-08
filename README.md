@@ -116,6 +116,11 @@ and ECHO lines remain distinct. A returned cast can publish a function and survi
 later eval history replay. Nine exact originals retain their private354 cuts;
 independent277 premises pass. Actual356 passes strict compilation. Wider callee
 and argument producers remain required.
+The one-positional-CV increment preserves selected targets across SEND warnings,
+with INIT5/call7/SEND-ECHO9 and existing temporary/reference output owners.
+Throwing SEND handlers retire the invoker at9; ordinary body throws retire it at7.
+Nine fresh exact originals and231 independent premises pass; actual358 passes
+strict compilation. Wider callees/arguments remain required.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
@@ -319,8 +324,11 @@ retains Generator/cache owners through normal fatal rendering, releases the repo
 exception before bailout, then suppresses later destructors. Normal exception-owned
 stdClass/ordinary child cleanup retains full admission and actual storage pins.
 A renderer rethrow at request C root reports/releases its builtin inner Throwable
-before abandoning the original report and real Generator/cache owners. Live-handler
-or deeper rendering, abrupt exception release, parked/escaped storage and generic
+before abandoning the original report and real Generator/cache owners. A returning
+renderer-installed handler releases its inner exception before registry restoration;
+warning callbacks can refresh the original cached string before fatal reporting.
+Three originals and 611 reached premises retain separate cuts. Throwing callbacks,
+deeper rendering, abrupt exception release, parked/escaped storage and generic
 terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
