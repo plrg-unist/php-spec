@@ -93,7 +93,10 @@ conversion temporary retain the selected table. The prefix adds no owner.
 Fourteen exact normal originals and six strict-SL recipes/375 premises retain
 separate compiler/source/state cuts in the
 [reference-Get ledger](../../coverage/semantics/arrayaccess-reference-get-review.json).
-Canonical-parent integration remains pending.
+Actual298 also passes full compilation, strict initialization and one new exact
+Fiber-core warning/Get suspension original. Its real internal reporting tail
+survives the parked Get and resumed shared property write;318 fields remain
+intact without a dynamic-property runtime claim. Canonical integration is pending.
 
 Wider memoized/property/GLOBALS producers and combined Iterator/ArrayAccess
 notice ordering remain required. Named reference sends and nested captured-row

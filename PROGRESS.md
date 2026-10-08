@@ -242,8 +242,12 @@ parent release and callback retirement. Fourteen normal originals agree across
 explicit cuts; six strict-SL recipes/375 premises cover demand, wrapper move,
 sharing, raw compound/throw cleanup, captured rows and retired-parent Unset.
 The [reference-Get ledger](coverage/semantics/arrayaccess-reference-get-review.json)
-keeps source, reached, compiler and original failures separate. Canonical-parent
-composition is pending. Named reference sends, nested captured-row updates,
+keeps source, reached, compiler and original failures separate. Actual298 over
+ff1b passes full compilation, strict initialization and one new exact original:
+a genuine Fiber reporting warning handler suspends inside Get, then resumes
+the shared property CELL write while restoring main reporting. Parent318 fields
+are preserved; this source makes no dynamic-property runtime claim. Canonical
+integration is pending. Named reference sends, nested captured-row updates,
 VALUE-return warning-handler producers and wider producers remain required;
 typed non-mixed return verification stays user-paused.
 

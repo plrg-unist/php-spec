@@ -1,7 +1,7 @@
 {
   "target": "PHP 8.5.10 CLI NTS 64-bit",
   "module": "spec/semantics/319-arrayaccess-reference-get.watsup",
-  "decision": "Private scope independently accepted; canonical-parent composition pending",
+  "decision": "Private scope and actual298 composition independently accepted; canonical integration pending",
   "semantic_revision": "986aded97894f4b3192da58190bd2f57a0a64dc6",
   "scope": [
     "Untyped/mixed implicit reference Get always demands a result",
@@ -221,5 +221,58 @@
     "vendor/php-src/Zend/zend_execute.c::zend_binary_assign_op_obj_dim",
     "vendor/php-src/Zend/zend_vm_def.h::ZEND_ASSIGN_REF"
   ],
-  "recovery_note": "Report paths resolve inside the recovery_root from the canonical project. Raw inputs and streams stay ignored; maintained originals and renderers regenerate them with local tools."
+  "recovery_note": "Original report paths resolve under recovery_root; current_parent_join paths resolve under its own recovery_root, both from the canonical project. Raw inputs and streams stay ignored; maintained originals and renderers regenerate them with local tools.",
+  "current_parent_join": {
+    "parent": "ff1b7a888ec27dde291ecef62b0b6633dd7772ed",
+    "revision": "4428e4a38b02f99ba5c3e12fdb284f9b20bd1c92",
+    "modules": 298,
+    "recovery_root": ".tools/arrayaccess-reference-get-current-parent-18",
+    "preparation": ".tools/arrayaccess-reference-get/prepared-t1pactok/report.json",
+    "report": ".tools/arrayaccess-reference-get/run-8uj_gsc1/report.json",
+    "commands": [
+      "python3 tests/semantics/arrayaccess_reference_get_prepare.py reference-get-parks-in-fiber-core-warning-handler",
+      "python3 tests/semantics/arrayaccess_reference_get_run.py .tools/arrayaccess-reference-get/prepared-t1pactok/report.json reference-get-parks-in-fiber-core-warning-handler"
+    ],
+    "compiler": {
+      "algo": {
+        "emitted_bytes": 9931608,
+        "seconds": 3.074
+      },
+      "struct": {
+        "emitted_bytes": 9540684,
+        "seconds": 3.969
+      }
+    },
+    "initial": {
+      "premises": 6,
+      "seconds": 5.069
+    },
+    "new_normal_originals": 1,
+    "source": "reference-get-parks-in-fiber-core-warning-handler",
+    "stdout": "A:H:8192;G;parked;E:8;F:30719;R:30719;",
+    "model_seconds": 17.12,
+    "outcome": "Native/model exact normal; physical stderr empty; all producer exits0",
+    "inputs_stable": true,
+    "closed_groups": 5,
+    "profile_and_caps": "Unchanged profile30719 and compiler/init120, native45, CLI60/outer90, 100000 steps, jobs1",
+    "runtime_inputs": {
+      ".tools/php/bin/php": {
+        "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+        "bytes": 49551712
+      },
+      ".tools/spectec/bin/p4spectec": {
+        "sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+        "bytes": 32150944
+      },
+      "_build/default/adapter/main.exe": {
+        "sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+        "bytes": 29115976
+      },
+      "tests/semantics/_build/default/numeric_runner.exe": {
+        "sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+        "bytes": 28628992
+      }
+    },
+    "scope": "Genuine313 internal Fiber reporting continuation through warning/Get suspension; shared property CELL writes8. Parent318 fields preserved; no dynamic-property runtime claim. Earlier14/375 cuts retained without renewal."
+  }
 }
