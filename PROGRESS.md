@@ -583,7 +583,7 @@ including nested arrays and continuation after
 a child throws. Six new exact normals at `ccafc5d65` and 139/145 reached premises
 at fixture-corrected `368bed28a` cover surviving array/reference owners, selected
 property mutation/deletion and B/previous=A exception chaining; strict318 initialization
-passes. Released-CV mutation, raw dying-array reads, callback-capable previous
+and the actual321 join at `be7edc9e2` pass. Released-CV mutation, raw dying-array reads, callback-capable previous
 reference wrappers, internal Generator/Fiber descendants, binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original
 now stops at builtin dispatch and retains zero agreement credit. Bounded
