@@ -1,0 +1,87 @@
+;; RETURN_BY_REF owns its computed RV through zend_error, then materializes it.
+;; Only an ordinary implicit Get on the accepted EPS/mixed lane enters here.
+dec $access_reference_value_get(pstate) : bool
+def $access_reference_value_get(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (ACCESS_RESULT paccess) :: ptask*
+  -- if paccess.PHASE = ACCESS_CALL $ptascii("offsetGet")
+  -- if $access_frame(S, pcallcontext, pframe)
+  -- if $access_reference_get(S, paccess)
+  -- if ~$reference_verifies(S)
+  -- if ~$finally_return_pending(S)
+def $access_reference_value_get(S) = false -- otherwise
+
+dec $access_reference_value_operand_source(pstate, porigin, poperand) : bool
+def $access_reference_value_operand_source(S, porigin, KNOWN pvalue) = true
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_value)
+  -- if $compiled_read(S, porigin_value) = (pvalue)
+def $access_reference_value_operand_source(S, porigin, poperand) = true
+  -- if $key_held_operand(poperand)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_value)
+  -- if $compiled_read(S, porigin_value) = eps
+def $access_reference_value_operand_source(S, porigin, poperand) = false -- otherwise
+
+;; Source authentication also applies to saved handler and cleanup metadata.
+;; Active owning tasks separately require their real operands to remain live.
+dec $access_reference_value_valid(pstate, porigin, poperand, int) : bool
+def $access_reference_value_valid(S, porigin, poperand, z) = (S.ORIGIN = (porigin) /\ $reference_return_value_valid(S, z) /\ $access_reference_value_get(S) /\ $reference_return_notice(S, poperand) /\ $access_reference_value_operand_source(S, porigin, poperand))
+
+def $access_reference_value_pending(S) = true
+  -- if S.TODO = (RETURN_REF_VALUE z) :: ptask*
+  -- if S.ORIGIN = (porigin)
+  -- if $access_reference_value_valid(S, porigin, S.RESULT, z)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $heap_subset($operand_nodes(S.RESULT), S.ALLOCATIONS)
+  -- if $error_handler_eligible(S, 8)
+  -- if S.SOURCEPENDING = eps
+def $access_reference_value_pending(S) = false -- otherwise
+
+dec $access_reference_value_begin(pstate, poperand, int) : pstate
+def $access_reference_value_begin(S, poperand, z) = $error_dispatch(S, 8, $ptascii("Only variable references should be returned by reference"), z, DIAGNOSTIC "Notice" $ptascii("Only variable references should be returned by reference") z, ACCESS_REFERENCE_VALUE_RESULT porigin poperand z)
+  -- if S.ORIGIN = (porigin)
+rule PhpStep/access-reference-value-notice: S ~> $access_reference_value_begin(S, S.RESULT, z)
+  -- if S.TODO = (RETURN_REF_VALUE z) :: ptask*
+  -- if $access_reference_value_pending(S)
+
+dec $access_reference_value_materialize(pstate, poperand) : pstate
+def $access_reference_value_materialize(S, REFERENCE n) = $reference_return_materialize(S, REFERENCE n, PNULL)
+def $access_reference_value_materialize(S, KNOWN pvalue) = $reference_return_materialize(S, KNOWN pvalue, pvalue)
+rule PhpStep/access-reference-value-materialize: S ~> $reference_return_unwind($access_reference_value_materialize($hold_task_inputs(S), poperand), S.HELD, z)
+  -- if S.TODO = (ACCESS_REFERENCE_VALUE_RESULT porigin poperand z) :: ptask*
+  -- if $call_task_valid(S, ACCESS_REFERENCE_VALUE_RESULT porigin poperand z)
+
+def $call_task_valid(S, ACCESS_REFERENCE_VALUE_RESULT porigin poperand z) = ($access_reference_value_valid(S, porigin, poperand, z) /\ $call_reference_operand_valid(S, poperand) /\ $heap_subset($operand_nodes(poperand), S.ALLOCATIONS))
+def $task_nodes(ACCESS_REFERENCE_VALUE_RESULT porigin poperand z) = $operand_nodes(poperand)
+def $source_operand_marker(ACCESS_REFERENCE_VALUE_RESULT porigin poperand z) = RETURN_REF_VALUE z
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ACCESS_REFERENCE_VALUE_RESULT porigin poperand z
+  -- if $access_reference_value_valid(S, porigin, poperand, z)
+  -- if perrorcall.SITE = porigin
+  -- if perrorcall.LEVEL = 8
+  -- if perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $ptascii("Only variable references should be returned by reference")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE z
+
+;; RETURN_BY_REF still materializes after a throwing handler and leaves Get.
+;; Its inner catch tail is bypassed, and frame release retains the real RV.
+def $error_read_discard(S, ACCESS_REFERENCE_VALUE_RESULT porigin poperand z) = S_returned[.TODO = [THROW_SEARCH n]][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask*
+  -- if $access_reference_value_valid(S, porigin, poperand, z)
+  -- if $call_reference_operand_valid(S, poperand)
+  -- if $heap_subset($operand_nodes(poperand), S.ALLOCATIONS)
+  -- if S_returned = $access_reference_value_materialize(S[.RESULT = poperand], poperand)
+
+;; A finished Get frame moves its RV owner after the caller's access owner.
+;; Generic throw cleanup then releases the receiver before the returned value.
+dec $access_reference_value_release_source(pstate, paccess) : bool
+def $access_reference_value_release_source(S, paccess) = (S.ORIGIN = (paccess.SITE) /\ paccess.PHASE = ACCESS_CALL $ptascii("offsetGet") /\ $access_source(S, paccess) /\ $access_reference_get(S, paccess))
+def $destructor_frame_throw_finish(S, pdestructionframe, n, (ACCESS_RESULT paccess) :: ptask_tail*) = S[.TODO = [THROW_SEARCH n, ACCESS_RESULT paccess, ACCESS_REFERENCE_VALUE_RELEASE paccess pdestructionframe.VALUE] ++ ptask_tail*][.DESTRUCTION.FRAMES = pdestructionframe_tail*][.RESULT = KNOWN PNULL][.HELD = eps]
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if pdestructionframe.VALUE = REFERENCE n_value
+  -- if $access_reference_value_release_source(S, paccess)
+  -- if paccess.OBJECT = (n_object)
+  -- if $access_method_selected(S, paccess, METHOD_TARGET n_object pdestructionframe.FUNCTION)
+def $call_task_valid(S, ACCESS_REFERENCE_VALUE_RELEASE paccess poperand) = ($access_reference_value_release_source(S, paccess) /\ $reference_operand(poperand) /\ $call_reference_operand_valid(S, poperand) /\ $heap_subset($operand_nodes(poperand), S.ALLOCATIONS))
+def $task_nodes(ACCESS_REFERENCE_VALUE_RELEASE paccess poperand) = $operand_nodes(poperand)
