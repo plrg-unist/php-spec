@@ -231,7 +231,11 @@ copy the value before callbacks, preserve null keys and distinguish genuine chil
 exception reinjection from direct API close. Its27 normal observations and658
 reached premises retain separate cuts; actual305 passes strict compilation after
 reviewed receive/source/ARG319/collector compatibility, without source/state renewal.
-IteratorAggregate, reference yields, wider call forms, request/terminal cleanup
+[Reference yields328](docs/semantics/GENERATOR-REFERENCE-YIELDS.md) preserve live
+cache cells, value-API array copies and direct/destructured foreach aliases.
+Notice callbacks and retired cache readback retain authentic nonowning carriers;
+bounded nonfinalizing global release preserves ordered cache retirement.
+IteratorAggregate, wider call forms and reference producers, request/terminal cleanup
 and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required

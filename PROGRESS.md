@@ -264,6 +264,16 @@ origin mismatch have zero affected credit. Actual316 passes strict compilation
 with reviewed trait/ArrayAccess/collector compatibility; earlier noarg/CV cuts
 and relocations gain no renewed credit.
 
+Generator328 adds source-owned reference-yield cells, value-API array snapshots
+and direct/inner-reference destructuring aliases. Notice/cleanup readback retains
+nonowning old-cache metadata and precise delegated exception reinjection.
+Private normal-source cuts remain separate; cache/warning690, delegation163,
+nonfinalizing request215, terminal-refusal40 and destructuring177 physical
+premises pass at their recorded inputs. The new minimal `9:9` original closes
+the preserved `1:1`/extra-Notice failure. Active-finally request close remains
+required Unsupported with zero agreement; paused generic returns stay excluded.
+[Scope and retained cuts](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
+
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
 The accepted private52 normal/four compiler agreements and618 reached premises,

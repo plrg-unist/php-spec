@@ -7440,22 +7440,26 @@
         "spec/semantics/69-foreach-control.watsup",
         "spec/semantics/129-goto-runtime.watsup",
         "spec/semantics/261-object-casts.watsup",
-        "spec/semantics/324-dynamic-property-reference-foreach.watsup"
+        "spec/semantics/324-dynamic-property-reference-foreach.watsup",
+        "spec/semantics/328-generator-reference-yields.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/foreach.py"
+        "tests/semantics/foreach.py",
+        "tests/semantics/reference_yield_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/foreach.py",
         "tests/semantics/dynamic_property_warning_sources.py",
-        "tests/semantics/duplicate_property_reference_protocol.py"
+        "tests/semantics/duplicate_property_reference_protocol.py",
+        "tests/semantics/reference_yield_prepare.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_hash.c",
         "coverage/semantics/foreach-runtime-review.json",
-        "coverage/semantics/duplicate-property-reference-review.json"
+        "coverage/semantics/duplicate-property-reference-review.json",
+        "docs/semantics/GENERATOR-REFERENCE-YIELDS.md"
       ],
-      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; public-object by-reference traversal is now bounded in property-references-review.json; Traversable callbacks, remaining frame/return and header/nullsafe contexts remain required. See foreach-runtime-review.json. Module324 selects physical duplicate dynamic buckets independently, retaining declared readonly/type checks and latest named access. Previous plain-CV object cleanup reads the released raw slot before atomic normal/throw reference installation. Reference traversal owns the actual shared receiver HCELL through alias writes, unset/recreate and object/array/scalar table changes; late scalar warning callbacks preserve that owner and normal/abrupt iterator removal. Initial12 normals/288 premises and added12 normals/current491 premises keep separate cuts with strictSL298. Released-CV mutation, wider callback-capable containers, binding-time exit, nonordinary replacement objects and expired borrowed notice buckets remain explicit boundaries; source/current-address admission does not prove historical reachability. See duplicate-property-reference-review.json.",
+      "review": "Reviewed bounded array foreach 1f0e8810: 155 exact sources, author9/6498 and independent8/3096 state assertions, explicit captured ownership, per-iterator saved copy positions and abrupt loop cleanup. Original AssignRef, dead-map, public serialization and DIM-origin defects preserved. Later full4997 source campaign passes container-campaign-audit.json; public-object by-reference traversal is now bounded in property-references-review.json; Traversable callbacks, remaining frame/return and header/nullsafe contexts remain required. See foreach-runtime-review.json. Module324 selects physical duplicate dynamic buckets independently, retaining declared readonly/type checks and latest named access. Previous plain-CV object cleanup reads the released raw slot before atomic normal/throw reference installation. Reference traversal owns the actual shared receiver HCELL through alias writes, unset/recreate and object/array/scalar table changes; late scalar warning callbacks preserve that owner and normal/abrupt iterator removal. Initial12 normals/288 premises and added12 normals/current491 premises keep separate cuts with strictSL298. Released-CV mutation, wider callback-capable containers, binding-time exit, nonordinary replacement objects and expired borrowed notice buckets remain explicit boundaries; source/current-address admission does not prove historical reachability. See duplicate-property-reference-review.json. Module328 adds bounded source-owned reference caches and effective foreach reference mode, including inner-reference destructuring; prior reference-yield frontiers are superseded only within GENERATOR-REFERENCE-YIELDS.md.",
       "planned_source_tests": [
         "tests/semantics/conformance/foreach-reference-mutation.php"
       ]
@@ -13324,7 +13328,8 @@
         "spec/semantics/117-arrow-compiler.watsup",
         "spec/semantics/118-arrows.watsup",
         "spec/semantics/311-arrow-generators.watsup",
-        "spec/semantics/80-call-control.watsup"
+        "spec/semantics/80-call-control.watsup",
+        "spec/semantics/328-generator-reference-yields.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_review_protocol.py",
@@ -13333,20 +13338,23 @@
         "tests/semantics/arrow_generator_warning_review_protocol.py",
         "tests/semantics/arrow_generator_globals_role_review_protocol.py",
         "tests/semantics/arrow_generator_integration_protocol.py",
-        "tests/semantics/arrow_generator_cleanup_protocol.py"
+        "tests/semantics/arrow_generator_cleanup_protocol.py",
+        "tests/semantics/reference_yield_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/generator_review.py",
         "tests/semantics/arrow_generator_prepare.py",
         "tests/semantics/arrow_generator_review.py",
-        "tests/semantics/arrow_generator_integration.py"
+        "tests/semantics/arrow_generator_integration.py",
+        "tests/semantics/reference_yield_prepare.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
         "docs/semantics/ARROW-GENERATORS.md",
-        "coverage/semantics/arrow-generator-review.json"
+        "coverage/semantics/arrow-generator-review.json",
+        "docs/semantics/GENERATOR-REFERENCE-YIELDS.md"
       ],
-      "review": "Generator280 eagerly receives ordinary arguments/defaults and creates an object-owned deferred frame for named functions, ordinary Closures and object methods. Source-supertype rejection and accepted one-level intersections are pinned at e235. Further creation scopes, byref generators and lifecycle remain required; see GENERATORS.md. Integrated Arrow Generator311 retains its validated frozen310 cut: eager receives, deferred captures, sent/delegated implicit returns, original signatures and lexical/receiver scope use accepted280/95/118. Value-CV warnings freeze null before delayed keys; handler throws retain the same Throwable/key and install the closed Closure owner before frame retirement. Separate cuts cover44 normal sources, nine compiler rejections and10 genuine strict-SL programs/groups with987 setup-inclusive premises; two required Unsupported controls and original failures earn zero agreement. Literal GLOBALS uses a matching explicit-request profile and array-only cached-key role. Frozen68393/286+311 composition separately passes compiler287, the fresh default/Fiber/Stringable-eval source and148 independent reached premises. Actual2a2e/291+311 composition separately passes compiler292, the same original and75 physical-HANDLE/Arrow-close premises with new gc/clone validation. Canonical294 passes strict compilation after independent ARG309/316 compatibility review; earlier source/state cuts retain their own inputs. Key-warning ingress, reference yields and wider lifecycle stay required; paused generic returns remain excluded."
+      "review": "Generator280 eagerly receives ordinary arguments/defaults and creates an object-owned deferred frame for named functions, ordinary Closures and object methods. Source-supertype rejection and accepted one-level intersections are pinned at e235. Further creation scopes, byref generators and lifecycle remain required; see GENERATORS.md. Integrated Arrow Generator311 retains its validated frozen310 cut: eager receives, deferred captures, sent/delegated implicit returns, original signatures and lexical/receiver scope use accepted280/95/118. Value-CV warnings freeze null before delayed keys; handler throws retain the same Throwable/key and install the closed Closure owner before frame retirement. Separate cuts cover44 normal sources, nine compiler rejections and10 genuine strict-SL programs/groups with987 setup-inclusive premises; two required Unsupported controls and original failures earn zero agreement. Literal GLOBALS uses a matching explicit-request profile and array-only cached-key role. Frozen68393/286+311 composition separately passes compiler287, the fresh default/Fiber/Stringable-eval source and148 independent reached premises. Actual2a2e/291+311 composition separately passes compiler292, the same original and75 physical-HANDLE/Arrow-close premises with new gc/clone validation. Canonical294 passes strict compilation after independent ARG309/316 compatibility review; earlier source/state cuts retain their own inputs. Key-warning ingress, reference yields and wider lifecycle stay required; paused generic returns remain excluded. Module328 adds bounded source-owned reference caches and effective foreach reference mode, including inner-reference destructuring; prior reference-yield frontiers are superseded only within GENERATOR-REFERENCE-YIELDS.md."
     },
     {
       "id": "resumable.yield",
@@ -13355,26 +13363,30 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/280-generators.watsup",
-        "spec/semantics/321-yield-key-warning.watsup"
+        "spec/semantics/321-yield-key-warning.watsup",
+        "spec/semantics/328-generator-reference-yields.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_review_protocol.py",
         "tests/semantics/yield_key_warning_protocol.py",
         "tests/semantics/yield_key_release_protocol.py",
-        "tests/semantics/yield_key_identity_protocol.py"
+        "tests/semantics/yield_key_identity_protocol.py",
+        "tests/semantics/reference_yield_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/generator_review.py",
         "tests/semantics/yield_key_warning_prepare.py",
         "tests/semantics/yield_key_warning_review.py",
-        "tests/semantics/yield_key_identity_review.py"
+        "tests/semantics/yield_key_identity_review.py",
+        "tests/semantics/reference_yield_prepare.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
         "docs/semantics/YIELD-KEY-WARNINGS.md",
-        "coverage/semantics/yield-key-warning-review.json"
+        "coverage/semantics/yield-key-warning-review.json",
+        "docs/semantics/GENERATOR-REFERENCE-YIELDS.md"
       ],
-      "review": "Generator280 executes by-value yields with cached array/reference owners and object-owned suspension frames. Twenty-seven normal and three compiler source agreements retain e235; independent state phases retain their separate cuts in GENERATORS.md. Reference yields, delegation and complete lifecycle remain required. Module321 retains the copied value before key-CV warnings, freezes null key and opcode line, and authenticates one object-specific partial-cache carrier. Actual delegated child resumers receive KEY/311 VALUE handler throws in their own catch/finally; direct APIs retain closed-cache/Closure ownership. Source and reached-state cuts stay separate in YIELD-KEY-WARNINGS.md."
+      "review": "Generator280 executes by-value yields with cached array/reference owners and object-owned suspension frames. Twenty-seven normal and three compiler source agreements retain e235; independent state phases retain their separate cuts in GENERATORS.md. Reference yields, delegation and complete lifecycle remain required. Module321 retains the copied value before key-CV warnings, freezes null key and opcode line, and authenticates one object-specific partial-cache carrier. Actual delegated child resumers receive KEY/311 VALUE handler throws in their own catch/finally; direct APIs retain closed-cache/Closure ownership. Source and reached-state cuts stay separate in YIELD-KEY-WARNINGS.md. Module328 adds bounded source-owned reference caches and effective foreach reference mode, including inner-reference destructuring; prior reference-yield frontiers are superseded only within GENERATOR-REFERENCE-YIELDS.md."
     },
     {
       "id": "resumable.yield-key",
@@ -13383,39 +13395,60 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/280-generators.watsup",
-        "spec/semantics/321-yield-key-warning.watsup"
+        "spec/semantics/321-yield-key-warning.watsup",
+        "spec/semantics/328-generator-reference-yields.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_review_protocol.py",
         "tests/semantics/yield_key_warning_protocol.py",
         "tests/semantics/yield_key_release_protocol.py",
-        "tests/semantics/yield_key_identity_protocol.py"
+        "tests/semantics/yield_key_identity_protocol.py",
+        "tests/semantics/reference_yield_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/generator_review.py",
         "tests/semantics/yield_key_warning_prepare.py",
         "tests/semantics/yield_key_warning_review.py",
-        "tests/semantics/yield_key_identity_review.py"
+        "tests/semantics/yield_key_identity_review.py",
+        "tests/semantics/reference_yield_prepare.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
         "docs/semantics/YIELD-KEY-WARNINGS.md",
-        "coverage/semantics/yield-key-warning-review.json"
+        "coverage/semantics/yield-key-warning-review.json",
+        "docs/semantics/GENERATOR-REFERENCE-YIELDS.md"
       ],
-      "review": "Generator280 preserves arbitrary raw keys, delayed key-CV fetch after value effects and signed64 implicit-index wrap. Source and state coverage are linked in GENERATORS.md; delegation/reference yields and destructor-sensitive replacement remain required. Module321 retains the copied value before key-CV warnings, freezes null key and opcode line, and authenticates one object-specific partial-cache carrier. Actual delegated child resumers receive KEY/311 VALUE handler throws in their own catch/finally; direct APIs retain closed-cache/Closure ownership. Source and reached-state cuts stay separate in YIELD-KEY-WARNINGS.md."
+      "review": "Generator280 preserves arbitrary raw keys, delayed key-CV fetch after value effects and signed64 implicit-index wrap. Source and state coverage are linked in GENERATORS.md; delegation/reference yields and destructor-sensitive replacement remain required. Module321 retains the copied value before key-CV warnings, freezes null key and opcode line, and authenticates one object-specific partial-cache carrier. Actual delegated child resumers receive KEY/311 VALUE handler throws in their own catch/finally; direct APIs retain closed-cache/Closure ownership. Source and reached-state cuts stay separate in YIELD-KEY-WARNINGS.md. Module328 adds bounded source-owned reference caches and effective foreach reference mode, including inner-reference destructuring; prior reference-yield frontiers are superseded only within GENERATOR-REFERENCE-YIELDS.md."
     },
     {
       "id": "resumable.byref-yield",
       "milestone": "5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+      "implementation": [
+        "spec/semantics/280-generators.watsup",
+        "spec/semantics/328-generator-reference-yields.watsup",
+        "spec/semantics/311-arrow-generators.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/reference_yield_protocol.py",
+        "tests/semantics/reference_yield_delegation_protocol.py",
+        "tests/semantics/reference_yield_terminal_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/reference_yield_prepare.py",
+        "tests/semantics/reference_yield_review.py",
+        "tests/semantics/reference_yield_delegation_review.py",
+        "tests/semantics/reference_yield_terminal_review.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_generators.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/Zend/zend_compile.c",
+        "docs/semantics/GENERATOR-REFERENCE-YIELDS.md",
+        "coverage/semantics/generator-reference-yields-review.json"
+      ],
+      "review": "Module328 preserves source BYREF signatures and Generator payload returns; cached cells, value-API copies, direct/destructured foreach aliases, Notice/cleanup ingress and nonowning old-cache readback have distinct source/state cuts. A genuine nonfinalizing direct-global release retires the paused frame; active-finally request close remains required Unsupported with zero agreement. Broader producer/call forms and lifecycle remain partial; paused generic returns stay excluded."
     },
     {
       "id": "resumable.yield-from",
