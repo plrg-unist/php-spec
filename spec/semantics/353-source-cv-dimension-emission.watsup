@@ -1,0 +1,99 @@
+;; Ordinary CV bases and CV/literal keys emit no preceding runtime work.
+;; Delayed FETCH_DIM_R therefore inherits the compiled key line, before any
+;; lookup or a later property read. Selection never samples the current CVs.
+dec $source_emission_dim_key(pstate, nat, pcpath, expression) : bool
+def $source_emission_dim_key(S, n, pcpath, expression) = true
+  -- if $source_emission_cv(S, n, pcpath, expression)
+def $source_emission_dim_key(S, n, pcpath, NScalarInt (INTEGER i) metadata) = true
+  -- if $compiled_read(S, PORIGIN n pcpath) = (PINT i)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_dim_key(S, n, pcpath, NScalarString (BYTES text) metadata) = true
+  -- if $compiled_read(S, PORIGIN n pcpath) = (PSTRING $base64(text))
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_dim_key(S, n, pcpath, expression) = false -- otherwise
+
+dec $source_emission_cv_dimension(pstate, nat, pcpath, expression) : porigin?
+def $source_emission_cv_dimension(S, n, pcpath, NExprArrayDimFetch expression_base expression_key metadata) = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprArrayDimFetch expression_base expression_key metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_base)
+  -- if $source_emission_dim_key(S, n, pcpath ++ [PCFIELD 1], expression_key)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_key, b_key))
+  -- if z_key = $expression_line(expression_key)
+  -- if $(z_key > 0)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_key, false))
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_cv_dimension(S, n, pcpath, expression) = eps -- otherwise
+
+def $source_echo_emission_origin(S, n, pcpath, expression) = (porigin)
+  -- if $source_emission_cv_dimension(S, n, pcpath, expression) = (porigin)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (porigin)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_cv_dimension(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (porigin)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+
+;; FETCH_DIM_W separates an addressable array before selecting an existing
+;; object receiver. A warning-protected old table can therefore lose its last
+;; ordinary owner during a handler's property assignment. Other modes and
+;; receiver protocols retain their existing dispatch.
+dec $property_receiver_array_root(pbase) : bool
+def $property_receiver_array_root(BASE_VALUE (VARIABLE ptbytes z)) = true
+def $property_receiver_array_root(BASE_GLOBAL (KNOWN (PSTRING ptbytes)) z) = true
+def $property_receiver_array_root(pbase) = false -- otherwise
+dec $property_receiver_array_key(pvalue) : bool
+def $property_receiver_array_key(PINT i) = true
+def $property_receiver_array_key(PSTRING ptbytes) = true
+def $property_receiver_array_key(pvalue) = false -- otherwise
+def $property_receiver_array_write(S, pbase, poperand, PPW, z) = true
+  -- if $property_receiver_array_root(pbase)
+  -- if S_root = $base_acquire(S, pbase, z)
+  -- if S_root.COMPLETION = NORMAL
+  -- if $location_slot(S_root, S_root.LOCATION) = DEFINED (PARRAY n)
+  -- if S_key = $quiet_operand(S_root, poperand)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN pvalue
+  -- if $property_receiver_array_key(pvalue)
+  -- if $key_selected_key(pvalue) = (pkey)
+  -- if $entry_lookup(S_key.ARRAYS[n].ITEMS, pkey) = (DIRECT (POBJECT n_object))
+
+;; A later literal property FETCH on null has its own warning boundary. The
+;; handler can change live storage, but the interrupted result remains null.
+dec $property_null_read_valid(pstate, pnameread) : bool
+def $property_null_read_valid(S, pnameread) = true
+  -- if S.ORIGIN = (pnameread.SITE)
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (NExprPropertyFetch expression (NIdentifier (BYTES text) metadata_name) metadata)
+  -- if pnameread.NAME = $base64(text)
+  -- if $code_expression_at_source(S, pnameread.SITE, eps) = (pnameread.LINE)
+  -- if pnameread.LINE = $source_line(metadata_name)
+  -- if $(pnameread.LINE > 0)
+  -- if pnameread.SITE = PORIGIN n pcpath
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((pnameread.LINE, false))
+def $property_null_read_valid(S, pnameread) = false -- otherwise
+def $property_null_read_plan(S) = (pnameread)
+  -- if S.TODO = (DIM_FETCH z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S.BASE = BASE_PROPERTY PNULL ptbytes
+  -- if pnameread = {SITE porigin, NAME ptbytes, LINE z}
+  -- if $property_null_read_valid(S, pnameread)
+def $property_null_read_plan(S) = eps -- otherwise
+dec $property_null_read_message(pnameread) : preqbytes
+def $property_null_read_message(pnameread) = $ptascii("Attempt to read property \"") ++ $c_string(pnameread.NAME) ++ $ptascii("\" on null")
+def $property_null_read_begin(S, pnameread) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $property_null_read_message(pnameread), pnameread.LINE, DIAGNOSTIC "Warning" $property_null_read_message(pnameread) pnameread.LINE, PROPERTY_NULL_RESULT pnameread)
+  -- if $property_null_read_plan(S) = (pnameread)
+def $call_task_valid(S, PROPERTY_NULL_RESULT pnameread) = $property_null_read_valid(S, pnameread)
+def $task_nodes(PROPERTY_NULL_RESULT pnameread) = eps
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_NULL_RESULT pnameread
+  -- if $property_null_read_valid(S, pnameread)
+  -- if perrorcall.SITE = pnameread.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pnameread.LINE
+  -- if perrorcall.MESSAGE = $property_null_read_message(pnameread)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+rule PhpStep/property-null-warning-resume: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_NULL_RESULT pnameread) :: ptask_tail*
+  -- if $property_null_read_valid(S, pnameread)

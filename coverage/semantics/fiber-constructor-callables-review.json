@@ -1,0 +1,209 @@
+{
+  "milestone": 354,
+  "status": "independently-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline": "fd432561fed9a9ce154dfb04a38e058fb8d0facc",
+  "modules": 339,
+  "semantic_code": "89d4694f5a26daa6c1fe5963e138af8376ed0a1c",
+  "scope": [
+    "Bound __construct captures retain immutable receiver/name selection, clone/equality and the original callback through direct, explicit __invoke and Fiber C-root calls.",
+    "Callable validation and deprecated-selector warnings precede repeated-constructor rejection. Parser and warning continuations retain authentic capture ownership through handler return, throw and suspension.",
+    "Known valid registered callbacks on READY receivers reach repeated-constructor rejection without executing or caching a missing library body; non-READY initialization still requires a real cached target.",
+    "Explicit entered constructor and __invoke frames retain actual sites and indexed arguments; pre-entry unknown names invent neither frame. C-root traces, last-RAW retirement and static constructor selection retain native behavior."
+  ],
+  "compiler": [
+    {
+      "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-constructor-capture-sl-i2dwp25q/report.json",
+      "sha256": "dc5703b7729d78c51e25b5ab45e4ce771e80886cb05f289a031c53f354d6e6ee",
+      "revision": "99d833d418e51c30063eeeea8b8a82126c49770f",
+      "passed": true,
+      "modules": 339,
+      "inputs_stable": true,
+      "scope": "Initial capture/parser/trace implementation."
+    },
+    {
+      "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-constructor-capture-sl-guoirhap/report.json",
+      "sha256": "df37c82157fa367116001a950c0ea153534f9d7ebc90c7032fb8bfe74c09bd68",
+      "revision": "ee5b893756df1901a7f2176352a3d50242dc9e33",
+      "passed": true,
+      "modules": 339,
+      "inputs_stable": true,
+      "scope": "Changed parse-only READY correction; exact initialization, heap and descriptor checks."
+    }
+  ],
+  "sources": {
+    "normal_agreements": 11,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-constructor-capture-source-jjuebno8/report.json",
+        "sha256": "ccd49ff1af56e478e4e3341a7373ce2c625381037ef0960d20d025ab3abe1a47",
+        "revision": "99d833d418e51c30063eeeea8b8a82126c49770f",
+        "passed": true,
+        "inputs_stable": true,
+        "head_stable": true,
+        "normal_agreements": 8
+      },
+      {
+        "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-constructor-capture-source-ooji9eud/report.json",
+        "sha256": "ddbd2f06c03dcb2b8dd5466e29e5dce0be8e433a8ac4ed56ca8886bb9ee4b1bf",
+        "revision": "d8413abac789584d60f1bad40a3316cbcbb4900b",
+        "passed": true,
+        "inputs_stable": true,
+        "head_stable": true,
+        "normal_agreements": 1
+      },
+      {
+        "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-constructor-capture-source-e309ww9y/report.json",
+        "sha256": "43d465245d8284f811dc9f246797159fcd10a760ecbd341eab84cb8dda46a7d1",
+        "revision": "068becfc1ca8f7ef9799beef90534aaab6871cd6",
+        "passed": true,
+        "inputs_stable": true,
+        "head_stable": true,
+        "normal_agreements": 1
+      },
+      {
+        "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-constructor-capture-source-6j_9ocaw/report.json",
+        "sha256": "f418f813f674c78608565d564b066cda91e5dcef31e55d6df053f3b500a43a94",
+        "revision": "ee5b893756df1901a7f2176352a3d50242dc9e33",
+        "passed": true,
+        "inputs_stable": true,
+        "head_stable": true,
+        "normal_agreements": 1
+      }
+    ],
+    "cut_policy": "Eight originals and the pre-entry/named-trace originals retain their prior inputs. Only the affected registered-builtin original was renewed after the parse-only correction."
+  },
+  "states": {
+    "independent_groups": 2,
+    "independent_premises": 210,
+    "author_groups": 1,
+    "author_premises": 112,
+    "premises_include_five_setup_clauses_per_group": true,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-state-review-ub_bjnuh/report.json",
+        "sha256": "5e2df88448dfc1a76debeed5e6d47c8076434d1e356101c9d50bd02e32304ee1",
+        "revision": "ee5b893756df1901a7f2176352a3d50242dc9e33",
+        "passed": true,
+        "role": "independent",
+        "premises": 105,
+        "group": "constructor-warning-keeps-direct-capture-owner-and-source",
+        "source_sha256": "c21f5ffd970661ee587820d0af16a3ed4822d0dc9947ea840052cad1d8c5ec06",
+        "harness_assertions": 102
+      },
+      {
+        "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-state-review-vsqaf10c/report.json",
+        "sha256": "bcb2f72e28996edac3547661348b5d9664cf0f2c76c17d57e98ef52146b36d6e",
+        "revision": "ee5b893756df1901a7f2176352a3d50242dc9e33",
+        "passed": true,
+        "role": "independent",
+        "premises": 105,
+        "group": "constructor-core-last-raw-retires-before-error-argument",
+        "source_sha256": "14f01ce87072aef4efd63292c57d0900e97e53532a7713d8236f993f2e5626ee",
+        "harness_assertions": 102
+      },
+      {
+        "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-state-review-b_ho29lz/report.json",
+        "sha256": "2ddecd7d9d3cf67dcd2803d810607c567b66508266c5d01d441e8d3d6a997f12",
+        "revision": "ee5b893756df1901a7f2176352a3d50242dc9e33",
+        "passed": true,
+        "role": "author",
+        "premises": 112,
+        "group": "ctor-core-compound-parser-keeps-real-warning-and-caller",
+        "source_sha256": "7044c48fc400831cb97b524af6401a055202ce5128a399b5c08397ff7e363661",
+        "harness_assertions": 110
+      }
+    ]
+  },
+  "failures": [
+    {
+      "path": ".tools/calls-fiber-constructor-capture-19/.tools/fiber-constructor-capture-source-wofua7r_/report.json",
+      "sha256": "01cf65dbc06541e32d772619e479de7b249fa0766ab6ca2e0ea9dca0e03915c4",
+      "revision": "d8413abac789584d60f1bad40a3316cbcbb4900b",
+      "passed": false,
+      "inputs_stable": true,
+      "head_stable": true,
+      "normal_agreements": 0,
+      "agreement_credit": 0,
+      "reason": "Known valid strlen callback incorrectly required an executable body before READY status rejection. The exact original passes only at the later affected cut."
+    }
+  ],
+  "semantic_inputs": {
+    "spec/semantics/281-fibers.watsup": "1b381457c7ba8ad87e7c404ed5cfab4abe88335a31181a54c9494fb2cae2d7f7",
+    "spec/semantics/331-fiber-static-callables.watsup": "6109269174e3ed7e9778aeb412079e2f620787a8f1842c7232acd017666121fb",
+    "spec/semantics/337-fiber-bound-callables.watsup": "422e3b418d4b37c6faf9af74bc426ac655246d191fee5e02180b520bd885d8a8",
+    "spec/semantics/354-fiber-constructor-callables.watsup": "d7b260ed0f39579906d4bf8cd9a27699210f65f10ed9042bbace57e30bb1471b"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_fibers.c: constructor Z_PARAM_FUNC before status, raw callback ownership and root retirement.",
+    "vendor/php-src/Zend/zend_closures.c: fake closure receiver/clone/equality and __invoke forwarding.",
+    "vendor/php-src/Zend/zend_execute_API.c: named mapping before handler entry."
+  ],
+  "validation": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "budgets": {
+      "source_steps": 100000,
+      "source_model_seconds": 60,
+      "source_process_seconds": 75,
+      "state_seek_steps": 4000,
+      "state_finish_steps": 4000,
+      "state_process_seconds": 120,
+      "compiler_process_seconds": 120
+    }
+  },
+  "native_originals": [
+    {
+      "path": ".tools/calls-fiber-constructor-capture-native-19/report.json",
+      "sha256": "31ffddf03bb3445268d37081406631d3c6a17615b7b0afda39b78efd1a681cd7",
+      "revision": "36cee1ed3e2c0e2fb314fff4a026ebe56b90c782",
+      "passed": true,
+      "originals": 8
+    },
+    {
+      "path": ".tools/calls-fiber-constructor-boundaries-native-19/report.json",
+      "sha256": "9fa994a5f2fde52ffbee4d2a2f85a0f9f23e266536b0898948a5c84d6f81d493",
+      "revision": "99d833d418e51c30063eeeea8b8a82126c49770f",
+      "passed": true,
+      "originals": 2
+    },
+    {
+      "path": ".tools/calls-fiber-constructor-named-trace-native-19/report.json",
+      "sha256": "a124989dff3eab6b6d7ec6d0a6bfa1be1d31cda0c8755512e6d219bc45661236",
+      "revision": "d8413abac789584d60f1bad40a3316cbcbb4900b",
+      "passed": true,
+      "originals": 1
+    }
+  ],
+  "recovery": [
+    "Raw private-cut reports, exact originals, argv, streams, hashes and generated fixtures remain under .tools/calls-fiber-constructor-capture-19/.tools; native originals remain in the external directories below.",
+    "Use fiber_constructor_capture_sources.py with selected --case and matching --native-report. Use fiber_constructor_capture_review.py --case for independent groups and fiber_constructor_capture_state.py for the author group; preserve recorded revisions and semantic inputs.",
+    "Compiler commands and generated check.watsup remain with each strict report. Earlier331/337/341/348/351 source and state cuts are not renewed.",
+    "The actual-parent compiler report and check.watsup remain under .tools/calls-fiber-constructor-capture-current-19/.tools. Metadata-only composition changes do not renew the recorded private cuts."
+  ],
+  "limits": [
+    "Outer unpacking, broader callable adapters, unresolved callback services, ordinary builtin execution and wider Fiber lifecycle consumers remain required core work. This slice does not implement library bodies.",
+    "Undefined-result getReturn and paused return verification are excluded. Focused agreement does not establish complete PHP semantics."
+  ],
+  "composition": {
+    "parent": "500a2cedc982a96d8057f8b50fe8829cb2a89fb6",
+    "tested_revision": "ed83deaf56418670a183a381477185918c02cf3d",
+    "modules": 341,
+    "compiler": {
+      "path": ".tools/calls-fiber-constructor-capture-current-19/.tools/fiber-constructor-capture-sl-cqi3zq04/report.json",
+      "sha256": "21c77bc673f79c4ed1eb349d424b968a4ac3acd6a09a905e2d4d0e041d708f48",
+      "passed": true,
+      "inputs_stable": true
+    },
+    "review": "Exact canonical340 manifest prefix plus354 once. Accepted281/331/337/354 bytes unchanged; current30/207/270/288/301/352/353/55 source-warning, property, string and generic graph guards preserved. No additional source/state renewal."
+  }
+}

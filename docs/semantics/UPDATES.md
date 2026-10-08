@@ -66,6 +66,20 @@ use the pinned numeric/string conversions, overflow, precision warnings and
 operator-specific errors. Power evaluation uses the existing pure binary64/libm
 specification helpers.
 
+Stringable `.=` converts the left value before dereferencing the selected RHS
+slot. A defined direct RHS CV is borrowed and follows callback rebinding; an
+initially undefined read keeps its warned null value, while a later unset is a
+quiet empty string. Evaluated temporary values and reference-return cells retain
+their actual owners through the final store, then release before outer operands.
+An initially non-reference root self CV casts once and reuses those bytes;
+reference self CVs follow the late RHS read. The destination pointer is selected
+before conversion: a later reference alias does not change whether the final
+write detaches the CV slot or writes the originally dereferenced reference cell.
+The expression returns the combined string value independently of later writes.
+The [focused evidence](../../coverage/semantics/compound-string-live-rhs-review.json)
+also checks cleanup when either cast throws. Static properties and broader
+borrowed destination retirement retain their separate boundaries.
+
 All twelve nodes stop constant preparation without traversing their children;
 ordinary compilation then visits the target and RHS in order. Direct/literal
 `$this` compound assignment is compile-valid, unlike ordinary rebinding. In the

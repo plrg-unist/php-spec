@@ -17,6 +17,47 @@ Original failures remain zero; the earlier349 11/663 retains its own cuts. Deleg
 terminal cleanup, parked/escaped storage and nested ordinary-object RETURN reads
 remain required. [Ledger](coverage/semantics/generator-storage-pin-review.json).
 
+354 executes bound `__construct` captures directly, through explicit `__invoke`
+and as Fiber C-root callbacks. Immutable receivers and real parser/warning
+continuations preserve validation-before-status ordering, handler suspension and
+last-RAW retirement. Known valid registered callbacks reach repeated-constructor
+rejection without executing their bodies. Strict339 initialization, eleven exact
+normal originals at separate cuts and independent210/author112 reached premises
+pass. The original registered-builtin Unsupported failure retains zero agreement;
+pre-entry names and entered constructor traces retain native frames and arguments.
+The actual341 composition over `500a2cedc` passes strict initialization with
+reviewed current source353, compound-string352, property-warning and generic
+ownership guards; earlier source/state cuts retain their inputs. Outer unpacking,
+broader callable adapters and lifecycle consumers remain required.
+[Constructor-capture ledger](coverage/semantics/fiber-constructor-callables-review.json).
+
+
+Source353 selects the first ordinary CV-base DIM read before ECHO or a literal
+property, using the key compiler line before live base/key lookup. The affected
+writable array-property receiver now separates its table; the later literal
+null-property warning has an authenticated fixed-null resume. Seven exact originals
+and245 independent premises retain separate private336 cuts. Actual340 over
+`ea7cf0a34` passes strict compilation at `7ff6d34c3`; current ARG/GEN/Fiber/collector
+interactions are independently reviewed. Original source failures, fixture stops
+and the receiver frontier false/vector retain zero affected credit. Wider emission
+and receiver forms remain required.
+[Ledger](coverage/semantics/source-dimension-emission-review.json).
+
+351 executes captured `start` as a Fiber C-root callback. Immutable RAW selection
+and genuine outer caller chains preserve separate original/copied argument
+buffers, RAW/result Closure owners and borrowed API receivers. Inner traces have
+no file or line site; actual outer callsites, body exception identity and
+last-callback retirement retain their native order. Strict334 initialization,
+ten normal originals and independent228/author107 reached premises pass at the
+recorded private cuts. The original compiler/source stops, diagnostic prefixes
+and author fixture elaboration stop retain zero agreement or state-group credit.
+The affected348 C-root control gains agreement only at351; outer unpacking,
+constructor captures, broader adapters and lifecycle consumers remain required.
+The actual338 composition over `b2fb07e1d` passes strict initialization with
+reviewed Generator349, collector345, source350, trait347 and property/ownership
+interactions; earlier source/state cuts retain their inputs.
+[Start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json).
+
 Collector345 runs remaining marked destructors in the cached worker's retained
 physical interval during public resume/throw, preserving the outer collector
 cursor and pending exception. Borrowed zero-owner targets support real weak
@@ -46,7 +87,7 @@ independent186/author96 reached premises pass at the recorded private cuts.
 Two C-root-start/outer-unpack controls and the separate original `is_int` builtin
 dependency failure have zero agreement. That builtin remains required core work;
 a distinct fresh comparison original checks the same weak int receive.
-C-root `start`, constructor captures and broader adapters remain required.
+At348, C-root `start`, constructor captures and broader adapters remained open.
 The actual333 composition over `05ef7bb9f` passes strict initialization with
 reviewed Generator/property/Throwable/ownership interactions; earlier source and
 state cuts retain their inputs.
@@ -72,7 +113,7 @@ nested108 and collector93 checks; original failures retain zero credit.
 The actual328 composition over `175a197e9` passes strict initialization while
 preserving current collector342, method307, source339 and ownership factors;
 earlier source/state cuts retain their inputs.
-C-root `start`, constructor captures and broader adapters remain required;
+At341, C-root `start`, constructor captures and broader adapters remained open;
 paused undefined-result verification is excluded. Earlier331/337 cuts are unchanged.
 [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json).
 
@@ -372,7 +413,27 @@ True branches are typed helper controls only; the source frontier proves false.
 Raw checks: `.tools/compiler-fiber-blocked-scan-19/.tools/fiber-blocked-controls-v1`.
 Final 336-module composition at `3f19f2278` passes changed initialization in4.122s.
 Raw final check: `.tools/compiler-fiber-blocked-current-19/.tools/fiber-blocked-current-controls-v1`.
-This factor's original full-source retry remains UNRUN.
+Its standalone original retry remains UNRUN; the combined result follows below.
+Module301's removed-owner consumer now reads the same observed state's edges
+after its first roots call, preserving owner order and fallback. Exact `c0cbdd69b`/336
+passes initialization, 51 typed physical/44 main and 56 reached physical/39 main
+premises, with explicit admission of the changed branch. Raw checks:
+`.tools/compiler-gc-transition-edges-19/.tools/gc-observed-edges-controls-v1`.
+Final 339-module composition at `a164f0f9e` passes changed initialization in4.171s.
+Raw final check: `.tools/compiler-gc-transition-edges-current-19/.tools/gc-observed-edges-current-controls-v1`.
+One combined302/301 original retry at `ea7cf0a34`/339 still reaches host55.045625
+with empty streams and zero agreement. Inputs stay stable and the group is reaped;
+no speedup or231 credit follows. Raw retry:
+`.tools/compiler-gc-transition-edges-current-19/.tools/full-default-retry-gc-observed-edges-v1/run-v1`.
+Module270's eager-slot consumer now reads same-state allocation edges after
+its first roots call, preserving owner/live-slot/property-pending order and fallback.
+Exact `6f16a3f11`/339 passes initialization, 68 typed physical/54 main premises
+and a genuine main UNSET frontier with 52 physical/32 main premises, explicitly
+admitting a nonempty CV-cell release. Raw checks:
+`.tools/compiler-eager-observed-edges-19/.tools/eager-observed-edges-controls-v1`.
+Final 340-module composition at `6c1a89b38` passes changed initialization in 4.270s.
+Raw final check: `.tools/compiler-eager-observed-edges-current-19/.tools/eager-observed-edges-current-controls-v1`.
+Its original full retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
@@ -819,8 +880,18 @@ reached premises at `edf7e7ec1` cover exact detach, ordinary cell-release transf
 pending A/B chains and genuine parked/restored Fiber ownership. The actual336
 join at `0d233dde9` passes strict initialization; earlier behavioral cuts remain
 separate. Borrowed plan snapshots and duplicate queues provide no authority.
+Last-owner previous reference wrappers now retire on the actual eager cleanup
+queue. A separate nonowning raw CV preserves safe own-destructor reads while the
+original wrapper reaches zero owners; normal/throw binding installs the selected
+reference atomically. Five exact originals pass at `329ec8e38`; independent
+native-first observations retain `f84fdab9d`. At `d3688fdf9`, 136/139 reached
+premises cover genuine wrapper release, masked raw storage, pending A/B chaining
+and refusal of whole `$GLOBALS` snapshots or expired borrowed-reference reads.
+Shared wrappers and surviving payloads decline this staged path. Earlier source,
+compiler and state cuts remain separate. The actual341 join over `6848742a2`
+passes strict initialization at `ecd8e8745`.
 Released-CV mutation, raw retired-container
-reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
+reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original
 now stops at builtin dispatch and retains zero agreement credit. Bounded
@@ -890,6 +961,20 @@ and production SL274 stages/init passes. The
 [ledger](coverage/semantics/instance-set-access-review.json) preserves original
 failures and the no-owner native Fiber frontier. Readonly follow-ons/hooks/magic, static
 Stringable compounds and wider borrowed destination lifetime remain required.
+
+Compound Stringable concatenation352 preserves the actual selected RHS slot:
+defined CVs remain live through the left cast, initially undefined reads latch
+null, and evaluated VAR/TMP operands retain their real owners until after the
+store. Non-reference self CVs reuse the left string; reference self CVs reread.
+Entry-time destination identity also preserves aliases created or rebound during
+conversion. Eleven exact originals and private332 compiler/init pass at632c;
+one separate caught left/right throw original passes at4bf8. One root/DIM/property
+expression-result original and249 new reached premises pass at7c15. The
+current-parent gate retains its separate cut in the
+[ledger](coverage/semantics/compound-string-live-rhs-review.json). Earlier334/344
+evidence is unchanged; static compounds and wider borrowed destinations remain open.
+Actual339 over CALLS351 `fd432561f` passes algo/struct/init at `0b0bd4336`,
+with independent pointwise parent review and no13/249 source/state renewal.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace

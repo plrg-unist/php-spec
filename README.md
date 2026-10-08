@@ -76,6 +76,8 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [Array-valued ordinary computed-name CVs](coverage/semantics/source-array-name-review.json) now resume warning handlers with fixed `Array` bytes before live target lookup. Borrowed array children can retire inside the handler; handler and child exceptions abort the fetch. Seven exact originals and117 independent premises retain private331; actual335 passes strict compilation. Wider producers remain required.
 
+[First dimension reads](coverage/semantics/source-dimension-emission-review.json) now retire owned include/eval operands at the key compiler line before reading an ordinary CV base and CV or literal key. A narrow writable array-property receiver separates the protected array; a later literal property warning resumes with fixed null. Seven exact originals and245 independent premises retain their private336 cuts; actual340 passes strict compilation. Wider emission and receiver forms remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -195,6 +197,12 @@ current scalar/array locations, preserving copied results and diagnostic order;
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
+[Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
+reads a defined RHS CV after the left conversion, preserves the non-reference
+self-CV fast path, and retains evaluated temporary/reference operands through
+the final store. Thirteen exact originals cover live rebinding, aliases, copied
+expression results and normal or throwing operand cleanup. The249 independent
+reached premises and current-composition gate retain separate records.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -229,8 +237,11 @@ Request 340 adds reverse-global and ascending-store close, handler-before-cache
 exception delivery and borrowed zero-owner store buckets. Genuine weak
 reacquisition restores ordinary release. [Fresh store teardown349](coverage/semantics/generator-fresh-store-review.json)
 releases bound frames without entering body/finally, preserves immediate CV-handler
-ordering and releases a closed Generator's Closure before its caches. Free-storage weak liveness,
-delegating request close and abrupt terminal cleanup remain required.
+ordering and releases a closed Generator's Closure before its caches.
+[Closed storage355](coverage/semantics/generator-storage-pin-review.json) keeps a
+physical pin and readable RETURN through child callbacks, then clears weak lookup.
+Delegating request close, abrupt terminal cleanup, parked/escaped storage and
+nested ordinary-object storage during RETURN reads remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -487,7 +498,8 @@ Full core and a fresh combined offline rebuild remain required.
 
 [WeakReference 296](docs/semantics/WEAK-REFERENCES.md) memoizes live wrappers without
 owning their targets. `get` returns a strong result; resurrection keeps the target
-live, and actual free clears weak lookup before child destruction. Twenty-one
+live. Ordinary object free clears weak lookup before property children; Generator
+storage notifies after its Closure/cache releases. Twenty-one
 exact sources and nine reached cuts (344 physical premises) pass; five Unsupported
 controls earn zero agreement. Pending-carrier unwind, deferred construction,
 wider consumers and WeakMap remain required. Canonical292/304
@@ -503,6 +515,8 @@ Pruning carries that graph through GC selection and destructor dispatch, with
 reuse only when destructor preparation leaves the state identical.
 Keep and release scans also reuse the carried graph, including detached and
 retired buckets; public helpers retain their behavior for modified graphs.
+GC and eager-destruction consumers read the same observed state’s edges after
+its roots without rebuilding those roots.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
@@ -791,9 +805,18 @@ Private Generator cleanup now preserves the same per-slot timing in actual clean
 queues and parked Fiber VMs. Four further exact originals and 134/71 reached
 premises cover reversed slot order, two constraints on one cell, exception
 chaining, owner transfer and rejection of stale snapshots or duplicate queues.
-The current336 composition passes strict compilation.
-Released-CV mutation, raw retired-container reads, callback-capable previous
-reference wrappers and internal Generator/Fiber retirement, binding-time exit
+The336 composition passes strict compilation.
+Last-owner previous reference wrappers now retire through the actual cleanup
+queue before binding. A separate raw CV adds no payload owner; the original
+wrapper has zero owners during callbacks. Safe live-object reads remain available,
+and selected-reference installation
+remains atomic after throws. Five exact originals and 136/139 reached premises
+cover shared wrappers, typed descendants, exception chaining and expired-pointer
+refusals at separate cuts; the actual341 composition passes strict compilation.
+Whole `$GLOBALS` snapshots during wrapper retirement
+remain Unsupported.
+Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
+and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
 full foreach coverage remains required.
 
@@ -1126,8 +1149,18 @@ Bound `start` captures forward the original positional/named buffer through
 direct and explicit `__invoke` entry, retaining the selected receiver through
 argument effects and cleanup. The
 [start-capture ledger](coverage/semantics/fiber-start-callables-review.json)
-records their separate checks. C-root `start`, outer unpacking and constructor
-captures remain required.
+records their separate checks. Captured `start` also runs as a Fiber C-root
+callback, preserving the original outer buffer and its separate handler copy.
+The [start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json)
+records genuine caller chains, source-free inner traces and callback retirement
+before the original argument destructor. Bound `__construct` captures now retain
+their immutable receiver through direct, explicit `__invoke` and C-root calls.
+Callable parsing, including deprecated selectors and suspended warning handlers,
+precedes repeated-constructor rejection. Known registered callbacks reach that
+rejection without executing their body. The
+[constructor-capture ledger](coverage/semantics/fiber-constructor-callables-review.json)
+records source/error traces, parser ownership and last-RAW retirement. Outer
+unpacking and broader callable adapters remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

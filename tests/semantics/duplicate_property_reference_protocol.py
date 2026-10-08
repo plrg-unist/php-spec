@@ -28,6 +28,8 @@ CASES = {
     'typed-slot-fiber':'review-typed-slot-fiber19',
     'generator-typed-slot':'review-generator-typed-slot-throw19',
     'generator-typed-slot-fiber':'review-generator-typed-slot-fiber19',
+    'wrapper':'review-prior-wrapper-live-throw19',
+    'wrapper-array':'review-prior-wrapper-array-throws19',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -225,6 +227,17 @@ def $dupref_phase(S, 30) = true
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
   -- if $dupref_output(S.EVENTS) = $ptascii("A|B|type|")
   -- if $dupref_generator_release(S.TODO, S.FRAMES) = (pgenrelease)
+def $dupref_phase(S, 31) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_operation_for(S) = eps
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
+  -- if pforeachbind.WRAPPER =/= eps
+  -- if $dupref_output(S.EVENTS) = $ptascii("old|")
+  -- if $objectprops_at(S.OBJECTPROPS, pforeachbind.OBJECT) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, $ptascii("x")) = (ppropertyslot_selected)
+  -- if ppropertyslot_selected.STATE = PROP_UNSET
 def $dupref_phase(S, n) = false -- otherwise
 dec $dupref_seek(pstate, nat, nat) : pstate
 def $dupref_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -660,7 +673,7 @@ def container_assertions(initial, expected, pending, descendants=False):
         '$heap_owners($heap_graph(S_release), HCELL pforeachbind.NEW) = 2',
         '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)',
         '$call_task_valid(S_release, FOREACH_BIND_RELEASE pforeachbind)',
-        'S_wrapper = S_release[.REFCELLS = pforeachbind.OLD :: S_release.REFCELLS]',
+        'S_wrapper = S_release[.REFCELLS = pforeachbind.OLD :: S_release.REFCELLS][.HELD = S_release.HELD ++ [HCELL pforeachbind.OLD]]',
         '$heap_valid($heap_graph(S_wrapper))',
         '$foreach_bind_capture(S_wrapper, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
         '~$call_task_valid(S_wrapper, FOREACH_BIND_RELEASE pforeachbind)',
@@ -1129,6 +1142,142 @@ def generator_typed_slot_fiber_assertions(initial, expected):
         '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
 
 
+def wrapper_assertions(initial, expected, array):
+    payload, node = ('PARRAY n_array', 'HARRAY n_array') if array else ('POBJECT n_previous', 'HOBJECT n_previous')
+    clauses = ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_release', 13 if array else 4),
+        'S_release.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_release_tail*',
+        'pforeachbind.WRAPPER = (n_wrapper)',
+        'pforeachbind.OLD = |S_release.STORE|',
+        'pforeachbind.VALUE = '+payload,
+        '$lookup(S_release.ENV, pforeachbind.NAME) = (n_wrapper)',
+        'n_wrapper <- S_release.REFCELLS',
+        '(HCELL n_wrapper) <- S_release.ALLOCATIONS',
+        '$heap_owners($heap_graph(S_release), HCELL n_wrapper) = 1',
+        '~$borrowed_reference_retired(S_release, ROOT n_wrapper)',
+        '$propref_at(S_release.PROPREFS, n_wrapper) = eps',
+        '$node_children(S_release, HCELL n_wrapper) = ['+node+']',
+        '$heap_owners($heap_graph(S_release), '+node+') = 1',
+        '$heap_owners($heap_graph(S_release), HCELL pforeachbind.NEW) = 2',
+        '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)',
+        'S_shared = S_release[.HELD = S_release.HELD ++ [HCELL n_wrapper]]',
+        '$heap_valid($heap_graph(S_shared))',
+        '$heap_owners($heap_graph(S_shared), HCELL n_wrapper) = 2',
+        '$foreach_bind_capture(S_shared, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
+        '~$foreach_bind_prior_unsupported(S_shared, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE)',
+        'S_missing = S_release[.ALLOCATIONS = $destruction_node_delete(S_release.ALLOCATIONS, HCELL n_wrapper)]',
+        '$foreach_bind_capture(S_missing, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
+        'pforeachbind_bad = pforeachbind[.OLD = n_wrapper][.WRAPPER = eps]',
+        'S_bad = S_release[.TODO = (FOREACH_BIND_RELEASE pforeachbind_bad) :: ptask_release_tail*]',
+        '~$call_task_valid(S_bad, FOREACH_BIND_RELEASE pforeachbind_bad)',
+        'S_zero = $drive_steps(S_release, 0)',
+        'S_zero.COMPLETION = BUDGET /\\ S_zero.STORE = S_release.STORE /\\ S_zero.ENV = S_release.ENV',
+        'S_queue_found = $drive_steps(S_release, 1)',
+        'S_queue_found.COMPLETION = BUDGET',
+        'S_queue = S_queue_found[.COMPLETION = NORMAL]', *valid('S_queue'),
+        'S_queue.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_release_tail*',
+        'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HCELL n_wrapper)]',
+        'pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        '$lookup(S_queue.ENV, pforeachbind.NAME) = (pforeachbind.OLD)',
+        '~(pforeachbind.OLD <- S_queue.REFCELLS)',
+        'S_queue.STORE[pforeachbind.OLD] = DEFINED ('+payload+')',
+        '$node_children(S_queue, HCELL pforeachbind.OLD) = eps',
+        '$node_children(S_queue, HCELL n_wrapper) = ['+node+']',
+        '$heap_owners($heap_graph(S_queue), HCELL n_wrapper) = 1',
+        '$heap_owners($heap_graph(S_queue), '+node+') = 1',
+        '$foreach_released_wrapper_cell(S_queue, pforeachbind.OLD)',
+        '$task_nodes(FOREACH_BIND_COMMIT pforeachbind) = [HCELL pforeachbind.NEW]',
+        *seek('S_queue', 'S_cleanup', 14 if array else 31),
+        'S_cleanup.CURRENT = (pcallcontext_cleanup)',
+        '$destructor_context_call(pcallcontext_cleanup, S_cleanup.CURRENT, S_cleanup.FRAMES) = (pdestructorcall_cleanup)',
+        'pdestructorcall_cleanup.OPERATION = (pdestructionoperation_cleanup)',
+        'pdestructionoperation_cleanup.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        '~((HCELL n_wrapper) <- S_cleanup.ALLOCATIONS)',
+        '$heap_owners($heap_graph(S_cleanup), HCELL n_wrapper) = 0',
+        '$borrowed_reference_retired(S_cleanup, ROOT n_wrapper)',
+        'S_expired = $quiet_operand(S_cleanup, BORROWED (ROOT n_wrapper))',
+        'S_expired.COMPLETION = UNSUPPORTED "retired reference wrapper pointer read"',
+        '~$borrowed_reference_retired(S_cleanup, ROOT pforeachbind.OLD)',
+        'paccess_expired = $access_record(S_cleanup, pforeachbind.SITE, pforeachbind.LINE, ACCESS_UNSET, BASE_VALUE (BORROWED (ROOT n_wrapper)), KNOWN PNULL, KNOWN PNULL, UNSET_ARRAY, eps, false)[.SELECTED = BORROWED (ROOT n_wrapper)]',
+        'S_access_expired = $access_live(S_cleanup, paccess_expired)',
+        'S_access_expired.COMPLETION = UNSUPPORTED "retired reference wrapper pointer read"',
+        'S_test_expired = $access_live(S_cleanup, paccess_expired[.MODE = ACCESS_READ (KEY_TEST false)])',
+        'S_test_expired.COMPLETION = UNSUPPORTED "retired reference wrapper pointer read"',
+        'S_cleanup.STORE[pforeachbind.OLD] = DEFINED ('+payload+')',
+        '~(pforeachbind.OLD <- S_cleanup.REFCELLS)',
+        '$node_children(S_cleanup, HCELL pforeachbind.OLD) = eps',
+        '$foreach_released_wrapper_cell(S_cleanup, pforeachbind.OLD)',
+        '$foreach_bind_scope(S_cleanup, pforeachbind, S_cleanup.FRAMES) = (S_caller)',
+        '$lookup(S_caller.ENV, pforeachbind.NAME) = (pforeachbind.OLD)',
+        '$foreach_bind_body_valid(S_caller, pforeachbind)',
+        '$foreach_bind_pending_frames(S_cleanup, pforeachbind.OLD, S_cleanup.FRAMES)',
+        '~$foreach_bind_pending_tasks(S_cleanup, pforeachbind.OLD, S_cleanup.TODO)',
+        '~$foreach_bind_pending_filtered_task(S_caller, pforeachbind.OLD, true, DESTRUCTOR_OPERATION_EXIT pdestructionoperation_cleanup)',
+        'S_snapshot = $globals_snapshot(S_cleanup)',
+        'S_snapshot.COMPLETION = UNSUPPORTED "released foreach reference wrapper snapshot"',
+        'S_snapshot.STORE = S_cleanup.STORE /\\ S_snapshot.ALLOCATIONS = S_cleanup.ALLOCATIONS',
+        'pforeachbind_bounds = pforeachbind[.WRAPPER = (|S_caller.STORE|)]',
+        '~$foreach_bind_wrapper_valid(S_caller, pforeachbind_bounds)',
+        '~$foreach_bind_body_valid(S_caller, pforeachbind_bounds)']
+    if array:
+        clauses += ['S_release.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_first)), ENTRY (KINT 1) (DIRECT (POBJECT n_second))]',
+            'pdestructorcall_cleanup.OBJECT = n_first',
+            '~((HARRAY n_array) <- S_cleanup.ALLOCATIONS)',
+            '$heap_owners($heap_graph(S_cleanup), HARRAY n_array) = 0',
+            '$heap_owners($heap_graph(S_cleanup), HOBJECT n_second) = 1',
+            *seek('S_cleanup', 'S_second', 15),
+            'S_second.CURRENT = (pcallcontext_second)',
+            '$destructor_context_call(pcallcontext_second, S_second.CURRENT, S_second.FRAMES) = (pdestructorcall_second)',
+            'pdestructorcall_second.OBJECT = n_second',
+            'pdestructorcall_second.PENDING = (n_previous_throw)',
+            '$throwable_live(S_second, n_previous_throw)',
+            '~((HOBJECT n_first) <- S_second.ALLOCATIONS)',
+            '$heap_owners($heap_graph(S_second), HCELL pforeachbind.NEW) = 1']
+    else:
+        clauses += ['S_payload_shared = S_release[.HELD = S_release.HELD ++ [HOBJECT n_previous]]',
+            '$heap_valid($heap_graph(S_payload_shared))',
+            '$heap_owners($heap_graph(S_payload_shared), HOBJECT n_previous) = 2',
+            '$foreach_bind_capture(S_payload_shared, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
+            '~$foreach_bind_prior_unsupported(S_payload_shared, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE)',
+            'pdestructorcall_cleanup.OBJECT = n_previous',
+            '(HOBJECT n_previous) <- S_cleanup.ALLOCATIONS',
+            '~$foreach_released_container_cell(S_cleanup, pforeachbind.OLD)',
+            '$heap_owners($heap_graph(S_cleanup), HCELL pforeachbind.NEW) = 1',
+            'S_read = $global_read_name(S_cleanup, pforeachbind.NAME, pforeachbind.LINE)',
+            'S_read.COMPLETION = NORMAL /\\ S_read.RESULT = KNOWN (POBJECT n_previous)',
+            'S_write = $global_assign_name(S_cleanup, pforeachbind.NAME, KNOWN (PINT 0), pforeachbind.LINE)',
+            'S_write.COMPLETION = UNSUPPORTED "mutation of released foreach CV"',
+            'S_unset = $global_unset(S_cleanup, pforeachbind.NAME)',
+            'S_unset.COMPLETION = UNSUPPORTED "mutation of released foreach CV"',
+            'S_reference = $global_acquire_name(S_cleanup, pforeachbind.NAME)',
+            'S_reference.COMPLETION = UNSUPPORTED "mutation of released foreach CV"']
+    clauses += [*seek('S_cleanup', 'S_finish', 6),
+        'S_finish.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_finish) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_finish_tail*',
+        'pdestructionoperation_finish.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        'pdestructionoperation_finish.PENDING = (n_pending)',
+        '$throwable_live(S_finish, n_pending)',
+        '$heap_owners($heap_graph(S_finish), HCELL pforeachbind.NEW) = 1',
+        '$foreach_bind_operation_source_valid(S_finish, pdestructionoperation_finish, pforeachbind)']
+    if array:
+        clauses += ['n_pending =/= n_previous_throw',
+            '$throwable_previous_id(S_finish, n_pending) = (n_previous_throw)']
+    clauses += ['S_commit_found = $drive_steps(S_finish, 1)',
+        'S_commit_found.COMPLETION = BUDGET',
+        'S_commit = S_commit_found[.COMPLETION = NORMAL]', *valid('S_commit'),
+        '$lookup(S_commit.ENV, pforeachbind.NAME) = (pforeachbind.NEW)',
+        'S_commit.STORE[pforeachbind.OLD] = UNDEFINED',
+        'S_commit.STORE[pforeachbind.NEW] = DEFINED (PINT 2)',
+        '~((HCELL n_wrapper) <- S_commit.ALLOCATIONS)',
+        '~$foreach_released_cell(S_commit, pforeachbind.OLD)',
+        '~$foreach_released_wrapper_cell(S_commit, pforeachbind.OLD)',
+        'S_commit.TODO = (THROW_SEARCH n_pending) :: ptask_finish_tail*',
+        'S_done = $drive(S_commit, 2048)',
+        'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+        'S_done.DESTRUCTION.OPERATIONS = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+    return clauses
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -1137,6 +1286,7 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
+            wrapper_assertions(initial, sources.EXPECTED[case], group=='wrapper-array') if group.startswith('wrapper') else
             generator_typed_slot_assertions(initial, sources.EXPECTED[case]) if group=='generator-typed-slot' else
             generator_typed_slot_fiber_assertions(initial, sources.EXPECTED[case]) if group=='generator-typed-slot-fiber' else
             typed_slot_assertions(initial, sources.EXPECTED[case]) if group=='typed-slot' else

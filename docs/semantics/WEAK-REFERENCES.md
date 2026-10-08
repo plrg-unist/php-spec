@@ -17,9 +17,11 @@ existing ordered release machinery.
 
 Object IDs never reuse. `get` therefore checks target allocation membership,
 without a second registry or a store-handle identity. Ordinary destruction keeps
-that membership during `__destruct` and resurrection; actual free removes it
-before outgoing properties retire. A child destructor consequently observes its
-parent's weak reference as null. Retired target IDs remain valid wrapper history.
+that membership during `__destruct` and resurrection. Ordinary object free removes
+it before outgoing properties retire, so a property child observes its parent's
+weak reference as null. Closed Generator storage355 retains its physical pin and
+weak target through Closure/cache release, then notifies on final retirement.
+Retired target IDs remain valid wrapper history.
 
 Direct NEW allocates a null-born candidate before evaluating arguments. Its
 internal constructor always throws; unknown named arguments fail before the

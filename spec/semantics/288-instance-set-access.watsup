@@ -60,10 +60,19 @@ def $property_receiver_read(S, POBJECT n, ptbytes, ppmode, z) = $property_instan
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $property_receiver_fetch(S, BASE_VALUE poperand, ppmode, z) = $base_read(S, BASE_VALUE poperand, z)
 def $property_receiver_fetch(S, BASE_NAME poperand z_name, ppmode, z) = $base_read(S, BASE_NAME poperand z_name, z)
+dec $property_receiver_array_write(pstate, pbase, poperand, ppmode, int) : bool
+def $property_receiver_array_write(S, pbase, poperand, ppmode, z) = false -- otherwise
+def $property_receiver_fetch(S, BASE_DIM pbase poperand z_key, ppmode, z) = S_place[.RESULT = KNOWN pvalue]
+  -- if $property_receiver_array_write(S, pbase, poperand, ppmode, z_key)
+  -- if S_place = $base_acquire(S, BASE_DIM pbase poperand z_key, z_key)
+  -- if S_place.COMPLETION = NORMAL
+  -- if $location_slot(S_place, S_place.LOCATION) = DEFINED pvalue
 def $property_receiver_fetch(S, BASE_DIM pbase poperand z_key, ppmode, z) = S_base
+  -- if ~$property_receiver_array_write(S, pbase, poperand, ppmode, z_key)
   -- if S_base = $property_receiver_fetch(S, pbase, ppmode, z_key)
   -- if S_base.COMPLETION =/= NORMAL
 def $property_receiver_fetch(S, BASE_DIM pbase poperand z_key, ppmode, z) = $dimension_read(S_base, pvalue, poperand, z_key)
+  -- if ~$property_receiver_array_write(S, pbase, poperand, ppmode, z_key)
   -- if S_base = $property_receiver_fetch(S, pbase, ppmode, z_key)
   -- if S_base.COMPLETION = NORMAL
   -- if S_base.RESULT = KNOWN pvalue
