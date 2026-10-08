@@ -331,7 +331,8 @@ def $gc_worker_cached(S, pgccall) = $destruction_store_new(S[.OBJECTS = S.OBJECT
 def $gc_worker_cached(S, pgccall) = S -- if S.GC.WORKER =/= eps
 def $gc_worker_start_plan(S, pgcplan, true) = $gc_plan(S, pgcplan.CALL)
 def $gc_worker_start_plan(S, pgcplan, false) = pgcplan
-def $gc_worker_start_buffer(S, pgcplan, true) = S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps][.GC.SCAN = {INDEX 0, END |pgcplan.BUFFER|}]
+def $gc_worker_start_buffer(S, pgcplan, true) = S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps][.GC.SCAN = {INDEX 0, END n_end}]
+  -- if n_end = |pgcplan.BUFFER|
 def $gc_worker_start_buffer(S, pgcplan, false) = S
 def $gc_fiber_trace(S, pgcplan) = $gc_worker_start(S, pgcplan, true)
   -- if $fiber_transfer_domain(S)
