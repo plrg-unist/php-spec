@@ -650,8 +650,13 @@ zero agreement. Final 351 over `8e513981b` compiles. Fresh internal collection n
 scans residual and new tags with its genuine GC caller. Signed −1+2 accounting
 returns 1 while both destructors retire. Two original full continuations pass
 166 independent physical premises; both whole CLI runs retain 60s timeouts/zero
-agreement. Final 353 over `d2bba03b2` compiles. Main residual dispatch, overlap,
-repeated internal suspension and different-active-pass reentry remain required.
+agreement. Final 353 over `d2bba03b2` compiles. Main-thread residual dispatch372
+uses its own physical interval and real caller scope without changing the cached
+Fiber cursor. Strict354 compilation/init and 171 independent physical premises
+complete both unchanged originals with count1, D/E retirement and exact exception
+priority; both whole CLI 60s timeouts retain zero agreement. Overlap, repeated
+internal suspension, different-active-pass reentry and whole CLI completion remain
+required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

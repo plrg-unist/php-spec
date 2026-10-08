@@ -259,9 +259,16 @@ GC_WAIT caller and physical interval. Signed accounting preserves the residual
 debit: first-pass −1 plus retrace 2 returns 1 while D/E both retire. Independent
 91/75 physical premises at separate 6132 fixture cuts complete both originals,
 including prior-error identity; both whole CLI runs retain 60s timeouts/zero
-agreement. Final 353 over `d2bba03b2` compiles at `3f2016024`. Main residual
-physical dispatch, overlap, repeated internal suspension, different-active-pass
-reentry, whole CLI completion and broader GC remain required.
+agreement. Final 353 over `d2bba03b2` compiles at `3f2016024`.
+372 now scans main-thread residual/fresh tags with a local physical interval,
+leaving the cached Fiber cursor unchanged. Exact frozen slots and called flags
+authenticate callbacks without adding residual D to fresh DTORS; E protects D’s
+error before ordinary finally chaining. At `7e5ff7198`/354, strict compilation/init
+and 93/78 independent physical premises complete both unchanged originals,
+including signed count1, D/E retirement and exact new/previous identities. Both
+whole CLI 60s timeouts retain zero agreement. Overlap, repeated internal
+suspension, different-active-pass reentry, whole CLI completion and broader GC
+remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
