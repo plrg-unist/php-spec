@@ -82,6 +82,8 @@ S_abrupt_future.TODO = (STRINGIFY_RESULT n_parent porigin_method 0) :: (GENERATO
 $call_tasks_valid(S_abrupt_future,S_abrupt_future.TODO)
 $request_fatal_stderr(S_abrupt.EVENTS) = eps
 ''')
+    if not release and not handler:
+        reject(checks, 'abrupt_consumer', 'S_abrupt[.TODO = (THROW_SEARCH n_inner) :: (STRINGIFY_RESULT n_parent porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent[.METHOD = eps]) :: ptask_parent_tail*]', 'S_abrupt')
     if handler:
         checks += fatal.lines(r'''
 pgenfatal_parent.SOURCE = THROW_SEARCH n_parent

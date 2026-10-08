@@ -155,9 +155,14 @@ def $eager_explicit_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $eager_explicit_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
+;; Heap edge discovery also walks this projection; keep its guards structural.
+;; Actual task admission authenticates the Throwable and retained REPORT.
 def $call_after_origin(S, THROW_SEARCH n) = S[.TODO = ptask_tail*]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
-  -- if $generator_request_report_abrupt(S)
+  -- if ptask_tail* = (STRINGIFY_RESULT n_parent porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_parent_tail*
+  -- if pgenfatal_parent.OBJECT = n_parent /\ pgenfatal_parent.METHOD = (porigin_method)
+  -- if pgenfatal_parent.FROZEN = NORMAL /\ pgenfatal_parent.TEXT = eps /\ pgenfatal_parent.REPORT = eps
+  -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps /\ S.ORIGIN = (porigin_method)
 def $call_after_origin(S, GENERATOR_REQUEST_REPORT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = (porigin_method)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pgenfatal.SOURCE = STRINGIFY_RESULT n_parent porigin_method 0
   -- if $generator_request_fatal_tail(S.TODO, pgenfatal) = (ptask_tail*)
