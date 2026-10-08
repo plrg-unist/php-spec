@@ -15,6 +15,8 @@ sys.path.insert(0, str(ROOT / 'tests/semantics'))
 from exception_handler_review import recorded
 
 CASES = Path(__file__).with_name('fiber_static_api_cases.json')
+PREFIX = 'fiber-static-api-source-'
+IMPLEMENTATION = Path(__file__)
 
 
 def main():
@@ -49,7 +51,7 @@ def main():
             native_previous[row['id']] = (path, directory / 'source.php', native)
     if args.native_report:
         assert set(native_previous) == {row['id'] for row in cases}
-    out = Path(tempfile.mkdtemp(prefix='fiber-static-api-source-', dir=ROOT / '.tools'))
+    out = Path(tempfile.mkdtemp(prefix=PREFIX, dir=ROOT / '.tools'))
     print(out, flush=True)
     git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, text=True).strip()
     revision = git('rev-parse', 'HEAD')
@@ -58,7 +60,7 @@ def main():
                 '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe',
                 '.tools/php/bin/php', '.tools/php-file.so', 'tests/semantics/profile.json',
                 'tests/semantics/exception_handler_review.py')]
-    watched += [Path(__file__), CASES]
+    watched += [IMPLEMENTATION, Path(__file__), CASES]
     watched += [source for _, source, _ in native_previous.values()]
     before = {str(path): digest(path) for path in watched}
     env = dict(os.environ, LC_ALL='C', TZ='UTC')
@@ -89,11 +91,20 @@ def main():
                 outcome = json.loads((directory / 'model.stdout').read_bytes())
             except ValueError:
                 outcome = {}
-            passed = (model['exit'] == 0 and not model['timeout'] and (directory / 'model.stderr').read_bytes() == b''
-                      and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program'
-                      and outcome.get('status') == 'normal' and outcome.get('exit_status') == 0
-                      and outcome.get('stdout') == base64.b64encode(nout).decode()
-                      and outcome.get('stderr') == base64.b64encode(nerr).decode())
+            passed = (not model['timeout'] and (directory / 'model.stderr').read_bytes() == b''
+                      and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program')
+            if row.get('expected_model') == 'unsupported':
+                passed = (passed and model['exit'] == 1 and outcome.get('status') == 'unsupported'
+                          and outcome.get('exit_status') is None and outcome.get('diagnostic') is None
+                          and outcome.get('reason') == row['unsupported_reason']
+                          and outcome.get('events') == row.get('unsupported_events', [])
+                          and outcome.get('stdout') == base64.b64encode(row.get('unsupported_stdout', '').encode()).decode()
+                          and outcome.get('stderr') == '')
+            else:
+                passed = (passed and model['exit'] == 0 and outcome.get('status') == 'normal'
+                          and outcome.get('exit_status') == 0
+                          and outcome.get('stdout') == base64.b64encode(nout).decode()
+                          and outcome.get('stderr') == base64.b64encode(nerr).decode())
             record.update(model=model, outcome=outcome)
         record['passed'] = passed
         records.append(record)
@@ -103,7 +114,7 @@ def main():
     stable = before == {str(path): digest(path) for path in watched}
     report = {'revision': revision, 'inputs': before, 'inputs_stable': stable,
               'head_stable': revision == git('rev-parse', 'HEAD'), 'selection': [row['id'] for row in cases],
-              'records': records, 'normal_agreements': sum(row['passed'] for row in records),
+              'records': records, 'normal_agreements': sum(row['passed'] and row.get('outcome', {}).get('status') == 'normal' for row in records),
               'runtime': runtime, 'profile': profile, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'jobs': 1},
               'compiler': {'mode': 'SL', 'cache': False, 'determinism_checks': True,
                            'spectec_commit': 'da36ac3c434cd291940293a63da64544307730a3', 'ocaml': '5.1.0'},
