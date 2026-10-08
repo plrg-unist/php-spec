@@ -1,0 +1,197 @@
+;; START forwards the original variadic buffer. Each SEND_UNPACK has its own
+;; named-order flag; completed pack snapshots are historical and nonowning.
+dec $fiber_start_pack_send(pnamedargs, pvalue, ptbytes?, bool) : pnamedargs?
+def $fiber_start_pack_send(pnamedargs, pvalue, eps, false) = (pnamedargs[.SLOTS = pnamedargs.SLOTS ++ [NAMED_SENT (KNOWN pvalue)]])
+def $fiber_start_pack_send(pnamedargs, pvalue, (ptbytes), b_named) = (pnamedargs[.NAMED = pnamedargs.NAMED ++ [(ptbytes, KNOWN pvalue)]])
+  -- if ~$named_has(pnamedargs.NAMED, ptbytes)
+def $fiber_start_pack_send(pnamedargs, pvalue, ptbytes?, b_named) = eps -- otherwise
+dec $fiber_start_pack_prefix(pnamedargs, pentry*, bool) : pnamedargs?
+def $fiber_start_pack_prefix(pnamedargs, eps, b_named) = (pnamedargs)
+def $fiber_start_pack_prefix(pnamedargs, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*, b_named) = $fiber_start_pack_prefix(pnamedargs_next, pentry_tail*, (b_named \/ ptbytes? =/= eps))
+  -- if ptbytes? = $exit_key_name(pkey)
+  -- if $fiber_start_pack_send(pnamedargs, pvalue, ptbytes?, b_named) = (pnamedargs_next)
+def $fiber_start_pack_prefix(pnamedargs, pentry*, b_named) = eps -- otherwise
+dec $fiber_start_pack_source_valid(pstate, porigin, pconfigpack) : bool
+def $fiber_start_pack_source_valid(S, porigin, pconfigpack) = true
+  -- if $intrinsic_argument(S, porigin, pconfigpack.INDEX) = ((expression, true, eps, pconfigpack.SITE, pconfigpack.LINE))
+  -- if $(pconfigpack.ARRAY < |S.ARRAYS|)
+  -- if $config_pack_items_valid(pconfigpack.ITEMS)
+def $fiber_start_pack_source_valid(S, porigin, pconfigpack) = false -- otherwise
+dec $fiber_start_source_replay(pstate, porigin, nat, pnamedargs, nat, pnamedargs, pconfigpack*) : (pnamedargs, pconfigpack*)?
+def $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, n_limit, pnamedargs_prefix, pconfigpack*) = ((pnamedargs_prefix, pconfigpack*))
+def $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, n_index, pnamedargs_prefix, pconfigpack*) = $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, $(n_index + 1), pnamedargs_next, pconfigpack*)
+  -- if $(n_index < n_limit)
+  -- if $intrinsic_argument(S, porigin, n_index) = ((expression, false, eps, porigin_arg, z))
+  -- if $named_slot_at(pnamedargs.SLOTS, |pnamedargs_prefix.SLOTS|) = NAMED_SENT (KNOWN pvalue)
+  -- if $fiber_start_pack_send(pnamedargs_prefix, pvalue, eps, (pnamedargs_prefix.NAMED =/= eps)) = (pnamedargs_next)
+def $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, n_index, pnamedargs_prefix, pconfigpack*) = $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, $(n_index + 1), pnamedargs_next, pconfigpack*)
+  -- if $(n_index < n_limit)
+  -- if $intrinsic_argument(S, porigin, n_index) = ((expression, false, (ptbytes), porigin_arg, z))
+  -- if $(|pnamedargs_prefix.NAMED| < |pnamedargs.NAMED|)
+  -- if pnamedargs.NAMED[|pnamedargs_prefix.NAMED|] = (ptbytes, KNOWN pvalue)
+  -- if $fiber_start_pack_send(pnamedargs_prefix, pvalue, (ptbytes), true) = (pnamedargs_next)
+def $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, n_index, pnamedargs_prefix, pconfigpack :: pconfigpack_tail*) = $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, $(n_index + 1), pnamedargs_next, pconfigpack_tail*)
+  -- if $(n_index < n_limit)
+  -- if pconfigpack.INDEX = n_index
+  -- if $fiber_start_pack_source_valid(S, porigin, pconfigpack)
+  -- if $fiber_start_pack_prefix(pnamedargs_prefix, pconfigpack.ITEMS, false) = (pnamedargs_next)
+def $fiber_start_source_replay(S, porigin, n_limit, pnamedargs, n_index, pnamedargs_prefix, pconfigpack*) = eps -- otherwise
+def $fiber_start_shape(S, porigin, n_index, pnamedargs, pconfigpack :: pconfigpack_tail*) = ($fiber_start_source_replay(S, porigin, n_index, pnamedargs, 0, {SLOTS eps, NAMED eps}, pconfigpack :: pconfigpack_tail*) = ((pnamedargs, eps)))
+
+;; Replace only this pending task for the existing selected-call validators.
+;; They still authenticate its receiver/Closure, source and owning result tail.
+dec $fiber_start_unpack_args(nat?, pfiberstart) : ptask
+def $fiber_start_unpack_args(eps, pfiberstart) = FIBER_ARGS pfiberstart
+def $fiber_start_unpack_args((n), pfiberstart) = FIBER_START_CAPTURE_ARGS n pfiberstart
+dec $fiber_start_unpack_task(ptask, nat?, pfiberstart) : bool
+def $fiber_start_unpack_task(FIBER_UNPACK_PREP eps pfiberstart, eps, pfiberstart) = true
+def $fiber_start_unpack_task(FIBER_UNPACK_PREP (n) pfiberstart, (n), pfiberstart) = true
+def $fiber_start_unpack_task(FIBER_UNPACK_NEXT eps pfiberstart poperand n_cursor, eps, pfiberstart) = true
+def $fiber_start_unpack_task(FIBER_UNPACK_NEXT (n) pfiberstart poperand n_cursor, (n), pfiberstart) = true
+def $fiber_start_unpack_task(ptask, n?, pfiberstart) = false -- otherwise
+dec $fiber_start_unpack_at_site(ptask, nat?, porigin) : bool
+def $fiber_start_unpack_at_site(FIBER_ARGS pfiberstart, eps, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_SEND pfiberstart, eps, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_START_CAPTURE_ARGS n pfiberstart, (n), porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_START_CAPTURE_SEND n pfiberstart, (n), porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_UNPACK_PREP eps pfiberstart, eps, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_UNPACK_PREP (n) pfiberstart, (n), porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_UNPACK_NEXT eps pfiberstart poperand n_cursor, eps, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(FIBER_UNPACK_NEXT (n) pfiberstart poperand n_cursor, (n), porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_unpack_at_site(ptask, n?, porigin) = false -- otherwise
+dec $fiber_start_unpack_count(ptask*, nat?, porigin) : nat
+def $fiber_start_unpack_count(eps, n?, porigin) = 0
+def $fiber_start_unpack_count(ptask :: ptask_tail*, n?, porigin) = $(1 + $fiber_start_unpack_count(ptask_tail*, n?, porigin))
+  -- if $fiber_start_unpack_at_site(ptask, n?, porigin)
+def $fiber_start_unpack_count(ptask :: ptask_tail*, n?, porigin) = $fiber_start_unpack_count(ptask_tail*, n?, porigin)
+  -- if ~$fiber_start_unpack_at_site(ptask, n?, porigin)
+dec $fiber_start_unpack_project(ptask*, nat?, pfiberstart, pfiberstart) : ptask*
+def $fiber_start_unpack_project(ptask :: ptask_tail*, n?, pfiberstart, pfiberstart_prefix) = $fiber_start_unpack_args(n?, pfiberstart_prefix) :: ptask_tail*
+  -- if $fiber_start_unpack_task(ptask, n?, pfiberstart)
+def $fiber_start_unpack_project(ptask :: ptask_tail*, n?, pfiberstart, pfiberstart_prefix) = ptask :: $fiber_start_unpack_project(ptask_tail*, n?, pfiberstart, pfiberstart_prefix)
+  -- if ~$fiber_start_unpack_task(ptask, n?, pfiberstart)
+def $fiber_start_unpack_project(eps, n?, pfiberstart, pfiberstart_prefix) = eps
+dec $fiber_start_unpack_scope(pstate, nat?, pfiberstart) : bool
+def $fiber_start_unpack_scope(S, eps, pfiberstart) = $fiber_start_valid(S, pfiberstart, true)
+def $fiber_start_unpack_scope(S, (n), pfiberstart) = $fiber_start_capture_valid(S, n, pfiberstart, true)
+dec $fiber_start_unpack_pending(pstate, nat?, pfiberstart) : bool
+def $fiber_start_unpack_pending(S, n?, pfiberstart) = true
+  -- if $fiber_start_unpack_count(S.TODO, n?, pfiberstart.SITE) = 1
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, eps, porigin, z))
+  -- if $fiber_start_unpack_scope(S[.TODO = $fiber_start_unpack_project(S.TODO, n?, pfiberstart, pfiberstart)], n?, pfiberstart)
+def $fiber_start_unpack_pending(S, n?, pfiberstart) = false -- otherwise
+dec $fiber_start_unpack_valid(pstate, nat?, pfiberstart, poperand, nat) : bool
+def $fiber_start_unpack_valid(S, n?, pfiberstart, KNOWN (PARRAY n_array), n_cursor) = true
+  -- if $fiber_start_unpack_count(S.TODO, n?, pfiberstart.SITE) = 1
+  -- if $fiber_start_source_replay(S, pfiberstart.SITE, pfiberstart.INDEX, pfiberstart.SENT, 0, {SLOTS eps, NAMED eps}, pfiberstart.PACKS) = ((pnamedargs_prefix, [pconfigpack]))
+  -- if pconfigpack.INDEX = pfiberstart.INDEX
+  -- if $fiber_start_pack_source_valid(S, pfiberstart.SITE, pconfigpack)
+  -- if pconfigpack.ARRAY = n_array
+  -- if (HARRAY n_array) <- S.ALLOCATIONS
+  -- if pconfigpack.ITEMS = $config_pack_capture(S, S.ARRAYS[n_array].ITEMS)
+  -- if $(n_cursor <= |pconfigpack.ITEMS|)
+  -- if $fiber_start_pack_prefix(pnamedargs_prefix, pconfigpack.ITEMS[0:n_cursor], false) = (pfiberstart.SENT)
+  -- if pfiberstart_prefix = pfiberstart[.SENT = pnamedargs_prefix][.PACKS = pfiberstart.PACKS[0:$nabs($(|pfiberstart.PACKS| - 1))]]
+  -- if $fiber_start_unpack_scope(S[.TODO = $fiber_start_unpack_project(S.TODO, n?, pfiberstart, pfiberstart_prefix)], n?, pfiberstart_prefix)
+def $fiber_start_unpack_valid(S, n?, pfiberstart, poperand, n_cursor) = false -- otherwise
+
+rule PhpStep/fiber-start-unpack: S ~> S[.TODO = [$at_task((porigin), EVAL expression), FIBER_UNPACK_PREP eps pfiberstart] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_ARGS pfiberstart) :: ptask_tail*
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, eps, porigin, z))
+rule PhpStep/fiber-start-capture-unpack: S ~> S[.TODO = [$at_task((porigin), EVAL expression), FIBER_UNPACK_PREP (n) pfiberstart] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_START_CAPTURE_ARGS n pfiberstart) :: ptask_tail*
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, eps, porigin, z))
+rule PhpStep/fiber-start-unpack-array: S ~> S_value[.TODO = (FIBER_UNPACK_NEXT n? pfiberstart[.PACKS = pfiberstart.PACKS ++ [pconfigpack]] S_value.RESULT 0) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_UNPACK_PREP n? pfiberstart) :: ptask_tail*
+  -- if $fiber_start_unpack_pending(S, n?, pfiberstart)
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, eps, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PARRAY n_array)
+  -- if pconfigpack = {INDEX pfiberstart.INDEX, SITE porigin, LINE z, ARRAY n_array, ITEMS $config_pack_capture(S_value, S_value.ARRAYS[n_array].ITEMS)}
+rule PhpStep/fiber-start-unpack-type: S ~> $throw_scalar(S_value, "TypeError", $ptascii("Only arrays and Traversables can be unpacked, ") ++ $noctor_unpack_type_bytes(S_value, pvalue) ++ $ptascii(" given"), z)
+  -- if S.TODO = (FIBER_UNPACK_PREP n? pfiberstart) :: ptask_tail*
+  -- if $fiber_start_unpack_pending(S, n?, pfiberstart)
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, eps, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if ~$is_array_value(pvalue) /\ ~$class_instanceof(S_value, pvalue, $ptascii("Traversable"))
+rule PhpStep/fiber-start-unpack-traversable: S ~> S_value[.COMPLETION = UNSUPPORTED "Fiber start Traversable unpacking"]
+  -- if S.TODO = (FIBER_UNPACK_PREP n? pfiberstart) :: ptask_tail*
+  -- if $fiber_start_unpack_pending(S, n?, pfiberstart)
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, eps, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+  -- if $class_instanceof(S_value, pvalue, $ptascii("Traversable"))
+rule PhpStep/fiber-start-unpack-abrupt: S ~> S_value
+  -- if S.TODO = (FIBER_UNPACK_PREP n? pfiberstart) :: ptask_tail*
+  -- if $fiber_start_unpack_pending(S, n?, pfiberstart)
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, eps, porigin, z))
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION =/= NORMAL
+
+dec $fiber_start_unpack_check(pstate, pfiberstart, pconfigpack, nat) : pstate
+def $fiber_start_unpack_check(S, pfiberstart, pconfigpack, n_cursor) = $throw_scalar(S, "Error", $ptascii("Cannot use positional argument after named argument during unpacking"), pconfigpack.LINE)
+  -- if pconfigpack.ITEMS[n_cursor] = ENTRY (KINT z) pitem
+  -- if $config_pack_named(pconfigpack.ITEMS[0:n_cursor])
+def $fiber_start_unpack_check(S, pfiberstart, pconfigpack, n_cursor) = $throw_scalar(S, "Error", $ptascii("Named parameter $") ++ $c_string(ptbytes) ++ $ptascii(" overwrites previous argument"), pconfigpack.LINE)
+  -- if pconfigpack.ITEMS[n_cursor] = ENTRY (KSTRING ptbytes) pitem
+  -- if $named_has(pfiberstart.SENT.NAMED, ptbytes)
+def $fiber_start_unpack_check(S, pfiberstart, pconfigpack, n_cursor) = S -- otherwise
+rule PhpStep/fiber-start-unpack-item: S ~> S_check[.TODO = (FIBER_UNPACK_NEXT n? pfiberstart[.SENT = pnamedargs] poperand $(n_cursor + 1)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor) :: ptask_tail*
+  -- if $fiber_start_unpack_valid(S, n?, pfiberstart, poperand, n_cursor)
+  -- if pconfigpack = pfiberstart.PACKS[$nabs($(|pfiberstart.PACKS| - 1))]
+  -- if $(n_cursor < |pconfigpack.ITEMS|)
+  -- if pconfigpack.ITEMS[n_cursor] = ENTRY pkey (DIRECT pvalue)
+  -- if S_check = $fiber_start_unpack_check(S, pfiberstart, pconfigpack, n_cursor)
+  -- if S_check.COMPLETION = NORMAL
+  -- if $fiber_start_pack_send(pfiberstart.SENT, pvalue, $exit_key_name(pkey), $config_pack_named(pconfigpack.ITEMS[0:n_cursor])) = (pnamedargs)
+rule PhpStep/fiber-start-unpack-item-error: S ~> S_check
+  -- if S.TODO = (FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor) :: ptask_tail*
+  -- if $fiber_start_unpack_valid(S, n?, pfiberstart, poperand, n_cursor)
+  -- if pconfigpack = pfiberstart.PACKS[$nabs($(|pfiberstart.PACKS| - 1))]
+  -- if $(n_cursor < |pconfigpack.ITEMS|)
+  -- if S_check = $fiber_start_unpack_check(S, pfiberstart, pconfigpack, n_cursor)
+  -- if S_check.COMPLETION =/= NORMAL
+rule PhpStep/fiber-start-unpack-done: S ~> S[.TODO = $fiber_start_unpack_args(n?, pfiberstart[.INDEX = $(pfiberstart.INDEX + 1)]) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor) :: ptask_tail*
+  -- if $fiber_start_unpack_valid(S, n?, pfiberstart, poperand, n_cursor)
+  -- if pconfigpack = pfiberstart.PACKS[$nabs($(|pfiberstart.PACKS| - 1))]
+  -- if n_cursor = |pconfigpack.ITEMS|
+
+dec $fiber_start_unpack_nodes(nat?, pfiberstart) : pnode*
+def $fiber_start_unpack_nodes(eps, pfiberstart) = $task_nodes(FIBER_ARGS pfiberstart)
+def $fiber_start_unpack_nodes((n), pfiberstart) = $task_nodes(FIBER_START_CAPTURE_ARGS n pfiberstart)
+def $task_nodes(FIBER_UNPACK_PREP n? pfiberstart) = $fiber_start_unpack_nodes(n?, pfiberstart)
+def $task_nodes(FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor) = $fiber_start_unpack_nodes(n?, pfiberstart) ++ $operand_nodes(poperand)
+def $call_task_valid(S, FIBER_UNPACK_PREP n? pfiberstart) = $fiber_start_unpack_pending(S, n?, pfiberstart)
+def $call_task_valid(S, FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor) = $fiber_start_unpack_valid(S, n?, pfiberstart, poperand, n_cursor)
+def $generator_internal_task(FIBER_UNPACK_PREP n? pfiberstart) = true
+def $generator_internal_task(FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor) = true
+
+;; Pending call teardown moves every slot once into Zend's release order.
+;; Explicit __invoke owns the Closure as EX(This); direct calls release the
+;; Closure function after named args through their existing capture tail.
+dec $fiber_start_unpack_unwind_valid(pstate, ptask) : bool
+def $fiber_start_unpack_unwind_valid(S, ptask) = true
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if $throwable_live(S, n_throwable)
+  -- if $call_task_valid(S[.TODO = (THROW_SEARCH n_throwable) :: ptask :: ptask_tail*], ptask)
+def $fiber_start_unpack_unwind_valid(S, ptask) = false -- otherwise
+dec $fiber_start_unpack_discard(pstate, ptask, nat?, pfiberstart, pnode*) : pstate
+def $fiber_start_unpack_discard(S, ptask, eps, pfiberstart, pnode*) = $destructor_release_begin(S, $destruction_values(pnode* ++ $named_slots_roots(pfiberstart.SENT.SLOTS) ++ [HOBJECT pfiberstart.OBJECT] ++ $named_roots(pfiberstart.SENT.NAMED)))
+  -- if $fiber_start_unpack_unwind_valid(S, ptask)
+def $fiber_start_unpack_discard(S, ptask, (n), pfiberstart, pnode*) = $destructor_release_begin(S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*], $destruction_values(pnode* ++ $named_slots_roots(pfiberstart.SENT.SLOTS) ++ [HOBJECT n] ++ $named_roots(pfiberstart.SENT.NAMED)))
+  -- if $fiber_start_unpack_unwind_valid(S, ptask)
+  -- if $exit_method_site(S, pfiberstart.SITE)
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_CAPTURE_RELEASE n pfiberstart.SITE) :: ptask_tail*
+def $fiber_start_unpack_discard(S, ptask, (n), pfiberstart, pnode*) = $destructor_release_begin(S, $destruction_values(pnode* ++ $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)))
+  -- if $fiber_start_unpack_unwind_valid(S, ptask)
+  -- if ~$exit_method_site(S, pfiberstart.SITE)
+def $return_discard(S, FIBER_UNPACK_PREP n? pfiberstart) = $fiber_start_unpack_discard(S, FIBER_UNPACK_PREP n? pfiberstart, n?, pfiberstart, eps)
+  -- if $fiber_start_unpack_unwind_valid(S, FIBER_UNPACK_PREP n? pfiberstart)
+def $return_discard(S, FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor) = $fiber_start_unpack_discard(S, FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor, n?, pfiberstart, $operand_nodes(poperand))
+  -- if $fiber_start_unpack_unwind_valid(S, FIBER_UNPACK_NEXT n? pfiberstart poperand n_cursor)

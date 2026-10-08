@@ -235,9 +235,9 @@ syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantc
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
 syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
 syntax psourcehelper = HELPER_EMPTY_EVAL | HELPER_ONCE_SKIP pfilecontext preqbytes | HELPER_FAILED_INCLUDE pfilecontext
-syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat }
+syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat, PACKS pconfigpack* }
 syntax pgcpublic = {API pfiberapi, SOURCE pgccall, INDEX nat, END nat, PENDING nat?, RESIDUAL bool}
-syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int }
+syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int, PACKS pconfigpack* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | GC_MAIN_SCAN pgcplan pgcscan | GC_MAIN_RETURN pgcplan pgcscan nat
@@ -296,6 +296,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | API_CALLABLE_RESULT papiquery nat
   | DEFAULT_STRING_RESULT pparameterstring | VARIADIC_STRING_RESULT pvariadicstring
   | CLOSURE_CALL_RESULT porigin int | CLOSURE_CALL_FORWARD pclosurecall nat pnamedargs nat
+  | FIBER_UNPACK_PREP nat? pfiberstart | FIBER_UNPACK_NEXT nat? pfiberstart poperand nat
   | FIBER_ARRAY_CONVERT pfiberarray
   | FIBER_ARRAY_CORE_START_INVOKE nat pfiberstart | FIBER_ARRAY_CORE_START_RESULT nat pfiberstart
   | METHOD_CONVERT pcalltarget porigin int | ARRAY_CONVERT pcalltarget parrayselection | STRING_CONVERT pcalltarget pstringselection
@@ -1033,7 +1034,7 @@ dec $fiber_trace_type(pintrinsic) : ptbytes
 dec $fiber_api_valid(pstate, pfiberapi) : bool
 dec $fiber_fixed_buffer_valid(pstate, porigin, pintrinsic, pvalue?) : bool
 dec $intrinsic_extent(pstate, porigin) : nat
-dec $fiber_start_shape(pstate, porigin, nat, pnamedargs) : bool
+dec $fiber_start_shape(pstate, porigin, nat, pnamedargs, pconfigpack*) : bool
 dec $fiber_start_prefix(pstate, porigin, nat, nat, pnamedargs) : bool
 dec $fiber_start_valid(pstate, pfiberstart, bool) : bool
 dec $fiber_wait_valid(pstate, pfiberapi) : bool

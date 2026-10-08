@@ -1,0 +1,120 @@
+[
+  {
+    "id": "peer-fiber-array-start-unpack-freezes-ref-selector-before-global-retirement",
+    "source": "<?php\n$target = new Fiber(static function (int $value, string $label = 'D', ...$extra) {\n    try {\n        echo $value, '|', $label, '|', $extra['tail'], '|';\n        Fiber::suspend('Y');\n    } finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\n$other = new Fiber(static function () { echo 'UNREACHED|'; });\n$receiver = $target;\n$method = 'StArT';\n$pair = [&$receiver, &$method];\nfunction startUnpackRetireSelector19() {\n    global $target, $other, $receiver, $method, $pair;\n    $receiver = $other;\n    $method = 'resume';\n    $pair = null;\n    $target = null;\n    echo 'P|';\n    return ['value' => '7', 'tail' => 'X'];\n}\n$yielded = $pair(...startUnpackRetireSelector19());\necho $yielded, '|', (int)($weak->get() === null), '|', (int)$other->isStarted();\n",
+    "engine_derived_expectation": "Dynamic array INIT freezes and retains the bound start receiver before the pack expression mutates REF members and retires the selector. String keys remain named arguments, target entry performs weak int conversion/default/variadic binding, and last receiver retirement closes the suspended target. Exact stdout awaits pinned native validation.",
+    "source_sha256": "45d279e91bdd5ca17c76f50e4f558df9d489605fabf9b2deab0f65267215473b",
+    "source_preparation_note": "Distinct corrected original: unset of a global-imported local only drops that local binding. Assign null through the global reference to retire the original global owner; preserve the initial unrun bytes separately.",
+    "native_stdout": "P|7|D|X|F|Y|1|0",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-fiber-fcc-start-unpack-retires-capture-keeps-named-buffer",
+    "source": "<?php\n$target = new Fiber(static function (int $value, string $label = 'D', ...$extra) {\n    echo $value, '|', $label, '|', $extra['tail'], '|';\n    return 29;\n});\n$start = $target->start(...);\n$weak = WeakReference::create($start);\nfunction startUnpackRetireCapture19() {\n    global $start;\n    $start = null;\n    echo 'P|';\n    return ['value' => '7', 'tail' => 'X'];\n}\n$yielded = $start->__invoke(...startUnpackRetireCapture19());\necho (int)($yielded === null), '|', $target->getReturn(), '|', (int)($weak->get() === null);\n",
+    "engine_derived_expectation": "The explicit invoke call retains the selected first-class start Closure before the pack expression retires its external variable. Unpacked named arguments preserve names into the target variadic binder, with normal defined return and final Closure retirement. Exact stdout awaits pinned native validation.",
+    "source_sha256": "63fc47514714ee46c6fb68fe10107f3da33356b2f512cb520898e9c9dedb7536",
+    "native_stdout": "P|7|D|X|1|29|1",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-fiber-start-unpack-errors-precede-already-started-status",
+    "source": "<?php\n$target = new Fiber(static function ($value) { return 17; });\n$target->start(0);\n$start = $target->start(...);\n$first = ['value' => 1];\n$duplicate = ['value' => 2];\ntry { $start(...$first, ...$duplicate); }\ncatch (Error $error) { echo $error->getMessage(), '|'; }\nunset($error);\n$mixed = ['value' => 1, 0 => 3];\ntry { $start->__invoke(...$mixed); }\ncatch (Error $error) { echo $error->getMessage(), '|'; }\nunset($error);\n$pair = [$target, 'start'];\ntry { $pair(...[4]); }\ncatch (FiberError $error) { echo $error->getMessage(), '|'; }\nunset($error);\necho (int)$target->isTerminated();\n",
+    "engine_derived_expectation": "SEND_UNPACK detects duplicate named keys and positional-after-named within one pack before invoking Fiber::start status checking. A valid positional pack reaches the already-started FiberError. No undefined getReturn is read. Exact diagnostics/stdout await pinned native validation.",
+    "source_sha256": "6e2f18fd6a59bdd84d1f8814a3143a1ebb777da1aff2c7018ec99bf1742c7610",
+    "native_stdout": "Named parameter $value overwrites previous argument|Cannot use positional argument after named argument during unpacking|Cannot start a fiber that has already been started|1",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-fiber-start-unpack-separate-packs-copy-dereferenced-members",
+    "source": "<?php\n$target = new Fiber(static function (int $value, ...$extra) {\n    echo $value, '|', $extra['tail'], '|';\n    return 17;\n});\n$value = '7';\n$first = ['tail' => 'X'];\n$second = [&$value];\nfunction startUnpackRetireCopiedPacks19() {\n    global $value, $first, $second;\n    $value = 9;\n    $first = null;\n    $second = null;\n    echo 'M|';\n    return [];\n}\n$result = $target->start(...$first, ...$second, ...startUnpackRetireCopiedPacks19());\necho (int)($result === null), '|', $value, '|', $target->getReturn();\n",
+    "engine_derived_expectation": "SEND_UNPACK resets positional-after-named tracking per pack. A named extra argument in the first pack and positional value in the second remain valid. The by-value outer start signature copies the referenced value before a third provider changes it and retires both packs; target entry receives the original string value for weak int conversion. Exact stdout awaits pinned native validation.",
+    "source_sha256": "5f734e7d7ab11b7358f21385f4433146eab70539f01bfee9511efbe4cf86c924",
+    "native_stdout": "M|7|X|1|9|17",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "author-fiber-start-unpack-abrupt-positional-and-named-owner-order",
+    "source": "<?php\nclass UnpackPayload374 {\n    private WeakReference $target;\n    private string $label;\n    public function __construct(WeakReference $target, string $label) {\n        $this->target = $target;\n        $this->label = $label;\n    }\n    public function __destruct() {\n        echo $this->label, (int)($this->target->get() === null), '|';\n    }\n}\nfunction unpackPark374() {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; }\n}\nfunction unpackPayload374(bool $named) {\n    global $target, $pair, $weak;\n    $target = null;\n    $pair = null;\n    echo 'P|';\n    if ($named) { return ['value' => new UnpackPayload374($weak, 'N')]; }\n    return [new UnpackPayload374($weak, 'D')];\n}\nfunction unpackThrow374() { throw new RuntimeException('pack'); }\n$target = new Fiber('unpackPark374');\n$target->start();\n$weak = WeakReference::create($target);\n$pair = [$target, 'start'];\ntry { $pair(...unpackPayload374(false), ...unpackThrow374()); }\ncatch (RuntimeException $error) { echo 'C|', $error->getMessage(), '|', (int)($weak->get() === null), '|'; }\nunset($error);\n$target = new Fiber('unpackPark374');\n$target->start();\n$weak = WeakReference::create($target);\n$pair = [$target, 'start'];\ntry { $pair(...unpackPayload374(true), ...unpackThrow374()); }\ncatch (RuntimeException $error) { echo 'C|', $error->getMessage(), '|', (int)($weak->get() === null), '|END'; }\n",
+    "source_sha256": "1246a700dc2f0f620978e939680af2c9cb29f7e7ea6051b2930a0b2ab98b6bce",
+    "engine_derived_expectation": "An earlier temporary pack owns the pending copied payload; a later pack expression throws before start status entry. After selector/global receiver retirement, positional payload release precedes bound receiver force-close, whereas extra named payload release follows that close. Exact native tuple remains unclaimed.",
+    "native_stdout": "P|D0|F|C|pack|1|P|F|N1|C|pack|1|END",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "author-fiber-start-unpack-invalid-types-precede-status",
+    "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$target->start();\n$start = $target->start(...);\ntry { $target->start(...17); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; foreach ($error->getTrace() as $frame) { echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|'; } }\nunset($error);\ntry { $start(...null); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; foreach ($error->getTrace() as $frame) { echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|'; } }\nunset($error);\ntry { $start->__invoke(...new stdClass()); }\ncatch (TypeError $error) { echo $error->getMessage(), '|'; foreach ($error->getTrace() as $frame) { echo $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|'; } }\nunset($error);\necho (int)$target->isTerminated(), '|', $target->getReturn();\n",
+    "source_sha256": "425ad6bd49ee114eb6e88caef4150c6fcbed7a70a45f2e7d12ff0aa378ce5097",
+    "engine_derived_expectation": "Scalar/null and a non-Traversable stdClass fail SEND_UNPACK before the already-started Fiber status check, through direct method, direct captured Closure and explicit invoke consumers. All return reads are defined. Exact diagnostics await native observation. Each caught trace is enumerated, distinguishing pre-entry SEND_UNPACK errors from entered start/status frames.",
+    "native_stdout": "Only arrays and Traversables can be unpacked, int given|Only arrays and Traversables can be unpacked, null given|Only arrays and Traversables can be unpacked, stdClass given|1|17",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-fiber-start-unpack-forwards-named-buffer-through-fcc-and-raw-core",
+    "source": "<?php\n$target = new Fiber(static function (int $value, ...$extra) {\n    echo 'F|', $value, '|', $extra['tail'], '|';\n    Fiber::suspend('Y');\n    return 17;\n});\n$capture = $target->start(...);\n$runner = new Fiber($capture);\n$result = $runner->start(...['value' => '7', 'tail' => 'X']);\necho (int)($result === null), '|', $runner->getReturn(), '|', (int)$target->isSuspended(), '|';\n$target->resume();\necho $target->getReturn(), '|';\n$rawTarget = new Fiber(static function (int $value, ...$extra) {\n    echo 'A|', $value, '|', $extra['tail'], '|';\n    Fiber::suspend('Z');\n    return 23;\n});\n$rawRunner = new Fiber([$rawTarget, 'start']);\n$rawResult = $rawRunner->start(...['value' => '9', 'tail' => 'Q']);\necho (int)($rawResult === null), '|', $rawRunner->getReturn(), '|', (int)$rawTarget->isSuspended(), '|';\n$rawTarget->resume();\necho $rawTarget->getReturn();\n",
+    "source_sha256": "663ed7b6af698f18ed041b031305bbcf3ed7fede370ef7133dca0c99c67dc852",
+    "engine_derived_expectation": "An ordinary start with one two-member named pack must authenticate its outer saved API while FCC and RAW-array core callbacks each rebuild a copied inner start buffer of length two. Both inner target suspensions return through the completed runner; only normally completed returns are read. Exact stdout awaits pinned native validation.",
+    "native_stdout": "F|7|X|1|Y|1|17|A|9|Q|1|Z|1|23",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-fiber-start-unpack-direct-and-explicit-capture-abrupt-named-order",
+    "source": "<?php\nclass StartUnpackCapturePayload374 {\n    private WeakReference $target;\n    public function __construct(WeakReference $target) { $this->target = $target; }\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\nfunction startUnpackCapturePark374() {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; }\n}\nfunction startUnpackCapturePack374() {\n    global $target, $start, $weak;\n    $target = null;\n    $start = null;\n    echo 'P|';\n    return ['value' => new StartUnpackCapturePayload374($weak)];\n}\nfunction startUnpackCaptureThrow374() { throw new RuntimeException('pack'); }\n$target = new Fiber('startUnpackCapturePark374');\n$target->start();\n$weak = WeakReference::create($target);\n$start = $target->start(...);\ntry { $start(...startUnpackCapturePack374(), ...startUnpackCaptureThrow374()); }\ncatch (RuntimeException $error) { echo 'C|', (int)($weak->get() === null), '|'; }\nunset($error);\n$target = new Fiber('startUnpackCapturePark374');\n$target->start();\n$weak = WeakReference::create($target);\n$start = $target->start(...);\ntry { $start->__invoke(...startUnpackCapturePack374(), ...startUnpackCaptureThrow374()); }\ncatch (RuntimeException $error) { echo 'C|', (int)($weak->get() === null), '|END'; }\n",
+    "source_sha256": "56f8997948d681d8ce5e2e2b598d089a39010e81065c3cac3f5561afee0458e8",
+    "engine_derived_expectation": "cleanup_unfinished_calls releases ordinary EX(This) before extra named parameters but the direct call Closure function owner after named parameters. Before the handler enters, explicit Closure::__invoke and direct FCC calls therefore need distinct ordering of last Closure/receiver retirement versus named payload destruction. Exact stdout awaits pinned native validation.",
+    "native_stdout": "P|D0|F|C|1|P|F|D1|C|1|END",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-start-dynamic-capture-named-unpack-selection",
+    "source": "<?php\n$original = new Fiber(static function ($value) {\n    echo 'O', (int)($value === $GLOBALS['other']), '|';\n    Fiber::suspend('Y');\n    return 47;\n});\n$other = new Fiber(static function () { echo 'X|'; return 53; });\n$selected = $original;\n$method = 'StArT';\n$start = $selected->$method(...);\n$method = 'resume';\necho $start(...['value' => ($selected = $other)]), '|';\necho (int)$original->isStarted(), (int)$other->isStarted(), (int)($selected === $other), '|';\n$original->resume();\necho $original->getReturn();\n",
+    "source_sha256": "b3c0e01d899b603c811635909e394372a26194618fed17d3ae671bc6e86dc41f",
+    "native_stdout": "O1|Y|101|47",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-confirmed-model-unrun"
+  },
+  {
+    "id": "boundary-fiber-start-unpack-traversable-generator",
+    "source": "<?php\nfunction startUnpackTraversable374() { yield 7; }\n$target = new Fiber(static function ($value) { echo $value; return 17; });\n$target->start(...startUnpackTraversable374());\necho '|', $target->getReturn();\n",
+    "source_sha256": "d88cd90cb2de726cf6275df05111e4d8891373c41c8872b6fa8f01d1dc7042d9",
+    "expected_model": "unsupported",
+    "unsupported_reason": "Fiber start Traversable unpacking",
+    "unsupported_events": [],
+    "native_stdout": "7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-fcc-start-unpack-dynamic-pack-retired-history",
+    "source": "<?php\n$target = new Fiber(static function (int $value, string $label = 'D', ...$extra) {\n    echo $value, '|', $label, '|', $extra['tail'], '|';\n    return 29;\n});\n$start = $target->start(...);\n$weak = WeakReference::create($start);\nfunction startUnpackRetireCapture19() {\n    global $start;\n    $start = null;\n    echo 'P|';\n    $value = '7';\n    return ['value' => $value, 'tail' => 'X'];\n}\n$yielded = $start->__invoke(...startUnpackRetireCapture19());\necho (int)($yielded === null), '|', $target->getReturn(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "2dc46b93f717f0ff1180eb1640066cd28b58a8e79f051050f8785360e86ff376",
+    "native_stdout": "P|7|D|X|1|29|1",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
