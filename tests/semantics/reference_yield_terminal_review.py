@@ -18,6 +18,7 @@ def main():
     driver.UNSUPPORTED = UNSUPPORTED
     driver.WATCHED += [
         'spec/semantics/97-call-reference-acquisition.watsup',
+        'spec/semantics/99-reference-returns.watsup',
         'spec/semantics/118-arrows.watsup',
         'spec/semantics/207-error-handler-runtime.watsup',
         'spec/semantics/270-eager-destructors.watsup',
