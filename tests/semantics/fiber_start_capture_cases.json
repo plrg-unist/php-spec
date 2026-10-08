@@ -1,0 +1,118 @@
+[
+  {
+    "id": "author-bound-start-weak-named-default-variadic",
+    "source": "<?php\nfunction startTarget348(int $x, $tail = 'D', ...$extra) {\n    echo (int)is_int($x), '|', $x, '|', $tail, '|', $extra['named'], '|';\n    $received = Fiber::suspend('Y');\n    return $received;\n}\n$fiber = new Fiber('startTarget348');\n$start = $fiber->start(...);\n$copy = clone $start;\necho (int)($copy == $start), '|';\nunset($start);\necho $copy(x: '7', named: 'N'), '|';\necho (int)($fiber->resume(29) === null), '|', $fiber->getReturn();\n",
+    "native_stdout": "1|1|7|D|N|Y|1|29",
+    "source_sha256": "85a45f1b028c12998fe90d663639950d25493f3ce3a00f8b6db863c90f243fda",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "author-bound-start-nested-parent-original-buffer",
+    "source": "<?php\n$target = new Fiber(static function ($value) {\n    echo 'T', $value, '|';\n    $received = Fiber::suspend('Y');\n    return $received;\n});\n$start = $target->start(...);\n$parent = new Fiber(static function () use ($start) {\n    echo 'P|';\n    $value = $start(value: 'V');\n    echo 'C', $value, '|';\n    return 19;\n});\necho (int)($parent->start() === null), '|';\necho (int)($target->resume(17) === null), '|', $target->getReturn(), '|', $parent->getReturn();\n",
+    "native_stdout": "P|TV|CY|1|1|17|19",
+    "source_sha256": "684b2cd55381b84be83ff85d11fcf0540e00f11af8f8c939c6a1cd57fc5c64a7",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-start-dynamic-capture-named-selection",
+    "source": "<?php\n$original = new Fiber(static function ($value) {\n    echo 'O', (int)($value === $GLOBALS['other']), '|';\n    Fiber::suspend('Y');\n    return 47;\n});\n$other = new Fiber(static function () { echo 'X|'; return 53; });\n$selected = $original;\n$method = 'StArT';\n$start = $selected->$method(...);\n$method = 'resume';\necho $start(value: ($selected = $other)), '|';\necho (int)$original->isStarted(), (int)$other->isStarted(), (int)($selected === $other), '|';\n$original->resume();\necho $original->getReturn();\n",
+    "source_sha256": "3780481e95e5611ac884910f920d5d8b88476eac000c1546e5e15da4e41c4d64",
+    "native_stdout": "O1|Y|101|47",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-start-invoke-status-after-argument-and-traces",
+    "source": "<?php\nfunction startArgument348() { echo 'E|'; return 9; }\n$fiber = new Fiber(static function () { return 23; });\n$start = $fiber->start(...);\necho (int)($start() === null), '|';\ntry { $start->__invoke(startArgument348()); }\ncatch (FiberError $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\ntry { $start(startArgument348()); }\ncatch (FiberError $error) {\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\necho $fiber->getReturn();\n",
+    "source_sha256": "080bc9076d8834b2d1b6881b1b89e6be218d33fc3c8dfe2e30a678ce770898c1",
+    "native_stdout": "1|E|Cannot start a fiber that has already been started|start->11|__invoke->11|E|start->11|23",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-start-unknown-named-callback-entry",
+    "source": "<?php\n$fiber = new Fiber(static function ($value) { echo 'B|'; return $value; });\n$start = $fiber->start(...);\ntry { $start(unknown: 17); }\ncatch (Error $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n    }\n}\necho (int)$fiber->isStarted(), (int)$fiber->isTerminated();\n",
+    "source_sha256": "62e88393797107baa4f021e721aa23b942360adcee60fb9fc5d923336d7028d0",
+    "native_stdout": "Unknown named parameter $unknown|start->11|11",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-start-reentry-active-identity",
+    "source": "<?php\n$fiber = new Fiber(static function () {\n    global $start, $fiber;\n    echo (int)(Fiber::getCurrent() === $fiber), '|';\n    try { $start(); }\n    catch (FiberError $error) { echo $error->getMessage(), '|'; }\n    Fiber::suspend('Y');\n    return 31;\n});\n$start = $fiber->start(...);\necho $start(), '|';\n$fiber->resume();\necho $fiber->getReturn();\n",
+    "source_sha256": "3c4ac33c9812b62139ffe39b7ec4e3fadf914a5cb47f2a6081eebb947fb3499e",
+    "native_stdout": "1|Cannot start a fiber that has already been started|Y|31",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-start-last-capture-closes-before-payload-retirement",
+    "source": "<?php\nclass StartPayload348 {\n    function __destruct() {\n        echo 'D', (int)($GLOBALS['weak']->get() === null), (int)($GLOBALS['weakCapture']->get() === null), '|';\n    }\n}\n$fiber = new Fiber(static function ($payload) {\n    try { Fiber::suspend('Y'); }\n    finally { echo 'F|'; return 61; }\n});\n$weak = WeakReference::create($fiber);\n$start = $fiber->start(...);\n$weakCapture = WeakReference::create($start);\nunset($fiber);\necho $start->__invoke(new StartPayload348()), '|';\necho (int)($weak->get() !== null), '|';\nunset($start);\necho (int)($weak->get() === null), (int)($weakCapture->get() === null);\n",
+    "source_sha256": "cc437c2db10d10c4bfccb1213893c4565eb8c9627f35205b382fb9334ae2ec35",
+    "native_stdout": "Y|1|F|D01|11",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-start-nested-same-capture-argument",
+    "source": "<?php\n$fiber = new Fiber(static function ($value = null) { echo 'B|'; return 5; });\n$start = $fiber->start(...);\ntry { $start($start()); }\ncatch (FiberError $error) { echo 'E|'; }\necho $fiber->getReturn();\n",
+    "source_sha256": "533888bbb6ed5c618546ef7b8717b8bede3622c8d5f7454f605749c4dc5cb2aa",
+    "native_stdout": "B|E|5",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "boundary-bound-start-capture",
+    "source": "<?php\n$f = new Fiber(static function () { echo 'B'; });\n$capture = $f->start(...);\n$capture();\n",
+    "source_sha256": "d40980aec5fa707ab35af92740a23f5c207d705f275e8957728df10b686543bd",
+    "native_stdout": "B",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-start-dynamic-capture-named-unpack-selection",
+    "source": "<?php\n$original = new Fiber(static function ($value) {\n    echo 'O', (int)($value === $GLOBALS['other']), '|';\n    Fiber::suspend('Y');\n    return 47;\n});\n$other = new Fiber(static function () { echo 'X|'; return 53; });\n$selected = $original;\n$method = 'StArT';\n$start = $selected->$method(...);\n$method = 'resume';\necho $start(...['value' => ($selected = $other)]), '|';\necho (int)$original->isStarted(), (int)$other->isStarted(), (int)($selected === $other), '|';\n$original->resume();\necho $original->getReturn();\n",
+    "source_sha256": "b3c0e01d899b603c811635909e394372a26194618fed17d3ae671bc6e86dc41f",
+    "native_stdout": "O1|Y|101|47",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "oracle_status": "native-only-confirmed-model-unrun",
+    "unsupported_reason": "Fiber start outer unpacking",
+    "unsupported_stdout": "",
+    "unsupported_events": []
+  },
+  {
+    "id": "boundary-bound-start-core-callback",
+    "source": "<?php\n$target = new Fiber(static function ($value) { echo 'T', $value, '|'; Fiber::suspend('Y'); return 41; });\n$runner = new Fiber($target->start(...));\necho (int)($runner->start(value: 7) === null), '|', $runner->getReturn(), '|';\n$target->resume();\necho $target->getReturn();\n",
+    "source_sha256": "97395b780fb9493bb6f95b6da22dd8e27d7081339ca5f78fd19964f84bcb727a",
+    "native_stdout": "T7|1|Y|41",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "unsupported",
+    "unsupported_reason": "Fiber constructor internal callable body",
+    "unsupported_stdout": "",
+    "unsupported_events": [],
+    "oracle_status": "native-only-confirmed-model-unrun"
+  }
+]
