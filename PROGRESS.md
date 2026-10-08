@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+351 executes captured `start` as a Fiber C-root callback. Immutable RAW selection
+and genuine outer caller chains preserve separate original/copied argument
+buffers, RAW/result Closure owners and borrowed API receivers. Inner traces have
+no file or line site; actual outer callsites, body exception identity and
+last-callback retirement retain their native order. Strict334 initialization,
+ten normal originals and independent228/author107 reached premises pass at the
+recorded private cuts. The original compiler/source stops, diagnostic prefixes
+and author fixture elaboration stop retain zero agreement or state-group credit.
+The affected348 C-root control gains agreement only at351; outer unpacking,
+constructor captures, broader adapters and lifecycle consumers remain required.
+[Start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json).
+
 348 executes bound `start` first-class captures directly and through explicit
 `__invoke`. Immutable receiver selection and original positional/named buffers
 survive argument effects, nested same-Closure calls, weak callback receives and
@@ -17,7 +29,7 @@ independent186/author96 reached premises pass at the recorded private cuts.
 Two C-root-start/outer-unpack controls and the separate original `is_int` builtin
 dependency failure have zero agreement. That builtin remains required core work;
 a distinct fresh comparison original checks the same weak int receive.
-C-root `start`, constructor captures and broader adapters remain required.
+At348, C-root `start`, constructor captures and broader adapters remained open.
 The actual333 composition over `05ef7bb9f` passes strict initialization with
 reviewed Generator/property/Throwable/ownership interactions; earlier source and
 state cuts retain their inputs.
@@ -43,7 +55,7 @@ nested108 and collector93 checks; original failures retain zero credit.
 The actual328 composition over `175a197e9` passes strict initialization while
 preserving current collector342, method307, source339 and ownership factors;
 earlier source/state cuts retain their inputs.
-C-root `start`, constructor captures and broader adapters remain required;
+At341, C-root `start`, constructor captures and broader adapters remained open;
 paused undefined-result verification is excluded. Earlier331/337 cuts are unchanged.
 [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json).
 

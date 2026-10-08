@@ -441,8 +441,19 @@ Closure owner.
 The [start-capture ledger](../../coverage/semantics/fiber-start-callables-review.json)
 keeps the accepted cuts and original failures separate.
 
-C-root `start`, outer argument unpacking, constructor capture and broader callable
-adapters remain required; the first two retain explicit Unsupported controls.
+Module351 executes captured `start` as a Fiber C-root callback. Immutable RAW
+selection retains the receiver; RAW and the result tail own separate Closure
+references. The original outer `start` buffer and the C handler's copied buffer
+have separate owners, while the waiting inner API borrows its receiver. Genuine
+saved caller chains authenticate nested captures and reject missing result tails.
+Inner `start` trace frames have no file or line site; the outer frame retains its
+real callsite. Last RAW retirement can release both capture and receiver before
+the original argument destructor. The
+[start C-root ledger](../../coverage/semantics/fiber-start-core-callables-review.json)
+keeps the new cuts and the earlier348 Unsupported observation distinct.
+
+Outer argument unpacking, constructor capture and broader callable adapters
+remain required; outer unpacking retains an explicit Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and

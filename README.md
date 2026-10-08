@@ -1099,8 +1099,12 @@ Bound `start` captures forward the original positional/named buffer through
 direct and explicit `__invoke` entry, retaining the selected receiver through
 argument effects and cleanup. The
 [start-capture ledger](coverage/semantics/fiber-start-callables-review.json)
-records their separate checks. C-root `start`, outer unpacking and constructor
-captures remain required.
+records their separate checks. Captured `start` also runs as a Fiber C-root
+callback, preserving the original outer buffer and its separate handler copy.
+The [start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json)
+records genuine caller chains, source-free inner traces and callback retirement
+before the original argument destructor. Outer unpacking, constructor captures
+and broader callable adapters remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 
