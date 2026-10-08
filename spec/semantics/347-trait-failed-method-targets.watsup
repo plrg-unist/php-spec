@@ -107,16 +107,16 @@ def $constant_callable_method_cached_at(S, porigin_site, n_prefix) = true
   -- if $(n_failed < n_prefix)
   -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, ptraitcachecause.CLASS, pmethoddesc))
 def $constant_callable_cached_method_at(S, porigin_site, n_prefix) = $trait_fcc_fixed_at_known(S, pconstantclosure, porigin_owner, pmethoddesc, n_prefix)
-  -- if $trait_fcc_cached_header(S, porigin_site) = eps
-  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
   -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
   -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_owner, 0) = (n_failed)
   -- if $(n_failed < n_prefix)
-def $constant_callable_cached_method_access(S, porigin_site, porigin_owner, pmethoddesc) = ($trait_fcc_fixed_at_known(S, pconstantclosure, porigin_first_owner, pmethoddesc_first, |S.DECLARATIONS|) = (pmethoddesc))
   -- if $trait_fcc_cached_header(S, porigin_site) = eps
+def $constant_callable_cached_method_access(S, porigin_site, porigin_owner, pmethoddesc) = ($trait_fcc_fixed_at_known(S, pconstantclosure, porigin_first_owner, pmethoddesc_first, |S.DECLARATIONS|) = (pmethoddesc))
   -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_first_owner, pmethoddesc_first))
   -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_first_owner, 0) = (n_failed)
   -- if $(n_failed < |S.DECLARATIONS|)
+  -- if $trait_fcc_cached_header(S, porigin_site) = eps
 
 def $trait_fcc_source_header_at(S, porigin_site, n_prefix) = ((pconstantclosure, porigin_owner, pmethoddesc))
   -- if $(n_prefix <= |S.DECLARATIONS|)
