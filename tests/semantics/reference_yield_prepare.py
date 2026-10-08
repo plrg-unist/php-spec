@@ -97,6 +97,22 @@ set_error_handler("warning328");
 foreach(leaf328() as $key=>&$alias){echo (int)($key===null),":",(int)($alias===null),"|";$alias=4;}
 echo $alias;
 ''', b'1:1|B1|4', 0),
+    'readonly-reference-fetch-precedes-old-cache-release': (
+        b'''<?php
+class Payload328 {function __destruct(){echo "D|";}}
+class Box328 {public readonly int $value;function __construct(){$this->value=4;}}
+function &leaf328($box){yield new Payload328;try{yield $box->value;}catch(Error $error){echo "E|";$next=2;yield $next;}}
+$generator=leaf328(new Box328);echo (int)($generator->current() instanceof Payload328),"|";
+$generator->next();echo $generator->current();
+''', b'1|E|D|2', 0),
+    'handler-retval-retirement-keeps-key-and-notice-ingress': (
+        b'''<?php
+class Retval328 {function __destruct(){echo "D";try{$value=$GLOBALS["generator"]->current();echo ":",$value;}catch(Error $error){echo ":R";}echo "|";}}
+function warn328($number,$message,$file,$line){echo "W",$number,"|";return new Retval328;}
+function &leaf328(&$value){yield $missingKey=>$value;yield $otherKey=>5;}
+set_error_handler("warn328");$value=4;$generator=leaf328($value);
+echo "C|",$generator->current(),"|";$generator->next();echo $generator->current();
+''', b'C|W2|D:4|4|W8|D:4|W2|D:5|5', 0),
 }
 
 DECLARATIONS = {
@@ -115,6 +131,7 @@ def main():
         'spec/semantics/207-error-handler-runtime.watsup',
         'spec/semantics/311-arrow-generators.watsup',
         'spec/semantics/321-yield-key-warning.watsup',
+        'spec/semantics/328-generator-reference-yields.watsup',
         'tests/semantics/reference_yield_prepare.py',
     ]
     return driver.main()
