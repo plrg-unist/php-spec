@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Source357 selects INIT for a named noarg nonbuiltin key call in an ordinary
+CV-base DIM, directly under ECHO or before a literal property. Owned include/eval
+operands retire before the call; existing runtime keeps the base borrowed and the
+returned key fixed before live lookup. Six exact originals and128 independent
+premises pass at `d198116d0`/341. Actual343 over `36ccc4520` passes strict compilation
+at `3bfd78e2d` with reviewed Generator storage/ordinary destructor compatibility.
+Earlier source/state cuts retain their inputs; dynamic/builtin/argument/fallback
+calls and wider emissions remain required.
+[Ledger](coverage/semantics/source-call-key-emission-review.json).
+
 Generator355 keeps one physical closed-storage pin through Closure/value/key/return
 release. Child callbacks retain weak Generator liveness and readable RETURN;
 consumed Closure/reference metadata adds no repeated owner. Existing257/303
@@ -60,17 +70,18 @@ reviewed Generator349, collector345, source350, trait347 and property/ownership
 interactions; earlier source/state cuts retain their inputs.
 [Start C-root ledger](coverage/semantics/fiber-start-core-callables-review.json).
 
-Collector345 runs remaining marked destructors in the cached worker's retained
-physical interval during public resume/throw, preserving the outer collector
-cursor and pending exception. Borrowed zero-owner targets support real weak
-reacquisition. Captured APIs authenticate their owning saved caller; nonpublic
-destructor access uses `Fiber` scope and the actual public API error location.
-Two direct originals/274 historical physical premises and two affected
-originals/177 new premises retain separate cuts; one incorrect earlier scope
-premise is superseded. Final336 over `6e107993a` compiles at `d04ff9c54` with
-reviewed current-parent intersections. Retained timeouts and fixture stops have
-zero affected credit. Suspension inside a cached public callback remains required.
-[Ledger](coverage/semantics/cycle-collection-review.json).
+Collector345 preserves cached callbacks across suspension and genuine reentry
+within the same live physical pass. The parked VM authenticates its real suspend
+and saved-frame projections; reentry binds the fresh public API without detaching
+or adding an owner. One normal source and 228 independent physical premises pass
+at separate cuts, including captured old/new exception priority and exact full
+continuations. Both captured source variants retain 60s CLI timeouts/zero agreement;
+fixture stops remain zero affected credit. Final 343 over `e1c3d4d61` compiles at
+`bb74145c7`, preserving reviewed Generator storage, call-key source and eager
+owner-order changes; the earlier 341 compiler cut remains separate.
+Publication 344 over `2ed57ca8a` preserves the static-property change by review.
+Earlier345 cuts remain separate. Post-pass reentry/internal takeover and broader
+GC remain required. [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
@@ -435,7 +446,19 @@ admitting a nonempty CV-cell release. Raw checks:
 `.tools/compiler-eager-observed-edges-19/.tools/eager-observed-edges-controls-v1`.
 Final 340-module composition at `6c1a89b38` passes changed initialization in 4.270s.
 Raw final check: `.tools/compiler-eager-observed-edges-current-19/.tools/eager-observed-edges-current-controls-v1`.
-Its original full retry remains UNRUN.
+The `500a2cedc`/340 original retry matches native output but the public model
+still reaches host 55.045470 with empty streams and zero agreement; inputs stay
+stable and the group is reaped, with no speedup or 231 credit. Raw retry:
+`.tools/compiler-eager-observed-edges-current-19/.tools/full-default-retry-eager-observed-edges-v1/run-v1`.
+The driver now carries the successfully evaluated original-state eager owner
+order into the following GC. Exact `8c889199c`/340 passes initialization, 66 typed
+physical/52 main and 102 reached physical/82 main premises. The real empty-slot
+STMT and later nonempty UNSET have an authenticated origin-entry step between them.
+The declaration stop and original 98-premise task-assumption failure remain preserved failures.
+Raw checks: `.tools/compiler-owner-order-carry-19/.tools/owner-order-carry-controls-v{1,2,3}`.
+Final 343-module composition at `4a96bad9a` passes changed initialization in 4.320s.
+Raw final check: `.tools/compiler-owner-order-carry-current-19/.tools/owner-order-carry-current-controls-v1`.
+Its original retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
@@ -461,9 +484,9 @@ and passes the required combined compiler without source/state renewal.
 The fresh explicit-INI source discriminates
 cached mask reuse. The two larger 60s model timeouts retain zero agreement.
 Module325 adds separately tested detached zero-owner retention, real reacquisition
-and active unowned-close retirement. Wider internal graphs, cached public callback
-suspension, automatic thresholds, resurrection and final request freeing remain
-required.
+and active unowned-close retirement. Wider internal graphs, post-pass public
+callback reentry/internal takeover, automatic thresholds, resurrection and final
+request freeing remain required.
 
 Undefined source operands293 resume genuine warnings with fixed null after
 handler writes, preserving direct empty-path errors and earlier computed-name
@@ -961,8 +984,8 @@ Private34 normal/8 compiler/350 reached checks keep their distinct cuts; one
 actual38f1/Fiber281 source at a939 agrees after suspension and target retirement,
 and production SL274 stages/init passes. The
 [ledger](coverage/semantics/instance-set-access-review.json) preserves original
-failures and the no-owner native Fiber frontier. Readonly follow-ons/hooks/magic, static
-Stringable compounds and wider borrowed destination lifetime remain required.
+failures and the no-owner native Fiber frontier. Readonly follow-ons/hooks/magic,
+wider static compound selectors and borrowed destination lifetime remain required.
 
 Compound Stringable concatenation352 preserves the actual selected RHS slot:
 defined CVs remain live through the left cast, initially undefined reads latch
@@ -974,9 +997,22 @@ one separate caught left/right throw original passes at4bf8. One root/DIM/proper
 expression-result original and249 new reached premises pass at7c15. The
 current-parent gate retains its separate cut in the
 [ledger](coverage/semantics/compound-string-live-rhs-review.json). Earlier334/344
-evidence is unchanged; static compounds and wider borrowed destinations remain open.
+evidence is unchanged; wider borrowed destinations remain open.
 Actual339 over CALLS351 `fd432561f` passes algo/struct/init at `0b0bd4336`,
 with independent pointwise parent review and no13/249 source/state renewal.
+
+Named static-property Stringable compounds356 retain the initial plain-slot versus
+reference-cell destination and conversion branch through callbacks. Typed stores
+return their verified value; initial-string reference writes and late plain-slot
+alias detachment preserve Zend's unchecked backing and retained type-source history
+with nonowning entry/write/retirement evidence. Eleven exact originals and private340
+compiler/init pass atc4ed; a separate typed-reference conversion/rejection original
+passes at163e. New368 reached premises pass ate148, including future-entry,
+foreign-cell and repeated-site history rejection. Actual344 over COMP `e1c3d4d618` passes algo/struct/init at `f0e03c885`,
+with pointwise353/354/355/357 and owner-factor review in the
+[ledger](coverage/semantics/static-compound-string-review.json). Dynamic selectors,
+self/parent/static class selectors, wider borrowed lifetime and registered-handler missing-RHS continuations
+remain separate; paused return producers are unchanged.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
@@ -1832,6 +1868,27 @@ The reviewed EX/SOURCE336 composition `8b47bee97` over `b4f1e6175` passes strict
 algo/struct at3.469/4.420s (`trait266-object-algo-pemw9ni4`,
 `trait266-object-struct-bjiml5w8` under the publish evidence directory). Its
 GC.SCAN schema and caller/source fields are preserved; source1/59 bridge unchanged.
+Failed imported first targets distinguish successful data binding followed by abstract
+verification failure from a failure before method-scope fixup. Exact historical
+data replay selects the fixed C scope or the known unfixed trait scope; an unknown
+phase denies cached selection without substituting the later class's method.
+Only scratch replay reuses the authenticated direct FCC value. A live retained
+FCC can evaluate `self::class` for its failed lexical owner without publishing it.
+At `6f76ae9fd`/339, strict algo/struct pass3.719/4.570s, one shutdown PHP-error tuple
+and59 supplied conditions plus6 setup clauses pass (49.848s), including genuine
+static installation and all declaration/call/heap validators. Raw evidence under
+`.tools/trait-fcc-failed-target-current19/.tools/` is `method-runtime-fag72wcy`,
+`closure-call-protocol-2k36nias`, `trait266-object-algo-b1gh0tol` and
+`trait266-object-struct-izuh_dgb`. Earlier Unsupported/timeout/interpreter failures
+(`uh6igkol`, `xf7jjsk7`, `ppfvuqw4`) and the rejected synthetic own-root fixture
+`1f6_ozo9` retain zero agreement. The native-warning catalogue transcription was
+corrected from preserved raw stderr without repeating PHP. Callbacks after fixup
+but before the failure marker remain open.
+The reviewed344 composition `0db3c85b5` over `c527549353` passes strict algo/struct
+at3.619/4.420s; these source1/59 cuts bridge unchanged. Current GC/Fiber/source
+fields and static-compound selectors are preserved. Raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-nke5f48d`
+and `trait266-object-struct-elvmk9fw` in the same directory.
 Broader307 parameter-view full-source validation,
 including mixed, constructor/default, handler and variadic timeout originals,
 remains open, as do broader differing-owner later births and
@@ -2136,7 +2193,7 @@ The installed families compose as follows; each ledger records its scope and lim
 | Typed static properties197 | Weak simple Stringable assignment rechecks live aliases and retains paired callback owners. Current Restore/ARG/INI composition preserves full property bytes, caller arguments and normal/throw cleanup. [Property ledger](coverage/semantics/typed-static-string-assignment-review.json). |
 | Weak string parameters214/216/218 | Fixed and positional/named variadic receives preserve caller strictness, nominal/callable precedence and captured cells; existing constraints reject before callbacks. Newly attached sources permit only the parameter-authorized backing value. Constructor-free defaults use genuine scratch cells, declaring method scope and fresh objects. Source6/state299/independent2 and variadic/default6+6/focused4/independent3/state336 retain separate cutoffs. [Parameter ledger](coverage/semantics/weak-string-parameters-review.json), [variadic/default ledger](coverage/semantics/variadic-default-string-review.json). |
 | Static setters200/201 | Backed final/asymmetric declarations normalize equivalent setters and preserve inheritance/error priority; direct and indirect consumers retain lexical access, live raw-slot checks and typed aliases. [Setter ledger](coverage/semantics/static-setter-access-review.json). |
-| Instance setters288 | Backed typed setters preserve lexical/prototype permission, called diagnostics, reference/indirect/unset priority and raw-object exceptions. Staged Stringable compound callbacks retain exact destination/consumer and saved writer scope. Private34 normal/8 compiler/350 reached premises retain distinct cuts; actual Fiber source1 and SL274 pass at a939. Static Stringable, writable append receivers and sole borrowed destination retirement remain open. [Instance ledger](coverage/semantics/instance-set-access-review.json). |
+| Instance setters288 | Backed typed setters preserve lexical/prototype permission, called diagnostics, reference/indirect/unset priority and raw-object exceptions. Staged Stringable compound callbacks retain exact destination/consumer and saved writer scope. Private34 normal/8 compiler/350 reached premises retain distinct cuts; actual Fiber source1 and SL274 pass at a939. Wider static selectors, writable append receivers and sole borrowed destination retirement remain open. [Instance ledger](coverage/semantics/instance-set-access-review.json). |
 | StaticCall reference acquisition141/142 | Getters with untyped return signatures retain scoped selection, typed and legal untyped static aliases and returned-cell cleanup. Typed REF flags preserve initialization/error priority even when discarded. Direct reference sends retain the real cell; ignored untyped getters leave raw values unchanged. Ownership/type-source and getter/borrowed-read checks keep their distinct revisions. [Reference ledger](coverage/semantics/static-method-reference-review.json). |
 | Argument introspection198/199 | Ordinary current and saved frames retain genuine named/unpacked argument views through invocation and callbacks. [Argument ledger](coverage/semantics/argument-introspection-calls-current-review.json). |
 | Object invocation and callable typing | Effective nonstatic `__invoke` lookup includes private/protected methods, retaining declaring owner, called class and receiver across argument effects and clone. Explicit access remains lexical. Callable-before-string parameters preserve dual-role objects; shared ordinary by-value return classification adds no fresh return agreement. [Publication](coverage/semantics/invoke-publication-current-review.json), [earlier invocation](coverage/semantics/source-invoke-current-review.json), [parameter reception](coverage/semantics/callable-string-current-review.json). |

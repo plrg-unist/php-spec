@@ -1,0 +1,26 @@
+;; An ordinary CV base emits no work before its no-argument named key call.
+;; INIT is therefore the first instruction, before the later DIM/property
+;; fetch. The CV stays borrowed through the callback; selection reads no value.
+dec $source_emission_cv_call_dimension(pstate, nat, pcpath, expression) : porigin?
+def $source_emission_cv_call_dimension(S, n, pcpath, NExprArrayDimFetch expression_base (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 1]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprArrayDimFetch expression_base (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], expression_base)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 1]) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 1]) = ((z_call, false))
+  -- if $(z_call > 0)
+  -- if z_call = $source_line(metadata_call)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_call, false))
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_cv_call_dimension(S, n, pcpath, expression) = eps -- otherwise
+
+def $source_echo_emission_origin(S, n, pcpath, expression) = (porigin)
+  -- if $source_emission_cv_call_dimension(S, n, pcpath, expression) = (porigin)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (porigin)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_cv_call_dimension(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (porigin)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps

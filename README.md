@@ -78,6 +78,13 @@ An undefined ordinary CV used as a computed variable name now warns before conve
 
 [First dimension reads](coverage/semantics/source-dimension-emission-review.json) now retire owned include/eval operands at the key compiler line before reading an ordinary CV base and CV or literal key. A narrow writable array-property receiver separates the protected array; a later literal property warning resumes with fixed null. Seven exact originals and245 independent premises retain their private336 cuts; actual340 passes strict compilation. Wider emission and receiver forms remain required.
 
+[Named noarg DIM key calls](coverage/semantics/source-call-key-emission-review.json)
+now retire owned include/eval operands at the first INIT line. The ordinary CV
+base stays borrowed through the call; the returned key is fixed before live base
+lookup. Six exact originals and128 independent premises retain private341;
+actual343 passes strict compilation with reviewed Generator storage compatibility.
+Dynamic/builtin/argument/fallback calls and wider emissions remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -203,6 +210,12 @@ self-CV fast path, and retains evaluated temporary/reference operands through
 the final store. Thirteen exact originals cover live rebinding, aliases, copied
 expression results and normal or throwing operand cleanup. The249 independent
 reached premises and current-composition gate retain separate records.
+[Named static-property Stringable compounds356](coverage/semantics/static-compound-string-review.json)
+preserve the initially selected plain slot or reference cell across callbacks,
+including typed final results and PHP's retained reference-type history. Twelve
+exact originals and368 reached premises cover live RHS reads, inherited slots,
+alias rebinding, reference history, temporary cleanup and access-error priority.
+The actual344 compiler/init gate retains its separate accepted record.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -517,6 +530,8 @@ Keep and release scans also reuse the carried graph, including detached and
 retired buckets; public helpers retain their behavior for modified graphs.
 GC and eager-destruction consumers read the same observed state’s edges after
 its roots without rebuilding those roots.
+The driver carries an already successful original-state owner order into the
+following GC pass; failed or skipped destruction branches retain public fallbacks.
 Authenticated specialized call contexts take precedence over ordinary error
 handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
@@ -536,7 +551,7 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, suspension inside a public collector callback, automatic
+graphs, post-pass public callback reentry/internal takeover, automatic
 thresholds and wider freeing remain open. Module332 adds quiescent public idle
 resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
@@ -552,7 +567,13 @@ Zero-owner targets remain borrowed; real weak reacquisition can free them.
 Captured APIs retain their genuine caller owners, and protected/private access
 uses native `Fiber` scope. Four exact originals and separate274/177 reached
 premises pass; one earlier scope assertion is superseded. Final336 compilation
-preserves the accepted current parent. Public callback suspension remains required.
+preserves the accepted current parent. Cached callbacks now suspend and reenter
+within the same live physical pass, preserving the cache and rebinding the fresh
+public API. One normal source and 228 reached physical premises pass; captured
+old/new exception priority completes in the state checks while its source CLI
+retains a 60s timeout with zero agreement. Final 343 compilation preserves `e1c3d4d61`; publication on `2ed57ca8a`
+preserves the static-property change by review.
+Post-pass reentry and internal takeover remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -752,7 +773,8 @@ native exceptions. Stringable `.=` retains the selected destination and restores
 the writer scope after callbacks. Private34 normal/eight compiler/350 reached
 checks retain their [cuts](coverage/semantics/instance-set-access-review.json);
 one actual Fiber source preserves the captured property across suspension.
-Readonly follow-ons/hooks, wider borrowed destination lifetime, static Stringable compounds
+Readonly follow-ons/hooks, wider borrowed destination lifetime and static
+Stringable compounds with wider selectors
 and broader temporary-return/callable/typed-reference consumers remain open.
 The ordinary [readonly slice294](docs/semantics/SOURCE-READONLY.md) adds first
 initialization, initialized write priority, detached object references and genuine
@@ -885,6 +907,10 @@ clauses separate.
 A later failed import also retains a dead receipt when the first owner failed;
 one shutdown original and59 supplied rollback conditions pass, with6 setup
 clauses separate.
+If data binding succeeds before abstract verification fails, later cached calls
+use the fixed class scope while an imported first birth keeps its trait scope.
+One shutdown original and59 supplied phase/scope/static conditions pass, with6
+setup clauses separate; the failed class stays unpublished.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider

@@ -142,5 +142,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-active-public-cached-callback-suspend-resume-22",
+    "source": "<?php\n$w = null;\nclass S345 {\n    public $s;\n    function __destruct() { global $w; $w = Fiber::getCurrent(); }\n}\n$seed = new Fiber(function () {\n    $a = new S345; $a->s = $a;\n    $b = new S345; $b->s = $b;\n    unset($a, $b); gc_collect_cycles();\n});\n$seed->start(); unset($seed);\nclass C345 {\n    public $s; public $k;\n    function __destruct() {\n        global $w;\n        if ($this->k === 0) {\n            echo 'A|', $w->resume(), '|';\n            echo $w->resume('resumed'), '|';\n            echo $w->isSuspended() ? 'idle|' : 'bad|';\n        } else {\n            echo Fiber::getCurrent() === $w ? 'B:worker|' : 'B:main|';\n            echo Fiber::suspend('paused'), '|';\n        }\n    }\n}\n$a = new C345; $a->s = $a; $a->k = 0;\n$b = new C345; $b->s = $b; $b->k = 1;\nunset($a, $b);\necho gc_collect_cycles(), '|END';\n",
+    "source_sha256": "460f8ece112d934338cdbfc6dbcdcaa1eb05cb47eb52625e091e989c30564d5c",
+    "stdout": "A|B:worker|paused|resumed||idle|2|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

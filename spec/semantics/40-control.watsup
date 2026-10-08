@@ -328,8 +328,12 @@ dec $source_exception_terminal(pstate) : pstate
 def $source_exception_terminal(S) = S -- otherwise
 dec $generator_close_terminal_pending(pstate) : bool
 def $generator_close_terminal_pending(S) = false -- otherwise
+syntax pownerobservation = NO_OWNER_ORDER | OBSERVED_OWNER_ORDER pnode*
+dec $destruction_transition_owners(pstate, pstate) : (pstate, pownerobservation)
 dec $gc_transition(pstate, pstate) : pstate
 def $gc_transition(S, S_next) = $prune_allocations(S_next) -- otherwise
+dec $gc_transition_owners(pstate, (pstate, pownerobservation)) : pstate
+def $gc_transition_owners(S, (S_next, pownerobservation)) = $gc_transition(S, S_next) -- otherwise
 dec $drive_steps(pstate, nat) : pstate
 dec $drive_checked(pstate, nat) : pstate
 def $drive_checked(S, n) = $drive_steps(S, n) -- if S.COMPLETION = NORMAL
@@ -387,7 +391,7 @@ def $drive_steps(S, n) = $drive_steps($prune_allocations($error_read_begin(S)), 
   -- if $(n > 0)
   -- if $(n - 1) = n_next
   -- if $error_read_pending(S)
-def $drive_steps(S, n) = $drive_steps($gc_transition(S, $destruction_transition(S, $source_exception_transition(S, $throwable_transition(S, S_next)))), n_next)
+def $drive_steps(S, n) = $drive_steps($gc_transition_owners(S, $destruction_transition_owners(S, $source_exception_transition(S, $throwable_transition(S, S_next)))), n_next)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if ~S.COMPILESTOP
