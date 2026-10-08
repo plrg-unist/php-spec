@@ -36,6 +36,7 @@ def $static_compound_selection(S, ppropertyid, porigin) = ((porigin_class, pprop
   -- if $class_static_at(S.CLASSSTATICS, ppropertyid) =/= eps
 def $static_compound_selection(S, ppropertyid, porigin) = eps -- otherwise
 def $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 (NVarLikeIdentifier (BYTES text) metadata_name) metadata_property) expression_right metadata)
   -- if $static_compound_selection(S, pstaticcompound.DECL, porigin) = ((pstaticcompound.CLASS, ppropertydesc))
 def $static_compound_descriptor(S, pstaticcompound, porigin) = eps -- otherwise
 def $static_compound_string(PSTRING ptbytes) = true

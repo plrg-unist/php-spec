@@ -181,14 +181,22 @@ def $trait_fcc_retained_new_scope(S, PORIGIN n_unit pcpath) = ((pclassdesc, pcon
   -- if $method_closure_scope_valid(S, pclosurescope)
   -- if $call_current_valid(S)
 
+dec $trait_fcc_failed_abstract(pstate, pclassdesc, pconstantclosure) : bool
+;; An explicit abstract flag is installed before trait data binding. Its source
+;; declaration, rather than a completed data phase, authenticates rejection.
+def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure_first) = true
+  -- if S.ORIGIN = (porigin_site)
+  -- if pclassdesc.ABSTRACT
+  -- if $trait_fcc_retained_new_scope(S, porigin_site) = ((pclassdesc, pconstantclosure_first))
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14 (INTEGER int_flags) (NIdentifier (BYTES text_name) metadata_name) phpType44 phpType42 phpType23 metadata)
+  -- if int_flags <- [16,80]
 ;; This proof covers an implicit abstract trait requirement after data fixup.
 ;; Parent and interface binding, including implicit Stringable, remain separate
 ;; obligations. The exact copied requirements decide abstractness, not fixup alone.
-dec $trait_fcc_failed_abstract(pstate, pclassdesc, pconstantclosure) : bool
 def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure_first) = true
   -- if S.ORIGIN = (porigin_site)
-  -- if $trait_fcc_retained_new_scope(S, porigin_site) = ((pclassdesc, pconstantclosure_first))
   -- if pclassdesc.PARENT = eps /\ ~pclassdesc.ABSTRACT
+  -- if $trait_fcc_retained_new_scope(S, porigin_site) = ((pclassdesc, pconstantclosure_first))
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((pconstantclosure_first.SITE, ptraitcachecause))
   -- if $trait_fcc_failed_target(S, pconstantclosure_first) = ((pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
   -- if $trait_fcc_failed_data_at(S, pconstantclosure_first, |S.DECLARATIONS|) = ((NORMAL, pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
@@ -219,6 +227,28 @@ def $dynamic_new_record_scope(S, pdynamicnew) = true
   -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
   -- if $class_static_selection_scope_method(S, $dynamic_new_scope_source(S, pdynamicnew), pclosurescope.LEXICAL) = eps
   -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure_first, pclosurescope.LEXICAL, pmethoddesc_first))
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
+  -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
+  -- if $dynamic_new_scope_source(S, pdynamicnew) = PORIGIN n_unit pcpath
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_source)
+  -- if $trait_source_same(pfunction_source, pmethoddesc.FUNCTION)
+
+;; Old FCC snapshots can keep a published trait scope while their canonical
+;; copied function belongs to a class. Preserve source-owned SELF/STATIC selections.
+def $dynamic_new_record_scope(S, pdynamicnew) = true
+  -- if pdynamicnew.CLOSURE = (CLOSURE_SCOPE pclosurescope)
+  -- if pdynamicnew.SCOPE = (pclosurescope.LEXICAL) /\ pdynamicnew.CALLED = (pclosurescope.CALLED)
+  -- if pclosurescope.CREATION = eps
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclosurescope.LEXICAL)
+  -- if $origin_node(S.SOURCES, pdynamicnew.SITE) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("static")]
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_static_selection_scope_method(S, $dynamic_new_scope_source(S, pdynamicnew), pclosurescope.LEXICAL) = (pmethoddesc_scope)
+  -- if porigin_method =/= pmethoddesc_scope.FUNCTION.ORIGIN
   -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
   -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
   -- if $dynamic_new_scope_source(S, pdynamicnew) = PORIGIN n_unit pcpath

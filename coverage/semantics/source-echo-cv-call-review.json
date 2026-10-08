@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Direct ECHO of a resolved named nonbuiltin call without namespace fallback, with one ordinary positional CV argument. Owned include/eval retirement precedes INIT5/SEND8; live sends, fixed-null warnings and existing TMPVAR/REFERENCE output owners are retained. Conversion and final release use post-SEND ECHO8.",
+  "implementation": [
+    "spec/semantics/31-source-origins.watsup",
+    "spec/semantics/84-call-integrity.watsup",
+    "spec/semantics/168-user-string-runtime.watsup",
+    "spec/semantics/257-request-destructors.watsup",
+    "spec/semantics/270-eager-destructors.watsup",
+    "spec/semantics/361-source-direct-call-emission.watsup"
+  ],
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_call/zend_compile_call_common/zend_compile_args/zend_compile_echo",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_SEND_VAR/ZEND_ECHO"
+  ],
+  "private_artifacts": ".tools/include-echo-cv-call-365-private-19/.tools/echo-cv-call-originals-19",
+  "native": {
+    "reports": [
+      "echo-cv-call-native-nrelwtgb/report.json",
+      "echo-cv-call-lines-native-e7n9brbr/report.json"
+    ],
+    "sha256": [
+      "3fe048a54a5e178200d03f905b8e22304e58b46c79a2a01d6a6759379e75d1bc",
+      "1ab1c2b9259aab2b74bb245dd209988c9c31bf85d39f6ffc17d2efd52044e903"
+    ],
+    "originals": 9,
+    "checked_guard_programs": 6,
+    "application_evaluations": 0,
+    "inputs_head_status_stable": true,
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "source_validation": {
+    "accepted_unique_originals": 9,
+    "comparison": "Exact original stdout/stderr, accepted frontend/adapter, normal modeled completion and exit0; every process bounded and fully reaped.",
+    "cuts": [
+      {
+        "revision": "21fc1ae0405057aa54e8ad2186bf9eb7c6743491",
+        "report": "echo-cv-call-source-run-crwvvu9n/report.json",
+        "sha256": "8b200f8220b960592b5fc480708ef7799a33362ae5de0218de4af53a0249af68",
+        "applications": 8,
+        "original_agreements": 8,
+        "retained_rows": [
+          "late-function",
+          "argument-warning",
+          "missing-function",
+          "argument-throw",
+          "result-throw",
+          "retirement-throw",
+          "baseline-lifetime"
+        ]
+      },
+      {
+        "revision": "3493d49bdd60458e3612b094fd2ea3b096afe9b3",
+        "report": "echo-cv-call-lines-source-run-kap4fczn/report.json",
+        "sha256": "408d85b186d6f6a4538ceaf1d2cf3bcda2438ca10e1811be665a285a7fc05bb8",
+        "applications": 2,
+        "original_agreements": 1,
+        "retained_rows": [
+          "eval-reference"
+        ],
+        "overall_passed": false
+      },
+      {
+        "revision": "f5f4ac0c1c57dea56e042f9bc799a322e0637492",
+        "report": "echo-cv-call-lines-source-run-etplh0zc/report.json",
+        "sha256": "608eaeecb4ddf4548ca78ad0e5c8569ebc5c7cc7e87c99d4fb4adf48af1040b3",
+        "applications": 1,
+        "original_agreements": 1,
+        "retained_rows": [],
+        "strict_compiler_seconds": 4.285
+      },
+      {
+        "revision": "3c9cc065f0a3621e676e78d68b57caa9aa90e648",
+        "report": "echo-cv-call-lines-source-run-ycbpfxrx/report.json",
+        "sha256": "810f7587eb0f3792a4aec519919cc1f76ba587085ec5f62eb07b42e76a34c433",
+        "applications": 1,
+        "original_agreements": 1,
+        "retained_rows": [
+          "result-lines"
+        ],
+        "strict_compiler_seconds": 4.289
+      }
+    ],
+    "modules": 349,
+    "inputs_head_status_stable": true,
+    "retention": "The final source-only line hook preserves seven prior observations; the destructor bridge preserves the passing eval stream. Final independent states check changed ECHO metadata and pending/active public admission; ordinary call/SEND line checks remain unchanged. No earlier361 source/state credit is renewed.",
+    "executed_applications_across_four_cuts": 12
+  },
+  "independent_state": {
+    "modules": 349,
+    "groups": [
+      "entry",
+      "admission",
+      "argument",
+      "result"
+    ],
+    "physical_main_premises": [
+      47,
+      58,
+      57,
+      74
+    ],
+    "total_physical_main_premises": 236,
+    "bindings": 150,
+    "boolean_checks": 86,
+    "application_evaluations": 4,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "scope": "Genuine retirement/INIT5/SEND8 and history/public admission; six matching-image negatives, fixed-null warning/throw priority, TMP and distinct argument/returned HCELL owners after argument mutation, source/receiver/tail/line forgeries and output before release.",
+    "cuts": [
+      {
+        "report": ".tools/include-review-19-echo-cv-call-emission/state-run-q783_6pf/report.json",
+        "sha256": "acd49105d422a4edf633a8ddd3cdc4f8ee8e4bbe5c33df902ebfd7defc7643d1",
+        "revision": "f5f4ac0c1c57dea56e042f9bc799a322e0637492",
+        "accepted_rows": [
+          "entry",
+          "admission",
+          "argument"
+        ],
+        "overall_passed": false
+      },
+      {
+        "report": ".tools/include-review-19-echo-cv-call-emission/state-run-055oijii/report.json",
+        "sha256": "7db735cb1ad0b2c39f2784a763cd0ab0f4a6deef34e17361ca527c22675db85b",
+        "revision": "3c9cc065f0a3621e676e78d68b57caa9aa90e648",
+        "accepted_rows": [
+          "result"
+        ],
+        "overall_passed": true
+      }
+    ]
+  },
+  "current_composition": {
+    "canonical_parent": "760771d9dc6c94228b37c8d4d5650a083a2170f2",
+    "revision": "702c33859abd21d790a2ffa8bfc7bc2f0a37bd61",
+    "modules": 351,
+    "report": ".tools/include-echo-cv-call-365-actual-19/.tools/echo-cv-call-current-19/echo-cv-call-current-compiler-2hwrcj95/report.json",
+    "sha256": "383559b1f5313bb4d8c63723f6a78d86b59c83bf8d55b0b289f98d688ee80665",
+    "strict_compiler_seconds": 4.326,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "compatibility": "Exact published760/351 manifest; unchanged361/source-line guards with canonical GEN257/270 additions retained. New Generator/Fiber, trait347 and node-free property-read359 selectors preserve owning ECHO/reference/source history contracts. Earlier9/236 cuts retain their inputs."
+  },
+  "preserved_zero_credit": [
+    "echo-cv-call-baseline-89nm36s1: unchanged ea58/349 loses BYTES before destructor throw;1 application/0 agreements.",
+    "echo-cv-call-lines-baseline-y5ppcj_g: unchanged21fc/349 reports cast/destructor5 instead of8;1 application/0 agreements.",
+    "kap4fczn result-lines row: cast8 succeeds but final destructor remains5; failed row0, passing eval row retained separately.",
+    "reviewer zzy0jl42 entry false and gn2sh7_r vector: fixture expected CODEARG for an ordinary PPR CV. Corrected to no token and forged-token public rejection;0 accepted credit.",
+    "reviewer q783_6pf result group: undefined authored frame_state helper stopped before evaluation. Canonical79 projection correction changes no assertions; first3 passing rows retained.",
+    "reviewer1nwdbqkg result false,7odzqrz1 predicate vector and rg0p1_vo conjunct split isolate pending/active public admission at ECHO8. Existing84 admitted only CODEEXPR5;0 accepted credit."
+  ],
+  "check_only_eval_child": "eval-check-p7_dnbvn pairs a genuine parse-eval PROGRAM with the unique checked parent literal;0 native/model applications.",
+  "maintained_sources": {
+    "harness": "tests/semantics/source_stringable_retirement_sources.py",
+    "prefix": "echo-cv-call-",
+    "selectors": 9,
+    "php_files": 16,
+    "relocation": "Nine identity copies (seven children plus eval and baseline); seven include mains change only two child-basename occurrences each. Explicit selectors are excluded from the old default.",
+    "renewed_application_evaluations": 0,
+    "renewed_source_agreements": 0
+  },
+  "reproduction": {
+    "private_cwd": ".tools/include-echo-cv-call-365-private-19",
+    "native": [
+      "python3 .tools/echo-cv-call-originals-19/prepare-native.py",
+      "python3 .tools/echo-cv-call-originals-19/prepare-lines-native.py"
+    ],
+    "first_source": "python3 .tools/echo-cv-call-originals-19/run-source.py --native-report .tools/echo-cv-call-originals-19/echo-cv-call-native-nrelwtgb/report.json",
+    "affected_source": "python3 .tools/echo-cv-call-originals-19/run-lines-source.py --native-report .tools/echo-cv-call-originals-19/echo-cv-call-native-nrelwtgb/report.json --native-report .tools/echo-cv-call-originals-19/echo-cv-call-lines-native-e7n9brbr/report.json",
+    "final_retry": "Add --case result-lines for the final3c9/current cut; f5/etplh0zc remains its preserved earlier bridge. Earlier cuts retain their exact revisions.",
+    "state_cwd": ".",
+    "state": "python3 .tools/include-review-19-echo-cv-call-emission/run-state.py --source-report .tools/include-echo-cv-call-365-private-19/.tools/echo-cv-call-originals-19/echo-cv-call-lines-source-run-ycbpfxrx/report.json",
+    "actual_cwd": ".tools/include-echo-cv-call-365-actual-19",
+    "caps_seconds": {
+      "compiler": 300,
+      "source_cli": 60,
+      "source_outer": 90,
+      "state_group": 90
+    },
+    "jobs": 1,
+    "profile": {
+      "error_reporting": 30719,
+      "include_path": ".:",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "mode": "SL",
+      "cache": false,
+      "det": true
+    },
+    "current_compiler": "python3 .tools/echo-cv-call-current-19/run-compiler.py 760771d9dc6c94228b37c8d4d5650a083a2170f2"
+  },
+  "remaining": [
+    "Named/unpacked/multiple/effectful arguments, dynamic/fallback/builtin callees and wider output/source producers remain required.",
+    "Historical implicit-destructor publication still requires literal first-top-level ECHO and195-preauthenticated installed images; no generic replay or class-constant receipt change.",
+    "Final combined fresh offline rebuild remains required. Local copied tools establish no new portability claim; paused returns verification is unchanged."
+  ],
+  "review": "include_review_19 independently accepts semantic/native/source/state/relocation scope and current-parent compatibility; final publication reviewed separately."
+}

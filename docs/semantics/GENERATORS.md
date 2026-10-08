@@ -103,8 +103,13 @@ carriers and marks later destructors called. C-root traces retain internal frame
 retain separate cuts; the original refusals remain zero agreement. Actual 351 over
 `7c4a13bc1` passes strict compilation at `ba1c17c07`; current schema, storage and
 collector/source guards remain intact, without renewing earlier source/state cuts.
-Abrupt rendering or exception release, exception-owned child storage, nonrenderable
-message warnings, parked storage, escaped reacquisition and wider terminal cleanup
+Normal post-report stdClass and ordinary child storage add one exact fatal original
+and 161 premises at its own cut, preserving real pins and full admission through
+Weak lookup and the authenticated future continuation. Composition with 353 modules
+over `a210cd253` passes strict compilation at `b7b693fa3`; prior cuts remain separate.
+Abrupt rendering or
+exception release, nonrenderable message warnings, parked storage, escaped
+reacquisition and wider terminal cleanup
 remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture

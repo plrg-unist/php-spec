@@ -1,4 +1,5 @@
 dec $fiber_start_core_actor(pstate) : bool
+dec $fiber_array_start_pending(pstate, pfiberstart) : bool
 dec $fiber_array_config_pending(pstate, pconfigcall) : bool
 dec $fiber_named_target(pfunction, ptbytes) : pnamedtarget
 dec $gc_worker_api(pfiberapi) : bool
@@ -494,6 +495,7 @@ rule PhpStep/fiber-start-send-abrupt: S ~> S_read
 rule PhpStep/fiber-start-done: S ~> $fiber_start(S, pfiberstart)
   -- if S.TODO = (FIBER_ARGS pfiberstart) :: ptask_tail*
   -- if $intrinsic_count(S, pfiberstart.SITE) = (pfiberstart.INDEX)
+  -- if ~$fiber_array_start_pending(S, pfiberstart)
 def $fiber_start(S, pfiberstart) = $throw_scalar(S, "FiberError", $ptascii("Cannot switch fibers in current execution context"), pfiberstart.LINE)
   -- if $fiber_blocked(S)
 def $fiber_start(S, pfiberstart) = $throw_scalar(S, "FiberError", $ptascii("Cannot start a fiber that has already been started"), pfiberstart.LINE)

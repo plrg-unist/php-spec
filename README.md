@@ -93,6 +93,14 @@ bytes to its pending exception. Ten exact originals and247 independent premises
 retain private344; actual349 passes strict compilation over CALLS362. Borrowed CVs
 keep their separate release path; wider call and output consumers remain required.
 
+[Direct ECHO with one CV argument](coverage/semantics/source-echo-cv-call-review.json)
+retires the owned source operand at INIT5 before SEND8 reads the live CV.
+Returning warning handlers send fixed null; function, retirement and handler
+errors retain their priority. Returned temporary/reference owners preserve bytes
+after argument mutation, with conversion and final destruction at ECHO8. Nine
+exact originals and236 independent premises retain separate private349 cuts;
+actual351 passes strict compilation. Broader call shapes remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -233,6 +241,12 @@ callback changes to the selector preserve that destination. Five new exact
 originals and241 reached premises cover helper and temporary object selectors,
 scalar continuation, captured references and typed expression results.
 The separate actual349 composition passes compilation and initialization.
+Computed static-property names now read direct name CVs after RHS evaluation
+and preserve evaluated name values or reference cells. Six further originals
+cover that timing, cold initialization with owned RHS temporaries, selected class
+roots, typed results and multiline access-error cleanup. Another295 independent
+reached premises validate queued owners, resolved-name authority and resumption.
+The separate actual353 composition passes compilation and initialization.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -274,8 +288,10 @@ physical pin and readable RETURN through child callbacks, then clears weak looku
 detaches inputs before finally while preserving CV owners, shared store order,
 delegated cache lifetime and nested normal handlers. [Request fatal cleanup 363](coverage/semantics/generator-request-abrupt-review.json)
 retains Generator/cache owners through normal fatal rendering, releases the reported
-exception before bailout, then suppresses later destructors. Abrupt rendering or
-exception release, parked/escaped storage and broader terminal cleanup remain required.
+exception before bailout, then suppresses later destructors. Normal exception-owned
+stdClass/ordinary child cleanup retains full admission and actual storage pins.
+Abrupt rendering or exception release, parked/escaped storage and broader terminal
+cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -888,13 +904,18 @@ cover pending exceptions, the Generator RETURN-child interaction and genuine
 Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
 adds one exact Iterator-child original and 113 reached premises; future
 destructor-tail validation applies the real result discard before owner checks.
-Raw property payload access and escaped reacquisition remain required.
+Consumed, uninitialized or heap-backed property payload access and escaped reacquisition remain required.
 The same physical pin now covers ordinary stdClass storage. A materialized
 property table transfers its one HARRAY owner before bucket cleanup; shared tables
 keep their children after the parent retires. Five new exact originals and
 150/91/51 reached premises cover deletion/reinsertion order, exception chaining,
 early Weak notification and the Generator RETURN-child interaction at separate cuts.
 The actual349 composition passes strict compilation.
+Initialized declared scalar properties that cleanup has not yet visited now read
+through the actual parent carrier and current slot, with ordinary visibility checks.
+Three exact originals and104/89 reached premises cover live typed aliases,
+consumed-slot refusal and genuine owner/slot boundaries; quiet, heap-backed and
+mutating accesses remain required. The actual351 composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -969,13 +990,18 @@ If data binding succeeds before abstract verification fails, later cached calls
 use the fixed class scope while an imported first birth keeps its trait scope.
 One shutdown original and59 supplied phase/scope/static conditions pass, with6
 setup clauses separate; the failed class stays unpublished.
-Retained `new self` rejects an unresolved abstract trait requirement before
-arguments or instance allocation. Imported and own/private targets require explicit
-data completion; two shutdown originals and83 supplied conditions plus12 setup
-clauses pass at separate cuts. Parent/interface construction contracts remain open.
-Retained `new static` constructs the published called class and enters arguments
-after allocation. One shutdown original and40 supplied conditions plus6 setup
-clauses pass, including durable selected-NEW static-fill history.
+Retained `new self` rejects abstract construction before arguments or instance
+allocation. Implicit requirements need completed data binding; explicit abstractness
+uses the declaration flags, including after an earlier data failure. Three shutdown
+originals and122 supplied conditions plus18 setup clauses pass at separate cuts.
+Parent/interface construction contracts remain open.
+Retained trait-scoped `new self` rejects the published trait before arguments,
+with a valid pending NEW certificate. One shutdown original and37 supplied
+conditions plus6 setup clauses pass.
+Retained `new static` constructs the published called class from failed-class or
+published-trait scope, entering arguments after allocation. Two shutdown originals
+and80 supplied conditions plus12 setup clauses pass at separate cuts, including
+durable selected-NEW static-fill history.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
@@ -1264,12 +1290,20 @@ static Fiber APIs before argument evaluation. Frozen dereferenced members surviv
 selector mutation or retirement; the pending call owns its bound receiver once,
 while static object selectors own none. Constructor callable parsing retains its
 real warning continuation and validation-before-status order.
+Ordinary array-selected `start` also freezes its receiver before arguments and
+forwards the original positional or named buffer. Nonowning receipts authenticate
+source and saved callers; completed selection stays valid after receiver retirement.
+Throwing arguments release
+positional values, the receiver, then extra named values in Zend order; recursive
+argument frames and body exceptions keep their real callsites.
+The [array-start ledger](coverage/semantics/fiber-array-start-review.json) records
+six exact originals and 427 reached premises at their separate cuts.
 Simple Fiber API arrays also convert to first-class Closures. A distinct source
 witness freezes the selected members; the temporary bound receiver owner moves
 into the Closure, while static selectors add none. Clone/equality and direct,
 explicit `__invoke` or C-root calls reuse the existing API protocols, including
-start and constructor captures. Ordinary array-selected start, raw array C-root
-callbacks, compound selectors and Fiber-start argument unpacking remain required.
+start and constructor captures. Raw array C-root callbacks, compound selectors
+and Fiber-start argument unpacking remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

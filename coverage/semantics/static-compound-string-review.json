@@ -131,7 +131,7 @@
     "python3 tests/semantics/static_compound_string_state_run.py REACHED/manifest.json"
   ],
   "boundaries": [
-    "Computed property names, keyword scopes entered through Closure/fromCallable or other callable wrappers, and wider borrowed destination lifetime remain separate.",
+    "Stringable property-name callbacks, keyword scopes entered through Closure/fromCallable or other callable wrappers, and wider borrowed destination lifetime remain separate.",
     "A registered-handler missing direct RHS-CV warning still stops at the preexisting Unsupported producer-continuation boundary.",
     "Earlier334/344/352 evidence and paused typed/NULL/finally-sensitive return-producer lanes are unchanged."
   ],
@@ -316,5 +316,161 @@
       "peer_projection": "361 ECHO ownership and362 Fiber array consumers use distinct source/task domains.39/301 reuse observed edges only when the full prepared and final states agree, retaining all actual roots and parent fields.",
       "renewed_source_or_reached_credit": 0
     }
+  },
+  "computed_properties": {
+    "module": "spec/semantics/366-computed-static-compounds.watsup",
+    "decision": "Accepted six exact originals at separate cuts,295 independent reached premises and actual353 compiler/init with pointwise parent review",
+    "behavior": [
+      "A direct property-name CV is read after eager RHS evaluation; evaluated name values and accepted untyped reference-return cells keep their prior selection.",
+      "Real NAME/READY tasks retain evaluated name and RHS owners through cold class initialization; CVs remain borrowed. Resolved bytes and selected class/property transfer to the existing static Stringable store.",
+      "Named, dynamic and ordinary-method keyword class roots preserve their actual selection, captured alias and verified expression result; buffered fetch and initializer lines remain distinct."
+    ],
+    "raw_directory": ".tools/scoped-static-compound-19/.tools/scoped-static-compounds",
+    "preserved_counterexample": {
+      "revision": "63786460e593da18bfa54fcdf600425bdbd2d648",
+      "report": "computed-property-probe-r7ppmlma/report.json",
+      "source": "computed-property-live-rhs",
+      "native": "normal0; exact full output",
+      "model": "Unsupported user object string conversion; empty output",
+      "agreement_credit": 0,
+      "unchanged_original_later_pass": "run-r4u01bnm/report.json"
+    },
+    "native_controls": {
+      "reports": [
+        "computed-property-probe-r7ppmlma/report.json",
+        "computed-property-native-6rxa8ukv/report.json"
+      ],
+      "originals": 6,
+      "fetch_error_lines": [
+        10,
+        18,
+        26
+      ],
+      "initializer_error": "Undefined constant self::MISSING:32",
+      "all_normal_empty_stderr": true
+    },
+    "source_cuts": [
+      {
+        "revision": "a0b4f81c9c5c80740c40e48d3e4d97c4fa6a9522",
+        "report": "run-r4u01bnm/report.json",
+        "exact_whole_originals": 4,
+        "ids": [
+          "computed-property-live-rhs",
+          "computed-property-cv-tmp-timing",
+          "computed-property-cold-default",
+          "computed-property-reference-name"
+        ]
+      },
+      {
+        "revision": "82ea0e59133d79c29a8b62c498dff314ee2650df",
+        "report": "run-l7v8hjlw/report.json",
+        "exact_whole_originals": 1,
+        "ids": [
+          "computed-property-selected-roots"
+        ],
+        "observer_correction": "Strict result===72 replaces unrelated Unsupported is_int; typed-result observation preserved"
+      },
+      {
+        "revision": "03bf61f0af0ebb78b6ae100b8f1c6639e51ed481",
+        "report": "run-9ktmc9zg/report.json",
+        "exact_whole_originals": 1,
+        "ids": [
+          "computed-property-preentry-cleanup"
+        ],
+        "expected_only_correction": "Observed lexical self::MISSING spelling and initializer line32; PHP bytes unchanged"
+      }
+    ],
+    "private_compiler_init": {
+      "revision": "a0b4f81c9c5c80740c40e48d3e4d97c4fa6a9522",
+      "report": "run-r4u01bnm/report.json",
+      "modules": 350,
+      "algo_bytes": 11133687,
+      "struct_bytes": 10811988,
+      "strict_SL_premises": 6,
+      "strict_SL_seconds": 5.264559268951416,
+      "passed": true
+    },
+    "new_reached": {
+      "revision": "1abff50f49330230a705521e40191cd619007df1",
+      "report": "reached-run-268whfdy/report.json",
+      "modules": 350,
+      "groups": [
+        {
+          "id": "computed-name-timing-and-queued-owners",
+          "assertions": 160,
+          "strict_SL_seconds": 31.639012575149536
+        },
+        {
+          "id": "computed-selection-reference-authority",
+          "assertions": 135,
+          "strict_SL_seconds": 45.49501705169678
+        }
+      ],
+      "compiler_bytes": [
+        11199119,
+        11226844
+      ],
+      "total_premises": 295,
+      "passed": true,
+      "inputs_stable": true,
+      "all_groups_reaped": true,
+      "fixture_only_stops": {
+        "count": 2,
+        "revisions": [
+          "746a1d06a",
+          "47472e366"
+        ],
+        "state_credit": 0
+      }
+    },
+    "preserved_zero_credit_stops": [
+      {
+        "report": "computed-property-probe-n239log_/report.json",
+        "reason": "Initial drafts used literal ::$property instead of computed ::${$property}; corrected originals have separate evidence"
+      },
+      {
+        "report": "run-3nefot9d/report.json",
+        "reason": "Compiler-only head/tail binder collision; no source/state execution"
+      },
+      {
+        "report": "run-wwhng64x/report.json",
+        "reason": "Compiler-only recursive otherwise restriction; explicit disjoint marker branches replace it"
+      },
+      {
+        "report": "run-ej4_au_7/report.json",
+        "reason": "New computed descriptor overlapped original generic descriptor; exact original literal AST domain restored"
+      },
+      {
+        "report": "run-r4u01bnm/report.json",
+        "reason": "Fifth whole source stops at unrelated registered is_int builtin after correct compound stores; later strict observer source is separate"
+      },
+      {
+        "report": "run-l7v8hjlw/report.json",
+        "reason": "Sixth native expected message forecast used qualified class instead of observed self; later expected-only correction preserves source bytes"
+      }
+    ],
+    "reproduce_source": "python3 tests/semantics/scoped_static_compound_prepare.py computed-property-live-rhs computed-property-cv-tmp-timing computed-property-cold-default computed-property-reference-name computed-property-selected-roots computed-property-preentry-cleanup; then scoped_static_compound_run.py PREPARED/report.json compiler-gates with the same ids",
+    "current_composition": {
+      "parent": "9aec542e2a3dd15ee5fedd0fd402dc757268f9d1",
+      "revision": "ed57a7c5c4ead995acf840cdc0a38d2c82a37058",
+      "modules": 353,
+      "raw_directory": ".tools/scoped-static-compound-current-19/.tools/scoped-static-compounds",
+      "report": "run-vlxgu4u5/report.json",
+      "algo_bytes": 11254800,
+      "struct_bytes": 10945465,
+      "strict_SL_premises": 6,
+      "strict_SL_seconds": 5.382985830307007,
+      "passed": true,
+      "inputs_stable": true,
+      "all_groups_reaped": true,
+      "pointwise_review": "Preserves SOURCE365 ECHO-only call/destructor line bridges,359 instance storage and physical collector roots,363 request-fatal dispatch,364/367 Fiber argument-buffer/caller-frame authority,347 retained SELF proof and every parent TYPE/SOURCE/CROOT field. New NAME/READY/cast source domains remain disjoint; generic task roots retain actual evaluated operands only.",
+      "renewed_prior_source_state_credit": 0
+    },
+    "boundaries": [
+      "Stringable property-name callbacks and registered-handler missing-name/RHS continuations require their separate producer protocols.",
+      "Keyword scopes entered through Closure/fromCallable or other callable wrappers and wider borrowed destination lifetime remain open; paused return producers are unchanged.",
+      "The is_int builtin observation is a separate required core behavior, with no whole agreement credit at its preserved Unsupported cut."
+    ],
+    "reproduce_states": "Prepare computed-property-cv-tmp-timing, computed-property-cold-default, computed-property-reference-name and computed-property-selected-roots; scoped_static_compound_state_prepare.py PREPARED/report.json renders only the two new groups; scoped_static_compound_state_run.py MANIFEST.json executes them"
   }
 }

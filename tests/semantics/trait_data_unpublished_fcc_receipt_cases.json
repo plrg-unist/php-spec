@@ -165,6 +165,39 @@
       "exit_status": 255,
       "stdout_base64": "UFJFO1NIVVQ7T1dOOkM6RTtFUlJPUjpDYW5ub3QgaW5zdGFudGlhdGUgYWJzdHJhY3QgY2xhc3MgQztGUkVTSDs=",
       "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEMgY29udGFpbnMgMSBhYnN0cmFjdCBtZXRob2QgYW5kIG11c3QgdGhlcmVmb3JlIGJlIGRlY2xhcmVkIGFic3RyYWN0IG9yIGltcGxlbWVudCB0aGUgcmVtYWluaW5nIG1ldGhvZCAoQzo6bikgaW4ge0ZJTEV9IG9uIGxpbmUgMjgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "failed-first-explicit-abstract-pre-data-self-new",
+      "source": "<?php\nfunction argument() { echo \"ARG;\"; }\ntrait T {\n    abstract public static function n();\n    public static function m() {\n        echo \"BODY:\", self::class, \":\", static::class, \";\";\n        new self(argument());\n        echo \"AFTER;\";\n    }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static $x = self::Y;\n        public static function n() {}\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    try { $f(); }\n    catch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\n    E::m();\n});\necho \"PRE;\";\nabstract class C {\n    use U;\n    public static $x = 0;\n    private static function m() {\n        echo \"OWN:\", self::class, \":\", static::class, \";\";\n        new self(argument());\n        echo \"AFTER;\";\n    }\n}\necho \"POST;\";\n",
+      "source_sha256": "a8954dd23a38e3e531774dac6dcbd2cbf0597cae832730a644bbfb95536906fe",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-failed-first-explicit-abstract-pre-data-self-new/command.json",
+      "native_raw_sha256": "12a481985d4bc3524697cd2c23a39f236d780efb1e134e11835787bfadb8d2c9",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7T1dOOkM6RTtFUlJPUjpDYW5ub3QgaW5zdGFudGlhdGUgYWJzdHJhY3QgY2xhc3MgQztGUkVTSDs=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEMgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEMuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMjgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "failed-first-pre-data-unfixed-trait-self-new",
+      "source": "<?php\nfunction argument() { echo \"ARG;\"; }\ntrait T {\n    abstract public static function n();\n    public static function m() {\n        echo \"BODY:\", self::class, \":\", static::class, \";\";\n        new self(argument());\n        echo \"AFTER;\";\n    }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static $x = self::Y;\n        public static function n() {}\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    try { $f(); }\n    catch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\n    E::m();\n});\necho \"PRE;\";\nclass C { use U; public static $x = 0; }\necho \"POST;\";\n",
+      "source_sha256": "ad48c11e61c0b04eace14c1c950846ddece83d7de64b5e269e4911aee63b7fa2",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-failed-first-pre-data-unfixed-trait-self-new/command.json",
+      "native_raw_sha256": "fcd488ac1c85b90eea347a409626e736620931527968be338a7b926f41696d15",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7Qk9EWTpVOkU7RVJST1I6Q2Fubm90IGluc3RhbnRpYXRlIHRyYWl0IFU7RlJFU0g7",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6Om0gaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDEwCkZhdGFsIGVycm9yOiBDIGFuZCBVIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDI4ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+    },
+    {
+      "id": "failed-first-pre-data-unfixed-trait-static-new",
+      "source": "<?php\nfunction argument() { echo \"ARG;\"; }\ntrait T {\n    abstract public static function n();\n    public static function m() {\n        echo \"BODY:\", self::class, \":\", static::class, \";\";\n        new static(argument());\n        echo \"AFTER;\";\n    }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static $x = self::Y;\n        public static function n() {}\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    try { $f(); }\n    catch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\n    E::m();\n});\necho \"PRE;\";\nclass C { use U; public static $x = 0; }\necho \"POST;\";\n",
+      "source_sha256": "57e246fe82116e479064b99a5f12e08f670b75b25a5b7e82c809281ac8382195",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-failed-first-pre-data-unfixed-trait-static-new/command.json",
+      "native_raw_sha256": "826f9d5c1115c7731bcfd1f5c7c490ec76cbc5c4b9846f6dcf1f452eaea087c4",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7Qk9EWTpVOkU7QVJHO0FGVEVSO0ZSRVNIOw==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6Om0gaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDEwCkZhdGFsIGVycm9yOiBDIGFuZCBVIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDI4ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
     }
   ],
   "scope": "Focused FCC equal scope, failed-owner retirement, adaptations and retained first targets through later live/failed imports. A first-owner failure after completed data binding selects the fixed method scope for later cached calls while preserving the unfixed imported first birth. Parameter-view constructor/handler/variadic full-source cases and callbacks before the failure marker remain open. Retained new static constructs the published called class, preserving selected NEW certificates through deferred static fills."

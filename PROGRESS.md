@@ -7,12 +7,32 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 367 executes ordinary simple Fiber-array `start`: immutable selection
+survives argument effects, and one receiver plus the original positional/named
+buffer transfer to the waiting API. Nonowning receipts remain valid after actual
+receiver retirement and keep recursive argument frames independent. Abrupt
+arguments release positional values, receiver, then extra named values in native
+order; body and entry exceptions preserve real `start` callsites. Strict 351, six
+exact normal originals at 5+1 cuts and 267 independent/160 author reached premises
+pass. The preimplementation Unsupported baseline retains zero agreement; earlier
+364/362 evidence is not renewed. Raw array C-root callbacks, compound selectors,
+Fiber-start unpacking and wider lifecycle consumers remain required.
+Actual352 over `262ab0c38` passes strict compilation at `c757a7e25`, preserving
+current source-line, property-read, trait and Generator/collector guards; private
+source/state cuts retain their own inputs.
+[Array-start ledger](coverage/semantics/fiber-array-start-review.json).
+
 Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
 Actual close/cache owners survive normal rendering and handler-registry mutation;
 the reported exception releases after frozen emission and before bailout suppresses
 later destructors. Internal C-root trace rows preserve real function arguments.
-Seven exact php_error255 originals and 493 strict premises pass at separate cuts;
-original refusals, preparation stops and corrected trace/admission failures stay at zero.
+Seven exact php_error255 originals and 493 strict premises pass at separate cuts.
+Normal post-report stdClass and ordinary child storage add one exact fatal original
+and 161 premises, preserving real pins and excluding consumed prefixes only from
+the future validation view. Earlier seven/493 cuts retain their own inputs.
+The current 353-module composition over `a210cd253` passes strict compilation at
+`b7b693fa3`; earlier validation retains its own inputs and current fields remain intact.
+Original refusals, preparation stops and corrected trace/admission failures stay at zero.
 Abrupt rendering/release, message-warning conversion, parked/escaped storage and
 wider terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
@@ -81,6 +101,21 @@ source/state cuts retain their inputs.
 Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
+
+SOURCE365 extends361 through a shared certificate for one ordinary positional
+CV argument. INIT5 precedes live SEND8; operand retirement can install the callee
+or replace the CV, while returning warnings send fixed null and earlier throws
+abort later work. Returned TMPVAR/HCELL values retain bytes after argument deletion;
+conversion and final release use ECHO8 independently of call initialization.
+Public pending/active cast admission authenticates that separate line.
+Nine exact originals retain seven rows at `21fc1ae04`, eval at `3493d49bd` and the
+new line discriminator at `3c9cc065f`, all private349. The two unchanged baselines
+and intermediate final-destructor line mismatch retain zero affected agreement.
+Independent236 premises (150 bindings/86 checks) retain three groups at `f5f4ac0c1`
+and the affected result group at `3c9cc065f`. Actual351 over `760771d9d` passes
+strict compilation with reviewed Generator/Fiber, trait and storage-read compatibility.
+No new module or owner schema is added.
+[Ledger](coverage/semantics/source-echo-cv-call-review.json).
 
 Source361 selects first INIT for a direct ECHO of a resolved named noarg
 nonbuiltin call without namespace fallback. Owned include/eval operands retire
@@ -1088,6 +1123,15 @@ New reached groups pass150/91/51 premises at `f064fd2c6`/`56d3b070b`/`2282b68da`
 covering table ownership, B-before-A throws, early Weak and actual355 RETURN storage.
 Original baseline/fixture failures retain zero credit; prior campaigns are unchanged.
 The actual349 join over `013ca6d2b` passes strict initialization at `e7e74c6c9`.
+Unvisited initialized declared scalar reads now preserve ordinary visibility and
+use the current DIRECT/ALIAS value under the actual unique storage carrier.
+Native3 at `8488dbc53` establish safe reads; the unchanged scalar model baseline
+stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
+`b89e7e66d`; fresh104/89 premises at that same cut prove frame ownership, live9
+with its typed source, real NEXT advancement/detach and consumed-slot refusal.
+The old typed fixture is adapted statically with no renewed credit. Quiet/heap
+payloads, uninitialized/consumed storage, mutation and escape remain required.
+The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -1201,7 +1245,17 @@ premises pass at `fc7727974`. The unchanged earlier dynamic Unsupported record
 retains zero agreement. Actual349 over COMP `ea58ac361` passes algo/struct/init
 at `bba0c15be`, with pointwise361/362 and same-state graph-factor review and
 no5/241 source/state renewal.
-Computed property names, keyword scopes entered through Closure/fromCallable or
+Computed static-property compounds366 delay name CV reads until after RHS work,
+retain evaluated name/RHS operands through real class preparation, then transfer
+the selected property to the existing static conversion/store. Buffered fetch
+lines remain distinct from initializer error lines. Six exact originals pass at
+separate `a0b4f81c9`/`82ea0e591`/`03bf61f0a` cuts; first-cut compiler/init passes.
+New295 reached premises pass at `1abff50f4`, including real cold-preparation
+owners, compiled-name/marker forgeries and retained REF selection. Actual-parent
+compiler/init passes at `ed57a7c5c` over CALLS367 `9aec542e2` (353 modules),
+with pointwise SOURCE365/367 owner/line review and no6/295 source/state renewal.
+Stringable
+property-name callbacks, keyword scopes entered through Closure/fromCallable or
 other callable wrappers, wider borrowed lifetime and registered-handler
 missing-RHS continuations remain separate; paused return producers are unchanged.
 
@@ -2125,6 +2179,40 @@ algo/struct at3.719/4.621s; source1/44 bridge with current callback witnesses
 and stdClass storage preserved. Raw compiler evidence is
 `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-jen_5u_i`
 and `trait266-object-struct-iqurkbph` in the same directory.
+Explicit abstract retained SELF now authenticates the original class flags and
+rejects construction even when data binding failed earlier; the implicit proof
+still requires NORMAL. At `00d1acb37`/350 over `7c4a13bc1`, strict algo/struct
+pass3.719/4.670s, one shutdown PHP-error tuple and39 supplied NEW/source-flag
+conditions plus6 setup clauses pass (27.209s), including all four validators.
+Raw evidence under current19 `.tools/` is `method-runtime-vcokv2pq`,
+`closure-call-protocol-7qumzqku`, `trait266-object-algo-9ms95gjp` and
+`trait266-object-struct-es2vzasj`. Earlier cuts remain unchanged.
+Old trait-scoped SELF now authenticates the canonical class copy against its
+published lexical trait and rejects construction with the pending NEW
+certificate intact. At `0d9bde4c6`/350 over `7c4a13bc1`, strict algo/struct
+pass3.669/4.670s, one shutdown PHP-error tuple and37 supplied source/scope/NEW
+conditions plus6 setup clauses pass (41.881s), including all four validators.
+Raw evidence under current19 `.tools/` is `method-runtime-eh0c0688`,
+`closure-call-protocol-fu2_4hpy`, `trait266-object-algo-4otuss2g` and
+`trait266-object-struct-qd7qmnag`. Earlier cuts remain unchanged.
+The reviewed351 union `02f053676` over `4f156a297` passes strict algo/struct
+at3.669/4.573s, preserving GEN request-fatal tasks and EX residual-GC fields.
+Private source1/39 and source1/37 cuts bridge unchanged. Raw compiler evidence
+is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-ucz93eec`
+and `trait266-object-struct-1edjhak2` in the same directory.
+Old trait-scoped STATIC now preserves the selected called class despite raw
+trait-method/canonical-copy origin differences. At `2cc1fbb87`/351 over
+`9782fbb4e`, strict algo/struct pass3.671/4.570s, one shutdown PHP-error tuple
+and40 supplied NEW/allocation/history conditions plus6 setup clauses pass
+(59.013s), including all four validators and malformed-certificate rejection.
+Raw evidence under current19 `.tools/` is `method-runtime-o8ztu9z_`,
+`closure-call-protocol-3yzz1hul`, `trait266-object-algo-mkqwx_04` and
+`trait266-object-struct-wdvmpr1n`; previous SELF/STATIC cuts are unchanged.
+The reviewed353 projection `ea6b5b5c2` over `54589b343` passes strict
+algo/struct at3.719/4.721s, preserving computed-static, Generator and source
+consumers; the private source1/40 cut bridges unchanged. Raw compiler evidence
+is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-5o1ambud`
+and `trait266-object-struct-ifvl6gz9` in the same directory.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,
