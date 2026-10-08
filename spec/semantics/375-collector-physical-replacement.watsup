@@ -1,0 +1,81 @@
+;; A physical residual callback suspends through the real GC_WAIT caller.
+;; Its guard becomes detached; a new worker reloads the remaining global
+;; interval without assigning the old target any fresh-plan progress.
+dec $gc_worker_physical_suspend(pstate, pconfigcall) : pstate
+dec $gc_worker_physical_replace_valid(pstate, pgcplan, pgcscan) : bool
+dec $gc_worker_physical_start(pstate, pgcplan, pgcscan) : pstate
+
+def $gc_worker_physical_suspend_ready(S) = true
+  -- if $gc_worker_guard_at(S) = (pgcguard)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if $gc_worker_api(pgcpublic.API)
+  -- if pgcpublic.RESIDUAL
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.SCAN = eps
+  -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.API = pgcpublic.API
+  -- if pfibercaller.OBJECT = pgcguard.WORKER
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT pgcguard.WORKER pgcplan) :: ptask_tail*
+  -- if $fiber_caller_wait(S, pfibercaller)
+  -- if ~$fiber_close_boundary(S)
+def $fiber_suspend(S, pconfigcall, pvalue) = $gc_worker_physical_suspend(S, pconfigcall)
+  -- if $gc_worker_physical_suspend_ready(S)
+def $gc_worker_physical_suspend(S, pconfigcall) = $destructor_release_begin(S_detached, [DESTRUCTION_VALUE (HOBJECT n)])
+  -- if S.ACTIVEFIBER = (n)
+  -- if $($heap_owners($heap_graph(S), HOBJECT n) > 1)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pgcguard_new = pgcguard[.PUBLIC = eps]
+  -- if S_plain = $gc_worker_put_guard(S[.TODO = $gc_worker_pending_tasks(S.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(S.FRAMES, pgcguard, pgcguard_new)], n, (pgcguard_new))
+  -- if S_plain.TODO = ptask :: ptask_tail*
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (INTRINSIC_FIBER_SUSPEND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE pfiber.SEQUENCE}
+  -- if S_saved = S_plain[.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_suspended = $fiber_put(S_saved, n, pfiber[.GC = (pgcworker[.GUARD = (pgcguard_new)])][.STATUS = FIBER_SUSPENDED][.VM = ($fiber_vm(S_saved))])
+  -- if S_returned = $fiber_vm_restore(S_suspended, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if S_returned.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_return*
+  -- if pgcscan = S_returned.GC.SCAN[.INDEX = $(S_returned.GC.SCAN.INDEX + 1)]
+  -- if S_detached = S_returned[.GC.WORKER = eps][.GC.SCAN = pgcscan][.TODO = (GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_return*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+def $gc_worker_physical_suspend(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "last-owner close during physical collector replacement"]
+  -- if S.ACTIVEFIBER = (n)
+  -- if $($heap_owners($heap_graph(S), HOBJECT n) <= 1)
+
+def $gc_task_consumer(GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan, pgccall) = 1 -- if pgcplan.CALL = pgccall
+def $gc_task_plan_consumer(GC_WORKER_PHYSICAL_REPLACE pgcplan_task pgcscan, pgcplan) = 1 -- if pgcplan_task = pgcplan
+def $task_nodes(GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) = $instance_roots(pgcplan.CALL.CALL.OWNER) ++ $instance_roots(pgcplan.CALL.PENDING)
+def $eager_explicit_task(GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) = true
+def $gc_worker_physical_replace_valid(S, pgcplan, pgcscan) = true
+  -- if S.ACTIVEFIBER =/= eps
+  -- if S.GC.WORKER = eps
+  -- if $gc_plan_valid(S, pgcplan)
+  -- if pgcplan.SCAN = eps
+  -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
+  -- if pgcplan.DTORS =/= eps
+  -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
+  -- if pgcscan = S.GC.SCAN
+  -- if pgcscan.END = |pgcplan.BUFFER|
+  -- if $(pgcscan.INDEX > 0) /\ $(pgcscan.INDEX <= pgcscan.END)
+  -- if $gc_main_tags(pgcplan, S.GC.BUFFER, 0)
+  -- if S.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, 0, pgcscan.INDEX, 0)
+def $gc_worker_physical_replace_valid(S, pgcplan, pgcscan) = false -- otherwise
+def $call_task_valid(S, GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) = $gc_worker_physical_replace_valid(S, pgcplan, pgcscan)
+rule PhpStep/gc-worker-physical-replace: S ~> $gc_worker_physical_start(S, pgcplan, pgcscan)
+  -- if S.TODO = (GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_tail*
+  -- if $gc_worker_physical_replace_valid(S, pgcplan, pgcscan)
+def $gc_worker_physical_start(S, pgcplan, pgcscan) = $gc_worker_internal_next(S_active, pgcpublic)
+  -- if S_cached = $gc_worker_cached(S, pgcplan.CALL)
+  -- if S_cached.GC.WORKER = (n)
+  -- if $fiber_at(S_cached, n) = (pfiber)
+  -- if pgcplan_next = pgcplan[.CALL.PENDING = eps]
+  -- if S_caller = $gc_replace(S_cached, pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
+  -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ}
+  -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
+  -- if pgcpublic = {API pfiberapi, SOURCE pgcplan_next.CALL, INDEX pgcscan.INDEX, END pgcscan.END, PENDING pgcplan.CALL.PENDING, RESIDUAL true}
+  -- if S_running = $fiber_put(S_caller, n, pfiber[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = pfiberapi.SEQUENCE])
+  -- if S_active = $gc_worker_start_vm(S_running, n, pfiber)[.TODO = [GC_WORKER_SCAN pgcpublic]][.ACTIVEFIBER = (n)][.FIBERCALLERS = pfibercaller :: S_caller.FIBERCALLERS][.FIBERSEQ = $(S_caller.FIBERSEQ + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+
+def $gc_worker_replacement_tasks((GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_tail*, pgcplan) = true
+def $gc_worker_replace_tasks((GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_tail*, pgcplan, pgcplan_new) = (GC_WORKER_PHYSICAL_REPLACE pgcplan_new pgcscan) :: ptask_tail*

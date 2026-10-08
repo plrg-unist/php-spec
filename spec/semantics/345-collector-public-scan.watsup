@@ -41,6 +41,8 @@ dec $gc_worker_internal_attachment(pstate, pgcguard, pgcpublic) : bool
 dec $gc_worker_internal_next(pstate, pgcpublic) : pstate
 dec $gc_worker_internal_idle(pstate, pgcpublic) : pstate
 dec $gc_worker_internal_pending(pstate, pgcpublic, pgcplan) : pstate
+dec $gc_worker_physical_suspend_ready(pstate) : bool
+def $gc_worker_physical_suspend_ready(S) = false -- otherwise
 
 ;; A residual DTOR_GARBAGE slot stays physically occupied in the release
 ;; engine, but is not a GC_ROOT seed on its next mark/scan. Reconstruct only
@@ -661,3 +663,4 @@ def $fiber_suspend(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "repeat
   -- if $gc_worker_guard_at(S) = (pgcguard)
   -- if pgcguard.PUBLIC = (pgcpublic)
   -- if $gc_worker_api(pgcpublic.API)
+  -- if ~$gc_worker_physical_suspend_ready(S)
