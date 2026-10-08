@@ -90,6 +90,16 @@
     "oracle_status": "native-only-confirmed-model-unrun"
   },
   {
+    "id": "peer-bound-start-argument-throw-releases-last-capture",
+    "source": "<?php\nfunction throwStartArgument348() {\n    unset($GLOBALS['start'], $GLOBALS['fiber']);\n    echo 'A|';\n    throw new Exception('argument');\n}\n$fiber = new Fiber(static function ($value) { echo 'B|'; return 13; });\n$weak = WeakReference::create($fiber);\n$start = $fiber->start(...);\n$weakCapture = WeakReference::create($start);\ntry { $start(throwStartArgument348()); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\necho (int)($weak->get() === null), (int)($weakCapture->get() === null);\n",
+    "source_sha256": "bad542eb03bc7774ded17dce91278f4165ab9047e7077a856cac0f5fbb1615db",
+    "native_stdout": "A|argument|11",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
     "id": "peer-bound-start-dynamic-capture-named-unpack-selection",
     "source": "<?php\n$original = new Fiber(static function ($value) {\n    echo 'O', (int)($value === $GLOBALS['other']), '|';\n    Fiber::suspend('Y');\n    return 47;\n});\n$other = new Fiber(static function () { echo 'X|'; return 53; });\n$selected = $original;\n$method = 'StArT';\n$start = $selected->$method(...);\n$method = 'resume';\necho $start(...['value' => ($selected = $other)]), '|';\necho (int)$original->isStarted(), (int)$other->isStarted(), (int)($selected === $other), '|';\n$original->resume();\necho $original->getReturn();\n",
     "source_sha256": "b3c0e01d899b603c811635909e394372a26194618fed17d3ae671bc6e86dc41f",
