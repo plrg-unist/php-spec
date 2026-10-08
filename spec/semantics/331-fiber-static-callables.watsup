@@ -334,6 +334,7 @@ def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_in
   -- if $fiber_capture_config_tag(pconfigcall)
   -- if ~$fiber_core_config(S, pconfigcall)
   -- if $exit_method_site(S, pconfigcall.SITE)
+  -- if pconfigcall.KIND =/= INTRINSIC_FIBER_CONSTRUCT
   -- if ptraceframe = {FILE eps, LINE $(-1), FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($fiber_trace_type(pconfigcall.KIND)), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
   -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE eps, LINE $(-1), FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($fiber_trace_type(pconfigcall.KIND)), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]

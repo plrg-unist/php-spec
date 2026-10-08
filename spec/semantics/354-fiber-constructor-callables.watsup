@@ -1,0 +1,25 @@
+;; Z_PARAM_FUNC can replace a captured constructor's CONFIG_INVOKE with a
+;; callable parser or warning continuation. The real adjacent Closure owner
+;; still authenticates selection; the parser borrows the same received value.
+def $fiber_capture_config_task(API_CALLABLE_RESULT papiquery n, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN papiquery.VALUE)]
+def $fiber_capture_config_task(ERROR_HANDLER_INVOKE perrorcall, pconfigcall) = true
+  -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery n
+  -- if $fiber_capture_config_task(perrorcall.RESUME, pconfigcall)
+def $fiber_capture_config_task(ERROR_HANDLER_RESULT perrorcall, pconfigcall) = true
+  -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery n
+  -- if $fiber_capture_config_task(perrorcall.RESUME, pconfigcall)
+def $fiber_capture_config_task(ERROR_HANDLER_CLEAN perrorcall, pconfigcall) = true
+  -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery n
+  -- if $fiber_capture_config_task(perrorcall.RESUME, pconfigcall)
+
+;; Constructor frames retain their caller site even through Closure::__invoke.
+def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if ~$fiber_core_config(S, pconfigcall)
+  -- if $exit_method_site(S, pconfigcall.SITE)
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__construct"), CLASS ($ptascii("Fiber")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
