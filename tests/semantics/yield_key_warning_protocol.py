@@ -41,6 +41,7 @@ def $yield_key_phase(S,5) = true
   -- if $yield_key_phase(S,2)
   -- if S.GLOBALTABLE = (psymboltable)
   -- if $trace_slot(S,psymboltable.ENV,$ptascii("value")) = PNULL
+  -- if S.TODO = (STMT (NStmtEcho (SEQUENCE expression*) metadata)) :: ptask*
 def $yield_key_phase(S,n) = false -- otherwise
 dec $yield_key_seek(pstate,nat,nat) : pstate
 def $yield_key_seek(S,n_phase,n) = S -- if $yield_key_phase(S,n_phase)
