@@ -1095,7 +1095,12 @@ records the new originals and reached checks, including saved calls to the idle
 collector Fiber. Fixed bound API captures also execute as Fiber C-root callbacks:
 the [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json)
 records borrowed receivers and callback retirement before original start arguments.
-Bound `start` and constructor captures remain required.
+Bound `start` captures forward the original positional/named buffer through
+direct and explicit `__invoke` entry, retaining the selected receiver through
+argument effects and cleanup. The
+[start-capture ledger](coverage/semantics/fiber-start-callables-review.json)
+records their separate checks. C-root `start`, outer unpacking and constructor
+captures remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

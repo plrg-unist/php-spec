@@ -1,0 +1,149 @@
+{
+  "milestone": 348,
+  "status": "independently-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "baseline": "38004d3f7993a8311a205806dfcf1d5d134cdb5d",
+  "semantic_code": "d24d0698b121d35f7ebb694128a02f79cb9232c2",
+  "modules": 329,
+  "scope": [
+    "Bound start first-class captures execute directly and through explicit __invoke, preserving immutable receiver and method selection.",
+    "Original positional/named buffers reach accepted Fiber start unchanged; callback receives remain weak with defaults and variadics.",
+    "The Closure owns its receiver. Pending argument tasks and waiting start APIs own their buffers and borrow that receiver; explicit invocation retains its additional Closure owner and copied buffer.",
+    "Pending ownership is keyed by capture and source site, admitting nested same-Closure argument calls while rejecting duplicate markers for one call.",
+    "Status errors follow argument evaluation; genuine direct and explicit start trace sites, target-entry name errors, argument throws and last-capture retirement preserve their actual continuations."
+  ],
+  "compiler": {
+    "path": ".tools/calls-fiber-start-capture-19/.tools/fiber-start-capture-sl-r7btcxlf/report.json",
+    "sha256": "fb457e1a04ee9093865c2ab5f964f2bf74dcf451a7a3a829d7b3df5106ed8ea1",
+    "revision": "d24d0698b121d35f7ebb694128a02f79cb9232c2",
+    "passed": true,
+    "modules": 329,
+    "mode": "SL",
+    "initialization": true,
+    "inputs_stable": true
+  },
+  "source": {
+    "path": ".tools/calls-fiber-start-capture-19/.tools/fiber-start-capture-source-h55tt7l5/report.json",
+    "sha256": "84486a824962075c19e972d7aaf64d68be8711685e4479133f33f18a1847cabd",
+    "revision": "d6402ef6f3235a65d3b99c4edc3d73a0ecf7c833",
+    "passed": true,
+    "normal_agreements": 10,
+    "new_normal_originals": 9,
+    "affected_former_unsupported_originals": 1,
+    "unsupported_controls": 2,
+    "unsupported_agreement_credit": 0,
+    "inputs_stable": true,
+    "head_stable": true
+  },
+  "states": {
+    "independent_groups": 2,
+    "independent_premises": 186,
+    "author_groups": 1,
+    "author_premises": 96,
+    "premises_include_five_setup_clauses_per_group": true,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-start-capture-19/.tools/fiber-state-review-7hkyq06y/report.json",
+        "sha256": "50429d9651fbc7fd4c0634b3262e558a02631c2b2e820ecafdf4fa498061a0df",
+        "revision": "d6402ef6f3235a65d3b99c4edc3d73a0ecf7c833",
+        "passed": true,
+        "group": "bound-start-named-wait-keeps-selected-receiver",
+        "role": "independent",
+        "premises": 97,
+        "source_sha256": "3780481e95e5611ac884910f920d5d8b88476eac000c1546e5e15da4e41c4d64"
+      },
+      {
+        "path": ".tools/calls-fiber-start-capture-19/.tools/fiber-state-review-f3yun6sh/report.json",
+        "sha256": "410fb29e3612181487cbeb362f4efcb27f4474fe2f3e9f54c450d44ebebd9444",
+        "revision": "d6402ef6f3235a65d3b99c4edc3d73a0ecf7c833",
+        "passed": true,
+        "group": "bound-start-invoke-wait-keeps-both-buffers-through-retirement",
+        "role": "independent",
+        "premises": 89,
+        "source_sha256": "cc437c2db10d10c4bfccb1213893c4565eb8c9627f35205b382fb9334ae2ec35"
+      },
+      {
+        "path": ".tools/calls-fiber-start-capture-19/.tools/fiber-state-review-me4zar9a/report.json",
+        "sha256": "0d85bbbf5aecbf43c560a633539615cbb88868670eb752d447c50f7a525d38c9",
+        "revision": "d6402ef6f3235a65d3b99c4edc3d73a0ecf7c833",
+        "passed": true,
+        "group": "bound-start-keeps-real-parent-and-original-named-buffer",
+        "role": "author",
+        "premises": 96,
+        "source_sha256": "684b2cd55381b84be83ff85d11fcf0540e00f11af8f8c939c6a1cd57fc5c64a7"
+      }
+    ]
+  },
+  "semantic_inputs": {
+    "spec/semantics/30-storage.watsup": "0133cd4403bbab0e6eaa21e77574dd67b687c5af133c14360db427c6cf9832d9",
+    "spec/semantics/331-fiber-static-callables.watsup": "1dc03e1bec1a21c2557641de10efa56635e16ecc1da5549d8e6993d7127f4208",
+    "spec/semantics/348-fiber-start-callables.watsup": "4262879e3ac23ac1948d5fe0f1261b20ab7b22e7bc89f878722126ca177c69f9"
+  },
+  "failures": [
+    {
+      "path": ".tools/calls-fiber-start-capture-19/.tools/fiber-start-capture-sl-fnv7s8k4/report.json",
+      "sha256": "9a21ee88cbd5b0775d523ea5bb20e0fe30ff7f8e6da014a1596914a81d071376",
+      "revision": "d8daddb0d5526da444c9b1f168af7a4f7cf274b1",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Strict elaboration could not bind text in a disjunctive completion clause; split NORMAL and UNSUPPORTED passthrough clauses in d24d0698b."
+    },
+    {
+      "path": ".tools/calls-fiber-start-capture-19/.tools/fiber-start-capture-source-kv98bh58/report.json",
+      "sha256": "d5cfa9b7c3634fd1abdf6c9c531b7d9986416903cf5d8f523fd9a9d31d6bddb0",
+      "revision": "d24d0698b121d35f7ebb694128a02f79cb9232c2",
+      "passed": false,
+      "agreement_credit": 0,
+      "reason": "Original author weak-receive program entered its target, then stopped at the existing is_int registered-builtin boundary. Its bytes/native observation remain preserved; a distinct fresh strict-comparison original is accepted in the later selection. Core builtin coverage remains required.",
+      "source_id": "author-bound-start-weak-named-default-variadic",
+      "source_sha256": "85a45f1b028c12998fe90d663639950d25493f3ce3a00f8b6db863c90f243fda",
+      "outcome": "Unsupported: registered builtin call"
+    }
+  ],
+  "identity": {
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "determinism_checks": true,
+      "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+      "ocaml": "5.1.0"
+    },
+    "runtime": {
+      "version": "8.5.10",
+      "sapi": "cli",
+      "int_size": 8,
+      "zts": false,
+      "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+      "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "source_budgets": {
+      "steps": 100000,
+      "model_seconds": 60,
+      "process_seconds": 75
+    },
+    "state_budgets": {
+      "seek_steps": 4000,
+      "finish_steps": 4000,
+      "process_seconds": 120
+    }
+  },
+  "recovery": {
+    "worktree": ".tools/calls-fiber-start-capture-19",
+    "branch": "calls/fiber-start-capture-19",
+    "source_command": "python3 tests/semantics/fiber_start_capture_sources.py",
+    "independent_command": "python3 tests/semantics/fiber_start_capture_review.py --case <recorded group>",
+    "author_command": "python3 tests/semantics/fiber_start_capture_state.py",
+    "compiler_command": "python3 .tools/fiber-start-capture-prep-19/compile.py",
+    "raw_reports": "Paths are relative to canonical php-spec; generated checks, exact argv, source bytes and streams remain outside Git."
+  },
+  "limits": [
+    "The original is_int-dependent source has zero agreement; the separately named fresh comparison original proves exact int7 without that builtin. This is a dependency gap, not a passing boundary control or a permanent core-library exception.",
+    "Outer argument unpacking and C-root start retain exact Unsupported controls with zero agreement. Constructor captures, broader adapters and remaining lifecycle work are required; held undefined-result/returns_verify work is excluded.",
+    "The affected337 start-capture original is supported at348 only; its earlier Unsupported observation and all prior331/337/341 source/state cuts remain unchanged."
+  ]
+}

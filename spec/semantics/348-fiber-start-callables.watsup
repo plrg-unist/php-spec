@@ -1,0 +1,202 @@
+;; start forwards its original variadic/named buffer, rather than fixed CONFIG slots.
+def $intrinsic_name(INTRINSIC_FIBER_START) = $ptascii("Fiber::start")
+def $fiber_bound_name(ptbytes) = true -- if $ptlc(ptbytes) = $ptascii("start")
+def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if pfibercapture.KIND = INTRINSIC_FIBER_START
+  -- if $ptlc(pfibercapture.NAME) = $ptascii("start")
+  -- if pfibercapture.INPUT = (n)
+  -- if $fiber_at(S, n) =/= eps
+  -- if $origin_node(S.SOURCES, pfibercapture.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptlc(pfibercapture.NAME))
+  -- if $ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $fiber_capture_new(S_read, INTRINSIC_FIBER_START, ptbytes, (n))
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $fiber_at(S_read, n) =/= eps
+  -- if $ptlc(ptbytes) = $ptascii("start") /\ $ppfirstclass(phpType7*)
+def $fiber_capture_owner(pfibercapture, n) = pfibercapture.INPUT
+  -- if pfibercapture.KIND = INTRINSIC_FIBER_START
+def $node_children(S, HOBJECT n) = [HOBJECT n_receiver]
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if pfibercapture.KIND = INTRINSIC_FIBER_START
+  -- if pfibercapture.INPUT = (n_receiver)
+def $named_closure_same(S, n_left, n_right) = true
+  -- if S.OBJECTS[n_left] = FIBERAPICLOSURE pfibercapture_left
+  -- if S.OBJECTS[n_right] = FIBERAPICLOSURE pfibercapture_right
+  -- if pfibercapture_left.KIND = INTRINSIC_FIBER_START
+  -- if pfibercapture_right.KIND = INTRINSIC_FIBER_START
+  -- if pfibercapture_left.INPUT = pfibercapture_right.INPUT
+def $fiber_callback_resolution(S, POBJECT n) = HANDLERUNKNOWN "Fiber start capture callback"
+  -- if $fiber_capture_live(S, n)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if pfibercapture.KIND = INTRINSIC_FIBER_START
+
+dec $fiber_start_capture_prepare(pstate, nat, porigin, int, bool) : pstate
+def $fiber_capture_prepare(S, n, porigin, z, b_pop) = $fiber_start_capture_prepare(S, n, porigin, z, b_pop)
+  -- if $fiber_capture_live(S, n)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if pfibercapture.KIND = INTRINSIC_FIBER_START
+def $fiber_start_capture_prepare(S, n, porigin, z, true) = S[.TODO = [FIBER_START_CAPTURE_ARGS n pfiberstart, FIBER_CAPTURE_RELEASE n porigin, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if pfibercapture.INPUT = (n_receiver)
+  -- if pfiberstart = {SITE porigin, OBJECT n_receiver, INDEX 0, SENT {SLOTS eps, NAMED eps}, LINE z}
+def $fiber_start_capture_prepare(S, n, porigin, z, false) = S[.TODO = [FIBER_START_CAPTURE_ARGS n pfiberstart, FIBER_CAPTURE_RELEASE n porigin] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if pfibercapture.INPUT = (n_receiver)
+  -- if pfiberstart = {SITE porigin, OBJECT n_receiver, INDEX 0, SENT {SLOTS eps, NAMED eps}, LINE z}
+
+dec $fiber_start_capture_task(ptask, nat, pfiberstart) : bool
+dec $fiber_start_capture_pending_task(ptask, nat, porigin) : bool
+dec $fiber_start_capture_pending_count(ptask*, nat, porigin) : nat
+dec $fiber_start_capture_pair(ptask*, nat, pfiberstart) : bool
+dec $fiber_start_capture_buffer_valid(pstate, nat, pfiberstart) : bool
+dec $fiber_start_capture_valid(pstate, nat, pfiberstart, bool) : bool
+dec $fiber_start_capture_result_valid(pstate, nat, pfiberstart, bool) : bool
+def $fiber_start_capture_task(FIBER_START_CAPTURE_ARGS n pfiberstart, n, pfiberstart) = true
+def $fiber_start_capture_task(FIBER_START_CAPTURE_SEND n pfiberstart, n, pfiberstart) = true
+def $fiber_start_capture_task(ptask, n, pfiberstart) = false -- otherwise
+def $fiber_start_capture_pending_task(FIBER_START_CAPTURE_ARGS n pfiberstart, n, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_capture_pending_task(FIBER_START_CAPTURE_SEND n pfiberstart, n, porigin) = (pfiberstart.SITE = porigin)
+def $fiber_start_capture_pending_task(ptask, n, porigin) = false -- otherwise
+def $fiber_start_capture_pending_count(eps, n, porigin) = 0
+def $fiber_start_capture_pending_count(ptask :: ptask_tail*, n, porigin) = $(1 + $fiber_start_capture_pending_count(ptask_tail*, n, porigin))
+  -- if $fiber_start_capture_pending_task(ptask, n, porigin)
+def $fiber_start_capture_pending_count(ptask :: ptask_tail*, n, porigin) = $fiber_start_capture_pending_count(ptask_tail*, n, porigin)
+  -- if ~$fiber_start_capture_pending_task(ptask, n, porigin)
+def $fiber_start_capture_pair(ptask :: (FIBER_CAPTURE_RELEASE n porigin) :: ptask_tail*, n, pfiberstart) = true
+  -- if $fiber_start_capture_task(ptask, n, pfiberstart)
+  -- if porigin = pfiberstart.SITE
+def $fiber_start_capture_pair((FIBER_START_CAPTURE_ARGS n pfiberstart) :: (FIBER_START_CAPTURE_RESULT n pfiberstart b) :: ptask_tail*, n, pfiberstart) = true
+def $fiber_start_capture_pair(ptask :: ptask_tail*, n, pfiberstart) = $fiber_start_capture_pair(ptask_tail*, n, pfiberstart)
+  -- if ~$fiber_start_capture_task(ptask, n, pfiberstart)
+def $fiber_start_capture_pair(ptask*, n, pfiberstart) = false -- otherwise
+def $fiber_start_capture_buffer_valid(S, n, pfiberstart) = true
+  -- if $generator_flat_tasks(S.TODO)
+  -- if $fiber_capture_live(S, n)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if pfibercapture.KIND = INTRINSIC_FIBER_START
+  -- if pfibercapture.INPUT = (pfiberstart.OBJECT)
+  -- if S.ORIGIN = (pfiberstart.SITE)
+  -- if $fiber_capture_call_site(S, pfiberstart.SITE)
+  -- if $call_line_valid(S, (pfiberstart.SITE), pfiberstart.LINE)
+  -- if $intrinsic_count(S, pfiberstart.SITE) = (n_count)
+  -- if $(pfiberstart.INDEX <= n_count)
+  -- if $fiber_start_shape(S, pfiberstart.SITE, pfiberstart.INDEX, pfiberstart.SENT)
+  -- if $fiber_capture_count(S.TODO, n, pfiberstart.SITE) = 1
+def $fiber_start_capture_buffer_valid(S, n, pfiberstart) = false -- otherwise
+def $fiber_start_capture_valid(S, n, pfiberstart, b_pending) = true
+  -- if $fiber_start_capture_buffer_valid(S, n, pfiberstart)
+  -- if $fiber_start_capture_pending_count(S.TODO, n, pfiberstart.SITE) = 1
+  -- if $fiber_start_capture_pair(S.TODO, n, pfiberstart)
+  -- if ~b_pending \/ $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) =/= eps
+def $fiber_start_capture_valid(S, n, pfiberstart, b_pending) = false -- otherwise
+def $fiber_start_capture_result_valid(S, n, pfiberstart, b) = true
+  -- if $fiber_start_capture_buffer_valid(S, n, pfiberstart)
+  -- if $intrinsic_count(S, pfiberstart.SITE) = (pfiberstart.INDEX)
+  -- if $fiber_start_capture_pending_count(S.TODO, n, pfiberstart.SITE) = 0 \/ $fiber_start_capture_pending_count(S.TODO, n, pfiberstart.SITE) = 1
+  -- if b = $exit_method_site(S, pfiberstart.SITE)
+def $fiber_start_capture_result_valid(S, n, pfiberstart, b) = false -- otherwise
+def $fiber_capture_count((FIBER_START_CAPTURE_RESULT n pfiberstart b) :: ptask*, n, porigin) = $(1 + $fiber_capture_count(ptask*, n, porigin))
+  -- if pfiberstart.SITE = porigin
+def $fiber_capture_result_site(FIBER_START_CAPTURE_RESULT n pfiberstart b, n, porigin) = (pfiberstart.SITE = porigin)
+
+;; Argument evaluation owns only the raw buffer; the release marker owns the Closure.
+rule PhpStep/fiber-start-capture-argument: S ~> S[.TODO = [$at_task((porigin), EVAL expression), FIBER_START_CAPTURE_SEND n pfiberstart] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_START_CAPTURE_ARGS n pfiberstart) :: ptask_tail*
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, false, ptbytes?, porigin, z))
+rule PhpStep/fiber-start-capture-unpack: S ~> S[.COMPLETION = UNSUPPORTED "Fiber start outer unpacking"]
+  -- if S.TODO = (FIBER_START_CAPTURE_ARGS n pfiberstart) :: ptask_tail*
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, true, ptbytes?, porigin, z))
+rule PhpStep/fiber-start-capture-send: S ~> S_read[.TODO = (FIBER_START_CAPTURE_ARGS n $fiber_start_sent(pfiberstart, pvalue, ptbytes?)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_START_CAPTURE_SEND n pfiberstart) :: ptask_tail*
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, false, ptbytes?, porigin, z))
+  -- if S_check = $fiber_start_check(S, pfiberstart, ptbytes?, z)
+  -- if S_check.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_check, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+rule PhpStep/fiber-start-capture-send-error: S ~> S_check
+  -- if S.TODO = (FIBER_START_CAPTURE_SEND n pfiberstart) :: ptask_tail*
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, false, ptbytes?, porigin, z))
+  -- if S_check = $fiber_start_check(S, pfiberstart, ptbytes?, z)
+  -- if S_check.COMPLETION =/= NORMAL
+rule PhpStep/fiber-start-capture-send-abrupt: S ~> S_read
+  -- if S.TODO = (FIBER_START_CAPTURE_SEND n pfiberstart) :: ptask_tail*
+  -- if $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) = ((expression, false, ptbytes?, porigin, z))
+  -- if S_check = $fiber_start_check(S, pfiberstart, ptbytes?, z)
+  -- if S_check.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_check, S.RESULT, z)
+  -- if S_read.COMPLETION =/= NORMAL
+rule PhpStep/fiber-start-capture-enter: S ~> S[.TODO = (FIBER_START_CAPTURE_ARGS n pfiberstart) :: (FIBER_START_CAPTURE_RESULT n pfiberstart b) :: ptask_tail*]
+  -- if S.TODO = (FIBER_START_CAPTURE_ARGS n pfiberstart) :: (FIBER_CAPTURE_RELEASE n porigin) :: ptask_tail*
+  -- if porigin = pfiberstart.SITE
+  -- if $fiber_start_capture_valid(S, n, pfiberstart, false)
+  -- if $intrinsic_count(S, pfiberstart.SITE) = (pfiberstart.INDEX)
+  -- if b = $exit_method_site(S, pfiberstart.SITE)
+
+dec $fiber_start_capture_trace(pstate, pfiberstart, bool) : ptraceframe*
+dec $fiber_start_capture_invoke(pstate, pfiberstart, bool) : pstate
+def $fiber_start_capture_trace(S, pfiberstart, false) = [$fiber_api_trace(S, pfiberapi)]
+  -- if pfiberapi = {SITE pfiberstart.SITE, OBJECT pfiberstart.OBJECT, KIND eps, START (pfiberstart.SENT), SENT eps, LINE pfiberstart.LINE, SEQUENCE S.FIBERSEQ}
+def $fiber_start_capture_trace(S, pfiberstart, true) = [$fiber_api_trace(S, pfiberapi), ptraceframe]
+  -- if pfiberapi = {SITE pfiberstart.SITE, OBJECT pfiberstart.OBJECT, KIND eps, START (pfiberstart.SENT), SENT eps, LINE pfiberstart.LINE, SEQUENCE S.FIBERSEQ}
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pfiberstart.SITE), LINE pfiberstart.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $fiber_api_trace_args(S, pfiberapi), HASARGS true}
+def $fiber_start_capture_invoke(S, pfiberstart, b) = $throwable_allocate_at(S_started[.COMPLETION = NORMAL], text, ptbytes, pfiberstart.SITE, z, $source_trace_prefixed(S, $fiber_start_capture_trace(S, pfiberstart, b)))
+  -- if S_started = $fiber_start(S, pfiberstart)
+  -- if S_started.COMPLETION = THROWN text ptbytes z
+def $fiber_start_capture_invoke(S, pfiberstart, b) = S_started
+  -- if S_started = $fiber_start(S, pfiberstart)
+  -- if S_started.COMPLETION = NORMAL
+def $fiber_start_capture_invoke(S, pfiberstart, b) = S_started
+  -- if S_started = $fiber_start(S, pfiberstart)
+  -- if S_started.COMPLETION = UNSUPPORTED text
+rule PhpStep/fiber-start-capture-invoke: S ~> $fiber_start_capture_invoke(S, pfiberstart, b)
+  -- if S.TODO = (FIBER_START_CAPTURE_ARGS n pfiberstart) :: (FIBER_START_CAPTURE_RESULT n pfiberstart b) :: ptask_tail*
+  -- if $fiber_start_capture_result_valid(S, n, pfiberstart, b)
+
+def $task_nodes(FIBER_START_CAPTURE_ARGS n pfiberstart) = $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
+def $task_nodes(FIBER_START_CAPTURE_SEND n pfiberstart) = $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
+def $task_nodes(FIBER_START_CAPTURE_RESULT n pfiberstart false) = [HOBJECT n]
+def $task_nodes(FIBER_START_CAPTURE_RESULT n pfiberstart true) = [HOBJECT n, HOBJECT n] ++ $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
+def $fiber_caller_api_nodes(pfibercaller) = $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
+  -- if pfiberapi = pfibercaller.API
+  -- if pfibercaller.VM.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_START_CAPTURE_RESULT n pfiberstart b) :: ptask_tail*
+  -- if pfiberapi.KIND = eps /\ pfiberapi.SENT = eps
+  -- if pfiberapi.START = (pfiberstart.SENT)
+  -- if pfiberapi.OBJECT = pfiberstart.OBJECT
+  -- if pfiberapi.SITE = pfiberstart.SITE /\ pfiberapi.LINE = pfiberstart.LINE
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_START_CAPTURE_RESULT n pfiberstart b) :: ptask_tail*
+  -- if $fiber_start_capture_result_valid(S, n, pfiberstart, b)
+  -- if pfiberapi.KIND = eps /\ pfiberapi.SENT = eps
+  -- if pfiberapi.START = (pfiberstart.SENT)
+  -- if pfiberapi.OBJECT = pfiberstart.OBJECT
+  -- if pfiberapi.SITE = pfiberstart.SITE /\ pfiberapi.LINE = pfiberstart.LINE
+def $fiber_caller_api_trace(S, pfiberapi) = $fiber_start_capture_trace(S, pfiberstart, b)
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_START_CAPTURE_RESULT n pfiberstart b) :: ptask_tail*
+  -- if $fiber_api_valid(S, pfiberapi)
+def $call_task_valid(S, FIBER_START_CAPTURE_ARGS n pfiberstart) = $fiber_start_capture_valid(S, n, pfiberstart, false)
+def $call_task_valid(S, FIBER_START_CAPTURE_SEND n pfiberstart) = $fiber_start_capture_valid(S, n, pfiberstart, true)
+def $call_task_valid(S, FIBER_START_CAPTURE_RESULT n pfiberstart b) = $fiber_start_capture_result_valid(S, n, pfiberstart, b)
+rule PhpStep/fiber-start-capture-result: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (FIBER_START_CAPTURE_RESULT n pfiberstart false) :: ptask_tail*
+  -- if $fiber_start_capture_result_valid(S, n, pfiberstart, false)
+rule PhpStep/fiber-start-capture-invoke-result: S ~> S[.TODO = (FIBER_CAPTURE_RELEASE n pfiberstart.SITE) :: ptask_tail*]
+  -- if S.TODO = (FIBER_START_CAPTURE_RESULT n pfiberstart true) :: ptask_tail*
+  -- if $fiber_start_capture_result_valid(S, n, pfiberstart, true)
+rule PhpStep/fiber-start-capture-throw-result: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_START_CAPTURE_RESULT n pfiberstart false) :: ptask_tail*
+  -- if $fiber_start_capture_result_valid(S, n, pfiberstart, false)
+  -- if $throwable_live(S, n_throwable)
+rule PhpStep/fiber-start-capture-invoke-throw-result: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: (FIBER_CAPTURE_RELEASE n pfiberstart.SITE) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_START_CAPTURE_RESULT n pfiberstart true) :: ptask_tail*
+  -- if $fiber_start_capture_result_valid(S, n, pfiberstart, true)
+  -- if $throwable_live(S, n_throwable)
+def $fiber_marker(FIBER_START_CAPTURE_RESULT n pfiberstart b) = true
+def $generator_internal_task(FIBER_START_CAPTURE_ARGS n pfiberstart) = true
+def $generator_internal_task(FIBER_START_CAPTURE_SEND n pfiberstart) = true
+def $generator_internal_task(FIBER_START_CAPTURE_RESULT n pfiberstart b) = true
