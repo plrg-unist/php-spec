@@ -17,6 +17,7 @@ dec $gc_worker_public_keep(pstate, nat) : pstate
 dec $gc_worker_public_raw_api(pstate) : pfiberapi?
 dec $gc_worker_public_captured_api_valid(pstate, pfiberapi) : bool
 dec $gc_worker_public_frames(pframe*, pgcguard, pgcguard) : pframe*
+dec $gc_worker_public_frame_view(pstate, pstate, pframe*) : bool
 dec $gc_worker_public_parked(pstate, nat, pfiber) : bool
 dec $gc_worker_public_reentry_ready(pstate, pgcguard) : bool
 dec $gc_worker_public_reentry(pstate, pconfigcall, pvalue) : pstate
@@ -140,7 +141,8 @@ def $gc_worker_scan_target(S, n, n_end) = $gc_worker_scan_target(S, $(n + 1), n_
   -- if $(n < n_end) /\ $(n < |S.GC.BUFFER|)
   -- if $gc_worker_scan_object(S, S.GC.BUFFER[n]) = eps
 rule PhpStep/gc-worker-public-scan-enter: S ~> $gc_worker_scan_enter(S, pgcpublic, n_slot, n_object)
-  -- if S.TODO = [GC_WORKER_SCAN pgcpublic]
+  -- if S.TODO = (GC_WORKER_SCAN pgcpublic) :: ptask_tail*
+  -- if ptask_tail* = eps
   -- if $gc_worker_scan_valid(S, pgcpublic)
   -- if $gc_worker_scan_target(S, pgcpublic.INDEX, pgcpublic.END) = ((n_slot, n_object))
 def $gc_worker_scan_enter(S, pgcpublic, n_slot, n_object) = $destructor_select(S_guarded, n_object, false, eps)
@@ -180,7 +182,8 @@ def $gc_worker_public_keep(S, n_object) = S
   -- if $($heap_owners($heap_graph(S), HOBJECT n_object) > 0)
 
 rule PhpStep/gc-worker-public-scan-idle: S ~> $gc_worker_scan_finish(S, pgcpublic)
-  -- if S.TODO = [GC_WORKER_SCAN pgcpublic]
+  -- if S.TODO = (GC_WORKER_SCAN pgcpublic) :: ptask_tail*
+  -- if ptask_tail* = eps
   -- if $gc_worker_scan_valid(S, pgcpublic)
   -- if $gc_worker_scan_target(S, pgcpublic.INDEX, pgcpublic.END) = eps
 def $gc_worker_scan_finish(S, pgcpublic) = $fiber_back($gc_worker_public_suspend(S_clear, pgcpublic.API), PNULL, false)
@@ -199,6 +202,8 @@ def $gc_worker_public_guard_live(S) = true
 def $gc_worker_public_guard_live(S) = false -- otherwise
 def $gc_worker_public_frames(eps, pgcguard, pgcguard_new) = eps
 def $gc_worker_public_frames(pframe :: pframe_tail*, pgcguard, pgcguard_new) = pframe[.TODO = $gc_worker_pending_tasks(pframe.TODO, pgcguard, pgcguard_new)] :: $gc_worker_public_frames(pframe_tail*, pgcguard, pgcguard_new)
+def $gc_worker_public_frame_view(S_parked, S, eps) = false
+def $gc_worker_public_frame_view(S_parked, S, pframe :: pframe_tail*) = ($fiber_vm(S) = $fiber_vm($constant_frame_scope(S_parked, pframe, pframe_tail*)) \/ $gc_worker_public_frame_view(S_parked, S, pframe_tail*))
 def $fiber_suspend(S, pconfigcall, pvalue) = $fiber_suspend_save(S_parked, pconfigcall, pvalue)
   -- if $gc_worker_guard_at(S) = (pgcguard)
   -- if pgcguard.PUBLIC = (pgcpublic)
@@ -216,9 +221,11 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
   -- if pfiber.STATUS = FIBER_SUSPENDED
   -- if pfiber.VM = (pfibervm)
-  -- if ~pfibervm.GLOBAL /\ pfibervm = $fiber_vm(S)
+  -- if ~pfibervm.GLOBAL /\ S.FIBERCALLERS = eps
+  -- if S_parked = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = (pgcguard.WORKER)][.FIBERCALLERS = eps][.COMPLETION = NORMAL]
   -- if pfibervm.TODO = (FIBER_CONTINUE pgcpublic.API) :: ptask_tail*
-  -- if $fiber_continue_valid(S, pgcpublic.API)
+  -- if $fiber_continue_valid(S_parked, pgcpublic.API)
+  -- if pfibervm = $fiber_vm(S) \/ $gc_worker_public_frame_view(S_parked, S, pfibervm.FRAMES)
   -- if pgcguard.WORKER = pgcpublic.API.OBJECT
   -- if pgcguard.SOURCE = pgcpublic.SOURCE /\ pgcguard.INDEX = pgcpublic.INDEX
   -- if $(pgcguard.INDEX < pgcpublic.END)
