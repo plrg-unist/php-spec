@@ -1977,6 +1977,23 @@ original failures. Actual227/232/239 composition adds nine source comparisons an
 127 state premises at separate cutoffs: saved default constructors, cold selected
 references, physical interface diagnostic files and imported-maker Closure scope.
 Accepted233/237 routes remain preserved; the method checkpoint remains partial.
+Ordinary class-owned abstract scoped calls now reject before argument evaluation,
+with access errors preceding abstract rejection and concrete/trait-warning dispatch
+unchanged. At `a962cef07`/354 over `aa8ebb4d1`, strict algo/struct pass3.719/4.673s,
+one normal source and24 supplied clauses plus6 setup pass (5.220s). Nineteen
+clauses check the genuine rejection and all four validators; five helper-only
+clauses check access/nonstatic priority and concrete dispatch. Raw evidence
+under current19 `.tools/` is `method-runtime-ciqhcicl`,
+`closure-call-protocol-98d5klby`, `trait266-object-algo-u5b6vb34` and
+`trait266-object-struct-e68x39kk`; baseline interpreter failure `4rvh0zjs`
+retains zero agreement. Source-profile recording now preserves legacy argv/text
+metadata and merges dictionary profiles; five representation checks pass without
+semantic reruns. Wider method/core obligations remain open.
+The reviewed355 projection `da11ceff4` over `035bbe2de` passes strict
+algo/struct at3.719/4.823s, preserving current storage and bound-constructor targets.
+Source1/24 bridge unchanged; raw compiler evidence is
+`.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-vgui9wdk`
+and `trait266-object-struct-p9t_dgxh` in the same directory.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and

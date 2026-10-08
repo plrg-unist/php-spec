@@ -963,6 +963,8 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
+Abstract scoped calls reject before arguments while retaining access-error priority;
+one normal source and24 supplied checks plus6 setup clauses pass.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work
