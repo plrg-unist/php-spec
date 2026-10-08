@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Generator328 adds source-owned reference-yield cells, value-API array snapshots
+and direct/inner-reference destructuring aliases. Notice/cleanup readback retains
+nonowning old-cache metadata and precise delegated exception reinjection.
+Private normal-source cuts remain separate; cache/warning690, delegation163,
+nonfinalizing request215, terminal-refusal40 and destructuring177 physical
+premises pass at their recorded inputs. The new minimal `9:9` original closes
+the preserved `1:1`/extra-Notice failure. Actual321 over `c38af3cf770` passes strict
+compilation at `c21e5ce52`, preserving336 and the reviewed39/301 owner factors.
+Active-finally request close remains required Unsupported with zero agreement;
+paused generic returns stay excluded.
+[Scope and retained cuts](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
+
 Source336 adds one named ordinary CV argument to computed-name emission: INIT6
 precedes known FETCH8/property11, and unknown `Sent` binds Error7 before CV demand.
 Six exact originals and325 independent premises retain private317. The final320
@@ -85,11 +97,11 @@ renewal. Earlier cuts retain their own tested parents.
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
 WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335,
-Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
+Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 320 modules composed over
-`89c1019cc`, retaining static Fiber API captures331, physical property references324 and collector335.
+with 321 modules composed over
+`c38af3cf770`, retaining static Fiber API captures331, physical property references324 and collector335.
 The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336.
 The property/clone composition passes strict SL290/compiler application0 at
@@ -284,22 +296,12 @@ origin mismatch have zero affected credit. Actual316 passes strict compilation
 with reviewed trait/ArrayAccess/collector compatibility; earlier noarg/CV cuts
 and relocations gain no renewed credit.
 
-Generator328 adds source-owned reference-yield cells, value-API array snapshots
-and direct/inner-reference destructuring aliases. Notice/cleanup readback retains
-nonowning old-cache metadata and precise delegated exception reinjection.
-Private normal-source cuts remain separate; cache/warning690, delegation163,
-nonfinalizing request215, terminal-refusal40 and destructuring177 physical
-premises pass at their recorded inputs. The new minimal `9:9` original closes
-the preserved `1:1`/extra-Notice failure. Active-finally request close remains
-required Unsupported with zero agreement; paused generic returns stay excluded.
-[Scope and retained cuts](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
-
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
 The accepted private52 normal/four compiler agreements and618 reached premises,
 plus the distinct actual274 source/87-premise cut, retain their original inputs.
 Canonical integration preserves newer ArrayAccess/Fiber/call fields; introduced
-composition checks pass with303/310. IteratorAggregate, reference yields and
+composition checks pass with303/310. IteratorAggregate, wider reference-yield forms and
 wider lifecycle/API behavior remain required. [Scope and retained evidence](docs/semantics/GENERATOR-DELEGATION.md).
 
 Generator303 now runs ordinary last-owner finalizers, releasing delegation links

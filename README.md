@@ -237,6 +237,8 @@ reviewed receive/source/ARG319/collector compatibility, without source/state ren
 cache cells, value-API array copies and direct/destructured foreach aliases.
 Notice callbacks and retired cache readback retain authentic nonowning carriers;
 bounded nonfinalizing global release preserves ordered cache retirement.
+Actual321 passes strict compilation over336 and the reviewed39/301 owner factors;
+earlier source/state cuts retain their inputs.
 IteratorAggregate, wider call forms and reference producers, request/terminal cleanup
 and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped

@@ -48,6 +48,10 @@ delegated warning/close adds163, nonfinalizing request release adds215, the requ
 terminal refusal adds40 and effective destructuring adds177. These counts include
 repeated setup and do not renew the accepted321 campaigns.
 
+The actual321-module composition over `c38af3cf770` passes strict compilation at
+`c21e5ce52`. It preserves336, the39/301 owner factors and current Fiber/property/GC
+fields; independent seam review requires no renewal of earlier source/state cuts.
+
 Maintained focused commands, run from the project root:
 
 ```sh
