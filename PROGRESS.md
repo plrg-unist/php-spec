@@ -1183,6 +1183,7 @@ with zero agreement. Strict354, source3 and fresh123/141 premises pass at
 `3418d8268`, proving Error ownership during receiver release, continued cleanup,
 B/previousError chaining and atomic selected-reference binding. No earlier
 campaign is renewed; consumed and original PROP_UNSET slots remain required.
+The actual355 join over `64b2fabca` passes strict initialization at `08dfc81ef`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

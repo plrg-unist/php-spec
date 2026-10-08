@@ -947,6 +947,7 @@ resolution, using the declaring class and source line. Three exact originals and
 123/141 reached premises cover inherited declarations, private denial, pending
 Error ownership, continued child cleanup and atomic selected-reference binding.
 Consumed and explicitly unset slots remain separate boundaries.
+The actual355 composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
