@@ -27,6 +27,15 @@ dec $generator_request_report_frozen(pstate, pgenfatal) : pcompletion
 dec $generator_request_string_tail(pstate, nat, porigin, ptask*) : bool
 dec $generator_request_report_abrupt(pstate) : bool
 dec $generator_request_close_trace(pstate, pcallcontext) : bool
+dec $generator_request_render_dispatch_ready(pstate) : bool
+dec $generator_request_render_source(ptask, pgenfatal, nat, bool) : bool
+dec $generator_request_render_prefix(ptask, pgenfatal, nat, bool) : bool
+dec $generator_request_render_resume(ptask) : ptask?
+dec $generator_request_render_at(ptask*) : (pgenfatal, nat, bool, ptask*)?
+dec $generator_request_render_view(pstate, pgenfatal) : pstate
+dec $generator_request_render_return_valid(pstate, pgenfatal, nat, bool) : bool
+dec $generator_request_render_warning(pstate, pgenfatal) : preqbytes
+dec $generator_request_render_abrupt(pstate) : bool
 
 ;; Request dtor_obj resumes the Generator from C with no execute_data caller.
 ;; Its saved creation context remains source authority, not a trace callsite.
@@ -150,13 +159,14 @@ def $generator_request_fatal_method(S, pgenfatal) = true
   -- if $origin_node(S.SOURCES, porigin_method) = (pcnode)
 def $generator_request_fatal_method(S, pgenfatal) = false -- otherwise
 def $generator_request_report_valid(S, pgenfatal) = true
-  -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps
+  -- if S_report = $generator_request_render_view(S, pgenfatal)
+  -- if $shutdown_task_scope(S_report) /\ S_report.ACTIVEFIBER = eps
   -- if pgenfatal.FROZEN = NORMAL /\ pgenfatal.TEXT = eps /\ pgenfatal.REPORT = eps
-  -- if S.ORIGIN = pgenfatal.METHOD
-  -- if $throwable_live(S, pgenfatal.OBJECT)
-  -- if $generator_request_fatal_method(S, pgenfatal)
-  -- if $generator_request_fatal_tail(S.TODO, pgenfatal) = (ptask_tail*)
-  -- if $generator_request_fatal_source(S, pgenfatal, ptask_tail*)
+  -- if S_report.ORIGIN = pgenfatal.METHOD
+  -- if $throwable_live(S_report, pgenfatal.OBJECT)
+  -- if $generator_request_fatal_method(S_report, pgenfatal)
+  -- if $generator_request_fatal_tail(S_report.TODO, pgenfatal) = (ptask_tail*)
+  -- if $generator_request_fatal_source(S_report, pgenfatal, ptask_tail*)
 def $generator_request_report_valid(S, pgenfatal) = false -- otherwise
 def $call_task_valid(S, GENERATOR_REQUEST_REPORT pgenfatal) = $generator_request_report_valid(S, pgenfatal)
 def $task_nodes(GENERATOR_REQUEST_REPORT pgenfatal) = [HOBJECT pgenfatal.OBJECT]
@@ -349,6 +359,114 @@ def $generator_request_report_abrupt(S) = false -- otherwise
 rule PhpStep/generator-request-render-abrupt-required: S ~> S[.COMPLETION = UNSUPPORTED "Generator request fatal rendering exception"]
   -- if $generator_request_report_abrupt(S)
   -- if ~$generator_request_fatal_ready(S)
+  -- if ~$generator_request_render_dispatch_ready(S)
+
+;; The completed renderer receiver is released before the new C-root handler.
+;; RETURN borrows the outer REPORT and the consumed inner exception identity.
+def $generator_request_render_dispatch_ready(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $generator_request_report_abrupt(S)
+  -- if S.EXCEPTIONHANDLER = (pvalue)
+def $generator_request_render_dispatch_ready(S) = false -- otherwise
+rule PhpStep/generator-request-render-handler: S ~> S[.TODO = (EXCEPTION_HANDLER_INVOKE {OBJECT n, CALLBACK pvalue, TARGET eps, ORIGIN (porigin_method), RAW $exception_snapshot(S, pvalue), SENT eps, RECEIVED eps}) :: (GENERATOR_REQUEST_RENDER_RETURN pgenfatal n false) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*][.EXCEPTIONHANDLERS = (pvalue) :: S.EXCEPTIONHANDLERS][.EXCEPTIONHANDLER = eps][.ORIGIN = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $generator_request_render_dispatch_ready(S)
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT pgenfatal.OBJECT porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
+  -- if pgenfatal.METHOD = (porigin_method)
+  -- if S.EXCEPTIONHANDLER = (pvalue)
+
+;; These queries also run during heap-edge discovery. Every guard is structural;
+;; the ordinary task validators authenticate the live handler/release carriers.
+def $generator_request_render_source(THROW_SEARCH n, pgenfatal, n, false) = true
+def $generator_request_render_source(EXCEPTION_HANDLER_RESULT pexceptioncall, pgenfatal, n, false) = (pexceptioncall.OBJECT = n /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
+def $generator_request_render_source(EXCEPTION_HANDLER_CLEAN pexceptioncall b_released, pgenfatal, n, false) = (pexceptioncall.OBJECT = n /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
+def $generator_request_render_source(ERROR_HANDLER_RESULT perrorcall, pgenfatal, n, true) = (perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true)
+def $generator_request_render_source(ERROR_HANDLER_CLEAN perrorcall, pgenfatal, n, true) = (perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true)
+def $generator_request_render_source(ptask, pgenfatal, n, b) = false -- otherwise
+def $generator_request_render_prefix(ptask, pgenfatal, n, b) = true
+  -- if ptask =/= THROW_SEARCH n
+  -- if $generator_request_render_source(ptask, pgenfatal, n, b)
+def $generator_request_render_prefix(EXCEPTION_HANDLER_INVOKE pexceptioncall, pgenfatal, n, false) = (pexceptioncall.OBJECT = n /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
+def $generator_request_render_prefix(EXCEPTION_HANDLER_ENTER pexceptioncall, pgenfatal, n, false) = (pexceptioncall.OBJECT = n /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
+def $generator_request_render_prefix(DESTRUCTOR_RELEASE pdestructionrelease, pgenfatal, n, b) = true
+  -- if ~pdestructionrelease.USER /\ pdestructionrelease.CALLER = eps /\ pdestructionrelease.CONSTCONTEXT = eps
+  -- if pdestructionrelease.ORIGIN = eps \/ pdestructionrelease.ORIGIN = pgenfatal.METHOD
+def $generator_request_render_prefix(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pgenfatal, n, b) = true
+  -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.CONSTCONTEXT = eps
+  -- if pdestructionoperation.ORIGIN = eps \/ pdestructionoperation.ORIGIN = pgenfatal.METHOD
+  -- if $generator_request_render_source(pdestructionoperation.SOURCE, pgenfatal, n, b)
+def $generator_request_render_prefix(DESTRUCTOR_ENTER pdestructorcall, pgenfatal, n, b) = (~pdestructorcall.USER /\ pdestructorcall.CALLER = eps)
+def $generator_request_render_prefix(DESTRUCTOR_RESULT pdestructorcall, pgenfatal, n, b) = (~pdestructorcall.USER /\ pdestructorcall.CALLER = eps)
+def $generator_request_render_prefix(INSTANCE_STORAGE_STEP pinstancestorage, pgenfatal, n, b) = $generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage)
+def $generator_request_render_prefix(THROW_SEARCH n_abrupt, pgenfatal, n, b) = true
+def $generator_request_render_prefix(ptask, pgenfatal, n, b) = false -- otherwise
+def $generator_request_render_resume(ERROR_HANDLER_INVOKE perrorcall) = (perrorcall.RESUME)
+def $generator_request_render_resume(ERROR_HANDLER_RESULT perrorcall) = (perrorcall.RESUME)
+def $generator_request_render_resume(ERROR_HANDLER_CLEAN perrorcall) = (perrorcall.RESUME)
+def $generator_request_render_resume(ptask) = eps -- otherwise
+def $generator_request_render_at((GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*) = ((pgenfatal, n, b, ptask_tail*))
+def $generator_request_render_at(ptask :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*) = ((pgenfatal, n, true, ptask_tail*))
+  -- if $generator_request_render_resume(ptask) = (GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true)
+def $generator_request_render_at(ptask :: ptask_tail*) = ((pgenfatal, n, b, ptask_result*))
+  -- if $generator_request_render_at(ptask_tail*) = ((pgenfatal, n, b, ptask_result*))
+  -- if $generator_request_render_prefix(ptask, pgenfatal, n, b)
+def $generator_request_render_at(ptask*) = eps -- otherwise
+def $generator_request_render_view(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*][.ORIGIN = pgenfatal.METHOD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps
+  -- if $generator_request_render_at(S.TODO) = ((pgenfatal, n, b, ptask_tail*))
+def $generator_request_render_view(S, pgenfatal) = S -- otherwise
+def $generator_request_render_return_valid(S, pgenfatal, n, b) = true
+  -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps
+  -- if $(n < |S.OBJECTS|) /\ $throwable_member(S, n)
+  -- if pgenfatal.METHOD =/= eps
+  -- if $generator_request_render_at(S.TODO) = ((pgenfatal, n, b, ptask_tail*))
+  -- if $generator_request_report_valid(S, pgenfatal)
+def $generator_request_render_return_valid(S, pgenfatal, n, b) = false -- otherwise
+def $call_task_valid(S, GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b) = $generator_request_render_return_valid(S, pgenfatal, n, b)
+def $task_nodes(GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b) = eps
+def $call_after_origin(S, GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b) = $generator_request_render_view(S, pgenfatal)
+def $eager_explicit_task(GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b) = true
+def $generator_internal_task(GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b) = true
+def $generator_request_tail_task(GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b) = true
+def $generator_request_resume_plain((GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
+
+def $generator_request_render_warning(S, pgenfatal) = $object_name(S, pgenfatal.OBJECT) ++ $ptascii("::__toString() must return a string")
+rule PhpStep/generator-request-render-return-warning: S ~> $error_dispatch(S, 2, $generator_request_render_warning(S, pgenfatal), 0, DIAGNOSTIC_INTERNAL "Warning" ($generator_request_render_warning(S, pgenfatal)) 0, GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true)
+  -- if S.TODO = (GENERATOR_REQUEST_RENDER_RETURN pgenfatal n false) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
+  -- if $generator_request_render_return_valid(S, pgenfatal, n, false)
+  -- if S.ORIGIN = pgenfatal.METHOD
+rule PhpStep/generator-request-render-return-cached: S ~> S[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*][.RESULT = KNOWN (PSTRING ptbytes)][.BASE = BASE_VALUE (KNOWN (PSTRING ptbytes))]
+  -- if S.TODO = (GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
+  -- if $generator_request_render_return_valid(S, pgenfatal, n, true)
+  -- if S.ORIGIN = pgenfatal.METHOD
+  -- if $throwable_field(S, pgenfatal.OBJECT, "string") = PSTRING ptbytes
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
+  -- if $generator_request_render_return_valid(S, pgenfatal, n, true)
+  -- if pgenfatal.METHOD = (perrorcall.SITE)
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = 0
+  -- if perrorcall.MESSAGE = $generator_request_render_warning(S, pgenfatal)
+  -- if perrorcall.EVENT = DIAGNOSTIC_INTERNAL "Warning" perrorcall.MESSAGE 0
+def $error_handler_file(S, perrorcall) = $ptascii("Unknown")
+  -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = 0
+def $generator_request_tail_task(ERROR_HANDLER_INVOKE perrorcall) = true -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
+def $generator_request_tail_task(ERROR_HANDLER_RESULT perrorcall) = true -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
+def $generator_request_tail_task(ERROR_HANDLER_CLEAN perrorcall) = true -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
+def $generator_request_resume_plain((ERROR_HANDLER_INVOKE perrorcall) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
+  -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
+def $generator_request_resume_plain((ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
+  -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
+def $generator_request_resume_plain((ERROR_HANDLER_CLEAN perrorcall) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
+  -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
+
+def $generator_request_render_abrupt(S) = true
+  -- if S.TODO = (THROW_SEARCH n_abrupt) :: ptask_tail*
+  -- if $generator_request_render_at(S.TODO) = ((pgenfatal, n, b, ptask_result*))
+  -- if $generator_request_render_return_valid(S, pgenfatal, n, b)
+def $generator_request_render_abrupt(S) = false -- otherwise
+def $shutdown_render_throw_pending(S) = true -- if $generator_request_render_abrupt(S)
+rule PhpStep/generator-request-render-handler-abrupt-required: S ~> S[.COMPLETION = UNSUPPORTED "Generator request fatal renderer handler or warning exception"]
+  -- if $generator_request_render_abrupt(S)
 def $generator_request_release_abrupt(S) = true
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if $exception_task_scope(S) /\ $destructor_result_valid(S, pdestructorcall)
