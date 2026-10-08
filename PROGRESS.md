@@ -497,6 +497,9 @@ keeps 341 earlier and 248 missing-key reached premises at their separate cuts.
 The composition of 325 modules over SOURCE339 `3691db3dd` passes full
 algorithmic/structuring compilation and six strict initialization checks at
 `7a7dd4faf`, without source/state renewal.
+The final composition of 326 modules over TRAIT307 `55c2eab0c` preserves its
+TYPE/default/FCC source guards by independent pointwise review; the 325-module
+compiler cut remains separate.
 The ordinary helper-base compiler repair preserves special builtin temporary
 rejection. Implicit Generator Get creation retains its existing deferred-scope
 boundary. Bare/fall-through NULL, finally-sensitive Notice ingress and wider
