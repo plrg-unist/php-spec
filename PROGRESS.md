@@ -13,6 +13,9 @@ CURRENT is the physical value slot; consumed-cell history is tied to the object'
 own storage stage. Nested normal handlers retain inner cache/close pins and admit
 the authenticated queued outer source frame. Eight exact normals and 553 new
 strict premises pass at separate cuts; malformed actual handlers remain rejected.
+Composition with 346 modules over `9cacdbf51` passes strict compilation at
+`4d867f6b0`, preserving current ownership/source/Fiber/collector semantics;
+earlier source/state cuts retain their inputs.
 Original Unsupported/failed cuts stay zero. Abrupt terminal cleanup, parked/escaped
 storage and broader lifecycle work remain required.
 [Ledger](coverage/semantics/generator-request-delegation-review.json).

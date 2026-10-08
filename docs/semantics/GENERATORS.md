@@ -92,7 +92,9 @@ order, independent CV owners, shared store order and the physical CURRENT cache 
 Nested normal handlers keep the genuine inner/outer close claims and cache owners;
 queued source views remain distinct from actual handler contexts.
 [Eight originals and 553 reached premises](../../coverage/semantics/generator-request-delegation-review.json)
-retain separate cuts. Abrupt terminal behavior, parked storage work, escaped
+retain separate cuts. Composition with 346 modules over `9cacdbf51` passes strict
+compilation at `4d867f6b0`; earlier source/state cuts retain their inputs.
+Abrupt terminal behavior, parked storage work, escaped
 reacquisition and nested ordinary-object RETURN reads remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
