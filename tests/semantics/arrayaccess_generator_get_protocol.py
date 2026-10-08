@@ -154,7 +154,13 @@ S_created.STORE[n_other_cell] = DEFINED (POBJECT n_other)
 n_other =/= n_box
 S_created.OBJECTS[n_other] = S_created.OBJECTS[n_box]
 (HOBJECT n_other) <- S_created.ALLOCATIONS
-'''.strip().splitlines() + guards('S_created') + guards('S_view')
+'''.strip().splitlines() + guards('S_created') + [
+        # This saved-frame proof view has no operational caller frame.
+        '$call_current_valid(S_view)',
+        '$call_frames_valid(S_view, S_view.FRAMES)',
+        '$call_tasks_valid(S_view, pframe_gen.TODO)',
+        '$generator_frame_valid(S_created, pgenerator, pframe_gen)',
+    ]
     checks += certificate_forgeries('S_created', 'pgenerator', 'pgeneratoraccess', 'pcallcontext', 'fresh', 'n_other')
     checks += seek('S_escape', 'S_created', 0) + r'''
 S_escape.OBJECTS[n_gen] = GENERATOR pgenerator
