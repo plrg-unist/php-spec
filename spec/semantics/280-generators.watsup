@@ -8,6 +8,21 @@ dec $generator_return_union(ptbranch*) : bool
 dec $ppyield_optional(ppstate, pcpath, phpType5) : ppstate
 dec $generator_function_body(pstate, pfunction) : bool
 dec $generator_set(pstate, nat, pgenerator) : pstate
+dec $ppgenerator_reference_scope(ppstate, pcpath) : bool
+dec $generator_reference_active(pstate) : bool
+dec $generator_reference_address(expression) : bool
+dec $generator_reference_producer(pstate, pgenerator) : bool
+dec $generator_reference_valid(pstate, pobject) : bool
+dec $generator_reference_nodes(nat?) : pnode*
+dec $generator_value_present(pgenerator) : bool
+dec $generator_loop_capture(pstate, nat, bool) : pstate
+dec $generator_loop_operand(pstate, nat, bool) : poperand
+dec $generator_reference_cleanup(pstate, ptask*) : perrorcall?
+dec $generator_borrowed_take(pstate, nat) : pgeneratorborrowed?
+dec $generator_borrowed_value(pgenerator) : poperand?
+dec $generator_borrowed_drop_value(pgeneratorborrowed?) : pgeneratorborrowed?
+dec $generator_borrowed_readable(pstate, nat, bool) : bool
+dec $generator_borrowed_node_valid(pstate, nat) : bool
 dec $generator_frame(pstate, ptask*) : pframe
 dec $generator_install(pstate, pframe) : pstate
 dec $generator_create(pstate, pfunction) : pstate
@@ -133,7 +148,7 @@ def $ppgenerator_body(P, pcpath, statement*) = $ppstatements(P, pcpath, 0, state
 def $ppgenerator_body(P, pcpath, statement*) = $ppconstant_error(P, $ptascii("Generator return type must be a supertype of Generator, ") ++ $pttypename(P.RETURNS) ++ $ptascii(" given"), P.LOCATION.LINE)
   -- if $generator_statements(statement*)
   -- if P.RETURNS =/= eps /\ ~$generator_return_supertype(P.RETURNS)
-def $ppgenerator_body(P, pcpath, statement*) = $ppunsupported(P, "generator reference yields")
+def $ppgenerator_body(P, pcpath, statement*) = $ppstatements(P[.RETURNS = eps][.RETURNREF = false], pcpath, 0, statement*)
   -- if $generator_statements(statement*)
   -- if P.RETURNS = eps \/ $generator_return_supertype(P.RETURNS)
   -- if P.RETURNREF
@@ -152,6 +167,7 @@ def $ppdispatch(P, pcpath, NExprYield phpType5_key phpType5_value metadata, PPR)
   -- if P.FOLD.FUNCTION = eps
 def $ppdispatch(P, pcpath, NExprYield phpType5_key phpType5_value metadata, PPR) = $ppclearvalue($ppyield_optional($ppyield_optional(P, pcpath ++ [PCFIELD 0], phpType5_key), pcpath ++ [PCFIELD 1], phpType5_value))
   -- if P.FOLD.FUNCTION =/= eps
+  -- if ~$ppgenerator_reference_scope(P, pcpath)
 def $ppdispatch(P, pcpath, NExprYieldFrom expression metadata, PPR) = $ppconstant_error(P, $ptascii("The \"yield\" expression can only be used inside a function"), $nabs($source_line(metadata)))
   -- if P.FOLD.FUNCTION = eps
 def $ppdispatch(P, pcpath, NExprYieldFrom expression metadata, PPR) = $ppclearvalue($ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR))
@@ -184,7 +200,7 @@ def $generator_set(S, n, pgenerator) = S[.OBJECTS = $object_set(S.OBJECTS, n, GE
 def $generator_frame(S, ptask*) = {SILENCES S.SILENCES, LOCALS ($active_table(S)), TODO ptask*, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT}
 def $generator_install(S, pframe) = $set_active_table(S[.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if pframe.LOCALS = (psymboltable)
-def $generator_create(S, pfunction) = $restore_frame(S[.OBJECTS = S.OBJECTS ++ [GENERATOR {FUNCTION pfunction.ORIGIN, FRAME ($generator_frame(S, $function_body_tasks(S, pfunction))), PHASE GENERATOR_FRESH, FIRST false, INDEX $(-1), VALUE eps, KEY eps, RETURN eps, CLOSURE pcallcontext.INSTANCE, DELEGATE eps}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
+def $generator_create(S, pfunction) = $restore_frame(S[.OBJECTS = S.OBJECTS ++ [GENERATOR {FUNCTION pfunction.ORIGIN, FRAME ($generator_frame(S, $function_body_tasks(S, pfunction))), PHASE GENERATOR_FRESH, FIRST false, INDEX $(-1), VALUE eps, REFCELL eps, KEY eps, BORROWED eps, RETURN eps, CLOSURE pcallcontext.INSTANCE, DELEGATE eps}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
   -- if n = |S.OBJECTS|
   -- if S.CURRENT = (pcallcontext)
 rule PhpStep/generator-create: S ~> $generator_create(S, pfunction)
@@ -282,6 +298,7 @@ def $generator_operate_plain(S, pgeneratorop) = $generator_complete($generator_r
   -- if pgeneratorop.NAME =/= "next" \/ pgenerator.PHASE = GENERATOR_CLOSED
   -- if ~(pgeneratorop.NAME <- ["send", "throw"])
   -- if pgeneratorop.NAME =/= "rewind" \/ pgenerator.FIRST
+  -- if ~(pgeneratorop.NAME <- ["current", "key"]) \/ $generator_borrowed_readable(S, pgeneratorop.OBJECT, pgeneratorop.NAME = "key")
 def $generator_complete(S, pgeneratorop) = S -- if pgeneratorop.LOOP = eps
 def $generator_complete(S, pgeneratorop) = $generator_loop_body(S, pgeneratorop)
   -- if pgeneratorop.LOOP =/= eps
@@ -347,6 +364,7 @@ def $generator_key_cv(S, porigin) = false -- otherwise
 def $generator_yield_value(S, porigin, poperand?) = S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 1]), EVAL expression), GENERATOR_YIELD_DONE porigin poperand?] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if ~$generator_reference_active(S) \/ ~$generator_reference_address(expression)
 def $generator_yield_value(S, porigin, poperand?) = S[.TODO = (GENERATOR_YIELD_DONE porigin poperand?) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = ptask :: ptask_tail*
   -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key ABSENT metadata)
@@ -382,7 +400,7 @@ def $generator_index(z, PINT z_key) = z_key -- if $(z_key > z)
 def $generator_index(z, pvalue) = z -- otherwise
 def $generator_yield_line(S, porigin) = $runtime_line(S[.ORIGIN = (porigin)], eps, NExprYield phpType5_key phpType5_value metadata)
   -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key phpType5_value metadata)
-def $generator_suspend(S, porigin, poperand?) = $restore_frame($generator_set(S_key, pgeneratorop.OBJECT, pgenerator[.FRAME = ($generator_frame(S_key, ptask_tail*))][.PHASE = GENERATOR_PAUSED][.DELEGATE = eps][.VALUE = (pvalue)][.KEY = (pvalue_key)][.INDEX = z_index])[.RESULT = KNOWN PNULL][.TODO = eps][.HELD = eps])
+def $generator_suspend(S, porigin, poperand?) = $restore_frame($generator_set(S_key, pgeneratorop.OBJECT, pgenerator[.FRAME = ($generator_frame(S_key, ptask_tail*))][.PHASE = GENERATOR_PAUSED][.DELEGATE = eps][.VALUE = (pvalue)][.KEY = (pvalue_key)][.BORROWED = eps][.INDEX = z_index])[.RESULT = KNOWN PNULL][.TODO = eps][.HELD = eps])
   -- if S.TODO = (GENERATOR_YIELD_STORE porigin poperand?) :: ptask_tail*
   -- if S.FRAMES = pframe :: pframe_tail*
   -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_resumer*
@@ -400,7 +418,7 @@ def $generator_suspend(S, porigin, (poperand)) = S_key
   -- if S_value.COMPLETION = NORMAL
   -- if S_key = $resolve_at(S_value, poperand, $generator_yield_line(S, porigin))
   -- if S_key.COMPLETION =/= NORMAL
-rule PhpStep/generator-yield-release: S ~> $generator_set(S[.TODO = (GENERATOR_YIELD_STORE porigin poperand?) :: ptask_tail*], pgeneratorop.OBJECT, pgenerator[.VALUE = eps][.KEY = eps][.DELEGATE = eps])
+rule PhpStep/generator-yield-release: S ~> $generator_set(S[.TODO = (GENERATOR_YIELD_STORE porigin poperand?) :: ptask_tail*], pgeneratorop.OBJECT, pgenerator[.BORROWED = $generator_borrowed_take(S, pgeneratorop.OBJECT)][.VALUE = eps][.REFCELL = eps][.KEY = eps][.DELEGATE = eps])
   -- if S.TODO = (GENERATOR_YIELD_DONE porigin poperand?) :: ptask_tail*
   -- if $generator_active(S)
   -- if S.FRAMES = pframe :: pframe_tail*
@@ -411,6 +429,7 @@ rule PhpStep/generator-yield-suspend: S ~> $generator_suspend(S, porigin, popera
   -- if $generator_active(S)
   -- if ~$generator_close_active(S)
   -- if ~$generator_yield_key_pending(S)
+  -- if ~$generator_reference_active(S)
 def $generator_yield_key_pending(S) = false -- otherwise
 
 def $generator_values_nodes(eps) = eps
@@ -419,7 +438,7 @@ def $generator_frame_nodes(eps) = eps
 def $generator_frame_nodes((pframe)) = $frames_roots([pframe])
 def $generator_closed_closure(pgenerator) = $instance_roots(pgenerator.CLOSURE) -- if pgenerator.PHASE = GENERATOR_CLOSED
 def $generator_closed_closure(pgenerator) = eps -- if pgenerator.PHASE =/= GENERATOR_CLOSED
-def $node_children(S, HOBJECT n) = $generator_frame_nodes(pgenerator.FRAME) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_closed_closure(pgenerator) ++ $generator_from_nodes(pgenerator.DELEGATE)
+def $node_children(S, HOBJECT n) = $generator_frame_nodes(pgenerator.FRAME) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_closed_closure(pgenerator) ++ $generator_from_nodes(pgenerator.DELEGATE)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $object_name(S, n) = $ptascii("Generator") -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $generator_arguments_nodes(eps) = eps
@@ -527,12 +546,14 @@ def $foreach_start(S, statement, plocation, true, z) = $throw_scalar(S, "Excepti
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
-def $foreach_start(S, statement, plocation, false, z) = $generator_operate(S[.TODO = ptask_tail*][.ITERATORS = S.ITERATORS ++ [GENERATORITER n_iterator n]][.NEXTITER = $(n_iterator + 1)], {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR n_iterator, STATEMENT statement}), ADVANCE false, ARGUMENTS eps})
+  -- if ~$generator_reference_producer(S, pgenerator)
+def $foreach_start(S, statement, plocation, b, z) = $generator_operate(S[.TODO = ptask_tail*][.ITERATORS = S.ITERATORS ++ [GENERATORITER n_iterator n]][.NEXTITER = $(n_iterator + 1)], {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR n_iterator, STATEMENT statement}), ADVANCE false, ARGUMENTS eps})
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
+  -- if ~b \/ $generator_reference_producer(S, pgenerator)
   -- if n_iterator = S.NEXTITER
 def $generator_loop_remove(piterator*, eps) = piterator*
 def $generator_loop_remove(piterator*, (pgeneratorloop)) = $iterator_remove(piterator*, pgeneratorloop.ITERATOR)
@@ -541,14 +562,13 @@ def $generator_key_tasks(S, expression, pvalue) = [$at_task($origin_child(S.ORIG
 def $generator_loop_body(S, pgeneratorop) = S[.ITERATORS = $generator_loop_remove(S.ITERATORS, pgeneratorop.LOOP)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
-def $generator_loop_body(S, pgeneratorop) = S_loop[.TODO = [$foreach_value_task(S_loop, expression_value, KNOWN pvalue, false, pgeneratorop.LINE)] ++ $generator_key_tasks(S_loop, phpType5_key, pvalue_key) ++ $statement_tasks(statement*, $origin_child((pgeneratorop.SITE), [PCFIELD 4]), 0) ++ [GENERATOR_NEXT pgeneratorop[.NAME = "next"][.ADVANCE = false]] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $generator_loop_body(S, pgeneratorop) = S_loop[.TODO = [$foreach_value_task(S_loop, expression_value, $generator_loop_operand(S_loop, pgeneratorop.OBJECT, b_ref), b_ref, pgeneratorop.LINE)] ++ $generator_key_tasks(S_loop, phpType5_key, pvalue_key) ++ $statement_tasks(statement*, $origin_child((pgeneratorop.SITE), [PCFIELD 4]), 0) ++ [GENERATOR_NEXT pgeneratorop[.NAME = "next"][.ADVANCE = false]] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pgeneratorop.LOOP = (pgeneratorloop)
   -- if pgeneratorloop.STATEMENT = NStmtForeach expression_iterable phpType5_key (BOOLEAN b_ref) expression_value (SEQUENCE statement*) (BOOLEAN false) metadata
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING]
-  -- if pvalue = $generator_cached_value(S, pgeneratorop.OBJECT, false)
   -- if pvalue_key = $generator_cached_value(S, pgeneratorop.OBJECT, true)
-  -- if S_loop = S[.ORIGIN = (pgeneratorop.SITE)]
+  -- if S_loop = $generator_loop_capture(S[.ORIGIN = (pgeneratorop.SITE)], pgeneratorop.OBJECT, b_ref)
 rule PhpStep/generator-next: S ~> $generator_operate(S[.TODO = ptask_tail*][.ORIGIN = (pgeneratorop.SITE)], pgeneratorop)
   -- if S.TODO = (GENERATOR_NEXT pgeneratorop) :: ptask_tail*
 def $task_nodes(GENERATOR_NEXT pgeneratorop) = $generator_operation_nodes(pgeneratorop)
@@ -647,7 +667,8 @@ def $generator_operation_site(S, pgeneratorop) = ($generator_source_method(S, pg
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
 def $generator_operation_site(S, pgeneratorop) = $generator_loop_site(S, pgeneratorop, pgeneratorloop)
   -- if pgeneratorop.LOOP = (pgeneratorloop)
-def $generator_loop_site(S, pgeneratorop, {ITERATOR n, STATEMENT (NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata)}) = ($origin_node(S.SOURCES, pgeneratorop.SITE) = (NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) /\ ~$ppforeach_references(expression_value, b_ref) /\ $goto_foreach_line_valid(S, NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata, pgeneratorop.SITE, pgeneratorop.LINE) /\ (pgeneratorop.NAME <- ["rewind", "next"]) /\ $(n < S.NEXTITER) /\ $iterator_lookup(S.ITERATORS, n) = (GENERATORITER n pgeneratorop.OBJECT) /\ $useriter_cursor_count(S.ITERATORS, n) = 1)
+def $generator_loop_site(S, pgeneratorop, {ITERATOR n, STATEMENT (NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata)}) = ($origin_node(S.SOURCES, pgeneratorop.SITE) = (NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) /\ (~$ppforeach_references(expression_value, b_ref) \/ (b_ref /\ $generator_reference_producer(S, pgenerator))) /\ $goto_foreach_line_valid(S, NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata, pgeneratorop.SITE, pgeneratorop.LINE) /\ (pgeneratorop.NAME <- ["rewind", "next"]) /\ $(n < S.NEXTITER) /\ $iterator_lookup(S.ITERATORS, n) = (GENERATORITER n pgeneratorop.OBJECT) /\ $useriter_cursor_count(S.ITERATORS, n) = 1)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
 def $generator_loop_site(S, pgeneratorop, pgeneratorloop) = false -- otherwise
 def $method_source_spelling(NIdentifier (BYTES text) metadata) = $base64(text)
 def $method_source_spelling(expression) = eps
@@ -775,7 +796,7 @@ def $generator_record_valid(S, pgenerator) = true
   -- if pgenerator.PHASE = GENERATOR_FRESH
   -- if pgenerator.DELEGATE = eps
   -- if ~pgenerator.FIRST /\ pgenerator.INDEX = $(-1)
-  -- if pgenerator.VALUE = eps /\ pgenerator.KEY = eps /\ pgenerator.RETURN = eps
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps /\ pgenerator.KEY = eps /\ pgenerator.RETURN = eps
   -- if pgenerator.FRAME = (pframe)
   -- if $generator_frame_valid(S, pgenerator, pframe)
   -- if pframe.TODO = $function_body_tasks(S, pfunction)
@@ -786,7 +807,7 @@ def $generator_record_valid(S, pgenerator) = true
   -- if $generator_closure_valid(S, pgenerator)
   -- if pgenerator.PHASE = GENERATOR_PAUSED
   -- if pgenerator.DELEGATE = eps
-  -- if pgenerator.VALUE =/= eps /\ pgenerator.KEY =/= eps /\ pgenerator.RETURN = eps
+  -- if $generator_value_present(pgenerator) /\ pgenerator.KEY =/= eps /\ pgenerator.RETURN = eps
   -- if pgenerator.FRAME = (pframe)
   -- if pframe.ORIGIN = (porigin)
   -- if S_frame = $generator_frame_scope(S, pframe)
@@ -811,7 +832,7 @@ def $generator_record_valid(S, pgenerator) = true
 def $generator_record_valid(S, pgenerator) = false -- otherwise
 def $generator_objects_valid(S, eps) = true
 def $generator_objects_valid(S, pnode :: pnode_tail*) = ($generator_node_valid(S, pnode) /\ $generator_objects_valid(S, pnode_tail*))
-def $generator_node_valid(S, HOBJECT n) = ($generator_object_valid(S, S.OBJECTS[n]) /\ $generator_yield_key_node_valid(S, n))
+def $generator_node_valid(S, HOBJECT n) = ($generator_object_valid(S, S.OBJECTS[n]) /\ $generator_reference_valid(S, S.OBJECTS[n]) /\ $generator_borrowed_node_valid(S, n) /\ $generator_yield_key_node_valid(S, n))
 def $generator_yield_key_node_valid(S, n) = true -- otherwise
 def $generator_node_valid(S, HARRAY n) = true
 def $generator_node_valid(S, HCELL n) = true

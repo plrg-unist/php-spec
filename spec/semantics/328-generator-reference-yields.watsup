@@ -1,0 +1,387 @@
+;; A reference producer owns the captured cell, independently of its old name.
+;; API reads dereference it; foreach-reference binds that same cell.
+dec $ppgenerator_reference_owner(pcnode?) : bool?
+dec $ppgenerator_reference_value(ppstate, pcpath, phpType5) : ppstate
+dec $generator_reference_cv(expression) : bool
+dec $generator_reference_snapshot(expression) : bool
+dec $generator_reference_fetch_valid(pstate, porigin, poperand?) : bool
+dec $generator_reference_operand(pstate, porigin, poperand) : pstate
+dec $generator_reference_notice(pstate, porigin, poperand) : bool
+dec $generator_reference_payload_valid(pstate, porigin?, pvalue) : bool
+dec $generator_reference_key_valid(pstate, porigin, poperand?) : bool
+dec $generator_reference_message() : preqbytes
+dec $generator_reference_notice_valid(pstate, nat, porigin, poperand?, pvalue, int) : bool
+dec $generator_reference_notice_ids(ptask) : nat*
+dec $generator_reference_notice_tasks(ptask*) : nat*
+dec $generator_reference_notice_frames(pframe*) : nat*
+dec $generator_reference_cache(pstate, nat) : pstate
+dec $generator_reference_suspend(pstate, nat, porigin, poperand?) : pstate
+dec $generator_reference_finish(pstate, nat, porigin, poperand?, poperand, int) : pstate
+dec $generator_borrowed_scope(pstate, nat) : bool
+dec $generator_borrowed_frames(pstate, nat, pframe*) : bool
+dec $generator_borrowed_tasks(pstate, nat, ptask*) : bool
+dec $generator_borrowed_task(pstate, nat, ptask) : bool
+dec $generator_borrowed_operand_live(pstate, poperand) : bool
+
+;; Source ownership supplies the producer flag while body returns compile as
+;; ordinary Generator payloads. Nested declarations stop this scope search.
+def $ppgenerator_reference_owner((NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)) = (b /\ $generator_statements(statement*))
+def $ppgenerator_reference_owner((NStmtClassMethod phpType14 phpType24 (BOOLEAN b) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)) = (b /\ $generator_statements(statement*))
+def $ppgenerator_reference_owner((NExprClosure phpType14 phpType4_static (BOOLEAN b) phpType16 phpType21 phpType18 (SEQUENCE statement*) metadata)) = (b /\ $generator_statements(statement*))
+def $ppgenerator_reference_owner((NExprArrowFunction phpType14 phpType4_static (BOOLEAN b) phpType16 phpType18 expression metadata)) = (b /\ $generator_syntax(expression))
+def $ppgenerator_reference_owner(pcnode?) = eps -- otherwise
+def $ppgenerator_reference_scope(P, pcpath) = b
+  -- if $ppgenerator_reference_owner($occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath)) = (b)
+def $ppgenerator_reference_scope(P, pcpath) = $ppgenerator_reference_scope(P, pcpath[0:n])
+  -- if $ppgenerator_reference_owner($occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath)) = eps
+  -- if |pcpath| > 0
+  -- if n = $nabs($(|pcpath| - 1))
+def $ppgenerator_reference_scope(P, eps) = false
+  -- if $ppgenerator_reference_owner($occurrence_node(P.FOLD.SOURCE.OCCURRENCES, eps)) = eps
+def $ppgenerator_reference_value(P, pcpath, ABSENT) = $ppclearvalue(P)
+def $ppgenerator_reference_value(P, pcpath, expression) = $ppconstant_error(P, $ptascii("Cannot take reference of a nullsafe chain"), $nabs($expression_line(expression)))
+  -- if $ppreturn_variable(expression) /\ $ppnullsafe(expression)
+def $ppgenerator_reference_value(P, pcpath, expression) = $ppexpr(P, pcpath, expression, PPW)
+  -- if $ppreturn_variable(expression) /\ ~$ppnullsafe(expression)
+  -- if ~$generator_reference_snapshot(expression)
+def $ppgenerator_reference_value(P, pcpath, expression) = $ppexpr(P, pcpath, expression, PPR)
+  -- if ~$ppreturn_variable(expression) \/ $generator_reference_snapshot(expression)
+def $ppdispatch(P, pcpath, NExprYield phpType5_key phpType5_value metadata, PPR) = $ppclearvalue($ppgenerator_reference_value($ppyield_optional(P, pcpath ++ [PCFIELD 0], phpType5_key), pcpath ++ [PCFIELD 1], phpType5_value))
+  -- if P.FOLD.FUNCTION =/= eps
+  -- if $ppgenerator_reference_scope(P, pcpath)
+
+def $generator_reference_producer(S, pgenerator) = pfunction.SIGNATURE.BYREF
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+def $generator_reference_producer(S, pgenerator) = false -- otherwise
+def $generator_reference_active(S) = pfunction.SIGNATURE.BYREF
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
+  -- if ~$eval_top_level(S)
+def $generator_reference_active(S) = false -- otherwise
+def $generator_reference_snapshot(NExprVariable phpType32 metadata) = ($direct_this(phpType32) \/ $ppglobals_base(NExprVariable phpType32 metadata))
+def $generator_reference_snapshot(expression) = false -- otherwise
+def $generator_reference_cv(NExprVariable phpType32 metadata) = (~$this_name(n*) /\ ~$psautoglobal(n*))
+  -- if $cv_name(phpType32) = (n*)
+def $generator_reference_cv(expression) = false -- otherwise
+def $generator_reference_address(expression) = ($call_reference_variable(expression) /\ ~$generator_reference_cv(expression) /\ ~$generator_reference_snapshot(expression))
+
+;; Non-CV writable addresses execute before YIELD. The captured cell replaces
+;; the receiver/base owner before a later key callback can retire that receiver.
+def $generator_yield_value(S, porigin, poperand?) = S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 1]), DIM_PREP expression), GENERATOR_YIELD_REF_FETCH porigin poperand?] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if $generator_reference_active(S) /\ $generator_reference_address(expression)
+def $generator_reference_fetch_valid(S, porigin, poperand?) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $generator_reference_active(S)
+  -- if $generator_yield_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if $generator_reference_address(expression)
+  -- if $generator_reference_key_valid(S, porigin, poperand?)
+def $generator_reference_fetch_valid(S, porigin, poperand?) = false -- otherwise
+rule PhpStep/generator-reference-fetch: S ~> S_cell[.TODO = (GENERATOR_YIELD_DONE porigin poperand?) :: ptask_tail*][.ORIGIN = (porigin)][.HELD = S.HELD][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GENERATOR_YIELD_REF_FETCH porigin poperand?) :: ptask_tail*
+  -- if $generator_reference_fetch_valid(S, porigin, poperand?)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if S_value = $hold_task_inputs(S)[.ORIGIN = $origin_child((porigin), [PCFIELD 1])]
+  -- if S_cell = $call_location_reference($call_reference_base(S_value, S.BASE, $runtime_line(S_value, eps, expression)))
+def $call_task_valid(S, GENERATOR_YIELD_REF_FETCH porigin poperand?) = $generator_reference_fetch_valid(S, porigin, poperand?)
+def $task_nodes(GENERATOR_YIELD_REF_FETCH porigin poperand?) = $generator_optional_operand_nodes(poperand?)
+def $generator_internal_task(GENERATOR_YIELD_REF_FETCH porigin poperand?) = true
+
+;; CV write acquisition is inside YIELD, after the previous cache was released.
+;; Bare and nonreferenceable operands keep values until foreach needs a wrapper.
+def $generator_reference_operand(S, porigin, poperand) = $call_location_reference($call_reference_base(S, BASE_VALUE poperand, $generator_yield_line(S, porigin)))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if $generator_reference_cv(expression)
+def $generator_reference_operand(S, porigin, REFERENCE n) = S[.RESULT = REFERENCE n]
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if ~$generator_reference_cv(expression)
+def $generator_reference_operand(S, porigin, KNOWN pvalue) = $call_fresh_reference(S, pvalue)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if ~$generator_reference_cv(expression)
+  -- if ~$generator_reference_notice(S, porigin, KNOWN pvalue)
+def $generator_reference_operand(S, porigin, poperand) = S[.RESULT = poperand]
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key ABSENT metadata)
+def $generator_reference_notice(S, porigin, poperand) = false
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key ABSENT metadata)
+def $generator_reference_notice(S, porigin, poperand) = ~$reference_operand(poperand)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if $ppreturn_call(expression)
+def $generator_reference_notice(S, porigin, poperand) = false
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if ~$ppreturn_call(expression)
+  -- if $ppreturn_variable(expression)
+def $generator_reference_notice(S, porigin, poperand) = (~$ppsend_var(expression) \/ $arginfo_tmp_origin(S, $origin_child((porigin), [PCFIELD 1])))
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if ~$ppreturn_call(expression) /\ ~$ppreturn_variable(expression)
+def $generator_reference_message() = $ptascii("Only variable references should be yielded by reference")
+def $generator_reference_payload_valid(S, (porigin), pvalue) = true
+  -- if $compiled_read(S, porigin) = eps \/ $compiled_read(S, porigin) = (pvalue)
+  -- if pnode* = $value_nodes(pvalue)
+  -- if (pnode <- S.ALLOCATIONS)*
+def $generator_reference_payload_valid(S, porigin?, pvalue) = false -- otherwise
+def $generator_reference_key_valid(S, porigin, (KNOWN pvalue)) = ($generator_yield_read_key_source(S, porigin, (KNOWN pvalue)) /\ $generator_reference_payload_valid(S, $origin_child((porigin), [PCFIELD 0]), pvalue))
+def $generator_reference_key_valid(S, porigin, eps) = $generator_yield_read_key_source(S, porigin, eps)
+def $generator_reference_key_valid(S, porigin, (VARIABLE n_name* z)) = $generator_yield_read_key_source(S, porigin, (VARIABLE n_name* z))
+def $generator_reference_key_valid(S, porigin, poperand?) = false -- otherwise
+
+def $generator_reference_cache(S, n) = $generator_set(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pgenerator[.VALUE = eps][.REFCELL = (n_cell)][.BORROWED = $generator_borrowed_drop_value(pgenerator.BORROWED)])
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if S.RESULT = REFERENCE n_cell
+def $generator_reference_cache(S, n) = $generator_set(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pgenerator[.VALUE = (pvalue)][.REFCELL = eps][.BORROWED = $generator_borrowed_drop_value(pgenerator.BORROWED)])
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if S.RESULT = KNOWN pvalue
+def $generator_reference_suspend(S, n, porigin, poperand?) = $restore_frame($generator_set(S_key, n, pgenerator[.FRAME = ($generator_frame(S_key, ptask_tail*))][.PHASE = GENERATOR_PAUSED][.KEY = (pvalue_key)][.BORROWED = eps][.INDEX = z_index])[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if (S_key, pvalue_key, z_index) = $generator_yield_key(S, pgenerator, poperand?, $generator_yield_line(S, porigin))
+  -- if S_key.COMPLETION = NORMAL
+def $generator_reference_suspend(S, n, porigin, (poperand)) = S_key
+  -- if S_key = $resolve_at(S, poperand, $generator_yield_line(S, porigin))
+  -- if S_key.COMPLETION =/= NORMAL
+def $generator_reference_finish(S, n, porigin, (poperand), poperand_value, z) = $generator_reference_cache(S[.RESULT = poperand_value], n)[.TODO = (GENERATOR_YIELD_KEY n porigin z) :: ptask_tail*][.RESULT = poperand]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $generator_yield_key_operand(S, porigin) = (poperand)
+  -- if $error_missing_operand(S, poperand)
+def $generator_reference_finish(S, n, porigin, poperand?, poperand_value, z) = $generator_reference_suspend($generator_reference_cache(S[.RESULT = poperand_value], n), n, porigin, poperand?)
+  -- if ~$error_missing_operand(S, $generator_optional_operand(poperand?))
+rule PhpStep/generator-reference-yield: S ~> $generator_reference_finish(S_cell[.HELD = S.HELD][.TODO = S.TODO], pgeneratorop.OBJECT, porigin, poperand?, S_cell.RESULT, $generator_yield_line(S, porigin))
+  -- if S.TODO = (GENERATOR_YIELD_STORE porigin poperand?) :: ptask_tail*
+  -- if $generator_active(S) /\ ~$generator_close_active(S) /\ $generator_reference_active(S)
+  -- if ~$generator_reference_notice(S, porigin, S.RESULT)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_resumer*
+  -- if S_cell = $generator_reference_operand($hold_task_inputs(S), porigin, S.RESULT)
+  -- if S_cell.COMPLETION = NORMAL
+rule PhpStep/generator-reference-yield-abrupt: S ~> S_cell[.HELD = S.HELD][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GENERATOR_YIELD_STORE porigin poperand?) :: ptask_tail*
+  -- if $generator_active(S) /\ ~$generator_close_active(S) /\ $generator_reference_active(S)
+  -- if ~$generator_reference_notice(S, porigin, S.RESULT)
+  -- if S_cell = $generator_reference_operand($hold_task_inputs(S), porigin, S.RESULT)
+  -- if S_cell.COMPLETION =/= NORMAL
+
+;; Notice resumes with its captured operand even if the callback replaces names.
+;; A throwing callback still installs VALUE/KEY before resumer exception handling.
+rule PhpStep/generator-reference-notice: S ~> $error_dispatch(S_value[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 8, $generator_reference_message(), z, DIAGNOSTIC "Notice" $generator_reference_message() z, GENERATOR_YIELD_REF_NOTICE pgeneratorop.OBJECT porigin poperand? pvalue z)
+  -- if S.TODO = (GENERATOR_YIELD_STORE porigin poperand?) :: ptask_tail*
+  -- if $generator_active(S) /\ ~$generator_close_active(S) /\ $generator_reference_active(S)
+  -- if $generator_reference_notice(S, porigin, S.RESULT)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_resumer*
+  -- if z = $generator_yield_line(S, porigin)
+  -- if S_value = $resolve_at(S, S.RESULT, z)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN pvalue
+def $generator_reference_notice_valid(S, n, porigin, poperand?, pvalue, z) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $generator_active(S) /\ ~$generator_close_active(S) /\ $generator_reference_active(S)
+  -- if $generator_yield_site(S, porigin)
+  -- if $generator_reference_key_valid(S, porigin, poperand?)
+  -- if $generator_reference_notice(S, porigin, KNOWN pvalue)
+  -- if $generator_reference_payload_valid(S, $origin_child((porigin), [PCFIELD 1]), pvalue)
+  -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if z = $generator_yield_line(S, porigin)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask_resumer*
+  -- if pgeneratorop.OBJECT = n
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps /\ pgenerator.KEY = eps /\ pgenerator.DELEGATE = eps
+  -- if $generator_id_count($generator_reference_notice_tasks(S.TODO) ++ $generator_reference_notice_frames(S.FRAMES), n) = 1
+def $generator_reference_notice_valid(S, n, porigin, poperand?, pvalue, z) = false -- otherwise
+def $generator_reference_notice_ids(GENERATOR_YIELD_REF_NOTICE n porigin poperand? pvalue z) = [n]
+def $generator_reference_notice_ids(ERROR_HANDLER_INVOKE perrorcall) = $generator_reference_notice_ids(perrorcall.RESUME)
+def $generator_reference_notice_ids(ERROR_HANDLER_RESULT perrorcall) = $generator_reference_notice_ids(perrorcall.RESUME)
+def $generator_reference_notice_ids(ERROR_HANDLER_CLEAN perrorcall) = $generator_reference_notice_ids(perrorcall.RESUME)
+def $generator_reference_notice_ids(AT porigin ptask) = $generator_reference_notice_ids(ptask)
+def $generator_reference_notice_ids(CHOOSE ptask_true* ptask_false* z) = $generator_reference_notice_tasks(ptask_true*) ++ $generator_reference_notice_tasks(ptask_false*)
+def $generator_reference_notice_ids(ptask) = eps -- otherwise
+def $generator_reference_notice_tasks(eps) = eps
+def $generator_reference_notice_tasks(ptask :: ptask_tail*) = $generator_reference_notice_ids(ptask) ++ $generator_reference_notice_tasks(ptask_tail*)
+def $generator_reference_notice_frames(eps) = eps
+def $generator_reference_notice_frames(pframe :: pframe_tail*) = $generator_reference_notice_tasks(pframe.TODO) ++ $generator_reference_notice_frames(pframe_tail*)
+def $call_task_valid(S, GENERATOR_YIELD_REF_NOTICE n porigin poperand? pvalue z) = $generator_reference_notice_valid(S, n, porigin, poperand?, pvalue, z)
+def $task_nodes(GENERATOR_YIELD_REF_NOTICE n porigin poperand? pvalue z) = $generator_optional_operand_nodes(poperand?) ++ $value_nodes(pvalue)
+def $generator_internal_task(GENERATOR_YIELD_REF_NOTICE n porigin poperand? pvalue z) = true
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = GENERATOR_YIELD_REF_NOTICE n porigin poperand? pvalue z
+  -- if perrorcall.SITE = porigin
+  -- if $generator_reference_notice_valid(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, porigin, poperand?, pvalue, z)
+  -- if perrorcall.LEVEL = 8 /\ perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $generator_reference_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" $generator_reference_message() z
+rule PhpStep/generator-reference-notice-result: S ~> $generator_reference_finish(S, n, porigin, poperand?, KNOWN pvalue, z)
+  -- if S.TODO = (GENERATOR_YIELD_REF_NOTICE n porigin poperand? pvalue z) :: ptask_tail*
+  -- if $generator_reference_notice_valid(S, n, porigin, poperand?, pvalue, z)
+def $error_read_discard(S, GENERATOR_YIELD_REF_NOTICE n porigin poperand? pvalue z) = $generator_yield_warning_throw(S_cached, n_throwable)
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if (S_key, pvalue_key, z_index) = $generator_yield_throw_key(S, pgenerator, poperand?, z)
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_cached = $generator_set(S_key[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pgenerator[.VALUE = (pvalue)][.REFCELL = eps][.KEY = (pvalue_key)][.BORROWED = eps][.INDEX = z_index])
+
+;; A callback retval is released while its raw handler remains disabled. Only
+;; the actual release/operation pair may precede this authenticated carrier.
+def $generator_reference_cleanup(S, (ERROR_HANDLER_CLEAN perrorcall) :: ptask*) = (perrorcall)
+  -- if $error_cleanup_valid(S, perrorcall)
+def $generator_reference_cleanup(S, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (ERROR_HANDLER_CLEAN perrorcall) :: ptask*) = (perrorcall)
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if pdestructionoperation.CLEANUP = (pdestructioncleanup)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ERROR_HANDLER_RESULT perrorcall
+  -- if $error_cleanup_valid(S, perrorcall)
+def $generator_reference_cleanup(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = (perrorcall)
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $generator_reference_cleanup(S, ptask*) = (perrorcall)
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $generator_reference_cleanup(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = (perrorcall)
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if $generator_reference_cleanup(S, ptask*) = (perrorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $generator_reference_cleanup(S, (DESTRUCTOR_ENTER pdestructorcall) :: ptask*) = (perrorcall)
+  -- if $destructor_enter_valid(S, pdestructorcall)
+  -- if $generator_reference_cleanup(S, ptask*) = (perrorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
+def $generator_reference_cleanup(S, ptask*) = eps -- otherwise
+def $generator_yield_key_task_ids(ERROR_HANDLER_CLEAN perrorcall) = $generator_yield_key_task_ids(perrorcall.RESUME)
+def $generator_yield_key_cache_task(S, pgenerator, ERROR_HANDLER_CLEAN perrorcall) = $generator_yield_key_cache_task(S, pgenerator, perrorcall.RESUME)
+  -- if $error_cleanup_valid(S, perrorcall)
+def $generator_yield_key_cache_scope(S, pgenerator) = $generator_yield_key_cache_task(S, pgenerator, ERROR_HANDLER_CLEAN perrorcall)
+  -- if $generator_reference_cleanup(S, S.TODO) = (perrorcall)
+
+def $generator_value_present(pgenerator) = (pgenerator.VALUE =/= eps \/ pgenerator.REFCELL =/= eps)
+def $generator_reference_nodes(eps) = eps
+def $generator_reference_nodes((n)) = [HCELL n]
+def $generator_reference_valid(S, GENERATOR pgenerator) = (~$generator_reference_producer(S, pgenerator) \/ pgenerator.DELEGATE = eps)
+  -- if pgenerator.REFCELL = eps
+def $generator_reference_valid(S, GENERATOR pgenerator) = ($generator_reference_producer(S, pgenerator) /\ pgenerator.VALUE = eps /\ pgenerator.DELEGATE = eps /\ $call_reference_operand_valid(S, REFERENCE n))
+  -- if pgenerator.REFCELL = (n)
+def $generator_reference_valid(S, pobject) = true -- otherwise
+def $generator_from_raw(S, n, n_depth) = (REFERENCE n_cell)
+  -- if $(n_depth > 0)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if ~$generator_from_cache(S, pgenerator.DELEGATE)
+  -- if pgenerator.REFCELL = (n_cell)
+def $generator_loop_capture(S, n, false) = S
+def $generator_loop_capture(S, n, true) = S
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.REFCELL =/= eps
+def $generator_loop_capture(S, n, true) = $generator_reference_cache($call_fresh_reference(S, pvalue), n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.REFCELL = eps
+  -- if pgenerator.VALUE = (pvalue)
+def $generator_loop_operand(S, n, false) = KNOWN $generator_cached_value(S, n, false)
+def $generator_loop_operand(S, n, true) = REFERENCE n_cell
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.REFCELL = (n_cell)
+
+;; zval_ptr_dtor drops old cache owners without overwriting their bits. This
+;; readback metadata owns nothing; VALUE and KEY are overwritten separately.
+def $generator_borrowed_take(S, n) = ({VALUE poperand?, KEY pgenerator.KEY})
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if poperand? = $generator_from_raw(S, n, $(|S.OBJECTS| + 1))
+  -- if poperand? =/= eps \/ pgenerator.KEY =/= eps
+def $generator_borrowed_take(S, n) = eps -- otherwise
+def $generator_borrowed_value(pgenerator) = pgeneratorborrowed.VALUE
+  -- if pgenerator.BORROWED = (pgeneratorborrowed)
+def $generator_borrowed_value(pgenerator) = eps -- if pgenerator.BORROWED = eps
+def $generator_borrowed_drop_value(eps) = eps
+def $generator_borrowed_drop_value((pgeneratorborrowed)) = eps -- if pgeneratorborrowed.KEY = eps
+def $generator_borrowed_drop_value((pgeneratorborrowed)) = (pgeneratorborrowed[.VALUE = eps])
+  -- if pgeneratorborrowed.KEY =/= eps
+def $generator_from_raw(S, n, n_depth) = (poperand)
+  -- if $(n_depth > 0)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if ~$generator_from_cache(S, pgenerator.DELEGATE)
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
+  -- if $generator_borrowed_value(pgenerator) = (poperand)
+def $generator_from_key(S, n, n_depth) = $generator_cache_value(pgeneratorborrowed.KEY)
+  -- if $(n_depth > 0)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if ~$generator_from_generator(S, $generator_from_input_of(pgenerator.DELEGATE))
+  -- if pgenerator.KEY = eps
+  -- if pgenerator.BORROWED = (pgeneratorborrowed)
+def $generator_borrowed_task(S, n, GENERATOR_YIELD_STORE porigin poperand?) = (S.ORIGIN = (porigin) /\ $generator_yield_site(S, porigin) /\ $generator_yield_read_key_source(S, porigin, poperand?))
+def $generator_borrowed_task(S, n, GENERATOR_YIELD_KEY n porigin z) = ($generator_yield_key_read_valid(S, n, porigin, z) /\ $generator_yield_key_input_valid(S, n, porigin))
+def $generator_borrowed_task(S, n, GENERATOR_YIELD_REF_NOTICE n porigin poperand? pvalue z) = $generator_reference_notice_valid(S, n, porigin, poperand?, pvalue, z)
+def $generator_borrowed_task(S, n, ERROR_READ_RESULT perrorread) = $generator_borrowed_task(S[.RESULT = perrorread.RESULT][.BASE = perrorread.BASE], n, perrorread.TASK)
+  -- if $error_read_valid(S, perrorread)
+def $generator_borrowed_task(S, n, ERROR_HANDLER_INVOKE perrorcall) = $generator_borrowed_task(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, perrorcall.RESUME)
+  -- if $error_call_valid(S, perrorcall)
+def $generator_borrowed_task(S, n, ERROR_HANDLER_RESULT perrorcall) = $generator_borrowed_task(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, perrorcall.RESUME)
+  -- if $error_call_valid(S, perrorcall)
+def $generator_borrowed_task(S, n, ERROR_HANDLER_CLEAN perrorcall) = $generator_borrowed_task(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, perrorcall.RESUME)
+  -- if $error_cleanup_valid(S, perrorcall)
+def $generator_borrowed_task(S, n, ptask) = false -- otherwise
+def $generator_borrowed_tasks(S, n, ptask :: ptask*) = true
+  -- if $generator_borrowed_task(S, n, ptask)
+def $generator_borrowed_tasks(S, n, (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (GENERATOR_YIELD_STORE porigin poperand?) :: ptask*) = true
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = GENERATOR_YIELD_DONE porigin poperand?
+  -- if pdestructionoperation.CLEANUP = eps
+  -- if $generator_borrowed_task(S, n, GENERATOR_YIELD_STORE porigin poperand?)
+def $generator_borrowed_tasks(S, n, ptask*) = true
+  -- if $generator_reference_cleanup(S, ptask*) = (perrorcall)
+  -- if $generator_borrowed_task(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, perrorcall.RESUME)
+def $generator_borrowed_tasks(S, n, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = $generator_borrowed_tasks(S, n, ptask*)
+  -- if $destructor_release_valid(S, pdestructionrelease)
+  -- if $generator_reference_cleanup(S, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = eps
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = GENERATOR_YIELD_DONE porigin poperand?
+def $generator_borrowed_tasks(S, n, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = $generator_borrowed_tasks(S, n, ptask*)
+  -- if $destructor_result_valid(S, pdestructorcall)
+  -- if $generator_reference_cleanup(S, (DESTRUCTOR_RESULT pdestructorcall) :: ptask*) = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = GENERATOR_YIELD_DONE porigin poperand?
+def $generator_borrowed_tasks(S, n, (DESTRUCTOR_ENTER pdestructorcall) :: ptask*) = $generator_borrowed_tasks(S, n, ptask*)
+  -- if $destructor_enter_valid(S, pdestructorcall)
+  -- if $generator_reference_cleanup(S, (DESTRUCTOR_ENTER pdestructorcall) :: ptask*) = eps
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = GENERATOR_YIELD_DONE porigin poperand?
+def $generator_borrowed_tasks(S, n, ptask*) = false -- otherwise
+def $generator_borrowed_scope(S, n) = true
+  -- if $generator_active(S) /\ ~$generator_close_active(S)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (GENERATOR_RESUME pgeneratorop) :: ptask*
+  -- if pgeneratorop.OBJECT = n
+  -- if $generator_borrowed_tasks(S, n, S.TODO)
+def $generator_borrowed_scope(S, n) = false -- otherwise
+def $generator_borrowed_frames(S, n, eps) = false
+def $generator_borrowed_frames(S, n, pframe :: pframe_tail*) = ($generator_borrowed_scope($constant_frame_scope(S, pframe, pframe_tail*), n) \/ $generator_borrowed_frames(S, n, pframe_tail*))
+def $generator_borrowed_node_valid(S, n) = true
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.BORROWED = eps
+def $generator_borrowed_node_valid(S, n) = true
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.BORROWED = (pgeneratorborrowed)
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.FRAME = eps /\ pgenerator.RETURN = eps /\ pgenerator.DELEGATE = eps /\ pgenerator.KEY = eps
+  -- if ~$generator_value_present(pgenerator) \/ pgeneratorborrowed.VALUE = eps
+  -- if pgeneratorborrowed.VALUE =/= eps \/ pgeneratorborrowed.KEY =/= eps
+  -- if $generator_borrowed_scope(S, n) \/ $generator_borrowed_frames(S, n, S.FRAMES)
+def $generator_borrowed_node_valid(S, n) = false -- if $generator_object(S, n) -- otherwise
+def $generator_borrowed_node_valid(S, n) = true -- if ~$generator_object(S, n)
+def $generator_borrowed_operand_live(S, REFERENCE n) = $call_reference_operand_valid(S, REFERENCE n)
+def $generator_borrowed_operand_live(S, KNOWN pvalue) = $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+def $generator_borrowed_operand_live(S, poperand) = false -- otherwise
+def $generator_borrowed_readable(S, n, false) = $generator_borrowed_operand_live(S, poperand)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if ~$generator_value_present(pgenerator)
+  -- if $generator_borrowed_value(pgenerator) = (poperand)
+def $generator_borrowed_readable(S, n, true) = $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.KEY = eps
+  -- if pgenerator.BORROWED = (pgeneratorborrowed)
+  -- if pgeneratorborrowed.KEY = (pvalue)
+def $generator_borrowed_readable(S, n, b) = true -- otherwise
+def $generator_operate_plain(S, pgeneratorop) = S[.COMPLETION = UNSUPPORTED "retired generator cache read outside live storage"]
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if $generator_cache_present(S, pgeneratorop.OBJECT)
+  -- if pgeneratorop.NAME <- ["current", "key"]
+  -- if ~$generator_borrowed_readable(S, pgeneratorop.OBJECT, pgeneratorop.NAME = "key")

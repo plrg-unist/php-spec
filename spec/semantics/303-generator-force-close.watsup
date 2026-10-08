@@ -178,10 +178,10 @@ def $generator_close_tail((GENERATOR_CLOSE_DONE pgenclose) :: ptask*) = true
 def $generator_close_tail((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*) = true
 def $generator_close_tail(ptask*) = false -- otherwise
 
-def $generator_close_children(S, HOBJECT n) = $generator_closed_closure(pgenerator) ++ $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN)
+def $generator_close_children(S, HOBJECT n) = $generator_closed_closure(pgenerator) ++ $generator_optional_operand_nodes($generator_close_current(pgenerator.DELEGATE)) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
-def $generator_close_children(S, HOBJECT n) = $generator_close_frame_nodes(S, pframe) ++ $generator_closed_closure(pgenerator) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_from_nodes(pgenerator.DELEGATE)
+def $generator_close_children(S, HOBJECT n) = $generator_close_frame_nodes(S, pframe) ++ $generator_closed_closure(pgenerator) ++ $generator_values_nodes(pgenerator.VALUE) ++ $generator_reference_nodes(pgenerator.REFCELL) ++ $generator_values_nodes(pgenerator.KEY) ++ $generator_values_nodes(pgenerator.RETURN) ++ $generator_from_nodes(pgenerator.DELEGATE)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_FRESH
   -- if pgenerator.FRAME = (pframe)

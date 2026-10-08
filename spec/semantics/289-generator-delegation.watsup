@@ -137,7 +137,8 @@ def $generator_from_raw(S, n, n_depth) = eps
   -- if $(n_depth > 0)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if ~$generator_from_cache(S, pgenerator.DELEGATE)
-  -- if pgenerator.VALUE = eps
+  -- if pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps
+  -- if $generator_borrowed_value(pgenerator) = eps
 ;; Presence is independent of the cached value being null.
 def $generator_from_cache(S, eps) = false
 def $generator_from_cache(S, (pgeneratorfrom)) = (pgeneratorfrom.CURRENT =/= eps \/ $generator_from_generator(S, pgeneratorfrom.INPUT))
@@ -162,6 +163,7 @@ def $generator_from_key(S, n, n_depth) = $generator_cache_value(pgenerator.KEY)
   -- if $(n_depth > 0)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if ~$generator_from_generator(S, $generator_from_input_of(pgenerator.DELEGATE))
+  -- if pgenerator.KEY =/= eps \/ pgenerator.BORROWED = eps
 def $generator_from_input_of(eps) = eps
 def $generator_from_input_of((pgeneratorfrom)) = pgeneratorfrom.INPUT
 def $generator_cache_present(S, n) = ($generator_from_raw(S, n, $(|S.OBJECTS| + 1)) =/= eps)
@@ -172,7 +174,7 @@ def $generator_cached_value(S, n, false) = PNULL
 def $generator_cached_value(S, n, true) = $generator_from_key(S, n, $(|S.OBJECTS| + 1))
 dec $generator_yield_key_cache_pending(pstate, pgenerator) : bool
 def $generator_yield_key_cache_pending(S, pgenerator) = false -- otherwise
-def $generator_cache_shape(S, pgenerator) = (((pgenerator.VALUE = eps) = (pgenerator.KEY = eps)) \/ $generator_yield_key_cache_pending(S, pgenerator))
+def $generator_cache_shape(S, pgenerator) = ((~$generator_value_present(pgenerator) = (pgenerator.KEY = eps)) \/ $generator_yield_key_cache_pending(S, pgenerator))
   -- if pgenerator.DELEGATE = eps
 def $generator_cache_shape(S, pgenerator) = ($generator_from_code(S, pgenerator, pgeneratorfrom.SITE) /\ $generator_from_cache_valid(S, pgeneratorfrom))
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
