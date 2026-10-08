@@ -529,5 +529,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-residual-dtor-next-internal-old-pending-review-preparation-26",
+    "source": "<?php\n$w=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w;\n  if($this->k===0){$w->resume();}\n  else{Fiber::suspend();}\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);gc_collect_cycles();\nclass D {\n public $s;\n function __destruct(){global $w,$n;echo Fiber::getCurrent()===$w?'D:cached|':'D:other|';throw $n;}\n}\n$t=new Fiber(function(){\n $d=new D;$d->s=$d;unset($d);gc_collect_cycles();\n});\n$t->start();\n$n=new Exception;$o=new Exception;\nclass E {\n public $s;\n function __destruct(){global $w;echo Fiber::getCurrent()===$w?'E:cached|':'E:other|';}\n}\n$u=new Fiber(function()use($o){\n try{throw $o;}\n finally{$e=new E;$e->s=$e;unset($e);gc_collect_cycles();}\n});\ntry{$u->start();}\ncatch(Throwable $c){echo $c===$n?'new|':'bad-final|';echo $c->getPrevious()===$o?'old|':'bad-prior|';}\necho 'END';\n",
+    "source_sha256": "a0c098a7d509ee4feff377a5223c76d55fc4b12f80bb9d1fd4c061cf7162352e",
+    "stdout": "D:cached|E:cached|new|old|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

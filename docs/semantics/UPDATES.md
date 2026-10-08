@@ -96,9 +96,16 @@ forwarding preserve the same destination. Dynamic class expressions resolve once
 before RHS evaluation and retain that class after selector mutation. Temporary
 object selectors retire before the RHS; the selected plain slot/reference and
 typed final result follow the same static store rules. Ordinary scalar concat
-restores its base without creating conversion history. Computed property names,
-keyword scopes entered through Closure/fromCallable or other callable wrappers,
-and registered-handler missing-RHS continuations remain outside this slice.
+restores its base without creating conversion history. Computed static-property
+name CVs are read after eager RHS effects; evaluated name values/reference cells
+retain their earlier selection. Source-bound tasks keep actual evaluated name
+and RHS owners through queued class initialization; CVs remain borrowed. They
+transfer the resolved property
+to the same conversion/store protocol. Property fetches retain their buffered
+opcode line, while initializer failures report the initializer source. Stringable
+property-name callbacks, keyword scopes entered through Closure/fromCallable or
+other callable wrappers, and registered-handler missing-RHS continuations remain
+outside this slice.
 
 All twelve nodes stop constant preparation without traversing their children;
 ordinary compilation then visits the target and RHS in order. Direct/literal

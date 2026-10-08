@@ -1,5 +1,6 @@
-;; Direct named noarg calls emit INIT before ECHO. Selection uses the completed
-;; static name/image, including when operand retirement installs the function.
+;; Direct named calls with no arguments or one ordinary CV emit INIT before
+;; ECHO. Selection uses the completed static name/image, including when operand
+;; retirement installs the function.
 dec $source_emission_noarg_call(pstate, nat, pcpath, expression) : int?
 def $source_emission_noarg_call(S, n, pcpath, NExprFuncCall name (SEQUENCE eps) metadata) = (z)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE eps) metadata)
@@ -12,8 +13,41 @@ def $source_emission_noarg_call(S, n, pcpath, NExprFuncCall name (SEQUENCE eps) 
   -- if $compiled_effects(S, PORIGIN n pcpath) = eps
 def $source_emission_noarg_call(S, n, pcpath, expression) = eps -- otherwise
 
-def $source_echo_emission_origin(S, n, pcpath, expression) = (PORIGIN n pcpath)
+;; INIT also precedes the single ordinary CV's SEND. The argument certificate
+;; describes its later instruction, never its live value before or after SEND.
+dec $source_emission_echo_call(pstate, nat, pcpath, expression) : int?
+def $source_emission_echo_call(S, n, pcpath, expression) = (z)
   -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
+def $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if z = $source_line(metadata_call)
+  -- if pcpath_argument = pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1]
+  -- if $source_emission_cv(S, n, pcpath_argument, NExprVariable (BYTES text_argument) metadata_value)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_argument) = ((z_argument, false))
+  -- if z_argument = $source_line(metadata_value)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_echo_call(S, n, pcpath, expression) = eps -- otherwise
+
+;; DO_CALL restores its own line on the emitted opcode; CG(zend_lineno) stays
+;; at the CV SEND for the following ECHO, including its cast and final release.
+dec $source_emission_echo_line(pstate, nat, pcpath, expression) : int?
+def $source_emission_echo_line(S, n, pcpath, expression) = (z)
+  -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
+def $source_emission_echo_line(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_argument)
+  -- if $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_init)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath, [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (z_argument)
+def $source_emission_echo_line(S, n, pcpath, expression) = eps -- otherwise
+def $echo_expression_line(S, expression) = $constant_runtime_line(S, z)
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $source_emission_echo_line(S, n, pcpath, expression) = (z)
+
+def $source_echo_emission_origin(S, n, pcpath, expression) = (PORIGIN n pcpath)
+  -- if $source_emission_echo_call(S, n, pcpath, expression) = (z)
 
 ;; Replayed publication from this operand destructor has the child's first
 ;; opcode as its historical callsite. Bind that site back to the original new
@@ -43,8 +77,9 @@ def $echo_source_destructor_selection(S, pmethoddesc, porigin_called, PORIGIN n 
   -- if (PDEXIT n PCSCOMPLETE) <- S.DECLARATIONS
   -- if $pcprogram(pcunit.AST) = (NStmtEcho (SEQUENCE (expression :: expression_tail*)) metadata_echo) :: statement_tail*
   -- if pcpath = [PCINDEX 0, PCFIELD 0, PCINDEX 0]
-  -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
-  -- if $echo_emit_source(S, PORIGIN n pcpath, z)
+  -- if $source_emission_echo_call(S, n, pcpath, expression) = (z_init)
+  -- if $source_emission_echo_line(S, n, pcpath, expression) = (z_echo)
+  -- if $echo_emit_source(S, PORIGIN n pcpath, z_echo)
   -- if $echo_source_parent(S, n) = (PORIGIN n_parent pcpath_parent)
   -- if $(n_parent < n)
   -- if $declaration_entry_site(S.DECLARATIONS, n) = (PORIGIN n_parent pcpath_parent)
@@ -66,9 +101,20 @@ def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, 
 dec $echo_call_site_valid(pstate, porigin, int) : bool
 def $echo_call_site_valid(S, PORIGIN n pcpath, z) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
-  -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
+  -- if $source_emission_echo_call(S, n, pcpath, expression) = (z_init)
+  -- if $source_emission_echo_line(S, n, pcpath, expression) = (z)
   -- if $echo_emit_source(S, PORIGIN n pcpath, z)
 def $echo_call_site_valid(S, porigin_site, z) = false -- otherwise
+
+;; An implicit cast uses ECHO's line rather than the named call's INIT line.
+;; Its real pending/entered conversion certificate keeps ordinary calls distinct.
+def $echo_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_site), z) = true
+  -- if $echo_call_site_valid(S, porigin_site, z)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_site)
+def $echo_string_context_line_valid(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin_site)
+  -- if $echo_call_site_valid(S, porigin_site, pcallcontext.LINE)
+  -- if $stringify_context(S, pcallcontext)
 
 ;; ECHO owns its returned TMPVAR or REFERENCE wrapper in addition to the cast
 ;; pin. VARIABLE/BORROWED operands retain the existing borrowed release path.
@@ -102,6 +148,24 @@ def $echo_call_temporary_shape(pechoresult) = (n = pechoresult.OBJECT)
 def $echo_call_temporary_shape(pechoresult) = $echo_call_reference_operand(pechoresult.TEMP) -- otherwise
 dec $echo_call_result_source(pstate, pechoresult) : bool
 def $echo_call_result_source(S, pechoresult) = ($echo_call_site_valid(S, pechoresult.SITE, pechoresult.LINE) /\ $echo_call_temporary_shape(pechoresult))
+
+;; The cast pin and ECHO temporary are released at ECHO's instruction, after
+;; DO_CALL. The consumed object/cell need not remain live to recover that line.
+dec $echo_call_release_line(pstate, ptask) : int?
+def $echo_call_release_line(S, ECHO_CALL_RESULT pechoresult) = (pechoresult.LINE)
+  -- if S.ORIGIN = (pechoresult.SITE)
+  -- if $echo_call_result_source(S, pechoresult)
+def $echo_call_release_line(S, ECHO_CALL_PENDING pechoresult n_text* n_pending) = (pechoresult.LINE)
+  -- if S.ORIGIN = (pechoresult.SITE)
+  -- if $echo_call_result_source(S, pechoresult)
+def $echo_call_release_line(S, STRINGIFY_RESULT n porigin_site z) = (z)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $echo_call_site_valid(S, porigin_site, z)
+def $echo_call_release_line(S, ptask) = eps -- otherwise
+def $destructor_source_line(S) = z
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if $echo_call_release_line(S, pdestructionoperation.SOURCE) = (z)
+
 dec $echo_call_temporary_valid(pstate, pechoresult) : bool
 def $echo_call_temporary_valid(S, pechoresult) = $stringable_instance(S, pechoresult.OBJECT)
   -- if pechoresult.TEMP = KNOWN (POBJECT pechoresult.OBJECT)

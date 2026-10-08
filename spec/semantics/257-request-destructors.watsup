@@ -9,6 +9,8 @@ dec $destructor_selected_frame(pstate) : pdestructionframe?
 dec $destructor_selected_pending(pstate, pdestructionframe?) : nat?
 dec $destructor_trace_suffix(pstate, pcallcontext) : ptraceframe*
 dec $destructor_source_site(pstate) : porigin?
+dec $destructor_source_line(pstate) : int
+def $destructor_source_line(S) = $property_current_line(S) -- otherwise
 dec $destructor_access_scope(pstate) : porigin?
 dec $destructor_boundary_valid(pstate, pdestructorcall) : bool
 dec $destructor_saved_operations(pstate, pdestructorcall*) : pdestructionoperation*
@@ -481,7 +483,7 @@ def $destructor_free(S, pnode, pdestructionrelease) = $destruction_storage_free(
 def $destructor_select(S, n, b_store, pdestructionrelease?) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS][.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: S.TODO]
   -- if $destructor_method(S, n) = (pmethoddesc)
   -- if pdestructionframe? = $destructor_selected_frame(S)
-  -- if pdestructorcall = {OBJECT n, TARGET METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, STORE b_store, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S), SITE $destructor_source_site(S), LINE $property_current_line(S), RELEASE pdestructionrelease?, FRAME pdestructionframe?, OPERATION $destructor_operation_for(S), PENDING $destructor_selected_pending(S, pdestructionframe?)}
+  -- if pdestructorcall = {OBJECT n, TARGET METHOD_TARGET n pmethoddesc.FUNCTION.ORIGIN, STORE b_store, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S), SITE $destructor_source_site(S), LINE $destructor_source_line(S), RELEASE pdestructionrelease?, FRAME pdestructionframe?, OPERATION $destructor_operation_for(S), PENDING $destructor_selected_pending(S, pdestructionframe?)}
 def $destructor_call_live(S, pdestructorcall) = true
   -- if $destructor_operational(S)
   -- if pdestructorcall <- S.DESTRUCTION.CALLS

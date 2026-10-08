@@ -93,6 +93,14 @@ bytes to its pending exception. Ten exact originals and247 independent premises
 retain private344; actual349 passes strict compilation over CALLS362. Borrowed CVs
 keep their separate release path; wider call and output consumers remain required.
 
+[Direct ECHO with one CV argument](coverage/semantics/source-echo-cv-call-review.json)
+retires the owned source operand at INIT5 before SEND8 reads the live CV.
+Returning warning handlers send fixed null; function, retirement and handler
+errors retain their priority. Returned temporary/reference owners preserve bytes
+after argument mutation, with conversion and final destruction at ECHO8. Nine
+exact originals and236 independent premises retain separate private349 cuts;
+actual351 passes strict compilation. Broader call shapes remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -233,6 +241,12 @@ callback changes to the selector preserve that destination. Five new exact
 originals and241 reached premises cover helper and temporary object selectors,
 scalar continuation, captured references and typed expression results.
 The separate actual349 composition passes compilation and initialization.
+Computed static-property names now read direct name CVs after RHS evaluation
+and preserve evaluated name values or reference cells. Six further originals
+cover that timing, cold initialization with owned RHS temporaries, selected class
+roots, typed results and multiline access-error cleanup. Another295 independent
+reached premises validate queued owners, resolved-name authority and resumption.
+The separate actual353 composition passes compilation and initialization.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -274,8 +288,10 @@ physical pin and readable RETURN through child callbacks, then clears weak looku
 detaches inputs before finally while preserving CV owners, shared store order,
 delegated cache lifetime and nested normal handlers. [Request fatal cleanup 363](coverage/semantics/generator-request-abrupt-review.json)
 retains Generator/cache owners through normal fatal rendering, releases the reported
-exception before bailout, then suppresses later destructors. Abrupt rendering or
-exception release, parked/escaped storage and broader terminal cleanup remain required.
+exception before bailout, then suppresses later destructors. Normal exception-owned
+stdClass/ordinary child cleanup retains full admission and actual storage pins.
+Abrupt rendering or exception release, parked/escaped storage and broader terminal
+cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -614,9 +630,12 @@ Quiescent public resume/throw now reloads the global physical interval and calls
 residual tagged destructors in the cached worker. One compact throw source and
 119 independent physical premises pass, including both original continuations
 and exact injected-error identity. The larger resume CLI retains its 60s timeout/
-zero agreement. Final 351 over `8e513981b` compiles. Residual internal dispatch/
-overlap, repeated internal suspension
-and different-active-pass public reentry remain required.
+zero agreement. Final 351 over `8e513981b` compiles. Fresh internal collection now
+scans residual and new tags with its genuine GC caller. Signed −1+2 accounting
+returns 1 while both destructors retire. Two original full continuations pass
+166 independent physical premises; both whole CLI runs retain 60s timeouts/zero
+agreement. Final 353 over `d2bba03b2` compiles. Main residual dispatch, overlap,
+repeated internal suspension and different-active-pass reentry remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -986,9 +1005,10 @@ Parent/interface construction contracts remain open.
 Retained trait-scoped `new self` rejects the published trait before arguments,
 with a valid pending NEW certificate. One shutdown original and37 supplied
 conditions plus6 setup clauses pass.
-Retained `new static` constructs the published called class and enters arguments
-after allocation. One shutdown original and40 supplied conditions plus6 setup
-clauses pass, including durable selected-NEW static-fill history.
+Retained `new static` constructs the published called class from failed-class or
+published-trait scope, entering arguments after allocation. Two shutdown originals
+and80 supplied conditions plus12 setup clauses pass at separate cuts, including
+durable selected-NEW static-fill history.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
@@ -1277,12 +1297,20 @@ static Fiber APIs before argument evaluation. Frozen dereferenced members surviv
 selector mutation or retirement; the pending call owns its bound receiver once,
 while static object selectors own none. Constructor callable parsing retains its
 real warning continuation and validation-before-status order.
+Ordinary array-selected `start` also freezes its receiver before arguments and
+forwards the original positional or named buffer. Nonowning receipts authenticate
+source and saved callers; completed selection stays valid after receiver retirement.
+Throwing arguments release
+positional values, the receiver, then extra named values in Zend order; recursive
+argument frames and body exceptions keep their real callsites.
+The [array-start ledger](coverage/semantics/fiber-array-start-review.json) records
+six exact originals and 427 reached premises at their separate cuts.
 Simple Fiber API arrays also convert to first-class Closures. A distinct source
 witness freezes the selected members; the temporary bound receiver owner moves
 into the Closure, while static selectors add none. Clone/equality and direct,
 explicit `__invoke` or C-root calls reuse the existing API protocols, including
-start and constructor captures. Ordinary array-selected start, raw array C-root
-callbacks, compound selectors and Fiber-start argument unpacking remain required.
+start and constructor captures. Raw array C-root callbacks, compound selectors
+and Fiber-start argument unpacking remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

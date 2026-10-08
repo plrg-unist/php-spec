@@ -393,7 +393,7 @@ def $destructor_boundary_valid(S, pdestructorcall) = true
   -- if S_view = S[.CURRENT = pdestructorcall.CALLER][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
   -- if pdestructorcall.USER = $destructor_user_source(S_view)
   -- if pdestructorcall.SITE = $destructor_source_site(S_view)
-  -- if pdestructorcall.LINE = $property_current_line(S_view)
+  -- if pdestructorcall.LINE = $destructor_source_line(S_view)
 def $destructor_boundary_valid(S, pdestructorcall) = false -- otherwise
 
 def $destructor_operation_suffix(eps, pdestructionoperation) = eps

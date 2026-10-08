@@ -70,6 +70,7 @@ dec $gc_trace(pstate, pgccall) : pstate
 dec $gc_dtor_begin(pstate, pgcplan, nat) : pstate
 dec $gc_dtor_done(pstate, pgcplan, nat) : pstate
 dec $gc_free(pstate, pgcplan) : pstate
+dec $gc_pass_count(pgcplan) : int
 dec $gc_finish(pstate, pgccall) : pstate
 dec $gc_pending_tasks(ptask*, pgcplan, pgcplan) : ptask*
 dec $gc_dtor_anchor(pstate, pdestructorcall) : (pgcplan, nat)?
@@ -725,6 +726,14 @@ def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BU
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if pgcplan.CANDIDATES = eps \/ $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER = eps \/ pgcplan.DTORS = eps
+  -- if pgcplan.DTORS = eps \/ pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
+def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "main collector dispatch with residual destructor tags"]
+  -- if S.ACTIVEFIBER = eps
+  -- if ~$gc_residual_overlap(S)
+  -- if pgcplan = $gc_plan(S, pgccall)
+  -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
+  -- if pgcplan.DTORS =/= eps
+  -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
 def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag shares an ordinary traced component"]
   -- if $gc_residual_overlap(S)
 rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
@@ -755,6 +764,13 @@ def $gc_dtor_done(S, pgcplan, n) = $gc_replace(S[.RESULT = KNOWN PNULL][.BASE = 
 ;; No user callback remains in the ordinary white free phase. Dispose that
 ;; genuine closed graph atomically, preserving store/buffer free order in pure
 ;; loops. The reference-cell cascade is ordinary zero-owner pruning, not count.
+;; Nested-data removal visits every physical destructor tag, including residual
+;; roots excluded from this pass's white count. Zend's intermediate count is signed.
+def $gc_pass_count(pgcplan) = $(i_count - |$destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER))|)
+  -- if pgcplan.DTORS =/= eps
+  -- if i_count = |$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)|
+def $gc_pass_count(pgcplan) = |$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)|
+  -- if pgcplan.DTORS = eps
 def $gc_nested_boundary(S, pgcplan) = ($heap_intersect(pgcplan.FREESET, $heap_reach($machine_roots(S), eps, $heap_graph(S).EDGES)) =/= eps)
 def $gc_terminal_park(S, pgcplan) = (pgcplan.CALL.PASS = 1 /\ $destruction_zero($heap_graph(S), $heap_intersect(pgcplan.DONE, S.ALLOCATIONS)) =/= eps)
 def $gc_free(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "resurrection of non-destructor garbage during collection"]
@@ -768,7 +784,7 @@ def $gc_free(S, pgcplan) = S_next[.TODO = (GC_TRACE pgccall_next) :: ptask*][.GC
   -- if pnode_live* = $destruction_nodes_delete(S.ALLOCATIONS, pnode_free*)
   -- if S_dropped = $prune_live($destruction_store_drop(S, pnode_free*), pnode_live*)
   -- if S_next = S_dropped[.GC = $gc_compact($gc_buffer_remove_nodes(S_dropped.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*)))]
-  -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + |$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)|)][.PASS = 1]
+  -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + $gc_pass_count(pgcplan))][.PASS = 1]
   -- if pgcplan.DTORS =/= eps /\ pgcplan.CALL.PASS = 0
 def $gc_free(S, pgcplan) = $gc_finish(S_next, pgccall_next)
   -- if ~$gc_nested_boundary(S, pgcplan) /\ ~$gc_terminal_park(S, pgcplan)
@@ -777,7 +793,7 @@ def $gc_free(S, pgcplan) = $gc_finish(S_next, pgccall_next)
   -- if pnode_live* = $destruction_nodes_delete(S.ALLOCATIONS, pnode_free*)
   -- if S_dropped = $prune_live($destruction_store_drop(S, pnode_free*), pnode_live*)
   -- if S_next = S_dropped[.GC = $gc_compact($gc_buffer_remove_nodes(S_dropped.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*)))]
-  -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + |$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)|)]
+  -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + $gc_pass_count(pgcplan))]
   -- if pgcplan.DTORS = eps \/ pgcplan.CALL.PASS = 1
 rule PhpStep/gc-free: S ~> $gc_free(S, pgcplan)
   -- if S.TODO = (GC_FREE pgcplan) :: ptask*
