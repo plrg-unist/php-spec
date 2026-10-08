@@ -809,8 +809,17 @@ reached premises at `edf7e7ec1` cover exact detach, ordinary cell-release transf
 pending A/B chains and genuine parked/restored Fiber ownership. The actual336
 join at `0d233dde9` passes strict initialization; earlier behavioral cuts remain
 separate. Borrowed plan snapshots and duplicate queues provide no authority.
+Last-owner previous reference wrappers now retire on the actual eager cleanup
+queue. A separate nonowning raw CV preserves safe own-destructor reads while the
+original wrapper reaches zero owners; normal/throw binding installs the selected
+reference atomically. Five exact originals pass at `329ec8e38`; independent
+native-first observations retain `f84fdab9d`. At `d3688fdf9`, 136/139 reached
+premises cover genuine wrapper release, masked raw storage, pending A/B chaining
+and refusal of whole `$GLOBALS` snapshots or expired borrowed-reference reads.
+Shared wrappers and surviving payloads decline this staged path. Earlier source,
+compiler and state cuts remain separate.
 Released-CV mutation, raw retired-container
-reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
+reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original
 now stops at builtin dispatch and retains zero agreement credit. Bounded

@@ -792,8 +792,15 @@ queues and parked Fiber VMs. Four further exact originals and 134/71 reached
 premises cover reversed slot order, two constraints on one cell, exception
 chaining, owner transfer and rejection of stale snapshots or duplicate queues.
 The current336 composition passes strict compilation.
-Released-CV mutation, raw retired-container reads, callback-capable previous
-reference wrappers and internal Generator/Fiber retirement, binding-time exit
+Last-owner previous reference wrappers now retire through the actual cleanup
+queue before binding. A separate raw CV preserves safe live-object reads while
+the expired wrapper and its payload gain no owner; selected-reference installation
+remains atomic after throws. Five exact originals and 136/139 reached premises
+cover shared wrappers, typed descendants, exception chaining and expired-pointer
+refusals at separate cuts. Whole `$GLOBALS` snapshots during wrapper retirement
+remain Unsupported.
+Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
+and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
 full foreach coverage remains required.
 
