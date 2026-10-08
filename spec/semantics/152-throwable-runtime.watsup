@@ -9,6 +9,7 @@ dec $trace_materialize(pstate, ptraceframe*) : pstate
 ;; All live fields, including trace and string cache, use property slots.
 dec $throwable_kind(text) : bool
 def $throwable_kind("Exception") = true
+def $throwable_kind("RuntimeException") = true
 def $throwable_kind("ErrorException") = true
 def $throwable_kind("Error") = true
 def $throwable_kind("CompileError") = true
@@ -24,6 +25,7 @@ def $throwable_kind("FiberError") = true
 def $throwable_kind("ClosedGeneratorException") = true
 def $throwable_kind(text) = false -- otherwise
 dec $throwable_parent(text) : text?
+def $throwable_parent("RuntimeException") = ("Exception")
 def $throwable_parent("ErrorException") = ("Exception")
 def $throwable_parent("CompileError") = ("Error")
 def $throwable_parent("ParseError") = ("CompileError")

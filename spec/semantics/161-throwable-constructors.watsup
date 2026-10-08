@@ -2,6 +2,7 @@
 ;; Error::__construct, except ErrorException's distinct constructor. FiberError
 ;; cannot be directly instantiated in the pinned engine.
 def $throwable_constructor_kind(preqbytes) = ("Exception") -- if $ptlc(preqbytes) = $ptascii("exception")
+def $throwable_constructor_kind(preqbytes) = ("RuntimeException") -- if $ptlc(preqbytes) = $ptascii("runtimeexception")
 def $throwable_constructor_kind(preqbytes) = ("ErrorException") -- if $ptlc(preqbytes) = $ptascii("errorexception")
 def $throwable_constructor_kind(preqbytes) = ("ClosedGeneratorException") -- if $ptlc(preqbytes) = $ptascii("closedgeneratorexception")
 def $throwable_constructor_kind(preqbytes) = ("Error") -- if $ptlc(preqbytes) = $ptascii("error")
