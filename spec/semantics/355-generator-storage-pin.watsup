@@ -3,6 +3,7 @@
 dec $generator_storage_slot(pgenerator, nat) : pnode*
 dec $generator_storage_remaining(pgenerator, nat) : pnode*
 dec $generator_storage_tasks(ptask*) : pgenstorage*
+dec $generator_storage_task(ptask) : bool
 dec $generator_storage_frames(pframe*) : pgenstorage*
 dec $generator_storage_select(pgenstorage*, nat) : pgenstorage?
 dec $generator_storage_for(pstate, nat) : pgenstorage?
@@ -28,7 +29,9 @@ def $generator_storage_remaining(pgenerator, n) = $generator_storage_slot(pgener
 
 def $generator_storage_tasks(eps) = eps
 def $generator_storage_tasks((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*) = pgenstorage :: $generator_storage_tasks(ptask*)
-def $generator_storage_tasks(ptask :: ptask_tail*) = $generator_storage_tasks(ptask_tail*) -- otherwise
+def $generator_storage_tasks(ptask :: ptask_tail*) = $generator_storage_tasks(ptask_tail*) -- if ~$generator_storage_task(ptask)
+def $generator_storage_task(GENERATOR_STORAGE_STEP pgenstorage) = true
+def $generator_storage_task(ptask) = false -- otherwise
 def $generator_storage_frames(eps) = eps
 def $generator_storage_frames(pframe :: pframe_tail*) = $generator_storage_tasks(pframe.TODO) ++ $generator_storage_frames(pframe_tail*)
 def $generator_storage_select(eps, n) = eps
@@ -40,7 +43,11 @@ def $generator_storage_record_at(S, pgenerator, eps) = eps
 def $generator_storage_record_at(S, pgenerator, pgenstorage :: pgenstorage_tail*) = (pgenstorage)
   -- if $(pgenstorage.OBJECT < |S.OBJECTS|)
   -- if S.OBJECTS[pgenstorage.OBJECT] = GENERATOR pgenerator
-def $generator_storage_record_at(S, pgenerator, pgenstorage :: pgenstorage_tail*) = $generator_storage_record_at(S, pgenerator, pgenstorage_tail*) -- otherwise
+def $generator_storage_record_at(S, pgenerator, pgenstorage :: pgenstorage_tail*) = $generator_storage_record_at(S, pgenerator, pgenstorage_tail*)
+  -- if $(pgenstorage.OBJECT >= |S.OBJECTS|)
+def $generator_storage_record_at(S, pgenerator, pgenstorage :: pgenstorage_tail*) = $generator_storage_record_at(S, pgenerator, pgenstorage_tail*)
+  -- if $(pgenstorage.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pgenstorage.OBJECT] =/= GENERATOR pgenerator
 def $generator_storage_active(S, n) = true -- if $generator_storage_for(S, n) = (pgenstorage)
 def $node_children(S, HOBJECT n) = $generator_storage_remaining(pgenerator, pgenstorage.NEXT)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
@@ -84,7 +91,7 @@ def $generator_storage_state_valid(S) = ($destructor_unique($generator_storage_i
   -- if pgenstorage* = $generator_storage_tasks(S.TODO) ++ $generator_storage_frames(S.FRAMES)
 def $generator_storage_tail(eps, pgenstorage) = eps
 def $generator_storage_tail((GENERATOR_STORAGE_STEP pgenstorage) :: ptask*, pgenstorage) = (ptask*)
-def $generator_storage_tail(ptask :: ptask_tail*, pgenstorage) = $generator_storage_tail(ptask_tail*, pgenstorage) -- otherwise
+def $generator_storage_tail(ptask :: ptask_tail*, pgenstorage) = $generator_storage_tail(ptask_tail*, pgenstorage) -- if ptask =/= GENERATOR_STORAGE_STEP pgenstorage
 def $generator_storage_parent(S, pgenstorage, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = ($destructor_release_valid(S, pdestructionrelease) /\ pgenstorage.USER = pdestructionrelease.USER)
 def $generator_storage_parent(S, pgenstorage, (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*) = $generator_close_release_valid(S, pgenrelease)
 def $generator_storage_parent(S, pgenstorage, ptask*) = false -- otherwise
