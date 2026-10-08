@@ -293,6 +293,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | FIBER_ARRAY_CONVERT pfiberarray
   | METHOD_CONVERT pcalltarget porigin int | ARRAY_CONVERT pcalltarget parrayselection | STRING_CONVERT pcalltarget pstringselection
   | FIBER_ARRAY_RELEASE pfiberarray | FIBER_ARRAY_RESULT pfiberarray pconfigcall
+  | FIBER_ARRAY_START_RELEASE pfiberarray | FIBER_ARRAY_START_RESULT pfiberarray pfiberstart
   | CTOR_ARGS pctorcall | CTOR_SEND pctorcall | CTOR_UNPACK_PREP pctorcall | CTOR_UNPACK_NEXT pctorcall poperand nat | CTOR_INVOKE pctorcall
   | SCOPED_CLASS phpType19 phpType20 phpType7* int | SCOPED_NAME phpType19 poperand phpType7* int
   | DYNAMIC_NEW_CLASS int int | DYNAMIC_NEW_FINISH pdynamicnew
