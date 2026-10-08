@@ -232,6 +232,8 @@ def $generator_request_bailout_at((DESTRUCTOR_RESULT pdestructorcall) :: ptask_t
   -- if ~pdestructorcall.USER
 def $generator_request_bailout_at(ptask*) = eps -- otherwise
 def $generator_request_bailout_valid(S, pgenfatal) = true
+  -- if $(pgenfatal.OBJECT < |S.OBJECTS|)
+  -- if $throwable_member(S, pgenfatal.OBJECT)
   -- if $generator_request_root(S)
   -- if $generator_request_bailout_tail(S.TODO, pgenfatal) = (ptask_tail*)
   -- if $generator_request_fatal_source(S, pgenfatal, ptask_tail*)

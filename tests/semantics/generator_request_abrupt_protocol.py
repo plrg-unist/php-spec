@@ -197,6 +197,7 @@ $generator_request_report_frozen(S_bailout,pgenfatal_bailout) = pgenfatal_bailou
                    '$throwable_live(S_bailout,n_old)',
                    '$heap_owners($heap_graph(S_bailout),HOBJECT n_old) = 1',
                    '$generator_request_resume_valid(S_bailout,pgenclose_report)']
+    reject(checks, 'bailout_bounds', 'S_bailout[.TODO = (GENERATOR_REQUEST_BAILOUT pgenfatal_bailout[.OBJECT = |S_bailout.OBJECTS|]) :: ptask_bailout_tail*]', 'S_bailout')
     reject(checks, 'frozen_report', 'S_bailout[.TODO = (GENERATOR_REQUEST_BAILOUT pgenfatal_bailout[.FROZEN = REQUESTFATAL $ptascii("Exception") $ptascii("forged") 0]) :: ptask_bailout_tail*]', 'S_bailout')
     checks += [f'S_stopped = $drive_steps({previous},0)',
                f'S_stopped = {previous}[.COMPLETION = BUDGET]',
