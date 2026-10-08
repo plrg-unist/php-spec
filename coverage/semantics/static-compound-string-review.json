@@ -14,7 +14,12 @@
       "zend_binary_assign_op_typed_ref",
       "zend_binary_assign_op_typed_prop"
     ],
-    "vendor/php-src/Zend/zend_operators.c": "concat_function"
+    "vendor/php-src/Zend/zend_operators.c": "concat_function",
+    "vendor/php-src/Zend/zend_compile.c": [
+      "zend_compile_class_ref",
+      "zend_compile_static_prop",
+      "zend_compile_compound_assign"
+    ]
   },
   "raw_directory": ".tools/static-compound-string-19/.tools/static-stringable-compounds",
   "preserved_counterexample": {
@@ -126,7 +131,7 @@
     "python3 tests/semantics/static_compound_string_state_run.py REACHED/manifest.json"
   ],
   "boundaries": [
-    "Computed/dynamic selectors, keyword scopes entered through Closure/fromCallable or other callable wrappers, and wider borrowed destination lifetime remain separate.",
+    "Computed property names, keyword scopes entered through Closure/fromCallable or other callable wrappers, and wider borrowed destination lifetime remain separate.",
     "A registered-handler missing direct RHS-CV warning still stops at the preexisting Unsupported producer-continuation boundary.",
     "Earlier334/344/352 evidence and paused typed/NULL/finally-sensitive return-producer lanes are unchanged."
   ],
@@ -228,6 +233,75 @@
       "inputs_stable": true,
       "groups_reaped": true,
       "peer_projection": "257 discarded-result proof view,296 staged Weak liveness,301 physical buffer occupancy and360 Generator source/CONST guards remain intact; selected ENTRY adds no owners or caller copies.",
+      "renewed_source_or_reached_credit": 0
+    }
+  },
+  "dynamic_selectors": {
+    "decision": "Accepted five exact dynamic-class originals and241 independent reached premises; final current-parent gate pending",
+    "behavior": "Dynamic class/literal-property targets retain the class resolved before RHS evaluation. Pure compound dispatch restores its temporary base, including ordinary scalar CONCAT. Existing selected ENTRY metadata preserves cell, verification branch and final typed result without owners or selector rereads.",
+    "raw_directory": ".tools/scoped-static-compound-19/.tools/scoped-static-compounds",
+    "preserved_counterexample": {
+      "revision": "7144659277d273997a3207c0775c4e64cadb78e3",
+      "report": "dynamic-probe-q8s5pzjj/report.json",
+      "native_stdout": "L;A:aafter;B:other;C:DynamicStaticSecondReview19;R:after;X:aafter;E;",
+      "model_status": "unsupported",
+      "model_stdout": "",
+      "reason": "user object string conversion",
+      "agreement_credit": 0
+    },
+    "native_controls": {
+      "revision": "09034d7890cb2b0cd8aec7dd7e93e9f082c2ad14",
+      "report": "dynamic-native-controls-jt3n8kc6/report.json",
+      "originals": 4,
+      "model_agreement_credit": 0
+    },
+    "sources_and_private_compiler_init": {
+      "revision": "09034d7890cb2b0cd8aec7dd7e93e9f082c2ad14",
+      "modules": 344,
+      "report": "run-hoeq676m/report.json",
+      "normal_originals": 5,
+      "algo_bytes": 10967958,
+      "struct_bytes": 10635895,
+      "strict_SL_initial_premises": 6,
+      "strict_SL_initial_seconds": 5.348,
+      "passed": true,
+      "inputs_stable": true,
+      "groups_reaped": true
+    },
+    "new_reached": {
+      "revision": "fc7727974432e10307c5216953ed713fa120d62b",
+      "modules": 344,
+      "report": "reached-run-mw5zoh_i/report.json",
+      "groups": [
+        {
+          "id": "dynamic-base-and-scalar-restore",
+          "premises": 116,
+          "algo_bytes": 11022333,
+          "strict_SL_seconds": 21.684
+        },
+        {
+          "id": "dynamic-selected-reference-authority",
+          "premises": 125,
+          "algo_bytes": 11018235,
+          "strict_SL_seconds": 30.254
+        }
+      ],
+      "premises": 241,
+      "passed": true,
+      "inputs_stable": true,
+      "groups_reaped": true
+    },
+    "reproduce_source": [
+      "python3 tests/semantics/scoped_static_compound_prepare.py dynamic-class-live-rhs dynamic-rhs-rebind-before-capture dynamic-helper-string-once dynamic-tmp-object-selector-release dynamic-captured-reference-rebind",
+      "python3 tests/semantics/scoped_static_compound_run.py PREPARED/report.json compiler-gates dynamic-class-live-rhs dynamic-rhs-rebind-before-capture dynamic-helper-string-once dynamic-tmp-object-selector-release dynamic-captured-reference-rebind"
+    ],
+    "reproduce_states": [
+      "python3 tests/semantics/scoped_static_compound_prepare.py dynamic-rhs-rebind-before-capture dynamic-helper-string-once dynamic-captured-reference-rebind",
+      "python3 tests/semantics/scoped_static_compound_state_prepare.py PREPARED/report.json",
+      "python3 tests/semantics/scoped_static_compound_state_run.py REACHED/manifest.json"
+    ],
+    "current_composition": {
+      "status": "pending fixed published parent and final compiler/init",
       "renewed_source_or_reached_credit": 0
     }
   }
