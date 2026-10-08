@@ -109,6 +109,9 @@ $lookup(S_terminal.ENV,$ptascii("value")) = (n_cell)
 S_terminal.OBJECTS[n_generator] = GENERATOR pgenerator_terminal
 pgenerator_terminal.REFCELL = (n_cell) /\ pgenerator_terminal.VALUE = eps
 pgenerator_terminal.FRAME = (pframe_terminal)
+$getclass_live_object(S_terminal,n_generator)
+~$getclass_live_object(S_terminal[.ALLOCATIONS = $destruction_node_delete(S_terminal.ALLOCATIONS,HOBJECT n_generator)],n_generator)
+~$getclass_live_object(S_terminal,|S_terminal.OBJECTS|)
 pframe_terminal.ORIGIN = (porigin_terminal)
 |$generator_close_regions(S_terminal,porigin_terminal)| = 1
 $generator_finalizer_frame(S_terminal,pgenerator_terminal.FRAME)
@@ -145,6 +148,7 @@ $heap_owners($heap_graph(S_unheld),HOBJECT n_generator) = 0
                    'S_closed.STORE[n_cell] = DEFINED (PINT 7)']
         finish(checks, 'S_closed', name)
         checks += ['~((HOBJECT n_generator) <- S_resumed.ALLOCATIONS)',
+                   '~$getclass_live_object(S_resumed,n_generator)',
                    'S_resumed.STORE[n_cell] = DEFINED (PINT 7)',
                    '$heap_owners($heap_graph(S_resumed),HCELL n_cell) = 1']
     elif name == 'request-store-cache-retained':
@@ -196,7 +200,10 @@ $heap_owners($heap_graph(S_pending),HOBJECT n_generator) = 1
 $throwable_field(S_pending,n_exception,"message") = PSTRING $ptascii("new")
 '''.strip().splitlines()
         if name == 'peer-request-uncaught-finally-required':
-            checks += ['S_refused = $drive(S_pending,4096)',
+            checks += ['S_budget = $drive_steps(S_pending,0)',
+                       'S_budget = S_pending[.COMPLETION = BUDGET]',
+                       'S_refused = $drive(S_pending,4096)',
+                       'S_refused = $drive(S_budget[.COMPLETION = NORMAL],4096)',
                        'S_refused.COMPLETION = UNSUPPORTED "Generator request-close uncaught exception"',
                        'S_refused.OBJECTS[n_generator] = GENERATOR pgenerator_pending']
             return checks
@@ -218,7 +225,10 @@ $generator_request_resume_valid(S_transfer,pgenclose_transfer)
         reject(checks, 'duplicate_resume', 'S_transfer[.TODO = (THROW_SEARCH n_exception) :: (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: (GENERATOR_REQUEST_RESUME pgenclose_transfer) :: ptask_transfer*]', 'S_transfer', same_heap=False)
         if name == 'peer-request-handler-throw-required':
             checks += seek('S_throw', 'S_transfer', 24) + valid('S_throw')
-            checks += ['S_refused = $drive(S_throw,4096)',
+            checks += ['S_budget = $drive_steps(S_throw,0)',
+                       'S_budget = S_throw[.COMPLETION = BUDGET]',
+                       'S_refused = $drive(S_throw,4096)',
+                       'S_refused = $drive(S_budget[.COMPLETION = NORMAL],4096)',
                        'S_refused.COMPLETION = UNSUPPORTED "Generator request-close exception-handler failure"',
                        'S_refused.OBJECTS[n_generator] = GENERATOR pgenerator_pending']
             return checks

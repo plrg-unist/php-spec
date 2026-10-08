@@ -27,6 +27,20 @@ class Payload340{function __destruct(){echo "D";}}
 function request340(){try{yield new Payload340;}finally{global $w;echo "F";$GLOBALS["saved"]=$w->get();$GLOBALS["again"]=1;}}
 $g=request340();$w=WeakReference::create($g);$wa=&$w;$g->current();echo "C|";
 ''', b'C|FD', 0),
+    'request-resurrection-computed-global-receiver': (
+        b'''<?php
+class Payload340{function __destruct(){echo "D";}}
+function request340(){try{yield new Payload340;}finally{echo "F";$GLOBALS["saved"]=$GLOBALS["w"]->get();$GLOBALS["again"]=1;}}
+$g=request340();$w=WeakReference::create($g);$wa=&$w;$g->current();echo "C|";
+''', b'C|FD', 0),
+    'generator-live-name-and-weak-target-through-phases': (
+        b'''<?php
+function request340(){yield 7;}
+$g=request340();$w=WeakReference::create($g);
+echo get_class($g),"|",(int)($w->get()===$g),"|",$g->current(),"|";
+$g->next();echo get_class($g),"|",(int)($w->get()===$g),"|";
+unset($g);echo (int)($w->get()===null);
+''', b'Generator|1|7|Generator|1|1', 0),
 }
 
 WATCHED = driver.WATCHED + [
