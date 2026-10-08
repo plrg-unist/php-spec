@@ -108,6 +108,15 @@ retain live handler writes. Returned temporary/reference owners keep bytes after
 argument mutation. Seven exact originals and204 independent premises retain private351; actual354
 passes strict compilation. Wider call shapes remain required.
 
+[Direct ECHO through an ordinary dynamic callee CV](coverage/semantics/source-echo-dynamic-cv-call-review.json)
+now retires the source operand at INIT5 before selecting the live callable.
+Undefined-CV handlers retain fixed null; selected invokers survive callee deletion,
+and returned temporary/reference owners keep bytes before destruction. Callable
+and ECHO lines remain distinct. A returned cast can publish a function and survive
+later eval history replay. Nine exact originals retain their private354 cuts;
+independent277 premises pass. Actual356 passes strict compilation. Wider callee
+and argument producers remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)

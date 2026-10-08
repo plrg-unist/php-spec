@@ -145,6 +145,22 @@ Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
 
+Direct ECHO now admits an ordinary CV dynamic callee with no arguments.
+The source certificate selects INIT5 independently of call7 and ECHO5, before
+operand retirement, live selection and warning demand. Undefined handlers resume
+captured null; invoker/array selection and existing TMPVAR/HCELL output ownership
+preserve mutation and retirement order. Dynamic and implicit-string declaration
+history alternatives now have disjoint domains, allowing a returned cast to
+publish a function before later eval. Nine exact originals retain seven rows at
+`50f11389e`, late installation at `dc8943d37` and cast publication at `f01375e6f`,
+all private354. Independent239 premises retain `dc8943d37`, with38 fresh history premises at
+`f01375e6f` (277 total,193 bindings/84 checks). Actual356 over `5107cc589`
+passes strict compilation with reviewed Generator/collector/scoped-method and
+assertion-state compatibility. Original
+baseline mismatches and nondeterministic replay failures retain zero agreement.
+No module, task or owner schema is added; wider callee/argument forms remain open.
+[Ledger](coverage/semantics/source-echo-dynamic-cv-call-review.json).
+
 Direct ECHO now admits one named ordinary CV argument through361's existing
 certificate and owning output protocol. INIT5 precedes live SEND; known second-slot
 binding uses ECHO8, while late-bound names use7. Default holes, unknown-name errors
