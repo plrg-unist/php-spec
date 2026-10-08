@@ -126,6 +126,13 @@ Private294 source4/67 premises retain their inputs. Actual296 passes strict
 compilation with reviewed Arrow/Fiber compatibility and no renewed source/state
 credit. Relocations add no execution credit; broader first emissions remain required.
 
+[Literal this emission323](coverage/semantics/source-this-emission-review.json)
+is independently accepted at private297: FETCH5 precedes child work or the later
+missing-instance Error5, while a method include retains its receiver/private scope.
+Four exact originals,70 independent premises and only9 affected guard checks pass;
+the corrected INSTANCE fixture false retains zero accepted credit. Relocations add
+no renewed execution credit; actual-parent integration and broader emissions remain pending.
+
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
 The accepted private52 normal/four compiler agreements and618 reached premises,

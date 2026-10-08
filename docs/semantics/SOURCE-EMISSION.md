@@ -65,3 +65,14 @@ Returning destructors preserve direct Array Warning5 and property-on-array
 Warning6. Actual296 retains Arrow311/Fiber313 and passes strict compilation with
 independently reviewed introduced compatibility; private source/state cuts keep
 their inputs. Relocations earn no renewed credit; broader emissions remain required.
+
+Module323 adds literal `$this` FETCH_THIS before direct ECHO or a literal property
+read in separately compiled nested code. Selection authenticates the original AST,
+certified receiver/variable line and complete image, independently of runtime
+instance existence. The [ledger](../../coverage/semantics/source-this-emission-review.json)
+retains private297 strict compilation, four exact originals,70 independent premises
+and9 newly affected maintained checks. Genuine method/private scope permits the
+later property read; absent-instance retirement precedes Error5. Parenthesized
+FETCH6/property8 and same-heap line/scope counterexamples pass. The initial wrong
+INSTANCE fixture false has zero accepted credit; previous72 is preparation-only.
+Relocations add no execution credit; actual-parent integration remains pending.

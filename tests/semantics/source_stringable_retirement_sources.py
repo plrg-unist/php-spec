@@ -32,7 +32,11 @@ CASES = {'regular': 'deferred-regular.php',
          'globals-direct': 'globals-direct-child.php',
          'globals-property': 'globals-property-child.php',
          'globals-direct-nonthrow': 'globals-direct-nonthrow-child.php',
-         'globals-property-nonthrow': 'globals-property-nonthrow-child.php'}
+         'globals-property-nonthrow': 'globals-property-nonthrow-child.php',
+         'this-direct': 'this-direct-child.php',
+         'this-property': 'this-property-child.php',
+         'this-property-nonthrow': 'this-property-nonthrow-child.php',
+         'this-no-instance-property-nonthrow': 'this-no-instance-property-nonthrow-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -70,7 +74,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)
