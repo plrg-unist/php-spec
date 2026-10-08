@@ -4,7 +4,7 @@
   "semantic_cut": "3429f29ad",
   "tested_cut": "87f9b399a",
   "modules": 298,
-  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws. Ordinary DESTRUCTOR_RELEASE now preserves a physical INSTANCE free_obj pin and unvisited slot edges until their individual transfer; early Weak notification and safe class metadata reads are distinct from physical retirement. Ordinary stdClass storage now retains the same physical parent pin; a materialized property table transfers one HARRAY edge before unique bucket cleanup or shared-table decrement. Initialized future declared scalar/object/array reads use the current slot under the actual unique INSTANCE storage carrier and preserve ordinary visibility. Heap results own the copied payload through actual eager receiver release; ALIAS reads retain its referent without acquiring the wrapper. Unvisited typed PROP_INITIAL reads raise ordinary Error after visibility resolution, with declaring-class and source metadata preserved through pending cleanup. Consumed/explicitly unset storage, quiet reads and already-freeing ordinary object targets remain explicit boundaries.",
+  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws. Ordinary DESTRUCTOR_RELEASE now preserves a physical INSTANCE free_obj pin and unvisited slot edges until their individual transfer; early Weak notification and safe class metadata reads are distinct from physical retirement. Ordinary stdClass storage now retains the same physical parent pin; a materialized property table transfers one HARRAY edge before unique bucket cleanup or shared-table decrement. Initialized future declared scalar/object/array reads use the current slot under the actual unique INSTANCE storage carrier and preserve ordinary visibility. Heap results own the copied payload through actual eager receiver release; ALIAS reads retain its referent without acquiring the wrapper. Unvisited typed PROP_INITIAL reads raise ordinary Error after visibility resolution, with declaring-class and source metadata preserved through pending cleanup. Future explicitly unset typed slots without __get raise ordinary Error only outside the actual dynamic-first release prefix. Consumed storage, quiet/getter reads, untyped unset access and already-freeing ordinary object targets remain explicit boundaries.",
   "admission": "Source AST, runtime line, iterator/cursor and selected physical address are checked. RELEASE recaptures the live selected slot; entered COMMIT may survive retired receiver storage while its selected HCELL remains real. Fresh false HOBJECT C-owner and selected-cell/source forgeries fail public admission. This bounded source/current-address check is not a historical reachability proof.",
   "engine": [
     "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_RW, ZEND_FE_FETCH_RW; selected Bucket promotion/ADDREF precedes previous target-CV destruction; receiver wrapper is dereferenced on each fetch",
@@ -887,6 +887,77 @@
       "elapsed_seconds": 4.471,
       "application_evaluations": 0,
       "meaning": "Actual parent SOURCE361/TRAIT347 and CALLS370 fields, Weak history/early notification and guards are preserved. Source3/state264 retain3418; only the combined compiler is renewed."
+    }
+  },
+  "ordinary_instance_future_unset_reads": {
+    "scope": "Ordinary INSTANCE free_obj reads of genuinely unvisited explicitly unset declared typed slots without effective __get. Actual dynamic-first release order, rather than numeric slot index or unchanged PROP_UNSET image, excludes consumed slots. Visibility resolves before ordinary declaring-class Error.",
+    "parent": "035bbe2de55122f28172282a04efece3f8901a94/355",
+    "raw_root": ".tools/properties-instance-future-unset-read19/.tools",
+    "engine": [
+      "Zend/zend_object_handlers.c: zend_std_unset_property clears IS_PROP_UNINIT; zend_std_read_property can invoke __get before uninit_error for explicitly unset slots, then zend_typed_property_uninitialized_access preserves declaring prop_info->ce",
+      "Zend/zend_objects.c: zend_object_std_dtor destroys dynamic properties before declared slots and continues cleanup with a pending exception",
+      "Zend/zend_vm_def.h: ZEND_FE_FETCH_RW installs the selected reference after previous-CV destruction before propagating its exception"
+    ],
+    "native_first": {
+      "cut": "0824519ef/355",
+      "raw": "instance-future-unset-native-first19-6wpyr5un/report.json",
+      "observations": 3,
+      "model_evaluations": 0
+    },
+    "preserved_baseline": {
+      "cut": "0824519ef/355",
+      "raw": "instance-future-unset-baseline19-go8n5b_2/report.json",
+      "status": "unsupported",
+      "reason": "freeing instance property access",
+      "stdout": "C|A/1|",
+      "normal_agreements": 0
+    },
+    "changed_cut": "f43b28b47/355",
+    "compiler": {
+      "raw": "instance-future-unset-current355-sl-init1-attempt1/report.json",
+      "passed": true,
+      "elapsed_seconds": 4.638,
+      "application_evaluations": 0
+    },
+    "sources": {
+      "raw": "dynamic-property-warning-source-108ukbjb/report.json",
+      "normal_agreements": 3,
+      "sha256": {
+        "review-instance-future-unset-dynamic-inherited19": "f56f8ac07420f5f0ed06f0696dddb334c55448624dc5e0277f720f755a205841",
+        "review-instance-future-unset-visibility-alias19": "c0f2d72dcc6dd9fce40371310445a4020ed49728f21f4eb25c02651a6dba2995",
+        "review-instance-future-unset-pending19": "9ce14aa978eeaeba250276bb117cc8de1a367fd84fab82af859f55590dc23464"
+      }
+    },
+    "reached": {
+      "cut": "bad93efed/355",
+      "dynamic": {
+        "premises": 142,
+        "raw": "instance-future-unset-ivxl0tr9/report.json"
+      },
+      "pending": {
+        "premises": 147,
+        "raw": "instance-future-unset-wcxcb4ag/report.json"
+      },
+      "meaning": "289 setup-inclusive premises. Genuine dynamic-first order [1,0]/NEXT1 leaves declared physical slot0 future. Actual DIM_FETCH Error PENDING owner1 and receiver parent2->1 cleanup remain authenticated. Later child B sees original/current number PROP_UNSET but actual prefix consumed, retains Error and chains B->previousError before atomic selected binding. Missing/duplicate carriers, bad NEXT, identical-image consumed endpoint and getter metadata are constructed controls; getter control executes no body. Native/public-CLI evaluations0; strict SL evaluates these premises at120/jobs1."
+    },
+    "zero_credit": [
+      {
+        "cut": "f43b28b47/355",
+        "raw": "instance-future-unset-6_wq2qiz/report.json",
+        "kind": "evaluated fixture-premise failure",
+        "meaning": "Incorrect literal-default representation; source compiler stores PROP_STORED. Corrected fixture checks resolved property_default_state=7. Zero credited premises; no semantic change or source/compiler renewal."
+      }
+    ],
+    "review": "properties_review_19 independently accepted frozen safe source bytes, native3, unchanged baseline, exact29-line semantics and raw strict/source3/state289. Existing initial fixtures use a default-preserving shared factor and one statically adapted constructed original-UNSET assertion; no historical campaign renewed.",
+    "remaining": "Consumed native storage, quiet/getter accesses, untyped unset reads, already-freeing target reacquisition, raw parent mutation/reference acquisition, escape, private303 physical storage and wider pointer consumers remain required.",
+    "composition": {
+      "parent": "976a55232a6cdf592fe3d8e55c1c6547d6b19951",
+      "cut": "4b31fc1cc9f529a5f936051f3409760e34a976ee/356",
+      "raw": "instance-future-unset-current356-sl-init1-attempt2/report.json",
+      "passed": true,
+      "elapsed_seconds": 4.563,
+      "application_evaluations": 0,
+      "meaning": "Actual COMP assertions, EX main-GC carrier, GEN root tails, TRAIT scoped dispatch and SOURCE196/207/361 producers are preserved and disjoint. Source3 remains f43 and state289 bad93; only the combined compiler is renewed."
     }
   }
 }

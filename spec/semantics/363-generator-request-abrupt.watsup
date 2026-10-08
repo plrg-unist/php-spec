@@ -8,6 +8,7 @@ dec $generator_request_fatal_source(pstate, pgenfatal, ptask*) : bool
 dec $generator_request_fatal_history(pstate, pgenfatal) : pstate
 dec $generator_request_fatal_selected(pstate) : pgenfatal?
 dec $generator_request_fatal_begin(pstate, pgenfatal) : pstate
+dec $generator_request_fatal_parent_origin(pgenfatal) : porigin?
 dec $generator_request_fatal_tail(ptask*, pgenfatal) : ptask*?
 dec $generator_request_report_at(ptask*) : pgenfatal?
 dec $generator_request_bailout_tail(ptask*, pgenfatal) : ptask*?
@@ -67,6 +68,11 @@ def $generator_request_fatal_source(S, pgenfatal, (GENERATOR_REQUEST_RESUME pgen
   -- if pgenfatal.SOURCE = THROW_SEARCH pgenfatal.OBJECT
   -- if S_history = $generator_request_fatal_history(S, pgenfatal)[.TODO = (GENERATOR_REQUEST_RESUME pgenclose) :: ptask_tail*]
   -- if $generator_request_resume_valid(S_history, pgenclose)
+def $generator_request_fatal_source(S, pgenfatal, (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_tail*) = true
+  -- if pgenfatal.SOURCE = STRINGIFY_RESULT pgenfatal_parent.OBJECT porigin_method 0
+  -- if pgenfatal_parent.METHOD = (porigin_method)
+  -- if S_parent = $generator_request_fatal_history(S, pgenfatal)[.ORIGIN = (porigin_method)][.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_tail*]
+  -- if $generator_request_report_valid(S_parent, pgenfatal_parent)
 def $generator_request_fatal_source(S, pgenfatal, ptask*) = false -- otherwise
 
 def $generator_request_fatal_selected(S) = (pgenfatal)
@@ -83,6 +89,12 @@ def $generator_request_fatal_selected(S) = (pgenfatal)
   -- if $generator_request_handler_abrupt(S)
   -- if $throwable_live(S, n)
   -- if pgenfatal = {SOURCE THROW_SEARCH n, OBJECT n, HANDLERS S.EXCEPTIONHANDLERS, METHOD eps, TEXT eps, REPORT eps, FROZEN NORMAL}
+def $generator_request_fatal_selected(S) = (pgenfatal)
+  -- if S.COMPLETION = NORMAL
+  -- if $generator_request_report_abrupt(S)
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if S.TODO = (THROW_SEARCH n) :: (STRINGIFY_RESULT n_parent porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_tail*
+  -- if pgenfatal = {SOURCE STRINGIFY_RESULT n_parent porigin_method 0, OBJECT n, HANDLERS S.EXCEPTIONHANDLERS, METHOD eps, TEXT eps, REPORT eps, FROZEN NORMAL}
 def $generator_request_fatal_selected(S) = eps -- otherwise
 def $generator_request_fatal_ready(S) = ($generator_request_fatal_selected(S) =/= eps)
 
@@ -92,6 +104,12 @@ def $generator_request_fatal_begin(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_
 def $generator_request_fatal_begin(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = pgenfatal.SOURCE :: ptask_tail*
   -- if pgenfatal.SOURCE = THROW_SEARCH pgenfatal.OBJECT
+;; zend_call_function drops its completed receiver frame before C-root rethrow.
+;; The outer zend_exception_error still owns its actual REPORT claim.
+def $generator_request_fatal_begin(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_tail*][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH pgenfatal.OBJECT) :: pgenfatal.SOURCE :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_tail*
+  -- if pgenfatal.SOURCE = STRINGIFY_RESULT pgenfatal_parent.OBJECT porigin_method 0
+  -- if pgenfatal_parent.METHOD = (porigin_method)
 rule PhpStep/generator-request-fatal-begin: S ~> $generator_request_fatal_begin(S, pgenfatal)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $generator_request_fatal_selected(S) = (pgenfatal)
@@ -104,11 +122,24 @@ def $generator_request_fatal_tail((STRINGIFY_RESULT n porigin 0) :: (GENERATOR_R
   -- if pgenfatal.OBJECT = n /\ pgenfatal.METHOD = (porigin)
 def $generator_request_fatal_tail((CALL_ARGS (METHOD_TARGET n porigin) eps 0 eps (porigin) 0) :: (STRINGIFY_RESULT n porigin 0) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*, pgenfatal) = (ptask_tail*)
   -- if pgenfatal.OBJECT = n /\ pgenfatal.METHOD = (porigin)
+def $generator_request_fatal_tail((DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*, pgenfatal) = (ptask_tail*)
+  -- if pgenfatal.SOURCE = STRINGIFY_RESULT n_parent porigin_method 0
+  -- if pdestructionrelease.CALLER = eps /\ pdestructionrelease.ORIGIN = eps /\ pdestructionrelease.CONSTCONTEXT = eps /\ ~pdestructionrelease.USER
+  -- if pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_parent)] \/ pdestructionrelease.JOBS = eps
+  -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH pgenfatal.OBJECT /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
+def $generator_request_fatal_tail((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*, pgenfatal) = (ptask_tail*)
+  -- if pgenfatal.SOURCE = STRINGIFY_RESULT n_parent porigin_method 0
+  -- if pdestructionoperation.CALLER = eps /\ pdestructionoperation.ORIGIN = eps /\ pdestructionoperation.CONSTCONTEXT = eps
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH pgenfatal.OBJECT /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.COMPLETION = NORMAL
 def $generator_request_fatal_tail(ptask*, pgenfatal) = eps -- otherwise
 def $generator_request_report_at((GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*) = (pgenfatal)
 def $generator_request_report_at((STRINGIFY_RESULT n porigin 0) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*) = (pgenfatal)
 def $generator_request_report_at((CALL_ARGS (METHOD_TARGET n porigin) eps 0 eps (porigin) 0) :: (STRINGIFY_RESULT n porigin 0) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*) = (pgenfatal)
 def $generator_request_report_at(ptask*) = eps -- otherwise
+def $generator_request_fatal_parent_origin(pgenfatal) = (porigin_method)
+  -- if pgenfatal.SOURCE = STRINGIFY_RESULT n porigin_method 0
+def $generator_request_fatal_parent_origin(pgenfatal) = eps -- otherwise
 def $generator_request_fatal_method(S, pgenfatal) = true
   -- if pgenfatal.METHOD = eps /\ pgenfatal.TEXT = eps
 def $generator_request_fatal_method(S, pgenfatal) = true
@@ -134,8 +165,20 @@ def $eager_explicit_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $eager_explicit_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
+;; Heap edge discovery also walks this projection; keep its guards structural.
+;; Actual task admission authenticates the Throwable and retained REPORT.
+def $call_after_origin(S, THROW_SEARCH n) = S[.TODO = ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ptask_tail* = (STRINGIFY_RESULT n_parent porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_parent_tail*
+  -- if pgenfatal_parent.OBJECT = n_parent /\ pgenfatal_parent.METHOD = (porigin_method)
+  -- if pgenfatal_parent.FROZEN = NORMAL /\ pgenfatal_parent.TEXT = eps /\ pgenfatal_parent.REPORT = eps
+  -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps /\ S.ORIGIN = (porigin_method)
+def $call_after_origin(S, GENERATOR_REQUEST_REPORT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = (porigin_method)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pgenfatal.SOURCE = STRINGIFY_RESULT n_parent porigin_method 0
+  -- if $generator_request_fatal_tail(S.TODO, pgenfatal) = (ptask_tail*)
 def $call_after_origin(S, GENERATOR_REQUEST_REPORT pgenfatal) = S[.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-def $call_after_origin(S, GENERATOR_REQUEST_BAILOUT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $generator_request_fatal_parent_origin(pgenfatal) = eps
+def $call_after_origin(S, GENERATOR_REQUEST_BAILOUT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = $generator_request_fatal_parent_origin(pgenfatal)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $generator_request_bailout_tail(S.TODO, pgenfatal) = (ptask_tail*)
 def $generator_request_tail_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $generator_request_tail_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
@@ -145,6 +188,7 @@ def $generator_request_resume_position(ptask*, pgenclose) = $generator_request_r
   -- if $generator_request_report_at(ptask*) = (pgenfatal)
   -- if $generator_request_fatal_tail(ptask*, pgenfatal) = (ptask_tail*)
 def $generator_request_resume_plain((GENERATOR_REQUEST_BAILOUT pgenfatal) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
+def $generator_request_resume_plain((GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
 def $generator_request_resume_plain((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
   -- if $generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage)
 def $generator_request_resume_plain((DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pgenclose) = $generator_request_resume_plain(ptask_tail*, pgenclose)
@@ -304,6 +348,7 @@ def $generator_request_report_abrupt(S) = true
 def $generator_request_report_abrupt(S) = false -- otherwise
 rule PhpStep/generator-request-render-abrupt-required: S ~> S[.COMPLETION = UNSUPPORTED "Generator request fatal rendering exception"]
   -- if $generator_request_report_abrupt(S)
+  -- if ~$generator_request_fatal_ready(S)
 def $generator_request_release_abrupt(S) = true
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if $exception_task_scope(S) /\ $destructor_result_valid(S, pdestructorcall)

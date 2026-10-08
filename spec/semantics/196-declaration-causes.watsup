@@ -223,15 +223,20 @@ def $declaration_method_selection(S, pmethoddesc, porigin_called, PORIGIN n_unit
   -- if $method_accessible(S, pmethoddesc, $declaration_caller_lexical(pdeclcalls))
 ;; A captured method has already checked access at creation. Its historical
 ;; dynamic operand is not a retained object or a fresh caller-scope lookup.
-def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+dec $declaration_dynamic_method_site(pstate, porigin) : bool
+def $declaration_dynamic_method_site(S, porigin_site) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
   -- if $dynamic_fixed_name(S, porigin_site) = eps
+def $declaration_dynamic_method_site(S, porigin_site) = false -- otherwise
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $declaration_dynamic_method_site(S, porigin_site)
 def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
   -- if $origin_node(S.SOURCES, porigin_site) = (NExprBinaryOpPipe expression_left expression_right metadata)
   -- if ~$declaration_pipe_method(S, porigin_site)
   -- if $declaration_pipe_function(S, porigin_site) = eps
 def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if ~$declaration_dynamic_method_site(S, porigin_site)
   -- if $ptlc(pmethoddesc.NAME) = $ptascii("__tostring")
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if $effective_method(S, porigin_called, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)

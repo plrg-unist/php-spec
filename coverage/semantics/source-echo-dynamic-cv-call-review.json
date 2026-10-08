@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Direct ECHO of a noarg call through an ordinary CV dynamic callee. Independent INIT/CV5, call7 and ECHO5 certify retirement-before-live-selection; undefined warnings capture null, invokers remain selected through deletion, and returned TMPVAR/REFERENCE owners preserve bytes before destruction. Conditional function publication during returned conversion replays without overlapping dynamic/string method selection.",
+  "implementation": [
+    "spec/semantics/196-declaration-causes.watsup",
+    "spec/semantics/207-error-handler-runtime.watsup",
+    "spec/semantics/361-source-direct-call-emission.watsup"
+  ],
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_call/zend_compile_echo",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_INIT_DYNAMIC_CALL/ZEND_ECHO",
+    "vendor/php-src/Zend/zend_execute.c:zval_undefined_cv"
+  ],
+  "native": {
+    "reports": [
+      ".tools/include-echo-dynamic-cv-call-private-19/.tools/echo-dynamic-cv-call-originals-19/echo-dynamic-cv-call-native-gvhdwb2k/report.json",
+      ".tools/include-echo-dynamic-cv-call-private-19/.tools/echo-dynamic-cv-call-cast-declaration-19/cast-declaration-native-yvgyv9t3/report.json"
+    ],
+    "originals": 9,
+    "checked_guard_programs": 6,
+    "checked_eval_child": "Unique checked parent Scalar_String bytes equal the parse-eval input.",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "application_evaluations": 0,
+    "inputs_head_status_stable": true
+  },
+  "source_validation": {
+    "unique_originals": 9,
+    "raw_application_evaluations": 10,
+    "exact_source_agreements": 9,
+    "cuts": [
+      {
+        "report": ".tools/include-echo-dynamic-cv-call-private-19/.tools/echo-dynamic-cv-call-originals-19/echo-dynamic-cv-call-source-run-tq2228yl/report.json",
+        "sha256": "cf731ee4cd917c804ec56da328b6ebb74101086421803c814e7cecd847084baa",
+        "revision": "50f11389eca8be9a4cd1c50333fdfd0b4c737bf7",
+        "modules": 354,
+        "accepted_rows": [
+          "undefined-return",
+          "undefined-throw",
+          "invoke-result-throw",
+          "array-callee",
+          "retirement-throw",
+          "eval-reference",
+          "baseline"
+        ],
+        "raw_applications": 8
+      },
+      {
+        "report": ".tools/include-echo-dynamic-cv-call-private-19/.tools/echo-dynamic-cv-call-originals-19/echo-dynamic-cv-call-source-run-g15ie8e0/report.json",
+        "sha256": "ad132d54208e3ae211ea4ff9f9e5af7a7954e26032e3fd0c13a1e084b41c493b",
+        "revision": "dc8943d370b7fd73a7b34c2e9c62311d00194abf",
+        "modules": 354,
+        "accepted_rows": [
+          "live-string"
+        ],
+        "raw_applications": 1
+      },
+      {
+        "report": ".tools/include-echo-dynamic-cv-call-private-19/.tools/echo-dynamic-cv-call-cast-declaration-19/cast-declaration-source-run-6vx9jrmd/report.json",
+        "sha256": "9626bc9bafb8611a88f9c4311914443c3b1ace453f094068dbb9d7a180a4c837",
+        "revision": "f01375e6f83fd0f7475d4070c639fb7d9a6bd02f",
+        "modules": 354,
+        "accepted_rows": [
+          "cast-declaration"
+        ],
+        "raw_applications": 1
+      }
+    ],
+    "comparison": "Exact original stdout/stderr, accepted frontend/adapter, normal modeled completion/exit0; bounded processes fully reaped with stable inputs/head/status.",
+    "compatibility": "The fixed-site361 guard affects the late operand-destructor publication only. The exact-domain196 repair preserves the old admission union and removes duplicate success at returned __toString publication; earlier8 sources/239 state premises retain their cuts."
+  },
+  "independent_state": {
+    "cuts": [
+      {
+        "report": ".tools/include-review-19-echo-dynamic-cv-call/state-run-q_trqfu6/report.json",
+        "sha256": "e609f1460847044182b9706c9cd9e38e47a21df9fdbd3e3f9630a1d7412cee08",
+        "revision": "dc8943d370b7fd73a7b34c2e9c62311d00194abf",
+        "modules": 354,
+        "groups": {
+          "entry": 79,
+          "warning": 57,
+          "selection": 40,
+          "result": 63
+        },
+        "bindings": 166,
+        "boolean_checks": 73,
+        "physical_main_premises": 239,
+        "application_evaluations": 4
+      },
+      {
+        "report": ".tools/include-review-19-echo-dynamic-cv-call/state-run-cuzlkw0j/report.json",
+        "sha256": "f2cf23d4eacaa7d1d3cd70272e967d5cca86ccd857ceda0b12db8db726e6d1b4",
+        "revision": "f01375e6f83fd0f7475d4070c639fb7d9a6bd02f",
+        "modules": 354,
+        "groups": {
+          "cast": 38
+        },
+        "bindings": 27,
+        "boolean_checks": 11,
+        "physical_main_premises": 38,
+        "application_evaluations": 1
+      }
+    ],
+    "scope": "Real source retirement/INIT/CALL_DYNAMIC and full-image negatives; captured-null current/saved handler authentication and abrupt priority; invoker/array selection; TMP3\u21922\u21921 and independent returned HCELL owners, line and consumed-source controls. Fresh captured PDRFUNCTION cause, active/ready public replay and same-heap cause forgeries, installed-function use and genuine later eval parser ingress.",
+    "inputs_module_stats_head_status_stable": true,
+    "physical_main_premises": 277,
+    "bindings": 193,
+    "boolean_checks": 84,
+    "application_evaluations": 5
+  },
+  "current_composition": {
+    "canonical_parent": "5107cc589de2963b3e71ed35461253926f6874bf",
+    "revision": "eab8e26093afbbca455a1ce5adcd3b0af7d35cc6",
+    "modules": 356,
+    "report": ".tools/include-echo-dynamic-cv-call-current-19/.tools/echo-dynamic-cv-call-current-19/echo-dynamic-cv-call-current-compiler-t2t2gt7z/report.json",
+    "sha256": "d152dcaf1159b25ffc70132460743bfc7102a54b2ebac9817a8b59fbc90237c7",
+    "strict_compiler_seconds": 4.421,
+    "exit": 0,
+    "timeout": false,
+    "group_after": [],
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "compatibility": "Exact published5107/356 manifest; sole196/207/361 semantic delta equals f013. Public scoped-method selection, Generator renderer/root retirement, current collector leaf handling and assertion-state propagation preserve the ordinary dynamic-call/ECHO/history path; earlier source/state cuts retain their inputs."
+  },
+  "preserved_zero_credit": [
+    "echo-dynamic-cv-call-baseline-y6uv5psb: unchanged2257 standalone1 application/0 agreement loses BYTES when returned destructor throws.",
+    "state-run-2x57j0xk: real main-time nondeterminism between196 dynamic selection and361 first-ECHO destructor delegation,0 completed applications; fixed only361 delegate domain.",
+    "cast-declaration-baseline-m4l_jswo: unchanged dc894 interpreter_failure during later eval,196 dynamic/__toString selection overlap;1 attempted application/0 agreement. Recorder assertion after report creation is retained.",
+    "state-run-w_2016z5: authored tuple-list alias binder elaboration stop,0 applications; only duplicate iteration removed before retry.",
+    "state-run-gk6i4wfi: fixture optional-CALLSITE tuple upcast stop before predicates,0 accepted applications; forged causes now use canonical declaration_context, same38 premises."
+  ],
+  "maintained_sources": {
+    "harness": "tests/semantics/source_stringable_retirement_sources.py",
+    "prefix": "echo-dynamic-cv-call-",
+    "selectors": 9,
+    "php_files": 16,
+    "relocation": "Nine child/eval/baseline files are identical; seven include mains change only child basenames (live-string twice, other mains once). Prior mappings/default selection are preserved.",
+    "renewed_applications_or_agreements": 0
+  },
+  "reproduction": {
+    "private_cwd": ".tools/include-echo-dynamic-cv-call-private-19",
+    "native": "python3 .tools/echo-dynamic-cv-call-originals-19/prepare-native.py",
+    "source8": "python3 .tools/echo-dynamic-cv-call-originals-19/run-source.py --native-report .tools/echo-dynamic-cv-call-originals-19/echo-dynamic-cv-call-native-gvhdwb2k/report.json",
+    "cast_native": "python3 .tools/echo-dynamic-cv-call-cast-declaration-19/prepare-native.py",
+    "cast_source": "python3 .tools/echo-dynamic-cv-call-cast-declaration-19/run-source.py --native-report .tools/echo-dynamic-cv-call-cast-declaration-19/cast-declaration-native-yvgyv9t3/report.json",
+    "state_cwd": ".",
+    "state239": "python3 .tools/include-review-19-echo-dynamic-cv-call/run-state.py --source-report .tools/include-echo-dynamic-cv-call-private-19/.tools/echo-dynamic-cv-call-originals-19/echo-dynamic-cv-call-source-run-g15ie8e0/report.json",
+    "cast_state": "python3 .tools/include-review-19-echo-dynamic-cv-call/run-state.py --case cast --prepared .tools/include-review-19-echo-dynamic-cv-call/PREPARED-CAST.json --source-report .tools/include-echo-dynamic-cv-call-private-19/.tools/echo-dynamic-cv-call-cast-declaration-19/cast-declaration-source-run-6vx9jrmd/report.json",
+    "caps_seconds": {
+      "compiler": 300,
+      "source_cli": 60,
+      "source_outer": 90,
+      "state_group": 90
+    },
+    "jobs": 1,
+    "profile": "tests/semantics/profile.json; error_reporting30719/include_path.:; LC_ALL=C/TZ=UTC/PHP_SPEC_SCRIPT_ENCODING absent; strict SL cache=false/det=true.",
+    "revision_note": "Restore the recorded private revision before each matching command: source8 at50f11389e, live-string retry/state239 atdc8943d37, cast source/state38 atf01375e6f. PREPARED files bind those exact semantic inputs; current-parent compilation is separate.",
+    "source_live_retry": "python3 .tools/echo-dynamic-cv-call-originals-19/run-source.py --case live-string --native-report .tools/echo-dynamic-cv-call-originals-19/echo-dynamic-cv-call-native-gvhdwb2k/report.json",
+    "actual_cwd": ".tools/include-echo-dynamic-cv-call-current-19",
+    "current_compiler": "python3 .tools/echo-dynamic-cv-call-current-19/run-compiler.py 5107cc589de2963b3e71ed35461253926f6874bf"
+  },
+  "remaining": [
+    "Wider callee and argument producers, source emissions/providers and complete core remain required.",
+    "No declaration receipt, task or owning schema changes; user-paused return verification remains unchanged.",
+    "Final combined fresh offline rebuild remains required; copied tools establish no new portability claim."
+  ],
+  "reviewer": "include_review_19"
+}

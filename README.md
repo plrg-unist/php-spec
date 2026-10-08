@@ -108,6 +108,15 @@ retain live handler writes. Returned temporary/reference owners keep bytes after
 argument mutation. Seven exact originals and204 independent premises retain private351; actual354
 passes strict compilation. Wider call shapes remain required.
 
+[Direct ECHO through an ordinary dynamic callee CV](coverage/semantics/source-echo-dynamic-cv-call-review.json)
+now retires the source operand at INIT5 before selecting the live callable.
+Undefined-CV handlers retain fixed null; selected invokers survive callee deletion,
+and returned temporary/reference owners keep bytes before destruction. Callable
+and ECHO lines remain distinct. A returned cast can publish a function and survive
+later eval history replay. Nine exact originals retain their private354 cuts;
+independent277 premises pass. Actual356 passes strict compilation. Wider callee
+and argument producers remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -171,9 +180,12 @@ Assertions now distinguish startup modes `-1`, `0` and `1` before compilation,
 including eval/include replay. Known direct calls capture normalized descriptions;
 dynamic and first-class calls keep ordinary argument evaluation. Twenty-five
 retained source/profile comparisons and 64 reached-state premises pass, including
-fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime mode
-updates, assertion options/callbacks, Stringable descriptions and wider expression
-export remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
+fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime INI updates
+preserve initial/current raw bytes and restore state; quiet quantities, positive
+mode 2, negative-boundary refusals and nested/throwing warning handlers match
+twelve further source profiles. Parsing warnings, Stringable-option refusal,
+assertion options/callbacks, Stringable descriptions and wider expression export
+remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
@@ -306,8 +318,10 @@ delegated cache lifetime and nested normal handlers. [Request fatal cleanup 363]
 retains Generator/cache owners through normal fatal rendering, releases the reported
 exception before bailout, then suppresses later destructors. Normal exception-owned
 stdClass/ordinary child cleanup retains full admission and actual storage pins.
-Abrupt rendering or exception release, parked/escaped storage and broader terminal
-cleanup remain required.
+A renderer rethrow at request C root reports/releases its builtin inner Throwable
+before abandoning the original report and real Generator/cache owners. Live-handler
+or deeper rendering, abrupt exception release, parked/escaped storage and generic
+terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -932,7 +946,7 @@ cover pending exceptions, the Generator RETURN-child interaction and genuine
 Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
 adds one exact Iterator-child original and 113 reached premises; future
 destructor-tail validation applies the real result discard before owner checks.
-Consumed or explicitly unset property payload access and escaped reacquisition remain required.
+Consumed property storage and escaped reacquisition remain required.
 The same physical pin now covers ordinary stdClass storage. A materialized
 property table transfers its one HARRAY owner before bucket cleanup; shared tables
 keep their children after the parent retires. Five new exact originals and
@@ -953,8 +967,14 @@ Unvisited uninitialized typed properties now raise ordinary Error after visibili
 resolution, using the declaring class and source line. Three exact originals and
 123/141 reached premises cover inherited declarations, private denial, pending
 Error ownership, continued child cleanup and atomic selected-reference binding.
-Consumed and explicitly unset slots remain separate boundaries.
+Consumed slots remain a separate boundary.
 The actual355 composition passes strict initialization.
+Future explicitly unset typed slots now raise the same Error when no getter is
+present. Three exact originals and 142/147 reached premises distinguish actual
+dynamic-first cleanup order from physical slot indexes, retain visibility and
+alias detachment, and verify pending cleanup and atomic selected binding.
+Consumed slots, quiet/getter accesses and untyped unset reads remain required.
+The actual356 composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -970,8 +990,14 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
-Abstract scoped calls reject before arguments while retaining access-error priority;
-one normal source and24 supplied checks plus6 setup clauses pass.
+Ordinary abstract scoped calls reject before arguments, and inaccessible concrete
+nonstatic methods report access errors before missing-receiver errors. Literal
+constructor calls retain their separate opcode dispatch, checking private denial
+before receiver compatibility. That further case passes one original and24
+genuine checks plus6 setup. The preceding two cases pass
+two normal originals and54 supplied checks plus12 setup clauses (40 genuine
+clauses and14 helper-only clauses covering flag/source probes); prior abstract-call
+evidence remains separate.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work

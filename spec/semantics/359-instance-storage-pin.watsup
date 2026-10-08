@@ -241,6 +241,31 @@ def $instance_storage_initial_desc(S, n, ptbytes) = (ppropertydesc)
   -- if ppropertyslot_live.STATE = PROP_INITIAL
   -- if $property_slot_valid(S, ppropertydesc, ppropertyslot_live)
 def $instance_storage_initial_desc(S, n, ptbytes) = eps -- otherwise
+;; Explicitly unset slots keep the same image after a visit. Their physical
+;; index must therefore be outside the actual dynamic-first release prefix.
+dec $instance_storage_declared_index(ppropertyslot*, ptbytes, nat) : nat?
+def $instance_storage_declared_index(eps, ptbytes, n) = eps
+def $instance_storage_declared_index(ppropertyslot :: ppropertyslot_tail*, ptbytes, n) = (n)
+  -- if ppropertyslot.DECL =/= eps /\ ppropertyslot.NAME = ptbytes
+def $instance_storage_declared_index(ppropertyslot :: ppropertyslot_tail*, ptbytes, n) = $instance_storage_declared_index(ppropertyslot_tail*, ptbytes, $(n + 1))
+  -- if ppropertyslot.DECL = eps \/ ppropertyslot.NAME =/= ptbytes
+dec $instance_storage_unset_desc(pstate, nat, ptbytes) : ppropertydesc?
+def $instance_storage_unset_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $instance_storage_for(S, n) = (pinstancestorage)
+  -- if $instance_storage_state_valid(S)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $effective_method(S, porigin, $ptascii("__get"), |S.CLASSES|) = eps
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ptbytes) = (ppropertyslot_live)
+  -- if $property_slot_at(pinstancestorage.SLOTS, ptbytes) = (ppropertyslot_live)
+  -- if ppropertyslot_live.STATE = PROP_UNSET
+  -- if $property_slot_valid(S, ppropertydesc, ppropertyslot_live)
+  -- if $instance_storage_declared_index(pinstancestorage.SLOTS, ptbytes, 0) = (n_slot)
+  -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
+  -- if ~(n_slot <- nat_order*[0:pinstancestorage.NEXT])
+def $instance_storage_unset_desc(S, n, ptbytes) = eps -- otherwise
 def $property_read(S, POBJECT n, ptbytes, z) = $property_read_key(S, POBJECT n, ptbytes_key, z)
   -- if $instance_storage_freeing(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
@@ -254,10 +279,14 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN pvalue]
 def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
   -- if $instance_storage_freeing(S, n)
   -- if $instance_storage_initial_desc(S, n, ptbytes) = (ppropertydesc)
+def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
+  -- if $instance_storage_freeing(S, n)
+  -- if $instance_storage_unset_desc(S, n, ptbytes) = (ppropertydesc)
 def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"]
   -- if $instance_storage_freeing(S, n)
   -- if $instance_storage_read_value(S, n, ptbytes) = eps
   -- if $instance_storage_initial_desc(S, n, ptbytes) = eps
+  -- if $instance_storage_unset_desc(S, n, ptbytes) = eps
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
 def $property_store_value(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
 def $property_store_key(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)

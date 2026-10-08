@@ -79,7 +79,10 @@ def step(parent, state):
             f'{state} = {state}_found[.COMPLETION = NORMAL]', *base.valid(state)]
 
 
-def start(initial, declaring):
+def start(initial, declaring, unset=False):
+    state = "PROP_UNSET" if unset else "PROP_INITIAL"
+    helper = "instance_storage_unset_desc" if unset else "instance_storage_initial_desc"
+    default = '$property_default_state(S_before, ppropertydesc) = (PROP_VALUE (DIRECT (PINT 7)))' if unset else 'ppropertydesc.DEFAULT = PROP_UNINITIALIZED'
     message = f'Typed property {declaring}::$number must not be accessed before initialization'
     return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
         *seek('S_initial', 'S_before', 0),
@@ -101,12 +104,12 @@ def start(initial, declaring):
         'ptbytes_key = $ptascii("number")',
         'S_before.ORIGIN = (porigin_read)',
         '$property_slot_at(pinstancestorage.SLOTS, ptbytes_key) = (ppropertyslot_number)',
-        'ppropertyslot_number.STATE = PROP_INITIAL',
+        f'ppropertyslot_number.STATE = {state}',
         '$objectprops_at(S_before.OBJECTPROPS, n_parent) = (ppropertyslot_live*)',
         '$property_slot_at(ppropertyslot_live*, ptbytes_key) = (ppropertyslot_number)',
-        '$instance_storage_initial_desc(S_before, n_parent, ptbytes_key) = (ppropertydesc)',
+        f'${helper}(S_before, n_parent, ptbytes_key) = (ppropertydesc)',
         'ppropertydesc.TYPE =/= eps',
-        'ppropertydesc.DEFAULT = PROP_UNINITIALIZED',
+        default,
         f'$property_declaring_name(S_before.CLASSES, ppropertydesc.ORIGIN) = $ptascii("{declaring}")',
         '$instance_storage_read_value(S_before, n_parent, ptbytes_key) = eps',
         f'ptbytes_message = $ptascii("{message}")',
@@ -173,7 +176,8 @@ def controls():
         'S_unset = S_before[.OBJECTPROPS = $objectprops_set(S_before.OBJECTPROPS, n_parent, $instance_storage_cleared(pinstancestorage_unset.SLOTS, 0))][.FRAMES = pframe_owner[.TODO = $initial_replace_stage(pframe_owner.TODO, pinstancestorage_unset)] :: pframe_tail*]',
         '$instance_storage_state_valid(S_unset)',
         '$instance_storage_initial_desc(S_unset, n_parent, ptbytes_key) = eps',
-        '$property_read(S_unset, POBJECT n_parent, ptbytes_key, z).COMPLETION = UNSUPPORTED "freeing instance property access"',
+        '$instance_storage_unset_desc(S_unset, n_parent, ptbytes_key) = (ppropertydesc)',
+        '$property_read(S_unset, POBJECT n_parent, ptbytes_key, z).COMPLETION = THROWN "Error" ptbytes_message z',
         '$instance_storage_initial_desc(S_before, n_parent, $ptascii("first")) = eps',
         '$property_read(S_before, POBJECT n_parent, $ptascii("first"), z).COMPLETION = UNSUPPORTED "freeing instance property access"',
         '$property_quiet(S_before, POBJECT n_parent, ptbytes_key, z).COMPLETION = UNSUPPORTED "freeing instance property access"',
@@ -188,8 +192,9 @@ def inherited_assertions(initial, expected):
         '~((HOBJECT n_parent) <- S_done.ALLOCATIONS)']
 
 
-def pending_assertions(initial, expected):
-    return [*start(initial, 'FutureInitialPendingParent359'),
+def pending_assertions(initial, expected, unset=False):
+    declaring = 'FutureUnsetPendingParent359' if unset else 'FutureInitialPendingParent359'
+    return [*start(initial, declaring, unset),
         'pinstancestorage.SLOTS = [ppropertyslot_first, ppropertyslot_number, ppropertyslot_second]',
         'ppropertyslot_second.STATE = PROP_VALUE (DIRECT (POBJECT n_second))',
         *seek('S_throw', 'S_second', 1),

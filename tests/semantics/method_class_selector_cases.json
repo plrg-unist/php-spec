@@ -156,5 +156,83 @@
       "implicit_flush": "1",
       "zend.assertions": "1"
     }
+  },
+  {
+    "id": "published-protected-nonstatic-call-before-arguments",
+    "source": "<?php\nfunction argument() { echo \"ARG;\"; }\nabstract class A { protected function n() { echo \"BODY;\"; } }\necho \"PRE;\";\ntry { A::n(argument()); }\ncatch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\necho \"POST;\";\n",
+    "source_sha256": "f512aba6b51c539c8e080eda5897dfa346dcaf3e8f7ec960dceb93312544fa9e",
+    "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-published-protected-nonstatic-call-before-arguments/command.json",
+    "native_raw_sha256": "89d17c0e9aa9a55ba3b97d6afdd4a2496b4ea22b6bb6b56b12c34805faddb55d",
+    "status": "normal",
+    "exit_status": 0,
+    "stdout_base64": "UFJFO0VSUk9SOkNhbGwgdG8gcHJvdGVjdGVkIG1ldGhvZCBBOjpuKCkgZnJvbSBnbG9iYWwgc2NvcGU7UE9TVDs=",
+    "stderr_template_base64": "",
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "published-abstract-constructor-call-before-arguments",
+    "source": "<?php\nfunction argument() { echo \"ARG;\"; }\nabstract class A { abstract public function __construct(); }\necho \"PRE;\";\ntry { A::__construct(argument()); }\ncatch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\necho \"POST;\";\n",
+    "source_sha256": "2d9394f45c2adff7cc3453b75e1c9b7b52a250c66488918a755b6c37247fc120",
+    "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-published-abstract-constructor-call-before-arguments/command.json",
+    "native_raw_sha256": "7377d05edf3685c2b02857e2a53b989b0e17962668f4dfc2de6fd63faea8e70d",
+    "status": "normal",
+    "exit_status": 0,
+    "stdout_base64": "UFJFO0VSUk9SOk5vbi1zdGF0aWMgbWV0aG9kIEE6Ol9fY29uc3RydWN0KCkgY2Fubm90IGJlIGNhbGxlZCBzdGF0aWNhbGx5O1BPU1Q7",
+    "stderr_template_base64": "",
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
+  },
+  {
+    "id": "private-constructor-unrelated-receiver-before-arguments",
+    "source": "<?php\nfunction argument() { echo \"ARG;\"; }\nclass A { private function __construct() { echo \"BODY;\"; } }\nclass B {\n    public function go() {\n        try { A::__construct(argument()); }\n        catch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\n    }\n}\necho \"PRE;\";\n(new B)->go();\necho \"POST;\";\n",
+    "source_sha256": "18949cd1eda1dcbffed1e22bc161d93dc69df07ad9c41ead3ab22858e8ee92d0",
+    "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-private-constructor-unrelated-receiver-before-arguments/command.json",
+    "native_raw_sha256": "34e4cbb4d92688abdb7d4550688c9f1e1da402832890a2f99aa15f89fb5b49f8",
+    "status": "normal",
+    "exit_status": 0,
+    "stdout_base64": "UFJFO0VSUk9SOkNhbm5vdCBjYWxsIHByaXZhdGUgQTo6X19jb25zdHJ1Y3QoKTtQT1NUOw==",
+    "stderr_template_base64": "",
+    "native_profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    }
   }
 ]

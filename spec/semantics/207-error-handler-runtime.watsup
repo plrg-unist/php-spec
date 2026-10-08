@@ -42,6 +42,7 @@ dec $error_binary_source(pcnode) : pbin?
 dec $error_read_source(pstate, perrorread) : bool
 dec $code_expression_at_source(pstate, porigin, pcpath) : int?
 dec $error_read_valid(pstate, perrorread) : bool
+dec $error_read_resume(pstate, perrorread, ptask*) : pstate
 dec $error_read_discard(pstate, ptask) : pstate
 dec $error_context_frame_call(pcallcontext, pframe*) : perrorcall?
 dec $error_context_frame_head(pcallcontext, pframe*) : perrorcall?
@@ -275,7 +276,8 @@ def $error_read_begin(S) = $identity_read_begin(S, pidentityread)
 def $error_read_begin(S) = $error_dispatch(S, 2, $ptascii("Undefined variable $") ++ perrorread.NAME, perrorread.LINE, WARNING perrorread.NAME perrorread.LINE, ERROR_READ_RESULT perrorread)
   -- if ~$key_read_pending(S)
   -- if $error_read_plan(S) = (perrorread)
-rule PhpStep/error-read-resume: S ~> S[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE]
+def $error_read_resume(S, perrorread, ptask_tail*) = S[.TODO = perrorread.TASK :: ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE] -- otherwise
+rule PhpStep/error-read-resume: S ~> $error_read_resume(S, perrorread, ptask_tail*)
   -- if S.TODO = (ERROR_READ_RESULT perrorread) :: ptask_tail*
   -- if $error_read_valid(S, perrorread)
 ;; ORIGINAL and INPUT are provenance alternatives, not additional owners.

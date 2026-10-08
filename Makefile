@@ -389,6 +389,8 @@ test-semantics: build
 	python3 tests/semantics/instance_future_heap_read_protocol.py --group array
 	python3 tests/semantics/instance_future_initial_read_protocol.py --group inherited
 	python3 tests/semantics/instance_future_initial_read_protocol.py --group pending
+	python3 tests/semantics/instance_future_unset_read_protocol.py --group dynamic
+	python3 tests/semantics/instance_future_unset_read_protocol.py --group pending
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
@@ -672,6 +674,9 @@ test-semantics: build
 	python3 tests/semantics/generator_request_abrupt_protocol.py --mode check --sl
 	python3 tests/semantics/generator_request_child_storage_peer_sources.py --mode full
 	python3 tests/semantics/generator_request_child_storage_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_render_abrupt_peer_sources.py --mode full
+	python3 tests/semantics/generator_request_render_abrupt_sources.py --mode full
+	python3 tests/semantics/generator_request_render_abrupt_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl
