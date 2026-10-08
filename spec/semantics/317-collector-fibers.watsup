@@ -25,7 +25,9 @@ dec $gc_worker_detach(pstate, nat, pgcplan) : pstate
 dec $gc_worker_guard_done(pstate, pgcguard) : pstate
 dec $gc_worker_guard_drop(pstate, pgcguard) : pstate
 dec $gc_worker_guard_zero(pstate, pgcguard) : pstate
+dec $gc_worker_public_resume(pstate, pconfigcall, pvalue) : pstate
 def $gc_worker_guard_zero(S, pgcguard) = S[.COMPLETION = UNSUPPORTED "zero-owner target after detached collector guard retirement"] -- otherwise
+def $gc_worker_public_resume(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "public resumption of an idle cached collector Fiber"] -- otherwise
 dec $gc_worker_pending_tasks(ptask*, pgcguard, pgcguard) : ptask*
 dec $gc_worker_pending(pstate, pgcguard, nat) : pstate
 dec $gc_worker_run_valid(pstate, nat) : bool
@@ -217,7 +219,7 @@ def $call_task_valid(S, GC_WORKER_IDLE n) = true
   -- if S.CURRENT = eps
   -- if S.FRAMES = eps
   -- if S.ORIGIN = eps
-def $fiber_resume(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "public resumption of an idle cached collector Fiber"]
+def $fiber_resume(S, pconfigcall, pvalue) = $gc_worker_public_resume(S, pconfigcall, pvalue)
   -- if pconfigcall.OWNER = S.GC.WORKER
   -- if S.GC.WORKER =/= eps
 
