@@ -1050,6 +1050,20 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
   -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
 def $call_after_origin(S, ASSERT_CALLBACK_RESULT passertcall) = S[.ORIGIN = (passertcall.FAILURE.CALL.SITE)]
 def $call_after_origin(S, ASSERT_CALLBACK_INVOKE passertcall) = S[.ORIGIN = (passertcall.FAILURE.CALL.SITE)]
+def $throwable_same_frame_continuation(S, S_next, ptask_old*) = S_next[.TODO = ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if ptask_old* = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if $assertion_callback_valid(S, passertcall)
+  -- if $throwable_live(S, n)
+  -- if S_next.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n_next
+def $throwable_same_frame_continuation(S, S_next, ptask_old*) = S_next[.TODO = ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (ASSERT_CALLBACK_CLEAN passertcall) :: ptask_tail*
+  -- if ptask_old* = (ASSERT_CALLBACK_CLEAN passertcall) :: ptask_tail*
+  -- if $assertion_callback_cleanup_valid(S, passertcall)
+  -- if $throwable_live(S, n)
+  -- if S_next.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n_next
 def $throwable_continuation(S, S_next) = S_next
   -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
   -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
