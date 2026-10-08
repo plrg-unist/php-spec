@@ -1360,5 +1360,33 @@
       "raw": ".tools/compiler-gc-keep-current-parent-18/.tools/gc-zero-current-join-v1/report.json",
       "limits": "Prior309118/Weak/native and55.046 timeout0 retain their own revisions. No renewed source,231, speedup or fresh/offline build credit."
     }
+  },
+  "gc_release_walk_keep_factor": {
+    "tested_revision": "cd2f2a3553c31409188e4e0f2e9aa5471eeb1abe",
+    "implementation_revision": "d64397f0cef0750f3c1a8e063f391b5265a4831d",
+    "canonical_parent": "79546523e03d45b645f28f45b028ab6982c97f0f",
+    "module_count": 314,
+    "scope": "301 retains public epsilon/HANDLE lazy clauses; first real node job computes the identical fixed-S keep once, then helper preserves evolving H, exact ownership guards, remaining-job roots, child/free queue and done order. Unmatch reaches original257 fallback; Runtime still propagates.",
+    "mode": "strictSL/dettrue/cachefalse; jobs1; state120; source45/host55",
+    "gates": [
+      "Strict initialization PASS3.919480s; real processed-DONE44 PASS29.848933s and ACTIVE-bare77 PASS26.844617s, all true/exit0/cleanup0/empty stderr.",
+      "Direct kept-target walks return eps; removing only the bare BUFFER preserves the heap and gives exact leaf release [target]. Real one-step/full GC retirement remains valid.",
+      "Parent-child WeakReference native/public exact P:live|C:null|N|END normal/accepted/program/exit0/empty stderr PASS9.325083s.",
+      "Full retry native matches; public PID4115976 host55.065073 timeout/cleanup-9/empty streams remains zero agreement."
+    ],
+    "inputs_unchanged": true,
+    "groups_reaped": true,
+    "review": "compiler_review_18 independently accepted exact code,121 genuine/controlled predicates, raw/stability and source tuple. EX and GEN reviewers accepted immutable keep, queue/root multiplicity, lazy domains and original fallback.",
+    "maintained_test": "Two exact passed kept-target walk queries promoted into the maintained ACTIVE/DONE cases; no new execution or full-group renewal credited.",
+    "raw": ".tools/compiler-gc-release-keep-18/.tools/gc-release-gate-v1/run-v1/report.json",
+    "limits": "Epsilon/HANDLE/Unmatch/Runtime domains are statically reviewed. No demonstrated speedup, whole retry/current231 agreement or fresh offline build; prior cuts retain identities and91 excluded.",
+    "current_join": {
+      "tested_revision": "1e95f04a8c58aee310c9342484ab5390b6347264",
+      "canonical_parent": "6a6a69475",
+      "module_count": 316,
+      "compiler": "StrictSL/dettrue/cachefalse/jobs1 PASS3.869538s true/exit0/cleanup0/empty stderr; inputs unchanged and group empty.",
+      "compatibility": "Only accepted301 lazy-walk factor introduced; current332 public-worker Throwable roots and333 source/line certificates remain unchanged. Fixed-S keep is never hoisted across worker promotion, caller restore or real source handoff. No concrete introduced risk requires old121/Weak/source renewal.",
+      "raw": ".tools/compiler-gc-keep-current-parent-18/.tools/gc-release-current-join-v1/report.json"
+    }
   }
 }
