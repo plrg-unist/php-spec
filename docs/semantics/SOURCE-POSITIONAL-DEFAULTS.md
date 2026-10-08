@@ -205,5 +205,7 @@ The `500a2cedc`/340 eager-edge original also reaches host55.045470 with empty
 streams and zero agreement.
 The `e1c3d4d61`/343 owner-order-carry original reaches host55.043267 with empty
 streams and zero agreement. Pure graph worklist pruning passes typed and genuine
-cascade controls at `a39876cbe`/343; its original retry remains UNRUN.
+cascade controls at `a39876cbe`/343; its `9cacdbf51`/345 original reaches host55.044761
+with empty streams and zero agreement. Same-state pruning-edge reuse passes
+typed and genuine frontiers at `738d2a3b1`/345; its original retry remains UNRUN.
 Whole retry composition and wider producers remain open.

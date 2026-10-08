@@ -541,6 +541,23 @@ and matches the new graph and public pruning results. Raw checks:
 `.tools/compiler-heap-prune-worklist-19/.tools/heap-prune-worklist-controls-v1`.
 Final 345-module composition at `8ed6d5bcb` passes changed initialization in 4.272s.
 Raw final check: `.tools/compiler-heap-prune-worklist-current-19/.tools/heap-prune-worklist-current-controls-v1`.
+The `9cacdbf51`/345 original retry matches native output but reaches host 55.044761
+with empty streams and zero agreement; inputs stay stable and the group is reaped.
+Raw retry: `.tools/compiler-heap-prune-worklist-current-19/.tools/full-default-retry-heap-prune-worklist-v1/run-v1`.
+One current-public-path hook diagnostic reaches normal active-Fiber execution
+with output through `H1|H2|X|H3|same:same:` before host 55.046281. Completed outer
+allocation-edge calls total 17.202s; `heap_prune` totals 1.025s. These nested
+observations include hook overhead and establish no speedup or source agreement.
+Raw diagnostic: `.tools/compiler-heap-prune-worklist-current-19/.tools/current-public-phase-v1`.
+GC now reuses pruning's already-built edges only when the full prepared/pruned
+states are equal; changed states recompute, preserving owner/root order and fallback.
+Exact `738d2a3b1`/345 passes initialization and 60 typed physical/47 main premises
+in 4.222s each, plus 65 reached physical/57 main premises in 4.971s. The latter
+admits real unchanged STMT GC and changed raw post-UNSET pruning. Its initial
+blank-separator parse stop remains preserved, with zero runtime credit.
+Raw checks: `.tools/compiler-pruned-edges-19/.tools/pruned-edges-controls-v{1,2}`.
+Final 349-module composition at `9b69ebb2e` passes changed initialization in 4.323s.
+Raw final check: `.tools/compiler-pruned-edges-current-19/.tools/pruned-edges-current-controls-v1`.
 Its original retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary

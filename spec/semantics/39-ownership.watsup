@@ -313,11 +313,14 @@ dec $generator_prune_pending(pstate, pnode*) : bool
 dec $generator_prune(pstate, pnode*) : pstate
 dec $prune_allocations_live(pstate, pnode*) : pstate
 dec $prune_allocations_graph(pstate, hgraph, pnode*) : pstate
+dec $prune_allocations_observed(pstate) : (pstate, hgraph)
 dec $fiber_prune_graph(pstate, hgraph, pnode*) : pstate
 dec $destruction_prune_graph(pstate, hgraph, pnode*) : pstate
 def $destruction_prune_graph(S, H, pnode_live*) = $prune_live(S, pnode_live*) -- otherwise
 def $fiber_prune_graph(S, H, pnode_live*) = $destruction_prune_graph(S, H, pnode_live*) -- otherwise
-def $prune_allocations(S) = $prune_allocations_graph(S, H, $gc_prune_nodes_graph(S, H))
+def $prune_allocations(S) = S_new
+  -- if (S_new, H) = $prune_allocations_observed(S)
+def $prune_allocations_observed(S) = ($prune_allocations_graph(S, H, $gc_prune_nodes_graph(S, H)), H)
   -- if H = $heap_graph(S)
 def $prune_allocations_graph(S, H, pnode_live*) = $generator_prune(S, pnode_live*)
   -- if $generator_prune_pending(S, pnode_live*)
