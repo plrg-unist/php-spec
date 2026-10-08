@@ -13,11 +13,30 @@ def $source_emission_noarg_call(S, n, pcpath, NExprFuncCall name (SEQUENCE eps) 
   -- if $compiled_effects(S, PORIGIN n pcpath) = eps
 def $source_emission_noarg_call(S, n, pcpath, expression) = eps -- otherwise
 
+;; A borrowed ordinary callee CV emits no FETCH. INIT keeps its CV line while
+;; DO_CALL uses the parser's separately recorded callable-expression line.
+dec $source_emission_dynamic_cv_call(pstate, nat, pcpath, expression) : int?
+def $source_emission_dynamic_cv_call(S, n, pcpath, NExprFuncCall (NExprVariable (BYTES text_callee) metadata_callee) (SEQUENCE eps) metadata_call) = (z_init)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall (NExprVariable (BYTES text_callee) metadata_callee) (SEQUENCE eps) metadata_call)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_callee) metadata_callee)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = eps
+  -- if $code_call_init(pcode.EXPRESSIONS, pcpath) = (z_init)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_init, false))
+  -- if z_init = $source_line(metadata_callee)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_call, false))
+  -- if $(z_call > 0)
+  -- if z_call = $callable_line(metadata_call)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_dynamic_cv_call(S, n, pcpath, expression) = eps -- otherwise
+
 ;; INIT also precedes the single ordinary CV's SEND. The argument certificate
 ;; describes its later instruction, never its live value before or after SEND.
 dec $source_emission_echo_call(pstate, nat, pcpath, expression) : int?
 def $source_emission_echo_call(S, n, pcpath, expression) = (z)
   -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
+def $source_emission_echo_call(S, n, pcpath, expression) = (z)
+  -- if $source_emission_dynamic_cv_call(S, n, pcpath, expression) = (z)
 def $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call)
   -- if $code_at(S.CODE, n) = (pcode)
@@ -51,6 +70,8 @@ def $source_emission_echo_call(S, n, pcpath, expression) = eps -- otherwise
 dec $source_emission_echo_line(pstate, nat, pcpath, expression) : int?
 def $source_emission_echo_line(S, n, pcpath, expression) = (z)
   -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
+def $source_emission_echo_line(S, n, pcpath, expression) = (z)
+  -- if $source_emission_dynamic_cv_call(S, n, pcpath, expression) = (z)
 def $source_emission_echo_line(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_argument)
   -- if $source_emission_echo_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call) = (z_init)
   -- if $code_expression_at_source(S, PORIGIN n pcpath, [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (z_argument)
@@ -122,6 +143,23 @@ def $echo_call_site_valid(S, PORIGIN n pcpath, z) = true
   -- if $echo_emit_source(S, PORIGIN n pcpath, z)
 def $echo_call_site_valid(S, porigin_site, z) = false -- otherwise
 
+;; INIT_DYNAMIC_CALL uses the warning's captured null, even if its handler
+;; replaces the live callee. Consume it directly instead of exposing an invalid
+;; CALL_DYNAMIC state whose borrowed CV operand has become a KNOWN value.
+def $error_simple_read(CALL_DYNAMIC porigin z_init z_call) = true
+def $error_read_line(CALL_DYNAMIC porigin z_init z_call, z_origin) = z_init
+def $error_read_source(S, perrorread) = true
+  -- if perrorread.ORIGINAL = CALL_DYNAMIC (PORIGIN n pcpath) z_init z_call
+  -- if $dynamic_task_valid(S, PORIGIN n pcpath, z_init, z_call)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $source_emission_dynamic_cv_call(S, n, pcpath, expression) = (z_init)
+  -- if perrorread.LINE = z_init
+  -- if perrorread.INPUT = VARIABLE perrorread.NAME z_init
+  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], perrorread.NAME)
+def $error_read_resume(S, perrorread, ptask_tail*) = $dynamic_value(S[.TODO = ptask_tail*][.RESULT = perrorread.RESULT][.BASE = perrorread.BASE], porigin, z_init, z_call)
+  -- if perrorread.TASK = CALL_DYNAMIC porigin z_init z_call
+  -- if $error_read_valid(S, perrorread)
+
 ;; An implicit cast uses ECHO's line rather than the named call's INIT line.
 ;; Its real pending/entered conversion certificate keeps ordinary calls distinct.
 def $echo_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_site), z) = true
@@ -181,6 +219,12 @@ def $echo_call_release_line(S, ptask) = eps -- otherwise
 def $destructor_source_line(S) = z
   -- if $destructor_operation_for(S) = (pdestructionoperation)
   -- if $echo_call_release_line(S, pdestructionoperation.SOURCE) = (z)
+def $destructor_source_line(S) = z_init
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = SOURCE_OPERAND_ENTER psourceoperand n
+  -- if pdestructionoperation.ORIGIN = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $source_emission_dynamic_cv_call(S, n, pcpath, expression) = (z_init)
 
 dec $echo_call_temporary_valid(pstate, pechoresult) : bool
 def $echo_call_temporary_valid(S, pechoresult) = $stringable_instance(S, pechoresult.OBJECT)
