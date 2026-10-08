@@ -130,3 +130,19 @@ def $trait_fcc_snapshot_ordinary(S, pconstantclosure) = (pmethoddesc)
 ;; The AST pointer owns its method statics even when the class was not linked.
 def $method_static_origin(S, porigin) = true
   -- if $static_function_at($method_functions($trait_fcc_failed_methods(S, S.CONSTANTCLOSURES)), porigin) = (pfunction)
+
+;; A retained callable can report its failed lexical class's name without
+;; granting that class publication, member lookup or construction authority.
+def $method_self_class_scope_valid(S, pclassdesc) = true
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = eps
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = CLOSURE_TARGET n
+  -- if pcallcontext.LEXICAL_CLASS = (pclassdesc.ORIGIN)
+  -- if $(n < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure_first, pclassdesc.ORIGIN, pmethoddesc_first))
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
+  -- if pclosurescope.LEXICAL = pclassdesc.ORIGIN
+  -- if $method_closure_scope_valid(S, pclosurescope)
+  -- if $call_current_valid(S)
