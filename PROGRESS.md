@@ -7,6 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+362 selects ordinary callable arrays with simple Fiber API method names before
+argument evaluation. Frozen members survive selector retirement and REF mutation;
+one bound receiver owner transfers from CONFIG to its waiting API, while static
+object selectors own none. Local receipts preserve recursive argument frames,
+real saved callers and constructor warning/validation order. Strict346,
+thirteen exact normal originals at12+1 cuts and independent259/author206 reached
+premises pass. Three required array-start/FCC/C-root Unsupported controls earn
+zero agreement. The compiler stop and original static fixture failure remain
+zero; the corrected fixture pins V in its genuine cleanup carrier and queued
+receiver retirement. Compound selectors, Fiber-start unpacking, broader adapters
+and lifecycle/library behavior remain required.
+[Array-consumer ledger](coverage/semantics/fiber-array-consumers-review.json).
+
 358 selects simple Fiber API method arrays and static class-method strings
 through `Closure::fromCallable`, including named and unpacked factory arguments.
 Frozen members and completed factory history survive callback-array mutation,

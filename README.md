@@ -1193,8 +1193,14 @@ bound captures own their receiver, while static object selectors add no owner.
 Direct, explicit `__invoke` and C-root consumers reuse the selected API protocol.
 Successful waiting calls retain their real API callsite in exception traces.
 The [factory ledger](coverage/semantics/fiber-from-callable-review.json) keeps
-distinct source and state cuts. Fiber-start argument unpacking, ordinary API
-callable arrays and effectful compound factory selectors remain required.
+distinct source and state cuts.
+Ordinary callable arrays with simple method names now select fixed bound and
+static Fiber APIs before argument evaluation. Frozen dereferenced members survive
+selector mutation or retirement; the pending call owns its bound receiver once, while static object
+selectors own none. Constructor callable parsing retains its real warning
+continuation and validation-before-status order. Fiber-start argument unpacking,
+array-selected start, array first-class conversion, array C-root callbacks and
+compound array or factory selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 
