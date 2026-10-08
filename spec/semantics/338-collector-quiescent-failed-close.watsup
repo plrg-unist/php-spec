@@ -1,0 +1,34 @@
+;; A throwing finalizer drops the pending graceful exception before returning.
+;; The destroy frame's one private zval retires at return, while the genuine
+;; caller operation retains the real exception. Admit only that storage tail.
+dec $gc_worker_quiescent_failed_retiring(pstate, nat) : bool
+def $gc_worker_quiescent_failed_retiring(S, n_exit) = true
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if $(n_exit < |S.OBJECTS|) /\ (HOBJECT n_exit) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_exit] = FIBERGRACEFUL n_worker n_sequence
+  -- if $(n_worker < n_exit) /\ $(n_sequence > 0) /\ $(n_sequence < S.FIBERSEQ)
+  -- if S.GC.WORKER =/= (n_worker)
+  -- if $fiber_at(S, n_worker) = (pfiber)
+  -- if pfiber.STATUS = FIBER_TERMINATED /\ pfiber.SEQUENCE = n_sequence
+  -- if pfiber.FAILED /\ ~pfiber.GRACEFUL /\ ~pfiber.RETURNED
+  -- if pfiber.VALUE = PNULL
+  -- if $fiber_record_valid(S, n_worker, pfiber)
+  -- if n_worker <- S.DESTRUCTION.CALLED
+  -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_control) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (DESTRUCTOR_RELEASE pdestructionrelease_worker) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_caller) :: ptask_tail*
+  -- if S.DESTRUCTION.RELEASES = pdestructionrelease_control :: pdestructionrelease_worker :: pdestructionrelease_tail*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_caller :: pdestructionoperation_tail*
+  -- if pdestructionrelease_control.USER /\ $destructor_release_valid(S, pdestructionrelease_control)
+  -- if pdestructionrelease_control.JOBS = [DESTRUCTION_VALUE (HOBJECT n_exit)]
+  -- if pdestructionrelease_worker.USER /\ $destructor_release_valid(S, pdestructionrelease_worker)
+  -- if pdestructionrelease_worker.JOBS = [DESTRUCTION_VALUE (HOBJECT n_worker)]
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_error
+  -- if $throwable_member(S, n_error)
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.PENDING = eps /\ pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if pdestructionoperation_caller.PENDING = (n_error)
+  -- if pdestructionoperation_caller.COMPLETION = NORMAL /\ pdestructionoperation_caller.CLEANUP = eps /\ pdestructionoperation_caller.NOGC = eps
+  -- if $destructor_operation_valid(S, pdestructionoperation_caller)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_exit) = 1
+def $gc_worker_quiescent_failed_retiring(S, n_exit) = false -- otherwise
+def $gc_worker_graceful_retiring(S, n_exit) = true
+  -- if $gc_worker_quiescent_failed_retiring(S, n_exit)

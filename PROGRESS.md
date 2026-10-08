@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+337 adds bound first-class `resume`/`throw`/defined `getReturn` and status methods.
+The Closure owns its selected Fiber; direct and explicit `__invoke` calls borrow
+that receiver while retaining their actual argument buffers and saved operation
+provenance. Strict318 initialization, nine normal originals and author65/independent403
+reached premises pass at the recorded private cuts. Two explicit start/C-root
+Unsupported controls earn zero agreement; earlier331 evidence is unchanged. A
+separate actual322 composition passes strict initialization, one collector
+original and115 independent premises: captured public resume/throw authenticate
+the genuine saved caller, preserve borrowed receiver roots and retire the idle
+cache on request completion. The
+[bound-callable ledger](coverage/semantics/fiber-bound-api-callables-review.json)
+retains these checks and required follow-ons.
+
+Collector338 admits failed last-owner close of a detached worker after collection.
+A throwing `finally` retires the one remaining private control owner while the
+real error stays in the caller's pending operation; a genuine prior exception
+keeps its identity. Two exact normal originals and two independent strict-SL
+groups with117/130 physical premises pass at separate private320 cuts. The
+322-module composition over `f89fbee745` passes combined compilation at
+`9277e334d`, preserving Generator328, source336 and reviewed ownership factors.
+Publication over `0bb453754` preserves the disjoint prior-array foreach guards;
+the tested compiler/source/state cuts remain unchanged.
+Active-pass failed close and wider close contexts remain required; earlier
+collector cuts retain their inputs. [Ledger](coverage/semantics/cycle-collection-review.json).
+
 Generator328 adds source-owned reference-yield cells, value-API array snapshots
 and direct/inner-reference destructuring aliases. Notice/cleanup readback retains
 nonowning old-cache metadata and precise delegated exception reinjection.
@@ -32,7 +57,7 @@ and its borrowed zero-owner target waits for the next real collection/count1.
 Two exact normal originals and two independent strict-SL groups with100/116
 physical premises pass at the private317 cut. The final319 composition over
 `6fac6d270` preserves static Fiber331 and property324 fields/tasks/owners and
-passes combined compilation at `e12be6f67`. Failed-finally close remains open;
+passes combined compilation at `e12be6f67`. Failed-finally close338 has separate cuts;
 earlier collector cuts keep their inputs. [Ledger](coverage/semantics/cycle-collection-review.json).
 
 331 adds source-authenticated static `getCurrent`/`suspend` first-class Closures
@@ -96,12 +121,12 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
-WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335,
+WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335/338,
 Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 321 modules composed over
-`c38af3cf770`, retaining static Fiber API captures331, physical property references324 and collector335.
+with 322 modules composed over
+`0bb453754`, retaining static Fiber API captures331, physical property references324 and collector335/338.
 The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336.
 The property/clone composition passes strict SL290/compiler application0 at

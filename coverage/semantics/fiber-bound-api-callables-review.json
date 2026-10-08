@@ -1,0 +1,206 @@
+{
+  "milestone": 337,
+  "status": "independently-reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "semantic_code": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
+  "baseline": "afd57f1e5e0988f426193a794ddfce9bd5e7328c",
+  "modules": 318,
+  "scope": [
+    "Bound first-class resume/throw/getReturn/status API captures; getReturn only reuses accepted defined-result behavior.",
+    "Selected receiver and method-name snapshots survive dynamic-name mutation, clone and __invoke aliases; loose equality includes receiver identity.",
+    "The Closure owns its receiver. CONFIG and waiting API calls borrow that receiver and own only actual sent buffers.",
+    "Direct and explicit __invoke owners, trace frames and argument retirement remain distinct through nested Fiber transfers.",
+    "Source-reached admission rejects wrong selected Closure/receiver, changed API buffers/kinds/sites/lines/sequences and hidden/duplicated result markers.",
+    "Captured public resume/throw of the exposed idle collector Fiber authenticates the actual saved caller continuation while the worker executes its C loop."
+  ],
+  "compiler": {
+    "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-bound-api-sl-_lbkb8s0/report.json",
+    "sha256": "f57b9eacd1ee556f023516c978f7c80e7ba7de7fbef20eca3b63617ea6c2f3c0",
+    "passed": true,
+    "mode": "SL",
+    "initialization": true,
+    "semantic_inputs_identical_to_source_report": true,
+    "tested_revision": "afd57f1e5e0988f426193a794ddfce9bd5e7328c"
+  },
+  "source": {
+    "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-bound-api-source-4reju3i5/report.json",
+    "sha256": "4d09652894f0b258f90654ef055439b7bcd82e292a97d72e04a46b423031a236",
+    "revision": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
+    "normal_agreements": 9,
+    "unsupported_controls": 2,
+    "unsupported_agreement_credit": 0,
+    "inputs_stable": true,
+    "head_stable": true,
+    "selection": [
+      "author-bound-fixed-api-status-unpack",
+      "author-bound-invoke-callback-throw-trace",
+      "boundary-bound-c-root-receiver",
+      "boundary-bound-start-capture",
+      "peer-bound-alias-clone-receiver",
+      "peer-bound-last-receiver-close",
+      "peer-bound-direct-last-capture-arguments",
+      "peer-bound-invoke-last-capture-arguments",
+      "peer-bound-throw-return",
+      "peer-bound-nested-resume-status",
+      "peer-bound-preflight-trace"
+    ]
+  },
+  "states": {
+    "author_groups": 1,
+    "author_premises": 65,
+    "independent_groups": 5,
+    "independent_premises": 403,
+    "premises_include_five_setup_clauses_per_group": true,
+    "cuts": [
+      {
+        "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-nft8k2yw/report.json",
+        "sha256": "de9b4143ee4147b48948a7284a4c22faf3e64814514a0e9346f4fe7f04363d9c",
+        "group": "bound-resume-snapshot-and-named-unpack",
+        "premises": 65,
+        "revision": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
+        "role": "author"
+      },
+      {
+        "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-fw631eai/report.json",
+        "sha256": "8a8bfaea006f1181facf7e5bff79d5b6f6126a7db19daaec78be0cc2588d8288",
+        "group": "bound-selection-keeps-immutable-receiver-without-config-owner",
+        "premises": 75,
+        "revision": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
+        "role": "independent"
+      },
+      {
+        "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-iy614ssc/report.json",
+        "sha256": "66b95859913f2022bc1113836e5b4aa2f24ae4e8df0822233e97fff18dca286d",
+        "group": "bound-direct-resume-borrows-receiver-and-owns-inner-buffer",
+        "premises": 86,
+        "revision": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
+        "role": "independent"
+      },
+      {
+        "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-9dd9moqz/report.json",
+        "sha256": "d7972b0786033288d7471a64e915d03d4e3136219d0c7027e7d2ff892aa9735d",
+        "group": "bound-invoke-resume-preserves-outer-buffer-and-second-closure",
+        "premises": 93,
+        "revision": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
+        "role": "independent"
+      },
+      {
+        "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-rcxtdd4f/report.json",
+        "sha256": "406c930a5a164dd89f0810626710634ba40884d3bee088b9fb9f57f4fd9c0456",
+        "group": "bound-throw-keeps-exact-injected-throwable-and-callsite",
+        "premises": 88,
+        "revision": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
+        "role": "independent"
+      },
+      {
+        "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-1wwqmmrt/report.json",
+        "sha256": "4a8c08b28334b244455d08e7e7736a3bccb4affec38a48678f700d0cb7f6711f",
+        "group": "nested-bound-resume-validates-real-saved-parent-continuation",
+        "premises": 61,
+        "revision": "851d60604c5d91a160f9c4ba7c9e45bbdb0e7b13",
+        "role": "independent"
+      }
+    ]
+  },
+  "preserved_failures": [
+    {
+      "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-q7ay7oec",
+      "reason": "Unbound CONFIG field in the author fixture stage; corrected only the binding order.",
+      "credit": 0
+    },
+    {
+      "path": ".tools/calls-fiber-bound-api-19/.tools/fiber-state-review-v2urf8nf",
+      "reason": "Independent nested fixture CHOOSE sequence syntax; corrected only parentheses.",
+      "credit": 0
+    },
+    {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-state-review-n6wotjiw",
+      "reason": "The forged API line omitted the paired CONFIG line, changing structural borrowed receiver roots; corrected only the fixture to preserve its heap-identical premise.",
+      "credit": 0
+    },
+    {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-state-review-ftf9fjr9",
+      "reason": "The fixture expected the idle cache to survive ordinary request completion; corrected only the final cache/retirement assertions.",
+      "credit": 0
+    }
+  ],
+  "identity": {
+    "php_source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "profile": "tests/semantics/profile.json",
+    "source_budgets": {
+      "steps": 100000,
+      "model_seconds": 60,
+      "process_seconds": 75
+    },
+    "state_budgets": {
+      "seek_steps": 4000,
+      "finish_steps": 4000,
+      "process_seconds": 120
+    }
+  },
+  "maintained_checks": [
+    "tests/semantics/fiber_bound_api_sources.py",
+    "tests/semantics/fiber_bound_api_cases.json",
+    "tests/semantics/fiber_bound_api_state.py",
+    "tests/semantics/fiber_bound_api_review.py",
+    "tests/semantics/fiber_bound_collector_review.py"
+  ],
+  "required_followons": [
+    "Bound start and constructor first-class captures.",
+    "Bound Fiber API callbacks at C roots and broader callable adapters/consumers.",
+    "Undefined-result Fiber cleanup/getReturn, request/fatal cleanup and other already tracked Fiber boundaries. Paused returns_verify is excluded."
+  ],
+  "limits": [
+    "Earlier331 source/state cuts retain their original identities; no renewal or full-core claim.",
+    "Raw private-cut reports and failures stay below .tools/calls-fiber-bound-api-19 in the canonical checkout; all ledger report paths are relative to that checkout. Maintained scripts regenerate focused observations with the project-local oracle.",
+    "Raw composition reports and fixture failures stay below .tools/calls-fiber-bound-api-current-19; source/compiler on the GEN321 parent and the final115-premise PROPS composition retain distinct tested revisions."
+  ],
+  "composition": {
+    "semantic_fix": "42884fd0f",
+    "initial_parent": "f89fbee745b66ad0123fa46096b9d7cfdd462cd8",
+    "state_parent": "0bb453754bd51f66066738411e276c9842a15f7a",
+    "compiler": {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-bound-api-sl-lu79gogv/report.json",
+      "sha256": "50c5e6badf206d6a1d3b673cd1f19d5e92d1da936de4385dcd2b0f203ebc57f7",
+      "revision": "42884fd0f6f848ac9ea99360e86cc779b92a0ec9",
+      "passed": true,
+      "modules": 322,
+      "mode": "SL",
+      "initialization": true,
+      "inputs_stable": true
+    },
+    "collector_original": {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-bound-api-source-vq8rzav0/report.json",
+      "sha256": "8955bbc7531328bb04b747812441c09d7b0b77bfb38745a3f319fb97a93ed5cc",
+      "revision": "903ff44845fa733133f0e35201396cf747a87e94",
+      "passed": true,
+      "normal_agreements": 1,
+      "selection": [
+        "peer-bound-idle-collector-calls"
+      ],
+      "inputs_stable": true,
+      "head_stable": true
+    },
+    "collector_state": {
+      "path": ".tools/calls-fiber-bound-api-current-19/.tools/fiber-state-review-b8w0w028/report.json",
+      "sha256": "2ae3d4a124c6ed90320786a9d368f2d9479c768a602356358d2d2c7b9e08bbf0",
+      "revision": "023232cd9ce5fc0acb9c684f4478ccaf3e52aeb6",
+      "passed": true,
+      "groups": 1,
+      "independent_premises": 115,
+      "group": "bound-collector-throw-authenticates-saved-invoke-owner",
+      "modules": 322
+    },
+    "review": "The11-line collector API wrapper restores the genuine caller/previous actor/tail and reuses bound WAIT/result authentication. PROPS prior-array guards preserve all five destruction queues and generic receiver edges; they are disjoint from captured-call validation. Earlier9/468 retain their own cuts. Final EX338 publication is a disjoint admission/manifest join: failed detached-worker private-control close cannot match the public idle transfer; unchanged evidence is not renewed.",
+    "publication_parent": "01f5240a20a5ed7df8c6ffc69471abfb3d7f5b33",
+    "publication_modules": 323
+  }
+}
