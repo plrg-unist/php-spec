@@ -675,6 +675,9 @@ test-semantics: build
 	python3 tests/semantics/generator_request_render_abrupt_peer_sources.py --mode full
 	python3 tests/semantics/generator_request_render_abrupt_sources.py --mode full
 	python3 tests/semantics/generator_request_render_abrupt_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_render_handler_peer_sources.py --mode full
+	python3 tests/semantics/generator_request_render_handler_sources.py --mode full
+	python3 tests/semantics/generator_request_render_handler_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl
