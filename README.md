@@ -219,6 +219,7 @@ The actual344 compiler/init gate retains its separate accepted record.
 Direct ordinary-method calls retain `self`, `parent` and `static` selection through
 conversion and nested calls. Six further originals and323 reached premises cover
 lexical/called scope, private shadows and captured-reference rebinding.
+The separate actual347 composition passes compilation and initialization.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

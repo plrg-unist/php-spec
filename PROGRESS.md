@@ -1087,8 +1087,9 @@ reached premises retain separate144 at `b228479d6` and179 at `714465927` cuts.
 The unchanged earlier keyword Unsupported record retains zero agreement.
 Dynamic selectors, keyword scopes entered through Closure/fromCallable or other
 callable wrappers, wider borrowed lifetime and registered-handler missing-RHS
-continuations remain separate; paused return producers are unchanged. The final347
-compiler/init gate over `66160341f` is pending.
+continuations remain separate; paused return producers are unchanged. Actual347
+over `66160341f` passes algo/struct/init at `c2b0f283b`, with exact257/296/301/360
+parent review and no6/323 source/state renewal.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
