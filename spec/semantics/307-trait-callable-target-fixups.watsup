@@ -15,6 +15,7 @@ dec $trait_fcc_history_cause(pstate, pconstantclosure*, porigin, porigin, nat) :
 dec $trait_fcc_cause_at(pstate, porigin, porigin, nat) : ptraitcachecause?
 dec $trait_fcc_import_one(pstate, pclassdesc, pmethoddesc, pclassdesc, nat) : pmethoddesc?
 dec $trait_fcc_import_source(pstate, pclassdesc, pmethoddesc, pclassdesc*, nat) : pmethoddesc?
+dec $trait_fcc_adapted(pstate, pclassdesc, pmethoddesc, nat) : pmethoddesc?
 dec $trait_fcc_unfixed(pstate, porigin, ptbytes, nat) : pmethoddesc?
 dec $trait_fcc_cached_header(pstate, porigin) : (pconstantclosure, porigin, pmethoddesc)?
 dec $trait_fcc_fixed_at_known(pstate, pconstantclosure, porigin, pmethoddesc, nat) : pmethoddesc?
@@ -258,16 +259,39 @@ def $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_trait :: pcl
   -- if $trait_fcc_import_one(S, pclassdesc, pmethoddesc, pclassdesc_trait, n_prefix) = (pmethoddesc_trait)
 def $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_trait :: pclassdesc_trait_tail*, n_prefix) = $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_trait_tail*, n_prefix)
   -- if $trait_fcc_import_one(S, pclassdesc, pmethoddesc, pclassdesc_trait, n_prefix) = eps
+;; Aliases and visibility changes are copied before function-scope fixup.
+;; Recover their exact selected copy, preserving the ordinary lookup path.
+def $trait_fcc_adapted(S, pclassdesc, pmethoddesc, n_prefix) = (pmethoddesc_unfixed)
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if pclassdesc_raw = pclassdesc[.METHODS = $trait_notice_own_methods(pclassdesc.METHODS, pclassdesc.ORIGIN)]
+  -- if S_prefix = S[.CLASSNAMES = $trait_notice_names(S, S.DECLARATIONS[0:n_prefix])][.DECLARATIONS = S.DECLARATIONS[0:n_prefix]][.TODO = eps][.COMPLETION = NORMAL]
+  -- if ptraitplan = $trait_plan(S_prefix, pclassdesc_raw)
+  -- if ptraitplan.ALIASES =/= eps
+  -- if $trait_fetch(S_prefix, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $trait_exclusions(S_prefix, pclassdesc_raw, pclassdesc_traits*, ptraitplan.PRECEDENCES, eps) = TRAITEXCLUSIONS (ptbytes_trait, ptbytes_method)*
+  -- if $trait_aliases(S_prefix, pclassdesc_raw, pclassdesc_traits*, ptraitplan.ALIASES, eps) = TRAITALIASES ptraitalias*
+  -- if $trait_copy_traits(pclassdesc_raw, pclassdesc_traits*, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S_prefix eps eps) = TRAITCOMPOSE S_methods ptraitmethod* ptraitmethod_required*
+  -- if S_methods.COMPLETION = NORMAL
+  -- if $trait_fcc_receipt_target(pmethoddesc, ptraitmethod*) = (pmethoddesc_unfixed)
+def $trait_fcc_adapted(S, pclassdesc, pmethoddesc, n_prefix) = eps -- otherwise
 def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = (pmethoddesc)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if $method_named(pclassdesc.METHODS, ptbytes_method) = (pmethoddesc)
   -- if pmethoddesc.OWNER = porigin_owner
   -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n pcpath
-def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_traits*, n_prefix)
+def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = (pmethoddesc_unfixed)
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
   -- if $method_named(pclassdesc.METHODS, ptbytes_method) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
   -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_traits*, n_prefix) = (pmethoddesc_unfixed)
+def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = (pmethoddesc_unfixed)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $method_named(pclassdesc.METHODS, ptbytes_method) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
+  -- if $trait_fetch(S, $trait_plan(S, pclassdesc).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $trait_fcc_import_source(S, pclassdesc, pmethoddesc, pclassdesc_traits*, n_prefix) = eps
+  -- if $trait_fcc_adapted(S, pclassdesc, pmethoddesc, n_prefix) = (pmethoddesc_unfixed)
 def $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix) = eps -- otherwise
 def $constant_callable_method_selected(S, porigin_site, porigin_owner, porigin_owner, n_prefix, ptbytes_method) = $trait_fcc_unfixed(S, porigin_owner, ptbytes_method, n_prefix)
   -- if $trait_fcc_cause_at(S, porigin_site, porigin_owner, n_prefix) =/= eps
