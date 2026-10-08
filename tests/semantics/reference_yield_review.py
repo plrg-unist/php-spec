@@ -122,6 +122,22 @@ echo $copy,":",$generator->current(),"|";
 foreach($generator as $item){echo $item,"|";$item=9;}
 echo $value;
 ''', b'3:7|7|7|7', 0),
+    'this-fetch-uses-cache-reference-without-rebinding-instance': (
+        b'''<?php
+class Self328 {function &give(){yield $this;echo "I",(int)($this instanceof Self328),"|";}}
+function warn($n,$m,$f,$l){echo "W",$l,"|";return true;}
+set_error_handler("warn");$object=new Self328;$generator=$object->give();
+foreach($generator as &$alias){echo (int)($alias===$object),":";$alias=null;}
+echo (int)($object instanceof Self328);
+''', b'1:I1|1', 0),
+    'globals-fetch-uses-reference-to-snapshot-without-notice': (
+        b'''<?php
+function &give(){yield $GLOBALS;}
+function warn($n,$m,$f,$l){echo "W",$l,"|";return true;}
+set_error_handler("warn");$value=3;
+foreach(give() as &$alias){$alias["value"]=8;break;}
+echo $value,":",$alias["value"];
+''', b'3:8', 0),
 }
 
 
