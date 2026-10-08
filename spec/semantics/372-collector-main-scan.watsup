@@ -2,6 +2,9 @@
 ;; interval. It neither reloads nor updates the cached Fiber's global cursor.
 ;; Residual targets are real callbacks, not members of the fresh DTORS list.
 dec $gc_main_context(pstate, pgcplan, pgcscan) : bool
+dec $gc_main_marked(pgcplan, nat, nat) : bool
+dec $gc_main_tag_source(pgcplan, pgcslot, nat) : bool
+dec $gc_main_tags(pgcplan, pgcslot*, nat) : bool
 dec $gc_main_scan_valid(pstate, pgcplan, pgcscan) : bool
 dec $gc_main_return_live(pstate, pgcplan, pgcscan, nat) : bool
 dec $gc_main_return_valid(pstate, pgcplan, pgcscan, nat) : bool
@@ -27,6 +30,16 @@ def $task_nodes(GC_MAIN_RETURN pgcplan pgcscan n) = [HOBJECT n] ++ $instance_roo
 def $eager_explicit_task(GC_MAIN_SCAN pgcplan pgcscan) = true
 def $eager_explicit_task(GC_MAIN_RETURN pgcplan pgcscan n) = true
 
+def $gc_main_marked(pgcplan, n_slot, n) = true
+  -- if $(n_slot < |pgcplan.BUFFER|)
+  -- if pgcplan.BUFFER[n_slot] = GC_DTOR_ROOT n \/ (pgcplan.BUFFER[n_slot] = GC_ROOT (HOBJECT n) /\ (HOBJECT n) <- pgcplan.DTORS)
+def $gc_main_marked(pgcplan, n_slot, n) = false -- otherwise
+def $gc_main_tag_source(pgcplan, GC_DTOR_ROOT n, n_slot) = $gc_main_marked(pgcplan, n_slot, n)
+def $gc_main_tag_source(pgcplan, pgcslot, n_slot) = true -- otherwise
+def $gc_main_tags(pgcplan, eps, n) = true
+def $gc_main_tags(pgcplan, pgcslot :: pgcslot_tail*, n) = ($gc_main_tag_source(pgcplan, pgcslot, n) /\ $gc_main_tags(pgcplan, pgcslot_tail*, $(n + 1)))
+  -- if $(n < |pgcplan.BUFFER|)
+def $gc_main_tags(pgcplan, pgcslot :: pgcslot_tail*, n) = true -- if $(n >= |pgcplan.BUFFER|)
 def $gc_main_context(S, pgcplan, pgcscan) = true
   -- if S.ACTIVEFIBER = eps
   -- if $gc_plan_live(S, pgcplan)
@@ -35,6 +48,7 @@ def $gc_main_context(S, pgcplan, pgcscan) = true
   -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
   -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
   -- if pgcscan.END = |pgcplan.BUFFER| /\ $(pgcscan.INDEX <= pgcscan.END)
+  -- if $gc_main_tags(pgcplan, S.GC.BUFFER, 0)
   -- if S.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, 0, pgcscan.INDEX, 0)
 def $gc_main_context(S, pgcplan, pgcscan) = false -- otherwise
 def $gc_main_scan_valid(S, pgcplan, pgcscan) = ($gc_main_context(S, pgcplan, pgcscan) /\ $gc_scope_valid(S, pgcplan.CALL))
@@ -42,7 +56,7 @@ def $call_task_valid(S, GC_MAIN_SCAN pgcplan pgcscan) = $gc_main_scan_valid(S, p
 def $gc_main_return_live(S, pgcplan, pgcscan, n) = true
   -- if $gc_main_context(S, pgcplan, pgcscan)
   -- if $(pgcscan.INDEX < pgcscan.END) /\ $(pgcscan.INDEX < |S.GC.BUFFER|)
-  -- if pgcplan.BUFFER[pgcscan.INDEX] = GC_DTOR_ROOT n \/ (pgcplan.BUFFER[pgcscan.INDEX] = GC_ROOT (HOBJECT n) /\ (HOBJECT n) <- pgcplan.DTORS)
+  -- if $gc_main_marked(pgcplan, pgcscan.INDEX, n)
   -- if ~(n <- pgcplan.CALLED)
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (pgcscan.INDEX)
   -- if S.GC.BUFFER[pgcscan.INDEX] = GC_ROOT (HOBJECT n)
