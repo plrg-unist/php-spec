@@ -309,8 +309,10 @@ delegated cache lifetime and nested normal handlers. [Request fatal cleanup 363]
 retains Generator/cache owners through normal fatal rendering, releases the reported
 exception before bailout, then suppresses later destructors. Normal exception-owned
 stdClass/ordinary child cleanup retains full admission and actual storage pins.
-Abrupt rendering or exception release, parked/escaped storage and broader terminal
-cleanup remain required.
+A renderer rethrow at request C root reports/releases its builtin inner Throwable
+before abandoning the original report and real Generator/cache owners. Live-handler
+or deeper rendering, abrupt exception release, parked/escaped storage and generic
+terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,

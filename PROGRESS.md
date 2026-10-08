@@ -69,8 +69,13 @@ the future validation view. Earlier seven/493 cuts retain their own inputs.
 The current 353-module composition over `a210cd253` passes strict compilation at
 `b7b693fa3`; earlier validation retains its own inputs and current fields remain intact.
 Original refusals, preparation stops and corrected trace/admission failures stay at zero.
-Abrupt rendering/release, message-warning conversion, parked/escaped storage and
-wider terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
+Request C-root renderer rethrows with no current handler add three exact fatal
+originals and 527 reached premises. The real receiver decrement preserves owners;
+the builtin inner Throwable reports/releases before the original report and
+Generator/cache/EHR carriers are abandoned. Structural future projections avoid
+heap-query recursion; full admission and malformed producer rejection remain intact.
+Live-handler/deeper rendering, abrupt exception release, message warnings,
+parked/escaped storage and generic terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
 guards; private source/state cuts retain their own revisions.
 [Ledger](coverage/semantics/generator-request-abrupt-review.json).
