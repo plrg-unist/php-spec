@@ -123,7 +123,7 @@ $class_static_selection_published([(porigin_base,true),(porigin_child,true),(por
         ('scope', '.SCOPE = (porigin_child)'),
         ('root', '.ROOT = porigin_grand'),
         ('site', '.SITE = pcompoundstring_self.SITE'),
-        ('closure', '.CLOSURE = (n_left_self)')])
+        ('closure', '.CLOSURE = (CLOSURE_CALL pcompoundstring_self.SITE n_left_self n_left_self porigin_base)')])
     checks += lines(r'''
 S_replayed = S_self[.CLASSCONSTANTHISTORY = S_self.CLASSCONSTANTHISTORY ++ [CCCOMPOUNDSELECT pstaticcompound_self pstaticselection_self pcompoundstring_self.SITE pcompoundstring_self.LINE n_prefix_self]]
 $heap_graph(S_replayed) = $heap_graph(S_self)
