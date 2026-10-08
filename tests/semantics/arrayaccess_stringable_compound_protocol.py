@@ -82,7 +82,7 @@ $call_task_valid(S, ACCESS_STRING_PREP paccess (REFERENCE n) eps)
 ~$call_task_valid(S, ACCESS_STRING_PREP paccess[.MODE = ACCESS_COMPOUND ADD PNULL] (REFERENCE n) eps)
 ~$call_task_valid(S, ACCESS_STRING_PREP paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")] (REFERENCE n) eps)
 ~$call_task_valid(S, ACCESS_STRING_PREP paccess[.OBJECT = (|S.OBJECTS|)] (REFERENCE n) eps)
-~$call_task_valid(S, ACCESS_STRING_PREP paccess (REFERENCE |S.STORE|) eps)
+~$call_task_valid(S, ACCESS_STRING_PREP paccess (REFERENCE (|S.STORE|)) eps)
 S_unmarked = S[.REFCELLS = $access_reference_unwrap(S.REFCELLS, n)]
 ~$call_task_valid(S_unmarked, ACCESS_STRING_PREP paccess (REFERENCE n) eps)
 $task_nodes(ACCESS_STRING_PREP paccess (REFERENCE n) eps) = [HCELL n, HOBJECT n_box]
