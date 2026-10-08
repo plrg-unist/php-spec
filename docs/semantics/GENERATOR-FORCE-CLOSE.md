@@ -89,6 +89,10 @@ preserves the existing root destructor and store continuations. Ordinary closed
 storage releases the Closure before value/reference, key and return caches,
 without changing heap graph traversal. The [fresh and storage ledger](../../coverage/semantics/generator-fresh-store-review.json)
 keeps original mismatches and separate source/state cuts.
+The composition with 337 modules over `ed1c8c6a2` passes strict compilation at
+`5dc524df4`. Its fresh typed-slot interaction retains the constraint through the
+earlier child destructor and detaches it at the genuine slot release: one new
+normal source and 79 strict premises, without renewing the private ten/584 cuts.
 
 Delegating request close, abrupt terminal cleanup and a real free-storage pin
 with late WeakReference notification remain required. In particular, cache reads

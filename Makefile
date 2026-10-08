@@ -640,6 +640,8 @@ test-semantics: build
 	python3 tests/semantics/generator_request_fresh_peer_sources.py --mode full
 	python3 tests/semantics/generator_storage_order_sources.py --mode full
 	python3 tests/semantics/generator_request_fresh_protocol.py --mode check --sl
+	python3 tests/semantics/generator_fresh_typed_slot_join_sources.py --mode full
+	python3 tests/semantics/generator_fresh_typed_slot_join_protocol.py --mode check --sl
 	python3 tests/semantics/generator_storage_order_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full

@@ -16,8 +16,8 @@
     "compiler_sha256": "ca7e0341b4bf8c91e84f446e22af9570defe5dcd67912a5dcc71afbc85563009",
     "strict_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
   },
-  "normal_source_agreements_distinct": 10,
-  "strict_physical_premises": 584,
+  "normal_source_agreements_distinct": 11,
+  "strict_physical_premises": 663,
   "compiler_cuts": [
     {
       "revision": "286469035",
@@ -42,6 +42,12 @@
       "artifact": "generator-request-finally-compile-z1ffviat",
       "modules": 333,
       "stdout_bytes": 10417496
+    },
+    {
+      "revision": "5dc524df45e400450e0209e3902d0cb056e723a0",
+      "artifact": "generator-request-finally-compile-grxr5t2z",
+      "modules": 337,
+      "stdout_bytes": 10496923
     }
   ],
   "source_cuts": [
@@ -74,6 +80,12 @@
       "artifact": "generator-force-close-review-wsj016da",
       "normal_agreements": 1,
       "new_distinct": 0
+    },
+    {
+      "revision": "5dc524df45e400450e0209e3902d0cb056e723a0",
+      "artifact": "generator-force-close-review-fbuluob8",
+      "normal_agreements": 1,
+      "new_distinct": 1
     }
   ],
   "state_cuts": [
@@ -106,6 +118,15 @@
       },
       "packet_result": "pass",
       "accepted_premises": 199
+    },
+    {
+      "revision": "5dc524df45e400450e0209e3902d0cb056e723a0",
+      "artifact": "generator-force-close-protocol-vavth37j",
+      "groups": {
+        "fresh-store-child-before-typed-slot": 79
+      },
+      "packet_result": "pass",
+      "accepted_premises": 79
     }
   ],
   "validation": "Accepted compiler cuts have complete main tails, exit0 and empty stderr. Accepted native/model sources are checked programs with identical original bytes/stdout/stderr/exit and normal completion. State cuts use actual strict SL runner true/exit0/empty stderr, full admission/heap guards and budget replay. All accepted packets have unchanged before/after fingerprints; commands, raw observations and identities remain in the listed artifacts.",
@@ -152,5 +173,16 @@
     "Real free_obj pin and late WeakReference notification, including readable RETURN/cache during child destructors.",
     "Delegating request close and broader terminal/fatal, uncaught/abrupt-handler and switching/collector lifecycle behavior."
   ],
-  "review": "Independent traversal_review_19 accepted the source, compiler and reached-state cuts and the bounded semantics; complete core is not claimed."
+  "review": "Independent traversal_review_19 accepted the source, compiler and reached-state cuts and the bounded semantics; complete core is not claimed.",
+  "current_composition": {
+    "parent": "ed1c8c6a2b5068f4d082fc53fbf0f718ef1a8eab",
+    "parent_modules": 336,
+    "revision": "5dc524df45e400450e0209e3902d0cb056e723a0",
+    "modules": 337,
+    "compatibility": "Exact parent ordered module prefix followed by module 349. Current typed-slot jobs in 303/346 and all source, ACCESS, trait, Fiber and collector fields are preserved. The one new fresh root typed-slot interaction validates constraint retention through the earlier child destructor and detachment at the actual slot marker. The private ten-source/584-premise cuts retain their own inputs; prior 340 and PROPS cuts receive no renewal.",
+    "compiler": "generator-request-finally-compile-grxr5t2z",
+    "new_distinct_normal_agreements": 1,
+    "new_strict_physical_premises": 79,
+    "independent_review": "traversal_review_19 accepted the actual shared-module join, compiler, exact source and reached ownership control."
+  }
 }

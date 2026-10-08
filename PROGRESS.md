@@ -125,8 +125,10 @@ Generator349 closes fresh store frames without entering body/finally, releases
 actual parameter/receiver owners, and transfers the single Closure owner.
 Root CV-destructor handlers precede later parameter release; closed storage
 releases the Closure before caches. Ten distinct normal originals and 584 strict-SL
-premises retain separate cuts and original failures. A real free-storage pin,
-late WeakReference notification and readable caches during child destructors remain
+premises retain separate cuts and original failures. The composition with 337 modules
+over `ed1c8c6a2` passes strict compilation at `5dc524df4`; its fresh typed-slot
+interaction adds one exact normal source and 79 strict premises. A real free-storage
+pin, late WeakReference notification and readable caches during child destructors remain
 required. [Bounded evidence](coverage/semantics/generator-fresh-store-review.json).
 
 Generator328 reference caches, value snapshots and effective destructuring aliases
