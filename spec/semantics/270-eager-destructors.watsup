@@ -41,6 +41,7 @@ dec $eager_operation_completion_roots(pdestructionoperation) : pnode*
 dec $destructor_operation_at(pcallcontext?, porigin?, pdestructionoperation*) : pdestructionoperation?
 dec $destructor_operation_valid(pstate, pdestructionoperation) : bool
 dec $destructor_operation_live(pstate, pdestructionoperation) : bool
+dec $eager_operation_value_valid(pstate, pdestructionoperation) : bool
 dec $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation) : ptask*
 dec $destructor_operation_finish(pstate, pdestructionoperation) : pstate
 dec $destructor_pending_finish(pstate, pdestructionoperation, nat, ptask*) : pstate
@@ -306,7 +307,8 @@ def $destructor_selected_pending(S, pdestructionframe?) = pdestructionoperation.
 def $destructor_selected_pending(S, pdestructionframe?) = $destructor_frame_pending(S, pdestructionframe?)
   -- if $destructor_operation_for(S) = eps
 
-def $destructor_operation_live(S, pdestructionoperation) = ($destructor_operational(S) /\ pdestructionoperation <- S.DESTRUCTION.OPERATIONS /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ $destructor_return_operand_valid(S, pdestructionoperation.VALUE) /\ $heap_subset($base_nodes(pdestructionoperation.BASE) ++ $eager_operation_completion_roots(pdestructionoperation), S.ALLOCATIONS) /\ $eager_operation_source_valid(S, pdestructionoperation) /\ $gc_operation_metadata_valid(S, pdestructionoperation))
+def $eager_operation_value_valid(S, pdestructionoperation) = $destructor_return_operand_valid(S, pdestructionoperation.VALUE) -- otherwise
+def $destructor_operation_live(S, pdestructionoperation) = ($destructor_operational(S) /\ pdestructionoperation <- S.DESTRUCTION.OPERATIONS /\ $destructor_pending_valid(S, pdestructionoperation.PENDING) /\ $eager_operation_value_valid(S, pdestructionoperation) /\ $heap_subset($base_nodes(pdestructionoperation.BASE) ++ $eager_operation_completion_roots(pdestructionoperation), S.ALLOCATIONS) /\ $eager_operation_source_valid(S, pdestructionoperation) /\ $gc_operation_metadata_valid(S, pdestructionoperation))
 def $destructor_operation_valid(S, pdestructionoperation) = ($destructor_operation_live(S, pdestructionoperation) /\ S.CURRENT = pdestructionoperation.CALLER /\ S.ORIGIN = pdestructionoperation.ORIGIN /\ S.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT)
 def $destructor_operations_valid(S, eps) = true
 def $destructor_operations_valid(S, pdestructionoperation :: pdestructionoperation_tail*) = ($destructor_operation_live(S, pdestructionoperation) /\ $destructor_operations_valid(S, pdestructionoperation_tail*))

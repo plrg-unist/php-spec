@@ -9,6 +9,7 @@ dec $generator_reference_operand(pstate, porigin, poperand) : pstate
 dec $generator_reference_notice(pstate, porigin, poperand) : bool
 dec $generator_reference_payload_valid(pstate, porigin?, pvalue) : bool
 dec $generator_reference_key_valid(pstate, porigin, poperand?) : bool
+dec $generator_yield_delayed_value_valid(pstate, pdestructionoperation) : bool
 dec $generator_reference_message() : preqbytes
 dec $generator_reference_notice_valid(pstate, nat, porigin, poperand?, pvalue, int) : bool
 dec $generator_reference_notice_ids(ptask) : nat*
@@ -86,6 +87,14 @@ rule PhpStep/generator-reference-fetch: S ~> S_cell[.TODO = (GENERATOR_YIELD_DON
   -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
   -- if S_value = $hold_task_inputs(S)[.ORIGIN = $origin_child((porigin), [PCFIELD 1])]
   -- if S_cell = $call_location_reference($call_reference_base(S_value, S.BASE, $runtime_line(S_value, eps, expression)))
+  -- if S_cell.COMPLETION = NORMAL
+rule PhpStep/generator-reference-fetch-abrupt: S ~> S_cell[.HELD = S.HELD][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (GENERATOR_YIELD_REF_FETCH porigin poperand?) :: ptask_tail*
+  -- if $generator_reference_fetch_valid(S, porigin, poperand?)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key expression metadata)
+  -- if S_value = $hold_task_inputs(S)[.ORIGIN = $origin_child((porigin), [PCFIELD 1])]
+  -- if S_cell = $call_location_reference($call_reference_base(S_value, S.BASE, $runtime_line(S_value, eps, expression)))
+  -- if S_cell.COMPLETION =/= NORMAL
 def $call_task_valid(S, GENERATOR_YIELD_REF_FETCH porigin poperand?) = $generator_reference_fetch_valid(S, porigin, poperand?)
 def $task_nodes(GENERATOR_YIELD_REF_FETCH porigin poperand?) = $generator_optional_operand_nodes(poperand?)
 def $generator_internal_task(GENERATOR_YIELD_REF_FETCH porigin poperand?) = true
@@ -126,6 +135,24 @@ def $generator_reference_key_valid(S, porigin, (KNOWN pvalue)) = ($generator_yie
 def $generator_reference_key_valid(S, porigin, eps) = $generator_yield_read_key_source(S, porigin, eps)
 def $generator_reference_key_valid(S, porigin, (VARIABLE n_name* z)) = $generator_yield_read_key_source(S, porigin, (VARIABLE n_name* z))
 def $generator_reference_key_valid(S, porigin, poperand?) = false -- otherwise
+
+;; Retiring the old cache must not resolve the next delayed CV. Its operation
+;; retains that exact source operand until the YIELD read/write acquisition.
+def $eager_operation_value_valid(S, pdestructionoperation) = $generator_yield_delayed_value_valid(S, pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = GENERATOR_YIELD_DONE porigin poperand?
+  -- if pdestructionoperation.VALUE = VARIABLE n_name* z
+def $generator_yield_delayed_value_valid(S, pdestructionoperation) = true
+  -- if pdestructionoperation.SOURCE = GENERATOR_YIELD_DONE porigin poperand?
+  -- if pdestructionoperation.VALUE = VARIABLE n_name* z
+  -- if pdestructionoperation.ORIGIN = (porigin) /\ pdestructionoperation.CLEANUP = eps
+  -- if S_view = S[.CURRENT = pdestructionoperation.CALLER][.ORIGIN = pdestructionoperation.ORIGIN][.CONSTCONTEXT = pdestructionoperation.CONSTCONTEXT]
+  -- if $generator_yield_site(S_view, porigin)
+  -- if $generator_reference_key_valid(S_view, porigin, poperand?)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYield phpType5_key (NExprVariable phpType32 metadata_value) metadata)
+  -- if $cv_source_name(S_view, phpType32) = (n_name*)
+  -- if ~$this_name(n_name*) /\ ~$psautoglobal(n_name*)
+  -- if z = $variable_line(phpType32, metadata_value)
+def $generator_yield_delayed_value_valid(S, pdestructionoperation) = false -- otherwise
 
 def $generator_reference_cache(S, n) = $generator_set(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pgenerator[.VALUE = eps][.REFCELL = (n_cell)][.BORROWED = $generator_borrowed_drop_value(pgenerator.BORROWED)])
   -- if S.OBJECTS[n] = GENERATOR pgenerator

@@ -113,6 +113,13 @@ function &leaf328(&$value){yield $missingKey=>$value;yield $otherKey=>5;}
 set_error_handler("warn328");$value=4;$generator=leaf328($value);
 echo "C|",$generator->current(),"|";$generator->next();echo $generator->current();
 ''', b'C|W2|D:4|4|W8|D:4|W2|D:5|5', 0),
+    'old-cache-destructor-mutates-delayed-value-cv': (
+        b'''<?php
+class Payload328 {public $slot;function __construct(&$slot){$this->slot=&$slot;}function __destruct(){$this->slot=9;echo "D|";}}
+function &leaf328(){$next=2;yield new Payload328($next);yield $next;}
+$generator=leaf328();echo "C|",(int)($generator->current() instanceof Payload328),"|";
+$generator->next();echo $generator->current();
+''', b'C|1|D|9', 0),
 }
 
 DECLARATIONS = {
@@ -130,6 +137,7 @@ def main():
         'spec/semantics/99-reference-returns.watsup',
         'spec/semantics/118-arrows.watsup',
         'spec/semantics/207-error-handler-runtime.watsup',
+        'spec/semantics/270-eager-destructors.watsup',
         'spec/semantics/311-arrow-generators.watsup',
         'spec/semantics/321-yield-key-warning.watsup',
         'spec/semantics/328-generator-reference-yields.watsup',
