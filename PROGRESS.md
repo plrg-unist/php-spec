@@ -30,6 +30,8 @@ Seven exact php_error255 originals and 493 strict premises pass at separate cuts
 Normal post-report stdClass and ordinary child storage add one exact fatal original
 and 161 premises, preserving real pins and excluding consumed prefixes only from
 the future validation view. Earlier seven/493 cuts retain their own inputs.
+The current 353-module composition over `a210cd253` passes strict compilation at
+`b7b693fa3`; earlier validation retains its own inputs and current fields remain intact.
 Original refusals, preparation stops and corrected trace/admission failures stay at zero.
 Abrupt rendering/release, message-warning conversion, parked/escaped storage and
 wider terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict

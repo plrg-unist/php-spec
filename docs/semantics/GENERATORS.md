@@ -105,7 +105,9 @@ retain separate cuts; the original refusals remain zero agreement. Actual 351 ov
 collector/source guards remain intact, without renewing earlier source/state cuts.
 Normal post-report stdClass and ordinary child storage add one exact fatal original
 and 161 premises at its own cut, preserving real pins and full admission through
-Weak lookup and the authenticated future continuation. Abrupt rendering or
+Weak lookup and the authenticated future continuation. Composition with 353 modules
+over `a210cd253` passes strict compilation at `b7b693fa3`; prior cuts remain separate.
+Abrupt rendering or
 exception release, nonrenderable message warnings, parked storage, escaped
 reacquisition and wider terminal cleanup
 remain required.
