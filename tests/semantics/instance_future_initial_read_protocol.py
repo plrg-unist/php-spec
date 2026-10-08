@@ -82,7 +82,7 @@ def step(parent, state):
 def start(initial, declaring, unset=False):
     state = "PROP_UNSET" if unset else "PROP_INITIAL"
     helper = "instance_storage_unset_desc" if unset else "instance_storage_initial_desc"
-    default = "PROP_LITERAL (PINT 7)" if unset else "PROP_UNINITIALIZED"
+    default = '$property_default_state(S_before, ppropertydesc) = (PROP_VALUE (DIRECT (PINT 7)))' if unset else 'ppropertydesc.DEFAULT = PROP_UNINITIALIZED'
     message = f'Typed property {declaring}::$number must not be accessed before initialization'
     return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
         *seek('S_initial', 'S_before', 0),
@@ -109,7 +109,7 @@ def start(initial, declaring, unset=False):
         '$property_slot_at(ppropertyslot_live*, ptbytes_key) = (ppropertyslot_number)',
         f'${helper}(S_before, n_parent, ptbytes_key) = (ppropertydesc)',
         'ppropertydesc.TYPE =/= eps',
-        f'ppropertydesc.DEFAULT = {default}',
+        default,
         f'$property_declaring_name(S_before.CLASSES, ppropertydesc.ORIGIN) = $ptascii("{declaring}")',
         '$instance_storage_read_value(S_before, n_parent, ptbytes_key) = eps',
         f'ptbytes_message = $ptascii("{message}")',
