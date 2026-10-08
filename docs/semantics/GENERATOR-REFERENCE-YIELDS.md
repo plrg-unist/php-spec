@@ -29,8 +29,9 @@ actual child resumer for delegated exception reinjection.
 
 A genuine direct-global request release can retire a paused, nondelegating frame
 with no active finally. Its cache cell remains owned until ordered object release.
-Request-end active finally still stops at the existing authentic Unsupported
-boundary: native `C|7|F` versus modeled partial `C|7|`, with zero agreement.
+Module340 now executes the identical active-finally request source as `C|7|F`;
+its original328 refusal and40 boundary premises retain their historical zero
+agreement. [Request cleanup](GENERATOR-FORCE-CLOSE.md) records the separate cut.
 Reference producers containing `yield from` retain the native compiler rejection.
 Wider producer/call forms, suspension during handlers, parked running Generators,
 other request/terminal paths and complete destruction/collection remain required.
@@ -59,7 +60,7 @@ python3 tests/semantics/reference_yield_prepare.py --mode full --select destruct
 python3 tests/semantics/reference_yield_review.py --mode full --select source-reference-rebind-does-not-retarget-cache-alias
 python3 tests/semantics/reference_yield_protocol.py --mode check --sl --select destructuring-live-reference,destructuring-cache-wrapper
 python3 tests/semantics/reference_yield_delegation_protocol.py --mode check --sl
-python3 tests/semantics/reference_yield_terminal_protocol.py --mode check --sl --select terminal-active-finally-refused
+python3 tests/semantics/generator_request_finally_protocol.py --mode check --sl --select request-global-reference-finally
 ```
 
 The sole oracle is `.tools/php/bin/php`, with `tests/semantics/profile.json`,

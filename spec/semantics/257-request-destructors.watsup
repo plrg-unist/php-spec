@@ -19,6 +19,7 @@ dec $destructor_saved_operations(pstate, pdestructorcall*) : pdestructionoperati
 dec $destructor_global_direct(pstate, preqbytes) : bool
 dec $destructor_uncalled_node(pstate, pnode) : bool
 dec $generator_destructor_pending(pstate, pnode) : bool
+dec $generator_request_retired_state_valid(pstate) : bool
 dec $destructor_leaf_valid(pstate, pdestructorcall) : bool
 dec $destructor_releases_valid(pstate, pdestructionrelease*) : bool
 dec $destructor_calls_valid(pstate, pdestructorcall*) : bool
@@ -241,6 +242,14 @@ syntax pdestructionprunecase = PRUNE_KEEP_UNSUPPORTED | PRUNE_REFUSE_RELEASE | P
 dec $destruction_prune_case(pstate, pnode*) : pdestructionprunecase
 dec $destruction_prune_waiting_case(pstate, bool) : pdestructionprunecase
 dec $destruction_prune_case_result(pstate, pnode*, pdestructionprunecase) : pstate
+dec $destruction_prune_case_graph_result(pstate, hgraph, pnode*, pdestructionprunecase) : pstate
+dec $destruction_prune_prepared_graph(pstate, hgraph, pnode*, pdestructionprunecase, bool) : pstate
+;; Preparation may change guarded virtual roots; reuse only the identical state.
+def $destruction_prune_graph(S, H, pnode_live*) = $destruction_prune_prepared_graph(S_new, H, pnode_live*, pdestructionprunecase, (S_new = S))
+  -- if S_new = $request_fatal_state($destruction_store_new(S))
+  -- if pdestructionprunecase = $destruction_prune_case(S_new, pnode_live*)
+def $destruction_prune_prepared_graph(S, H, pnode_live*, pdestructionprunecase, true) = $destruction_prune_case_graph_result(S, H, pnode_live*, pdestructionprunecase)
+def $destruction_prune_prepared_graph(S, H, pnode_live*, pdestructionprunecase, false) = $destruction_prune_case_result(S, pnode_live*, pdestructionprunecase)
 def $destruction_prune(S, pnode_live*) = $destruction_prune_case_result(S_new, pnode_live*, pdestructionprunecase)
   -- if S_new = $request_fatal_state($destruction_store_new(S))
   -- if pdestructionprunecase = $destruction_prune_case(S_new, pnode_live*)
@@ -259,6 +268,10 @@ def $destruction_prune_case_result(S, pnode_live*, PRUNE_KEEP_UNSUPPORTED) = S
 def $destruction_prune_case_result(S, pnode_live*, PRUNE_REFUSE_RELEASE) = S[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
 def $destruction_prune_case_result(S, pnode_live*, PRUNE_BEGIN_RELEASE) = $destructor_release_begin(S, $destruction_values($gc_zero(S, $heap_graph(S), S.ALLOCATIONS)))
 def $destruction_prune_case_result(S, pnode_live*, PRUNE_DROP_STORE) = $prune_live($destruction_store_drop(S, $gc_release_order(S, $heap_graph(S))), pnode_live*)
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_KEEP_UNSUPPORTED) = S
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_REFUSE_RELEASE) = S[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_BEGIN_RELEASE) = $destructor_release_begin(S, $destruction_values($gc_zero(S, H, S.ALLOCATIONS)))
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_DROP_STORE) = $prune_live($destruction_store_drop(S, $gc_release_order(S, H)), pnode_live*)
 
 def $destructor_ready(S) = true
   -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
@@ -353,6 +366,7 @@ rule PhpStep/destructor-store-skip: S ~> S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.
   -- if ~(n <- S.DESTRUCTION.CALLED)
   -- if $destructor_method(S, n) = eps
   -- if ~$internal_destructor_pending(S, HOBJECT n)
+  -- if ~$generator_destructor_pending(S, HOBJECT n)
 rule PhpStep/destructor-store-past: S ~> S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)]
   -- if S.TODO = [DESTRUCTOR_STORE]
   -- if $call_task_valid(S, DESTRUCTOR_STORE)
@@ -675,6 +689,7 @@ def $destruction_state_valid(S) = true
   -- if $destructor_numbers_valid(S.DESTRUCTION.CALLED, |S.OBJECTS|)
   -- if $destructor_numbers_valid(S.DESTRUCTION.FREE, S.DESTRUCTION.NEXT)
   -- if $destructor_unique(S.DESTRUCTION.CALLED) /\ $destructor_unique(S.DESTRUCTION.FREE)
+  -- if $generator_request_retired_state_valid(S)
   -- if ~(0 <- S.DESTRUCTION.FREE)
   -- if S.DESTRUCTION.PHASE = DESTRUCTION_PENDING \/ $destructor_startup_order($global_table_view(S))
   -- if S.DESTRUCTION.PHASE =/= DESTRUCTION_STORE \/ S.DESTRUCTION.NOREUSE
@@ -689,6 +704,7 @@ def $destruction_state_valid(S) = true
   -- if $eager_abandoned_valid(S, S.DESTRUCTION.ABANDONED)
   -- if $eager_property_caches_valid(S, S.DESTRUCTION.PROPCACHE)
 def $destruction_state_valid(S) = false -- otherwise
+def $generator_request_retired_state_valid(S) = (S.DESTRUCTION.RETIRED = eps) -- otherwise
 def $destructor_releases_valid(S, eps) = true
 def $destructor_releases_valid(S, pdestructionrelease :: pdestructionrelease_tail*) = ($destructor_release_live(S, pdestructionrelease) /\ $destructor_releases_valid(S, pdestructionrelease_tail*))
 def $destructor_calls_valid(S, eps) = true

@@ -30,6 +30,9 @@ def $gc_bare_keep(S) = $heap_reach($heap_intersect($gc_bare_nodes(S.GC.BUFFER), 
 def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES
   -- if S.GC.ACTIVE = eps
   -- if $gc_bare_nodes(S.GC.BUFFER) =/= eps
+def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep(S)).NODES
+  -- if S.GC.ACTIVE = eps
+  -- if $gc_bare_nodes(S.GC.BUFFER) =/= eps
 def $gc_bare_promote(H, eps) = eps
 def $gc_bare_promote(H, (GC_BARE_ROOT n) :: pgcslot*) = (GC_ROOT (HOBJECT n)) :: $gc_bare_promote(H, pgcslot*)
   -- if $($heap_owners(H, HOBJECT n) > 0)

@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""Real delayed-CV retirement and non-finalizing request cache release."""
+"""Real delayed-CV retirement and non-finalizing request cache release.
+
+The promoted active-finally original is in generator_request_finally_protocol.
+"""
 import os
 
 import generator_force_close_protocol as driver
 import reference_yield_prepare as author
-import reference_yield_terminal_review as terminal
 
 CASES = {
     'delayed-cv-terminal-reference-cache': author.CASES['readonly-reference-fetch-precedes-old-cache-release'],
     'notice-terminal-value-cache': author.CASES['handler-retval-retirement-keeps-key-and-notice-ingress'],
-    'terminal-active-finally-refused': (
-        terminal.UNSUPPORTED['reference-terminal-active-finally-required'][0],
-        terminal.UNSUPPORTED['reference-terminal-active-finally-required'][1], 0),
+
 }
 WATCHED = driver.source.WATCHED + [
     'spec/semantics/97-call-reference-acquisition.watsup',
@@ -45,10 +45,6 @@ def $reference_terminal_phase(S,2) = true
 def $reference_terminal_phase(S,3) = true
   -- if S.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask*
   -- if pgenclose.STAGE = CLOSE_FINISHED
-def $reference_terminal_phase(S,4) = true
-  -- if S.TODO = (EMIT z) :: ptask*
-  -- if S.RESULT = KNOWN (PSTRING ($ptascii("|")))
-  -- if $close_outputs(S.EVENTS) = $ptascii("C|7")
 def $reference_terminal_phase(S,n) = false -- otherwise
 dec $reference_terminal_seek(pstate,nat,nat) : pstate
 def $reference_terminal_seek(S,n_phase,n) = S
@@ -83,41 +79,6 @@ def assertions(checked, path, directory, name):
                + driver.driver.byte_expr(os.fsencode(driver.ROOT)) + ')')
     checks = ['S_initial = ' + initial, '~S_initial.COMPILESTOP']
     previous = 'S_initial'
-    if name == 'terminal-active-finally-refused':
-        checks += seek('S_terminal', previous, 4) + valid('S_terminal')
-        checks += r'''
-S_terminal.CURRENT = eps /\ S_terminal.FRAMES = eps
-$trace_slot(S_terminal,S_terminal.ENV,$ptascii("generator")) = POBJECT n_generator
-$lookup(S_terminal.ENV,$ptascii("value")) = (n_cell)
-S_terminal.STORE[n_cell] = DEFINED (PINT 7)
-n_cell <- S_terminal.REFCELLS
-S_terminal.OBJECTS[n_generator] = GENERATOR pgenerator_terminal
-pgenerator_terminal.PHASE = GENERATOR_PAUSED /\ pgenerator_terminal.DELEGATE = eps
-pgenerator_terminal.VALUE = eps /\ pgenerator_terminal.REFCELL = (n_cell)
-pgenerator_terminal.KEY = (PINT 0) /\ pgenerator_terminal.BORROWED = eps
-pgenerator_terminal.FRAME = (pframe_terminal)
-pframe_terminal.ORIGIN = (porigin_terminal)
-$generator_record_valid(S_terminal,pgenerator_terminal)
-$generator_close_site(S_terminal,pgenerator_terminal,porigin_terminal)
-$generator_close_frame_valid(S_terminal,pgenerator_terminal,pframe_terminal)
-S_frame = $generator_frame_scope(S_terminal,pframe_terminal)
-~$reference_returning(S_frame)
-$call_task_valid(S_frame,RETURN_NULL)
-$generator_finalizer_frame(S_terminal,pgenerator_terminal.FRAME)
-$generator_close_regions(S_terminal,porigin_terminal) =/= eps
-~$generator_prune_pending(S_terminal,$gc_prune_nodes(S_terminal))
-S_rejected = $drive(S_terminal,4096)
-S_rejected.COMPLETION = UNSUPPORTED "Generator force-close at request end"
-S_rejected.TODO = eps /\ S_rejected.FRAMES = eps
-S_rejected.OBJECTS[n_generator] = GENERATOR pgenerator_terminal
-~$generator_close_dead(S_rejected,S_rejected.ALLOCATIONS,$gc_prune_nodes(S_rejected))
-$generator_prune_pending(S_rejected,$gc_prune_nodes(S_rejected))
-$close_outputs(S_rejected.EVENTS) = $ptascii("C|7|")
-S_stopped = $drive_steps(S_terminal,0)
-S_stopped = S_terminal[.COMPLETION = BUDGET]
-$drive(S_stopped[.COMPLETION = NORMAL],4096) = S_rejected
-'''.strip().splitlines()
-        return checks
     if name == 'delayed-cv-terminal-reference-cache':
         checks += seek('S_operation', previous, 0) + valid('S_operation')
         checks += r'''

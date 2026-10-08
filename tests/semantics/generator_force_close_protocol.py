@@ -12,6 +12,7 @@ import generator_force_close_review as source
 import typed_static_invoke_set_protocol as driver
 
 ROOT = source.ROOT
+NATIVE_ERROR_PREFIXES = {}
 CASES = {name: source.CASES[case] for name, case in [
     ('graph-input', 'graph-temporary-child'),
     ('graph-queued', 'graph-temporary-child'),
@@ -428,7 +429,9 @@ def main():
             report['records'].append(row)
             native = source.run([str(driver.types.PHP), '-n', *driver.types.FLAGS, str(path)], directory / 'native', 10)
             row.update(native_exit=native.returncode, native_stdout=driver.b64(native.stdout), native_stderr=driver.b64(native.stderr))
-            assert native.returncode == 0 and native.stdout == CASES[name][1] and not native.stderr
+            prefix = NATIVE_ERROR_PREFIXES.get(name)
+            error_matches = native.stderr.lstrip(b"\r\n").startswith(prefix.replace(b"{file}", os.fsencode(path))) if prefix else not native.stderr
+            assert native.returncode == CASES[name][2] and native.stdout == CASES[name][1] and error_matches
             frontend = Worker([str(driver.types.PHP), '-n', *driver.types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], directory / 'frontend')
             try:
                 parsed = frontend.request({'op': 'parse', 'source': driver.b64(path.read_bytes())})

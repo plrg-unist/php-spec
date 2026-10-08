@@ -1,0 +1,98 @@
+[
+  {
+    "id": "author-bound-core-resume-named-return",
+    "source": "<?php\n$receiver = new Fiber(static function () {\n    echo Fiber::suspend('S'), '|';\n    Fiber::suspend('T');\n    return 13;\n});\necho $receiver->start(), '|';\n$callback = $receiver->resume(...);\n$child = new Fiber($callback);\nunset($callback);\necho (int)($child->start(value: 'R') === null), '|', $child->getReturn(), '|';\necho (int)$receiver->isSuspended(), '|';\n$receiver->resume();\necho $receiver->getReturn();\n",
+    "source_sha256": "49504c64fa95a56de8ffd0ae74259d20f0b74c7c52562f6895afe6bde165f86d",
+    "native_stdout": "S|R|1|T|1|13",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "author-bound-core-last-capture-retirement",
+    "source": "<?php\n$weakClosure = null;\n$weakReceiver = null;\nclass BoundCoreArgument341 {\n    function __destruct() {\n        global $weakClosure, $weakReceiver;\n        echo 'D', (int)($weakClosure->get() !== null), (int)($weakReceiver->get() !== null), '|';\n    }\n}\n$receiver = new Fiber(static function () {\n    try { Fiber::suspend(); echo 'B|'; Fiber::suspend(); }\n    finally { echo 'F|'; }\n});\n$receiver->start();\n$callback = $receiver->resume(...);\n$weakClosure = WeakReference::create($callback);\n$weakReceiver = WeakReference::create($receiver);\n$child = new Fiber($callback);\nunset($callback, $receiver);\n$child->start(new BoundCoreArgument341());\necho (int)($weakClosure->get() === null), (int)($weakReceiver->get() === null);\n",
+    "source_sha256": "13cbb0af0d72ae028cc68ab879bd89cecd8cbc6456362ab34e04dd20726b5c3c",
+    "native_stdout": "B|F|D00|11",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "peer-bound-core-defined-return-keeps-last-receiver",
+    "source": "<?php\n$target = new Fiber(static function () { return 23; });\n$target->start();\n$weak = WeakReference::create($target);\n$capture = $target->getReturn(...);\n$runner = new Fiber($capture);\nunset($capture, $target);\necho (int)($weak->get() !== null), '|';\necho (int)($runner->start() === null), '|', $runner->getReturn(), '|';\necho (int)($weak->get() === null);\n",
+    "source_sha256": "ae106629a6f0f525ae33f1e94277b6b8646aea5eb63a66e4e2c74f0ae6cd6ce7",
+    "native_exit": 0,
+    "native_stdout": "1|1|23|1",
+    "native_stderr": ""
+  },
+  {
+    "id": "peer-bound-core-status-last-capture-defined-close",
+    "source": "<?php\n$target = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    finally { echo 'F|'; return 59; }\n});\n$target->start();\n$weak = WeakReference::create($target);\n$runner = new Fiber($target->isSuspended(...));\nunset($target);\necho (int)($weak->get() !== null), '|';\n$runner->start();\necho (int)$runner->getReturn(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "4349e514a678615b9eac434c88d0467fe09630a1242c1a4435433bbc2cd592b2",
+    "native_exit": 0,
+    "native_stdout": "1|F|1|1",
+    "native_stderr": ""
+  },
+  {
+    "id": "peer-bound-core-resume-argument-retirement-context",
+    "source": "<?php\nclass CoreArgument341 {\n    function __destruct() { echo 'D', (int)(Fiber::getCurrent() === $GLOBALS['runner']), '|'; }\n}\n$target = new Fiber(static function () {\n    Fiber::suspend();\n    echo 'T|';\n    Fiber::suspend('R');\n    return 19;\n});\n$target->start();\n$runner = new Fiber($target->resume(...));\necho (int)($runner->start(new CoreArgument341()) === null), '|', $runner->getReturn(), '|';\n$target->resume();\necho $target->getReturn();\n",
+    "source_sha256": "619d865fa64ef7e79a5fb9ff05e9f288f1b8f0fd000de32e928fe4fab1b7be19",
+    "native_exit": 0,
+    "native_stdout": "T|D0|1|R|19",
+    "native_stderr": ""
+  },
+  {
+    "id": "peer-bound-core-throw-and-defined-return-alias",
+    "source": "<?php\n$target = new Fiber(static function () {\n    try { Fiber::suspend(); }\n    catch (Exception $error) { echo 'C', $error->getMessage(), '|'; }\n    return 37;\n});\n$target->start();\n$weak = WeakReference::create($target);\n$get = $target->getReturn(...);\n$runner = new Fiber($target->throw(...));\nunset($target);\n$runner->start(exception: new Exception('X'));\necho $runner->getReturn() === null ? 'N|' : 'V|';\necho $get(), '|';\nunset($get);\necho (int)($weak->get() === null);\n",
+    "source_sha256": "bd564ae2182f81048376e05bd3f85042711da99cf868e8fdc22c5ffe19ccc246",
+    "native_exit": 0,
+    "native_stdout": "CX|N|37|1",
+    "native_stderr": ""
+  },
+  {
+    "id": "peer-bound-core-resume-body-error-trace",
+    "source": "<?php\n$target = new Fiber(static function () { Fiber::suspend(); throw new RuntimeException('body'); });\n$target->start();\n$weak = WeakReference::create($target);\n$runner = new Fiber($target->resume(...));\nunset($target);\ntry { $runner->start(); }\ncatch (RuntimeException $error) {\n    foreach ($error->getTrace() as $row) {\n        if ($row['function'] === 'resume' || $row['function'] === 'start') {\n            echo $row['function'], $row['type'], (int)isset($row['file']), (int)isset($row['line']), '|';\n        }\n    }\n}\necho (int)$runner->isTerminated(), '|', (int)($weak->get() === null);\n",
+    "source_sha256": "3d889ef555d857c0b77b42868884dba5f5ef56763e9b9f83f3e17013e41b0697",
+    "native_exit": 0,
+    "native_stdout": "resume->00|start->11|1|1",
+    "native_stderr": ""
+  },
+  {
+    "id": "peer-bound-core-getreturn-unknown-name-trace",
+    "source": "<?php\n$target = new Fiber(static function () { return 41; });\n$target->start();\n$runner = new Fiber($target->getReturn(...));\ntry { $runner->start(unexpected: 1); }\ncatch (Error $error) {\n    echo $error->getMessage(), '|';\n    foreach ($error->getTrace() as $row) {\n        echo $row['function'], isset($row['type']) ? $row['type'] : '', '|';\n    }\n}\necho (int)$runner->isTerminated(), '|', $target->getReturn();\n",
+    "source_sha256": "5dc1f5ec6abec09cd9d5303249756be3db30d59f712456dc97b552f5359f341d",
+    "native_exit": 0,
+    "native_stdout": "Unknown named parameter $unexpected|start->|1|41",
+    "native_stderr": ""
+  },
+  {
+    "id": "peer-bound-core-nested-running-callers",
+    "source": "<?php\n$target = new Fiber(static function () {\n    global $target, $runner, $parent;\n    Fiber::suspend();\n    echo 'C', (int)(Fiber::getCurrent() === $target), (int)$runner->isRunning(), (int)$parent->isRunning(), '|';\n    Fiber::suspend('R');\n    return 17;\n});\n$target->start();\n$runner = new Fiber($target->resume(...));\n$parent = new Fiber(static function () use ($runner) {\n    echo 'P|';\n    $runner->start('argument');\n    echo $runner->getReturn(), '|', (int)(Fiber::getCurrent() === $GLOBALS['parent']), '|';\n    return 31;\n});\n$parent->start();\necho $parent->getReturn(), '|';\n$target->resume();\necho $target->getReturn();\n",
+    "source_sha256": "e9f14d9e7a708f9b4ba4e0fda06440d2a246e2f6767b9110e5f3124825fb4ce7",
+    "native_exit": 0,
+    "native_stdout": "P|C111|R|1|31|17",
+    "native_stderr": ""
+  },
+  {
+    "id": "boundary-bound-c-root-receiver",
+    "source": "<?php\n$f = new Fiber(static function () {});\n$capture = $f->isStarted(...);\necho 'P|';\n$child = new Fiber($capture);\necho (int)$child->start();\n",
+    "source_sha256": "968ed37c34460d0d83b23848f295cd6487d3fbb95c284e84cae217f81d99e9a6",
+    "native_stdout": "P|0",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  },
+  {
+    "id": "author-bound-core-idle-collector-transfer",
+    "source": "<?php\nclass BoundCoreIdle341 {\n    public $self;\n    function __construct() { $this->self = $this; }\n    function __destruct() {\n        $GLOBALS['worker'] = Fiber::getCurrent();\n        echo 'D|';\n    }\n}\n$request = new Fiber(static function () {\n    $cycle = new BoundCoreIdle341();\n    unset($cycle);\n    echo gc_collect_cycles(), '|';\n});\n$request->start();\nunset($request);\n$resume = new Fiber($worker->resume(...));\n$throw = new Fiber($worker->throw(...));\n$suspended = new Fiber($worker->isSuspended(...));\nunset($worker);\necho (int)($resume->start(value: 123) === null), '|';\ntry { $throw->start(exception: new Exception('idle')); }\ncatch (Exception $error) { echo $error->getMessage(), '|'; }\nunset($error);\n$suspended->start();\necho (int)$suspended->getReturn(), '|';\nunset($resume, $throw, $suspended);\necho 'END';\n",
+    "source_sha256": "0ebf8845cc1edf1b237589f31aa28cece0f86d96f470c61b25162cfd1785577e",
+    "native_stdout": "D|1|1|idle|1|END",
+    "native_stderr": "",
+    "native_exit": 0,
+    "expected_model": "normal",
+    "oracle_status": "native-only-confirmed-model-unrun"
+  }
+]

@@ -72,6 +72,8 @@ One named ordinary CV argument now retains INIT6 before known FETCH8/property11 
 
 An undefined ordinary CV used as a computed variable name now warns before conversion, then reads the live caller CV after the handler returns. [Seven exact originals and171 independent premises](coverage/semantics/source-missing-name-cv-review.json) retain private321, including local scope, handler-false fallback, throw priority and include retirement. A later missing-target warning still returns null after handler writes. Actual324 passes strict compilation with reviewed bound-Fiber/Generator/collector/array compatibility; wider conversion callbacks remain required.
 
+[Stringable ordinary computed-name CVs](coverage/semantics/source-stringable-name-review.json) now keep returned name bytes through cast-receiver retirement, then read the live target. Destructor exceptions retain the default missing-target warning while suppressing an eligible registered handler. Eight exact originals and134 independent premises retain private325; actual329 passes strict compilation with reviewed current-parent compatibility. Special targets and wider producers remain required.
+
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
 [configuration unpack increment](coverage/semantics/include-unpacked-current-review.json)
@@ -221,6 +223,10 @@ catch/finally execution and exception identity. [Delegation](docs/semantics/GENE
 adds arrays, source Iterators and shared Generator graphs with live raw caches
 and natural return/unwind. [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
 runs pending finally bodies with real scopes, graph links and cached owners.
+Request 340 adds reverse-global and ascending-store close, handler-before-cache
+exception delivery and borrowed zero-owner store buckets. Genuine weak
+reacquisition restores ordinary release; fresh store and abrupt terminal cleanup
+remain required. [Retained cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
 including eager argument and frame cleanup with pending exception chains.
@@ -479,6 +485,9 @@ source; earlier cuts retain their inputs.
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,
 preserving lazy empty/nonobject prefixes, eager node order and helper fallbacks.
+Pruning carries that graph through GC selection and destructor dispatch, with
+reuse only when destructor preparation leaves the state identical. Authenticated
+specialized call contexts take precedence over ordinary error handler validation.
 Its retained30-source/606-premise and private3/45 cuts remain separate
 from the new captured-source/66-premise and readonly-clone/GC compositions.
 The earlier 291-module strict compiler/initialization and readonly clone original pass;
@@ -739,17 +748,23 @@ explicit Unsupported boundaries; computed names and wider writes remain required
 select each duplicate bucket independently while preserving declared readonly/type
 checks and latest named access. Reference foreach retains the actual shared receiver
 cell across replacement, unset and object/array/scalar changes. Previous plain-CV
-object destruction reads the old value before the selected reference is installed;
-normal and throwing cleanup preserve that reference. Late scalar warnings retain
+own-destructor object cleanup reads the old value while the object remains live;
+normal and throwing cleanup preserve the selected reference. Late scalar warnings retain
 the iterator owner through callbacks and remove it on normal or abrupt completion.
 A fresh original and 92 reached premises cover explicit GC while the saved binding
 continuation retains its selected cell; the318 composition retains Fiber API captures.
 Previous plain-CV arrays now release ordinary and nested child destructors in
 order before installing the selected reference, including after a child throws.
 Six new originals and 284 reached premises check shared owners, selected-property
-mutation/deletion and exception chaining. Released-CV mutation, raw dying-array
-reads, callback-capable previous reference wrappers and internal Generator/Fiber
-retirement, binding-time exit and expired notice buckets remain explicit boundaries;
+mutation/deletion and exception chaining. Ordinary previous objects without their
+own destructor now release dynamic children before declared children; four new
+originals and 313 reached premises cover shared owners, retirement and throwing
+cleanup. Retiring typed property sources remain excluded: two native controls
+observe constraints during dynamic callbacks and their removal after retirement.
+The engine detaches sources at each declared slot; implementing this is required next.
+Released-CV mutation, raw retired-container reads, callback-capable previous
+reference wrappers and internal Generator/Fiber retirement, binding-time exit
+and expired notice buckets remain explicit boundaries;
 full foreach coverage remains required.
 
 Simple typed property assignment converts its declaration
@@ -803,9 +818,15 @@ source2 and87 supplied strict-SL conditions cover retirement and equal lexical/c
 FCC scope, with12 setup clauses separate. The reviewed322 composition passes strict
 compilation and a genuine active default/TYPE checkpoint with26 supplied conditions
 plus6 setup clauses; that checkpoint ends at the old-U constructor Error.
+Live concrete aliases and visibility adaptations preserve the exact selected body,
+default and alias static cells. Three normal source comparisons and44 supplied
+birth/default/static conditions pass, with6 setup clauses separate.
+Later failed imports preserve a published first owner's cached method even when
+their own method differs; one PHP-error source comparison and68 supplied retirement
+conditions pass, with6 setup clauses separate.
 Parameter-view full-source constructor,
-handler and variadic cases, live adaptations, later births reusing a different
-first target and executable reuse of a failed target remain open. Wider
+handler and variadic cases, broader differing-owner later births
+and executable reuse of a failed target remain open. Wider
 initializer contexts, held/open failed links and readonly
 storage remain
 required. The current313 join passes strict compilation, one fresh REAL/constructor
@@ -1060,8 +1081,10 @@ selected Fiber. Calls borrow its receiver from the Closure and preserve distinct
 direct and `__invoke` buffers through nested transfers and retirement. The
 [bound-callable ledger](coverage/semantics/fiber-bound-api-callables-review.json)
 records the new originals and reached checks, including saved calls to the idle
-collector Fiber. Bound `start` captures and C-root
-callback receivers remain required.
+collector Fiber. Fixed bound API captures also execute as Fiber C-root callbacks:
+the [C-root ledger](coverage/semantics/fiber-bound-core-callables-review.json)
+records borrowed receivers and callback retirement before original start arguments.
+Bound `start` and constructor captures remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

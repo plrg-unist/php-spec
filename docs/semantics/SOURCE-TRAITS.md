@@ -249,8 +249,16 @@ trait's scope, so a private/protected copy cannot authenticate a forbidden FCC b
 Focused source2 and87 supplied
 conditions cover failed retirement and equal lexical/called scope; the current
 default/TYPE checkpoint stops at the genuine old-U constructor Error.
-Dependency fills in held/open compilation, live FCC adaptations, differing-owner
-later births and executable failed-target reuse retain explicit boundaries.
+Live concrete FCC aliases and visibility changes recover the exact adapted copy
+after ordinary lookup misses, including aliases of an excluded method and aliases
+retained beside a using class's own override. Birth scope, defaults and canonical
+class/alias static cells are preserved.
+Later failed imports authenticate the already published first owner's cached
+method at the new birth prefix. A different own method is never substituted;
+the later owner retires while the first cache remains live. One PHP-error source
+and68 supplied retirement conditions pass, with6 setup clauses separate.
+Dependency fills in held/open compilation, broader differing-owner later births and
+executable failed-target reuse retain explicit boundaries.
 Wider parameter-view full-source constructor, handler and variadic cases remain
 unvalidated obligations.
 An excluded `parent::` collision control terminated the pinned engine with

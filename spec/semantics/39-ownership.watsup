@@ -243,12 +243,24 @@ def $closure_scopes_prune(pclosurescope :: pclosurescope_tail*, pnode*) = $closu
   -- if ~((HOBJECT pclosurescope.OBJECT) <- pnode*)
 dec $gc_prune_nodes(pstate) : pnode*
 def $gc_prune_nodes(S) = $heap_prune($heap_graph(S)).NODES -- otherwise
+dec $gc_prune_nodes_graph(pstate, hgraph) : pnode*
+def $gc_prune_nodes_graph(S, H) = $heap_prune(H).NODES -- otherwise
 dec $gc_prune_buffer(pstate, pnode*) : pgc
 def $gc_prune_buffer(S, pnode*) = S.GC -- otherwise
 dec $generator_prune_pending(pstate, pnode*) : bool
 dec $generator_prune(pstate, pnode*) : pstate
 dec $prune_allocations_live(pstate, pnode*) : pstate
-def $prune_allocations(S) = $prune_allocations_live(S, $gc_prune_nodes(S))
+dec $prune_allocations_graph(pstate, hgraph, pnode*) : pstate
+dec $fiber_prune_graph(pstate, hgraph, pnode*) : pstate
+dec $destruction_prune_graph(pstate, hgraph, pnode*) : pstate
+def $destruction_prune_graph(S, H, pnode_live*) = $prune_live(S, pnode_live*) -- otherwise
+def $fiber_prune_graph(S, H, pnode_live*) = $destruction_prune_graph(S, H, pnode_live*) -- otherwise
+def $prune_allocations(S) = $prune_allocations_graph(S, H, $gc_prune_nodes_graph(S, H))
+  -- if H = $heap_graph(S)
+def $prune_allocations_graph(S, H, pnode_live*) = $generator_prune(S, pnode_live*)
+  -- if $generator_prune_pending(S, pnode_live*)
+def $prune_allocations_graph(S, H, pnode_live*) = $fiber_prune_graph(S, H, pnode_live*)
+  -- if ~$generator_prune_pending(S, pnode_live*)
 def $prune_allocations_live(S, pnode_live*) = $generator_prune(S, pnode_live*)
   -- if $generator_prune_pending(S, pnode_live*)
 def $prune_allocations_live(S, pnode_live*) = $fiber_prune(S, pnode_live*)

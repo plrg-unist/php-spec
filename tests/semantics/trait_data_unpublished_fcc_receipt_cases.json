@@ -66,7 +66,18 @@
       "exit_status": 0,
       "stdout_base64": "Qzs=",
       "stderr_template_base64": ""
+    },
+    {
+      "id": "published-first-target-failed-later-birth",
+      "source": "<?php\ntrait T {\n    public static function m() { echo \"T;\"; }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nclass C {\n    use U;\n    public static $x = self::Y;\n    public static function m() { echo \"C;\"; }\n}\necho \"PRE;\";\nclass E {\n    use U;\n    public static $x = 0;\n    public static function m() { echo \"E;\"; }\n}\necho \"POST;\";\n",
+      "source_sha256": "0d3031295fb000d456276eea2e6d2db88253cdc3cd027c8ccc9b2b2f22990e11",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-later-birth-current19/.tools/fcc-later-receipt-review19/native-published-first-target-failed-later-birth/command.json",
+      "native_raw_sha256": "b5ebf7776444245d1a78e78f664794e982f1330e17741fa34d8358a97b5d6097",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEUgYW5kIFUgZGVmaW5lIHRoZSBzYW1lIHByb3BlcnR5ICgkeCkgaW4gdGhlIGNvbXBvc2l0aW9uIG9mIEUuIEhvd2V2ZXIsIHRoZSBkZWZpbml0aW9uIGRpZmZlcnMgYW5kIGlzIGNvbnNpZGVyZWQgaW5jb21wYXRpYmxlLiBDbGFzcyB3YXMgY29tcG9zZWQgaW4ge0ZJTEV9IG9uIGxpbmUgMTQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
     }
   ],
-  "scope": "Focused earliest-source-target FCC failed-owner retirement and own-method equal lexical/called scope. Parameter-view constructor/handler/variadic full-source cases remain open."
+  "scope": "Focused earliest-source-target FCC failed-owner retirement and own-method equal lexical/called scope. Parameter-view constructor/handler/variadic full-source cases remain open. Later failed imports preserve an authenticated published first owner target."
 }

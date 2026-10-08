@@ -118,7 +118,9 @@ dec $eager_fatal_cell_history(pstate, (nat, pslot)*) : pstate
 dec $eager_fatal_handler_bounds(pstate, pdestructionhandler*) : bool
 dec $eager_fatal_cell_bounds(pstate, (nat, pslot)*) : bool
 
-def $destructor_operational(S) = (S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE /\ ($destructor_classes(S.CLASSES) \/ $(S.FIBERSEQ > 1)))
+dec $generator_request_operational(pstate) : bool
+def $generator_request_operational(S) = false -- otherwise
+def $destructor_operational(S) = (S.DESTRUCTION.PHASE =/= DESTRUCTION_DONE /\ ($destructor_classes(S.CLASSES) \/ $(S.FIBERSEQ > 1) \/ $generator_request_operational(S)))
 ;; A source MAIN expression is a real USER execution boundary despite having no
 ;; model pcallcontext. Synthetic C sites name methods, not compiled expressions.
 def $eager_source_origin(S, (porigin)) = true
