@@ -197,7 +197,8 @@ Known-current keep/zero/release graph reuse at `c09806280`/330 passes strict
 initialization and focused helper/retention controls. Its `94e3593e6`/334 full retry
 still times out at host55.045 with empty streams and zero agreement.
 Deferring total Fiber owner scans at `7b02a1d39`/334 passes helper and genuine
-false-frontier controls; that factor's original full-source retry is UNRUN.
+false-frontier controls; its standalone original retry remains UNRUN.
 Same-state GC edge consumption at `c0cbdd69b`/336 passes typed and admitted
-source-step controls; the combined original retry remains UNRUN.
+source-step controls. The combined302/301 original at `ea7cf0a34`/339 still reaches
+host55.045625 with empty streams and zero agreement; no speedup or231 credit follows.
 Whole retry composition and wider producers remain open.

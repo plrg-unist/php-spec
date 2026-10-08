@@ -388,7 +388,7 @@ True branches are typed helper controls only; the source frontier proves false.
 Raw checks: `.tools/compiler-fiber-blocked-scan-19/.tools/fiber-blocked-controls-v1`.
 Final 336-module composition at `3f19f2278` passes changed initialization in4.122s.
 Raw final check: `.tools/compiler-fiber-blocked-current-19/.tools/fiber-blocked-current-controls-v1`.
-This factor's original full-source retry remains UNRUN.
+Its standalone original retry remains UNRUN; the combined result follows below.
 Module301's removed-owner consumer now reads the same observed state's edges
 after its first roots call, preserving owner order and fallback. Exact `c0cbdd69b`/336
 passes initialization, 51 typed physical/44 main and 56 reached physical/39 main
@@ -396,7 +396,19 @@ premises, with explicit admission of the changed branch. Raw checks:
 `.tools/compiler-gc-transition-edges-19/.tools/gc-observed-edges-controls-v1`.
 Final 339-module composition at `a164f0f9e` passes changed initialization in4.171s.
 Raw final check: `.tools/compiler-gc-transition-edges-current-19/.tools/gc-observed-edges-current-controls-v1`.
-The combined original retry remains UNRUN.
+One combined302/301 original retry at `ea7cf0a34`/339 still reaches host55.045625
+with empty streams and zero agreement. Inputs stay stable and the group is reaped;
+no speedup or231 credit follows. Raw retry:
+`.tools/compiler-gc-transition-edges-current-19/.tools/full-default-retry-gc-observed-edges-v1/run-v1`.
+Module270's eager-slot consumer now reads same-state allocation edges after
+its first roots call, preserving owner/live-slot/property-pending order and fallback.
+Exact `6f16a3f11`/339 passes initialization, 68 typed physical/54 main premises
+and a genuine main UNSET frontier with 52 physical/32 main premises, explicitly
+admitting a nonempty CV-cell release. Raw checks:
+`.tools/compiler-eager-observed-edges-19/.tools/eager-observed-edges-controls-v1`.
+Final 340-module composition at `6c1a89b38` passes changed initialization in 4.270s.
+Raw final check: `.tools/compiler-eager-observed-edges-current-19/.tools/eager-observed-edges-current-controls-v1`.
+Its original full retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
