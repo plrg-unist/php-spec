@@ -1,7 +1,6 @@
 ;; Fiber::start forwards zend_call_function's copied variadic/named args.
 ;; RAW and the result tail own the Closure; only the handler/API owns the copy.
 dec $fiber_start_core_live(pstate, nat) : bool
-dec $fiber_start_core_actor(pstate) : bool
 def $fiber_start_core_live(S, n) = true
   -- if $fiber_capture_live(S, n)
   -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
