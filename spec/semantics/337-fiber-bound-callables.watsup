@@ -66,3 +66,14 @@ def $fiber_caller_api_trace(S, pfiberapi) = $config_trace_frames(S, pconfigcall,
   -- if $fiber_capture_config_tag(pconfigcall)
   -- if $fiber_bound_kind(pconfigcall.KIND)
   -- if $fiber_capture_result_valid(S, n, pconfigcall, b)
+
+;; The idle collector executes its public API in a C loop. Authenticate its
+;; captured call through the actual saved caller, where the owning tail lives.
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if S.TODO = [GC_WORKER_PUBLIC pfiberapi]
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.API = pfiberapi /\ pfibercaller.OBJECT = pfiberapi.OBJECT
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if S_caller.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*
+  -- if $fiber_bound_kind(pconfigcall.KIND)
+  -- if $fiber_api_valid(S_caller, pfiberapi)
