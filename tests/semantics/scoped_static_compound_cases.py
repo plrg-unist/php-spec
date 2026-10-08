@@ -342,4 +342,275 @@ echo "V:", DynamicTypedFirstReview19::$value, ";I:", DynamicTypedFirstReview19::
         'expected_stdout': 'L;A:changed;B:other;O:ab;C:DynamicAliasSecondReview19;X:ab;T;V:12;I:1;A:12;J:1;X:12;K:1;B:9;C:DynamicTypedSecondReview19;E;',
         'discriminator': 'Dynamic selected ENTRY retains the originally referenced cell through class-CV and property-row rebinding; final raw backing and expression result follow that captured cell. A second dynamic selection keeps a captured typed-int REF, verifies 12 and returns its integer result after the RHS changes the class CV.',
     },
+    {
+        'id': 'computed-property-live-rhs',
+        'source': '''<?php
+class ComputedStaticSlotReview19 {
+    public static mixed $value;
+    public static mixed $other = "other";
+}
+class LeftComputedStaticReview19 {
+    public function __toString(): string {
+        global $property, $rhs;
+        echo "L;";
+        $property = "other";
+        $rhs = "after";
+        return "a";
+    }
+}
+$property = "value";
+$rhs = "before";
+ComputedStaticSlotReview19::$value = new LeftComputedStaticReview19();
+$result = (ComputedStaticSlotReview19::${$property} .= $rhs);
+echo "V:", ComputedStaticSlotReview19::$value,
+     ";O:", ComputedStaticSlotReview19::$other,
+     ";P:", $property, ";R:", $rhs, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'L;V:aafter;O:other;P:other;R:after;X:aafter;E;',
+        'discriminator': 'A computed static property name is selected before left conversion. Changing the property CV and live RHS during conversion retains the original slot and returns the completed expression value.',
+    },
+    {
+        'id': 'computed-property-cv-tmp-timing',
+        'source': '''<?php
+class ComputedTimingSlotReview19 {
+    public static mixed $value;
+    public static mixed $other;
+}
+class LeftComputedValueReview19 {
+    public function __toString(): string { echo "A;"; return "a"; }
+}
+class LeftComputedOtherReview19 {
+    public function __toString(): string { echo "B;"; return "b"; }
+}
+function computedTimingRhsReview19() {
+    global $property;
+    echo "R;";
+    $property = "other";
+    return "s";
+}
+function computedTimingNameReview19() {
+    global $property;
+    echo "N;";
+    return $property;
+}
+$original = new LeftComputedValueReview19();
+ComputedTimingSlotReview19::$value = $original;
+ComputedTimingSlotReview19::$other = new LeftComputedOtherReview19();
+$property = "value";
+$result = (ComputedTimingSlotReview19::${$property} .= computedTimingRhsReview19());
+echo "V:", ComputedTimingSlotReview19::$value === $original,
+     ";O:", ComputedTimingSlotReview19::$other,
+     ";P:", $property, ";X:", $result, ";";
+$unchangedOther = new LeftComputedOtherReview19();
+ComputedTimingSlotReview19::$value = new LeftComputedValueReview19();
+ComputedTimingSlotReview19::$other = $unchangedOther;
+$property = "value";
+$result = (ComputedTimingSlotReview19::${computedTimingNameReview19()} .= computedTimingRhsReview19());
+echo "V:", ComputedTimingSlotReview19::$value,
+     ";O:", ComputedTimingSlotReview19::$other === $unchangedOther,
+     ";P:", $property, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'R;B;V:1;O:bs;P:other;X:bs;N;R;A;V:as;O:1;P:other;X:as;E;',
+        'discriminator': 'The direct property CV is read by the final static opcode after RHS effects, while an evaluated property-name helper returns a copied TMP before RHS evaluation. Both retain their selected slots through conversion.',
+    },
+    {
+        'id': 'computed-property-cold-default',
+        'source': '''<?php
+class ColdComputedSlotReview19 {
+    public const BASE = "a";
+    public const OTHER = "o";
+    public static string $value = self::BASE;
+    public static string $other = self::OTHER;
+}
+class RightColdComputedReview19 {
+    public function __toString(): string {
+        global $property;
+        echo "B;";
+        $property = "other";
+        return "b";
+    }
+    public function __destruct() { echo "D;"; }
+}
+$property = "value";
+$result = (
+    ColdComputedSlotReview19::${"value"}
+    .= new RightColdComputedReview19()
+);
+echo "V:", ColdComputedSlotReview19::$value,
+     ";O:", ColdComputedSlotReview19::$other,
+     ";P:", $property, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'B;D;V:ab;O:o;P:other;X:ab;E;',
+        'discriminator': 'Cold static defaults and a compiled constant computed name require genuine class-data preparation before capture. The evaluated RHS object survives queued work, changes an unrelated name CV during conversion, and retires after the final store. The multiline fetch tests the fetch/opcode source handoff.',
+    },
+    {
+        'id': 'computed-property-reference-name',
+        'source': '''<?php
+class ComputedNameReferenceSlotReview19 {
+    public static $value;
+    public static $other = "other";
+}
+class LeftComputedNameReferenceReview19 {
+    public function __toString(): string {
+        global $replacement;
+        echo "L;";
+        ComputedNameReferenceSlotReview19::$value =& $replacement;
+        return "a";
+    }
+}
+function &computedReferenceNameReview19() {
+    global $property;
+    echo "N;";
+    return $property;
+}
+function computedReferenceRhsReview19() {
+    echo "R;";
+    unset($GLOBALS['property']);
+    $GLOBALS['property'] = "other";
+    return "b";
+}
+$property = "value";
+$oldName =& $property;
+$replacement = "changed";
+ComputedNameReferenceSlotReview19::$value = new LeftComputedNameReferenceReview19();
+$alias =& ComputedNameReferenceSlotReview19::$value;
+$result = (ComputedNameReferenceSlotReview19::${computedReferenceNameReview19()} .= computedReferenceRhsReview19());
+echo "V:", ComputedNameReferenceSlotReview19::$value,
+     ";A:", $alias, ";O:", ComputedNameReferenceSlotReview19::$other,
+     ";N:", $oldName, ";P:", $property, ";X:", $result, ";";
+class ComputedDefinedNameSlotReview19 { public static mixed $value; }
+class LeftComputedDefinedNameReview19 {
+    public function __toString(): string { echo "D;"; return "c"; }
+}
+function computedDefineNameRhsReview19() {
+    global $undefinedName;
+    echo "R;";
+    $undefinedName = "value";
+    return "d";
+}
+ComputedDefinedNameSlotReview19::$value = new LeftComputedDefinedNameReview19();
+$result = (ComputedDefinedNameSlotReview19::${$undefinedName} .= computedDefineNameRhsReview19());
+echo "V:", ComputedDefinedNameSlotReview19::$value, ";N:", $undefinedName,
+     ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'N;R;L;V:changed;A:ab;O:other;N:value;P:other;X:ab;R;D;V:cd;N:value;X:cd;E;',
+        'discriminator': 'An accepted untyped by-reference name helper retains its original cell across RHS unset/rebind; the selected static alias retains its original cell across conversion rebind. An initially absent name CV becomes defined by RHS before its delayed read, so no early warning is emitted.',
+    },
+    {
+        'id': 'computed-property-selected-roots',
+        'source': '''<?php
+class ComputedDynamicRootReview19 {
+    public static $value = "base";
+    public static $other;
+}
+class ComputedDynamicDecoyReview19 {
+    public static $value = "decoy-value";
+    public static $other = "decoy-other";
+}
+class LeftComputedDynamicRootReview19 {
+    public function __toString(): string {
+        global $class, $property, $replacement;
+        echo "L;";
+        $class = "ComputedDynamicDecoyReview19";
+        $property = "value";
+        ComputedDynamicRootReview19::$other =& $replacement;
+        return "a";
+    }
+}
+function computedDynamicRootRhsReview19() {
+    global $class, $property;
+    echo "R;";
+    $class = "ComputedDynamicDecoyReview19";
+    $property = "other";
+    return "b";
+}
+$class = "ComputedDynamicRootReview19";
+$property = "value";
+$replacement = "changed";
+ComputedDynamicRootReview19::$other = new LeftComputedDynamicRootReview19();
+$alias =& ComputedDynamicRootReview19::$other;
+$result = ($class::${$property} .= computedDynamicRootRhsReview19());
+echo "B:", ComputedDynamicRootReview19::$value,
+     ";O:", ComputedDynamicRootReview19::$other, ";A:", $alias,
+     ";DV:", ComputedDynamicDecoyReview19::$value,
+     ";DO:", ComputedDynamicDecoyReview19::$other,
+     ";C:", $class, ";P:", $property, ";X:", $result, ";";
+class ComputedKeywordRootReview19 {
+    public static int $value = 1;
+    public static int $other = 2;
+    public static function append() {
+        global $property;
+        return (static::${$property} .= new RightComputedKeywordRootReview19());
+    }
+}
+class ComputedKeywordChildReview19 extends ComputedKeywordRootReview19 {
+    public static int $value = 7;
+    public static int $other = 9;
+}
+class RightComputedKeywordRootReview19 {
+    public function __toString(): string {
+        global $property;
+        echo "T;";
+        $property = "other";
+        return "2";
+    }
+}
+$property = "value";
+$result = ComputedKeywordChildReview19::append();
+echo "PB:", ComputedKeywordRootReview19::$value,
+     ";V:", ComputedKeywordChildReview19::$value,
+     ";O:", ComputedKeywordChildReview19::$other,
+     ";P:", $property, ";X:", $result, ";I:", ($result === 72), ";E;";
+''',
+        'expected_stdout': 'R;L;B:base;O:changed;A:ab;DV:decoy-value;DO:decoy-other;C:ComputedDynamicDecoyReview19;P:value;X:ab;T;PB:1;V:72;O:9;P:other;X:72;I:1;E;',
+        'discriminator': 'A dynamic class is selected before RHS while the computed name CV is read afterward; its captured static alias survives conversion rebind. An ordinary static:: method selects the called child and returns the verified typed integer result despite name mutation during conversion.',
+    },
+    {
+        'id': 'computed-property-preentry-cleanup',
+        'source': '''<?php
+class RightComputedPreentryReview19 {
+    public function __toString(): string { echo "B;"; return "b"; }
+    public function __destruct() { echo "D;"; }
+}
+class ComputedPreentrySlotReview19 { public static string $value; }
+$property = "value";
+echo "C;";
+try {
+    MissingComputedPreentryClassReview19::${$property}
+    .= new RightComputedPreentryReview19();
+} catch (Error $error) {
+    echo "X:", $error->getMessage(), ":", $error->getLine(), ";";
+}
+echo "N;";
+$property = "absent";
+try {
+    ComputedPreentrySlotReview19::${$property}
+    .= new RightComputedPreentryReview19();
+} catch (Error $error) {
+    echo "X:", $error->getMessage(), ":", $error->getLine(), ";";
+}
+echo "U;";
+$property = "value";
+try {
+    ComputedPreentrySlotReview19::${$property}
+    .= new RightComputedPreentryReview19();
+} catch (Error $error) {
+    echo "X:", $error->getMessage(), ":", $error->getLine(), ";";
+}
+class ComputedColdFailureSlotReview19 {
+    public static string $value = self::MISSING;
+}
+echo "K;";
+$property = "value";
+try {
+    ComputedColdFailureSlotReview19::${$property}
+    .= new RightComputedPreentryReview19();
+} catch (Error $error) {
+    echo "X:", $error->getMessage(), ":", $error->getLine(), ";";
+}
+echo "E;";
+''',
+        'expected_stdout': 'C;D;X:Class "MissingComputedPreentryClassReview19" not found:10;N;D;X:Access to undeclared static property ComputedPreentrySlotReview19::$absent:18;U;D;X:Typed static property ComputedPreentrySlotReview19::$value must not be accessed before initialization:26;K;D;X:Undefined constant self::MISSING:32;E;',
+        'discriminator': 'Missing named class, missing computed property, and uninitialized typed property errors occur after RHS evaluation but before Stringable conversion; each evaluated temporary RHS is released during the catchable preentry failure. Fetch and RHS appear on distinct lines; Error.getLine forecasts the delayed static-fetch line, pending native observation.',
+    },
 ]
