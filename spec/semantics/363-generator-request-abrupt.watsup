@@ -451,6 +451,7 @@ def $error_call_valid(S, perrorcall) = true
 def $error_handler_file(S, perrorcall) = $ptascii("Unknown")
   -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
   -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = 0
+def $generator_request_render_warning_resume(GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true) = true
 def $generator_request_tail_task(ERROR_HANDLER_INVOKE perrorcall) = true -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
 def $generator_request_tail_task(ERROR_HANDLER_RESULT perrorcall) = true -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
 def $generator_request_tail_task(ERROR_HANDLER_CLEAN perrorcall) = true -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true
