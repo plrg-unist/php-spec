@@ -375,6 +375,8 @@ test-semantics: build
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group typed-slot-fiber
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group generator-typed-slot
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group generator-typed-slot-fiber
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group wrapper
+	python3 tests/semantics/duplicate_property_reference_protocol.py --group wrapper-array
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group notice-owner
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group scalar-warning

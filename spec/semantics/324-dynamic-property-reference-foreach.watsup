@@ -212,25 +212,39 @@ def $foreach_bind_payload_kind(S, POBJECT n) = $(n < |S.OBJECTS|)
 def $foreach_bind_payload_kind(S, PARRAY n) = $(n < |S.ARRAYS|)
 def $foreach_bind_payload_kind(S, pvalue) = false -- otherwise
 
+;; A singleton wrapper expires before its payload callback. Keep the physical
+;; CV address in fresh plain storage, distinct from that released heap wrapper.
+dec $foreach_bind_old(pstate, nat) : (nat, nat?)?
+def $foreach_bind_old(S, n) = ((n, eps))
+  -- if ~(n <- S.REFCELLS)
+def $foreach_bind_old(S, n) = ((|S.STORE|, (n)))
+  -- if n <- S.REFCELLS
+  -- if (HCELL n) <- S.ALLOCATIONS
+  -- if $heap_owners($heap_graph(S), HCELL n) = 1
+  -- if $propref_at(S.PROPREFS, n) = eps
+def $foreach_bind_old(S, n) = eps -- otherwise
+
 dec $foreach_bind_capture(pstate, ptbytes, nat, int) : pforeachbind?
 def $foreach_bind_capture(S, ptbytes, n_source, z) = (pforeachbind)
   -- if $foreach_bind_source(S, ptbytes, z, S.TODO) = (n_iterator, n_object, porigin_foreach, pnode)
   -- if S.ORIGIN = (porigin)
   -- if ~$environment_blocked(S, ptbytes)
   -- if S_view = $foreach_bind_view(S)
-  -- if $lookup(S_view.ENV, ptbytes) = (n_old)
-  -- if $(n_old < |S.STORE|) /\ $(n_source < |S.STORE|)
-  -- if n_old =/= n_source /\ ~(n_old <- S.REFCELLS)
-  -- if ~$foreach_released_cell(S, n_old)
-  -- if S.STORE[n_old] = DEFINED pvalue_previous
+  -- if $lookup(S_view.ENV, ptbytes) = (n_previous)
+  -- if $(n_previous < |S.STORE|) /\ $(n_source < |S.STORE|)
+  -- if n_previous =/= n_source
+  -- if ~$foreach_released_cell(S, n_previous)
+  -- if $foreach_bind_old(S, n_previous) = ((n_old, n_wrapper?))
+  -- if S.STORE[n_previous] = DEFINED pvalue_previous
   -- if $foreach_bind_plain_payload(S, ptbytes, n_source, z, pvalue_previous)
+  -- if n_wrapper? = eps \/ $foreach_bind_prior_unsupported(S, ptbytes, n_source, z)
   -- if $iterator_lookup(S.ITERATORS, n_iterator) = (OBJECTITER n_iterator n_object n_position true)
   -- if $objectprops_at(S.OBJECTPROPS, n_object) = (ppropertyslot_all*)
   -- if $(n_position > 0) /\ $(n_position <= |ppropertyslot_all*|)
   -- if ppropertyslot = ppropertyslot_all*[$nabs($(n_position - 1))]
   -- if $property_foreach_selected_slot(S, n_object, n_position, ppropertyslot.NAME) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_source)
-  -- if pforeachbind = {SITE porigin, FOREACH porigin_foreach, ITERATOR n_iterator, OBJECT n_object, OWNER pnode, POSITION n_position, KEY ppropertyslot.NAME, NAME ptbytes, OLD n_old, VALUE pvalue_previous, NEW n_source, CALLER S.CURRENT, CONSTCONTEXT S.CONSTCONTEXT, LINE z}
+  -- if pforeachbind = {SITE porigin, FOREACH porigin_foreach, ITERATOR n_iterator, OBJECT n_object, OWNER pnode, POSITION n_position, KEY ppropertyslot.NAME, NAME ptbytes, OLD n_old, WRAPPER n_wrapper?, VALUE pvalue_previous, NEW n_source, CALLER S.CURRENT, CONSTCONTEXT S.CONSTCONTEXT, LINE z}
 def $foreach_bind_capture(S, ptbytes, n_source, z) = eps -- otherwise
 
 ;; A container or expired wrapper needs a raw payload only if its retirement
@@ -269,12 +283,23 @@ def $foreach_bind_selected_valid(S, pforeachbind) = true
   -- if pvalue =/= POBJECT pforeachbind.OBJECT
   -- if $(pforeachbind.POSITION > 0)
 def $foreach_bind_selected_valid(S, pforeachbind) = false -- otherwise
+dec $foreach_bind_wrapper_valid(pstate, pforeachbind) : bool
+def $foreach_bind_wrapper_valid(S, pforeachbind) = true
+  -- if pforeachbind.WRAPPER = eps
+def $foreach_bind_wrapper_valid(S, pforeachbind) = true
+  -- if pforeachbind.WRAPPER = (n_wrapper)
+  -- if $(n_wrapper < |S.STORE|) /\ $(n_wrapper < pforeachbind.OLD)
+  -- if $(pforeachbind.NEW < pforeachbind.OLD)
+  -- if n_wrapper =/= pforeachbind.NEW /\ n_wrapper <- S.REFCELLS
+  -- if S.STORE[n_wrapper] = DEFINED pforeachbind.VALUE
+def $foreach_bind_wrapper_valid(S, pforeachbind) = false -- otherwise
 dec $foreach_bind_body_valid(pstate, pforeachbind) : bool
 def $foreach_bind_body_valid(S, pforeachbind) = true
   -- if S.ORIGIN = (pforeachbind.SITE) /\ S.CURRENT = pforeachbind.CALLER /\ S.CONSTCONTEXT = pforeachbind.CONSTCONTEXT
   -- if $foreach_bind_source(S, pforeachbind.NAME, pforeachbind.LINE, S.TODO) = (pforeachbind.ITERATOR, pforeachbind.OBJECT, pforeachbind.FOREACH, pforeachbind.OWNER)
   -- if $(pforeachbind.OLD < |S.STORE|) /\ $(pforeachbind.NEW < |S.STORE|)
   -- if pforeachbind.OLD =/= pforeachbind.NEW /\ ~(pforeachbind.OLD <- S.REFCELLS)
+  -- if $foreach_bind_wrapper_valid(S, pforeachbind)
   -- if $foreach_bind_payload_kind(S, pforeachbind.VALUE)
   -- if S.STORE[pforeachbind.OLD] = DEFINED pforeachbind.VALUE
   -- if (HCELL pforeachbind.OLD) <- S.ALLOCATIONS
@@ -297,43 +322,64 @@ def $call_task_valid(S, FOREACH_BIND_RELEASE pforeachbind) = ($foreach_bind_capt
 def $call_task_valid(S, FOREACH_BIND_COMMIT pforeachbind) = ($foreach_bind_body_valid(S, pforeachbind) /\ $foreach_bind_address_valid(S, pforeachbind) /\ (~$destructor_operational(S) \/ $foreach_bind_operation_queued(S.TODO, pforeachbind)))
 def $task_nodes(FOREACH_BIND_RELEASE pforeachbind) = [HCELL pforeachbind.NEW]
 def $task_nodes(FOREACH_BIND_COMMIT pforeachbind) = [HCELL pforeachbind.NEW]
-rule PhpStep/foreach-bind-release: S ~> S[.TODO = (FOREACH_BIND_COMMIT pforeachbind) :: ptask_tail*]
+dec $foreach_bind_shadow_local(pstate, pforeachbind) : pstate
+def $foreach_bind_shadow_local(S, pforeachbind) = S[.STORE = S.STORE ++ [DEFINED pforeachbind.VALUE]][.ALLOCATIONS = S.ALLOCATIONS ++ [HCELL pforeachbind.OLD]][.ENV = (BIND pforeachbind.NAME pforeachbind.OLD) :: $unbind(S.ENV, pforeachbind.NAME)]
+dec $foreach_bind_release(pstate, pforeachbind) : pstate
+def $foreach_bind_release(S, pforeachbind) = S
+  -- if pforeachbind.WRAPPER = eps
+def $foreach_bind_release(S, pforeachbind) = $global_table_view($foreach_bind_shadow_local($global_table_view(S), pforeachbind))
+  -- if pforeachbind.WRAPPER =/= eps /\ $scope_global(S, eps)
+def $foreach_bind_release(S, pforeachbind) = $foreach_bind_shadow_local(S, pforeachbind)
+  -- if pforeachbind.WRAPPER =/= eps /\ ~$scope_global(S, eps)
+rule PhpStep/foreach-bind-release: S ~> $foreach_bind_release(S[.TODO = (FOREACH_BIND_COMMIT pforeachbind) :: ptask_tail*], pforeachbind)
   -- if S.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_tail*
   -- if $call_task_valid(S, FOREACH_BIND_RELEASE pforeachbind)
 
 ;; Ownership predicates inspect the actual saved queues. They add no OLD root.
-dec $foreach_bind_pending_task(pstate, nat, ptask) : bool
+dec $foreach_bind_pending_filtered_task(pstate, nat, bool, ptask) : bool
 dec $foreach_bind_pending_after(pstate, ptask) : pstate
+dec $foreach_bind_pending_filtered_tasks(pstate, nat, bool, ptask*) : bool
+dec $foreach_bind_pending_filtered_frames(pstate, nat, bool, pframe*) : bool
+dec $foreach_bind_pending_filtered_vm(pstate, nat, bool, pfibervm) : bool
+dec $foreach_bind_pending_filtered_objects(pstate, nat, bool, pobject*) : bool
+dec $foreach_bind_pending_filtered_object(pstate, nat, bool, pobject) : bool
+dec $foreach_bind_pending_filtered_callers(pstate, nat, bool, pfibercaller*) : bool
+dec $foreach_bind_pending_filtered_closers(pstate, nat, bool, pfiberclose*) : bool
+def $foreach_bind_pending_filtered_task(S, n, b_wrapper, AT porigin ptask) = $foreach_bind_pending_filtered_task(S[.ORIGIN = (porigin)], n, b_wrapper, ptask)
+def $foreach_bind_pending_filtered_task(S, n, b_wrapper, FOREACH_BIND_COMMIT pforeachbind) = (n = pforeachbind.OLD /\ (~b_wrapper \/ pforeachbind.WRAPPER =/= eps) /\ $foreach_bind_body_valid(S, pforeachbind))
+def $foreach_bind_pending_filtered_task(S, n, b_wrapper, ptask) = false -- otherwise
+def $foreach_bind_pending_after(S, FOREACH_BIND_COMMIT pforeachbind) = S
+def $foreach_bind_pending_after(S, ptask) = $call_after_origin(S, ptask) -- otherwise
+def $foreach_bind_pending_filtered_tasks(S, n, b_wrapper, eps) = false
+def $foreach_bind_pending_filtered_tasks(S, n, b_wrapper, ptask :: ptask_tail*) = ($foreach_bind_pending_filtered_task(S, n, b_wrapper, ptask) \/ $foreach_bind_pending_filtered_tasks($foreach_bind_pending_after(S, ptask), n, b_wrapper, ptask_tail*))
+def $foreach_bind_pending_filtered_frames(S, n, b_wrapper, eps) = false
+def $foreach_bind_pending_filtered_frames(S, n, b_wrapper, pframe :: pframe_tail*) = ($foreach_bind_pending_filtered_tasks($constant_frame_scope(S, pframe, pframe_tail*), n, b_wrapper, pframe.TODO) \/ $foreach_bind_pending_filtered_frames(S, n, b_wrapper, pframe_tail*))
+def $foreach_bind_pending_filtered_vm(S, n, b_wrapper, pfibervm) = ($foreach_bind_pending_filtered_tasks(S_view, n, b_wrapper, S_view.TODO) \/ $foreach_bind_pending_filtered_frames(S_view, n, b_wrapper, S_view.FRAMES))
+  -- if S_view = $fiber_vm_restore(S, pfibervm)
+def $foreach_bind_pending_filtered_objects(S, n, b_wrapper, eps) = false
+def $foreach_bind_pending_filtered_objects(S, n, b_wrapper, pobject :: pobject_tail*) = ($foreach_bind_pending_filtered_object(S, n, b_wrapper, pobject) \/ $foreach_bind_pending_filtered_objects(S, n, b_wrapper, pobject_tail*))
+def $foreach_bind_pending_filtered_object(S, n, b_wrapper, FIBER pfiber) = $foreach_bind_pending_filtered_vm(S, n, b_wrapper, pfibervm)
+  -- if pfiber.VM = (pfibervm)
+def $foreach_bind_pending_filtered_object(S, n, b_wrapper, GENERATOR pgenerator) = $foreach_bind_pending_filtered_tasks($constant_frame_scope(S, pframe, eps), n, b_wrapper, pframe.TODO)
+  -- if pgenerator.FRAME = (pframe)
+def $foreach_bind_pending_filtered_object(S, n, b_wrapper, pobject) = false -- otherwise
+def $foreach_bind_pending_filtered_callers(S, n, b_wrapper, eps) = false
+def $foreach_bind_pending_filtered_callers(S, n, b_wrapper, pfibercaller :: pfibercaller_tail*) = ($foreach_bind_pending_filtered_vm(S, n, b_wrapper, pfibercaller.VM) \/ $foreach_bind_pending_filtered_callers(S, n, b_wrapper, pfibercaller_tail*))
+def $foreach_bind_pending_filtered_closers(S, n, b_wrapper, eps) = false
+def $foreach_bind_pending_filtered_closers(S, n, b_wrapper, pfiberclose :: pfiberclose_tail*) = ($foreach_bind_pending_filtered_vm(S, n, b_wrapper, pfiberclose.VM) \/ $foreach_bind_pending_filtered_closers(S, n, b_wrapper, pfiberclose_tail*))
+dec $foreach_bind_pending(pstate, nat, bool) : bool
+def $foreach_bind_pending(S, n, b_wrapper) = ($foreach_bind_pending_filtered_tasks(S, n, b_wrapper, S.TODO) \/ $foreach_bind_pending_filtered_frames(S, n, b_wrapper, S.FRAMES) \/ $foreach_bind_pending_filtered_objects(S, n, b_wrapper, S.OBJECTS) \/ $foreach_bind_pending_filtered_callers(S, n, b_wrapper, S.FIBERCALLERS) \/ $foreach_bind_pending_filtered_closers(S, n, b_wrapper, S.FIBERCLOSERS))
 dec $foreach_bind_pending_tasks(pstate, nat, ptask*) : bool
 dec $foreach_bind_pending_frames(pstate, nat, pframe*) : bool
 dec $foreach_bind_pending_vm(pstate, nat, pfibervm) : bool
-dec $foreach_bind_pending_objects(pstate, nat, pobject*) : bool
-dec $foreach_bind_pending_object(pstate, nat, pobject) : bool
-dec $foreach_bind_pending_callers(pstate, nat, pfibercaller*) : bool
-dec $foreach_bind_pending_closers(pstate, nat, pfiberclose*) : bool
-def $foreach_bind_pending_task(S, n, AT porigin ptask) = $foreach_bind_pending_task(S[.ORIGIN = (porigin)], n, ptask)
-def $foreach_bind_pending_task(S, n, FOREACH_BIND_COMMIT pforeachbind) = (n = pforeachbind.OLD /\ $foreach_bind_body_valid(S, pforeachbind))
-def $foreach_bind_pending_task(S, n, ptask) = false -- otherwise
-def $foreach_bind_pending_after(S, FOREACH_BIND_COMMIT pforeachbind) = S
-def $foreach_bind_pending_after(S, ptask) = $call_after_origin(S, ptask) -- otherwise
-def $foreach_bind_pending_tasks(S, n, eps) = false
-def $foreach_bind_pending_tasks(S, n, ptask :: ptask_tail*) = ($foreach_bind_pending_task(S, n, ptask) \/ $foreach_bind_pending_tasks($foreach_bind_pending_after(S, ptask), n, ptask_tail*))
-def $foreach_bind_pending_frames(S, n, eps) = false
-def $foreach_bind_pending_frames(S, n, pframe :: pframe_tail*) = ($foreach_bind_pending_tasks($constant_frame_scope(S, pframe, pframe_tail*), n, pframe.TODO) \/ $foreach_bind_pending_frames(S, n, pframe_tail*))
-def $foreach_bind_pending_vm(S, n, pfibervm) = ($foreach_bind_pending_tasks(S_view, n, S_view.TODO) \/ $foreach_bind_pending_frames(S_view, n, S_view.FRAMES))
-  -- if S_view = $fiber_vm_restore(S, pfibervm)
-def $foreach_bind_pending_objects(S, n, eps) = false
-def $foreach_bind_pending_objects(S, n, pobject :: pobject_tail*) = ($foreach_bind_pending_object(S, n, pobject) \/ $foreach_bind_pending_objects(S, n, pobject_tail*))
-def $foreach_bind_pending_object(S, n, FIBER pfiber) = $foreach_bind_pending_vm(S, n, pfibervm)
-  -- if pfiber.VM = (pfibervm)
-def $foreach_bind_pending_object(S, n, GENERATOR pgenerator) = $foreach_bind_pending_tasks($constant_frame_scope(S, pframe, eps), n, pframe.TODO)
-  -- if pgenerator.FRAME = (pframe)
-def $foreach_bind_pending_object(S, n, pobject) = false -- otherwise
-def $foreach_bind_pending_callers(S, n, eps) = false
-def $foreach_bind_pending_callers(S, n, pfibercaller :: pfibercaller_tail*) = ($foreach_bind_pending_vm(S, n, pfibercaller.VM) \/ $foreach_bind_pending_callers(S, n, pfibercaller_tail*))
-def $foreach_bind_pending_closers(S, n, eps) = false
-def $foreach_bind_pending_closers(S, n, pfiberclose :: pfiberclose_tail*) = ($foreach_bind_pending_vm(S, n, pfiberclose.VM) \/ $foreach_bind_pending_closers(S, n, pfiberclose_tail*))
-def $foreach_released_cell(S, n) = ($foreach_bind_pending_tasks(S, n, S.TODO) \/ $foreach_bind_pending_frames(S, n, S.FRAMES) \/ $foreach_bind_pending_objects(S, n, S.OBJECTS) \/ $foreach_bind_pending_callers(S, n, S.FIBERCALLERS) \/ $foreach_bind_pending_closers(S, n, S.FIBERCLOSERS))
+def $foreach_bind_pending_tasks(S, n, ptask*) = $foreach_bind_pending_filtered_tasks(S, n, false, ptask*)
+def $foreach_bind_pending_frames(S, n, pframe*) = $foreach_bind_pending_filtered_frames(S, n, false, pframe*)
+def $foreach_bind_pending_vm(S, n, pfibervm) = $foreach_bind_pending_filtered_vm(S, n, false, pfibervm)
+def $foreach_released_cell(S, n) = $foreach_bind_pending(S, n, false)
+def $foreach_released_wrapper_cell(S, n) = $foreach_bind_pending(S, n, true)
+def $foreach_released_wrapper_name(S, ptbytes) = $foreach_released_wrapper_cell(S, n)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+def $foreach_released_wrapper_name(S, ptbytes) = false -- otherwise
 def $foreach_released_name(S, ptbytes) = $foreach_released_cell(S, n)
   -- if $lookup(S.ENV, ptbytes) = (n)
 def $foreach_released_name(S, ptbytes) = false -- otherwise

@@ -284,24 +284,37 @@ def $access_live(S, paccess) = $access_call(S, paccess[.OBJECT = (n)], $ptascii(
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
   -- if paccess.BASE = BASE_VALUE poperand_base
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $access_instance(S, POBJECT n)
 def $access_live(S, paccess) = $access_call(S, paccess[.OBJECT = (n)], $ptascii("offsetUnset"))
   -- if paccess.MODE = ACCESS_UNSET
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $access_instance(S, POBJECT n)
 def $access_live(S, paccess) = $access_nonobject(S, paccess, pvalue)
   -- if paccess.MODE = ACCESS_UNSET
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$access_instance(S, pvalue)
 def $access_live(S, paccess) = $access_nonobject(S, paccess, pvalue)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
   -- if paccess.BASE = BASE_VALUE poperand_base
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$access_instance(S, pvalue)
+def $access_live(S, paccess) = S_read
+  -- if paccess.MODE = ACCESS_UNSET
+  -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION =/= NORMAL
+def $access_live(S, paccess) = S_read
+  -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
+  -- if paccess.BASE = BASE_VALUE poperand_base
+  -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION =/= NORMAL
 def $access_nonobject(S, paccess, pvalue) = $rcontainer_test(S, {READ {SITE paccess.TARGET, GLOBAL false, MODE KEY_TEST b, INPUT paccess.INPUT, VALUE paccess.OFFSET, BASE pvalue, OWNERS paccess.BASE, LINE paccess.LINE, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}, SELECTED paccess.SELECTED, PHASE READ_OFFSET pvalue}, pvalue)
   -- if paccess.MODE = ACCESS_READ (KEY_TEST b)
 def $access_nonobject(S, paccess, pvalue) = $key_read_done(S_out, PNULL)

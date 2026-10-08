@@ -218,7 +218,7 @@ syntax pordinaryinternal = {SOURCE pctorcall, CALL pctorcall, INDEX nat, VALUES 
 syntax pconstantlookup = { ORIGIN porigin, SITE porigin, DECL porigin, PREFIX nat }
 syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass, LOOKUP pconstantlookup? }
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
-syntax pforeachbind = { SITE porigin, FOREACH porigin, ITERATOR nat, OBJECT nat, OWNER pnode, POSITION nat, KEY ptbytes, NAME ptbytes, OLD nat, VALUE pvalue, NEW nat, CALLER pcallcontext?, CONSTCONTEXT pconstantcontext?, LINE int }
+syntax pforeachbind = { SITE porigin, FOREACH porigin, ITERATOR nat, OBJECT nat, OWNER pnode, POSITION nat, KEY ptbytes, NAME ptbytes, OLD nat, WRAPPER nat?, VALUE pvalue, NEW nat, CALLER pcallcontext?, CONSTCONTEXT pconstantcontext?, LINE int }
 syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
 syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
@@ -627,6 +627,8 @@ def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.EN
 ;; unwrap an ALIAS into DIRECT while the original cell's wrapper remains intact.
 dec $reference_cell(pstate, nat) : pstate
 dec $foreach_released_cell(pstate, nat) : bool
+dec $foreach_released_wrapper_cell(pstate, nat) : bool
+dec $foreach_released_wrapper_name(pstate, nat*) : bool
 dec $foreach_released_container_cell(pstate, nat) : bool
 dec $foreach_released_container_name(pstate, nat*) : bool
 dec $foreach_released_name(pstate, nat*) : bool

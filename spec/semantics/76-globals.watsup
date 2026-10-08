@@ -25,13 +25,25 @@ def $globals_container_pending(S, preqbytes :: preqbytes_tail*) = true
 def $globals_container_pending(S, preqbytes :: preqbytes_tail*) = $globals_container_pending(S, preqbytes_tail*)
   -- if ~$foreach_released_container_name(S, preqbytes)
 
+dec $globals_wrapper_pending(pstate, preqbytes*) : bool
+def $globals_wrapper_pending(S, eps) = false
+def $globals_wrapper_pending(S, preqbytes :: preqbytes_tail*) = true
+  -- if $foreach_released_wrapper_name(S, preqbytes)
+def $globals_wrapper_pending(S, preqbytes :: preqbytes_tail*) = $globals_wrapper_pending(S, preqbytes_tail*)
+  -- if ~$foreach_released_wrapper_name(S, preqbytes)
+
 dec $globals_snapshot(pstate) : pstate
+def $globals_snapshot(S) = S[.COMPLETION = UNSUPPORTED "released foreach reference wrapper snapshot"]
+  -- if S_view = $global_table_view(S)
+  -- if $globals_wrapper_pending(S_view, S_view.SYMBOLS)
 def $globals_snapshot(S) = S[.COMPLETION = UNSUPPORTED "released foreach container payload read"]
   -- if S_view = $global_table_view(S)
+  -- if ~$globals_wrapper_pending(S_view, S_view.SYMBOLS)
   -- if $globals_container_pending(S_view, S_view.SYMBOLS)
 def $globals_snapshot(S) = $global_table_view($allocate_array(S_view, $globals_entries(S_view, S_view.SYMBOLS, $array_empty())))
   -- if S_view = $global_table_view(S)
   -- if ~$globals_container_pending(S_view, S_view.SYMBOLS)
+  -- if ~$globals_wrapper_pending(S_view, S_view.SYMBOLS)
 
 rule PhpStep/globals-read: S ~> S_snapshot[.TODO = ptask_tail*]
   -- if S.TODO = (EVAL expression) :: ptask_tail*

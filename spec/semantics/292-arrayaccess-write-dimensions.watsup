@@ -214,9 +214,16 @@ def $access_location_operand(S, porigin, ELEMENT n pkey) = REFERENCE n_cell
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (ALIAS n_cell)
 def $access_location_operand(S, porigin, ELEMENT n pkey) = BORROWED (ELEMENT n pkey)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, pkey) = (DIRECT pvalue)
+dec $borrowed_reference_retired(pstate, plocation) : bool
+def $borrowed_reference_retired(S, ROOT n) = (n <- S.REFCELLS /\ ~((HCELL n) <- S.ALLOCATIONS))
+def $borrowed_reference_retired(S, plocation) = false -- otherwise
+def $quiet_operand(S, BORROWED plocation) = S[.COMPLETION = UNSUPPORTED "retired reference wrapper pointer read"]
+  -- if $borrowed_reference_retired(S, plocation)
 def $quiet_operand(S, BORROWED plocation) = S[.RESULT = KNOWN pvalue]
+  -- if ~$borrowed_reference_retired(S, plocation)
   -- if $location_slot(S, plocation) = DEFINED pvalue
 def $quiet_operand(S, BORROWED plocation) = S[.RESULT = KNOWN PNULL]
+  -- if ~$borrowed_reference_retired(S, plocation)
   -- if $location_slot(S, plocation) = UNDEFINED
 ;; Final nested Unset borrows a real row or extracted VAR. Its location must
 ;; be in range; this does not assert a callback-history proof for the capture.
