@@ -2,6 +2,8 @@
 ;; Render, release the reported exception, then catch bailout and mark all
 ;; destructors called. SOURCE/TEXT/FROZEN borrow history; only REPORT owns ex.
 
+syntax pgenfatal = {SOURCE ptask, OBJECT nat, HANDLERS (pvalue?)*, METHOD porigin?, TEXT preqbytes?, REPORT pobjectprops?, FROZEN pcompletion}
+
 dec $generator_request_fatal_source(pstate, pgenfatal, ptask*) : bool
 dec $generator_request_fatal_history(pstate, pgenfatal) : pstate
 dec $generator_request_fatal_selected(pstate) : pgenfatal?
