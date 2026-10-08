@@ -888,13 +888,18 @@ cover pending exceptions, the Generator RETURN-child interaction and genuine
 Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
 adds one exact Iterator-child original and 113 reached premises; future
 destructor-tail validation applies the real result discard before owner checks.
-Raw property payload access and escaped reacquisition remain required.
+Consumed, uninitialized or heap-backed property payload access and escaped reacquisition remain required.
 The same physical pin now covers ordinary stdClass storage. A materialized
 property table transfers its one HARRAY owner before bucket cleanup; shared tables
 keep their children after the parent retires. Five new exact originals and
 150/91/51 reached premises cover deletion/reinsertion order, exception chaining,
 early Weak notification and the Generator RETURN-child interaction at separate cuts.
 The actual349 composition passes strict compilation.
+Initialized declared scalar properties that cleanup has not yet visited now read
+through the actual parent carrier and current slot, with ordinary visibility checks.
+Three exact originals and104/89 reached premises cover live typed aliases,
+consumed-slot refusal and genuine owner/slot boundaries; quiet, heap-backed and
+mutating accesses remain required. The actual351 composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
