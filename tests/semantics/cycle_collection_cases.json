@@ -133,5 +133,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-active-idle-stale-interval-bare-resume-21",
+    "source": "<?php\n$worker345 = null; $weakB345 = null;\nclass IntervalSeed345 {\n    public $self;\n    function __construct() { $this->self = $this; }\n    function __destruct() { global $worker345; $worker345 = Fiber::getCurrent(); }\n}\n$seed = new Fiber(function () {\n    $a = new IntervalSeed345; $b = new IntervalSeed345;\n    unset($a, $b); gc_collect_cycles();\n});\n$seed->start(); unset($seed);\nclass IntervalActive345 {\n    public $self;\n    public $kind;\n    function __construct($kind) { $this->self = $this; $this->kind = $kind; }\n    function __destruct() {\n        global $worker345, $weakB345;\n        if ($this->kind === 0) {\n            echo 'A|';\n            $worker345->resume();\n            echo $weakB345->get() !== null ? 'B-held|' : 'B-lost|';\n            echo $weakB345->get() === null ? 'B-gone|' : 'B-retained|';\n        } else {\n            echo Fiber::getCurrent() === $worker345 ? 'B:worker|' : 'B:main|';\n            $this->self = null;\n        }\n    }\n}\n$a = new IntervalActive345(0); $b = new IntervalActive345(1);\n$weakB345 = WeakReference::create($b);\nunset($a, $b);\necho gc_collect_cycles(), '|END';\n",
+    "source_sha256": "fbb7fb2b2e1ad7c5b84e08f2add13eb9e2066df3f0dfa03052b79b04106279b6",
+    "stdout": "A|B:worker|B-held|B-gone|1|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

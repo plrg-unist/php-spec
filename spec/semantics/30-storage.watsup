@@ -87,7 +87,7 @@ syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
 syntax pnamedargs = { SLOTS pnamedslot*, NAMED (nat*, poperand)* }
 syntax pdefaultctor = { NEW pdefaultnew, FUNCTION porigin, INDEX nat, PREPARED pnamedargs }
 syntax punpackcall = { FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX nat, SENT pnamedargs, CALLSITE porigin?, LINE int }
-syntax pintrinsic = INTRINSIC_GC_COLLECT | INTRINSIC_GC_ENABLE | INTRINSIC_GC_DISABLE | INTRINSIC_GC_ENABLED | INTRINSIC_WEAKREF_CREATE | INTRINSIC_WEAKREF_GET | INTRINSIC_WEAKREF_CONSTRUCT | INTRINSIC_FIBER_CONSTRUCT | INTRINSIC_FIBER_RESUME | INTRINSIC_FIBER_THROW | INTRINSIC_FIBER_SUSPEND | INTRINSIC_FIBER_CURRENT | INTRINSIC_FIBER_STARTED | INTRINSIC_FIBER_SUSPENDED | INTRINSIC_FIBER_RUNNING | INTRINSIC_FIBER_TERMINATED | INTRINSIC_FIBER_RETURN | INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
+syntax pintrinsic = INTRINSIC_GC_COLLECT | INTRINSIC_GC_ENABLE | INTRINSIC_GC_DISABLE | INTRINSIC_GC_ENABLED | INTRINSIC_WEAKREF_CREATE | INTRINSIC_WEAKREF_GET | INTRINSIC_WEAKREF_CONSTRUCT | INTRINSIC_FIBER_CONSTRUCT | INTRINSIC_FIBER_START | INTRINSIC_FIBER_RESUME | INTRINSIC_FIBER_THROW | INTRINSIC_FIBER_SUSPEND | INTRINSIC_FIBER_CURRENT | INTRINSIC_FIBER_STARTED | INTRINSIC_FIBER_SUSPENDED | INTRINSIC_FIBER_RUNNING | INTRINSIC_FIBER_TERMINATED | INTRINSIC_FIBER_RETURN | INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
   | INTRINSIC_ERROR_REPORTING | INTRINSIC_SET_ERROR_HANDLER | INTRINSIC_RESTORE_ERROR_HANDLER | INTRINSIC_GET_ERROR_HANDLER | INTRINSIC_TRIGGER_ERROR | INTRINSIC_USER_ERROR
   | INTRINSIC_SET_EXCEPTION_HANDLER | INTRINSIC_RESTORE_EXCEPTION_HANDLER | INTRINSIC_GET_EXCEPTION_HANDLER
 syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
@@ -166,12 +166,14 @@ syntax hedge
 syntax hgraph
 syntax pgcvisit = GC_VISIT pnode bool
 syntax pgcprogress = GC_CALLED pnode | GC_SKIPPED pnode | GC_DETACHED pnode
-syntax pgcslot = GC_EMPTY | GC_ROOT pnode | GC_RETIRED nat | GC_BARE_ROOT nat
+syntax pgcslot = GC_EMPTY | GC_ROOT pnode | GC_RETIRED nat | GC_BARE_ROOT nat | GC_DTOR_ROOT nat
+syntax pgcscan = {INDEX nat, END nat}
+syntax pgcpublic
 syntax pgccall = {NONCE nat, CALL pconfigcall, CALLER pcallcontext?, ORIGIN porigin?, CONSTCONTEXT pconstantcontext?, PASS nat, TOTAL nat, PENDING nat?}
 syntax pgcplan = {CALL pgccall, GRAPH hgraph, TABLES pobjecttable*, CALLED nat*, PROXIES hedge*, COUNTED pnode*, BUFFER pgcslot*, CANDIDATES pnode*, DTORS pnode*, FREESET pnode*, INDEX nat, STEPS pgcprogress*, DONE pnode*}
-syntax pgcguard = {WORKER nat, SOURCE pgccall, INDEX nat, OBJECT nat, PENDING nat?}
+syntax pgcguard = {WORKER nat, SOURCE pgccall, INDEX nat, OBJECT nat, PENDING nat?, PUBLIC pgcpublic?}
 syntax pgcworker = {BIRTH pgccall, GUARD pgcguard?}
-syntax pgc = {ENABLED bool, IMMUTABLE nat*, BUFFER pgcslot*, FREE nat*, NEXT nat, ACTIVE pgccall?, PLAN pgcplan?, WORKER nat?}
+syntax pgc = {ENABLED bool, IMMUTABLE nat*, BUFFER pgcslot*, FREE nat*, NEXT nat, ACTIVE pgccall?, PLAN pgcplan?, WORKER nat?, SCAN pgcscan}
 syntax pshutdownrenderphase = SHUTDOWN_RENDER_MESSAGE | SHUTDOWN_RENDER_TRACE | SHUTDOWN_RENDER_RETURN | SHUTDOWN_RENDER_DONE
 syntax pshutdownrender = { ROOT nat, CURRENT nat, SEEN nat*, TEXT nat*, MESSAGE nat*, ROOTMESSAGE nat*, PENDING nat?, PHASE pshutdownrenderphase }
 syntax pshutdown = { ENTRIES pshutdownentry*, INDEX nat, PHASE pshutdownphase, SENT poperand*, RECEIVED poperand*, RENDER pshutdownrender?, COMPLETION pcompletion }
@@ -222,10 +224,11 @@ syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*
 syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
 syntax psourcehelper = HELPER_EMPTY_EVAL | HELPER_ONCE_SKIP pfilecontext preqbytes | HELPER_FAILED_INCLUDE pfilecontext
 syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat }
+syntax pgcpublic = {API pfiberapi, SOURCE pgccall, INDEX nat, END nat, PENDING nat?}
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
-  | GC_WORKER_PUBLIC pfiberapi | GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat | GC_WORKER_WAIT nat pgcplan | GC_WORKER_REPLACE pgcplan | GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat | GC_FREE pgcplan | FIBER_CORE_RESULT nat pconfigcall | FIBER_API_CORE_RESULT nat nat pconfigcall | FIBER_CAPTURE_RELEASE nat porigin | FIBER_CAPTURE_RESULT nat pconfigcall bool | FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_YIELD_KEY nat porigin int | GENERATOR_YIELD_REF_FETCH porigin poperand? | GENERATOR_YIELD_REF_NOTICE nat porigin poperand? pvalue int | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
+  | GC_WORKER_SCAN pgcpublic | GC_WORKER_PUBLIC pfiberapi | GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat | GC_WORKER_WAIT nat pgcplan | GC_WORKER_REPLACE pgcplan | GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat | GC_FREE pgcplan | FIBER_CORE_RESULT nat pconfigcall | FIBER_API_CORE_RESULT nat nat pconfigcall | FIBER_CAPTURE_RELEASE nat porigin | FIBER_CAPTURE_RESULT nat pconfigcall bool | FIBER_START_CAPTURE_ARGS nat pfiberstart | FIBER_START_CAPTURE_SEND nat pfiberstart | FIBER_START_CAPTURE_RESULT nat pfiberstart bool | FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_YIELD_KEY nat porigin int | GENERATOR_YIELD_REF_FETCH porigin poperand? | GENERATOR_YIELD_REF_NOTICE nat porigin poperand? pvalue int | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
   | GENERATOR_CLOSE_RELEASE pgenrelease | GENERATOR_CLOSE_ENTER pgenclose | GENERATOR_CLOSE_DONE pgenclose | GENERATOR_CLOSE_SCAN nat porigin | GENERATOR_CLOSE_FINALLY porigin | GENERATOR_CLOSE_FROM porigin
   | COMPOUND_STRING_PREP plocation pvalue pvalue porigin int | COMPOUND_STRING_LEFT plocation pvalue porigin int | COMPOUND_STRING_RIGHT plocation ptbytes porigin int
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
@@ -252,7 +255,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | OBJECT_CLASS_NAME int
   | EXCEPTION_HANDLER_INVOKE pexceptioncall | EXCEPTION_HANDLER_ENTER pexceptioncall | EXCEPTION_HANDLER_RESULT pexceptioncall
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
-  | GLOBAL_READ_RESULT pglobalread | NAME_READ_RESULT pnameread | NAME_CV_READ_RESULT pnameread
+  | GLOBAL_READ_RESULT pglobalread | NAME_READ_RESULT pnameread | NAME_CV_READ_RESULT pnameread | NAME_ARRAY_RESULT pnameread
   | NAME_STRING_RESULT pnamestring | NAME_STRING_READY pnamestring preqbytes | NAME_STRING_PENDING pnamestring preqbytes nat
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_APPEND int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
@@ -987,6 +990,7 @@ dec $fiber_activate(pstate, nat, pfiber, pfiberapi, bool, pvalue) : pstate
 dec $fiber_resume(pstate, pconfigcall, pvalue) : pstate
 dec $fiber_inject(pstate, pfiberapi, pvalue) : pstate
 dec $fiber_suspend(pstate, pconfigcall, pvalue) : pstate
+dec $gc_worker_public_guard_live(pstate) : bool
 dec $fiber_back(pstate, pvalue, bool) : pstate
 dec $fiber_name_error(pfunction, pnamedargs, (ptbytes, poperand)*) : ptbytes?
 dec $fiber_named_map(pfunction, pnamedargs, (ptbytes, poperand)*) : pnamedargs

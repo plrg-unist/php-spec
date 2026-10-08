@@ -268,9 +268,9 @@ def $constant_callable_method(S, porigin, porigin_owner, n_prefix) = ((pmethodde
   -- if $constant_callable_method_class(S, porigin, porigin_owner, n_prefix) = (porigin_called)
 def $constant_callable_method(S, porigin, porigin_owner, n_prefix) = eps -- otherwise
 def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = $method_accessible(S, pmethoddesc, (porigin_owner))
-  -- if $constant_callable_cached_method(S, porigin) = eps
+  -- if $constant_callable_cached_method_at(S, porigin, |S.DECLARATIONS|) = eps
 def $constant_callable_method_access(S, porigin, porigin_owner, pmethoddesc) = $constant_callable_cached_method_access(S, porigin, porigin_owner, pmethoddesc)
-  -- if $constant_callable_cached_method(S, porigin) =/= eps
+  -- if $constant_callable_cached_method_at(S, porigin, |S.DECLARATIONS|) =/= eps
 def $constant_callable_cached_method_access(S, porigin, porigin_owner, pmethoddesc) = ($constant_callable_cached_method(S, porigin) = (pmethoddesc)) -- otherwise
 
 def $constant_callable_method_allocate(S, porigin, pmethoddesc, porigin_called, n_prefix) = $constant_callable_method_result(S, $constant_callable_stamp(S_scoped, n, porigin, n_prefix), porigin, pmethoddesc)
@@ -308,7 +308,7 @@ def $constant_callable_method_create(S, porigin) = $throw_scalar(S, "Error", $pt
   -- if expression = NExprStaticCall phpType19 phpType20 phpType6 metadata
 def $constant_callable_method_create(S, porigin) = $throw_scalar(S, "Error", $ptascii("Call to undefined method ") ++ ptbytes_class ++ $ptascii("::") ++ ptbytes_method ++ $ptascii("()"), $runtime_line(S, eps, expression))
   -- if $constant_callable_context(S, porigin) = ((porigin_decl, porigin_owner))
-  -- if $constant_callable_cached_method(S, porigin) = eps
+  -- if $constant_callable_cached_method_at(S, porigin, $constant_callable_creation_prefix(S, porigin)) = eps
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
   -- if $constant_callable_class_name(S, porigin, porigin_owner, phpType19) = (ptbytes_class)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_called)

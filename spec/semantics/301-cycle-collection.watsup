@@ -70,6 +70,8 @@ dec $gc_dtor_anchor(pstate, pdestructorcall) : (pgcplan, nat)?
 dec $gc_dtor_anchor_tasks(ptask*, nat) : (pgcplan, nat)?
 dec $gc_dtor_anchor_frames(pframe*, nat) : (pgcplan, nat)?
 dec $gc_keep(pstate) : pnode*
+;; Carried prune callers supply H = heap_graph(S).
+dec $gc_keep_graph(pstate, hgraph) : pnode*
 dec $gc_retained(hgraph, pnode*, pnode*) : pnode*
 dec $gc_prune_graph(hgraph, pnode*) : hgraph
 dec $gc_release_walk(pstate, hgraph, pdestructionjob*, pnode*) : pnode*
@@ -117,15 +119,23 @@ dec $gc_snapshot_fresh(pstate, pgcplan) : bool
 dec $gc_worker_state_valid(pstate) : bool
 dec $gc_slot_node(pgcslot) : pnode?
 dec $gc_bare_keep(pstate) : pnode*
+dec $gc_bare_keep_graph(pstate, hgraph) : pnode*
 dec $gc_transition_prepare(pstate) : pstate
+dec $gc_mark_dtors(pgcslot*, pnode*) : pgcslot*
+dec $gc_unmarked_slots(pgcslot*) : pgcslot*
+dec $gc_marked(pstate, pnode) : bool
+dec $gc_unmark(pstate, pnode) : pstate
 dec $generator_request_transition_prepare(pstate) : pstate
 dec $generator_request_retired_keep(pstate) : pnode*
+dec $generator_request_retired_keep_graph(pstate, hgraph) : pnode*
 def $gc_slot_node(GC_ROOT pnode) = (pnode)
 def $gc_slot_node(pgcslot) = eps -- otherwise
 def $gc_bare_keep(S) = eps -- otherwise
+def $gc_bare_keep_graph(S, H) = eps -- otherwise
 def $gc_transition_prepare(S) = S -- otherwise
 def $generator_request_transition_prepare(S) = S -- otherwise
 def $generator_request_retired_keep(S) = eps -- otherwise
+def $generator_request_retired_keep_graph(S, H) = eps -- otherwise
 def $gc_parked_call_count(S, pgccall) = 0 -- otherwise
 def $gc_parked_plan_count(S, pgcplan) = 0 -- otherwise
 def $gc_snapshot_fresh(S, pgcplan) = $gc_fresh_tasks(S.TODO, pgcplan) -- otherwise
@@ -499,7 +509,7 @@ def $gc_uncalled_snapshot(S, (HARRAY n) :: pnode*, nat*) = $gc_uncalled_snapshot
 def $gc_steps_valid(S, eps, eps) = true
 def $gc_steps_valid(S, (HOBJECT n) :: pnode*, (GC_CALLED (HOBJECT n)) :: pgcprogress*) = (n <- S.DESTRUCTION.CALLED /\ $gc_steps_valid(S, pnode*, pgcprogress*))
 def $gc_steps_valid(S, pnode :: pnode_tail*, (GC_SKIPPED pnode) :: pgcprogress*) = $gc_steps_valid(S, pnode_tail*, pgcprogress*)
-  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode)
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode) \/ ~$gc_marked(S, pnode)
 def $gc_steps_valid(S, pnode*, pgcprogress*) = false -- otherwise
 def $gc_step_done(eps) = eps
 def $gc_step_done((GC_CALLED pnode) :: pgcprogress*) = pnode :: $gc_step_done(pgcprogress*)
@@ -509,7 +519,7 @@ def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobject
 def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, INDEX 0, STEPS eps, DONE eps}
   -- if H = $gc_graph(S)
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
-  -- if pgc_start = $gc_compact(S.GC)
+  -- if pgc_start = $gc_compact(S.GC[.BUFFER = $gc_unmarked_slots(S.GC.BUFFER)])
   -- if pnode_white* = $gc_white(H, $gc_nodes(pgc_start.BUFFER))
   -- if pgc_black_removed = $gc_compact($gc_buffer_drop_nodes(pgc_start, $destruction_nodes_delete($gc_physical_nodes(pgc_start.BUFFER), pnode_white*)))
   -- if (pnode_visit*, pnode_counted*) = $gc_walk(H, hedge_proxy*, $gc_root_visits($gc_nodes(pgc_black_removed.BUFFER)), pnode_white*, eps, eps)
@@ -638,7 +648,7 @@ def $gc_active_valid(S) = $gc_call_live(S, pgccall)
 def $gc_active_valid(S) = $gc_plan_live(S, pgcplan)
   -- if S.GC.PLAN = (pgcplan)
 def $gc_active_valid(S) = false -- otherwise
-def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S))
+def $gc_state_valid(S) = ($destructor_unique(S.GC.IMMUTABLE) /\ $gc_immutable_flags_valid(S, S.GC.IMMUTABLE) /\ $gc_buffer_valid(S, S.GC) /\ $gc_active_valid(S) /\ $gc_worker_state_valid(S) /\ $(S.GC.SCAN.INDEX <= S.GC.SCAN.END))
 
 def $gc_simple_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.TODO = ptask :: ptask_tail*
 def $gc_receive(S, pconfigcall) = $gc_simple_done(S, PBOOL S.GC.ENABLED) -- if pconfigcall.KIND = INTRINSIC_GC_ENABLED
@@ -687,7 +697,7 @@ def $gc_trace(S, pgccall) = $gc_fiber_trace(S, pgcplan)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER =/= eps /\ pgcplan.DTORS =/= eps
-def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan, GC_DTORS pgcplan)
+def $gc_trace(S, pgccall) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps], pgcplan, GC_DTORS pgcplan)
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if pgcplan.CANDIDATES = eps \/ $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if S.ACTIVEFIBER = eps \/ pgcplan.DTORS = eps
@@ -697,18 +707,18 @@ rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
 rule PhpStep/gc-dtors-done: S ~> S[.TODO = (GC_FREE pgcplan) :: ptask*]
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ pgcplan.INDEX = |pgcplan.DTORS|
-rule PhpStep/gc-dtor-skip: S ~> $gc_replace(S, pgcplan_next, GC_DTORS pgcplan_next)
+rule PhpStep/gc-dtor-skip: S ~> $gc_replace($gc_unmark(S, pnode), pgcplan_next, GC_DTORS pgcplan_next)
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pnode = pgcplan.DTORS[pgcplan.INDEX]
-  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode)
+  -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode) \/ ~$gc_marked(S, pnode)
   -- if pgcplan_next = pgcplan[.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_SKIPPED pnode]]
 rule PhpStep/gc-dtor-enter: S ~> $gc_dtor_begin(S, pgcplan, n)
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
   -- if $gc_plan_valid(S, pgcplan) /\ $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
-  -- if (HOBJECT n) <- S.ALLOCATIONS /\ $destructor_uncalled_node(S, HOBJECT n)
-def $gc_dtor_begin(S, pgcplan, n) = $destructor_select(S[.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*], n, false, eps)
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ $destructor_uncalled_node(S, HOBJECT n) /\ $gc_marked(S, HOBJECT n)
+def $gc_dtor_begin(S, pgcplan, n) = $destructor_select($gc_unmark(S, HOBJECT n)[.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*], n, false, eps)
   -- if S.TODO = (GC_DTORS pgcplan) :: ptask*
 rule PhpStep/gc-dtor-return: S ~> $gc_dtor_done(S, pgcplan, n)
   -- if S.TODO = (GC_DTOR_RETURN pgcplan n) :: ptask*
@@ -758,6 +768,9 @@ def $gc_finish(S, pgccall) = S[.GC.ACTIVE = eps][.GC.PLAN = eps][.TODO = (THROW_
 def $gc_keep(S) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, $heap_graph(S).EDGES) ++ $gc_bare_keep(S) ++ $generator_request_retired_keep(S)
   -- if S.GC.PLAN = (pgcplan)
 def $gc_keep(S) = $gc_bare_keep(S) ++ $generator_request_retired_keep(S) -- otherwise
+def $gc_keep_graph(S, H) = $heap_reach($heap_intersect(pgcplan.DONE ++ pgcplan.FREESET, S.ALLOCATIONS), eps, H.EDGES) ++ $gc_bare_keep_graph(S, H) ++ $generator_request_retired_keep_graph(S, H)
+  -- if S.GC.PLAN = (pgcplan)
+def $gc_keep_graph(S, H) = $gc_bare_keep_graph(S, H) ++ $generator_request_retired_keep_graph(S, H) -- otherwise
 def $gc_retained(H, eps, pnode_keep*) = eps
 def $gc_retained(H, pnode :: pnode_tail*, pnode_keep*) = pnode :: $gc_retained(H, pnode_tail*, pnode_keep*)
   -- if pnode <- pnode_keep* \/ $($heap_owners(H, pnode) > 0)
@@ -769,12 +782,15 @@ def $gc_prune_graph(H, pnode_keep*) = $gc_prune_graph(H[.NODES = pnode_live*], p
   -- if pnode_live* = $gc_retained(H, H.NODES, pnode_keep*)
   -- if pnode_live* =/= H.NODES
 def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
-def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
+def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep_graph(S, H)).NODES -- if S.GC.ACTIVE =/= eps
 dec $gc_zero_keep(hgraph, pnode*, pnode*) : pnode*
 dec $gc_zero_owners(hgraph, pnode, pnode*, pnode*, nat) : pnode*
 def $gc_zero(S, H, eps) = eps
 def $gc_zero(S, H, pnode :: pnode_tail*) = $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*)
   -- if pnode_keep* = $gc_keep(S)
+def $gc_zero_graph(S, H, eps) = eps
+def $gc_zero_graph(S, H, pnode :: pnode_tail*) = $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*)
+  -- if pnode_keep* = $gc_keep_graph(S, H)
 def $gc_zero_keep(H, eps, pnode_keep*) = eps
 def $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*) = $gc_zero_owners(H, pnode, pnode_tail*, pnode_keep*, n_owners)
   -- if n_owners = $heap_owners(H, pnode)
@@ -797,6 +813,10 @@ def $gc_release_walk_keep(H, pdestructionjob_head :: pdestructionjob*, pnode_don
   -- if $heap_owners(H[.ROOTS = H.ROOTS ++ $destruction_job_nodes(pdestructionjob*)], pnode) = 0
   -- if pnode_live* = $destruction_node_delete(H.NODES, pnode)
 def $gc_release_order(S, H) = $gc_release_walk(S, H, $destruction_values($gc_zero(S, H, H.NODES)), eps)
+def $gc_release_order_graph(S, H) = eps -- if H.NODES = eps
+def $gc_release_order_graph(S, H) = $gc_release_walk_keep(H, $destruction_values($gc_zero_keep(H, H.NODES, pnode_keep*)), eps, pnode_keep*)
+  -- if H.NODES =/= eps
+  -- if pnode_keep* = $gc_keep_graph(S, H)
 
 def $gc_dtor_anchor_tasks((GC_DTOR_RETURN pgcplan n) :: ptask*, n) = ((pgcplan, n))
 def $gc_dtor_anchor_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, n) = $gc_dtor_anchor_tasks(ptask*, n)

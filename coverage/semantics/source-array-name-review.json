@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Ordinary CV-computed variable names whose resolved operand is an array. Warning continuation borrows the array, fixes Array on normal return, then fetches the live caller target; throwing conversion handlers abort before FETCH.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/207-error-handler-runtime.watsup",
+    "spec/semantics/350-array-computed-cv-name.watsup"
+  ],
+  "engine": {
+    "tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_operators.c::__zval_get_string_func(IS_ARRAY)",
+      "Zend/zend_vm_def.h::zend_fetch_var_address_helper",
+      "Zend/zend.c::zend_error_zstr_at"
+    ],
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "ordering": "Array conversion reports E_WARNING, then returns NULL if the try conversion has an exception; otherwise it returns the fixed Array string. FETCH target lookup follows only the successful conversion."
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1",
+    "include_path": ".:"
+  },
+  "native_investigation": {
+    "report": ".tools/include-array-name-350-private-19/.tools/array-name-originals-19/array-name-native-eix4lvza/report.json",
+    "sha256": "68a19466aff26a6db610e5aa00d275a718006967595a5ee28b62f44a026ff6d5",
+    "revision": "d811717a02e05d1eaeef7979c8fa3790a4ae30f4",
+    "modules": 330,
+    "originals": [
+      "replacement",
+      "target-warning",
+      "handler-throw",
+      "child-throw",
+      "handler-created",
+      "local",
+      "retirement"
+    ],
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_head_status_stable": true,
+    "checked_main_programs": 7
+  },
+  "private_cut": {
+    "revision": "c2a1051dbfb84eb210ae95ab0521e5a90c61ed0f",
+    "modules": 331,
+    "source": {
+      "report": ".tools/include-array-name-350-private-19/.tools/array-name-originals-19/array-name-source-run-qm_xjat8/report.json",
+      "sha256": "e7efffd336638f3ded6571c0aa787871489081ae993325e3fff554dd90a5468f",
+      "compiler_mode": "SL/cache=false/det=true",
+      "compiler_elapsed_seconds": 4.088,
+      "application_evaluations": 7,
+      "exact_source_agreements": 7,
+      "inputs_head_status_stable": true
+    },
+    "independent_state": {
+      "report": ".tools/include-review-19-array-name/state-run-ty0rzg6g/report.json",
+      "sha256": "caf21c658992e818c858973a2968fb4fbe47f782282bed80cc617d983c50f809",
+      "mode": "SL/cache=false/det=true",
+      "groups": [
+        {
+          "id": "live",
+          "physical_main_premises": 67,
+          "elapsed_seconds": 20.501
+        },
+        {
+          "id": "lifetime",
+          "physical_main_premises": 50,
+          "elapsed_seconds": 21.865
+        }
+      ],
+      "physical_main_premises": 117,
+      "application_evaluations": 2,
+      "inputs_module_stats_head_status_stable": true
+    },
+    "counterexamples": [
+      "Stringable replacement is never cast; old array child retires during the handler before live Array lookup.",
+      "A later missing-target warning returns fixed null despite creating Array.",
+      "First missing-name warning can create the live array used by conversion; local scope and false-handler fallback remain intact.",
+      "Heap-identical source/name/line/pair/current/saved-frame forgeries reject; resume metadata adds no array owner.",
+      "An additional ordinary child owner delays destruction; handler and child-destructor throws suppress target warnings.",
+      "Include operand retirement uses FETCH6 before array warning6/property8."
+    ]
+  },
+  "current_composition": {
+    "report": ".tools/include-array-name-350-actual-19/.tools/array-name-actual-current-19/array-name-actual-compiler-golr5tmv/report.json",
+    "sha256": "ae8b5c715e76fb0031877573843846df53d8f76e20b0294b9cf1600d3800889b",
+    "revision": "4832f222615bc9733f372b6b609800750aea364b",
+    "canonical_parent": "94e3593e6b0c194f589ec84c42acae0264f112c9",
+    "modules": 335,
+    "mode": "SL/cache=false/det=true",
+    "elapsed_seconds": 4.116,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "compatibility": "Exact published334 manifest prefix plus350. Independent static review accepts current-H graph factors, typed-slot release, Generator RV/close, failed trait target history and bound Fiber start guards. Private source/state cuts retain their inputs."
+  },
+  "preserved_failure": {
+    "report": ".tools/include-review-19-array-name/state-run-dv1_qdma/report.json",
+    "sha256": "ba6845143a19791d015ce71db1f413456c9ff5d5e11d016c49c06311115201af",
+    "reason": "Fixture output-list helper used non-pure premises with otherwise; elaboration stopped before evaluation. Per-event projection plus ordinary recursion corrects only that helper.",
+    "application_evaluations": 0,
+    "accepted_credit": 0
+  },
+  "fixture_note": "Before execution, the throw control was corrected to expect automatic raw callback restoration with an ineligible live mask; terminal checks also require output-only events. The117-premise strengthened cut passes unchanged semantics.",
+  "maintained_sources": {
+    "harness": "tests/semantics/source_stringable_retirement_sources.py",
+    "selectors": [
+      "array-name-replacement",
+      "array-name-target-warning",
+      "array-name-handler-throw",
+      "array-name-child-throw",
+      "array-name-handler-created",
+      "array-name-local",
+      "array-name-retirement"
+    ],
+    "child": "tests/semantics/source-stringable-retirement/array-name-retirement-child.php",
+    "relocation": "Seven files are byte-identical; retirement main changes only three child-basename occurrences. New selectors are explicit and excluded from default selection.",
+    "renewed_application_evaluations": 0,
+    "renewed_source_agreements": 0
+  },
+  "reproduction": {
+    "private_cwd": ".tools/include-array-name-350-private-19",
+    "native": "python3 .tools/array-name-originals-19/prepare-native.py",
+    "source": "python3 .tools/array-name-originals-19/run-source.py",
+    "independent_state": "python3 .tools/include-review-19-array-name/run-state.py --source-report .tools/include-array-name-350-private-19/.tools/array-name-originals-19/array-name-source-run-qm_xjat8/report.json (from canonical project)",
+    "actual_cwd": ".tools/include-array-name-350-actual-19",
+    "current_compiler": "python3 .tools/array-name-actual-current-19/run-compiler.py 94e3593e6b0c194f589ec84c42acae0264f112c9",
+    "caps_seconds": {
+      "compiler": 300,
+      "source_cli": 60,
+      "source_outer": 90,
+      "state_group": 90
+    },
+    "jobs": 1
+  },
+  "remaining": [
+    "Wider computed-name producers, special/global source forms and broader first-emission/provider coverage remain required.",
+    "Released foreach array payload guards and paused returns verification remain unchanged.",
+    "These scoped cuts do not establish complete core or a final fresh offline rebuild."
+  ],
+  "review": "Independent include_review_19 semantic/native/harness/state/publication review accepted; compiler_review_19 accepted the exact207/current-H seam."
+}

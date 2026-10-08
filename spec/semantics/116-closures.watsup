@@ -129,7 +129,9 @@ def $task_nodes(CLOSURE_CAPTURE n_object n_slot) = [HOBJECT n_object]
 ;; existing representation for ordinary named targets and diagnostic metadata.
 def $target_nodes(PORIGIN n pcpath) = eps
 def $target_nodes(CLOSURE_TARGET n) = [HOBJECT n]
-def $all_functions(S) = S.FUNCTIONS ++ S.CLOSURETEMPLATES ++ $class_method_functions(S.CLASSES)
+dec $trait_fcc_retained_functions(pstate) : pfunction*
+def $trait_fcc_retained_functions(S) = eps -- otherwise
+def $all_functions(S) = S.FUNCTIONS ++ S.CLOSURETEMPLATES ++ $class_method_functions(S.CLASSES) ++ $trait_fcc_retained_functions(S)
 def $target_function(S, PORIGIN n pcpath) = $function_at(S.FUNCTIONS ++ S.CLOSURETEMPLATES, PORIGIN n pcpath)
 def $target_function(S, CLOSURE_TARGET n) = $function_at(S.CLOSURETEMPLATES, porigin)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin pitem* pstaticcell*

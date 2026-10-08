@@ -429,8 +429,20 @@ The [C-root ledger](../../coverage/semantics/fiber-bound-core-callables-review.j
 retains its separate source/state cuts and the affected337 former Unsupported
 original. Earlier331/337 cuts are not renewed.
 
-Bound `start` captures, constructor capture and broader callable adapters remain
-required; `start` still has an explicit source Unsupported control.
+Module348 adds bound `start` captures for direct and explicit `__invoke` calls.
+Their selected receiver survives argument-side reassignment; the original
+positional/named buffer reaches the target unchanged. The Closure owns the
+receiver, while pending SEND and waiting API frames own only their buffers.
+Explicit invocation retains its additional Closure owner and copied buffer.
+Nested same-capture argument calls distinguish their source sites. Status errors
+follow argument evaluation, and `start` trace frames retain the real callsite,
+including explicit invocation. Pre-entry argument throws release the call's
+Closure owner.
+The [start-capture ledger](../../coverage/semantics/fiber-start-callables-review.json)
+keeps the accepted cuts and original failures separate.
+
+C-root `start`, outer argument unpacking, constructor capture and broader callable
+adapters remain required; the first two retain explicit Unsupported controls.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and

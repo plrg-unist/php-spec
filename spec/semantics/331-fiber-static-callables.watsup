@@ -148,10 +148,12 @@ def $fiber_capture_prepare(S, n, porigin, z, b_pop) = S[.TODO = [CONFIG_ARGS pco
   -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
   -- if $fiber_capture_live(S, n)
   -- if pconfigcall = {SITE porigin, KIND pfibercapture.KIND, INDEX 0, SENT eps, NAMED false, OWNER $fiber_capture_owner(pfibercapture, n), SELECTION (n), LINE z, PACKS eps}
+  -- if $fiber_capture_config_tag(pconfigcall)
 def $fiber_capture_prepare(S, n, porigin, z, false) = S[.TODO = [CONFIG_ARGS pconfigcall, FIBER_CAPTURE_RELEASE n porigin] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
   -- if $fiber_capture_live(S, n)
   -- if pconfigcall = {SITE porigin, KIND pfibercapture.KIND, INDEX 0, SENT eps, NAMED false, OWNER $fiber_capture_owner(pfibercapture, n), SELECTION (n), LINE z, PACKS eps}
+  -- if $fiber_capture_config_tag(pconfigcall)
 def $dynamic_value(S, porigin, z_init, z_call) = $fiber_capture_prepare(S, n, porigin, z_call, false)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)

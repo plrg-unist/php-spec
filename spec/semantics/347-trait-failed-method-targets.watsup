@@ -1,0 +1,81 @@
+;; A failed link retires its Closure objects, while the source AST keeps the
+;; first method pointer. Reconstruct metadata without restoring class publication.
+dec $trait_fcc_failed_target(pstate, pconstantclosure) : (porigin, pmethoddesc, pmethoddesc)?
+dec $trait_fcc_failed_header(pstate, porigin) : (pconstantclosure, porigin, pmethoddesc)?
+dec $trait_fcc_failed_methods(pstate, pconstantclosure*) : pmethoddesc*
+dec $trait_fcc_failed_method_select(pstate, pconstantclosure*, (porigin, pmethoddesc, pmethoddesc)?) : pmethoddesc*
+dec $trait_fcc_retained_method_functions(pstate, pmethoddesc*) : pfunction*
+dec $trait_fcc_retained_function_add(pstate, pmethoddesc, pfunction*) : pfunction*
+
+def $trait_fcc_failed_target(S, pconstantclosure) = ((ptraitcachecause.CLASS, pmethoddesc_copy, pmethoddesc))
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE porigin_method pconstantclosure.SITE porigin_owner eps)
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, pconstantclosure.SITE) = (pconstantclosure)
+  -- if $trait_fcc_retired_receipt(S, pconstantclosure) = (pclassconstantdesc)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
+  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (NExprStaticCall phpType19 phpType20 phpType6 metadata)
+  -- if $constant_callable_method_name(phpType20) = (ptbytes_method)
+  -- if $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_copy, ptraitmethod*))
+  -- if $class_at(S_copy.CLASSES, ptraitcachecause.CLASS) = (pclassdesc_copy)
+  -- if $method_named(pclassdesc_copy.METHODS, $ptlc(ptbytes_method)) = (pmethoddesc_copy)
+  -- if $trait_fcc_receipt_target(pmethoddesc_copy, ptraitmethod*) = (pmethoddesc)
+  -- if pmethoddesc_copy.FUNCTION.ORIGIN = porigin_method
+def $trait_fcc_failed_target(S, pconstantclosure) = eps -- otherwise
+def $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $constant_callable_first(S.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)
+  -- if $trait_fcc_failed_target(S, pconstantclosure) = ((porigin_owner, pmethoddesc_copy, pmethoddesc))
+def $trait_fcc_failed_header(S, porigin_site) = eps -- otherwise
+
+;; Ordinary descriptors win. Only missing imported origins are enumerated;
+;; an existing own method keeps its canonical descriptor and source identity.
+def $trait_fcc_failed_methods(S, eps) = eps
+def $trait_fcc_failed_methods(S, pconstantclosure :: pconstantclosure_tail*) = $trait_fcc_failed_method_select(S, pconstantclosure_tail*, $trait_fcc_failed_target(S, pconstantclosure))
+def $trait_fcc_failed_method_select(S, pconstantclosure*, ((porigin_owner, pmethoddesc_copy, pmethoddesc))) = pmethoddesc_copy :: $trait_fcc_failed_methods(S, pconstantclosure*)
+def $trait_fcc_failed_method_select(S, pconstantclosure*, eps) = $trait_fcc_failed_methods(S, pconstantclosure*)
+def $trait_fcc_retained_method_functions(S, eps) = eps
+def $trait_fcc_retained_method_functions(S, pmethoddesc :: pmethoddesc_tail*) = $trait_fcc_retained_function_add(S, pmethoddesc, $trait_fcc_retained_method_functions(S, pmethoddesc_tail*))
+def $trait_fcc_retained_function_add(S, pmethoddesc, pfunction*) = pmethoddesc.FUNCTION :: pfunction*
+  -- if $trait_imported_origin(pmethoddesc.FUNCTION.ORIGIN)
+  -- if $class_method_origin(S.CLASSES, pmethoddesc.FUNCTION.ORIGIN) = eps
+  -- if $function_at(pfunction*, pmethoddesc.FUNCTION.ORIGIN) = eps
+def $trait_fcc_retained_function_add(S, pmethoddesc, pfunction*) = pfunction* -- otherwise
+def $trait_fcc_retained_functions(S) = $trait_fcc_retained_method_functions(S, $trait_fcc_failed_methods(S, S.CONSTANTCLOSURES))
+def $closure_method_origin(S, porigin) = (pmethoddesc)
+  -- if $class_method_origin(S.CLASSES, porigin) = eps
+  -- if $method_origin($trait_fcc_failed_methods(S, S.CONSTANTCLOSURES), porigin) = (pmethoddesc)
+
+;; The latent cache becomes usable after the authenticated failure row. It
+;; never grants a value or a live scope to the retired first Closure itself.
+def $constant_callable_cached_method_at(S, porigin_site, n_prefix) = $trait_fcc_fixed_at_known(S, pconstantclosure, porigin_owner, pmethoddesc, n_prefix)
+  -- if $trait_fcc_cached_header(S, porigin_site) = eps
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_owner, 0) = (n_failed)
+  -- if $(n_failed < n_prefix)
+def $constant_callable_cached_method_access(S, porigin_site, porigin_owner, pmethoddesc) = (pmethoddesc = pmethoddesc_first)
+  -- if $trait_fcc_cached_header(S, porigin_site) = eps
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_first_owner, pmethoddesc_first))
+  -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_first_owner, 0) = (n_failed)
+  -- if $(n_failed < |S.DECLARATIONS|)
+
+def $trait_fcc_source_header_at(S, porigin_site, n_prefix) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $trait_fcc_cached_header(S, porigin_site) = eps
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_owner, 0) = (n_failed)
+  -- if $(n_failed < n_prefix)
+
+;; A later published import can fill its constant outside a collision frame.
+def $trait_fcc_snapshot_ordinary(S, pconstantclosure) = (pmethoddesc)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = eps
+  -- if $trait_fcc_failed_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_first_owner, pmethoddesc_first))
+  -- if $(pconstantclosure_first.OBJECT < pconstantclosure.OBJECT)
+  -- if $class_constant_callable_receipt_owner(S, pconstantclosure) = (porigin_owner)
+  -- if $constant_callable_published(S.DECLARATIONS[0:pconstantclosure.PREFIX], porigin_owner)
+  -- if $constant_callable_cached_method_at(S, pconstantclosure.SITE, pconstantclosure.PREFIX) = (pmethoddesc)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE porigin_owner eps)
+  -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+
+;; The AST pointer owns its method statics even when the class was not linked.
+def $method_static_origin(S, porigin) = true
+  -- if $static_function_at($method_functions($trait_fcc_failed_methods(S, S.CONSTANTCLOSURES)), porigin) = (pfunction)

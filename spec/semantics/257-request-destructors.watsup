@@ -42,8 +42,12 @@ dec $destruction_release_order(hgraph) : pnode*
 dec $destruction_zero(hgraph, pnode*) : pnode*
 dec $gc_release_order(pstate, hgraph) : pnode*
 def $gc_release_order(S, H) = $destruction_release_order(H) -- otherwise
+dec $gc_release_order_graph(pstate, hgraph) : pnode*
+def $gc_release_order_graph(S, H) = $gc_release_order(S, H) -- otherwise
 dec $gc_zero(pstate, hgraph, pnode*) : pnode*
 def $gc_zero(S, H, pnode*) = $destruction_zero(H, pnode*) -- otherwise
+dec $gc_zero_graph(pstate, hgraph, pnode*) : pnode*
+def $gc_zero_graph(S, H, pnode*) = $gc_zero(S, H, pnode*) -- otherwise
 dec $destruction_release_walk(hgraph, pdestructionjob*, pnode*) : pnode*
 dec $destruction_values(pnode*) : pdestructionjob*
 dec $destruction_job_nodes(pdestructionjob*) : pnode*
@@ -273,8 +277,8 @@ def $destruction_prune_case_result(S, pnode_live*, PRUNE_BEGIN_RELEASE) = $destr
 def $destruction_prune_case_result(S, pnode_live*, PRUNE_DROP_STORE) = $prune_live($destruction_store_drop(S, $gc_release_order(S, $heap_graph(S))), pnode_live*)
 def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_KEEP_UNSUPPORTED) = S
 def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_REFUSE_RELEASE) = S[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
-def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_BEGIN_RELEASE) = $destructor_release_begin(S, $destruction_values($gc_zero(S, H, S.ALLOCATIONS)))
-def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_DROP_STORE) = $prune_live($destruction_store_drop(S, $gc_release_order(S, H)), pnode_live*)
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_BEGIN_RELEASE) = $destructor_release_begin(S, $destruction_values($gc_zero_graph(S, H, S.ALLOCATIONS)))
+def $destruction_prune_case_graph_result(S, H, pnode_live*, PRUNE_DROP_STORE) = $prune_live($destruction_store_drop(S, $gc_release_order_graph(S, H)), pnode_live*)
 
 def $destructor_ready(S) = true
   -- if ~$eval_compile_exit_pending(S) \/ ~$exit_completion(S.COMPLETION)
@@ -519,6 +523,7 @@ dec $fiber_core_root(pstate) : bool
 def $destructor_private_error(S, pdestructorcall, ptbytes) = $throw_scalar(S, "Error", ptbytes, pdestructorcall.LINE)
   -- if ~$fiber_finished_root(S)
   -- if ~$fiber_core_root(S)
+  -- if S.CURRENT =/= eps \/ ~$gc_worker_public_guard_live(S)
 rule PhpStep/destructor-private-error: S ~> $destructor_private_error(S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*], pdestructorcall, $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ [32] ++ $object_name(S, pdestructorcall.OBJECT) ++ $ptascii("::__destruct()") ++ $method_scope_suffix(S, $destructor_access_scope(S)))
   -- if S.TODO = (DESTRUCTOR_ENTER pdestructorcall) :: ptask_tail*
   -- if $destructor_enter_valid(S, pdestructorcall)
