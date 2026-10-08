@@ -35,8 +35,10 @@ dec $heap_edge_owners(pnode, hedge*, pnode*) : nat
 def $heap_edge_owners(pnode, eps, pnode_alloc*) = 0
 def $heap_edge_owners(pnode, (HEDGE pnode_from pnode) :: hedge_tail*, pnode_alloc*) = $(1 + $heap_edge_owners(pnode, hedge_tail*, pnode_alloc*))
   -- if $heap_member(pnode_from, pnode_alloc*)
+def $heap_edge_owners(pnode, (HEDGE pnode_from pnode) :: hedge_tail*, pnode_alloc*) = $heap_edge_owners(pnode, hedge_tail*, pnode_alloc*)
+  -- if ~$heap_member(pnode_from, pnode_alloc*)
 def $heap_edge_owners(pnode, (HEDGE pnode_from pnode_to) :: hedge_tail*, pnode_alloc*) = $heap_edge_owners(pnode, hedge_tail*, pnode_alloc*)
-  -- if (pnode =/= pnode_to \/ ~$heap_member(pnode_from, pnode_alloc*))
+  -- if pnode =/= pnode_to
 
 dec $heap_owners(hgraph, pnode) : nat
 def $heap_owners(H, pnode) = $($heap_count(pnode, H.ROOTS) + $heap_edge_owners(pnode, H.EDGES, H.NODES))

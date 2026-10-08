@@ -766,12 +766,15 @@ def $gc_prune_graph(H, pnode_keep*) = $gc_prune_graph(H[.NODES = pnode_live*], p
   -- if pnode_live* =/= H.NODES
 def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
 dec $gc_zero_keep(hgraph, pnode*, pnode*) : pnode*
+dec $gc_zero_owners(hgraph, pnode, pnode*, pnode*, nat) : pnode*
 def $gc_zero(S, H, eps) = eps
 def $gc_zero(S, H, pnode :: pnode_tail*) = $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*)
   -- if pnode_keep* = $gc_keep(S)
 def $gc_zero_keep(H, eps, pnode_keep*) = eps
-def $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*) = pnode :: $gc_zero_keep(H, pnode_tail*, pnode_keep*) -- if $heap_owners(H, pnode) = 0 /\ ~(pnode <- pnode_keep*)
-def $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*) = $gc_zero_keep(H, pnode_tail*, pnode_keep*) -- if $($heap_owners(H, pnode) > 0) \/ pnode <- pnode_keep*
+def $gc_zero_keep(H, pnode :: pnode_tail*, pnode_keep*) = $gc_zero_owners(H, pnode, pnode_tail*, pnode_keep*, n_owners)
+  -- if n_owners = $heap_owners(H, pnode)
+def $gc_zero_owners(H, pnode, pnode_tail*, pnode_keep*, n_owners) = pnode :: $gc_zero_keep(H, pnode_tail*, pnode_keep*) -- if n_owners = 0 /\ ~(pnode <- pnode_keep*)
+def $gc_zero_owners(H, pnode, pnode_tail*, pnode_keep*, n_owners) = $gc_zero_keep(H, pnode_tail*, pnode_keep*) -- if $(n_owners > 0) \/ pnode <- pnode_keep*
 dec $gc_release_walk_keep(hgraph, pdestructionjob*, pnode*, pnode*) : pnode*
 def $gc_release_walk(S, H, eps, pnode_done*) = pnode_done*
 def $gc_release_walk(S, H, (DESTRUCTION_HANDLE n) :: pdestructionjob*, pnode_done*) = $gc_release_walk(S, H, pdestructionjob*, pnode_done* ++ [HOBJECT n])
