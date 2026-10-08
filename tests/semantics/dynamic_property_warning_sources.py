@@ -52,6 +52,7 @@ CASES = {
     'reference-foreach-scalar-handler-throw18': b"<?php\nclass ScalarWarningThrowReceiver18 {\n    public $x = 1;\n    public $y = 2;\n    public function __destruct() { echo 'receiver-drop|'; }\n}\nset_error_handler(function($level, $message, $file, $line) {\n    echo 'fetch-warning|';\n    throw new Exception('scalar-stop');\n});\n$object = new ScalarWarningThrowReceiver18();\n$value = 0;\ntry {\n    foreach ($object as $key => &$value) {\n        echo $key, '=', $value, '|';\n        if ($key === 'x') { $object = 7; }\n    }\n} catch (Exception $error) {\n    echo 'caught=', $error->getMessage(), '|';\n}\necho $value, '|done';\n",
     'reference-foreach-invalid-key-unset-receiver-key-observer18': b'<?php\n$object = (object) ["\\0" => 2, \'x\' => 3];\nset_error_handler(function($level, $message, $file, $line) {\n    echo \'notice|\';\n    unset($GLOBALS[\'object\']);\n    return true;\n});\n$value = 0;\nforeach ($object as $key => &$value) {\n    echo ($key === "\\0" ? \'nul\' : $key), \'=\', $value, \'|\';\n}\necho $value, \'|done\';\n',
     'reference-foreach-invalid-key-retained-table-key-observer18': b'<?php\n$object = (object) ["\\0" => 2];\nset_error_handler(function($level, $message, $file, $line) {\n    echo \'notice|\';\n    $GLOBALS[\'held\'] = (array) $GLOBALS[\'object\'];\n    $GLOBALS[\'object\'] = (object) [\'z\' => 4];\n    return true;\n});\n$value = 0;\nforeach ($object as $key => &$value) {\n    echo ($key === "\\0" ? \'nul\' : $key), \'=\', $value, \'|\';\n    $value = $value + 10;\n}\nunset($value);\necho $held["\\0"], \'/\', $object->z, \'|done\';\n',
+    'duplicate-reference-foreach-binding-gc18': "<?php\nclass DuplicateReferenceForeachBindingObservationObject18 {}\nclass DuplicateReferenceForeachBindingObservationDestructor18 {\n    public function __destruct() {\n        echo $GLOBALS['value'] instanceof DuplicateReferenceForeachBindingObservationDestructor18 ? 'old|' : 'new|';\n        unset($GLOBALS['object']->x);\n        unset($GLOBALS['object']->x);\n        echo gc_collect_cycles(), '|';\n    }\n}\n$object = new DuplicateReferenceForeachBindingObservationObject18();\nset_error_handler(function($level, $message, $file, $line) use ($object) {\n    echo 'warning|';\n    @$object->x = 2;\n    return true;\n});\n$object->x = 7;\n$value = new DuplicateReferenceForeachBindingObservationDestructor18();\nforeach ($object as $key => &$value) {\n    echo $key, '=', $value, '|';\n    $value = 12;\n}\necho $value, '/';\necho isset($object->x) ? 'present|' : 'absent|';\nunset($value);\necho 'done';\n",
 }
 
 EXPECTED = {
@@ -95,6 +96,7 @@ EXPECTED = {
     'reference-foreach-scalar-handler-throw18': 'x=1|receiver-drop|fetch-warning|caught=scalar-stop|1|done',
     'reference-foreach-invalid-key-unset-receiver-key-observer18': 'notice|nul=2|x=3|3|done',
     'reference-foreach-invalid-key-retained-table-key-observer18': 'notice|nul=2|z=4|12/14|done',
+    'duplicate-reference-foreach-binding-gc18': 'warning|old|0|x=2|12/absent|done',
 }
 
 BOUNDARIES = {
