@@ -83,8 +83,16 @@ strict-SL premises retain separate private cuts; 85 premises assert required abr
 controls with zero observation agreement. Actual330 over `7a0f8044f` passes strict
 compilation at `1399d8a7e`, preserving source343, bound C-root and collector342
 behavior without renewing source/state cuts. The original observer mismatch stays
-zero credit. Fresh store close, delegating request close and wider terminal/free-storage paths
+zero credit. Delegating request close and wider terminal/free-storage paths
 remain required. [Scope and cuts](coverage/semantics/generator-request-finally-review.json).
+
+Generator349 closes fresh store frames without entering body/finally, releases
+actual parameter/receiver owners, and transfers the single Closure owner.
+Root CV-destructor handlers precede later parameter release; closed storage
+releases the Closure before caches. Ten distinct normal originals and 584 strict-SL
+premises retain separate cuts and original failures. A real free-storage pin,
+late WeakReference notification and readable caches during child destructors remain
+required. [Bounded evidence](coverage/semantics/generator-fresh-store-review.json).
 
 Generator328 reference caches, value snapshots and effective destructuring aliases
 retain their original source/state cuts and actual321 compiler. 340 promotes the

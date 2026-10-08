@@ -75,10 +75,17 @@ creation, and creation through changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.
 [Module310](GENERATOR-FIBER-CLOSE.md) extends ordinary paused-Generator release
-to the active Fiber stack while preserving real parked caller owners. Request-end,
+to the active Fiber stack while preserving real parked caller owners. Wider
 terminal cleanup, parked running Generators, switching finalizers, general user
 destructors and cyclic collection remain required; their explicit Unsupported controls earn no
 agreement. Natural return/throw/finally cleanup remains distinct from forced close.
+
+Normal request cleanup340 uses real global/store owners and borrowed zero-owner
+buckets. Module349 also closes fresh store frames without running their bodies,
+preserves immediate CV-handler ordering, and releases a closed Generator's Closure before its
+caches. [Source and state cuts](../../coverage/semantics/generator-fresh-store-review.json)
+remain bounded: free-storage weak liveness, delegating request close and abrupt
+terminal behavior are still required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and
