@@ -28,7 +28,8 @@ def $fiber_receive_value(S, pconfigcall, POBJECT n_capture) = $fiber_done($fiber
   -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, n)
 
 rule PhpStep/fiber-start-core-enter: S ~> S[.TODO = [FIBER_START_CORE_INVOKE n_runner n_capture pfiberstart, FIBER_START_CORE_RESULT n_runner n_capture pfiberstart, FIBER_FINISH n_runner]][.ORIGIN = (pfiberstart.SITE)]
-  -- if S.TODO = [FIBER_ENTER n_runner pnamedargs, FIBER_FINISH n_runner]
+  -- if S.TODO = (FIBER_ENTER n_runner pnamedargs) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
   -- if $fiber_enter_valid(S, n_runner, pnamedargs)
   -- if $fiber_at(S, n_runner) = (pfiber)
   -- if pfiber.RAW = POBJECT n_capture
@@ -37,8 +38,9 @@ rule PhpStep/fiber-start-core-enter: S ~> S[.TODO = [FIBER_START_CORE_INVOKE n_r
   -- if S.OBJECTS[n_capture] = FIBERAPICLOSURE pfibercapture
   -- if pfibercapture.INPUT = (n_receiver)
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfiberapi_outer = pfibercaller.API
   -- if n_count = $(|pnamedargs.SLOTS| + |pnamedargs.NAMED|)
-  -- if pfiberstart = {SITE pfibercaller.API.SITE, OBJECT n_receiver, INDEX n_count, SENT pnamedargs, LINE pfibercaller.API.LINE}
+  -- if pfiberstart = {SITE pfiberapi_outer.SITE, OBJECT n_receiver, INDEX n_count, SENT pnamedargs, LINE pfiberapi_outer.LINE}
 
 dec $fiber_start_core_tasks(pstate, nat, nat, pfiberstart) : bool
 dec $fiber_start_core_result_valid(pstate, nat, nat, pfiberstart) : bool
