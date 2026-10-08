@@ -796,9 +796,10 @@ Throwable validation against the actual live heap. The actual332 join at
 retain the same per-slot constraints without retaining the retired parent. Four
 exact normal originals and strict332 initialization pass at `5b26e3526`; 134/71
 reached premises at `edf7e7ec1` cover exact detach, ordinary cell-release transfer,
-pending A/B chains and genuine parked/restored Fiber ownership. Borrowed plan
-snapshots and duplicate queues provide no authority. Released-CV mutation, raw
-retired-container
+pending A/B chains and genuine parked/restored Fiber ownership. The actual336
+join at `0d233dde9` passes strict initialization; earlier behavioral cuts remain
+separate. Borrowed plan snapshots and duplicate queues provide no authority.
+Released-CV mutation, raw retired-container
 reads, callback-capable previous reference wrappers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
 and expired notice buckets remain Unsupported. The preserved `is_array` original

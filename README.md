@@ -788,6 +788,7 @@ Private Generator cleanup now preserves the same per-slot timing in actual clean
 queues and parked Fiber VMs. Four further exact originals and 134/71 reached
 premises cover reversed slot order, two constraints on one cell, exception
 chaining, owner transfer and rejection of stale snapshots or duplicate queues.
+The current336 composition passes strict compilation.
 Released-CV mutation, raw retired-container reads, callback-capable previous
 reference wrappers and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
