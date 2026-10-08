@@ -946,11 +946,15 @@ def $scoped_name_prepare(S, phpType19, poperand_selector, expression_name, phpTy
   -- if S.TODO = ptask :: ptask_tail*
   -- if $property_computed_name(expression_name)
 
+dec $trait_fcc_retained_call_scope(pstate, porigin) : (pclassdesc, pconstantclosure)?
+def $trait_fcc_retained_call_scope(S, porigin) = eps -- otherwise
+
 rule PhpStep/scoped-call-named: S ~> S[.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if $ppscoped_named(phpType19)
   -- if S.ORIGIN = (porigin)
   -- if ~$constant_callable_active(S, porigin)
+  -- if $trait_fcc_retained_call_scope(S, porigin) = eps
 rule PhpStep/scoped-call-dynamic: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 0]), EVAL expression_class), SCOPED_CLASS expression_class phpType20 phpType7* $runtime_line(S, eps, NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)] ++ ptask_tail*]
   -- if S.TODO = (EVAL (NExprStaticCall expression_class phpType20 (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if ~$ppscoped_named(expression_class)

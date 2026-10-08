@@ -255,6 +255,19 @@ keep their earlier priority. The [ledger](../../coverage/semantics/source-echo-c
 retains nine exact originals and236 independent premises across private349 cuts.
 The original lost-bytes
 and line/admission mismatches keep zero affected credit. Actual351 over `760771d9d`
-passes strict compilation with reviewed current-parent compatibility. Named/unpacked/multiple/effectful
+passes strict compilation with reviewed current-parent compatibility. Wider named/unpacked/multiple/effectful
 arguments, dynamic/fallback/builtin callees and wider ECHO/source producers remain
 required.
+
+The same361 certificate now admits one named ordinary CV argument under direct
+ECHO. Its completed CV descriptor certifies SEND/ECHO8 for a known second slot
+and7 for a deferred name; CV metadata remains8. INIT5 still selects operand
+retirement before binding and demand. No live argument/callee lookup occurs in
+that selection or in the existing returned TMPVAR/REFERENCE owner certificates.
+Default holes and returning warning handlers preserve fixed null; unknown names
+and earlier exceptions retain their priority. Seven exact originals pass at
+private351, with204 independent premises. Actual354 over `1c4c8f283` passes
+strict compilation with reviewed current-parent compatibility.
+The [ledger](../../coverage/semantics/source-echo-named-cv-call-review.json)
+retains the original baseline mismatch separately. Wider argument/callee/output
+producers and final combined offline validation remain required.

@@ -156,15 +156,11 @@ def $method_self_class_scope_valid(S, pclassdesc) = true
   -- if $method_closure_scope_valid(S, pclosurescope)
   -- if $call_current_valid(S)
 
-;; Keyword SELF retains the actual class entry. Recognize that source-owned
-;; request before the ordinary named constructor path; unknown failed layouts
-;; must not become a fresh named lookup or an allocation.
-def $trait_fcc_retained_new_scope(S, PORIGIN n_unit pcpath) = ((pclassdesc, pconstantclosure_first))
+;; Keyword SELF retains the actual class entry. Authenticate its source-owned
+;; request before ordinary named lookup; unknown failed layouts stay unsupported.
+dec $trait_fcc_retained_scope(pstate, porigin) : (pclassdesc, pconstantclosure)?
+def $trait_fcc_retained_scope(S, PORIGIN n_unit pcpath) = ((pclassdesc, pconstantclosure_first))
   -- if S.ORIGIN = (PORIGIN n_unit pcpath)
-  -- if $ordinary_keyword_new_site(S, PORIGIN n_unit pcpath)
-  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
-  -- if $ptlc($base64(text)) = $ptascii("self")
-  -- if $method_source_task(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
   -- if S.CURRENT = (pcallcontext)
   -- if pcallcontext.TARGET = CLOSURE_TARGET n
   -- if pcallcontext.LEXICAL_CLASS = (porigin_owner)
@@ -180,6 +176,36 @@ def $trait_fcc_retained_new_scope(S, PORIGIN n_unit pcpath) = ((pclassdesc, pcon
   -- if pclosurescope.LEXICAL = porigin_owner
   -- if $method_closure_scope_valid(S, pclosurescope)
   -- if $call_current_valid(S)
+
+def $trait_fcc_retained_scope(S, porigin) = eps -- otherwise
+def $trait_fcc_retained_new_scope(S, porigin) = $trait_fcc_retained_scope(S, porigin)
+  -- if $ordinary_keyword_new_site(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if $method_source_task(S, NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+def $trait_fcc_retained_call_scope(S, porigin) = $trait_fcc_retained_scope(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall (NName (BYTES text) metadata_name) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $method_source_task(S, NExprStaticCall (NName (BYTES text) metadata_name) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)
+
+dec $trait_fcc_failed_required_class(pstate, pclassdesc, pconstantclosure) : (pclassdesc, bool)?
+def $trait_fcc_failed_required_class(S, pclassdesc, pconstantclosure_first) = ((pclassdesc_required, b))
+  -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
+  -- if pclassdesc.PARENT = eps
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((pconstantclosure_first.SITE, ptraitcachecause))
+  -- if $trait_fcc_failed_target(S, pconstantclosure_first) = ((pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
+  -- if $trait_fcc_failed_data_at(S, pconstantclosure_first, |S.DECLARATIONS|) = ((NORMAL, pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
+  -- if $trait_fcc_receipt_composition(S, ptraitcachecause) = ((S_copy, ptraitmethod*, ptraitmethod_required*))
+  -- if $class_at(S_copy.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_copy)
+  -- if $trait_import_interfaces(pclassdesc_copy, pclassdesc_copy.METHODS) = eps
+  -- if S_required = $trait_requirements(S_copy, pclassdesc_copy, ptraitmethod_required*)
+  -- if S_required.COMPLETION = NORMAL
+  -- if $class_at(S_required.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_required)
+  -- if $trait_import_interfaces(pclassdesc_required, pclassdesc_required.METHODS) = eps
+  -- if $pil_contract_issue(S_required, pclassdesc_required) = METHOD_OK
+  -- if b = ($pil_abstract_message(S_required, pclassdesc_required) =/= eps)
+def $trait_fcc_failed_required_class(S, pclassdesc, pconstantclosure) = eps -- otherwise
 
 dec $trait_fcc_failed_abstract(pstate, pclassdesc, pconstantclosure) : bool
 ;; An explicit abstract flag is installed before trait data binding. Its source
@@ -197,22 +223,30 @@ def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure_first) = true
   -- if S.ORIGIN = (porigin_site)
   -- if pclassdesc.PARENT = eps /\ ~pclassdesc.ABSTRACT
   -- if $trait_fcc_retained_new_scope(S, porigin_site) = ((pclassdesc, pconstantclosure_first))
-  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((pconstantclosure_first.SITE, ptraitcachecause))
-  -- if $trait_fcc_failed_target(S, pconstantclosure_first) = ((pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
-  -- if $trait_fcc_failed_data_at(S, pconstantclosure_first, |S.DECLARATIONS|) = ((NORMAL, pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
-  -- if $trait_fcc_receipt_composition(S, ptraitcachecause) = ((S_copy, ptraitmethod*, ptraitmethod_required*))
-  -- if $class_at(S_copy.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_copy)
-  -- if $trait_import_interfaces(pclassdesc_copy, pclassdesc_copy.METHODS) = eps
-  -- if S_required = $trait_requirements(S_copy, pclassdesc_copy, ptraitmethod_required*)
-  -- if S_required.COMPLETION = NORMAL
-  -- if $class_at(S_required.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_required)
-  -- if $trait_import_interfaces(pclassdesc_required, pclassdesc_required.METHODS) = eps
-  -- if $pil_contract_issue(S_required, pclassdesc_required) = METHOD_OK
-  -- if $pil_abstract_message(S_required, pclassdesc_required) = (ptbytes_message)
+  -- if $trait_fcc_failed_required_class(S, pclassdesc, pconstantclosure_first) = ((pclassdesc_required, true))
 def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure) = false -- otherwise
 def $trait_fcc_retained_new(S, pclassdesc, pconstantclosure, z) = $throw_scalar(S, "Error", $ptascii("Cannot instantiate abstract class ") ++ pclassdesc.NAME, z)
   -- if $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure)
 def $trait_fcc_retained_new(S, pclassdesc, pconstantclosure, z) = S[.COMPLETION = UNSUPPORTED "retained failed class construction"] -- otherwise
+
+;; A retained SELF call selects from the authenticated post-data requirement
+;; table. Unknown method phases cannot fall through to a fresh named lookup.
+dec $trait_fcc_retained_call(pstate, pclassdesc, pconstantclosure, ptbytes, int) : pstate
+def $trait_fcc_retained_call(S, pclassdesc, pconstantclosure, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot call abstract method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("()"), z)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $trait_fcc_retained_call_scope(S, porigin_site) = ((pclassdesc, pconstantclosure))
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19 (NIdentifier (BYTES text) metadata_method) (SEQUENCE phpType7*) metadata)
+  -- if ptbytes = $base64(text)
+  -- if $trait_fcc_failed_required_class(S, pclassdesc, pconstantclosure) = ((pclassdesc_required, b))
+  -- if $method_named(pclassdesc_required.METHODS, $ptlc(ptbytes)) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = pclassdesc.ORIGIN /\ pmethoddesc.ABSTRACT
+  -- if $method_accessible(S, pmethoddesc, (pclassdesc.ORIGIN))
+def $trait_fcc_retained_call(S, pclassdesc, pconstantclosure, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "retained failed class method call"] -- otherwise
+rule PhpStep/trait-retained-abstract-call: S ~> $trait_fcc_retained_call(S[.TODO = ptask_tail*], pclassdesc, pconstantclosure, $base64(text_method), $runtime_line(S, eps, NExprStaticCall phpType19 (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata))
+  -- if S.TODO = (EVAL (NExprStaticCall phpType19 (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if ~$constant_callable_active(S, porigin_site)
+  -- if $trait_fcc_retained_call_scope(S, porigin_site) = ((pclassdesc, pconstantclosure))
 
 ;; A completed NEW certificate keeps its source/scope proof after the receiving
 ;; Closure retires. Current minting separately compares the live caller evidence.

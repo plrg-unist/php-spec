@@ -119,6 +119,17 @@ Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
 
+Direct ECHO now admits one named ordinary CV argument through361's existing
+certificate and owning output protocol. INIT5 precedes live SEND; known second-slot
+binding uses ECHO8, while late-bound names use7. Default holes, unknown-name errors
+before CV demand and fixed-null returning warnings retain their native order.
+Returned TMPVAR/HCELL values survive post-SEND argument mutation. Seven exact
+originals and204 independent premises (142 bindings/62 checks) retain `5baec287b`/351.
+Actual354 over `1c4c8f283` passes strict compilation with reviewed current-parent
+compatibility. The unchanged baseline's parent/cast lines and early destruction
+retain zero agreement. No new module or owner schema is added.
+[Ledger](coverage/semantics/source-echo-named-cv-call-review.json).
+
 SOURCE365 extends361 through a shared certificate for one ordinary positional
 CV argument. INIT5 precedes live SEND8; operand retirement can install the callee
 or replace the CV, while returning warnings send fixed null and earlier throws
@@ -2242,6 +2253,19 @@ algo/struct at3.719/4.721s, preserving computed-static, Generator and source
 consumers; the private source1/40 cut bridges unchanged. Raw compiler evidence
 is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-5o1ambud`
 and `trait266-object-struct-ifvl6gz9` in the same directory.
+Retained failed-class `self::n(argument())` now selects an authenticated copied abstract
+method and rejects it before argument evaluation. The shared required-class proof
+keeps the existing implicit SELF construction behavior; unknown phases stay
+Unsupported rather than becoming a fresh named lookup. At `b40dc5c2d`/354 over
+`2257ebf82`, strict algo/struct pass3.719/4.723s, one shutdown PHP-error source
+and41 supplied pre-send/source/phase conditions plus6 setup clauses pass (28.598s),
+including unchanged allocations/events, the exact remaining TODO and all four
+validators. Raw evidence under current19 `.tools/` is `method-runtime-cl8ncs4a`,
+`closure-call-protocol-rms153ed`, `trait266-object-algo-tx_skl4w` and
+`trait266-object-struct-sa28i5sp`. The accepted-baseline mismatch `pynrj2xf`
+retains zero agreement; previous SELF/STATIC cuts are unchanged. Parent assertion,
+source, storage and collector fields remain intact. Wider failed-owner members
+and the larger parameter-view sources remain open.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,

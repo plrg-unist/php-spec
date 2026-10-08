@@ -110,7 +110,14 @@ CASES = {'regular': 'deferred-regular.php',
          'echo-cv-call-retirement-throw': 'echo-cv-call-retirement-throw-child.php',
          'echo-cv-call-eval-reference': None,
          'echo-cv-call-baseline-lifetime': None,
-         'echo-cv-call-result-lines': 'echo-cv-call-result-lines-child.php'}
+         'echo-cv-call-result-lines': 'echo-cv-call-result-lines-child.php',
+         'echo-named-cv-call-known-second': 'echo-named-cv-call-known-second-child.php',
+         'echo-named-cv-call-late-second': 'echo-named-cv-call-late-second-child.php',
+         'echo-named-cv-call-unknown-name': 'echo-named-cv-call-unknown-name-child.php',
+         'echo-named-cv-call-argument-warning': 'echo-named-cv-call-argument-warning-child.php',
+         'echo-named-cv-call-argument-throw': 'echo-named-cv-call-argument-throw-child.php',
+         'echo-named-cv-call-retirement-throw': 'echo-named-cv-call-retirement-throw-child.php',
+         'echo-named-cv-call-eval-reference': None}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -148,7 +155,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-', 'echo-cv-call-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-', 'echo-cv-call-', 'echo-named-cv-call-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)
