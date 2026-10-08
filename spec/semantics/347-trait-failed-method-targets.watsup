@@ -28,7 +28,8 @@ def $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owne
 def $trait_fcc_failed_header(S, porigin_site) = eps -- otherwise
 
 ;; Trait method scopes are fixed after data binding, before abstract/interface
-;; verification. Replay only that completed prefix after an authenticated failure.
+;; verification. The authenticated first birth has no preceding constant context;
+;; replay its data prefix without the later import's active initializer.
 def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = $trait_fcc_failed_data_phase(S_data.COMPLETION, porigin_owner, pmethoddesc_copy, pmethoddesc)
   -- if $(n_prefix <= |S.DECLARATIONS|)
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
@@ -39,7 +40,7 @@ def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = $trait_fcc_faile
   -- if $trait_fcc_failed_target(S, pconstantclosure) = ((porigin_owner, pmethoddesc_copy, pmethoddesc))
   -- if pmethoddesc.OWNER =/= porigin_owner
   -- if $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_methods, ptraitmethod*))
-  -- if S_before = S_methods[.CLASSCONSTANTCACHE = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin_owner, n_failed)][.TODO = [TRAIT_NOTICE_REPLAY porigin_owner n_failed ptraitcachecause.USERPREFIX]]
+  -- if S_before = S_methods[.CLASSCONSTANTCACHE = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin_owner, n_failed)][.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.TODO = [TRAIT_NOTICE_REPLAY porigin_owner n_failed ptraitcachecause.USERPREFIX]]
   -- if $class_at(S_before.CLASSES, porigin_owner) = (pclassdesc_methods)
   -- if $trait_fetch(S_before, $trait_plan(S_before, pclassdesc_methods).TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
   -- if S_constants = $trait_data_constants(S_before, pclassdesc_methods, pclassdesc_traits*, eps)
