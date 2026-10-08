@@ -120,7 +120,13 @@ $close_outputs(S_queued.EVENTS) = $ptascii("C|")
         checks += ['$generator_frame_scope(S_store,pframe_store) = S_frame',
                    '$trace_slot(S_frame,S_frame.ENV,$ptascii("second")) = POBJECT n_second']
         checks += base.seek('S_handler', 'S_queued', 63) + valid('S_handler')
-        checks += ['S_handler.OBJECTS[n_generator] = GENERATOR pgenerator_closed',
+        checks += ['S_handler.FRAMES = [pframe_handler]',
+                   'pframe_handler.CONTEXT = eps',
+                   'pframe_handler.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_handler_tail*',
+                   '$exception_result_valid(S_handler,pexceptioncall)',
+                   '$destructor_call_tail(pframe_handler.TODO,pdestructorcall) = (ptask_handler_tail*)',
+                   '$destructor_call_pending_valid(S_handler,pdestructorcall)',
+                   'S_handler.OBJECTS[n_generator] = GENERATOR pgenerator_closed',
                    '$generator_request_fresh_closed(pgenerator_closed)',
                    '$heap_owners($heap_graph(S_handler),HOBJECT n_generator) = 2',
                    '$heap_owners($heap_graph(S_handler),HOBJECT n_second) = 1',
@@ -130,6 +136,15 @@ $close_outputs(S_queued.EVENTS) = $ptascii("C|")
                    r'~pdestructorcall.USER /\ pdestructorcall.CALLER = eps',
                    r'pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps',
                    '$close_outputs(S_handler.EVENTS) = $ptascii("C|A")']
+        checks += ['pdestructorcall_user = pdestructorcall[.USER = true]',
+                   '$destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall_user) :: ptask_handler_tail*,pdestructorcall) = eps',
+                   '$destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall_user) :: ptask_handler_tail*,pdestructorcall_user) = eps']
+        reject(checks, 'handler_user',
+               'S_handler[.FRAMES = [pframe_handler[.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall_user) :: ptask_handler_tail*]]]',
+               'S_handler')
+        reject(checks, 'handler_wrong_throwable',
+               'S_handler[.FRAMES = [pframe_handler[.TODO = (EXCEPTION_HANDLER_RESULT (pexceptioncall[.OBJECT = n_second])) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_handler_tail*]]]',
+               'S_handler', same_heap=False)
     base.finish(checks, 'S_queued', name)
     if name == 'fresh-self-reference-becomes-borrowed-store-bucket':
         checks += ['S_resumed.DESTRUCTION.RETIRED = eps',

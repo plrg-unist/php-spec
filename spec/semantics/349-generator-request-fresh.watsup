@@ -45,6 +45,13 @@ def $generator_close_done_site(S, pgenerator, pgenclose) = (pgenclose.SITE = pge
   -- if pgenclose.STORE =/= eps
   -- if $generator_request_fresh_closed(pgenerator)
 
+;; A root CV destructor's handler returns to its existing result marker.
+;; Task admission separately validates the handler and destructor certificates.
+def $destructor_call_tail((EXCEPTION_HANDLER_RESULT pexceptioncall) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask*, pdestructorcall) = (ptask*)
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps
+  -- if pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+
 ;; free_storage releases the closed Closure before the cached zvals.
 def $destruction_child_jobs(S, HOBJECT n) = $destruction_values($generator_close_children(S, HOBJECT n))
   -- if S.OBJECTS[n] = GENERATOR pgenerator
