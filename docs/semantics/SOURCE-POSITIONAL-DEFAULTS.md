@@ -170,4 +170,6 @@ The nonempty GC zero-owner scan computes the same keep list once on
 and the exact WeakReference original pass; empty-scan and fallback domains are
 statically reviewed. Its full retry still hits55.046 with empty streams and
 zero agreement, so no speedup or current231 credit follows.
+Its actual314 join passes strict initialization on `1a148ff63`; earlier309 cuts
+retain their source/state scope without renewal.
 Whole retry composition and wider producers remain open.

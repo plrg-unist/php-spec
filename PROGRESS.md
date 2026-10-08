@@ -125,6 +125,8 @@ active-bare75 direct keep/retirement predicates, and the exact WeakReference
 original in9.279s. Empty-scan and Unmatch/Runtime domains are statically reviewed.
 Its full retry still times out at55.046 with empty streams and zero agreement;
 inputs are stable and groups reaped, with no demonstrated speedup or231 credit.
+The actual314 join preserves TRAIT290/297/299, CV330 and ARG329 handoff fields;
+strict initialization passes on `1a148ff63` in3.871s. The309 cuts stay distinct.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
