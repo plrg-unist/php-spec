@@ -244,6 +244,139 @@ def $trait_default_new_name(S, porigin) = pclassdesc.PARENT
   -- if pcallcontext.LEXICAL_CLASS = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
 def $trait_default_new_name(S, porigin) = eps -- otherwise
+
+;; A deferred keyword constructor retains its receive's selected scope while
+;; class-table work enters other initializers. Its source owner is a parameter
+;; default, rather than the method BODY used by ordinary scoped fetches.
+dec $trait_default_selection_default(pstate, pfunction, pdefault, porigin) : bool
+def $trait_default_selection_default(S, pfunction, pdefault, porigin_site) = true
+  -- if pdefault.KIND = PDDEFERRED
+  -- if porigin_param = $default_parameter_origin(S, pfunction.ORIGIN, pdefault.INDEX)
+  -- if $constant_expression_root(S, porigin_param) = (pdefault.ORIGIN)
+  -- if $constant_expression_below(S, porigin_param, porigin_site)
+def $trait_default_selection_default(S, pfunction, pdefault, porigin_site) = false -- otherwise
+dec $trait_default_selection_defaults(pstate, pfunction, pdefault*, porigin) : bool
+def $trait_default_selection_defaults(S, pfunction, eps, porigin_site) = false
+def $trait_default_selection_defaults(S, pfunction, pdefault :: pdefault_tail*, porigin_site) = ($trait_default_selection_default(S, pfunction, pdefault, porigin_site) \/ $trait_default_selection_defaults(S, pfunction, pdefault_tail*, porigin_site))
+dec $trait_default_selection_function(pstate, porigin, porigin) : bool
+def $trait_default_selection_function(S, porigin_site, porigin_function) = true
+  -- if $class_method_origin(S.CLASSES, porigin_function) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin_function
+  -- if $trait_default_new_function(S, porigin_function)
+  -- if $trait_default_selection_defaults(S, pmethoddesc.FUNCTION, pmethoddesc.FUNCTION.DEFAULTS, porigin_site)
+def $trait_default_selection_function(S, porigin_site, porigin_function) = false -- otherwise
+dec $trait_default_selection_method(pstate, pmethoddesc*, porigin, porigin) : pmethoddesc?
+def $trait_default_selection_method(S, eps, porigin_scope, porigin_site) = eps
+def $trait_default_selection_method(S, pmethoddesc :: pmethoddesc_tail*, porigin_scope, porigin_site) = (pmethoddesc)
+  -- if pmethoddesc.OWNER = porigin_scope
+  -- if $trait_default_selection_function(S, porigin_site, pmethoddesc.FUNCTION.ORIGIN)
+def $trait_default_selection_method(S, pmethoddesc :: pmethoddesc_tail*, porigin_scope, porigin_site) = $trait_default_selection_method(S, pmethoddesc_tail*, porigin_scope, porigin_site)
+  -- if pmethoddesc.OWNER =/= porigin_scope \/ ~$trait_default_selection_function(S, porigin_site, pmethoddesc.FUNCTION.ORIGIN)
+dec $trait_default_selection_evidence(pstate, porigin) : pclosureevidence?
+def $trait_default_selection_evidence(S, porigin_site) = (pclosureevidence)
+  -- if $closure_evidence_current(S) = (pclosureevidence)
+  -- if $closure_evidence_valid(S, pclosureevidence)
+  -- if $closure_evidence_body(S, $closure_evidence_object(pclosureevidence)) = (porigin_function)
+  -- if $trait_default_selection_function(S, porigin_site, porigin_function)
+def $trait_default_selection_evidence(S, porigin_site) = eps -- otherwise
+
+def $class_static_selection_header(S, pstaticselection) = true
+  -- if $class_at(S.CLASSES, pstaticselection.ROOT) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pstaticselection.ROOT)
+  -- if pstaticselection.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprNew (NName (BYTES text) metadata_name) (SEQUENCE phpType7*) metadata)
+  -- if $ptlc($base64(text)) <- [$ptascii("self"), $ptascii("parent")]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, b))
+def $class_static_selection_valid(S, pstaticselection) = true
+  -- if $class_static_selection_header(S, pstaticselection)
+  -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if ptbytes = $ptlc($base64(text))
+  -- if pstaticselection.CLOSURE = (pclosureevidence)
+  -- if $closure_evidence_valid(S, pclosureevidence)
+  -- if $closure_evidence_body(S, $closure_evidence_object(pclosureevidence)) = (porigin_function)
+  -- if $trait_default_selection_function(S, pstaticselection.SITE, porigin_function)
+  -- if pstaticselection.SCOPE = (porigin_scope)
+  -- if pstaticselection.CALLED = (porigin_called)
+  -- if $closure_evidence_lexical(pclosureevidence) = (porigin_scope)
+  -- if $closure_evidence_called(pclosureevidence) = (porigin_called)
+  -- if $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = (pstaticselection.ROOT)
+def $class_static_selection_valid(S, pstaticselection) = true
+  -- if $class_static_selection_header(S, pstaticselection)
+  -- if $origin_node(S.SOURCES, pstaticselection.SITE) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if ptbytes = $ptlc($base64(text))
+  -- if pstaticselection.CLOSURE = eps
+  -- if pstaticselection.SCOPE = (porigin_scope)
+  -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
+  -- if $trait_default_selection_method(S, pclassdesc_scope.METHODS, porigin_scope, pstaticselection.SITE) = (pmethoddesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_scope.NAME)) = (porigin_scope)
+  -- if pstaticselection.CALLED = (porigin_called)
+  -- if $class_at(S.CLASSES, porigin_called) = (pclassdesc_called)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_called.NAME)) = (porigin_called)
+  -- if $class_constant_parent_chain(S, porigin_called, pmethoddesc.OWNER, |S.CLASSES|)
+  -- if $class_static_selection_root(S, ptbytes, porigin_scope, porigin_called) = (pstaticselection.ROOT)
+def $trait_default_new_selection(S, ptbytes) = (pstaticselection)
+  -- if S.ORIGIN = (porigin)
+  -- if $trait_default_new_site(S, porigin)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
+  -- if $trait_default_selection_evidence(S, porigin) = (pclosureevidence)
+  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE $closure_evidence_lexical(pclosureevidence), CALLED $closure_evidence_called(pclosureevidence), CLOSURE (pclosureevidence)}
+  -- if $class_static_selection_valid(S, pstaticselection)
+def $trait_default_new_selection(S, ptbytes) = (pstaticselection)
+  -- if S.ORIGIN = (porigin)
+  -- if $trait_default_new_site(S, porigin)
+  -- if ~$from_current(S)
+  -- if $trait_default_selection_evidence(S, porigin) = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
+  -- if pstaticselection = {SITE porigin, ROOT porigin_root, SCOPE pcallcontext.LEXICAL_CLASS, CALLED pcallcontext.CALLED_CLASS, CLOSURE eps}
+  -- if $class_static_selection_valid(S, pstaticselection)
+def $trait_default_new_selection(S, ptbytes) = eps -- otherwise
+
+;; The constructor continuation keeps the actual arguments and allocation
+;; branch. Existing selected table/static histories retain the same authority.
+dec $class_constant_selected_constructor_ready(pstate, pstaticselection, phpType7*, bool, int) : bool
+def $class_constant_selected_constructor_ready(S, pstaticselection, phpType7*, b_ctor, z) = ($class_constant_new_work(S, pclassdesc.NAME, z) = eps)
+  -- if S.TODO = (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*
+  -- if $class_at(S.CLASSES, pstaticselection.ROOT) = (pclassdesc)
+def $class_constant_selected_constructor_ready(S, pstaticselection, phpType7*, b_ctor, z) = true -- otherwise
+dec $class_constant_selected_constructor_task(pstate, pstaticselection, phpType7*, bool, int) : bool
+def $class_constant_selected_constructor_task(S, pstaticselection, phpType7*, b_ctor, z) = true
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if S.ORIGIN = (pstaticselection.SITE)
+  -- if $class_at(S.CLASSES, pstaticselection.ROOT) = (pclassdesc)
+  -- if $class_constant_constructor_task(S, pclassdesc.NAME, phpType7*, b_ctor, z)
+  -- if $class_constant_selected_constructor_ready(S, pstaticselection, phpType7*, b_ctor, z)
+def $class_constant_selected_constructor_task(S, pstaticselection, phpType7*, b_ctor, z) = false -- otherwise
+rule PhpStep/trait-default-selected-construct: S ~> $constructor_after_class_update(S[.TODO = ptask_tail*], pclassdesc.NAME, phpType7*, z)
+  -- if S.TODO = (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* true z) :: ptask_tail*
+  -- if $class_constant_selected_constructor_task(S, pstaticselection, phpType7*, true, z)
+  -- if $class_at(S.CLASSES, pstaticselection.ROOT) = (pclassdesc)
+rule PhpStep/trait-default-selected-noctor: S ~> $noctor_start_ready(S[.TODO = ptask_tail*], pclassdesc.NAME, phpType7*, z)
+  -- if S.TODO = (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* false z) :: ptask_tail*
+  -- if $class_constant_selected_constructor_task(S, pstaticselection, phpType7*, false, z)
+  -- if $class_at(S.CLASSES, pstaticselection.ROOT) = (pclassdesc)
+def $call_task_valid(S, CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) = $class_constant_selected_constructor_task(S, pstaticselection, phpType7*, b_ctor, z)
+def $class_constant_update_continuation(CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) = true
+def $class_constant_update_target(S, (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*) = (pstaticselection.ROOT)
+def $class_static_selection_at((CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*) = (pstaticselection)
+def $class_static_selection_matches(S, porigin_site, porigin_root) = true
+  -- if $class_static_selection_at(S.TODO) = (pstaticselection)
+  -- if pstaticselection.SITE = porigin_site /\ pstaticselection.ROOT = porigin_root
+def $class_static_selection_matches(S, porigin_site, porigin_root) = false -- otherwise
+def $class_constant_update_task(S, porigin, z, (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*) = true
+  -- if $class_constant_selected_constructor_task(S, pstaticselection, phpType7*, b_ctor, z)
+  -- if $class_constant_origin(S.CLASSES, porigin) = (pclassconstantdesc)
+  -- if pclassconstantdesc <- $class_constant_update_order(S, pstaticselection.ROOT, |S.CLASSES|)
+  -- if ~pclassconstantdesc.FOLDED
+def $class_constant_table_task(S, porigin, z, (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*) = true
+  -- if $class_constant_selected_constructor_task(S, pstaticselection, phpType7*, b_ctor, z)
+  -- if porigin <- $class_constant_table_lineage(S, pstaticselection.ROOT, |S.CLASSES|)
+def $class_constant_update_blocks(S, (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*, porigin_acc*) = ($class_constant_update_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $class_constant_update_blocks(S, ptask_tail*, eps))
+def $class_constant_table_blocks(S, (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*, porigin_acc*) = ($class_constant_table_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $class_constant_table_blocks(S, ptask_tail*, eps))
+def $static_default_blocks(S, (CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*, porigin_acc*) = ($static_default_sequence(S, pstaticselection.ROOT, porigin_acc*) /\ $static_default_blocks(S, ptask_tail*, eps))
+def $static_default_phases((CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z) :: ptask_tail*, b_property) = $static_default_phases(ptask_tail*, false)
+
 rule PhpStep/trait-default-new-parent-missing: S ~> $throw_scalar(S, "Error", $ptascii("Cannot access \"parent\" when current class scope has no parent"), $runtime_line(S, eps, NExprNew name (SEQUENCE phpType7*) metadata))
   -- if S.TODO = (EVAL (NExprNew name (SEQUENCE phpType7*) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)

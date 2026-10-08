@@ -31,6 +31,13 @@ dec $class_constant_table_task(pstate, porigin, int, ptask*) : bool
 dec $class_static_selected_needed(pstate, porigin) : bool
 dec $class_static_selection(pstate, poperand) : pstaticselection?
 dec $class_static_selection_at(ptask*) : pstaticselection?
+dec $class_static_selection_matches(pstate, porigin, porigin) : bool
+dec $trait_default_new_selection(pstate, ptbytes) : pstaticselection?
+dec $class_constant_constructor_marker(pstate, ptbytes, phpType7*, bool, int) : ptask
+dec $class_constant_constructor_selected(pstaticselection?, ptbytes, phpType7*, bool, int) : ptask
+def $class_constant_constructor_marker(S, ptbytes, phpType7*, b_ctor, z) = $class_constant_constructor_selected($trait_default_new_selection(S, ptbytes), ptbytes, phpType7*, b_ctor, z)
+def $class_constant_constructor_selected((pstaticselection), ptbytes, phpType7*, b_ctor, z) = CLASS_CONST_CONSTRUCT_SELECTED pstaticselection phpType7* b_ctor z
+def $class_constant_constructor_selected(eps, ptbytes, phpType7*, b_ctor, z) = CLASS_CONST_CONSTRUCT ptbytes phpType7* b_ctor z
 dec $class_constant_table_event(pstate, porigin, porigin, porigin, nat) : pclassconstantevent
 dec $dynamic_new_table_selected(pstate, porigin) : bool
 def $dynamic_new_table_selected(S, porigin) = false -- otherwise
@@ -763,12 +770,12 @@ def $class_constant_new_work(S, ptbytes, z) = $class_constant_table_tasks(S, por
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if pclassdesc.KIND = "class" /\ ~pclassdesc.ABSTRACT
 def $class_constant_new_work(S, ptbytes, z) = eps -- otherwise
-def $constructor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* true z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $constructor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [$class_constant_constructor_marker(S, ptbytes, phpType7*, true, z)] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
   -- if ptask_work* =/= eps
 def $constructor_start(S, ptbytes, phpType7*, z) = $constructor_start_ready(S, ptbytes, phpType7*, z)
   -- if $class_constant_new_work(S, ptbytes, z) = eps
-def $noctor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [CLASS_CONST_CONSTRUCT ptbytes phpType7* false z] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $noctor_start(S, ptbytes, phpType7*, z) = S[.TODO = ptask_work* ++ [$class_constant_constructor_marker(S, ptbytes, phpType7*, false, z)] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ~$autoload_pending(S, ptbytes)
   -- if ptask_work* = $class_constant_new_work(S, ptbytes, z)
   -- if ptask_work* =/= eps
@@ -1147,6 +1154,7 @@ def $class_constant_parent_chain(S, porigin_root, porigin, n) = false -- otherwi
 
 def $class_constant_update_site(S, PORIGIN n pcpath, porigin_root) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprNew phpType28 phpType6 metadata)
+  -- if ~$class_static_selection_matches(S, PORIGIN n pcpath, porigin_root)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $new_source_name(S, PORIGIN n pcpath) = (ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_root)
