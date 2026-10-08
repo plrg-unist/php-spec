@@ -205,7 +205,12 @@ CASES = {'graph-temporary-child': (b'<?php\nfunction inner(){try{yield 1;}finall
                             b'race() as $r){echo $r["function"],";";}}}}function go(){$g=seq();echo $g->current();unset($g);echo "Z";}go()'
                             b';',
                             b'1seq;go;Z',
-                            0)}
+                            0),
+ 'request-end-required': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";}}$g=seq();echo $g->current();echo "Z";\n',
+                          b'1ZF', 0),
+ 'self-cache-cycle-required': (b'<?php\nfunction seq(){try{$self=yield 1;yield 2;}finally{echo "F";}}$g=seq();echo $g->current(),$g->send('
+                               b'$g);unset($g);echo "Z";',
+                               b'12ZF', 0)}
 DECLARATIONS = {'finally-break-live-loop': (b'<?php\nfunction seq(){while(true){try{yield 1;echo "X";}finally{echo "F";break;}}echo "S";}$g=seq();echo '
                              b'$g->current();unset($g);echo "Z";\n',
                              b'jump out of a finally block is disallowed',
@@ -214,16 +219,7 @@ DECLARATIONS = {'finally-break-live-loop': (b'<?php\nfunction seq(){while(true){
                              b'echo $g->current();unset($g);echo "Z";\n',
                              b'jump out of a finally block is disallowed',
                              2)}
-UNSUPPORTED = {'request-end-required': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";}}$g=seq();echo $g->current();echo "Z";\n',
-                          b'1ZF',
-                          'Generator force-close at request end',
-                          0),
- 'self-cache-cycle-required': (b'<?php\nfunction seq(){try{$self=yield 1;yield 2;}finally{echo "F";}}$g=seq();echo $g->current(),$g->send('
-                               b'$g);unset($g);echo "Z";',
-                               b'12ZF',
-                               'Generator force-close at request end',
-                               0),
- 'finalizer-exit-required': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";exit(7);}}$g=seq();echo $g->current();unset($g);echo '
+UNSUPPORTED = {'finalizer-exit-required': (b'<?php\nfunction seq(){try{yield 1;}finally{echo "F";exit(7);}}$g=seq();echo $g->current();unset($g);echo '
                              b'"Z";\n',
                              b'1F',
                              'Generator force-close terminal cleanup',

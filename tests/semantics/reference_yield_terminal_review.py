@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
-"""Retain the terminal active-finally boundary beside reference-cache retirement."""
+"""The original328 terminal source, promoted by request-finally340."""
 import generator_force_close_review as driver
 
-UNSUPPORTED = {
+CASES = {
     'reference-terminal-active-finally-required': (
         b'''<?php
 class Request328{function __destruct(){}}
 function &terminal328(&$value){try{yield $value;}finally{echo "F";}}
 $value=7;$generator=terminal328($value);echo "C|",$generator->current(),"|";
-''', b'C|7|F', 'Generator force-close at request end', 0),
+''', b'C|7|F', 0),
 }
 
 
 def main():
-    driver.CASES = {}
+    driver.CASES = CASES
     driver.DECLARATIONS = {}
-    driver.UNSUPPORTED = UNSUPPORTED
+    driver.UNSUPPORTED = {}
     driver.WATCHED += [
         'spec/semantics/97-call-reference-acquisition.watsup',
         'spec/semantics/99-reference-returns.watsup',
@@ -25,6 +25,7 @@ def main():
         'spec/semantics/311-arrow-generators.watsup',
         'spec/semantics/321-yield-key-warning.watsup',
         'spec/semantics/328-generator-reference-yields.watsup',
+        'spec/semantics/340-generator-request-finally.watsup',
         'tests/semantics/reference_yield_terminal_review.py',
     ]
     return driver.main()

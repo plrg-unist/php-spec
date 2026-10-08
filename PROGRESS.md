@@ -7,17 +7,19 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Generator328 adds source-owned reference-yield cells, value-API array snapshots
-and direct/inner-reference destructuring aliases. Notice/cleanup readback retains
-nonowning old-cache metadata and precise delegated exception reinjection.
-Private normal-source cuts remain separate; cache/warning690, delegation163,
-nonfinalizing request215, terminal-refusal40 and destructuring177 physical
-premises pass at their recorded inputs. The new minimal `9:9` original closes
-the preserved `1:1`/extra-Notice failure. Actual321 over `c38af3cf770` passes strict
-compilation at `c21e5ce52`, preserving336 and the reviewed39/301 owner factors.
-Active-finally request close remains required Unsupported with zero agreement;
-paused generic returns stay excluded.
-[Scope and retained cuts](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
+Generator 340 closes paused frames at normal request end through real reverse
+globals and ascending store handles. Registered normal handlers run before cache
+release; borrowed zero-owner buckets survive bare store decrements until genuine
+weak reacquisition restores ordinary release. 19 normal originals and 692 physical
+strict-SL premises retain separate private cuts; 85 premises assert required abrupt
+controls with zero observation agreement. The original observer mismatch stays0.
+Fresh store close, delegating request close and wider terminal/free-storage paths
+remain required. [Scope and cuts](coverage/semantics/generator-request-finally-review.json).
+
+Generator328 reference caches, value snapshots and effective destructuring aliases
+retain their original source/state cuts and actual321 compiler.340 promotes the
+identical active-finally original; its old refusal40 remains zero agreement.
+[Reference-yield scope](docs/semantics/GENERATOR-REFERENCE-YIELDS.md).
 
 Source336 adds one named ordinary CV argument to computed-name emission: INIT6
 precedes known FETCH8/property11, and unknown `Sent` binds Error7 before CV demand.
