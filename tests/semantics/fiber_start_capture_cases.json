@@ -1,9 +1,9 @@
 [
   {
-    "id": "author-bound-start-weak-named-default-variadic",
-    "source": "<?php\nfunction startTarget348(int $x, $tail = 'D', ...$extra) {\n    echo (int)is_int($x), '|', $x, '|', $tail, '|', $extra['named'], '|';\n    $received = Fiber::suspend('Y');\n    return $received;\n}\n$fiber = new Fiber('startTarget348');\n$start = $fiber->start(...);\n$copy = clone $start;\necho (int)($copy == $start), '|';\nunset($start);\necho $copy(x: '7', named: 'N'), '|';\necho (int)($fiber->resume(29) === null), '|', $fiber->getReturn();\n",
+    "id": "author-bound-start-weak-comparison-named-default-variadic",
+    "source": "<?php\nfunction startTarget348(int $x, $tail = 'D', ...$extra) {\n    echo (int)($x === 7), '|', $x, '|', $tail, '|', $extra['named'], '|';\n    $received = Fiber::suspend('Y');\n    return $received;\n}\n$fiber = new Fiber('startTarget348');\n$start = $fiber->start(...);\n$copy = clone $start;\necho (int)($copy == $start), '|';\nunset($start);\necho $copy(x: '7', named: 'N'), '|';\necho (int)($fiber->resume(29) === null), '|', $fiber->getReturn();\n",
     "native_stdout": "1|1|7|D|N|Y|1|29",
-    "source_sha256": "85a45f1b028c12998fe90d663639950d25493f3ce3a00f8b6db863c90f243fda",
+    "source_sha256": "2f93dd4cca890227a46b5af6e97f4d741dda8fda6661c678161abd5f98979b0d",
     "native_stderr": "",
     "native_exit": 0,
     "expected_model": "normal",
