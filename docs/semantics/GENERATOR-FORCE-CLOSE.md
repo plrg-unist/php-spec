@@ -102,6 +102,8 @@ Pending Throwable ownership remains on the existing operation/frame; the same
 continuation works after an ordinary forced close.
 The [storage-pin ledger](../../coverage/semantics/generator-storage-pin-review.json)
 keeps six exact normal sources and 784 new strict premises at their own cut.
+Two affected maintained queues separately pass 209 premises. Actual342 over
+`dc68616a3` passes strict compilation at `f78a1a06b`; earlier cuts are unchanged.
 
 Delegating request close, abrupt terminal cleanup, parked storage work and
 escaped reacquisition remain required. Nested ordinary-object storage during a

@@ -13,6 +13,8 @@ consumed Closure/reference metadata adds no repeated owner. Existing257/303
 parents retain pending Throwable priority, with sole-pin retirement before handle
 reuse. Six exact normals and 784 new strict premises pass at `b62f360d7`; the two
 actually affected maintained storage queues separately pass 209 at `d67773039`.
+Actual342 over `dc68616a3` passes strict compilation at `f78a1a06b`;
+reviewed current-parent composition preserves the separate source/state cuts.
 Original failures remain zero; the earlier349 11/663 retains its own cuts. Delegation, abrupt
 terminal cleanup, parked/escaped storage and nested ordinary-object RETURN reads
 remain required. [Ledger](coverage/semantics/generator-storage-pin-review.json).
