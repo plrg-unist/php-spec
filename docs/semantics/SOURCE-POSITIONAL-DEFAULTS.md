@@ -194,5 +194,8 @@ Further pruning graph carry and the ordinary-handler fallback repair at
 The same full source again reaches host 55.066 with empty streams and zero
 agreement.
 Known-current keep/zero/release graph reuse at `c09806280`/330 passes strict
-initialization and focused helper/retention controls; its full-source retry is UNRUN.
+initialization and focused helper/retention controls. Its `94e3593e6`/334 full retry
+still times out at host55.045 with empty streams and zero agreement.
+Deferring total Fiber owner scans at `7b02a1d39`/334 passes helper and genuine
+false-frontier controls; that factor's original full-source retry is UNRUN.
 Whole retry composition and wider producers remain open.

@@ -340,7 +340,19 @@ stay intact. Raw checks: `.tools/compiler-prune-graph-publication-19/.tools/prun
 Final 334-module composition at `989e6bb09` passes changed initialization in
 4.222s; its earlier 330 fixture identities stay separate. Raw final check:
 `.tools/compiler-prune-keep-current-19/.tools/prune-keep-current-controls-v1`.
-The new factor's original full-source retry remains UNRUN.
+The unchanged 1697-byte original on `94e3593e6`/334 matches native output, while
+the public model still reaches host55.045 with empty streams and zero agreement.
+Inputs stay stable and the group is reaped; no speedup or 231 credit follows.
+Raw retry: `.tools/compiler-prune-keep-current-19/.tools/full-default-retry-graph-keep-v1/run-v1`.
+Module302 skips total graph owner scans only after evaluating a false close
+predicate, retaining per-node fallback and eager recursive tail. Exact `7b02a1d39`/334
+passes changed initialization, 44 independent physical/43 main helper premises
+and a genuine suspended-ready Fiber frontier with 54 physical/41 main premises.
+True branches are typed helper controls only; the source frontier proves false.
+Raw checks: `.tools/compiler-fiber-blocked-scan-19/.tools/fiber-blocked-controls-v1`.
+Final 336-module composition at `3f19f2278` passes changed initialization in4.122s.
+Raw final check: `.tools/compiler-fiber-blocked-current-19/.tools/fiber-blocked-current-controls-v1`.
+This factor's original full-source retry remains UNRUN.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
