@@ -18,6 +18,7 @@ dec $gc_worker_public_raw_api(pstate) : pfiberapi?
 dec $gc_worker_public_captured_api_valid(pstate, pfiberapi) : bool
 dec $gc_worker_public_frames(pframe*, pgcguard, pgcguard) : pframe*
 dec $gc_worker_public_origin_view(pstate, pstate, ptask*) : bool
+dec $gc_worker_public_origin_task_view(pstate, pstate, ptask) : bool
 dec $gc_worker_public_frame_view(pstate, pstate, pframe*) : bool
 dec $gc_worker_public_frame_result_view(pstate, pstate, pframe) : bool
 dec $gc_worker_public_parked(pstate, nat, pfiber) : bool
@@ -205,8 +206,9 @@ def $gc_worker_public_guard_live(S) = false -- otherwise
 def $gc_worker_public_frames(eps, pgcguard, pgcguard_new) = eps
 def $gc_worker_public_frames(pframe :: pframe_tail*, pgcguard, pgcguard_new) = pframe[.TODO = $gc_worker_pending_tasks(pframe.TODO, pgcguard, pgcguard_new)] :: $gc_worker_public_frames(pframe_tail*, pgcguard, pgcguard_new)
 def $gc_worker_public_origin_view(S_scope, S, eps) = false
-def $gc_worker_public_origin_view(S_scope, S, (ORIGIN_RETURN porigin?) :: ptask_tail*) = ($fiber_vm(S) = $fiber_vm(S_scope[.ORIGIN = porigin?]) \/ $gc_worker_public_origin_view(S_scope, S, ptask_tail*))
-def $gc_worker_public_origin_view(S_scope, S, ptask :: ptask_tail*) = $gc_worker_public_origin_view(S_scope, S, ptask_tail*) -- otherwise
+def $gc_worker_public_origin_view(S_scope, S, ptask :: ptask_tail*) = ($gc_worker_public_origin_task_view(S_scope, S, ptask) \/ $gc_worker_public_origin_view(S_scope, S, ptask_tail*))
+def $gc_worker_public_origin_task_view(S_scope, S, ORIGIN_RETURN porigin?) = ($fiber_vm(S) = $fiber_vm(S_scope[.ORIGIN = porigin?]))
+def $gc_worker_public_origin_task_view(S_scope, S, ptask) = false -- otherwise
 def $gc_worker_public_frame_view(S_parked, S, eps) = false
 def $gc_worker_public_frame_view(S_parked, S, pframe :: pframe_tail*) = ($fiber_vm(S) = $fiber_vm(S_scope) \/ $gc_worker_public_origin_view(S_scope, S, pframe.TODO) \/ $gc_worker_public_frame_result_view(S_scope, S, pframe) \/ $gc_worker_public_frame_view(S_parked, S, pframe_tail*))
   -- if S_scope = $constant_frame_scope(S_parked, pframe, pframe_tail*)
