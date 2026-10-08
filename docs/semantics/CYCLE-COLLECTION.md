@@ -410,6 +410,27 @@ group passes separately after removing duplicate checks. Its original 120s cap
 and both whole CLI 60s timeouts retain zero affected/agreement credit.
 Final 357 over `b7419cbe1` compiles at `9ce39cd54`, preserving reviewed assertion,
 private-constructor, typed freeing-read, source and Generator cleanup additions.
-Last-cache-owner release is explicitly Unsupported before mutation and remains
-required next, alongside repeated detached suspension, overlap, different-pass
-reentry and whole CLI completion. Earlier cuts are unchanged.
+At that cut, last-cache-owner release is Unsupported before mutation; the
+separate cut below extends it. Earlier cuts are unchanged.
+
+Last-cache-owner physical replacement now uses the real ordered cache release to
+close the actual detached worker before replacement starts. Normal close runs its
+finally and retires the two private control owners in order. Failed close releases
+the pending control copy when its finally throws, leaves one private release owner, and moves
+the real error into the actual plan pending slot. The caller's outer error remains
+in its real FINALLY continuation until ordinary chaining. The new retiring
+predicate admits only this actual terminated worker/sequence and ordered
+control/operation/worker/physical-replacement tail; it grants storage and scoped
+caller validity without a Throwable owner, catch authority or invented D progress.
+
+At separate `4227d8609` fixture cuts finalized as `292b27847`, 77/89 independent
+physical premises (recorder 63/71, authored 60/68) complete both unchanged
+originals. They check normal control2→1, failed control1 versus real plan pending,
+the outer FINALLY owner, same-heap source/sequence/pending forgeries, count1/weak
+retirement and exact new/previous identity. The normal PASS remains in a false
+aggregate; only the affected failed negative reruns after correcting root order.
+That fixture stop and both whole CLI 60s timeouts retain zero affected/agreement
+credit. Final 358 over `0059e0a9e` compiles at `0da2cdae7`, preserving empty PACKS
+in both actual API constructors, inherited-constructor diagnostics and quiet
+freeing reads. Takeover resuspension, overlap, different-pass reentry and whole
+CLI completion remain required.

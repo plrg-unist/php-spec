@@ -336,9 +336,19 @@ complete both unchanged originals, including count0 followed by later count1,
 distinct old/new errors and old-worker termination. Both whole CLI 60s timeouts
 retain zero agreement; the first error-state 120s cap retains zero affected credit.
 Final 357 over `b7419cbe1` compiles at `9ce39cd54`, preserving current assertions,
-private-constructor, storage, source and Generator cleanup changes. Last-cache-owner
-close, repeated detached suspension, overlap, different-active-pass reentry,
-whole CLI completion and broader GC remain required.
+private-constructor, storage, source and Generator cleanup changes.
+Last-cache-owner physical replacement now closes the actual suspended worker
+before starting its replacement. Normal close runs finally; failed close moves
+the real error into plan pending while the caller's outer error stays in FINALLY.
+Only the actual normal/failed private-control release tail gains storage/scoped
+admission. Independent 77/89 physical premises at separate `4227d8609` fixture
+cuts, finalized as `292b27847`, complete both unchanged originals, count1/weak
+retirement and exact new/previous identities. Both whole CLI 60s timeouts retain
+zero agreement; the first failed-state root-order premise has zero affected credit.
+Final 358 over `0059e0a9e` compiles at `0da2cdae7`, preserving both empty-PACKS API
+constructors and reviewed inherited-constructor/quiet-read behavior. Takeover
+resuspension, overlap, different-active-pass reentry, whole CLI completion and
+broader GC remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
