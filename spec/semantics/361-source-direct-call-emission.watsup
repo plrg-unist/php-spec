@@ -22,32 +22,50 @@ def $echo_call_site_valid(S, PORIGIN n pcpath, z) = true
   -- if $echo_emit_source(S, PORIGIN n pcpath, z)
 def $echo_call_site_valid(S, porigin_site, z) = false -- otherwise
 
-;; ECHO owns its returned TMPVAR in addition to the cast callback's pin. A raw
-;; VARIABLE/CELL is borrowed and retains the existing conversion/release path.
+;; ECHO owns its returned TMPVAR or REFERENCE wrapper in addition to the cast
+;; pin. VARIABLE/BORROWED operands retain the existing borrowed release path.
+dec $echo_call_reference_operand(poperand) : bool
+def $echo_call_reference_operand(REFERENCE n) = true
+def $echo_call_reference_operand(poperand) = false -- otherwise
+dec $echo_call_owning_operand(poperand) : bool
+def $echo_call_owning_operand(KNOWN (POBJECT n)) = true
+def $echo_call_owning_operand(poperand) = $echo_call_reference_operand(poperand) -- otherwise
 dec $call_echo_string_plan(pstate) : pechoresult?
-def $call_echo_string_plan(S) = ({OBJECT n, SITE porigin_site, LINE z, TAIL ptask_tail*})
+def $call_echo_string_plan(S) = ({TEMP S.RESULT, OBJECT n, SITE porigin_site, LINE z, TAIL ptask_tail*})
   -- if S.TODO = (EMIT z) :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
-  -- if S.RESULT = KNOWN (POBJECT n)
-  -- if $stringable_instance(S, n)
+  -- if $echo_call_owning_operand(S.RESULT)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
   -- if $echo_call_site_valid(S, porigin_site, z)
 def $call_echo_string_plan(S) = eps -- otherwise
 def $call_echo_string_pending(S) = ($call_echo_string_plan(S) =/= eps)
 
-rule PhpStep/echo-call-string-begin: S ~> $user_string_begin(S, pechoresult.OBJECT, pechoresult.SITE, pechoresult.LINE, ECHO_CALL_RESULT pechoresult, pechoresult.TAIL)
+rule PhpStep/echo-call-string-begin: S ~> $user_string_begin(S_read, pechoresult.OBJECT, pechoresult.SITE, pechoresult.LINE, ECHO_CALL_RESULT pechoresult, pechoresult.TAIL)
   -- if $call_echo_string_plan(S) = (pechoresult)
+  -- if S_read = $resolve_at(S, S.RESULT, pechoresult.LINE)
 
+dec $echo_call_temporary_shape(pechoresult) : bool
+def $echo_call_temporary_shape(pechoresult) = (n = pechoresult.OBJECT)
+  -- if pechoresult.TEMP = KNOWN (POBJECT n)
+def $echo_call_temporary_shape(pechoresult) = $echo_call_reference_operand(pechoresult.TEMP) -- otherwise
 dec $echo_call_result_source(pstate, pechoresult) : bool
-def $echo_call_result_source(S, pechoresult) = $echo_call_site_valid(S, pechoresult.SITE, pechoresult.LINE)
-dec $echo_call_result_suffix(ptask*, pechoresult) : bool
-def $echo_call_result_suffix(eps, pechoresult) = false
-def $echo_call_result_suffix((ECHO_CALL_RESULT pechoresult) :: ptask_tail*, pechoresult) = (pechoresult.TAIL = ptask_tail*)
-def $echo_call_result_suffix(ptask :: ptask_tail*, pechoresult) = $echo_call_result_suffix(ptask_tail*, pechoresult)
-  -- if ptask =/= ECHO_CALL_RESULT pechoresult
+def $echo_call_result_source(S, pechoresult) = ($echo_call_site_valid(S, pechoresult.SITE, pechoresult.LINE) /\ $echo_call_temporary_shape(pechoresult))
+dec $echo_call_temporary_valid(pstate, pechoresult) : bool
+def $echo_call_temporary_valid(S, pechoresult) = $stringable_instance(S, pechoresult.OBJECT)
+  -- if pechoresult.TEMP = KNOWN (POBJECT pechoresult.OBJECT)
+def $echo_call_temporary_valid(S, pechoresult) = true
+  -- if pechoresult.TEMP = REFERENCE n
+  -- if $call_reference_operand_valid(S, pechoresult.TEMP)
+  -- if $(pechoresult.OBJECT < |S.OBJECTS|)
+def $echo_call_temporary_valid(S, pechoresult) = false -- otherwise
 dec $echo_call_result_valid(pstate, pechoresult) : bool
-def $echo_call_result_valid(S, pechoresult) = (S.ORIGIN = (pechoresult.SITE) /\ $echo_call_result_source(S, pechoresult) /\ $stringable_instance(S, pechoresult.OBJECT) /\ $echo_call_result_suffix(S.TODO, pechoresult))
+def $echo_call_result_valid(S, pechoresult) = (S.ORIGIN = (pechoresult.SITE) /\ $echo_call_result_source(S, pechoresult) /\ $echo_call_temporary_valid(S, pechoresult) /\ $source_operand_suffix(S.TODO, ECHO_CALL_RESULT pechoresult, pechoresult.TAIL))
 
-def $task_nodes(ECHO_CALL_RESULT pechoresult) = [HOBJECT pechoresult.OBJECT]
+def $task_nodes(ECHO_CALL_RESULT pechoresult) = $operand_nodes(pechoresult.TEMP)
 def $call_task_valid(S, ECHO_CALL_RESULT pechoresult) = $echo_call_result_valid(S, pechoresult)
 def $stringify_source_consumer(ECHO_CALL_RESULT pechoresult) = true
 def $stringify_source(S, porigin_site, z, ECHO_CALL_RESULT pechoresult) = (porigin_site = pechoresult.SITE /\ z = pechoresult.LINE /\ $echo_call_result_source(S, pechoresult))
@@ -64,3 +82,25 @@ rule PhpStep/echo-call-string-result: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EV
 ;; finishes; authenticate source/line without demanding a second live owner.
 def $eager_operation_source_guard(S, pdestructionoperation) = ($echo_call_result_source(S, pechoresult) /\ pdestructionoperation.ORIGIN = (pechoresult.SITE) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
   -- if pdestructionoperation.SOURCE = ECHO_CALL_RESULT pechoresult
+
+;; A reference can change its referent during __toString. Releasing the cast
+;; pin can then throw after a successful return; non-try ECHO still writes those
+;; bytes before freeing its reference temporary and checking the exception.
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (ECHO_CALL_RESULT pechoresult) :: ptask_tail*) = S[.TODO = (ECHO_CALL_PENDING pechoresult n_text* n_pending) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
+  -- if pechoresult.TEMP = REFERENCE n
+  -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT pechoresult.OBJECT pechoresult.SITE pechoresult.LINE
+  -- if pdestructionoperation.ORIGIN = (pechoresult.SITE)
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.VALUE = KNOWN (PSTRING n_text*)
+  -- if pdestructionoperation.BASE = BASE_VALUE (KNOWN (PSTRING n_text*))
+  -- if pechoresult.TAIL = ptask_tail*
+  -- if $echo_call_result_valid(S, pechoresult)
+  -- if $eval_compile_pending_object(S, THROWING n_pending)
+def $task_nodes(ECHO_CALL_PENDING pechoresult n_text* n_pending) = $operand_nodes(pechoresult.TEMP) ++ [HOBJECT n_pending]
+def $call_task_valid(S, ECHO_CALL_PENDING pechoresult n_text* n_pending) = (S.ORIGIN = (pechoresult.SITE) /\ $echo_call_result_source(S, pechoresult) /\ $echo_call_reference_operand(pechoresult.TEMP) /\ $echo_call_temporary_valid(S, pechoresult) /\ $source_operand_suffix(S.TODO, ECHO_CALL_PENDING pechoresult n_text* n_pending, pechoresult.TAIL) /\ $eval_compile_pending_object(S, THROWING n_pending))
+rule PhpStep/echo-call-string-pending: S ~> S[.TODO = (THROW_SEARCH n_pending) :: ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT n_text*]][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ECHO_CALL_PENDING pechoresult n_text* n_pending) :: ptask_tail*
+  -- if $call_task_valid(S, ECHO_CALL_PENDING pechoresult n_text* n_pending)
+  -- if pechoresult.TAIL = ptask_tail*
+def $eager_operation_source_guard(S, pdestructionoperation) = ($echo_call_result_source(S, pechoresult) /\ $echo_call_reference_operand(pechoresult.TEMP) /\ pdestructionoperation.ORIGIN = (pechoresult.SITE) /\ pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_VALUE (KNOWN PNULL))
+  -- if pdestructionoperation.SOURCE = ECHO_CALL_PENDING pechoresult n_text* n_pending
