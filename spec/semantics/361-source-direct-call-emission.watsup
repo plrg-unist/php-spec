@@ -15,6 +15,55 @@ def $source_emission_noarg_call(S, n, pcpath, expression) = eps -- otherwise
 def $source_echo_emission_origin(S, n, pcpath, expression) = (PORIGIN n pcpath)
   -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
 
+;; Replayed publication from this operand destructor has the child's first
+;; opcode as its historical callsite. Bind that site back to the original new
+;; operand, without keeping its retired object alive in declaration history.
+dec $echo_source_parent(pstate, nat) : porigin?
+def $echo_source_parent(S, n) = (pfilebinding.SITE)
+  -- if $file_binding_at(S.FILEBINDINGS, n) = (pfilebinding)
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = eps
+def $echo_source_parent(S, n) = (pevalbinding.SITE)
+  -- if $eval_binding_at(S.EVALBINDINGS, n) = (pevalbinding)
+  -- if $file_binding_at(S.FILEBINDINGS, n) = eps
+def $echo_source_parent(S, n) = eps -- otherwise
+dec $echo_source_new_site(pstate, porigin) : porigin?
+def $echo_source_new_site(S, PORIGIN n pcpath) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInclude expression (INTEGER z) metadata)
+  -- if $(z >= 1 /\ z <= 4)
+def $echo_source_new_site(S, PORIGIN n pcpath) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprEval expression metadata)
+def $echo_source_new_site(S, porigin) = eps -- otherwise
+dec $echo_source_destructor_selection(pstate, pmethoddesc, porigin, porigin) : bool
+def $echo_source_destructor_selection(S, pmethoddesc, porigin_called, PORIGIN n pcpath) = true
+  -- if $(n > 0)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if P = $declaration_compiler_state($eval_source_ppstate(S, pcunit))
+  -- if P.COMPLETION = PPCNORMAL /\ $compilation_image_valid(S, pcunit, P)
+  -- if (PDEXIT n PCSCOMPLETE) <- S.DECLARATIONS
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $source_emission_noarg_call(S, n, pcpath, expression) = (z)
+  -- if $echo_emit_source(S, PORIGIN n pcpath, z)
+  -- if $source_first_work_origin(S, n, P.WORK) = (PORIGIN n pcpath)
+  -- if $echo_source_parent(S, n) = (PORIGIN n_parent pcpath_parent)
+  -- if $(n_parent < n)
+  -- if $declaration_entry_site(S.DECLARATIONS, n) = (PORIGIN n_parent pcpath_parent)
+  -- if $source_unit(S.SOURCES, n_parent) = (pcunit_parent)
+  -- if P_parent = $declaration_compiler_state($eval_source_ppstate(S, pcunit_parent))
+  -- if P_parent.COMPLETION = PPCNORMAL /\ $compilation_image_valid(S, pcunit_parent, P_parent)
+  -- if (PDEXIT n_parent PCSCOMPLETE) <- S.DECLARATIONS
+  -- if $echo_source_new_site(S, PORIGIN n_parent pcpath_parent) = (PORIGIN n_parent pcpath_new)
+  -- if $origin_node(S.SOURCES, PORIGIN n_parent pcpath_new) = (NExprNew name (SEQUENCE eps) metadata_new)
+  -- if $ppscoped_named(name) /\ ~$ppscoped_keyword(name)
+  -- if $code_name(P_parent.INSTALLED.CODE.NAMES, pcpath_new) = ((ptbytes_class, eps))
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_called)
+  -- if $effective_method(S, porigin_called, $ptascii("__toString"), |S.CLASSES|) = (pmethoddesc_string)
+  -- if pmethoddesc_string.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc_string.STATIC /\ ~pmethoddesc_string.ABSTRACT
+  -- if $effective_method(S, porigin_called, $ptascii("__destruct"), |S.CLASSES|) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+def $echo_source_destructor_selection(S, pmethoddesc, porigin_called, porigin_site) = false -- otherwise
+def $declaration_method_selection(S, pmethoddesc, porigin_called, porigin_site, pdeclcalls) = true
+  -- if $echo_source_destructor_selection(S, pmethoddesc, porigin_called, porigin_site)
+
 dec $echo_call_site_valid(pstate, porigin, int) : bool
 def $echo_call_site_valid(S, PORIGIN n pcpath, z) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
