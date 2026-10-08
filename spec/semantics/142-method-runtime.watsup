@@ -898,6 +898,13 @@ def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, pope
   -- if ~pmethoddesc.STATIC
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
   -- if ~$scoped_receiver_valid(S, porigin_requested, pmethoddesc, $scoped_current_receiver(S))
+  -- if $scoped_ctor_arm(S) \/ $method_accessible(S, pmethoddesc, $method_current_scope(S))
+def $scoped_select_found_base(S, phpType19, porigin_requested, pmethoddesc, poperand_selector, ptbytes, phpType7*, z) = $method_denied(S, pmethoddesc, ptbytes, $method_current_scope(S), false, z)[.TODO = eps]
+  -- if ~pmethoddesc.STATIC
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_owner)
+  -- if ~$scoped_receiver_valid(S, porigin_requested, pmethoddesc, $scoped_current_receiver(S))
+  -- if ~$scoped_ctor_arm(S)
+  -- if ~$method_accessible(S, pmethoddesc, $method_current_scope(S))
 dec $scoped_select(pstate, phpType19, poperand, ptbytes, phpType7*, int) : pstate
 def $scoped_select(S, phpType19, KNOWN (PSTRING n_class*), ptbytes_method, phpType7*, z) = $ctor_method_start(S, n_receiver, z)
   -- if $ptlc(ptbytes_method) = $ptascii("__construct")
