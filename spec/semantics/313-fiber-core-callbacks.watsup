@@ -6,6 +6,8 @@ dec $fiber_core_name_error(pintrinsic, pnamedslot*, (ptbytes, poperand)*) : ptby
 dec $fiber_core_named_map(pintrinsic, pnamedslot*, (ptbytes, poperand)*) : pnamedslot*
 dec $fiber_core_tail(ptask*) : (nat, pconfigcall)?
 dec $fiber_core_tail_frames(pframe*) : (nat, pconfigcall)?
+dec $fiber_core_task_at(ptask*) : ptask?
+dec $fiber_core_task_frames(pframe*) : ptask?
 dec $fiber_core_count(ptask*) : nat
 dec $fiber_core_frame_count(pframe*) : nat
 dec $fiber_core_result_valid(pstate, nat, pconfigcall) : bool
@@ -17,6 +19,13 @@ def $fiber_core_target(PSTRING ptbytes) = (FIBER_REPORTING_TARGET)
   -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("error_reporting")
 def $fiber_core_target(pvalue) = eps -- otherwise
 def $target_nodes(FIBER_REPORTING_TARGET) = eps
+def $fiber_core_callback_target(FIBER_REPORTING_TARGET) = true
+def $fiber_core_callback_target(pcalltarget) = false -- otherwise
+def $fiber_core_callback_kind(S, pfiber) = (INTRINSIC_ERROR_REPORTING)
+  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
+def $fiber_core_callback_kind(S, pfiber) = eps -- otherwise
+def $fiber_core_result_task(S, n, pfiber, pconfigcall) = FIBER_CORE_RESULT n pconfigcall
+  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
 def $fiber_callback_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
   -- if $fiber_core_target(pvalue) = (pcalltarget)
 def $fiber_cached_target_valid(S, pfiber) = true
@@ -50,17 +59,15 @@ rule PhpStep/fiber-core-enter-name-error: S ~> $throwable_allocate_at(S, "Error"
   -- if ptask_tail* = [FIBER_FINISH n]
   -- if $fiber_enter_valid(S, n, pnamedargs)
   -- if $fiber_at(S, n) = (pfiber)
-  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
-  -- if pintrinsic = INTRINSIC_ERROR_REPORTING
+  -- if $fiber_core_callback_kind(S, pfiber) = (pintrinsic)
   -- if $fiber_core_name_error(pintrinsic, pnamedargs.SLOTS, pnamedargs.NAMED) = (ptbytes)
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
-rule PhpStep/fiber-core-enter: S ~> $fiber_put(S[.TODO = [CONFIG_INVOKE pconfigcall, FIBER_CORE_RESULT n pconfigcall] ++ ptask_tail*][.ORIGIN = (pconfigcall.SITE)], n, pfiber[.ENTRY = ({SLOTS pnamedslot*, NAMED eps})])
+rule PhpStep/fiber-core-enter: S ~> $fiber_put(S[.TODO = [CONFIG_INVOKE pconfigcall, $fiber_core_result_task(S, n, pfiber, pconfigcall)] ++ ptask_tail*][.ORIGIN = (pconfigcall.SITE)], n, pfiber[.ENTRY = ({SLOTS pnamedslot*, NAMED eps})])
   -- if S.TODO = (FIBER_ENTER n pnamedargs) :: ptask_tail*
   -- if ptask_tail* = [FIBER_FINISH n]
   -- if $fiber_enter_valid(S, n, pnamedargs)
   -- if $fiber_at(S, n) = (pfiber)
-  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
-  -- if pintrinsic = INTRINSIC_ERROR_REPORTING
+  -- if $fiber_core_callback_kind(S, pfiber) = (pintrinsic)
   -- if $fiber_core_name_error(pintrinsic, pnamedargs.SLOTS, pnamedargs.NAMED) = eps
   -- if pnamedslot* = $fiber_core_named_map(pintrinsic, pnamedargs.SLOTS, pnamedargs.NAMED)
   -- if n_count = |pnamedslot*|
@@ -102,11 +109,11 @@ def $fiber_core_start_valid(S, n, pconfigcall) = true
   -- if pfibercaller.OBJECT = n /\ pfibercaller.API.START = eps
 def $fiber_core_start_valid(S, n, pconfigcall) = false -- otherwise
 def $fiber_core_result_valid(S, n, pconfigcall) = true
+  -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
   -- if S.ACTIVEFIBER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.STATUS <- [FIBER_RUNNING, FIBER_SUSPENDED]
-  -- if pfiber.TARGET = (FIBER_REPORTING_TARGET)
-  -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
+  -- if $fiber_core_callback_kind(S, pfiber) = (pconfigcall.KIND)
   -- if pconfigcall.OWNER = eps /\ pconfigcall.SELECTION = eps /\ pconfigcall.PACKS = eps
   -- if ~pconfigcall.NAMED
   -- if pconfigcall.INDEX = |pconfigcall.SENT|
@@ -116,6 +123,7 @@ def $fiber_core_result_valid(S, n, pconfigcall) = true
   -- if $fiber_cache_valid(S, n, pfiber)
   -- if $fiber_core_start_valid(S, n, pconfigcall)
   -- if $($fiber_core_count(S.TODO) + $fiber_core_frame_count(S.FRAMES)) = 1
+  -- if $fiber_core_task_at(S.TODO) = ($fiber_core_result_task(S, n, pfiber, pconfigcall)) \/ $fiber_core_task_frames(S.FRAMES) = ($fiber_core_result_task(S, n, pfiber, pconfigcall))
   -- if (S.CURRENT = eps /\ S.FRAMES = eps /\ S.ORIGIN = (pconfigcall.SITE) /\ $fiber_core_tail(S.TODO) = ((n, pconfigcall))) \/ $fiber_core_tail_frames(S.FRAMES) = ((n, pconfigcall))
 def $fiber_core_result_valid(S, n, pconfigcall) = false -- otherwise
 def $fiber_core_config(S, pconfigcall) = true
@@ -139,6 +147,7 @@ def $call_saved_context_valid(S, pframe) = true -- if $fiber_core_base_frame(S, 
 ;; public Fiber::start/resume suffix is appended by the ordinary trace walker.
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE eps, LINE $(-1), FUNCTION $intrinsic_name(pconfigcall.KIND), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
   -- if $fiber_core_config(S, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_ERROR_REPORTING
 def $destructor_trace_suffix(S, pcallcontext) = $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))
   -- if $destructor_context_valid(S, pcallcontext)
   -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)

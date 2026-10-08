@@ -7,6 +7,13 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+331 adds source-authenticated static `getCurrent`/`suspend` first-class Closures
+with receiver-free capture, alias/clone history and distinct direct, `__invoke`
+and Fiber C-root owners through resume/throw cleanup. Independent sources and
+reached-state guards retain their private cuts. The actual317 composition over
+`e91fc6d6` passes strict compilation; newer collector/source/GC guards remain
+intact. [Scope and retained cuts](coverage/semantics/fiber-static-api-callables-review.json).
+
 Collector332 adds quiescent public resume/throw into the cached collector Fiber.
 Its real caller transfer preserves the worker mask and idle cache without a
 stored exception or supplied-value worker owner. Strict compilation/initialization
