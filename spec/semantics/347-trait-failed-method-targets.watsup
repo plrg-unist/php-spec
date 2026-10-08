@@ -232,3 +232,25 @@ def $dynamic_new_record_scope(S, pdynamicnew) = true
   -- if $dynamic_new_scope_source(S, pdynamicnew) = PORIGIN n_unit pcpath
   -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_source)
   -- if $trait_source_same(pfunction_source, pmethoddesc.FUNCTION)
+
+;; Old FCC snapshots can keep a published trait scope while their canonical
+;; copied function belongs to a class. Preserve that source-owned SELF selection.
+def $dynamic_new_record_scope(S, pdynamicnew) = true
+  -- if pdynamicnew.CLOSURE = (CLOSURE_SCOPE pclosurescope)
+  -- if pdynamicnew.SCOPE = (pclosurescope.LEXICAL) /\ pdynamicnew.CALLED = (pclosurescope.CALLED)
+  -- if pclosurescope.CREATION = eps
+  -- if $class_at(S.CLASSES, pclosurescope.LEXICAL) = (pclassdesc)
+  -- if pclassdesc.KIND = "trait"
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclosurescope.LEXICAL)
+  -- if $origin_node(S.SOURCES, pdynamicnew.SITE) = (NExprNew (NName (BYTES text) metadata_name) phpType6 metadata)
+  -- if $ptlc($base64(text)) = $ptascii("self")
+  -- if $ordinary_keyword_new_site(S, pdynamicnew.SITE)
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pclosurescope.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $class_static_selection_scope_method(S, $dynamic_new_scope_source(S, pdynamicnew), pclosurescope.LEXICAL) = (pmethoddesc_scope)
+  -- if porigin_method =/= pmethoddesc_scope.FUNCTION.ORIGIN
+  -- if $closure_method_origin(S, porigin_method) = (pmethoddesc)
+  -- if $trait_fcc_scope_owner(S, pmethoddesc, porigin_site, porigin_requested, pclosurescope) = (porigin_requested)
+  -- if $dynamic_new_scope_source(S, pdynamicnew) = PORIGIN n_unit pcpath
+  -- if $goto_source_owner($all_functions(S), n_unit, pcpath) = (pfunction_source)
+  -- if $trait_source_same(pfunction_source, pmethoddesc.FUNCTION)
