@@ -20,6 +20,14 @@ reference selection likewise retains the using and called classes after deferred
 initialization. A pending reference fetch requires its selected source/class/member
 marker; the actual fetch still requires its prepared base. Imported Closure cold
 selectors retain copied scope evidence without owning the retired creator.
+Deferred trait parameter constructors retain their selected class and scope while
+class-table work enters other initializers. The continuation preserves the actual
+arguments, source line and constructor/allocation branch. Existing selected table
+histories authenticate the exact canonical method/default source after restoration.
+Ordinary captures use a published class certificate that survives capture retirement;
+matching invalid selection markers cannot fall back to generic source authority.
+The ordinary constructor/retirement source and38 supplied reached checks (6 setup)
+pass at1fa6af571 without unpublished-FCC307 dependencies.
 An inherited method keeps its original import identity.
 Goto and include/eval entry retain the physical checked body
 while authenticating the selected importing scope.

@@ -1,0 +1,37 @@
+;; A computed name supplied by an ordinary CV emits no name-producing opcode.
+;; FETCH_R belongs to the outer variable occurrence and inherits that child
+;; CV's compiler line. Reading the live name remains runtime work after source
+;; operand retirement, including before a later literal property read.
+dec $source_emission_computed_cv(pstate, nat, pcpath, expression) : porigin?
+def $source_emission_computed_cv(S, n, pcpath, NExprVariable (NExprVariable (BYTES text_name) metadata_name) metadata) = (PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (NExprVariable (BYTES text_name) metadata_name) metadata)
+  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], NExprVariable (BYTES text_name) metadata_name) = eps
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_name) metadata_name)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_name, false))
+  -- if z_name = $source_line(metadata_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, false))
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_computed_cv(S, n, pcpath, expression) = eps -- otherwise
+
+def $source_echo_emission_origin(S, n, pcpath, expression) = (porigin)
+  -- if $source_emission_computed_cv(S, n, pcpath, expression) = (porigin)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (porigin)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_computed_cv(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (porigin)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if z_property = $source_line(metadata_property)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+
+;; Reuse327's captured ordinary-name warning and fixed-null continuation. This
+;; disjoint CV-source certificate owns no value and never substitutes a later
+;; name-CV or handler-created target for the interrupted FETCH result.
+def $computed_name_source(S, pnameread) = true
+  -- if pnameread.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (expression)
+  -- if $source_emission_computed_cv(S, n, pcpath, expression) = (pnameread.SITE)
+  -- if $code_expression_at_source(S, pnameread.SITE, [PCFIELD 0]) = (pnameread.LINE)
+  -- if ~$scope_global(S[.ORIGIN = (pnameread.SITE)], eps)
+  -- if ~$this_name(pnameread.NAME) /\ ~$psautoglobal(pnameread.NAME)

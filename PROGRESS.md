@@ -56,9 +56,9 @@ WeakReference296, ordinary cycle collection301 and collector Fibers317/325,
 Fiber291/302/308/313/322, Generator289/303/310/311/321 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318 and defaults286/295/306/312,
-with309 modules composed over
-`cd624aeef74cd`. The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327.
+with310 modules composed over
+`cf0cc541515e`. The ordered integration preserves
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -204,6 +204,14 @@ The new warning producer resumes with null after handler writes, with188 indepen
 entry/admission/pending-handler premises. Original Unsupported and two fixture
 stops retain zero affected credit. Actual307 passes strict compilation with reviewed
 collector/Generator/ArrayAccess compatibility; broader names remain required.
+
+[CV-computed name emission330](coverage/semantics/source-cv-name-emission-review.json)
+is integrated: compiling the ordinary name CV emits no opcode,
+and outer FETCH6 precedes property8 after operand retirement. Four exact originals
+show the live name changes before lookup; a missing target resumes null after handler
+name/target writes. Genuine entry/warning/identity controls pass174 premises.
+Actual310 passes strict compilation with reviewed Fiber/collector/constructor compatibility.
+Earlier cuts and relocations gain no renewed credit; broader names remain required.
 
 Generator289 now delegates arrays, source Iterators and shared/nested Generators,
 preserving raw caches, input forwarding, actual callback demand and return transfer.
@@ -1185,6 +1193,15 @@ original failures. Actual227/232/239 composition adds nine source comparisons an
 127 state premises at separate cutoffs: saved default constructors, cold selected
 references, physical interface diagnostic files and imported-maker Closure scope.
 Accepted233/237 routes remain preserved; the method checkpoint remains partial.
+
+Deferred trait parameter constructors now preserve their selected scope across
+class-table initialization, including actual arguments, constructor choice and
+source line. Independent actual1fa6af571 compiler gates, one fresh ordinary source
+and38 supplied reached checks (6 setup) pass on the accepted40e3 foundation without
+307. Genuine constructor allocation, capture retirement, durable table history and
+post-retirement property iteration are covered. Earlier unpublished-FCC/count
+originals keep their separate Unsupported/private results and zero transferred
+agreement; no whole trait-family or paused return closure is claimed.
 
 Trait data238 composes constants and properties before parent inheritance, with
 scoped invariant types, evaluated pure compatibility, source keyword diagnostics
