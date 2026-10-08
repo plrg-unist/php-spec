@@ -144,7 +144,27 @@ CASES = {
             *review.VALID, *ZERO,
             'S_one = $drive_steps(S, 1)', 'S_one.COMPLETION = BUDGET',
             'S_one.ACTIVEFIBER = eps', 'S_one.FIBERCALLERS = eps',
-            'S_one.RESULT = KNOWN (PSTRING ($ptascii("V")))',
+            # The returned outer start frame releases EX(This) before exposing V.
+            # Its real cleanup carrier owns V while the scratch result is null.
+            'S_one.RESULT = KNOWN PNULL',
+            'S_one.DESTRUCTION.OPERATIONS = [pdestructionoperation]',
+            'pdestructionoperation.VALUE = KNOWN (PSTRING ($ptascii("V")))',
+            'pdestructionoperation.SOURCE = CONFIG_INVOKE pconfigcall',
+            'pdestructionoperation.PENDING = eps',
+            'pdestructionoperation.CALLER = pfibercaller.VM.CURRENT',
+            'pdestructionoperation.ORIGIN = pfibercaller.VM.ORIGIN',
+            'S_one.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: '
+            '(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_returned*',
+            'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HOBJECT n_runner)]',
+            '$call_descriptors_valid(S_one[.COMPLETION = NORMAL])',
+            '$heap_valid($heap_graph(S_one))',
+            '$heap_owners($heap_graph(S_one), HOBJECT n_runner) = 2',
+            # The singleton shared-value release drops only the queued owner.
+            'S_released = $drive_steps(S_one[.COMPLETION = NORMAL], 1)',
+            'S_released.COMPLETION = BUDGET',
+            '$heap_owners($heap_graph(S_released), HOBJECT n_runner) = 1',
+            '$call_descriptors_valid(S_released[.COMPLETION = NORMAL])',
+            '$heap_valid($heap_graph(S_released))',
             '$fiber_at(S_one, n_runner) = (pfiber_paused)',
             'pfiber_paused.STATUS = FIBER_SUSPENDED', 'pfiber_paused.VM = (pfibervm)',
             'pfibervm.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_saved*',
