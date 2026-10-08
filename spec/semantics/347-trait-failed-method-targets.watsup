@@ -58,6 +58,17 @@ def $constant_callable_cached_method_access(S, porigin_site, porigin_owner, pmet
   -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_first_owner, 0) = (n_failed)
   -- if $(n_failed < |S.DECLARATIONS|)
 
+;; A later published import can fill its constant outside a collision frame.
+def $trait_fcc_snapshot_ordinary(S, pconstantclosure) = (pmethoddesc)
+  -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = eps
+  -- if $trait_fcc_failed_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_first_owner, pmethoddesc_first))
+  -- if $(pconstantclosure_first.OBJECT < pconstantclosure.OBJECT)
+  -- if $class_constant_callable_receipt_owner(S, pconstantclosure) = (porigin_owner)
+  -- if $constant_callable_published(S.DECLARATIONS[0:pconstantclosure.PREFIX], porigin_owner)
+  -- if $constant_callable_cached_method_at(S, pconstantclosure.SITE, pconstantclosure.PREFIX) = (pmethoddesc)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc.FUNCTION.ORIGIN pconstantclosure.SITE porigin_owner eps)
+  -- if pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+
 ;; The AST pointer owns its method statics even when the class was not linked.
 def $method_static_origin(S, porigin) = true
   -- if $static_function_at($method_functions($trait_fcc_failed_methods(S, S.CONSTANTCLOSURES)), porigin) = (pfunction)
