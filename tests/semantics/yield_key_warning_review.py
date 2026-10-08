@@ -125,6 +125,31 @@ function seq(){try{yield 1;}finally{yield $missingKey=>4;}}
 set_error_handler("warn");$generator=seq();echo $generator->current(),"|";
 try{unset($generator);echo "X";}catch(Error $caught){echo $caught->getMessage(),"|";}echo "Z";
 ''', b'1|Cannot yield from finally in a force-closed generator|Z', 0),
+    'cached-value-destructor-throw-after-key-warning': (
+        b'''<?php
+class Payload321 {function __destruct(){echo "D|";throw $GLOBALS["replacement"];}}
+$replacement=new Exception("replacement");$value=new Payload321;$weak=WeakReference::create($value);
+function warn($n,$m,$f,$l){echo "W",$l,"|";$GLOBALS["value"]=null;return true;}
+$arrow=fn(&$value)=>yield $missingKey=>$value;
+set_error_handler("warn");$generator=$arrow($value);unset($arrow);echo "C|";
+$generator->current();try{unset($generator);echo "X";}catch(Exception $caught){echo (int)($caught===$replacement),":",(int)($caught->getPrevious()===null),":",(int)($weak->get()===null),"Z";}
+''', b'C|W5|D|1:1:1Z', 0),
+    'cached-value-destructor-replaces-force-close-finally-throw': (
+        b'''<?php
+class Payload321 {function __destruct(){echo "D|";throw $GLOBALS["replacement"];}}
+$original=new Exception("original");$replacement=new Exception("replacement");$value=new Payload321;$weak=WeakReference::create($value);
+function warn($n,$m,$f,$l){echo "W",$l,"|";$GLOBALS["value"]=null;return true;}
+function seq321(&$value){try{yield $missingKey=>$value;}finally{echo "F|";throw $GLOBALS["original"];}}
+set_error_handler("warn");$generator=seq321($value);echo "C|";
+$generator->current();try{unset($generator);echo "X";}catch(Exception $caught){echo (int)($caught===$replacement),":",(int)($caught->getPrevious()===$original),":",(int)($original->getPrevious()===null),":",(int)($weak->get()===null),"Z";}
+''', b'C|W5|F|D|1:1:1:1Z', 0),
+    'key-warning-keeps-cached-array-before-handler-write': (
+        b'''<?php
+$value=[1];function warn($n,$m,$f,$l){echo "W",$l,"|";$GLOBALS["value"][0]=9;return true;}
+set_error_handler("warn");$arrow=fn(&$value)=>yield $missingKey=>$value;
+$generator=$arrow($value);unset($arrow);echo "C|",$generator->current()[0],":",$value[0],":",(int)($generator->key()===null),"|";
+$generator->send(8);echo $generator->getReturn();
+''', b'C|W3|1:9:1|8', 0),
 }
 
 
