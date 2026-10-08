@@ -340,5 +340,23 @@
     "exit": 0,
     "status": "normal",
     "source_sha256": "1a5528cc92bad75f6d47958f7e6b1e931d39864ee82ee57fb29c78153c9d0e98"
+  },
+  {
+    "id": "collector-zero-guard-reacquired-before-collection",
+    "source": "<?php\nclass ZeroGuard317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $held;\n        $held = Fiber::getCurrent();\n        Fiber::suspend();\n        $this->self = null;\n        echo \"released|\";\n    }\n}\n$request = new Fiber(function () {\n    global $weak;\n    $a = new ZeroGuard317();\n    $weak = WeakReference::create($a);\n    unset($a);\n    echo \"first:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\n$held->resume();\necho $held->isTerminated() ? \"done|\" : \"held|\";\n$rescued = $weak->get();\necho $rescued === null ? \"gone|\" : \"live|\";\nunset($rescued);\necho $weak->get() === null ? \"retired|\" : \"retained|\";\necho \"after:\", gc_collect_cycles(), \"|END\";\n",
+    "stdout": "first:0|released|done|live|retired|after:0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "9e6fac54cb8ce300027cf13b53baef68ff7ba492efac361e82f5934473e43cf4"
+  },
+  {
+    "id": "collector-zero-guard-child-reacquire-review-18",
+    "source": "<?php\nclass ReviewChild325 {\n    public function __destruct() {\n        global $weakParent;\n        echo \"child-dtor:\", $weakParent->get() === null ? \"parent-gone|\" : \"parent-live|\";\n    }\n}\nclass ReviewZero325 {\n    public $self;\n    public $child;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        global $held, $weakChild;\n        $held = Fiber::getCurrent();\n        Fiber::suspend();\n        $this->self = null;\n        $this->child = new ReviewChild325();\n        $weakChild = WeakReference::create($this->child);\n        echo \"bare|\";\n    }\n}\n$request = new Fiber(function () {\n    global $weakParent;\n    $a = new ReviewZero325();\n    $weakParent = WeakReference::create($a);\n    unset($a);\n    echo \"first:\", gc_collect_cycles(), \"|\";\n});\n$request->start();\n$held->resume();\necho $held->isTerminated() ? \"done|\" : \"held|\";\n$rescued = $weakParent->get();\necho $rescued === null ? \"unavailable|\" : \"reacquired|\";\nunset($rescued);\necho $weakChild->get() === null ? \"child-gone|\" : \"child-live|\";\necho $weakParent->get() === null ? \"parent-gone|\" : \"parent-live|\";\necho \"after:\", gc_collect_cycles(), \"|END\";\n",
+    "stdout": "first:0|bare|done|reacquired|child-dtor:parent-gone|child-gone|parent-gone|after:0|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "cf261e5fd31aadde9054388d675231014d4acd99d4a1fbeeb073a5e5056bba6a"
   }
 ]
