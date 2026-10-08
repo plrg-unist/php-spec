@@ -769,6 +769,7 @@ def $gc_prune_graph(H, pnode_keep*) = $gc_prune_graph(H[.NODES = pnode_live*], p
   -- if pnode_live* = $gc_retained(H, H.NODES, pnode_keep*)
   -- if pnode_live* =/= H.NODES
 def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
+def $gc_prune_nodes_graph(S, H) = $gc_prune_graph(H, $gc_keep(S)).NODES -- if S.GC.ACTIVE =/= eps
 dec $gc_zero_keep(hgraph, pnode*, pnode*) : pnode*
 dec $gc_zero_owners(hgraph, pnode, pnode*, pnode*, nat) : pnode*
 def $gc_zero(S, H, eps) = eps

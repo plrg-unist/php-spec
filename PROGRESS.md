@@ -281,6 +281,21 @@ Composition over `b7ed1bea1`/326 preserves SOURCE339, TRAIT307 and ARG334
 by static review, without runtime renewal.
 Raw records: `.tools/compiler-fiber-protection-graph-19/.tools`
 (`fiber-protection-gate-v{1,2,3,4}` and `full-default-retry-protection-v1`).
+Pruning now carries its graph through GC selection, Fiber protection and
+destructor dispatch, retaining active and idle bare-root guards. Destructor
+preparation reuses the graph only for identical states; changed states take the
+original prepared-state path. Exact `74a8a11ca`/326 passes strict initialization
+and 41 independent fixture premises. Its first destructor78 check exposed an existing
+207 ordinary-handler/destructor validation overlap. The one-line fallback repair
+at `039abc623`/326 passes changed initialization and four fixtures with 78 destructor,
+69 protected Fiber, 40 active GC and 37 ordinary-handler domain premises.
+The original full source still times out at host 55.066 with empty streams and
+zero agreement; inputs are stable and groups reaped. No speedup or 231 credit follows.
+Final 330-module composition at `5ca56cf55` mirrors the new idle retired-bucket guard
+and passes changed initialization plus a genuine retirement fixture with 73 body /
+190 physical premises. Earlier 326 cuts stay separate. Raw failures and checks remain
+under `.tools/compiler-fiber-protection-current-19/.tools` (`prune-graph-controls-v{1,2,3}`
+and `full-default-retry-prune-graph-v1`) and `.tools/compiler-prune-graph-publication-19/.tools/prune-graph-gen330-controls-v1`.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and

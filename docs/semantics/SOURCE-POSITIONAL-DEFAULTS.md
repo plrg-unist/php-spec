@@ -189,4 +189,8 @@ retry still times out at host 55.065 with empty streams and zero agreement.
 Fixed-state Fiber protection graph reuse on `181931c20`/321 passes strict, 22
 partiality and 65 reached lifecycle premises; its full retry still times out at
 host 55.066 with empty streams and zero agreement. No speedup or 231 credit follows.
+Further pruning graph carry and the ordinary-handler fallback repair at
+`039abc623`/326 pass affected destructor/Fiber/GC and handler-domain controls.
+The same full source again reaches host 55.066 with empty streams and zero
+agreement.
 Whole retry composition and wider producers remain open.
