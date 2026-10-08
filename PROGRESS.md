@@ -896,6 +896,18 @@ and production SL274 stages/init passes. The
 failures and the no-owner native Fiber frontier. Readonly follow-ons/hooks/magic, static
 Stringable compounds and wider borrowed destination lifetime remain required.
 
+Compound Stringable concatenation352 preserves the actual selected RHS slot:
+defined CVs remain live through the left cast, initially undefined reads latch
+null, and evaluated VAR/TMP operands retain their real owners until after the
+store. Non-reference self CVs reuse the left string; reference self CVs reread.
+Entry-time destination identity also preserves aliases created or rebound during
+conversion. Eleven exact originals and private332 compiler/init pass at632c;
+one separate caught left/right throw original passes at4bf8. One root/DIM/property
+expression-result original and249 new reached premises pass at7c15. The
+current-parent gate retains its separate cut in the
+[ledger](coverage/semantics/compound-string-live-rhs-review.json). Earlier334/344
+evidence is unchanged; static compounds and wider borrowed destinations remain open.
+
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
 the operand. Borrowed variables gain no temporary owner; captured arrays survive

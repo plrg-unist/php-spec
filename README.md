@@ -195,6 +195,12 @@ current scalar/array locations, preserving copied results and diagnostic order;
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.
+[Stringable compound concatenation352](coverage/semantics/compound-string-live-rhs-review.json)
+reads a defined RHS CV after the left conversion, preserves the non-reference
+self-CV fast path, and retains evaluated temporary/reference operands through
+the final store. Thirteen exact originals cover live rebinding, aliases, copied
+expression results and normal or throwing operand cleanup. The249 independent
+reached premises and current-composition gate retain separate records.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

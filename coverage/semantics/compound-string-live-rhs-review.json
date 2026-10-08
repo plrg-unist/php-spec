@@ -1,0 +1,145 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "module": "spec/semantics/352-compound-string-live-rhs.watsup",
+  "decision": "Accepted thirteen exact original source agreements and249 new reached premises; actual current-parent compiler/init gate pending",
+  "behavior": [
+    "A defined physical RHS CV is borrowed and read after left conversion; initial UNDEF latches null, late UNDEF converts quietly to empty.",
+    "Evaluated VAR/TMP values and accepted untyped reference-return cells retain actual owners through final store and release before outer operands.",
+    "Initially nonreference self CV reuses the left cast bytes; referenced self CV dereferences RHS after that cast.",
+    "Destination pointer classification precedes callbacks, preserving late alias detachment versus writes to the originally dereferenced reference cell.",
+    "Each cast consumer correlates the selected receiver without adding an owner; both left/right throw cleanup agree with PHP."
+  ],
+  "engine_routes": {
+    "vendor/php-src/Zend/zend_operators.c": "concat_function",
+    "vendor/php-src/Zend/zend_vm_def.h": [
+      "ZEND_ASSIGN_OP",
+      "ZEND_ASSIGN_DIM_OP",
+      "ZEND_ASSIGN_OBJ_OP"
+    ],
+    "vendor/php-src/Zend/zend_compile.c": "zend_compile_compound_assign"
+  },
+  "raw_directory": ".tools/compound-string-live-rhs-19/.tools/compound-string-live-rhs",
+  "preserved_counterexample": {
+    "revision": "9d1956cd55aa6590293986d9e92523feab163372",
+    "report": "probe-8wconacy/report.json",
+    "native_stdout": "L;V:aafter;R:after;E;",
+    "model_stdout": "L;V:abefore;R:after;E;",
+    "agreement_credit": 0
+  },
+  "sources": {
+    "normal_originals": 13,
+    "cuts": [
+      {
+        "revision": "632c323331198586676abc33d581619438f3c1a6",
+        "report": "run-qpvjcakk/report.json",
+        "normal_originals": 11,
+        "passed": true,
+        "inputs_stable": true,
+        "groups_reaped": true
+      },
+      {
+        "revision": "4bf8bde4e6cd01022a402ef554035c5297af531a",
+        "report": "run-woxsdbww/report.json",
+        "normal_originals": 1,
+        "selection": [
+          "compound-concat-rhs-temp-throw-cleanup"
+        ],
+        "passed": true,
+        "inputs_stable": true,
+        "groups_reaped": true
+      },
+      {
+        "revision": "7c15b5732cbb8162e640c603a234415cae400864",
+        "report": "run-7lw6yr4j/report.json",
+        "normal_originals": 1,
+        "selection": [
+          "compound-concat-expression-result-copy"
+        ],
+        "passed": true,
+        "inputs_stable": true,
+        "groups_reaped": true
+      }
+    ]
+  },
+  "private_compiler_init": {
+    "revision": "632c323331198586676abc33d581619438f3c1a6",
+    "modules": 332,
+    "report": "run-qpvjcakk/report.json",
+    "algo_bytes": 10747254,
+    "struct_bytes": 10411451,
+    "strict_SL_initial_premises": 6,
+    "passed": true
+  },
+  "new_reached": {
+    "revision": "7c15b5732cbb8162e640c603a234415cae400864",
+    "modules": 332,
+    "report": "reached-run-qb2nung_/report.json",
+    "groups": [
+      {
+        "id": "borrowed-cv-and-entry-flags",
+        "premises": 105,
+        "strict_SL_seconds": 29.006,
+        "algo_bytes": 10776412
+      },
+      {
+        "id": "owned-tmp-reference-and-release",
+        "premises": 144,
+        "strict_SL_seconds": 28.849,
+        "algo_bytes": 10790289
+      }
+    ],
+    "premises": 249,
+    "passed": true,
+    "inputs_stable": true,
+    "groups_reaped": true
+  },
+  "current_composition": {
+    "status": "pending final projection onto imminent accepted CALLS338 parent, then one339 compiler/init gate"
+  },
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/spectec/bin/p4spectec": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed",
+    "profile": "tests/semantics/profile.json"
+  },
+  "caps": {
+    "compiler": 120,
+    "strict_SL_initial": 120,
+    "native": 45,
+    "CLI": 60,
+    "outer": 90,
+    "steps": 100000,
+    "source_phase": 480
+  },
+  "jobs": 1,
+  "reproduce_source": [
+    "python3 tests/semantics/compound_string_live_rhs_prepare.py",
+    "python3 tests/semantics/compound_string_live_rhs_run.py PREPARED/report.json"
+  ],
+  "boundaries": [
+    "Static Stringable compounds and wider borrowed destination lifetime remain separate.",
+    "No earlier334/344 evidence is renewed. Paused typed/NULL/finally-sensitive producer lanes are unchanged."
+  ],
+  "preserved_fixture_failures": [
+    {
+      "report": "reached-run-zbre1mcq/report.json",
+      "reason": "Renderer frame/tail binder collision before SL; corrected fixture only.",
+      "credit": 0
+    },
+    {
+      "report": "reached-run-c1uin3oa/report.json",
+      "reason": "Negative saved receiver assertion used per-task frame guard; corrected to actual frame-pair guard, retaining full descriptors rejection.",
+      "credit": 0
+    }
+  ],
+  "reproduce_states": [
+    "python3 tests/semantics/compound_string_live_rhs_prepare.py compound-concat-rhs-object-replacement compound-concat-rhs-object-temp-owner compound-concat-rhs-reference-return-owner",
+    "python3 tests/semantics/compound_string_live_rhs_state_prepare.py PREPARED/report.json",
+    "python3 tests/semantics/compound_string_live_rhs_state_run.py REACHED/manifest.json"
+  ]
+}
