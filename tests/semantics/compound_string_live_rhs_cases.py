@@ -311,4 +311,36 @@ echo "E;";
         'expected_stdout': 'Q1;L1;D:right1;X:left;D:left1;Q2;L2;R2;D:right2;X:right;D:left2;E;',
         'discriminator': 'Either conversion failure frees the copied RHS TMP before the catch, preserves the unwritten LHS object, and does not run a skipped RHS conversion. Exceptions were created before any operand objects.',
     },
+    {
+        'id': 'compound-concat-expression-result-copy',
+        'source': '''<?php
+class LeftResultCopyReview19 {
+    public function __toString(): string {
+        global $rhs;
+        echo "L;";
+        $rhs = "after";
+        return "a";
+    }
+}
+class ResultBoxReview19 { public $value; }
+$rhs = "before";
+$target = new LeftResultCopyReview19();
+$result = ($target .= $rhs);
+$target = "later";
+echo "R:", $result, ";V:", $target, ";";
+$rhs = "before";
+$array = [new LeftResultCopyReview19()];
+$result = ($array[0] .= $rhs);
+$array[0] = "later";
+echo "D:", $result, ";V:", $array[0], ";";
+$rhs = "before";
+$box = new ResultBoxReview19();
+$box->value = new LeftResultCopyReview19();
+$result = ($box->value .= $rhs);
+$box->value = "later";
+echo "P:", $result, ";V:", $box->value, ";E;";
+''',
+        'expected_stdout': 'L;R:aafter;V:later;L;D:aafter;V:later;L;P:aafter;V:later;E;',
+        'discriminator': 'The compound expression yields the full concatenated string as an ordinary copy, preserved after its root, dimension or property destination is overwritten.',
+    },
 ]

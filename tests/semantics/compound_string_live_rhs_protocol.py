@@ -111,7 +111,7 @@ $stringify_consumer_receiver_valid(S_changed, n_left, COMPOUND_LIVE_LEFT pcompou
 ~$stringify_consumer_receiver_valid(S_changed, n_new, COMPOUND_LIVE_LEFT pcompoundstring_selected)
 S_bad_saved = S_changed[.FRAMES = pframe[.TODO = (STRINGIFY_RESULT n_left pcompoundstring.SITE pcompoundstring.LINE) :: (COMPOUND_LIVE_LEFT pcompoundstring_selected[.SELECTED = (n_new)]) :: ptask_saved*] :: pframe_tail*]
 $heap_graph(S_bad_saved) = $heap_graph(S_changed)
-~$call_frames_valid(S_bad_saved, S_bad_saved.FRAMES)
+~$stringify_frames_pairs_valid(S_bad_saved, S_bad_saved.FRAMES)
 ~$call_descriptors_valid(S_bad_saved)
 ''') + guards('S_changed')
     return checks
