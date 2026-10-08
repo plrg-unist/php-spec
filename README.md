@@ -1028,6 +1028,10 @@ Retained `new static` constructs the published called class from failed-class or
 published-trait scope, entering arguments after allocation. Two shutdown originals
 and80 supplied conditions plus12 setup clauses pass at separate cuts, including
 durable selected-NEW static-fill history.
+An authenticated retained `self::n(argument())` rejects the exact abstract method before
+arguments, using completed data binding and copied requirements. One shutdown
+original and41 supplied conditions plus6 setup clauses pass, including all four
+global validators; unknown phases stay Unsupported.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
