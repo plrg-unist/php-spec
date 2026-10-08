@@ -171,9 +171,12 @@ Assertions now distinguish startup modes `-1`, `0` and `1` before compilation,
 including eval/include replay. Known direct calls capture normalized descriptions;
 dynamic and first-class calls keep ordinary argument evaluation. Twenty-five
 retained source/profile comparisons and 64 reached-state premises pass, including
-fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime mode
-updates, assertion options/callbacks, Stringable descriptions and wider expression
-export remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
+fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime INI updates
+preserve initial/current raw bytes and restore state; quiet quantities, positive
+mode 2, negative-boundary refusals and nested/throwing warning handlers match
+twelve further source profiles. Parsing warnings, Stringable-option refusal,
+assertion options/callbacks, Stringable descriptions and wider expression export
+remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
@@ -306,8 +309,10 @@ delegated cache lifetime and nested normal handlers. [Request fatal cleanup 363]
 retains Generator/cache owners through normal fatal rendering, releases the reported
 exception before bailout, then suppresses later destructors. Normal exception-owned
 stdClass/ordinary child cleanup retains full admission and actual storage pins.
-Abrupt rendering or exception release, parked/escaped storage and broader terminal
-cleanup remain required.
+A renderer rethrow at request C root reports/releases its builtin inner Throwable
+before abandoning the original report and real Generator/cache owners. Live-handler
+or deeper rendering, abrupt exception release, parked/escaped storage and generic
+terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -571,6 +576,8 @@ controls earn zero agreement. Pending-carrier unwind, deferred construction,
 wider consumers and WeakMap remain required. Canonical292/304
 composition separately passes strict277 initialization and one exact weak lifetime
 source; earlier cuts retain their inputs.
+Wrappers also satisfy nominal `WeakReference` argument and property types after
+their referent retires; diagnostics retain the actual internal class name.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
@@ -650,8 +657,15 @@ zero agreement. Final 351 over `8e513981b` compiles. Fresh internal collection n
 scans residual and new tags with its genuine GC caller. Signed −1+2 accounting
 returns 1 while both destructors retire. Two original full continuations pass
 166 independent physical premises; both whole CLI runs retain 60s timeouts/zero
-agreement. Final 353 over `d2bba03b2` compiles. Main residual dispatch, overlap,
-repeated internal suspension and different-active-pass reentry remain required.
+agreement. Final 353 over `d2bba03b2` compiles. Main-thread residual dispatch372
+uses its own physical interval and real caller scope without changing the cached
+Fiber cursor. Strict354 compilation/init and 171 independent physical premises
+complete both unchanged originals with count1, D/E retirement and exact exception
+priority. Final 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed
+trait, storage, raw Fiber-array and ASSERTIONS additions; both whole CLI 60s
+timeouts retain zero agreement. Overlap, repeated
+internal suspension, different-active-pass reentry and whole CLI completion remain
+required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -923,7 +937,7 @@ cover pending exceptions, the Generator RETURN-child interaction and genuine
 Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
 adds one exact Iterator-child original and 113 reached premises; future
 destructor-tail validation applies the real result discard before owner checks.
-Consumed or uninitialized property payload access and escaped reacquisition remain required.
+Consumed or explicitly unset property payload access and escaped reacquisition remain required.
 The same physical pin now covers ordinary stdClass storage. A materialized
 property table transfers its one HARRAY owner before bucket cleanup; shared tables
 keep their children after the parent retires. Five new exact originals and
@@ -940,6 +954,12 @@ property aliases without retaining their wrapper. Three further originals and
 136/134 reached premises cover alias rebinding, array copy-on-write and kept
 children surviving parent retirement until explicit release. The actual353
 composition passes strict initialization.
+Unvisited uninitialized typed properties now raise ordinary Error after visibility
+resolution, using the declaring class and source line. Three exact originals and
+123/141 reached premises cover inherited declarations, private denial, pending
+Error ownership, continued child cleanup and atomic selected-reference binding.
+Consumed and explicitly unset slots remain separate boundaries.
+The actual355 composition passes strict initialization.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -955,6 +975,12 @@ keys, and preserves quiet probes and by-reference argument error ordering. Its
 compiler and paused-state controls. [Source methods and constructors](docs/semantics/SOURCE-METHODS.md)
 execute ordinary/nullsafe, inherited, nonpublic and static/scoped dispatch,
 bound closures and `Closure->__invoke` trampolines.
+Ordinary abstract scoped calls reject before arguments, and inaccessible concrete
+nonstatic methods report access errors before missing-receiver errors. Literal
+constructor calls retain their separate opcode dispatch. The latter two cases pass
+two normal originals and54 supplied checks plus12 setup clauses (40 genuine
+clauses and14 helper-only clauses covering flag/source probes); prior abstract-call
+evidence remains separate.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work
@@ -1026,6 +1052,10 @@ Retained `new static` constructs the published called class from failed-class or
 published-trait scope, entering arguments after allocation. Two shutdown originals
 and80 supplied conditions plus12 setup clauses pass at separate cuts, including
 durable selected-NEW static-fill history.
+An authenticated retained `self::n(argument())` rejects the exact abstract method before
+arguments, using completed data binding and copied requirements. One shutdown
+original and41 supplied conditions plus6 setup clauses pass, including all four
+global validators; unknown phases stay Unsupported.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
@@ -1326,8 +1356,15 @@ Simple Fiber API arrays also convert to first-class Closures. A distinct source
 witness freezes the selected members; the temporary bound receiver owner moves
 into the Closure, while static selectors add none. Clone/equality and direct,
 explicit `__invoke` or C-root calls reuse the existing API protocols, including
-start and constructor captures. Raw array C-root callbacks, compound selectors
-and Fiber-start argument unpacking remain required.
+start and constructor captures. Simple raw Fiber API arrays also run as C-root
+callbacks, including start and constructor methods. RAW owns its current array
+members; the frozen receiver cache and C result tails add no receiver owner.
+Copied C arguments remain separate from the original outer start buffer. Saved
+Fiber states and actual callers authenticate nested, parked static and idle
+collector continuations. Inner API trace frames have no file or line site. The
+[raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json)
+records these distinct checks. Compound selectors and Fiber-start argument
+unpacking remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

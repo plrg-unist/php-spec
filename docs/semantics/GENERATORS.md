@@ -107,10 +107,15 @@ Normal post-report stdClass and ordinary child storage add one exact fatal origi
 and 161 premises at its own cut, preserving real pins and full admission through
 Weak lookup and the authenticated future continuation. Composition with 353 modules
 over `a210cd253` passes strict compilation at `b7b693fa3`; prior cuts remain separate.
-Abrupt rendering or
-exception release, nonrenderable message warnings, parked storage, escaped
-reacquisition and wider terminal cleanup
-remain required.
+At request C root with no current exception handler, a throwing custom renderer
+reports and releases its builtin inner Throwable before bailout abandons the
+original report and Generator/cache owners. Three exact fatal originals and 527
+reached premises retain separate cuts, including the real receiver decrement,
+handler exception retention and reporting mutation after emission. Actual 356 over
+`2b98ff468` passes strict compilation at `72d5f7353`, preserving current fields;
+private source/state cuts retain their own inputs. Live-handler or
+deeper custom rendering, abrupt exception release, message warnings, parked or
+escaped storage and generic terminal cleanup remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and

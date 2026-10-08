@@ -977,6 +977,80 @@ CASES['failed-first-unfixed-trait-static-new-published-called-class'] = {
     'checks': UNFIXED_TRAIT_STATIC_NEW,
 }
 
+OWN_ABSTRACT_CALL_STAGE = ('S.TODO = (EVAL (NExprStaticCall (NName (BYTES text_self) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) (SEQUENCE phpType7*) metadata)) :: ptask_tail* -- if '
+ '$ptlc($base64(text_self)) = $ptascii("self") -- if $ptlc($base64(text_method)) = $ptascii("n") '
+ '-- if S.ORIGIN = (porigin_site) -- if S.CURRENT = (pcallcontext) -- if pcallcontext.TARGET = '
+ 'CLOSURE_TARGET n_fcc -- if pcallcontext.LEXICAL_CLASS = (porigin_c) -- if $class_at(S.CLASSES, '
+ 'porigin_c) = (pclassdesc_c) -- if pclassdesc_c.NAME = $ptascii("C") -- if '
+ 'pcallcontext.CALLED_CLASS = (porigin_e) -- if $class_at(S.CLASSES, porigin_e) = (pclassdesc_e) '
+ '-- if pclassdesc_e.NAME = $ptascii("E")')
+OWN_ABSTRACT_CALL = ['$method_source_task(S, NExprStaticCall (NName (BYTES text_self) metadata_class) (NIdentifier '
+ '(BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)',
+ '~$ppfirstclass(phpType7*)',
+ '$call_current_valid(S)',
+ '$constant_callable_record(S.CONSTANTCLOSURES, n_fcc) = (pconstantclosure)',
+ '$trait_fcc_failed_header(S, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_c, '
+ 'pmethoddesc_unfixed))',
+ 'pmethoddesc_unfixed.OWNER = porigin_c /\\ pmethoddesc_unfixed.VISIBILITY = PROPERTY_PRIVATE /\\ '
+ '~$trait_imported_origin(pmethoddesc_unfixed.FUNCTION.ORIGIN)',
+ '$constant_callable_record_valid(S, pconstantclosure_first) /\\ ~(HOBJECT '
+ 'pconstantclosure_first.OBJECT <- S.ALLOCATIONS) /\\ $closure_scope_at(S.CLOSURESCOPES, '
+ 'pconstantclosure_first.OBJECT) = eps',
+ '$class_named(S.CLASSNAMES, $ptascii("c")) = eps /\\ $class_named(S.CLASSNAMES, $ptascii("e")) = '
+ '(porigin_e)',
+ '$closure_scope_at(S.CLOSURESCOPES, n_fcc) = (pclosurescope)',
+ 'pclosurescope.LEXICAL = porigin_c /\\ pclosurescope.CALLED = porigin_e',
+ '$trait_fcc_retained_call_scope(S, porigin_site) = ((pclassdesc_c, pconstantclosure_first))',
+ '$trait_fcc_failed_required_class(S, pclassdesc_c, pconstantclosure_first) = '
+ '((pclassdesc_required, b_abstract))',
+ 'b_abstract /\\ pclassdesc_required.ORIGIN = porigin_c /\\ pclassdesc_required.NAME = '
+ 'pclassdesc_c.NAME',
+ '$method_named(pclassdesc_required.METHODS, $ptascii("n")) = (pmethoddesc_n)',
+ 'pmethoddesc_n.OWNER = porigin_c /\\ pmethoddesc_n.ABSTRACT /\\ pmethoddesc_n.STATIC /\\ '
+ 'pmethoddesc_n.VISIBILITY = PROPERTY_PUBLIC',
+ '$method_accessible(S, pmethoddesc_n, (porigin_c))',
+ 'porigin_site = PORIGIN n_unit pcpath_site',
+ '$code_at(S.CODE, n_unit) = (pcode)',
+ '$code_expression(pcode.EXPRESSIONS, pcpath_site) = ((z, false))',
+ 'PhpStep: S ~> S_rejected',
+ 'S_rejected.COMPLETION = THROWN "Error" $ptascii("Cannot call abstract method C::n()") z',
+ 'S_rejected.TODO = ptask_tail*',
+ 'S_rejected.CURRENT = S.CURRENT /\\ S_rejected.OBJECTS = S.OBJECTS /\\ S_rejected.ALLOCATIONS = '
+ 'S.ALLOCATIONS /\\ S_rejected.EVENTS = S.EVENTS',
+ '$class_constant_state_valid(S_rejected)',
+ '$call_descriptors_valid(S_rejected)',
+ '$declaration_history_valid(S_rejected)',
+ '$heap_valid($heap_graph(S_rejected))',
+ '$trait_fcc_retained_call_scope(S, pconstantclosure_first.SITE) = eps',
+ '$trait_fcc_retained_call_scope(S[.CURRENT = (pcallcontext[.TARGET = CLOSURE_TARGET '
+ 'pconstantclosure_first.OBJECT][.INSTANCE = (pconstantclosure_first.OBJECT)])], porigin_site) = '
+ 'eps',
+ '$trait_fcc_failed_required_class(S, pclassdesc_c, pconstantclosure_first[.PREFIX = '
+ '$(pconstantclosure_first.PREFIX + 1)]) = eps',
+ '$trait_fcc_retained_call_scope(S[.CURRENT = (pcallcontext[.LEXICAL_CLASS = (porigin_e)])], '
+ 'porigin_site) = eps',
+ '$trait_fcc_retained_call(S, pclassdesc_c, pconstantclosure_first, $ptascii("m"), z) = '
+ 'S[.COMPLETION = UNSUPPORTED "retained failed class method call"]',
+ '$class_named(S.CLASSNAMES, $ptascii("u")) = (porigin_u)',
+ '$class_at(S.CLASSES, porigin_u) = (pclassdesc_u)',
+ '$ppproperty_desc_at(pclassdesc_u.PROPERTIES, $ptascii("x")) = (ppropertydesc_u)',
+ 'S_before_fixup = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_u[.PROPERTIES = '
+ '[ppropertydesc_u[.DEFAULT = PROP_LITERAL (PINT 0)]]])]',
+ '$trait_fcc_failed_required_class(S_before_fixup, pclassdesc_c, pconstantclosure_first) = eps',
+ 'S_unknown_phase = S[.CLASSES = $trait_class_set(S.CLASSES, pclassdesc_u[.PROPERTIES = '
+ '[ppropertydesc_u[.DEFAULT = PROP_DEFERRED porigin_u]]])]',
+ '$trait_fcc_failed_required_class(S_unknown_phase, pclassdesc_c, pconstantclosure_first) = eps',
+ '$trait_fcc_retained_call_scope(S_unknown_phase, porigin_site) = ((pclassdesc_c, '
+ 'pconstantclosure_first))',
+ '$trait_fcc_retained_call(S_unknown_phase, pclassdesc_c, pconstantclosure_first, $ptascii("n"), '
+ 'z) = S_unknown_phase[.COMPLETION = UNSUPPORTED "retained failed class method call"]']
+CASES['failed-first-post-fixup-own-private-abstract-method-before-arguments'] = {
+    'source': SOURCES['failed-first-post-fixup-abstract-method-call'],
+    'stage': OWN_ABSTRACT_CALL_STAGE,
+    'checks': OWN_ABSTRACT_CALL,
+}
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--match', default='')

@@ -364,6 +364,28 @@ aggregate; the corrected global-view group passes separately. Earlier mistaken
 entry-owner and local/global fixture assumptions retain zero affected credit.
 Both original whole CLI runs retain 60s timeouts/zero agreement. Final 353 over
 `d2bba03b2` compiles at `3f2016024`, preserving reviewed 366/367, source, trait,
-storage and Generator cleanup changes. Main physical residual dispatch is
-explicit Unsupported and required next; overlap, repeated internal suspension,
-different-active-pass reentry, whole CLI completion and broader GC remain open.
+storage and Generator cleanup changes. The main physical residual boundary at
+that cut is extended below; earlier source/state cuts retain their identities.
+
+Main-thread residual dispatch372 uses `gc_call_destructors(..., NULL)` semantics:
+its local interval spans the fresh frozen buffer, while the cached Fiber’s global
+cursor remains unchanged by the loop. Current tags must come from their actual
+frozen slots; a normalized callback target must also have been uncalled at the
+producer. Reused ordinary roots and already-called tags do not invoke callbacks.
+Actual main return tasks own one callback pin and pending error; saved main caller
+scope/trace remain ordinary. E protects D’s error, which passes through scan/free
+before ordinary finally chains the caller’s outer error. Fresh E receives actual
+SKIPPED progress, with no invented residual-D membership or DONE credit. Signed
+−1+2 accounting still returns 1 while D/E both retire.
+
+At `7e5ff7198`/354 plus fixture `cac7bcad5`, both unchanged originals complete
+93/78 independent physical premises (recorder81/64, authored78/61), checking
+frozen-slot/CALLED/tag/end negatives and genuine consumer/scope,
+unchanged global cursor, exact native streams and new.previous identity. Both
+whole CLI runs retain their 60s timeouts/zero agreement. The initial syntax stop
+has zero application credit; strict compilation/init pass after explicit interval
+binding. Repeated internal suspension, residual/eligible overlap, different-pass
+reentry, whole CLI completion and broader GC remain required.
+Final 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed abstract
+method selection, typed freeing reads, raw Fiber-array tasks and ASSERTIONS.
+The original source/state cuts retain their inputs and counts.

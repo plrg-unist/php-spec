@@ -1,0 +1,231 @@
+;; Fiber retains the raw callback array. Its function cache borrows the
+;; selected receiver, even after reference members select different values.
+dec $fiber_raw_target(pstate, pvalue) : pfiberrawapi?
+dec $fiber_raw_cached_valid(pstate, pfiber) : bool
+dec $fiber_raw_input_valid(pvalue, pfiberrawapi) : bool
+dec $fiber_raw_receiver_live(pstate, pfiberrawapi) : bool
+dec $fiber_raw_owner(pfiberrawapi, nat) : nat?
+dec $fiber_raw_outer_valid(pstate, nat) : bool
+dec $fiber_raw_core_call(pstate, pfiberapi) : pconfigcall?
+
+def $fiber_raw_target(S, pvalue) = (pfiberrawapi)
+  -- if pvalue = PARRAY n
+  -- if $fiber_factory_candidate(S, pvalue)
+  -- if pentry* = $fiber_factory_items(S, pvalue)
+  -- if $fiber_factory_selection(S, pvalue, pentry*) = ((pintrinsic, ptbytes, n_input?))
+  -- if pfiberrawapi = {ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT n_input?}
+def $fiber_raw_target(S, pvalue) = eps -- otherwise
+def $fiber_callback_resolution(S, pvalue) = HANDLERRESOLVED (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if $fiber_raw_target(S, pvalue) = (pfiberrawapi)
+def $fiber_core_callback_target(FIBER_ARRAY_TARGET pfiberrawapi) = true
+def $fiber_callable_target_tag(FIBER_ARRAY_TARGET pfiberrawapi) = true
+def $target_nodes(FIBER_ARRAY_TARGET pfiberrawapi) = eps
+def $fiber_receive_value(S, pconfigcall, pvalue) = $fiber_done($fiber_put(S_birth, n, pfiber[.READY = true][.CALL = (pconfigcall)][.RAW = pvalue][.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)][.BIRTH = $dynamic_new_find(S, S.TODO, pconfigcall.SITE)][.CAPTURE = $consumer_capture_current(S, pconfigcall.SITE)][.PRODUCER = $consumer_producer_current(S)]), PNULL)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $fiber_raw_target(S, pvalue) = (pfiberrawapi)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if ~pfiber.READY
+  -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, n)
+
+;; The completed constructor CALL authenticates RAW. Frozen ITEMS, rather
+;; than the current array/reference cells, authenticate its selected cache.
+def $fiber_raw_cached_valid(S, pfiber) = true
+  -- if pfiber.RAW = PARRAY n
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if $fiber_factory_members(S, pfiber.RAW, pfiberrawapi.ITEMS) = ((pvalue_receiver, pfiberrawapi.NAME))
+  -- if $fiber_factory_receiver(S, pvalue_receiver)
+  -- if ~$typed_callable_method(pfiberrawapi.NAME, false, false)
+  -- if $fiber_factory_method(pfiberrawapi.NAME) = (pfiberrawapi.KIND)
+  -- if $fiber_raw_input_valid(pvalue_receiver, pfiberrawapi)
+def $fiber_raw_cached_valid(S, pfiber) = false -- otherwise
+def $fiber_raw_input_valid(PSTRING ptbytes, pfiberrawapi) = (pfiberrawapi.INPUT = eps /\ $fiber_static(pfiberrawapi.KIND))
+def $fiber_raw_input_valid(POBJECT n_input, pfiberrawapi) = (pfiberrawapi.INPUT = (n_input))
+def $fiber_raw_input_valid(pvalue, pfiberrawapi) = false -- otherwise
+def $fiber_cached_target_valid(S, pfiber) = true -- if $fiber_raw_cached_valid(S, pfiber)
+def $fiber_raw_receiver_live(S, pfiberrawapi) = true -- if $fiber_static(pfiberrawapi.KIND)
+def $fiber_raw_receiver_live(S, pfiberrawapi) = true
+  -- if ~$fiber_static(pfiberrawapi.KIND)
+  -- if pfiberrawapi.INPUT = (n_input)
+  -- if $fiber_at(S, n_input) =/= eps
+def $fiber_raw_receiver_live(S, pfiberrawapi) = false -- otherwise
+def $fiber_raw_owner(pfiberrawapi, n_runner) = (n_runner) -- if $fiber_static(pfiberrawapi.KIND)
+def $fiber_raw_owner(pfiberrawapi, n_runner) = pfiberrawapi.INPUT -- if ~$fiber_static(pfiberrawapi.KIND)
+
+;; SELECTION names the genuine runner, not a Closure or a selected-call nonce.
+;; The existing borrowed Fiber tag keeps CONFIG's copied arguments as its
+;; only roots; FIBER_CORE_RESULT introduces no extra function_name owner.
+def $fiber_core_binding(S, pfiber) = (n_owner?, n_selection?)
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if $fiber_raw_cached_valid(S, pfiber)
+  -- if pfiber.CALL = (pconfigcall)
+  -- if pconfigcall.OWNER = (n_runner)
+  -- if n_owner? = $fiber_raw_owner(pfiberrawapi, n_runner)
+  -- if n_selection? = (n_runner)
+def $fiber_core_callback_kind(S, pfiber) = (pfiberrawapi.KIND)
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if $fiber_raw_cached_valid(S, pfiber)
+  -- if $fiber_kind(pfiberrawapi.KIND)
+def $fiber_core_result_task(S, n_runner, pfiber, pconfigcall) = FIBER_CORE_RESULT n_runner pconfigcall
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if $fiber_raw_cached_valid(S, pfiber)
+  -- if $fiber_kind(pfiberrawapi.KIND)
+
+def $fiber_raw_outer_valid(S, n_runner) = true
+  -- if S.FIBERCALLERS = eps
+  -- if $fiber_at(S, n_runner) = (pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+def $fiber_raw_outer_valid(S, n_runner) = true
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n_runner /\ pfibercaller.API.OBJECT = n_runner
+  -- if $fiber_at(S, n_runner) = (pfiber)
+  -- if pfibercaller.API.SEQUENCE = pfiber.SEQUENCE
+  -- if pfibercaller.VM.TODO = (FIBER_WAIT pfibercaller.API) :: ptask_outer*
+  -- if S_outer = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if $fiber_api_valid(S_outer, pfibercaller.API)
+def $fiber_raw_outer_valid(S, n_runner) = false -- otherwise
+def $fiber_core_site_valid(S, pconfigcall) = ($fiber_raw_cached_valid(S, pfiber) /\ $fiber_raw_receiver_live(S, pfiberrawapi) /\ $fiber_raw_outer_valid(S, n_runner) /\ ($fiber_method_site(S, pconfigcall.SITE, eps) \/ $fiber_capture_call_site(S, pconfigcall.SITE)))
+  -- if S.ACTIVEFIBER = (n_runner)
+  -- if $fiber_at(S, n_runner) = (pfiber)
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+
+;; During resume/throw the C handler owns the copied transfer value, while
+;; its bound receiver remains borrowed from the cached callback selection.
+def $fiber_caller_api_nodes(pfibercaller) = $fiber_value_nodes(pfiberapi.SENT)
+  -- if pfiberapi = pfibercaller.API
+  -- if pfibercaller.VM.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CORE_RESULT n_runner pconfigcall) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if pconfigcall.OWNER = (pfiberapi.OBJECT) /\ pconfigcall.SELECTION = (n_runner)
+  -- if pfiberapi.KIND = (pconfigcall.KIND) /\ pfiberapi.START = eps
+  -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
+  -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
+def $fiber_raw_core_call(S, pfiberapi) = (pconfigcall)
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_CORE_RESULT n_runner pconfigcall) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
+  -- if $fiber_at(S, n_runner) = (pfiber)
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if $fiber_core_result_valid(S, n_runner, pconfigcall)
+  -- if pconfigcall.KIND <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if pconfigcall.OWNER = (pfiberapi.OBJECT) /\ pconfigcall.SELECTION = (n_runner)
+  -- if pfiberapi.KIND = (pconfigcall.KIND) /\ pfiberapi.START = eps
+  -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
+  -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
+  -- if $config_slots_valid(S, pconfigcall.SENT)
+  -- if pconfigcall.KIND =/= INTRINSIC_FIBER_THROW \/ $class_instanceof(S, $fiber_config_value(pconfigcall), $ptascii("Throwable"))
+def $fiber_raw_core_call(S, pfiberapi) = eps -- otherwise
+def $fiber_api_valid(S, pfiberapi) = true -- if $fiber_raw_core_call(S, pfiberapi) =/= eps
+def $fiber_caller_api_trace(S, pfiberapi) = $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))
+  -- if $fiber_raw_core_call(S, pfiberapi) = (pconfigcall)
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if S.TODO = [GC_WORKER_PUBLIC pfiberapi]
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.API = pfiberapi /\ pfibercaller.OBJECT = pfiberapi.OBJECT
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if $fiber_raw_core_call(S_caller, pfiberapi) =/= eps
+
+;; START forwards its copied original buffer. INVOKE owns that copy;
+;; RESULT is nonowning and RAW alone retains the cached receiver.
+dec $fiber_raw_start_tasks(pstate, nat, pfiberstart) : bool
+dec $fiber_raw_start_valid(pstate, nat, pfiberstart) : bool
+dec $fiber_raw_start_wait_valid(pstate, pfiberapi) : bool
+def $fiber_start_core_actor(S) = true
+  -- if S.ACTIVEFIBER = (n_runner)
+  -- if $fiber_at(S, n_runner) = (pfiber)
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if pfiberrawapi.KIND = INTRINSIC_FIBER_START
+  -- if $fiber_raw_cached_valid(S, pfiber)
+rule PhpStep/fiber-array-core-start-enter: S ~> S[.TODO = [FIBER_ARRAY_CORE_START_INVOKE n_runner pfiberstart, FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart, FIBER_FINISH n_runner]][.ORIGIN = (pfiberstart.SITE)]
+  -- if S.TODO = (FIBER_ENTER n_runner pnamedargs) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
+  -- if $fiber_enter_valid(S, n_runner, pnamedargs)
+  -- if $fiber_at(S, n_runner) = (pfiber)
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if pfiberrawapi.KIND = INTRINSIC_FIBER_START
+  -- if $fiber_raw_cached_valid(S, pfiber)
+  -- if $fiber_raw_receiver_live(S, pfiberrawapi)
+  -- if pfiberrawapi.INPUT = (n_receiver)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfiberapi_outer = pfibercaller.API
+  -- if n_count = $(|pnamedargs.SLOTS| + |pnamedargs.NAMED|)
+  -- if pfiberstart = {SITE pfiberapi_outer.SITE, OBJECT n_receiver, INDEX n_count, SENT pnamedargs, LINE pfiberapi_outer.LINE}
+def $fiber_raw_start_tasks(S, n_runner, pfiberstart) = true
+  -- if S.TODO = (FIBER_ARRAY_CORE_START_INVOKE n_runner pfiberstart) :: (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
+def $fiber_raw_start_tasks(S, n_runner, pfiberstart) = true
+  -- if S.TODO = (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
+def $fiber_raw_start_tasks(S, n_runner, pfiberstart) = true
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
+  -- if pfiberapi.KIND = eps /\ pfiberapi.SENT = eps
+  -- if pfiberapi.START = (pfiberstart.SENT)
+  -- if pfiberapi.OBJECT = pfiberstart.OBJECT
+  -- if pfiberapi.SITE = pfiberstart.SITE /\ pfiberapi.LINE = pfiberstart.LINE
+def $fiber_raw_start_tasks(S, n_runner, pfiberstart) = true
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if $throwable_live(S, n_throwable)
+  -- if ptask_tail* = [FIBER_ARRAY_CORE_START_INVOKE n_runner pfiberstart, FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart, FIBER_FINISH n_runner] \/ ptask_tail* = [FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart, FIBER_FINISH n_runner]
+def $fiber_raw_start_tasks(S, n_runner, pfiberstart) = false -- otherwise
+def $fiber_raw_start_valid(S, n_runner, pfiberstart) = true
+  -- if $generator_flat_tasks(S.TODO) /\ $generator_flat_frames(S.FRAMES)
+  -- if S.ACTIVEFIBER = (n_runner)
+  -- if S.CURRENT = eps /\ S.FRAMES = eps /\ S.ORIGIN = (pfiberstart.SITE)
+  -- if $fiber_at(S, n_runner) = (pfiber)
+  -- if pfiber.STATUS = FIBER_RUNNING
+  -- if pfiber.TARGET = (FIBER_ARRAY_TARGET pfiberrawapi)
+  -- if pfiberrawapi.KIND = INTRINSIC_FIBER_START
+  -- if pfiberrawapi.INPUT = (pfiberstart.OBJECT)
+  -- if $fiber_raw_receiver_live(S, pfiberrawapi)
+  -- if pfiber.ENTRY = (pfiberstart.SENT)
+  -- if pfiberstart.INDEX = $(|pfiberstart.SENT.SLOTS| + |pfiberstart.SENT.NAMED|)
+  -- if $fiber_cache_valid(S, n_runner, pfiber)
+  -- if $fiber_raw_start_tasks(S, n_runner, pfiberstart)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n_runner /\ pfibercaller.API.OBJECT = n_runner
+  -- if pfibercaller.API.KIND = eps /\ pfibercaller.API.SENT = eps
+  -- if pfibercaller.API.START = (pfiberstart.SENT)
+  -- if pfibercaller.API.SEQUENCE = pfiber.SEQUENCE
+  -- if pfibercaller.API.SITE = pfiberstart.SITE /\ pfibercaller.API.LINE = pfiberstart.LINE
+  -- if $fiber_raw_outer_valid(S, n_runner)
+def $fiber_raw_start_valid(S, n_runner, pfiberstart) = false -- otherwise
+def $fiber_raw_start_wait_valid(S, pfiberapi) = true
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
+  -- if $fiber_raw_start_valid(S, n_runner, pfiberstart)
+def $fiber_raw_start_wait_valid(S, pfiberapi) = false -- otherwise
+rule PhpStep/fiber-array-core-start-invoke: S ~> $fiber_start_core_invoke(S, pfiberstart)
+  -- if S.TODO = (FIBER_ARRAY_CORE_START_INVOKE n_runner pfiberstart) :: ptask_tail*
+  -- if $fiber_raw_start_valid(S, n_runner, pfiberstart)
+def $task_nodes(FIBER_ARRAY_CORE_START_INVOKE n_runner pfiberstart) = $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
+def $task_nodes(FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) = eps
+def $fiber_caller_api_nodes(pfibercaller) = $named_slots_roots(pfiberstart.SENT.SLOTS) ++ $named_roots(pfiberstart.SENT.NAMED)
+  -- if pfiberapi = pfibercaller.API
+  -- if pfibercaller.VM.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
+  -- if ptask_tail* = [FIBER_FINISH n_runner]
+  -- if pfiberapi.KIND = eps /\ pfiberapi.SENT = eps
+  -- if pfiberapi.START = (pfiberstart.SENT)
+  -- if pfiberapi.OBJECT = pfiberstart.OBJECT
+  -- if pfiberapi.SITE = pfiberstart.SITE /\ pfiberapi.LINE = pfiberstart.LINE
+def $fiber_api_valid(S, pfiberapi) = true -- if $fiber_raw_start_wait_valid(S, pfiberapi)
+def $fiber_caller_api_trace(S, pfiberapi) = $fiber_start_core_trace(S, pfiberstart)
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
+  -- if $fiber_raw_start_wait_valid(S, pfiberapi)
+def $call_task_valid(S, FIBER_ARRAY_CORE_START_INVOKE n_runner pfiberstart) = $fiber_raw_start_valid(S, n_runner, pfiberstart)
+def $call_task_valid(S, FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) = $fiber_raw_start_valid(S, n_runner, pfiberstart)
+rule PhpStep/fiber-array-core-start-result: S ~> S[.TODO = ptask_tail*][.ORIGIN = eps]
+  -- if S.TODO = (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
+  -- if $fiber_raw_start_valid(S, n_runner, pfiberstart)
+rule PhpStep/fiber-array-core-start-result-throw: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*][.ORIGIN = eps]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) :: ptask_tail*
+  -- if $fiber_raw_start_valid(S, n_runner, pfiberstart)
+  -- if $throwable_live(S, n_throwable)
+def $fiber_marker(FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) = true
+def $call_after_origin(S, FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) = S[.ORIGIN = eps]
+def $generator_internal_task(FIBER_ARRAY_CORE_START_INVOKE n_runner pfiberstart) = true
+def $generator_internal_task(FIBER_ARRAY_CORE_START_RESULT n_runner pfiberstart) = true

@@ -1,5 +1,5 @@
 {
-  "scope": "Native-first direct, aliased, dynamic and first-class assertions, startup modes and exact descriptions; runtime options/callbacks and wider AST export remain required follow-ons.",
+  "scope": "Native-first direct, aliased, dynamic and first-class assertions, startup and runtime modes, raw INI readback/restore, refusal handlers and exact descriptions; options/callbacks, parsing warnings and wider AST export remain required follow-ons.",
   "cases": [
     {
       "id": "direct-effects-mode1",
@@ -439,6 +439,210 @@
       },
       "native_group": ".tools/compiler-assertions-368-19/.tools/assertion-concat-baseline-v1/run-v1/report.json",
       "native_raw_sha256": "8cf320a2c11cbc542a184431c1a471dbdc793fa68c8414264bd464ff9a238cd2"
+    },
+    {
+      "id": "runtime-updates-mode1",
+      "source": "<?php\nfunction side(){echo 'arg|';return false;}\necho ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','0'),'|';\necho assert(side())?'true':'false';\n$dynamic='assert';echo '|dynamic:',$dynamic(side())?'true':'false';\necho '|',ini_get('zend.assertions'),'|',ini_set('zend.assertions','1'),'|';\ntry{assert(side());}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\necho '|',ini_restore('zend.assertions')===null?'null':'BAD','|',ini_get('zend.assertions');\n",
+      "source_sha256": "a2454f5ce26c947e930c11ce8ac86987aa70d03f7fc34d147321f9ab83475cb3",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "MXwxfHRydWV8ZHluYW1pYzphcmd8dHJ1ZXwwfDB8YXJnfGNhdWdodDphc3NlcnQoc2lkZSgpKXxudWxsfDE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-updates-mode0",
+      "source": "<?php\nfunction side(){echo 'arg|';return false;}\necho ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','0'),'|';\necho assert(side())?'true':'false';\n$dynamic='assert';echo '|dynamic:',$dynamic(side())?'true':'false';\necho '|',ini_get('zend.assertions'),'|',ini_set('zend.assertions','1'),'|';\ntry{assert(side());}catch(AssertionError $e){echo 'caught:',$e->getMessage();}\necho '|',ini_restore('zend.assertions')===null?'null':'BAD','|',ini_get('zend.assertions');\n",
+      "source_sha256": "a2454f5ce26c947e930c11ce8ac86987aa70d03f7fc34d147321f9ab83475cb3",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "MHwwfHRydWV8ZHluYW1pYzphcmd8dHJ1ZXwwfDB8YXJnfGNhdWdodDphc3NlcnQoc2lkZSgpKXxudWxsfDA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-boundary-mode1",
+      "source": "<?php\nset_error_handler(static function($n,$message){echo 'W:',$n,':',$message,'|';return true;});\necho ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-1')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-2')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','1')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-1')===false?'false':'value';echo '|',ini_get('zend.assertions');\nrestore_error_handler();\n",
+      "source_sha256": "3549762782a9c80245a4d3d2e7b713efe3f9951026b95783a0731c6acd454e48",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "MXxXOjI6emVuZC5hc3NlcnRpb25zIG1heSBiZSBjb21wbGV0ZWx5IGVuYWJsZWQgb3IgZGlzYWJsZWQgb25seSBpbiBwaHAuaW5pfGZhbHNlfDF8VzoyOnplbmQuYXNzZXJ0aW9ucyBtYXkgYmUgY29tcGxldGVseSBlbmFibGVkIG9yIGRpc2FibGVkIG9ubHkgaW4gcGhwLmluaXxmYWxzZXwxfHZhbHVlfDF8VzoyOnplbmQuYXNzZXJ0aW9ucyBtYXkgYmUgY29tcGxldGVseSBlbmFibGVkIG9yIGRpc2FibGVkIG9ubHkgaW4gcGhwLmluaXxmYWxzZXwx",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-boundary-mode0",
+      "source": "<?php\nset_error_handler(static function($n,$message){echo 'W:',$n,':',$message,'|';return true;});\necho ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-1')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-2')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','1')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-1')===false?'false':'value';echo '|',ini_get('zend.assertions');\nrestore_error_handler();\n",
+      "source_sha256": "3549762782a9c80245a4d3d2e7b713efe3f9951026b95783a0731c6acd454e48",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "MHxXOjI6emVuZC5hc3NlcnRpb25zIG1heSBiZSBjb21wbGV0ZWx5IGVuYWJsZWQgb3IgZGlzYWJsZWQgb25seSBpbiBwaHAuaW5pfGZhbHNlfDB8VzoyOnplbmQuYXNzZXJ0aW9ucyBtYXkgYmUgY29tcGxldGVseSBlbmFibGVkIG9yIGRpc2FibGVkIG9ubHkgaW4gcGhwLmluaXxmYWxzZXwwfHZhbHVlfDF8VzoyOnplbmQuYXNzZXJ0aW9ucyBtYXkgYmUgY29tcGxldGVseSBlbmFibGVkIG9yIGRpc2FibGVkIG9ubHkgaW4gcGhwLmluaXxmYWxzZXwx",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-boundary-mode-1",
+      "source": "<?php\nset_error_handler(static function($n,$message){echo 'W:',$n,':',$message,'|';return true;});\necho ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-1')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-2')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','1')===false?'false':'value';echo '|',ini_get('zend.assertions'),'|';\necho ini_set('zend.assertions','-1')===false?'false':'value';echo '|',ini_get('zend.assertions');\nrestore_error_handler();\n",
+      "source_sha256": "3549762782a9c80245a4d3d2e7b713efe3f9951026b95783a0731c6acd454e48",
+      "startup_ini": {
+        "zend.assertions": "LTE="
+      },
+      "stdout_base64": "LTF8dmFsdWV8LTF8VzoyOnplbmQuYXNzZXJ0aW9ucyBtYXkgYmUgY29tcGxldGVseSBlbmFibGVkIG9yIGRpc2FibGVkIG9ubHkgaW4gcGhwLmluaXxmYWxzZXwtMXxXOjI6emVuZC5hc3NlcnRpb25zIG1heSBiZSBjb21wbGV0ZWx5IGVuYWJsZWQgb3IgZGlzYWJsZWQgb25seSBpbiBwaHAuaW5pfGZhbHNlfC0xfHZhbHVlfC0x",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "-1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-reentrant-mode1",
+      "source": "<?php\nfunction side(){echo 'BAD-ARG';return false;}\nset_error_handler(static function($n,$message){echo 'W:',$n,'|nested:',ini_set('zend.assertions','0'),'|';return true;});\necho ini_set('zend.assertions','-1')===false?'false':'BAD';echo '|',ini_get('zend.assertions'),'|';\necho assert(side())?'true':'false';\nrestore_error_handler();ini_restore('zend.assertions');echo '|',ini_get('zend.assertions');\n",
+      "source_sha256": "6a9c100c225cc7c283925568f3141cc28116465f65630d42cbe36972cb3375ef",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "VzoyfG5lc3RlZDoxfGZhbHNlfDB8dHJ1ZXwx",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-handler-throw-mode1",
+      "source": "<?php\n$original=new Exception('stop');\nset_error_handler(static function($n,$message)use($original){echo 'W:',$n,'|';throw $original;});\ntry{ini_set('zend.assertions','-1');echo 'BAD';}catch(Exception $caught){echo $caught===$original?'same':'BAD';}\necho '|',ini_get('zend.assertions'),'|';restore_error_handler();\ntry{assert(false);}catch(AssertionError $caught){echo $caught->getMessage();}\n",
+      "source_sha256": "c6e8151aeb82c9ea2f8defeaf57cc4e1fdf5ab5bec849341da5e0f0cbdf8164d",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "VzoyfHNhbWV8MXxhc3NlcnQoZmFsc2Up",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-raw-mode1",
+      "source": "<?php\nforeach(['2','+1','01',' 0 ',false,null]as$value){$old=ini_set('zend.assertions',$value);echo '[',$old===false?'false':$old,']>[',ini_get('zend.assertions'),']|';}\necho ini_restore('zend.assertions')===null?'null':'BAD';echo '|',ini_get('zend.assertions');\n",
+      "source_sha256": "2262f35eab91fab53016c6fa26f2c16582a615b8162edc32f102fd584bebeef0",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "WzFdPlsyXXxbMl0+WysxXXxbKzFdPlswMV18WzAxXT5bIDAgXXxbIDAgXT5bXXxbXT5bXXxudWxsfDE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-raw-mode0",
+      "source": "<?php\nforeach(['2','+1','01',' 0 ',false,null]as$value){$old=ini_set('zend.assertions',$value);echo '[',$old===false?'false':$old,']>[',ini_get('zend.assertions'),']|';}\necho ini_restore('zend.assertions')===null?'null':'BAD';echo '|',ini_get('zend.assertions');\n",
+      "source_sha256": "2262f35eab91fab53016c6fa26f2c16582a615b8162edc32f102fd584bebeef0",
+      "startup_ini": {
+        "zend.assertions": "MA=="
+      },
+      "stdout_base64": "WzBdPlsyXXxbMl0+WysxXXxbKzFdPlswMV18WzAxXT5bIDAgXXxbIDAgXT5bXXxbXT5bXXxudWxsfDA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "0"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-eval-mode1",
+      "source": "<?php\nfunction side(){echo 'arg|';return false;}\nini_set('zend.assertions','0');\neval('echo assert(side())?\"zero|\":\"BAD\";');\nini_set('zend.assertions','1');\neval('try{assert(side());}catch(AssertionError $e){echo $e->getMessage();}');\n",
+      "source_sha256": "d73a85ce4e9a275845a4ef9f2431de96da0b14abcb3f28b0586020bdd73fba53",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "emVyb3xhcmd8YXNzZXJ0KHNpZGUoKSk=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-compile-mode1",
+      "source": "<?php\nini_set('zend.assertions','0');echo 'before|';\neval('assert($a[]);');echo 'BAD';\n",
+      "source_sha256": "ff84ddd0b61ff6b0fab55e86ec66808c04e4c4e367ef1e0ed7177e2bf0adfee7",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "YmVmb3JlfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2UgW10gZm9yIHJlYWRpbmcgaW4ge0ZJTEV9KDMpIDogZXZhbCgpJ2QgY29kZSBvbiBsaW5lIDEKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
+    },
+    {
+      "id": "runtime-enabled-two-mode1",
+      "source": "<?php\nini_set('zend.assertions','2');echo ini_get('zend.assertions'),'|';\ntry{assert(false);}catch(AssertionError $e){echo $e->getMessage();}\n",
+      "source_sha256": "c061d8bf6c47a6291b06b5b59afdd1dfafcab23f2bb79d77f5b8fd74c574f6a2",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "Mnxhc3NlcnQoZmFsc2Up",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-ini-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "5a13db007a2741ab30a415a6a97f06ab2776c9e62319b16b3ee8a51abcc86b94"
     }
   ],
   "native_profile": {
