@@ -44,7 +44,8 @@ pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n_generator)) :: pdestruc
 pdestructionrelease.USER
 S_release.OBJECTS[n_generator] = GENERATOR pgenerator
 pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
-pgenerator.CLOSURE = (n_closure) /\ pgenerator.RETURN = (POBJECT n_value)
+pgenerator.CLOSURE = (n_closure)
+pgenerator.RETURN = (POBJECT n_value)
 pgenerator.VALUE = eps /\ pgenerator.REFCELL = eps /\ pgenerator.KEY = eps
 $node_children(S_release,HOBJECT n_generator) = [HOBJECT n_value,HOBJECT n_closure]
 $node_children(S_release,HOBJECT n_closure) = [HCELL n_capture]
