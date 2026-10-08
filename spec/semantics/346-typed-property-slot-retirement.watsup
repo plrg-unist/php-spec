@@ -35,7 +35,8 @@ dec $property_release_closers(pstate, pfiberclose*, pdestructionrelease*) : pdes
 dec $property_release_queues(pstate) : pdestructionrelease*
 def $property_release_tasks(pdestructionrelease, eps) = 0
 def $property_release_tasks(pdestructionrelease, (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = $(1 + $property_release_tasks(pdestructionrelease, ptask*))
-def $property_release_tasks(pdestructionrelease, ptask_head :: ptask*) = $property_release_tasks(pdestructionrelease, ptask*) -- otherwise
+def $property_release_tasks(pdestructionrelease, ptask_head :: ptask*) = $property_release_tasks(pdestructionrelease, ptask*)
+  -- if ptask_head =/= DESTRUCTOR_RELEASE pdestructionrelease
 def $property_release_frames(pdestructionrelease, eps) = 0
 def $property_release_frames(pdestructionrelease, pframe :: pframe_tail*) = $($property_release_tasks(pdestructionrelease, pframe.TODO) + $property_release_frames(pdestructionrelease, pframe_tail*))
 def $property_release_owners(pdestructionrelease, ptask*, pframe*) = $($property_release_tasks(pdestructionrelease, ptask*) + $property_release_frames(pdestructionrelease, pframe*))
@@ -63,11 +64,15 @@ def $property_release_closers(S, pfiberclose :: pfiberclose_tail*, pdestructionr
 def $property_release_queues(S) = $property_release_closers(S, S.FIBERCLOSERS, $property_release_callers(S, S.FIBERCALLERS, $property_release_objects(S, S.ALLOCATIONS, $property_release_records(S.DESTRUCTION.RELEASES, S.TODO, S.FRAMES, eps))))
 
 dec $property_source_jobs(pdestructionjob*, nat, pproptypesource) : nat
+dec $property_source_job_pending(pdestructionjob, pdestructionjob*, nat, pproptypesource) : bool
 dec $property_source_queues(pdestructionrelease*, nat, pproptypesource) : nat
+def $property_source_job_pending(DESTRUCTION_PROP_SOURCE pproptypesource_job n_job, pdestructionjob*, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = (n_job = n_cell /\ pproptypesource_job = OBJECT_PROP_SOURCE n_object ptbytes ppropertyid /\ (DESTRUCTION_HANDLE n_object) <- pdestructionjob*)
+def $property_source_job_pending(pdestructionjob_head, pdestructionjob*, n_cell, pproptypesource) = false -- otherwise
 def $property_source_jobs(eps, n_cell, pproptypesource) = 0
-def $property_source_jobs((DESTRUCTION_PROP_SOURCE (OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) n_cell) :: pdestructionjob*, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid) = $(1 + $property_source_jobs(pdestructionjob*, n_cell, OBJECT_PROP_SOURCE n_object ptbytes ppropertyid))
-  -- if (DESTRUCTION_HANDLE n_object) <- pdestructionjob*
-def $property_source_jobs(pdestructionjob_head :: pdestructionjob*, n_cell, pproptypesource) = $property_source_jobs(pdestructionjob*, n_cell, pproptypesource) -- otherwise
+def $property_source_jobs(pdestructionjob_head :: pdestructionjob*, n_cell, pproptypesource) = $(1 + $property_source_jobs(pdestructionjob*, n_cell, pproptypesource))
+  -- if $property_source_job_pending(pdestructionjob_head, pdestructionjob*, n_cell, pproptypesource)
+def $property_source_jobs(pdestructionjob_head :: pdestructionjob*, n_cell, pproptypesource) = $property_source_jobs(pdestructionjob*, n_cell, pproptypesource)
+  -- if ~$property_source_job_pending(pdestructionjob_head, pdestructionjob*, n_cell, pproptypesource)
 def $property_source_queues(eps, n_cell, pproptypesource) = 0
 def $property_source_queues(pdestructionrelease :: pdestructionrelease_tail*, n_cell, pproptypesource) = $($property_source_jobs(pdestructionrelease.JOBS, n_cell, pproptypesource) + $property_source_queues(pdestructionrelease_tail*, n_cell, pproptypesource))
 dec $property_retired_source_valid(pstate, nat, pproptypesource) : bool
