@@ -30,7 +30,7 @@ The current source includes accepted ArrayAccess292/304/309, eager destruction27
 WeakReference296, ordinary cycle collection301, Fiber291/302/308/313,
 Generator289/303/310/311 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
-and ordinary dynamic-property creation318, with 297 modules descended from
+and ordinary dynamic-property creation318 plus physical references324, with 298 modules descended from
 `38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320.
 The property/clone composition passes strict SL290/compiler application0 at
@@ -265,11 +265,29 @@ Unused results release before receiver cleanup, while used results retain a copy
 Fifteen private exact normals retain separate cuts; initial 297, changed 498 and
 cleanup 98 reached premises are not one campaign. The 297-module composition at
 `078ecb2f8` passes strict initialization, one new exact GC/resurrection source and 69/98
-GC/cleanup premises. Four explicit Unsupported boundaries cover handler exit,
+GC/cleanup premises. At that cut, four explicit Unsupported boundaries cover handler exit,
 duplicate casts/reference foreach and expired or undefined RHS pointers.
 Computed names, wider writes and full-family closure remain required. The
 [review](coverage/semantics/dynamic-property-warning-review.json) retains original
 failures, commands and cuts; no historical clone campaign is renewed.
+
+Physical duplicate-property reference foreach324 now selects and promotes the
+actual bucket, preserving latest named access and declared readonly/type checks.
+Staged previous-CV destruction keeps its raw value readable, masks its released
+edge and installs the selected reference before normal/throw continuation. The
+real shared receiver cell survives unset/recreate and follows alias writes, table
+replacement and object/array/scalar dispatch; late scalar warnings retain that
+owner until normal or abrupt iterator removal. Initial12 normals and288 reached
+premises retain their earlier cuts. The shared-receiver extension has12 additional
+exact normals at separate cuts, strict SL298 initialization and491 affected
+premises at87f9b399a. HOBJECT-owner forgeries fail public reference-foreach
+admission. Mutation of the released CV, callback-capable container retirement,
+binding-time exit, nonordinary replacement objects and expired notice buckets
+remain explicit boundaries. Bounded source/current-address admission is not a
+historical reachability proof. The concise
+[review](coverage/semantics/duplicate-property-reference-review.json) preserves
+original mismatches and the uncredited strlen observer; no earlier318 campaign
+is renewed.
 
 The actual290 composition preserves ordinary borrowed eager-cleanup certificates
 and authenticates live clone windows in the existing saved Fiber-close VM without
