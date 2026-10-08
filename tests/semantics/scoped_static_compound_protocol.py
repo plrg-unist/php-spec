@@ -410,7 +410,7 @@ def computed_name(state, suffix):
 
 
 def computed_live(state, suffix, value, selected=False):
-    checks = [f'{state}.TODO = (COMPOUND_LIVE_PREP pcompoundstring_{suffix} {value}) :: ptask_{suffix}_live*',
+    checks = [f'{state}.TODO = (COMPOUND_LIVE_PREP pcompoundstring_{suffix} {value}) :: ptask_{suffix}*',
               f'pcompoundstring_{suffix}.PLACE = STATIC_COMPOUND pstaticcompound_{suffix}',
               f'$static_compound_capture({state}, pstaticcompound_{suffix}.DECL, pcompoundstring_{suffix}.SITE, pstaticcompound_{suffix}.ENTRY) = (pstaticcompound_{suffix})']
     if selected:
