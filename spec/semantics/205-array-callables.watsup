@@ -149,6 +149,7 @@ def $array_capture_result(S, ARRAYRESOLVED pcalltarget porigin_requested ptbytes
 def $array_capture_result(S, ARRAYINVALID ptbytes, porigin_site, z_init, z_convert) = $throw_scalar(S, "Error", ptbytes, z_init)
 def $array_capture_result(S, ARRAYUNKNOWN text, porigin_site, z_init, z_convert) = S[.COMPLETION = UNSUPPORTED text]
 def $array_firstclass_value(S, n, PORIGIN n_unit pcpath, z_init) = $array_capture_result(S, $array_resolve(S, n, ARRAY_DISPATCH), PORIGIN n_unit pcpath, z_init, z_convert)
+  -- if ~$fiber_array_candidate(S, n)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_convert, b))
 

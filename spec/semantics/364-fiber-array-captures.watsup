@@ -1,0 +1,55 @@
+;; Array FCC selection has its own durable source witness. The temporary
+;; convert task owns EX(This); the resulting Closure replaces that owner.
+dec $fiber_array_capture_new(pstate, nat, porigin, int, int) : pstate
+dec $fiber_array_capture_source_valid(pstate, pfiberarray) : bool
+dec $fiber_array_convert_valid(pstate, pfiberarray) : bool
+
+def $array_firstclass_value(S, n, PORIGIN n_unit pcpath, z_init) = $fiber_array_capture_new(S, n, PORIGIN n_unit pcpath, z_init, z_convert)
+  -- if $fiber_array_candidate(S, n)
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_convert, b))
+def $fiber_array_capture_new(S, n, porigin, z_init, z_convert) = $throw_scalar(S, "Error", $ptascii("Call to undefined method Fiber::") ++ $c_string(ptbytes) ++ $ptascii("()"), z_init)
+  -- if $fiber_factory_members(S, PARRAY n, $fiber_factory_items(S, PARRAY n)) = ((pvalue, ptbytes))
+  -- if $fiber_factory_method(ptbytes) = eps
+def $fiber_array_capture_new(S, n, porigin, z_init, z_convert) = $throw_scalar(S, "Error", $ptascii("Non-static method Fiber::") ++ $fiber_method_name(pintrinsic) ++ $ptascii("() cannot be called statically"), z_init)
+  -- if $fiber_factory_members(S, PARRAY n, $fiber_factory_items(S, PARRAY n)) = ((PSTRING ptbytes_class, ptbytes))
+  -- if $fiber_factory_method(ptbytes) = (pintrinsic)
+  -- if ~$fiber_static(pintrinsic)
+def $fiber_array_capture_new(S, n, porigin, z_init, z_convert) = S[.TODO = (FIBER_ARRAY_CONVERT pfiberarray) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pentry* = $fiber_factory_items(S, PARRAY n)
+  -- if $fiber_factory_selection(S, PARRAY n, pentry*) = ((pintrinsic, ptbytes, n_input?))
+  -- if pfiberarray = {SITE porigin, INIT z_init, LINE z_convert, ARRAY n, ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT n_input?}
+
+def $fiber_array_capture_source_valid(S, pfiberarray) = true
+  -- if $origin_node(S.SOURCES, pfiberarray.SITE) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppcall_dynamic(expression) /\ $ppfirstclass(phpType7*)
+  -- if $firstclass_evaluated(S, pfiberarray.SITE)
+  -- if $dynamic_fixed_name(S, pfiberarray.SITE) = eps
+  -- if pfiberarray.INIT = $dynamic_init_line(S, pfiberarray.SITE)
+  -- if $call_line_valid(S, (pfiberarray.SITE), pfiberarray.LINE)
+  -- if ~$typed_callable_method(pfiberarray.NAME, false, false)
+  -- if $fiber_factory_selection(S, PARRAY pfiberarray.ARRAY, pfiberarray.ITEMS) = ((pfiberarray.KIND, pfiberarray.NAME, pfiberarray.INPUT))
+def $fiber_array_capture_source_valid(S, pfiberarray) = false -- otherwise
+def $fiber_array_at_site(FIBER_ARRAY_CONVERT pfiberarray, porigin) = (pfiberarray.SITE = porigin)
+def $fiber_array_convert_valid(S, pfiberarray) = true
+  -- if $fiber_array_count(S.TODO, pfiberarray.SITE) = 1
+  -- if S.ORIGIN = (pfiberarray.SITE)
+  -- if $fiber_array_capture_source_valid(S, pfiberarray)
+  -- if $fiber_array_receiver_live(S, pfiberarray)
+  -- if $call_current_valid(S)
+def $fiber_array_convert_valid(S, pfiberarray) = false -- otherwise
+def $task_nodes(FIBER_ARRAY_CONVERT pfiberarray) = $exit_owner_nodes($fiber_array_owner(pfiberarray))
+def $call_task_valid(S, FIBER_ARRAY_CONVERT pfiberarray) = $fiber_array_convert_valid(S, pfiberarray)
+def $fiber_marker(FIBER_ARRAY_CONVERT pfiberarray) = true
+def $generator_internal_task(FIBER_ARRAY_CONVERT pfiberarray) = true
+rule PhpStep/fiber-array-convert: S ~> S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_ARRAY_CONVERT pfiberarray) :: ptask_tail*
+  -- if $fiber_array_convert_valid(S, pfiberarray)
+  -- if n = |S.OBJECTS|
+  -- if pfibercapture = {SITE pfiberarray.SITE, KIND pfiberarray.KIND, NAME pfiberarray.NAME, INPUT pfiberarray.INPUT, FACTORY eps, ARRAY (pfiberarray)}
+  -- if $fiber_capture_source_valid(S, pfibercapture)
+def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if pfibercapture.FACTORY = eps /\ pfibercapture.ARRAY = (pfiberarray)
+  -- if pfibercapture.SITE = pfiberarray.SITE /\ pfibercapture.KIND = pfiberarray.KIND
+  -- if pfibercapture.NAME = pfiberarray.NAME /\ pfibercapture.INPUT = pfiberarray.INPUT
+  -- if $fiber_array_capture_source_valid(S, pfiberarray)
