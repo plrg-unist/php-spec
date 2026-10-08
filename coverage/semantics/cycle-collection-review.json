@@ -955,6 +955,12 @@
       "python3 tests/semantics/cycle_collection_review.py --match collector-active-public-cached-core-two-identities-compact-review-22",
       "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-public-callback-parked-vm-and-live-pass --case collector-public-callback-fresh-core-throw-keeps-old-pending"
     ],
-    "boundaries": "Post-pass public reentry and internal collector takeover remain explicit Unsupported and required next work, alongside active-pass failed close, wider GC/lifetime graphs and fresh offline rebuild. No full-core or paused-returns credit."
+    "boundaries": "Post-pass public reentry and internal collector takeover remain explicit Unsupported and required next work, alongside active-pass failed close, wider GC/lifetime graphs and fresh offline rebuild. No full-core or paused-returns credit.",
+    "publication_parent": {
+      "parent_revision": "2ed57ca8afe6a120ac0963a984139ebae7051a2a",
+      "semantic_join_revision": "0f3a59a79400b32f7967ecbdc664f141cdd7f553",
+      "modules": 344,
+      "validation": "Independent static intersection review only.356 requires class-static concatenation or resulting STATIC_COMPOUND/CCCOMPOUND/COMPOUND_CLASS_PROP_SOURCE records, absent from both sources and parked VMs. New metadata owns nothing;317/345/281 are unchanged versus tested bb741. The343 compiler and earlier source/state cuts retain their original inputs; no second compiler or runtime renewal."
+    }
   }
 }

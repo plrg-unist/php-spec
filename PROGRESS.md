@@ -78,7 +78,8 @@ at separate cuts, including captured old/new exception priority and exact full
 continuations. Both captured source variants retain 60s CLI timeouts/zero agreement;
 fixture stops remain zero affected credit. Final 343 over `e1c3d4d61` compiles at
 `bb74145c7`, preserving reviewed Generator storage, call-key source and eager
-owner-order changes; the earlier341 compiler cut remains separate.
+owner-order changes; the earlier 341 compiler cut remains separate.
+Publication 344 over `2ed57ca8a` preserves the static-property change by review.
 Earlier345 cuts remain separate. Post-pass reentry/internal takeover and broader
 GC remain required. [Ledger](coverage/semantics/cycle-collection-review.json).
 
