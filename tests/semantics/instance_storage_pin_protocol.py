@@ -196,7 +196,7 @@ def typed_assertions(initial, expected):
         'S_clone = $allocate_array(S_first, $array_empty())',
         'S_clone.RESULT = KNOWN (PARRAY n_array)',
         'S_first.ORIGIN = (porigin_clone)',
-        'pclonecall = {SITE porigin_clone, INDEX 2, SENT [NAMED_SENT (KNOWN (POBJECT n_parent)), NAMED_SENT (KNOWN (PARRAY n_array))], NAMED false, OWNER eps, NAME eps, LINE $property_current_line(S_first)}',
+        'pclonecall = {SITE porigin_clone, INDEX 2, SENT ([NAMED_SENT (KNOWN (POBJECT n_parent)), NAMED_SENT (KNOWN (PARRAY n_array))]), NAMED false, OWNER eps, NAME eps, LINE $property_current_line(S_first)}',
         'S_clone_refused = $clone_receive(S_clone, pclonecall)',
         'S_clone_refused.COMPLETION = UNSUPPORTED "freeing instance clone"',
         'S_clone_refused.ALLOCATIONS = S_clone.ALLOCATIONS',
