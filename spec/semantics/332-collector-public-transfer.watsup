@@ -51,7 +51,7 @@ def $gc_worker_public_valid(S, pfiberapi) = false -- otherwise
 def $call_task_valid(S, GC_WORKER_PUBLIC pfiberapi) = $gc_worker_public_valid(S, pfiberapi)
 def $task_nodes(GC_WORKER_PUBLIC pfiberapi) = [HOBJECT n]
   -- if pfiberapi.KIND = (INTRINSIC_FIBER_THROW) /\ pfiberapi.SENT = (POBJECT n)
-def $task_nodes(GC_WORKER_PUBLIC pfiberapi) = eps -- otherwise
+def $task_nodes(GC_WORKER_PUBLIC pfiberapi) = eps -- if pfiberapi.KIND = (INTRINSIC_FIBER_RESUME)
 def $eager_explicit_task(GC_WORKER_PUBLIC pfiberapi) = true
 
 def $gc_worker_public_suspend(S, pfiberapi) = $fiber_put(S_idle, pfiberapi.OBJECT, pfiber[.STATUS = FIBER_SUSPENDED][.VM = ($fiber_vm(S_idle))])
