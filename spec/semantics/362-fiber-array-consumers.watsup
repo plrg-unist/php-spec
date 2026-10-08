@@ -1,0 +1,165 @@
+;; Dynamic array INIT freezes dereferenced members before argument evaluation.
+;; CONFIG and the waiting API own EX(This); these receipts own no heap values.
+dec $fiber_array_new(pstate, nat, porigin, int, int) : pstate
+dec $fiber_array_owner(pfiberarray) : nat?
+dec $fiber_array_site_valid(pstate, pfiberarray) : bool
+dec $fiber_array_receiver_live(pstate, pfiberarray) : bool
+dec $fiber_array_source_valid(pstate, pfiberarray) : bool
+dec $fiber_array_config_matches(pfiberarray, pconfigcall) : bool
+dec $fiber_array_config_pair(ptask*, pconfigcall) : pfiberarray?
+dec $fiber_array_count(ptask*, porigin) : nat
+dec $fiber_array_selected(pstate, pfiberarray, pconfigcall) : bool
+dec $fiber_array_release_valid(pstate, pfiberarray) : bool
+dec $fiber_array_result_valid(pstate, pfiberarray, pconfigcall) : bool
+
+def $fiber_array_candidate(S, n) = $fiber_factory_candidate(S, PARRAY n)
+def $array_dynamic(S, n, porigin, z_init, z_call) = $fiber_array_new(S, n, porigin, z_init, z_call)
+  -- if $fiber_array_candidate(S, n)
+def $fiber_array_new(S, n, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Call to undefined method Fiber::") ++ $c_string(ptbytes) ++ $ptascii("()"), z_init)
+  -- if $fiber_factory_members(S, PARRAY n, $fiber_factory_items(S, PARRAY n)) = ((pvalue, ptbytes))
+  -- if $fiber_factory_method(ptbytes) = eps
+def $fiber_array_new(S, n, porigin, z_init, z_call) = $throw_scalar(S, "Error", $ptascii("Non-static method Fiber::") ++ $fiber_method_name(pintrinsic) ++ $ptascii("() cannot be called statically"), z_init)
+  -- if $fiber_factory_members(S, PARRAY n, $fiber_factory_items(S, PARRAY n)) = ((PSTRING ptbytes_class, ptbytes))
+  -- if $fiber_factory_method(ptbytes) = (pintrinsic)
+  -- if ~$fiber_static(pintrinsic)
+def $fiber_array_new(S, n, porigin, z_init, z_call) = S[.COMPLETION = UNSUPPORTED "ordinary array Fiber start argument buffer"]
+  -- if $fiber_factory_selection(S, PARRAY n, $fiber_factory_items(S, PARRAY n)) = ((INTRINSIC_FIBER_START, ptbytes, n_input?))
+def $fiber_array_new(S, n, porigin, z_init, z_call) = S[.TODO = [CONFIG_ARGS pconfigcall, FIBER_ARRAY_RELEASE pfiberarray] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pentry* = $fiber_factory_items(S, PARRAY n)
+  -- if $fiber_factory_selection(S, PARRAY n, pentry*) = ((pintrinsic, ptbytes, n_input?))
+  -- if $fiber_kind(pintrinsic)
+  -- if pfiberarray = {SITE porigin, INIT z_init, LINE z_call, ARRAY n, ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT n_input?}
+  -- if pconfigcall = {SITE porigin, KIND pintrinsic, INDEX 0, SENT eps, NAMED false, OWNER $fiber_array_owner(pfiberarray), SELECTION eps, LINE z_call, PACKS eps}
+
+def $fiber_array_owner(pfiberarray) = eps -- if $fiber_static(pfiberarray.KIND)
+def $fiber_array_owner(pfiberarray) = pfiberarray.INPUT -- otherwise
+def $fiber_array_site_valid(S, pfiberarray) = true
+  -- if $origin_node(S.SOURCES, pfiberarray.SITE) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $ppcall_dynamic(expression) /\ ~$ppfirstclass(phpType7*)
+  -- if $firstclass_evaluated(S, pfiberarray.SITE)
+  -- if $dynamic_fixed_name(S, pfiberarray.SITE) = eps
+  -- if pfiberarray.INIT = $dynamic_init_line(S, pfiberarray.SITE)
+  -- if $call_line_valid(S, (pfiberarray.SITE), pfiberarray.LINE)
+def $fiber_array_site_valid(S, pfiberarray) = false -- otherwise
+def $fiber_array_receiver_live(S, pfiberarray) = true -- if $fiber_static(pfiberarray.KIND)
+def $fiber_array_receiver_live(S, pfiberarray) = true
+  -- if pfiberarray.INPUT = (n_input)
+  -- if $fiber_at(S, n_input) =/= eps
+def $fiber_array_receiver_live(S, pfiberarray) = false -- otherwise
+def $fiber_array_source_valid(S, pfiberarray) = true
+  -- if $fiber_kind(pfiberarray.KIND)
+  -- if $fiber_array_site_valid(S, pfiberarray)
+  -- if $fiber_factory_members(S, PARRAY pfiberarray.ARRAY, pfiberarray.ITEMS) = ((PSTRING ptbytes_class, pfiberarray.NAME))
+  -- if $fiber_factory_receiver(S, PSTRING ptbytes_class)
+  -- if ~$typed_callable_method(pfiberarray.NAME, false, false)
+  -- if $fiber_method(pfiberarray.NAME) = (pfiberarray.KIND)
+  -- if $fiber_static(pfiberarray.KIND) /\ pfiberarray.INPUT = eps
+def $fiber_array_source_valid(S, pfiberarray) = true
+  -- if $fiber_kind(pfiberarray.KIND)
+  -- if $fiber_array_site_valid(S, pfiberarray)
+  -- if pfiberarray.INPUT = (n_input)
+  -- if $fiber_factory_members(S, PARRAY pfiberarray.ARRAY, pfiberarray.ITEMS) = ((POBJECT n_input, pfiberarray.NAME))
+  -- if $fiber_factory_receiver(S, POBJECT n_input)
+  -- if ~$typed_callable_method(pfiberarray.NAME, false, false)
+  -- if $fiber_method(pfiberarray.NAME) = (pfiberarray.KIND)
+def $fiber_array_source_valid(S, pfiberarray) = false -- otherwise
+def $fiber_array_config_matches(pfiberarray, pconfigcall) = (pconfigcall.SITE = pfiberarray.SITE /\ pconfigcall.LINE = pfiberarray.LINE /\ pconfigcall.KIND = pfiberarray.KIND /\ pconfigcall.OWNER = $fiber_array_owner(pfiberarray) /\ pconfigcall.SELECTION = eps)
+def $fiber_array_config_pair(ptask :: (FIBER_ARRAY_RELEASE pfiberarray) :: ptask_tail*, pconfigcall) = (pfiberarray)
+  -- if $fiber_capture_config_task(ptask, pconfigcall)
+def $fiber_array_config_pair(ptask :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*, pconfigcall) = (pfiberarray)
+  -- if $fiber_capture_config_task(ptask, pconfigcall)
+def $fiber_array_config_pair(ptask :: ptask_tail*, pconfigcall) = $fiber_array_config_pair(ptask_tail*, pconfigcall)
+  -- if ~$fiber_capture_config_task(ptask, pconfigcall)
+def $fiber_array_config_pair(ptask*, pconfigcall) = eps -- otherwise
+;; A user argument frame has its own TODO; recursive calls at the same site
+;; therefore retain independent receipts instead of sharing a global count.
+def $fiber_array_count(eps, porigin) = 0
+def $fiber_array_count((FIBER_ARRAY_RELEASE pfiberarray) :: ptask*, porigin) = $(1 + $fiber_array_count(ptask*, porigin))
+  -- if pfiberarray.SITE = porigin
+def $fiber_array_count((FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask*, porigin) = $(1 + $fiber_array_count(ptask*, porigin))
+  -- if pfiberarray.SITE = porigin
+def $fiber_array_count(ptask :: ptask_tail*, porigin) = $fiber_array_count(ptask_tail*, porigin) -- otherwise
+def $fiber_array_selected(S, pfiberarray, pconfigcall) = true
+  -- if $fiber_array_source_valid(S, pfiberarray)
+  -- if $fiber_array_config_matches(pfiberarray, pconfigcall)
+  -- if $fiber_array_config_pair(S.TODO, pconfigcall) = (pfiberarray)
+  -- if $fiber_array_count(S.TODO, pfiberarray.SITE) = 1
+  -- if $generator_flat_tasks(S.TODO)
+  -- if $fiber_array_receiver_live(S, pfiberarray)
+def $fiber_array_selected(S, pfiberarray, pconfigcall) = false -- otherwise
+def $config_selected_valid(S, pconfigcall) = true
+  -- if $fiber_kind(pconfigcall.KIND) /\ pconfigcall.SELECTION = eps
+  -- if $fiber_array_config_pair(S.TODO, pconfigcall) = (pfiberarray)
+  -- if $fiber_array_selected(S, pfiberarray, pconfigcall)
+def $fiber_array_config_pending(S, pconfigcall) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: (FIBER_ARRAY_RELEASE pfiberarray) :: ptask_tail*
+  -- if $fiber_array_config_matches(pfiberarray, pconfigcall)
+def $fiber_array_config_pending(S, pconfigcall) = false -- otherwise
+rule PhpStep/fiber-array-invoke: S ~> $fiber_receive(S[.TODO = (CONFIG_INVOKE pconfigcall) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*], pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: (FIBER_ARRAY_RELEASE pfiberarray) :: ptask_tail*
+  -- if $fiber_array_selected(S, pfiberarray, pconfigcall)
+  -- if $config_invoke_valid(S, pconfigcall)
+
+def $fiber_array_release_valid(S, pfiberarray) = ($fiber_array_source_valid(S, pfiberarray) /\ S.ORIGIN = (pfiberarray.SITE) /\ $fiber_array_count(S.TODO, pfiberarray.SITE) = 1 /\ $generator_flat_tasks(S.TODO))
+def $fiber_array_result_valid(S, pfiberarray, pconfigcall) = true
+  -- if $fiber_array_release_valid(S, pfiberarray)
+  -- if $fiber_array_config_matches(pfiberarray, pconfigcall)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
+  -- if $config_sent_shape(S, pconfigcall)
+def $fiber_array_result_valid(S, pfiberarray, pconfigcall) = false -- otherwise
+def $task_nodes(FIBER_ARRAY_RELEASE pfiberarray) = eps
+def $task_nodes(FIBER_ARRAY_RESULT pfiberarray pconfigcall) = eps
+def $call_task_valid(S, FIBER_ARRAY_RELEASE pfiberarray) = $fiber_array_release_valid(S, pfiberarray)
+def $call_task_valid(S, FIBER_ARRAY_RESULT pfiberarray pconfigcall) = $fiber_array_result_valid(S, pfiberarray, pconfigcall)
+def $fiber_marker(FIBER_ARRAY_RELEASE pfiberarray) = true
+def $fiber_marker(FIBER_ARRAY_RESULT pfiberarray pconfigcall) = true
+def $generator_internal_task(FIBER_ARRAY_RELEASE pfiberarray) = true
+def $generator_internal_task(FIBER_ARRAY_RESULT pfiberarray pconfigcall) = true
+rule PhpStep/fiber-array-release: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (FIBER_ARRAY_RELEASE pfiberarray) :: ptask_tail*
+  -- if $fiber_array_release_valid(S, pfiberarray)
+rule PhpStep/fiber-array-result: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*
+  -- if $fiber_array_result_valid(S, pfiberarray, pconfigcall)
+rule PhpStep/fiber-array-throw-release: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_ARRAY_RELEASE pfiberarray) :: ptask_tail*
+  -- if $fiber_array_release_valid(S, pfiberarray)
+  -- if $throwable_live(S, n_throwable)
+rule PhpStep/fiber-array-throw-result: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*
+  -- if $fiber_array_result_valid(S, pfiberarray, pconfigcall)
+  -- if $throwable_live(S, n_throwable)
+
+;; The saved API owns its actual argument buffer and ordinary bound receiver.
+;; Static suspend instead names the running Fiber, independent of input object.
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if pfiberapi.KIND = (pintrinsic)
+  -- if pintrinsic <- [INTRINSIC_FIBER_RESUME, INTRINSIC_FIBER_THROW]
+  -- if pfiberapi.START = eps
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*
+  -- if $fiber_array_result_valid(S, pfiberarray, pconfigcall)
+  -- if pconfigcall.KIND = pintrinsic /\ pconfigcall.OWNER = (pfiberapi.OBJECT)
+  -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
+  -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
+  -- if $config_slots_valid(S, pconfigcall.SENT)
+  -- if pintrinsic =/= INTRINSIC_FIBER_THROW \/ $class_instanceof(S, $fiber_config_value(pconfigcall), $ptascii("Throwable"))
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND) /\ pfiberapi.START = eps
+  -- if S.TODO = (FIBER_CONTINUE pfiberapi) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*
+  -- if $fiber_array_result_valid(S, pfiberarray, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_SUSPEND /\ pconfigcall.OWNER = eps
+  -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
+  -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
+  -- if $config_slots_valid(S, pconfigcall.SENT)
+  -- if S.ACTIVEFIBER = (pfiberapi.OBJECT)
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if S.TODO = [GC_WORKER_PUBLIC pfiberapi]
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.API = pfiberapi /\ pfibercaller.OBJECT = pfiberapi.OBJECT
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if S_caller.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_ARRAY_RESULT pfiberarray pconfigcall) :: ptask_tail*
+  -- if $fiber_api_valid(S_caller, pfiberapi)
