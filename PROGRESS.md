@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Privately accepted321 copies a known YIELD value before an ordinary missing
+key-CV warning, authenticates one object-specific partial-cache carrier and keeps
+null key/index/opcode-line behavior through callbacks. Actual child-resume markers
+select child catch/finally reinjection for KEY and311 VALUE warnings; direct API
+resumers preserve closed-cache ownership. A narrow303 release-only handoff moves
+cached destructor owners once and preserves replacement exception priority.
+Strict compiler295,27 exact normal observations and eight genuine reached groups
+with658 physical premises pass at their separate c102/7edf cuts. Original failures
+and the older required close Unsupported retain zero credit. Actual-current-parent
+composition remains pending; no old campaign is renewed.
+[Scope and results](docs/semantics/YIELD-KEY-WARNINGS.md).
+
 Arrow Generator311 is integrated; its frozen310/276 cut retains44 normal source
 agreements, nine compiler rejections and10 genuine strict-SL groups with987
 setup-inclusive premises retain separate cuts; two required Unsupported controls

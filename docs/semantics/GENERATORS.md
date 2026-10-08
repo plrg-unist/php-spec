@@ -82,6 +82,13 @@ premises. The actual292 property/collection parent separately passes the same
 source and75 reached physical-HANDLE/Arrow-close premises. Final294 passes strict
 compilation; earlier source/state cuts retain their own tested parents.
 
+[YIELD key warnings321](YIELD-KEY-WARNINGS.md) cache the value before an ordinary
+missing key-CV warning. Handler reference/array writes preserve the copied value;
+the read freezes null without advancing the implicit index. Actual child resumer
+markers distinguish delegated exception reinjection from direct API close.
+Cached user-destructor release retains an authenticated operation/frame carrier
+and replacement exception priority. Wider producers and lifetimes remain required.
+
 Constructor-created global constant instances follow the existing noncache
 policy for object defaults. Receives, yield caches and return values retain the
 original instance identity; the completed source receipt adds no heap owner.

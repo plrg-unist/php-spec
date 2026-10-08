@@ -2876,7 +2876,8 @@
       "implementation": [
         "spec/semantics/20-machine.watsup",
         "spec/semantics/45-constant-context.watsup",
-        "spec/semantics/280-generators.watsup"
+        "spec/semantics/280-generators.watsup",
+        "spec/semantics/321-yield-key-warning.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -2884,9 +2885,15 @@
         "tests/semantics/generator_review.py",
         "tests/semantics/generator_review_protocol.py",
         "tests/semantics/generator_effects_review.py",
-        "tests/semantics/generator_effects_review_protocol.py"
+        "tests/semantics/generator_effects_review_protocol.py",
+        "tests/semantics/yield_key_warning_prepare.py",
+        "tests/semantics/yield_key_warning_review.py",
+        "tests/semantics/yield_key_warning_protocol.py",
+        "tests/semantics/yield_key_release_protocol.py",
+        "tests/semantics/yield_key_identity_review.py",
+        "tests/semantics/yield_key_identity_protocol.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. That prepass alone did not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Generator280 now admits ordinary by-value yield execution with raw keys, deferred frames and real resumer traces; 27 normal and three compiler source agreements retain e235. Separate state cuts are recorded in GENERATORS.md. Reference yields, delegation and complete lifecycle remain required. Literal send/throw now capture input before initialization and resume used yield results or ordinary Throwable search; new source/state validation is recorded separately in GENERATORS.md."
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. That prepass alone did not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Generator280 now admits ordinary by-value yield execution with raw keys, deferred frames and real resumer traces; 27 normal and three compiler source agreements retain e235. Separate state cuts are recorded in GENERATORS.md. Reference yields, delegation and complete lifecycle remain required. Literal send/throw now capture input before initialization and resume used yield results or ordinary Throwable search; new source/state validation is recorded separately in GENERATORS.md. Module321 copies the value before an ordinary missing key-CV warning and authenticates one partial-cache continuation. Actual child-resumer markers distinguish delegated exception reinjection from direct API close; wider producers and lifetimes remain required."
     },
     {
       "node": "Expr_YieldFrom",
@@ -8921,7 +8928,8 @@
         "spec/semantics/118-arrows.watsup",
         "spec/semantics/280-generators.watsup",
         "spec/semantics/311-arrow-generators.watsup",
-        "spec/semantics/80-call-control.watsup"
+        "spec/semantics/80-call-control.watsup",
+        "spec/semantics/321-yield-key-warning.watsup"
       ],
       "helper_tests": [
         "tests/semantics/arrow_generator_protocol.py",
@@ -8929,7 +8937,10 @@
         "tests/semantics/arrow_generator_warning_review_protocol.py",
         "tests/semantics/arrow_generator_globals_role_review_protocol.py",
         "tests/semantics/arrow_generator_integration_protocol.py",
-        "tests/semantics/arrow_generator_cleanup_protocol.py"
+        "tests/semantics/arrow_generator_cleanup_protocol.py",
+        "tests/semantics/yield_key_warning_protocol.py",
+        "tests/semantics/yield_key_release_protocol.py",
+        "tests/semantics/yield_key_identity_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/arrows.py",
@@ -8938,7 +8949,10 @@
         "tests/semantics/arrow_compiler.py",
         "tests/semantics/arrow_generator_prepare.py",
         "tests/semantics/arrow_generator_review.py",
-        "tests/semantics/arrow_generator_integration.py"
+        "tests/semantics/arrow_generator_integration.py",
+        "tests/semantics/yield_key_warning_prepare.py",
+        "tests/semantics/yield_key_warning_review.py",
+        "tests/semantics/yield_key_identity_review.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -8946,9 +8960,11 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/arrows-review.json",
         "docs/semantics/ARROW-GENERATORS.md",
-        "coverage/semantics/arrow-generator-review.json"
+        "coverage/semantics/arrow-generator-review.json",
+        "docs/semantics/YIELD-KEY-WARNINGS.md",
+        "coverage/semantics/yield-key-warning-review.json"
       ],
-      "review": "Arrow117/118 on1026/0ec5 reuses real closure instances with source-derived implicit captures, completed undefined snapshots, fresh invocation locals and authenticated expression returns. The exact one-test partition bridge preserves five measured365a gates; arrows-review.json binds32 sources (23 normal,7 PHP errors,2 static rejections),20 compiler phases/223 projections,26 protocol/264,13 regressions including the separate explicit-closure suppression source, existing closure protocol20/217, author493 unique dense assertions in9 partitions (960 executed premises), independent dense4/731 and32 complete old1017 response bridges. Exact original-context32 model-only replays are separate from fresh maintained profiles. Actual never-reference-demand and named-only suppression-guard failures are preserved with narrow source-aware corrections. Ordinary objects, class-bound scope, method/bind/clone/first-class/Closure services, cycle collection and dynamic-source lifetime remain required; no family closure or refreshed broad integration claim. Integrated Arrow Generator311 retains its validated frozen310 cut: eager receives, deferred captures, sent/delegated implicit returns, original signatures and lexical/receiver scope use accepted280/95/118. Value-CV warnings freeze null before delayed keys; handler throws retain the same Throwable/key and install the closed Closure owner before frame retirement. Separate cuts cover44 normal sources, nine compiler rejections and10 genuine strict-SL programs/groups with987 setup-inclusive premises; two required Unsupported controls and original failures earn zero agreement. Literal GLOBALS uses a matching explicit-request profile and array-only cached-key role. Frozen68393/286+311 composition separately passes compiler287, the fresh default/Fiber/Stringable-eval source and148 independent reached premises. Actual2a2e/291+311 composition separately passes compiler292, the same original and75 physical-HANDLE/Arrow-close premises with new gc/clone validation. Canonical294 passes strict compilation after independent ARG309/316 compatibility review; earlier source/state cuts retain their own inputs. Key-warning ingress, reference yields and wider lifecycle stay required; paused generic returns remain excluded.",
+      "review": "Arrow117/118 on1026/0ec5 reuses real closure instances with source-derived implicit captures, completed undefined snapshots, fresh invocation locals and authenticated expression returns. The exact one-test partition bridge preserves five measured365a gates; arrows-review.json binds32 sources (23 normal,7 PHP errors,2 static rejections),20 compiler phases/223 projections,26 protocol/264,13 regressions including the separate explicit-closure suppression source, existing closure protocol20/217, author493 unique dense assertions in9 partitions (960 executed premises), independent dense4/731 and32 complete old1017 response bridges. Exact original-context32 model-only replays are separate from fresh maintained profiles. Actual never-reference-demand and named-only suppression-guard failures are preserved with narrow source-aware corrections. Ordinary objects, class-bound scope, method/bind/clone/first-class/Closure services, cycle collection and dynamic-source lifetime remain required; no family closure or refreshed broad integration claim. Integrated Arrow Generator311 retains its validated frozen310 cut: eager receives, deferred captures, sent/delegated implicit returns, original signatures and lexical/receiver scope use accepted280/95/118. Value-CV warnings freeze null before delayed keys; direct handler throws retain the same Throwable/key and install the closed Closure owner before frame retirement. Separate cuts cover44 normal sources, nine compiler rejections and10 genuine strict-SL programs/groups with987 setup-inclusive premises; two required Unsupported controls and original failures earn zero agreement. Literal GLOBALS uses a matching explicit-request profile and array-only cached-key role. Frozen68393/286+311 composition separately passes compiler287, the fresh default/Fiber/Stringable-eval source and148 independent reached premises. Actual2a2e/291+311 composition separately passes compiler292, the same original and75 physical-HANDLE/Arrow-close premises with new gc/clone validation. Canonical294 passes strict compilation after independent ARG309/316 compatibility review; earlier source/state cuts retain their own inputs. Reference yields and wider lifecycle stay required; paused generic returns remain excluded. Module321 retains the copied value before key-CV warnings, freezes null key and opcode line, and authenticates one object-specific partial-cache carrier. Actual delegated child resumers receive KEY/311 VALUE handler throws in their own catch/finally; direct APIs retain closed-cache/Closure ownership. Source and reached-state cuts stay separate in YIELD-KEY-WARNINGS.md.",
       "planned_source_tests": [
         "tests/semantics/conformance/closure-capture.php"
       ]
@@ -12984,18 +13000,27 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/280-generators.watsup"
+        "spec/semantics/280-generators.watsup",
+        "spec/semantics/321-yield-key-warning.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/generator_review_protocol.py"
+        "tests/semantics/generator_review_protocol.py",
+        "tests/semantics/yield_key_warning_protocol.py",
+        "tests/semantics/yield_key_release_protocol.py",
+        "tests/semantics/yield_key_identity_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/generator_review.py"
+        "tests/semantics/generator_review.py",
+        "tests/semantics/yield_key_warning_prepare.py",
+        "tests/semantics/yield_key_warning_review.py",
+        "tests/semantics/yield_key_identity_review.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+        "vendor/php-src/Zend/zend_generators.c",
+        "docs/semantics/YIELD-KEY-WARNINGS.md",
+        "coverage/semantics/yield-key-warning-review.json"
       ],
-      "review": "Generator280 executes by-value yields with cached array/reference owners and object-owned suspension frames. Twenty-seven normal and three compiler source agreements retain e235; independent state phases retain their separate cuts in GENERATORS.md. Reference yields, delegation and complete lifecycle remain required."
+      "review": "Generator280 executes by-value yields with cached array/reference owners and object-owned suspension frames. Twenty-seven normal and three compiler source agreements retain e235; independent state phases retain their separate cuts in GENERATORS.md. Reference yields, delegation and complete lifecycle remain required. Module321 retains the copied value before key-CV warnings, freezes null key and opcode line, and authenticates one object-specific partial-cache carrier. Actual delegated child resumers receive KEY/311 VALUE handler throws in their own catch/finally; direct APIs retain closed-cache/Closure ownership. Source and reached-state cuts stay separate in YIELD-KEY-WARNINGS.md."
     },
     {
       "id": "resumable.yield-key",
@@ -13003,18 +13028,27 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/280-generators.watsup"
+        "spec/semantics/280-generators.watsup",
+        "spec/semantics/321-yield-key-warning.watsup"
       ],
       "helper_tests": [
-        "tests/semantics/generator_review_protocol.py"
+        "tests/semantics/generator_review_protocol.py",
+        "tests/semantics/yield_key_warning_protocol.py",
+        "tests/semantics/yield_key_release_protocol.py",
+        "tests/semantics/yield_key_identity_protocol.py"
       ],
       "source_tests": [
-        "tests/semantics/generator_review.py"
+        "tests/semantics/generator_review.py",
+        "tests/semantics/yield_key_warning_prepare.py",
+        "tests/semantics/yield_key_warning_review.py",
+        "tests/semantics/yield_key_identity_review.py"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_generators.c"
+        "vendor/php-src/Zend/zend_generators.c",
+        "docs/semantics/YIELD-KEY-WARNINGS.md",
+        "coverage/semantics/yield-key-warning-review.json"
       ],
-      "review": "Generator280 preserves arbitrary raw keys, delayed key-CV fetch after value effects and signed64 implicit-index wrap. Source and state coverage are linked in GENERATORS.md; delegation/reference yields and destructor-sensitive replacement remain required."
+      "review": "Generator280 preserves arbitrary raw keys, delayed key-CV fetch after value effects and signed64 implicit-index wrap. Source and state coverage are linked in GENERATORS.md; delegation/reference yields and destructor-sensitive replacement remain required. Module321 retains the copied value before key-CV warnings, freezes null key and opcode line, and authenticates one object-specific partial-cache carrier. Actual delegated child resumers receive KEY/311 VALUE handler throws in their own catch/finally; direct APIs retain closed-cache/Closure ownership. Source and reached-state cuts stay separate in YIELD-KEY-WARNINGS.md."
     },
     {
       "id": "resumable.byref-yield",
@@ -13123,29 +13157,36 @@
         "spec/semantics/257-request-destructors.watsup",
         "spec/semantics/280-generators.watsup",
         "spec/semantics/303-generator-force-close.watsup",
-        "spec/semantics/310-generator-fiber-close.watsup"
+        "spec/semantics/310-generator-fiber-close.watsup",
+        "spec/semantics/321-yield-key-warning.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_review_protocol.py",
         "tests/semantics/generator_force_close_protocol.py",
         "tests/semantics/generator_fiber_close_protocol.py",
         "tests/semantics/generator_fiber_close_review_protocol.py",
-        "tests/semantics/generator_eager_close_review_protocol.py"
+        "tests/semantics/generator_eager_close_review_protocol.py",
+        "tests/semantics/yield_key_warning_protocol.py",
+        "tests/semantics/yield_key_release_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/generator_review.py",
         "tests/semantics/generator_force_close_review.py",
         "tests/semantics/generator_fiber_close_prepare.py",
         "tests/semantics/generator_fiber_close_review.py",
-        "tests/semantics/generator_integration_review.py"
+        "tests/semantics/generator_integration_review.py",
+        "tests/semantics/yield_key_warning_prepare.py",
+        "tests/semantics/yield_key_warning_review.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "docs/semantics/GENERATOR-FIBER-CLOSE.md",
-        "coverage/semantics/generator-fiber-close-review.json"
+        "coverage/semantics/generator-fiber-close-review.json",
+        "docs/semantics/YIELD-KEY-WARNINGS.md",
+        "coverage/semantics/yield-key-warning-review.json"
       ],
-      "review": "Generator280 natural completion is extended by303 ordinary last-owner forced close. Input/graph links release before pending finally; parameters, locals and raw caches preserve child order through actual frame/storage release. Independent40 normal and2 compiler agreements plus11 state groups/8 programs/569 setup-inclusive premises retain separate cuts in GENERATOR-FORCE-CLOSE.md. Five request/terminal controls earn zero agreement. General destructors, cyclic GC and request/terminal cleanup remain required. Module310 extends ordinary paused-Generator close to an active Fiber, preserving current identity and real parked owners. Author14 and independent12 normal source agreements, four precise required Unsupported controls with zero agreement, and eight genuine strict-SL programs/groups669 physical premises (318+351 including repeated setup) retain separate276-module cuts in GENERATOR-FIBER-CLOSE.md; independent final private publication review passes; canonical integration preserves later call/destruction/Fiber fields. Actual282 composition adds five distinct normal integration originals, two promoted normal close checks and a precise request Unsupported control with zero agreement. One genuine strict-SL frame-release program passes189 setup-inclusive premises for the real pending carrier, remaining owner, previous chain and live-state resumption. The existing ledger retains separate cuts and zero-credit discrepancies; pending eager releases without an operation/frame carrier remain required. Parked running Generators and switching finalizers remain required; no full-family closure."
+      "review": "Generator280 natural completion is extended by303 ordinary last-owner forced close. Input/graph links release before pending finally; parameters, locals and raw caches preserve child order through actual frame/storage release. Independent40 normal and2 compiler agreements plus11 state groups/8 programs/569 setup-inclusive premises retain separate cuts in GENERATOR-FORCE-CLOSE.md. Five request/terminal controls earn zero agreement. General destructors, cyclic GC and request/terminal cleanup remain required. Module310 extends ordinary paused-Generator close to an active Fiber, preserving current identity and real parked owners. Author14 and independent12 normal source agreements, four precise required Unsupported controls with zero agreement, and eight genuine strict-SL programs/groups669 physical premises (318+351 including repeated setup) retain separate276-module cuts in GENERATOR-FIBER-CLOSE.md; independent final private publication review passes; canonical integration preserves later call/destruction/Fiber fields. Actual282 composition adds five distinct normal integration originals, two promoted normal close checks and a precise request Unsupported control with zero agreement. One genuine strict-SL frame-release program passes189 setup-inclusive premises for the real pending carrier, remaining owner, previous chain and live-state resumption. The existing ledger retains separate cuts and zero-credit discrepancies; pending eager releases without an operation/frame carrier remain required. Parked running Generators and switching finalizers remain required; no full-family closure. The321 cache-release interaction admits an uncalled cached destructor only through a genuine top operation/frame and release-only path to its exit. Local/caller pending exceptions merge before entry; replacements update the same Generator releases and caller exit. Other close stages and wider destructor lifetimes remain required."
     },
     {
       "id": "resumable.generator-finally",

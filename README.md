@@ -216,6 +216,10 @@ signatures. Value warnings retain the same Throwable, cached key and closed
 Closure owner. The current default/Fiber/Stringable-eval composition passes its
 source and75 reached cleanup premises; earlier cuts retain their identities.
 Final294 preserves the accepted property, collection and source-emission modules.
+Privately reviewed [key-CV warnings321](docs/semantics/YIELD-KEY-WARNINGS.md)
+copy the value before callbacks, preserve null keys and distinguish genuine child
+exception reinjection from direct API close. Its27 normal observations and658
+reached premises retain separate private cuts pending current-parent integration.
 IteratorAggregate, reference yields, wider call forms, request/terminal cleanup
 and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
