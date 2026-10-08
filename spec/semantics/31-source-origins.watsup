@@ -53,9 +53,11 @@ dec $statement_tasks(statement*, porigin?, nat) : ptask*
 def $statement_tasks(eps, porigin?, n) = eps
 def $statement_tasks(statement :: statement_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), STMT statement)] ++ $statement_tasks(statement_tail*, porigin?, $(n + 1))
 
+dec $echo_expression_line(pstate, expression) : int
+def $echo_expression_line(S, expression) = $runtime_line(S, eps, expression) -- otherwise
 dec $echo_tasks(pstate, expression*, porigin?, nat) : ptask*
 def $echo_tasks(S, eps, porigin?, n) = eps
-def $echo_tasks(S, expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), $at_task($origin_child(porigin?, [PCINDEX n]), EMIT $runtime_line(S[.ORIGIN = $origin_child(porigin?, [PCINDEX n])], eps, expression))] ++ $echo_tasks(S, expression_tail*, porigin?, $(n + 1))
+def $echo_tasks(S, expression :: expression_tail*, porigin?, n) = [$at_task($origin_child(porigin?, [PCINDEX n]), EVAL expression), $at_task($origin_child(porigin?, [PCINDEX n]), EMIT $echo_expression_line(S[.ORIGIN = $origin_child(porigin?, [PCINDEX n])], expression))] ++ $echo_tasks(S, expression_tail*, porigin?, $(n + 1))
 
 dec $unset_tasks(expression*, porigin?, nat) : ptask*
 def $unset_tasks(eps, porigin?, n) = eps

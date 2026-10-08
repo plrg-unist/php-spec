@@ -196,11 +196,44 @@ def $generator_close_destructor_tasks(S, (INSTANCE_STORAGE_STEP pinstancestorage
 def $generator_request_tail_task(INSTANCE_STORAGE_STEP pinstancestorage) = true
   -- if ~pinstancestorage.USER /\ pinstancestorage.CALLER = eps /\ pinstancestorage.ORIGIN = eps /\ pinstancestorage.CONSTCONTEXT = eps
 
-;; Metadata-only class/identity reads are safe during free_obj. Consumed native
-;; property zvals are raw storage, so structural payload access stays explicit.
-def $property_read(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+;; The NEXT-prefix image clears every consumed slot. An initialized slot equal
+;; to its original image is therefore still owned by the actual parent carrier.
+;; Read its current scalar/alias value; consumed native zvals remain raw storage.
+dec $instance_storage_read_item(pstate, pitem) : pvalue?
+def $instance_storage_read_item(S, DIRECT pvalue) = (pvalue)
+  -- if $value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED
+def $instance_storage_read_item(S, ALIAS n) = (pvalue)
+  -- if $(n < |S.STORE|)
+  -- if (HCELL n) <- S.ALLOCATIONS /\ n <- S.REFCELLS
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $value_nodes(pvalue) = eps /\ pvalue =/= PUNDEFINED
+def $instance_storage_read_item(S, pitem) = eps -- otherwise
+dec $instance_storage_read_value(pstate, nat, ptbytes) : pvalue?
+def $instance_storage_read_value(S, n, ptbytes) = (pvalue)
+  -- if $instance_storage_for(S, n) = (pinstancestorage)
+  -- if $instance_storage_state_valid(S)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $property_slot_at(ppropertyslot*, ptbytes) = (ppropertyslot_live)
+  -- if $property_slot_at(pinstancestorage.SLOTS, ptbytes) = (ppropertyslot_live)
+  -- if ppropertyslot_live.STATE = PROP_VALUE pitem
+  -- if $instance_storage_read_item(S, pitem) = (pvalue)
+  -- if $property_slot_valid(S, ppropertydesc, ppropertyslot_live)
+def $instance_storage_read_value(S, n, ptbytes) = eps -- otherwise
+def $property_read(S, POBJECT n, ptbytes, z) = $property_read_key(S, POBJECT n, ptbytes_key, z)
+  -- if $instance_storage_freeing(S, n)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
+def $property_read(S, POBJECT n, ptbytes, z) = $property_access_error(S, n, ptbytes, z)
+  -- if $instance_storage_freeing(S, n)
+  -- if ~$property_accessible(S, n, ptbytes)
 def $property_quiet(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
-def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
+def $property_read_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN pvalue]
+  -- if $instance_storage_freeing(S, n)
+  -- if $instance_storage_read_value(S, n, ptbytes) = (pvalue)
+def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"]
+  -- if $instance_storage_freeing(S, n)
+  -- if $instance_storage_read_value(S, n, ptbytes) = eps
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
 def $property_store_value(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)
 def $property_store_key(S, n, ptbytes, pvalue, z) = S[.COMPLETION = UNSUPPORTED "freeing instance property access"] -- if $instance_storage_freeing(S, n)

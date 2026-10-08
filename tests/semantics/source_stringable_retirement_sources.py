@@ -101,7 +101,16 @@ CASES = {'regular': 'deferred-regular.php',
          'echo-call-baseline-lifetime': None,
          'echo-call-reference-live': 'echo-call-reference-live-child.php',
          'echo-call-cast-throw': 'echo-call-cast-throw-child.php',
-         'echo-call-reference-pending': 'echo-call-reference-pending-child.php'}
+         'echo-call-reference-pending': 'echo-call-reference-pending-child.php',
+         'echo-cv-call-late-function': 'echo-cv-call-late-function-child.php',
+         'echo-cv-call-argument-warning': 'echo-cv-call-argument-warning-child.php',
+         'echo-cv-call-missing-function': 'echo-cv-call-missing-function-child.php',
+         'echo-cv-call-argument-throw': 'echo-cv-call-argument-throw-child.php',
+         'echo-cv-call-result-throw': 'echo-cv-call-result-throw-child.php',
+         'echo-cv-call-retirement-throw': 'echo-cv-call-retirement-throw-child.php',
+         'echo-cv-call-eval-reference': None,
+         'echo-cv-call-baseline-lifetime': None,
+         'echo-cv-call-result-lines': 'echo-cv-call-result-lines-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -139,7 +148,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-', 'echo-cv-call-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)

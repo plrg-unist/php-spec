@@ -238,6 +238,23 @@ Borrowed CVs keep their existing release path. The [ledger](../../coverage/seman
 retains ten exact originals and247 independent premises at separate private344
 cuts; actual349 over published CALLS362 passes strict compilation without renewing
 those cuts. Original early-free/admission failures and the corrected pre-call owner
-fixture retain zero affected credit. Dynamic/builtin/argument/fallback calls, wider temporary and
+fixture retain zero affected credit. Dynamic/builtin/wider argument/fallback calls, wider temporary and
 borrowed pending-output producers, wider implicit-destructor declaration causes,
 and final combined offline validation remain required.
+
+SOURCE365 extends361's ECHO-call certificate to one ordinary positional CV
+argument. Exact AST/CODENAME without fallback and separate INIT5/SEND8 descriptors
+select first work without reading argument storage. The same hook extends the
+literal first-top-level ECHO history classifier under195's preauthenticated images
+and admits returned TMPVAR/REFERENCE owners after the argument changes. ECHO's
+post-SEND line8 is shared by scheduling, cast authentication and operation-aware
+destructor selection/validation. Public pending/active casts authenticate that
+separate ECHO line; ordinary call/SEND and property lines keep their defaults.
+Returning argument warnings retain fixed null; function/retirement/handler throws
+keep their earlier priority. The [ledger](../../coverage/semantics/source-echo-cv-call-review.json)
+retains nine exact originals and236 independent premises across private349 cuts.
+The original lost-bytes
+and line/admission mismatches keep zero affected credit. Actual351 over `760771d9d`
+passes strict compilation with reviewed current-parent compatibility. Named/unpacked/multiple/effectful
+arguments, dynamic/fallback/builtin callees and wider ECHO/source producers remain
+required.

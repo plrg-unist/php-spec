@@ -7,6 +7,21 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 367 executes ordinary simple Fiber-array `start`: immutable selection
+survives argument effects, and one receiver plus the original positional/named
+buffer transfer to the waiting API. Nonowning receipts remain valid after actual
+receiver retirement and keep recursive argument frames independent. Abrupt
+arguments release positional values, receiver, then extra named values in native
+order; body and entry exceptions preserve real `start` callsites. Strict 351, six
+exact normal originals at 5+1 cuts and 267 independent/160 author reached premises
+pass. The preimplementation Unsupported baseline retains zero agreement; earlier
+364/362 evidence is not renewed. Raw array C-root callbacks, compound selectors,
+Fiber-start unpacking and wider lifecycle consumers remain required.
+Actual352 over `262ab0c38` passes strict compilation at `c757a7e25`, preserving
+current source-line, property-read, trait and Generator/collector guards; private
+source/state cuts retain their own inputs.
+[Array-start ledger](coverage/semantics/fiber-array-start-review.json).
+
 Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
 Actual close/cache owners survive normal rendering and handler-registry mutation;
 the reported exception releases after frozen emission and before bailout suppresses
@@ -81,6 +96,21 @@ source/state cuts retain their inputs.
 Fiber-start argument unpacking, ordinary API callable arrays, effectful compound
 factory selectors and wider lifecycle/library consumers remain required.
 [Fiber factory ledger](coverage/semantics/fiber-from-callable-review.json).
+
+SOURCE365 extends361 through a shared certificate for one ordinary positional
+CV argument. INIT5 precedes live SEND8; operand retirement can install the callee
+or replace the CV, while returning warnings send fixed null and earlier throws
+abort later work. Returned TMPVAR/HCELL values retain bytes after argument deletion;
+conversion and final release use ECHO8 independently of call initialization.
+Public pending/active cast admission authenticates that separate line.
+Nine exact originals retain seven rows at `21fc1ae04`, eval at `3493d49bd` and the
+new line discriminator at `3c9cc065f`, all private349. The two unchanged baselines
+and intermediate final-destructor line mismatch retain zero affected agreement.
+Independent236 premises (150 bindings/86 checks) retain three groups at `f5f4ac0c1`
+and the affected result group at `3c9cc065f`. Actual351 over `760771d9d` passes
+strict compilation with reviewed Generator/Fiber, trait and storage-read compatibility.
+No new module or owner schema is added.
+[Ledger](coverage/semantics/source-echo-cv-call-review.json).
 
 Source361 selects first INIT for a direct ECHO of a resolved named noarg
 nonbuiltin call without namespace fallback. Owned include/eval operands retire
@@ -1088,6 +1118,15 @@ New reached groups pass150/91/51 premises at `f064fd2c6`/`56d3b070b`/`2282b68da`
 covering table ownership, B-before-A throws, early Weak and actual355 RETURN storage.
 Original baseline/fixture failures retain zero credit; prior campaigns are unchanged.
 The actual349 join over `013ca6d2b` passes strict initialization at `e7e74c6c9`.
+Unvisited initialized declared scalar reads now preserve ordinary visibility and
+use the current DIRECT/ALIAS value under the actual unique storage carrier.
+Native3 at `8488dbc53` establish safe reads; the unchanged scalar model baseline
+stops explicitly Unsupported with zero agreement. Source3 and strict349 pass at
+`b89e7e66d`; fresh104/89 premises at that same cut prove frame ownership, live9
+with its typed source, real NEXT advancement/detach and consumed-slot refusal.
+The old typed fixture is adapted statically with no renewed credit. Quiet/heap
+payloads, uninitialized/consumed storage, mutation and escape remain required.
+The actual351 join over `9782fbb4e` passes strict initialization at `4fbcf845e`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

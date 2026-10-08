@@ -1,0 +1,118 @@
+;; Ordinary array start owns EX(This) and the original buffer, with a
+;; nonowning selection receipt surviving both transfers and retirement.
+dec $fiber_array_start_source_valid(pstate, pfiberarray) : bool
+dec $fiber_array_start_matches(pfiberarray, pfiberstart) : bool
+dec $fiber_array_start_task(ptask, pfiberstart) : bool
+dec $fiber_array_start_receipt(ptask, pfiberstart) : pfiberarray?
+dec $fiber_array_start_pair(ptask*, pfiberstart) : pfiberarray?
+dec $fiber_array_start_buffer_valid(pstate, pfiberarray, pfiberstart) : bool
+dec $fiber_array_start_release_valid(pstate, pfiberarray) : bool
+dec $fiber_array_start_result_valid(pstate, pfiberarray, pfiberstart) : bool
+dec $fiber_array_start_unwind_valid(pstate, pfiberstart) : bool
+dec $fiber_array_start_discard(pstate, pfiberstart) : pstate
+
+def $fiber_array_new(S, n, porigin, z_init, z_call) = S[.TODO = [FIBER_ARGS pfiberstart, FIBER_ARRAY_START_RELEASE pfiberarray] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pentry* = $fiber_factory_items(S, PARRAY n)
+  -- if $fiber_factory_selection(S, PARRAY n, pentry*) = ((INTRINSIC_FIBER_START, ptbytes, (n_input)))
+  -- if pfiberarray = {SITE porigin, INIT z_init, LINE z_call, ARRAY n, ITEMS pentry*, KIND INTRINSIC_FIBER_START, NAME ptbytes, INPUT (n_input)}
+  -- if pfiberstart = {SITE porigin, OBJECT n_input, INDEX 0, SENT {SLOTS eps, NAMED eps}, LINE z_call}
+def $fiber_array_start_source_valid(S, pfiberarray) = true
+  -- if pfiberarray.KIND = INTRINSIC_FIBER_START
+  -- if $fiber_array_site_valid(S, pfiberarray)
+  -- if pfiberarray.INPUT = (n_input)
+  -- if $fiber_factory_members(S, PARRAY pfiberarray.ARRAY, pfiberarray.ITEMS) = ((POBJECT n_input, pfiberarray.NAME))
+  -- if $fiber_factory_receiver(S, POBJECT n_input)
+  -- if $ptlc(pfiberarray.NAME) = $ptascii("start")
+def $fiber_array_start_source_valid(S, pfiberarray) = false -- otherwise
+def $fiber_array_start_matches(pfiberarray, pfiberstart) = (pfiberarray.SITE = pfiberstart.SITE /\ pfiberarray.LINE = pfiberstart.LINE /\ pfiberarray.INPUT = (pfiberstart.OBJECT))
+def $fiber_array_start_task(FIBER_ARGS pfiberstart, pfiberstart) = true
+def $fiber_array_start_task(FIBER_SEND pfiberstart, pfiberstart) = true
+def $fiber_array_start_task(ptask, pfiberstart) = false -- otherwise
+def $fiber_array_start_receipt(FIBER_ARRAY_START_RELEASE pfiberarray, pfiberstart) = (pfiberarray)
+  -- if $fiber_array_start_matches(pfiberarray, pfiberstart)
+def $fiber_array_start_receipt(FIBER_ARRAY_START_RESULT pfiberarray pfiberstart, pfiberstart) = (pfiberarray)
+def $fiber_array_start_receipt(ptask, pfiberstart) = eps -- otherwise
+def $fiber_array_start_pair(ptask :: ptask_receipt :: ptask_tail*, pfiberstart) = $fiber_array_start_receipt(ptask_receipt, pfiberstart)
+  -- if $fiber_array_start_task(ptask, pfiberstart)
+def $fiber_array_start_pair(ptask :: ptask_tail*, pfiberstart) = $fiber_array_start_pair(ptask_tail*, pfiberstart)
+  -- if ~$fiber_array_start_task(ptask, pfiberstart)
+def $fiber_array_start_pair(ptask*, pfiberstart) = eps -- otherwise
+def $fiber_array_at_site(FIBER_ARRAY_START_RELEASE pfiberarray, porigin) = (pfiberarray.SITE = porigin)
+def $fiber_array_at_site(FIBER_ARRAY_START_RESULT pfiberarray pfiberstart, porigin) = (pfiberarray.SITE = porigin)
+def $fiber_array_start_buffer_valid(S, pfiberarray, pfiberstart) = true
+  -- if $fiber_array_start_source_valid(S, pfiberarray)
+  -- if $fiber_array_start_matches(pfiberarray, pfiberstart)
+  -- if S.ORIGIN = (pfiberstart.SITE)
+  -- if $intrinsic_count(S, pfiberstart.SITE) = (n_count)
+  -- if $(pfiberstart.INDEX <= n_count)
+  -- if $fiber_start_shape(S, pfiberstart.SITE, pfiberstart.INDEX, pfiberstart.SENT)
+  -- if $fiber_array_count(S.TODO, pfiberarray.SITE) = 1
+  -- if $generator_flat_tasks(S.TODO)
+def $fiber_array_start_buffer_valid(S, pfiberarray, pfiberstart) = false -- otherwise
+def $fiber_start_valid(S, pfiberstart, b_pending) = true
+  -- if $fiber_array_start_pair(S.TODO, pfiberstart) = (pfiberarray)
+  -- if $fiber_array_start_buffer_valid(S, pfiberarray, pfiberstart)
+  -- if $fiber_array_receiver_live(S, pfiberarray)
+  -- if ~b_pending \/ $intrinsic_argument(S, pfiberstart.SITE, pfiberstart.INDEX) =/= eps
+def $fiber_array_start_pending(S, pfiberstart) = true
+  -- if S.TODO = (FIBER_ARGS pfiberstart) :: (FIBER_ARRAY_START_RELEASE pfiberarray) :: ptask_tail*
+  -- if $fiber_array_start_matches(pfiberarray, pfiberstart)
+def $fiber_array_start_pending(S, pfiberstart) = false -- otherwise
+rule PhpStep/fiber-array-start-invoke: S ~> $fiber_start_capture_invoke(S[.TODO = (FIBER_ARGS pfiberstart) :: (FIBER_ARRAY_START_RESULT pfiberarray pfiberstart) :: ptask_tail*], pfiberstart, false)
+  -- if S.TODO = (FIBER_ARGS pfiberstart) :: (FIBER_ARRAY_START_RELEASE pfiberarray) :: ptask_tail*
+  -- if $fiber_array_start_buffer_valid(S, pfiberarray, pfiberstart)
+  -- if $fiber_start_valid(S, pfiberstart, false)
+  -- if $intrinsic_count(S, pfiberstart.SITE) = (pfiberstart.INDEX)
+
+def $fiber_array_start_release_valid(S, pfiberarray) = ($fiber_array_start_source_valid(S, pfiberarray) /\ S.ORIGIN = (pfiberarray.SITE) /\ $fiber_array_count(S.TODO, pfiberarray.SITE) = 1 /\ $generator_flat_tasks(S.TODO))
+def $fiber_array_start_result_valid(S, pfiberarray, pfiberstart) = true
+  -- if $fiber_array_start_buffer_valid(S, pfiberarray, pfiberstart)
+  -- if $intrinsic_count(S, pfiberstart.SITE) = (pfiberstart.INDEX)
+def $fiber_array_start_result_valid(S, pfiberarray, pfiberstart) = false -- otherwise
+def $task_nodes(FIBER_ARRAY_START_RELEASE pfiberarray) = eps
+def $task_nodes(FIBER_ARRAY_START_RESULT pfiberarray pfiberstart) = eps
+def $call_task_valid(S, FIBER_ARRAY_START_RELEASE pfiberarray) = $fiber_array_start_release_valid(S, pfiberarray)
+def $call_task_valid(S, FIBER_ARRAY_START_RESULT pfiberarray pfiberstart) = $fiber_array_start_result_valid(S, pfiberarray, pfiberstart)
+def $fiber_marker(FIBER_ARRAY_START_RELEASE pfiberarray) = true
+def $fiber_marker(FIBER_ARRAY_START_RESULT pfiberarray pfiberstart) = true
+def $generator_internal_task(FIBER_ARRAY_START_RELEASE pfiberarray) = true
+def $generator_internal_task(FIBER_ARRAY_START_RESULT pfiberarray pfiberstart) = true
+rule PhpStep/fiber-array-start-release: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (FIBER_ARRAY_START_RELEASE pfiberarray) :: ptask_tail*
+  -- if $fiber_array_start_release_valid(S, pfiberarray)
+rule PhpStep/fiber-array-start-result: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (FIBER_ARRAY_START_RESULT pfiberarray pfiberstart) :: ptask_tail*
+  -- if $fiber_array_start_result_valid(S, pfiberarray, pfiberstart)
+rule PhpStep/fiber-array-start-throw-release: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_ARRAY_START_RELEASE pfiberarray) :: ptask_tail*
+  -- if $fiber_array_start_release_valid(S, pfiberarray)
+  -- if $throwable_live(S, n_throwable)
+rule PhpStep/fiber-array-start-throw-result: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_ARRAY_START_RESULT pfiberarray pfiberstart) :: ptask_tail*
+  -- if $fiber_array_start_result_valid(S, pfiberarray, pfiberstart)
+  -- if $throwable_live(S, n_throwable)
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if pfiberapi.KIND = eps /\ pfiberapi.SENT = eps
+  -- if S.TODO = (FIBER_WAIT pfiberapi) :: (FIBER_ARRAY_START_RESULT pfiberarray pfiberstart) :: ptask_tail*
+  -- if $fiber_array_start_result_valid(S, pfiberarray, pfiberstart)
+  -- if pfiberapi.OBJECT = pfiberstart.OBJECT
+  -- if pfiberapi.SITE = pfiberstart.SITE /\ pfiberapi.LINE = pfiberstart.LINE
+  -- if pfiberapi.START = (pfiberstart.SENT)
+
+;; Zend releases positional args, then EX(This), then extra named args.
+;; Moving those slots to an ordered release queue preserves every owner.
+def $fiber_array_start_unwind_valid(S, pfiberstart) = true
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_receipt :: ptask_tail*
+  -- if $fiber_array_start_receipt(ptask_receipt, pfiberstart) = (pfiberarray)
+  -- if $call_task_valid(S, ptask_receipt)
+  -- if $fiber_array_start_buffer_valid(S, pfiberarray, pfiberstart)
+  -- if $fiber_array_receiver_live(S, pfiberarray)
+  -- if $throwable_live(S, n_throwable)
+def $fiber_array_start_unwind_valid(S, pfiberstart) = false -- otherwise
+def $fiber_array_start_discard(S, pfiberstart) = $destructor_release_begin(S, $destruction_values($named_slots_roots(pfiberstart.SENT.SLOTS) ++ [HOBJECT pfiberstart.OBJECT] ++ $named_roots(pfiberstart.SENT.NAMED)))
+def $return_discard(S, FIBER_ARGS pfiberstart) = $fiber_array_start_discard(S, pfiberstart)
+  -- if $fiber_array_start_unwind_valid(S, pfiberstart)
+def $return_discard(S, FIBER_SEND pfiberstart) = $fiber_array_start_discard(S, pfiberstart)
+  -- if $fiber_array_start_unwind_valid(S, pfiberstart)
