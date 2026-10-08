@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+337 adds bound first-class `resume`/`throw`/defined `getReturn` and status methods.
+The Closure owns its selected Fiber; direct and explicit `__invoke` calls borrow
+that receiver while retaining their actual argument buffers and saved operation
+provenance. Strict318 initialization, nine normal originals and author65/independent403
+reached premises pass at the recorded private cuts. Two explicit start/C-root
+Unsupported controls earn zero agreement; earlier331 evidence is unchanged. The
+[bound-callable ledger](coverage/semantics/fiber-bound-api-callables-review.json)
+retains these checks and required follow-ons.
+
 Generator328 adds source-owned reference-yield cells, value-API array snapshots
 and direct/inner-reference destructuring aliases. Notice/cleanup readback retains
 nonowning old-cache metadata and precise delegated exception reinjection.
