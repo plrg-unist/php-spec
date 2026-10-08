@@ -183,4 +183,6 @@ The full 1697-byte retry still reaches host55.065 with empty streams and zero
 agreement; this demonstrates no speedup or231 coverage.
 Its actual335-parent319 composition passes strict initialization on `3e56ab759`,
 without renewing the316 runtime cuts.
+Both factors compose over SOURCE336/320 by static review; the per-edge partition
+`2582d7008`/319 passes strict and48 graph premises but has no full-retry result.
 Whole retry composition and wider producers remain open.

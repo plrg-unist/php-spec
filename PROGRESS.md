@@ -175,6 +175,10 @@ groups are reaped. No speedup or231 credit follows. Raw records are under
 `.tools/compiler-gc-zero-owners-18/.tools/gc-zero-owners-gate-v1/run-v{1,2}`.
 The actual335-parent319 composition passes strict initialization on `3e56ab759`
 in4.019s; earlier316 runtime cuts retain their identities.
+Private `2582d7008`/319 partitions edge targets before source-membership scans,
+passing strict initialization and48 graph premises; its full retry is UNRUN.
+Both pure factors compose over SOURCE336/320 by static review. Raw owner checks:
+`.tools/compiler-edge-owners-19/.tools/edge-owner-gate-v1`.
 
 Ordinary collection301 preserves potential-root order, discarded-temporary
 decrements, parked handle authority, weak retirement, destructor guards and
