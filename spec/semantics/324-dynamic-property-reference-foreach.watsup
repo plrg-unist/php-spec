@@ -190,10 +190,14 @@ rule PhpStep/foreach-bind-commit: S ~> $foreach_bind_store(S[.TODO = ptask_tail*
   -- if $call_task_valid(S, FOREACH_BIND_COMMIT pforeachbind)
 
 dec $foreach_bind_scope(pstate, pforeachbind, pframe*) : pstate?
+dec $foreach_bind_same_scope(pstate, pforeachbind) : bool
+def $foreach_bind_same_scope(S, pforeachbind) = (S.CURRENT = pforeachbind.CALLER /\ S.ORIGIN = (pforeachbind.SITE) /\ S.CONSTCONTEXT = pforeachbind.CONSTCONTEXT)
 def $foreach_bind_scope(S, pforeachbind, pframe*) = (S)
-  -- if S.CURRENT = pforeachbind.CALLER /\ S.ORIGIN = (pforeachbind.SITE) /\ S.CONSTCONTEXT = pforeachbind.CONSTCONTEXT
-def $foreach_bind_scope(S, pforeachbind, pframe :: pframe_tail*) = $foreach_bind_scope($constant_frame_scope(S, pframe, pframe_tail*), pforeachbind, pframe_tail*) -- otherwise
-def $foreach_bind_scope(S, pforeachbind, eps) = eps -- otherwise
+  -- if $foreach_bind_same_scope(S, pforeachbind)
+def $foreach_bind_scope(S, pforeachbind, pframe :: pframe_tail*) = $foreach_bind_scope($constant_frame_scope(S, pframe, pframe_tail*), pforeachbind, pframe_tail*)
+  -- if ~$foreach_bind_same_scope(S, pforeachbind)
+def $foreach_bind_scope(S, pforeachbind, eps) = eps
+  -- if ~$foreach_bind_same_scope(S, pforeachbind)
 dec $foreach_bind_operation_source_valid(pstate, pdestructionoperation, pforeachbind) : bool
 def $foreach_bind_operation_source_valid(S, pdestructionoperation, pforeachbind) = true
   -- if pdestructionoperation.CALLER = pforeachbind.CALLER /\ pdestructionoperation.ORIGIN = (pforeachbind.SITE) /\ pdestructionoperation.CONSTCONTEXT = pforeachbind.CONSTCONTEXT
