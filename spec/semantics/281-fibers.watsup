@@ -530,8 +530,10 @@ def $fiber_inject(S, pfiberapi, pvalue) = S[.RESULT = KNOWN pvalue][.BASE = BASE
 def $fiber_inject(S, pfiberapi, POBJECT n) = $throwable_begin(S[.TODO = ptask_tail*][.COMPLETION = THROWING n])
   -- if pfiberapi.KIND = (INTRINSIC_FIBER_THROW)
   -- if S.TODO = (FIBER_CONTINUE pfiberapi_suspended) :: ptask_tail*
-def $fiber_suspend(S, pconfigcall, pvalue) = $fiber_back($fiber_put(S_saved, n, pfiber[.STATUS = FIBER_SUSPENDED][.VM = ($fiber_vm(S_saved))]), pvalue, false)
+dec $fiber_suspend_save(pstate, pconfigcall, pvalue) : pstate
+def $fiber_suspend(S, pconfigcall, pvalue) = $fiber_suspend_save(S, pconfigcall, pvalue)
   -- if ~$gc_worker_public_guard_live(S)
+def $fiber_suspend_save(S, pconfigcall, pvalue) = $fiber_back($fiber_put(S_saved, n, pfiber[.STATUS = FIBER_SUSPENDED][.VM = ($fiber_vm(S_saved))]), pvalue, false)
   -- if S.ACTIVEFIBER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if S.TODO = ptask :: ptask_tail*

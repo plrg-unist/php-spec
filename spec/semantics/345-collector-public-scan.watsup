@@ -16,6 +16,10 @@ dec $gc_worker_scan_finish(pstate, pgcpublic) : pstate
 dec $gc_worker_public_keep(pstate, nat) : pstate
 dec $gc_worker_public_raw_api(pstate) : pfiberapi?
 dec $gc_worker_public_captured_api_valid(pstate, pfiberapi) : bool
+dec $gc_worker_public_frames(pframe*, pgcguard, pgcguard) : pframe*
+dec $gc_worker_public_parked(pstate, nat, pfiber) : bool
+dec $gc_worker_public_reentry_ready(pstate, pgcguard) : bool
+dec $gc_worker_public_reentry(pstate, pconfigcall, pvalue) : pstate
 
 ;; The result tail in the real saved caller owns a bound fake Closure. Read
 ;; the raw scan/guard here: validating that guard would recurse through this hook.
@@ -186,11 +190,95 @@ def $gc_worker_scan_finish(S, pgcpublic) = $fiber_back($gc_worker_public_suspend
   -- if pgcpublic.PENDING = (n_error)
   -- if S_clear = S[.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, pgcpublic.INDEX, pgcpublic.END, 0)]
 
-;; Main -> public resume has no gc_call_destructors_in_fiber return loop, so
-;; a PHP suspension here must never take the ordinary317 detach path.
+;; Main -> public resume has no gc_call_destructors_in_fiber return loop.
+;; Park the actual callback VM and guard without dropping the cache. Replace
+;; the old public caller by the real suspend site; it owns no additional zval.
 def $gc_worker_public_guard_live(S) = true
   -- if $gc_worker_guard_at(S) = (pgcguard)
   -- if pgcguard.PUBLIC =/= eps
 def $gc_worker_public_guard_live(S) = false -- otherwise
-def $fiber_suspend(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "suspension inside a public collector scan callback"]
-  -- if $gc_worker_public_guard_live(S)
+def $gc_worker_public_frames(eps, pgcguard, pgcguard_new) = eps
+def $gc_worker_public_frames(pframe :: pframe_tail*, pgcguard, pgcguard_new) = pframe[.TODO = $gc_worker_pending_tasks(pframe.TODO, pgcguard, pgcguard_new)] :: $gc_worker_public_frames(pframe_tail*, pgcguard, pgcguard_new)
+def $fiber_suspend(S, pconfigcall, pvalue) = $fiber_suspend_save(S_parked, pconfigcall, pvalue)
+  -- if $gc_worker_guard_at(S) = (pgcguard)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT pgcguard.WORKER, KIND (INTRINSIC_FIBER_SUSPEND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE pfiber.SEQUENCE}
+  -- if pgcguard_new = pgcguard[.PUBLIC = (pgcpublic[.API = pfiberapi])]
+  -- if S_parked = $gc_worker_put_guard(S[.TODO = $gc_worker_pending_tasks(S.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(S.FRAMES, pgcguard, pgcguard_new)], pgcguard.WORKER, (pgcguard_new))
+
+;; A restored parked view has no public caller. Its actual stored VM, live
+;; guard and matching FIBER_CONTINUE authenticate the callback instead.
+def $gc_worker_guard_attachment(S, pgcguard) = true
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if pgcpublic.API.KIND = (INTRINSIC_FIBER_SUSPEND)
+  -- if S.GC.WORKER = (pgcguard.WORKER)
+  -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.VM = (pfibervm)
+  -- if ~pfibervm.GLOBAL /\ pfibervm = $fiber_vm(S)
+  -- if pfibervm.TODO = (FIBER_CONTINUE pgcpublic.API) :: ptask_tail*
+  -- if $fiber_continue_valid(S, pgcpublic.API)
+  -- if pgcguard.WORKER = pgcpublic.API.OBJECT
+  -- if pgcguard.SOURCE = pgcpublic.SOURCE /\ pgcguard.INDEX = pgcpublic.INDEX
+  -- if $(pgcguard.INDEX < pgcpublic.END)
+  -- if pgcpublic.PENDING = eps
+def $gc_worker_public_parked(S, n, pfiber) = true
+  -- if S.GC.WORKER = (n) /\ $gc_worker_cache_valid(S, n, pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcguard.WORKER = n
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if pgcpublic.API.KIND = (INTRINSIC_FIBER_SUSPEND)
+  -- if pfiber.VM = (pfibervm)
+  -- if ~pfibervm.GLOBAL
+  -- if pfibervm.TODO = (FIBER_CONTINUE pgcpublic.API) :: ptask_tail*
+  -- if pgcpublic.API.OBJECT = n /\ pgcpublic.API.SEQUENCE = pfiber.SEQUENCE
+  -- if $($gc_worker_guard_count(pfibervm.TODO, pgcguard) + $gc_worker_guard_frames(pfibervm.FRAMES, pgcguard)) = 1
+  -- if $gc_worker_guard_tail(pfibervm.TODO, pgcguard) \/ $gc_worker_guard_frame_tail(pfibervm.FRAMES, pgcguard)
+  -- if $fiber_vm_valid(S, pfibervm, (n), eps)
+def $gc_worker_public_parked(S, n, pfiber) = false -- otherwise
+def $fiber_record_valid(S, n, pfiber) = true
+  -- if $gc_worker_public_parked(S, n, pfiber)
+
+;; Reentry before the collecting caller returns uses the same genuine plan
+;; and physical target. Later passes may move/reuse slots and need their own
+;; continuation admission; do not reuse a historical plan as live authority.
+def $gc_worker_public_reentry_ready(S, pgcguard) = true
+  -- if S.GC.WORKER = (pgcguard.WORKER)
+  -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if $gc_worker_public_parked(S, pgcguard.WORKER, pfiber)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_plan_live(S, pgcplan)
+  -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
+  -- if pgcpublic.END = S.GC.SCAN.END
+  -- if pgcguard.INDEX = S.GC.SCAN.INDEX
+  -- if (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
+  -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
+def $gc_worker_public_reentry_ready(S, pgcguard) = false -- otherwise
+def $gc_worker_public_resume(S, pconfigcall, pvalue) = $gc_worker_public_reentry(S, pconfigcall, pvalue)
+  -- if pconfigcall.OWNER = (n)
+  -- if S.GC.WORKER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcguard.PUBLIC =/= eps
+def $gc_worker_public_reentry(S, pconfigcall, pvalue) = $fiber_activate(S_bound, n, pfiber_bound, pfiberapi, false, pvalue)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if $gc_worker_public_reentry_ready(S, pgcguard)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if pfiber.VM = (pfibervm)
+  -- if pfiberapi = {SITE pconfigcall.SITE, OBJECT n, KIND (pconfigcall.KIND), START eps, SENT $fiber_config_sent(pconfigcall), LINE pconfigcall.LINE, SEQUENCE S.FIBERSEQ}
+  -- if pgcguard_new = pgcguard[.PUBLIC = (pgcpublic[.API = pfiberapi])]
+  -- if pfibervm_bound = pfibervm[.TODO = $gc_worker_pending_tasks(pfibervm.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(pfibervm.FRAMES, pgcguard, pgcguard_new)]
+  -- if pfiber_bound = pfiber[.GC = (pgcworker[.GUARD = (pgcguard_new)])][.VM = (pfibervm_bound)]
+  -- if S_bound = $fiber_put(S, n, pfiber_bound)
+def $gc_worker_public_reentry(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "public collector callback reentry after its physical pass changed"] -- otherwise
