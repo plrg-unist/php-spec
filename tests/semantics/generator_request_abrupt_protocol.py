@@ -62,6 +62,10 @@ def lines(value):
     return value.strip().splitlines()
 
 
+def normal_valid(state):
+    return driver.valid(state) + [f"$scope_codes_valid({state},{state}.CODE)"]
+
+
 def assertions(checked, path, directory, name):
     initial = ('$php_file_run(' + checked['fixture'] + ',0,'
                + driver.driver.byte_expr(os.fsencode(path)) + ','
@@ -70,7 +74,7 @@ def assertions(checked, path, directory, name):
     custom = name in ['request-fatal-custom-render', 'request-fatal-handler-custom-render']
     handler = name == 'request-fatal-handler-custom-render'
     release = name == 'request-fatal-exception-release'
-    checks += base.seek('S_report', 'S_initial', 300) + valid('S_report')
+    checks += base.seek('S_report', 'S_initial', 300) + normal_valid('S_report')
     checks += lines(r'''
 S_report.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_report) :: ptask_report_tail*
 $generator_request_report_valid(S_report,pgenfatal_report)
@@ -118,7 +122,7 @@ $generator_close_done_valid(S_report,pgenclose_report)
     reject(checks, 'report_object', 'S_report[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_report[.OBJECT = n_generator]) :: ptask_report_tail*]', 'S_report', same_heap=False)
     previous = 'S_report'
     if custom:
-        checks += base.seek('S_string', previous, 301) + valid('S_string')
+        checks += base.seek('S_string', previous, 301) + normal_valid('S_string')
         checks += lines(r'''
 S_string.TODO = (CALL_ARGS (METHOD_TARGET n_exception porigin_method) eps 0 eps (porigin_method) 0) :: (STRINGIFY_RESULT n_exception porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal_string) :: ptask_string_tail*
 pgenfatal_string = pgenfatal_report[.METHOD = (porigin_method)]
@@ -127,7 +131,7 @@ $generator_request_report_valid(S_string,pgenfatal_string)
 $heap_owners($heap_graph(S_string),HOBJECT n_generator) = 1
 $heap_owners($heap_graph(S_string),HOBJECT n_payload) = 1
 ''')
-        checks += base.seek('S_renderer', 'S_string', 302) + valid('S_renderer')
+        checks += base.seek('S_renderer', 'S_string', 302) + normal_valid('S_renderer')
         checks += lines(r'''
 S_renderer.FRAMES = pframe_renderer :: pframe_renderer_tail*
 pframe_renderer.TODO = (STRINGIFY_RESULT n_exception porigin_method 0) :: (GENERATOR_REQUEST_REPORT pgenfatal_string) :: ptask_string_tail*
@@ -135,7 +139,7 @@ $heap_owners($heap_graph(S_renderer),HOBJECT n_generator) = 1
 $heap_owners($heap_graph(S_renderer),HOBJECT n_payload) = 1
 $request_fatal_stderr(S_renderer.EVENTS) = eps
 ''')
-        checks += base.seek('S_lookup', 'S_renderer', 303) + valid('S_lookup')
+        checks += base.seek('S_lookup', 'S_renderer', 303) + normal_valid('S_lookup')
         checks += lines(r'''
 S_lookup.RESULT = KNOWN (POBJECT n_generator)
 $heap_owners($heap_graph(S_lookup),HOBJECT n_generator) = 2
@@ -154,7 +158,7 @@ $throwable_field(S_lookup,n_exception,"previous") = PNULL
 ''')
         previous = 'S_lookup'
     if release:
-        checks += base.seek('S_exception_dtor', previous, 310) + valid('S_exception_dtor')
+        checks += base.seek('S_exception_dtor', previous, 310) + normal_valid('S_exception_dtor')
         checks += lines(r'''
 S_exception_dtor.FRAMES = pframe_exception :: pframe_exception_tail*
 pframe_exception.TODO = (DESTRUCTOR_RESULT pdestructorcall_exception) :: ptask_exception_tail*
@@ -169,7 +173,7 @@ $request_fatal_stderr(S_exception_dtor.EVENTS) =/= eps
 ptbytes_reported = $request_fatal_stderr(S_exception_dtor.EVENTS)
 $throwable_field(S_exception_dtor,n_exception,"message") = PSTRING $ptascii("new")
 ''')
-        checks += base.seek('S_mutated', 'S_exception_dtor', 311) + valid('S_mutated')
+        checks += base.seek('S_mutated', 'S_exception_dtor', 311) + normal_valid('S_mutated')
         checks += lines(r'''
 S_mutated.REPORTING = 0
 $throwable_field(S_mutated,n_exception,"message") = PSTRING $ptascii("later")
@@ -177,7 +181,7 @@ $request_fatal_stderr(S_mutated.EVENTS) = ptbytes_reported
 $generator_request_report_frozen(S_mutated,pgenfatal_released) = pgenfatal_released.FROZEN
 ''')
         previous = 'S_mutated'
-    checks += base.seek('S_bailout', previous, 320) + valid('S_bailout')
+    checks += base.seek('S_bailout', previous, 320) + normal_valid('S_bailout')
     checks += lines(r'''
 S_bailout.TODO = (GENERATOR_REQUEST_BAILOUT pgenfatal_bailout) :: ptask_bailout_tail*
 $generator_request_bailout_valid(S_bailout,pgenfatal_bailout)

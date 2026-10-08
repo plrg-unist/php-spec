@@ -26,24 +26,26 @@ dec $generator_request_report_frozen(pstate, pgenfatal) : pcompletion
 dec $generator_request_string_tail(pstate, nat, porigin, ptask*) : bool
 dec $generator_request_report_abrupt(pstate) : bool
 
-;; Historical allocation membership validates the already-consumed exception
-;; transfer. It changes neither the live heap nor its roots.
+;; Preserve only the original handler lookup view. The retained actual tail
+;; authenticates the transfer after the reported exception has been released.
 def $generator_request_fatal_history(S, pgenfatal) = S[.ORIGIN = eps][.EXCEPTIONHANDLER = eps][.EXCEPTIONHANDLERS = pgenfatal.HANDLERS]
-  -- if (HOBJECT pgenfatal.OBJECT) <- S.ALLOCATIONS
-def $generator_request_fatal_history(S, pgenfatal) = S[.ORIGIN = eps][.EXCEPTIONHANDLER = eps][.EXCEPTIONHANDLERS = pgenfatal.HANDLERS][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT pgenfatal.OBJECT]]
-  -- if ~((HOBJECT pgenfatal.OBJECT) <- S.ALLOCATIONS)
 def $generator_request_fatal_source(S, pgenfatal, (GENERATOR_CLOSE_DONE pgenclose_done) :: ptask_tail*) = true
   -- if pgenfatal.SOURCE = GENERATOR_CLOSE_DONE pgenclose
   -- if pgenclose.PENDING = (pgenfatal.OBJECT)
   -- if pgenclose_done = pgenclose[.PENDING = eps]
-  -- if S_history = $generator_request_fatal_history(S, pgenfatal)[.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask_tail*]
-  -- if S_history.EXCEPTIONHANDLER = eps
-  -- if $generator_request_done_pending(S_history, pgenclose)
-  -- if $generator_close_done_valid(S_history, pgenclose)
-def $generator_request_fatal_source(S, pgenfatal, ptask_tail*) = true
+  -- if S_history = $generator_request_fatal_history(S, pgenfatal)[.TODO = (GENERATOR_CLOSE_DONE pgenclose_done) :: ptask_tail*]
+  -- if $generator_request_root(S_history) /\ $generator_request_tail(S_history, ptask_tail*)
+  -- if $generator_close_done_valid(S_history, pgenclose_done)
+def $generator_request_fatal_source(S, pgenfatal, (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (GENERATOR_REQUEST_RESUME pgenclose) :: ptask_tail*) = true
   -- if pgenfatal.SOURCE = THROW_SEARCH pgenfatal.OBJECT
-  -- if S_history = $generator_request_fatal_history(S, pgenfatal)[.TODO = pgenfatal.SOURCE :: ptask_tail*]
-  -- if $generator_request_handler_abrupt(S_history)
+  -- if S_history = $generator_request_fatal_history(S, pgenfatal)[.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: (GENERATOR_REQUEST_RESUME pgenclose) :: ptask_tail*]
+  -- if $exception_task_scope(S_history) /\ $exception_result_valid(S_history, pexceptioncall)
+  -- if S_history.EXCEPTIONHANDLERS = (pexceptioncall.CALLBACK) :: (pvalue?)*
+  -- if $generator_request_resume_valid(S_history, pgenclose)
+def $generator_request_fatal_source(S, pgenfatal, (GENERATOR_REQUEST_RESUME pgenclose) :: ptask_tail*) = true
+  -- if pgenfatal.SOURCE = THROW_SEARCH pgenfatal.OBJECT
+  -- if S_history = $generator_request_fatal_history(S, pgenfatal)[.TODO = (GENERATOR_REQUEST_RESUME pgenclose) :: ptask_tail*]
+  -- if $generator_request_resume_valid(S_history, pgenclose)
 def $generator_request_fatal_source(S, pgenfatal, ptask*) = false -- otherwise
 
 def $generator_request_fatal_selected(S) = (pgenfatal)
