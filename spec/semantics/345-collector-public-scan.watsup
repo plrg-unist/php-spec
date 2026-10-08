@@ -30,7 +30,9 @@ dec $gc_worker_public_reentry(pstate, pconfigcall, pvalue) : pstate
 dec $gc_worker_scan_api_valid(pstate, pfiberapi) : bool
 dec $gc_worker_takeover_ready(pstate, pgcplan, bool) : bool
 dec $gc_worker_takeover(pstate, pgcplan) : pstate
-dec $gc_worker_internal_progress(pstate, pgcplan, pgcpublic, pnode*) : pgcprogress*
+dec $gc_worker_internal_progress(pstate, pgcplan, pnode*) : pgcprogress*
+dec $gc_unvisited_valid(pstate, pgcplan, pnode) : bool
+dec $gc_worker_internal_attachment(pstate, pgcguard, pgcpublic) : bool
 dec $gc_worker_internal_next(pstate, pgcpublic) : pstate
 dec $gc_worker_internal_idle(pstate, pgcpublic) : pstate
 dec $gc_worker_internal_pending(pstate, pgcpublic, pgcplan) : pstate
@@ -53,6 +55,9 @@ def $gc_residual_overlap(S) = true
   -- if H = $gc_graph(S)
   -- if $heap_intersect(pnode_residual*, $heap_reach($gc_eligible_nodes(S.GC.BUFFER), eps, H.EDGES)) =/= eps
 def $gc_residual_overlap(S) = false -- otherwise
+def $gc_plan_scan_valid(pgcplan) = true -- if pgcplan.SCAN = eps
+def $gc_plan_scan_valid(pgcplan) = ($(pgcscan.INDEX > 0) /\ $(pgcscan.INDEX <= pgcscan.END))
+  -- if pgcplan.SCAN = (pgcscan)
 
 ;; The result tail in the real saved caller owns a bound fake Closure. Read
 ;; the raw scan/guard here: validating that guard would recurse through this hook.
@@ -241,10 +246,25 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if pgcguard.PUBLIC = (pgcpublic)
   -- if $gc_worker_api(pgcpublic.API)
   -- if $gc_worker_public_context(S, pgcpublic)
+  -- if $gc_worker_internal_attachment(S, pgcguard, pgcpublic)
   -- if pgcpublic.PENDING = eps
   -- if pgcguard.WORKER = pgcpublic.API.OBJECT
   -- if pgcguard.SOURCE = pgcpublic.SOURCE /\ pgcguard.INDEX = pgcpublic.INDEX
   -- if $(pgcguard.INDEX < pgcpublic.END)
+def $gc_worker_internal_attachment(S, pgcguard, pgcpublic) = true
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.SCAN = (pgcscan)
+  -- if ~((HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS)
+  -- if pgcscan.INDEX = $(pgcguard.INDEX + 1) /\ pgcscan.END = pgcpublic.END
+def $gc_worker_internal_attachment(S, pgcguard, pgcpublic) = true
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.SCAN = (pgcscan)
+  -- if (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS
+  -- if $(pgcscan.INDEX <= pgcguard.INDEX) /\ pgcscan.END = pgcpublic.END
+  -- if pgcguard.INDEX = S.GC.SCAN.INDEX
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
+  -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
+def $gc_worker_internal_attachment(S, pgcguard, pgcpublic) = false -- otherwise
 ;; zend_get_executed_scope stops at the internal Fiber::resume/throw frame.
 ;; Its builtin class has no user-class origin and grants no nonpublic access.
 def $gc_worker_guard_scope(S, pgcguard) = eps
@@ -438,7 +458,8 @@ def $gc_worker_takeover(S, pgcplan) = $gc_worker_start_vm(S_running, n, pfiber_b
   -- if pgcworker.GUARD = (pgcguard)
   -- if pgcguard.PUBLIC = (pgcpublic)
   -- if pfiber.VM = (pfibervm)
-  -- if S_caller = $gc_replace($gc_worker_start_buffer(S, pgcplan, true), pgcplan, GC_WORKER_WAIT n pgcplan)
+  -- if pgcplan_next = pgcplan[.SCAN = ({INDEX $(pgcguard.INDEX + 1), END pgcpublic.END})]
+  -- if S_caller = $gc_replace($gc_worker_start_buffer(S, pgcplan_next, true), pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
   -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ}
   -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
   -- if pgcguard_new = pgcguard[.SOURCE = pgcplan.CALL[.PENDING = eps]][.PUBLIC = (pgcpublic[.API = pfiberapi][.SOURCE = pgcplan.CALL[.PENDING = eps]])]
@@ -448,20 +469,22 @@ def $gc_worker_takeover(S, pgcplan) = $gc_worker_start_vm(S_running, n, pfiber_b
 
 ;; The real local loop can finish before visiting a newly marked low slot.
 ;; This outcome neither calls that destructor nor adds it to the DONE prefix.
-def $gc_worker_internal_progress(S, pgcplan, pgcpublic, eps) = eps
-def $gc_worker_internal_progress(S, pgcplan, pgcpublic, pnode :: pnode_tail*) = (GC_SKIPPED pnode) :: $gc_worker_internal_progress(S, pgcplan, pgcpublic, pnode_tail*)
+def $gc_worker_internal_progress(S, pgcplan, eps) = eps
+def $gc_worker_internal_progress(S, pgcplan, pnode :: pnode_tail*) = (GC_SKIPPED pnode) :: $gc_worker_internal_progress(S, pgcplan, pnode_tail*)
   -- if ~(pnode <- S.ALLOCATIONS) \/ ~$destructor_uncalled_node(S, pnode) \/ ~$gc_marked(S, pnode)
-def $gc_worker_internal_progress(S, pgcplan, pgcpublic, pnode :: pnode_tail*) = (GC_UNVISITED pnode pgcpublic.INDEX pgcpublic.END) :: $gc_worker_internal_progress(S, pgcplan, pgcpublic, pnode_tail*)
-  -- if pnode <- S.ALLOCATIONS /\ $destructor_uncalled_node(S, pnode) /\ $gc_marked(S, pnode)
+def $gc_worker_internal_progress(S, pgcplan, pnode :: pnode_tail*) = (GC_UNVISITED pnode) :: $gc_worker_internal_progress(S, pgcplan, pnode_tail*)
+  -- if $gc_unvisited_valid(S, pgcplan, pnode)
+def $gc_unvisited_valid(S, pgcplan, pnode) = true
+  -- if pgcplan.SCAN = (pgcscan)
+  -- if $(pgcscan.INDEX > 0) /\ $(pgcscan.INDEX <= pgcscan.END)
   -- if $gc_slot_find(pgcplan.BUFFER, pnode, 0) = (n)
-  -- if $(n < pgcpublic.INDEX) \/ $(n >= pgcpublic.END)
-def $gc_steps_valid(S, pnode :: pnode_tail*, (GC_UNVISITED pnode n_start n_end) :: pgcprogress*) = $gc_steps_valid(S, pnode_tail*, pgcprogress*)
-  -- if $(n_start <= n_end)
+  -- if $(n < pgcscan.INDEX) \/ $(n >= pgcscan.END)
+  -- if pnode <- S.ALLOCATIONS /\ $destructor_uncalled_node(S, pnode) /\ $gc_marked(S, pnode)
+def $gc_unvisited_valid(S, pgcplan, pnode) = false -- otherwise
+def $gc_steps_valid(S, pnode :: pnode_tail*, (GC_UNVISITED pnode) :: pgcprogress*) = $gc_steps_valid(S, pnode_tail*, pgcprogress*)
   -- if S.GC.PLAN = (pgcplan)
-  -- if $gc_slot_find(pgcplan.BUFFER, pnode, 0) = (n)
-  -- if $(n < n_start) \/ $(n >= n_end)
-  -- if pnode <- S.ALLOCATIONS /\ $destructor_uncalled_node(S, pnode) /\ $gc_marked(S, pnode)
-def $gc_step_done((GC_UNVISITED pnode n_start n_end) :: pgcprogress*) = $gc_step_done(pgcprogress*)
+  -- if $gc_unvisited_valid(S, pgcplan, pnode)
+def $gc_step_done((GC_UNVISITED pnode) :: pgcprogress*) = $gc_step_done(pgcprogress*)
 def $gc_worker_internal_pending(S, pgcpublic, pgcplan) = S -- if pgcpublic.PENDING = eps
 def $gc_worker_internal_pending(S, pgcpublic, pgcplan) = $gc_worker_plan_set($fiber_close_chain(S, n_error, pgcplan.CALL.PENDING), pgcplan[.CALL.PENDING = (n_error)])
   -- if pgcpublic.PENDING = (n_error)
@@ -479,7 +502,7 @@ def $gc_worker_internal_next(S, pgcpublic) = $gc_worker_internal_idle(S, pgcpubl
   -- if $gc_worker_scan_target(S, pgcpublic.INDEX, pgcpublic.END) = eps
 def $gc_worker_internal_idle(S, pgcpublic) = $gc_worker_idle($gc_worker_plan_set(S_pending, pgcplan_done), pgcpublic.API.OBJECT, pgcplan_done)
   -- if S.GC.PLAN = (pgcplan)
-  -- if pgcprogress* = $gc_worker_internal_progress(S, pgcplan, pgcpublic, pgcplan.DTORS)
+  -- if pgcprogress* = $gc_worker_internal_progress(S, pgcplan, pgcplan.DTORS)
   -- if S_clear = S[.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, pgcpublic.INDEX, pgcpublic.END, 0)]
   -- if S_pending = $gc_worker_internal_pending(S_clear, pgcpublic, pgcplan)
   -- if S_pending.GC.PLAN = (pgcplan_pending)

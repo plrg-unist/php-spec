@@ -7,6 +7,7 @@ dec $gc_eligible_nodes(pgcslot*) : pnode*
 dec $gc_snapshot_slot(pgcslot, pnode*) : pgcslot
 dec $gc_snapshot_slots(pgcslot*, pnode*) : pgcslot*
 dec $gc_residual_overlap(pstate) : bool
+dec $gc_plan_scan_valid(pgcplan) : bool
 dec $gc_physical_nodes(pgcslot*) : pnode*
 dec $gc_slot_set(pgcslot*, nat, pgcslot) : pgcslot*
 dec $gc_slot_find(pgcslot*, pnode, nat) : nat?
@@ -526,7 +527,7 @@ def $gc_step_done((GC_CALLED pnode) :: pgcprogress*) = pnode :: $gc_step_done(pg
 def $gc_step_done((GC_SKIPPED pnode) :: pgcprogress*) = $gc_step_done(pgcprogress*)
 def $gc_tables_valid(S, eps, pnode*) = true
 def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobjecttable.OBJECT < |S.OBJECTS|) /\ $(pobjecttable.TABLE < |S.ARRAYS|) /\ (HOBJECT pobjecttable.OBJECT) <- pnode* /\ (HARRAY pobjecttable.TABLE) <- pnode* /\ $gc_tables_valid(S, pobjecttable_tail*, pnode*))
-def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, INDEX 0, STEPS eps, DONE eps}
+def $gc_plan(S, pgccall) = {CALL pgccall, GRAPH H, TABLES S.OBJECTTABLES, CALLED S.DESTRUCTION.CALLED, PROXIES hedge_proxy*, COUNTED pnode_counted*, BUFFER pgc_white.BUFFER, CANDIDATES pnode_candidates*, DTORS pnode_dtors*, FREESET pnode_free*, SCAN eps, INDEX 0, STEPS eps, DONE eps}
   -- if H = $gc_graph(S)
   -- if hedge_proxy* = $gc_proxy_edges(S.OBJECTTABLES, H.NODES)
   -- if pgc_start = $gc_compact(S.GC)
@@ -595,6 +596,7 @@ def $gc_done_prefix(S, pgcplan) = true
 def $gc_done_prefix(S, pgcplan) = false -- otherwise
 def $gc_plan_live(S, pgcplan) = true
   -- if S.GC.PLAN = (pgcplan) /\ $gc_call_live(S, pgcplan.CALL)
+  -- if $gc_plan_scan_valid(pgcplan)
   -- if $heap_valid(pgcplan.GRAPH) /\ $heap_unique(pgcplan.CANDIDATES)
   -- if pgcplan.CANDIDATES = $gc_nodes(pgcplan.BUFFER)
   -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
