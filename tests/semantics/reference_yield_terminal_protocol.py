@@ -125,7 +125,7 @@ $call_task_valid(S_frame,RETURN_NULL)
                    '$generator_close_regions(S_request,porigin_request) =/= eps',
                    '~$generator_destructor_request_ready(S_request,pdestructionrelease,HOBJECT n_generator)',
                    'S_rejected = $drive_steps(S_request,1)',
-                   'S_rejected.COMPLETION = UNSUPPORTED "Generator last-owner release during terminal cleanup"',
+                   'S_rejected.COMPLETION = UNSUPPORTED "Generator force-close at request end"',
                    '$close_outputs(S_request.EVENTS) = $ptascii("C|7|")',
                    '$close_outputs(S_rejected.EVENTS) = $close_outputs(S_request.EVENTS)']
         return checks

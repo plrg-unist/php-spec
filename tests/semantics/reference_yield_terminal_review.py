@@ -8,7 +8,7 @@ UNSUPPORTED = {
 class Request328{function __destruct(){}}
 function &terminal328(&$value){try{yield $value;}finally{echo "F";}}
 $value=7;$generator=terminal328($value);echo "C|",$generator->current(),"|";
-''', b'C|7|F', 'Generator last-owner release during terminal cleanup', 0),
+''', b'C|7|F', 'Generator force-close at request end', 0),
 }
 
 
