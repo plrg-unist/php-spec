@@ -131,4 +131,7 @@ original distinguishes the cached mask from changed shared INI; the earlier
 reporting original remains a separate observation. The held-guard group also
 checks admission of the real saved C root after its original caller retires.
 Compilation with 292 modules passes; earlier source, cached-state and initialization
-cuts retain their identities in the ledger. Current-parent composition is pending.
+cuts retain their identities in the ledger. The actual318 parent composition
+passes strict compilation/initialization with298 modules and one fresh exact
+reporting-Fiber/handler original: nested collection stays busy0, masks restore,
+and the real cycle count1/weak retirement completes.

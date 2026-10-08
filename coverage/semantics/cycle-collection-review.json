@@ -1,7 +1,7 @@
 {
   "version": 1,
   "target": "PHP8.5.10 CLI NTS64, error_reporting30719",
-  "scope": "Independently accepted bounded ordinary collection301 and private hidden collector-Fiber317; separate parent compositions retain their cuts. Wider GC and complete core remain open.",
+  "scope": "Independently accepted bounded ordinary collection301 and bounded hidden collector-Fiber317; separate parent compositions retain their cuts. Wider GC and complete core remain open.",
   "accepted_prerequisites": {
     "eager270_source_sha256": "d85fc9f4f1df452d90fc3f7be8a6b198cfdc9bc0e7a7524fceb51fb427aad908",
     "weak296_source_patch_sha256": "2d86a99f0acd6b7a2faef4fddc0802971f30e2a5cb307a921db0feee07875aef",
@@ -312,7 +312,7 @@
     "recovery": "python3 tests/semantics/cycle_collection_sources.py --match readonly-clone-reinitialized-self-slots-remain-real-cycles"
   },
   "collector_fiber317": {
-    "status": "independently accepted bounded private slice; current-parent composition pending",
+    "status": "independently accepted bounded slice; actualff1b/297 parent composition passes with298 modules",
     "test_root": ".tools/gc-fiber-current317-18",
     "implementation_revision": "0f18443d217c33d81dc2ef081d795488e4752caf",
     "modules": 292,
@@ -381,6 +381,22 @@
       "python3 tests/semantics/cycle_collection_sources.py --start-at collector-worker-identity-and-idle-reuse --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces",
       "python3 tests/semantics/cycle_collection_review.py --start-at collector-detached-reentry-review-18 --exclude-match collector-detached-pending-review-18",
       "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-cached-vm-keeps-reporting-and-one-parked-pass --case collector-detached-guard-outlives-its-real-caller"
-    ]
+    ],
+    "current_parent_composition": {
+      "test_root": ".tools/gc-fiber-current297-18",
+      "parent_revision": "ff1b7a888ec27dde291ecef62b0b6633dd7772ed",
+      "tested_revision": "871bcf9a4211b2b754e50185abc64ea3b390c561",
+      "modules": 298,
+      "compiler_report": ".tools/gc-collector-18-compiler-bgx9qnfb/report.json",
+      "initializer_report": ".tools/gc-collector-18-init-twa8ol0p/report.json",
+      "source_report": ".tools/shutdown-review-56tr7yyu/report.json",
+      "source_input_report": ".tools/gc-collector-18-source-zqnma0r4/report.json",
+      "native_report": ".tools/gc-fiber-current-16/.tools/gc-collector-native-16-ulp6cq09/report.json",
+      "source_id": "collector-nested-core-reporting-keeps-global-busy",
+      "source_stdout": "D|dep|0|old|30719|1|gone|END",
+      "scope": "Preserves313 reporting root/target,311 eager release, source316/320 and all six318 dynamic-property rule files. A nested reporting Fiber emits a handled conversion deprecation, whose callback sees global GC busy0; child return and caller masks restore, then the real cycle retires with count1 and weak null.",
+      "result": "Strict algorithm/structure and initialization true newline; one fresh checked program normal0 exact native/model tuple. Empty stderr, exit0/no timeout, empty wrapper groups and stable inputs/HEAD/status. Earlier13 source cuts and78/68 state cuts are not renewed; copied tools add no rebuild credit.",
+      "recovery": "python3 tests/semantics/cycle_collection_review.py --match collector-nested-core-reporting-keeps-global-busy"
+    }
   }
 }

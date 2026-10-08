@@ -450,11 +450,13 @@ object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Its retained30-source/606-premise and private3/45 cuts remain separate
 from the new captured-source/66-premise and readonly-clone/GC compositions.
 The earlier 291-module strict compiler/initialization and readonly clone original pass;
-the larger nested-Generator source retains a zero-credit 90s timeout. Private
-module 317 adds actual cached collector Fibers, global parked collection, detached
+the larger nested-Generator source retains a zero-credit 90s timeout.
+Module 317 adds actual cached collector Fibers, global parked collection, detached
 target/pending guards, replacement batches and authenticated callbackless idle
 retirement. Thirteen exact originals and two independent strict-SL groups with
-78/68 premises pass at their recorded cuts. Larger exception-source 60s timeouts
+78/68 premises pass at their recorded cuts. The actual318 parent passes strict
+298 compilation/initialization and one fresh reporting-Fiber/handler source,
+including nested busy GC0 and real count1/weak retirement. Larger exception-source 60s timeouts
 remain separate from the compact trace/pending controls. Wider internal graphs,
 public idle-worker resumption, detached zero-owner guard retirement, automatic
 thresholds and wider freeing remain open.
