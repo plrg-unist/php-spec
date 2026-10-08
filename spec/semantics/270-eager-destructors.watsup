@@ -770,7 +770,7 @@ def $eager_fatal_reported(S, pcompletion) = true
   -- if ~$declaration_early(S.DECLARATIONS, porigin, PPCLASS)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata)
 def $eager_fatal_reported(S, pcompletion) = false -- otherwise
-def $eager_fatal_ready(S, pcompletion) = (($destructor_bailout(pcompletion) \/ $eager_fatal_reported(S, pcompletion)) /\ $eager_fatal_target(S) =/= eps /\ ($frames_roots($eager_fatal_frame(S) :: S.FRAMES) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE)) =/= eps)
+def $eager_fatal_ready(S, pcompletion) = (($destructor_bailout(pcompletion) \/ $eager_fatal_reported(S, pcompletion)) /\ $eager_fatal_target(S) =/= eps /\ ($frames_roots($eager_fatal_frame(S) :: S.FRAMES) ++ $operand_nodes(S.RESULT) ++ $base_nodes(S.BASE)) =/= eps) -- otherwise
 def $eager_fatal_nodes(pdestructionfatal) = $frames_roots(pdestructionfatal.FRAME :: pdestructionfatal.FRAMES) ++ $operand_nodes(pdestructionfatal.VALUE) ++ $base_nodes(pdestructionfatal.BASE)
 ;; Handler registries and callback array/reference rows are borrowed lookup
 ;; evidence. Later queue writes cannot alter the interrupted selection input.
