@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module 374 unpacks arrays into ordinary method/array and captured START buffers.
+Per-pack named ordering, dereferenced value copies and nonowning completed history
+survive selector/pack retirement; copied C-root buffers authenticate their genuine
+outer API. Ordered unwind preserves active-pack, positional/EX(This)/named and
+direct Closure versus explicit invoke cleanup. Strict356, ten exact normals at
+9+1 cuts and 345 independent plus 296 author premises pass. Constant packs retain
+their genuine pool owner; a distinct dynamic-pack companion proves retired history.
+Initial elaboration/matching failures and pooled fixture assumptions retain zero
+affected credit. Traversable packs remain explicit Unsupported/zero agreement and
+required follow-on work; compound/lifecycle gaps and paused returns remain open.
+[Start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json).
+
 Module 370 executes simple RAW Fiber API array C-root callbacks, including start
 and constructor. RAW owns current members; frozen caches and C handlers borrow
 the receiver, with separate original/copied buffers. Saved states and actual
