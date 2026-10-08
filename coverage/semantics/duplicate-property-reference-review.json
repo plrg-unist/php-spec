@@ -423,7 +423,7 @@
     "scope": "Callback-producing last-owner previous reference wrappers without type sources retire on actual eager jobs. A fresh plain physical CV replaces only the target binding and masks its borrowed payload edge; the original wrapper has zero owners during callbacks. Live own-destructor object reads remain supported, and COMMIT installs the selected reference before normal/throw continuation. Shared wrappers or surviving payloads do not enter this staged path.",
     "engine": [
       "Zend/zend_vm_def.h: ZEND_FE_FETCH_RW retains selected reference before i_zval_ptr_dtor and installs it afterward",
-      "Zend/zend_variables.c: rc_dtor_func destroys the last reference payload before freeing its wrapper",
+      "Zend/zend_variables.c: zend_reference_destroy destroys ref->val before freeing the last reference wrapper",
       "Zend/zend_vm_def.h: ZEND_FETCH_GLOBALS; Zend/zend_hash.c: zend_proptable_to_symtable and reference-copy behavior"
     ],
     "native_first": {
@@ -470,6 +470,18 @@
       "duplicate-property-reference-dzawlebn: fixture sampled selected ownership before nested unset release finished; later operation boundary preserves the sole-owner assertion. Ignored unset-owner diagnostic observes (2,1,1,true) and earns zero agreement."
     ],
     "review": "properties_review_19 independently accepts pinned engine ordering, genuine wrapper/raw-CV separation, normal5 and separate136/139 reached cuts. Earlier duplicate-reference, array, descendant and typed-slot campaigns are not renewed.",
-    "remaining": "Released-CV mutation, raw retired-container reads, whole-GLOBALS snapshots during wrapper retirement, wider raw-pointer consumers, internal-close descendants and binding-time exit remain required. Released-CV scalar-write lifetime concerns are source-inferred only, with no native/model observation or engine-bug claim."
+    "remaining": "Released-CV mutation, raw retired-container reads, whole-GLOBALS snapshots during wrapper retirement, wider raw-pointer consumers, internal-close descendants and binding-time exit remain required. Released-CV scalar-write lifetime concerns are source-inferred only, with no native/model observation or engine-bug claim.",
+    "composition": {
+      "parent": "6848742a2",
+      "tested_cut": "ecd8e8745",
+      "modules": 341,
+      "compiler": {
+        "passed": true,
+        "raw": "wrapper-current341-sl-init1-attempt1/report.json",
+        "application_evaluations": 0,
+        "elapsed_seconds": 4.222
+      },
+      "review": "Actual CALLS354 Fiber parser/task/trace modules and manifest remain unchanged; SOURCE353 receiver/write and property-null tasks plus COMP270 allocation-edge graph hooks are preserved. Only tested wrapper semantics differ; normal5 and reached136/139 retain their original cuts."
+    }
   }
 }

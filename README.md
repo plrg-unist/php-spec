@@ -801,13 +801,15 @@ Private Generator cleanup now preserves the same per-slot timing in actual clean
 queues and parked Fiber VMs. Four further exact originals and 134/71 reached
 premises cover reversed slot order, two constraints on one cell, exception
 chaining, owner transfer and rejection of stale snapshots or duplicate queues.
-The current336 composition passes strict compilation.
+The336 composition passes strict compilation.
 Last-owner previous reference wrappers now retire through the actual cleanup
-queue before binding. A separate raw CV preserves safe live-object reads while
-the expired wrapper and its payload gain no owner; selected-reference installation
+queue before binding. A separate raw CV adds no payload owner; the original
+wrapper has zero owners during callbacks. Safe live-object reads remain available,
+and selected-reference installation
 remains atomic after throws. Five exact originals and 136/139 reached premises
 cover shared wrappers, typed descendants, exception chaining and expired-pointer
-refusals at separate cuts. Whole `$GLOBALS` snapshots during wrapper retirement
+refusals at separate cuts; the actual341 composition passes strict compilation.
+Whole `$GLOBALS` snapshots during wrapper retirement
 remain Unsupported.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

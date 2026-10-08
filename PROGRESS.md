@@ -878,7 +878,8 @@ native-first observations retain `f84fdab9d`. At `d3688fdf9`, 136/139 reached
 premises cover genuine wrapper release, masked raw storage, pending A/B chaining
 and refusal of whole `$GLOBALS` snapshots or expired borrowed-reference reads.
 Shared wrappers and surviving payloads decline this staged path. Earlier source,
-compiler and state cuts remain separate.
+compiler and state cuts remain separate. The actual341 join over `6848742a2`
+passes strict initialization at `ecd8e8745`.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
