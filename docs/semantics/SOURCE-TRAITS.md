@@ -264,6 +264,11 @@ scope, including private own methods and aliases absent from the later class.
 Three shutdown originals and115 supplied checkpoint conditions cover literal
 defaults and clone-shared statics;12 setup clauses are separate. The first Closure
 stays retired and cannot regain a live value or scope.
+If the later import also fails, its dead receipt still selects the first target
+after the authenticated first-owner failure, at the later birth prefix. Both
+owners retire; the first latent cache
+metadata remains distinct from live value/scope authority. One shutdown original
+and59 supplied rollback conditions pass, with6 setup clauses separate.
 Dependency fills in held/open compilation, broader differing-owner later births and
 wider failed-owner member/construction behavior retain explicit boundaries.
 Wider parameter-view full-source constructor, handler and variadic cases remain

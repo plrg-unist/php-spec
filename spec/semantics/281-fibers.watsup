@@ -1,3 +1,4 @@
+dec $fiber_start_core_actor(pstate) : bool
 dec $fiber_named_target(pfunction, ptbytes) : pnamedtarget
 dec $gc_worker_api(pfiberapi) : bool
 def $gc_worker_api(pfiberapi) = (pfiberapi.KIND = (INTRINSIC_GC_COLLECT))
@@ -205,6 +206,7 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("fiber")
   -- if $fiber_method(ptbytes) = (pintrinsic)
   -- if $ppfirstclass(phpType7*) /\ ~$fiber_static(pintrinsic)
+  -- if pintrinsic =/= INTRINSIC_FIBER_CONSTRUCT
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING ($ptascii("Fiber")))]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
@@ -262,10 +264,13 @@ def $fiber_receive_value(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if ~$api_special(S, pvalue)
   -- if $fiber_callback_resolution(S, pvalue) = HANDLERUNKNOWN text
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if ~pfiber.READY \/ $error_handler_callable(S, pvalue) =/= (true)
 def $fiber_receive_value(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "FiberError", $ptascii("Cannot call constructor twice"))
   -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
   -- if ~$api_special(S, pvalue)
-  -- if $fiber_callback_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
+  -- if $error_handler_callable(S, pvalue) = (true)
   -- if pconfigcall.OWNER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.READY
@@ -770,6 +775,7 @@ def $fiber_trace_type(pintrinsic) = $ptascii("->") -- if ~$fiber_static(pintrins
 ;; Each start/resume/throw activation consumes one global sequence number. A suspended continuation
 ;; must name its own last transfer, so a stale saved stack cannot be replayed.
 def $fiber_api_valid(S, pfiberapi) = true
+  -- if ~$fiber_start_core_actor(S)
   -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
   -- if $call_line_valid(S, (pfiberapi.SITE), pfiberapi.LINE)
   -- if $fiber_at(S, pfiberapi.OBJECT) = (pfiber)
@@ -974,7 +980,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "
 def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Non-static method Fiber::") ++ $fiber_method_name(pintrinsic) ++ $ptascii("() cannot be called statically"), z)
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("fiber")
   -- if $fiber_method(ptbytes) = (pintrinsic)
-  -- if ~$fiber_static(pintrinsic) /\ ~$ppfirstclass(phpType7*)
+  -- if ~$fiber_static(pintrinsic) /\ (~$ppfirstclass(phpType7*) \/ pintrinsic = INTRINSIC_FIBER_CONSTRUCT)
 def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Non-static method Fiber::start() cannot be called statically"), z)
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("fiber")
   -- if $ptlc(ptbytes) = $ptascii("start")

@@ -26,6 +26,10 @@ CASES = {
     'descendants-guard':'review-descendant-order19',
     'typed-slot':'review-typed-slot-two-sources-throw19',
     'typed-slot-fiber':'review-typed-slot-fiber19',
+    'generator-typed-slot':'review-generator-typed-slot-throw19',
+    'generator-typed-slot-fiber':'review-generator-typed-slot-fiber19',
+    'wrapper':'review-prior-wrapper-live-throw19',
+    'wrapper-array':'review-prior-wrapper-array-throws19',
 }
 PREFIX = r'''
 dec $dupref_is_output(pevent) : bool
@@ -45,6 +49,61 @@ def $dupref_descendant_phase(S, ptbytes) = true
   -- if $destructor_method(S, n_previous) = eps
   -- if $dupref_output(S.EVENTS) = ptbytes
 def $dupref_descendant_phase(S, ptbytes) = false -- otherwise
+dec $dupref_generator_jobs(pdestructionjob*) : bool
+dec $dupref_generator_job(pdestructionjob) : bool
+dec $dupref_generator_task(ptask) : pgenrelease?
+dec $dupref_generator_tasks(ptask*) : pgenrelease?
+dec $dupref_generator_frames(pframe*) : pgenrelease?
+dec $dupref_generator_release(ptask*, pframe*) : pgenrelease?
+dec $dupref_generator_plan_task(ptask) : pgenclose?
+dec $dupref_generator_plan_tasks(ptask*) : pgenclose?
+dec $dupref_generator_plan_frames(pframe*) : pgenclose?
+dec $dupref_generator_is_release(ptask) : bool
+dec $dupref_generator_without_tasks(ptask*) : ptask*
+dec $dupref_generator_without_frames(pframe*) : pframe*
+def $dupref_generator_job(DESTRUCTION_PROP_SOURCE pproptypesource n_cell) = true
+def $dupref_generator_job(pdestructionjob) = false -- otherwise
+def $dupref_generator_jobs(eps) = false
+def $dupref_generator_jobs(pdestructionjob :: pdestructionjob_tail*) = ($dupref_generator_job(pdestructionjob) \/ $dupref_generator_jobs(pdestructionjob_tail*))
+def $dupref_generator_task(GENERATOR_CLOSE_RELEASE pgenrelease) = (pgenrelease)
+  -- if $dupref_generator_jobs(pgenrelease.JOBS)
+def $dupref_generator_task(ptask) = eps -- otherwise
+def $dupref_generator_tasks(eps) = eps
+def $dupref_generator_tasks(ptask :: ptask_tail*) = (pgenrelease)
+  -- if $dupref_generator_task(ptask) = (pgenrelease)
+def $dupref_generator_tasks(ptask :: ptask_tail*) = $dupref_generator_tasks(ptask_tail*)
+  -- if $dupref_generator_task(ptask) = eps
+def $dupref_generator_frames(eps) = eps
+def $dupref_generator_frames(pframe :: pframe_tail*) = (pgenrelease)
+  -- if $dupref_generator_tasks(pframe.TODO) = (pgenrelease)
+def $dupref_generator_frames(pframe :: pframe_tail*) = $dupref_generator_frames(pframe_tail*)
+  -- if $dupref_generator_tasks(pframe.TODO) = eps
+def $dupref_generator_release(ptask*, pframe*) = (pgenrelease)
+  -- if $dupref_generator_tasks(ptask*) = (pgenrelease)
+def $dupref_generator_release(ptask*, pframe*) = $dupref_generator_frames(pframe*)
+  -- if $dupref_generator_tasks(ptask*) = eps
+def $dupref_generator_plan_task(GENERATOR_CLOSE_DONE pgenclose) = (pgenclose)
+def $dupref_generator_plan_task(GENERATOR_CLOSE_ENTER pgenclose) = (pgenclose)
+def $dupref_generator_plan_task(ptask) = eps -- otherwise
+def $dupref_generator_plan_tasks(eps) = eps
+def $dupref_generator_plan_tasks(ptask :: ptask_tail*) = (pgenclose)
+  -- if $dupref_generator_plan_task(ptask) = (pgenclose)
+def $dupref_generator_plan_tasks(ptask :: ptask_tail*) = $dupref_generator_plan_tasks(ptask_tail*)
+  -- if $dupref_generator_plan_task(ptask) = eps
+def $dupref_generator_plan_frames(eps) = eps
+def $dupref_generator_plan_frames(pframe :: pframe_tail*) = (pgenclose)
+  -- if $dupref_generator_plan_tasks(pframe.TODO) = (pgenclose)
+def $dupref_generator_plan_frames(pframe :: pframe_tail*) = $dupref_generator_plan_frames(pframe_tail*)
+  -- if $dupref_generator_plan_tasks(pframe.TODO) = eps
+def $dupref_generator_is_release(GENERATOR_CLOSE_RELEASE pgenrelease) = true
+def $dupref_generator_is_release(ptask) = false -- otherwise
+def $dupref_generator_without_tasks(eps) = eps
+def $dupref_generator_without_tasks(ptask :: ptask_tail*) = $dupref_generator_without_tasks(ptask_tail*)
+  -- if $dupref_generator_is_release(ptask)
+def $dupref_generator_without_tasks(ptask :: ptask_tail*) = ptask :: $dupref_generator_without_tasks(ptask_tail*)
+  -- if ~$dupref_generator_is_release(ptask)
+def $dupref_generator_without_frames(eps) = eps
+def $dupref_generator_without_frames(pframe :: pframe_tail*) = pframe[.TODO = $dupref_generator_without_tasks(pframe.TODO)] :: $dupref_generator_without_frames(pframe_tail*)
 dec $dupref_phase(pstate, nat) : bool
 def $dupref_phase(S, 0) = true
   -- if S.TODO = (FOREACH_NEXT n (HCELL n_receiver) statement porigin? z) :: ptask_tail*
@@ -155,6 +214,30 @@ def $dupref_phase(S, 24) = true
   -- if $fiber_at(S, n_fiber) = (pfiber)
   -- if pfiber.STATUS = FIBER_SUSPENDED
 def $dupref_phase(S, 27) = $dupref_descendant_phase(S, $ptascii("A|B|type|"))
+def $dupref_phase(S, 28) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if $dupref_output(S.EVENTS) = $ptascii("A|")
+  -- if $dupref_generator_release(S.TODO, S.FRAMES) = (pgenrelease)
+def $dupref_phase(S, 29) = true
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob*
+def $dupref_phase(S, 30) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if $dupref_output(S.EVENTS) = $ptascii("A|B|type|")
+  -- if $dupref_generator_release(S.TODO, S.FRAMES) = (pgenrelease)
+def $dupref_phase(S, 31) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $destructor_operation_for(S) = eps
+  -- if $destructor_context_call(pcallcontext, S.CURRENT, S.FRAMES) = (pdestructorcall)
+  -- if pdestructorcall.OPERATION = (pdestructionoperation)
+  -- if pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind
+  -- if pforeachbind.WRAPPER =/= eps
+  -- if $dupref_output(S.EVENTS) = $ptascii("old|")
+  -- if $objectprops_at(S.OBJECTPROPS, pforeachbind.OBJECT) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, $ptascii("x")) = (ppropertyslot_selected)
+  -- if ppropertyslot_selected.STATE = PROP_UNSET
 def $dupref_phase(S, n) = false -- otherwise
 dec $dupref_seek(pstate, nat, nat) : pstate
 def $dupref_seek(S, n_phase, n) = S -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
@@ -590,7 +673,7 @@ def container_assertions(initial, expected, pending, descendants=False):
         '$heap_owners($heap_graph(S_release), HCELL pforeachbind.NEW) = 2',
         '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)',
         '$call_task_valid(S_release, FOREACH_BIND_RELEASE pforeachbind)',
-        'S_wrapper = S_release[.REFCELLS = pforeachbind.OLD :: S_release.REFCELLS]',
+        'S_wrapper = S_release[.REFCELLS = pforeachbind.OLD :: S_release.REFCELLS][.HELD = S_release.HELD ++ [HCELL pforeachbind.OLD]]',
         '$heap_valid($heap_graph(S_wrapper))',
         '$foreach_bind_capture(S_wrapper, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
         '~$call_task_valid(S_wrapper, FOREACH_BIND_RELEASE pforeachbind)',
@@ -897,6 +980,304 @@ def typed_slot_fiber_assertions(initial, expected):
         '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
 
 
+def generator_typed_slot_assertions(initial, expected):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_child', 28),
+        '$dupref_generator_release(S_child.TODO, S_child.FRAMES) = (pgenrelease)',
+        'pgenrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell) :: pdestructionjob_tail*',
+        'S_child.PROPREFS = [{CELL n_cell, SOURCES ([pproptypesource_second, pproptypesource_first])}]',
+        'pproptypesource_first = OBJECT_PROP_SOURCE n_parent $ptascii("first") ppropertyid_first',
+        'pproptypesource_second = OBJECT_PROP_SOURCE n_parent $ptascii("second") ppropertyid_second',
+        '(DESTRUCTION_PROP_SOURCE pproptypesource_second n_cell) <- pdestructionjob_tail*',
+        '(DESTRUCTION_HANDLE n_parent) <- pdestructionjob_tail*',
+        '~((HOBJECT n_parent) <- S_child.ALLOCATIONS)',
+        '$objectprops_at(S_child.OBJECTPROPS, n_parent) = eps',
+        '$property_generator_source_count(S_child, n_cell, pproptypesource_first) = 1',
+        '$property_generator_source_count(S_child, n_cell, pproptypesource_second) = 1',
+        '$property_source_queues($property_release_queues(S_child), n_cell, pproptypesource_first) = 0',
+        '$generator_close_release_valid(S_child, pgenrelease)',
+        '$gc_handle_all(S_child, n_parent) = 1',
+        '$gc_retired_valid(S_child, n_parent)',
+        '$propref_source_valid(S_child, n_cell, pproptypesource_first)',
+        '$propref_source_valid(S_child, n_cell, pproptypesource_second)',
+        '$heap_owners($heap_graph(S_child), HCELL n_cell) = 3',
+        '$destruction_job_node(DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell) = (HCELL n_cell)',
+        'S_without = S_child[.TODO = $dupref_generator_without_tasks(S_child.TODO)][.FRAMES = $dupref_generator_without_frames(S_child.FRAMES)]',
+        'S_without.DESTRUCTION.CALLS = S_child.DESTRUCTION.CALLS',
+        '$property_generator_source_count(S_without, n_cell, pproptypesource_first) = 0',
+        '~$propref_source_queued(S_without, n_cell, pproptypesource_first)',
+        '~$proprefs_valid(S_without)',
+        '$dupref_generator_plan_frames(S_child.FRAMES) = (pgenclose)',
+        'pframe_snapshot = S_child.FRAMES[0]',
+        'pframe_receipt = pframe_snapshot[.TODO = [GENERATOR_CLOSE_RELEASE pgenrelease]]',
+        'pgenclose_receipt = pgenclose[.FRAME = (pframe_receipt)]',
+        'S_receipt = S_without[.TODO = [GENERATOR_CLOSE_ENTER pgenclose_receipt, GENERATOR_CLOSE_DONE pgenclose_receipt]]',
+        '$property_generator_source_count(S_receipt, n_cell, pproptypesource_first) = 0',
+        '~$propref_source_queued(S_receipt, n_cell, pproptypesource_first)',
+        'S_duplicate = S_child[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: S_child.TODO]',
+        '$property_generator_source_count(S_duplicate, n_cell, pproptypesource_first) = 2',
+        '~$propref_source_queued(S_duplicate, n_cell, pproptypesource_first)',
+        '~$generator_close_jobs_valid(S_duplicate, pgenrelease.JOBS)',
+        '~$generator_close_jobs_valid(S_child, (DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell) :: pgenrelease.JOBS)',
+        '~$generator_close_jobs_valid(S_child, [DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell])',
+        '~$generator_close_jobs_valid(S_child, (DESTRUCTION_PROP_SOURCE (CLASS_PROP_SOURCE ppropertyid_first) n_cell) :: pdestructionjob_tail*)',
+        '~$generator_close_jobs_valid(S_child, (DESTRUCTION_PROP_SOURCE pproptypesource_first (|S_child.STORE|)) :: pdestructionjob_tail*)',
+        'n_handle = S_child.DESTRUCTION.HANDLES[n_parent]',
+        'S_free = S_child[.DESTRUCTION.FREE = n_handle :: S_child.DESTRUCTION.FREE]',
+        '~$property_retired_source_valid(S_free, n_cell, pproptypesource_first)',
+        '~$generator_close_jobs_valid(S_free, pgenrelease.JOBS)',
+        *seek('S_child', 'S_first', 29),
+        'S_first.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_first) :: ptask_first_tail*',
+        'pgenrelease_first.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource_first n_cell) :: pdestructionjob_first_tail*',
+        'pgenrelease_first.PENDING = (n_pending)',
+        '$throwable_live(S_first, n_pending)',
+        'S_zero = $drive_steps(S_first, 0)',
+        'S_zero.COMPLETION = BUDGET',
+        'S_zero.TODO = S_first.TODO /\\ S_zero.PROPREFS = S_first.PROPREFS',
+        'S_one_found = $drive_steps(S_first, 1)',
+        'S_one_found.COMPLETION = BUDGET',
+        'S_one = S_one_found[.COMPLETION = NORMAL]', *valid('S_one'),
+        'S_one.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_first[.JOBS = (DESTRUCTION_VALUE (HCELL n_cell)) :: pdestructionjob_first_tail*]) :: ptask_first_tail*',
+        'S_one.PROPREFS = [{CELL n_cell, SOURCES ([pproptypesource_second])}]',
+        '~$propref_source_valid(S_one, n_cell, pproptypesource_first)',
+        '$propref_source_valid(S_one, n_cell, pproptypesource_second)',
+        '$heap_owners($heap_graph(S_one), HCELL n_cell) = 3',
+        'S_value_found = $drive_steps(S_one, 1)',
+        'S_value_found.COMPLETION = BUDGET',
+        'S_value = S_value_found[.COMPLETION = NORMAL]', *valid('S_value'),
+        'S_value.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_value) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_value) :: (GENERATOR_CLOSE_RELEASE pgenrelease_value) :: ptask_value_tail*',
+        'pdestructionrelease_value.JOBS = [DESTRUCTION_VALUE (HCELL n_cell)]',
+        'pdestructionoperation_value.SOURCE = GENERATOR_CLOSE_RELEASE pgenrelease_first[.JOBS = (DESTRUCTION_VALUE (HCELL n_cell)) :: pdestructionjob_first_tail*]',
+        'pgenrelease_value.JOBS = pdestructionjob_first_tail*',
+        'pgenrelease_value.PENDING = (n_pending)',
+        '$destructor_release_valid(S_value, pdestructionrelease_value)',
+        '$propref_source_valid(S_value, n_cell, pproptypesource_second)',
+        '$heap_owners($heap_graph(S_value), HCELL n_cell) = 3',
+        'S_drop_found = $drive_steps(S_value, 1)',
+        'S_drop_found.COMPLETION = BUDGET',
+        'S_drop = S_drop_found[.COMPLETION = NORMAL]', *valid('S_drop'),
+        'S_drop.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_value[.JOBS = eps]) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_value) :: (GENERATOR_CLOSE_RELEASE pgenrelease_value) :: ptask_value_tail*',
+        '$heap_owners($heap_graph(S_drop), HCELL n_cell) = 2',
+        *seek('S_drop', 'S_second_child', 30),
+        'S_second_child.CURRENT = (pcallcontext)',
+        '$destructor_context_call(pcallcontext, S_second_child.CURRENT, S_second_child.FRAMES) = (pdestructorcall)',
+        'pdestructorcall.PENDING = (n_pending)',
+        'S_second_child.STORE[n_cell] = DEFINED (PINT 7)',
+        'S_second_child.PROPREFS = [{CELL n_cell, SOURCES ([pproptypesource_second])}]',
+        '$propref_source_valid(S_second_child, n_cell, pproptypesource_second)',
+        *seek('S_second_child', 'S_second', 29),
+        'S_second.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_second) :: ptask_second_tail*',
+        'pgenrelease_second.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource_second n_cell) :: pdestructionjob_second_tail*',
+        'pgenrelease_second.PENDING = (n_final)',
+        'n_final =/= n_pending',
+        '$throwable_previous_id(S_second, n_final) = (n_pending)',
+        'S_detached_found = $drive_steps(S_second, 1)',
+        'S_detached_found.COMPLETION = BUDGET',
+        'S_detached = S_detached_found[.COMPLETION = NORMAL]', *valid('S_detached'),
+        'S_detached.PROPREFS = eps',
+        'S_detached.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_second[.JOBS = (DESTRUCTION_VALUE (HCELL n_cell)) :: pdestructionjob_second_tail*]) :: ptask_second_tail*',
+        '$heap_owners($heap_graph(S_detached), HCELL n_cell) = 2',
+        'S_forged = S_detached[.PROPREFS = S_second.PROPREFS]',
+        '~$proprefs_valid(S_forged)',
+        'S_done = $drive(S_detached, 2048)',
+        'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+        'S_done.PROPREFS = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+
+
+def generator_typed_slot_fiber_assertions(initial, expected):
+    return ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_parked', 24),
+        '$lookup(S_parked.ENV, $ptascii("fiber")) = (n_cv)',
+        'S_parked.STORE[n_cv] = DEFINED (POBJECT n_fiber)',
+        '$fiber_at(S_parked, n_fiber) = (pfiber)',
+        'pfiber.STATUS = FIBER_SUSPENDED', 'pfiber.VM = (pfibervm)',
+        '$dupref_generator_release(pfibervm.TODO, pfibervm.FRAMES) = (pgenrelease)',
+        'pgenrelease.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob_tail*',
+        'pproptypesource = OBJECT_PROP_SOURCE n_parent $ptascii("number") ppropertyid',
+        '(DESTRUCTION_HANDLE n_parent) <- pdestructionjob_tail*',
+        '~((HOBJECT n_parent) <- S_parked.ALLOCATIONS)',
+        '$property_source_queues($property_release_queues(S_parked), n_cell, pproptypesource) = 0',
+        '$($property_generator_source_tasks(S_parked.TODO, n_cell, pproptypesource) + $property_generator_source_frames(S_parked.FRAMES, n_cell, pproptypesource)) = 0',
+        '$($property_generator_source_tasks(pfibervm.TODO, n_cell, pproptypesource) + $property_generator_source_frames(pfibervm.FRAMES, n_cell, pproptypesource)) = 1',
+        '$property_generator_source_count(S_parked, n_cell, pproptypesource) = 1',
+        '$propref_source_queued(S_parked, n_cell, pproptypesource)',
+        '$propref_source_valid(S_parked, n_cell, pproptypesource)',
+        '$gc_retired_valid(S_parked, n_parent)',
+        'S_vm = $fiber_vm_restore(S_parked, pfibervm)[.ACTIVEFIBER = (n_fiber)]',
+        '$property_generator_source_count(S_vm, n_cell, pproptypesource) = 1',
+        '$propref_source_valid(S_vm, n_cell, pproptypesource)',
+        '$heap_valid($heap_graph(S_vm))',
+        'pfibervm_bad = pfibervm[.TODO = $dupref_generator_without_tasks(pfibervm.TODO)][.FRAMES = $dupref_generator_without_frames(pfibervm.FRAMES)]',
+        'pfibervm_bad.DESTRUCTORCALLS = pfibervm.DESTRUCTORCALLS',
+        'S_stale = $fiber_put(S_parked, n_fiber, pfiber[.VM = (pfibervm_bad)])',
+        '$property_generator_source_count(S_stale, n_cell, pproptypesource) = 0',
+        '~$propref_source_valid(S_stale, n_cell, pproptypesource)',
+        '~$proprefs_valid(S_stale)',
+        'pfibervm_duplicate = pfibervm[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: pfibervm.TODO]',
+        'S_duplicate = $fiber_put(S_parked, n_fiber, pfiber[.VM = (pfibervm_duplicate)])',
+        '$property_generator_source_count(S_duplicate, n_cell, pproptypesource) = 2',
+        '~$propref_source_queued(S_duplicate, n_cell, pproptypesource)',
+        'S_two_vms = S_parked[.OBJECTS = S_parked.OBJECTS ++ [FIBER pfiber]][.ALLOCATIONS = S_parked.ALLOCATIONS ++ [HOBJECT (|S_parked.OBJECTS|)]]',
+        '$property_generator_source_count(S_two_vms, n_cell, pproptypesource) = 2',
+        '~$propref_source_queued(S_two_vms, n_cell, pproptypesource)',
+        'S_zero = $drive_steps(S_parked, 0)',
+        'S_zero.COMPLETION = BUDGET /\\ S_zero.OBJECTS = S_parked.OBJECTS /\\ S_zero.PROPREFS = S_parked.PROPREFS',
+        *seek('S_parked', 'S_slot', 29),
+        'S_slot.ACTIVEFIBER = (n_fiber)',
+        '$dupref_output(S_slot.EVENTS) = $ptascii("A|type|back|")',
+        'S_slot.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_slot) :: ptask_slot_tail*',
+        'pgenrelease_slot.JOBS = (DESTRUCTION_PROP_SOURCE pproptypesource n_cell) :: pdestructionjob_slot_tail*',
+        '$propref_source_valid(S_slot, n_cell, pproptypesource)',
+        'S_one_found = $drive_steps(S_slot, 1)',
+        'S_one_found.COMPLETION = BUDGET',
+        'S_one = S_one_found[.COMPLETION = NORMAL]', *valid('S_one'),
+        'S_one.PROPREFS = eps',
+        'S_one.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_slot[.JOBS = (DESTRUCTION_VALUE (HCELL n_cell)) :: pdestructionjob_slot_tail*]) :: ptask_slot_tail*',
+        '~$propref_source_valid(S_one, n_cell, pproptypesource)',
+        '$heap_owners($heap_graph(S_one), HCELL n_cell) = $heap_owners($heap_graph(S_slot), HCELL n_cell)',
+        'S_done = $drive(S_one, 2048)',
+        'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.ACTIVEFIBER = eps',
+        'S_done.PROPREFS = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+
+
+def wrapper_assertions(initial, expected, array):
+    payload, node = ('PARRAY n_array', 'HARRAY n_array') if array else ('POBJECT n_previous', 'HOBJECT n_previous')
+    clauses = ['S_initial = '+initial, '~S_initial.COMPILESTOP',
+        *seek('S_initial', 'S_release', 13 if array else 4),
+        'S_release.TODO = (FOREACH_BIND_RELEASE pforeachbind) :: ptask_release_tail*',
+        'pforeachbind.WRAPPER = (n_wrapper)',
+        'pforeachbind.OLD = |S_release.STORE|',
+        'pforeachbind.VALUE = '+payload,
+        '$lookup(S_release.ENV, pforeachbind.NAME) = (n_wrapper)',
+        'n_wrapper <- S_release.REFCELLS',
+        '(HCELL n_wrapper) <- S_release.ALLOCATIONS',
+        '$heap_owners($heap_graph(S_release), HCELL n_wrapper) = 1',
+        '~$borrowed_reference_retired(S_release, ROOT n_wrapper)',
+        '$propref_at(S_release.PROPREFS, n_wrapper) = eps',
+        '$node_children(S_release, HCELL n_wrapper) = ['+node+']',
+        '$heap_owners($heap_graph(S_release), '+node+') = 1',
+        '$heap_owners($heap_graph(S_release), HCELL pforeachbind.NEW) = 2',
+        '$foreach_bind_capture(S_release, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = (pforeachbind)',
+        'S_shared = S_release[.HELD = S_release.HELD ++ [HCELL n_wrapper]]',
+        '$heap_valid($heap_graph(S_shared))',
+        '$heap_owners($heap_graph(S_shared), HCELL n_wrapper) = 2',
+        '$foreach_bind_capture(S_shared, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
+        '~$foreach_bind_prior_unsupported(S_shared, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE)',
+        'S_missing = S_release[.ALLOCATIONS = $destruction_node_delete(S_release.ALLOCATIONS, HCELL n_wrapper)]',
+        '$foreach_bind_capture(S_missing, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
+        'pforeachbind_bad = pforeachbind[.OLD = n_wrapper][.WRAPPER = eps]',
+        'S_bad = S_release[.TODO = (FOREACH_BIND_RELEASE pforeachbind_bad) :: ptask_release_tail*]',
+        '~$call_task_valid(S_bad, FOREACH_BIND_RELEASE pforeachbind_bad)',
+        'S_zero = $drive_steps(S_release, 0)',
+        'S_zero.COMPLETION = BUDGET /\\ S_zero.STORE = S_release.STORE /\\ S_zero.ENV = S_release.ENV',
+        'S_queue_found = $drive_steps(S_release, 1)',
+        'S_queue_found.COMPLETION = BUDGET',
+        'S_queue = S_queue_found[.COMPLETION = NORMAL]', *valid('S_queue'),
+        'S_queue.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_release_tail*',
+        'pdestructionrelease.JOBS = [DESTRUCTION_VALUE (HCELL n_wrapper)]',
+        'pdestructionoperation.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        '$lookup(S_queue.ENV, pforeachbind.NAME) = (pforeachbind.OLD)',
+        '~(pforeachbind.OLD <- S_queue.REFCELLS)',
+        'S_queue.STORE[pforeachbind.OLD] = DEFINED ('+payload+')',
+        '$node_children(S_queue, HCELL pforeachbind.OLD) = eps',
+        '$node_children(S_queue, HCELL n_wrapper) = ['+node+']',
+        '$heap_owners($heap_graph(S_queue), HCELL n_wrapper) = 1',
+        '$heap_owners($heap_graph(S_queue), '+node+') = 1',
+        '$foreach_released_wrapper_cell(S_queue, pforeachbind.OLD)',
+        '$task_nodes(FOREACH_BIND_COMMIT pforeachbind) = [HCELL pforeachbind.NEW]',
+        *seek('S_queue', 'S_cleanup', 14 if array else 31),
+        'S_cleanup.CURRENT = (pcallcontext_cleanup)',
+        '$destructor_context_call(pcallcontext_cleanup, S_cleanup.CURRENT, S_cleanup.FRAMES) = (pdestructorcall_cleanup)',
+        'pdestructorcall_cleanup.OPERATION = (pdestructionoperation_cleanup)',
+        'pdestructionoperation_cleanup.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        '~((HCELL n_wrapper) <- S_cleanup.ALLOCATIONS)',
+        '$heap_owners($heap_graph(S_cleanup), HCELL n_wrapper) = 0',
+        '$borrowed_reference_retired(S_cleanup, ROOT n_wrapper)',
+        'S_expired = $quiet_operand(S_cleanup, BORROWED (ROOT n_wrapper))',
+        'S_expired.COMPLETION = UNSUPPORTED "retired reference wrapper pointer read"',
+        '~$borrowed_reference_retired(S_cleanup, ROOT pforeachbind.OLD)',
+        'paccess_expired = $access_record(S_cleanup, pforeachbind.SITE, pforeachbind.LINE, ACCESS_UNSET, BASE_VALUE (BORROWED (ROOT n_wrapper)), KNOWN PNULL, KNOWN PNULL, UNSET_ARRAY, eps, false)[.SELECTED = BORROWED (ROOT n_wrapper)]',
+        'S_access_expired = $access_live(S_cleanup, paccess_expired)',
+        'S_access_expired.COMPLETION = UNSUPPORTED "retired reference wrapper pointer read"',
+        'S_test_expired = $access_live(S_cleanup, paccess_expired[.MODE = ACCESS_READ (KEY_TEST false)])',
+        'S_test_expired.COMPLETION = UNSUPPORTED "retired reference wrapper pointer read"',
+        'S_cleanup.STORE[pforeachbind.OLD] = DEFINED ('+payload+')',
+        '~(pforeachbind.OLD <- S_cleanup.REFCELLS)',
+        '$node_children(S_cleanup, HCELL pforeachbind.OLD) = eps',
+        '$foreach_released_wrapper_cell(S_cleanup, pforeachbind.OLD)',
+        '$foreach_bind_scope(S_cleanup, pforeachbind, S_cleanup.FRAMES) = (S_caller)',
+        '$lookup(S_caller.ENV, pforeachbind.NAME) = (pforeachbind.OLD)',
+        '$foreach_bind_body_valid(S_caller, pforeachbind)',
+        '$foreach_bind_pending_frames(S_cleanup, pforeachbind.OLD, S_cleanup.FRAMES)',
+        '~$foreach_bind_pending_tasks(S_cleanup, pforeachbind.OLD, S_cleanup.TODO)',
+        '~$foreach_bind_pending_filtered_task(S_caller, pforeachbind.OLD, true, DESTRUCTOR_OPERATION_EXIT pdestructionoperation_cleanup)',
+        'S_snapshot = $globals_snapshot(S_cleanup)',
+        'S_snapshot.COMPLETION = UNSUPPORTED "released foreach reference wrapper snapshot"',
+        'S_snapshot.STORE = S_cleanup.STORE /\\ S_snapshot.ALLOCATIONS = S_cleanup.ALLOCATIONS',
+        'pforeachbind_bounds = pforeachbind[.WRAPPER = (|S_caller.STORE|)]',
+        '~$foreach_bind_wrapper_valid(S_caller, pforeachbind_bounds)',
+        '~$foreach_bind_body_valid(S_caller, pforeachbind_bounds)']
+    if array:
+        clauses += ['S_release.ARRAYS[n_array].ITEMS = [ENTRY (KINT 0) (DIRECT (POBJECT n_first)), ENTRY (KINT 1) (DIRECT (POBJECT n_second))]',
+            'pdestructorcall_cleanup.OBJECT = n_first',
+            '~((HARRAY n_array) <- S_cleanup.ALLOCATIONS)',
+            '$heap_owners($heap_graph(S_cleanup), HARRAY n_array) = 0',
+            '$heap_owners($heap_graph(S_cleanup), HOBJECT n_second) = 1',
+            *seek('S_cleanup', 'S_second', 15),
+            'S_second.CURRENT = (pcallcontext_second)',
+            '$destructor_context_call(pcallcontext_second, S_second.CURRENT, S_second.FRAMES) = (pdestructorcall_second)',
+            'pdestructorcall_second.OBJECT = n_second',
+            'pdestructorcall_second.PENDING = (n_previous_throw)',
+            '$throwable_live(S_second, n_previous_throw)',
+            '~((HOBJECT n_first) <- S_second.ALLOCATIONS)',
+            '$heap_owners($heap_graph(S_second), HCELL pforeachbind.NEW) = 1']
+    else:
+        clauses += ['S_payload_shared = S_release[.HELD = S_release.HELD ++ [HOBJECT n_previous]]',
+            '$heap_valid($heap_graph(S_payload_shared))',
+            '$heap_owners($heap_graph(S_payload_shared), HOBJECT n_previous) = 2',
+            '$foreach_bind_capture(S_payload_shared, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE) = eps',
+            '~$foreach_bind_prior_unsupported(S_payload_shared, pforeachbind.NAME, pforeachbind.NEW, pforeachbind.LINE)',
+            'pdestructorcall_cleanup.OBJECT = n_previous',
+            '(HOBJECT n_previous) <- S_cleanup.ALLOCATIONS',
+            '~$foreach_released_container_cell(S_cleanup, pforeachbind.OLD)',
+            '$heap_owners($heap_graph(S_cleanup), HCELL pforeachbind.NEW) = 1',
+            'S_read = $global_read_name(S_cleanup, pforeachbind.NAME, pforeachbind.LINE)',
+            'S_read.COMPLETION = NORMAL /\\ S_read.RESULT = KNOWN (POBJECT n_previous)',
+            'S_write = $global_assign_name(S_cleanup, pforeachbind.NAME, KNOWN (PINT 0), pforeachbind.LINE)',
+            'S_write.COMPLETION = UNSUPPORTED "mutation of released foreach CV"',
+            'S_unset = $global_unset(S_cleanup, pforeachbind.NAME)',
+            'S_unset.COMPLETION = UNSUPPORTED "mutation of released foreach CV"',
+            'S_reference = $global_acquire_name(S_cleanup, pforeachbind.NAME)',
+            'S_reference.COMPLETION = UNSUPPORTED "mutation of released foreach CV"']
+    clauses += [*seek('S_cleanup', 'S_finish', 6),
+        'S_finish.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_finish) :: (FOREACH_BIND_COMMIT pforeachbind) :: ptask_finish_tail*',
+        'pdestructionoperation_finish.SOURCE = FOREACH_BIND_RELEASE pforeachbind',
+        'pdestructionoperation_finish.PENDING = (n_pending)',
+        '$throwable_live(S_finish, n_pending)',
+        '$heap_owners($heap_graph(S_finish), HCELL pforeachbind.NEW) = 1',
+        '$foreach_bind_operation_source_valid(S_finish, pdestructionoperation_finish, pforeachbind)']
+    if array:
+        clauses += ['n_pending =/= n_previous_throw',
+            '$throwable_previous_id(S_finish, n_pending) = (n_previous_throw)']
+    clauses += ['S_commit_found = $drive_steps(S_finish, 1)',
+        'S_commit_found.COMPLETION = BUDGET',
+        'S_commit = S_commit_found[.COMPLETION = NORMAL]', *valid('S_commit'),
+        '$lookup(S_commit.ENV, pforeachbind.NAME) = (pforeachbind.NEW)',
+        'S_commit.STORE[pforeachbind.OLD] = UNDEFINED',
+        'S_commit.STORE[pforeachbind.NEW] = DEFINED (PINT 2)',
+        '~((HCELL n_wrapper) <- S_commit.ALLOCATIONS)',
+        '~$foreach_released_cell(S_commit, pforeachbind.OLD)',
+        '~$foreach_released_wrapper_cell(S_commit, pforeachbind.OLD)',
+        'S_commit.TODO = (THROW_SEARCH n_pending) :: ptask_finish_tail*',
+        'S_done = $drive(S_commit, 2048)',
+        'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps',
+        'S_done.DESTRUCTION.OPERATIONS = eps',
+        '$dupref_output(S_done.EVENTS) = $ptascii('+json.dumps(expected)+')', *valid('S_done')]
+    return clauses
+
+
 def prepare(directory, group):
     source = directory/'source.php'
     case = CASES[group]
@@ -905,6 +1286,9 @@ def prepare(directory, group):
     sources.prepare(directory, source)
     initial = '$php_run(program_source,0,'+json.dumps(base64.b64encode(os.fsencode(source)).decode())+')'
     body = (physical_assertions(initial, sources.EXPECTED[case]) if group=='physical' else
+            wrapper_assertions(initial, sources.EXPECTED[case], group=='wrapper-array') if group.startswith('wrapper') else
+            generator_typed_slot_assertions(initial, sources.EXPECTED[case]) if group=='generator-typed-slot' else
+            generator_typed_slot_fiber_assertions(initial, sources.EXPECTED[case]) if group=='generator-typed-slot-fiber' else
             typed_slot_assertions(initial, sources.EXPECTED[case]) if group=='typed-slot' else
             typed_slot_fiber_assertions(initial, sources.EXPECTED[case]) if group=='typed-slot-fiber' else
             container_assertions(initial, sources.EXPECTED[case], group=='container-throw') if group.startswith('container') else

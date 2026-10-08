@@ -58,6 +58,13 @@ def $constant_callable_cached_method_access(S, porigin_site, porigin_owner, pmet
   -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_first_owner, 0) = (n_failed)
   -- if $(n_failed < |S.DECLARATIONS|)
 
+def $trait_fcc_source_header_at(S, porigin_site, n_prefix) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $(n_prefix <= |S.DECLARATIONS|)
+  -- if $trait_fcc_cached_header(S, porigin_site) = eps
+  -- if $trait_fcc_failed_header(S, porigin_site) = ((pconstantclosure, porigin_owner, pmethoddesc))
+  -- if $trait_failed_cache_index(S.DECLARATIONS, porigin_owner, 0) = (n_failed)
+  -- if $(n_failed < n_prefix)
+
 ;; A later published import can fill its constant outside a collision frame.
 def $trait_fcc_snapshot_ordinary(S, pconstantclosure) = (pmethoddesc)
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = eps

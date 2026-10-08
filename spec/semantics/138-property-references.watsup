@@ -105,7 +105,7 @@ dec $proprefs_live(ppropref*, pnode*) : ppropref*
 def $proprefs_prune(S, ppropref_list*, eps, pnode*) = $proprefs_live(ppropref_list*, pnode*)
 def $proprefs_prune(S, ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune(S, ppropref_list*, pobjectprops_tail*, pnode*)
   -- if (HOBJECT pobjectprops.OBJECT) <- pnode*
-def $proprefs_prune(S, ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune(S, $proprefs_prune_slots(S, ppropref_list*, pobjectprops.OBJECT, pobjectprops.SLOTS), pobjectprops_tail*, pnode*)
+def $proprefs_prune(S, ppropref_list*, pobjectprops :: pobjectprops_tail*, pnode*) = $proprefs_prune(S, $proprefs_prune_slots(S[.ALLOCATIONS = pnode*], ppropref_list*, pobjectprops.OBJECT, pobjectprops.SLOTS), pobjectprops_tail*, pnode*)
   -- if ~((HOBJECT pobjectprops.OBJECT) <- pnode*)
 
 dec $propref_unique_sources(pproptypesource*) : bool

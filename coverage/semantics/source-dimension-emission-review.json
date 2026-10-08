@@ -1,0 +1,247 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Owned include/eval operand retirement before first ordinary CV-base DIM read with ordinary CV or literal int/string key, directly under ECHO or before a literal property. Narrow PPW array receiver separation and a source-certified literal null-property warning continuation.",
+  "implementation": [
+    "spec/semantics/353-source-cv-dimension-emission.watsup",
+    "spec/semantics/288-instance-set-access.watsup",
+    "spec/semantics/207-error-handler-runtime.watsup",
+    "spec/semantics/30-storage.watsup"
+  ],
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_delayed_compile_dim/zend_delayed_compile_prop/zend_compile_echo",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_FETCH_DIM_R/ZEND_FETCH_DIM_W",
+    "vendor/php-src/Zend/zend_execute.c:slow_index_convert/zend_fetch_dimension_address"
+  ],
+  "native": [
+    {
+      "report": ".tools/include-dim-emission-353-private-19/.tools/dim-emission-originals-19/dim-emission-native-lc0h5n88/report.json",
+      "sha256": "5e7835aeb13670ed3953382a01d6c0d30f92a432bd46e6654639c66c2f10a00a",
+      "revision": "67f7a95bb12940f51853f9519af47c64c550f938",
+      "originals": 6,
+      "scope": "Six originals and six parser/check-only guard programs; guards have no native/model execution.",
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "inputs_head_status_stable": true
+    },
+    {
+      "report": ".tools/include-dim-emission-353-private-19/.tools/dim-emission-originals-19/dim-receiver-native-_e7v0n76/report.json",
+      "sha256": "53769291ed737eac79e9247437b76135938d50e1669d917f77bedb98604f7172",
+      "revision": "6ab9255fef083937b32b6df61fea75fa05416b1d",
+      "originals": 2,
+      "scope": "Extra ordinary array owner keeps the old protected table live; read-only handler leaves it unchanged.",
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "inputs_head_status_stable": true
+    },
+    {
+      "report": ".tools/include-dim-emission-353-private-19/.tools/dim-emission-originals-19/dim-property-throw-native-va9kh6uq/report.json",
+      "sha256": "6b41333becad8768d252ed5598d6519a5df3732eef4691deeae22f112d2c4bf3",
+      "revision": "8a57be960186671bfa1f566b5f12663c67ee8a1b",
+      "originals": 1,
+      "scope": "Only the later property warning throws; handler writes survive while BODY is skipped.",
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "inputs_head_status_stable": true
+    }
+  ],
+  "source_validation": [
+    {
+      "report": ".tools/include-dim-emission-353-private-19/.tools/dim-emission-originals-19/dim-emission-source-run-bwekbgxa/report.json",
+      "sha256": "c727f38cb7c8253172c48474f95b93380e456a167d47a22ed2aded8a4400c293",
+      "revision": "67f7a95bb12940f51853f9519af47c64c550f938",
+      "accepted_rows": [
+        "direct-live",
+        "literal-throw",
+        "literal-live"
+      ],
+      "source_agreements": 3,
+      "accepted_application_evaluations": 3,
+      "modules": 336,
+      "inputs_head_status_stable": true,
+      "note": "Only the first three source rows are accepted; the overall report is false on the later property row."
+    },
+    {
+      "report": ".tools/include-dim-emission-353-private-19/.tools/dim-emission-originals-19/dim-emission-source-run-aotsg141/report.json",
+      "sha256": "a6b1680ecb00e03bb1205a200474fa3faec6572e8200c624cc01f7d7d3e28906",
+      "revision": "8a57be960186671bfa1f566b5f12663c67ee8a1b",
+      "accepted_rows": [
+        "property-warning",
+        "arrayaccess-throw",
+        "eval-live",
+        "property-warning-throw"
+      ],
+      "source_agreements": 4,
+      "application_evaluations": 4,
+      "modules": 336,
+      "inputs_head_status_stable": true,
+      "strict_compiler_seconds": 4.067
+    }
+  ],
+  "independent_state": {
+    "revision": "8a57be960186671bfa1f566b5f12663c67ee8a1b",
+    "modules": 336,
+    "physical_main_premises": 245,
+    "bindings": 134,
+    "boolean_checks": 111,
+    "application_evaluations": 3,
+    "source_agreements": 0,
+    "accepted_cuts": [
+      {
+        "report": ".tools/include-review-19-dim-emission/state-run-b2n4rx_f/report.json",
+        "sha256": "01abea4a78f4c9a1af95b86856be7bffaba9a6d466c7d25ac885b50365994b0a",
+        "accepted_rows": [
+          "entry",
+          "admission"
+        ],
+        "physical_main_premises": [
+          58,
+          102
+        ],
+        "elapsed_seconds": [
+          24.241,
+          4.909
+        ],
+        "note": "Only these first two rows pass; the overall report is false at receiver elaboration."
+      },
+      {
+        "report": ".tools/include-review-19-dim-emission/state-run-nwg0udo1/report.json",
+        "sha256": "6606a509f30d03db6f0a5c266ec995c8a9097f452e4f5c844265ee010be8276f",
+        "accepted_rows": [
+          "receiver"
+        ],
+        "physical_main_premises": [
+          85
+        ],
+        "elapsed_seconds": [
+          47.541
+        ]
+      }
+    ],
+    "inputs_module_stats_head_status_stable": true,
+    "scope": "Genuine source entry, compiler-image admission/forgeries, live base/key, exact PPIS read versus PPW COW, surviving ordinary copy, handler writes, current/saved warning identity and fixed-null literal-property resume."
+  },
+  "current_composition": {
+    "report": ".tools/include-dim-emission-353-actual-19/.tools/dim-emission-actual-current-19/dim-emission-actual-compiler-nkdto7kg/report.json",
+    "sha256": "14f8ee2a443ab666aa5b80f98266ccf40c1bf004764103e68e76867c6879c478",
+    "revision": "7ff6d34c37bb5acec7723b4c025f4410b4122ded",
+    "canonical_parent": "ea7cf0a34f6b6fbd6da46a72fb28aaec7843d511",
+    "modules": 340,
+    "strict_compiler_seconds": 4.181,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "inputs_module_stats_head_status_stable": true,
+    "review": "Exact canonical manifest prefix plus353; additive30 preserves ARG352/PROPS tasks and fields, Fiber351/Generator349 selectors are disjoint, and COMP301 uses current S_done allocation edges. No source/state renewal."
+  },
+  "preserved_failures": [
+    {
+      "report": ".tools/include-dim-emission-353-private-19/.tools/dim-emission-originals-19/dim-emission-source-run-bwekbgxa/report.json",
+      "sha256": "c727f38cb7c8253172c48474f95b93380e456a167d47a22ed2aded8a4400c293",
+      "revision": "67f7a95bb12940f51853f9519af47c64c550f938",
+      "affected_row": "property-warning",
+      "affected_application_evaluations": 1,
+      "accepted_affected_credit": 0,
+      "reason": "Normal model kept the protected table alive through a nested property receiver read, emitted null-key deprecation and HANDLER-LIVE. Native FETCH_DIM_W separates the table, so the interrupted read returns null and the later property warns at9."
+    },
+    {
+      "report": ".tools/include-dim-emission-353-private-19/.tools/dim-emission-originals-19/dim-emission-source-run-161bgpah/report.json",
+      "sha256": "21874efc3867c0714433cdd8404004756343abda312550bca4ad9a4cb207bc32",
+      "revision": "6ab9255fef083937b32b6df61fea75fa05416b1d",
+      "affected_row": "property-warning",
+      "affected_application_evaluations": 1,
+      "accepted_affected_credit": 0,
+      "reason": "After the COW repair, execution reached explicit Unsupported at the later null-property warning: no producer continuation yet. The literal-null warning producer fixes this separate boundary."
+    },
+    {
+      "report": ".tools/include-review-19-dim-emission/state-run-b2n4rx_f/report.json",
+      "sha256": "01abea4a78f4c9a1af95b86856be7bffaba9a6d466c7d25ac885b50365994b0a",
+      "affected_row": "receiver",
+      "affected_application_evaluations": 0,
+      "accepted_affected_credit": 0,
+      "reason": "Nonexistent fixture global_write_name helper. Replaced with ordinary global_assign_name, restoring RESULT/BASE; accepted entry/admission rows are retained separately."
+    },
+    {
+      "report": ".tools/include-review-19-dim-emission/state-run-mbdne_sh/report.json",
+      "sha256": "45fdddf09eca8746d46a51664651df20663976dcc638de93302d102bfb460678",
+      "affected_row": "receiver",
+      "affected_application_evaluations": 1,
+      "accepted_affected_credit": 0,
+      "diagnostic": {
+        "report": ".tools/include-review-19-dim-emission/receiver-debug-run-uw_oai87/report.json",
+        "sha256": "d9742caaf33fbd78c75b7dec4ce37b88fa25bbee9bc5382ec5eb46fa8ab76167",
+        "accepted_credit": 0
+      },
+      "reason": "All48 bindings hold; only checks14/15/18 assumed one step completed the pending store or old-array protection release. Bounded exact-tail selection preserves all assertions; no executable/source edit."
+    }
+  ],
+  "maintained_sources": {
+    "harness": "tests/semantics/source_stringable_retirement_sources.py",
+    "selectors": [
+      "dim-direct-live",
+      "dim-literal-throw",
+      "dim-literal-live",
+      "dim-property-warning",
+      "dim-arrayaccess-throw",
+      "dim-eval-live",
+      "dim-property-warning-throw"
+    ],
+    "relocation": "Eval main and five children are byte-identical; six include mains change only three child-basename occurrences each. Seven explicit selectors are excluded from default selection.",
+    "renewed_application_evaluations": 0,
+    "renewed_source_agreements": 0
+  },
+  "reproduction": {
+    "private_cwd": ".tools/include-dim-emission-353-private-19",
+    "native": "python3 .tools/dim-emission-originals-19/prepare-native.py; prepare-controls.py and prepare-throw.py capture the focused new native controls.",
+    "source": "python3 .tools/dim-emission-originals-19/run-source.py --native-report .tools/dim-emission-originals-19/dim-emission-native-lc0h5n88/report.json (original failed cut67f7); run-affected.py adds --native-report .tools/dim-emission-originals-19/dim-property-throw-native-va9kh6uq/report.json and --case property-warning --case arrayaccess-throw --case eval-live --case property-warning-throw at8a57.",
+    "independent_state": "python3 .tools/include-review-19-dim-emission/run-state.py --source-report .tools/include-dim-emission-353-private-19/.tools/dim-emission-originals-19/dim-emission-source-run-aotsg141/report.json (from canonical project)",
+    "actual_cwd": ".tools/include-dim-emission-353-actual-19",
+    "current_compiler": "python3 .tools/dim-emission-actual-current-19/run-compiler.py ea7cf0a34f6b6fbd6da46a72fb28aaec7843d511",
+    "caps_seconds": {
+      "compiler": 300,
+      "source_cli": 60,
+      "source_outer": 90,
+      "state_group": 90
+    },
+    "jobs": 1,
+    "profile": {
+      "target": "project-local .tools/php/bin/php from vendored PHP 8.5.10",
+      "startup_error_reporting": 30719,
+      "include_path": ".:",
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": "absent",
+      "mode": "SL",
+      "cache": false,
+      "det": true
+    }
+  },
+  "remaining": [
+    "Wider source producers/emissions/providers and complete-core offline rebuild remain required.",
+    "The writable receiver repair admits only PPW, direct CV/fixed GLOBAL array roots, quiet int/string keys and existing DIRECT object entries; wider modes, missing/alias entries, readonly chains, strings and ArrayAccess retain their earlier paths.",
+    "The new warning producer admits literal properties on null; wider property diagnostics and paused returns verification remain unchanged."
+  ],
+  "review": "include_review_19 independently reviews source/native/handler/state/publication; properties_dev_19 accepts the exact bounded288 receiver seam.",
+  "preserved_state_fixture_stops": {
+    "reports": [
+      {
+        "report": ".tools/include-review-19-dim-emission/state-run-twhc4b4f/report.json",
+        "sha256": "0a8326be998ff7db26e0a4699b2929a5ace43df4813a404caf293d45a813ddeb"
+      },
+      {
+        "report": ".tools/include-review-19-dim-emission/state-run-ice5dlb_/report.json",
+        "sha256": "47261760a3214ec77aa60f21db661e7db0785f5891d051037836ce2f3c30611f"
+      },
+      {
+        "report": ".tools/include-review-19-dim-emission/state-run-tpf2rugl/report.json",
+        "sha256": "09461d37d272b98f9c7f9e5fed329f9d9444ddd5dc8d154371894c37d4aebc40"
+      },
+      {
+        "report": ".tools/include-review-19-dim-emission/state-run-8s6er0kb/report.json",
+        "sha256": "1fec858fe854e710ba8452acf5c30e19f84c278a2362d840fbb6fe7738e7f04b"
+      }
+    ],
+    "application_evaluations": 0,
+    "accepted_credit": 0,
+    "reason": "Three elaboration stops (byte-vector/AST-pattern parsing and Boolean binding placement), then an overlapping destructor/outer-DIM fixture stage selector. Corrections change fixture syntax/selection only; executable semantics and source inputs remain unchanged."
+  }
+}

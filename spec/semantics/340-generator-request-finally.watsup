@@ -56,6 +56,8 @@ def $generator_request_store_ready(S, n) = true
   -- if $generator_request_frame_valid(S, pgenerator)
 def $generator_request_store_ready(S, n) = false -- otherwise
 def $generator_request_store_begin(S, n, n_handle) = $generator_close_prepare_store(S_queued, pgenrelease, n, (n_handle))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED
   -- if pgenrelease = {JOBS eps, VALUE S.RESULT, BASE S.BASE, PENDING eps, COMPLETION NORMAL}
   -- if S_queued = S[.DESTRUCTION.INDEX = $(n_handle + 1)][.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]][.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: S.TODO]
 rule PhpStep/generator-request-store-close: S ~> $generator_request_store_begin(S, n, S.DESTRUCTION.INDEX)

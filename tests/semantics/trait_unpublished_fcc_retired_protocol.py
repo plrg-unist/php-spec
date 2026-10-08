@@ -426,6 +426,78 @@ CASES['failed-first-alias-target-published-import-scope'] = {
     'checks': FAILED_ALIAS,
 }
 
+BOTH_FAILED_STAGE = ('S.TODO = (STMT (NStmtClass phpType14 phpType24 phpType3 '
+         'phpType44 phpType42 phpType23 metadata)) :: ptask_tail* '
+         '-- if S.ORIGIN = (porigin_e) '
+         '-- if $class_at(S.CLASSES, porigin_e) = (pclassdesc_e) '
+         '-- if pclassdesc_e.NAME = $ptascii("E")')
+BOTH_FAILED = [
+    'S_seed = S[.TODO = ptask_tail*]',
+    'S_seed.CONSTANTCLOSURES = pconstantclosure_first :: pconstantclosure_tail*',
+    '$trait_fcc_failed_header(S_seed, pconstantclosure_first.SITE) = ((pconstantclosure_first, porigin_c, pmethoddesc_unfixed))',
+    '$class_named(S_seed.CLASSNAMES, $ptascii("c")) = eps',
+    '$class_named(S_seed.CLASSNAMES, $ptascii("e")) = eps',
+    '$trait_failed_cache_index(S_seed.DECLARATIONS, porigin_c, 0) = (n_failed)',
+    '$closure_method_origin(S_seed, pmethoddesc_unfixed.FUNCTION.ORIGIN) = (pmethoddesc_c)',
+    'pmethoddesc_c.OWNER = porigin_c',
+    '$method_named(pclassdesc_e.METHODS, $ptascii("m")) = (pmethoddesc_e)',
+    'pmethoddesc_e.FUNCTION.ORIGIN =/= pmethoddesc_c.FUNCTION.ORIGIN',
+    'S_link = $review_trait_real_failed_link(S_seed, pclassdesc_e)',
+    'n_later = |S_seed.OBJECTS|',
+    '$trait_real_birth_at(S_link.CLASSCONSTANTHISTORY, n_later) = ((pconstantclosure_first.SITE, ptraitcachecause))',
+    '$constant_callable_record(S_link.CONSTANTCLOSURES, n_later) = (pconstantclosure)',
+    'pconstantclosure.DECL =/= pconstantclosure_first.DECL',
+    '$(n_failed < pconstantclosure.PREFIX)',
+    '$constant_callable_cached_method_at(S_link, pconstantclosure.SITE, pconstantclosure.PREFIX) = (pmethoddesc_unfixed)',
+    'S_link.OBJECTS[n_later] = CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc_c.FUNCTION.ORIGIN pconstantclosure.SITE porigin_e eps)',
+    '$closure_scope_at(S_link.CLOSURESCOPES, n_later) = (pclosurescope)',
+    'pclosurescope.LEXICAL = pmethoddesc_unfixed.OWNER',
+    'pclosurescope.CALLED = porigin_e',
+    '$trait_fcc_receipt_source(S_link, pconstantclosure, ptraitcachecause) = (pclassconstantdesc_y)',
+    'pclassconstantdesc_y.OWNER = porigin_e',
+    '$trait_failed_cache_ready(S_seed, S_link)',
+    'PhpStep: S ~> S_after',
+    'S_after.COMPLETION = STATICBYTES ptbytes_message z_fatal',
+    'S_after.CLASSES = S_seed.CLASSES',
+    'S_after.DECLARATIONS = S_seed.DECLARATIONS ++ [PDRTRAITCACHEFAIL porigin_e $declaration_cause(S_seed)]',
+    '$class_named(S_after.CLASSNAMES, $ptascii("c")) = eps',
+    '$class_named(S_after.CLASSNAMES, $ptascii("e")) = eps',
+    '$trait_fcc_failed_header(S_after, pconstantclosure.SITE) = ((pconstantclosure_first, porigin_c, pmethoddesc_unfixed))',
+    '$trait_fcc_cached_header(S_after, pconstantclosure.SITE) = eps',
+    '$constant_callable_record_valid(S_after, pconstantclosure_first)',
+    '~$constant_callable_value_valid(S_after, pconstantclosure_first.OBJECT, pconstantclosure.SITE)',
+    '$trait_fcc_retired_receipt(S_after, pconstantclosure) = (pclassconstantdesc_y)',
+    '$constant_callable_record_valid(S_after, pconstantclosure)',
+    '~$constant_callable_value_valid(S_after, n_later, pconstantclosure.SITE)',
+    '~(HOBJECT pconstantclosure_first.OBJECT <- S_after.ALLOCATIONS)',
+    '~(HOBJECT n_later <- S_after.ALLOCATIONS)',
+    '$closure_scope_at(S_after.CLOSURESCOPES, pconstantclosure_first.OBJECT) = eps',
+    '$closure_scope_at(S_after.CLOSURESCOPES, n_later) = eps',
+    '$trait_fcc_birth_owner(S_after, pconstantclosure) = eps',
+    '$class_constant_state_valid(S_after)',
+    '$call_descriptors_valid(S_after)',
+    '$declaration_history_valid(S_after)',
+    '$heap_valid($heap_graph(S_after))',
+    'S_fresh = S_after[.OBJECTS = $object_set(S_after.OBJECTS, n_later, CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc_e.FUNCTION.ORIGIN pconstantclosure.SITE porigin_e eps))]',
+    '$trait_fcc_receipt_source(S_fresh, pconstantclosure, ptraitcachecause) = eps',
+    '~$constant_callable_record_valid(S_fresh, pconstantclosure)',
+    'S_wrong_called = S_after[.OBJECTS = $object_set(S_after.OBJECTS, n_later, CONSTANTCLOSURE pconstantclosure.SITE (METHODCLOSURE pmethoddesc_c.FUNCTION.ORIGIN pconstantclosure.SITE porigin_c eps))]',
+    '$trait_fcc_receipt_source(S_wrong_called, pconstantclosure, ptraitcachecause) = eps',
+    '$trait_fcc_receipt_source(S_after, pconstantclosure[.PREFIX = pconstantclosure_first.PREFIX], ptraitcachecause[.PREFIX = pconstantclosure_first.PREFIX]) = eps',
+    'S_after.CONSTANTCLOSURES = pconstantclosure_first :: pconstantclosure_later*',
+    'S_wrong_source = S_after[.CONSTANTCLOSURES = pconstantclosure_first[.DECL = porigin_c] :: pconstantclosure_later*]',
+    '$trait_fcc_failed_header(S_wrong_source, pconstantclosure.SITE) = eps',
+    '$trait_fcc_receipt_source(S_wrong_source, pconstantclosure, ptraitcachecause) = eps',
+    'S_live = S_after[.ALLOCATIONS = S_after.ALLOCATIONS ++ [HOBJECT n_later]]',
+    '$trait_fcc_retired_receipt(S_live, pconstantclosure) = eps',
+    '~$constant_callable_record_valid(S_live, pconstantclosure)',
+]
+CASES['failed-first-target-followed-by-failed-later-import'] = {
+    'source': SOURCES['failed-first-target-failed-later-import'],
+    'stage': BOTH_FAILED_STAGE,
+    'checks': BOTH_FAILED,
+}
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--match', default='')

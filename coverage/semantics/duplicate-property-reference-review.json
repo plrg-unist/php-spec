@@ -1,10 +1,10 @@
 {
   "target": "PHP 8.5.10 CLI NTS64 profile30719",
-  "status": "partial; independently reviewed ordinary descendant retirement and per-slot typed property-source detachment",
+  "status": "partial; independently reviewed physical property references, descendant/typed-slot timing and last-owner previous-wrapper retirement",
   "semantic_cut": "3429f29ad",
   "tested_cut": "87f9b399a",
   "modules": 298,
-  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues, without retaining the retired parent.",
+  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV own-destructor object cleanup keeps its old raw value readable while the object remains live; selected-reference installation is atomic on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal. Plain previous-CV arrays release ordinary/nested child destructors in order before binding, preserving shared array/reference owners and continuing child destruction after throw. Ordinary no-own-destructor previous instances release dynamic children before declared children, continuing after throws and preserving selected-reference binding; ordinary typed sources now detach at individual declared-slot release visits, including genuine parked Fiber queues, without retaining the retired parent. Private Generator-close INSTANCE children now retain the same per-slot constraints in actual current, frame and saved-Fiber cleanup queues. Last-owner previous reference wrappers now retire through genuine eager cleanup while a separate nonowning raw CV preserves safe own-destructor reads; selected-reference installation remains atomic after throws.",
   "admission": "Source AST, runtime line, iterator/cursor and selected physical address are checked. RELEASE recaptures the live selected slot; entered COMMIT may survive retired receiver storage while its selected HCELL remains real. Fresh false HOBJECT C-owner and selected-cell/source forgeries fail public admission. This bounded source/current-address check is not a historical reachability proof.",
   "engine": [
     "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_RW, ZEND_FE_FETCH_RW; selected Bucket promotion/ADDREF precedes previous target-CV destruction; receiver wrapper is dereferenced on each fetch",
@@ -352,6 +352,136 @@
       "review": "Exact ARG344 Generator ACCESS schema/280/284/303/334/344 code and full parent module order remain intact before346; graph-carry dispatch, state-aware child jobs and propref pruning compose without replacing live ownership. Source6/state151/84 keep their original cuts.",
       "earlier_compiler": "typed-slot-current331-sl-init1-attempt1/report.json at73067facd/331; PASS4.053s, application0, same source/state cut separation."
     },
-    "remaining": "Private Generator-close typed-slot release timing303/340, released-CV mutation, raw retired-container reads, previous reference wrappers, internal-close descendants and binding-time exit remain required; no family closure."
+    "remaining": "Private Generator-close timing is addressed below; released-CV mutation, raw retired-container reads, previous reference wrappers, internal-close descendants and binding-time exit remain required; no family closure."
+  },
+  "generator_typed_slot_retirement": {
+    "parent": "05ef7bb9f",
+    "semantic_cut": "5b26e3526",
+    "modules": 332,
+    "raw_root": ".tools/properties-generator-typed-slots19/.tools/",
+    "scope": "Private GENERATOR_CLOSE_RELEASE INSTANCE children use the existing per-slot HCELL jobs. Exact source detachment precedes value release without retaining the retired parent. Authority requires one actual owning current/frame/saved-Fiber job and a later reserved parent HANDLE; borrowed ENTER/DONE.FRAME and operation/call snapshots do not count.",
+    "engine": [
+      "Zend/zend_generators.c: zend_generator_close, zend_generator_dtor_storage, zend_generator_free_storage",
+      "Zend/zend_objects.c: zend_object_std_dtor, zend_object_dtor_property"
+    ],
+    "sources": {
+      "cut": "5b26e3526",
+      "raw": "dynamic-property-warning-source-o0wpcxw0/report.json",
+      "normal_agreements": 4,
+      "selection": [
+        "review-generator-typed-slot-before19",
+        "review-generator-typed-slot-after19",
+        "review-generator-typed-slot-throw19",
+        "review-generator-typed-slot-fiber19"
+      ],
+      "meaning": "Exact native/public normal0 streams and empty stderr. Declaration order reverses assignment order; two sources on one cell detach independently under A/B chaining; a genuine child destructor suspends during paused Generator close."
+    },
+    "reached": {
+      "generator-typed-slot": {
+        "cut": "edf7e7ec1",
+        "premises": 134,
+        "raw": "duplicate-property-reference-jsjfvsi8/report.json"
+      },
+      "generator-typed-slot-fiber": {
+        "cut": "edf7e7ec1",
+        "premises": 71,
+        "raw": "duplicate-property-reference-mnbgabe2/report.json"
+      },
+      "meaning": "Genuine callback/release and parked/resumed states, exact slot detach, existing GEN-to-ordinary HCELL ownership transfer before decrement, pending A/B and real reserved HANDLE proof. Explicit stale receipt, duplicate queue/VM, freed handle and malformed source/job projections are rejection controls, not reached-state claims. Native/model evaluations0."
+    },
+    "compiler": {
+      "cut": "5b26e3526",
+      "raw": "generator-typed-slot-current332-sl-init1-attempt1/report.json",
+      "passed": true,
+      "application_evaluations": 0,
+      "elapsed_seconds": 4.043
+    },
+    "preserved_stops": [
+      "duplicate-property-reference-pvsqqvrw: pre-evaluation helper iteration binding; distinct recursive tails correct the spelling.",
+      "duplicate-property-reference-axcvsv3y: pre-evaluation source identity binding; actual source vector is bound first.",
+      "duplicate-property-reference-ghuqjlen: fixture expected cell decrement before the authentic ordinary-release handoff; stronger reached assertions now cover transfer and subsequent decrement. Ignored value-owners/value-todo diagnostics retain zero agreement credit."
+    ],
+    "review": "properties_review_19 independently accepts engine timing, authentic private job/handle/carrier authority, source4 and separate reached134/71 cuts. Earlier ordinary typed-slot, descendant, array and duplicate-reference campaigns are not renewed.",
+    "remaining": "Released-CV mutation, raw retired-container reads, previous reference wrappers, internal-close descendants and binding-time exit remain required; no family closure.",
+    "composition": {
+      "parent": "86eaf9d20",
+      "tested_cut": "0d233dde9",
+      "modules": 336,
+      "compiler": {
+        "passed": true,
+        "raw": "generator-typed-slot-current336-sl-init1-attempt1/report.json",
+        "application_evaluations": 0,
+        "elapsed_seconds": 4.238
+      },
+      "review": "Exact current parent modules, additive GC/Fiber/name fields and graph hooks remain intact; only reviewed138/303/346 changes semantically. Ordinary Fiber suspension is disjoint from the public-GC suspension guard. Source4/state134/71 retain their original cuts."
+    }
+  },
+  "previous_wrapper_retirement": {
+    "parent": "b2fb07e1d",
+    "modules": 337,
+    "raw_root": ".tools/properties-wrapper-retirement19/.tools/",
+    "scope": "Callback-producing last-owner previous reference wrappers without type sources retire on actual eager jobs. A fresh plain physical CV replaces only the target binding and masks its borrowed payload edge; the original wrapper has zero owners during callbacks. Live own-destructor object reads remain supported, and COMMIT installs the selected reference before normal/throw continuation. Shared wrappers or surviving payloads do not enter this staged path.",
+    "engine": [
+      "Zend/zend_vm_def.h: ZEND_FE_FETCH_RW retains selected reference before i_zval_ptr_dtor and installs it afterward",
+      "Zend/zend_variables.c: zend_reference_destroy destroys ref->val before freeing the last reference wrapper",
+      "Zend/zend_vm_def.h: ZEND_FETCH_GLOBALS; Zend/zend_hash.c: zend_proptable_to_symtable and reference-copy behavior"
+    ],
+    "native_first": {
+      "cut": "f84fdab9d",
+      "raw": "wrapper-native-first19-_v5_sq30/report.json",
+      "observations": 5,
+      "model_evaluations": 0,
+      "meaning": "Exact frozen stdout, exit0 and empty stderr before model evaluation; these are the same five originals, not additional agreements."
+    },
+    "sources": {
+      "cut": "329ec8e38",
+      "raw": "dynamic-property-warning-source-vfp6pec2/report.json",
+      "normal_agreements": 5,
+      "selection": [
+        "review-prior-wrapper-live-read19",
+        "review-prior-wrapper-live-throw19",
+        "review-prior-wrapper-array-throws19",
+        "review-prior-wrapper-shared19",
+        "review-prior-wrapper-typed-child19"
+      ],
+      "meaning": "Exact native/public normal0 streams and empty stderr; selected deletion, live old-value reads, atomic throw binding, array A/B chaining, shared-wrapper delay and typed descendant timing."
+    },
+    "reached": {
+      "cut": "d3688fdf9",
+      "wrapper": {
+        "premises": 136,
+        "raw": "duplicate-property-reference-yiymrlha/report.json"
+      },
+      "wrapper-array": {
+        "premises": 139,
+        "raw": "duplicate-property-reference-rx5slq0l/report.json"
+      },
+      "meaning": "Setup-inclusive premises at genuine release/callback/commit states: original wrapper allocation then zero roots, masked nonREF raw CV, selected-cell ownership and atomic install. Explicit shared/surviving-owner, missing allocation, bounds, snapshot and expired ArrayAccess-consumer projections are controls, not reached witnesses. Native/model evaluations0."
+    },
+    "compiler": {
+      "cut": "329ec8e38",
+      "raw": "wrapper-current337-sl-init1-attempt2/report.json",
+      "passed": true,
+      "application_evaluations": 0,
+      "elapsed_seconds": 4.087
+    },
+    "preserved_stops": [
+      "dynamic-property-warning-source-t1op50q9: nested optional tuple upcast failed in interpreter; typed optional binding corrects only DSL spelling.",
+      "duplicate-property-reference-dzawlebn: fixture sampled selected ownership before nested unset release finished; later operation boundary preserves the sole-owner assertion. Ignored unset-owner diagnostic observes (2,1,1,true) and earns zero agreement."
+    ],
+    "review": "properties_review_19 independently accepts pinned engine ordering, genuine wrapper/raw-CV separation, normal5 and separate136/139 reached cuts. Earlier duplicate-reference, array, descendant and typed-slot campaigns are not renewed.",
+    "remaining": "Released-CV mutation, raw retired-container reads, whole-GLOBALS snapshots during wrapper retirement, wider raw-pointer consumers, internal-close descendants and binding-time exit remain required. Released-CV scalar-write lifetime concerns are source-inferred only, with no native/model observation or engine-bug claim.",
+    "composition": {
+      "parent": "6848742a2",
+      "tested_cut": "ecd8e8745",
+      "modules": 341,
+      "compiler": {
+        "passed": true,
+        "raw": "wrapper-current341-sl-init1-attempt1/report.json",
+        "application_evaluations": 0,
+        "elapsed_seconds": 4.222
+      },
+      "review": "Actual CALLS354 Fiber parser/task/trace modules and manifest remain unchanged; SOURCE353 receiver/write and property-null tasks plus COMP270 allocation-edge graph hooks are preserved. Only tested wrapper semantics differ; normal5 and reached136/139 retain their original cuts."
+    }
   }
 }
