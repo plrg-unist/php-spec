@@ -164,8 +164,8 @@ def $generator_destructor_request_ready(S, pdestructionrelease, HOBJECT n) = tru
 def $generator_destructor_request_ready(S, pdestructionrelease, pnode) = false -- otherwise
 rule PhpStep/generator-destructor-request-close: S ~> $generator_close_begin_pending(S_unheld, [DESTRUCTION_VALUE (HOBJECT n)], eps)
   -- if S.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: ptask_tail*
-  -- if $generator_destructor_request_ready(S, pdestructionrelease, HOBJECT n)
   -- if pdestructionrelease.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionjob_tail*
+  -- if $generator_destructor_request_ready(S, pdestructionrelease, HOBJECT n)
   -- if S_unheld = $destructor_release_replace(S, pdestructionrelease[.JOBS = pdestructionjob_tail*])
 def $generator_destructor_tail((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*) = true
 def $generator_destructor_tail(ptask*) = false -- otherwise
