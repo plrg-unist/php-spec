@@ -296,8 +296,13 @@ has a different origin from the canonical class copy. Deferred static fills reta
 that NEW selection in durable history. Two shutdown PHP-error originals and80
 supplied argument-entry/history conditions plus12 setup clauses pass at separate
 cuts, including all four global validators and forged certificate rejection.
-The failed class gains no publication or member lookup
-authority. Parent/interface contracts, including implicit Stringable, remain required.
+A source-owned retained `self::n(argument())` selects the exact copied abstract method
+after completed data and requirement binding, checks access, and throws before
+argument evaluation. Unknown phases stay Unsupported. One shutdown PHP-error
+original and41 supplied conditions plus6 setup clauses pass, including unchanged
+allocations and all four global validators.
+The failed class gains no publication or fresh named-lookup authority.
+Parent/interface contracts, including implicit Stringable, remain required.
 Dependency fills in held/open compilation, broader differing-owner later births and
 wider failed-owner member/construction behavior retain explicit boundaries.
 Wider parameter-view full-source constructor, handler and variadic cases remain

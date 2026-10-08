@@ -198,6 +198,17 @@
       "exit_status": 255,
       "stdout_base64": "UFJFO1NIVVQ7Qk9EWTpVOkU7QVJHO0FGVEVSO0ZSRVNIOw==",
       "stderr_template_base64": "RGVwcmVjYXRlZDogQ2FsbGluZyBzdGF0aWMgdHJhaXQgbWV0aG9kIFU6Om0gaXMgZGVwcmVjYXRlZCwgaXQgc2hvdWxkIG9ubHkgYmUgY2FsbGVkIG9uIGEgY2xhc3MgdXNpbmcgdGhlIHRyYWl0IGluIHtGSUxFfSBvbiBsaW5lIDEwCkZhdGFsIGVycm9yOiBDIGFuZCBVIGRlZmluZSB0aGUgc2FtZSBwcm9wZXJ0eSAoJHgpIGluIHRoZSBjb21wb3NpdGlvbiBvZiBDLiBIb3dldmVyLCB0aGUgZGVmaW5pdGlvbiBkaWZmZXJzIGFuZCBpcyBjb25zaWRlcmVkIGluY29tcGF0aWJsZS4gQ2xhc3Mgd2FzIGNvbXBvc2VkIGluIHtGSUxFfSBvbiBsaW5lIDI4ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+    },
+    {
+      "id": "failed-first-post-fixup-abstract-method-call",
+      "source": "<?php\nfunction argument() { echo \"ARG;\"; }\ntrait T {\n    abstract public static function n();\n    public static function m() {\n        echo \"BODY:\", self::class, \":\", static::class, \";\";\n        new self(argument());\n        echo \"AFTER;\";\n    }\n    public const Y = self::m(...);\n    public static $x = self::Y;\n}\ntrait U { use T; }\nregister_shutdown_function(static function () {\n    echo \"SHUT;\";\n    class E {\n        use U;\n        public static $x = self::Y;\n        public static function n() {}\n        public static function m() { echo \"FRESH;\"; }\n    }\n    $f = E::Y;\n    try { $f(); }\n    catch (Error $ex) { echo \"ERROR:\", $ex->getMessage(), \";\"; }\n    E::m();\n});\necho \"PRE;\";\nclass C {\n    use U;\n    public static $x = self::Y;\n    private static function m() {\n        echo \"OWN:\", self::class, \":\", static::class, \";\";\n        self::n(argument());\n        echo \"AFTER;\";\n    }\n}\necho \"POST;\";\n",
+      "source_sha256": "a40a627d97206e72813341a85109fb737d99fb17bf59eedd460a6ad8f916322c",
+      "native_group": "/home/user/workspace/php-spec/.tools/trait-fcc-failed-target-current19/.tools/fcc-failed-fixup-review19/native-failed-first-post-fixup-abstract-method-call/command.json",
+      "native_raw_sha256": "ab12fac39d88d6ba82b197222fe74f9378ffa27f9768a3c2367088b240a31093",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "UFJFO1NIVVQ7T1dOOkM6RTtFUlJPUjpDYW5ub3QgY2FsbCBhYnN0cmFjdCBtZXRob2QgQzo6bigpO0ZSRVNIOw==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENsYXNzIEMgY29udGFpbnMgMSBhYnN0cmFjdCBtZXRob2QgYW5kIG11c3QgdGhlcmVmb3JlIGJlIGRlY2xhcmVkIGFic3RyYWN0IG9yIGltcGxlbWVudCB0aGUgcmVtYWluaW5nIG1ldGhvZCAoQzo6bikgaW4ge0ZJTEV9IG9uIGxpbmUgMjgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
     }
   ],
   "scope": "Focused FCC equal scope, failed-owner retirement, adaptations and retained first targets through later live/failed imports. A first-owner failure after completed data binding selects the fixed method scope for later cached calls while preserving the unfixed imported first birth. Parameter-view constructor/handler/variadic full-source cases and callbacks before the failure marker remain open. Retained new static constructs the published called class, preserving selected NEW certificates through deferred static fills."
