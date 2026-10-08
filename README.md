@@ -974,6 +974,9 @@ allocation. Implicit requirements need completed data binding; explicit abstract
 uses the declaration flags, including after an earlier data failure. Three shutdown
 originals and122 supplied conditions plus18 setup clauses pass at separate cuts.
 Parent/interface construction contracts remain open.
+Retained trait-scoped `new self` rejects the published trait before arguments,
+with a valid pending NEW certificate. One shutdown original and37 supplied
+conditions plus6 setup clauses pass.
 Retained `new static` constructs the published called class and enters arguments
 after allocation. One shutdown original and40 supplied conditions plus6 setup
 clauses pass, including durable selected-NEW static-fill history.

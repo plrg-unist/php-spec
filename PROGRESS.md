@@ -2133,6 +2133,19 @@ conditions plus6 setup clauses pass (27.209s), including all four validators.
 Raw evidence under current19 `.tools/` is `method-runtime-vcokv2pq`,
 `closure-call-protocol-7qumzqku`, `trait266-object-algo-9ms95gjp` and
 `trait266-object-struct-es2vzasj`. Earlier cuts remain unchanged.
+Old trait-scoped SELF now authenticates the canonical class copy against its
+published lexical trait and rejects construction with the pending NEW
+certificate intact. At `0d9bde4c6`/350 over `7c4a13bc1`, strict algo/struct
+pass3.669/4.670s, one shutdown PHP-error tuple and37 supplied source/scope/NEW
+conditions plus6 setup clauses pass (41.881s), including all four validators.
+Raw evidence under current19 `.tools/` is `method-runtime-eh0c0688`,
+`closure-call-protocol-fu2_4hpy`, `trait266-object-algo-4otuss2g` and
+`trait266-object-struct-qd7qmnag`. Earlier cuts remain unchanged.
+The reviewed351 union `02f053676` over `4f156a297` passes strict algo/struct
+at3.669/4.573s, preserving GEN request-fatal tasks and EX residual-GC fields.
+Private source1/39 and source1/37 cuts bridge unchanged. Raw compiler evidence
+is `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-ucz93eec`
+and `trait266-object-struct-1edjhak2` in the same directory.
 The failed class remains unpublished; parent/interface construction contracts,
 including implicit Stringable, remain required.
 Broader307 parameter-view full-source validation,
