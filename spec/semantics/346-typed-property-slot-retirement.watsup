@@ -45,7 +45,8 @@ def $property_release_records(pdestructionrelease :: pdestructionrelease_tail*, 
   -- if $($property_release_owners(pdestructionrelease, ptask*, pframe*) > 1)
 def $property_release_records(pdestructionrelease :: pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*) = $property_release_records(pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done* ++ [pdestructionrelease])
   -- if $property_release_owners(pdestructionrelease, ptask*, pframe*) = 1
-def $property_release_records(pdestructionrelease :: pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*) = $property_release_records(pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*) -- otherwise
+def $property_release_records(pdestructionrelease :: pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*) = $property_release_records(pdestructionrelease_tail*, ptask*, pframe*, pdestructionrelease_done*)
+  -- if $property_release_owners(pdestructionrelease, ptask*, pframe*) = 0
 def $property_release_vm(S, pfibervm, n_active?, pdestructionrelease*) = $property_release_records(pfibervm.DESTRUCTORRELEASES, pfibervm.TODO, pfibervm.FRAMES, pdestructionrelease*)
   -- if n_active? =/= S.ACTIVEFIBER
 def $property_release_vm(S, pfibervm, n_active?, pdestructionrelease*) = pdestructionrelease* -- otherwise
