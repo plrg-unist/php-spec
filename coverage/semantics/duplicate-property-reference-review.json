@@ -1,0 +1,112 @@
+{
+  "target": "PHP 8.5.10 CLI NTS64 profile30719",
+  "status": "partial; independently reviewed private semantic/source and affected491 cuts accepted",
+  "semantic_cut": "3429f29ad",
+  "tested_cut": "87f9b399a",
+  "modules": 298,
+  "scope": "Physical duplicate dynamic-property reference foreach; declared readonly/type guards and latest named access retained. Plain previous-CV object cleanup keeps its old raw value readable until atomic selected-reference installation on return/throw. Actual shared receiver HCELL survives alias writes and unset/recreate, retargets object/array tables without late reset-time COW, and retains late scalar warning ownership until normal/abrupt iterator removal.",
+  "admission": "Source AST, runtime line, iterator/cursor and selected physical address are checked. RELEASE recaptures the live selected slot; entered COMMIT may survive retired receiver storage while its selected HCELL remains real. Fresh false HOBJECT C-owner and selected-cell/source forgeries fail public admission. This bounded source/current-address check is not a historical reachability proof.",
+  "engine": [
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_RW, ZEND_FE_FETCH_RW; selected Bucket promotion/ADDREF precedes previous target-CV destruction; receiver wrapper is dereferenced on each fetch",
+    "vendor/php-src/Zend/zend_hash.c: zend_hash_iterator_pos; physical cursor changes table on payload replacement"
+  ],
+  "execution": "Project-local executables copied from accepted318 composition; identities retained in raw init records. Production SL_mode and numeric --sl; no fresh rebuild claim. LC_ALL=C/TZ=UTC; original file/cwd/profile, hashes, streams and commands retained per report.",
+  "caps": "native30/modelCLI60/process90/numericSL120/outer420/jobs1 serial",
+  "raw_root": ".tools/properties-duplicate-reference18/.tools/",
+  "sources": {
+    "initial12": {
+      "cut": "3a95c9531",
+      "raw": [
+        "dynamic-property-warning-source-o9e4quz_/report.json",
+        "dynamic-property-warning-source-w16y79ao/report.json"
+      ]
+    },
+    "shared_receiver12": {
+      "cuts": [
+        "767ded875",
+        "0a844c677",
+        "63b1d2644",
+        "347a081bf"
+      ],
+      "raw": [
+        "dynamic-property-warning-source-tbcqj8x0/report.json",
+        "dynamic-property-warning-source-2vvfbibx/report.json (first3 only)",
+        "dynamic-property-warning-source-21c1n1lk/report.json",
+        "dynamic-property-warning-source-txduxbhm/report.json (completed2 only)",
+        "dynamic-property-warning-source-x764md5_/report.json",
+        "dynamic-property-warning-source-p0qtthli/report.json"
+      ]
+    },
+    "meaning": "24 distinct normal originals at separate cuts, not one current-HEAD campaign. Normal0, empty stderr and exact native/model streams; stopped/Unsupported entries earn no agreement."
+  },
+  "reached": {
+    "initial288": {
+      "groups": {
+        "physical": 77,
+        "binding": 104,
+        "pending-binding": 107
+      },
+      "cuts": [
+        "3c85a1327",
+        "42130c3f1"
+      ],
+      "raw": [
+        "duplicate-property-reference-rorg6rhe/report.json",
+        "duplicate-property-reference-rzew0ex3/report.json",
+        "duplicate-property-reference-itx1p7yq/report.json"
+      ]
+    },
+    "current491": {
+      "cut": "87f9b399a",
+      "groups": {
+        "physical": 88,
+        "binding": 104,
+        "pending-binding": 107,
+        "receiver-cleanup": 87,
+        "notice-owner": 32,
+        "scalar-warning": 73
+      },
+      "raw": [
+        "duplicate-property-reference-rume5t3g/report.json",
+        "duplicate-property-reference-1ua3jed3/report.json",
+        "duplicate-property-reference-1p5145bi/report.json",
+        "duplicate-property-reference-1f6r_ye7/report.json",
+        "duplicate-property-reference-omcdyx47/report.json",
+        "duplicate-property-reference-i3utpzh9/report.json"
+      ]
+    },
+    "meaning": "Physical premises including checked source/setup, not unique states. Actual selected HCELL owners, completed bucket deletion, raw OLD/masked edge, pending ownership and atomic install; retired old receiver/new table; HCELL-only notice roots; scalar callback replacement/iterator removal; zero/one-step resumption and terminal streams."
+  },
+  "compiler": {
+    "initial": "duplicate-reference-sl-init1-attempt4/report.json at3a95c9531",
+    "shared_receiver": "duplicate-reference-shared-receiver-sl-init1-attempt1/report.json at767ded875",
+    "scalar": "duplicate-reference-shared-receiver-sl-init2-attempt1/report.json at0a844c677",
+    "admission": "duplicate-reference-shared-receiver-sl-init3-attempt1/report.json at87f9b399a;3.706s",
+    "application_evaluations": 0
+  },
+  "boundaries": {
+    "raw": "dynamic-property-warning-boundary-3zj3zj4w/report.json at3c85a1327",
+    "controls": 6,
+    "agreement_claim": false,
+    "reasons": [
+      "foreach reference binding exit continuation",
+      "mutation of released foreach CV (same-value write, unset, promotion and rebind)",
+      "foreach reference previous CV pointer lifetime (callback-capable array)"
+    ],
+    "remaining": "Wider callback-capable container/wrapper retirement, binding-time exit/shutdown, nonordinary replacement objects and expired borrowed notice buckets remain required. Earlier318 handler-exit/duplicate-cast/expired-RHS boundaries retain their own cuts."
+  },
+  "zero_credit": {
+    "prior_cv_order": "duplicate-reference-binding-observation-counterexample1-attempt1: native old versus model new, bothnormal0; corrected by staged binding",
+    "receiver_rebind": "duplicate-reference-receiver-rebind-counterexample1-attempt1: native new z/w versus model cached y; corrected by actual shared HCELL",
+    "scalar_warning": "dynamic-property-warning-source-2vvfbibx: scalar entry lacked a producer continuation; corrected at0a844c677",
+    "strlen_observer": "dynamic-property-warning-source-txduxbhm: original unset-notice observer stopped at registered builtin call. Original retained-table strlen companion remains unrun/preparation0. Distinct key-equality originals preserve both byte files.",
+    "state_stops": "Original physical80 duplicate-property-reference-tgf5fcm4 failed129 admission; diagnostic-only prefetch probe has0 credit. Earlier binding fixture stops preserve wrong receiver-wrapper premise and inner-unset timing before corrected104/107.",
+    "preserved": "Raw compiler/fixture failures remain ignored; no earlier318 or clone campaign renewal. User-paused return verification remains held."
+  },
+  "recovery": {
+    "source": "python3 tests/semantics/dynamic_property_warning_sources.py source --select EXACT_CASE_IDS",
+    "states": "python3 tests/semantics/duplicate_property_reference_protocol.py --group GROUP",
+    "prepare": "Add --prepare-only for checked frontend/adapter preparation with numeric/native/model0",
+    "contract": "Numeric strictSL requires true newline/exit0/empty stderr, stable input snapshots and closed checked workers. Reports retain exact original hashes, selections and commands."
+  }
+}
