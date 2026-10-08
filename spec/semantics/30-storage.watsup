@@ -132,6 +132,7 @@ syntax pnameread = { SITE porigin, NAME nat*, LINE int }
 syntax pnamestring = { READ pnameread, OBJECT nat, TAIL ptask* }
 syntax pechoresult = { TEMP poperand, OBJECT nat, SITE porigin, LINE int, TAIL ptask* }
 syntax pcompoundstring = { PLACE plocation, RIGHT poperand, SITE porigin, LINE int, CV bool, SELF bool, SELECTED nat? }
+syntax pcomputedcompound = { CLASS poperand, NAME poperand, RIGHT poperand, SITE porigin, LINE int }
 syntax pclosurescope, pclosurebinding
 ;; The selecting callback is borrowed history, not a retained queue owner.
 syntax pcloneproducer = { SITE porigin, NAME ptbytes?, CLOSURE nat? }
@@ -242,6 +243,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | GENERATOR_STORAGE_STEP pgenstorage
   | COMPOUND_STRING_PREP plocation pvalue pvalue porigin int | COMPOUND_STRING_LEFT plocation pvalue porigin int | COMPOUND_STRING_RIGHT plocation ptbytes porigin int
   | COMPOUND_LIVE_PREP pcompoundstring pvalue | COMPOUND_LIVE_LEFT pcompoundstring | COMPOUND_LIVE_RIGHT pcompoundstring ptbytes | COMPOUND_LIVE_RELEASE pcompoundstring | COMPOUND_LIVE_DONE pcompoundstring
+  | COMPOUND_STATIC_NAME pcomputedcompound | COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
   | AUTO_NEW preqbytes phpType7* int int | AUTO_PUBLISH porigin | AUTO_EXPLICIT_DONE pconfigcall
   | AUTO_DEFAULT_NEW preqbytes phpType7* porigin int

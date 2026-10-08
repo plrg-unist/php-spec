@@ -1,0 +1,179 @@
+;; Static op1 CVs are read after eager RHS work; evaluated name operands retain
+;; their real owners until the property address has been fetched.
+dec $computed_static_source(pstate, porigin) : bool
+dec $computed_static_operand(pstate, porigin, pcpath, poperand) : bool
+dec $computed_static_valid(pstate, pcomputedcompound) : bool
+dec $computed_static_ready(pstate, pcomputedcompound, porigin, ptbytes) : bool
+dec $computed_static_marker(pstate, ptask*, pcomputedcompound, porigin, ptbytes) : bool
+dec $computed_static_marker_pair(ptask*, pcomputedcompound, porigin, ptbytes) : bool
+dec $computed_static_name_compatible(pstate, porigin, ptbytes) : bool
+dec $computed_static_named_root(pstate, porigin) : porigin?
+dec $computed_static_base(pstate, ppropertyid, porigin) : (porigin, ptbytes)?
+dec $computed_static_selection_allowed(pstate, porigin) : bool
+
+def $compound_string_line(S, porigin, NExprStaticPropertyFetch phpType19 expression_name metadata_fetch, expression_right, metadata) = $runtime_line(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], eps, NExprStaticPropertyFetch phpType19 expression_name metadata_fetch)
+  -- if $class_static_computed_name(expression_name)
+def $computed_static_source(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 expression_name metadata_property) expression_right metadata)
+  -- if $class_static_computed_name(expression_name)
+def $computed_static_source(S, porigin) = false -- otherwise
+def $computed_static_operand(S, porigin, pcpath, VARIABLE n_name* z) = true
+  -- if $compound_live_cv_name(S, porigin, pcpath) = (n_name*)
+  -- if $code_expression_at_source(S, porigin, pcpath) = (z)
+def $computed_static_operand(S, porigin, pcpath, KNOWN pvalue) = true
+  -- if $compound_live_cv_name(S, porigin, pcpath) = eps
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $compiled_read(S, porigin_operand) = eps \/ $compiled_read(S, porigin_operand) = (pvalue)
+def $computed_static_operand(S, porigin, pcpath, REFERENCE n) = true
+  -- if $compound_live_cv_name(S, porigin, pcpath) = eps
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $compiled_read(S, porigin_operand) = eps
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+def $computed_static_operand(S, porigin, pcpath, poperand) = false -- otherwise
+def $computed_static_valid(S, pcomputedcompound) = true
+  -- if $computed_static_source(S, pcomputedcompound.SITE)
+  -- if $compound_string_site_valid(S, pcomputedcompound.SITE, pcomputedcompound.LINE)
+  -- if $origin_child((pcomputedcompound.SITE), [PCFIELD 0]) = (porigin_fetch)
+  -- if $origin_node(S.SOURCES, porigin_fetch) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
+  -- if S_fetch = S[.ORIGIN = (porigin_fetch)]
+  -- if pcomputedcompound.LINE = $runtime_line(S_fetch, eps, NExprStaticPropertyFetch phpType19 expression_name metadata)
+  -- if $class_static_ref_selector_matches(S_fetch, phpType19, pcomputedcompound.CLASS)
+  -- if $computed_static_operand(S, pcomputedcompound.SITE, [PCFIELD 0, PCFIELD 1], pcomputedcompound.NAME)
+  -- if $computed_static_operand(S, pcomputedcompound.SITE, [PCFIELD 1], pcomputedcompound.RIGHT)
+  -- if $heap_subset($operand_nodes(pcomputedcompound.NAME) ++ $operand_nodes(pcomputedcompound.RIGHT), S.ALLOCATIONS)
+  -- if $call_reference_operand_valid(S, pcomputedcompound.NAME) /\ $call_reference_operand_valid(S, pcomputedcompound.RIGHT)
+def $computed_static_valid(S, pcomputedcompound) = false -- otherwise
+def $computed_static_name_compatible(S, porigin, ptbytes) = true
+  -- if $origin_child((porigin), [PCFIELD 0, PCFIELD 1]) = (porigin_name)
+  -- if $compiled_read(S, porigin_name) = eps
+def $computed_static_name_compatible(S, porigin, ptbytes) = true
+  -- if $origin_child((porigin), [PCFIELD 0, PCFIELD 1]) = (porigin_name)
+  -- if $compiled_read(S, porigin_name) = (pvalue)
+  -- if S_name = $stringify(S[.COMPLETION = NORMAL], pvalue, 1)
+  -- if S_name.COMPLETION = NORMAL /\ S_name.RESULT = KNOWN (PSTRING ptbytes)
+def $computed_static_name_compatible(S, porigin, ptbytes) = false -- otherwise
+
+def $class_static_ref_pending_tail((COMPOUND_PREP CONCAT (NExprStaticPropertyFetch phpType19 expression_name metadata) expression_right z) :: ptask*) = $class_static_computed_name(expression_name)
+def $compound_target(S, CONCAT, BASE_CLASS_STATIC_PENDING poperand_class poperand_name, poperand_right, z) = S[.TODO = (COMPOUND_STATIC_NAME pcomputedcompound) :: S.TODO][.ORIGIN = (porigin_fetch)][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_fetch)
+  -- if $origin_node(S.SOURCES, porigin_fetch) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
+  -- if pcomputedcompound = {CLASS poperand_class, NAME poperand_name, RIGHT poperand_right, SITE porigin, LINE $runtime_line(S[.ORIGIN = (porigin_fetch)], eps, NExprStaticPropertyFetch phpType19 expression_name metadata)}
+  -- if $computed_static_valid(S, pcomputedcompound)
+def $task_nodes(COMPOUND_STATIC_NAME pcomputedcompound) = $operand_nodes(pcomputedcompound.NAME) ++ $operand_nodes(pcomputedcompound.RIGHT)
+def $task_nodes(COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) = $operand_nodes(pcomputedcompound.NAME) ++ $operand_nodes(pcomputedcompound.RIGHT)
+def $call_task_valid(S, COMPOUND_STATIC_NAME pcomputedcompound) = ($computed_static_valid(S, pcomputedcompound) /\ S.ORIGIN = $origin_child((pcomputedcompound.SITE), [PCFIELD 0]))
+def $computed_static_ready(S, pcomputedcompound, porigin, ptbytes) = (S.BASE = BASE_CLASS_STATIC porigin ptbytes /\ $class_constant_static_work(S, pcomputedcompound.CLASS, ptbytes, pcomputedcompound.LINE) = eps)
+  -- if S.TODO = (COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) :: ptask*
+def $computed_static_ready(S, pcomputedcompound, porigin, ptbytes) = $computed_static_marker(S, S.TODO, pcomputedcompound, porigin, ptbytes)
+  -- if S.TODO = ptask_head :: ptask_tail*
+  -- if ptask_head =/= COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes
+def $computed_static_ready(S, pcomputedcompound, porigin, ptbytes) = false -- if S.TODO = eps
+def $computed_static_marker_pair((CLASS_CONST_STATIC poperand ptbytes z) :: (COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) :: ptask*, pcomputedcompound, porigin, ptbytes) = true
+def $computed_static_marker_pair((CLASS_CONST_SELECTED pstaticselection ptbytes z) :: (COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) :: ptask*, pcomputedcompound, porigin, ptbytes) = true
+def $computed_static_marker_pair(ptask*, pcomputedcompound, porigin, ptbytes) = false -- otherwise
+def $computed_static_marker(S, (CLASS_CONST_STATIC poperand ptbytes z) :: (COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) :: ptask*, pcomputedcompound, porigin, ptbytes) = (poperand = pcomputedcompound.CLASS /\ z = pcomputedcompound.LINE)
+def $computed_static_marker(S, (CLASS_CONST_SELECTED pstaticselection ptbytes z) :: (COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) :: ptask*, pcomputedcompound, porigin, ptbytes) = (pstaticselection.ROOT = porigin /\ pstaticselection.SITE = $origin_child((pcomputedcompound.SITE), [PCFIELD 0]) /\ z = pcomputedcompound.LINE /\ $class_static_selection_valid(S, pstaticselection))
+def $computed_static_marker(S, ptask_head :: ptask_tail*, pcomputedcompound, porigin, ptbytes) = $computed_static_marker(S, ptask_tail*, pcomputedcompound, porigin, ptbytes)
+  -- if ~$computed_static_marker_pair(ptask_head :: ptask_tail*, pcomputedcompound, porigin, ptbytes)
+def $computed_static_marker(S, eps, pcomputedcompound, porigin, ptbytes) = false
+def $call_task_valid(S, COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes) = ($computed_static_valid(S, pcomputedcompound) /\ S.ORIGIN = $origin_child((pcomputedcompound.SITE), [PCFIELD 0]) /\ $scoped_selector_class(S, pcomputedcompound.CLASS) = (porigin) /\ $computed_static_name_compatible(S, pcomputedcompound.SITE, ptbytes) /\ $computed_static_ready(S, pcomputedcompound, porigin, ptbytes))
+
+rule PhpStep/computed-static-name: S ~> $class_static_prepare_base(S_name[.TODO = (COMPOUND_STATIC_READY pcomputedcompound porigin_root ptbytes) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pcomputedcompound.CLASS, ptbytes, pcomputedcompound.LINE)
+  -- if S.TODO = (COMPOUND_STATIC_NAME pcomputedcompound) :: ptask*
+  -- if $call_task_valid(S, COMPOUND_STATIC_NAME pcomputedcompound)
+  -- if S_class = $class_static_prepare_base_ready(S, pcomputedcompound.CLASS, eps, pcomputedcompound.LINE)
+  -- if S_class.COMPLETION = NORMAL
+  -- if S_class.BASE = BASE_CLASS_STATIC porigin_root ptbytes_unused
+  -- if S_name = $resolve_name(S_class, pcomputedcompound.NAME, pcomputedcompound.LINE)
+  -- if S_name.COMPLETION = NORMAL
+  -- if S_name.RESULT = KNOWN (PSTRING ptbytes)
+rule PhpStep/computed-static-class-abrupt: S ~> S_class[.TODO = eps]
+  -- if S.TODO = (COMPOUND_STATIC_NAME pcomputedcompound) :: ptask*
+  -- if S_class = $class_static_prepare_base_ready(S, pcomputedcompound.CLASS, eps, pcomputedcompound.LINE)
+  -- if S_class.COMPLETION =/= NORMAL
+rule PhpStep/computed-static-name-abrupt: S ~> S_name[.TODO = eps]
+  -- if S.TODO = (COMPOUND_STATIC_NAME pcomputedcompound) :: ptask*
+  -- if S_class = $class_static_prepare_base_ready(S, pcomputedcompound.CLASS, eps, pcomputedcompound.LINE)
+  -- if S_class.COMPLETION = NORMAL
+  -- if S_name = $resolve_name(S_class, pcomputedcompound.NAME, pcomputedcompound.LINE)
+  -- if S_name.COMPLETION =/= NORMAL
+rule PhpStep/computed-static-ready: S ~> S_updated[.HELD = S.HELD]
+  -- if S.TODO = (COMPOUND_STATIC_READY pcomputedcompound porigin_root ptbytes) :: ptask*
+  -- if $call_task_valid(S, COMPOUND_STATIC_READY pcomputedcompound porigin_root ptbytes)
+  -- if S_updated = $compound_target($hold_task_inputs(S)[.ORIGIN = (pcomputedcompound.SITE)], CONCAT, BASE_CLASS_STATIC porigin_root ptbytes, pcomputedcompound.RIGHT, pcomputedcompound.LINE)
+
+;; The resolved base is transient; the existing ENTRY binds later captures.
+def $compound_target(S, CONCAT, BASE_CLASS_STATIC porigin_root ptbytes, poperand, z) = S_changed[.BASE = S.BASE]
+  -- if S.ORIGIN = (porigin)
+  -- if $computed_static_source(S, porigin)
+  -- if $compound_string_site_valid(S, porigin, z)
+  -- if S_changed = $compound_operands($compound_location(S[.BASE = BASE_CLASS_STATIC porigin_root ptbytes], BASE_CLASS_STATIC porigin_root ptbytes, z), CONCAT, poperand, z)
+def $computed_static_base(S, ppropertyid, porigin) = ((porigin_root, ptbytes))
+  -- if $computed_static_source(S, porigin)
+  -- if S.BASE = BASE_CLASS_STATIC porigin_root ptbytes
+def $computed_static_base(S, ppropertyid, porigin) = ((pstaticcompound.CLASS, ppropertydesc.NAME))
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.TODO = (COMPOUND_LIVE_PREP pcompoundstring pvalue) :: ptask*
+  -- if pcompoundstring.PLACE = STATIC_COMPOUND pstaticcompound
+  -- if pcompoundstring.SITE = porigin /\ pstaticcompound.DECL = ppropertyid
+  -- if $(pstaticcompound.ENTRY < |S.CLASSCONSTANTHISTORY|)
+  -- if $static_compound_entry(S.CLASSCONSTANTHISTORY[pstaticcompound.ENTRY], pstaticcompound, porigin, pcompoundstring.LINE)
+  -- if $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+def $computed_static_base(S, ppropertyid, porigin) = eps -- otherwise
+def $computed_static_named_root(S, porigin) = (porigin_root)
+  -- if $computed_static_source(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 expression_name metadata_property) expression_right metadata)
+  -- if $ppscoped_named(phpType19) \/ $class_static_literal_class(phpType19)
+  -- if $class_static_selection_keyword(phpType19) = eps
+  -- if $class_static_selector_source_name(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], phpType19) = (ptbytes_class)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin_root)
+  -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
+  -- if $ptlc(ptbytes_class) = $ptlc(pclassdesc.NAME)
+def $computed_static_named_root(S, porigin) = eps -- otherwise
+def $static_compound_selection(S, ppropertyid, porigin) = ((porigin_root, ppropertydesc))
+  -- if $computed_static_named_root(S, porigin) = (porigin_root)
+  -- if $computed_static_base(S, ppropertyid, porigin) = ((porigin_root, ptbytes))
+  -- if $computed_static_name_compatible(S, porigin, ptbytes)
+  -- if $class_static_select(S, porigin_root, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) =/= eps
+def $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
+  -- if $computed_static_named_root(S, porigin) = (pstaticcompound.CLASS)
+  -- if $(pstaticcompound.ENTRY < |S.CLASSCONSTANTHISTORY|)
+  -- if S.CLASSCONSTANTHISTORY[pstaticcompound.ENTRY] = CCCOMPOUNDENTER pstaticcompound porigin z n_prefix
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticcompound.DECL) = (ppropertydesc)
+  -- if $computed_static_name_compatible(S, porigin, ppropertydesc.NAME)
+  -- if $class_static_select(S, pstaticcompound.CLASS, ppropertydesc.NAME) = (ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, pstaticcompound.DECL) =/= eps
+
+def $computed_static_selection_allowed(S, porigin) = true
+  -- if $computed_static_source(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 expression_name metadata_property) expression_right metadata)
+  -- if ~$ppscoped_named(phpType19) /\ ~$class_static_literal_class(phpType19)
+def $computed_static_selection_allowed(S, porigin) = true
+  -- if $computed_static_source(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 expression_name metadata_property) expression_right metadata)
+  -- if $class_static_selection_keyword(phpType19) =/= eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $static_compound_method_target(pcallcontext.TARGET)
+  -- if ~$from_current(S)
+def $computed_static_selection_allowed(S, porigin) = false -- otherwise
+def $static_compound_scoped_selection(S, ppropertyid, porigin) = ((pstaticselection, ppropertydesc))
+  -- if $computed_static_selection_allowed(S, porigin)
+  -- if $computed_static_base(S, ppropertyid, porigin) = ((porigin_root, ptbytes))
+  -- if $computed_static_name_compatible(S, porigin, ptbytes)
+  -- if $class_at(S.CLASSES, porigin_root) = (pclassdesc)
+  -- if $class_static_selection(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], KNOWN (PSTRING pclassdesc.NAME)) = (pstaticselection)
+  -- if $class_static_select(S, porigin_root, ptbytes) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if $class_static_at(S.CLASSSTATICS, ppropertyid) =/= eps
+def $static_compound_selected_descriptor(S, pstaticcompound, pstaticselection, porigin) = (ppropertydesc)
+  -- if $computed_static_source(S, porigin)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (pstaticselection.SITE)
+  -- if pstaticselection.ROOT = pstaticcompound.CLASS /\ pstaticselection.CLOSURE = eps
+  -- if $class_static_selection_valid(S, pstaticselection)
+  -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticcompound.DECL) = (ppropertydesc)
+  -- if $computed_static_name_compatible(S, porigin, ppropertydesc.NAME)
+  -- if $class_static_select(S, pstaticselection.ROOT, ppropertydesc.NAME) = (ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, pstaticcompound.DECL) =/= eps
