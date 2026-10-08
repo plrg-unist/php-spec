@@ -1,11 +1,12 @@
 ;; zend_call_function owns the fake Closure while borrowing its this_ptr.
 ;; RAW owns the other Closure reference until callback retirement.
-def $fiber_core_binding(S, pfiber) = (pfibercapture.INPUT, (n_capture))
+def $fiber_core_binding(S, pfiber) = (pfibercapture.INPUT, n_selection?)
   -- if pfiber.RAW = POBJECT n_capture
   -- if pfiber.TARGET = (FIBER_API_TARGET n_capture)
   -- if $fiber_capture_core_live(S, n_capture)
   -- if S.OBJECTS[n_capture] = FIBERAPICLOSURE pfibercapture
   -- if $fiber_bound_kind(pfibercapture.KIND)
+  -- if n_selection? = (n_capture)
 def $config_receive(S, pconfigcall) = $fiber_receive(S, pconfigcall)
   -- if $fiber_capture_config_tag(pconfigcall)
   -- if $fiber_core_config_valid(S, pconfigcall)
