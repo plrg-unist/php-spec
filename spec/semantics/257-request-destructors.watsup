@@ -349,13 +349,16 @@ rule PhpStep/destructor-global-store: S ~> S[.DESTRUCTION.PHASE = DESTRUCTION_ST
 
 ;; Object-store handles are reused before this pass; reuse stops during it. The
 ;; live upper bound grows when a destructor creates another object.
+def $instance_storage_freeing(S, n) = false -- otherwise
+def $instance_storage_state_valid(S) = true -- otherwise
 def $destructor_handle(S, n_handle, n) = (n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $(n < |S.DESTRUCTION.HANDLES|)
   -- if S.DESTRUCTION.HANDLES[n] = n_handle
   -- if (HOBJECT n) <- S.ALLOCATIONS
 def $destructor_handle(S, n_handle, n) = $destructor_handle(S, n_handle, $(n + 1))
   -- if $(n < |S.DESTRUCTION.HANDLES|)
-  -- if S.DESTRUCTION.HANDLES[n] =/= n_handle \/ ~((HOBJECT n) <- S.ALLOCATIONS)
+  -- if S.DESTRUCTION.HANDLES[n] =/= n_handle \/ ~((HOBJECT n) <- S.ALLOCATIONS) \/ $instance_storage_freeing(S, n)
 def $destructor_handle(S, n_handle, n) = eps -- if $(n >= |S.DESTRUCTION.HANDLES|)
 def $call_task_valid(S, DESTRUCTOR_STORE) = ($shutdown_task_scope(S) /\ S.ORIGIN = eps /\ S.DESTRUCTION.PHASE = DESTRUCTION_STORE /\ S.DESTRUCTION.RELEASES = eps /\ S.DESTRUCTION.CALLS = eps /\ $(S.DESTRUCTION.INDEX >= 1) /\ $(S.DESTRUCTION.INDEX <= S.DESTRUCTION.NEXT))
 rule PhpStep/destructor-store-call: S ~> $destructor_select(S[.DESTRUCTION.INDEX = $(S.DESTRUCTION.INDEX + 1)], n, true, eps)
@@ -575,7 +578,7 @@ def $destructor_finish(S, pdestructorcall) = $destructor_release_begin(S_done, [
   -- if S_done = S[.DESTRUCTION.CALLS = pdestructorcall_tail*][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT]
   -- if $heap_owners($heap_graph(S_done), HOBJECT pdestructorcall.OBJECT) = 0
 ;; Future tail guards see the borrowed stacks after their preceding marker.
-def $call_after_origin(S, DESTRUCTOR_RESULT pdestructorcall) = S[.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.DESTRUCTION.CALLS = pdestructorcall_tail*]
+def $call_after_origin(S, DESTRUCTOR_RESULT pdestructorcall) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.DESTRUCTION.CALLS = pdestructorcall_tail*]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*
 def $call_after_origin(S, DESTRUCTOR_ENTER pdestructorcall) = S[.ORIGIN = pdestructorcall.ORIGIN][.CONSTCONTEXT = pdestructorcall.CONSTCONTEXT][.DESTRUCTION.CALLS = pdestructorcall_tail*]
   -- if S.DESTRUCTION.CALLS = pdestructorcall :: pdestructorcall_tail*

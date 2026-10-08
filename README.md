@@ -216,6 +216,10 @@ including typed final results and PHP's retained reference-type history. Twelve
 exact originals and368 reached premises cover live RHS reads, inherited slots,
 alias rebinding, reference history, temporary cleanup and access-error priority.
 The actual344 compiler/init gate retains its separate accepted record.
+Direct ordinary-method calls retain `self`, `parent` and `static` selection through
+conversion and nested calls. Six further originals and323 reached premises cover
+lexical/called scope, private shadows and captured-reference rebinding.
+The separate actual347 composition passes compilation and initialization.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -846,6 +850,15 @@ cover shared wrappers, typed descendants, exception chaining and expired-pointer
 refusals at separate cuts; the actual341 composition passes strict compilation.
 Whole `$GLOBALS` snapshots during wrapper retirement
 remain Unsupported.
+Ordinary INSTANCE storage359 now keeps one physical parent pin through ordered
+property release. WeakReference already returns null during child callbacks, while
+safe class metadata remains readable; each slot transfers its owner and detaches
+its type source exactly once. Five new originals and 164/57/67 reached premises
+cover pending exceptions, the Generator RETURN-child interaction and genuine
+Fiber suspension, with distinct source and repair cuts in the review. The composition of 347 modules
+adds one exact Iterator-child original and 113 reached premises; future
+destructor-tail validation applies the real result discard before owner checks.
+Raw property payload access and escaped reacquisition remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -920,6 +933,9 @@ If data binding succeeds before abstract verification fails, later cached calls
 use the fixed class scope while an imported first birth keeps its trait scope.
 One shutdown original and59 supplied phase/scope/static conditions pass, with6
 setup clauses separate; the failed class stays unpublished.
+A retained `new self` rejects an unresolved abstract trait requirement before
+arguments or instance allocation. One shutdown original and39 supplied conditions plus6
+setup clauses pass; this proof covers classes without parent/interface contracts.
 Parameter-view full-source constructor,
 handler and variadic cases, broader differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider

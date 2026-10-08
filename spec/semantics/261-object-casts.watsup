@@ -410,13 +410,17 @@ def $object_member_tail(ptbytes, n_class) = ptbytes[n_start : n_length]
   -- if n_length = $(|ptbytes| - n_start)
 
 def $object_foreach_reset(S, n) = $objectprops_mark($object_table_materialize($object_table_write(S, n), n), n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = STDINSTANCE
 def $object_foreach_reset(S, n) = $objectprops_mark(S, n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] =/= STDINSTANCE
 dec $object_foreach_select(pstate, nat) : pstate
 def $object_foreach_select(S, n) = $objectprops_mark($object_table_materialize(S, n), n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] = STDINSTANCE
 def $object_foreach_select(S, n) = $objectprops_mark(S, n)
+  -- if ~$instance_storage_freeing(S, n)
   -- if S.OBJECTS[n] =/= STDINSTANCE
 
 dec $object_foreach_key_used(statement) : bool

@@ -113,30 +113,37 @@ def $property_access_error(S, n, ptbytes, z) = $throw_scalar(S, "Error", $ptasci
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
 
 def $property_read(S, POBJECT n, ptbytes, z) = $property_read_key(S, POBJECT n, ptbytes_key, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $property_read(S, POBJECT n, ptbytes, z) = $property_access_error(S, n, ptbytes, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if ~$property_accessible(S, n, ptbytes)
 def $property_read(S, pvalue, ptbytes, z) = $property_read_key(S, pvalue, ptbytes, z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 
 def $property_quiet(S, POBJECT n, ptbytes, z) = $property_quiet_key(S, POBJECT n, ptbytes_key, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $property_quiet(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL] -- otherwise
 
 def $property_store_value(S, n, ptbytes, pvalue, z) = $property_store_key(S, n, ptbytes_key, pvalue, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $property_store_value(S, n, ptbytes, pvalue, z) = $property_access_error(S, n, ptbytes, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if ~$property_accessible(S, n, ptbytes)
 
 def $property_unset(S, POBJECT n, ptbytes, z) = $property_unset_key(S, POBJECT n, ptbytes_key, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
 def $property_unset(S, POBJECT n, ptbytes, z) = $property_access_error(S, n, ptbytes, z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if ~$property_accessible(S, n, ptbytes)
 def $property_unset(S, pvalue, ptbytes, z) = S[.RESULT = KNOWN PNULL]
