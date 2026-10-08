@@ -56,7 +56,7 @@ python3 tests/semantics/yield_key_identity_protocol.py --mode check --sl
 Historical311 warning and Unsupported observations retain their own cuts. The
 byte-identical missing-key original is now maintained as a normal321 source;
 its earlier Unsupported record receives no agreement credit. Broader operand
-producers, reference yields, handler suspension with saved Generator resumers,
+producers beyond the bounded [reference-yield slice328](GENERATOR-REFERENCE-YIELDS.md), handler suspension with saved Generator resumers,
 other close-stage destructors, cyclic/request/terminal cleanup and wider
 Generator/Fiber lifetimes remain required. Paused generic returns are excluded.
 This slice does not establish complete Generator or core semantics.

@@ -39,9 +39,9 @@ DECLARATIONS = {
     'invalid-dnf-supertype': (b'<?php\n$f=fn():(Iterator&Countable)|false=>yield 1;\necho "X";\n', b'Generator return type must be a supertype of Generator, (Iterator&Countable)|false given', 2),
     'reference-arrow-yield-from': (b'<?php\n$f=fn&()=>yield from [1];\necho "X";\n', b'Cannot use "yield from" inside a by-reference generator', 2),
 }
-UNSUPPORTED = {
-    'reference-arrow-yield': (b'<?php\n$x=5;$f=fn&()=>yield $x;foreach($f() as $v){echo $v;}echo "Z";\n', b'5Z', 'generator reference yields', 0),
-}
+UNSUPPORTED = {}
+# The unchanged reference-arrow-yield original is now normal in
+# reference_yield_prepare.py; its old Unsupported evidence keeps its own cut.
 # The unchanged missing-key original is now a normal321 case in
 # yield_key_warning_prepare.py; its old Unsupported evidence keeps its own cut.
 WATCHED = driver.WATCHED + [

@@ -61,8 +61,9 @@ admission and ownership checks use actual source-reached states.
 
 Array, source Iterator and Generator graph delegation are covered by
 [Module289](GENERATOR-DELEGATION.md), including shared progress, return transfer,
-live callback references and natural owner cleanup. IteratorAggregate,
-reference yields, dynamic/nullsafe
+live callback references and natural owner cleanup. [Reference yields328](GENERATOR-REFERENCE-YIELDS.md)
+add live cells, value-API snapshots, foreach/destructuring aliases and authentic
+Notice/cleanup readback. IteratorAggregate, broader reference producers, dynamic/nullsafe
 API calls, named/unpacked API arguments, scoped static and implicit callback
 creation, and creation through changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
