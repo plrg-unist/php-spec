@@ -7,6 +7,15 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Collector342 admits public idle resume/throw during an active pass once every
+planned destructor is marked called. The real parked collector consumer remains
+busy; worker cache/mask and transient error ownership follow332. Two exact normal
+originals and two independent strict-SL groups with127/138 physical premises pass
+at private323. Final327 over `5f478ea6a` passes combined compilation at `f9dbe3205`,
+preserving337/339/307/334 and the pointwise302 factor. Remaining-dtor stale-interval
+transfer stays Unsupported; earlier cuts are unchanged.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source339 adds the missing ordinary name-CV warning before computed FETCH.
 Returning handlers change the live caller CV used for conversion; absent/unset
 CVs quietly become null, while a later missing-target warning keeps fixed null.
@@ -83,7 +92,8 @@ stored exception or supplied-value worker owner. Strict compilation/initializati
 and three exact source controls pass at `084aebce1`; two explicit strict-SL groups
 with169 premises pass separately at `0649fd604`. The final315 composition over
 `79546523e` passes combined compilation at `f3d62ee7b` without renewing earlier
-cuts. Active-pass idle transfer remains Unsupported; complete GC and the fresh
+cuts. Module342 separately admits active transfer after destructor exhaustion;
+remaining-dtor transfer stays Unsupported. Complete GC and the fresh
 combined offline rebuild remain required.
 
 Collector325 retains a detached zero-owner target and its outgoing graph through
@@ -131,12 +141,12 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
-WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335/338,
+WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335/338/342,
 Fiber291/302/308/313/322, Generator289/303/310/311/321/328 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 324 modules composed over
-`6b51f811c`, retaining static/bound Fiber API captures331/337, physical property references324 and collector335/338.
+with 327 modules composed over
+`5f478ea6a`, retaining static/bound Fiber API captures331/337, physical property references324 and collector335/338/342.
 The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339.
 The property/clone composition passes strict SL290/compiler application0 at

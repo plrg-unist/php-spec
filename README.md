@@ -496,12 +496,17 @@ originals/85 reached premises retain their private cuts. A fresh active
 unowned-close original and117 reached premises separately check same-pass count1,
 real private-control retirement and saved caller admission. Larger exception-source
 60s timeouts remain separate from compact trace/pending controls. Wider internal
-graphs, public idle-worker transfer during an active collection, automatic
+graphs, public idle-worker transfer with uncalled pass destructors, automatic
 thresholds and wider freeing remain open. Module332 adds quiescent public idle
 resume/throw: supplied values are discarded, new cycles await real collection,
 and exceptions reach the caller without terminating or remaining in the worker.
 Three new exact originals and two strict-SL groups with169 premises pass at
 separate cuts; the final315 current-parent join passes combined compilation.
+Module342 admits idle public resume/throw during an active pass after all planned
+destructors are marked called: the pass stays busy, masks restore and injected
+errors retain identity without remaining in the worker. Two exact originals and
+265 independent physical premises retain private323; final327 compilation
+preserves337/339/307/334/302. Remaining-dtor stale-interval transfer is still required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
