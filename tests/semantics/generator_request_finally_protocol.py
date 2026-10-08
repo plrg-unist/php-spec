@@ -163,7 +163,8 @@ $destructor_handle(S_store,S_store.DESTRUCTION.INDEX,0) = (n_generator)
 n_handle = S_store.DESTRUCTION.INDEX
 ~(n_generator <- S_store.DESTRUCTION.CALLED)
 S_store.OBJECTS[n_generator] = GENERATOR pgenerator_store
-pgenerator_store.VALUE = (POBJECT n_payload) /\ pgenerator_store.REFCELL = eps
+pgenerator_store.VALUE = (POBJECT n_payload)
+pgenerator_store.REFCELL = eps
 $heap_owners($heap_graph(S_store),HOBJECT n_generator) = 1
 $heap_owners($heap_graph(S_store),HOBJECT n_payload) = 1
 '''.strip().splitlines()
