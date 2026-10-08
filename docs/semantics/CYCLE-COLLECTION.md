@@ -386,3 +386,6 @@ whole CLI runs retain their 60s timeouts/zero agreement. The initial syntax stop
 has zero application credit; strict compilation/init pass after explicit interval
 binding. Repeated internal suspension, residual/eligible overlap, different-pass
 reentry, whole CLI completion and broader GC remain required.
+Final 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed abstract
+method selection, typed freeing reads, raw Fiber-array tasks and ASSERTIONS.
+The original source/state cuts retain their inputs and counts.

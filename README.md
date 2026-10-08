@@ -656,7 +656,9 @@ agreement. Final 353 over `d2bba03b2` compiles. Main-thread residual dispatch372
 uses its own physical interval and real caller scope without changing the cached
 Fiber cursor. Strict354 compilation/init and 171 independent physical premises
 complete both unchanged originals with count1, D/E retirement and exact exception
-priority; both whole CLI 60s timeouts retain zero agreement. Overlap, repeated
+priority. Final 356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed
+trait, storage, raw Fiber-array and ASSERTIONS additions; both whole CLI 60s
+timeouts retain zero agreement. Overlap, repeated
 internal suspension, different-active-pass reentry and whole CLI completion remain
 required.
 Normal last-owner close335 runs the detached worker's `finally` immediately

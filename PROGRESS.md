@@ -269,8 +269,10 @@ leaving the cached Fiber cursor unchanged. Exact frozen slots and called flags
 authenticate callbacks without adding residual D to fresh DTORS; E protects D’s
 error before ordinary finally chaining. At `7e5ff7198`/354, strict compilation/init
 and 93/78 independent physical premises complete both unchanged originals,
-including signed count1, D/E retirement and exact new/previous identities. Both
-whole CLI 60s timeouts retain zero agreement. Overlap, repeated internal
+including signed count1, D/E retirement and exact new/previous identities. Final
+356 over `a1c5e2626` compiles at `43e793df3`, preserving reviewed abstract-method,
+typed freeing-read, raw Fiber-array tasks and ASSERTIONS additions. Both whole
+CLI 60s timeouts retain zero agreement. Overlap, repeated internal
 suspension, different-active-pass reentry, whole CLI completion and broader GC
 remain required.
 [Ledger](coverage/semantics/cycle-collection-review.json).
