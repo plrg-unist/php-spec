@@ -17,6 +17,9 @@ exact normal originals at 5+1 cuts and 267 independent/160 author reached premis
 pass. The preimplementation Unsupported baseline retains zero agreement; earlier
 364/362 evidence is not renewed. Raw array C-root callbacks, compound selectors,
 Fiber-start unpacking and wider lifecycle consumers remain required.
+Actual352 over `262ab0c38` passes strict compilation at `c757a7e25`, preserving
+current source-line, property-read, trait and Generator/collector guards; private
+source/state cuts retain their own inputs.
 [Array-start ledger](coverage/semantics/fiber-array-start-review.json).
 
 Generator 363 handles uncaught request-finally and throwing-handler fatal cleanup.
