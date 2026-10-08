@@ -150,7 +150,7 @@ def controls():
         'S_duplicate = S_before[.TODO = (INSTANCE_STORAGE_STEP pinstancestorage) :: S_before.TODO]',
         '~$instance_storage_state_valid(S_duplicate)',
         '$instance_storage_read_value(S_duplicate, n_parent, ppropertyslot_later.NAME) = eps',
-        '$property_quiet(S_before, POBJECT n_parent, ppropertyslot_later.NAME, z).COMPLETION = UNSUPPORTED "freeing instance property access"',
+        '$property_quiet(S_before, POBJECT n_parent, ppropertyslot_later.NAME, z) = S_before[.RESULT = pdestructionoperation.VALUE]',
         '$property_reference_fetch_unshared(S_before, n_parent, ppropertyslot_later.NAME, z).COMPLETION = UNSUPPORTED "freeing instance property access"']
 
 
