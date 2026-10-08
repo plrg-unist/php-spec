@@ -244,7 +244,9 @@ Other native preparations remain uncredited until implemented.
 Module307 preserves unpublished FCC targets and their birth-time parameter scope
 through method fixup, with canonical code, defaults, returns and statics unchanged.
 Failed first-target imports retain source-authenticated dead receipts through exact
-method-copy reconstruction and history replay. Focused source2 and87 supplied
+method-copy reconstruction and history replay. Access uses the unfixed exporting
+trait's scope, so a private/protected copy cannot authenticate a forbidden FCC birth.
+Focused source2 and87 supplied
 conditions cover failed retirement and equal lexical/called scope; the current
 default/TYPE checkpoint stops at the genuine old-U constructor Error.
 Dependency fills in held/open compilation, live FCC adaptations, differing-owner

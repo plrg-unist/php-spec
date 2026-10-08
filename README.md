@@ -780,9 +780,11 @@ their name before later binding, without publishing the failed class. First-targ
 method FCCs also retain source-checked dead receipts after failed composition,
 reconstructing the exact trait method-copy plan and declaration prefix. Immutable
 parameter TYPE views retain the callable's birth scope and canonical code, defaults,
-return contract and statics. Focused
+return contract and statics. Receipt access uses the unfixed exporting-trait scope;
+68 supplied private/protected forgery checks pass, with12 setup clauses separate.
+Focused
 source2 and87 supplied strict-SL conditions cover retirement and equal lexical/called
-FCC scope, with12 setup clauses separate. The current322 composition passes strict
+FCC scope, with12 setup clauses separate. The reviewed322 composition passes strict
 compilation and a genuine active default/TYPE checkpoint with26 supplied conditions
 plus6 setup clauses; that checkpoint ends at the old-U constructor Error.
 Parameter-view full-source constructor,

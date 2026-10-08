@@ -125,6 +125,76 @@ CASES = {
     },
 }
 
+# Genuine source prefixes; the forbidden FCC rows are negative inputs only.
+ACCESS_SOURCES = {'private': '<?php\n'
+            'trait T {\n'
+            '    public static function m() { echo "M;"; }\n'
+            '    public const Y = self::m(...);\n'
+            '    public static $x = self::Y;\n'
+            '}\n'
+            'trait U { use T; }\n'
+            'echo "PRE;";\n'
+            'class C { use U { m as private; } public static $x = self::Y; }\n'
+            'echo "POST;";\n',
+ 'protected': '<?php\n'
+              'trait T {\n'
+              '    public static function m() { echo "M;"; }\n'
+              '    public const Y = self::m(...);\n'
+              '    public static $x = self::Y;\n'
+              '}\n'
+              'trait U { use T; }\n'
+              'echo "PRE;";\n'
+              'class C { use U { m as protected; } public static $x = self::Y; }\n'
+              'echo "POST;";\n'}
+ACCESS_CHECKS = ['$class_named(S.CLASSNAMES, $ptascii("c")) = eps',
+ '$review19_fcc_table(S, pclassdesc_c) = ((S_constants, pclassdesc_constants))',
+ '$class_constant_desc(pclassdesc_constants.CONSTANTS, $ptascii("Y")) = (pclassconstantdesc_y)',
+ '$trait_fcc_source(S_constants, pclassconstantdesc_y)',
+ '$ppproperty_desc_at(pclassdesc_constants.PROPERTIES, $ptascii("x")) = (ppropertydesc_x)',
+ 'ppropertydesc_x.DEFAULT = PROP_DEFERRED porigin_root',
+ 'porigin_root = PORIGIN n_source pcpath_root',
+ '$origin_node(S.SOURCES, porigin_root) = (expression_root)',
+ '$review_trait_object_seed(S_constants, pclassdesc_constants, porigin_root) = (F_seed)',
+ '$review_trait_real_start(F_seed, pcpath_root, pclassconstantdesc_y, '
+ '$expression_line(expression_root)) = ((S_start, ptraitcachecause))',
+ '$trait_fcc_receipt_methods(S_start, ptraitcachecause) = ((S_copy, ptraitmethod*))',
+ '$class_at(S_copy.CLASSES, porigin_c) = (pclassdesc_copy)',
+ '$method_named(pclassdesc_copy.METHODS, $ptascii("m")) = (pmethoddesc_copy)',
+ '$trait_fcc_receipt_target(pmethoddesc_copy, ptraitmethod*) = (pmethoddesc_unfixed)',
+ 'pmethoddesc_copy.OWNER = porigin_c',
+ 'pmethoddesc_unfixed.OWNER =/= porigin_c',
+ '$class_at(S_copy.CLASSES, pmethoddesc_unfixed.OWNER) = (pclassdesc_exporter)',
+ 'pclassdesc_exporter.NAME = $ptascii("U")',
+ 'pclassdesc_exporter.KIND = "trait"',
+ 'pmethoddesc_unfixed[.OWNER = porigin_c] = pmethoddesc_copy',
+ '$method_accessible(S_copy, pmethoddesc_copy, (porigin_c))',
+ '~$method_accessible(S_copy, pmethoddesc_unfixed, (porigin_c))',
+ 'n_forbidden = |S_start.OBJECTS|',
+ 'porigin_site = pclassconstantdesc_y.INITIALIZER',
+ '$origin_node(S_start.SOURCES, porigin_site) = (pcnode)',
+ '$trait_fcc_form(pcnode)',
+ 'pconstantclosure = {OBJECT n_forbidden, SITE porigin_site, DECL pclassconstantdesc_y.ORIGIN, '
+ 'PREFIX ptraitcachecause.PREFIX}',
+ 'S_forbidden = S_start[.OBJECTS = S_start.OBJECTS ++ [CONSTANTCLOSURE porigin_site (METHODCLOSURE '
+ 'pmethoddesc_unfixed.FUNCTION.ORIGIN porigin_site porigin_c eps)]][.CONSTANTCLOSURES = '
+ 'S_start.CONSTANTCLOSURES ++ [pconstantclosure]][.CLASSCONSTANTHISTORY = '
+ 'S_start.CLASSCONSTANTHISTORY ++ [CCTRAITBIRTH n_forbidden porigin_site ptraitcachecause]]',
+ '$trait_cache_cause_selected(S_forbidden, ptraitcachecause) = (pclassconstantdesc_y)',
+ '$constant_callable_first(S_forbidden.CONSTANTCLOSURES, porigin_site) = (pconstantclosure)',
+ '$trait_real_birth_at(S_forbidden.CLASSCONSTANTHISTORY, n_forbidden) = ((porigin_site, '
+ 'ptraitcachecause))',
+ '$trait_fcc_receipt_source(S_forbidden, pconstantclosure, ptraitcachecause) = eps',
+ '$trait_real_receipt_source(S_forbidden, pconstantclosure, ptraitcachecause) = eps']
+CASES.update({
+    f"forbidden-{visibility}-unfixed-trait-fcc-receipt": {
+        "source": source, "stage": STAGE,
+        "checks": [*ACCESS_CHECKS[:15],
+                   f"pmethoddesc_copy.VISIBILITY = PROPERTY_{visibility.upper()}",
+                   *ACCESS_CHECKS[15:]],
+    }
+    for visibility, source in ACCESS_SOURCES.items()
+})
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--match', default='')
