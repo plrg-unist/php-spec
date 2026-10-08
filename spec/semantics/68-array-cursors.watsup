@@ -44,6 +44,8 @@ def $iterator_lookup((OBJECTITER n_other n_object n_position b_ref) :: piterator
 
 dec $iterator_set(piterator*, piterator) : piterator*
 def $iterator_set(eps, piterator) = [piterator]
+def $iterator_set((ITERATOR n n_old b_old pcursor*) :: piterator*, OBJECTITER n n_object n_position b_ref) = (OBJECTITER n n_object n_position b_ref) :: piterator*
+def $iterator_set((OBJECTITER n n_old n_old_position b_old) :: piterator*, ITERATOR n n_array b pcursor*) = (ITERATOR n n_array b pcursor*) :: piterator*
 def $iterator_set((ITERATOR n n_old b_old (CURSOR n_table_old n_position_old)*) :: piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*) = (ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*
 def $iterator_set((ITERATOR n_other n_old b_old (CURSOR n_table_old n_position_old)*) :: piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*) = (ITERATOR n_other n_old b_old (CURSOR n_table_old n_position_old)*) :: $iterator_set(piterator*, ITERATOR n n_array b (CURSOR n_table n_saved)*)
   -- if n_other =/= n
@@ -98,7 +100,8 @@ def $cursor_prune((CURSOR n_table n_saved) :: (CURSOR n_tail n_position)*, pnode
   -- if ~$heap_member(HARRAY n_table, pnode*)
 def $iterators_prune(eps, pnode*) = eps
 def $iterators_prune((ITERATOR n n_array b (CURSOR n_table n_saved)*) :: piterator*, pnode*) = (ITERATOR n n_array b ($cursor_prune((CURSOR n_table n_saved)*, pnode*))) :: $iterators_prune(piterator*, pnode*)
+def $iterators_prune((OBJECTITER n n_object n_position true) :: piterator*, pnode*) = (OBJECTITER n n_object n_position true) :: $iterators_prune(piterator*, pnode*)
 def $iterators_prune((OBJECTITER n n_object n_position b_ref) :: piterator*, pnode*) = (OBJECTITER n n_object n_position b_ref) :: $iterators_prune(piterator*, pnode*)
-  -- if $heap_member(HOBJECT n_object, pnode*)
+  -- if ~b_ref /\ $heap_member(HOBJECT n_object, pnode*)
 def $iterators_prune((OBJECTITER n n_object n_position b_ref) :: piterator*, pnode*) = $iterators_prune(piterator*, pnode*)
-  -- if ~$heap_member(HOBJECT n_object, pnode*)
+  -- if ~b_ref /\ ~$heap_member(HOBJECT n_object, pnode*)

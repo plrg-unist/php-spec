@@ -36,7 +36,7 @@ syntax ppropertyslot = { DECL ppropertyid?, NAME ptbytes, STATE ppropstate }
 syntax pobjectprops = { OBJECT nat, SLOTS ppropertyslot*, MATERIALIZED bool }
 syntax pobjecttable = { OBJECT nat, TABLE nat }
 syntax pobjectcast = { SITE porigin, LINE int, OBJECT nat, INPUT poperand, CELL nat?, REFERENCED bool }
-syntax pobjectforeach = { SITE porigin, LINE int, OBJECT nat, ITERATOR nat, POSITION nat, TABLE nat, SERIAL nat, KEY ptbytes, REF bool }
+syntax pobjectforeach = { SITE porigin, LINE int, OBJECT nat, OWNER pnode, ITERATOR nat, POSITION nat, TABLE nat, SERIAL nat, KEY ptbytes, REF bool }
 syntax pproptypesource = OBJECT_PROP_SOURCE nat ptbytes ppropertyid | CLASS_PROP_SOURCE ppropertyid | RETIRED_CLASS_PROP_SOURCE porigin nat
 syntax ppropref = { CELL nat, SOURCES pproptypesource* }
 syntax prefcoercion = { CELL nat, SITE porigin, LINE int, VALUE ptbytes }
@@ -215,6 +215,7 @@ syntax pordinaryinternal = {SOURCE pctorcall, CALL pctorcall, INDEX nat, VALUES 
 syntax pconstantlookup = { ORIGIN porigin, SITE porigin, DECL porigin, PREFIX nat }
 syntax pconstantfact = { ORIGIN porigin, VALUE pvalue?, CLASS pvalueclass, LOOKUP pconstantlookup? }
 syntax pconstantcontext = { ORIGIN porigin, LINE int, FACTS pconstantfact* }
+syntax pforeachbind = { SITE porigin, FOREACH porigin, ITERATOR nat, OBJECT nat, OWNER pnode, POSITION nat, KEY ptbytes, NAME ptbytes, OLD nat, VALUE pvalue, NEW nat, CALLER pcallcontext?, CONSTCONTEXT pconstantcontext?, LINE int }
 syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantcontext?, ORIGIN porigin?, LINE int }
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
 syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
@@ -222,7 +223,8 @@ syntax psourcehelper = HELPER_EMPTY_EVAL | HELPER_ONCE_SKIP pfilecontext preqbyt
 syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat }
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
-syntax ptask = GC_WORKER_PUBLIC pfiberapi | GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat | GC_WORKER_WAIT nat pgcplan | GC_WORKER_REPLACE pgcplan | GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat | GC_FREE pgcplan | FIBER_CORE_RESULT nat pconfigcall | FIBER_API_CORE_RESULT nat nat pconfigcall | FIBER_CAPTURE_RELEASE nat porigin | FIBER_CAPTURE_RESULT nat pconfigcall bool | FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_YIELD_KEY nat porigin int | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
+syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
+  | GC_WORKER_PUBLIC pfiberapi | GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat | GC_WORKER_WAIT nat pgcplan | GC_WORKER_REPLACE pgcplan | GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat | GC_FREE pgcplan | FIBER_CORE_RESULT nat pconfigcall | FIBER_API_CORE_RESULT nat nat pconfigcall | FIBER_CAPTURE_RELEASE nat porigin | FIBER_CAPTURE_RESULT nat pconfigcall bool | FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_YIELD_KEY nat porigin int | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
   | GENERATOR_CLOSE_RELEASE pgenrelease | GENERATOR_CLOSE_ENTER pgenclose | GENERATOR_CLOSE_DONE pgenclose | GENERATOR_CLOSE_SCAN nat porigin | GENERATOR_CLOSE_FINALLY porigin | GENERATOR_CLOSE_FROM porigin
   | COMPOUND_STRING_PREP plocation pvalue pvalue porigin int | COMPOUND_STRING_LEFT plocation pvalue porigin int | COMPOUND_STRING_RIGHT plocation ptbytes porigin int
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
@@ -613,8 +615,11 @@ def $ensure(S, n_name*) = S[.CELL = n_cell][.STORE = S.STORE ++ [UNDEFINED]][.EN
 ;; carries no heap edge and stable cell IDs are never recycled. Array copies may
 ;; unwrap an ALIAS into DIRECT while the original cell's wrapper remains intact.
 dec $reference_cell(pstate, nat) : pstate
-def $reference_cell(S, n) = S -- if n <- S.REFCELLS
-def $reference_cell(S, n) = S[.REFCELLS = n :: S.REFCELLS] -- if ~(n <- S.REFCELLS)
+dec $foreach_released_cell(pstate, nat) : bool
+dec $foreach_released_name(pstate, nat*) : bool
+def $reference_cell(S, n) = S[.COMPLETION = UNSUPPORTED "mutation of released foreach CV"] -- if $foreach_released_cell(S, n)
+def $reference_cell(S, n) = S -- if ~$foreach_released_cell(S, n) /\ n <- S.REFCELLS
+def $reference_cell(S, n) = S[.REFCELLS = n :: S.REFCELLS] -- if ~$foreach_released_cell(S, n) /\ ~(n <- S.REFCELLS)
 
 ;; Ordinary writable-name fetching initializes the slot without creating a
 ;; reference wrapper. Reference-source acquisition adds the marker afterward.
@@ -681,17 +686,23 @@ def $write_name(S, n_name*, pvalue) = $write_cell_checked(S_found, S_found.CELL,
 dec $bind_reference(pstate, nat*) : pstate
 def $bind_reference(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if $environment_blocked(S, n_name*)
+def $bind_reference(S, n_name*) = S[.COMPLETION = UNSUPPORTED "mutation of released foreach CV"]
+  -- if ~$environment_blocked(S, n_name*) /\ $foreach_released_name(S, n_name*)
 ;; ZEND_ASSIGN_REF returns an owning reference wrapper when its value is used.
 ;; Consumers dereference this captured cell, even if a name is later rebound.
 def $bind_reference(S, n_name*) = $reference_cell(S, S.CELL)[.ENV = (BIND n_name* S.CELL) :: $unbind(S.ENV, n_name*)][.SYMBOLS = $symbol_add(S.SYMBOLS, n_name*)][.RESULT = REFERENCE S.CELL]
   -- if ~$environment_blocked(S, n_name*)
+  -- if ~$foreach_released_name(S, n_name*)
   -- if S.STORE[S.CELL] = DEFINED pvalue
 
 dec $unset_name(pstate, nat*) : pstate
 def $unset_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "request environment variable"]
   -- if $environment_blocked(S, n_name*) /\ ~$this_name(n_name*)
+def $unset_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "mutation of released foreach CV"]
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*)) /\ $foreach_released_name(S, n_name*)
 def $unset_name(S, n_name*) = S[.ENV = $unbind(S.ENV, n_name*)][.SYMBOLS = $symbol_unset(S, n_name*)]
   -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
+  -- if ~$foreach_released_name(S, n_name*)
 
 dec $runtime_line(pstate, pcpath, expression) : int
 dec $enter_compiled_task(pstate, porigin, ptask, ptask*) : pstate
