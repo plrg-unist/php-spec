@@ -847,7 +847,12 @@ rule PhpStep/assert-callback-invalid: S ~> $assertion_callback_error($config_err
 rule PhpStep/assert-callback-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "assertion callback invocation form"]
   -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
   -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
-  -- if $error_handler_resolution(S, passertcall.CALLBACK) = HANDLERUNKNOWN text \/ $api_special(S, passertcall.CALLBACK)
+  -- if $error_handler_resolution(S, passertcall.CALLBACK) = HANDLERUNKNOWN text
+  -- if ~$api_special(S, passertcall.CALLBACK)
+rule PhpStep/assert-callback-api-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "assertion callback invocation form"]
+  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
+  -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
+  -- if $api_special(S, passertcall.CALLBACK)
 rule PhpStep/assert-callback-reference-return: S ~> S[.COMPLETION = UNSUPPORTED "assertion callback reference-return body"]
   -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
   -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
@@ -885,6 +890,10 @@ def $assertion_callback_finish(S, passertcall) = $eager_operation_begin(S_clean,
 def $assertion_callback_finish(S, passertcall) = $assertion_policy(S[.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*], passertcall.FAILURE)
   -- if S.TODO = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
   -- if ~$destructor_operational(S)
+def $eager_internal_source(ASSERT_CALLBACK_RESULT passertcall) = true
+def $eager_internal_source(ASSERT_CALLBACK_CLEAN passertcall) = true
+def $eager_operation_cleanup_source(ASSERT_CALLBACK_RESULT passertcall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall /\ ~pdestructioncleanup.RELEASED)
+def $eager_operation_cleanup_source(ASSERT_CALLBACK_CLEAN passertcall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall /\ ~pdestructioncleanup.RELEASED)
 def $eager_cleanup_source_target(ASSERT_CALLBACK_RESULT passertcall) = passertcall.TARGET
 def $eager_cleanup_source(ASSERT_CALLBACK_CLEAN passertcall) = ASSERT_CALLBACK_RESULT passertcall
 def $eager_cleanup_final(ASSERT_CALLBACK_CLEAN passertcall) = true
