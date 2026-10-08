@@ -322,5 +322,14 @@
     "exit": 0,
     "status": "normal",
     "source_sha256": "db7db99000753a8165d58e90f1611cbc2e555e1bcb0bc8a812baa1e32aa87c5a"
+  },
+  {
+    "id": "collector-nested-core-reporting-keeps-global-busy",
+    "source": "<?php\nset_error_handler(function ($level, $message) {\n    echo $level === E_DEPRECATED ? \"dep|\" : \"other|\";\n    echo gc_collect_cycles(), \"|\";\n    return true;\n});\nclass CoreCollector317 {\n    public $self;\n    public function __construct() { $this->self = $this; }\n    public function __destruct() {\n        echo \"D|\";\n        $core = new Fiber(\"error_reporting\");\n        $core->start(1.5);\n        echo $core->getReturn() === 30719 ? \"old|\" : \"bad|\";\n        echo error_reporting(), \"|\";\n    }\n}\n$request = new Fiber(function () {\n    $object = new CoreCollector317();\n    $weak = WeakReference::create($object);\n    unset($object);\n    echo gc_collect_cycles(), \"|\";\n    echo $weak->get() === null ? \"gone|\" : \"live|\";\n});\n$request->start();\necho \"END\";\n",
+    "stdout": "D|dep|0|old|30719|1|gone|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "f0b83f54f3f790281803fb22f044809fe15c65a572c84d464bb4efe528dc532d"
   }
 ]
