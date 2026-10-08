@@ -16,6 +16,8 @@ dec $fiber_core_base_frame(pstate, pframe) : bool
 dec $fiber_core_active_call(pstate) : pconfigcall?
 dec $fiber_core_binding(pstate, pfiber) : (nat?, nat?)
 def $fiber_core_binding(S, pfiber) = (eps, eps) -- otherwise
+dec $fiber_core_site_valid(pstate, pconfigcall) : bool
+def $fiber_core_site_valid(S, pconfigcall) = $fiber_method_site(S, pconfigcall.SITE, eps) -- otherwise
 
 def $fiber_core_target(PSTRING ptbytes) = (FIBER_REPORTING_TARGET)
   -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("error_reporting")
@@ -122,7 +124,7 @@ def $fiber_core_result_valid(S, n, pconfigcall) = true
   -- if ~pconfigcall.NAMED
   -- if pconfigcall.INDEX = |pconfigcall.SENT|
   -- if pfiber.ENTRY = ({SLOTS pconfigcall.SENT, NAMED eps})
-  -- if $fiber_method_site(S, pconfigcall.SITE, eps)
+  -- if $fiber_core_site_valid(S, pconfigcall)
   -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
   -- if $fiber_cache_valid(S, n, pfiber)
   -- if $fiber_core_start_valid(S, n, pconfigcall)

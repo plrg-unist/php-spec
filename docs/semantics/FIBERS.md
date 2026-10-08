@@ -506,7 +506,20 @@ retirement. Existing clone/equality, direct, explicit invoke and C-root protocol
 preserve their buffers, traces and callback cleanup. Live-static and bound receiver
 checks are disjoint; duplicate conversion tasks fail local admission.
 
-Fiber-start argument unpacking, raw array C-root callbacks and compound array
+Module 370 executes simple raw Fiber API arrays as C-root callbacks, including
+start and constructor methods. RAW retains its actual array members; frozen
+cache receivers and result markers are borrowed. CONFIG and START invocation
+own copied arguments, while outer start buffers keep their separate owners.
+Saved Fiber states and actual callers authenticate fixed transfers and parked
+static continuations
+entered through dynamic start and public idle collector calls. Constructor
+warnings preserve the original start site across a later resume. Inner API
+trace frames have no file or line site, and last RAW retirement can force-close
+its target before original argument destruction. The
+[raw-array ledger](../../coverage/semantics/fiber-array-core-callbacks-review.json)
+keeps the new source/state cuts and earlier Unsupported baseline separate.
+
+Fiber-start argument unpacking and compound array
 or factory selectors remain required; start unpacking
 retains an explicit Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.

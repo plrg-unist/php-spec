@@ -170,10 +170,9 @@
     "id": "boundary-fiber-array-c-root-callback",
     "source": "<?php\n$target = new Fiber(static function () { return 17; });\n$target->start();\n$runner = new Fiber([$target, 'getReturn']);\necho (int)($runner->start() === null), '|', $runner->getReturn();\n",
     "source_sha256": "bd54382232498e8c4daf72278f7584f9dc47d20805643ca40b415f10fb05e82c",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "native_status": "recorded",
-    "engine_derived_expectation": "Ordinary internal-array Fiber C-root callbacks remain a required separate consumer; target return17 is defined before callback selection.",
-    "unsupported_reason": "Fiber constructor internal callable body",
+    "engine_derived_expectation": "The RAW getReturn callback consumes the target return17 after normal termination; its cached receiver is borrowed from the retained callback array.",
     "native_stdout": "1|17",
     "native_stderr": "",
     "native_exit": 0
