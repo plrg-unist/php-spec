@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Collector345 runs remaining marked destructors in the cached worker's retained
+physical interval during public resume/throw, preserving the outer collector
+cursor and pending exception. Borrowed zero-owner targets support real weak
+reacquisition. Captured APIs authenticate their owning saved caller; nonpublic
+destructor access uses `Fiber` scope and the actual public API error location.
+Two direct originals/274 historical physical premises and two affected
+originals/177 new premises retain separate cuts; one incorrect earlier scope
+premise is superseded. Final336 over `6e107993a` compiles at `d04ff9c54` with
+reviewed current-parent intersections. Retained timeouts and fixture stops have
+zero affected credit. Suspension inside a cached public callback remains required.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335
@@ -59,8 +71,8 @@ planned destructor is marked called. The real parked collector consumer remains
 busy; worker cache/mask and transient error ownership follow332. Two exact normal
 originals and two independent strict-SL groups with127/138 physical premises pass
 at private323. Final327 over `5f478ea6a` passes combined compilation at `f9dbe3205`,
-preserving337/339/307/334 and the pointwise302 factor. Remaining-dtor stale-interval
-transfer stays Unsupported; earlier cuts are unchanged.
+preserving337/339/307/334 and the pointwise302 factor. Module345 separately handles
+remaining-dtor stale intervals; these earlier cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source339 adds the missing ordinary name-CV warning before computed FETCH.
@@ -192,14 +204,14 @@ renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
 The current source includes accepted ArrayAccess292/304/309/319/326/329, eager destruction270,
-WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335/338/342,
+WeakReference296, ordinary cycle collection301 and collector Fibers317/325/332/335/338/342/345,
 Fiber291/302/308/313/322/341, Generator289/303/310/311/321/328/340 and source operands293/298,
 plus instance/readonly properties288/294, clone300/305 with cached maker selection
 and ordinary dynamic-property creation318, physical references324 and defaults286/295/306/312,
-with 330 modules composed over
-`7a0f8044f`, retaining static/bound Fiber API captures331/337/341, physical property references324 and collector335/338/342.
+with 336 modules composed over
+`6e107993a`, retaining static/bound Fiber API captures331/337/341/348, property references324/346, Generator344 and collector335/338/342/345.
 The ordered integration preserves
-the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339/343.
+the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320/323/327/330/333/336/339/343/350.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
 4767e8ea6. Transfer onto68393 retains the same semantic inputs. Earlier private
@@ -354,8 +366,8 @@ and passes the required combined compiler without source/state renewal.
 The fresh explicit-INI source discriminates
 cached mask reuse. The two larger 60s model timeouts retain zero agreement.
 Module325 adds separately tested detached zero-owner retention, real reacquisition
-and active unowned-close retirement. Wider internal graphs, idle-worker public
-resumption, automatic thresholds, resurrection and final request freeing remain
+and active unowned-close retirement. Wider internal graphs, cached public callback
+suspension, automatic thresholds, resurrection and final request freeing remain
 required.
 
 Undefined source operands293 resume genuine warnings with fixed null after

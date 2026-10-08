@@ -1,7 +1,7 @@
 {
   "version": 1,
   "target": "PHP8.5.10 CLI NTS64, error_reporting30719",
-  "scope": "Independently accepted bounded ordinary collection301 and bounded hidden collector-Fiber317; separate parent compositions retain their cuts. Wider GC and complete core remain open.",
+  "scope": "Independently accepted ordinary collection301 and hidden collector-Fiber317/325/332/335/338/342/345 cuts; separate parent compositions retain their inputs. Wider GC and complete core remain open.",
   "accepted_prerequisites": {
     "eager270_source_sha256": "d85fc9f4f1df452d90fc3f7be8a6b198cfdc9bc0e7a7524fceb51fb427aad908",
     "weak296_source_patch_sha256": "2d86a99f0acd6b7a2faef4fddc0802971f30e2a5cb307a921db0feee07875aef",
@@ -226,7 +226,7 @@
   },
   "boundaries": [
     "Automatic threshold collection",
-    "Wider internal lifetime graphs and active idle-worker transfer with uncalled pass destructors",
+    "Wider internal lifetime graphs and suspension inside a cached public collector callback",
     "Active-pass failed-finally and wider callbackless close-return contexts beyond the reviewed normal and failed quiescent tails",
     "Initially free non-destructor resurrection and new zero-owner destructor target after retrace",
     "Arbitrary synthetic producer reachability beyond local TEMP receipt consistency",
@@ -743,5 +743,125 @@
       "Preserved private wrapper: taskset -c 1 python3 .tools/run-gc-active-idle-20.py compiler; exact vectors/identities are in reports."
     ],
     "boundaries": "Remaining-dtor stale intervals, active-pass failed close, broader GC/WeakMap/request freeing and fresh combined offline rebuild remain required."
+  },
+  "public_physical_interval345": {
+    "status": "Independently reviewed physical interval callbacks and captured/visibility interaction; final336 combined compiler PASS",
+    "scope": "Public resume/throw scans the cached worker retained physical interval against current destructor-slot tags. Remaining callbacks preserve the outer plan cursor/pending error; one real public guard retains target/pending error, zero-owner targets use borrowed bare slots. Captured calls authenticate actual saved Closure-owning tails. Visibility uses builtin Fiber scope with Error at the public API file/line/caller trace. No artificial owner/history or internal detach on public suspension.",
+    "test_root": ".tools/gc-quiescent-close-18",
+    "raw_root": ".tools/gc-quiescent-close-18/.tools",
+    "engine": [
+      "Zend/zend_gc.c::{gc_destructor_fiber,gc_call_destructors,gc_call_destructors_in_fiber}",
+      "Zend/zend_objects.c::zend_objects_destroy_object",
+      "Zend/zend_execute_API.c::zend_get_executed_scope",
+      "Zend/zend_fibers.c public resume/throw and VM switch"
+    ],
+    "source_cuts": [
+      {
+        "revision": "156c98667dd742b4c4f41f57a896cfdfbfd414bb",
+        "modules": 328,
+        "compiler": "gc-public-scan-21-compiler-odh16rgx/report.json",
+        "strict_init": "gc-public-scan-21-init-6jo_d822/report.json",
+        "source_report": "gc-public-scan-21-source-_7auyfrt/report.json",
+        "native_reports": [
+          "gc-collector-native-16-7kwksppi/report.json",
+          "gc-collector-native-16-l3noqdko/report.json"
+        ],
+        "source_ids": [
+          "collector-active-idle-stale-interval-bare-resume-21",
+          "collector-active-idle-stale-interval-throw-identity-review-21"
+        ],
+        "result": "Two accepted normal0 agreements: B runs in worker, zero-owner weak acquisition/release yields count1; public injected identity/retirement, idle mask/busy state and count2 agree."
+      },
+      {
+        "revision": "0df2d161e863ae4071f21c0630d6927cd9ed3447",
+        "modules": 331,
+        "source_report": "gc-public-scan-21-source-_lre589v/report.json",
+        "children": [
+          "shutdown-review-0t8c3s91/report.json",
+          "shutdown-review-ct057qha/report.json"
+        ],
+        "native_reports": [
+          "gc-collector-native-16-ibcvdq4k/report.json",
+          "gc-collector-native-16-xvh85h7x/report.json"
+        ],
+        "source_ids": [
+          "collector-active-interval-bound-core-throw-compact-review-21",
+          "collector-active-interval-protected-api-scope-review-21"
+        ],
+        "result": "Two accepted checked-program/normal0 agreements,44.338/41.634s: real bound C-root retains injected identity through B; protected B rejects saved subclass authority with from-scope-Fiber Error. Exact stdout/empty stderr, exits0/no timeout."
+      }
+    ],
+    "state_cuts": [
+      {
+        "revision": "f8885c8d413c2d50c9b928d8d944587184be7ea0",
+        "fixture_commit": "5811d04f370633732f0ab955f1e5fec089c15604",
+        "reports": [
+          "gc-public-scan-state-review-21-k_lp_6sc/report.json",
+          "shutdown-state-review-mtpupd5r/report.json",
+          "gc-public-scan-state-review-21-q1mzkwbe/report.json",
+          "shutdown-state-review-925srjmm/report.json"
+        ],
+        "physical_premises": [
+          123,
+          151
+        ],
+        "runner_assertions": [
+          120,
+          148
+        ],
+        "authored_checks": [
+          117,
+          145
+        ],
+        "result": "Bare row PASS within first false aggregate; corrected throw row PASS separately. Physical slot/skip/source/consumer negatives, public pending replacement/previous priority, zero-owner retention, budget/one-step and exact continuations pass. The single saved-PHP-class guard_scope premise is superseded by2643d59ae and the new protected-access cut; the other premises retain their tested input identities."
+      },
+      {
+        "revision": "0df2d161e863ae4071f21c0630d6927cd9ed3447",
+        "fixture_commit": "adcf0d8b88036e3d74d8492086e0fbc8fbede1db",
+        "reports": [
+          "gc-public-scan-state-review-21-xhtrzpbp/report.json",
+          "shutdown-state-review-b5m_i4h9/report.json",
+          "gc-public-scan-state-review-21-3a8eca0t/report.json",
+          "shutdown-state-review-lj48i040/report.json"
+        ],
+        "physical_premises": [
+          76,
+          101
+        ],
+        "runner_assertions": [
+          73,
+          98
+        ],
+        "authored_checks": [
+          70,
+          95
+        ],
+        "result": "Protected row PASS within false aggregate; corrected C-root row PASS separately in77.213s. Genuine nested caller/result/finish/Closure owners, coherent same-heap finish/API forgeries, guard entry and complete cleanup pass. Protected Error has correct API file/line/message, one owner and unchanged outer plan. Both true newline/exits0/no timeout/empty stderr."
+      }
+    ],
+    "final_composition": {
+      "parent_revision": "6e107993a479e3d7a9e83ce3b7ec64a226d10fde",
+      "tested_revision": "d04ff9c5429e51ddddbc5343b2d1b4e294a97dd2",
+      "modules": 336,
+      "compiler_report": "gc-public-scan-21-compiler-6dofix93/report.json",
+      "result": "Stable clean inputs/revision/status, algo3.452s/struct4.308s, real10,814,809/10,482,139-byte artifacts, exits0/no timeout/empty stderr/reaped groups. Actual-parent review preserves Generator.ACCESS/344, typed property-source346, bound start348, failed trait targets347, carried graph keep/release and SOURCE350 read-plan; no old source/state renewal or offline rebuild."
+    },
+    "validation": "LC_ALL=C/TZ=UTC/script encoding absent, jobs1, native30s/source60s/outer120s/state120s caps unchanged. Reports contain exact binaries/profile/commands/input hashes and stable input/revision/status snapshots. Source agreement covers only four accepted originals at their distinct cuts.",
+    "preserved_zero_credit": {
+      "initial_parse": "gc-public-scan-21-compiler-3bxu4h0j/report.json: retained scan-END record expression parse stop, fixed by156c binding; zero model credit.",
+      "synthetic_pending_fixture": "shutdown-state-review-mtpupd5r/report.json throw row omitted synthetic destruction handle; corrected untrimmed179-assertion row shutdown-state-review-5ht68z_r/report.json then hit120s. Both affected rows retain zero credit; bare PASS is retained separately.",
+      "captured_elaboration": "gc-public-scan-21-source-rr_kq9gf/report.json / shutdown-review-endk2480/report.json: noninvertible raw-record conjunction binding stopped before execution; fixed sequentially by99e272031.",
+      "larger_captured_source": "gc-public-scan-21-source-xbw2pot5/report.json / shutdown-review-iv_jb0w8/report.json: originalc8ad source hit internal60s model timeout. Native6wki9vef passes; original remains selectable, excluded from default source target. Compact909e is a distinct accepted original.",
+      "captured_fixture_roots": "shutdown-state-review-b5m_i4h9/report.json C-root row incorrectly asserted same heap after changing captured config OWNER. Corrected control expects real root difference and coherently forges RESULT/FINISH for same-heap rejection; only affected row reran.",
+      "old_interval_preparation": "gc-active-idle-interval-review-preparation-20.json remains unexecuted/zero credit;345 uses distinct first-observed originals.",
+      "next_cached_suspension": "gc-public-scan-cached-suspend-original-22.json / collector-active-public-cached-callback-suspend-resume-22, SHA460f8ece112d934338cdbfc6dbcdcaa1eb05cb47eb52625e091e989c30564d5c, unexecuted/zero credit."
+    },
+    "recovery": [
+      "python3 tests/semantics/cycle_collection_sources.py --match collector-active-idle-stale-interval-bare-resume-21",
+      "python3 tests/semantics/cycle_collection_review.py --match collector-active-idle-stale-interval-throw-identity-review-21",
+      "python3 tests/semantics/cycle_collection_review.py --match collector-active-interval --exclude-match collector-active-interval-bound-core-throw-review-21",
+      "python3 tests/semantics/cycle_collection_state_review.py --sl --case collector-public-scan-bound-core-caller-and-guard --case collector-public-scan-protected-destructor-uses-fiber-scope"
+    ],
+    "boundaries": "Cached public callback suspension/reentry remains explicit Unsupported and required. Active-pass failed close, wider internal graphs, automatic thresholds, broader GC/WeakMap/request freeing and the fresh combined offline rebuild remain open. Paused returns verification is unchanged."
   }
 }

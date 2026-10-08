@@ -1,6 +1,6 @@
 # Explicit cycle collection
 
-Modules 301/317/325/332/335/338/342 implement a bounded ordinary-object/array collector on the pinned
+Modules 301/317/325/332/335/338/342/345 implement a bounded ordinary-object/array collector on the pinned
 PHP 8.5.10 CLI profile. It extends the real ownership graph and WeakReference
 protocol; unreachable cycles remain allocated until collection. It does not
 establish complete GC, WeakMap, or request-freeing semantics.
@@ -41,7 +41,19 @@ stays in the real caller VM, so nested GC remains busy0. Main collection leaves
 the worker's old scan interval intact; an already-called slot may normalize its
 tag, but cannot invoke a callback or change owners. Resume/throw resuspends the
 cached worker with its mask and no retained supplied value/error. A stale interval
-containing an uncalled marked destructor remains Unsupported.
+containing an uncalled marked destructor is handled separately by345.
+
+Module345 preserves the retained physical interval and actual destructor-slot
+tags. Public resume/throw scans current marked slots, normalizes consumed tags
+and invokes remaining destructors without advancing the outer plan. Its guard
+owns the target and pending public exception once; that exception stays separate
+from the outer collector's pending error. Zero-owner targets use325's borrowed
+retention, including weak reacquisition followed by immediate ordinary release.
+Bound direct and C-root calls authenticate the real saved result tail that owns
+their Closure. Destructor visibility uses the internal `Fiber` API scope, and
+access errors retain that API's file, line and caller trace. Suspending inside
+this cached public callback remains explicitly Unsupported; it must retain the
+cache and live scan rather than take317's internal detach/replacement loop.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -134,8 +146,8 @@ under an `AT` wrapper. Historical snapshots cannot authorize arbitrary callbacks
 zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
-Explicit boundaries remain for wider internal lifetime graphs, public idle-worker
-transfer with uncalled pass destructors, active-pass failed close and wider
+Explicit boundaries remain for wider internal lifetime graphs, suspension inside
+a cached public collector callback, active-pass failed close and wider
 callbackless close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
@@ -244,3 +256,12 @@ and exact continuations pass. Final327 over `5f478ea6a` compiles at `f9dbe3205` 
 reviewed337/339/307/334/302 intersections. The initial fixture elaboration stop
 and unexecuted interval-overlap preparation retain zero agreement; earlier cuts
 are unchanged.
+
+Public interval345 retains two direct source agreements and123/151 historical
+physical premises at separate328 cuts. The earlier saved-PHP-class scope assertion
+is superseded by a native protected-access discriminator and76 new premises.
+A compact bound-C-root original and101 new premises check actual captured caller
+ownership through scan/guard entry and real exception identity. Both affected
+originals agree at `0df2d161e`/331; final336 over `6e107993a` compiles at `d04ff9c54`.
+Parse/fixture stops and the larger captured-source60s timeout retain zero affected
+credit; earlier cuts are unchanged and no offline rebuild is claimed.
