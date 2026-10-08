@@ -74,6 +74,9 @@ dec $generator_close_done_head(ptask*) : bool
 dec $generator_close_exception_nodes(nat?) : pnode*
 dec $generator_close_enter_task(ptask) : bool
 dec $generator_close_yield_node(pcnode?) : bool
+dec $generator_close_destructor_ready(pstate, pgenrelease) : bool
+dec $generator_close_destructor_tasks(ptask*, nat?, nat?, ptask) : bool
+dec $generator_close_destructor_pending(pstate, nat?) : pstate
 
 def $generator_close_started(GENERATOR pgenerator) = (pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING])
 def $generator_close_started(pobject) = false -- otherwise
@@ -183,6 +186,33 @@ def $generator_close_children(S, HOBJECT n) = $generator_close_frame_nodes(S, pf
   -- if pgenerator.PHASE = GENERATOR_FRESH
   -- if pgenerator.FRAME = (pframe)
 def $generator_close_children(S, pnode) = $node_children(S, pnode) -- otherwise
+;; Cached storage can enter the ordinary destructor loop only when its actual
+;; pending carrier is reachable through these release markers.
+def $generator_close_destructor_tasks((DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*, n_local?, n_caller?, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = true
+def $generator_close_destructor_tasks((DESTRUCTOR_FRAME_EXIT pdestructionframe) :: ptask*, n_local?, n_caller?, DESTRUCTOR_FRAME_EXIT pdestructionframe) = true
+def $generator_close_destructor_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(ptask*, n_local?, n_caller?, ptask_exit)
+def $generator_close_destructor_tasks((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, n_local?, n_caller?, ptask_exit) = $generator_close_destructor_tasks(ptask*, n_local?, n_caller?, ptask_exit)
+  -- if pgenrelease.PENDING = eps \/ pgenrelease.PENDING = n_local? \/ pgenrelease.PENDING = n_caller?
+def $generator_close_destructor_tasks(ptask*, n_local?, n_caller?, ptask_exit) = false -- otherwise
+def $generator_close_destructor_ready(S, pgenrelease) = true
+  -- if $destructor_operational(S) /\ $destructor_user_source(S)
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if $generator_close_destructor_tasks(S.TODO, pgenrelease.PENDING, pdestructionoperation.PENDING, DESTRUCTOR_OPERATION_EXIT pdestructionoperation)
+def $generator_close_destructor_ready(S, pgenrelease) = true
+  -- if $destructor_operational(S) /\ $destructor_user_source(S)
+  -- if $destructor_operation_for(S) = eps
+  -- if $destructor_selected_frame(S) = (pdestructionframe)
+  -- if S.DESTRUCTION.FRAMES = pdestructionframe :: pdestructionframe_tail*
+  -- if $destructor_frame_valid(S, pdestructionframe)
+  -- if $generator_close_destructor_tasks(S.TODO, pgenrelease.PENDING, pdestructionframe.PENDING, DESTRUCTOR_FRAME_EXIT pdestructionframe)
+def $generator_close_destructor_ready(S, pgenrelease) = false -- otherwise
+def $generator_close_destructor_pending(S, eps) = S
+def $generator_close_destructor_pending(S, (n)) = $generator_destructor_finish(S, n)
+def $destructor_operation_tasks((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, pdestructionoperation, pdestructionoperation_new) = (GENERATOR_CLOSE_RELEASE pgenrelease[.PENDING = pdestructionoperation_new.PENDING]) :: $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation_new)
+def $destructor_release_frame((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, pdestructionframe) = $destructor_release_frame(ptask*, pdestructionframe)
+def $destructor_frame_tasks((GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*, pdestructionframe, pdestructionframe_new) = (GENERATOR_CLOSE_RELEASE pgenrelease[.PENDING = pdestructionframe_new.PENDING]) :: $destructor_frame_tasks(ptask*, pdestructionframe, pdestructionframe_new)
 def $generator_close_current(eps) = eps
 def $generator_close_current((pgeneratorfrom)) = pgeneratorfrom.CURRENT
 def $generator_close_release(S, pgenrelease) = $generator_close_release_end(S, pgenrelease)
@@ -201,6 +231,19 @@ def $generator_close_release(S, pgenrelease) = $generator_close_prepare(S, pgenr
   -- if HOBJECT n <- S.ALLOCATIONS
   -- if $heap_owners($heap_graph(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*]), HOBJECT n) = 0
   -- if $generator_close_node(S, HOBJECT n)
+def $generator_close_release(S, pgenrelease) = $destructor_release_begin(S_tail, [DESTRUCTION_VALUE pnode])
+  -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
+  -- if pgenrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
+  -- if pnode <- S.ALLOCATIONS
+  -- if S_unheld = S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*]
+  -- if $heap_owners($heap_graph(S_unheld), pnode) = 0
+  -- if ~$generator_close_node(S, pnode)
+  -- if $destructor_uncalled_node(S, pnode)
+  -- if $generator_close_destructor_ready(S, pgenrelease)
+  -- if (S_merged, n?) = $generator_close_merge(S, pgenrelease.PENDING, $destructor_selected_pending(S, $destructor_selected_frame(S)))
+  -- if S_pending = $generator_close_destructor_pending(S_merged, n?)
+  -- if S_pending.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_pending) :: ptask_pending*
+  -- if S_tail = S_pending[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease_pending[.JOBS = pdestructionjob*]) :: ptask_pending*]
 def $generator_close_release(S, pgenrelease) = S[.COMPLETION = UNSUPPORTED "ordinary destructor release before request stage"]
   -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
   -- if pgenrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
@@ -208,6 +251,7 @@ def $generator_close_release(S, pgenrelease) = S[.COMPLETION = UNSUPPORTED "ordi
   -- if $heap_owners($heap_graph(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = pdestructionjob*]) :: ptask*]), pnode) = 0
   -- if ~$generator_close_node(S, pnode)
   -- if $destructor_uncalled_node(S, pnode)
+  -- if ~$generator_close_destructor_ready(S, pgenrelease)
 def $generator_close_release(S, pgenrelease) = $prune_live(S[.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease[.JOBS = $destruction_values($generator_close_children(S, pnode)) ++ $destruction_free_job(pnode) ++ pdestructionjob*]) :: ptask*], $destruction_node_delete(S.ALLOCATIONS, pnode))
   -- if S.TODO = (GENERATOR_CLOSE_RELEASE pgenrelease) :: ptask*
   -- if pgenrelease.JOBS = (DESTRUCTION_VALUE pnode) :: pdestructionjob*
