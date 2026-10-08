@@ -138,6 +138,24 @@ def $echo_call_temporary_shape(pechoresult) = (n = pechoresult.OBJECT)
 def $echo_call_temporary_shape(pechoresult) = $echo_call_reference_operand(pechoresult.TEMP) -- otherwise
 dec $echo_call_result_source(pstate, pechoresult) : bool
 def $echo_call_result_source(S, pechoresult) = ($echo_call_site_valid(S, pechoresult.SITE, pechoresult.LINE) /\ $echo_call_temporary_shape(pechoresult))
+
+;; The cast pin and ECHO temporary are released at ECHO's instruction, after
+;; DO_CALL. The consumed object/cell need not remain live to recover that line.
+dec $echo_call_release_line(pstate, ptask) : int?
+def $echo_call_release_line(S, ECHO_CALL_RESULT pechoresult) = (pechoresult.LINE)
+  -- if S.ORIGIN = (pechoresult.SITE)
+  -- if $echo_call_result_source(S, pechoresult)
+def $echo_call_release_line(S, ECHO_CALL_PENDING pechoresult n_text* n_pending) = (pechoresult.LINE)
+  -- if S.ORIGIN = (pechoresult.SITE)
+  -- if $echo_call_result_source(S, pechoresult)
+def $echo_call_release_line(S, STRINGIFY_RESULT n porigin_site z) = (z)
+  -- if S.ORIGIN = (porigin_site)
+  -- if $echo_call_site_valid(S, porigin_site, z)
+def $echo_call_release_line(S, ptask) = eps -- otherwise
+def $destructor_source_line(S) = z
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if $echo_call_release_line(S, pdestructionoperation.SOURCE) = (z)
+
 dec $echo_call_temporary_valid(pstate, pechoresult) : bool
 def $echo_call_temporary_valid(S, pechoresult) = $stringable_instance(S, pechoresult.OBJECT)
   -- if pechoresult.TEMP = KNOWN (POBJECT pechoresult.OBJECT)
