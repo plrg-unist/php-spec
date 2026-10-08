@@ -134,7 +134,8 @@ CASES = {'regular': 'deferred-regular.php',
          'echo-dynamic-cv-argument-absent-function': 'echo-dynamic-cv-argument-absent-function-child.php',
          'echo-dynamic-cv-argument-retirement-throw': 'echo-dynamic-cv-argument-retirement-throw-child.php',
          'echo-dynamic-cv-argument-eval-reference': None,
-         'echo-dynamic-cv-argument-baseline-lifetime': None}
+         'echo-dynamic-cv-argument-baseline-lifetime': None,
+         'echo-dynamic-cv-argument-callee-throw': 'echo-dynamic-cv-argument-callee-throw-child.php'}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
