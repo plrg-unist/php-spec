@@ -1,0 +1,15 @@
+;; Test-only exposure of the actual method-copy/constants prefix.
+dec $review19_fcc_table(pstate, pclassdesc) : (pstate, pclassdesc)?
+def $review19_fcc_table(S, pclassdesc) = ((S_constants, pclassdesc_constants))
+  -- if ptraitplan = $trait_plan(S, pclassdesc)
+  -- if $trait_fetch(S, ptraitplan.TRAITS, eps) = TRAITFETCHED pclassdesc_traits*
+  -- if $trait_exclusions(S, pclassdesc, pclassdesc_traits*, ptraitplan.PRECEDENCES, eps) = TRAITEXCLUSIONS (ptbytes_trait, ptbytes_method)*
+  -- if $trait_aliases(S, pclassdesc, pclassdesc_traits*, ptraitplan.ALIASES, eps) = TRAITALIASES ptraitalias*
+  -- if $trait_copy_traits(pclassdesc, pclassdesc_traits*, ptraitalias*, (ptbytes_trait, ptbytes_method)*, TRAITCOMPOSE S eps eps) = TRAITCOMPOSE S_methods ptraitmethod* ptraitmethod_required*
+  -- if S_methods.COMPLETION = NORMAL
+  -- if pmethoddesc* = pclassdesc.METHODS ++ $trait_composed_methods(ptraitmethod*)
+  -- if pclassdesc_composed = pclassdesc[.METHODS = pmethoddesc*][.INTERFACES = $trait_import_interfaces(pclassdesc, pmethoddesc*)]
+  -- if S_composed = S_methods[.CLASSES = $trait_class_set(S_methods.CLASSES, pclassdesc_composed)]
+  -- if S_constants = $trait_data_constants(S_composed, pclassdesc_composed, pclassdesc_traits*, eps)
+  -- if S_constants.COMPLETION = NORMAL
+  -- if $class_at(S_constants.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_constants)

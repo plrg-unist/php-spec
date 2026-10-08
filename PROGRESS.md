@@ -1469,8 +1469,39 @@ strict algo/struct and one new pinned REAL/default-constructor original, with ex
 passes46 supplied conditions plus6 terminal-aware setup clauses: actual REAL
 birth/cache/receipt, selected constructor7 allocation and capture retirement with
 the REAL authority still live. The current constructor/default/Generator/Fiber/source
-fields are retained. Unaccepted307 parameter views and its full mixed, handler and
-variadic timeout originals remain private and open; paused return work is excluded.
+fields are retained. Module307 now reconstructs exact source method copies at the
+first target's declaration prefix to validate failed FCC births after rollback.
+Dead receipts and pure history replay preserve the first target without publishing
+its owner or admitting a live callable. Focused source2 retain exact output/error
+bytes and exits; strict-SL failed-import53 and equal-scope34 supplied conditions pass,
+with12 setup clauses separate. Raw evidence is under the private
+`.tools/trait-selected-constructor-current/.tools/`: `closure-call-protocol-y5x1pwdf`,
+`closure-call-protocol-v81oh3gj`, `method-runtime-87l_y5f5` and `method-runtime-a2gromik`.
+The first failed source's recorder label is corrected from static rejection to
+runtime PHP error; its already completed duplicate adds no coverage. These focused
+cuts bridge to the reviewed current composition without renewal. The322 cut at
+`4c03c177d` over `f89fbee74` passes strict algo/struct at3.369/4.270s and a genuine
+active DEFAULTRECEIVE/TYPE checkpoint with26 supplied conditions plus6 setup clauses
+at36.874s. It preserves canonical code/default/return/static identity and rejects a
+forged receive owner before the actual old-U constructor Error; no whole-source or
+unwind coverage is claimed. Current raw evidence is under
+`.tools/trait-fcc-parameters-composed-19/.tools/`: `trait266-object-algo-2riubhjo`,
+`trait266-object-struct-k27i1h7p` and `closure-call-protocol-yveph8_d`.
+The323 composition over EX338 tightens receipt access to the unfixed exporting
+trait's scope. At `77d34fc10`, strict algo/struct pass3.419/4.370s and private/protected
+forbidden-receipt checks pass68 supplied conditions plus12 setup clauses. Their native
+originals confirm access Errors before the property fatal; they add no source-agreement
+credit. The affected public failed-birth53 conditions plus6 setup clauses pass11.734s.
+Raw artifacts are `trait266-object-algo-s6o6pssf`,
+`trait266-object-struct-n4p5pbmw`, `closure-call-protocol-10bjo22b`,
+`closure-call-protocol-08sz3xg1`, `closure-call-protocol-q5w3a8qt` and
+`fcc-access-review19/native-*` under the same current
+worktree's `.tools/`.
+Broader307 parameter-view full-source validation,
+including mixed, constructor/default, handler and variadic timeout originals,
+remains open, as do live
+adaptation lookup, differing-owner later births and executable failed-target reuse.
+Paused return work is excluded.
 
 Dynamic read-key continuations233 preserve selected bases/keys through missing-CV,
 null/float and global-array-name callbacks. GLOBALS rereads undefined keys in the

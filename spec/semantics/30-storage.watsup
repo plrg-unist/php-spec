@@ -264,7 +264,7 @@ syntax ptask = FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachb
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
-  | TRAIT_DATA_SEED pdeclnoticeitem* | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
+  | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
   | PROPERTY_STRING_RESULT ppropertystring | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
   | PROPERTY_DYNAMIC_RESULT pdynamicproperty | PROPERTY_DYNAMIC_INSERT pdynamicproperty

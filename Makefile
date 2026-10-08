@@ -566,6 +566,8 @@ test-semantics: build
 	python3 tests/semantics/trait_failed_real_protocol.py
 	python3 tests/semantics/trait_failed_real_review_protocol.py
 	python3 tests/semantics/trait_failed_real_crossfile_review_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_data_unpublished_fcc_receipt_cases.json
+	python3 tests/semantics/trait_unpublished_fcc_retired_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/trait_failed_name_cases.json
 	python3 tests/semantics/trait_failed_name_protocol.py
 	python3 tests/semantics/trait_failed_name_review_protocol.py
