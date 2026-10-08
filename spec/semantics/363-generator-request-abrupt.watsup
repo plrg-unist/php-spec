@@ -413,6 +413,8 @@ def $generator_request_render_at(ptask*) = eps -- otherwise
 def $generator_request_render_view(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*][.ORIGIN = pgenfatal.METHOD][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps
   -- if $generator_request_render_at(S.TODO) = ((pgenfatal, n, b, ptask_tail*))
+  -- if S.TODO = ptask :: ptask_prefix*
+  -- if ptask =/= GENERATOR_REQUEST_RENDER_RETURN pgenfatal n b \/ (S.ORIGIN = pgenfatal.METHOD /\ S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL))
 def $generator_request_render_view(S, pgenfatal) = S -- otherwise
 def $generator_request_render_return_valid(S, pgenfatal, n, b) = true
   -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps

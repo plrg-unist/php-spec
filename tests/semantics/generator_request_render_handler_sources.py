@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Request renderer handler/warning ordering; native forecasts are provisional."""
+"""Request renderer handler/warning ordering with observed native controls."""
 import generator_request_render_handler_peer_sources as peer
 
 driver = peer.driver
@@ -17,12 +17,14 @@ $later=new LaterRenderWarning;$g=requestRenderWarning();$wg=WeakReference::creat
 $wp=WeakReference::create($g->current());$keepPayload=&$wp;echo "C|";
 ''', b'C|FT1:1HW1:1:1:1:1:1O1:1', 'Generator request fatal rendering exception', 255),
 }
+CASES = {name: (row[0], row[1], row[3]) for name, row in UNSUPPORTED.items()}
 
 
 def main():
-    driver.CASES = {}
+    driver.CASES = CASES
     driver.DECLARATIONS = {}
-    driver.UNSUPPORTED = UNSUPPORTED
+    driver.UNSUPPORTED = {}
+    driver.EXPECTED_STATUSES = {name: 'php_error' for name in CASES}
     driver.NATIVE_ERROR_PREFIXES = {
         'request-render-warning-reads-live-cache': b'Fatal error: Uncaught RenderWarningException: changed',
     }

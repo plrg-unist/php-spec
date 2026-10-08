@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Unchanged live-handler renderer original; native forecasts are provisional."""
+"""Preserved native-observed request renderer handler originals."""
 import generator_request_render_abrupt_peer_sources as previous
 
 driver = previous.driver
@@ -28,6 +28,8 @@ $wp=WeakReference::create($g->current());$keepPayload=&$wp;echo "C|";
 ''', b'C|FT1:1H1:1I1:1:1O1:1', 'Generator request fatal rendering exception', 255),
 }
 
+CASES = {name: (row[0], row[1], row[3]) for name, row in UNSUPPORTED.items()}
+
 EXTRA_WATCHED = previous.EXTRA_WATCHED + [
     'spec/semantics/157-throwable-properties.watsup',
     'spec/semantics/158-throwable-methods.watsup',
@@ -37,9 +39,10 @@ EXTRA_WATCHED = previous.EXTRA_WATCHED + [
 
 
 def main():
-    driver.CASES = {}
+    driver.CASES = CASES
     driver.DECLARATIONS = {}
-    driver.UNSUPPORTED = UNSUPPORTED
+    driver.UNSUPPORTED = {}
+    driver.EXPECTED_STATUSES = {name: 'php_error' for name in CASES}
     driver.NATIVE_ERROR_PREFIXES = {
         'peer-request-render-handler-returns':
             b'Warning: RenderHandlerException::__toString() must return a string',
