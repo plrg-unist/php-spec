@@ -7,6 +7,22 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+362 selects ordinary callable arrays with simple Fiber API method names before
+argument evaluation. Frozen members survive selector retirement and REF mutation;
+one bound receiver owner transfers from CONFIG to its waiting API, while static
+object selectors own none. Local receipts preserve recursive argument frames,
+real saved callers and constructor warning/validation order. Strict346,
+thirteen exact normal originals at12+1 cuts and independent259/author206 reached
+premises pass. Three required array-start/FCC/C-root Unsupported controls earn
+zero agreement. The compiler stop and original static fixture failure remain
+zero; the corrected fixture pins V in its genuine cleanup carrier and queued
+receiver retirement. Compound selectors, Fiber-start unpacking, broader adapters
+and lifecycle/library behavior remain required.
+Actual348 over `b03c0d918` passes strict compilation at `e109fec8a`, preserving
+current storage pins, compound/SELF, Generator and generic ownership paths;
+private source/state cuts retain their inputs.
+[Array-consumer ledger](coverage/semantics/fiber-array-consumers-review.json).
+
 Module 360 closes normal request delegations, detaching real input owners before
 finally while retaining independent CV owners and shared store order. Delegated
 CURRENT is the physical value slot; consumed-cell history is tied to the object's

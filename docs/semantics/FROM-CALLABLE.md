@@ -39,7 +39,8 @@ owners authenticate historical selection without owning anything; static
 object-style selectors add no receiver root. The result shares the existing
 Fiber API direct, explicit `__invoke` and C-root behavior. The
 [Fiber factory ledger](../../coverage/semantics/fiber-from-callable-review.json)
-tracks these checks; ordinary API callable arrays and effectful compound factory
+tracks these checks. Ordinary fixed Fiber API callable arrays with simple method
+names use module362's separate dynamic-call protocol. Compound array and factory
 selectors remain required.
 
 Invalid callable values raise the factory's `TypeError`. An actual-object getter

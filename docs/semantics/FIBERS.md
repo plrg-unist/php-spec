@@ -478,9 +478,18 @@ independently from handler-entry error formatting.
 The [factory ledger](../../coverage/semantics/fiber-from-callable-review.json)
 keeps the new checks and original trace failure at their distinct cuts.
 
-Fiber-start argument unpacking, ordinary API callable arrays and effectful compound
-factory selectors remain required; start unpacking retains an explicit
-Unsupported control.
+Module362 selects fixed bound and static APIs through ordinary callable-array
+invocation with simple method names. Dynamic INIT freezes dereferenced receiver
+and method members before arguments. Nonowning receipts authenticate genuine CONFIG, saved WAIT and static
+CONTINUE tails after selector arrays or member references change. The ordinary
+call owns one bound receiver and transfers that owner to its waiting API;
+static object selectors own none and suspend names the actual running Fiber.
+Recursive argument frames keep independent receipts at the same source site.
+Constructor parsing preserves its exact callable-query and warning continuation.
+
+Fiber-start argument unpacking, array-selected start, array first-class conversion,
+array C-root callbacks and compound array or factory selectors remain required;
+start unpacking retains an explicit Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and

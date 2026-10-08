@@ -1,4 +1,5 @@
 dec $fiber_start_core_actor(pstate) : bool
+dec $fiber_array_config_pending(pstate, pconfigcall) : bool
 dec $fiber_named_target(pfunction, ptbytes) : pnamedtarget
 dec $gc_worker_api(pfiberapi) : bool
 def $gc_worker_api(pfiberapi) = (pfiberapi.KIND = (INTRINSIC_GC_COLLECT))
@@ -233,6 +234,7 @@ rule PhpStep/fiber-config-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if $fiber_kind(pconfigcall.KIND)
   -- if $config_invoke_valid(S, pconfigcall)
+  -- if ~$fiber_array_config_pending(S, pconfigcall)
 
 def $fiber_done(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
