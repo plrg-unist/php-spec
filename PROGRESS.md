@@ -1007,9 +1007,10 @@ alias detachment preserve Zend's unchecked backing and retained type-source hist
 with nonowning entry/write/retirement evidence. Eleven exact originals and private340
 compiler/init pass atc4ed; a separate typed-reference conversion/rejection original
 passes at163e. New368 reached premises pass ate148, including future-entry,
-foreign-cell and repeated-site history rejection. The actual-parent gate remains
-pending in the [ledger](coverage/semantics/static-compound-string-review.json). Dynamic/scoped
-selectors, wider borrowed lifetime and registered-handler missing-RHS continuations
+foreign-cell and repeated-site history rejection. Actual344 over COMP `e1c3d4d618` passes algo/struct/init at `f0e03c885`,
+with pointwise353/354/355/357 and owner-factor review in the
+[ledger](coverage/semantics/static-compound-string-review.json). Dynamic selectors,
+self/parent/static class selectors, wider borrowed lifetime and registered-handler missing-RHS continuations
 remain separate; paused return producers are unchanged.
 
 Array eval/include conversion287 dispatches the real warning before parser or
