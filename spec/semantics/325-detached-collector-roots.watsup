@@ -2,13 +2,16 @@
 ;; A zero-owner target stays allocated and buffered until real collection. The
 ;; buffer tag has no heap owner, and ordinary reacquisition clears its retention.
 dec $gc_bare_nodes(pgcslot*) : pnode*
+dec $gc_bare_slot(pgcslot) : bool
 dec $gc_bare_valid(pstate, nat) : bool
 dec $gc_bare_record(pstate, nat) : pstate
 dec $gc_bare_return(pstate, nat?) : pstate
 dec $gc_bare_promote(hgraph, pgcslot*) : pgcslot*
+def $gc_bare_slot(GC_BARE_ROOT n) = true
+def $gc_bare_slot(pgcslot) = false -- otherwise
 def $gc_bare_nodes(eps) = eps
 def $gc_bare_nodes((GC_BARE_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_bare_nodes(pgcslot*)
-def $gc_bare_nodes(pgcslot :: pgcslot_tail*) = $gc_bare_nodes(pgcslot_tail*) -- otherwise
+def $gc_bare_nodes(pgcslot :: pgcslot_tail*) = $gc_bare_nodes(pgcslot_tail*) -- if ~$gc_bare_slot(pgcslot)
 def $gc_slot_node(GC_BARE_ROOT n) = (HOBJECT n)
 def $gc_nodes((GC_BARE_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_nodes(pgcslot*)
 def $gc_physical_nodes((GC_BARE_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_physical_nodes(pgcslot*)
@@ -32,7 +35,7 @@ def $gc_bare_promote(H, (GC_BARE_ROOT n) :: pgcslot*) = (GC_ROOT (HOBJECT n)) ::
   -- if $($heap_owners(H, HOBJECT n) > 0)
 def $gc_bare_promote(H, (GC_BARE_ROOT n) :: pgcslot*) = (GC_BARE_ROOT n) :: $gc_bare_promote(H, pgcslot*)
   -- if $heap_owners(H, HOBJECT n) = 0
-def $gc_bare_promote(H, pgcslot :: pgcslot_tail*) = pgcslot :: $gc_bare_promote(H, pgcslot_tail*) -- otherwise
+def $gc_bare_promote(H, pgcslot :: pgcslot_tail*) = pgcslot :: $gc_bare_promote(H, pgcslot_tail*) -- if ~$gc_bare_slot(pgcslot)
 def $gc_transition_prepare(S) = S[.GC.BUFFER = $gc_bare_promote($heap_graph(S), S.GC.BUFFER)]
   -- if $gc_bare_nodes(S.GC.BUFFER) =/= eps
 
