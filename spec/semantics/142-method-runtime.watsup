@@ -801,6 +801,7 @@ def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("closure")
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("weakreference")
+  -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("fiber")
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL

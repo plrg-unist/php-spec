@@ -1,0 +1,322 @@
+;; Fake static Fiber closures have no bound receiver. INPUT records only the
+;; original object-style capture; NAME freezes a dynamic method selection.
+dec $fiber_capture_source_valid(pstate, pfibercapture) : bool
+dec $fiber_capture_live(pstate, nat) : bool
+dec $fiber_capture_new(pstate, pintrinsic, ptbytes, nat?) : pstate
+def $fiber_static_name(ptbytes) = $fiber_static(pintrinsic)
+  -- if $fiber_method(ptbytes) = (pintrinsic)
+def $fiber_static_name(ptbytes) = false -- otherwise
+dec $fiber_capture_input_before(nat?, nat) : bool
+def $fiber_capture_input_before(eps, n) = true
+def $fiber_capture_input_before((n_input), n) = $(n_input < n)
+def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if $fiber_static(pfibercapture.KIND)
+  -- if $fiber_method(pfibercapture.NAME) = (pfibercapture.KIND)
+  -- if pfibercapture.INPUT = eps
+  -- if $origin_node(S.SOURCES, pfibercapture.SITE) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $fiber_static_class(S, pfibercapture.SITE, phpType19)
+  -- if $method_source_name(phpType20, $ptlc(pfibercapture.NAME))
+  -- if $ppfirstclass(phpType7*)
+def $fiber_capture_source_valid(S, pfibercapture) = true
+  -- if $fiber_static(pfibercapture.KIND)
+  -- if $fiber_method(pfibercapture.NAME) = (pfibercapture.KIND)
+  -- if pfibercapture.INPUT = (n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if $origin_node(S.SOURCES, pfibercapture.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptlc(pfibercapture.NAME))
+  -- if $ppfirstclass(phpType7*)
+def $fiber_capture_source_valid(S, pfibercapture) = false -- otherwise
+def $fiber_capture_live(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_capture_source_valid(S, pfibercapture)
+  -- if $fiber_capture_input_before(pfibercapture.INPUT, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+def $fiber_capture_live(S, n) = false -- otherwise
+def $fiber_capture_new(S, pintrinsic, ptbytes, n_input?) = S[.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if n = |S.OBJECTS|
+  -- if pfibercapture = {SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT n_input?}
+  -- if $fiber_capture_source_valid(S, pfibercapture)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $fiber_capture_new(S_read, pintrinsic, ptbytes, (n))
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $fiber_at(S_read, n) =/= eps
+  -- if $fiber_method(ptbytes) = (pintrinsic)
+  -- if $fiber_static(pintrinsic) /\ $ppfirstclass(phpType7*)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = $fiber_capture_new(S, pintrinsic, ptbytes, eps)
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("fiber")
+  -- if $fiber_method(ptbytes) = (pintrinsic)
+  -- if $fiber_static(pintrinsic) /\ $ppfirstclass(phpType7*)
+
+def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+def $closure_callable(S, n) = $fiber_capture_live(S, n) -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+def $closure_live_object_valid(S, n) = $fiber_capture_live(S, n) -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_capture_live(S, n)
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+def $getclass_live_object(S, n) = $fiber_capture_live(S, n) -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+def $class_instanceof(S, POBJECT n, preqbytes) = true
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $ptlc(preqbytes) = $ptascii("closure")
+def $named_closure_same(S, n_left, n_right) = true
+  -- if S.OBJECTS[n_left] = FIBERAPICLOSURE pfibercapture_left
+  -- if S.OBJECTS[n_right] = FIBERAPICLOSURE pfibercapture_right
+  -- if pfibercapture_left.KIND = pfibercapture_right.KIND
+def $cast_value(S, CASTARRAY, POBJECT n, z) = $allocate_array(S, {ITEMS ([ENTRY (KINT 0) (DIRECT (POBJECT n))]), NEXT 1, POSITIONS ([POSITION (KINT 0) 0]), SERIAL 1})
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S.OBJECTS[n_source] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_capture_live(S, n_source)
+  -- if n = |S.OBJECTS|
+def $clone_same_kind(FIBERAPICLOSURE pfibercapture, FIBERAPICLOSURE pfibercapture) = true
+
+;; The ordinary CONFIG buffer owns arguments. Its OWNER=SELECTION capture
+;; pair is borrowed from the separate Closure call owner, not a lookup nonce.
+def $fiber_capture_config_tag(pconfigcall) = ($fiber_static(pconfigcall.KIND) /\ pconfigcall.OWNER =/= eps /\ pconfigcall.OWNER = pconfigcall.SELECTION)
+dec $fiber_capture_call_site(pstate, porigin) : bool
+dec $fiber_capture_count(ptask*, nat, porigin) : nat
+dec $fiber_capture_result_site(ptask, nat, porigin) : bool
+dec $fiber_capture_config_task(ptask, pconfigcall) : bool
+dec $fiber_capture_config_pair(pstate, ptask*, nat, pconfigcall) : bool
+dec $fiber_capture_config_selected(pstate, pconfigcall) : bool
+dec $fiber_capture_prepare(pstate, nat, porigin, int, bool) : pstate
+dec $fiber_capture_invoke(pstate, pconfigcall) : pstate
+dec $fiber_capture_release_valid(pstate, nat, porigin) : bool
+dec $fiber_capture_result_valid(pstate, nat, pconfigcall, bool) : bool
+def $fiber_capture_call_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+def $fiber_capture_call_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if ~$ppfirstclass(phpType7*)
+def $fiber_capture_call_site(S, porigin) = false -- otherwise
+def $fiber_capture_count(eps, n, porigin) = 0
+def $fiber_capture_count((FIBER_CAPTURE_RELEASE n porigin) :: ptask*, n, porigin) = $(1 + $fiber_capture_count(ptask*, n, porigin))
+def $fiber_capture_count((FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask*, n, porigin) = $(1 + $fiber_capture_count(ptask*, n, porigin))
+  -- if pconfigcall.SITE = porigin
+def $fiber_capture_count(ptask :: ptask_tail*, n, porigin) = $fiber_capture_count(ptask_tail*, n, porigin)
+  -- if ptask =/= FIBER_CAPTURE_RELEASE n porigin
+  -- if ~$fiber_capture_result_site(ptask, n, porigin)
+def $fiber_capture_result_site(FIBER_CAPTURE_RESULT n pconfigcall b, n, porigin) = (pconfigcall.SITE = porigin)
+def $fiber_capture_result_site(ptask, n, porigin) = false -- otherwise
+def $fiber_capture_config_task(CONFIG_ARGS pconfigcall, pconfigcall) = true
+def $fiber_capture_config_task(CONFIG_SEND pconfigcall, pconfigcall) = true
+def $fiber_capture_config_task(CONFIG_UNPACK_PREP pconfigcall, pconfigcall) = true
+def $fiber_capture_config_task(CONFIG_UNPACK_NEXT pconfigcall poperand n, pconfigcall) = true
+def $fiber_capture_config_task(CONFIG_INVOKE pconfigcall, pconfigcall) = true
+def $fiber_capture_config_task(ptask, pconfigcall) = false -- otherwise
+def $fiber_capture_config_pair(S, ptask :: (FIBER_CAPTURE_RELEASE n porigin) :: ptask_tail*, n, pconfigcall) = true
+  -- if $fiber_capture_config_task(ptask, pconfigcall)
+  -- if porigin = pconfigcall.SITE
+def $fiber_capture_config_pair(S, ptask :: (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask_tail*, n, pconfigcall) = true
+  -- if $fiber_capture_config_task(ptask, pconfigcall)
+  -- if b = $exit_method_site(S, pconfigcall.SITE)
+def $fiber_capture_config_pair(S, ptask :: ptask_tail*, n, pconfigcall) = $fiber_capture_config_pair(S, ptask_tail*, n, pconfigcall)
+  -- if ~$fiber_capture_config_task(ptask, pconfigcall)
+def $fiber_capture_config_pair(S, ptask*, n, pconfigcall) = false -- otherwise
+def $fiber_capture_config_selected(S, pconfigcall) = true
+  -- if $generator_flat_tasks(S.TODO)
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_capture_live(S, n)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if pfibercapture.KIND = pconfigcall.KIND
+  -- if $fiber_capture_call_site(S, pconfigcall.SITE)
+  -- if $fiber_capture_config_pair(S, S.TODO, n, pconfigcall)
+  -- if $fiber_capture_count(S.TODO, n, pconfigcall.SITE) = 1
+def $fiber_capture_config_selected(S, pconfigcall) = false -- otherwise
+def $config_selected_valid(S, pconfigcall) = $fiber_capture_config_selected(S, pconfigcall)
+  -- if $fiber_capture_config_tag(pconfigcall)
+def $fiber_capture_prepare(S, n, porigin, z, b_pop) = S[.TODO = [CONFIG_ARGS pconfigcall, FIBER_CAPTURE_RELEASE n porigin, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if b_pop
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_capture_live(S, n)
+  -- if pconfigcall = {SITE porigin, KIND pfibercapture.KIND, INDEX 0, SENT eps, NAMED false, OWNER (n), SELECTION (n), LINE z, PACKS eps}
+def $fiber_capture_prepare(S, n, porigin, z, false) = S[.TODO = [CONFIG_ARGS pconfigcall, FIBER_CAPTURE_RELEASE n porigin] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_capture_live(S, n)
+  -- if pconfigcall = {SITE porigin, KIND pfibercapture.KIND, INDEX 0, SENT eps, NAMED false, OWNER (n), SELECTION (n), LINE z, PACKS eps}
+def $dynamic_value(S, porigin, z_init, z_call) = $fiber_capture_prepare(S, n, porigin, z_call, false)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $fiber_capture_prepare(S_read, n, porigin, z, true)
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $ptlc(ptbytes) = $ptascii("__invoke") /\ ~$ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $invoke_capture(S_read, n, S.ORIGIN)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $ptlc(ptbytes) = $ptascii("__invoke") /\ $ppfirstclass(phpType7*)
+
+;; __invoke copies its wrapper buffer and adds a second Closure call owner.
+;; These owners appear only after SEND has finished and the C handler enters.
+def $fiber_capture_invoke(S, pconfigcall) = $fiber_receive(S[.TODO = (CONFIG_INVOKE pconfigcall) :: (FIBER_CAPTURE_RESULT n pconfigcall b_invoke) :: ptask_tail*], pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: (FIBER_CAPTURE_RELEASE n pconfigcall.SITE) :: ptask_tail*
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_capture_config_selected(S, pconfigcall)
+  -- if b_invoke = $exit_method_site(S, pconfigcall.SITE)
+def $config_receive(S, pconfigcall) = $fiber_capture_invoke(S, pconfigcall)
+  -- if $fiber_capture_config_tag(pconfigcall)
+def $task_nodes(FIBER_CAPTURE_RELEASE n porigin) = [HOBJECT n]
+def $task_nodes(FIBER_CAPTURE_RESULT n pconfigcall false) = [HOBJECT n]
+def $task_nodes(FIBER_CAPTURE_RESULT n pconfigcall true) = [HOBJECT n, HOBJECT n] ++ $named_slots_roots(pconfigcall.SENT)
+def $fiber_capture_release_valid(S, n, porigin) = ($fiber_capture_live(S, n) /\ S.ORIGIN = (porigin) /\ $fiber_capture_call_site(S, porigin) /\ $fiber_capture_count(S.TODO, n, porigin) = 1 /\ $generator_flat_tasks(S.TODO))
+def $fiber_capture_result_valid(S, n, pconfigcall, b) = true
+  -- if $generator_flat_tasks(S.TODO)
+  -- if $fiber_capture_live(S, n)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+  -- if $fiber_capture_config_tag(pconfigcall) /\ pconfigcall.OWNER = (n)
+  -- if pconfigcall.KIND = pfibercapture.KIND
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $fiber_capture_call_site(S, pconfigcall.SITE)
+  -- if $call_line_valid(S, (pconfigcall.SITE), pconfigcall.LINE)
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (pconfigcall.INDEX)
+  -- if $config_sent_shape(S, pconfigcall)
+  -- if $fiber_capture_count(S.TODO, n, pconfigcall.SITE) = 1
+  -- if b = $exit_method_site(S, pconfigcall.SITE)
+  -- if ~b \/ $config_slots_valid(S, pconfigcall.SENT)
+def $fiber_capture_result_valid(S, n, pconfigcall, b) = false -- otherwise
+def $call_task_valid(S, FIBER_CAPTURE_RELEASE n porigin) = $fiber_capture_release_valid(S, n, porigin)
+def $call_task_valid(S, FIBER_CAPTURE_RESULT n pconfigcall b) = $fiber_capture_result_valid(S, n, pconfigcall, b)
+rule PhpStep/fiber-capture-result: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (FIBER_CAPTURE_RESULT n pconfigcall false) :: ptask_tail*
+  -- if $fiber_capture_result_valid(S, n, pconfigcall, false)
+rule PhpStep/fiber-capture-invoke-result: S ~> S[.TODO = (FIBER_CAPTURE_RELEASE n pconfigcall.SITE) :: ptask_tail*]
+  -- if S.TODO = (FIBER_CAPTURE_RESULT n pconfigcall true) :: ptask_tail*
+  -- if $fiber_capture_result_valid(S, n, pconfigcall, true)
+rule PhpStep/fiber-capture-release: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (FIBER_CAPTURE_RELEASE n porigin) :: ptask_tail*
+  -- if $fiber_capture_release_valid(S, n, porigin)
+def $fiber_marker(FIBER_CAPTURE_RELEASE n porigin) = true
+def $fiber_marker(FIBER_CAPTURE_RESULT n pconfigcall b) = true
+;; Reuse the existing nested-control walk: these runtime owners cannot be
+;; manufactured inside an AT wrapper or either unexecuted CHOOSE branch.
+def $generator_internal_task(FIBER_CAPTURE_RELEASE n porigin) = true
+def $generator_internal_task(FIBER_CAPTURE_RESULT n pconfigcall b) = true
+def $generator_internal_task(FIBER_API_CORE_RESULT n n_capture pconfigcall) = true
+rule PhpStep/fiber-capture-throw-result: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_CAPTURE_RESULT n pconfigcall false) :: ptask_tail*
+  -- if $fiber_capture_result_valid(S, n, pconfigcall, false)
+  -- if $throwable_live(S, n_throwable)
+rule PhpStep/fiber-capture-invoke-throw-result: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: (FIBER_CAPTURE_RELEASE n pconfigcall.SITE) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_CAPTURE_RESULT n pconfigcall true) :: ptask_tail*
+  -- if $fiber_capture_result_valid(S, n, pconfigcall, true)
+  -- if $throwable_live(S, n_throwable)
+rule PhpStep/fiber-capture-throw-release: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_CAPTURE_RELEASE n porigin) :: ptask_tail*
+  -- if $fiber_capture_release_valid(S, n, porigin)
+  -- if $throwable_live(S, n_throwable)
+
+;; A parked continuation's payload is the real inner C argument buffer.
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if $fiber_at(S, pfiberapi.OBJECT) =/= eps
+  -- if pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND) /\ pfiberapi.START = eps
+  -- if S.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*
+  -- if ptask_tail* = (FIBER_CAPTURE_RESULT n pconfigcall b) :: ptask*
+  -- if $fiber_capture_result_valid(S, n, pconfigcall, b)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_SUSPEND
+  -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
+  -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
+  -- if $config_slots_valid(S, pconfigcall.SENT)
+  -- if S.ACTIVEFIBER = (pfiberapi.OBJECT)
+
+;; Constructor caches are immutable borrowed target pointers. RAW owns the
+;; Closure; the C result tail separately owns zend_call_function's addref.
+def $fiber_core_callback_target(FIBER_API_TARGET n) = true
+def $target_nodes(FIBER_API_TARGET n) = eps
+def $fiber_callback_resolution(S, POBJECT n) = HANDLERRESOLVED (FIBER_API_TARGET n)
+  -- if $fiber_capture_live(S, n)
+def $fiber_callable_target_tag(FIBER_API_TARGET n) = true
+def $fiber_cached_target_valid(S, pfiber) = true
+  -- if pfiber.RAW = POBJECT n
+  -- if pfiber.TARGET = (FIBER_API_TARGET n)
+  -- if $fiber_capture_live(S, n)
+def $fiber_receive_value(S, pconfigcall, POBJECT n_capture) = $fiber_done($fiber_put(S_birth, n, pfiber[.READY = true][.CALL = (pconfigcall)][.RAW = POBJECT n_capture][.TARGET = (FIBER_API_TARGET n_capture)][.BIRTH = $dynamic_new_find(S, S.TODO, pconfigcall.SITE)][.CAPTURE = $consumer_capture_current(S, pconfigcall.SITE)][.PRODUCER = $consumer_producer_current(S)]), PNULL)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CONSTRUCT
+  -- if $fiber_capture_live(S, n_capture)
+  -- if pconfigcall.OWNER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if ~pfiber.READY
+  -- if S_birth = $consumer_clone_birth_record(S, pconfigcall, n)
+def $fiber_core_callback_kind(S, pfiber) = (pfibercapture.KIND)
+  -- if pfiber.RAW = POBJECT n
+  -- if pfiber.TARGET = (FIBER_API_TARGET n)
+  -- if $fiber_capture_live(S, n)
+  -- if S.OBJECTS[n] = FIBERAPICLOSURE pfibercapture
+def $fiber_core_result_task(S, n, pfiber, pconfigcall) = FIBER_API_CORE_RESULT n n_capture pconfigcall
+  -- if pfiber.RAW = POBJECT n_capture
+  -- if pfiber.TARGET = (FIBER_API_TARGET n_capture)
+  -- if $fiber_capture_live(S, n_capture)
+def $fiber_core_result_kind(FIBER_API_CORE_RESULT n n_capture pconfigcall) = true
+def $fiber_core_tail([FIBER_API_CORE_RESULT n n_capture pconfigcall, FIBER_FINISH n]) = ((n, pconfigcall))
+def $fiber_core_count((FIBER_API_CORE_RESULT n n_capture pconfigcall) :: ptask*) = $(1 + $fiber_core_count(ptask*))
+def $fiber_core_task_at([FIBER_CORE_RESULT n pconfigcall, FIBER_FINISH n]) = (FIBER_CORE_RESULT n pconfigcall)
+def $fiber_core_task_at([FIBER_API_CORE_RESULT n n_capture pconfigcall, FIBER_FINISH n]) = (FIBER_API_CORE_RESULT n n_capture pconfigcall)
+def $fiber_core_task_at(ptask :: ptask_tail*) = $fiber_core_task_at(ptask_tail*)
+  -- if ~$fiber_core_result_kind(ptask)
+def $fiber_core_task_at(ptask*) = eps -- otherwise
+def $fiber_core_task_frames(eps) = eps
+def $fiber_core_task_frames(pframe :: pframe_tail*) = (ptask)
+  -- if $fiber_core_task_at(pframe.TODO) = (ptask)
+def $fiber_core_task_frames(pframe :: pframe_tail*) = $fiber_core_task_frames(pframe_tail*)
+  -- if $fiber_core_task_at(pframe.TODO) = eps
+def $task_nodes(FIBER_API_CORE_RESULT n n_capture pconfigcall) = [HOBJECT n_capture]
+dec $fiber_api_core_result_valid(pstate, nat, nat, pconfigcall) : bool
+def $fiber_api_core_result_valid(S, n, n_capture, pconfigcall) = true
+  -- if S.ORIGIN = (pconfigcall.SITE)
+  -- if $fiber_core_result_valid(S, n, pconfigcall)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $fiber_core_result_task(S, n, pfiber, pconfigcall) = FIBER_API_CORE_RESULT n n_capture pconfigcall
+def $fiber_api_core_result_valid(S, n, n_capture, pconfigcall) = false -- otherwise
+def $call_task_valid(S, FIBER_API_CORE_RESULT n n_capture pconfigcall) = $fiber_api_core_result_valid(S, n, n_capture, pconfigcall)
+def $fiber_api_valid(S, pfiberapi) = true
+  -- if $(pfiberapi.SEQUENCE > 0) /\ $(pfiberapi.SEQUENCE < S.FIBERSEQ)
+  -- if pfiberapi.KIND = (INTRINSIC_FIBER_SUSPEND) /\ pfiberapi.START = eps
+  -- if S.TODO = (FIBER_CONTINUE pfiberapi) :: ptask_tail*
+  -- if $fiber_core_tail(ptask_tail*) = ((pfiberapi.OBJECT, pconfigcall))
+  -- if $fiber_core_result_valid(S, pfiberapi.OBJECT, pconfigcall)
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_SUSPEND
+  -- if pfiberapi.SITE = pconfigcall.SITE /\ pfiberapi.LINE = pconfigcall.LINE
+  -- if pfiberapi.SENT = $fiber_config_sent(pconfigcall)
+  -- if $config_slots_valid(S, pconfigcall.SENT)
+rule PhpStep/fiber-api-core-result: S ~> S[.TODO = ptask_tail*][.ORIGIN = eps]
+  -- if S.TODO = (FIBER_API_CORE_RESULT n n_capture pconfigcall) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $call_task_valid(S, FIBER_API_CORE_RESULT n n_capture pconfigcall)
+def $fiber_marker(FIBER_API_CORE_RESULT n n_capture pconfigcall) = true
+rule PhpStep/fiber-api-core-result-throw: S ~> S[.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*][.ORIGIN = eps]
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: (FIBER_API_CORE_RESULT n n_capture pconfigcall) :: ptask_tail*
+  -- if S.CURRENT = eps /\ S.FRAMES = eps
+  -- if $call_task_valid(S, FIBER_API_CORE_RESULT n n_capture pconfigcall)
+  -- if $throwable_live(S, n_throwable)
+def $call_after_origin(S, FIBER_API_CORE_RESULT n n_capture pconfigcall) = S[.ORIGIN = eps]
+
+def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe]
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if ~$exit_method_site(S, pconfigcall.SITE)
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
+  -- if $fiber_capture_config_tag(pconfigcall)
+  -- if $exit_method_site(S, pconfigcall.SITE)
+  -- if ptraceframe = {FILE eps, LINE $(-1), FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE eps, LINE $(-1), FUNCTION $fiber_method_name(pconfigcall.KIND), CLASS ($ptascii("Fiber")), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
+  -- if $fiber_core_config(S, pconfigcall)
+  -- if $fiber_static(pconfigcall.KIND)

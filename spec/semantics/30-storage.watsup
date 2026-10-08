@@ -15,7 +15,7 @@ syntax pmethodcapture = { FUNCTION porigin, CALLSITE porigin?, LEXICAL_CLASS por
 syntax pcallableaccess = { SITE porigin?, SCOPE porigin?, OBJECT bool, CREATION pmethodcapture? }
 syntax papiquery
 syntax pfibercallable
-syntax pcalltarget = porigin | FIBER_REPORTING_TARGET | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable
+syntax pcalltarget = porigin | FIBER_REPORTING_TARGET | FIBER_API_TARGET nat | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable
 syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
 syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass | PCCPRECISION pcpath int
@@ -105,6 +105,7 @@ syntax pargcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, 
 ;; Completed unpack certificates borrow values from SENT, never heap owners.
 syntax pconfigpack = { INDEX nat, SITE porigin, LINE int, ARRAY nat, ITEMS pentry* }
 syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
+syntax pfibercapture = { SITE porigin, KIND pintrinsic, NAME ptbytes, INPUT nat? }
 ;; Zend retains the raw callable, not the registration-time function cache.
 syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes | HANDLERUNKNOWN text
@@ -221,7 +222,7 @@ syntax psourcehelper = HELPER_EMPTY_EVAL | HELPER_ONCE_SKIP pfilecontext preqbyt
 syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat }
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
-syntax ptask = GC_WORKER_PUBLIC pfiberapi | GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat | GC_WORKER_WAIT nat pgcplan | GC_WORKER_REPLACE pgcplan | GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat | GC_FREE pgcplan | FIBER_CORE_RESULT nat pconfigcall | FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_YIELD_KEY nat porigin int | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
+syntax ptask = GC_WORKER_PUBLIC pfiberapi | GC_WORKER_RUN nat | GC_WORKER_GUARD pgcguard | GC_WORKER_IDLE nat | GC_WORKER_WAIT nat pgcplan | GC_WORKER_REPLACE pgcplan | GC_TRACE pgccall | GC_DTORS pgcplan | GC_DTOR_RETURN pgcplan nat | GC_FREE pgcplan | FIBER_CORE_RESULT nat pconfigcall | FIBER_API_CORE_RESULT nat nat pconfigcall | FIBER_CAPTURE_RELEASE nat porigin | FIBER_CAPTURE_RESULT nat pconfigcall bool | FIBER_RETURN_FINISH pfiberfinish | FIBER_THROW_FINISH pfiberfinish | FIBER_CALLBACK_FINISH pfiberfinish | FIBER_ARGS pfiberstart | FIBER_SEND pfiberstart | FIBER_ENTER nat pnamedargs | FIBER_FINISH nat | FIBER_WAIT pfiberapi | FIBER_CONTINUE pfiberapi | GENERATOR_FROM_EVAL porigin | GENERATOR_FROM_NEXT nat porigin | GENERATOR_FROM_RESULT nat porigin nat | GENERATOR_FROM_CALLBACK nat porigin text | GENERATOR_FROM_VALID nat porigin poperand | GENERATOR_FROM_COMPLETE nat porigin nat pvalue | GENERATOR_CREATE porigin | GENERATOR_ARGS pgeneratorop phpType7* poperand* | GENERATOR_SEND pgeneratorop phpType7* poperand* | GENERATOR_RESUME pgeneratorop | GENERATOR_YIELD_VALUE porigin poperand? | GENERATOR_YIELD_DONE porigin poperand? | GENERATOR_YIELD_STORE porigin poperand? | GENERATOR_YIELD_KEY nat porigin int | GENERATOR_NEXT pgeneratorop | AUTO_REGISTER_RECEIVE pautoloadregistration | AUTO_REGISTER_NULL pautoloadregistration | AUTO_REGISTER_NOTICE pautoloadregistration | AUTO_UNREGISTER pautoloadentry | AUTO_UNREGISTER_ALL pautoloadentry | AUTO_CALL_NULL pconfigcall
   | GENERATOR_CLOSE_RELEASE pgenrelease | GENERATOR_CLOSE_ENTER pgenclose | GENERATOR_CLOSE_DONE pgenclose | GENERATOR_CLOSE_SCAN nat porigin | GENERATOR_CLOSE_FINALLY porigin | GENERATOR_CLOSE_FROM porigin
   | COMPOUND_STRING_PREP plocation pvalue pvalue porigin int | COMPOUND_STRING_LEFT plocation pvalue porigin int | COMPOUND_STRING_RIGHT plocation ptbytes porigin int
   | AUTO_NEXT pautoloadcall | AUTO_REFERENCE pautoloadcall pautoloadentry | AUTO_ENTER pautoloadcall pautoloadentry poperand | AUTO_RESULT pautoloadcall pautoloadentry poperand
@@ -361,7 +362,7 @@ syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FI
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue* }
-syntax pobject = WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
+syntax pobject = WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
@@ -923,6 +924,11 @@ dec $fiber_optional(pintrinsic) : bool
 dec $fiber_method(ptbytes) : pintrinsic?
 dec $fiber_method_name(pintrinsic) : ptbytes
 dec $fiber_static(pintrinsic) : bool
+dec $fiber_static_name(ptbytes) : bool
+dec $fiber_capture_config_tag(pconfigcall) : bool
+dec $fiber_core_callback_target(pcalltarget) : bool
+dec $fiber_core_callback_kind(pstate, pfiber) : pintrinsic?
+dec $fiber_core_result_task(pstate, nat, pfiber, pconfigcall) : ptask
 dec $fiber_new_site(pstate, porigin) : bool
 dec $fiber_static_class(pstate, porigin, phpType19) : bool
 dec $fiber_source_name(pintrinsic?) : ptbytes
