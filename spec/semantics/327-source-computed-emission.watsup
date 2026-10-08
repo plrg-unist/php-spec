@@ -1,0 +1,30 @@
+;; A computed variable compiles its name before emitting FETCH_R. A resolved
+;; no-argument user call therefore emits INIT first, even when that variable
+;; is the receiver of a later property read. Selection certifies compilation;
+;; the name callback and target lookup remain runtime work after retirement.
+dec $source_emission_computed_call(pstate, nat, pcpath, expression) : porigin?
+def $source_emission_computed_call(S, n, pcpath, NExprVariable (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata) = (PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprVariable (NExprFuncCall name (SEQUENCE eps) metadata_call) metadata)
+  -- if $cv_source_name(S[.ORIGIN = (PORIGIN n pcpath)], NExprFuncCall name (SEQUENCE eps) metadata_call) = eps
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = ((z_call, false))
+  -- if $(z_call > 0)
+  -- if z_call = $source_line(metadata_call)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_variable, false))
+  -- if z_variable = z_call
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $source_emission_computed_call(S, n, pcpath, expression) = eps -- otherwise
+
+;; Literal CV/auto-global/GLOBALS/this and314's direct call receiver are disjoint.
+def $source_echo_emission_origin(S, n, pcpath, expression) = (porigin)
+  -- if $source_emission_computed_call(S, n, pcpath, expression) = (porigin)
+def $source_echo_emission_origin(S, n, pcpath, NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata) = (porigin)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_property) metadata_property) metadata)
+  -- if $source_emission_computed_call(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (porigin)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_property, false))
+  -- if $(z_property > 0)
+  -- if z_property = $source_line(metadata_property)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
