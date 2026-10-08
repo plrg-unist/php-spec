@@ -26,11 +26,12 @@ their introduced seams are independently reviewed as compatible, with no source/
 renewal. Earlier cuts retain their own tested parents.
 [Scope and retained cuts](docs/semantics/ARROW-GENERATORS.md).
 
-The canonical source includes accepted ArrayAccess292/304/309, eager destruction270,
+The current source includes accepted ArrayAccess292/304/309, eager destruction270,
 WeakReference296, ordinary cycle collection301, Fiber291/302/308/313,
 Generator289/303/310/311 and source operands293/298,
-plus instance/readonly properties288/294 and clone300/305 with cached maker selection,
-with296 modules descended from `38f1dfaa045f`. The ordered integration preserves
+plus instance/readonly properties288/294, clone300/305 with cached maker selection
+and ordinary dynamic-property creation318, with 297 modules descended from
+`38f1dfaa045f`. The ordered integration preserves
 the final Generator eager-release bridge, Fiber cleanup guards and source-emission314/316/320.
 The property/clone composition passes strict SL290/compiler application0 at
 f6b2cad34, two new exact normal originals and79 independent strict-SL premises at
@@ -146,8 +147,9 @@ initialization, one exact defined-result original and two reached strict-SL
 groups/113 premises. The final GEN/include parent `ed7f23c67` composition passes
 strict-SL 285 initialization, the same exact original and two groups/113 premises
 on tested transfer `68b9ec4c4`. Earlier cuts retain their own evidence.
-The original verbose-source timeout and ordinary dynamic-property warning gap
-remain required; undefined-result engine verification remains held.
+The original verbose-source timeout retains zero agreement. CALLS308's dynamic
+property warning retains Unsupported at its original cut; no result is renewed.
+Undefined-result engine verification remains held.
 
 Ordinary eager destruction270 releases consumed slots in native order, retaining
 pending owners through callbacks, throws and resurrection. MAIN preserves source
@@ -251,9 +253,23 @@ pending-candidate identity rewrites remain an admission boundary. The
 preserves original failures, scoped repairs and regeneration commands.
 Accepted305 semantic inputs and all earlier cuts remain unchanged. Its directly
 affected private shutdown companion now agrees exactly at367e581df and is
-published at a2cab39d0. Dynamic-property warning ingress needs an
-owned callback continuation and real destination lifetime; its preserved CALLS308
-source remains Unsupported with zero agreement.
+published at a2cab39d0. Its preserved CALLS308 warning original retains its
+historical Unsupported cut with zero agreement.
+
+Ordinary dynamic-property creation318 now resumes eligible callbacks for literal
+simple assignments. The real warning owner protects the destination, then its
+retirement decision survives destructor resurrection. Late plain CVs, old
+reference payloads and owned RHS temporaries retain distinct behavior; same-key
+reentry appends physical buckets with latest lookup and ordered value foreach.
+Unused results release before receiver cleanup, while used results retain a copy.
+Fifteen private exact normals retain separate cuts; initial 297, changed 498 and
+cleanup 98 reached premises are not one campaign. The 297-module composition at
+`078ecb2f8` passes strict initialization, one new exact GC/resurrection source and 69/98
+GC/cleanup premises. Four explicit Unsupported boundaries cover handler exit,
+duplicate casts/reference foreach and expired or undefined RHS pointers.
+Computed names, wider writes and full-family closure remain required. The
+[review](coverage/semantics/dynamic-property-warning-review.json) retains original
+failures, commands and cuts; no historical clone campaign is renewed.
 
 The actual290 composition preserves ordinary borrowed eager-cleanup certificates
 and authenticates live clone windows in the existing saved Fiber-close VM without
