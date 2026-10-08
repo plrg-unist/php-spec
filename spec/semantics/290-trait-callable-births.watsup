@@ -141,25 +141,25 @@ def $trait_real_birth_at(pclassconstantevent :: pclassconstantevent_tail*, n) = 
 def $trait_real_stamp(S, n, porigin_site, porigin_decl, n_prefix) = S[.CLASSCONSTANTHISTORY = S.CLASSCONSTANTHISTORY ++ [CCTRAITBIRTH n porigin_site ptraitcachecause]]
   -- if $trait_real_markers(S.TODO) = [ptraitcachecause]
   -- if ptraitcachecause.PREFIX = n_prefix
+  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
+  -- if $trait_real_form(pcnode)
   -- if $trait_real_active(S, ptraitcachecause)
   -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
   -- if pclassconstantdesc.ORIGIN = porigin_decl
   -- if $constant_callable_context(S, porigin_site) = ((porigin_decl, pclassconstantdesc.OWNER))
-  -- if $origin_node(S.SOURCES, porigin_site) = (pcnode)
-  -- if $trait_real_form(pcnode)
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, n) = eps
 def $trait_real_stamp(S, n, porigin_site, porigin_decl, n_prefix) = S -- otherwise
 def $trait_real_birth_owner(S, pconstantclosure) = (pclassconstantdesc.OWNER)
   -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
   -- if pconstantclosure.PREFIX = ptraitcachecause.PREFIX
+  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
+  -- if $trait_real_form(pcnode)
+  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (REALCLOSURE pconstantclosure.SITE eps pstaticcell*)
   -- if $trait_real_cause(S, ptraitcachecause) = (pclassconstantdesc)
   -- if pconstantclosure.DECL = pclassconstantdesc.ORIGIN
   -- if $trait_real_authority(S, ptraitcachecause)
   -- if $constant_callable_path(S, pconstantclosure.SITE, pclassconstantdesc.INITIALIZER)
-  -- if $origin_node(S.SOURCES, pconstantclosure.SITE) = (pcnode)
-  -- if $trait_real_form(pcnode)
-  -- if S.OBJECTS[pconstantclosure.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (REALCLOSURE pconstantclosure.SITE eps pstaticcell*)
   -- if $function_at(S.CLOSURETEMPLATES, pconstantclosure.SITE) = (pfunction)
   -- if $closure_lexicals(pfunction.CODE.EXPRESSIONS) = eps
 def $trait_real_birth_owner(S, pconstantclosure) = eps -- otherwise
@@ -189,6 +189,7 @@ def $closure_scope_row_valid(S, pclosurescope) = true
   -- if HOBJECT pclosurescope.OBJECT <- S.ALLOCATIONS
   -- if $constant_callable_record(S.CONSTANTCLOSURES, pclosurescope.OBJECT) = (pconstantclosure)
   -- if $trait_real_birth_owner(S, pconstantclosure) = (pclosurescope.CALLED)
+  -- if S.OBJECTS[pclosurescope.OBJECT] = CONSTANTCLOSURE pconstantclosure.SITE (REALCLOSURE pconstantclosure.SITE eps pstaticcell*)
   -- if pclosurescope.LEXICAL = pclosurescope.CALLED
   -- if pclosurescope.RECEIVER = eps /\ pclosurescope.CREATION = eps
 def $class_constant_history_fills(S, (CCTRAITBIRTH n porigin_site ptraitcachecause) :: pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, n_previous) = $class_constant_history_fills(S, pclassconstantevent*, (porigin_flag, b_flag)*, porigin_cached*, porigin_filled*, ptraitcachecause.PREFIX)
