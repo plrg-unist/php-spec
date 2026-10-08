@@ -14,6 +14,7 @@ from generator_review import run
 ROOT = Path(__file__).resolve().parents[2]
 REQUEST_CASES = set()
 NATIVE_ERROR_PREFIXES = {}
+EXPECTED_STATUSES = {}
 
 # Existing FD198 transport: primitive request inputs, no PHP evaluation.
 REQUEST_EXEC = '''import os,sys
@@ -331,7 +332,7 @@ def main():
                     assert model.returncode == 1 and observation["status"] == "unsupported" and observation["reason"] == UNSUPPORTED[name][2], (name, observation)
                     report["unsupported"] += 1
                 else:
-                    expected_status = "static_rejection" if name in DECLARATIONS else "explicit_exit" if CASES[name][2] else "normal"
+                    expected_status = EXPECTED_STATUSES.get(name, "static_rejection" if name in DECLARATIONS else "explicit_exit" if CASES[name][2] else "normal")
                     assert model.returncode == 0 and observation["status"] == expected_status, (name, observation)
                     assert observation["reason"] is None
                     assert observation["exit_status"] == native.returncode
