@@ -24,6 +24,8 @@ dec $gc_worker_idle(pstate, nat, pgcplan) : pstate
 dec $gc_worker_detach(pstate, nat, pgcplan) : pstate
 dec $gc_worker_guard_done(pstate, pgcguard) : pstate
 dec $gc_worker_guard_drop(pstate, pgcguard) : pstate
+dec $gc_worker_guard_zero(pstate, pgcguard) : pstate
+def $gc_worker_guard_zero(S, pgcguard) = S[.COMPLETION = UNSUPPORTED "zero-owner target after detached collector guard retirement"] -- otherwise
 dec $gc_worker_pending_tasks(ptask*, pgcguard, pgcguard) : ptask*
 dec $gc_worker_pending(pstate, pgcguard, nat) : pstate
 dec $gc_worker_run_valid(pstate, nat) : bool
@@ -479,7 +481,7 @@ def $gc_worker_guard_done(S, pgcguard) = $gc_worker_plan_set($gc_worker_guard_dr
   -- if S.GC.WORKER = (pgcguard.WORKER)
   -- if S.GC.PLAN = (pgcplan)
   -- if pgcplan_next = pgcplan[.CALL.PENDING = pgcguard.PENDING][.INDEX = $(pgcplan.INDEX + 1)][.STEPS = pgcplan.STEPS ++ [GC_CALLED (HOBJECT pgcguard.OBJECT)]][.DONE = pgcplan.DONE ++ [HOBJECT pgcguard.OBJECT]]
-def $gc_worker_guard_done(S, pgcguard) = S[.COMPLETION = UNSUPPORTED "zero-owner target after detached collector guard retirement"]
+def $gc_worker_guard_done(S, pgcguard) = $gc_worker_guard_zero(S, pgcguard)
   -- if S.GC.WORKER =/= (pgcguard.WORKER)
   -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
   -- if $heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) = 0

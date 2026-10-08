@@ -1,0 +1,49 @@
+;; gc_call_destructors uses bare GC_DELREF after a resumed detached callback.
+;; A zero-owner target stays allocated and buffered until real collection. The
+;; buffer tag has no heap owner, and ordinary reacquisition clears its retention.
+dec $gc_bare_nodes(pgcslot*) : pnode*
+dec $gc_bare_valid(pstate, nat) : bool
+dec $gc_bare_record(pstate, nat) : pstate
+dec $gc_bare_return(pstate, nat?) : pstate
+dec $gc_bare_promote(hgraph, pgcslot*) : pgcslot*
+def $gc_bare_nodes(eps) = eps
+def $gc_bare_nodes((GC_BARE_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_bare_nodes(pgcslot*)
+def $gc_bare_nodes(pgcslot :: pgcslot_tail*) = $gc_bare_nodes(pgcslot_tail*) -- otherwise
+def $gc_slot_node(GC_BARE_ROOT n) = (HOBJECT n)
+def $gc_nodes((GC_BARE_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_nodes(pgcslot*)
+def $gc_physical_nodes((GC_BARE_ROOT n) :: pgcslot*) = (HOBJECT n) :: $gc_physical_nodes(pgcslot*)
+def $gc_compact_slots((GC_BARE_ROOT n) :: pgcslot*) = (GC_BARE_ROOT n) :: $gc_compact_slots(pgcslot*)
+def $gc_compact_back((GC_BARE_ROOT n) :: pgcslot*) = (GC_BARE_ROOT n) :: $gc_compact_slots($gc_slot_reverse(pgcslot*))
+def $gc_bare_valid(S, n_object) = true
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+  -- if n_object <- S.DESTRUCTION.CALLED
+  -- if $gc_ordinary_node(S, HOBJECT n_object)
+  -- if $gc_possible_root(S, HOBJECT n_object)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_object) = 0
+def $gc_bare_valid(S, n_object) = false -- otherwise
+def $gc_slots_valid(S, (GC_BARE_ROOT n_object) :: pgcslot*, nat*, n) = (~(n <- nat*) /\ $gc_bare_valid(S, n_object) /\ $gc_slots_valid(S, pgcslot*, nat*, $(n + 1)))
+
+def $gc_bare_keep(S) = $heap_reach($heap_intersect($gc_bare_nodes(S.GC.BUFFER), S.ALLOCATIONS), eps, $heap_graph(S).EDGES)
+def $gc_prune_nodes(S) = $gc_prune_graph($heap_graph(S), $gc_keep(S)).NODES
+  -- if S.GC.ACTIVE = eps
+  -- if $gc_bare_nodes(S.GC.BUFFER) =/= eps
+def $gc_bare_promote(H, eps) = eps
+def $gc_bare_promote(H, (GC_BARE_ROOT n) :: pgcslot*) = (GC_ROOT (HOBJECT n)) :: $gc_bare_promote(H, pgcslot*)
+  -- if $($heap_owners(H, HOBJECT n) > 0)
+def $gc_bare_promote(H, (GC_BARE_ROOT n) :: pgcslot*) = (GC_BARE_ROOT n) :: $gc_bare_promote(H, pgcslot*)
+  -- if $heap_owners(H, HOBJECT n) = 0
+def $gc_bare_promote(H, pgcslot :: pgcslot_tail*) = pgcslot :: $gc_bare_promote(H, pgcslot_tail*) -- otherwise
+def $gc_transition_prepare(S) = S[.GC.BUFFER = $gc_bare_promote($heap_graph(S), S.GC.BUFFER)]
+  -- if $gc_bare_nodes(S.GC.BUFFER) =/= eps
+
+def $gc_bare_record(S, n_object) = S[.GC = pgc[.BUFFER = $gc_slot_set(pgc.BUFFER, n, GC_BARE_ROOT n_object)]]
+  -- if pgc = $gc_buffer_add(S.GC, HOBJECT n_object)
+  -- if $gc_slot_find(pgc.BUFFER, HOBJECT n_object, 0) = (n)
+def $gc_bare_return(S, eps) = S
+def $gc_bare_return(S, (n)) = S[.TODO = (THROW_SEARCH n) :: S.TODO]
+def $gc_worker_guard_zero(S, pgcguard) = $gc_bare_return($gc_bare_record(S_dropped, pgcguard.OBJECT), pgcguard.PENDING)
+  -- if $gc_worker_guard_valid(S, pgcguard)
+  -- if S.GC.WORKER =/= (pgcguard.WORKER)
+  -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
+  -- if $heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) = 0
+  -- if $gc_ordinary_node(S_dropped, HOBJECT pgcguard.OBJECT)
