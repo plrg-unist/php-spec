@@ -2025,6 +2025,22 @@ algo/struct at3.719/4.823s, preserving current storage and bound-constructor tar
 Source1/24 bridge unchanged; raw compiler evidence is
 `.tools/trait-fcc-failed-target-publish19/.tools/trait266-object-algo-vgui9wdk`
 and `trait266-object-struct-p9t_dgxh` in the same directory.
+Concrete nonstatic scoped calls now check access before a missing-receiver Error;
+literal constructor calls bypass ordinary method access/abstract lookup, preserving
+the constructor opcode arm. At `0c48e90f3`/356 over `4563a5bf9`, strict algo/struct
+pass3.770/4.770s. Two new normal originals and34/20 supplied clauses plus6 setup
+per case pass (5.269/5.319s):40 genuine clauses cover actual rejection/no argument
+or allocation effects and all four global validators;14 clauses are helper-only
+flag/source probes. The protected-call baseline mismatch `7bc1r1bg` remains zero
+agreement. Raw current19 `.tools/` evidence is `method-runtime-y4klgpdm`,
+`method-runtime-cn0j7jql`, `closure-call-protocol-pxes1q9x`,
+`closure-call-protocol-5t_9yrp5`, `trait266-object-algo-4_69i9m4` and
+`trait266-object-struct-z558o98n`. Prior abstract/failed-owner sources and states
+are unchanged and not renewed; wider method/core obligations remain open.
+Final356 projection `e65e35e2a` over `43890afab` passes strict algo/struct at
+3.869/4.871s, preserving current assertion/Generator fields and dispatch.
+Source2/34+20 bridge unchanged; raw publish19 compiler evidence is
+`.tools/trait266-object-algo-l1ao1xno` and `trait266-object-struct-qztdz26_`.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and

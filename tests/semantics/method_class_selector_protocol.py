@@ -358,5 +358,113 @@ CASES['published-abstract-static-call-before-arguments'] = {
     'checks': PUBLISHED_ABSTRACT_CALL,
 }
 
+PROTECTED_NONSTATIC_CALL_STAGE = ('S.TODO = (SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) phpType7* z) :: ptask_tail* -- if $ptlc($base64(text_class)) = '
+ '$ptascii("a") -- if $ptlc($base64(text_method)) = $ptascii("n") -- if S.ORIGIN = (porigin_site) '
+ '-- if S.CURRENT = eps -- if $class_named(S.CLASSNAMES, $ptascii("a")) = (porigin_a) -- if '
+ '$class_at(S.CLASSES, porigin_a) = (pclassdesc_a)')
+# First20 clauses are genuine; final14 are helper-only flag/source probes.
+PROTECTED_NONSTATIC_CALL = ['$scoped_class_task(S, NName (BYTES text_class) metadata_class, NIdentifier (BYTES text_method) '
+ 'metadata_method, phpType7*, z)',
+ '$call_task_valid(S, SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) phpType7* z)',
+ 'pclassdesc_a.NAME = $ptascii("A") /\\ pclassdesc_a.KIND = "class" /\\ pclassdesc_a.ABSTRACT',
+ '$scoped_source_name(S, NName (BYTES text_class) metadata_class) = (pclassdesc_a.NAME)',
+ '$method_named(pclassdesc_a.METHODS, $ptascii("n")) = (pmethoddesc_n)',
+ 'pmethoddesc_n.OWNER = porigin_a /\\ ~pmethoddesc_n.ABSTRACT /\\ ~pmethoddesc_n.STATIC /\\ '
+ 'pmethoddesc_n.VISIBILITY = PROPERTY_PROTECTED',
+ '~$method_accessible(S, pmethoddesc_n, eps)',
+ '~$scoped_ctor_arm(S)',
+ 'phpType7* = (NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument) '
+ ':: phpType7_tail*',
+ 'phpType7_tail* = eps',
+ '$origin_node(S.SOURCES, porigin_site) = (NExprStaticCall (NName (BYTES text_class) '
+ 'metadata_class) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) '
+ 'metadata_call)',
+ '$call_current_valid(S)',
+ 'PhpStep: S ~> S_rejected',
+ 'S_rejected.COMPLETION = THROWN "Error" $ptascii("Call to protected method A::n() from global '
+ 'scope") z',
+ 'S_rejected.TODO = eps /\\ S_rejected.CURRENT = S.CURRENT',
+ 'S_rejected.OBJECTS = S.OBJECTS /\\ S_rejected.ALLOCATIONS = S.ALLOCATIONS /\\ S_rejected.EVENTS '
+ '= S.EVENTS',
+ '$class_constant_state_valid(S_rejected)',
+ '$call_descriptors_valid(S_rejected)',
+ '$declaration_history_valid(S_rejected)',
+ '$heap_valid($heap_graph(S_rejected))',
+ 'S_denied = $scoped_select_found(S, NName (BYTES text_class) metadata_class, porigin_a, '
+ 'pmethoddesc_n[.VISIBILITY = PROPERTY_PRIVATE], KNOWN (PSTRING pclassdesc_a.NAME), $ptascii("n"), '
+ 'phpType7*, z)',
+ 'S_denied.COMPLETION = THROWN "Error" $ptascii("Call to private method A::n() from global scope") '
+ 'z /\\ S_denied.TODO = eps',
+ 'S_public = $scoped_select_found(S, NName (BYTES text_class) metadata_class, porigin_a, '
+ 'pmethoddesc_n[.VISIBILITY = PROPERTY_PUBLIC], KNOWN (PSTRING pclassdesc_a.NAME), $ptascii("n"), '
+ 'phpType7*, z)',
+ 'S_public.COMPLETION = THROWN "Error" $ptascii("Non-static method A::n() cannot be called '
+ 'statically") z /\\ S_public.TODO = eps',
+ 'S_static = $scoped_select_found(S, NName (BYTES text_class) metadata_class, porigin_a, '
+ 'pmethoddesc_n[.STATIC = true], KNOWN (PSTRING pclassdesc_a.NAME), $ptascii("n"), phpType7*, z)',
+ 'S_static.COMPLETION = THROWN "Error" $ptascii("Call to protected method A::n() from global '
+ 'scope") z /\\ S_static.TODO = eps',
+ 'porigin_site = PORIGIN n_unit pcpath_site',
+ '$source_unit(S.SOURCES, n_unit) = (pcunit)',
+ 'S_ctor = S[.SOURCES = [pcunit[.OCCURRENCES = [PCOCCURRENCE pcpath_site (NExprStaticCall (NName '
+ '(BYTES text_class) metadata_class) (NIdentifier (BYTES "X19jb25zdHJ1Y3Q=") metadata_method) '
+ '(SEQUENCE phpType7*) metadata_call)] ++ pcunit.OCCURRENCES]] ++ S.SOURCES]',
+ 'pmethoddesc_ctor = pmethoddesc_n[.NAME = $ptascii("__construct")][.VISIBILITY = '
+ 'PROPERTY_PRIVATE]',
+ '$scoped_ctor_arm(S_ctor)',
+ 'S_ctor_rejected = $scoped_select_found(S_ctor, NName (BYTES text_class) metadata_class, '
+ 'porigin_a, pmethoddesc_ctor, KNOWN (PSTRING pclassdesc_a.NAME), $ptascii("__construct"), '
+ 'phpType7*, z)',
+ 'S_ctor_rejected.COMPLETION = THROWN "Error" $ptascii("Non-static method A::__construct() cannot '
+ 'be called statically") z',
+ 'S_ctor_rejected.TODO = eps']
+CASES['published-protected-nonstatic-call-before-arguments'] = {
+    'source': SOURCES['published-protected-nonstatic-call-before-arguments'],
+    'stage': PROTECTED_NONSTATIC_CALL_STAGE,
+    'checks': PROTECTED_NONSTATIC_CALL,
+}
+
+ABSTRACT_CONSTRUCTOR_CALL_STAGE = ('S.TODO = (SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) phpType7* z) :: ptask_tail* -- if $ptlc($base64(text_class)) = '
+ '$ptascii("a") -- if $ptlc($base64(text_method)) = $ptascii("__construct") -- if S.ORIGIN = '
+ '(porigin_site) -- if S.CURRENT = eps -- if $class_named(S.CLASSNAMES, $ptascii("a")) = '
+ '(porigin_a) -- if $class_at(S.CLASSES, porigin_a) = (pclassdesc_a)')
+# All20 clauses use the genuine selected constructor and its next step.
+ABSTRACT_CONSTRUCTOR_CALL = ['$scoped_class_task(S, NName (BYTES text_class) metadata_class, NIdentifier (BYTES text_method) '
+ 'metadata_method, phpType7*, z)',
+ '$call_task_valid(S, SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES '
+ 'text_method) metadata_method) phpType7* z)',
+ 'pclassdesc_a.NAME = $ptascii("A") /\\ pclassdesc_a.KIND = "class" /\\ pclassdesc_a.ABSTRACT',
+ '$scoped_source_name(S, NName (BYTES text_class) metadata_class) = (pclassdesc_a.NAME)',
+ '$method_named(pclassdesc_a.METHODS, $ptascii("__construct")) = (pmethoddesc_ctor)',
+ 'pmethoddesc_ctor.OWNER = porigin_a /\\ pmethoddesc_ctor.ABSTRACT /\\ ~pmethoddesc_ctor.STATIC '
+ '/\\ pmethoddesc_ctor.VISIBILITY = PROPERTY_PUBLIC',
+ '$method_accessible(S, pmethoddesc_ctor, eps)',
+ '$scoped_ctor_arm(S)',
+ 'phpType7* = (NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN false) metadata_argument) '
+ ':: phpType7_tail*',
+ 'phpType7_tail* = eps',
+ '$origin_node(S.SOURCES, porigin_site) = (NExprStaticCall (NName (BYTES text_class) '
+ 'metadata_class) (NIdentifier (BYTES text_method) metadata_method) (SEQUENCE phpType7*) '
+ 'metadata_call)',
+ '$call_current_valid(S)',
+ 'PhpStep: S ~> S_rejected',
+ 'S_rejected.COMPLETION = THROWN "Error" $ptascii("Non-static method A::__construct() cannot be '
+ 'called statically") z',
+ 'S_rejected.TODO = eps /\\ S_rejected.CURRENT = S.CURRENT',
+ 'S_rejected.OBJECTS = S.OBJECTS /\\ S_rejected.ALLOCATIONS = S.ALLOCATIONS /\\ S_rejected.EVENTS '
+ '= S.EVENTS',
+ '$class_constant_state_valid(S_rejected)',
+ '$call_descriptors_valid(S_rejected)',
+ '$declaration_history_valid(S_rejected)',
+ '$heap_valid($heap_graph(S_rejected))']
+CASES['published-abstract-constructor-call-before-arguments'] = {
+    'source': SOURCES['published-abstract-constructor-call-before-arguments'],
+    'stage': ABSTRACT_CONSTRUCTOR_CALL_STAGE,
+    'checks': ABSTRACT_CONSTRUCTOR_CALL,
+}
+
 if __name__ == '__main__':
     protocol.run(CASES, (Path(__file__), CATALOGUE))

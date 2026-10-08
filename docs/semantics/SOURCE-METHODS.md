@@ -47,13 +47,15 @@ and abstract mismatch checks. A constructor cannot be static. `A::f()`, `self::f
 class name sets the called class for static methods. A nonstatic scoped method may
 reuse the active `$this` only when it is an instance of the requested class;
 its called class is then the receiver's class. Visibility is checked before
-arguments. An accessible abstract method rejects before nonstatic checks or
-arguments; inaccessible abstract methods retain the access error first. One normal
-source and24 supplied clauses plus6 setup pass, including a genuine rejection
-and four global validators. Five helper-only clauses check flag priority and
-unchanged concrete dispatch. A literal `__construct` call uses Zend's constructor arm, including
-its receiver-class private check; a variable method name follows ordinary
-method lookup. Parser-foldable string concatenation of `__construct` also
+arguments. Ordinary nonconstructor methods check access before abstract or
+missing-receiver rejection. One normal abstract-call source and24 supplied
+clauses plus6 setup retain their separate cut. A literal `__construct` call uses
+Zend's constructor arm, including its receiver-class private check, and bypasses
+ordinary method access/abstract checks; without a compatible receiver an abstract
+constructor reports the nonstatic-call Error. A variable method name follows
+ordinary method lookup. Two further normal originals and54 supplied clauses plus12
+setup pass at `0c48e90f3`/356:40 genuine clauses include both actual rejections
+and all four global validators, while14 helper-only clauses cover flag/source dispatch probes. Parser-foldable string concatenation of `__construct` also
 uses that arm. Class expressions resolve their type and lookup before a
 computed method name; literal class lookup follows the computed name.
 
