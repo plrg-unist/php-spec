@@ -272,8 +272,10 @@ ordering and releases a closed Generator's Closure before its caches.
 physical pin and readable RETURN through child callbacks, then clears weak lookup.
 [Request delegation](coverage/semantics/generator-request-delegation-review.json)
 detaches inputs before finally while preserving CV owners, shared store order,
-delegated cache lifetime and nested normal handlers. Abrupt terminal cleanup,
-parked/escaped storage and nested ordinary-object RETURN reads remain required.
+delegated cache lifetime and nested normal handlers. [Request fatal cleanup 363](coverage/semantics/generator-request-abrupt-review.json)
+retains Generator/cache owners through normal fatal rendering, releases the reported
+exception before bailout, then suppresses later destructors. Abrupt rendering or
+exception release, parked/escaped storage and broader terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -608,8 +610,13 @@ keeps its retained local interval separate from the new global scan. The unvisit
 destructor target survives retracing and runs at request cleanup. One normal source
 and 154 independent physical premises pass; original and compact old-error CLI
 runs retain 60s timeouts/zero agreement. Final 349 over `63786460e` compiles.
-Residual-tag dispatch, repeated internal
-suspension and different-active-pass public reentry remain required.
+Quiescent public resume/throw now reloads the global physical interval and calls
+residual tagged destructors in the cached worker. One compact throw source and
+119 independent physical premises pass, including both original continuations
+and exact injected-error identity. The larger resume CLI retains its 60s timeout/
+zero agreement. Final 351 over `8e513981b` compiles. Residual internal dispatch/
+overlap, repeated internal suspension
+and different-active-pass public reentry remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -967,9 +974,10 @@ If data binding succeeds before abstract verification fails, later cached calls
 use the fixed class scope while an imported first birth keeps its trait scope.
 One shutdown original and59 supplied phase/scope/static conditions pass, with6
 setup clauses separate; the failed class stays unpublished.
-A retained `new self` rejects an unresolved abstract trait requirement before
-arguments or instance allocation. One shutdown original and39 supplied conditions plus6
-setup clauses pass; this proof covers classes without parent/interface contracts.
+Retained `new self` rejects an unresolved abstract trait requirement before
+arguments or instance allocation. Imported and own/private targets require explicit
+data completion; two shutdown originals and83 supplied conditions plus12 setup
+clauses pass at separate cuts. Parent/interface construction contracts remain open.
 Retained `new static` constructs the published called class and enters arguments
 after allocation. One shutdown original and40 supplied conditions plus6 setup
 clauses pass, including durable selected-NEW static-fill history.
@@ -1258,11 +1266,15 @@ The [factory ledger](coverage/semantics/fiber-from-callable-review.json) keeps
 distinct source and state cuts.
 Ordinary callable arrays with simple method names now select fixed bound and
 static Fiber APIs before argument evaluation. Frozen dereferenced members survive
-selector mutation or retirement; the pending call owns its bound receiver once, while static object
-selectors own none. Constructor callable parsing retains its real warning
-continuation and validation-before-status order. Fiber-start argument unpacking,
-array-selected start, array first-class conversion, array C-root callbacks and
-compound array or factory selectors remain required.
+selector mutation or retirement; the pending call owns its bound receiver once,
+while static object selectors own none. Constructor callable parsing retains its
+real warning continuation and validation-before-status order.
+Simple Fiber API arrays also convert to first-class Closures. A distinct source
+witness freezes the selected members; the temporary bound receiver owner moves
+into the Closure, while static selectors add none. Clone/equality and direct,
+explicit `__invoke` or C-root calls reuse the existing API protocols, including
+start and constructor captures. Ordinary array-selected start, raw array C-root
+callbacks, compound selectors and Fiber-start argument unpacking remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

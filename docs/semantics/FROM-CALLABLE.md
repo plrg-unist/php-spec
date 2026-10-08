@@ -40,8 +40,10 @@ object-style selectors add no receiver root. The result shares the existing
 Fiber API direct, explicit `__invoke` and C-root behavior. The
 [Fiber factory ledger](../../coverage/semantics/fiber-from-callable-review.json)
 tracks these checks. Ordinary fixed Fiber API callable arrays with simple method
-names use module362's separate dynamic-call protocol. Compound array and factory
-selectors remain required.
+names use module362's separate dynamic-call protocol. Module 364 converts simple
+Fiber API arrays directly to first-class Closures using a separate ARRAY source
+witness; it does not manufacture completed factory-call history. Compound array
+and factory selectors remain required.
 
 Invalid callable values raise the factory's `TypeError`. An actual-object getter
 denial becomes its previous `Error`, with raw selected method spelling. A throwing

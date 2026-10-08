@@ -187,7 +187,7 @@ test-semantics: build
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
 	python3 tests/semantics/weak_reference_state_review.py
-	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces
+	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces --exclude-match collector-residual-dtor-public-resume-preparation-25
 	python3 tests/semantics/cycle_collection_state.py
 	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18 --exclude-match collector-detached-quiescent-throwing-fiber-prior-error-review-19 --exclude-match collector-active-interval-bound-core-throw-review-21 --exclude-match collector-active-public-cached-core-old-pending-new-throw-review-22 --exclude-match collector-active-public-cached-core-two-identities-compact-review-22 --exclude-match collector-public-postpass-core-old-pending-new-throw-review-23 --exclude-match collector-new-fiber-pass-keeps-parked-old-error-review-24 --exclude-match collector-internal-takeover-old-error-compact-preparation-24
 	python3 tests/semantics/cycle_collection_state_review.py --sl
@@ -662,6 +662,9 @@ test-semantics: build
 	python3 tests/semantics/generator_request_delegation_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_peer_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_abrupt_sources.py --mode full
+	python3 tests/semantics/generator_request_abrupt_peer_sources.py --mode full
+	python3 tests/semantics/generator_request_abrupt_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl

@@ -78,35 +78,15 @@ unset($g);$observer=new Observer340;$oa=&$observer;echo "C|";
 ''', b'C|FHDP1:0:1', 0),
 }
 
-UNSUPPORTED = {
-    'peer-request-uncaught-finally-required': (
-        b'''<?php
-function request340(){try{yield 1;}finally{echo "F";throw new Exception("new");}}
-$g=request340();echo "C|",$g->current(),"|";
-''', b'C|1|F', 'Generator request-close uncaught exception', 255),
-    'peer-request-handler-throw-required': (
-        b'''<?php
-function caught340($e){echo "H";throw new Exception("handler");}
-set_exception_handler("caught340");
-function request340(){try{yield 1;}finally{echo "F";throw new Exception("new");}}
-$g=request340();echo "C|",$g->current(),"|";
-''', b'C|1|FH', 'Generator request-close exception-handler failure', 255),
-}
-
-CONTROLS = {
-    name: (source, stdout, exit_code,
-           b'Fatal error: Uncaught Exception: '
-           + (b'new' if name == 'peer-request-uncaught-finally-required' else b'handler'),
-           reason)
-    for name, (source, stdout, reason, exit_code) in UNSUPPORTED.items()
-}
+# The two historical abrupt originals now compare exactly in
+# generator_request_abrupt_peer_sources.py (363); their old refusal cuts remain zero.
 
 
 def main():
     driver.CASES = CASES
     driver.DECLARATIONS = {}
-    driver.UNSUPPORTED = UNSUPPORTED
-    driver.NATIVE_ERROR_PREFIXES = {name: control[3] for name, control in CONTROLS.items()}
+    driver.UNSUPPORTED = {}
+    driver.NATIVE_ERROR_PREFIXES = {}
     driver.WATCHED += [
         'spec/semantics/222-exception-handlers.watsup',
         'spec/semantics/257-request-destructors.watsup',

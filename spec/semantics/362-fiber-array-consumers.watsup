@@ -44,6 +44,7 @@ def $fiber_array_site_valid(S, pfiberarray) = true
 def $fiber_array_site_valid(S, pfiberarray) = false -- otherwise
 def $fiber_array_receiver_live(S, pfiberarray) = true -- if $fiber_static(pfiberarray.KIND)
 def $fiber_array_receiver_live(S, pfiberarray) = true
+  -- if ~$fiber_static(pfiberarray.KIND)
   -- if pfiberarray.INPUT = (n_input)
   -- if $fiber_at(S, n_input) =/= eps
 def $fiber_array_receiver_live(S, pfiberarray) = false -- otherwise

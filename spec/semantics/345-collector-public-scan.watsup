@@ -8,6 +8,9 @@ dec $gc_scan_clear(pgcslot*, nat, nat, nat) : pgcslot*
 dec $gc_worker_public_error(pfiberapi) : nat?
 dec $gc_worker_public_context(pstate, pgcpublic) : bool
 dec $gc_worker_public_pass_context(pstate, pgcpublic) : bool
+dec $gc_worker_public_residual_pass(pstate) : bool
+dec $gc_worker_public_residual_context(pstate, pgcpublic) : bool
+dec $gc_worker_public_residual_attachment(pstate, pgcguard, pgcpublic) : bool
 dec $gc_worker_scan_cursor(pstate, nat) : bool
 dec $gc_worker_scan_valid(pstate, pgcpublic) : bool
 dec $gc_worker_scan_object(pstate, pgcslot) : nat?
@@ -134,13 +137,23 @@ def $gc_worker_public_scan_pass(S) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
   -- if $gc_uncalled(S, pgcplan.DTORS) =/= eps
+def $gc_worker_public_residual_pass(S) = true
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if S.GC.BUFFER =/= $gc_unmarked_slots(S.GC.BUFFER)
+def $gc_worker_public_residual_pass(S) = false -- otherwise
+def $gc_worker_public_scan_pass(S) = true
+  -- if $gc_worker_public_residual_pass(S)
 def $gc_worker_public_error(pfiberapi) = eps -- if pfiberapi.KIND = (INTRINSIC_FIBER_RESUME)
 def $gc_worker_public_error(pfiberapi) = (n)
   -- if pfiberapi.KIND = (INTRINSIC_FIBER_THROW)
   -- if pfiberapi.SENT = (POBJECT n)
-def $gc_worker_public_task(S, pfiberapi) = GC_WORKER_SCAN {API pfiberapi, SOURCE pgcplan.CALL[.PENDING = eps], INDEX S.GC.SCAN.INDEX, END S.GC.SCAN.END, PENDING $gc_worker_public_error(pfiberapi)}
+def $gc_worker_public_task(S, pfiberapi) = GC_WORKER_SCAN {API pfiberapi, SOURCE pgcplan.CALL[.PENDING = eps], INDEX S.GC.SCAN.INDEX, END S.GC.SCAN.END, PENDING $gc_worker_public_error(pfiberapi), RESIDUAL false}
   -- if $gc_worker_public_scan_pass(S)
   -- if S.GC.PLAN = (pgcplan)
+def $gc_worker_public_task(S, pfiberapi) = GC_WORKER_SCAN {API pfiberapi, SOURCE pgcworker.BIRTH, INDEX S.GC.SCAN.INDEX, END S.GC.SCAN.END, PENDING $gc_worker_public_error(pfiberapi), RESIDUAL true}
+  -- if $gc_worker_public_residual_pass(S)
+  -- if $fiber_at(S, pfiberapi.OBJECT) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
 
 def $gc_worker_scan_api_valid(S, pfiberapi) = $gc_worker_public_api_valid(S, pfiberapi)
   -- if ~$gc_worker_api(pfiberapi)
@@ -158,6 +171,7 @@ def $gc_worker_public_context(S, pgcpublic) = $gc_worker_public_pass_context(S, 
   -- if $gc_worker_scan_api_valid(S, pgcpublic.API)
 def $gc_worker_public_context(S, pgcpublic) = false -- otherwise
 def $gc_worker_public_pass_context(S, pgcpublic) = true
+  -- if ~pgcpublic.RESIDUAL
   -- if ~$gc_worker_api(pgcpublic.API)
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
@@ -167,18 +181,37 @@ def $gc_worker_public_pass_context(S, pgcpublic) = true
   -- if $gc_worker_scan_cursor(S, pgcpublic.INDEX)
   -- if $destructor_pending_valid(S, pgcpublic.PENDING)
 def $gc_worker_public_pass_context(S, pgcpublic) = true
+  -- if ~pgcpublic.RESIDUAL
   -- if ~$gc_worker_api(pgcpublic.API)
   -- if $gc_worker_public_quiescent(S)
   -- if $(pgcpublic.INDEX <= pgcpublic.END)
   -- if $destructor_pending_valid(S, pgcpublic.PENDING)
 def $gc_worker_public_pass_context(S, pgcpublic) = true
+  -- if ~pgcpublic.RESIDUAL
   -- if $gc_worker_api(pgcpublic.API)
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
   -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
   -- if $(pgcpublic.INDEX <= pgcpublic.END)
   -- if $destructor_pending_valid(S, pgcpublic.PENDING)
+def $gc_worker_public_pass_context(S, pgcpublic) = $gc_worker_public_residual_context(S, pgcpublic)
+  -- if pgcpublic.RESIDUAL
 def $gc_worker_public_pass_context(S, pgcpublic) = false -- otherwise
+;; A later public entry reloads the current global interval. Keep this mode
+;; through the last callback, whose normalized slot is no longer a tag.
+;; BIRTH supplies only immutable source facts; API/cursor/slot supply authority.
+def $gc_worker_public_residual_context(S, pgcpublic) = true
+  -- if pgcpublic.RESIDUAL
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if S.GC.WORKER = (pgcpublic.API.OBJECT)
+  -- if $fiber_at(S, pgcpublic.API.OBJECT) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcpublic.SOURCE = pgcworker.BIRTH
+  -- if pgcpublic.END = S.GC.SCAN.END
+  -- if $(pgcpublic.INDEX <= pgcpublic.END)
+  -- if $gc_worker_scan_cursor(S, pgcpublic.INDEX)
+  -- if $destructor_pending_valid(S, pgcpublic.PENDING)
+def $gc_worker_public_residual_context(S, pgcpublic) = false -- otherwise
 def $gc_worker_scan_cursor(S, n) = true -- if n = S.GC.SCAN.INDEX
 def $gc_worker_scan_cursor(S, n) = true
   -- if n = $(S.GC.SCAN.INDEX + 1)
@@ -201,6 +234,11 @@ def $gc_worker_scan_object(S, GC_DTOR_ROOT n) = (n)
   -- if S.GC.PLAN = (pgcplan)
   -- if (HOBJECT n) <- pgcplan.DTORS /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $destructor_uncalled_node(S, HOBJECT n)
+def $gc_worker_scan_object(S, GC_DTOR_ROOT n) = (n)
+  -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if $gc_dtor_tag_valid(S, n)
+  -- if $destructor_uncalled_node(S, HOBJECT n)
 def $gc_worker_scan_object(S, pgcslot) = eps -- otherwise
 def $gc_worker_scan_target(S, n, n_end) = eps
   -- if $(n >= n_end) \/ $(n >= |S.GC.BUFFER|)
@@ -222,6 +260,7 @@ def $gc_worker_scan_enter(S, pgcpublic, n_slot, n_object) = $destructor_select(S
   -- if S_guarded = $gc_worker_put_guard(S_scan[.TODO = [GC_WORKER_GUARD pgcguard, FIBER_FINISH pgcguard.WORKER]], pgcguard.WORKER, (pgcguard))
 def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if ~pgcpublic.RESIDUAL
   -- if ~$gc_worker_api(pgcpublic.API)
   -- if $gc_worker_public_context(S, pgcpublic)
   -- if pgcpublic.PENDING = eps
@@ -235,6 +274,7 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
 def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if ~pgcpublic.RESIDUAL
   -- if ~$gc_worker_api(pgcpublic.API)
   -- if S.GC.ACTIVE = eps /\ S.GC.PLAN = eps
   -- if $gc_worker_public_context(S, pgcpublic)
@@ -244,6 +284,7 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if $(pgcguard.INDEX < pgcpublic.END)
 def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if ~pgcpublic.RESIDUAL
   -- if $gc_worker_api(pgcpublic.API)
   -- if $gc_worker_public_context(S, pgcpublic)
   -- if $gc_worker_internal_attachment(S, pgcguard, pgcpublic)
@@ -251,6 +292,22 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if pgcguard.WORKER = pgcpublic.API.OBJECT
   -- if pgcguard.SOURCE = pgcpublic.SOURCE /\ pgcguard.INDEX = pgcpublic.INDEX
   -- if $(pgcguard.INDEX < pgcpublic.END)
+def $gc_worker_guard_attachment(S, pgcguard) = true
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if pgcpublic.RESIDUAL
+  -- if ~$gc_worker_api(pgcpublic.API)
+  -- if $gc_worker_public_context(S, pgcpublic)
+  -- if $gc_worker_public_residual_attachment(S, pgcguard, pgcpublic)
+def $gc_worker_public_residual_attachment(S, pgcguard, pgcpublic) = true
+  -- if pgcpublic.RESIDUAL
+  -- if pgcpublic.PENDING = eps
+  -- if pgcguard.WORKER = pgcpublic.API.OBJECT
+  -- if pgcguard.SOURCE = pgcpublic.SOURCE
+  -- if pgcguard.INDEX = pgcpublic.INDEX /\ pgcguard.INDEX = S.GC.SCAN.INDEX
+  -- if $(pgcguard.INDEX < pgcpublic.END)
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
+  -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
+def $gc_worker_public_residual_attachment(S, pgcguard, pgcpublic) = false -- otherwise
 def $gc_worker_internal_attachment(S, pgcguard, pgcpublic) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if pgcplan.SCAN = (pgcscan)
@@ -392,6 +449,7 @@ def $gc_worker_public_reentry_ready(S, pgcguard) = true
   -- if pgcworker.GUARD = (pgcguard)
   -- if $gc_worker_public_parked(S, pgcguard.WORKER, pfiber)
   -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if ~pgcpublic.RESIDUAL
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
   -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
@@ -407,6 +465,17 @@ def $gc_worker_public_reentry_ready(S, pgcguard) = true
   -- if pfiber.GC = (pgcworker)
   -- if pgcworker.GUARD = (pgcguard)
   -- if $gc_worker_public_parked(S, pgcguard.WORKER, pfiber)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if ~pgcpublic.RESIDUAL
+def $gc_worker_public_reentry_ready(S, pgcguard) = true
+  -- if S.GC.WORKER = (pgcguard.WORKER)
+  -- if $fiber_at(S, pgcguard.WORKER) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if $gc_worker_public_parked(S, pgcguard.WORKER, pfiber)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if $gc_worker_public_residual_context(S, pgcpublic)
+  -- if $gc_worker_public_residual_attachment(S, pgcguard, pgcpublic)
 def $gc_worker_public_reentry_ready(S, pgcguard) = false -- otherwise
 def $gc_worker_public_resume(S, pconfigcall, pvalue) = $gc_worker_public_reentry(S, pconfigcall, pvalue)
   -- if pconfigcall.OWNER = (n)
@@ -462,7 +531,7 @@ def $gc_worker_takeover(S, pgcplan) = $gc_worker_start_vm(S_running, n, pfiber_b
   -- if S_caller = $gc_replace($gc_worker_start_buffer(S, pgcplan_next, true), pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
   -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ}
   -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
-  -- if pgcguard_new = pgcguard[.SOURCE = pgcplan.CALL[.PENDING = eps]][.PUBLIC = (pgcpublic[.API = pfiberapi][.SOURCE = pgcplan.CALL[.PENDING = eps]])]
+  -- if pgcguard_new = pgcguard[.SOURCE = pgcplan.CALL[.PENDING = eps]][.PUBLIC = (pgcpublic[.API = pfiberapi][.SOURCE = pgcplan.CALL[.PENDING = eps]][.RESIDUAL = false])]
   -- if pfibervm_bound = pfibervm[.TODO = $gc_worker_pending_tasks(pfibervm.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(pfibervm.FRAMES, pgcguard, pgcguard_new)]
   -- if pfiber_bound = pfiber[.GC = (pgcworker[.GUARD = (pgcguard_new)])][.VM = (pfibervm_bound)]
   -- if S_running = $fiber_put(S_caller, n, pfiber_bound[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = pfiberapi.SEQUENCE])
@@ -524,6 +593,7 @@ def $gc_worker_public_resume(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORT
   -- if pfiber.GC = (pgcworker)
   -- if pgcworker.GUARD = eps
   -- if ~$gc_worker_public_dispatch_valid(S)
+  -- if ~$gc_worker_public_scan_pass(S)
 def $gc_worker_start(S, pgcplan, b_fresh) = S[.COMPLETION = UNSUPPORTED "collector Fiber dispatch with residual destructor tags"]
   -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
   -- if S.GC.WORKER = eps

@@ -487,9 +487,18 @@ static object selectors own none and suspend names the actual running Fiber.
 Recursive argument frames keep independent receipts at the same source site.
 Constructor parsing preserves its exact callable-query and warning continuation.
 
-Fiber-start argument unpacking, array-selected start, array first-class conversion,
-array C-root callbacks and compound array or factory selectors remain required;
-start unpacking retains an explicit Unsupported control.
+Module 364 converts simple Fiber API arrays to first-class Closures, including
+start and constructor methods. Its ARRAY witness authenticates the actual dynamic
+FCC source, INIT/conversion lines and dereferenced member snapshot; factory and
+method-capture witnesses remain separate. The conversion task's bound receiver
+owner moves into the Closure, and static object inputs stay nonowning after
+retirement. Existing clone/equality, direct, explicit invoke and C-root protocols
+preserve their buffers, traces and callback cleanup. Live-static and bound receiver
+checks are disjoint; duplicate conversion tasks fail local admission.
+
+Fiber-start argument unpacking, ordinary array-selected start, raw array C-root
+callbacks and compound array or factory selectors remain required; start unpacking
+retains an explicit Unsupported control.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and

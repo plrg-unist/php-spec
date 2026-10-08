@@ -7,6 +7,7 @@ dec $trait_fcc_failed_method_select(pstate, pconstantclosure*, (porigin, pmethod
 dec $trait_fcc_retained_method_functions(pstate, pmethoddesc*) : pfunction*
 dec $trait_fcc_retained_function_add(pstate, pmethoddesc, pfunction*) : pfunction*
 dec $trait_fcc_failed_data_phase(pcompletion, porigin, pmethoddesc, pmethoddesc) : (porigin, pmethoddesc)?
+dec $trait_fcc_failed_data_at(pstate, pconstantclosure, nat) : (pcompletion, porigin, pmethoddesc, pmethoddesc)?
 dec $trait_fcc_failed_phase_cache(pstate, pconstantclosure, ptraitcachecause, pdefaultcache*) : pdefaultcache*
 
 def $trait_fcc_failed_target(S, pconstantclosure) = ((ptraitcachecause.CLASS, pmethoddesc_copy, pmethoddesc))
@@ -31,7 +32,15 @@ def $trait_fcc_failed_header(S, porigin_site) = eps -- otherwise
 ;; Trait method scopes are fixed after data binding, before abstract/interface
 ;; verification. The authenticated first birth has no preceding constant context;
 ;; replay its data prefix without the later import's active initializer.
-def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = $trait_fcc_failed_data_phase(S_data.COMPLETION, porigin_owner, pmethoddesc_copy, pmethoddesc)
+def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = $trait_fcc_failed_data_phase(pcompletion, porigin_owner, pmethoddesc_copy, pmethoddesc)
+  -- if $(pconstantclosure.OBJECT < |S.OBJECTS|)
+  -- if $object_body(S.OBJECTS[pconstantclosure.OBJECT]) = METHODCLOSURE porigin_method porigin_site porigin_requested eps
+  -- if $trait_imported_origin(porigin_method)
+  -- if $trait_fcc_failed_data_at(S, pconstantclosure, n_prefix) = ((pcompletion, porigin_owner, pmethoddesc_copy, pmethoddesc))
+  -- if pmethoddesc.OWNER =/= porigin_owner
+;; Own methods keep the same scope on both sides of data binding, so their
+;; abstract-class proof must use the explicit data completion.
+def $trait_fcc_failed_data_at(S, pconstantclosure, n_prefix) = ((S_data.COMPLETION, porigin_owner, pmethoddesc_copy, pmethoddesc))
   -- if $(n_prefix <= |S.DECLARATIONS|)
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure.OBJECT) = ((pconstantclosure.SITE, ptraitcachecause))
   -- if porigin_owner = ptraitcachecause.CLASS
@@ -39,7 +48,6 @@ def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = $trait_fcc_faile
   -- if $(n_failed < n_prefix)
   -- if pconstantclosure.PREFIX = n_failed
   -- if $trait_fcc_failed_target(S, pconstantclosure) = ((porigin_owner, pmethoddesc_copy, pmethoddesc))
-  -- if pmethoddesc.OWNER =/= porigin_owner
   -- if $trait_fcc_receipt_methods(S, ptraitcachecause) = ((S_methods, ptraitmethod*))
   -- if pdefaultcache_prefix* = $trait_cache_notice_prefix(S, S.CLASSCONSTANTHISTORY, porigin_owner, n_failed)
   -- if S_before = S_methods[.CLASSCONSTANTCACHE = $trait_fcc_failed_phase_cache(S, pconstantclosure, ptraitcachecause, pdefaultcache_prefix*)][.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.TODO = [TRAIT_NOTICE_REPLAY porigin_owner n_failed ptraitcachecause.USERPREFIX]]
@@ -48,6 +56,7 @@ def $trait_fcc_failed_fixup_at(S, pconstantclosure, n_prefix) = $trait_fcc_faile
   -- if S_constants = $trait_data_constants(S_before, pclassdesc_methods, pclassdesc_traits*, eps)
   -- if $class_at(S_constants.CLASSES, porigin_owner) = (pclassdesc_constants)
   -- if S_data = $trait_data_properties(S_constants, pclassdesc_constants, pclassdesc_traits*, eps)
+def $trait_fcc_failed_data_at(S, pconstantclosure, n_prefix) = eps -- otherwise
 ;; The authenticated direct FCC has no effect beyond its allocation/diagnostic.
 ;; Its exact first value suffices for scratch data comparisons; no live cache or
 ;; allocation is restored, and wider initializers keep the complete replay.
@@ -182,7 +191,7 @@ def $trait_fcc_failed_abstract(S, pclassdesc, pconstantclosure_first) = true
   -- if pclassdesc.PARENT = eps /\ ~pclassdesc.ABSTRACT
   -- if $trait_real_birth_at(S.CLASSCONSTANTHISTORY, pconstantclosure_first.OBJECT) = ((pconstantclosure_first.SITE, ptraitcachecause))
   -- if $trait_fcc_failed_target(S, pconstantclosure_first) = ((pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
-  -- if $trait_fcc_failed_fixup_at(S, pconstantclosure_first, |S.DECLARATIONS|) = ((pclassdesc.ORIGIN, pmethoddesc_copy))
+  -- if $trait_fcc_failed_data_at(S, pconstantclosure_first, |S.DECLARATIONS|) = ((NORMAL, pclassdesc.ORIGIN, pmethoddesc_copy, pmethoddesc_first))
   -- if $trait_fcc_receipt_composition(S, ptraitcachecause) = ((S_copy, ptraitmethod*, ptraitmethod_required*))
   -- if $class_at(S_copy.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_copy)
   -- if $trait_import_interfaces(pclassdesc_copy, pclassdesc_copy.METHODS) = eps
