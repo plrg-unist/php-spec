@@ -29,13 +29,16 @@ dec $ppimage_declared(ppstate, porigin, ppubkind) : bool
 def $ppimage_declared(P, porigin, PPCLASS) = ($class_at(P.CLASSES, porigin) =/= eps)
 def $ppimage_declared(P, porigin, PPFUNCTION) = ($function_at(P.FUNCTIONS, porigin) =/= eps)
 
+dec $ppimage_publication_ready(ppstate, porigin, ppubkind) : bool
+def $ppimage_publication_ready(P, porigin, ppubkind) = $ppimage_unit(P) -- otherwise
+
 def $ppimage_publication(P, porigin, ppubkind, true) = $ppimage_save($ppcompiler_precision(P[.PUBLICATIONS = P.PUBLICATIONS ++ [PPCP porigin n_diagnostics ppubkind]]), false)
   -- if P.COMPLETION = PPCNORMAL
-  -- if $ppimage_unit(P)
+  -- if $ppimage_publication_ready(P, porigin, ppubkind)
   -- if $ppimage_declared(P, porigin, ppubkind)
   -- if n_diagnostics = |P.DIAGNOSTICS|
 def $ppimage_publication(P, porigin, ppubkind, b) = P
-  -- if ~b \/ P.COMPLETION =/= PPCNORMAL \/ ~$ppimage_unit(P) \/ ~$ppimage_declared(P, porigin, ppubkind)
+  -- if ~b \/ P.COMPLETION =/= PPCNORMAL \/ ~$ppimage_publication_ready(P, porigin, ppubkind) \/ ~$ppimage_declared(P, porigin, ppubkind)
 
 ;; Capture transition facts at real publication sites, never in scratch links.
 dec $declaration_enter_at(pstate, nat, porigin?, int) : pstate

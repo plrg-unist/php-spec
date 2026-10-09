@@ -72,10 +72,40 @@ def $anonymous_class_prefix(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*
   -- if $anonymous_class_prefix(pcunit, ptbytes_file, pclassdesc_tail*, $(n_counter + 1))
 def $anonymous_class_prefix(pcunit, ptbytes_file, pclassdesc*, n_counter) = false -- otherwise
 
+;; These global factory bodies restore their own CV/code scope before the unit
+;; image is saved. Only the class checkpoint is recorded inside the body.
+dec $anonymous_factory_source(ppstate, pcnode) : (ptbytes, nat)?
+def $anonymous_factory_source(P, NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = (($ptjoin(P.ENV.NAMESPACE, $base64(text)), 5))
+  -- if ~P.CLOSURE
+def $anonymous_factory_source(P, NExprClosure (SEQUENCE eps) (BOOLEAN true) (BOOLEAN false) (SEQUENCE eps) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = (($ptascii("{closure:") ++ P.LOCATION.FILE ++ [58] ++ $ntunsigned($psline(metadata)) ++ [125], 6))
+  -- if P.CLOSURE
+def $anonymous_factory_source(P, pcnode) = eps -- otherwise
+
+dec $anonymous_factory_context(ppstate, pcpath) : bool
+def $anonymous_factory_context(P, pcpath) = true
+  -- if $anonymous_unit(P.FOLD.SOURCE)
+  -- if P.CLASSCONTEXT = eps /\ P.FOLD.CLASSCONTEXT = eps
+  -- if P.CLOSURE = P.FOLD.CLOSURE
+  -- if ~P.FOLD.CONSTANT /\ ~P.FOLD.DEFAULT
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (P.GOTOROOT)) = (pcnode)
+  -- if $anonymous_factory_source(P, pcnode) = ((ptbytes_name, n_body))
+  -- if P.FOLD.FUNCTION = ptbytes_name
+  -- if pcpath_body = P.GOTOROOT ++ [PCFIELD n_body]
+  -- if $(|pcpath_body| < |pcpath|) /\ pcpath[0:|pcpath_body|] = pcpath_body
+def $anonymous_factory_context(P, pcpath) = false -- otherwise
+
+def $ppimage_publication_ready(P, PORIGIN 0 pcpath, PPCLASS) = true
+  -- if ~$ppimage_unit(P) /\ $anonymous_factory_context(P, pcpath)
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 pcpath) = (pcnode)
+  -- if $anonymous_class_node(pcnode)
+  -- if $anonymous_class_prefix(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, 0)
+  -- if $class_at(P.CLASSES, PORIGIN 0 pcpath) = (pclassdesc)
+  -- if pclassdesc.EARLY
+
 dec $ppanonymous_class(ppstate, pcpath, statement) : ppstate
 def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATION = P.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]]
   -- if $anonymous_unit(P.FOLD.SOURCE) /\ $anonymous_class_node(statement)
-  -- if $ppimage_unit(P) /\ ~P.FOLD.CONSTANT
+  -- if ($ppimage_unit(P) \/ $anonymous_factory_context(P, pcpath)) /\ ~P.FOLD.CONSTANT
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (statement)
   -- if $class_at(P.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = eps
   -- if $anonymous_class_prefix(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, 0)
