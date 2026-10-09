@@ -313,7 +313,7 @@ def $gc_worker_overlap_selected(S, pgcplan, n_object, n_slot) = true
   -- if S.GC.SCAN.INDEX = n_slot /\ S.GC.SCAN.END = |pgcplan.BUFFER|
   -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n_object)
   -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
-  -- if pgcplan.INDEX =/= 0 \/ (S.GC.BUFFER = $gc_slot_set(pgcslot*, n_slot, GC_ROOT (HOBJECT n_object)) /\ S.GC.FREE = nat_free*)
+  -- if n_object <- S.DESTRUCTION.CALLED \/ pgcplan.INDEX =/= 0 \/ (S.GC.BUFFER = $gc_slot_set(pgcslot*, n_slot, GC_ROOT (HOBJECT n_object)) /\ S.GC.FREE = nat_free*)
 def $gc_worker_overlap_selected(S, pgcplan, n_object, n_slot) = false -- otherwise
 def $gc_worker_overlap_image(S, pgcplan) = true -- if ~$gc_overlap_plan(pgcplan)
 def $gc_worker_overlap_image(S, pgcplan) = true
@@ -530,6 +530,7 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
   -- if $gc_worker_overlap_image(S, pgcplan)
+  -- if ~$gc_overlap_plan(pgcplan) \/ $gc_worker_overlap_selected(S, pgcplan, pgcguard.OBJECT, S.GC.SCAN.INDEX)
   -- if pgcplan.CALL = pgcguard.SOURCE
   -- if pgcplan.INDEX = pgcguard.INDEX
   -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
