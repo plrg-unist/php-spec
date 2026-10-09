@@ -204,8 +204,16 @@ def main():
              '$replay_function(S_scope, [102])'] + pair_checks('S_scope') + [
              'porigin_wrong = pcallcontext.FUNCTION', '$call_tasks_valid(S_scope, pframe.TODO)',
              '$switch_state_tasks(pframe.TODO, 3) = [FINALLY_ONLY porigin_outer]',
-             '$finally_catch_origin(S_scope, porigin_outer, pframe.ORIGIN)',
-             'pframe.ORIGIN =/= (porigin_outer)'], pair_bad('S_scope', saved=True), error_scope='S_scope')
+             'S.CURRENT = (pcallcontext_current)',
+             'pcallcontext_current.CALLSITE = pframe.ORIGIN',
+             'pframe.ORIGIN = (porigin_call)',
+             '$origin_node(S.SOURCES, porigin_call) = (NExprFuncCall (NName (BYTES "Zw==") metadata_name) (SEQUENCE eps) metadata_call)',
+             '$goto_saved(pframe.TODO, porigin_switch) = GOTOTASKS ((SWITCH_REPLAY_END porigin_switch) :: (SWITCH_REPLAY_PHASE porigin_switch) :: (ORIGIN_RETURN (porigin_catch)) :: ptask_outer*)',
+             'porigin_catch = PORIGIN n_unit pcpath_catch',
+             'porigin_call = PORIGIN n_unit pcpath_call',
+             '$effect_below(pcpath_catch ++ [PCFIELD 2], pcpath_call)',
+             '$finally_catch_origin(S_scope, porigin_outer, (porigin_catch))',
+             'porigin_catch =/= porigin_outer'], pair_bad('S_scope', saved=True), error_scope='S_scope')
 
     case = 'ref-replay-switch-goto-naked-saved'
     fixture('same-catch-goto-capability', case, f + ['S.TODO = (STMT (NStmtGoto phpType11 metadata)) :: ptask_tail*'], [
