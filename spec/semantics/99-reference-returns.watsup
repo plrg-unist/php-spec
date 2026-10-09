@@ -11,11 +11,33 @@ dec $reference_return_store(pstate, pvalue, pvalue) : pstate
 dec $reference_return_notice(pstate, poperand) : bool
 dec $reference_return_value(pstate, poperand, int) : pstate
 dec $reference_return_write_operand(pstate, poperand, pvalue, pvalue) : pstate
-dec $reference_return_diagnostic(pstate, poperand, int) : pstate
 dec $reference_return_materialize(pstate, poperand, pvalue) : pstate
 dec $reference_operand(poperand) : bool
 dec $reference_return_unwind(pstate, pnode*, int) : pstate
 dec $access_reference_value_pending(pstate) : bool
+dec $reference_notice_marker(ptask) : bool
+dec $reference_notice_clean(ptask*) : ptask*
+dec $reference_notice_designation(pstate, poperand) : prefreturnnotice?
+dec $reference_notice_unwind(pstate, pnode*, int, prefreturnnotice?) : pstate
+dec $reference_notice_operand(poperand, pvalue) : poperand
+dec $reference_return_value_result(pstate, pstate, poperand, pvalue) : pstate
+
+;; The marker adds no operand owner. A completed new return cancels the old
+;; Notice; failed initial verification leaves the pending transfer untouched.
+def $reference_notice_marker(REF_RETURN_NOTICE porigin z prefreturnnotice) = true
+def $reference_notice_marker(ptask) = false -- otherwise
+def $reference_notice_clean(eps) = eps
+def $reference_notice_clean((REF_RETURN_NOTICE porigin z prefreturnnotice) :: ptask_tail*) = $reference_notice_clean(ptask_tail*)
+def $reference_notice_clean(ptask :: ptask_tail*) = ptask :: $reference_notice_clean(ptask_tail*)
+  -- if ~$reference_notice_marker(ptask)
+def $reference_notice_designation(S, poperand) = (REF_NOTICE_VALUE) -- if $reference_return_notice(S, poperand)
+def $reference_notice_designation(S, poperand) = eps -- if ~$reference_return_notice(S, poperand)
+def $reference_notice_operand(REFERENCE n, pvalue) = REFERENCE n
+def $reference_notice_operand(poperand, pvalue) = KNOWN pvalue -- otherwise
+def $reference_return_value_result(S_original, S, poperand, pvalue) = S[.RESULT = $reference_notice_operand(poperand, pvalue)]
+  -- if $reference_return_notice(S_original, poperand)
+def $reference_return_value_result(S_original, S, poperand, pvalue) = $reference_return_materialize(S, poperand, pvalue)
+  -- if ~$reference_return_notice(S_original, poperand)
 
 ;; Caller result demand follows original source consumers, including folded ones.
 def $reference_origin_parent(PORIGIN n pcpath, n_count) = ((PORIGIN n pcpath[0:n_parent], pcpath[n_parent:n_count]))
@@ -137,7 +159,7 @@ def $reference_return_notice(S, poperand) = true -- otherwise
 def $reference_return_value(S, poperand, z) = S_checked
   -- if S_checked = $typed_return_checked($resolve_at(S, poperand, z), z, $typed_reference_operand_source(S, poperand))
   -- if S_checked.COMPLETION =/= NORMAL
-def $reference_return_value(S, poperand, z) = $reference_return_materialize($reference_return_diagnostic(S_written, poperand, z), poperand, pvalue)
+def $reference_return_value(S, poperand, z) = $reference_return_value_result(S, S_written, poperand, pvalue)
   -- if S_input = $resolve_at(S, poperand, z)
   -- if S_input.RESULT = KNOWN pvalue_original
   -- if S_checked = $typed_return_checked(S_input, z, $typed_reference_operand_source(S, poperand))
@@ -151,9 +173,6 @@ def $reference_return_write_operand(S, REFERENCE n, pvalue_original, pvalue) = $
   -- if pvalue_original =/= pvalue \/ S.STORE[n] = UNDEFINED
 def $reference_return_write_operand(S, poperand, pvalue_original, pvalue) = S -- otherwise
 
-def $reference_return_diagnostic(S, poperand, z) = $diagnostic(S, "Notice", $ptascii("Only variable references should be returned by reference"), z)
-  -- if $reference_return_notice(S, poperand)
-def $reference_return_diagnostic(S, poperand, z) = S -- if ~$reference_return_notice(S, poperand)
 def $reference_return_materialize(S, poperand, pvalue) = S -- if S.COMPLETION =/= NORMAL
 def $reference_return_materialize(S, REFERENCE n, pvalue) = S[.RESULT = REFERENCE n]
   -- if S.COMPLETION = NORMAL
@@ -179,15 +198,21 @@ def $reference_operand(REFERENCE n) = true
 def $reference_operand(poperand) = false -- otherwise
 
 def $reference_return_unwind(S, pnode*, z) = S[.HELD = pnode*][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.COMPLETION =/= NORMAL
-def $reference_return_unwind(S, pnode*, z) = S[.TODO = (RETURN_REF_UNWIND S.RESULT z false porigin_source) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = pnode*]
+def $reference_return_unwind(S, pnode*, z) = S[.TODO = (RETURN_REF_UNWIND S.RESULT z false porigin_source) :: $reference_notice_clean(S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = pnode*]
   -- if S.COMPLETION = NORMAL
   -- if S.ORIGIN = (porigin_source)
+def $reference_notice_unwind(S, pnode*, z, prefreturnnotice?) = $reference_return_unwind(S, pnode*, z)
+  -- if S.COMPLETION =/= NORMAL \/ prefreturnnotice? = eps
+def $reference_notice_unwind(S, pnode*, z, (prefreturnnotice)) = S_unwind[.TODO = S_unwind.TODO ++ [REF_RETURN_NOTICE porigin_source z prefreturnnotice]]
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin_source)
+  -- if S_unwind = $reference_return_unwind(S, pnode*, z)
 rule PhpStep/return-reference-fetch: S ~> $reference_return_unwind($reference_return_fetch($hold_task_inputs(S), S.BASE, z), S.HELD, z)
   -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
-rule PhpStep/return-reference-value: S ~> $reference_return_unwind($reference_return_value($hold_task_inputs(S), S.RESULT, z), S.HELD, z)
+rule PhpStep/return-reference-value: S ~> $reference_notice_unwind($reference_return_value($hold_task_inputs(S), S.RESULT, z), S.HELD, z, $reference_notice_designation(S, S.RESULT))
   -- if S.TODO = (RETURN_REF_VALUE z) :: ptask_tail*
   -- if ~$access_reference_value_pending(S)
-rule PhpStep/return-reference-null: S ~> $reference_return_unwind($reference_return_materialize($diagnostic($hold_task_inputs(S), "Notice", $ptascii("Only variable references should be returned by reference"), z), KNOWN PNULL, PNULL), S.HELD, z)
+rule PhpStep/return-reference-null: S ~> $reference_notice_unwind($hold_task_inputs(S)[.RESULT = KNOWN PNULL], S.HELD, z, (REF_NOTICE_NULL))
   -- if S.TODO = (RETURN_REF_NULL z) :: ptask_tail*
 
 ;; Return stages bind source designation and emission metadata, not value history.
@@ -253,4 +278,4 @@ def $reference_return_result_tasks(KNOWN pvalue, (RETURN_REF_VALUE z) :: ptask_t
 def $reference_return_result_tasks(REFERENCE n, (RETURN_REF_VALUE z) :: ptask_tail*) = true
 def $reference_return_result_tasks(VARIABLE n_name* z_name, (RETURN_REF_VALUE z) :: ptask_tail*) = false
 def $reference_return_result_tasks(poperand, ptask*) = true -- otherwise
-def $reference_return_result_valid(S) = $reference_return_result_tasks(S.RESULT, S.TODO)
+def $reference_return_result_valid(S) = ($reference_return_result_tasks(S.RESULT, S.TODO) /\ $reference_notice_presence(S))
