@@ -325,6 +325,8 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
   | REF_STRING_FETCH prefstringcv | REF_STRING_THROW prefstringcv
+  | REF_CV_STRING_FETCH prefstringcv | REF_CV_STRING_THROW prefstringcv
+  | REF_CV_STRING_TEMP prefstringcv | REF_CV_STRING_COPY prefstringcv pvalue
   | PROPERTY_STRING_RESULT ppropertystring | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
   | PROPERTY_DYNAMIC_RESULT pdynamicproperty | PROPERTY_DYNAMIC_INSERT pdynamicproperty
   | PARAMETER_STRING_RESULT pparameterstring

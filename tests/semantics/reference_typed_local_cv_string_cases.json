@@ -1,0 +1,37 @@
+[
+  {
+    "id": "local-cv-string-plain-unused",
+    "source": "<?php\nclass O {\n    public function __toString(): string { echo \"T;\"; return \"s\"; }\n    public function __destruct() { echo \"D;\"; }\n}\nfunction &f(): string {\n    $x = new O;\n    return $x;\n}\nf(); echo \"A;\";\n",
+    "stdout": "T;D;A;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "local-cv-string-plain-used",
+    "source": "<?php\nclass O {\n    public function __toString(): string { echo \"T;\"; return \"s\"; }\n    public function __destruct() { echo \"D;\"; }\n}\nfunction &f(): string {\n    $x = new O;\n    return $x;\n}\n$r =& f(); echo \"R:\",$r,\";\"; $r=\"changed\"; echo \"A:\",$r,\";\";\n",
+    "stdout": "T;D;R:s;A:changed;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "local-cv-string-protected-unused",
+    "source": "<?php\nclass O {\n    public function __toString(): string { echo \"T;\"; return \"s\"; }\n    public function __destruct() { echo \"D;\"; }\n}\nfunction &f(): string {\n    $x = new O;\n    try { return $x; } finally { echo \"F;\"; }\n}\nf(); echo \"A;\";\n",
+    "stdout": "T;D;F;A;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "local-cv-string-protected-used",
+    "source": "<?php\nclass O {\n    public function __toString(): string { echo \"T;\"; return \"s\"; }\n    public function __destruct() { echo \"D;\"; }\n}\nfunction &f(): string {\n    $x = new O;\n    try { return $x; } finally { echo \"F;\"; }\n}\n$r =& f(); echo \"R:\",$r,\";\"; $r=\"changed\"; echo \"A:\",$r,\";\";\n",
+    "stdout": "T;D;F;R:s;A:changed;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "local-cv-string-protected-used-callback-throw",
+    "source": "<?php\nclass O {\n    public function __toString(): string { echo \"T;\"; throw new Exception(\"callback\"); }\n    public function __destruct() { echo \"D;\"; }\n}\nfunction &f(): string {\n    $x = new O;\n    try { return $x; } finally { echo \"F;\"; }\n}\ntry { $r =& f(); echo \"BAD;\"; }\ncatch (Throwable $e) {\n    echo \"C:\",$e->getMessage(),\";\";\n    $p = $e->getPrevious();\n    echo $p === null ? \"P:none;\" : \"P:\".$p->getMessage().\";\";\n}\necho \"A;\";\n",
+    "stdout": "T;F;D;C:f(): Return value must be of type string, O returned;P:callback;A;",
+    "stderr": "",
+    "exit": 0
+  }
+]

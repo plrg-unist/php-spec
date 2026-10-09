@@ -1,0 +1,203 @@
+;; A plain CV is borrowed during initial verification. Protected returns instead
+;; MAKE_REF into one owning VAR before that verification. The cast receiver has
+;; its separate STRINGIFY_RESULT owner; neither certificate owns it or the CV.
+dec $typed_cv_string_capture(pstate, int) : prefstringcv?
+dec $typed_cv_string_cell_valid(pstate, prefstringcv) : bool
+dec $typed_cv_string_task(ptask) : bool
+dec $typed_cv_string_clear(ptask*) : bool
+dec $typed_cv_string_tail_valid(pstate, prefstringcv, ptask*) : bool
+dec $typed_cv_string_original(pstate, prefstringcv, ptask*) : ptask*
+dec $typed_cv_string_shape(pstate, prefstringcv) : bool
+dec $typed_cv_string_valid(pstate, prefstringcv) : bool
+dec $typed_cv_string_begin(pstate, prefstringcv, ptask*) : pstate
+dec $typed_cv_string_owner(ptask*, prefstringcv) : bool
+dec $typed_cv_string_copy_at(ptask*, nat) : (prefstringcv, pvalue)?
+dec $typed_cv_string_copy_suffix(ptask*, prefstringcv) : ptask*
+dec $typed_cv_string_copy_valid(pstate, prefstringcv, pvalue) : bool
+dec $typed_cv_string_released_scope(pstate, nat) : bool
+dec $typed_cv_string_released_frames(pstate, pframe*, nat) : bool
+dec $typed_cv_string_released_vm(pstate, pfibervm, nat) : bool
+dec $typed_cv_string_released_object(pstate, pobject, nat) : bool
+dec $typed_cv_string_released_objects(pstate, pobject*, nat) : bool
+dec $typed_cv_string_released_callers(pstate, pfibercaller*, nat) : bool
+dec $typed_cv_string_released_closers(pstate, pfiberclose*, nat) : bool
+dec $typed_cv_string_copy(pstate, prefstringcv, pvalue) : pstate
+dec $typed_cv_string_finish(pstate, prefstringcv, pvalue, ptask*) : pstate
+dec $typed_cv_string_drop_temp(ptask*, prefstringcv) : ptask*
+
+def $typed_cv_string_cell_valid(S, prefstringcv) = true
+  -- if S.ORIGIN = (prefstringcv.SOURCE)
+  -- if $typed_ref_string_source(S, prefstringcv.SOURCE, prefstringcv.LINE)
+  -- if ~$ref_replay_from_finalizer(S, prefstringcv.SOURCE)
+  -- if $origin_node(S.SOURCES, prefstringcv.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = (prefstringcv.CELL)
+  -- if $(prefstringcv.CELL < |S.STORE|) /\ $(prefstringcv.OBJECT < |S.OBJECTS|)
+  -- if (HCELL prefstringcv.CELL) <- S.ALLOCATIONS
+  -- if S.STORE[prefstringcv.CELL] = DEFINED pvalue
+  -- if ~$typed_reference_cell_source(S, prefstringcv.CELL)
+  -- if ($finally_return_pending(S) /\ prefstringcv.CELL <- S.REFCELLS) \/ (~$finally_return_pending(S) /\ ~(prefstringcv.CELL <- S.REFCELLS))
+def $typed_cv_string_cell_valid(S, prefstringcv) = false -- otherwise
+
+def $typed_cv_string_capture(S, z) = ({SOURCE porigin_site, LINE z, CELL n_cell, OBJECT n_object})
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.BASE = BASE_VALUE (VARIABLE n_name* z_name)
+  -- if $typed_ref_string_source(S, porigin_site, z)
+  -- if ~$ref_replay_from_finalizer(S, porigin_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
+  -- if ~(n_cell <- S.REFCELLS)
+  -- if $heap_owners($heap_graph(S), HCELL n_cell) = 1
+  -- if ~$typed_reference_cell_source(S, n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if (HOBJECT n_object) <- S.ALLOCATIONS
+  -- if $stringable_instance(S, n_object)
+  -- if $typed_ref_string_type(S, n_object)
+def $typed_cv_string_capture(S, z) = eps -- otherwise
+def $typed_cv_string_candidate(S, z) = ($typed_cv_string_capture(S, z) =/= eps)
+
+def $typed_cv_string_task(REF_CV_STRING_FETCH prefstringcv) = true
+def $typed_cv_string_task(REF_CV_STRING_THROW prefstringcv) = true
+def $typed_cv_string_task(REF_CV_STRING_TEMP prefstringcv) = true
+def $typed_cv_string_task(REF_CV_STRING_COPY prefstringcv pvalue) = true
+def $typed_cv_string_task(AT porigin ptask) = $typed_cv_string_task(ptask)
+def $typed_cv_string_task(ptask) = false -- otherwise
+def $typed_cv_string_clear(eps) = true
+def $typed_cv_string_clear(ptask :: ptask_tail*) = (~$typed_cv_string_task(ptask) /\ $typed_cv_string_clear(ptask_tail*))
+
+def $typed_cv_string_tail_valid(S, prefstringcv, (REF_CV_STRING_TEMP prefstringcv) :: ptask_tail*) = $typed_cv_string_clear(ptask_tail*)
+  -- if $finally_return_pending(S)
+def $typed_cv_string_tail_valid(S, prefstringcv, ptask_tail*) = $typed_cv_string_clear(ptask_tail*)
+  -- if ~$finally_return_pending(S)
+def $typed_cv_string_tail_valid(S, prefstringcv, ptask_tail*) = false -- otherwise
+def $typed_cv_string_original(S, prefstringcv, (REF_CV_STRING_TEMP prefstringcv) :: ptask_tail*) = ptask_tail*
+  -- if $finally_return_pending(S)
+def $typed_cv_string_original(S, prefstringcv, ptask_tail*) = ptask_tail*
+  -- if ~$finally_return_pending(S)
+
+def $typed_cv_string_shape(S, prefstringcv) = $typed_cv_string_tail_valid(S, prefstringcv, ptask_tail*)
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET prefstringcv.OBJECT porigin_method) eps 0 eps (prefstringcv.SOURCE) prefstringcv.LINE) :: (STRINGIFY_RESULT prefstringcv.OBJECT prefstringcv.SOURCE prefstringcv.LINE) :: (REF_CV_STRING_FETCH prefstringcv) :: (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*
+def $typed_cv_string_shape(S, prefstringcv) = $typed_cv_string_tail_valid(S, prefstringcv, ptask_tail*)
+  -- if S.TODO = (STRINGIFY_RESULT prefstringcv.OBJECT prefstringcv.SOURCE prefstringcv.LINE) :: (REF_CV_STRING_FETCH prefstringcv) :: (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*
+def $typed_cv_string_shape(S, prefstringcv) = $typed_cv_string_tail_valid(S, prefstringcv, ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n_error) :: (STRINGIFY_RESULT prefstringcv.OBJECT prefstringcv.SOURCE prefstringcv.LINE) :: (REF_CV_STRING_FETCH prefstringcv) :: (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*
+def $typed_cv_string_shape(S, prefstringcv) = false -- otherwise
+def $typed_cv_string_valid(S, prefstringcv) = ($typed_cv_string_cell_valid(S, prefstringcv) /\ (HOBJECT prefstringcv.OBJECT) <- S.ALLOCATIONS /\ $stringable_instance(S, prefstringcv.OBJECT) /\ $typed_ref_string_type(S, prefstringcv.OBJECT) /\ $typed_cv_string_shape(S, prefstringcv))
+
+def $typed_cv_string_begin(S, prefstringcv, ptask_tail*) = $user_string_begin($reference_cell(S, prefstringcv.CELL), prefstringcv.OBJECT, prefstringcv.SOURCE, prefstringcv.LINE, REF_CV_STRING_FETCH prefstringcv, (REF_CV_STRING_THROW prefstringcv) :: (REF_CV_STRING_TEMP prefstringcv) :: ptask_tail*)
+  -- if $finally_return_pending(S)
+def $typed_cv_string_begin(S, prefstringcv, ptask_tail*) = $user_string_begin(S, prefstringcv.OBJECT, prefstringcv.SOURCE, prefstringcv.LINE, REF_CV_STRING_FETCH prefstringcv, (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*)
+  -- if ~$finally_return_pending(S)
+rule PhpStep/typed-local-cv-string-call: S ~> $typed_cv_string_begin(S, prefstringcv, ptask_tail*)
+  -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
+  -- if $typed_cv_string_capture(S, z) = (prefstringcv)
+
+def $stringify_source(S, porigin_site, z, REF_CV_STRING_FETCH prefstringcv) = ($typed_cv_string_valid(S, prefstringcv) /\ porigin_site = prefstringcv.SOURCE /\ z = prefstringcv.LINE)
+def $stringify_source_consumer(REF_CV_STRING_FETCH prefstringcv) = true
+def $stringify_consumer_tail_valid(S, porigin_site, z, REF_CV_STRING_FETCH prefstringcv, (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*) = ($typed_cv_string_valid(S, prefstringcv) /\ $typed_cv_string_tail_valid(S, prefstringcv, ptask_tail*))
+def $stringify_consumer_receiver_valid(S, n_object, REF_CV_STRING_FETCH prefstringcv) = (n_object = prefstringcv.OBJECT)
+def $task_nodes(REF_CV_STRING_FETCH prefstringcv) = eps
+def $task_nodes(REF_CV_STRING_THROW prefstringcv) = eps
+def $task_nodes(REF_CV_STRING_TEMP prefstringcv) = [HCELL prefstringcv.CELL]
+def $task_nodes(REF_CV_STRING_COPY prefstringcv pvalue) = $value_nodes(pvalue)
+def $call_task_valid(S, REF_CV_STRING_FETCH prefstringcv) = $typed_cv_string_valid(S, prefstringcv)
+def $call_task_valid(S, REF_CV_STRING_THROW prefstringcv) = $typed_cv_string_valid(S, prefstringcv)
+def $call_task_valid(S, REF_CV_STRING_TEMP prefstringcv) = ($typed_cv_string_cell_valid(S, prefstringcv) /\ $finally_return_pending(S) /\ $typed_cv_string_owner(S.TODO, prefstringcv))
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n_object porigin_site z) :: (REF_CV_STRING_FETCH prefstringcv) :: (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*
+
+def $typed_cv_string_owner((REF_CV_STRING_FETCH prefstringcv) :: (REF_CV_STRING_THROW prefstringcv) :: (REF_CV_STRING_TEMP prefstringcv) :: ptask_tail*, prefstringcv) = $typed_cv_string_clear(ptask_tail*)
+def $typed_cv_string_owner((REF_CV_STRING_COPY prefstringcv pvalue) :: (REF_CV_STRING_TEMP prefstringcv) :: ptask_tail*, prefstringcv) = ($string_bytes(pvalue) =/= eps /\ $typed_cv_string_clear(ptask_tail*))
+def $typed_cv_string_owner(ptask :: ptask_tail*, prefstringcv) = $typed_cv_string_owner(ptask_tail*, prefstringcv)
+  -- if ~$typed_cv_string_task(ptask)
+def $typed_cv_string_owner(ptask*, prefstringcv) = false -- otherwise
+
+;; OBJ_RELEASE precedes ZVAL_COPY_VALUE. STORE retains the raw old zval while
+;; this COPY stage masks only its released object edge, including in a saved f.
+def $stringify_return_state(S, REF_CV_STRING_FETCH prefstringcv, pvalue_text, (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*) = S[.TODO = (REF_CV_STRING_COPY prefstringcv pvalue_text) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $typed_cv_string_valid(S, prefstringcv)
+  -- if $string_bytes(pvalue_text) =/= eps
+  -- if S.STORE[prefstringcv.CELL] = DEFINED (POBJECT prefstringcv.OBJECT)
+def $stringify_return_state(S, REF_CV_STRING_FETCH prefstringcv, pvalue_text, (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*) = S[.COMPLETION = UNSUPPORTED "local return CV changed during string conversion"]
+  -- if $typed_cv_string_valid(S, prefstringcv)
+  -- if S.STORE[prefstringcv.CELL] =/= DEFINED (POBJECT prefstringcv.OBJECT)
+
+def $typed_cv_string_copy_at((REF_CV_STRING_COPY prefstringcv pvalue) :: ptask_tail*, n_cell) = ((prefstringcv, pvalue))
+  -- if prefstringcv.CELL = n_cell
+def $typed_cv_string_copy_at(ptask :: ptask_tail*, n_cell) = $typed_cv_string_copy_at(ptask_tail*, n_cell)
+  -- otherwise
+def $typed_cv_string_copy_at(eps, n_cell) = eps
+def $typed_cv_string_copy_valid(S, prefstringcv, pvalue) = true
+  -- if $typed_cv_string_cell_valid(S, prefstringcv)
+  -- if S.STORE[prefstringcv.CELL] = DEFINED (POBJECT prefstringcv.OBJECT)
+  -- if $string_bytes(pvalue) =/= eps
+  -- if $typed_cv_string_copy_at(S.TODO, prefstringcv.CELL) = ((prefstringcv, pvalue))
+  -- if $typed_cv_string_copy_suffix(S.TODO, prefstringcv) = ptask_tail*
+  -- if $typed_cv_string_tail_valid(S, prefstringcv, ptask_tail*)
+def $typed_cv_string_copy_valid(S, prefstringcv, pvalue) = false -- otherwise
+def $typed_cv_string_copy_suffix((REF_CV_STRING_COPY prefstringcv pvalue) :: ptask_tail*, prefstringcv) = ptask_tail*
+def $typed_cv_string_copy_suffix(ptask :: ptask_tail*, prefstringcv) = $typed_cv_string_copy_suffix(ptask_tail*, prefstringcv)
+  -- if ~$typed_cv_string_task(ptask)
+def $typed_cv_string_copy_suffix(ptask*, prefstringcv) = eps -- otherwise
+def $call_task_valid(S, REF_CV_STRING_COPY prefstringcv pvalue) = $typed_cv_string_copy_valid(S, prefstringcv, pvalue)
+
+def $typed_cv_string_released_scope(S, n_cell) = $typed_cv_string_copy_valid(S, prefstringcv, pvalue)
+  -- if $typed_cv_string_copy_at(S.TODO, n_cell) = ((prefstringcv, pvalue))
+def $typed_cv_string_released_scope(S, n_cell) = false -- otherwise
+def $typed_cv_string_released_frames(S, pframe :: pframe_tail*, n_cell) = true
+  -- if $typed_cv_string_released_scope($constant_frame_scope(S, pframe, pframe_tail*), n_cell)
+def $typed_cv_string_released_frames(S, pframe :: pframe_tail*, n_cell) = $typed_cv_string_released_frames(S, pframe_tail*, n_cell)
+  -- if ~$typed_cv_string_released_scope($constant_frame_scope(S, pframe, pframe_tail*), n_cell)
+def $typed_cv_string_released_frames(S, eps, n_cell) = false
+;; VM parking moves the same continuation; it cannot restore the released edge.
+def $typed_cv_string_released_vm(S, pfibervm, n_cell) = ($typed_cv_string_released_scope(S_view, n_cell) \/ $typed_cv_string_released_frames(S_view, S_view.FRAMES, n_cell))
+  -- if S_view = $fiber_vm_restore(S, pfibervm)
+def $typed_cv_string_released_object(S, FIBER pfiber, n_cell) = $typed_cv_string_released_vm(S, pfibervm, n_cell)
+  -- if pfiber.VM = (pfibervm)
+def $typed_cv_string_released_object(S, GENERATOR pgenerator, n_cell) = $typed_cv_string_released_scope($constant_frame_scope(S, pframe, eps), n_cell)
+  -- if pgenerator.FRAME = (pframe)
+def $typed_cv_string_released_object(S, pobject, n_cell) = false -- otherwise
+def $typed_cv_string_released_objects(S, pobject :: pobject_tail*, n_cell) = ($typed_cv_string_released_object(S, pobject, n_cell) \/ $typed_cv_string_released_objects(S, pobject_tail*, n_cell))
+def $typed_cv_string_released_objects(S, eps, n_cell) = false
+def $typed_cv_string_released_callers(S, pfibercaller :: pfibercaller_tail*, n_cell) = ($typed_cv_string_released_vm(S, pfibercaller.VM, n_cell) \/ $typed_cv_string_released_callers(S, pfibercaller_tail*, n_cell))
+def $typed_cv_string_released_callers(S, eps, n_cell) = false
+def $typed_cv_string_released_closers(S, pfiberclose :: pfiberclose_tail*, n_cell) = ($typed_cv_string_released_vm(S, pfiberclose.VM, n_cell) \/ $typed_cv_string_released_closers(S, pfiberclose_tail*, n_cell))
+def $typed_cv_string_released_closers(S, eps, n_cell) = false
+def $typed_cv_string_released_cell(S, n_cell) = ($typed_cv_string_released_scope(S, n_cell) \/ $typed_cv_string_released_frames(S, S.FRAMES, n_cell) \/ $typed_cv_string_released_objects(S, S.OBJECTS, n_cell) \/ $typed_cv_string_released_callers(S, S.FIBERCALLERS, n_cell) \/ $typed_cv_string_released_closers(S, S.FIBERCLOSERS, n_cell))
+
+def $typed_cv_string_copy(S, prefstringcv, pvalue) = S[.STORE = $set_cell(S.STORE, prefstringcv.CELL, DEFINED pvalue)]
+def $typed_cv_string_finish(S, prefstringcv, pvalue, ptask_tail*) = $reference_return_unwind(S_stored, S.HELD, prefstringcv.LINE)
+  -- if S_written = $typed_cv_string_copy(S, prefstringcv, pvalue)[.TODO = $typed_cv_string_original(S, prefstringcv, ptask_tail*)][.LOCATION = ROOT prefstringcv.CELL]
+  -- if S_stored = $reference_return_store(S_written, pvalue, pvalue)
+rule PhpStep/typed-local-cv-string-copy: S ~> $typed_cv_string_finish(S, prefstringcv, pvalue, ptask_tail*)
+  -- if S.TODO = (REF_CV_STRING_COPY prefstringcv pvalue) :: ptask_tail*
+  -- if $typed_cv_string_copy_valid(S, prefstringcv, pvalue)
+
+def $typed_cv_string_drop_temp((REF_CV_STRING_TEMP prefstringcv) :: ptask_tail*, prefstringcv) = ptask_tail*
+def $typed_cv_string_drop_temp(ptask :: ptask_tail*, prefstringcv) = ptask :: $typed_cv_string_drop_temp(ptask_tail*, prefstringcv)
+  -- if ptask =/= REF_CV_STRING_TEMP prefstringcv
+def $typed_cv_string_drop_temp(eps, prefstringcv) = eps
+;; A throwing destructor still returns to the C conversion's raw copy before
+;; its exception propagates. No alias or return outcome is minted on this route.
+def $return_discard(S, REF_CV_STRING_COPY prefstringcv pvalue) = $typed_cv_string_copy(S, prefstringcv, pvalue)[.TODO = $typed_cv_string_drop_temp(S.TODO, prefstringcv)]
+
+def $typed_return_throw_pending(S) = true
+  -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n_object porigin_site z) :: (REF_CV_STRING_FETCH prefstringcv) :: (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*
+  -- if n_object = prefstringcv.OBJECT /\ porigin_site = prefstringcv.SOURCE /\ z = prefstringcv.LINE
+  -- if $typed_cv_string_valid(S, prefstringcv)
+  -- if $throwable_live(S, n_old)
+rule PhpStep/typed-local-cv-string-throw: S ~> S_linked[.TODO = (THROW_SEARCH n_new) :: $typed_cv_string_original(S, prefstringcv, ptask_tail*)][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n_object porigin_site z) :: (REF_CV_STRING_FETCH prefstringcv) :: (REF_CV_STRING_THROW prefstringcv) :: ptask_tail*
+  -- if n_object = prefstringcv.OBJECT /\ porigin_site = prefstringcv.SOURCE /\ z = prefstringcv.LINE
+  -- if $typed_cv_string_valid(S, prefstringcv)
+  -- if $throwable_live(S, n_old)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S.STORE[prefstringcv.CELL] = DEFINED pvalue_live
+  -- if S_error = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue_live) ++ $ptascii(" returned"), z)
+  -- if S_new = $throwable_materialize(S_error)
+  -- if S_new.COMPLETION = THROWING n_new
+  -- if S_linked = $throwable_previous(S_new, n_new, n_old)
+  -- if S_linked.COMPLETION = THROWING n_new

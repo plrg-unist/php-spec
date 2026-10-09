@@ -4,6 +4,7 @@
 dec $typed_ref_string_source(pstate, porigin, int) : bool
 dec $typed_ref_string_type(pstate, nat) : bool
 dec $typed_ref_string_capture(pstate, int) : prefstringcv?
+dec $typed_cv_string_candidate(pstate, int) : bool
 dec $typed_ref_string_task(ptask) : bool
 dec $typed_ref_string_clear(ptask*) : bool
 dec $typed_ref_string_shape(pstate, prefstringcv) : bool
@@ -40,7 +41,7 @@ def $typed_ref_string_capture(S, z) = ({ SOURCE porigin_site, LINE z, CELL n_cel
   -- if $stringable_instance(S, n_object)
   -- if $typed_ref_string_type(S, n_object)
 def $typed_ref_string_capture(S, z) = eps -- otherwise
-def $typed_ref_string_candidate(S, z) = ($typed_ref_string_capture(S, z) =/= eps)
+def $typed_ref_string_candidate(S, z) = ($typed_ref_string_capture(S, z) =/= eps \/ $typed_cv_string_candidate(S, z))
 
 def $typed_ref_string_task(REF_STRING_FETCH prefstringcv) = true
 def $typed_ref_string_task(REF_STRING_THROW prefstringcv) = true
