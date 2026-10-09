@@ -150,7 +150,9 @@ callback redispatches through the restored handler before warning cleanup resume
 the original empty cached fatal report. Exact source1 and strict compiler358 retain
 `558e53a9c`; 220 reached SL premises retain `80be20cde`. Genuine warning/handler/report
 owners and malformed source/site/line/origin rejection pass; initial binding stops
-and the incorrect fixed-argument phase retain zero credit. Absent or throwing restored
+and the incorrect fixed-argument phase retain zero credit. Actual361 over `59c163ef4`
+passes strict compilation at `7983c825f` (6.128 seconds), preserving current ARG/CALLS
+fields; private source/state cuts retain their inputs. Absent or throwing restored
 handlers, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
 message warnings, parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict

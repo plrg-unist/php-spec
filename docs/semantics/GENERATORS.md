@@ -136,7 +136,9 @@ The handler carrier owns the warning object independently of the consumed inner
 exception; original REPORT and real Generator/cache owners survive throughout.
 Exact source1 and compiler358 retain `558e53a9c`; strict220 retains `80be20cde`, with
 authentic continuations, malformed producer rejection and budget replay. Original
-binding stops and the incorrect fixed-argument phase remain zero. Absent or throwing
+binding stops and the incorrect fixed-argument phase remain zero. Actual361 over
+`59c163ef4` passes strict compilation at `7983c825f`, preserving current ARG/CALLS
+fields; private source/state cuts retain their inputs. Absent or throwing
 restored handlers, deeper custom rendering, abrupt child free_obj/destructor/weak-Generator
 lifetimes, message warnings, parked or escaped storage and generic terminal cleanup
 remain required.
