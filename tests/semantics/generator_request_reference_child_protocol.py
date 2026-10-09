@@ -79,9 +79,10 @@ $generator_request_release_slot(S_abrupt,ppropertyslot_leaf,n_leaf)
                      f'$call_descriptors_valid({state}_throw)',
                      f'$generator_request_fatal_selected({state}_throw) = eps']
         reject(controls, 'reference_cell_' + label, state, 'S_report')
+    controls += ['n_cell_beyond = |S_report.STORE|']
     for label, state in [
         ('live', 'S_report[.ALLOCATIONS = S_report.ALLOCATIONS ++ [HCELL n_cell]]'),
-        ('bounds', 'S_report[.TODO = $child_pin_tasks(S_report.TODO,pinstancestorage[.NEXT = 1],[INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = 1][.SLOTS = [ppropertyslot_leaf[.STATE = PROP_VALUE (ALIAS |S_report.STORE|)]]]])]'),
+        ('bounds', 'S_report[.TODO = $child_pin_tasks(S_report.TODO,pinstancestorage[.NEXT = 1],[INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = 1][.SLOTS = [ppropertyslot_leaf[.STATE = PROP_VALUE (ALIAS n_cell_beyond)]]]])]'),
         ('slot', 'S_report[.TODO = $child_pin_tasks(S_report.TODO,pinstancestorage[.NEXT = 1],[INSTANCE_STORAGE_STEP pinstancestorage[.NEXT = 1][.SLOTS = [ppropertyslot_leaf[.STATE = PROP_UNSET]]]])]'),
     ]:
         bad = 'S_cell_' + label
