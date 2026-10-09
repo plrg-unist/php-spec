@@ -573,6 +573,17 @@ and whole CLI timeouts are unchanged.
 Actual361 over `be0cfaa7f` passes strict compilation/init at `9391ce28e`, preserving
 reviewed call/ownership/property interfaces; source1/state321 retain their inputs.
 
+Closed white ordinary-object overlap317 now runs on a genuine ordinary Fiber
+through its distinct idle cached worker when every residual tag is removed.
+Exact nested images, saved caller/API and real guards preserve physical cursor,
+ordinal and CALLED authority. Source1 agrees under CLI60 at `e3d359d01`; five
+source-reached cuts155/134/172/54/130 cover all408 original obligations
+(645 executed premises include repeated setup), with count0, E retirement and
+D self-owner/weak-live. Pure lookup/source-site factors preserve all validators.
+Earlier compiler stops, source failures and timeouts retain zero credit; mixed surviving
+residuals, nonordinary/later-pass overlap and wider GC remain required.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335
