@@ -58,7 +58,7 @@ def $ppsignature_attribute(P, pcpath, pscontinuation, phpType14) = $ppsignature_
   -- if pscontinuation.PARAMETER.DEFAULT = (expression)
 def $ppsignature_attribute_finish(P, pscontinuation, phpType14) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppsignature_attribute_finish(P, pscontinuation, phpType14) = $ppsignature_issue(P, "error", $psattribute_message(ptbytes_resolved), pscontinuation.PARAMETER.LINE)
+def $ppsignature_attribute_finish(P, pscontinuation, phpType14) = $ppsignature_issue(P, "error", $psattribute_message(ptbytes_resolved), P.LOCATION.LINE)
   -- if P.COMPLETION = PPCNORMAL
   -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) = (ptbytes_resolved)
 
