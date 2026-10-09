@@ -11,8 +11,13 @@ in the original top file list, absence of a block body, then integer0/1 value.
 Preceding Nop and Declare statements are allowed. Nested declarations fail the
 file-list membership check. Directive names are case-insensitive. Errors use the
 first declaration item's line, including failures in a later item.92 does not
-clone constant folding or type normalization. Other directive semantics remain
-explicit Unsupported after their common literal check.
+clone constant folding or type normalization. Unknown literal directive names now
+append ordered E_COMPILE_WARNING (128) diagnostics, then compile optional PCFIELD1
+body statements with the enclosing EARLY unchanged, matching nested compilation
+in `zend_compile_declare`. Ticks/encoding remain explicit Unsupported after their
+common literal check; wider values/publication contexts remain required.
+The [unknown-declare review](../../coverage/semantics/compiler-declare-review.json)
+records the separate native-first extension without renewing the strict cuts below.
 
 The minimal compiler910/e7227852 differs from accepted defaults909/e25eb2b9 in92,
 its registry entry, pcode.STRICT and the unit/function projections. Portable tests

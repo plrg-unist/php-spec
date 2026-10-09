@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Unknown literal `declare` names now compile ordered E_COMPILE_WARNING (128)
+diagnostics with original spelling and the first item's line. Runtime no-op/body
+work authenticates the source and enters PCFIELD1 children; compilation retains
+enclosing EARLY. Two fresh eval originals agree at 713be74f4 /373:
+strict3 (5.422s), ordered warning/default delivery, body warning2 and original
+shared Throwable cleanup. Seven genuine PhpSteps pass 228 source-frontier/guard
+checks plus six pure known-directive/nonliteral exclusions in 105/129 groups.
+Type-only elab2 has zero runtime credit; the original compile Unsupported remains
+zero agreement. Ticks, encoding, wider literal/body/publication and dynamic-source
+interactions remain required; previous cuts and safety boundaries stay frozen.
+[Declare ledger](coverage/semantics/compiler-declare-review.json).
+
 Ordinary unit0 parentless anonymous classes now compile authentic NUL/file/line/hex
 names in real compiler order and publish their descriptors before the first NEW.
 Repeated visits allocate distinct objects with independent defaults; same-line

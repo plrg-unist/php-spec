@@ -1,0 +1,42 @@
+{
+  "scope": "Bounded unknown literal declare compilation: ordered E_COMPILE_WARNING (128) bypasses registered handlers, then semicolon or ordinary body executes. Runtime undefined-CV E_WARNING (2) in the body preserves the original shared Throwable. Known ticks/encoding, wider literal and nested publication interactions remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "unknown-declare-semicolon-order",
+      "source": "<?php\n$effects = 0;\n$calls = 0;\nerror_reporting(128);\nset_error_handler(function ($level, $message) use (&$calls) {\n    ++$calls;\n    echo 'BAD:handler:', $level, '|';\n    return true;\n});\n$returned = eval('declare(first = 1,\n    SECOND = \"unused\");\n++$effects;\nreturn 23;');\nrestore_error_handler();\necho 'return:', $returned, '|effects:', $effects, '|calls:', $calls;\n",
+      "source_sha256": "34661e5852093319ea43b96eb44cc6adc82815c513fe2e9762b8e221b53fa67c",
+      "stdout_base64": "cmV0dXJuOjIzfGVmZmVjdHM6MXxjYWxsczow",
+      "stderr_template_base64": "V2FybmluZzogVW5zdXBwb3J0ZWQgZGVjbGFyZSAnZmlyc3QnIGluIHtGSUxFfSgxMCkgOiBldmFsKCknZCBjb2RlIG9uIGxpbmUgMQpXYXJuaW5nOiBVbnN1cHBvcnRlZCBkZWNsYXJlICdTRUNPTkQnIGluIHtGSUxFfSgxMCkgOiBldmFsKCknZCBjb2RlIG9uIGxpbmUgMQo=",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/compiler-declare-native-20/run-v1/unknown-declare-semicolon-order/command.json",
+      "native_raw_sha256": "88e78891f65e7659bc64807ffa28337bfba19993aa12369b054f35e11df84019"
+    },
+    {
+      "id": "unknown-declare-block-runtime-throw",
+      "source": "<?php\n$effects = 0;\n$calls = 0;\n$failure = new Exception('shared');\nerror_reporting(128);\nset_error_handler(function ($level, $message) use (&$calls, $failure) {\n    ++$calls;\n    echo 'handler:', $level, '|';\n    echo $message === 'Undefined variable $missing' ? 'message:yes|' : 'message:BAD|';\n    throw $failure;\n});\n$returned = 'unset';\ntry {\n    $returned = eval('declare(MiXeD = 1) {\n    ++$effects;\n    echo $missing;\n}\n++ $effects;\nreturn 29;');\n} catch (Exception $caught) {\n    echo $caught === $failure ? 'same|' : 'different|';\n}\nrestore_error_handler();\necho 'effects:', $effects, '|calls:', $calls, '|returned:', $returned;\n",
+      "source_sha256": "1056501a3f2a58c688de97cd970a74b250bb7ef4e2492dec3aa696bd689ddb48",
+      "stdout_base64": "aGFuZGxlcjoyfG1lc3NhZ2U6eWVzfHNhbWV8ZWZmZWN0czoxfGNhbGxzOjF8cmV0dXJuZWQ6dW5zZXQ=",
+      "stderr_template_base64": "V2FybmluZzogVW5zdXBwb3J0ZWQgZGVjbGFyZSAnTWlYZUQnIGluIHtGSUxFfSgxNCkgOiBldmFsKCknZCBjb2RlIG9uIGxpbmUgMQo=",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/compiler-declare-native-20/run-v1/unknown-declare-block-runtime-throw/command.json",
+      "native_raw_sha256": "92280b5c9b9a098eb653c2fcc39e04a33ec7c3398758aa1c0f4184a15e178fd5"
+    }
+  ]
+}

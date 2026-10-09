@@ -591,6 +591,10 @@ Broader property consumers,186 producers and full core remain open.
 [Source strict_types declarations](docs/semantics/SOURCE-STRICT-DECLARATIONS.md) now
 execute with source-checked unit/function flags; [independent review](coverage/semantics/strict-declaration-review.json)
 binds917 source, protocol, cache/resume and complete weak-state bridges.
+Unknown literal `declare` names now emit ordered E_COMPILE_WARNING (128), bypass
+registered handlers and continue into the real body. Two fresh originals and
+focused notice/body/shared-throw checks pass; ticks, encoding and wider directive
+values remain required. [Declare review](coverage/semantics/compiler-declare-review.json).
 [Typed positional parameters and value returns](docs/semantics/SOURCE-TYPED-FUNCTIONS.md)
 now execute builtin scalar/container checks, sequential receives and uncoerced
 default caching while preserving aliases and cleanup. [Independent acceptance](coverage/semantics/typed-function-review.json)

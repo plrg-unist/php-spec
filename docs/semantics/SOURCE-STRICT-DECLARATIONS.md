@@ -1,11 +1,21 @@
 # Source strict_types declarations
 
 This prerequisite admits checked `declare(strict_types=0|1);` declarations without a body and records lexical strictness in unit and function CODE. It preserves existing untyped calls, defaults, references and ownership. Builtin scalar/container typed admission is now covered by the subsequent
-[typed contract](SOURCE-TYPED-FUNCTIONS.md); other declare directives and registered builtin bodies remain explicit later core dependencies.
+[typed contract](SOURCE-TYPED-FUNCTIONS.md); ticks/encoding and registered builtin bodies remain explicit later core dependencies.
 
 Compiler92 uses the existing parser-literal and lexical environment machinery. Source placement is checked against the original top-level statement list. Earlier Nop or Declare statements are allowed; nested strict declarations and block form fail. Declaration names are case-insensitive, values must be integer zero or one, and setting one is sticky across subsequent zero declarations. Diagnostics use the first declaration item's compiler line, including later-item failures. The compiler retains the original declaration in executable work.
 
-Runtime93 consumes only strict-only declaration lists with an absent body. This step changes the work queue and no value, owner, environment or cache. Code strictness is established by compilation; the declaration does not mutate caller frames at runtime.
+Runtime93's strict rule consumes strict-only declaration lists with an absent body. This step changes the work queue and no value, owner, environment or cache. Code strictness is established by compilation; the declaration does not mutate caller frames at runtime.
+
+The separate unknown-directive extension preserves this strict rule. Literal
+unknown names emit E_COMPILE_WARNING (128), in item order with original spelling
+and the first item's line, then compile their optional body as nested statements.
+Runtime authenticates the actual Declare occurrence and schedules its PCFIELD1
+children; no new state, receipt or owning root is introduced. Two exact eval
+originals and 228 source-frontier/guard checks plus six pure exclusions pass at
+713be74f4 /373. Ticks/encoding, wider literal values and body/publication contexts
+remain required; the [declare ledger](../../coverage/semantics/compiler-declare-review.json)
+keeps the original Unsupported and earlier strict evidence separate.
 
 The public source guard requires the unit CODE flag to equal the existing compiler projection. A source declaration forces that projection even in a program without functions or calls. The no-declaration fast path requires a false unit flag. Existing function descriptor reconstruction checks each function's own CODE flag. No global same-file function-flag equality is imposed: future supported declare blocks can affect function compilation contexts separately.
 
