@@ -25,11 +25,11 @@ def $exact_function(S, n_name*) = true
 def $exact_function(S, n_name*) = false -- otherwise
 dec $exact_value_tasks(ptask*) : bool
 def $exact_value_tasks((RETURN_REF_VALUE z) :: ptask*) = true
-def $exact_value_tasks(ptask :: ptask*) = $exact_value_tasks(ptask*) -- otherwise
+def $exact_value_tasks(ptask_head :: ptask_tail*) = $exact_value_tasks(ptask_tail*) -- otherwise
 def $exact_value_tasks(eps) = false
 dec $exact_finally_tasks(ptask*) : bool
 def $exact_finally_tasks((FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask*) = true
-def $exact_finally_tasks(ptask :: ptask*) = $exact_finally_tasks(ptask*) -- otherwise
+def $exact_finally_tasks(ptask_head :: ptask_tail*) = $exact_finally_tasks(ptask_tail*) -- otherwise
 def $exact_finally_tasks(eps) = false
 dec $exact_stage(pstate, nat) : bool
 def $exact_stage(S, 1) = true
