@@ -1563,7 +1563,7 @@ tracks these bounded checks. Nested START acquisition retains each returned
 Aggregate until recursive acquisition finishes, then retires layers inside-out
 before rewind. Repeated ancestor identities remain distinct retval owners;
 throwing-layer cleanup preserves remaining retirement before data and input.
-Pending Generator startup executes a literal-output/scalar-yield prefix with an
+Pending Generator startup executes a literal-output/scalar-yield prefix with a
 frame with no owned roots, then closes without finally. Other pending startup routes remain
 required. The [nested ledger](coverage/semantics/fiber-start-nested-aggregate-review.json)
 records eleven normal agreements, two zero-credit Unsupported controls and twenty
