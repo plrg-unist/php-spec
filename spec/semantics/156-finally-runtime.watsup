@@ -5,6 +5,7 @@ dec $finally_source_inside(pstate, porigin, porigin) : bool
 dec $finally_marker_origin(ptask) : porigin?
 dec $finally_catch_origin(pstate, porigin, porigin?) : bool
 dec $finally_phase_of(ptask) : nat?
+dec $goto_prior_origin(porigin) : porigin?
 dec $ref_recheck_tail(pstate, porigin, porigin, poperand, int, ptask*) : ptask*
 dec $ref_replay_owners(pstate, porigin) : porigin*
 dec $ref_recheck_last(ptask*, ptask) : bool
@@ -726,7 +727,6 @@ def $finally_resume_at(FINALLY_GOTO porigin porigin_source pcpath_source pcpath_
 ;; Goto can land inside a protected try or catch without executing its header.
 ;; Reuse the live continuation when present; otherwise synthesize the lexical
 ;; finalizer marker and its enclosing source return for the entered region.
-dec $goto_prior_origin(porigin) : porigin?
 def $goto_prior_origin(PORIGIN n pcpath) = eps -- if $(|pcpath| < 2)
 def $goto_prior_origin(PORIGIN n pcpath) = (PORIGIN n pcpath[0:n_parent])
   -- if $(|pcpath| >= 2)

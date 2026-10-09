@@ -27,6 +27,14 @@ def $replay_guard((REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*
 def $replay_guard(ptask_head :: ptask_tail*) = $replay_guard(ptask_tail*)
   -- if $ref_replay_guard_owner(ptask_head) = eps
 def $replay_guard(eps) = eps
+dec $replay_error_head(ptask) : bool
+def $replay_error_head(FINALLY_RESUME porigin (n)) = true
+def $replay_error_head(ptask) = false -- otherwise
+dec $replay_error(ptask*) : nat?
+def $replay_error((FINALLY_RESUME porigin (n)) :: ptask_tail*) = (n)
+def $replay_error(ptask_head :: ptask_tail*) = $replay_error(ptask_tail*)
+  -- if ~$replay_error_head(ptask_head)
+def $replay_error(eps) = eps
 dec $replay_replace(ptask*, ptask, ptask*) : ptask*
 def $replay_replace(eps, ptask_old, ptask_new*) = eps
 def $replay_replace(ptask_old :: ptask_tail*, ptask_old, ptask_new*) = ptask_new* ++ ptask_tail*
@@ -265,9 +273,31 @@ def main():
         ('new-throw-overrides-pending-error', 'delayed-error-replay-throw-override', 'THROW_SEARCH n'),
     ):
         tasks = f'[{head}, REF_REPLAY_AFTER porigin_source_old z_old ({try_owner}), REF_REPLAY_ORIGIN porigin_source_old z_old ({try_owner}), REF_REPLAY_PHASE porigin_source_old z_old ({try_owner})]'
-        fixture(name, case, g + ['S.TODO = ' + tasks], ['S.TODO = ' + tasks,
+        lifetime = (['$throwable_previous_id(S, n) = (n_old)',
+                     '$throwable_live(S, n_old)',
+                     'S.OBJECTS[n_old] = THROWABLE pthrowable_old',
+                     'pthrowable_old.KIND = "TypeError"'] if name.startswith('new-throw') else [
+                     'S.GLOBALTABLE = (psymboltable)',
+                     '$lookup(psymboltable.ENV, $ptascii("replacement")) = (n_cell)',
+                     '$lookup(psymboltable.ENV, [118]) = (n_v)', 'n_cell =/= n_v'])
+        fixture(name, case, g + ['S.TODO = ' + tasks], ['S.TODO = ' + tasks] + lifetime + [
             'S_next = $drive_steps(S, 1)', 'S_next.TODO = [' + head + ']',
             '$call_descriptors_valid(S_next)', '$heap_valid($heap_graph(S_next))'])
+
+    fixture('return-override-error-lifetime', 'delayed-error-replay-return-override', g + [
+        'S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*', '$replay_error(S.TODO) = (n_old)'], [
+        'S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*', '$replay_error(S.TODO) = (n_old)',
+        '$throwable_live(S, n_old)', 'S.OBJECTS[n_old] = THROWABLE pthrowable_old',
+        'pthrowable_old.KIND = "TypeError"',
+        'S.GLOBALTABLE = (psymboltable)',
+        '$lookup(psymboltable.ENV, $ptascii("replacement")) = (n_cell)',
+        '$lookup(psymboltable.ENV, [118]) = (n_v)', 'n_cell =/= n_v',
+        'S.STORE[n_cell] = DEFINED (PSTRING $ptascii("override"))',
+        'S_next = $drive_steps(S, 1)',
+        'S_next.TODO = (RETURN_REF_UNWIND (REFERENCE n_cell) z false porigin_source) :: ptask_after*',
+        'S_done = $drive(S, 10001)', 'S_done.COMPLETION = NORMAL',
+        '~$throwable_live(S_done, n_old)',
+        'S_done.STORE[n_cell] = DEFINED (PSTRING $ptascii("changed"))'])
 
     (args.output / 'manifest.json').write_text(json.dumps({
         'source_report': str((args.raw / 'report.json').resolve()),
