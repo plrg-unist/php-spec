@@ -47,11 +47,18 @@ with historical copied pack entries and the genuine outer API retained through
 C-root forwarding. Module 376 adds Generator and Iterator START packs with real
 resume/callback continuations. NaN `valid()` warnings preserve the original raw
 retval through handlers, including parked handlers and thrown direct start Closure calls;
-Single IteratorAggregate START acquisition keeps its original operand separate
+IteratorAggregate START acquisition keeps its original operand separate
 from acquired Iterator/Generator data and retires data before a temporary operand;
 direct captured-call throws retain their original exception and capture order.
 The [Aggregate ledger](../../coverage/semantics/fiber-start-aggregate-review.json)
-keeps these checks separate. Nested acquisition and wider raw payload changes remain required.
+keeps these checks separate. Nested acquisition retains each raw Aggregate retval
+until recursive acquisition finishes and retires returned layers before data and
+the original operand on errors. Direct captured-call throws retain the same
+exception/capture order; [nested checks](../../coverage/semantics/fiber-start-nested-aggregate-review.json)
+have their own evidence. Pending Generator startup is bounded to a literal-output/
+scalar-yield prefix and close of a frame with no owned roots without finally. Wider
+startup, raw
+payload changes and other Aggregate consumers remain required.
 Module 370 executes simple raw Fiber API arrays as C-root callbacks. The Fiber
 retains the original array, while its frozen receiver cache remains borrowed;
 this differs from an owning Closure capture and ordinary array INIT.
