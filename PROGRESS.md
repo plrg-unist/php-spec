@@ -47,6 +47,20 @@ The actual 361-module composition over `61e7b80ff` passes strict compilation at
 `6c098ce8` (4.979 s), preserving current EX/CALLS interfaces without renewing
 the private checks. [Override review](coverage/semantics/promoted-override-review.json).
 
+One zero-argument builtin `#[Override]` on an ordinary parameter now raises the
+native target Fatal in methods, functions, Closures and arrows. Name/variadic
+guards and constant-default compilation precede it; type/default compatibility
+follows it. Resolved spelling and surviving compiler lines are retained. Eval
+preserves earlier output/notices and stops before catch, body or publication.
+Sixteen originals agree across the bad18/94a/929/ba904 cuts. Strict compilation
+of 361 modules and one SL gate with 109 checks (68 derived request checks,
+41 reached eval checks) pass at `4f6a47d6`. Earlier line/nondeterminism
+discrepancies, fixture stops and the failed state run retain zero credit. Other
+parameter attributes/hooks remain required. The actual 361-module composition
+over `786137a55` passes strict compilation at `f5eb9399b` (4.954 s), preserving
+current runtime/owner/GC/replay paths without renewing the private checks.
+[Parameter-target review](coverage/semantics/parameter-override-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

@@ -10,6 +10,9 @@ dec $ppdefaults_ready(ppstate, ppstate, pcpath, ptbytes, statement*, metadata, p
 dec $ppdefault_prepare(ppstate, pcpath, expression) : ppstate
 dec $ppdefault_kind(pvalue?) : text
 dec $ppdefault_descriptor(ppstate, pcpath) : pdefaultkind
+dec $ppsignature_attribute_valid(ppstate, pcpath, pscontinuation, phpType14) : bool
+dec $ppsignature_attribute(ppstate, pcpath, pscontinuation, phpType14) : ppstate
+dec $ppsignature_attribute_finish(ppstate, pscontinuation, phpType14) : ppstate
 
 def $ppdefaults_begin(P, pcpath, ptbytes, statement*, metadata, phpType16, phpType18, b) = $ppdefaults_step(P, $ppfunction_start(P[.CLASSCONTEXT = eps][.EVALCLASS = eps], ptbytes, { PARAMETERS eps, RETURNS eps, BYREF b })[.GOTOROOT = pcpath], pcpath, ptbytes, statement*, metadata, $psstep_start(phpType16, phpType18, b, $ppfunction_context(P[.CLASSCONTEXT = eps], ptbytes)))
 
@@ -30,6 +33,34 @@ def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDONE 
   -- if P_body = $ppgenerator_body(P_header, pcpath ++ [PCFIELD 5], statement*)
 def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppdefaults_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
+def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSATTRIBUTETARGETREQUEST pscontinuation phpType14) = $ppsignature_attribute($ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath ++ [PCFIELD 3, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)], pscontinuation, phpType14)
+  -- if P.COMPLETION = PPCNORMAL
+
+;; The checked Param and its lexical scope survive default compilation. An
+;; invalid builtin target stops before typename/default compatibility checks.
+def $ppsignature_attribute_valid(P, pcpath, pscontinuation, phpType14) = true
+  -- if P.FOLD.SOURCE = $pcsource(P.FOLD.SOURCE.ID, P.FOLD.SOURCE.AST)
+  -- if pcpath = P.GOTOROOT ++ [PCFIELD 3, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)] \/ pcpath = P.GOTOROOT ++ [PCFIELD 4, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)]
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
+  -- if $pslower(NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata) = PSINPUTATTRIBUTES pscontinuation.PARAMETER phpType14
+  -- if pscontinuation.CONTEXT.NAMESPACE = P.ENV.NAMESPACE /\ pscontinuation.CONTEXT.IMPORTS = P.ENV.CLASSES /\ pscontinuation.CONTEXT.FILE = P.LOCATION.FILE
+  -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) =/= eps
+def $ppsignature_attribute_valid(P, pcpath, pscontinuation, phpType14) = false -- otherwise
+def $ppsignature_attribute(P, pcpath, pscontinuation, phpType14) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppsignature_attribute(P, pcpath, pscontinuation, phpType14) = $ppunsupported(P, "edited parameter attribute target")
+  -- if P.COMPLETION = PPCNORMAL /\ ~$ppsignature_attribute_valid(P, pcpath, pscontinuation, phpType14)
+def $ppsignature_attribute(P, pcpath, pscontinuation, phpType14) = $ppsignature_attribute_finish(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pscontinuation, phpType14)
+  -- if P.COMPLETION = PPCNORMAL /\ $ppsignature_attribute_valid(P, pcpath, pscontinuation, phpType14)
+  -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
+def $ppsignature_attribute(P, pcpath, pscontinuation, phpType14) = $ppsignature_attribute_finish($ppdefault_prepare(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE][.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], pcpath ++ [PCFIELD 6], expression), pscontinuation, phpType14)
+  -- if P.COMPLETION = PPCNORMAL /\ $ppsignature_attribute_valid(P, pcpath, pscontinuation, phpType14)
+  -- if pscontinuation.PARAMETER.DEFAULT = (expression)
+def $ppsignature_attribute_finish(P, pscontinuation, phpType14) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppsignature_attribute_finish(P, pscontinuation, phpType14) = $ppsignature_issue(P, "error", $psattribute_message(ptbytes_resolved), P.LOCATION.LINE)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) = (ptbytes_resolved)
 
 def $ppdefaults_request(P_outer, P, pcpath, ptbytes, statement*, metadata, pscontinuation) = $ppdefaults_step(P_outer, $ppdefault_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n_index), pcpath, ptbytes, statement*, metadata, $psstep_resume(pscontinuation, PSNONE))
   -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
