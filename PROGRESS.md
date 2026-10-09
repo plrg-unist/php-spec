@@ -2332,6 +2332,8 @@ parked return cleanup, restored result and last receiver retirement. The prior
 Unsupported and one-step fixture failure remain zero credit. The maintained
 source/renderer bytes are unchanged; relocation renews no runtime evidence.
 Wider getter/binding/library targets and original 7's CLI60 timeout remain open.
+Actual-parent compilation passes at `71edcca7` over `8cc17e6e` with 371 modules;
+pointwise EX/RETURNS review adds no private source, state or native renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
