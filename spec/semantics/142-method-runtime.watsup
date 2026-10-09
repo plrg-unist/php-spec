@@ -1516,6 +1516,7 @@ dec $promotion_source(pstate, pfunction) : phpType16?
 dec $promotion_tasks_from(porigin, phpType17*, nat) : ptask*
 dec $promotion_task(porigin, nat, psinput) : ptask*
 dec $promotion_raw(pstate, pfunction, nat) : psraw?
+dec $promotion_attribute_context(pfunction) : ptcontext
 dec $promotion_descriptor(pstate, pfunction, nat) : ppropertydesc?
 dec $promotion_type_scope(pclassdesc) : ptscope
 dec $trait_data_import_type(pclassdesc, ptbranch*) : ptbranch*
@@ -1541,12 +1542,65 @@ def $promotion_raw(S, pfunction, n) = (psraw)
   -- if $promotion_source(S, pfunction) = (SEQUENCE phpType17*)
   -- if $(n < |phpType17*|) /\ $(n < |pfunction.SIGNATURE.PARAMETERS|)
   -- if $pslower(phpType17*[n]) = PSINPUT psraw
-  -- if psraw.FLAGS =/= 0 /\ ~psraw.EXTRA /\ ~psraw.VARIADIC
+  -- if psraw.FLAGS =/= 0 /\ $psattributes_supported($promotion_attribute_context(pfunction), psraw) /\ ~psraw.VARIADIC
   -- if $ppproperty_supported(psraw.FLAGS) /\ ~$ppproperty_flag(psraw.FLAGS, 8)
   -- if psraw.NAME = pfunction.SIGNATURE.PARAMETERS[n].NAME
   -- if psraw.BYREF = pfunction.SIGNATURE.PARAMETERS[n].BYREF
   -- if ~pfunction.SIGNATURE.PARAMETERS[n].VARIADIC
 def $promotion_raw(S, pfunction, n) = eps -- otherwise
+def $promotion_attribute_context(pfunction) = { NAMESPACE pfunction.ENV.NAMESPACE, IMPORTS pfunction.ENV.CLASSES, SCOPE PTGLOBAL, POSITION PTPARAMETER, OWNER eps, MEMBER eps, FILE eps, LINE 0 }
+
+;; Override belongs to the effective promoted property, including a retained
+;; trait declaration. Compatible collisions keep the surviving source origin.
+dec $trait_data_property(pclassdesc, ppropertydesc) : ppropertydesc
+dec $trait_restore(pstate, pstate) : pstate
+dec $promotion_override_property(pstate, pclassdesc, ppropertydesc) : bool
+dec $promotion_override_parent_layout(pstate, pclassdesc) : ppropertydesc*
+dec $promotion_override_parent_match(ppropertydesc*, ptbytes) : bool
+dec $promotion_override_issue(pstate, pclassdesc, ppropertydesc*, ppropertydesc*) : ptbytes?
+dec $promotion_override_finish(pstate, pclassdesc, pstate) : pstate
+
+def $promotion_override_property(S, pclassdesc, ppropertydesc) = true
+  -- if $origin_node(S.SOURCES, $origin_source(ppropertydesc.ORIGIN)) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
+  -- if phpType14 =/= SEQUENCE eps
+  -- if $origin_source(ppropertydesc.ORIGIN) = PORIGIN n_unit pcpath
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_method = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if pcpath = pcpath_method ++ [PCFIELD 4, PCINDEX n]
+  -- if $class_method_origin(S.CLASSES, PORIGIN n_unit pcpath_method) = (pmethoddesc)
+  -- if $promotion_raw(S, pmethoddesc.FUNCTION, n) = (psraw)
+  -- if psraw.EXTRA = PSPARAMETERATTRIBUTES phpType14
+  -- if $promotion_descriptor(S, pmethoddesc.FUNCTION, n) = (ppropertydesc_source)
+  -- if ppropertydesc = ppropertydesc_source \/ ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source)
+def $promotion_override_property(S, pclassdesc, ppropertydesc) = false -- otherwise
+
+def $promotion_override_parent_layout(S, pclassdesc) = $property_info_layout(S, porigin_parent, |S.CLASSES|)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+def $promotion_override_parent_layout(S, pclassdesc) = $throwable_layout(text_kind)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (INTERNAL_THROWABLE_PARENT text_kind)
+def $promotion_override_parent_layout(S, pclassdesc) = eps -- otherwise
+def $promotion_override_parent_match(ppropertydesc*, ptbytes) = (ppropertydesc.VISIBILITY =/= PROPERTY_PRIVATE)
+  -- if $ppproperty_desc_at(ppropertydesc*, ptbytes) = (ppropertydesc)
+def $promotion_override_parent_match(ppropertydesc*, ptbytes) = false -- otherwise
+def $promotion_override_issue(S, pclassdesc, ppropertydesc_parent*, eps) = eps
+def $promotion_override_issue(S, pclassdesc, ppropertydesc_parent*, ppropertydesc :: ppropertydesc_tail*) = (pclassdesc.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" has #[\\Override] attribute, but no matching parent property exists"))
+  -- if $promotion_override_property(S, pclassdesc, ppropertydesc)
+  -- if ~$promotion_override_parent_match(ppropertydesc_parent*, ppropertydesc.NAME)
+def $promotion_override_issue(S, pclassdesc, ppropertydesc_parent*, ppropertydesc :: ppropertydesc_tail*) = $promotion_override_issue(S, pclassdesc, ppropertydesc_parent*, ppropertydesc_tail*)
+  -- if ~$promotion_override_property(S, pclassdesc, ppropertydesc) \/ $promotion_override_parent_match(ppropertydesc_parent*, ppropertydesc.NAME)
+
+;; Ordinary inheritance diagnostics precede this check. A failure restores the
+;; attempted publication through the existing class/trait rollback protocol.
+def $promotion_override_finish(S, pclassdesc, S_linked) = S_linked
+  -- if S_linked.COMPLETION =/= NORMAL \/ pclassdesc.KIND = "trait"
+def $promotion_override_finish(S, pclassdesc, S_linked) = S_linked
+  -- if S_linked.COMPLETION = NORMAL /\ pclassdesc.KIND =/= "trait"
+  -- if $class_at(S_linked.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_effective)
+  -- if $promotion_override_issue(S_linked, pclassdesc_effective, $promotion_override_parent_layout(S_linked, pclassdesc_effective), pclassdesc_effective.PROPERTIES) = eps
+def $promotion_override_finish(S, pclassdesc, S_linked) = $trait_restore(S, $pil_method_fatal(S_linked, pclassdesc.ORIGIN, ptbytes_message, pclassdesc.LINE))
+  -- if S_linked.COMPLETION = NORMAL /\ pclassdesc.KIND =/= "trait"
+  -- if $class_at(S_linked.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_effective)
+  -- if $promotion_override_issue(S_linked, pclassdesc_effective, $promotion_override_parent_layout(S_linked, pclassdesc_effective), pclassdesc_effective.PROPERTIES) = (ptbytes_message)
 
 ;; A trait keeps its declaration certificate even if a compatible class or
 ;; earlier trait supplies the effective slot. Scope resolves the actual target.
