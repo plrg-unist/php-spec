@@ -15,6 +15,10 @@ and a shared deprecation Throwable that skips the eval body and assignment.
 Strict3 passes 5.275s; author109/peer132 pass 231 source-frontier checks plus 10 pure
 reporter-mask projections. The original normal mismatch retains zero agreement;
 wider compiler warning producers and dynamic interactions remain required.
+The actual composition of 371 modules over 3a0be383 passes strict3 at
+8e254b11 (5.374s), preserving canonical by-ref cursor, collector, captured-getter
+and foreach acquisition authority. Private source2 / 231+10 and the original
+mismatch retain their own cuts.
 [Severity ledger](coverage/semantics/compiler-warning-severity-review.json).
 
 Root-terminal HALT compilation now folds original-file byte offsets and treats
