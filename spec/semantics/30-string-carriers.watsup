@@ -21,7 +21,7 @@ def $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = true
   -- if S.STRINGDATA[n] = n_bytes*
   -- if $startup_bytes(n_bytes*)
 def $string_carrier_valid(S, pvalue) = false -- otherwise
-def $string_request(S, n*) = S[.STRINGDATA = S.STRINGDATA ++ [n*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING |S.STRINGDATA|) n*)]
+def $string_request(S, n*) = S[.STRINGDATA = S.STRINGDATA ++ [n*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) n*)]
 dec $string_getter_value(pvalue) : pvalue?
 def $string_getter_value(PSTRING_CARRIER INTERNED_STRING n*) = (PSTRING_CARRIER INTERNED_STRING n*)
 def $string_getter_value(PSTRING_CARRIER pstringidentity n*) = (PSTRING_CARRIER INTERNED_STRING n*)
