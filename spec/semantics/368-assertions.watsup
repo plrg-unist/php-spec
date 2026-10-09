@@ -13,6 +13,7 @@ dec $assertion_ini_records_valid(pstate, passertini*) : bool
 dec $assertion_ini_restore(pstate, pconfigcall) : pstate
 dec $assertion_ini_restore_string_finish(pstate, pconfigcall, pvalue) : pstate
 dec $assertion_ini_set(pstate, pconfigcall, pvalue) : pstate
+dec $assertion_ini_convert_start(pstate, pconfigcall, pvalue) : pstate
 dec $assertion_ini_blocked(int, int) : bool
 dec $assertion_ini_warning() : preqbytes
 dec $assertion_ini_argument(pstate, pconfigcall, int) : preqbytes?
@@ -118,7 +119,7 @@ dec $assertion_ini_conversion_warning(pstate, pvalue) : bool
 def $assertion_ini_conversion_warning(S, PFLOAT n) = b
   -- if (n_text*, b) = $number_text(NFLOAT n, $precision_value(S))
 def $assertion_ini_conversion_warning(S, pvalue) = false -- otherwise
-def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI value conversion warning old-return snapshot"]
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $assertion_ini_convert_start(S, pconfigcall, pvalue)
   -- if n_option* = $ptascii("zend.assertions")
   -- if $assertion_ini_conversion_warning(S, pvalue)
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $assertion_ini_set(S_value, pconfigcall, pvalue_new)
