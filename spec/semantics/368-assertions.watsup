@@ -16,7 +16,6 @@ dec $assertion_ini_blocked(int, int) : bool
 dec $assertion_ini_warning() : preqbytes
 dec $assertion_ini_argument(pstate, pconfigcall, int) : preqbytes?
 dec $assertion_ini_option_valid(pstate, pconfigcall) : bool
-dec $assertion_ini_failed_valid(pstate, pconfigcall, preqbytes, int) : bool
 dec $ppassertion_selected(pnresult) : bool
 dec $ppassertion_prepare(ppstate, pcpath, phpType7*) : ppstate
 dec $assertion_control(preqbytes) : bool
@@ -166,32 +165,6 @@ def $assertion_ini_option_valid(S, pconfigcall) = true
   -- if $string_bytes(pvalue_option) = (n_option*)
   -- if n_option* = $ptascii("zend.assertions")
 def $assertion_ini_option_valid(S, pconfigcall) = false -- otherwise
-def $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision) = true
-  -- if pconfigcall.KIND = INTRINSIC_INI_SET
-  -- if $config_invoke_valid(S, pconfigcall)
-  -- if $assertion_ini_option_valid(S, pconfigcall)
-  -- if $assertion_ini_argument(S, pconfigcall, z_precision) = (preqbytes)
-  -- if $assertion_quantity(preqbytes) = (z_new)
-  -- if $assertion_ini_blocked(S.ASSERTIONS, z_new)
-def $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision) = false -- otherwise
-def $task_nodes(ASSERTION_INI_FAILED pconfigcall preqbytes z_precision) = $config_nodes(pconfigcall)
-def $selected_task_nonce(ASSERTION_INI_FAILED pconfigcall preqbytes z_precision) = pconfigcall.SELECTION
-def $call_task_valid(S, ASSERTION_INI_FAILED pconfigcall preqbytes z_precision) = $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision)
-rule PhpStep/assertion-ini-failed: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (ASSERTION_INI_FAILED pconfigcall preqbytes z_precision) :: ptask_tail*
-  -- if $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision)
-def $error_call_valid(S, perrorcall) = true
-  -- if S.ORIGIN = (perrorcall.SITE)
-  -- if perrorcall.RESUME = ASSERTION_INI_FAILED pconfigcall preqbytes z_precision
-  -- if $assertion_ini_failed_valid(S, pconfigcall, preqbytes, z_precision)
-  -- if pconfigcall.SITE = perrorcall.SITE
-  -- if perrorcall.LEVEL = 2
-  -- if perrorcall.LINE = pconfigcall.LINE
-  -- if perrorcall.MESSAGE = $assertion_ini_warning()
-  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
-def $error_context_trigger(S, pcallcontext) = (pconfigcall)
-  -- if $error_context_call(S, pcallcontext) = (perrorcall)
-  -- if perrorcall.RESUME = ASSERTION_INI_FAILED pconfigcall preqbytes z_precision
 def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
 

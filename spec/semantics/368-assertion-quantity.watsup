@@ -258,4 +258,5 @@ def $error_read_discard(S, ASSERTION_INI_RESULT passertini) = $error_default(S[.
 def $error_read_discard(S, ASSERTION_INI_RESULT passertini) = S[.ASSERTIONINI = $assertion_ini_remove(S.ASSERTIONINI, passertini.ID)]
   -- if $assertion_ini_valid(S, passertini)
   -- if passertini.PHASE = ASSERTION_REFUSE z_old
-def $error_read_discard(S, ASSERTION_INI_RESULT passertini) = S[.COMPLETION = UNSUPPORTED "invalid assertion INI completion certificate"] -- otherwise
+def $error_read_discard(S, ASSERTION_INI_RESULT passertini) = S[.COMPLETION = UNSUPPORTED "invalid assertion INI completion certificate"]
+  -- if ~$assertion_ini_valid(S, passertini)
