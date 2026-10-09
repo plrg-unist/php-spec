@@ -1,6 +1,7 @@
 ;; Ordinary SEND/name processing is unchanged. The live API slots own values;
 ;; SOURCE records only nonowning metadata for the received-prefix certificate.
 def $ordinary_internal_ready(S, pctorcall) = true
+  -- if pctorcall.BASE =/= "SensitiveParameterValue"
   -- if $call_task_valid(S, CTOR_INVOKE pctorcall)
   -- if $(|pctorcall.SENT| <= $default_internal_arity(pctorcall.BASE))
 
