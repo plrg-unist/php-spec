@@ -1,0 +1,303 @@
+{
+  "milestone": "Fiber START single IteratorAggregate acquisition and ownership",
+  "status": "partial; independently reviewed private source and state cuts, ready for actual-parent composition",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "baseline": "5b7452edd1023dacf558946a27dc7cb198681b47",
+  "semantic_code": "37cac98577172e10ba6d34fef500a8172f373e37",
+  "scope": [
+    "Real IteratorAggregate Traversable ancestry, getIterator public/nonstatic/parameter prototype, abstract/inherited/source-interface publication, tentative-return notices, Iterator exclusivity and Iterator/Generator covariance.",
+    "Single Aggregate-to-Iterator/Generator acquisition keeps original borrowed/owning INPUT unchanged and acquired iterator data distinct; original aggregate identity adds no data owner.",
+    "Implicit getIterator pending/entered/parked targets borrow their receiver. GENERATOR_CREATE copies only the target into an owning retained context, authenticated by the actual unpack argument index/site/line and real generator context.",
+    "Raw REFERENCE, scalar and stable self-return are rejected with the native Traversable Exception. Callback throws retain their original Exception and direct Closure capture.",
+    "Successful and abrupt retirement release raw retval, acquired data and original temporary input in order before unfinished call buffers."
+  ],
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-traversable-sl-opst297j/report.json",
+    "sha256": "ec9a4d9c855ae332d0f3c118542d69ee8c44d69a43181171e71f2c29af0f0f61",
+    "revision": "37cac98577172e10ba6d34fef500a8172f373e37",
+    "strict_modules": 361
+  },
+  "sources": {
+    "normal_agreements": 13,
+    "php_error_agreements": 5,
+    "unsupported_controls": 4,
+    "unsupported_agreements": 0,
+    "native_reused": true,
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-source-x37j44d6/report.json",
+        "sha256": "646a6874f683822242fbc9abb40121c4ef3fe0da3fd5b2016ce8bea7bbdb16e3",
+        "revision": "8107ebec7c1996df16329b5a4e43ee609e931cf4",
+        "accepted_ids": [
+          "safe-aggregate-iterator-acquisition",
+          "aggregate-fresh-iterator-owner-order",
+          "aggregate-generator-acquisition",
+          "aggregate-get-iterator-parks",
+          "aggregate-get-iterator-throws-direct-fcc",
+          "source-interface-inherited-get-iterator",
+          "aggregate-missing-method-contract",
+          "aggregate-protected-method-contract",
+          "aggregate-static-method-contract",
+          "aggregate-required-argument-contract",
+          "aggregate-iterator-exclusive-contract",
+          "aggregate-nested-acquisition-required",
+          "aggregate-foreach-acquisition-required",
+          "aggregate-yield-from-acquisition-required",
+          "aggregate-borrowed-cv-retired-keeper",
+          "aggregate-covariant-iterator-generator-override",
+          "aggregate-ordinary-call-unpack-required",
+          "author-fiber-start-iterator-aggregate-acquisition"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-source-ae8bb7l5/report.json",
+        "sha256": "b8f5fe40d71276cb0973e15dc86e7da89711dd50430ed994ac2d9debe7a2945f",
+        "revision": "37cac98577172e10ba6d34fef500a8172f373e37",
+        "accepted_ids": [
+          "safe-aggregate-reference-iterator-acquisition",
+          "stable-self-returning-aggregate",
+          "scalar-returning-aggregate",
+          "aggregate-tentative-return-notice"
+        ]
+      }
+    ],
+    "cut_policy": "The18 unaffected records retain8107. Four rejected-return originals are selected only from the affected37cac rerun; the original full22 report remains preserved. Source/native bytes and expectations are unchanged."
+  },
+  "states": {
+    "status": "all fourteen exact-source independent groups pass",
+    "runner": "tests/semantics/fiber_start_aggregate_review.py",
+    "physical_premises": 425,
+    "count_policy": "Physical generated premises include harness and embedded reached-stage clauses. Only named passing records receive credit.",
+    "continuation_policy": "The22 exact original-source comparisons supply full continuations. Bounded state cuts test source-reached owners, ordered real steps, zero budget and same-heap authority counterexamples.",
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-s1lx_lpb/report.json",
+        "sha256": "453dfd90c70bf09c1222da686f81f1eb9af3b4b0ca09964f92a6184faee5091a",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-pending-get-iterator-has-input-without-data-owner": 38
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-ym7adera/report.json",
+        "sha256": "dde99bdc35a1cd22f67d695e5a1d61b7c3c9e55bfb96574b415d0beb939b2c1d",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-acquired-iterator-keeps-original-input-and-distinct-data": 28
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-pyoivbgt/report.json",
+        "sha256": "3a1ab71622cbfcc266c32f8ec6d650486d072c70ce29795b19d201ad6ca964de",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-get-iterator-rejects-owning-method-target": 20
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-g41vgz5a/report.json",
+        "sha256": "901aa279639f50834e5e90fb7d573bdf7d1318c89dbdacb5ffdc78e3695734ff",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-success-retires-inner-data-before-temporary-input": 33
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-zkfny2ga/report.json",
+        "sha256": "ad58ff8b099d05df9a0f1478aae123bc9e97b89c99e7993f1db01df11cb7dd58",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-generator-data-owner-is-native-operation-only": 31
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-87o1zsy2/report.json",
+        "sha256": "f5aead456bc3e46820a51f65ce73602e9d20079ebb32cc2d07b59ad21a4cf5b9",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-generator-method-promotes-only-copied-receiver-owner": 37
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-xkdsykyx/report.json",
+        "sha256": "e8eda4f55cbebe2a9ecca4b08fb5074d14278fc3a8d9154dde510c3a393672db",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-generator-rejects-shifted-receipt-and-context-line": 26
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-1ogd2smg/report.json",
+        "sha256": "949e189e5b19bad1b8b805179b38306683ea9b6f94c19e8a1e36da2e14b6fa06",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-generator-rejects-wrong-original-unpack-index": 26
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-jo1790j8/report.json",
+        "sha256": "471d4fc73d5311594cff6d8b35426d5ef82aff85c1013432e0595da8b9891a94",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-parked-get-iterator-keeps-real-frame-without-data-root": 47
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-5534zizb/report.json",
+        "sha256": "e5d97913b1944d06aecff6884d5b0d4165620dad7b5810a6dbca580a69de0479",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-parked-get-iterator-rejects-shifted-unpack-line": 27
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-rygts6u3/report.json",
+        "sha256": "472e05fe36aa9720f6998bd28f08dc6e3a5c13d638f5e70c2e3c928a7b89e819",
+        "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+        "accepted_physical_premises": {
+          "aggregate-parked-get-iterator-rejects-duplicate-start": 27
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-5mnqprvv/report.json",
+        "sha256": "27f9dba13c92b2e7a70a1c8bf9fcae72bb14dccfe0e109c13b1cf7913f808370",
+        "revision": "37cac98577172e10ba6d34fef500a8172f373e37",
+        "accepted_physical_premises": {
+          "aggregate-raw-reference-result-is-rejected-and-retained-for-unwind": 28
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-5cv_cars/report.json",
+        "sha256": "71d942f09471abb9316efca87b74d7be3cff3f70e41c0f919f852cd159b2b2d9",
+        "revision": "37cac98577172e10ba6d34fef500a8172f373e37",
+        "accepted_physical_premises": {
+          "aggregate-retired-original-identity-adds-no-owner-after-acquisition": 25
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-wdoi3r8z/report.json",
+        "sha256": "4f8d998638ac3ce32b8c59f9820995716e20580263a57ba2f0f5d127565efc35",
+        "revision": "37cac98577172e10ba6d34fef500a8172f373e37",
+        "accepted_physical_premises": {
+          "aggregate-get-iterator-throw-releases-only-input-before-direct-capture": 32
+        }
+      }
+    ],
+    "driver_reported_premises": 387
+  },
+  "native_originals": {
+    "mode": "native-diagnostic",
+    "originals": 21,
+    "semantic_agreements": 0,
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-native-0yppdqoe/report.json",
+        "sha256": "3b0af93f854fac69ad961ffc217e8b08bad233b68eb7c2be2a27997e01a946ed",
+        "revision": "5b7452edd1023dacf558946a27dc7cb198681b47",
+        "originals": 9,
+        "semantic_agreements": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-contract-native-cqf5py8a/report.json",
+        "sha256": "62cf16526111eaef19bdea5dee2cfbff78c487b0c91e68463c077a6e874a74b7",
+        "revision": "5b7452edd1023dacf558946a27dc7cb198681b47",
+        "originals": 10,
+        "semantic_agreements": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-covariance-native-2hxpbear/report.json",
+        "sha256": "d8be1c0f54b84999f191620629f3ca3c2346c11acd2a98ee4562d566d90dd22a",
+        "revision": "5b7452edd1023dacf558946a27dc7cb198681b47",
+        "originals": 1,
+        "semantic_agreements": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-call-control-native-u3vt4r24/report.json",
+        "sha256": "dc8cd985bccc567cff6734dff26423ed30ae36442f574be3793392b6378544b7",
+        "revision": "5b7452edd1023dacf558946a27dc7cb198681b47",
+        "originals": 1,
+        "semantic_agreements": 0
+      }
+    ],
+    "reuse_policy": "Raw native original bytes, paths, commands, streams and exits are unchanged; derived rows/results metadata permits source comparison without native renewal."
+  },
+  "affected_historical_control": {
+    "native_report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-traversable-native-19/report.json",
+    "id": "author-fiber-start-iterator-aggregate-acquisition",
+    "native_stdout": "A|7|X|17",
+    "current_expected_model": "normal",
+    "policy": "Only this affected current assertion is forwarded and compared on its preserved native path. The old Unsupported0 report and Traversable ledger remain historical, without renewed source13/state1060 credit."
+  },
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-traversable-sl-ixnane7b/report.json",
+      "sha256": "e5958e4bc217c60f5568e1f30fcdb8ca049108213640baf265bfd19c3a09bce6",
+      "revision": "d03a755bdac3fbdcb4317ff35dd4b8359b409ae5",
+      "result": "Early generator_from_aggregate consumer lacked its declaration; declaration moved unchanged to30.",
+      "affected_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-traversable-sl-ks5vxbi8/report.json",
+      "sha256": "2aca353062e89979e643125358c586065d8b0f55f4689a56401e6912b5713945",
+      "revision": "2e0e170ce4b99e69abb7047491f6b717fa9c34be",
+      "result": "Retained callback CALLSITE binding shared an AND premise; bindings separated without predicate change.",
+      "affected_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-traversable-sl-6qt087f5/report.json",
+      "sha256": "9ae89d68987014c1307270c7d413169d101e2b74f371b77bdad2bbe62640fa90",
+      "revision": "662d322700869fcc75fdb58496b31212d12dd510",
+      "result": "Non-pure class_at occurred under an otherwise rule; existing authenticated object_name supplies identical class bytes.",
+      "affected_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-cu89zu3x/report.json",
+      "sha256": "dc9358b6693dde78c59e95727846e44e9a301d27e3c54217cdf2fa10be0aa3f1",
+      "revision": "8107ebec7c1996df16329b5a4e43ee609e931cf4",
+      "result": "Source-exact component diagnostic first rejects class_state_valid: live PILBUILTIN whitelist omitted the newly admitted IteratorAggregate.",
+      "affected_credit": 0
+    },
+    {
+      "directory": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-mguvakt3",
+      "revision": "8107ebec7c1996df16329b5a4e43ee609e931cf4",
+      "result": "Ten completed groups reject authentic initial global admission; case11 interrupted/reaped, final3 UNRUN. All original generated fixtures/streams remain preserved.",
+      "affected_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-mn9hzt26/report.json",
+      "sha256": "7949dfa431e695e3a142da56713a4b8660dc30cf288b53a9443be37e6c522c67",
+      "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+      "result": "Original raw-reference one-step fixture exposes loss of the getIterator-error continuation/raw owner during152 scalar Throwable materialization; original assertions remain unchanged.",
+      "affected_credit": 0
+    }
+  ],
+  "validation": {
+    "processes": "Serial jobs1; native75s, source model100000steps/60s and host75s, state seek/finish4000 and host120s, strict120s. Exact argv/environment/binary/profile/streams/exits remain in raw reports.",
+    "source_cut_retention": "Live178 validation adds only the real newly published IteratorAggregate link. The37cac hook is confined to authentic getIterator rejection: unaffected source18 and state340 retain their original cuts; four affected sources and the remaining85 state premises use37cac.",
+    "prior_cut_policy": "Earlier supported Traversable13/state1060 and NaN4/state269 retain their original inputs; no unchanged suite renewal."
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_interfaces.stub.php:IteratorAggregate",
+    "vendor/php-src/Zend/zend_interfaces.c:zend_user_it_new_iterator, zend_user_it_get_new_iterator and interface implementation hooks",
+    "vendor/php-src/Zend/zend_execute_API.c:zend_call_function borrowed known-instance receiver",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_GENERATOR_CREATE receiver promotion and ZEND_SEND_UNPACK ordered cleanup"
+  ],
+  "recovery": {
+    "private_worktree": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20",
+    "sources": "python3 tests/semantics/fiber_start_aggregate_sources.py --native-report .tools/aggregate-native-reuse1.json --native-report .tools/aggregate-native-reuse2.json --native-report .tools/aggregate-native-reuse3.json --native-report .tools/aggregate-native-reuse4.json --native-report /home/user/workspace/php-spec/.tools/calls-fiber-start-traversable-native-19/report.json",
+    "states": "python3 tests/semantics/fiber_start_aggregate_review.py --case ID",
+    "strict": "python3 .tools/strict.py"
+  },
+  "limits": [
+    "Nested Aggregate acquisition, foreach/yield-from/ordinary-call Aggregate unpack consumers are explicit Unsupported controls with zero agreement; traversal-aggregate-279 remains a separate held gap.",
+    "The historical unsafe sole-CV unset/return-this probe is not retried. Safe evidence preserves independent owners during getIterator and retires a keeper only after acquisition.",
+    "Wider raw payload changes, effectful compound selectors and callback/lifecycle consumers remain required; other return-verification consumers are not extended by this milestone."
+  ],
+  "continuation_repair": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-state-review-ds278gjj/report.json",
+    "sha256": "8ceea5f2e326c9edae3caa0aba0e1eca3e1e65023e669c4e211efb7f9aaa680a",
+    "revision": "5fdbbc45a2e8fd198fc3be412272598371cdd510",
+    "result": "The exact one-step diagnostic confirms TODO becomes THROW_SEARCH plus old tail and loses one HCELL owner despite global/heap admission. The scoped376 hook authenticates the complete existing acquire transition and preserves its raw-return error marker.",
+    "affected_gates": "Changed strict361, four exact rejected-return sources and original raw-reference28 were renewed; retired-keeper25/direct-FCC32 were previously unrun. Other accepted gates retain their cuts."
+  }
+}

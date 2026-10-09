@@ -547,8 +547,19 @@ while a copied NaN stays true. The INVOKE/RESULT/CLEAN wrappers preserve exactly
 one pending START, including its data owner after the source CV changes. Throwing
 handlers retire raw retval, iterator data and temporary operand before the call
 buffer. The [NaN ledger](../../coverage/semantics/fiber-start-nan-review.json)
-records these separate cuts. IteratorAggregate acquisition, wider raw payload
-changes and compound array or factory selectors remain required.
+records these separate cuts. IteratorAggregate START packs now acquire a distinct
+Iterator or Generator through the real public, nonstatic `getIterator()` contract.
+The original input remains borrowed or owning as before; the aggregate identity
+adds no iterator-data root. Its `getIterator()` receiver is borrowed, including parked
+frames. Generator creation gives the copied frame one receiver owner and retains
+the exact unpack argument/index/line authority. Raw reference, scalar and self
+returns raise the native Exception and survive until authenticated unwind.
+Successful cleanup retires returned iterator
+data before a temporary aggregate operand; callback errors preserve the same order
+before the unfinished buffer. The [Aggregate ledger](../../coverage/semantics/fiber-start-aggregate-review.json)
+tracks the contract, source and reached-state cuts. Nested Aggregate acquisition,
+foreach/yield-from/ordinary-call unpack consumers, wider raw payload changes and
+compound array or factory selectors remain required.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and
@@ -563,7 +574,7 @@ suppressed `exit` in a destroyed Fiber remain required consumers.
 
 `getReturn` after graceful close without an actual return, request/fatal cleanup,
 wider core internal callback bodies, reference forwarding, wider API callable/FCC entry,
-IteratorAggregate `start` unpacking, wider raw payload changes and switching during
+nested IteratorAggregate acquisition, wider raw payload changes and switching during
 initialization/source loading remain required. The first transfer domain rejects active or saved constant/default and
 autoload initialization, and active Generator execution, including switches in
 their helper calls. Their shared pending flags and parked ownership remain

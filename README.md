@@ -1527,8 +1527,14 @@ arguments; the [Traversable ledger](coverage/semantics/fiber-start-traversable-r
 records their source and reached-state checks. NaN `valid()` warnings retain the
 raw return through mutating, parked and throwing handlers: live references are
 reread, while copied NaN remains true. The [NaN ledger](coverage/semantics/fiber-start-nan-review.json)
-records these separate cuts. IteratorAggregate acquisition, wider raw payload
-changes and compound selectors remain required.
+records these separate cuts. IteratorAggregate START packs now call the real
+`getIterator()` contract and retain the original operand separately from the
+returned Iterator or Generator. The `getIterator()` receiver is borrowed; a saved
+Generator frame acquires its own receiver. Rejected raw returns survive until
+authenticated unwind. Iterator data retires before a temporary aggregate
+operand. The [Aggregate ledger](coverage/semantics/fiber-start-aggregate-review.json)
+tracks these bounded checks. Nested acquisition, foreach/yield-from/ordinary-call
+unpacking, wider raw payload changes and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

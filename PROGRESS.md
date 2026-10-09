@@ -85,8 +85,8 @@ prunes consumed owners without creating inactive release jobs. Strict359 and
 thirteen exact normals at 11+1+1 cuts and 752 independent plus 308 author physical
 premises pass. Source-identical cuts preserve every original assertion within
 existing caps; earlier failures and timeouts retain zero affected credit.
-IteratorAggregate acquisition, wider raw payload changes and compound selectors
-remain required; Aggregate is still Unsupported/zero agreement.
+At that cut, IteratorAggregate acquisition was Unsupported/zero agreement;
+wider raw payload changes and compound selectors remained required.
 Actual361 over `401bfb516` passes strict SL compilation at `a54204745`, preserving
 the current ARG Stringable/static, exact-return, property and abrupt-cleanup paths;
 private13/1060 source/state cuts retain their original inputs.
@@ -103,6 +103,21 @@ affected credit; selected-handler cleanup precedes exact raw/data/temp release.
 Prior376 cuts are not renewed. Actual361 over `169dd2f3f` passes strict SL
 compilation at `f8d591f24`; EX32 and fatal-render interactions preserve their own paths.
 [NaN ledger](coverage/semantics/fiber-start-nan-review.json).
+
+IteratorAggregate START acquisition preserves original borrowed/owning input and
+distinct returned Iterator/Generator data. Real prototype/inheritance, tentative
+return notices and builtin covariance are checked; raw reference/scalar/self
+returns raise the native Exception and survive until authenticated unwind.
+The `getIterator()` receiver is borrowed, while Generator creation adds one
+receiver to its saved frame. Successful cleanup retires
+inner data before temporary input. Thirteen exact normals and five native255
+declaration failures pass; four explicit consumer controls have zero agreement.
+The affected historical Aggregate original now agrees, with its earlier
+Unsupported record preserved. Strict361 and fourteen independent source-reached
+groups/425 physical premises pass at their separate cuts. Live interface-link
+admission and rejected raw-return retention are corrected; original failures stay
+at zero credit. Nested acquisition and foreach/yield-from/ordinary-call unpack
+consumers remain required. [Aggregate ledger](coverage/semantics/fiber-start-aggregate-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;
