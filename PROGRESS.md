@@ -20,7 +20,10 @@ and one genuine getter step pass 45 frontier/guard checks plus two pure display
 projection premises. Mixed named RTD consumers, nested and function/Closure
 publication, later source units, parents/interfaces/attributes/constructors and
 wider members/consumers remain required. Earlier cuts and safety boundaries stay
-frozen. [Anonymous class ledger](coverage/semantics/anonymous-classes-review.json).
+frozen. The actual composition of 373 modules over 59080391d passes strict3 at
+c4dcd87e (5.324s), preserving canonical Fiber, class-hook, property and acquisition guards.
+Private source2 / 205+21 and trace1 / 45+2 retain their original cuts.
+[Anonymous class ledger](coverage/semantics/anonymous-classes-review.json).
 
 Private-final E_COMPILE_WARNING (128) delivery remains accepted at dec3e9968 /371:
 two originals and 231 source-frontier checks plus 10 pure mask queries. Actual371
