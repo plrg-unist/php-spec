@@ -1469,7 +1469,11 @@ genuine outer API.
 Abrupt cleanup preserves positional/receiver/named order and the distinct direct
 Closure versus explicit `__invoke` owner order. The
 [start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json) records
-these checks. Traversable packs and compound selectors remain required.
+these checks. Generator and Iterator packs now use real native resume operations
+and iterator callbacks, preserving references through `key()` before copying
+arguments; the [Traversable ledger](coverage/semantics/fiber-start-traversable-review.json)
+records their source and reached-state checks. IteratorAggregate acquisition, NaN
+warning continuations and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

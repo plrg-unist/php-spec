@@ -40,9 +40,23 @@ direct Closure versus explicit invoke cleanup. Strict356, ten exact normals at
 9+1 cuts and 345 independent plus 296 author premises pass. Constant packs retain
 their genuine pool owner; a distinct dynamic-pack companion proves retired history.
 Initial elaboration/matching failures and pooled fixture assumptions retain zero
-affected credit. Traversable packs remain explicit Unsupported/zero agreement and
-required follow-on work; compound/lifecycle gaps and paused returns remain open.
+affected credit. Compound/lifecycle gaps and paused returns remain open.
 [Start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json).
+
+Module 376 uses native Generator resumes and real Iterator callbacks for START
+packs. Borrowed CVs, iterator data and retained `current()` references have
+distinct owners; arguments copy after `key()`, before `next()`. Exact unpack
+lines authenticate implicit calls and saved frames. The 374 quiet-unwind fix
+prunes consumed owners without creating inactive release jobs. Strict359 and
+thirteen exact normals at 11+1+1 cuts and 752 independent plus 308 author physical
+premises pass. Source-identical cuts preserve every original assertion within
+existing caps; earlier failures and timeouts retain zero affected credit.
+IteratorAggregate acquisition, NaN warning continuations and compound selectors
+remain required; Aggregate is still Unsupported/zero agreement.
+Actual361 over `401bfb516` passes strict SL compilation at `a54204745`, preserving
+the current ARG Stringable/static, exact-return, property and abrupt-cleanup paths;
+private13/1060 source/state cuts retain their original inputs.
+[Traversable ledger](coverage/semantics/fiber-start-traversable-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;

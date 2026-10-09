@@ -1,0 +1,142 @@
+[
+  {
+    "id": "peer-fiber-start-generator-unpack-freezes-ref-selector-and-retires-last-receiver",
+    "source": "<?php\nfunction startGeneratorSelector19() {\n    global $receiver, $method, $pair, $target, $other;\n    try {\n        echo 'G|';\n        $receiver = $other;\n        $method = 'resume';\n        $pair = null;\n        $target = null;\n        yield 'value' => '7';\n        yield 'tail' => 'X';\n    } finally {\n        echo 'C|';\n    }\n}\n$target = new Fiber(static function (int $value, string $label = 'D', ...$extra) {\n    try {\n        echo $value, '|', $label, '|', $extra['tail'], '|';\n        Fiber::suspend('Y');\n        return 17;\n    } finally {\n        echo 'F|';\n    }\n});\n$weak = WeakReference::create($target);\n$other = new Fiber(static function () { return 23; });\n$receiver = $target;\n$method = 'StArT';\n$pair = [&$receiver, &$method];\n$result = $pair(...startGeneratorSelector19());\necho $result, '|', (int)($weak->get() === null), '|', (int)$other->isStarted();\n",
+    "source_sha256": "e0f550372062325900078305fa613a8862ff7deb0268fce7d0b25e04d7512fdf",
+    "purpose": "Dynamic INIT selection precedes generator user code; completed iteration precedes callback entry and last-receiver cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|C|7|D|X|F|Y|1|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-start-iterator-unpack-copies-reference-current-into-explicit-named-buffer",
+    "source": "<?php\nclass StartReferenceIterator19 implements Iterator {\n    private int $position = 0;\n    private mixed $value = '7';\n    public function rewind(): void { echo 'W|'; $this->position = 0; }\n    public function valid(): bool { return $this->position < 2; }\n    public function key(): mixed { return $this->position === 0 ? 'value' : 'tail'; }\n    public function &current(): mixed { return $this->value; }\n    public function next(): void {\n        ++$this->position;\n        $this->value = $this->position === 1 ? 'X' : '9';\n    }\n    public function after(): mixed { return $this->value; }\n}\n$target = new Fiber(static function (int $value, ...$extra) {\n    echo $value, '|', $extra['tail'], '|';\n    Fiber::suspend('Y');\n    return 29;\n});\n$start = $target->start(...);\n$pack = new StartReferenceIterator19;\necho $start->__invoke(...$pack), '|', $pack->after(), '|', (int)$target->isSuspended(), '|';\n$target->resume();\necho $target->getReturn();\n",
+    "source_sha256": "160ebc1ad05aae12495db84e574076be2ed5d68a21252dc1d6eb74ee4ad4d016",
+    "purpose": "Iterator current returns a shared reference; later next mutation must not change earlier forwarded named values.",
+    "expected_model": "normal",
+    "native_stdout": "W|7|X|Y|9|1|29",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-start-iterator-key-mutation-reads-reference-after-key-and-numeric-string-key",
+    "source": "<?php\nclass StartKeyMutationIterator19 implements Iterator {\n    private int $position = 0;\n    private mixed $value = '7';\n    public function rewind(): void { echo 'W|'; $this->position = 0; }\n    public function valid(): bool { echo 'V', $this->position, '|'; return $this->position < 2; }\n    public function &current(): mixed { echo 'C', $this->position, '|'; return $this->value; }\n    public function key(): mixed {\n        echo 'K', $this->position, '|';\n        if ($this->position === 0) {\n            $this->value = '11';\n            return '0';\n        }\n        return 'tail';\n    }\n    public function next(): void {\n        echo 'N', $this->position, '|';\n        ++$this->position;\n        $this->value = $this->position === 1 ? 'X' : '9';\n    }\n    public function after(): mixed { return $this->value; }\n}\n$target = new Fiber(static function (int $value, ...$extra) {\n    echo $value, '|', $extra['tail'], '|';\n    Fiber::suspend('Y');\n    return 29;\n});\n$pack = new StartKeyMutationIterator19;\necho $target->start(...$pack), '|', $pack->after(), '|';\n$target->resume();\necho $target->getReturn();\n",
+    "source_sha256": "73bc30d55315713b40d46d805eec8ea66ea8a1abc711f010253758dd7c05321e",
+    "purpose": "Implicit Iterator order current then key then COPY_DEREF then next; numeric string key is positional and later named tail remains intact.",
+    "expected_model": "normal",
+    "native_stdout": "W|V0|C0|K0|N0|V1|C1|K1|N1|V2|11|X|Y|9|29",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-start-iterator-key-parks-parent-before-reading-current-reference",
+    "source": "<?php\nclass StartParkedKeyIterator19 implements Iterator {\n    public mixed $value = '7';\n    private int $position = 0;\n    public function rewind(): void { echo 'W|'; $this->position = 0; }\n    public function valid(): bool { return $this->position === 0; }\n    public function &current(): mixed { echo 'C|'; return $this->value; }\n    public function key(): mixed { echo 'K|'; Fiber::suspend('S'); return 'value'; }\n    public function next(): void { ++$this->position; }\n}\n$target = new Fiber(static function (int $value) {\n    echo $value, '|';\n    Fiber::suspend('T');\n    return 17;\n});\n$pack = new StartParkedKeyIterator19;\n$parent = new Fiber(static function () use ($target, $pack) {\n    echo $target->start(...$pack), '|';\n    return 23;\n});\necho $parent->start(), '|', (int)$target->isStarted(), '|';\n$pack->value = '11';\necho $parent->resume(), '|', (int)$target->isSuspended(), '|', $parent->getReturn(), '|';\n$target->resume();\necho $target->getReturn();\n",
+    "source_sha256": "22e059e0d03700d1bb113c73ee6230426574e1028b48520e4f685878fbaf2f5a",
+    "purpose": "Actual implicit key callback suspends the parent; current reference and pending selected START survive, and a main mutation is read only after key returns.",
+    "expected_model": "normal",
+    "native_stdout": "W|C|K|S|0|11|T||1|23|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-start-iterator-callback-throw-retires-current-before-selected-receiver",
+    "source": "<?php\nclass StartTraversablePayload376 {\n    private WeakReference $weak;\n    public function __construct(WeakReference $weak) { $this->weak = $weak; }\n    public function __destruct() { echo 'D', (int)($this->weak->get() === null), '|'; }\n}\nclass StartThrowIterator376 implements Iterator {\n    private int $position = 0;\n    private WeakReference $weak;\n    private bool $named;\n    public function __construct(WeakReference $weak, bool $named) { $this->weak = $weak; $this->named = $named; }\n    public function rewind(): void { global $pair, $target; $pair = null; $target = null; echo 'W|'; }\n    public function valid(): bool { return true; }\n    public function current(): mixed {\n        global $original;\n        if ($this->position === 0) { return new StartTraversablePayload376($this->weak); }\n        echo 'T|';\n        throw $original;\n    }\n    public function key(): mixed { return $this->named ? 'payload' : 0; }\n    public function next(): void { ++$this->position; }\n    public function __destruct() { echo 'I|'; }\n}\nforeach ([false, true] as $named) {\n    $target = new Fiber(static function () { try { Fiber::suspend('Y'); } finally { echo 'F|'; } });\n    $target->start();\n    $weak = WeakReference::create($target);\n    $pair = [$target, 'start'];\n    $original = new Exception('iterator');\n    try { $pair(...new StartThrowIterator376($weak, $named)); }\n    catch (Throwable $error) { echo 'C', (int)($error === $original), '|', $error->getMessage(), '|', (int)($weak->get() === null), '|'; }\n    unset($error, $original);\n}\necho 'END';\n",
+    "source_sha256": "fdc60cda147d63e31b9a3f4b07c16107ff21d04ded1f5b8c06729545207fa173",
+    "purpose": "A real Iterator callback throws before repeated-start status; temporary iterator retires before positional/receiver/named pending-call owners.",
+    "expected_model": "normal",
+    "native_stdout": "W|T|I|D0|F|C1|iterator|1|W|T|I|F|D1|C1|iterator|1|END",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-start-traversable-invalid-keys-and-closed-generator-precede-status",
+    "source": "<?php\nfunction invalidStartPack376($kind) {\n    try {\n        echo 'G', $kind, '|';\n        if ($kind === 0) { yield false => 7; }\n        if ($kind === 1) { yield 'value' => 7; yield 'value' => 8; }\n        if ($kind === 2) { yield 'tail' => 'X'; yield 0 => 7; }\n    } finally { echo 'C|'; }\n}\nfunction closedStartPack376() { yield 7; }\n$target = new Fiber(static function ($value = 0) { return 17; });\n$target->start();\nforeach ([0, 1, 2] as $kind) {\n    try { $target->start(...invalidStartPack376($kind)); }\n    catch (Throwable $error) { echo $error->getMessage(), '|'; }\n    unset($error);\n}\n$closed = closedStartPack376();\n$closed->next();\ntry { $target->start(...$closed); }\ncatch (Throwable $error) { echo $error->getMessage(), '|'; }\necho (int)$target->isTerminated(), '|', $target->getReturn();\n",
+    "source_sha256": "1962766ae9433650c7156aa62d0ac8d3586b7e1df91f7a29dd130d37a83592b6",
+    "purpose": "Invalid keys, duplicate names and one-pack named ordering are checked before target status; closed Generator acquisition rejects before rewind.",
+    "expected_model": "normal",
+    "native_stdout": "G0|C|Keys must be of type int|string during argument unpacking|G1|C|Named parameter $value overwrites previous argument|G2|C|Cannot use positional argument after named argument during unpacking|Cannot traverse an already closed generator|1|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-start-generator-packs-forward-through-fcc-and-raw-core-start",
+    "source": "<?php\nfunction coreStartPack376($value, $tail) {\n    try { echo 'G|'; yield 'value' => $value; yield 'tail' => $tail; }\n    finally { echo 'C|'; }\n}\n$target = new Fiber(static function (int $value, ...$extra) { echo $value, '|', $extra['tail'], '|'; Fiber::suspend('Y'); return 17; });\n$runner = new Fiber($target->start(...));\necho $runner->start(...coreStartPack376('7', 'X')), '|', (int)$runner->isTerminated(), '|';\n$target->resume();\necho $target->getReturn(), '|';\n$other = new Fiber(static function (int $value, ...$extra) { echo $value, '|', $extra['tail'], '|'; Fiber::suspend('Z'); return 23; });\n$raw = new Fiber([$other, 'start']);\necho $raw->start(...coreStartPack376('9', 'Q')), '|', (int)$raw->isTerminated(), '|';\n$other->resume();\necho $other->getReturn();\n",
+    "source_sha256": "1adc1126e0f917838e16f342f1dd145bd389ccbdb909f90eb3842a59b973ef05",
+    "purpose": "Actual Generator packs complete before ordinary outer START; copied FCC/RAW core buffers retain their real outer witness.",
+    "expected_model": "normal",
+    "native_stdout": "G|C|7|X||1|17|G|C|9|Q||1|23",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "author-fiber-start-iterator-aggregate-acquisition",
+    "source": "<?php\nclass StartAggregate376 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'A|'; yield 'value' => '7'; yield 'tail' => 'X'; }\n}\n$target = new Fiber(static function (int $value, ...$extra) { echo $value, '|', $extra['tail'], '|'; return 17; });\n$target->start(...new StartAggregate376);\necho $target->getReturn();\n",
+    "source_sha256": "927e998fd6e16541b83871c3dbff7556b6144941faeefc2d3acf7b3e0a7b8a53",
+    "purpose": "Real IteratorAggregate acquisition delegates to the returned Generator; separate required dependency if class protocol is not yet admitted.",
+    "expected_model": "unsupported",
+    "native_stdout": "A|7|X|17",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "internal interface method contract",
+    "unsupported_events": []
+  },
+  {
+    "id": "peer-fiber-start-advanced-generator-rewind-error-preserves-live-pack-before-status",
+    "source": "<?php\nfunction advancedStartPack19() {\n    try {\n        yield 'value' => 7;\n        yield 'value' => 9;\n    } finally {\n        echo 'C|';\n    }\n}\n$target = new Fiber(static function () { return 17; });\n$target->start();\n$pack = advancedStartPack19();\n$pack->rewind();\n$pack->next();\ntry { $target->start(...$pack); }\ncatch (Throwable $error) { echo $error->getMessage(), '|'; }\necho $pack->current(), '|', (int)$target->isTerminated(), '|', $target->getReturn(), '|';\nunset($pack);\necho 'END';\n",
+    "source_sha256": "19c98a78fdf597f7358aaff36e7780c998ee7495e7ff231f7f5537f8495bdaa8",
+    "purpose": "Native rewind of a live but advanced Generator throws before target status; immediate generator error must retain/retire the iterator-data owner exactly and leave the original current value intact.",
+    "expected_model": "normal",
+    "native_stdout": "Cannot rewind a generator that was already run|9|1|17|C|END",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-start-traversable-body-throws-retain-identity-and-genuine-implicit-traces",
+    "source": "<?php\nfunction throwingStartPack19() {\n    global $original;\n    try {\n        yield 7;\n        $original = new Exception('generator');\n        throw $original;\n    } finally {\n        echo 'G|';\n    }\n}\nclass StartTraceKeyIterator19 implements Iterator {\n    public function rewind(): void {}\n    public function valid(): bool { return true; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed {\n        global $original;\n        $original = new Exception('key');\n        throw $original;\n    }\n    public function next(): void { echo 'NEXT|'; }\n    public function __destruct() { echo 'I|'; }\n}\n$target = new Fiber(static function ($value) { echo 'BODY|'; return 17; });\ntry { $target->start(...throwingStartPack19()); }\ncatch (Throwable $error) {\n    echo (int)($error === $original), '|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['class'] ?? '', '::', $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\nunset($error, $original);\necho (int)$target->isStarted(), '|';\n$start = $target->start(...);\ntry { $start->__invoke(...new StartTraceKeyIterator19); }\ncatch (Throwable $error) {\n    echo (int)($error === $original), '|', $error->getMessage(), '|';\n    foreach ($error->getTrace() as $frame) {\n        echo $frame['class'] ?? '', '::', $frame['function'], '.', (int)isset($frame['file']), (int)isset($frame['line']), '|';\n    }\n}\nunset($error, $original);\necho (int)$target->isStarted(), '|';\n$target->start(7);\necho $target->getReturn();\n",
+    "source_sha256": "7f2c237a6b6717a97b63d6ee5cf39833ddecc4335001bd076ee024749ce35f13",
+    "purpose": "A real resumed Generator body throw and implicit Iterator key throw precede target entry; fresh exception traces expose true callback lineage without synthetic Generator or START frames.",
+    "expected_model": "normal",
+    "native_stdout": "G|1|generator|::throwingStartPack19.11|0|I|1|key|StartTraceKeyIterator19::key.11|0|BODY|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-start-iterator-borrowed-cv-can-retire-during-parked-callback",
+    "source": "<?php\nclass StartRetiredCvIterator19 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void {\n        global $pack;\n        $pack = null;\n        $this->position = 0;\n        echo 'W|';\n    }\n    public function valid(): bool { return $this->position === 0; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { echo 'K|'; Fiber::suspend('S'); return 0; }\n    public function next(): void { ++$this->position; }\n    public function __destruct() { echo 'I|'; }\n}\n$target = new Fiber(static function (int $value) { echo 'B', $value, '|'; return 17; });\n$pack = new StartRetiredCvIterator19;\n$weakPack = WeakReference::create($pack);\n$parent = new Fiber(static function () use ($target, &$pack) {\n    $target->start(...$pack);\n    echo 'R|';\n    return 23;\n});\necho $parent->start(), '|', (int)($weakPack->get() !== null), '|';\necho $parent->resume(), '|', (int)($weakPack->get() === null), '|', $target->getReturn(), '|', $parent->getReturn();\n",
+    "source_sha256": "2342d4447b99fc195aab2c24931d9cd2e9708c84364fcd50b806e693d0fb2492",
+    "purpose": "rewind clears the reference-shared CV before key suspends; iterator data and key EX(This) retain the old object, without rereading or owning the changed operand cell; iterator destructor precedes target entry.",
+    "expected_model": "normal",
+    "native_stdout": "W|K|S|1|I|B7|R||1|17|23",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "boundary-fiber-start-unpack-traversable-generator",
+    "source": "<?php\nfunction startUnpackTraversable374() { yield 7; }\n$target = new Fiber(static function ($value) { echo $value; return 17; });\n$target->start(...startUnpackTraversable374());\necho '|', $target->getReturn();\n",
+    "source_sha256": "d88cd90cb2de726cf6275df05111e4d8891373c41c8872b6fa8f01d1dc7042d9",
+    "expected_model": "normal",
+    "native_stdout": "7|17",
+    "native_stderr": "",
+    "native_exit": 0,
+    "purpose": "Former374 boundary: real Generator unpack completes before target entry."
+  },
+  {
+    "id": "peer-fiber-start-multiline-iterator-callback-trace-uses-unpack-opline",
+    "source": "<?php\nclass StartMultilineTraceIterator19 implements Iterator {\n    public function rewind(): void {}\n    public function valid(): bool { return true; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { throw new Exception('key'); }\n    public function next(): void { echo 'NEXT|'; }\n}\n$target = new Fiber(static function ($value) { return 17; });\ntry {\n    $target->start(\n        ...new StartMultilineTraceIterator19\n    );\n} catch (Throwable $error) {\n    $frame = $error->getTrace()[0];\n    echo $frame['function'], '|', $frame['line'], '|', (int)$target->isStarted(), '|';\n}\nunset($error, $frame);\n$start = $target->start(...);\ntry {\n    $start->__invoke(\n        ...new StartMultilineTraceIterator19\n    );\n} catch (Throwable $error) {\n    $frame = $error->getTrace()[0];\n    echo $frame['function'], '|', $frame['line'], '|', (int)$target->isStarted(), '|';\n}\nunset($error, $frame);\n$target->start(7);\necho $target->getReturn();\n",
+    "source_sha256": "b70b34300af7cf98fe924c919129e45e3b70b3369840bf2a9472f85615a2d012",
+    "purpose": "Implicit Iterator callback uses the actual SEND_UNPACK opline on multiline ordinary and explicit FCC calls; numeric trace lines distinguish outer call end lines.",
+    "native_stdout": "key|12|0|key|22|0|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "peer-fiber-start-direct-fcc-quiet-iterator-error-retains-selected-receiver",
+    "source": "<?php\nclass ColdStartIterator20 implements Iterator {\n    public function rewind(): void {}\n    public function valid(): bool { return true; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { throw new Exception('key'); }\n    public function next(): void { echo 'NEXT|'; }\n}\n$target = new Fiber(static function ($value) { echo 'BODY|'; return 17; });\n$weak = WeakReference::create($target);\n$start = $target->start(...);\ntry {\n    $start(\n        ...new ColdStartIterator20\n    );\n} catch (Throwable $error) {\n    echo $error->getMessage(), '|', (int)$target->isStarted(), '|';\n}\nunset($error, $target);\necho (int)($weak->get() !== null), '|';\nunset($start);\necho (int)($weak->get() === null);\n",
+    "source_sha256": "dbec945c781d7e43cb46c6ef69f860c435e35750bdbe42f5ff39ab3acfbfd693",
+    "purpose": "A destructor-free Iterator fails before a direct captured start transfers; the Closure remains the sole selected-Fiber owner after the target CV retires.",
+    "native_stdout": "key|0|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
