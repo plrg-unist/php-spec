@@ -181,8 +181,12 @@ array/cell roots, referent edges or GC pins; primitive siblings remain allowed.
 An explicit global reference keeps HCELL and its Leaf edge live after array
 retirement, preventing the second fatal. Exact source2, strict816/113 and complete
 compiler364 retain `9faf09e39`; the helper-load stop, failed local-CV control,
-primary refusal and reached172 diagnostic retain zero credit. Current-parent
-composition is pending. Multiple owning nodes and recursive containers remain
+primary refusal and reached172 diagnostic retain zero credit. Actual366 over
+`87752f2a0` passes strict compilation at `807fa6013` (6.471 seconds). Empty parameter
+attributes/plain traces preserve existing owners; Aggregate/Fiber, quantity and
+undefined-read hooks are inactive. Parent frame/fatal-history fields are preserved;
+private source2/929 retain their original inputs. Multiple owning nodes and recursive
+containers remain
 outside this slice. Wider handlers, rendering,
 child lifetimes, reacquisition, message warnings, parked or escaped storage and
 generic terminal cleanup remain required.

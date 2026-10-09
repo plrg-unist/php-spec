@@ -380,7 +380,10 @@ no owner, edge or GC pin. An explicit global reference instead retains the cell
 and Leaf through the first fatal. Source2, strict816/113 and complete compiler364
 retain `9faf09e39` (6.536 seconds). The initial helper-load stop, failed local-CV
 alias control, primary Unsupported and 172-premise reached diagnostic remain zero.
-Current-parent composition is pending. Wider
+Final366 over `87752f2a0` passes strict compilation at `807fa6013`
+(6.471 seconds). Empty parameter attributes/plain traces add no sensitive wrapper
+or owner; Aggregate/Fiber, quantity and undefined-read hooks are inactive.
+Private source2/929 retain their `9faf09e39` inputs. Wider
 handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
