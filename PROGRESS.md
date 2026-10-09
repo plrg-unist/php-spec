@@ -29,6 +29,9 @@ now retains a unary converted call and commits the saved original despite handle
 retirement/shared throw. Two fresh safe originals and211 frontier checks, including
 a projected owner query, pass at05db/365; strict3 passes5.024s. Last-owner Stringable
 entry cleanup, nullable saved-original reentry and NaN timing remain required.
+Actual367 over288c passes strict3 ate6c5 (5.224s), preserving Aggregate foreach,
+deferred return Notices, live concat and mixed-CV property ingress; private
+source2/211 cuts are unchanged.
 Actual365 over7377 passes strict3 at6b2a (5.020s), retaining current GEN/PROPS,
 retired-owner and SensitiveParameter guards; private source3/236 cuts are unchanged.
 Actual363 over1b33 passes strict3 at1ad9 (4.975s), preserving canonical GEN release
