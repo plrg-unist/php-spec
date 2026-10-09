@@ -74,7 +74,9 @@ Ten originals agree at `e27ceb30c` (362 modules); the namespaced user attribute
 remains explicit Unsupported with zero agreement. Strict compilation and SL112
 (34 derived source checks, 78 reached lifetime checks) pass at the same cut.
 The original false105 fixture and both diagnostics retain zero state credit.
-Current-parent composition is pending; promoted/mixed/hooks and wider wrapper
+Actual 365-module composition over `88ddc64c5` passes strict compilation at
+`78453102d` (5.083 s), preserving current retirement, string, GEN and PROPS paths
+without renewing the private checks. Promoted/mixed/hooks and wider wrapper
 protocols remain required. [Sensitive review](coverage/semantics/sensitive-parameter-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
