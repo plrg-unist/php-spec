@@ -318,6 +318,8 @@ dec $propref_exact_step(pstate, pvalue, pproptypesource?, pvalue?, pproptypesour
 dec $propref_possible_step(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource, ppropertydesc, pproptypesource*, int) : ppropcheck
 dec $propref_possible_convert(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource, pproptypesource*, int, ptypeconversion) : ppropcheck
 dec $propref_coerced_agreement(pstate, pvalue, pproptypesource?, pvalue?, pproptypesource, pvalue, pproptypesource*, int) : ppropcheck
+dec $propref_conversion(pstate, ptbranch*, pvalue, bool) : ptypeconversion
+def $propref_conversion(S, ptbranch*, pvalue, b) = $typed_conversion_at(S, ptbranch*, pvalue, b) -- otherwise
 
 def $propref_check(S, pvalue_original, pproptypesource_first?, eps, eps, z) = PROP_ACCEPT S pvalue_original
 def $propref_check(S, pvalue_original, pproptypesource_first?, (pvalue_coerced), eps, z) = PROP_ACCEPT S pvalue_coerced
@@ -333,8 +335,8 @@ def $propref_exact_step(S, pvalue_original, eps, eps, pproptypesource_current, p
 def $propref_exact_step(S, pvalue_original, (pproptypesource_first), eps, pproptypesource_current, pproptypesource_tail*, z) = $propref_check(S, pvalue_original, (pproptypesource_first), eps, pproptypesource_tail*, z)
 
 def $propref_possible_step(S, pvalue_original, (pproptypesource_first), eps, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z) = PROP_REJECT ($propref_conflict(S, pproptypesource_first, pproptypesource_current, pvalue_original, z))
-def $propref_possible_step(S, pvalue_original, eps, eps, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z) = $propref_possible_convert(S, pvalue_original, eps, eps, pproptypesource_current, pproptypesource_tail*, z, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue_original, $property_strict(S)))
-def $propref_possible_step(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, ppropertydesc, pproptypesource_tail*, z) = $propref_possible_convert(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pproptypesource_tail*, z, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue_original, $property_strict(S)))
+def $propref_possible_step(S, pvalue_original, eps, eps, pproptypesource_current, ppropertydesc, pproptypesource_tail*, z) = $propref_possible_convert(S, pvalue_original, eps, eps, pproptypesource_current, pproptypesource_tail*, z, $propref_conversion(S, ppropertydesc.TYPE, pvalue_original, $property_strict(S)))
+def $propref_possible_step(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, ppropertydesc, pproptypesource_tail*, z) = $propref_possible_convert(S, pvalue_original, (pproptypesource_first), (pvalue_coerced), pproptypesource_current, pproptypesource_tail*, z, $propref_conversion(S, ppropertydesc.TYPE, pvalue_original, $property_strict(S)))
 
 def $propref_possible_convert(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, pproptypesource_tail*, z, TYPEREJECT) = PROP_REJECT ($propref_error(S, pproptypesource_current, pvalue_original, z))
 def $propref_possible_convert(S, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, pproptypesource_tail*, z, ptypeconversion) = $propref_coerced_agreement(S_converted, pvalue_original, pproptypesource_first?, pvalue_coerced?, pproptypesource_current, pvalue_new, pproptypesource_tail*, z)

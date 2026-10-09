@@ -345,6 +345,9 @@ rule PhpStep/foreach-bind-release: S ~> $foreach_bind_release(S[.TODO = (FOREACH
 dec $foreach_bind_pending_filtered_task(pstate, nat, bool, ptask) : bool
 dec $foreach_bind_pending_after(pstate, ptask) : pstate
 dec $foreach_bind_pending_filtered_tasks(pstate, nat, bool, ptask*) : bool
+dec $foreach_bind_commit_task(ptask) : bool
+dec $foreach_bind_commit_tasks(ptask*) : bool
+dec $foreach_bind_pending_filtered_scan(pstate, nat, bool, ptask*) : bool
 dec $foreach_bind_pending_filtered_frames(pstate, nat, bool, pframe*) : bool
 dec $foreach_bind_pending_filtered_vm(pstate, nat, bool, pfibervm) : bool
 dec $foreach_bind_pending_filtered_objects(pstate, nat, bool, pobject*) : bool
@@ -356,8 +359,17 @@ def $foreach_bind_pending_filtered_task(S, n, b_wrapper, FOREACH_BIND_COMMIT pfo
 def $foreach_bind_pending_filtered_task(S, n, b_wrapper, ptask) = false -- otherwise
 def $foreach_bind_pending_after(S, FOREACH_BIND_COMMIT pforeachbind) = S
 def $foreach_bind_pending_after(S, ptask) = $call_after_origin(S, ptask) -- otherwise
-def $foreach_bind_pending_filtered_tasks(S, n, b_wrapper, eps) = false
-def $foreach_bind_pending_filtered_tasks(S, n, b_wrapper, ptask :: ptask_tail*) = ($foreach_bind_pending_filtered_task(S, n, b_wrapper, ptask) \/ $foreach_bind_pending_filtered_tasks($foreach_bind_pending_after(S, ptask), n, b_wrapper, ptask_tail*))
+def $foreach_bind_commit_task(AT porigin ptask) = $foreach_bind_commit_task(ptask)
+def $foreach_bind_commit_task(FOREACH_BIND_COMMIT pforeachbind) = true
+def $foreach_bind_commit_task(ptask) = false -- otherwise
+def $foreach_bind_commit_tasks(eps) = false
+def $foreach_bind_commit_tasks(ptask :: ptask_tail*) = ($foreach_bind_commit_task(ptask) \/ $foreach_bind_commit_tasks(ptask_tail*))
+def $foreach_bind_pending_filtered_scan(S, n, b_wrapper, eps) = false
+def $foreach_bind_pending_filtered_scan(S, n, b_wrapper, ptask :: ptask_tail*) = ($foreach_bind_pending_filtered_task(S, n, b_wrapper, ptask) \/ $foreach_bind_pending_filtered_scan($foreach_bind_pending_after(S, ptask), n, b_wrapper, ptask_tail*))
+def $foreach_bind_pending_filtered_tasks(S, n, b_wrapper, ptask*) = false
+  -- if ~$foreach_bind_commit_tasks(ptask*)
+def $foreach_bind_pending_filtered_tasks(S, n, b_wrapper, ptask*) = $foreach_bind_pending_filtered_scan(S, n, b_wrapper, ptask*)
+  -- if $foreach_bind_commit_tasks(ptask*)
 def $foreach_bind_pending_filtered_frames(S, n, b_wrapper, eps) = false
 def $foreach_bind_pending_filtered_frames(S, n, b_wrapper, pframe :: pframe_tail*) = ($foreach_bind_pending_filtered_tasks($constant_frame_scope(S, pframe, pframe_tail*), n, b_wrapper, pframe.TODO) \/ $foreach_bind_pending_filtered_frames(S, n, b_wrapper, pframe_tail*))
 def $foreach_bind_pending_filtered_vm(S, n, b_wrapper, pfibervm) = ($foreach_bind_pending_filtered_tasks(S_view, n, b_wrapper, S_view.TODO) \/ $foreach_bind_pending_filtered_frames(S_view, n, b_wrapper, S_view.FRAMES))

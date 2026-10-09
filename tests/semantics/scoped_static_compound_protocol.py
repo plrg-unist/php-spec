@@ -50,8 +50,8 @@ def start(state, row):
             *seek(state, f'{state}_initial[.COMPLETION = NORMAL]', 0)]
 
 
-def seek(state, previous, phase):
-    return [f'{state}_reached = $scoped_seek({previous}, {phase}, 1000)',
+def seek(state, previous, phase, steps=1000):
+    return [f'{state}_reached = $scoped_seek({previous}, {phase}, {steps})',
             f'{state}_reached.COMPLETION = NORMAL \\/ {state}_reached.COMPLETION = BUDGET',
             f'{state} = {state}_reached[.COMPLETION = NORMAL]',
             f'$scoped_phase({state}, {phase})']
@@ -397,10 +397,10 @@ def computed_guards(state):
             f'$heap_valid($heap_graph({state}))']
 
 
-def computed_start(state, row, phase=4):
+def computed_start(state, row, phase=4, steps=1000):
     return [f'{state}_initial = $php_run({row["fixture"]}, 0, {row["filename"]})',
             f'{state}_initial.COMPLETION = BUDGET',
-            *seek(state, f'{state}_initial[.COMPLETION = NORMAL]', phase)]
+            *seek(state, f'{state}_initial[.COMPLETION = NORMAL]', phase, steps)]
 
 
 def computed_name(state, suffix):
@@ -589,8 +589,317 @@ $static_compound_source(S_keyword_written, pstaticcompound_keyword_live, pcompou
     return checks
 
 
+
+STRINGABLE_CASES = [
+    ('stringable-name-receiver-and-cold-owners', [
+        'stringable-property-name-borrowed-cv', 'stringable-property-name-cold-owners']),
+    ('stringable-name-late-address-and-pending-write', [
+        'stringable-property-name-slot-rebind', 'stringable-property-name-pending-masks']),
+]
+
+STRINGABLE_EXTRA = r'''
+def $scoped_phase(S, 8) = true
+  -- if S.TODO = (STRINGIFY_RESULT n porigin z) :: (COMPOUND_STATIC_CAST pcomputedcompound n_selected porigin_root) :: ptask*
+def $scoped_phase(S, 9) = true
+  -- if S.TODO = (COMPOUND_STATIC_CAST pcomputedcompound n porigin_root) :: ptask*
+def $scoped_phase(S, 10) = true
+  -- if S.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?) :: ptask*
+def $scoped_phase(S, 11) = true
+  -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
+  -- if pcomputedaddress.PENDING = eps
+def $scoped_phase(S, 13) = true
+  -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
+  -- if pcomputedaddress.PENDING = (n_pending)
+  -- if pcomputedaddress.NAME = $ptascii("text")
+def $scoped_phase(S, 14) = true
+  -- if S.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound n porigin eps (n_pending)) :: ptask*
+def $scoped_phase(S, 15) = true
+  -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
+  -- if pcomputedaddress.PENDING = (n_pending)
+  -- if pcomputedaddress.NAME = $ptascii("reference")
+def $scoped_phase(S, 16) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*
+  -- if pdestructionoperation.SOURCE = COMPOUND_STATIC_FETCH pcomputedcompound n porigin ptbytes n_pending?
+def $scoped_phase(S, 17) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_old
+  -- if pdestructionoperation.PENDING =/= eps
+def $scoped_phase(S, 18) = true
+  -- if S.TODO = (THROW_VALUE porigin z) :: ptask*
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.NAME = $ptascii("BorrowedDoubleThrowNameReview19::__toString")
+'''
+
+
+def stringable_receiver(borrowed, cold):
+    checks = computed_start('S_borrowed', borrowed, 8)
+    checks += lines(r'''
+S_borrowed.TODO = (STRINGIFY_RESULT n_borrowed porigin_borrowed_string z_borrowed_string) :: (COMPOUND_STATIC_CAST pcomputedcompound_borrowed n_borrowed porigin_borrowed) :: ptask_borrowed*
+(porigin_borrowed_string, z_borrowed_string) = (pcomputedcompound_borrowed.SITE, pcomputedcompound_borrowed.LINE)
+pcomputedcompound_borrowed.NAME = VARIABLE $ptascii("property") z_property
+pcomputedcompound_borrowed.RIGHT = VARIABLE $ptascii("rhs") z_rhs
+S_borrowed.RESULT = KNOWN (PSTRING $ptascii("value"))
+$computed_static_cast_valid(S_borrowed, pcomputedcompound_borrowed, n_borrowed, porigin_borrowed)
+$stringify_pairs_valid(S_borrowed, S_borrowed.TODO)
+$task_nodes(COMPOUND_STATIC_CAST pcomputedcompound_borrowed n_borrowed porigin_borrowed) = eps
+$heap_owners($heap_graph(S_borrowed), HOBJECT n_borrowed) = 1
+S_borrowed_global = $global_table_view(S_borrowed)
+$lookup(S_borrowed_global.ENV, $ptascii("property")) = (n_property)
+S_borrowed.STORE[n_property] = DEFINED (PSTRING $ptascii("other"))
+$lookup(S_borrowed_global.ENV, $ptascii("rhs")) = (n_rhs)
+S_borrowed.STORE[n_rhs] = DEFINED (PSTRING $ptascii("after"))
+~$computed_static_valid(S_borrowed, pcomputedcompound_borrowed[.NAME = KNOWN (POBJECT n_borrowed)])
+~$call_task_valid(S_borrowed, COMPOUND_STATIC_CAST pcomputedcompound_borrowed[.LINE = $(pcomputedcompound_borrowed.LINE + 1)] n_borrowed porigin_borrowed)
+''') + computed_guards('S_borrowed')
+    checks += seek('S_borrowed_fetch', 'S_borrowed', 10) + lines(r'''
+S_borrowed_fetch.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound_borrowed n_borrowed porigin_borrowed $ptascii("value") eps) :: ptask_borrowed*
+~((HOBJECT n_borrowed) <- S_borrowed_fetch.ALLOCATIONS)
+$ordinary_internal_string_evidence(S_borrowed_fetch, n_borrowed)
+$computed_static_cast_valid(S_borrowed_fetch, pcomputedcompound_borrowed, n_borrowed, porigin_borrowed)
+$task_nodes(COMPOUND_STATIC_FETCH pcomputedcompound_borrowed n_borrowed porigin_borrowed $ptascii("value") eps) = eps
+S_borrowed_fetch.STORE[n_property] = DEFINED (PSTRING $ptascii("other"))
+S_borrowed_fetch.STORE[n_rhs] = DEFINED (PSTRING $ptascii("retired"))
+$outputs(S_borrowed_fetch.EVENTS) = $ptascii("N;B;D;")
+''') + computed_guards('S_borrowed_fetch')
+    checks += seek('S_borrowed_address', 'S_borrowed_fetch', 11) + lines(r'''
+S_borrowed_address.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress_borrowed) :: ptask_borrowed*
+pcomputedaddress_borrowed.CLASS = pcomputedcompound_borrowed.CLASS
+pcomputedaddress_borrowed.RIGHT = pcomputedcompound_borrowed.RIGHT
+pcomputedaddress_borrowed.NAME = $ptascii("value")
+S_borrowed_address.BASE = BASE_CLASS_STATIC porigin_borrowed $ptascii("value")
+$task_nodes(COMPOUND_STATIC_APPLY pcomputedaddress_borrowed) = eps
+$call_task_valid(S_borrowed_address, COMPOUND_STATIC_APPLY pcomputedaddress_borrowed)
+pcomputedaddress_other = pcomputedaddress_borrowed[.NAME = $ptascii("other")]
+$computed_static_address_valid(S_borrowed_address, pcomputedaddress_other)
+~$call_task_valid(S_borrowed_address, COMPOUND_STATIC_APPLY pcomputedaddress_other)
+S_borrowed_wrong = S_borrowed_address[.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress_other) :: ptask_borrowed*]
+~$call_descriptors_valid(S_borrowed_wrong)
+~$call_task_valid(S_borrowed_address[.BASE = BASE_VALUE (KNOWN PNULL)], COMPOUND_STATIC_APPLY pcomputedaddress_borrowed)
+''') + computed_guards('S_borrowed_address')
+    checks += computed_finish('S_borrowed_address', borrowed['expected_stdout'])
+    checks += computed_start('S_cold_pin', cold, 8) + lines(r'''
+S_cold_pin.TODO = (STRINGIFY_RESULT n_cold_name porigin_cold_string z_cold_string) :: (COMPOUND_STATIC_CAST pcomputedcompound_cold_name n_cold_name porigin_cold_child) :: ptask_cold_name*
+(porigin_cold_string, z_cold_string) = (pcomputedcompound_cold_name.SITE, pcomputedcompound_cold_name.LINE)
+pcomputedcompound_cold_name.NAME = KNOWN (POBJECT n_cold_name)
+pcomputedcompound_cold_name.RIGHT = KNOWN (POBJECT n_cold_right)
+n_cold_name =/= n_cold_right
+$task_nodes(COMPOUND_STATIC_CAST pcomputedcompound_cold_name n_cold_name porigin_cold_child) = [HOBJECT n_cold_name, HOBJECT n_cold_right]
+$heap_owners($heap_graph(S_cold_pin), HOBJECT n_cold_name) = 2
+$heap_owners($heap_graph(S_cold_pin), HOBJECT n_cold_right) = 1
+~$computed_static_cast_valid(S_cold_pin, pcomputedcompound_cold_name, n_cold_right, porigin_cold_child)
+''') + computed_guards('S_cold_pin')
+    checks += seek('S_cold_cast', 'S_cold_pin', 9) + lines(r'''
+ptask_cold_name_work* = $class_constant_static_work(S_cold_cast, pcomputedcompound_cold_name.CLASS, $ptascii("value"), pcomputedcompound_cold_name.LINE)
+ptask_cold_name_work* =/= eps
+S_cold_name_queued = $drive_steps(S_cold_cast, 1)[.COMPLETION = NORMAL]
+S_cold_name_queued.TODO[|ptask_cold_name_work*|] = CLASS_CONST_SELECTED pstaticselection_cold_name $ptascii("value") pcomputedcompound_cold_name.LINE
+S_cold_name_queued.TODO = ptask_cold_name_work* ++ [CLASS_CONST_SELECTED pstaticselection_cold_name $ptascii("value") pcomputedcompound_cold_name.LINE, COMPOUND_STATIC_FETCH pcomputedcompound_cold_name n_cold_name porigin_cold_child $ptascii("value") eps] ++ ptask_cold_name*
+pstaticselection_cold_name.ROOT = porigin_cold_child
+$class_static_selection_valid(S_cold_name_queued, pstaticselection_cold_name)
+$computed_static_fetch_marker(S_cold_name_queued, S_cold_name_queued.TODO, pcomputedcompound_cold_name, n_cold_name, porigin_cold_child, $ptascii("value"), eps)
+$computed_static_fetch_pair(S_cold_name_queued.TODO[|ptask_cold_name_work*|:2], pcomputedcompound_cold_name, n_cold_name, porigin_cold_child, $ptascii("value"), eps)
+~$computed_static_fetch_pair(S_cold_name_queued.TODO[|ptask_cold_name_work*|:2], pcomputedcompound_cold_name, n_cold_name, porigin_cold_child, $ptascii("value"), (n_cold_name))
+$task_nodes(COMPOUND_STATIC_FETCH pcomputedcompound_cold_name n_cold_name porigin_cold_child $ptascii("value") eps) = [HOBJECT n_cold_name, HOBJECT n_cold_right]
+S_cold_marker_wrong = S_cold_name_queued[.TODO = ptask_cold_name_work* ++ [CLASS_CONST_SELECTED pstaticselection_cold_name $ptascii("value") $(pcomputedcompound_cold_name.LINE + 1), COMPOUND_STATIC_FETCH pcomputedcompound_cold_name n_cold_name porigin_cold_child $ptascii("value") eps] ++ ptask_cold_name*]
+~$computed_static_fetch_marker(S_cold_marker_wrong, S_cold_marker_wrong.TODO, pcomputedcompound_cold_name, n_cold_name, porigin_cold_child, $ptascii("value"), eps)
+~$call_descriptors_valid(S_cold_marker_wrong)
+''') + computed_guards('S_cold_name_queued')
+    checks += seek('S_cold_name_address', 'S_cold_name_queued', 11) + lines(r'''
+S_cold_name_address.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress_cold_name) :: ptask_cold_name*
+~((HOBJECT n_cold_name) <- S_cold_name_address.ALLOCATIONS)
+pcomputedaddress_cold_name.RIGHT = KNOWN (POBJECT n_cold_right)
+$task_nodes(COMPOUND_STATIC_APPLY pcomputedaddress_cold_name) = [HOBJECT n_cold_right]
+$heap_owners($heap_graph(S_cold_name_address), HOBJECT n_cold_right) = 1
+$outputs(S_cold_name_address.EVENTS) = $ptascii("H;Q;N;D:c;")
+''') + computed_guards('S_cold_name_address')
+    return checks
+
+
+def stringable_late_address(alias, pending):
+    checks = computed_start('S_alias_fetch', alias, 10) + lines(r'''
+S_alias_fetch.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound_alias_name n_alias_name porigin_alias_root $ptascii("value") eps) :: ptask_alias_name*
+pcomputedcompound_alias_name.NAME = KNOWN (POBJECT n_alias_name)
+$class_named(S_alias_fetch.CLASSNAMES, $ptlc($ptascii("NameRebindSlotReview19"))) = (porigin_alias_root)
+$class_static_select(S_alias_fetch, porigin_alias_root, $ptascii("value")) = (ppropertydesc_alias_name)
+$class_static_at(S_alias_fetch.CLASSSTATICS, ppropertydesc_alias_name.ORIGIN) = (pclassstatic_before_name)
+pclassstatic_before_name.STATE = PROP_VALUE (DIRECT (PSTRING $ptascii("a")))
+S_alias_global = $global_table_view(S_alias_fetch)
+$lookup(S_alias_global.ENV, $ptascii("class")) = (n_class_name_cv)
+S_alias_fetch.STORE[n_class_name_cv] = DEFINED (PSTRING $ptascii("NameTypedRebindSlotReview19"))
+$heap_owners($heap_graph(S_alias_fetch), HOBJECT n_alias_name) = 1
+''') + computed_guards('S_alias_fetch')
+    checks += seek('S_alias_operation', 'S_alias_fetch', 16) + lines(r'''
+S_alias_operation.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_alias_name) :: ptask_alias_operation_tail*
+S_alias_operation.DESTRUCTION.OPERATIONS = pdestructionoperation_alias_name :: pdestructionoperation_alias_tail*
+~$foreach_bind_commit_tasks(S_alias_operation.TODO)
+pdestructionoperation_alias_bad = pdestructionoperation_alias_name[.ORIGIN = eps]
+S_alias_bad_operation = S_alias_operation[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_alias_bad) :: ptask_alias_operation_tail*][.DESTRUCTION.OPERATIONS = pdestructionoperation_alias_bad :: pdestructionoperation_alias_tail*]
+~$foreach_bind_pending_filtered_tasks(S_alias_bad_operation, n_class_name_cv, false, S_alias_bad_operation.TODO)
+~$destructor_operation_valid(S_alias_bad_operation, pdestructionoperation_alias_bad)
+~$call_descriptors_valid(S_alias_bad_operation)
+''') + computed_guards('S_alias_operation')
+    checks += seek('S_alias_address', 'S_alias_operation', 11) + lines(r'''
+S_alias_address.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress_alias_name) :: ptask_alias_name*
+pcomputedaddress_alias_name.ROOT = porigin_alias_root
+~((HOBJECT n_alias_name) <- S_alias_address.ALLOCATIONS)
+$class_static_at(S_alias_address.CLASSSTATICS, ppropertydesc_alias_name.ORIGIN) = (pclassstatic_after_name)
+pclassstatic_after_name.STATE = PROP_VALUE (ALIAS n_alias_slot)
+S_alias_address.STORE[n_alias_slot] = DEFINED (PSTRING $ptascii("old"))
+$call_task_valid(S_alias_address, COMPOUND_STATIC_APPLY pcomputedaddress_alias_name)
+S_alias_written = $drive_steps(S_alias_address, 1)[.COMPLETION = NORMAL]
+S_alias_written.STORE[n_alias_slot] = DEFINED (PSTRING $ptascii("oldb"))
+S_alias_written.RESULT = KNOWN (PSTRING $ptascii("oldb"))
+''') + computed_guards('S_alias_address')
+    checks += seek('S_typed_name_fetch', 'S_alias_written', 10) + lines(r'''
+S_typed_name_fetch.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound_typed_name n_typed_name porigin_typed_name_root $ptascii("value") eps) :: ptask_typed_name*
+$class_static_select(S_typed_name_fetch, porigin_typed_name_root, $ptascii("value")) = (ppropertydesc_typed_name)
+$class_static_at(S_typed_name_fetch.CLASSSTATICS, ppropertydesc_typed_name.ORIGIN) = (pclassstatic_typed_before)
+pclassstatic_typed_before.STATE = PROP_VALUE (ALIAS n_typed_original)
+S_typed_name_fetch.STORE[n_typed_original] = DEFINED (PINT 1)
+''')
+    checks += seek('S_typed_name_address', 'S_typed_name_fetch', 11) + lines(r'''
+S_typed_name_address.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress_typed_name) :: ptask_typed_name*
+$class_static_at(S_typed_name_address.CLASSSTATICS, ppropertydesc_typed_name.ORIGIN) = (pclassstatic_typed_after)
+pclassstatic_typed_after.STATE = PROP_VALUE (ALIAS n_typed_replacement)
+n_typed_original =/= n_typed_replacement
+S_typed_name_address.STORE[n_typed_original] = DEFINED (PINT 1)
+S_typed_name_address.STORE[n_typed_replacement] = DEFINED (PINT 7)
+S_typed_name_written = $drive_steps(S_typed_name_address, 1)[.COMPLETION = NORMAL]
+S_typed_name_written.STORE[n_typed_original] = DEFINED (PINT 1)
+S_typed_name_written.STORE[n_typed_replacement] = DEFINED (PINT 72)
+S_typed_name_written.RESULT = KNOWN (PINT 72)
+''') + computed_guards('S_typed_name_address')
+    # Four earlier pending operations precede this reference frontier.
+    checks += computed_start('S_mask_reference', pending, 15, steps=2000) + lines(r'''
+S_mask_reference.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress_mask_reference) :: ptask_mask_reference*
+pcomputedaddress_mask_reference.PENDING = (n_mask_reference_pending)
+$class_static_select(S_mask_reference, pcomputedaddress_mask_reference.ROOT, pcomputedaddress_mask_reference.NAME) = (ppropertydesc_mask_reference)
+$class_static_at(S_mask_reference.CLASSSTATICS, ppropertydesc_mask_reference.ORIGIN) = (pclassstatic_mask_reference)
+pclassstatic_mask_reference.STATE = PROP_VALUE (ALIAS n_mask_reference)
+S_mask_reference.STORE[n_mask_reference] = DEFINED (PINT 7)
+$computed_static_pending_writer(S_mask_reference[.ORIGIN = (pcomputedaddress_mask_reference.SITE)], pcomputedaddress_mask_reference)
+$propref_conversion(S_mask_reference[.ORIGIN = (pcomputedaddress_mask_reference.SITE)], ppropertydesc_mask_reference.TYPE, PSTRING $ptascii("72"), false) = TYPEREJECT
+''') + computed_guards('S_mask_reference')
+    checks += seek('S_mask_raw', 'S_mask_reference', 13) + lines(r'''
+S_mask_raw.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress_mask_raw) :: ptask_mask_raw*
+pcomputedaddress_mask_raw.PENDING = (n_mask_raw_pending)
+$class_static_select(S_mask_raw, pcomputedaddress_mask_raw.ROOT, pcomputedaddress_mask_raw.NAME) = (ppropertydesc_mask_raw)
+$class_static_at(S_mask_raw.CLASSSTATICS, ppropertydesc_mask_raw.ORIGIN) = (pclassstatic_mask_raw)
+pclassstatic_mask_raw.STATE = PROP_VALUE (ALIAS n_mask_raw)
+S_mask_raw.STORE[n_mask_raw] = DEFINED (PSTRING $ptascii("a"))
+n_mask_raw =/= n_mask_reference
+$task_nodes(COMPOUND_STATIC_APPLY pcomputedaddress_mask_raw) = [HOBJECT n_mask_raw_pending]
+S_mask_raw_place = $compound_location(S_mask_raw[.ORIGIN = (pcomputedaddress_mask_raw.SITE)], BASE_CLASS_STATIC pcomputedaddress_mask_raw.ROOT pcomputedaddress_mask_raw.NAME, pcomputedaddress_mask_raw.LINE)
+$static_compound_capture(S_mask_raw_place, ppropertydesc_mask_raw.ORIGIN, pcomputedaddress_mask_raw.SITE, |S_mask_raw_place.CLASSCONSTANTHISTORY|) = (pstaticcompound_mask_raw)
+pstaticcompound_mask_raw.CELL = (n_mask_raw)
+~pstaticcompound_mask_raw.VERIFY
+S_mask_raw_entry = S_mask_raw_place[.LOCATION = STATIC_COMPOUND pstaticcompound_mask_raw][.CLASSCONSTANTHISTORY = S_mask_raw_place.CLASSCONSTANTHISTORY ++ [$static_compound_enter_event(S_mask_raw_place, pstaticcompound_mask_raw, pcomputedaddress_mask_raw.SITE, pcomputedaddress_mask_raw.LINE)]][.RESULT = KNOWN (PSTRING $ptascii("a2"))]
+$reference_coercion_admission(S_mask_raw_entry, n_mask_raw, pcomputedaddress_mask_raw.SITE, pcomputedaddress_mask_raw.LINE, $ptascii("a2"))
+(HCELL n_mask_reference) <- S_mask_raw_entry.ALLOCATIONS
+n_mask_reference <- S_mask_raw_entry.REFCELLS
+S_mask_raw_foreign = S_mask_raw_entry[.LOCATION = STATIC_COMPOUND pstaticcompound_mask_raw[.CELL = (n_mask_reference)]]
+~$reference_coercion_admission(S_mask_raw_foreign, n_mask_reference, pcomputedaddress_mask_raw.SITE, pcomputedaddress_mask_raw.LINE, $ptascii("a2"))
+S_mask_raw_verify = S_mask_raw_entry[.LOCATION = STATIC_COMPOUND pstaticcompound_mask_raw[.VERIFY = true]]
+~$reference_coercion_admission(S_mask_raw_verify, n_mask_raw, pcomputedaddress_mask_raw.SITE, pcomputedaddress_mask_raw.LINE, $ptascii("a2"))
+S_mask_raw_no_pending = S_mask_raw_entry[.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress_mask_raw[.PENDING = eps]) :: ptask_mask_raw*]
+~$reference_coercion_admission(S_mask_raw_no_pending, n_mask_raw, pcomputedaddress_mask_raw.SITE, pcomputedaddress_mask_raw.LINE, $ptascii("a2"))
+S_mask_raw_zero = $drive_steps(S_mask_raw, 0)
+S_mask_raw_zero = S_mask_raw[.COMPLETION = BUDGET]
+S_mask_raw_step = $drive_steps(S_mask_raw, 1)
+S_mask_raw_step.COMPLETION = BUDGET
+S_mask_raw_written = S_mask_raw_step[.COMPLETION = NORMAL]
+S_mask_raw_written.TODO = (THROW_SEARCH n_mask_raw_pending) :: ptask_mask_raw*
+S_mask_raw_written.STORE[n_mask_raw] = DEFINED (PSTRING $ptascii("a2"))
+$reference_coercion_at(S_mask_raw_written.REFCOERCIONS, n_mask_raw) = (prefcoercion_mask_raw)
+prefcoercion_mask_raw.VALUE = $ptascii("a2")
+$reference_coercion_row_valid(S_mask_raw_written, prefcoercion_mask_raw)
+$proprefs_valid(S_mask_raw_written)
+S_mask_raw_written.CLASSCONSTANTHISTORY = S_mask_raw.CLASSCONSTANTHISTORY ++ [$static_compound_enter_event(S_mask_raw_place, pstaticcompound_mask_raw, pcomputedaddress_mask_raw.SITE, pcomputedaddress_mask_raw.LINE), CCCOMPOUNDWRITE pstaticcompound_mask_raw pcomputedaddress_mask_raw.SITE pcomputedaddress_mask_raw.LINE $ptascii("a2") (|S_mask_raw.DECLARATIONS|)]
+''') + computed_guards('S_mask_raw') + computed_guards('S_mask_raw_written')
+    checks += seek('S_mask_failed_method', 'S_mask_raw_written', 18) + lines(r'''
+S_mask_failed_method.CURRENT = (pcallcontext_mask_failed_method)
+''')
+    checks += seek('S_mask_failed_operation', 'S_mask_failed_method', 17) + lines(r'''
+S_mask_failed_operation.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_failed) :: ptask_mask_failed_operation*
+S_mask_failed_operation.DESTRUCTION.OPERATIONS = pdestructionoperation_mask_failed :: pdestructionoperation_mask_tail*
+pdestructionoperation_mask_failed.SOURCE = THROW_SEARCH n_mask_cast
+pdestructionoperation_mask_failed.PENDING = (n_mask_drop)
+pdestructionoperation_mask_failed.COMPLETION = NORMAL
+pdestructionoperation_mask_failed.VALUE = KNOWN PNULL
+pdestructionoperation_mask_failed.CALLER = S_mask_failed_operation.CURRENT
+pdestructionoperation_mask_failed.CALLER =/= (pcallcontext_mask_failed_method)
+$destructor_operation_valid(S_mask_failed_operation, pdestructionoperation_mask_failed)
+$call_task_valid(S_mask_failed_operation, DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_failed)
+$computed_static_throw_fetch(ptask_mask_failed_operation*, pdestructionoperation_mask_failed.ORIGIN, n_mask_cast) = (ptask_mask_cast_fetch)
+ptask_mask_cast_fetch = COMPOUND_STATIC_FETCH pcomputedcompound_mask_cast n_mask_cast_receiver porigin_mask_cast_root ptbytes_mask_cast n_mask_cast_pending?
+ptbytes_mask_cast = eps
+n_mask_cast_pending? = (n_mask_cast)
+pdestructionoperation_mask_failed.ORIGIN = $origin_child((pcomputedcompound_mask_cast.SITE), [PCFIELD 0])
+$computed_static_throw_fetch((CLASS_CONST_BIND porigin_mask_cast_root) :: ptask_mask_failed_operation*, pdestructionoperation_mask_failed.ORIGIN, n_mask_cast) = (ptask_mask_cast_fetch)
+$computed_static_fetch_pending([CLASS_CONST_BIND porigin_mask_cast_root, ptask_mask_cast_fetch, ORIGIN_RETURN eps], ptask_mask_cast_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_mask_cast n_mask_cast_receiver porigin_mask_cast_root eps (n_mask_drop)) = [CLASS_CONST_BIND porigin_mask_cast_root, COMPOUND_STATIC_FETCH pcomputedcompound_mask_cast n_mask_cast_receiver porigin_mask_cast_root eps (n_mask_drop), ORIGIN_RETURN eps]
+ptask_mask_empty_pending* = $computed_static_fetch_pending(ptask_mask_failed_operation*, ptask_mask_cast_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_mask_cast n_mask_cast_receiver porigin_mask_cast_root eps eps)
+$computed_static_throw_fetch(ptask_mask_empty_pending*, pdestructionoperation_mask_failed.ORIGIN, n_mask_cast) = eps
+$computed_static_throw_fetch(ptask_mask_failed_operation*, pdestructionoperation_mask_failed.ORIGIN, n_mask_drop) = eps
+$computed_static_throw_fetch(ptask_mask_failed_operation*, (pcomputedcompound_mask_cast.SITE), n_mask_cast) = eps
+ptask_mask_nonempty_name* = $computed_static_fetch_pending(ptask_mask_failed_operation*, ptask_mask_cast_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_mask_cast n_mask_cast_receiver porigin_mask_cast_root $ptascii("text") (n_mask_cast))
+$computed_static_throw_fetch(ptask_mask_nonempty_name*, pdestructionoperation_mask_failed.ORIGIN, n_mask_cast) = eps
+S_mask_failed_cleanup = $eager_cleanup_finish(S_mask_failed_operation, pdestructionoperation_mask_failed)[.DESTRUCTION.OPERATIONS = pdestructionoperation_mask_tail*]
+S_mask_failed_caller = $destructor_pending_finish(S_mask_failed_cleanup, pdestructionoperation_mask_failed[.CALLER = (pcallcontext_mask_failed_method)], n_mask_drop, ptask_mask_failed_operation*)
+S_mask_failed_caller.TODO = (THROW_SEARCH n_mask_drop) :: ptask_mask_failed_operation*
+S_mask_failed_source = $destructor_pending_finish(S_mask_failed_cleanup, pdestructionoperation_mask_failed[.SOURCE = THROW_SEARCH n_mask_drop], n_mask_drop, ptask_mask_failed_operation*)
+S_mask_failed_source.TODO = (THROW_SEARCH n_mask_drop) :: ptask_mask_failed_operation*
+S_mask_failed_origin = $destructor_pending_finish(S_mask_failed_cleanup, pdestructionoperation_mask_failed[.ORIGIN = (pcomputedcompound_mask_cast.SITE)], n_mask_drop, ptask_mask_failed_operation*)
+S_mask_failed_origin.TODO = (THROW_SEARCH n_mask_drop) :: ptask_mask_failed_operation*
+$computed_static_throw_projection(S_mask_failed_operation, pdestructionoperation_mask_failed)
+pdestructionoperation_mask_failed.BASE = BASE_CLASS_STATIC porigin_mask_cast_root eps
+S_mask_failed_view = $call_after_origin(S_mask_failed_operation, DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_failed)
+S_mask_failed_view.TODO = ptask_mask_failed_operation*
+S_mask_failed_view.BASE = pdestructionoperation_mask_failed.BASE
+S_mask_failed_view.RESULT = S_mask_failed_operation.RESULT
+S_mask_failed_view.DESTRUCTION.OPERATIONS = pdestructionoperation_mask_tail*
+$call_task_valid(S_mask_failed_view, ptask_mask_cast_fetch)
+pdestructionoperation_mask_bad_base = pdestructionoperation_mask_failed[.BASE = BASE_VALUE (KNOWN PNULL)]
+S_mask_failed_bad_base = S_mask_failed_operation[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_bad_base) :: ptask_mask_failed_operation*][.DESTRUCTION.OPERATIONS = pdestructionoperation_mask_bad_base :: pdestructionoperation_mask_tail*]
+~$computed_static_throw_projection(S_mask_failed_bad_base, pdestructionoperation_mask_bad_base)
+pdestructionoperation_mask_bad_source = pdestructionoperation_mask_failed[.SOURCE = THROW_SEARCH n_mask_drop]
+S_mask_failed_bad_source = S_mask_failed_operation[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_bad_source) :: ptask_mask_failed_operation*][.DESTRUCTION.OPERATIONS = pdestructionoperation_mask_bad_source :: pdestructionoperation_mask_tail*]
+~$computed_static_throw_projection(S_mask_failed_bad_source, pdestructionoperation_mask_bad_source)
+pdestructionoperation_mask_bad_origin = pdestructionoperation_mask_failed[.ORIGIN = (pcomputedcompound_mask_cast.SITE)]
+S_mask_failed_bad_origin = S_mask_failed_operation[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_bad_origin) :: ptask_mask_failed_operation*][.DESTRUCTION.OPERATIONS = pdestructionoperation_mask_bad_origin :: pdestructionoperation_mask_tail*]
+~$computed_static_throw_projection(S_mask_failed_bad_origin, pdestructionoperation_mask_bad_origin)
+pdestructionoperation_mask_bad_caller = pdestructionoperation_mask_failed[.CALLER = (pcallcontext_mask_failed_method)]
+S_mask_failed_bad_caller = S_mask_failed_operation[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_bad_caller) :: ptask_mask_failed_operation*][.DESTRUCTION.OPERATIONS = pdestructionoperation_mask_bad_caller :: pdestructionoperation_mask_tail*]
+~$computed_static_throw_projection(S_mask_failed_bad_caller, pdestructionoperation_mask_bad_caller)
+~$computed_static_throw_projection(S_mask_failed_operation[.DESTRUCTION.OPERATIONS = pdestructionoperation_mask_tail*], pdestructionoperation_mask_failed)
+~$computed_static_throw_projection(S_mask_failed_operation[.TODO = ptask_mask_failed_operation*], pdestructionoperation_mask_failed)
+~$computed_static_throw_projection(S_mask_failed_operation[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_failed) :: ptask_mask_empty_pending*], pdestructionoperation_mask_failed)
+~$computed_static_throw_projection(S_mask_failed_operation[.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_mask_failed) :: ptask_mask_nonempty_name*], pdestructionoperation_mask_failed)
+''') + computed_guards('S_mask_failed_operation')
+    checks += seek('S_mask_failed_fetch', 'S_mask_failed_operation', 14) + lines(r'''
+S_mask_failed_fetch.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound_mask_failed n_mask_failed porigin_mask_failed eps (n_mask_drop)) :: ptask_mask_failed*
+pcomputedcompound_mask_failed.NAME = VARIABLE $ptascii("borrowedProperty") z_mask_property
+~((HOBJECT n_mask_failed) <- S_mask_failed_fetch.ALLOCATIONS)
+$ordinary_internal_string_evidence(S_mask_failed_fetch, n_mask_failed)
+$throwable_field(S_mask_failed_fetch, n_mask_drop, "message") = PSTRING $ptascii("drop")
+$throwable_previous_id(S_mask_failed_fetch, n_mask_drop) = (n_mask_cast)
+$throwable_field(S_mask_failed_fetch, n_mask_cast, "message") = PSTRING $ptascii("cast")
+S_mask_failed_read = $class_static_read(S_mask_failed_fetch, porigin_mask_failed, eps, pcomputedcompound_mask_failed.LINE)
+S_mask_failed_error = $computed_static_pending_end(S_mask_failed_read[.TODO = eps], (n_mask_drop), ptask_mask_failed*)
+S_mask_failed_error.COMPLETION = THROWING n_mask_lookup
+$throwable_previous_id(S_mask_failed_error, n_mask_lookup) = (n_mask_drop)
+$throwable_previous_id(S_mask_failed_error, n_mask_drop) = (n_mask_cast)
+$computed_static_fetch_pair([CLASS_CONST_STATIC pcomputedcompound_mask_failed.CLASS eps pcomputedcompound_mask_failed.LINE, COMPOUND_STATIC_FETCH pcomputedcompound_mask_failed n_mask_failed porigin_mask_failed eps (n_mask_drop)], pcomputedcompound_mask_failed, n_mask_failed, porigin_mask_failed, eps, (n_mask_drop))
+~$computed_static_fetch_pair([CLASS_CONST_STATIC pcomputedcompound_mask_failed.CLASS eps pcomputedcompound_mask_failed.LINE, COMPOUND_STATIC_FETCH pcomputedcompound_mask_failed n_mask_failed porigin_mask_failed eps (n_mask_drop)], pcomputedcompound_mask_failed, n_mask_failed, porigin_mask_failed, eps, (n_mask_cast))
+$call_task_valid(S_mask_failed_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_mask_failed n_mask_failed porigin_mask_failed eps (n_mask_drop))
+~$call_task_valid(S_mask_failed_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_mask_failed n_mask_failed porigin_mask_failed eps (|S_mask_failed_fetch.OBJECTS|))
+''') + computed_guards('S_mask_failed_fetch')
+    checks += computed_finish('S_mask_failed_fetch', pending['expected_stdout'])
+    return checks
+
+
 CASES += DYNAMIC_CASES
 CASES += COMPUTED_CASES
+CASES += STRINGABLE_CASES
 
 
 def render(name, sources):
@@ -606,9 +915,13 @@ def render(name, sources):
         checks = computed_timing(sources[COMPUTED_CASES[0][1][0]], sources[COMPUTED_CASES[0][1][1]])
     elif name == COMPUTED_CASES[1][0]:
         checks = computed_references(sources[COMPUTED_CASES[1][1][0]], sources[COMPUTED_CASES[1][1][1]])
+    elif name == STRINGABLE_CASES[0][0]:
+        checks = stringable_receiver(sources[STRINGABLE_CASES[0][1][0]], sources[STRINGABLE_CASES[0][1][1]])
+    elif name == STRINGABLE_CASES[1][0]:
+        checks = stringable_late_address(sources[STRINGABLE_CASES[1][1][0]], sources[STRINGABLE_CASES[1][1][1]])
     else:
         raise ValueError(name)
-    text = EXTRA + DYNAMIC_EXTRA + COMPUTED_EXTRA + PREFIX.replace('STAGE', '$scoped_phase(S, 0)')
+    text = EXTRA + DYNAMIC_EXTRA + COMPUTED_EXTRA + STRINGABLE_EXTRA + PREFIX.replace('STAGE', '$scoped_phase(S, 0)')
     text += '\ndec $main() : bool\ndef $main() = true\n'
     text += ''.join('  -- if ' + check + '\n' for check in checks)
     return text, checks

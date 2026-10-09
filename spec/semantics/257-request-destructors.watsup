@@ -174,12 +174,12 @@ dec $destructor_frame_suffix(pdestructionframe*, pdestructionframe) : pdestructi
 dec $destructor_saved_frames(pstate, pdestructorcall*) : pdestructionframe*
 dec $destructor_saved_scope(pstate, pdestructorcall) : pstate
 
-def $destructor_method(S, n) = $effective_method(S, porigin, $ptascii("__destruct"), |S.CLASSES|)
+def $destructor_method(S, n) = $effective_method(S, porigin, [95,95,100,101,115,116,114,117,99,116], |S.CLASSES|)
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INSTANCE porigin
 def $destructor_method(S, n) = eps -- otherwise
 def $destructor_classes(eps) = false
-def $destructor_classes(pclassdesc :: pclassdesc_tail*) = ($method_named(pclassdesc.METHODS, $ptascii("__destruct")) =/= eps \/ $destructor_classes(pclassdesc_tail*))
+def $destructor_classes(pclassdesc :: pclassdesc_tail*) = ($method_named(pclassdesc.METHODS, [95,95,100,101,115,116,114,117,99,116]) =/= eps \/ $destructor_classes(pclassdesc_tail*))
 def $destructor_active(S) = (S.DESTRUCTION.PHASE = DESTRUCTION_GLOBALS \/ S.DESTRUCTION.PHASE = DESTRUCTION_STORE)
 def $destructor_waiting(S, pnode :: pnode_tail*) = true
   -- if $internal_destructor_pending(S, pnode)

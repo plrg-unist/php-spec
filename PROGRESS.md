@@ -1500,10 +1500,29 @@ New295 reached premises pass at `1abff50f4`, including real cold-preparation
 owners, compiled-name/marker forgeries and retained REF selection. Actual-parent
 compiler/init passes at `ed57a7c5c` over CALLS367 `9aec542e2` (353 modules),
 with pointwise SOURCE365/367 owner/line review and no6/295 source/state renewal.
-Stringable
-property-name callbacks, keyword scopes entered through Closure/fromCallable or
+Keyword scopes entered through Closure/fromCallable or
 other callable wrappers, wider borrowed lifetime and registered-handler
 missing-RHS continuations remain separate; paused return producers are unchanged.
+
+Stringable computed static-property names371 freeze the selected class and
+converted bytes, check the property address, then retire the receiver before
+capturing the live row, reference cell and RHS. Pending scalar writes retain
+PHP's conversion/operator priority.
+Failed NAME conversion and throwing final cleanup now keep the authenticated
+empty-name FETCH and queued tail, with Error.previous=drop.previous=cast.
+The descriptor walker restores only its saved inert base and original queued tail.
+Eight of nine exact originals pass at distinct private cuts. The original
+pending-masks source remains required/open: the changed public run retains its
+60-second CLI timeout and zero whole agreement. Prior123 receiver/cold-owner
+premises and new238 late-address/pending/projection premises have separate inputs;
+changed algo/struct/init and the238 fixture pass. The preserved73.924s diagnostic
+records the repaired double-throw mismatch. Current360 algorithmic compilation
+passes ataa44149a overb894 with pointwise99/156 review and no accepted source/state
+renewal. The unchanged original7 current run repeats CLI60 timeout in65.143s, with
+exact native bytes and zero whole agreement. Standalone init/state on360 remain
+UNRUN; ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
+The [ledger](coverage/semantics/static-compound-string-review.json) retains
+the source/state cuts and failures without renewing older evidence.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace
