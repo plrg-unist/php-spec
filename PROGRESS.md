@@ -189,6 +189,14 @@ throw7. Nine fresh exact originals retain two rows at20cd and seven at491e;
 independent231 premises (153 bindings/78 checks) pass at491e/private356.
 Actual358 over478710ea passes strict compilation with reviewed Fiber/collector
 and storage seams. Earlier9/277 retain their cuts; wider call shapes remain open.
+The named-CV increment additionally separates SEND/ECHO line9 from operand
+metadata line11. Its source-selected warning shape rejects forged operand metadata
+before fallback; the existing nonowning discard source preserves throwing-handlerD9.
+Second-slot/default binding, unknown-name priority and independent returned
+reference cells keep their runtime protocols. Eight exact originals and251 independent
+premises (entry101/warning72/result78;170 bindings/81 checks) retain `db5c0f0f3`/358.
+Actual358 over `2aa14083a` passes strict compilation at `a2dcb99e3` with reviewed
+current seams. Prior9/231 remain unchanged; wider call shapes remain required.
 [Ledger](coverage/semantics/source-echo-dynamic-cv-call-review.json).
 
 Direct ECHO now admits one named ordinary CV argument through361's existing

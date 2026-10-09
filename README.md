@@ -120,7 +120,11 @@ The one-positional-CV increment preserves selected targets across SEND warnings,
 with INIT5/call7/SEND-ECHO9 and existing temporary/reference output owners.
 Throwing SEND handlers retire the invoker at9; ordinary body throws retire it at7.
 Nine fresh exact originals and231 independent premises pass; actual358 passes
-strict compilation. Wider callees/arguments remain required.
+strict compilation. One named CV argument now separates SEND/ECHO line9 from the
+CV's source line11, preserving the second slot, defaults, unknown-name priority
+and captured-null warnings. Eight exact originals and251 independent premises
+retain private358; actual358 passes strict compilation. Earlier cuts retain their
+inputs; wider callees/arguments remain required.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed

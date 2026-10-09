@@ -301,3 +301,17 @@ rows;231 independent premises (153 bindings/78 checks) pass at491/private356.
 Actual358 over478710ea passes strict compilation with reviewed current seams.
 Wider callees/arguments and full-core/offline validation remain required; the
 earlier noarg9/277 cuts are unchanged.
+
+One named ordinary CV argument now shares the dynamic-callee first-INIT
+certificate. Completed descriptors retain INIT5, call7 and SEND/ECHO9 independently
+of the borrowed argument's source line11. A state-aware warning shape selects this
+source domain before validating INPUT11, so forged INPUT9 cannot use the ordinary
+fallback. Returning handlers keep captured null, defaults and selected targets;
+throwing handlers retain the authenticated read for receiver destruction at9.
+Unknown case-sensitive labels fail before CV demand; local-frame cleanup keeps its
+actual outer caller12. Existing TMPVAR/independent HCELL owners preserve bytes at
+ECHO9 after argument/callee mutation. Eight exact originals and251 independent
+premises (entry101/warning72/result78;170 bindings/81 checks) retain `db5c0f0f3`/358.
+Actual358 over `2aa14083a` passes strict compilation at `a2dcb99e3`; the state-aware
+warning shape and current renderer/collector/trait seams are independently reviewed.
+Earlier source/state cuts retain their inputs; wider calls remain required.
