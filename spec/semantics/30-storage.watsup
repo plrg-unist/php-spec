@@ -318,6 +318,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | YIELD_FROM_AGGREGATE pyieldfromaggregate text
   | YIELD_FROM_ITERATOR_NEXT nat pyieldfromreceipt
   | YIELD_FROM_ITERATOR_RESULT nat pyieldfromreceipt nat
+  | YIELD_FROM_ITERATOR_VALID nat pyieldfromreceipt poperand
   | FOREACH_AGGREGATE pforeachaggregate text
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender

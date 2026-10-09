@@ -60,6 +60,8 @@ dec $generator_from_claim(ptask) : nat*
 dec $generator_from_claims(ptask*) : nat*
 dec $generator_from_saved_claims(pframe*) : nat*
 dec $generator_from_suspended_claims(pstate, pnode*) : nat*
+dec $generator_from_saved_fiber_claims(pstate) : nat*
+def $generator_from_saved_fiber_claims(S) = eps -- otherwise
 dec $generator_from_object_claims(pobject) : nat*
 dec $generator_from_claim_owners(pstate, pnode*, nat*) : bool
 dec $generator_from_claim_owner(pstate, pnode, nat*) : bool
@@ -640,6 +642,10 @@ def $generator_from_valid_operand(S, KNOWN pvalue) = ($generator_from_nan(pvalue
 def $generator_from_valid_operand(S, REFERENCE n) = $call_reference_operand_valid(S, REFERENCE n)
 def $generator_from_valid_operand(S, poperand) = false -- otherwise
 def $generator_from_valid_task(S, n, porigin, poperand) = ($generator_from_callback_valid(S, n, porigin, "valid") /\ $generator_from_valid_operand(S, poperand))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.ACQUISITION = eps
+def $generator_from_valid_task(S, n, porigin, poperand) = false -- otherwise
 def $call_task_valid(S, GENERATOR_FROM_VALID n porigin poperand) = $generator_from_valid_task(S, n, porigin, poperand)
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = GENERATOR_FROM_VALID n porigin poperand
@@ -695,7 +701,7 @@ def $generator_from_record_valid(S, n, pgenerator) = false -- otherwise
 def $generator_from_child_id((POBJECT n)) = n
 def $generator_from_child_id(pvalue?) = 0 -- otherwise
 def $generator_from_state_valid(S) = ($useriter_ids_unique(nat*) /\ $generator_from_claim_owners(S, S.ALLOCATIONS, nat*) /\ $generator_from_contexts_valid(S, S.CURRENT, S.TODO, S.FRAMES) /\ $generator_from_suspended_contexts(S, S.ALLOCATIONS))
-  -- if nat* = $generator_from_claims(S.TODO) ++ $generator_from_saved_claims(S.FRAMES) ++ $generator_from_suspended_claims(S, S.ALLOCATIONS)
+  -- if nat* = $generator_from_claims(S.TODO) ++ $generator_from_saved_claims(S.FRAMES) ++ $generator_from_suspended_claims(S, S.ALLOCATIONS) ++ $generator_from_saved_fiber_claims(S)
 def $generator_from_contexts_valid(S, pcallcontext?, ptask*, eps) = ($generator_from_tasks_context(S, pcallcontext?, ptask*) /\ $generator_from_claims(ptask*) = eps)
 def $generator_from_contexts_valid(S, pcallcontext?, ptask*, pframe :: pframe_tail*) = ($generator_from_tasks_context(S, pcallcontext?, ptask*) /\ $generator_from_tasks_position(ptask*) /\ $generator_from_moving_claims(ptask*, pframe.TODO) /\ $generator_from_contexts_valid(S, pframe.CONTEXT, pframe.TODO, pframe_tail*))
 def $generator_from_tasks_context(S, pcallcontext?, eps) = true
