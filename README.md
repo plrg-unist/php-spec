@@ -347,7 +347,11 @@ First-class `Closure::fromCallable(...)` can now be invoked as a variable factor
 Calls retain the factory during arguments; the returned method Closure keeps
 its receiver after factory retirement. Callback access uses the invoking USER scope.
 Eight factory sources and 526 state premises retain separate 367-module cuts.
-Explicit `__invoke`, wider factory targets and original 7 remain open.
+Literal `->__invoke(callback: ...)` now preserves the selected factory when
+arguments clear its caller cell. Invocation USER scope controls private access;
+errors retain both the API and Closure invoke frames. A separate variable control
+and four explicit sources agree on 368-module cuts, with 552 state premises.
+First-class invoke aliases, wider factory targets and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

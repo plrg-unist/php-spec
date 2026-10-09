@@ -86,8 +86,17 @@ the direct control at 6e709da7, then the captured receiver witness and six bound
 cases at 8cc7ed12. The [factory state renderer](../../tests/semantics/from_callable_factory_protocol.py)
 retains 526 premises (467 genuine/derived, 59 constructed); the receiver witness
 is in the [static compound catalogue](../../tests/semantics/scoped_static_compound_cases.py).
-Explicit `__invoke`, computed/keyword factory creation and captured-factory
-Fiber/getter callbacks remain required. Required original static-compound source 7
+Literal normal `->__invoke(callback: ...)` also preserves the selected factory
+when an argument clears its caller cell, retaining METHOD_RESULT and the caller
+tail. Callback access uses invocation USER scope; factory creation grants no
+later access. Error traces retain the API frame followed by `Closure->__invoke`,
+with the invocation line and indexed argument snapshots. The variable control
+agrees at b9f0b1ae/368, and four explicit sources plus 552 premises (512
+genuine/derived, 40 constructed) pass at c1cdc2b5/368. These are separate from
+the earlier 367-module factory cuts; maintained relocation renews no execution.
+First-class invoke aliases, nullsafe/computed method entry, computed/keyword
+factory creation and captured-factory Fiber/getter callbacks remain required.
+Required original static-compound source 7
 keeps its separate CLI 60 timeout with zero agreement.
 
 The maintained [source cases](../../tests/semantics/from_callable_cases.json) and

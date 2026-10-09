@@ -221,5 +221,23 @@
     "source": "<?php\nfunction clearFactoryArgumentReview20() {\n    global $factory;\n    echo \"A;\";\n    $factory = null;\n    return fn() => \"ok\";\n}\necho \"Q;\";\n$factory = Closure::fromCallable(...);\n$closure = $factory(callback: clearFactoryArgumentReview20());\necho \"F;V:\", $closure(), \";\";\n$closure = null;\necho \"E;\";\n",
     "source_sha256": "e443835bbf3b6f773bb7507e6c691ce2731a7de2f134530a93f5b28f28ef6208",
     "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-explicit-user-invocation",
+    "source": "<?php\nclass InvokeFactoryUserInvokeReview20 {\n    private static function hidden() { echo \"B;\"; return \"ok\"; }\n    public static function select($factory) {\n        echo \"I;\";\n        return $factory->__invoke(callback: [self::class, \"hidden\"]);\n    }\n}\necho \"Q;\";\n$factory = Closure::fromCallable(...);\n$closure = InvokeFactoryUserInvokeReview20::select($factory);\n$factory = null;\necho \"F;V:\", $closure(), \";\";\n$closure = null;\necho \"E;\";\n",
+    "source_sha256": "1e0dacf34cc40b1a8ecfe3f79384d5d8f1c5b5bc17d9234bf46526bd5dcdcfef",
+    "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-explicit-user-creation",
+    "source": "<?php\nclass InvokeFactoryUserCreateReview20 {\n    private static function hidden() { echo \"B;\"; return \"bad\"; }\n    public static function make() {\n        echo \"C;\";\n        return Closure::fromCallable(...);\n    }\n}\necho \"Q;\";\n$factory = InvokeFactoryUserCreateReview20::make();\ntry {\n    $closure = $factory->__invoke(callback: [InvokeFactoryUserCreateReview20::class, \"hidden\"]);\n    echo \"BAD;\";\n} catch (Throwable $error) {\n    echo \"X:\", get_class($error), \":\", $error->getMessage(), \";\";\n}\n$factory = null;\necho \"E;\";\n",
+    "source_sha256": "15f6d2ecaf3c1d269f042788e2374506601cf360ff4693a63c647f1276fbd93a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-explicit-error-trace",
+    "source": "<?php\nclass InvokeFactoryTraceReview20 {\n    private static function hidden() { echo \"BAD;\"; }\n}\necho \"Q;\";\n$factory = Closure::fromCallable(...);\ntry {\n    $invokeLine = __LINE__ + 1;\n    $closure = $factory->__invoke(callback: [InvokeFactoryTraceReview20::class, \"hidden\"]);\n    echo \"BAD;\";\n} catch (Throwable $error) {\n    echo \"X:\", get_class($error), \":\", $error->getMessage(), \";\";\n    foreach ($error->getTrace() as $frame) {\n        echo \"T:\", $frame[\"class\"], $frame[\"type\"], $frame[\"function\"], \";\";\n        echo \"F:\", isset($frame[\"file\"]) ? ($frame[\"file\"] === __FILE__ ? \"source\" : \"other\") : \"none\", \";\";\n        echo \"L:\", isset($frame[\"line\"]) ? ($frame[\"line\"] === $invokeLine ? \"invoke\" : \"other\") : \"none\", \";\";\n        foreach ($frame[\"args\"] as $key => $value) {\n            echo \"K:\", $key, \";\";\n        }\n    }\n}\n$factory = null;\necho \"E;\";\n",
+    "source_sha256": "c8752132f9c456e9dc1d6966e216796b37b3eff33c1927f74c9bed92450e9a85",
+    "expected_model": "normal"
   }
 ]

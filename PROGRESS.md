@@ -2165,12 +2165,22 @@ ownership, factory retirement, callback/write and explicit receiver retirement.
 Invocation USER scope controls callback access; creation scope grants no later access.
 The initializer Unsupported and pre-child clean-status stop remain zero credit.
 The maintained renderer is byte-identical to the accepted fixture; relocation
-adds no runtime renewal. Explicit __invoke, computed/keyword creation and captured
-factory Fiber/getter callbacks stay open, as does required original 7's CLI 60 timeout.
+adds no runtime renewal. Invoke aliases, nullsafe/computed method entry,
+computed/keyword creation and captured-factory Fiber/getter callbacks stay open,
+as does required original 7's CLI 60 timeout.
 Current-parent compilation passes at def000e9 over ac4a95b5 with 368 modules;
 pointwise storage/intrinsic/getter review adds no source or state renewal.
 The [factory ledger](coverage/semantics/from-callable-review.json) keeps the
 distinct native/source/state cuts and boundaries.
+Literal captured-factory `->__invoke(callback: ...)` now authenticates method
+entry and preserves METHOD_RESULT plus the caller tail. CONFIG owns the selected
+factory while an argument clears its caller cell; the returned Closure owns its
+receiver independently after factory retirement. Invocation USER permission and
+API→Closure invoke error frames match native PHP. The variable control agrees at
+b9f0b1ae/368; four explicit sources and 552 state premises (512 genuine/derived,
+40 constructed) pass at c1cdc2b5/368. The wrong-representation state failure and
+original interpreter failure remain zero credit. Maintained source/fixture bytes
+are unchanged; relocation adds no runtime renewal. Original 7 stays OPEN timeout0.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
