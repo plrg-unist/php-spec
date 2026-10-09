@@ -1,15 +1,47 @@
 {
-  "status": "native-first observations only; semantic proposal awaiting authorization and implementation",
+  "status": "independently accepted private increment; actual-parent integration pending",
   "target": "PHP8.5.10 CLI NTS64; vendor/php-src dfca573f1; profile30719",
-  "parent": "0c549de11176e6c9977713ff675c08b7a920eaa0",
-  "native_revision": "fee272c5bcc89665e9f96e2aac4dc7649591a081",
-  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
-  "raw": ".tools/properties-reference-call20/.tools/property-reference-call-native20-6751r_0k/report.json",
-  "command": "python3 .tools/reference_call_native20.py (private tree, seven selected CASES; serialjobs1, native30)",
-  "native_exit0_empty_stderr": 7,
-  "model_agreements": 0,
-  "state_premises": 0,
-  "cases": {
+  "accepted_parent": "b8946ce5033df51ca309210a8623bf47657358dc/359",
+  "production_revision": "402e729ce",
+  "scope": "Existing377 literal missing/untyped UNSET reads on live ordinary INSTANCE/stdClass from named noarg nonbuiltin user calls without name fallback, resolved BYREF, genuine PROPERTY_PREP+DIM_FETCH and returned REFERENCE to a live actual HCELL. Captured target is borrowed; the task owns only the returned cell. Accepted99/79 are unchanged.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL, jobs1; native30/model60/process90/numeric120; profile30719; shared tools reused, no rebuild"
+  },
+  "native_first": [
+    {
+      "revision": "fee272c5bcc89665e9f96e2aac4dc7649591a081",
+      "cases": 7,
+      "raw": ".tools/properties-reference-call20/.tools/property-reference-call-native20-6751r_0k/report.json",
+      "model_agreements": 0,
+      "state_premises": 0
+    },
+    {
+      "revision": "9fa9f29c0344186a7d6ea4d93866089752879640",
+      "cases": 2,
+      "raw": ".tools/properties-reference-call20/.tools/property-reference-call-native20-47a6prev/report.json",
+      "model_agreements": 0,
+      "state_premises": 0
+    },
+    {
+      "revision": "cba3ab69551c8fd0e9983a606764ff065373c30f",
+      "cases": 1,
+      "raw": ".tools/properties-reference-call20/.tools/property-reference-call-native20-s13fr_8v/report.json",
+      "model_agreements": 0,
+      "state_premises": 0
+    }
+  ],
+  "source": {
+    "revision": "cba3ab69551c8fd0e9983a606764ff065373c30f",
+    "cases": 10,
+    "raw": ".tools/properties-reference-call20/.tools/dynamic-property-warning-source-y2ejv0vs/report.json",
+    "outcomes": "All original bytes, normal/exit0, exact native/model stdout and empty stderr; includes writable/finally/callee-rebind controls."
+  },
+  "source_sha256": {
+    "review-property-reference-call-stdclass20": "a1c9af387b7e82a707d9bd964f58d59f88ad7becda3468700031f909d841a437",
+    "review-property-reference-call-replacement-last-owner20": "c6a098a09270f3e521a1d924cf596f67b6d511ef583f8cbfeeef186b8c9c2394",
+    "review-property-reference-call-replacement-pending20": "67debf3359ac78acc497c2dac6efb1815780f1e54d418b71218cb4352527323e",
     "review-property-reference-call-handler-rebind20": "a89159245266a012a871566fe975aab306c3e01bf54026b7589c465c309d1319",
     "review-property-reference-call-owned20": "14db958c18e11bfa12e804a7f8e8d5f02363738c15ea932f6895c45f723ef2ee",
     "review-property-reference-call-unset20": "31c9a6d9d7024ab33217d5d57d956422256a3eadb7e9c03a5bd4f7b163d42119",
@@ -18,11 +50,45 @@
     "review-property-reference-call-writable-control20": "fb4c28dbd32e4a659e0a584508742d6025b29a91adc37e58d4db738de84d3536",
     "review-property-reference-call-finally20": "df83c4eb72274c6ded8398ecd5482764836ed58053d28866fb9c08d597c46b6a"
   },
-  "facts": [
-    "8.5 RETURN_BY_REF leaves a shared reference wrapper through callee leave. Callee cleanup rebinding destroys the old receiver before property lookup; lookup sees the new referent.",
-    "FETCH_OBJ_R dereferences the returned wrapper without a payload copy. Handler assignment retires the captured receiver inside Warning; the wrapper retains the replacement through FETCH cleanup.",
-    "Unsetting a global alias alone leaves the returned wrapper and original receiver alive through Warning. It does not discriminate wrapper versus payload ownership.",
-    "Writable reception retains the reference alias; finally rebinding is visible before property lookup."
+  "strict": {
+    "revision": "cba3ab69551c8fd0e9983a606764ff065373c30f",
+    "modules": 359,
+    "raw": ".tools/properties-reference-call20/.tools/property-reference-call-strict20-12msh3bh/report.json",
+    "seconds": 4.696,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "reached": [
+    {
+      "group": "replacement",
+      "revision": "cba3ab69551c8fd0e9983a606764ff065373c30f",
+      "premises": 237,
+      "raw": ".tools/properties-reference-call20/.tools/property-reference-warning-9u_u3gel/report.json"
+    },
+    {
+      "group": "pending",
+      "revision": "d615fdf4d7b7a6ad1729ffbbdc8bbfc22b8bf028",
+      "premises": 207,
+      "raw": ".tools/properties-reference-call20/.tools/property-reference-warning-oxpwqldq/report.json"
+    },
+    {
+      "group": "stdclass",
+      "revision": "d615fdf4d7b7a6ad1729ffbbdc8bbfc22b8bf028",
+      "premises": 225,
+      "raw": ".tools/properties-reference-call20/.tools/property-reference-warning-rrkqcr_a/report.json"
+    }
+  ],
+  "reached_scope": "Each whole gate passes normal numeric exit0/true/empty stderr at a stable clean cut. Repeated setup is included in the separate group counts. Current/saved source, line/name/key/flags, missing/wrong and duplicate carrier negatives; incoming BASE/capture uniqueness; default/masked capture; constructed false return after genuine effects; old CELL=eps injection; wrapper/target owner separation; pending H protection/B previous H; stdClass child retirement; budget/resume and final expiry.",
+  "compatibility": "d615 changes only pending fixture expectations after cba: WeakReference still resolves the live replacement at destructor entry, then clears on storage release. Production/source/strict/replacement cuts are unchanged and not renewed. Earlier377 source6/source2 and132/154/166 remain at their separate accepted cuts in undefined-property-review.json.",
+  "failures": [
+    {
+      "revision": "cba3ab69551c8fd0e9983a606764ff065373c30f",
+      "raw": ".tools/properties-reference-call20/.tools/property-reference-warning-29i7xd6e/report.json",
+      "credit": 0,
+      "cause": "Pending fixture expected Weak=null at __destruct entry. Pinned zend_objects_store_del calls dtor_obj before free_obj; zend_object_std_dtor notifies weak refs later. Corrected fixture checks live allocated/not-freeing destructor identity and retains final null and B previous H."
+    }
   ],
   "preserved_prediction": {
     "case": "review-property-reference-call-callee-cleanup20",
@@ -31,6 +97,21 @@
     "credit": 0,
     "meaning": "The original8.6-style before-leave payload snapshot prediction is false for pinned8.5. Its raw candidate mismatch remains unchanged; only the maintained expected string is corrected from this observation."
   },
+  "facts": [
+    "8.5 RETURN_BY_REF leaves a shared reference wrapper through callee leave. Callee cleanup rebinding destroys the old receiver before property lookup; lookup sees the new referent.",
+    "FETCH_OBJ_R dereferences the returned wrapper without a payload copy. Handler assignment retires the captured receiver inside Warning; the wrapper retains the replacement through FETCH cleanup.",
+    "Unsetting a global alias alone leaves the returned wrapper and original receiver alive through Warning. It does not discriminate wrapper versus payload ownership.",
+    "Writable reception retains the reference alias; finally rebinding is visible before property lookup.",
+    "Only the returned wrapper remains after handler removes the global alias; replacement N runs at FETCH cleanup, and a throw B chains previous H.",
+    "stdClass rebind retires its old property table and child inside Warning; the replacement expires after wrapper cleanup."
+  ],
   "engine": "Pinned Zend/zend_compile.c zend_compile_call_common emits IS_VAR; Zend/zend_vm_def.h RETURN_BY_REF has no zend_return_unwrap_ref and FETCH_OBJ_R dereferences the wrapper then FREE_OP1. Sibling8.6-dev TMP/unref behavior is excluded.",
-  "remaining": "Current377 raw-reference refusal remains. Proposed bounded property reception must preserve actual wrapper ownership and borrow the captured target without absence reread; accepted99 no-write repair is distinct and unaccepted code is not imported."
+  "commands": {
+    "native": "python3 .tools/reference_call_native20.py <exact IDs> (three separate native-only selections)",
+    "strict": "python3 .tools/reference_call_strict20.py",
+    "source": "python3 tests/semantics/dynamic_property_warning_sources.py source --select <the ten source_sha256 keys>",
+    "reached": "python3 tests/semantics/property_reference_warning_protocol.py --group replacement|pending|stdclass (serial)"
+  },
+  "review": "properties_review_20 independently accepts pinned engine reasoning, code/source/counterexamples, exact raws and separate-cut compatibility; actual-parent composition remains separate.",
+  "remaining": "Arguments, dynamic/builtin/fallback/method receivers, computed property names, getters/hooks, already-freeing reference targets and wider reference producers remain required. Existing handler-eligible raw-reference refusal remains unchanged outside this new authenticated lane. No8.6 before-leave payload normalization is required for this8.5 increment; held278/279 and unaccepted replay/conversion work are excluded."
 }

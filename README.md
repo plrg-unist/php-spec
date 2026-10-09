@@ -1044,7 +1044,14 @@ The reviewed current359 composition over `f5c4eed1f` passes strict compilation
 at `e77c3eff0`, preserving current source and Generator interfaces.
 [The review](coverage/semantics/undefined-property-review.json) preserves the
 original fallback/fixture failures and the weaker bound-Closure witness.
-Computed names, getters/hooks and read-call reference normalization remain required.
+Literal named noarg reference-return calls now retain the actual returned cell
+through undefined-property warnings. The captured target remains borrowed, so
+handler rebinding may retire it while the cell keeps the replacement alive until
+fetch cleanup. Ten exact originals and separate 237/207/225 reached cuts cover
+callee/finally rebinding, normal and throwing last-owner cleanup, saved callers
+and stdClass child retirement. [The reference-receiver review](coverage/semantics/reference-property-receiver-review.json)
+records the pinned8.5 wrapper behavior and the refuted8.6 snapshot prediction.
+Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
