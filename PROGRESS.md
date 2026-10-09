@@ -2076,6 +2076,8 @@ The initializer Unsupported and pre-child clean-status stop remain zero credit.
 The maintained renderer is byte-identical to the accepted fixture; relocation
 adds no runtime renewal. Explicit __invoke, computed/keyword creation and captured
 factory Fiber/getter callbacks stay open, as does required original 7's CLI 60 timeout.
+Current-parent compilation passes at def000e9 over ac4a95b5 with 368 modules;
+pointwise storage/intrinsic/getter review adds no source or state renewal.
 The [factory ledger](coverage/semantics/from-callable-review.json) keeps the
 distinct native/source/state cuts and boundaries.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
