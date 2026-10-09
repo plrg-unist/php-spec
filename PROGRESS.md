@@ -2223,7 +2223,9 @@ Two safe originals and distinct17+17 genuine SL premises pass at `fbab085b0` and
 Strict compilation passes; the original baseline mismatch and unreached computed
 fixture remain zero credit. The corrected fixture uses the authentic live CV.
 [The focused ledger](coverage/semantics/missing-constructor-review.json) retains
-the separate cuts; wider method/core obligations remain open.
+the separate cuts. Actual `d47aee7c3` composition at `6e462b5e`/359 passes strict
+SL in 4.801s with zero runtime/source credit, preserving ASSERT/INI and GC/PROP
+interfaces. Private sources/states are not renewed; wider method/core stays open.
 
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and
