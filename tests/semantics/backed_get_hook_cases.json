@@ -105,9 +105,7 @@
       "stdout_base64": "R3xCfEx8RHxOfA==",
       "stderr_template_base64": "",
       "status": "normal"
-    }
-  ],
-  "unsupported_controls": [
+    },
     {
       "id": "virtual-nested-closure-boundary",
       "source": "<?php\nclass HookVirtual28 {\n    public int $value {\n        get {\n            $unused = function () { return $this->value; };\n            return 31;\n        }\n    }\n}\n$box = new HookVirtual28();\necho $box->value, \"|\";\n",
@@ -117,9 +115,8 @@
       "exit_status": 0,
       "stdout_base64": "MzF8",
       "stderr_template_base64": "",
-      "status": "normal",
-      "expected_model_status": "unsupported",
-      "source_agreements": 0
+      "status": "normal"
     }
-  ]
+  ],
+  "unsupported_controls": []
 }

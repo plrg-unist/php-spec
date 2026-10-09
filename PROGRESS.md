@@ -341,8 +341,8 @@ backing precedes magic, and traces retain `$value::get`. Eight originals and
 strict compilation of 372 modules pass at `3ae28b26`. SL177 (19 derived, 158
 reached checks) proves real entry/backing/throw steps and receiver/result cleanup,
 including the payload parked across receiver destruction and final weak-null.
-The virtual nested-closure control stays Unsupported; prior compiler/fixture
-stops, false states and diagnostics retain zero affected credit. Virtual/set/byref,
+The virtual nested-closure control was Unsupported at that cut; prior compiler/fixture
+stops, false states and diagnostics retain zero affected credit. Defaulted virtual/set/byref,
 inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
 and hooked unset remain required. Actual 372-module composition over `48b6455fd`
 passes strict initialization at `390c27db4` (5.421 s), preserving parent callable
@@ -352,11 +352,24 @@ Expression bodies retain the actual expression origin and compiled return line,
 including untyped return admission and saved Hook source during string conversion.
 Seven new originals and strict 372-module initialization pass at `41ed4ea8d`;
 SL137 (15 derived, 122 reached) proves actual return, saved conversion, parked
-payload and final weak-null release. The virtual nested-closure control remains
-Unsupported. These cuts retain the block results above. Actual 372-module
+payload and final weak-null release. Its virtual declaration control was
+Unsupported at that cut. These cuts retain the block results above. Actual 372-module
 composition over `de44ad6d3` passes strict initialization at `5e3f9cbcf`
 (5.448 s), preserving parent yield-from and magic-get dispatch without renewing
 the private checks. [Expression review](coverage/semantics/expression-get-hooks-review.json).
+
+Public by-value virtual get hooks without a default retain their declaration and
+return type while owning no backing slot. Repeated reads execute the body;
+ordinary writes evaluate the RHS before the read-only Error, without conversion.
+Returned values survive receiver release and die when their last result owner is
+removed. Literal string forms of `$this` and property names establish backing
+correctly. Eight source agreements retain `90d182c4` (5) and `c4dd589c` (3),
+including the two formerly Unsupported virtual controls. SL139 at `c4dd589c`
+(13 derived, 126 reached) proves pending CV writes, forged-slot rejection and
+result ownership; false135 and diagnostic runs retain zero credit. Hooked object
+iteration is explicitly Unsupported; defaulted virtual/set/byref and wider
+receiver/access families remain partial. Actual composition is pending.
+[Virtual hook review](coverage/semantics/virtual-get-hooks-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

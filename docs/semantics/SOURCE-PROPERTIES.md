@@ -33,9 +33,17 @@ return compilation at the authentic expression child, preserving its emitted lin
 and the Hook source across string callbacks. Seven additional originals and 137
 derived/reached checks are recorded in the
 [expression review](../../coverage/semantics/expression-get-hooks-review.json).
-Virtual/set/byref hooks,
+Virtual getters without defaults retain the same declaration, function and return
+type while omitting the physical slot. The receiver owns no returned-value edge;
+result copies survive receiver cleanup and release independently. Ordinary writes
+evaluate the RHS before read-only rejection and skip destination coercion. Literal
+string `$this`/property forms still establish backing; nested function bodies do
+not. Eight affected originals and 139 derived/reached checks are recorded in the
+[virtual review](../../coverage/semantics/virtual-get-hooks-review.json).
+Hooked object iteration is explicit Unsupported rather than a raw storage view;
+array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
-and hooked unset remain explicit boundaries.
+and hooked unset remain boundaries.
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and

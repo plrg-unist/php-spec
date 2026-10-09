@@ -1,0 +1,71 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit, profile 30719, LC_ALL=C/TZ=UTC, jobs 1",
+  "scope": "Own public by-value block/expression get hooks without a backing use or explicit default, in the existing literal CV/This read slice. Virtual declarations keep type/function metadata but no storage or receiver-to-result edge. Pending CV writes evaluate RHS before read-only rejection and destination coercion.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_property_hook_find_property_usage (literal This/property ZVALs, special AST boundaries)",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_write_property (virtual no-set denial before type conversion), zend_std_get_properties_for (cast storage view)",
+    "vendor/php-src/Zend/zend_property_hooks.c:zend_hooked_object_get_iterator (both backed and virtual reads)"
+  ],
+  "implementation": [
+    "spec/semantics/136-property-runtime.watsup",
+    "spec/semantics/261-object-casts.watsup",
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "private_revision": "c4dd589c73fb2b5be2ce8a59d748687eb43dccfe",
+  "module_count": 372,
+  "sources": {
+    "agreements": 8,
+    "cuts": [
+      {
+        "revision": "90d182c445e8e455f7f97b533f0313af2ff00c95",
+        "agreements": 5,
+        "reports": [
+          "changed-model-uz16tpgt/report.json",
+          "focused/changed-model-tpamlu2v/report.json"
+        ]
+      },
+      {
+        "revision": "c4dd589c73fb2b5be2ce8a59d748687eb43dccfe",
+        "agreements": 3,
+        "reports": [
+          "literal/changed-model-c20k3f3r/report.json",
+          "affected/affected-model-h8osqrmu/report.json"
+        ]
+      }
+    ],
+    "catalogue": "tests/semantics/virtual_get_hook_cases.json (six new agreements and separate hooked-iteration Unsupported0)",
+    "affected_controls": "Exact prior backed get virtual-nested-closure source now agrees31|; expression declaration control agreesV|. Their historical Unsupported cuts remain0; both current catalogues now select them as normal cases.",
+    "observations": "Repeated reads/RHS-before-denial; no Stringable conversion and rejected temporary destruction; absent virtual slots in clone/casts; untyped returns; literal This/name backing slots; no property ownership of results; hooked iteration Unsupported0."
+  },
+  "strict": {
+    "report": "virtual-hook-compiler-0wyc1e0j/report.json",
+    "sha256": "4fb12a62f58737d4a30649e601625369dc90e762c22af4d78e381b2c88091550",
+    "elapsed_seconds": 5.386782,
+    "init_only": true,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "state": {
+    "report": "virtual-hook-state-2f9ui822/report.json",
+    "sha256": "236cb1f0141ab089ae5411e89f922eb6d92239ad533e5681cdd17062e0e695c2",
+    "fixture_sha256": "ee8c8f6febbf8622e4f1f7b5f2baedc71092b8308bcef344350f06c7f354c5b0",
+    "derived": 13,
+    "reached": 126,
+    "total": 139,
+    "raw_steps": 9,
+    "sl_seconds": 16.812648,
+    "source_agreements": 0,
+    "result": "SL true; real hook entry, pending CV write/readonly rejection, declared/dynamic ghost-slot refusal, literal backing writes and independent receiver/result final release. Original135 full AL passed before the fixture-only checkpoint correction; no AL139 claim."
+  },
+  "validation": "Pinned PHP b9adb/SpecTec26d77 and strict ff24; native45, model60/outer75/100000, strict300/init-only and state120; cache=false/det=true, exact bytes, closed workers, stable clean inputs/head/status and reaped groups.",
+  "preserved": "Original parsed/checked Unsupported2, wxj elaboration stop, literal90d read-only discrepancy, b933/initial134 UNRUN, old virtual Unsupported controls and false135 remain0 at their cuts. Three-arm, ten-prefix and actual-cursor diagnostics remain0; they localized a fixture-only BASE_PROPERTY versus real BASE_PROPERTY_PENDING mismatch. Older block8/state177 and expression7/state137 are unchanged.",
+  "remaining": "Defaulted virtual/set/byref/attributed/inherited/trait hooks, temporary/computed receivers and self-read, quiet/reference/indirect access, hooked unset and hook-driven iteration.",
+  "raw_root": ".tools/backed-get-hooks-current-28/.tools/virtual-get-hooks-probes-30 (ignored)",
+  "recovery": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_get_hook_cases.json",
+    "python3 tests/semantics/virtual_get_hook_protocol.py --revision \"$(git rev-parse HEAD)\""
+  ],
+  "actual_composition": {
+    "status": "pending"
+  }
+}

@@ -38,6 +38,8 @@ dec $property_reference_target_check(pstate, nat, ptbytes, int) : pstate
 dec $property_foreach_reference(pstate, nat, ptbytes, int) : pstate
 dec $property_duplicate_table(pstate, nat) : bool
 dec $property_slot_named(ppropertyslot*, ptbytes) : bool
+dec $property_hook_virtual(pstate, ppropertydesc) : bool
+dec $property_hook_instance(pstate, nat) : bool
 ;; Class descriptors are source facts; each owned object has mutable slots.
 dec $property_replace(ppropertydesc*, ppropertydesc) : ppropertydesc*
 def $property_replace(eps, ppropertydesc) = [ppropertydesc]
@@ -93,7 +95,10 @@ def $property_default_state(S, ppropertydesc) = eps
   -- if ppropertydesc.DEFAULT = PROP_STORED porigin
   -- if $pool_value(S.POOLS, porigin) = eps
 def $property_initial_slots(S, porigin_class, eps) = (eps)
+def $property_initial_slots(S, porigin_class, ppropertydesc :: ppropertydesc_tail*) = $property_initial_slots(S, porigin_class, ppropertydesc_tail*)
+  -- if $property_hook_virtual(S, ppropertydesc)
 def $property_initial_slots(S, porigin_class, ppropertydesc :: ppropertydesc_tail*) = ({ DECL (ppropertydesc.ORIGIN), NAME ppropertydesc.KEY, STATE ppropstate } :: ppropertyslot_tail*)
+  -- if ~$property_hook_virtual(S, ppropertydesc)
   -- if $property_template_state(S, porigin_class, ppropertydesc) = (ppropstate)
   -- if $property_initial_slots(S, porigin_class, ppropertydesc_tail*) = (ppropertyslot_tail*)
 def $property_initial_slots(S, porigin_class, ppropertydesc*) = eps -- otherwise
@@ -273,7 +278,10 @@ def $property_slots_valid(S, eps, ppropertyslot :: ppropertyslot_tail*) = $prope
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_UNSET
   -- if ~$property_bad_name(ppropertyslot.NAME)
+def $property_slots_valid(S, ppropertydesc :: ppropertydesc_tail*, ppropertyslot*) = $property_slots_valid(S, ppropertydesc_tail*, ppropertyslot*)
+  -- if $property_hook_virtual(S, ppropertydesc)
 def $property_slots_valid(S, ppropertydesc :: ppropertydesc_tail*, ppropertyslot :: ppropertyslot_tail*) = ($property_slot_valid(S, ppropertydesc, ppropertyslot) /\ $property_slots_valid(S, ppropertydesc_tail*, ppropertyslot_tail*))
+  -- if ~$property_hook_virtual(S, ppropertydesc)
 def $property_slots_valid(S, ppropertydesc*, ppropertyslot*) = false -- otherwise
 def $property_slot_named(eps, ptbytes) = false
 def $property_slot_named(ppropertyslot :: ppropertyslot_tail*, ptbytes) = $property_slot_named(ppropertyslot_tail*, ptbytes)

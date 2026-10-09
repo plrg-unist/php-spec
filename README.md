@@ -1145,8 +1145,13 @@ cover exceptions, traces and receiver/result cleanup in the
 [hook review](coverage/semantics/backed-get-hooks-review.json). Expression bodies
 retain their real source child and compiled implicit-return line; seven additional
 originals and 137 return/callback/lifetime checks pass in the
-[expression review](coverage/semantics/expression-get-hooks-review.json). Virtual/set/reference,
-inherited/trait and wider receiver or indirect-access families remain required.
+[expression review](coverage/semantics/expression-get-hooks-review.json). Virtual getters
+without defaults retain declaration/type metadata and own no backing slot; writes
+evaluate the RHS before read-only rejection and returned values have ordinary
+result ownership. Eight affected source agreements and 139 derived/reached checks
+are recorded in the [virtual review](coverage/semantics/virtual-get-hooks-review.json).
+Hooked iteration, defaulted virtual/set/reference, inherited/trait and wider
+receiver or indirect-access families remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed
