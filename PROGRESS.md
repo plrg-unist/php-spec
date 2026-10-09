@@ -2560,6 +2560,18 @@ credit. Maintained source/render bytes are unchanged; no relocation renewal.
 Other targets and required original 7's CLI60 timeout remain OPEN.
 Actual-parent compilation and initialized SL299 pass at `288bb478` over
 `8a81891c` with 374 modules; COMP383/PROPS384 seams preserve prior source/native cuts.
+Captured factories now select bound `Fiber::resume`. The producer retires during
+selection arguments; frozen resume survives later name mutation and callback
+retirement. Clearing the selected capture cell in its value argument leaves the
+saved caller result marker
+as the sole Closure owner; its INPUT edge retains the receiver through the child
+transfer. The child receives the exact done value and the call returns null.
+Authentic eager cleanup retires both before restoring the original consumer tail.
+Direct agreement stays at fa678cc48/374; repaired agreement and 343 premises
+(264 genuine/derived, 79 constructed) pass at 2daa5c433/374, including exact
+zero-budget resumption. The original Unsupported remains zero credit; maintained
+source/render relocation renews no runtime evidence. Other targets and required
+original 7's CLI60 timeout remain OPEN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

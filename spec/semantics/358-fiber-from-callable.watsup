@@ -10,6 +10,7 @@ dec $fiber_factory_new(pstate, pconfigcall, pvalue, pentry*) : pstate
 dec $fiber_factory_current(pstate, pconfigcall, pvalue) : bool
 dec $fiber_factory_suspended(pstate, pconfigcall, pvalue) : bool
 dec $fiber_factory_suspend(pstate, pconfigcall, pvalue) : bool
+dec $fiber_factory_resume(pstate, pconfigcall, pvalue) : bool
 dec $fiber_factory_saved_call(pstate, pconfigcall, pintrinsic, nat?) : bool
 
 def $fiber_factory_items(S, PARRAY n) = $config_pack_capture(S, S.ARRAYS[n].ITEMS)
@@ -91,6 +92,15 @@ def $fiber_factory_suspend(S, pconfigcall, pvalue) = true
   -- if $fiber_factory_selection(S, pvalue, $fiber_factory_items(S, pvalue)) = ((INTRINSIC_FIBER_SUSPEND, ptbytes, eps))
 def $fiber_factory_suspend(S, pconfigcall, pvalue) = false -- otherwise
 
+def $fiber_factory_resume(S, pconfigcall, pvalue) = true
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
+  -- if $fiber_factory_candidate(S, pvalue)
+  -- if $fiber_factory_selection(S, pvalue, $fiber_factory_items(S, pvalue)) = ((INTRINSIC_FIBER_RESUME, ptbytes, (n_input)))
+def $fiber_factory_resume(S, pconfigcall, pvalue) = false -- otherwise
+
 def $from_receive(S, pconfigcall, pvalue) = $fiber_factory_new(S, pconfigcall, pvalue, $fiber_factory_items(S, pvalue))
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if $fiber_factory_candidate(S, pvalue)
@@ -111,15 +121,18 @@ def $from_receive(S, pconfigcall, pvalue) = $fiber_factory_new(S, pconfigcall, p
   -- if $fiber_factory_suspended(S, pconfigcall, pvalue)
 def $from_receive(S, pconfigcall, pvalue) = $fiber_factory_new(S, pconfigcall, pvalue, $fiber_factory_items(S, pvalue))
   -- if $fiber_factory_suspend(S, pconfigcall, pvalue)
+def $from_receive(S, pconfigcall, pvalue) = $fiber_factory_new(S, pconfigcall, pvalue, $fiber_factory_items(S, pvalue))
+  -- if $fiber_factory_resume(S, pconfigcall, pvalue)
 def $from_receive(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "captured Closure::fromCallable factory Fiber callback"]
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
   -- if $fiber_factory_candidate(S, pvalue)
   -- if ~$fiber_factory_current(S, pconfigcall, pvalue)
   -- if ~$fiber_factory_suspended(S, pconfigcall, pvalue)
   -- if ~$fiber_factory_suspend(S, pconfigcall, pvalue)
+  -- if ~$fiber_factory_resume(S, pconfigcall, pvalue)
 def $fiber_factory_new(S, pconfigcall, pvalue, pentry*) = $from_done(S[.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if $config_invoke_valid(S, pconfigcall)
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ $fiber_factory_suspended(S, pconfigcall, pvalue) \/ $fiber_factory_suspend(S, pconfigcall, pvalue)
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ $fiber_factory_suspended(S, pconfigcall, pvalue) \/ $fiber_factory_suspend(S, pconfigcall, pvalue) \/ $fiber_factory_resume(S, pconfigcall, pvalue)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if $fiber_factory_selection(S, pvalue, pentry*) = ((pintrinsic, ptbytes, n_input?))
   -- if n = |S.OBJECTS|
@@ -142,6 +155,12 @@ def $fiber_factory_saved_call(S, pconfigcall, INTRINSIC_FIBER_SUSPENDED, (n_inpu
   -- if $from_factory_saved(S, n_factory)
   -- if $from_factory_call_site(S, pconfigcall.SITE)
 def $fiber_factory_saved_call(S, pconfigcall, INTRINSIC_FIBER_SUSPEND, eps) = true
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = (n_factory)
+  -- if $from_factory_saved(S, n_factory)
+  -- if $from_factory_call_site(S, pconfigcall.SITE)
+def $fiber_factory_saved_call(S, pconfigcall, INTRINSIC_FIBER_RESUME, (n_input)) = true
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
   -- if pconfigcall.SELECTION = eps
   -- if pconfigcall.OWNER = (n_factory)
