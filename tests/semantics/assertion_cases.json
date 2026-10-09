@@ -1511,6 +1511,26 @@
       "exit_status": 0,
       "status": "normal",
       "native_group": ".tools/compiler-assertion-nan-20/.tools/assertion-nan-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-nullable-restore-clear-mode1",
+      "source": "<?php\n$warnings = 0;\n$effects = 0;\nset_error_handler(static function ($level, $message) use (&$warnings) {\n    echo 'W', ++$warnings, ':', ini_get('zend.assertions'), '|';\n    if ($warnings === 1) {\n        ini_restore('zend.assertions');\n        return true;\n    }\n    $nested = @ini_restore('zend.assertions');\n    echo 'nested:', $nested === null ? 'null|' : 'BAD|';\n    echo 'inner:', ini_get('zend.assertions'), '|';\n    return true;\n});\n$seed = ini_set('zend.assertions', '12X');\necho 'seed:', $seed, '|raw:', ini_get('zend.assertions'), '|';\n$fresh = ini_set('zend.assertions', '0');\necho 'fresh:', $fresh, '|raw:', ini_get('zend.assertions'), '|';\n$returned = ini_restore('zend.assertions');\necho $returned === null ? 'null|' : 'BAD|';\necho 'raw:', ini_get('zend.assertions') === '' ? 'empty|' : 'BAD|';\nassert(++$effects > 0);\necho 'effects:', $effects, '|';\n$noop = ini_restore('zend.assertions');\necho 'noop:', $noop === null ? 'null|' : 'BAD|';\necho 'raw:', ini_get('zend.assertions') === '' ? 'empty|' : 'BAD|';\nassert(++$effects > 0);\necho 'after:', $effects, '|warnings:', $warnings;\n",
+      "source_sha256": "cfbbc3b8afcb45935d6053e1c98377e90cff2293761a480111bed51042c38375",
+      "stdout_base64": "VzE6MXxzZWVkOjF8cmF3OjEyWHxmcmVzaDoxMlh8cmF3OjB8VzI6MHxuZXN0ZWQ6bnVsbHxpbm5lcjoxMlh8bnVsbHxyYXc6ZW1wdHl8ZWZmZWN0czoxfG5vb3A6bnVsbHxyYXc6ZW1wdHl8YWZ0ZXI6Mnx3YXJuaW5nczoy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-nullable-20/.tools/assertion-nullable-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-nullable-restore-throw-mode1",
+      "source": "<?php\n$warnings = 0;\n$effects = 0;\n$returned = 'unset';\n$failure = new Exception('restore-clear');\nset_error_handler(static function ($level, $message) use (&$warnings, $failure) {\n    echo 'W', ++$warnings, ':', ini_get('zend.assertions'), '|';\n    if ($warnings === 1) {\n        ini_restore('zend.assertions');\n        return true;\n    }\n    $nested = @ini_restore('zend.assertions');\n    echo 'nested:', $nested === null ? 'null|' : 'BAD|';\n    echo 'inner:', ini_get('zend.assertions'), '|';\n    throw $failure;\n});\n$seed = ini_set('zend.assertions', '12X');\necho 'seed:', $seed, '|';\n$fresh = ini_set('zend.assertions', '0');\nassert(++$effects > 0);\necho 'fresh:', $fresh, '|off:', $effects, '|';\ntry {\n    $returned = ini_restore('zend.assertions');\n    echo 'BAD|';\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 'same|' : 'other|';\n}\n$raw = ini_get('zend.assertions');\necho 'empty:', $raw === '' ? 'yes' : 'no', '|false:', $raw === false ? 'yes' : 'no';\necho '|returned:', $returned, '|';\nassert(++$effects > 0);\necho 'effects:', $effects, '|';\n$noop = ini_restore('zend.assertions');\necho 'noop:', $noop === null ? 'null|' : 'BAD|';\necho 'raw:', ini_get('zend.assertions') === '' ? 'empty|' : 'BAD|';\nassert(++$effects > 0);\necho 'after:', $effects, '|warnings:', $warnings;\n",
+      "source_sha256": "225d05bb17d7c1da5f047b802cbd3eae6c77f0be25329c05d157ce5e2ac84af5",
+      "stdout_base64": "VzE6MXxzZWVkOjF8ZnJlc2g6MTJYfG9mZjowfFcyOjB8bmVzdGVkOm51bGx8aW5uZXI6MTJYfHNhbWV8ZW1wdHk6eWVzfGZhbHNlOm5vfHJldHVybmVkOnVuc2V0fGVmZmVjdHM6MXxub29wOm51bGx8cmF3OmVtcHR5fGFmdGVyOjJ8d2FybmluZ3M6Mg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-nullable-20/.tools/assertion-nullable-native-20/run-v1/report.json"
     }
   ],
   "native_profile": {

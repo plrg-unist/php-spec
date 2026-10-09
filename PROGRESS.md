@@ -32,8 +32,13 @@ the old return and formatted input before conversion warning dispatch, then capt
 live raw/original after the callback. Two fresh safe originals and247 source-frontier
 checks plus eight pure trace-clear companions pass atc2b195/367; strict3 passes5.021s.
 The shared Throwable survives committed NAN/mode0 without a second handler entry;
-the baseline and original entry-certificate failure retain zero credit. Last-owner
-Stringable entry cleanup and nullable saved-original reentry remain required.
+the baseline and original entry-certificate failure retain zero credit. Reentrant
+restore now represents a cleared live original as raw NULL with modified=false.
+The getter returns canonical empty bytes; parsed mode12 and safe no-op restores
+remain intact through the shared Throwable. Two fresh originals and323 checks at
+real frontiers plus12 pure exclusion queries pass at242576/367; strict3 passes5.074s.
+New or active SET/NaN continuations encountering NULL stop explicitly; no source
+executes NULL parsing. Last-owner Stringable entry and wider producers remain required.
 Actual367 overdb808 passes strict3 atfac7c8 (5.121s), preserving ARG
 receiver/argument/foreach continuations and EX parked-public lookup/collector guards.
 Private source2/255 cuts and prior unsafe boundaries remain unchanged.

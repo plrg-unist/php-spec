@@ -30,7 +30,13 @@ The startup `INIT` stays immutable. A fresh `ini_set` captures current raw as th
 per-round `ORIGINAL` before updating, even when reentrant restore left modified
 false with malformed raw. `ini_restore` parses the frozen saved input and runs its
 warning handler. Successful completion installs the live saved original and
-clears modified, including when the original shared Throwable is pending.
+clears modified, including when the original shared Throwable is pending. If a
+nested restore already cleared that live original, outer completion installs raw
+NULL with modified=false while preserving the frozen parsed mode. The cached
+`ORIGINAL` remains the last authenticated string; it is not a live saved pointer
+when modified=false. The existing directive getter returns canonical empty bytes,
+distinct from a missing directive's false result. Later no-op restore leaves NULL
+and the real `MODE.INPUT` unchanged.
 
 Retained-entry Stringable SET converts the option once, replaces actual argument0
 and then snapshots the old return. Frozen records authenticate the converted call
@@ -82,16 +88,21 @@ Two safe NaN originals pass atc2b195 with247 checks at actual entry, conversion,
 parsing and shared-throw frontiers, plus eight explicitly projected trace-clear
 companions. The original unsupported baseline and failed entry certificate stay
 zero credit; the corrected pure byte proof is checked at the real call entry.
+Two safe cleared-original restore originals pass at242576 with323 checks at actual
+outer completion, handler/caller throw, getter and no-op frontiers, plus12 pure
+helper exclusions. The normal path checks three genuine PhpSteps; the pending
+path checks two after observing the same Throwable before catch. The prior
+cleared-original Unsupported baseline remains zero credit.
 
 ```sh
 python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json --match assertion-quantity
 python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json --match assertion-carrier
 ```
 
-Required follow-ons remain explicit: a restore callback can clear the live saved
-original, leaving a nullable raw value that this string-only state does not yet
-represent. That path is Unsupported, distinct from the intentional lifetime
-divergence above. Zend quantity parsing dereferences a NULL string; later set/restore
-from that state is not probed. Last-owner Stringable SET/RESTORE entry cleanup
-remains required. Wider string identity producers, descriptions, exporter forms and callback
+Required follow-ons remain explicit: new SET and already-active SET/NaN
+continuations encountering NULL raw stop before further conversion, pointer comparison or
+original capture. Zend quantity parsing dereferences a NULL string; no source
+probes SET-fromNULL or NULL parsing. This supported getter/no-op domain is separate
+from the intentional lifetime divergence above. Last-owner Stringable SET/RESTORE
+entry cleanup remains required. Wider string identity producers, descriptions, exporter forms and callback
 paths remain core work. This is a bounded milestone, not complete assertion/INI coverage.

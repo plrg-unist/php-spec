@@ -141,7 +141,9 @@ RESTORE preserves a unary converted call and commits the saved original through
 shared throw/handler retirement. NaN SET freezes the old return before conversion
 warning dispatch and captures raw/original after the callback. Pending shared
 Throwable completion skips an eligible second handler while committing the input.
-Last-owner entry cleanup, nullable saved-original after reentry,
+Cleared-original restore retains NULL raw, canonical empty getters and live parsed
+mode through shared throw and later no-op restores. New/active SET or NaN updates
+encountering NULL stop explicitly, without probing NULL parsing. Last-owner entry,
 wider startup/callback facts, Stringable descriptions, exporter forms and single
 named-description/unpack producers remain required.
 

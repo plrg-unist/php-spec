@@ -212,8 +212,11 @@ arguments and commits the saved original through handler retirement/shared throw
 Two new originals and211 frontier checks pass at05db. NaN SET now preserves the
 pre-conversion old return separately from handler-modified raw state and commits
 through an original pending Throwable without a second handler entry. Two originals,
-247 source-frontier checks and eight pure companions pass atc2b195. Last-owner entry
-cleanup, nullable-original reentry, descriptions and wider forms remain required.
+247 source-frontier checks and eight pure companions pass atc2b195. Cleared-original
+restore now retains NULL raw separately from its empty getter and parsed mode12.
+Two safe originals,323 frontier checks and12 pure exclusion queries pass at242576;
+shared throw and later no-op restore preserve the state. SET/NaN from NULL remains
+explicit Unsupported; last-owner entry, descriptions and wider forms remain required.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
