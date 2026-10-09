@@ -1,3 +1,4 @@
+dec $retired_enter(pstate, porigin?) : pstate
 dec $generator_object(pstate, nat) : bool
 dec $foreach_reference_acquire(pstate, pbase, int) : pstate
 dec $foreach_reset_location(pstate, statement, int) : pstate
@@ -17,7 +18,7 @@ def $foreach_reference_at(S, NOWHERE, pvalue) = $reference_cell(S[.STORE = S.STO
   -- if n = |S.STORE|
 
 dec $foreach_start(pstate, statement, plocation, bool, int) : pstate
-def $foreach_start(S, statement, plocation, false, z) = S[.TODO = (FOREACH_NEXT n_iterator (HARRAY n_array) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [ITERATOR n_iterator n_array false ([(CURSOR n_array 0)])]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $foreach_start(S, statement, plocation, false, z) = $retired_enter(S, S.ORIGIN)[.TODO = (FOREACH_NEXT n_iterator (HARRAY n_array) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S.ITERATORS ++ [ITERATOR n_iterator n_array false ([(CURSOR n_array 0)])]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.RESULT = KNOWN (PARRAY n_array)
   -- if n_iterator = S.NEXTITER

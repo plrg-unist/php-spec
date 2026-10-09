@@ -251,9 +251,10 @@ rule PhpStep/label-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "inval
   -- if S.TODO = (STMT (NStmtLabel phpType11 metadata)) :: ptask_tail*
   -- if ~$goto_label_valid(S, NStmtLabel phpType11 metadata, S.ORIGIN)
 
+dec $retired_rebuilt_tail(pstate, ptask*) : pstate
 dec $goto_jump(pstate, porigin, pcpath) : pstate
 dec $goto_target_origin(pstate, porigin, ptask*) : porigin?
-def $goto_jump(S, porigin_source, pcpath_target) = S[.TODO = ptask_new*][.ORIGIN = $goto_target_origin(S, PORIGIN n pcpath_target, ptask_new*)][.ITERATORS = $goto_drop_iterators(S.ITERATORS, S.TODO, PORIGIN n pcpath_target)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $goto_jump(S, porigin_source, pcpath_target) = $retired_rebuilt_tail(S, ptask_new*)[.TODO = ptask_new*][.ORIGIN = $goto_target_origin(S, PORIGIN n pcpath_target, ptask_new*)][.ITERATORS = $goto_drop_iterators(S.ITERATORS, S.TODO, PORIGIN n pcpath_target)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if porigin_source = PORIGIN n pcpath_source
   -- if $goto_site(S, porigin_source, pcpath_target)
   -- if $goto_base(S, porigin_source) = GOTOTASKS ptask_base*
