@@ -18,8 +18,9 @@ def $request_finally_phase(S,601) = true
 def $request_finally_phase(S,602) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $trace_context_function(S,pcallcontext) = $ptascii("handledWarningThrow")
-  -- if pcallcontext.EXTRA = [KNOWN (POBJECT n)]
-  -- if $throwable_field(S,n,"message") = PSTRING $ptascii("warning")
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall) :: ptask_tail*
+  -- if $throwable_field(S,pexceptioncall.OBJECT,"message") = PSTRING $ptascii("warning")
 def $request_finally_phase(S,603) = true
   -- if S.TODO = (EXCEPTION_HANDLER_CLEAN pexceptioncall false) :: (ERROR_HANDLER_RESULT perrorcall) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
 def $request_finally_phase(S,604) = true
@@ -132,6 +133,9 @@ $exception_invoke_valid(S_wrong_origin,pexceptioncall_wrong)
 S_handler.FRAMES = pframe_handler :: pframe_handler_tail*
 pframe_handler.TODO = (EXCEPTION_HANDLER_RESULT pexceptioncall_entered) :: (ERROR_HANDLER_RESULT perrorcall) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_parent_tail*
 pexceptioncall_entered.OBJECT = n_warning /\ pexceptioncall_entered.ORIGIN = (porigin_method)
+pexceptioncall_entered.SENT = (KNOWN (POBJECT n_warning)) /\ pexceptioncall_entered.RECEIVED = (KNOWN (POBJECT n_warning))
+S_handler.CURRENT = (pcallcontext_handler)
+pcallcontext_handler.ARGC = 1 /\ pcallcontext_handler.EXTRA = eps
 pframe_handler.CONTEXT = eps /\ pframe_handler.ORIGIN = eps
 S_handler.EXCEPTIONHANDLER = eps /\ S_handler.ERRORHANDLER.CALLBACK = eps
 $heap_owners($heap_graph(S_handler),HOBJECT n_warning) = 2
