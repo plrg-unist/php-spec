@@ -2230,6 +2230,9 @@ or getter type-source attachment occurs. Native6 and the model Unsupported basel
 pending errors, and owned copied payloads survive source/cell removal. The rejected
 recorder parent argument ran no numeric actor and retains zero credit; prior cuts
 are unchanged. [Reference-getter ledger](coverage/semantics/magic-property-reference-review.json).
+The actual374 join over `bed352b5a` passes strict at `e0d62e7ed` (5.399s,
+state credit0). Parent anonymous-class, hook/type and cleanup interfaces are
+preserved; those wider paths are absent from these originals. Private cuts are unchanged.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

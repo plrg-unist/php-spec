@@ -1467,6 +1467,8 @@ mismatches retain the ordinary getter TypeError. The first actual source selects
 the conflict label, and pending errors survive later source detachment/repair.
 [Six source agreements and six reached groups](coverage/semantics/magic-property-reference-review.json)
 pass 829 setup-inclusive premises; owned copied payloads survive source/cell removal.
+The actual374 join over `bed352b5a` passes strict at `e0d62e7ed` (5.399s),
+preserving current anonymous-class and hook interfaces; private cuts remain unchanged.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.
