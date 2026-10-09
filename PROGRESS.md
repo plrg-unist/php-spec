@@ -248,9 +248,11 @@ Actual unreleased fatal frames retain both INSTANCE pins and nonowning retired
 HANDLE jobs; borrowed history is not another carrier. Source1 retains `7d3574e75`;
 549 SL premises and complete compiler361 retain `47c8c3c1c` (6.459 seconds).
 Original refusal, diagnostic/binding stops, cache/retirement fixture failures and
-Weak/GC admission gaps stay at zero; actual-parent composition remains pending. Wider handlers/rendering,
-child lifetimes, reacquisition, message warnings, parked/escaped storage and generic
-terminal cleanup remain required.
+Weak/GC admission gaps stay at zero. Final361 over `e889a1592` passes strict
+compilation at `77e534575` (6.488 seconds), preserving EX34's301/372 collector
+guards; this source has no collector task. Private source/state cuts retain their
+inputs. Wider handlers/rendering, child lifetimes, reacquisition, message warnings,
+parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
 guards; private source/state cuts retain their own revisions.

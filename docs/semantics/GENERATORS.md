@@ -146,9 +146,11 @@ Generator/cache owners survive. Unreleased fatal FRAME/FRAMES retain INSTANCE pi
 and the old reported Exception's pending HANDLE/occupied GC slot. Discovery excludes
 saved DESTRUCTION and SOURCE certificates. Exact source1 retains `7d3574e75`; strict549
 and complete compiler361 retain `47c8c3c1c`. Prior refusals, diagnostics and failed
-fixtures remain zero; actual-parent composition is pending. Wider handlers,
-rendering, child lifetimes, reacquisition, message warnings, parked or escaped
-storage and generic terminal cleanup remain required.
+checks remain zero. Final361 over `e889a1592` passes strict compilation at
+`77e534575`, preserving EX34's301/372 collector guards; this source has no collector
+task. Private source/state cuts retain their inputs. Wider handlers, rendering,
+child lifetimes, reacquisition, message warnings, parked or escaped storage and
+generic terminal cleanup remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and
