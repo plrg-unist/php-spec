@@ -34,6 +34,10 @@ slice failure retain zero credit; the corrected guard checks length before slici
 Original a898 source2 / 205+21 and e646 trace1 / 45+2 cuts remain frozen. Wider RTD
 consumers, factory parameters/captures/types/class scope, incomplete scope images,
 include/eval, constructors and broader class consumers remain required.
+Actual composition of 374 modules over 3609d8d4 passes strict3 at 137edf830
+(5.572s), preserving task-specific hook, finalizer, Fiber, property/yield and GC
+guards. Private source2 and separate function140/Closure140 cuts retain their
+original revisions.
 [Anonymous class ledger](coverage/semantics/anonymous-classes-review.json).
 
 Private-final E_COMPILE_WARNING (128) delivery remains accepted at dec3e9968 /371:
