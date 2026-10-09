@@ -211,6 +211,7 @@ dec $assertion_ini_retired_raw(pstate, passertini) : bool
 def $assertion_ini_retired_raw(S, passertini) = true
   -- if passertini.ENTRYMODIFIED
   -- if passertini.OLDRAW = PSTRING_CARRIER (REQUEST_STRING n) n_bytes*
+  -- if passertini.OLDRAW =/= S.ASSERTIONSORIGINAL
   -- if S.ASSERTIONSRAW =/= passertini.OLDRAW
 def $assertion_ini_retired_raw(S, passertini) = false -- otherwise
 dec $assertion_ini_install(pstate, passertini) : pstate
