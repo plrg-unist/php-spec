@@ -155,7 +155,11 @@ the retired marker and STORE value provide release evidence without a cell root
 or referent edge. Actual SOURCE/result claims still retain exactly two Leaf C
 owners. New source1/compiler361 retain `c5b8de418`; strict677 retains `4870a1a8c`.
 Original refusal, reached discriminator and bounds syntax stop remain zero;
-current-parent compilation is pending. Wider handlers, rendering,
+actual363 over `d54dd9fa8` passes strict compilation and affected SL677 at
+`a2847abb8`. Three shared message observations use bytes across immutable string
+carriers; source/compilerc5 and private state487 retain their original cuts.
+The parent renderer's byte-extraction rule and actual pin/handle owners remain
+intact. Wider handlers, rendering,
 child lifetimes, reacquisition, message warnings, parked or escaped storage and
 generic terminal cleanup remain required.
 

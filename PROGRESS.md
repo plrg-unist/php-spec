@@ -304,7 +304,10 @@ Stable retired-cell markers and STORE evidence certify the consumed child withou
 owning it; Parent Weak-null and both Leaf C claims survive. Source1/compiler361
 retain `c5b8de418` (6.315 seconds); 677 strict SL premises retain `4870a1a8c`.
 The original Unsupported, reached discriminator and pre-evaluation bounds syntax
-stop retain zero credit; current-parent compilation is pending. Wider
+stop retain zero credit. Actual363 over `d54dd9fa8` passes strict compilation
+and the affected 677 SL group at `a2847abb8` (compiler 6.438 seconds). Three shared
+message predicates observe bytes across the parent's immutable carriers;
+private source/compilerc5 and state487 retain their cuts. Wider
 handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
