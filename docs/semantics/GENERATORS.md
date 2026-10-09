@@ -148,7 +148,28 @@ saved DESTRUCTION and SOURCE certificates. Exact source1 retains `7d3574e75`; st
 and complete compiler361 retain `47c8c3c1c`. Prior refusals, diagnostics and failed
 checks remain zero. Final361 over `e889a1592` passes strict compilation at
 `77e534575`, preserving EX34's301/372 collector guards; this source has no collector
-task. Private source/state cuts retain their inputs. Wider handlers, rendering,
+task. Private source/state cuts retain their inputs. A declared property ALIAS,
+after its last local alias is unset, transfers HCELL then Leaf during release and
+follows the same second-fatal path. The model never reuses reference-cell IDs;
+the retired marker and STORE value provide release evidence without a cell root
+or referent edge. Actual SOURCE/result claims still retain exactly two Leaf C
+owners. New source1/compiler361 retain `c5b8de418`; strict677 retains `4870a1a8c`.
+Original refusal, reached discriminator and bounds syntax stop remain zero;
+actual363 over `d54dd9fa8` passes strict compilation and affected SL677 at
+`a2847abb8`. Three shared message observations use bytes across immutable string
+carriers; source/compilerc5 and private state487 retain their original cuts.
+The parent renderer's byte-extraction rule and actual pin/handle owners remain
+intact. A declared array child retires HARRAY before its sole owning Leaf entry
+reaches the same ROOT/nonuser release tail. Its in-range retired row certifies the
+child without another array pin, GC slot or heap edge; primitive siblings are
+allowed, while multiple owning nodes, nested arrays and reference entries remain
+outside this slice. A real external shared-array owner prevents entry release and
+the second fatal. Exact source2, strict712/77 and complete compiler363 retain
+`5da367130`; original refusal and reached118 diagnostic remain zero at `4c410b607`.
+Actual364 over `70c5ff9fc` passes strict compilation at `3aeb34484`; the new
+retired-owner carriers remain empty because neither source has switch/foreach
+or reference-return replay. Parent frame/fatal-history fields are preserved;
+private source2/789 retain their inputs. Wider handlers, rendering,
 child lifetimes, reacquisition, message warnings, parked or escaped storage and
 generic terminal cleanup remain required.
 

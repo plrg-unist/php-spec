@@ -7,6 +7,27 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Bounded assertion quantity warnings retain frozen parsed modes and old returns
+through nested raw writes, throw and restore. Immutable string carriers preserve
+INI identity while ordinary consumers use bytes. Seventeen safe originals retain
+the separate 5ec/4141/1a8 cuts; actual phase234 at93be contains208 well-defined and26
+reached lifetime-boundary checks. A replaced modified request raw stops with explicit
+Unsupported; four native lifetime probes have zero agreement, with no allocator model.
+Affected Throwable source3, genuine trace47 and retained Generator source1/report52
+pass at1a8; template2 passes at6cb. Strict361 compiler3 passes at1a8 (4.623s).
+The [quantity ledger](coverage/semantics/assertion-quantity-review.json) preserves
+failures and the separate diagnostic46. Per-round original recapture and warned
+restore now pass two fresh safe originals and182 source-frontier checks plus one
+pure NULL trace query at57ee/363; strict3 passes5.024s. Pending shared Throwable
+identity and real restore commits remain intact. Nullable saved-original reentry,
+Stringable-option snapshots, NaN conversion timing and wider producers remain required.
+Actual363 over1b33 passes strict3 at1ad9 (4.975s), preserving canonical GEN release
+evidence and carrier-aware ARG/GEN fixtures; the private source/state cuts are unchanged.
+Actual363 over75dade passes final strict3 atb0d8 (4.921s), preserving current
+CALLS/CLASS/PROPS guards. Source-backed static70, Fiber54 plus4 pure key queries
+and three retained incoming originals keep their0506/2ae cuts. Static356/371 and
+key376 preserve carriers; the ledger retains separate failed source/VERIFY/fixture cuts.
+
 Constructor property promotion retains source Param flags/origins, compiles separate
 property defaults and performs ordered value/reference writes after all receives.
 Explicit re-entry, private/inherited/trait scope, readonly checks and supported method
@@ -99,6 +120,19 @@ cuts; actual361 over `dd6478b` passes strict compilation at `3c06eba5` (4.880s).
 The selected-catch admission failure keeps zero affected credit at its original cut. Runtime VAR/TMP
 array owners, active-finalizer replay and protected NULL/186 paths remain open.
 [Switch replay review](coverage/semantics/reference-return-switch-replay-review.json).
+
+Protected reference returns now preserve the first cleanup of mutable, refcounted
+switch temporaries and dense value-foreach owners. Non-owning rows retain physical
+identity/cursor through current and saved frames, authenticated replacement and replay.
+Capture conservatively requires at least three genuine owning edges before cleanup
+and two after; aliases sharing a cell count once. Later one-owner reads remain live;
+collected switch END reads nothing, while collected foreach fetch stops explicitly.
+Thirteen originals pass at private362 cuts: four exact native tuples and nine deliberate
+c/d=8(native) to1(spec) differences, with zero agreement for those nine. State23/1,873
+and independent pending98 pass across retained cuts. Actual364 over `2c1283f04` passes
+strict at `31838d5ad` (5.033s) and one genuine carrier bridge/71 assertions. Original
+failures/timeouts remain zero-credit. Wider payloads, active-finalizer replay and
+protected NULL/186 remain required. [Owner review](coverage/semantics/reference-return-retired-owner-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
@@ -198,8 +232,9 @@ tuples, 54 typed quantity/state premises and 96 authentic state premises pass.
 Nested writes and original thrown identity survive; altered refusal bytes/options
 are rejected. Raw output is under
 `.tools/compiler-assertion-ini-368-19/.tools/{assertion-ini-gate-v1,method-runtime-9j809l_h,assertion-ini-state-v1}`.
-Parsing warnings/overflow and authenticated Stringable-option refusal remain
-required; explicit startup transport still admits exactly `-1`/`0`/`1`.
+The later bounded warning/overflow/carrier cut is recorded above; original recapture,
+warned restore and authenticated Stringable-option refusal remain required. Explicit
+startup transport still admits exactly `-1`/`0`/`1`.
 The actual 356-module composition over `4563a5bf9` passes strict initialization
 at `06409ee08` (4.471 seconds); raw output is in
 `.tools/compiler-assertion-ini-current-19/.tools/assertion-ini-current-gate-v1`.
@@ -292,7 +327,27 @@ Original refusal, diagnostic/binding stops, cache/retirement fixture failures an
 Weak/GC admission gaps stay at zero. Final361 over `e889a1592` passes strict
 compilation at `77e534575` (6.488 seconds), preserving EX34's301/372 collector
 guards; this source has no collector task. Private source/state cuts retain their
-inputs. Wider handlers/rendering, child lifetimes, reacquisition, message warnings,
+inputs. A declared property ALIAS whose last local alias is unset transfers its
+HCELL then Leaf through the actual release chain and emits the same second fatal.
+Stable retired-cell markers and STORE evidence certify the consumed child without
+owning it; Parent Weak-null and both Leaf C claims survive. Source1/compiler361
+retain `c5b8de418` (6.315 seconds); 677 strict SL premises retain `4870a1a8c`.
+The original Unsupported, reached discriminator and pre-evaluation bounds syntax
+stop retain zero credit. Actual363 over `d54dd9fa8` passes strict compilation
+and the affected 677 SL group at `a2847abb8` (compiler 6.438 seconds). Three shared
+message predicates observe bytes across the parent's immutable carriers;
+private source/compilerc5 and state487 retain their cuts. A declared array child's
+sole owning Leaf entry transfers through genuine HARRAY retirement and emits the
+same second fatal; retired contents add no array pin, GC slot or child edge.
+The real shared-array control keeps its live owner and Leaf silent through the
+first fatal. Source2, strict712/77 and complete compiler363 retain `5da367130`
+(6.312 seconds). The original primary Unsupported and 118-premise reached
+discriminator retain zero credit at `4c410b607`; the exact shared baseline is a
+separate control. Actual364 over `70c5ff9fc` passes strict compilation at
+`3aeb34484` (6.399 seconds). The parent's retired-owner carriers remain empty on
+both sources; current frame/fatal-history fields survive. Private source2/789
+retain their `5da367130` inputs. Wider
+handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
@@ -1606,6 +1661,33 @@ source6/state760 and source10/state669 are unrenewed.
 The actual361 join over `b82bd2425` passes strict at `432084968` (4.923s),
 preserving current call roots, return replay and class Override interfaces.
 It renews no source/state credit.
+Two positional ordinary CVs now use a local source certificate in377;
+shared361 ECHO admission and99/79/cell ownership are unchanged. Deferred SEND2
+reports emitted23 while preserving documentary INPUT24 and captured prefix7
+despite caller mutation to99/19. Native6 retains `0be182e03`; distinct core-only
+companion2 observations retain `4e9366787`. Strict361 passes at `f16303c4e`;
+source6 and six reached groups pass 1207 setup-inclusive premises at `64fdea48c`,
+covering first-null/later-live sends, shared formals, both parameter callbacks
+before PREP, current/saved malformed carriers and H/B cleanup. The original
+`is_null` source campaign retains zero credit; the second original remains
+model-unrun. Earlier noarg/one-CV/named cuts and failures are unrenewed.
+The actual361 join over `430face8d` passes strict at `4b39fa53c` (5.028s),
+preserving current CALLS/class compiler, return replay and fatal-cleanup interfaces.
+It adds no source/state credit.
+Two distinct named ordinary CVs now preserve source SEND order and formal-slot
+binding through377's local certificate;99/79/CELL/270 and shared361 are unchanged.
+Native6 retains `4c64cd257`; the late first-SEND companion retains `b5e60e7b1`.
+Changed strict361 and affected pending/late-first source2 pass at `7c2c5e8ef`;
+five earlier per-case agreements retain `1378c1d0d` under the named-extraction
+bridge. Five whole state gates pass 1245 setup-inclusive premises across separate
+366/316/186/77/300 cuts, authenticating both emitted SEND lines, captured null,
+shared cells, formal/default leave order and frame/operation pending cleanup.
+The original whole-source7 and fixture failures remain zero; previous cuts are
+unrenewed.
+The actual364 join over `e26e3fb2d` passes strict at `2383140e3` (5.104s)
+and one affected pending300 gate. Local byte observations accommodate current
+Throwable string carriers; GEN363 and RETURNS378 seams remain disjoint. Earlier
+source/private state cuts retain their own identities and credit.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
@@ -1784,6 +1866,15 @@ This modest matched observation is not a CLI estimate. Required original 7 keeps
 its prior timeout and zero agreement; no source or accepted state cut is renewed.
 Actual-parent compilation passes at 640a59899 over 7c3299fd with 361 modules,
 preserving scalar replay hooks; this checks compiler compatibility only.
+A new cold double-throw source at b82bd2425 with 361 modules passes native/model
+agreement and 155 genuine state premises without a production change. Empty-name
+lookup leaves the static default deferred, preserves Error.previous=drop.previous=cast,
+and retires the owned RHS without calling its __toString. Actual operation/FETCH,
+descriptor, history and heap guards pass. The preparation stop and incorrect
+receiver-field fixture failure remain preserved with zero credit. Prior source/state
+cuts are unchanged; required original 7 remains open at its CLI 60 timeout.
+Current publication over ee06368a4 with 363 modules passes compilation and 156
+carrier-aware cold fixture premises at 2009abf79; source agreement stays at b82.
 ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
@@ -3214,8 +3305,9 @@ failures and interrupted evidence.
 
 `returns_verify` has resumed with the authorized temporary verifier. Preserve
 held branches and evidence, and do not retry the rejected engine experiment.
-Delayed return replay and runtime-owner recovery still require validation and
-independent review before integration or dependent work.
+Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
+bounded physical-array owner recovery. Wider owner domains, already active-finalizer
+returns, protected temporary/NULL Notice timing and Stringable186 remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 

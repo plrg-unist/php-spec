@@ -38,20 +38,20 @@ def $property_declaring_name(pclassdesc*, INTERNAL_PROPERTY "ErrorException" ptb
 
 dec $throwable_slot(text, text, pvalue) : ppropertyslot
 def $throwable_slot(text, text_field, pvalue) = {DECL (INTERNAL_PROPERTY $throwable_base(text) $ptascii(text_field)), NAME $throwable_key($throwable_base(text), text_field), STATE PROP_VALUE (DIRECT pvalue)}
-dec $throwable_slots_values(text, preqbytes, preqbytes, int, preqbytes, int, nat, pvalue) : ppropertyslot*
-def $throwable_slots_values(text, preqbytes_message, preqbytes_string, z_code, preqbytes_file, z_line, n_trace, pvalue_previous) = [
-  $throwable_slot(text, "message", PSTRING preqbytes_message),
-  $throwable_slot(text, "string", PSTRING preqbytes_string),
+dec $throwable_slots_values(text, pvalue, pvalue, int, pvalue, int, nat, pvalue) : ppropertyslot*
+def $throwable_slots_values(text, pvalue_message, pvalue_string, z_code, pvalue_file, z_line, n_trace, pvalue_previous) = [
+  $throwable_slot(text, "message", pvalue_message),
+  $throwable_slot(text, "string", pvalue_string),
   $throwable_slot(text, "code", PINT z_code),
-  $throwable_slot(text, "file", PSTRING preqbytes_file),
+  $throwable_slot(text, "file", pvalue_file),
   $throwable_slot(text, "line", PINT z_line),
   $throwable_slot(text, "trace", PARRAY n_trace),
   $throwable_slot(text, "previous", pvalue_previous)
 ]
 dec $throwable_severity_slot(int) : ppropertyslot
 def $throwable_severity_slot(z) = {DECL (INTERNAL_PROPERTY "ErrorException" $ptascii("severity")), NAME $throwable_key("ErrorException", "severity"), STATE PROP_VALUE (DIRECT (PINT z))}
-def $throwable_slots("ErrorException", preqbytes_message, preqbytes_file, z, n_trace, pvalue_previous) = $throwable_slots_values("ErrorException", preqbytes_message, eps, 0, preqbytes_file, z, n_trace, pvalue_previous) ++ [$throwable_severity_slot(1)]
-def $throwable_slots(text, preqbytes_message, preqbytes_file, z, n_trace, pvalue_previous) = $throwable_slots_values(text, preqbytes_message, eps, 0, preqbytes_file, z, n_trace, pvalue_previous)
+def $throwable_slots("ErrorException", preqbytes_message, preqbytes_file, z, n_trace, pvalue_previous) = $throwable_slots_values("ErrorException", PSTRING preqbytes_message, PSTRING eps, 0, PSTRING preqbytes_file, z, n_trace, pvalue_previous) ++ [$throwable_severity_slot(1)]
+def $throwable_slots(text, preqbytes_message, preqbytes_file, z, n_trace, pvalue_previous) = $throwable_slots_values(text, PSTRING preqbytes_message, PSTRING eps, 0, PSTRING preqbytes_file, z, n_trace, pvalue_previous)
   -- if text =/= "ErrorException"
 
 def $throwable_field(S, n, text_field) = pvalue
@@ -137,10 +137,13 @@ def $throwable_slots_valid(S, n, pthrowable) = true
   -- if pthrowable.KIND = "ErrorException"
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if ~pobjectprops.MATERIALIZED
-  -- if $throwable_field(S, n, "message") = PSTRING preqbytes_message
-  -- if $throwable_field(S, n, "string") = PSTRING preqbytes_string
+  -- if pvalue_message = $throwable_field(S, n, "message")
+  -- if $string_bytes(pvalue_message) = (preqbytes_message)
+  -- if pvalue_string = $throwable_field(S, n, "string")
+  -- if $string_bytes(pvalue_string) = (preqbytes_string)
   -- if $throwable_field(S, n, "code") = PINT z_code
-  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if pvalue_file = $throwable_field(S, n, "file")
+  -- if $string_bytes(pvalue_file) = (preqbytes_file)
   -- if $throwable_field(S, n, "line") = PINT z
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
   -- if $(n_trace < |S.ARRAYS|)
@@ -149,15 +152,18 @@ def $throwable_slots_valid(S, n, pthrowable) = true
   -- if pvalue_previous = $throwable_field(S, n, "previous")
   -- if $throwable_previous_slot_valid(S, pvalue_previous)
   -- if $throwable_field(S, n, "severity") = PINT z_severity
-  -- if pobjectprops.SLOTS = $throwable_slots_values("ErrorException", preqbytes_message, preqbytes_string, z_code, preqbytes_file, z, n_trace, pvalue_previous) ++ [$throwable_severity_slot(z_severity)]
+  -- if pobjectprops.SLOTS = $throwable_slots_values("ErrorException", pvalue_message, pvalue_string, z_code, pvalue_file, z, n_trace, pvalue_previous) ++ [$throwable_severity_slot(z_severity)]
   -- if $property_slots_valid(S, $throwable_layout("ErrorException"), pobjectprops.SLOTS)
 def $throwable_slots_valid(S, n, pthrowable) = true
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if ~pobjectprops.MATERIALIZED
-  -- if $throwable_field(S, n, "message") = PSTRING preqbytes_message
-  -- if $throwable_field(S, n, "string") = PSTRING preqbytes_string
+  -- if pvalue_message = $throwable_field(S, n, "message")
+  -- if $string_bytes(pvalue_message) = (preqbytes_message)
+  -- if pvalue_string = $throwable_field(S, n, "string")
+  -- if $string_bytes(pvalue_string) = (preqbytes_string)
   -- if $throwable_field(S, n, "code") = PINT z_code
-  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if pvalue_file = $throwable_field(S, n, "file")
+  -- if $string_bytes(pvalue_file) = (preqbytes_file)
   -- if $throwable_field(S, n, "line") = PINT z
   -- if $(z > 0) \/ $fiber_root_error_source(S, n, pthrowable)
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
@@ -166,7 +172,7 @@ def $throwable_slots_valid(S, n, pthrowable) = true
   -- if $trace_graph_valid(S, n_trace)
   -- if pvalue_previous = $throwable_field(S, n, "previous")
   -- if $throwable_previous_slot_valid(S, pvalue_previous)
-  -- if pobjectprops.SLOTS = $throwable_slots_values(pthrowable.KIND, preqbytes_message, preqbytes_string, z_code, preqbytes_file, z, n_trace, pvalue_previous)
+  -- if pobjectprops.SLOTS = $throwable_slots_values(pthrowable.KIND, pvalue_message, pvalue_string, z_code, pvalue_file, z, n_trace, pvalue_previous)
   -- if $property_slots_valid(S, $throwable_layout(pthrowable.KIND), pobjectprops.SLOTS)
   -- if pthrowable.KIND =/= "ErrorException"
 def $throwable_slots_valid(S, n, pthrowable) = false -- otherwise

@@ -130,7 +130,7 @@ def run(match, catalogue=DEFAULT_CASES):
         expected_stdout = row['stdout_base64']
         if 'stdout_template_base64' in row:
             expected_stdout = base64.b64encode(base64.b64decode(row['stdout_template_base64']).replace(
-                b'{FILE}', str(source).encode())).decode()
+                b'{FILE}', os.fsencode(source))).decode()
         passed = passed and actual.get('stdout') == expected_stdout
         passed = passed and actual.get('stderr') == base64.b64encode(stderr).decode()
         native_profile = row.get('native_profile', shared_profile or {})

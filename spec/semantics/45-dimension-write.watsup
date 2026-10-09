@@ -28,7 +28,8 @@ def $string_write_value(S, n_bytes*, n_index, pvalue, z) = (S_string, n_bytes*)
 def $string_write_value(S, n_bytes*, n_index, pvalue, z) = $string_write_bytes(S_string, n_bytes*, n_index, n_value*, z)
   -- if S_string = $stringify(S, pvalue, z)
   -- if S_string.COMPLETION = NORMAL
-  -- if S_string.RESULT = KNOWN (PSTRING n_value*)
+  -- if S_string.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_value*)
 
 dec $string_write_operand(pstate, nat*, nat, poperand, int) : (pstate, nat*)
 def $string_write_operand(S, n_bytes*, n_index, poperand, z) = (S_value, n_bytes*)

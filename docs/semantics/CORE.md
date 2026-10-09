@@ -128,7 +128,13 @@ arguments, live warning/exception/bail policy and pending chains after retval or
 selected-receiver retirement. Each deprecated constant is protected through nested
 and parked handlers. The [options ledger](../../coverage/semantics/assertion-options-review.json)
 retains the bounded source/state cuts and excluded Count observer separately.
-Parsing-warning paths, authenticated Stringable-option INI refusal, wider startup
+[Bounded quantity warnings](ASSERTION-QUANTITIES.md) retain frozen numeric modes
+when handlers change raw bytes, throw or restore; copied string identities govern
+raw installation while ordinary consumers compare bytes. Reentrant release of a
+replaced modified request raw is explicit Unsupported, with zero native agreement.
+Fresh modification rounds recapture the current raw original; warned restore
+parses that frozen input and preserves pending Throwable identity. Nullable saved
+original after reentry, authenticated Stringable-option refusal, wider startup
 facts, callback forms, Stringable descriptions, wider export and single
 named-description/unpack producers remain required core work.
 

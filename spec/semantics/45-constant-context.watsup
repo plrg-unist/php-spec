@@ -107,7 +107,7 @@ def $pfunsupported(F, text) = F[.MEMORY = F.MEMORY[.COMPLETION = UNSUPPORTED tex
 ;; Every retained folded array is a pool owner, including unused partial children.
 dec $pfremember(pfstate, pcpath, pvalue?, int) : pfstate
 def $pfremember(F, pcpath, eps, z) = F[.VALUE = eps]
-def $pfremember(F, pcpath, (pvalue), z) = F[.FACTS = F.FACTS ++ [PFFACT pcpath pvalue z]][.VALUE = (pvalue)][.MEMORY = F.MEMORY[.HELD = F.MEMORY.HELD ++ $value_nodes(pvalue)]]
+def $pfremember(F, pcpath, (pvalue), z) = F[.FACTS = F.FACTS ++ [PFFACT pcpath ($string_plain(pvalue)) z]][.VALUE = ($string_plain(pvalue))][.MEMORY = F.MEMORY[.HELD = F.MEMORY.HELD ++ $value_nodes(pvalue)]]
 
 def $pfclass_literal(expression) = $pfclass_literal_at(expression, 14)
 
@@ -368,7 +368,7 @@ def $pftracked(F, pcpath, expression, z) = $pfselected(F, pcpath, pcpath_target,
 
 def $pfwarning_events(eps, pcpath) = eps
 def $pfwarning_events((DIAGNOSTIC "Warning" ptbytes z) :: pevent*, pcpath) = (pcpath, ptbytes, z) :: $pfwarning_events(pevent*, pcpath)
-def $pfwarned(F, pcpath, S) = $pfcompiler_precision(F[.MEMORY = S[.EVENTS = eps]][.WARNINGS = F.WARNINGS ++ $pfwarning_events(S.EVENTS, pcpath)][.VALUE = (pvalue)])
+def $pfwarned(F, pcpath, S) = $pfcompiler_precision(F[.MEMORY = S[.EVENTS = eps]][.WARNINGS = F.WARNINGS ++ $pfwarning_events(S.EVENTS, pcpath)][.VALUE = ($string_plain(pvalue))])
   -- if S.RESULT = KNOWN pvalue
   -- if F.RECORD = eps
 def $pftruth(F, pcpath, pvalue, z) = $pfwarned(F, pcpath, $truth_value(F.MEMORY, pvalue, z))

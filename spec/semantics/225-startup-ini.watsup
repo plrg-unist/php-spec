@@ -1,6 +1,5 @@
 ;; Registered startup bytes are explicit environment facts, after INI parsing.
 ;; A null reporting entry differs from a present empty value despite readback.
-dec $startup_bytes(preqbytes) : bool
 def $startup_bytes(eps) = true
 def $startup_bytes(n :: preqbytes) = ($(n < 256) /\ $startup_bytes(preqbytes))
 dec $startup_reporting_valid(preqbytes?) : bool

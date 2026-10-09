@@ -1,0 +1,29 @@
+{
+  "scope": "Two affected original controls: dense Throwable trace args constructor/saved installed pair/continue, and early pending-header reference-return replacement. Preserve native c=8 versus coherent c=1 policy explicitly; no initial11 renewal or current model acceptance implied.",
+  "cases": [
+    {
+      "id": "foreach-trace-args-constructor-saved-continue",
+      "source": "<?php class N{} function trace_source($a,$b){$e=new Exception;$t=$e->getTrace();return $t[0][\"args\"];} function ping(){echo \"P;\";}$src=trace_source(1,2);$b=$src;$c=$src;$x=\"s\";$y=\"\";function &f():string{global $src,$x,$y;try{foreach($src as $v){try{return $x;}catch(TypeError $e){echo \"C\",$v,\";\";}finally{echo \"F\",$v,\";\";$x=new N;}echo \"A\",$v,\";\";ping();continue;}}catch(Exception $outer){echo \"BAD;\";}$y=\"ok\";return $y;}$r=&f();echo \"r=\",$r,\";\";$src[0]=9;$b[0]=8;echo \"c=\",$c[0],\";\";",
+      "source_sha256": "385eac83e0190603a4bce152f114d168d108d88968d6788277be4dc63a1ff0e5",
+      "native_stdout": "F1;C1;F1;A1;P;C2;F2;A2;P;r=ok;c=8;",
+      "expected_coherent_stdout": "F1;C1;F1;A1;P;C2;F2;A2;P;r=ok;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence",
+      "native_report": ".tools/returns-verify20-owner/native-owner-trace-af1_ljpa/report.json",
+      "purpose": "Source-reach scalar dense args array constructed by Throwable trace storage163, authenticate its real value iterator and first end release, then ping from recovered body with an installed retired pair saved and continue under a plain TRY region."
+    },
+    {
+      "id": "foreach-pending-header-reference-return",
+      "source": "<?php class N{} $src=[1];$src[0]=1;$b=$src;$c=$src;$x=\"s\";$y=\"\";function &f():string{global $src,$x,$y;try{foreach($src as $v){try{return $x;}catch(TypeError $e){echo \"C\",$v,\";\";$y=\"new\";return $y;}echo \"A\",$v,\";\";}}finally{echo \"F;\";$x=new N;}$y=\"ok\";return $y;}$a=&f();echo \"r=\",$a,\";\";$src[0]=9;$b[0]=8;echo \"c=\",$c[0],\";\";",
+      "source_sha256": "0bd3b75a6bb2e2d312a5a342485b3514212fed329e63ec3adcc5f9e74a81e4c4",
+      "native_stdout": "F;C1;F;r=new;c=8;",
+      "expected_coherent_stdout": "F;C1;F;r=new;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence",
+      "native_report": ".tools/returns-verify20-owner/native-owner-pending-axzyxlb2/report.json",
+      "purpose": "A selected no-finally catch returns a new reference before AFTER rebuilds the retired pair. At the genuine old REF_ORIGIN/PHASE retirement, classify replacing return and remaining future check without relying on old/new source equality. Preserve FIRST/ARRAY/cursor only for an admitted actual completed replacement; generic replay behavior is not assumed."
+    }
+  ]
+}

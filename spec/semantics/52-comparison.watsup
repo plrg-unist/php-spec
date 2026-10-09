@@ -69,35 +69,37 @@ def $null_string_pair(PNULL, PSTRING n*) = true
 def $null_string_pair(PSTRING n*, PNULL) = true
 def $null_string_pair(pvalue_left, pvalue_right) = false -- otherwise
 dec $scalar_order(pstate, pvalue, pvalue) : int
-def $scalar_order(S, PSTRING n_left*, PSTRING n_right*) = $string_order(n_left*, n_right*)
-def $scalar_order(S, PNULL, PSTRING eps) = 0
-def $scalar_order(S, PSTRING eps, PNULL) = 0
-def $scalar_order(S, PNULL, PSTRING (n :: n_tail*)) = $(-1)
-def $scalar_order(S, PSTRING (n :: n_tail*), PNULL) = 1
+dec $scalar_plain_order(pstate, pvalue, pvalue) : int
+def $scalar_order(S, pvalue_left, pvalue_right) = $scalar_plain_order(S, $string_plain(pvalue_left), $string_plain(pvalue_right))
+def $scalar_plain_order(S, PSTRING n_left*, PSTRING n_right*) = $string_order(n_left*, n_right*)
+def $scalar_plain_order(S, PNULL, PSTRING eps) = 0
+def $scalar_plain_order(S, PSTRING eps, PNULL) = 0
+def $scalar_plain_order(S, PNULL, PSTRING (n :: n_tail*)) = $(-1)
+def $scalar_plain_order(S, PSTRING (n :: n_tail*), PNULL) = 1
 ;; Pure truth intentionally suppresses NaN coercion notices here, matching
 ;; zend_compare's explicit NaN/null/bool compatibility branch.
-def $scalar_order(S, pvalue_left, pvalue_right) = $bool_order($truth(S, pvalue_left), $truth(S, pvalue_right))
+def $scalar_plain_order(S, pvalue_left, pvalue_right) = $bool_order($truth(S, pvalue_left), $truth(S, pvalue_right))
   -- if $boolish(pvalue_left) \/ $boolish(pvalue_right)
   -- if ~$null_string_pair(pvalue_left, pvalue_right)
-def $scalar_order(S, PINT i_left, PINT i_right) = $compare_int(i_left, i_right)
-def $scalar_order(S, PFLOAT n, PINT i) = $num_compare(NFLOAT n, NINT i)
-def $scalar_order(S, PINT i, PFLOAT n) = $num_compare(NINT i, NFLOAT n)
-def $scalar_order(S, PFLOAT n_left, PFLOAT n_right) = $float_compare(n_left, n_right)
-def $scalar_order(S, PINT i, PSTRING n*) = $number_string_order(NINT i, n*)
-def $scalar_order(S, PSTRING n*, PINT i) = $(-$number_string_order(NINT i, n*))
-def $scalar_order(S, PFLOAT n, PSTRING n_string*) = 1
+def $scalar_plain_order(S, PINT i_left, PINT i_right) = $compare_int(i_left, i_right)
+def $scalar_plain_order(S, PFLOAT n, PINT i) = $num_compare(NFLOAT n, NINT i)
+def $scalar_plain_order(S, PINT i, PFLOAT n) = $num_compare(NINT i, NFLOAT n)
+def $scalar_plain_order(S, PFLOAT n_left, PFLOAT n_right) = $float_compare(n_left, n_right)
+def $scalar_plain_order(S, PINT i, PSTRING n*) = $number_string_order(NINT i, n*)
+def $scalar_plain_order(S, PSTRING n*, PINT i) = $(-$number_string_order(NINT i, n*))
+def $scalar_plain_order(S, PFLOAT n, PSTRING n_string*) = 1
   -- if $fparts_nan($float_decode(n))
-def $scalar_order(S, PSTRING n_string*, PFLOAT n) = 1
+def $scalar_plain_order(S, PSTRING n_string*, PFLOAT n) = 1
   -- if $fparts_nan($float_decode(n))
-def $scalar_order(S, PFLOAT n, PSTRING n_string*) = $number_string_precision_order(NFLOAT n, n_string*, $precision_value(S))
+def $scalar_plain_order(S, PFLOAT n, PSTRING n_string*) = $number_string_precision_order(NFLOAT n, n_string*, $precision_value(S))
   -- if ~$fparts_nan($float_decode(n))
-def $scalar_order(S, PSTRING n_string*, PFLOAT n) = $(-$number_string_precision_order(NFLOAT n, n_string*, $precision_value(S)))
+def $scalar_plain_order(S, PSTRING n_string*, PFLOAT n) = $(-$number_string_precision_order(NFLOAT n, n_string*, $precision_value(S)))
   -- if ~$fparts_nan($float_decode(n))
-def $scalar_order(S, PARRAY n, pvalue) = 1
+def $scalar_plain_order(S, PARRAY n, pvalue) = 1
   -- if ~$boolish(pvalue)
   -- if $type_bytes(pvalue) =/= [97,114,114,97,121]
   -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
-def $scalar_order(S, pvalue, PARRAY n) = $(-1)
+def $scalar_plain_order(S, pvalue, PARRAY n) = $(-1)
   -- if ~$boolish(pvalue)
   -- if $type_bytes(pvalue) =/= [97,114,114,97,121]
   -- if $type_bytes(pvalue) =/= [111, 98, 106, 101, 99, 116]
@@ -114,21 +116,21 @@ def $empty_instance_same(S, n_left, n_right) = true
   -- if S.OBJECTS[n_left] = INSTANCE porigin
   -- if S.OBJECTS[n_right] = INSTANCE porigin
 def $empty_instance_same(S, n_left, n_right) = false -- otherwise
-def $scalar_order(S, POBJECT n, POBJECT n) = 0
-def $scalar_order(S, POBJECT n_left, POBJECT n_right) = 0
+def $scalar_plain_order(S, POBJECT n, POBJECT n) = 0
+def $scalar_plain_order(S, POBJECT n_left, POBJECT n_right) = 0
   -- if n_left =/= n_right
   -- if ($named_closure_same(S, n_left, n_right) \/ $empty_instance_same(S, n_left, n_right) \/ $weakref_pair(S, n_left, n_right))
-def $scalar_order(S, POBJECT n_left, POBJECT n_right) = 1
+def $scalar_plain_order(S, POBJECT n_left, POBJECT n_right) = 1
   -- if n_left =/= n_right
   -- if ~($named_closure_same(S, n_left, n_right) \/ $empty_instance_same(S, n_left, n_right) \/ $weakref_pair(S, n_left, n_right))
-def $scalar_order(S, POBJECT n, PINT i) = $compare_int(1, i)
-def $scalar_order(S, PINT i, POBJECT n) = $compare_int(i, 1)
-def $scalar_order(S, POBJECT n_object, PFLOAT n) = $num_compare(NINT 1, NFLOAT n)
-def $scalar_order(S, PFLOAT n, POBJECT n_object) = $num_compare(NFLOAT n, NINT 1)
-def $scalar_order(S, POBJECT n, PSTRING n_bytes*) = 1
-def $scalar_order(S, PSTRING n_bytes*, POBJECT n) = $(-1)
-def $scalar_order(S, POBJECT n_object, PARRAY n_array) = 1
-def $scalar_order(S, PARRAY n_array, POBJECT n_object) = $(-1)
+def $scalar_plain_order(S, POBJECT n, PINT i) = $compare_int(1, i)
+def $scalar_plain_order(S, PINT i, POBJECT n) = $compare_int(i, 1)
+def $scalar_plain_order(S, POBJECT n_object, PFLOAT n) = $num_compare(NINT 1, NFLOAT n)
+def $scalar_plain_order(S, PFLOAT n, POBJECT n_object) = $num_compare(NFLOAT n, NINT 1)
+def $scalar_plain_order(S, POBJECT n, PSTRING n_bytes*) = 1
+def $scalar_plain_order(S, PSTRING n_bytes*, POBJECT n) = $(-1)
+def $scalar_plain_order(S, POBJECT n_object, PARRAY n_array) = 1
+def $scalar_plain_order(S, PARRAY n_array, POBJECT n_object) = $(-1)
 
 dec $value_order(pstate, pvalue, pvalue, pnode*) : porder
 dec $entries_order(pstate, pentry*, pentry*, pnode*) : porder

@@ -144,7 +144,8 @@ def $static_string_pair_receiver(ptask :: ptask_tail*, pstaticstring) = $static_
   -- if ~$static_string_scratch_head(ptask :: ptask_tail*, pstaticstring)
 
 dec $static_string_completed_operand(poperand) : bool
-def $static_string_completed_operand(KNOWN (PSTRING ptbytes)) = true
+def $static_string_completed_operand(KNOWN pvalue_text) = true
+  -- if $string_bytes(pvalue_text) = (ptbytes)
 def $static_string_completed_operand(poperand) = false -- otherwise
 dec $static_string_result_phase_valid(pstate, pstaticstring) : bool
 def $static_string_result_phase_valid(S, pstaticstring) = $static_string_result_phase_valid(S[.TODO = ptask :: ptask_tail*], pstaticstring)
@@ -191,9 +192,10 @@ rule PhpStep/static-string-begin: S ~> $user_string_begin(S_read, pstaticstring.
 rule PhpStep/static-string-complete: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (STATIC_STRING_RESULT pstaticstring) :: (STATIC_STRING_CAPTURE pstaticstring) :: ptask_tail*
   -- if $static_string_task_valid(S, pstaticstring)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (ptbytes)
   -- if S_inputs = S[.TODO = ptask_tail*][.HELD = S.HELD ++ $operand_nodes(pstaticstring.RHS)]
-  -- if S_written = $class_static_store_value(S_inputs, pstaticstring.CLASS, pstaticstring.NAME, PSTRING ptbytes, pstaticstring.LINE)
+  -- if S_written = $class_static_store_value(S_inputs, pstaticstring.CLASS, pstaticstring.NAME, pvalue_text, pstaticstring.LINE)
 
 ;; Discard the companion before the next public integrity check. Callback
 ;; exceptions retain their identity; ordinary live-write errors get this same

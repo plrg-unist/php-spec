@@ -32,14 +32,16 @@ def $parameter_backing_row_valid(S, pparameterbacking) = true
   -- if (HCELL pparameterbacking.CELL) <- S.ALLOCATIONS
   -- if pparameterbacking.CELL <- S.REFCELLS
   -- if $(pparameterbacking.CELL < |S.STORE|)
-  -- if S.STORE[pparameterbacking.CELL] = DEFINED (PSTRING pparameterbacking.VALUE)
+  -- if S.STORE[pparameterbacking.CELL] = DEFINED pvalue_string
+  -- if $string_bytes(pvalue_string) = (pparameterbacking.VALUE)
   -- if $parameter_backing_source(S, pparameterbacking)
 def $parameter_backing_row_valid(S, pparameterbacking) = false -- otherwise
 dec $parameter_backing_rows_valid(pstate, pparameterbacking*) : bool
 def $parameter_backing_rows_valid(S, eps) = true
 def $parameter_backing_rows_valid(S, pparameterbacking :: pparameterbacking_tail*) = ($parameter_backing_row_valid(S, pparameterbacking) /\ $parameter_backing_at(pparameterbacking_tail*, pparameterbacking.CELL) = eps /\ $parameter_backing_rows_valid(S, pparameterbacking_tail*))
 def $parameter_backings_valid(S) = $parameter_backing_rows_valid(S, S.PARAMETERBACKINGS)
-def $parameter_backing_value(S, n_cell, PSTRING n_text*) = true
+def $parameter_backing_value(S, n_cell, pvalue_string) = true
+  -- if $string_bytes(pvalue_string) = (n_text*)
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = (pparameterbacking)
   -- if pparameterbacking.VALUE = n_text*
   -- if $parameter_backing_row_valid(S, pparameterbacking)
@@ -54,13 +56,16 @@ def $parameter_backing_admission(S, pparameterstring, n_text*) = true
   -- if S.TODO = [PARAMETER_STRING_RESULT pparameterstring]
   -- if S.COMPLETION = NORMAL
   -- if $parameter_string_scope_valid(S, pparameterstring)
-  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_text*)
   -- if pparameterstring.CELL <- S.REFCELLS
   -- if $propref_at(S.PROPREFS, pparameterstring.CELL) = (ppropref)
   -- if $parameter_backing_source(S, {FUNCTION pparameterstring.FUNCTION, INDEX pparameterstring.INDEX, CELL pparameterstring.CELL, LINE pparameterstring.LINE, VALUE n_text*})
 def $parameter_backing_admission(S, pparameterstring, n_text*) = false -- otherwise
-def $parameter_backing_write(S, pparameterstring, n_text*) = S[.STORE = $set_cell(S.STORE, pparameterstring.CELL, DEFINED (PSTRING n_text*))][.PARAMETERBACKINGS = {FUNCTION pparameterstring.FUNCTION, INDEX pparameterstring.INDEX, CELL pparameterstring.CELL, LINE pparameterstring.LINE, VALUE n_text*} :: $parameter_backing_remove(S.PARAMETERBACKINGS, pparameterstring.CELL)]
+def $parameter_backing_write(S, pparameterstring, n_text*) = S[.STORE = $set_cell(S.STORE, pparameterstring.CELL, DEFINED pvalue_string)][.PARAMETERBACKINGS = {FUNCTION pparameterstring.FUNCTION, INDEX pparameterstring.INDEX, CELL pparameterstring.CELL, LINE pparameterstring.LINE, VALUE n_text*} :: $parameter_backing_remove(S.PARAMETERBACKINGS, pparameterstring.CELL)]
   -- if $parameter_backing_admission(S, pparameterstring, n_text*)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_text*)
 def $parameter_backing_write(S, pparameterstring, n_text*) = S[.COMPLETION = UNSUPPORTED "invalid parameter backing conversion"]
   -- if ~$parameter_backing_admission(S, pparameterstring, n_text*)
 

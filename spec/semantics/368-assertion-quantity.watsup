@@ -1,0 +1,350 @@
+;; zend_ini_parse_quantity_warn freezes its signed64 quantity before dispatch.
+;; Parsing diagnostics take precedence over overflow where the C decoder does.
+dec $assertion_quantity_escape_byte(nat) : preqbytes
+def $assertion_quantity_escape_byte(10) = $ptascii("\\n")
+def $assertion_quantity_escape_byte(13) = $ptascii("\\r")
+def $assertion_quantity_escape_byte(9) = $ptascii("\\t")
+def $assertion_quantity_escape_byte(12) = $ptascii("\\f")
+def $assertion_quantity_escape_byte(11) = $ptascii("\\v")
+def $assertion_quantity_escape_byte(27) = $ptascii("\\e")
+def $assertion_quantity_escape_byte(92) = $ptascii("\\\\")
+def $assertion_quantity_escape_byte(n) = $ptascii("\\x") ++ [n_hex*[n_upper], n_hex*[n_lower]]
+  -- if $(n < 32) \/ $(n > 126)
+  -- if ~(n <- [10,13,9,12,11,27])
+  -- if n_hex* = $ptascii("0123456789ABCDEF")
+  -- if n_upper = $(n / 16)
+  -- if n_lower = $(n \ 16)
+def $assertion_quantity_escape_byte(n) = [n]
+  -- if $(n >= 32) /\ $(n <= 126) /\ n =/= 92
+dec $assertion_quantity_escape(preqbytes) : preqbytes
+def $assertion_quantity_escape(eps) = eps
+def $assertion_quantity_escape(n_byte :: n_tail*) = $assertion_quantity_escape_byte(n_byte) ++ $assertion_quantity_escape(n_tail*)
+dec $assertion_quantity_diagnostic(preqbytes) : preqbytes
+def $assertion_quantity_diagnostic(n*) = $c_string($ptascii("Invalid \"zend.assertions\" setting. ") ++ n*)
+dec $assertion_quantity_invalid(preqbytes, preqbytes) : preqbytes
+def $assertion_quantity_invalid(n_input*, n_reason*) = $ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\": ") ++ n_reason* ++ $ptascii(", interpreting as \"0\" for backwards compatibility")
+dec $assertion_quantity_right_trim(preqbytes) : preqbytes
+def $assertion_quantity_right_trim(eps) = eps
+def $assertion_quantity_right_trim(n*) = $assertion_quantity_right_trim(n*[0:n_last])
+  -- if $(|n*| > 0)
+  -- if n_last = $nabs($(|n*| - 1))
+  -- if $ntspace(n*[n_last])
+def $assertion_quantity_right_trim(n*) = n*
+  -- if $(|n*| > 0)
+  -- if ~$ntspace(n*[$nabs($(|n*| - 1))])
+dec $assertion_quantity_leading(preqbytes) : bool
+def $assertion_quantity_leading(n_byte :: n_tail*) = $ntdigit(n_byte)
+def $assertion_quantity_leading(eps) = false
+dec $assertion_quantity_prefixed(preqbytes) : bool
+def $assertion_quantity_prefixed(48 :: n_byte :: n_tail*) = (n_byte <- [88,120,79,111,66,98])
+def $assertion_quantity_prefixed(n*) = false -- otherwise
+dec $assertion_quantity_bad_prefix(preqbytes, nat) : bool
+def $assertion_quantity_bad_prefix(eps, n_base) = true
+def $assertion_quantity_bad_prefix(n_byte :: n_tail*, n_base) = true
+  -- if $ntspace(n_byte) \/ n_byte <- [43,45]
+def $assertion_quantity_bad_prefix(48 :: n_byte :: n_tail*, n_base) = true
+  -- if n_byte <- [88,120,79,111] \/ (n_base =/= 16 /\ n_byte <- [66,98])
+def $assertion_quantity_bad_prefix(n*, n_base) = false -- otherwise
+dec $assertion_quantity_integer(nat, nat) : (int, bool)
+def $assertion_quantity_integer(n_sign, n) = ($(-1), true)
+  -- if $(n > 18446744073709551615)
+def $assertion_quantity_integer(n_sign, n) = ($long_signed(n), true)
+  -- if $(n <= 18446744073709551615)
+  -- if $(n >= 9223372036854775808)
+  -- if ~(n_sign = 1 /\ n = 9223372036854775808)
+def $assertion_quantity_integer(1, n) = ($(-n), false)
+  -- if $(n <= 9223372036854775808)
+def $assertion_quantity_integer(0, n) = (n, false)
+  -- if $(n < 9223372036854775808)
+dec $assertion_quantity_warning_option(preqbytes) : preqbytes?
+def $assertion_quantity_warning_option(n*) = (n*)
+dec $assertion_quantity_end(preqbytes, int, bool) : (int, preqbytes?)
+def $assertion_quantity_end(n_input*, z, true) = (z, $assertion_quantity_warning_option($assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\": value is out of range, using overflow result for backwards compatibility"))))
+def $assertion_quantity_end(n_input*, z, false) = (z, eps)
+dec $assertion_quantity_suffix(preqbytes, preqbytes, int, bool) : (int, preqbytes?)
+def $assertion_quantity_suffix(n_input*, eps, z, b_overflow) = $assertion_quantity_end(n_input*, z, b_overflow)
+def $assertion_quantity_suffix(n_input*, n_tail*, z, b_overflow) = (z, $assertion_quantity_warning_option($assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\": unknown multiplier \"") ++ $assertion_quantity_escape([n_last]) ++ $ptascii("\", interpreting as \"") ++ $assertion_quantity_escape(n_interpreted*) ++ $ptascii("\" for backwards compatibility"))))
+  -- if n_tail* =/= eps
+  -- if n_last = n_tail*[$nabs($(|n_tail*| - 1))]
+  -- if $assertion_quantity_factor([n_last]) = eps
+  -- if n_interpreted* = n_input*[0:$nabs($(|$assertion_quantity_right_trim(n_input*)| - |n_tail*|))]
+def $assertion_quantity_suffix(n_input*, n_tail*, z, b_overflow) = (z_result, $assertion_quantity_warning_option($assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\", interpreting as \"") ++ $assertion_quantity_escape(n_interpreted*) ++ $assertion_quantity_escape([n_last]) ++ $ptascii("\" for backwards compatibility"))))
+  -- if $(|n_tail*| > 1)
+  -- if n_last = n_tail*[$nabs($(|n_tail*| - 1))]
+  -- if $assertion_quantity_factor([n_last]) = (n_factor)
+  -- if z_result = $long_signed($($long_unsigned(z) * n_factor \ 18446744073709551616))
+  -- if n_interpreted* = n_input*[0:$nabs($(|$assertion_quantity_right_trim(n_input*)| - |n_tail*|))]
+def $assertion_quantity_suffix(n_input*, [n_last], z, b_overflow) = $assertion_quantity_end(n_input*, z_result, b_overflow \/ $(z * n_factor < -9223372036854775808) \/ $(z * n_factor > 9223372036854775807))
+  -- if $assertion_quantity_factor([n_last]) = (n_factor)
+  -- if z_result = $long_signed($($long_unsigned(z) * n_factor \ 18446744073709551616))
+dec $assertion_quantity_digits_result(preqbytes, nat, preqbytes, nat) : (int, preqbytes?)
+def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = (0, $assertion_quantity_warning_option($assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no digits after base prefix")))))
+  -- if $assertion_quantity_prefixed(n_digits*)
+  -- if $assertion_quantity_base(n_digits*) = ((n_base, n_unsigned*))
+  -- if $assertion_quantity_bad_prefix(n_unsigned*, n_base)
+def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = (0, $assertion_quantity_warning_option($assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no valid leading digits")))))
+  -- if $assertion_quantity_base(n_digits*) = ((n_base, n_unsigned*))
+  -- if ~$assertion_quantity_prefixed(n_digits*) \/ ~$assertion_quantity_bad_prefix(n_unsigned*, n_base)
+  -- if DIGITS n_value 0 n_tail* = $assertion_quantity_digits(n_base, n_unsigned*, 0, 0)
+def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = $assertion_quantity_suffix(n_input*, $nttrim(n_tail*), z, b_overflow)
+  -- if $assertion_quantity_base(n_digits*) = ((n_base, n_unsigned*))
+  -- if ~$assertion_quantity_prefixed(n_digits*) \/ ~$assertion_quantity_bad_prefix(n_unsigned*, n_base)
+  -- if DIGITS n_value n_count n_tail* = $assertion_quantity_digits(n_base, n_unsigned*, 0, 0)
+  -- if $(n_count > 0)
+  -- if (z, b_overflow) = $assertion_quantity_integer(n_sign, n_value)
+def $assertion_quantity_decode(n_input*) = (0, eps)
+  -- if $assertion_quantity_trim(n_input*) = eps
+def $assertion_quantity_decode(n_input*) = (0, $assertion_quantity_warning_option($assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no valid leading digits")))))
+  -- if n_trimmed* = $assertion_quantity_trim(n_input*)
+  -- if n_trimmed* =/= eps
+  -- if (n_sign, n_digits*) = $ntsign(n_trimmed*)
+  -- if ~$assertion_quantity_leading(n_digits*)
+def $assertion_quantity_decode(n_input*) = (0, $assertion_quantity_warning_option($assertion_quantity_diagnostic($ptascii("Invalid prefix \"0") ++ [n_digits*[1]] ++ $ptascii("\", interpreting as \"0\" for backwards compatibility"))))
+  -- if n_trimmed* = $assertion_quantity_trim(n_input*)
+  -- if (n_sign, n_digits*) = $ntsign(n_trimmed*)
+  -- if $assertion_quantity_leading(n_digits*)
+  -- if $assertion_quantity_base(n_digits*) = eps
+def $assertion_quantity_decode(n_input*) = $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base)
+  -- if n_trimmed* = $assertion_quantity_trim(n_input*)
+  -- if (n_sign, n_digits*) = $ntsign(n_trimmed*)
+  -- if $assertion_quantity_leading(n_digits*)
+  -- if $assertion_quantity_base(n_digits*) = ((n_base, n_unsigned*))
+
+;; Active snapshots are non-owning certificates. Ordinary tasks keep the call's
+;; argument owners; exact membership authenticates reentrant completion.
+dec $assertion_ini_record(passertini*, nat) : passertini?
+def $assertion_ini_record(eps, n) = eps
+def $assertion_ini_record(passertini_head :: passertini_tail*, n) = (passertini_head) -- if passertini_head.ID = n
+def $assertion_ini_record(passertini_head :: passertini_tail*, n) = $assertion_ini_record(passertini_tail*, n) -- if passertini_head.ID =/= n
+dec $assertion_ini_remove(passertini*, nat) : passertini*
+def $assertion_ini_remove(eps, n) = eps
+def $assertion_ini_remove(passertini_head :: passertini_tail*, n) = passertini_tail* -- if passertini_head.ID = n
+def $assertion_ini_remove(passertini_head :: passertini_tail*, n) = passertini_head :: $assertion_ini_remove(passertini_tail*, n) -- if passertini_head.ID =/= n
+dec $assertion_ini_phase_valid(passertiniphase, int) : bool
+dec $assertion_ini_action_valid(pstate, passertini) : bool
+def $assertion_ini_action_valid(S, passertini) = true
+  -- if passertini.CALL.KIND = INTRINSIC_INI_SET
+  -- if $assertion_ini_option_valid(S, passertini.CALL)
+  -- if $string_carrier_valid(S, passertini.OLDRETURN)
+  -- if $string_getter_value(passertini.OLDRAW) = (passertini.OLDRETURN)
+  -- if passertini.ENTRYMODIFIED \/ passertini.OLDRAW = passertini.ORIGINAL
+def $assertion_ini_action_valid(S, passertini) = true
+  -- if passertini.CALL.KIND = INTRINSIC_INI_RESTORE
+  -- if $assertion_ini_option_valid(S, passertini.CALL)
+  -- if passertini.ENTRYMODIFIED
+  -- if passertini.OLDRETURN = PNULL
+  -- if passertini.INPUT = passertini.ORIGINAL
+def $assertion_ini_action_valid(S, passertini) = false -- otherwise
+dec $assertion_ini_record_shape(pstate, passertini) : bool
+def $assertion_ini_record_shape(S, passertini) = true
+  -- if $(passertini.ID < S.ASSERTIONININEXT)
+  -- if $assertion_ini_action_valid(S, passertini)
+  -- if $string_carrier_valid(S, passertini.INPUT) /\ $string_carrier_valid(S, passertini.OLDRAW) /\ $string_carrier_valid(S, passertini.ORIGINAL)
+  -- if $string_bytes(passertini.INPUT) = (n_input*)
+  -- if (passertini.VALUE, passertini.WARNING) = $assertion_quantity_decode(n_input*)
+  -- if $precision_ini_valid($decimal_integer(passertini.PRECISION))
+  -- if $assertion_ini_phase_valid(passertini.PHASE, passertini.VALUE)
+def $assertion_ini_record_shape(S, passertini) = false -- otherwise
+def $assertion_ini_phase_valid(ASSERTION_PARSE, z) = true
+def $assertion_ini_phase_valid(ASSERTION_REFUSE z_old, z) = $assertion_ini_blocked(z_old, z)
+def $assertion_ini_records_valid(S, eps) = true
+def $assertion_ini_records_valid(S, passertini_head :: passertini_tail*) = ($assertion_ini_record_shape(S, passertini_head) /\ $assertion_ini_record(passertini_tail*, passertini_head.ID) = eps /\ $assertion_ini_records_valid(S, passertini_tail*))
+dec $assertion_ini_input_copy(pstate, passertini) : bool
+dec $assertion_ini_input_valid(pstate, passertini) : bool
+def $assertion_ini_input_valid(S, passertini) = true
+  -- if passertini.CALL.KIND = INTRINSIC_INI_SET
+  -- if $string_bytes(passertini.INPUT) = (n_input*)
+  -- if $assertion_ini_argument(S, passertini.CALL, passertini.PRECISION) = (n_input*)
+  -- if $assertion_ini_input_copy(S, passertini)
+def $assertion_ini_input_valid(S, passertini) = (passertini.INPUT = passertini.ORIGINAL)
+  -- if passertini.CALL.KIND = INTRINSIC_INI_RESTORE
+def $assertion_ini_input_valid(S, passertini) = false -- otherwise
+dec $assertion_ini_valid(pstate, passertini) : bool
+def $assertion_ini_valid(S, passertini) = true
+  -- if $assertion_state_valid(S)
+  -- if $assertion_ini_record(S.ASSERTIONINI, passertini.ID) = (passertini)
+  -- if $assertion_ini_record_shape(S, passertini)
+  -- if $config_invoke_valid(S, passertini.CALL)
+  -- if $assertion_ini_input_valid(S, passertini)
+def $assertion_ini_valid(S, passertini) = false -- otherwise
+def $assertion_ini_input_copy(S, passertini) = (passertini.INPUT = pvalue)
+  -- if passertini.CALL.SENT = [NAMED_SENT poperand, NAMED_SENT (KNOWN pvalue)]
+  -- if $method_string(pvalue)
+def $assertion_ini_input_copy(S, passertini) = true -- otherwise
+;; INIT is startup policy; ORIGINAL is captured anew when modification begins.
+dec $assertion_ini_capture(pstate) : pstate
+def $assertion_ini_capture(S) = S[.ASSERTIONSORIGINAL = S.ASSERTIONSRAW][.ASSERTIONSMODIFIED = true]
+  -- if ~S.ASSERTIONSMODIFIED
+def $assertion_ini_capture(S) = S -- if S.ASSERTIONSMODIFIED
+dec $assertion_ini_entry(pstate, pconfigcall) : pstate
+def $assertion_ini_entry(S, pconfigcall) = $assertion_ini_capture(S)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+def $assertion_ini_entry(S, pconfigcall) = S
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+dec $assertion_ini_old_return(pstate, pconfigcall) : pvalue?
+def $assertion_ini_old_return(S, pconfigcall) = $string_getter_value(S.ASSERTIONSRAW)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+def $assertion_ini_old_return(S, pconfigcall) = (PNULL)
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+dec $assertion_ini_prepare(pstate, pconfigcall, pvalue) : pstate
+def $assertion_ini_prepare(S, pconfigcall, pvalue) = S_entry[.ASSERTIONININEXT = $(S.ASSERTIONININEXT + 1)][.ASSERTIONINI = S.ASSERTIONINI ++ [passertini]][.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_entry = $assertion_ini_entry(S, pconfigcall)
+  -- if $string_bytes(pvalue) = (n_input*)
+  -- if (z, n_warning*?) = $assertion_quantity_decode(n_input*)
+  -- if $assertion_ini_old_return(S, pconfigcall) = (pvalue_old)
+  -- if passertini = {ID S.ASSERTIONININEXT, CALL pconfigcall, INPUT pvalue, OLDRAW S.ASSERTIONSRAW, OLDRETURN pvalue_old, ORIGINAL S_entry.ASSERTIONSORIGINAL, ENTRYMODIFIED S.ASSERTIONSMODIFIED, VALUE z, WARNING n_warning*?, PRECISION ($precision_value(S)), PHASE ASSERTION_PARSE}
+def $assertion_ini_set(S, pconfigcall, pvalue) = $error_dispatch(S_pending, 2, n_warning*, pconfigcall.LINE, DIAGNOSTIC "Warning" n_warning* pconfigcall.LINE, ASSERTION_INI_RESULT passertini)
+  -- if $assertion_state_valid(S)
+  -- if $assertion_ini_option_valid(S, pconfigcall)
+  -- if $string_carrier_valid(S, pvalue)
+  -- if S_pending = $assertion_ini_prepare(S, pconfigcall, pvalue)
+  -- if S_pending.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*
+  -- if passertini.WARNING = (n_warning*)
+def $assertion_ini_set(S, pconfigcall, pvalue) = S_pending
+  -- if $assertion_state_valid(S)
+  -- if $assertion_ini_option_valid(S, pconfigcall)
+  -- if $string_carrier_valid(S, pvalue)
+  -- if S_pending = $assertion_ini_prepare(S, pconfigcall, pvalue)
+  -- if S_pending.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*
+  -- if passertini.WARNING = eps
+dec $assertion_ini_quiet_option(pstate, pconfigcall, pvalue) : bool
+def $assertion_ini_quiet_option(S, pconfigcall, pvalue) = true
+  -- if $assertion_state_valid(S)
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+  -- if $string_carrier_valid(S, pvalue)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT poperand]
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $string_bytes(pvalue) = (n_input*)
+  -- if $assertion_quantity(n_input*) = (z)
+  -- if ~$assertion_ini_blocked(S.ASSERTIONS, z)
+  -- if S.TODO = ptask :: ptask_tail*
+def $assertion_ini_quiet_option(S, pconfigcall, pvalue) = false -- otherwise
+;; The existing Stringable option route can finish a quiet accepted update.
+;; Warning snapshots still require the original string option argument.
+def $assertion_ini_set(S, pconfigcall, pvalue) = $assertion_ini_capture(S)[.TODO = ptask_tail*][.ASSERTIONS = z][.ASSERTIONSMODE = {INPUT pvalue, VALUE z}][.ASSERTIONSRAW = pvalue][.ASSERTIONSINI = n_input*][.RESULT = KNOWN pvalue_old][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $assertion_ini_quiet_option(S, pconfigcall, pvalue)
+  -- if $string_bytes(pvalue) = (n_input*)
+  -- if $assertion_quantity(n_input*) = (z)
+  -- if $string_getter_value(S.ASSERTIONSRAW) = (pvalue_old)
+  -- if S.TODO = ptask :: ptask_tail*
+def $assertion_ini_set(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI Stringable option warning or refusal"]
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT poperand]
+  -- if ~$assertion_ini_quiet_option(S, pconfigcall, pvalue)
+def $assertion_ini_set(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI string identity producer or state"] -- otherwise
+def $assertion_ini_restore(S, pconfigcall) = $error_dispatch(S_pending, 2, n_warning*, pconfigcall.LINE, DIAGNOSTIC "Warning" n_warning* pconfigcall.LINE, ASSERTION_INI_RESULT passertini)
+  -- if $assertion_state_valid(S)
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if S.ASSERTIONSMODIFIED
+  -- if $assertion_ini_option_valid(S, pconfigcall)
+  -- if S_pending = $assertion_ini_prepare(S, pconfigcall, S.ASSERTIONSORIGINAL)
+  -- if S_pending.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*
+  -- if passertini.WARNING = (n_warning*)
+def $assertion_ini_restore(S, pconfigcall) = S_pending
+  -- if $assertion_state_valid(S)
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if S.ASSERTIONSMODIFIED
+  -- if $assertion_ini_option_valid(S, pconfigcall)
+  -- if S_pending = $assertion_ini_prepare(S, pconfigcall, S.ASSERTIONSORIGINAL)
+  -- if S_pending.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*
+  -- if passertini.WARNING = eps
+def $assertion_ini_restore(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $assertion_state_valid(S)
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if ~S.ASSERTIONSMODIFIED
+  -- if S.TODO = ptask :: ptask_tail*
+def $assertion_ini_restore(S, pconfigcall) = $assertion_restore(S)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $assertion_state_valid(S)
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if S.ASSERTIONSMODIFIED
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n))]
+  -- if S.TODO = ptask :: ptask_tail*
+def $assertion_ini_restore(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "assertion INI restore option or state"] -- otherwise
+;; zend_alter_ini_entry_ex releases frozen prev_value after a successful handler.
+;; A nested replacement already consumed that modified request-string retain.
+;; Later allocator reuse and stale zval reads fall outside immutable carriers.
+dec $assertion_ini_retired_raw(pstate, passertini) : bool
+def $assertion_ini_retired_raw(S, passertini) = true
+  -- if passertini.CALL.KIND = INTRINSIC_INI_SET
+  -- if passertini.ENTRYMODIFIED
+  -- if passertini.OLDRAW = PSTRING_CARRIER (REQUEST_STRING n) n_bytes*
+  -- if ~S.ASSERTIONSMODIFIED \/ passertini.OLDRAW =/= S.ASSERTIONSORIGINAL
+  -- if S.ASSERTIONSRAW =/= passertini.OLDRAW
+def $assertion_ini_retired_raw(S, passertini) = false -- otherwise
+dec $assertion_ini_install(pstate, passertini) : pstate
+def $assertion_ini_install(S, passertini) = S[.COMPLETION = UNSUPPORTED "reentrant assertion INI retired request-string owner"]
+  -- if passertini.CALL.KIND = INTRINSIC_INI_SET
+  -- if $assertion_ini_retired_raw(S, passertini)
+def $assertion_ini_install(S, passertini) = S[.ASSERTIONS = passertini.VALUE][.ASSERTIONSMODE = {INPUT passertini.INPUT, VALUE passertini.VALUE}][.ASSERTIONSRAW = passertini.INPUT][.ASSERTIONSINI = n_input*]
+  -- if passertini.CALL.KIND = INTRINSIC_INI_SET
+  -- if ~$assertion_ini_retired_raw(S, passertini)
+  -- if $string_same(S.ASSERTIONSRAW, passertini.OLDRAW) = (true)
+  -- if $string_bytes(passertini.INPUT) = (n_input*)
+def $assertion_ini_install(S, passertini) = S[.ASSERTIONS = passertini.VALUE][.ASSERTIONSMODE = {INPUT passertini.INPUT, VALUE passertini.VALUE}]
+  -- if passertini.CALL.KIND = INTRINSIC_INI_SET
+  -- if ~$assertion_ini_retired_raw(S, passertini)
+  -- if $string_same(S.ASSERTIONSRAW, passertini.OLDRAW) = (false)
+def $assertion_ini_install(S, passertini) = S[.COMPLETION = UNSUPPORTED "reentrant assertion INI restore cleared saved original"]
+  -- if passertini.CALL.KIND = INTRINSIC_INI_RESTORE
+  -- if ~S.ASSERTIONSMODIFIED
+def $assertion_ini_install(S, passertini) = S[.ASSERTIONS = passertini.VALUE][.ASSERTIONSMODE = {INPUT passertini.INPUT, VALUE passertini.VALUE}][.ASSERTIONSRAW = S.ASSERTIONSORIGINAL][.ASSERTIONSINI = n_original*][.ASSERTIONSMODIFIED = false]
+  -- if passertini.CALL.KIND = INTRINSIC_INI_RESTORE
+  -- if S.ASSERTIONSMODIFIED
+  -- if $string_bytes(S.ASSERTIONSORIGINAL) = (n_original*)
+dec $assertion_ini_complete(pstate, passertini) : pstate
+def $assertion_ini_complete(S, passertini) = S_installed[.ASSERTIONINI = $assertion_ini_remove(S.ASSERTIONINI, passertini.ID)][.RESULT = KNOWN passertini.OLDRETURN][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S_installed = $assertion_ini_install(S, passertini)
+dec $assertion_ini_refuse(pstate, passertini) : pstate
+def $assertion_ini_refuse(S, passertini) = $error_dispatch(S_refused, 2, $assertion_ini_warning(), passertini.CALL.LINE, DIAGNOSTIC "Warning" $assertion_ini_warning() passertini.CALL.LINE, ASSERTION_INI_RESULT passertini_refused)
+  -- if passertini_refused = passertini[.PHASE = ASSERTION_REFUSE S.ASSERTIONS]
+  -- if S_refused = S[.ASSERTIONINI = $assertion_ini_remove(S.ASSERTIONINI, passertini.ID) ++ [passertini_refused]]
+rule PhpStep/assertion-quantity-complete: S ~> $assertion_ini_complete(S[.TODO = ptask_tail*], passertini)
+  -- if S.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*
+  -- if $assertion_ini_valid(S, passertini)
+  -- if passertini.PHASE = ASSERTION_PARSE
+  -- if ~$assertion_ini_blocked(S.ASSERTIONS, passertini.VALUE)
+rule PhpStep/assertion-quantity-refuse: S ~> $assertion_ini_refuse(S, passertini)
+  -- if S.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*
+  -- if $assertion_ini_valid(S, passertini)
+  -- if passertini.PHASE = ASSERTION_PARSE
+  -- if $assertion_ini_blocked(S.ASSERTIONS, passertini.VALUE)
+dec $assertion_ini_refused_value(passertini) : pvalue
+def $assertion_ini_refused_value(passertini) = PBOOL false -- if passertini.CALL.KIND = INTRINSIC_INI_SET
+def $assertion_ini_refused_value(passertini) = PNULL -- if passertini.CALL.KIND = INTRINSIC_INI_RESTORE
+rule PhpStep/assertion-quantity-refused: S ~> S[.TODO = ptask_tail*][.ASSERTIONINI = $assertion_ini_remove(S.ASSERTIONINI, passertini.ID)][.RESULT = KNOWN ($assertion_ini_refused_value(passertini))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*
+  -- if $assertion_ini_valid(S, passertini)
+  -- if passertini.PHASE = ASSERTION_REFUSE z_old
+def $task_nodes(ASSERTION_INI_RESULT passertini) = $config_nodes(passertini.CALL)
+def $selected_task_nonce(ASSERTION_INI_RESULT passertini) = passertini.CALL.SELECTION
+def $call_task_valid(S, ASSERTION_INI_RESULT passertini) = $assertion_ini_valid(S, passertini)
+dec $assertion_ini_message(passertini) : preqbytes?
+def $assertion_ini_message(passertini) = passertini.WARNING -- if passertini.PHASE = ASSERTION_PARSE
+def $assertion_ini_message(passertini) = $assertion_quantity_warning_option($assertion_ini_warning()) -- if passertini.PHASE = ASSERTION_REFUSE z_old
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ASSERTION_INI_RESULT passertini
+  -- if $assertion_ini_valid(S, passertini)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.SITE = passertini.CALL.SITE
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.LINE = passertini.CALL.LINE
+  -- if $assertion_ini_message(passertini) = (perrorcall.MESSAGE)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (passertini.CALL)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ASSERTION_INI_RESULT passertini
+
+;; zend_error returns to OnUpdateAssertions even with EG(exception) pending.
+;; A second refusal warning uses the default reporter while retaining that throw.
+def $error_read_discard(S, ASSERTION_INI_RESULT passertini) = $assertion_ini_complete(S, passertini)[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $assertion_ini_valid(S, passertini)
+  -- if passertini.PHASE = ASSERTION_PARSE
+  -- if ~$assertion_ini_blocked(S.ASSERTIONS, passertini.VALUE)
+def $error_read_discard(S, ASSERTION_INI_RESULT passertini) = $error_default(S[.ASSERTIONINI = $assertion_ini_remove(S.ASSERTIONINI, passertini.ID)][.ERRORFATALTRACE = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], DIAGNOSTIC "Warning" $assertion_ini_warning() passertini.CALL.LINE, 2)
+  -- if $assertion_ini_valid(S, passertini)
+  -- if passertini.PHASE = ASSERTION_PARSE
+  -- if $assertion_ini_blocked(S.ASSERTIONS, passertini.VALUE)
+def $error_read_discard(S, ASSERTION_INI_RESULT passertini) = S[.ASSERTIONINI = $assertion_ini_remove(S.ASSERTIONINI, passertini.ID)]
+  -- if $assertion_ini_valid(S, passertini)
+  -- if passertini.PHASE = ASSERTION_REFUSE z_old
+def $error_read_discard(S, ASSERTION_INI_RESULT passertini) = S[.COMPLETION = UNSUPPORTED "invalid assertion INI completion certificate"]
+  -- if ~$assertion_ini_valid(S, passertini)

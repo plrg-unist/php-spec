@@ -445,7 +445,8 @@ def $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes) = true
   -- if ptask_consumer = VARIADIC_STRING_RESULT pvariadicstring
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [ptask_consumer]
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $receive_string_scope_valid(S, ptask_consumer)
   -- if $receive_string_cell(ptask_consumer) = (n_cell)
   -- if n_cell <- S.REFCELLS
@@ -453,10 +454,16 @@ def $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes) = true
   -- if $parameter_backing_source(S, {FUNCTION $receive_string_function(ptask_consumer), INDEX $receive_string_index(ptask_consumer), CELL n_cell, LINE $receive_string_line(ptask_consumer), VALUE ptbytes})
 def $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes) = false -- otherwise
 dec $receive_string_store(pstate, ptask, nat, ptbytes) : pstate
-def $receive_string_store(S, DEFAULT_STRING_RESULT pparameterstring, n_cell, ptbytes) = $write_cell_checked(S, n_cell, PSTRING ptbytes, pparameterstring.LINE)
-def $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes) = $write_cell_checked(S, n_cell, PSTRING ptbytes, pvariadicstring.LINE)
+def $receive_string_store(S, DEFAULT_STRING_RESULT pparameterstring, n_cell, ptbytes) = $write_cell_checked(S, n_cell, pvalue_string, pparameterstring.LINE)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
+def $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes) = $write_cell_checked(S, n_cell, pvalue_string, pvariadicstring.LINE)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $propref_at(S.PROPREFS, n_cell) = eps
-def $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED (PSTRING ptbytes))][.PARAMETERBACKINGS = pparameterbacking :: $parameter_backing_remove(S.PARAMETERBACKINGS, n_cell)]
+def $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED pvalue_string)][.PARAMETERBACKINGS = pparameterbacking :: $parameter_backing_remove(S.PARAMETERBACKINGS, n_cell)]
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if ptask_consumer = VARIADIC_STRING_RESULT pvariadicstring
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes)
@@ -476,18 +483,20 @@ def $variadic_string_finish(S, pvariadicstring, pvalue) = $variadic_insert(S, pf
 def $variadic_string_finish(S, pvariadicstring, pvalue) = $named_variadic_insert(S, pfunction, pvariadicstring.ELEMENT, pvariadicstring.OPERAND, pvalue)
   -- if pvariadicstring.NAMED
   -- if $receiving_function(S, pvariadicstring.FUNCTION) = (pfunction)
-rule PhpStep/variadic-string-value: S ~> $variadic_string_finish(S, pvariadicstring, PSTRING ptbytes)
+rule PhpStep/variadic-string-value: S ~> $variadic_string_finish(S, pvariadicstring, pvalue_string)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [VARIADIC_STRING_RESULT pvariadicstring]
   -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
   -- if pvariadicstring.OPERAND = KNOWN pvalue
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
-rule PhpStep/variadic-string-reference: S ~> $variadic_string_finish(S_store, pvariadicstring, PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
+rule PhpStep/variadic-string-reference: S ~> $variadic_string_finish(S_store, pvariadicstring, pvalue_string)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [VARIADIC_STRING_RESULT pvariadicstring]
   -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
   -- if pvariadicstring.OPERAND = REFERENCE n_cell
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S_store = $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes)
   -- if S_store.COMPLETION = NORMAL
 rule PhpStep/variadic-string-reference-abrupt: S ~> S_store
@@ -495,14 +504,16 @@ rule PhpStep/variadic-string-reference-abrupt: S ~> S_store
   -- if S.TODO = [VARIADIC_STRING_RESULT pvariadicstring]
   -- if $receive_string_scope_valid(S, VARIADIC_STRING_RESULT pvariadicstring)
   -- if pvariadicstring.OPERAND = REFERENCE n_cell
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S_store = $receive_string_store(S, VARIADIC_STRING_RESULT pvariadicstring, n_cell, ptbytes)
   -- if S_store.COMPLETION =/= NORMAL
 rule PhpStep/default-string-store: S ~> S_store[.TODO = $default_next(S_store, pfunction, $(pparameterstring.INDEX + 1))][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [DEFAULT_STRING_RESULT pparameterstring]
   -- if $receive_string_scope_valid(S, DEFAULT_STRING_RESULT pparameterstring)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $receiving_function(S, pparameterstring.FUNCTION) = (pfunction)
   -- if S_store = $receive_string_store(S, DEFAULT_STRING_RESULT pparameterstring, pparameterstring.CELL, ptbytes)
   -- if S_store.COMPLETION = NORMAL
@@ -510,6 +521,7 @@ rule PhpStep/default-string-store-abrupt: S ~> S_store
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [DEFAULT_STRING_RESULT pparameterstring]
   -- if $receive_string_scope_valid(S, DEFAULT_STRING_RESULT pparameterstring)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S_store = $receive_string_store(S, DEFAULT_STRING_RESULT pparameterstring, pparameterstring.CELL, ptbytes)
   -- if S_store.COMPLETION =/= NORMAL

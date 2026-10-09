@@ -257,11 +257,13 @@ def $class_constant_member_value(S, poperand_class, KNOWN pvalue, z) = S_class
   -- if S_class.COMPLETION =/= NORMAL
 def $class_constant_member_value(S, poperand_class, KNOWN pvalue, z) = $class_constant_member_typed(S, poperand_class, pvalue, z)
   -- if S.CONSTCONTEXT =/= eps
-def $class_constant_member_typed(S, KNOWN (PSTRING ptbytes_class), PSTRING ptbytes, z) = $class_constant_result(S, PSTRING pclassdesc.NAME, PVSTRING false)
+def $class_constant_member_typed(S, KNOWN (PSTRING ptbytes_class), pvalue_string, z) = $class_constant_result(S, PSTRING pclassdesc.NAME, PVSTRING false)
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S.CONSTCONTEXT = eps /\ $ptlc(ptbytes) = $ptascii("class")
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_class)) = (porigin)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
-def $class_constant_member_typed(S, poperand_class, PSTRING ptbytes, z) = $class_constant_fetch(S, poperand_class, ptbytes, z)
+def $class_constant_member_typed(S, poperand_class, pvalue_string, z) = $class_constant_fetch(S, poperand_class, ptbytes, z)
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S.CONSTCONTEXT =/= eps \/ $ptlc(ptbytes) =/= $ptascii("class")
 def $class_constant_member_typed(S, poperand_class, pvalue, z) = $throw_scalar(S, "TypeError", $ptascii("Cannot use value of type ") ++ $ptascii($typed_tag(pvalue)) ++ $ptascii(" as class constant name"), z)
   -- if ~$method_string(pvalue)

@@ -97,11 +97,11 @@ def $consumer_exception_original(S, papiquery) = true
   -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
   -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
   -- if $api_item_snapshot(pitem_receiver, papiquery.INPUT)
-  -- if $api_item_snapshot(pitem_method, PSTRING papiquery.ORIGINAL)
+  -- if $api_string_snapshot(pitem_method, papiquery.ORIGINAL)
 def $consumer_exception_original(S, papiquery) = true
   -- if papiquery.SOURCE = EXCEPTION_HANDLER_INVOKE pexceptioncall
   -- if papiquery.VALUE = pexceptioncall.CALLBACK
-  -- if papiquery.VALUE = PSTRING papiquery.ORIGINAL
+  -- if $string_bytes(papiquery.VALUE) = (papiquery.ORIGINAL)
   -- if pexceptioncall.RAW = eps
 def $consumer_exception_original(S, papiquery) = false -- otherwise
 def $api_source_line(S, EXCEPTION_HANDLER_INVOKE pexceptioncall) = 0
@@ -144,11 +144,12 @@ def $consumer_snapshot(S, papiquery) = (S.ARRAYS[n][.ITEMS = [ENTRY (KINT 0) (DI
 def $consumer_snapshot(S, papiquery) = eps -- otherwise
 def $consumer_snapshot_valid(papiquery, (parray)) = true
   -- if papiquery.VALUE = PARRAY n
-  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes)
+  -- if papiquery.METHOD = DIRECT pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if parray.ITEMS = [ENTRY (KINT 0) (DIRECT papiquery.INPUT), ENTRY (KINT 1) papiquery.METHOD]
 def $consumer_snapshot_valid(papiquery, eps) = true
-  -- if papiquery.VALUE = PSTRING ptbytes
-  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes)
+  -- if $string_bytes(papiquery.VALUE) = (ptbytes)
+  -- if papiquery.METHOD = DIRECT papiquery.VALUE
   -- if papiquery.ORIGINAL = ptbytes
 def $consumer_snapshot_valid(papiquery, parray?) = false -- otherwise
 
@@ -164,7 +165,7 @@ def $consumer_class_valid(S, papiquery) = true
   -- if papiquery.PREFIX = 0 /\ papiquery.WIDTH = 0
 def $consumer_class_valid(S, papiquery) = true
   -- if papiquery.OUTER = eps
-  -- if papiquery.VALUE = PSTRING ptbytes
+  -- if $string_bytes(papiquery.VALUE) = (ptbytes)
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
   -- if papiquery.INPUT = PSTRING ptbytes_class
   -- if papiquery.PREFIX = $(|ptbytes_class| + 2) /\ papiquery.WIDTH = |ptbytes_method|
@@ -183,7 +184,8 @@ def $consumer_receiver_live(S, (n)) = ((HOBJECT n) <- S.ALLOCATIONS)
 def $consumer_receiver_live(S, eps) = false
 def $consumer_method_valid(S, papiquery, porigin, ptbytes) = true
   -- if $consumer_class_valid(S, papiquery)
-  -- if papiquery.METHOD = DIRECT (PSTRING ptbytes_full)
+  -- if papiquery.METHOD = DIRECT pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes_full)
   -- if $api_leaf_snapshot(papiquery, ptbytes)
   -- if $api_selected_method($consumer_history(S, papiquery), papiquery, ptbytes) = (pmethoddesc)
   -- if pmethoddesc.FUNCTION.ORIGIN = porigin

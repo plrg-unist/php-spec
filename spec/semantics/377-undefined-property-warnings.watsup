@@ -53,7 +53,41 @@ dec $property_undefined_reference_arguments(phpType7*) : bool
 def $property_undefined_reference_arguments(eps) = true
 def $property_undefined_reference_arguments([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)]) = true
 def $property_undefined_reference_arguments([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)]) = true
+def $property_undefined_reference_arguments([(NArg ABSENT (NExprVariable (BYTES text_first) metadata_first) (BOOLEAN false) (BOOLEAN false) metadata_argument_first), (NArg ABSENT (NExprVariable (BYTES text_second) metadata_second) (BOOLEAN false) (BOOLEAN false) metadata_argument_second)]) = true
+def $property_undefined_reference_arguments([(NArg (NIdentifier (BYTES text_parameter_first) metadata_parameter_first) (NExprVariable (BYTES text_first) metadata_first) (BOOLEAN false) (BOOLEAN false) metadata_argument_first), (NArg (NIdentifier (BYTES text_parameter_second) metadata_parameter_second) (NExprVariable (BYTES text_second) metadata_second) (BOOLEAN false) (BOOLEAN false) metadata_argument_second)]) = true
+  -- if $base64(text_parameter_first) =/= $base64(text_parameter_second)
 def $property_undefined_reference_arguments(phpType7*) = false -- otherwise
+;; Two ordinary positional CVs have separate SEND occurrences. Deferred SENDs
+;; can share the argument-list line; complete-image admission checks that image.
+dec $property_undefined_reference_call(pstate, nat, pcpath, expression) : int?
+def $property_undefined_reference_call(S, n, pcpath, expression) = (z)
+  -- if $source_emission_echo_call(S, n, pcpath, expression) = (z)
+def $property_undefined_reference_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_first) metadata_first) (BOOLEAN false) (BOOLEAN false) metadata_argument_first), (NArg ABSENT (NExprVariable (BYTES text_second) metadata_second) (BOOLEAN false) (BOOLEAN false) metadata_argument_second)])) metadata_call) = (z)
+  -- if $property_undefined_reference_name(name)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_first) metadata_first) (BOOLEAN false) (BOOLEAN false) metadata_argument_first), (NArg ABSENT (NExprVariable (BYTES text_second) metadata_second) (BOOLEAN false) (BOOLEAN false) metadata_argument_second)])) metadata_call)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if z = $source_line(metadata_call)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1], NExprVariable (BYTES text_first) metadata_first)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 1, PCINDEX 1, PCFIELD 1], NExprVariable (BYTES text_second) metadata_second)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $property_undefined_reference_call(S, n, pcpath, NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter_first) metadata_parameter_first) (NExprVariable (BYTES text_first) metadata_first) (BOOLEAN false) (BOOLEAN false) metadata_argument_first), (NArg (NIdentifier (BYTES text_parameter_second) metadata_parameter_second) (NExprVariable (BYTES text_second) metadata_second) (BOOLEAN false) (BOOLEAN false) metadata_argument_second)])) metadata_call) = (z)
+  -- if $base64(text_parameter_first) =/= $base64(text_parameter_second)
+  -- if $property_undefined_reference_name(name)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter_first) metadata_parameter_first) (NExprVariable (BYTES text_first) metadata_first) (BOOLEAN false) (BOOLEAN false) metadata_argument_first), (NArg (NIdentifier (BYTES text_parameter_second) metadata_parameter_second) (NExprVariable (BYTES text_second) metadata_second) (BOOLEAN false) (BOOLEAN false) metadata_argument_second)])) metadata_call)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if z = $source_line(metadata_call)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1], NExprVariable (BYTES text_first) metadata_first)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 1, PCINDEX 1, PCFIELD 1], NExprVariable (BYTES text_second) metadata_second)
+  -- if $compiled_effects(S, PORIGIN n pcpath) = eps
+def $property_undefined_reference_call(S, n, pcpath, expression) = eps -- otherwise
 dec $property_undefined_reference_source(pstate, pnameread) : bool
 def $property_undefined_reference_source(S, pnameread) = true
   -- if pnameread.SITE = PORIGIN n pcpath
@@ -61,7 +95,7 @@ def $property_undefined_reference_source(S, pnameread) = true
   -- if expression_receiver = NExprFuncCall name (SEQUENCE phpType7*) metadata_call
   -- if $property_undefined_reference_name(name)
   -- if $property_undefined_reference_arguments(phpType7*)
-  -- if $source_emission_echo_call(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (z_call)
+  -- if $property_undefined_reference_call(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (z_call)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
   -- if $call_target(S, ptbytes_name, eps) = (pfunction)
@@ -91,6 +125,68 @@ def $property_undefined_named_send_line(S, NAMED_SEND pcalltarget eps 0 pnamedar
 def $property_undefined_named_send_line(S, ptask) = eps -- otherwise
 def $error_read_state_shape(S, ptask, poperand, pbase) = $echo_dynamic_named_read_shape(S, ptask, poperand, pbase, z_send)
   -- if $property_undefined_named_send_line(S, ptask) = (z_send)
+;; Two named CVs preserve their actual named prefix and remaining source tail.
+;; Deferred sends use the argument-list line, not each label or CV's own line.
+dec $property_undefined_two_named_send_line(pstate, ptask) : int?
+def $property_undefined_two_named_send_line(S, NAMED_SEND pcalltarget phpType7_tail* n_argument pnamedargs (PORIGIN n pcpath_call) z_call) = (z_send)
+  -- if $(n_argument < 2)
+  -- if $(|pcpath_call| > 0)
+  -- if n_parent = $(|pcpath_call| - 1)
+  -- if pcpath = pcpath_call[0:n_parent]
+  -- if pcpath_call = pcpath ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata_property)
+  -- if expression_receiver = NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter_first) metadata_parameter_first) (NExprVariable (BYTES text_first) metadata_first) (BOOLEAN false) (BOOLEAN false) metadata_argument_first), (NArg (NIdentifier (BYTES text_parameter_second) metadata_parameter_second) (NExprVariable (BYTES text_second) metadata_second) (BOOLEAN false) (BOOLEAN false) metadata_argument_second)])) metadata_call
+  -- if $property_undefined_reference_source(S, {SITE PORIGIN n pcpath, NAME $base64(text_name), LINE $source_line(metadata_name)})
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath_call) = ((ptbytes_callee, eps))
+  -- if $call_target(S, ptbytes_callee, eps) = (pfunction)
+  -- if pcalltarget = pfunction.ORIGIN
+  -- if $call_task_valid(S, NAMED_SEND pcalltarget phpType7_tail* n_argument pnamedargs (PORIGIN n pcpath_call) z_call)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath_call, eps) = (z_call)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath_call, [PCFIELD 1, PCINDEX n_argument, PCFIELD 1]) = (z_send)
+  -- if $named_source(S, (PORIGIN n pcpath_call), n_argument) = NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument
+  -- if z_send =/= $source_line(metadata_value)
+def $property_undefined_two_named_send_line(S, ptask) = eps -- otherwise
+dec $property_undefined_two_named_read_shape(pstate, ptask, poperand, pbase, int) : perrorread?
+def $property_undefined_two_named_read_shape(S, NAMED_SEND pcalltarget phpType7_tail* n pnamedargs (porigin) z_call, poperand_input, pbase, z_send) = (perrorread[.LINE = z_send])
+  -- if $(n < 2)
+  -- if $call_argument_source(S, porigin) = PCALLARGUMENTS phpType7* n_field
+  -- if |phpType7*| = 2
+  -- if $named_source(S, (porigin), n) = NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument
+  -- if poperand_input = VARIABLE $base64(text_argument) $source_line(metadata_value)
+  -- if $error_read_shape(NAMED_SEND pcalltarget phpType7_tail* n pnamedargs (porigin) z_call, poperand_input, pbase) = (perrorread)
+def $property_undefined_two_named_read_shape(S, ptask, poperand, pbase, z_send) = eps -- otherwise
+def $error_read_state_shape(S, ptask, poperand, pbase) = $property_undefined_two_named_read_shape(S, ptask, poperand, pbase, z_send)
+  -- if $property_undefined_two_named_send_line(S, ptask) = (z_send)
+;; The second deferred positional SEND preserves its already-captured prefix
+;; and borrowed INPUT while reporting the actual emitted argument-list line.
+dec $property_undefined_positional_send_line(pstate, ptask) : int?
+def $property_undefined_positional_send_line(S, CALL_SEND pcalltarget eps 1 poperand* (PORIGIN n pcpath_call) z_call) = (z_send)
+  -- if |poperand*| = 1
+  -- if $(|pcpath_call| > 0)
+  -- if n_parent = $(|pcpath_call| - 1)
+  -- if pcpath = pcpath_call[0:n_parent]
+  -- if pcpath_call = pcpath ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata_property)
+  -- if expression_receiver = NExprFuncCall name (SEQUENCE ([(NArg ABSENT (NExprVariable (BYTES text_first) metadata_first) (BOOLEAN false) (BOOLEAN false) metadata_argument_first), (NArg ABSENT (NExprVariable (BYTES text_second) metadata_second) (BOOLEAN false) (BOOLEAN false) metadata_argument_second)])) metadata_call
+  -- if $property_undefined_reference_source(S, {SITE PORIGIN n pcpath, NAME $base64(text_name), LINE $source_line(metadata_name)})
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath_call) = ((ptbytes_callee, eps))
+  -- if $call_target(S, ptbytes_callee, eps) = (pfunction)
+  -- if pcalltarget = pfunction.ORIGIN
+  -- if $call_task_valid(S, CALL_SEND pcalltarget eps 1 poperand* (PORIGIN n pcpath_call) z_call)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath_call, eps) = (z_call)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath_call, [PCFIELD 1, PCINDEX 1, PCFIELD 1]) = (z_send)
+  -- if z_send =/= $source_line(metadata_second)
+def $property_undefined_positional_send_line(S, ptask) = eps -- otherwise
+dec $property_undefined_positional_read_shape(pstate, ptask, poperand, pbase, int) : perrorread?
+def $property_undefined_positional_read_shape(S, CALL_SEND pcalltarget eps 1 poperand* (porigin) z_call, poperand_input, pbase, z_send) = (perrorread[.LINE = z_send])
+  -- if $call_argument_expression(S, (porigin), 1) = NExprVariable (BYTES text_second) metadata_second
+  -- if poperand_input = VARIABLE $base64(text_second) $source_line(metadata_second)
+  -- if $error_read_shape(CALL_SEND pcalltarget eps 1 poperand* (porigin) z_call, poperand_input, pbase) = (perrorread)
+def $property_undefined_positional_read_shape(S, ptask, poperand, pbase, z_send) = eps -- otherwise
+def $error_read_state_shape(S, ptask, poperand, pbase) = $property_undefined_positional_read_shape(S, ptask, poperand, pbase, z_send)
+  -- if $property_undefined_positional_send_line(S, ptask) = (z_send)
 dec $property_undefined_cell(pstate, nat) : bool
 def $property_undefined_cell(S, n) = true
   -- if $(n < |S.STORE|)

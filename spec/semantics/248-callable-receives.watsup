@@ -130,7 +130,7 @@ rule PhpStep/api-variadic-receive: S ~> $api_begin(S, ptask, $variadic_operand_v
 def $api_source_line(S, CALLABLE_DEFAULT_RECEIVE porigin n) = $default_parameter_line(S, porigin, n)
 def $api_source_line(S, ptask) = $default_parameter_line(S, $api_receive_function(ptask), $api_receive_index(S, ptask))
   -- if $api_variadic_task(ptask)
-def $api_string_item(S, ptask, ptbytes) = ALIAS n_cell
+def $api_string_item(S, ptask, pvalue) = ALIAS n_cell
   -- if $api_variadic_task(ptask)
   -- if $api_receive_operand(S, ptask) = REFERENCE n_cell
 dec $api_receive_operand_valid(pstate, papiquery) : bool
@@ -214,6 +214,7 @@ dec $api_slow_skip(text, pvalue) : bool
 def $api_slow_skip(text, PINT i) = (text = "int")
 def $api_slow_skip(text, PFLOAT n) = (text = "float")
 def $api_slow_skip(text, PSTRING ptbytes) = (text = "string")
+def $api_slow_skip(text, PSTRING_CARRIER pstringidentity ptbytes) = (text = "string")
 def $api_slow_skip(text, pvalue) = false -- otherwise
 dec $api_slow_masks(text*, pvalue) : text*
 def $api_slow_masks(eps, pvalue) = eps
@@ -376,12 +377,17 @@ def $receive_string_cell(CALLABLE_STRING_RESULT ptask (KNOWN pvalue) n n_index z
 def $receive_backing_admission(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z, n_cell, ptbytes) = true
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = [CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z]
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z)
   -- if $parameter_backing_source(S, {FUNCTION $api_receive_function(ptask), INDEX $api_receive_index(S, ptask), CELL n_cell, LINE $api_source_line(S, ptask), VALUE ptbytes})
-def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes) = $write_cell_checked(S, n_cell, PSTRING ptbytes, $api_source_line(S, ptask))
+def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes) = $write_cell_checked(S, n_cell, pvalue_string, $api_source_line(S, ptask))
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $propref_at(S.PROPREFS, n_cell) = eps
-def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED (PSTRING ptbytes))][.PARAMETERBACKINGS = pparameterbacking :: $parameter_backing_remove(S.PARAMETERBACKINGS, n_cell)]
+def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED pvalue_string)][.PARAMETERBACKINGS = pparameterbacking :: $parameter_backing_remove(S.PARAMETERBACKINGS, n_cell)]
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if ptask_consumer = CALLABLE_STRING_RESULT ptask poperand n n_index z
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if $receive_backing_admission(S, ptask_consumer, n_cell, ptbytes)
@@ -389,19 +395,22 @@ def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, 
 def $receive_string_store(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes) = S[.COMPLETION = UNSUPPORTED "invalid parameter backing conversion"]
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if ~$receive_backing_admission(S, CALLABLE_STRING_RESULT ptask poperand n n_index z, n_cell, ptbytes)
-rule PhpStep/callable-string-value: S ~> $api_receive_finish(S, ptask, PSTRING ptbytes)
+rule PhpStep/callable-string-value: S ~> $api_receive_finish(S, ptask, pvalue_string)
   -- if S.TODO = [CALLABLE_STRING_RESULT ptask (KNOWN pvalue) n n_index z]
   -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask (KNOWN pvalue) n n_index z)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
-rule PhpStep/callable-string-reference: S ~> $api_receive_finish(S_store, ptask, PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
+rule PhpStep/callable-string-reference: S ~> $api_receive_finish(S_store, ptask, pvalue_string)
   -- if S.TODO = [CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z]
   -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S_store = $receive_string_store(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z, n_cell, ptbytes)
   -- if S_store.COMPLETION = NORMAL
 rule PhpStep/callable-string-reference-abrupt: S ~> S_store
   -- if S.TODO = [CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z]
   -- if $receive_string_scope_valid(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S_store = $receive_string_store(S, CALLABLE_STRING_RESULT ptask (REFERENCE n_cell) n n_index z, n_cell, ptbytes)
   -- if S_store.COMPLETION =/= NORMAL

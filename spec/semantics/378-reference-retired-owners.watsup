@@ -1,0 +1,459 @@
+dec $retired_future_check(pstate, porigin, int, bool, ptask*) : bool
+dec $retired_recheck_task(ptask, porigin, int) : bool
+dec $retired_recheck_for(ptask*, porigin, int) : bool
+;; Coherent recovery after the first real array end-owner release. These rows
+;; and paired controls borrow physical identity; they add no heap root or edge.
+dec $retired_lookup(pretiredowner*, porigin) : pretiredowner?
+def $retired_lookup(eps, porigin) = eps
+def $retired_lookup(pretiredowner :: pretiredowner_tail*, porigin) = (pretiredowner)
+  -- if pretiredowner.OWNER = porigin
+def $retired_lookup(pretiredowner :: pretiredowner_tail*, porigin) = $retired_lookup(pretiredowner_tail*, porigin)
+  -- if pretiredowner.OWNER =/= porigin
+dec $retired_remove(pretiredowner*, porigin) : pretiredowner*
+def $retired_remove(eps, porigin) = eps
+def $retired_remove(pretiredowner :: pretiredowner_tail*, porigin) = $retired_remove(pretiredowner_tail*, porigin)
+  -- if pretiredowner.OWNER = porigin
+def $retired_remove(pretiredowner :: pretiredowner_tail*, porigin) = pretiredowner :: $retired_remove(pretiredowner_tail*, porigin)
+  -- if pretiredowner.OWNER =/= porigin
+dec $retired_set(pretiredowner*, pretiredowner) : pretiredowner*
+def $retired_set(pretiredowner_all*, pretiredowner) = $retired_remove(pretiredowner_all*, pretiredowner.OWNER) ++ [pretiredowner]
+def $retired_enter(S, (porigin)) = S[.RETIREDOWNERS = $retired_remove(S.RETIREDOWNERS, porigin)]
+def $retired_enter(S, eps) = S
+
+dec $retired_scalar(pvalue) : bool
+def $retired_scalar(PNULL) = true
+def $retired_scalar(PBOOL b) = true
+def $retired_scalar(PINT z) = true
+def $retired_scalar(PFLOAT n) = true
+def $retired_scalar(PSTRING n*) = true
+def $retired_scalar(PSTRING_CARRIER pstringidentity n*) = true
+def $retired_scalar(pvalue) = false -- otherwise
+dec $retired_scalar_entries(pentry*) : bool
+def $retired_scalar_entries(eps) = true
+def $retired_scalar_entries((ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($retired_scalar(pvalue) /\ $retired_scalar_entries(pentry_tail*))
+def $retired_scalar_entries(pentry*) = false -- otherwise
+dec $retired_dense_entries(pentry*, pposition*, nat) : bool
+def $retired_dense_entries(eps, eps, n) = true
+def $retired_dense_entries((ENTRY (KINT z) (DIRECT pvalue)) :: pentry_tail*, (POSITION (KINT z) n) :: pposition_tail*, n) = ($retired_scalar(pvalue) /\ $retired_dense_entries(pentry_tail*, pposition_tail*, $(n + 1)))
+  -- if z = $(n)
+def $retired_dense_entries(pentry*, pposition*, n) = false -- otherwise
+dec $retired_dense_array(parray) : bool
+def $retired_dense_array(parray) = ($retired_dense_entries(parray.ITEMS, parray.POSITIONS, 0) /\ parray.SERIAL = |parray.ITEMS|)
+
+;; This is the pinned ordinary named DO_FCALL VAR result route, not a guess
+;; from CODEEXPR's boolean. CV/CONST and ref-returning calls remain separate.
+dec $retired_switch_var_site(pstate, porigin) : bool
+def $retired_switch_var_site(S, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtSwitch (NExprFuncCall name (SEQUENCE eps) metadata_call) phpType60 metadata)
+  -- if $goto_scope_valid(S, PORIGIN n pcpath)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if pcpath_subject = pcpath ++ [PCFIELD 0]
+  -- if $code_name(pcode.NAMES, pcpath_subject) = ((ptbytes_name, eps))
+  -- if ~$pfunction_builtin(ptbytes_name)
+  -- if $source_emission_noarg_call(S, n, pcpath_subject, NExprFuncCall name (SEQUENCE eps) metadata_call) = (z_init)
+  -- if $ppunpack_call_class(pcode.NAMES, pcpath_subject) = (UNPACK_VAR)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_subject) = ((z_call, false))
+  -- if $compiled_read(S, PORIGIN n pcpath_subject) = eps
+  -- if $call_target(S, ptbytes_name, eps) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if $call_supported_signature(S, pfunction)
+def $retired_switch_var_site(S, porigin) = false -- otherwise
+dec $retired_foreach_site(pstate, porigin) : bool
+def $retired_foreach_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtForeach expression phpType5 (BOOLEAN false) expression_value phpType23 (BOOLEAN false) metadata)
+  -- if ~$ppforeach_references(expression_value, false)
+  -- if $goto_scope_valid(S, porigin)
+def $retired_foreach_site(S, porigin) = false -- otherwise
+dec $retired_inside(pstate, porigin, porigin) : bool
+def $retired_inside(S, PORIGIN n pcpath_owner, PORIGIN n pcpath_source) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_owner) = (NStmtSwitch expression phpType60 metadata)
+  -- if $effect_below(pcpath_owner ++ [PCFIELD 1], pcpath_source)
+def $retired_inside(S, PORIGIN n pcpath_owner, PORIGIN n pcpath_source) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_owner) = (NStmtForeach expression phpType5 phpType4 expression_value phpType23 phpType4_else metadata)
+  -- if $effect_below(pcpath_owner ++ [PCFIELD 4], pcpath_source)
+def $retired_inside(S, porigin_owner, porigin_source) = false -- otherwise
+dec $retired_return_site(pstate, porigin, int) : bool
+def $retired_return_site(S, porigin, z) = true
+  -- if $goto_scope_valid(S, porigin)
+  -- if $reference_return_source(S[.ORIGIN = (porigin)], z)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if ~("mixed" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
+  -- if $ref_replay_owners(S, porigin) =/= eps
+  -- if ~$ref_replay_from_finalizer(S, porigin)
+  -- if ~$generator_active(S)
+def $retired_return_site(S, porigin, z) = false -- otherwise
+dec $retired_kind_valid(pstate, pretiredowner) : bool
+def $retired_kind_valid(S, pretiredowner) = $retired_switch_var_site(S, pretiredowner.OWNER)
+  -- if pretiredowner.KIND = RET_SWITCH_VAR_ARRAY
+  -- if pretiredowner.POSITION = eps
+def $retired_kind_valid(S, pretiredowner) = $retired_foreach_site(S, pretiredowner.OWNER)
+  -- if pretiredowner.KIND = RET_FOREACH_VALUE_ARRAY
+  -- if pretiredowner.POSITION = (n_position)
+def $retired_kind_valid(S, pretiredowner) = false -- otherwise
+;; Source and historical slot bounds survive allocation retirement. Liveness
+;; and admitted payload category are checked only for reconstruction or fetch.
+dec $retired_row_valid(pstate, pretiredowner) : bool
+def $retired_row_valid(S, pretiredowner) = true
+  -- if $(pretiredowner.ARRAY < |S.ARRAYS|)
+  -- if $retired_kind_valid(S, pretiredowner)
+  -- if $retired_return_site(S, pretiredowner.FIRSTRETURN, pretiredowner.FIRSTLINE)
+  -- if $retired_return_site(S, pretiredowner.LASTRETURN, pretiredowner.LASTLINE)
+  -- if $retired_inside(S, pretiredowner.OWNER, pretiredowner.FIRSTRETURN)
+  -- if $retired_inside(S, pretiredowner.OWNER, pretiredowner.LASTRETURN)
+def $retired_row_valid(S, pretiredowner) = false -- otherwise
+
+dec $retired_task_row(ptask) : pretiredowner?
+def $retired_task_row(RETIRED_SWITCH_END pretiredowner) = (pretiredowner)
+def $retired_task_row(RETIRED_FOREACH_NEXT pretiredowner) = (pretiredowner)
+def $retired_task_row(RETIRED_OWNER_PHASE pretiredowner) = (pretiredowner)
+def $retired_task_row(ptask) = eps -- otherwise
+dec $retired_end_task(pretiredowner) : ptask
+def $retired_end_task(pretiredowner) = RETIRED_SWITCH_END pretiredowner
+  -- if pretiredowner.KIND = RET_SWITCH_VAR_ARRAY
+def $retired_end_task(pretiredowner) = RETIRED_FOREACH_NEXT pretiredowner
+  -- if pretiredowner.KIND = RET_FOREACH_VALUE_ARRAY
+dec $retired_pair_tasks(pretiredowner) : ptask*
+def $retired_pair_tasks(pretiredowner) = [$retired_end_task(pretiredowner), RETIRED_OWNER_PHASE pretiredowner]
+dec $retired_pair(ptask*, pretiredowner) : bool
+def $retired_pair(eps, pretiredowner) = false
+def $retired_pair(ptask :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*, pretiredowner) = true
+  -- if ptask = $retired_end_task(pretiredowner)
+def $retired_pair(ptask :: ptask_tail*, pretiredowner) = $retired_pair(ptask_tail*, pretiredowner)
+  -- if $retired_task_row(ptask) =/= (pretiredowner)
+def $retired_pair(ptask*, pretiredowner) = false -- otherwise
+dec $retired_owner_count(ptask*, porigin) : nat
+def $retired_owner_count(eps, porigin) = 0
+def $retired_owner_count(ptask :: ptask_tail*, porigin) = $(1 + $retired_owner_count(ptask_tail*, porigin))
+  -- if $retired_task_row(ptask) = (pretiredowner)
+  -- if pretiredowner.OWNER = porigin
+def $retired_owner_count(ptask :: ptask_tail*, porigin) = $retired_owner_count(ptask_tail*, porigin)
+  -- if $retired_task_row(ptask) = eps
+def $retired_owner_count(ptask :: ptask_tail*, porigin) = $retired_owner_count(ptask_tail*, porigin)
+  -- if $retired_task_row(ptask) = (pretiredowner)
+  -- if pretiredowner.OWNER =/= porigin
+dec $retired_pair_valid(pstate, pretiredowner) : bool
+def $retired_pair_valid(S, pretiredowner) = ($retired_row_valid(S, pretiredowner) /\ $retired_lookup(S.RETIREDOWNERS, pretiredowner.OWNER) = (pretiredowner) /\ $retired_pair(S.TODO, pretiredowner) /\ $retired_owner_count(S.TODO, pretiredowner.OWNER) = 2 /\ $switch_replay_owner_count(S.TODO, pretiredowner.OWNER) = 1)
+
+;; Pending selection is syntactic and separate from descriptor validation.
+;; The existing task validators authenticate operands, source and phase.
+dec $retired_capability_task(ptask, porigin, int) : bool
+def $retired_capability_task(RETURN_REF_UNWIND poperand z b porigin, porigin, z) = true
+def $retired_capability_task(FINALLY_REF_RETURN porigin_final porigin poperand z, porigin, z) = true
+def $retired_capability_task(REF_RECHECK porigin porigin_first poperand z, porigin, z) = true
+def $retired_capability_task(REF_REPLAY porigin poperand z prefowner*, porigin, z) = true
+def $retired_capability_task(REF_REPLAY_ORIGIN porigin z prefowner*, porigin, z) = true
+def $retired_capability_task(ptask, porigin, z) = false -- otherwise
+dec $retired_capability(ptask*, porigin, int) : bool
+def $retired_capability(eps, porigin, z) = false
+def $retired_capability(ptask :: ptask_tail*, porigin, z) = ($retired_capability_task(ptask, porigin, z) \/ $retired_capability(ptask_tail*, porigin, z))
+dec $retired_pending(pstate, pretiredowner, ptask*) : bool
+def $retired_pending(S, pretiredowner, eps) = false
+def $retired_pending(S, pretiredowner, (RETURN_REF_UNWIND poperand z b porigin) :: ptask_tail*) = true
+  -- if pretiredowner.LASTRETURN = porigin /\ pretiredowner.LASTLINE = z
+  -- if $retired_future_check(S, porigin, z, b, ptask_tail*)
+def $retired_pending(S, pretiredowner, (FINALLY_REF_RETURN porigin_final porigin poperand z) :: ptask_tail*) = true
+  -- if pretiredowner.LASTRETURN = porigin /\ pretiredowner.LASTLINE = z
+  -- if $finally_source_inside(S, porigin_final, porigin)
+  -- if $finally_present(S, porigin_final)
+def $retired_pending(S, pretiredowner, (REF_RECHECK porigin porigin_first poperand z) :: ptask_tail*) = true
+  -- if pretiredowner.LASTRETURN = porigin /\ pretiredowner.LASTLINE = z
+  -- if porigin_first <- $ref_replay_owners(S, porigin)
+def $retired_pending(S, pretiredowner, (REF_REPLAY porigin poperand z prefowner*) :: ptask_tail*) = true
+  -- if pretiredowner.LASTRETURN = porigin /\ pretiredowner.LASTLINE = z
+  -- if prefowner* = $ref_replay_contexts(S, porigin)
+def $retired_pending(S, pretiredowner, (REF_REPLAY_ORIGIN porigin z prefowner*) :: (REF_REPLAY_PHASE porigin z prefowner*) :: ptask_tail*) = true
+  -- if pretiredowner.LASTRETURN = porigin /\ pretiredowner.LASTLINE = z
+  -- if $ref_replay_site(S, porigin, z, prefowner*)
+def $retired_pending(S, pretiredowner, ptask :: ptask_tail*) = $retired_pending(S, pretiredowner, ptask_tail*)
+  -- if ~$retired_capability_task(ptask, pretiredowner.LASTRETURN, pretiredowner.LASTLINE)
+def $retired_pending(S, pretiredowner, ptask*) = false -- otherwise
+dec $retired_rows_valid(pstate, pretiredowner*) : bool
+def $retired_rows_valid(S, eps) = true
+def $retired_rows_valid(S, pretiredowner :: pretiredowner_tail*) = ($retired_row_valid(S, pretiredowner) /\ $retired_lookup(pretiredowner_tail*, pretiredowner.OWNER) = eps /\ ($retired_pair_valid(S, pretiredowner) \/ ($retired_owner_count(S.TODO, pretiredowner.OWNER) = 0 /\ $switch_replay_owner_count(S.TODO, pretiredowner.OWNER) = 0 /\ $retired_pending(S, pretiredowner, S.TODO))) /\ $retired_rows_valid(S, pretiredowner_tail*))
+def $retired_current_valid(S) = $retired_rows_valid(S, S.RETIREDOWNERS)
+
+dec $retired_live(pstate, pretiredowner) : bool
+def $retired_live(S, pretiredowner) = true
+  -- if $(pretiredowner.ARRAY < |S.ARRAYS|)
+  -- if (HARRAY pretiredowner.ARRAY) <- S.ALLOCATIONS
+  -- if $($heap_owners($heap_graph(S), HARRAY pretiredowner.ARRAY) > 0)
+  -- if pretiredowner.KIND = RET_SWITCH_VAR_ARRAY
+  -- if $retired_scalar_entries(S.ARRAYS[pretiredowner.ARRAY].ITEMS)
+def $retired_live(S, pretiredowner) = true
+  -- if $(pretiredowner.ARRAY < |S.ARRAYS|)
+  -- if (HARRAY pretiredowner.ARRAY) <- S.ALLOCATIONS
+  -- if $($heap_owners($heap_graph(S), HARRAY pretiredowner.ARRAY) > 0)
+  -- if pretiredowner.KIND = RET_FOREACH_VALUE_ARRAY
+  -- if $retired_dense_array(S.ARRAYS[pretiredowner.ARRAY])
+  -- if pretiredowner.POSITION = (n_position)
+  -- if $(n_position <= S.ARRAYS[pretiredowner.ARRAY].SERIAL)
+def $retired_live(S, pretiredowner) = false -- otherwise
+
+dec $retired_future_task(pstate, ptask, porigin*) : bool
+def $retired_future_task(S, TRY_END porigin, porigin_owner*) = (porigin <- porigin_owner* /\ $finally_present(S, porigin))
+def $retired_future_task(S, FINALLY_ONLY porigin, porigin_owner*) = (porigin <- porigin_owner* /\ $finally_present(S, porigin))
+def $retired_future_task(S, ptask, porigin_owner*) = false -- otherwise
+dec $retired_future_tail(pstate, ptask*, porigin*) : bool
+def $retired_future_tail(S, eps, porigin_owner*) = false
+def $retired_future_tail(S, ptask :: ptask_tail*, porigin_owner*) = ($retired_future_task(S, ptask, porigin_owner*) \/ $retired_future_tail(S, ptask_tail*, porigin_owner*))
+def $retired_future_check(S, porigin, z, false, ptask_tail*) = ($retired_return_site(S, porigin, z) /\ $retired_future_tail(S, ptask_tail*, $ref_replay_owners(S, porigin)))
+def $retired_future_check(S, porigin, z, true, ptask_tail*) = ($retired_return_site(S, porigin, z) /\ ($retired_future_tail(S, ptask_tail*, $ref_replay_owners(S, porigin)) \/ $retired_recheck_for(ptask_tail*, porigin, z)))
+def $retired_recheck_for(eps, porigin, z) = false
+def $retired_recheck_for((REF_RECHECK porigin porigin_first poperand z) :: ptask_tail*, porigin, z) = true
+def $retired_recheck_for(ptask :: ptask_tail*, porigin, z) = $retired_recheck_for(ptask_tail*, porigin, z)
+  -- if ~$retired_recheck_task(ptask, porigin, z)
+def $retired_recheck_task(REF_RECHECK porigin porigin_first poperand z, porigin, z) = true
+def $retired_recheck_task(ptask, porigin, z) = false -- otherwise
+
+;; Capture uses the genuine still-owning task, then checks the ordinary graph
+;; after removing exactly that task (and its value iterator). Aliases count the
+;; single physical payload edge, and neither record nor pair contributes roots.
+dec $retired_capture(pstate, porigin, int, bool, ptask, ptask*) : pretiredowner?
+def $retired_capture(S, porigin_return, z_return, b, SWITCH_NEXT statement porigin_owner (KNOWN (PARRAY n_array)), ptask_tail*) = (pretiredowner)
+  -- if $retired_switch_var_site(S, porigin_owner)
+  -- if $switch_site(S, statement, porigin_owner)
+  -- if $retired_inside(S, porigin_owner, porigin_return)
+  -- if $retired_future_check(S, porigin_return, z_return, b, ptask_tail*)
+  -- if $retired_lookup(S.RETIREDOWNERS, porigin_owner) = eps
+  -- if pretiredowner = {OWNER porigin_owner, FIRSTRETURN porigin_return, FIRSTLINE z_return, LASTRETURN porigin_return, LASTLINE z_return, KIND RET_SWITCH_VAR_ARRAY, ARRAY n_array, POSITION eps}
+  -- if $retired_live(S, pretiredowner)
+  -- if ~$array_immutable(S, n_array)
+  -- if $($heap_owners($heap_graph(S), HARRAY n_array) >= 3)
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: (SWITCH_NEXT statement porigin_owner (KNOWN (PARRAY n_array))) :: ptask_tail*
+  -- if ptask_owner = SWITCH_NEXT statement porigin_owner (KNOWN (PARRAY n_array))
+  -- if ptask_unwind = RETURN_REF_UNWIND poperand z_return b porigin_return
+  -- if S_removed = $return_discard(S[.TODO = ptask_unwind :: ptask_tail*], ptask_owner)
+  -- if $($heap_owners($heap_graph(S_removed), HARRAY n_array) >= 2)
+def $retired_capture(S, porigin_return, z_return, b, FOREACH_NEXT n_iter (HARRAY n_array) statement (porigin_owner) z_owner, ptask_tail*) = (pretiredowner)
+  -- if $retired_foreach_site(S, porigin_owner)
+  -- if $goto_marker_valid(S, FOREACH_NEXT n_iter (HARRAY n_array) statement (porigin_owner) z_owner)
+  -- if $iterator_lookup(S.ITERATORS, n_iter) = (ITERATOR n_iter n_array false ([(CURSOR n_array n_position)]))
+  -- if $retired_inside(S, porigin_owner, porigin_return)
+  -- if $retired_future_check(S, porigin_return, z_return, b, ptask_tail*)
+  -- if $retired_lookup(S.RETIREDOWNERS, porigin_owner) = eps
+  -- if pretiredowner = {OWNER porigin_owner, FIRSTRETURN porigin_return, FIRSTLINE z_return, LASTRETURN porigin_return, LASTLINE z_return, KIND RET_FOREACH_VALUE_ARRAY, ARRAY n_array, POSITION (n_position)}
+  -- if $retired_live(S, pretiredowner)
+  -- if ~$array_immutable(S, n_array)
+  -- if $($heap_owners($heap_graph(S), HARRAY n_array) >= 3)
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: (FOREACH_NEXT n_iter (HARRAY n_array) statement (porigin_owner) z_owner) :: ptask_tail*
+  -- if ptask_owner = FOREACH_NEXT n_iter (HARRAY n_array) statement (porigin_owner) z_owner
+  -- if ptask_unwind = RETURN_REF_UNWIND poperand z_return b porigin_return
+  -- if S_removed = $return_discard(S[.TODO = ptask_unwind :: ptask_tail*], ptask_owner)
+  -- if $($heap_owners($heap_graph(S_removed), HARRAY n_array) >= 2)
+def $retired_capture(S, porigin_return, z_return, b, ptask, ptask_tail*) = eps -- otherwise
+
+dec $retired_pair_head(ptask, pretiredowner) : bool
+def $retired_pair_head(RETIRED_SWITCH_END pretiredowner, pretiredowner) = true
+def $retired_pair_head(RETIRED_FOREACH_NEXT pretiredowner, pretiredowner) = true
+def $retired_pair_head(ptask, pretiredowner) = false -- otherwise
+dec $retired_borrowed_task(ptask) : bool
+def $retired_borrowed_task(RETIRED_SWITCH_END pretiredowner) = true
+def $retired_borrowed_task(RETIRED_FOREACH_NEXT pretiredowner) = true
+def $retired_borrowed_task(ptask) = false -- otherwise
+def $retired_ref_discard(S, porigin_return, z_return, b, ptask, ptask_tail*) = S_removed[.RETIREDOWNERS = $retired_set(S_removed.RETIREDOWNERS, pretiredowner)]
+  -- if ~$retired_borrowed_task(ptask)
+  -- if $retired_capture(S, porigin_return, z_return, b, ptask, ptask_tail*) = (pretiredowner)
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: ptask :: ptask_tail*
+  -- if S_removed = $return_discard(S[.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: ptask_tail*], ptask)
+def $retired_ref_discard(S, porigin_return, z_return, b, ptask, ptask_tail*) = $return_discard(S[.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: ptask_tail*], ptask)
+  -- if ~$retired_borrowed_task(ptask)
+  -- if $retired_capture(S, porigin_return, z_return, b, ptask, ptask_tail*) = eps
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: ptask :: ptask_tail*
+;; The actual borrowed pair has priority over any same-site completed return.
+;; FIRST, physical ARRAY and cursor remain fixed; only LAST changes.
+def $retired_ref_discard(S, porigin_return, z_return, b, ptask, (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*) = S[.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: ptask_tail*][.RETIREDOWNERS = $retired_set(S.RETIREDOWNERS, pretiredowner[.LASTRETURN = porigin_return][.LASTLINE = z_return])][.ORIGIN = (pretiredowner.OWNER)]
+  -- if $retired_pair_head(ptask, pretiredowner)
+  -- if $retired_pair_valid(S, pretiredowner)
+  -- if $retired_inside(S, pretiredowner.OWNER, porigin_return)
+  -- if $retired_future_check(S, porigin_return, z_return, b, ptask_tail*)
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: ptask :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+def $retired_ref_discard(S, porigin_return, z_return, b, ptask, (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*) = $return_discard(S[.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*], ptask)
+  -- if $retired_pair_head(ptask, pretiredowner)
+  -- if ~($retired_pair_valid(S, pretiredowner) /\ $retired_inside(S, pretiredowner.OWNER, porigin_return) /\ $retired_future_check(S, porigin_return, z_return, b, ptask_tail*))
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z_return b porigin_return) :: ptask :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+
+;; Only actual retirement of an older pending task invokes these consumers.
+dec $retired_drop_rows(pretiredowner*, porigin, int) : pretiredowner*
+def $retired_drop_rows(eps, porigin, z) = eps
+def $retired_drop_rows(pretiredowner :: pretiredowner_tail*, porigin, z) = $retired_drop_rows(pretiredowner_tail*, porigin, z)
+  -- if pretiredowner.LASTRETURN = porigin /\ pretiredowner.LASTLINE = z
+def $retired_drop_rows(pretiredowner :: pretiredowner_tail*, porigin, z) = pretiredowner :: $retired_drop_rows(pretiredowner_tail*, porigin, z)
+  -- if ~(pretiredowner.LASTRETURN = porigin /\ pretiredowner.LASTLINE = z)
+def $retired_drop_transfer(S, porigin, z) = S[.RETIREDOWNERS = $retired_drop_rows(S.RETIREDOWNERS, porigin, z)]
+dec $retired_replace_rows(pstate, pretiredowner*, porigin, int, porigin, int, bool, ptask*) : pretiredowner*
+def $retired_replace_rows(S, eps, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*) = eps
+def $retired_replace_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*) = pretiredowner[.LASTRETURN = porigin_new][.LASTLINE = z_new] :: $retired_replace_rows(S, pretiredowner_tail*, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*)
+  -- if pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old
+  -- if $retired_inside(S, pretiredowner.OWNER, porigin_new)
+  -- if $retired_future_check(S, porigin_new, z_new, b, ptask_tail*)
+def $retired_replace_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*) = $retired_replace_rows(S, pretiredowner_tail*, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*)
+  -- if pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old
+  -- if ~($retired_inside(S, pretiredowner.OWNER, porigin_new) /\ $retired_future_check(S, porigin_new, z_new, b, ptask_tail*))
+def $retired_replace_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*) = pretiredowner :: $retired_replace_rows(S, pretiredowner_tail*, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*)
+  -- if ~(pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old)
+def $retired_replace_transfer(S, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*) = S[.RETIREDOWNERS = $retired_replace_rows(S, S.RETIREDOWNERS, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*)]
+
+;; Retiring one replay header must not replace another still-live old phase.
+dec $retired_ref_transfer(ptask) : bool
+def $retired_ref_transfer(RETURN_REF_UNWIND poperand z b porigin) = true
+def $retired_ref_transfer(ptask) = false -- otherwise
+dec $retired_after_rows(pstate, pretiredowner*, porigin, int, ptask, ptask*) : pretiredowner*
+def $retired_after_rows(S, eps, porigin_old, z_old, ptask, ptask_tail*) = eps
+def $retired_after_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*) = pretiredowner :: $retired_after_rows(S, pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*)
+  -- if ~(pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old)
+def $retired_after_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*) = pretiredowner :: $retired_after_rows(S, pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*)
+  -- if pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old
+  -- if $retired_pair(S.TODO, pretiredowner) \/ $retired_pending(S, pretiredowner, S.TODO)
+def $retired_after_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, RETURN_REF_UNWIND poperand z_new b porigin_new, ptask_tail*) = $retired_replace_rows(S, [pretiredowner], porigin_old, z_old, porigin_new, z_new, b, ptask_tail*) ++ $retired_after_rows(S, pretiredowner_tail*, porigin_old, z_old, RETURN_REF_UNWIND poperand z_new b porigin_new, ptask_tail*)
+  -- if pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old
+  -- if ~($retired_pair(S.TODO, pretiredowner) \/ $retired_pending(S, pretiredowner, S.TODO))
+def $retired_after_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*) = $retired_after_rows(S, pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*)
+  -- if pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old
+  -- if ~($retired_pair(S.TODO, pretiredowner) \/ $retired_pending(S, pretiredowner, S.TODO))
+  -- if ~$retired_ref_transfer(ptask)
+def $retired_after_transfer(S, porigin_old, z_old, ptask, ptask_tail*) = S[.RETIREDOWNERS = $retired_after_rows(S_tail, S.RETIREDOWNERS, porigin_old, z_old, ptask, ptask_tail*)]
+  -- if S.TODO = ptask :: (REF_REPLAY_ORIGIN porigin_old z_old prefowner*) :: (REF_REPLAY_PHASE porigin_old z_old prefowner*) :: ptask_tail*
+  -- if $ref_replay_site(S, porigin_old, z_old, prefowner*)
+  -- if S_tail = S[.TODO = ptask :: ptask_tail*]
+
+;; An ordinary catch inside an active finalizer has no adjacent delayed-replay
+;; capability. It leaves the genuine FINALLY_REF_RETURN and rows unchanged.
+dec $retired_catch_rows(pstate, pretiredowner*, porigin, int, porigin) : pretiredowner*
+def $retired_catch_rows(S, eps, porigin_return, z, porigin_catch) = eps
+def $retired_catch_rows(S, pretiredowner :: pretiredowner_tail*, porigin_return, z, porigin_catch) = $retired_catch_rows(S, pretiredowner_tail*, porigin_return, z, porigin_catch)
+  -- if pretiredowner.LASTRETURN = porigin_return /\ pretiredowner.LASTLINE = z
+  -- if ~$retired_inside(S, pretiredowner.OWNER, porigin_catch)
+def $retired_catch_rows(S, pretiredowner :: pretiredowner_tail*, porigin_return, z, porigin_catch) = pretiredowner :: $retired_catch_rows(S, pretiredowner_tail*, porigin_return, z, porigin_catch)
+  -- if ~(pretiredowner.LASTRETURN = porigin_return /\ pretiredowner.LASTLINE = z) \/ $retired_inside(S, pretiredowner.OWNER, porigin_catch)
+def $retired_select_catch(S, porigin_try, n_index) = S[.RETIREDOWNERS = $retired_catch_rows(S, S.RETIREDOWNERS, porigin_return, z, porigin_catch)]
+  -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin_try) :: (REF_REPLAY_ORIGIN porigin_return z ((REPLAY_TRY porigin_try) :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_return z ((REPLAY_TRY porigin_try) :: prefowner_tail*)) :: ptask_tail*
+  -- if $ref_replay_site(S, porigin_return, z, (REPLAY_TRY porigin_try) :: prefowner_tail*)
+  -- if $origin_child((porigin_try), [PCFIELD 1, PCINDEX n_index]) = (porigin_catch)
+  -- if $origin_node(S.SOURCES, porigin_catch) = (NStmtCatch phpType42 phpType43 phpType23 metadata)
+def $retired_select_catch(S, porigin_try, n_index) = S -- otherwise
+
+dec $retired_rebuilt_rows(pstate, pretiredowner*, ptask*) : pretiredowner*
+def $retired_rebuilt_rows(S, eps, ptask*) = eps
+def $retired_rebuilt_rows(S, pretiredowner :: pretiredowner_tail*, ptask*) = pretiredowner :: $retired_rebuilt_rows(S, pretiredowner_tail*, ptask*)
+  -- if $retired_pair(ptask*, pretiredowner) \/ $retired_pending(S[.TODO = ptask*], pretiredowner, ptask*)
+def $retired_rebuilt_rows(S, pretiredowner :: pretiredowner_tail*, ptask*) = $retired_rebuilt_rows(S, pretiredowner_tail*, ptask*)
+  -- if ~($retired_pair(ptask*, pretiredowner) \/ $retired_pending(S[.TODO = ptask*], pretiredowner, ptask*))
+def $retired_rebuilt_tail(S, ptask*) = S[.RETIREDOWNERS = $retired_rebuilt_rows(S, S.RETIREDOWNERS, ptask*)]
+
+dec $retired_replay_ready(pstate, pretiredowner, ptask*) : bool
+def $retired_replay_ready(S, pretiredowner, eps) = false
+def $retired_replay_ready(S, pretiredowner, (REF_REPLAY_ORIGIN porigin z prefowner*) :: ptask_tail*) = true
+  -- if pretiredowner.LASTRETURN = porigin /\ pretiredowner.LASTLINE = z
+  -- if $ref_replay_site(S, porigin, z, prefowner*)
+def $retired_replay_ready(S, pretiredowner, ptask :: ptask_tail*) = $retired_replay_ready(S, pretiredowner, ptask_tail*)
+  -- if ~$retired_capability_task(ptask, pretiredowner.LASTRETURN, pretiredowner.LASTLINE) \/ ~$ref_replay_origin_task(ptask)
+def $retired_replay_ready(S, pretiredowner, ptask*) = false -- otherwise
+def $retired_replay_loop(S, PORIGIN n pcpath_target, porigin_owner) = (statement)
+  -- if $retired_lookup(S.RETIREDOWNERS, porigin_owner) = (pretiredowner)
+  -- if $retired_row_valid(S, pretiredowner)
+  -- if $retired_inside(S, porigin_owner, PORIGIN n pcpath_target)
+  -- if $retired_replay_ready(S, pretiredowner, S.TODO)
+  -- if $retired_live(S, pretiredowner)
+  -- if $origin_node(S.SOURCES, porigin_owner) = (statement)
+def $retired_replay_loop(S, porigin_target, porigin_owner) = eps -- otherwise
+def $ref_replay_loop_next(S, statement, porigin) = $retired_pair_tasks(pretiredowner)
+  -- if $retired_lookup(S.RETIREDOWNERS, porigin) = (pretiredowner)
+  -- if $retired_row_valid(S, pretiredowner)
+  -- if $retired_live(S, pretiredowner)
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+
+;; Pair validation does not read the payload. In particular a no-read switch
+;; end remains admissible after the last independent owner has disappeared.
+def $call_task_valid(S, RETIRED_SWITCH_END pretiredowner) = ($retired_pair_valid(S, pretiredowner) /\ pretiredowner.KIND = RET_SWITCH_VAR_ARRAY /\ S.ORIGIN = $goto_target_origin(S, pretiredowner.OWNER, S.TODO))
+def $call_task_valid(S, RETIRED_FOREACH_NEXT pretiredowner) = ($retired_pair_valid(S, pretiredowner) /\ pretiredowner.KIND = RET_FOREACH_VALUE_ARRAY /\ S.ORIGIN = $goto_target_origin(S, pretiredowner.OWNER, S.TODO))
+def $call_task_valid(S, RETIRED_OWNER_PHASE pretiredowner) = $retired_pair_valid(S, pretiredowner)
+def $call_after_origin(S, RETIRED_SWITCH_END pretiredowner) = S[.ORIGIN = (pretiredowner.OWNER)]
+def $call_after_origin(S, RETIRED_FOREACH_NEXT pretiredowner) = S[.ORIGIN = (pretiredowner.OWNER)]
+def $task_nodes(RETIRED_SWITCH_END pretiredowner) = eps
+def $task_nodes(RETIRED_FOREACH_NEXT pretiredowner) = eps
+def $task_nodes(RETIRED_OWNER_PHASE pretiredowner) = eps
+def $goto_saved((RETIRED_SWITCH_END pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*, porigin) = GOTOTASKS ((RETIRED_SWITCH_END pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*)
+  -- if pretiredowner.OWNER = porigin
+def $goto_saved((RETIRED_FOREACH_NEXT pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*, porigin) = GOTOTASKS ((RETIRED_FOREACH_NEXT pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*)
+  -- if pretiredowner.OWNER = porigin
+def $goto_saved_match(RETIRED_SWITCH_END pretiredowner, porigin) = (pretiredowner.OWNER = porigin)
+def $goto_saved_match(RETIRED_FOREACH_NEXT pretiredowner, porigin) = (pretiredowner.OWNER = porigin)
+def $goto_marker_origin(RETIRED_SWITCH_END pretiredowner) = (pretiredowner.OWNER)
+def $goto_marker_origin(RETIRED_FOREACH_NEXT pretiredowner) = (pretiredowner.OWNER)
+def $goto_marker_valid(S, RETIRED_SWITCH_END pretiredowner) = ($retired_row_valid(S, pretiredowner) /\ pretiredowner.KIND = RET_SWITCH_VAR_ARRAY)
+def $goto_marker_valid(S, RETIRED_FOREACH_NEXT pretiredowner) = ($retired_row_valid(S, pretiredowner) /\ pretiredowner.KIND = RET_FOREACH_VALUE_ARRAY)
+def $goto_marker_valid(S, RETIRED_OWNER_PHASE pretiredowner) = $retired_row_valid(S, pretiredowner)
+def $goto_keep_owner(RETIRED_SWITCH_END pretiredowner, PORIGIN n pcpath_target) = $effect_below(pcpath_owner, pcpath_target)
+  -- if pretiredowner.OWNER = PORIGIN n pcpath_owner
+def $goto_keep_owner(RETIRED_FOREACH_NEXT pretiredowner, PORIGIN n pcpath_target) = $effect_below(pcpath_owner, pcpath_target)
+  -- if pretiredowner.OWNER = PORIGIN n pcpath_owner
+def $goto_try_switch_marker(S, PORIGIN n pcpath_try, RETIRED_SWITCH_END pretiredowner) = true
+  -- if pretiredowner.OWNER = PORIGIN n pcpath_owner
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_try) = (NStmtTryCatch phpType23 phpType65 phpType67 metadata)
+  -- if $effect_below(pcpath_owner ++ [PCFIELD 1], pcpath_try)
+  -- if $retired_pair_valid(S, pretiredowner)
+def $loop_marker(RETIRED_SWITCH_END pretiredowner) = true
+def $loop_marker(RETIRED_FOREACH_NEXT pretiredowner) = true
+
+dec $retired_end(pstate, pretiredowner, ptask*) : pstate
+def $retired_end(S, pretiredowner, ptask_tail*) = S[.TODO = ptask_tail*][.RETIREDOWNERS = $retired_remove(S.RETIREDOWNERS, pretiredowner.OWNER)][.ORIGIN = (pretiredowner.OWNER)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $return_discard(S, RETIRED_SWITCH_END pretiredowner) = S[.TODO = ptask :: ptask_tail*][.RETIREDOWNERS = $retired_remove(S.RETIREDOWNERS, pretiredowner.OWNER)][.ORIGIN = (pretiredowner.OWNER)]
+  -- if S.TODO = ptask :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $ref_replay_transfer(ptask)
+def $return_discard(S, RETIRED_FOREACH_NEXT pretiredowner) = S[.TODO = ptask :: ptask_tail*][.RETIREDOWNERS = $retired_remove(S.RETIREDOWNERS, pretiredowner.OWNER)][.ORIGIN = (pretiredowner.OWNER)]
+  -- if S.TODO = ptask :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $ref_replay_transfer(ptask)
+def $return_discard(S, RETIRED_SWITCH_END pretiredowner) = $retired_end(S, pretiredowner, ptask_tail*)
+  -- if S.TODO = (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+def $return_discard(S, RETIRED_FOREACH_NEXT pretiredowner) = $retired_end(S, pretiredowner, ptask_tail*)
+  -- if S.TODO = (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+rule PhpStep/retired-switch-end: S ~> $retired_end(S, pretiredowner, ptask_tail*)
+  -- if S.TODO = (RETIRED_SWITCH_END pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $retired_pair_valid(S, pretiredowner)
+  -- if pretiredowner.KIND = RET_SWITCH_VAR_ARRAY
+
+dec $retired_foreach_body(pstate, pretiredowner, ptask*, pvalue) : pstate
+def $retired_foreach_body(S, pretiredowner, ptask_tail*, pvalue) = S_owner[.TODO = [$foreach_value_task(S_owner, expression_value, KNOWN pvalue, false, z)] ++ $foreach_key_tasks(S_owner, phpType5, KINT $(n_position)) ++ $statement_tasks(statement*, $origin_child((pretiredowner.OWNER), [PCFIELD 4]), 0) ++ $retired_pair_tasks(pretiredowner_next) ++ ptask_tail*][.RETIREDOWNERS = $retired_set(S.RETIREDOWNERS, pretiredowner_next)][.ORIGIN = $goto_target_origin(S, pretiredowner.OWNER, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $origin_node(S.SOURCES, pretiredowner.OWNER) = (NStmtForeach expression_iterable phpType5 (BOOLEAN false) expression_value (SEQUENCE statement*) (BOOLEAN false) metadata)
+  -- if pretiredowner.POSITION = (n_position)
+  -- if pretiredowner_next = pretiredowner[.POSITION = ($(n_position + 1))]
+  -- if S_owner = S[.ORIGIN = (pretiredowner.OWNER)]
+  -- if z = $runtime_line(S_owner, [PCFIELD 0], expression_iterable)
+rule PhpStep/retired-foreach-value: S ~> $retired_foreach_body(S, pretiredowner, ptask_tail*, pvalue)
+  -- if S.TODO = (RETIRED_FOREACH_NEXT pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $retired_pair_valid(S, pretiredowner)
+  -- if pretiredowner.KIND = RET_FOREACH_VALUE_ARRAY
+  -- if $retired_live(S, pretiredowner)
+  -- if pretiredowner.POSITION = (n_position)
+  -- if $(n_position < S.ARRAYS[pretiredowner.ARRAY].SERIAL)
+  -- if S.ARRAYS[pretiredowner.ARRAY].ITEMS[n_position] = ENTRY (KINT z_key) (DIRECT pvalue)
+rule PhpStep/retired-foreach-end: S ~> $retired_end(S, pretiredowner, ptask_tail*)
+  -- if S.TODO = (RETIRED_FOREACH_NEXT pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $retired_pair_valid(S, pretiredowner)
+  -- if pretiredowner.KIND = RET_FOREACH_VALUE_ARRAY
+  -- if $retired_live(S, pretiredowner)
+  -- if pretiredowner.POSITION = (n_position)
+  -- if n_position = S.ARRAYS[pretiredowner.ARRAY].SERIAL
+rule PhpStep/retired-foreach-lifetime-boundary: S ~> S[.TODO = eps][.RETIREDOWNERS = eps][.COMPLETION = UNSUPPORTED "reference replay requires live dense value-foreach array"]
+  -- if S.TODO = (RETIRED_FOREACH_NEXT pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $retired_pair_valid(S, pretiredowner)
+  -- if pretiredowner.KIND = RET_FOREACH_VALUE_ARRAY
+  -- if ~$retired_live(S, pretiredowner)
+def $jump_loop(S, porigin_source, 1, n_original, b) = $retired_end(S, pretiredowner, ptask_tail*)
+  -- if S.TODO = (RETIRED_SWITCH_END pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $retired_pair_valid(S, pretiredowner)
+def $jump_loop(S, porigin_source, 1, n_original, false) = $retired_end(S, pretiredowner, ptask_tail*)
+  -- if S.TODO = (RETIRED_FOREACH_NEXT pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $retired_pair_valid(S, pretiredowner)
+def $jump_loop(S, porigin_source, 1, n_original, true) = S[.ORIGIN = $goto_target_origin(S, pretiredowner.OWNER, S.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (RETIRED_FOREACH_NEXT pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $retired_pair_valid(S, pretiredowner)
+def $jump_loop(S, porigin_source, n_depth, n_original, b) = $jump_loop($retired_end(S, pretiredowner, ptask_tail*), porigin_source, $nabs($(n_depth - 1)), n_original, b)
+  -- if S.TODO = ptask :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*
+  -- if $retired_pair_head(ptask, pretiredowner)
+  -- if $retired_pair_valid(S, pretiredowner)
+  -- if $(n_depth > 1)
+
+def $return_discard(S, REF_RECHECK porigin porigin_first poperand z) = $retired_drop_transfer(S, porigin, z)

@@ -197,8 +197,15 @@ live callback failure policy and pending exceptions through selected-receiver
 cleanup. Constant protection survives parked handlers. The
 [options ledger](coverage/semantics/assertion-options-review.json) keeps 20 source
 originals and 117/67 reached checks at separate cuts; the excluded Count observer
-and valid foreach companion stay distinct. Parsing warnings, Stringable-option INI
-refusal, Stringable descriptions and wider expression/callback forms remain required.
+and valid foreach companion stay distinct. [Bounded quantity warnings](docs/semantics/ASSERTION-QUANTITIES.md)
+preserve frozen numeric modes after handler raw writes, throw or restore. Runtime
+string carriers retain INI identity while ordinary consumers observe bytes. Four
+reentrant request-string lifetime probes remain explicit Unsupported with zero
+native agreement. Fresh updates recapture the current original, and warned restore
+preserves pending Throwable identity while enabling assertions again. Two new safe
+originals and182 source-frontier checks plus one pure trace query pass at57ee.
+Nullable saved-original reentry, Stringable-option refusal/descriptions and wider
+expression/callback forms remain required.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
@@ -295,6 +302,9 @@ retire the receiver before reading the live row, reference cell and RHS. Failed 
 preserves empty-name lookup and the Error-to-destructor-to-cast exception chain.
 Eight of nine exact originals pass at separate cuts; the pending-masks original
 remains required with an unchanged 60-second CLI timeout and zero agreement.
+A separate cold double-throw witness and 155 state premises pass on a 361-module
+cut: empty-name lookup leaves defaults deferred and retires the RHS without
+stringifying it, preserving Error-to-destructor-to-cast chaining.
 Prior 123/private 238 cuts remain separate. A tested cut with 360 modules passes
 compilation, 238 affected state premises and 23 constant-export/control premises.
 One constant lookup per insertion reduces calls from 689,580 to 229,972 over
@@ -364,7 +374,14 @@ destructor throwing during reported-exception release emits a second fatal.
 The Parent free_obj pin keeps Weak lookup null; two Leaf C claims and real
 Generator/cache owners survive. Its unfinished fatal frame retains the old
 Exception's occupied GC slot through the pending HANDLE job. One exact source
-and 549 strict premises retain separate cuts. Wider handlers/rendering,
+and 549 strict premises retain separate cuts. A declared reference-cell child,
+after its last local alias is unset, follows the same second-fatal path. Its
+retired cell/STORE value certifies the actual Leaf release without adding an owner;
+one new exact source and 677 strict premises retain separate cuts. An array child's
+sole owning Leaf entry follows the same path after real array retirement; retired
+contents add no owner. An external shared array retains the Leaf and emits only the
+first fatal. Two exact sources and 712/77 strict premises retain their private cut.
+Wider handlers/rendering,
 child lifetimes, reacquisition, parked/escaped storage and generic terminal cleanup
 remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
@@ -487,9 +504,14 @@ with 1,102 assertions pass; actual361 compilation has a separate cut.
 now preserves selected-case remainder, fallthrough and catch scope without
 re-evaluating the subject or creating a freeable owner. Seven preserved originals
 and 14 current/saved fixtures with 1,339 assertions pass at retained private361
-cuts; actual-parent strict compilation remains separate. Runtime VAR/TMP array
-owners, active-finalizer replay, protected temporary/NULL Notice timing and
-Stringable reference conversion remain open.
+cuts; actual-parent strict compilation remains separate.
+[Physical array-owner recovery](coverage/semantics/reference-return-retired-owner-review.json)
+preserves the first cleanup and borrows its identity/cursor through current and saved
+frames. Capture requires at least three genuine owners before cleanup and two after;
+metadata adds none. Four originals agree exactly; nine delayed COW controls intentionally
+retain c/d=1 instead of native8, with zero agreement credit. State23/1,873, independent
+pending98 and actual-parent carrier71 pass; strict364 is separate. Wider payload domains,
+active-finalizer replay, protected temporary/NULL Notice timing and Stringable186 remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -1119,9 +1141,10 @@ The reviewed current359 composition over `f5c4eed1f` passes strict compilation
 at `e77c3eff0`, preserving current source and Generator interfaces.
 [The review](coverage/semantics/undefined-property-review.json) preserves the
 original fallback/fixture failures and the weaker bound-Closure witness.
-Literal calls to named reference-return functions with no arguments or one CV
-argument, positional or named, now retain the actual returned cell
-through undefined-property warnings. The captured target remains borrowed, so
+Literal calls to named reference-return functions with no arguments, one CV
+argument supplied positionally or by name, two positional CVs, or two CVs with
+distinct named labels retain the
+actual returned cell through undefined-property warnings. The captured target remains borrowed, so
 handler rebinding may retire it while the cell keeps the replacement alive until
 fetch cleanup. Ten exact originals and separate 237/207/225 reached cuts cover
 callee/finally rebinding, normal and throwing last-owner cleanup, saved callers
@@ -1139,6 +1162,25 @@ affected deferred comparison retain separate cuts; five new reached groups
 validate shared cells, captured null, callee cleanup and pending exceptions.
 The actual361 join over `b82bd2425` passes strict at `432084968`, preserving
 current call, return-replay and class interfaces.
+Two positional CVs now preserve left-to-right live sends: a first Warning fixes
+null while its handler can change or unset the second CV before that later read.
+Deferred SEND2 uses its emitted line while retaining the documentary CV operand
+and captured prefix. Six source agreements and 1207 setup-inclusive reached
+premises cover shared reference formals, parameter cleanup before lookup and
+throwing prefix/replacement cleanup. The original `is_null` observers retain
+their builtin boundary; distinct core-only companions provide the first two
+agreements.
+The actual361 join over `430face8d` passes strict at `4b39fa53c`, preserving
+current CALLS, class attributes, return replay and lifecycle interfaces.
+Two distinct named CVs preserve source SEND order while binding captured values
+to formal slots. Deferred warnings retain documentary CV operands and emitted
+argument-list lines at both ordinals. Seven per-case source agreements and 1245
+setup-inclusive reached premises cover skipped defaults, shared cells, formal
+cleanup order and label-error priority before later CV demand. Earlier whole
+source and fixture failures retain zero credit.
+The actual364 join over `e26e3fb2d` passes strict at `2383140e3`; one affected
+pending300 gate also passes with exact Throwable message bytes under current
+string carriers. Earlier source/state cuts remain separate.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

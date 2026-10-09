@@ -150,7 +150,8 @@ def $target_called_class(S, pcalltarget) = eps -- otherwise
 dec $method_target_eligible(pstate, porigin, pmethoddesc) : bool
 dec $scoped_selector_class(pstate, poperand) : porigin?
 dec $scoped_receiver_valid(pstate, porigin, pmethoddesc, nat?) : bool
-def $scoped_selector_class(S, KNOWN (PSTRING n*)) = $class_named(S.CLASSNAMES, $ptlc(n*))
+def $scoped_selector_class(S, KNOWN pvalue_string) = $class_named(S.CLASSNAMES, $ptlc(n*))
+  -- if $string_bytes(pvalue_string) = (n*)
 def $scoped_selector_class(S, poperand) = eps -- otherwise
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, eps) = true -- if pmethoddesc.STATIC
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, (n)) = true
@@ -638,6 +639,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "
 
 dec $method_string(pvalue) : bool
 def $method_string(PSTRING n*) = true
+def $method_string(PSTRING_CARRIER pstringidentity n*) = true
 def $method_string(pvalue) = false -- otherwise
 
 dec $method_continue(pstate, poperand, phpType20, phpType7*, int) : pstate
@@ -689,7 +691,8 @@ rule PhpStep/method-name: S ~> $method_select(S_name, poperand, n_name*, phpType
   -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
   -- if S_name.COMPLETION = NORMAL
-  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if S_name.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_name*)
 rule PhpStep/method-name-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
@@ -791,13 +794,15 @@ dec $scoped_dynamic_class(pstate, int) : pstate
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING n*)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = (porigin_class)
   -- if $class_at(S_read.CLASSES, porigin_class) = (pclassdesc)
 def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class \"") ++ n* ++ $ptascii("\" not found"), z)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING n*)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("closure")
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("weakreference")
@@ -987,7 +992,8 @@ rule PhpStep/scoped-name: S ~> $scoped_select(S_name, phpType19, poperand_select
   -- if S.TODO = (SCOPED_NAME phpType19 poperand_selector phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
   -- if S_name.COMPLETION = NORMAL
-  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if S_name.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_name*)
 rule PhpStep/scoped-name-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (SCOPED_NAME phpType19 poperand_selector phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
