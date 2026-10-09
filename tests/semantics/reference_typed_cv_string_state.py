@@ -171,7 +171,7 @@ def main():
             ], terminal=['$lookup(S_whole.ENV, $ptascii("x")) = (n_cell)',
                          '$lookup(S_whole.ENV, $ptascii("y")) = (n_cell)', 'S_whole.STORE[n_cell] = DEFINED pvalue_text'])
 
-    saved = ['$tc_function(S, $ptascii("__toString"))', 'S.FRAMES = pframe :: pframe_tail*',
+    saved = ['$tc_function(S, $ptascii("O::__toString"))', 'S.FRAMES = pframe :: pframe_tail*',
              'pframe.TODO = (STRINGIFY_RESULT n_object porigin_source z_result) :: (REF_STRING_FETCH prefstringcv) :: (REF_STRING_THROW prefstringcv) :: ptask_result_tail*']
     for kind in ('rebind', 'unset'):
         namespace = ['S.GLOBALTABLE = (psymboltable_changed)', '$lookup(psymboltable_changed.ENV, $ptascii("other")) = (n_other)',
@@ -180,7 +180,7 @@ def main():
                       else ['$lookup(psymboltable_changed.ENV, $ptascii("x")) = eps'])
         stages = {0: capture, 1: saved + namespace, 2: ready}
         checks = capture_checks + ['S_saved = $tc_find(S_begin, 2000, 1)',
-            '$tc_function(S_saved, $ptascii("__toString"))', 'S_saved.FRAMES = pframe :: pframe_tail*',
+            '$tc_function(S_saved, $ptascii("O::__toString"))', 'S_saved.FRAMES = pframe :: pframe_tail*',
             'pframe.TODO = (STRINGIFY_RESULT n_object prefstringcv.SOURCE z) :: (REF_STRING_FETCH prefstringcv) :: (REF_STRING_THROW prefstringcv) :: ptask_tail*',
             'pframe.LOCALS = (psymboltable_f)', '$lookup(psymboltable_f.ENV, $ptascii("x")) = (n_cell)',
             'S_scope = $constant_frame_scope(S_saved, pframe, pframe_tail*)',
