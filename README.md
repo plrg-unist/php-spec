@@ -1172,7 +1172,7 @@ at `e77c3eff0`, preserving current source and Generator interfaces.
 original fallback/fixture failures and the weaker bound-Closure witness.
 Literal calls to named reference-return functions with no arguments, one CV
 argument supplied positionally or by name, two positional CVs, or two CVs with
-distinct named labels retain the
+distinct named labels, or a positional CV followed by a named CV retain the
 actual returned cell through undefined-property warnings. The captured target remains borrowed, so
 handler rebinding may retire it while the cell keeps the replacement alive until
 fetch cleanup. Ten exact originals and separate 237/207/225 reached cuts cover
@@ -1210,6 +1210,13 @@ source and fixture failures retain zero credit.
 The actual364 join over `e26e3fb2d` passes strict at `2383140e3`; one affected
 pending300 gate also passes with exact Throwable message bytes under current
 string carriers. Earlier source/state cuts remain separate.
+A positional CV followed by one named CV now preserves the captured prefix,
+skipped defaults and the emitted deferred second-SEND line. Six exact originals
+and five reached groups pass 1235 setup-inclusive premises, including shared
+cell owners, parameter cleanup before lookup and label-error/property cleanup.
+Earlier source/state cuts retain their original credit.
+The actual367 join over `4d7ef44ee` passes strict at `87aca689f` (5.179s),
+preserving accepted Notice, GEN and ARG interfaces without renewing those cuts.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

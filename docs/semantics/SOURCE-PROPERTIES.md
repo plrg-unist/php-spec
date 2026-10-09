@@ -63,7 +63,8 @@ getters/hooks and wider receiver forms remain required.
 
 At PHP8.5, a literal named nonbuiltin reference-return call without name fallback,
 with no arguments, one ordinary CV supplied positionally or by name, two
-positional ordinary CVs, or two CVs with distinct named labels, keeps its returned
+positional ordinary CVs, two CVs with distinct named labels, or a positional CV
+followed by one named CV, keeps its returned
 reference cell through callee leave. Module377 now
 captures that actual cell before PROPERTY_PREP, borrows the live ordinary
 instance/stdClass target and keeps the warning result null even when handler
@@ -105,8 +106,15 @@ order, so lookup captures the cell after all callee-leave callbacks. Unknown and
 duplicate labels fail before that CV's demand. Captured prefix release can leave
 a caller-local owner whose later frame unwind runs its destructor; the pending
 label Error remains protected and may become a cleanup exception's previous.
-More than two arguments, mixed positional/named pairs, unpacked or computed
-arguments and dynamic callees remain outside this bounded lane.
+A positional CV followed by a named CV uses the same actual named-task protocol.
+Its first Warning fixes null in formal slot0; the later named CV is read after
+handler effects and can bind around a skipped default. The first SEND retains
+its equal documentary line, while a deferred named SEND uses the compiled
+argument-list line without changing INPUT or the captured prefix. Unknown and
+duplicate destinations still fail before CV demand; buffer release and later
+caller-local frame cleanup keep their distinct owners and pending Error.
+More than two arguments, unpacked or computed actuals and dynamic callees
+remain outside this bounded lane.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
