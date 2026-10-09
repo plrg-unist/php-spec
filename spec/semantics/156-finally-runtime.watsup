@@ -398,7 +398,7 @@ def $ref_recheck_throw_producer(S, S_next) = true
   -- if S_next.FRAMES = S.FRAMES
   -- if S_next.CURRENT = S.CURRENT
 def $ref_recheck_throw_producer(S, S_next) = true
-  -- if S.TODO = [RETURN_REF_UNWIND poperand z true porigin_source, REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first poperand z]
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RETURN_CURSOR prefreturncursor porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
   -- if $ref_return_cursor_valid(S, prefreturncursor, porigin_source, z)
   -- if $throwable_pending(S_next.COMPLETION)
   -- if S_next.FRAMES = S.FRAMES
@@ -416,7 +416,7 @@ def $throwable_continuation(S, S_next) = S_next[.TODO = (REF_REPLAY porigin_sour
   -- if prefowner* = $ref_replay_contexts(S, porigin_source)
 def $throwable_continuation(S, S_next) = S_next[.TODO = [REF_REPLAY_ACTIVE porigin_source poperand z prefowner* prefreturncursor]]
   -- if $ref_recheck_throw_producer(S, S_next)
-  -- if S.TODO = [RETURN_REF_UNWIND poperand z true porigin_source, REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first poperand z]
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RETURN_CURSOR prefreturncursor porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
   -- if prefowner* = $ref_replay_contexts(S, porigin_source)
 def $throwable_continuation(S, S_next) = S_next[.TODO = [REF_REPLAY_TWO porigin_source poperand z prefowner* prefreturncursor_inner prefreturncursor_outer]]
   -- if $ref_recheck_throw_producer(S, S_next)
