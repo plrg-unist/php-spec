@@ -440,6 +440,14 @@ test-semantics: build
 	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group leave
 	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group priority
 	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group pending
+	python3 tests/semantics/magic_property_get_protocol.py --group reference
+	python3 tests/semantics/magic_property_get_protocol.py --group readonly
+	python3 tests/semantics/magic_property_get_protocol.py --group type-error
+	python3 tests/semantics/magic_property_get_protocol.py --group initial
+	python3 tests/semantics/magic_property_get_protocol.py --group value
+	python3 tests/semantics/magic_property_get_protocol.py --group getter-throw
+	python3 tests/semantics/magic_property_get_protocol.py --group returned-throw
+	python3 tests/semantics/magic_property_get_protocol.py --group discarded
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup

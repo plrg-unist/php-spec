@@ -207,10 +207,13 @@ def $call_line_valid(S, (porigin_site), z) = true
   -- if $terminal_string_site(S, porigin_site, z)
   -- if ~$eval_compile_string_site(S, porigin_site, z)
 def $call_line_valid(S, porigin?, z) = false -- otherwise
+dec $property_get_pending_site(pstate, porigin) : bool
+def $property_get_pending_site(S, porigin) = false -- otherwise
 dec $call_arguments_valid(pstate, porigin?, nat, phpType7*, poperand*, nat) : bool
 dec $stringify_pending_site(pstate, porigin) : bool
 def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remaining*, poperand*, n_sent) = true
   -- if ~$stringify_pending_site(S, PORIGIN n_unit pcpath)
+  -- if ~$property_get_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$useriter_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$fiber_traversal_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$foreach_aggregate_pending_site(S, PORIGIN n_unit pcpath)
@@ -230,10 +233,13 @@ def $call_arguments_valid(S, porigin?, n_index, phpType7*, poperand*, n_sent) = 
 dec $call_sent_operands_valid(pstate, pcalltarget, nat, poperand*) : bool
 dec $error_context_kind(pstate, pcallcontext) : bool
 dec $error_context_valid(pstate, pcallcontext) : bool
+dec $property_get_context_kind(pcallcontext) : bool
+def $property_get_context_kind(pcallcontext) = false -- otherwise
 dec $call_arity_valid(pstate, pcallcontext) : bool
 dec $stringify_context_kind(pstate, pcallcontext) : bool
 def $call_arity_valid(S, pcallcontext) = true
   -- if ~$stringify_context_kind(S, pcallcontext)
+  -- if ~$property_get_context_kind(pcallcontext)
   -- if ~$error_context_kind(S, pcallcontext)
   -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$fiber_traversal_context_kind(S, pcallcontext)

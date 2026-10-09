@@ -1854,7 +1854,21 @@ The actual367 join over `4d7ef44ee` passes strict at `87aca689f` (5.179s).
 Genuine variable returns keep Notice markers absent; introduced GEN request,
 compound-string and static FROMCALLABLE paths are inactive. Source/state credit
 remains at the separate private cuts.
-Computed names, magic getters/hooks, consumed storage and wider reference-call
+The first implicit getter family now supports literal ordinary CV-base reads
+through public nonstatic `__get` with one untyped required parameter and no
+declared return type. Missing/public UNSET invokes it; typed INITIAL still
+raises Error without a getter. Module380 holds the receiver once while the
+getter context borrows it, verifies exact property types before receiver release,
+then copies the current reference payload. Value returns stay fixed, discarded
+reads retain their real RV, and H/B/C cleanup exceptions preserve previous links.
+Native7 and discarded-native1 retain separate cuts; source8 passes at `7971e6693`
+under the validator-only bridge to changed strict368 at `9b46165fc`.
+Eight whole state groups pass 1293 setup-inclusive premises across `233992212`,
+`176e6efa7` and `d3ee92ffd`. Original native/state failures and diagnostic credit remain zero; earlier
+property milestones retain their separate cuts.
+[Getter ledger](coverage/semantics/magic-property-get-review.json).
+Coercions, constrained returned cells, wider signatures, quiet/write/recursive
+getters, computed names, hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,

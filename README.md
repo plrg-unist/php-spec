@@ -1271,7 +1271,18 @@ cell owners, parameter cleanup before lookup and label-error/property cleanup.
 Earlier source/state cuts retain their original credit.
 The actual367 join over `4d7ef44ee` passes strict at `87aca689f` (5.179s),
 preserving accepted Notice, GEN and ARG interfaces without renewing those cuts.
-Computed names, getters/hooks and wider reference-call receivers remain required.
+Literal CV-base reads now invoke a first public `__get` family for missing or
+explicitly unset public properties. Never-initialized typed properties still
+raise Error without invoking the getter. One real receiver hold survives the
+borrowed getter call; exact property verification precedes receiver release,
+and a reference result is copied afterward from its current cell. Eight source
+agreements and eight reached groups pass 1293 setup-inclusive premises, covering
+value/reference differences, discarded reads and H/B/C exception cleanup.
+[The getter review](coverage/semantics/magic-property-get-review.json) retains
+distinct native, source, strict and state cuts plus the original failures.
+Coercions, constrained returned cells, wider getter signatures, quiet/write
+access, guarded recursion, computed names, hooks and wider reference-call
+receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
