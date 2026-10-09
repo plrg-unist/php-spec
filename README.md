@@ -331,9 +331,13 @@ A renderer rethrow at request C root reports/releases its builtin inner Throwabl
 before abandoning the original report and real Generator/cache owners. A returning
 renderer-installed handler releases its inner exception before registry restoration;
 warning callbacks can refresh the original cached string before fatal reporting.
-Three originals and 611 reached premises retain separate cuts. Throwing callbacks,
-deeper rendering, abrupt exception release, parked/escaped storage and generic
-terminal cleanup remain required.
+Three originals and 611 reached premises retain separate cuts. A throwing
+renderer-installed handler receives its own fatal report while real outer
+handler/report and Generator/cache owners survive. Its reported exception releases
+before bailout, even when its destructor changes reporting to zero. Two new
+originals and 343 strict premises retain separate cuts. Throwing warning callbacks,
+deeper rendering, abrupt child cleanup, parked/escaped storage and generic terminal
+cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,

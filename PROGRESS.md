@@ -98,8 +98,17 @@ receive Unknown/line0, and fatal reporting reads the original live cached string
 Real pins/transient Weak owners, actual-head refusal and budget replay pass.
 Actual 358 over `b721887ce` passes strict compilation at `00536106a`, preserving
 current source/argument/storage fields; private 3/611 retain their own inputs.
-Throwing callbacks/deeper rendering, abrupt exception release, message warnings,
-parked/escaped storage and generic terminal cleanup remain required. Actual 351 over `7c4a13bc1` passes strict
+A throwing renderer-installed handler adds two exact fatal originals and 163/180
+strict premises at separate cuts. Genuine EHR/renderer-return/outer-report carriers
+retain prior exceptions and Generator/cache owners while the new renderer holds
+three roots; frozen reporting precedes its release and reporting-zero destructor.
+The release replay starts from its already authenticated bailout; all 180 premises
+remain. Earlier nondeterminism, wrong renderer-owner and 120-second AL/SL timeouts
+retain zero affected credit. Actual 358 over `2aa14083a` passes strict compilation
+at `646916637`; private source/state cuts retain their revisions. Throwing warning
+callbacks, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
+message warnings, parked/escaped storage and generic terminal cleanup remain required.
+Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
 guards; private source/state cuts retain their own revisions.
 [Ledger](coverage/semantics/generator-request-abrupt-review.json).
