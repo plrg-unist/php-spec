@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Bounded assertion quantity warnings retain frozen parsed modes and old returns
+through nested raw writes, throw and restore. Immutable string carriers preserve
+INI identity while ordinary consumers use bytes. Seventeen safe originals retain
+the separate 5ec/4141/1a8 cuts; actual phase234 at93be contains208 well-defined and26
+reached lifetime-boundary checks. A replaced modified request raw stops with explicit
+Unsupported; four native lifetime probes have zero agreement, with no allocator model.
+Affected Throwable source3, genuine trace47 and retained Generator source1/report52
+pass at1a8; template2 passes at6cb. Strict361 compiler3 passes at1a8 (4.623s).
+The [quantity ledger](coverage/semantics/assertion-quantity-review.json) preserves
+failures and the separate diagnostic46. Original recapture/warned restore,
+Stringable-option snapshots, NaN conversion timing and wider producers remain required.
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
@@ -56,8 +68,9 @@ tuples, 54 typed quantity/state premises and 96 authentic state premises pass.
 Nested writes and original thrown identity survive; altered refusal bytes/options
 are rejected. Raw output is under
 `.tools/compiler-assertion-ini-368-19/.tools/{assertion-ini-gate-v1,method-runtime-9j809l_h,assertion-ini-state-v1}`.
-Parsing warnings/overflow and authenticated Stringable-option refusal remain
-required; explicit startup transport still admits exactly `-1`/`0`/`1`.
+The later bounded warning/overflow/carrier cut is recorded above; original recapture,
+warned restore and authenticated Stringable-option refusal remain required. Explicit
+startup transport still admits exactly `-1`/`0`/`1`.
 The actual 356-module composition over `4563a5bf9` passes strict initialization
 at `06409ee08` (4.471 seconds); raw output is in
 `.tools/compiler-assertion-ini-current-19/.tools/assertion-ini-current-gate-v1`.

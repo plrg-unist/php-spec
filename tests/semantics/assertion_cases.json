@@ -1,5 +1,5 @@
 {
-  "scope": "Native-first assertion source catalogue with separately reviewed startup/runtime and option/callback cuts; ordinary-library observers remain in excluded_cases with zero semantic agreement.",
+  "scope": "Native-first assertion startup/options and bounded quantity/carrier originals retain separate tested cuts. Four reentrant request-string lifetime controls require exact Unsupported and receive zero native agreement; Count remains a distinct excluded ordinary-library observer.",
   "cases": [
     {
       "id": "direct-effects-mode1",
@@ -1455,6 +1455,84 @@
       "native_raw_sha256": "e03e0c54306baff2bb169f999bf003be0bd813d9bf45ad4e84d9e54591422161",
       "exclusion": "Ordinary-library count observer, excluded by CORE.md; original model Unsupported remains zero agreement.",
       "preserved_model_failure": ".tools/compiler-assertion-ini-current-19/.tools/method-runtime-w9yskwoa/report.json"
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "assertion-quantity-pointer-literal-mode1",
+      "source": "<?php\n$digit='1';\n$raw=\"$digit$digit\";\n$effects=0;\necho 'seed:',ini_set('zend.assertions',$raw),'|';\nset_error_handler(static function($level,$message){\n echo 'H:',$level,'|nested:',ini_set('zend.assertions','11'),'|';\n return true;\n});\necho 'old:',ini_set('zend.assertions','12X'),'|raw:',ini_get('zend.assertions'),'|';\nassert(++$effects>0);\necho 'effects:',$effects;\n",
+      "source_sha256": "96740d7cc04a43ed321f3f60651a86ad96728111c35d02ee27f952cd4a410a74",
+      "native_group": ".tools/compiler-assertion-quantity-20/.tools/assertion-quantity-pointer-native-20-k_t_2pdi/run-v1/report.json",
+      "native_observation": {
+        "stdout_base64": "c2VlZDoxfG9sZDpIOjJ8bmVzdGVkOjExfDExfHJhdzoxMXxlZmZlY3RzOjE=",
+        "stderr_base64": "",
+        "exit_status": 0
+      },
+      "model_expected": {
+        "status": "unsupported",
+        "reason": "reentrant assertion INI retired request-string owner",
+        "stdout_prefix_base64": "c2VlZDoxfG9sZDpIOjJ8bmVzdGVkOjExfA==",
+        "exit_status": null
+      },
+      "well_defined_native_agreements": 0,
+      "classification": "Intentional boundary for the observed Zend string lifetime defect; zero agreement, distinct from excluded ordinary-library Count."
+    },
+    {
+      "id": "assertion-quantity-allocation-unpinned-mode1",
+      "source": "<?php\n$number = 1.0;\nini_set('zend.assertions', $number);\nset_error_handler(static function() {\n    ini_set('zend.assertions', 2.0);\n    ini_set('zend.assertions', 3.0);\n    return true;\n});\n$old = ini_set('zend.assertions', '12X');\necho 'old:', $old, '|raw:', ini_get('zend.assertions');\ntry { assert(false, 'live'); echo '|disabled'; } catch (AssertionError $e) { echo '|enabled'; }\n",
+      "source_sha256": "3827e9ecb9fca8eabe58744c5ccbadc4356a4c9da3c8f89ce7d3998c3042aa35",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-assertion-quantity-20/.tools/assertion-quantity-allocation-native-prep-20/run-v1/report.json",
+      "native_observation": {
+        "stdout_base64": "b2xkOjF8cmF3OjEyWHxlbmFibGVk",
+        "stderr_base64": "",
+        "exit_status": 0
+      },
+      "model_expected": {
+        "status": "unsupported",
+        "reason": "reentrant assertion INI retired request-string owner",
+        "stdout_prefix_base64": "",
+        "exit_status": null
+      },
+      "well_defined_native_agreements": 0,
+      "classification": "Intentional boundary for the observed Zend string lifetime defect; zero agreement, distinct from excluded ordinary-library Count."
+    },
+    {
+      "id": "assertion-quantity-allocation-pinned-mode1",
+      "source": "<?php\n$number = 1.0;\n$pin = (string) $number;\nini_set('zend.assertions', $pin);\nset_error_handler(static function() {\n    ini_set('zend.assertions', 2.0);\n    ini_set('zend.assertions', 3.0);\n    return true;\n});\n$old = ini_set('zend.assertions', '12X');\necho 'old:', $old, '|raw:', ini_get('zend.assertions');\ntry { assert(false, 'live'); echo '|disabled'; } catch (AssertionError $e) { echo '|enabled'; }\n",
+      "source_sha256": "3dc8ed5d391aa3be0d5afd59bf8e0055099658fc0df2d1a0f2d70c9ce2b419b9",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-assertion-quantity-20/.tools/assertion-quantity-allocation-native-prep-20/run-v1/report.json",
+      "native_observation": {
+        "stdout_base64": "b2xkOjF8cmF3OjN8ZW5hYmxlZA==",
+        "stderr_base64": "",
+        "exit_status": 0
+      },
+      "model_expected": {
+        "status": "unsupported",
+        "reason": "reentrant assertion INI retired request-string owner",
+        "stdout_prefix_base64": "",
+        "exit_status": null
+      },
+      "well_defined_native_agreements": 0,
+      "classification": "Intentional boundary for the observed Zend string lifetime defect; zero agreement, distinct from excluded ordinary-library Count."
+    },
+    {
+      "id": "assertion-quantity-pinned-post-outer-mode1",
+      "source": "<?php\n$number = 1.0;\n$pin = (string) $number;\nini_set('zend.assertions', $pin);\nset_error_handler(static function() {\n    ini_set('zend.assertions', 2.0);\n    ini_set('zend.assertions', 3.0);\n    return true;\n});\n$old = ini_set('zend.assertions', '12X');\n$four = 4.0;\n$probe = (string) $four;\necho 'old:', $old, '|raw:', ini_get('zend.assertions'), '|pin:', $pin, '|probe:', $probe;\n",
+      "source_sha256": "c91f33485f714ed10ba238ac8308d61b0eb745bfd68a1de2adc2af5a9092a05d",
+      "native_group": "/home/user/workspace/php-spec/.tools/compiler-assertion-quantity-20/.tools/review-quantity-post-outer-20/run-v1/report.json",
+      "native_observation": {
+        "stdout_base64": "b2xkOjF8cmF3OjN8cGluOjR8cHJvYmU6NA==",
+        "stderr_base64": "",
+        "exit_status": 0
+      },
+      "model_expected": {
+        "status": "unsupported",
+        "reason": "reentrant assertion INI retired request-string owner",
+        "stdout_prefix_base64": "",
+        "exit_status": null
+      },
+      "well_defined_native_agreements": 0,
+      "classification": "Intentional boundary for the observed Zend string lifetime defect; zero agreement, distinct from excluded ordinary-library Count."
     }
   ]
 }
