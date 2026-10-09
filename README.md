@@ -383,6 +383,11 @@ retains only its receiver after factory and callback retirement; frozen selectio
 survives a referenced-name change through real suspension and termination. Direct
 and repaired source agreements remain distinct on the tested 372-module cuts,
 with 241 state premises. Other targets and original 7 remain open.
+Captured factories now select static `Fiber::suspend` with no bound input.
+The parked result marker keeps the selected Closure alive after its caller cell
+retires; resume returns the exact value and cleanup releases the last owner.
+The direct and repaired sources agree on distinct 372-module cuts, with 299 state
+premises. Wider targets and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

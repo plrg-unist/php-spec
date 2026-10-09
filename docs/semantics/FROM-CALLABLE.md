@@ -112,7 +112,7 @@ sources plus 191 premises (154 genuine/derived, 37 constructed) pass at 771e/371
 The earlier Unsupported and parked-return fixture failure remain zero credit.
 This coverage does not establish transformed binding or wider internal targets.
 Nullsafe/computed invoke capture, wider aliases, computed/keyword factory creation
-and captured-factory Fiber/wider getter callbacks remain required.
+and remaining captured-factory Fiber targets and wider getter callbacks remain required.
 Required original static-compound source 7
 keeps its separate CLI 60 timeout with zero agreement.
 

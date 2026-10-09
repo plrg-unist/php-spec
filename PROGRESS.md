@@ -2519,6 +2519,17 @@ while bound capture source/liveness correctly becomes false. The original
 Unsupported remains zero credit; other targets and original 7 remain OPEN.
 Actual-parent compilation and initialized SL241 pass at `baf287a4` over
 `d2ea8468` with 372 modules; CLASS/CALLS seams preserve prior source/native cuts.
+Captured factories now select receiver-free static `Fiber::suspend`. Frozen
+DIRECT members retain suspend after the source reference becomes getCurrent and
+the factory/callback retire. Nulling the selected Closure's caller cell during
+value arguments leaves its real result marker as the sole parked owner. Resume
+returns the exact value; ordered cleanup retires the capture before restoring
+that value to its original consumer. Direct agreement stays at 59080391/372;
+captured agreement and 299 premises (247 genuine/derived, 52 constructed) pass
+at c871de946/372, including saved VM authority and exact zero-budget resumption.
+The original Unsupported and premature-result fixture263 failure remain zero
+credit. Maintained source/render bytes are unchanged; no relocation renewal.
+Other targets and required original 7's CLI60 timeout remain OPEN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

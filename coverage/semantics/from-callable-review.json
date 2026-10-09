@@ -1003,7 +1003,7 @@
     },
     "review": "Narrow 358 semantics, native and distinct direct/repaired public raw, state241 and maintained exact source/render/dispatch byte identity independently accepted by arguments_review_21. Exact d2ea/372 CLASS/CALLS join, bound driver and current compiler plus initialized SL241 are accepted; this result note changes no executable input.",
     "remaining": [
-      "Captured-factory Fiber kinds beyond static getCurrent and bound isSuspended, wider selection/invocation forms and effectful selectors require separate evidence.",
+      "Captured-factory Fiber kinds beyond static getCurrent, bound isSuspended and the separately validated receiver-free static suspend, wider selection/invocation forms and effectful selectors require separate evidence.",
       "Required original static-compound source 7 remains OPEN with unchanged CLI60 timeout and zero agreement; no older getter, factory, alias, static/current Fiber or static-compound evidence is renewed."
     ],
     "current_composition": {
@@ -1023,5 +1023,116 @@
       "source_native_renewal_credit": 0,
       "introduced_seam": "CLASS95/382 and CALLS380 routes preserved pointwise and disjoint from this method-only source. One initialized affected fixture; no separate init producer or old-cut renewal."
     }
+  },
+  "captured_factory_fiber_suspend": {
+    "status": "ACCEPTED_PRIVATE_PARTIAL",
+    "base_revision": "59080391d699bbd05babb4e6852233e1ab940f32",
+    "semantic_revision": "c871de94639ad5fc69ab83814074dc20ee243584",
+    "modules": 372,
+    "artifact_root": ".tools/captured-factory-fiber-20",
+    "scope": "Captured first-class Closure::fromCallable factory selects receiver-free static Fiber::suspend through variable invocation. Frozen reference-name selection, retired producer/callback, selected-capture caller-cell retirement, real park/resume and last-owner release are validated.",
+    "implementation": [
+      "spec/semantics/358-fiber-from-callable.watsup"
+    ],
+    "behavior": [
+      "Actual CONFIG_INVOKE and live config_invoke_valid admit only INTRINSIC_FIBER_SUSPEND with INPUT eps. Existing allocator, source/line/arity/frozen-member checks and disjoint Unsupported fallback remain intact.",
+      "Historical CALL and ITEMS authenticate saved factory creation/invocation after producer retirement and own no factory/array. The returned static capture has no owning child.",
+      "The source method cell changes to getCurrent, while the selected capture stays suspend. Clearing its caller cell during the value argument leaves the authentic FIBER_CAPTURE_RESULT as its sole owner in the parked VM.",
+      "The saved API/result tail validates exact site, line, buffer and activation. Resume returns the exact done value; eager last-owner cleanup parks/restores it before the original consumer. WeakReference observes the capture gone after return.",
+      "Static saved source remains valid after capture retirement, while live validation becomes false. Exact zero-budget/full resumption and separately constructed certificate/continuation forgeries discriminate authority."
+    ],
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_closures.c: zend_create_closure_from_callable, fake Closure callable retention",
+      "vendor/php-src/Zend/zend_fibers.c: Fiber::suspend, zend_fiber_suspend_internal, zend_fiber_delegate_transfer_result"
+    ],
+    "cuts": {
+      "native": {
+        "report": ".tools/captured-factory-fiber-suspend-21/captured-factory-fiber-suspend-native-21-cqtq0two/report.json",
+        "sha256": "e1b7dde1162e1bd9d903f01c7b05243929767da8fa3bc71d01c5d0cee442e871",
+        "revision": "59080391d699bbd05babb4e6852233e1ab940f32",
+        "oracle_cases": 2,
+        "model_credit": 0,
+        "stdout": "Q;A;M:getCurrent;F;B;V;P:pause;H:held;R:done;H:gone;T:done;E;"
+      },
+      "baseline": {
+        "report": ".tools/captured-factory-fiber-suspend-21/captured-factory-fiber-suspend-model-21-9z5on4ar/report.json",
+        "sha256": "7186a13681e7c11dc5b20a301b8be5af4f82eea210a59152c1f68403b4fb7a81",
+        "revision": "59080391d699bbd05babb4e6852233e1ab940f32",
+        "direct_agreement": 1,
+        "captured_agreement": 0,
+        "captured_status": "unsupported",
+        "captured_stdout": "Q;A;",
+        "reason": "captured Closure::fromCallable factory Fiber callback"
+      },
+      "failed_fixture": {
+        "report": ".tools/captured-factory-fiber-suspend-21/factory-fiber-suspend-state-21-3olpncpq/report.json",
+        "sha256": "62a69711b772a1f10dd2d57b53711f60e78be563d7cd2c0a94569fd93b4c2774",
+        "revision": "c871de94639ad5fc69ab83814074dc20ee243584",
+        "compiler": "PASS",
+        "compiler_seconds": 5.038829326629639,
+        "state": "FAIL",
+        "state_seconds": 18.64221978187561,
+        "state_premises": 263,
+        "source_credit": 0,
+        "location": "Premature S_released.RESULT equality omitted authentic eager last-owner cleanup; preserved fixture/raw unchanged."
+      },
+      "state": {
+        "report": ".tools/captured-factory-fiber-suspend-21/factory-fiber-suspend-state-21-oibk9ald/report.json",
+        "sha256": "e274460b3bab31e1d97b132b1e1b5d0887bad7538c260a28d15ab78ffeab0ad3",
+        "revision": "c871de94639ad5fc69ab83814074dc20ee243584",
+        "compiler": "PASS",
+        "compiler_seconds": 4.94950270652771,
+        "state": "PASS",
+        "state_seconds": 42.29940724372864,
+        "state_premises": 299,
+        "genuine_and_derived": 247,
+        "constructed": 52,
+        "source_credit": 0
+      },
+      "public": {
+        "report": ".tools/captured-factory-fiber-suspend-21/factory-fiber-suspend-repair-model-21-a_f_nc55/report.json",
+        "sha256": "6863a052813e3e949d023100711ad5c7310e4b202d5cb3c3ade617f4cfaba420",
+        "revision": "c871de94639ad5fc69ab83814074dc20ee243584",
+        "agreement_cases": [
+          "captured-factory-fiber-suspend"
+        ],
+        "source_credit": 1,
+        "seconds": 16.28702688217163
+      }
+    },
+    "commands": [
+      "python3 .tools/captured-factory-fiber-suspend-21/run-captured-factory-fiber-suspend-native-21.py",
+      "python3 .tools/captured-factory-fiber-suspend-21/run-captured-factory-fiber-suspend-model-21.py",
+      "python3 .tools/captured-factory-fiber-suspend-21/run-factory-fiber-suspend-state-21.py",
+      "python3 .tools/captured-factory-fiber-suspend-21/run-factory-fiber-suspend-repair-model-21.py .tools/captured-factory-fiber-suspend-21/factory-fiber-suspend-state-21-oibk9ald/report.json"
+    ],
+    "caps": {
+      "native": 45,
+      "worker_request": 30,
+      "compiler": 120,
+      "state": 300,
+      "CLI": 60,
+      "outer": 90,
+      "steps": 100000,
+      "jobs": 1
+    },
+    "maintained": {
+      "sources": "tests/semantics/scoped_static_compound_cases.py",
+      "ids": [
+        "from-callable-direct-fiber-suspend",
+        "from-callable-factory-fiber-suspend"
+      ],
+      "renderer": "tests/semantics/from_callable_suspend_fiber_review.py",
+      "dispatch": "tests/semantics/scoped_static_compound_protocol.py: from-callable-factory-static-fiber-suspension",
+      "source_bytes": "Exact accepted native originals",
+      "fixture_bytes": 48626,
+      "fixture_premises": 299,
+      "relocation_runtime_renewal": 0
+    },
+    "review": "Narrow 358 semantics, native and distinct direct/repaired public raw plus corrected state299 independently accepted by arguments_review_21. Maintained exact source/render/dispatch byte identity independently accepted; no relocation runtime renewal.",
+    "remaining": [
+      "Captured-factory Fiber kinds beyond static getCurrent, receiver-free static suspend and bound isSuspended, object-style/wider selection and invocation forms, and suspension error paths require separate source/state evidence.",
+      "Required original static-compound source 7 remains OPEN with its unchanged CLI60 timeout and zero agreement; no older getter, factory, alias, static/current/bound Fiber or static-compound cut is renewed."
+    ]
   }
 }
