@@ -55,8 +55,9 @@ def $ppsignature_diagnostics(P, psdiagnostic :: psdiagnostic_tail*) = $ppsignatu
 def $ppsignature_diagnostic(P, PSDIAGNOSTIC text_level text_code ptbytes* ptcontext) = $ppsignature_issue(P, text_level, $psmessage(PSDIAGNOSTIC text_level text_code ptbytes* ptcontext), ptcontext.LINE)
 def $ppsignature_diagnostic(P, PSTYPEDIAGNOSTIC (PTDIAGNOSTIC text_level text_code ptbranch* ptcontext)) = $ppsignature_issue(P, text_level, $ptmessage(PTDIAGNOSTIC text_level text_code ptbranch* ptcontext), ptcontext.LINE)
 def $ppsignature_issue(P, "fatal", ptbytes, n) = P[.COMPLETION = PPCABRUPT (STATICBYTES ptbytes n)]
+def $ppsignature_issue(P, "error", ptbytes, n) = P[.COMPLETION = PPCABRUPT (FATAL ptbytes n)]
 def $ppsignature_issue(P, text, ptbytes, n) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC text "function-message" ([ptbytes]) (P.LOCATION[.LINE = n])]]
-  -- if text =/= "fatal"
+  -- if text =/= "fatal" /\ text =/= "error"
 def $plmessage(PLDIAGNOSTIC text "function-message" ([ptbytes]) pllocation) = ptbytes
 
 def $ppfunction_name(P, ptbytes) = P[.COMPLETION = PPCABRUPT (STATICBYTES ($ptascii("Cannot redeclare function ") ++ $ptjoin(P.ENV.NAMESPACE, ptbytes) ++ $ptascii("() (previously declared as local import)")) P.LOCATION.LINE)]

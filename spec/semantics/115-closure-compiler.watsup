@@ -64,6 +64,8 @@ def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadat
   -- if P_body = $ppgenerator_body(P_uses, pcpath ++ [PCFIELD 6], statement*)
 def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSDEFAULTREQUEST pscontinuation) = $ppclosure_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
+def $ppclosure_step(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, PSSATTRIBUTETARGETREQUEST pscontinuation phpType14) = $ppsignature_attribute($ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath ++ [PCFIELD 3, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)], pscontinuation, phpType14)
+  -- if P.COMPLETION = PPCNORMAL
 
 def $ppclosure_request(P_outer, P, pcpath, ptbytes, phpType22*, statement*, metadata, pscontinuation) = $ppclosure_step(P_outer, $ppdefault_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n_index), pcpath, ptbytes, phpType22*, statement*, metadata, $psstep_resume(pscontinuation, PSNONE))
   -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
