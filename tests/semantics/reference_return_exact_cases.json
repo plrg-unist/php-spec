@@ -102,8 +102,10 @@
     {
       "id": "parameter-backing-finally-required-recheck-unused",
       "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;try{return $v;}finally{echo 'F|';$v=new stdClass;}}$v=new S;take($v);try{g();echo 'ACCEPTED';}catch(TypeError $e){echo 'R';}echo '|',C::$o===$v&&$v instanceof stdClass?'SHARED':'DETACHED';",
-      "predicted_stdout": "F|R|SHARED",
-      "source_sha256": "44f566f645f39927bf956ec80be1addb8d2368e7e1b955822573f801f19f9b59"
+      "predicted_stdout": "F|F|R|SHARED",
+      "source_sha256": "44f566f645f39927bf956ec80be1addb8d2368e7e1b955822573f801f19f9b59",
+      "prediction_at_freeze": "F|R|SHARED",
+      "status": "native_model_mismatch_pending_delayed_type_error_finalizer_replay"
     }
   ],
   "prepared_parent": "ea04fbbe4e0d4948c10d829a3c1f6ec4672728d9"
