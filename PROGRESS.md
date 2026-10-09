@@ -1462,6 +1462,8 @@ at `50fb5bed6`, including parameter retirement before lookup, shared/scalar and
 separate argument cells, saved carriers and pending H/B cleanup. The first
 constructed dynamic-image fixture failure remains zero; only its callable-line
 certificate changed. Earlier source10/state669 and all prior failures are unrenewed.
+The actual361 composition over `43a3fed4f` passes strict at `827c12ebf`
+(4.946s), preserving current compiler insertion and class-promotion interfaces.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container

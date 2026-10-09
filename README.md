@@ -1086,7 +1086,8 @@ The actual361 join over `7c18fccada` passes strict compilation at `0b6054930`,
 preserving accepted return replay, CALLS and exception interfaces.
 Six further originals and five reached groups cover argument destruction before
 lookup, shared argument/receiver cells, a surviving separate argument alias and
-normal/pending fetch cleanup. Wider argument and callee forms remain required.
+normal/pending fetch cleanup. The actual361 composition over `43a3fed4f` passes
+strict at `827c12ebf`, preserving current compiler and class-promotion interfaces.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
