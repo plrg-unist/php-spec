@@ -1734,6 +1734,14 @@ The actual364 join over `e26e3fb2d` passes strict at `2383140e3` (5.104s)
 and one affected pending300 gate. Local byte observations accommodate current
 Throwable string carriers; GEN363 and RETURNS378 seams remain disjoint. Earlier
 source/private state cuts retain their own identities and credit.
+Mixed positional-then-named ordinary CVs now use377's local source certificate;
+only the deferred second named SEND needs an emitted-line override. First n0
+uses the authentic NAMED_SEND carrier with generic equal-line capture. Native6
+retains `f41c88dfe`; strict364/source6 and five whole reached gates pass 1235
+setup-inclusive premises at `b766af8a1`, covering slot0/slot2 around default3,
+shared HCELL3/payload1, parameter/default leave order, current/saved malformed
+carriers and frame/operation pending cleanup. Shared105/213/99/79/CELL/270 and
+all earlier accepted cuts/failures are unchanged.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
