@@ -54,6 +54,13 @@
       "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;try{return $v;}finally{echo 'F|';$v=new stdClass;}}$v=new S;take($v);try{g();echo 'ACCEPTED';}catch(TypeError $e){echo 'R';}echo '|',C::$o===$v&&$v instanceof stdClass?'SHARED':'DETACHED';",
       "predicted_stdout": "F|F|R|SHARED",
       "purpose": "Preserved source44f566 delayed return recheck failure through accepted216 backing."
+    },
+    {
+      "id": "delayed-error-local-catch-saved-call",
+      "purpose": "Nested ping saves the replay-selected local catch frame with FINALLY_ONLY(REPLAY_TRY), then cleanup and AFTER resume retain the new shared return.",
+      "predicted_stdout": "F1|C|P|F2|A|caught|shared",
+      "source": "<?php\nfunction ping() { echo 'P|'; }\nfunction &g(): string {\n    global $v, $n;\n    try { return $v; }\n    catch (TypeError $e) { echo 'C|'; ping(); $v = 'caught'; }\n    finally { ++$n; echo 'F', $n, '|'; if ($n === 1) { $v = new stdClass; } }\n    echo 'A|'; return $v;\n}\n$v = 'old'; $n = 0;\n$r =& g(); echo $r;\n$r = 'shared'; echo '|', $v;\n",
+      "source_sha256": "6e51f4ef3bd0abee43f7d8ade3eba95590621f1af2383cb27d098849f5c7fd76"
     }
   ]
 }
