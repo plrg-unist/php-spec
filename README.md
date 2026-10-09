@@ -1142,6 +1142,8 @@ premises cover shared reference formals, parameter cleanup before lookup and
 throwing prefix/replacement cleanup. The original `is_null` observers retain
 their builtin boundary; distinct core-only companions provide the first two
 agreements.
+The actual361 join over `430face8d` passes strict at `4b39fa53c`, preserving
+current CALLS, class attributes, return replay and lifecycle interfaces.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

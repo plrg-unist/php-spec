@@ -1605,6 +1605,9 @@ covering first-null/later-live sends, shared formals, both parameter callbacks
 before PREP, current/saved malformed carriers and H/B cleanup. The original
 `is_null` source campaign retains zero credit; the second original remains
 model-unrun. Earlier noarg/one-CV/named cuts and failures are unrenewed.
+The actual361 join over `430face8d` passes strict at `4b39fa53c` (5.028s),
+preserving current CALLS/class compiler, return replay and fatal-cleanup interfaces.
+It adds no source/state credit.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
