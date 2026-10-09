@@ -484,8 +484,8 @@ during arguments; saved creation and invocation authority needs no live producer
 or current USER frame. Frozen members survive referenced-name mutation and array
 retirement. The returned Closure adds no factory/array root and reads the actual
 active Fiber across suspension. Other captured-factory Fiber kinds and bound
-inputs beyond the separately validated bound `isSuspended` remain explicit
-Unsupported boundaries. The [core-factory ledger](../../coverage/semantics/from-callable-review.json)
+inputs beyond the separately validated bound `isSuspended` and receiver-free
+static `suspend` remain explicit Unsupported boundaries. The [core-factory ledger](../../coverage/semantics/from-callable-review.json)
 keeps the direct control, repaired source and 270 state premises at distinct cuts.
 
 Bound captured-factory `isSuspended` keeps the selected Fiber through a single
@@ -496,6 +496,18 @@ last receiver retirement when the returned Closure is released. Immutable saved
 factory evidence remains valid afterward, while the bound capture source/live
 checks require an allocated receiver and become false. The direct and repaired
 372-module cuts and 241 state premises stay separate from getCurrent evidence.
+
+Receiver-free captured-factory `suspend` freezes its name before referenced-name
+mutation and factory/callback retirement. Argument evaluation may clear the
+selected Closure's caller cell; its result marker then remains the sole owner
+in the actual suspended VM. The API and saved result tail retain exact source,
+line, buffer and activation evidence. Resume supplies the exact return value;
+ordered release retires the capture and restores that value before the consumer
+runs. Static saved source evidence remains valid afterward and adds no producer
+owner. Separate 372-module direct/repaired sources and 299 premises authenticate
+these states and exact zero-budget resumption; the initial premature-result
+fixture failure keeps zero credit. Object-style input and wider captured targets
+require separate evidence.
 
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver

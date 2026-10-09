@@ -2232,7 +2232,20 @@ The actual372 join over `e11f0f06c` passes strict at `5f96624c8` (5.554s,
 state credit0). Parent hook guards and class/return/collector/Fiber interfaces
 are preserved; these originals use unhooked nongenerator instances. Private
 cuts and original failures retain their credit.
-Wider coercions, constrained returned cells, wider signatures, quiet/write/recursive
+Module384 now verifies real typed-property-backed getter references for builtin
+int/object targets. Exact compatible verification is whole-state identity; weak
+fitting integer-string conversion only selects the first-source conflict Error,
+while strict/nonnumeric rejection uses ordinary MAGIC_GET TypeError. No cell write
+or getter type-source attachment occurs. Native6 and the model Unsupported baseline
+(CLI1) retain separate16d6 cuts; strict373/source6 and six whole reached groups pass
+829 setup-inclusive premises at `9cb4c6ea9`. Real source detachment/repair preserves
+pending errors, and owned copied payloads survive source/cell removal. The rejected
+recorder parent argument ran no numeric actor and retains zero credit; prior cuts
+are unchanged. [Reference-getter ledger](coverage/semantics/magic-property-reference-review.json).
+The actual374 join over `bed352b5a` passes strict at `e0d62e7ed` (5.399s,
+state credit0). Parent anonymous-class, hook/type and cleanup interfaces are
+preserved; those wider paths are absent from these originals. Private cuts are unchanged.
+Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
 held278/279 add no dependency or credit.
@@ -2518,6 +2531,19 @@ while bound capture source/liveness correctly becomes false. The original
 Unsupported remains zero credit; other targets and original 7 remain OPEN.
 Actual-parent compilation and initialized SL241 pass at `baf287a4` over
 `d2ea8468` with 372 modules; CLASS/CALLS seams preserve prior source/native cuts.
+Captured factories now select receiver-free static `Fiber::suspend`. Frozen
+DIRECT members retain suspend after the source reference becomes getCurrent and
+the factory/callback retire. Nulling the selected Closure's caller cell during
+value arguments leaves its real result marker as the sole parked owner. Resume
+returns the exact value; ordered cleanup retires the capture before restoring
+that value to its original consumer. Direct agreement stays at 59080391/372;
+captured agreement and 299 premises (247 genuine/derived, 52 constructed) pass
+at c871de946/372, including saved VM authority and exact zero-budget resumption.
+The original Unsupported and premature-result fixture263 failure remain zero
+credit. Maintained source/render bytes are unchanged; no relocation renewal.
+Other targets and required original 7's CLI60 timeout remain OPEN.
+Actual-parent compilation and initialized SL299 pass at `288bb478` over
+`8a81891c` with 374 modules; COMP383/PROPS384 seams preserve prior source/native cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

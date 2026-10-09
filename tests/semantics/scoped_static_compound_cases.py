@@ -1888,3 +1888,88 @@ echo "L:", $weak->get() === null ? "gone" : "held", ";E;";
         'discriminator': 'Captured factory survives argument-cell clearing; the returned bound capture owns only its Fiber after producer/callback/original receiver-cell retirement, keeps frozen isSuspended across resume, and releases the last strong receiver owner.',
     },
 ]
+
+CASES += [
+    {
+        'id': 'from-callable-direct-fiber-suspend',
+        'source': '''<?php
+function discardFactorySuspendCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireSelectedSuspendValueReview21() {
+    global $selected;
+    $selected = null;
+    echo "V;";
+    return "pause";
+}
+echo "Q;";
+$method = "suspend";
+$callback = ["Fiber", &$method];
+$factory = null;
+$selected = Closure::fromCallable(callback: discardFactorySuspendCallbackReview21());
+$weak = WeakReference::create($selected);
+$callback[1] = "getCurrent";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = new Fiber(function () use (&$selected) {
+    echo "B;";
+    $received = $selected(retireSelectedSuspendValueReview21());
+    echo "R:", $received, ";";
+    return $received;
+});
+$paused = $fiber->start();
+echo "P:", $paused, ";H:", $weak->get() !== null ? "held" : "gone", ";";
+$fiber->resume("done");
+$returned = $fiber->getReturn();
+echo "H:", $weak->get() === null ? "gone" : "held", ";T:", $returned, ";";
+$fiber = null;
+echo "E;";
+''',
+        'expected_stdout': 'Q;A;M:getCurrent;F;B;V;P:pause;H:held;R:done;H:gone;T:done;E;',
+        'discriminator': 'Direct factory freezes static suspend across referenced-name and callback retirement; the selected Closure survives caller-cell clearing during its value argument, stays owned while parked, and retires after resume returns.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-suspend',
+        'source': '''<?php
+function discardFactorySuspendCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireSelectedSuspendValueReview21() {
+    global $selected;
+    $selected = null;
+    echo "V;";
+    return "pause";
+}
+echo "Q;";
+$method = "suspend";
+$callback = ["Fiber", &$method];
+$factory = Closure::fromCallable(...);
+$selected = $factory(callback: discardFactorySuspendCallbackReview21());
+$weak = WeakReference::create($selected);
+$callback[1] = "getCurrent";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = new Fiber(function () use (&$selected) {
+    echo "B;";
+    $received = $selected(retireSelectedSuspendValueReview21());
+    echo "R:", $received, ";";
+    return $received;
+});
+$paused = $fiber->start();
+echo "P:", $paused, ";H:", $weak->get() !== null ? "held" : "gone", ";";
+$fiber->resume("done");
+$returned = $fiber->getReturn();
+echo "H:", $weak->get() === null ? "gone" : "held", ";T:", $returned, ";";
+$fiber = null;
+echo "E;";
+''',
+        'expected_stdout': 'Q;A;M:getCurrent;F;B;V;P:pause;H:held;R:done;H:gone;T:done;E;',
+        'discriminator': 'Captured factory survives argument-cell clearing; immutable saved factory authority and frozen static suspend remain valid after producer/callback retirement, with the returned Closure retained solely by its real parked result marker until cleanup restores the resumed value.',
+    },
+]

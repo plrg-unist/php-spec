@@ -1,0 +1,40 @@
+;; MAGIC_GET checks a constrained returned reference without assigning it or
+;; attaching the requested property's type. A possible conversion is tested
+;; only to select the diagnostic; the real referent remains unchanged.
+dec $property_get_propref(pstate, ppropertyget, nat) : bool
+dec $property_get_propref_check(pstate, ppropertyget, ppropertydesc, pvalue, pproptypesource, ppropclass) : pstate
+dec $property_get_propref_possible(pstate, ppropertyget, ppropertydesc, pvalue, pproptypesource, ptypeconversion) : pstate
+
+def $property_get_propref(S, ppropertyget, n_cell) = true
+  -- if S.RESULT = REFERENCE n_cell
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_tail_valid(S, ppropertyget)
+  -- if ppropertyget.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))]
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if ppropref.SOURCES =/= eps
+  -- if $proprefs_valid(S)
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+def $property_get_propref(S, ppropertyget, n_cell) = false -- otherwise
+
+def $property_get_verify(S, ppropertyget, REFERENCE n_cell) = $property_get_propref_check(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, $propref_class(S, ppropertydesc.TYPE, pvalue, pmethoddesc.FUNCTION.CODE.STRICT))
+  -- if $property_get_propref(S, ppropertyget, n_cell)
+  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if ppropref.SOURCES = pproptypesource :: pproptypesource_tail*
+
+def $property_get_propref_check(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, PROP_EXACT) = S
+def $property_get_propref_check(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, PROP_IMPOSSIBLE) = $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEREJECT)
+def $property_get_propref_check(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, PROP_POSSIBLE) = $property_get_propref_possible(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, false))
+
+def $property_get_propref_possible(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, TYPEREJECT) = $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEREJECT)
+def $property_get_propref_possible(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, TYPEINTEGER pvalue) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $typed_given(S, pvalue) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
+  -- if $typed_string_value(pvalue)
+  -- if $typed_number(pvalue) = (NINT i)
+  -- if $long_range(i)
+def $property_get_propref_possible(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, ptypeconversion) = S[.COMPLETION = UNSUPPORTED "magic getter constrained reference coercion"] -- otherwise
