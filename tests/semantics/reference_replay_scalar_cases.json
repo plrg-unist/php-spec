@@ -1,0 +1,90 @@
+{
+  "scope": "Source-only while/do/for continuation recovery after caught delayed reference rejection, without re-evaluating initializers. Physical array owners and switches remain separate.",
+  "historical_native_report": "/home/user/workspace/php-spec/.tools/reference-replay-loop-draft/.tools/finally-source-q8ovdj_e/report.json",
+  "cases": [
+    {
+      "id": "ref-replay-scalar-for",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;for($i=init();$i<2;$i++,upd()){try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A\",$i,\";\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "821485ed0eb58bd97f723ffdf7a36c4ef4aa914d5b13ac61e52e40024ac72864",
+      "native_stdout": "I;F;C;F;A0;U;C;F;A1;U;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-while",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;$i=0;while(test($i)){try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A\",$i,\";\";$i++;}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "5ebef2e7218dad109e955adf9d0547588a20d43317ca6de09c03a1a3e3e3290c",
+      "native_stdout": "Q;F;C;F;A0;Q;C;F;A1;Q;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-do",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;$i=0;do{try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A\",$i,\";\";$i++;}while(test($i));$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "ddb9d5fba7f5c213b8b8268f97539f1b10fb1b6040a012e07e6408165480c192",
+      "native_stdout": "F;C;F;A0;Q;C;F;A1;Q;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-break2",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;for($i=init();$i<2;$i++,upd()){$j=0;while($j<2){try{return $x;}catch(TypeError $e){echo \"C;\";break 2;}finally{echo \"F;\";$x=new N;}echo \"BAD;\";$j++;}}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "22fd969b9f7b21d6b534a0536928926130bbcd8d5cb9f1b5acdc67eed2f43583",
+      "native_stdout": "I;F;C;F;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-continue2",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;for($i=init();$i<2;$i++,upd()){$j=0;while($j<2){try{return $x;}catch(TypeError $e){echo \"C;\";continue 2;}finally{echo \"F;\";$x=new N;}echo \"BAD;\";$j++;}}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "a7f774a82d37b4c8d46bfc8bcb6fbebb060786b647b705e49eb18e684f71faef",
+      "native_stdout": "I;F;C;F;U;C;F;U;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-outer-try",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;try{if(true){for($i=init();$i<2;$i++,upd()){try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A\",$i,\";\";}upd();}}catch(Throwable $e){echo \"OUT;\";}finally{echo \"G;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "607d1357ffcfa494981449a7d28033e47dc6bf604164e6fddb444dcc7f7bf574",
+      "native_stdout": "I;F;G;C;F;A0;U;C;F;A1;U;U;G;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-outer-catch",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;try{throw new Exception(\"go\");}catch(Exception $e){if(true){for($i=init();$i<2;$i++,upd()){try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A\",$i,\";\";}upd();}}finally{echo \"G;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "2a60d567c7d07992c28443b265ee11d0689db430f08132e0db94e8c1ac97ae98",
+      "native_stdout": "I;F;G;C;F;A0;U;C;F;A1;U;U;G;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-method",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}class R{function &f():string{global $x,$y;for($i=init();$i<2;$i++,upd()){try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A\",$i,\";\";}$y=\"ok\";return $y;}}$r=new R;$a=&$r->f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "1177bc603c50c086fcc70faf7c18cf62e443eafa693abebf9b58123bccf1361c",
+      "native_stdout": "I;F;C;F;A0;U;C;F;A1;U;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-closure",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}$f=function &() use(&$x,&$y):string{for($i=init();$i<2;$i++,upd()){try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A\",$i,\";\";}$y=\"ok\";return $y;};$a=&$f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "cd55340e504c7fe2a2ba7269175961da3d73a522fb065aa547e113345d1ab456",
+      "native_stdout": "I;F;C;F;A0;U;C;F;A1;U;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-naked-break",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;for($i=init();$i<2;$i++,upd()){try{try{try{return $x;}finally{echo \"F;\";$x=new N;}}catch(TypeError $e){echo \"C;\";break;}}finally{echo \"G;\";}echo \"BAD;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "25d8a7a73c19b8587ceaa79f3a9d0b01f6294b5b5b6d0584606fd5a047b367d0",
+      "native_stdout": "I;F;G;F;C;G;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-naked-continue",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;for($i=init();$i<2;$i++,upd()){try{try{try{return $x;}finally{echo \"F;\";$x=new N;}}catch(TypeError $e){echo \"C;\";continue;}}finally{echo \"G;\";}echo \"BAD;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "2dddd081ea98f615d921e112556d0f4f28c8704141f96806775f6a8766538fed",
+      "native_stdout": "I;F;G;F;C;G;U;F;C;G;U;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-jump-override-return",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;$seen=false;for($i=init();$i<2;$i++,upd()){try{try{try{return $x;}finally{echo \"F;\";$x=new N;}}catch(TypeError $e){echo \"C;\";$seen=true;break;}}finally{echo \"G;\";if($seen){$y=\"over\";return $y;}}echo \"BAD;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "f2a0d798f379f122c4ec008010ff25748d5e8fc8a13a34aa8ba212c9f8586f10",
+      "native_stdout": "I;F;G;F;C;G;a=over;y=q;"
+    }
+  ]
+}

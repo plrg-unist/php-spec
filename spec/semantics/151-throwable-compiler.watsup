@@ -1,3 +1,4 @@
+dec $goto_prior_origin(porigin) : porigin?
 ;; zend_compile_throw compiles its operand, emits THROW, and returns IS_CONST true.
 ;; Retain that effect when an enclosing boolean expression folds its result.
 dec $ppthrow_done(ppstate, pcpath) : ppstate
@@ -119,7 +120,7 @@ dec $goto_catch(pstate, porigin, phpType66*, porigin, ptask*, ptask*, nat) : pgo
 
 ;; Zend permits goto into a try or catch. Entering a catch skips matching and
 ;; binding, and cannot activate that try's sibling handlers.
-def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch (SEQUENCE statement*) phpType65 ABSENT metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 0])), 0) ++ [TRY_END (PORIGIN n pcpath_try)] ++ ptask_tail*, ptask_old*)
+def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch (SEQUENCE statement*) phpType65 ABSENT metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 0])), 0) ++ [TRY_END (PORIGIN n pcpath_try), ORIGIN_RETURN $goto_prior_origin(PORIGIN n pcpath_try)] ++ ptask_tail*, ptask_old*)
   -- if $effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)
 def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch phpType23 (SEQUENCE phpType66*) ABSENT metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_catch(S, PORIGIN n pcpath_target, phpType66*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, 0)
   -- if ~$effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)

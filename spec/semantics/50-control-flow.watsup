@@ -97,6 +97,8 @@ def $jump_depth(ABSENT) = 1
 def $jump_depth(NScalarInt (INTEGER i) metadata) = $nabs(i)
   -- if $(i > 0)
 dec $loop_marker(ptask) : bool
+dec $jump_replay_marker(ptask) : bool
+def $jump_replay_marker(ptask) = false -- otherwise
 dec $jump_loop(pstate, porigin, nat, nat, bool) : pstate
 def $jump_loop(S, porigin_source, 1, n_original, false) = S[.TODO = ptask_tail*][.ORIGIN = porigin?][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (LOOP_NEXT statement porigin?) :: ptask_tail*
@@ -109,6 +111,7 @@ def $jump_loop(S, porigin_source, n, n_original, b) = $jump_loop(S[.TODO = ptask
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$loop_marker(ptask)
   -- if ~$finally_transfer_marker(S, ptask)
+  -- if ~$jump_replay_marker(ptask)
 def $jump_loop(S, porigin_source, n, n_original, b) = S[.COMPLETION = UNSUPPORTED "invalid loop continuation"]
   -- if S.TODO = eps
 def $loop_marker(LOOP_NEXT statement porigin?) = true
