@@ -45,6 +45,18 @@ rule PhpStep/origin-return: S ~> S[.TODO = ptask_tail*][.ORIGIN = porigin?]
   -- if S.TODO = (ORIGIN_RETURN porigin?) :: ptask_tail*
 rule PhpStep/nop: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (STMT (NStmtNop metadata)) :: ptask_tail*
+dec $halt_statement_valid(pstate, statement) : bool
+def $halt_statement_valid(S, statement) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $pphalt_valid(pcunit, pcpath, statement)
+def $halt_statement_valid(S, statement) = false -- otherwise
+rule PhpStep/halt-compiler: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtHaltCompiler phpType33 metadata)) :: ptask_tail*
+  -- if $halt_statement_valid(S, NStmtHaltCompiler phpType33 metadata)
+rule PhpStep/halt-compiler-invalid: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid halt compiler source"]
+  -- if S.TODO = (STMT (NStmtHaltCompiler phpType33 metadata)) :: ptask_tail*
+  -- if ~$halt_statement_valid(S, NStmtHaltCompiler phpType33 metadata)
 rule PhpStep/block: S ~> S[.TODO = $statement_tasks(statement_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtBlock (SEQUENCE statement_tail*) metadata)) :: ptask_tail*
 rule PhpStep/inline: S ~> S[.TODO = ptask_tail*][.EVENTS = S.EVENTS ++ [OUTPUT $base64(text)]]

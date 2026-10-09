@@ -11,6 +11,46 @@ syntax ppstate = { CLASSES pclassdesc*, CLASSCONSTANTS pclassconstantdesc*, CLOS
   COMPLETION ppcompletion, DIAGNOSTICS pldiagnostic*, WORK ppwork*, WRITES (pcpath, nat)*, EXPRESSIONS ppexprdone*, ACCESS (pcpath, ppmode)*, NAMES (pcpath, pnreference)*, REDIRECTS (pcpath, pcpath, bool)* }
 var P : ppstate
 
+;; Zend compile_const reads the final file AST before ordinary constant lookup.
+dec $pphalt_end_tag(metadataEntry) : bool
+def $pphalt_end_tag(MendFilePos z) = true
+def $pphalt_end_tag(metadataEntry) = false -- otherwise
+dec $pphalt_end(metadata) : int?
+def $pphalt_end(eps) = eps
+def $pphalt_end((MendFilePos z) :: metadata) = ($(z + 1))
+  -- if $(z >= 0 /\ z < 9223372036854775807)
+def $pphalt_end(metadataEntry :: metadata) = $pphalt_end(metadata)
+  -- if ~$pphalt_end_tag(metadataEntry)
+def $pphalt_end(metadata) = eps -- otherwise
+dec $pphalt_last(statement*) : statement?
+def $pphalt_last([NStmtHaltCompiler phpType33 metadata]) = (NStmtHaltCompiler phpType33 metadata)
+def $pphalt_last(statement :: statement_tail*) = $pphalt_last(statement_tail*)
+  -- if statement_tail* =/= eps
+def $pphalt_last(statement*) = eps -- otherwise
+dec $pphalt_offset(program) : int?
+def $pphalt_offset(PROGRAM statement*) = $pphalt_end(metadata)
+  -- if $pphalt_last(statement*) = (NStmtHaltCompiler phpType33 metadata)
+def $pphalt_offset(program) = eps -- otherwise
+dec $pphalt_valid(pcunit, pcpath, statement) : bool
+def $pphalt_valid(pcunit, pcpath, NStmtHaltCompiler phpType33 metadata) = true
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if pcpath = [PCINDEX n]
+  -- if $(n + 1) = |$pcprogram(pcunit.AST)|
+  -- if $occurrence_node(pcunit.OCCURRENCES, pcpath) = (NStmtHaltCompiler phpType33 metadata)
+  -- if $pphalt_last($pcprogram(pcunit.AST)) = (NStmtHaltCompiler phpType33 metadata)
+  -- if $pphalt_offset(pcunit.AST) = (z)
+def $pphalt_valid(pcunit, pcpath, statement) = false -- otherwise
+dec $pphalt_name(pnresult) : bool
+def $pphalt_name(PNRESOLVED pnreference) = true
+  -- if pnreference.KIND = PLCONSTANT
+  -- if $ptast(pnreference.ORIGINAL) = PTNAME ptqual ptbytes
+  -- if (pnreference.RESOLVED = $ptascii("__COMPILER_HALT_OFFSET__") \/ (ptqual =/= PTRELATIVE /\ ptbytes = $ptascii("__COMPILER_HALT_OFFSET__")))
+def $pphalt_name(pnresult) = false -- otherwise
+dec $pphalt_constant(program, plenv, name) : int?
+def $pphalt_constant(program, plenv, name) = $pphalt_offset(program)
+  -- if $pphalt_name($pnresolve(plenv, PLCONSTANT, name))
+def $pphalt_constant(program, plenv, name) = eps -- otherwise
+
 dec $ppfoldwarnings((pcpath, ptbytes, int)*, pllocation) : pldiagnostic*
 dec $ppnotdone(ppstate, pcpath) : ppstate
 dec $ppshort(ppstate, pcpath, bool, expression) : ppstate
@@ -145,6 +185,9 @@ def $ppstatement(P, pcpath, statement) = P
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppstatement(P, pcpath, NStmtNop metadata) = P
   -- if P.COMPLETION = PPCNORMAL
+def $ppstatement(P, pcpath, NStmtHaltCompiler phpType33 metadata) = $pplocate(P, pcpath, $source_line(metadata))
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $pphalt_valid(P.FOLD.SOURCE, pcpath, NStmtHaltCompiler phpType33 metadata)
 def $ppstatement(P, pcpath, NStmtInlineHTML (BYTES text) metadata) = $pplocate(P, pcpath, $source_line(metadata))
   -- if P.COMPLETION = PPCNORMAL
 def $ppstatement(P, pcpath, NStmtExpression expression metadata) = $ppexpr(P, pcpath ++ [PCFIELD 0], expression, PPR)
@@ -290,7 +333,10 @@ def $ppdispatch(P, pcpath, expression, ppmode) = $ppcheck(P, $context_error("Can
 def $ppdispatch(P, pcpath, NScalarInt (INTEGER i) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PINT i)]]
 def $ppdispatch(P, pcpath, NScalarFloat (FLOAT text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PFLOAT $hex_bits(text, 0))]]
 def $ppdispatch(P, pcpath, NScalarString (BYTES text) metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PSTRING $base64(text))]]
+def $ppdispatch(P, pcpath, NExprConstFetch name metadata, PPR) = P[.FOLD = P.FOLD[.VALUE = (PINT z)]]
+  -- if $pphalt_constant(P.FOLD.SOURCE.AST, P.ENV, name) = (z)
 def $ppdispatch(P, pcpath, NExprConstFetch name metadata, PPR) = $ppnamed(P, pcpath, $pnresolve(P.ENV, PLCONSTANT, name))
+  -- if $pphalt_constant(P.FOLD.SOURCE.AST, P.ENV, name) = eps
 def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppclearvalue(P)
   -- if ($cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = ([116,104,105,115]) \/ $cv_name_at(phpType32, P.FOLD.PARSEPRECISION) = ([71,76,79,66,65,76,83]))
 def $ppdispatch(P, pcpath, NExprVariable phpType32 metadata, ppmode) = $ppvariable(P, pcpath, phpType32, ppmode)
