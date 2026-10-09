@@ -224,6 +224,7 @@ def $ref_recheck_task(REF_RECHECK porigin_source porigin_first poperand z) = tru
 def $ref_recheck_task(ptask) = false -- otherwise
 
 dec $retired_ref_discard(pstate, porigin, int, bool, ptask, ptask*) : pstate
+dec $retired_after_transfer(pstate, porigin, int, ptask, ptask*) : pstate
 dec $return_ref_step(pstate, poperand, int, bool, porigin, ptask*) : pstate
 def $return_ref_step(S, poperand, z, b, porigin_source, (TRY_END porigin) :: ptask_tail*) = $finally_enter_ref_return(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $finally_present(S, porigin)
@@ -444,7 +445,7 @@ def $return_discard(S, TRY_END porigin) = $ref_replay_restore(S[.TODO = ptask ::
   -- if $ref_replay_transfer(ptask)
 def $return_discard(S, TRY_END porigin) = $ref_replay_restore(S[.TODO = ptask_tail*], porigin_source, z, (REPLAY_TRY porigin) :: prefowner_tail*)
   -- if S.TODO = (REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: ptask_tail*
-def $return_discard(S, REF_REPLAY_AFTER porigin_source z prefowner*) = S[.TODO = ptask :: ptask_tail*][.ORIGIN = $ref_replay_outer(prefowner*)]
+def $return_discard(S, REF_REPLAY_AFTER porigin_source z prefowner*) = $retired_after_transfer(S, porigin_source, z, ptask, ptask_tail*)[.TODO = ptask :: ptask_tail*][.ORIGIN = $ref_replay_outer(prefowner*)]
   -- if S.TODO = ptask :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*
   -- if $ref_replay_transfer(ptask)
 dec $ref_replay_pair(ptask*, porigin, int, prefowner*) : bool

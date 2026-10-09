@@ -294,6 +294,29 @@ def $retired_replace_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, 
   -- if ~(pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old)
 def $retired_replace_transfer(S, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*) = S[.RETIREDOWNERS = $retired_replace_rows(S, S.RETIREDOWNERS, porigin_old, z_old, porigin_new, z_new, b, ptask_tail*)]
 
+;; Retiring one replay header must not replace another still-live old phase.
+dec $retired_ref_transfer(ptask) : bool
+def $retired_ref_transfer(RETURN_REF_UNWIND poperand z b porigin) = true
+def $retired_ref_transfer(ptask) = false -- otherwise
+dec $retired_after_rows(pstate, pretiredowner*, porigin, int, ptask, ptask*) : pretiredowner*
+def $retired_after_rows(S, eps, porigin_old, z_old, ptask, ptask_tail*) = eps
+def $retired_after_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*) = pretiredowner :: $retired_after_rows(S, pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*)
+  -- if ~(pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old)
+def $retired_after_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*) = pretiredowner :: $retired_after_rows(S, pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*)
+  -- if pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old
+  -- if $retired_pair(S.TODO, pretiredowner) \/ $retired_pending(S, pretiredowner, S.TODO)
+def $retired_after_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, RETURN_REF_UNWIND poperand z_new b porigin_new, ptask_tail*) = $retired_replace_rows(S, [pretiredowner], porigin_old, z_old, porigin_new, z_new, b, ptask_tail*) ++ $retired_after_rows(S, pretiredowner_tail*, porigin_old, z_old, RETURN_REF_UNWIND poperand z_new b porigin_new, ptask_tail*)
+  -- if pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old
+  -- if ~($retired_pair(S.TODO, pretiredowner) \/ $retired_pending(S, pretiredowner, S.TODO))
+def $retired_after_rows(S, pretiredowner :: pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*) = $retired_after_rows(S, pretiredowner_tail*, porigin_old, z_old, ptask, ptask_tail*)
+  -- if pretiredowner.LASTRETURN = porigin_old /\ pretiredowner.LASTLINE = z_old
+  -- if ~($retired_pair(S.TODO, pretiredowner) \/ $retired_pending(S, pretiredowner, S.TODO))
+  -- if ~$retired_ref_transfer(ptask)
+def $retired_after_transfer(S, porigin_old, z_old, ptask, ptask_tail*) = S[.RETIREDOWNERS = $retired_after_rows(S_tail, S.RETIREDOWNERS, porigin_old, z_old, ptask, ptask_tail*)]
+  -- if S.TODO = ptask :: (REF_REPLAY_ORIGIN porigin_old z_old prefowner*) :: (REF_REPLAY_PHASE porigin_old z_old prefowner*) :: ptask_tail*
+  -- if $ref_replay_site(S, porigin_old, z_old, prefowner*)
+  -- if S_tail = S[.TODO = ptask :: ptask_tail*]
+
 ;; An ordinary catch inside an active finalizer has no adjacent delayed-replay
 ;; capability. It leaves the genuine FINALLY_REF_RETURN and rows unchanged.
 dec $retired_catch_rows(pstate, pretiredowner*, porigin, int, porigin) : pretiredowner*
