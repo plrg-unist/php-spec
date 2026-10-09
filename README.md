@@ -1563,8 +1563,17 @@ returned Iterator or Generator. The `getIterator()` receiver is borrowed; a save
 Generator frame acquires its own receiver. Rejected raw returns survive until
 authenticated unwind. Iterator data retires before a temporary aggregate
 operand. The [Aggregate ledger](coverage/semantics/fiber-start-aggregate-review.json)
-tracks these bounded checks. Nested acquisition, foreach/yield-from/ordinary-call
-unpacking, wider raw payload changes and compound selectors remain required.
+tracks these bounded checks. Nested START acquisition retains each returned
+Aggregate until recursive acquisition finishes, then retires layers inside-out
+before rewind. Repeated ancestor identities remain distinct retval owners;
+throwing-layer cleanup preserves remaining retirement before data and input.
+Pending Generator startup executes a literal-output/scalar-yield prefix with a
+frame with no owned roots, then closes without finally. Other pending startup routes remain
+required. The [nested ledger](coverage/semantics/fiber-start-nested-aggregate-review.json)
+records eleven normal agreements, two zero-credit Unsupported controls and twenty
+independent reached groups/544 physical premises.
+Foreach/yield-from/ordinary-call unpacking, wider raw payload changes and compound
+selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

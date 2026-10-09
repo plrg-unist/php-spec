@@ -155,11 +155,27 @@ The affected historical Aggregate original now agrees, with its earlier
 Unsupported record preserved. Strict361 and fourteen independent source-reached
 groups/425 physical premises pass at their separate cuts. Live interface-link
 admission and rejected raw-return retention are corrected; original failures stay
-at zero credit. Nested acquisition and foreach/yield-from/ordinary-call unpack
-consumers remain required. Actual361 over `5ec31e145` passes strict SL at
+at zero credit. At this single-acquisition cut, nested acquisition and
+foreach/yield-from/ordinary-call unpack consumers remained required. Actual361 over `5ec31e145` passes strict SL at
 `35d7e73f1`, preserving current promotion, reference-recheck and EX33 collector
 paths; private source/state cuts retain their original inputs.
 [Aggregate ledger](coverage/semantics/fiber-start-aggregate-review.json).
+
+Recursive Aggregate START acquisition owns each returned layer, including
+nonadjacent repeated identities, and retires layers inside-out before rewind.
+Terminal data stays protected while a throwing retval destructor preserves the
+pending Throwable through remaining layer retirement. Eleven exact normal
+originals and strict361 pass privately. Literal-output/scalar-yield startup with
+a pending error runs the real Generator body, then closes a frame with no owned roots
+without finally; two explicit controls keep pre-yield calls and owned roots at zero
+agreement. Twenty independent reached groups/544 physical premises pass, including genuine
+borrowed/raw owners, retained Generator receipts and pending-error startup/close.
+Original model, strict-binding and cleanup-fixture failures retain zero credit.
+Actual361 over `fbc87ced3` passes strict SL at `53396820d`, preserving current
+switch replay, promotion and shutdown fatal cleanup; private source/state cuts
+retain their inputs. Other Aggregate consumers and broader pending Generator
+startup remain required.
+[Nested ledger](coverage/semantics/fiber-start-nested-aggregate-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;

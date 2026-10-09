@@ -4,6 +4,10 @@ dec $fiber_traversal_object(pstate, nat, bool) : bool
 dec $fiber_traversal_input(pstate, pfibertraversal) : bool
 dec $fiber_traversal_input_object(pfibertraversal) : nat
 dec $fiber_traversal_identity(pstate, pfibertraversal) : bool
+dec $fiber_traversal_acquisition_last(nat, nat*) : nat
+dec $fiber_traversal_acquisition_object(pfibertraversal) : nat
+dec $fiber_traversal_acquisition_valid(pstate, nat, nat*) : bool
+dec $fiber_traversal_acquisition_nodes(nat*) : pnode*
 dec $fiber_traversal_operand(expression, nat, poperand) : poperand
 dec $fiber_traversal_history(pstate, porigin, ptraversablepack) : bool
 dec $fiber_traversal_valid(pstate, pfibertraversal) : bool
@@ -24,6 +28,13 @@ dec $fiber_traversal_method_target(nat, porigin, text) : pcalltarget
 dec $fiber_traversal_target_selected(pstate, pfibertraversal, pcalltarget, text) : bool
 dec $fiber_traversal_generator_context(pstate, pcallcontext) : bool
 dec $fiber_traversal_acquire(pstate, pfibertraversal, ptask*) : pstate
+dec $fiber_traversal_acquired(pstate, pfibertraversal, ptask*) : pstate
+dec $fiber_traversal_rewind(pstate, pfibertraversal, ptask*) : pstate
+dec $fiber_traversal_pending_literal(phpType5) : bool
+dec $fiber_traversal_pending_echo(expression*) : bool
+dec $fiber_traversal_pending_prefix(ptask*) : bool
+dec $fiber_traversal_pending_body(pstate, nat) : bool
+dec $fiber_traversal_pending_generator(pstate, pfibertraversal, ptask*) : pstate
 dec $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, text) : bool
 dec $fiber_traversal_generator_tasks(pstate, pgeneratorop, ptask*) : bool
 dec $fiber_traversal_generator_frames(pstate, pgeneratorop, pframe*) : bool
@@ -59,18 +70,33 @@ def $fiber_traversal_operand(expression, n, REFERENCE n_cell) = REFERENCE n_cell
 def $fiber_traversal_operand(expression, n, poperand) = KNOWN (POBJECT n) -- otherwise
 def $fiber_traversal_input_object(pfibertraversal) = n -- if pfibertraversal.AGGREGATE = (n)
 def $fiber_traversal_input_object(pfibertraversal) = pfibertraversal.OBJECT -- if pfibertraversal.AGGREGATE = eps
+def $fiber_traversal_acquisition_last(n, eps) = n
+def $fiber_traversal_acquisition_last(n, n_next :: nat*) = $fiber_traversal_acquisition_last(n_next, nat*)
+def $fiber_traversal_acquisition_object(pfibertraversal) = $fiber_traversal_acquisition_last($fiber_traversal_input_object(pfibertraversal), pfibertraversal.ACQUIRED)
+def $fiber_traversal_acquisition_valid(S, n, eps) = true
+def $fiber_traversal_acquisition_valid(S, n, n_next :: nat*) = true
+  -- if n_next =/= n
+  -- if (HOBJECT n_next) <- S.ALLOCATIONS
+  -- if $generator_from_aggregate(S, POBJECT n_next)
+  -- if $fiber_traversal_acquisition_valid(S, n_next, nat*)
+def $fiber_traversal_acquisition_valid(S, n, nat*) = false -- otherwise
+def $fiber_traversal_acquisition_nodes(eps) = eps
+def $fiber_traversal_acquisition_nodes(n :: nat*) = $fiber_traversal_acquisition_nodes(nat*) ++ [HOBJECT n]
 def $fiber_traversal_identity(S, pfibertraversal) = $fiber_traversal_object(S, pfibertraversal.OBJECT, true)
   -- if pfibertraversal.AGGREGATE = eps
+  -- if pfibertraversal.ACQUIRED = eps
 def $fiber_traversal_identity(S, pfibertraversal) = true
   -- if pfibertraversal.AGGREGATE = (n)
   -- if $(n < |S.OBJECTS|)
   -- if $generator_from_aggregate(S, POBJECT n)
-  -- if pfibertraversal.OBJECT = n
+  -- if $fiber_traversal_acquisition_valid(S, n, pfibertraversal.ACQUIRED)
+  -- if pfibertraversal.OBJECT = $fiber_traversal_acquisition_object(pfibertraversal)
 def $fiber_traversal_identity(S, pfibertraversal) = true
   -- if pfibertraversal.AGGREGATE = (n)
   -- if $(n < |S.OBJECTS|)
   -- if $generator_from_aggregate(S, POBJECT n)
-  -- if pfibertraversal.OBJECT =/= n
+  -- if $fiber_traversal_acquisition_valid(S, n, pfibertraversal.ACQUIRED)
+  -- if pfibertraversal.OBJECT =/= $fiber_traversal_acquisition_object(pfibertraversal)
   -- if $fiber_traversal_object(S, pfibertraversal.OBJECT, true)
 def $fiber_traversal_identity(S, pfibertraversal) = false -- otherwise
 def $fiber_traversal_input(S, pfibertraversal) = true
@@ -126,25 +152,44 @@ def $fiber_traversal_valid(S, pfibertraversal) = true
 def $fiber_traversal_valid(S, pfibertraversal) = false -- otherwise
 def $fiber_traversal_stage(S, pfibertraversal, "generator") = (pfibertraversal.CURRENT = KNOWN PNULL)
   -- if $generator_object(S, pfibertraversal.OBJECT)
+  -- if pfibertraversal.ACQUIRED = eps
 def $fiber_traversal_stage(S, pfibertraversal, text) = true
   -- if $useriter_instance(S, pfibertraversal.OBJECT)
+  -- if pfibertraversal.ACQUIRED = eps
   -- if text <- ["rewind", "valid", "current", "next"]
   -- if pfibertraversal.CURRENT = KNOWN PNULL
   -- if text =/= "rewind" \/ pfibertraversal.ITEMS = eps
   -- if text =/= "next" \/ pfibertraversal.ITEMS =/= eps
 def $fiber_traversal_stage(S, pfibertraversal, text) = $call_reference_operand_valid(S, pfibertraversal.CURRENT)
   -- if $useriter_instance(S, pfibertraversal.OBJECT)
+  -- if pfibertraversal.ACQUIRED = eps
   -- if text = "key"
 def $fiber_traversal_stage(S, pfibertraversal, "valid-nan") = $generator_from_valid_operand(S, pfibertraversal.CURRENT)
   -- if $useriter_instance(S, pfibertraversal.OBJECT)
+  -- if pfibertraversal.ACQUIRED = eps
 def $fiber_traversal_stage(S, pfibertraversal, "getIterator") = true
-  -- if pfibertraversal.AGGREGATE = (pfibertraversal.OBJECT)
+  -- if pfibertraversal.AGGREGATE =/= eps
+  -- if pfibertraversal.OBJECT = $fiber_traversal_acquisition_object(pfibertraversal)
   -- if $generator_from_aggregate(S, POBJECT pfibertraversal.OBJECT)
   -- if pfibertraversal.CURRENT = KNOWN PNULL
   -- if pfibertraversal.ITEMS = eps
 def $fiber_traversal_stage(S, pfibertraversal, "getIterator-error") = $call_reference_operand_valid(S, pfibertraversal.CURRENT)
-  -- if pfibertraversal.AGGREGATE = (pfibertraversal.OBJECT)
+  -- if pfibertraversal.AGGREGATE =/= eps
+  -- if pfibertraversal.OBJECT = $fiber_traversal_acquisition_object(pfibertraversal)
   -- if $generator_from_aggregate(S, POBJECT pfibertraversal.OBJECT)
+  -- if pfibertraversal.ITEMS = eps
+def $fiber_traversal_stage(S, pfibertraversal, "acquired") = true
+  -- if pfibertraversal.AGGREGATE =/= eps
+  -- if pfibertraversal.ACQUIRED = eps
+  -- if $fiber_traversal_object(S, pfibertraversal.OBJECT, true)
+  -- if pfibertraversal.CURRENT = KNOWN PNULL
+  -- if pfibertraversal.ITEMS = eps
+def $fiber_traversal_stage(S, pfibertraversal, "acquired-error") = true
+  -- if pfibertraversal.AGGREGATE =/= eps
+  -- if pfibertraversal.ACQUIRED = eps
+  -- if $fiber_traversal_object(S, pfibertraversal.OBJECT, true)
+  -- if pfibertraversal.CURRENT = KNOWN (POBJECT n)
+  -- if $throwable_live(S, n)
   -- if pfibertraversal.ITEMS = eps
 def $fiber_traversal_stage(S, pfibertraversal, text) = false -- otherwise
 def $fiber_traversal_call_at(CALL_ARGS (METHOD_TARGET n porigin_method) phpType7* n_index poperand* (porigin) z, porigin) = true
@@ -316,12 +361,17 @@ def $fiber_traversal_method_selected(S, n, porigin_method, text) = false -- othe
 
 ;; A tagged Generator operation borrows no invented method frame. During its
 ;; native resume the operation owns iterator data and the marker owns operand.
-def $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, text) = (pgeneratorop.STARTPACK /\ pgeneratorop.OBJECT = pfibertraversal.OBJECT /\ pgeneratorop.SITE = pfibertraversal.START.SITE /\ pgeneratorop.LINE = pfibertraversal.LINE /\ pgeneratorop.LOOP = eps /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE /\ pgeneratorop.NAME = text /\ (text <- ["rewind", "next"]) /\ pfibertraversal.CURRENT = KNOWN PNULL /\ ((text = "rewind" /\ pfibertraversal.ITEMS = eps) \/ (text = "next" /\ pfibertraversal.ITEMS =/= eps)))
+def $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, text) = (pgeneratorop.STARTPACK /\ pfibertraversal.ACQUIRED = eps /\ pgeneratorop.OBJECT = pfibertraversal.OBJECT /\ pgeneratorop.SITE = pfibertraversal.START.SITE /\ pgeneratorop.LINE = pfibertraversal.LINE /\ pgeneratorop.LOOP = eps /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE /\ pgeneratorop.NAME = text /\ (text <- ["rewind", "next"]) /\ pfibertraversal.CURRENT = KNOWN PNULL /\ ((text = "rewind" /\ pfibertraversal.ITEMS = eps) \/ (text = "next" /\ pfibertraversal.ITEMS =/= eps)))
+  -- if text =/= "rewind-error"
+def $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, "rewind-error") = $fiber_traversal_generator_header(pgeneratorop, pfibertraversal[.CURRENT = KNOWN PNULL], "rewind")
+  -- if pfibertraversal.CURRENT = KNOWN (POBJECT n)
+def $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, text) = false -- otherwise
 def $fiber_traversal_generator_tasks(S, pgeneratorop, (GENERATOR_RESUME pgeneratorop) :: (FIBER_TRAVERSE_GENERATOR pfibertraversal text) :: ptask*) = true
   -- if $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, text)
   -- if $generator_object(S, pfibertraversal.OBJECT)
   -- if $generator_flat_tasks(S.TODO)
   -- if $fiber_traversal_valid(S, pfibertraversal)
+  -- if text =/= "rewind-error" \/ ($fiber_traversal_stage(S, pfibertraversal, "acquired-error") /\ $fiber_traversal_pending_body(S, pfibertraversal.OBJECT))
 def $fiber_traversal_generator_tasks(S, pgeneratorop, (THROW_SEARCH n) :: ptask*) = $fiber_traversal_generator_tasks(S, pgeneratorop, ptask*)
 def $fiber_traversal_generator_tasks(S, pgeneratorop, ptask*) = false -- otherwise
 def $fiber_traversal_generator_frames(S, pgeneratorop, eps) = false
@@ -331,6 +381,8 @@ def $generator_operation_site(S, pgeneratorop) = $fiber_traversal_generator_vali
 def $generator_resumption_valid(S, pgeneratorop) = ($generator_operation_valid(S, pgeneratorop) /\ $generator_resumption_stage(S, pgeneratorop)) -- if pgeneratorop.STARTPACK
 def $generator_operation_trace(S, pgeneratorop) = eps -- if pgeneratorop.STARTPACK
 def $fiber_traversal_promote((FIBER_TRAVERSE_GENERATOR pfibertraversal text) :: ptask*) = (FIBER_TRAVERSE_RESULT pfibertraversal "generator") :: ptask*
+  -- if text =/= "rewind-error"
+def $fiber_traversal_promote((FIBER_TRAVERSE_GENERATOR pfibertraversal "rewind-error") :: ptask*) = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask*
 def $fiber_traversal_promote(ptask :: ptask_tail*) = ptask :: $fiber_traversal_promote(ptask_tail*)
   -- if ~$fiber_traversal_generator_task(ptask)
 def $fiber_traversal_promote(eps) = eps
@@ -339,6 +391,15 @@ def $fiber_traversal_generator_task(ptask) = false -- otherwise
 def $fiber_traversal_complete(S, pgeneratorop) = S[.TODO = $fiber_traversal_promote(S.TODO)]
   -- if S.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal text) :: ptask*
   -- if $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, text)
+  -- if text =/= "rewind-error"
+def $fiber_traversal_complete(S, pgeneratorop) = $generator_set(S[.TODO = (THROW_SEARCH n) :: (FIBER_TRAVERSE_RESULT pfibertraversal[.CURRENT = KNOWN PNULL] "acquired") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgeneratorop.OBJECT, pgenerator[.FRAME = eps][.PHASE = GENERATOR_CLOSED])
+  -- if S.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal "rewind-error") :: ptask*
+  -- if $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, "rewind-error")
+  -- if pfibertraversal.CURRENT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_PAUSED
+  -- if pgenerator.FRAME = (pframe)
+  -- if $generator_close_frame_nodes(S, pframe) = eps
 def $fiber_traversal_generator(S, pfibertraversal, text, ptask*) = S_run[.TODO = $fiber_traversal_promote(S_run.TODO)]
   -- if pgeneratorop = {OBJECT pfibertraversal.OBJECT, NAME text, SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true}
   -- if S_run = $generator_operate(S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgeneratorop)
@@ -348,12 +409,12 @@ def $return_discard(S, GENERATOR_RESUME pgeneratorop) = S[.TODO = $fiber_travers
 def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = $throw_scalar(S, "Exception", $ptascii("Cannot traverse an already closed generator"), z)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
-def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = $fiber_traversal_generator(S, {CAPTURE n_capture?, START pfiberstart, OBJECT n, AGGREGATE eps, INPUT poperand, SITE porigin, LINE z, CURRENT (KNOWN PNULL), SENT pfiberstart.SENT, ITEMS eps}, "rewind", ptask*)
+def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = $fiber_traversal_generator(S, {CAPTURE n_capture?, START pfiberstart, OBJECT n, AGGREGATE eps, ACQUIRED eps, INPUT poperand, SITE porigin, LINE z, CURRENT (KNOWN PNULL), SENT pfiberstart.SENT, ITEMS eps}, "rewind", ptask*)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
-def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = $fiber_traversal_call(S, {CAPTURE n_capture?, START pfiberstart, OBJECT n, AGGREGATE eps, INPUT poperand, SITE porigin, LINE z, CURRENT (KNOWN PNULL), SENT pfiberstart.SENT, ITEMS eps}, "rewind", ptask*)
+def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = $fiber_traversal_call(S, {CAPTURE n_capture?, START pfiberstart, OBJECT n, AGGREGATE eps, ACQUIRED eps, INPUT poperand, SITE porigin, LINE z, CURRENT (KNOWN PNULL), SENT pfiberstart.SENT, ITEMS eps}, "rewind", ptask*)
   -- if $useriter_instance(S, n)
-def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = $fiber_traversal_call(S, {CAPTURE n_capture?, START pfiberstart, OBJECT n, AGGREGATE (n), INPUT poperand, SITE porigin, LINE z, CURRENT (KNOWN PNULL), SENT pfiberstart.SENT, ITEMS eps}, "getIterator", ptask*)
+def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = $fiber_traversal_call(S, {CAPTURE n_capture?, START pfiberstart, OBJECT n, AGGREGATE (n), ACQUIRED eps, INPUT poperand, SITE porigin, LINE z, CURRENT (KNOWN PNULL), SENT pfiberstart.SENT, ITEMS eps}, "getIterator", ptask*)
   -- if $generator_from_aggregate(S, POBJECT n)
 def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = S[.COMPLETION = UNSUPPORTED "Fiber start IteratorAggregate acquisition"] -- otherwise
 rule PhpStep/fiber-start-unpack-traversable: S ~> $fiber_traversal_begin(S_value, n_capture?, pfiberstart, n, $fiber_traversal_operand(expression, n, S.RESULT), porigin, z, ptask_tail*)
@@ -368,10 +429,10 @@ rule PhpStep/fiber-start-unpack-traversable: S ~> $fiber_traversal_begin(S_value
 ;; get_new_iterator checks the raw retval tag; it does not unwrap a reference.
 rule PhpStep/fiber-traversal-aggregate-result: S ~> $fiber_traversal_acquire(S, pfibertraversal, ptask_tail*)
   -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "getIterator") :: ptask_tail*
-def $fiber_traversal_acquire(S, pfibertraversal, ptask*) = $fiber_traversal_call(S, pfibertraversal[.OBJECT = n], "rewind", ptask*)
+def $fiber_traversal_acquire(S, pfibertraversal, ptask*) = $fiber_traversal_acquired(S, pfibertraversal[.OBJECT = n], ptask*)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $useriter_instance(S, n)
-def $fiber_traversal_acquire(S, pfibertraversal, ptask*) = $fiber_traversal_generator(S, pfibertraversal[.OBJECT = n], "rewind", ptask*)
+def $fiber_traversal_acquire(S, pfibertraversal, ptask*) = $fiber_traversal_acquired(S, pfibertraversal[.OBJECT = n], ptask*)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
@@ -379,11 +440,95 @@ def $fiber_traversal_acquire(S, pfibertraversal, ptask*) = $throw_scalar(S[.TODO
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_CLOSED
-def $fiber_traversal_acquire(S, pfibertraversal, ptask*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "Fiber start nested IteratorAggregate acquisition"]
+def $fiber_traversal_acquire(S, pfibertraversal, ptask*) = $fiber_traversal_call(S, pfibertraversal[.OBJECT = n][.ACQUIRED = pfibertraversal.ACQUIRED ++ [n]], "getIterator", ptask*)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if n =/= pfibertraversal.OBJECT
   -- if $generator_from_aggregate(S, POBJECT n)
 def $fiber_traversal_acquire(S, pfibertraversal, ptask*) = $throw_scalar(S[.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal[.CURRENT = S.RESULT] "getIterator-error") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Exception", $ptascii("Objects returned by ") ++ $object_name(S, pfibertraversal.OBJECT) ++ $ptascii("::getIterator() must be traversable or implement interface Iterator"), pfibertraversal.LINE) -- otherwise
+
+;; Every recursive raw Aggregate retval remains owned until get_iterator returns.
+;; Native recursion retires these layers inside-out before the first rewind.
+def $fiber_traversal_acquired(S, pfibertraversal, ptask*) = $fiber_traversal_rewind(S, pfibertraversal, ptask*)
+  -- if pfibertraversal.ACQUIRED = eps
+def $fiber_traversal_acquired(S, pfibertraversal, ptask*) = $fiber_start_unpack_release(S[.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal[.ACQUIRED = eps] "acquired") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $fiber_traversal_acquisition_nodes(pfibertraversal.ACQUIRED))
+  -- if pfibertraversal.ACQUIRED =/= eps
+def $fiber_traversal_rewind(S, pfibertraversal, ptask*) = $fiber_traversal_call(S, pfibertraversal, "rewind", ptask*)
+  -- if $useriter_instance(S, pfibertraversal.OBJECT)
+def $fiber_traversal_rewind(S, pfibertraversal, ptask*) = $fiber_traversal_generator(S, pfibertraversal, "rewind", ptask*)
+  -- if $generator_object(S, pfibertraversal.OBJECT)
+rule PhpStep/fiber-traversal-acquired-rewind: S ~> $fiber_traversal_rewind(S, pfibertraversal, ptask_tail*)
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired") :: ptask_tail*
+
+;; A retval destructor can throw while outer raw retvals still need retirement.
+;; Authenticate its genuine release before moving the pending exception owner.
+def $destructor_resume_pending(S, pdestructorcall) = S[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (FIBER_TRAVERSE_RESULT pfibertraversal[.CURRENT = KNOWN (POBJECT n)] "acquired-error") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (FIBER_TRAVERSE_RESULT pfibertraversal text) :: ptask_tail*
+  -- if text <- ["acquired", "acquired-error"]
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_before)
+  -- if pdestructionrelease_before.JOBS = pdestructionjob :: pdestructionjob_tail*
+  -- if $destruction_job_node(pdestructionjob) = (HOBJECT pdestructorcall.OBJECT)
+  -- if pdestructionrelease = pdestructionrelease_before[.JOBS = pdestructionjob_tail*]
+  -- if S_check = S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (FIBER_TRAVERSE_RESULT pfibertraversal text) :: ptask_tail*][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS]
+  -- if $destructor_result_valid(S_check, pdestructorcall)
+  -- if $destructor_release_valid(S_check, pdestructionrelease)
+  -- if $fiber_traversal_result_valid(S_check, pfibertraversal, text)
+  -- if $throwable_live(S, n)
+def $destructor_tail_pending((FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask*) = (n)
+  -- if pfibertraversal.CURRENT = KNOWN (POBJECT n)
+rule PhpStep/fiber-traversal-acquired-throw: S ~> S[.TODO = (THROW_SEARCH n) :: (FIBER_TRAVERSE_RESULT pfibertraversal[.CURRENT = KNOWN PNULL] "acquired") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask_tail*
+  -- if pfibertraversal.CURRENT = KNOWN (POBJECT n)
+  -- if ~$generator_object(S, pfibertraversal.OBJECT)
+
+;; Generator rewind resumes its bytecode despite an already pending exception.
+;; Literal output/scalar yield has no exception-sensitive call before suspension.
+;; Native close then frees its empty frame without executing finally.
+def $fiber_traversal_pending_literal(ABSENT) = true
+def $fiber_traversal_pending_literal(NScalarString phpType33 metadata) = true
+def $fiber_traversal_pending_literal(NScalarInt phpType24 metadata) = true
+def $fiber_traversal_pending_literal(NScalarFloat phpType41 metadata) = true
+def $fiber_traversal_pending_literal(phpType5) = false -- otherwise
+def $fiber_traversal_pending_echo(eps) = true
+def $fiber_traversal_pending_echo(expression :: expression_tail*) = ($fiber_traversal_pending_literal(expression) /\ $fiber_traversal_pending_echo(expression_tail*))
+def $fiber_traversal_pending_prefix((AT porigin (STMT (NStmtNop metadata))) :: ptask*) = $fiber_traversal_pending_prefix(ptask*)
+def $fiber_traversal_pending_prefix((AT porigin (STMT (NStmtEcho (SEQUENCE expression*) metadata))) :: ptask*) = ($fiber_traversal_pending_echo(expression*) /\ $fiber_traversal_pending_prefix(ptask*))
+def $fiber_traversal_pending_prefix((AT porigin (STMT (NStmtBlock (SEQUENCE statement*) metadata))) :: ptask*) = $fiber_traversal_pending_prefix($statement_tasks(statement*, $origin_child((porigin), [PCFIELD 0]), 0) ++ ptask*)
+def $fiber_traversal_pending_prefix((AT porigin (STMT (NStmtTryCatch (SEQUENCE statement*) phpType65 phpType67 metadata))) :: ptask*) = $fiber_traversal_pending_prefix($statement_tasks(statement*, $origin_child((porigin), [PCFIELD 0]), 0))
+def $fiber_traversal_pending_prefix((AT porigin (STMT (NStmtExpression (NExprYield phpType5_key phpType5_value metadata_yield) metadata))) :: ptask*) = ($fiber_traversal_pending_literal(phpType5_key) /\ $fiber_traversal_pending_literal(phpType5_value))
+def $fiber_traversal_pending_prefix(ptask*) = false -- otherwise
+def $fiber_traversal_pending_body(S, n) = true
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if ~$generator_reference_producer(S, pgenerator)
+  -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
+  -- if $fiber_traversal_pending_prefix($function_body_tasks(S, pfunction))
+def $fiber_traversal_pending_body(S, n) = false -- otherwise
+def $fiber_traversal_pending_generator(S, pfibertraversal, ptask*) = $generator_resume(S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal "rewind-error") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pfibertraversal.OBJECT, NAME "rewind", SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true})
+rule PhpStep/fiber-traversal-acquired-generator-pending: S ~> $fiber_traversal_pending_generator(S, pfibertraversal, ptask_tail*)
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask_tail*
+  -- if $fiber_traversal_result_valid(S, pfibertraversal, "acquired-error")
+  -- if S.OBJECTS[pfibertraversal.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+  -- if pgenerator.FRAME = (pframe)
+  -- if $generator_close_frame_nodes(S, pframe) = eps
+  -- if $fiber_traversal_pending_body(S, pfibertraversal.OBJECT)
+rule PhpStep/fiber-traversal-acquired-generator-owned: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Fiber start pending exception Generator owned frame"]
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask_tail*
+  -- if S.OBJECTS[pfibertraversal.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+  -- if pgenerator.FRAME = (pframe)
+  -- if $generator_close_frame_nodes(S, pframe) =/= eps
+rule PhpStep/fiber-traversal-acquired-generator-prefix: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Fiber start pending exception Generator pre-yield effects"]
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask_tail*
+  -- if S.OBJECTS[pfibertraversal.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_FRESH
+  -- if pgenerator.FRAME = (pframe)
+  -- if $generator_close_frame_nodes(S, pframe) = eps
+  -- if ~$fiber_traversal_pending_body(S, pfibertraversal.OBJECT)
+rule PhpStep/fiber-traversal-acquired-generator-phase: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Fiber start pending exception Generator rewind phase"]
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask_tail*
+  -- if S.OBJECTS[pfibertraversal.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_FRESH
 
 ;; Rejection keeps the raw retval owner while the scalar Exception is materialized.
 def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
@@ -517,8 +662,8 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LINE = pfibertraversal.LINE
   -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
-def $fiber_traversal_nodes(pfibertraversal, true) = $operand_nodes(pfibertraversal.CURRENT) ++ [HOBJECT pfibertraversal.OBJECT] ++ $operand_nodes(pfibertraversal.INPUT)
-def $fiber_traversal_nodes(pfibertraversal, false) = $operand_nodes(pfibertraversal.CURRENT) ++ $operand_nodes(pfibertraversal.INPUT)
+def $fiber_traversal_nodes(pfibertraversal, true) = $operand_nodes(pfibertraversal.CURRENT) ++ [HOBJECT pfibertraversal.OBJECT] ++ $fiber_traversal_acquisition_nodes(pfibertraversal.ACQUIRED) ++ $operand_nodes(pfibertraversal.INPUT)
+def $fiber_traversal_nodes(pfibertraversal, false) = $operand_nodes(pfibertraversal.CURRENT) ++ $fiber_traversal_acquisition_nodes(pfibertraversal.ACQUIRED) ++ $operand_nodes(pfibertraversal.INPUT)
 def $fiber_traversal_data(text) = ~((text <- ["getIterator", "getIterator-error"]))
 def $task_nodes(FIBER_TRAVERSE_RESULT pfibertraversal text) = $fiber_start_unpack_nodes(pfibertraversal.CAPTURE, pfibertraversal.START[.SENT = pfibertraversal.SENT]) ++ $fiber_traversal_nodes(pfibertraversal, $fiber_traversal_data(text))
 def $task_nodes(FIBER_TRAVERSE_GENERATOR pfibertraversal text) = $fiber_start_unpack_nodes(pfibertraversal.CAPTURE, pfibertraversal.START[.SENT = pfibertraversal.SENT]) ++ $fiber_traversal_nodes(pfibertraversal, false)
