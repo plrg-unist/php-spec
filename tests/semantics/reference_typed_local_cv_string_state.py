@@ -214,8 +214,11 @@ def main():
     error_finally = ['$lc_function(S, $ptascii("f"))', '$lc_throw_finally(S.TODO) = (FINALLY_RESUME porigin_owner (n_error))',
                      '$lc_outputs(S.EVENTS) = $ptascii("T;")']
     error_destructor = ['$lc_function(S, $ptascii("O::__destruct"))', '$lc_outputs(S.EVENTS) = $ptascii("T;F;")']
+    error_resumed = ['$lc_function(S, $ptascii("f"))', 'S.TODO = (THROW_SEARCH n_error) :: ptask_tail*',
+                     'S.OBJECTS[n_error] = THROWABLE pthrowable_error', 'pthrowable_error.KIND = "TypeError"',
+                     '$lc_outputs(S.EVENTS) = $ptascii("T;")']
     fixture('protected-callback-error-lifetime', 'local-cv-string-protected-used-callback-throw',
-        {0: capture, 1: saved, 2: error_ready, 3: error_finally, 4: error_destructor},
+        {0: capture, 1: saved, 2: error_ready, 3: error_finally, 4: error_destructor, 5: error_resumed},
         capture_checks(True, True) + saved_checks(True) + [
         'S_error = $lc_find($drive_steps(S_saved, 1), 2000, 2)',
         'S_error.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n_object prefstringcv.SOURCE z) :: (REF_CV_STRING_FETCH prefstringcv) :: (REF_CV_STRING_THROW prefstringcv) :: ptask_conversion_tail*',
@@ -223,7 +226,18 @@ def main():
         '$typed_return_throw_pending(S_error)', '$throwable_live(S_error, n_old)',
         '$string_bytes($throwable_field(S_error, n_old, "message")) = ($ptascii("callback"))',
         '$call_descriptors_valid(S_error)', '$heap_valid($heap_graph(S_error))',
-        'S_new = $drive_steps(S_error, 1)', 'S_new.TODO = (THROW_SEARCH n_new) :: ptask_tail*',
+        'S_releasing = $drive_steps(S_error, 1)', 'S_releasing.COMPLETION = BUDGET',
+        'S_releasing.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask_tail*',
+        'pdestructionoperation.PENDING = (n_new)', 'pdestructionoperation.SOURCE = THROW_SEARCH n_old',
+        'pdestructionoperation.CALLER = S_error.CURRENT', 'pdestructionoperation.ORIGIN = S_error.ORIGIN',
+        '$heap_count(HCELL n_cell, $destruction_job_nodes(pdestructionrelease.JOBS)) = 1',
+        '$heap_count(HOBJECT n_object, $destruction_job_nodes(pdestructionrelease.JOBS)) = 1',
+        '$task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = [HOBJECT n_new]',
+        '$lc_count(S_releasing.TODO) = 0', 'S_releasing.STORE[n_cell] = DEFINED (POBJECT n_object)',
+        '$throwable_field(S_releasing, n_new, "previous") = POBJECT n_old',
+        '$lc_outputs(S_releasing.EVENTS) = $ptascii("T;")',
+        '$call_descriptors_valid(S_releasing)', '$heap_valid($heap_graph(S_releasing))',
+        'S_new = $lc_find(S_releasing, 2000, 5)', 'S_new.TODO = (THROW_SEARCH n_new) :: ptask_tail*',
         'n_new =/= n_old', '$throwable_live(S_new, n_new)', '$throwable_live(S_new, n_old)',
         'S_new.OBJECTS[n_new] = THROWABLE pthrowable_new', 'pthrowable_new.KIND = "TypeError"',
         '$string_bytes($throwable_field(S_new, n_new, "message")) = ($ptascii("f(): Return value must be of type string, O returned"))',
