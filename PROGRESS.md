@@ -79,6 +79,9 @@ originals and217 checks at source-derived frontiers, including helper counterexa
 pass at088d14878/370; strict3 passes5.224s. The prior TypeError diagnostic carries
 zero agreement. Description warning conversion/unpack and last-owner entry/handoff
 remain required. [Description checkpoints](coverage/semantics/assertion-quantity-review.json).
+Actual370 overfee8a505 passes strict3 at3d4f3eb7 (5.221s), preserving acquired
+Iterator NaN continuations and captured-Sensitive constructor trace/owner guards.
+Private scalar source2/217 checks and all prior cuts remain unchanged.
 Actual370 over1963b152 passes strict3 atb74fe28fb (5.775s), preserving current
 factory/GEN/SensitiveParameter, implicit-getter, typed-reference and EX worker guards.
 Private description source3/265+4 checks and all previous cuts remain unchanged.
