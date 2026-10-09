@@ -332,7 +332,10 @@ The real shared-array control keeps its live owner and Leaf silent through the
 first fatal. Source2, strict712/77 and complete compiler363 retain `5da367130`
 (6.312 seconds). The original primary Unsupported and 118-premise reached
 discriminator retain zero credit at `4c410b607`; the exact shared baseline is a
-separate control. Actual-parent compilation is pending. Wider
+separate control. Actual364 over `70c5ff9fc` passes strict compilation at
+`3aeb34484` (6.399 seconds). The parent's retired-owner carriers remain empty on
+both sources; current frame/fatal-history fields survive. Private source2/789
+retain their `5da367130` inputs. Wider
 handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict

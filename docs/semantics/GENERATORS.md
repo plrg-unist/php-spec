@@ -166,7 +166,10 @@ allowed, while multiple owning nodes, nested arrays and reference entries remain
 outside this slice. A real external shared-array owner prevents entry release and
 the second fatal. Exact source2, strict712/77 and complete compiler363 retain
 `5da367130`; original refusal and reached118 diagnostic remain zero at `4c410b607`.
-Actual-parent compilation is pending. Wider handlers, rendering,
+Actual364 over `70c5ff9fc` passes strict compilation at `3aeb34484`; the new
+retired-owner carriers remain empty because neither source has switch/foreach
+or reference-return replay. Parent frame/fatal-history fields are preserved;
+private source2/789 retain their inputs. Wider handlers, rendering,
 child lifetimes, reacquisition, message warnings, parked or escaped storage and
 generic terminal cleanup remain required.
 
