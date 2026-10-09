@@ -12,6 +12,8 @@ from recorded_worker import Worker
 
 ROOT = Path(__file__).resolve().parents[2]
 CASES = {
+    'review-property-undefined-borrowed-false20': b"<?php\nclass UndefinedBorrowedFalseReceiver377 { public function __destruct() { echo 'D|'; } }\n$receiver = new UndefinedBorrowedFalseReceiver377(); $weak = WeakReference::create($receiver);\nset_error_handler(function ($level, $message, $file, $line) {\n    echo 'H|'; unset($GLOBALS['receiver']);\n    echo (int) ($GLOBALS['weak']->get() === null), '|';\n    return false;\n});\necho 'C|';\n$read = $receiver->missing;\nrestore_error_handler();\necho (int) ($read === null), '/', (int) ($weak->get() === null), '|done';\n",
+    'review-property-undefined-false-replacement20': b"<?php\nclass UndefinedFalseReceiver377 { public function __destruct() { echo 'R|'; } }\nclass UndefinedFalseHandler377 {\n    public function __invoke($level, $message, $file, $line) {\n        echo 'H|'; unset($GLOBALS['receiver']);\n        set_error_handler(function ($level, $message, $file, $line) { echo 'late|'; return true; });\n        return false;\n    }\n    public function __destruct() { error_reporting(0); echo 'F|'; }\n}\n$receiver = new UndefinedFalseReceiver377(); $weak = WeakReference::create($receiver);\nset_error_handler(new UndefinedFalseHandler377());\necho 'C|';\n$read = $receiver->missing;\nrestore_error_handler();\necho (int) ($read === null), '/', (int) ($weak->get() === null), '|done';\n",
     'review-property-undefined-owned-retirement19': b"<?php\nclass UndefinedOwnedReceiver377 { public function __destruct() { echo 'D|'; } }\nfunction undefined_owned_receiver377() { return $GLOBALS['receiver']; }\n$receiver = new UndefinedOwnedReceiver377(); $weak = WeakReference::create($receiver);\nset_error_handler(function ($level, $message, $file, $line) {\n    echo 'H|'; unset($GLOBALS['receiver']);\n    echo (int) ($GLOBALS['weak']->get() === null), '|';\n    return true;\n});\necho 'C|';\n$read = undefined_owned_receiver377()->missing;\nrestore_error_handler();\necho (int) ($read === null), '/', (int) ($weak->get() === null), '|done';\n",
     'review-property-undefined-borrowed-retirement19': b"<?php\nclass UndefinedBorrowedReceiver377 { public function __destruct() { echo 'D|'; } }\n$receiver = new UndefinedBorrowedReceiver377(); $weak = WeakReference::create($receiver);\nset_error_handler(function ($level, $message, $file, $line) {\n    echo 'H|'; unset($GLOBALS['receiver']);\n    echo (int) ($GLOBALS['weak']->get() === null), '|';\n    return true;\n});\necho 'C|';\n$read = $receiver->missing;\nrestore_error_handler();\necho (int) ($read === null), '/', (int) ($weak->get() === null), '|done';\n",
     'review-property-undefined-live-unset-resume19': b"<?php\nclass UndefinedLiveFixedBase377 { public $field = 7; }\nclass UndefinedLiveFixed377 extends UndefinedLiveFixedBase377 {\n    private $secret = 9;\n    public function clear() { unset($this->field, $this->secret); }\n}\n$live = new UndefinedLiveFixed377(); $live->clear(); $std = new stdClass(); $count = 0;\nset_error_handler(function ($level, $message, $file, $line) {\n    echo 'W', $level, ':', $message, '/', (int) ($file === __FILE__), '/', $line, '|';\n    $GLOBALS['count'] = $GLOBALS['count'] + 1;\n    if ($GLOBALS['count'] === 1) { $GLOBALS['live']->field = 41; }\n    else { $GLOBALS['std']->missing = 52; }\n    return true;\n});\necho 'C|';\ntry { echo $live->secret; } catch (Error $error) { echo 'denied|'; }\necho (int) ($live->field === null), '/', $live->field, '|';\necho (int) ($std->missing === null), '/', $std->missing, '|';\nrestore_error_handler(); echo $count, '|done';\n",
@@ -111,7 +113,14 @@ CASES = {
     'review-instance-storage-fiber19': b"<?php\nclass InstanceStorageReceiver359 { public $x = 2; }\nclass InstanceStorageParent359 { public $leaf; public int $number; }\nclass InstanceStorageLeaf359 { public function __destruct() {\n    echo 'C|'; Fiber::suspend('paused'); echo 'resume|';\n} }\n$r = 7;\n$fiber = new Fiber(function() use (&$r) {\n    $object = new InstanceStorageReceiver359();\n    $value = new InstanceStorageParent359();\n    $value->leaf = new InstanceStorageLeaf359(); $value->number =& $r;\n    $GLOBALS['wp'] = WeakReference::create($value);\n    foreach ($object as $key => &$value) { echo $key, '=', $value, '|'; }\n});\necho $fiber->start(), '|', (int) ($wp->get() === null), '|';\ntry { $r = 'bad'; echo 'free|'; }\ncatch (TypeError $error) { echo 'type|'; }\n$fiber->resume(); $r = 'free';\necho $r, '/', (int) ($wp->get() === null), '|done';\n",
 }
 
+EXPECTED_STDERR = {
+    'review-property-undefined-borrowed-false20': 'Warning: Undefined property: UndefinedBorrowedFalseReceiver377::$missing in {FILE} on line 10\n',
+    'review-property-undefined-false-replacement20': 'Warning: Undefined property: UndefinedFalseReceiver377::$missing in {FILE} on line 14\n',
+}
+
 EXPECTED = {
+    'review-property-undefined-borrowed-false20': 'C|H|D|1|1/1|done',
+    'review-property-undefined-false-replacement20': 'C|H|R|F|1/1|done',
     'review-property-undefined-owned-retirement19': 'C|H|0|D|1/1|done',
     'review-property-undefined-borrowed-retirement19': 'C|H|D|1|1/1|done',
     'review-property-undefined-live-unset-resume19': 'C|denied|W2:Undefined property: UndefinedLiveFixed377::$field/1/17|1/41|W2:Undefined property: stdClass::$missing/1/18|1/52|2|done',
@@ -296,7 +305,8 @@ def main():
                 (b'warning|old|' if name=='duplicate-reference-foreach-binding-exit18' else b'warning|'),
                 BOUNDARIES[name][3] if len(BOUNDARIES[name])==4 else None)
             else: row['outcome'] = cross.source(
-                {'abrupt':False, 'expected_exit_status':0, 'expected_stdout':EXPECTED[name]}, directory, source)
+                {'abrupt':False, 'expected_exit_status':0, 'expected_stdout':EXPECTED[name],
+                 'expected_stderr_template':EXPECTED_STDERR.get(name, '')}, directory, source)
             assert cross.snapshot(None)==before
             assert source.read_bytes()==original
             row['completed']=True

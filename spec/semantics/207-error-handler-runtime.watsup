@@ -54,7 +54,7 @@ dec $error_context_anchor(pstate, pcallcontext, pcallcontext?, pframe*) : bool
 dec $error_context_receiving_function(pstate, pcallcontext) : pfunction?
 dec $error_handler_registered(pstate, perrorhandler) : bool
 dec $error_trace_capture(pstate, int, ptask) : pstate
-dec $error_fallback_finish(pstate, pvalue) : pstate
+dec $error_fallback_finish(pstate, perrorcall) : pstate
 dec $error_default_event(pstate, pevent) : pevent
 dec $error_trace_arguments(pstate, (pkey, pvalue)*) : preqbytes
 dec $error_trace_location(ptraceframe) : preqbytes
@@ -202,10 +202,11 @@ rule PhpStep/error-handler-invoke: S ~> S_next
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_invoke_known(S, perrorcall) = (S_next)
 
-;; A fatal default bails out before Zend reaches automatic raw restoration.
-def $error_fallback_finish(S, pvalue) = $error_handler_restore(S, pvalue) -- if S.COMPLETION = NORMAL
-def $error_fallback_finish(S, pvalue) = S -- if S.COMPLETION =/= NORMAL
-rule PhpStep/error-handler-fallback: S ~> $error_fallback_finish($error_default(S[.TODO = perrorcall.RESUME :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.EVENT, perrorcall.LEVEL), perrorcall.CALLBACK)
+;; Default reporting precedes the same retval/selection cleanup as a handled
+;; warning. A fatal default bails out before automatic raw restoration.
+def $error_fallback_finish(S, perrorcall) = $error_handler_finish(S, perrorcall) -- if S.COMPLETION = NORMAL
+def $error_fallback_finish(S, perrorcall) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.COMPLETION =/= NORMAL
+rule PhpStep/error-handler-fallback: S ~> $error_fallback_finish($error_default(S, perrorcall.EVENT, perrorcall.LEVEL), perrorcall)
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
   -- if S.RESULT = KNOWN (PBOOL false)
