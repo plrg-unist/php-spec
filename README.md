@@ -348,9 +348,12 @@ Three originals and 611 reached premises retain separate cuts. A throwing
 renderer-installed handler receives its own fatal report while real outer
 handler/report and Generator/cache owners survive. Its reported exception releases
 before bailout, even when its destructor changes reporting to zero. Two new
-originals and 343 strict premises retain separate cuts. Throwing warning callbacks,
-deeper rendering, abrupt child cleanup, parked/escaped storage and generic terminal
-cleanup remain required.
+originals and 343 strict premises retain separate cuts. A throwing renderer warning
+callback redispatches its new exception through the restored handler, then resumes
+the original empty cached fatal report. One exact fatal original and 220 strict
+premises retain separate cuts. Absent or throwing restored handlers, deeper
+rendering, abrupt child cleanup, parked/escaped storage and generic terminal cleanup
+remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -1469,7 +1472,11 @@ genuine outer API.
 Abrupt cleanup preserves positional/receiver/named order and the distinct direct
 Closure versus explicit `__invoke` owner order. The
 [start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json) records
-these checks. Traversable packs and compound selectors remain required.
+these checks. Generator and Iterator packs now use real native resume operations
+and iterator callbacks, preserving references through `key()` before copying
+arguments; the [Traversable ledger](coverage/semantics/fiber-start-traversable-review.json)
+records their source and reached-state checks. IteratorAggregate acquisition, NaN
+warning continuations and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

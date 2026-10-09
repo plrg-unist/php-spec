@@ -108,6 +108,8 @@ syntax pargref = { TARGET pcalltarget, CALLSITE porigin, ARGUMENT porigin, POSIT
 syntax pargcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int }
 ;; Completed unpack certificates borrow values from SENT, never heap owners.
 syntax pconfigpack = { INDEX nat, SITE porigin, LINE int, ARRAY nat, ITEMS pentry* }
+syntax ptraversablepack = { INDEX nat, SITE porigin, LINE int, OBJECT nat, ITEMS pentry* }
+syntax pfiberpack = FIBER_ARRAY_PACK pconfigpack | FIBER_TRAVERSABLE_PACK ptraversablepack
 syntax pconfigcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT pnamedslot*, NAMED bool, OWNER nat?, SELECTION nat?, LINE int, PACKS pconfigpack* }
 syntax pfiberfactory = { CALL pconfigcall, ITEMS pentry* }
 syntax pfiberarray = { SITE porigin, INIT int, LINE int, ARRAY nat, ITEMS pentry*, KIND pintrinsic, NAME ptbytes, INPUT nat? }
@@ -242,9 +244,10 @@ syntax pstaticdefaultcontext = { DECL porigin, ROOT porigin, PREVIOUS pconstantc
 syntax pinterpolation = { SITE porigin, INDEX nat, MODE nat, LINE int, TEXT nat*, VALUES poperand* }
 syntax psourceoperand = { SITE porigin, LINE int, KIND int, INPUT poperand, OWNER nat, TAIL ptask* }
 syntax psourcehelper = HELPER_EMPTY_EVAL | HELPER_ONCE_SKIP pfilecontext preqbytes | HELPER_FAILED_INCLUDE pfilecontext
-syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat, PACKS pconfigpack* }
+syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat, PACKS pfiberpack* }
 syntax pgcpublic = {API pfiberapi, SOURCE pgccall, INDEX nat, END nat, PENDING nat?, RESIDUAL bool}
-syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int, PACKS pconfigpack* }
+syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int, PACKS pfiberpack* }
+syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | GC_MAIN_SCAN pgcplan pgcscan | GC_MAIN_RETURN pgcplan pgcscan nat
@@ -306,6 +309,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | DEFAULT_STRING_RESULT pparameterstring | VARIADIC_STRING_RESULT pvariadicstring
   | CLOSURE_CALL_RESULT porigin int | CLOSURE_CALL_FORWARD pclosurecall nat pnamedargs nat
   | FIBER_UNPACK_PREP nat? pfiberstart | FIBER_UNPACK_NEXT nat? pfiberstart poperand nat
+  | FIBER_TRAVERSE_RESULT pfibertraversal text | FIBER_TRAVERSE_GENERATOR pfibertraversal text
   | FIBER_ARRAY_CONVERT pfiberarray
   | FIBER_ARRAY_CORE_START_INVOKE nat pfiberstart | FIBER_ARRAY_CORE_START_RESULT nat pfiberstart
   | METHOD_CONVERT pcalltarget porigin int | ARRAY_CONVERT pcalltarget parrayselection | STRING_CONVERT pcalltarget pstringselection
@@ -407,7 +411,7 @@ syntax pgeneratoraccess = { TARGET pcalltarget, SITE porigin, LINE int }
 syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom?, ACCESS pgeneratoraccess? }
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
-syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue* }
+syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool }
 syntax pobject = WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
@@ -1043,7 +1047,12 @@ dec $fiber_trace_type(pintrinsic) : ptbytes
 dec $fiber_api_valid(pstate, pfiberapi) : bool
 dec $fiber_fixed_buffer_valid(pstate, porigin, pintrinsic, pvalue?) : bool
 dec $intrinsic_extent(pstate, porigin) : nat
-dec $fiber_start_shape(pstate, porigin, nat, pnamedargs, pconfigpack*) : bool
+dec $fiber_start_shape(pstate, porigin, nat, pnamedargs, pfiberpack*) : bool
+dec $fiber_traversal_selected(pstate, pcalltarget, porigin) : bool
+dec $fiber_traversal_pending_site(pstate, porigin) : bool
+dec $fiber_traversal_context_kind(pstate, pcallcontext) : bool
+dec $fiber_traversal_context(pstate, pcallcontext) : bool
+dec $fiber_traversal_complete(pstate, pgeneratorop) : pstate
 dec $fiber_start_prefix(pstate, porigin, nat, nat, pnamedargs) : bool
 dec $fiber_start_valid(pstate, pfiberstart, bool) : bool
 dec $fiber_wait_valid(pstate, pfiberapi) : bool

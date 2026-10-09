@@ -40,9 +40,23 @@ direct Closure versus explicit invoke cleanup. Strict356, ten exact normals at
 9+1 cuts and 345 independent plus 296 author premises pass. Constant packs retain
 their genuine pool owner; a distinct dynamic-pack companion proves retired history.
 Initial elaboration/matching failures and pooled fixture assumptions retain zero
-affected credit. Traversable packs remain explicit Unsupported/zero agreement and
-required follow-on work; compound/lifecycle gaps and paused returns remain open.
+affected credit. Compound/lifecycle gaps and paused returns remain open.
 [Start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json).
+
+Module 376 uses native Generator resumes and real Iterator callbacks for START
+packs. Borrowed CVs, iterator data and retained `current()` references have
+distinct owners; arguments copy after `key()`, before `next()`. Exact unpack
+lines authenticate implicit calls and saved frames. The 374 quiet-unwind fix
+prunes consumed owners without creating inactive release jobs. Strict359 and
+thirteen exact normals at 11+1+1 cuts and 752 independent plus 308 author physical
+premises pass. Source-identical cuts preserve every original assertion within
+existing caps; earlier failures and timeouts retain zero affected credit.
+IteratorAggregate acquisition, NaN warning continuations and compound selectors
+remain required; Aggregate is still Unsupported/zero agreement.
+Actual361 over `401bfb516` passes strict SL compilation at `a54204745`, preserving
+the current ARG Stringable/static, exact-return, property and abrupt-cleanup paths;
+private13/1060 source/state cuts retain their original inputs.
+[Traversable ledger](coverage/semantics/fiber-start-traversable-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;
@@ -131,8 +145,15 @@ The release replay starts from its already authenticated bailout; all 180 premis
 remain. Earlier nondeterminism, wrong renderer-owner and 120-second AL/SL timeouts
 retain zero affected credit. Final 358 over `ea04fbbe4` passes strict compilation
 at `ff3d3278b`, preserving named-SEND warning shapes; the earlier 2aa/646 compiler
-and private source/state cuts retain their revisions. Throwing warning
-callbacks, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
+and private source/state cuts retain their revisions. A throwing renderer warning
+callback redispatches through the restored handler before warning cleanup resumes
+the original empty cached fatal report. Exact source1 and strict compiler358 retain
+`558e53a9c`; 220 reached SL premises retain `80be20cde`. Genuine warning/handler/report
+owners and malformed source/site/line/origin rejection pass; initial binding stops
+and the incorrect fixed-argument phase retain zero credit. Actual361 over `59c163ef4`
+passes strict compilation at `7983c825f` (6.128 seconds), preserving current ARG/CALLS
+fields; private source/state cuts retain their inputs. Absent or throwing restored
+handlers, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
 message warnings, parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source

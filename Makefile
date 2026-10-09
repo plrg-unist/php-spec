@@ -183,6 +183,9 @@ test-semantics: build
 	python3 tests/semantics/fiber_static_api_sources.py
 	python3 tests/semantics/fiber_static_api_state.py
 	python3 tests/semantics/fiber_static_api_review.py
+	python3 tests/semantics/fiber_start_traversable_sources.py
+	python3 tests/semantics/fiber_start_traversable_state.py
+	python3 tests/semantics/fiber_start_traversable_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -689,6 +692,8 @@ test-semantics: build
 	python3 tests/semantics/generator_request_render_handler_protocol.py --mode check --sl
 	python3 tests/semantics/generator_request_render_handler_throw_peer_sources.py --mode full
 	python3 tests/semantics/generator_request_render_handler_throw_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_render_warning_throw_sources.py --mode full
+	python3 tests/semantics/generator_request_render_warning_throw_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl
