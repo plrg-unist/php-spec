@@ -2181,6 +2181,8 @@ b9f0b1ae/368; four explicit sources and 552 state premises (512 genuine/derived,
 40 constructed) pass at c1cdc2b5/368. The wrong-representation state failure and
 original interpreter failure remain zero credit. Maintained source/fixture bytes
 are unchanged; relocation adds no runtime renewal. Original 7 stays OPEN timeout0.
+Actual-parent algorithmic compilation passes at b6022a52 over 7cb33cde with
+370 modules; pointwise constructor/COMP/property review renews no source/state cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
