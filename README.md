@@ -294,9 +294,11 @@ freeze the selected class and converted name, check the property address, then
 retire the receiver before reading the live row, reference cell and RHS. Failed conversion plus throwing cleanup
 preserves empty-name lookup and the Error-to-destructor-to-cast exception chain.
 Eight of nine exact originals pass at separate cuts; the pending-masks original
-remains required after the current360 run repeats its unchanged 60-second CLI
-timeout. Prior123 and new238 reached premises retain separate inputs; current360
-algorithmic compilation and pointwise99/156 compatibility review pass.
+remains required with an unchanged 60-second CLI timeout and zero agreement.
+Prior 123/private 238 cuts remain separate. A tested cut with 360 modules passes
+compilation, 238 affected state premises and 23 constant-export/control premises.
+One constant lookup per insertion reduces calls from 689,580 to 229,972 over
+a matched prefix of 400 steps while preserving the returned tuple exactly.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

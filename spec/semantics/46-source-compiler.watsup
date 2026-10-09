@@ -425,13 +425,15 @@ def $ppconstant_at((pcpath, pvalue) :: (pcpath_tail, pvalue_tail)*, pcpath) = (p
 def $ppconstant_at((pcpath_other, pvalue) :: (pcpath_tail, pvalue_tail)*, pcpath) = $ppconstant_at((pcpath_tail, pvalue_tail)*, pcpath)
   -- if pcpath_other =/= pcpath
 dec $ppput(ppconstants, pcpath, pvalue) : ppconstants
+dec $ppput_result((pcpath, pvalue)*, pcpath, pvalue, pvalue?) : ppconstants
 def $ppput(PPCINVALID text, pcpath, pvalue) = PPCINVALID text
-def $ppput(PPCCONSTANTS (pcpath_old, pvalue_old)*, pcpath, pvalue) = PPCCONSTANTS ((pcpath_old, pvalue_old)* ++ [(pcpath, pvalue)])
-  -- if $ppconstant_at((pcpath_old, pvalue_old)*, pcpath) = eps
-def $ppput(PPCCONSTANTS (pcpath_old, pvalue_old)*, pcpath, pvalue) = PPCCONSTANTS (pcpath_old, pvalue_old)*
-  -- if $ppconstant_at((pcpath_old, pvalue_old)*, pcpath) = (pvalue)
-def $ppput(PPCCONSTANTS (pcpath_old, pvalue_old)*, pcpath, pvalue) = PPCINVALID "conflicting constant values for one source occurrence"
-  -- if $ppconstant_at((pcpath_old, pvalue_old)*, pcpath) = (pvalue_existing)
+def $ppput(PPCCONSTANTS (pcpath_old, pvalue_old)*, pcpath, pvalue) = $ppput_result((pcpath_old, pvalue_old)*, pcpath, pvalue, $ppconstant_at((pcpath_old, pvalue_old)*, pcpath))
+def $ppput_result((pcpath_old, pvalue_old)*, pcpath, pvalue, pvalue_found?) = PPCCONSTANTS ((pcpath_old, pvalue_old)* ++ [(pcpath, pvalue)])
+  -- if pvalue_found? = eps
+def $ppput_result((pcpath_old, pvalue_old)*, pcpath, pvalue, pvalue_found?) = PPCCONSTANTS (pcpath_old, pvalue_old)*
+  -- if pvalue_found? = (pvalue)
+def $ppput_result((pcpath_old, pvalue_old)*, pcpath, pvalue, pvalue_found?) = PPCINVALID "conflicting constant values for one source occurrence"
+  -- if pvalue_found? = (pvalue_existing)
   -- if pvalue_existing =/= pvalue
 
 dec $ppmergefacts(ppconstants, pffact*) : ppconstants

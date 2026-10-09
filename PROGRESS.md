@@ -1598,8 +1598,21 @@ changed algo/struct/init and the238 fixture pass. The preserved73.924s diagnosti
 records the repaired double-throw mismatch. Current360 algorithmic compilation
 passes ataa44149a overb894 with pointwise99/156 review and no accepted source/state
 renewal. The unchanged original7 current run repeats CLI60 timeout in65.143s, with
-exact native bytes and zero whole agreement. Standalone init/state on360 remain
-UNRUN; ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
+exact native bytes and zero whole agreement. Standalone init/state at that
+401 baseline are UNRUN.
+A narrow module 46 constant-insertion factor at 30a7223 evaluates the existing lookup
+once, preserving exact values/table IDs, list order and conflicting-value refusal.
+Changed compilation and strict current 238 plus 23 focused premises pass, including
+the nested-NAN export pipeline and ten empty/present/order/identity controls.
+Original 7 still returns CLI 60 timeout in 65.092 s with exact native bytes and zero
+whole agreement. Matched prefixes of 400 steps return the same BUDGET state tuple:
+lookup calls fall from 689,580 to 229,972; exclusive instrumented time falls from 8.4063 s to 2.9977 s.
+These wall-time profiles locate work; they do not establish a CLI 60 completion.
+The initial fixture syntax failure remains preserved with zero credit.
+Standalone initialization is not renewed; prior 123/private 238 keep their cuts.
+Actual-parent compilation passes at 64854b87 over 8f9dda67 with 361 modules;
+promotion, HCELL and replay hooks are preserved, with no source/state renewal.
+ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

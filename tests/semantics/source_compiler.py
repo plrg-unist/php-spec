@@ -152,6 +152,17 @@ def main():
             child=occurrences.path_term([('INDEX',0),('FIELD',0),('INDEX',0),('FIELD',0),('INDEX',0),('FIELD',1)])
             i=len(fixtures)
             fixtures.append(f'dec $case{i}() : bool\ndef $case{i}() = true\n  -- if P = $ppstart(91, {checked["fixture"]}, ([120]))\n  -- if P.COMPLETION = PPCNORMAL\n  -- if $pffact(P.FOLD.FACTS, {path}) = (PARRAY n_root)\n  -- if $pffact(P.FOLD.FACTS, {child}) = (PARRAY n_child)\n  -- if n_root =/= n_child\n  -- if $ppconstants(P) = PPCCONSTANTS (pcpath_constants, pvalue_constants)*\n  -- if $ppconstant_at((pcpath_constants, pvalue_constants)*, {path}) = (PARRAY n_root)\n  -- if $ppconstants(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR {path} 1 (PARRAY n_root)]]) = $ppconstants(P)\n  -- if $ppconstants(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR {path} 1 (PINT 9)]]) = PPCINVALID "conflicting constant values for one source occurrence"\n  -- if $ppconstants(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR {path} 1 (PARRAY n_child)]]) = PPCINVALID "conflicting constant values for one source occurrence"\n  -- if $ppconstants(P[.EXPRESSIONS = P.EXPRESSIONS ++ [PPCEXPR {path} 0 eps]]) = PPCINVALID "missing compiled operand line"\n  -- if $ppconstants(P[.FOLD = P.FOLD[.FACTS = [PFFACT {path} (PARRAY n_root) 0]]]) = PPCINVALID "missing constant rewrite line"\n  -- if $ppconstants(P[.COMPLETION = PPCNAMESPACE]) = PPCINVALID "incomplete source compilation"\n')
+            fixtures[-1]+='''  -- if $ppput(PPCCONSTANTS eps, eps, PNULL) = PPCCONSTANTS ([(eps, PNULL)])
+  -- if $ppput(PPCCONSTANTS ([(eps, PNULL)]), eps, PNULL) = PPCCONSTANTS ([(eps, PNULL)])
+  -- if $ppput(PPCCONSTANTS ([(eps, PNULL)]), eps, PBOOL false) = PPCINVALID "conflicting constant values for one source occurrence"
+  -- if $ppput(PPCCONSTANTS ([(eps, PSTRING eps)]), eps, PSTRING eps) = PPCCONSTANTS ([(eps, PSTRING eps)])
+  -- if $ppput(PPCCONSTANTS ([(eps, PSTRING eps)]), eps, PNULL) = PPCINVALID "conflicting constant values for one source occurrence"
+  -- if $ppput(PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1), (([(PCINDEX 0)]), PNULL)]), ([(PCFIELD 1)]), PSTRING ([0, 255])) = PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1), (([(PCINDEX 0)]), PNULL), (([(PCFIELD 1)]), PSTRING ([0, 255]))])
+  -- if $ppput(PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1), (([(PCINDEX 0)]), PNULL)]), ([(PCINDEX 0)]), PNULL) = PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1), (([(PCINDEX 0)]), PNULL)])
+  -- if $ppput(PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1)]), ([(PCFIELD 0)]), PBOOL true) = PPCINVALID "conflicting constant values for one source occurrence"
+  -- if $ppput(PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1), (([(PCFIELD 0)]), PINT 2)]), ([(PCFIELD 0)]), PINT 1) = PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1), (([(PCFIELD 0)]), PINT 2)])
+  -- if $ppput(PPCINVALID "", eps, PNULL) = PPCINVALID ""
+'''
             for source, probes in ACCESS_CASES:
                 i=len(fixtures);parsed=f.request({'op':'parse','source':base64.b64encode(source).decode()});assert parsed['accepted'],parsed
                 checked=a.request({'op':'check','ast':parsed['ast'],'fixture':True})
