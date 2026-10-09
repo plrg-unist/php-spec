@@ -192,9 +192,14 @@ retained source/profile comparisons and 64 reached-state premises pass, includin
 fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime INI updates
 preserve initial/current raw bytes and restore state; quiet quantities, positive
 mode 2, negative-boundary refusals and nested/throwing warning handlers match
-twelve further source profiles. Parsing warnings, Stringable-option refusal,
-assertion options/callbacks, Stringable descriptions and wider expression export
-remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
+twelve further source profiles. Deprecated options now retain old-value snapshots,
+live callback failure policy and pending exceptions through selected-receiver
+cleanup. Constant protection survives parked handlers. The
+[options ledger](coverage/semantics/assertion-options-review.json) keeps 20 source
+originals and 117/67 reached checks at separate cuts; the excluded Count observer
+and valid foreach companion stay distinct. Parsing warnings, Stringable-option INI
+refusal, Stringable descriptions and wider expression/callback forms remain required.
+Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
