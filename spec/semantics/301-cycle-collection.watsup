@@ -580,7 +580,8 @@ def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode true) 
 def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode false) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, $gc_slot_set(pgcslot*, n_slot, GC_EMPTY), n_slot :: nat_free*, $gc_visit_order($gc_nested_visits($heap_children(pnode, H.EDGES))) ++ pgcvisit*, $(n_debit + 1))
   -- if pnode <- pnode_black*
   -- if $gc_slot_find(pgcslot*, pnode, 0) = (n_slot)
-def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode false) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, pgcvisit*, n_debit) -- otherwise
+def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode false) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, pgcvisit*, n_debit)
+  -- if ~(pnode <- pnode_black*) \/ $gc_slot_find(pgcslot*, pnode, 0) = eps
 def $gc_nested_slots(H, pnode_black*, pgcslot*, nat_free*, n_slot, n_debit) = (pgcslot*, nat_free*, n_debit)
   -- if $(n_slot >= |pgcslot*|)
 def $gc_nested_slots(H, pnode_black*, pgcslot*, nat_free*, n_slot, n_debit) = $gc_nested_slots(H, pnode_black*, pgcslot_next*, nat_next*, $(n_slot + 1), n_next)
