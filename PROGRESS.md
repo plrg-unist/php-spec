@@ -7,18 +7,25 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
-Private-final compiler warnings now retain E_COMPILE_WARNING (128) through direct
-reporting and source-owned dynamic delivery. They bypass user handlers and obey
-the reporting mask; ordinary warning 2 and deprecation 8192 still enter handlers.
-Two fresh originals agree at dec3e9968 /371, including reporting128 versus handler2
-and a shared deprecation Throwable that skips the eval body and assignment.
-Strict3 passes 5.275s; author109/peer132 pass 231 source-frontier checks plus 10 pure
-reporter-mask projections. The original normal mismatch retains zero agreement;
-wider compiler warning producers and dynamic interactions remain required.
-The actual composition of 371 modules over 3a0be383 passes strict3 at
-8e254b11 (5.374s), preserving canonical by-ref cursor, collector, captured-getter
-and foreach acquisition authority. Private source2 / 231+10 and the original
-mismatch retain their own cuts.
+Ordinary unit0 parentless anonymous classes now compile authentic NUL/file/line/hex
+names in real compiler order and publish their descriptors before the first NEW.
+Repeated visits allocate distinct objects with independent defaults; same-line
+sites remain distinct and methods retain lexical class scope. Two fresh originals
+agree at a898dc45c /373, with strict3 (5.324s) and 205 source-frontier/guard checks
+plus 21 pure formatter/domain queries in 126/100 groups. The compile-stage baseline,
+initial compiler stop and three fixture/elaboration stops retain zero credit.
+A separate trace original agrees at e64640919 /373: raw CLASS keeps its full name,
+while getTraceAsString displays the prefix before NUL. Changed strict3 (5.371s)
+and one genuine getter step pass 45 frontier/guard checks plus two pure display
+projection premises. Mixed named RTD consumers, nested and function/Closure
+publication, later source units, parents/interfaces/attributes/constructors and
+wider members/consumers remain required. Earlier cuts and safety boundaries stay
+frozen. [Anonymous class ledger](coverage/semantics/anonymous-classes-review.json).
+
+Private-final E_COMPILE_WARNING (128) delivery remains accepted at dec3e9968 /371:
+two originals and 231 source-frontier checks plus 10 pure mask queries. Actual371
+over 3a0be383 passes strict3 at 8e254b11 (5.374s); the original mismatch remains zero.
+Wider warning producers and dynamic interactions remain required.
 [Severity ledger](coverage/semantics/compiler-warning-severity-review.json).
 
 Root-terminal HALT compilation now folds original-file byte offsets and treats

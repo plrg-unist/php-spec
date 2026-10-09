@@ -50,3 +50,28 @@ diagnostics use the token-derived declaration keyword line. Mixed/repeated/argum
 and user attributes, anonymous/enum targets and wider attribute protocols remain
 Unsupported. The [attribute review](../../coverage/semantics/allow-dynamic-properties-review.json)
 separates ten source agreements from genuine write/history/link checks.
+
+Ordinary anonymous `new class` expressions use source-authenticated class headers
+and publish a parentless class before the first runtime visit. The compiled name
+is `class@anonymous`, NUL, the original filename, start line and a hexadecimal
+uint32 suffix. The suffix follows actual compiler descriptor order; it is not a
+runtime visit count. Namespace scope does not prefix the name, and distinct sites
+on one physical line remain distinct. Each visit allocates a fresh object from
+the same class, with independent property storage and the real lexical scope.
+
+Module383 admits authentic unit0 contexts with no named class/interface/trait/enum
+RTD counter consumers or nested class bodies. Forms are parentless, without
+interfaces, attributes or constructor arguments; public untyped property defaults
+use the existing literal/constant-concat parser, and public noarg by-value nonmagic
+methods use existing body compilation. Ordinary functions and Closures do not
+consume the RTD counter, but anonymous descendants in their publication contexts
+remain Unsupported. Include/eval units, inheritance, attributes, constructors,
+wider members/defaults and complete RTD ordering remain required.
+
+Raw `getTrace()['class']` retains the entire generated name. The shared trace
+renderer applies `c_string` only to the displayed CLASS bytes, matching Zend's
+`TRACE_APPEND_KEY`; `getTraceAsString()` therefore prints `class@anonymous`.
+Stored names and trace arrays remain intact. The
+[anonymous class review](../../coverage/semantics/anonymous-classes-review.json)
+keeps three exact originals and the publication/allocation and trace frontiers at
+their distinct cuts, with pure formatter/domain/display queries separated.

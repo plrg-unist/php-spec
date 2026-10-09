@@ -2763,7 +2763,8 @@
         "spec/semantics/267-named-keyword-new.watsup",
         "spec/semantics/283-global-constant-objects.watsup",
         "spec/semantics/285-default-new-autoload.watsup",
-        "spec/semantics/370-fiber-array-core-callbacks.watsup"
+        "spec/semantics/370-fiber-array-core-callbacks.watsup",
+        "spec/semantics/383-anonymous-classes.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
@@ -2796,9 +2797,10 @@
         "tests/semantics/global_constant_objects_protocol.py",
         "tests/semantics/default_new_autoload_sources.py",
         "tests/semantics/fiber_array_core_sources.py",
-        "tests/semantics/fiber_array_core_cases.json"
+        "tests/semantics/fiber_array_core_cases.json",
+        "tests/semantics/anonymous_class_cases.json"
       ],
-      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload remains required (dynamic-new-review.json). Ordinary named keyword NEW267 adds actual lexical/called scope, immediate inherited constructor owners and persistent service-entry scope. Source18 normal/4 compiler and reached154 clauses at91dc retain distinct failure/preparation records in named-keyword-new-review.json; complete core stays partial. Global constant NEW283 has three exact source agreements at17c12b379 and103/84/87 AL premises at041ce1/00578e/bc44da (274 total). Nonfoldable instance identity completes only after every argument and constructor return; inherited file/eval entry scope and genuine escaped retry retain owners. A separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity. Eager destructor release and internal/Throwable/autoload lanes remain required; deferred-static-defaults-review.json keeps failures and cuts separate. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required. Module370 adds simple RAW Fiber API C-root callbacks with borrowed receiver/cache ownership and authenticated saved states/callers; separate cuts and open gaps are in fiber-array-core-callbacks-review.json.",
+      "review": "Named classes, stdClass, inherited allocation and no-constructor arguments retain object-classes-review.json, stdclass-review.json, noctor-args-review.json and inheritance-review.json. Public properties and effective inherited constructors now initialize owned instances; constructor results cannot replace the allocated object (properties-review.json, methods-review.json). Ordinary dynamic class selectors are covered below; other internal bodies remain open. Module227 supports source-owned direct/inherited parameter default constructors: lazy table completion precedes allocation, all AST values precede access/name mapping, declaration strictness and API reference warning/wrap priority retain owners. Source2/independent16 at a223, cold affected5 at954, reached183/fact source2 atd441 and actual219/222 composition2 at2b153 keep separate cuts in default-constructors-review.json. Internal defaults235/240 and rebound anonymous keyword NEW245 are covered below; statuses stay partial. Actual221 supplied callable constructor reception and its source-reached saved API callback/default-owner39 are accepted separately at2a380; missing only the retained constructor owner rejects public admission. No historical gate renewal. Prepared internal default constructors235 admit lossless scalars with declaration strictness, finite named-hole/argc filling and string-mutated later error traces. Source8+7/owner67 at9fa and affected trace2 at7fb keep separate cuts in internal-default-constructors-review.json; original count Unsupported contributes zero agreement. Suspended reception240 and anonymous keyword defaults245 are covered below; status stays partial. Internal default reception240 now suspends weak-null/lossy integer warnings and user Stringable parsing in formal order, preserving raw integer versus rewritten string trace slots and nearest saved constructor owners. Source14 atd9, builtin/fallback2 and185 reached premises in133+24+28 groups at7c have separate cuts in internal-default-reception-review.json. The original one-process185 timeout adds no verdict. Ordinary constructor effects250 and anonymous keyword defaults245 are covered below; status stays partial. Anonymous keyword default NEW245 now authenticates receiving Closure/arrow lexical scope independently of called class/receiver, including rebound/imported/temporary-call and saved same-template owners. Source3+6+2 at89fe and reached owner172/recursive97 at2d7fd retain distinct cuts in anonymous-default-new-review.json; original dynamic object ::class Unsupported and fixture/descriptor failures stay preserved. Ordinary Throwable effects are covered by250; object ::class256 is covered separately in object-class-name-review.json and status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Ordinary dynamic NEW260 has28 private normal/3 compiler controls,225 reached premises and actual cached-METHOD source1/34; scope/history certificates retain no selector owners. Autoload remains required (dynamic-new-review.json). Ordinary named keyword NEW267 adds actual lexical/called scope, immediate inherited constructor owners and persistent service-entry scope. Source18 normal/4 compiler and reached154 clauses at91dc retain distinct failure/preparation records in named-keyword-new-review.json; complete core stays partial. Global constant NEW283 has three exact source agreements at17c12b379 and103/84/87 AL premises at041ce1/00578e/bc44da (274 total). Nonfoldable instance identity completes only after every argument and constructor return; inherited file/eval entry scope and genuine escaped retry retain owners. A separate cold no-constructor success1/80 and failure-retry1/81 AL verify table-before-argument/allocation order and fresh eval identity. Eager destructor release and internal/Throwable/autoload lanes remain required; deferred-static-defaults-review.json keeps failures and cuts separate. Module285 adds authentic parameter-default NEW autoload with lookup before nested arguments, fresh loaded-constructor selection, declaration strictness and retained receiving/declaration owners. Nine private sources at07a78 and174 reached premises at ebb346 stay distinct from actuald57/GEN280 composition1 at24f376; global AST NEW autoload and wider consumers remain required. Module370 adds simple RAW Fiber API C-root callbacks with borrowed receiver/cache ownership and authenticated saved states/callers; separate cuts and open gaps are in fiber-array-core-callbacks-review.json. Module383 adds authentic ordinary unit0 parentless anonymous expressions, generated NUL/file/line/hex site identities, compile-time publication and repeated fresh instances;164 preserves full trace class names while displaying the C-string prefix. Three exact originals agree at separate a898/e646 cuts. Genuine publication/allocation/same-line205 checks plus21 pure companions and trace45 plus2 pure checks remain separate. Mixed named RTD consumers, nested/function/Closure publication, include/eval, parents/interfaces/attributes/constructors and wider consumers remain required; anonymous-classes-review.json records partial scope and failures0.",
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/stdclass-review.json",
@@ -2812,7 +2814,8 @@
         "coverage/semantics/dynamic-new-review.json",
         "coverage/semantics/deferred-static-defaults-review.json",
         "coverage/semantics/default-new-autoload-review.json",
-        "coverage/semantics/fiber-array-core-callbacks-review.json"
+        "coverage/semantics/fiber-array-core-callbacks-review.json",
+        "coverage/semantics/anonymous-classes-review.json"
       ],
       "helper_tests": [
         "tests/semantics/internal_default_constructor_protocol.py",
@@ -4146,7 +4149,8 @@
         "spec/semantics/177-interface-compiler.watsup",
         "spec/semantics/228-trait-methods.watsup",
         "spec/semantics/318-dynamic-property-warnings.watsup",
-        "frontend/worker.php"
+        "frontend/worker.php",
+        "spec/semantics/383-anonymous-classes.watsup"
       ],
       "source_tests": [
         "tests/semantics/object_classes.py",
@@ -4165,9 +4169,10 @@
         "tests/semantics/arrayaccess_current.php",
         "tests/semantics/fiber_start_aggregate_sources.py",
         "tests/semantics/fiber_start_aggregate_cases.json",
-        "tests/semantics/allow_dynamic_properties_cases.json"
+        "tests/semantics/allow_dynamic_properties_cases.json",
+        "tests/semantics/anonymous_class_cases.json"
       ],
-      "review": "Source class publication and ancestry are reviewed in object-classes-review.json and inheritance-review.json. Public instance properties and public instance methods/constructors now compile and link with ordered declarations, inherited properties/signatures and abstract/final constraints (properties-review.json, methods-review.json). Nonpublic/static/readonly members, hooks, interfaces/traits and other internal bodies remain open. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. IteratorAggregate now has real Traversable ancestry and getIterator prototype/inherited/source-interface publication, including public/nonstatic/parameter obligations, tentative-return notices and Iterator exclusivity. Bounded contract/source evidence is in fiber-start-aggregate-review.json; other internal contracts and acquisition consumers remain required. Single zero-argument builtin AllowDynamicProperties class attributes resolve actual namespace/imports and permit inherited dynamic slots without a deprecation owner. Trait/interface/readonly targets retain priority and keyword lines. Source10 at separate 2945/8c cuts and strict 370/SL131 (37 derived, 94 reached) at 8c are independently reviewed in allow-dynamic-properties-review.json; original failures retain zero affected credit. Mixed/repeated/argument/user attributes, anonymous/enum targets and wider attribute protocols remain partial.",
+      "review": "Source class publication and ancestry are reviewed in object-classes-review.json and inheritance-review.json. Public instance properties and public instance methods/constructors now compile and link with ordered declarations, inherited properties/signatures and abstract/final constraints (properties-review.json, methods-review.json). Nonpublic/static/readonly members, hooks, interfaces/traits and other internal bodies remain open. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. IteratorAggregate now has real Traversable ancestry and getIterator prototype/inherited/source-interface publication, including public/nonstatic/parameter obligations, tentative-return notices and Iterator exclusivity. Bounded contract/source evidence is in fiber-start-aggregate-review.json; other internal contracts and acquisition consumers remain required. Single zero-argument builtin AllowDynamicProperties class attributes resolve actual namespace/imports and permit inherited dynamic slots without a deprecation owner. Trait/interface/readonly targets retain priority and keyword lines. Source10 at separate 2945/8c cuts and strict 370/SL131 (37 derived, 94 reached) at 8c are independently reviewed in allow-dynamic-properties-review.json; original failures retain zero affected credit. Mixed/repeated/argument/user attributes, anonymous/enum targets and wider attribute protocols remain partial. Module383 adds authentic ordinary unit0 parentless anonymous expressions, generated NUL/file/line/hex site identities, compile-time publication and repeated fresh instances;164 preserves full trace class names while displaying the C-string prefix. Three exact originals agree at separate a898/e646 cuts. Genuine publication/allocation/same-line205 checks plus21 pure companions and trace45 plus2 pure checks remain separate. Mixed named RTD consumers, nested/function/Closure publication, include/eval, parents/interfaces/attributes/constructors and wider consumers remain required; anonymous-classes-review.json records partial scope and failures0.",
       "helper_tests": [
         "tests/semantics/class_headers.py",
         "coverage/semantics/class-headers.json",
@@ -4184,7 +4189,8 @@
         "coverage/semantics/fiber-start-aggregate-review.json",
         "coverage/semantics/allow-dynamic-properties-review.json",
         "vendor/php-src/Zend/zend_attributes.c",
-        "vendor/php-src/Zend/zend_inheritance.c"
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "coverage/semantics/anonymous-classes-review.json"
       ]
     },
     {
@@ -11364,15 +11370,28 @@
     {
       "id": "classes.anonymous",
       "milestone": "4a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_inheritance.c"
+      "implementation": [
+        "spec/semantics/383-anonymous-classes.watsup",
+        "spec/semantics/164-throwable-trace-methods.watsup"
       ],
-      "review": null
+      "helper_tests": [
+        "coverage/semantics/anonymous-classes-review.json"
+      ],
+      "source_tests": [
+        "tests/semantics/method_runtime.py",
+        "tests/semantics/anonymous_class_cases.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_inheritance.c",
+        "vendor/php-src/Zend/zend_compile.c",
+        "vendor/php-src/Zend/zend_vm_def.h",
+        "vendor/php-src/Zend/zend_builtin_functions.c",
+        "vendor/php-src/Zend/zend_exceptions.c",
+        "coverage/semantics/anonymous-classes-review.json"
+      ],
+      "review": "Module383 adds authentic ordinary unit0 parentless anonymous expressions, generated NUL/file/line/hex site identities, compile-time publication and repeated fresh instances;164 preserves full trace class names while displaying the C-string prefix. Three exact originals agree at separate a898/e646 cuts. Genuine publication/allocation/same-line205 checks plus21 pure companions and trace45 plus2 pure checks remain separate. Mixed named RTD consumers, nested/function/Closure publication, include/eval, parents/interfaces/attributes/constructors and wider consumers remain required; anonymous-classes-review.json records partial scope and failures0."
     },
     {
       "id": "classes.abstract",

@@ -1069,7 +1069,16 @@ observable bytes and process status without inferring an exit category.
 [Named empty classes](docs/semantics/SOURCE-CLASSES.md) now support early and
 conditional activation, allocate owned objects, and support identity, exact class
 types and literal `instanceof`; their [review](coverage/semantics/object-classes-review.json)
-binds source and paused-state checks. [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
+binds source and paused-state checks.
+Ordinary parentless anonymous classes now publish source-authenticated names before
+execution and allocate a fresh instance on each visit. Repeated visits create
+distinct objects of one class; separate same-line sites have distinct class
+identities and methods retain lexical scope. Raw exception traces keep
+the full NUL-bearing name; display uses its C-string prefix. Three originals agree
+at separate cuts in the [anonymous class review](coverage/semantics/anonymous-classes-review.json).
+Mixed RTD counters, nested/publication contexts, constructors, inheritance,
+attributes and wider consumers remain required.
+[Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary
 empty-object behavior; its [review](coverage/semantics/stdclass-review.json)
 binds source and ownership checks. [Non-object casts](docs/semantics/OBJECT-CASTS.md)

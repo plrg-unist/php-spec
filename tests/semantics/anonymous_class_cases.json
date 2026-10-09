@@ -1,0 +1,53 @@
+{
+  "scope": "Ordinary unit0 parentless anonymous-class publication, repeated allocation, same-line identity, lexical scope and full trace names versus C-string display. Partial core; RTD mixtures, nested/publication contexts, constructors, inheritance and attributes remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-class-repeat-identity",
+      "source": "<?php\n$first = null;\n$last = null;\nfor ($i = 0; $i < 2; $i++) {\n    $object = new class {\n        public $value = 3;\n        public function identity(): string { return __CLASS__; }\n    };\n    if ($i === 0) { $first = $object; } else { $last = $object; }\n}\n$first->value = 9;\n$expected = \"class@anonymous\\0\" . __FILE__ . ':5$0';\necho $first !== $last ? 'objects:distinct' : 'BAD:object';\necho '|class:', $first::class === $last::class ? 'same' : 'BAD:class';\necho '|name:', $first->identity() === $expected ? 'exact' : 'BAD:name';\necho '|values:', $first->value, ':', $last->value;\n$other = new class {};\necho '|site:', $other::class !== $first::class ? 'distinct' : 'BAD:site';\n",
+      "source_sha256": "6f8e4c1a97b40973ae69a62cbc53f5ac82d8ae2210e02433f904d08ecf8754be",
+      "stdout_base64": "b2JqZWN0czpkaXN0aW5jdHxjbGFzczpzYW1lfG5hbWU6ZXhhY3R8dmFsdWVzOjk6M3xzaXRlOmRpc3RpbmN0",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-class-native-20/run-v1/anonymous-class-repeat-identity/command.json",
+      "native_raw_sha256": "ba01a9e752bdfe899a7417ec43f02edcff24f679077bc4e4e1304d214fc974d4"
+    },
+    {
+      "id": "anonymous-class-namespace-same-line-sites",
+      "source": "<?php\nnamespace AnonymousClassReview;\n$objects = [];\nfor ($i = 0; $i < 2; $i++) {\n    $line = __LINE__; $objects[] = new class {\n        public $value = 0;\n        public function className() { return self::class; }\n    };\n}\n$otherLine = __LINE__; $other = new class {}; $third = new class {};\n$one = $objects[0];\n$two = $objects[1];\n$expected = \"class@anonymous\\0\" . __FILE__ . ':' . $line . '$0';\n$otherExpected = \"class@anonymous\\0\" . __FILE__ . ':' . $otherLine . '$1';\n$thirdExpected = \"class@anonymous\\0\" . __FILE__ . ':' . $otherLine . '$2';\necho $one !== $two ? 'objects:distinct' : 'BAD:objects';\necho '|class:', $one::class === $two::class ? 'same' : 'BAD';\necho '|site:', $one::class !== $other::class ? 'different' : 'BAD';\necho '|same-line:', $other::class !== $third::class ? 'different' : 'BAD';\necho '|exact:', $one::class === $expected ? 'yes' : 'BAD';\necho '|other:', $other::class === $otherExpected ? 'yes' : 'BAD';\necho '|third:', $third::class === $thirdExpected ? 'yes' : 'BAD';\necho '|scope:', $one->className() === $one::class ? 'same' : 'BAD';\n$one->value = 7;\necho '|one:', $one->value, '|two:', $two->value;\n",
+      "source_sha256": "2e6a9b234695e2b9e7b9ca697b9399ebb1c0f573fa82c8d6040d0b1727d00d5e",
+      "stdout_base64": "b2JqZWN0czpkaXN0aW5jdHxjbGFzczpzYW1lfHNpdGU6ZGlmZmVyZW50fHNhbWUtbGluZTpkaWZmZXJlbnR8ZXhhY3Q6eWVzfG90aGVyOnllc3x0aGlyZDp5ZXN8c2NvcGU6c2FtZXxvbmU6N3x0d286MA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-class-native-20/run-v1/anonymous-class-namespace-same-line-sites/command.json",
+      "native_raw_sha256": "97a89520adffa3eeb6521f18d741e010ca67c8c0118a47946489d5f6491fa10b"
+    },
+    {
+      "id": "anonymous-class-trace-name",
+      "source": "<?php\n$value = new class {\n    public function capture() {\n        return new \\Exception('M');\n    }\n};\n$line = __LINE__ + 1;\n$e = $value->capture();\n$trace = $e->getTrace();\n$name = \"class@anonymous\\0\" . __FILE__ . ':2$0';\necho $trace[0]['class'] === $value::class && $trace[0]['class'] === $name ? 'raw:same|' : 'raw:BAD|';\n$expected = '#0 ' . __FILE__ . '(' . $line . '): class@anonymous->capture()' . \"\\n#1 {main}\";\necho $e->getTraceAsString() === $expected ? 'text:display' : 'text:BAD';\n",
+      "source_sha256": "9bc13cca950457e99af2becd6aabcdef14fbc867bf35b4f60a2c07067c823d6c",
+      "stdout_base64": "cmF3OnNhbWV8dGV4dDpkaXNwbGF5",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-class-trace-native-20/run-v1/anonymous-class-trace-name/command.json",
+      "native_raw_sha256": "4775aac7f9881cbadabcb1d0b19bc6e4829102cec52dd30651fefd432b89cb9d"
+    }
+  ]
+}
