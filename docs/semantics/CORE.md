@@ -143,9 +143,13 @@ warning dispatch and captures raw/original after the callback. Pending shared
 Throwable completion skips an eligible second handler while committing the input.
 Cleared-original restore retains NULL raw, canonical empty getters and live parsed
 mode through shared throw and later no-op restores. New/active SET or NaN updates
-encountering NULL stop explicitly, without probing NULL parsing. Last-owner entry,
-wider startup/callback facts, Stringable descriptions, exporter forms and single
-named-description/unpack producers remain required.
+encountering NULL stop explicitly, without probing NULL parsing. Retained-owner
+Stringable descriptions convert once before truth in enabled weak assertions. The
+converted argument resumes the entered test without rechecking the live mode;
+cast-time traces retain the original object and failure traces store the string.
+Original cast Throwable identity survives. Last-owner entry/handoff, unpack and weak
+scalar description trace replacement, wider startup/callback facts, exporter forms
+and single named-description producers remain required.
 
 Each intrinsic follows the target's argument/type checks and exception propagation,
 including source-backed early-return cases such as disabled assertions.

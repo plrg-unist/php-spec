@@ -55,6 +55,15 @@ Throwable survives the subsequent parsing warning and update. An eligible handle
 is skipped for that second warning; default reporting remains active when ineligible.
 Byte authentication does not repeat conversion or callback dispatch.
 
+Retained-owner Stringable descriptions convert once before truth in enabled weak
+assertions. Successful conversion replaces only argument1 and resumes the entered
+test even if the callback disabled later assertions. During the cast, implicit
+trace frames retain the original description object; assertion failure afterward
+stores the converted string and message. A cast throw propagates the original
+Throwable without assigning the outer return. Disabled direct/dynamic calls retain
+their existing argument-evaluation distinction. Unpacked descriptions and last-owner
+entry/handoff cleanup remain explicit Unsupported, not completed core behavior.
+
 The engine releases a frozen modified `prev_value` after a successful warning
 callback, even when a nested update already replaced and released that request
 raw retain. Four retained originals expose the resulting lifetime defect; a
@@ -93,6 +102,11 @@ outer completion, handler/caller throw, getter and no-op frontiers, plus12 pure
 helper exclusions. The normal path checks three genuine PhpSteps; the pending
 path checks two after observing the same Throwable before catch. The prior
 cleared-original Unsupported baseline remains zero credit.
+Three fresh retained-owner description originals pass atb4ea with265 checks at real
+entry, return, published throw and cast/caller trace frontiers plus4 pure ownership
+exclusions. The fixture preserves raw throwing PhpStep facts and checks admission
+after the actual driver publishes THROW_SEARCH. The original premature-descriptor
+failure remains zero credit; these are checks, not269 distinct states.
 
 ```sh
 python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json --match assertion-quantity
@@ -104,5 +118,6 @@ continuations encountering NULL raw stop before further conversion, pointer comp
 original capture. Zend quantity parsing dereferences a NULL string; no source
 probes SET-fromNULL or NULL parsing. This supported getter/no-op domain is separate
 from the intentional lifetime divergence above. Last-owner Stringable SET/RESTORE
-entry cleanup remains required. Wider string identity producers, descriptions, exporter forms and callback
-paths remain core work. This is a bounded milestone, not complete assertion/INI coverage.
+entry cleanup remains required. Description last-owner entry/handoff, unpack and
+weak scalar trace-argument replacement, wider string identity producers, exporter
+forms and callback paths remain core work. This is bounded assertion/INI coverage.

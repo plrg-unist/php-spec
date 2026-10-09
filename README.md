@@ -215,8 +215,12 @@ through an original pending Throwable without a second handler entry. Two origin
 247 source-frontier checks and eight pure companions pass atc2b195. Cleared-original
 restore now retains NULL raw separately from its empty getter and parsed mode12.
 Two safe originals,323 frontier checks and12 pure exclusion queries pass at242576;
-shared throw and later no-op restore preserve the state. SET/NaN from NULL remains
-explicit Unsupported; last-owner entry, descriptions and wider forms remain required.
+shared throw and later no-op restore preserve the state. Retained-owner Stringable
+descriptions convert before truth and finish an entered assertion despite live mode0.
+Cast-time traces retain the object; failure traces use the converted string. Three
+new originals,265 frontier checks and4 pure ownership queries pass atb4ea. SET/NaN
+from NULL, last-owner entry, description unpack and weak scalar trace replacement
+remain required alongside wider forms.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 

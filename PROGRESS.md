@@ -38,7 +38,15 @@ The getter returns canonical empty bytes; parsed mode12 and safe no-op restores
 remain intact through the shared Throwable. Two fresh originals and323 checks at
 real frontiers plus12 pure exclusion queries pass at242576/367; strict3 passes5.074s.
 New or active SET/NaN continuations encountering NULL stop explicitly; no source
-executes NULL parsing. Last-owner Stringable entry and wider producers remain required.
+executes NULL parsing. Retained-owner Stringable descriptions now convert once before
+truth and resume the entered assertion despite a callback changing live mode to0.
+Cast-time traces retain the original object; a failed assertion stores the converted
+argument/message. Original cast Throwable identity and untouched assignment survive.
+Three fresh originals,265 checks at source frontiers and4 pure owner-exclusion queries
+pass atb4ea/367; strict3 passes5.174s. The original raw-descriptor timing failure retains
+zero credit; the corrected fixture checks admission after actual driver publication to
+THROW_SEARCH. Last-owner entry/handoff, unpack and weak scalar trace replacement remain
+required. [Description checkpoint](coverage/semantics/assertion-quantity-review.json).
 Actual367 over78f866bb passes strict3 at7a2095bf (5.071s), preserving
 SensitiveParameterValue reception and by-reference finalizer cursor/replay guards.
 Private nullable source2/335 and all earlier cuts remain unchanged.
