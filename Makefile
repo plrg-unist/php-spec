@@ -519,6 +519,8 @@ test-semantics: build
 	python3 tests/semantics/missing_constructor_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/constructor_promotion_cases.json
 	python3 tests/semantics/constructor_promotion_protocol.py
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/constructor_promotion_override_cases.json
+	python3 tests/semantics/constructor_promotion_override_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

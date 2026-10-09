@@ -27,7 +27,16 @@ same declaration scope and readonly checks. The original body remains unchanged.
 A promoted WeakReference property owns the wrapper while its target remains weak.
 [The promotion review](../../coverage/semantics/constructor-promotion-review.json)
 records nine exact sources, genuine Weak/byref steps and preserved failures.
-Parameter attributes/hooks remain explicit Unsupported.
+One zero-argument builtin `#[Override]` on a promoted property resolves through
+its real namespace/import context. It requires an exact-name nonprivate parent
+property after ordinary inheritance compatibility. Simple root declarations fail
+during compilation, including unreachable declarations; trait checks defer until
+the using class links. Compatible trait collisions retain the effective property's
+own source obligation. A failed check rolls back class publication. The
+[Override review](../../coverage/semantics/promoted-override-review.json) records
+thirteen source agreements, a separate user-attribute Unsupported control and 110
+genuine certificate/write/rollback assertions. Other parameter attributes/hooks
+remain explicit Unsupported.
 
 Object `foreach` by value uses a live slot cursor, so later writes can affect
 later iterations. Dynamic deletion leaves a cursor tombstone; reinsertion

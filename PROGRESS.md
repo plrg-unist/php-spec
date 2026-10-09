@@ -15,8 +15,20 @@ attributes reuse ordinary property protocols. Exact original9b85 now gives
 CompileError. Private359 at00c passes strict compilation, source9 and genuine
 Weak48/byref47. Historical Unsupported, strict/fixture stops and wrong-status row
 retain zero affected credit. Actual361 over6e09 passes strict compilation
-at8335 (4.840s); private source/state cuts retain their inputs. Parameter
+at8335 (4.840s); private source/state cuts retain their inputs. Other parameter
 attributes/hooks and complete core remain required. [Promotion review](coverage/semantics/constructor-promotion-review.json).
+
+Promoted properties accept one zero-argument builtin `#[Override]` through the
+actual namespace/import scope. Exact nonprivate parent properties satisfy it;
+simple root errors occur during compilation, while parent/trait links check after
+ordinary compatibility and roll back failed publication. Trait collisions retain
+the effective declaration's source. Two originals plus eleven focused sources
+agree at `373f804e` (361 modules);
+the namespaced user attribute stays Unsupported with zero agreement. Strict
+compilation and 110 genuine assertions (own 63, trait 26, rollback 21) pass at
+`456ebb0b`; the source cut and four earlier compiler stops retain their identities.
+Actual-parent composition remains
+pending. [Override review](coverage/semantics/promoted-override-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
