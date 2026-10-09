@@ -1096,6 +1096,8 @@ pass; baseline98 localizes the old residual object fence. Whole source39 CLI60
 remains OPEN/zero agreement, with only that default source selection excluded.
 Residual arrays/outside references, main/mixed layouts, black/external components,
 non-idle workers, later passes and broader GC remain required; prior cuts unchanged.
+Actual372 over `fb58ba46f` passes compiler/init at `fb0d5750e`; reviewed hook,
+getter/caller and return interfaces preserve state375 at1c1de and source39 CLI60 OPEN/0.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
