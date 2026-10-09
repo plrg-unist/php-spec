@@ -46,6 +46,7 @@ dec $assertion_failed(pstate, pconfigcall, preqbytes) : pstate
 dec $assertion_failed_result(pstate) : pstate
 dec $assertion_test(pstate, pconfigcall, pvalue, pvalue) : pstate
 dec $assertion_description_value(pstate, pconfigcall, pvalue, pvalue) : pstate
+dec $assertion_scalar_description_finish(pstate, pconfigcall, pvalue) : pstate
 dec $assertion_description_source(pstate, pconfigcall) : (nat, porigin, int)?
 dec $assertion_description_source_at(pstate, pconfigcall, nat) : (nat, porigin, int)?
 dec $assertion_description_string_valid(pstate, pconfigcall, nat, porigin, int) : bool
@@ -370,9 +371,20 @@ def $assertion_description_value(S, pconfigcall, pvalue, PNULL) = $assertion_tes
 def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = $assertion_test(S, pconfigcall, pvalue, pvalue_description)
   -- if $string_bytes(pvalue_description) = (preqbytes)
 def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = $assertion_test(S, pconfigcall, pvalue, POBJECT n) -- if $throwable_member(S, n)
-def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = $assertion_test(S, pconfigcall, pvalue, PSTRING preqbytes)
+def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = $assertion_scalar_description_finish($typed_apply(S, TYPESTRING pvalue_description, pconfigcall.LINE), pconfigcall, pvalue)
   -- if $typed_scalar(pvalue_description) /\ ~$method_string(pvalue_description)
-  -- if $config_conversion(S, pconfigcall, pvalue_description) = TYPEVALUE (PSTRING preqbytes)
+  -- if $config_conversion(S, pconfigcall, pvalue_description) = TYPESTRING pvalue_description
+  -- if pconfigcall.PACKS = eps
+  -- if ~$assertion_ini_conversion_warning(S, pvalue_description)
+def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = S[.COMPLETION = UNSUPPORTED "assert scalar description unpack source"]
+  -- if $typed_scalar(pvalue_description) /\ ~$method_string(pvalue_description)
+  -- if $config_conversion(S, pconfigcall, pvalue_description) = TYPESTRING pvalue_description
+  -- if pconfigcall.PACKS =/= eps
+def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = S[.COMPLETION = UNSUPPORTED "assert scalar description warning conversion"]
+  -- if $typed_scalar(pvalue_description) /\ ~$method_string(pvalue_description)
+  -- if $config_conversion(S, pconfigcall, pvalue_description) = TYPESTRING pvalue_description
+  -- if pconfigcall.PACKS = eps
+  -- if $assertion_ini_conversion_warning(S, pvalue_description)
 def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = $assertion_description_begin(S, pconfigcall)
   -- if ~$throwable_member(S, n)
   -- if $stringable_instance(S, n)
@@ -405,6 +417,22 @@ rule PhpStep/assertion-invoke: S ~> $assertion_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_ASSERT
   -- if $config_invoke_valid(S, pconfigcall)
+
+;; Quiet ZPP scalar conversion mutates the actual argument before truth/callbacks.
+def $assertion_scalar_description_finish(S, pconfigcall, pvalue) = $assertion_test(S_call, pconfigcall_converted, pvalue, pvalue_text)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_ASSERT
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_description)]
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_carrier_valid(S, pvalue_text)
+  -- if $string_bytes(pvalue_text) = (n_text*)
+  -- if pconfigcall_converted = $assertion_description_call(pconfigcall, pvalue_text)
+  -- if S_call = S[.TODO = (CONFIG_INVOKE pconfigcall_converted) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $assertion_scalar_description_finish(S, pconfigcall, pvalue) = S
+  -- if S.COMPLETION =/= NORMAL
+def $assertion_scalar_description_finish(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "assert scalar description conversion result"] -- otherwise
 
 ;; ZPP converts an enabled call's second argument before testing its truth.
 ;; The continuation owns the original call only until the actual slot is replaced.
