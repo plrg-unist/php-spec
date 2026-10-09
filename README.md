@@ -979,7 +979,8 @@ Future explicitly unset typed slots now raise the same Error when no getter is
 present. Three exact originals and 142/147 reached premises distinguish actual
 dynamic-first cleanup order from physical slot indexes, retain visibility and
 alias detachment, and verify pending cleanup and atomic selected binding.
-Consumed slots, wider quiet/getter accesses and untyped unset reads remain required.
+The later undefined-property cut below extends untyped unset reads; consumed
+slots and wider getter accesses remain required.
 The actual356 composition passes strict initialization.
 Future initialized declared values and typed INITIAL/UNSET slots now support
 quiet `isset`, `empty` and `??` without magic consumers. Terminal probes borrow
@@ -988,6 +989,15 @@ null and typed INITIAL/UNSET results; 157/138 reached premises prove unchanged
 heap owners, alias rebinding/type detach and kept-child survival.
 The actual358 composition passes strict initialization.
 Consumed/missing storage and wider magic accesses remain required.
+Literal undefined property reads now run real warning handlers with fixed null
+after their writes or receiver retirement. CV/`$this` receivers borrow their
+owner; temporaries hold the receiver until completion. Future untyped UNSET slots
+retain their physical storage carrier through quiet reads and handler throws.
+Six original comparisons and two distinct false-return comparisons retain
+separate cuts; 132/154/166 reached premises and strict initialization pass.
+[The review](coverage/semantics/undefined-property-review.json) preserves the
+original fallback/fixture failures and the weaker bound-Closure witness.
+Computed names, getters/hooks and read-call reference normalization remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
