@@ -260,15 +260,15 @@ def main():
         'S_next.HELD = S.HELD', 'S_next.ITERATORS = S.ITERATORS',
         '$call_descriptors_valid(S_next)', '$heap_valid($heap_graph(S_next))'], guard_mutations())
 
-    label = 'S.TODO = (STMT (NStmtLabel (NIdentifier (BYTES "L") metadata_identifier) metadata_label)) :: ptask_tail*'
+    label = 'S.TODO = (STMT (NStmtLabel (NIdentifier (BYTES "TA==") metadata_identifier) metadata_label)) :: ptask_tail*'
     fixture('goto-authenticated-label', goto_case, f + [label], [label,
-        'S.ORIGIN = (porigin_label)', '$origin_node(S.SOURCES, porigin_label) = (NStmtLabel (NIdentifier (BYTES "L") metadata_identifier) metadata_label)',
-        '$goto_label_valid(S, NStmtLabel (NIdentifier (BYTES "L") metadata_identifier) metadata_label, S.ORIGIN)',
+        'S.ORIGIN = (porigin_label)', '$origin_node(S.SOURCES, porigin_label) = (NStmtLabel (NIdentifier (BYTES "TA==") metadata_identifier) metadata_label)',
+        '$goto_label_valid(S, NStmtLabel (NIdentifier (BYTES "TA==") metadata_identifier) metadata_label, S.ORIGIN)',
         '$scalar_tasks(S.TODO, 0) = eps', '$scalar_tasks(S.TODO, 1) = eps', '$replay_guard(S.TODO) = eps',
         '$lookup(S.ENV, [105]) = (n_i)', 'S.STORE[n_i] = DEFINED (PINT 0)',
         '$replay_outputs(S.EVENTS) = ' + str(list(b'I;F;C;F;'))], [
         'S[.ORIGIN = eps]',
-        'S[.TODO = (STMT (NStmtLabel (NIdentifier (BYTES "missing") metadata_identifier) metadata_label)) :: ptask_tail*]'])
+        'S[.TODO = (STMT (NStmtLabel (NIdentifier (BYTES "bWlzc2luZw==") metadata_identifier) metadata_label)) :: ptask_tail*]'])
 
     direct = 'S.TODO = (GOTO_UNWIND porigin_goto pcpath_goto pcpath_target) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*'
     fixture('goto-crosses-direct-replay-pair', 'ref-replay-scalar-goto-direct-replay-pair', f + [direct], [direct,
