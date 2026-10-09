@@ -13,7 +13,7 @@ def $trace_array_arguments(S, (ENTRY pkey pitem) :: pentry_tail*) = $trace_argum
   -- if pentry_tail* =/= eps
 
 dec $trace_frame_call(pstate, nat) : preqbytes
-def $trace_frame_call(S, n_frame) = preqbytes_class ++ preqbytes_type ++ preqbytes_function
+def $trace_frame_call(S, n_frame) = $c_string(preqbytes_class) ++ preqbytes_type ++ preqbytes_function
   -- if $trace_array_field(S, n_frame, $ptascii("class")) = PSTRING preqbytes_class
   -- if $trace_array_field(S, n_frame, $ptascii("type")) = PSTRING preqbytes_type
   -- if $trace_array_field(S, n_frame, $ptascii("function")) = PSTRING preqbytes_function
