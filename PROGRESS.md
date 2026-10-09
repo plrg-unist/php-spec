@@ -247,8 +247,8 @@ keeps Weak lookup null; two Leaf C claims and real Generator/cache owners surviv
 Actual unreleased fatal frames retain both INSTANCE pins and nonowning retired
 HANDLE jobs; borrowed history is not another carrier. Source1 retains `7d3574e75`;
 549 SL premises and complete compiler361 retain `47c8c3c1c` (6.459 seconds).
-Original refusal, diagnostic/binding stops and cache/Weak/GC fixture failures stay
-at zero; actual-parent composition remains pending. Wider handlers/rendering,
+Original refusal, diagnostic/binding stops, cache/retirement fixture failures and
+Weak/GC admission gaps stay at zero; actual-parent composition remains pending. Wider handlers/rendering,
 child lifetimes, reacquisition, message warnings, parked/escaped storage and generic
 terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
