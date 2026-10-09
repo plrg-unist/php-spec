@@ -1003,6 +1003,20 @@ return, property/caller and captured-constructor interfaces preserve state329 at
 f184 and the whole-source CLI60 OPEN/zero agreement limit.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Reference-mediated overlap301 transparently follows genuine unbuffered HCELL
+edges without reference debit. Fresh-component reach, live reference markers and
+canonical frozen cell shapes preserve count/image and current worker authority;
+residual reach remains object-only. Three source-reached cuts corrected159/130/118
+at `b5fc0476e` execute 407 premises: direct/duplicate reference walks, real E guard
+and marker/shape counterfeits, signed -1+2=1, E/array/reference retirement,
+D self-owner1/weak-live, request cleanup and replay. Native grounding and compiler/init
+pass; baseline101 localizes the old refusal. The original159 stops on literal-record
+syntax before semantic checks with zero credit; its separate correction is syntax only.
+Whole source38 CLI60 remains OPEN/zero agreement; only its default whole-CLI
+selection is newly excluded, with all state groups enabled. Broader reference,
+main/mixed, proxy/black/external and later-pass overlap remain required; prior cuts
+are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335

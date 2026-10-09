@@ -934,6 +934,13 @@ signed -1+2=1, E/array retirement and D self-owner/weak liveness. Its whole sour
 CLI60 remains OPEN with zero agreement credit. Main/mixed array layouts,
 references/proxy tables and wider overlap remain required.
 
+That fresh component can also traverse genuine unbuffered reference cells without
+charging them. Live reference markers and canonical frozen cell edges preserve
+admission and guard authority. Three ordinary-Fiber E→array→reference→D cuts
+execute 407 premises, including signed count1, E/array/reference retirement and
+D self-owner/weak liveness. Whole source38 CLI60 remains OPEN with zero agreement
+credit; broader reference, main/mixed and proxy overlap remain required.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
