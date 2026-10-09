@@ -294,7 +294,8 @@ def $compiler_event(text, n_message*, pllocation) = DIAGNOSTIC text n_message* p
   -- if pllocation.UNIT = 0
 dec $compiler_warning_level(text) : int
 def $compiler_warning_level("private-final-method") = 128
-def $compiler_warning_level(text) = 2 -- if text =/= "private-final-method"
+def $compiler_warning_level("unknown-declare") = 128
+def $compiler_warning_level(text) = 2 -- if text =/= "private-final-method" /\ text =/= "unknown-declare"
 def $compiler_diagnostics(S, pldiagnostic*) = S
   -- if S.COMPLETION =/= NORMAL
 def $compiler_diagnostics(S, eps) = S

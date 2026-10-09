@@ -1,14 +1,16 @@
-;; Private strict_types compiler prerequisite; runtime directive work is unpaired.
+;; Literal directive compilation preserves ordered warnings and nested body work.
 dec $ppstrict_line(phpType49*) : int
 dec $ppstrict_items(ppstate, pcpath, phpType47, phpType49*) : ppstate
 dec $ppstrict_item(ppstate, pcpath, phpType47, phpType49) : ppstate
+dec $ppdeclare_body(ppstate, pcpath, phpType47) : ppstate
+dec $ppunknown_declare(ptbytes) : bool
 dec $ppstrict_place(ppstate, pcpath, phpType47, pvalue) : ppstate
 dec $ppstrict_value(ppstate, pvalue) : ppstate
 dec $ppstrict_first(program, pcpath) : bool
 dec $ppstrict_prefix(statement*, nat) : bool
 dec $ppstrict_preceding(statement) : bool
 
-def $ppstatement(P, pcpath, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = $ppstrict_items($pplocate(P, pcpath, $ppstrict_line(phpType49*)), pcpath, phpType47, phpType49*)
+def $ppstatement(P, pcpath, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = $ppdeclare_body($ppstrict_items($pplocate(P, pcpath, $ppstrict_line(phpType49*)), pcpath, phpType47, phpType49*), pcpath, phpType47)
   -- if P.COMPLETION = PPCNORMAL
 
 def $ppstrict_items(P, pcpath, phpType47, phpType49*) = P
@@ -25,9 +27,26 @@ def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) 
   -- if $ptlc($base64(text)) = $ptascii("strict_types")
 def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = $ppunsupported(P, "other declare directive compilation")
   -- if $parser_literal(expression) = (pvalue)
-  -- if $ptlc($base64(text)) =/= $ptascii("strict_types")
+  -- if $ptlc($base64(text)) = $ptascii("ticks") \/ $ptlc($base64(text)) = $ptascii("encoding")
+def $ppstrict_item(P, pcpath, phpType47, NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "warning" "unknown-declare" ([$base64(text)]) P.LOCATION]]
+  -- if $parser_literal(expression) = (pvalue)
+  -- if $ppunknown_declare($base64(text))
 def $ppstrict_item(P, pcpath, phpType47, phpType49) = $ppunsupported(P, "edited declare item")
   -- otherwise
+
+def $ppunknown_declare(ptbytes) = true
+  -- if ptbytes_lower = $ptlc(ptbytes)
+  -- if ptbytes_lower =/= $ptascii("strict_types") /\ ptbytes_lower =/= $ptascii("ticks") /\ ptbytes_lower =/= $ptascii("encoding")
+def $ppunknown_declare(ptbytes) = false -- otherwise
+def $plmessage(PLDIAGNOSTIC "warning" "unknown-declare" ([ptbytes]) pllocation) = $ptascii("Unsupported declare '") ++ ptbytes ++ $ptascii("'")
+
+;; zend_compile_declare uses nested statement compilation, without early binding.
+def $ppdeclare_body(P, pcpath, phpType47) = P
+  -- if P.COMPLETION =/= PPCNORMAL
+def $ppdeclare_body(P, pcpath, ABSENT) = P
+  -- if P.COMPLETION = PPCNORMAL
+def $ppdeclare_body(P, pcpath, SEQUENCE statement*) = $ppstatements(P, pcpath ++ [PCFIELD 1], 0, statement*)
+  -- if P.COMPLETION = PPCNORMAL
 
 def $ppstrict_place(P, pcpath, phpType47, pvalue) = $ppconstant_error(P, $ptascii("strict_types declaration must be the very first statement in the script"), P.LOCATION.LINE)
   -- if ~$ppstrict_first(P.FOLD.SOURCE.AST, pcpath)

@@ -1,4 +1,3 @@
-;; Only strict_types directives without a body have executable declaration work.
 ;; Placement and unit/function flags are checked by the source compiler projection.
 dec $strict_work_items(phpType49*) : bool
 def $strict_work_items(eps) = true
@@ -12,3 +11,27 @@ def $strict_work_items(phpType49*) = false -- otherwise
 rule PhpStep/strict-declare: S ~> S[.TODO = ptask_tail*]
   -- if S.TODO = (STMT (NStmtDeclare (SEQUENCE phpType49*) ABSENT metadata)) :: ptask_tail*
   -- if $strict_work_items(phpType49*)
+
+dec $declare_work_items(phpType49*, bool) : bool
+def $declare_work_items(eps, b_strict) = true
+def $declare_work_items(phpType49 :: phpType49_tail*, true) = $declare_work_items(phpType49_tail*, true)
+  -- if $strict_work_items([phpType49])
+def $declare_work_items((NDeclareItem (NIdentifier (BYTES text) metadata_name) expression metadata) :: phpType49_tail*, b_strict) = $declare_work_items(phpType49_tail*, b_strict)
+  -- if $ppunknown_declare($base64(text))
+  -- if $parser_literal(expression) = (pvalue)
+def $declare_work_items(phpType49*, b_strict) = false -- otherwise
+
+dec $unknown_declare_valid(pstate, statement) : bool
+def $unknown_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata) = true
+  -- if $declare_work_items(phpType49*, (phpType47 = ABSENT))
+  -- if ~$strict_work_items(phpType49*)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_accepts(S.SOURCES, porigin, STMT (NStmtDeclare (SEQUENCE phpType49*) phpType47 metadata))
+def $unknown_declare_valid(S, statement) = false -- otherwise
+
+rule PhpStep/unknown-declare: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (STMT (NStmtDeclare (SEQUENCE phpType49*) ABSENT metadata)) :: ptask_tail*
+  -- if $unknown_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) ABSENT metadata)
+rule PhpStep/unknown-declare-body: S ~> S[.TODO = $statement_tasks(statement*, $origin_child(S.ORIGIN, [PCFIELD 1]), 0) ++ ptask_tail*]
+  -- if S.TODO = (STMT (NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata)) :: ptask_tail*
+  -- if $unknown_declare_valid(S, NStmtDeclare (SEQUENCE phpType49*) (SEQUENCE statement*) metadata)
