@@ -38,7 +38,8 @@ def $task_nodes(NAME_STRING_RESULT pnamestring) = eps
 
 ;; Capture bytes before dropping the cast owner. Receiver metadata is no longer
 ;; an owner and is never resolved through the potentially changed name CV.
-def $stringify_return_state(S, NAME_STRING_RESULT pnamestring, n_text*, ptask_tail*) = S[.TODO = (NAME_STRING_READY pnamestring n_text*) :: ptask_tail*][.RESULT = KNOWN (PSTRING n_text*)][.BASE = BASE_VALUE (KNOWN (PSTRING n_text*))]
+def $stringify_return_state(S, NAME_STRING_RESULT pnamestring, pvalue_text, ptask_tail*) = S[.TODO = (NAME_STRING_READY pnamestring n_text*) :: ptask_tail*][.RESULT = KNOWN pvalue_text][.BASE = BASE_VALUE (KNOWN pvalue_text)]
+  -- if $string_bytes(pvalue_text) = (n_text*)
   -- if $call_task_valid(S, NAME_STRING_RESULT pnamestring)
   -- if pnamestring.TAIL = ptask_tail*
 def $call_task_valid(S, NAME_STRING_READY pnamestring n_text*) = ($computed_string_name_valid(S, pnamestring) /\ $source_operand_suffix(S.TODO, NAME_STRING_READY pnamestring n_text*, pnamestring.TAIL))
@@ -59,7 +60,8 @@ rule PhpStep/computed-string-name-special-target: S ~> S[.TODO = eps][.COMPLETIO
 def $destructor_pending_finish(S, pdestructionoperation, n_pending, (NAME_STRING_READY pnamestring n_text*) :: ptask_tail*) = S[.TODO = (NAME_STRING_PENDING pnamestring n_text* n_pending) :: ptask_tail*][.RESULT = pdestructionoperation.VALUE][.BASE = pdestructionoperation.BASE][.CELL = pdestructionoperation.CELL][.KEY = pdestructionoperation.KEY][.LOCATION = pdestructionoperation.LOCATION][.COMPLETION = NORMAL]
   -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT pnamestring.OBJECT pnamestring.READ.SITE pnamestring.READ.LINE
   -- if pdestructionoperation.ORIGIN = (pnamestring.READ.SITE)
-  -- if pdestructionoperation.VALUE = KNOWN (PSTRING n_text*)
+  -- if pdestructionoperation.VALUE = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (n_text*)
   -- if pdestructionoperation.CALLER = S.CURRENT
   -- if pnamestring.TAIL = ptask_tail*
   -- if $computed_string_name_valid(S, pnamestring)

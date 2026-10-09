@@ -12,16 +12,19 @@ def $fiber_factory_items(S, PARRAY n) = $config_pack_capture(S, S.ARRAYS[n].ITEM
   -- if $(n < |S.ARRAYS|)
   -- if (HARRAY n) <- S.ALLOCATIONS
 def $fiber_factory_items(S, pvalue) = eps -- otherwise
-def $fiber_factory_members(S, PSTRING ptbytes, eps) = ((PSTRING ptbytes_class, ptbytes_method))
+def $fiber_factory_members(S, pvalue_string, eps) = ((PSTRING ptbytes_class, ptbytes_method))
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $method_string_parts(ptbytes) = ((ptbytes_class, ptbytes_method))
 def $fiber_factory_members(S, PARRAY n, pentry*) = ((pvalue, ptbytes))
   -- if $(n < |S.ARRAYS|)
   -- if |pentry*| = 2
   -- if $config_pack_items_valid(pentry*)
   -- if $entry_lookup(pentry*, KINT 0) = (DIRECT pvalue)
-  -- if $entry_lookup(pentry*, KINT 1) = (DIRECT (PSTRING ptbytes))
+  -- if $entry_lookup(pentry*, KINT 1) = (DIRECT pvalue_method)
+  -- if $string_bytes(pvalue_method) = (ptbytes)
 def $fiber_factory_members(S, pvalue, pentry*) = eps -- otherwise
-def $fiber_factory_receiver(S, PSTRING ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("fiber"))
+def $fiber_factory_receiver(S, pvalue_string) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("fiber"))
+  -- if $string_bytes(pvalue_string) = (ptbytes)
 def $fiber_factory_receiver(S, POBJECT n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = FIBER pfiber
@@ -35,8 +38,9 @@ def $fiber_factory_method(ptbytes) = (INTRINSIC_FIBER_START) -- if $ptlc(ptbytes
 def $fiber_factory_method(ptbytes) = $fiber_method(ptbytes) -- otherwise
 
 def $fiber_factory_selection(S, pvalue, pentry*) = ((pintrinsic, ptbytes, eps))
-  -- if $fiber_factory_members(S, pvalue, pentry*) = ((PSTRING ptbytes_class, ptbytes))
-  -- if $fiber_factory_receiver(S, PSTRING ptbytes_class)
+  -- if $fiber_factory_members(S, pvalue, pentry*) = ((pvalue_receiver, ptbytes))
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_class)
+  -- if $fiber_factory_receiver(S, pvalue_receiver)
   -- if $fiber_factory_method(ptbytes) = (pintrinsic)
   -- if $fiber_static(pintrinsic)
 def $fiber_factory_selection(S, pvalue, pentry*) = ((pintrinsic, ptbytes, n_input?))
@@ -51,8 +55,9 @@ def $fiber_factory_error(S, pvalue, pentry*) = ($ptascii("class Fiber does not h
   -- if $fiber_factory_receiver(S, pvalue_receiver)
   -- if $fiber_factory_method(ptbytes) = eps
 def $fiber_factory_error(S, pvalue, pentry*) = ($ptascii("non-static method Fiber::") ++ $fiber_method_name(pintrinsic) ++ $ptascii("() cannot be called statically"))
-  -- if $fiber_factory_members(S, pvalue, pentry*) = ((PSTRING ptbytes_class, ptbytes))
-  -- if $fiber_factory_receiver(S, PSTRING ptbytes_class)
+  -- if $fiber_factory_members(S, pvalue, pentry*) = ((pvalue_receiver, ptbytes))
+  -- if $string_bytes(pvalue_receiver) = (ptbytes_class)
+  -- if $fiber_factory_receiver(S, pvalue_receiver)
   -- if $fiber_factory_method(ptbytes) = (pintrinsic)
   -- if ~$fiber_static(pintrinsic)
 def $fiber_factory_error(S, pvalue, pentry*) = eps -- otherwise

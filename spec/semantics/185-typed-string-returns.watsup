@@ -45,7 +45,8 @@ def $typed_return_marker_shape(S, n, porigin_site, z) = true
   -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
 def $typed_return_marker_shape(S, n, porigin_site, z) = true
   -- if S.TODO = (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
-  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (n_text*)
 def $typed_return_marker_shape(S, n, porigin_site, z) = true
   -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
 def $typed_return_marker_shape(S, n, porigin_site, z) = false -- otherwise
@@ -90,10 +91,11 @@ rule PhpStep/typed-return-string-call: S ~> $user_string_begin(S_read, n, porigi
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $typed_return_callback_ready(S_read, n, z)
 
-rule PhpStep/typed-return-string-complete: S ~> S[.TODO = (RETURN_UNWIND (KNOWN (PSTRING n_text*)) S.ORIGIN) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/typed-return-string-complete: S ~> S[.TODO = (RETURN_UNWIND (KNOWN pvalue_text) S.ORIGIN) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*
   -- if $typed_return_marker_valid(S, n, porigin_site, z)
-  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (n_text*)
 
 rule PhpStep/typed-return-string-throw: S ~> S_linked[.TODO = (THROW_SEARCH n_new) :: ptask_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n porigin_site z) :: (RETURN_VALUE z) :: (TYPE_RETURN_THROW n porigin_site z) :: ptask_tail*

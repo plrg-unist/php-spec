@@ -633,7 +633,8 @@ rule PhpStep/property-name: S ~> S_name[.TODO = ptask_tail*][.BASE = BASE_PROPER
   -- if S.TODO = (PROPERTY_NAME pvalue z) :: ptask_tail*
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)
   -- if S_name.COMPLETION = NORMAL
-  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if S_name.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_name*)
 rule PhpStep/property-name-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (PROPERTY_NAME pvalue z) :: ptask_tail*
   -- if S_name = $resolve_name(S, $captured_name(S, [PCFIELD 1], S.RESULT), z)

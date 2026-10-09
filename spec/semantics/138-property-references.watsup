@@ -144,14 +144,16 @@ def $reference_coercion_row_valid(S, prefcoercion) = true
   -- if (HCELL prefcoercion.CELL) <- S.ALLOCATIONS
   -- if prefcoercion.CELL <- S.REFCELLS
   -- if $(prefcoercion.CELL < |S.STORE|)
-  -- if S.STORE[prefcoercion.CELL] = DEFINED (PSTRING prefcoercion.VALUE)
+  -- if S.STORE[prefcoercion.CELL] = DEFINED pvalue_string
+  -- if $string_bytes(pvalue_string) = (prefcoercion.VALUE)
   -- if $reference_coercion_source(S, prefcoercion.SITE, prefcoercion.LINE)
 def $reference_coercion_row_valid(S, prefcoercion) = false -- otherwise
 dec $reference_coercion_rows_valid(pstate, prefcoercion*) : bool
 def $reference_coercion_rows_valid(S, eps) = true
 def $reference_coercion_rows_valid(S, prefcoercion :: prefcoercion_tail*) = ($reference_coercion_row_valid(S, prefcoercion) /\ $reference_coercion_at(prefcoercion_tail*, prefcoercion.CELL) = eps /\ $reference_coercion_rows_valid(S, prefcoercion_tail*))
 def $reference_coercions_valid(S) = $reference_coercion_rows_valid(S, S.REFCOERCIONS)
-def $reference_coercion_value(S, n_cell, PSTRING n_text*) = true
+def $reference_coercion_value(S, n_cell, pvalue_string) = true
+  -- if $string_bytes(pvalue_string) = (n_text*)
   -- if $reference_coercion_at(S.REFCOERCIONS, n_cell) = (prefcoercion)
   -- if prefcoercion.VALUE = n_text*
   -- if $reference_coercion_row_valid(S, prefcoercion)
@@ -175,10 +177,13 @@ def $reference_coercion_admission(S, n_cell, porigin, z, n_text*) = true
   -- if n_cell <- S.REFCELLS
   -- if $(n_cell < |S.STORE|)
   -- if S.COMPLETION = NORMAL
-  -- if S.RESULT = KNOWN (PSTRING n_text*)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_text*)
 def $reference_coercion_admission(S, n_cell, porigin, z, n_text*) = false -- otherwise
-def $reference_coercion_write(S, n_cell, porigin, z, n_text*) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED (PSTRING n_text*))][.REFCOERCIONS = {CELL n_cell, SITE porigin, LINE z, VALUE n_text*} :: $reference_coercion_remove(S.REFCOERCIONS, n_cell)]
+def $reference_coercion_write(S, n_cell, porigin, z, n_text*) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED pvalue_string)][.REFCOERCIONS = {CELL n_cell, SITE porigin, LINE z, VALUE n_text*} :: $reference_coercion_remove(S.REFCOERCIONS, n_cell)]
   -- if $reference_coercion_admission(S, n_cell, porigin, z, n_text*)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_text*)
 def $reference_coercion_write(S, n_cell, porigin, z, n_text*) = S[.COMPLETION = UNSUPPORTED "invalid reference coercion producer"]
   -- if ~$reference_coercion_admission(S, n_cell, porigin, z, n_text*)
 

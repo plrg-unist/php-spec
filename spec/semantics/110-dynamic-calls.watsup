@@ -87,7 +87,8 @@ def $dynamic_name(S, preqbytes_original, preqbytes_lookup, porigin, z_init, z_ca
 def $dynamic_value(S, porigin, z_init, z_call) = S -- if S.COMPLETION =/= NORMAL
 def $dynamic_value(S, porigin, z_init, z_call) = $dynamic_name(S, n*, $dynamic_lookup_name(n*), porigin, z_init, z_call)
   -- if S.COMPLETION = NORMAL
-  -- if S.RESULT = KNOWN (PSTRING n*)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
 def $dynamic_value(S, porigin, z_init, z_call) = $array_dynamic(S, n, porigin, z_init, z_call)
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PARRAY n)

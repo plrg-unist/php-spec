@@ -82,7 +82,8 @@ def $location_array(S, plocation, z) = $diagnostic(S_written, "Deprecated", ([65
   -- if S_written = $location_array_new(S, plocation, z)
   -- if S_written.COMPLETION = NORMAL
 def $location_array(S, plocation, z) = S[.COMPLETION = UNSUPPORTED "string offset write"]
-  -- if $location_slot(S, plocation) = DEFINED (PSTRING n*)
+  -- if $location_slot(S, plocation) = DEFINED pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
 def $location_array(S, plocation, z) = $throw_scalar(S, "Error", $ptascii("Cannot use object of type ") ++ $object_name(S, n) ++ $ptascii(" as array"), z)
   -- if $location_slot(S, plocation) = DEFINED (POBJECT n)
   -- if ~$access_instance(S, POBJECT n)
@@ -141,7 +142,8 @@ def $dimension_location(S, poperand?, pstringfetch, z) = S
   -- if S.COMPLETION =/= NORMAL
 def $dimension_location(S, poperand?, pstringfetch, z) = $string_dimension_fetch(S, poperand?, pstringfetch, z)
   -- if S.COMPLETION = NORMAL
-  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n*)
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
 def $dimension_location(S, poperand?, pstringfetch, z) = $array_dimension_location($fetch_location_array(S, S.LOCATION, z), poperand?, z)
   -- otherwise
 
@@ -152,7 +154,8 @@ def $base_acquire(S, BASE_NAME poperand z_name, z) = S_name
 def $base_acquire(S, BASE_NAME poperand z_name, z) = $location_name_at(S_name, n_name*, z_name)
   -- if S_name = $resolve_name(S, poperand, z_name)
   -- if S_name.COMPLETION = NORMAL
-  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if S_name.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_name*)
 def $base_acquire(S, BASE_DIM pbase poperand z_key, z) = $dimension_location($base_acquire(S, pbase, z_key), (poperand), STRINGNESTED, z_key)
 def $base_acquire(S, BASE_APPEND pbase z_key, z) = $dimension_location($base_acquire(S, pbase, z_key), eps, STRINGNESTED, z_key)
 
@@ -196,12 +199,14 @@ def $assign_dimension(S, poperand_key?, poperand, z_key, z) = S
   -- if S.COMPLETION =/= NORMAL
 def $assign_dimension(S, poperand_key?, poperand, z_key, z) = S_written
   -- if S.COMPLETION = NORMAL
-  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n_bytes*)
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_bytes*)
   -- if (S_written, n_new*) = $string_dimension_write(S, n_bytes*, poperand_key?, poperand, z_key)
   -- if S_written.COMPLETION =/= NORMAL
 def $assign_dimension(S, poperand_key?, poperand, z_key, z) = $location_write_result(S_written, S.LOCATION, PSTRING n_new*, S_written.RESULT)
   -- if S.COMPLETION = NORMAL
-  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n_bytes*)
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_bytes*)
   -- if (S_written, n_new*) = $string_dimension_write(S, n_bytes*, poperand_key?, poperand, z_key)
   -- if S_written.COMPLETION = NORMAL
 def $assign_dimension(S, poperand_key?, poperand, z_key, z) = $assign_array_operand($location_array(S, S.LOCATION, z_key), poperand_key?, poperand, z_key, z)
