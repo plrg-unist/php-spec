@@ -444,9 +444,19 @@ passes strict compilation/init at `280feeb2a`, preserving GEN176/363 and the
 PROPS207/377 warning and ownership interfaces. The printable-metadata helper is the concrete
 changed cost dependency for the one throw-only retry; no general speedup is inferred.
 The initial undefined-helper compiler stop, first throw-state 120s timeout and
-both whole CLI 60s timeouts retain zero affected/agreement credit. Overlap, active
-residual and wider Fiber-pass reentry, whole CLI completion and broader GC remain
-required; earlier cuts are unchanged.
+both whole CLI 60s timeouts retain zero affected/agreement credit. Overlap, wider
+active residual/Fiber-pass reentry, earlier whole CLI completion and broader GC
+remain required; earlier cuts are unchanged.
+
+During a live main callback, public resume/throw of the idle worker now scans
+snapshot-marked residual targets outside the fresh plan's DTORS. The authentic
+main return, physical cursor and tags govern admission without changing fresh
+plan progress. Two native-grounded unset-order companions pass whole CLI60 and
+174 independent physical premises (95/79) at `c5a3e54df`, preserving count1 and
+exact replacement/prior exception identity. Actual361 over `9988f88bf` passes
+strict compilation/init at `5d89edb95`; reviewed Traversable, Generator and
+computed-static paths preserve this lane. Four earlier native observations and
+the first failed diagnostic remain preserved; corrected41 only localizes refusal.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
