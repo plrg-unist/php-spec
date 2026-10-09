@@ -9,6 +9,7 @@ dec $gc_snapshot_slots(pgcslot*, pnode*) : pgcslot*
 dec $gc_residual_overlap(pstate) : bool
 dec $gc_overlap_objects(pnode*) : bool
 dec $gc_overlap_component(pgcplan, pnode*) : bool
+dec $gc_overlap_residuals(pgcplan, pnode*) : bool
 dec $gc_overlap_plan(pgcplan) : bool
 dec $gc_overlap_refmarks(pstate, pnode*) : bool
 dec $gc_overlap_refstate(pstate, pgcplan) : bool
@@ -575,6 +576,11 @@ def $gc_overlap_component(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_component(
   -- if $gc_slot_find(pgcplan.BUFFER, HCELL n, 0) = eps
   -- if $gc_nested_reference(pgcplan.GRAPH, HCELL n)
 def $gc_overlap_component(pgcplan, pnode*) = false -- otherwise
+def $gc_overlap_residuals(pgcplan, eps) = true
+def $gc_overlap_residuals(pgcplan, (HOBJECT n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
+def $gc_overlap_residuals(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
+  -- if $gc_overlap_component(pgcplan, [HCELL n])
+def $gc_overlap_residuals(pgcplan, pnode*) = false -- otherwise
 def $gc_overlap_plan(pgcplan) = true
   -- if pgcplan.SCAN = eps /\ pgcplan.CALL.PASS = 0
   -- if pgcplan.DTORS =/= eps
@@ -592,7 +598,7 @@ def $gc_overlap_plan(pgcplan) = true
   -- if $heap_subset(pnode_component*, pnode_white*)
   -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
   -- if $gc_overlap_component(pgcplan, pnode_component*)
-  -- if $gc_overlap_objects($heap_reach(pnode_residual*, eps, pgcplan.GRAPH.EDGES))
+  -- if $gc_overlap_residuals(pgcplan, $heap_reach(pnode_residual*, eps, pgcplan.GRAPH.EDGES))
 def $gc_overlap_plan(pgcplan) = false -- otherwise
 ;; The frozen graph cannot certify IS_REFERENCE. Authenticate markers only
 ;; for its still-live component cells; retired snapshots retain no such demand.
