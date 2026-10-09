@@ -4,7 +4,6 @@
 dec $gc_main_context(pstate, pgcplan, pgcscan) : bool
 dec $gc_main_tag_source(pgcplan, pgcslot, nat) : bool
 dec $gc_main_scan_valid(pstate, pgcplan, pgcscan) : bool
-dec $gc_main_return_live(pstate, pgcplan, pgcscan, nat) : bool
 dec $gc_main_return_valid(pstate, pgcplan, pgcscan, nat) : bool
 dec $gc_main_object(pstate, pgcslot) : nat?
 dec $gc_main_target(pstate, nat, nat) : (nat, nat)?
@@ -14,7 +13,6 @@ dec $gc_main_finish(pstate, pgcplan, pgcscan) : pstate
 dec $gc_main_progress(pstate, pnode*) : pgcprogress*
 dec $gc_main_anchor_tasks(ptask*) : (pgcplan, pgcscan, nat)?
 dec $gc_main_anchor_frames(pframe*) : (pgcplan, pgcscan, nat)?
-dec $gc_main_anchor(pstate) : (pgcplan, pgcscan, nat)?
 dec $gc_main_pending_tasks(ptask*, pgcplan, pgcplan) : ptask*
 
 def $gc_main_trace(S, pgcplan) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps], pgcplan, GC_MAIN_SCAN pgcplan pgcscan)

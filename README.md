@@ -735,8 +735,15 @@ onto the fresh destructor. Independent 96/109 physical premises at separate
 old/new error identity. Actual359 over `0c549de11` passes strict compilation/init;
 review preserves GEN176/363 and PROPS207/377 with their shared ownership paths.
 The initial compiler stop, first throw-state 120s timeout and both whole CLI
-60s timeouts retain zero affected/agreement credit. Overlap, active residual and
-wider Fiber-pass reentry, whole CLI completion and broader GC remain required.
+60s timeouts retain zero affected/agreement credit. Overlap, wider active residual
+and Fiber-pass reentry, earlier whole CLI completion and broader GC remain required.
+Public resume/throw during a live main callback now lets the idle worker consume
+snapshot-marked residual targets outside the fresh plan's DTORS. Authentic main
+return, cursor and tag checks preserve fresh plan progress and pending errors.
+Two native-grounded unset-order companions pass whole CLI60 and 174 independent
+physical premises (95/79) at `c5a3e54df`, including count1 and exact replacement/prior
+exception identity. Actual361 over `9988f88bf` passes strict compilation/init at
+`5d89edb95`; earlier cuts retain their inputs.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
