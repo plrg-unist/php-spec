@@ -308,7 +308,7 @@ wider attribute protocols remain required. Actual 371-module composition over
 current GC/PROPS/ARG interfaces without renewing private source/state checks.
 [Dynamic-property attribute review](coverage/semantics/allow-dynamic-properties-review.json).
 
-Public backed by-value block get hooks now compile as authentic source functions
+Public backed by-value block and expression get hooks compile as authentic source functions
 with the property's implicit return type. Ordinary CV and `$this` reads invoke
 the hook; backing access bypasses it only in the active hook on that receiver.
 Nested ordinary calls and other receivers dispatch normally, uninitialized
@@ -323,6 +323,13 @@ and hooked unset remain required. Actual 372-module composition over `48b6455fd`
 passes strict initialization at `390c27db4` (5.421 s), preserving parent callable
 and magic-get ownership paths without renewing the private source/state checks.
 [Hook review](coverage/semantics/backed-get-hooks-review.json).
+Expression bodies retain the actual expression origin and compiled return line,
+including untyped return admission and saved Hook source during string conversion.
+Seven new originals and strict 372-module initialization pass at `41ed4ea8d`;
+SL137 (15 derived, 122 reached) proves actual return, saved conversion, parked
+payload and final weak-null release. The virtual nested-closure control remains
+Unsupported. These cuts retain the block results above; actual-parent composition
+is pending. [Expression review](coverage/semantics/expression-get-hooks-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

@@ -19,7 +19,7 @@ deprecation capture; see the [attribute review](../../coverage/semantics/allow-d
 A leading-NUL computed name raises the engine error
 for read, write and unset, while quiet tests remain silent.
 
-Public backed by-value block `get` hooks compile into source functions with the
+Public backed by-value block and expression `get` hooks compile into source functions with the
 property's return type. Literal reads through an ordinary CV or `$this` execute
 the hook each time. Direct backing access requires the same property and receiver
 in the active hook; saved hook frames, ordinary helpers and other receivers do
@@ -28,7 +28,12 @@ backing raises its error before magic lookup. One receiver hold moves from the
 selected target to the entered hook. Its return payload survives receiver cleanup,
 and exceptions retain the hook's class/name/line. The
 [hook review](../../coverage/semantics/backed-get-hooks-review.json) records eight
-originals and separate 177 source/state checks. Virtual/set/byref hooks,
+originals and separate 177 source/state checks. Expression bodies reuse implicit
+return compilation at the authentic expression child, preserving its emitted line
+and the Hook source across string callbacks. Seven additional originals and 137
+derived/reached checks are recorded in the
+[expression review](../../coverage/semantics/expression-get-hooks-review.json).
+Virtual/set/byref hooks,
 inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
 and hooked unset remain explicit boundaries.
 

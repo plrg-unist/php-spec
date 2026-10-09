@@ -1,0 +1,114 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "SHA256(stdout + NUL + stderr)",
+  "cases": [
+    {
+      "id": "backing-transform",
+      "source": "<?php\nfunction short_hook_value29(int $value): int {\n    echo \"G\", $value, \"|\";\n    return $value + 1;\n}\nclass HookExpression29 {\n    public int $value = 7 {\n        get => short_hook_value29($this->value);\n    }\n}\n$box = new HookExpression29();\necho $box->value, \"|\", $box->value, \"|\";\n$box->value = 17;\necho $box->value, \"|\";\n",
+      "source_sha256": "ca11fa7a627a33030348e7af0de0ce8ce4a91b838f150be5ccbcc3adb612f498",
+      "native_group": "original2-81a5",
+      "native_raw_sha256": "da20454286bc232ce63b44d88abb5f41398ae33c02d7ac7f2b0f8444a9dfa188",
+      "exit_status": 0,
+      "stdout_base64": "Rzd8OHxHN3w4fEcxN3wxOHw=",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "implicit-return-error",
+      "source": "<?php\nclass HookExpressionType29 {\n    public int $value = 7 {\n        get => $this->value === 7 ? [] : 17;\n    }\n}\n$box = new HookExpressionType29();\ntry { echo \"before|\", $box->value, \"|after|\"; }\ncatch (\\TypeError $error) {\n    echo \"caught|\", $error->getMessage(), \"|\", $error->getTraceAsString(), \"|\";\n}\n$box->value = 17;\necho \"resume|\", $box->value, \"|\";\n",
+      "source_sha256": "451256641c0e6898b71973fb9769490e4687c469aad6fa53e8f0b65af6bbea08",
+      "native_group": "original2-81a5",
+      "native_raw_sha256": "fb9fc677c69fd044a157c684d5dcaf597c807edd2ea38589dba1de40d58fd6ef",
+      "exit_status": 0,
+      "stdout_base64": "YmVmb3JlfGNhdWdodHxIb29rRXhwcmVzc2lvblR5cGUyOTo6JHZhbHVlOjpnZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IHJldHVybmVkfCMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9leHByZXNzaW9uLWdldC1ob29rcy1wcml2YXRlLTI5Ly50b29scy9leHByZXNzaW9uLWdldC1ob29rcy1wcm9iZXMtMjkvaW1wbGljaXQtcmV0dXJuLWVycm9yLnBocCg4KTogSG9va0V4cHJlc3Npb25UeXBlMjktPiR2YWx1ZTo6Z2V0KCkKIzEge21haW59fHJlc3VtZXwxN3w=",
+      "stderr_template_base64": "",
+      "status": "normal",
+      "stdout_template_base64": "YmVmb3JlfGNhdWdodHxIb29rRXhwcmVzc2lvblR5cGUyOTo6JHZhbHVlOjpnZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBpbnQsIGFycmF5IHJldHVybmVkfCMwIHtGSUxFfSg4KTogSG9va0V4cHJlc3Npb25UeXBlMjktPiR2YWx1ZTo6Z2V0KCkKIzEge21haW59fHJlc3VtZXwxN3w="
+    },
+    {
+      "id": "untyped-return",
+      "source": "<?php\nclass HookExpressionUntyped29 {\n    public $value = 7 {\n        get => $this->value + 1;\n    }\n}\n$box = new HookExpressionUntyped29();\necho $box->value, \"|\";\n$box->value = 17;\necho $box->value, \"|\";\n",
+      "source_sha256": "142c71fdb5f6454dfa2a55d053def5714d144d1d08f3b2b440c0180d69211605",
+      "native_group": "focused6-41ed",
+      "native_raw_sha256": "02c60eb3be55964b421e3c22dc85c5c929942915c409fa672e1e658c00aa2974",
+      "exit_status": 0,
+      "stdout_base64": "OHwxOHw=",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "nested-helper-reread",
+      "source": "<?php\nfunction expression_reread29($box, int $backing): int {\n    echo \"H\", $backing, \"|\";\n    if ($backing === 7) {\n        $box->value = 17;\n        return $box->value;\n    }\n    return $backing;\n}\nclass HookExpressionNested29 {\n    public int $value = 7 {\n        get => expression_reread29($this, $this->value);\n    }\n}\n$box = new HookExpressionNested29();\necho $box->value, \"|\";\n",
+      "source_sha256": "36381e95d0aac73a45942107db89e8aa31fc0ab6f11a3f250f4dcaf68e18c86a",
+      "native_group": "focused6-41ed",
+      "native_raw_sha256": "c77105f86992fa3b733d0992da8154eb942be521b638bcbde5b99c2c2a46fba5",
+      "exit_status": 0,
+      "stdout_base64": "SDd8SDE3fDE3fA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "typed-string-callback",
+      "source": "<?php\nclass HookExpressionStringValue29 {\n    function __toString(): string { echo \"S|\"; return \"19\"; }\n}\nfunction expression_string29(string $backing): HookExpressionStringValue29 {\n    echo \"G\", $backing, \"|\";\n    return new HookExpressionStringValue29();\n}\nclass HookExpressionString29 {\n    public string $value = \"7\" {\n        get => expression_string29($this->value);\n    }\n}\n$box = new HookExpressionString29();\necho $box->value, \"|\";\n",
+      "source_sha256": "b68295e73dec1301021d3730e35636afe02ee474fee6ccccf26af6f6c6b1f675",
+      "native_group": "focused6-41ed",
+      "native_raw_sha256": "acb0d60b2ae4a111acb5c94af1c3ffedcb0aff782436de23379003eaca1199b2",
+      "exit_status": 0,
+      "stdout_base64": "Rzd8U3wxOXw=",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "multiline-strict-return",
+      "source": "<?php\ndeclare(strict_types=1);\nclass HookExpressionStrict29 {\n    public int $value = 7 {\n        get =>\n            $this->value === 7\n                ? \"19\"\n                : 17;\n    }\n}\n$box = new HookExpressionStrict29();\ntry { echo \"before|\", $box->value, \"|after|\"; }\ncatch (\\TypeError $error) {\n    echo \"caught|\", $error->getMessage(), \"|\", $error->getLine(), \"|\", $error->getTraceAsString(), \"|\";\n}\n$box->value = 17;\necho \"resume|\", $box->value, \"|\";\n",
+      "source_sha256": "b8201a34385f1f377ce96ec74640be5ff752625c8a7a25fb41ee1d4febedd957",
+      "native_group": "focused6-41ed",
+      "native_raw_sha256": "12d817c19134103354a13be29ebb5a9c580f680317163c13b7f5d95b2885023d",
+      "exit_status": 0,
+      "stdout_base64": "YmVmb3JlfGNhdWdodHxIb29rRXhwcmVzc2lvblN0cmljdDI5OjokdmFsdWU6OmdldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIGludCwgc3RyaW5nIHJldHVybmVkfDh8IzAgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2V4cHJlc3Npb24tZ2V0LWhvb2tzLXByaXZhdGUtMjkvLnRvb2xzL2V4cHJlc3Npb24tZ2V0LWhvb2tzLXByb2Jlcy0yOS9mb2N1c2VkL211bHRpbGluZS1zdHJpY3QtcmV0dXJuLnBocCgxMik6IEhvb2tFeHByZXNzaW9uU3RyaWN0MjktPiR2YWx1ZTo6Z2V0KCkKIzEge21haW59fHJlc3VtZXwxN3w=",
+      "stderr_template_base64": "",
+      "status": "normal",
+      "stdout_template_base64": "YmVmb3JlfGNhdWdodHxIb29rRXhwcmVzc2lvblN0cmljdDI5OjokdmFsdWU6OmdldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIGludCwgc3RyaW5nIHJldHVybmVkfDh8IzAge0ZJTEV9KDEyKTogSG9va0V4cHJlc3Npb25TdHJpY3QyOS0+JHZhbHVlOjpnZXQoKQojMSB7bWFpbn18cmVzdW1lfDE3fA=="
+    },
+    {
+      "id": "receiver-release-payload",
+      "source": "<?php\nclass HookExpressionLeaf29 {\n    function __destruct() { echo \"D|\"; }\n}\nfunction expression_leaf29(HookExpressionLeaf29 $leaf): HookExpressionLeaf29 {\n    echo \"G|\";\n    unset($GLOBALS[\"box\"]);\n    return $leaf;\n}\nclass HookExpressionHeap29 {\n    public HookExpressionLeaf29 $value {\n        get => expression_leaf29($this->value);\n    }\n    function __construct(HookExpressionLeaf29 $leaf) { $this->value = $leaf; }\n    function __destruct() { echo \"B|\"; }\n}\n$leaf = new HookExpressionLeaf29();\n$weak = \\WeakReference::create($leaf);\n$box = new HookExpressionHeap29($leaf);\nunset($leaf);\n$result = $box->value;\necho $weak->get() === null ? \"N|\" : \"L|\";\nunset($result);\necho $weak->get() === null ? \"N|\" : \"L|\";\n",
+      "source_sha256": "0611daaa268136f5d191a5366ff62e5c01cd70da888ac698c24bbcd80ea66727",
+      "native_group": "focused6-41ed",
+      "native_raw_sha256": "05b4f25390a60390a2e52213ba1e9b04b0e12fc19e375ba3cca4c619c9aa2a49",
+      "exit_status": 0,
+      "stdout_base64": "R3xCfEx8RHxOfA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "virtual-nested-closure-boundary",
+      "source": "<?php\nclass HookExpressionVirtual29 {\n    public int $value {\n        get => (fn() => $this->value)();\n    }\n}\necho \"V|\";\n",
+      "source_sha256": "843cb160492aa4f201fc7760ed43d5f4f7ac36f55a6be12de413a08ce239e7f4",
+      "native_group": "focused6-41ed",
+      "native_raw_sha256": "e5d89aa3ec13cde77e1bd44d1558e50dedec51f9640879abafcf1c1ef31be2be",
+      "exit_status": 0,
+      "stdout_base64": "Vnw=",
+      "stderr_template_base64": "",
+      "status": "normal",
+      "expected_model_status": "unsupported",
+      "source_agreements": 0
+    }
+  ]
+}
