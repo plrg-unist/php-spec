@@ -1,0 +1,126 @@
+{
+  "status": "independently accepted current-parent milestone",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; tests/semantics/profile.json, reporting30719",
+  "scope": "Module377 literal missing/untyped UNSET reads on ordinary live INSTANCE/stdClass, plus authenticated future359 untyped UNSET slots. Fixed-null warning resumption preserves effects, borrowed CV/this retirement, actual temporary owners and pending cleanup.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL, cache disabled, encountered determinism checks"
+  },
+  "engine": [
+    "Zend/zend_object_handlers.c: zend_std_read_property returns the uninitialized/null result after the undefined-property diagnostic; it does not repeat the lookup after callbacks.",
+    "Zend/zend_vm_def.h: FETCH_OBJ_R/VM property read distinguish borrowed CV/this from temporary input ownership.",
+    "Zend/zend_objects.c: zend_object_std_dtor preserves dynamic-first physical slot retirement and per-slot reference-source detach.",
+    "Zend/zend.c: zend_error reports an exact false return before retval/parameter cleanup, then restores or drops the original raw handler.",
+    "Zend/zend_vm_def.h: ZEND_DECLARE_LAMBDA_FUNCTION binds This unless the lambda/enclosing function is static."
+  ],
+  "raw_root": ".tools/properties-instance-future-untyped-unset19/.tools",
+  "retained_cut": {
+    "revision": "bd419da303f5e7885a5eb4a20d895cd27c749ade",
+    "modules": 359,
+    "strict": "instance-future-untyped-current359-sl-init1-attempt2/report.json",
+    "sources": "dynamic-property-warning-source-u4wubyfq/report.json",
+    "normal_agreements": 6
+  },
+  "false_cleanup_fix": {
+    "revision": "cb1c194666d498d3e4416c07de5c8a3e21bcbc20",
+    "strict": "instance-future-untyped-current359-sl-init1-attempt20/report.json",
+    "strict_seconds": 4.671,
+    "meaning": "Normal207 false fallback reports first, then reuses genuine entered-handler cleanup. Fatal default still clears result/base and does not restore RAW. No absence reread or relaxed internal-source admission."
+  },
+  "reached": [
+    {
+      "group": "borrowed",
+      "revision": "cb1c194666d498d3e4416c07de5c8a3e21bcbc20",
+      "premises": 132,
+      "raw": "property-undefined-warning-ch4itvx4/report.json"
+    },
+    {
+      "group": "owned",
+      "revision": "7528ebb1cb8ba3c4d3d843ce56d841164eda0ad2",
+      "premises": 154,
+      "raw": "property-undefined-warning-eeutvcdq/report.json"
+    },
+    {
+      "group": "pending",
+      "revision": "192e334522b4e65a1c71e60f0609ab36ac3a7620",
+      "premises": 166,
+      "raw": "property-undefined-warning-jum5bg9g/report.json"
+    }
+  ],
+  "reached_meaning": "452 setup-inclusive, model-only premises at separate cuts: actual owner transfer/Weak retirement, fixed null, full state/heap admission, handler-false cleanup, throwing identity/B-previous-H chaining, consumed-slot/carrier refusals, atomic selected-cell installation and zero/final budget replay. Constructed raw-REFERENCE controls retain precise Unsupported; they are not native reference-return agreements.",
+  "new_sources": {
+    "revision": "192e334522b4e65a1c71e60f0609ab36ac3a7620",
+    "raw": "dynamic-property-warning-source-631ye828/report.json",
+    "normal_agreements": 2,
+    "cases": [
+      "review-property-undefined-borrowed-false20",
+      "review-property-undefined-false-static-replacement20"
+    ],
+    "meaning": "Exact stdout/stderr and exit0; Warning lines10/14. Static replacement has no implicit This owner: handler destructor prints F before after-fetch and sets reporting0 after default Warning emission."
+  },
+  "native_first": [
+    {
+      "revision": "38db9f516",
+      "raw": "property-undefined-false-native20-_aginqn8/report.json",
+      "meaning": "Borrowed false original plus a distinct bound-Closure replacement observation. The latter keeps an implicit This owner and is only a weaker timing control, not the corrected retirement witness."
+    },
+    {
+      "revision": "192e334522b4e65a1c71e60f0609ab36ac3a7620",
+      "raw": "property-undefined-false-static-native20-mkfuer3k/report.json",
+      "meaning": "Corrected distinct static-replacement original, native-only before its public source comparison."
+    }
+  ],
+  "preserved_failures": [
+    {
+      "raw": "property-undefined-warning-t09twum2/report.json",
+      "credit": 0,
+      "cause": "Constructed false fallback lacked the mandatory entered-handler cleanup record; actual borrowed-retirement checks before it passed but the whole gate failed."
+    },
+    {
+      "raw": "property-undefined-fallback-partition19/report.json",
+      "credit": 0,
+      "cause": "Local admission false; all eight other partitions true."
+    },
+    {
+      "raw": "property-undefined-fallback-local20/report.json",
+      "credit": 0,
+      "cause": "57 local predicates isolate task admission and destruction-state admission."
+    },
+    {
+      "raw": "property-undefined-fallback-operation20/report.json",
+      "credit": 0,
+      "cause": "Diagnostic fixture had a blank line before appended premises; pre-evaluation syntax stop."
+    },
+    {
+      "raw": "property-undefined-fallback-operation20-v2/report.json",
+      "credit": 0,
+      "cause": "Diagnostic confirms SOURCE=ERROR_HANDLER_RESULT/CLEANUP=eps violates internal-source admission; resume tail remains valid."
+    },
+    {
+      "raw": "property-undefined-warning-a3hgv3gt/report.json",
+      "credit": 0,
+      "cause": "Owned fixture emitted an if expression for a direct PhpStep premise; pre-evaluation elaboration stop. Corrected writer follows the existing direct-relation convention."
+    }
+  ],
+  "compatibility": "Original six handlers return true or throw, so the false-only207 correction leaves their paths unchanged. Moving its declaration, correcting owned direct-relation emission and editing the new replacement source do not alter the borrowed/pending fixture bodies or production rules. These cuts retain their tested revisions; documentation adds no renewed credit.",
+  "commands": {
+    "strict": "python3 .tools/instance_future_untyped_strict_init19.py 20",
+    "reached": "python3 tests/semantics/property_undefined_warning_protocol.py --group borrowed|owned|pending (serial)",
+    "sources": "python3 tests/semantics/dynamic_property_warning_sources.py source --select review-property-undefined-borrowed-false20,review-property-undefined-false-static-replacement20",
+    "caps": "jobs1; numeric120; native30/model60/process90"
+  },
+  "review": "properties_review_20 independently accepts semantic rules, exact raw completions, counterexamples, separate-cut compatibility and actual-parent code/inventory. Current-parent strict359 is recorded separately.",
+  "remaining": "Computed names, magic getters/hooks, consumed or missing future storage, wider receiver/ownership forms and accepted99 BP_VAR_R read-call reference-result normalization. Do not invent an HCELL-owned Warning protocol; held278/279 remain excluded dependencies.",
+  "actual_parent": {
+    "parent": "f5c4eed1f7c847105c759e3a50c9a8b6f47d9ef1",
+    "revision": "e77c3eff08dd853a0e314f09ced3cae054769f8e",
+    "modules": 359,
+    "strict_raw": ".tools/properties-undefined-current20/.tools/properties-undefined-current359-strict20/report.json",
+    "strict_seconds": 4.567,
+    "exit": 0,
+    "state_assertions_evaluated": 0,
+    "command": "python3 .tools/property_undefined_current_strict20.py (actual-parent worktree)",
+    "meaning": "Reviewed current207 state-aware SOURCE/GEN363 guards,270 eager_operation_source and30 Generator renderer fields are preserved. Strict compilation is separate from earlier source/reached cuts; no renewed semantic credit."
+  }
+}

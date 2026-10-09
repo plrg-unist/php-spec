@@ -121,7 +121,16 @@ Three fatal originals and 611 reached premises validate the real handler/destruc
 pins, transient Weak owners, warning delivery, cache mutation and replay at separate cuts.
 Actual 358 over `b721887ce` passes strict compilation at `00536106a`; current
 source/argument/storage fields remain intact and private 3/611 retain their inputs.
-Throwing callbacks, deeper custom rendering, abrupt exception release, message warnings, parked or
+A throwing renderer-installed handler rethrows at its genuine C root and receives
+its own fatal report. Authentic EHR, renderer-return and outer-report carriers keep
+the original exception and Generator/cache alive; its custom renderer has three
+real owners from CURRENT, STRINGIFY_RESULT and REPORT. The new exception releases
+after frozen emission and before bailout, including a destructor that sets reporting
+to zero. Two exact fatal originals and 163/180 strict premises retain separate cuts.
+Final 358 over `ea04fbbe4` passes strict compilation at `ff3d3278b`, preserving the
+named-SEND warning shapes. Earlier 2aa/646 and source/state cuts retain their inputs.
+Throwing warning callbacks, deeper custom rendering, abrupt
+child free_obj/destructor/weak-Generator lifetimes, message warnings, parked or
 escaped storage and generic terminal cleanup remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture

@@ -331,9 +331,13 @@ A renderer rethrow at request C root reports/releases its builtin inner Throwabl
 before abandoning the original report and real Generator/cache owners. A returning
 renderer-installed handler releases its inner exception before registry restoration;
 warning callbacks can refresh the original cached string before fatal reporting.
-Three originals and 611 reached premises retain separate cuts. Throwing callbacks,
-deeper rendering, abrupt exception release, parked/escaped storage and generic
-terminal cleanup remain required.
+Three originals and 611 reached premises retain separate cuts. A throwing
+renderer-installed handler receives its own fatal report while real outer
+handler/report and Generator/cache owners survive. Its reported exception releases
+before bailout, even when its destructor changes reporting to zero. Two new
+originals and 343 strict premises retain separate cuts. Throwing warning callbacks,
+deeper rendering, abrupt child cleanup, parked/escaped storage and generic terminal
+cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -1007,7 +1011,8 @@ Future explicitly unset typed slots now raise the same Error when no getter is
 present. Three exact originals and 142/147 reached premises distinguish actual
 dynamic-first cleanup order from physical slot indexes, retain visibility and
 alias detachment, and verify pending cleanup and atomic selected binding.
-Consumed slots, wider quiet/getter accesses and untyped unset reads remain required.
+The later undefined-property cut below extends untyped unset reads; consumed
+slots and wider getter accesses remain required.
 The actual356 composition passes strict initialization.
 Future initialized declared values and typed INITIAL/UNSET slots now support
 quiet `isset`, `empty` and `??` without magic consumers. Terminal probes borrow
@@ -1016,6 +1021,17 @@ null and typed INITIAL/UNSET results; 157/138 reached premises prove unchanged
 heap owners, alias rebinding/type detach and kept-child survival.
 The actual358 composition passes strict initialization.
 Consumed/missing storage and wider magic accesses remain required.
+Literal undefined property reads now run real warning handlers with fixed null
+after their writes or receiver retirement. CV/`$this` receivers borrow their
+owner; temporaries hold the receiver until completion. Future untyped UNSET slots
+retain their physical storage carrier through quiet reads and handler throws.
+Six original comparisons and two distinct false-return comparisons retain
+separate cuts; 132/154/166 reached premises and strict initialization pass.
+The reviewed current359 composition over `f5c4eed1f` passes strict compilation
+at `e77c3eff0`, preserving current source and Generator interfaces.
+[The review](coverage/semantics/undefined-property-review.json) preserves the
+original fallback/fixture failures and the weaker bound-Closure witness.
+Computed names, getters/hooks and read-call reference normalization remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
