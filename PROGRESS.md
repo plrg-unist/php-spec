@@ -368,7 +368,9 @@ including the two formerly Unsupported virtual controls. SL139 at `c4dd589c`
 (13 derived, 126 reached) proves pending CV writes, forged-slot rejection and
 result ownership; false135 and diagnostic runs retain zero credit. Hooked object
 iteration is explicitly Unsupported; defaulted virtual/set/byref and wider
-receiver/access families remain partial. Actual composition is pending.
+receiver/access families remain partial. Actual 374-module composition over
+`2112d1e9` passes strict initialization at `964aa9e4` (5.479 s), retaining the
+parent magic-get/reference paths and the private source/state cuts.
 [Virtual hook review](coverage/semantics/virtual-get-hooks-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
