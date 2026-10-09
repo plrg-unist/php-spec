@@ -1392,6 +1392,9 @@ discarded and by-value results, surviving aliases and H/B/C cleanup pass
 with 1266 setup-inclusive premises. Native6 plus a separate by-value native1,
 the original Unsupported baseline and failed gates keep their distinct cuts;
 earlier CV/denied getter evidence is unchanged.
+The actual371 join over `675a2e1b5` passes strict at `d54c66076` (5.417s),
+preserving current compiler warning routing and getter interfaces. Private
+source/state cuts retain their original credit.
 Coercions, constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

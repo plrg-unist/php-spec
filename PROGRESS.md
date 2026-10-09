@@ -2124,6 +2124,9 @@ Native6 and separate by-value native1 precede the model Unsupported baseline
 setup-inclusive premises across `e293c490f`, `54e85fba1`, `a2a6f4aae` and
 `715f48e38`; original failures remain zero. Existing public/denied cuts are unchanged.
 [Owned-getter ledger](coverage/semantics/magic-property-owned-review.json).
+The actual371 join over `675a2e1b5` passes strict at `d54c66076` (5.417s,
+state credit0). Current compiler severity routing is retained; these getter
+sources have no private-final diagnostic. Private cuts and failures are unchanged.
 Coercions, constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
