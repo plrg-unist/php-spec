@@ -152,7 +152,7 @@ def main():
         stage_text += 'def $owner_stage(S, n_stage) = false -- otherwise\n'
         out = args.output / (name + '.watsup')
         out.write_text(PREFIX + HELPERS + '\n' + stage_text + '\ndec $main() : bool\ndef $main() = true\n' +
-                       ''.join('  -- if ' + x + '\n' for x in assertions))
+                       ''.join('  -- ' + (x if x.startswith('PhpStep:') else 'if ' + x) + '\n' for x in assertions))
         records.append({'id': name, 'source_id': case, 'fixture': str(out.resolve()),
                         'source_sha256': (negative[case][1] if negative_case else cases[case])['source_sha256'],
                         'assertions': len(assertions), 'source_packets_only': negative_case})
@@ -431,7 +431,7 @@ def main():
         '$retired_row_valid(S_cursor, pretiredowner_cursor)', '$retired_pair_valid(S_cursor, pretiredowner_cursor)',
         '$call_descriptors_valid(S_cursor)', '~$retired_live(S_cursor, pretiredowner_cursor)',
         '$heap_graph(S_cursor) = $heap_graph(S)',
-        'S_cursor_next = $drive_steps(S_cursor, 1)',
+        'PhpStep: S_cursor ~> S_cursor_next',
         'S_cursor_next.COMPLETION = UNSUPPORTED "reference replay requires live dense value-foreach array"',
         'S_cursor_next.STORE = S_cursor.STORE', 'S_cursor_next.ARRAYS = S_cursor.ARRAYS',
         'S_cursor_next.ITERATORS = S_cursor.ITERATORS', 'S_cursor_next.NEXTITER = S_cursor.NEXTITER',
@@ -452,7 +452,7 @@ def main():
                  'pretiredowner.POSITION = (1)', '~(HARRAY pretiredowner.ARRAY <- S.ALLOCATIONS)']
     checks = stage[1:] + pair() + ['$retired_row_valid(S, pretiredowner)', '~$retired_live(S, pretiredowner)',
         '$heap_owners($heap_graph(S), HARRAY pretiredowner.ARRAY) = 0',
-        'S_next = $drive_steps(S, 1)',
+        'PhpStep: S ~> S_next',
         'S_next.COMPLETION = UNSUPPORTED "reference replay requires live dense value-foreach array"',
         'S_next.RETIREDOWNERS = eps', 'S_next.TODO = eps', 'S_next.STORE = S.STORE',
         'S_next.ARRAYS = S.ARRAYS', 'S_next.ITERATORS = S.ITERATORS', 'S_next.NEXTITER = S.NEXTITER',
