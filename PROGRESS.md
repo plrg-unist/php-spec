@@ -2530,6 +2530,8 @@ at c871de946/372, including saved VM authority and exact zero-budget resumption.
 The original Unsupported and premature-result fixture263 failure remain zero
 credit. Maintained source/render bytes are unchanged; no relocation renewal.
 Other targets and required original 7's CLI60 timeout remain OPEN.
+Actual-parent compilation and initialized SL299 pass at `288bb478` over
+`8a81891c` with 374 modules; COMP383/PROPS384 seams preserve prior source/native cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
