@@ -531,8 +531,24 @@ Closure calls release their Closure after named values; explicit `__invoke`
 releases it as EX(This). Pack errors retain their actual pre-entry trace.
 The [start-unpack ledger](../../coverage/semantics/fiber-start-unpack-review.json)
 keeps these new checks separate from earlier captures and callback consumers.
-Traversable unpacking and compound array or factory selectors remain required;
-Traversable START packs retain an explicit Unsupported control.
+Module 376 unpacks Generators through native resume operations and Iterators
+through their real callbacks. A source CV is borrowed; temporary operands and
+iterator data retain separate owners. Iterator `current()` references survive
+`key()` and are dereferenced before `next()`. Saved callbacks authenticate their
+source and unpack instruction line; completed history remains valid after the
+iterator retires. Callback errors retire iterator data and temporary operands
+before the unfinished call buffer. Without an effectful cleanup domain, ordinary
+pruning consumes those owners without creating an inactive release task.
+The [Traversable ledger](../../coverage/semantics/fiber-start-traversable-review.json)
+records the source and reached-state checks. NaN `valid()` warns at the actual
+unpack line while retaining its original raw return. A handler may mutate or park
+that reference; the C truth test rereads its live payload after handler cleanup,
+while a copied NaN stays true. The INVOKE/RESULT/CLEAN wrappers preserve exactly
+one pending START, including its data owner after the source CV changes. Throwing
+handlers retire raw retval, iterator data and temporary operand before the call
+buffer. The [NaN ledger](../../coverage/semantics/fiber-start-nan-review.json)
+records these separate cuts. IteratorAggregate acquisition, wider raw payload
+changes and compound array or factory selectors remain required.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and
@@ -547,8 +563,8 @@ suppressed `exit` in a destroyed Fiber remain required consumers.
 
 `getReturn` after graceful close without an actual return, request/fatal cleanup,
 wider core internal callback bodies, reference forwarding, wider API callable/FCC entry,
-Traversable `start` unpacking and switching during initialization/source loading remain
-required. The first transfer domain rejects active or saved constant/default and
+IteratorAggregate `start` unpacking, wider raw payload changes and switching during
+initialization/source loading remain required. The first transfer domain rejects active or saved constant/default and
 autoload initialization, and active Generator execution, including switches in
 their helper calls. Their shared pending flags and parked ownership remain
 required consumers. Actual late Fiber-shutdown/frameless switching restrictions need

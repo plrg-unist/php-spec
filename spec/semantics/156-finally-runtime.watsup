@@ -1,6 +1,14 @@
 ;; Generated-only Stage A previous links form an acyclic chain. Direct
 ;; constructor writes may create cycles and require a later bounded traversal.
 syntax pthrowchain = THROWCHAIN nat* | BADTHROWCHAIN
+dec $finally_source_inside(pstate, porigin, porigin) : bool
+dec $finally_marker_origin(ptask) : porigin?
+dec $finally_catch_origin(pstate, porigin, porigin?) : bool
+dec $finally_phase_of(ptask) : nat?
+dec $goto_prior_origin(porigin) : porigin?
+dec $ref_recheck_tail(pstate, porigin, porigin, poperand, int, ptask*) : ptask*
+dec $ref_replay_owners(pstate, porigin) : porigin*
+dec $ref_recheck_last(ptask*, ptask) : bool
 dec $throwable_chain(pstate, nat, nat*) : pthrowchain
 dec $throwable_chain_next(pstate, nat?, nat*) : pthrowchain
 def $throwable_chain(S, n, n_seen*) = $throwable_chain_next(S, $throwable_previous_id(S, n), n_seen* ++ [n])
@@ -85,6 +93,7 @@ def $finally_enter_goto(S, porigin, porigin_source, pcpath_target, ptask_tail*) 
 dec $finally_leave(pstate, porigin, ptask*) : pstate
 dec $finally_leave_return(pstate, porigin, porigin, poperand, ptask*) : pstate
 def $finally_leave(S, porigin, (FINALLY_PHASE porigin n_phase) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*) = $return_discard(S[.TODO = ptask_tail*][.ORIGIN = (porigin)], ORIGIN_RETURN porigin_outer?)
+def $finally_leave(S, porigin, (FINALLY_PHASE porigin n_phase) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*) = $return_discard(S[.TODO = ptask_tail*][.ORIGIN = (porigin)], REF_REPLAY_ORIGIN porigin_source z prefowner*)
 def $finally_leave(S, porigin, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "invalid finally continuation"] -- otherwise
 dec $finally_leave_throw(pstate, porigin, nat, ptask*) : pstate
 def $finally_leave_throw(S, porigin, n, ptask_tail*) = S_left[.TODO = (THROW_SEARCH n) :: S_left.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -92,9 +101,38 @@ def $finally_leave_throw(S, porigin, n, ptask_tail*) = S_left[.TODO = (THROW_SEA
 def $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*) = S_left[.TODO = (RETURN_UNWIND poperand (porigin_source)) :: S_left.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_left = $finally_leave(S, porigin, ptask_tail*)
 dec $finally_leave_ref_return(pstate, porigin, porigin, poperand, int, bool, ptask*) : pstate
-def $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b_finalized, ptask_tail*) = S_left[.TODO = (RETURN_REF_UNWIND poperand z b_finalized porigin_source) :: S_left.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b_finalized, ptask_tail*) = S_left[.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: $ref_recheck_tail(S_left, porigin, porigin_source, poperand, z, S_left.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_left = $finally_leave(S, porigin, ptask_tail*)
 
+;; The first completed protected finalizer leaves one witness at the end of
+;; this call's continuation. Later finalizers retain it; an overriding return
+;; replaces the old transfer and removes its witness.
+dec $ref_recheck_owner(ptask*, porigin, poperand, int) : porigin?
+dec $ref_recheck_same(ptask, porigin, poperand, int) : bool
+def $ref_recheck_same(REF_RECHECK porigin_source porigin poperand z, porigin_source, poperand, z) = true
+def $ref_recheck_same(ptask, porigin_source, poperand, z) = false -- otherwise
+def $ref_recheck_owner(eps, porigin_source, poperand, z) = eps
+def $ref_recheck_owner((REF_RECHECK porigin_source porigin poperand z) :: ptask_tail*, porigin_source, poperand, z) = (porigin)
+def $ref_recheck_owner(ptask :: ptask_tail*, porigin_source, poperand, z) = $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z)
+  -- if ~$ref_recheck_same(ptask, porigin_source, poperand, z)
+dec $ref_recheck_clean(ptask*) : ptask*
+dec $ref_recheck_marker(ptask) : bool
+def $ref_recheck_marker(REF_RECHECK porigin_source porigin poperand z) = true
+def $ref_recheck_marker(REF_REPLAY porigin_source poperand z prefowner_tail*) = true
+def $ref_recheck_marker(ptask) = false -- otherwise
+def $ref_recheck_clean(eps) = eps
+def $ref_recheck_clean((REF_RECHECK porigin_source porigin poperand z) :: ptask_tail*) = $ref_recheck_clean(ptask_tail*)
+def $ref_recheck_clean((REF_REPLAY porigin_source poperand z prefowner_tail*) :: ptask_tail*) = $ref_recheck_clean(ptask_tail*)
+def $ref_recheck_clean(ptask :: ptask_tail*) = ptask :: $ref_recheck_clean(ptask_tail*)
+  -- if ~$ref_recheck_marker(ptask)
+def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*) ++ [REF_RECHECK porigin_source porigin_first poperand z]
+  -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = (porigin_first)
+def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*) ++ [REF_RECHECK porigin_source porigin poperand z]
+  -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = eps
+  -- if $finally_source_inside(S, porigin, porigin_source)
+def $ref_recheck_tail(S, porigin, porigin_source, poperand, z, ptask_tail*) = $ref_recheck_clean(ptask_tail*)
+  -- if $ref_recheck_owner(ptask_tail*, porigin_source, poperand, z) = eps
+  -- if ~$finally_source_inside(S, porigin, porigin_source)
 ;; A completed return carries its already evaluated operand through each
 ;; finalizer. A return inside that finalizer discards the older transfer.
 def $finally_transfer_marker(S, TRY_END porigin) = $finally_present(S, porigin)
@@ -127,6 +165,63 @@ def $finally_ref_recheck(S, poperand, z) = $reference_return_write_operand(S_che
   -- if S_checked = $typed_return_checked(S_input, z, $typed_reference_operand_source(S, poperand))
   -- if S_checked.COMPLETION = NORMAL
   -- if S_checked.RESULT = KNOWN pvalue
+dec $ref_replay_filter(pstate, nat, pcpath*, porigin) : porigin*
+def $ref_replay_filter(S, n, eps, porigin_source) = eps
+def $ref_replay_filter(S, n, pcpath_try :: pcpath_tail*, porigin_source) = $ref_replay_filter(S, n, pcpath_tail*, porigin_source) ++ [PORIGIN n pcpath_try]
+  -- if $finally_source_inside(S, PORIGIN n pcpath_try, porigin_source)
+def $ref_replay_filter(S, n, pcpath_try :: pcpath_tail*, porigin_source) = $ref_replay_filter(S, n, pcpath_tail*, porigin_source)
+  -- if ~$finally_source_inside(S, PORIGIN n pcpath_try, porigin_source)
+def $ref_replay_owners(S, PORIGIN n pcpath_source) = $ref_replay_filter(S, n, $ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), PORIGIN n pcpath_source)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+dec $ref_replay_context_paths(pstate, nat, pcpath, pcpath) : prefowner*
+dec $ref_context_kind(pstate, nat, pcpath, pcpath) : prefowner?
+def $ref_context_kind(S, n, pcpath_source, pcpath_current) = (REPLAY_TRY (PORIGIN n pcpath_current))
+  -- if $throwable_try_valid(S, PORIGIN n pcpath_current)
+  -- if $effect_below(pcpath_current ++ [PCFIELD 0], pcpath_source)
+def $ref_context_kind(S, n, pcpath_source, pcpath_current) = (REPLAY_CATCH (PORIGIN n pcpath_current))
+  -- if $finally_present(S, PORIGIN n pcpath_current)
+  -- if $effect_below(pcpath_current ++ [PCFIELD 1], pcpath_source)
+def $ref_context_kind(S, n, pcpath_source, pcpath_current) = eps -- otherwise
+def $ref_replay_context_paths(S, n, pcpath_source, eps) = eps
+def $ref_replay_context_paths(S, n, pcpath_source, pcpath_current) = eps
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ppfinally_scope_node(pcunit.OCCURRENCES, pcpath_current)
+def $ref_replay_context_paths(S, n, pcpath_source, pcpath_current) = [prefowner] ++ $ref_replay_context_paths(S, n, pcpath_source, pcpath_current[0:n_parent])
+  -- if $(|pcpath_current| > 0)
+  -- if n_parent = $(|pcpath_current| - 1)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if ~$ppfinally_scope_node(pcunit.OCCURRENCES, pcpath_current)
+  -- if $ref_context_kind(S, n, pcpath_source, pcpath_current) = (prefowner)
+def $ref_replay_context_paths(S, n, pcpath_source, pcpath_current) = $ref_replay_context_paths(S, n, pcpath_source, pcpath_current[0:n_parent])
+  -- if $(|pcpath_current| > 0)
+  -- if n_parent = $(|pcpath_current| - 1)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if ~$ppfinally_scope_node(pcunit.OCCURRENCES, pcpath_current)
+  -- if $ref_context_kind(S, n, pcpath_source, pcpath_current) = eps
+dec $ref_replay_contexts(pstate, porigin) : prefowner*
+def $ref_replay_contexts(S, PORIGIN n pcpath_source) = $ref_replay_context_paths(S, n, pcpath_source, pcpath_source)
+def $ref_recheck_throw_producer(S, S_next) = true
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
+  -- if $ref_replay_owners(S, porigin_source) = porigin_first :: porigin_owner_tail*
+  -- if $throwable_pending(S_next.COMPLETION)
+  -- if S_next.FRAMES = S.FRAMES
+  -- if S_next.CURRENT = S.CURRENT
+def $ref_recheck_throw_producer(S, S_next) = false -- otherwise
+def $throwable_continuation(S, S_next) = S_next[.TODO = (REF_REPLAY porigin_source poperand z prefowner*) :: eps]
+  -- if $ref_recheck_throw_producer(S, S_next)
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
+  -- if prefowner* = $ref_replay_contexts(S, porigin_source)
+dec $ref_owner_origin(prefowner) : porigin
+def $ref_owner_origin(REPLAY_TRY porigin) = porigin
+def $ref_owner_origin(REPLAY_CATCH porigin) = porigin
+dec $ref_replay_tasks(porigin, int, prefowner*) : ptask*
+def $ref_replay_tasks(porigin_source, z, eps) = eps
+def $ref_replay_tasks(porigin_source, z, (REPLAY_TRY porigin) :: prefowner_tail*) = [TRY_END porigin, REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*), REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)] ++ $ref_replay_tasks(porigin_source, z, prefowner_tail*)
+def $ref_replay_tasks(porigin_source, z, (REPLAY_CATCH porigin) :: prefowner_tail*) = [FINALLY_ONLY porigin, REF_REPLAY_ORIGIN porigin_source z ((REPLAY_CATCH porigin) :: prefowner_tail*), REF_REPLAY_PHASE porigin_source z ((REPLAY_CATCH porigin) :: prefowner_tail*)] ++ $ref_replay_tasks(porigin_source, z, prefowner_tail*)
+dec $ref_recheck_task(ptask) : bool
+def $ref_recheck_task(REF_RECHECK porigin_source porigin_first poperand z) = true
+def $ref_recheck_task(ptask) = false -- otherwise
+
 dec $return_ref_step(pstate, poperand, int, bool, porigin, ptask*) : pstate
 def $return_ref_step(S, poperand, z, b, porigin_source, (TRY_END porigin) :: ptask_tail*) = $finally_enter_ref_return(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $finally_present(S, porigin)
@@ -138,7 +233,14 @@ def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_JUMP porigin po
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_GOTO porigin porigin_old pcpath_old pcpath_target) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, ptask :: ptask_tail*) = $return_discard(S[.TODO = (RETURN_REF_UNWIND poperand z b porigin_source) :: ptask_tail*], ptask)
   -- if ~$finally_transfer_marker(S, ptask)
+  -- if ~$ref_recheck_task(ptask)
 def $return_ref_step(S, poperand, z, false, porigin_source, eps) = $return_step(S, poperand, (porigin_source), eps)
+def $return_ref_step(S, poperand, z, true, porigin_source, (REF_RECHECK porigin_source porigin_first poperand z) :: eps) = $return_step(S_checked, $finally_ref_result(S_checked, poperand), (porigin_source), eps)
+  -- if S_checked = $finally_ref_recheck(S, poperand, z)
+  -- if S_checked.COMPLETION = NORMAL
+def $return_ref_step(S, poperand, z, true, porigin_source, (REF_RECHECK porigin_source porigin_first poperand z) :: eps) = S_checked
+  -- if S_checked = $finally_ref_recheck(S, poperand, z)
+  -- if S_checked.COMPLETION =/= NORMAL
 def $return_ref_step(S, poperand, z, true, porigin_source, eps) = $return_step(S_checked, $finally_ref_result(S_checked, poperand), (porigin_source), eps)
   -- if S_checked = $finally_ref_recheck(S, poperand, z)
   -- if S_checked.COMPLETION = NORMAL
@@ -147,8 +249,223 @@ def $return_ref_step(S, poperand, z, true, porigin_source, eps) = S_checked
   -- if S_checked.COMPLETION =/= NORMAL
 rule PhpStep/return-ref-unwind: S ~> $return_ref_step(S, poperand, z, b, porigin_source, ptask_tail*)
   -- if S.TODO = (RETURN_REF_UNWIND poperand z b porigin_source) :: ptask_tail*
+def $ref_recheck_last(eps, ptask_marker) = false
+def $ref_recheck_last(ptask_marker :: eps, ptask_marker) = true
+def $ref_recheck_last(ptask :: ptask_tail*, ptask_marker) = $ref_recheck_last(ptask_tail*, ptask_marker)
+  -- if ptask =/= ptask_marker
+dec $ref_recheck_producer(ptask*, porigin, poperand, int) : bool
+dec $ref_recheck_producer_task(ptask, porigin, poperand, int) : bool
+def $ref_recheck_producer_task(RETURN_REF_UNWIND poperand z true porigin_source, porigin_source, poperand, z) = true
+def $ref_recheck_producer_task(FINALLY_REF_RETURN porigin porigin_source poperand z, porigin_source, poperand, z) = true
+def $ref_recheck_producer_task(ptask, porigin_source, poperand, z) = false -- otherwise
+def $ref_recheck_producer((RETURN_REF_UNWIND poperand z true porigin_source) :: ptask_tail*, porigin_source, poperand, z) = true
+def $ref_recheck_producer((FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*, porigin_source, poperand, z) = true
+def $ref_recheck_producer(ptask :: ptask_tail*, porigin_source, poperand, z) = $ref_recheck_producer(ptask_tail*, porigin_source, poperand, z)
+  -- if ~$ref_recheck_producer_task(ptask, porigin_source, poperand, z)
+def $ref_recheck_producer(eps, porigin_source, poperand, z) = false
+dec $ref_recheck_count(ptask*) : nat
+def $ref_recheck_count(eps) = 0
+def $ref_recheck_count((REF_RECHECK porigin_source porigin_first poperand z) :: ptask_tail*) = $(1 + $ref_recheck_count(ptask_tail*))
+def $ref_recheck_count(ptask :: ptask_tail*) = $ref_recheck_count(ptask_tail*)
+  -- if ~$ref_recheck_task(ptask)
+dec $ref_recheck_context(pstate, porigin, porigin, poperand, int) : bool
+dec $ref_recheck_throw_shape(ptask*) : bool
+def $ref_recheck_throw_shape((THROW_SEARCH n) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps) = true
+def $ref_recheck_throw_shape(ptask*) = false -- otherwise
+def $ref_recheck_context(S, porigin_source, porigin_first, poperand, z) = $throwable_live(S, n)
+  -- if S.TODO = (THROW_SEARCH n) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
+def $ref_recheck_context(S, porigin_source, porigin_first, poperand, z) = $ref_recheck_producer(S.TODO, porigin_source, poperand, z)
+  -- if $ref_recheck_last(S.TODO, REF_RECHECK porigin_source porigin_first poperand z)
+  -- if ~$ref_recheck_throw_shape(S.TODO)
+def $ref_recheck_context(S, porigin_source, porigin_first, poperand, z) = false -- otherwise
+dec $ref_recheck_valid(pstate, porigin, porigin, poperand, int) : bool
+def $ref_recheck_valid(S, porigin_source, porigin_first, poperand, z) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand) /\ $ref_recheck_count(S.TODO) = 1 /\ $ref_recheck_context(S, porigin_source, porigin_first, poperand, z))
+  -- if $ref_replay_owners(S, porigin_source) = porigin_first :: porigin_tail*
+def $ref_recheck_valid(S, porigin_source, porigin_first, poperand, z) = false -- otherwise
+dec $ref_recheck_pending_owner(ptask*, porigin*) : bool
+dec $ref_recheck_pending_task(ptask, porigin*) : bool
+def $ref_recheck_pending_task(TRY_END porigin, porigin_owner*) = (porigin <- porigin_owner*)
+def $ref_recheck_pending_task(FINALLY_ONLY porigin, porigin_owner*) = (porigin <- porigin_owner*)
+def $ref_recheck_pending_task(FINALLY_REF_RETURN porigin porigin_source poperand z, porigin_owner*) = (porigin <- porigin_owner*)
+def $ref_recheck_pending_task(ptask, porigin_owner*) = false -- otherwise
+def $ref_recheck_pending_owner(eps, porigin_owner*) = false
+def $ref_recheck_pending_owner((TRY_END porigin) :: ptask_tail*, porigin_owner*) = true -- if porigin <- porigin_owner*
+def $ref_recheck_pending_owner((FINALLY_ONLY porigin) :: ptask_tail*, porigin_owner*) = true -- if porigin <- porigin_owner*
+def $ref_recheck_pending_owner((FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*, porigin_owner*) = true -- if porigin <- porigin_owner*
+def $ref_recheck_pending_owner(ptask :: ptask_tail*, porigin_owner*) = $ref_recheck_pending_owner(ptask_tail*, porigin_owner*)
+  -- if ~$ref_recheck_pending_task(ptask, porigin_owner*)
+def $call_task_valid(S, RETURN_REF_UNWIND poperand z true porigin_source) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand) /\ ($ref_recheck_last(S.TODO, REF_RECHECK porigin_source porigin_first poperand z) \/ $ref_recheck_pending_owner(S.TODO, porigin_first :: porigin_tail*)))
+  -- if $ref_replay_owners(S, porigin_source) = porigin_first :: porigin_tail*
 def $call_task_valid(S, RETURN_REF_UNWIND poperand z b porigin_source) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand))
+  -- if ~b \/ $ref_replay_owners(S, porigin_source) = eps
+def $call_task_valid(S, REF_RECHECK porigin_source porigin_first poperand z) = $ref_recheck_valid(S, porigin_source, porigin_first, poperand, z)
 def $task_nodes(RETURN_REF_UNWIND poperand z b porigin_source) = $operand_nodes(poperand)
+
+dec $ref_replay_valid(pstate, porigin, poperand, int, prefowner*) : bool
+def $ref_replay_valid(S, porigin_source, poperand, z, prefowner*) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand) /\ prefowner* = $ref_replay_contexts(S, porigin_source) /\ prefowner* =/= eps /\ $throwable_live(S, n) /\ pthrowable.KIND = "TypeError")
+  -- if S.TODO = (THROW_SEARCH n) :: (REF_REPLAY porigin_source poperand z prefowner*) :: eps
+  -- if S.OBJECTS[n] = THROWABLE pthrowable
+def $ref_replay_valid(S, porigin_source, poperand, z, prefowner*) = false -- otherwise
+def $call_task_valid(S, REF_REPLAY porigin_source poperand z prefowner*) = $ref_replay_valid(S, porigin_source, poperand, z, prefowner*)
+
+dec $ref_replay_finalizer_paths(pcpath, pcpath*) : bool
+def $ref_replay_finalizer_paths(pcpath_source, eps) = false
+def $ref_replay_finalizer_paths(pcpath_source, pcpath :: pcpath_tail*) = ($effect_below(pcpath ++ [PCFIELD 2], pcpath_source) \/ $ref_replay_finalizer_paths(pcpath_source, pcpath_tail*))
+dec $ref_replay_from_finalizer(pstate, porigin) : bool
+def $ref_replay_from_finalizer(S, PORIGIN n pcpath_source) = $ref_replay_finalizer_paths(pcpath_source, $ppfinally_protected(pcunit.OCCURRENCES, pcpath_source))
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+
+;; The failed recheck has consumed its producer. One source-derived replay
+;; witness expands into ordinary throw-search owners and is then gone.
+rule PhpStep/ref-replay-expand: S ~> S[.TODO = (THROW_SEARCH n) :: $ref_replay_tasks(porigin_source, z, prefowner_first :: prefowner_tail*)][.ORIGIN = ($ref_owner_origin(prefowner_first))]
+  -- if S.TODO = (THROW_SEARCH n) :: (REF_REPLAY porigin_source poperand z (prefowner_first :: prefowner_tail*)) :: eps
+  -- if $ref_replay_valid(S, porigin_source, poperand, z, prefowner_first :: prefowner_tail*)
+  -- if ~$ref_replay_from_finalizer(S, porigin_source)
+;; The authenticated producer has already discarded any enclosing finalizer's
+;; pending outcome. Initial return-expression failures do not mint REF_REPLAY.
+rule PhpStep/ref-replay-finalizer-missing: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "reference return replay requires runtime finalizer"]
+  -- if S.TODO = (THROW_SEARCH n) :: (REF_REPLAY porigin_source poperand z prefowner*) :: eps
+  -- if $ref_replay_valid(S, porigin_source, poperand, z, prefowner*)
+  -- if $ref_replay_from_finalizer(S, porigin_source)
+def $throwable_marker(REF_REPLAY porigin_source poperand z prefowner_tail*) = true
+def $task_nodes(REF_RECHECK porigin_source porigin_first poperand z) = $operand_nodes(poperand)
+def $task_nodes(REF_REPLAY porigin_source poperand z prefowner_tail*) = $operand_nodes(poperand)
+
+;; The restoration slot retains the source's catch eligibility. After an owner
+;; is left, the retired triple either resumes its source tail or is discarded
+;; by the overriding transfer. All replay guards are non-owning.
+dec $ref_replay_outer(prefowner*) : porigin?
+def $ref_replay_outer(prefowner :: prefowner_next :: prefowner_tail*) = ($ref_owner_origin(prefowner_next))
+def $ref_replay_outer(prefowner :: eps) = $goto_prior_origin($ref_owner_origin(prefowner))
+dec $ref_replay_suffix(prefowner*, prefowner*) : bool
+def $ref_replay_suffix(prefowner_all*, prefowner_suffix*) = true
+  -- if prefowner_all* = prefowner_suffix*
+def $ref_replay_suffix(prefowner :: prefowner_tail*, prefowner_suffix*) = $ref_replay_suffix(prefowner_tail*, prefowner_suffix*)
+  -- if (prefowner :: prefowner_tail*) =/= prefowner_suffix*
+def $ref_replay_suffix(eps, prefowner_suffix*) = false -- if prefowner_suffix* =/= eps
+dec $ref_replay_site(pstate, porigin, int, prefowner*) : bool
+def $ref_replay_site(S, porigin_source, z, prefowner*) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ prefowner* =/= eps /\ $ref_replay_suffix($ref_replay_contexts(S, porigin_source), prefowner*))
+dec $ref_replay_binding(pstate, porigin, ptask*) : bool
+dec $ref_replay_binding_task(ptask, porigin) : bool
+def $ref_replay_binding_task(CATCH_BIND porigin n_index n, porigin) = true
+def $ref_replay_binding_task(ptask, porigin) = false -- otherwise
+def $ref_replay_binding(S, porigin, eps) = false
+def $ref_replay_binding(S, porigin, (CATCH_BIND porigin n_index n) :: ptask_tail*) = $throwable_binding_valid(S[.ORIGIN = (porigin)], porigin, n_index, n)
+def $ref_replay_binding(S, porigin, ptask :: ptask_tail*) = $ref_replay_binding(S, porigin, ptask_tail*)
+  -- if ~$ref_replay_binding_task(ptask, porigin)
+dec $ref_replay_caught(pstate, porigin) : bool
+def $ref_replay_caught(S, porigin) = (($finally_catch_origin(S, porigin, S.ORIGIN) /\ S.ORIGIN =/= (porigin)) \/ $ref_replay_binding(S, porigin, S.TODO))
+dec $ref_replay_phase(pstate, ptask, prefowner*) : bool
+def $ref_replay_phase(S, TRY_END porigin, (REPLAY_TRY porigin) :: prefowner_tail*) = true
+def $ref_replay_phase(S, FINALLY_ONLY porigin, (REPLAY_CATCH porigin) :: prefowner_tail*) = true
+def $ref_replay_phase(S, FINALLY_ONLY porigin, (REPLAY_TRY porigin) :: prefowner_tail*) = $ref_replay_caught(S, porigin)
+def $ref_replay_phase(S, ptask, prefowner :: prefowner_tail*) = ($finally_marker_origin(ptask) = ($ref_owner_origin(prefowner)) /\ $finally_phase_of(ptask) =/= eps)
+  -- if $finally_phase_of(ptask) =/= eps
+def $ref_replay_phase(S, ptask, prefowner*) = false -- otherwise
+dec $ref_replay_guard_before(pstate, ptask*, porigin, int, prefowner*) : bool
+dec $ref_replay_guard_prefix(ptask*, porigin, int, prefowner*) : bool
+def $ref_replay_guard_prefix(ptask :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*, porigin_source, z, prefowner*) = true
+def $ref_replay_guard_prefix(ptask :: (FINALLY_PHASE porigin n_phase) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*, porigin_source, z, prefowner*) = true
+def $ref_replay_guard_prefix(ptask*, porigin_source, z, prefowner*) = false -- otherwise
+def $ref_replay_guard_before(S, eps, porigin_source, z, prefowner*) = false
+def $ref_replay_guard_before(S, ptask :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*, porigin_source, z, prefowner*) = $ref_replay_phase(S, ptask, prefowner*)
+  -- if ptask =/= REF_REPLAY_AFTER porigin_source z prefowner*
+def $ref_replay_guard_before(S, ptask :: (FINALLY_PHASE porigin n_phase) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*, porigin_source, z, prefowner*) = ($ref_replay_phase(S, ptask, prefowner*) /\ $finally_marker_origin(ptask) = (porigin) /\ $finally_phase_of(ptask) = (n_phase))
+def $ref_replay_guard_before(S, (REF_REPLAY_AFTER porigin_source z prefowner*) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*, porigin_source, z, prefowner*) = true
+def $ref_replay_guard_before(S, ptask :: ptask_tail*, porigin_source, z, prefowner*) = $ref_replay_guard_before(S, ptask_tail*, porigin_source, z, prefowner*)
+  -- if ~$ref_replay_guard_prefix(ptask :: ptask_tail*, porigin_source, z, prefowner*)
+dec $ref_replay_guard_tail(ptask*, porigin, int, prefowner*) : bool
+dec $ref_replay_guard_task(ptask, porigin, int, prefowner*) : bool
+def $ref_replay_guard_task(REF_REPLAY_ORIGIN porigin_source z prefowner*, porigin_source, z, prefowner*) = true
+def $ref_replay_guard_task(ptask, porigin_source, z, prefowner*) = false -- otherwise
+def $ref_replay_guard_tail(eps, porigin_source, z, prefowner*) = false
+dec $ref_replay_guard_next(ptask*, porigin, int, prefowner*) : bool
+def $ref_replay_guard_next((REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*, porigin_source, z, prefowner :: prefowner_tail*) = ($ref_recheck_clean(ptask_tail*) = $ref_replay_tasks(porigin_source, z, prefowner_tail*))
+def $ref_replay_guard_next(ptask*, porigin_source, z, prefowner*) = false -- otherwise
+def $ref_replay_guard_tail((REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*, porigin_source, z, prefowner*) = $ref_replay_guard_next(ptask_tail*, porigin_source, z, prefowner*)
+def $ref_replay_guard_tail(ptask :: ptask_tail*, porigin_source, z, prefowner*) = $ref_replay_guard_tail(ptask_tail*, porigin_source, z, prefowner*)
+  -- if ~$ref_replay_guard_task(ptask, porigin_source, z, prefowner*)
+dec $ref_replay_guard_count(ptask*, porigin) : nat
+dec $ref_replay_guard_owner(ptask) : porigin?
+def $ref_replay_guard_owner(REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) = (porigin)
+def $ref_replay_guard_owner(REF_REPLAY_ORIGIN porigin_source z ((REPLAY_CATCH porigin) :: prefowner_tail*)) = (porigin)
+def $ref_replay_guard_owner(ptask) = eps -- otherwise
+def $ref_replay_guard_count(eps, porigin) = 0
+def $ref_replay_guard_count((REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*, porigin) = $(1 + $ref_replay_guard_count(ptask_tail*, porigin))
+  -- if $ref_owner_origin(prefowner) = porigin
+def $ref_replay_guard_count(ptask :: ptask_tail*, porigin) = $ref_replay_guard_count(ptask_tail*, porigin)
+  -- if $ref_replay_guard_owner(ptask) =/= (porigin)
+dec $ref_replay_phase_owner(ptask) : porigin?
+def $ref_replay_phase_owner(REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) = (porigin)
+def $ref_replay_phase_owner(REF_REPLAY_PHASE porigin_source z ((REPLAY_CATCH porigin) :: prefowner_tail*)) = (porigin)
+def $ref_replay_phase_owner(ptask) = eps -- otherwise
+dec $ref_replay_phase_count(ptask*, porigin) : nat
+def $ref_replay_phase_count(eps, porigin) = 0
+def $ref_replay_phase_count((REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*, porigin) = $(1 + $ref_replay_phase_count(ptask_tail*, porigin))
+  -- if $ref_owner_origin(prefowner) = porigin
+def $ref_replay_phase_count(ptask :: ptask_tail*, porigin) = $ref_replay_phase_count(ptask_tail*, porigin)
+  -- if $ref_replay_phase_owner(ptask) =/= (porigin)
+;; ORIGIN validates header phase before call_after_origin restores the outer
+;; context. Its adjacent PHASE checks only the source and whole pair structure.
+dec $ref_replay_phase_valid(pstate, porigin, int, prefowner*) : bool
+def $ref_replay_phase_valid(S, porigin_source, z, prefowner :: prefowner_tail*) = ($ref_replay_site(S, porigin_source, z, prefowner :: prefowner_tail*) /\ $ref_replay_guard_count(S.TODO, $ref_owner_origin(prefowner)) = 1 /\ $ref_replay_phase_count(S.TODO, $ref_owner_origin(prefowner)) = 1 /\ $ref_replay_guard_tail(S.TODO, porigin_source, z, prefowner :: prefowner_tail*))
+def $ref_replay_phase_valid(S, porigin_source, z, eps) = false
+def $call_task_valid(S, REF_REPLAY_PHASE porigin_source z prefowner*) = $ref_replay_phase_valid(S, porigin_source, z, prefowner*)
+dec $ref_replay_guard_valid(pstate, porigin, int, prefowner*) : bool
+def $ref_replay_guard_valid(S, porigin_source, z, prefowner :: prefowner_tail*) = ($ref_replay_site(S, porigin_source, z, prefowner :: prefowner_tail*) /\ $ref_replay_guard_count(S.TODO, $ref_owner_origin(prefowner)) = 1 /\ $ref_replay_phase_count(S.TODO, $ref_owner_origin(prefowner)) = 1 /\ $ref_replay_guard_tail(S.TODO, porigin_source, z, prefowner :: prefowner_tail*) /\ ($ref_replay_guard_before(S, S.TODO, porigin_source, z, prefowner :: prefowner_tail*) \/ (~$finally_present(S, $ref_owner_origin(prefowner)) /\ $ref_replay_caught(S, $ref_owner_origin(prefowner)))))
+def $ref_replay_guard_valid(S, porigin_source, z, eps) = false
+def $call_task_valid(S, REF_REPLAY_ORIGIN porigin_source z prefowner*) = $ref_replay_guard_valid(S, porigin_source, z, prefowner*)
+def $call_after_origin(S, REF_REPLAY_ORIGIN porigin_source z prefowner*) = S[.ORIGIN = $ref_replay_outer(prefowner*)]
+def $call_after_origin(S, REF_REPLAY_AFTER porigin_source z prefowner*) = S[.ORIGIN = $ref_replay_outer(prefowner*)]
+dec $ref_replay_transfer(ptask) : bool
+def $ref_replay_transfer(THROW_SEARCH n) = true
+def $ref_replay_transfer(RETURN_UNWIND poperand porigin?) = true
+def $ref_replay_transfer(RETURN_REF_UNWIND poperand z b porigin) = true
+def $ref_replay_transfer(GOTO_UNWIND porigin pcpath pcpath_target) = true
+def $ref_replay_transfer(ptask) = false -- otherwise
+dec $ref_replay_restore(pstate, porigin, int, prefowner*) : pstate
+def $ref_replay_restore(S, porigin_source, z, prefowner*) = S[.TODO = ptask :: (REF_REPLAY_AFTER porigin_source z prefowner*) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*][.ORIGIN = $ref_replay_outer(prefowner*)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $ref_replay_transfer(ptask)
+def $ref_replay_restore(S, porigin_source, z, prefowner*) = S[.TODO = (REF_REPLAY_AFTER porigin_source z prefowner*) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: eps][.ORIGIN = $ref_replay_outer(prefowner*)]
+  -- if S.TODO = eps
+def $ref_replay_restore(S, porigin_source, z, prefowner*) = S[.TODO = (REF_REPLAY_AFTER porigin_source z prefowner*) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: S.TODO][.ORIGIN = $ref_replay_outer(prefowner*)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if ~$ref_replay_transfer(ptask)
+def $return_discard(S, REF_REPLAY_ORIGIN porigin_source z prefowner*) = $ref_replay_restore(S[.TODO = ptask :: ptask_tail*], porigin_source, z, prefowner*)
+  -- if S.TODO = ptask :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*
+  -- if $ref_replay_transfer(ptask)
+def $return_discard(S, REF_REPLAY_ORIGIN porigin_source z prefowner*) = $ref_replay_restore(S[.TODO = ptask_tail*], porigin_source, z, prefowner*)
+  -- if S.TODO = (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*
+def $return_discard(S, TRY_END porigin) = $ref_replay_restore(S[.TODO = ptask :: ptask_tail*], porigin_source, z, (REPLAY_TRY porigin) :: prefowner_tail*)
+  -- if S.TODO = ptask :: (REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: ptask_tail*
+  -- if $ref_replay_transfer(ptask)
+def $return_discard(S, TRY_END porigin) = $ref_replay_restore(S[.TODO = ptask_tail*], porigin_source, z, (REPLAY_TRY porigin) :: prefowner_tail*)
+  -- if S.TODO = (REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: ptask_tail*
+def $return_discard(S, REF_REPLAY_AFTER porigin_source z prefowner*) = S[.TODO = ptask :: ptask_tail*][.ORIGIN = $ref_replay_outer(prefowner*)]
+  -- if S.TODO = ptask :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*
+  -- if $ref_replay_transfer(ptask)
+dec $ref_replay_pair(ptask*, porigin, int, prefowner*) : bool
+def $ref_replay_pair((REF_REPLAY_AFTER porigin_source z prefowner*) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*, porigin_source, z, prefowner*) = true
+def $ref_replay_pair(ptask :: (REF_REPLAY_AFTER porigin_source z prefowner*) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*, porigin_source, z, prefowner*) = $ref_replay_transfer(ptask)
+def $ref_replay_pair(ptask*, porigin_source, z, prefowner*) = false -- otherwise
+def $call_task_valid(S, REF_REPLAY_AFTER porigin_source z prefowner*) = ($ref_replay_pair(S.TODO, porigin_source, z, prefowner*) /\ $ref_replay_guard_valid(S, porigin_source, z, prefowner*) /\ S.ORIGIN = $ref_replay_outer(prefowner*))
+rule PhpStep/ref-replay-origin: S ~> $ref_replay_restore(S[.TODO = ptask_tail*], porigin_source, z, prefowner*)
+  -- if S.TODO = (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*
+
+;; Resume after the caught source try without re-executing its body.
+;; A consumed runtime loop/foreach/switch owner is not reconstructed here.
+dec $ref_replay_after_tasks(pstate, porigin) : pgototasks
+def $ref_replay_after_tasks(S, PORIGIN n pcpath) = GOTOTASKS ptask_tail*
+  -- if $goto_base(S, PORIGIN n pcpath) = GOTOTASKS ptask_base*
+  -- if $goto_find(S, PORIGIN n pcpath, ptask_base*, eps) = GOTOTASKS ((AT (PORIGIN n pcpath) (STMT statement)) :: ptask_tail*)
+def $ref_replay_after_tasks(S, porigin) = GOTOMISSING -- otherwise
+rule PhpStep/ref-replay-after: S ~> S[.TODO = ptask_source*][.ORIGIN = $goto_target_origin(S, $ref_owner_origin(prefowner), ptask_source*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (REF_REPLAY_AFTER porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*
+  -- if $ref_replay_after_tasks(S, $ref_owner_origin(prefowner)) = GOTOTASKS ptask_source*
+rule PhpStep/ref-replay-after-missing: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "reference return replay requires runtime owner"]
+  -- if S.TODO = (REF_REPLAY_AFTER porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*
+  -- if $ref_replay_after_tasks(S, $ref_owner_origin(prefowner)) = GOTOMISSING
 
 dec $finally_jump_enterable(ptask) : bool
 def $jump_loop(S, porigin_source, n_depth, n_original, b_continue) = $finally_enter_jump(S, porigin, porigin_source, n_depth, n_original, b_continue, ptask_tail*)
@@ -267,7 +584,6 @@ def $task_nodes(FINALLY_REF_RETURN porigin porigin_source poperand z) = $operand
 
 ;; The current source origin distinguishes catch/try continuation from an
 ;; executing finalizer. Each frame may hold at most one marker for a source try.
-dec $finally_marker_origin(ptask) : porigin?
 def $finally_marker_origin(TRY_END porigin) = (porigin)
 def $finally_marker_origin(FINALLY_ONLY porigin) = (porigin)
 def $finally_marker_origin(FINALLY_RESUME porigin n?) = (porigin)
@@ -283,7 +599,6 @@ def $finally_marker_count(ptask :: ptask_tail*, porigin) = $(1 + $finally_marker
   -- if $finally_marker_origin(ptask) = (porigin)
 def $finally_marker_count(ptask :: ptask_tail*, porigin) = $finally_marker_count(ptask_tail*, porigin)
   -- if $finally_marker_origin(ptask) =/= (porigin)
-dec $finally_catch_origin(pstate, porigin, porigin?) : bool
 def $finally_catch_origin(S, porigin, (porigin)) = true
 def $finally_catch_origin(S, PORIGIN n pcpath, (PORIGIN n pcpath_active)) = true
   -- if $(|pcpath_active| = |pcpath| + 2)
@@ -302,7 +617,6 @@ def $finally_saved_valid(S, (n)) = $throwable_live(S, n)
 dec $finally_resume_valid(pstate, porigin, nat?) : bool
 def $finally_resume_valid(S, porigin, n?) = ($throwable_try_valid(S, porigin) /\ $finally_present(S, porigin) /\ S.ORIGIN = $origin_child((porigin), [PCFIELD 2]) /\ $finally_saved_valid(S, n?) /\ $finally_marker_count(S.TODO, porigin) = 1)
 def $call_task_valid(S, FINALLY_ONLY porigin) = $finally_only_valid(S, porigin)
-dec $finally_phase_of(ptask) : nat?
 def $finally_phase_of(FINALLY_RESUME porigin n?) = ($finally_outcome_phase(n?))
 def $finally_phase_of(FINALLY_RETURN porigin porigin_source poperand) = (2)
 def $finally_phase_of(FINALLY_REF_RETURN porigin porigin_source poperand z) = (3)
@@ -332,7 +646,6 @@ def $finally_phase_count(ptask :: ptask_tail*, porigin) = $finally_phase_count(p
   -- if $finally_phase_origin(ptask) =/= (porigin)
 def $call_task_valid(S, FINALLY_RESUME porigin n?) = ($finally_resume_valid(S, porigin, n?) /\ $finally_phase_at(S.TODO, FINALLY_RESUME porigin n?, $finally_outcome_phase(n?)))
 def $call_task_valid(S, FINALLY_PHASE porigin n_phase) = ($finally_phase_guard_valid(S.TODO, porigin, n_phase) /\ $finally_phase_count(S.TODO, porigin) = 1)
-dec $finally_source_inside(pstate, porigin, porigin) : bool
 def $finally_source_inside(S, PORIGIN n pcpath_try, PORIGIN n pcpath_source) = ($effect_below(pcpath_try, pcpath_source) /\ ~$effect_below(pcpath_try ++ [PCFIELD 2], pcpath_source) /\ $goto_scope_valid(S, PORIGIN n pcpath_source))
 def $finally_source_inside(S, porigin, porigin_source) = false -- otherwise
 dec $finally_return_source_valid(pstate, porigin, porigin) : bool
@@ -414,7 +727,6 @@ def $finally_resume_at(FINALLY_GOTO porigin porigin_source pcpath_source pcpath_
 ;; Goto can land inside a protected try or catch without executing its header.
 ;; Reuse the live continuation when present; otherwise synthesize the lexical
 ;; finalizer marker and its enclosing source return for the entered region.
-dec $goto_prior_origin(porigin) : porigin?
 def $goto_prior_origin(PORIGIN n pcpath) = eps -- if $(|pcpath| < 2)
 def $goto_prior_origin(PORIGIN n pcpath) = (PORIGIN n pcpath[0:n_parent])
   -- if $(|pcpath| >= 2)
@@ -537,6 +849,10 @@ def $finally_outer_origin_valid(S, porigin, eps) = (S.CURRENT = eps)
 def $finally_outer_origin_valid(S, PORIGIN n pcpath, (PORIGIN n pcpath_outer)) = ($effect_below(pcpath_outer, pcpath) /\ $(|pcpath_outer| < |pcpath|))
 def $finally_outer_origin_valid(S, porigin, porigin_outer?) = false -- otherwise
 dec $finally_continuation_valid(pstate, ptask, ptask*) : bool
+def $finally_continuation_valid(S, ptask_marker, (FINALLY_PHASE porigin n_phase) :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask*) = ($finally_marker_origin(ptask_marker) = (porigin) /\ $finally_phase_of(ptask_marker) = (n_phase) /\ $ref_replay_site(S, porigin_source, z, prefowner*) /\ $ref_replay_phase(S, ptask_marker, prefowner*))
+  -- if $finally_phase_of(ptask_marker) =/= eps
+def $finally_continuation_valid(S, ptask_marker, (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask*) = ($ref_replay_site(S, porigin_source, z, prefowner*) /\ $ref_replay_phase(S, ptask_marker, prefowner*))
+  -- if $finally_phase_of(ptask_marker) = eps
 def $finally_continuation_valid(S, ptask_marker, (FINALLY_PHASE porigin n_phase) :: (ORIGIN_RETURN porigin_outer?) :: ptask*) = ($finally_marker_origin(ptask_marker) = (porigin) /\ $finally_phase_of(ptask_marker) = (n_phase) /\ $finally_outer_origin_valid(S, porigin, porigin_outer?))
   -- if $finally_phase_of(ptask_marker) =/= eps
 def $finally_continuation_valid(S, ptask_marker, (ORIGIN_RETURN porigin_outer?) :: ptask*) = $finally_outer_origin_valid(S, porigin, porigin_outer?)
@@ -545,14 +861,10 @@ def $finally_continuation_valid(S, ptask_marker, (ORIGIN_RETURN porigin_outer?) 
 def $finally_continuation_valid(S, ptask_marker, ptask*) = false -- otherwise
 dec $finally_continuations_valid(pstate, ptask*) : bool
 def $finally_continuations_valid(S, eps) = true
-def $finally_continuations_valid(S, ptask :: ptask_tail*) = ($finally_continuation_valid(S, ptask, ptask_tail*) /\ $finally_continuations_valid(S, ptask_tail*))
+def $finally_continuations_valid(S, ptask :: ptask_tail*) = ($finally_continuation_valid(S, ptask, ptask_tail*) /\ $finally_continuations_valid($call_after_origin(S, ptask), ptask_tail*))
   -- if $finally_marker_origin(ptask) = (porigin)
-  -- if $finally_present(S, porigin)
-def $finally_continuations_valid(S, ptask :: ptask_tail*) = $finally_continuations_valid(S, ptask_tail*)
+def $finally_continuations_valid(S, ptask :: ptask_tail*) = $finally_continuations_valid($call_after_origin(S, ptask), ptask_tail*)
   -- if $finally_marker_origin(ptask) = eps
-def $finally_continuations_valid(S, ptask :: ptask_tail*) = $finally_continuations_valid(S, ptask_tail*)
-  -- if $finally_marker_origin(ptask) = (porigin)
-  -- if ~$finally_present(S, porigin)
 dec $finally_current_complete(pstate) : bool
 def $finally_current_complete(S) = $finally_continuations_valid(S, S.TODO)
   -- if S.ORIGIN = eps

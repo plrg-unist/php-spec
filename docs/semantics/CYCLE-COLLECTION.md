@@ -474,5 +474,20 @@ Its printable-metadata lookup changes a concrete `ptascii` cost dependency for
 the throw-only retry; trait and named-CV ECHO paths are disjoint. No general
 speedup or earlier-cut renewal is inferred. The initial undefined-helper compiler
 stop, first throw-state 120s timeout and both whole CLI 60s timeouts retain zero
-affected/agreement credit. Active idle/residual tags, overlap, wider Fiber-pass
-reentry, whole CLI completion and broader GC remain required.
+affected/agreement credit. Wider active idle/residual tags, overlap, Fiber-pass
+reentry, earlier whole CLI completion and broader GC remain required.
+
+A live main callback can now resume/throw into the idle worker to scan
+snapshot-marked residual targets outside fresh DTORS. Admission binds the real
+main return and normalized selected callback; public cursor/guard/tag checks
+retain fresh main progress and separate pending errors. Changing only the
+explicit unset order grounds the intended path: the four earlier observations
+ran F on main and carry no residual-worker credit. The corrected41
+diagnostic localizes the actual dispatch refusal; its first driver-phase failure
+retains zero credit. At `c5a3e54df`, both new whole CLI60 sources agree and 174
+independent physical premises (95/79) reject tag/cursor/API/consumer forgeries,
+preserve count1 and exact replacement/prior errors, and complete both continuations.
+Actual361 over `9988f88bf` passes compilation and strict init at `5d89edb95`;
+Traversable/Generator/computed-static task paths are absent and their default
+ownership paths preserve this lane. Earlier 205/state and whole CLI timeout cuts
+are unchanged; wider active/overlap/Fiber-pass behavior remains open.

@@ -50,9 +50,20 @@ When a handler returns false, default reporting precedes return/selected-target
 cleanup and raw-handler restoration. The
 [undefined-property review](../../coverage/semantics/undefined-property-review.json)
 keeps native/source and reached-state cuts separate. Computed names, magic
-getters/hooks and wider receiver forms remain required. Raw reference-return
-receivers retain an explicit boundary pending read-call normalization through
-accepted module 99; this does not depend on held return-cleanup work.
+getters/hooks and wider receiver forms remain required.
+
+At PHP8.5, a literal named noarg nonbuiltin reference-return call without name
+fallback keeps its returned reference cell through callee leave. Module377 now
+captures that actual cell before PROPERTY_PREP, borrows the live ordinary
+instance/stdClass target and keeps the warning result null even when handler
+rebinding retires that target. FETCH cleanup through270 releases the read's
+returned cell owner; other aliases can keep that cell and its replacement alive.
+Cell and source checks are disjoint
+from the existing CV/temporary lanes; duplicate current or saved carriers are
+refused. [The reference-receiver review](../../coverage/semantics/reference-property-receiver-review.json)
+records exact native/source cases, reached ownership controls and the pinned8.5
+engine distinction from8.6. Accepted99/79 are unchanged; wider call forms,
+computed receivers and already-freeing targets remain required.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

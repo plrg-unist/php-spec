@@ -101,6 +101,6 @@ passed = (failure is None and len(rows) == expected_rows
     'caps': {'compiler': 120, 'strict_SL': 300, 'native': 45, 'CLI': 60, 'outer': 90, 'steps': 100000},
     'environment': {'LC_ALL': ENV['LC_ALL'], 'TZ': ENV['TZ'], 'cwd': str(ROOT),
         'PHP_SPEC_SCRIPT_ENCODING_removed': 'PHP_SPEC_SCRIPT_ENCODING' not in ENV},
-    'scope': 'Fresh keyword static selection, nested scope and captured-reference guards; no earlier source/state renewal'},
+    'scope': 'Selected static-property source, conversion, address and reference guards; no earlier source/state renewal'},
     indent=2) + '\n')
 raise SystemExit(0 if passed else 1)

@@ -12,6 +12,8 @@ dec $gc_worker_public_foreign_context(pstate, pgcpublic) : bool
 dec $gc_worker_public_foreign_attachment(pstate, pgcguard) : bool
 dec $gc_main_marked(pgcplan, nat, nat) : bool
 dec $gc_main_tags(pgcplan, pgcslot*, nat) : bool
+dec $gc_main_return_live(pstate, pgcplan, pgcscan, nat) : bool
+dec $gc_main_anchor(pstate) : (pgcplan, pgcscan, nat)?
 dec $gc_worker_public_residual_pass(pstate) : bool
 dec $gc_worker_public_residual_context(pstate, pgcpublic) : bool
 dec $gc_worker_public_residual_attachment(pstate, pgcguard, pgcpublic) : bool
@@ -190,6 +192,7 @@ def $gc_worker_public_pass_context(S, pgcpublic) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
   -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
+  -- if pgcplan.SCAN =/= eps \/ $gc_main_tags(pgcplan, S.GC.BUFFER, 0)
   -- if pgcpublic.END = S.GC.SCAN.END
   -- if $(pgcpublic.INDEX <= pgcpublic.END)
   -- if $gc_worker_scan_cursor(S, pgcpublic.INDEX)
@@ -302,7 +305,6 @@ def $gc_worker_scan_object(S, GC_DTOR_ROOT n) = (n)
   -- if ~((HOBJECT n) <- pgcplan.DTORS)
   -- if $gc_worker_public_raw(S) = (pgcpublic)
   -- if pgcpublic.API.KIND = (INTRINSIC_FIBER_RESUME) \/ pgcpublic.API.KIND = (INTRINSIC_FIBER_THROW)
-  -- if pgcpublic.SOURCE =/= pgcplan.CALL[.PENDING = eps]
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (n_slot)
   -- if $gc_main_marked(pgcplan, n_slot, n)
   -- if (HOBJECT n) <- S.ALLOCATIONS
@@ -344,7 +346,7 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if $(pgcguard.INDEX < pgcpublic.END)
   -- if S.GC.PLAN = (pgcplan)
   -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
-  -- if (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS
+  -- if (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS \/ (pgcplan.SCAN = eps /\ $gc_main_marked(pgcplan, pgcguard.INDEX, pgcguard.OBJECT))
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
   -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
 def $gc_worker_guard_attachment(S, pgcguard) = true
@@ -717,11 +719,15 @@ def $gc_worker_internal_idle(S, pgcpublic) = $gc_worker_idle($gc_worker_plan_set
   -- if S_pending.GC.PLAN = (pgcplan_pending)
   -- if pgcplan_done = pgcplan_pending[.INDEX = |pgcplan_pending.DTORS|][.STEPS = pgcprogress*][.DONE = eps]
 
-;; These residual paths are required follow-on work. Refuse them at ingress
-;; instead of silently selecting only plan.DTORS or overwriting a live guard.
+;; A live main callback authenticates its residual physical snapshot. Other
+;; residual public entries still require their own supported dispatch path.
 def $gc_worker_public_dispatch_valid(S) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if $heap_subset($gc_uncalled(S, $destruction_nodes_delete($gc_nodes(S.GC.BUFFER), $gc_eligible_nodes(S.GC.BUFFER))), pgcplan.DTORS)
+def $gc_worker_public_dispatch_valid(S) = true
+  -- if $gc_main_anchor(S) = ((pgcplan, pgcscan, n))
+  -- if $gc_main_return_live(S, pgcplan, pgcscan, n)
+  -- if n <- S.DESTRUCTION.CALLED
 def $gc_worker_public_dispatch_valid(S) = true
   -- if S.GC.PLAN = eps
   -- if S.GC.BUFFER = $gc_unmarked_slots(S.GC.BUFFER)

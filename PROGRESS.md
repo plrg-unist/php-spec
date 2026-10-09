@@ -22,11 +22,23 @@ acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
 and later ordinary writes remain checked. Sixteen of17 focused originals agree,
 with private358 independent35 and13 source-reached fixtures/483 assertions passing.
-The seventeenth exposes the held delayed-TypeError replay gap: native
-`F|F|R|SHARED`, model `F|R|SHARED`, zero agreement. Parser-only fixture stops and
-the original prediction remain preserved. Actual359 over6536a8339 passes strict SL compilation at37b08adeb (4.679s);
-private358 source/state cuts retain their inputs. Held replay/owner recovery and
-Stringable reference conversion remain required. [Exact-return review](coverage/semantics/reference-return-exact-review.json).
+Actual359 over6536a8339 passes strict SL compilation at37b08adeb (4.679s);
+those source/state cuts and the original seventeenth failure retain their identities.
+[Exact-return review](coverage/semantics/reference-return-exact-review.json).
+
+Delayed reference-return TypeError now re-enters the protected exception chain
+once, preserving pending-error ownership, selected catch eligibility and code
+after a caught try. Ten replay originals agree at `247446c` (360 modules), including
+the former `F|F|R|SHARED` mismatch; 14 source-reached current/saved fixtures pass
+954 assertions.
+Four preserved affected return controls and one core-only terminal weak-conversion
+control agree. The 361-module composition over `5b7452edd` passes separate strict
+compilation at `2c3dbf30`.
+The old prediction, pre-evaluation declaration failure and Unsupported `gettype`
+observer remain zero-credit at their original cuts. Current-base scalar-loop and
+CV/compiled-CONST switch recovery, physical-array owners, active-finalizer replay,
+protected temporary/NULL Notice timing and Stringable reference conversion remain
+required. [Replay review](coverage/semantics/reference-return-replay-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
@@ -50,9 +62,35 @@ direct Closure versus explicit invoke cleanup. Strict356, ten exact normals at
 9+1 cuts and 345 independent plus 296 author premises pass. Constant packs retain
 their genuine pool owner; a distinct dynamic-pack companion proves retired history.
 Initial elaboration/matching failures and pooled fixture assumptions retain zero
-affected credit. Traversable packs remain explicit Unsupported/zero agreement and
-required follow-on work; compound/lifecycle gaps and paused returns remain open.
+affected credit. Compound/lifecycle gaps and paused returns remain open.
 [Start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json).
+
+Module 376 uses native Generator resumes and real Iterator callbacks for START
+packs. Borrowed CVs, iterator data and retained `current()` references have
+distinct owners; arguments copy after `key()`, before `next()`. Exact unpack
+lines authenticate implicit calls and saved frames. The 374 quiet-unwind fix
+prunes consumed owners without creating inactive release jobs. Strict359 and
+thirteen exact normals at 11+1+1 cuts and 752 independent plus 308 author physical
+premises pass. Source-identical cuts preserve every original assertion within
+existing caps; earlier failures and timeouts retain zero affected credit.
+IteratorAggregate acquisition, wider raw payload changes and compound selectors
+remain required; Aggregate is still Unsupported/zero agreement.
+Actual361 over `401bfb516` passes strict SL compilation at `a54204745`, preserving
+the current ARG Stringable/static, exact-return, property and abrupt-cleanup paths;
+private13/1060 source/state cuts retain their original inputs.
+[Traversable ledger](coverage/semantics/fiber-start-traversable-review.json).
+
+NaN Iterator `valid()` warnings retain the original raw retval through ordinary
+handler mutation, suspension and throw. Live references reread the changed float;
+copied NaN stays true. Warning wrappers preserve one authentic START pack through
+retval cleanup, and thrown handlers retire raw result/data/temporary before the
+unfinished buffer. Strict361 and four unchanged native-profile normals pass at
+`d2852e8bf`; eight independent source-reached groups/269 physical premises pass.
+The original Unsupported baseline and thrown-tail fixture failure retain zero
+affected credit; selected-handler cleanup precedes exact raw/data/temp release.
+Prior376 cuts are not renewed. Actual361 over `169dd2f3f` passes strict SL
+compilation at `f8d591f24`; EX32 and fatal-render interactions preserve their own paths.
+[NaN ledger](coverage/semantics/fiber-start-nan-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;
@@ -142,8 +180,15 @@ The release replay starts from its already authenticated bailout; all 180 premis
 remain. Earlier nondeterminism, wrong renderer-owner and 120-second AL/SL timeouts
 retain zero affected credit. Final 358 over `ea04fbbe4` passes strict compilation
 at `ff3d3278b`, preserving named-SEND warning shapes; the earlier 2aa/646 compiler
-and private source/state cuts retain their revisions. Throwing warning
-callbacks, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
+and private source/state cuts retain their revisions. A throwing renderer warning
+callback redispatches through the restored handler before warning cleanup resumes
+the original empty cached fatal report. Exact source1 and strict compiler358 retain
+`558e53a9c`; 220 reached SL premises retain `80be20cde`. Genuine warning/handler/report
+owners and malformed source/site/line/origin rejection pass; initial binding stops
+and the incorrect fixed-argument phase retain zero credit. Actual361 over `59c163ef4`
+passes strict compilation at `7983c825f` (6.128 seconds), preserving current ARG/CALLS
+fields; private source/state cuts retain their inputs. Absent or throwing restored
+handlers, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
 message warnings, parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
@@ -434,9 +479,19 @@ passes strict compilation/init at `280feeb2a`, preserving GEN176/363 and the
 PROPS207/377 warning and ownership interfaces. The printable-metadata helper is the concrete
 changed cost dependency for the one throw-only retry; no general speedup is inferred.
 The initial undefined-helper compiler stop, first throw-state 120s timeout and
-both whole CLI 60s timeouts retain zero affected/agreement credit. Overlap, active
-residual and wider Fiber-pass reentry, whole CLI completion and broader GC remain
-required; earlier cuts are unchanged.
+both whole CLI 60s timeouts retain zero affected/agreement credit. Overlap, wider
+active residual/Fiber-pass reentry, earlier whole CLI completion and broader GC
+remain required; earlier cuts are unchanged.
+
+During a live main callback, public resume/throw of the idle worker now scans
+snapshot-marked residual targets outside the fresh plan's DTORS. The authentic
+main return, physical cursor and tags govern admission without changing fresh
+plan progress. Two native-grounded unset-order companions pass whole CLI60 and
+174 independent physical premises (95/79) at `c5a3e54df`, preserving count1 and
+exact replacement/prior exception identity. Actual361 over `9988f88bf` passes
+strict compilation/init at `5d89edb95`; reviewed Traversable, Generator and
+computed-static paths preserve this lane. Four earlier native observations and
+the first failed diagnostic remain preserved; corrected41 only localizes refusal.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -1387,8 +1442,20 @@ review accepts these private cuts and the actual359 join over `f5c4eed1f`,
 which passes strict compilation at `e77c3eff0` (4.567s) while preserving current
 state-aware207 guards,270 renderer-source classification and30 Generator fields.
 [Ledger](coverage/semantics/undefined-property-review.json).
-Computed names, magic getters/hooks, consumed storage and accepted99 read-call
-reference normalization remain required; held278/279 add no dependency or credit.
+The pinned8.5 reference-call increment keeps the genuine returned HCELL and
+borrows its captured target before PROPERTY_PREP erases the wrapper. Literal
+named noarg nonbuiltin calls without fallback now preserve fixed null after
+target retirement, release wrapper-only replacements at FETCH cleanup and chain
+throwing cleanup B with previous H. Ten exact originals and replacement237 pass
+at `cba3ab695`; pending207/stdClass225 pass at `d615fdf4d` after a fixture-only
+WeakReference timing correction. Strict359 passes at the original changed cut;
+native7/native2/native1 and the failed pending gate retain separate zero-model
+or zero-state credit. Accepted99/79 remain unchanged. [Reference-receiver ledger](coverage/semantics/reference-property-receiver-review.json).
+The independently reviewed actual361 join over `7c18fccada` passes strict
+compilation at `0b6054930` (4.817s), preserving current return-replay vocabulary,
+CALLS pack/NaN schemas and exception interfaces. It renews no source/state cut.
+Computed names, magic getters/hooks, consumed storage and wider reference-call
+receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -1511,10 +1578,29 @@ New295 reached premises pass at `1abff50f4`, including real cold-preparation
 owners, compiled-name/marker forgeries and retained REF selection. Actual-parent
 compiler/init passes at `ed57a7c5c` over CALLS367 `9aec542e2` (353 modules),
 with pointwise SOURCE365/367 owner/line review and no6/295 source/state renewal.
-Stringable
-property-name callbacks, keyword scopes entered through Closure/fromCallable or
+Keyword scopes entered through Closure/fromCallable or
 other callable wrappers, wider borrowed lifetime and registered-handler
 missing-RHS continuations remain separate; paused return producers are unchanged.
+
+Stringable computed static-property names371 freeze the selected class and
+converted bytes, check the property address, then retire the receiver before
+capturing the live row, reference cell and RHS. Pending scalar writes retain
+PHP's conversion/operator priority.
+Failed NAME conversion and throwing final cleanup now keep the authenticated
+empty-name FETCH and queued tail, with Error.previous=drop.previous=cast.
+The descriptor walker restores only its saved inert base and original queued tail.
+Eight of nine exact originals pass at distinct private cuts. The original
+pending-masks source remains required/open: the changed public run retains its
+60-second CLI timeout and zero whole agreement. Prior123 receiver/cold-owner
+premises and new238 late-address/pending/projection premises have separate inputs;
+changed algo/struct/init and the238 fixture pass. The preserved73.924s diagnostic
+records the repaired double-throw mismatch. Current360 algorithmic compilation
+passes ataa44149a overb894 with pointwise99/156 review and no accepted source/state
+renewal. The unchanged original7 current run repeats CLI60 timeout in65.143s, with
+exact native bytes and zero whole agreement. Standalone init/state on360 remain
+UNRUN; ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
+The [ledger](coverage/semantics/static-compound-string-review.json) retains
+the source/state cuts and failures without renewing older evidence.
 
 Array eval/include conversion287 dispatches the real warning before parser or
 file-provider work and freezes `Array` after callbacks, even when they replace

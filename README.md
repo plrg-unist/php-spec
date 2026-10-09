@@ -289,6 +289,14 @@ cover that timing, cold initialization with owned RHS temporaries, selected clas
 roots, typed results and multiline access-error cleanup. Another295 independent
 reached premises validate queued owners, resolved-name authority and resumption.
 The separate actual353 composition passes compilation and initialization.
+[Stringable computed static-property names371](coverage/semantics/static-compound-string-review.json)
+freeze the selected class and converted name, check the property address, then
+retire the receiver before reading the live row, reference cell and RHS. Failed conversion plus throwing cleanup
+preserves empty-name lookup and the Error-to-destructor-to-cast exception chain.
+Eight of nine exact originals pass at separate cuts; the pending-masks original
+remains required after the current360 run repeats its unchanged 60-second CLI
+timeout. Prior123 and new238 reached premises retain separate inputs; current360
+algorithmic compilation and pointwise99/156 compatibility review pass.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -340,9 +348,12 @@ Three originals and 611 reached premises retain separate cuts. A throwing
 renderer-installed handler receives its own fatal report while real outer
 handler/report and Generator/cache owners survive. Its reported exception releases
 before bailout, even when its destructor changes reporting to zero. Two new
-originals and 343 strict premises retain separate cuts. Throwing warning callbacks,
-deeper rendering, abrupt child cleanup, parked/escaped storage and generic terminal
-cleanup remain required.
+originals and 343 strict premises retain separate cuts. A throwing renderer warning
+callback redispatches its new exception through the restored handler, then resumes
+the original empty cached fatal report. One exact fatal original and 220 strict
+premises retain separate cuts. Absent or throwing restored handlers, deeper
+rendering, abrupt child cleanup, parked/escaped storage and generic terminal cleanup
+remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -450,8 +461,13 @@ now preserve existing cells, property sources and parameter-backing certificates
 through forwarded calls and `finally`; real conversions, missing-slot initialization
 and ordinary checked writes retain their behavior. Sixteen focused source agreements
 and private358 state cuts of 35 plus 483 assertions pass; actual359 passes separate
-strict compilation. The separate delayed-TypeError
-finalizer replay mismatch remains required work.
+strict compilation. [Delayed reference-return replay](coverage/semantics/reference-return-replay-review.json)
+now follows the protected exception chain once, retaining pending-error ownership,
+selected catch eligibility and the continuation after a caught try. Ten replay
+originals, 14 current/saved fixtures with 954 assertions and five affected return
+controls pass at private360; actual361 passes a separate strict compiler gate.
+Scalar-loop/CV-CONST continuation and physical-array owner recovery, active-finalizer
+replay, protected temporary/NULL Notice timing and Stringable conversion remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -724,8 +740,15 @@ onto the fresh destructor. Independent 96/109 physical premises at separate
 old/new error identity. Actual359 over `0c549de11` passes strict compilation/init;
 review preserves GEN176/363 and PROPS207/377 with their shared ownership paths.
 The initial compiler stop, first throw-state 120s timeout and both whole CLI
-60s timeouts retain zero affected/agreement credit. Overlap, active residual and
-wider Fiber-pass reentry, whole CLI completion and broader GC remain required.
+60s timeouts retain zero affected/agreement credit. Overlap, wider active residual
+and Fiber-pass reentry, earlier whole CLI completion and broader GC remain required.
+Public resume/throw during a live main callback now lets the idle worker consume
+snapshot-marked residual targets outside the fresh plan's DTORS. Authentic main
+return, cursor and tag checks preserve fresh plan progress and pending errors.
+Two native-grounded unset-order companions pass whole CLI60 and 174 independent
+physical premises (95/79) at `c5a3e54df`, including count1 and exact replacement/prior
+exception identity. Actual361 over `9988f88bf` passes strict compilation/init at
+`5d89edb95`; earlier cuts retain their inputs.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -1049,7 +1072,16 @@ The reviewed current359 composition over `f5c4eed1f` passes strict compilation
 at `e77c3eff0`, preserving current source and Generator interfaces.
 [The review](coverage/semantics/undefined-property-review.json) preserves the
 original fallback/fixture failures and the weaker bound-Closure witness.
-Computed names, getters/hooks and read-call reference normalization remain required.
+Literal named noarg reference-return calls now retain the actual returned cell
+through undefined-property warnings. The captured target remains borrowed, so
+handler rebinding may retire it while the cell keeps the replacement alive until
+fetch cleanup. Ten exact originals and separate 237/207/225 reached cuts cover
+callee/finally rebinding, normal and throwing last-owner cleanup, saved callers
+and stdClass child retirement. [The reference-receiver review](coverage/semantics/reference-property-receiver-review.json)
+records the pinned8.5 wrapper behavior and the refuted8.6 snapshot prediction.
+The actual361 join over `7c18fccada` passes strict compilation at `0b6054930`,
+preserving accepted return replay, CALLS and exception interfaces.
+Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
@@ -1466,7 +1498,14 @@ genuine outer API.
 Abrupt cleanup preserves positional/receiver/named order and the distinct direct
 Closure versus explicit `__invoke` owner order. The
 [start-unpack ledger](coverage/semantics/fiber-start-unpack-review.json) records
-these checks. Traversable packs and compound selectors remain required.
+these checks. Generator and Iterator packs now use real native resume operations
+and iterator callbacks, preserving references through `key()` before copying
+arguments; the [Traversable ledger](coverage/semantics/fiber-start-traversable-review.json)
+records their source and reached-state checks. NaN `valid()` warnings retain the
+raw return through mutating, parked and throwing handlers: live references are
+reread, while copied NaN remains true. The [NaN ledger](coverage/semantics/fiber-start-nan-review.json)
+records these separate cuts. IteratorAggregate acquisition, wider raw payload
+changes and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

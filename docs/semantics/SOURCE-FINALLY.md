@@ -13,8 +13,22 @@ repeat the declared return-type check after finalization.
 Unused reference calls also retain their selected cell or evaluated temporary
 until that check. Used temporary results keep the ordinary fresh reference.
 The installed [retention ledger](../../coverage/semantics/reference-unused-finally-installed.json)
-records five exact sources and two paused stages (30 assertions). Protected-region
-rejection replay and object conversion remain separate.
+records five exact sources and two paused stages (30 assertions).
+
+A delayed terminal reference-return TypeError now re-enters the protected return
+source's exception chain once. The captured operand reaches terminal recheck;
+its replay witness retires normally. A second-pass finalizer repair retains the
+pending TypeError. Returns and throws can replace it, with ordinary error release
+or previous-chain ownership. Source-authenticated TRY and already selected CATCH
+owners preserve catch eligibility; a caught error resumes code after the try
+without re-evaluating its body.
+
+The [replay review](../../coverage/semantics/reference-return-replay-review.json)
+binds ten exact replay originals, 14 current/saved source-reached fixtures with 954
+assertions and five affected return controls at private360. Actual361 compilation
+has a distinct compiler-only cut. Current-base scalar-loop and CV/compiled-CONST
+switch recovery, physical-array owners, replay from an already active finalizer,
+protected temporary/NULL Notice timing and object conversion remain required.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.
@@ -65,6 +79,8 @@ Primary source routes in the vendored engine are `zend_compile_try`,
 `zend_check_finally_breakout`, `zend_dispatch_try_catch_finally_helper`,
 `ZEND_FAST_CALL`, `ZEND_FAST_RET`, `ZEND_DISCARD_EXCEPTION`, and
 `zend_exception_set_previous`.
+For delayed reference rejection, `ZEND_VERIFY_RETURN_TYPE` and the dispatch test
+against `finally_op` explain exception re-entry at the protected return source.
 
 The [Stage A author ledger](../../coverage/semantics/finally-author.json) and
 [Stage B author ledger](../../coverage/semantics/finally-stage-b-author.json)

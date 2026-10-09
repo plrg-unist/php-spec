@@ -1,0 +1,185 @@
+{
+  "scope": "Source-authenticated one-use delayed reference-return TypeError replay, selected TRY/CATCH phase and after-try continuation. No intentional engine divergence in this increment; runtime-owner recovery remains separate.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "profile": "tests/semantics/profile.json",
+    "error_reporting": 30719,
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+  },
+  "private_revision": "247446c7c1dc15f9c849f980fde9026e7b27d83a",
+  "private_modules": 360,
+  "implementation_pins": {
+    "30-storage.watsup": "aa61d238f1ae924c87a9b833e810f664c979f5b1dd744a247b3613ff56e4e1c1",
+    "99-reference-returns.watsup": "c7ca1cd6863022780d2a9d9d4a606aa39692ddcd448745c8b3fde9dba70986e1",
+    "152-throwable-runtime.watsup": "ae9b821dec857a5f1031b5e7cc590bb8e757edd95f6184cf5f9a4fce96405b45",
+    "156-finally-runtime.watsup": "e8bb5b3ca865c899f9a6a6899239d9f9f5504cfcf2fbdab3f2c773766ee31a08",
+    "modules.json": "eac79e3f701f24b65543c6ed46313fc3338d30b6d49d7bf1c1e48821cd19a26e"
+  },
+  "artifacts": {
+    "php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "native": [
+    {
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/native-16lqg2tc/report.json",
+      "report_sha256": "8c10f9ff1d7b617478315ac5b47e4b6cdf3560684aeb08857bd2994091d6780a",
+      "revision": "b8946ce5033df51ca309210a8623bf47657358dc",
+      "native_observations": 7,
+      "source_agreements": 0
+    },
+    {
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/native-catch-7muj_wwo/report.json",
+      "report_sha256": "92703d9f93173b0fc7f2650c5df5c26fe24daaa5ab6ee73f08d0f8987d7e4440",
+      "revision": "b8946ce5033df51ca309210a8623bf47657358dc",
+      "native_observations": 2,
+      "source_agreements": 0
+    },
+    {
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/native-saved-2haoszqi/report.json",
+      "report_sha256": "6532aee906045949df17f7ec463c460c6044d6657c960295b0169ed239663911",
+      "revision": "401bfb5169855ee107324bdd948094fad28995ea",
+      "native_observations": 1,
+      "source_agreements": 0
+    }
+  ],
+  "model": {
+    "raw_report": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/model-vsij2g22/report.json",
+    "report_sha256": "bb7720e6372c585dd0a10a46c649fde419621c27fe5b157c198a71f497f5298a",
+    "revision": "247446c7c1dc15f9c849f980fde9026e7b27d83a",
+    "source_agreements": 10,
+    "selection": "tests/semantics/reference_replay_cases.json",
+    "normal": 10,
+    "exit_status": 0,
+    "stderr": ""
+  },
+  "state": {
+    "raw_report": "/home/user/workspace/php-spec/.tools/returns-replay-current-20/.tools/returns-replay20/state-wave-dlwqiyt0/report.json",
+    "report_sha256": "f5563758f2f08f559aee8c9d8814f950169b0240b483b47becdc9eec6c9b9e67",
+    "revision": "247446c7c1dc15f9c849f980fde9026e7b27d83a",
+    "fixtures": 14,
+    "assertions": 954,
+    "runner_mode": "SL",
+    "cap_seconds_each": 45,
+    "manifest_sha256": "1f71897c06bff337ba8f60bdb3ca4718054b477125341a1503a8466e8bf3b799",
+    "processes_reaped": true,
+    "inputs_head_status_stable": true
+  },
+  "affected_compatibility": [
+    {
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/compat-9kwxtbc0/report.json",
+      "report_sha256": "b10cf876fe354799d4de9ffcd19c4d2e783b41a6add9b8a1159b946133947fbb",
+      "revision": "247446c7c1dc15f9c849f980fde9026e7b27d83a",
+      "accepted": 4,
+      "accepted_ids": [
+        "parameter-backing-finally-recheck",
+        "parameter-backing-finally-unused",
+        "parameter-backing-finally-global-rebind",
+        "ordinary-reference-strict-int-float"
+      ],
+      "report_globally_passed": false
+    },
+    {
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/compat-bvky4up4/report.json",
+      "report_sha256": "dbefcc483ad32671b0c06720aaceca89fd136386c83044f023a72420a6e959e3",
+      "revision": "247446c7c1dc15f9c849f980fde9026e7b27d83a",
+      "accepted": 1,
+      "accepted_ids": [
+        "terminal-reference-weak-conversion-after-finally-core"
+      ]
+    }
+  ],
+  "terminal_core_native": {
+    "raw_report": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/native-terminalcore-0uotytwr/report.json",
+    "report_sha256": "19c84ba68ca20b7629d41f69df223740d75c38fb087f15a70d10efdd9c7479f7",
+    "revision": "169dd2f3f98cd1c42cab4a08bc6709c25ce05d70",
+    "source_sha256": "a5293fecfcdfe5c911e648d0ea1cac1bc1ffd37e458f941e855dab11e6113429",
+    "stdout": "F|string|2|changed",
+    "exit_status": 0,
+    "stderr": "",
+    "source_agreements": 0
+  },
+  "private_compiler": {
+    "raw_report": "/home/user/workspace/php-spec/.tools/returns-replay-current-20/.tools/returns-replay20/returns-replay-current-compiler-td5z0jbh/report.json",
+    "report_sha256": "85c0f0a78ef2245b01d8f665b53716a842edd8edf9c4eedc28d25b413f3eddd7",
+    "revision": "247446c7c1dc15f9c849f980fde9026e7b27d83a",
+    "canonical_parent": "401bfb5169855ee107324bdd948094fad28995ea",
+    "modules": 360,
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "cap_seconds": 300,
+    "jobs": 1,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "pid": 312866,
+    "pgid": 312866,
+    "exit": 0,
+    "elapsed": 4.858172178268433,
+    "timeout": false,
+    "group_after": []
+  },
+  "actual_parent_compiler": {
+    "revision": "2c3dbf30efa7c8b25e21c888272481597412db20",
+    "canonical_parent": "5b7452edd1023dacf558946a27dc7cb198681b47",
+    "modules": 361,
+    "raw_report": "/home/user/workspace/php-spec/.tools/returns-replay-publication-20/.tools/returns-replay20/returns-replay-current-compiler-mvz4hqyl/report.json",
+    "report_sha256": "fdf713fee087189333d5037a77f8fa69f17435e72045770e725abab9a8b90bf5",
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "cap_seconds": 300,
+    "jobs": 1,
+    "memory_cap": "inherited_unlimited_no_distinct_prior_cap",
+    "pid": 323687,
+    "pgid": 323687,
+    "exit": 0,
+    "elapsed": 4.777448892593384,
+    "timeout": false,
+    "group_after": [],
+    "input_head_status_stable": true,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "reviewer": "returns_review_20",
+  "preserved_failures": [
+    {
+      "revision": "a54d93c7391862546f6358a64af3853d30cdf1a9",
+      "raw_directory": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/model-2ss1f69x",
+      "reason": "goto_prior_origin declared after first call; execute elaboration stopped before any source evaluation",
+      "model_evaluations": 0,
+      "source_agreements": 0
+    },
+    {
+      "ledger": "coverage/semantics/reference-return-exact-review.json",
+      "id": "parameter-backing-finally-required-recheck-unused",
+      "old_native_stdout": "F|F|R|SHARED",
+      "old_model_stdout": "F|R|SHARED",
+      "old_prediction": "F|R|SHARED",
+      "old_source_agreements": 0,
+      "current_result": "same original now agrees at private247; historical failure unchanged"
+    },
+    {
+      "native": {
+        "raw_report": "/home/user/workspace/php-spec/.tools/returns-verify20-replay/native-terminal-kvb19rcf/report.json",
+        "report_sha256": "30a3cd77f886d28c2e7f7e57631fe6e26f4b37b4f2cfc78796974ddd0172548a",
+        "revision": "9988f88bf0cbca8a5e0295b08288588dcc13d9a1"
+      },
+      "id": "terminal-reference-weak-conversion-after-finally",
+      "reason": "gettype observer is Unsupported registered builtin in compat-9kwxtbc0 after F|",
+      "source_agreements": 0,
+      "supported_derivative": "terminal-reference-weak-conversion-after-finally-core"
+    }
+  ],
+  "remaining": [
+    "current-base scalar-loop and CV/compiled-CONST switch continuation recovery",
+    "live physical-array switch/value-foreach owner recovery and terminal cleanup",
+    "replay from an already active finalizer and consumed runtime owners",
+    "protected temporary/NULL return Notice timing and typed scope",
+    "typed by-reference Stringable conversion186"
+  ],
+  "reproduce": "Restore private247 plus ignored native/model packets. run_model.py <private-root> <revision> compares the maintained ten-source catalogue to native7+2+1. Generate fixtures using python3 tests/semantics/reference_replay_state.py --raw <model-vsij2g22> --output <ignored-directory>; execute the fourteen manifest fixtures serially with pinned numeric_runner.exe --sl and that revision ordered modules.json. Affected compatibility reuses four existing native packets and the separate terminal-core native packet. Final parent compilation is compiler-only, with zero runtime credit."
+}

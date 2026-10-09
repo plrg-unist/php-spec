@@ -1,0 +1,118 @@
+{
+  "milestone": "Fiber START Iterator valid NaN warning continuations",
+  "status": "partial; independently reviewed private cut and actual-parent composition",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "baseline": "59c163ef46c8125ae96a7ef9c0cce832eed55b6b",
+  "semantic_code": "d2852e8bf6f6a2fe33a097d4b99725cb45d5dbc2",
+  "scope": [
+    "The original raw valid() retval is retained before dereference through generic handler invocation and retval cleanup; copied NaN and a live reference keep distinct truth decisions.",
+    "Warning dispatch authenticates START source, actual unpack line, severity2, exact message and Warning event. INVOKE/RESULT/CLEAN wrappers preserve one source pack.",
+    "Parked saved frames retain raw reference and iterator data after the source CV changes to null; target entry waits for the resumed truth decision.",
+    "Thrown handlers preserve the original Exception; generic selected-handler cleanup runs first, then raw retval, iterator data and temporary operand retire before unfinished direct start Closure buffers."
+  ],
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/fiber-start-traversable-sl-xlk3x13c/report.json",
+    "sha256": "bc20a1172871d61138b6221200911b5aae28173dc374b089c37c0a4472273a8f",
+    "strict_modules": 361
+  },
+  "sources": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/fiber-start-nan-source-lr3zykir/report.json",
+    "sha256": "edfe4a9c406a4b18e1baee71e97f97bdc2f98fb388b07434e9f36c660259efda",
+    "normal_agreements": 4,
+    "native_reused": true
+  },
+  "states": {
+    "status": "all eight final source-reached groups pass",
+    "runner": "tests/semantics/fiber_start_nan_review.py",
+    "physical_premises": 269,
+    "driver_reported_premises": 244,
+    "count_policy": "Physical generated premises include five harness premises and embedded reached-stage clauses. Repeated setup is counted per tested group. Only named passing records in mixed reports receive credit.",
+    "continuation_policy": "Four unchanged whole originals supply complete event continuation; state cuts authenticate actual warning/decision/park/CLEAN/throw frontiers. Zero-budget checks are in reference-resume and parked-state groups.",
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/fiber-state-review-bnu18s8x/report.json",
+        "sha256": "02b3d34c11eae37c4cbd219ad5a18f96c84d7174d42fd48caf5ce786c74a64f9",
+        "revision": "d2852e8bf6f6a2fe33a097d4b99725cb45d5dbc2",
+        "accepted_physical_premises": {
+          "nan-reference-handler-rereads-float-zero": 36
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/fiber-state-review-tm_bazp2/report.json",
+        "sha256": "def793d6a9d09dea301e9c3ff0fc8171b25a319862c199d4cd79bc8160e18d6c",
+        "revision": "d2852e8bf6f6a2fe33a097d4b99725cb45d5dbc2",
+        "accepted_physical_premises": {
+          "nan-value-handler-keeps-copied-nan-and-clears-raw-before-current": 32,
+          "nan-warning-invoke-authenticates-level-line-event": 36,
+          "nan-parked-handler-keeps-reference-and-iterator-data-after-cv-null": 45,
+          "nan-parked-warning-rejects-changed-line-on-same-heap": 27,
+          "nan-parked-warning-rejects-duplicate-start-in-real-frame": 27,
+          "nan-operational-handler-clean-keeps-one-start-and-raw-reference": 28
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/fiber-state-review-0w5i0_lm/report.json",
+        "sha256": "2d6dcfafd8eba6e467886dafee53beddb6341edaff20cc7ba1f5e2abf741241e",
+        "revision": "d2852e8bf6f6a2fe33a097d4b99725cb45d5dbc2",
+        "accepted_physical_premises": {
+          "nan-thrown-handler-releases-raw-result-data-temp-before-direct-capture": 38
+        }
+      }
+    ]
+  },
+  "native_originals": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-traversable-19/.tools/fiber-start-nan-native-1n1dg0l7/report.json",
+    "sha256": "e82afb13c529c53d4b3b19c6c88a95acc76d4047413c56b6f2aa7d3c1496d726",
+    "normal_agreements": 0,
+    "mode": "native-diagnostic",
+    "reuse_metadata": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/nan-native-reuse.json",
+    "reuse_policy": "Classification metadata is derived from unchanged original command/streams/source bytes; no native rerun."
+  },
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/fiber-start-nan-source-ljqibino/report.json",
+      "sha256": "99e6b5f8e9819e88416f7051e4baa85ab2cf59c569946f6c36bb0fd118e89a77",
+      "revision": "03405d1194bfaf0ac22e871c0e7ee917a8463025",
+      "result": "Exact reference original reaches Unsupported Fiber start Iterator valid NaN warning continuation after W|, before handler effects; zero agreement."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/fiber-state-review-tm_bazp2/report.json",
+      "sha256": "def793d6a9d09dea301e9c3ff0fc8171b25a319862c199d4cd79bc8160e18d6c",
+      "revision": "d2852e8bf6f6a2fe33a097d4b99725cb45d5dbc2",
+      "result": "Original thrown one-step fixture omitted the generic selected-handler release/operation prefix. Its record remains FAIL/zero; six other records pass separately."
+    }
+  ],
+  "validation": {
+    "processes": "Serial jobs1; native tuples retain original75s; source model100000steps/60s and host75s; state seek/finish4000 and host120s; strict120s. Exact argv, environment, runtime/compiler identities, streams and exits stay in raw reports.",
+    "prior_cut_policy": "Accepted376 source13/state1060 retain their exact earlier inputs. New rules are confined to valid-nan, so unrelated historical evidence is not renewed."
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_interfaces.c:zend_user_it_valid",
+    "vendor/php-src/Zend/zend_operators.h:i_zend_is_true",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_SEND_UNPACK"
+  ],
+  "recovery": {
+    "private_worktree": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20",
+    "sources": "python3 tests/semantics/fiber_start_nan_sources.py --native-report .tools/nan-native-reuse.json",
+    "states": "python3 tests/semantics/fiber_start_nan_review.py --case ID",
+    "strict": ".tools/strict.py"
+  },
+  "limits": [
+    "Reference payloads reuse the existing raw float/int decision; other raw payload type changes remain explicit Unsupported.",
+    "IteratorAggregate contract/acquisition, effectful compound selectors and wider callback/lifecycle consumers remain required.",
+    "Undefined-result getReturn, held-return verification and constructor promotion are not extended. Raw evidence remains outside Git."
+  ],
+  "fixture_correction": {
+    "frontier_directory": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-20/.tools/nan-throw-frontier-t_7xt1pf",
+    "result": "The genuine step first releases the selected handler Closure and exits its THROW_SEARCH operation, then runs the original exact raw-cell/iterator-data/temporary release. Only the affected thrown fixture was corrected/rerun; other passing dictionaries are unchanged."
+  },
+  "actual_parent_composition": {
+    "parent": "169dd2f3f98cd1c42cab4a08bc6709c25ce05d70",
+    "semantic_revision": "f8d591f244648c5573a889e4152edce704b89c57",
+    "strict_modules": 361,
+    "compiler_report": "/home/user/workspace/php-spec/.tools/calls-iterator-valid-nan-actual-20/.tools/fiber-start-traversable-sl-t3cu0q_x/report.json",
+    "compiler_report_sha256": "c367323f1af316cfb8adf5e20e64b170dcb9a18fe96e875837d350906bd92003",
+    "review": "Pointwise376 only; current EX32 GC_MAIN/return/CALLED gates and Generator fatal-render routing are disjoint from these warning/Iterator frames. Shared error handlers, eager cleanup, raw decision and unpack ownership remain unchanged.",
+    "cut_policy": "Private four original agreements and eight groups/269 physical premises retain their exact inputs; only the actual-parent strict compiler is new."
+  }
+}
