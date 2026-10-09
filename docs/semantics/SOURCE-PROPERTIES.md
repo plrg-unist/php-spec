@@ -62,8 +62,9 @@ keeps native/source and reached-state cuts separate. Computed names, magic
 getters/hooks and wider receiver forms remain required.
 
 At PHP8.5, a literal named nonbuiltin reference-return call without name fallback,
-with no arguments, one ordinary CV supplied positionally or by name, or two
-positional ordinary CVs, keeps its returned reference cell through callee leave. Module377 now
+with no arguments, one ordinary CV supplied positionally or by name, two
+positional ordinary CVs, or two CVs with distinct named labels, keeps its returned
+reference cell through callee leave. Module377 now
 captures that actual cell before PROPERTY_PREP, borrows the live ordinary
 instance/stdClass target and keeps the warning result null even when handler
 rebinding retires that target. FETCH cleanup through270 releases the read's
@@ -94,8 +95,18 @@ replace the returned cell during leave before property lookup. Prefix cleanup
 after an argument throw and wrapper cleanup after a property throw preserve
 exception chaining. Core-only companions replace the ordinary `is_null`
 observers in the positive comparison set; original bytes and builtin boundaries
-remain recorded separately. More than two arguments, mixed/named pairs, unpacked or
-computed arguments and dynamic callees remain outside this bounded lane.
+remain recorded separately.
+Two distinct named CVs use a separate local certificate without restricting label
+order. SENDs read CVs in source order; named binding puts each captured operand in
+its formal slot. Known sends use individual CV lines, while both deferred
+ordinals use the emitted argument-list line and preserve documentary INPUT and
+already-sent slots. Skipped defaults and parameter destruction follow formal
+order, so lookup captures the cell after all callee-leave callbacks. Unknown and
+duplicate labels fail before that CV's demand. Captured prefix release can leave
+a caller-local owner whose later frame unwind runs its destructor; the pending
+label Error remains protected and may become a cleanup exception's previous.
+More than two arguments, mixed positional/named pairs, unpacked or computed
+arguments and dynamic callees remain outside this bounded lane.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

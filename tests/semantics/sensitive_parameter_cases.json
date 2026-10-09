@@ -1,0 +1,154 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "SHA256(stdout + NUL + stderr)",
+  "cases": [
+    {
+      "id": "constructor-live-cv",
+      "source": "<?php\nclass SensitiveCtor22 {\n    public function __construct(#[\\SensitiveParameter] int $secret, int $visible) {\n        $secret = 17;\n        throw new \\Error(\"E\");\n    }\n}\ntry { new SensitiveCtor22(7, 9); }\ncatch (\\Error $error) {\n    $trace = $error->getTrace();\n    $args = $trace[0][\"args\"];\n    echo $args[0] instanceof \\SensitiveParameterValue ? \"R|\" : \"N|\";\n    echo $args[0]->getValue(), \"|\", $args[1], \"|\";\n    echo $error->getTraceAsString();\n}\n",
+      "source_sha256": "f45a6dfc01514a8595bb06075b70ab3073711ddbcde37c6a4b43d563bc74a142",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/native-first/report.json",
+      "native_raw_sha256": "4af3dcbcd0d87b42450889d69e444ad6a00e495c6b956f2ae62fd8a410d383c4",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UnwxN3w5fCMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jb25zdHJ1Y3Rvci1zZW5zaXRpdmUtcGFyYW1ldGVyLXByaXZhdGUtMjIvLnRvb2xzL2NvbnN0cnVjdG9yLXNlbnNpdGl2ZS1wYXJhbWV0ZXItcHJvYmVzLTIyL2NvbnN0cnVjdG9yLWxpdmUtY3YucGhwKDgpOiBTZW5zaXRpdmVDdG9yMjItPl9fY29uc3RydWN0KE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSksIDkpCiMxIHttYWlufQ==",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "UnwxN3w5fCMwIHtGSUxFfSg4KTogU2Vuc2l0aXZlQ3RvcjIyLT5fX2NvbnN0cnVjdChPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpLCA5KQojMSB7bWFpbn0="
+    },
+    {
+      "id": "variadic-original-args",
+      "source": "<?php\nfunction sensitiveVariadic22(#[\\SensitiveParameter] int ...$secret) {\n    $secret[0] = 29;\n    throw new \\Error(\"E\");\n}\ntry { sensitiveVariadic22(7, 9); }\ncatch (\\Error $error) {\n    $trace = $error->getTrace();\n    $args = $trace[0][\"args\"];\n    echo $args[0] instanceof \\SensitiveParameterValue ? \"R|\" : \"N|\";\n    echo $args[1] instanceof \\SensitiveParameterValue ? \"R|\" : \"N|\";\n    echo $args[0]->getValue(), \"|\", $args[1]->getValue(), \"|\";\n    echo $error->getTraceAsString();\n}\n",
+      "source_sha256": "48d3cd7528a5119aa3ac8fbb19a3d38e5a159280d0c551b6a11721adf2b6a60c",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/native-first/report.json",
+      "native_raw_sha256": "7b971848896d25c491100ec72984e374b53c56a15f7394add7d97109cdb4ddf9",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UnxSfDd8OXwjMCAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY29uc3RydWN0b3Itc2Vuc2l0aXZlLXBhcmFtZXRlci1wcml2YXRlLTIyLy50b29scy9jb25zdHJ1Y3Rvci1zZW5zaXRpdmUtcGFyYW1ldGVyLXByb2Jlcy0yMi92YXJpYWRpYy1vcmlnaW5hbC1hcmdzLnBocCg2KTogc2Vuc2l0aXZlVmFyaWFkaWMyMihPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpLCBPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpKQojMSB7bWFpbn0=",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "UnxSfDd8OXwjMCB7RklMRX0oNik6IHNlbnNpdGl2ZVZhcmlhZGljMjIoT2JqZWN0KFNlbnNpdGl2ZVBhcmFtZXRlclZhbHVlKSwgT2JqZWN0KFNlbnNpdGl2ZVBhcmFtZXRlclZhbHVlKSkKIzEge21haW59"
+    },
+    {
+      "id": "import-alias",
+      "source": "<?php\nnamespace SensitiveAlias22;\nuse \\SeNsItIvEpArAmEtEr as Secret;\nfunction alias22(#[secret] $value) { throw new \\Error(\"E\"); }\ntry { alias22(7); }\ncatch (\\Error $error) {\n    $args = $error->getTrace()[0][\"args\"];\n    echo $args[0] instanceof \\SensitiveParameterValue ? \"R|\" : \"N|\";\n    echo $args[0]->getValue(), \"|\", $error->getTraceAsString();\n}\n",
+      "source_sha256": "6cdc2dce6f88c2180fbf19ddf464967e6be5ef1d2c3f7cafa870e89725e2eb24",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "0031cdf7fb1d2931ad1110070ffbd357bd402f43316222a9e90dd4d722d2d280",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "Unw3fCMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jb25zdHJ1Y3Rvci1zZW5zaXRpdmUtcGFyYW1ldGVyLXByaXZhdGUtMjIvLnRvb2xzL2NvbnN0cnVjdG9yLXNlbnNpdGl2ZS1wYXJhbWV0ZXItcHJvYmVzLTIyL2ZvY3VzZWQvaW1wb3J0LWFsaWFzLnBocCg1KTogU2Vuc2l0aXZlQWxpYXMyMlxhbGlhczIyKE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ==",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "Unw3fCMwIHtGSUxFfSg1KTogU2Vuc2l0aXZlQWxpYXMyMlxhbGlhczIyKE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ=="
+    },
+    {
+      "id": "fixed-reference-snapshot",
+      "source": "<?php\nfunction sensitiveReference22(#[\\SensitiveParameter] &$value) {\n    $value = 17;\n    return new \\Error(\"E\");\n}\n$value = 7;\n$error = sensitiveReference22($value);\n$value = 23;\n$args = $error->getTrace()[0][\"args\"];\necho $value, \"|\", $args[0]->getValue(), \"|\", $error->getTraceAsString();\n",
+      "source_sha256": "5100026319a0d85e1455584a4d11fc184dd92ffb3519451515c0761d551af92a",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "08c6ce75a1e6469ae72362bc257a23ced0eda3e9c2bedc3c2c915d298407d534",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MjN8MTd8IzAgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NvbnN0cnVjdG9yLXNlbnNpdGl2ZS1wYXJhbWV0ZXItcHJpdmF0ZS0yMi8udG9vbHMvY29uc3RydWN0b3Itc2Vuc2l0aXZlLXBhcmFtZXRlci1wcm9iZXMtMjIvZm9jdXNlZC9maXhlZC1yZWZlcmVuY2Utc25hcHNob3QucGhwKDcpOiBzZW5zaXRpdmVSZWZlcmVuY2UyMihPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpKQojMSB7bWFpbn0=",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "MjN8MTd8IzAge0ZJTEV9KDcpOiBzZW5zaXRpdmVSZWZlcmVuY2UyMihPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpKQojMSB7bWFpbn0="
+    },
+    {
+      "id": "named-variadic-originals",
+      "source": "<?php\nfunction sensitiveNamed22($visible, #[\\SensitiveParameter] ...$secret) {\n    $secret[\"token\"] = 29;\n    throw new \\Error(\"E\");\n}\ntry { sensitiveNamed22(visible: 3, token: 7, pin: 9); }\ncatch (\\Error $error) {\n    $args = $error->getTrace()[0][\"args\"];\n    echo $args[0], \"|\", $args[\"token\"]->getValue(), \"|\", $args[\"pin\"]->getValue(), \"|\";\n    echo $error->getTraceAsString();\n}\n",
+      "source_sha256": "32c7f3a5d8a5b3e7b9d2ff39f6f09c1a603e7734ff8965f21428e766ff63243d",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "604398fbb921938d93b51fdef0c605eb93cdc21e33cc75b454e9fadabc60cf44",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "M3w3fDl8IzAgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NvbnN0cnVjdG9yLXNlbnNpdGl2ZS1wYXJhbWV0ZXItcHJpdmF0ZS0yMi8udG9vbHMvY29uc3RydWN0b3Itc2Vuc2l0aXZlLXBhcmFtZXRlci1wcm9iZXMtMjIvZm9jdXNlZC9uYW1lZC12YXJpYWRpYy1vcmlnaW5hbHMucGhwKDYpOiBzZW5zaXRpdmVOYW1lZDIyKDMsIHRva2VuOiBPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpLCBwaW46IE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ==",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "M3w3fDl8IzAge0ZJTEV9KDYpOiBzZW5zaXRpdmVOYW1lZDIyKDMsIHRva2VuOiBPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpLCBwaW46IE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ=="
+    },
+    {
+      "id": "omitted-defaults",
+      "source": "<?php\nfunction sensitiveDefault22(#[\\SensitiveParameter] $secret = 7, $visible = 9) {\n    return new \\Error(\"E\");\n}\n$error = sensitiveDefault22();\n$args = $error->getTrace()[0][\"args\"];\necho $args === [] ? \"EMPTY|\" : \"BAD|\";\n$error = sensitiveDefault22(23);\n$args = $error->getTrace()[0][\"args\"];\necho $args[0]->getValue(), \"|\", $args[1] ?? \"ABSENT\", \"|\", $error->getTraceAsString();\n",
+      "source_sha256": "03d1071211a7d2404997476e8289b60335fc0e682f2e82bf95c6fe9388c345b8",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "4aebcb3b149a24cfe60d03de1b0ae864b95773734be1eaf3d2032dda87022824",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "RU1QVFl8MjN8QUJTRU5UfCMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jb25zdHJ1Y3Rvci1zZW5zaXRpdmUtcGFyYW1ldGVyLXByaXZhdGUtMjIvLnRvb2xzL2NvbnN0cnVjdG9yLXNlbnNpdGl2ZS1wYXJhbWV0ZXItcHJvYmVzLTIyL2ZvY3VzZWQvb21pdHRlZC1kZWZhdWx0cy5waHAoOCk6IHNlbnNpdGl2ZURlZmF1bHQyMihPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpKQojMSB7bWFpbn0=",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "RU1QVFl8MjN8QUJTRU5UfCMwIHtGSUxFfSg4KTogc2Vuc2l0aXZlRGVmYXVsdDIyKE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ=="
+    },
+    {
+      "id": "wrapper-heap-lifetime",
+      "source": "<?php\nclass SensitiveLeaf22 { public function __destruct() { echo \"D|\"; } }\nfunction sensitiveHeap22(#[\\SensitiveParameter] $secret) { return new \\Error(\"E\"); }\n$secret = new SensitiveLeaf22;\n$weak = \\WeakReference::create($secret);\n$error = sensitiveHeap22($secret);\nunset($secret);\necho $weak->get() === null ? \"N|\" : \"L|\";\n$trace = $error->getTrace();\n$wrapper = $trace[0][\"args\"][0];\necho $wrapper->getValue() === $weak->get() ? \"S|\" : \"F|\";\nunset($trace, $error);\necho $weak->get() === null ? \"N|\" : \"L|\";\nunset($wrapper);\necho $weak->get() === null ? \"N|\" : \"L|\";\n",
+      "source_sha256": "2985b63dccaba689dc20822040691b08afd2110fbaad94c6fd76bf5cc109e864",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "0745dd50320788885f65621c0ec2107d04bd695d8a116a92156897293a6524bb",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "THxTfEx8RHxOfA==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "closure-arrow",
+      "source": "<?php\n$closure = function (#[\\SensitiveParameter] $value) { $value = 17; return new \\Error(\"C\"); };\n$error = $closure(7);\necho $error->getTrace()[0][\"args\"][0]->getValue(), \"|\";\n$arrow = fn(#[\\SensitiveParameter] $value) => new \\Error(\"A\");\n$error = $arrow(9);\necho $error->getTrace()[0][\"args\"][0]->getValue(), \"|\", $error->getTraceAsString();\n",
+      "source_sha256": "1af764bc57207d50344a131d140f40ba75ebef9b3feffad92e8fb837543ed990",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "12141ebe18ffc5f81d70e2692af70aa74fe7db388f6040d5faec696203471cd7",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MTd8OXwjMCAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY29uc3RydWN0b3Itc2Vuc2l0aXZlLXBhcmFtZXRlci1wcml2YXRlLTIyLy50b29scy9jb25zdHJ1Y3Rvci1zZW5zaXRpdmUtcGFyYW1ldGVyLXByb2Jlcy0yMi9mb2N1c2VkL2Nsb3N1cmUtYXJyb3cucGhwKDYpOiB7Y2xvc3VyZTovaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY29uc3RydWN0b3Itc2Vuc2l0aXZlLXBhcmFtZXRlci1wcml2YXRlLTIyLy50b29scy9jb25zdHJ1Y3Rvci1zZW5zaXRpdmUtcGFyYW1ldGVyLXByb2Jlcy0yMi9mb2N1c2VkL2Nsb3N1cmUtYXJyb3cucGhwOjV9KE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ==",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "MTd8OXwjMCB7RklMRX0oNik6IHtjbG9zdXJlOntGSUxFfTo1fShPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpKQojMSB7bWFpbn0="
+    },
+    {
+      "id": "inherited-trait",
+      "source": "<?php\ntrait SensitiveTrait22 {\n    public function capture22(#[\\SensitiveParameter] $value) { $value = 17; return new \\Error(\"E\"); }\n}\nclass SensitiveParent22 { use SensitiveTrait22; }\nclass SensitiveChild22 extends SensitiveParent22 {}\n$error = (new SensitiveChild22)->capture22(7);\necho $error->getTrace()[0][\"args\"][0]->getValue(), \"|\", $error->getTraceAsString();\n",
+      "source_sha256": "cd33ee685067ae49079e82123f6cb3ec5079bab8d8a6b0e1a330ca38d92b5bb8",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "3ba70b47bf56393f6a169d76b976b4dd117e0aaf65e295cb72f77db755d30108",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MTd8IzAgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NvbnN0cnVjdG9yLXNlbnNpdGl2ZS1wYXJhbWV0ZXItcHJpdmF0ZS0yMi8udG9vbHMvY29uc3RydWN0b3Itc2Vuc2l0aXZlLXBhcmFtZXRlci1wcm9iZXMtMjIvZm9jdXNlZC9pbmhlcml0ZWQtdHJhaXQucGhwKDcpOiBTZW5zaXRpdmVQYXJlbnQyMi0+Y2FwdHVyZTIyKE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ==",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "MTd8IzAge0ZJTEV9KDcpOiBTZW5zaXRpdmVQYXJlbnQyMi0+Y2FwdHVyZTIyKE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ=="
+    },
+    {
+      "id": "user-fatal-capture",
+      "source": "<?php\nfunction sensitiveFatal22(#[\\SensitiveParameter] $value) {\n    $value = 17;\n    trigger_error(\"E\", E_USER_ERROR);\n}\nsensitiveFatal22(7);\n",
+      "source_sha256": "c893dc662a7effcc9634bff1b7f9bfdefc5f744a05f90a743c1c2cd646ac1ffd",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "1d9e8e8e0e51d84b5b3478628f19a2224bf066f4fd52e315f4699c2c2cdcfdaa",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogUGFzc2luZyBFX1VTRVJfRVJST1IgdG8gdHJpZ2dlcl9lcnJvcigpIGlzIGRlcHJlY2F0ZWQgc2luY2UgOC40LCB0aHJvdyBhbiBleGNlcHRpb24gb3IgY2FsbCBleGl0IHdpdGggYSBzdHJpbmcgbWVzc2FnZSBpbnN0ZWFkIGluIHtGSUxFfSBvbiBsaW5lIDQKRmF0YWwgZXJyb3I6IEUgaW4ge0ZJTEV9IG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge0ZJTEV9KDQpOiB0cmlnZ2VyX2Vycm9yKCdFJywgMjU2KQojMSB7RklMRX0oNik6IHNlbnNpdGl2ZUZhdGFsMjIoT2JqZWN0KFNlbnNpdGl2ZVBhcmFtZXRlclZhbHVlKSkKIzIge21haW59Cg=="
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "namespace-nonbuiltin",
+      "source": "<?php\nnamespace SensitiveUser22;\nclass SensitiveParameter {}\nfunction user22(#[SensitiveParameter] $value) { throw new \\Error(\"E\"); }\ntry { user22(7); }\ncatch (\\Error $error) {\n    echo $error->getTrace()[0][\"args\"][0], \"|\", $error->getTraceAsString();\n}\n",
+      "source_sha256": "9f42b6af2732b9dd78de352d32ce321dd5ec2f1b141d1924ea7615fdb72bcc00",
+      "native_group": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22/focused/native-first/report.json",
+      "native_raw_sha256": "a0dfa8e6c29900739392af20929a1511d93c4cbb7ef9067a566b9beea64575b5",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3wjMCAvaG9tZS91c2VyL3dvcmtzcGFjZS9waHAtc3BlYy8udG9vbHMvY29uc3RydWN0b3Itc2Vuc2l0aXZlLXBhcmFtZXRlci1wcml2YXRlLTIyLy50b29scy9jb25zdHJ1Y3Rvci1zZW5zaXRpdmUtcGFyYW1ldGVyLXByb2Jlcy0yMi9mb2N1c2VkL25hbWVzcGFjZS1ub25idWlsdGluLnBocCg1KTogU2Vuc2l0aXZlVXNlcjIyXHVzZXIyMig3KQojMSB7bWFpbn0=",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "N3wjMCB7RklMRX0oNSk6IFNlbnNpdGl2ZVVzZXIyMlx1c2VyMjIoNykKIzEge21haW59",
+      "expected_model_status": "unsupported",
+      "source_agreements": 0
+    }
+  ]
+}

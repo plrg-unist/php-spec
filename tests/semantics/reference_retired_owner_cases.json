@@ -1,0 +1,123 @@
+{
+  "scope": "Conservative physical-array owner retirement after authentic reference-return cleanup: at least three genuine payload owners before the first end release, at least two after. Paired replay metadata contributes no heap root. Live reconstruction and value-foreach fetch use the captured allocation/cursor; no-read switch end consumes identity without a second release.",
+  "policy": "Seven delayed rows intentionally retain coherent c/d=1 instead of pinned native c/d=8 caused by repeated cleanup. These are policy checks, not native agreement; the other four controls require exact native triples.",
+  "historical_native_reports": [
+    ".tools/reference-replay-loop-draft/.tools/replay-release-native-9jzfqfbk/report.json",
+    ".tools/reference-replay-loop-draft/.tools/replay-release-independent-repeat-ezt54fzs/report.json",
+    ".tools/reference-replay-switch-draft/.tools/replay-retired-eligibility-native-lel19q7k/report.json",
+    ".tools/reference-replay-switch-draft/.tools/replay-retired-repeat-native-d6g939c8/report.json",
+    ".tools/returns-verify20-owner/native-active-inner-ffpabuj9/report.json"
+  ],
+  "cases": [
+    {
+      "id": "switch-delayed-cow",
+      "source": "<?php class N{} function make(){$v=[];$v[]=1;$v[]=2;return $v;}$src=make();$b=$src;$c=$src;$x=\"s\";$y=\"\";function subject(){global $src;return $src;}function &f():string{global $x,$y;switch(subject()){case [1,2]:try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A;\";break;}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$src[0]=7;echo \"s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";$b[0]=8;echo \"s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";",
+      "source_sha256": "b1f0d2d9a87a40fa1f3e2bf9cef78b356908f9d187121d14bc359723592b103b",
+      "native_stdout": "F;C;F;A;a=ok;s=7;b=1;c=1;s=7;b=8;c=8;",
+      "expected_coherent_stdout": "F;C;F;A;a=ok;s=7;b=1;c=1;s=7;b=8;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence"
+    },
+    {
+      "id": "switch-initial-error-control",
+      "source": "<?php class N{} function make(){$v=[];$v[]=1;$v[]=2;return $v;}$src=make();$b=$src;$c=$src;$x=\"s\";$y=\"\";$x=new N;function subject(){global $src;return $src;}function &f():string{global $x,$y;switch(subject()){case [1,2]:try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A;\";break;}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$src[0]=7;echo \"s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";$b[0]=8;echo \"s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";",
+      "source_sha256": "c11867e214a9c2350cfd4c1b56571edc955b87100ca4bbee67687900c87ed3d3",
+      "native_stdout": "C;F;A;a=ok;s=7;b=1;c=1;s=7;b=8;c=1;",
+      "expected_coherent_stdout": "C;F;A;a=ok;s=7;b=1;c=1;s=7;b=8;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "native_control_agreement"
+    },
+    {
+      "id": "foreach-value-delayed-cow",
+      "source": "<?php class N{} function make(){$v=[];$v[]=1;$v[]=2;return $v;}$src=make();$b=$src;$c=$src;$x=\"s\";$y=\"\";function &f():string{global $x,$y,$src;foreach($src as $v){try{return $x;}catch(TypeError $e){echo \"C\",$v,\";\";}finally{echo \"F\",$v,\";\";$x=new N;}echo \"A\",$v,\";\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$src[0]=7;echo \"s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";$b[0]=8;echo \"s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";",
+      "source_sha256": "552e75c36e6464042b57b3e63f229ad9c7f12f6b1711400363403879f405be6e",
+      "native_stdout": "F1;C1;F1;A1;C2;F2;A2;a=ok;s=7;b=1;c=1;s=7;b=8;c=8;",
+      "expected_coherent_stdout": "F1;C1;F1;A1;C2;F2;A2;a=ok;s=7;b=1;c=1;s=7;b=8;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence"
+    },
+    {
+      "id": "foreach-value-initial-error-control",
+      "source": "<?php class N{} function make(){$v=[];$v[]=1;$v[]=2;return $v;}$src=make();$b=$src;$c=$src;$x=\"s\";$y=\"\";$x=new N;function &f():string{global $x,$y,$src;foreach($src as $v){try{return $x;}catch(TypeError $e){echo \"C\",$v,\";\";}finally{echo \"F\",$v,\";\";$x=new N;}echo \"A\",$v,\";\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$src[0]=7;echo \"s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";$b[0]=8;echo \"s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";",
+      "source_sha256": "9c856c0503aad9f608fa31177735ab25670bfb4fb4a1185625c9653c8ad0f9df",
+      "native_stdout": "C1;F1;A1;C2;F2;A2;a=ok;s=7;b=1;c=1;s=7;b=8;c=1;",
+      "expected_coherent_stdout": "C1;F1;A1;C2;F2;A2;a=ok;s=7;b=1;c=1;s=7;b=8;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "native_control_agreement"
+    },
+    {
+      "id": "foreach-value-finalizer-cow",
+      "source": "<?php class N{} function make(){$v=[];$v[]=1;$v[]=2;return $v;}$src=make();$b=$src;$c=$src;$x=\"s\";$y=\"\";function &f():string{global $x,$y,$src;foreach($src as $v){try{return $x;}catch(TypeError $e){echo \"C\",$v,\";\";}finally{$src[0]=7;echo \"F\",$v,\";\";$x=new N;}echo \"A\",$v,\";\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";$b[0]=8;echo \"b=\",$b[0],\";c=\",$c[0],\";\";",
+      "source_sha256": "6280c0e1658310ee4680d236e1476f044afdafbb131318dcda3fc211aae97b0c",
+      "native_stdout": "F1;C1;F1;A1;C2;F2;A2;a=ok;s=7;b=1;c=1;b=8;c=8;",
+      "expected_coherent_stdout": "F1;C1;F1;A1;C2;F2;A2;a=ok;s=7;b=1;c=1;b=8;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence"
+    },
+    {
+      "id": "foreach-value-finalizer-initial-error-control",
+      "source": "<?php class N{} function make(){$v=[];$v[]=1;$v[]=2;return $v;}$src=make();$b=$src;$c=$src;$x=\"s\";$y=\"\";$x=new N;function &f():string{global $x,$y,$src;foreach($src as $v){try{return $x;}catch(TypeError $e){echo \"C\",$v,\";\";}finally{$src[0]=7;echo \"F\",$v,\";\";$x=new N;}echo \"A\",$v,\";\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";s=\",$src[0],\";b=\",$b[0],\";c=\",$c[0],\";\";$b[0]=8;echo \"b=\",$b[0],\";c=\",$c[0],\";\";",
+      "source_sha256": "0150a035132b6e9d9a9d22f55ade6a76eb2d4bf7326ec1286162c70ab6b8e602",
+      "native_stdout": "C1;F1;A1;C2;F2;A2;a=ok;s=7;b=1;c=1;b=8;c=1;",
+      "expected_coherent_stdout": "C1;F1;A1;C2;F2;A2;a=ok;s=7;b=1;c=1;b=8;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "native_control_agreement"
+    },
+    {
+      "id": "foreach-return-active-finalizer-inner-catch-saved",
+      "source": "<?php $src=[1];$src[0]=1;$b=$src;$c=$src;$x=\"s\";function ping(){echo \"P;\";}function &f():string{global $src,$x;try{foreach($src as $v){return $x;}}finally{echo \"F;\";try{throw new Exception();}catch(Exception $e){ping();echo \"I;\";}echo \"A;\";}}$a=&f();echo \"r=\",$a,\";\";$src[0]=9;$b[0]=8;echo \"c=\",$c[0],\";\";",
+      "source_sha256": "fbed68e23347ed002976449c152fe5b6f5edf0ea23482c6f69f3e64234b66c33",
+      "native_stdout": "F;P;I;A;r=s;c=1;",
+      "expected_coherent_stdout": "F;P;I;A;r=s;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "native_control_agreement"
+    },
+    {
+      "id": "foreach-before-first-finalizer",
+      "source": "<?php class N{} $src=[1];$src[0]=1;$b=$src;$c=$src;$x=\"s\";$y=\"\";function &f():string{global $src,$x,$y;try{foreach($src as $v){try{return $x;}catch(TypeError $e){echo \"C\",$v,\";\";}echo \"A\",$v,\";\";}}finally{echo \"F;\";$x=new N;}$y=\"ok\";return $y;}$a=&f();echo \"r=\",$a,\";\";$src[0]=9;$b[0]=8;echo \"c=\",$c[0],\";\";",
+      "source_sha256": "367e4d70bae9d420dae9687f07ce1c0ec51f663d024fa8eddeb98bbfc520cd67",
+      "native_stdout": "F;C1;A1;F;r=ok;c=8;",
+      "expected_coherent_stdout": "F;C1;A1;F;r=ok;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence"
+    },
+    {
+      "id": "switch-before-first-finalizer",
+      "source": "<?php class N{} $src=[1];$src[0]=1;$b=$src;$c=$src;$x=\"s\";$y=\"\";function choose(){global $src;echo \"K;\";return $src;}function &f():string{global $x,$y;try{switch(choose()){case [1]:try{return $x;}catch(TypeError $e){echo \"C;\";}echo \"A;\";break;}}finally{echo \"F;\";$x=new N;}$y=\"ok\";return $y;}$a=&f();echo \"r=\",$a,\";\";$src[0]=9;$b[0]=8;echo \"c=\",$c[0],\";\";",
+      "source_sha256": "02613ec3669d6abb231c05428401625a657033eabd5004f8ebbd38a63e73f657",
+      "native_stdout": "K;F;C;A;F;r=ok;c=8;",
+      "expected_coherent_stdout": "K;F;C;A;F;r=ok;c=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence"
+    },
+    {
+      "id": "foreach-two-return-sites",
+      "source": "<?php class N{} $src=[1,2];$src[0]=1;$b=$src;$c=$src;$d=$src;$x=\"s\";$y=\"\";function &f():string{global $src,$x,$y;foreach($src as $v){$x=\"s\";if($v===1){try{return $x;}catch(TypeError $e){echo \"C1;\";}finally{echo \"F1;\";$x=new N;}}else{try{return $x;}catch(TypeError $e){echo \"C2;\";}finally{echo \"F2;\";$x=new N;}}echo \"A\",$v,\";\";}$y=\"ok\";return $y;}$a=&f();echo \"r=\",$a,\";\";$src[0]=9;$b[0]=8;echo \"c=\",$c[0],\";d=\",$d[0],\";\";",
+      "source_sha256": "2e815b15330d5cbf8ee71f8c5e61efb83231fe0a5adea1f8f899afd6c9dfc83b",
+      "native_stdout": "F1;C1;F1;A1;F2;C2;F2;A2;r=ok;c=8;d=8;",
+      "expected_coherent_stdout": "F1;C1;F1;A1;F2;C2;F2;A2;r=ok;c=1;d=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence"
+    },
+    {
+      "id": "foreach-repeat-late",
+      "source": "<?php class N{} $src=[1,2];$src[0]=1;$b=$src;$c=$src;$d=$src;$x=\"s\";$y=\"\";function &f():string{global $src,$x,$y;foreach($src as $v){$x=\"s\";try{return $x;}catch(TypeError $e){echo \"C\",$v,\";\";}finally{echo \"F\",$v,\";\";$x=new N;}echo \"A\",$v,\";\";}$y=\"ok\";return $y;}$a=&f();echo \"r=\",$a,\";\";$src[0]=9;$b[0]=8;echo \"c=\",$c[0],\";d=\",$d[0],\";\";",
+      "source_sha256": "e303508eba0d2fc18c0e6a93c9e0ba9cfedc04dbd4b78c13f6736e4a10b2bb4e",
+      "native_stdout": "F1;C1;F1;A1;F2;C2;F2;A2;r=ok;c=8;d=8;",
+      "expected_coherent_stdout": "F1;C1;F1;A1;F2;C2;F2;A2;r=ok;c=1;d=1;",
+      "native_stderr": "",
+      "native_exit": 0,
+      "relationship": "intentional_coherent_owner_divergence"
+    }
+  ]
+}

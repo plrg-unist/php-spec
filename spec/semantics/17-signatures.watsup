@@ -22,6 +22,7 @@ dec $pslower(phpType17) : psinput
 dec $psparameter_input(psraw, phpType14) : psinput
 dec $psattribute_parameter_line(phpType18, nat) : nat
 dec $pspromotion_override_attribute(ptcontext, phpType14) : bool
+dec $pssensitive_parameter_attribute(ptcontext, phpType14) : bool
 dec $psattributes_supported(ptcontext, psraw, phpType14) : bool
 dec $psattribute_target(ptcontext, psraw, phpType14) : ptbytes?
 dec $psattribute_message(ptbytes) : ptbytes
@@ -118,7 +119,10 @@ def $psparameter_input(psraw, phpType14) = PSINPUTATTRIBUTES psraw phpType14
 def $pspromotion_override_attribute(ptcontext, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = ($ptlc($ptresolve(ptcontext, ptqual, ptbytes)) = $ptascii("override"))
   -- if $ptast(name) = PTNAME ptqual ptbytes
 def $pspromotion_override_attribute(ptcontext, phpType14) = false -- otherwise
-def $psattributes_supported(ptcontext, psraw, phpType14) = (psraw.FLAGS =/= 0 /\ ~psraw.EXTRA /\ $pspromotion_override_attribute(ptcontext, phpType14))
+def $pssensitive_parameter_attribute(ptcontext, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = ($ptlc($ptresolve(ptcontext, ptqual, ptbytes)) = $ptascii("sensitiveparameter"))
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+def $pssensitive_parameter_attribute(ptcontext, phpType14) = false -- otherwise
+def $psattributes_supported(ptcontext, psraw, phpType14) = (~psraw.EXTRA /\ ((psraw.FLAGS =/= 0 /\ $pspromotion_override_attribute(ptcontext, phpType14)) \/ (psraw.FLAGS = 0 /\ $pssensitive_parameter_attribute(ptcontext, phpType14))))
 def $psattribute_target(ptcontext, psraw, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = (ptbytes_resolved)
   -- if psraw.FLAGS = 0 /\ ~psraw.EXTRA
   -- if $ptast(name) = PTNAME ptqual ptbytes

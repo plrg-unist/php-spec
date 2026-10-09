@@ -71,6 +71,19 @@ over `786137a55` passes strict compilation at `f5eb9399b` (4.954 s), preserving
 current runtime/owner/GC/replay paths without renewing the private checks.
 [Parameter-target review](coverage/semantics/parameter-override-review.json).
 
+Ordinary parameters accept one zero-argument builtin `#[SensitiveParameter]`.
+Fixed trace slots snapshot current CVs; positional/named variadic slots retain
+their original operands, with no invented omitted defaults. Real owning wrappers
+are allocated before callback/retirement and shared by getters and trace rendering.
+Ten originals agree at `e27ceb30c` (362 modules); the namespaced user attribute
+remains explicit Unsupported with zero agreement. Strict compilation and SL112
+(34 derived source checks, 78 reached lifetime checks) pass at the same cut.
+The original false105 fixture and both diagnostics retain zero state credit.
+Actual 365-module composition over `88ddc64c5` passes strict compilation at
+`78453102d` (5.083 s), preserving current retirement, string, GEN and PROPS paths
+without renewing the private checks. Promoted/mixed/hooks and wider wrapper
+protocols remain required. [Sensitive review](coverage/semantics/sensitive-parameter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
@@ -114,6 +127,19 @@ cuts; actual361 over `dd6478b` passes strict compilation at `3c06eba5` (4.880s).
 The selected-catch admission failure keeps zero affected credit at its original cut. Runtime VAR/TMP
 array owners, active-finalizer replay and protected NULL/186 paths remain open.
 [Switch replay review](coverage/semantics/reference-return-switch-replay-review.json).
+
+Protected reference returns now preserve the first cleanup of mutable, refcounted
+switch temporaries and dense value-foreach owners. Non-owning rows retain physical
+identity/cursor through current and saved frames, authenticated replacement and replay.
+Capture conservatively requires at least three genuine owning edges before cleanup
+and two after; aliases sharing a cell count once. Later one-owner reads remain live;
+collected switch END reads nothing, while collected foreach fetch stops explicitly.
+Thirteen originals pass at private362 cuts: four exact native tuples and nine deliberate
+c/d=8(native) to1(spec) differences, with zero agreement for those nine. State23/1,873
+and independent pending98 pass across retained cuts. Actual364 over `2c1283f04` passes
+strict at `31838d5ad` (5.033s) and one genuine carrier bridge/71 assertions. Original
+failures/timeouts remain zero-credit. Wider payloads, active-finalizer replay and
+protected NULL/186 remain required. [Owner review](coverage/semantics/reference-return-retired-owner-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
@@ -317,7 +343,17 @@ The original Unsupported, reached discriminator and pre-evaluation bounds syntax
 stop retain zero credit. Actual363 over `d54dd9fa8` passes strict compilation
 and the affected 677 SL group at `a2847abb8` (compiler 6.438 seconds). Three shared
 message predicates observe bytes across the parent's immutable carriers;
-private source/compilerc5 and state487 retain their cuts. Wider
+private source/compilerc5 and state487 retain their cuts. A declared array child's
+sole owning Leaf entry transfers through genuine HARRAY retirement and emits the
+same second fatal; retired contents add no array pin, GC slot or child edge.
+The real shared-array control keeps its live owner and Leaf silent through the
+first fatal. Source2, strict712/77 and complete compiler363 retain `5da367130`
+(6.312 seconds). The original primary Unsupported and 118-premise reached
+discriminator retain zero credit at `4c410b607`; the exact shared baseline is a
+separate control. Actual364 over `70c5ff9fc` passes strict compilation at
+`3aeb34484` (6.399 seconds). The parent's retired-owner carriers remain empty on
+both sources; current frame/fatal-history fields survive. Private source2/789
+retain their `5da367130` inputs. Wider
 handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
@@ -1645,6 +1681,20 @@ model-unrun. Earlier noarg/one-CV/named cuts and failures are unrenewed.
 The actual361 join over `430face8d` passes strict at `4b39fa53c` (5.028s),
 preserving current CALLS/class compiler, return replay and fatal-cleanup interfaces.
 It adds no source/state credit.
+Two distinct named ordinary CVs now preserve source SEND order and formal-slot
+binding through377's local certificate;99/79/CELL/270 and shared361 are unchanged.
+Native6 retains `4c64cd257`; the late first-SEND companion retains `b5e60e7b1`.
+Changed strict361 and affected pending/late-first source2 pass at `7c2c5e8ef`;
+five earlier per-case agreements retain `1378c1d0d` under the named-extraction
+bridge. Five whole state gates pass 1245 setup-inclusive premises across separate
+366/316/186/77/300 cuts, authenticating both emitted SEND lines, captured null,
+shared cells, formal/default leave order and frame/operation pending cleanup.
+The original whole-source7 and fixture failures remain zero; previous cuts are
+unrenewed.
+The actual364 join over `e26e3fb2d` passes strict at `2383140e3` (5.104s)
+and one affected pending300 gate. Local byte observations accommodate current
+Throwable string carriers; GEN363 and RETURNS378 seams remain disjoint. Earlier
+source/private state cuts retain their own identities and credit.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
@@ -3262,8 +3312,9 @@ failures and interrupted evidence.
 
 `returns_verify` has resumed with the authorized temporary verifier. Preserve
 held branches and evidence, and do not retry the rejected engine experiment.
-Delayed return replay and runtime-owner recovery still require validation and
-independent review before integration or dependent work.
+Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
+bounded physical-array owner recovery. Wider owner domains, already active-finalizer
+returns, protected temporary/NULL Notice timing and Stringable186 remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 

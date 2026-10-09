@@ -27,7 +27,8 @@ def $getter_owner(text, pgettermethod) = $throwable_base(text) -- otherwise
 dec $getter_available(text, pgettermethod) : bool
 def $getter_available("ErrorException", GET_SEVERITY) = true
 def $getter_available(text, GET_SEVERITY) = false -- if text =/= "ErrorException"
-def $getter_available(text, pgettermethod) = true -- if pgettermethod =/= GET_SEVERITY
+def $getter_available(text, pgettermethod) = true -- if pgettermethod =/= GET_SEVERITY /\ pgettermethod =/= GET_SENSITIVE_VALUE
+def $getter_available(text, GET_SENSITIVE_VALUE) = false -- if text =/= "SensitiveParameterValue"
 dec $ctor_selected_name(text, ptbytes) : bool
 def $ctor_selected_name(text_kind, ptbytes) = true
   -- if $ptlc(ptbytes) = $ptascii("__construct")
