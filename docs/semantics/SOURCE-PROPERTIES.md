@@ -64,8 +64,8 @@ authenticated physical storage carrier. Consumed slots remain refused.
 When a handler returns false, default reporting precedes return/selected-target
 cleanup and raw-handler restoration. The
 [undefined-property review](../../coverage/semantics/undefined-property-review.json)
-keeps native/source and reached-state cuts separate. Computed names, magic
-getters/hooks and wider receiver forms remain required.
+keeps native/source and reached-state cuts separate. Computed names, hooks and
+wider receiver forms remain required.
 
 At PHP8.5, a literal named nonbuiltin reference-return call without name fallback,
 with no arguments, one ordinary CV supplied positionally or by name, two
@@ -122,6 +122,33 @@ caller-local frame cleanup keep their distinct owners and pending Error.
 More than two arguments, unpacked or computed actuals and dynamic callees
 remain outside this bounded lane.
 
+Literal ordinary CV-base reads now invoke public nonstatic `__get` with one
+untyped required parameter and no declared return type. The first family covers
+ordinary instances, literal names and missing or publicly accessible UNSET
+properties. A typed INITIAL slot raises its initialization Error without invoking
+the getter. Writes, quiet probes, inaccessible slots, wider signatures and
+guarded recursion remain explicit Unsupported.
+
+Module380 owns one receiver hold while the known-instance getter frame borrows
+it. The raw returned value or reference survives property verification and
+receiver release. Only afterward does read reception copy the reference cell's
+current payload, so receiver destruction can change that result; a value return
+keeps its original payload. Discarded reads still retain the getter RV through
+receiver release. Exact type verification uses the getter's strictness and
+performs no backing-slot write or type-source attachment. An actual mismatch
+raises the declaring property's TypeError before receiver cleanup; later cell
+repair cannot remove it, and a successful check is not repeated after cleanup.
+Valid coercions and constrained returned reference cells remain Unsupported.
+
+Getter throws release the receiver under the pending exception. If receiver
+cleanup throws after a normal return, the raw reference is materialized and its
+payload released under that exception, preserving a later cleanup exception's
+previous link. Current/saved carrier checks reject missing or duplicate holds;
+entered continuations never reread the caller CV or property absence. The
+[getter review](../../coverage/semantics/magic-property-get-review.json) records
+eight exact source agreements, 1293 setup-inclusive reached premises and the
+separate original failures.
+
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
 binds source, compiler and paused-state checks. Public property references
@@ -131,5 +158,6 @@ mangled storage keys are described in [SOURCE-PROPERTY-VISIBILITY.md](SOURCE-PRO
 [Class static members](SOURCE-CLASS-STATICS.md) have a separate bounded storage
 and access contract. Non-object casts and stdClass table sharing are described in
 [OBJECT-CASTS.md](OBJECT-CASTS.md), including numeric/NUL storage keys, raw undefined
-buckets and callback-sensitive iteration. Readonly members, hooks, magic access
-and wider property consumers remain open. Public constructors are implemented separately.
+buckets and callback-sensitive iteration. Wider readonly operations, hooks,
+magic setters and quiet access, and wider property consumers remain open.
+Public constructors are implemented separately.

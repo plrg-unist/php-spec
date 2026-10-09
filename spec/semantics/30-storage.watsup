@@ -20,7 +20,7 @@ syntax pcallableaccess = { SITE porigin?, SCOPE porigin?, OBJECT bool, CREATION 
 syntax papiquery
 syntax pfibercallable
 syntax pfiberrawapi
-syntax pcalltarget = porigin | FIBER_REPORTING_TARGET | FIBER_API_TARGET nat | FIBER_ARRAY_TARGET pfiberrawapi | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | AGGREGATE_METHOD_TARGET nat porigin | AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | FOREACH_AGGREGATE_GENERATOR_TARGET nat porigin porigin int | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable
+syntax pcalltarget = porigin | FIBER_REPORTING_TARGET | FIBER_API_TARGET nat | FIBER_ARRAY_TARGET pfiberrawapi | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | PROPERTY_GET_TARGET nat porigin | AGGREGATE_METHOD_TARGET nat porigin | AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | FOREACH_AGGREGATE_GENERATOR_TARGET nat porigin porigin int | YIELD_FROM_AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable
 syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
 syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass | PCCPRECISION pcpath int | PCCASSERTION pcpath nat*
@@ -94,7 +94,7 @@ syntax pnamedslot = NAMED_HOLE | NAMED_SENT poperand
 syntax pnamedargs = { SLOTS pnamedslot*, NAMED (nat*, poperand)* }
 syntax pdefaultctor = { NEW pdefaultnew, FUNCTION porigin, INDEX nat, PREPARED pnamedargs }
 syntax punpackcall = { FUNCTION pcalltarget, ARGUMENTS phpType7*, INDEX nat, SENT pnamedargs, CALLSITE porigin?, LINE int }
-syntax pintrinsic = INTRINSIC_ASSERT | INTRINSIC_ASSERT_OPTIONS | INTRINSIC_GC_COLLECT | INTRINSIC_GC_ENABLE | INTRINSIC_GC_DISABLE | INTRINSIC_GC_ENABLED | INTRINSIC_WEAKREF_CREATE | INTRINSIC_WEAKREF_GET | INTRINSIC_WEAKREF_CONSTRUCT | INTRINSIC_FIBER_CONSTRUCT | INTRINSIC_FIBER_START | INTRINSIC_FIBER_RESUME | INTRINSIC_FIBER_THROW | INTRINSIC_FIBER_SUSPEND | INTRINSIC_FIBER_CURRENT | INTRINSIC_FIBER_STARTED | INTRINSIC_FIBER_SUSPENDED | INTRINSIC_FIBER_RUNNING | INTRINSIC_FIBER_TERMINATED | INTRINSIC_FIBER_RETURN | INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
+syntax pintrinsic = INTRINSIC_ASSERT | INTRINSIC_ASSERT_OPTIONS | INTRINSIC_GC_COLLECT | INTRINSIC_GC_ENABLE | INTRINSIC_GC_DISABLE | INTRINSIC_GC_ENABLED | INTRINSIC_WEAKREF_CREATE | INTRINSIC_WEAKREF_GET | INTRINSIC_WEAKREF_CONSTRUCT | INTRINSIC_FIBER_CONSTRUCT | INTRINSIC_FIBER_START | INTRINSIC_FIBER_RESUME | INTRINSIC_FIBER_THROW | INTRINSIC_FIBER_SUSPEND | INTRINSIC_FIBER_CURRENT | INTRINSIC_FIBER_STARTED | INTRINSIC_FIBER_SUSPENDED | INTRINSIC_FIBER_RUNNING | INTRINSIC_FIBER_TERMINATED | INTRINSIC_FIBER_RETURN | INTRINSIC_REGISTER_SHUTDOWN_FUNCTION | INTRINSIC_AUTO_REGISTER | INTRINSIC_AUTO_UNREGISTER | INTRINSIC_AUTO_FUNCTIONS | INTRINSIC_AUTO_CALL | INTRINSIC_EXIT | INTRINSIC_DIE | INTRINSIC_CLONE | INTRINSIC_GET_CLASS | INTRINSIC_GET_CALLED_CLASS | INTRINSIC_FROM_CALLABLE | INTRINSIC_FROM_CALLABLE_FACTORY | INTRINSIC_CLOSURE_CURRENT | INTRINSIC_CLOSURE_BIND | INTRINSIC_CLOSURE_BINDTO | INTRINSIC_FUNC_NUM_ARGS | INTRINSIC_FUNC_GET_ARG | INTRINSIC_FUNC_GET_ARGS | INTRINSIC_GET_INCLUDE_PATH | INTRINSIC_SET_INCLUDE_PATH | INTRINSIC_INI_GET | INTRINSIC_INI_SET | INTRINSIC_INI_RESTORE | INTRINSIC_CHDIR
   | INTRINSIC_ERROR_REPORTING | INTRINSIC_SET_ERROR_HANDLER | INTRINSIC_RESTORE_ERROR_HANDLER | INTRINSIC_GET_ERROR_HANDLER | INTRINSIC_TRIGGER_ERROR | INTRINSIC_USER_ERROR
   | INTRINSIC_SET_EXCEPTION_HANDLER | INTRINSIC_RESTORE_EXCEPTION_HANDLER | INTRINSIC_GET_EXCEPTION_HANDLER
 syntax pexitcall = { SITE porigin, KIND pintrinsic, INDEX nat, SENT poperand*, NAMED bool, OWNER nat?, LINE int }
@@ -134,6 +134,7 @@ syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase, pgeneratorfrom
 syntax pgenclosestage, pgenclose, pgenrelease, pgenstorage
 syntax prefowner = REPLAY_TRY porigin | REPLAY_CATCH porigin
 syntax prefreturncursor = { OWNER porigin, SOURCE porigin, LINE int, OUTER porigin? }
+syntax prefstringcv = { SOURCE porigin, LINE int, CELL nat, OBJECT nat }
 syntax prefreturnnotice = REF_NOTICE_VALUE | REF_NOTICE_NULL
 syntax pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
 syntax pgenfatal
@@ -148,6 +149,7 @@ syntax pidentityread = { SITE porigin, OP pbin, LEFT nat*, LEFTLINE int, RIGHT n
 syntax pexceptioncall = { OBJECT nat, CALLBACK pvalue, TARGET pcalltarget?, ORIGIN porigin?, RAW parray?, SENT poperand?, RECEIVED poperand? }
 syntax pglobalread = { SITE porigin, NAME nat*, LINE int }
 syntax pnameread = { SITE porigin, NAME nat*, LINE int }
+syntax ppropertyget = { SITE porigin, NAME ptbytes, LINE int, OBJECT nat, CLASS porigin, METHOD porigin, DECL ppropertyid? }
 syntax ppropertywarning = { READ pnameread, OBJECT nat, KEY ptbytes, FREEING bool, BORROWED bool, CELL nat? }
 syntax pnamestring = { READ pnameread, OBJECT nat, TAIL ptask* }
 syntax pechoresult = { TEMP poperand, OBJECT nat, SITE porigin, LINE int, TAIL ptask* }
@@ -257,6 +259,9 @@ syntax psourcehelper = HELPER_EMPTY_EVAL | HELPER_ONCE_SKIP pfilecontext preqbyt
 syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat, PACKS pfiberpack* }
 syntax pgcpublic = {API pfiberapi, SOURCE pgccall, INDEX nat, END nat, PENDING nat?, RESIDUAL bool}
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int, PACKS pfiberpack* }
+syntax pyieldfromreceipt = { AGGREGATE nat, FUNCTION porigin, SITE porigin, LINE int }
+syntax pyieldfromaggregate = { PARENT nat, SITE porigin, LINE int, AGGREGATE nat, OBJECT nat, ACQUIRED nat*, INPUT poperand, CURRENT poperand }
+syntax pyieldfromretained = { PARENT nat, DATA nat, RECEIPT pyieldfromreceipt, INDEX nat }
 syntax pforeachaggregate = { STATEMENT statement, SITE porigin, LINE int, AGGREGATE nat, OBJECT nat, ACQUIRED nat*, INPUT poperand, CURRENT poperand, ITERATOR nat? }
 syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGATE nat?, ACQUIRED nat*, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
@@ -297,7 +302,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | OBJECT_CLASS_NAME int
   | EXCEPTION_HANDLER_INVOKE pexceptioncall | EXCEPTION_HANDLER_ENTER pexceptioncall | EXCEPTION_HANDLER_RESULT pexceptioncall
   | ERROR_HANDLER_INVOKE perrorcall | ERROR_HANDLER_RESULT perrorcall | ERROR_READ_RESULT perrorread | ERROR_TRIGGER_PHASE pconfigcall nat | CONFIG_INI_NULL_RESULT pconfigcall | ASSERTION_INI_RESULT passertini | ASSERT_OPTIONS_READY pconfigcall | ASSERT_OPTIONS_ARRAY passertoption | ASSERT_OPTIONS_STRING passertoption nat porigin int | ASSERT_DESCRIPTION_STRING pconfigcall nat porigin int | ASSERT_CALLBACK_INVOKE passertcall | ASSERT_CALLBACK_RESULT passertcall | ASSERT_CALLBACK_CLEAN passertcall | ASSERT_FAILURE_WARNING passertfailure | CHDIR_WARNING_RESULT pdircontext nat* nat | ERROR_IDENTITY_RESULT pidentityread
-  | GLOBAL_READ_RESULT pglobalread | NAME_READ_RESULT pnameread | NAME_CV_READ_RESULT pnameread | NAME_ARRAY_RESULT pnameread | PROPERTY_NULL_RESULT pnameread | PROPERTY_UNDEFINED_RESULT ppropertywarning
+  | GLOBAL_READ_RESULT pglobalread | NAME_READ_RESULT pnameread | NAME_CV_READ_RESULT pnameread | NAME_ARRAY_RESULT pnameread | PROPERTY_NULL_RESULT pnameread | PROPERTY_UNDEFINED_RESULT ppropertywarning | PROPERTY_GET_RESULT ppropertyget | PROPERTY_GET_COPY ppropertyget poperand | PROPERTY_GET_DROP ppropertyget pvalue
   | NAME_STRING_RESULT pnamestring | NAME_STRING_READY pnamestring preqbytes | NAME_STRING_PENDING pnamestring preqbytes nat
   | KEY_READ_BASE pbase pkeymode | KEY_READ_DIM poperand int pkeymode | KEY_READ_GLOBAL poperand int pkeymode | KEY_READ_RESULT pkeyread | KEY_READ_FINISH porigin ptask
   | KEY_WRITE_BASE pbase bool | KEY_WRITE_DIM poperand int bool | KEY_WRITE_APPEND int bool | KEY_WRITE_GLOBAL poperand int bool | KEY_WRITE_RESULT pkeywrite | KEY_WRITE_FINISH pkeywriter
@@ -310,11 +315,15 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | PARAMETER_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int
+  | YIELD_FROM_AGGREGATE pyieldfromaggregate text
+  | YIELD_FROM_ITERATOR_NEXT nat pyieldfromreceipt
+  | YIELD_FROM_ITERATOR_RESULT nat pyieldfromreceipt nat
   | FOREACH_AGGREGATE pforeachaggregate text
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
   | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
+  | REF_STRING_FETCH prefstringcv | REF_STRING_THROW prefstringcv
   | PROPERTY_STRING_RESULT ppropertystring | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
   | PROPERTY_DYNAMIC_RESULT pdynamicproperty | PROPERTY_DYNAMIC_INSERT pdynamicproperty
   | PARAMETER_STRING_RESULT pparameterstring
@@ -407,7 +416,7 @@ syntax pbindscoperesult = BIND_SCOPE pbindscope | BIND_SCOPE_MISSING ptbytes | B
 syntax pbindwarning = { CALL pconfigcall, SCOPE pbindscoperesult, MESSAGE ptbytes }
 syntax pclosureevidence = CLOSURE_SCOPE pclosurescope | CLOSURE_BINDING pclosurebinding | CLOSURE_CALL porigin nat nat porigin
 ;; A durable fake closure keeps selection certificates, never the raw callback container.
-syntax pfrommethod = { SITE porigin, INPUT pvalue, METHOD ptbytes, SCOPE porigin?, CALLED porigin?, THIS nat?, CLASS papiclass, OUTER papiclass?, ORIGINAL ptbytes, PREFIX nat, WIDTH nat, FUNCTION porigin, NAME ptbytes, STATIC bool, CREATION pmethodcapture?, ARRAY bool, INVOKE bool }
+syntax pfrommethod = { SITE porigin, FACTORY nat?, INPUT pvalue, METHOD ptbytes, SCOPE porigin?, CALLED porigin?, THIS nat?, CLASS papiclass, OUTER papiclass?, ORIGINAL ptbytes, PREFIX nat, WIDTH nat, FUNCTION porigin, NAME ptbytes, STATIC bool, CREATION pmethodcapture?, ARRAY bool, INVOKE bool }
 ;; Fibers move VM-local control; heap, class tables, INI and handlers stay shared.
 syntax pfiberstatus = FIBER_INIT | FIBER_RUNNING | FIBER_SUSPENDED | FIBER_TERMINATED
 syntax pfibervm = { GLOBAL bool, TABLE psymboltable, TODO ptask*, ORIGIN porigin?, CURRENT pcallcontext?, RETIREDOWNERS pretiredowner*, FRAMES pframe*, DESTRUCTORCALLS pdestructorcall*, DESTRUCTORRELEASES pdestructionrelease*, DESTRUCTORFRAMES pdestructionframe*, DESTRUCTOROPERATIONS pdestructionoperation*, DESTRUCTORCLEANUPS pdestructioncleanup*, HELD pnode*, RESULT poperand, BASE pbase, CELL nat, KEY pkey, LOCATION plocation, REPORTING int, SILENCES psilence*, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, CONSTCONTEXT pconstantcontext?, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin? }
@@ -424,10 +433,10 @@ syntax pgenstorage = { OBJECT nat, HANDLE nat, NEXT nat, CALLER pcallcontext?, O
 syntax pgeneratorborrowed = { VALUE poperand?, KEY pvalue? }
 syntax pgeneratoraccess = { TARGET pcalltarget, SITE porigin, LINE int }
 syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FIRST bool, INDEX int, VALUE pvalue?, REFCELL nat?, KEY pvalue?, BORROWED pgeneratorborrowed?, RETURN pvalue?, CLOSURE nat?, DELEGATE pgeneratorfrom?, ACCESS pgeneratoraccess? }
-syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand? }
+syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand?, ACQUISITION pyieldfromreceipt? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
-syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool }
-syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
+syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool, BORROWED bool }
+syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
@@ -439,7 +448,7 @@ syntax preceivebirth = { ORIGIN porigin, FUNCTION porigin, CALLSITE porigin?, PA
 syntax psourcepending = { OPERAND psourceoperand, UNIT nat, HELPER psourcehelper?, EXCEPTION nat, CALLER pcallcontext? }
 
 syntax pstate = { OBJECTS pobject*, CLOSURESCOPES pclosurescope*, CLOSUREBINDINGS pclosurebinding*, OBJECTPROPS pobjectprops*, OBJECTTABLES pobjecttable*, PROPREFS ppropref*, REFCOERCIONS prefcoercion*, CONTAINERINITS pcontainerinit*, PARAMETERBACKINGS pparameterbacking*, CLONES pclonewindow*, CLONEMAKERS pclonemaker*, CLASSES pclassdesc*, CLASSNAMES (preqbytes, porigin)*, DECLARATIONS pdeclaration*, LINKEDPARENTS pclasslink*, LINKEDINTERFACES pinterfacelink*, CLOSURETEMPLATES pfunction*, STATICS pstaticcell*, CLASSSTATICS pclassstatic*, INSTANCEDEFAULTS pinstancetemplate*, CLASSCONSTANTCACHE pdefaultcache*, CLASSCONSTANTHISTORY pclassconstantevent*, CLASSCONSTANTINIT pclassconstantcontext*, CONSTANTCLOSURES pconstantclosure*, PARAMETERCLOSURES pparameterclosure*, CONSTANTOBJECTS pconstantobject*, STARTUP pstartup?, ASSERTIONS int, ASSERTIONSINIT preqbytes, ASSERTIONSINI preqbytes, ASSERTIONSMODIFIED bool, ASSERTIONSRAW pvalue, ASSERTIONSORIGINAL pvalue, ASSERTIONSMODE passertmode, ASSERTIONININEXT nat, ASSERTIONINI passertini*, STRINGDATA (nat*)*, ASSERTACTIVE passertflag, ASSERTBAIL passertflag, ASSERTWARNING passertflag, ASSERTEXCEPTION passertflag, ASSERTCALLBACK pvalue?, ASSERTOPTIONNEXT nat, ASSERTOPTIONS passertoption*, REPORTING int, REPORTINGINI preqbytes, REPORTINGMODIFIED bool, DISPLAYINIT preqbytes?, DISPLAYINI preqbytes?, DISPLAYMODIFIED bool, PRECISIONINIT preqbytes, PRECISIONINI preqbytes, PRECISIONMODIFIED bool, SILENCES psilence*, ERRORHANDLER perrorhandler, ERRORHANDLERS perrorhandler*, EXCEPTIONHANDLER pvalue?, EXCEPTIONHANDLERS pvalue?*, AUTOLOAD pautoloadregistry, AUTOSEQ nat, SHUTDOWN pshutdown, DESTRUCTION pdestruction, GC pgc, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, DEFAULTCACHE pdefaultcache*, PARAMETERSEQ nat, PARAMETERRECEIVES preceivebirth*, CONSTCONTEXT pconstantcontext?, USERCONSTANTS puserconstant*, TRACE ptraceframe*, ERRORFATALTRACE ptraceframe*, ERRORORIGIN porigin?, FUNCTIONS pfunction*, CALLABLES (preqbytes, porigin)*, GLOBALTABLE psymboltable?, ACTIVEFIBER nat?, FIBERCALLERS pfibercaller*, FIBERCLOSERS pfiberclose*, FIBERSEQ nat, FRAMES pframe*, CURRENT pcallcontext?, RETIREDOWNERS pretiredowner*, REQUEST prequest?, FILECWD preqbytes?, FILEINCLUDEPATH preqbytes?, FILESEQ nat, DIRSEQ nat, DIRCONVSEQ nat, DIRCONVERSIONS pdirconversion*, DIRCONTEXT pdircontext?, SELECTSEQ nat, SELECTEDCALLS pselectedcall*, FILECONTEXTS pfilecontext*, FILEBINDINGS pfilebinding*, INCLUDEDOPENED preqbytes*, EVALCONTEXTS pevalcontext*, EVALBINDINGS pevalbinding*, FAILEDSOURCES pfailedsource*, SOURCEPENDING psourcepending?, SERVICELEFT nat?, COMPILESTOP bool, SYMBOLS preqbytes*, CVS preqbytes*, HTTPROOTS (preqbytes, pvalue)*, ACTIVATED preqbytes*, TODO ptask*, EVENTS pevent*, COMPLETION pcompletion,
-  ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat }
+  ENV pbinding*, STORE pslot*, REFCELLS nat*, RESULT poperand, CELL nat, ARRAYS parray*, KEY pkey, BASE pbase, LOCATION plocation, ALLOCATIONS pnode*, HELD pnode*, SOURCES pcunit*, ORIGIN porigin?, POOLS ppool*, FILES psourcefile*, CODE pcode*, ITERATORS piterator*, NEXTITER nat, YIELDRETAINED pyieldfromretained* }
 
 dec $parser_literal_origin(pstate, porigin?, expression) : pvalue?
 dec $source_precision(pstate, porigin?) : int?
@@ -979,6 +988,7 @@ dec $bound_fake_object(pstate, nat) : bool
 dec $bound_fake_internal_scope(pstate) : ptbytes?
 dec $bound_fake_internal_called(pstate) : ptbytes?
 dec $closure_bind_kind(pintrinsic) : bool
+dec $from_kind(pintrinsic) : bool
 dec $closure_static_api_kind(pintrinsic) : bool
 dec $closure_static_api_owner_valid(pstate, nat) : bool
 dec $closure_binding_api_site(pstate, porigin) : bool
@@ -1203,3 +1213,9 @@ dec $generator_cached_value(pstate, nat, bool) : pvalue
 dec $generator_cache_shape(pstate, pgenerator) : bool
 dec $generator_from_state_valid(pstate) : bool
 dec $generator_from_selected(pstate, pcalltarget, porigin) : bool
+
+dec $yield_from_aggregate_selected(pstate, pcalltarget, porigin) : bool
+dec $yield_from_aggregate_pending_site(pstate, porigin) : bool
+dec $yield_from_aggregate_context(pstate, pcallcontext) : bool
+dec $yield_from_retained_nodes(pyieldfromretained*) : pnode*
+dec $yield_from_retained_valid(pstate, pyieldfromretained*) : bool

@@ -185,5 +185,41 @@
     "source": "<?php\nclass NestedStaticRequested234 {\n    public static function make() {\n        return function () {\n            echo isset($this) ? '1' : '0';\n            echo ':', self::class, ':', static::class,\n                 ':', get_called_class(), '|';\n        };\n    }\n}\nclass NestedStaticForeign234 {\n    public function capture() {\n        return Closure::fromCallable([NestedStaticRequested234::class, 'self::make']);\n    }\n}\nset_error_handler(static function () { echo 'D|'; });\n$maker = new NestedStaticForeign234();\n$parent = $maker->capture();\nunset($maker);\n$child = $parent();\n$copy = clone $child;\nunset($parent);\n$child();\n$copy();\nunset($child, $copy);\n",
     "source_sha256": "3c204fc3c8f7f24edb9127ffee9458a4b6246ad2d2b3c2277a469ec1a29366b4",
     "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-user-invocation",
+    "source": "<?php\nclass FactoryUserInvokeReview20 {\n    private static function hidden() { echo \"B;\"; return \"ok\"; }\n    public static function select($factory) {\n        echo \"I;\";\n        return $factory(callback: [self::class, \"hidden\"]);\n    }\n}\necho \"Q;\";\n$factory = Closure::fromCallable(...);\n$closure = FactoryUserInvokeReview20::select($factory);\n$factory = null;\necho \"F;V:\", $closure(), \";\";\n$closure = null;\necho \"E;\";\n",
+    "source_sha256": "b9d5ecc6800d9fbdd519b340cce4d09800e641e78d79d1681ad5668829d4cf06",
+    "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-user-creation",
+    "source": "<?php\nclass FactoryUserCreateReview20 {\n    private static function hidden() { echo \"B;\"; return \"bad\"; }\n    public static function make() {\n        echo \"C;\";\n        return Closure::fromCallable(...);\n    }\n}\necho \"Q;\";\n$factory = FactoryUserCreateReview20::make();\ntry {\n    $closure = $factory(callback: [FactoryUserCreateReview20::class, \"hidden\"]);\n    echo \"BAD;\";\n} catch (Throwable $error) {\n    echo \"X:\", get_class($error), \":\", $error->getMessage(), \";\";\n}\n$factory = null;\necho \"E;\";\n",
+    "source_sha256": "2e42ab89662eb5070c29319f6afbbd083953c0e53f79fb89e5a2347a2970985a",
+    "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-duplicate-unpack",
+    "source": "<?php\necho \"Q;\";\n$factory = Closure::fromCallable(...);\ntry {\n    $closure = $factory(...[\"callback\" => \"MissingFirstFactoryCallbackReview20\"], callback: \"MissingSecondFactoryCallbackReview20\");\n    echo \"BAD;\";\n} catch (Throwable $error) {\n    echo \"X:\", get_class($error), \":\", $error->getMessage(), \";\";\n}\n$factory = null;\necho \"E;\";\n",
+    "source_sha256": "b210ebe5a6d0fffeb60c958a5ceee6deefa247fff43c150d0046f801f5c10115",
+    "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-wrong-name",
+    "source": "<?php\necho \"Q;\";\n$factory = Closure::fromCallable(...);\ntry {\n    $closure = $factory(wrong: \"MissingFactoryCallbackReview20\");\n    echo \"BAD;\";\n} catch (Throwable $error) {\n    echo \"X:\", get_class($error), \":\", $error->getMessage(), \";\";\n}\n$factory = null;\necho \"E;\";\n",
+    "source_sha256": "7229512e98e5eb7f5b67a61673aadef2487f620b5dc7b33435cc82a6baf5264d",
+    "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-closure-identity",
+    "source": "<?php\necho \"Q;\";\n$callback = fn() => \"ok\";\n$factory = Closure::fromCallable(...);\n$closure = $factory(callback: $callback);\necho \"S:\", $closure === $callback ? \"same\" : \"different\", \";\";\n$factory = null;\n$callback = null;\necho \"F;V:\", $closure(), \";\";\n$closure = null;\necho \"E;\";\n",
+    "source_sha256": "26eaaf320767e61c7d5a7491443e8d37f916dc6af694f3c44a67d64b7644b0dc",
+    "expected_model": "normal"
+  },
+  {
+    "id": "captured-factory-argument-retirement",
+    "source": "<?php\nfunction clearFactoryArgumentReview20() {\n    global $factory;\n    echo \"A;\";\n    $factory = null;\n    return fn() => \"ok\";\n}\necho \"Q;\";\n$factory = Closure::fromCallable(...);\n$closure = $factory(callback: clearFactoryArgumentReview20());\necho \"F;V:\", $closure(), \";\";\n$closure = null;\necho \"E;\";\n",
+    "source_sha256": "e443835bbf3b6f773bb7507e6c691ce2731a7de2f134530a93f5b28f28ef6208",
+    "expected_model": "normal"
   }
 ]

@@ -1326,3 +1326,121 @@ echo "V:", FromInstanceNameChildReview20::$value,
         'discriminator': 'A nonstatic Closure::fromCallable preserves the exact receiver-bearing scope through computed NAME retirement and the distinct RHS callback; explicit Closure release retires its sole receiver without invalidating saved selection evidence.',
     },
 ]
+
+
+CASES += [
+    {
+        'id': 'stringable-name-direct-factory-instance-byref',
+        'source': '''<?php
+class FromFactoryNameBaseReview20 {
+    public static string $value = "a";
+    public function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+    public function __destruct() {
+        echo "W;";
+    }
+}
+class FromFactoryNameChildReview20 extends FromFactoryNameBaseReview20 {
+    public static string $value = "c";
+}
+class FromFactoryNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        FromFactoryNameChildReview20::$value = "d";
+        $rhs = new FromFactoryRightReview20();
+    }
+}
+class FromFactoryRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+$property = new FromFactoryNameReview20();
+$rhs = "before";
+echo "Q;";
+$callback = [new FromFactoryNameChildReview20(), "append"];
+$closure = Closure::fromCallable(callback: $callback);
+$callback = null;
+echo "F;";
+$result = $closure($property, $rhs);
+$rhs = "done";
+$closure = null;
+echo "V:", FromFactoryNameChildReview20::$value,
+     ";B:", FromFactoryNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;F;H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'Direct fromCallable control retains the inherited by-ref Stringable NAME/RHS body and retires the receiver after callback-array release.',
+    },
+    {
+        'id': 'stringable-name-captured-factory-instance-byref',
+        'source': '''<?php
+class FromFactoryNameBaseReview20 {
+    public static string $value = "a";
+    public function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+    public function __destruct() {
+        echo "W;";
+    }
+}
+class FromFactoryNameChildReview20 extends FromFactoryNameBaseReview20 {
+    public static string $value = "c";
+}
+class FromFactoryNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        FromFactoryNameChildReview20::$value = "d";
+        $rhs = new FromFactoryRightReview20();
+    }
+}
+class FromFactoryRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+$property = new FromFactoryNameReview20();
+$rhs = "before";
+echo "Q;";
+$callback = [new FromFactoryNameChildReview20(), "append"];
+$factory = Closure::fromCallable(...);
+$closure = $factory(callback: $callback);
+$callback = null;
+$factory = null;
+echo "F;";
+$result = $closure($property, $rhs);
+$rhs = "done";
+$closure = null;
+echo "V:", FromFactoryNameChildReview20::$value,
+     ";B:", FromFactoryNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;F;H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'A first-class captured fromCallable factory receives a named callback, retires before the returned method Closure runs, and preserves by-ref Stringable NAME/RHS effects and explicit receiver retirement.',
+    },
+]

@@ -1,0 +1,93 @@
+[
+  {
+    "id": "baseline/typed-return-reference-control",
+    "source": "<?php class O{function __toString(){echo \"S;\";return \"x\";}}$x=new O;function &f():string{global $x;return $x;}$y=&f();echo $y;",
+    "stdout": "S;x",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "cv-binding/rebind-plain-unused",
+    "source": "<?php\nclass O{function __toString():string{global $other;echo \"T;\";$GLOBALS[\"x\"]=&$other;return \"s\";}}\n$x=new O;$old=&$x;$other=\"o\";\nfunction &f():string{global $x;return $x;}\nf();echo \"old=\",$old,\";x=\",$x,\";other=\",$other,\";\";echo \"x=\",$x,\";other=\",$other,\";\";\n",
+    "stdout": "T;old=s;x=o;other=o;x=o;other=o;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "cv-binding/rebind-plain-used",
+    "source": "<?php\nclass O{function __toString():string{global $other;echo \"T;\";$GLOBALS[\"x\"]=&$other;return \"s\";}}\n$x=new O;$old=&$x;$other=\"o\";\nfunction &f():string{global $x;return $x;}\n$r=&f();echo \"r=\",$r,\";\";echo \"old=\",$old,\";x=\",$x,\";other=\",$other,\";\";$r=\"q\";echo \"write-old=\",$old,\";\";echo \"x=\",$x,\";other=\",$other,\";\";\n",
+    "stdout": "T;r=s;old=s;x=o;other=o;write-old=q;x=o;other=o;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "cv-binding/rebind-protected-unused",
+    "source": "<?php\nclass O{function __toString():string{global $other;echo \"T;\";$GLOBALS[\"x\"]=&$other;return \"s\";}}\n$x=new O;$old=&$x;$other=\"o\";\nfunction &f():string{global $x;try{return $x;}finally{echo \"F:\",$x,\";\";}}\nf();echo \"old=\",$old,\";x=\",$x,\";other=\",$other,\";\";echo \"x=\",$x,\";other=\",$other,\";\";\n",
+    "stdout": "T;F:s;old=s;x=o;other=o;x=o;other=o;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "cv-binding/rebind-protected-used",
+    "source": "<?php\nclass O{function __toString():string{global $other;echo \"T;\";$GLOBALS[\"x\"]=&$other;return \"s\";}}\n$x=new O;$old=&$x;$other=\"o\";\nfunction &f():string{global $x;try{return $x;}finally{echo \"F:\",$x,\";\";}}\n$r=&f();echo \"r=\",$r,\";\";echo \"old=\",$old,\";x=\",$x,\";other=\",$other,\";\";$r=\"q\";echo \"write-old=\",$old,\";\";echo \"x=\",$x,\";other=\",$other,\";\";\n",
+    "stdout": "T;F:s;r=s;old=s;x=o;other=o;write-old=q;x=o;other=o;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "cv-binding/unset-plain-unused",
+    "source": "<?php\nclass O{function __toString():string{global $other;echo \"T;\";unset($GLOBALS[\"x\"]);return \"s\";}}\n$x=new O;$old=&$x;$other=\"o\";\nfunction &f():string{global $x;return $x;}\nf();echo \"old=\",$old,\";isset=\",isset($x)?\"1\":\"0\",\";other=\",$other,\";\";echo \"isset=\",isset($x)?\"1\":\"0\",\";\";\n",
+    "stdout": "T;old=s;isset=0;other=o;isset=0;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "cv-binding/unset-plain-used",
+    "source": "<?php\nclass O{function __toString():string{global $other;echo \"T;\";unset($GLOBALS[\"x\"]);return \"s\";}}\n$x=new O;$old=&$x;$other=\"o\";\nfunction &f():string{global $x;return $x;}\n$r=&f();echo \"r=\",$r,\";\";echo \"old=\",$old,\";isset=\",isset($x)?\"1\":\"0\",\";other=\",$other,\";\";$r=\"q\";echo \"write-old=\",$old,\";\";echo \"isset=\",isset($x)?\"1\":\"0\",\";\";\n",
+    "stdout": "T;r=s;old=s;isset=0;other=o;write-old=q;isset=0;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "cv-binding/unset-protected-unused",
+    "source": "<?php\nclass O{function __toString():string{global $other;echo \"T;\";unset($GLOBALS[\"x\"]);return \"s\";}}\n$x=new O;$old=&$x;$other=\"o\";\nfunction &f():string{global $x;try{return $x;}finally{echo \"F:\",$x,\";\";}}\nf();echo \"old=\",$old,\";isset=\",isset($x)?\"1\":\"0\",\";other=\",$other,\";\";echo \"isset=\",isset($x)?\"1\":\"0\",\";\";\n",
+    "stdout": "T;F:s;old=s;isset=0;other=o;isset=0;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "cv-binding/unset-protected-used",
+    "source": "<?php\nclass O{function __toString():string{global $other;echo \"T;\";unset($GLOBALS[\"x\"]);return \"s\";}}\n$x=new O;$old=&$x;$other=\"o\";\nfunction &f():string{global $x;try{return $x;}finally{echo \"F:\",$x,\";\";}}\n$r=&f();echo \"r=\",$r,\";\";echo \"old=\",$old,\";isset=\",isset($x)?\"1\":\"0\",\";other=\",$other,\";\";$r=\"q\";echo \"write-old=\",$old,\";\";echo \"isset=\",isset($x)?\"1\":\"0\",\";\";\n",
+    "stdout": "T;F:s;r=s;old=s;isset=0;other=o;write-old=q;isset=0;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "live-error/plain-unused",
+    "source": "<?php\nclass O {function __toString():string {global $x;echo \"T;\";$x=7;throw new Exception(\"callback\");}}\n$x=new O;\nfunction &f():string {global $x;return $x;}\ntry{f();echo \"BAD;\";}catch(TypeError $e){echo $e->getMessage(),\";\",$e->getPrevious()->getMessage(),\";\";}echo \"x=\",$x,\";\";\n",
+    "stdout": "T;f(): Return value must be of type string, int returned;callback;x=7;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "live-error/plain-used",
+    "source": "<?php\nclass O {function __toString():string {global $x;echo \"T;\";$x=7;throw new Exception(\"callback\");}}\n$x=new O;\nfunction &f():string {global $x;return $x;}\ntry{$a=&f();echo \"BAD;\";}catch(TypeError $e){echo $e->getMessage(),\";\",$e->getPrevious()->getMessage(),\";\";}echo \"x=\",$x,\";\";\n",
+    "stdout": "T;f(): Return value must be of type string, int returned;callback;x=7;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "live-error/protected-unused",
+    "source": "<?php\nclass O {function __toString():string {global $x;echo \"T;\";$x=7;throw new Exception(\"callback\");}}\n$x=new O;\nfunction &f():string {global $x;try{return $x;}finally{echo \"F;\";}}\ntry{f();echo \"BAD;\";}catch(TypeError $e){echo $e->getMessage(),\";\",$e->getPrevious()->getMessage(),\";\";}echo \"x=\",$x,\";\";\n",
+    "stdout": "T;F;f(): Return value must be of type string, int returned;callback;x=7;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "live-error/protected-used",
+    "source": "<?php\nclass O {function __toString():string {global $x;echo \"T;\";$x=7;throw new Exception(\"callback\");}}\n$x=new O;\nfunction &f():string {global $x;try{return $x;}finally{echo \"F;\";}}\ntry{$a=&f();echo \"BAD;\";}catch(TypeError $e){echo $e->getMessage(),\";\",$e->getPrevious()->getMessage(),\";\";}echo \"x=\",$x,\";\";\n",
+    "stdout": "T;F;f(): Return value must be of type string, int returned;callback;x=7;",
+    "stderr": "",
+    "exit": 0
+  }
+]

@@ -1,0 +1,271 @@
+;; zend_std_read_property holds the receiver once. The known-instance __get
+;; frame borrows that hold; its RV is dereferenced only after OBJ_RELEASE.
+dec $property_get_source(pstate, ppropertyget) : bool
+dec $property_get_decl(pstate, porigin, ptbytes) : ppropertyid?
+dec $property_get_public(pstate, nat, ptbytes) : bool
+dec $property_get_history(pstate, ppropertyget) : bool
+dec $property_get_valid(pstate, ppropertyget, bool) : bool
+dec $property_get_carrier(ptask, nat, porigin) : nat
+dec $property_get_carriers(ptask*, nat, porigin) : nat
+dec $property_get_guard_task(ptask, nat, ptbytes) : bool
+dec $property_get_guard_tasks(ptask*, nat, ptbytes) : bool
+dec $property_get_guard_frames(pframe*, nat, ptbytes) : bool
+dec $property_get_plan(pstate) : ppropertyget?
+dec $property_get_begin(pstate, ppropertyget) : pstate
+dec $property_get_capture(pstate, ppropertyget) : bool
+dec $property_get_pending_call(pstate, pcalltarget, porigin) : bool
+dec $property_get_frame(pstate, pcallcontext, pframe) : bool
+dec $property_get_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+dec $property_get_context(pstate, pcallcontext) : bool
+dec $property_get_unconstrained(pstate, poperand) : bool
+dec $property_get_verify(pstate, ppropertyget, poperand) : pstate
+dec $property_get_verify_value(pstate, ppropertyget, ppropertydesc, pvalue, ptypeconversion) : pstate
+dec $property_get_complete(pstate, ppropertyget, poperand) : pstate
+dec $property_get_abrupt(pstate, ppropertyget) : pstate
+dec $property_get_drop_pending(pstate) : bool
+
+;; INITIAL deliberately does not invoke __get. The UNSET state is distinct.
+def $property_get_method(S, n) = $effective_method(S, porigin, $ptascii("__get"), |S.CLASSES|)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin
+  -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
+def $property_get_needed(S, n, ptbytes) = true
+  -- if $property_get_method(S, n) =/= eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = eps
+def $property_get_needed(S, n, ptbytes) = true
+  -- if $property_get_method(S, n) =/= eps
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
+  -- if $property_slot_at(ppropertyslot_all*, ptbytes) = (ppropertyslot)
+  -- if ppropertyslot.STATE = PROP_UNSET
+
+def $property_get_decl(S, porigin, ptbytes) = (ppropertydesc.ORIGIN)
+  -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = (ppropertydesc)
+def $property_get_decl(S, porigin, ptbytes) = eps -- otherwise
+
+def $property_get_source(S, ppropertyget) = true
+  -- if ppropertyget.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if ppropertyget.NAME = $base64(text_name)
+  -- if $reference_cv(NExprVariable (BYTES text_receiver) metadata_receiver) = (ptbytes_receiver)
+  -- if $source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver)
+  -- if S_view = S[.ORIGIN = (ppropertyget.SITE)]
+  -- if ~$scope_global(S_view, [PCFIELD 0])
+  -- if $property_prep_task(S_view, NIdentifier (BYTES text_name) metadata_name, ppropertyget.LINE)
+  -- if $compiled_effects(S, ppropertyget.SITE) = eps
+def $property_get_source(S, ppropertyget) = false -- otherwise
+
+def $property_get_public(S, n, ptbytes) = true
+  -- if $property_effective_desc(S, n, ptbytes) = eps
+def $property_get_public(S, n, ptbytes) = (ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ppropertydesc.KEY = ptbytes)
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+
+def $property_get_history(S, ppropertyget) = true
+  -- if $property_get_source(S, ppropertyget)
+  -- if $(ppropertyget.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[ppropertyget.OBJECT] = INSTANCE ppropertyget.CLASS
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = ppropertyget.METHOD
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+  -- if ppropertyget.DECL = $property_get_decl(S, ppropertyget.CLASS, ppropertyget.NAME)
+  -- if $property_get_public(S, ppropertyget.OBJECT, ppropertyget.NAME)
+def $property_get_history(S, ppropertyget) = false -- otherwise
+
+def $property_get_carrier(PROPERTY_GET_RESULT ppropertyget, n, porigin) = 1
+  -- if ppropertyget.OBJECT = n /\ ppropertyget.SITE = porigin
+def $property_get_carrier(PROPERTY_GET_COPY ppropertyget poperand, n, porigin) = 1
+  -- if ppropertyget.OBJECT = n /\ ppropertyget.SITE = porigin
+def $property_get_carrier(PROPERTY_GET_DROP ppropertyget pvalue, n, porigin) = 1
+  -- if ppropertyget.OBJECT = n /\ ppropertyget.SITE = porigin
+def $property_get_carrier(AT porigin_site ptask, n, porigin) = $property_get_carrier(ptask, n, porigin)
+def $property_get_carrier(ptask, n, porigin) = 0 -- otherwise
+def $property_get_carriers(eps, n, porigin) = 0
+def $property_get_carriers(ptask :: ptask_tail*, n, porigin) = $($property_get_carrier(ptask, n, porigin) + $property_get_carriers(ptask_tail*, n, porigin))
+def $property_get_valid(S, ppropertyget, b_live) = true
+  -- if $property_get_history(S, ppropertyget)
+  -- if ~b_live \/ ((HOBJECT ppropertyget.OBJECT) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, ppropertyget.OBJECT))
+  -- if $($property_get_carriers(S.TODO, ppropertyget.OBJECT, ppropertyget.SITE) <= 1)
+def $property_get_valid(S, ppropertyget, b_live) = false -- otherwise
+
+;; RESULT is the invocation stage; COPY no longer represents native IN_GET.
+;; Thus reentry from receiver destruction after the getter returns is distinct.
+def $property_get_guard_task(PROPERTY_GET_RESULT ppropertyget, n, ptbytes) = (ppropertyget.OBJECT = n /\ ppropertyget.NAME = ptbytes)
+def $property_get_guard_task(ptask, n, ptbytes) = false -- otherwise
+def $property_get_guard_tasks(ptask :: ptask_tail*, n, ptbytes) = ($property_get_guard_task(ptask, n, ptbytes) \/ $property_get_guard_tasks(ptask_tail*, n, ptbytes))
+def $property_get_guard_tasks(eps, n, ptbytes) = false
+def $property_get_guard_frames(eps, n, ptbytes) = false
+def $property_get_guard_frames(pframe :: pframe_tail*, n, ptbytes) = ($property_get_guard_tasks(pframe.TODO, n, ptbytes) \/ $property_get_guard_frames(pframe_tail*, n, ptbytes))
+
+def $property_get_pending(S) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_get_needed(S, n, $base64(text))
+
+def $property_get_plan(S) = (ppropertyget)
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if S.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, n)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_get_needed(S, n, $base64(text_name))
+  -- if $property_resolve(S, n, $base64(text_name)) = PROPERTY_ACCESS $base64(text_name)
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if ppropertyget = {SITE porigin, NAME $base64(text_name), LINE z, OBJECT n, CLASS porigin_class, METHOD pmethoddesc.FUNCTION.ORIGIN, DECL $property_get_decl(S, porigin_class, $base64(text_name))}
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_carriers(S.TODO, n, porigin) = 0
+  -- if ~$property_get_guard_tasks(S.TODO, n, ppropertyget.NAME)
+  -- if ~$property_get_guard_frames(S.FRAMES, n, ppropertyget.NAME)
+def $property_get_plan(S) = eps -- otherwise
+
+def $property_get_begin(S, ppropertyget) = S[.TODO = [(CALL_ARGS (PROPERTY_GET_TARGET ppropertyget.OBJECT ppropertyget.METHOD) eps 1 ([KNOWN (PSTRING ppropertyget.NAME)]) (ppropertyget.SITE) ppropertyget.LINE), PROPERTY_GET_RESULT ppropertyget] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
+rule PhpStep/property-get: S ~> $property_get_begin(S, ppropertyget)
+  -- if $property_get_plan(S) = (ppropertyget)
+rule PhpStep/property-get-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic getter receiver, signature or recursive access"]
+  -- if $property_get_pending(S)
+  -- if $property_get_plan(S) = eps
+
+;; The internal call borrows its receiver from the one saved RESULT task.
+def $target_nodes(PROPERTY_GET_TARGET n porigin) = eps
+def $target_instance(PROPERTY_GET_TARGET n porigin) = eps
+def $target_receiver(S, PROPERTY_GET_TARGET n porigin) = $target_receiver(S, METHOD_TARGET n porigin)
+def $target_lexical_class(S, PROPERTY_GET_TARGET n porigin) = $target_lexical_class(S, METHOD_TARGET n porigin)
+def $target_called_class(S, PROPERTY_GET_TARGET n porigin) = $target_called_class(S, METHOD_TARGET n porigin)
+def $target_function(S, PROPERTY_GET_TARGET n porigin) = $target_function(S, METHOD_TARGET n porigin)
+  -- if $property_get_method(S, n) = (pmethoddesc)
+  -- if pmethoddesc.FUNCTION.ORIGIN = porigin
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $ppmethod_get_signature(pmethoddesc.FUNCTION.SIGNATURE)
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = PROPERTY_GET_TARGET n porigin
+
+def $property_get_capture(S, ppropertyget) = true
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $origin_node(S.SOURCES, ppropertyget.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) phpType20 metadata)
+  -- if S_view = S[.ORIGIN = (ppropertyget.SITE)][.RESULT = VARIABLE $base64(text_receiver) $variable_line(BYTES text_receiver, metadata_receiver)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = [PROPERTY_PREP phpType20 ppropertyget.LINE, DIM_FETCH ppropertyget.LINE]]
+  -- if $property_get_plan(S_view) = (ppropertyget)
+def $property_get_capture(S, ppropertyget) = false -- otherwise
+
+def $property_get_pending_call(S, PROPERTY_GET_TARGET n porigin_method, porigin) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_GET_TARGET n porigin_method) eps 1 ([KNOWN (PSTRING ptbytes)]) (porigin) z) :: (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if ppropertyget.OBJECT = n /\ ppropertyget.METHOD = porigin_method
+  -- if ppropertyget.SITE = porigin /\ ppropertyget.LINE = z /\ ppropertyget.NAME = ptbytes
+  -- if S.ORIGIN = (porigin)
+  -- if $property_get_capture(S, ppropertyget)
+def $property_get_pending_call(S, pcalltarget, porigin) = false -- otherwise
+def $property_get_pending_site(S, porigin) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 1 poperand* (porigin) z) :: ptask_tail*
+  -- if $property_get_pending_call(S, pcalltarget, porigin)
+def $call_arguments_valid(S, (porigin), 1, eps, poperand :: eps, 0) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 1 (poperand :: eps) (porigin) z) :: ptask_tail*
+  -- if $property_get_pending_call(S, pcalltarget, porigin)
+
+def $property_get_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if pframe.ORIGIN = (ppropertyget.SITE)
+  -- if pcallcontext.TARGET = PROPERTY_GET_TARGET ppropertyget.OBJECT ppropertyget.METHOD
+  -- if pcallcontext.CALLSITE = (ppropertyget.SITE) /\ pcallcontext.LINE = ppropertyget.LINE
+  -- if pcallcontext.ARGC = 1 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if $property_get_valid(S[.ORIGIN = pframe.ORIGIN][.TODO = pframe.TODO], ppropertyget, true)
+def $property_get_frame(S, pcallcontext, pframe) = false -- otherwise
+
+def $property_get_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $property_get_frame(S, pcallcontext, pframe)
+  -- if pcallcontext.TARGET = pcalltarget /\ pcallcontext.CALLSITE = (porigin)
+def $property_get_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $property_get_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+  -- if ~(pcallcontext.TARGET = pcalltarget /\ pcallcontext.CALLSITE = (porigin))
+def $property_get_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $property_get_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+def $property_get_entered(S, pcallcontext?, eps, pcalltarget, porigin) = false
+
+def $call_selected_valid(S, PROPERTY_GET_TARGET n porigin_method, (porigin)) = ($property_get_pending_call(S, PROPERTY_GET_TARGET n porigin_method, porigin) \/ $property_get_entered(S, S.CURRENT, S.FRAMES, PROPERTY_GET_TARGET n porigin_method, porigin))
+def $property_get_context_kind(pcallcontext) = true -- if pcallcontext.TARGET = PROPERTY_GET_TARGET n porigin
+def $property_get_context(S, pcallcontext) = true
+  -- if $property_get_context_kind(pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $property_get_entered(S, S.CURRENT, S.FRAMES, pcallcontext.TARGET, porigin)
+def $property_get_context(S, pcallcontext) = false -- otherwise
+def $call_arity_valid(S, pcallcontext) = $property_get_context(S, pcallcontext) -- if $property_get_context_kind(pcallcontext)
+def $call_extent_valid(S, pcallcontext) = $property_get_context(S, pcallcontext) -- if $property_get_context_kind(pcallcontext)
+def $named_context_valid(S, pcallcontext) = $property_get_context(S, pcallcontext) -- if $property_get_context_kind(pcallcontext)
+def $reference_callback_used(S, pcallcontext) = (true)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $property_get_context(S, pcallcontext)
+
+;; Exact verification is identity: neither a checked write nor TYPE_SOURCES
+;; attachment occurs. Coercions and constrained cells remain explicit residuals.
+def $property_get_unconstrained(S, KNOWN pvalue) = true
+def $property_get_unconstrained(S, REFERENCE n) = ($propref_at(S.PROPREFS, n) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps)
+def $property_get_unconstrained(S, poperand) = false -- otherwise
+def $property_get_verify(S, ppropertyget, poperand) = S -- if ppropertyget.DECL = eps
+def $property_get_verify(S, ppropertyget, poperand) = S
+  -- if ppropertyget.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.TYPE = eps
+def $property_get_verify(S, ppropertyget, poperand) = $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, pmethoddesc.FUNCTION.CODE.STRICT))
+  -- if ppropertyget.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.TYPE =/= eps
+  -- if $property_get_unconstrained(S, poperand)
+  -- if S_read = $quiet_operand(S, poperand)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+def $property_get_verify(S, ppropertyget, poperand) = S[.COMPLETION = UNSUPPORTED "magic getter typed reference sources"] -- otherwise
+
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEVALUE pvalue) = S
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEREJECT) = $throw_scalar(S, "TypeError", $ptascii("Value of type ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned from ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::__get() must be compatible with unset property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, ptypeconversion) = S[.COMPLETION = UNSUPPORTED "magic getter property type coercion"] -- otherwise
+
+def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
+;; Verification can fail after a real RV was returned. Retain that raw owner
+;; while the receiver is released under the newly materialized TypeError.
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if S_next.TODO = (PROPERTY_GET_COPY ppropertyget S.RESULT) :: ptask_tail*
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+rule PhpStep/property-get-result: S ~> $property_get_complete(S, ppropertyget, S.RESULT)
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+
+def $property_get_abrupt(S, ppropertyget) = S[.TODO = (THROW_SEARCH n) :: (PROPERTY_GET_COPY ppropertyget (KNOWN PNULL)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $return_discard(S, PROPERTY_GET_RESULT ppropertyget) = $property_get_abrupt(S, ppropertyget)
+
+rule PhpStep/property-get-copy: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*
+  -- if $property_get_valid(S, ppropertyget, false)
+  -- if S_read = $quiet_operand(S, poperand)
+  -- if S_read.RESULT = KNOWN pvalue
+;; Under a pending exception the materialized temporary owns the payload in a
+;; task, keeping THROW_SEARCH's RESULT null. Its next discard is ordinary270.
+def $return_discard(S, PROPERTY_GET_COPY ppropertyget poperand) = S[.TODO = (THROW_SEARCH n) :: (PROPERTY_GET_DROP ppropertyget pvalue) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if S_read = $quiet_operand(S, poperand)
+  -- if S_read.RESULT = KNOWN pvalue
+
+def $task_nodes(PROPERTY_GET_RESULT ppropertyget) = [HOBJECT ppropertyget.OBJECT]
+def $task_nodes(PROPERTY_GET_COPY ppropertyget poperand) = $operand_nodes(poperand)
+def $task_nodes(PROPERTY_GET_DROP ppropertyget pvalue) = $value_nodes(pvalue)
+def $call_task_valid(S, PROPERTY_GET_RESULT ppropertyget) = $property_get_valid(S, ppropertyget, true)
+def $call_task_valid(S, PROPERTY_GET_COPY ppropertyget poperand) = ($property_get_valid(S, ppropertyget, false) /\ $call_reference_operand_valid(S, poperand))
+def $property_get_drop_pending(S) = true
+  -- if $eager_operation_pending(S) =/= eps
+def $property_get_drop_pending(S) = true
+  -- if $destructor_operation_for(S) = (pdestructionoperation)
+  -- if pdestructionoperation.PENDING =/= eps
+  -- if $destructor_pending_valid(S, pdestructionoperation.PENDING)
+def $property_get_drop_pending(S) = false -- otherwise
+def $call_task_valid(S, PROPERTY_GET_DROP ppropertyget pvalue) = ($property_get_valid(S, ppropertyget, false) /\ $property_get_drop_pending(S) /\ $heap_subset($value_nodes(pvalue), S.ALLOCATIONS))
+def $eager_operation_source_guard(S, pdestructionoperation) = $property_get_valid(S, ppropertyget, false)
+  -- if pdestructionoperation.SOURCE = PROPERTY_GET_RESULT ppropertyget

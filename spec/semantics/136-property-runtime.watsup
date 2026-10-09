@@ -341,7 +341,15 @@ def $property_strict(S) = pcode.STRICT
   -- if S.ORIGIN = (PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
 def $property_strict(S) = false -- otherwise
+dec $property_get_method(pstate, nat) : pmethoddesc?
+def $property_get_method(S, n) = eps -- otherwise
+dec $property_get_needed(pstate, nat, ptbytes) : bool
+def $property_get_needed(S, n, ptbytes) = false -- otherwise
+dec $property_get_pending(pstate) : bool
+def $property_get_pending(S) = false -- otherwise
 dec $property_read_key(pstate, pvalue, ptbytes, int) : pstate
+def $property_read_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "magic getter read receiver or mode"]
+  -- if $property_get_needed(S, n, ptbytes)
 def $property_read_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_read_value(S, pitem)]
   -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
@@ -349,6 +357,7 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_read
   -- if ppropertyslot.STATE = PROP_VALUE pitem
 def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Typed property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" must not be accessed before initialization"), z)
   -- if ~$instance_storage_freeing(S, n)
+  -- if ~$property_get_needed(S, n, ptbytes)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_INITIAL \/ ppropertyslot.STATE = PROP_UNSET
@@ -357,10 +366,12 @@ def $property_read_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $pt
   -- if ppropertydesc.TYPE =/= eps
 def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)[.RESULT = KNOWN PNULL]
   -- if ~$instance_storage_freeing(S, n)
+  -- if ~$property_get_needed(S, n, ptbytes)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
 def $property_read_key(S, POBJECT n, ptbytes, z) = $diagnostic(S, "Warning", $ptascii("Undefined property: ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)[.RESULT = KNOWN PNULL]
   -- if ~$instance_storage_freeing(S, n)
+  -- if ~$property_get_needed(S, n, ptbytes)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = (ppropertyslot)
   -- if ppropertyslot.STATE = PROP_UNSET
@@ -375,6 +386,8 @@ def $property_read_key(S, pvalue, ptbytes, z) = $diagnostic(S, "Warning", $ptasc
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 
 dec $property_quiet_key(pstate, pvalue, ptbytes, int) : pstate
+def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "quiet magic getter read"]
+  -- if $property_get_needed(S, n, ptbytes)
 def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.RESULT = KNOWN $entry_value(S, pitem)]
   -- if ~$instance_storage_freeing(S, n)
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
@@ -619,6 +632,7 @@ def $property_undefined_reference_plan(S) = eps -- otherwise
 rule PhpStep/property-base-static: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_PROPERTY pvalue $base64(text)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
   -- if ~$property_undefined_reference_receiver(S)
+  -- if ~$property_get_pending(S)
   -- if $property_undefined_reference_plan(S) = eps
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL

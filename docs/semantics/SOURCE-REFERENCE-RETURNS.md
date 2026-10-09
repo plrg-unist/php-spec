@@ -72,8 +72,20 @@ catch resumes the cleared old return with NULL, while normal replacement and fin
 return preserve the selected new reference cell. Three exact originals and eight
 reached current/saved fixtures/602 assertions pass; actual-parent compilation has a
 separate cut in the [active-finalizer review](../../coverage/semantics/reference-return-active-finalizer-review.json).
-Wider consumed VALUE/CONST/NULL and multiple-active histories, Stringable186 and wider
-owner protocols remain required.
+Wider consumed VALUE/CONST/NULL and multiple-active histories, wider Stringable CV
+layouts and owner protocols remain required.
+
+Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
+before weak Stringable conversion. Its retained current/saved f-local binding
+authenticates that selection independently of later GLOBALS rebind/unset. Success
+writes the captured cell and uses ordinary reference-return demand/unwinding; callback
+failure reads its live value for TypeError and preserves the callback Exception as
+previous. Certificates own nothing; existing STRINGIFY_RESULT retains the cast receiver.
+The [typed CV review](../../coverage/semantics/reference-return-typed-cv-review.json)
+binds 13 exact originals and eight reached fixtures/843 assertions at separate cuts,
+plus actual-parent compilation. Admission checks source, line, receiver, matching
+copies and retained local identity, not a fully coherent rewritten private history.
+Released/nonreference CV layouts, destructor timing and wider typed consumers remain open.
 
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;

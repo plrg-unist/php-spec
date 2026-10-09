@@ -41,8 +41,17 @@ dec $gc_worker_public_reentry(pstate, pconfigcall, pvalue) : pstate
 dec $gc_worker_scan_api_valid(pstate, pfiberapi) : bool
 dec $gc_worker_takeover_ready(pstate, pgcplan, bool) : bool
 dec $gc_worker_takeover(pstate, pgcplan) : pstate
-dec $gc_worker_residual_start_ready(pstate, pgcplan, bool) : bool
 dec $gc_worker_residual_start(pstate, pgcplan) : pstate
+dec $gc_worker_mixed_overlap_plan(pgcplan) : bool
+dec $gc_worker_residual_profile(pstate, pgcplan) : bool
+dec $gc_worker_residual_dispatch(pstate, pgcpublic, pgcplan) : pstate
+dec $gc_worker_residual_image(pstate, pgcplan, pgcpublic) : bool
+dec $gc_worker_residual_tags(pgcplan, pgcslot*, nat) : bool
+dec $gc_worker_residual_called(pstate, pnode*) : bool
+dec $gc_worker_residual_initial(pstate, pgcplan, pgcpublic, pgcguard?) : bool
+dec $gc_worker_residual_prefix(pstate, pgcplan, pgcpublic, pnode*) : bool
+dec $gc_worker_residual_selected(pstate, pgcplan, pgcpublic, nat, nat) : bool
+dec $gc_worker_residual_pin(pstate, pgcguard, pgcpublic) : bool
 dec $gc_worker_internal_progress(pstate, pgcplan, pnode*) : pgcprogress*
 dec $gc_unvisited_valid(pstate, pgcplan, pnode) : bool
 dec $gc_worker_internal_attachment(pstate, pgcguard, pgcpublic) : bool
@@ -252,6 +261,7 @@ def $gc_worker_public_residual_context(S, pgcpublic) = true
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_worker_internal_scan_range(pgcplan, pgcpublic)
   -- if $gc_plan_live(S, pgcplan)
+  -- if $gc_worker_residual_image(S, pgcplan, pgcpublic)
   -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
   -- if pgcpublic.END = S.GC.SCAN.END /\ pgcpublic.END = |pgcplan.BUFFER|
   -- if $(pgcpublic.INDEX <= pgcpublic.END)
@@ -260,6 +270,101 @@ def $gc_worker_public_residual_context(S, pgcpublic) = true
 def $gc_worker_public_residual_context(S, pgcpublic) = false -- otherwise
 def $gc_worker_internal_scan_range(pgcplan, pgcpublic) = true -- if pgcplan.SCAN = eps
 def $gc_worker_internal_scan_range(pgcplan, pgcpublic) = false -- otherwise
+;; The mixed Fiber lane keeps the nested image and scans surviving physical
+;; tags. Its saved GC_WAIT caller supplies the one real collection authority.
+def $gc_worker_residual_image(S, pgcplan, pgcpublic) = true
+  -- if ~$gc_overlap_plan(pgcplan)
+def $gc_worker_residual_image(S, pgcplan, pgcpublic) = true
+  -- if $gc_worker_mixed_overlap_plan(pgcplan)
+  -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
+  -- if S.GC.WORKER = (n)
+  -- if S.ACTIVEFIBER = (n)
+  -- if pgcpublic.API.OBJECT = n
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.VM = eps
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if $fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps)
+  -- if pfibercaller.OBJECT = n /\ pfibercaller.API = pgcpublic.API
+  -- if $gc_worker_api(pfibercaller.API) /\ $fiber_caller_wait(S, pfibercaller)
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_tail*
+  -- if pfibercaller.PREVIOUS = (n_caller)
+  -- if n_caller =/= n
+  -- if $fiber_at(S, n_caller) = (pfiber_caller)
+  -- if pfiber_caller.GC = eps /\ $fiber_record_valid(S, n_caller, pfiber_caller)
+  -- if pfibercaller.VM.CURRENT = pgcplan.CALL.CALLER /\ pfibercaller.VM.ORIGIN = pgcplan.CALL.ORIGIN /\ pfibercaller.VM.CONSTCONTEXT = pgcplan.CALL.CONSTCONTEXT
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if $gc_scope_valid(S_caller, pgcplan.CALL)
+  -- if $gc_worker_residual_tags(pgcplan, S.GC.BUFFER, 0)
+  -- if $gc_worker_residual_prefix(S, pgcplan, pgcpublic, $destruction_nodes_delete($gc_uncalled_snapshot(S, pgcplan.CANDIDATES, pgcplan.CALLED), $gc_nested_removed(pgcplan)))
+  -- if S.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, 0, pgcpublic.INDEX, 0)
+  -- if $gc_worker_residual_initial(S, pgcplan, pgcpublic, pgcworker.GUARD)
+def $gc_worker_residual_image(S, pgcplan, pgcpublic) = false -- otherwise
+def $gc_worker_residual_tags(pgcplan, eps, n_slot) = true
+def $gc_worker_residual_tags(pgcplan, (GC_DTOR_ROOT n) :: pgcslot*, n_slot) = $gc_worker_residual_tags(pgcplan, pgcslot*, $(n_slot + 1))
+  -- if $gc_main_marked(pgcplan, n_slot, n)
+def $gc_worker_residual_tags(pgcplan, pgcslot :: pgcslot_tail*, n_slot) = $gc_worker_residual_tags(pgcplan, pgcslot_tail*, $(n_slot + 1))
+  -- if $gc_eligible_slot(pgcslot) = $gc_nodes([pgcslot])
+def $gc_worker_residual_tags(pgcplan, pgcslot*, n_slot) = false -- otherwise
+def $gc_worker_residual_called(S, (HOBJECT n) :: pnode*) = true -- if n <- S.DESTRUCTION.CALLED
+def $gc_worker_residual_called(S, (HOBJECT n) :: pnode*) = $gc_worker_residual_called(S, pnode*)
+  -- if ~(n <- S.DESTRUCTION.CALLED)
+def $gc_worker_residual_called(S, pnode*) = false -- otherwise
+def $gc_worker_residual_initial(S, pgcplan, pgcpublic, pgcguard?) = true
+  -- if pnode* = $destruction_nodes_delete($gc_uncalled_snapshot(S, pgcplan.CANDIDATES, pgcplan.CALLED), $gc_nested_removed(pgcplan))
+  -- if $gc_worker_residual_called(S, pnode*)
+def $gc_worker_residual_initial(S, pgcplan, pgcpublic, eps) = (S.GC.BUFFER = pgcslot* /\ S.GC.FREE = nat_free* /\ S.GC.SCAN.INDEX = 0)
+  -- if pnode* = $destruction_nodes_delete($gc_uncalled_snapshot(S, pgcplan.CANDIDATES, pgcplan.CALLED), $gc_nested_removed(pgcplan))
+  -- if ~$gc_worker_residual_called(S, pnode*)
+  -- if pgcpublic.INDEX = 0
+  -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
+def $gc_worker_residual_initial(S, pgcplan, pgcpublic, (pgcguard)) = (S.GC.BUFFER = $gc_scan_clear(pgcslot*, 0, n_end, 0) /\ S.GC.FREE = nat_free*)
+  -- if pnode* = $destruction_nodes_delete($gc_uncalled_snapshot(S, pgcplan.CANDIDATES, pgcplan.CALLED), $gc_nested_removed(pgcplan))
+  -- if ~$gc_worker_residual_called(S, pnode*)
+  -- if $gc_worker_residual_selected(S, pgcplan, pgcpublic, pgcguard.OBJECT, pgcguard.INDEX)
+  -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
+  -- if n_end = $(pgcpublic.INDEX + 1)
+def $gc_worker_residual_initial(S, pgcplan, pgcpublic, pgcguard?) = false -- otherwise
+def $gc_worker_residual_prefix(S, pgcplan, pgcpublic, eps) = true
+def $gc_worker_residual_prefix(S, pgcplan, pgcpublic, (HOBJECT n) :: pnode*) = $gc_worker_residual_prefix(S, pgcplan, pgcpublic, pnode*)
+  -- if $gc_slot_find(pgcplan.BUFFER, HOBJECT n, 0) = (n_slot)
+  -- if $(n_slot < |S.GC.BUFFER|)
+  -- if n <- S.DESTRUCTION.CALLED
+def $gc_worker_residual_prefix(S, pgcplan, pgcpublic, (HOBJECT n) :: pnode*) = $gc_worker_residual_prefix(S, pgcplan, pgcpublic, pnode*)
+  -- if $gc_slot_find(pgcplan.BUFFER, HOBJECT n, 0) = (n_slot)
+  -- if $(n_slot < |S.GC.BUFFER|)
+  -- if ~(n <- S.DESTRUCTION.CALLED)
+  -- if $(n_slot >= pgcpublic.INDEX)
+  -- if S.GC.BUFFER[n_slot] = GC_DTOR_ROOT n
+def $gc_worker_residual_prefix(S, pgcplan, pgcpublic, (HOBJECT n) :: pnode*) = $gc_worker_residual_prefix(S, pgcplan, pgcpublic, pnode*)
+  -- if $gc_slot_find(pgcplan.BUFFER, HOBJECT n, 0) = (n_slot)
+  -- if $(n_slot < |S.GC.BUFFER|)
+  -- if ~(n <- S.DESTRUCTION.CALLED)
+  -- if ~($(n_slot >= pgcpublic.INDEX) /\ S.GC.BUFFER[n_slot] = GC_DTOR_ROOT n)
+  -- if $gc_worker_residual_selected(S, pgcplan, pgcpublic, n, n_slot)
+def $gc_worker_residual_prefix(S, pgcplan, pgcpublic, pnode*) = false -- otherwise
+def $gc_worker_residual_selected(S, pgcplan, pgcpublic, n_object, n_slot) = true
+  -- if pgcpublic.RESIDUAL /\ $gc_worker_api(pgcpublic.API)
+  -- if S.GC.WORKER = (pgcpublic.API.OBJECT)
+  -- if S.ACTIVEFIBER = (pgcpublic.API.OBJECT)
+  -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
+  -- if pgcpublic.PENDING = eps
+  -- if pgcpublic.END = S.GC.SCAN.END /\ pgcpublic.END = |pgcplan.BUFFER|
+  -- if $fiber_at(S, pgcpublic.API.OBJECT) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if pgcguard.WORKER = pgcpublic.API.OBJECT /\ pgcguard.SOURCE = pgcpublic.SOURCE
+  -- if pgcguard.OBJECT = n_object /\ pgcguard.INDEX = n_slot
+  -- if n_slot = pgcpublic.INDEX /\ n_slot = S.GC.SCAN.INDEX
+  -- if ~(n_object <- pgcplan.CALLED)
+  -- if $gc_main_marked(pgcplan, n_slot, n_object)
+  -- if $gc_worker_birth_valid(S, pgcguard.SOURCE) /\ $destructor_pending_valid(S, pgcguard.PENDING)
+  -- if $($gc_worker_guard_count(S.TODO, pgcguard) + $gc_worker_guard_frames(S.FRAMES, pgcguard)) = 1
+  -- if $gc_worker_guard_tail(S.TODO, pgcguard) \/ $gc_worker_guard_frame_tail(S.FRAMES, pgcguard)
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n_object, 0) = (n_slot)
+  -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n_object)
+def $gc_worker_residual_selected(S, pgcplan, pgcpublic, n_object, n_slot) = false -- otherwise
 def $gc_worker_scan_cursor(S, n) = true -- if n = S.GC.SCAN.INDEX
 def $gc_worker_scan_cursor(S, n) = true
   -- if n = $(S.GC.SCAN.INDEX + 1)
@@ -409,6 +514,15 @@ def $gc_worker_public_residual_attachment(S, pgcguard, pgcpublic) = true
   -- if $(pgcguard.INDEX < pgcpublic.END)
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT pgcguard.OBJECT, 0) = (pgcguard.INDEX)
   -- if S.GC.BUFFER[pgcguard.INDEX] = GC_ROOT (HOBJECT pgcguard.OBJECT)
+  -- if $gc_worker_residual_pin(S, pgcguard, pgcpublic)
+def $gc_worker_residual_pin(S, pgcguard, pgcpublic) = true -- if S.GC.PLAN = eps
+def $gc_worker_residual_pin(S, pgcguard, pgcpublic) = true
+  -- if S.GC.PLAN = (pgcplan)
+  -- if ~$gc_overlap_plan(pgcplan)
+def $gc_worker_residual_pin(S, pgcguard, pgcpublic) = $gc_worker_residual_selected(S, pgcplan, pgcpublic, pgcguard.OBJECT, pgcguard.INDEX)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_overlap_plan(pgcplan)
+def $gc_worker_residual_pin(S, pgcguard, pgcpublic) = false -- otherwise
 def $gc_worker_public_residual_attachment(S, pgcguard, pgcpublic) = false -- otherwise
 def $gc_worker_internal_attachment(S, pgcguard, pgcpublic) = true
   -- if S.GC.PLAN = (pgcplan)
@@ -621,11 +735,28 @@ def $gc_worker_start(S, pgcplan, b_fresh) = S[.COMPLETION = UNSUPPORTED "collect
 ;; task. Its new global interval is separate from the callback's local suffix.
 ;; Once that callback has idled, a fresh internal entry reloads the new interval
 ;; and visits its physical tags, including roots excluded from the new plan.
+def $gc_worker_mixed_overlap_plan(pgcplan) = true
+  -- if $gc_overlap_plan(pgcplan)
+  -- if ~$heap_subset($destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER)), $gc_nested_removed(pgcplan))
+def $gc_worker_mixed_overlap_plan(pgcplan) = false -- otherwise
+def $gc_worker_residual_profile(S, pgcplan) = true -- if ~$gc_residual_overlap(S)
+def $gc_worker_residual_profile(S, pgcplan) = true
+  -- if $gc_residual_overlap(S)
+  -- if $gc_worker_mixed_overlap_plan(pgcplan)
+  -- if $fiber_transfer_domain(S)
+  -- if S.ACTIVEFIBER = (n_caller)
+  -- if $fiber_at(S, n_caller) = (pfiber_caller)
+  -- if pfiber_caller.GC = eps /\ $fiber_record_valid(S, n_caller, pfiber_caller)
+  -- if $fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps)
+  -- if S.GC.WORKER = (n)
+  -- if n =/= n_caller
+  -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
+def $gc_worker_residual_profile(S, pgcplan) = false -- otherwise
 def $gc_worker_residual_start_ready(S, pgcplan, true) = true
   -- if S.ACTIVEFIBER =/= eps
   -- if S.TODO = (GC_TRACE pgcplan.CALL) :: ptask_tail*
   -- if $gc_scope_valid(S, pgcplan.CALL)
-  -- if ~$gc_residual_overlap(S)
+  -- if $gc_worker_residual_profile(S, pgcplan)
   -- if pgcplan = $gc_plan(S, pgcplan.CALL)
   -- if pgcplan.DTORS =/= eps
   -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
@@ -640,7 +771,7 @@ def $gc_worker_residual_start_ready(S, pgcplan, true) = true
 def $gc_worker_residual_start_ready(S, pgcplan, b_fresh) = false -- otherwise
 def $gc_worker_start(S, pgcplan, true) = $gc_worker_residual_start(S, pgcplan)
   -- if $gc_worker_residual_start_ready(S, pgcplan, true)
-def $gc_worker_residual_start(S, pgcplan) = $gc_worker_internal_next(S_active, pgcpublic)
+def $gc_worker_residual_start(S, pgcplan) = $gc_worker_residual_dispatch(S_active, pgcpublic, pgcplan)
   -- if S.GC.WORKER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pgcplan_next = pgcplan[.CALL.PENDING = eps]
@@ -650,6 +781,10 @@ def $gc_worker_residual_start(S, pgcplan) = $gc_worker_internal_next(S_active, p
   -- if pgcpublic = {API pfiberapi, SOURCE pgcplan_next.CALL, INDEX S_caller.GC.SCAN.INDEX, END S_caller.GC.SCAN.END, PENDING pgcplan.CALL.PENDING, RESIDUAL true}
   -- if S_running = $fiber_put(S_caller, n, pfiber[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = pfiberapi.SEQUENCE])
   -- if S_active = $gc_worker_start_vm(S_running, n, pfiber)[.TODO = [GC_WORKER_SCAN pgcpublic]][.ACTIVEFIBER = (n)][.FIBERCALLERS = pfibercaller :: S_caller.FIBERCALLERS][.FIBERSEQ = $(S_caller.FIBERSEQ + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $gc_worker_residual_dispatch(S, pgcpublic, pgcplan) = S
+  -- if $gc_worker_mixed_overlap_plan(pgcplan)
+def $gc_worker_residual_dispatch(S, pgcpublic, pgcplan) = $gc_worker_internal_next(S, pgcpublic)
+  -- if ~$gc_worker_mixed_overlap_plan(pgcplan)
 def $gc_worker_takeover_ready(S, pgcplan, true) = true
   -- if S.TODO = (GC_TRACE pgcplan.CALL) :: ptask_tail*
   -- if $gc_scope_valid(S, pgcplan.CALL)

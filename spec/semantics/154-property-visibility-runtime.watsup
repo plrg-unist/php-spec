@@ -116,10 +116,15 @@ def $property_read(S, POBJECT n, ptbytes, z) = $property_read_key(S, POBJECT n, 
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
+def $property_read(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "inaccessible magic getter read"]
+  -- if ~$instance_storage_freeing(S, n)
+  -- if ~$property_accessible(S, n, ptbytes)
+  -- if $property_get_method(S, n) =/= eps
 def $property_read(S, POBJECT n, ptbytes, z) = $property_access_error(S, n, ptbytes, z)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$throwable_object(S, n)
   -- if ~$property_accessible(S, n, ptbytes)
+  -- if $property_get_method(S, n) = eps
 def $property_read(S, pvalue, ptbytes, z) = $property_read_key(S, pvalue, ptbytes, z)
   -- if $type_bytes(pvalue) =/= $ptascii("object")
 

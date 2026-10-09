@@ -8,6 +8,33 @@ Generator delegation forwards `send` and
 `throw` to the active leaf and supplies its natural return to the waiting parent.
 Waiting siblings observe shared progress without gaining an extra method trace.
 
+Module380 acquires nested `IteratorAggregate` results through borrowed
+`getIterator()` calls. Every returned Aggregate occurrence owns its raw result;
+layers retire inside-out, then the original operand retires before rewind.
+Persistent CVs remain borrowed, including unchanged global reference cells;
+reference-valued original operands own their raw cell until retirement.
+Raw reference getter returns and already-closed Generator results raise their
+native Exceptions.
+
+A returned Generator is consumed through its iterator hooks. The outer cache
+copies raw values and reference cells, the expression returns null, send values
+are ignored by the inner iterator, and injected exceptions stay in the outer
+Generator. Acquisition receipts separate this route from shared child graphs.
+Internal rewind/next operations borrow data already owned by the outer iterator.
+A Generator getter's stored frame owns its receiver once; genuine parked getters
+retain their parent resumer and source authority in the Fiber VM.
+
+When layer or original-operand cleanup throws after constructing the iterator,
+the pinned early exception branch retains its data until request cleanup.
+The model keeps that single data owner in a source-authenticated request record.
+A later real rewind exception instead releases data before catch.
+Seventeen unchanged native-grounded originals agree at separate private cuts.
+Twenty-five genuine-source groups/720 ownership and counterexample premises pass;
+original failures retain zero credit in the
+[Aggregate ledger](../../coverage/semantics/yield-from-aggregate-review.json).
+Changed original operands, wider operand modes and acquired Iterator NaN warning
+continuations remain explicit required gaps.
+
 Getters can detach an independently completed child without resuming the parent.
 The copied current remains available until advancement, while the key becomes
 null. A detached COMPLETE continuation owns its copied return value and adds no
@@ -37,7 +64,7 @@ existing Throwable transition audit remains unchanged. Admission rejects cycles,
 duplicate or moved claims, inconsistent source/stage metadata, invalid cursors,
 and wrapped or stranded internal tasks.
 
-Private source review currently records 52 normal agreements and four compiler
+Private source review at the earlier direct-delegation cuts records 52 normal agreements and four compiler
 rejections in separate cuts. Three exact Unsupported controls earn no agreement:
 IteratorAggregate stops at its earlier interface declaration contract, started
 force-close stops in this tested cut, and NaN handler changes to other raw

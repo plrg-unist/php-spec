@@ -537,5 +537,25 @@ Terminal checks include full continuation and zero-budget replay. Pure typed
 intrinsic-option and GC-source dispatch factors remove duplicate lookup while
 retaining every result/validator; five focused lookup controls pass strict init.
 Earlier failures/timeouts remain zero credit and unrun preparations remain
-preserved. Mixed surviving residuals, nonordinary/black/external components,
+preserved. Nonordinary/black/external components,
 non-idle worker states and later-pass Fiber overlap remain required.
+
+Mixed ordinary-Fiber overlap301/345 uses the physical SCAN path when nested
+removal leaves a separate ordinary residual component. The new frontier preserves
+the exact BUFFER/FREE image and global cursor 0 before the first selection; legacy entry
+remains atomic. The saved GC_WAIT caller supplies real U scope and API authority.
+Every current tag and future uncalled F/E target stays tied to the frozen slot;
+the selected guard independently pins its physical index even after CALLED.
+Before any surviving target is CALLED, BUFFER/FREE must match the nested image
+or its exact current-selection normalization.
+F remains outside fresh DTORS/progress, and removed D cannot reappear as a tag.
+
+At `fb872a74e`/367, independent cuts 147/95/118 preserve initial/preselection
+images, caller/consumer and guard counterfeits, signed -2+2=0, F/E retirement and
+D self-owner 1/weak-live. The terminal cut matches native F→E→D/END and request
+worker cleanup with replay. The original whole CLI60 times out and retains zero
+source agreement; only its default source selection is excluded. Correcting the
+first 146-premise fixture changes saved CURRENT.LINE while preserving its owning payload;
+the original failed heap equality remains zero credit. Baseline 97/projection 66
+are localization only. Wider overlap layouts, throwing callbacks/reentry,
+nonordinary/black/external components, non-idle caches and later passes remain open.

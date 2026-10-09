@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Aggregate yield-from380 recursively acquires real Iterator/Generator data through
+borrowed getter calls, retires raw layers and the original operand before rewind,
+and keeps returned Generators in generic iterator mode: null result, no send/throw
+forwarding and live raw reference cache. Copied getter frames own This once;
+parked acquisition keeps the real parent resumer/source receipt. Early pending
+cleanup retains constructed data until request cleanup; real rewind errors drop
+it before catch. Seventeen unchanged originals agree across the retained source16
+and owning-reference source1 cuts; strict368 passes at `b1164af45`. Independent
+25/720 physical owner and source-authority premises pass at separate cuts.
+Original compiler/source/fixture failures remain zero. Acquired Iterator NaN warnings,
+changed original operands and ordinary-call Aggregate unpack remain required.
+Actual368 over `7b449476` passes strict compilation at `f4567b30`; private
+source/state cuts retain their inputs. [Yield-from review](coverage/semantics/yield-from-aggregate-review.json).
+
 Bounded assertion quantity warnings retain frozen parsed modes and old returns
 through nested raw writes, throw and restore. Immutable string carriers preserve
 INI identity while ordinary consumers use bytes. Seventeen safe originals retain
@@ -137,8 +151,19 @@ Unsupported with zero agreement; the earlier raw-completion fixture preparation
 was corrected before execution. Actual 367-module composition over `24c1b9e4`
 passes strict initialization at `0e5152643` (5.351 s), preserving current assertion
 fields and sibling constructor arms without renewing private source/state checks.
-First-class constructor/getter, uninitialized getter, debug/property and wider wrapper protocols
+First-class constructor, uninitialized getter, debug/property and wider wrapper protocols
 remain required. [Constructor review](coverage/semantics/sensitive-value-constructor-review.json).
+
+First-class SensitiveParameterValue `getValue(...)` callables own their receiver
+and snapshot through the existing getter-closure protocol. Five originals agree
+at `db70c7a5`: array COW, argument priority, computed capture/alias and clone
+ownership. Strict initialization of 367 modules and separate SL76 (15 derived,
+61 reached checks) pass; four real steps verify capture, getter-copy ownership
+and final destructor/weak-null release. Both checked baselines retain Unsupported
+with zero agreement. Actual 368-module composition over `47accb555` passes strict
+initialization at `f4ca5840` (5.209 s), retaining parent owner/runtime paths and
+existing getter-closure ownership without renewing private checks.
+[Getter review](coverage/semantics/sensitive-value-getter-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
@@ -216,7 +241,18 @@ Actual367 over `99f3432e` passes strict compilation at `5b40480dc` (5.173s, zero
 application evaluations); its cut stays separate in the
 [active-finalizer review](coverage/semantics/reference-return-active-finalizer-review.json).
 Wider consumed VALUE/CONST/NULL and multiple-active-finalizer histories,
-Stringable186 and wider owner domains remain required.
+wider Stringable CV layouts and owner domains remain required.
+
+Weak by-reference Stringable returns now preserve the selected live, unconstrained
+aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
+cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
+Failed callbacks report the live selected value and chain the callback Exception.
+The certificates add no roots; existing STRINGIFY_RESULT retains the cast receiver.
+Thirteen exact originals agree at `010545`/368; eight reached fixtures pass 843 assertions
+(95 at `34607` plus 748 at `436014`). Actual 370 over `6f096ef1` passes strict at
+`cfd5f87d` (5.280s, zero application evaluations); the
+[typed CV review](coverage/semantics/reference-return-typed-cv-review.json) keeps each cut separate.
+Released/nonreference CV layouts, destructor timing and wider typed consumers remain open.
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
@@ -810,10 +846,26 @@ ordinal and CALLED authority. Source1 agrees under CLI60 at `e3d359d01`; five
 source-reached cuts155/134/172/54/130 cover all408 original obligations
 (645 executed premises include repeated setup), with count0, E retirement and
 D self-owner/weak-live. Pure lookup/source-site factors preserve all validators.
-Earlier compiler stops, source failures and timeouts retain zero credit; mixed surviving
-residuals, nonordinary/later-pass overlap and wider GC remain required.
+Earlier compiler stops, source failures and timeouts retain zero credit;
+nonordinary/later-pass overlap and wider GC remain required.
 Actual367 over `6e709da74` passes compiler/init at `020f95d30`; reviewed carrier,
 fatal, reference-return and promotion interfaces preserve the unchanged e3 cuts.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
+Mixed ordinary-Fiber overlap301/345 now scans surviving physical tags after
+nested removal through the actual U caller and cached worker W. Exact initial BUFFER/FREE,
+surviving F/E tags and the selected physical guard retain authority without adding
+F to fresh DTORS/progress. Three independent source-reached cuts 147/95/118 at
+`fb872a74e` execute 360 premises: F→E→D, signed -2+2=0, F/E retirement, D self-owner 1
+and weak-live, request cleanup and replay. Compiler/init pass; baseline 97 and
+projection 66 localize ingress and first selection. The first 146-premise fixture clears an
+owner-bearing caller and fails with zero credit; its corrected LINE-only forgery
+preserves the heap. The whole source CLI60 timeout remains OPEN with zero source
+agreement, and only that source is excluded from the default whole-CLI campaign.
+Wider overlap/throw/reentry, nonordinary/non-idle and later-pass lanes remain required;
+prior cuts are unchanged. Actual370 over `71cf292aa` passes compiler/init at
+`aecdcb088`; reviewed typed-return, caller and retained-root interfaces preserve
+the fb872 cuts and whole-source CLI60 OPEN/zero agreement limit.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -1837,7 +1889,25 @@ The actual367 join over `4d7ef44ee` passes strict at `87aca689f` (5.179s).
 Genuine variable returns keep Notice markers absent; introduced GEN request,
 compound-string and static FROMCALLABLE paths are inactive. Source/state credit
 remains at the separate private cuts.
-Computed names, magic getters/hooks, consumed storage and wider reference-call
+The first implicit getter family now supports literal ordinary CV-base reads
+through public nonstatic `__get` with one untyped required parameter and no
+declared return type. Missing/public UNSET invokes it; typed INITIAL still
+raises Error without a getter. Module380 holds the receiver once while the
+getter context borrows it, verifies exact property types before receiver release,
+then copies the current reference payload. Value returns stay fixed, discarded
+reads retain their real RV, and H/B/C cleanup exceptions preserve previous links.
+Native7 and discarded-native1 retain separate cuts; source8 passes at `7971e6693`
+under the validator-only bridge to changed strict368 at `9b46165fc`.
+Eight whole state groups pass 1293 setup-inclusive premises across `233992212`,
+`176e6efa7` and `d3ee92ffd`. Original native/state failures and diagnostic credit remain zero; earlier
+property milestones retain their separate cuts.
+[Getter ledger](coverage/semantics/magic-property-get-review.json).
+The reviewed actual369 join over `b9f0b1ae9` passes strict at `bae438b0f`
+(5.181s, state credit0). Current class/Generator targets, return cursors and
+callable factory fields are preserved; these untyped nongenerator getters leave
+those paths inactive. Private source8/state1293 retain their separate cuts.
+Coercions, constrained returned cells, wider signatures, quiet/write/recursive
+getters, computed names, hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
@@ -2046,6 +2116,23 @@ selection metadata adds no owner. The earlier wrapper Unsupported remains zero
 credit, and required original 7 retains its separate CLI 60 timeout.
 Actual-parent compilation passes at 943e2c3c over 94f4b007 with 367 modules;
 pointwise promotion/property replay review adds no source or state renewal.
+First-class `Closure::fromCallable(...)` now has a source-stamped factory carrier
+and its own owning CONFIG kind. The returned method capture retains a nonowning
+factory certificate after retirement. The direct control agrees at 6e709da7/367;
+captured inherited by-ref NAME/live Stringable RHS and six new permission,
+named/unpacked argument, identity and argument-retirement originals agree at
+8cc7ed12/367. Its 526 state premises pass (467 genuine/derived, 59 constructed),
+including factory creation, CONFIG owner count 2, distinct returned receiver
+ownership, factory retirement, callback/write and explicit receiver retirement.
+Invocation USER scope controls callback access; creation scope grants no later access.
+The initializer Unsupported and pre-child clean-status stop remain zero credit.
+The maintained renderer is byte-identical to the accepted fixture; relocation
+adds no runtime renewal. Explicit __invoke, computed/keyword creation and captured
+factory Fiber/getter callbacks stay open, as does required original 7's CLI 60 timeout.
+Current-parent compilation passes at def000e9 over ac4a95b5 with 368 modules;
+pointwise storage/intrinsic/getter review adds no source or state renewal.
+The [factory ledger](coverage/semantics/from-callable-review.json) keeps the
+distinct native/source/state cuts and boundaries.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
@@ -3458,9 +3545,10 @@ failures and interrupted evidence.
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic, scalar-loop, CV/compiled-CONST
   and bounded physical-array return replay are integrated, as is deferred reference-return
-  Notice dispatch. Bounded single-active-finalizer CV replay is integrated. Wider consumed VALUE/CONST/NULL
-  and multiple-active histories, and typed by-reference Stringable conversion186, remain
-  open; accepted ordinary by-value classification does not close them. [String contract](docs/semantics/USER-STRING.md),
+  Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
+  reference conversion 186 are integrated. Wider consumed VALUE/CONST/NULL and
+  multiple-active histories, released/nonreference CV layouts and wider typed consumers
+  remain open. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
   enums, hooks, readonly and wider instance setter consumers,
@@ -3478,8 +3566,9 @@ failures and interrupted evidence.
 held branches and evidence, and do not retry the rejected engine experiment.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
-integrated. Wider owner domains, consumed VALUE/CONST/NULL or multiple-active histories
-and Stringable186 remain required.
+integrated, as is bounded aliased-CV Stringable reference conversion 186. Wider owner
+domains, consumed VALUE/CONST/NULL or multiple-active histories, released/nonreference
+CV layouts and wider typed consumers remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 

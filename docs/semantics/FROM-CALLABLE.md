@@ -75,11 +75,26 @@ Argument-read warnings occur before API entry; their throws escape unwrapped,
 and a continuing read sends its captured null even after a callback defines the
 variable. The actual C API frame remains present in factory/handler traces.
 
+Fixed first-class `Closure::fromCallable(...)` capture now creates a distinct
+factory object. Variable invocation owns that factory through argument evaluation;
+the returned method Closure owns its receiver independently after factory retirement.
+Callback selection uses the factory invocation's USER scope. The saved factory
+occurrence adds no receiver owner and remains valid after retirement.
+Named/unpacked argument errors precede callback resolution, and a Closure input
+retains its identity. Eight factory originals keep their separate 367-module cuts:
+the direct control at 6e709da7, then the captured receiver witness and six boundary
+cases at 8cc7ed12. The [factory state renderer](../../tests/semantics/from_callable_factory_protocol.py)
+retains 526 premises (467 genuine/derived, 59 constructed); the receiver witness
+is in the [static compound catalogue](../../tests/semantics/scoped_static_compound_cases.py).
+Explicit `__invoke`, computed/keyword factory creation and captured-factory
+Fiber/getter callbacks remain required. Required original static-compound source 7
+keeps its separate CLI 60 timeout with zero agreement.
+
 The maintained [source cases](../../tests/semantics/from_callable_cases.json) and
 [paused fixtures](../../tests/semantics/from_callable_protocol.py) cover these
 boundaries; the [review ledger](../../coverage/semantics/from-callable-review.json)
-records distinct source/state cutoffs and original failures. Capturing or dynamically
-calling the internal factory itself, arbitrary library-builtin captures, magic and
+records distinct source/state cutoffs and original failures. Wider internal factory
+forms, arbitrary library-builtin captures, magic and
 autoload callables and remaining callable warning consumers stay required.
 [Transformed fake binding and current Closure253](CLOSURE-CURRENT-BINDING.md)
 cover the selected capture/binding phase with its remaining REAL/temporary boundaries. No return-verification or complete-core claim is made.

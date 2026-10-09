@@ -21,6 +21,7 @@ dec $reference_notice_designation(pstate, poperand) : prefreturnnotice?
 dec $reference_notice_unwind(pstate, pnode*, int, prefreturnnotice?) : pstate
 dec $reference_notice_operand(poperand, pvalue) : poperand
 dec $reference_return_value_result(pstate, pstate, poperand, pvalue) : pstate
+dec $typed_ref_string_candidate(pstate, int) : bool
 
 ;; The marker adds no operand owner. A completed new return cancels the old
 ;; Notice; failed initial verification leaves the pending transfer untouched.
@@ -209,6 +210,7 @@ def $reference_notice_unwind(S, pnode*, z, (prefreturnnotice)) = S_unwind[.TODO 
   -- if S_unwind = $reference_return_unwind(S, pnode*, z)
 rule PhpStep/return-reference-fetch: S ~> $reference_return_unwind($reference_return_fetch($hold_task_inputs(S), S.BASE, z), S.HELD, z)
   -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
+  -- if ~$typed_ref_string_candidate(S, z)
 rule PhpStep/return-reference-value: S ~> $reference_notice_unwind($reference_return_value($hold_task_inputs(S), S.RESULT, z), S.HELD, z, $reference_notice_designation(S, S.RESULT))
   -- if S.TODO = (RETURN_REF_VALUE z) :: ptask_tail*
   -- if ~$access_reference_value_pending(S)

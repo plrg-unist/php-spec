@@ -196,11 +196,13 @@ test-semantics: build
 	python3 tests/semantics/foreach_aggregate_review.py
 	python3 tests/semantics/foreach_valid_nan_sources.py
 	python3 tests/semantics/foreach_valid_nan_review.py
+	python3 tests/semantics/yield_from_aggregate_sources.py
+	python3 tests/semantics/yield_from_aggregate_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
 	python3 tests/semantics/weak_reference_state_review.py
-	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces --exclude-match collector-residual-dtor-public-resume-preparation-25 --exclude-match collector-residual-dtor-next-internal-fiber-pass-preparation-26 --exclude-match collector-residual-dtor-next-main-pass-preparation-27 --exclude-match collector-residual-internal-callback-suspends-and-detaches-preparation-28 --exclude-match collector-residual-internal-suspension-releases-last-cache-owner-preparation-29 --exclude-match collector-public-callback-resuspends-during-internal-takeover-preparation-30 --exclude-match collector-cached-public-reentry-during-different-main-pass-preparation-31
+	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces --exclude-match collector-residual-dtor-public-resume-preparation-25 --exclude-match collector-residual-dtor-next-internal-fiber-pass-preparation-26 --exclude-match collector-residual-dtor-next-main-pass-preparation-27 --exclude-match collector-residual-internal-callback-suspends-and-detaches-preparation-28 --exclude-match collector-residual-internal-suspension-releases-last-cache-owner-preparation-29 --exclude-match collector-public-callback-resuspends-during-internal-takeover-preparation-30 --exclude-match collector-cached-public-reentry-during-different-main-pass-preparation-31 --exclude-match collector-fiber-mixed-residual-tags-and-fresh-eligible-overlap-preparation-36
 	python3 tests/semantics/cycle_collection_state.py
 	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18 --exclude-match collector-detached-quiescent-throwing-fiber-prior-error-review-19 --exclude-match collector-active-interval-bound-core-throw-review-21 --exclude-match collector-active-public-cached-core-old-pending-new-throw-review-22 --exclude-match collector-active-public-cached-core-two-identities-compact-review-22 --exclude-match collector-public-postpass-core-old-pending-new-throw-review-23 --exclude-match collector-new-fiber-pass-keeps-parked-old-error-review-24 --exclude-match collector-internal-takeover-old-error-compact-preparation-24 --exclude-match collector-residual-dtor-next-internal-old-pending-review-preparation-26 --exclude-match collector-residual-dtor-main-old-pending-review-preparation-27 --exclude-match collector-residual-internal-suspension-separates-replacement-error-review-preparation-28 --exclude-match collector-residual-last-owner-failed-finally-prior-error-review-preparation-29 --exclude-match collector-public-internal-resuspension-separates-two-finally-errors-review-preparation-30 --exclude-match collector-cached-public-throw-during-different-main-pass-prior-identity-review-preparation-31
 	python3 tests/semantics/cycle_collection_state_review.py --sl
@@ -438,6 +440,14 @@ test-semantics: build
 	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group leave
 	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group priority
 	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group pending
+	python3 tests/semantics/magic_property_get_protocol.py --group reference
+	python3 tests/semantics/magic_property_get_protocol.py --group readonly
+	python3 tests/semantics/magic_property_get_protocol.py --group type-error
+	python3 tests/semantics/magic_property_get_protocol.py --group initial
+	python3 tests/semantics/magic_property_get_protocol.py --group value
+	python3 tests/semantics/magic_property_get_protocol.py --group getter-throw
+	python3 tests/semantics/magic_property_get_protocol.py --group returned-throw
+	python3 tests/semantics/magic_property_get_protocol.py --group discarded
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
@@ -556,6 +566,8 @@ test-semantics: build
 	python3 tests/semantics/constructor_sensitive_promotion_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_value_constructor_cases.json
 	python3 tests/semantics/sensitive_value_constructor_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_value_getter_cases.json
+	python3 tests/semantics/sensitive_value_getter_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

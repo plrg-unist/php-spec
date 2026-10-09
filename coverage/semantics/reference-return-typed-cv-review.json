@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "status": "independently_accepted_bounded_aliased_cv_stringable_reference_returns",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "scope": "Weak by-reference returns of ordinary live unconstrained aliased CV cells preserve the captured cell through Stringable callbacks. Retained current/saved f-local binding authenticates the certificate while GLOBALS may rebind or disappear. Conversion writes the old cell atomically; callback failure reports its live value and chains the previous Exception.",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "authority": [
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_VERIFY_RETURN_TYPE",
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_str_weak",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_cast_object_tostring"
+  ],
+  "source": {
+    "revision": "010545c8877440b006a7dba69eef101311255804",
+    "exact_agreements": 13,
+    "raw": ".tools/returns-verify20-typed/typed-cv-model-askt53p9/report.json",
+    "report_sha256": "2d6cbe77a16dc28276df40971f8adac6abd8928d808fe07db2f100c38e3c0722"
+  },
+  "state": {
+    "preserved_first": {
+      "revision": "34607dbab6849cac3783385b69ee5e3fa943ee87",
+      "fixtures": 1,
+      "assertions": 95,
+      "raw": ".tools/returns-typed-cv-20/.tools/returns-typed20/typed-state-e00kuwyg/report.json",
+      "report_sha256": "026e29350ad2b3c8e8cb82b2f41eb539d5a907b4b783600847d3d969d6c5f390"
+    },
+    "affected_last7": {
+      "revision": "436014d86672d7d1230d37124408334d741a0f45",
+      "fixtures": 7,
+      "assertions": 748,
+      "raw": ".tools/returns-typed-cv-20/.tools/returns-typed20/typed-state-last7-nozkrus9/report.json",
+      "report_sha256": "b902c4a046a4f5c0b186c8ad66d72ba2c0e6c6ad9e4a452205b8625cf44a5c1b"
+    },
+    "fixtures": 8,
+    "assertions": 843
+  },
+  "actual_parent_compiler": {
+    "revision": "cfd5f87d274625028fb0b6425fef2a0072a62a68",
+    "canonical_parent": "6f096ef110312cd3da23fcbae76fbd7f17a4a2d6",
+    "modules": 370,
+    "raw": ".tools/returns-typed-publication-20/.tools/returns-typed20/returns-typed-current-compiler-vadfnbef/report.json",
+    "report_sha256": "798a836f616f30ce01129c74140674f02fae5c947ef72a8d8f018fca37706c06",
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "exit": 0,
+    "elapsed_seconds": 5.280239582061768,
+    "timeout": false,
+    "group_after": [],
+    "inputs_module_stats_head_status_stable": true
+  },
+  "ownership": "REF_STRING_FETCH/THROW certificates add no cell/object roots; existing STRINGIFY_RESULT retains the actual cast receiver. Selected cells in these controls remain live through real aliases/frame bindings; released or nonreference CV and destructor timing are not claimed.",
+  "history_limit": "Admission authenticates source, line, receiver, matching certificate copies and retained f-local CV identity; it does not reconstruct or reject a fully coherently rewritten private history.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json",
+    "E_ALL": 30719,
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1,
+    "state_cap_seconds": 45
+  },
+  "preserved_failures": [
+    "historical baseline Stringable reference return Unsupported: zero credit",
+    "34607 saved-method finder expected bare __toString rather than actual O::__toString: fixture-only zero credit; first 95 retained"
+  ],
+  "intentional_divergence": false,
+  "remaining": [
+    "released or nonreference CV layouts and destructor timing",
+    "wider typed source/consumer and repeated-conversion domains",
+    "consumed VALUE/CONST/NULL or multiple-active-finalizer histories, wider physical owner payloads and complete returns/core conformance"
+  ],
+  "reviewer": "returns_review_20",
+  "verifier": "returns_verify_20",
+  "recovery": "Exact originals/native packets remain in ignored .tools/returns-verify20-typed/native_cv_controls.json. Regenerate with tests/semantics/reference_typed_cv_string_state.py --raw .tools/returns-verify20-typed/typed-cv-model-askt53p9 --output DIR. Retain first 95 at 34607 and corrected last seven/748 at 436014; execute serially using pinned runner --sl in modules.json order. The compiler initializes with zero application evaluations; metadata edits earn no renewed runtime credit."
+}
