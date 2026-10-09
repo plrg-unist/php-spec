@@ -540,8 +540,15 @@ iterator retires. Callback errors retire iterator data and temporary operands
 before the unfinished call buffer. Without an effectful cleanup domain, ordinary
 pruning consumes those owners without creating an inactive release task.
 The [Traversable ledger](../../coverage/semantics/fiber-start-traversable-review.json)
-records the source and reached-state checks. IteratorAggregate acquisition, NaN
-warning continuations and compound array or factory selectors remain required.
+records the source and reached-state checks. NaN `valid()` warns at the actual
+unpack line while retaining its original raw return. A handler may mutate or park
+that reference; the C truth test rereads its live payload after handler cleanup,
+while a copied NaN stays true. The INVOKE/RESULT/CLEAN wrappers preserve exactly
+one pending START, including its data owner after the source CV changes. Throwing
+handlers retire raw retval, iterator data and temporary operand before the call
+buffer. The [NaN ledger](../../coverage/semantics/fiber-start-nan-review.json)
+records these separate cuts. IteratorAggregate acquisition, wider raw payload
+changes and compound array or factory selectors remain required.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
 `zend_closure_compare` in `Zend/zend_closures.c`, and
@@ -556,7 +563,7 @@ suppressed `exit` in a destroyed Fiber remain required consumers.
 
 `getReturn` after graceful close without an actual return, request/fatal cleanup,
 wider core internal callback bodies, reference forwarding, wider API callable/FCC entry,
-IteratorAggregate `start` unpacking, NaN warning continuations and switching during
+IteratorAggregate `start` unpacking, wider raw payload changes and switching during
 initialization/source loading remain required. The first transfer domain rejects active or saved constant/default and
 autoload initialization, and active Generator execution, including switches in
 their helper calls. Their shared pending flags and parked ownership remain
