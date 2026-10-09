@@ -14,7 +14,8 @@ attributes reuse ordinary property protocols. Exact original9b85 now gives
 `B|Y|F|D1||Z|1|1`; eight focused originals add seven normals and one ordered
 CompileError. Private359 at00c passes strict compilation, source9 and genuine
 Weak48/byref47. Historical Unsupported, strict/fixture stops and wrong-status row
-retain zero affected credit. Actual-parent composition is pending; parameter
+retain zero affected credit. Actual361 over6e09 passes strict compilation
+at8335 (4.840s); private source/state cuts retain their inputs. Parameter
 attributes/hooks and complete core remain required. [Promotion review](coverage/semantics/constructor-promotion-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
