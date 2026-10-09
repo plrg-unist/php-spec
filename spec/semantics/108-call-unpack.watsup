@@ -104,6 +104,7 @@ def $unpack_prepare(S, punpackcall) = $throw_scalar(S_read, "TypeError", $ptasci
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$is_array_value(pvalue)
+  -- if ~$generator_from_aggregate(S_read, pvalue)
 def $unpack_prepare(S, punpackcall) = $unpack_separate(S_read, S.RESULT, $unpack_writable(S, punpackcall), $unpack_needs_reference(pfunction.SIGNATURE.PARAMETERS, S_read.ARRAYS[n].ITEMS, |punpackcall.SENT.SLOTS|))
   -- if S_read = $resolve_at($hold_task_inputs(S), S.RESULT, $unpack_line(S, punpackcall))
   -- if S_read.COMPLETION = NORMAL

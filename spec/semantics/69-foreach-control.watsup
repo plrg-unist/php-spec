@@ -39,6 +39,7 @@ def $foreach_start(S, statement, plocation, false, z) = S_marked[.TODO = (FOREAC
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object)
   -- if ~$useriter_instance(S, n_object)
+  -- if ~$generator_from_aggregate(S, POBJECT n_object)
   -- if n_iterator = S.NEXTITER
   -- if S_marked = $object_foreach_reset(S, n_object)
 def $foreach_start(S, statement, plocation, true, z) = S_marked[.TODO = (FOREACH_NEXT n_iterator (HCELL n_cell) statement S.ORIGIN z) :: ptask_tail*][.ITERATORS = S_marked.ITERATORS ++ [OBJECTITER n_iterator n_object 0 true]][.NEXTITER = $(n_iterator + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -46,6 +47,7 @@ def $foreach_start(S, statement, plocation, true, z) = S_marked[.TODO = (FOREACH
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object)
   -- if ~$useriter_instance(S, n_object)
+  -- if ~$generator_from_aggregate(S, POBJECT n_object)
   -- if n_iterator = S.NEXTITER
   -- if S_ref = $foreach_reference_at(S, plocation, POBJECT n_object)
   -- if S_ref.COMPLETION = NORMAL
@@ -54,6 +56,7 @@ def $foreach_start(S, statement, plocation, true, z) = S_marked[.TODO = (FOREACH
 def $foreach_start(S, statement, plocation, true, z) = S_ref
   -- if S.RESULT = KNOWN (POBJECT n_object)
   -- if $class_plain_instance(S, n_object) /\ ~$useriter_instance(S, n_object)
+  -- if ~$generator_from_aggregate(S, POBJECT n_object)
   -- if S_ref = $foreach_reference_at(S, plocation, POBJECT n_object)
   -- if S_ref.COMPLETION =/= NORMAL
 def $foreach_start(S, statement, plocation, b, z) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]

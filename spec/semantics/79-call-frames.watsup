@@ -25,8 +25,12 @@ def $call_target_extra_roots(pcallcontext) = [HOBJECT n]
 def $call_target_extra_roots(pcallcontext) = $operand_nodes(poperand_selector)
   -- if pcallcontext.TARGET = SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector
 def $call_target_extra_roots(pcallcontext) = eps -- otherwise
+dec $call_receiver_roots(pcallcontext) : pnode*
+def $call_receiver_roots(pcallcontext) = eps
+  -- if pcallcontext.TARGET = AGGREGATE_METHOD_TARGET n porigin
+def $call_receiver_roots(pcallcontext) = $instance_roots(pcallcontext.RECEIVER) -- otherwise
 def $call_context_roots(eps) = eps
-def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $instance_roots(pcallcontext.RECEIVER) ++ $call_target_extra_roots(pcallcontext) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED) ++ $wrapper_roots(pcallcontext.WRAPPER)
+def $call_context_roots((pcallcontext)) = $instance_roots(pcallcontext.INSTANCE) ++ $call_receiver_roots(pcallcontext) ++ $call_target_extra_roots(pcallcontext) ++ $operands_roots(pcallcontext.EXTRA) ++ $named_roots(pcallcontext.NAMED) ++ $wrapper_roots(pcallcontext.WRAPPER)
 def $frames_roots(eps) = eps
 def $frames_roots(pframe :: pframe_tail*) = $table_roots(pframe.LOCALS) ++ $tasks_nodes(pframe.TODO) ++ pframe.HELD ++ $call_context_roots(pframe.CONTEXT) ++ $frames_roots(pframe_tail*)
 

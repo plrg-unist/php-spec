@@ -2,7 +2,7 @@
 ;; language protocols. Tentative-return notices are a separate pending slice.
 dec $useriter_members() : ptbytes*
 def $useriter_members() = [$ptascii("current"), $ptascii("next"), $ptascii("key"), $ptascii("valid"), $ptascii("rewind")]
-def $useriter_builtin(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("iterator"), $ptascii("traversable")])
+def $useriter_builtin(ptbytes) = ($ptlc(ptbytes) <- [$ptascii("iterator"), $ptascii("iteratoraggregate"), $ptascii("traversable")])
 dec $useriter_signature(ptbytes) : pssignature
 def $useriter_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "mixed"]))]), BYREF false }
   -- if $ptlc(ptbytes) <- [$ptascii("current"), $ptascii("key")]
@@ -10,24 +10,33 @@ def $useriter_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUI
   -- if $ptlc(ptbytes) = $ptascii("valid")
 def $useriter_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTBUILTIN "void"]))]), BYREF false }
   -- if $ptlc(ptbytes) <- [$ptascii("next"), $ptascii("rewind")]
+def $useriter_signature(ptbytes) = { PARAMETERS eps, RETURNS ([(PTBRANCH ([PTCLASS $ptascii("Traversable")]))]), BYREF false }
+  -- if $ptlc(ptbytes) = $ptascii("getiterator")
 dec $useriter_scope() : pvclass
 def $useriter_scope() = { NAME $ptascii("Iterator"), PARENT eps, ANCESTORS ([$ptascii("Traversable")]), FINAL false }
+dec $useriter_method_scope(ptbytes) : pvclass
+def $useriter_method_scope(ptbytes) = { NAME $ptascii("IteratorAggregate"), PARENT eps, ANCESTORS ([$ptascii("Traversable")]), FINAL false }
+  -- if $ptlc(ptbytes) = $ptascii("getiterator")
+def $useriter_method_scope(ptbytes) = $useriter_scope() -- otherwise
+dec $useriter_member_name(ptbytes) : ptbytes
+def $useriter_member_name(ptbytes) = $ptascii("getIterator") -- if $ptlc(ptbytes) = $ptascii("getiterator")
+def $useriter_member_name(ptbytes) = $ptlc(ptbytes) -- otherwise
 
 dec $useriter_method_issue(pstate, pclassdesc, pmethoddesc) : pmethodissue
 dec $useriter_method_compared(pstate, pclassdesc, pmethoddesc, pmmethod, pmmethod, pmcheck) : pmethodissue
 dec $useriter_return_compared(pmethoddesc, pmcheck) : pmethodissue
-def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method Iterator::") ++ $ptlc(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
+def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Cannot make non static method ") ++ $useriter_method_scope(pmethoddesc.NAME).NAME ++ $ptascii("::") ++ $useriter_member_name(pmethoddesc.NAME) ++ $ptascii("() static in class ") ++ pclassdesc.NAME) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if pmethoddesc.STATIC
-def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class Iterator)")) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
+def $useriter_method_issue(S, pclassdesc, pmethoddesc) = METHOD_FILEISSUE ($ptascii("Access level to ") ++ pclassdesc.NAME ++ $ptascii("::") ++ pmethoddesc.NAME ++ $ptascii("() must be public (as in class ") ++ $useriter_method_scope(pmethoddesc.NAME).NAME ++ $ptascii(")")) pmethoddesc.FUNCTION.LINE pmethoddesc.FUNCTION.ORIGIN
   -- if ~pmethoddesc.STATIC
   -- if pmethoddesc.VISIBILITY =/= PROPERTY_PUBLIC
-def $useriter_method_issue(S, pclassdesc, pmethoddesc) = $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto[.SIGNATURE = pmmethod_proto.SIGNATURE[.RETURNS = eps]], $useriter_scope(), $method_active_registry(S, S.CLASSNAMES)))
+def $useriter_method_issue(S, pclassdesc, pmethoddesc) = $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto[.SIGNATURE = pmmethod_proto.SIGNATURE[.RETURNS = eps]], $useriter_method_scope(pmethoddesc.NAME), $method_active_registry(S, S.CLASSNAMES)))
   -- if ~pmethoddesc.STATIC
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC
   -- if pmmethod_selected = $pmethod_user(pmethoddesc, pclassdesc, $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN))
-  -- if pmmethod_proto = $pil_signature_method($ptascii("Iterator"), $ptlc(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), $useriter_signature(pmethoddesc.NAME))
-def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVYES ptbytes*) = $useriter_return_compared(pmethoddesc, $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto, $useriter_scope(), $method_active_registry(S, S.CLASSNAMES)))
-def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVNO ptbytes*) = $pil_internal_source_result(pmethoddesc[.OWNER = pmethoddesc.FUNCTION.ORIGIN], $pmmismatch(pmmethod_selected, $pil_scope(S, pclassdesc), pmmethod_proto, $useriter_scope(), 14))
+  -- if pmmethod_proto = $pil_signature_method($useriter_method_scope(pmethoddesc.NAME).NAME, $useriter_member_name(pmethoddesc.NAME), $call_sourcefile(S.FILES, pmethoddesc.FUNCTION.ORIGIN), $useriter_signature(pmethoddesc.NAME))
+def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVYES ptbytes*) = $useriter_return_compared(pmethoddesc, $pmcompare(PMUSER pmmethod_selected, $pil_scope(S, pclassdesc), PMUSER pmmethod_proto, $useriter_method_scope(pmethoddesc.NAME), $method_active_registry(S, S.CLASSNAMES)))
+def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVNO ptbytes*) = $pil_internal_source_result(pmethoddesc[.OWNER = pmethoddesc.FUNCTION.ORIGIN], $pmmismatch(pmmethod_selected, $pil_scope(S, pclassdesc), pmmethod_proto, $useriter_method_scope(pmethoddesc.NAME), 14))
 def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMCHECK PVUNRESOLVED ptbytes*) = METHOD_UNSUPPORTED "Iterator dependent method declaration"
 def $useriter_method_compared(S, pclassdesc, pmethoddesc, pmmethod_selected, pmmethod_proto, PMUNSUPPORTED text) = METHOD_UNSUPPORTED text
 def $useriter_return_compared(pmethoddesc, PMCHECK PVYES ptbytes*) = METHOD_OK
@@ -48,28 +57,40 @@ def $useriter_methods(S, pclassdesc, ptbytes :: ptbytes_tail*, ppmethodinherited
   -- if pmethodissue =/= METHOD_OK
 def $useriter_contract(S, pclassdesc) = $useriter_methods(S, pclassdesc, $useriter_members(), $pil_info_extra(S, pclassdesc.ORIGIN, $ppmethod_own(pclassdesc, pclassdesc.METHODS), |S.CLASSES|))
   -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Iterator"), |S.CLASSES|)
+  -- if ~$class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("IteratorAggregate"), |S.CLASSES|)
+def $useriter_contract(S, pclassdesc) = METHOD_RUNTIMEISSUE ($ptascii("Class ") ++ pclassdesc.NAME ++ $ptascii(" cannot implement both Iterator and IteratorAggregate at the same time")) pclassdesc.LINE
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Iterator"), |S.CLASSES|)
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("IteratorAggregate"), |S.CLASSES|)
+def $useriter_contract(S, pclassdesc) = $useriter_methods(S, pclassdesc, [$ptascii("getIterator")], $pil_info_extra(S, pclassdesc.ORIGIN, $ppmethod_own(pclassdesc, pclassdesc.METHODS), |S.CLASSES|))
+  -- if ~$class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Iterator"), |S.CLASSES|)
+  -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("IteratorAggregate"), |S.CLASSES|)
 def $useriter_contract(S, pclassdesc) = METHOD_UNSUPPORTED "concrete Traversable-only class core fatal"
   -- if pclassdesc.KIND = "class"
   -- if ~pclassdesc.ABSTRACT
   -- if ~$class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Iterator"), |S.CLASSES|)
+  -- if ~$class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("IteratorAggregate"), |S.CLASSES|)
   -- if $class_origin_matches(S, pclassdesc.ORIGIN, $ptascii("Traversable"), |S.CLASSES|)
 def $useriter_contract(S, pclassdesc) = METHOD_OK -- otherwise
 def $useriter_after_issue(S, pclassdesc, METHOD_OK) = $useriter_contract(S, pclassdesc)
 def $useriter_after_issue(S, pclassdesc, pmethodissue) = pmethodissue -- otherwise
 def $useriter_parent_publish(S, S_parent, pclassdesc) = $pil_method_publish(S, S_parent, pclassdesc)
-  -- if $class_origin_matches(S_parent, pclassdesc.ORIGIN, $ptascii("Iterator"), |S_parent.CLASSES|) \/ (pclassdesc.INTERFACES = eps /\ $class_origin_matches(S_parent, pclassdesc.ORIGIN, $ptascii("Traversable"), |S_parent.CLASSES|))
+  -- if $class_origin_matches(S_parent, pclassdesc.ORIGIN, $ptascii("Iterator"), |S_parent.CLASSES|) \/ $class_origin_matches(S_parent, pclassdesc.ORIGIN, $ptascii("IteratorAggregate"), |S_parent.CLASSES|) \/ (pclassdesc.INTERFACES = eps /\ $class_origin_matches(S_parent, pclassdesc.ORIGIN, $ptascii("Traversable"), |S_parent.CLASSES|))
 def $useriter_parent_publish(S, S_parent, pclassdesc) = S_parent -- otherwise
 def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited*) = $useriter_methods(S, pclassdesc, $useriter_members(), ppmethodinherited*)
   -- if $ptlc(ptbytes) = $ptascii("iterator")
 def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited*) = METHOD_OK
   -- if $ptlc(ptbytes) = $ptascii("traversable")
+def $pil_order_one(S, pclassdesc, PILBUILTIN ptbytes, pilref_seen*, ppmethodinherited*) = $useriter_methods(S, pclassdesc, [$ptascii("getIterator")], ppmethodinherited*)
+  -- if $ptlc(ptbytes) = $ptascii("iteratoraggregate")
 def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes, $ptascii("Traversable")] ++ $pil_ref_names(S, pilref_tail*, n)
-  -- if $ptlc(ptbytes) = $ptascii("iterator")
+  -- if $ptlc(ptbytes) <- [$ptascii("iterator"), $ptascii("iteratoraggregate")]
 dec $useriter_abstract(pstate, pclassdesc, ptbytes*, pilabstract*) : pilabstract*
 def $useriter_abstract(S, pclassdesc, eps, pilabstract*) = pilabstract*
 def $useriter_abstract(S, pclassdesc, ptbytes :: ptbytes_tail*, pilabstract*) = $useriter_abstract(S, pclassdesc, ptbytes_tail*, $pil_abs_add(S, pclassdesc, ptbytes, $ptascii("Iterator::") ++ ptbytes, pilabstract*))
 def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, $useriter_abstract(S, pclassdesc_child, $useriter_members(), pilabstract*))
   -- if $ptlc(ptbytes) = $ptascii("iterator")
+def $pil_abs_refs(S, pclassdesc_child, (PILBUILTIN ptbytes) :: pilref_tail*, n, pilabstract*) = $pil_abs_refs(S, pclassdesc_child, pilref_tail*, n, $pil_abs_add(S, pclassdesc_child, $ptascii("getIterator"), $ptascii("IteratorAggregate::getIterator"), pilabstract*))
+  -- if $ptlc(ptbytes) = $ptascii("iteratoraggregate")
 
 def $useriter_instance(S, n) = true
   -- if $(n < |S.OBJECTS|)

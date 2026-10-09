@@ -165,7 +165,7 @@ def $pil_any(S, (PILSOURCE ptbytes_link porigin_link) :: pilref_tail*, ptbytes, 
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_link)) = (porigin_link)
   -- if $class_at(S.CLASSES, porigin_link) = (pclassdesc_link)
   -- if pclassdesc_link.KIND = "interface"
-def $pil_any(S, (PILBUILTIN ptbytes_link) :: pilref_tail*, ptbytes, n) = ($ptlc(ptbytes_link) = $ptlc(ptbytes) \/ ($ptlc(ptbytes_link) = $ptascii("throwable") /\ $ptlc(ptbytes) = $ptascii("stringable")) \/ ($ptlc(ptbytes_link) = $ptascii("iterator") /\ $ptlc(ptbytes) = $ptascii("traversable")) \/ $pil_any(S, pilref_tail*, ptbytes, n))
+def $pil_any(S, (PILBUILTIN ptbytes_link) :: pilref_tail*, ptbytes, n) = ($ptlc(ptbytes_link) = $ptlc(ptbytes) \/ ($ptlc(ptbytes_link) = $ptascii("throwable") /\ $ptlc(ptbytes) = $ptascii("stringable")) \/ ($ptlc(ptbytes_link) <- [$ptascii("iterator"), $ptascii("iteratoraggregate")] /\ $ptlc(ptbytes) = $ptascii("traversable")) \/ $pil_any(S, pilref_tail*, ptbytes, n))
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes_link)) = (INTERNAL ptbytes_key ptbytes_display "interface")
 
 dec $pil_targets_valid(pstate, ptbytes*, pilref*) : bool
@@ -215,7 +215,7 @@ def $pil_targets_valid(S, ptbytes :: ptbytes_tail*, (PILSOURCE ptbytes porigin) 
   -- if pclassdesc.KIND = "interface"
 def $pil_targets_valid(S, ptbytes :: ptbytes_tail*, (PILBUILTIN ptbytes) :: pilref_tail* ) = $pil_targets_valid(S, ptbytes_tail*, pilref_tail* )
   -- if $class_internal_at($class_internal_catalogue(), $ptlc(ptbytes)) = (INTERNAL ptbytes_key ptbytes_display "interface")
-  -- if $ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable"), $ptascii("iterator"), $ptascii("traversable"), $ptascii("arrayaccess")]
+  -- if $ptlc(ptbytes) <- [$ptascii("stringable"), $ptascii("throwable"), $ptascii("iterator"), $ptascii("iteratoraggregate"), $ptascii("traversable"), $ptascii("arrayaccess")]
 def $pil_targets_valid(S, ptbytes*, pilref_link* ) = false -- otherwise
 
 dec $pil_entries_valid(pstate, pinterfacelink*, porigin*) : bool

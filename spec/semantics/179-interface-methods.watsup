@@ -42,7 +42,7 @@ def $pil_ref_names(S, (PILSOURCE ptbytes porigin) :: pilref_tail*, n) = [ptbytes
 def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes, $ptascii("Stringable")] ++ $pil_ref_names(S, pilref_tail*, n)
   -- if $ptlc(ptbytes) = $ptascii("throwable")
 def $pil_ref_names(S, (PILBUILTIN ptbytes) :: pilref_tail*, n) = [ptbytes] ++ $pil_ref_names(S, pilref_tail*, n)
-  -- if $ptlc(ptbytes) =/= $ptascii("throwable") /\ $ptlc(ptbytes) =/= $ptascii("iterator")
+  -- if $ptlc(ptbytes) =/= $ptascii("throwable") /\ ~($ptlc(ptbytes) <- [$ptascii("iterator"), $ptascii("iteratoraggregate")])
 def $pil_ancestor_names(S, porigin, 0) = eps
 def $pil_ancestor_names(S, porigin, n) = $pil_ref_names(S, pilref*, $nabs($(n - 1))) ++ $pil_ancestor_names(S, porigin_parent, $nabs($(n - 1)))
   -- if $(n > 0)
