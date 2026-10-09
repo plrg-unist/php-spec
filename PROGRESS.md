@@ -94,8 +94,20 @@ remains explicit Unsupported with zero agreement. Strict compilation and SL112
 The original false105 fixture and both diagnostics retain zero state credit.
 Actual 365-module composition over `88ddc64c5` passes strict compilation at
 `78453102d` (5.083 s), preserving current retirement, string, GEN and PROPS paths
-without renewing the private checks. Promoted/mixed/hooks and wider wrapper
-protocols remain required. [Sensitive review](coverage/semantics/sensitive-parameter-review.json).
+without renewing the private checks. Mixed/repeated/argument attributes, hooks and
+wider wrapper protocols remain required. [Sensitive review](coverage/semantics/sensitive-parameter-review.json).
+
+Promoted constructor parameters also accept the single builtin SensitiveParameter.
+Value/reference property writes retain ordinary semantics; trace wrappers capture
+later live CVs without creating a property Override obligation. Source8 passes at
+separate bf6/688 cuts, including readonly/private/trait and ordered promotion
+errors. Strict 365-module compilation and SL176 (74 derived, 102 reached checks)
+pass at `75c4aba82`, including authentic queued-promotion admission. Earlier
+Unsupported, method-continuation failure, fixture stops, false states and diagnostics
+retain zero affected credit. Actual 367-module composition over `235a74c84`
+passes strict initialization at `5448b4ba` (5.214 s), preserving current owner,
+GC, GEN, PROPS, CALLS and returns paths without renewing private checks.
+[Sensitive promotion review](coverage/semantics/sensitive-promotion-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
@@ -257,16 +269,28 @@ keep exact data-before-input unwind. Persistent reference-mode CVs stay borrowed
 reference-valued inputs retain their HCELL, and reference-yielding Generators keep
 ordinary live aliases. Retained foreach Generator close runs real finally throw
 and Fiber suspension, with source-authenticated receipts and unique operation
-ownership across saved VMs. Twenty selected normal sources and strict362 pass;
-the later-valid NaN control stays Unsupported/zero agreement. Twenty-six independent reached
+ownership across saved VMs. Earlier cuts retain twenty normal sources, strict362
+and the later-valid NaN Unsupported control/zero agreement. Twenty-six independent reached
 groups/719 physical premises pass at separate retained cuts; genuine getter
 creation readiness and one initializer cursor claim are checked. Original admission/source failures stay
 zero; prior Aggregate/START evidence is not renewed. Changed original CV/reference
-operands, wider byref locations, foreach NaN handlers and remaining Aggregate
+operands, wider byref locations and remaining Aggregate
 consumers stay required. Actual366 over `c07eac043` passes strict SL at
 `646095932`, preserving current retired-owner replay, sensitive trace wrappers
 and assertion conversion; private source/state cuts retain their inputs.
 [Foreach ledger](coverage/semantics/foreach-aggregate-review.json).
+
+Foreach valid NaN warnings retain the raw return through ordinary handler invoke,
+result and cleanup, then reread live numeric references once. Copied NaN stays
+true; first-valid input retirement follows raw-result cleanup, and thrown handlers
+retire raw retval before data/input. Seven new originals and the affected unchanged
+late-valid original agree with preserved native tuples; strict366 passes at
+`6ce4b1524`. Eighteen independent genuine-source groups/495 physical premises
+pass at retained cuts, including saved-frame forgeries and exact raw retirement. Wider raw
+payload changes remain explicit Unsupported; previous foreach/START evidence is
+not renewed. Actual367 over `88f132db8` passes strict at `0b37a8334`,
+preserving the parent reference-return Notice protocol.
+[NaN ledger](coverage/semantics/foreach-valid-nan-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;
@@ -735,6 +759,19 @@ black/external/nonordinary/Fiber/later-pass overlap remains required; prior cuts
 and whole CLI timeouts are unchanged.
 Actual361 over `be0cfaa7f` passes strict compilation/init at `9391ce28e`, preserving
 reviewed call/ownership/property interfaces; source1/state321 retain their inputs.
+
+Closed white ordinary-object overlap317 now runs on a genuine ordinary Fiber
+through its distinct idle cached worker when every residual tag is removed.
+Exact nested images, saved caller/API and real guards preserve physical cursor,
+ordinal and CALLED authority. Source1 agrees under CLI60 at `e3d359d01`; five
+source-reached cuts155/134/172/54/130 cover all408 original obligations
+(645 executed premises include repeated setup), with count0, E retirement and
+D self-owner/weak-live. Pure lookup/source-site factors preserve all validators.
+Earlier compiler stops, source failures and timeouts retain zero credit; mixed surviving
+residuals, nonordinary/later-pass overlap and wider GC remain required.
+Actual367 over `6e709da74` passes compiler/init at `020f95d30`; reviewed carrier,
+fatal, reference-return and promotion interfaces preserve the unchanged e3 cuts.
+[Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
@@ -1956,6 +1993,16 @@ All prior stops remain zero credit. EPS saved selection keeps ordinary compatibi
 other Closure families, INI identity, ARG329 and required original 7 remain open.
 Actual-parent compilation passes at a67b4e4a over 633ecec1e with 367 modules;
 pointwise Notice/ownership review adds no source or state renewal.
+Inherited nonstatic `Closure::fromCallable` now admits the exact saved receiver
+through existing source/body/history evidence. Ordinary-instance agreement stays
+at 4d7/367; repaired wrapper agreement passes at ff368a41/367. Its 430 premises
+(282 reached, 148 constructed) authenticate receiver ownership through the distinct
+RHS callback/write, explicit Closure and receiver retirement, and saved descriptor
+validity afterward. Missing or substituted current/saved receivers are rejected;
+selection metadata adds no owner. The earlier wrapper Unsupported remains zero
+credit, and required original 7 retains its separate CLI 60 timeout.
+Actual-parent compilation passes at 943e2c3c over 94f4b007 with 367 modules;
+pointwise promotion/property replay review adds no source or state renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

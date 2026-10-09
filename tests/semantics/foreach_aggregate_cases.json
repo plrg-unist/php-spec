@@ -164,101 +164,10 @@
     "source": "<?php\nclass ForeachLaterNanIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; $this->position = 0; }\n    #[ReturnTypeWillChange]\n    public function valid() { echo \"V|\"; return $this->position === 0 ? true : NAN; }\n    public function current(): mixed { echo \"C|\"; return $this->position + 7; }\n    public function key(): mixed { return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachLaterNanAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachLaterNanIterator22(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\n$count = 0;\nforeach (new ForeachLaterNanAggregate22() as $value) {\n    echo \"B\", $value, \"|\";\n    $count++;\n    if ($count === 2) { break; }\n}\necho \"E\";\n",
     "source_sha256": "5d5dc136dd61b57817dd7c82a4823b0c6cad9afe30b98bb74f3dffc811899d26",
     "purpose": "later valid nan required; real foreach Aggregate acquisition.",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "native_stdout": "G|W|V|A|C|B7|X|V|H|2|unexpected NAN value was coerced to bool|21|C|B8|I|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "Iterator foreach valid NaN warning continuation",
-    "unsupported_stdout": "G|W|V|A|C|B7|X|V|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "71",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "87",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "86",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "65",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "67",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "66"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "55"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "88",
-            "124"
-          ]
-        ]
-      },
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "86",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "native_exit": 0
   },
   {
     "id": "aggregate-foreach-acquisition-required",

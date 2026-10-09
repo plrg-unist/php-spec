@@ -329,6 +329,11 @@ Saved selection evidence survives the callback and final Closure retirement with
 adding an owner. Separate ordinary and wrapper originals match native PHP;
 213 carrier premises and 359 wrapper selection/authority premises retain their
 distinct 363-module cuts. Other Closure families and required original 7 remain open.
+An inherited nonstatic `fromCallable` wrapper also retains its exact receiver-bearing
+selection through the distinct RHS callback. Explicit Closure release retires the
+sole receiver; saved selection evidence remains valid without owning either object.
+Separate ordinary and repaired wrapper sources agree with native PHP on 367-module
+cuts, with 430 wrapper premises. Required original 7 keeps its separate CLI 60 timeout.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -357,8 +362,13 @@ Acquisition and cleanup throws preserve data/input order; reference traversal
 accepts reference-yielding Generators and rejects Iterator/nonreference Generator
 results. Retained foreach Generator close frames survive Fiber suspension with
 one receiver owner. [Focused acceptance](coverage/semantics/foreach-aggregate-review.json)
-keeps original source/state cuts separate. Foreach NaN warning continuations,
-wider operand modes and Aggregate yield-from/ordinary-call unpack remain required.
+keeps original source/state cuts separate. [Foreach NaN warnings](coverage/semantics/foreach-valid-nan-review.json)
+retain raw valid results through ordinary handlers, reread live references after
+handler writes and preserve iterator/input cleanup on suspension or throw.
+Eight exact originals and eighteen genuine-source groups/495 ownership and
+warning-authority premises pass at retained cuts.
+Wider raw payload/operand modes and Aggregate yield-from/ordinary-call unpack
+remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
@@ -835,6 +845,13 @@ fresh traced graph. Real F selection uses its surviving physical tag without add
 to fresh DTORS or progress; one signed retrace retires F/E and keeps D weak-live.
 One unchanged source and 321 independent premises (215/106) pass at `a2ef8b039`.
 Incoming owners, nonordinary components and wider overlap remain explicit boundaries.
+Ordinary-Fiber overlap now admits only profiles with every residual tag nested-removed.
+It preserves the computed physical image while fresh E and retraced D run on the
+distinct cached worker. One unchanged source agrees
+under CLI60 at `e3d359d01`; five source-reached cuts cover all408 original state
+obligations, including caller/guard forgeries, count0, weak liveness and terminal
+replay. Mixed surviving-residual, nonordinary and later-pass Fiber overlap remain
+required; earlier cuts retain their inputs.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
@@ -901,11 +918,15 @@ and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES
 now support ordered no-finally try/catch and throw/rethrow, internal constructors,
 getters and structured traces. The distinct `ErrorException` constructor and
 `getSeverity` have a separate [bounded review](coverage/semantics/error-exception-review.json).
-Ordinary parameters accept one zero-argument builtin `#[SensitiveParameter]`.
-Captured traces store owning `SensitiveParameterValue` snapshots; `getValue()`
-and trace strings observe the same wrappers. The [review](coverage/semantics/sensitive-parameter-review.json)
-records current fixed CVs, original variadic operands and final wrapper release.
-Promoted/mixed attributes and wider wrapper protocols remain required.
+Ordinary and promoted constructor parameters accept one zero-argument builtin
+`#[SensitiveParameter]`. Captured traces store owning `SensitiveParameterValue`
+snapshots; `getValue()` and trace strings observe the same wrappers. The
+[trace review](coverage/semantics/sensitive-parameter-review.json) records current
+fixed CVs, original variadic operands and final wrapper release. The
+[promotion review](coverage/semantics/sensitive-promotion-review.json) preserves
+value/reference properties separately from later CV snapshots and authenticates
+queued promotions. Mixed/repeated/argument attributes, hooks and wider wrapper
+protocols remain required.
 [Finally continuations](docs/semantics/SOURCE-FINALLY.md) preserve normal,
 thrown and transferring outcomes, including value/reference returns, loop jumps
 and goto across protected regions. [Source Throwable subclasses](docs/semantics/THROWABLE-SUBCLASSES.md)

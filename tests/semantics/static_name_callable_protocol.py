@@ -440,3 +440,93 @@ pstaticcompound_bad_entry = pstaticcompound[.ENTRY = |S_live.CLASSCONSTANTHISTOR
     text = prefix + '\ndec $main() : bool\ndef $main() = true\n'
     text += ''.join('  -- if ' + check + '\n' for check in checks)
     return text, checks, reached, len(checks) - reached
+
+
+def render_instance_wrapper(fixture, filename, expected):
+    text, checks, reached, _ = render_wrapper(fixture, filename, expected)
+    prefix = text.split('\ndec $main()')[0].replace('FromStatic', 'FromInstance')
+    genuine = [check.replace('FromStatic', 'FromInstance') for check in checks[:reached]]
+    controls = [check.replace('FromStatic', 'FromInstance') for check in checks[reached:]]
+    genuine[genuine.index('pfrommethod.STATIC')] = '~pfrommethod.STATIC'
+    index = genuine.index('pclosurescope.RECEIVER = eps')
+    genuine[index:index + 1] = lines(r"""
+pcallcontext_append.RECEIVER = (n_receiver)
+pclosurescope.RECEIVER = (n_receiver)
+pclosurescope.RECEIVER =/= eps
+$from_receiver(pfrommethod) = (n_receiver)
+pfrommethod.CLASS.RECEIVER = (n_receiver)
+pfrommethod.CLASS.CALLED = porigin_child
+S_name.OBJECTS[n_receiver] = INSTANCE porigin_child
+(HOBJECT n_receiver) <- S_name.ALLOCATIONS
+n_receiver =/= n_closure /\ n_receiver =/= n_name
+$from_live_receiver(S_name, pfrommethod)
+$node_children(S_name, HOBJECT n_closure) = [HOBJECT n_receiver]
+$call_context_roots((pcallcontext_append)) = [HOBJECT n_closure, HOBJECT n_receiver]
+$heap_owners($heap_graph(S_name), HOBJECT n_closure) = 2
+$heap_owners($heap_graph(S_name), HOBJECT n_receiver) = 2
+""")
+    index = genuine.index('pcallcontext_append.TARGET = CLOSURE_TARGET n_closure')
+    genuine.insert(index + 1, 'pcallcontext_append.INSTANCE = (n_closure)')
+    extra = lines(r"""
+$lookup(S_name_global.ENV, $ptascii("receiver")) = eps
+(HOBJECT n_receiver) <- S_apply.ALLOCATIONS
+$node_children(S_apply, HOBJECT n_closure) = [HOBJECT n_receiver]
+$call_context_roots(S_apply.CURRENT) = [HOBJECT n_closure, HOBJECT n_receiver]
+$heap_owners($heap_graph(S_apply), HOBJECT n_receiver) = 2
+""")
+    index = genuine.index('$computed_static_selection_closure(S_capture, (CLOSURE_SCOPE pclosurescope))')
+    genuine[index:index] = extra
+    for state in ('S_live', 'S_right_return', 'S_before_store', 'S_written'):
+        index = next(i for i, check in enumerate(genuine) if check.startswith(state + '.TODO = '))
+        genuine[index:index] = [f'(HOBJECT n_receiver) <- {state}.ALLOCATIONS',
+                               f'$node_children({state}, HOBJECT n_closure) = [HOBJECT n_receiver]',
+                               f'$heap_owners($heap_graph({state}), HOBJECT n_receiver) = 2']
+    index = genuine.index('$heap_owners($heap_graph(S_callback), HOBJECT n_right) = 3')
+    genuine[index:index] = lines(r"""
+n_right =/= n_receiver
+(HOBJECT n_receiver) <- S_callback.ALLOCATIONS
+$node_children(S_callback, HOBJECT n_closure) = [HOBJECT n_receiver]
+$heap_owners($heap_graph(S_callback), HOBJECT n_receiver) = 2
+""")
+    index = genuine.index('~((HOBJECT n_closure) <- S_done.ALLOCATIONS)')
+    genuine[index + 1:index + 1] = lines(r"""
+~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)
+$heap_owners($heap_graph(S_done), HOBJECT n_closure) = 0
+$heap_owners($heap_graph(S_done), HOBJECT n_receiver) = 0
+$closure_scope_at(S_done.CLOSURESCOPES, n_closure) = eps
+S_done.OBJECTS[n_closure] = FROMCALLABLECLOSURE pfrommethod
+S_done.OBJECTS[n_receiver] = INSTANCE porigin_child
+$closure_evidence_valid(S_done, CLOSURE_SCOPE pclosurescope)
+$computed_static_selection_closure(S_done, (CLOSURE_SCOPE pclosurescope))
+""")
+    controls = [check.replace('S_object_bad_nonstatic', 'S_object_bad_static')
+                .replace('FROMCALLABLECLOSURE pfrommethod[.STATIC = false]',
+                         'FROMCALLABLECLOSURE pfrommethod[.STATIC = true]')
+                for check in controls]
+    for label, change in [('missing_receiver', '.RECEIVER = eps'),
+                          ('wrong_receiver', '.RECEIVER = (n_right)'),
+                          ('wrong_instance', '.INSTANCE = (n_receiver)')]:
+        controls += [f'S_current_bad_{label} = S_capture[.CURRENT = (pcallcontext_append[{change}])]',
+                     f'$from_current(S_current_bad_{label})',
+                     f'$closure_evidence_current(S_current_bad_{label}) = eps',
+                     f'~$computed_static_selection_allowed(S_current_bad_{label}, pcomputedaddress.SITE)',
+                     f'$static_compound_capture(S_current_bad_{label}, ppropertydesc.ORIGIN, pcomputedaddress.SITE, |S_current_bad_{label}.CLASSCONSTANTHISTORY|) = eps']
+    controls += lines(r"""
+pclosurescope_missing_receiver = pclosurescope[.RECEIVER = eps]
+~$computed_static_selection_closure(S_live, (CLOSURE_SCOPE pclosurescope_missing_receiver))
+pstaticselection_missing_receiver = pstaticselection[.CLOSURE = (CLOSURE_SCOPE pclosurescope_missing_receiver)]
+$static_compound_selected_descriptor(S_live, pstaticcompound, pstaticselection_missing_receiver, pcompoundstring.SITE) = eps
+n_other_receiver = |S_live.OBJECTS|
+S_same_class = S_live[.OBJECTS = S_live.OBJECTS ++ [INSTANCE porigin_child]]
+S_same_class.OBJECTS[n_other_receiver] = S_live.OBJECTS[n_receiver]
+n_other_receiver =/= n_receiver
+$closure_evidence_valid(S_same_class, CLOSURE_SCOPE pclosurescope)
+pclosurescope_other_receiver = pclosurescope[.RECEIVER = (n_other_receiver)]
+~$computed_static_selection_closure(S_same_class, (CLOSURE_SCOPE pclosurescope_other_receiver))
+pstaticselection_other_receiver = pstaticselection[.CLOSURE = (CLOSURE_SCOPE pclosurescope_other_receiver)]
+$static_compound_selected_descriptor(S_same_class, pstaticcompound, pstaticselection_other_receiver, pcompoundstring.SITE) = eps
+""")
+    checks = genuine + controls
+    text = prefix + '\ndec $main() : bool\ndef $main() = true\n'
+    text += ''.join('  -- if ' + check + '\n' for check in checks)
+    return text, checks, len(genuine), len(controls)

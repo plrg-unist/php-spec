@@ -750,6 +750,7 @@ def $gc_worker_start(S, pgcplan, b_fresh) = S[.COMPLETION = UNSUPPORTED "collect
   -- if pfiber.GC = (pgcworker)
   -- if pgcworker.GUARD = eps
   -- if ~$gc_worker_residual_start_ready(S, pgcplan, b_fresh)
+  -- if ~$gc_worker_overlap_start_ready(S, pgcplan, b_fresh)
 def $fiber_suspend(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "repeated callback suspension after internal collector takeover"]
   -- if $gc_worker_guard_at(S) = (pgcguard)
   -- if pgcguard.PUBLIC = (pgcpublic)

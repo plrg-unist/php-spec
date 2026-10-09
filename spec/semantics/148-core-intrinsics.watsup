@@ -10,12 +10,12 @@ dec $intrinsic_named(preqbytes) : pintrinsic?
 def $intrinsic_named(preqbytes) = (INTRINSIC_EXIT) -- if $ptlc(preqbytes) = $ptascii("exit")
 def $intrinsic_named(preqbytes) = (INTRINSIC_DIE) -- if $ptlc(preqbytes) = $ptascii("die")
 def $intrinsic_named(preqbytes) = eps -- otherwise
-def $intrinsic_lookup(preqbytes, preqbytes_fallback?) = (pintrinsic)
-  -- if $intrinsic_named(preqbytes) = (pintrinsic)
-def $intrinsic_lookup(preqbytes, (preqbytes_fallback)) = $intrinsic_named(preqbytes_fallback)
-  -- if $intrinsic_named(preqbytes) = eps
-def $intrinsic_lookup(preqbytes, eps) = eps
-  -- if $intrinsic_named(preqbytes) = eps
+;; Resolve the primary once; a namespace fallback is considered only on a miss.
+dec $intrinsic_lookup_result(pintrinsic?, preqbytes?) : pintrinsic?
+def $intrinsic_lookup_result((pintrinsic), preqbytes_fallback?) = (pintrinsic)
+def $intrinsic_lookup_result(eps, (preqbytes_fallback)) = $intrinsic_named(preqbytes_fallback)
+def $intrinsic_lookup_result(eps, eps) = eps
+def $intrinsic_lookup(preqbytes, preqbytes_fallback?) = $intrinsic_lookup_result($intrinsic_named(preqbytes), preqbytes_fallback?)
 
 def $intrinsic_firstclass(S, pintrinsic) = S[.OBJECTS = S.OBJECTS ++ [INTRINSICCLOSURE pintrinsic]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n = |S.OBJECTS|

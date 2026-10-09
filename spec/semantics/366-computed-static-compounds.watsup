@@ -160,6 +160,16 @@ def $computed_static_selection_closure(S, pclosureevidence?) = true
   -- if S.OBJECTS[pclosurescope.OBJECT] = FROMCALLABLECLOSURE pfrommethod
   -- if pfrommethod.STATIC
   -- if $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
+def $computed_static_selection_closure(S, pclosureevidence?) = true
+  -- if pclosureevidence? = (CLOSURE_SCOPE pclosurescope)
+  -- if pclosureevidence? =/= eps
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pclosurescope.OBJECT] = FROMCALLABLECLOSURE pfrommethod
+  -- if ~pfrommethod.STATIC
+  -- if n_receiver? = pclosurescope.RECEIVER
+  -- if n_receiver? =/= eps
+  -- if n_receiver? = $from_receiver(pfrommethod)
+  -- if $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
 def $computed_static_selection_closure(S, pclosureevidence?) = false -- otherwise
 
 def $computed_static_selection_allowed(S, porigin) = true

@@ -520,3 +520,22 @@ F/E retirement, D self-owner1/weak-live and unchanged cached-worker cursor.
 Actual slot bindings preserve two-finger compaction without assuming allocation
 order; the original195 ordering failure retains zero credit. Baseline66 is
 localization only. Incoming, nonordinary and broader overlap lanes remain open.
+
+Ordinary-Fiber overlap uses the existing RUN path only when every residual tag
+belongs to computed nested removal. Start readiness authenticates real U and
+a distinct idle cached W; transfer preserves the produced BUFFER/FREE image.
+Raw saved CURRENT/ORIGIN/CONSTCONTEXT, the caller chain/API and one real guard
+pin authority. Guard ordinal0 differs from E's physical cursor; only authentic
+normalized preselection can provide SITE before CALLED, and executable guards
+still require CALLED. Kept-D, omitted/future E, skipped progress, caller, API and
+duplicate-consumer counterfeits reject. Signed -1+1=0 frees E and leaves D
+self-owned/weak-live; request cleanup clears the cache and gracefully terminates W.
+
+At `e3d359d01`, the unchanged source agrees under CLI60 and five reached cuts
+cover original408 obligations (645 executed premises include repeated setup).
+Terminal checks include full continuation and zero-budget replay. Pure typed
+intrinsic-option and GC-source dispatch factors remove duplicate lookup while
+retaining every result/validator; five focused lookup controls pass strict init.
+Earlier failures/timeouts remain zero credit and unrun preparations remain
+preserved. Mixed surviving residuals, nonordinary/black/external components,
+non-idle worker states and later-pass Fiber overlap remain required.
