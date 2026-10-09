@@ -47,8 +47,10 @@ def $gc_main_tags(pgcplan, eps, n) = true
 def $gc_main_tags(pgcplan, pgcslot :: pgcslot_tail*, n) = ($gc_main_tag_source(pgcplan, pgcslot, n) /\ $gc_main_tags(pgcplan, pgcslot_tail*, $(n + 1)))
   -- if $(n < |pgcplan.BUFFER|)
 def $gc_main_tags(pgcplan, pgcslot :: pgcslot_tail*, n) = true -- if $(n >= |pgcplan.BUFFER|)
+;; Selection reads callback metadata after normalization but before CALLED.
+;; Its current return pin permits that transient image; driving still checks CALLED.
 def $gc_main_called_prefix(S, pgcplan, pgcscan, eps) = true
-def $gc_main_called_prefix(S, pgcplan, pgcscan, (HOBJECT n) :: pnode*) = ((n <- S.DESTRUCTION.CALLED \/ ($(n_slot >= pgcscan.INDEX) /\ $(n_slot < |S.GC.BUFFER|) /\ S.GC.BUFFER[n_slot] = GC_DTOR_ROOT n)) /\ $gc_main_called_prefix(S, pgcplan, pgcscan, pnode*))
+def $gc_main_called_prefix(S, pgcplan, pgcscan, (HOBJECT n) :: pnode*) = ((n <- S.DESTRUCTION.CALLED \/ ($(n_slot >= pgcscan.INDEX) /\ $(n_slot < |S.GC.BUFFER|) /\ S.GC.BUFFER[n_slot] = GC_DTOR_ROOT n) \/ (n_slot = pgcscan.INDEX /\ $gc_main_anchor(S) = ((pgcplan, pgcscan, n)) /\ $(n_slot < |S.GC.BUFFER|) /\ S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n))) /\ $gc_main_called_prefix(S, pgcplan, pgcscan, pnode*))
   -- if $gc_slot_find(pgcplan.BUFFER, HOBJECT n, 0) = (n_slot)
 def $gc_main_called_prefix(S, pgcplan, pgcscan, pnode*) = false -- otherwise
 def $gc_main_context(S, pgcplan, pgcscan) = true
