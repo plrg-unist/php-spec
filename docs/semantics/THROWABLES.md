@@ -82,7 +82,14 @@ value. Invoked getters return ordinary copies; callable clones and aliases retai
 the same receiver while last copy release triggers destruction and weak-target
 notification. Five originals and separate authentic capture/getter/last-release
 checks are recorded in the [getter review](../../coverage/semantics/sensitive-value-getter-review.json).
-Mixed/repeated/argument attributes, hooks, first-class constructors,
+First-class constructor captures retain the initialized receiver through ordered
+sends, arity checks and readonly rejection. Immutable capture sites differ from
+invocation sites; explicit/nullsafe invocation adds the Closure frame, and clones
+retain the same receiver. The callable owns the old snapshot while Error traces
+own rejected arguments, with independent final release and weak-target notification.
+Five originals and SL129 source/ownership controls are recorded in the
+[constructor callable review](../../coverage/semantics/sensitive-value-constructor-callables-review.json).
+Mixed/repeated/argument attributes, hooks, constructor binding/Closure::call,
 uninitialized getter, debug/property and wider wrapper protocols remain required.
 
 `ErrorException` appends a protected typed `severity` as the eighth slot; its

@@ -419,12 +419,101 @@ def $generator_from_claim(YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child
 def $generator_from_tasks_position((GENERATOR_RESUME pgeneratorop) :: (YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) :: ptask*) = ($generator_from_claims(ptask*) = eps)
 def $generator_from_search_position((GENERATOR_RESUME pgeneratorop) :: (YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) :: ptask*) = ($generator_from_claims(ptask*) = eps)
 
-rule PhpStep/yield-from-acquired-valid-nan-required: S ~> S[.COMPLETION = UNSUPPORTED "yield from acquired Iterator valid NaN warning continuation"]
+;; Acquired Iterator truth conversion retains the raw callback result through
+;; ordinary warning handlers. The receipt keeps the generic iterator mode.
+dec $yield_from_iterator_valid_task(pstate, nat, pyieldfromreceipt, poperand) : bool
+dec $yield_from_iterator_nan_release(pstate, nat, pyieldfromreceipt, poperand) : pstate
+dec $yield_from_iterator_warning_transfer(pstate) : bool
+dec $yield_from_iterator_warning_vm_claims(pstate, pfibervm) : nat*
+dec $yield_from_iterator_warning_object_claims(pstate, pnode*) : nat*
+dec $yield_from_iterator_warning_node_claims(pstate, pnode) : nat*
+dec $yield_from_iterator_warning_caller_claims(pstate, pfibercaller*) : nat*
+dec $yield_from_iterator_warning_closer_claims(pstate, pfiberclose*) : nat*
+rule PhpStep/yield-from-acquired-valid-nan: S ~> $error_dispatch(S_read[.ORIGIN = (porigin)], 2, $ptascii("unexpected NAN value was coerced to bool"), pyieldfromreceipt.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) pyieldfromreceipt.LINE, YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt S.RESULT)
   -- if S.TODO = (GENERATOR_FROM_CALLBACK n porigin "valid") :: ptask_tail*
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
-  -- if pgeneratorfrom.ACQUISITION =/= eps
-  -- if S_read = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
+  -- if pgeneratorfrom.ACQUISITION = (pyieldfromreceipt)
+  -- if pyieldfromreceipt.SITE = porigin
+  -- if $generator_from_callback_valid(S, n, porigin, "valid")
+  -- if $yield_from_iterator_valid(S, n, pyieldfromreceipt)
+  -- if S_read = $resolve_at(S, S.RESULT, pyieldfromreceipt.LINE)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $generator_from_nan(pvalue)
+rule PhpStep/yield-from-acquired-valid-current: S ~> $generator_from_call(S, n, pyieldfromreceipt.SITE, "current", ptask_tail*)
+  -- if S.TODO = (YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) :: ptask_tail*
+  -- if $yield_from_iterator_valid_task(S, n, pyieldfromreceipt, poperand)
+  -- if $generator_from_valid_decision(S, poperand) = (true)
+rule PhpStep/yield-from-acquired-valid-end: S ~> $yield_from_iterator_nan_release(S[.TODO = ptask_tail*], n, pyieldfromreceipt, poperand)
+  -- if S.TODO = (YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) :: ptask_tail*
+  -- if $yield_from_iterator_valid_task(S, n, pyieldfromreceipt, poperand)
+  -- if $generator_from_valid_decision(S, poperand) = (false)
+rule PhpStep/yield-from-acquired-valid-payload: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "yield from acquired Iterator valid NaN raw payload type change"]
+  -- if S.TODO = (YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) :: ptask_tail*
+  -- if $generator_from_valid_decision(S, poperand) = eps
+
+def $yield_from_iterator_valid_task(S, n, pyieldfromreceipt, poperand) = ($yield_from_iterator_valid(S, n, pyieldfromreceipt) /\ $generator_from_callback_valid(S, n, pyieldfromreceipt.SITE, "valid") /\ $generator_from_valid_operand(S, poperand))
+def $call_task_valid(S, YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) = $yield_from_iterator_valid_task(S, n, pyieldfromreceipt, poperand)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand
+  -- if $yield_from_iterator_valid_task(S, n, pyieldfromreceipt, poperand)
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.SITE = pyieldfromreceipt.SITE /\ perrorcall.LINE = pyieldfromreceipt.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+;; The raw result retires before the constructed iterator. Acquired input has
+;; already been freed; post-rewind errors never enter request retention.
+def $yield_from_iterator_nan_release(S, n, pyieldfromreceipt, poperand) = $fiber_start_unpack_release($generator_from_drop(S[.ORIGIN = (pyieldfromreceipt.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n), $operand_nodes(poperand) ++ $generator_values_nodes(pgeneratorfrom.INPUT))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+def $return_discard(S, YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) = $yield_from_iterator_nan_release(S, n, pyieldfromreceipt, poperand)
+  -- if $useriter_nan_unwind_valid(S, YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand)
+def $error_read_discard(S, YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) = $yield_from_iterator_nan_release(S, n, pyieldfromreceipt, poperand)
+  -- if $useriter_nan_unwind_valid(S, YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand)
+def $task_nodes(YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) = $operand_nodes(poperand)
+def $generator_internal_task(YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) = true
+def $eager_explicit_task(YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) = true
+def $generator_internal_task(ERROR_HANDLER_INVOKE perrorcall) = true -- if perrorcall.RESUME = YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand
+def $generator_internal_task(ERROR_HANDLER_RESULT perrorcall) = true -- if perrorcall.RESUME = YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand
+def $generator_internal_task(ERROR_HANDLER_CLEAN perrorcall) = true -- if perrorcall.RESUME = YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand
+def $generator_from_claim(YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand) = [n]
+def $generator_from_claim(ERROR_HANDLER_CLEAN perrorcall) = $generator_from_claim(perrorcall.RESUME)
+  -- if perrorcall.RESUME = YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand
+
+;; The actual selected handler runs in its restored caller scope. Only this
+;; singleton parent resumer may move with the warning's Fiber VM.
+def $yield_from_iterator_warning_transfer(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe_handler :: pframe_tail*
+  -- if pframe_handler.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
+  -- if perrorcall.RESUME = YIELD_FROM_ITERATOR_VALID n pyieldfromreceipt poperand
+  -- if pframe_handler.CONTEXT = (pcallcontext_parent)
+  -- if pcallcontext_parent.FUNCTION = pyieldfromreceipt.FUNCTION
+  -- if pframe_handler.ORIGIN = (pyieldfromreceipt.SITE)
+  -- if $error_context_valid(S, pcallcontext)
+  -- if S_caller = $api_saved_frame_scope($constant_frame_scope(S, pframe_handler, pframe_tail*), pframe_handler, pframe_tail*)
+  -- if $error_entered_call_valid(S_caller, perrorcall)
+  -- if $generator_resume_ids(S.TODO) = eps
+  -- if $generator_saved_ids(S.FRAMES) = [n]
+  -- if $generator_from_claims(S.TODO) ++ $generator_from_saved_claims(S.FRAMES) = [n]
+def $yield_from_iterator_warning_transfer(S) = false -- otherwise
+def $fiber_generator_transfer(S) = true -- if $yield_from_iterator_warning_transfer(S)
+def $yield_from_iterator_warning_vm_claims(S, pfibervm) = $generator_from_claims(pfibervm.TODO) ++ $generator_from_saved_claims(pfibervm.FRAMES)
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.COMPLETION = NORMAL]
+  -- if $yield_from_iterator_warning_transfer(S_view)
+def $yield_from_iterator_warning_vm_claims(S, pfibervm) = eps -- otherwise
+def $yield_from_iterator_warning_object_claims(S, eps) = eps
+def $yield_from_iterator_warning_object_claims(S, pnode :: pnode_tail*) = $yield_from_iterator_warning_node_claims(S, pnode) ++ $yield_from_iterator_warning_object_claims(S, pnode_tail*)
+def $yield_from_iterator_warning_node_claims(S, HOBJECT n) = $yield_from_iterator_warning_vm_claims(S, pfibervm)
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if pfiber.VM = (pfibervm)
+  -- if S.ACTIVEFIBER =/= (n)
+def $yield_from_iterator_warning_node_claims(S, pnode) = eps -- otherwise
+def $yield_from_iterator_warning_caller_claims(S, eps) = eps
+def $yield_from_iterator_warning_caller_claims(S, pfibercaller :: pfibercaller_tail*) = $yield_from_iterator_warning_vm_claims(S, pfibercaller.VM) ++ $yield_from_iterator_warning_caller_claims(S, pfibercaller_tail*)
+def $yield_from_iterator_warning_closer_claims(S, eps) = eps
+def $yield_from_iterator_warning_closer_claims(S, pfiberclose :: pfiberclose_tail*) = $yield_from_iterator_warning_vm_claims(S, pfiberclose.VM) ++ $yield_from_iterator_warning_closer_claims(S, pfiberclose_tail*)
+def $generator_from_saved_fiber_claims(S) = $yield_from_iterator_warning_object_claims(S, S.ALLOCATIONS) ++ $yield_from_iterator_warning_caller_claims(S, S.FIBERCALLERS) ++ $yield_from_iterator_warning_closer_claims(S, S.FIBERCLOSERS)

@@ -198,6 +198,8 @@ test-semantics: build
 	python3 tests/semantics/foreach_valid_nan_review.py
 	python3 tests/semantics/yield_from_aggregate_sources.py
 	python3 tests/semantics/yield_from_aggregate_review.py
+	python3 tests/semantics/yield_from_valid_nan_sources.py
+	python3 tests/semantics/yield_from_valid_nan_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -568,6 +570,8 @@ test-semantics: build
 	python3 tests/semantics/sensitive_value_constructor_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_value_getter_cases.json
 	python3 tests/semantics/sensitive_value_getter_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_value_constructor_callable_cases.json
+	python3 tests/semantics/sensitive_value_constructor_callable_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

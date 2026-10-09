@@ -396,7 +396,13 @@ early cleanup errors retain constructed data until request cleanup, while rewind
 errors release it before catch. Seventeen exact originals and 25 genuine-source
 groups/720 ownership premises pass at the separate cuts in the
 [Aggregate review](coverage/semantics/yield-from-aggregate-review.json).
-Acquired Iterator NaN and changed original operands remain required.
+Acquired Iterator NaN warnings retain raw results through ordinary handlers,
+reread live numeric references once, and preserve parent ownership when a handler
+parks. False results and thrown handlers release raw retval before iterator data.
+Nine exact originals and twenty genuine-source groups/637 ownership and warning
+authority premises pass; [warning review](coverage/semantics/yield-from-valid-nan-review.json)
+records the separate checks. Wider raw payload changes and changed original operands
+remain required.
 [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
 runs pending finally bodies with real scopes, graph links and cached owners.
 Request 340 adds reverse-global and ascending-store close, handler-before-cache
@@ -969,6 +975,11 @@ First-class `getValue(...)` callables retain their wrapper and captured value;
 getter copies, callable clones and final release keep ordinary ownership. Five
 originals and separate capture/lifetime checks are recorded in the
 [getter review](coverage/semantics/sensitive-value-getter-review.json).
+First-class `__construct(...)` callables retain the initialized wrapper through
+argument sends and readonly rejection. Aliases, explicit/nullsafe invocation and
+clones preserve ownership; the callable's old snapshot and the Error's rejected
+replacement retire independently. Five originals and separate genuine checks are
+recorded in the [constructor callable review](coverage/semantics/sensitive-value-constructor-callables-review.json).
 [Finally continuations](docs/semantics/SOURCE-FINALLY.md) preserve normal,
 thrown and transferring outcomes, including value/reference returns, loop jumps
 and goto across protected regions. [Source Throwable subclasses](docs/semantics/THROWABLE-SUBCLASSES.md)

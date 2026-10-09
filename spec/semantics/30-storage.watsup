@@ -239,7 +239,7 @@ syntax pbindkind = INSTANCE_BIND | STATIC_BIND
 syntax pbindcall = {SITE porigin, SOURCE nat?, KIND pbindkind, INDEX nat, SENT poperand*, LINE int}
 syntax pclosurecall = {SITE porigin, SOURCE nat, FIRST pvalue?, RECEIVER nat?, INDEX nat, SENT pnamedargs, RAW (pkey, poperand)*, ERROR ptbytes?, LINE int}
 dec $closure_call_target(pcalltarget) : bool
-syntax pctorcallmode = CTOR_NEW | CTOR_METHOD
+syntax pctorcallmode = CTOR_NEW | CTOR_METHOD | CTOR_CAPTURE nat
 syntax pctorcall = {SITE porigin, RECEIVER nat, BASE text, MODE pctorcallmode, INDEX nat, SENT pnamedslot*, NAMED bool, LINE int}
 syntax ptraitcall = {SITE porigin, CLASS phpType19, REQUESTED porigin, FUNCTION porigin, SELECTOR poperand, METHOD nat*, ARGUMENTS phpType7*, LINE int}
 syntax ppmode = PPF | PPR | PPW | PPRW | PPUNSET | PPIS
@@ -318,6 +318,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | YIELD_FROM_AGGREGATE pyieldfromaggregate text
   | YIELD_FROM_ITERATOR_NEXT nat pyieldfromreceipt
   | YIELD_FROM_ITERATOR_RESULT nat pyieldfromreceipt nat
+  | YIELD_FROM_ITERATOR_VALID nat pyieldfromreceipt poperand
   | FOREACH_AGGREGATE pforeachaggregate text
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
@@ -338,6 +339,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | FIBER_ARRAY_RELEASE pfiberarray | FIBER_ARRAY_RESULT pfiberarray pconfigcall
   | FIBER_ARRAY_START_RELEASE pfiberarray | FIBER_ARRAY_START_RESULT pfiberarray pfiberstart
   | CTOR_ARGS pctorcall | CTOR_SEND pctorcall | CTOR_UNPACK_PREP pctorcall | CTOR_UNPACK_NEXT pctorcall poperand nat | CTOR_INVOKE pctorcall
+  | CTOR_CAPTURE_RESULT nat porigin
   | SCOPED_CLASS phpType19 phpType20 phpType7* int | SCOPED_NAME phpType19 poperand phpType7* int
   | DYNAMIC_NEW_CLASS int int | DYNAMIC_NEW_FINISH pdynamicnew
   | NOCTOR_ARGS pnoctorcall | NOCTOR_SEND pnoctorcall | NOCTOR_UNPACK_PREP pnoctorcall | NOCTOR_UNPACK_NEXT pnoctorcall poperand nat
@@ -436,7 +438,7 @@ syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FI
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand?, ACQUISITION pyieldfromreceipt? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool, BORROWED bool }
-syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
+syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
@@ -490,6 +492,7 @@ dec $instance_default_bound_state(pstate, porigin, pstaticdefaultcontext, pprope
 dec $instance_object_state_valid(pstate, pinstancetemplate, ppropertydesc) : bool
 dec $method_capture_invocation_valid(pstate, pmethodcapture, porigin) : bool
 dec $invoke_capture(pstate, nat, porigin?) : pstate
+dec $ctor_capture_live(pstate, nat) : bool
 dec $method_link_issue(pstate, pclassdesc, porigin) : pmethodissue
 dec $ctor_pairs_valid(pstate, ptask*) : bool
 dec $ctor_frames_pairs_valid(pstate, pframe*) : bool

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "yield-from-acquired-initial-nan-reference",
+    "source": "<?php\n$condition = NAN;\nclass YieldFromAcquiredInitialNanReferenceIterator24 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredInitialNanReferenceAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredInitialNanReferenceIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    global $condition;\n    $condition = 0.0;\n    return true;\n});\nfunction YieldFromAcquiredInitialNanReferenceOuter24() {\n    $result = yield from new YieldFromAcquiredInitialNanReferenceAggregate24();\n    echo \"N\", (int)($result === null), \"|\";\n    return 17;\n}\n$outer = YieldFromAcquiredInitialNanReferenceOuter24();\nforeach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $outer->getReturn(), \"|E\";\n",
+    "source_sha256": "112ec09db405f92b755914974b38b23b9717971b3f0d33ab33d08dc55a121591",
+    "purpose": "Acquired Iterator valid NaN warning keeps raw result, generic receipt and immediate data cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|H|2|unexpected NAN value was coerced to bool|23|I|N1|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-acquired-initial-nan-value",
+    "source": "<?php\n$condition = NAN;\nclass YieldFromAcquiredInitialNanValueIterator24 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredInitialNanValueAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredInitialNanValueIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    global $condition;\n    $condition = 0.0;\n    return true;\n});\nfunction YieldFromAcquiredInitialNanValueOuter24() {\n    $result = yield from new YieldFromAcquiredInitialNanValueAggregate24();\n    echo \"N\", (int)($result === null), \"|\";\n    return 17;\n}\n$outer = YieldFromAcquiredInitialNanValueOuter24();\nforeach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $outer->getReturn(), \"|E\";\n",
+    "source_sha256": "719a172bdff8352f952951c1e8548f3474c51feaae22be243d5f18d4af298e04",
+    "purpose": "Acquired Iterator valid NaN warning keeps raw result, generic receipt and immediate data cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|H|2|unexpected NAN value was coerced to bool|23|C|K|B11:7|X|V|I|N1|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-acquired-later-nan-reference",
+    "source": "<?php\n$condition = 1.0;\nclass YieldFromAcquiredLaterNanReferenceIterator24 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7 + $this->position; }\n    public function key(): mixed { echo \"K|\"; return 11 + $this->position; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = $this->position === 1 ? NAN : 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredLaterNanReferenceAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredLaterNanReferenceIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    global $condition;\n    $condition = 0.0;\n    return true;\n});\nfunction YieldFromAcquiredLaterNanReferenceOuter24() {\n    $result = yield from new YieldFromAcquiredLaterNanReferenceAggregate24();\n    echo \"N\", (int)($result === null), \"|\";\n    return 17;\n}\n$outer = YieldFromAcquiredLaterNanReferenceOuter24();\nforeach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $outer->getReturn(), \"|E\";\n",
+    "source_sha256": "4e0d175f171bf94b809da9ce046292bf49f1339898c2585964ef4fde01f472f0",
+    "purpose": "Acquired Iterator valid NaN warning keeps raw result, generic receipt and immediate data cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|C|K|B11:7|X|V|H|2|unexpected NAN value was coerced to bool|24|I|N1|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-acquired-later-nan-value",
+    "source": "<?php\n$condition = 1.0;\nclass YieldFromAcquiredLaterNanValueIterator24 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7 + $this->position; }\n    public function key(): mixed { echo \"K|\"; return 11 + $this->position; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = $this->position === 1 ? NAN : 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredLaterNanValueAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredLaterNanValueIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    global $condition;\n    $condition = 0.0;\n    return true;\n});\nfunction YieldFromAcquiredLaterNanValueOuter24() {\n    $result = yield from new YieldFromAcquiredLaterNanValueAggregate24();\n    echo \"N\", (int)($result === null), \"|\";\n    return 17;\n}\n$outer = YieldFromAcquiredLaterNanValueOuter24();\nforeach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $outer->getReturn(), \"|E\";\n",
+    "source_sha256": "06efaa65f1292aa74513ce698b2ff886d2d686516bbc57260797b3e557ad4563",
+    "purpose": "Acquired Iterator valid NaN warning keeps raw result, generic receipt and immediate data cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|C|K|B11:7|X|V|H|2|unexpected NAN value was coerced to bool|24|C|K|B12:8|X|V|I|N1|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-acquired-nan-handler-parks",
+    "source": "<?php\n$condition = NAN;\nclass YieldFromAcquiredParkedNanIterator24 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredParkedNanAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredParkedNanIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    global $condition;\n    Fiber::suspend(\"warn\");\n    echo \"R|\";\n    $condition = 0.0;\n    return true;\n});\nfunction YieldFromAcquiredParkedNanOuter24() {\n    $result = yield from\n        new YieldFromAcquiredParkedNanAggregate24();\n    echo \"N\", (int)($result === null), \"|\";\n    return 17;\n}\n$target = new Fiber(static function () {\n    $outer = YieldFromAcquiredParkedNanOuter24();\n    foreach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    echo $outer->getReturn(), \"|\";\n    return 23;\n});\necho $target->start(), \"|\", (int)$target->isSuspended(), \"|\", (int)$target->isTerminated(), \"|\";\n$target->resume();\necho (int)$target->isTerminated(), \"|\", $target->getReturn(), \"|E\";\n",
+    "source_sha256": "2ac68b88b1cd1480ecf7f111d3bb11f383618c9e44b36e99677684f062bbe501",
+    "purpose": "Acquired Iterator valid NaN warning keeps raw result, generic receipt and immediate data cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|H|2|unexpected NAN value was coerced to bool|26|warn|1|0|R|I|N1|17|1|23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-acquired-initial-nan-handler-throws",
+    "source": "<?php\n$condition = NAN;\nclass YieldFromAcquiredThrownInitialNanIterator24 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredThrownInitialNanAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredThrownInitialNanIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$failure = new Exception(\"warning handler\");\nset_error_handler(static function ($severity, $message, $file, $line) use ($failure) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\nfunction YieldFromAcquiredThrownInitialNanOuter24() {\n    global $failure;\n    try {\n        $result = yield from new YieldFromAcquiredThrownInitialNanAggregate24();\n        echo \"N\", (int)($result === null), \"|\";\n    } catch (Throwable $caught) { echo (int)($caught === $failure), \"|\"; }\n    return 17;\n}\n$outer = YieldFromAcquiredThrownInitialNanOuter24();\nforeach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $outer->getReturn(), \"|E\";\n",
+    "source_sha256": "0dd50b026cdc51f84ad00e8c1e40411b2dc1b92aafc7c86fcec78ce48c1ddf09",
+    "purpose": "Acquired Iterator valid NaN warning keeps raw result, generic receipt and immediate data cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|H|2|unexpected NAN value was coerced to bool|24|I|1|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-acquired-later-nan-handler-throws",
+    "source": "<?php\n$condition = 1.0;\nclass YieldFromAcquiredThrownLaterNanIterator24 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7 + $this->position; }\n    public function key(): mixed { echo \"K|\"; return 11 + $this->position; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = $this->position === 1 ? NAN : 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredThrownLaterNanAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredThrownLaterNanIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$failure = new Exception(\"warning handler\");\nset_error_handler(static function ($severity, $message, $file, $line) use ($failure) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\nfunction YieldFromAcquiredThrownLaterNanOuter24() {\n    global $failure;\n    try {\n        $result = yield from new YieldFromAcquiredThrownLaterNanAggregate24();\n        echo \"N\", (int)($result === null), \"|\";\n    } catch (Throwable $caught) { echo (int)($caught === $failure), \"|\"; }\n    finally { echo \"F|\"; }\n    return 17;\n}\n$outer = YieldFromAcquiredThrownLaterNanOuter24();\nforeach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $outer->getReturn(), \"|E\";\n",
+    "source_sha256": "a81a93e53cea8e52d54cd098561c3862dbd5ec81647846cd4274710422c472f8",
+    "purpose": "Acquired Iterator valid NaN warning keeps raw result, generic receipt and immediate data cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|C|K|B11:7|X|V|H|2|unexpected NAN value was coerced to bool|25|I|1|F|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-acquired-initial-nan-default-warning",
+    "source": "<?php\n$condition = NAN;\nclass YieldFromAcquiredDefaultNanIterator24 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredDefaultNanAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredDefaultNanIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction YieldFromAcquiredDefaultNanOuter24() {\n    $result = yield from new YieldFromAcquiredDefaultNanAggregate24();\n    echo \"N\", (int)($result === null), \"|\";\n    return 17;\n}\n$outer = YieldFromAcquiredDefaultNanOuter24();\nforeach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $outer->getReturn(), \"|E\";\n",
+    "source_sha256": "a37274144cd75babd61ee217e38caa061f3d10b80cc49fddef38d9273de59db8",
+    "purpose": "Acquired Iterator valid NaN warning keeps raw result, generic receipt and immediate data cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|C|K|B11:7|X|V|I|N1|17|E",
+    "native_stderr": "Warning: unexpected NAN value was coerced to bool in {source} on line 17\n",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-acquired-initial-nan-reference-true",
+    "source": "<?php\n$condition = NAN;\nclass YieldFromAcquiredInitialNanReferenceTrueIterator24 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromAcquiredInitialNanReferenceTrueAggregate24 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new YieldFromAcquiredInitialNanReferenceTrueIterator24(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    global $condition;\n    $condition = 1.0;\n    return true;\n});\nfunction YieldFromAcquiredInitialNanReferenceTrueOuter24() {\n    $result = yield from new YieldFromAcquiredInitialNanReferenceTrueAggregate24();\n    echo \"N\", (int)($result === null), \"|\";\n    return 17;\n}\n$outer = YieldFromAcquiredInitialNanReferenceTrueOuter24();\nforeach ($outer as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $outer->getReturn(), \"|E\";\n",
+    "source_sha256": "3f3e2e08b8443b2b59381844aa1951a673d1fb91ef7706638bf3312170b1a0e7",
+    "purpose": "A live NaN reference changed to1.0 continues after raw retval retirement.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|V|H|2|unexpected NAN value was coerced to bool|23|C|K|B11:7|X|V|I|N1|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

@@ -16,10 +16,22 @@ cleanup retains constructed data until request cleanup; real rewind errors drop
 it before catch. Seventeen unchanged originals agree across the retained source16
 and owning-reference source1 cuts; strict368 passes at `b1164af45`. Independent
 25/720 physical owner and source-authority premises pass at separate cuts.
-Original compiler/source/fixture failures remain zero. Acquired Iterator NaN warnings,
-changed original operands and ordinary-call Aggregate unpack remain required.
+Original compiler/source/fixture failures remain zero. At that acquisition cut,
+Iterator NaN warnings remained required; changed original operands and ordinary-call
+Aggregate unpack remain required.
 Actual368 over `7b449476` passes strict compilation at `f4567b30`; private
 source/state cuts retain their inputs. [Yield-from review](coverage/semantics/yield-from-aggregate-review.json).
+
+Acquired Iterator `valid()` NaN warnings now retain their raw retval and acquisition
+receipt through ordinary handler invoke, result and cleanup. One post-handler
+decision rereads numeric references; copied NaN remains true. Real parked handlers
+preserve the parent resumer and delegation claim in the Fiber VM. False or thrown
+warnings retire raw retval before iterator data, without request retention.
+Nine exact native-grounded originals and strict368 pass at `c52ae1d16`.
+Twenty independent genuine-source groups/637 physical ownership and warning
+authority premises pass at `d825e3fc0`. Wider raw payload changes stay explicit Unsupported. Actual370 over `d827dc635` passes strict SL at `4723282ff`;
+private source/state cuts retain their own inputs.
+[Warning review](coverage/semantics/yield-from-valid-nan-review.json).
 
 Bounded assertion quantity warnings retain frozen parsed modes and old returns
 through nested raw writes, throw and restore. Immutable string carriers preserve
@@ -160,7 +172,7 @@ Unsupported with zero agreement; the earlier raw-completion fixture preparation
 was corrected before execution. Actual 367-module composition over `24c1b9e4`
 passes strict initialization at `0e5152643` (5.351 s), preserving current assertion
 fields and sibling constructor arms without renewing private source/state checks.
-First-class constructor, uninitialized getter, debug/property and wider wrapper protocols
+Uninitialized getter, debug/property and wider wrapper protocols
 remain required. [Constructor review](coverage/semantics/sensitive-value-constructor-review.json).
 
 First-class SensitiveParameterValue `getValue(...)` callables own their receiver
@@ -173,6 +185,20 @@ with zero agreement. Actual 368-module composition over `47accb555` passes stric
 initialization at `f4ca5840` (5.209 s), retaining parent owner/runtime paths and
 existing getter-closure ownership without renewing private checks.
 [Getter review](coverage/semantics/sensitive-value-getter-review.json).
+
+First-class wrapper constructors retain their initialized receiver through ordered
+sends, arity checks and readonly rejection. Computed capture names stay fixed;
+aliases, explicit/nullsafe invocation and clones preserve ownership. Five originals
+agree across `420f47247`/`9602dbc4f`. Strict compilation of 368 modules and SL129
+(27 derived, 102 reached checks) pass at `a9228bdd8`: real capture/SEND/Error steps
+and final releases distinguish the callable's old value from the Error's rejected
+replacement; saved caller queues authenticate nested argument calls. Both original
+Unsupported baselines, the initial trace mismatch and fixture AL stop retain zero
+affected credit. Binding/Closure::call and wider wrapper protocols remain partial.
+Actual 370-module composition over `36b0c6948` passes strict initialization at
+`b39a2a2b0` (5.284 s), preserving current factory/carrier and sibling runtime paths
+without renewing the private source/state checks.
+[Constructor callable review](coverage/semantics/sensitive-value-constructor-callables-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
