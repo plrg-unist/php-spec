@@ -1,4 +1,10 @@
 dec $generator_from_nan(pvalue) : bool
+dec $generator_from_valid_operand(pstate, poperand) : bool
+dec $generator_from_valid_decision(pstate, poperand) : bool?
+dec $fiber_start_unpack_release(pstate, pnode*) : pstate
+dec $foreach_valid_nan_resume(ptask) : bool
+dec $useriter_nan_unwind_valid(pstate, ptask) : bool
+dec $useriter_nan_release(pstate, nat, nat, porigin, poperand) : pstate
 ;; PHP 8.5.10 zend_interfaces.stub.php and zend_user_it_* supply these
 ;; language protocols. Tentative-return notices are a separate pending slice.
 dec $useriter_members() : ptbytes*
@@ -134,6 +140,7 @@ def $useriter_result_valid(S, n, n_object, statement, porigin_site, z, text_stag
   -- if $call_reference_operand_valid(S, poperand)
   -- if text_stage = "key" \/ poperand = KNOWN PNULL
   -- if text_stage =/= "key" \/ $useriter_has_key(statement)
+def $useriter_result_valid(S, n, n_object, statement, porigin_site, z, "valid-nan", poperand) = ($useriter_instance(S, n_object) /\ $useriter_site(S, statement, porigin_site, z) /\ $useriter_cursor_valid(S, n, n_object) /\ $generator_from_valid_operand(S, poperand))
 def $useriter_result_valid(S, n, n_object, statement, porigin_site, z, text_stage, poperand) = false -- otherwise
 dec $useriter_method_selected(pstate, nat, porigin, text) : bool
 def $useriter_method_selected(S, n, porigin_method, text_stage) = true
@@ -195,6 +202,11 @@ def $useriter_marker(pframe) = true
   -- if pframe.TODO = (USERITER_RESULT n n_object statement porigin_site z text_stage poperand) :: ptask_tail*
 def $useriter_marker(pframe) = false -- otherwise
 dec $useriter_task_ids(ptask) : nat*
+def $foreach_valid_nan_resume(USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand) = true
+def $foreach_valid_nan_resume(ptask) = false -- otherwise
+def $useriter_task_ids(ERROR_HANDLER_INVOKE perrorcall) = $useriter_task_ids(perrorcall.RESUME) -- if $foreach_valid_nan_resume(perrorcall.RESUME)
+def $useriter_task_ids(ERROR_HANDLER_RESULT perrorcall) = $useriter_task_ids(perrorcall.RESUME) -- if $foreach_valid_nan_resume(perrorcall.RESUME)
+def $useriter_task_ids(ERROR_HANDLER_CLEAN perrorcall) = $useriter_task_ids(perrorcall.RESUME) -- if $foreach_valid_nan_resume(perrorcall.RESUME)
 def $useriter_task_ids(USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = [n]
 def $useriter_task_ids(USERITER_NEXT n n_object statement porigin_site z poperand) = [n]
 def $useriter_task_ids(AT porigin ptask) = $useriter_task_ids(ptask)
@@ -299,6 +311,9 @@ rule PhpStep/useriter-body-next: S ~> $useriter_call(S, n, n_object, statement, 
 def $task_nodes(USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = [HOBJECT n_object] ++ $operand_nodes(poperand)
 def $task_nodes(USERITER_NEXT n n_object statement porigin_site z poperand) = [HOBJECT n_object] ++ $operand_nodes(poperand)
 def $return_discard(S, USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)][.ORIGIN = (porigin_site)]
+  -- if text_stage =/= "valid-nan"
+def $return_discard(S, USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand) = $useriter_nan_release(S, n, n_object, porigin_site, poperand)
+  -- if $useriter_nan_unwind_valid(S, USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand)
 def $return_discard(S, USERITER_NEXT n n_object statement porigin_site z poperand) = S[.ITERATORS = $iterator_remove(S.ITERATORS, n)][.ORIGIN = (porigin_site)]
 def $loop_marker(USERITER_NEXT n n_object statement porigin_site z poperand) = true
 def $jump_loop(S, porigin_source, 1, n_original, false) = $foreach_finish(S[.ORIGIN = (porigin_site)], n)
@@ -320,6 +335,7 @@ def $goto_marker_origin(USERITER_NEXT n n_object statement porigin_site z popera
 
 def $error_task_iterator(USERITER_RESULT n n_object statement porigin_site z text_stage poperand) = [n]
 def $error_task_iterator(USERITER_NEXT n n_object statement porigin_site z poperand) = [n]
+def $error_task_iterator(ERROR_HANDLER_CLEAN perrorcall) = $error_task_iterator(perrorcall.RESUME) -- if $foreach_valid_nan_resume(perrorcall.RESUME)
 
 def $useriter_source_contract(S, pclassdesc, porigin) = $useriter_contract(S, pclassdesc)
   -- if $pil_nominal(S, porigin, $ptascii("Iterator"), |S.CLASSES|)
@@ -327,9 +343,37 @@ def $useriter_source_contract(S, pclassdesc, porigin) = METHOD_OK -- otherwise
 def $useriter_source_after(S, pclassdesc, porigin, METHOD_OK) = $useriter_source_contract(S, pclassdesc, porigin)
 def $useriter_source_after(S, pclassdesc, porigin, pmethodissue) = pmethodissue -- otherwise
 
-rule PhpStep/useriter-valid-nan-required: S ~> S_read[.COMPLETION = UNSUPPORTED "Iterator foreach valid NaN warning continuation"]
+;; Keep the raw valid() retval through the C truth warning. A live reference
+;; is reread after the handler, while a copied NaN remains true.
+rule PhpStep/useriter-valid-nan: S ~> $error_dispatch(S_read[.ORIGIN = (porigin_site)], 2, $ptascii("unexpected NAN value was coerced to bool"), z, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) z, USERITER_RESULT n n_object statement porigin_site z "valid-nan" S.RESULT)
   -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "valid" poperand) :: ptask_tail*
+  -- if $useriter_result_valid(S, n, n_object, statement, porigin_site, z, "valid", poperand)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $generator_from_nan(pvalue)
+rule PhpStep/useriter-valid-nan-current: S ~> $useriter_call(S, n, n_object, statement, porigin_site, z, "current", KNOWN PNULL, ptask_tail*)
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand) :: ptask_tail*
+  -- if $generator_from_valid_decision(S, poperand) = (true)
+rule PhpStep/useriter-valid-nan-end: S ~> $useriter_nan_release($foreach_finish(S, n), n, n_object, porigin_site, poperand)
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand) :: ptask_tail*
+  -- if $generator_from_valid_decision(S, poperand) = (false)
+rule PhpStep/useriter-valid-nan-payload: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Iterator foreach valid NaN raw payload type change"]
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand) :: ptask_tail*
+  -- if $generator_from_valid_decision(S, poperand) = eps
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $useriter_result_valid(S, n, n_object, statement, porigin_site, z, "valid-nan", poperand)
+  -- if perrorcall.SITE = porigin_site /\ perrorcall.LINE = z
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $useriter_nan_unwind_valid(S, ptask) = true
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if $throwable_live(S, n_throwable)
+  -- if $call_task_valid(S[.TODO = (THROW_SEARCH n_throwable) :: ptask :: ptask_tail*], ptask)
+def $useriter_nan_unwind_valid(S, ptask) = false -- otherwise
+def $useriter_nan_release(S, n, n_object, porigin_site, poperand) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, n)][.ORIGIN = (porigin_site)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(poperand) ++ [HOBJECT n_object])
+def $error_read_discard(S, USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand) = $useriter_nan_release(S, n, n_object, porigin_site, poperand)
+  -- if $useriter_nan_unwind_valid(S, USERITER_RESULT n n_object statement porigin_site z "valid-nan" poperand)

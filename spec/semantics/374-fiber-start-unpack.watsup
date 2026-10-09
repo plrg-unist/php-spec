@@ -173,7 +173,6 @@ def $fiber_start_unpack_unwind_valid(S, ptask) = true
   -- if $throwable_live(S, n_throwable)
   -- if $call_task_valid(S[.TODO = (THROW_SEARCH n_throwable) :: ptask :: ptask_tail*], ptask)
 def $fiber_start_unpack_unwind_valid(S, ptask) = false -- otherwise
-dec $fiber_start_unpack_release(pstate, pnode*) : pstate
 def $fiber_start_unpack_release(S, pnode*) = $destructor_release_begin(S, $destruction_values(pnode*))
   -- if $destructor_operational(S)
 ;; With no effectful cleanup domain, the driver prunes the consumed owners.

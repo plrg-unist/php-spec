@@ -142,6 +142,13 @@ def $foreach_aggregate_stage(S, pforeachaggregate, text) = true
   -- if ~$foreach_aggregate_reference(pforeachaggregate.STATEMENT)
   -- if $useriter_instance(S, pforeachaggregate.OBJECT)
   -- if $useriter_cursor_valid(S, n, pforeachaggregate.OBJECT)
+def $foreach_aggregate_stage(S, pforeachaggregate, "valid-nan") = true
+  -- if pforeachaggregate.ITERATOR = (n)
+  -- if pforeachaggregate.ACQUIRED = eps
+  -- if ~$foreach_aggregate_reference(pforeachaggregate.STATEMENT)
+  -- if $useriter_instance(S, pforeachaggregate.OBJECT)
+  -- if $useriter_cursor_valid(S, n, pforeachaggregate.OBJECT)
+  -- if $generator_from_valid_operand(S, pforeachaggregate.CURRENT)
 def $foreach_aggregate_stage(S, pforeachaggregate, text) = true
   -- if text <- ["ready", "empty", "current", "finish", "input-error", "generator"]
   -- if pforeachaggregate.ITERATOR = (n)
@@ -164,6 +171,10 @@ def $foreach_aggregate_cursor(S, pforeachaggregate, n) = true
 def $foreach_aggregate_cursor(S, pforeachaggregate, n) = false -- otherwise
 
 def $foreach_aggregate_at(FOREACH_AGGREGATE pforeachaggregate text, porigin) = (pforeachaggregate.SITE = porigin)
+def $foreach_valid_nan_resume(FOREACH_AGGREGATE pforeachaggregate "valid-nan") = true
+def $foreach_aggregate_at(ERROR_HANDLER_INVOKE perrorcall, porigin) = (pforeachaggregate.SITE = porigin) -- if perrorcall.RESUME = FOREACH_AGGREGATE pforeachaggregate "valid-nan"
+def $foreach_aggregate_at(ERROR_HANDLER_RESULT perrorcall, porigin) = (pforeachaggregate.SITE = porigin) -- if perrorcall.RESUME = FOREACH_AGGREGATE pforeachaggregate "valid-nan"
+def $foreach_aggregate_at(ERROR_HANDLER_CLEAN perrorcall, porigin) = (pforeachaggregate.SITE = porigin) -- if perrorcall.RESUME = FOREACH_AGGREGATE pforeachaggregate "valid-nan"
 def $foreach_aggregate_at(ptask, porigin) = false -- otherwise
 def $foreach_aggregate_count(eps, porigin) = 0
 def $foreach_aggregate_count(ptask :: ptask_tail*, porigin) = $(1 + $foreach_aggregate_count(ptask_tail*, porigin)) -- if $foreach_aggregate_at(ptask, porigin)
@@ -399,12 +410,27 @@ rule PhpStep/foreach-aggregate-valid: S ~> S_read[.TODO = (FOREACH_AGGREGATE pfo
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$generator_from_nan(pvalue)
-rule PhpStep/foreach-aggregate-valid-nan-required: S ~> S_read[.COMPLETION = UNSUPPORTED "Iterator foreach valid NaN warning continuation"]
+rule PhpStep/foreach-aggregate-valid-nan: S ~> $error_dispatch(S_read[.ORIGIN = (pforeachaggregate.SITE)], 2, $ptascii("unexpected NAN value was coerced to bool"), pforeachaggregate.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) pforeachaggregate.LINE, FOREACH_AGGREGATE pforeachaggregate[.CURRENT = S.RESULT] "valid-nan")
   -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "valid") :: ptask_tail*
+  -- if $foreach_aggregate_result_valid(S, pforeachaggregate, "valid")
   -- if S_read = $resolve_at(S, S.RESULT, pforeachaggregate.LINE)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $generator_from_nan(pvalue)
+rule PhpStep/foreach-aggregate-valid-nan-ready: S ~> S[.TODO = (FOREACH_AGGREGATE pforeachaggregate[.CURRENT = KNOWN PNULL] $foreach_aggregate_decision(b)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "valid-nan") :: ptask_tail*
+  -- if $generator_from_valid_decision(S, pforeachaggregate.CURRENT) = (b)
+rule PhpStep/foreach-aggregate-valid-nan-payload: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Iterator foreach valid NaN raw payload type change"]
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "valid-nan") :: ptask_tail*
+  -- if $generator_from_valid_decision(S, pforeachaggregate.CURRENT) = eps
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = FOREACH_AGGREGATE pforeachaggregate "valid-nan"
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $foreach_aggregate_result_valid(S, pforeachaggregate, "valid-nan")
+  -- if perrorcall.SITE = pforeachaggregate.SITE /\ perrorcall.LINE = pforeachaggregate.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
 def $foreach_aggregate_decision(true) = "ready"
 def $foreach_aggregate_decision(false) = "empty"
 
@@ -492,3 +518,5 @@ def $useriter_task_ids(FOREACH_AGGREGATE pforeachaggregate "generator") = eps
 def $useriter_task_ids(FOREACH_AGGREGATE pforeachaggregate text) = $foreach_aggregate_ids(pforeachaggregate.ITERATOR) -- if text =/= "generator"
 def $error_task_iterator(FOREACH_AGGREGATE pforeachaggregate text) = $foreach_aggregate_ids(pforeachaggregate.ITERATOR)
 def $return_discard(S, FOREACH_AGGREGATE pforeachaggregate text) = $fiber_start_unpack_release(S[.ITERATORS = $foreach_aggregate_remove(S.ITERATORS, pforeachaggregate.ITERATOR)][.ORIGIN = (pforeachaggregate.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $foreach_aggregate_nodes(pforeachaggregate, text))
+def $error_read_discard(S, FOREACH_AGGREGATE pforeachaggregate "valid-nan") = $return_discard(S, FOREACH_AGGREGATE pforeachaggregate "valid-nan")
+  -- if $useriter_nan_unwind_valid(S, FOREACH_AGGREGATE pforeachaggregate "valid-nan")
