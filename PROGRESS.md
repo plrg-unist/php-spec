@@ -1651,6 +1651,8 @@ The 1,746,870 ppaccess_at calls remain unchanged; exclusive instrumented time
 falls from 3.1486 s to 2.8034 s, and total time from 20.8399 s to 20.5914 s.
 This modest matched observation is not a CLI estimate. Required original 7 keeps
 its prior timeout and zero agreement; no source or accepted state cut is renewed.
+Actual-parent compilation passes at 640a59899 over 7c3299fd with 361 modules,
+preserving scalar replay hooks; this checks compiler compatibility only.
 ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
