@@ -128,6 +128,7 @@ def $assertion_ini_record_shape(S, passertini) = true
   -- if $assertion_ini_option_valid(S, passertini.CALL)
   -- if $string_carrier_valid(S, passertini.INPUT) /\ $string_carrier_valid(S, passertini.OLDRAW) /\ $string_carrier_valid(S, passertini.OLDRETURN)
   -- if $string_getter_value(passertini.OLDRAW) = (passertini.OLDRETURN)
+  -- if passertini.ENTRYMODIFIED \/ passertini.OLDRAW = S.ASSERTIONSORIGINAL
   -- if $string_bytes(passertini.INPUT) = (n_input*)
   -- if (passertini.VALUE, passertini.WARNING) = $assertion_quantity_decode(n_input*)
   -- if $precision_ini_valid($decimal_integer(passertini.PRECISION))
@@ -158,7 +159,7 @@ def $assertion_ini_prepare(S, pconfigcall, pvalue) = S[.ASSERTIONSMODIFIED = tru
   -- if $string_bytes(pvalue) = (n_input*)
   -- if (z, n_warning*?) = $assertion_quantity_decode(n_input*)
   -- if $string_getter_value(S.ASSERTIONSRAW) = (pvalue_old)
-  -- if passertini = {ID S.ASSERTIONININEXT, CALL pconfigcall, INPUT pvalue, OLDRAW S.ASSERTIONSRAW, OLDRETURN pvalue_old, VALUE z, WARNING n_warning*?, PRECISION ($precision_value(S)), PHASE ASSERTION_PARSE}
+  -- if passertini = {ID S.ASSERTIONININEXT, CALL pconfigcall, INPUT pvalue, OLDRAW S.ASSERTIONSRAW, OLDRETURN pvalue_old, ENTRYMODIFIED S.ASSERTIONSMODIFIED, VALUE z, WARNING n_warning*?, PRECISION ($precision_value(S)), PHASE ASSERTION_PARSE}
 def $assertion_ini_set(S, pconfigcall, pvalue) = $error_dispatch(S_pending, 2, n_warning*, pconfigcall.LINE, DIAGNOSTIC "Warning" n_warning* pconfigcall.LINE, ASSERTION_INI_RESULT passertini)
   -- if $assertion_state_valid(S)
   -- if $assertion_ini_option_valid(S, pconfigcall)
@@ -203,11 +204,24 @@ def $assertion_ini_set(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "as
   -- if ~S.ASSERTIONSMODIFIED
   -- if S.ASSERTIONSRAW =/= S.ASSERTIONSORIGINAL
 def $assertion_ini_set(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI string identity producer or state"] -- otherwise
+;; zend_alter_ini_entry_ex releases frozen prev_value after a successful handler.
+;; A nested replacement already consumed that modified request-string retain.
+;; Later allocator reuse and stale zval reads fall outside immutable carriers.
+dec $assertion_ini_retired_raw(pstate, passertini) : bool
+def $assertion_ini_retired_raw(S, passertini) = true
+  -- if passertini.ENTRYMODIFIED
+  -- if passertini.OLDRAW = PSTRING_CARRIER (REQUEST_STRING n) n_bytes*
+  -- if S.ASSERTIONSRAW =/= passertini.OLDRAW
+def $assertion_ini_retired_raw(S, passertini) = false -- otherwise
 dec $assertion_ini_install(pstate, passertini) : pstate
+def $assertion_ini_install(S, passertini) = S[.COMPLETION = UNSUPPORTED "reentrant assertion INI retired request-string owner"]
+  -- if $assertion_ini_retired_raw(S, passertini)
 def $assertion_ini_install(S, passertini) = S[.ASSERTIONS = passertini.VALUE][.ASSERTIONSMODE = {INPUT passertini.INPUT, VALUE passertini.VALUE}][.ASSERTIONSRAW = passertini.INPUT][.ASSERTIONSINI = n_input*]
+  -- if ~$assertion_ini_retired_raw(S, passertini)
   -- if $string_same(S.ASSERTIONSRAW, passertini.OLDRAW) = (true)
   -- if $string_bytes(passertini.INPUT) = (n_input*)
 def $assertion_ini_install(S, passertini) = S[.ASSERTIONS = passertini.VALUE][.ASSERTIONSMODE = {INPUT passertini.INPUT, VALUE passertini.VALUE}]
+  -- if ~$assertion_ini_retired_raw(S, passertini)
   -- if $string_same(S.ASSERTIONSRAW, passertini.OLDRAW) = (false)
 dec $assertion_ini_complete(pstate, passertini) : pstate
 def $assertion_ini_complete(S, passertini) = S_installed[.ASSERTIONINI = $assertion_ini_remove(S.ASSERTIONINI, passertini.ID)][.RESULT = KNOWN passertini.OLDRETURN][.BASE = BASE_VALUE (KNOWN PNULL)]
