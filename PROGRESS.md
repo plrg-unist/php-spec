@@ -189,6 +189,9 @@ and final releases distinguish the callable's old value from the Error's rejecte
 replacement; saved caller queues authenticate nested argument calls. Both original
 Unsupported baselines, the initial trace mismatch and fixture AL stop retain zero
 affected credit. Binding/Closure::call and wider wrapper protocols remain partial.
+Actual 370-module composition over `36b0c6948` passes strict initialization at
+`b39a2a2b0` (5.284 s), preserving current factory/carrier and sibling runtime paths
+without renewing the private source/state checks.
 [Constructor callable review](coverage/semantics/sensitive-value-constructor-callables-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
