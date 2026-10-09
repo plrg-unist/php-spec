@@ -613,4 +613,470 @@ echo "E;";
         'expected_stdout': 'C;D;X:Class "MissingComputedPreentryClassReview19" not found:10;N;D;X:Access to undeclared static property ComputedPreentrySlotReview19::$absent:18;U;D;X:Typed static property ComputedPreentrySlotReview19::$value must not be accessed before initialization:26;K;D;X:Undefined constant self::MISSING:32;E;',
         'discriminator': 'Missing named class, missing computed property, and uninitialized typed property errors occur after RHS evaluation but before Stringable conversion; each evaluated temporary RHS is released during the catchable preentry failure. Fetch and RHS appear on distinct lines; Error.getLine forecasts the delayed static-fetch line, pending native observation.',
     },
+    {
+        'id': 'stringable-property-name-temp',
+        'source': '''<?php
+class StringableNameSlotReview19 {
+    public static mixed $value = "a";
+    public static mixed $other = "other";
+}
+class StringableComputedNameReview19 {
+    public function __toString(): string {
+        global $property, $rhs;
+        echo "N;";
+        $property = "other";
+        $rhs = "after";
+        return "value";
+    }
+    public function __destruct() { echo "D;"; }
+}
+function stringableComputedNameReview19() {
+    echo "H;";
+    return new StringableComputedNameReview19();
+}
+$property = "value";
+$rhs = "before";
+$result = (StringableNameSlotReview19::${stringableComputedNameReview19()} .= $rhs);
+echo "V:", StringableNameSlotReview19::$value,
+     ";O:", StringableNameSlotReview19::$other,
+     ";P:", $property, ";R:", $rhs, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'H;N;D;V:aafter;O:other;P:other;R:after;X:aafter;E;',
+        'discriminator': 'A helper-returned NAME temporary casts once, changes the live RHS/name CV, then retires before the primitive static compound read and copied expression result.',
+    },
+    {
+        'id': 'stringable-property-name-borrowed-cv',
+        'source': '''<?php
+class BorrowedNameSlotReview19 {
+    public static mixed $value = "a";
+    public static mixed $other = "o";
+}
+class BorrowedNameReview19 {
+    public function __toString(): string {
+        global $property, $rhs;
+        echo "N;";
+        $property = "other";
+        $rhs = "after";
+        echo "B;";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        $rhs = "retired";
+    }
+}
+$property = new BorrowedNameReview19();
+$rhs = "before";
+$result = (BorrowedNameSlotReview19::${$property} .= $rhs);
+echo "V:", BorrowedNameSlotReview19::$value,
+     ";O:", BorrowedNameSlotReview19::$other,
+     ";P:", $property, ";R:", $rhs, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'N;B;D;V:aretired;O:o;P:other;R:retired;X:aretired;E;',
+        'discriminator': 'The cast receiver survives replacement of its borrowed NAME CV through the rest of the method; its final destructor changes the RHS before the selected property is read.',
+    },
+    {
+        'id': 'stringable-property-name-slot-rebind',
+        'source': '''<?php
+class NameRebindSlotReview19 {
+    public static mixed $value = "a";
+}
+class NameTypedRebindSlotReview19 {
+    public static int $value = 1;
+}
+class NameRebindReview19 {
+    public function __toString(): string {
+        global $mode, $class;
+        echo "N;";
+        if ($mode === 1) { $class = "NameTypedRebindSlotReview19"; }
+        return "value";
+    }
+    public function __destruct() {
+        global $mode, $alias, $replacement, $rhs;
+        echo "D;";
+        if ($mode === 1) {
+            NameRebindSlotReview19::$value =& $alias;
+            $rhs = "b";
+        } else {
+            NameTypedRebindSlotReview19::$value =& $replacement;
+            $rhs = "2";
+        }
+    }
+}
+function nameRebindReview19() { return new NameRebindReview19(); }
+$mode = 1;
+$class = "NameRebindSlotReview19";
+$alias = "old";
+$replacement = 7;
+$rhs = "before";
+echo "1;";
+$first = ($class::${nameRebindReview19()} .= $rhs);
+echo "V:", NameRebindSlotReview19::$value, ";A:", $alias,
+     ";C:", $class, ";X:", $first, ";";
+$mode = 2;
+$original = 1;
+NameTypedRebindSlotReview19::$value =& $original;
+$rhs = "before";
+echo "2;";
+$second = (NameTypedRebindSlotReview19::${nameRebindReview19()} .= $rhs);
+echo "V:", NameTypedRebindSlotReview19::$value, ";A:", $original,
+     ";B:", $replacement, ";X:", $second, ";I:", ($second === 72), ";E;";
+''',
+        'expected_stdout': '1;N;D;V:oldb;A:oldb;C:NameTypedRebindSlotReview19;X:oldb;2;N;D;V:72;A:1;B:72;X:72;I:1;E;',
+        'discriminator': 'A NAME temporary destructor changes the selected row alias before compound capture, with dynamic class mutation preserving the original root. A typed reference rebind updates the new cell and returns integer72 while the old cell stays1.',
+    },
+    {
+        'id': 'stringable-property-name-errors-cleanup',
+        'source': '''<?php
+class NameErrorSlotReview19 {
+    public static int $value;
+}
+class NameErrorReview19 {
+    public function __toString(): string {
+        global $chosen, $nameException;
+        echo "N;";
+        if ($chosen === "throw") { throw $nameException; }
+        return $chosen;
+    }
+    public function __destruct() { echo "D;"; }
+}
+class NameErrorRightReview19 {
+    public function __toString(): string { echo "B;"; return "b"; }
+    public function __destruct() { echo "R;"; }
+}
+function nameErrorReview19() { echo "H;"; return new NameErrorReview19(); }
+function nameErrorRightReview19() { echo "Q;"; return new NameErrorRightReview19(); }
+$nameException = new Exception("name");
+$chosen = "value";
+echo "C;";
+try {
+    MissingNameErrorClassReview19::${nameErrorReview19()}
+        .= nameErrorRightReview19();
+} catch (Throwable $error) {
+    echo "X:", $error->getMessage(), ":", $error->getLine(), ";";
+}
+$chosen = "absent";
+echo "P;";
+try {
+    NameErrorSlotReview19::${nameErrorReview19()}
+        .= nameErrorRightReview19();
+} catch (Throwable $error) {
+    echo "X:", $error->getMessage(), ":", $error->getLine(), ";";
+}
+$chosen = "value";
+echo "U;";
+try {
+    NameErrorSlotReview19::${nameErrorReview19()}
+        .= nameErrorRightReview19();
+} catch (Throwable $error) {
+    echo "X:", $error->getMessage(), ":", $error->getLine(), ";";
+}
+$chosen = "throw";
+echo "T;";
+try {
+    NameErrorSlotReview19::${nameErrorReview19()}
+        .= nameErrorRightReview19();
+} catch (Throwable $error) {
+    echo "X:", $error->getMessage(), ":", $error->getLine(), ";";
+}
+class NamePendingSlotReview19 {
+    public static mixed $value = "a";
+}
+class NamePendingReview19 {
+    public function __toString(): string { echo "N;"; return "value"; }
+    public function __destruct() {
+        global $pendingNameException, $rhs;
+        echo "D;";
+        $rhs = "after";
+        throw $pendingNameException;
+    }
+}
+function namePendingReview19() { echo "H;"; return new NamePendingReview19(); }
+$pendingNameException = new Exception("free");
+$rhs = "before";
+$pendingResult = "sentinel";
+echo "F;";
+try {
+    $pendingResult = (NamePendingSlotReview19::${namePendingReview19()} .= $rhs);
+} catch (Throwable $error) {
+    echo "X:", $error->getMessage(), ";";
+}
+echo "V:", NamePendingSlotReview19::$value,
+     ";R:", $rhs, ";Z:", $pendingResult, ";E;";
+''',
+        'expected_stdout': 'C;H;Q;D;R;X:Class "MissingNameErrorClassReview19" not found:24;P;H;Q;N;D;R;X:Access to undeclared static property NameErrorSlotReview19::$absent:32;U;H;Q;N;D;R;X:Typed static property NameErrorSlotReview19::$value must not be accessed before initialization:40;T;H;Q;N;D;R;X:Access to undeclared static property NameErrorSlotReview19::$:48;F;H;N;D;X:free;V:aafter;R:after;Z:sentinel;E;',
+        'discriminator': 'Class/read-access/uninitialized failures release evaluated NAME then RHS. Throwing NAME conversion is replaced by empty-property lookup Error. A pending NAME destructor exception still permits scalar compound store before catch, but aborts the outer result assignment.',
+    },
+    {
+        'id': 'stringable-property-name-cold-owners',
+        'source': '''<?php
+class ColdStringableNameSlotReview19 {
+    public const BASE = "a";
+    public const OTHER = "o";
+    public static string $value = self::BASE;
+    public static string $other = self::OTHER;
+    public static function run() {
+        global $property;
+        $result = (static::${coldStringableNameReview19()} .= coldStringableNameRightReview19());
+        echo "V:", static::$value, ";A:", self::$value,
+             ";O:", static::$other, ";P:", $property, ";X:", $result, ";E;";
+    }
+}
+class ColdStringableNameChildReview19 extends ColdStringableNameSlotReview19 {
+    public const BASE = "c";
+    public static string $value = self::BASE;
+}
+class ColdStringableNameReview19 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        echo "D:", ColdStringableNameChildReview19::$value, ";";
+        ColdStringableNameChildReview19::$value = "d";
+    }
+}
+class ColdStringableNameRightReview19 {
+    public function __toString(): string {
+        echo "B:", ColdStringableNameChildReview19::$value, ";";
+        return "b";
+    }
+    public function __destruct() {
+        echo "R:", ColdStringableNameChildReview19::$value, ";";
+    }
+}
+function coldStringableNameReview19() { echo "H;"; return new ColdStringableNameReview19(); }
+function coldStringableNameRightReview19() { echo "Q;"; return new ColdStringableNameRightReview19(); }
+$property = "value";
+ColdStringableNameChildReview19::run();
+''',
+        'expected_stdout': 'H;Q;N;D:c;B:d;R:db;V:db;A:a;O:o;P:other;X:db;E;',
+        'discriminator': 'An inherited static:: method selects the called child through NAME conversion and deferred defaults; NAME retirement changes its current value before RHS conversion, while the owned RHS temporary survives through final store.',
+    },
+    {
+        'id': 'stringable-property-name-pending-paths',
+        'source': r'''<?php
+class NamePendingTypedSlotReview19 { public static int $value = 7; }
+class NamePendingMixedSlotReview19 { public static mixed $value = "a"; }
+class NamePendingReview19 {
+    public function __toString(): string { echo "N;"; return "value"; }
+    public function __destruct() {
+        global $mode, $rhs, $pending;
+        echo "D;";
+        if ($mode === 1) { $rhs = "2"; }
+        if ($mode === 2) { $rhs = "x"; }
+        if ($mode === 4) { $rhs = ["x"]; }
+        throw $pending;
+    }
+}
+class NamePendingRightReview19 {
+    public function __toString(): string { echo "B;"; return "b"; }
+    public function __destruct() { echo "R;"; }
+}
+function pendingNameReview19() { echo "H;"; return new NamePendingReview19(); }
+function pendingRightReview19() { echo "Q;"; return new NamePendingRightReview19(); }
+$mode = 1;
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "S;";
+try { $result = (NamePendingTypedSlotReview19::${pendingNameReview19()} .= $rhs); }
+catch (Throwable $e) { echo "X:", $e->getMessage(), ";"; }
+echo "V:", NamePendingTypedSlotReview19::$value, ";I:", (NamePendingTypedSlotReview19::$value === 72), ";Z:", $result, ";";
+$mode = 2;
+NamePendingTypedSlotReview19::$value = 7;
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "T;";
+try { $result = (NamePendingTypedSlotReview19::${pendingNameReview19()} .= $rhs); }
+catch (Throwable $e) {
+    echo "X:", ($e instanceof TypeError), ":";
+    $previous = $e->getPrevious();
+    if ($previous === null) { echo "none"; } else { echo $previous->getMessage(); }
+    echo ";";
+}
+echo "V:", NamePendingTypedSlotReview19::$value, ";Z:", $result, ";";
+$mode = 3;
+$pending = new Exception("free");
+$result = "sentinel";
+echo "O;";
+try { $result = (NamePendingMixedSlotReview19::${pendingNameReview19()} .= pendingRightReview19()); }
+catch (Throwable $e) { echo "X:", $e->getMessage(), ";"; }
+echo "V:", NamePendingMixedSlotReview19::$value, ";Z:", $result, ";";
+$mode = 4;
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "A;";
+try { $result = @(NamePendingMixedSlotReview19::${pendingNameReview19()} .= $rhs); }
+catch (Throwable $e) { echo "X:", $e->getMessage(), ";"; }
+echo "V:", NamePendingMixedSlotReview19::$value, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'S;H;N;D;X:free;V:7;I:;Z:sentinel;T;H;N;D;X::none;V:7;Z:sentinel;O;H;Q;N;D;R;X:free;V:a;Z:sentinel;A;H;N;D;X:free;V:a;Z:sentinel;E;',
+        'discriminator': 'A pending NAME-destructor exception prevents weak integer verification and leaves its original exception unchanged; it also suppresses RHS Stringable entry while releasing the owned temporary, and aborts suppressed array conversion before store.',
+    },
+
+    {
+        'id': 'stringable-property-name-pending-masks',
+        'source': r'''<?php
+class NamePendingMasksSlotReview19 {
+    public static int|float $number = 7;
+    public static bool $boolean = false;
+    public static float|bool $floatbool = false;
+    public static int|bool $intbool = false;
+    public static int $reference = 7;
+    public static string $text = "a";
+}
+class NamePendingMasksReview19 {
+    public function __toString(): string { global $chosen; echo "N;"; return $chosen; }
+    public function __destruct() { global $rhs, $pending; echo "D;"; $rhs = "2"; throw $pending; }
+}
+function pendingMasksNameReview19() { echo "H;"; return new NamePendingMasksReview19(); }
+$chosen = "number";
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "U;";
+try { $result = (NamePendingMasksSlotReview19::${pendingMasksNameReview19()} .= $rhs); }
+catch (Throwable $e) { echo "X:", $e->getMessage(), ";"; }
+echo "V:", NamePendingMasksSlotReview19::$number, ";I:", (NamePendingMasksSlotReview19::$number === 72), ";Z:", $result, ";";
+$chosen = "boolean";
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "B;";
+try { $result = (NamePendingMasksSlotReview19::${pendingMasksNameReview19()} .= $rhs); }
+catch (Throwable $e) { echo "X:", $e->getMessage(), ";"; }
+echo "V:", NamePendingMasksSlotReview19::$boolean, ";I:", (NamePendingMasksSlotReview19::$boolean === false), ";Z:", $result, ";";
+$chosen = "floatbool";
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "F;";
+try { $result = (NamePendingMasksSlotReview19::${pendingMasksNameReview19()} .= $rhs); }
+catch (Throwable $e) { echo "X:", $e->getMessage(), ";"; }
+echo "V:", NamePendingMasksSlotReview19::$floatbool, ";I:", (NamePendingMasksSlotReview19::$floatbool === false), ";Z:", $result, ";";
+$chosen = "intbool";
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "I;";
+try { $result = (NamePendingMasksSlotReview19::${pendingMasksNameReview19()} .= $rhs); }
+catch (Throwable $e) { echo "X:", $e->getMessage(), ";"; }
+echo "V:", NamePendingMasksSlotReview19::$intbool, ";I:", (NamePendingMasksSlotReview19::$intbool === false), ";Z:", $result, ";";
+$chosen = "reference";
+$alias = 7;
+NamePendingMasksSlotReview19::$reference =& $alias;
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "R;";
+try { $result = (NamePendingMasksSlotReview19::${pendingMasksNameReview19()} .= $rhs); }
+catch (Throwable $e) {
+    echo "X:", ($e instanceof TypeError), ":";
+    $previous = $e->getPrevious();
+    if ($previous === null) { echo "none"; } else { echo $previous->getMessage(); }
+    echo ";";
+}
+echo "V:", NamePendingMasksSlotReview19::$reference, ";A:", $alias, ";Z:", $result, ";";
+$chosen = "text";
+$textAlias = "a";
+NamePendingMasksSlotReview19::$text =& $textAlias;
+$rhs = "before";
+$pending = new Exception("free");
+$result = "sentinel";
+echo "S;";
+try { $result = (NamePendingMasksSlotReview19::${pendingMasksNameReview19()} .= $rhs); }
+catch (Throwable $e) { echo "X:", $e->getMessage(), ";"; }
+echo "V:", NamePendingMasksSlotReview19::$text, ";A:", $textAlias, ";Z:", $result, ";";
+class BorrowedDoubleThrowNameReview19 {
+    public function __toString(): string {
+        global $borrowedProperty, $castPending;
+        echo "N;";
+        $borrowedProperty = "unused";
+        throw $castPending;
+    }
+    public function __destruct() { global $dtorPending; echo "D;"; throw $dtorPending; }
+}
+$castPending = new Exception("cast");
+$dtorPending = new Exception("drop");
+$borrowedProperty = new BorrowedDoubleThrowNameReview19();
+$result = "sentinel";
+echo "C;";
+try { $result = (NamePendingMasksSlotReview19::${$borrowedProperty} .= "b"); }
+catch (Throwable $e) {
+    echo "X:", $e->getMessage(), ";Q:";
+    $previous = $e->getPrevious();
+    if ($previous === null) { echo "none"; } else { echo $previous->getMessage(); }
+    echo ";";
+}
+echo "P:", $borrowedProperty, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'U;H;N;D;X:free;V:72;I:1;Z:sentinel;B;H;N;D;X:free;V:;I:1;Z:sentinel;F;H;N;D;X:free;V:;I:1;Z:sentinel;I;H;N;D;X:free;V:;I:1;Z:sentinel;R;H;N;D;X:1:free;V:7;A:7;Z:sentinel;S;H;N;D;X:free;V:a2;A:a2;Z:sentinel;C;N;D;X:Access to undeclared static property NamePendingMasksSlotReview19::$;Q:drop;P:unused;Z:sentinel;E;',
+        'discriminator': 'Pending numeric int|float conversion succeeds, weak bool masks abort, typed-int REF rejection chains a new TypeError, an initially string typed REF performs the fast compound store, and borrowed cast/destructor double-throw still performs the empty-name address lookup.',
+    },
+
+    {
+        'id': 'stringable-property-name-owned-reference',
+        'source': r'''<?php
+class OwnedReferenceNameSlotReview19 { public static mixed $value = "a"; }
+class OwnedReferenceNameReview19 {
+    public function __toString(): string {
+        global $name, $rhs;
+        echo "N;";
+        unset($GLOBALS["name"]);
+        $GLOBALS["name"] = "other";
+        $rhs = "after";
+        return "value";
+    }
+    public function __destruct() {
+        global $alias, $rhs;
+        echo "D;";
+        OwnedReferenceNameSlotReview19::$value =& $alias;
+        $rhs = "retired";
+    }
+}
+function &ownedReferenceNameReview19() { global $name; echo "H;"; return $name; }
+$name = new OwnedReferenceNameReview19();
+$alias = "old";
+$rhs = "before";
+$result = (OwnedReferenceNameSlotReview19::${ownedReferenceNameReview19()} .= $rhs);
+echo "V:", OwnedReferenceNameSlotReview19::$value, ";A:", $alias,
+     ";P:", $name, ";R:", $rhs, ";X:", $result, ";E;";
+''',
+        'expected_stdout': 'H;N;D;V:oldretired;A:oldretired;P:other;R:retired;X:oldretired;E;',
+        'discriminator': 'An accepted99 untyped returned REF retains the old name cell across actual global unset/rebind; its final release changes the selected alias and live RHS before capture.',
+    },
+    {
+        'id': 'stringable-property-name-pending-cold-failure',
+        'source': r'''<?php
+class PendingColdNameSlotReview19 { public static string $value = self::MISSING; }
+class PendingColdNameReview19 {
+    public function __toString(): string { global $name; echo "N;"; $name = "other"; return "value"; }
+    public function __destruct() { global $drop; echo "D;"; throw $drop; }
+}
+class PendingColdNameRightReview19 {
+    public function __toString(): string { echo "B;"; return "b"; }
+    public function __destruct() { echo "R;"; }
+}
+function pendingColdNameRightReview19() { echo "Q;"; return new PendingColdNameRightReview19(); }
+$name = new PendingColdNameReview19();
+$drop = new Exception("drop");
+$result = "sentinel";
+try { $result = (PendingColdNameSlotReview19::${$name} .= pendingColdNameRightReview19()); }
+catch (Throwable $e) {
+    echo "X:", $e->getMessage(), ";Q:";
+    $previous = $e->getPrevious();
+    if ($previous === null) { echo "none"; } else { echo $previous->getMessage(); }
+    echo ";L:", $e->getLine(), ";";
+}
+echo "P:", $name, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;N;D;R;X:Undefined constant self::MISSING;Q:drop;L:2;P:other;Z:sentinel;E;',
+        'discriminator': 'A borrowed selected receiver destructor leaves a pending exception before genuine cold static initialization; initializer failure replaces it while the evaluated RHS temporary retires.',
+    },
 ]
