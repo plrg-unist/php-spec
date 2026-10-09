@@ -1925,6 +1925,17 @@ cuts are unchanged; required original 7 remains open at its CLI 60 timeout.
 Current publication over ee06368a4 with 363 modules passes compilation and 156
 carrier-aware cold fixture premises at 2009abf79; source agreement stays at b82.
 ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
+Live compound string gates now accept authenticated carrier bytes and preserve
+the concat helper's STRINGDATA state; empty branches keep legacy unknown identity.
+Ordinary inherited-static by-ref NAME/RHS agrees at 09cd/363 with 213 premises
+(149 reached, 64 constructed). At 5e77/363, static Closure::fromCallable computed
+keyword selection retains genuine CLOSURE_SCOPE through the RHS callback/write
+and actual request retirement. The wrapper matches native bytes; 359 premises
+(239 reached, 120 constructed) authenticate the entry and reject narrow forgeries.
+All prior stops remain zero credit. EPS saved selection keeps ordinary compatibility;
+other Closure families, INI identity, ARG329 and required original 7 remain open.
+Actual-parent compilation passes at a67b4e4a over 633ecec1e with 367 modules;
+pointwise Notice/ownership review adds no source or state renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

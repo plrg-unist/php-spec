@@ -10,6 +10,7 @@ dec $computed_static_name_compatible(pstate, porigin, ptbytes) : bool
 dec $computed_static_named_root(pstate, porigin) : porigin?
 dec $computed_static_base(pstate, ppropertyid, porigin) : (porigin, ptbytes)?
 dec $computed_static_selection_allowed(pstate, porigin) : bool
+dec $computed_static_selection_closure(pstate, pclosureevidence?) : bool
 dec $computed_static_name_call(pstate, pcomputedcompound) : bool
 def $computed_static_name_call(S, pcomputedcompound) = false -- otherwise
 
@@ -151,6 +152,16 @@ def $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
   -- if $class_static_select(S, pstaticcompound.CLASS, ppropertydesc.NAME) = (ppropertydesc)
   -- if $class_static_at(S.CLASSSTATICS, pstaticcompound.DECL) =/= eps
 
+def $computed_static_selection_closure(S, eps) = true
+def $computed_static_selection_closure(S, pclosureevidence?) = true
+  -- if pclosureevidence? = (CLOSURE_SCOPE pclosurescope)
+  -- if pclosureevidence? =/= eps
+  -- if $(pclosurescope.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[pclosurescope.OBJECT] = FROMCALLABLECLOSURE pfrommethod
+  -- if pfrommethod.STATIC
+  -- if $closure_evidence_valid(S, CLOSURE_SCOPE pclosurescope)
+def $computed_static_selection_closure(S, pclosureevidence?) = false -- otherwise
+
 def $computed_static_selection_allowed(S, porigin) = true
   -- if $computed_static_source(S, porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 expression_name metadata_property) expression_right metadata)
@@ -162,6 +173,14 @@ def $computed_static_selection_allowed(S, porigin) = true
   -- if S.CURRENT = (pcallcontext)
   -- if $static_compound_method_target(pcallcontext.TARGET)
   -- if ~$from_current(S)
+def $computed_static_selection_allowed(S, porigin) = true
+  -- if $computed_static_source(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 expression_name metadata_property) expression_right metadata)
+  -- if $class_static_selection_keyword(phpType19) =/= eps
+  -- if $from_current(S)
+  -- if pclosureevidence? = $closure_evidence_current(S)
+  -- if pclosureevidence? =/= eps
+  -- if $computed_static_selection_closure(S, pclosureevidence?)
 def $computed_static_selection_allowed(S, porigin) = false -- otherwise
 def $static_compound_scoped_selection(S, ppropertyid, porigin) = ((pstaticselection, ppropertydesc))
   -- if $computed_static_selection_allowed(S, porigin)
@@ -175,7 +194,8 @@ def $static_compound_scoped_selection(S, ppropertyid, porigin) = ((pstaticselect
 def $static_compound_selected_descriptor(S, pstaticcompound, pstaticselection, porigin) = (ppropertydesc)
   -- if $computed_static_source(S, porigin)
   -- if $origin_child((porigin), [PCFIELD 0]) = (pstaticselection.SITE)
-  -- if pstaticselection.ROOT = pstaticcompound.CLASS /\ pstaticselection.CLOSURE = eps
+  -- if pstaticselection.ROOT = pstaticcompound.CLASS
+  -- if $computed_static_selection_closure(S, pstaticselection.CLOSURE)
   -- if $class_static_selection_valid(S, pstaticselection)
   -- if $class_static_active_desc(S, S.CLASSNAMES, pstaticcompound.DECL) = (ppropertydesc)
   -- if $computed_static_name_compatible(S, porigin, ppropertydesc.NAME)

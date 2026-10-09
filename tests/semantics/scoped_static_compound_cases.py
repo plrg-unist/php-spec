@@ -1119,3 +1119,102 @@ echo "P:", $name, ";Z:", $result, ";E;";
         'discriminator': 'Failed NAME conversion and throwing receiver cleanup preserve empty-name lookup before cold defaults, chain Error to drop to cast, and retire the owned RHS without stringifying it.',
     },
 ]
+
+
+CASES += [
+    {
+        'id': 'stringable-name-ordinary-live-byref',
+        'source': r'''<?php
+class FromStaticNameBaseReview20 {
+    public static string $value = "a";
+    public static function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+}
+class FromStaticNameChildReview20 extends FromStaticNameBaseReview20 {
+    public static string $value = "c";
+}
+class FromStaticNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        FromStaticNameChildReview20::$value = "d";
+        $rhs = new FromStaticRightReview20();
+    }
+}
+class FromStaticRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+$property = new FromStaticNameReview20();
+$rhs = "before";
+$result = FromStaticNameChildReview20::append($property, $rhs);
+$rhs = "done";
+echo "V:", FromStaticNameChildReview20::$value,
+     ";B:", FromStaticNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'H;N;D;B;R;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'An inherited ordinary static call keeps lexical Base/called Child while borrowed by-ref NAME retirement changes the live Stringable RHS; carrier bytes and fresh request-string storage preserve the caller cells.',
+    },
+    {
+        'id': 'stringable-name-from-callable-live-byref',
+        'source': r'''<?php
+class FromStaticNameBaseReview20 {
+    public static string $value = "a";
+    public static function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+}
+class FromStaticNameChildReview20 extends FromStaticNameBaseReview20 {
+    public static string $value = "c";
+}
+class FromStaticNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        FromStaticNameChildReview20::$value = "d";
+        $rhs = new FromStaticRightReview20();
+    }
+}
+class FromStaticRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+$property = new FromStaticNameReview20();
+$rhs = "before";
+$closure = Closure::fromCallable([FromStaticNameChildReview20::class, "append"]);
+$result = $closure($property, $rhs);
+$rhs = "done";
+echo "V:", FromStaticNameChildReview20::$value,
+     ";B:", FromStaticNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'H;N;D;B;R;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'A retained static Closure::fromCallable wrapper freezes lexical Base/called Child and exact saved CLOSURE_SCOPE through borrowed by-ref NAME retirement, RHS conversion and the final property write without another closure owner.',
+    },
+]
