@@ -1034,10 +1034,22 @@ $call_task_valid(S_lookup, THROW_SEARCH n_lookup)
 CASES += DYNAMIC_CASES
 CASES += COMPUTED_CASES
 CASES += STRINGABLE_CASES
+CALLABLE_CASES = [
+    ('stringable-name-ordinary-live-carrier', ['stringable-name-ordinary-live-byref']),
+    ('stringable-name-from-callable-live-selection', ['stringable-name-from-callable-live-byref']),
+]
+CASES += CALLABLE_CASES
 CASES += [('stringable-name-cold-double-throw', ['stringable-property-name-cold-double-throw'])]
 
 
 def render(name, sources):
+    if name in (case[0] for case in CALLABLE_CASES):
+        from static_name_callable_protocol import render_ordinary, render_wrapper
+        case = next(case for case in CALLABLE_CASES if case[0] == name)
+        row = sources[case[1][0]]
+        renderer = render_ordinary if name == CALLABLE_CASES[0][0] else render_wrapper
+        text, checks, _, _ = renderer(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
     if name == 'stringable-name-cold-double-throw':
         row = sources['stringable-property-name-cold-double-throw']
         return cold_double_throw(row['fixture'], row['filename'], row['expected_stdout'])
