@@ -150,7 +150,9 @@ cast-time traces retain the original object and failure traces store the string.
 Original cast Throwable identity survives. Quiet weak scalar descriptions convert
 once and replace the actual argument before failure policy; traces/callback evidence
 use that converted carrier. Named false becomes empty bytes while NULL and source
-variables stay unchanged. Description warning conversion/unpack, last-owner entry/handoff,
+variables stay unchanged. Logical-not generated descriptions preserve prefix
+precedence and required parentheses around compound children. Description warning
+conversion/unpack, last-owner entry/handoff,
 wider startup/callback facts, exporter forms and single named-description producers
 remain required.
 

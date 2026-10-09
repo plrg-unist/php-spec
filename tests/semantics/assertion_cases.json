@@ -1581,6 +1581,26 @@
       "exit_status": 0,
       "status": "normal",
       "native_group": ".tools/compiler-assertion-scalar-description-20/.tools/assertion-scalar-description-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-logical-not-description-mode1",
+      "source": "<?php\n$flag = true;\n$returned = 'unset';\ntry {\n    $returned = assert(!$flag);\n    echo 'BAD|';\n} catch (AssertionError $caught) {\n    $trace = $caught->getTrace();\n    echo 'message:', $caught->getMessage(), '|code:', $caught->getCode(), '|';\n    echo $trace[0]['function'], ':';\n    echo $trace[0]['args'][0] === false ? 'false:' : 'BAD:';\n    echo $trace[0]['args'][1] === $caught->getMessage() ? 'same|' : 'BAD|';\n}\necho 'returned:', $returned, '|flag:', $flag === true ? 'true' : 'BAD';\n",
+      "source_sha256": "95b4c449572a90e932dadd94d1ce95e78b5a39a4b0dc20c7e5cedf60083b610e",
+      "stdout_base64": "bWVzc2FnZTphc3NlcnQoISRmbGFnKXxjb2RlOjF8YXNzZXJ0OmZhbHNlOnNhbWV8cmV0dXJuZWQ6dW5zZXR8ZmxhZzp0cnVl",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-not-description-20/.tools/assertion-not-description-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-logical-not-description-compound-mode1",
+      "source": "<?php\n$left = true;\n$right = true;\n$returned = 'unset';\ntry {\n    $returned = assert(!($left && $right));\n    echo 'BAD|';\n} catch (AssertionError $failure) {\n    $description = 'assert(!($left && $right))';\n    echo $failure->getMessage() === $description ? 'message:compound|' : 'BAD|';\n    $trace = $failure->getTrace();\n    echo $trace[0]['function'] === 'assert' ? 'assert|' : 'BAD|';\n    echo $trace[0]['args'][0] === false ? 'false|' : 'BAD|';\n    echo $trace[0]['args'][1] === $description ? 'description:compound|' : 'BAD|';\n    echo 'code:', $failure->getCode(), '|';\n}\necho 'returned:', $returned, '|left:', $left === true ? 'true|' : 'BAD|';\necho 'right:', $right === true ? 'true|' : 'BAD|';\n$left = false;\n$returned = assert(!($left && $right));\necho $returned === true ? 'control:true|' : 'BAD|';\necho 'left:', $left === false ? 'false|' : 'BAD|';\necho 'right:', $right === true ? 'true' : 'BAD';\n",
+      "source_sha256": "901e2685784f16c2276d4642687bbb1511f02aa24288ecf26659a5950713cf68",
+      "stdout_base64": "bWVzc2FnZTpjb21wb3VuZHxhc3NlcnR8ZmFsc2V8ZGVzY3JpcHRpb246Y29tcG91bmR8Y29kZToxfHJldHVybmVkOnVuc2V0fGxlZnQ6dHJ1ZXxyaWdodDp0cnVlfGNvbnRyb2w6dHJ1ZXxsZWZ0OmZhbHNlfHJpZ2h0OnRydWU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-not-description-20/.tools/assertion-not-description-native-20/run-v1/report.json"
     }
   ],
   "native_profile": {

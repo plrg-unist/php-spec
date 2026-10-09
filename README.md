@@ -223,6 +223,9 @@ weak scalar descriptions now replace the actual call argument before failure han
 integer17 and named false/NULL controls agree in two fresh originals with217 checks
 at088d. NULL and source variables remain unchanged. SET/NaN from NULL, last-owner
 entry, description warning conversion and unpack remain required alongside wider forms.
+Logical-not generated descriptions now preserve Zend precedence and compound-child
+parentheses. Two fresh originals,79 source-frontier checks and2 pure export-context
+queries pass atbb485b; wider exporter forms remain open.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 

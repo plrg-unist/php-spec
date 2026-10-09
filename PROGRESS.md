@@ -79,6 +79,12 @@ originals and217 checks at source-derived frontiers, including helper counterexa
 pass at088d14878/370; strict3 passes5.224s. The prior TypeError diagnostic carries
 zero agreement. Description warning conversion/unpack and last-owner entry/handoff
 remain required. [Description checkpoints](coverage/semantics/assertion-quantity-review.json).
+Logical-not generated descriptions now use Zend prefix precedence240/child241,
+retaining compound-child parentheses. Two fresh originals and79 checks at a genuine
+compound pool/default-message/trace/true-control frontier pass atbb485b301/370, plus
+two pure export-context queries; strict3 passes5.223s. The compile-stage exporter
+Unsupported baseline retains zero agreement/reached credit; wider exporter forms
+remain required. [Exporter checkpoint](coverage/semantics/assertion-quantity-review.json).
 Actual370 overfee8a505 passes strict3 at3d4f3eb7 (5.221s), preserving acquired
 Iterator NaN continuations and captured-Sensitive constructor trace/owner guards.
 Private scalar source2/217 checks and all prior cuts remain unchanged.
