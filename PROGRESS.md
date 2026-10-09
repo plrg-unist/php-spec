@@ -764,6 +764,8 @@ source-reached cuts155/134/172/54/130 cover all408 original obligations
 D self-owner/weak-live. Pure lookup/source-site factors preserve all validators.
 Earlier compiler stops, source failures and timeouts retain zero credit; mixed surviving
 residuals, nonordinary/later-pass overlap and wider GC remain required.
+Actual367 over `6e709da74` passes compiler/init at `020f95d30`; reviewed carrier,
+fatal, reference-return and promotion interfaces preserve the unchanged e3 cuts.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
