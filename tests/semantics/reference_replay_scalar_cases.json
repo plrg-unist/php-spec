@@ -85,6 +85,20 @@
       "status": "normal",
       "source_sha256": "f2a0d798f379f122c4ec008010ff25748d5e8fc8a13a34aa8ba212c9f8586f10",
       "native_stdout": "I;F;G;F;C;G;a=over;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-goto-from-delayed-catch",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;for($i=init();$i<2;$i++,upd()){try{return $x;}catch(TypeError $e){echo \"C;\";goto L;}finally{echo \"F;\";$x=new N;}echo \"A\",$i,\";\";}L:$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "e24d45caec531998bf42e37f2755e3d83741b8a0c5ab4da67eaecee282d4ccac",
+      "native_stdout": "I;F;C;F;a=ok;y=q;"
+    },
+    {
+      "id": "ref-replay-scalar-goto-direct-replay-pair",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function init(){echo \"I;\";return 0;}function upd(){echo \"U;\";}function test($i){echo \"Q;\";return $i<2;}function &f():string{global $x,$y;for($i=init();$i<2;$i++,upd()){try{try{try{return $x;}finally{echo \"F;\";$x=new N;}}catch(TypeError $e){echo \"C;\";goto L;}}finally{echo \"G;\";}echo \"BAD;\";}L:$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "status": "normal",
+      "source_sha256": "bbd602b1e9a54fb0daa782a10af7172611acc696a9c09e0eef3f8c83ba58b722",
+      "native_stdout": "I;F;G;F;C;G;a=ok;y=q;"
     }
   ]
 }
