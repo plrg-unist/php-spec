@@ -112,6 +112,55 @@ def $assertion_quantity_decode(n_input*) = $assertion_quantity_digits_result(n_i
 
 ;; Active snapshots are non-owning certificates. Ordinary tasks keep the call's
 ;; argument owners; exact membership authenticates reentrant completion.
+;; Z_PARAM_STR replaces the option argument before ini_set snapshots its return.
+;; The original conversion task is borrowed source evidence, never an owner.
+dec $assertion_ini_conversion_history(pstate, nat) : pstate
+def $assertion_ini_conversion_history(S, n) = S
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+def $assertion_ini_conversion_history(S, n) = S[.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]]
+  -- if ~((HOBJECT n) <- S.ALLOCATIONS)
+dec $assertion_ini_conversion_valid(pstate, passertiniconversion?, pconfigcall) : bool
+def $assertion_ini_conversion_valid(S, eps, pconfigcall) = $assertion_ini_option_valid(S, pconfigcall)
+def $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall) = true
+  -- if passertiniconversion.SOURCE = CONFIG_STRING_RESULT pconfigcall_original n porigin_child z_child z_call
+  -- if pconfigcall_original.KIND = INTRINSIC_INI_SET
+  -- if pconfigcall_original.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT (KNOWN pvalue)]
+  -- if $string_carrier_valid(S, passertiniconversion.VALUE)
+  -- if $string_bytes(passertiniconversion.VALUE) = (n_option*)
+  -- if n_option* = $ptascii("zend.assertions")
+  -- if pconfigcall = pconfigcall_original[.SENT = ([NAMED_SENT (KNOWN passertiniconversion.VALUE), NAMED_SENT (KNOWN pvalue)])]
+  -- if $ordinary_internal_string_evidence(S, n)
+  -- if S_history = $assertion_ini_conversion_history(S, n)
+  -- if $config_string_site_valid(S_history, pconfigcall_original, n, porigin_child, z_child, z_call)
+def $assertion_ini_conversion_valid(S, passertiniconversion?, pconfigcall) = false -- otherwise
+dec $assertion_ini_conversion(pstate, pconfigcall) : passertiniconversion?
+def $assertion_ini_conversion(S, pconfigcall) = (passertiniconversion)
+  -- if S.TODO = ptask_source :: ptask_tail*
+  -- if ptask_source = CONFIG_STRING_RESULT pconfigcall_original n porigin_child z_child z_call
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
+  -- if passertiniconversion = {SOURCE ptask_source, VALUE pvalue_option}
+  -- if $assertion_ini_conversion_valid(S, (passertiniconversion), pconfigcall)
+def $assertion_ini_conversion(S, pconfigcall) = eps -- otherwise
+dec $assertion_ini_converted_retained(pstate, pconfigcall, nat) : bool
+def $assertion_ini_converted_retained(S, pconfigcall, n) = true
+  -- if S.TODO = ptask_source :: ptask_tail*
+  -- if S_live = S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $($heap_owners($heap_graph(S_live), HOBJECT n) > 0)
+def $assertion_ini_converted_retained(S, pconfigcall, n) = false -- otherwise
+dec $assertion_ini_string_finish(pstate, pconfigcall, pvalue, pvalue) : pstate
+def $assertion_ini_string_finish(S, pconfigcall, pvalue_option, pvalue) = $config_ini_finish(S_call, pconfigcall_converted, n_option*, pvalue)
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n porigin_child z_child z_call) :: ptask_tail*
+  -- if $string_carrier_valid(S, pvalue_option)
+  -- if $string_bytes(pvalue_option) = (n_option*)
+  -- if n_option* = $ptascii("zend.assertions")
+  -- if pconfigcall_converted = pconfigcall[.SENT = ([NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)])]
+  -- if $assertion_ini_converted_retained(S, pconfigcall_converted, n)
+  -- if S_call = S[.ORIGIN = (pconfigcall.SITE)]
+def $assertion_ini_string_finish(S, pconfigcall, pvalue_option, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI Stringable option entry retirement"] -- otherwise
+def $config_ini_string_finish(S, pconfigcall, pvalue_option, pvalue) = $assertion_ini_string_finish(S, pconfigcall, pvalue_option, pvalue)
+  -- if $string_bytes(pvalue_option) = (n_option*)
+  -- if n_option* = $ptascii("zend.assertions")
+
 dec $assertion_ini_record(passertini*, nat) : passertini?
 def $assertion_ini_record(eps, n) = eps
 def $assertion_ini_record(passertini_head :: passertini_tail*, n) = (passertini_head) -- if passertini_head.ID = n
@@ -139,6 +188,7 @@ dec $assertion_ini_record_shape(pstate, passertini) : bool
 def $assertion_ini_record_shape(S, passertini) = true
   -- if $(passertini.ID < S.ASSERTIONININEXT)
   -- if $assertion_ini_action_valid(S, passertini)
+  -- if $assertion_ini_conversion_valid(S, passertini.CONVERSION, passertini.CALL)
   -- if $string_carrier_valid(S, passertini.INPUT) /\ $string_carrier_valid(S, passertini.OLDRAW) /\ $string_carrier_valid(S, passertini.ORIGINAL)
   -- if $string_bytes(passertini.INPUT) = (n_input*)
   -- if (passertini.VALUE, passertini.WARNING) = $assertion_quantity_decode(n_input*)
@@ -160,11 +210,17 @@ def $assertion_ini_input_valid(S, passertini) = (passertini.INPUT = passertini.O
   -- if passertini.CALL.KIND = INTRINSIC_INI_RESTORE
 def $assertion_ini_input_valid(S, passertini) = false -- otherwise
 dec $assertion_ini_valid(pstate, passertini) : bool
+dec $assertion_ini_call_valid(pstate, passertini) : bool
+def $assertion_ini_call_valid(S, passertini) = $config_invoke_valid(S, passertini.CALL)
+  -- if passertini.CONVERSION = eps
+def $assertion_ini_call_valid(S, passertini) = $assertion_ini_conversion_valid(S, passertini.CONVERSION, passertini.CALL)
+  -- if passertini.CONVERSION =/= eps
+  -- if S.ORIGIN = (passertini.CALL.SITE)
 def $assertion_ini_valid(S, passertini) = true
   -- if $assertion_state_valid(S)
   -- if $assertion_ini_record(S.ASSERTIONINI, passertini.ID) = (passertini)
   -- if $assertion_ini_record_shape(S, passertini)
-  -- if $config_invoke_valid(S, passertini.CALL)
+  -- if $assertion_ini_call_valid(S, passertini)
   -- if $assertion_ini_input_valid(S, passertini)
 def $assertion_ini_valid(S, passertini) = false -- otherwise
 def $assertion_ini_input_copy(S, passertini) = (passertini.INPUT = pvalue)
@@ -193,7 +249,7 @@ def $assertion_ini_prepare(S, pconfigcall, pvalue) = S_entry[.ASSERTIONININEXT =
   -- if $string_bytes(pvalue) = (n_input*)
   -- if (z, n_warning*?) = $assertion_quantity_decode(n_input*)
   -- if $assertion_ini_old_return(S, pconfigcall) = (pvalue_old)
-  -- if passertini = {ID S.ASSERTIONININEXT, CALL pconfigcall, INPUT pvalue, OLDRAW S.ASSERTIONSRAW, OLDRETURN pvalue_old, ORIGINAL S_entry.ASSERTIONSORIGINAL, ENTRYMODIFIED S.ASSERTIONSMODIFIED, VALUE z, WARNING n_warning*?, PRECISION ($precision_value(S)), PHASE ASSERTION_PARSE}
+  -- if passertini = {ID S.ASSERTIONININEXT, CALL pconfigcall, CONVERSION ($assertion_ini_conversion(S, pconfigcall)), INPUT pvalue, OLDRAW S.ASSERTIONSRAW, OLDRETURN pvalue_old, ORIGINAL S_entry.ASSERTIONSORIGINAL, ENTRYMODIFIED S.ASSERTIONSMODIFIED, VALUE z, WARNING n_warning*?, PRECISION ($precision_value(S)), PHASE ASSERTION_PARSE}
 def $assertion_ini_set(S, pconfigcall, pvalue) = $error_dispatch(S_pending, 2, n_warning*, pconfigcall.LINE, DIAGNOSTIC "Warning" n_warning* pconfigcall.LINE, ASSERTION_INI_RESULT passertini)
   -- if $assertion_state_valid(S)
   -- if $assertion_ini_option_valid(S, pconfigcall)
@@ -208,29 +264,6 @@ def $assertion_ini_set(S, pconfigcall, pvalue) = S_pending
   -- if S_pending = $assertion_ini_prepare(S, pconfigcall, pvalue)
   -- if S_pending.TODO = (ASSERTION_INI_RESULT passertini) :: ptask_tail*
   -- if passertini.WARNING = eps
-dec $assertion_ini_quiet_option(pstate, pconfigcall, pvalue) : bool
-def $assertion_ini_quiet_option(S, pconfigcall, pvalue) = true
-  -- if $assertion_state_valid(S)
-  -- if pconfigcall.KIND = INTRINSIC_INI_SET
-  -- if $string_carrier_valid(S, pvalue)
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT poperand]
-  -- if $config_invoke_valid(S, pconfigcall)
-  -- if $string_bytes(pvalue) = (n_input*)
-  -- if $assertion_quantity(n_input*) = (z)
-  -- if ~$assertion_ini_blocked(S.ASSERTIONS, z)
-  -- if S.TODO = ptask :: ptask_tail*
-def $assertion_ini_quiet_option(S, pconfigcall, pvalue) = false -- otherwise
-;; The existing Stringable option route can finish a quiet accepted update.
-;; Warning snapshots still require the original string option argument.
-def $assertion_ini_set(S, pconfigcall, pvalue) = $assertion_ini_capture(S)[.TODO = ptask_tail*][.ASSERTIONS = z][.ASSERTIONSMODE = {INPUT pvalue, VALUE z}][.ASSERTIONSRAW = pvalue][.ASSERTIONSINI = n_input*][.RESULT = KNOWN pvalue_old][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if $assertion_ini_quiet_option(S, pconfigcall, pvalue)
-  -- if $string_bytes(pvalue) = (n_input*)
-  -- if $assertion_quantity(n_input*) = (z)
-  -- if $string_getter_value(S.ASSERTIONSRAW) = (pvalue_old)
-  -- if S.TODO = ptask :: ptask_tail*
-def $assertion_ini_set(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI Stringable option warning or refusal"]
-  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n)), NAMED_SENT poperand]
-  -- if ~$assertion_ini_quiet_option(S, pconfigcall, pvalue)
 def $assertion_ini_set(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI string identity producer or state"] -- otherwise
 def $assertion_ini_restore(S, pconfigcall) = $error_dispatch(S_pending, 2, n_warning*, pconfigcall.LINE, DIAGNOSTIC "Warning" n_warning* pconfigcall.LINE, ASSERTION_INI_RESULT passertini)
   -- if $assertion_state_valid(S)

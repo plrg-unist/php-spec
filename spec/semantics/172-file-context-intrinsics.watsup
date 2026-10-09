@@ -367,6 +367,7 @@ dec $config_plural(nat) : preqbytes
 def $config_plural(1) = eps
 def $config_plural(n) = $ptascii("s") -- otherwise
 dec $config_ini_finish(pstate, pconfigcall, preqbytes, pvalue) : pstate
+dec $config_ini_string_finish(pstate, pconfigcall, pvalue, pvalue) : pstate
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $throwable_allocate(S, "TypeError", $ptascii("ini_set(): Argument #2 ($value) must be of type string|int|float|bool|null"), pconfigcall.LINE, $source_trace_prefixed(S, $config_trace_frames(S, pconfigcall, [PSTRING n_option*, pvalue])))
   -- if $config_ini_value_conversion(pvalue) = TYPEREJECT
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S_value[.TODO = ptask_tail*][.REPORTING = $reporting_ini_mask(n_new*)][.REPORTINGINI = n_new*][.REPORTINGMODIFIED = true][.RESULT = KNOWN (PSTRING S.REPORTINGINI)][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -902,7 +903,12 @@ rule PhpStep/config-ini-get-string-result: S ~> $config_ini_get_finish(S_call, p
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n_option*)
   -- if S_call = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
-rule PhpStep/config-ini-string-result: S ~> $config_ini_finish(S_call, pconfigcall, n_option*, pvalue)
+def $config_ini_string_finish(S, pconfigcall, pvalue_option, pvalue) = $config_ini_finish(S_call, pconfigcall, n_option*, pvalue)
+  -- if $string_bytes(pvalue_option) = (n_option*)
+  -- if n_option* =/= $ptascii("zend.assertions")
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_call = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
+rule PhpStep/config-ini-string-result: S ~> $config_ini_string_finish(S, pconfigcall, pvalue_string, pvalue)
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_INI_SET
   -- if S.ORIGIN = (porigin_child)
@@ -910,7 +916,6 @@ rule PhpStep/config-ini-string-result: S ~> $config_ini_finish(S_call, pconfigca
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN (POBJECT n_object)), NAMED_SENT (KNOWN pvalue)]
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n_option*)
-  -- if S_call = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
 rule PhpStep/config-string-nul: S ~> $throwable_allocate(S_call, "ValueError", $intrinsic_name(pconfigcall.KIND) ++ $ptascii("(): Argument #1 ($") ++ $config_parameter_name(pconfigcall.KIND, 0) ++ $ptascii(") must not contain any null bytes"), pconfigcall.LINE, $source_trace_prefixed(S_call, $config_trace_frames(S_call, pconfigcall, [PSTRING n_requested*])))
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_CHDIR \/ pconfigcall.KIND = INTRINSIC_SET_INCLUDE_PATH
