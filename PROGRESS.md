@@ -61,6 +61,9 @@ pass atb4ea/367; strict3 passes5.174s. The original raw-descriptor timing failur
 zero credit; the corrected fixture checks admission after actual driver publication to
 THROW_SEARCH. Last-owner entry/handoff, unpack and weak scalar trace replacement remain
 required. [Description checkpoint](coverage/semantics/assertion-quantity-review.json).
+Actual370 over1963b152 passes strict3 atb74fe28fb (5.775s), preserving current
+factory/GEN/SensitiveParameter, implicit-getter, typed-reference and EX worker guards.
+Private description source3/265+4 checks and all previous cuts remain unchanged.
 Actual367 over78f866bb passes strict3 at7a2095bf (5.071s), preserving
 SensitiveParameterValue reception and by-reference finalizer cursor/replay guards.
 Private nullable source2/335 and all earlier cuts remain unchanged.
