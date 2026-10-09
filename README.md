@@ -1381,6 +1381,17 @@ pass 1094 setup-inclusive premises; earlier public-getter evidence is unchanged.
 The actual370 join over `e2ef06143` passes strict at `2fc127185` (5.422s),
 preserving current callable, class, Generator, collector and assertion interfaces.
 Private source/state cuts retain their original credit.
+Literal reads on a statically named ordinary noarg by-value function result now
+invoke the same public getter for missing/public UNSET properties. The original
+receiver temporary survives the getter hold: reception copies the returned
+payload and releases the raw return's cell owner before releasing that temporary;
+surviving aliases can keep the cell alive. The copied payload stays alive through
+receiver cleanup. Readonly verification,
+discarded and by-value results, surviving aliases and H/B/C cleanup pass
+[seven source agreements and seven reached groups](coverage/semantics/magic-property-owned-review.json)
+with 1266 setup-inclusive premises. Native6 plus a separate by-value native1,
+the original Unsupported baseline and failed gates keep their distinct cuts;
+earlier CV/denied getter evidence is unchanged.
 Coercions, constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

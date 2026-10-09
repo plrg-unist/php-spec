@@ -2110,6 +2110,20 @@ The actual370 join over `e2ef06143` passes strict at `2fc127185` (5.422s,
 state credit0). Current factory/constructor callable, Generator/collector and
 assertion additions preserve the ordinary getter interfaces and are inactive
 in these originals. Private source6/state1094 and all failures keep their cuts.
+Owned results from statically named ordinary noarg by-value functions support literal
+BP_VAR_R through the public getter for missing/public UNSET properties. The
+original receiver temporary and getter hold are separate roots; the getter
+context still borrows. COPY releases the raw return's cell owner before BASE
+releases the original receiver; surviving aliases can retain the cell. The
+detached payload stays alive through cleanup.
+Readonly verification precedes copying, shared receivers are not forced to
+destruct, and discarded/by-value reception and H/B/C previous links are retained.
+Native6 and separate by-value native1 precede the model Unsupported baseline
+(CLI exit1). Source7 passes at `ca973db86`; changed strict370 passes at
+`a2a6f4aae` (5.395s, state credit0). Seven whole reached groups pass 1266
+setup-inclusive premises across `e293c490f`, `54e85fba1`, `a2a6f4aae` and
+`715f48e38`; original failures remain zero. Existing public/denied cuts are unchanged.
+[Owned-getter ledger](coverage/semantics/magic-property-owned-review.json).
 Coercions, constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

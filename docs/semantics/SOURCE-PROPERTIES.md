@@ -135,7 +135,7 @@ physical key; accessible typed INITIAL raises Error without invoking the getter.
 Lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, writes, quiet probes,
 wider signatures and guarded recursion remain explicit Unsupported.
 
-Module380 owns one receiver hold while the known-instance getter frame borrows
+For CV receivers, module380 owns one hold while the known-instance getter frame borrows
 it. The raw returned value or reference survives any captured property verification
 and receiver release. Only afterward does read reception copy the reference cell's
 current payload, so receiver destruction can change that result; a value return
@@ -161,6 +161,23 @@ separate original failures. The
 [denied-getter review](../../coverage/semantics/magic-property-denied-review.json)
 separately records six exact sources and 1094 reached premises for lexical keys,
 absent hidden type info, captured caller scope and reference/exception cleanup.
+
+Literal BP_VAR_R also accepts an owned result from a statically named ordinary
+noarg nonbuiltin/nofallback by-value nongenerator function, for public missing or
+public UNSET properties. The original receiver temporary and standard getter
+hold are separate owners; the getter context borrows. After verification and
+getter-hold release, COPY detaches the payload and releases the raw return's cell
+owner before BASE releases the original receiver. Surviving aliases can retain
+the cell; its rebinding preserves the selected copied payload, which stays alive
+through receiver cleanup. A replacement held only by the global cell can
+retire during receiver destruction. Real surviving aliases suppress receiver destruction.
+Abrupt BASE cleanup protects the copied value in GET_DROP under the pending
+exception, with null read registers and genuine H/B/C previous links.
+By-value and discarded getter results follow the same receiver-release order.
+The [owned-getter review](../../coverage/semantics/magic-property-owned-review.json)
+records seven source agreements and 1266 setup-inclusive reached premises at
+distinct retained cuts. By-reference factories, owned denied access and wider
+factory/receiver forms remain Unsupported; prior CV/denied evidence is unchanged.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
