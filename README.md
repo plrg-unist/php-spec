@@ -1501,6 +1501,8 @@ converting that cell. Readonly backing stays UNSET without a new type source.
 pass 904 setup-inclusive premises, including binary64 rounding and CV versus owned
 receiver cleanup. Numeric strings, booleans and wider float conversions remain open;
 earlier getter evidence is unchanged.
+The actual374 join over `2c0d9531c` passes strict at `076606980` (5.481s),
+preserving current virtual-hook interfaces; private cuts retain their original credit.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

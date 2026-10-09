@@ -2287,6 +2287,9 @@ setup-inclusive premises at `a8174525b`, covering repeated reads, binary64 round
 CV post-destructor copy and owned detachment before BASE release. Bits/original-RV,
 string/bool and PARAM controls are constructed; prior cuts and failures are unchanged.
 [Float-getter ledger](coverage/semantics/magic-property-float-review.json).
+The actual374 join over `2c0d9531c` passes strict at `076606980` (5.481s,
+state credit0). Current virtual-hook guards are preserved and inactive in these
+unhooked originals; private cuts and prior failures retain their credit.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
