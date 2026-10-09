@@ -134,13 +134,16 @@ def $ref_return_cursor_site(S, prefreturncursor) = true
   -- if $typed_exact(pfunction.SIGNATURE.RETURNS, pvalue)
   -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
 def $ref_return_cursor_site(S, prefreturncursor) = false -- otherwise
-;; A literal CONST survives DISCARD_EXCEPTION. Only its immutable string
-;; source can recover this value without replaying expression effects.
+;; A literal CONST survives DISCARD_EXCEPTION. Its immutable string or
+;; explicit null source can recover this value without expression effects.
 def $ref_return_cursor_literal(S, prefreturncursor) = (pvalue_literal)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NScalarString phpType33 metadata_string) metadata)
   -- if $evaluate(NScalarString phpType33 metadata_string) = VALUE pvalue
   -- if pvalue_literal = $string_literal_value(pvalue)
   -- if pvalue_literal = PSTRING_CARRIER INTERNED_STRING n_bytes*
+def $ref_return_cursor_literal(S, prefreturncursor) = (PNULL)
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprConstFetch (NName (BYTES text) metadata_name) metadata_const) metadata)
+  -- if $special_constant($base64(text)) = (PNULL)
 def $ref_return_cursor_literal(S, prefreturncursor) = eps -- otherwise
 def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
