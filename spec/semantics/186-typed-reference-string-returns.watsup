@@ -58,10 +58,13 @@ def $typed_ref_string_shape(S, prefstringcv) = $typed_ref_string_clear(ptask_tai
 def $typed_ref_string_shape(S, prefstringcv) = false -- otherwise
 
 ;; Later callback writes may change the cell's value or the GLOBALS binding.
-;; Admission retains the physical certificate, without another name selection.
+;; The retained local binding authenticates, but does not reselect, its cell.
 def $typed_ref_string_valid(S, prefstringcv) = true
   -- if S.ORIGIN = (prefstringcv.SOURCE)
   -- if $typed_ref_string_source(S, prefstringcv.SOURCE, prefstringcv.LINE)
+  -- if $origin_node(S.SOURCES, prefstringcv.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = (prefstringcv.CELL)
   -- if $call_reference_operand_valid(S, REFERENCE prefstringcv.CELL)
   -- if $stringable_instance(S, prefstringcv.OBJECT)
   -- if $typed_ref_string_type(S, prefstringcv.OBJECT)
@@ -76,6 +79,8 @@ def $task_nodes(REF_STRING_FETCH prefstringcv) = eps
 def $task_nodes(REF_STRING_THROW prefstringcv) = eps
 def $call_task_valid(S, REF_STRING_FETCH prefstringcv) = $typed_ref_string_valid(S, prefstringcv)
 def $call_task_valid(S, REF_STRING_THROW prefstringcv) = $typed_ref_string_valid(S, prefstringcv)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n_object porigin_site z) :: (REF_STRING_FETCH prefstringcv) :: (REF_STRING_THROW prefstringcv) :: ptask_tail*
 
 rule PhpStep/typed-reference-string-call: S ~> $user_string_begin(S, prefstringcv.OBJECT, prefstringcv.SOURCE, z, REF_STRING_FETCH prefstringcv, (REF_STRING_THROW prefstringcv) :: ptask_tail*)
   -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
