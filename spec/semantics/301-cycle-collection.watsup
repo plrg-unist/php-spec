@@ -17,6 +17,7 @@ dec $gc_worker_overlap_start_ready(pstate, pgcplan, bool) : bool
 dec $gc_worker_residual_start_ready(pstate, pgcplan, bool) : bool
 dec $gc_nested_visits(pnode*) : pgcvisit*
 dec $gc_nested_reference(hgraph, pnode) : bool
+dec $gc_cell_shapes(hgraph, pnode*) : bool
 dec $gc_nested_walk(hgraph, pnode*, pgcslot*, nat*, pgcvisit*, nat) : (pgcslot*, nat*, nat)
 dec $gc_nested_slots(hgraph, pnode*, pgcslot*, nat*, nat, nat) : (pgcslot*, nat*, nat)
 dec $gc_nested_image(pgcplan) : (pgcslot*, nat*, nat)
@@ -625,6 +626,10 @@ def $gc_nested_reference(H, HCELL n) = true -- if $heap_children(HCELL n, H.EDGE
 def $gc_nested_reference(H, HCELL n) = true -- if $heap_children(HCELL n, H.EDGES) = [HOBJECT n_object]
 def $gc_nested_reference(H, HCELL n) = true -- if $heap_children(HCELL n, H.EDGES) = [HARRAY n_array]
 def $gc_nested_reference(H, pnode) = false -- otherwise
+def $gc_cell_shapes(H, eps) = true
+def $gc_cell_shapes(H, (HCELL n) :: pnode*) = ($gc_nested_reference(H, HCELL n) /\ $gc_cell_shapes(H, pnode*))
+def $gc_cell_shapes(H, (HOBJECT n) :: pnode*) = $gc_cell_shapes(H, pnode*)
+def $gc_cell_shapes(H, (HARRAY n) :: pnode*) = $gc_cell_shapes(H, pnode*)
 def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, eps, n_debit) = (pgcslot*, nat_free*, n_debit)
 def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode true) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, $gc_visit_order($gc_nested_visits($heap_children(pnode, H.EDGES))) ++ pgcvisit*, $(n_debit + 1))
 def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode false) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, $gc_slot_set(pgcslot*, n_slot, GC_EMPTY), n_slot :: nat_free*, $gc_visit_order($gc_nested_visits($heap_children(pnode, H.EDGES))) ++ pgcvisit*, $(n_debit + 1))
@@ -728,6 +733,7 @@ def $gc_plan_live(S, pgcplan) = true
   -- if S.GC.PLAN = (pgcplan) /\ $gc_call_live(S, pgcplan.CALL)
   -- if $gc_plan_scan_valid(pgcplan)
   -- if $heap_valid(pgcplan.GRAPH) /\ $heap_unique(pgcplan.CANDIDATES)
+  -- if $gc_cell_shapes(pgcplan.GRAPH, pgcplan.GRAPH.NODES)
   -- if pgcplan.CANDIDATES = $gc_nodes(pgcplan.BUFFER)
   -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
   -- if $heap_subset(pgcplan.CANDIDATES, pgcplan.GRAPH.NODES)
