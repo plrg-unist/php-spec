@@ -1,0 +1,82 @@
+{
+  "scope": "Private-final-method compiler diagnostic uses E_COMPILE_WARNING (128) in both direct reporting and source-owned notice dispatch; ordinary warning2 and implicit-nullable8192 controls remain handler-eligible. Partial severity/core coverage.",
+  "status": "independently_reviewed_private",
+  "semantic_revision": "dec3e99687f393586caea897820299f1059eda53",
+  "semantic_root": ".tools/compiler-warning-severity-20",
+  "module_count": 371,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "implementation": [
+    "spec/semantics/33-runtime-compiler.watsup",
+    "spec/semantics/230-iterator-declaration-notices.watsup"
+  ],
+  "source_contract": [
+    "Zend/zend_compile.c:8260 private-final E_COMPILE_WARNING (128);9602 noncompound use E_WARNING (2);7861 implicit-nullable E_DEPRECATED (8192).",
+    "Zend/zend.c:1538 excludes E_COMPILE_WARNING from user callbacks independently of reporting mask.",
+    "Existing diagnostic code and206 handler eligibility preserved; shared level helper changes only private-final-method."
+  ],
+  "native": {
+    "report": ".tools/compiler-warning-severity-20/.tools/compiler-warning-native-20/run-v1/report.json",
+    "cases": 2,
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "agreements": 0,
+    "note": "Observation-only original processes; model agreements recorded separately."
+  },
+  "baseline": {
+    "revision": "88d7e5d4c9d029dc9d8648ffa9b54d92c08ccc26",
+    "report": ".tools/compiler-warning-severity-20/.tools/compiler-warning-baseline-20/run-v1/report.json",
+    "result": "Checked normal0 mismatch: two level2 handler calls, suppressed compiler stderr; diagnostic pass, zero native agreement.",
+    "native_agreements": 0
+  },
+  "private_gate": {
+    "revision": "dec3e99687f393586caea897820299f1059eda53",
+    "compiler_report": ".tools/compiler-warning-severity-20/.tools/compiler-warning-gate-20/report.json",
+    "strict_premises": 3,
+    "strict_seconds": 5.2749669551849365,
+    "source_report": ".tools/compiler-warning-severity-20/.tools/compiler-warning-model-20/run-v1/report.json",
+    "safe_native_agreements": 2,
+    "state_report": ".tools/compiler-warning-severity-20/.tools/compiler-warning-state-20/report.json",
+    "state_groups": [
+      {
+        "id": "author",
+        "checks": 109,
+        "seconds": 7.72385048866272
+      },
+      {
+        "id": "peer",
+        "checks": 132,
+        "seconds": 9.980264663696289
+      }
+    ],
+    "source_frontier_checks": 231,
+    "pure_companion_checks": 10,
+    "note": "Counts are checks, not distinct states. Four genuine dispatch/default PhpSteps; actual source resumption, handler and caller shared THROW_SEARCH before catch. Pure mask projections clear the handler and have zero reached/source credit. All exact true/empty stderr or native tuples, stable inputs/exitscleanup0/groups[]/no unrun."
+  },
+  "commands": [
+    "python3 .tools/compiler-warning-gate-20/run-compiler.py SLOT",
+    "python3 .tools/compiler-warning-model-20/run.py SLOT",
+    "python3 .tools/compiler-warning-state-20/run.py SLOT"
+  ],
+  "catalogue": "tests/semantics/compiler_warning_cases.json",
+  "maintained_command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_warning_cases.json",
+  "remaining": [
+    "Wider compiler diagnostic producers, severity/message coverage and dynamic initializer/callback interactions remain required.",
+    "Existing unsafe UAF/SET-fromNULL and last-owner boundaries and all earlier accepted cuts are unchanged."
+  ]
+}

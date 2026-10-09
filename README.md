@@ -1395,7 +1395,11 @@ warnings retain selected cells and operand ownership through handlers and abrupt
 opcode completion. Deferred collision operands compare before type conversion;
 operation diagnostics are recorded with runtime operand order and AST lines,
 then delivered after class publication. Private-final compile warnings retain
-their phase order and handler-ineligible severity. Successful collision dependency
+their phase order and handler-ineligible severity. Compiler delivery of those diagnostics also
+preserves level 128 versus eligible warnings at levels 2 and 8192 under live
+reporting masks;
+[two new originals and focused state checks](coverage/semantics/compiler-warning-severity-review.json)
+cover returning and shared-throw eval paths. Successful collision dependency
 fills retain real typed caches and distinct import scopes. Collision expression
 errors stop the comparison, flush earlier diagnostics without handlers and render
 the pending Error before the composition fatal. Cyclic lookups retain full imported

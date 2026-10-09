@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Private-final compiler warnings now retain E_COMPILE_WARNING (128) through direct
+reporting and source-owned dynamic delivery. They bypass user handlers and obey
+the reporting mask; ordinary warning 2 and deprecation 8192 still enter handlers.
+Two fresh originals agree at dec3e9968 /371, including reporting128 versus handler2
+and a shared deprecation Throwable that skips the eval body and assignment.
+Strict3 passes 5.275s; author109/peer132 pass 231 source-frontier checks plus 10 pure
+reporter-mask projections. The original normal mismatch retains zero agreement;
+wider compiler warning producers and dynamic interactions remain required.
+[Severity ledger](coverage/semantics/compiler-warning-severity-review.json).
+
 Root-terminal HALT compilation now folds original-file byte offsets and treats
 the authenticated final statement as a no-op, preserving pools, events and the
 remaining continuation. Two fresh originals agree at c78beb627/371, including

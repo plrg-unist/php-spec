@@ -1,0 +1,42 @@
+{
+  "scope": "Bounded private-final E_COMPILE_WARNING (128) provenance through default reporting and dynamic eval delivery, distinguished from eligible E_WARNING (2) and E_DEPRECATED (8192). Wider compiler warning producers remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "compile-warning-private-final-ordinary-warning",
+      "source": "<?php\n$effects = 0;\n$calls = 0;\nfunction compiler_warning_author($level, $message) {\n    global $calls;\n    ++$calls;\n    echo 'handler:', $level, '|';\n    echo $message === \"The use statement with non-compound name 'BareCompilerWarning' has no effect\"\n        ? 'message:yes|' : 'BAD:message|';\n    return true;\n}\nerror_reporting(128);\nset_error_handler('compiler_warning_author');\n$returned = eval('class CompileWarningAuthor { final private function hidden() {} }\nuse BareCompilerWarning;\n$effects = 1; return 27;');\necho 'return:', $returned, '|effects:', $effects, '|calls:', $calls;\n",
+      "source_sha256": "997aced8b8316f157d8545ed2d5333e830072726a51ed2877b17d8d02f606005",
+      "stdout_base64": "aGFuZGxlcjoyfG1lc3NhZ2U6eWVzfHJldHVybjoyN3xlZmZlY3RzOjF8Y2FsbHM6MQ==",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9KDE0KSA6IGV2YWwoKSdkIGNvZGUgb24gbGluZSAxCg==",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-warning-severity-20/.tools/compiler-warning-native-20/run-v1/compile-warning-private-final-ordinary-warning/command.json",
+      "native_raw_sha256": "35c128f1af30644c1b834932be536d2bc2dcec3a5410160579b2c4572f98f5d0"
+    },
+    {
+      "id": "compile-warning-private-final-deprecated-throw",
+      "source": "<?php\n$effects = 0;\n$calls = 0;\n$shared = new Exception('shared');\nfunction compiler_warning_peer($level, $message) {\n    global $shared, $calls;\n    ++$calls;\n    echo $level === 8192 ? 'deprecated|' : 'BAD:level|';\n    echo $message === 'NullableWarningPeer(): Implicitly marking parameter $x as nullable is deprecated, the explicit nullable type must be used instead'\n        ? 'message:yes|' : 'BAD:message|';\n    throw $shared;\n}\nset_error_handler('compiler_warning_peer');\n$returned = 'unset';\ntry {\n    $returned = eval('class CompileWarningPeer { final private function hidden() {} } $effects = 1; return 7;');\n} catch (Throwable $e) {\n    echo $e === $shared ? 'BAD:early-shared|' : 'BAD:early-other|';\n}\necho 'compile-return:', $returned, '|effects:', $effects, '|calls:', $calls, '|';\n$returned = 'unset';\ntry {\n    $returned = eval('function NullableWarningPeer(int $x = null) {} $effects = 2; return 9;');\n} catch (Throwable $e) {\n    echo $e === $shared ? 'same|' : 'BAD:other|';\n}\necho 'return:', $returned, '|effects:', $effects, '|calls:', $calls;\n",
+      "source_sha256": "89db43467205839e99a7f26593b64d2efb0c1a87eab423ae1450e1d2f2addb38",
+      "stdout_base64": "Y29tcGlsZS1yZXR1cm46N3xlZmZlY3RzOjF8Y2FsbHM6MHxkZXByZWNhdGVkfG1lc3NhZ2U6eWVzfHNhbWV8cmV0dXJuOnVuc2V0fGVmZmVjdHM6MXxjYWxsczox",
+      "stderr_template_base64": "V2FybmluZzogUHJpdmF0ZSBtZXRob2RzIGNhbm5vdCBiZSBmaW5hbCBhcyB0aGV5IGFyZSBuZXZlciBvdmVycmlkZGVuIGJ5IG90aGVyIGNsYXNzZXMgaW4ge0ZJTEV9KDE2KSA6IGV2YWwoKSdkIGNvZGUgb24gbGluZSAxCg==",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-warning-severity-20/.tools/compiler-warning-native-20/run-v1/compile-warning-private-final-deprecated-throw/command.json",
+      "native_raw_sha256": "bc613d48755670c407ad4b5eda3aee17a99722a2ab6504a96860f95493ce1228"
+    }
+  ]
+}

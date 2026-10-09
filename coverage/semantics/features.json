@@ -13198,15 +13198,21 @@
     {
       "id": "diagnostics.severity",
       "milestone": "3a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
+      "implementation": [
+        "spec/semantics/33-runtime-compiler.watsup",
+        "spec/semantics/230-iterator-declaration-notices.watsup"
+      ],
       "helper_tests": [],
-      "source_tests": [],
+      "source_tests": [
+        "tests/semantics/compiler_warning_cases.json",
+        "tests/semantics/method_runtime.py"
+      ],
       "evidence": [
         "vendor/php-src/Zend/zend.c"
       ],
-      "review": null,
+      "review": "Bounded private-final compiler severity128 bypasses user callbacks and obeys the reporting mask in direct reporting/dynamic compile delivery; ordinary warning2 and implicit-nullable8192 remain eligible. Fresh native/model source2, strict3 and231 source-frontier checks plus10 pure mask projections pass at dec3e9968/371. The original normal mismatch has zero agreement. Wider diagnostic producers/severity coverage remain required; see compiler-warning-severity-review.json.",
       "planned_source_tests": [
         "tests/semantics/conformance/key-collisions.php"
       ]
@@ -13956,7 +13962,7 @@
         "coverage/semantics/eval-scope-followup-author.json",
         "coverage/semantics/compound-eval-location-review.json"
       ],
-      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json."
+      "review": "Checked dynamic-source execution retains actual eval scope, source units and one-shot parser continuations; earlier cutoffs remain in dynamic-eval-author.json and eval-scope-followup-author.json. Compound initializer eval creation retains authenticated filename owner/root/child separately from actual lexical scope and SITE, including retired bindings, rebound Closure units, private emitter scope and inherited static defaults. Genuine compiler ParseError/CompileError allocation uses its failed unit; runtime-created exceptions keep execution override. Five original source agreements/81 controls and separate current219 source1/214 compilation at2c0c retain their actual cutoffs. Wider initializer/callback/compile-warning consumers remain open; see compound-eval-location-review.json. Private-final severity128 versus eligible warning2/deprecation8192 now passes two new exact originals and231 source-frontier checks plus10 pure projections at dec3e9968/371; shared-Throwable source cleanup skips body/assignment. Broader compile-warning consumers remain required; compiler-warning-severity-review.json keeps the initial mismatch separate."
     },
     {
       "id": "dynamic.include",

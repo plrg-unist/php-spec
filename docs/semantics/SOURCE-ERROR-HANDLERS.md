@@ -45,6 +45,15 @@ the old raw handler only if no replacement remains; it preserves the live mask.
 Only exact `false` requests default reporting, using the mask after the callback.
 Callback `finally` runs before restoration; caller catch/finally runs afterward.
 
+Private-final compiler diagnostics retain E_COMPILE_WARNING (128) severity
+and bypass callbacks in both direct reporting and dynamic compile queues.
+The reporting mask still controls display. E_WARNING (2) and E_DEPRECATED (8192)
+remain eligible even when the global mask omits them. Two exact original eval
+programs and 231 source-frontier checks plus 10 pure reporter projections validate
+that distinction, including an original shared Throwable before caller catch;
+[the severity ledger](../../coverage/semantics/compiler-warning-severity-review.json)
+keeps the initial mismatch separate. Wider compiler producers remain required.
+
 Direct trigger callbacks receive arguments weakly through the internal trigger
 frame. Implicit user-opcode callbacks preserve source strictness. Byref callback
 parameters receive temporary references to four passed values, with ordinary
