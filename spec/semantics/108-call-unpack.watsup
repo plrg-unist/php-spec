@@ -96,6 +96,8 @@ def $unpack_separate(S, REFERENCE n, true, false) = S[.RESULT = REFERENCE n]
 def $unpack_separate(S, poperand, b_writable, b_reference) = S -- otherwise
 
 dec $unpack_prepare(pstate, punpackcall) : pstate
+dec $unpack_iterator_value(pstate, pvalue) : bool
+def $unpack_iterator_value(S, pvalue) = false -- otherwise
 def $unpack_prepare(S, punpackcall) = S_read
   -- if S_read = $resolve_at($hold_task_inputs(S), S.RESULT, $unpack_line(S, punpackcall))
   -- if S_read.COMPLETION =/= NORMAL
@@ -105,6 +107,7 @@ def $unpack_prepare(S, punpackcall) = $throw_scalar(S_read, "TypeError", $ptasci
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$is_array_value(pvalue)
   -- if ~$generator_from_aggregate(S_read, pvalue)
+  -- if ~$unpack_iterator_value(S_read, pvalue)
 def $unpack_prepare(S, punpackcall) = $unpack_separate(S_read, S.RESULT, $unpack_writable(S, punpackcall), $unpack_needs_reference(pfunction.SIGNATURE.PARAMETERS, S_read.ARRAYS[n].ITEMS, |punpackcall.SENT.SLOTS|))
   -- if S_read = $resolve_at($hold_task_inputs(S), S.RESULT, $unpack_line(S, punpackcall))
   -- if S_read.COMPLETION = NORMAL
@@ -116,7 +119,9 @@ def $unpack_prepare(S, punpackcall) = S_read[.COMPLETION = UNSUPPORTED "unpack o
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (PARRAY n)
   -- if $unpack_class(S, punpackcall) = eps
-rule PhpStep/unpack-prepared: S ~> S_prepared[.TODO = (UNPACK_NEXT punpackcall S_prepared.RESULT 0 false) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD]
+dec $unpack_prepared(pstate, pstate, punpackcall, ptask*) : pstate
+def $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*) = S_prepared[.TODO = (UNPACK_NEXT punpackcall S_prepared.RESULT 0 false) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = S.HELD] -- otherwise
+rule PhpStep/unpack-prepared: S ~> $unpack_prepared(S, S_prepared, punpackcall, ptask_tail*)
   -- if S.TODO = (UNPACK_PREP punpackcall) :: ptask_tail*
   -- if S_prepared = $unpack_prepare(S, punpackcall)
   -- if S_prepared.COMPLETION = NORMAL
