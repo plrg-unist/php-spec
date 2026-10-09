@@ -859,8 +859,13 @@ compiler and paused-task checks. [Constructor promotion](coverage/semantics/cons
 retains source parameter declarations, separate property defaults and ordered
 value/reference writes after all receives, including explicit constructor re-entry
 and inherited/trait scopes. Source9 and genuine Weak48/byref47 preserve the
-original failure and separate acceptance cuts; parameter attributes/hooks remain
-required. [Public property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md)
+original failure and separate acceptance cuts. One zero-argument builtin
+`#[Override]` on promoted properties now resolves real imports and checks the
+effective parent declaration, including deferred trait links. Thirteen originals
+and 110 genuine source/trait/rollback assertions have separate reviewed cuts in
+[the Override review](coverage/semantics/promoted-override-review.json); other
+parameter attributes/hooks remain required.
+[Public property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md)
 now attach ordered typed sources to shared cells, check writes atomically, and
 preserve aliases across unset and object traversal. Their
 [review](coverage/semantics/property-references-review.json) records exact source,

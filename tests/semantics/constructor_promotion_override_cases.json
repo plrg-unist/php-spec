@@ -1,0 +1,162 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "inherited-promoted-override",
+      "source": "<?php\nclass OverrideBase20 { public int $value = 1; }\nclass OverrideChild20 extends OverrideBase20 {\n    public function __construct(#[\\Override] public int $value) { echo $this->value, \"|\"; }\n}\n$o = new OverrideChild20(7);\necho $o->value, \"|\";\n$o->__construct(8);\necho $o->value;\n",
+      "source_sha256": "4ae31a95dd870ff2188959419552b925f72bb799b4bcb293bf772fbcddc244d0",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/native-first/report.json",
+      "native_raw_sha256": "5751856bb2d9b2e2c2ef25469149eb3a18fd4d2a8c989c6447a534f90fc3b896",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3w3fDh8OA==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "missing-promoted-override",
+      "source": "<?php\nclass OverrideMissing20 {\n    public function __construct(#[\\Override] public int $value) { echo \"BODY\"; }\n}\nnew OverrideMissing20(3);\n",
+      "source_sha256": "52a6c81c20f53c1e841835513460c5386f7dd6e764682cc64a17c4b2941edd43",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/native-first/report.json",
+      "native_raw_sha256": "074eb043502379522e6ee40b3094b151c821f28d1be3b1aa2417c99932e585b6",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE92ZXJyaWRlTWlzc2luZzIwOjokdmFsdWUgaGFzICNbXE92ZXJyaWRlXSBhdHRyaWJ1dGUsIGJ1dCBubyBtYXRjaGluZyBwYXJlbnQgcHJvcGVydHkgZXhpc3RzIGluIHtGSUxFfSBvbiBsaW5lIDIKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "conditional-simple-root",
+      "source": "<?php\necho \"BEFORE|\";\nif (false) {\n    class ConditionalRootOverride20 {\n        public function __construct(#[\\Override] public int $value) { echo \"BODY\"; }\n    }\n}\necho \"AFTER\";\n",
+      "source_sha256": "23b3bbc7ec4303e32fed584c624a14dd73a6ede0d174348914240a00940c1e96",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "e53c8bf3fef7ebc589596518f479b6eea2ce1af957432e2a2470123816cd6734",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENvbmRpdGlvbmFsUm9vdE92ZXJyaWRlMjA6OiR2YWx1ZSBoYXMgI1tcT3ZlcnJpZGVdIGF0dHJpYnV0ZSwgYnV0IG5vIG1hdGNoaW5nIHBhcmVudCBwcm9wZXJ0eSBleGlzdHMgaW4ge0ZJTEV9IG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    },
+    {
+      "id": "function-simple-root",
+      "source": "<?php\necho \"BEFORE|\";\nfunction declareRootOverride20() {\n    class FunctionRootOverride20 {\n        public function __construct(#[\\Override] public int $value) { echo \"BODY\"; }\n    }\n}\necho \"AFTER\";\n",
+      "source_sha256": "25a7e8236ebf00af6eb6a75500692bdb497b84cd959aa54a4b08c353718dacf3",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "fb61a2a82feb5be19bcf8a65072f3ee51d38a10a5969efe15e3226522f5120f2",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEZ1bmN0aW9uUm9vdE92ZXJyaWRlMjA6OiR2YWx1ZSBoYXMgI1tcT3ZlcnJpZGVdIGF0dHJpYnV0ZSwgYnV0IG5vIG1hdGNoaW5nIHBhcmVudCBwcm9wZXJ0eSBleGlzdHMgaW4ge0ZJTEV9IG9uIGxpbmUgNApTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    },
+    {
+      "id": "parent-private",
+      "source": "<?php\nclass PrivateOverrideBase20 { private int $value = 1; }\nclass PrivateOverrideChild20 extends PrivateOverrideBase20 {\n    public function __construct(#[\\Override] public int $value) { echo \"BODY\"; }\n}\nnew PrivateOverrideChild20(3);\n",
+      "source_sha256": "941486ea4e901058cd95c59df6056ee5c2dbd94b98629b9c142aead0bf22ee97",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "cbc1c63101442bf52745e78a363d9ca25f8522d5893f6f8e31359389ec406dcb",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFByaXZhdGVPdmVycmlkZUNoaWxkMjA6OiR2YWx1ZSBoYXMgI1tcT3ZlcnJpZGVdIGF0dHJpYnV0ZSwgYnV0IG5vIG1hdGNoaW5nIHBhcmVudCBwcm9wZXJ0eSBleGlzdHMgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    },
+    {
+      "id": "property-name-case",
+      "source": "<?php\nclass CaseOverrideBase20 { public int $Value = 1; }\nclass CaseOverrideChild20 extends CaseOverrideBase20 {\n    public function __construct(#[\\Override] public int $value) { echo \"BODY\"; }\n}\nnew CaseOverrideChild20(3);\n",
+      "source_sha256": "2fd12e0efdcd6bbf650edec2f9ea4f09d9213c0202bd1d7d3b8414957fbceb10",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "a826b979cf463b18f5c1477c2109ead657a67d65039f1757f0ac6dce61078d22",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhc2VPdmVycmlkZUNoaWxkMjA6OiR2YWx1ZSBoYXMgI1tcT3ZlcnJpZGVdIGF0dHJpYnV0ZSwgYnV0IG5vIG1hdGNoaW5nIHBhcmVudCBwcm9wZXJ0eSBleGlzdHMgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    },
+    {
+      "id": "grandparent-import-alias",
+      "source": "<?php\nnamespace PromotedOverrideAlias20;\nuse \\Override as NeedsParent;\nclass Grand20 { protected int $value = 1; }\nclass Middle20 extends Grand20 {}\nclass Child20 extends Middle20 {\n    public function __construct(#[nEeDsPaReNt] public int $value) { echo $this->value, \"|\"; }\n}\n$o = new Child20(9);\necho $o->value;\n",
+      "source_sha256": "a17550ce46e66a81076621fec9bb777382ec6d83ef8cdde81bb288555d486b84",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "4e4ee18798ef92ebc32234d90df0b852c945f4812abb0e3b971824792ce10527",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "OXw5",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "raw-trait-import",
+      "source": "<?php\ntrait ImportedOverrideCtor20 {\n    public function __construct(#[\\Override] public int $value) { echo \"T\", $this->value; }\n}\necho \"TRAIT|\";\nclass ImportedOverrideBase20 { public int $value = 1; }\nclass ImportedOverrideChild20 extends ImportedOverrideBase20 { use ImportedOverrideCtor20; }\n$o = new ImportedOverrideChild20(13);\necho \"|\", $o->value;\n",
+      "source_sha256": "5d7b304b7b4894f57663d4e654847c45a406418534eb25671a340eac16c15c6f",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "eb44d01d38f0f68af3c5228270e98c5f5b8e4bf00675c66469adc4c5e0c49d22",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "VFJBSVR8VDEzfDEz",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "raw-trait-missing-deferred",
+      "source": "<?php\ntrait MissingOverrideCtor20 {\n    public function __construct(#[\\Override] public int $value) { echo \"BODY\"; }\n}\necho \"BEFORE|\";\nclass MissingImportedOverride20 { use MissingOverrideCtor20; }\necho \"AFTER\";\n",
+      "source_sha256": "98501cc2097cb3b93c1deff0bb4b969c6a43aefe177fc1dcaa64d6d07a7478d7",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "9c9164008487ebeb7025a1c85e76125342d0e5535f6b8f547a6fcc77e6d158c2",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "QkVGT1JFfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE1pc3NpbmdJbXBvcnRlZE92ZXJyaWRlMjA6OiR2YWx1ZSBoYXMgI1tcT3ZlcnJpZGVdIGF0dHJpYnV0ZSwgYnV0IG5vIG1hdGNoaW5nIHBhcmVudCBwcm9wZXJ0eSBleGlzdHMgaW4ge0ZJTEV9IG9uIGxpbmUgNgpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    },
+    {
+      "id": "compatible-class-collision",
+      "source": "<?php\ntrait CollisionOverrideCtor20 {\n    public function __construct(#[\\Override] public int $value) { echo $this->value, \"|\"; }\n}\nclass CollisionOverrideClass20 {\n    public int $value;\n    use CollisionOverrideCtor20;\n}\n$o = new CollisionOverrideClass20(17);\necho $o->value, \"|\";\n$o->__construct(19);\necho $o->value;\n",
+      "source_sha256": "0a818a3b184c7d011a6e5166bd2b553efdf35e883f360d59360fbbbe56e53cc7",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "8dbaeb08c08f610ee04aab79171029f81084054919dc57bdad9dce8cb0df5a99",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MTd8MTd8MTl8MTk=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "conditional-parent-deferred",
+      "source": "<?php\nclass DeferredOverrideBase20 {}\necho \"BEFORE|\";\nif (true) {\n    class DeferredOverrideChild20 extends DeferredOverrideBase20 {\n        public function __construct(#[\\Override] public int $value) { echo \"BODY\"; }\n    }\n}\necho \"AFTER\";\n",
+      "source_sha256": "d83fa828226b367fa5553f75f98391bedfeca14fe00017795df8c142d1ececcc",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "999f729a90c0a5d772405603c50852a2918421615e19346e94c85f172d2a989f",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "QkVGT1JFfA==",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlZmVycmVkT3ZlcnJpZGVDaGlsZDIwOjokdmFsdWUgaGFzICNbXE92ZXJyaWRlXSBhdHRyaWJ1dGUsIGJ1dCBubyBtYXRjaGluZyBwYXJlbnQgcHJvcGVydHkgZXhpc3RzIGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "plain-promotion-reentry",
+      "source": "<?php\nclass PlainOverrideBase20 { public int $value = 1; }\nclass PlainOverrideChild20 extends PlainOverrideBase20 {\n    public function __construct(public int $value) { echo $this->value, \"|\"; }\n}\n$o = new PlainOverrideChild20(23);\necho $o->value, \"|\";\n$o->__construct(29);\necho $o->value;\n",
+      "source_sha256": "97f32592f5684cbe54c30978ee5fe741a4d88bed03b9bb4cfa3c38cd0d1cf369",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "fbe33b3635939d8528f36e8eee04a2b57c08efcd2d70c459d0e9e962526658d8",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MjN8MjN8Mjl8Mjk=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "invalid-default-priority",
+      "source": "<?php\nclass InvalidDefaultOverride20 {\n    public function __construct(#[\\Override] public int $value = \"wrong\") { echo \"BODY\"; }\n}\necho \"AFTER\";\n",
+      "source_sha256": "118fdc3e9d5fde5fa5902a2ecf4a2b54685ba6b33bf70a66af0fcfb56b0eab5c",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-promotion-override-private-20/.tools/constructor-promotion-override-probes-20/focused/native-first/report.json",
+      "native_raw_sha256": "e881f71fbe782d35e9fa6f26181a82799d5c3c7b48222a747ffc918f0cd8c536",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCB1c2Ugc3RyaW5nIGFzIGRlZmF1bHQgdmFsdWUgZm9yIHBhcmFtZXRlciAkdmFsdWUgb2YgdHlwZSBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    }
+  ]
+}
