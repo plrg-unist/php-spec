@@ -570,6 +570,8 @@ Baseline66 localizes the old301 refusal. The first195 ordering fixture fails wit
 zero aggregate credit; corrected controls change no code/source. Broader
 black/external/nonordinary/Fiber/later-pass overlap remains required; prior cuts
 and whole CLI timeouts are unchanged.
+Actual361 over `be0cfaa7f` passes strict compilation/init at `9391ce28e`, preserving
+reviewed call/ownership/property interfaces; source1/state321 retain their inputs.
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
