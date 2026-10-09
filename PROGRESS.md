@@ -99,7 +99,9 @@ separate bf6/688 cuts, including readonly/private/trait and ordered promotion
 errors. Strict 365-module compilation and SL176 (74 derived, 102 reached checks)
 pass at `75c4aba82`, including authentic queued-promotion admission. Earlier
 Unsupported, method-continuation failure, fixture stops, false states and diagnostics
-retain zero affected credit. Current-parent composition remains pending.
+retain zero affected credit. Actual 367-module composition over `235a74c84`
+passes strict initialization at `5448b4ba` (5.214 s), preserving current owner,
+GC, GEN, PROPS, CALLS and returns paths without renewing private checks.
 [Sensitive promotion review](coverage/semantics/sensitive-promotion-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
