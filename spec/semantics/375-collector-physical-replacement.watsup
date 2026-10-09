@@ -2,23 +2,43 @@
 ;; Its guard becomes detached; a new worker reloads the remaining global
 ;; interval without assigning the old target any fresh-plan progress.
 dec $gc_worker_physical_suspend(pstate, pconfigcall) : pstate
+dec $gc_worker_physical_plan_ready(pgcplan, pgcpublic) : bool
+dec $gc_worker_physical_cursor(pgcplan, pgcguard, pgcscan) : bool
+dec $gc_worker_physical_plan(pgcplan, pgcscan) : pgcplan
 dec $gc_worker_physical_replace_valid(pstate, pgcplan, pgcscan) : bool
+dec $gc_worker_physical_replace_pass(pstate, pgcplan, pgcscan) : bool
 dec $gc_worker_physical_start(pstate, pgcplan, pgcscan) : pstate
 
 def $gc_worker_physical_suspend_ready(S) = true
   -- if $gc_worker_guard_at(S) = (pgcguard)
   -- if pgcguard.PUBLIC = (pgcpublic)
   -- if $gc_worker_api(pgcpublic.API)
-  -- if pgcpublic.RESIDUAL
   -- if S.GC.PLAN = (pgcplan)
-  -- if pgcplan.SCAN = eps
+  -- if $gc_worker_physical_plan_ready(pgcplan, pgcpublic)
   -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
+  -- if S.GC.SCAN.END = |pgcplan.BUFFER|
+  -- if $gc_worker_physical_cursor(pgcplan, pgcguard, S.GC.SCAN)
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
   -- if pfibercaller.API = pgcpublic.API
   -- if pfibercaller.OBJECT = pgcguard.WORKER
   -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT pgcguard.WORKER pgcplan) :: ptask_tail*
   -- if $fiber_caller_wait(S, pfibercaller)
   -- if ~$fiber_close_boundary(S)
+def $gc_worker_physical_plan_ready(pgcplan, pgcpublic) = pgcpublic.RESIDUAL -- if pgcplan.SCAN = eps
+def $gc_worker_physical_plan_ready(pgcplan, pgcpublic) = true
+  -- if pgcplan.SCAN =/= eps
+  -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
+def $gc_worker_physical_plan_ready(pgcplan, pgcpublic) = false -- otherwise
+def $gc_worker_physical_cursor(pgcplan, pgcguard, pgcscan) = true
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if pgcpublic.RESIDUAL \/ (HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS
+  -- if pgcscan.INDEX = pgcguard.INDEX
+def $gc_worker_physical_cursor(pgcplan, pgcguard, pgcscan) = true
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if ~pgcpublic.RESIDUAL
+  -- if ~((HOBJECT pgcguard.OBJECT) <- pgcplan.DTORS)
+  -- if pgcscan.INDEX = 0
+def $gc_worker_physical_cursor(pgcplan, pgcguard, pgcscan) = false -- otherwise
 def $fiber_suspend(S, pconfigcall, pvalue) = $gc_worker_physical_suspend(S, pconfigcall)
   -- if $gc_worker_physical_suspend_ready(S)
 def $gc_worker_physical_suspend(S, pconfigcall) = $destructor_release_begin(S_detached, [DESTRUCTION_VALUE (HOBJECT n)])
@@ -37,7 +57,10 @@ def $gc_worker_physical_suspend(S, pconfigcall) = $destructor_release_begin(S_de
   -- if S_returned = $fiber_vm_restore(S_suspended, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
   -- if S_returned.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_return*
   -- if pgcscan = S_returned.GC.SCAN[.INDEX = $(S_returned.GC.SCAN.INDEX + 1)]
-  -- if S_detached = S_returned[.GC.WORKER = eps][.GC.SCAN = pgcscan][.TODO = (GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_return*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if pgcplan_next = $gc_worker_physical_plan(pgcplan, pgcscan)
+  -- if S_detached = S_returned[.GC.WORKER = eps][.GC.SCAN = pgcscan][.GC.PLAN = (pgcplan_next)][.GC.ACTIVE = (pgcplan_next.CALL)][.TODO = (GC_WORKER_PHYSICAL_REPLACE pgcplan_next pgcscan) :: ptask_return*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+def $gc_worker_physical_plan(pgcplan, pgcscan) = pgcplan -- if pgcplan.SCAN = eps
+def $gc_worker_physical_plan(pgcplan, pgcscan) = pgcplan[.SCAN = (pgcscan)] -- if pgcplan.SCAN =/= eps
 
 def $gc_task_consumer(GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan, pgccall) = 1 -- if pgcplan.CALL = pgccall
 def $gc_task_plan_consumer(GC_WORKER_PHYSICAL_REPLACE pgcplan_task pgcscan, pgcplan) = 1 -- if pgcplan_task = pgcplan
@@ -47,16 +70,27 @@ def $gc_worker_physical_replace_valid(S, pgcplan, pgcscan) = true
   -- if S.ACTIVEFIBER =/= eps
   -- if S.GC.WORKER = eps
   -- if $gc_plan_valid(S, pgcplan)
-  -- if pgcplan.SCAN = eps
   -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
   -- if pgcplan.DTORS =/= eps
-  -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
   -- if pgcscan = S.GC.SCAN
   -- if pgcscan.END = |pgcplan.BUFFER|
   -- if $(pgcscan.INDEX > 0) /\ $(pgcscan.INDEX <= pgcscan.END)
   -- if $gc_main_tags(pgcplan, S.GC.BUFFER, 0)
-  -- if S.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, 0, pgcscan.INDEX, 0)
+  -- if $gc_worker_physical_replace_pass(S, pgcplan, pgcscan)
 def $gc_worker_physical_replace_valid(S, pgcplan, pgcscan) = false -- otherwise
+def $gc_worker_physical_replace_pass(S, pgcplan, pgcscan) = true
+  -- if pgcplan.SCAN = eps
+  -- if pgcplan.BUFFER =/= $gc_unmarked_slots(pgcplan.BUFFER)
+  -- if S.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, 0, pgcscan.INDEX, 0)
+def $gc_worker_physical_replace_pass(S, pgcplan, pgcscan) = true
+  -- if pgcplan.SCAN = (pgcscan)
+  -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
+def $gc_worker_physical_replace_pass(S, pgcplan, pgcscan) = false -- otherwise
+def $gc_worker_internal_scan_range(pgcplan, pgcpublic) = true
+  -- if pgcplan.SCAN = (pgcscan)
+  -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
+  -- if pgcscan.END = pgcpublic.END
+  -- if $(pgcscan.INDEX <= pgcpublic.INDEX)
 def $call_task_valid(S, GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) = $gc_worker_physical_replace_valid(S, pgcplan, pgcscan)
 rule PhpStep/gc-worker-physical-replace: S ~> $gc_worker_physical_start(S, pgcplan, pgcscan)
   -- if S.TODO = (GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan) :: ptask_tail*

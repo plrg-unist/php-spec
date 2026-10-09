@@ -38,6 +38,7 @@ dec $gc_worker_residual_start(pstate, pgcplan) : pstate
 dec $gc_worker_internal_progress(pstate, pgcplan, pnode*) : pgcprogress*
 dec $gc_unvisited_valid(pstate, pgcplan, pnode) : bool
 dec $gc_worker_internal_attachment(pstate, pgcguard, pgcpublic) : bool
+dec $gc_worker_internal_scan_range(pgcplan, pgcpublic) : bool
 dec $gc_worker_internal_next(pstate, pgcpublic) : pstate
 dec $gc_worker_internal_idle(pstate, pgcpublic) : pstate
 dec $gc_worker_internal_pending(pstate, pgcpublic, pgcplan) : pstate
@@ -220,7 +221,7 @@ def $gc_worker_public_residual_context(S, pgcpublic) = true
   -- if pgcpublic.RESIDUAL
   -- if $gc_worker_api(pgcpublic.API)
   -- if S.GC.PLAN = (pgcplan)
-  -- if pgcplan.SCAN = eps
+  -- if $gc_worker_internal_scan_range(pgcplan, pgcpublic)
   -- if $gc_plan_live(S, pgcplan)
   -- if pgcpublic.SOURCE = pgcplan.CALL[.PENDING = eps]
   -- if pgcpublic.END = S.GC.SCAN.END /\ pgcpublic.END = |pgcplan.BUFFER|
@@ -228,6 +229,8 @@ def $gc_worker_public_residual_context(S, pgcpublic) = true
   -- if $gc_worker_scan_cursor(S, pgcpublic.INDEX)
   -- if $destructor_pending_valid(S, pgcpublic.PENDING)
 def $gc_worker_public_residual_context(S, pgcpublic) = false -- otherwise
+def $gc_worker_internal_scan_range(pgcplan, pgcpublic) = true -- if pgcplan.SCAN = eps
+def $gc_worker_internal_scan_range(pgcplan, pgcpublic) = false -- otherwise
 def $gc_worker_scan_cursor(S, n) = true -- if n = S.GC.SCAN.INDEX
 def $gc_worker_scan_cursor(S, n) = true
   -- if n = $(S.GC.SCAN.INDEX + 1)

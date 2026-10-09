@@ -324,8 +324,11 @@ retains Generator/cache owners through normal fatal rendering, releases the repo
 exception before bailout, then suppresses later destructors. Normal exception-owned
 stdClass/ordinary child cleanup retains full admission and actual storage pins.
 A renderer rethrow at request C root reports/releases its builtin inner Throwable
-before abandoning the original report and real Generator/cache owners. Live-handler
-or deeper rendering, abrupt exception release, parked/escaped storage and generic
+before abandoning the original report and real Generator/cache owners. A returning
+renderer-installed handler releases its inner exception before registry restoration;
+warning callbacks can refresh the original cached string before fatal reporting.
+Three originals and 611 reached premises retain separate cuts. Throwing callbacks,
+deeper rendering, abrupt exception release, parked/escaped storage and generic
 terminal cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
@@ -688,8 +691,13 @@ suspended worker before physical replacement, running finally or transferring
 its real error into collection pending. Two original full continuations pass
 166 independent physical premises, including count1/weak retirement and exact
 new/previous exception identity. Both whole CLI 60s timeouts retain zero agreement.
-Final 358 over `0059e0a9e` compiles at `0da2cdae7`. Takeover resuspension, overlap,
-different-active-pass reentry and whole CLI completion remain required.
+Final 358 over `0059e0a9e` compiles at `0da2cdae7`. Old public callbacks can now
+suspend again during internal takeover: replacement uses the advanced reset
+cursor while earlier marked targets survive and real FINALLY errors stay
+separate. Both original full continuations pass 212 independent physical
+premises; both whole CLI 60s timeouts retain zero agreement. Final 358 over
+`6ed4873bd` compiles at `0bc957892`. Overlap, different-active-pass reentry and
+whole CLI completion remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -1092,8 +1100,11 @@ An authenticated retained `self::n(argument())` rejects the exact abstract metho
 arguments, using completed data binding and copied requirements. One shutdown
 original and41 supplied conditions plus6 setup clauses pass, including all four
 global validators; unknown phases stay Unsupported.
-Parameter-view full-source constructor,
-handler and variadic cases, broader differing-owner later births
+Three full parameter-view originals now agree with PHP at the original45/55 limits:
+constructor/default rejection, error-handler reception and positional/named variadic
+Stringable conversion preserve old, later and cloned scopes. Exact ASCII lookup and
+disjoint property/header guards reduce repeated source replay work without changing
+authority. Broader mixed parameter-view contexts, differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
 initializer contexts, held/open failed links and readonly
 storage remain

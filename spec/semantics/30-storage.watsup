@@ -259,6 +259,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | DESTRUCTOR_GLOBALS | DESTRUCTOR_STORE | DESTRUCTOR_RELEASE pdestructionrelease | DESTRUCTOR_ENTER pdestructorcall | DESTRUCTOR_RESULT pdestructorcall | DESTRUCTOR_WARNING pdestructorcall | DESTRUCTOR_FRAME_EXIT pdestructionframe | FIBER_PROTECTED_PREVIOUS pdestructorcall nat
   | GENERATOR_REQUEST_RESUME pgenclose
   | GENERATOR_REQUEST_REPORT pgenfatal | GENERATOR_REQUEST_BAILOUT pgenfatal
+  | GENERATOR_REQUEST_RENDER_RETURN pgenfatal nat bool
   | DESTRUCTOR_OPERATION_EXIT pdestructionoperation
   | ACCESS_REFERENCE_VALUE_RESULT porigin poperand int
   | ACCESS_REFERENCE_VALUE_RELEASE paccess poperand

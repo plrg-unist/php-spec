@@ -565,5 +565,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-public-internal-resuspension-separates-two-finally-errors-review-preparation-30",
+    "source": "<?php\n$w=null;$o=new Exception;$n=new Exception;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w,$o;\n  if($this->k===0){$w->resume();}\n  else{\n   try{throw $o;}finally{\n    Fiber::suspend();\n    echo 'again|';\n    echo Fiber::suspend()===null?'B:null|':'bad-value|';\n   }\n  }\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);gc_collect_cycles();\nclass D {\n public $s;\n function __destruct(){global $w;echo Fiber::getCurrent()===$w?'D:cached|':'D:other|';}\n}\n$t=new Fiber(function()use($n){\n $d=new D;$d->s=$d;unset($d);\n try{throw $n;}finally{gc_collect_cycles();}\n});\ntry{$t->start();}catch(Throwable $c){\n echo $c===$n?'new|':'bad-new|';\n echo $c->getPrevious()===null?'new-alone|':'new-linked|';\n}\ntry{$w->resume();}catch(Throwable $c){\n echo $c===$o?'old|':'bad-old|';\n echo $c->getPrevious()===null?'old-alone|':'old-linked|';\n}\necho $w->isTerminated()?'worker-done|':'worker-live|';\necho 'END';\n",
+    "source_sha256": "de7bafb0c70704acdfc236950622c32e38c11e6afb35ce5dce9bd8ccfec7c452",
+    "stdout": "again|new|new-alone|B:null|old|old-alone|worker-done|ENDD:other|",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

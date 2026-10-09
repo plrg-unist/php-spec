@@ -10,6 +10,7 @@ dec $error_level_name(int) : text
 dec $error_user_deprecation() : preqbytes
 dec $error_handler_file(pstate, perrorcall) : preqbytes
 dec $iterator_notice_resume(ptask) : bool
+dec $generator_request_render_warning_resume(ptask) : bool
 dec $error_callback_line(pstate, perrorcall) : int
 dec $exception_warning_resume(ptask) : bool
 dec $error_handler_values(pstate, perrorcall) : pvalue*
@@ -135,8 +136,10 @@ def $call_task_valid(S, ERROR_TRIGGER_PHASE pconfigcall n) = ($error_trigger_kin
 def $error_handler_target(S, pvalue) = (pcalltarget)
   -- if $error_handler_resolution(S, pvalue) = HANDLERRESOLVED pcalltarget
 def $error_handler_target(S, pvalue) = eps -- otherwise
+def $generator_request_render_warning_resume(ptask) = false -- otherwise
 def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, porigin)
   -- if ~$iterator_notice_resume(perrorcall.RESUME)
+  -- if ~$generator_request_render_warning_resume(perrorcall.RESUME)
   -- if $class_constant_error_origin(S) = (porigin)
 def $error_handler_file(S, perrorcall) = $call_sourcefile(S.FILES, perrorcall.SITE) -- otherwise
 def $error_callback_line(S, perrorcall) = perrorcall.LINE -- otherwise

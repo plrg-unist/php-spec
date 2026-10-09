@@ -305,8 +305,12 @@ The failed class gains no publication or fresh named-lookup authority.
 Parent/interface contracts, including implicit Stringable, remain required.
 Dependency fills in held/open compilation, broader differing-owner later births and
 wider failed-owner member/construction behavior retain explicit boundaries.
-Wider parameter-view full-source constructor, handler and variadic cases remain
-unvalidated obligations.
+The exact full constructor/default, error-handler and positional/named variadic
+parameter-view originals agree with PHP at the original100000-step/45/55 limits.
+They retain old trait scope, later fixed class scope and cloned snapshots through
+conversion and the old-scope constructor Error. A reviewed ASCII lookup and disjoint
+property/header guards preserve bytes, comparison results and target authority.
+Broader mixed parameter-view contexts remain unvalidated.
 An excluded `parent::` collision control terminated the pinned engine with
 SIGSEGV; it supplies no language-level oracle result or agreement.
 Historical reached

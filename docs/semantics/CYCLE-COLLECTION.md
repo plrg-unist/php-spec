@@ -432,5 +432,24 @@ aggregate; only the affected failed negative reruns after correcting root order.
 That fixture stop and both whole CLI 60s timeouts retain zero affected/agreement
 credit. Final 358 over `0059e0a9e` compiles at `0da2cdae7`, preserving empty PACKS
 in both actual API constructors, inherited-constructor diagnostics and quiet
-freeing reads. Takeover resuspension, overlap, different-pass reentry and whole
-CLI completion remain required.
+freeing reads. That cut's takeover-resuspension refusal is extended below.
+
+An old public callback can now suspend again during internal takeover. The real
+wrapper advances its reset global cursor, which differs from the old guard's
+local slot. Detachment captures that advanced suffix in PLAN.SCAN and the
+physical-replacement task; earlier marked targets remain physical and unvisited,
+without DONE credit. The old guard/VM and its real FINALLY error stay separate
+from the fresh caller's FINALLY. Replacement uses the current GC caller and
+physical suffix, preserving the old callback's lexical scope.
+
+At separate `88daee39b` fixture cuts finalized as `27e65e46e`, 114/98 independent
+physical premises (recorder 98/86, authored 95/83) complete both unchanged
+originals. They check reset-cursor/frozen-end readiness, independent suffix
+mismatches, retained low tags, once-only activation and separate FINALLY owners.
+The normal PASS remains in a false aggregate. Only the affected error group
+reruns after replacing a request-final lookup of the retired new error with its
+actual retirement; the original stop and diagnostic copy retain zero affected
+credit. Both whole CLI 60s timeouts retain zero agreement. Final 358 over
+`6ed4873bd` compiles at `0bc957892`, preserving Generator renderer/handler and
+dynamic-source hooks. Overlap, different-pass reentry and whole CLI completion
+remain required.

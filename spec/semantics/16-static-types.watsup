@@ -377,9 +377,25 @@ def $ptasciidigit(text, ptbyte) = $(ptbyte + 32)
   -- if text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"[ptbyte:1]
 def $ptasciidigit(text, ptbyte) = $ptasciidigit(text, $(ptbyte + 1))
   -- if text =/= " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"[ptbyte:1]
+;; Printable metadata characters use a bounded table lookup; other inputs keep the original path.
+dec $ptasciifind(text, text*, nat) : nat
+def $ptasciifind(text, [text], ptbyte) = $(ptbyte + 32)
+def $ptasciifind(text, text_ascii*, ptbyte) = $ptasciifind(text, text_ascii*[0:ptbyte_half], ptbyte)
+  -- if $(|text_ascii*| > 1)
+  -- if ptbyte_half = $(|text_ascii*| / 2)
+  -- if text <- text_ascii*[0:ptbyte_half]
+def $ptasciifind(text, text_ascii*, ptbyte) = $ptasciifind(text, text_ascii*[ptbyte_half:ptbyte_rest], $(ptbyte + ptbyte_half))
+  -- if $(|text_ascii*| > 1)
+  -- if ptbyte_half = $(|text_ascii*| / 2)
+  -- if ptbyte_rest = $(|text_ascii*| - ptbyte_half)
+  -- if ~(text <- text_ascii*[0:ptbyte_half])
+dec $ptasciichar(text, text*) : nat
+def $ptasciichar(text, text_ascii*) = $ptasciifind(text, text_ascii*, 0) -- if text <- text_ascii*
+def $ptasciichar(text, text_ascii*) = $ptasciidigit(text, 0) -- if ~(text <- text_ascii*)
+
 dec $ptascii(text) : ptbytes
 def $ptascii("") = eps
-def $ptascii(text) = $ptasciidigit(text[0:1], 0) :: $ptascii(text[1:ptbyte])
+def $ptascii(text) = $ptasciichar(text[0:1], [" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "[", "\\", "]", "^", "_", "`", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~"]) :: $ptascii(text[1:ptbyte])
   -- if $(|text| > 0)
   -- if ptbyte = $(|text| - 1)
 

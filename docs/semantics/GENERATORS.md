@@ -113,8 +113,15 @@ original report and Generator/cache owners. Three exact fatal originals and 527
 reached premises retain separate cuts, including the real receiver decrement,
 handler exception retention and reporting mutation after emission. Actual 356 over
 `2b98ff468` passes strict compilation at `72d5f7353`, preserving current fields;
-private source/state cuts retain their own inputs. Live-handler or
-deeper custom rendering, abrupt exception release, message warnings, parked or
+private source/state cuts retain their own inputs. A renderer-installed handler
+that returns normally releases its inner exception before restoring the registry.
+The invalid-return warning runs before fatal reporting reads the live original cache;
+callbacks receive Unknown/line0 and can refresh it through `parent::__toString()`.
+Three fatal originals and 611 reached premises validate the real handler/destructor
+pins, transient Weak owners, warning delivery, cache mutation and replay at separate cuts.
+Actual 358 over `b721887ce` passes strict compilation at `00536106a`; current
+source/argument/storage fields remain intact and private 3/611 retain their inputs.
+Throwing callbacks, deeper custom rendering, abrupt exception release, message warnings, parked or
 escaped storage and generic terminal cleanup remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
