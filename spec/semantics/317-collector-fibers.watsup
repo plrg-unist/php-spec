@@ -561,11 +561,11 @@ def $gc_source(S) = true
 def $gc_source(S) = true
   -- if S.CURRENT = eps
   -- if S.GC.PLAN = (pgcplan)
-  -- if $gc_overlap_plan(pgcplan)
-  -- if $gc_plan_live(S, pgcplan) /\ $gc_worker_overlap_image(S, pgcplan)
   -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
   -- if ~(n <- S.DESTRUCTION.CALLED)
+  -- if $gc_overlap_plan(pgcplan)
+  -- if $gc_plan_live(S, pgcplan) /\ $gc_worker_overlap_image(S, pgcplan)
   -- if $gc_slot_find(pgcplan.BUFFER, HOBJECT n, 0) = (n_slot)
   -- if $gc_worker_overlap_selected(S, pgcplan, n, n_slot)
 def $destructor_tail_pending((GC_WORKER_GUARD pgcguard) :: ptask_tail*) = pgcguard.PENDING
