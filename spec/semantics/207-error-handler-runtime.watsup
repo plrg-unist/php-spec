@@ -261,7 +261,7 @@ def $error_read_plan(S) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
-def $error_read_pending(S) = ($key_read_pending(S) \/ (($error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps \/ $computed_name_plan(S) =/= eps \/ $computed_cv_name_plan(S) =/= eps \/ $computed_array_name_plan(S) =/= eps \/ $property_null_read_plan(S) =/= eps \/ $property_undefined_read_plan(S) =/= eps)))
+def $error_read_pending(S) = ($key_read_pending(S) \/ $property_undefined_reference_plan(S) =/= eps \/ (($error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps \/ $computed_name_plan(S) =/= eps \/ $computed_cv_name_plan(S) =/= eps \/ $computed_array_name_plan(S) =/= eps \/ $property_null_read_plan(S) =/= eps \/ $property_undefined_read_plan(S) =/= eps)))
 def $error_read_begin(S) = $key_read_begin(S)
   -- if $key_read_pending(S)
 def $error_read_begin(S) = $global_read_begin(S, pglobalread)

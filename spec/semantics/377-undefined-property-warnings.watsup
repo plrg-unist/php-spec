@@ -1,4 +1,5 @@
 ;; Literal undefined-property FETCH borrows a CV receiver and owns a temporary.
+;; A returned reference keeps its actual cell; its captured target is borrowed.
 ;; The handler may retire a borrowed receiver or populate live storage; the
 ;; interrupted result remains null in either case.
 dec $property_undefined_history(pstate, nat) : bool
@@ -43,6 +44,48 @@ def $property_undefined_cv_receiver(S, ppropertywarning) = true
   -- if $this_receiver(S) = (ppropertywarning.OBJECT)
 def $property_undefined_cv_receiver(S, ppropertywarning) = false -- otherwise
 
+dec $property_undefined_reference_name(phpType19) : bool
+def $property_undefined_reference_name(NName phpType33 metadata) = true
+def $property_undefined_reference_name(NNameFullyQualified phpType33 metadata) = true
+def $property_undefined_reference_name(NNameRelative phpType33 metadata) = true
+def $property_undefined_reference_name(phpType19) = false -- otherwise
+dec $property_undefined_reference_source(pstate, pnameread) : bool
+def $property_undefined_reference_source(S, pnameread) = true
+  -- if pnameread.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pnameread.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text) metadata_name) metadata)
+  -- if expression_receiver = NExprFuncCall name (SEQUENCE eps) metadata_call
+  -- if $property_undefined_reference_name(name)
+  -- if $source_emission_noarg_call(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (z_call)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
+  -- if $call_target(S, ptbytes_name, eps) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+  -- if ~$function_generator(S, pfunction)
+def $property_undefined_reference_source(S, pnameread) = false -- otherwise
+dec $property_undefined_cell(pstate, nat) : bool
+def $property_undefined_cell(S, n) = true
+  -- if $(n < |S.STORE|)
+  -- if n <- S.REFCELLS /\ (HCELL n) <- S.ALLOCATIONS
+  -- if S.STORE[n] = DEFINED pvalue
+def $property_undefined_cell(S, n) = false -- otherwise
+;; Count owning continuations in this caller's task list, not cleanup history.
+dec $property_undefined_cell_task(ptask, nat, porigin) : nat
+def $property_undefined_cell_task(PROPERTY_UNDEFINED_RESULT ppropertywarning, n, porigin) = 1
+  -- if ppropertywarning.CELL = (n) /\ ppropertywarning.READ.SITE = porigin
+def $property_undefined_cell_task(AT porigin_at ptask, n, porigin) = $property_undefined_cell_task(ptask, n, porigin)
+def $property_undefined_cell_task(ERROR_HANDLER_INVOKE perrorcall, n, porigin) = $property_undefined_cell_task(perrorcall.RESUME, n, porigin)
+def $property_undefined_cell_task(ERROR_HANDLER_RESULT perrorcall, n, porigin) = $property_undefined_cell_task(perrorcall.RESUME, n, porigin)
+def $property_undefined_cell_task(ERROR_HANDLER_CLEAN perrorcall, n, porigin) = $property_undefined_cell_task(perrorcall.RESUME, n, porigin)
+def $property_undefined_cell_task(ptask, n, porigin) = 0 -- otherwise
+dec $property_undefined_cell_tasks(ptask*, nat, porigin) : nat
+def $property_undefined_cell_tasks(eps, n, porigin) = 0
+def $property_undefined_cell_tasks(ptask :: ptask_tail*, n, porigin) = $($property_undefined_cell_task(ptask, n, porigin) + $property_undefined_cell_tasks(ptask_tail*, n, porigin))
+dec $property_undefined_source_borrow(pstate, ppropertywarning) : bool
+def $property_undefined_source_borrow(S, ppropertywarning) = (ppropertywarning.BORROWED = $property_undefined_borrowed_source(S, ppropertywarning.READ))
+  -- if ppropertywarning.CELL = eps
+def $property_undefined_source_borrow(S, ppropertywarning) = (ppropertywarning.BORROWED /\ ~ppropertywarning.FREEING /\ $property_undefined_reference_source(S, ppropertywarning.READ))
+  -- if ppropertywarning.CELL = (n)
+
 dec $property_undefined_slot(pstate, nat, ptbytes) : bool
 def $property_undefined_slot(S, n, ptbytes) = true
   -- if $instance_storage_freeing(S, n)
@@ -65,14 +108,22 @@ def $property_undefined_slot(S, n, ptbytes) = false -- otherwise
 ;; Only the future mode rechecks its still-pending physical slot visit.
 dec $property_undefined_carrier(pstate, ppropertywarning) : bool
 def $property_undefined_carrier(S, ppropertywarning) = true
+  -- if ppropertywarning.CELL = (n)
+  -- if ~ppropertywarning.FREEING /\ ppropertywarning.BORROWED
+  -- if $property_undefined_cell(S, n)
+  -- if $($property_undefined_cell_tasks(S.TODO, n, ppropertywarning.READ.SITE) <= 1)
+def $property_undefined_carrier(S, ppropertywarning) = true
+  -- if ppropertywarning.CELL = eps
   -- if ~ppropertywarning.FREEING
   -- if ppropertywarning.BORROWED
 def $property_undefined_carrier(S, ppropertywarning) = true
+  -- if ppropertywarning.CELL = eps
   -- if ~ppropertywarning.FREEING
   -- if ~ppropertywarning.BORROWED
   -- if $property_undefined_class(S, ppropertywarning.OBJECT)
   -- if ~$instance_storage_freeing(S, ppropertywarning.OBJECT)
 def $property_undefined_carrier(S, ppropertywarning) = true
+  -- if ppropertywarning.CELL = eps
   -- if ppropertywarning.FREEING
   -- if $instance_storage_untyped_unset_desc(S, ppropertywarning.OBJECT, ppropertywarning.KEY) =/= eps
 def $property_undefined_carrier(S, ppropertywarning) = false -- otherwise
@@ -80,7 +131,7 @@ dec $property_undefined_read_valid(pstate, ppropertywarning) : bool
 def $property_undefined_read_valid(S, ppropertywarning) = true
   -- if $property_null_read_valid(S, ppropertywarning.READ)
   -- if $property_undefined_history(S, ppropertywarning.OBJECT)
-  -- if ppropertywarning.BORROWED = $property_undefined_borrowed_source(S, ppropertywarning.READ)
+  -- if $property_undefined_source_borrow(S, ppropertywarning)
   -- if $property_undefined_carrier(S, ppropertywarning)
   -- if $property_visible_name(S, ppropertywarning.OBJECT, ppropertywarning.KEY) = ppropertywarning.READ.NAME
 def $property_undefined_read_valid(S, ppropertywarning) = false -- otherwise
@@ -92,14 +143,26 @@ def $property_undefined_read_plan(S) = (ppropertywarning)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
   -- if $property_undefined_slot(S, n, ptbytes_key)
   -- if pnameread = {SITE porigin, NAME ptbytes, LINE z}
-  -- if ppropertywarning = {READ pnameread, OBJECT n, KEY ptbytes_key, FREEING $instance_storage_freeing(S, n), BORROWED $property_undefined_borrowed_source(S, pnameread)}
+  -- if ppropertywarning = {READ pnameread, OBJECT n, KEY ptbytes_key, FREEING $instance_storage_freeing(S, n), BORROWED $property_undefined_borrowed_source(S, pnameread), CELL eps}
   -- if ~ppropertywarning.BORROWED \/ $property_undefined_cv_receiver(S, ppropertywarning)
   -- if $property_undefined_read_valid(S, ppropertywarning)
+def $property_undefined_reference_plan(S) = (ppropertywarning_cell)
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if S.RESULT = REFERENCE n_cell
+  -- if $property_undefined_cell(S, n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+  -- if $property_undefined_read_plan(S[.TODO = (DIM_FETCH z) :: ptask_tail*][.BASE = BASE_PROPERTY (POBJECT n) $base64(text)]) = (ppropertywarning)
+  -- if ~ppropertywarning.FREEING /\ ~ppropertywarning.BORROWED
+  -- if ppropertywarning_cell = ppropertywarning[.BORROWED = true][.CELL = (n_cell)]
+  -- if $property_undefined_read_valid(S, ppropertywarning_cell)
+  -- if $property_undefined_cell_tasks(S.TODO, n_cell, ppropertywarning_cell.READ.SITE) = 0
+def $property_undefined_read_plan(S) = (ppropertywarning)
+  -- if $property_undefined_reference_plan(S) = (ppropertywarning)
 def $machine_base_roots(S) = eps
   -- if $property_undefined_read_plan(S) = (ppropertywarning)
   -- if ppropertywarning.BORROWED
-;; IS_VAR may retain a reference wrapper rather than a fixed payload owner.
-;; Keep that required ownership protocol explicit before resolve_at erases it.
+;; Refuse wider reference receivers before resolve_at erases their carrier.
 def $property_undefined_reference_receiver(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
   -- if $error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)
@@ -109,21 +172,40 @@ def $property_undefined_reference_receiver(S) = true
   -- if S.STORE[n] = DEFINED (POBJECT n_receiver)
   -- if $property_undefined_read_plan(S[.TODO = (DIM_FETCH z) :: ptask_tail*][.BASE = BASE_PROPERTY (POBJECT n_receiver) $base64(text)]) = (ppropertywarning)
   -- if ~ppropertywarning.BORROWED
+  -- if $property_undefined_reference_plan(S) = eps
 rule PhpStep/property-undefined-reference-receiver: S ~> S[.COMPLETION = UNSUPPORTED "undefined property reference receiver lifetime"]
   -- if $property_undefined_reference_receiver(S)
 dec $property_undefined_read_message(pstate, ppropertywarning) : preqbytes
 def $property_undefined_read_message(S, ppropertywarning) = $ptascii("Undefined property: ") ++ $object_name(S, ppropertywarning.OBJECT) ++ $ptascii("::$") ++ $c_string(ppropertywarning.READ.NAME)
-def $property_undefined_read_begin(S, ppropertywarning) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $property_undefined_read_message(S, ppropertywarning), ppropertywarning.READ.LINE, DIAGNOSTIC "Warning" $property_undefined_read_message(S, ppropertywarning) ppropertywarning.READ.LINE, PROPERTY_UNDEFINED_RESULT ppropertywarning)
+dec $property_undefined_read_dispatch(pstate, ppropertywarning) : pstate
+def $property_undefined_read_dispatch(S, ppropertywarning) = $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], 2, $property_undefined_read_message(S, ppropertywarning), ppropertywarning.READ.LINE, DIAGNOSTIC "Warning" $property_undefined_read_message(S, ppropertywarning) ppropertywarning.READ.LINE, PROPERTY_UNDEFINED_RESULT ppropertywarning)
+def $property_undefined_read_begin(S, ppropertywarning) = $property_undefined_read_dispatch(S, ppropertywarning)
   -- if $property_undefined_read_plan(S) = (ppropertywarning)
+  -- if ppropertywarning.CELL = eps
+def $property_undefined_read_begin(S, ppropertywarning) = $property_undefined_read_dispatch(S[.TODO = (DIM_FETCH z) :: ptask_tail*], ppropertywarning)
+  -- if $property_undefined_reference_plan(S) = (ppropertywarning)
+  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
 def $call_task_valid(S, PROPERTY_UNDEFINED_RESULT ppropertywarning) = $property_undefined_read_valid(S, ppropertywarning)
 def $task_nodes(PROPERTY_UNDEFINED_RESULT ppropertywarning) = eps
+  -- if ppropertywarning.CELL = eps
   -- if ppropertywarning.BORROWED
 def $task_nodes(PROPERTY_UNDEFINED_RESULT ppropertywarning) = [HOBJECT ppropertywarning.OBJECT]
+  -- if ppropertywarning.CELL = eps
   -- if ~ppropertywarning.BORROWED
+def $task_nodes(PROPERTY_UNDEFINED_RESULT ppropertywarning) = [HCELL n]
+  -- if ppropertywarning.CELL = (n)
 dec $property_undefined_entry(pstate, perrorcall, ppropertywarning) : bool
 def $property_undefined_entry(S, perrorcall, ppropertywarning) = true
   -- if perrorcall.TARGET = eps
+  -- if ppropertywarning.CELL = eps
   -- if $property_undefined_read_plan(S[.TODO = (DIM_FETCH ppropertywarning.READ.LINE) :: S.TODO][.BASE = BASE_PROPERTY (POBJECT ppropertywarning.OBJECT) ppropertywarning.READ.NAME]) = (ppropertywarning)
+def $property_undefined_entry(S, perrorcall, ppropertywarning) = true
+  -- if perrorcall.TARGET = eps
+  -- if ppropertywarning.CELL = (n)
+  -- if $property_undefined_class(S, ppropertywarning.OBJECT)
+  -- if ~$instance_storage_freeing(S, ppropertywarning.OBJECT)
+  -- if $origin_node(S.SOURCES, ppropertywarning.READ.SITE) = (NExprPropertyFetch expression_receiver phpType20_name metadata)
+  -- if $property_undefined_reference_plan(S[.TODO = [PROPERTY_PREP phpType20_name ppropertywarning.READ.LINE, DIM_FETCH ppropertywarning.READ.LINE]][.ORIGIN = (ppropertywarning.READ.SITE)][.RESULT = REFERENCE n]) = (ppropertywarning)
 def $property_undefined_entry(S, perrorcall, ppropertywarning) = true
   -- if perrorcall.TARGET =/= eps
 def $property_undefined_entry(S, perrorcall, ppropertywarning) = false -- otherwise
