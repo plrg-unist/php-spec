@@ -10,6 +10,7 @@ dec $assertion_quantity_factor(preqbytes) : nat?
 dec $assertion_quantity(preqbytes) : int?
 dec $assertion_quantity_decode(preqbytes) : (int, preqbytes?)
 dec $assertion_ini_records_valid(pstate, passertini*) : bool
+dec $assertion_raw_valid(pstate) : bool
 dec $assertion_ini_restore(pstate, pconfigcall) : pstate
 dec $assertion_ini_restore_string_finish(pstate, pconfigcall, pvalue) : pstate
 dec $assertion_ini_set(pstate, pconfigcall, pvalue) : pstate
@@ -99,12 +100,20 @@ def $assertion_quantity(preqbytes) = (z)
 def $assertion_quantity(preqbytes) = eps -- otherwise
 def $assertion_memory(S, z) = S[.ASSERTIONS = z][.ASSERTIONSINIT = $decimal_integer(z)][.ASSERTIONSINI = $decimal_integer(z)][.ASSERTIONSMODIFIED = false][.ASSERTIONSRAW = pvalue][.ASSERTIONSORIGINAL = pvalue][.ASSERTIONSMODE = {INPUT pvalue, VALUE z}]
   -- if pvalue = PSTRING_CARRIER INTERNED_STRING $decimal_integer(z)
+def $assertion_raw_valid(S) = true
+  -- if S.ASSERTIONSRAW = PNULL
+  -- if ~S.ASSERTIONSMODIFIED /\ S.ASSERTIONSINI = eps
+def $assertion_raw_valid(S) = true
+  -- if S.ASSERTIONSRAW =/= PNULL
+  -- if $string_carrier_valid(S, S.ASSERTIONSRAW)
+  -- if $string_bytes(S.ASSERTIONSRAW) = (S.ASSERTIONSINI)
+def $assertion_raw_valid(S) = false -- otherwise
 def $assertion_state_valid(S) = true
   -- if $assertion_policy_valid(S)
   -- if $startup_bytes(S.ASSERTIONSINIT) /\ $startup_bytes(S.ASSERTIONSINI)
   -- if $assertion_quantity(S.ASSERTIONSINIT) = (z_initial)
-  -- if $string_carrier_valid(S, S.ASSERTIONSRAW) /\ $string_carrier_valid(S, S.ASSERTIONSORIGINAL) /\ $string_carrier_valid(S, S.ASSERTIONSMODE.INPUT)
-  -- if $string_bytes(S.ASSERTIONSRAW) = (S.ASSERTIONSINI)
+  -- if $assertion_raw_valid(S)
+  -- if $string_carrier_valid(S, S.ASSERTIONSORIGINAL) /\ $string_carrier_valid(S, S.ASSERTIONSMODE.INPUT)
   -- if $string_bytes(S.ASSERTIONSORIGINAL) = (n_original*)
   -- if $startup_bytes(n_original*)
   -- if $string_bytes(S.ASSERTIONSMODE.INPUT) = (n_input*)
@@ -119,11 +128,18 @@ dec $assertion_ini_conversion_warning(pstate, pvalue) : bool
 def $assertion_ini_conversion_warning(S, PFLOAT n) = b
   -- if (n_text*, b) = $number_text(NFLOAT n, $precision_value(S))
 def $assertion_ini_conversion_warning(S, pvalue) = false -- otherwise
+def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = S[.COMPLETION = UNSUPPORTED "assertion INI set from null raw value"]
+  -- if n_option* = $ptascii("zend.assertions")
+  -- if S.ASSERTIONSRAW = PNULL
+  -- if $config_ini_value_conversion(pvalue) = ptypeconversion
+  -- if ptypeconversion =/= TYPEREJECT
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $assertion_ini_convert_start(S, pconfigcall, pvalue)
   -- if n_option* = $ptascii("zend.assertions")
+  -- if S.ASSERTIONSRAW =/= PNULL
   -- if $assertion_ini_conversion_warning(S, pvalue)
 def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $assertion_ini_set(S_value, pconfigcall, pvalue_new)
   -- if n_option* = $ptascii("zend.assertions")
+  -- if S.ASSERTIONSRAW =/= PNULL
   -- if ~$assertion_ini_conversion_warning(S, pvalue)
   -- if $config_ini_value_conversion(pvalue) = ptypeconversion
   -- if ptypeconversion =/= TYPEREJECT
@@ -133,6 +149,12 @@ def $config_ini_finish(S, pconfigcall, n_option*, pvalue) = $assertion_ini_set(S
   -- if $string_bytes(pvalue_new) = (n_new*)
 def $config_ini_get_finish(S, pconfigcall, n_option*) = $string_getter(S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], S.ASSERTIONSRAW)
   -- if n_option* = $ptascii("zend.assertions")
+  -- if S.ASSERTIONSRAW =/= PNULL
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_get_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING eps)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if n_option* = $ptascii("zend.assertions")
+  -- if S.ASSERTIONSRAW = PNULL
+  -- if $assertion_state_valid(S)
   -- if S.TODO = ptask :: ptask_tail*
 def $config_ini_unary_finish(S, pconfigcall, n_option*) = $assertion_ini_restore(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
