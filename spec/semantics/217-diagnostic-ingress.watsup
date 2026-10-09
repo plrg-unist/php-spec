@@ -22,6 +22,10 @@ def $deprecated_constant_source(S, porigin, n_prefix) = eps -- otherwise
 def $deprecated_constant_selected(S, porigin) = ($deprecated_constant_source(S, porigin, |S.USERCONSTANTS|) =/= eps)
 dec $deprecated_constant_message() : preqbytes
 def $deprecated_constant_message() = $ptascii("Constant E_STRICT is deprecated since 8.4, the error level was removed")
+dec $deprecated_constant_message_at(pstate, porigin) : preqbytes
+def $deprecated_constant_message_at(S, porigin) = $deprecated_constant_message() -- otherwise
+dec $deprecated_constant_value(pstate, porigin) : pvalue
+def $deprecated_constant_value(S, porigin) = PINT 2048 -- otherwise
 dec $deprecated_constant_active_task(ptask) : bool
 def $deprecated_constant_active_task(DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) = true
 def $deprecated_constant_active_task(ERROR_HANDLER_INVOKE perrorcall) = $deprecated_constant_active_task(perrorcall.RESUME)
@@ -35,15 +39,32 @@ def $deprecated_constant_active_frames(eps) = false
 def $deprecated_constant_active_frames(pframe :: pframe_tail*) = ($deprecated_constant_active_tasks(pframe.TODO) \/ $deprecated_constant_active_frames(pframe_tail*))
 dec $deprecated_constant_active(pstate) : bool
 def $deprecated_constant_active(S) = ($deprecated_constant_active_tasks(S.TODO) \/ $deprecated_constant_active_frames(S.FRAMES))
+dec $deprecated_constant_identity(pstate, porigin) : preqbytes
+def $deprecated_constant_identity(S, porigin) = $ptascii("E_STRICT") -- otherwise
+dec $deprecated_constant_protected_task(pstate, ptask, preqbytes) : bool
+def $deprecated_constant_protected_task(S, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant, preqbytes) = (preqbytes = $deprecated_constant_identity(S[.USERCONSTANTS = S.USERCONSTANTS[0:pdeprecatedconstant.PREFIX]], pdeprecatedconstant.SITE))
+  -- if $(pdeprecatedconstant.PREFIX <= |S.USERCONSTANTS|)
+def $deprecated_constant_protected_task(S, ERROR_HANDLER_INVOKE perrorcall, preqbytes) = $deprecated_constant_protected_task(S, perrorcall.RESUME, preqbytes)
+def $deprecated_constant_protected_task(S, ERROR_HANDLER_RESULT perrorcall, preqbytes) = $deprecated_constant_protected_task(S, perrorcall.RESUME, preqbytes)
+def $deprecated_constant_protected_task(S, ERROR_HANDLER_CLEAN perrorcall, preqbytes) = $deprecated_constant_protected_task(S, perrorcall.RESUME, preqbytes)
+def $deprecated_constant_protected_task(S, ptask, preqbytes) = false -- otherwise
+dec $deprecated_constant_protected_tasks(pstate, ptask*, preqbytes) : bool
+def $deprecated_constant_protected_tasks(S, eps, preqbytes) = false
+def $deprecated_constant_protected_tasks(S, ptask :: ptask_tail*, preqbytes) = ($deprecated_constant_protected_task(S, ptask, preqbytes) \/ $deprecated_constant_protected_tasks(S, ptask_tail*, preqbytes))
+dec $live_control_tasks(pstate) : ptask*
+dec $deprecated_constant_protected(pstate, porigin) : bool
+def $deprecated_constant_protected(S, porigin) = $deprecated_constant_protected_tasks(S, $live_control_tasks(S), $deprecated_constant_identity(S, porigin))
 dec $deprecated_constant_result(pstate, porigin, ptask*) : pstate
-def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE (PINT 2048), CLASS PVSCALAR, LOOKUP eps})])]
+dec $deprecated_constant_result_value(pstate, porigin, ptask*, pvalue) : pstate
+def $deprecated_constant_result(S, porigin, ptask_tail*) = $deprecated_constant_result_value(S, porigin, ptask_tail*, $deprecated_constant_value(S, porigin))
+def $deprecated_constant_result_value(S, porigin, ptask_tail*, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.CONSTCONTEXT = (pconstantcontext[.FACTS = $constant_fact_put(pconstantcontext.FACTS, {ORIGIN porigin, VALUE pvalue, CLASS PVSCALAR, LOOKUP eps})])]
   -- if S.CONSTCONTEXT = (pconstantcontext)
-def $deprecated_constant_result(S, porigin, ptask_tail*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PINT 2048)]
+def $deprecated_constant_result_value(S, porigin, ptask_tail*, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue]
   -- if S.CONSTCONTEXT = eps
 def $deprecated_constant_start(S, porigin, ptask_tail*) = $deprecated_constant_result(S, porigin, ptask_tail*)
-  -- if $deprecated_constant_active(S)
-def $deprecated_constant_start(S, porigin, ptask_tail*) = $error_dispatch(S_pending, 8192, $deprecated_constant_message(), z, DIAGNOSTIC "Deprecated" $deprecated_constant_message() z, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
-  -- if ~$deprecated_constant_active(S)
+  -- if $deprecated_constant_protected(S, porigin)
+def $deprecated_constant_start(S, porigin, ptask_tail*) = $error_dispatch(S_pending, 8192, $deprecated_constant_message_at(S, porigin), z, DIAGNOSTIC "Deprecated" $deprecated_constant_message_at(S, porigin) z, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+  -- if ~$deprecated_constant_protected(S, porigin)
   -- if n_prefix = |S.USERCONSTANTS|
   -- if $deprecated_constant_source(S[.ORIGIN = (porigin)], porigin, n_prefix) = (z)
   -- if pdeprecatedconstant = {SITE porigin, LINE z, PREFIX n_prefix}
@@ -52,6 +73,9 @@ dec $deprecated_constant_task(ptask, pdeprecatedconstant) : bool
 def $deprecated_constant_task(DEPRECATED_CONSTANT_RESULT pdeprecatedconstant, pdeprecatedconstant) = true
 def $deprecated_constant_task(ERROR_HANDLER_INVOKE perrorcall, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
 def $deprecated_constant_task(ERROR_HANDLER_RESULT perrorcall, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+def $deprecated_constant_task(ERROR_HANDLER_CLEAN perrorcall, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+def $deprecated_constant_task(DESTRUCTOR_OPERATION_EXIT pdestructionoperation, pdeprecatedconstant) = (perrorcall.RESUME = DEPRECATED_CONSTANT_RESULT pdeprecatedconstant)
+  -- if pdestructionoperation.SOURCE = ERROR_HANDLER_RESULT perrorcall
 def $deprecated_constant_task(ptask, pdeprecatedconstant) = false -- otherwise
 dec $deprecated_constant_valid(pstate, pdeprecatedconstant) : bool
 def $deprecated_constant_valid(S, pdeprecatedconstant) = true
@@ -60,7 +84,7 @@ def $deprecated_constant_valid(S, pdeprecatedconstant) = true
   -- if S.ORIGIN = (pdeprecatedconstant.SITE)
   -- if $deprecated_constant_source(S, pdeprecatedconstant.SITE, pdeprecatedconstant.PREFIX) = (pdeprecatedconstant.LINE)
 def $deprecated_constant_valid(S, pdeprecatedconstant) = false -- otherwise
-rule PhpStep/deprecated-constant-done: S ~> $deprecated_constant_result(S, pdeprecatedconstant.SITE, ptask_tail*)
+rule PhpStep/deprecated-constant-done: S ~> $deprecated_constant_result_value(S, pdeprecatedconstant.SITE, ptask_tail*, $deprecated_constant_value(S[.USERCONSTANTS = S.USERCONSTANTS[0:pdeprecatedconstant.PREFIX]], pdeprecatedconstant.SITE))
   -- if S.TODO = (DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) :: ptask_tail*
   -- if $deprecated_constant_valid(S, pdeprecatedconstant)
 def $call_task_valid(S, DEPRECATED_CONSTANT_RESULT pdeprecatedconstant) = $deprecated_constant_valid(S, pdeprecatedconstant)
@@ -70,7 +94,7 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.SITE = pdeprecatedconstant.SITE
   -- if perrorcall.LEVEL = 8192
   -- if perrorcall.LINE = pdeprecatedconstant.LINE
-  -- if perrorcall.MESSAGE = $deprecated_constant_message()
+  -- if perrorcall.MESSAGE = $deprecated_constant_message_at(S[.USERCONSTANTS = S.USERCONSTANTS[0:pdeprecatedconstant.PREFIX]], pdeprecatedconstant.SITE)
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
 
 ;; ZPP computes the integer before warning. error_reporting samples the live

@@ -1,5 +1,6 @@
 ;; Assertion compilation selects the builtin after lexical name resolution.
 ;; Its negative startup mode omits argument compilation, unlike runtime mode0.
+dec $assertion_policy_valid(pstate) : bool
 dec $assertion_ini_mode(preqbytes) : int?
 dec $assertion_quantity_trim(preqbytes) : preqbytes
 dec $assertion_quantity_base(preqbytes) : (nat, preqbytes)?
@@ -36,6 +37,7 @@ dec $assertion_float_text(nat, preqbytes) : preqbytes
 dec $assertion_direct_site(pstate, porigin) : bool
 dec $assertion_default(pstate, pconfigcall) : preqbytes?
 dec $assertion_success(pstate) : pstate
+dec $assertion_failure_begin(pstate, pconfigcall, pvalue) : pstate
 dec $assertion_failed(pstate, pconfigcall, preqbytes) : pstate
 dec $assertion_failed_result(pstate) : pstate
 dec $assertion_test(pstate, pconfigcall, pvalue, pvalue) : pstate
@@ -94,6 +96,7 @@ def $assertion_quantity(preqbytes) = (z)
 def $assertion_quantity(preqbytes) = eps -- otherwise
 def $assertion_memory(S, z) = S[.ASSERTIONS = z][.ASSERTIONSINIT = $decimal_integer(z)][.ASSERTIONSINI = $decimal_integer(z)][.ASSERTIONSMODIFIED = false]
 def $assertion_state_valid(S) = true
+  -- if $assertion_policy_valid(S)
   -- if $startup_bytes(S.ASSERTIONSINIT) /\ $startup_bytes(S.ASSERTIONSINI)
   -- if $assertion_quantity(S.ASSERTIONSINIT) = (z_initial)
   -- if $assertion_quantity(S.ASSERTIONSINI) = (S.ASSERTIONS)
@@ -324,7 +327,7 @@ def $assertion_default(S, pconfigcall) = $assertion_constant_at(ppool.CONSTANTS,
 def $assertion_default(S, pconfigcall) = eps -- otherwise
 def $assertion_success(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL true)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
-def $assertion_failed(S, pconfigcall, preqbytes) = $assertion_failed_result($config_error(S, $assertion_trace_call(S, pconfigcall), "AssertionError", preqbytes))
+def $assertion_failed(S, pconfigcall, preqbytes) = $assertion_failed_result($config_error(S, $assertion_trace_call(S, pconfigcall), "AssertionError", $c_string(preqbytes)))
 def $assertion_failed_result(S) = $throwable_constructor_field(S, n, "code", PINT 1)
   -- if S.COMPLETION = THROWING n
 def $assertion_failed_result(S) = S -- otherwise
@@ -332,8 +335,8 @@ def $assertion_test(S, pconfigcall, pvalue, pvalue_description) = $assertion_suc
 def $assertion_test(S, pconfigcall, pvalue, POBJECT n) = S[.COMPLETION = THROWING n]
   -- if ~$truth(S, pvalue)
   -- if $throwable_member(S, n)
-def $assertion_test(S, pconfigcall, pvalue, PSTRING preqbytes) = $assertion_failed(S, pconfigcall, preqbytes) -- if ~$truth(S, pvalue)
-def $assertion_test(S, pconfigcall, pvalue, PNULL) = $assertion_failed(S, pconfigcall, eps) -- if ~$truth(S, pvalue)
+def $assertion_test(S, pconfigcall, pvalue, PSTRING preqbytes) = $assertion_failure_begin(S, pconfigcall, PSTRING preqbytes) -- if ~$truth(S, pvalue)
+def $assertion_test(S, pconfigcall, pvalue, PNULL) = $assertion_failure_begin(S, pconfigcall, PNULL) -- if ~$truth(S, pvalue)
 def $assertion_description_value(S, pconfigcall, pvalue, PNULL) = $assertion_test(S, pconfigcall, pvalue, PNULL)
 def $assertion_description_value(S, pconfigcall, pvalue, PSTRING preqbytes) = $assertion_test(S, pconfigcall, pvalue, PSTRING preqbytes)
 def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = $assertion_test(S, pconfigcall, pvalue, POBJECT n) -- if $throwable_member(S, n)
@@ -345,27 +348,27 @@ def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = S[.COMPLET
   -- if $stringable_instance(S, n)
   -- if ~$config_strict(S, pconfigcall)
 def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = $config_error(S, pconfigcall, "TypeError", $ptascii("assert(): Argument #2 ($description) must be of type Throwable|string|null, ") ++ $typed_given(S, pvalue_description) ++ $ptascii(" given")) -- otherwise
-def $assertion_receive(S, pconfigcall) = $assertion_success(S) -- if $(S.ASSERTIONS <= 0)
+def $assertion_receive(S, pconfigcall) = $assertion_success(S) -- if $(S.ASSERTIONS <= 0) \/ ~S.ASSERTACTIVE.VALUE
 def $assertion_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("assert() expects at least 1 argument, 0 given"))
-  -- if $(S.ASSERTIONS > 0)
+  -- if $(S.ASSERTIONS > 0) /\ S.ASSERTACTIVE.VALUE
   -- if pconfigcall.SENT = eps
 def $assertion_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("assert() expects at most 2 arguments, ") ++ $decimal_integer(|pconfigcall.SENT|) ++ $ptascii(" given"))
-  -- if $(S.ASSERTIONS > 0)
+  -- if $(S.ASSERTIONS > 0) /\ S.ASSERTACTIVE.VALUE
   -- if $(|pconfigcall.SENT| > 2)
 def $assertion_receive(S, pconfigcall) = $config_error(S, pconfigcall, "ArgumentCountError", $ptascii("assert(): Argument #1 ($assertion) not passed"))
-  -- if $(S.ASSERTIONS > 0)
+  -- if $(S.ASSERTIONS > 0) /\ S.ASSERTACTIVE.VALUE
   -- if $config_missing(pconfigcall.SENT, 0) = (0)
   -- if $(|pconfigcall.SENT| <= 2)
 def $assertion_receive(S, pconfigcall) = $assertion_description_value(S, pconfigcall, pvalue, PSTRING preqbytes)
-  -- if $(S.ASSERTIONS > 0)
+  -- if $(S.ASSERTIONS > 0) /\ S.ASSERTACTIVE.VALUE
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if $assertion_default(S, pconfigcall) = (preqbytes)
 def $assertion_receive(S, pconfigcall) = $assertion_description_value(S, pconfigcall, pvalue, PNULL)
-  -- if $(S.ASSERTIONS > 0)
+  -- if $(S.ASSERTIONS > 0) /\ S.ASSERTACTIVE.VALUE
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if $assertion_default(S, pconfigcall) = eps
 def $assertion_receive(S, pconfigcall) = $assertion_description_value(S, pconfigcall, pvalue, pvalue_description)
-  -- if $(S.ASSERTIONS > 0)
+  -- if $(S.ASSERTIONS > 0) /\ S.ASSERTACTIVE.VALUE
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_description)]
 def $assertion_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "assert argument receive shape"] -- otherwise
 rule PhpStep/assertion-invoke: S ~> $assertion_receive(S, pconfigcall)
@@ -427,3 +430,663 @@ def $assertion_trace_call(S, pconfigcall) = pconfigcall[.SENT = pconfigcall.SENT
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
   -- if $assertion_default(S, pconfigcall) = (preqbytes)
 def $assertion_trace_call(S, pconfigcall) = pconfigcall -- otherwise
+
+;; assert_options snapshots the old boolean only after the function diagnostic.
+;; Its conversion record retains that C local across Stringable/error callbacks.
+dec $assertion_bool_int(bool) : int
+def $assertion_bool_int(true) = 1
+def $assertion_bool_int(false) = 0
+dec $assertion_option_at(passertoption*, nat) : passertoption?
+dec $assertion_option_remove(passertoption*, nat) : passertoption*
+dec $assertion_option_drop(pstate, passertoption) : pstate
+dec $assertion_options_records_valid(passertoption*, nat) : bool
+dec $assertion_flag_bool(preqbytes) : bool
+dec $assertion_flag_state(pstate, int) : passertflag
+dec $assertion_flag_put(pstate, int, passertflag) : pstate
+dec $assertion_flag_set(pstate, int, preqbytes) : pstate
+dec $assertion_flag_restore(pstate, int) : pstate
+dec $assertion_flag_valid(passertflag) : bool
+dec $assertion_options_message() : preqbytes
+dec $assertion_options_valid(pstate, pconfigcall) : bool
+dec $assertion_options_return(pstate, pvalue) : pstate
+dec $assertion_options_receive(pstate, pconfigcall) : pstate
+dec $assertion_options_body(pstate, pconfigcall, int) : pstate
+dec $assertion_options_callback(pstate, pconfigcall) : pstate
+dec $assertion_options_value(pstate, passertoption, pvalue) : pstate
+dec $assertion_options_finish(pstate, passertoption, preqbytes) : pstate
+dec $assertion_option_valid(pstate, passertoption) : bool
+dec $assertion_option_source(pstate, passertoption) : (nat, porigin, int)?
+dec $assertion_option_source_at(pstate, passertoption, nat) : (nat, porigin, int)?
+dec $assertion_option_string_valid(pstate, passertoption, nat, porigin, int) : bool
+
+def $intrinsic_name(INTRINSIC_ASSERT_OPTIONS) = $ptascii("assert_options")
+def $intrinsic_named(preqbytes) = (INTRINSIC_ASSERT_OPTIONS) -- if $ptlc(preqbytes) = $ptascii("assert_options")
+def $config_kind(INTRINSIC_ASSERT_OPTIONS) = true
+def $assertion_kind(INTRINSIC_ASSERT_OPTIONS) = true
+def $config_parameter(INTRINSIC_ASSERT_OPTIONS, preqbytes) = (0) -- if preqbytes = $ptascii("option")
+def $config_parameter(INTRINSIC_ASSERT_OPTIONS, preqbytes) = (1) -- if preqbytes = $ptascii("value")
+def $config_parameter_name(INTRINSIC_ASSERT_OPTIONS, 0) = $ptascii("option")
+def $config_parameter_name(INTRINSIC_ASSERT_OPTIONS, 1) = $ptascii("value")
+def $error_api_min(INTRINSIC_ASSERT_OPTIONS) = 1
+def $error_api_max(INTRINSIC_ASSERT_OPTIONS) = 2
+
+def $assertion_flag_bool(preqbytes) = ($ptlc(preqbytes) <- [$ptascii("true"), $ptascii("yes"), $ptascii("on")] \/ $reporting_ini_mask(preqbytes) =/= 0)
+def $assertion_flag_option(preqbytes) = (1) -- if preqbytes = $ptascii("assert.active")
+def $assertion_flag_option(preqbytes) = (3) -- if preqbytes = $ptascii("assert.bail")
+def $assertion_flag_option(preqbytes) = (4) -- if preqbytes = $ptascii("assert.warning")
+def $assertion_flag_option(preqbytes) = (5) -- if preqbytes = $ptascii("assert.exception")
+def $assertion_flag_option(preqbytes) = eps -- otherwise
+def $assertion_flag_state(S, 1) = S.ASSERTACTIVE
+def $assertion_flag_state(S, 3) = S.ASSERTBAIL
+def $assertion_flag_state(S, 4) = S.ASSERTWARNING
+def $assertion_flag_state(S, 5) = S.ASSERTEXCEPTION
+def $assertion_flag_put(S, 1, passertflag) = S[.ASSERTACTIVE = passertflag]
+def $assertion_flag_put(S, 3, passertflag) = S[.ASSERTBAIL = passertflag]
+def $assertion_flag_put(S, 4, passertflag) = S[.ASSERTWARNING = passertflag]
+def $assertion_flag_put(S, 5, passertflag) = S[.ASSERTEXCEPTION = passertflag]
+def $assertion_flag_set(S, z, preqbytes) = $assertion_flag_put(S, z, passertflag[.VALUE = $assertion_flag_bool(preqbytes)][.RAW = preqbytes][.MODIFIED = true])
+  -- if passertflag = $assertion_flag_state(S, z)
+def $assertion_flag_restore(S, z) = $assertion_flag_put(S, z, passertflag[.VALUE = $assertion_flag_bool(passertflag.INITIAL)][.RAW = passertflag.INITIAL][.MODIFIED = false])
+  -- if passertflag = $assertion_flag_state(S, z)
+def $assertion_flag_valid(passertflag) = ($startup_bytes(passertflag.INITIAL) /\ $startup_bytes(passertflag.RAW) /\ passertflag.VALUE = $assertion_flag_bool(passertflag.RAW) /\ (passertflag.MODIFIED \/ passertflag.RAW = passertflag.INITIAL))
+def $config_ini_get_finish(S, pconfigcall, n_option*) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING passertflag.RAW)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $assertion_flag_option(n_option*) = (z)
+  -- if passertflag = $assertion_flag_state(S, z)
+  -- if S.TODO = ptask :: ptask_tail*
+def $config_ini_unary_finish(S, pconfigcall, n_option*) = $assertion_flag_restore(S, z)[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if $assertion_flag_option(n_option*) = (z)
+  -- if S.TODO = ptask :: ptask_tail*
+rule PhpStep/assertion-flag-restore-string-result: S ~> $assertion_flag_restore(S, z)[.ORIGIN = (pconfigcall.SITE)][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if S.ORIGIN = (porigin_child)
+  -- if $config_string_site_valid(S, pconfigcall, n_object, porigin_child, z_child, z_call)
+  -- if S.RESULT = KNOWN (PSTRING n_option*)
+  -- if $assertion_flag_option(n_option*) = (z)
+def $assertion_options_message() = $ptascii("Function assert_options() is deprecated since 8.3")
+def $assertion_options_valid(S, pconfigcall) = (pconfigcall.KIND = INTRINSIC_ASSERT_OPTIONS /\ $config_invoke_valid(S, pconfigcall))
+def $assertion_options_return(S, pvalue) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+def $assertion_options_receive(S, pconfigcall) = S_arity
+  -- if S_arity = $error_api_arity(S, pconfigcall)
+  -- if S_arity.COMPLETION =/= NORMAL
+def $assertion_options_receive(S, pconfigcall) = S_option
+  -- if S_arity = $error_api_arity(S, pconfigcall)
+  -- if S_arity.COMPLETION = NORMAL
+  -- if S_option = $error_api_long(S_arity, pconfigcall, 0, $error_api_value(pconfigcall, 0, PNULL))
+  -- if S_option.COMPLETION =/= NORMAL
+def $assertion_options_receive(S, pconfigcall) = $assertion_options_body(S_option, pconfigcall, z)
+  -- if S_arity = $error_api_arity(S, pconfigcall)
+  -- if S_arity.COMPLETION = NORMAL
+  -- if S_option = $error_api_long(S_arity, pconfigcall, 0, $error_api_value(pconfigcall, 0, PNULL))
+  -- if S_option.COMPLETION = NORMAL
+  -- if S_option.RESULT = KNOWN (PINT z)
+def $assertion_options_body(S, pconfigcall, 2) = $assertion_options_callback(S, pconfigcall)
+def $assertion_options_body(S, pconfigcall, z) = $assertion_options_return(S, PINT $assertion_bool_int(passertflag.VALUE))
+  -- if z <- [1,3,4,5]
+  -- if |pconfigcall.SENT| = 1
+  -- if passertflag = $assertion_flag_state(S, z)
+def $assertion_options_body(S, pconfigcall, z) = $assertion_options_value(S[.ASSERTOPTIONNEXT = $(n + 1)][.ASSERTOPTIONS = passertoption :: S.ASSERTOPTIONS], passertoption, pvalue)
+  -- if z <- [1,3,4,5]
+  -- if |pconfigcall.SENT| = 2
+  -- if pvalue = $error_api_value(pconfigcall, 1, PNULL)
+  -- if passertflag = $assertion_flag_state(S, z)
+  -- if n = S.ASSERTOPTIONNEXT
+  -- if passertoption = {ID n, CALL pconfigcall, OPTION z, OLD passertflag.VALUE}
+def $assertion_options_body(S, pconfigcall, z) = $config_error(S, pconfigcall, "ValueError", $ptascii("assert_options(): Argument #1 ($option) must be an ASSERT_* constant"))
+  -- if ~(z <- [1,2,3,4,5])
+def $assertion_options_callback(S, pconfigcall) = $assertion_options_return(S, $error_handler_value({CALLBACK S.ASSERTCALLBACK, LEVELS 0}))
+  -- if |pconfigcall.SENT| = 1
+def $assertion_options_callback(S, pconfigcall) = $assertion_options_return(S[.ASSERTCALLBACK = eps], $error_handler_value({CALLBACK S.ASSERTCALLBACK, LEVELS 0}))
+  -- if |pconfigcall.SENT| = 2
+  -- if $error_api_value(pconfigcall, 1, PNULL) = PNULL
+def $assertion_options_callback(S, pconfigcall) = $assertion_options_return(S[.ASSERTCALLBACK = (pvalue)], $error_handler_value({CALLBACK S.ASSERTCALLBACK, LEVELS 0}))
+  -- if |pconfigcall.SENT| = 2
+  -- if pvalue = $error_api_value(pconfigcall, 1, PNULL)
+  -- if pvalue =/= PNULL
+
+def $assertion_option_valid(S, passertoption) = true
+  -- if $assertion_option_at(S.ASSERTOPTIONS, passertoption.ID) = (passertoption)
+  -- if $(passertoption.ID < S.ASSERTOPTIONNEXT)
+  -- if passertoption.OPTION <- [1,3,4,5]
+  -- if $assertion_options_valid(S[.ORIGIN = (passertoption.CALL.SITE)], passertoption.CALL)
+  -- if |passertoption.CALL.SENT| = 2
+  -- if $error_long_conversion($error_api_value(passertoption.CALL, 0, PNULL), $config_strict(S, passertoption.CALL)) = TYPEVALUE (PINT passertoption.OPTION)
+def $assertion_option_valid(S, passertoption) = false -- otherwise
+def $assertion_options_finish(S, passertoption, preqbytes) = $assertion_options_return($assertion_flag_set($assertion_option_drop(S, passertoption), passertoption.OPTION, preqbytes), PINT $assertion_bool_int(passertoption.OLD))
+  -- if $assertion_option_at(S.ASSERTOPTIONS, passertoption.ID) = (passertoption)
+def $assertion_options_value(S, passertoption, pvalue) = $assertion_options_finish(S_value, passertoption, preqbytes)
+  -- if $typed_scalar(pvalue) \/ pvalue = PNULL
+  -- if ptypeconversion = $config_ini_value_conversion(pvalue)
+  -- if S_value = $typed_apply(S, ptypeconversion, passertoption.CALL.LINE)
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN (PSTRING preqbytes)
+def $assertion_options_value(S, passertoption, PARRAY n) = $error_dispatch(S, 2, $ptascii("Array to string conversion"), passertoption.CALL.LINE, DIAGNOSTIC "Warning" $ptascii("Array to string conversion") passertoption.CALL.LINE, ASSERT_OPTIONS_ARRAY passertoption)
+def $assertion_options_value(S, passertoption, POBJECT n) = $user_string_begin(S[.ORIGIN = (porigin_child)], n, porigin_child, passertoption.CALL.LINE, ASSERT_OPTIONS_STRING passertoption n porigin_child z_child, ptask_tail*)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $assertion_option_source(S, passertoption) = ((n, porigin_child, z_child))
+  -- if $stringable_instance(S, n)
+def $assertion_options_value(S, passertoption, POBJECT n) = $config_error($assertion_option_drop(S, passertoption), passertoption.CALL, "Error", $ptascii("Object of class ") ++ $object_name(S, n) ++ $ptascii(" could not be converted to string"))
+  -- if ~$stringable_instance(S, n)
+def $assertion_options_value(S, passertoption, pvalue) = $assertion_option_drop(S, passertoption)[.COMPLETION = UNSUPPORTED "assert_options conversion source"] -- otherwise
+
+def $assertion_option_source(S, passertoption) = $assertion_option_source_at(S, passertoption, 0)
+def $assertion_option_source_at(S, passertoption, n_source) = ((n, porigin_child, z_child))
+  -- if $(n_source < 2)
+  -- if passertoption.CALL.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN (POBJECT n))]
+  -- if $intrinsic_argument(S, passertoption.CALL.SITE, n_source) = ((expression, false, preqbytes?, porigin_child, z_child))
+  -- if $config_destination(INTRINSIC_ASSERT_OPTIONS, preqbytes?, n_source) = (1)
+  -- if $intrinsic_count(S, passertoption.CALL.SITE) = (2)
+def $assertion_option_source_at(S, passertoption, n_source) = $assertion_option_source_at(S, passertoption, $(n_source + 1))
+  -- if $(n_source < 2)
+  -- if $intrinsic_argument(S, passertoption.CALL.SITE, n_source) = ((expression, false, preqbytes?, porigin_child, z_child))
+  -- if $config_destination(INTRINSIC_ASSERT_OPTIONS, preqbytes?, n_source) =/= (1)
+def $assertion_option_source_at(S, passertoption, n_source) = eps -- otherwise
+def $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child) = ($assertion_option_valid(S, passertoption) /\ $assertion_option_source(S, passertoption) = ((n, porigin_child, z_child)) /\ $stringable_instance(S, n))
+
+rule PhpStep/assert-options-deprecated: S ~> $error_dispatch(S, 8192, $assertion_options_message(), pconfigcall.LINE, DIAGNOSTIC "Deprecated" $assertion_options_message() pconfigcall.LINE, ASSERT_OPTIONS_READY pconfigcall)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $assertion_options_valid(S, pconfigcall)
+rule PhpStep/assert-options-ready: S ~> $assertion_options_receive(S, pconfigcall)
+  -- if S.TODO = (ASSERT_OPTIONS_READY pconfigcall) :: ptask_tail*
+  -- if $assertion_options_valid(S, pconfigcall)
+rule PhpStep/assert-options-array: S ~> $assertion_options_finish(S, passertoption, $ptascii("Array"))
+  -- if S.TODO = (ASSERT_OPTIONS_ARRAY passertoption) :: ptask_tail*
+  -- if $assertion_option_valid(S, passertoption)
+  -- if $is_array_value($error_api_value(passertoption.CALL, 1, PNULL))
+rule PhpStep/assert-options-string: S ~> $assertion_options_finish(S[.ORIGIN = (passertoption.CALL.SITE)], passertoption, preqbytes)
+  -- if S.TODO = (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_child)
+  -- if $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
+  -- if S.RESULT = KNOWN (PSTRING preqbytes)
+def $task_nodes(ASSERT_OPTIONS_READY pconfigcall) = $config_nodes(pconfigcall)
+def $task_nodes(ASSERT_OPTIONS_ARRAY passertoption) = $config_nodes(passertoption.CALL)
+def $task_nodes(ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) = [HOBJECT n] ++ $config_nodes(passertoption.CALL)
+def $selected_task_nonce(ASSERT_OPTIONS_READY pconfigcall) = pconfigcall.SELECTION
+def $selected_task_nonce(ASSERT_OPTIONS_ARRAY passertoption) = passertoption.CALL.SELECTION
+def $selected_task_nonce(ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) = passertoption.CALL.SELECTION
+def $call_task_valid(S, ASSERT_OPTIONS_READY pconfigcall) = $assertion_options_valid(S, pconfigcall)
+def $call_task_valid(S, ASSERT_OPTIONS_ARRAY passertoption) = $assertion_option_valid(S, passertoption)
+def $call_task_valid(S, ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) = $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
+def $config_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_child), z) = true
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_child) z) :: (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
+  -- if z = passertoption.CALL.LINE
+  -- if $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_child)
+def $error_call_valid(S, perrorcall) = true
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.RESUME = ASSERT_OPTIONS_READY pconfigcall
+  -- if $assertion_options_valid(S, pconfigcall)
+  -- if perrorcall.SITE = pconfigcall.SITE
+  -- if perrorcall.LINE = pconfigcall.LINE
+  -- if perrorcall.LEVEL = 8192
+  -- if perrorcall.MESSAGE = $assertion_options_message()
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if perrorcall.RESUME = ASSERT_OPTIONS_ARRAY passertoption
+  -- if $assertion_option_valid(S, passertoption)
+  -- if $is_array_value($error_api_value(passertoption.CALL, 1, PNULL))
+  -- if perrorcall.SITE = passertoption.CALL.SITE
+  -- if perrorcall.LINE = passertoption.CALL.LINE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("Array to string conversion")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = (pconfigcall)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ASSERT_OPTIONS_READY pconfigcall
+def $error_context_trigger(S, pcallcontext) = (passertoption.CALL)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ASSERT_OPTIONS_ARRAY passertoption
+def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if pconfigcall.KIND = INTRINSIC_ASSERT_OPTIONS
+
+def $assertion_option_at(eps, n) = eps
+def $assertion_option_at(passertoption :: passertoption_tail*, n) = (passertoption) -- if passertoption.ID = n
+def $assertion_option_at(passertoption :: passertoption_tail*, n) = $assertion_option_at(passertoption_tail*, n) -- if passertoption.ID =/= n
+def $assertion_option_remove(eps, n) = eps
+def $assertion_option_remove(passertoption :: passertoption_tail*, n) = passertoption_tail* -- if passertoption.ID = n
+def $assertion_option_remove(passertoption :: passertoption_tail*, n) = passertoption :: $assertion_option_remove(passertoption_tail*, n) -- if passertoption.ID =/= n
+def $assertion_option_drop(S, passertoption) = S[.ASSERTOPTIONS = $assertion_option_remove(S.ASSERTOPTIONS, passertoption.ID)]
+def $assertion_options_records_valid(eps, n) = true
+def $assertion_options_records_valid(passertoption :: passertoption_tail*, n) = ($(passertoption.ID < n) /\ passertoption.OPTION <- [1,3,4,5] /\ passertoption.CALL.KIND = INTRINSIC_ASSERT_OPTIONS /\ |passertoption.CALL.SENT| = 2 /\ $assertion_option_at(passertoption_tail*, passertoption.ID) = eps /\ $assertion_options_records_valid(passertoption_tail*, n))
+def $assertion_policy_valid(S) = ($assertion_flag_valid(S.ASSERTACTIVE) /\ $assertion_flag_valid(S.ASSERTBAIL) /\ $assertion_flag_valid(S.ASSERTWARNING) /\ $assertion_flag_valid(S.ASSERTEXCEPTION) /\ $heap_subset($assertion_callback_roots(S.ASSERTCALLBACK), S.ALLOCATIONS) /\ $assertion_options_records_valid(S.ASSERTOPTIONS, S.ASSERTOPTIONNEXT))
+
+;; Only live consumers own conversion records; history snapshots do not count.
+dec $assertion_option_task_ids(ptask) : nat*
+dec $assertion_option_task_list_ids(ptask*) : nat*
+dec $live_control_frame_tasks(pframe*) : ptask*
+dec $live_control_vm_tasks(pstate, pfibervm, nat?) : ptask*
+dec $live_control_caller_tasks(pstate, pfibercaller*) : ptask*
+dec $live_control_close_tasks(pstate, pfiberclose*) : ptask*
+dec $live_control_node_tasks(pstate, pnode) : ptask*
+dec $live_control_object_tasks(pstate, pnode*) : ptask*
+dec $assertion_option_ids_valid(passertoption*, nat*) : bool
+dec $assertion_option_records_owned(passertoption*, nat*) : bool
+def $assertion_option_task_ids(ASSERT_OPTIONS_ARRAY passertoption) = [passertoption.ID]
+def $assertion_option_task_ids(ASSERT_OPTIONS_STRING passertoption n porigin z) = [passertoption.ID]
+def $assertion_option_task_ids(AT porigin ptask) = $assertion_option_task_ids(ptask)
+def $assertion_option_task_ids(ERROR_HANDLER_INVOKE perrorcall) = $assertion_option_task_ids(perrorcall.RESUME)
+def $assertion_option_task_ids(ERROR_HANDLER_RESULT perrorcall) = $assertion_option_task_ids(perrorcall.RESUME)
+def $assertion_option_task_ids(ERROR_HANDLER_CLEAN perrorcall) = $assertion_option_task_ids(perrorcall.RESUME)
+def $assertion_option_task_ids(ptask) = eps -- otherwise
+def $assertion_option_task_list_ids(eps) = eps
+def $assertion_option_task_list_ids(ptask :: ptask_tail*) = $assertion_option_task_ids(ptask) ++ $assertion_option_task_list_ids(ptask_tail*)
+def $live_control_frame_tasks(eps) = eps
+def $live_control_frame_tasks(pframe :: pframe_tail*) = pframe.TODO ++ $live_control_frame_tasks(pframe_tail*)
+def $live_control_vm_tasks(S, pfibervm, n?) = pfibervm.TODO ++ $live_control_frame_tasks(pfibervm.FRAMES) -- if n? =/= S.ACTIVEFIBER
+def $live_control_vm_tasks(S, pfibervm, n?) = eps -- if n? = S.ACTIVEFIBER
+def $live_control_caller_tasks(S, eps) = eps
+def $live_control_caller_tasks(S, pfibercaller :: pfibercaller_tail*) = $live_control_vm_tasks(S, pfibercaller.VM, pfibercaller.PREVIOUS) ++ $live_control_caller_tasks(S, pfibercaller_tail*)
+def $live_control_close_tasks(S, eps) = eps
+def $live_control_close_tasks(S, pfiberclose :: pfiberclose_tail*) = $live_control_vm_tasks(S, pfiberclose.VM, pfiberclose.PREVIOUS) ++ $live_control_close_tasks(S, pfiberclose_tail*)
+def $live_control_node_tasks(S, HOBJECT n) = $live_control_vm_tasks(S, pfibervm, (n))
+  -- if $object_body(S.OBJECTS[n]) = FIBER pfiber
+  -- if pfiber.VM = (pfibervm)
+def $live_control_node_tasks(S, HOBJECT n) = pframe.TODO
+  -- if $object_body(S.OBJECTS[n]) = GENERATOR pgenerator
+  -- if pgenerator.FRAME = (pframe)
+def $live_control_node_tasks(S, pnode) = eps -- otherwise
+def $live_control_object_tasks(S, eps) = eps
+def $live_control_object_tasks(S, pnode :: pnode_tail*) = $live_control_node_tasks(S, pnode) ++ $live_control_object_tasks(S, pnode_tail*)
+def $assertion_option_ids_valid(passertoption*, eps) = true
+def $assertion_option_ids_valid(passertoption*, n :: n_tail*) = ($assertion_option_at(passertoption*, n) =/= eps /\ ~(n <- n_tail*) /\ $assertion_option_ids_valid(passertoption*, n_tail*))
+def $assertion_option_records_owned(eps, n*) = true
+def $assertion_option_records_owned(passertoption :: passertoption_tail*, n*) = (passertoption.ID <- n* /\ $assertion_option_records_owned(passertoption_tail*, n*))
+def $live_control_tasks(S) = S.TODO ++ $live_control_frame_tasks(S.FRAMES) ++ $live_control_caller_tasks(S, S.FIBERCALLERS) ++ $live_control_close_tasks(S, S.FIBERCLOSERS) ++ $live_control_object_tasks(S, S.ALLOCATIONS)
+def $assertion_options_state_valid(S) = true -- if S.ASSERTOPTIONS = eps
+def $assertion_options_state_valid(S) = true
+  -- if S.ASSERTOPTIONS =/= eps
+  -- if n* = $assertion_option_task_list_ids($live_control_tasks(S))
+  -- if $assertion_option_ids_valid(S.ASSERTOPTIONS, n*)
+  -- if $assertion_option_records_owned(S.ASSERTOPTIONS, n*)
+def $assertion_options_state_valid(S) = false -- otherwise
+def $return_discard(S, ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) = $assertion_option_drop(S, passertoption)
+def $return_discard(S, ASSERT_OPTIONS_ARRAY passertoption) = $assertion_option_drop(S, passertoption)
+def $error_read_discard(S, ASSERT_OPTIONS_ARRAY passertoption) = $assertion_option_drop(S, passertoption)
+def $stringify_source(S, porigin_child, z, ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) = (z = passertoption.CALL.LINE /\ $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child))
+def $config_string_child_site(S, porigin_child, z) = true
+  -- if S.TODO = ptask :: (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
+  -- if z = passertoption.CALL.LINE
+  -- if $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
+def $config_string_child_site(S, porigin_child, z) = true
+  -- if S.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
+  -- if z = passertoption.CALL.LINE
+  -- if $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
+def $config_string_child_site(S, porigin_child, z) = true
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
+  -- if z = passertoption.CALL.LINE
+  -- if $assertion_option_string_valid(S, passertoption, n, porigin_child, z_child)
+
+;; ASSERT_* shares the existing protected runtime constant diagnostic protocol.
+dec $assertion_option_constant(preqbytes) : int?
+dec $assertion_constant_name(pstate, preqbytes, preqbytes?) : preqbytes?
+dec $assertion_constant_source_name(pstate, porigin) : preqbytes?
+def $assertion_option_constant(preqbytes) = (1) -- if preqbytes = $ptascii("ASSERT_ACTIVE")
+def $assertion_option_constant(preqbytes) = (2) -- if preqbytes = $ptascii("ASSERT_CALLBACK")
+def $assertion_option_constant(preqbytes) = (3) -- if preqbytes = $ptascii("ASSERT_BAIL")
+def $assertion_option_constant(preqbytes) = (4) -- if preqbytes = $ptascii("ASSERT_WARNING")
+def $assertion_option_constant(preqbytes) = (5) -- if preqbytes = $ptascii("ASSERT_EXCEPTION")
+def $assertion_option_constant(preqbytes) = eps -- otherwise
+def $assertion_constant_name(S, preqbytes, preqbytes_fallback?) = (preqbytes)
+  -- if $assertion_option_constant(preqbytes) =/= eps
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+def $assertion_constant_name(S, preqbytes, (preqbytes_fallback)) = (preqbytes_fallback)
+  -- if $source_constant_lookup(S, preqbytes) = eps
+  -- if $assertion_option_constant(preqbytes_fallback) =/= eps
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes_fallback)) = eps
+def $assertion_constant_name(S, preqbytes, preqbytes_fallback?) = eps -- otherwise
+def $assertion_constant_source_name(S, PORIGIN n pcpath) = $assertion_constant_name(S, preqbytes, preqbytes_fallback?)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+def $assertion_constant_source_name(S, porigin) = eps -- otherwise
+def $deprecated_constant_name(S, preqbytes, preqbytes_fallback?) = true
+  -- if $assertion_constant_name(S, preqbytes, preqbytes_fallback?) =/= eps
+def $deprecated_constant_message_at(S, porigin) = $ptascii("Constant ") ++ preqbytes ++ $ptascii(" is deprecated since 8.3, as assert_options() is deprecated")
+  -- if $assertion_constant_source_name(S, porigin) = (preqbytes)
+def $deprecated_constant_value(S, porigin) = PINT z
+  -- if $assertion_constant_source_name(S, porigin) = (preqbytes)
+  -- if $assertion_option_constant(preqbytes) = (z)
+def $deprecated_constant_identity(S, porigin) = preqbytes
+  -- if $assertion_constant_source_name(S, porigin) = (preqbytes)
+def $constant_name_class(S, preqbytes, preqbytes_fallback?) = PVSCALAR
+  -- if $assertion_option_constant(preqbytes) =/= eps
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+
+;; The selected callable is frozen across registry replacement. Raw array data
+;; witnesses selection; only the actual selected cache owns its receiver.
+dec $assertion_pending_valid(pstate, nat?) : bool
+dec $assertion_callback_error(pstate, passertfailure) : pstate
+dec $assertion_policy_error_finish(pstate, passertfailure) : pstate
+dec $assertion_failure_valid(pstate, passertfailure) : bool
+dec $assertion_description_argument(pstate, pconfigcall, pvalue) : pvalue?
+dec $assertion_saved_description(pstate, pconfigcall) : pvalue?
+dec $assertion_callback_values(pstate, passertfailure) : pvalue*
+dec $assertion_callback_valid(pstate, passertcall) : bool
+dec $assertion_callback_enter(pstate, passertcall, pcalltarget, pfunction) : pstate
+dec $assertion_callback_finish(pstate, passertcall) : pstate
+dec $assertion_callback_cleanup_valid(pstate, passertcall) : bool
+dec $assertion_policy(pstate, passertfailure) : pstate
+dec $assertion_policy_error(pstate, passertfailure) : pstate
+dec $assertion_policy_error_result(pstate, passertfailure) : pstate
+dec $assertion_warning_text(pvalue) : preqbytes
+dec $assertion_policy_finish(pstate, passertfailure) : pstate
+dec $assertion_callback_context_head(pcallcontext, pframe*) : passertcall?
+dec $assertion_callback_context_frames(pcallcontext, pframe*) : passertcall?
+dec $assertion_callback_context_call(pstate, pcallcontext) : passertcall?
+dec $assertion_callback_context_anchor(pstate, pcallcontext, pcallcontext?, pframe*) : bool
+dec $assertion_callback_context_valid(pstate, pcallcontext) : bool
+
+def $assertion_description_argument(S, pconfigcall, PNULL) = (PNULL)
+def $assertion_description_argument(S, pconfigcall, PSTRING preqbytes) = (PSTRING preqbytes)
+def $assertion_description_argument(S, pconfigcall, pvalue) = (PSTRING preqbytes)
+  -- if $typed_scalar(pvalue) /\ ~$method_string(pvalue)
+  -- if $config_conversion(S, pconfigcall, pvalue) = TYPEVALUE (PSTRING preqbytes)
+def $assertion_description_argument(S, pconfigcall, pvalue) = eps -- otherwise
+def $assertion_saved_description(S, pconfigcall) = (PSTRING preqbytes)
+  -- if |pconfigcall.SENT| = 1
+  -- if $assertion_default(S, pconfigcall) = (preqbytes)
+def $assertion_saved_description(S, pconfigcall) = (PNULL)
+  -- if |pconfigcall.SENT| = 1
+  -- if $assertion_default(S, pconfigcall) = eps
+def $assertion_saved_description(S, pconfigcall) = $assertion_description_argument(S, pconfigcall, pvalue)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_assertion), NAMED_SENT (KNOWN pvalue)]
+def $assertion_saved_description(S, pconfigcall) = eps -- otherwise
+def $assertion_failure_valid(S, passertfailure) = true
+  -- if passertfailure.CALL.KIND = INTRINSIC_ASSERT
+  -- if $config_invoke_valid(S[.ORIGIN = (passertfailure.CALL.SITE)], passertfailure.CALL)
+  -- if passertfailure.CALL.SENT = (NAMED_SENT (KNOWN pvalue)) :: pnamedslot*
+  -- if ~$truth(S, pvalue)
+  -- if $precision_ini_valid($decimal_integer(passertfailure.PRECISION))
+  -- if $assertion_saved_description($precision_memory(S, passertfailure.PRECISION), passertfailure.CALL) = (passertfailure.DESCRIPTION)
+  -- if $assertion_pending_valid(S, passertfailure.PENDING)
+def $assertion_failure_valid(S, passertfailure) = false -- otherwise
+def $assertion_failure_begin(S, pconfigcall, pvalue) = $assertion_policy(S, {CALL pconfigcall, DESCRIPTION pvalue, PRECISION $precision_value(S), PENDING eps})
+  -- if S.ASSERTCALLBACK = eps
+def $assertion_failure_begin(S, pconfigcall, pvalue) = S[.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ASSERTCALLBACK = (pvalue_callback)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if passertcall = {FAILURE {CALL pconfigcall, DESCRIPTION pvalue, PRECISION $precision_value(S), PENDING eps}, CALLBACK pvalue_callback, RAW $exception_snapshot(S, pvalue_callback), TARGET eps}
+def $assertion_callback_values(S, passertfailure) = [PSTRING $call_sourcefile(S.FILES, passertfailure.CALL.SITE), PINT passertfailure.CALL.LINE, PNULL]
+  -- if passertfailure.DESCRIPTION = PNULL
+def $assertion_callback_values(S, passertfailure) = [PSTRING $call_sourcefile(S.FILES, passertfailure.CALL.SITE), PINT passertfailure.CALL.LINE, PNULL, PSTRING preqbytes]
+  -- if passertfailure.DESCRIPTION = PSTRING preqbytes
+def $assertion_callback_valid(S, passertcall) = true
+  -- if $assertion_failure_valid(S, passertcall.FAILURE)
+  -- if passertcall.TARGET = (pcalltarget)
+  -- if $exception_raw_selected(S, passertcall.CALLBACK, passertcall.RAW, pcalltarget)
+  -- if $handler_emitter_valid(S, pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+def $assertion_callback_valid(S, passertcall) = false -- otherwise
+def $assertion_callback_enter(S, passertcall, pcalltarget, pfunction) = $call_arity($target_after_enter($call_enter(S_args, pfunction, poperand*, (passertcall.FAILURE.CALL.SITE), passertcall.FAILURE.CALL.LINE), pcalltarget), pfunction, |pvalue*|, (passertcall.FAILURE.CALL.SITE), passertcall.FAILURE.CALL.LINE)
+  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
+  -- if pvalue* = $assertion_callback_values(S, passertcall.FAILURE)
+  -- if S_pending = S[.TODO = (ASSERT_CALLBACK_RESULT passertcall[.TARGET = (pcalltarget)]) :: ptask_tail*]
+  -- if $error_handler_operands(S_pending, pcalltarget, pvalue*, 0, passertcall.FAILURE.CALL.LINE) = (S_args, poperand*)
+rule PhpStep/assert-callback-enter: S ~> $assertion_callback_enter(S, passertcall, pcalltarget, pfunction)
+  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
+  -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
+  -- if $error_handler_target(S, passertcall.CALLBACK) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+  -- if ~$api_special(S, passertcall.CALLBACK)
+rule PhpStep/assert-callback-invalid: S ~> $assertion_callback_error($config_error(S, $assertion_trace_call(S, passertcall.FAILURE.CALL), "Error", $ptascii("Invalid callback ") ++ $error_callback_name(S, passertcall.CALLBACK) ++ $ptascii(", ") ++ preqbytes), passertcall.FAILURE)
+  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
+  -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
+  -- if $error_handler_resolution(S, passertcall.CALLBACK) = HANDLERINVALID preqbytes
+  -- if ~$api_special(S, passertcall.CALLBACK)
+rule PhpStep/assert-callback-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "assertion callback invocation form"]
+  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
+  -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
+  -- if $error_handler_resolution(S, passertcall.CALLBACK) = HANDLERUNKNOWN text
+  -- if ~$api_special(S, passertcall.CALLBACK)
+rule PhpStep/assert-callback-api-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "assertion callback invocation form"]
+  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
+  -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
+  -- if $api_special(S, passertcall.CALLBACK)
+rule PhpStep/assert-callback-reference-return: S ~> S[.COMPLETION = UNSUPPORTED "assertion callback reference-return body"]
+  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
+  -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
+  -- if $error_handler_target(S, passertcall.CALLBACK) = (pcalltarget)
+  -- if $target_function(S, pcalltarget) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+  -- if ~$api_special(S, passertcall.CALLBACK)
+def $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall) = ($assertion_failure_valid(S, passertcall.FAILURE) /\ passertcall.TARGET = eps /\ passertcall.FAILURE.PENDING = eps /\ S.ASSERTCALLBACK = (passertcall.CALLBACK) /\ passertcall.RAW = $exception_snapshot(S, passertcall.CALLBACK))
+def $call_task_valid(S, ASSERT_CALLBACK_RESULT passertcall) = $assertion_callback_valid(S, passertcall)
+def $task_nodes(ASSERT_CALLBACK_INVOKE passertcall) = $config_nodes(passertcall.FAILURE.CALL) ++ $instance_roots(passertcall.FAILURE.PENDING)
+def $task_nodes(ASSERT_CALLBACK_RESULT passertcall) = $config_nodes(passertcall.FAILURE.CALL) ++ $instance_roots(passertcall.FAILURE.PENDING) ++ $error_selected_roots(passertcall.TARGET)
+def $task_nodes(ASSERT_CALLBACK_CLEAN passertcall) = $config_nodes(passertcall.FAILURE.CALL)
+def $task_nodes(ASSERT_FAILURE_WARNING passertfailure) = $config_nodes(passertfailure.CALL) ++ $instance_roots(passertfailure.PENDING)
+def $selected_task_nonce(ASSERT_CALLBACK_INVOKE passertcall) = passertcall.FAILURE.CALL.SELECTION
+def $selected_task_nonce(ASSERT_CALLBACK_RESULT passertcall) = passertcall.FAILURE.CALL.SELECTION
+def $selected_task_nonce(ASSERT_CALLBACK_CLEAN passertcall) = passertcall.FAILURE.CALL.SELECTION
+def $selected_task_nonce(ASSERT_FAILURE_WARNING passertfailure) = passertfailure.CALL.SELECTION
+def $throwable_marker(ASSERT_CALLBACK_RESULT passertcall) = true
+rule PhpStep/assert-callback-return: S ~> $assertion_callback_finish(S, passertcall)
+  -- if S.TODO = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if $assertion_callback_valid(S, passertcall)
+  -- if $exception_return_operand(S.RESULT)
+rule PhpStep/assert-callback-throw: S ~> $assertion_callback_finish(S[.TODO = (ASSERT_CALLBACK_RESULT passertcall_pending) :: ptask_tail*], passertcall_pending)
+  -- if S.TODO = (THROW_SEARCH n) :: (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if $assertion_callback_valid(S, passertcall)
+  -- if $throwable_live(S, n)
+  -- if passertcall_pending = passertcall[.FAILURE.PENDING = (n)]
+
+;; Retval and the selected cache are released before the live flags are read.
+def $assertion_callback_finish(S, passertcall) = $eager_operation_begin(S_clean, S_clean, ASSERT_CALLBACK_RESULT passertcall, $error_selected_roots(passertcall.TARGET) ++ $operand_nodes(S.RESULT))
+  -- if S.TODO = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if $destructor_operational(S)
+  -- if pdestructioncleanup = $eager_cleanup_record(S, ASSERT_CALLBACK_RESULT passertcall)
+  -- if S_clean = S[.TODO = (ASSERT_CALLBACK_CLEAN passertcall) :: ptask_tail*][.DESTRUCTION.CLEANUPS = pdestructioncleanup :: S.DESTRUCTION.CLEANUPS][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $assertion_callback_finish(S, passertcall) = $assertion_policy(S[.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*], passertcall.FAILURE)
+  -- if S.TODO = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if ~$destructor_operational(S)
+def $eager_internal_source(ASSERT_CALLBACK_RESULT passertcall) = true
+def $eager_internal_source(ASSERT_CALLBACK_CLEAN passertcall) = true
+def $eager_operation_cleanup_source(ASSERT_CALLBACK_RESULT passertcall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall /\ ~pdestructioncleanup.RELEASED)
+def $eager_operation_cleanup_source(ASSERT_CALLBACK_CLEAN passertcall, pdestructioncleanup) = (pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall /\ ~pdestructioncleanup.RELEASED)
+def $eager_cleanup_source_target(ASSERT_CALLBACK_RESULT passertcall) = passertcall.TARGET
+def $eager_cleanup_source(ASSERT_CALLBACK_CLEAN passertcall) = ASSERT_CALLBACK_RESULT passertcall
+def $eager_cleanup_final(ASSERT_CALLBACK_CLEAN passertcall) = true
+def $eager_cleanup_object(S, ASSERT_CALLBACK_RESULT passertcall) = $eager_raw_history_nodes(S, passertcall.CALLBACK)
+;; The borrowed lookup view repeats receiver identities. Pending exceptions
+;; must remain valid on the actual heap rather than on that historical view.
+def $eager_cleanup_valid(S, pdestructioncleanup) = true
+  -- if pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall
+  -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
+  -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL /\ pdestructioncleanup.TARGET.CLONE = eps
+  -- if passertcall.TARGET = (pdestructioncleanup.TARGET.TARGET)
+  -- if $assertion_pending_valid(S, passertcall.FAILURE.PENDING)
+  -- if $assertion_callback_valid($eager_cleanup_history(S, pdestructioncleanup), passertcall[.FAILURE.PENDING = eps])
+def $assertion_callback_cleanup_valid(S, passertcall) = true
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall
+  -- if ~pdestructioncleanup.RELEASED
+  -- if $eager_cleanup_valid(S, pdestructioncleanup)
+  -- if S.CURRENT = pdestructioncleanup.CALLER /\ S.ORIGIN = pdestructioncleanup.ORIGIN /\ S.CONSTCONTEXT = pdestructioncleanup.CONSTCONTEXT
+def $assertion_callback_cleanup_valid(S, passertcall) = false -- otherwise
+def $call_task_valid(S, ASSERT_CALLBACK_CLEAN passertcall) = $assertion_callback_cleanup_valid(S, passertcall)
+rule PhpStep/assert-callback-clean: S ~> $assertion_policy(S[.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*][.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*], passertcall.FAILURE)
+  -- if S.TODO = (ASSERT_CALLBACK_CLEAN passertcall) :: ptask_tail*
+  -- if $assertion_callback_cleanup_valid(S, passertcall)
+  -- if passertcall.FAILURE.PENDING = eps
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+def $call_after_origin(S, ASSERT_CALLBACK_CLEAN passertcall) = S[.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*]
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+  -- if pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall
+def $return_discard(S, ASSERT_CALLBACK_CLEAN passertcall) = $call_after_origin(S, ASSERT_CALLBACK_CLEAN passertcall)
+
+;; An exception raised by the callback is retained until Zend's failure policy.
+def $assertion_policy(S, passertfailure) = $assertion_policy_error(S, passertfailure) -- if S.ASSERTEXCEPTION.VALUE
+def $assertion_policy(S, passertfailure) = $error_dispatch(S, 2, $ptascii("assert(): ") ++ $assertion_warning_text(passertfailure.DESCRIPTION), passertfailure.CALL.LINE, DIAGNOSTIC "Warning" ($ptascii("assert(): ") ++ $assertion_warning_text(passertfailure.DESCRIPTION)) passertfailure.CALL.LINE, ASSERT_FAILURE_WARNING passertfailure)
+  -- if ~S.ASSERTEXCEPTION.VALUE /\ S.ASSERTWARNING.VALUE
+  -- if passertfailure.PENDING = eps
+def $assertion_policy(S, passertfailure) = $assertion_policy_finish(S, passertfailure)
+  -- if ~S.ASSERTEXCEPTION.VALUE /\ ~S.ASSERTWARNING.VALUE
+def $assertion_policy(S, passertfailure) = $assertion_policy_finish(S, passertfailure)
+  -- if ~S.ASSERTEXCEPTION.VALUE /\ S.ASSERTWARNING.VALUE
+  -- if passertfailure.PENDING =/= eps
+  -- if $error_handler_eligible(S, 2)
+def $assertion_policy(S, passertfailure) = $assertion_policy_finish($error_default(S[.ERRORFATALTRACE = eps], DIAGNOSTIC "Warning" ($ptascii("assert(): ") ++ $assertion_warning_text(passertfailure.DESCRIPTION)) passertfailure.CALL.LINE, 2), passertfailure)
+  -- if ~S.ASSERTEXCEPTION.VALUE /\ S.ASSERTWARNING.VALUE
+  -- if passertfailure.PENDING =/= eps
+  -- if ~$error_handler_eligible(S, 2)
+def $assertion_policy_error(S, passertfailure) = $assertion_policy_error_result($assertion_failed(S, passertfailure.CALL, $c_string(preqbytes)), passertfailure)
+  -- if passertfailure.DESCRIPTION = PSTRING preqbytes
+def $assertion_policy_error(S, passertfailure) = $assertion_policy_error_result($assertion_failed(S, passertfailure.CALL, eps), passertfailure)
+  -- if passertfailure.DESCRIPTION = PNULL
+def $assertion_policy_error_result(S, passertfailure) = $assertion_policy_error_finish($throwable_constructor_field(S, n, "previous", POBJECT n_previous), passertfailure)
+  -- if S.COMPLETION = THROWING n
+  -- if passertfailure.PENDING = (n_previous)
+def $assertion_policy_error_result(S, passertfailure) = $assertion_policy_error_finish(S, passertfailure) -- otherwise
+def $assertion_warning_text(PNULL) = $ptascii("Assertion failed")
+def $assertion_warning_text(PSTRING preqbytes) = $c_string(preqbytes) ++ $ptascii(" failed")
+def $assertion_policy_finish(S, passertfailure) = $assertion_options_return(S, PBOOL false)
+  -- if ~S.ASSERTBAIL.VALUE /\ passertfailure.PENDING = eps
+def $assertion_policy_finish(S, passertfailure) = S[.COMPLETION = THROWING n]
+  -- if ~S.ASSERTBAIL.VALUE
+  -- if passertfailure.PENDING = (n)
+def $assertion_policy_finish(S, passertfailure) = S[.COMPLETION = EXITED 0][.TODO = eps][.ORIGIN = eps][.CONSTCONTEXT = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
+  -- if S.ASSERTBAIL.VALUE /\ passertfailure.PENDING = eps
+def $assertion_policy_finish(S, passertfailure) = S[.COMPLETION = UNSUPPORTED "assertion bail with pending callback exception"]
+  -- if S.ASSERTBAIL.VALUE /\ passertfailure.PENDING =/= eps
+rule PhpStep/assert-failure-warning: S ~> $assertion_policy_finish(S, passertfailure)
+  -- if S.TODO = (ASSERT_FAILURE_WARNING passertfailure) :: ptask_tail*
+  -- if $call_task_valid(S, ASSERT_FAILURE_WARNING passertfailure)
+def $call_task_valid(S, ASSERT_FAILURE_WARNING passertfailure) = ($assertion_failure_valid(S, passertfailure) /\ passertfailure.PENDING = eps)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ASSERT_FAILURE_WARNING passertfailure
+  -- if $call_task_valid(S, ASSERT_FAILURE_WARNING passertfailure)
+  -- if perrorcall.SITE = passertfailure.CALL.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = passertfailure.CALL.LINE
+  -- if perrorcall.MESSAGE = $ptascii("assert(): ") ++ $assertion_warning_text(passertfailure.DESCRIPTION)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_read_discard(S, ASSERT_FAILURE_WARNING passertfailure) = S[.COMPLETION = UNSUPPORTED "assertion bail after throwing warning handler"] -- if S.ASSERTBAIL.VALUE
+def $error_read_discard(S, ASSERT_FAILURE_WARNING passertfailure) = S -- if ~S.ASSERTBAIL.VALUE
+def $error_context_trigger(S, pcallcontext) = (passertfailure.CALL)
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = ASSERT_FAILURE_WARNING passertfailure
+def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands($assertion_trace_call(S, pconfigcall).SENT))
+  -- if pconfigcall.KIND = INTRINSIC_ASSERT
+
+def $assertion_pending_valid(S, eps) = true
+def $assertion_pending_valid(S, (n)) = $throwable_live(S, n)
+def $assertion_callback_error(S, passertfailure) = $assertion_policy(S[.COMPLETION = NORMAL], passertfailure[.PENDING = (n)])
+  -- if S.COMPLETION = THROWING n
+def $assertion_callback_error(S, passertfailure) = S -- otherwise
+def $assertion_policy_error_finish(S, passertfailure) = $shutdown_freeze_marked(S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = (passertfailure.CALL.SITE)])
+  -- if S.ASSERTBAIL.VALUE
+  -- if S.COMPLETION = THROWING n
+def $assertion_policy_error_finish(S, passertfailure) = S -- otherwise
+def $eager_operation_pending(S) = (n)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (ASSERT_CALLBACK_CLEAN passertcall) :: ptask_tail*
+  -- if passertcall.FAILURE.PENDING = (n)
+def $throwable_marker(ASSERT_CALLBACK_CLEAN passertcall) = true
+rule PhpStep/assert-callback-clean-throw: S ~> $assertion_policy(S[.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*][.DESTRUCTION.CLEANUPS = pdestructioncleanup_tail*], passertcall.FAILURE[.PENDING = (n)])
+  -- if S.TODO = (THROW_SEARCH n) :: (ASSERT_CALLBACK_CLEAN passertcall) :: ptask_tail*
+  -- if $assertion_callback_cleanup_valid(S, passertcall)
+  -- if $throwable_live(S, n)
+  -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
+def $eager_cleanup_caller_scope(S, pdestructioncleanup) = $eager_cleanup_saved_scope(S, pdestructioncleanup, S.FRAMES)
+  -- if pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall
+  -- if S.CURRENT =/= pdestructioncleanup.CALLER \/ S.ORIGIN =/= pdestructioncleanup.ORIGIN \/ S.CONSTCONTEXT =/= pdestructioncleanup.CONSTCONTEXT
+
+;; Current and saved callbacks use their immediate real caller frame. The raw
+;; registry stays enabled; these checks do not restore a replaced registration.
+def $assertion_callback_context_head(pcallcontext, pframe :: pframe_caller :: pframe_tail*) = (passertcall)
+  -- if pframe.CONTEXT = (pcallcontext)
+  -- if pframe_caller.TODO = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+def $assertion_callback_context_head(pcallcontext, pframe*) = eps -- otherwise
+def $assertion_callback_context_frames(pcallcontext, pframe*) = (passertcall)
+  -- if $assertion_callback_context_head(pcallcontext, pframe*) = (passertcall)
+def $assertion_callback_context_frames(pcallcontext, pframe :: pframe_tail*) = $assertion_callback_context_frames(pcallcontext, pframe_tail*)
+  -- if $assertion_callback_context_head(pcallcontext, pframe :: pframe_tail*) = eps
+def $assertion_callback_context_frames(pcallcontext, eps) = eps
+def $assertion_callback_context_call(S, pcallcontext) = (passertcall)
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+def $assertion_callback_context_call(S, pcallcontext) = $assertion_callback_context_frames(pcallcontext, S.FRAMES) -- otherwise
+def $assertion_callback_context_anchor(S, pcallcontext, (pcallcontext), pframe :: pframe_tail*) = true
+  -- if pframe.TODO = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if passertcall.TARGET = (pcallcontext.TARGET)
+  -- if pframe.ORIGIN = (passertcall.FAILURE.CALL.SITE)
+  -- if $assertion_callback_valid($constant_frame_scope(S, pframe, pframe_tail*), passertcall)
+def $assertion_callback_context_anchor(S, pcallcontext, pcallcontext_other?, pframe :: pframe_tail*) = $assertion_callback_context_anchor(S, pcallcontext, pframe.CONTEXT, pframe_tail*)
+  -- if pcallcontext_other? =/= (pcallcontext)
+def $assertion_callback_context_anchor(S, pcallcontext, pcallcontext_other?, pframe*) = false -- otherwise
+def $assertion_callback_context_valid(S, pcallcontext) = true
+  -- if $assertion_callback_context_call(S, pcallcontext) = (passertcall)
+  -- if $assertion_callback_context_anchor(S, pcallcontext, S.CURRENT, S.FRAMES)
+  -- if passertcall.TARGET = (pcallcontext.TARGET)
+  -- if pcallcontext.CALLSITE = (passertcall.FAILURE.CALL.SITE)
+  -- if pcallcontext.LINE = passertcall.FAILURE.CALL.LINE
+  -- if pcallcontext.WRAPPER = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.HOLES = eps
+  -- if pcallcontext.ARGC = |$assertion_callback_values(S, passertcall.FAILURE)|
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if |pcallcontext.EXTRA| = $(pcallcontext.ARGC - n_received)
+  -- if $call_sent_operands_valid(S, pcallcontext.TARGET, n_received, pcallcontext.EXTRA)
+def $assertion_callback_context_valid(S, pcallcontext) = false -- otherwise
+def $error_context_kind(S, pcallcontext) = true -- if $assertion_callback_context_call(S, pcallcontext) =/= eps
+def $error_context_valid(S, pcallcontext) = true -- if $assertion_callback_context_valid(S, pcallcontext)
+def $error_context_direct_trigger(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $assertion_callback_context_valid(S, pcallcontext)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $assertion_callback_context_valid(S, pcallcontext)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
+def $ordinary_internal_callback_context(S, pcallcontext) = true -- if $assertion_callback_context_valid(S, pcallcontext)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE $trace_context_type(S, pcallcontext), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}] ++ $config_trace_frames(S, $assertion_trace_call(S, passertcall.FAILURE.CALL), $trace_extra(S, $getclass_trace_operands(passertcall.FAILURE.CALL.SENT)))
+  -- if $assertion_callback_context_valid(S, pcallcontext)
+  -- if $assertion_callback_context_call(S, pcallcontext) = (passertcall)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if psparam* = $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)
+  -- if pvalue* = $trace_parameters(S, pbinding*, (psparam.NAME)*, pcallcontext.ARGC) ++ $trace_extra(S, pcallcontext.EXTRA)
+def $call_after_origin(S, ASSERT_CALLBACK_RESULT passertcall) = S[.ORIGIN = (passertcall.FAILURE.CALL.SITE)]
+def $call_after_origin(S, ASSERT_CALLBACK_INVOKE passertcall) = S[.ORIGIN = (passertcall.FAILURE.CALL.SITE)]
+def $throwable_same_frame_continuation(S, S_next, ptask_old*) = S_next[.TODO = ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if ptask_old* = (ASSERT_CALLBACK_RESULT passertcall) :: ptask_tail*
+  -- if $assertion_callback_valid(S, passertcall)
+  -- if $throwable_live(S, n)
+  -- if S_next.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n_next
+def $throwable_same_frame_continuation(S, S_next, ptask_old*) = S_next[.TODO = ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: (ASSERT_CALLBACK_CLEAN passertcall) :: ptask_tail*
+  -- if ptask_old* = (ASSERT_CALLBACK_CLEAN passertcall) :: ptask_tail*
+  -- if $assertion_callback_cleanup_valid(S, passertcall)
+  -- if $throwable_live(S, n)
+  -- if S_next.TODO = (CONFIG_INVOKE passertcall.FAILURE.CALL) :: ptask_tail*
+  -- if S_next.COMPLETION = THROWING n_next
+def $throwable_continuation(S, S_next) = S_next
+  -- if S.TODO = (ASSERT_CALLBACK_INVOKE passertcall) :: ptask_tail*
+  -- if $call_task_valid(S, ASSERT_CALLBACK_INVOKE passertcall)
+  -- if $error_handler_target(S, passertcall.CALLBACK) = (pcalltarget)
+  -- if S_next.FRAMES = pframe :: S.FRAMES
+  -- if pframe.TODO = (ASSERT_CALLBACK_RESULT passertcall[.TARGET = (pcalltarget)]) :: ptask_tail*
+  -- if pframe.CONTEXT = S.CURRENT /\ pframe.ORIGIN = S.ORIGIN /\ pframe.CONSTCONTEXT = S.CONSTCONTEXT
+  -- if pframe.SILENCES = S.SILENCES /\ pframe.BORROWEDREAD = S.BORROWEDREAD /\ pframe.OBJECTCAST = S.OBJECTCAST
+
+;; Stringable flag setters retain their own exact source and native frame.
+def $config_string_trace_context(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_child)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
+  -- if pcallcontext.LINE = z /\ z = passertoption.CALL.LINE
+  -- if $stringify_entered(S, S.CURRENT, S.FRAMES, METHOD_TARGET n porigin_method, porigin_child)
+  -- if $assertion_option_string_valid($constant_frame_scope(S, pframe, pframe_tail*), passertoption, n, porigin_child, z_child)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE ($ptascii("->")), ARGS eps, HASARGS true}] ++ $config_trace_frames(S, passertoption.CALL, $trace_extra(S, $getclass_trace_operands(passertoption.CALL.SENT)))
+  -- if $config_string_trace_context(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_OPTIONS_STRING passertoption n porigin_child z_child) :: ptask_tail*
