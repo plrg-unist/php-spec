@@ -1,0 +1,128 @@
+;; Zend debug_backtrace_get_args: fixed arguments read current CVs; extra
+;; positional/named variadic arguments retain their original operands.
+;; A trace-only tag roots the dereferenced snapshot until actual object allocation.
+dec $sensitive_source_parameters(pcnode) : (nat, phpType17*)?
+def $sensitive_source_parameters(NStmtFunction phpType14 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 phpType23 metadata) = ((3, phpType17*))
+def $sensitive_source_parameters(NStmtClassMethod phpType14 phpType24 phpType4 phpType11 (SEQUENCE phpType17*) phpType18 phpType47 metadata) = ((4, phpType17*))
+def $sensitive_source_parameters(NExprClosure phpType14 phpType4_static phpType4_ref (SEQUENCE phpType17*) phpType21 phpType18 phpType23 metadata) = ((3, phpType17*))
+def $sensitive_source_parameters(NExprArrowFunction phpType14 phpType4_static phpType4_ref (SEQUENCE phpType17*) phpType18 expression metadata) = ((3, phpType17*))
+def $sensitive_source_parameters(pcnode) = eps -- otherwise
+
+dec $sensitive_trace_parameter(pstate, pfunction, nat) : bool
+def $sensitive_trace_parameter(S, pfunction, n) = true
+  -- if $function_at($all_functions(S), pfunction.ORIGIN) = (pfunction)
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n_unit pcpath
+  -- if $source_unit(S.SOURCES, n_unit) = (pcunit)
+  -- if pcunit = $pcsource(pcunit.ID, pcunit.AST)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (pcnode)
+  -- if $sensitive_source_parameters(pcnode) = ((n_field, phpType17*))
+  -- if $(n < |phpType17*|) /\ $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if phpType17*[n] = NParam phpType14 (INTEGER 0) phpType18 phpType4_ref phpType4_var phpType10 phpType5 (SEQUENCE eps) metadata
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD n_field, PCINDEX n]) = (porigin_param)
+  -- if $origin_node(S.SOURCES, porigin_param) = (phpType17*[n])
+  -- if $pslower(phpType17*[n]) = PSINPUTATTRIBUTES psraw phpType14
+  -- if ~psraw.EXTRA /\ psraw.FLAGS = 0
+  -- if psraw.NAME = pfunction.SIGNATURE.PARAMETERS[n].NAME
+  -- if psraw.BYREF = pfunction.SIGNATURE.PARAMETERS[n].BYREF
+  -- if psraw.VARIADIC = pfunction.SIGNATURE.PARAMETERS[n].VARIADIC
+  -- if $pssensitive_parameter_attribute({NAMESPACE pfunction.ENV.NAMESPACE, IMPORTS pfunction.ENV.CLASSES, SCOPE PTGLOBAL, POSITION PTPARAMETER, OWNER eps, MEMBER eps, FILE eps, LINE 0}, phpType14)
+def $sensitive_trace_parameter(S, pfunction, n) = false -- otherwise
+
+dec $sensitive_trace_index(pfunction, pkey) : nat?
+def $sensitive_trace_index(pfunction, KINT z) = ($nabs(z))
+  -- if $(z >= 0 /\ z < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+def $sensitive_trace_index(pfunction, KINT z) = (n_fixed)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $(z >= n_fixed /\ n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
+def $sensitive_trace_index(pfunction, KSTRING ptbytes) = (n_fixed)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
+def $sensitive_trace_index(pfunction, pkey) = eps -- otherwise
+dec $sensitive_trace_argument(pstate, pfunction, pkey, ptracearg) : ptracearg
+def $sensitive_trace_argument(S, pfunction, pkey, pvalue) = SENSITIVE_TRACE pvalue
+  -- if $sensitive_trace_index(pfunction, pkey) = (n)
+  -- if $sensitive_trace_parameter(S, pfunction, n)
+def $sensitive_trace_argument(S, pfunction, pkey, ptracearg) = ptracearg -- otherwise
+dec $sensitive_trace_arguments(pstate, pfunction, (pkey, ptracearg)*) : (pkey, ptracearg)*
+def $sensitive_trace_arguments(S, pfunction, eps) = eps
+def $sensitive_trace_arguments(S, pfunction, (pkey, ptracearg) :: (pkey_tail, ptracearg_tail)*) = (pkey, $sensitive_trace_argument(S, pfunction, pkey, ptracearg)) :: $sensitive_trace_arguments(S, pfunction, (pkey_tail, ptracearg_tail)*)
+dec $sensitive_trace_head(pstate, pcallcontext, ptraceframe*) : ptraceframe*
+def $sensitive_trace_head(S, pcallcontext, ptraceframe :: ptraceframe_tail*) = ptraceframe[.ARGS = $sensitive_trace_arguments(S, pfunction, ptraceframe.ARGS)] :: ptraceframe_tail*
+  -- if ptraceframe.HASARGS
+  -- if ptraceframe.FUNCTION = $trace_context_function(S, pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+def $sensitive_trace_head(S, pcallcontext, ptraceframe*) = ptraceframe* -- otherwise
+def $sensitive_trace_context(S, pbinding*, eps) = eps
+def $sensitive_trace_context(S, pbinding*, (pcallcontext)) = $sensitive_trace_head(S, pcallcontext, $trace_context(S, pbinding*, (pcallcontext)))
+
+;; Allocate the wrapper before returning a captured trace to callbacks or
+;; frame teardown. No user code or PHP value can observe the capture tag.
+dec $sensitive_trace_values(pstate, (pkey, ptracearg)*) : (pstate, (pkey, ptracearg)*)
+def $sensitive_trace_values(S, eps) = (S, eps)
+def $sensitive_trace_values(S, (pkey, pvalue) :: (pkey_tail, ptracearg_tail)*) = (S_tail, (pkey, pvalue) :: (pkey_values, ptracearg_values)*)
+  -- if (S_tail, (pkey_values, ptracearg_values)*) = $sensitive_trace_values(S, (pkey_tail, ptracearg_tail)*)
+def $sensitive_trace_values(S, (pkey, SENSITIVE_TRACE pvalue) :: (pkey_tail, ptracearg_tail)*) = (S_tail, (pkey, POBJECT n) :: (pkey_values, ptracearg_values)*)
+  -- if n = |S.OBJECTS|
+  -- if S_value = S[.OBJECTS = S.OBJECTS ++ [SENSITIVEVALUE pvalue]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]]
+  -- if (S_tail, (pkey_values, ptracearg_values)*) = $sensitive_trace_values(S_value, (pkey_tail, ptracearg_tail)*)
+def $sensitive_trace_frames(S, eps) = (S, eps)
+def $sensitive_trace_frames(S, ptraceframe :: ptraceframe_tail*) = (S_tail, ptraceframe[.ARGS = (pkey_values, ptracearg_values)*] :: ptraceframe_values*)
+  -- if (S_values, (pkey_values, ptracearg_values)*) = $sensitive_trace_values(S, ptraceframe.ARGS)
+  -- if (S_tail, ptraceframe_values*) = $sensitive_trace_frames(S_values, ptraceframe_tail*)
+def $sensitive_trace_freeze(S) = S_values[.TRACE = ptraceframe_values*][.ERRORFATALTRACE = ptraceframe_fatal*]
+  -- if (S_trace, ptraceframe_values*) = $sensitive_trace_frames(S, S.TRACE)
+  -- if (S_values, ptraceframe_fatal*) = $sensitive_trace_frames(S_trace, S.ERRORFATALTRACE)
+
+;; The wrapper's private readonly mixed slot is an owning value snapshot.
+dec $sensitive_value_live(pstate, nat) : bool
+def $sensitive_value_live(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+  -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
+def $sensitive_value_live(S, n) = false -- otherwise
+def $object_name(S, n) = $ptascii("SensitiveParameterValue") -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $node_children(S, HOBJECT n) = $value_nodes(pvalue) -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("sensitiveparametervalue"))
+  -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, $ptascii("SensitiveParameterValue"))
+  -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $typed_given(S, POBJECT n) = $ptascii("SensitiveParameterValue") -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $getclass_live_object(S, n) = true -- if $sensitive_value_live(S, n)
+def $closure_live_object_valid(S, n) = true -- if $sensitive_value_live(S, n)
+def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $property_live_complete(S, (HOBJECT n) :: pnode*) = $property_live_complete(S, pnode*) -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+
+;; Reuse the checked zero-argument getter send, arity and ownership protocol.
+def $getter_name(GET_SENSITIVE_VALUE) = $ptascii("getValue")
+def $getter_owner("SensitiveParameterValue", GET_SENSITIVE_VALUE) = "SensitiveParameterValue"
+def $getter_available("SensitiveParameterValue", GET_SENSITIVE_VALUE) = true
+dec $sensitive_value_select(pstate, nat, ptbytes, phpType7*, int) : pstate
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $sensitive_value_select(S_read, n, ptbytes, phpType7*, z)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin, RECEIVER n, BASE "SensitiveParameterValue", METHOD GET_SENSITIVE_VALUE, CAPTURE eps, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $sensitive_value_live(S, n)
+  -- if $ptlc(ptbytes) = $ptascii("getvalue")
+  -- if ~$ppfirstclass(phpType7*)
+def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "SensitiveParameterValue internal method body"][.TODO = eps]
+  -- if $ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("__debuginfo")] \/ ($ptlc(ptbytes) = $ptascii("getvalue") /\ $ppfirstclass(phpType7*))
+def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined method SensitiveParameterValue::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)
+  -- if ~($ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("__debuginfo"), $ptascii("getvalue")])
+dec $sensitive_getter_source(pcnode) : bool
+def $sensitive_getter_source(NExprMethodCall expression phpType20 phpType6 metadata) = $method_source_name(phpType20, $ptascii("getValue"))
+def $sensitive_getter_source(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = $method_source_name(phpType20, $ptascii("getValue"))
+def $sensitive_getter_source(pcnode) = false -- otherwise
+def $getter_selected(S, pgettercall) = true
+  -- if pgettercall.CAPTURE = eps
+  -- if pgettercall.BASE = "SensitiveParameterValue" /\ pgettercall.METHOD = GET_SENSITIVE_VALUE
+  -- if $sensitive_value_live(S, pgettercall.RECEIVER)
+  -- if $origin_node(S.SOURCES, pgettercall.SITE) = (pcnode)
+  -- if $sensitive_getter_source(pcnode)
+def $getter_body(S, pgettercall) = S[.RESULT = KNOWN pvalue]
+  -- if pgettercall.METHOD = GET_SENSITIVE_VALUE
+  -- if S.OBJECTS[pgettercall.RECEIVER] = SENSITIVEVALUE pvalue

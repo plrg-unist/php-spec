@@ -122,6 +122,8 @@ dec $destructor_context_kind(pstate, pcallcontext) : bool
 dec $generator_context_trace_kind(pstate, pcallcontext) : bool
 dec $generator_trace_scope(pstate, pcallcontext?, pframe*) : pstate
 dec $trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
+dec $sensitive_trace_context(pstate, pbinding*, pcallcontext?) : ptraceframe*
+dec $sensitive_trace_frames(pstate, ptraceframe*) : (pstate, ptraceframe*)
 dec $default_internal_callback_context(pstate, pcallcontext) : bool
 def $default_internal_callback_context(S, pcallcontext) = false -- otherwise
 dec $ordinary_internal_callback_context(pstate, pcallcontext) : bool
@@ -157,12 +159,15 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE $call_sourcefile(S.FIL
 dec $trace_saved(pstate, pframe*) : ptraceframe*
 def $trace_saved(S, eps) = eps
 def $trace_saved(S, pframe :: pframe_tail*) = $trace_saved(S, pframe_tail*) -- if pframe.CONTEXT = eps
-def $trace_saved(S, pframe :: pframe_tail*) = $trace_context($generator_trace_scope(S, pframe.CONTEXT, pframe_tail*), psymboltable.ENV, pframe.CONTEXT) ++ $trace_saved(S, pframe_tail*)
+def $trace_saved(S, pframe :: pframe_tail*) = $sensitive_trace_context($generator_trace_scope(S, pframe.CONTEXT, pframe_tail*), psymboltable.ENV, pframe.CONTEXT) ++ $trace_saved(S, pframe_tail*)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
-dec $trace_values_roots((pkey, pvalue)*) : pnode*
+dec $trace_argument_roots(ptracearg) : pnode*
+def $trace_argument_roots(pvalue) = $operand_nodes(KNOWN pvalue)
+def $trace_argument_roots(SENSITIVE_TRACE pvalue) = $operand_nodes(KNOWN pvalue)
+dec $trace_values_roots((pkey, ptracearg)*) : pnode*
 def $trace_values_roots(eps) = eps
-def $trace_values_roots((pkey, pvalue) :: (pkey_tail, pvalue_tail)*) = $operand_nodes(KNOWN pvalue) ++ $trace_values_roots((pkey_tail, pvalue_tail)*)
+def $trace_values_roots((pkey, ptracearg) :: (pkey_tail, ptracearg_tail)*) = $trace_argument_roots(ptracearg) ++ $trace_values_roots((pkey_tail, ptracearg_tail)*)
 def $trace_roots(eps) = eps
 def $trace_roots(ptraceframe :: ptraceframe_tail*) = $trace_values_roots(ptraceframe.ARGS) ++ $trace_roots(ptraceframe_tail*)
 
@@ -198,7 +203,7 @@ def $error_unwind_trace(S) = S.TRACE -- if S.COMPLETION = USERFATAL n* z b
 def $error_unwind_trace(S) = $eval_exception_trace(S) -- otherwise
 dec $file_warning_drop_scope(pstate) : pstate
 def $file_warning_drop_scope(S) = S -- otherwise
-def $start_error_unwind(S) = $eval_compile_unwind($file_warning_drop_scope($error_release_iterators($silence_unwind(S)))[.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = $error_unwind_trace(S)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.BORROWEDREAD = eps][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
+def $start_error_unwind(S) = $sensitive_trace_freeze($eval_compile_unwind($file_warning_drop_scope($error_release_iterators($silence_unwind(S)))[.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = $error_unwind_trace(S)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.BORROWEDREAD = eps][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]))
 dec $error_unwind(pstate, pcompletion) : pstate
 def $error_unwind(S, pcompletion) = $eval_compile_unwind($file_warning_drop_scope($error_release_iterators($silence_unwind($restore_frame(S))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TODO = [ERROR_UNWIND pcompletion]][.BORROWEDREAD = eps][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
   -- if S.FRAMES =/= eps

@@ -221,7 +221,7 @@ syntax pdeclnoticekind = NOTICE_RUNTIME | NOTICE_FILE nat | NOTICE_EVAL nat nat
 syntax pdeclnoticebatch = { KIND pdeclnoticekind, SITE porigin, LINE int, CLASSES (porigin, nat)*, NOTICES pdeclnoticeitem*, INDEX nat }
 syntax pdeprecatedconstant = { SITE porigin, LINE int, PREFIX nat }
 syntax pselectedcall = { NONCE nat, SITE porigin, KIND pintrinsic, ORIGINAL nat*, LOOKUP nat*, DEPTH nat, LINE int }
-syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS | GET_TRACE | GET_TRACE_STRING | GET_TO_STRING | GET_SEVERITY
+syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS | GET_TRACE | GET_TRACE_STRING | GET_TO_STRING | GET_SEVERITY | GET_SENSITIVE_VALUE
 syntax pgettercall = {SITE porigin, RECEIVER nat, BASE text, METHOD pgettermethod, CAPTURE nat?, INDEX nat, SENT poperand*, LINE int}
 syntax pbindkind = INSTANCE_BIND | STATIC_BIND
 syntax pbindcall = {SITE porigin, SOURCE nat?, KIND pbindkind, INDEX nat, SENT poperand*, LINE int}
@@ -374,7 +374,9 @@ syntax puserconstant = { NAME preqbytes, ORIGIN porigin, VALUE pvalue, CLASS pva
 syntax preceiveowner = { ID nat, PREFIX nat, PUBLICATION nat }
 syntax pcallcontext = { TARGET pcalltarget, DEFAULTRECEIVE preceiveowner?, WRAPPER pnamedargs?, INSTANCE nat?, RECEIVER nat?, LEXICAL_CLASS porigin?, CALLED_CLASS porigin?, FUNCTION porigin, NAME preqbytes, CALLSITE porigin?, LINE int, PARAMS preqbytes*, ARGC nat, HOLES nat*, EXTRA poperand*, NAMED (preqbytes, poperand)* }
 syntax pframe = { SILENCES psilence*, LOCALS psymboltable?, TODO ptask*, ORIGIN porigin?, HELD pnode*, CONTEXT pcallcontext?, BORROWEDREAD pidentityread?, OBJECTCAST pobjectcast?, CONSTCONTEXT pconstantcontext? }
-syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqbytes?, TYPE preqbytes?, ARGS (pkey, pvalue)*, HASARGS bool }
+;; The tag is confined to captured trace arguments, never a PHP value.
+syntax ptracearg = pvalue | SENSITIVE_TRACE pvalue
+syntax ptraceframe = { FILE preqbytes, LINE int, FUNCTION preqbytes, CLASS preqbytes?, TYPE preqbytes?, ARGS (pkey, ptracearg)*, HASARGS bool }
 syntax pstaticcell = { ORIGIN porigin, CELL nat }
 syntax pclassstatic = { DECL ppropertyid, STATE ppropstate }
 syntax pinstanceobjectcertificate = INSTANCE_OBJECT_BIND porigin porigin porigin porigin pstaticselection? pvalueclass nat nat | INSTANCE_OBJECT_COPY porigin nat pinstanceobjectcertificate
@@ -413,7 +415,7 @@ syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FI
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool }
-syntax pobject = WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
+syntax pobject = SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat
@@ -487,6 +489,7 @@ dec $ppnullsafe(expression) : bool
 dec $throwable_object(pstate, nat) : bool
 dec $throwable_string_coercion(pstate, ptbranch*, pvalue, bool) : bool
 dec $object_name(pstate, nat) : preqbytes
+dec $sensitive_trace_freeze(pstate) : pstate
 dec $class_plain_instance(pstate, nat) : bool
 dec $stringable_instance(pstate, nat) : bool
 dec $user_string_value(pstate, pvalue) : bool

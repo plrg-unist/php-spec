@@ -336,12 +336,12 @@ dec $gc_transition_owners(pstate, (pstate, pownerobservation)) : pstate
 def $gc_transition_owners(S, (S_next, pownerobservation)) = $gc_transition(S, S_next) -- otherwise
 dec $drive_steps(pstate, nat) : pstate
 dec $drive_checked(pstate, nat) : pstate
-def $drive_checked(S, n) = $drive_steps(S, n) -- if S.COMPLETION = NORMAL
-def $drive_checked(S, n) = S -- if S.COMPLETION =/= NORMAL
+def $drive_checked(S, n) = $drive_steps($sensitive_trace_freeze(S), n) -- if S.COMPLETION = NORMAL
+def $drive_checked(S, n) = $sensitive_trace_freeze(S) -- if S.COMPLETION =/= NORMAL
 dec $declaration_entry_check(pstate) : pstate
 dec $drive(pstate, nat) : pstate
 def $drive(S, n) = $drive_checked($call_entry_check(S), n) -- if S.COMPLETION = NORMAL
-def $drive(S, n) = $drive_steps($declaration_entry_check(S), n) -- if S.COMPLETION =/= NORMAL
+def $drive(S, n) = $drive_steps($sensitive_trace_freeze($declaration_entry_check(S)), n) -- if S.COMPLETION =/= NORMAL
 def $drive_steps(S, n) = S
   -- if S.TODO = eps
   -- if S.COMPLETION = NORMAL
@@ -391,7 +391,7 @@ def $drive_steps(S, n) = $drive_steps($prune_allocations($error_read_begin(S)), 
   -- if $(n > 0)
   -- if $(n - 1) = n_next
   -- if $error_read_pending(S)
-def $drive_steps(S, n) = $drive_steps($gc_transition_owners(S, $destruction_transition_owners(S, $source_exception_transition(S, $throwable_transition(S, S_next)))), n_next)
+def $drive_steps(S, n) = $drive_steps($gc_transition_owners(S, $destruction_transition_owners(S, $sensitive_trace_freeze($source_exception_transition(S, $throwable_transition(S, S_next))))), n_next)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if ~S.COMPILESTOP
