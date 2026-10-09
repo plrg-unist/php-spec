@@ -307,7 +307,14 @@ The original Unsupported, reached discriminator and pre-evaluation bounds syntax
 stop retain zero credit. Actual363 over `d54dd9fa8` passes strict compilation
 and the affected 677 SL group at `a2847abb8` (compiler 6.438 seconds). Three shared
 message predicates observe bytes across the parent's immutable carriers;
-private source/compilerc5 and state487 retain their cuts. Wider
+private source/compilerc5 and state487 retain their cuts. A declared array child's
+sole owning Leaf entry transfers through genuine HARRAY retirement and emits the
+same second fatal; retired contents add no array pin, GC slot or child edge.
+The real shared-array control keeps its live owner and Leaf silent through the
+first fatal. Source2, strict712/77 and complete compiler363 retain `5da367130`
+(6.312 seconds). The original primary Unsupported and 118-premise reached
+discriminator retain zero credit at `4c410b607`; the exact shared baseline is a
+separate control. Actual-parent compilation is pending. Wider
 handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
