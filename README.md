@@ -326,6 +326,11 @@ Saved selection evidence survives the callback and final Closure retirement with
 adding an owner. Separate ordinary and wrapper originals match native PHP;
 213 carrier premises and 359 wrapper selection/authority premises retain their
 distinct 363-module cuts. Other Closure families and required original 7 remain open.
+An inherited nonstatic `fromCallable` wrapper also retains its exact receiver-bearing
+selection through the distinct RHS callback. Explicit Closure release retires the
+sole receiver; saved selection evidence remains valid without owning either object.
+Separate ordinary and repaired wrapper sources agree with native PHP on 367-module
+cuts, with 430 wrapper premises. Required original 7 keeps its separate CLI 60 timeout.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

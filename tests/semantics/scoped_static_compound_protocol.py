@@ -1040,9 +1040,15 @@ CALLABLE_CASES = [
 ]
 CASES += CALLABLE_CASES
 CASES += [('stringable-name-cold-double-throw', ['stringable-property-name-cold-double-throw'])]
+CASES += [('stringable-name-from-callable-instance-selection', ['stringable-name-from-callable-instance-byref'])]
 
 
 def render(name, sources):
+    if name == 'stringable-name-from-callable-instance-selection':
+        from static_name_callable_protocol import render_instance_wrapper
+        row = sources['stringable-name-from-callable-instance-byref']
+        text, checks, _, _ = render_instance_wrapper(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
     if name in (case[0] for case in CALLABLE_CASES):
         from static_name_callable_protocol import render_ordinary, render_wrapper
         case = next(case for case in CALLABLE_CASES if case[0] == name)

@@ -1218,3 +1218,111 @@ echo "V:", FromStaticNameChildReview20::$value,
         'discriminator': 'A retained static Closure::fromCallable wrapper freezes lexical Base/called Child and exact saved CLOSURE_SCOPE through borrowed by-ref NAME retirement, RHS conversion and the final property write without another closure owner.',
     },
 ]
+
+
+CASES += [
+    {
+        'id': 'stringable-name-ordinary-instance-byref',
+        'source': r'''<?php
+class FromInstanceNameBaseReview20 {
+    public static string $value = "a";
+    public function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+    public function __destruct() {
+        echo "W;";
+    }
+}
+class FromInstanceNameChildReview20 extends FromInstanceNameBaseReview20 {
+    public static string $value = "c";
+}
+class FromInstanceNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        FromInstanceNameChildReview20::$value = "d";
+        $rhs = new FromInstanceRightReview20();
+    }
+}
+class FromInstanceRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+$property = new FromInstanceNameReview20();
+$rhs = "before";
+$receiver = new FromInstanceNameChildReview20();
+$result = $receiver->append($property, $rhs);
+$rhs = "done";
+$receiver = null;
+echo "V:", FromInstanceNameChildReview20::$value,
+     ";B:", FromInstanceNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'An inherited instance call preserves lexical Base/called Child while borrowed by-ref NAME retirement installs a live Stringable RHS; explicit receiver release occurs before observing caller cells and the stored result.',
+    },
+    {
+        'id': 'stringable-name-from-callable-instance-byref',
+        'source': r'''<?php
+class FromInstanceNameBaseReview20 {
+    public static string $value = "a";
+    public function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+    public function __destruct() {
+        echo "W;";
+    }
+}
+class FromInstanceNameChildReview20 extends FromInstanceNameBaseReview20 {
+    public static string $value = "c";
+}
+class FromInstanceNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        FromInstanceNameChildReview20::$value = "d";
+        $rhs = new FromInstanceRightReview20();
+    }
+}
+class FromInstanceRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+$property = new FromInstanceNameReview20();
+$rhs = "before";
+$closure = Closure::fromCallable([new FromInstanceNameChildReview20(), "append"]);
+$result = $closure($property, $rhs);
+$rhs = "done";
+$closure = null;
+echo "V:", FromInstanceNameChildReview20::$value,
+     ";B:", FromInstanceNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'A nonstatic Closure::fromCallable preserves the exact receiver-bearing scope through computed NAME retirement and the distinct RHS callback; explicit Closure release retires its sole receiver without invalidating saved selection evidence.',
+    },
+]

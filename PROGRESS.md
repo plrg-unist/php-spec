@@ -1975,6 +1975,14 @@ All prior stops remain zero credit. EPS saved selection keeps ordinary compatibi
 other Closure families, INI identity, ARG329 and required original 7 remain open.
 Actual-parent compilation passes at a67b4e4a over 633ecec1e with 367 modules;
 pointwise Notice/ownership review adds no source or state renewal.
+Inherited nonstatic `Closure::fromCallable` now admits the exact saved receiver
+through existing source/body/history evidence. Ordinary-instance agreement stays
+at 4d7/367; repaired wrapper agreement passes at ff368a41/367. Its 430 premises
+(282 reached, 148 constructed) authenticate receiver ownership through the distinct
+RHS callback/write, explicit Closure and receiver retirement, and saved descriptor
+validity afterward. Missing or substituted current/saved receivers are rejected;
+selection metadata adds no owner. The earlier wrapper Unsupported remains zero
+credit, and required original 7 retains its separate CLI 60 timeout.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
