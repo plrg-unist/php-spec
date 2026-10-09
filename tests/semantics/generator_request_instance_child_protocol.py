@@ -85,8 +85,8 @@ pgenerator.PHASE = GENERATOR_CLOSED /\ pgenerator.FRAME = eps
 pgenerator.VALUE = (POBJECT n_payload)
 S_first.EXCEPTIONHANDLER = eps
 $generator_request_report_valid(S_first,pgenfatal_first)
-$throwable_field(S_first,n_reported,"message") = PSTRING $ptascii("handler")
-$throwable_field(S_first,n_original,"message") = PSTRING $ptascii("new")
+$string_bytes($throwable_field(S_first,n_reported,"message")) = ($ptascii("handler"))
+$string_bytes($throwable_field(S_first,n_original,"message")) = ($ptascii("new"))
 $request_fatal_stderr(S_first.EVENTS) = eps
 ''')
     checks += base.seek('S_release', 'S_first', 701) + fatal.normal_valid('S_release')
@@ -171,7 +171,7 @@ $heap_graph(S_throw_future).EDGES = $heap_graph(S_abrupt).EDGES
 $heap_owners($heap_graph(S_throw_future),HOBJECT n_leaf) = 1
 $heap_owners($heap_graph(S_throw_future),HOBJECT n_parent) = 1
 $throwable_live(S_abrupt,n_exception)
-$throwable_field(S_abrupt,n_exception,"message") = PSTRING $ptascii("leaf")
+$string_bytes($throwable_field(S_abrupt,n_exception,"message")) = ($ptascii("leaf"))
 $throwable_field(S_abrupt,n_exception,"previous") = PNULL
 $generator_request_fatal_selected(S_abrupt) = (pgenfatal_new)
 pgenfatal_new.SOURCE = DESTRUCTOR_RESULT pdestructorcall /\ pgenfatal_new.OBJECT = n_exception
