@@ -168,13 +168,22 @@ intact. A declared array child retires HARRAY before its sole owning Leaf entry
 reaches the same ROOT/nonuser release tail. Its in-range retired row certifies the
 child without another array pin, GC slot or heap edge; primitive siblings are
 allowed, while multiple owning nodes, nested arrays and reference entries remain
-outside this slice. A real external shared-array owner prevents entry release and
+outside that slice. A real external shared-array owner prevents entry release and
 the second fatal. Exact source2, strict712/77 and complete compiler363 retain
 `5da367130`; original refusal and reached118 diagnostic remain zero at `4c410b607`.
 Actual364 over `70c5ff9fc` passes strict compilation at `3aeb34484`; the new
 retired-owner carriers remain empty because neither source has switch/foreach
 or reference-return replay. Parent frame/fatal-history fields are preserved;
-private source2/789 retain their inputs. Wider handlers, rendering,
+private source2/789 retain their inputs. A sole owning reference entry additionally
+retires HARRAY then HCELL before the real Leaf release. The original array row,
+stable retired-cell marker and STORE value certify both consumed layers without
+array/cell roots, referent edges or GC pins; primitive siblings remain allowed.
+An explicit global reference keeps HCELL and its Leaf edge live after array
+retirement, preventing the second fatal. Exact source2, strict816/113 and complete
+compiler364 retain `9faf09e39`; the helper-load stop, failed local-CV control,
+primary refusal and reached172 diagnostic retain zero credit. Current-parent
+composition is pending. Multiple owning nodes and recursive containers remain
+outside this slice. Wider handlers, rendering,
 child lifetimes, reacquisition, message warnings, parked or escaped storage and
 generic terminal cleanup remain required.
 

@@ -392,6 +392,10 @@ one new exact source and 677 strict premises retain separate cuts. An array chil
 sole owning Leaf entry follows the same path after real array retirement; retired
 contents add no owner. An external shared array retains the Leaf and emits only the
 first fatal. Two exact sources and 712/77 strict premises retain their private cut.
+A sole reference entry follows the same path after genuine array and cell
+retirement. Their historical rows certify release without owning the Leaf; an
+explicit global reference keeps the cell and Leaf live, emitting only the first
+fatal. Two exact sources and 816/113 strict premises retain their private cut.
 Wider handlers/rendering,
 child lifetimes, reacquisition, parked/escaped storage and generic terminal cleanup
 remain required.

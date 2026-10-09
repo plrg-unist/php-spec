@@ -374,7 +374,13 @@ discriminator retain zero credit at `4c410b607`; the exact shared baseline is a
 separate control. Actual364 over `70c5ff9fc` passes strict compilation at
 `3aeb34484` (6.399 seconds). The parent's retired-owner carriers remain empty on
 both sources; current frame/fatal-history fields survive. Private source2/789
-retain their `5da367130` inputs. Wider
+retain their `5da367130` inputs. A sole reference entry retires HARRAY then HCELL
+before the authentic Leaf release; stable cell markers and historical rows add
+no owner, edge or GC pin. An explicit global reference instead retains the cell
+and Leaf through the first fatal. Source2, strict816/113 and complete compiler364
+retain `9faf09e39` (6.536 seconds). The initial helper-load stop, failed local-CV
+alias control, primary Unsupported and 172-premise reached diagnostic remain zero.
+Current-parent composition is pending. Wider
 handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
