@@ -5,5 +5,12 @@
     "stdout": "O;P;I1;I2;C;A;r=old;x=old;n=2;yfixed=1;",
     "stderr": "Notice: Only variable references should be returned by reference in /home/user/workspace/php-spec/.tools/returns-consumed-literal-native-20/.tools/returns-verify20-consumed-value/native-consumed-literal-j7409o1p/source.php on line 4\n",
     "exit": 0
+  },
+  {
+    "id": "active-finalizer-consumed-literal-saved-replay",
+    "source": "<?php\n$x=\"old\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$y,$n;try{return \"old\";}finally{echo \"O;\";ping();try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";if($n===1){$y=new stdClass;}else{ping();$y=\"fixed\";}}}catch(TypeError $e){echo \"C;\";}echo \"A;\";}}\ntry{$r=&f();echo \"r=\",$r,\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;I1;I2;P;C;A;r=old;x=old;n=2;yfixed=1;",
+    "stderr": "Notice: Only variable references should be returned by reference in /home/user/workspace/php-spec/.tools/returns-consumed-literal-native-20/.tools/returns-verify20-consumed-value/native-consumed-literal-saved-1sdxo2ej/source.php on line 4\n",
+    "exit": 0
   }
 ]
