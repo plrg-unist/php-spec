@@ -354,8 +354,13 @@ Acquisition and cleanup throws preserve data/input order; reference traversal
 accepts reference-yielding Generators and rejects Iterator/nonreference Generator
 results. Retained foreach Generator close frames survive Fiber suspension with
 one receiver owner. [Focused acceptance](coverage/semantics/foreach-aggregate-review.json)
-keeps original source/state cuts separate. Foreach NaN warning continuations,
-wider operand modes and Aggregate yield-from/ordinary-call unpack remain required.
+keeps original source/state cuts separate. [Foreach NaN warnings](coverage/semantics/foreach-valid-nan-review.json)
+retain raw valid results through ordinary handlers, reread live references after
+handler writes and preserve iterator/input cleanup on suspension or throw.
+Eight exact originals and eighteen genuine-source groups/495 ownership and
+warning-authority premises pass at retained cuts.
+Wider raw payload/operand modes and Aggregate yield-from/ordinary-call unpack
+remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and

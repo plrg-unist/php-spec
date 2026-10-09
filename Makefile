@@ -194,6 +194,8 @@ test-semantics: build
 	python3 tests/semantics/fiber_start_nested_aggregate_review.py
 	python3 tests/semantics/foreach_aggregate_sources.py
 	python3 tests/semantics/foreach_aggregate_review.py
+	python3 tests/semantics/foreach_valid_nan_sources.py
+	python3 tests/semantics/foreach_valid_nan_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

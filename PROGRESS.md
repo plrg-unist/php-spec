@@ -252,16 +252,28 @@ keep exact data-before-input unwind. Persistent reference-mode CVs stay borrowed
 reference-valued inputs retain their HCELL, and reference-yielding Generators keep
 ordinary live aliases. Retained foreach Generator close runs real finally throw
 and Fiber suspension, with source-authenticated receipts and unique operation
-ownership across saved VMs. Twenty selected normal sources and strict362 pass;
-the later-valid NaN control stays Unsupported/zero agreement. Twenty-six independent reached
+ownership across saved VMs. Earlier cuts retain twenty normal sources, strict362
+and the later-valid NaN Unsupported control/zero agreement. Twenty-six independent reached
 groups/719 physical premises pass at separate retained cuts; genuine getter
 creation readiness and one initializer cursor claim are checked. Original admission/source failures stay
 zero; prior Aggregate/START evidence is not renewed. Changed original CV/reference
-operands, wider byref locations, foreach NaN handlers and remaining Aggregate
+operands, wider byref locations and remaining Aggregate
 consumers stay required. Actual366 over `c07eac043` passes strict SL at
 `646095932`, preserving current retired-owner replay, sensitive trace wrappers
 and assertion conversion; private source/state cuts retain their inputs.
 [Foreach ledger](coverage/semantics/foreach-aggregate-review.json).
+
+Foreach valid NaN warnings retain the raw return through ordinary handler invoke,
+result and cleanup, then reread live numeric references once. Copied NaN stays
+true; first-valid input retirement follows raw-result cleanup, and thrown handlers
+retire raw retval before data/input. Seven new originals and the affected unchanged
+late-valid original agree with preserved native tuples; strict366 passes at
+`6ce4b1524`. Eighteen independent genuine-source groups/495 physical premises
+pass at retained cuts, including saved-frame forgeries and exact raw retirement. Wider raw
+payload changes remain explicit Unsupported; previous foreach/START evidence is
+not renewed. Actual367 over `88f132db8` passes strict at `0b37a8334`,
+preserving the parent reference-return Notice protocol.
+[NaN ledger](coverage/semantics/foreach-valid-nan-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;
