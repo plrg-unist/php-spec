@@ -1,5 +1,5 @@
 {
-  "scope": "Native-first direct, aliased, dynamic and first-class assertions, startup/runtime modes, options and callback failure policy, live retval release, Stringable flag snapshots, per-constant deprecation protection and exact descriptions; remaining warning/INI/producer shapes stay required.",
+  "scope": "Native-first assertion source catalogue with separately reviewed startup/runtime and option/callback cuts; ordinary-library observers remain in excluded_cases with zero semantic agreement.",
   "cases": [
     {
       "id": "direct-effects-mode1",
@@ -679,23 +679,6 @@
       "native_raw_sha256": "e03e0c54306baff2bb169f999bf003be0bd813d9bf45ad4e84d9e54591422161"
     },
     {
-      "id": "options-callback-args-mode1",
-      "source": "<?php\nassert_options(5,0);assert_options(4,0);\nassert_options(2,static function(...$args){\n echo count($args),':',$args[0]===__FILE__?'file':'BAD',':',$args[1],':',$args[2]===null?'null':'BAD';\n if(count($args)===4){echo ':',$args[3];}echo '|';\n});\necho assert(false)===false?'false|':'BAD';\n$f='assert';echo $f(false)===false?'false|':'BAD';\necho $f(false,null)===false?'false|':'BAD';\necho $f(false,'')===false?'false|':'BAD';\necho assert(false,'explicit')===false?'false|':'BAD';\n$closure=assert(...);echo $closure(false)===false?'false':'BAD';\n",
-      "source_sha256": "bcbf443119a379d08f005bede148ac297937c440a0d3d7ec518c9c99f3a6d4e6",
-      "startup_ini": {
-        "zend.assertions": "MQ=="
-      },
-      "stdout_base64": "NDpmaWxlOjc6bnVsbDphc3NlcnQoZmFsc2UpfGZhbHNlfDM6ZmlsZTo4Om51bGx8ZmFsc2V8MzpmaWxlOjk6bnVsbHxmYWxzZXw0OmZpbGU6MTA6bnVsbDp8ZmFsc2V8NDpmaWxlOjExOm51bGw6ZXhwbGljaXR8ZmFsc2V8MzpmaWxlOjEyOm51bGx8ZmFsc2U=",
-      "stderr_template_base64": "RGVwcmVjYXRlZDogRnVuY3Rpb24gYXNzZXJ0X29wdGlvbnMoKSBpcyBkZXByZWNhdGVkIHNpbmNlIDguMyBpbiB7RklMRX0gb24gbGluZSAyCkRlcHJlY2F0ZWQ6IEZ1bmN0aW9uIGFzc2VydF9vcHRpb25zKCkgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjMgaW4ge0ZJTEV9IG9uIGxpbmUgMgpEZXByZWNhdGVkOiBGdW5jdGlvbiBhc3NlcnRfb3B0aW9ucygpIGlzIGRlcHJlY2F0ZWQgc2luY2UgOC4zIGluIHtGSUxFfSBvbiBsaW5lIDMK",
-      "exit_status": 0,
-      "status": "normal",
-      "native_profile": {
-        "zend.assertions": "1"
-      },
-      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-options-baseline-v1/run-v1/report.json",
-      "native_raw_sha256": "e03e0c54306baff2bb169f999bf003be0bd813d9bf45ad4e84d9e54591422161"
-    },
-    {
       "id": "options-throwable-mode1",
       "source": "<?php\nassert_options(3,1);\nassert_options(2,static function(){echo 'BAD-CALLBACK';});\n$original=new Exception('given');\ntry{assert(false,$original);echo 'BAD';}catch(Throwable $e){echo $e===$original?'same|':'BAD';}\necho 'alive';\n",
       "source_sha256": "e42119dd7cf04ba0e03dc87f8e1f20aba98767ed067cffa8cb77424548c7d5d9",
@@ -807,12 +790,13 @@
       "stdout_base64": "YmVmb3JlfHNodXRkb3dufA==",
       "stderr_template_base64": "RGVwcmVjYXRlZDogRnVuY3Rpb24gYXNzZXJ0X29wdGlvbnMoKSBpcyBkZXByZWNhdGVkIHNpbmNlIDguMyBpbiB7RklMRX0gb24gbGluZSAyCkRlcHJlY2F0ZWQ6IEZ1bmN0aW9uIGFzc2VydF9vcHRpb25zKCkgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjMgaW4ge0ZJTEV9IG9uIGxpbmUgMgpEZXByZWNhdGVkOiBGdW5jdGlvbiBhc3NlcnRfb3B0aW9ucygpIGlzIGRlcHJlY2F0ZWQgc2luY2UgOC4zIGluIHtGSUxFfSBvbiBsaW5lIDIK",
       "exit_status": 0,
-      "status": "normal",
+      "status": "explicit_exit",
       "native_profile": {
         "zend.assertions": "1"
       },
       "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-options-baseline-v1/run-v1/report.json",
-      "native_raw_sha256": "e03e0c54306baff2bb169f999bf003be0bd813d9bf45ad4e84d9e54591422161"
+      "native_raw_sha256": "e03e0c54306baff2bb169f999bf003be0bd813d9bf45ad4e84d9e54591422161",
+      "status_classification": "Recorded exact tuple at method-runtime-ih83ppy7; assertion bailout is EXITED0, distinct from normal completion. Original status-only recorder false remains preserved."
     },
     {
       "id": "options-deprecations-mode1",
@@ -956,6 +940,57 @@
       },
       "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-constants-baseline-v1/run-v1/report.json",
       "native_raw_sha256": "424aceea283546290edddb46eafc6cb02ab5a77594f7b285e0567558b543ab35"
+    },
+    {
+      "id": "options-callback-args-foreach-mode1",
+      "source": "<?php\nassert_options(5,0);assert_options(4,0);\nassert_options(2,static function(...$args){\n $n=0;foreach($args as $_){++$n;} echo $n,':',$args[0]===__FILE__?'file':'BAD',':',$args[1],':',$args[2]===null?'null':'BAD';\n if($n===4){echo ':',$args[3];}echo '|';\n});\necho assert(false)===false?'false|':'BAD';\n$f='assert';echo $f(false)===false?'false|':'BAD';\necho $f(false,null)===false?'false|':'BAD';\necho $f(false,'')===false?'false|':'BAD';\necho assert(false,'explicit')===false?'false|':'BAD';\n$closure=assert(...);echo $closure(false)===false?'false':'BAD';\n",
+      "source_sha256": "1436943b335557502d373bba515b81958ee1a8da793b7e0f5d8d78d8c14e0fb7",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "NDpmaWxlOjc6bnVsbDphc3NlcnQoZmFsc2UpfGZhbHNlfDM6ZmlsZTo4Om51bGx8ZmFsc2V8MzpmaWxlOjk6bnVsbHxmYWxzZXw0OmZpbGU6MTA6bnVsbDp8ZmFsc2V8NDpmaWxlOjExOm51bGw6ZXhwbGljaXR8ZmFsc2V8MzpmaWxlOjEyOm51bGx8ZmFsc2U=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogRnVuY3Rpb24gYXNzZXJ0X29wdGlvbnMoKSBpcyBkZXByZWNhdGVkIHNpbmNlIDguMyBpbiB7RklMRX0gb24gbGluZSAyCkRlcHJlY2F0ZWQ6IEZ1bmN0aW9uIGFzc2VydF9vcHRpb25zKCkgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjMgaW4ge0ZJTEV9IG9uIGxpbmUgMgpEZXByZWNhdGVkOiBGdW5jdGlvbiBhc3NlcnRfb3B0aW9ucygpIGlzIGRlcHJlY2F0ZWQgc2luY2UgOC4zIGluIHtGSUxFfSBvbiBsaW5lIDMK",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-options-args-foreach-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "4e388edbd1e120ad09ad9f51aef1e740dba4d8f506079794aa0aabafdc20acf1"
+    },
+    {
+      "id": "options-callback-pending-owner-mode1",
+      "source": "<?php\n$original=new Exception('callback');\nclass LastCallback{\n function __invoke(){global $original;echo 'C|';assert_options(2,null);throw $original;}\n function __destruct(){echo 'D|';}\n}\nassert_options(2,new LastCallback);\ntry{assert(false,'failed');}catch(AssertionError $caught){\n echo 'A:',$caught->getMessage(),':',$caught->getPrevious()===$original?'same':'BAD',':',$caught->getCode();\n}\n",
+      "source_sha256": "8d3d6fffe45acb90f9dc22dac417991c56f4df36b5839b8875a65109c34b05ca",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "Q3xEfEE6ZmFpbGVkOnNhbWU6MQ==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogRnVuY3Rpb24gYXNzZXJ0X29wdGlvbnMoKSBpcyBkZXByZWNhdGVkIHNpbmNlIDguMyBpbiB7RklMRX0gb24gbGluZSA3CkRlcHJlY2F0ZWQ6IEZ1bmN0aW9uIGFzc2VydF9vcHRpb25zKCkgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjMgaW4ge0ZJTEV9IG9uIGxpbmUgNAo=",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-options-pending-owner-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "1440278f4e9907c96744cba078be9c71eb0c388e9b42930a083120bce07c5fe3"
+    },
+    {
+      "id": "options-review-array-pending-owner-mode1",
+      "source": "<?php\n$original=new Exception('callback');\nclass LastCallbackArray{\n function run(){global $original;echo 'C|';assert_options(2,null);throw $original;}\n function __destruct(){echo 'D|';}\n}\nassert_options(2,[new LastCallbackArray,'run']);\ntry{assert(false,'array-failed');}catch(AssertionError $caught){\n echo 'A:',$caught->getMessage(),':',$caught->getPrevious()===$original?'same':'BAD',':',$caught->getCode();\n}\n",
+      "source_sha256": "e0e52c8e87bdd84af03dc861abf05831f5d1a9059d42a00c13548a14dd4c15db",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "Q3xEfEE6YXJyYXktZmFpbGVkOnNhbWU6MQ==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogRnVuY3Rpb24gYXNzZXJ0X29wdGlvbnMoKSBpcyBkZXByZWNhdGVkIHNpbmNlIDguMyBpbiB7RklMRX0gb24gbGluZSA3CkRlcHJlY2F0ZWQ6IEZ1bmN0aW9uIGFzc2VydF9vcHRpb25zKCkgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjMgaW4ge0ZJTEV9IG9uIGxpbmUgNAo=",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-current-19/.tools/assertion-options-review-array-pending-20-a816d7bs/run-v1/report.json",
+      "native_raw_sha256": "635066281af7633e1fe0a0434d73232141896add9fce8eac0e19725955ece47a"
     }
   ],
   "native_profile": {
@@ -972,5 +1007,26 @@
     "output_buffering": "0",
     "implicit_flush": "1",
     "zend.assertions": "1"
-  }
+  },
+  "excluded_cases": [
+    {
+      "id": "options-callback-args-mode1",
+      "source": "<?php\nassert_options(5,0);assert_options(4,0);\nassert_options(2,static function(...$args){\n echo count($args),':',$args[0]===__FILE__?'file':'BAD',':',$args[1],':',$args[2]===null?'null':'BAD';\n if(count($args)===4){echo ':',$args[3];}echo '|';\n});\necho assert(false)===false?'false|':'BAD';\n$f='assert';echo $f(false)===false?'false|':'BAD';\necho $f(false,null)===false?'false|':'BAD';\necho $f(false,'')===false?'false|':'BAD';\necho assert(false,'explicit')===false?'false|':'BAD';\n$closure=assert(...);echo $closure(false)===false?'false':'BAD';\n",
+      "source_sha256": "bcbf443119a379d08f005bede148ac297937c440a0d3d7ec518c9c99f3a6d4e6",
+      "startup_ini": {
+        "zend.assertions": "MQ=="
+      },
+      "stdout_base64": "NDpmaWxlOjc6bnVsbDphc3NlcnQoZmFsc2UpfGZhbHNlfDM6ZmlsZTo4Om51bGx8ZmFsc2V8MzpmaWxlOjk6bnVsbHxmYWxzZXw0OmZpbGU6MTA6bnVsbDp8ZmFsc2V8NDpmaWxlOjExOm51bGw6ZXhwbGljaXR8ZmFsc2V8MzpmaWxlOjEyOm51bGx8ZmFsc2U=",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogRnVuY3Rpb24gYXNzZXJ0X29wdGlvbnMoKSBpcyBkZXByZWNhdGVkIHNpbmNlIDguMyBpbiB7RklMRX0gb24gbGluZSAyCkRlcHJlY2F0ZWQ6IEZ1bmN0aW9uIGFzc2VydF9vcHRpb25zKCkgaXMgZGVwcmVjYXRlZCBzaW5jZSA4LjMgaW4ge0ZJTEV9IG9uIGxpbmUgMgpEZXByZWNhdGVkOiBGdW5jdGlvbiBhc3NlcnRfb3B0aW9ucygpIGlzIGRlcHJlY2F0ZWQgc2luY2UgOC4zIGluIHtGSUxFfSBvbiBsaW5lIDMK",
+      "exit_status": 0,
+      "status": "normal",
+      "native_profile": {
+        "zend.assertions": "1"
+      },
+      "native_group": ".tools/compiler-assertion-ini-368-19/.tools/assertion-options-baseline-v1/run-v1/report.json",
+      "native_raw_sha256": "e03e0c54306baff2bb169f999bf003be0bd813d9bf45ad4e84d9e54591422161",
+      "exclusion": "Ordinary-library count observer, excluded by CORE.md; original model Unsupported remains zero agreement.",
+      "preserved_model_failure": ".tools/compiler-assertion-ini-current-19/.tools/method-runtime-w9yskwoa/report.json"
+    }
+  ]
 }

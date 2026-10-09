@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Deprecated assertion options preserve raw flags, old-value snapshots, callback
+arguments and live warning/exception/bail policy after callback/retval retirement.
+Per-constant protection survives namespace publication and parked handlers.
+Earlier 17 accepted originals retain their cuts; parked constant at 6fcb and selected
+receiver plus independent RAW-array cleanup at ca196 add three, giving 20 distinct
+options originals. State 117 stays at d7; original pending state 52 plus 15 real/history
+and frozen-wrapper counterexamples pass at ca196 (67 total), with strict 356 compilation.
+Pending exceptions validate on the real heap; the historical target view owns none.
+The [ledger](coverage/semantics/assertion-options-review.json) keeps original failures,
+the Count Unsupported/foreach distinction and bailout status-only correction.
+Actual 358 over f5c4 passes strict compilation at 4c201; canonical 207/361/363 are
+unchanged. Canonical integration, wider callback/description producers and INI warning
+paths remain required.
+
 Module 374 unpacks arrays into ordinary method/array and captured START buffers.
 Per-pack named ordering, dereferenced value copies and nonowning completed history
 survive selector/pack retirement; copied C-root buffers authenticate their genuine
