@@ -46,6 +46,13 @@ dec $assertion_failed(pstate, pconfigcall, preqbytes) : pstate
 dec $assertion_failed_result(pstate) : pstate
 dec $assertion_test(pstate, pconfigcall, pvalue, pvalue) : pstate
 dec $assertion_description_value(pstate, pconfigcall, pvalue, pvalue) : pstate
+dec $assertion_description_source(pstate, pconfigcall) : (nat, porigin, int)?
+dec $assertion_description_source_at(pstate, pconfigcall, nat) : (nat, porigin, int)?
+dec $assertion_description_string_valid(pstate, pconfigcall, nat, porigin, int) : bool
+dec $assertion_description_call(pconfigcall, pvalue) : pconfigcall
+dec $assertion_description_retained(pstate, pconfigcall, nat) : bool
+dec $assertion_description_begin(pstate, pconfigcall) : pstate
+dec $assertion_description_finish(pstate, pconfigcall, nat, pvalue) : pstate
 dec $assertion_receive(pstate, pconfigcall) : pstate
 dec $assertion_entry(pstate, prequest?, preqbytes?) : pstate
 dec $assertion_entry_cwd(prequest?, preqbytes?) : preqbytes?
@@ -365,7 +372,7 @@ def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = $assertion
 def $assertion_description_value(S, pconfigcall, pvalue, pvalue_description) = $assertion_test(S, pconfigcall, pvalue, PSTRING preqbytes)
   -- if $typed_scalar(pvalue_description) /\ ~$method_string(pvalue_description)
   -- if $config_conversion(S, pconfigcall, pvalue_description) = TYPEVALUE (PSTRING preqbytes)
-def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = S[.COMPLETION = UNSUPPORTED "assert Stringable description callback"]
+def $assertion_description_value(S, pconfigcall, pvalue, POBJECT n) = $assertion_description_begin(S, pconfigcall)
   -- if ~$throwable_member(S, n)
   -- if $stringable_instance(S, n)
   -- if ~$config_strict(S, pconfigcall)
@@ -397,6 +404,99 @@ rule PhpStep/assertion-invoke: S ~> $assertion_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_ASSERT
   -- if $config_invoke_valid(S, pconfigcall)
+
+;; ZPP converts an enabled call's second argument before testing its truth.
+;; The continuation owns the original call only until the actual slot is replaced.
+def $assertion_description_source(S, pconfigcall) = $assertion_description_source_at(S, pconfigcall, 0)
+def $assertion_description_source_at(S, pconfigcall, n_source) = ((n, porigin_child, z_child))
+  -- if $(n_source < 2)
+  -- if pconfigcall.KIND = INTRINSIC_ASSERT
+  -- if pconfigcall.PACKS = eps
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (POBJECT n))]
+  -- if $intrinsic_count(S, pconfigcall.SITE) = (2)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n_source) = ((expression, false, preqbytes?, porigin_child, z_child))
+  -- if $config_destination(INTRINSIC_ASSERT, preqbytes?, n_source) = (1)
+def $assertion_description_source_at(S, pconfigcall, n_source) = $assertion_description_source_at(S, pconfigcall, $(n_source + 1))
+  -- if $(n_source < 2)
+  -- if $intrinsic_argument(S, pconfigcall.SITE, n_source) = ((expression, false, preqbytes?, porigin_child, z_child))
+  -- if $config_destination(INTRINSIC_ASSERT, preqbytes?, n_source) =/= (1)
+def $assertion_description_source_at(S, pconfigcall, n_source) = eps -- otherwise
+def $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child) = true
+  -- if $assertion_description_source(S, pconfigcall) = ((n, porigin_child, z_child))
+  -- if $config_invoke_valid(S[.ORIGIN = (pconfigcall.SITE)], pconfigcall)
+  -- if ~$config_strict(S, pconfigcall)
+  -- if ~$throwable_member(S, n)
+  -- if $stringable_instance(S, n)
+def $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child) = false -- otherwise
+def $assertion_description_call(pconfigcall, pvalue_text) = pconfigcall[.SENT = ([NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_text)])]
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_description)]
+def $assertion_description_retained(S, pconfigcall, n) = true
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S_live = S[.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $($heap_owners($heap_graph(S_live), HOBJECT n) > 0)
+def $assertion_description_retained(S, pconfigcall, n) = false -- otherwise
+def $assertion_description_begin(S, pconfigcall) = $user_string_begin(S[.ORIGIN = (porigin_child)], n, porigin_child, pconfigcall.LINE, ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child, ptask_tail*)
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if $assertion_description_source(S, pconfigcall) = ((n, porigin_child, z_child))
+  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+  -- if $assertion_description_retained(S, $assertion_description_call(pconfigcall, PNULL), n)
+def $assertion_description_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "assert Stringable description unpack source"]
+  -- if pconfigcall.PACKS =/= eps
+def $assertion_description_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "assert Stringable description receiver cleanup"]
+  -- if $assertion_description_source(S, pconfigcall) = ((n, porigin_child, z_child))
+  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+  -- if ~$assertion_description_retained(S, $assertion_description_call(pconfigcall, PNULL), n)
+def $assertion_description_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "assert Stringable description source"] -- otherwise
+def $assertion_description_finish(S, pconfigcall, n, pvalue_text) = $assertion_test(S_call, pconfigcall_converted, pvalue, pvalue_text)
+  -- if S.TODO = (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN (POBJECT n))]
+  -- if pconfigcall_converted = $assertion_description_call(pconfigcall, pvalue_text)
+  -- if $assertion_description_retained(S, pconfigcall_converted, n)
+  -- if S_call = S[.TODO = (CONFIG_INVOKE pconfigcall_converted) :: ptask_tail*][.ORIGIN = (pconfigcall.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $assertion_description_finish(S, pconfigcall, n, pvalue_text) = S[.COMPLETION = UNSUPPORTED "assert Stringable description receiver cleanup"] -- otherwise
+rule PhpStep/assert-description-string: S ~> $assertion_description_finish(S, pconfigcall, n, pvalue_text)
+  -- if S.TODO = (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_child)
+  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_carrier_valid(S, pvalue_text)
+  -- if $string_bytes(pvalue_text) = (n_text*)
+def $task_nodes(ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) = $config_nodes(pconfigcall)
+def $selected_task_nonce(ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) = pconfigcall.SELECTION
+def $call_task_valid(S, ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) = (S.ORIGIN = (porigin_child) /\ $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child))
+def $stringify_source(S, porigin_child, z, ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) = (z = pconfigcall.LINE /\ $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child))
+def $config_string_pending_line_valid(S, METHOD_TARGET n porigin_method, (porigin_child), z) = true
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET n porigin_method) eps 0 eps (porigin_child) z) :: (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
+  -- if z = pconfigcall.LINE
+  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+  -- if $stringify_pending(S, METHOD_TARGET n porigin_method, porigin_child)
+def $config_string_child_site(S, porigin_child, z) = true
+  -- if S.TODO = ptask :: (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
+  -- if z = pconfigcall.LINE
+  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+def $config_string_child_site(S, porigin_child, z) = true
+  -- if S.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
+  -- if z = pconfigcall.LINE
+  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+def $config_string_child_site(S, porigin_child, z) = true
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
+  -- if z = pconfigcall.LINE
+  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+def $config_string_trace_context(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.CALLSITE = (porigin_child)
+  -- if $context_target(pcallcontext) = METHOD_TARGET n porigin_method
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
+  -- if pcallcontext.LINE = z /\ z = pconfigcall.LINE
+  -- if $stringify_entered(S, S.CURRENT, S.FRAMES, METHOD_TARGET n porigin_method, porigin_child)
+  -- if $assertion_description_string_valid($constant_frame_scope(S, pframe, pframe_tail*), pconfigcall, n, porigin_child, z_child)
+def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCTION $trace_context_function(S, pcallcontext), CLASS $trace_context_class(S, pcallcontext), TYPE ($ptascii("->")), ARGS eps, HASARGS true}] ++ $config_trace_frames(S, pconfigcall, $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT)))
+  -- if $config_string_trace_context(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (STRINGIFY_RESULT n porigin_child z) :: (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
 
 ;; Optional request/file facts follow the existing entry checks. Compilation
 ;; receives the mode before pplexical performs any argument/context checks.
