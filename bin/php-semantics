@@ -107,8 +107,8 @@ def observe(state, filename, display_mode=2):
 
         def exception_message(value):
             kind = value['tag']
-            if kind == 'PSTRING':
-                return bytes(map(int, value['args'][0])), False
+            if kind in ('PSTRING', 'PSTRING_CARRIER'):
+                return bytes(map(int, value['args'][-1])), False
             if kind == 'PINT':
                 return str(value['args'][0]).encode(), False
             if kind == 'PBOOL':
@@ -223,8 +223,8 @@ def observe(state, filename, display_mode=2):
             else:
                 name = 'Closure'
             return b'Object(' + name.encode() + b')'
-        if kind == 'PSTRING':
-            data = bytes(map(int, value['args'][0]))
+        if kind in ('PSTRING', 'PSTRING_CARRIER'):
+            data = bytes(map(int, value['args'][-1]))
             escapes = {10: b'\\n', 13: b'\\r', 9: b'\\t', 12: b'\\f', 11: b'\\v', 27: b'\\e', 92: b'\\\\'}
             return b"'" + b''.join(escapes.get(ch, bytes([ch]) if 32 <= ch <= 126 else f'\\x{ch:02X}'.encode())
                                    for ch in data[:15]) + (b"...'" if len(data) > 15 else b"'")
@@ -273,7 +273,7 @@ def observe(state, filename, display_mode=2):
     if origin is not None:
         location = source_filename(origin['args'][0])
     if uncaught_chain:
-        location = bytes(map(int, field(uncaught_chain[0], 'file')['args'][0]))
+        location = bytes(map(int, field(uncaught_chain[0], 'file')['args'][-1]))
     diagnostic = None
     status = {'NORMAL': 'normal', 'REQUESTFATAL': 'php_error', 'EXITED': 'explicit_exit', 'FATAL': 'php_error', 'USERFATAL': 'php_error', 'INTERNALFATAL': 'php_error', 'PHPERROR': 'php_error', 'THROWN': 'php_error', 'STATICERROR': 'static_rejection', 'STATICBYTES': 'static_rejection', 'COMPILETHROWN': 'static_rejection',
               'UNSUPPORTED': 'unsupported', 'BUDGET': 'budget_exhausted'}[tag]
@@ -331,7 +331,7 @@ def observe(state, filename, display_mode=2):
                     prefix = b'Fatal error: Uncaught ' if index == 0 else b'\nNext '
                     message_part = b': ' + message_bytes if message_bytes else b''
                     stderr += (prefix + chain_name.encode('utf-8', 'surrogateescape') + message_part + b' in '
-                               + bytes(map(int, field(chain_id, 'file')['args'][0])) + b':' + str(field(chain_id, 'line')['args'][0]).encode()
+                               + bytes(map(int, field(chain_id, 'file')['args'][-1])) + b':' + str(field(chain_id, 'line')['args'][0]).encode()
                                + b'\nStack trace:\n')
                     stderr += slot_trace(int(field(chain_id, 'trace')['args'][0]))
                 stderr += b'  thrown in ' + location + b' on line ' + str(line).encode() + b'\n'
