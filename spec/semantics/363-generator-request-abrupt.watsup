@@ -507,7 +507,8 @@ def $exception_dispatch_ready(S) = true
   -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
   -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n_inner true
   -- if $exception_task_scope(S) /\ S.ORIGIN = pgenfatal.METHOD
-  -- if S.ERRORHANDLER.CALLBACK = eps /\ S.EXCEPTIONHANDLER = (pvalue)
+  -- if S.ERRORHANDLER.CALLBACK = eps
+  -- if S.EXCEPTIONHANDLER = (pvalue)
   -- if $throwable_live(S, n)
   -- if $error_entered_call_valid(S, perrorcall)
 rule PhpStep/generator-request-render-handler-abrupt-required: S ~> S[.COMPLETION = UNSUPPORTED "Generator request fatal renderer handler or warning exception"]
