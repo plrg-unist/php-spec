@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "status": "accepted_bounded_scalar_replay",
+  "target": "PHP 8.5.10 CLI NTS64/profile30719",
+  "scope": "Source-authenticated while/do/for tails and caught break/continue/goto in named, method and closure frames; no physical loop owner synthesized.",
+  "engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "basis": "Zend VERIFY_RETURN_TYPE, FAST_CALL/FAST_RET and exception dispatch; generic delayed replay retains its separately accepted ledger."
+  },
+  "behavior": [
+    "Recover inner-to-outer scalar LOOP_NEXT tails without rerunning initializers or the caught try body.",
+    "Keep condition/update work, selected catch eligibility and plain TRY origin restoration.",
+    "Cross authentic one-use replay pairs for depth2 jumps and both goto paths; outgoing finalizers, label admission and overriding reference aliases are preserved.",
+    "Retain99/156 original-versus-checked writer arities and ordinary error retirement."
+  ],
+  "source": {
+    "agreements": 14,
+    "catalogue": "tests/semantics/reference_replay_scalar_cases.json",
+    "twelve": {
+      "revision": "8d762fbf7c3fc088fb9f8c596af6aa1b6f831536",
+      "native": ".tools/reference-replay-loop-draft/.tools/finally-source-q8ovdj_e",
+      "model": ".tools/returns-verify20-scalar/model-cgbucyo7/report.json"
+    },
+    "goto": {
+      "revision": "8d762fbf7c3fc088fb9f8c596af6aa1b6f831536",
+      "native": ".tools/returns-verify20-scalar/native-goto-20lyks9g/report.json",
+      "model": ".tools/returns-verify20-scalar/model-goto-0qeavbdd/report.json"
+    },
+    "direct_goto": {
+      "revision": "bf65e598059120afec36d4b8699d273c944d1190",
+      "native": ".tools/returns-verify20-scalar/native-goto-direct-4stxtxm_/report.json",
+      "model": ".tools/returns-verify20-scalar/model-goto-direct-24mdua7g/report.json"
+    },
+    "result": "All14 exact normal stdout/stderr/exit0; preserved native12 reused without renewal."
+  },
+  "state": {
+    "producer": "tests/semantics/reference_replay_scalar_state.py",
+    "fixtures": 15,
+    "assertions": 1102,
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "explicit --sl/modules361/jobs1/cap45 per fixture",
+    "first13": {
+      "revision": "51eb37c29664a25cc0dae0d3fc2a7fd793632de8",
+      "fixtures": 13,
+      "assertions": 973,
+      "raw": ".tools/returns-replay-scalar-20/.tools/returns-scalar20/state-wave-sletcg66/report.json"
+    },
+    "remaining2": {
+      "revision": "89e49e574a3ac9d93a74bac5194dc72a972f42cb",
+      "fixtures": 2,
+      "assertions": 129,
+      "raw": ".tools/returns-replay-scalar-20/.tools/returns-scalar20/state-wave-17ke70_e/report.json"
+    },
+    "manifest": ".tools/returns-replay-scalar-20/.tools/returns-scalar20/state-v3/manifest.json",
+    "manifest_sha256": "aed2238d88555c50aa405eaede9761a0dae08f945a28b6540b528e380342f1e5",
+    "result": "All15 true/empty stderr/exit0, stable and reaped. First13 bodies byte-identical after label-only fix. Genuine BUDGET frontiers, real saved upd frames, malformed source/kind/pair refusal, public zero/adjacent/whole equality and terminal alias/error retirement."
+  },
+  "actual_parent_compiler": {
+    "revision": "c5579f5d8cf8e28896fef402a42011d1d0bb55c4",
+    "parent": "cf9411d676abfd8f5a160851ba584e8c3c9528e9",
+    "modules": 361,
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "mode": "SL/cache=false/det=true ordered parse/elaborate/analysis/structure/initialization",
+    "command": "python3 .tools/returns-scalar20/run-compiler.py cf9411d676abfd8f5a160851ba584e8c3c9528e9",
+    "cwd": ".tools/returns-replay-scalar-publication-20",
+    "raw": ".tools/returns-replay-scalar-publication-20/.tools/returns-scalar20/returns-scalar-current-compiler-jqkzajd_/report.json",
+    "seconds": 4.87757682800293,
+    "exit": 0,
+    "pid": 353672,
+    "group_after": [],
+    "stable": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "interaction_review": "CTOR/ARG hooks inactive and constant lookup equivalent;377 named-CV PROPERTY receiver absent,39 STMT root specialization equals prior eps. Five modified paths byte-equal to private89."
+  },
+  "preserved_failures": [
+    {
+      "raw": ".tools/returns-replay-scalar-20/.tools/returns-scalar20/state-wave-2f8wrap2/report.json",
+      "credit": 0,
+      "reason": "First fixture rejected before semantics: terminal PSTRING literal required typed string constructor."
+    },
+    {
+      "raw": ".tools/returns-replay-scalar-20/.tools/returns-scalar20/state-wave-sletcg66/report.json",
+      "failed_fixture_credit": 0,
+      "reason": "After13 passing fixtures, label finder exhausted on unencoded L. Only label BYTES fields corrected; remaining2 run separately."
+    }
+  ],
+  "reviewer": "returns_review_20",
+  "verifier": "returns_verify_20; temporary gpt-6-sol/max assignment remains active",
+  "intentional_divergence": false,
+  "remaining": [
+    "CV/compiled-CONST switch recovery",
+    "Physical-array first-release/COW and value-foreach owner/cursor recovery under the separately agreed conservative domain",
+    "RW reuse, sole-owner/dangling, object/destructor and consumed active-finalizer domains",
+    "Protected temporary/NULL Notice timing and Stringable reference conversion186",
+    "Complete resumed returns verification and complete PHP core"
+  ],
+  "recovery": "Use archived parsed/checked/request packets for source12 and both goto models with the frozen89 producer (three --raw directories), then the pinned b57 runner in explicit --sl and modules.json order. Raw archives stay ignored; no native12 or earlier replay10/state14 renewal."
+}

@@ -44,9 +44,13 @@ That ledger retains the original delayed-TypeError failure and disproved
 ten replay originals and 14 current/saved fixtures with 954 assertions pass at
 private360. Four preserved affected return controls and one core-only terminal
 weak-conversion control also agree; actual361 compilation retains a distinct cut.
-Current-base scalar-loop/CV-CONST continuation and physical-array owner recovery,
-active-finalizer replay, protected temporary/NULL Notice timing and by-reference
-Stringable conversion remain required.
+The [scalar continuation increment](../../coverage/semantics/reference-return-scalar-replay-review.json)
+also recovers while/do/for tails and caught break/continue/goto through source
+contexts: 14 originals and 15 reached fixtures with 1,102 assertions pass at
+separate private361 cuts; actual361 strict compilation has a distinct cut.
+CV/compiled-CONST switches and physical-array owner recovery, active-finalizer
+replay, protected temporary/NULL Notice timing and by-reference Stringable
+conversion remain required.
 
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;

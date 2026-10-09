@@ -26,9 +26,17 @@ without re-evaluating its body.
 The [replay review](../../coverage/semantics/reference-return-replay-review.json)
 binds ten exact replay originals, 14 current/saved source-reached fixtures with 954
 assertions and five affected return controls at private360. Actual361 compilation
-has a distinct compiler-only cut. Current-base scalar-loop and CV/compiled-CONST
-switch recovery, physical-array owners, replay from an already active finalizer,
+has a distinct compiler-only cut. CV/compiled-CONST switch recovery, physical-array
+owners, replay from an already active finalizer,
 protected temporary/NULL Notice timing and object conversion remain required.
+
+Source-authenticated while/do/for tails resume remaining body, update and
+condition work after caught delayed rejection without queuing the initializer
+again. Inner-to-outer loop order and break/continue/goto preserve try/catch scope
+in named functions, methods and closures. The [scalar review](../../coverage/semantics/reference-return-scalar-replay-review.json)
+binds 14 exact originals and 15 current/saved fixtures with 1,102 assertions at
+retained private361 cuts. Actual361 over `cf9411d` passes strict compilation at
+`c5579f5d`; fixture typing and label-encoding failures keep zero affected credit.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.

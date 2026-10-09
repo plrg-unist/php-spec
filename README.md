@@ -471,7 +471,11 @@ now follows the protected exception chain once, retaining pending-error ownershi
 selected catch eligibility and the continuation after a caught try. Ten replay
 originals, 14 current/saved fixtures with 954 assertions and five affected return
 controls pass at private360; actual361 passes a separate strict compiler gate.
-Scalar-loop/CV-CONST continuation and physical-array owner recovery, active-finalizer
+Source-only [scalar-loop recovery](coverage/semantics/reference-return-scalar-replay-review.json)
+preserves initialization and loop steps through caught break/continue/goto in
+named, method and closure frames. Fourteen originals and 15 reached fixtures
+with 1,102 assertions pass; actual361 compilation has a separate cut.
+CV/compiled-CONST switches and physical-array owner recovery, active-finalizer
 replay, protected temporary/NULL Notice timing and Stringable conversion remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)

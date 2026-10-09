@@ -36,10 +36,21 @@ Four preserved affected return controls and one core-only terminal weak-conversi
 control agree. The 361-module composition over `5b7452edd` passes separate strict
 compilation at `2c3dbf30`.
 The old prediction, pre-evaluation declaration failure and Unsupported `gettype`
-observer remain zero-credit at their original cuts. Current-base scalar-loop and
-CV/compiled-CONST switch recovery, physical-array owners, active-finalizer replay,
+observer remain zero-credit at their original cuts. CV/compiled-CONST switch
+recovery, physical-array owners, active-finalizer replay,
 protected temporary/NULL Notice timing and Stringable reference conversion remain
 required. [Replay review](coverage/semantics/reference-return-replay-review.json).
+
+Source-authenticated while/do/for tails now recover after caught delayed reference
+rejection without repeating initialization. Break/continue depth, goto labels and
+try/catch origin survive named, method and closure frames. Fourteen originals
+agree at retained private361 cuts; 15 reached current/saved fixtures pass 1,102
+assertions (13/973 at51eb, corrected label/direct2/129 at89e). The actual361
+composition over `cf9411d` passes strict compilation at `c5579f5d` (4.878s).
+Fixture elaboration and label-finder failures retain zero affected credit.
+CV/compiled-CONST switches, physical-array owners, active-finalizer replay and
+protected temporary/NULL Notice/Stringable paths remain required.
+[Scalar replay review](coverage/semantics/reference-return-scalar-replay-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
