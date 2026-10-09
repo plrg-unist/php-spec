@@ -2267,6 +2267,8 @@ arena identity, CONFIG owner retention, retired factory provenance and independe
 receiver/RHS/write/retirement. The interpreter failure and fixture variable collision
 remain zero credit. The maintained renderer is byte-identical to the accepted
 fixture; wider computed/nullsafe captures and original 7's CLI60 timeout stay open.
+Actual-parent compilation passes at `0b4de6cd` over `5a127787` with 371 modules;
+pointwise CLASS/ownership review adds no private source, state or native renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
