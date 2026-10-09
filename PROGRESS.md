@@ -1953,6 +1953,10 @@ retain separate cuts; five groups pass 880 premises at `19cce2600`, and the
 affected214 at `b5be8ecec` brings the total to 1094. The original Unsupported
 baseline, preparation failure and failed cleanup-source assertion retain zero credit.
 [Denied-getter ledger](coverage/semantics/magic-property-denied-review.json).
+The actual370 join over `e2ef06143` passes strict at `2fc127185` (5.422s,
+state credit0). Current factory/constructor callable, Generator/collector and
+assertion additions preserve the ordinary getter interfaces and are inactive
+in these originals. Private source6/state1094 and all failures keep their cuts.
 Coercions, constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

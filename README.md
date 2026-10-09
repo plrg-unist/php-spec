@@ -1316,6 +1316,9 @@ use the physical backing key or raise its initialization Error. The original
 caller scope remains valid through privileged getter/destructor callbacks.
 [Six new source agreements and six reached groups](coverage/semantics/magic-property-denied-review.json)
 pass 1094 setup-inclusive premises; earlier public-getter evidence is unchanged.
+The actual370 join over `e2ef06143` passes strict at `2fc127185` (5.422s),
+preserving current callable, class, Generator, collector and assertion interfaces.
+Private source/state cuts retain their original credit.
 Coercions, constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.
