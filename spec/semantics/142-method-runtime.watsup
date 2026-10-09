@@ -1564,9 +1564,10 @@ dec $promotion_override_finish(pstate, pclassdesc, pstate) : pstate
 def $promotion_override_property(S, pclassdesc, ppropertydesc) = true
   -- if $class_at(S.CLASSES, pclassdesc.ORIGIN) = (pclassdesc)
   -- if $ppproperty_desc_at(pclassdesc.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc)
-  -- if $origin_node(S.SOURCES, $origin_source(ppropertydesc.ORIGIN)) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if $origin_node(S.SOURCES, $origin_source(porigin)) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
   -- if phpType14 =/= SEQUENCE eps
-  -- if $origin_source(ppropertydesc.ORIGIN) = PORIGIN n_unit pcpath
+  -- if $origin_source(porigin) = PORIGIN n_unit pcpath
   -- if $(|pcpath| >= 2)
   -- if pcpath_method = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath = pcpath_method ++ [PCFIELD 4, PCINDEX n]
