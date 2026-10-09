@@ -1,0 +1,41 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "missing-constructor-literal-versus-computed-before-arguments",
+      "source": "<?php\nfunction argument() { echo \"ARG;\"; }\nclass A {}\necho \"PRE;\";\ntry { A::__construct(argument()); }\ncatch (Error $ex) { echo \"LITERAL:\", $ex->getMessage(), \";\"; }\n$method = \"__construct\";\ntry { A::$method(argument()); }\ncatch (Error $ex) { echo \"DYNAMIC:\", $ex->getMessage(), \";\"; }\necho \"POST;\";\n",
+      "source_sha256": "ad5d586da075d73227ba58c4ebe331373d46a8122b292cd6315d2608c04c5065",
+      "native_group": "/home/user/workspace/php-spec/.tools/missing-constructor-literal-computed-private-20/.tools/missing-constructor-probes-20/native-missing-constructor-literal-versus-computed-before-arguments/command.json",
+      "native_raw_sha256": "a0a1e94f3df28c66fa3c34f241f0211ab95824d408d1263435cc674eced404e2",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UFJFO0xJVEVSQUw6Q2Fubm90IGNhbGwgY29uc3RydWN0b3I7RFlOQU1JQzpDYWxsIHRvIHVuZGVmaW5lZCBtZXRob2QgQTo6X19jb25zdHJ1Y3QoKTtQT1NUOw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "missing-constructor-folded-methods-before-arguments",
+      "source": "<?php\nfunction argument() { echo \"ARG;\"; }\nclass A {}\ntry { A::__CoNsTrUcT(argument()); }\ncatch (Error $ex) { echo \"IDENTIFIER:\", $ex->getMessage(), \";\"; }\ntry { A::{\"__CoNsTrUcT\"}(argument()); }\ncatch (Error $ex) { echo \"STRING:\", $ex->getMessage(), \";\"; }\ntry { A::{\"__con\".\"struct\"}(argument()); }\ncatch (Error $ex) { echo \"CONCAT:\", $ex->getMessage(), \";\"; }\n$method = \"__CoNsTrUcT\";\ntry { A::$method(argument()); }\ncatch (Error $ex) { echo \"DYNAMIC:\", $ex->getMessage(), \";\"; }\n$class = \"A\";\ntry { $class::__construct(argument()); }\ncatch (Error $ex) { echo \"CLASSCV:\", $ex->getMessage(), \";\"; }\ntry { MissingClass::__construct(argument()); }\ncatch (Error $ex) { echo \"CLASS:\", $ex->getMessage(), \";\"; }\ntry { A::missing(argument()); }\ncatch (Error $ex) { echo \"METHOD:\", $ex->getMessage(), \";\"; }\n",
+      "source_sha256": "e25da32e93794fa6ebfeb7193a78e0dff9e32c7076276b0c78ebf4ce42701ba0",
+      "native_group": "/home/user/workspace/php-spec/.tools/missing-constructor-literal-computed-private-20/.tools/missing-constructor-probes-20/native-missing-constructor-folded-methods-before-arguments/command.json",
+      "native_raw_sha256": "36f44a1fc197c4a1e8f8e0b9b2f443c6b46efb584087bfb246ac20dc2f90817d",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "SURFTlRJRklFUjpDYW5ub3QgY2FsbCBjb25zdHJ1Y3RvcjtTVFJJTkc6Q2Fubm90IGNhbGwgY29uc3RydWN0b3I7Q09OQ0FUOkNhbm5vdCBjYWxsIGNvbnN0cnVjdG9yO0RZTkFNSUM6Q2FsbCB0byB1bmRlZmluZWQgbWV0aG9kIEE6Ol9fQ29Oc1RyVWNUKCk7Q0xBU1NDVjpDYW5ub3QgY2FsbCBjb25zdHJ1Y3RvcjtDTEFTUzpDbGFzcyAiTWlzc2luZ0NsYXNzIiBub3QgZm91bmQ7TUVUSE9EOkNhbGwgdG8gdW5kZWZpbmVkIG1ldGhvZCBBOjptaXNzaW5nKCk7",
+      "stderr_template_base64": ""
+    }
+  ]
+}

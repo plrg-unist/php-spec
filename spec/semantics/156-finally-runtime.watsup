@@ -121,8 +121,10 @@ dec $finally_ref_recheck(pstate, poperand, int) : pstate
 def $finally_ref_recheck(S, poperand, z) = S_checked
   -- if S_checked = $typed_return_checked($resolve_at(S, poperand, z), z, $typed_reference_operand_source(S, poperand))
   -- if S_checked.COMPLETION =/= NORMAL
-def $finally_ref_recheck(S, poperand, z) = $reference_return_write_operand(S_checked, poperand, pvalue)
-  -- if S_checked = $typed_return_checked($resolve_at(S, poperand, z), z, $typed_reference_operand_source(S, poperand))
+def $finally_ref_recheck(S, poperand, z) = $reference_return_write_operand(S_checked, poperand, pvalue_original, pvalue)
+  -- if S_input = $resolve_at(S, poperand, z)
+  -- if S_input.RESULT = KNOWN pvalue_original
+  -- if S_checked = $typed_return_checked(S_input, z, $typed_reference_operand_source(S, poperand))
   -- if S_checked.COMPLETION = NORMAL
   -- if S_checked.RESULT = KNOWN pvalue
 dec $return_ref_step(pstate, poperand, int, bool, porigin, ptask*) : pstate

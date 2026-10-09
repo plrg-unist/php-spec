@@ -123,8 +123,13 @@ the three explicit startup modes, selected normalized descriptions, ordinary
 dynamic/FCC evaluation, description type-check priority and Throwable identity.
 Quiet runtime INI updates preserve raw/initial values, modified/restore timing,
 positive enabled quantities and post-handler state after negative-boundary refusal.
-Parsing-warning paths, authenticated Stringable-option refusal, wider startup facts,
-options/callbacks, Stringable descriptions, wider export and single
+Deprecated options preserve raw flags and old-value snapshots, ordinary callback
+arguments, live warning/exception/bail policy and pending chains after retval or
+selected-receiver retirement. Each deprecated constant is protected through nested
+and parked handlers. The [options ledger](../../coverage/semantics/assertion-options-review.json)
+retains the bounded source/state cuts and excluded Count observer separately.
+Parsing-warning paths, authenticated Stringable-option INI refusal, wider startup
+facts, callback forms, Stringable descriptions, wider export and single
 named-description/unpack producers remain required core work.
 
 Each intrinsic follows the target's argument/type checks and exception propagation,

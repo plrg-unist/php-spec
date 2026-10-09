@@ -7,6 +7,31 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Exact reference returns99 avoid unchanged checked writes during verification,
+acquisition and156 repeated finalizer checks. Genuine backing certificates,
+selected cells and property sources survive; conversions, quiet initialization
+and later ordinary writes remain checked. Sixteen of17 focused originals agree,
+with private358 independent35 and13 source-reached fixtures/483 assertions passing.
+The seventeenth exposes the held delayed-TypeError replay gap: native
+`F|F|R|SHARED`, model `F|R|SHARED`, zero agreement. Parser-only fixture stops and
+the original prediction remain preserved. Actual359 over6536a8339 passes strict SL compilation at37b08adeb (4.679s);
+private358 source/state cuts retain their inputs. Held replay/owner recovery and
+Stringable reference conversion remain required. [Exact-return review](coverage/semantics/reference-return-exact-review.json).
+
+Deprecated assertion options preserve raw flags, old-value snapshots, callback
+arguments and live warning/exception/bail policy after callback/retval retirement.
+Per-constant protection survives namespace publication and parked handlers.
+Earlier 17 accepted originals retain their cuts; parked constant at 6fcb and selected
+receiver plus independent RAW-array cleanup at ca196 add three, giving 20 distinct
+options originals. State 117 stays at d7; original pending state 52 plus 15 real/history
+and frozen-wrapper counterexamples pass at ca196 (67 total), with strict 356 compilation.
+Pending exceptions validate on the real heap; the historical target view owns none.
+The [ledger](coverage/semantics/assertion-options-review.json) keeps original failures,
+the Count Unsupported/foreach distinction and bailout status-only correction.
+Actual 359 over dfca passes strict compilation at 14ae4, preserving current property
+warning/base roots and collector/storage fields. Earlier 358/f5 compilation retains
+its own cut. Wider callback/description producers and INI warning paths remain required.
+
 Module 374 unpacks arrays into ordinary method/array and captured START buffers.
 Per-pack named ordering, dereferenced value copies and nonowning completed history
 survive selector/pack retirement; copied C-root buffers authenticate their genuine
@@ -387,8 +412,20 @@ physical premises complete both unchanged originals. The affected error fixture
 now checks request-final retirement of the new error; its obsolete lookup has
 zero affected credit. Both whole CLI 60s timeouts retain zero agreement. Final
 358 over `6ed4873bd` compiles at `0bc957892`, preserving reviewed Generator render
-and dynamic-source hooks. Overlap, different-active-pass reentry, whole CLI
-completion and broader GC remain required.
+and dynamic-source hooks.
+Different-main public reentry345 now authenticates the actual parked VM/fresh API
+while preserving fresh main tags after the old target slot is reused. Old guard
+INDEX equals the global cursor; the completed local scan must be INDEX+1, so a
+rewind cannot consume the fresh E callback. Independent normal96 at `93cb1cfd5`
+and throw109 at `950c158d5` complete both unchanged originals with exact error
+identity, heap-identical forgeries and budget replay. Actual359 over `0c549de11`
+passes strict compilation/init at `280feeb2a`, preserving GEN176/363 and the
+PROPS207/377 warning and ownership interfaces. The printable-metadata helper is the concrete
+changed cost dependency for the one throw-only retry; no general speedup is inferred.
+The initial undefined-helper compiler stop, first throw-state 120s timeout and
+both whole CLI 60s timeouts retain zero affected/agreement credit. Overlap, active
+residual and wider Fiber-pass reentry, whole CLI completion and broader GC remain
+required; earlier cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -2189,6 +2226,18 @@ Current19 raw evidence is `method-runtime-svn8anig`, `closure-call-protocol-66s2
 original normal mismatch `s0r3su65` retains zero agreement. Prior constructor
 cuts are not renewed; current375 collector/task fields remain preserved.
 
+Ordinary scoped calls without an effective constructor now preserve Zend's
+constructor arm: literal and folded names raise `Cannot call constructor`,
+while computed names retain the undefined-method Error before arguments.
+Two safe originals and distinct17+17 genuine SL premises pass at `fbab085b0` and
+`87618a93e`/358, with no argument/allocation effects and all four validators.
+Strict compilation passes; the original baseline mismatch and unreached computed
+fixture remain zero credit. The corrected fixture uses the authentic live CV.
+[The focused ledger](coverage/semantics/missing-constructor-review.json) retains
+the separate cuts. Actual `d47aee7c3` composition at `6e462b5e`/359 passes strict
+SL in 4.801s with zero runtime/source credit, preserving ASSERT/INI and GC/PROP
+interfaces. Private sources/states are not renewed; wider method/core stays open.
+
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and
 source line. Independent actual1fa6af571 compiler gates, one fresh ordinary source
@@ -2880,10 +2929,10 @@ failures and interrupted evidence.
   Called-class introspection223 leaves builtin Closure rebinding, builtin API
   callback targets, suspension and wider reference-result consumers open.
 
-`returns_verify` is temporarily paused by the user. Preserve its branches and
-evidence; do not retry the blocked engine experiment, substitute a reviewer,
-merge changes awaiting its validation, or begin work depending on those
-unaccepted changes. Independent work proceeds from the accepted baseline.
+`returns_verify` has resumed with the authorized temporary verifier. Preserve
+held branches and evidence, and do not retry the rejected engine experiment.
+Delayed return replay and runtime-owner recovery still require validation and
+independent review before integration or dependent work.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 

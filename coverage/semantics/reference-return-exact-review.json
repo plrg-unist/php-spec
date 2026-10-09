@@ -1,0 +1,109 @@
+{
+  "scope": "Exact reference-return verification/acquisition avoids unchanged checked assignments; actual conversions and required initialization retain writes. Other held return work remains open.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "error_reporting": 30719,
+    "native_profile": "tests/semantics/profile.json"
+  },
+  "semantic_revision": "842a82714977ccd71ed9640f4652dddbaef77ef0",
+  "prepared_parent": "ea04fbbe4e0d4948c10d829a3c1f6ec4672728d9",
+  "private_modules": 358,
+  "implementation_pins": {
+    "spec/semantics/99-reference-returns.watsup": "c7ca1cd6863022780d2a9d9d4a606aa39692ddcd448745c8b3fde9dba70986e1",
+    "spec/semantics/156-finally-runtime.watsup": "5ad02a1ca805cbbc54e4100f1618885f400e17473acdeb129d40d8ca35dc035f"
+  },
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "sources": [
+    {
+      "revision": "842a82714977ccd71ed9640f4652dddbaef77ef0",
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-no-write-20/.tools/returns-verify20-sz1t6cka/report.json",
+      "report_sha256": "8cf3f8b415cec4df56869607c9ca7cb73b50b177307c781396bc51a4ca92a3e8",
+      "accepted": 8
+    },
+    {
+      "revision": "842a82714977ccd71ed9640f4652dddbaef77ef0",
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-no-write-20/.tools/returns-verify20-controls-g2pp6dd0/report.json",
+      "report_sha256": "fa0d7a9b859ff1eb038800fefc2097c77764db305291d749d67b4a0339cb2eac",
+      "accepted": 7
+    },
+    {
+      "revision": "a05774e76ff3c6afbbc7b9614171c4c483485c0d",
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-no-write-20/.tools/returns-verify20-finalizer-qrojp6bl/report.json",
+      "report_sha256": "d1ea8c7f9857ba91cb43257f14305f8aea402c00d2048268ab588e2dd57de8e2",
+      "accepted": 1,
+      "accepted_ids": [
+        "parameter-backing-finally-global-rebind"
+      ],
+      "report_globally_passed": false
+    }
+  ],
+  "source_agreements": 16,
+  "state": [
+    {
+      "revision": "842a82714977ccd71ed9640f4652dddbaef77ef0",
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-no-write-20/.tools/returns-verify20-state-current-fetch-rr1myk1k/report.json",
+      "report_sha256": "785df2eb8c53a401742a78d9acc1ba90a09d44208e92e63876fac8c70b0677d7",
+      "accepted": 35
+    },
+    {
+      "revision": "c375743676911251bdf33328d5e4e004050297eb",
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-no-write-20/.tools/returns-verify20-state-forwarded-value-ux01cg6u/report.json",
+      "report_sha256": "1668bbaa8ffa19d8c6ddccc39c494ce9867dc6e28e564d79b195408f060f7bab",
+      "accepted": 49
+    },
+    {
+      "revision": "c375743676911251bdf33328d5e4e004050297eb",
+      "raw_report": "/home/user/workspace/php-spec/.tools/returns-no-write-20/.tools/returns-verify20-state-suite-jirn7471/report.json",
+      "report_sha256": "deba742343096dae20a7776b8cefad1e02073fa21d0c924c3b650fe1e569e7a8",
+      "accepted": 434
+    }
+  ],
+  "state_fixtures": 14,
+  "state_assertions": 518,
+  "actual_parent_compiler": {
+    "revision": "37b08adeb824048300e0d5891e5047757acd9fb4",
+    "canonical_parent": "6536a833921fa63d1d1b2863ba8754b00ed498fa",
+    "modules": 359,
+    "raw_report": "/home/user/workspace/php-spec/.tools/returns-no-write-current-20/.tools/returns-exact-current-20/returns-exact-current-compiler-r98c2a6i/report.json",
+    "report_sha256": "b29fc7559fe4fc4a6b2f69bf24488d4b1d374f24d6c182de3297c70ccbfd4665",
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "cap_seconds": 300,
+    "jobs": 1,
+    "memory_cap": "inherited_unlimited_no_distinct_prior_cap",
+    "elapsed_seconds": 4.679382085800171,
+    "exit_status": 0,
+    "pid": 297462,
+    "pgid": 297462,
+    "group_after": [],
+    "input_head_status_stable": true,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "reviewer": "returns_review_20",
+  "known_failure": {
+    "id": "parameter-backing-finally-required-recheck-unused",
+    "source_sha256": "44f566f645f39927bf956ec80be1addb8d2368e7e1b955822573f801f19f9b59",
+    "native_stdout": "F|F|R|SHARED",
+    "model_stdout": "F|R|SHARED",
+    "prediction_at_freeze": "F|R|SHARED",
+    "native_model_exit_status": 0,
+    "native_model_stderr": "",
+    "source_agreements": 0,
+    "status": "required_delayed_type_error_finalizer_replay_pending"
+  },
+  "preserved_fixture_failures": [
+    "BUDGET pause normalization before stepping (independent fixture only)",
+    "shared task head/tail binder rejected before semantics",
+    "recursive otherwise rejected before semantics"
+  ],
+  "remaining": [
+    "authenticated delayed return replay",
+    "live physical array switch/value-foreach owner recovery and terminal cleanup",
+    "protected temporary-return Notice timing",
+    "typed by-reference Stringable conversion186"
+  ],
+  "reproduce": "Check out each recorded revision and retain its ignored raw source packets. Regenerate source-reached state fixtures with tests/semantics/reference_return_exact_state.py --raw <source8> --raw <controls7> --raw <finalizer2> --output <ignored-directory>; execute fixtures serially with the pinned numeric runner --sl and that revision modules.json. The finalizer report credits only its explicitly accepted row."
+}

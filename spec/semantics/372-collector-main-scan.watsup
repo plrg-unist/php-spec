@@ -2,9 +2,7 @@
 ;; interval. It neither reloads nor updates the cached Fiber's global cursor.
 ;; Residual targets are real callbacks, not members of the fresh DTORS list.
 dec $gc_main_context(pstate, pgcplan, pgcscan) : bool
-dec $gc_main_marked(pgcplan, nat, nat) : bool
 dec $gc_main_tag_source(pgcplan, pgcslot, nat) : bool
-dec $gc_main_tags(pgcplan, pgcslot*, nat) : bool
 dec $gc_main_scan_valid(pstate, pgcplan, pgcscan) : bool
 dec $gc_main_return_live(pstate, pgcplan, pgcscan, nat) : bool
 dec $gc_main_return_valid(pstate, pgcplan, pgcscan, nat) : bool

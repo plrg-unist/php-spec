@@ -1,0 +1,112 @@
+{
+  "scope": "Exact reference-return verification/acquisition preserves current and saved storage; ordinary assignment/bind and real scalar conversions retain checked writes. By-reference Stringable returns and retired-container recovery remain separate.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "status": "sixteen_focused_source_agreements_one_delayed_replay_mismatch_recorded_in_reference_return_exact_review",
+  "cases": [
+    {
+      "id": "parameter-backing-untyped-cv",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g(){global $v;return $v;}$v=new S;take($v);try{$r=&g();echo $r,'|',$r===$v?'same':'different';}catch(TypeError $e){echo 'RETURN_ERROR';}try{$v='s';echo '|WRITE_ACCEPTED';}catch(TypeError $e){echo '|WRITE_REJECTED';}try{C::$o=&$v;echo '|BIND_ACCEPTED';}catch(TypeError $e){echo '|BIND_REJECTED';}$r=new stdClass;echo '|',$v===$r&&C::$o===$r?'SHARED':'DETACHED';",
+      "predicted_stdout": "s|same|WRITE_REJECTED|BIND_REJECTED|SHARED",
+      "source_sha256": "06a65f0d8fd4c864e49aeafae09d82dcab78db22b1d673441efe94c376ed3fd7"
+    },
+    {
+      "id": "parameter-backing-typed-cv",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;return $v;}$v=new S;take($v);try{$r=&g();echo $r,'|',$r===$v?'same':'different';}catch(TypeError $e){echo 'RETURN_ERROR';}try{$v='s';echo '|WRITE_ACCEPTED';}catch(TypeError $e){echo '|WRITE_REJECTED';}$r=new stdClass;echo '|',$v===$r&&C::$o===$r?'SHARED':'DETACHED';",
+      "predicted_stdout": "s|same|WRITE_REJECTED|SHARED",
+      "source_sha256": "4c1744a4274bd6d5f8d39c9a55093ab075153cea28475cec2e8941ffb00beeff"
+    },
+    {
+      "id": "parameter-backing-typed-cv-unused",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;return $v;}$v=new S;take($v);try{g();echo $v;}catch(TypeError $e){echo 'RETURN_ERROR';}try{$v='s';echo '|WRITE_ACCEPTED';}catch(TypeError $e){echo '|WRITE_REJECTED';}",
+      "predicted_stdout": "s|WRITE_REJECTED",
+      "source_sha256": "aaf1592c78df7b4088b5a0f3cbf16c3a9b8c4cfa96f0748e82fac9984cd7847e"
+    },
+    {
+      "id": "parameter-backing-static-alias-fetch",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{return C::$o;}$v=new S;take($v);try{$r=&g();echo $r;}catch(TypeError $e){echo 'RETURN_ERROR';}try{$r='s';echo '|WRITE_ACCEPTED';}catch(TypeError $e){echo '|WRITE_REJECTED';}$r=new stdClass;echo '|',$v===$r&&C::$o===$r?'SHARED':'DETACHED';",
+      "predicted_stdout": "s|WRITE_REJECTED|SHARED",
+      "source_sha256": "c09158cf18d6fa248190327d7340bc92eb3f644405058afe49ff931ec2ff0823"
+    },
+    {
+      "id": "parameter-backing-reference-call",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &h(){global $v;return $v;}function &g():string{return h();}$v=new S;take($v);try{$r=&g();echo $r;}catch(TypeError $e){echo 'RETURN_ERROR';}try{$r='s';echo '|WRITE_ACCEPTED';}catch(TypeError $e){echo '|WRITE_REJECTED';}$r=new stdClass;echo '|',$v===$r&&C::$o===$r?'SHARED':'DETACHED';",
+      "predicted_stdout": "s|WRITE_REJECTED|SHARED",
+      "source_sha256": "c491d9e3fe86d41947d4af6f9e2680adc96e6a4bf7112b54f2e98364a2ba3c4f"
+    },
+    {
+      "id": "parameter-backing-finally-recheck",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;try{return $v;}finally{echo 'F|';}}$v=new S;take($v);try{$r=&g();echo $r;}catch(TypeError $e){echo 'RETURN_ERROR';}try{$v='s';echo '|WRITE_ACCEPTED';}catch(TypeError $e){echo '|WRITE_REJECTED';}$r=new stdClass;echo '|',$v===$r&&C::$o===$r?'SHARED':'DETACHED';",
+      "predicted_stdout": "F|s|WRITE_REJECTED|SHARED",
+      "source_sha256": "47a12a30685e4daa0d65ad01a049d34f5ab10f96239866457b9f223b3f4dfd53"
+    },
+    {
+      "id": "ordinary-reference-conversion",
+      "source": "<?php function &g():int{global $v;return $v;}$v='5';$old=&$v;$r=&g();echo $v===5?'converted':'unchanged','|',$old===5?'old':'lost','|';$r=6;echo $v===6?'shared':'detached';",
+      "predicted_stdout": "converted|old|shared",
+      "source_sha256": "18fab2d05d8c7aabeda87ac10dd80c13190c263a26cddda9eae8992e674910f7"
+    },
+    {
+      "id": "ordinary-reference-unused-conversion",
+      "source": "<?php function &g():int{global $v;return $v;}$v='5';$old=&$v;g();echo $v===5?'converted':'unchanged','|',$old===5?'shared':'detached';",
+      "predicted_stdout": "converted|shared",
+      "source_sha256": "33e7bdee3f49461b3790d9e29d79c3ed3d25304ddc24fc7a575cee281b142d41"
+    },
+    {
+      "id": "ordinary-reference-strict-int-float",
+      "source": "<?php declare(strict_types=1);function &g():float{global $v;return $v;}$v=2;$old=&$v;$r=&g();echo $v===2.0?'converted':'unchanged','|',$old===2.0?'old':'lost','|';$r=3.0;echo $v===3.0?'shared':'detached';",
+      "predicted_stdout": "converted|old|shared",
+      "source_sha256": "af91d018b180c964b440725182c8079f76318a072ee24f64b0c6c0baf58beb91"
+    },
+    {
+      "id": "ordinary-computed-missing-unused",
+      "source": "<?php function &g(){$name='missing';return $$name;}g();echo 'quiet';",
+      "predicted_stdout": "quiet",
+      "source_sha256": "c240b90848c83e69bd2bcffa8cebb22cd563e8b486017b440308494c91c633e5"
+    },
+    {
+      "id": "ordinary-nullable-missing-used",
+      "source": "<?php function &g():?int{return $missing;}$r=&g();echo $r===null?'null':'bad';$r=2;echo '|',$r;",
+      "predicted_stdout": "null|2",
+      "source_sha256": "1b1d31848ef170b106d394b8ca09e928223d3e250b08a07ef7428c3a2585747f"
+    },
+    {
+      "id": "ordinary-nullable-missing-unused",
+      "source": "<?php function &g():?int{return $missing;}g();echo 'warn-before-quiet';",
+      "predicted_stdout": "warn-before-quiet",
+      "source_sha256": "1ed305b7ba1cca3e3a12041ddee713a56d23f3b0a4b2ab52434b13590fbfaa41"
+    },
+    {
+      "id": "ordinary-nonnullable-missing-error",
+      "source": "<?php function &g():int{return $missing;}try{g();}catch(TypeError $e){echo 'R';}",
+      "predicted_stdout": "R",
+      "source_sha256": "dffcf40b41609a18242a70994bab1f72c4cd3471835aaa4b25b7c13f51f269ee"
+    },
+    {
+      "id": "ordinary-nullable-static-initialize",
+      "source": "<?php class C{public static ?int $v;}function &g():?int{return C::$v;}$r=&g();echo $r===null?'null':'bad';$r=2;echo '|',C::$v;",
+      "predicted_stdout": "null|2",
+      "source_sha256": "1fa8dd663c720c6deeb29f2c8d34e7f34ed63c0d40653d9533de60e725484bd0"
+    },
+    {
+      "id": "parameter-backing-finally-unused",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;try{return $v;}finally{echo 'F|';}}$v=new S;take($v);try{g();echo $v;}catch(TypeError $e){echo 'RETURN_ERROR';}try{$v='s';echo '|WRITE_ACCEPTED';}catch(TypeError $e){echo '|WRITE_REJECTED';}",
+      "predicted_stdout": "F|s|WRITE_REJECTED",
+      "source_sha256": "85f8bcd5e7acf317769ba6dbe5d64f792e87aa27f1e6fe18442374f3c6f13ad2"
+    },
+    {
+      "id": "parameter-backing-finally-global-rebind",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function ping(){echo 'F|';}function &g():string{global $v;try{return $v;}finally{ping();unset($GLOBALS['v']);$GLOBALS['v']='new';}}$v=new S;take($v);$r=&g();echo $r,'|',$v,'|',C::$o===$r?'old':'lost';$r=new stdClass;echo '|',C::$o===$r&&$v==='new'?'SHARED':'DETACHED';",
+      "predicted_stdout": "F|s|new|old|SHARED",
+      "source_sha256": "9caeb3ff868f74ef19ce383502b40fabc573c62deea7ce6fddcfcf5ada81361e"
+    },
+    {
+      "id": "parameter-backing-finally-required-recheck-unused",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;try{return $v;}finally{echo 'F|';$v=new stdClass;}}$v=new S;take($v);try{g();echo 'ACCEPTED';}catch(TypeError $e){echo 'R';}echo '|',C::$o===$v&&$v instanceof stdClass?'SHARED':'DETACHED';",
+      "predicted_stdout": "F|F|R|SHARED",
+      "source_sha256": "44f566f645f39927bf956ec80be1addb8d2368e7e1b955822573f801f19f9b59",
+      "prediction_at_freeze": "F|R|SHARED",
+      "status": "native_model_mismatch_pending_delayed_type_error_finalizer_replay"
+    }
+  ],
+  "prepared_parent": "ea04fbbe4e0d4948c10d829a3c1f6ec4672728d9"
+}

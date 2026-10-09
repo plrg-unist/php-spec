@@ -6,10 +6,11 @@ dec $reference_verifies(pstate) : bool
 dec $reference_return_fetch(pstate, pbase, int) : pstate
 dec $reference_cv_base(pbase) : bool
 dec $reference_return_location(pstate, int) : pstate
-dec $reference_return_store(pstate, pvalue) : pstate
+dec $reference_return_write_location(pstate, pvalue, pvalue) : pstate
+dec $reference_return_store(pstate, pvalue, pvalue) : pstate
 dec $reference_return_notice(pstate, poperand) : bool
 dec $reference_return_value(pstate, poperand, int) : pstate
-dec $reference_return_write_operand(pstate, poperand, pvalue) : pstate
+dec $reference_return_write_operand(pstate, poperand, pvalue, pvalue) : pstate
 dec $reference_return_diagnostic(pstate, poperand, int) : pstate
 dec $reference_return_materialize(pstate, poperand, pvalue) : pstate
 dec $reference_operand(poperand) : bool
@@ -73,9 +74,11 @@ def $reference_return_fetch(S, BASE_VALUE (VARIABLE n_name* z_name), z) = S_read
   -- if $reference_verifies(S)
   -- if S_read = $typed_return_checked($read_name(S, n_name*, z), z, $typed_reference_name_source(S, n_name*))
   -- if S_read.COMPLETION =/= NORMAL
-def $reference_return_fetch(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $reference_return_store($base_acquire(S_read, BASE_VALUE (VARIABLE n_name* z_name), z), pvalue)
+def $reference_return_fetch(S, BASE_VALUE (VARIABLE n_name* z_name), z) = $reference_return_store($base_acquire(S_read, BASE_VALUE (VARIABLE n_name* z_name), z), pvalue_original, pvalue)
   -- if $reference_verifies(S)
-  -- if S_read = $typed_return_checked($read_name(S, n_name*, z), z, $typed_reference_name_source(S, n_name*))
+  -- if S_input = $read_name(S, n_name*, z)
+  -- if S_input.RESULT = KNOWN pvalue_original
+  -- if S_read = $typed_return_checked(S_input, z, $typed_reference_name_source(S, n_name*))
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
 def $reference_return_fetch(S, pbase, z) = $reference_return_location($call_reference_base(S, pbase, z), z)
@@ -94,20 +97,28 @@ def $reference_return_location_defined(S, z) = S -- if S.COMPLETION =/= NORMAL
 def $reference_return_location_defined(S, z) = S_checked
   -- if S.COMPLETION = NORMAL
   -- if $reference_slot($location_slot(S, S.LOCATION)) = DEFINED pvalue
-  -- if S_checked = $typed_return_checked($location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue], z, $typed_reference_location_source(S, S.LOCATION))
+  -- if S_checked = $typed_return_checked($reference_return_write_location(S, pvalue, pvalue)[.RESULT = KNOWN pvalue], z, $typed_reference_location_source(S, S.LOCATION))
   -- if S_checked.COMPLETION =/= NORMAL
-def $reference_return_location_defined(S, z) = $reference_return_store(S_checked, pvalue_new)
+def $reference_return_location_defined(S, z) = $reference_return_store(S_checked, pvalue, pvalue_new)
   -- if S.COMPLETION = NORMAL
   -- if $reference_slot($location_slot(S, S.LOCATION)) = DEFINED pvalue
-  -- if S_checked = $typed_return_checked($location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN pvalue], z, $typed_reference_location_source(S, S.LOCATION))
+  -- if S_checked = $typed_return_checked($reference_return_write_location(S, pvalue, pvalue)[.RESULT = KNOWN pvalue], z, $typed_reference_location_source(S, S.LOCATION))
   -- if S_checked.COMPLETION = NORMAL
   -- if S_checked.RESULT = KNOWN pvalue_new
 
-def $reference_return_store(S, pvalue) = S -- if S.COMPLETION =/= NORMAL
-def $reference_return_store(S, pvalue) = $call_location_reference($location_write(S, S.LOCATION, pvalue))
+;; Exact verification is not an assignment. Missing places still initialize,
+;; and actual conversions compare against their captured pre-check input.
+def $reference_return_write_location(S, pvalue_original, pvalue) = S
+  -- if pvalue_original = pvalue
+  -- if $location_slot(S, S.LOCATION) =/= UNDEFINED
+def $reference_return_write_location(S, pvalue_original, pvalue) = $location_write(S, S.LOCATION, pvalue)
+  -- if pvalue_original =/= pvalue \/ $location_slot(S, S.LOCATION) = UNDEFINED
+
+def $reference_return_store(S, pvalue_original, pvalue) = S -- if S.COMPLETION =/= NORMAL
+def $reference_return_store(S, pvalue_original, pvalue) = $call_location_reference($reference_return_write_location(S, pvalue_original, pvalue))
   -- if S.COMPLETION = NORMAL
   -- if $reference_return_used(S) \/ $finally_return_pending(S)
-def $reference_return_store(S, pvalue) = $location_write(S, S.LOCATION, pvalue)[.RESULT = KNOWN PNULL]
+def $reference_return_store(S, pvalue_original, pvalue) = $reference_return_write_location(S, pvalue_original, pvalue)[.RESULT = KNOWN PNULL]
   -- if S.COMPLETION = NORMAL
   -- if ~$reference_return_used(S)
   -- if ~$finally_return_pending(S)
@@ -127,12 +138,18 @@ def $reference_return_value(S, poperand, z) = S_checked
   -- if S_checked = $typed_return_checked($resolve_at(S, poperand, z), z, $typed_reference_operand_source(S, poperand))
   -- if S_checked.COMPLETION =/= NORMAL
 def $reference_return_value(S, poperand, z) = $reference_return_materialize($reference_return_diagnostic(S_written, poperand, z), poperand, pvalue)
-  -- if S_checked = $typed_return_checked($resolve_at(S, poperand, z), z, $typed_reference_operand_source(S, poperand))
+  -- if S_input = $resolve_at(S, poperand, z)
+  -- if S_input.RESULT = KNOWN pvalue_original
+  -- if S_checked = $typed_return_checked(S_input, z, $typed_reference_operand_source(S, poperand))
   -- if S_checked.COMPLETION = NORMAL
   -- if S_checked.RESULT = KNOWN pvalue
-  -- if S_written = $reference_return_write_operand(S_checked, poperand, pvalue)
-def $reference_return_write_operand(S, REFERENCE n, pvalue) = $write_cell_checked(S, n, pvalue, $property_current_line(S))
-def $reference_return_write_operand(S, poperand, pvalue) = S -- otherwise
+  -- if S_written = $reference_return_write_operand(S_checked, poperand, pvalue_original, pvalue)
+def $reference_return_write_operand(S, REFERENCE n, pvalue_original, pvalue) = S
+  -- if pvalue_original = pvalue
+  -- if S.STORE[n] =/= UNDEFINED
+def $reference_return_write_operand(S, REFERENCE n, pvalue_original, pvalue) = $write_cell_checked(S, n, pvalue, $property_current_line(S))
+  -- if pvalue_original =/= pvalue \/ S.STORE[n] = UNDEFINED
+def $reference_return_write_operand(S, poperand, pvalue_original, pvalue) = S -- otherwise
 
 def $reference_return_diagnostic(S, poperand, z) = $diagnostic(S, "Notice", $ptascii("Only variable references should be returned by reference"), z)
   -- if $reference_return_notice(S, poperand)

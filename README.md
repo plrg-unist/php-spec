@@ -192,9 +192,14 @@ retained source/profile comparisons and 64 reached-state premises pass, includin
 fresh `AssertionError` code 1 and supplied `Throwable` identity. Runtime INI updates
 preserve initial/current raw bytes and restore state; quiet quantities, positive
 mode 2, negative-boundary refusals and nested/throwing warning handlers match
-twelve further source profiles. Parsing warnings, Stringable-option refusal,
-assertion options/callbacks, Stringable descriptions and wider expression export
-remain required. Run the [catalogue](tests/semantics/assertion_cases.json)
+twelve further source profiles. Deprecated options now retain old-value snapshots,
+live callback failure policy and pending exceptions through selected-receiver
+cleanup. Constant protection survives parked handlers. The
+[options ledger](coverage/semantics/assertion-options-review.json) keeps 20 source
+originals and 117/67 reached checks at separate cuts; the excluded Count observer
+and valid foreach companion stay distinct. Parsing warnings, Stringable-option INI
+refusal, Stringable descriptions and wider expression/callback forms remain required.
+Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
@@ -440,6 +445,13 @@ gates, exact926 state bridges and canonical CLI8.
 [Source reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md) now preserve
 caller demand, alias ownership and shared-cell type coercion; [independent review](coverage/semantics/reference-return-review.json)
 binds942 source/state/protocol gates and the one-state-test bridge.
+[Exact reference-return checks](coverage/semantics/reference-return-exact-review.json)
+now preserve existing cells, property sources and parameter-backing certificates
+through forwarded calls and `finally`; real conversions, missing-slot initialization
+and ordinary checked writes retain their behavior. Sixteen focused source agreements
+and private358 state cuts of 35 plus 483 assertions pass; actual359 passes separate
+strict compilation. The separate delayed-TypeError
+finalizer replay mismatch remains required work.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -704,8 +716,16 @@ suspend again during internal takeover: replacement uses the advanced reset
 cursor while earlier marked targets survive and real FINALLY errors stay
 separate. Both original full continuations pass 212 independent physical
 premises; both whole CLI 60s timeouts retain zero agreement. Final 358 over
-`6ed4873bd` compiles at `0bc957892`. Overlap, different-active-pass reentry and
-whole CLI completion remain required.
+`6ed4873bd` compiles at `0bc957892`. Different-main public reentry now resumes
+the actual parked callback while the fresh main plan retains current tags, even
+when its target slot has been reused. The completed local scan cannot rewind
+onto the fresh destructor. Independent 96/109 physical premises at separate
+`93cb1cfd5`/`950c158d5` cuts complete both unchanged originals and preserve
+old/new error identity. Actual359 over `0c549de11` passes strict compilation/init;
+review preserves GEN176/363 and PROPS207/377 with their shared ownership paths.
+The initial compiler stop, first throw-state 120s timeout and both whole CLI
+60s timeouts retain zero affected/agreement credit. Overlap, active residual and
+wider Fiber-pass reentry, whole CLI completion and broader GC remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -1044,7 +1064,10 @@ Ordinary abstract scoped calls reject before arguments, and inaccessible concret
 nonstatic methods report access errors before missing-receiver errors. Literal
 constructor calls retain separate opcode dispatch: private denial precedes
 receiver compatibility, and inherited private constructor errors name the requested
-class.
+class. A missing constructor reports `Cannot call constructor` for literal/folded method
+names and the ordinary undefined-method Error for computed names; both suppress
+argument evaluation. [The focused review](coverage/semantics/missing-constructor-review.json)
+records two exact originals and distinct17+17 reached SL checks.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work
