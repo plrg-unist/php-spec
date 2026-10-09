@@ -135,14 +135,14 @@ def $exit_conversion(pvalue, false) = $typed_weak(["int", "string"], pvalue)
   -- if pvalue =/= PNULL
 def $exit_conversion(pvalue, b) = TYPEREJECT -- otherwise
 dec $exit_finish(pstate) : pstate
-def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED $ntprecision32(z)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
+def $exit_finish(S) = S[.RETIREDOWNERS = eps][.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED $ntprecision32(z)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (PINT z)
-def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
+def $exit_finish(S) = S[.RETIREDOWNERS = eps][.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (eps)
-def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.EVENTS = S.EVENTS ++ [OUTPUT n*]][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
+def $exit_finish(S) = S[.RETIREDOWNERS = eps][.TODO = eps][.ORIGIN = eps][.EVENTS = S.EVENTS ++ [OUTPUT n*]][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN pvalue_string
   -- if $string_bytes(pvalue_string) = (n*)

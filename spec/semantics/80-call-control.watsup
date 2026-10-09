@@ -193,10 +193,10 @@ def $return_step(S, poperand, porigin_source?, ptask :: ptask_tail*) = $return_d
   -- if ~$eval_end_marker(ptask)
 def $return_step(S, poperand, porigin_source?, eps) = $generator_return(S, poperand)
   -- if $generator_active(S)
-def $return_step(S, poperand, porigin_source?, eps) = $restore_frame(S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
+def $return_step(S, poperand, porigin_source?, eps) = $restore_frame(S[.RETIREDOWNERS = eps][.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
   -- if S.FRAMES =/= eps
   -- if ~$generator_active(S)
-def $return_step(S, poperand, porigin_source?, eps) = S[.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]
+def $return_step(S, poperand, porigin_source?, eps) = S[.RETIREDOWNERS = eps][.TODO = eps][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.ORIGIN = eps]
   -- if S.FRAMES = eps
 rule PhpStep/return-unwind: S ~> $return_step(S, poperand, porigin_source?, ptask_tail*)
   -- if S.TODO = (RETURN_UNWIND poperand porigin_source?) :: ptask_tail*

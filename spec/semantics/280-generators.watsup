@@ -207,10 +207,10 @@ def $function_fallthrough(S, pfunction) = $typed_fallthrough(pfunction) -- if ~$
 def $generator_object(S, n) = true -- if $(n < |S.OBJECTS|) -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $generator_object(S, n) = false -- otherwise
 def $generator_set(S, n, pgenerator) = S[.OBJECTS = $object_set(S.OBJECTS, n, GENERATOR pgenerator)]
-def $generator_frame(S, ptask*) = {SILENCES S.SILENCES, LOCALS ($active_table(S)), TODO ptask*, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT}
+def $generator_frame(S, ptask*) = {SILENCES S.SILENCES, LOCALS ($active_table(S)), TODO ptask*, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT, RETIREDOWNERS S.RETIREDOWNERS, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT}
 dec $generator_creation_frame(pstate, pfunction) : pframe
 def $generator_creation_frame(S, pfunction) = $generator_frame(S, $function_body_tasks(S, pfunction)) -- otherwise
-def $generator_install(S, pframe) = $set_active_table(S[.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
+def $generator_install(S, pframe) = $set_active_table(S[.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.RETIREDOWNERS = pframe.RETIREDOWNERS][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if pframe.LOCALS = (psymboltable)
 def $generator_create(S, pfunction) = $restore_frame(S[.OBJECTS = S.OBJECTS ++ [GENERATOR {FUNCTION pfunction.ORIGIN, FRAME ($generator_creation_frame(S, pfunction)), PHASE GENERATOR_FRESH, FIRST false, INDEX $(-1), VALUE eps, REFCELL eps, KEY eps, BORROWED eps, RETURN eps, CLOSURE pcallcontext.INSTANCE, DELEGATE eps, ACCESS $access_generator_capture(S, pcallcontext)}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
   -- if n = |S.OBJECTS|
