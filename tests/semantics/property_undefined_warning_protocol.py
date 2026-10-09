@@ -316,7 +316,7 @@ def main():
         clauses = ['program_source = '+(out/'program.watsup').read_text().strip(), *body]
         fixture = out/'protocol.watsup'
         fixture.write_text(PREFIX+'dec $body() : bool\ndef $body() = true\n'+
-            ''.join('  -- if '+clause+'\n' for clause in clauses)+
+            ''.join('  -- '+('' if clause.startswith('PhpStep:') else 'if ')+clause+'\n' for clause in clauses)+
             '\ndec $main() : bool\ndef $main() = $body()\n')
         (out/'assertions.json').write_text(json.dumps(clauses, indent=2)+'\n')
         report.update(source_sha256=cross.invoke.sha(source), fixture_sha256=cross.invoke.sha(fixture), assertions=len(clauses))
