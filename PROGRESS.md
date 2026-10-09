@@ -131,8 +131,13 @@ The release replay starts from its already authenticated bailout; all 180 premis
 remain. Earlier nondeterminism, wrong renderer-owner and 120-second AL/SL timeouts
 retain zero affected credit. Final 358 over `ea04fbbe4` passes strict compilation
 at `ff3d3278b`, preserving named-SEND warning shapes; the earlier 2aa/646 compiler
-and private source/state cuts retain their revisions. Throwing warning
-callbacks, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
+and private source/state cuts retain their revisions. A throwing renderer warning
+callback redispatches through the restored handler before warning cleanup resumes
+the original empty cached fatal report. Exact source1 and strict compiler358 retain
+`558e53a9c`; 220 reached SL premises retain `80be20cde`. Genuine warning/handler/report
+owners and malformed source/site/line/origin rejection pass; initial binding stops
+and the incorrect fixed-argument phase retain zero credit. Absent or throwing restored
+handlers, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
 message warnings, parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source

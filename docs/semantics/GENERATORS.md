@@ -129,9 +129,17 @@ after frozen emission and before bailout, including a destructor that sets repor
 to zero. Two exact fatal originals and 163/180 strict premises retain separate cuts.
 Final 358 over `ea04fbbe4` passes strict compilation at `ff3d3278b`, preserving the
 named-SEND warning shapes. Earlier 2aa/646 and source/state cuts retain their inputs.
-Throwing warning callbacks, deeper custom rendering, abrupt
-child free_obj/destructor/weak-Generator lifetimes, message warnings, parked or
-escaped storage and generic terminal cleanup remain required.
+A throwing renderer warning callback passes its new exception to the restored
+handler at the real C root. Handler release precedes raw warning-handler restoration;
+the original empty cached fatal report then releases its receiver before bailout.
+The handler carrier owns the warning object independently of the consumed inner
+exception; original REPORT and real Generator/cache owners survive throughout.
+Exact source1 and compiler358 retain `558e53a9c`; strict220 retains `80be20cde`, with
+authentic continuations, malformed producer rejection and budget replay. Original
+binding stops and the incorrect fixed-argument phase remain zero. Absent or throwing
+restored handlers, deeper custom rendering, abrupt child free_obj/destructor/weak-Generator
+lifetimes, message warnings, parked or escaped storage and generic terminal cleanup
+remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and
