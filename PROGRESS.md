@@ -240,9 +240,17 @@ the original empty cached fatal report. Exact source1 and strict compiler358 ret
 owners and malformed source/site/line/origin rejection pass; initial binding stops
 and the incorrect fixed-argument phase retain zero credit. Actual361 over `59c163ef4`
 passes strict compilation at `7983c825f` (6.128 seconds), preserving current ARG/CALLS
-fields; private source/state cuts retain their inputs. Absent or throwing restored
-handlers, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
-message warnings, parked/escaped storage and generic terminal cleanup remain required.
+fields; private source/state cuts retain their inputs. A ROOT/nonuser ordinary
+child destructor throwing during reported-exception release, with no live handler,
+emits a second fatal while retaining the unfinished release tail. The Parent pin
+keeps Weak lookup null; two Leaf C claims and real Generator/cache owners survive.
+Actual unreleased fatal frames retain both INSTANCE pins and nonowning retired
+HANDLE jobs; borrowed history is not another carrier. Source1 retains `7d3574e75`;
+549 SL premises and complete compiler361 retain `47c8c3c1c` (6.459 seconds).
+Original refusal, diagnostic/binding stops and cache/Weak/GC fixture failures stay
+at zero; actual-parent composition remains pending. Wider handlers/rendering,
+child lifetimes, reacquisition, message warnings, parked/escaped storage and generic
+terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
 guards; private source/state cuts retain their own revisions.

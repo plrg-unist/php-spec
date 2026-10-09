@@ -70,6 +70,7 @@ dec $eager_raw_history_nodes(pstate, pvalue) : pnode*
 dec $eager_cleanup_valid(pstate, pdestructioncleanup) : bool
 dec $eager_operation_source_valid(pstate, pdestructionoperation) : bool
 dec $eager_operation_cleanup_source(ptask, pdestructioncleanup) : bool
+dec $generator_request_fatal_ready(pstate) : bool
 dec $eager_bailout_source(pstate) : ptask?
 dec $eager_bailout_unwind(pstate) : bool
 dec $eager_bailout_error(pstate) : perrorcall?
@@ -671,6 +672,7 @@ def $eager_bailout_source(S) = (DESTRUCTOR_RESULT pdestructorcall)
   -- if S.CURRENT = eps /\ S.FRAMES = eps /\ ~pdestructorcall.USER
   -- if $destructor_result_valid(S, pdestructorcall)
   -- if ~$exception_dispatch_ready(S)
+  -- if ~$generator_request_fatal_ready(S)
 def $eager_bailout_source(S) = (DESTRUCTOR_WARNING pdestructorcall)
   -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if perrorcall.RESUME = DESTRUCTOR_WARNING pdestructorcall

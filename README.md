@@ -359,8 +359,13 @@ before bailout, even when its destructor changes reporting to zero. Two new
 originals and 343 strict premises retain separate cuts. A throwing renderer warning
 callback redispatches its new exception through the restored handler, then resumes
 the original empty cached fatal report. One exact fatal original and 220 strict
-premises retain separate cuts. Absent or throwing restored handlers, deeper
-rendering, abrupt child cleanup, parked/escaped storage and generic terminal cleanup
+premises retain separate cuts. At the cleared request C root, a property-child
+destructor throwing during reported-exception release emits a second fatal.
+The Parent free_obj pin keeps Weak lookup null; two Leaf C claims and real
+Generator/cache owners survive. Its unfinished fatal frame retains the old
+Exception's occupied GC slot through the pending HANDLE job. One exact source
+and 549 strict premises retain separate cuts. Wider handlers/rendering,
+child lifetimes, reacquisition, parked/escaped storage and generic terminal cleanup
 remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
