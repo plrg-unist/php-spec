@@ -232,7 +232,9 @@ modules and SL131 (37 derived, 94 reached checks) pass at `8c37b2c6`, including
 real writes, inherited links and rejection of substituted compiled-name evidence.
 The earlier trait-line mismatch and both pre-main fixture stops retain zero
 affected credit. Mixed/repeated/argument attributes, anonymous/enum targets and
-wider attribute protocols remain required. Actual-parent composition is pending.
+wider attribute protocols remain required. Actual 371-module composition over
+`55c9c98a9` passes strict initialization at `9f2ed249d` (5.553 s), preserving
+current GC/PROPS/ARG interfaces without renewing private source/state checks.
 [Dynamic-property attribute review](coverage/semantics/allow-dynamic-properties-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
