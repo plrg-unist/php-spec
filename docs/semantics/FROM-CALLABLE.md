@@ -103,8 +103,16 @@ remains valid after retirement. The REAL identity/by-reference control agrees at
 e2ef/370; the repaired factory source and 610 premises (550 genuine/derived,
 60 constructed) pass at 3cb295d1d/370. The interpreter failure and contradictory
 fixture variable binding remain zero credit; maintained relocation renews no execution.
+Captured factories also select the finite Throwable getter body through a
+nonowning creation/invocation certificate. The getter owns its receiver independently
+after factory retirement and reads its live message. Clone copies that certificate
+and receiver; equality compares receiver, method and base independently from source.
+The direct control agrees at 557e/371, and the captured live-message and clone/equality
+sources plus 191 premises (154 genuine/derived, 37 constructed) pass at 771e/371.
+The earlier Unsupported and parked-return fixture failure remain zero credit.
+This coverage does not establish transformed binding or wider internal targets.
 Nullsafe/computed invoke capture, wider aliases, computed/keyword factory creation
-and captured-factory Fiber/getter callbacks remain required.
+and captured-factory Fiber/wider getter callbacks remain required.
 Required original static-compound source 7
 keeps its separate CLI 60 timeout with zero agreement.
 

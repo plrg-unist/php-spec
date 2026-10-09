@@ -1630,5 +1630,101 @@ echo "V:", AliasFactoryNameChildReview20::$value,
         'expected_stdout': 'Q;S:same;I;A;F;H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
         'discriminator': 'Literal first-class __invoke preserves factory identity and its creation authority; selected CONFIG retains it as both caller cells are cleared, and the returned receiver retires independently after by-reference NAME/RHS effects.',
     },
+    {
+        'id': 'from-callable-direct-getter-live',
+        'source': '''<?php
+class FactoryGetterExceptionReview20 extends Exception {
+    public function replace($message) {
+        $this->message = $message;
+        echo "M;";
+    }
+    public function __destruct() { echo "D;"; }
+}
+function discardFactoryGetterArgumentReview20() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$receiver = new FactoryGetterExceptionReview20("before");
+$callback = [$receiver, "getMessage"];
+$factory = null;
+$closure = Closure::fromCallable(callback: discardFactoryGetterArgumentReview20());
+$callback = null;
+echo "F;";
+$receiver->replace("after");
+$receiver = null;
+echo "H;";
+$result = $closure();
+$closure = null;
+echo "V:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;A;F;M;H;D;V:after;E;',
+        'discriminator': 'Direct factory control reads the live Throwable message and owns its receiver until explicit returned-Closure release.',
+    },
+    {
+        'id': 'from-callable-factory-getter-live',
+        'source': '''<?php
+class FactoryGetterExceptionReview20 extends Exception {
+    public function replace($message) {
+        $this->message = $message;
+        echo "M;";
+    }
+    public function __destruct() { echo "D;"; }
+}
+function discardFactoryGetterArgumentReview20() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$receiver = new FactoryGetterExceptionReview20("before");
+$callback = [$receiver, "getMessage"];
+$factory = Closure::fromCallable(...);
+$closure = $factory(callback: discardFactoryGetterArgumentReview20());
+$callback = null;
+echo "F;";
+$receiver->replace("after");
+$receiver = null;
+echo "H;";
+$result = $closure();
+$closure = null;
+echo "V:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;A;F;M;H;D;V:after;E;',
+        'discriminator': 'Selected captured factory survives argument-cell clearing; the returned getter retains only its receiver, reads the changed message after factory retirement and retires that receiver at explicit release.',
+    },
+    {
+        'id': 'from-callable-factory-getter-copy',
+        'source': '''<?php
+class FactoryGetterCopyExceptionReview20 extends Exception {
+    public function replace($message) { $this->message = $message; echo "M;"; }
+    public function __destruct() { echo "D;"; }
+}
+echo "Q;";
+$receiver = new FactoryGetterCopyExceptionReview20("before");
+$factory = Closure::fromCallable(...);
+$direct = Closure::fromCallable([$receiver, "getMessage"]);
+$captured = $factory(callback: [$receiver, "getMessage"]);
+$copy = clone $captured;
+echo "S:", $direct == $captured ? "same" : "different", ";";
+echo "I:", $direct === $captured ? "same" : "different", ";";
+echo "C:", $copy == $captured ? "same" : "different", ";";
+echo "J:", $copy === $captured ? "same" : "different", ";";
+$factory = null;
+$direct = null;
+$captured = null;
+$receiver->replace("after");
+$receiver = null;
+echo "F;";
+$result = $copy();
+$copy = null;
+echo "V:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;S:same;I:different;C:same;J:different;M;F;D;V:after;E;',
+        'discriminator': 'Direct and factory captures compare equal without identical objects; cloning preserves method, receiver and nonowning source certificate after the other captures and factory retire.',
+    },
 
 ]

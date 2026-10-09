@@ -177,7 +177,7 @@ rule PhpStep/closure-current-invoke: S ~> $config_receive(S, pconfigcall)
 def $bind_is_instance(S, n) = true -- if S.OBJECTS[n] = INSTANCE porigin
 def $bind_is_instance(S, n) = false -- otherwise
 def $fake_bind_direct_getter(S, n) = ((n_receiver, pgettermethod, text_base))
-  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $fake_bind_direct_getter(S, n) = eps -- otherwise
 def $fake_bind_intrinsic(S, n) = (pintrinsic)
   -- if $object_body(S.OBJECTS[n]) = INTRINSICCLOSURE pintrinsic
@@ -185,7 +185,7 @@ def $fake_bind_intrinsic(S, n) = $fake_bind_intrinsic($fake_bind_history(S, pbou
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
 def $fake_bind_intrinsic(S, n) = eps -- otherwise
 def $fake_bind_getter(S, n) = ((n_receiver, pgettermethod, text_base))
-  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $fake_bind_getter(S, n) = $fake_bind_getter($fake_bind_history(S, pboundfake), pboundfake.SOURCE)
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
 def $fake_bind_getter(S, n) = eps -- otherwise
@@ -213,7 +213,7 @@ def $bind_object_scope(S, n) = BIND_INTERNAL ($object_name(S, n))
   -- if ~$bind_is_instance(S, n)
 def $fake_bind_scope(S, n) = pboundfake.SCOPE -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
 def $fake_bind_scope(S, n) = BIND_INTERNAL ($ptascii(text_base))
-  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $fake_bind_scope(S, n) = BIND_CLASS pclosurescope.LEXICAL
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = (pclosurescope)
 def $fake_bind_scope(S, n) = BIND_CLASS porigin
@@ -245,7 +245,7 @@ def $fake_bind_static(S, n) = false
 ;; No real allocation or ownership edge is introduced by this helper.
 def $fake_bind_history_nodes(S, n, (pclosurescope)) = [HOBJECT n] ++ $scoped_receiver_nodes(pclosurescope.RECEIVER)
 def $fake_bind_history_nodes(S, n, eps) = [HOBJECT n, HOBJECT n_receiver]
-  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $fake_bind_history_nodes(S, n, eps) = [HOBJECT n] ++ $scoped_receiver_nodes(pboundfake.RECEIVER)
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
 def $fake_bind_history_nodes(S, n, eps) = [HOBJECT n]
@@ -565,7 +565,7 @@ rule PhpStep/fake-bind-invoke: S ~> $fake_bind_receive(S, pconfigcall)
 def $fake_bind_name(S, n) = $fake_bind_name($fake_bind_history(S, pboundfake), pboundfake.SOURCE)
   -- if S.OBJECTS[n] = BOUNDFAKECLOSURE pboundfake
 def $fake_bind_name(S, n) = $getter_name(pgettermethod)
-  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $fake_bind_name(S, n) = $intrinsic_name(pintrinsic)
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic
 def $fake_bind_name(S, n) = pmethoddesc.NAME
@@ -885,7 +885,7 @@ def $fake_compare_called(S, n) = $fake_bind_scope(S, n)
   -- if ~$bound_fake_object(S, n)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
 def $fake_compare_receiver(S, n) = (n_receiver)
-  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base porigin
+  -- if $object_body(S.OBJECTS[n]) = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $fake_compare_receiver(S, n) = $target_receiver(S, CLOSURE_TARGET n)
   -- if $fake_bind_direct_getter(S, n) = eps
 def $fake_compare_internal(S, n) = ($fake_bind_intrinsic(S, n) =/= eps \/ $fake_bind_getter(S, n) =/= eps)

@@ -1,4 +1,5 @@
 """Real core-factory creation, receive, retired producer and inherited callback."""
+from error_handler_protocol import PREFIX
 from scoped_static_compound_protocol import computed_start, guards, lines, seek
 from static_name_callable_protocol import render_instance_wrapper
 
@@ -865,4 +866,208 @@ $from_valid(S_callback[.CURRENT = eps], pfrommethod)
     checks = genuine + controls
     text = prefix + INVOKE_PHASE + ALIAS_PHASE + '\ndec $main() : bool\ndef $main() = true\n'
     text += ''.join('  -- if ' + check + '\n' for check in checks)
+    return text, checks, len(genuine), len(controls)
+
+
+GETTER_PHASE = r'''
+dec $scoped_phase(pstate, nat) : bool
+def $scoped_phase(S, 0) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+def $scoped_phase(S, 1) = true
+  -- if S.TODO = (GETTER_INVOKE pgettercall) :: ptask*
+  -- if pgettercall.METHOD = GET_MESSAGE
+  -- if pgettercall.CAPTURE =/= eps
+def $scoped_phase(S, 2) = true
+  -- if S.TODO = (GETTER_CAPTURE_RESULT n porigin) :: ptask*
+def $scoped_phase(S, n) = false -- otherwise
+dec $scoped_seek(pstate, nat, nat) : pstate
+def $scoped_seek(S, n_phase, n) = S
+  -- if $scoped_phase(S, n_phase)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+def $scoped_seek(S, n_phase, n) = $scoped_seek($drive_steps(S[.COMPLETION = NORMAL], 1), n_phase, $nabs($(n - 1)))
+  -- if ~$scoped_phase(S, n_phase)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $(n > 0)
+def $scoped_seek(S, n_phase, 0) = S
+  -- if ~$scoped_phase(S, n_phase)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+def $scoped_seek(S, n_phase, n) = S
+  -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
+'''
+
+
+def render_factory_getter(program, filename, expected):
+    genuine = [f'S_initial = $php_run({program}, 0, {filename})',
+               'S_initial.COMPLETION = BUDGET']
+    genuine += seek('S_config', 'S_initial', 0)
+    genuine += lines(r'''
+S_config.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_config*
+pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+pconfigcall.OWNER = (n_factory)
+pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_callback))]
+pconfigcall.SELECTION = eps
+pconfigcall.INDEX = 1
+pconfigcall.NAMED
+porigin_invoke = pconfigcall.SITE
+S_config.ORIGIN = (porigin_invoke)
+S_config.CURRENT = eps
+S_config.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_create
+porigin_create =/= porigin_invoke
+$from_factory_site(S_config, porigin_create)
+$from_factory_call_site(S_config, porigin_invoke)
+~$from_site(S_config, porigin_invoke)
+$from_factory_live(S_config, n_factory)
+$from_factory_saved(S_config, n_factory)
+$config_selected_valid(S_config, pconfigcall)
+$config_invoke_valid(S_config, pconfigcall)
+$call_task_valid(S_config, CONFIG_INVOKE pconfigcall)
+$lookup(S_config.ENV, $ptascii("factory")) = (n_factory_cell)
+S_config.STORE[n_factory_cell] = DEFINED PNULL
+$lookup(S_config.ENV, $ptascii("receiver")) = (n_receiver_cell)
+S_config.STORE[n_receiver_cell] = DEFINED (POBJECT n_receiver)
+$lookup(S_config.ENV, $ptascii("callback")) = (n_callback_cell)
+S_config.STORE[n_callback_cell] = DEFINED (PARRAY n_original_callback)
+$from_getter(S_config, n_callback) = ((n_receiver, GET_MESSAGE, "Exception"))
+S_config.OBJECTS[n_receiver] = INSTANCE porigin_receiver
+(HOBJECT n_receiver) <- S_config.ALLOCATIONS
+$task_nodes(CONFIG_INVOKE pconfigcall) = [HOBJECT n_factory, HARRAY n_callback]
+$node_children(S_config, HOBJECT n_factory) = eps
+$heap_owners($heap_graph(S_config), HOBJECT n_factory) = 1
+$outputs(S_config.EVENTS) = $ptascii("Q;A;")
+''') + guards('S_config')
+    genuine += lines(r'''
+n_closure = |S_config.OBJECTS|
+pgettersource = GETTER_FACTORY n_factory porigin_invoke
+PhpStep: S_config ~> S_mint
+S_mint = $from_receive(S_config, pconfigcall, PARRAY n_callback)
+S_mint.COMPLETION = NORMAL
+S_mint.OBJECTS = S_config.OBJECTS ++ [GETTERCLOSURE n_receiver GET_MESSAGE "Exception" pgettersource]
+S_mint.ALLOCATIONS = S_config.ALLOCATIONS ++ [HOBJECT n_closure]
+S_mint.RESULT = KNOWN (POBJECT n_closure)
+S_mint.BASE = BASE_VALUE (KNOWN PNULL)
+S_mint.TODO = ptask_config*
+S_mint.EVENTS = S_config.EVENTS
+$from_getter_source(S_mint, pgettersource, n_closure)
+$getter_capture_live(S_mint, n_closure)
+$closure_callable(S_mint, n_closure)
+$closure_live_object_valid(S_mint, n_closure)
+$node_children(S_mint, HOBJECT n_closure) = [HOBJECT n_receiver]
+S_minted = $drive_steps(S_config, 1)
+S_minted.COMPLETION = BUDGET
+''') + guards('S_minted')
+    genuine += seek('S_live', 'S_minted', 1)
+    genuine += lines(r'''
+S_live.TODO = (GETTER_INVOKE pgettercall) :: ptask_getter*
+pgettercall.RECEIVER = n_receiver
+pgettercall.CAPTURE = (n_closure)
+pgettercall.METHOD = GET_MESSAGE
+pgettercall.BASE = "Exception"
+pgettercall.SENT = eps
+S_live.OBJECTS[n_closure] = GETTERCLOSURE n_receiver GET_MESSAGE "Exception" pgettersource
+S_live.CURRENT = eps
+S_live.STORE[n_factory_cell] = DEFINED PNULL
+S_live.STORE[n_callback_cell] = DEFINED PNULL
+S_live.STORE[n_receiver_cell] = DEFINED PNULL
+~((HOBJECT n_factory) <- S_live.ALLOCATIONS)
+~((HARRAY n_callback) <- S_live.ALLOCATIONS)
+~((HARRAY n_original_callback) <- S_live.ALLOCATIONS)
+(HOBJECT n_closure) <- S_live.ALLOCATIONS
+(HOBJECT n_receiver) <- S_live.ALLOCATIONS
+$from_factory_saved(S_live, n_factory)
+~$from_factory_live(S_live, n_factory)
+$heap_owners($heap_graph(S_live), HOBJECT n_factory) = 0
+$node_children(S_live, HOBJECT n_closure) = [HOBJECT n_receiver]
+$heap_owners($heap_graph(S_live), HOBJECT n_receiver) = 2
+$from_getter_source(S_live, pgettersource, n_closure)
+$getter_capture_live(S_live, n_closure)
+$getter_selected(S_live, pgettercall)
+$call_task_valid(S_live, GETTER_INVOKE pgettercall)
+pvalue_message = $throwable_field(S_live, n_receiver, "message")
+$string_bytes(pvalue_message) = ($ptascii("after"))
+$outputs(S_live.EVENTS) = $ptascii("Q;A;F;M;H;")
+''') + guards('S_live')
+    genuine += lines(r'''
+S_release = $drive_steps(S_live, 1)
+S_release.COMPLETION = BUDGET
+S_release.RESULT = KNOWN PNULL
+S_release.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+pdestructionoperation.SOURCE = GETTER_INVOKE pgettercall
+pdestructionoperation.VALUE = KNOWN pvalue_held
+$string_bytes(pvalue_held) = ($ptascii("after"))
+$destructor_operation_valid(S_release, pdestructionoperation)
+$outputs(S_release.EVENTS) = $outputs(S_live.EVENTS)
+''') + guards('S_release')
+    genuine += seek('S_value', 'S_release', 2)
+    genuine += lines(r'''
+S_value.TODO = (GETTER_CAPTURE_RESULT n_closure pgettercall.SITE) :: ptask_getter_after*
+S_value.TODO = ptask_getter*
+S_value.RESULT = KNOWN pvalue_result
+$string_bytes(pvalue_result) = ($ptascii("after"))
+$outputs(S_value.EVENTS) = $outputs(S_live.EVENTS)
+$heap_owners($heap_graph(S_value), HOBJECT n_receiver) = 1
+$from_getter_source(S_value, pgettersource, n_closure)
+$getter_capture_live(S_value, n_closure)
+''') + guards('S_value')
+    genuine += lines(r'''
+S_done = $drive(S_value[.COMPLETION = NORMAL], 1000)
+S_done.COMPLETION = NORMAL
+S_done.TODO = eps
+S_done.FRAMES = eps
+S_done.TRACE = eps
+~((HOBJECT n_factory) <- S_done.ALLOCATIONS)
+~((HOBJECT n_closure) <- S_done.ALLOCATIONS)
+~((HOBJECT n_receiver) <- S_done.ALLOCATIONS)
+$heap_owners($heap_graph(S_done), HOBJECT n_factory) = 0
+$heap_owners($heap_graph(S_done), HOBJECT n_receiver) = 0
+$from_factory_saved(S_done, n_factory)
+$from_getter_source(S_done, pgettersource, n_closure)
+~$getter_capture_live(S_done, n_closure)
+''') + [f'$outputs(S_done.EVENTS) = $ptascii("{expected}")'] + guards('S_done')
+
+    # These use the real reached state but are constructed certificate/body controls.
+    controls = lines(r'''
+~$from_getter_source(S_live, porigin_invoke, n_closure)
+~$from_getter_source(S_live, GETTER_FACTORY n_factory porigin_create, n_closure)
+~$from_getter_source(S_live, GETTER_FACTORY n_receiver porigin_invoke, n_closure)
+n_absent_factory = |S_live.OBJECTS|
+~$from_getter_source(S_live, GETTER_FACTORY n_absent_factory porigin_invoke, n_closure)
+S_wrong_kind = S_live[.OBJECTS[n_factory] = INTRINSICCLOSURE INTRINSIC_FROM_CALLABLE]
+~$from_getter_source(S_wrong_kind, pgettersource, n_closure)
+~$getter_capture_live(S_wrong_kind, n_closure)
+S_wrong_creation = S_live[.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_invoke]
+~$from_getter_source(S_wrong_creation, pgettersource, n_closure)
+~$getter_capture_live(S_wrong_creation, n_closure)
+S_no_source = S_live[.SOURCES = eps]
+~$from_getter_source(S_no_source, pgettersource, n_closure)
+S_future = S_live[.OBJECTS = S_live.OBJECTS ++ [FROMCALLABLEFACTORY porigin_create]]
+$from_factory_saved(S_future, n_absent_factory)
+~$from_getter_source(S_future, GETTER_FACTORY n_absent_factory porigin_invoke, n_closure)
+S_wrong_receiver = S_live[.OBJECTS[n_closure] = GETTERCLOSURE n_factory GET_MESSAGE "Exception" pgettersource]
+~$getter_capture_live(S_wrong_receiver, n_closure)
+S_wrong_method = S_live[.OBJECTS[n_closure] = GETTERCLOSURE n_receiver GET_SENSITIVE_VALUE "Exception" pgettersource]
+~$getter_capture_live(S_wrong_method, n_closure)
+S_wrong_base = S_live[.OBJECTS[n_closure] = GETTERCLOSURE n_receiver GET_MESSAGE "Error" pgettersource]
+~$getter_capture_live(S_wrong_base, n_closure)
+S_wrong_site = S_live[.OBJECTS[n_closure] = GETTERCLOSURE n_receiver GET_MESSAGE "Exception" (GETTER_FACTORY n_factory porigin_create)]
+~$getter_capture_live(S_wrong_site, n_closure)
+n_copy = |S_live.OBJECTS|
+S_copy = $clone_object(S_live, n_closure)
+S_copy.RESULT = KNOWN (POBJECT n_copy)
+S_copy.OBJECTS[n_copy] = GETTERCLOSURE n_receiver GET_MESSAGE "Exception" pgettersource
+$node_children(S_copy, HOBJECT n_copy) = [HOBJECT n_receiver]
+$getter_capture_live(S_copy, n_copy)
+$named_closure_same(S_copy, n_closure, n_copy)
+$named_closure_same(S_copy, n_copy, n_closure)
+$fake_bind_direct_getter(S_live, n_closure) = ((n_receiver, GET_MESSAGE, "Exception"))
+$fake_bind_scope(S_live, n_closure) = BIND_INTERNAL ($ptascii("Exception"))
+$fake_bind_history_nodes(S_live, n_closure, eps) = [HOBJECT n_closure, HOBJECT n_receiver]
+$fake_bind_name(S_live, n_closure) = $ptascii("getMessage")
+$fake_compare_receiver(S_live, n_closure) = (n_receiver)
+''')
+    checks = genuine + controls
+    text = PREFIX[PREFIX.index('dec $outputs'):] + GETTER_PHASE
+    text += '\ndec $main() : bool\ndef $main() = true\n'
+    text += ''.join(('  -- ' if check.startswith('PhpStep:') else '  -- if ') + check + '\n'
+                    for check in checks)
     return text, checks, len(genuine), len(controls)

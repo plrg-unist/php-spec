@@ -2294,7 +2294,7 @@ Invocation USER scope controls callback access; creation scope grants no later a
 The initializer Unsupported and pre-child clean-status stop remain zero credit.
 The maintained renderer is byte-identical to the accepted fixture; relocation
 adds no runtime renewal. Invoke aliases, nullsafe/computed method entry,
-computed/keyword creation and captured-factory Fiber/getter callbacks stay open,
+computed/keyword creation and captured-factory Fiber/wider getter callbacks stay open,
 as does required original 7's CLI 60 timeout.
 Current-parent compilation passes at def000e9 over ac4a95b5 with 368 modules;
 pointwise storage/intrinsic/getter review adds no source or state renewal.
@@ -2322,6 +2322,16 @@ remain zero credit. The maintained renderer is byte-identical to the accepted
 fixture; wider computed/nullsafe captures and original 7's CLI60 timeout stay open.
 Actual-parent compilation passes at `0b4de6cd` over `5a127787` with 371 modules;
 pointwise CLASS/ownership review adds no private source, state or native renewal.
+Captured factories now select finite Throwable getters through an immutable,
+nonowning creation/invocation certificate. The returned getter owns only its
+receiver, reads the changed message after factory retirement, and keeps that
+receiver through clone/equality and final release. The direct control agrees at
+557e/371; captured live-message and new clone/equality sources agree at 771e/371.
+Its 191 premises (154 genuine/derived, 37 constructed) prove actual CONFIG/mint,
+parked return cleanup, restored result and last receiver retirement. The prior
+Unsupported and one-step fixture failure remain zero credit. The maintained
+source/renderer bytes are unchanged; relocation renews no runtime evidence.
+Wider getter/binding/library targets and original 7's CLI60 timeout remain open.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

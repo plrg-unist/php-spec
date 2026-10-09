@@ -25,6 +25,7 @@ dec $from_outer(pfrommethod) : porigin
 dec $from_split(pfrommethod) : bool
 dec $from_getter(pstate, nat) : (nat, pgettermethod, text)?
 dec $from_getter_kind(pstate, nat, ptbytes) : text?
+dec $from_getter_source(pstate, pgettersource, nat) : bool
 dec $from_compare(pstate, nat, nat) : bool
 dec $from_object(pobject) : bool
 dec $from_child_valid(pstate, porigin, pclosurescope) : bool
@@ -236,9 +237,13 @@ def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done(S[.OBJECTS = S.OB
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if $from_getter(S, n_array) = ((n_receiver, pgettermethod, text_base))
   -- if n = |S.OBJECTS|
-def $from_receive(S, pconfigcall, PARRAY n_array) = S[.COMPLETION = UNSUPPORTED "captured Closure::fromCallable factory getter callback"]
+def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done(S[.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n_receiver pgettermethod text_base (GETTER_FACTORY n_factory pconfigcall.SITE)]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
-  -- if $from_getter(S, n_array) =/= eps
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
+  -- if $config_invoke_valid(S, pconfigcall)
+  -- if pconfigcall.OWNER = (n_factory)
+  -- if $from_getter(S, n_array) = ((n_receiver, pgettermethod, text_base))
+  -- if n = |S.OBJECTS|
 def $from_receive(S, pconfigcall, pvalue_string) = $api_begin(S, CONFIG_INVOKE pconfigcall, pvalue_string)
   -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if ~$fiber_factory_candidate(S, pvalue_string)
@@ -681,14 +686,17 @@ def $from_getter(S, n_array) = ((n_receiver, pgettermethod, $getter_owner(text_k
   -- if $getter_available(text_kind, pgettermethod)
 def $from_getter(S, n_array) = eps -- otherwise
 
+def $from_getter_source(S, porigin, n) = $from_site(S, porigin)
+def $from_getter_source(S, GETTER_FACTORY n_factory porigin, n) = ($(n_factory < n) /\ $from_factory_saved(S, n_factory) /\ $from_factory_call_site(S, porigin))
+
 def $getter_capture_live(S, n) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
   -- if $(n_receiver < n) /\ (HOBJECT n_receiver) <- S.ALLOCATIONS
   -- if $from_getter_kind(S, n_receiver, $getter_name(pgettermethod)) = (text_kind)
   -- if $getter_available(text_kind, pgettermethod)
   -- if text_base = $getter_owner(text_kind, pgettermethod)
-  -- if $from_site(S, porigin_site)
+  -- if $from_getter_source(S, pgettersource, n)
 
 def $class_instanceof(S, POBJECT n, ptbytes) = true
   -- if $ptlc(ptbytes) = $ptascii("closure")
@@ -713,9 +721,9 @@ def $named_closure_same(S, n_left, n_right) = $from_compare(S, n_left, n_right)
 def $from_object(FROMCALLABLECLOSURE pfrommethod) = true
 def $from_object(pobject) = false -- otherwise
 def $named_closure_same(S, n_left, n_right) = true
-  -- if S.OBJECTS[n_left] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_left
-  -- if S.OBJECTS[n_right] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_right
-  -- if $from_site(S, porigin_left) \/ $from_site(S, porigin_right)
+  -- if S.OBJECTS[n_left] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource_left
+  -- if S.OBJECTS[n_right] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource_right
+  -- if $from_getter_source(S, pgettersource_left, n_left) \/ $from_getter_source(S, pgettersource_right, n_right)
   -- if $getter_capture_live(S, n_left) /\ $getter_capture_live(S, n_right)
 
 

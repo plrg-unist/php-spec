@@ -368,6 +368,11 @@ identity and creation authority. The selected call retains it as original and al
 caller cells retire; the returned Closure owns its receiver independently. A REAL
 control and repaired factory source agree on separate 370-module cuts, with 610
 factory premises. Wider invoke/factory forms and original 7 remain open.
+Captured factories now select finite Throwable getters with a nonowning source
+certificate. The getter reads the receiver's live message after factory retirement;
+clones retain the same receiver, and equality ignores the creation certificate.
+The direct control and two repaired sources agree on separate 371-module cuts,
+with 191 state premises. Wider targets and required original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
