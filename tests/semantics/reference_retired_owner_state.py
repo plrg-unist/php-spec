@@ -283,10 +283,16 @@ def main():
 
     for case, kind in (('switch-delayed-cow', 'RETIRED_SWITCH_END'),
                        ('foreach-value-finalizer-cow', 'RETIRED_FOREACH_NEXT')):
-        stage = f + ['S.TODO = (' + kind + ' pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*']
-        if kind == 'RETIRED_FOREACH_NEXT':
-            stage += ['pretiredowner.POSITION = (n_position)', 'n_position = S.ARRAYS[pretiredowner.ARRAY].SERIAL']
-        checks = stage[1:] + pair() + ['S_next = $drive_steps(S, 1)', 'S_next.TODO = ptask_tail*',
+        if kind == 'RETIRED_SWITCH_END':
+            stage = f + ['S.TODO = (STMT (NStmtBreak phpType5 metadata)) :: ptask_before*',
+                         'S.RETIREDOWNERS = [pretiredowner]', '$retired_pair(S.TODO, pretiredowner)']
+            suffix = ['$jump_depth(phpType5) = 1',
+                      '$goto_saved(S.TODO, pretiredowner.OWNER) = GOTOTASKS ((RETIRED_SWITCH_END pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*)']
+        else:
+            stage = f + ['S.TODO = (' + kind + ' pretiredowner) :: (RETIRED_OWNER_PHASE pretiredowner) :: ptask_tail*',
+                         'pretiredowner.POSITION = (n_position)', 'n_position = S.ARRAYS[pretiredowner.ARRAY].SERIAL']
+            suffix = []
+        checks = stage[1:] + suffix + pair() + ['S_next = $drive_steps(S, 1)', 'S_next.TODO = ptask_tail*',
             'S_next.RETIREDOWNERS = eps', 'S_next.STORE = S.STORE', 'S_next.ARRAYS = S.ARRAYS',
             '$heap_owners($heap_graph(S_next), HARRAY pretiredowner.ARRAY) = $heap_owners($heap_graph(S), HARRAY pretiredowner.ARRAY)',
             'S_next.ITERATORS = S.ITERATORS', '$call_descriptors_valid(S_next)']
