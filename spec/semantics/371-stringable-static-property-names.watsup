@@ -327,7 +327,8 @@ def $reference_coercion_admission(S, n, porigin, z, ptbytes) = true
   -- if $static_compound_source(S, pstaticcompound, porigin, z)
   -- if $(pstaticcompound.ENTRY + 1 = |S.CLASSCONSTANTHISTORY|)
   -- if $static_compound_capture(S, pstaticcompound.DECL, porigin, pstaticcompound.ENTRY) = (pstaticcompound)
-  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN pvalue
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
   -- if $string_bytes(pvalue) = (ptbytes)
 rule PhpStep/computed-static-name-apply-pending: S ~> $computed_static_pending_end(S_updated[.HELD = S.HELD], pcomputedaddress.PENDING, ptask*)
   -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
