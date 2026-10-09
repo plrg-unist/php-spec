@@ -114,6 +114,7 @@ def $bind_parameters(S, psparam :: psparam_tail*, (REFERENCE n) :: poperand*) = 
   -- if psparam.BYREF
 dec $function_tasks(pstate, pfunction) : ptask*
 dec $function_body_tasks(pstate, pfunction) : ptask*
+dec $promotion_tasks(pstate, pfunction) : ptask*
 dec $function_fallthrough(pstate, pfunction) : ptask
 dec $function_generator(pstate, pfunction) : bool
 dec $generator_active(pstate) : bool
@@ -121,10 +122,10 @@ dec $generator_return(pstate, poperand) : pstate
 def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtFunction phpType14 (BOOLEAN b) phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
-def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
+def $function_body_tasks(S, pfunction) = $promotion_tasks(S, pfunction) ++ $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
   -- if pfunction.ORIGIN = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
-def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
+def $function_body_tasks(S, pfunction) = $promotion_tasks(S, pfunction) ++ $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
   -- if pfunction.ORIGIN = TRAIT_ORIGIN porigin_owner porigin_source ptbytes
   -- if $origin_source(porigin_source) = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, porigin_source) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)

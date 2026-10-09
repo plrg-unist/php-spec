@@ -151,6 +151,9 @@ def $trait_property_keyword_spelling(S, ppropertydesc) = $trait_type_keyword_spe
   -- if $(|pcpath| >= 2)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtProperty phpType14 phpType24 phpType18 phpType56 phpType37 metadata_group)
 def $trait_property_keyword_spelling(S, ppropertydesc) = eps -- otherwise
+def $trait_property_keyword_spelling(S, ppropertydesc) = $trait_type_keyword_spelling($ptast(phpType18))
+  -- if ppropertydesc.ORIGIN = porigin
+  -- if $origin_node(S.SOURCES, $origin_source(porigin)) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
 ;; Only diagnostics project source keyword spelling; stored and checked types
 ;; remain normalized and bound to their authentic declaring owner.
 def $trait_member_type_input(S, porigin) = ($ptast(phpType18))
@@ -164,6 +167,8 @@ def $trait_member_type_input(S, porigin) = ($ptast(phpType18))
   -- if $(|pcpath| >= 2)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath[0:$nabs($(|pcpath| - 2))]) = (NStmtClassConst phpType14 phpType24 phpType18 phpType45 metadata_group)
 def $trait_member_type_input(S, porigin) = eps -- otherwise
+def $trait_member_type_input(S, porigin) = ($ptast(phpType18))
+  -- if $origin_node(S.SOURCES, $origin_source(porigin)) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
 def $trait_member_display_type(S, porigin, ptbranch*) = $trait_type_display(ptbranch*, ptinput) -- if $trait_member_type_input(S, porigin) = (ptinput)
 def $trait_member_display_type(S, porigin, ptbranch*) = ptbranch* -- if $trait_member_type_input(S, porigin) = eps
 def $trait_type_display(ptbranch*, ptinput) = ($trait_type_display_branch(ptbranch, ptinput))*

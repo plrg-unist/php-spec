@@ -1,6 +1,6 @@
 ;; Local signature compilation. Declaration activation and calls are separate.
 syntax psraw = { NAME ptbytes, TYPE phpType18, BYREF bool, VARIADIC bool,
-  DEFAULT phpType5, LINE nat, EXTRA bool }
+  DEFAULT phpType5, LINE nat, FLAGS int, EXTRA bool }
 syntax psinput = PSINPUT psraw | PSINPUTUNSUPPORTED text
 syntax psnumber = PSINTEGER int | PSFLOAT | PSNONNUMERIC
 syntax psdefault = PSNONE | PSDEFAULT phpType5 text | PSDEFAULTUNSUPPORTED text
@@ -33,6 +33,7 @@ dec $psprepend(psdiagnostic*, psoneresult) : psoneresult
 dec $psnullable(ptcontext, phpType18, psdefault, ptresult) : ptresult
 dec $psisnulldefault(psdefault) : bool
 dec $psforced(phpType18, psdefault, ptresult) : bool
+dec $psconstructor_context(ptcontext) : bool
 dec $psacceptdefault(ptbranch*, psdefault) : bool
 dec $psconvertdefault(ptbranch*, psdefault) : psdefault
 dec $psone(ptcontext, psraw, psinput*, ptbytes*, bool) : psoneresult
@@ -79,7 +80,7 @@ def $psstartline(MstartLine int) = true
 def $psstartline(metadataEntry) = false
   -- otherwise
 
-def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = PSINPUT { NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), EXTRA (phpType14 =/= SEQUENCE eps \/ int =/= 0 \/ phpType37 =/= SEQUENCE eps) }
+def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = PSINPUT { NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), FLAGS int, EXTRA (phpType14 =/= SEQUENCE eps \/ phpType37 =/= SEQUENCE eps) }
 def $pslower(phpType17) = PSINPUTUNSUPPORTED "edited dynamic parameter name"
   -- otherwise
 
@@ -207,7 +208,7 @@ def $psguard(ptcontext, psraw, psinput*, ptbytes*, false) = $psdefaultguard(ptco
 
 def $psdefaultguard(ptcontext, psraw, psinput*) = PSGUARDED ($pserror(ptcontext, "variadic-default", eps))
   -- if psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT
-def $psdefaultguard(ptcontext, psraw, psinput*) = PSGUARDED (PSONEUNSUPPORTED "parameter attributes, promotion or hooks")
+def $psdefaultguard(ptcontext, psraw, psinput*) = PSGUARDED (PSONEUNSUPPORTED "parameter attributes or hooks")
   -- if ~(psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT)
   -- if psraw.EXTRA
 def $psdefaultguard(ptcontext, psraw, psinput*) = PSNEEDDEFAULT
@@ -226,6 +227,11 @@ def $psdefaultready(ptcontext, psraw, psinput*, psdefault) = $pstypestage(ptcont
 def $pstypestage(ptcontext, psraw, psinput*, PSDEFAULTUNSUPPORTED text) = PSONEUNSUPPORTED text
 def $pstypestage(ptcontext, psraw, psinput*, psdefault) = $pstyped(ptcontext, psraw, psinput*, psdefault, $psforced(psraw.TYPE, psdefault, ptresult), $psnullable(ptcontext, psraw.TYPE, psdefault, ptresult))
   -- if psdefault = PSNONE \/ $pshasdefault(psdefault)
+  -- if psraw.FLAGS = 0
+  -- if ptresult = $ptraw(ptcontext, $ptast(psraw.TYPE))
+def $pstypestage(ptcontext, psraw, psinput*, psdefault) = $pstyped(ptcontext, psraw, psinput*, psdefault, false, ptresult)
+  -- if psdefault = PSNONE \/ $pshasdefault(psdefault)
+  -- if psraw.FLAGS =/= 0
   -- if ptresult = $ptraw(ptcontext, $ptast(psraw.TYPE))
 def $pshasdefault(PSDEFAULT phpType5 text) = true
 def $pshasdefault(psdefault) = false
@@ -242,8 +248,20 @@ def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTERROR ptdiag
 def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTUNSUPPORTED text) = PSONEUNSUPPORTED text
 def $pspositionstage(ptcontext, psraw, psinput*, PSDEFAULT phpType5 text, bool, PTOK ptbranch* ptdiagnostic*) = $pserror(ptcontext, "invalid-default", [$psdefaulttypename(text), psraw.NAME, $pttypename(ptbranch*)])
   -- if ~$psacceptdefault(ptbranch*, PSDEFAULT phpType5 text)
+def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTOK ptbranch* ptdiagnostic*) = $pserror(ptcontext, "promotion-outside-constructor", eps)
+  -- if $psacceptdefault(ptbranch*, psdefault)
+  -- if psraw.FLAGS =/= 0 /\ ~$psconstructor_context(ptcontext)
 def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTOK ptbranch* ptdiagnostic*) = PSONE { NAME psraw.NAME, TYPE ptbranch*, BYREF psraw.BYREF, VARIADIC psraw.VARIADIC, REQUIRED ((psraw.DEFAULT = ABSENT /\ ~psraw.VARIADIC) \/ $psrequiredlater(psinput*) =/= eps), DEFAULT $psretain_default(psinput*, $psconvertdefault(ptbranch*, psdefault)) } ($psoptionalnotice(ptcontext, psraw, psinput*, bool))
   -- if $psacceptdefault(ptbranch*, psdefault)
+  -- if psraw.FLAGS = 0 \/ $psconstructor_context(ptcontext)
+
+def $psconstructor_context(ptcontext) = true
+  -- if ptcontext.SCOPE = PTKNOWN ptbytes ptbytes_parent?
+  -- if $ptlc(ptcontext.MEMBER) = $ptascii("__construct")
+def $psconstructor_context(ptcontext) = true
+  -- if ptcontext.SCOPE = PTTRAIT ptbytes
+  -- if $ptlc(ptcontext.MEMBER) = $ptascii("__construct")
+def $psconstructor_context(ptcontext) = false -- otherwise
 
 def $psretain_default(psinput*, psdefault) = PSNONE
   -- if $psrequiredlater(psinput*) =/= eps
@@ -298,6 +316,7 @@ def $psmessage(PSDIAGNOSTIC text "parameter-redefined" ([ptbytes]) ptcontext) = 
 def $psmessage(PSDIAGNOSTIC text "parameter-this" ptbytes* ptcontext) = $ptascii("Cannot use $this as parameter")
 def $psmessage(PSDIAGNOSTIC text "variadic-last" ptbytes* ptcontext) = $ptascii("Only the last parameter can be variadic")
 def $psmessage(PSDIAGNOSTIC text "variadic-default" ptbytes* ptcontext) = $ptascii("Variadic parameter cannot have a default value")
+def $psmessage(PSDIAGNOSTIC text "promotion-outside-constructor" ptbytes* ptcontext) = $ptascii("Cannot declare promoted property outside a constructor")
 def $psmessage(PSDIAGNOSTIC text "invalid-default" ([ptbytes_kind, ptbytes_name, ptbytes_type]) ptcontext) = $ptascii("Cannot use ") ++ ptbytes_kind ++ $ptascii(" as default value for parameter $") ++ ptbytes_name ++ $ptascii(" of type ") ++ ptbytes_type
 def $psmessage(PSDIAGNOSTIC text "implicit-nullable" ([ptbytes]) ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Implicitly marking parameter $") ++ ptbytes ++ $ptascii(" as nullable is deprecated, the explicit nullable type must be used instead")
 def $psmessage(PSDIAGNOSTIC text "optional-before-required" ([ptbytes_optional, ptbytes_required]) ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Optional parameter $") ++ ptbytes_optional ++ $ptascii(" declared before required parameter $") ++ ptbytes_required ++ $ptascii(" is implicitly treated as a required parameter")

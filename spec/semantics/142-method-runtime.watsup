@@ -1509,3 +1509,113 @@ def $call_task_valid(S, EVAL (NExprClassConstFetch phpType19 phpType20 metadata)
   -- if S.CONSTCONTEXT =/= eps
   -- if $pfclassname_keyword(phpType19) <- [$ptascii("self"), $ptascii("parent")]
   -- if $pfclassname_member(phpType20)
+
+;; Promotion reads the current parameter cell after all receives, before the
+;; original body. No synthetic AST, cached RHS, or extra receiver owner is used.
+dec $promotion_source(pstate, pfunction) : phpType16?
+dec $promotion_tasks_from(porigin, phpType17*, nat) : ptask*
+dec $promotion_task(porigin, nat, psinput) : ptask*
+dec $promotion_raw(pstate, pfunction, nat) : psraw?
+dec $promotion_descriptor(pstate, pfunction, nat) : ppropertydesc?
+dec $promotion_type_scope(pclassdesc) : ptscope
+dec $promotion_task_valid(pstate, porigin, nat) : bool
+dec $promotion_write(pstate, nat, ptbytes, nat, psraw) : pstate
+dec $promotion_write_reference(pstate, nat, ptbytes, nat, int) : pstate
+
+def $promotion_source(S, pfunction) = (SEQUENCE phpType17*)
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NStmtClassMethod phpType14 (INTEGER flags) phpType4 (NIdentifier (BYTES text) metadata_name) (SEQUENCE phpType17*) phpType18 (SEQUENCE statement*) metadata)
+  -- if $iterator_notice_attributes(pfunction.ENV, phpType14)
+  -- if $ptlc($base64(text)) = $ptascii("__construct")
+  -- if ~$ppproperty_flag(flags, 8) /\ ~$ppproperty_flag(flags, 16)
+def $promotion_source(S, pfunction) = eps -- otherwise
+def $promotion_tasks(S, pfunction) = $promotion_tasks_from(pfunction.ORIGIN, phpType17*, 0)
+  -- if $promotion_source(S, pfunction) = (SEQUENCE phpType17*)
+def $promotion_tasks(S, pfunction) = eps -- otherwise
+def $promotion_tasks_from(porigin, eps, n) = eps
+def $promotion_tasks_from(porigin, phpType17 :: phpType17_tail*, n) = $promotion_task(porigin, n, $pslower(phpType17)) ++ $promotion_tasks_from(porigin, phpType17_tail*, $(n + 1))
+def $promotion_task(porigin, n, PSINPUT psraw) = [PROMOTE_PARAMETER porigin n] -- if psraw.FLAGS =/= 0
+def $promotion_task(porigin, n, psinput) = eps -- otherwise
+
+def $promotion_raw(S, pfunction, n) = (psraw)
+  -- if $promotion_source(S, pfunction) = (SEQUENCE phpType17*)
+  -- if $(n < |phpType17*|) /\ $(n < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $pslower(phpType17*[n]) = PSINPUT psraw
+  -- if psraw.FLAGS =/= 0 /\ ~psraw.EXTRA /\ ~psraw.VARIADIC
+  -- if $ppproperty_supported(psraw.FLAGS) /\ ~$ppproperty_flag(psraw.FLAGS, 8)
+  -- if psraw.NAME = pfunction.SIGNATURE.PARAMETERS[n].NAME
+  -- if psraw.BYREF = pfunction.SIGNATURE.PARAMETERS[n].BYREF
+  -- if ~pfunction.SIGNATURE.PARAMETERS[n].VARIADIC
+def $promotion_raw(S, pfunction, n) = eps -- otherwise
+
+;; A trait keeps its declaration certificate even if a compatible class or
+;; earlier trait supplies the effective slot. Scope resolves the actual target.
+def $promotion_descriptor(S, pfunction, n) = (ppropertydesc)
+  -- if $promotion_raw(S, pfunction, n) = (psraw)
+  -- if $class_method_origin(S.CLASSES, $origin_source(pfunction.ORIGIN)) = (pmethoddesc_source)
+  -- if $class_at(S.CLASSES, pmethoddesc_source.OWNER) = (pclassdesc_source)
+  -- if $ppproperty_desc_at(pclassdesc_source.PROPERTIES, psraw.NAME) = (ppropertydesc)
+  -- if $origin_source(pfunction.ORIGIN) = PORIGIN n_unit pcpath
+  -- if ppropertydesc.ORIGIN = PORIGIN n_unit (pcpath ++ [PCFIELD 4, PCINDEX n])
+  -- if ppropertydesc.NAME = psraw.NAME
+  -- if ppropertydesc.KEY = $ppproperty_key(psraw.FLAGS, psraw.NAME, pclassdesc_source.NAME)
+  -- if ppropertydesc.VISIBILITY = $ppproperty_visibility(psraw.FLAGS)
+  -- if ppropertydesc.READONLY = ($ppproperty_flag(psraw.FLAGS, 64) \/ pclassdesc_source.READONLY)
+  -- if ppropertydesc.SETVISIBILITY = $ppproperty_declared_set(psraw.FLAGS, ppropertydesc.READONLY)
+  -- if ppropertydesc.FINAL = $ppproperty_final(psraw.FLAGS) /\ ~ppropertydesc.STATIC
+  -- if $ptype_normalize(psraw.TYPE, {NAMESPACE pmethoddesc_source.FUNCTION.ENV.NAMESPACE, IMPORTS pmethoddesc_source.FUNCTION.ENV.CLASSES, SCOPE $promotion_type_scope(pclassdesc_source), POSITION PTPROPERTY, OWNER pclassdesc_source.NAME, MEMBER psraw.NAME, FILE $call_sourcefile(S.FILES, pmethoddesc_source.FUNCTION.ORIGIN), LINE psraw.LINE}) = PTOK ptbranch* ptdiagnostic*
+  -- if $ppproperty_type_equal(ppropertydesc.TYPE, ptbranch*)
+  -- if $ppproperty_type_equal(ppropertydesc.TYPE, pmethoddesc_source.FUNCTION.SIGNATURE.PARAMETERS[n].TYPE)
+  -- if (ppropertydesc.TYPE = eps /\ ppropertydesc.DEFAULT = PROP_NULL) \/ (ppropertydesc.TYPE =/= eps /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
+  -- if ppropertydesc.LINE = psraw.LINE
+  -- if $class_method_origin(S.CLASSES, pfunction.ORIGIN) = (pmethoddesc)
+  -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
+  -- if $ppproperty_type_equal($trait_data_import_type(pclassdesc, ppropertydesc.TYPE), pfunction.SIGNATURE.PARAMETERS[n].TYPE)
+def $promotion_descriptor(S, pfunction, n) = eps -- otherwise
+def $promotion_type_scope(pclassdesc) = PTTRAIT pclassdesc.NAME -- if pclassdesc.KIND = "trait"
+def $promotion_type_scope(pclassdesc) = PTKNOWN pclassdesc.NAME pclassdesc.PARENT -- if pclassdesc.KIND =/= "trait"
+
+def $promotion_task_valid(S, porigin, n) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.FUNCTION = porigin /\ pcallcontext.DEFAULTRECEIVE = eps
+  -- if S.ORIGIN = (porigin) /\ S.CONSTCONTEXT = eps
+  -- if $call_current_valid(S)
+  -- if $receiving_function(S, porigin) = (pfunction)
+  -- if $class_method_origin(S.CLASSES, porigin) = (pmethoddesc)
+  -- if pcallcontext.LEXICAL_CLASS = (pmethoddesc.OWNER)
+  -- if pcallcontext.RECEIVER = (n_receiver)
+  -- if $promotion_source(S, pfunction) = (SEQUENCE phpType17*)
+  -- if $promotion_raw(S, pfunction, n) = (psraw)
+  -- if $promotion_descriptor(S, pfunction, n) = (ppropertydesc)
+  -- if $default_received_slots(S, pfunction.SIGNATURE.PARAMETERS, |pfunction.SIGNATURE.PARAMETERS|)
+  -- if $origin_source(porigin) = PORIGIN n_unit pcpath
+  -- if pfunction.BODY = pcpath ++ [PCFIELD 6]
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if S.TODO = $promotion_tasks_from(porigin, phpType17*[n:$nabs($(|phpType17*| - n))], n) ++ $statement_tasks(statement*, (PORIGIN n_unit pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
+  -- if $property_resolve(S, n_receiver, psraw.NAME) = PROPERTY_ACCESS ptbytes
+  -- if $lookup(S.ENV, psraw.NAME) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $promotion_task_valid(S, porigin, n) = false -- otherwise
+def $call_task_valid(S, PROMOTE_PARAMETER porigin n) = $promotion_task_valid(S, porigin, n)
+
+def $promotion_write(S, n_receiver, ptbytes, n_cell, psraw) = $property_store_key(S, n_receiver, ptbytes, pvalue, psraw.LINE)
+  -- if ~psraw.BYREF
+  -- if S.STORE[n_cell] = DEFINED pvalue
+def $promotion_write(S, n_receiver, ptbytes, n_cell, psraw) = $promotion_write_reference(S, n_receiver, ptbytes, n_cell, psraw.LINE)
+  -- if psraw.BYREF
+def $promotion_write_reference(S, n_receiver, ptbytes, n_cell, z) = $assign_property_reference(S_checked, n_receiver, ptbytes, n_cell, z)
+  -- if S_checked = $property_reference_target_check(S, n_receiver, ptbytes, z)
+  -- if S_checked.COMPLETION = NORMAL
+def $promotion_write_reference(S, n_receiver, ptbytes, n_cell, z) = S_checked
+  -- if S_checked = $property_reference_target_check(S, n_receiver, ptbytes, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+
+rule PhpStep/promote-parameter: S ~> S_written[.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROMOTE_PARAMETER porigin n) :: ptask_tail*
+  -- if $promotion_task_valid(S, porigin, n)
+  -- if $receiving_function(S, porigin) = (pfunction)
+  -- if $promotion_raw(S, pfunction, n) = (psraw)
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.RECEIVER = (n_receiver)
+  -- if $property_resolve(S, n_receiver, psraw.NAME) = PROPERTY_ACCESS ptbytes
+  -- if $lookup(S.ENV, psraw.NAME) = (n_cell)
+  -- if S_written = $promotion_write(S[.TODO = ptask_tail*][.ORIGIN = ($default_parameter_origin(S, porigin, n))], n_receiver, ptbytes, n_cell, psraw)

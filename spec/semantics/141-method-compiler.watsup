@@ -38,6 +38,8 @@ dec $ppmethod_defaults(ppstate, pcpath, psparam*, nat) : pdefault*
 dec $ppmethod_step(ppstate, ppstate, pcpath, int, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, psprogress) : ppmembers
 dec $ppmethod_request(ppstate, ppstate, pcpath, int, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation) : ppmembers
 dec $ppmethod_ready(ppstate, ppstate, pcpath, int, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, expression) : ppmembers
+dec $ppmethod_parameter(ppstate, ppstate, pcpath, int, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, psoneresult) : ppmembers
+dec $pppromotion_parameter(ppstate, pcpath, int, psraw, ppropertydesc*, pchheader) : ppropertywork
 dec $ppmethod_finish(ppstate, ppstate, pcpath, int, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
 
 dec $pmethod_user(pmethoddesc, pclassdesc, ptbytes) : pmmethod
@@ -84,9 +86,9 @@ def $ppmember_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags)
   -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait"
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, $ppmember_path(pcpath, pchheader, n), $source_line(metadata)), $ppmember_path(pcpath, pchheader, n), flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
-def $ppmember_groups(P, pcpath, n, (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc*, pmethoddesc_next*, pchheader)
+def $ppmember_groups(P, pcpath, n, (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pmethoddesc_next*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
-  -- if PPMEMBERS P_next ppropertydesc* pmethoddesc_next* = $ppmethod_one(P, $ppmember_path(pcpath, pchheader, n), NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if PPMEMBERS P_next ppropertydesc_next* pmethoddesc_next* = $ppmethod_one(P, $ppmember_path(pcpath, pchheader, n), NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader)
 def $ppmember_groups(P, pcpath, n, statement*, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS ($ppunsupported(P, "class members")) ppropertydesc* pmethoddesc* -- otherwise
 
 def $ppmethod_at(eps, ptbytes) = false
@@ -195,7 +197,7 @@ def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, ABSENT, metadata, pproper
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature_effective.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDEFAULTREQUEST pscontinuation) = $ppmethod_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation[.DIAGNOSTICS = eps])
 
-def $ppmethod_request(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation) = $ppmethod_step(P_outer, $ppmethod_default_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n), pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, $psstep_resume(pscontinuation, PSNONE))
+def $ppmethod_request(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation) = $ppmethod_parameter(P_outer, $ppmethod_default_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n), pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, $psdefaultready(pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE][.POSITION = PTPARAMETER], pscontinuation.PARAMETER, pscontinuation.REST, PSNONE))
   -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
   -- if n = |pscontinuation.SIGNATURE.PARAMETERS|
 def $ppmethod_request(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation) = $ppmethod_ready(P_outer, $ppdefault_prepare(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE][.FOLD = P.FOLD[.DEFAULT = true][.CONSTANT = true]], $ppmethod_default_path(pcpath, n), expression), pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, expression)
@@ -203,9 +205,35 @@ def $ppmethod_request(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, p
   -- if n = |pscontinuation.SIGNATURE.PARAMETERS|
 def $ppmethod_ready(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, expression) = PPMEMBERS P ppropertydesc* pmethoddesc*
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppmethod_ready(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, expression) = $ppmethod_step(P_outer, $ppmethod_default_parameter(P, pcpath, n), pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, $psstep_resume(pscontinuation, PSDEFAULT expression $ppdefault_kind(P.FOLD.VALUE)))
+def $ppmethod_ready(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, expression) = $ppmethod_parameter(P_outer, $ppmethod_default_parameter(P, pcpath, n), pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, $psdefaultready(pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE][.POSITION = PTPARAMETER], pscontinuation.PARAMETER, pscontinuation.REST, psdefault))
   -- if P.COMPLETION = PPCNORMAL
   -- if n = |pscontinuation.SIGNATURE.PARAMETERS|
+  -- if psdefault = PSDEFAULT expression $ppdefault_kind(P.FOLD.VALUE)
+
+;; Each promoted declaration follows this parameter's default/type checks and
+;; precedes the next parameter. Its origin remains the real source NParam.
+def $ppmethod_parameter(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, PSONE psparam psdiagnostic*) = $ppmethod_step(P_outer, P_next, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc_next*, pmethoddesc*, pchheader, $psafterone_start(pscontinuation.CONTEXT, pscontinuation.REST, pscontinuation.SIGNATURE, pscontinuation.DIAGNOSTICS, PSONE psparam eps))
+  -- if n = |pscontinuation.SIGNATURE.PARAMETERS|
+  -- if PPROPERTIES P_next ppropertydesc_next* = $pppromotion_parameter($ppsignature_diagnostics(P, psdiagnostic*), pcpath ++ [PCFIELD 4, PCINDEX n], flags, pscontinuation.PARAMETER, ppropertydesc*, pchheader)
+def $ppmethod_parameter(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, psoneresult) = $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, $psafterone_start(pscontinuation.CONTEXT, pscontinuation.REST, pscontinuation.SIGNATURE, pscontinuation.DIAGNOSTICS, psoneresult)) -- otherwise
+
+def $pppromotion_parameter(P, pcpath, flags, psraw, ppropertydesc*, pchheader) = PPROPERTIES P ppropertydesc*
+  -- if psraw.FLAGS = 0
+def $pppromotion_parameter(P, pcpath, flags, psraw, ppropertydesc*, pchheader) = PPROPERTIES ($ppconstant_error(P, $ptascii("Cannot declare promoted property in an abstract constructor"), psraw.LINE)) ppropertydesc*
+  -- if psraw.FLAGS =/= 0
+  -- if $ppproperty_flag(flags, 16) \/ pchheader.KIND = "interface"
+def $pppromotion_parameter(P, pcpath, flags, psraw, ppropertydesc*, pchheader) = PPROPERTIES ($ppconstant_error(P, $ptascii("Cannot declare variadic promoted property"), psraw.LINE)) ppropertydesc*
+  -- if psraw.FLAGS =/= 0
+  -- if ~$ppproperty_flag(flags, 16) /\ pchheader.KIND =/= "interface"
+  -- if psraw.VARIADIC
+def $pppromotion_parameter(P, pcpath, flags, psraw, ppropertydesc*, pchheader) = PPROPERTIES ($ppconstant_error(P, $ptascii("Cannot redeclare ") ++ pchheader.NAME ++ $ptascii("::$") ++ psraw.NAME, psraw.LINE)) ppropertydesc*
+  -- if psraw.FLAGS =/= 0
+  -- if ~$ppproperty_flag(flags, 16) /\ pchheader.KIND =/= "interface" /\ ~psraw.VARIADIC
+  -- if $ppproperty_at(ppropertydesc*, psraw.NAME)
+def $pppromotion_parameter(P, pcpath, flags, psraw, ppropertydesc*, pchheader) = $ppproperty_typed(P, pcpath, psraw.FLAGS, ABSENT, psraw.NAME, $ptype_normalize(psraw.TYPE, $ppproperty_context(P, pchheader, psraw.NAME, psraw.LINE)), ppropertydesc*, pchheader, psraw.LINE)
+  -- if psraw.FLAGS =/= 0
+  -- if ~$ppproperty_flag(flags, 16) /\ pchheader.KIND =/= "interface" /\ ~psraw.VARIADIC
+  -- if ~$ppproperty_at(ppropertydesc*, psraw.NAME)
 
 def $ppmethod_finish(P_outer, P_body, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) = PPMEMBERS P_body ppropertydesc* pmethoddesc*
   -- if P_body.COMPLETION =/= PPCNORMAL
