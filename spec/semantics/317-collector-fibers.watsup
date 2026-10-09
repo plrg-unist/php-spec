@@ -351,6 +351,7 @@ def $gc_worker_overlap_selected(S, pgcplan, n_object, n_slot) = false -- otherwi
 def $gc_worker_overlap_image(S, pgcplan) = true -- if ~$gc_overlap_plan(pgcplan)
 def $gc_worker_overlap_image(S, pgcplan) = true
   -- if $gc_overlap_plan(pgcplan)
+  -- if $gc_overlap_refstate(S, pgcplan)
   -- if $heap_subset($destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER)), $gc_nested_removed(pgcplan))
   -- if S.GC.WORKER = (n)
   -- if S.ACTIVEFIBER = (n)
@@ -439,6 +440,7 @@ def $gc_worker_overlap_start_ready(S, pgcplan, true) = true
   -- if S.ACTIVEFIBER = (n_caller)
   -- if S.TODO = (GC_TRACE pgcplan.CALL) :: ptask_tail*
   -- if $gc_overlap_plan(pgcplan)
+  -- if $gc_overlap_refstate(S, pgcplan)
   -- if $gc_scope_valid(S, pgcplan.CALL) /\ $fiber_transfer_domain(S)
   -- if pgcplan = $gc_plan(S, pgcplan.CALL)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))

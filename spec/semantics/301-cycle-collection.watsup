@@ -10,10 +10,13 @@ dec $gc_residual_overlap(pstate) : bool
 dec $gc_overlap_objects(pnode*) : bool
 dec $gc_overlap_component(pgcplan, pnode*) : bool
 dec $gc_overlap_plan(pgcplan) : bool
+dec $gc_overlap_refmarks(pstate, pnode*) : bool
+dec $gc_overlap_refstate(pstate, pgcplan) : bool
 dec $gc_overlap_ready(pstate, pgccall) : bool
 dec $gc_worker_overlap_start_ready(pstate, pgcplan, bool) : bool
 dec $gc_worker_residual_start_ready(pstate, pgcplan, bool) : bool
 dec $gc_nested_visits(pnode*) : pgcvisit*
+dec $gc_nested_reference(hgraph, pnode) : bool
 dec $gc_nested_walk(hgraph, pnode*, pgcslot*, nat*, pgcvisit*, nat) : (pgcslot*, nat*, nat)
 dec $gc_nested_slots(hgraph, pnode*, pgcslot*, nat*, nat, nat) : (pgcslot*, nat*, nat)
 dec $gc_nested_image(pgcplan) : (pgcslot*, nat*, nat)
@@ -555,7 +558,8 @@ def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobject
 
 ;; A reached residual tag remains tag3 after collect_roots ORs tag2. Only
 ;; fresh destructor roots become purple; the visited residual stays black.
-;; Bound this lane to a closed white component of objects and nonproxy arrays.
+;; Bound this lane to a closed white component of objects, nonproxy arrays
+;; and genuine unbuffered references.
 ;; Unreached residual tags stay purple in admitted histories. Their object
 ;; components must remain disjoint from every eligible root's traced graph.
 def $gc_overlap_objects(eps) = true
@@ -565,6 +569,10 @@ def $gc_overlap_component(pgcplan, eps) = true
 def $gc_overlap_component(pgcplan, (HOBJECT n) :: pnode*) = $gc_overlap_component(pgcplan, pnode*)
 def $gc_overlap_component(pgcplan, (HARRAY n) :: pnode*) = $gc_overlap_component(pgcplan, pnode*)
   -- if ~$gc_proxy_tables(pgcplan.TABLES, pgcplan.GRAPH.NODES, n)
+def $gc_overlap_component(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_component(pgcplan, pnode*)
+  -- if (HCELL n) <- $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES)
+  -- if $gc_slot_find(pgcplan.BUFFER, HCELL n, 0) = eps
+  -- if $gc_nested_reference(pgcplan.GRAPH, HCELL n)
 def $gc_overlap_component(pgcplan, pnode*) = false -- otherwise
 def $gc_overlap_plan(pgcplan) = true
   -- if pgcplan.SCAN = eps /\ pgcplan.CALL.PASS = 0
@@ -585,25 +593,49 @@ def $gc_overlap_plan(pgcplan) = true
   -- if $gc_overlap_component(pgcplan, pnode_component*)
   -- if $gc_overlap_objects($heap_reach(pnode_residual*, eps, pgcplan.GRAPH.EDGES))
 def $gc_overlap_plan(pgcplan) = false -- otherwise
+;; The frozen graph cannot certify IS_REFERENCE. Authenticate markers only
+;; for its still-live component cells; retired snapshots retain no such demand.
+def $gc_overlap_refmarks(S, eps) = true
+def $gc_overlap_refmarks(S, (HCELL n) :: pnode*) = $gc_overlap_refmarks(S, pnode*)
+  -- if ~((HCELL n) <- S.ALLOCATIONS) \/ n <- S.REFCELLS
+def $gc_overlap_refmarks(S, (HOBJECT n) :: pnode*) = $gc_overlap_refmarks(S, pnode*)
+def $gc_overlap_refmarks(S, (HARRAY n) :: pnode*) = $gc_overlap_refmarks(S, pnode*)
+def $gc_overlap_refmarks(S, pnode*) = false -- otherwise
+def $gc_overlap_refstate(S, pgcplan) = true
+  -- if $gc_overlap_refmarks(S, $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
+def $gc_overlap_refstate(S, pgcplan) = true
+  -- if ~$gc_overlap_refmarks(S, $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
+  -- if ~$gc_overlap_plan(pgcplan)
+def $gc_overlap_refstate(S, pgcplan) = false -- otherwise
 def $gc_overlap_ready(S, pgccall) = true
   -- if S.ACTIVEFIBER = eps
   -- if pgcplan = $gc_plan(S, pgccall)
   -- if $gc_overlap_plan(pgcplan)
+  -- if $gc_overlap_refstate(S, pgcplan)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
 def $gc_overlap_ready(S, pgccall) = false -- otherwise
 
 ;; remove_nested_data charges a present root before following its children.
 ;; A black buffered child is removed and charged, even when it is that root.
+;; An unbuffered reference follows its referent without a charge of its own.
 ;; Physical order decides whether a later root tag is still present.
 def $gc_nested_visits(eps) = eps
 def $gc_nested_visits(pnode :: pnode_tail*) = (GC_VISIT pnode false) :: $gc_nested_visits(pnode_tail*)
+def $gc_nested_reference(H, HCELL n) = true -- if $heap_children(HCELL n, H.EDGES) = eps
+def $gc_nested_reference(H, HCELL n) = true -- if $heap_children(HCELL n, H.EDGES) = [HOBJECT n_object]
+def $gc_nested_reference(H, HCELL n) = true -- if $heap_children(HCELL n, H.EDGES) = [HARRAY n_array]
+def $gc_nested_reference(H, pnode) = false -- otherwise
 def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, eps, n_debit) = (pgcslot*, nat_free*, n_debit)
 def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode true) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, $gc_visit_order($gc_nested_visits($heap_children(pnode, H.EDGES))) ++ pgcvisit*, $(n_debit + 1))
 def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode false) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, $gc_slot_set(pgcslot*, n_slot, GC_EMPTY), n_slot :: nat_free*, $gc_visit_order($gc_nested_visits($heap_children(pnode, H.EDGES))) ++ pgcvisit*, $(n_debit + 1))
   -- if pnode <- pnode_black*
   -- if $gc_slot_find(pgcslot*, pnode, 0) = (n_slot)
+def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode false) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, $gc_nested_visits($heap_children(pnode, H.EDGES)) ++ pgcvisit*, n_debit)
+  -- if ~(pnode <- pnode_black*) \/ $gc_slot_find(pgcslot*, pnode, 0) = eps
+  -- if $gc_nested_reference(H, pnode)
 def $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, (GC_VISIT pnode false) :: pgcvisit*, n_debit) = $gc_nested_walk(H, pnode_black*, pgcslot*, nat_free*, pgcvisit*, n_debit)
   -- if ~(pnode <- pnode_black*) \/ $gc_slot_find(pgcslot*, pnode, 0) = eps
+  -- if ~$gc_nested_reference(H, pnode)
 def $gc_nested_slots(H, pnode_black*, pgcslot*, nat_free*, n_slot, n_debit) = (pgcslot*, nat_free*, n_debit)
   -- if $(n_slot >= |pgcslot*|)
 def $gc_nested_slots(H, pnode_black*, pgcslot*, nat_free*, n_slot, n_debit) = $gc_nested_slots(H, pnode_black*, pgcslot_next*, nat_next*, $(n_slot + 1), n_next)
@@ -706,6 +738,7 @@ def $gc_plan_live(S, pgcplan) = true
   -- if pgcplan.FREESET = $destruction_nodes_delete($gc_visit(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)), eps), $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
   -- if pgcplan.PROXIES = $gc_proxy_edges(pgcplan.TABLES, pgcplan.GRAPH.NODES)
   -- if $gc_proxy_edges_valid(pgcplan.GRAPH, pgcplan.PROXIES)
+  -- if $gc_overlap_refstate(S, pgcplan)
   -- if $gc_snapshot_valid($gc_call_scope(S, pgcplan.CALL), pgcplan)
   -- if $($gc_plan_consumer_count(S.TODO, pgcplan) + $gc_plan_frame_count(S.FRAMES, pgcplan) + $gc_parked_plan_count(S, pgcplan)) = 1
   -- if $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)), eps, eps) = (pnode_visit*, pgcplan.COUNTED)
