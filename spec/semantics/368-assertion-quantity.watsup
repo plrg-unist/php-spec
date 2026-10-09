@@ -8,10 +8,12 @@ def $assertion_quantity_escape_byte(12) = $ptascii("\\f")
 def $assertion_quantity_escape_byte(11) = $ptascii("\\v")
 def $assertion_quantity_escape_byte(27) = $ptascii("\\e")
 def $assertion_quantity_escape_byte(92) = $ptascii("\\\\")
-def $assertion_quantity_escape_byte(n) = $ptascii("\\x") ++ [n_hex*[$(n / 16)], n_hex*[$(n \ 16)]]
+def $assertion_quantity_escape_byte(n) = $ptascii("\\x") ++ [n_hex*[n_upper], n_hex*[n_lower]]
   -- if $(n < 32) \/ $(n > 126)
   -- if ~(n <- [10,13,9,12,11,27])
   -- if n_hex* = $ptascii("0123456789ABCDEF")
+  -- if n_upper = $(n / 16)
+  -- if n_lower = $(n \ 16)
 def $assertion_quantity_escape_byte(n) = [n]
   -- if $(n >= 32) /\ $(n <= 126) /\ n =/= 92
 dec $assertion_quantity_escape(preqbytes) : preqbytes
