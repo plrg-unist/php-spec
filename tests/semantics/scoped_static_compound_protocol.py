@@ -907,7 +907,7 @@ def $scoped_phase(S, 19) = true
   -- if pcallcontext.NAME = $ptascii("ColdDoubleNameReview20::__toString")
 def $scoped_phase(S, 20) = true
   -- if S.TODO = (THROW_SEARCH n_lookup) :: ptask*
-  -- if $throwable_field(S, n_lookup, "message") = PSTRING $ptascii("Access to undeclared static property ColdDoubleNameSlotReview20::$")
+  -- if $string_bytes($throwable_field(S, n_lookup, "message")) = ($ptascii("Access to undeclared static property ColdDoubleNameSlotReview20::$"))
 '''
 
 
@@ -930,7 +930,8 @@ pcallcontext_method.RECEIVER = (n_name)
 $outputs(S_method.EVENTS) = $ptascii("Q;N;")
 S_global = $global_table_view(S_method)
 $lookup(S_global.ENV, $ptascii("name")) = (n_name_cell)
-S_method.STORE[n_name_cell] = DEFINED (PSTRING $ptascii("other"))
+S_method.STORE[n_name_cell] = DEFINED pvalue_name
+$string_bytes(pvalue_name) = ($ptascii("other"))
 $lookup(S_global.ENV, $ptascii("cast")) = (n_cast_cell)
 S_method.STORE[n_cast_cell] = DEFINED (POBJECT n_cast)
 $lookup(S_global.ENV, $ptascii("drop")) = (n_drop_cell)
@@ -991,9 +992,9 @@ $ordinary_internal_string_evidence(S_fetch, n_name)
 (HOBJECT n_right) <- S_fetch.ALLOCATIONS
 $task_nodes(ptask_fetch) = [HOBJECT n_right, HOBJECT n_drop]
 $heap_owners($heap_graph(S_fetch), HOBJECT n_right) = 1
-$throwable_field(S_fetch, n_drop, "message") = PSTRING $ptascii("drop")
+$string_bytes($throwable_field(S_fetch, n_drop, "message")) = ($ptascii("drop"))
 $throwable_previous_id(S_fetch, n_drop) = (n_cast)
-$throwable_field(S_fetch, n_cast, "message") = PSTRING $ptascii("cast")
+$string_bytes($throwable_field(S_fetch, n_cast, "message")) = ($ptascii("cast"))
 $throwable_previous_id(S_fetch, n_cast) = eps
 $outputs(S_fetch.EVENTS) = $ptascii("Q;N;D;")
 $computed_static_fetch_ready(S_fetch, pcomputedcompound_cold, n_name, porigin_cold, eps, (n_drop))
@@ -1006,7 +1007,7 @@ S_nonempty_fetch = S_fetch[.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound_cold
 ''') + unchanged_cold('S_fetch') + guards('S_fetch')
     checks += seek('S_lookup', 'S_fetch', 20) + lines(r'''
 S_lookup.TODO = (THROW_SEARCH n_lookup) :: ptask_lookup_tail*
-$throwable_field(S_lookup, n_lookup, "message") = PSTRING $ptascii("Access to undeclared static property ColdDoubleNameSlotReview20::$")
+$string_bytes($throwable_field(S_lookup, n_lookup, "message")) = ($ptascii("Access to undeclared static property ColdDoubleNameSlotReview20::$"))
 S_lookup.OBJECTS[n_lookup] = THROWABLE pthrowable_lookup
 pthrowable_lookup.KIND = "Error"
 $throwable_previous_id(S_lookup, n_lookup) = (n_drop)
