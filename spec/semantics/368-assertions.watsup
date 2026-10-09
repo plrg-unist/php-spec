@@ -49,6 +49,7 @@ dec $assertion_description_value(pstate, pconfigcall, pvalue, pvalue) : pstate
 dec $assertion_description_source(pstate, pconfigcall) : (nat, porigin, int)?
 dec $assertion_description_source_at(pstate, pconfigcall, nat) : (nat, porigin, int)?
 dec $assertion_description_string_valid(pstate, pconfigcall, nat, porigin, int) : bool
+dec $assertion_description_result_valid(pstate, pconfigcall, nat, porigin, int) : bool
 dec $assertion_description_call(pconfigcall, pvalue) : pconfigcall
 dec $assertion_description_retained(pstate, pconfigcall, nat) : bool
 dec $assertion_description_begin(pstate, pconfigcall) : pstate
@@ -428,6 +429,13 @@ def $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_chil
   -- if ~$throwable_member(S, n)
   -- if $stringable_instance(S, n)
 def $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child) = false -- otherwise
+def $assertion_description_result_valid(S, pconfigcall, n, porigin_child, z_child) = true
+  -- if S.ORIGIN = (porigin_child)
+  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+  -- if S.RESULT = KNOWN pvalue_text
+  -- if $string_carrier_valid(S, pvalue_text)
+  -- if $string_bytes(pvalue_text) = (n_text*)
+def $assertion_description_result_valid(S, pconfigcall, n, porigin_child, z_child) = false -- otherwise
 def $assertion_description_call(pconfigcall, pvalue_text) = pconfigcall[.SENT = ([NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_text)])]
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue), NAMED_SENT (KNOWN pvalue_description)]
 def $assertion_description_retained(S, pconfigcall, n) = true
@@ -457,11 +465,8 @@ def $assertion_description_finish(S, pconfigcall, n, pvalue_text) = $assertion_t
 def $assertion_description_finish(S, pconfigcall, n, pvalue_text) = S[.COMPLETION = UNSUPPORTED "assert Stringable description receiver cleanup"] -- otherwise
 rule PhpStep/assert-description-string: S ~> $assertion_description_finish(S, pconfigcall, n, pvalue_text)
   -- if S.TODO = (ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) :: ptask_tail*
-  -- if S.ORIGIN = (porigin_child)
-  -- if $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child)
+  -- if $assertion_description_result_valid(S, pconfigcall, n, porigin_child, z_child)
   -- if S.RESULT = KNOWN pvalue_text
-  -- if $string_carrier_valid(S, pvalue_text)
-  -- if $string_bytes(pvalue_text) = (n_text*)
 def $task_nodes(ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) = $config_nodes(pconfigcall)
 def $selected_task_nonce(ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) = pconfigcall.SELECTION
 def $call_task_valid(S, ASSERT_DESCRIPTION_STRING pconfigcall n porigin_child z_child) = (S.ORIGIN = (porigin_child) /\ $assertion_description_string_valid(S, pconfigcall, n, porigin_child, z_child))
