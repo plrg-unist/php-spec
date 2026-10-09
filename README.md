@@ -761,6 +761,12 @@ Two native-grounded unset-order companions pass whole CLI60 and 174 independent
 physical premises (95/79) at `c5a3e54df`, including count1 and exact replacement/prior
 exception identity. Actual361 over `9988f88bf` passes strict compilation/init at
 `5d89edb95`; earlier cuts retain their inputs.
+Main collection also handles a closed ordinary-object residual/eligible overlap.
+Physical nested removal drops old D's tag before fresh E runs; one retrace calls D,
+frees E and preserves D's self-cycle, with signed count0 and a live weak probe.
+One unchanged source and 247 independent reached premises (165/82) pass at
+`85b9d0b73`; mixed, black-root, array/reference/proxy and Fiber overlap remain open.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

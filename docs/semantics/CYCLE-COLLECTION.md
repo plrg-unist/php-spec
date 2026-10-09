@@ -491,3 +491,20 @@ Actual361 over `9988f88bf` passes compilation and strict init at `5d89edb95`;
 Traversable/Generator/computed-static task paths are absent and their default
 ownership paths preserve this lane. Earlier 205/state and whole CLI timeout cuts
 are unchanged; wider active/overlap/Fiber-pass behavior remains open.
+
+Main-only residual/eligible overlap301 is bounded to a closed white object
+component reached from fresh DTORS. The physical nested fold removes old D's
+tag and records its exact free slot before E's callback, preserving the cached
+worker cursor. Frozen producer replay, future fresh tags and the real current
+RETURN authenticate selection; its normalized metadata image precedes CALLED,
+while executable RETURN still requires CALLED. Signed -1 then one retrace's +1
+returns0, freeing E while called D retains only its self owner and a live weak probe.
+
+At `85b9d0b73`, one unchanged original agrees under CLI60 and independent165/82
+premises complete both reached cuts. E's global REF-CV cleanup reuses the freed
+slot for rooted cached W; the retrace removes W as black before the E/D walk.
+The corrected82 binds that real image without code/source/selection renewal;
+original79 and earlier compiler/source/133 failures retain zero credit. Baseline38
+and image110 are localization only. Mixed residuals, black/external roots,
+arrays/references/proxies in the protected component and Fiber/later-pass overlap
+remain explicit boundaries. Earlier205/174 and whole CLI timeouts are unchanged.

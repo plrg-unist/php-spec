@@ -506,6 +506,16 @@ computed-static paths preserve this lane. Four earlier native observations and
 the first failed diagnostic remain preserved; corrected41 only localizes refusal.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Residual/eligible overlap301 now admits a closed white ordinary-object component
+on main PASS0. Physical nested removal clears old D before fresh E runs; the
+single retrace calls D, frees E and leaves D's self-cycle/weak probe live, with
+signed count -1+1=0. The exact current RETURN pin authenticates preselection SITE
+before CALLED; executable return and future-tag/cursor checks retain authority.
+One unchanged whole CLI60 source and 247 independent premises (165/82) pass at
+`85b9d0b73`. Baseline38 and image110 localize distinct boundaries; earlier compiler,
+source/133 and obsolete79 fixture failures retain zero aggregate credit.
+Mixed/black-root/array/reference/proxy/Fiber overlap and wider GC remain required.
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335
