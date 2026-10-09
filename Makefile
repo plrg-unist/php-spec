@@ -186,6 +186,8 @@ test-semantics: build
 	python3 tests/semantics/fiber_start_traversable_sources.py
 	python3 tests/semantics/fiber_start_traversable_state.py
 	python3 tests/semantics/fiber_start_traversable_review.py
+	python3 tests/semantics/fiber_start_nan_sources.py
+	python3 tests/semantics/fiber_start_nan_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

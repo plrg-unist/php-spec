@@ -51,12 +51,24 @@ prunes consumed owners without creating inactive release jobs. Strict359 and
 thirteen exact normals at 11+1+1 cuts and 752 independent plus 308 author physical
 premises pass. Source-identical cuts preserve every original assertion within
 existing caps; earlier failures and timeouts retain zero affected credit.
-IteratorAggregate acquisition, NaN warning continuations and compound selectors
+IteratorAggregate acquisition, wider raw payload changes and compound selectors
 remain required; Aggregate is still Unsupported/zero agreement.
 Actual361 over `401bfb516` passes strict SL compilation at `a54204745`, preserving
 the current ARG Stringable/static, exact-return, property and abrupt-cleanup paths;
 private13/1060 source/state cuts retain their original inputs.
 [Traversable ledger](coverage/semantics/fiber-start-traversable-review.json).
+
+NaN Iterator `valid()` warnings retain the original raw retval through ordinary
+handler mutation, suspension and throw. Live references reread the changed float;
+copied NaN stays true. Warning wrappers preserve one authentic START pack through
+retval cleanup, and thrown handlers retire raw result/data/temporary before the
+unfinished buffer. Strict361 and four unchanged native-profile normals pass at
+`d2852e8bf`; eight independent source-reached groups/269 physical premises pass.
+The original Unsupported baseline and thrown-tail fixture failure retain zero
+affected credit; selected-handler cleanup precedes exact raw/data/temp release.
+Prior376 cuts are not renewed. Actual361 over `169dd2f3f` passes strict SL
+compilation at `f8d591f24`; EX32 and fatal-render interactions preserve their own paths.
+[NaN ledger](coverage/semantics/fiber-start-nan-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;

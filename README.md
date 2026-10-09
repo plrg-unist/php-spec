@@ -1482,8 +1482,11 @@ Closure versus explicit `__invoke` owner order. The
 these checks. Generator and Iterator packs now use real native resume operations
 and iterator callbacks, preserving references through `key()` before copying
 arguments; the [Traversable ledger](coverage/semantics/fiber-start-traversable-review.json)
-records their source and reached-state checks. IteratorAggregate acquisition, NaN
-warning continuations and compound selectors remain required.
+records their source and reached-state checks. NaN `valid()` warnings retain the
+raw return through mutating, parked and throwing handlers: live references are
+reread, while copied NaN remains true. The [NaN ledger](coverage/semantics/fiber-start-nan-review.json)
+records these separate cuts. IteratorAggregate acquisition, wider raw payload
+changes and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

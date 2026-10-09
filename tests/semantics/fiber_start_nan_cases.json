@@ -1,0 +1,42 @@
+[
+  {
+    "id": "iterator-valid-nan-reference-handler",
+    "source": "<?php\nclass StartNanReferenceIterator20 implements Iterator {\n    public float $more = NAN;\n    public function rewind(): void { echo 'W|'; }\n    #[ReturnTypeWillChange]\n    public function &valid() { return $this->more; }\n    public function current(): mixed { echo 'C|'; return 7; }\n    public function key(): mixed { echo 'K|'; return 0; }\n    public function next(): void { echo 'N|'; $this->more = 0.0; }\n}\n$pack = new StartNanReferenceIterator20;\n$target = new Fiber(static function ($value = 'D') {\n    echo 'B', $value, '|';\n    return 17;\n});\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $pack;\n    echo $severity, '|', $message, '|', $line, '|';\n    $pack->more = 0.0;\n    return true;\n});\n$target->start(\n    ...$pack\n);\nrestore_error_handler();\necho $target->getReturn();\n",
+    "source_sha256": "3fe5f6ec4ffb547a0bd247bdd10ee3565b155db4a9ac9d9e6ebd5b91f3b05a6b",
+    "purpose": "Reference valid() payload is reread after warning-handler mutation to float zero.",
+    "expected_model": "normal",
+    "native_stdout": "W|2|unexpected NAN value was coerced to bool|23|BD|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-valid-nan-value-handler",
+    "source": "<?php\nclass StartNanValueIterator20 implements Iterator {\n    public float $more = NAN;\n    public function rewind(): void { echo 'W|'; }\n    #[ReturnTypeWillChange]\n    public function valid() { return $this->more; }\n    public function current(): mixed { echo 'C|'; return 7; }\n    public function key(): mixed { echo 'K|'; return 0; }\n    public function next(): void { echo 'N|'; $this->more = 0.0; }\n}\n$pack = new StartNanValueIterator20;\n$target = new Fiber(static function ($value = 'D') {\n    echo 'B', $value, '|';\n    return 17;\n});\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $pack;\n    echo $severity, '|', $message, '|', $line, '|';\n    $pack->more = 0.0;\n    return true;\n});\n$target->start(\n    ...$pack\n);\nrestore_error_handler();\necho $target->getReturn();\n",
+    "source_sha256": "51f11619b853ee51b379adecb810ebb35733ece20718b89cffc64a81fdfd57f2",
+    "purpose": "Copied NaN valid() result remains true after its property changes to float zero.",
+    "expected_model": "normal",
+    "native_stdout": "W|2|unexpected NAN value was coerced to bool|23|C|K|N|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-valid-nan-reference-handler-parks",
+    "source": "<?php\nclass StartParkedNanIterator20 implements Iterator {\n    public float $more = NAN;\n    public function rewind(): void { echo 'W|'; }\n    #[ReturnTypeWillChange]\n    public function &valid() { return $this->more; }\n    public function current(): mixed { echo 'C|'; return 7; }\n    public function key(): mixed { echo 'K|'; return 0; }\n    public function next(): void { echo 'N|'; $this->more = 0.0; }\n}\n$pack = new StartParkedNanIterator20;\n$more =& $pack->more;\n$weak = WeakReference::create($pack);\n$target = new Fiber(static function ($value = 'D') {\n    echo 'B', $value, '|';\n    return 17;\n});\n$parent = new Fiber(static function () {\n    global $pack, $target;\n    set_error_handler(static function ($severity, $message, $file, $line) {\n        echo $severity, '|', $message, '|', $line, '|';\n        Fiber::suspend('pause');\n        return true;\n    });\n    $target->start(\n        ...$pack\n    );\n    restore_error_handler();\n    return 23;\n});\necho $parent->start(), '|', (int)$target->isStarted(), '|',\n    (int)($weak->get() !== null), '|';\n$pack = null;\n$more = 0.0;\necho (int)($weak->get() !== null), '|';\n$parent->resume();\necho (int)($weak->get() === null), '|', $target->getReturn(), '|', $parent->getReturn();\n",
+    "source_sha256": "cd8d8e591f1b80715bfdab8f15bd908d9b1d81a22415f9d3a72391d615da6c0e",
+    "purpose": "A parked handler retains raw reference and iterator data after the source CV changes to null.",
+    "expected_model": "normal",
+    "native_stdout": "W|2|unexpected NAN value was coerced to bool|26|pause|0|1|1|BD|1|17|23",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-valid-nan-reference-handler-throws",
+    "source": "<?php\nclass StartThrownNanIterator20 implements Iterator {\n    public float $more = NAN;\n    public function rewind(): void { echo 'W|'; }\n    #[ReturnTypeWillChange]\n    public function &valid() { return $this->more; }\n    public function current(): mixed { echo 'C|'; return 7; }\n    public function key(): mixed { echo 'K|'; return 0; }\n    public function next(): void { echo 'N|'; $this->more = 0.0; }\n    public function __destruct() { echo 'D|'; }\n}\n$target = new Fiber(static function ($value = 'D') { return 17; });\n$weak = WeakReference::create($target);\n$start = $target->start(...);\n$original = new Exception('warning');\nset_error_handler(static function ($severity, $message, $file, $line) use ($original) {\n    echo $severity, '|', $message, '|', $line, '|';\n    throw $original;\n});\ntry {\n    $start(\n        ...new StartThrownNanIterator20\n    );\n} catch (Throwable $error) {\n    echo (int)($error === $original), '|', (int)$target->isStarted(), '|';\n}\nrestore_error_handler();\nunset($target);\necho (int)($weak->get() !== null), '|';\nunset($start);\necho (int)($weak->get() === null);\n",
+    "source_sha256": "e95b8e1a7bd8e26ab9df2dae19c51afc5fa7c8a3223a1245db3bccbea897025c",
+    "purpose": "A thrown warning handler retires temporary iterator before pending direct start Closure cleanup without target entry.",
+    "expected_model": "normal",
+    "native_stdout": "W|2|unexpected NAN value was coerced to bool|22|D|1|0|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
