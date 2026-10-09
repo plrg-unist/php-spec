@@ -17,6 +17,7 @@ def $coerce_number(PBOOL true) = COERCED (NINT 1) false
 def $coerce_number(PINT i) = COERCED (NINT i) false
 def $coerce_number(PFLOAT n) = COERCED (NFLOAT n) false
 def $coerce_number(PSTRING n*) = $coerce_string($numeric_string(n*))
+def $coerce_number(PSTRING_CARRIER pstringidentity n*) = $coerce_string($numeric_string(n*))
 def $coerce_number(PARRAY n) = BADNUMBER
 
 dec $type_bytes(pvalue) : nat*
@@ -25,6 +26,7 @@ def $type_bytes(PBOOL b) = [98, 111, 111, 108]
 def $type_bytes(PINT i) = [105, 110, 116]
 def $type_bytes(PFLOAT n) = [102, 108, 111, 97, 116]
 def $type_bytes(PSTRING n*) = [115, 116, 114, 105, 110, 103]
+def $type_bytes(PSTRING_CARRIER pstringidentity n*) = [115, 116, 114, 105, 110, 103]
 def $type_bytes(PARRAY n) = [97,114,114,97,121]
 
 dec $value_type_bytes(pvalue) : nat*
@@ -83,7 +85,7 @@ def $arithmetic_operator(pbin) = false
 
 dec $strict_identical(pvalue, pvalue) : bool
 def $strict_identical(PFLOAT n_1, PFLOAT n_2) = $num_identical(NFLOAT n_1, NFLOAT n_2)
-def $strict_identical(pvalue_1, pvalue_2) = (pvalue_1 = pvalue_2)
+def $strict_identical(pvalue_1, pvalue_2) = ($string_plain(pvalue_1) = $string_plain(pvalue_2))
   -- otherwise
 
 dec $identity_apply(pstate, bool, pvalue, pvalue, int) : pstate
@@ -125,28 +127,34 @@ def $unary_apply(S, NEGATIVE, pvalue, z) = S_warned[.RESULT = KNOWN $number_valu
 
 dec $precision_value(pstate) : int
 dec $stringify(pstate, pvalue, int) : pstate
-def $stringify(S, PFLOAT n, z) = S[.RESULT = KNOWN (PSTRING n_out*)]
+def $stringify(S, PFLOAT n, z) = $string_request(S, n_out*)
   -- if (n_out*, false) = $number_text(NFLOAT n, $precision_value(S))
-def $stringify(S, PFLOAT n, z) = $report_event(S[.RESULT = KNOWN (PSTRING n_out*)], DIAGNOSTIC "Warning" ([117,110,101,120,112,101,99,116,101,100,32,78,65,78,32,118,97,108,117,101,32,119,97,115,32,99,111,101,114,99,101,100,32,116,111,32,115,116,114,105,110,103]) z, 2)
+def $stringify(S, PFLOAT n, z) = $report_event($string_request(S, n_out*), DIAGNOSTIC "Warning" ([117,110,101,120,112,101,99,116,101,100,32,78,65,78,32,118,97,108,117,101,32,119,97,115,32,99,111,101,114,99,101,100,32,116,111,32,115,116,114,105,110,103]) z, 2)
   -- if (n_out*, true) = $number_text(NFLOAT n, $precision_value(S))
   -- if $(z > 0)
 def $stringify(S, PFLOAT n, z) = S[.COMPLETION = UNSUPPORTED "missing source line"]
   -- if (n_out*, true) = $number_text(NFLOAT n, $precision_value(S))
   -- if $(z <= 0)
 def $stringify(S, PSTRING n*, z) = S[.RESULT = KNOWN (PSTRING n*)]
-def $stringify(S, PINT i, z) = S[.RESULT = KNOWN (PSTRING $decimal_integer(i))]
-def $stringify(S, PUNDEFINED, z) = S[.RESULT = KNOWN (PSTRING eps)]
-def $stringify(S, PNULL, z) = S[.RESULT = KNOWN (PSTRING eps)]
-def $stringify(S, PBOOL b, z) = S[.RESULT = KNOWN (PSTRING $echo_value(PBOOL b))]
+def $stringify(S, PSTRING_CARRIER pstringidentity n*, z) = S[.RESULT = KNOWN (PSTRING_CARRIER pstringidentity n*)]
+def $stringify(S, PINT i, z) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $decimal_integer(i))]
+  -- if $(i >= 0) /\ $(i <= 9)
+def $stringify(S, PINT i, z) = $string_request(S, $decimal_integer(i))
+  -- if $(i < 0) \/ $(i > 9)
+def $stringify(S, PUNDEFINED, z) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING eps)]
+def $stringify(S, PNULL, z) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING eps)]
+def $stringify(S, PBOOL b, z) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING $echo_value(PBOOL b))]
 
 dec $resolve_name(pstate, poperand, int) : pstate
 def $resolve_name(S, poperand, z) = S_read
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION =/= NORMAL
-def $resolve_name(S, poperand, z) = $stringify(S_read, pvalue, z)
+def $resolve_name(S, poperand, z) = S_string[.RESULT = KNOWN $string_plain(pvalue_string)]
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+  -- if S_string = $stringify(S_read, pvalue, z)
+  -- if S_string.RESULT = KNOWN pvalue_string
 
 def $fetch_write_name_at(S, n_name*, z) = $throw_scalar(S, "Error", [67,97,110,110,111,116,32,114,101,45,97,115,115,105,103,110,32,36,116,104,105,115], z)
   -- if $this_name(n_name*)

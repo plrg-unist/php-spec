@@ -18,6 +18,8 @@ def $cast_value(S, CASTBOOL, pvalue, z) = $truth_value(S, pvalue, z)
 def $cast_value(S, CASTSTRING, pvalue, z) = $stringify(S, pvalue, z)
 def $cast_value(S, CASTINT, PFLOAT n, z) = $cast_notices(S, castnotice*, n, z)[.RESULT = KNOWN (PINT i)]
   -- if (i, castnotice*) = $float_long(n, false)
+def $cast_value(S, CASTINT, PSTRING_CARRIER pstringidentity n*, z) = $cast_value(S, CASTINT, PSTRING n*, z)
+def $cast_value(S, CASTFLOAT, PSTRING_CARRIER pstringidentity n*, z) = $cast_value(S, CASTFLOAT, PSTRING n*, z)
 def $cast_value(S, CASTINT, PSTRING n*, z) = S[.RESULT = KNOWN (PINT $string_cast_integer(n*))]
 def $cast_value(S, CASTINT, PINT i, z) = S[.RESULT = KNOWN (PINT i)]
 def $cast_value(S, CASTINT, pvalue, z) = S[.RESULT = KNOWN (PINT $cast_truth_int(S, pvalue))]

@@ -74,6 +74,7 @@ dec $key_value(pstate, pvalue, bool, int) : pstate
 def $key_value(S, PINT i, b, z) = S[.KEY = KINT i]
 def $key_value(S, PBOOL false, b, z) = S[.KEY = KINT 0]
 def $key_value(S, PBOOL true, b, z) = S[.KEY = KINT 1]
+def $key_value(S, PSTRING_CARRIER pstringidentity n*, b, z) = $key_value(S, PSTRING n*, b, z)
 def $key_value(S, PSTRING n*, b, z) = S[.KEY = KINT i]
   -- if $string_key(n*) = INTEGERKEY i
 def $key_value(S, PSTRING n*, b, z) = S[.KEY = KSTRING n*]

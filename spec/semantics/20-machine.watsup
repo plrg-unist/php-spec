@@ -1,6 +1,7 @@
 ;; Request state and pending work are explicit; PHP effects never use host I/O.
 syntax pmagic = MAGICFILE | MAGICDIR | MAGICLINE | MAGICNAMESPACE | MAGICCLASS | MAGICFUNCTION | MAGICMETHOD | MAGICTRAIT | MAGICPROPERTY
-syntax pvalue = PUNDEFINED | PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat* | PARRAY nat | POBJECT nat
+syntax pstringidentity = INTERNED_STRING | REQUEST_STRING nat
+syntax pvalue = PUNDEFINED | PNULL | PBOOL bool | PINT int | PFLOAT nat | PSTRING nat* | PSTRING_CARRIER pstringidentity nat* | PARRAY nat | POBJECT nat
 syntax pkey = KINT int | KSTRING nat*
 syntax pitem = DIRECT pvalue | UNINITIALIZED | ALIAS nat
 syntax pentry = ENTRY pkey pitem
@@ -248,6 +249,7 @@ def $echo_value(PBOOL false) = eps
 def $echo_value(PBOOL true) = [49]
 def $echo_value(PINT z) = $decimal_integer(z)
 def $echo_value(PSTRING n*) = n*
+def $echo_value(PSTRING_CARRIER pstringidentity n*) = n*
 def $echo_value(PFLOAT n) = n_out*
   -- if (n_out*, b_warning) = $number_text(NFLOAT n, 14)
 
