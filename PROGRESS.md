@@ -118,8 +118,10 @@ named arguments, array COW, getter copies and final object release retain ordina
 semantics. Seven originals, strict compilation of 367 modules and SL121 (20
 constructed, 101 reached checks) pass at `a50f9bc5`. Both checked baselines retain
 Unsupported with zero agreement; the earlier raw-completion fixture preparation
-was corrected before execution. Actual-parent composition is pending. First-class
-constructor/getter, uninitialized getter, debug/property and wider wrapper protocols
+was corrected before execution. Actual 367-module composition over `24c1b9e4`
+passes strict initialization at `0e5152643` (5.351 s), preserving current assertion
+fields and sibling constructor arms without renewing private source/state checks.
+First-class constructor/getter, uninitialized getter, debug/property and wider wrapper protocols
 remain required. [Constructor review](coverage/semantics/sensitive-value-constructor-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
