@@ -45,6 +45,20 @@ Actual370 over `288dc800` passes strict SL at `50367af16`; private source/state
 cuts retain their own inputs.
 [Rebound review](coverage/semantics/yield-from-rebound-operand-review.json).
 
+Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
+non-Aggregate returns after rebinding an independently protected original CV or
+reference. Borrowed CVs and owning cells retain their modes through initial
+Iterator valid-result cleanup or Generator yield; input retirement then precedes
+current/body with data protected.
+Six unchanged originals agree at `4e9dd1014`;
+strict370 passes there. The changed-Aggregate control passes its zero-agreement
+assertions at `1cf220b69`; its original event-encoding failure stays zero.
+Nine genuine-source groups/361 physical ownership and authority premises pass
+at `5a811c3d5`; no state fixture correction was needed.
+Actual371 over `557e8c817` passes strict SL at `ab0808dff`; private source/state
+cuts retain their own inputs.
+[Foreach rebound review](coverage/semantics/foreach-rebound-operand-review.json).
+
 Bounded assertion quantity warnings retain frozen parsed modes and old returns
 through nested raw writes, throw and restore. Immutable string carriers preserve
 INI identity while ordinary consumers use bytes. Seventeen safe originals retain

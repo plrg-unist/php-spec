@@ -1,0 +1,85 @@
+[
+  {
+    "id": "foreach-rebound-cv-object-iterator",
+    "source": "<?php\nclass ForeachReboundCvIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachReboundCvPayload20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachReboundCvAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = new ForeachReboundCvPayload20();\n        return new ForeachReboundCvIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachReboundCv20(): int {\n    global $slot;\n    foreach ($slot as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachReboundCvAggregate20();\n$slot = $keeper;\necho foreachReboundCv20(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "fabb4a1cc674db4819bd31d5bca7a233fdd0881483a1902b9807aebcc04e8937",
+    "purpose": "Foreach Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver through initialization.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|C|K|B11:7|X|V|I|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-rebound-cv-null-generator",
+    "source": "<?php\nfunction foreachReboundPlainGenerator20(): Generator {\n    try {\n        echo \"Y|\";\n        yield 11 => 7;\n    } finally {\n        echo \"F|\";\n    }\n    return 23;\n}\nclass ForeachReboundGeneratorAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = null;\n        return foreachReboundPlainGenerator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachReboundGenerator20(): int {\n    global $slot;\n    foreach ($slot as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachReboundGeneratorAggregate20();\n$slot = $keeper;\necho foreachReboundGenerator20(), \"|\";\necho $slot === null ? 1 : 0, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "7c6c6a5a1302b0611a1ae99b19777f2e16f270747da4f8a49555b045d93ce702",
+    "purpose": "Foreach Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver through initialization.",
+    "expected_model": "normal",
+    "native_stdout": "G|Y|B11:7|F|17|1|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-rebound-reference-object-iterator",
+    "source": "<?php\nclass ForeachReboundReferenceIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachReboundReferencePayload20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachReboundReferenceAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = new ForeachReboundReferencePayload20();\n        return new ForeachReboundReferenceIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction &foreachReboundOperand20(): mixed {\n    global $slot;\n    echo \"R|\";\n    return $slot;\n}\nfunction foreachReboundReference20(): int {\n    global $slot;\n    foreach (foreachReboundOperand20() as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachReboundReferenceAggregate20();\n$slot = $keeper;\necho foreachReboundReference20(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "9a8583c03db5fce617af1d5b895278f6085b0f89f3719009c90f69bbd78a0240",
+    "purpose": "Foreach Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver through initialization.",
+    "expected_model": "normal",
+    "native_stdout": "R|G|W|V|C|K|B11:7|X|V|I|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-rebound-getter-parks",
+    "source": "<?php\nclass ForeachReboundParkIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachReboundParkPayload20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachReboundParkAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = new ForeachReboundParkPayload20();\n        Fiber::suspend(\"acquire\");\n        echo \"R|\";\n        return new ForeachReboundParkIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachReboundPark20(): int {\n    global $slot;\n    foreach ($slot as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachReboundParkAggregate20();\n$slot = $keeper;\n$fiber = new Fiber(function (): void { echo foreachReboundPark20(), \"|\"; });\necho $fiber->start(), \"|\", $fiber->isSuspended() ? 1 : 0, \"|\", $slot === $keeper ? 0 : 1, \"|\";\n$fiber->resume();\necho $fiber->isTerminated() ? 1 : 0, \"|\";\nunset($fiber, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "5809e104badbf301a4f54f562a2228ac6bb1ed07a666824522de3b1e8daa6d0b",
+    "purpose": "Foreach Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver through initialization.",
+    "expected_model": "normal",
+    "native_stdout": "G|acquire|1|1|R|W|V|C|K|B11:7|X|V|I|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-rebound-getter-throws",
+    "source": "<?php\nclass ForeachReboundThrowAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $failure;\n        echo \"G|\";\n        $slot = null;\n        throw $failure;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachReboundThrow20(): int {\n    global $slot, $failure;\n    try {\n        foreach ($slot as $value) { echo \"B|\"; }\n    } catch (Throwable $caught) {\n        echo \"C\", $caught === $failure ? 1 : 0, \"|\";\n    }\n    return 17;\n}\n$failure = new Exception(\"foreach-rebound-getter\");\n$keeper = new ForeachReboundThrowAggregate20();\n$slot = $keeper;\necho foreachReboundThrow20(), \"|\";\necho $slot === null ? 1 : 0, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "b1cd2746d6d724083ace7bb41c4bc1e8ceab2a720587973e007cd92cb2b62cd9",
+    "purpose": "Foreach Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver through initialization.",
+    "expected_model": "normal",
+    "native_stdout": "G|C1|17|1|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-rebound-getter-reference-rejected",
+    "source": "<?php\nclass ForeachReboundRawIterator20 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void {}\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachReboundRawAggregate20 implements IteratorAggregate {\n    public function &getIterator(): Traversable {\n        global $slot, $savedIterator;\n        echo \"G|\";\n        $slot = false;\n        return $savedIterator;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachReboundRaw20(): int {\n    global $slot;\n    try {\n        foreach ($slot as $value) { echo \"B|\"; }\n    } catch (Throwable $caught) {\n        echo $caught->getMessage(), \"|\";\n    }\n    return 17;\n}\n$savedIterator = new ForeachReboundRawIterator20();\n$keeper = new ForeachReboundRawAggregate20();\n$slot = $keeper;\necho foreachReboundRaw20(), \"|\";\necho $slot === false ? 1 : 0, \"|\";\nunset($savedIterator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "9711269b4d7f4c3ed8ba377ef95e4a66a7df2f419a88ce1096fdf24cadf6f63e",
+    "purpose": "Foreach Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver through initialization.",
+    "expected_model": "normal",
+    "native_stdout": "G|Objects returned by ForeachReboundRawAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|I|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-rebound-returned-aggregate-self-control",
+    "source": "<?php\nclass ForeachReboundControlIterator20 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void {}\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachReboundControlNext20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"X|\"; return new ForeachReboundControlIterator20(); }\n    public function __destruct() { echo \"Q|\"; }\n}\nclass ForeachReboundControlAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $next;\n        echo \"G|\";\n        $slot = $next;\n        return $next;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachReboundControl20(): int {\n    global $slot;\n    try {\n        foreach ($slot as $value) { echo \"B|\"; }\n    } catch (Throwable $caught) {\n        echo $caught->getMessage(), \"|\";\n    }\n    return 17;\n}\n$next = new ForeachReboundControlNext20();\n$keeper = new ForeachReboundControlAggregate20();\n$slot = $keeper;\necho foreachReboundControl20(), \"|\";\necho $slot === $next ? 1 : 0, \"|\";\nunset($slot, $next, $keeper);\necho \"E\";\n",
+    "source_sha256": "42d9dd2f89cae9615fb5397faf500b77a7124b74047c4a5b11c097fa56891081",
+    "purpose": "Foreach Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver through initialization.",
+    "expected_model": "unsupported",
+    "native_stdout": "G|Objects returned by ForeachReboundControlAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|Q|A|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "foreach IteratorAggregate changed original operand",
+    "unsupported_stdout": "G|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]

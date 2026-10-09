@@ -29,7 +29,16 @@ reference-valued original call is dereferenced for acquisition while its raw HCE
 survives until operand retirement. Raw reference getter returns are rejected
 without dereferencing. Reference foreach accepts actual reference-yielding
 Generators; terminal Iterator results raise Error and nonreference Generator
-results raise Exception. Changed original CV/reference operands and wider
+results raise Exception. A getter with an independently kept receiver may
+rebind its original CV/reference before returning terminal Iterator/Generator
+data or a rejected raw non-Aggregate value. For terminal data, input retains its
+borrowed CV or owning-cell mode through initial Iterator valid-result cleanup or
+Generator yield, then retires before current/body with data protected. Rejected
+raw returns still name the original class. Six unchanged originals agree; nine
+genuine-source groups/361 physical ownership and authority premises pass at their
+retained cuts. The [rebound ledger](../../coverage/semantics/foreach-rebound-operand-review.json)
+keeps the changed-Aggregate control and original fixture failure at zero agreement.
+Changed operands returning another Aggregate and wider
 reference-location modes remain explicit Unsupported boundaries.
 
 A Generator getter's stored foreach receipt owns its receiver once and binds the

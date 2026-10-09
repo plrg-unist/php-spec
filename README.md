@@ -382,7 +382,11 @@ primary diagnostic through source effects, nested eval/include compilation and
 deferred runtime class-link failures.
 Aggregate foreach acquires nested Iterator/Generator data, retires returned layers
 before initialization and the original operand after initial Iterator valid-result
-cleanup or Generator yield.
+cleanup or Generator yield. A getter with an independently kept receiver may
+rebind the original CV/reference before returning Iterator/Generator data or a
+rejected raw value. Input retirement follows initial Iterator valid-result
+cleanup or Generator yield;
+changed operands returning another Aggregate remain explicit Unsupported.
 Acquisition and cleanup throws preserve data/input order; reference traversal
 accepts reference-yielding Generators and rejects Iterator/nonreference Generator
 results. Retained foreach Generator close frames survive Fiber suspension with
