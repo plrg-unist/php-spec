@@ -555,10 +555,21 @@ before CALLED; executable return and future-tag/cursor checks retain authority.
 One unchanged whole CLI60 source and 247 independent premises (165/82) pass at
 `85b9d0b73`. Baseline38 and image110 localize distinct boundaries; earlier compiler,
 source/133 and obsolete79 fixture failures retain zero aggregate credit.
-Mixed/black-root/array/reference/proxy/Fiber overlap and wider GC remain required.
+Black-root/array/reference/proxy/Fiber overlap and wider GC remain required.
 Actual361 over `8ac503030` passes strict compilation/init at `d77cd6d9a`, with
 independently reviewed call, ownership and scalar-return interfaces; earlier
 source/state cuts are unchanged.
+
+Mixed overlap301/372 now permits separate ordinary residual components outside
+the eligible graph, with an incoming-owner closure and surviving-tag authority.
+In the grounded original, nested removal drops D's tag while F survives for selection
+before E; signed -2+2 returns0, F/E retire and D retains its self-owner/weak liveness.
+Source1 and 321 independent premises (215/106) pass at `a2ef8b039`; role-bound
+physical slots preserve exact removal, cached-W reuse, retrace order and replay.
+Baseline66 localizes the old301 refusal. The first195 ordering fixture fails with
+zero aggregate credit; corrected controls change no code/source. Broader
+black/external/nonordinary/Fiber/later-pass overlap remains required; prior cuts
+and whole CLI timeouts are unchanged.
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.

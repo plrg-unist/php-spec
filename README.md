@@ -770,7 +770,12 @@ Main collection also handles a closed ordinary-object residual/eligible overlap.
 Physical nested removal drops old D's tag before fresh E runs; one retrace calls D,
 frees E and preserves D's self-cycle, with signed count0 and a live weak probe.
 One unchanged source and 247 independent reached premises (165/82) pass at
-`85b9d0b73`; mixed, black-root, array/reference/proxy and Fiber overlap remain open.
+`85b9d0b73`; black-root, array/reference/proxy and Fiber overlap remain open.
+Mixed overlap also admits a separate ordinary residual component outside the
+fresh traced graph. Real F selection uses its surviving physical tag without adding F
+to fresh DTORS or progress; one signed retrace retires F/E and keeps D weak-live.
+One unchanged source and 321 independent premises (215/106) pass at `a2ef8b039`.
+Incoming owners, nonordinary components and wider overlap remain explicit boundaries.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
