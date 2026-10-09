@@ -8,6 +8,8 @@ dec $gc_snapshot_slot(pgcslot, pnode*) : pgcslot
 dec $gc_snapshot_slots(pgcslot*, pnode*) : pgcslot*
 dec $gc_residual_overlap(pstate) : bool
 dec $gc_overlap_objects(pnode*) : bool
+dec $gc_fresh_array_component(pgcplan, pnode*) : bool
+dec $gc_fresh_array_plan(pgcplan) : bool
 dec $gc_overlap_component(pgcplan, pnode*) : bool
 dec $gc_overlap_residuals(pgcplan, pnode*) : bool
 dec $gc_overlap_plan(pgcplan) : bool
@@ -558,6 +560,29 @@ def $gc_step_done((GC_SKIPPED pnode) :: pgcprogress*) = $gc_step_done(pgcprogres
 def $gc_tables_valid(S, eps, pnode*) = true
 def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobjecttable.OBJECT < |S.OBJECTS|) /\ $(pobjecttable.TABLE < |S.ARRAYS|) /\ (HOBJECT pobjecttable.OBJECT) <- pnode* /\ (HARRAY pobjecttable.TABLE) <- pnode* /\ $gc_tables_valid(S, pobjecttable_tail*, pnode*))
 
+;; Fresh ordinary arrays beneath a destructor are BLACK buffered children,
+;; even before any residual tag exists. Bound this producer to a closed white
+;; object/array component; references and proxy tables need separate admission.
+def $gc_fresh_array_component(pgcplan, eps) = true
+def $gc_fresh_array_component(pgcplan, (HOBJECT n) :: pnode*) = $gc_fresh_array_component(pgcplan, pnode*)
+def $gc_fresh_array_component(pgcplan, (HARRAY n) :: pnode*) = $gc_fresh_array_component(pgcplan, pnode*)
+  -- if ~$gc_proxy_tables(pgcplan.TABLES, pgcplan.GRAPH.NODES, n)
+def $gc_fresh_array_component(pgcplan, pnode*) = false -- otherwise
+def $gc_fresh_array_plan(pgcplan) = true
+  -- if pgcplan.CALL.PASS = 0 /\ pgcplan.DTORS =/= eps
+  -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
+  -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
+  -- if pnode_component* = $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES)
+  -- if ~$gc_overlap_objects(pnode_component*)
+  -- if $gc_fresh_array_component(pgcplan, pnode_component*)
+  -- if $heap_subset(pnode_component*, pgcplan.COUNTED)
+  -- if $heap_subset(pnode_component*, $gc_nodes(pgcplan.BUFFER))
+  -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
+  -- if pnode_white* = $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if $heap_subset(pnode_component*, pnode_white*)
+  -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
+def $gc_fresh_array_plan(pgcplan) = false -- otherwise
+
 ;; A reached residual tag remains tag3 after collect_roots ORs tag2. Only
 ;; fresh destructor roots become purple; the visited residual stays black.
 ;; Bound this lane to a closed white component of objects, nonproxy arrays
@@ -742,6 +767,7 @@ def $gc_plan_live(S, pgcplan) = true
   -- if $gc_cell_shapes(pgcplan.GRAPH, pgcplan.GRAPH.NODES)
   -- if pgcplan.CANDIDATES = $gc_nodes(pgcplan.BUFFER)
   -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
+  -- if $heap_subset(pgcplan.COUNTED, $gc_nodes(pgcplan.BUFFER))
   -- if $heap_subset(pgcplan.CANDIDATES, pgcplan.GRAPH.NODES)
   -- if $destructor_unique(pgcplan.CALLED) /\ $destructor_numbers_valid(pgcplan.CALLED, |S.OBJECTS|)
   -- if $gc_called_subset(pgcplan.CALLED, S.DESTRUCTION.CALLED)

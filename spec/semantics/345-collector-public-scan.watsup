@@ -41,6 +41,9 @@ dec $gc_worker_public_reentry(pstate, pconfigcall, pvalue) : pstate
 dec $gc_worker_scan_api_valid(pstate, pfiberapi) : bool
 dec $gc_worker_takeover_ready(pstate, pgcplan, bool) : bool
 dec $gc_worker_takeover(pstate, pgcplan) : pstate
+dec $gc_worker_takeover_buffer(pstate, pgcplan) : pstate
+dec $gc_worker_takeover_task(pstate, pgcplan) : pstate
+dec $gc_worker_takeover_image_valid(pstate, pgcplan) : bool
 dec $gc_worker_residual_start(pstate, pgcplan) : pstate
 dec $gc_worker_mixed_overlap_plan(pgcplan) : bool
 dec $gc_worker_residual_profile(pstate, pgcplan) : bool
@@ -798,7 +801,7 @@ def $gc_worker_takeover_ready(S, pgcplan, true) = true
 def $gc_worker_takeover_ready(S, pgcplan, b_fresh) = false -- otherwise
 def $gc_worker_start(S, pgcplan, true) = $gc_worker_takeover(S, pgcplan)
   -- if $gc_worker_takeover_ready(S, pgcplan, true)
-def $gc_worker_takeover(S, pgcplan) = $gc_worker_start_vm(S_running, n, pfiber_bound)[.ACTIVEFIBER = (n)][.FIBERCALLERS = pfibercaller :: S_caller.FIBERCALLERS][.FIBERSEQ = $(S_caller.FIBERSEQ + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $gc_worker_takeover(S, pgcplan) = $gc_worker_takeover_task(S_active, pgcplan_next)
   -- if S.GC.WORKER = (n)
   -- if $fiber_at(S, n) = (pfiber)
   -- if pfiber.GC = (pgcworker)
@@ -806,13 +809,64 @@ def $gc_worker_takeover(S, pgcplan) = $gc_worker_start_vm(S_running, n, pfiber_b
   -- if pgcguard.PUBLIC = (pgcpublic)
   -- if pfiber.VM = (pfibervm)
   -- if pgcplan_next = pgcplan[.SCAN = ({INDEX $(pgcguard.INDEX + 1), END pgcpublic.END})]
-  -- if S_caller = $gc_replace($gc_worker_start_buffer(S, pgcplan_next, true), pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
+  -- if S_caller = $gc_replace($gc_worker_takeover_buffer(S, pgcplan_next), pgcplan_next, GC_WORKER_WAIT n pgcplan_next)
   -- if pfiberapi = {SITE pgcplan.CALL.CALL.SITE, OBJECT n, KIND (INTRINSIC_GC_COLLECT), START eps, SENT eps, LINE pgcplan.CALL.CALL.LINE, SEQUENCE S_caller.FIBERSEQ, PACKS eps}
   -- if pfibercaller = {OBJECT n, PREVIOUS S_caller.ACTIVEFIBER, VM $fiber_vm(S_caller), API pfiberapi}
   -- if pgcguard_new = pgcguard[.SOURCE = pgcplan.CALL[.PENDING = eps]][.PUBLIC = (pgcpublic[.API = pfiberapi][.SOURCE = pgcplan.CALL[.PENDING = eps]][.RESIDUAL = false])]
   -- if pfibervm_bound = pfibervm[.TODO = $gc_worker_pending_tasks(pfibervm.TODO, pgcguard, pgcguard_new)][.FRAMES = $gc_worker_public_frames(pfibervm.FRAMES, pgcguard, pgcguard_new)]
   -- if pfiber_bound = pfiber[.GC = (pgcworker[.GUARD = (pgcguard_new)])][.VM = (pfibervm_bound)]
   -- if S_running = $fiber_put(S_caller, n, pfiber_bound[.STATUS = FIBER_RUNNING][.VM = eps][.SEQUENCE = pfiberapi.SEQUENCE])
+  -- if S_active = $gc_worker_start_vm(S_running, n, pfiber_bound)[.ACTIVEFIBER = (n)][.FIBERCALLERS = pfibercaller :: S_caller.FIBERCALLERS][.FIBERSEQ = $(S_caller.FIBERSEQ + 1)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+
+;; Check the new nested image before the already-called old callback resumes.
+;; Its later cleanup may reuse a freed array slot without calling fresh DTORS.
+def $gc_worker_takeover_buffer(S, pgcplan) = S[.GC.BUFFER = pgcslot*][.GC.FREE = nat_free*][.GC.SCAN = {INDEX 0, END n_end}]
+  -- if $gc_fresh_array_plan(pgcplan)
+  -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
+  -- if n_end = |pgcplan.BUFFER|
+def $gc_worker_takeover_buffer(S, pgcplan) = $gc_worker_start_buffer(S, pgcplan, true)
+  -- if ~$gc_fresh_array_plan(pgcplan)
+def $gc_worker_takeover_task(S, pgcplan) = S[.TODO = (GC_WORKER_TAKEOVER_IMAGE pgcplan) :: S.TODO]
+  -- if $gc_fresh_array_plan(pgcplan)
+def $gc_worker_takeover_task(S, pgcplan) = S -- if ~$gc_fresh_array_plan(pgcplan)
+def $gc_worker_takeover_image_valid(S, pgcplan) = true
+  -- if S.TODO = (GC_WORKER_TAKEOVER_IMAGE pgcplan) :: ptask_tail*
+  -- if $gc_fresh_array_plan(pgcplan)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
+  -- if S.GC.WORKER = (n)
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.VM = eps
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcguard.PUBLIC = (pgcpublic)
+  -- if ~pgcpublic.RESIDUAL
+  -- if pgcguard.OBJECT <- pgcplan.CALLED
+  -- if $gc_worker_guard_valid(S, pgcguard)
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if pfibercaller.OBJECT = n /\ pfibercaller.API = pgcpublic.API
+  -- if $gc_worker_api(pfibercaller.API) /\ $fiber_caller_wait(S, pfibercaller)
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_caller_tail*
+  -- if pfibercaller.VM.CURRENT = pgcplan.CALL.CALLER /\ pfibercaller.VM.ORIGIN = pgcplan.CALL.ORIGIN /\ pfibercaller.VM.CONSTCONTEXT = pgcplan.CALL.CONSTCONTEXT
+  -- if pfibercaller.PREVIOUS = (n_caller)
+  -- if n_caller =/= n
+  -- if $fiber_at(S, n_caller) = (pfiber_caller)
+  -- if pfiber_caller.GC = eps /\ $fiber_record_valid(S, n_caller, pfiber_caller)
+  -- if $fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps)
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if $gc_scope_valid(S_caller, pgcplan.CALL)
+  -- if pgcplan.SCAN = (pgcscan)
+  -- if pgcscan.INDEX = $(pgcguard.INDEX + 1) /\ pgcscan.END = pgcpublic.END
+  -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
+  -- if S.GC.BUFFER = pgcslot* /\ S.GC.FREE = nat_free*
+  -- if S.GC.SCAN.INDEX = 0 /\ S.GC.SCAN.END = |pgcplan.BUFFER|
+def $gc_worker_takeover_image_valid(S, pgcplan) = false -- otherwise
+def $call_task_valid(S, GC_WORKER_TAKEOVER_IMAGE pgcplan) = $gc_worker_takeover_image_valid(S, pgcplan)
+def $eager_explicit_task(GC_WORKER_TAKEOVER_IMAGE pgcplan) = true
+rule PhpStep/gc-worker-takeover-image: S ~> S[.TODO = ptask_tail*]
+  -- if S.TODO = (GC_WORKER_TAKEOVER_IMAGE pgcplan) :: ptask_tail*
+  -- if $gc_worker_takeover_image_valid(S, pgcplan)
 
 ;; The real local loop can finish before visiting a newly marked low slot.
 ;; This outcome neither calls that destructor nor adds it to the DONE prefix.
