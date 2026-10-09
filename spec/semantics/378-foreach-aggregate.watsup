@@ -3,6 +3,7 @@ dec $foreach_aggregate_generator_match(ptask, pgeneratorop) : bool
 dec $foreach_aggregate_generator_promote(ptask*, pgeneratorop) : ptask*
 dec $foreach_aggregate_input_identity(pforeachaggregate) : bool
 dec $foreach_aggregate_input_stable(pstate, pforeachaggregate) : bool
+dec $foreach_aggregate_no_self_check(pstate, poperand) : bool
 dec $foreach_aggregate_acquire_result(pstate, pforeachaggregate, ptask*) : pstate
 dec $foreach_aggregate_data_nodes(nat, bool) : pnode*
 dec $foreach_aggregate_error_clear(text) : text
@@ -103,6 +104,11 @@ def $foreach_aggregate_input_stable(S, pforeachaggregate) = true
   -- if ~(n <- S.REFCELLS)
   -- if S.STORE[n] = DEFINED (POBJECT pforeachaggregate.AGGREGATE)
 def $foreach_aggregate_input_stable(S, pforeachaggregate) = false -- otherwise
+
+;; Only a raw Aggregate result rereads the original operand for self comparison.
+def $foreach_aggregate_no_self_check(S, KNOWN pvalue) = ~$generator_from_aggregate(S, pvalue)
+def $foreach_aggregate_no_self_check(S, REFERENCE n) = true
+def $foreach_aggregate_no_self_check(S, poperand) = false -- otherwise
 
 def $foreach_begin(S, S_read, statement, plocation, b, z) = $foreach_aggregate_call(S_read, {STATEMENT statement, SITE porigin, LINE z, AGGREGATE n, OBJECT n, ACQUIRED eps, INPUT S.RESULT, CURRENT (KNOWN PNULL), ITERATOR eps}, "getIterator", ptask_tail*)
   -- if S.TODO = ptask :: ptask_tail*
@@ -352,9 +358,10 @@ def $foreach_aggregate_call(S, pforeachaggregate, text, ptask_tail*) = S[.ORIGIN
   -- if S.OBJECTS[pforeachaggregate.OBJECT] = INSTANCE porigin
   -- if $effective_method(S, porigin, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
 def $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*)
-  -- if $foreach_aggregate_input_stable(S, pforeachaggregate)
+  -- if $foreach_aggregate_input_stable(S, pforeachaggregate) \/ $foreach_aggregate_no_self_check(S, S.RESULT)
 def $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "foreach IteratorAggregate changed original operand"]
   -- if ~$foreach_aggregate_input_stable(S, pforeachaggregate)
+  -- if ~$foreach_aggregate_no_self_check(S, S.RESULT)
 rule PhpStep/foreach-aggregate-getIterator: S ~> $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*)
   -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "getIterator") :: ptask_tail*
 def $foreach_aggregate_error(S, pforeachaggregate, text, ptbytes, ptask_tail*) = $throw_scalar(S[.TODO = (FOREACH_AGGREGATE pforeachaggregate[.CURRENT = S.RESULT] "getIterator-error") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], text, ptbytes, pforeachaggregate.LINE)
