@@ -615,8 +615,13 @@ now carries the actual consumed return cursor without keeping its old operand ro
 Uncaught errors cross it once; local catches resume the cleared old return, and normal
 replacement preserves the new alias. Three originals agree and eight reached
 current/saved fixtures pass 602 assertions; actual-parent compilation is separate.
-Wider consumed VALUE/CONST/NULL and multiple-active histories, Stringable186 and wider
-owner domains remain open.
+[Consumed string-literal replay](coverage/semantics/reference-return-consumed-literal-review.json) now recovers the original interned
+value after a locally caught inner rejection in one already-active finalizer.
+The source cursor owns no operand, restores one original-line VALUE Notice and
+returns a fresh cell distinct from the globals. Two originals agree and three
+reached current/saved fixtures pass 347 assertions; actual-parent compilation is
+separate. Effectful VALUE, other CONST/NULL and multiple-active histories, wider
+Stringable consumers and owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

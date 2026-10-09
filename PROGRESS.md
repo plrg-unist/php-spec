@@ -342,6 +342,15 @@ application evaluations); its cut stays separate in the
 Wider consumed VALUE/CONST/NULL and multiple-active-finalizer histories,
 wider Stringable CV layouts and owner domains remain required.
 
+One consumed string literal compiled as CONST now resumes its original interned
+value after an inner delayed TypeError is caught in an already-active finalizer.
+Its non-owning source cursor restores one VALUE Notice at the original return
+line after the catch and finalizer tail. A fresh returned cell keeps the caller
+write separate from the globals. Two exact originals agree at `bdb0f010` and
+`1341b27f`; three reached current/saved fixtures pass 347 assertions at `9b98849d`.
+Actual 371 over `88d7e5d4c` passes strict at `682126ff1` (5.413s, zero application evaluations).
+The [consumed-literal review](coverage/semantics/reference-return-consumed-literal-review.json) keeps these cuts distinct.
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
@@ -3710,7 +3719,8 @@ failures and interrupted evidence.
   and bounded physical-array return replay are integrated, as is deferred reference-return
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
   reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
-  Wider consumed VALUE/CONST/NULL and multiple-active histories, genuinely released
+  Immutable string-literal consumed continuation is also integrated. Effectful VALUE,
+  other CONST/NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
@@ -3731,7 +3741,8 @@ held branches and evidence, and do not retry the rejected engine experiment.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
-lifetime 381. Wider owner domains, consumed VALUE/CONST/NULL or multiple-active histories,
+lifetime 381 and immutable string-literal consumed continuation. Wider owner domains,
+effectful VALUE, other CONST/NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
 consumers remain required.
 

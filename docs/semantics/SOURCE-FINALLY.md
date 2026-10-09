@@ -86,6 +86,15 @@ validity enforce the single-history bound; carried markers authenticate source/s
 not a fully coherent alternative private history. Wider consumed VALUE/CONST/NULL and
 multiple-active histories, wider Stringable CV layouts and owner domains remain required.
 
+For one old immutable string literal compiled as CONST with exact declared-type
+acceptance, runtime156 recovers its original interned value from the authenticated
+source after a caught inner rejection. The cursor owns no operand nodes. Normal
+resumption restores one VALUE Notice at the original line before materializing a
+fresh returned cell; the caller write preserves the globals. Two exact originals
+and three reached current/saved fixtures/347 assertions pass at distinct cuts in
+the [consumed-literal review](../../coverage/semantics/reference-return-consumed-literal-review.json). Actual-parent compilation is
+separate. Effectful VALUE, other CONST/NULL and multiple histories remain required.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes
