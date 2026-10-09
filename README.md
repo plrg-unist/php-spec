@@ -204,8 +204,11 @@ reentrant request-string lifetime probes remain explicit Unsupported with zero
 native agreement. Fresh updates recapture the current original, and warned restore
 preserves pending Throwable identity while enabling assertions again. Two new safe
 originals and182 source-frontier checks plus one pure trace query pass at57ee.
-Nullable saved-original reentry, Stringable-option refusal/descriptions and wider
-expression/callback forms remain required.
+Retained-entry Stringable SET now preserves once-only conversion, post-conversion
+old returns, refusal/shared throws and converted trace arguments. Handler retirement
+runs the Option destructor without a ghost owner. Three new originals and236
+frontier checks pass at7eaee. Last-owner entry cleanup, warned Stringable RESTORE,
+nullable-original/NaN timing, descriptions and wider forms remain required.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 

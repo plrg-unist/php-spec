@@ -133,10 +133,13 @@ when handlers change raw bytes, throw or restore; copied string identities gover
 raw installation while ordinary consumers compare bytes. Reentrant release of a
 replaced modified request raw is explicit Unsupported, with zero native agreement.
 Fresh modification rounds recapture the current raw original; warned restore
-parses that frozen input and preserves pending Throwable identity. Nullable saved
-original after reentry, authenticated Stringable-option refusal, wider startup
-facts, callback forms, Stringable descriptions, wider export and single
-named-description/unpack producers remain required core work.
+parses that frozen input and preserves pending Throwable identity. Retained-entry
+Stringable SET replaces the actual option argument before the old-return snapshot;
+warning/refusal traces use the converted string. Its borrowed conversion evidence
+survives real handler retirement without owning the Option. Last-owner entry
+cleanup, warned Stringable RESTORE, nullable saved-original after reentry, NaN timing,
+wider startup/callback facts, Stringable descriptions, exporter forms and single
+named-description/unpack producers remain required.
 
 Each intrinsic follows the target's argument/type checks and exception propagation,
 including source-backed early-return cases such as disabled assertions.

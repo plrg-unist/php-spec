@@ -19,8 +19,13 @@ The [quantity ledger](coverage/semantics/assertion-quantity-review.json) preserv
 failures and the separate diagnostic46. Per-round original recapture and warned
 restore now pass two fresh safe originals and182 source-frontier checks plus one
 pure NULL trace query at57ee/363; strict3 passes5.024s. Pending shared Throwable
-identity and real restore commits remain intact. Nullable saved-original reentry,
-Stringable-option snapshots, NaN conversion timing and wider producers remain required.
+identity and real restore commits remain intact. Retained-entry Stringable SET
+now snapshots the converted option before the old return, warning/refusal and trace
+arguments. The original conversion is borrowed evidence; actual calls own only the
+converted string, so handler retirement runs the Option destructor immediately.
+Three fresh safe originals and236 checks at real frontiers, including a projected
+ownership query, pass at7eaee/363; strict3 passes4.921s. Last-owner entry cleanup,
+warned Stringable RESTORE, nullable saved-original reentry and NaN timing remain required.
 Actual363 over1b33 passes strict3 at1ad9 (4.975s), preserving canonical GEN release
 evidence and carrier-aware ARG/GEN fixtures; the private source/state cuts are unchanged.
 Actual363 over75dade passes final strict3 atb0d8 (4.921s), preserving current

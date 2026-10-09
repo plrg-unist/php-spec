@@ -32,6 +32,13 @@ false with malformed raw. `ini_restore` parses the frozen saved input and runs i
 warning handler. Successful completion installs the live saved original and
 clears modified, including when the original shared Throwable is pending.
 
+Retained-entry Stringable SET converts the option once, replaces actual argument0
+and then snapshots the old return. Frozen records authenticate the converted call
+and borrowed original conversion; only the converted call owns and supplies trace
+arguments. Warning/refusal handlers may retire the Option without delaying its
+destructor or invalidating source evidence. Pending shared Throwable identity and
+normal false refusal both survive completion.
+
 The engine releases a frozen modified `prev_value` after a successful warning
 callback, even when a nested update already replaced and released that request
 raw retain. Four retained originals expose the resulting lifetime defect; a
@@ -53,6 +60,10 @@ source filename, preserving literal `given.php`.
 Two fresh safe recapture/restore originals pass at57ee, with182 checks at real
 source frontiers plus one pure NULL trace companion. These are separate cuts;
 the earlier originals, lifetime controls and failures retain their identities.
+Three fresh Stringable SET originals pass at7eaee with236 checks at real frontiers,
+including a projected converted-call ownership query. These checks cover genuine
+handoff/commit, refusal/shared throw, converted trace arguments and Option owners0
+after handler retirement; they are not236 distinct states.
 
 ```sh
 python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json --match assertion-quantity
@@ -62,7 +73,9 @@ python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_
 Required follow-ons remain explicit: a restore callback can clear the live saved
 original, leaving a nullable raw value that this string-only state does not yet
 represent. That path is Unsupported, distinct from the intentional lifetime
-divergence above. Warned/refused Stringable options need authenticated snapshots;
-NaN conversion warnings need the pre-conversion old return snapshot. Wider
-string identity producers, descriptions, exporter forms and callback paths remain
+divergence above. Zend quantity parsing dereferences a NULL string; later set/restore
+from that state is not probed. Last-owner Stringable SET entry cleanup and warned
+Stringable RESTORE remain required; NaN conversion warnings need the pre-conversion
+old return snapshot. Wider string identity producers, descriptions, exporter forms
+and callback paths remain
 core work. This is a bounded milestone, not complete assertion/INI coverage.

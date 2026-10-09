@@ -1441,6 +1441,36 @@
       "status": "normal",
       "native_group": ".tools/compiler-assertion-recapture-20/.tools/assertion-recapture-native-20/run-v1/report.json",
       "native_raw_sha256": "ca0f8eff4d1f22466739918c1078497fdc1a1382fc8a848b1be518bcb13df1b2"
+    },
+    {
+      "id": "assertion-stringable-option-parser-warning-nested-mode1",
+      "source": "<?php\n$casts = 0;\n$warnings = 0;\n$effects = 0;\nclass AssertionOption {\n    public function __toString(): string {\n        global $casts;\n        echo 'O', ++$casts, ':', ini_get('zend.assertions'), '|';\n        ini_set('zend.assertions', '2');\n        return 'zend.assertions';\n    }\n}\n$option = new AssertionOption;\nset_error_handler(static function ($level, $message) use (&$warnings) {\n    echo 'W', ++$warnings, ':', $level, ':', ini_get('zend.assertions'), ':', $message, '|';\n    ini_set('zend.assertions', '0');\n    return true;\n});\n$old = ini_set($option, '12X');\nassert(++$effects > 0);\necho 'old:', $old, '|raw:', ini_get('zend.assertions'), '|effects:', $effects, '|casts:', $casts, '|';\nini_restore('zend.assertions');\necho 'restore:', ini_get('zend.assertions'), '|warnings:', $warnings;\n",
+      "source_sha256": "98c486ddf6f6ca009af504fff9414e5ce62e61814a7fdf77a15b1eb1b042b7dc",
+      "stdout_base64": "TzE6MXxXMToyOjI6SW52YWxpZCAiemVuZC5hc3NlcnRpb25zIiBzZXR0aW5nLiBJbnZhbGlkIHF1YW50aXR5ICIxMlgiOiB1bmtub3duIG11bHRpcGxpZXIgIlgiLCBpbnRlcnByZXRpbmcgYXMgIjEyIiBmb3IgYmFja3dhcmRzIGNvbXBhdGliaWxpdHl8b2xkOjJ8cmF3OjB8ZWZmZWN0czoxfGNhc3RzOjF8cmVzdG9yZToxfHdhcm5pbmdzOjE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-stringable-20/.tools/assertion-stringable-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-stringable-option-negative-refusal-throw-mode1",
+      "source": "<?php\n$effects = 0;\n$casts = 0;\n$warnings = 0;\n$returned = 'unset';\n$failure = new Exception('option-warning');\nclass AssertionOptionRefusalReview20 {\n    public function __toString(): string {\n        global $casts;\n        echo 'C', ++$casts, ':', ini_get('zend.assertions'), '|';\n        ini_set('zend.assertions', '2');\n        return 'zend.assertions';\n    }\n}\n$option = new AssertionOptionRefusalReview20();\nset_error_handler(static function ($level, $message) use (&$warnings, $failure) {\n    echo 'W', ++$warnings, ':', ini_get('zend.assertions'), '|';\n    $probe = new Exception('trace');\n    $trace = $probe->getTrace();\n    echo $trace[1]['function'], ':',\n        $trace[1]['args'][0] === 'zend.assertions' ? 'converted|' : 'BAD|';\n    ini_set('zend.assertions', '0');\n    if ($warnings === 2) {\n        throw $failure;\n    }\n    return true;\n});\n$refused = ini_set($option, '-1');\necho $refused === false ? 'refused|' : 'BAD|';\nassert(++$effects > 0);\necho 'raw:', ini_get('zend.assertions'), '|off:', $effects, '|';\ntry {\n    $returned = ini_set($option, '-1');\n    echo 'BAD|';\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 'same|' : 'other|';\n}\nassert(++$effects > 0);\necho 'raw:', ini_get('zend.assertions'), '|returned:', $returned,\n    '|effects:', $effects, '|casts:', $casts, '|warnings:', $warnings, '|';\nini_restore('zend.assertions');\nassert(++$effects > 0);\necho 'restored:', ini_get('zend.assertions'), '|after:', $effects;\n",
+      "source_sha256": "5789210d528af23ba5ebee23cb13beecee778256e888a726ae3ddb71c46993ab",
+      "stdout_base64": "QzE6MXxXMToyfGluaV9zZXQ6Y29udmVydGVkfHJlZnVzZWR8cmF3OjB8b2ZmOjB8QzI6MHxXMjoyfGluaV9zZXQ6Y29udmVydGVkfHNhbWV8cmF3OjB8cmV0dXJuZWQ6dW5zZXR8ZWZmZWN0czowfGNhc3RzOjJ8d2FybmluZ3M6MnxyZXN0b3JlZDoxfGFmdGVyOjE=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-stringable-20/.tools/assertion-stringable-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-stringable-option-handler-retirement-mode1",
+      "source": "<?php\n$warnings = 0;\n$effects = 0;\nclass AssertionOptionRetireReview20 {\n    public function __toString(): string {\n        echo 'C|';\n        return 'zend.assertions';\n    }\n    public function __destruct() {\n        echo 'D|';\n    }\n}\n$option = new AssertionOptionRetireReview20();\nset_error_handler(static function ($level, $message) use (&$option, &$warnings) {\n    echo 'H', ++$warnings, '|';\n    $option = null;\n    echo 'retired|';\n    return true;\n});\n$old = ini_set($option, '12X');\nassert(++$effects > 0);\necho 'old:', $old, '|raw:', ini_get('zend.assertions'), '|effects:', $effects;\nini_restore('zend.assertions');\necho '|restored:', ini_get('zend.assertions');\n",
+      "source_sha256": "7267e0d2fc3c7d9f1b51fdac866c01b5a1726c8c9a3b24165339b4640c8f933d",
+      "stdout_base64": "Q3xIMXxEfHJldGlyZWR8b2xkOjF8cmF3OjEyWHxlZmZlY3RzOjF8cmVzdG9yZWQ6MQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-stringable-20/.tools/assertion-stringable-retire-native-20/run-v1/report.json"
     }
   ],
   "native_profile": {
