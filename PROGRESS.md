@@ -21,6 +21,8 @@ restore now pass two fresh safe originals and182 source-frontier checks plus one
 pure NULL trace query at57ee/363; strict3 passes5.024s. Pending shared Throwable
 identity and real restore commits remain intact. Nullable saved-original reentry,
 Stringable-option snapshots, NaN conversion timing and wider producers remain required.
+Actual363 over1b33 passes strict3 at1ad9 (4.975s), preserving canonical GEN release
+evidence and carrier-aware ARG/GEN fixtures; the private source/state cuts are unchanged.
 Actual363 over75dade passes final strict3 atb0d8 (4.921s), preserving current
 CALLS/CLASS/PROPS guards. Source-backed static70, Fiber54 plus4 pure key queries
 and three retained incoming originals keep their0506/2ae cuts. Static356/371 and
