@@ -1,0 +1,113 @@
+;; VERIFY_RETURN_TYPE keeps the selected aliased CV address during __toString.
+;; These certificates add no cell/object root; STRINGIFY_RESULT owns the real
+;; temporary receiver. Released nonreference CV layouts remain a dependency.
+dec $typed_ref_string_source(pstate, porigin, int) : bool
+dec $typed_ref_string_type(pstate, nat) : bool
+dec $typed_ref_string_capture(pstate, int) : prefstringcv?
+dec $typed_ref_string_task(ptask) : bool
+dec $typed_ref_string_clear(ptask*) : bool
+dec $typed_ref_string_shape(pstate, prefstringcv) : bool
+dec $typed_ref_string_valid(pstate, prefstringcv) : bool
+
+def $typed_ref_string_source(S, porigin_site, z) = true
+  -- if $reference_return_fetch_valid(S[.ORIGIN = (porigin_site)], z)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) =/= eps
+  -- if ~$scope_global(S[.ORIGIN = (porigin_site)], [PCFIELD 0])
+  -- if ~$ppglobals_base(NExprVariable (BYTES text) metadata_variable)
+  -- if ~$direct_this(BYTES text)
+def $typed_ref_string_source(S, porigin_site, z) = false -- otherwise
+
+def $typed_ref_string_type(S, n_object) = true
+  -- if $reference_returning(S)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if ~pfunction.CODE.STRICT
+  -- if ~("callable" <- $ptmasks(pfunction.SIGNATURE.RETURNS))
+  -- if $typed_reference_conversion(S, pfunction.SIGNATURE.RETURNS, POBJECT n_object, false, false) = TYPEDEPENDENT "user object string conversion"
+def $typed_ref_string_type(S, n_object) = false -- otherwise
+
+def $typed_ref_string_capture(S, z) = ({ SOURCE porigin_site, LINE z, CELL n_cell, OBJECT n_object })
+  -- if S.ORIGIN = (porigin_site)
+  -- if S.BASE = BASE_VALUE (VARIABLE n_name* z_name)
+  -- if $typed_ref_string_source(S, porigin_site, z)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $cv_name(BYTES text) = (n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if ~$typed_reference_cell_source(S, n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if $stringable_instance(S, n_object)
+  -- if $typed_ref_string_type(S, n_object)
+def $typed_ref_string_capture(S, z) = eps -- otherwise
+def $typed_ref_string_candidate(S, z) = ($typed_ref_string_capture(S, z) =/= eps)
+
+def $typed_ref_string_task(REF_STRING_FETCH prefstringcv) = true
+def $typed_ref_string_task(REF_STRING_THROW prefstringcv) = true
+def $typed_ref_string_task(AT porigin ptask) = $typed_ref_string_task(ptask)
+def $typed_ref_string_task(ptask) = false -- otherwise
+def $typed_ref_string_clear(eps) = true
+def $typed_ref_string_clear(ptask :: ptask_tail*) = (~$typed_ref_string_task(ptask) /\ $typed_ref_string_clear(ptask_tail*))
+
+def $typed_ref_string_shape(S, prefstringcv) = $typed_ref_string_clear(ptask_tail*)
+  -- if S.TODO = (CALL_ARGS (METHOD_TARGET prefstringcv.OBJECT porigin_method) eps 0 eps (prefstringcv.SOURCE) prefstringcv.LINE) :: (STRINGIFY_RESULT prefstringcv.OBJECT prefstringcv.SOURCE prefstringcv.LINE) :: (REF_STRING_FETCH prefstringcv) :: (REF_STRING_THROW prefstringcv) :: ptask_tail*
+def $typed_ref_string_shape(S, prefstringcv) = $typed_ref_string_clear(ptask_tail*)
+  -- if S.TODO = (STRINGIFY_RESULT prefstringcv.OBJECT prefstringcv.SOURCE prefstringcv.LINE) :: (REF_STRING_FETCH prefstringcv) :: (REF_STRING_THROW prefstringcv) :: ptask_tail*
+def $typed_ref_string_shape(S, prefstringcv) = $typed_ref_string_clear(ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n_error) :: (STRINGIFY_RESULT prefstringcv.OBJECT prefstringcv.SOURCE prefstringcv.LINE) :: (REF_STRING_FETCH prefstringcv) :: (REF_STRING_THROW prefstringcv) :: ptask_tail*
+def $typed_ref_string_shape(S, prefstringcv) = false -- otherwise
+
+;; Later callback writes may change the cell's value or the GLOBALS binding.
+;; Admission retains the physical certificate, without another name selection.
+def $typed_ref_string_valid(S, prefstringcv) = true
+  -- if S.ORIGIN = (prefstringcv.SOURCE)
+  -- if $typed_ref_string_source(S, prefstringcv.SOURCE, prefstringcv.LINE)
+  -- if $call_reference_operand_valid(S, REFERENCE prefstringcv.CELL)
+  -- if $stringable_instance(S, prefstringcv.OBJECT)
+  -- if $typed_ref_string_type(S, prefstringcv.OBJECT)
+  -- if $typed_ref_string_shape(S, prefstringcv)
+def $typed_ref_string_valid(S, prefstringcv) = false -- otherwise
+
+def $stringify_source(S, porigin_site, z, REF_STRING_FETCH prefstringcv) = ($typed_ref_string_valid(S, prefstringcv) /\ porigin_site = prefstringcv.SOURCE /\ z = prefstringcv.LINE)
+def $stringify_source_consumer(REF_STRING_FETCH prefstringcv) = true
+def $stringify_consumer_tail_valid(S, porigin_site, z, REF_STRING_FETCH prefstringcv, (REF_STRING_THROW prefstringcv) :: ptask_tail*) = ($typed_ref_string_valid(S, prefstringcv) /\ $typed_ref_string_clear(ptask_tail*))
+def $stringify_consumer_receiver_valid(S, n_object, REF_STRING_FETCH prefstringcv) = (n_object = prefstringcv.OBJECT)
+def $task_nodes(REF_STRING_FETCH prefstringcv) = eps
+def $task_nodes(REF_STRING_THROW prefstringcv) = eps
+def $call_task_valid(S, REF_STRING_FETCH prefstringcv) = $typed_ref_string_valid(S, prefstringcv)
+def $call_task_valid(S, REF_STRING_THROW prefstringcv) = $typed_ref_string_valid(S, prefstringcv)
+
+rule PhpStep/typed-reference-string-call: S ~> $user_string_begin(S, prefstringcv.OBJECT, prefstringcv.SOURCE, z, REF_STRING_FETCH prefstringcv, (REF_STRING_THROW prefstringcv) :: ptask_tail*)
+  -- if S.TODO = (RETURN_REF_FETCH z) :: ptask_tail*
+  -- if $typed_ref_string_capture(S, z) = (prefstringcv)
+
+;; The actual STRINGIFY_RESULT step writes the captured cell and completes the
+;; ordinary initial return; no extra post-callback owner or phase is minted.
+def $stringify_return_state(S, REF_STRING_FETCH prefstringcv, pvalue_text, (REF_STRING_THROW prefstringcv) :: ptask_tail*) = $reference_return_unwind(S_stored, S.HELD, prefstringcv.LINE)
+  -- if $typed_ref_string_valid(S, prefstringcv)
+  -- if $string_bytes(pvalue_text) = (n_text*)
+  -- if S_stored = $reference_return_store(S[.TODO = ptask_tail*][.LOCATION = ROOT prefstringcv.CELL], POBJECT prefstringcv.OBJECT, pvalue_text)
+
+def $typed_return_throw_pending(S) = true
+  -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n_object porigin_site z) :: (REF_STRING_FETCH prefstringcv) :: (REF_STRING_THROW prefstringcv) :: ptask_tail*
+  -- if n_object = prefstringcv.OBJECT
+  -- if porigin_site = prefstringcv.SOURCE
+  -- if z = prefstringcv.LINE
+  -- if $typed_ref_string_valid(S, prefstringcv)
+  -- if $throwable_live(S, n_old)
+
+rule PhpStep/typed-reference-string-throw: S ~> S_linked[.TODO = (THROW_SEARCH n_new) :: ptask_tail*][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_old) :: (STRINGIFY_RESULT n_object porigin_site z) :: (REF_STRING_FETCH prefstringcv) :: (REF_STRING_THROW prefstringcv) :: ptask_tail*
+  -- if n_object = prefstringcv.OBJECT
+  -- if porigin_site = prefstringcv.SOURCE
+  -- if z = prefstringcv.LINE
+  -- if $typed_ref_string_valid(S, prefstringcv)
+  -- if $throwable_live(S, n_old)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S.STORE[prefstringcv.CELL] = DEFINED pvalue_live
+  -- if S_error = $throw_scalar(S, "TypeError", $call_function_name(S, pfunction) ++ $ptascii("(): Return value must be of type ") ++ $pttypename(pfunction.SIGNATURE.RETURNS) ++ $ptascii(", ") ++ $typed_given(S, pvalue_live) ++ $ptascii(" returned"), z)
+  -- if S_new = $throwable_materialize(S_error)
+  -- if S_new.COMPLETION = THROWING n_new
+  -- if S_linked = $throwable_previous(S_new, n_new, n_old)
+  -- if S_linked.COMPLETION = THROWING n_new

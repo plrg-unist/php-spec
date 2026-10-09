@@ -134,6 +134,7 @@ syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase, pgeneratorfrom
 syntax pgenclosestage, pgenclose, pgenrelease, pgenstorage
 syntax prefowner = REPLAY_TRY porigin | REPLAY_CATCH porigin
 syntax prefreturncursor = { OWNER porigin, SOURCE porigin, LINE int, OUTER porigin? }
+syntax prefstringcv = { SOURCE porigin, LINE int, CELL nat, OBJECT nat }
 syntax prefreturnnotice = REF_NOTICE_VALUE | REF_NOTICE_NULL
 syntax pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
 syntax pgenfatal
@@ -322,6 +323,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
   | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
   | TYPE_RETURN_THROW nat porigin int
+  | REF_STRING_FETCH prefstringcv | REF_STRING_THROW prefstringcv
   | PROPERTY_STRING_RESULT ppropertystring | STATIC_STRING_RESULT pstaticstring | STATIC_STRING_CAPTURE pstaticstring
   | PROPERTY_DYNAMIC_RESULT pdynamicproperty | PROPERTY_DYNAMIC_INSERT pdynamicproperty
   | PARAMETER_STRING_RESULT pparameterstring
