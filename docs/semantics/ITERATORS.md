@@ -15,6 +15,32 @@ The iterator and its actual current result remain owned during `key()` and the b
 a reference result is read after `key()` and its original cell survives rebinding.
 Break, return, goto and abrupt frame teardown release the cursor and its owners.
 
+Module378 adds real `IteratorAggregate` acquisition to foreach. Implicit getter
+receivers remain borrowed; each returned Aggregate occurrence owns its raw
+retval, and layers retire inside-out before terminal Iterator/Generator startup.
+The original iterable stays alive through first rewind/valid or Generator yield.
+Raw valid retval cleanup precedes original input retirement, then the existing
+cursor runs current/key/body without repeating initial valid. Acquisition or layer
+retirement errors prevent startup. Retval cleanup throws release data before
+input; an input destructor throw prevents current/body while data remains protected.
+
+Persistent iterable CVs remain borrowed without reference conversion. A
+reference-valued original call is dereferenced for acquisition while its raw HCELL
+survives until operand retirement. Raw reference getter returns are rejected
+without dereferencing. Reference foreach accepts actual reference-yielding
+Generators; terminal Iterator results raise Error and nonreference Generator
+results raise Exception. Changed original CV/reference operands and wider
+reference-location modes remain explicit Unsupported boundaries.
+
+A Generator getter's stored foreach receipt owns its receiver once and binds the
+actual source statement and iterable line. MAIN break uses the compiled foreach
+boundary for user close execution. A genuine active close frame may move with a
+Fiber VM during finally suspension; saved close IDs participate in unique
+Generator operation ownership across object, caller and closer VMs. Other
+Generator transfer contexts retain their previous boundaries. The
+[foreach ledger](../../coverage/semantics/foreach-aggregate-review.json) records
+the twenty selected original agreements, NaN control and focused reached checks.
+
 Module230 admits omitted or incompatible tentative returns as deprecations.
 Checks follow the actual parent and ordered interface prototypes: source methods
 can replace tentative obligations, direct Iterator bindings restore them, and
@@ -56,10 +82,10 @@ replays the recorded notice prefix and retires only discarded source owners.
 Chronological replay rederives the failed source binding and rollback; the actual
 report requires its failure record and genuine caller cause.
 
-`IteratorAggregate`, `ArrayAccess`, Traversable argument/array unpacking and wider
-ordinary object/reference traversal remain required. Broader object destruction
-and cyclic garbage collection remain unfinished. This milestone does not establish
-complete traversal or complete PHP core semantics.
+Aggregate yield-from/ordinary-call unpack, foreach NaN warning continuations and
+wider original/reference operand modes remain required. ArrayAccess, wider
+ordinary object/reference traversal and complete lifecycle remain unfinished.
+This milestone does not establish complete traversal or complete PHP core semantics.
 
 `python3 tests/semantics/user_iterator.py --mode native` checks the authored native
 expectations. `python3 tests/semantics/user_iterator_protocol.py --select cursor-claims,cursor-alias`

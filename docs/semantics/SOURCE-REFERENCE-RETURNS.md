@@ -57,6 +57,16 @@ cuts; actual-parent compilation is separate. Runtime VAR/TMP array owners,
 active-finalizer replay, protected temporary/NULL Notice timing and by-reference
 Stringable conversion remain required.
 
+Module 379 defers the designated Notice until finalizers and repeated type checks
+complete. Source occurrence, designation and emitted line remain captured through
+current/saved handlers; the raw operand retains its existing payload owner until
+ordinary materialization and frame cleanup. A throwing handler leaves this function
+and propagates in the caller; a replacing variable return cancels the old Notice.
+Six focused originals plus one protected-unused control agree, and eight reached
+fixtures pass 722 assertions. Actual-parent compilation keeps a distinct cut in the
+[Notice review](../../coverage/semantics/reference-return-notice-review.json).
+Active-finalizer replay, Stringable186 and wider owner protocols remain required.
+
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;
 casts to void, ternary/coalesce expressions and value/reference consumers retain

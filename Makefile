@@ -192,6 +192,8 @@ test-semantics: build
 	python3 tests/semantics/fiber_start_aggregate_review.py
 	python3 tests/semantics/fiber_start_nested_aggregate_sources.py
 	python3 tests/semantics/fiber_start_nested_aggregate_review.py
+	python3 tests/semantics/foreach_aggregate_sources.py
+	python3 tests/semantics/foreach_aggregate_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -738,6 +740,8 @@ test-semantics: build
 	python3 tests/semantics/generator_request_reference_child_protocol.py --mode check --sl
 	python3 tests/semantics/generator_request_array_child_sources.py --mode full
 	python3 tests/semantics/generator_request_array_child_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_array_reference_child_sources.py --mode full
+	python3 tests/semantics/generator_request_array_reference_child_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl

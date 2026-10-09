@@ -1,0 +1,356 @@
+{
+  "milestone": "IteratorAggregate foreach acquisition, initial operand retirement and retained Generator close",
+  "status": "partial; independently reviewed private source and reached-state gates pass",
+  "baseline": "430face8d23408e6b92d5fe9b53c2e358e469536",
+  "tested_revision": "4d1792a1c4a2919dae7f1a051b72f63a1443053f",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "Zend/zend_vm_def.h:ZEND_FE_RESET_R/ZEND_FE_RESET_RW/ZEND_FE_FETCH_R/ZEND_FE_FREE",
+    "Zend/zend_execute.c:zend_fe_reset_iterator",
+    "Zend/zend_interfaces.c:zend_user_it_get_new_iterator",
+    "Zend/zend_generators.c:zend_generator_close"
+  ],
+  "scope": [
+    "Recursive Aggregate acquisition keeps genuine borrowed getter receivers and one raw owner per returned layer occurrence. Terminal data is protected while layers retire before rewind/startup.",
+    "Original borrowed/owning iterable survives first valid/yield; valid raw-retval cleanup finishes before INPUT retirement and current/body, without a second initial valid.",
+    "Acquisition/layer throws prevent startup. Retval/input/Generator-body throws retain exact pending Throwable and data/input order.",
+    "Persistent reference-mode CVs stay borrowed; a reference-valued original call owns its raw HCELL. Reference loops raise Error for a terminal Iterator and Exception for a nonreference Generator; reference-yielding Generators retain ordinary aliases.",
+    "Stored foreach Generator receipts bind actual statement/operand line and own This once. MAIN break is a compiled USER boundary; authenticated force-close frames and exact-one Generator operation claims move through saved Fiber VMs."
+  ],
+  "sources": {
+    "normal_agreements": 20,
+    "unsupported_controls": 1,
+    "unsupported_agreement_credit": 0,
+    "cuts": [
+      {
+        "revision": "ab6e13f4da605306e88d18a5e49a41c8081d1b34",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-source-qya196jy/report.json",
+        "selected_normal_ids": [
+          "foreach-aggregate-by-reference-generator",
+          "foreach-aggregate-by-reference-iterator-refused",
+          "foreach-aggregate-deep-getter-parks",
+          "foreach-aggregate-deep-getter-throws",
+          "foreach-aggregate-empty-iterator"
+        ],
+        "selected_unsupported_controls": [],
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "revision": "fffc9a8a4e3271a910c0e91e91be4b8b74aebbbf",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-source-1m65h1zw/report.json",
+        "selected_normal_ids": [
+          "foreach-aggregate-generator-method-break",
+          "foreach-aggregate-input-destructor-throws",
+          "foreach-aggregate-layer-destructor-throws-generator",
+          "foreach-aggregate-multiline-getter-lines",
+          "foreach-aggregate-nested-temporary-break",
+          "foreach-aggregate-nonreference-generator-refused",
+          "foreach-aggregate-plain-generator",
+          "foreach-aggregate-raw-reference-return-rejected",
+          "foreach-aggregate-reference-original-operand",
+          "foreach-aggregate-valid-retval-retirement",
+          "foreach-aggregate-valid-retval-destructor-throws",
+          "aggregate-foreach-acquisition-required",
+          "foreach-aggregate-generator-body-throws",
+          "foreach-aggregate-generator-finally-throws"
+        ],
+        "selected_unsupported_controls": [
+          "foreach-aggregate-later-valid-nan-required"
+        ],
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-source-jnl5gzlf/report.json",
+        "selected_normal_ids": [
+          "foreach-aggregate-generator-finally-parks"
+        ],
+        "selected_unsupported_controls": [],
+        "inputs_stable": true,
+        "head_stable": true
+      }
+    ]
+  },
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-sl-qb7858ea/report.json",
+    "revision": "4d1792a1c4a2919dae7f1a051b72f63a1443053f",
+    "modules": 362,
+    "process_seconds": 120,
+    "passed": true
+  },
+  "native_discovery": {
+    "new_originals": 20,
+    "semantic_agreements": 0,
+    "reports": [
+      "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-native-k9p8_k8s/report.json",
+      "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-valid-native-dt9g3dve/report.json",
+      "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-generator-throw-native-omc6tp99/report.json",
+      "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-generator-close-native-0depxf6k/report.json"
+    ],
+    "affected_original_report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-contract-native-cqf5py8a/report.json",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1,
+      "PHP_SPEC_SCRIPT_ENCODING": "unset"
+    },
+    "native_process_seconds": 75,
+    "model_seconds": 60,
+    "model_process_seconds": 75
+  },
+  "states": {
+    "status": "PASS; exact selected cuts retain their separate tested revisions",
+    "runner": "tests/semantics/foreach_aggregate_review.py",
+    "fixture_revision": "38990896af0010acea06c4a712e8191324e1c712",
+    "groups": 26,
+    "physical_premises": 719,
+    "driver_clauses": 654,
+    "process_seconds": 120,
+    "selected": [
+      {
+        "id": "foreach-deep-getter-borrows-receiver-and-owns-raw-layers",
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-misx751q/report.json",
+        "physical_premises": 36,
+        "driver_clauses": 35,
+        "passed": true
+      },
+      {
+        "id": "foreach-getter-rejects-owning-target",
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-m3k7zlhq/report.json",
+        "physical_premises": 17,
+        "driver_clauses": 16,
+        "passed": true
+      },
+      {
+        "id": "foreach-getter-rejects-foreign-line-and-preserves-zero-budget",
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-_es3c2le/report.json",
+        "physical_premises": 18,
+        "driver_clauses": 17,
+        "passed": true
+      },
+      {
+        "id": "foreach-terminal-acquisition-protects-data-before-layer-retirement",
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-86grpsm2/report.json",
+        "physical_premises": 29,
+        "driver_clauses": 27,
+        "passed": true
+      },
+      {
+        "id": "foreach-first-valid-retires-input-before-current",
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-5y9trdy0/report.json",
+        "physical_premises": 26,
+        "driver_clauses": 26,
+        "passed": true
+      },
+      {
+        "id": "foreach-empty-valid-retires-input-before-data",
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-4zg19mov/report.json",
+        "physical_premises": 34,
+        "driver_clauses": 34,
+        "passed": true
+      },
+      {
+        "id": "foreach-valid-raw-retval-destructor-precedes-input-release",
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-hqzqejt2/report.json",
+        "physical_premises": 22,
+        "driver_clauses": 21,
+        "passed": true
+      },
+      {
+        "id": "foreach-valid-retval-throw-keeps-data-and-input-for-unwind",
+        "revision": "38990896af0010acea06c4a712e8191324e1c712",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-ctcuzqnn/report.json",
+        "physical_premises": 32,
+        "driver_clauses": 31,
+        "passed": true
+      },
+      {
+        "id": "foreach-generator-method-promotes-only-copied-receiver",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-4yicernd/report.json",
+        "physical_premises": 32,
+        "driver_clauses": 29,
+        "passed": true
+      },
+      {
+        "id": "foreach-generator-rejects-shifted-receipt-and-context-line",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-q40lx19e/report.json",
+        "physical_premises": 20,
+        "driver_clauses": 16,
+        "passed": true
+      },
+      {
+        "id": "foreach-main-break-releases-generator-at-user-statement-boundary",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-x8qdrv8a/report.json",
+        "physical_premises": 40,
+        "driver_clauses": 38,
+        "passed": true
+      },
+      {
+        "id": "foreach-parked-generator-close-keeps-real-receipt-and-receiver-owner",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-92zz_uck/report.json",
+        "physical_premises": 39,
+        "driver_clauses": 33,
+        "passed": true
+      },
+      {
+        "id": "foreach-parked-generator-close-rejects-shifted-receipt",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-ew353tmm/report.json",
+        "physical_premises": 29,
+        "driver_clauses": 23,
+        "passed": true
+      },
+      {
+        "id": "foreach-parked-generator-close-rejects-duplicate-real-claim",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-ohvvz8mr/report.json",
+        "physical_premises": 33,
+        "driver_clauses": 27,
+        "passed": true
+      },
+      {
+        "id": "foreach-parked-getter-keeps-real-raw-owner-and-borrowed-frame",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-zkc3pti4/report.json",
+        "physical_premises": 32,
+        "driver_clauses": 26,
+        "passed": true
+      },
+      {
+        "id": "foreach-parked-getter-rejects-shifted-real-frame-line",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-9a5ug1fh/report.json",
+        "physical_premises": 26,
+        "driver_clauses": 20,
+        "passed": true
+      },
+      {
+        "id": "foreach-parked-getter-zero-budget-preserves-saved-owners",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-o0f3il6n/report.json",
+        "physical_premises": 16,
+        "driver_clauses": 10,
+        "passed": true
+      },
+      {
+        "id": "foreach-parked-getter-rejects-duplicate-real-continuation",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-h8ogjmmt/report.json",
+        "physical_premises": 30,
+        "driver_clauses": 24,
+        "passed": true
+      },
+      {
+        "id": "foreach-original-reference-operand-keeps-raw-cell-owner",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-xt4ahqjn/report.json",
+        "physical_premises": 25,
+        "driver_clauses": 25,
+        "passed": true
+      },
+      {
+        "id": "foreach-byref-generator-cv-remains-borrowed-before-acquisition",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-1gx6cjuz/report.json",
+        "physical_premises": 25,
+        "driver_clauses": 25,
+        "passed": true
+      },
+      {
+        "id": "foreach-raw-reference-getter-result-is-rejected-and-owned-until-unwind",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-59l4p3re/report.json",
+        "physical_premises": 24,
+        "driver_clauses": 23,
+        "passed": true
+      },
+      {
+        "id": "foreach-pending-layer-error-prevents-generator-startup",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-9dg5jfy_/report.json",
+        "physical_premises": 39,
+        "driver_clauses": 38,
+        "passed": true
+      },
+      {
+        "id": "foreach-pending-layer-hook-rejects-foreign-release-snapshot",
+        "revision": "ab3d5fcf68c4fb12819aefa4be0c9d53151d9c75",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-g_blym99/report.json",
+        "physical_premises": 21,
+        "driver_clauses": 20,
+        "passed": true
+      },
+      {
+        "id": "foreach-initial-generator-body-has-one-data-owner-in-real-operation",
+        "revision": "4d1792a1c4a2919dae7f1a051b72f63a1443053f",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-6fnbeghm/report.json",
+        "physical_premises": 26,
+        "driver_clauses": 23,
+        "passed": true
+      },
+      {
+        "id": "foreach-generator-startup-throw-transfers-data-and-retires-cursor",
+        "revision": "4d1792a1c4a2919dae7f1a051b72f63a1443053f",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-dn29851h/report.json",
+        "physical_premises": 28,
+        "driver_clauses": 28,
+        "passed": true
+      },
+      {
+        "id": "foreach-input-destructor-throw-keeps-data-before-body",
+        "revision": "4d1792a1c4a2919dae7f1a051b72f63a1443053f",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-tffjq8hn/report.json",
+        "physical_premises": 20,
+        "driver_clauses": 19,
+        "passed": true
+      }
+    ]
+  },
+  "preserved_failures": [
+    "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-source-qya196jy/report.json",
+    "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-mylrq4np/report.json",
+    "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-source-4h3menms/report.json",
+    "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-source-1m65h1zw/report.json",
+    "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-mrs5ea0o/report.json",
+    "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-83kk1bx5/report.json"
+  ],
+  "diagnostics": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/fiber-state-review-w4lljl47/report.json",
+      "agreement_credit": 0,
+      "finding": "Real Break and one-step descriptor/heap admission pass; compiled MAIN foreach release was USER=false before the source classifier correction."
+    }
+  ],
+  "preserved_failure_credit": 0,
+  "remaining": [
+    "Iterator foreach valid NaN warning continuations",
+    "changed original CV/reference operand identity or type",
+    "wider foreach reference-location modes",
+    "Aggregate yield-from and ordinary-call unpack consumers",
+    "wider Generator transfer contexts and complete lifecycle"
+  ],
+  "compatibility": "Prior START13/state1060, NaN4/state269, single Aggregate22/state425 and nested11/control2/state544 retain their tested inputs; no renewal claimed. The readiness and stage-only cursor corrections change admission only; source21 and passing state cuts retain their inputs. Actual-parent compilation is recorded separately.",
+  "actual_composition": {
+    "baseline": "c07eac043f280aa88159c0ce38a4e06083633719",
+    "semantic_revision": "6460959321c0b061e1f6fd8fc2c723c6106c49e5",
+    "modules": 366,
+    "compiler_report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-current-20/.tools/foreach-aggregate-sl-p7g_chax/report.json",
+    "compiler_passed": true,
+    "status": "independently reviewed exact-parent composition; strict PASS",
+    "compatibility": "Pointwise net preserves parent retired-owner fields/replay, SensitiveParameter trace wrappers, Stringable assertion conversion and existing Generator/Fiber close guards. Private source/state cuts retain their original inputs; no renewal."
+  }
+}

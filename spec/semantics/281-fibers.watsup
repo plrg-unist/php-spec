@@ -65,15 +65,17 @@ dec $fiber_caller_api_nodes(pfibercaller) : pnode*
 dec $fiber_transfer_context(pstate, pcallcontext?) : bool
 dec $fiber_transfer_frames(pstate, pframe*) : bool
 dec $fiber_transfer_reason(pstate) : text
+dec $fiber_generator_transfer(pstate) : bool
 ;; The five active destruction lists move with the real VM stack.
 def $fiber_transfer_reason(S) = "Fiber switch during an initializer, source loader or Generator continuation"
 def $fiber_transfer_context(S, eps) = true
 def $fiber_transfer_context(S, (pcallcontext)) = (pcallcontext.DEFAULTRECEIVE = eps /\ ~$autoload_context_kind(S, pcallcontext))
 def $fiber_transfer_frames(S, eps) = true
-def $fiber_transfer_frames(S, pframe :: pframe_tail*) = (pframe.CONSTCONTEXT = eps /\ $generator_resume_ids(pframe.TODO) = eps /\ $fiber_transfer_context(S, pframe.CONTEXT) /\ $fiber_transfer_frames(S, pframe_tail*))
+def $fiber_transfer_frames(S, pframe :: pframe_tail*) = (pframe.CONSTCONTEXT = eps /\ $fiber_transfer_context(S, pframe.CONTEXT) /\ $fiber_transfer_frames(S, pframe_tail*))
+def $fiber_generator_transfer(S) = ($generator_resume_ids(S.TODO) = eps /\ $generator_saved_ids(S.FRAMES) = eps) -- otherwise
 dec $generator_storage_transfer(pstate) : bool
 def $generator_storage_transfer(S) = true -- otherwise
-def $fiber_transfer_domain(S) = (S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $generator_resume_ids(S.TODO) = eps /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES) /\ $generator_storage_transfer(S))
+def $fiber_transfer_domain(S) = (S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $fiber_generator_transfer(S) /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES) /\ $generator_storage_transfer(S))
 
 ;; Fixed-signature Fiber methods reuse CONFIG's by-value SEND and named slots.
 def $fiber_kind(INTRINSIC_FIBER_CONSTRUCT) = true
@@ -910,10 +912,10 @@ def $fiber_record_valid(S, n, pfiber) = false -- otherwise
 def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = true
   -- if ~pfibervm.GLOBAL \/ (pfibervm.TABLE = $empty_table() /\ pfibervm.CURRENT = eps /\ pfibervm.FRAMES = eps /\ n? = eps)
   -- if $generator_flat_tasks(pfibervm.TODO) /\ $generator_flat_frames(pfibervm.FRAMES)
-  -- if $generator_resume_ids(pfibervm.TODO) = eps /\ $generator_saved_ids(pfibervm.FRAMES) = eps
   ;; The transfer domain excludes a loader in this saved VM. Validate the
   ;; active source/publication on S and this VM's tasks with loader contexts cleared.
   -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n?][.FIBERCALLERS = pfibercaller*][.COMPLETION = NORMAL][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.DIRCONTEXT = eps]
+  -- if $fiber_generator_transfer(S_view)
   -- if $eval_tasks_markers_valid(S_view, S_view.TODO)
   -- if $eval_requests_owned(S_view.TODO)
   -- if $eval_frames_markers_valid(S_view, S_view.FRAMES)

@@ -341,7 +341,15 @@ compilation at each publication; handler throws or exit preserve later class
 publication, while user fatals stop it. Compiler fatal formatting retains the
 primary diagnostic through source effects, nested eval/include compilation and
 deferred runtime class-link failures.
-IteratorAggregate and other Traversable consumers remain required.
+Aggregate foreach acquires nested Iterator/Generator data, retires returned layers
+before initialization and the original operand after initial Iterator valid-result
+cleanup or Generator yield.
+Acquisition and cleanup throws preserve data/input order; reference traversal
+accepts reference-yielding Generators and rejects Iterator/nonreference Generator
+results. Retained foreach Generator close frames survive Fiber suspension with
+one receiver owner. [Focused acceptance](coverage/semantics/foreach-aggregate-review.json)
+keeps original source/state cuts separate. Foreach NaN warning continuations,
+wider operand modes and Aggregate yield-from/ordinary-call unpack remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
@@ -386,6 +394,10 @@ one new exact source and 677 strict premises retain separate cuts. An array chil
 sole owning Leaf entry follows the same path after real array retirement; retired
 contents add no owner. An external shared array retains the Leaf and emits only the
 first fatal. Two exact sources and 712/77 strict premises retain their private cut.
+A sole reference entry follows the same path after genuine array and cell
+retirement. Their historical rows certify release without owning the Leaf; an
+explicit global reference keeps the cell and Leaf live, emitting only the first
+fatal. Two exact sources and 816/113 strict premises retain their private cut.
 Wider handlers/rendering,
 child lifetimes, reacquisition, parked/escaped storage and generic terminal cleanup
 remain required.
@@ -516,7 +528,13 @@ frames. Capture requires at least three genuine owners before cleanup and two af
 metadata adds none. Four originals agree exactly; nine delayed COW controls intentionally
 retain c/d=1 instead of native8, with zero agreement credit. State23/1,873, independent
 pending98 and actual-parent carrier71 pass; strict364 is separate. Wider payload domains,
-active-finalizer replay, protected temporary/NULL Notice timing and Stringable186 remain open.
+active-finalizer replay and Stringable186 remain open.
+[Deferred reference-return Notices](coverage/semantics/reference-return-notice-review.json)
+now run after protected finalizers and type rechecks, preserve diagnostic source/line
+through callbacks, and retire cancelled or throwing outcomes through ordinary cleanup.
+Six focused originals and one preserved protected-unused control agree; eight reached
+current/saved fixtures pass 722 assertions. Actual-parent compilation is separate.
+Already-active finalizer replay, Stringable186 and wider owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

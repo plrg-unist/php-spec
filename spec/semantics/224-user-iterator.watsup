@@ -1,3 +1,4 @@
+dec $generator_from_nan(pvalue) : bool
 ;; PHP 8.5.10 zend_interfaces.stub.php and zend_user_it_* supply these
 ;; language protocols. Tentative-return notices are a separate pending slice.
 dec $useriter_members() : ptbytes*
@@ -260,12 +261,14 @@ rule PhpStep/useriter-valid-end: S ~> $foreach_finish(S_read, n)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$generator_from_nan(pvalue)
   -- if ~$truth(S_read, pvalue)
 rule PhpStep/useriter-valid-current: S ~> $useriter_call(S_read, n, n_object, statement, porigin_site, z, "current", KNOWN PNULL, ptask_tail*)
   -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "valid" poperand) :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$generator_from_nan(pvalue)
   -- if $truth(S_read, pvalue)
 rule PhpStep/useriter-current-key: S ~> $useriter_call(S, n, n_object, statement, porigin_site, z, "key", S.RESULT, ptask_tail*)
   -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "current" poperand) :: ptask_tail*
@@ -323,3 +326,10 @@ def $useriter_source_contract(S, pclassdesc, porigin) = $useriter_contract(S, pc
 def $useriter_source_contract(S, pclassdesc, porigin) = METHOD_OK -- otherwise
 def $useriter_source_after(S, pclassdesc, porigin, METHOD_OK) = $useriter_source_contract(S, pclassdesc, porigin)
 def $useriter_source_after(S, pclassdesc, porigin, pmethodissue) = pmethodissue -- otherwise
+
+rule PhpStep/useriter-valid-nan-required: S ~> S_read[.COMPLETION = UNSUPPORTED "Iterator foreach valid NaN warning continuation"]
+  -- if S.TODO = (USERITER_RESULT n n_object statement porigin_site z "valid" poperand) :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $generator_from_nan(pvalue)

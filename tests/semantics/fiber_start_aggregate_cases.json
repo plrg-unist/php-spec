@@ -164,13 +164,10 @@
     "source": "<?php\nclass PeerForeachIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerForeachAggregate20 implements IteratorAggregate {\n    public string $property = 'wrong';\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\n$iterator = new PeerForeachIterator20;\n$aggregate = new PeerForeachAggregate20;\nforeach ($aggregate as $value) {\n    echo 'V', $value, '|';\n}\necho 'E';\n",
     "source_sha256": "54b80be17efdcd58d529164596917fd2066991eb971f19dc889af9c31cb1b342",
     "purpose": "aggregate foreach acquisition required.",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "native_stdout": "A|W|V7|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "foreach IteratorAggregate acquisition",
-    "unsupported_stdout": "",
-    "unsupported_events": []
+    "native_exit": 0
   },
   {
     "id": "aggregate-yield-from-acquisition-required",

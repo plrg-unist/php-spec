@@ -144,7 +144,16 @@ c/d=8(native) to1(spec) differences, with zero agreement for those nine. State23
 and independent pending98 pass across retained cuts. Actual364 over `2c1283f04` passes
 strict at `31838d5ad` (5.033s) and one genuine carrier bridge/71 assertions. Original
 failures/timeouts remain zero-credit. Wider payloads, active-finalizer replay and
-protected NULL/186 remain required. [Owner review](coverage/semantics/reference-return-retired-owner-review.json).
+Stringable186 remain required. [Owner review](coverage/semantics/reference-return-retired-owner-review.json).
+
+By-reference VALUE, bare/null and implicit-return Notices now dispatch after protected
+finalizers and repeated type checks. Captured source and line survive saved handlers;
+throwing handlers leave through ordinary cleanup, and replacing variable returns cancel
+the old Notice. Six focused originals and one protected-unused control agree at retained
+private cuts with 365 modules cuts. Eight reached current/saved fixtures pass 722 assertions (315+407);
+Actual 367-module composition over `d23ed96e6` passes strict compilation at `8d7fad70e` (5.082 s), with zero application evaluations. Active-finalizer replay, Stringable186
+and wider owner domains remain required.
+[Notice review](coverage/semantics/reference-return-notice-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
@@ -231,6 +240,25 @@ switch replay, promotion and shutdown fatal cleanup; private source/state cuts
 retain their inputs. Other Aggregate consumers and broader pending Generator
 startup remain required.
 [Nested ledger](coverage/semantics/fiber-start-nested-aggregate-review.json).
+
+Aggregate foreach378 acquires nested real Iterator/Generator data with borrowed
+getter receivers and one raw owner per returned layer. Layers retire before
+initialization; raw valid retval cleanup precedes original input retirement and
+the loop body. Acquisition/layer throws prevent startup, while retval/input throws
+keep exact data-before-input unwind. Persistent reference-mode CVs stay borrowed;
+reference-valued inputs retain their HCELL, and reference-yielding Generators keep
+ordinary live aliases. Retained foreach Generator close runs real finally throw
+and Fiber suspension, with source-authenticated receipts and unique operation
+ownership across saved VMs. Twenty selected normal sources and strict362 pass;
+the later-valid NaN control stays Unsupported/zero agreement. Twenty-six independent reached
+groups/719 physical premises pass at separate retained cuts; genuine getter
+creation readiness and one initializer cursor claim are checked. Original admission/source failures stay
+zero; prior Aggregate/START evidence is not renewed. Changed original CV/reference
+operands, wider byref locations, foreach NaN handlers and remaining Aggregate
+consumers stay required. Actual366 over `c07eac043` passes strict SL at
+`646095932`, preserving current retired-owner replay, sensitive trace wrappers
+and assertion conversion; private source/state cuts retain their inputs.
+[Foreach ledger](coverage/semantics/foreach-aggregate-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;
@@ -358,7 +386,16 @@ discriminator retain zero credit at `4c410b607`; the exact shared baseline is a
 separate control. Actual364 over `70c5ff9fc` passes strict compilation at
 `3aeb34484` (6.399 seconds). The parent's retired-owner carriers remain empty on
 both sources; current frame/fatal-history fields survive. Private source2/789
-retain their `5da367130` inputs. Wider
+retain their `5da367130` inputs. A sole reference entry retires HARRAY then HCELL
+before the authentic Leaf release; stable cell markers and historical rows add
+no owner, edge or GC pin. An explicit global reference instead retains the cell
+and Leaf through the first fatal. Source2, strict816/113 and complete compiler364
+retain `9faf09e39` (6.536 seconds). The initial helper-load stop, failed local-CV
+alias control, primary Unsupported and 172-premise reached diagnostic remain zero.
+Final366 over `87752f2a0` passes strict compilation at `807fa6013`
+(6.471 seconds). Empty parameter attributes/plain traces add no sensitive wrapper
+or owner; Aggregate/Fiber, quantity and undefined-read hooks are inactive.
+Private source2/929 retain their `9faf09e39` inputs. Wider
 handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
@@ -3298,10 +3335,10 @@ failures and interrupted evidence.
   wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
-  Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return
-  Notice timing and typed
-  by-reference string conversion186 remain open; accepted ordinary by-value
-  classification does not close them. [String contract](docs/semantics/USER-STRING.md),
+  Wider deprecated constant consumers remain open. Generic, scalar-loop, CV/compiled-CONST
+  and bounded physical-array return replay are integrated, as is deferred reference-return
+  Notice dispatch. Already-active-finalizer replay and typed by-reference Stringable
+  conversion186 remain open; accepted ordinary by-value classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
   enums, hooks, readonly and wider instance setter consumers,
@@ -3319,7 +3356,7 @@ failures and interrupted evidence.
 held branches and evidence, and do not retry the rejected engine experiment.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Wider owner domains, already active-finalizer
-returns, protected temporary/NULL Notice timing and Stringable186 remain required.
+returns and Stringable186 remain required; deferred VALUE/NULL Notice dispatch is integrated.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 

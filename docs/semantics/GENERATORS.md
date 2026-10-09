@@ -69,16 +69,21 @@ Array, source Iterator and Generator graph delegation are covered by
 [Module289](GENERATOR-DELEGATION.md), including shared progress, return transfer,
 live callback references and natural owner cleanup. [Reference yields328](GENERATOR-REFERENCE-YIELDS.md)
 add live cells, value-API snapshots, foreach/destructuring aliases and authentic
-Notice/cleanup readback. IteratorAggregate, broader reference producers, dynamic/nullsafe
-API calls, named/unpacked API arguments, scoped static and other implicit callback
-creation, and creation through changed/imported caller scope remain required.
+Notice/cleanup readback. Aggregate acquisition has separate START and
+[foreach scopes](ITERATORS.md). Aggregate yield-from/ordinary-call unpack,
+broader reference producers, dynamic/nullsafe API calls, named/unpacked API
+arguments, scoped static and other implicit callback creation, and creation
+through changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.
 [Module310](GENERATOR-FIBER-CLOSE.md) extends ordinary paused-Generator release
-to the active Fiber stack while preserving real parked caller owners. Wider
-terminal cleanup, parked running Generators, switching finalizers, general user
-destructors and cyclic collection remain required; their explicit Unsupported controls earn no
-agreement. Natural return/throw/finally cleanup remains distinct from forced close.
+to the active Fiber stack while preserving real parked caller owners. Module378
+retains a foreach Generator getter's real receiver and statement/line receipt
+through break-driven finally throw and Fiber suspension; saved close IDs preserve
+unique running-operation ownership. Wider terminal cleanup, running-Generator
+transfers, switching finalizers, general user destructors and cyclic collection
+remain required; their explicit Unsupported controls earn no agreement. Natural
+return/throw/finally cleanup remains distinct from forced close.
 
 Normal request cleanup340 uses real global/store owners and borrowed zero-owner
 buckets. Module349 also closes fresh store frames without running their bodies,
@@ -163,13 +168,26 @@ intact. A declared array child retires HARRAY before its sole owning Leaf entry
 reaches the same ROOT/nonuser release tail. Its in-range retired row certifies the
 child without another array pin, GC slot or heap edge; primitive siblings are
 allowed, while multiple owning nodes, nested arrays and reference entries remain
-outside this slice. A real external shared-array owner prevents entry release and
+outside that slice. A real external shared-array owner prevents entry release and
 the second fatal. Exact source2, strict712/77 and complete compiler363 retain
 `5da367130`; original refusal and reached118 diagnostic remain zero at `4c410b607`.
 Actual364 over `70c5ff9fc` passes strict compilation at `3aeb34484`; the new
 retired-owner carriers remain empty because neither source has switch/foreach
 or reference-return replay. Parent frame/fatal-history fields are preserved;
-private source2/789 retain their inputs. Wider handlers, rendering,
+private source2/789 retain their inputs. A sole owning reference entry additionally
+retires HARRAY then HCELL before the real Leaf release. The original array row,
+stable retired-cell marker and STORE value certify both consumed layers without
+array/cell roots, referent edges or GC pins; primitive siblings remain allowed.
+An explicit global reference keeps HCELL and its Leaf edge live after array
+retirement, preventing the second fatal. Exact source2, strict816/113 and complete
+compiler364 retain `9faf09e39`; the helper-load stop, failed local-CV control,
+primary refusal and reached172 diagnostic retain zero credit. Actual366 over
+`87752f2a0` passes strict compilation at `807fa6013` (6.471 seconds). Empty parameter
+attributes/plain traces preserve existing owners; Aggregate/Fiber, quantity and
+undefined-read hooks are inactive. Parent frame/fatal-history fields are preserved;
+private source2/929 retain their original inputs. Multiple owning nodes and recursive
+containers remain
+outside this slice. Wider handlers, rendering,
 child lifetimes, reacquisition, message warnings, parked or escaped storage and
 generic terminal cleanup remain required.
 

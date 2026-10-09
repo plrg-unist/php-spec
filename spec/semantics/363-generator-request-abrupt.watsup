@@ -108,6 +108,14 @@ def $generator_request_release_slot(S, ppropertyslot, n) = true
   -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PARRAY n_array))
   -- if $(n_array < |S.ARRAYS|) /\ ~((HARRAY n_array) <- S.ALLOCATIONS)
   -- if $entries_nodes(S.ARRAYS[n_array].ITEMS) = [HOBJECT n]
+;; A sole reference entry borrows both retired layers as release evidence.
+def $generator_request_release_slot(S, ppropertyslot, n) = true
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT (PARRAY n_array))
+  -- if $(n_array < |S.ARRAYS|) /\ ~((HARRAY n_array) <- S.ALLOCATIONS)
+  -- if $entries_nodes(S.ARRAYS[n_array].ITEMS) = [HCELL n_cell]
+  -- if $(n_cell < |S.STORE|) /\ n_cell <- S.REFCELLS
+  -- if ~((HCELL n_cell) <- S.ALLOCATIONS)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
 def $generator_request_release_slot(S, ppropertyslot, n) = false -- otherwise
 
 ;; zend_exception_error has already emitted its fatal before OBJ_RELEASE(ex).
