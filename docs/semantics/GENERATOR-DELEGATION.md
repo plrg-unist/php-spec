@@ -33,7 +33,7 @@ Twenty-five genuine-source groups/720 ownership and counterexample premises pass
 original failures retain zero credit in the
 [Aggregate ledger](../../coverage/semantics/yield-from-aggregate-review.json).
 At that acquisition cut, Iterator NaN warning continuations remained required.
-Changed original operands and wider operand modes remain explicit required gaps.
+At that cut, changed original operands and wider operand modes remained required.
 
 Acquired Iterator `valid()` NaN warnings retain the raw returned operand and the
 actual acquisition receipt through ordinary handler invoke, result and cleanup.
@@ -48,6 +48,17 @@ groups/637 physical ownership and authority premises pass at `d825e3fc0`. The
 [warning ledger](../../coverage/semantics/yield-from-valid-nan-review.json) tracks
 their separate state checks. Other post-handler raw payload tags remain an explicit
 Unsupported dependency. Earlier direct-delegation evidence is unchanged.
+
+A getter may rebind the original borrowed CV or owning reference operand before
+returning terminal Iterator/Generator data or a rejected non-Aggregate raw value.
+The engine rereads the original operand only for an Aggregate self comparison;
+other rejections use the original class name. Independent keepers protect all
+six validated callback receivers, and existing raw-cell/data ownership is
+unchanged. Changed operands returning another Aggregate remain explicit
+Unsupported/zero agreement. Nine genuine-source groups/376 physical owner and
+source-authority premises pass; both original fixture failures retain zero credit.
+[Rebound review](../../coverage/semantics/yield-from-rebound-operand-review.json)
+records these originals and their source-reached owner checks.
 
 Getters can detach an independently completed child without resuming the parent.
 The copied current remains available until advancement, while the key becomes

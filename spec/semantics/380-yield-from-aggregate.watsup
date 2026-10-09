@@ -4,6 +4,7 @@ dec $yield_from_receipt_valid(pstate, pyieldfromreceipt) : bool
 dec $yield_from_aggregate_receipt(pstate, pyieldfromaggregate) : pyieldfromreceipt
 dec $yield_from_aggregate_input_mode(pstate, porigin, poperand) : bool
 dec $yield_from_aggregate_input_stable(pstate, pyieldfromaggregate) : bool
+dec $yield_from_aggregate_no_self_check(pstate, poperand) : bool
 dec $yield_from_aggregate_input(pstate, pyieldfromaggregate, text) : bool
 dec $yield_from_aggregate_input_identity(pyieldfromaggregate) : bool
 dec $yield_from_aggregate_stage(pstate, pyieldfromaggregate, text) : bool
@@ -85,6 +86,11 @@ def $yield_from_aggregate_input_stable(S, pyieldfromaggregate) = true
   -- if S.STORE[n] = DEFINED (POBJECT pyieldfromaggregate.AGGREGATE)
 def $yield_from_aggregate_input_stable(S, pyieldfromaggregate) = false -- otherwise
 
+;; Only a raw Aggregate result rereads the original operand for self comparison.
+def $yield_from_aggregate_no_self_check(S, KNOWN pvalue) = ~$generator_from_aggregate(S, pvalue)
+def $yield_from_aggregate_no_self_check(S, REFERENCE n) = true
+def $yield_from_aggregate_no_self_check(S, poperand) = false -- otherwise
+
 def $generator_from_begin(S, S_read, porigin, POBJECT n) = $yield_from_aggregate_call(S_read, {PARENT $generator_from_active(S_read), SITE porigin, LINE $generator_from_line(S_read, porigin), AGGREGATE n, OBJECT n, ACQUIRED eps, INPUT S.RESULT, CURRENT KNOWN PNULL}, ptask_tail*)
   -- if S.TODO = (GENERATOR_FROM_EVAL porigin) :: ptask_tail*
   -- if $generator_from_aggregate(S_read, POBJECT n)
@@ -132,9 +138,10 @@ def $yield_from_aggregate_call(S, pyieldfromaggregate, ptask_tail*) = S[.ORIGIN 
   -- if S.OBJECTS[pyieldfromaggregate.OBJECT] = INSTANCE porigin
   -- if $effective_method(S, porigin, $ptascii("getIterator"), |S.CLASSES|) = (pmethoddesc)
 def $yield_from_aggregate_acquire(S, pyieldfromaggregate, ptask_tail*) = $yield_from_aggregate_acquire_result(S, pyieldfromaggregate, ptask_tail*)
-  -- if $yield_from_aggregate_input_stable(S, pyieldfromaggregate)
+  -- if $yield_from_aggregate_input_stable(S, pyieldfromaggregate) \/ $yield_from_aggregate_no_self_check(S, S.RESULT)
 def $yield_from_aggregate_acquire(S, pyieldfromaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "yield from IteratorAggregate changed original operand"]
   -- if ~$yield_from_aggregate_input_stable(S, pyieldfromaggregate)
+  -- if ~$yield_from_aggregate_no_self_check(S, S.RESULT)
 rule PhpStep/yield-from-aggregate-getIterator: S ~> $yield_from_aggregate_acquire(S, pyieldfromaggregate, ptask_tail*)
   -- if S.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
 def $yield_from_aggregate_error(S, pyieldfromaggregate, ptbytes, ptask_tail*) = $throw_scalar(S[.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate[.CURRENT = S.RESULT] "getIterator-error") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Exception", ptbytes, pyieldfromaggregate.LINE)

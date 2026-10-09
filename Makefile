@@ -200,6 +200,8 @@ test-semantics: build
 	python3 tests/semantics/yield_from_aggregate_review.py
 	python3 tests/semantics/yield_from_valid_nan_sources.py
 	python3 tests/semantics/yield_from_valid_nan_review.py
+	python3 tests/semantics/yield_from_rebound_operand_sources.py
+	python3 tests/semantics/yield_from_rebound_operand_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
