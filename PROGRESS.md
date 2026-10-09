@@ -17,9 +17,9 @@ and frozen-wrapper counterexamples pass at ca196 (67 total), with strict 356 com
 Pending exceptions validate on the real heap; the historical target view owns none.
 The [ledger](coverage/semantics/assertion-options-review.json) keeps original failures,
 the Count Unsupported/foreach distinction and bailout status-only correction.
-Actual 358 over f5c4 passes strict compilation at 4c201; canonical 207/361/363 are
-unchanged. Canonical integration, wider callback/description producers and INI warning
-paths remain required.
+Actual 359 over dfca passes strict compilation at 14ae4, preserving current property
+warning/base roots and collector/storage fields. Earlier 358/f5 compilation retains
+its own cut. Wider callback/description producers and INI warning paths remain required.
 
 Module 374 unpacks arrays into ordinary method/array and captured START buffers.
 Per-pack named ordering, dereferenced value copies and nonowning completed history
