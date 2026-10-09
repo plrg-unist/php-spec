@@ -1213,6 +1213,8 @@ skipped defaults and the emitted deferred second-SEND line. Six exact originals
 and five reached groups pass 1235 setup-inclusive premises, including shared
 cell owners, parameter cleanup before lookup and label-error/property cleanup.
 Earlier source/state cuts retain their original credit.
+The actual367 join over `4d7ef44ee` passes strict at `87aca689f` (5.179s),
+preserving accepted Notice, GEN and ARG interfaces without renewing those cuts.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

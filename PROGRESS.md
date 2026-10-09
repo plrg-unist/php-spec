@@ -1742,6 +1742,10 @@ setup-inclusive premises at `b766af8a1`, covering slot0/slot2 around default3,
 shared HCELL3/payload1, parameter/default leave order, current/saved malformed
 carriers and frame/operation pending cleanup. Shared105/213/99/79/CELL/270 and
 all earlier accepted cuts/failures are unchanged.
+The actual367 join over `4d7ef44ee` passes strict at `87aca689f` (5.179s).
+Genuine variable returns keep Notice markers absent; introduced GEN request,
+compound-string and static FROMCALLABLE paths are inactive. Source/state credit
+remains at the separate private cuts.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
