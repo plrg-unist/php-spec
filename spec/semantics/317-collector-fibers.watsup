@@ -52,6 +52,7 @@ dec $gc_worker_overlap_targets(pstate, pgcplan, nat, pnode*) : bool
 dec $gc_worker_overlap_selected(pstate, pgcplan, nat, nat) : bool
 dec $gc_worker_overlap_selected_buffer(pstate, pgcplan, nat, nat) : bool
 dec $gc_worker_overlap_initial_buffer(pstate, pgcplan, pgcguard?) : bool
+dec $gc_worker_overlap_attachment(pstate, pgcplan, pgcguard) : bool
 
 ;; Restored VM views exclude their borrowed parked copy. Only TODO/FRAMES,
 ;; never destructor histories or PLAN itself, authenticate the global pass.
@@ -437,9 +438,9 @@ def $gc_worker_start_plan(S, pgcplan, false) = pgcplan
 def $gc_worker_overlap_start_ready(S, pgcplan, true) = true
   -- if S.ACTIVEFIBER = (n_caller)
   -- if S.TODO = (GC_TRACE pgcplan.CALL) :: ptask_tail*
+  -- if $gc_overlap_plan(pgcplan)
   -- if $gc_scope_valid(S, pgcplan.CALL) /\ $fiber_transfer_domain(S)
   -- if pgcplan = $gc_plan(S, pgcplan.CALL)
-  -- if $gc_overlap_plan(pgcplan)
   -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
   -- if $heap_subset($destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER)), $gc_nested_removed(pgcplan))
   -- if $fiber_at(S, n_caller) = (pfiber_caller)
@@ -561,13 +562,18 @@ def $gc_worker_base_frame(S, pframe) = true
 def $gc_worker_base_frame(S, pframe) = false -- otherwise
 def $call_saved_context_valid(S, pframe) = true -- if $gc_worker_base_frame(S, pframe)
 
+def $gc_worker_overlap_attachment(S, pgcplan, pgcguard) = true
+  -- if ~$gc_overlap_plan(pgcplan)
+def $gc_worker_overlap_attachment(S, pgcplan, pgcguard) = $gc_worker_overlap_selected(S, pgcplan, pgcguard.OBJECT, S.GC.SCAN.INDEX)
+  -- if $gc_overlap_plan(pgcplan)
+def $gc_worker_overlap_attachment(S, pgcplan, pgcguard) = false -- otherwise
 def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if pgcguard.PUBLIC = eps
   -- if S.GC.WORKER = (pgcguard.WORKER)
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
   -- if $gc_worker_overlap_image(S, pgcplan)
-  -- if ~$gc_overlap_plan(pgcplan) \/ $gc_worker_overlap_selected(S, pgcplan, pgcguard.OBJECT, S.GC.SCAN.INDEX)
+  -- if $gc_worker_overlap_attachment(S, pgcplan, pgcguard)
   -- if pgcplan.CALL = pgcguard.SOURCE
   -- if pgcplan.INDEX = pgcguard.INDEX
   -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
