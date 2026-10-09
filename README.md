@@ -370,7 +370,7 @@ retain raw valid results through ordinary handlers, reread live references after
 handler writes and preserve iterator/input cleanup on suspension or throw.
 Eight exact originals and eighteen genuine-source groups/495 ownership and
 warning-authority premises pass at retained cuts.
-Wider raw payload/operand modes and Aggregate yield-from/ordinary-call unpack
+Wider raw payload/operand modes and Aggregate ordinary-call unpack
 remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
@@ -378,7 +378,15 @@ ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 traces. Inputs survive initialization; exception injection preserves ordinary
 catch/finally execution and exception identity. [Delegation](docs/semantics/GENERATOR-DELEGATION.md)
 adds arrays, source Iterators and shared Generator graphs with live raw caches
-and natural return/unwind. [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
+and natural return/unwind. Aggregate yield-from now acquires nested real iterator
+data, retires layers and the original operand before rewind, and treats returned
+Generators as generic iterators with null results. Raw reference caches stay live;
+early cleanup errors retain constructed data until request cleanup, while rewind
+errors release it before catch. Seventeen exact originals and 25 genuine-source
+groups/720 ownership premises pass at the separate cuts in the
+[Aggregate review](coverage/semantics/yield-from-aggregate-review.json).
+Acquired Iterator NaN and changed original operands remain required.
+[Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
 runs pending finally bodies with real scopes, graph links and cached owners.
 Request 340 adds reverse-global and ascending-store close, handler-before-cache
 exception delivery and borrowed zero-owner store buckets. Genuine weak
@@ -444,7 +452,7 @@ Notice callbacks and retired cache readback retain authentic nonowning carriers;
 bounded nonfinalizing global release preserves ordered cache retirement.
 Actual321 passes strict compilation over336 and the reviewed39/301 owner factors;
 earlier source/state cuts retain their inputs.
-IteratorAggregate, wider call forms and reference producers, request/terminal cleanup
+Wider IteratorAggregate consumers, call forms and reference producers, request/terminal cleanup
 and complete destruction/GC remain required.
 [Ordinary array omissions](docs/semantics/ARRAY-OMISSIONS.md) now retain skipped
 slots and exact compiler diagnostic context. Object/frame-dependent destructuring and required
@@ -1692,8 +1700,7 @@ frame with no owned roots, then closes without finally. Other pending startup ro
 required. The [nested ledger](coverage/semantics/fiber-start-nested-aggregate-review.json)
 records eleven normal agreements, two zero-credit Unsupported controls and twenty
 independent reached groups/544 physical premises.
-Foreach/yield-from/ordinary-call unpacking, wider raw payload changes and compound
-selectors remain required.
+Ordinary-call unpacking, wider raw payload changes and compound selectors remain required.
 The undefined-result protocol, request/fatal cleanup and wider Fiber consumers
 remain required.
 

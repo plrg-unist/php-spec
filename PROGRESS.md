@@ -7,6 +7,20 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Aggregate yield-from380 recursively acquires real Iterator/Generator data through
+borrowed getter calls, retires raw layers and the original operand before rewind,
+and keeps returned Generators in generic iterator mode: null result, no send/throw
+forwarding and live raw reference cache. Copied getter frames own This once;
+parked acquisition keeps the real parent resumer/source receipt. Early pending
+cleanup retains constructed data until request cleanup; real rewind errors drop
+it before catch. Seventeen unchanged originals agree across the retained source16
+and owning-reference source1 cuts; strict368 passes at `b1164af45`. Independent
+25/720 physical owner and source-authority premises pass at separate cuts.
+Original compiler/source/fixture failures remain zero. Acquired Iterator NaN warnings,
+changed original operands and ordinary-call Aggregate unpack remain required.
+Actual368 over `7b449476` passes strict compilation at `f4567b30`; private
+source/state cuts retain their inputs. [Yield-from review](coverage/semantics/yield-from-aggregate-review.json).
+
 Bounded assertion quantity warnings retain frozen parsed modes and old returns
 through nested raw writes, throw and restore. Immutable string carriers preserve
 INI identity while ordinary consumers use bytes. Seventeen safe originals retain

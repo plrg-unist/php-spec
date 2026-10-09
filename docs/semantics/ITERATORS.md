@@ -95,7 +95,8 @@ replays the recorded notice prefix and retires only discarded source owners.
 Chronological replay rederives the failed source binding and rollback; the actual
 report requires its failure record and genuine caller cause.
 
-Aggregate yield-from/ordinary-call unpack and
+Aggregate yield-from has its separate [acquisition route](GENERATOR-DELEGATION.md).
+Ordinary-call unpack and
 wider original/reference operand modes remain required. ArrayAccess, wider
 ordinary object/reference traversal and complete lifecycle remain unfinished.
 This milestone does not establish complete traversal or complete PHP core semantics.

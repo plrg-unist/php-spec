@@ -1,0 +1,307 @@
+{
+  "milestone": "IteratorAggregate yield-from acquisition and generic iterator data",
+  "status": "partial; source17/state25 and actual-parent strict368 PASS; independently reviewed, ready for integration",
+  "baseline": "235a74c84c8d08a1e81adeac32605274c91dd76f",
+  "semantic_revision": "b1164af45c660c446dae5b313411a11c75f1763f",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "Zend/zend_vm_def.h:ZEND_YIELD_FROM",
+    "Zend/zend_interfaces.c:zend_user_it_get_new_iterator",
+    "Zend/zend_generators.c:zend_generator_get_next_delegated_value",
+    "Zend/zend_generators.c:zend_generator_get_iterator"
+  ],
+  "scope": [
+    "Borrowed getIterator callbacks recursively acquire each returned Aggregate occurrence, then retire layers inside-out and original input before rewind.",
+    "Returned Generators remain generic iterator data: raw reference cache, null expression result, no send/throw forwarding or shared child graph.",
+    "Stored getter Generator context owns This once; genuine acquisition frames and parent resumer receipts survive Fiber suspension.",
+    "Only constructed iterator data affected by pre-rewind layer/input cleanup exceptions gets one retained request owner; actual rewind errors release data immediately.",
+    "A reference-valued original operand owns its raw cell until input retirement; the independent stored Aggregate payload remains live."
+  ],
+  "sources": {
+    "normal_agreements": 17,
+    "unsupported_controls": 0,
+    "cuts": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/yield-from-aggregate-source-wa0340sc/report.json",
+        "revision": "b1164af45c660c446dae5b313411a11c75f1763f",
+        "selected_ids": [
+          "yield-from-aggregate-stable-iterator",
+          "yield-from-aggregate-nested-owner-order",
+          "yield-from-aggregate-generator-iterator-return-send",
+          "yield-from-aggregate-generator-getter-receiver",
+          "yield-from-aggregate-deeper-getter-parks",
+          "yield-from-aggregate-deeper-getter-throws",
+          "yield-from-aggregate-raw-reference-rejected",
+          "yield-from-aggregate-repeated-ancestor",
+          "yield-from-aggregate-layer-destructor-throws",
+          "yield-from-aggregate-input-destructor-throws-generator",
+          "yield-from-aggregate-generator-throw-not-forwarded",
+          "yield-from-aggregate-empty-generator",
+          "yield-from-aggregate-already-closed-generator",
+          "yield-from-aggregate-generator-reference-cache",
+          "yield-from-aggregate-rewind-throws",
+          "aggregate-yield-from-acquisition-required"
+        ],
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/yield-from-aggregate-source-qj92wjgi/report.json",
+        "revision": "c54e472b05d7f2d31788925bcfd8a92c9eed5d2e",
+        "selected_ids": [
+          "yield-from-aggregate-reference-original-operand"
+        ],
+        "inputs_stable": true,
+        "head_stable": true
+      }
+    ],
+    "affected_historical_control": "aggregate-yield-from-acquisition-required",
+    "historical_control_agreement_credit": 0
+  },
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/yield-from-aggregate-sl-o45ifzdd/report.json",
+    "revision": "b1164af45c660c446dae5b313411a11c75f1763f",
+    "modules": 368,
+    "process_seconds": 120,
+    "passed": true
+  },
+  "native_discovery": {
+    "new_originals": 16,
+    "semantic_agreements": 0,
+    "reports": [
+      "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/yield-from-aggregate-native-1o_93b98/report.json",
+      "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/yield-from-aggregate-rewind-native-4fr9ffj9/report.json",
+      "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/yield-from-aggregate-reference-native-tdn9p5t9/report.json"
+    ],
+    "reused_historical_native_report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-contract-native-cqf5py8a/report.json",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1,
+      "PHP_SPEC_SCRIPT_ENCODING": "unset"
+    },
+    "native_process_seconds": 75,
+    "model_seconds": 60,
+    "model_process_seconds": 75
+  },
+  "states": {
+    "status": "PASS; selected genuine-source cuts only",
+    "runner": "tests/semantics/yield_from_aggregate_review.py",
+    "fixture_revision": "c6124288f7cebe7fc88baaf5c25ef576ff1eac53",
+    "groups": 25,
+    "physical_premises": 720,
+    "driver_clauses": 641,
+    "process_seconds": 120,
+    "selected": [
+      {
+        "id": "stable-global-cv-reference-cell-borrows-original-with-live-identity",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-x2mhpnnz/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 28,
+        "driver_clauses": 26
+      },
+      {
+        "id": "pending-getter-borrows-receiver-and-enters-real-source-frame",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-zpqca1ms/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 36,
+        "driver_clauses": 34
+      },
+      {
+        "id": "pending-getter-rejects-coordinated-source-line-forgery",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-zw41dm_s/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 16,
+        "driver_clauses": 14
+      },
+      {
+        "id": "terminal-transfer-retires-returned-layers-inside-out-and-protects-data",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-7yd2m5mw/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 33,
+        "driver_clauses": 30
+      },
+      {
+        "id": "original-input-retires-before-first-rewind",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-nxwiuls4/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 30,
+        "driver_clauses": 29
+      },
+      {
+        "id": "generic-generator-body-has-one-data-owner-and-real-borrowed-resumer",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-hghc8bg7/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 30,
+        "driver_clauses": 26
+      },
+      {
+        "id": "generic-generator-rejects-cleared-acquisition-with-authentic-result-receipt",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-whlu_zw7/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 19,
+        "driver_clauses": 15
+      },
+      {
+        "id": "ordinary-generator-call-cannot-forge-borrowed-native-operation",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-g3zyrmmy/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 21,
+        "driver_clauses": 17
+      },
+      {
+        "id": "generator-getter-promotes-only-its-copied-frame-to-owned-receiver",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-0r1hab50/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 38,
+        "driver_clauses": 34
+      },
+      {
+        "id": "generator-getter-rejects-coordinated-retained-receipt-and-line-forgery",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-c0qsasju/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 21,
+        "driver_clauses": 16
+      },
+      {
+        "id": "generic-generator-cache-retains-raw-reference-across-global-write",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-n3jdnnlm/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 25,
+        "driver_clauses": 21
+      },
+      {
+        "id": "finite-repeated-ancestor-keeps-each-returned-owner-occurrence",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-2jkn6_r2/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 27,
+        "driver_clauses": 23
+      },
+      {
+        "id": "parked-deeper-getter-retains-input-layer-and-exact-parent-resumer",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-6vdd22tt/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 38,
+        "driver_clauses": 31
+      },
+      {
+        "id": "parked-deeper-getter-rejects-shifted-real-source-frame",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-kkxki34_/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 35,
+        "driver_clauses": 28
+      },
+      {
+        "id": "parked-deeper-getter-rejects-duplicate-authentic-acquisition-owner",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-ke75s9fz/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 35,
+        "driver_clauses": 28
+      },
+      {
+        "id": "raw-reference-rejection-keeps-return-cell-through-authenticated-error-step",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-qt790yzu/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 33,
+        "driver_clauses": 31
+      },
+      {
+        "id": "already-closed-generator-rejection-constructs-no-retained-iterator",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-rbq3_kg2/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 30,
+        "driver_clauses": 28
+      },
+      {
+        "id": "pending-layer-hook-authenticates-real-release-snapshot",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-rfbvw7jo/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 25,
+        "driver_clauses": 24
+      },
+      {
+        "id": "constructed-iterator-pending-error-appends-one-request-data-owner",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-60ghmy4s/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 34,
+        "driver_clauses": 32
+      },
+      {
+        "id": "retained-iterator-rejects-duplicate-authentic-occurrence-index",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-w29zrgk8/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 16,
+        "driver_clauses": 14
+      },
+      {
+        "id": "retained-iterator-rejects-shifted-source-receipt-with-identical-heap",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-infit_ug/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 17,
+        "driver_clauses": 15
+      },
+      {
+        "id": "input-destructor-error-retains-fresh-generator-without-starting-body",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-z926hlh3/report.json",
+        "revision": "c3c8264431733cd2244ef566fb566a7f8bf6afe7",
+        "physical_premises": 20,
+        "driver_clauses": 18
+      },
+      {
+        "id": "rewind-error-releases-data-before-catch-and-never-enters-retained-list",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-785xzn30/report.json",
+        "revision": "c6124288f7cebe7fc88baaf5c25ef576ff1eac53",
+        "physical_premises": 36,
+        "driver_clauses": 33
+      },
+      {
+        "id": "reference-original-input-is-one-owning-cell-with-borrowed-getter",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-lsosdgi3/report.json",
+        "revision": "c6124288f7cebe7fc88baaf5c25ef576ff1eac53",
+        "physical_premises": 33,
+        "driver_clauses": 31
+      },
+      {
+        "id": "reference-original-input-release-keeps-cell-payload-and-protected-data",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-hgwee0na/report.json",
+        "revision": "c6124288f7cebe7fc88baaf5c25ef576ff1eac53",
+        "physical_premises": 44,
+        "driver_clauses": 43
+      }
+    ]
+  },
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/yield-from-aggregate-sl-49nwkp4t/report.json",
+      "credit": 0,
+      "reason": "retained INDEX record syntax binding before source execution"
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/yield-from-aggregate-source-r330fyvl/report.json",
+      "credit": 0,
+      "reason": "first unchanged imported global CV rejected by reference-cell flag; remaining15 unrun"
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-20/.tools/fiber-state-review-y139hanp/report.json",
+      "credit": 0,
+      "reason": "rewind cleanup fixture expected an immediate search although the real operation stores the Throwable in PENDING until release finishes"
+    }
+  ],
+  "required_gaps": [
+    "Acquired Iterator valid NaN warning continuation",
+    "Changed original CV/reference identity and wider operand modes",
+    "Wider running-Generator transfers and lifecycle",
+    "Ordinary-call IteratorAggregate unpack",
+    "Complete PHP core semantics"
+  ],
+  "actual_parent_composition": {
+    "parent": "7b449476b86409b1c4a25882b6215f9f320f0ad3",
+    "semantic_revision": "f4567b30a1489aff7ebd4375db13e81c1d1e1d5f",
+    "compiler_report": "/home/user/workspace/php-spec/.tools/calls-yield-from-aggregate-current-20/.tools/yield-from-aggregate-current-sl-6wvf2j1w/report.json",
+    "modules": 368,
+    "passed": true,
+    "inputs_stable": true,
+    "retained_private_cuts": "source16 at b116 plus source1 at c54; first22 states at c3 plus corrected/new3 at c612; no renewed credit"
+  }
+}

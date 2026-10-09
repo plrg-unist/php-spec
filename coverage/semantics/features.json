@@ -3344,13 +3344,21 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/380-yield-from-aggregate.watsup"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/yield_from_aggregate_sources.py"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. That earlier constant-prepass cut did not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Module380 supports nested IteratorAggregate yield-from acquisition through borrowed getters, then inside-out layer and original-input retirement before rewind. Returned Generators use generic iterator data: null result, ignored send values, outer exception injection and live raw reference cache. Copied getter frames own This once; genuine parked acquisition preserves parent resumer authority. Constructed data survives early cleanup exceptions until request cleanup, while real rewind errors release it immediately. Original reference operands retain raw-cell ownership. Seventeen normal originals and 25 genuine-source groups/720 physical premises pass at separate cuts; strict368 passes at b116. Changed original operands, acquired Iterator NaN, ordinary-call unpack and wider lifecycle remain required; historical failures retain zero credit. See yield-from-aggregate-review.json.",
+      "helper_tests": [
+        "tests/semantics/yield_from_aggregate_review.py"
+      ],
+      "evidence": [
+        "coverage/semantics/yield-from-aggregate-review.json"
+      ]
     },
     {
       "node": "Identifier",
@@ -12774,12 +12782,14 @@
         "spec/semantics/224-user-iterator.watsup",
         "spec/semantics/230-iterator-declaration-notices.watsup",
         "spec/semantics/376-fiber-start-traversable.watsup",
-        "spec/semantics/378-foreach-aggregate.watsup"
+        "spec/semantics/378-foreach-aggregate.watsup",
+        "spec/semantics/380-yield-from-aggregate.watsup"
       ],
       "helper_tests": [
         "tests/semantics/fiber_start_aggregate_review.py",
         "tests/semantics/fiber_start_nested_aggregate_review.py",
-        "tests/semantics/foreach_aggregate_review.py"
+        "tests/semantics/foreach_aggregate_review.py",
+        "tests/semantics/yield_from_aggregate_review.py"
       ],
       "source_tests": [
         "tests/semantics/fiber_start_aggregate_sources.py",
@@ -12789,16 +12799,18 @@
         "tests/semantics/foreach_aggregate_sources.py",
         "tests/semantics/foreach_aggregate_cases.json",
         "tests/semantics/foreach_valid_nan_sources.py",
-        "tests/semantics/foreach_valid_nan_cases.json"
+        "tests/semantics/foreach_valid_nan_cases.json",
+        "tests/semantics/yield_from_aggregate_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_interfaces.c",
         "coverage/semantics/fiber-start-aggregate-review.json",
         "coverage/semantics/fiber-start-nested-aggregate-review.json",
         "coverage/semantics/foreach-aggregate-review.json",
-        "coverage/semantics/foreach-valid-nan-review.json"
+        "coverage/semantics/foreach-valid-nan-review.json",
+        "coverage/semantics/yield-from-aggregate-review.json"
       ],
-      "review": "Real getIterator contracts and single Aggregate-to-Iterator/Generator START acquisition preserve borrowed receiver, original input and distinct iterator data. Thirteen normal and five exact native255 fatal comparisons pass; four named Unsupported acquisition controls have zero agreement. Fourteen independent exact-source owner/frame/continuation groups425 physical premises pass at their separate cuts; the live class-link and raw-return continuation failures remain preserved. Foreach/yield-from/ordinary-call unpacking remain required; unsafe last-owner mutation is excluded from these witnesses. Recursive Aggregate START acquisition preserves repeated raw retval owners and inside-out retirement before rewind, including pending destructor throw cleanup. Eleven native-profile normal comparisons and two Unsupported0 controls pass. Pending Generator startup uses real literal output/scalar yield and closes a frame with no owned roots without finally; wider startup remains required. Twenty independent source-reached groups/544 physical premises pass at separate cuts in fiber-start-nested-aggregate-review.json; original failures retain zero credit. Module378 adds source Aggregate foreach acquisition and exact layer/raw-valid/input retirement before ordinary Iterator/Generator traversal. Twenty selected normal originals and a zero-agreement NaN control retain separate cuts; 26 source-reached groups/719 physical premises pass at their separate retained cuts. At those earlier cuts, changed original operands, wider reference locations and foreach NaN handlers remained required; see foreach-aggregate-review.json. Initial Aggregate and later ordinary Iterator foreach valid NaN warnings retain raw retval through generic handlers, reread live numeric reference payloads once and clear raw owners before current/input retirement. Eight exact native-grounded originals agree on reference/copy, park/throw and default-warning behavior at6ce4; eighteen independent genuine-source groups/495 physical premises pass at retained cuts. Foreign raw payload changes remain explicit Unsupported; prior cuts receive no renewed credit. See foreach-valid-nan-review.json."
+      "review": "Real getIterator contracts and single Aggregate-to-Iterator/Generator START acquisition preserve borrowed receiver, original input and distinct iterator data. Thirteen normal and five exact native255 fatal comparisons pass; four named Unsupported acquisition controls have zero agreement. Fourteen independent exact-source owner/frame/continuation groups425 physical premises pass at their separate cuts; the live class-link and raw-return continuation failures remain preserved. At that earlier cut, foreach/yield-from/ordinary-call unpacking remained required; unsafe last-owner mutation is excluded from these witnesses. Recursive Aggregate START acquisition preserves repeated raw retval owners and inside-out retirement before rewind, including pending destructor throw cleanup. Eleven native-profile normal comparisons and two Unsupported0 controls pass. Pending Generator startup uses real literal output/scalar yield and closes a frame with no owned roots without finally; wider startup remains required. Twenty independent source-reached groups/544 physical premises pass at separate cuts in fiber-start-nested-aggregate-review.json; original failures retain zero credit. Module378 adds source Aggregate foreach acquisition and exact layer/raw-valid/input retirement before ordinary Iterator/Generator traversal. Twenty selected normal originals and a zero-agreement NaN control retain separate cuts; 26 source-reached groups/719 physical premises pass at their separate retained cuts. At those earlier cuts, changed original operands, wider reference locations and foreach NaN handlers remained required; see foreach-aggregate-review.json. Initial Aggregate and later ordinary Iterator foreach valid NaN warnings retain raw retval through generic handlers, reread live numeric reference payloads once and clear raw owners before current/input retirement. Eight exact native-grounded originals agree on reference/copy, park/throw and default-warning behavior at6ce4; eighteen independent genuine-source groups/495 physical premises pass at retained cuts. Foreign raw payload changes remain explicit Unsupported; prior cuts receive no renewed credit. See foreach-valid-nan-review.json. Module380 supports nested IteratorAggregate yield-from acquisition through borrowed getters, then inside-out layer and original-input retirement before rewind. Returned Generators use generic iterator data: null result, ignored send values, outer exception injection and live raw reference cache. Copied getter frames own This once; genuine parked acquisition preserves parent resumer authority. Constructed data survives early cleanup exceptions until request cleanup, while real rewind errors release it immediately. Original reference operands retain raw-cell ownership. Seventeen normal originals and 25 genuine-source groups/720 physical premises pass at separate cuts; strict368 passes at b116. Changed original operands, acquired Iterator NaN, ordinary-call unpack and wider lifecycle remain required; historical failures retain zero credit. See yield-from-aggregate-review.json."
     },
     {
       "id": "protocols.ArrayAccess",
@@ -14418,7 +14430,8 @@
         "spec/semantics/311-arrow-generators.watsup",
         "spec/semantics/80-call-control.watsup",
         "spec/semantics/328-generator-reference-yields.watsup",
-        "spec/semantics/378-foreach-aggregate.watsup"
+        "spec/semantics/378-foreach-aggregate.watsup",
+        "spec/semantics/380-yield-from-aggregate.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_review_protocol.py",
@@ -14429,7 +14442,8 @@
         "tests/semantics/arrow_generator_integration_protocol.py",
         "tests/semantics/arrow_generator_cleanup_protocol.py",
         "tests/semantics/reference_yield_protocol.py",
-        "tests/semantics/foreach_aggregate_review.py"
+        "tests/semantics/foreach_aggregate_review.py",
+        "tests/semantics/yield_from_aggregate_review.py"
       ],
       "source_tests": [
         "tests/semantics/generator_review.py",
@@ -14438,16 +14452,18 @@
         "tests/semantics/arrow_generator_integration.py",
         "tests/semantics/reference_yield_prepare.py",
         "tests/semantics/foreach_aggregate_sources.py",
-        "tests/semantics/foreach_aggregate_cases.json"
+        "tests/semantics/foreach_aggregate_cases.json",
+        "tests/semantics/yield_from_aggregate_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
         "docs/semantics/ARROW-GENERATORS.md",
         "coverage/semantics/arrow-generator-review.json",
         "docs/semantics/GENERATOR-REFERENCE-YIELDS.md",
-        "coverage/semantics/foreach-aggregate-review.json"
+        "coverage/semantics/foreach-aggregate-review.json",
+        "coverage/semantics/yield-from-aggregate-review.json"
       ],
-      "review": "Generator280 eagerly receives ordinary arguments/defaults and creates an object-owned deferred frame for named functions, ordinary Closures and object methods. Source-supertype rejection and accepted one-level intersections are pinned at e235. Further creation scopes, byref generators and lifecycle remain required; see GENERATORS.md. Integrated Arrow Generator311 retains its validated frozen310 cut: eager receives, deferred captures, sent/delegated implicit returns, original signatures and lexical/receiver scope use accepted280/95/118. Value-CV warnings freeze null before delayed keys; handler throws retain the same Throwable/key and install the closed Closure owner before frame retirement. Separate cuts cover44 normal sources, nine compiler rejections and10 genuine strict-SL programs/groups with987 setup-inclusive premises; two required Unsupported controls and original failures earn zero agreement. Literal GLOBALS uses a matching explicit-request profile and array-only cached-key role. Frozen68393/286+311 composition separately passes compiler287, the fresh default/Fiber/Stringable-eval source and148 independent reached premises. Actual2a2e/291+311 composition separately passes compiler292, the same original and75 physical-HANDLE/Arrow-close premises with new gc/clone validation. Canonical294 passes strict compilation after independent ARG309/316 compatibility review; earlier source/state cuts retain their own inputs. Key-warning ingress, reference yields and wider lifecycle stay required; paused generic returns remain excluded. Module328 adds bounded source-owned reference caches and effective foreach reference mode, including inner-reference destructuring; prior reference-yield frontiers are superseded only within GENERATOR-REFERENCE-YIELDS.md. Module378 retains a real foreach getIterator Generator receiver/statement/line receipt through last-owner finally throw and Fiber suspension. Authenticated saved close IDs participate in unique running-Generator ownership. Wider Generator transfer contexts remain required; see foreach-aggregate-review.json for the separate source/state cuts."
+      "review": "Generator280 eagerly receives ordinary arguments/defaults and creates an object-owned deferred frame for named functions, ordinary Closures and object methods. Source-supertype rejection and accepted one-level intersections are pinned at e235. Further creation scopes, byref generators and lifecycle remain required; see GENERATORS.md. Integrated Arrow Generator311 retains its validated frozen310 cut: eager receives, deferred captures, sent/delegated implicit returns, original signatures and lexical/receiver scope use accepted280/95/118. Value-CV warnings freeze null before delayed keys; handler throws retain the same Throwable/key and install the closed Closure owner before frame retirement. Separate cuts cover44 normal sources, nine compiler rejections and10 genuine strict-SL programs/groups with987 setup-inclusive premises; two required Unsupported controls and original failures earn zero agreement. Literal GLOBALS uses a matching explicit-request profile and array-only cached-key role. Frozen68393/286+311 composition separately passes compiler287, the fresh default/Fiber/Stringable-eval source and148 independent reached premises. Actual2a2e/291+311 composition separately passes compiler292, the same original and75 physical-HANDLE/Arrow-close premises with new gc/clone validation. Canonical294 passes strict compilation after independent ARG309/316 compatibility review; earlier source/state cuts retain their own inputs. Key-warning ingress, reference yields and wider lifecycle stay required; paused generic returns remain excluded. Module328 adds bounded source-owned reference caches and effective foreach reference mode, including inner-reference destructuring; prior reference-yield frontiers are superseded only within GENERATOR-REFERENCE-YIELDS.md. Module378 retains a real foreach getIterator Generator receiver/statement/line receipt through last-owner finally throw and Fiber suspension. Authenticated saved close IDs participate in unique running-Generator ownership. Wider Generator transfer contexts remain required; see foreach-aggregate-review.json for the separate source/state cuts. Module380 supports nested IteratorAggregate yield-from acquisition through borrowed getters, then inside-out layer and original-input retirement before rewind. Returned Generators use generic iterator data: null result, ignored send values, outer exception injection and live raw reference cache. Copied getter frames own This once; genuine parked acquisition preserves parent resumer authority. Constructed data survives early cleanup exceptions until request cleanup, while real rewind errors release it immediately. Original reference operands retain raw-cell ownership. Seventeen normal originals and 25 genuine-source groups/720 physical premises pass at separate cuts; strict368 passes at b116. Changed original operands, acquired Iterator NaN, ordinary-call unpack and wider lifecycle remain required; historical failures retain zero credit. See yield-from-aggregate-review.json."
     },
     {
       "id": "resumable.yield",
@@ -14556,24 +14572,28 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/289-generator-delegation.watsup",
-        "spec/semantics/360-generator-request-delegation.watsup"
+        "spec/semantics/360-generator-request-delegation.watsup",
+        "spec/semantics/380-yield-from-aggregate.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_delegation_protocol.py",
-        "tests/semantics/generator_request_delegation_protocol.py"
+        "tests/semantics/generator_request_delegation_protocol.py",
+        "tests/semantics/yield_from_aggregate_review.py"
       ],
       "source_tests": [
         "tests/semantics/generator_delegation_review.py",
         "tests/semantics/generator_request_delegation_sources.py",
-        "tests/semantics/generator_request_delegation_peer_sources.py"
+        "tests/semantics/generator_request_delegation_peer_sources.py",
+        "tests/semantics/yield_from_aggregate_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
         "vendor/php-src/Zend/zend_interfaces.c",
         "vendor/php-src/Zend/zend_operators.h",
-        "coverage/semantics/generator-request-delegation-review.json"
+        "coverage/semantics/generator-request-delegation-review.json",
+        "coverage/semantics/yield-from-aggregate-review.json"
       ],
-      "review": "Generator289 implements arrays, source Iterators and shared/nested Generator graphs with live raw caches, input forwarding, natural return transfer and authenticated callback scopes. Independent52 normal/4 compiler agreements retain separate source cuts in GENERATOR-DELEGATION.md; three exact Unsupported controls earn zero. Ten source-derived protocol programs pass12 finite groups/618 reached conditions across separate AL/SL cuts, including source bindings and repeated setup. Original failures retain zero; actual38f1/273+289 compiles274 modules and adds one normal Fiber/property-based ArrayAccess/current reference interaction; two new bounded ingress/owner groups pass87 setup-inclusive premises in a separate actual SL cut. Original reference-dimension/property-ingress failures and the reached byref-getter boundary retain zero agreement. This source does not execute287 eval/include warning continuations. IteratorAggregate acquisition, broader APIs, reference yields, complete destruction/GC and other NaN-handler raw payload tags remain required. Ordinary last-owner forced close is covered separately by303; abrupt terminal cleanup remains required. Module360 adds normal request delegation with actual input-before-finally detachment, independent CV owners, shared store order and physical CURRENT cache release. Nested normal handlers retain both close claims/cache and authenticate queued source views without weakening actual handler admission. Eight distinct normal originals and 553 new strict premises retain separate private cuts; consumed-cell/payload-copy negatives bind the object\u2019s own storage stage. Original failures remain zero; abrupt terminal cleanup, parked/escaped storage and broader lifecycle work remain required. See generator-request-delegation-review.json."
+      "review": "Generator289 implements arrays, source Iterators and shared/nested Generator graphs with live raw caches, input forwarding, natural return transfer and authenticated callback scopes. Independent52 normal/4 compiler agreements retain separate source cuts in GENERATOR-DELEGATION.md; three exact Unsupported controls earn zero. Ten source-derived protocol programs pass12 finite groups/618 reached conditions across separate AL/SL cuts, including source bindings and repeated setup. Original failures retain zero; actual38f1/273+289 compiles274 modules and adds one normal Fiber/property-based ArrayAccess/current reference interaction; two new bounded ingress/owner groups pass87 setup-inclusive premises in a separate actual SL cut. Original reference-dimension/property-ingress failures and the reached byref-getter boundary retain zero agreement. This source does not execute287 eval/include warning continuations. At that earlier direct-delegation cut, IteratorAggregate acquisition, broader APIs, reference yields, complete destruction/GC and other NaN-handler raw payload tags remained required. Ordinary last-owner forced close is covered separately by303; abrupt terminal cleanup remains required. Module360 adds normal request delegation with actual input-before-finally detachment, independent CV owners, shared store order and physical CURRENT cache release. Nested normal handlers retain both close claims/cache and authenticate queued source views without weakening actual handler admission. Eight distinct normal originals and 553 new strict premises retain separate private cuts; consumed-cell/payload-copy negatives bind the object\u2019s own storage stage. Original failures remain zero; abrupt terminal cleanup, parked/escaped storage and broader lifecycle work remain required. See generator-request-delegation-review.json. Module380 supports nested IteratorAggregate yield-from acquisition through borrowed getters, then inside-out layer and original-input retirement before rewind. Returned Generators use generic iterator data: null result, ignored send values, outer exception injection and live raw reference cache. Copied getter frames own This once; genuine parked acquisition preserves parent resumer authority. Constructed data survives early cleanup exceptions until request cleanup, while real rewind errors release it immediately. Original reference operands retain raw-cell ownership. Seventeen normal originals and 25 genuine-source groups/720 physical premises pass at separate cuts; strict368 passes at b116. Changed original operands, acquired Iterator NaN, ordinary-call unpack and wider lifecycle remain required; historical failures retain zero credit. See yield-from-aggregate-review.json."
     },
     {
       "id": "resumable.send",
@@ -14628,25 +14648,29 @@
       "implementation": [
         "spec/semantics/280-generators.watsup",
         "spec/semantics/378-foreach-aggregate.watsup",
-        "spec/semantics/224-user-iterator.watsup"
+        "spec/semantics/224-user-iterator.watsup",
+        "spec/semantics/380-yield-from-aggregate.watsup"
       ],
       "helper_tests": [
         "tests/semantics/generator_review_protocol.py",
-        "tests/semantics/foreach_aggregate_review.py"
+        "tests/semantics/foreach_aggregate_review.py",
+        "tests/semantics/yield_from_aggregate_review.py"
       ],
       "source_tests": [
         "tests/semantics/generator_review.py",
         "tests/semantics/foreach_aggregate_sources.py",
         "tests/semantics/foreach_aggregate_cases.json",
         "tests/semantics/foreach_valid_nan_sources.py",
-        "tests/semantics/foreach_valid_nan_cases.json"
+        "tests/semantics/foreach_valid_nan_cases.json",
+        "tests/semantics/yield_from_aggregate_sources.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_generators.c",
         "coverage/semantics/foreach-aggregate-review.json",
-        "coverage/semantics/foreach-valid-nan-review.json"
+        "coverage/semantics/foreach-valid-nan-review.json",
+        "coverage/semantics/yield-from-aggregate-review.json"
       ],
-      "review": "Generator280 supports literal rewind/current/key/valid/next calls and value foreach with real resumer traces, cached running getters and positional over-arity effects. Source and independent frame/owner coverage are linked in GENERATORS.md. Send/throw, dynamic/nullsafe/named/unpacked calls, reference traversal and lifecycle remain required. Module378 adds source Aggregate foreach acquisition and exact layer/raw-valid/input retirement before ordinary Iterator/Generator traversal. Twenty selected normal originals and a zero-agreement NaN control retain separate cuts; 26 source-reached groups/719 physical premises pass at their separate retained cuts. At those earlier cuts, changed original operands, wider reference locations and foreach NaN handlers remained required; see foreach-aggregate-review.json. Initial Aggregate and later ordinary Iterator foreach valid NaN warnings retain raw retval through generic handlers, reread live numeric reference payloads once and clear raw owners before current/input retirement. Eight exact native-grounded originals agree on reference/copy, park/throw and default-warning behavior at6ce4; eighteen independent genuine-source groups/495 physical premises pass at retained cuts. Foreign raw payload changes remain explicit Unsupported; prior cuts receive no renewed credit. See foreach-valid-nan-review.json."
+      "review": "Generator280 supports literal rewind/current/key/valid/next calls and value foreach with real resumer traces, cached running getters and positional over-arity effects. Source and independent frame/owner coverage are linked in GENERATORS.md. Send/throw, dynamic/nullsafe/named/unpacked calls, reference traversal and lifecycle remain required. Module378 adds source Aggregate foreach acquisition and exact layer/raw-valid/input retirement before ordinary Iterator/Generator traversal. Twenty selected normal originals and a zero-agreement NaN control retain separate cuts; 26 source-reached groups/719 physical premises pass at their separate retained cuts. At those earlier cuts, changed original operands, wider reference locations and foreach NaN handlers remained required; see foreach-aggregate-review.json. Initial Aggregate and later ordinary Iterator foreach valid NaN warnings retain raw retval through generic handlers, reread live numeric reference payloads once and clear raw owners before current/input retirement. Eight exact native-grounded originals agree on reference/copy, park/throw and default-warning behavior at6ce4; eighteen independent genuine-source groups/495 physical premises pass at retained cuts. Foreign raw payload changes remain explicit Unsupported; prior cuts receive no renewed credit. See foreach-valid-nan-review.json. Module380 supports nested IteratorAggregate yield-from acquisition through borrowed getters, then inside-out layer and original-input retirement before rewind. Returned Generators use generic iterator data: null result, ignored send values, outer exception injection and live raw reference cache. Copied getter frames own This once; genuine parked acquisition preserves parent resumer authority. Constructed data survives early cleanup exceptions until request cleanup, while real rewind errors release it immediately. Original reference operands retain raw-cell ownership. Seventeen normal originals and 25 genuine-source groups/720 physical premises pass at separate cuts; strict368 passes at b116. Changed original operands, acquired Iterator NaN, ordinary-call unpack and wider lifecycle remain required; historical failures retain zero credit. See yield-from-aggregate-review.json."
     },
     {
       "id": "resumable.generator-close",

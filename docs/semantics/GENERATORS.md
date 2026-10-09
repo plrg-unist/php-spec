@@ -70,7 +70,9 @@ Array, source Iterator and Generator graph delegation are covered by
 live callback references and natural owner cleanup. [Reference yields328](GENERATOR-REFERENCE-YIELDS.md)
 add live cells, value-API snapshots, foreach/destructuring aliases and authentic
 Notice/cleanup readback. Aggregate acquisition has separate START and
-[foreach scopes](ITERATORS.md). Aggregate yield-from/ordinary-call unpack,
+[foreach scopes](ITERATORS.md); Module380 adds bounded nested Aggregate
+[yield-from acquisition](GENERATOR-DELEGATION.md) with generic Generator data,
+null results and phase-specific error cleanup. Aggregate ordinary-call unpack,
 broader reference producers, dynamic/nullsafe API calls, named/unpacked API
 arguments, scoped static and other implicit callback creation, and creation
 through changed/imported caller scope remain required.

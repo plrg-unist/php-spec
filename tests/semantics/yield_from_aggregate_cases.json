@@ -1,0 +1,172 @@
+[
+  {
+    "id": "yield-from-aggregate-stable-iterator",
+    "source": "<?php\nclass YieldFromStableIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { echo 'V|'; return $this->more; }\n    public function current(): mixed { echo 'C|'; return 7; }\n    public function key(): mixed { echo 'K|'; return 11; }\n    public function next(): void { echo 'X|'; $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass YieldFromStableAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'G|';\n        return $iterator;\n    }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromStable20() {\n    global $aggregate;\n    $result = yield from $aggregate;\n    echo 'N', (int)($result === null), '|';\n    return 17;\n}\n$iterator = new YieldFromStableIterator20;\n$aggregate = new YieldFromStableAggregate20;\n$outer = yieldFromStable20();\nforeach ($outer as $key => $value) { echo 'B', $key, ':', $value, '|'; }\necho $outer->getReturn(), '|';\n$aggregate = null;\n$iterator = null;\necho 'E';\n",
+    "source_sha256": "a6a3c774529b7312f6793f4dfc1f56e6b09d67159b5954b9b6916cfba34a391c",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|C|K|B11:7|X|V|N1|17|A|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-nested-owner-order",
+    "source": "<?php\nclass YieldFromFreshIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { echo 'V|'; return $this->more; }\n    public function current(): mixed { echo 'C|'; return 7; }\n    public function key(): mixed { echo 'K|'; return 11; }\n    public function next(): void { echo 'X|'; $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass YieldFromInnerAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'N|'; return new YieldFromFreshIterator20; }\n    public function __destruct() { echo 'n|'; }\n}\nclass YieldFromMiddleAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'M|'; return new YieldFromInnerAggregate20; }\n    public function __destruct() { echo 'm|'; }\n}\nclass YieldFromOuterAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new YieldFromMiddleAggregate20; }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromNested20() {\n    $result = yield from new YieldFromOuterAggregate20;\n    echo 'N', (int)($result === null), '|';\n    return 17;\n}\n$outer = yieldFromNested20();\nforeach ($outer as $key => $value) { echo 'B', $key, ':', $value, '|'; }\necho $outer->getReturn();\n",
+    "source_sha256": "527d4c6a05864bca11b0071ae2f14a4b41430275ea67318fa7700be12dc096df",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "O|M|N|n|m|A|W|V|C|K|B11:7|X|V|I|N1|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-generator-iterator-return-send",
+    "source": "<?php\nfunction yieldFromPlainInner20() {\n    try {\n        echo 'Y|';\n        $received = yield 11 => 7;\n        echo 'S', (int)($received === null), '|';\n        return 23;\n    } finally { echo 'F|'; }\n}\nclass YieldFromPlainGeneratorAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'G|'; return yieldFromPlainInner20(); }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromPlainOuter20() {\n    $result = yield from new YieldFromPlainGeneratorAggregate20;\n    echo 'N', (int)($result === null), '|';\n    return 17;\n}\n$outer = yieldFromPlainOuter20();\necho $outer->current(), ':', $outer->key(), '|';\necho (int)($outer->send(99) === null), '|', $outer->getReturn();\n",
+    "source_sha256": "97ec5a41f46f61ab5647951d23647cc6bbbafd4b0b13c23e56496f6ea5440c85",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|Y|7:11|S1|F|N1|1|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-generator-getter-receiver",
+    "source": "<?php\nclass YieldFromMethodGeneratorAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        try { echo 'Y|'; yield 11 => 7; return 23; }\n        finally { echo 'F|'; }\n    }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromMethodOuter20() {\n    $result = yield from new YieldFromMethodGeneratorAggregate20;\n    echo 'N', (int)($result === null), '|';\n    return 17;\n}\n$outer = yieldFromMethodOuter20();\nforeach ($outer as $key => $value) { echo 'B', $key, ':', $value, '|'; }\necho $outer->getReturn();\n",
+    "source_sha256": "d2cbc357963be35a037e86a10c9fc78fef312bf1b6e9c6ae2b49152a8b80dfab",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "Y|B11:7|F|A|N1|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-deeper-getter-parks",
+    "source": "<?php\nclass YieldFromParkedIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass YieldFromParkedInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        echo 'N|';\n        Fiber::suspend('acquire');\n        echo 'R|';\n        return new YieldFromParkedIterator20;\n    }\n    public function __destruct() { echo 'n|'; }\n}\nclass YieldFromParkedOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new YieldFromParkedInner20; }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromParked20() {\n    $result = yield from new YieldFromParkedOuter20;\n    echo 'N', (int)($result === null), '|';\n    return 17;\n}\n$outer = yieldFromParked20();\n$fiber = new Fiber(static function () use ($outer) {\n    foreach ($outer as $key => $value) { echo 'B', $key, ':', $value, '|'; }\n    return 23;\n});\necho $fiber->start(), '|', (int)$fiber->isSuspended(), '|', (int)$fiber->isTerminated(), '|';\n$fiber->resume();\necho $outer->getReturn(), '|', $fiber->getReturn(), '|', (int)$fiber->isTerminated();\n",
+    "source_sha256": "a83947f7ee9142e02343779d7bb021ee18578c6a927900d3577b8aa9bf3bf8f9",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|acquire|1|0|R|n|A|W|B11:7|I|N1|17|23|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-deeper-getter-throws",
+    "source": "<?php\nclass YieldFromThrowingInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $original;\n        echo 'N|';\n        throw $original;\n    }\n    public function __destruct() { echo 'n|'; }\n}\nclass YieldFromThrowingOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new YieldFromThrowingInner20; }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromGetterThrow20() {\n    global $original;\n    try { yield from new YieldFromThrowingOuter20; }\n    catch (Throwable $error) { echo (int)($error === $original), '|'; }\n    finally { echo 'F|'; }\n    return 17;\n}\n$original = new Exception('getter');\n$outer = yieldFromGetterThrow20();\necho (int)$outer->valid(), '|', $outer->getReturn();\n",
+    "source_sha256": "12d4b7507b26638466138b032785892835470969aea5b79e3203a80b2a7affa1",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|n|A|1|F|0|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-raw-reference-rejected",
+    "source": "<?php\nclass YieldFromReferenceIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass YieldFromReferenceAggregate20 implements IteratorAggregate {\n    public function &getIterator(): Traversable {\n        global $iterator;\n        echo 'G|';\n        return $iterator;\n    }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromReference20() {\n    try { yield from new YieldFromReferenceAggregate20; }\n    catch (Throwable $error) { echo get_class($error), '|', $error->getMessage(), '|'; }\n    return 17;\n}\n$iterator = new YieldFromReferenceIterator20;\n$outer = yieldFromReference20();\necho (int)$outer->valid(), '|', $outer->getReturn(), '|';\n$iterator = null;\necho 'E';\n",
+    "source_sha256": "c67bd528fbd298b98f018f8909c3028f5b7005e2269f27eedbed0a901f6d8662",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|Exception|Objects returned by YieldFromReferenceAggregate20::getIterator() must be traversable or implement interface Iterator|0|17|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-repeated-ancestor",
+    "source": "<?php\nclass YieldFromRepeatedIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass YieldFromRepeatedOuter20 implements IteratorAggregate {\n    private int $calls = 0;\n    public function getIterator(): Traversable {\n        global $middle;\n        ++$this->calls;\n        echo 'O', $this->calls, '|';\n        if ($this->calls === 1) { return $middle; }\n        return new YieldFromRepeatedIterator20;\n    }\n    public function __destruct() { echo 'A|'; }\n}\nclass YieldFromRepeatedMiddle20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $aggregate;\n        echo 'M|';\n        return $aggregate;\n    }\n    public function __destruct() { echo 'm|'; }\n}\nfunction yieldFromRepeated20() {\n    global $aggregate;\n    return yield from $aggregate;\n}\n$aggregate = new YieldFromRepeatedOuter20;\n$middle = new YieldFromRepeatedMiddle20;\n$outer = yieldFromRepeated20();\nforeach ($outer as $key => $value) { echo 'B', $key, ':', $value, '|'; }\necho 'N', (int)($outer->getReturn() === null), '|';\n$middle = null;\n$aggregate = null;\necho 'E';\n",
+    "source_sha256": "ad139387928b79d8024241bad0f85725c16ef87a7874c01efc66f43fca89aa3d",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "O1|M|O2|W|B11:7|I|N1|m|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-layer-destructor-throws",
+    "source": "<?php\nclass YieldFromPendingIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { echo 'V|'; return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass YieldFromPendingInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'N|'; return new YieldFromPendingIterator20; }\n    public function __destruct() { global $original; echo 'n|'; throw $original; }\n}\nclass YieldFromPendingMiddle20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'M|'; return new YieldFromPendingInner20; }\n    public function __destruct() { echo 'm|'; }\n}\nclass YieldFromPendingOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new YieldFromPendingMiddle20; }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromLayerThrow20() {\n    global $original;\n    try { yield from new YieldFromPendingOuter20; }\n    catch (Throwable $error) { echo (int)($error === $original), '|'; }\n    return 17;\n}\n$original = new Exception('layer');\n$outer = yieldFromLayerThrow20();\necho (int)$outer->valid(), '|', $outer->getReturn();\n",
+    "source_sha256": "a5d7918af8b0f9c7a426b59af4e53ffa02706ae78fe4201e7f66db16b5699a7a",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "O|M|N|n|m|A|1|0|17I|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-input-destructor-throws-generator",
+    "source": "<?php\nfunction yieldFromUnstartedInner20() {\n    try { echo 'Y|'; yield 7; }\n    finally { echo 'F|'; }\n}\nclass YieldFromThrowingInput20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'G|'; return yieldFromUnstartedInner20(); }\n    public function __destruct() { global $original; echo 'A|'; throw $original; }\n}\nfunction yieldFromInputThrow20() {\n    global $original;\n    try { yield from new YieldFromThrowingInput20; }\n    catch (Throwable $error) { echo (int)($error === $original), '|'; }\n    return 17;\n}\n$original = new Exception('input');\n$outer = yieldFromInputThrow20();\necho (int)$outer->valid(), '|', $outer->getReturn();\n",
+    "source_sha256": "841028b8ff6b005cae8311b6d0a37cc253f49e60eb2326f595e61505eb966eb7",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|1|0|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-generator-throw-not-forwarded",
+    "source": "<?php\nfunction yieldFromThrowInner20() {\n    try { echo 'Y|'; yield 7; }\n    catch (Throwable $error) { echo 'L|'; yield 9; }\n    finally { echo 'F|'; }\n}\nclass YieldFromThrowGeneratorAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'G|'; return yieldFromThrowInner20(); }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromThrowOuter20() {\n    global $original;\n    try { yield from new YieldFromThrowGeneratorAggregate20; }\n    catch (Throwable $error) { echo 'H', (int)($error === $original), '|'; }\n    return 17;\n}\n$original = new Exception('injected');\n$outer = yieldFromThrowOuter20();\necho $outer->current(), '|';\necho (int)($outer->throw($original) === null), '|', $outer->getReturn();\n",
+    "source_sha256": "b5f056421b587d6bbbf75c42be1c5bfb112eaad8b3c3bd3ddee743e75345f19a",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|Y|7|F|H1|1|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-empty-generator",
+    "source": "<?php\nfunction yieldFromEmptyInner20() {\n    try { echo 'Y|'; if (false) { yield 7; } return 23; }\n    finally { echo 'F|'; }\n}\nclass YieldFromEmptyGeneratorAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'G|'; return yieldFromEmptyInner20(); }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromEmptyOuter20() {\n    $result = yield from new YieldFromEmptyGeneratorAggregate20;\n    echo 'N', (int)($result === null), '|';\n    return 17;\n}\n$outer = yieldFromEmptyOuter20();\necho (int)$outer->valid(), '|', $outer->getReturn();\n",
+    "source_sha256": "34d5b5bc415aedc1c2faf9fbe429449181739a5bb42768510210d00a0d206c07",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|Y|F|N1|0|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-already-closed-generator",
+    "source": "<?php\nfunction yieldFromClosedInner20() {\n    try { echo 'Y|'; yield 7; return 23; }\n    finally { echo 'F|'; }\n}\nclass YieldFromClosedGeneratorAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $inner;\n        echo 'G|';\n        return $inner;\n    }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromClosedOuter20() {\n    try { yield from new YieldFromClosedGeneratorAggregate20; }\n    catch (Throwable $error) { echo get_class($error), '|', $error->getMessage(), '|'; }\n    return 17;\n}\n$inner = yieldFromClosedInner20();\n$inner->current();\n$inner->next();\necho $inner->getReturn(), '|';\n$outer = yieldFromClosedOuter20();\necho (int)$outer->valid(), '|', $outer->getReturn(), '|';\n$inner = null;\necho 'E';\n",
+    "source_sha256": "e41ce6dd8d1fe042acce118bd0352e1ec6c5b7abd0b49ba5ce42eefc84211afc",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "Y|F|23|G|A|Exception|Cannot traverse an already closed generator|0|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-generator-reference-cache",
+    "source": "<?php\n$value = 7;\nfunction &yieldFromReferenceInner20() {\n    global $value;\n    try { echo 'Y|'; yield $value; echo 'X|'; }\n    finally { echo 'F|'; }\n}\nclass YieldFromReferenceGeneratorAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'G|'; return yieldFromReferenceInner20(); }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromReferenceOuter20() {\n    $result = yield from new YieldFromReferenceGeneratorAggregate20;\n    echo 'N', (int)($result === null), '|';\n    return 17;\n}\n$outer = yieldFromReferenceOuter20();\necho $outer->current(), '|';\n$value = 9;\necho $outer->current(), '|';\n$outer->next();\necho (int)$outer->valid(), '|', $outer->getReturn();\n",
+    "source_sha256": "0ee22f7aa01ccc36a60b836075bd2897173b7c68228c6a3a4e2d2301be92c46e",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|Y|7|9|X|F|N1|0|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-rewind-throws",
+    "source": "<?php\nclass YieldFromRewindThrowIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { global $original; echo 'W|'; throw $original; }\n    public function valid(): bool { echo 'V|'; return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass YieldFromRewindThrowAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'G|'; return new YieldFromRewindThrowIterator20; }\n    public function __destruct() { echo 'A|'; }\n}\nfunction yieldFromRewindThrow20() {\n    global $original;\n    try { yield from new YieldFromRewindThrowAggregate20; }\n    catch (Throwable $error) { echo (int)($error === $original), '|'; }\n    return 17;\n}\n$original = new Exception('rewind');\n$outer = yieldFromRewindThrow20();\necho (int)$outer->valid(), '|', $outer->getReturn();\n",
+    "source_sha256": "065e5dab42f63bfc2ed1e02d59495262d02bc13cb9e4a29642959467f8ecb432",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|W|I|1|0|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-yield-from-acquisition-required",
+    "source": "<?php\nclass PeerDelegatedIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerDelegatedAggregate20 implements IteratorAggregate {\n    public string $property = 'wrong';\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\n$iterator = new PeerDelegatedIterator20;\n$aggregate = new PeerDelegatedAggregate20;\nfunction peerForwardAggregate20() {\n    global $aggregate;\n    yield from $aggregate;\n}\nforeach (peerForwardAggregate20() as $value) {\n    echo 'V', $value, '|';\n}\necho 'E';\n",
+    "source_sha256": "53448f7e85abc624bdec8513d67b6efccad277deb3553ff2307600c3093fb363",
+    "purpose": "Real IteratorAggregate yield-from acquisition and generic iterator ownership.",
+    "expected_model": "normal",
+    "native_stdout": "A|W|V7|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-aggregate-reference-original-operand",
+    "source": "<?php\nclass YieldFromOriginalReferenceIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass YieldFromOriginalReferenceAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'G|';\n        return $iterator;\n    }\n    public function __destruct() { echo 'A|'; }\n}\nfunction &yieldFromOriginalReferenceCarrier20() {\n    global $aggregate;\n    echo 'R|';\n    return $aggregate;\n}\nfunction yieldFromOriginalReferenceOuter20() {\n    $result = yield from yieldFromOriginalReferenceCarrier20();\n    echo 'N', (int)($result === null), '|';\n    return 17;\n}\n$iterator = new YieldFromOriginalReferenceIterator20;\n$aggregate = new YieldFromOriginalReferenceAggregate20;\n$outer = yieldFromOriginalReferenceOuter20();\nforeach ($outer as $value) { echo 'B', $value, '|'; }\necho $outer->getReturn(), '|';\n$aggregate = null;\n$iterator = null;\necho 'E';\n",
+    "source_sha256": "2ee7ce24c5643fea9342465af145569ed0b8230bf4569839d89f80af4a90dc27",
+    "purpose": "A real reference-valued original Aggregate operand retains its raw cell while iterator data transfers.",
+    "expected_model": "normal",
+    "native_stdout": "R|G|W|B7|N1|17|A|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
