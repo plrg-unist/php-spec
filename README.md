@@ -500,9 +500,14 @@ with 1,102 assertions pass; actual361 compilation has a separate cut.
 now preserves selected-case remainder, fallthrough and catch scope without
 re-evaluating the subject or creating a freeable owner. Seven preserved originals
 and 14 current/saved fixtures with 1,339 assertions pass at retained private361
-cuts; actual-parent strict compilation remains separate. Runtime VAR/TMP array
-owners, active-finalizer replay, protected temporary/NULL Notice timing and
-Stringable reference conversion remain open.
+cuts; actual-parent strict compilation remains separate.
+[Physical array-owner recovery](coverage/semantics/reference-return-retired-owner-review.json)
+preserves the first cleanup and borrows its identity/cursor through current and saved
+frames. Capture requires at least three genuine owners before cleanup and two after;
+metadata adds none. Four originals agree exactly; nine delayed COW controls intentionally
+retain c/d=1 instead of native8, with zero agreement credit. State23/1,873, independent
+pending98 and actual-parent carrier71 pass; strict364 is separate. Wider payload domains,
+active-finalizer replay, protected temporary/NULL Notice timing and Stringable186 remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
