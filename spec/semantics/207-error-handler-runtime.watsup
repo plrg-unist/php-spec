@@ -55,6 +55,7 @@ dec $error_context_receiving_function(pstate, pcallcontext) : pfunction?
 dec $error_handler_registered(pstate, perrorhandler) : bool
 dec $error_trace_capture(pstate, int, ptask) : pstate
 dec $error_fallback_finish(pstate, perrorcall) : pstate
+dec $error_handler_finish(pstate, perrorcall) : pstate
 dec $error_default_event(pstate, pevent) : pevent
 dec $error_trace_arguments(pstate, (pkey, pvalue)*) : preqbytes
 dec $error_trace_location(ptraceframe) : preqbytes
@@ -210,7 +211,6 @@ rule PhpStep/error-handler-fallback: S ~> $error_fallback_finish($error_default(
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
   -- if S.RESULT = KNOWN (PBOOL false)
-dec $error_handler_finish(pstate, perrorcall) : pstate
 rule PhpStep/error-handler-handled: S ~> $error_handler_finish(S, perrorcall)
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
