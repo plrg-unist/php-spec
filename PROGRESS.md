@@ -15,6 +15,9 @@ namespace/global379 versus local17 and UTF-8 byte positioning. Strict3 passes 5.
 A separate pure payload decoder2 passes; the compile-stage baseline and two
 fixture failures retain zero credit. Encoded profiles, broader constant/default/class
 contexts and include/eval registration remain required.
+Actual 371 over 8f1b22aad passes strict3 at 72e1a9d58 (5.321s), preserving attributed
+class lines, property/factory/collector and foreach acquisition guards. Private
+source2/104+20 checks and both fixture failures retain their original cuts.
 [HALT ledger](coverage/semantics/halt-compiler-review.json).
 
 Aggregate yield-from380 recursively acquires real Iterator/Generator data through
