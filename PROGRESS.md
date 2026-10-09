@@ -2440,6 +2440,8 @@ The direct control agrees at 05b0/371, and the repaired captured source agrees a
 43 constructed) pass; the original Unsupported and compiler binding stop remain
 zero credit. Other captured Fiber kinds/bound inputs and original 7's CLI60 timeout
 remain open. Maintained source/fixture relocation adds no runtime renewal.
+Actual-parent compilation and initialized SL270 pass at `f1c392c8` over
+`0a4cf46e` with 372 modules; pointwise Hook/EX39/RETURNS review adds no source/native renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
