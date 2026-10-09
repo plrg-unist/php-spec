@@ -135,6 +135,12 @@ EXPECTED_STDERR = {
 }
 
 EXPECTED = {
+    'review-property-reference-cv-argument-same-cell21': 'C|F|H|D|1|after-fetch|1/1/0|done',
+    'review-property-reference-cv-argument-replacement21': 'C|F7|H|1|Undefined property: ReferenceCvReplacementOld21::$missing@16|D|1/0|N|after-fetch|1/1/1/0|done',
+    'review-property-reference-cv-argument-parameter-cleanup21': 'C|A|D|H|1/1/0|N|after-fetch|1/1/0|done',
+    'review-property-reference-cv-argument-pending21': 'C|H|D|0|N|caught=B/previous=H|1/1/0|done',
+    'review-property-reference-cv-argument-alias21': 'C|H|12|0|D|after-fetch|1/1/0/12|done',
+    'review-property-reference-cv-argument-writable21': 'C|D|1/ReferenceCvWritableNew21/12|held|N|done',
     'review-property-reference-call-stdclass20': 'C|H|D|1/0|after-fetch|1/1/1|done',
     'review-property-reference-call-replacement-last-owner20': 'C|H|D|0|N|after-fetch|1/1/1|done',
     'review-property-reference-call-replacement-pending20': 'C|H|D|0|N|caught=B/previous=H|1/1|done',

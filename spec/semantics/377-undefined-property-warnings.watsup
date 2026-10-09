@@ -49,13 +49,18 @@ def $property_undefined_reference_name(NName phpType33 metadata) = true
 def $property_undefined_reference_name(NNameFullyQualified phpType33 metadata) = true
 def $property_undefined_reference_name(NNameRelative phpType33 metadata) = true
 def $property_undefined_reference_name(phpType19) = false -- otherwise
+dec $property_undefined_reference_arguments(phpType7*) : bool
+def $property_undefined_reference_arguments(eps) = true
+def $property_undefined_reference_arguments([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)]) = true
+def $property_undefined_reference_arguments(phpType7*) = false -- otherwise
 dec $property_undefined_reference_source(pstate, pnameread) : bool
 def $property_undefined_reference_source(S, pnameread) = true
   -- if pnameread.SITE = PORIGIN n pcpath
   -- if $origin_node(S.SOURCES, pnameread.SITE) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text) metadata_name) metadata)
-  -- if expression_receiver = NExprFuncCall name (SEQUENCE eps) metadata_call
+  -- if expression_receiver = NExprFuncCall name (SEQUENCE phpType7*) metadata_call
   -- if $property_undefined_reference_name(name)
-  -- if $source_emission_noarg_call(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (z_call)
+  -- if $property_undefined_reference_arguments(phpType7*)
+  -- if $source_emission_echo_call(S, n, pcpath ++ [PCFIELD 0], expression_receiver) = (z_call)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0]) = ((ptbytes_name, eps))
   -- if $call_target(S, ptbytes_name, eps) = (pfunction)
