@@ -95,7 +95,7 @@ def $ctor_destination_for("ErrorException", (preqbytes), n) = (4) -- if preqbyte
 def $ctor_destination_for("ErrorException", (preqbytes), n) = (5) -- if preqbytes = $ptascii("previous")
 def $ctor_destination_for("ErrorException", (preqbytes), n) = eps
   -- if ~(preqbytes <- [$ptascii("message"), $ptascii("code"), $ptascii("severity"), $ptascii("filename"), $ptascii("line"), $ptascii("previous")])
-def $ctor_destination_for(text, preqbytes?, n) = $ctor_destination(preqbytes?, n) -- if text =/= "ErrorException"
+def $ctor_destination_for(text, preqbytes?, n) = $ctor_destination(preqbytes?, n) -- if text =/= "ErrorException" /\ text =/= "SensitiveParameterValue"
 dec $ctor_send_check(pstate, pctorcall, preqbytes?, int) : pstate
 def $ctor_send_check(S, pctorcall, (preqbytes), z) = $throw_scalar(S, "Error", $ptascii("Unknown named parameter $") ++ $c_string(preqbytes), z)
   -- if $ctor_destination_for(pctorcall.BASE, (preqbytes), |pctorcall.SENT|) = eps
@@ -286,4 +286,5 @@ dec $ordinary_internal_ready(pstate, pctorcall) : bool
 def $ordinary_internal_ready(S, pctorcall) = false -- otherwise
 rule PhpStep/ctor-invoke: S ~> $ctor_receive(S[.TODO = ptask_tail*], pctorcall)
   -- if S.TODO = (CTOR_INVOKE pctorcall) :: ptask_tail*
+  -- if pctorcall.BASE =/= "SensitiveParameterValue"
   -- if ~$ordinary_internal_ready(S, pctorcall)

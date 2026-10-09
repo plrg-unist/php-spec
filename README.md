@@ -556,7 +556,13 @@ now run after protected finalizers and type rechecks, preserve diagnostic source
 through callbacks, and retire cancelled or throwing outcomes through ordinary cleanup.
 Six focused originals and one preserved protected-unused control agree; eight reached
 current/saved fixtures pass 722 assertions. Actual-parent compilation is separate.
-Already-active finalizer replay, Stringable186 and wider owner domains remain open.
+[Single-active-finalizer CV replay](coverage/semantics/reference-return-active-finalizer-review.json)
+now carries the actual consumed return cursor without keeping its old operand root.
+Uncaught errors cross it once; local catches resume the cleared old return, and normal
+replacement preserves the new alias. Three originals agree and eight reached
+current/saved fixtures pass 602 assertions; actual-parent compilation is separate.
+Wider consumed VALUE/CONST/NULL and multiple-active histories, Stringable186 and wider
+owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -930,6 +936,10 @@ fixed CVs, original variadic operands and final wrapper release. The
 value/reference properties separately from later CV snapshots and authenticates
 queued promotions. Mixed/repeated/argument attributes, hooks and wider wrapper
 protocols remain required.
+Direct `SensitiveParameterValue` construction copies a dereferenced mixed value;
+readonly re-entry preserves that snapshot, and getter copies retain ordinary
+ownership. Seven originals and separate constructor/lifetime checks are recorded
+in the [constructor review](coverage/semantics/sensitive-value-constructor-review.json).
 [Finally continuations](docs/semantics/SOURCE-FINALLY.md) preserve normal,
 thrown and transferring outcomes, including value/reference returns, loop jumps
 and goto across protected regions. [Source Throwable subclasses](docs/semantics/THROWABLE-SUBCLASSES.md)

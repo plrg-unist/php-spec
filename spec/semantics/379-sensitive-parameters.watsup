@@ -75,24 +75,82 @@ def $sensitive_trace_freeze(S) = S_values[.TRACE = ptraceframe_values*][.ERRORFA
   -- if (S_values, ptraceframe_fatal*) = $sensitive_trace_frames(S_trace, S.ERRORFATALTRACE)
 
 ;; The wrapper's private readonly mixed slot is an owning value snapshot.
+;; Direct construction allocates an uninitialized slot before argument sends.
+dec $sensitive_value_body(pobject) : bool
+def $sensitive_value_body(SENSITIVEUNSET porigin) = true
+def $sensitive_value_body(SENSITIVEVALUE pvalue) = true
+def $sensitive_value_body(pobject) = false -- otherwise
 dec $sensitive_value_live(pstate, nat) : bool
+def $sensitive_value_live(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = SENSITIVEUNSET porigin
 def $sensitive_value_live(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
   -- if $heap_subset($value_nodes(pvalue), S.ALLOCATIONS)
 def $sensitive_value_live(S, n) = false -- otherwise
-def $object_name(S, n) = $ptascii("SensitiveParameterValue") -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $object_name(S, n) = $ptascii("SensitiveParameterValue") -- if $sensitive_value_body(S.OBJECTS[n])
+def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = SENSITIVEUNSET porigin
 def $node_children(S, HOBJECT n) = $value_nodes(pvalue) -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
 def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) = $ptascii("sensitiveparametervalue"))
-  -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+  -- if $sensitive_value_body(S.OBJECTS[n])
 def $typed_object_exact(S, ptbranch*, POBJECT n) = $typed_class_type(ptbranch*, $ptascii("SensitiveParameterValue"))
-  -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
-def $typed_given(S, POBJECT n) = $ptascii("SensitiveParameterValue") -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+  -- if $sensitive_value_body(S.OBJECTS[n])
+def $typed_given(S, POBJECT n) = $ptascii("SensitiveParameterValue") -- if $sensitive_value_body(S.OBJECTS[n])
 def $getclass_live_object(S, n) = true -- if $sensitive_value_live(S, n)
 def $closure_live_object_valid(S, n) = true -- if $sensitive_value_live(S, n)
-def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
-def $property_live_complete(S, (HOBJECT n) :: pnode*) = $property_live_complete(S, pnode*) -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if $sensitive_value_body(S.OBJECTS[n])
+def $property_live_complete(S, (HOBJECT n) :: pnode*) = $property_live_complete(S, pnode*) -- if $sensitive_value_body(S.OBJECTS[n])
+
+;; Reuse the authentic internal constructor send, name, arity and root protocol.
+def $new_has_ctor(S, ptbytes) = true -- if $ptlc(ptbytes) = $ptascii("sensitiveparametervalue")
+def $new_class(S, ptbytes, z) = S[.OBJECTS = S.OBJECTS ++ [SENSITIVEUNSET porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ptlc(ptbytes) = $ptascii("sensitiveparametervalue")
+  -- if S.ORIGIN = (porigin)
+  -- if n = |S.OBJECTS|
+def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin, RECEIVER n, BASE "SensitiveParameterValue", MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.ORIGIN = (porigin)
+  -- if $sensitive_value_live(S, n)
+def $constructor_start_ready(S, ptbytes, phpType7*, z) = $ctor_start(S_new, n, CTOR_NEW, z)
+  -- if $ptlc(ptbytes) = $ptascii("sensitiveparametervalue")
+  -- if S_new = $new_class(S, ptbytes, $new_allocation_line(S, z))
+  -- if S_new.RESULT = KNOWN (POBJECT n)
+def $ctor_destination_for("SensitiveParameterValue", eps, n) = (n)
+def $ctor_destination_for("SensitiveParameterValue", (ptbytes), n) = (0) -- if ptbytes = $ptascii("value")
+def $ctor_destination_for("SensitiveParameterValue", (ptbytes), n) = eps -- if ptbytes =/= $ptascii("value")
+
+dec $sensitive_ctor_method_source(pcnode) : bool
+def $sensitive_ctor_method_source(NExprMethodCall expression phpType20 phpType6 metadata) = $method_source_name(phpType20, $ptascii("__construct"))
+def $sensitive_ctor_method_source(NExprNullsafeMethodCall expression phpType20 phpType6 metadata) = $method_source_name(phpType20, $ptascii("__construct"))
+def $sensitive_ctor_method_source(pcnode) = false -- otherwise
+def $ctor_selected(S, pctorcall) = true
+  -- if pctorcall.BASE = "SensitiveParameterValue" /\ pctorcall.MODE = CTOR_NEW
+  -- if $sensitive_value_live(S, pctorcall.RECEIVER)
+  -- if S.OBJECTS[pctorcall.RECEIVER] = SENSITIVEUNSET pctorcall.SITE
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
+  -- if $new_source_name(S, pctorcall.SITE) = (ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("sensitiveparametervalue")
+def $ctor_selected(S, pctorcall) = true
+  -- if pctorcall.BASE = "SensitiveParameterValue" /\ pctorcall.MODE = CTOR_METHOD
+  -- if $sensitive_value_live(S, pctorcall.RECEIVER)
+  -- if $origin_node(S.SOURCES, pctorcall.SITE) = (pcnode)
+  -- if $sensitive_ctor_method_source(pcnode)
+
+dec $sensitive_ctor_receive(pstate, pctorcall) : pstate
+def $sensitive_ctor_receive(S, pctorcall) = $ctor_error(S, pctorcall, "ArgumentCountError", $ptascii("SensitiveParameterValue::__construct() expects exactly 1 argument, ") ++ $decimal_integer(|pctorcall.SENT|) ++ $ptascii(" given"))
+  -- if |pctorcall.SENT| =/= 1
+def $sensitive_ctor_receive(S, pctorcall) = S[.OBJECTS[pctorcall.RECEIVER] = SENSITIVEVALUE pvalue][.RESULT = KNOWN $ctor_result(pctorcall.MODE, pctorcall.RECEIVER)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pctorcall.SENT = [(NAMED_SENT (KNOWN pvalue))]
+  -- if S.OBJECTS[pctorcall.RECEIVER] = SENSITIVEUNSET porigin
+def $sensitive_ctor_receive(S, pctorcall) = $ctor_error(S, pctorcall, "Error", $ptascii("Cannot modify readonly property SensitiveParameterValue::$value"))
+  -- if pctorcall.SENT = [(NAMED_SENT (KNOWN pvalue))]
+  -- if S.OBJECTS[pctorcall.RECEIVER] = SENSITIVEVALUE pvalue_old
+rule PhpStep/sensitive-value-constructor: S ~> $sensitive_ctor_receive(S[.TODO = ptask_tail*], pctorcall)
+  -- if S.TODO = (CTOR_INVOKE pctorcall) :: ptask_tail*
+  -- if pctorcall.BASE = "SensitiveParameterValue"
+  -- if $call_task_valid(S, CTOR_INVOKE pctorcall)
 
 ;; Reuse the checked zero-argument getter send, arity and ownership protocol.
 def $getter_name(GET_SENSITIVE_VALUE) = $ptascii("getValue")
@@ -103,15 +161,18 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $sensitive_value_select
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
-  -- if S_read.OBJECTS[n] = SENSITIVEVALUE pvalue
+  -- if $sensitive_value_body(S_read.OBJECTS[n])
 def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = S[.TODO = [GETTER_ARGS {SITE porigin, RECEIVER n, BASE "SensitiveParameterValue", METHOD GET_SENSITIVE_VALUE, CAPTURE eps, INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $sensitive_value_live(S, n)
   -- if $ptlc(ptbytes) = $ptascii("getvalue")
   -- if ~$ppfirstclass(phpType7*)
+def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = $ctor_method_start(S, n, z)
+  -- if $ptlc(ptbytes) = $ptascii("__construct")
+  -- if ~$ppfirstclass(phpType7*)
 def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "SensitiveParameterValue internal method body"][.TODO = eps]
-  -- if $ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("__debuginfo")] \/ ($ptlc(ptbytes) = $ptascii("getvalue") /\ $ppfirstclass(phpType7*))
+  -- if $ptlc(ptbytes) = $ptascii("__debuginfo") \/ ($ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("getvalue")] /\ $ppfirstclass(phpType7*))
 def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined method SensitiveParameterValue::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)
   -- if ~($ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("__debuginfo"), $ptascii("getvalue")])
 dec $sensitive_getter_source(pcnode) : bool
@@ -127,3 +188,6 @@ def $getter_selected(S, pgettercall) = true
 def $getter_body(S, pgettercall) = S[.RESULT = KNOWN pvalue]
   -- if pgettercall.METHOD = GET_SENSITIVE_VALUE
   -- if S.OBJECTS[pgettercall.RECEIVER] = SENSITIVEVALUE pvalue
+def $getter_body(S, pgettercall) = S[.COMPLETION = UNSUPPORTED "uninitialized SensitiveParameterValue getter"]
+  -- if pgettercall.METHOD = GET_SENSITIVE_VALUE
+  -- if S.OBJECTS[pgettercall.RECEIVER] = SENSITIVEUNSET porigin

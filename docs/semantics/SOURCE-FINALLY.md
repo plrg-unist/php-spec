@@ -71,8 +71,20 @@ and leaves through ordinary frame cleanup, without reviving consumed catches.
 A replacing finalizer return cancels its pending Notice. The
 [Notice review](../../coverage/semantics/reference-return-notice-review.json)
 keeps six focused originals, one protected-unused control, eight reached current/saved
-fixtures/722 assertions and actual-parent compilation separate. Already-active finalizer
-replay, Stringable186 and wider owner domains remain required.
+fixtures/722 assertions and actual-parent compilation separate.
+
+For one already-active finalizer, runtime156 captures the actual consumed ordinary CV
+reference-return source/line and phase3 restore cursor. It owns no operand and survives
+current/saved replay continuations. Uncaught inner rejection crosses the consumed outer
+cursor without repeating its body; a locally caught rejection resumes the cleared old
+return with KNOWN NULL, allowing its repeated check to re-enter the outer finalizer.
+Normal replacement returns the selected new cell without an unchanged checked write.
+The [active-finalizer review](../../coverage/semantics/reference-return-active-finalizer-review.json)
+binds three exact originals and eight source-reached fixtures/602 assertions across
+retained367 cuts. Actual-parent strict compilation is separate. Capture and pending
+validity enforce the single-history bound; carried markers authenticate source/site/phase,
+not a fully coherent alternative private history. Wider consumed VALUE/CONST/NULL and
+multiple-active histories, Stringable186 and wider owner domains remain required.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.

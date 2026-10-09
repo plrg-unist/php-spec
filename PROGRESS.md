@@ -117,6 +117,18 @@ passes strict initialization at `5448b4ba` (5.214 s), preserving current owner,
 GC, GEN, PROPS, CALLS and returns paths without renewing private checks.
 [Sensitive promotion review](coverage/semantics/sensitive-promotion-review.json).
 
+Direct SensitiveParameterValue construction uses ordinary ordered argument sends
+and stores an owning dereferenced snapshot. Arity precedes readonly re-entry;
+named arguments, array COW, getter copies and final object release retain ordinary
+semantics. Seven originals, strict compilation of 367 modules and SL121 (20
+constructed, 101 reached checks) pass at `a50f9bc5`. Both checked baselines retain
+Unsupported with zero agreement; the earlier raw-completion fixture preparation
+was corrected before execution. Actual 367-module composition over `24c1b9e4`
+passes strict initialization at `0e5152643` (5.351 s), preserving current assertion
+fields and sibling constructor arms without renewing private source/state checks.
+First-class constructor/getter, uninitialized getter, debug/property and wider wrapper protocols
+remain required. [Constructor review](coverage/semantics/sensitive-value-constructor-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
@@ -178,10 +190,22 @@ By-reference VALUE, bare/null and implicit-return Notices now dispatch after pro
 finalizers and repeated type checks. Captured source and line survive saved handlers;
 throwing handlers leave through ordinary cleanup, and replacing variable returns cancel
 the old Notice. Six focused originals and one protected-unused control agree at retained
-private cuts with 365 modules cuts. Eight reached current/saved fixtures pass 722 assertions (315+407);
-Actual 367-module composition over `d23ed96e6` passes strict compilation at `8d7fad70e` (5.082 s), with zero application evaluations. Active-finalizer replay, Stringable186
+private cuts with 365 modules. Eight reached current/saved fixtures pass 722 assertions (315+407);
+Actual 367-module composition over `d23ed96e6` passes strict compilation at `8d7fad70e` (5.082 s), with zero application evaluations. Stringable186
 and wider owner domains remain required.
 [Notice review](coverage/semantics/reference-return-notice-review.json).
+
+Delayed rejection inside one already-active finalizer now preserves its consumed
+ordinary CV reference-return cursor without retaining the discarded operand root.
+Uncaught errors cross that consumed continuation once; a local catch resumes the
+cleared old return, whose NULL recheck can re-enter the outer finalizer. Successful
+replacement keeps the selected new alias. Three originals agree at `d12494664`;
+eight source-reached current/saved fixtures pass 602 assertions (277+325).
+Actual367 over `99f3432e` passes strict compilation at `5b40480dc` (5.173s, zero
+application evaluations); its cut stays separate in the
+[active-finalizer review](coverage/semantics/reference-return-active-finalizer-review.json).
+Wider consumed VALUE/CONST/NULL and multiple-active-finalizer histories,
+Stringable186 and wider owner domains remain required.
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
@@ -3423,8 +3447,9 @@ failures and interrupted evidence.
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
   Wider deprecated constant consumers remain open. Generic, scalar-loop, CV/compiled-CONST
   and bounded physical-array return replay are integrated, as is deferred reference-return
-  Notice dispatch. Already-active-finalizer replay and typed by-reference Stringable
-  conversion186 remain open; accepted ordinary by-value classification does not close them. [String contract](docs/semantics/USER-STRING.md),
+  Notice dispatch. Bounded single-active-finalizer CV replay is integrated. Wider consumed VALUE/CONST/NULL
+  and multiple-active histories, and typed by-reference Stringable conversion186, remain
+  open; accepted ordinary by-value classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
   enums, hooks, readonly and wider instance setter consumers,
@@ -3441,8 +3466,9 @@ failures and interrupted evidence.
 `returns_verify` has resumed with the authorized temporary verifier. Preserve
 held branches and evidence, and do not retry the rejected engine experiment.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
-bounded physical-array owner recovery. Wider owner domains, already active-finalizer
-returns and Stringable186 remain required; deferred VALUE/NULL Notice dispatch is integrated.
+bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
+integrated. Wider owner domains, consumed VALUE/CONST/NULL or multiple-active histories
+and Stringable186 remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 

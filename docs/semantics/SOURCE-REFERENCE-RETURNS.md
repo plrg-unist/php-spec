@@ -65,7 +65,15 @@ and propagates in the caller; a replacing variable return cancels the old Notice
 Six focused originals plus one protected-unused control agree, and eight reached
 fixtures pass 722 assertions. Actual-parent compilation keeps a distinct cut in the
 [Notice review](../../coverage/semantics/reference-return-notice-review.json).
-Active-finalizer replay, Stringable186 and wider owner protocols remain required.
+Runtime156 now retains the actual consumed ordinary CV reference-return cursor for one
+already-active finalizer, with no discarded operand root. Inner rejection preserves
+its pending error during replay; uncaught escape consumes the cursor once. A local
+catch resumes the cleared old return with NULL, while normal replacement and final
+return preserve the selected new reference cell. Three exact originals and eight
+reached current/saved fixtures/602 assertions pass; actual-parent compilation has a
+separate cut in the [active-finalizer review](../../coverage/semantics/reference-return-active-finalizer-review.json).
+Wider consumed VALUE/CONST/NULL and multiple-active histories, Stringable186 and wider
+owner protocols remain required.
 
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;

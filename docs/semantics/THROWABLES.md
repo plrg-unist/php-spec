@@ -71,8 +71,14 @@ its trace wrapper captures 17; a by-reference property/caller can later become 2
 while the wrapper retains 17. The attribute creates no property Override
 obligation. Eight source agreements and separate genuine property/wrapper and
 queued-admission checks are recorded in the [promotion review](../../coverage/semantics/sensitive-promotion-review.json).
-Mixed/repeated/argument attributes, hooks, direct wrapper construction,
-first-class getters and wider wrapper/property protocols remain required.
+Direct wrapper construction copies one dereferenced mixed value through ordinary
+ordered sends. Arity errors precede readonly re-entry errors; rejected writes
+preserve the old snapshot. Getter copies own objects independently of the wrapper,
+and last release triggers ordinary destruction and WeakReference notification.
+Seven originals and separate allocation/SEND/getter/retirement checks are recorded
+in the [constructor review](../../coverage/semantics/sensitive-value-constructor-review.json).
+Mixed/repeated/argument attributes, hooks, first-class constructor/getters,
+uninitialized getter, debug/property and wider wrapper protocols remain required.
 
 `ErrorException` appends a protected typed `severity` as the eighth slot; its
 inherited private fields retain `Exception` declaration IDs. Its own

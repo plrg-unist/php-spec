@@ -1,0 +1,32 @@
+{
+  "scope": "Typed CV reference returns from an already active finalizer; actual consumed outer reference-return cursor only.",
+  "cases": [
+    {
+      "id": "active-finalizer-uncaught",
+      "source": "<?php\n$x=\"old\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{return $y;}finally{++$n;echo \"I\",$n,\";\";if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}}\ntry{$r=&f();echo \"BAD:\",$r,\";\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+      "source_sha256": "0e48771bc031a075cca261763724ab0cfed1726261506f9d4300d5c48e7c4f41",
+      "stdout": "O;P;I1;I2;R;x=old;n=2;yfixed=1;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "BYREF return from inside an already active outer finalizer, with nested inner finally delayed rejection/replay and authentic saved ping frame. Distinct x/y cells; final snapshots avoid casting possible object to string. Native truth required before any model/state credit."
+    },
+    {
+      "id": "active-finalizer-local-catch",
+      "source": "<?php\n$x=\"old\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}catch(TypeError $e){echo \"C;\";}echo \"A;\";}}\ntry{$r=&f();echo \"r=\",$r,\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+      "source_sha256": "04d9f14a51854d61dddf37541fbccca817a484b69b01eba0756b2a9e72e3344d",
+      "stdout": "O;P;I1;I2;C;A;O;P;I3;r=fixed;x=old;n=3;yfixed=0;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "Catch the delayed inner reference-return TypeError inside an already active outer finalizer, then execute ordinary code after that catch. Native observation must determine whether the original outer x return resumes. Distinct x/y cells, saved ping, and a write through the returned alias distinguish the selected cell from a copied payload."
+    },
+    {
+      "id": "active-finalizer-saved-and-normal",
+      "source": "<?php\n$x=\"old\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}}\ntry{$r=&f();echo \"BAD:\",$r,\";\";}catch(TypeError $e){echo \"R;\";}\n$r=&f();echo \"Q:\",$r,\";\";$r=\"changed\";\necho \"x=\",$x,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+      "source_sha256": "7604a7bf3c0063bfa10882321d7dc9daf0613361d1c3b3df38ca0672d31b8d6d",
+      "stdout": "O;P;I1;P;I2;P;R;O;P;I3;P;Q:fixed;x=old;n=3;yfixed=0;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "The uncaught first-call path retains the inner I2 ping with the genuine consumed outer cursor in a saved frame. A second completed call reaches cursor NORMAL retirement and a write through the returned y alias."
+    }
+  ]
+}
