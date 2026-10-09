@@ -1,0 +1,118 @@
+{
+  "scope": "Public backed by-value block get hooks, literal CV/This read dispatch, active same-property/same-receiver backing bypass, implicit property return type, hook traces and receiver/result ownership. Virtual/set/byref, inheritance/traits, wider receivers, quiet/reference/indirect access and hooked unset remain partial.",
+  "target": "PHP8.5.10 CLI NTS64; profile30719; LC_ALL=C TZ=UTC; jobs1",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+  "engine": [
+    "Zend/zend_compile.c: zend_compile_property_hook, zend_property_hook_find_property_usage",
+    "Zend/zend_object_handlers.c: zend_should_call_hook, zend_call_get_hook, zend_std_read_property"
+  ],
+  "raw_root": ".tools/backed-get-hooks-private-28/.tools/backed-get-hooks-probes-28",
+  "native_first": {
+    "original_revision": "5a1277877e7e3512f61ec35fbad95e0d7d4649e5",
+    "originals": 2,
+    "report": "native-first/report.json",
+    "report_sha256": "7e70a7c080d4d67bef6dcb8642c0d6112a1a95e0f7aa9aa1d05c4e7c7f1abc9a",
+    "focused_revision": "3ae28b26c93bae008c0ae81eb7d437c71bd622d1",
+    "focused": 7,
+    "focused_report": "focused/native-first/report.json",
+    "focused_report_sha256": "5c18cc86dd5b0c331888d9d19c78bf890dbcececa2ae7f9af8fe7330a515914b"
+  },
+  "accepted_source": [
+    {
+      "revision": "3ae28b26c93bae008c0ae81eb7d437c71bd622d1",
+      "report": "changed-model-nlx_3ayt/report.json",
+      "report_sha256": "61935b2a9967c5870a6e69cf325983d99dea5806443db922df1476c68898808d",
+      "agreements": 2
+    },
+    {
+      "revision": "3ae28b26c93bae008c0ae81eb7d437c71bd622d1",
+      "report": "focused/changed-model-fxnw7fra/report.json",
+      "report_sha256": "b635bf726ad82ba0fd484b28f13b8c546867bfb144653af3bff558691d98dfc8",
+      "agreements": 6,
+      "virtual_boundary": "Unsupported/source0"
+    }
+  ],
+  "private_strict": {
+    "revision": "3ae28b26c93bae008c0ae81eb7d437c71bd622d1",
+    "modules": 372,
+    "report": "backed-hook-compiler-dbwwwqdo/report.json",
+    "report_sha256": "e590428805b0380dfeb597c4c42611965b851821fad6e7152872417ac36337f5",
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "accepted_state": {
+    "revision": "3ae28b26c93bae008c0ae81eb7d437c71bd622d1",
+    "preparation": "backed-hook-prepared-d6sv1ier/PREPARED.json",
+    "report": "backed-hook-state-qsoq6b0z/report.json",
+    "report_sha256": "1b3538397e97a1c9d799d7a656504947e0116337f97a39e53855ca34cd3cf27a",
+    "fixture_sha256": "98aa3d347b161efa83262c0c8bc397c4c98ca1741c381bec67cf5f03ba66b2f2",
+    "mode": "SL",
+    "derived_checks": 19,
+    "reached_checks": 158,
+    "real_steps": 9,
+    "seconds": 18.107931,
+    "cap_seconds": 120,
+    "application_evaluations": 1,
+    "source_agreements": 0,
+    "phase_correction": "The same hook at its next return statement follows pending global-cell release; all original ownership assertions are retained. Prior full AL pass belongs to boh177."
+  },
+  "preserved_zero": [
+    {
+      "report": "accepted-current-baseline/report.json",
+      "cause": "original2 checked Unsupported at property compiler135",
+      "source_agreements": 0
+    },
+    {
+      "report": "backed-hook-compiler-ag4778re/report.json",
+      "cause": "record term parsing",
+      "application_evaluations": 0
+    },
+    {
+      "report": "backed-hook-compiler-_cv7qlxu/report.json",
+      "cause": "list/scalar binder elaboration",
+      "application_evaluations": 0
+    },
+    {
+      "report": "backed-hook-compiler-t1dehwdl/report.json",
+      "cause": "fresh computed binder algorithmic check",
+      "application_evaluations": 0
+    },
+    {
+      "report": "backed-hook-compiler-3rr_biod/report.json",
+      "cause": "recursive otherwise algorithmic check",
+      "application_evaluations": 0
+    },
+    {
+      "report": "backed-hook-state-_o2n9roi/report.json",
+      "cause": "helper declaration before main",
+      "state_credit": 0
+    },
+    {
+      "report": "backed-hook-state-raqplbzk/report.json",
+      "cause": "fresh compound extraction before main",
+      "state_credit": 0
+    },
+    {
+      "report": "backed-hook-state-0u64o0f3/report.json",
+      "cause": "false177 before release checkpoint correction; complete AL passed at this fixture cut",
+      "state_credit": 0
+    },
+    {
+      "report": "backed-hook-diagnostic-vwj44hxz/report.json",
+      "cause": "four-arm diagnostic [true,true,false,true]",
+      "state_credit": 0
+    },
+    {
+      "report": "backed-hook-heap-diagnostic-oddcpchx/report.json",
+      "cause": "initial8 true, next release checkpoint false",
+      "state_credit": 0
+    }
+  ],
+  "maintained_commands": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/backed_get_hook_cases.json",
+    "python3 tests/semantics/backed_get_hook_protocol.py --revision HEAD_SHA"
+  ],
+  "recording": "Raw source/parsed+checked programs, exact argv/caps/streams/exits and stable inputs/head/status/reaped groups remain ignored. Source8, state177 and compile-only cuts retain distinct credit. Maintained relocation changes paths/transport only.",
+  "actual_composition": "Pending exact canonical parent and one strict init-only check; no private source/state renewal."
+}

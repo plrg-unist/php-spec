@@ -240,6 +240,7 @@ dec $stringify_context_kind(pstate, pcallcontext) : bool
 def $call_arity_valid(S, pcallcontext) = true
   -- if ~$stringify_context_kind(S, pcallcontext)
   -- if ~$property_get_context_kind(pcallcontext)
+  -- if ~$property_hook_context_kind(pcallcontext)
   -- if ~$error_context_kind(S, pcallcontext)
   -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$fiber_traversal_context_kind(S, pcallcontext)

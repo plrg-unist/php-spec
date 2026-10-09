@@ -294,6 +294,20 @@ wider attribute protocols remain required. Actual 371-module composition over
 current GC/PROPS/ARG interfaces without renewing private source/state checks.
 [Dynamic-property attribute review](coverage/semantics/allow-dynamic-properties-review.json).
 
+Public backed by-value block get hooks now compile as authentic source functions
+with the property's implicit return type. Ordinary CV and `$this` reads invoke
+the hook; backing access bypasses it only in the active hook on that receiver.
+Nested ordinary calls and other receivers dispatch normally, uninitialized
+backing precedes magic, and traces retain `$value::get`. Eight originals and
+strict compilation of 372 modules pass at `3ae28b26`. SL177 (19 derived, 158
+reached checks) proves real entry/backing/throw steps and receiver/result cleanup,
+including the payload parked across receiver destruction and final weak-null.
+The virtual nested-closure control stays Unsupported; prior compiler/fixture
+stops, false states and diagnostics retain zero affected credit. Virtual/set/byref,
+inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
+and hooked unset remain required. Actual current-parent composition is pending.
+[Hook review](coverage/semantics/backed-get-hooks-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

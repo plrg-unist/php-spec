@@ -42,14 +42,17 @@ def $property_get_method(S, n) = $effective_method(S, porigin, $ptascii("__get")
   -- if $class_throwable_kind(S, porigin, |S.CLASSES|) = eps
 def $property_get_needed(S, n, ptbytes) = true
   -- if $property_get_method(S, n) =/= eps
+  -- if ~$property_hook_declared(S, n, ptbytes)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_DENIED ppropertydesc
 def $property_get_needed(S, n, ptbytes) = true
   -- if $property_get_method(S, n) =/= eps
+  -- if ~$property_hook_declared(S, n, ptbytes)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
   -- if $property_slot_at(ppropertyslot_all*, ptbytes_key) = eps
 def $property_get_needed(S, n, ptbytes) = true
   -- if $property_get_method(S, n) =/= eps
+  -- if ~$property_hook_declared(S, n, ptbytes)
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot_all*)
   -- if $property_slot_at(ppropertyslot_all*, ptbytes_key) = (ppropertyslot)

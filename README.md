@@ -1075,6 +1075,13 @@ classes and descendants while ordinary classes retain deprecation. Invalid
 trait/interface/readonly targets preserve diagnostic priority and keyword lines;
 ten sources and 131 derived/reached checks are recorded in the
 [attribute review](coverage/semantics/allow-dynamic-properties-review.json).
+Public backed by-value block `get` hooks execute their source body on each read,
+use the property's return type and retain ordinary writes to the backing slot.
+Only the active hook on the same receiver bypasses dispatch; nested calls and
+other receivers invoke their hooks. Eight originals and 177 source/state checks
+cover exceptions, traces and receiver/result cleanup in the
+[hook review](coverage/semantics/backed-get-hooks-review.json). Virtual/set/reference,
+inherited/trait and wider receiver or indirect-access families remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed

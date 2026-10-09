@@ -625,13 +625,17 @@ def $call_task_valid(S, PROPERTY_REF_BIND_CV pbase n_name* z) = ($property_ref_b
 def $call_task_valid(S, PROPERTY_REF_FETCH z) = $property_ref_fetch_task(S, z)
 
 dec $property_reference_fetch_unshared(pstate, nat, ptbytes, int) : pstate
+def $property_reference_fetch(S, n_object, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "by-value property hook reference reception"]
+  -- if $property_hook_read_needed(S, n_object, ptbytes)
 def $property_reference_fetch(S, n_object, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "writable magic getter reception"]
   -- if $property_get_needed(S, n_object, ptbytes)
 def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_copy(S, n_object, ptbytes)
+  -- if ~$property_hook_read_needed(S, n_object, ptbytes)
   -- if ~$instance_storage_freeing(S, n_object)
   -- if $property_receiver_copy(S, n_object, ptbytes)
   -- if ~$property_get_needed(S, n_object, ptbytes)
 def $property_reference_fetch(S, n_object, ptbytes, z) = $property_reference_slot(S, n_object, ptbytes, z)
+  -- if ~$property_hook_read_needed(S, n_object, ptbytes)
   -- if ~$instance_storage_freeing(S, n_object)
   -- if ~$property_receiver_copy(S, n_object, ptbytes)
   -- if ~$property_get_needed(S, n_object, ptbytes)

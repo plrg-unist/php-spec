@@ -1,0 +1,260 @@
+;; PHP 8.5.10: a backed, public by-value block get is a real source function.
+;; Its implicit return type is the property's type, with no ordinary method entry.
+dec $hook_boundary(pcnode) : bool
+def $hook_boundary(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
+def $hook_boundary(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
+def $hook_boundary(NExprClosure phpType14 phpType4 phpType4_2 phpType16 phpType21 phpType18 phpType23 metadata) = true
+def $hook_boundary(NExprArrowFunction phpType14 phpType4 phpType4_2 phpType16 phpType18 expression metadata) = true
+def $hook_boundary(NStmtTrait phpType14 phpType3 phpType23 metadata) = true
+def $hook_boundary(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = true
+def $hook_boundary(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 metadata) = true
+def $hook_boundary(pcnode) = false -- otherwise
+dec $hook_uses_node(pcnode, ptbytes) : bool
+dec $hook_uses_children(pcoccurrence*, ptbytes) : bool
+def $hook_uses_node(NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) metadata, ptbytes) = true
+  -- if $base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes
+def $hook_uses_node(NExprNullsafePropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) metadata, ptbytes) = true
+  -- if $base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes
+def $hook_uses_node(pcnode, ptbytes) = false -- if $hook_boundary(pcnode)
+def $hook_uses_node(pcnode, ptbytes) = $hook_uses_children($pcchildren(pcnode, eps), ptbytes)
+  -- otherwise
+def $hook_uses_children(eps, ptbytes) = false
+def $hook_uses_children((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, ptbytes) = ($hook_uses_node(pcnode, ptbytes) \/ $hook_uses_children(pcoccurrence*, ptbytes))
+
+dec $hook_name(ptbytes) : ptbytes
+def $hook_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::get")
+dec $pphook_compile(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
+dec $pphook_finish(ppstate, ppstate, pcpath, ppropertydesc, metadata, pchheader) : ppstate
+
+def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_compile(P_next, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc_new, phpType38, pchheader) ppropertydesc_next*
+  -- if flags <- [0,1] /\ pchheader.KIND = "class" /\ ~pchheader.READONLY
+  -- if pchheader.PARENT = eps /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
+  -- if P_next.COMPLETION = PPCNORMAL
+  -- if |ppropertydesc_next*| = $(|ppropertydesc*| + 1)
+  -- if ppropertydesc_new = ppropertydesc_next*[|ppropertydesc*|]
+def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata, ppropertydesc*, pchheader) = PPROPERTIES P_next ppropertydesc_next*
+  -- if flags <- [0,1] /\ pchheader.KIND = "class" /\ ~pchheader.READONLY
+  -- if pchheader.PARENT = eps /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $ppproperty_group_line_valid(P, metadata)
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem phpType40 phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
+  -- if P_next.COMPLETION =/= PPCNORMAL
+def $ppproperty_hook_group(P, pcpath, statement, ppropertydesc*, pchheader) = PPROPERTIES ($ppunsupported(P, "property hook visibility, inheritance, attributes or shape")) ppropertydesc* -- otherwise
+
+def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ppropertydesc, metadata, pchheader)
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if ~$generator_statements(statement*)
+  -- if $hook_uses_children($pcfield_phpType39(SEQUENCE statement*, eps), ppropertydesc.NAME)
+  -- if z = $source_line(metadata)
+  -- if $(z > 0 /\ z <= $source_end_line(metadata))
+  -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false})[.RETURNREF = false][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+def $pphook_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "virtual, set, by-reference, short or attributed property hook") -- otherwise
+
+def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, metadata, pchheader) = P_body
+  -- if P_body.COMPLETION =/= PPCNORMAL
+def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, metadata, pchheader) = $ppfunction_add(P_restored, {DEFAULTS eps, ORIGIN PORIGIN P_outer.FOLD.SOURCE.ID pcpath, NAME (pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)), SIGNATURE {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false}, CVS P_body.CVS, ENV P_outer.ENV, CODE $ppfunction_code(P_body), BODY (pcpath ++ [PCFIELD 5]), EARLY false, LINE $nabs($source_line(metadata)), ENDLINE $psendline(metadata)})
+  -- if P_body.COMPLETION = PPCNORMAL
+  -- if P_restored = P_body[.CLOSURE = P_outer.CLOSURE][.CLASSCONTEXT = P_outer.CLASSCONTEXT][.EVALCLASS = P_outer.EVALCLASS][.RETURNREF = P_outer.RETURNREF][.RETURNS = P_outer.RETURNS][.CVS = P_outer.CVS][.HEADERASSIGNED = P_outer.HEADERASSIGNED][.LOOPS = P_outer.LOOPS][.SWITCHES = P_outer.SWITCHES][.GOTOROOT = P_outer.GOTOROOT][.LABELS = P_outer.LABELS][.GOTOS = P_outer.GOTOS][.EARLY = P_outer.EARLY][.FOLD = P_body.FOLD[.FUNCTION = P_outer.FOLD.FUNCTION][.CLASSCONTEXT = P_outer.FOLD.CLASSCONTEXT][.CLOSURE = P_outer.FOLD.CLOSURE][.VALUE = eps]][.LOCATION = P_outer.LOCATION][.EXPRESSIONS = P_outer.EXPRESSIONS ++ P_body.EXPRESSIONS][.ACCESS = P_outer.ACCESS ++ P_body.ACCESS][.NAMES = P_outer.NAMES ++ P_body.NAMES][.REDIRECTS = P_outer.REDIRECTS ++ P_body.REDIRECTS][.WRITES = P_outer.WRITES ++ P_body.WRITES][.GLOBALS = P_outer.GLOBALS ++ P_body.GLOBALS]
+
+def $function_body_tasks(S, pfunction) = $statement_tasks(statement*, (PORIGIN n pfunction.BODY), 0) ++ [$function_fallthrough(S, pfunction)]
+  -- if pfunction.ORIGIN = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NPropertyHook phpType14 phpType24 (BOOLEAN false) phpType11 (SEQUENCE eps) (SEQUENCE statement*) metadata)
+
+;; Source-derived hook identity is separate from ordinary methods and __get.
+dec $hook_property_at(ppropertydesc*, porigin) : ppropertydesc?
+def $hook_property_at(eps, porigin) = eps
+def $hook_property_at(ppropertydesc :: ppropertydesc_tail*, porigin) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = porigin
+def $hook_property_at(ppropertydesc :: ppropertydesc_tail*, porigin) = $hook_property_at(ppropertydesc_tail*, porigin)
+  -- if ppropertydesc.ORIGIN =/= porigin
+
+dec $property_hook_origin(pstate, ppropertydesc) : porigin?
+def $property_hook_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0]))
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) (SEQUENCE statement*) metadata_hook])) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if ~$generator_statements(statement*)
+  -- if $hook_uses_children($pcfield_phpType39(SEQUENCE statement*, eps), ppropertydesc.NAME)
+def $property_hook_origin(S, ppropertydesc) = eps -- otherwise
+
+def $property_hook_declared(S, n, ptbytes) = true
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_hook_origin(S, ppropertydesc) =/= eps
+def $property_hook_declared(S, n, ptbytes) = false -- otherwise
+
+dec $property_hook_backing(pstate, nat, ppropertydesc) : bool
+def $property_hook_backing(S, n, ppropertydesc) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+  -- if ppropertyhook.OBJECT = n /\ ppropertyhook.PROPERTY = ppropertydesc.ORIGIN
+  -- if pcallcontext.RECEIVER = (n) /\ pcallcontext.FUNCTION = ppropertyhook.HOOK
+  -- if $property_hook_origin(S, ppropertydesc) = (ppropertyhook.HOOK)
+def $property_hook_backing(S, n, ppropertydesc) = false -- otherwise
+
+def $property_hook_read_needed(S, n, ptbytes) = true
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_hook_origin(S, ppropertydesc) =/= eps
+  -- if ~$property_hook_backing(S, n, ppropertydesc)
+def $property_hook_read_needed(S, n, ptbytes) = false -- otherwise
+
+dec $property_hook_function(pstate, ppropertyhook) : pfunction?
+def $property_hook_function(S, ppropertyhook) = (pfunction)
+  -- if $(ppropertyhook.OBJECT < |S.OBJECTS|)
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin_class)
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyhook.PROPERTY
+  -- if $property_hook_origin(S, ppropertydesc) = (ppropertyhook.HOOK)
+  -- if $function_at(S.FUNCTIONS, ppropertyhook.HOOK) = (pfunction)
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc_owner)
+  -- if pfunction.NAME = pclassdesc_owner.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
+  -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false}
+  -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
+  -- if pfunction.ORIGIN = PORIGIN n pcpath_hook
+  -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5]
+  -- if ~$function_generator(S, pfunction)
+def $property_hook_function(S, ppropertyhook) = eps -- otherwise
+
+;; The site is the actual read; the result tail certifies this internal call.
+dec $property_hook_source(pstate, ppropertyhook) : bool
+def $property_hook_source(S, ppropertyhook) = true
+  -- if ppropertyhook.SITE = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, ppropertyhook.SITE) = (NExprPropertyFetch (NExprVariable (BYTES text_receiver) metadata_receiver) (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if ($source_emission_cv(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver) \/ $source_emission_this_fetch(S, n, pcpath ++ [PCFIELD 0], NExprVariable (BYTES text_receiver) metadata_receiver))
+  -- if $property_effective_desc(S, ppropertyhook.OBJECT, $base64(text_name)) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyhook.PROPERTY
+  -- if S_view = S[.ORIGIN = (ppropertyhook.SITE)]
+  -- if $property_prep_task(S_view, NIdentifier (BYTES text_name) metadata_name, ppropertyhook.LINE)
+  -- if $compiled_effects(S, ppropertyhook.SITE) = eps
+  -- if $property_hook_function(S, ppropertyhook) =/= eps
+def $property_hook_source(S, ppropertyhook) = false -- otherwise
+
+dec $property_hook_valid(pstate, ppropertyhook, bool) : bool
+def $property_hook_valid(S, ppropertyhook, b_live) = ($property_hook_source(S, ppropertyhook) /\ (~b_live \/ ((HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, ppropertyhook.OBJECT))))
+
+def $property_hook_pending(S) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_hook_read_needed(S, n, $base64(text_name))
+def $property_hook_pending(S) = false -- otherwise
+
+dec $property_hook_plan(pstate) : ppropertyhook?
+def $property_hook_plan(S) = (ppropertyhook)
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_hook_read_needed(S, n, $base64(text_name))
+  -- if $property_resolve(S, n, $base64(text_name)) = PROPERTY_ACCESS $base64(text_name)
+  -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
+  -- if $property_hook_valid(S, ppropertyhook, true)
+def $property_hook_plan(S) = eps -- otherwise
+rule PhpStep/property-hook-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_HOOK_RESULT ppropertyhook] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (DIM_FETCH z) :: ptask_tail*
+  -- if $property_hook_plan(S) = (ppropertyhook)
+rule PhpStep/property-hook-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "property hook read source or function"]
+  -- if $property_hook_pending(S)
+  -- if $property_hook_plan(S) = eps
+rule PhpStep/property-hook-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+  -- if S.TODO = (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+
+;; The call target owns the receiver until the genuine frame takes it over.
+;; RESULT owns the returned payload before frame cleanup releases the receiver.
+def $target_nodes(PROPERTY_HOOK_TARGET ppropertyhook) = [HOBJECT ppropertyhook.OBJECT]
+def $target_instance(PROPERTY_HOOK_TARGET ppropertyhook) = eps
+def $target_receiver(S, PROPERTY_HOOK_TARGET ppropertyhook) = (ppropertyhook.OBJECT)
+def $target_lexical_class(S, PROPERTY_HOOK_TARGET ppropertyhook) = $property_declaring_class(S.CLASSES, ppropertyhook.PROPERTY)
+def $target_called_class(S, PROPERTY_HOOK_TARGET ppropertyhook) = (porigin)
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin
+def $target_function(S, PROPERTY_HOOK_TARGET ppropertyhook) = $property_hook_function(S, ppropertyhook)
+  -- if $property_hook_valid(S, ppropertyhook, true)
+def $task_nodes(PROPERTY_HOOK_RESULT ppropertyhook) = eps
+
+dec $property_hook_pending_call(pstate, ppropertyhook) : bool
+def $property_hook_pending_call(S, ppropertyhook) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE) :: (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*
+  -- if S.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_hook_valid(S, ppropertyhook, true)
+def $property_hook_pending_call(S, ppropertyhook) = false -- otherwise
+
+dec $property_hook_entered(pstate, pcallcontext?, pframe*, ppropertyhook) : bool
+dec $property_hook_frame(pstate, pcallcontext, pframe, ppropertyhook) : bool
+def $property_hook_frame(S, pcallcontext, pframe, ppropertyhook) = true
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+  -- if pcallcontext.CALLSITE = (ppropertyhook.SITE) /\ pcallcontext.LINE = ppropertyhook.LINE
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+  -- if pframe.TODO = (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*
+  -- if pframe.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_hook_valid(S, ppropertyhook, true)
+def $property_hook_frame(S, pcallcontext, pframe, ppropertyhook) = false -- otherwise
+def $property_hook_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertyhook) = $property_hook_frame(S, pcallcontext, pframe, ppropertyhook)
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+def $property_hook_entered(S, (pcallcontext), pframe :: pframe_tail*, ppropertyhook) = $property_hook_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyhook)
+  -- if pcallcontext.TARGET =/= PROPERTY_HOOK_TARGET ppropertyhook
+def $property_hook_entered(S, eps, pframe :: pframe_tail*, ppropertyhook) = $property_hook_entered(S, pframe.CONTEXT, pframe_tail*, ppropertyhook)
+def $property_hook_entered(S, pcallcontext?, eps, ppropertyhook) = false
+
+def $call_selected_valid(S, PROPERTY_HOOK_TARGET ppropertyhook, (porigin)) = (porigin = ppropertyhook.SITE /\ ($property_hook_pending_call(S, ppropertyhook) \/ $property_hook_entered(S, S.CURRENT, S.FRAMES, ppropertyhook)))
+def $call_arguments_valid(S, (porigin), 0, eps, eps, 0) = true
+  -- if S.TODO = (CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (porigin) z) :: ptask_tail*
+  -- if $property_hook_pending_call(S, ppropertyhook)
+
+def $property_hook_context_kind(pcallcontext) = true
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+def $property_hook_context_kind(pcallcontext) = false -- otherwise
+dec $property_hook_context_valid(pstate, pcallcontext) : bool
+def $property_hook_context_valid(S, pcallcontext) = $property_hook_entered(S, S.CURRENT, S.FRAMES, ppropertyhook)
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+  -- if pcallcontext.CALLSITE = (ppropertyhook.SITE) /\ pcallcontext.LINE = ppropertyhook.LINE
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
+def $property_hook_context_valid(S, pcallcontext) = false -- otherwise
+def $call_arity_valid(S, pcallcontext) = $property_hook_context_valid(S, pcallcontext)
+  -- if $property_hook_context_kind(pcallcontext)
+def $call_extent_valid(S, pcallcontext) = $property_hook_context_valid(S, pcallcontext)
+  -- if $property_hook_context_kind(pcallcontext)
+def $named_context_valid(S, pcallcontext) = $property_hook_context_valid(S, pcallcontext)
+  -- if $property_hook_context_kind(pcallcontext)
+def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = $property_hook_valid(S, ppropertyhook, false)
+
+def $trace_context_function(S, pcallcontext) = $hook_name(ppropertydesc.NAME)
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+  -- if S.OBJECTS[ppropertyhook.OBJECT] = INSTANCE porigin_class
+  -- if $hook_property_at($property_layout(S, porigin_class, |S.CLASSES|), ppropertyhook.PROPERTY) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyhook.PROPERTY
+def $trace_context_class(S, pcallcontext) = ($property_declaring_name(S.CLASSES, ppropertyhook.PROPERTY))
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+
+;; Hooked indirect/reference/unset families do not borrow ordinary backing access.
+def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S[.COMPLETION = UNSUPPORTED "by-value property hook indirect access"]
+  -- if $property_hook_read_needed(S, n, ptbytes)
+
+;; A plain overriding declaration cannot silently discard an inherited hook.
+dec $property_hook_parent_overlap(pstate, ppropertydesc*, ppropertydesc*) : bool
+dec $property_hook_parent_match(pstate, ppropertydesc?) : bool
+def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false
+def $property_hook_parent_overlap(S, ppropertydesc :: ppropertydesc_tail*, ppropertydesc_parent*) = ($property_hook_parent_match(S, $property_desc_at(ppropertydesc_parent*, ppropertydesc.KEY)) \/ $property_hook_parent_overlap(S, ppropertydesc_tail*, ppropertydesc_parent*))
+def $property_hook_parent_match(S, eps) = false
+def $property_hook_parent_match(S, (ppropertydesc_inherited)) = ($property_hook_origin(S, ppropertydesc_inherited) =/= eps)
+def $property_hook_link_finish(S, pclassdesc, S_linked) = $trait_restore(S, S_linked[.COMPLETION = UNSUPPORTED "inherited property hook override"])
+  -- if S_linked.COMPLETION = NORMAL
+  -- if $class_at(S_linked.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_effective)
+  -- if $property_hook_parent_overlap(S_linked, pclassdesc_effective.PROPERTIES, $promotion_override_parent_layout(S_linked, pclassdesc_effective))
+def $property_hook_link_finish(S, pclassdesc, S_linked) = S_linked -- otherwise
+
+def $property_unset_indirect_check(S, n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "hooked property unset"]
+  -- if $property_hook_declared(S, n, ptbytes)

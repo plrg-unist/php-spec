@@ -91,6 +91,9 @@ def $ppmember_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags)
   -- if pchheader.KIND = "class" \/ pchheader.KIND = "trait"
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, $ppmember_path(pcpath, pchheader, n), $source_line(metadata)), $ppmember_path(pcpath, pchheader, n), flags, phpType18, phpType57*, ppropertydesc*, pchheader, $source_line(metadata))
+def $ppmember_groups(P, pcpath, n, (NStmtProperty phpType14 phpType24 phpType18 phpType56 (SEQUENCE (phpType38 :: phpType38_tail*)) metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_hook_group(P, $ppmember_path(pcpath, pchheader, n), NStmtProperty phpType14 phpType24 phpType18 phpType56 (SEQUENCE (phpType38 :: phpType38_tail*)) metadata, ppropertydesc*, pchheader)
 def $ppmember_groups(P, pcpath, n, (NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata) :: statement_tail*, ppropertydesc*, pmethoddesc*, pchheader) = $ppmember_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pmethoddesc_next*, pchheader)
   -- if P.COMPLETION = PPCNORMAL
   -- if PPMEMBERS P_next ppropertydesc_next* pmethoddesc_next* = $ppmethod_one(P, $ppmember_path(pcpath, pchheader, n), NStmtClassMethod phpType14 phpType24 phpType4 phpType11 phpType16 phpType18 phpType47 metadata, ppropertydesc*, pmethoddesc*, pchheader)

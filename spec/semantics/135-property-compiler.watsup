@@ -4,6 +4,7 @@ dec $ppproperty_readonly_name(bool) : ptbytes
 ;; Public declared instance properties are immutable source descriptors. Values
 ;; live in per-object slots; the compiler records defaults in the unit pool.
 syntax ppropertywork = PPROPERTIES ppstate ppropertydesc*
+dec $ppproperty_hook_group(ppstate, pcpath, statement, ppropertydesc*, pchheader) : ppropertywork
 syntax ppropertyinherited = PPIHERITED ppropertydesc ptbytes | PPINONE
 var flags : int
 var bit : int
@@ -93,6 +94,9 @@ def $ppproperty_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flag
 def $ppproperty_groups(P, pcpath, n, (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE phpType57*) (SEQUENCE eps) metadata) :: statement_tail*, ppropertydesc*, pchheader) = PPROPERTIES ($ppunsupported(P, "missing property compiler line")) ppropertydesc*
   -- if P.COMPLETION = PPCNORMAL
   -- if ~$ppproperty_group_line_valid(P, metadata)
+def $ppproperty_groups(P, pcpath, n, (NStmtProperty phpType14 phpType24 phpType18 phpType56 (SEQUENCE (phpType38 :: phpType38_tail*)) metadata) :: statement_tail*, ppropertydesc*, pchheader) = $ppproperty_groups(P_next, pcpath, $(n + 1), statement_tail*, ppropertydesc_next*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
+  -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_hook_group(P, $ppmember_path(pcpath, pchheader, n), NStmtProperty phpType14 phpType24 phpType18 phpType56 (SEQUENCE (phpType38 :: phpType38_tail*)) metadata, ppropertydesc*, pchheader)
 def $ppproperty_groups(P, pcpath, n, statement*, ppropertydesc*, pchheader) = PPROPERTIES ($ppunsupported(P, "property attributes, hooks, or members")) ppropertydesc*
   -- otherwise
 
