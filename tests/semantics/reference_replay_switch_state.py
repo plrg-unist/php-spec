@@ -130,6 +130,20 @@ def main():
                 mutate('$replay_replace(' + tasks + ', ptask_end, [SWITCH_REPLAY_END porigin_wrong])'),
                 mutate('$replay_replace(' + tasks + ', ptask_phase, [SWITCH_REPLAY_PHASE porigin_wrong])')]
 
+    def caught_checks(scope, site):
+        return ['porigin_owner = PORIGIN n_unit pcpath_owner',
+                '$origin_child((porigin_owner), [PCFIELD 1, PCINDEX 0]) = (porigin_catch)',
+                '$origin_node(S.SOURCES, porigin_catch) = (NStmtCatch phpType42 phpType43 phpType23 metadata_catch)',
+                'porigin_catch = PORIGIN n_unit pcpath_catch',
+                site + ' = PORIGIN n_unit pcpath_site',
+                '$effect_below(pcpath_catch ++ [PCFIELD 2], pcpath_site)',
+                '$finally_catch_origin(' + scope + ', porigin_owner, (porigin_catch))',
+                '$ref_replay_after_tasks(' + scope + ', porigin_owner) = GOTOTASKS ptask_source*',
+                '$switch_state_tasks(ptask_source*, 0) = [SWITCH_REPLAY_END porigin_switch]',
+                '$switch_replay_site(' + scope + ', porigin_switch)',
+                '$switch_replay_guard_inside(' + scope + ', porigin_switch, ' + scope + '.TODO)',
+                '$goto_saved_try(' + scope + '.TODO, porigin_owner) = GOTOTASKS ((REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_replay*)']
+
     f = ['$replay_function(S, [102])']
     after = 'S.TODO = (REF_REPLAY_AFTER porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*'
     for case in cases:
@@ -221,10 +235,11 @@ def main():
             'S.ORIGIN = (porigin_goto)', '$goto_target(S, porigin_goto) = (pcpath_target)',
             '$goto_site(S, porigin_goto, pcpath_target)', '~$goto_exits_finally(S, porigin_goto, pcpath_target)',
             '$replay_guard(S.TODO) = (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*))',
-            'porigin_owner = $ref_owner_origin(prefowner)', '~$finally_present(S, porigin_owner)',
-            '$ref_replay_caught(S, porigin_owner)', '$switch_state_tasks(S.TODO, 0) = eps',
+            'porigin_owner = $ref_owner_origin(prefowner)', '~$finally_present(S, porigin_owner)'] + caught_checks('S', 'porigin_goto') + [
+            '$switch_state_tasks(S.TODO, 0) = eps',
             'S_next = $drive_steps(S, 1)', '$call_descriptors_valid(S_next)',
             '$replay_guard(S_next.TODO) = (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*))',
+            '$goto_saved_try(S_next.TODO, porigin_owner) = GOTOTASKS ((REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_next*)',
             'S_next.STORE = S.STORE', 'S_next.ALLOCATIONS = S.ALLOCATIONS'], [
             'S[.TODO = $replay_replace(S.TODO, REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*), eps)]',
             'S[.TODO = $replay_replace(S.TODO, REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*), [REF_REPLAY_ORIGIN porigin_source $(z + 100) (prefowner :: prefowner_tail*)])]'])
@@ -234,7 +249,9 @@ def main():
             '$replay_function(S_scope, [102])', '$switch_state_tasks(pframe.TODO, 0) = eps',
             '$replay_guard(pframe.TODO) = (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*))',
             'porigin_owner = $ref_owner_origin(prefowner)', '~$finally_present(S_scope, porigin_owner)',
-            '$ref_replay_caught(S_scope, porigin_owner)', '$ref_replay_guard_valid(S_scope, porigin_source, z, prefowner :: prefowner_tail*)',
+            'S.CURRENT = (pcallcontext_current)', 'pcallcontext_current.CALLSITE = pframe.ORIGIN',
+            'pframe.ORIGIN = (porigin_call)',
+            '$origin_node(S.SOURCES, porigin_call) = (NExprFuncCall (NName (BYTES "Zw==") metadata_name) (SEQUENCE eps) metadata_call)'] + caught_checks('S_scope', 'porigin_call') + [
             '$call_tasks_valid(S_scope, pframe.TODO)'], [
             'S[.FRAMES = pframe[.TODO = $replay_replace(pframe.TODO, REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*), eps)] :: pframe_tail*]',
             'S[.FRAMES = pframe[.TODO = $replay_replace(pframe.TODO, REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*), [REF_REPLAY_ORIGIN porigin_source $(z + 100) (prefowner :: prefowner_tail*)])] :: pframe_tail*]'], error_scope='S_scope')
