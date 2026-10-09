@@ -34,6 +34,9 @@ checks plus eight pure trace-clear companions pass atc2b195/367; strict3 passes5
 The shared Throwable survives committed NAN/mode0 without a second handler entry;
 the baseline and original entry-certificate failure retain zero credit. Last-owner
 Stringable entry cleanup and nullable saved-original reentry remain required.
+Actual367 overdb808 passes strict3 atfac7c8 (5.121s), preserving ARG
+receiver/argument/foreach continuations and EX parked-public lookup/collector guards.
+Private source2/255 cuts and prior unsafe boundaries remain unchanged.
 Actual367 over288c passes strict3 ate6c5 (5.224s), preserving Aggregate foreach,
 deferred return Notices, live concat and mixed-CV property ingress; private
 source2/211 cuts are unchanged.
