@@ -46,6 +46,10 @@ dec $gc_close_scope(pstate, pfiberclose*, pgccall) : pstate?
 dec $gc_worker_scope(pcallcontext?) : porigin?
 dec $gc_worker_start_buffer(pstate, pgcplan, bool) : pstate
 dec $gc_worker_guard_scope(pstate, pgcguard) : porigin?
+dec $gc_worker_overlap_image(pstate, pgcplan) : bool
+dec $gc_worker_overlap_tags(pgcplan, pgcslot*, nat) : bool
+dec $gc_worker_overlap_targets(pstate, pgcplan, nat, pnode*) : bool
+dec $gc_worker_overlap_selected(pstate, pgcplan, nat, nat) : bool
 
 ;; Restored VM views exclude their borrowed parked copy. Only TODO/FRAMES,
 ;; never destructor histories or PLAN itself, authenticate the global pass.
@@ -277,6 +281,63 @@ def $gc_worker_wait_valid(S, n, pgcplan) = true
   -- if $gc_worker_cache_valid(S, n, pfiber)
 def $gc_worker_wait_valid(S, n, pgcplan) = false -- otherwise
 def $call_task_valid(S, GC_WORKER_WAIT n pgcplan) = $gc_worker_wait_valid(S, n, pgcplan)
+;; Frozen slot provenance survives callbacks. A removed residual tag cannot be
+;; restored, and every uncalled fresh target remains marked until selection.
+def $gc_worker_overlap_tags(pgcplan, eps, n_slot) = true
+def $gc_worker_overlap_tags(pgcplan, (GC_DTOR_ROOT n) :: pgcslot*, n_slot) = $gc_worker_overlap_tags(pgcplan, pgcslot*, $(n_slot + 1))
+  -- if $(n_slot < |pgcplan.BUFFER|)
+  -- if pgcplan.BUFFER[n_slot] = GC_ROOT (HOBJECT n)
+  -- if (HOBJECT n) <- pgcplan.DTORS
+def $gc_worker_overlap_tags(pgcplan, pgcslot :: pgcslot_tail*, n_slot) = $gc_worker_overlap_tags(pgcplan, pgcslot_tail*, $(n_slot + 1))
+  -- if $gc_eligible_slot(pgcslot) = $gc_nodes([pgcslot])
+def $gc_worker_overlap_tags(pgcplan, pgcslot*, n_slot) = false -- otherwise
+def $gc_worker_overlap_targets(S, pgcplan, n_ordinal, eps) = true
+def $gc_worker_overlap_targets(S, pgcplan, n_ordinal, (HOBJECT n) :: pnode*) = ((n <- S.DESTRUCTION.CALLED \/ ($(n_ordinal >= pgcplan.INDEX) /\ $(n_slot < |S.GC.BUFFER|) /\ S.GC.BUFFER[n_slot] = GC_DTOR_ROOT n) \/ (n_ordinal = pgcplan.INDEX /\ $gc_worker_overlap_selected(S, pgcplan, n, n_slot))) /\ $gc_worker_overlap_targets(S, pgcplan, $(n_ordinal + 1), pnode*))
+  -- if $gc_slot_find(pgcplan.BUFFER, HOBJECT n, 0) = (n_slot)
+def $gc_worker_overlap_targets(S, pgcplan, n_ordinal, pnode*) = false -- otherwise
+;; Metadata reads the genuine normalized guard before CALLED is appended.
+;; Its logical ordinal is distinct from the global physical cursor.
+def $gc_worker_overlap_selected(S, pgcplan, n_object, n_slot) = true
+  -- if S.ACTIVEFIBER = S.GC.WORKER /\ S.GC.WORKER = (n)
+  -- if $fiber_at(S, n) = (pfiber) /\ pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = (pgcguard)
+  -- if pgcguard.PUBLIC = eps /\ pgcguard.WORKER = n
+  -- if pgcguard.SOURCE = pgcplan.CALL[.PENDING = eps]
+  -- if pgcguard.INDEX = pgcplan.INDEX /\ $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pgcguard.OBJECT = n_object /\ pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n_object
+  -- if $gc_worker_birth_valid(S, pgcguard.SOURCE) /\ $destructor_pending_valid(S, pgcguard.PENDING)
+  -- if $($gc_worker_guard_count(S.TODO, pgcguard) + $gc_worker_guard_frames(S.FRAMES, pgcguard)) = 1
+  -- if $gc_worker_guard_tail(S.TODO, pgcguard) \/ $gc_worker_guard_frame_tail(S.FRAMES, pgcguard)
+  -- if $gc_slot_find(pgcplan.BUFFER, HOBJECT n_object, 0) = (n_slot)
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n_object, 0) = (n_slot)
+  -- if S.GC.SCAN.INDEX = n_slot /\ S.GC.SCAN.END = |pgcplan.BUFFER|
+  -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n_object)
+  -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
+  -- if pgcplan.INDEX =/= 0 \/ (S.GC.BUFFER = $gc_slot_set(pgcslot*, n_slot, GC_ROOT (HOBJECT n_object)) /\ S.GC.FREE = nat_free*)
+def $gc_worker_overlap_selected(S, pgcplan, n_object, n_slot) = false -- otherwise
+def $gc_worker_overlap_image(S, pgcplan) = true -- if ~$gc_overlap_plan(pgcplan)
+def $gc_worker_overlap_image(S, pgcplan) = true
+  -- if $gc_overlap_plan(pgcplan)
+  -- if $heap_subset($destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER)), $gc_nested_removed(pgcplan))
+  -- if S.GC.WORKER = (n) /\ S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber) /\ pfiber.GC = (pgcworker)
+  -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.VM = eps
+  -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
+  -- if $fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps)
+  -- if pfibercaller.OBJECT = n /\ $gc_worker_api(pfibercaller.API)
+  -- if $fiber_api_valid(S, pfibercaller.API) /\ $fiber_caller_wait(S, pfibercaller)
+  -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_tail*
+  -- if pfibercaller.PREVIOUS = (n_caller) /\ n_caller =/= n
+  -- if $fiber_at(S, n_caller) = (pfiber_caller)
+  -- if pfiber_caller.GC = eps /\ $fiber_record_valid(S, n_caller, pfiber_caller)
+  -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
+  -- if $gc_scope_valid(S_caller, pgcplan.CALL)
+  -- if S.GC.SCAN.END = |pgcplan.BUFFER|
+  -- if $gc_worker_overlap_tags(pgcplan, S.GC.BUFFER, 0)
+  -- if $gc_worker_overlap_targets(S, pgcplan, 0, pgcplan.DTORS)
+  -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
+  -- if pgcplan.INDEX =/= 0 \/ pgcworker.GUARD =/= eps \/ (S.GC.BUFFER = pgcslot* /\ S.GC.FREE = nat_free* /\ S.GC.SCAN.INDEX = 0)
+def $gc_worker_overlap_image(S, pgcplan) = false -- otherwise
 def $gc_worker_run_valid(S, n) = true
   -- if S.ACTIVEFIBER = (n)
   -- if S.GC.WORKER = (n)
@@ -289,6 +350,7 @@ def $gc_worker_run_valid(S, n) = true
   -- if pgcworker.GUARD = eps
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
+  -- if $gc_worker_overlap_image(S, pgcplan)
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
   -- if pfibercaller.OBJECT = n
   -- if $gc_worker_api(pfibercaller.API)
@@ -314,7 +376,7 @@ def $gc_worker_plan_set(S, pgcplan) = S[.GC.PLAN = (pgcplan)][.GC.ACTIVE = (pgcp
   -- if $gc_worker_api(pfibercaller.API)
   -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT pfibercaller.OBJECT pgcplan_old) :: ptask_tail*
 def $gc_worker_start(S, pgcplan, b_fresh) = $gc_worker_start_vm(S_running, n, pfiber)[.TODO = [GC_WORKER_RUN n]][.ACTIVEFIBER = (n)][.FIBERCALLERS = pfibercaller :: S_caller.FIBERCALLERS][.FIBERSEQ = $(S_caller.FIBERSEQ + 1)]
-  -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
+  -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER) \/ $gc_worker_overlap_start_ready(S, pgcplan, b_fresh)
   -- if S_cached = $gc_worker_cached(S, pgcplan.CALL)
   -- if S_cached.GC.WORKER = (n)
   -- if $fiber_at(S_cached, n) = (pfiber)
@@ -336,7 +398,32 @@ def $gc_worker_cached(S, pgccall) = $destruction_store_new(S[.OBJECTS = S.OBJECT
 def $gc_worker_cached(S, pgccall) = S -- if S.GC.WORKER =/= eps
 def $gc_worker_start_plan(S, pgcplan, true) = $gc_plan(S, pgcplan.CALL)
 def $gc_worker_start_plan(S, pgcplan, false) = pgcplan
+;; Only a closed overlap whose residual tags were all physically removed can
+;; enter the ordinary fresh RUN lane; surviving residuals need a physical scan.
+def $gc_worker_overlap_start_ready(S, pgcplan, true) = true
+  -- if S.ACTIVEFIBER = (n_caller)
+  -- if S.TODO = (GC_TRACE pgcplan.CALL) :: ptask_tail*
+  -- if $gc_scope_valid(S, pgcplan.CALL) /\ $fiber_transfer_domain(S)
+  -- if pgcplan = $gc_plan(S, pgcplan.CALL)
+  -- if $gc_overlap_plan(pgcplan)
+  -- if $gc_ordinary_nodes(S, $heap_reach(pgcplan.CANDIDATES, eps, pgcplan.GRAPH.EDGES))
+  -- if $heap_subset($destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER)), $gc_nested_removed(pgcplan))
+  -- if $fiber_at(S, n_caller) = (pfiber_caller)
+  -- if pfiber_caller.GC = eps /\ $fiber_record_valid(S, n_caller, pfiber_caller)
+  -- if $fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps)
+  -- if S.GC.WORKER = (n) /\ n =/= n_caller
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if $fiber_record_valid(S, n, pfiber)
+  -- if pfiber.STATUS = FIBER_SUSPENDED
+  -- if pfiber.GC = (pgcworker) /\ pgcworker.GUARD = eps
+  -- if pfiber.VM = (pfibervm) /\ pfibervm.TODO = [GC_WORKER_IDLE n]
+def $gc_worker_overlap_start_ready(S, pgcplan, b_fresh) = false -- otherwise
 def $gc_worker_start_buffer(S, pgcplan, true) = S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps][.GC.SCAN = {INDEX 0, END n_end}]
+  -- if ~$gc_overlap_plan(pgcplan)
+  -- if n_end = |pgcplan.BUFFER|
+def $gc_worker_start_buffer(S, pgcplan, true) = S[.GC.BUFFER = pgcslot*][.GC.FREE = nat_free*][.GC.SCAN = {INDEX 0, END n_end}]
+  -- if $gc_overlap_plan(pgcplan)
+  -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
   -- if n_end = |pgcplan.BUFFER|
 def $gc_worker_start_buffer(S, pgcplan, false) = S
 def $gc_fiber_trace(S, pgcplan) = $gc_worker_start(S, pgcplan, true)
@@ -442,6 +529,7 @@ def $gc_worker_guard_attachment(S, pgcguard) = true
   -- if S.GC.WORKER = (pgcguard.WORKER)
   -- if S.GC.PLAN = (pgcplan)
   -- if $gc_plan_live(S, pgcplan)
+  -- if $gc_worker_overlap_image(S, pgcplan)
   -- if pgcplan.CALL = pgcguard.SOURCE
   -- if pgcplan.INDEX = pgcguard.INDEX
   -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
@@ -461,6 +549,14 @@ def $destructor_leaf_valid(S, pdestructorcall) = true
 def $gc_source(S) = true
   -- if S.CURRENT = eps
   -- if $gc_worker_guard_at(S) =/= eps
+def $gc_source(S) = true
+  -- if S.CURRENT = eps
+  -- if S.GC.PLAN = (pgcplan) /\ $gc_overlap_plan(pgcplan)
+  -- if $gc_plan_live(S, pgcplan) /\ $gc_worker_overlap_image(S, pgcplan)
+  -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
+  -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
+  -- if $gc_slot_find(pgcplan.BUFFER, HOBJECT n, 0) = (n_slot)
+  -- if $gc_worker_overlap_selected(S, pgcplan, n, n_slot)
 def $destructor_tail_pending((GC_WORKER_GUARD pgcguard) :: ptask_tail*) = pgcguard.PENDING
 def $gc_worker_scope(eps) = eps
 def $gc_worker_scope((pcallcontext)) = pcallcontext.LEXICAL_CLASS

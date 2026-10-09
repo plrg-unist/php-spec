@@ -10,6 +10,7 @@ dec $gc_residual_overlap(pstate) : bool
 dec $gc_overlap_objects(pnode*) : bool
 dec $gc_overlap_plan(pgcplan) : bool
 dec $gc_overlap_ready(pstate, pgccall) : bool
+dec $gc_worker_overlap_start_ready(pstate, pgcplan, bool) : bool
 dec $gc_nested_visits(pnode*) : pgcvisit*
 dec $gc_nested_walk(hgraph, pnode*, pgcslot*, nat*, pgcvisit*, nat) : (pgcslot*, nat*, nat)
 dec $gc_nested_slots(hgraph, pnode*, pgcslot*, nat*, nat, nat) : (pgcslot*, nat*, nat)
@@ -814,9 +815,14 @@ def $gc_trace(S, pgccall) = $gc_main_trace(S, pgcplan)
 def $gc_trace(S, pgccall) = $gc_main_trace(S, $gc_plan(S, pgccall))
   -- if $gc_residual_overlap(S)
   -- if $gc_overlap_ready(S, pgccall)
+def $gc_trace(S, pgccall) = $gc_fiber_trace(S, pgcplan)
+  -- if $gc_residual_overlap(S)
+  -- if pgcplan = $gc_plan(S, pgccall)
+  -- if $gc_worker_overlap_start_ready(S, pgcplan, true)
 def $gc_trace(S, pgccall) = S[.COMPLETION = UNSUPPORTED "residual destructor tag shares an ordinary traced component"]
   -- if $gc_residual_overlap(S)
   -- if ~$gc_overlap_ready(S, pgccall)
+  -- if ~$gc_worker_overlap_start_ready(S, $gc_plan(S, pgccall), true)
 rule PhpStep/gc-trace: S ~> $gc_trace(S, pgccall)
   -- if S.TODO = (GC_TRACE pgccall) :: ptask*
   -- if $call_task_valid(S, GC_TRACE pgccall)
