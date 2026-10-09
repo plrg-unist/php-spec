@@ -1,0 +1,59 @@
+{
+  "scope": "Source-authenticated one-use terminal reference TypeError replay and own-catch continuation; physical runtime-owner recovery remains separate.",
+  "cases": [
+    {
+      "id": "initial-error-finalizer-repairs-cell",
+      "purpose": "Initial verification rejects before the protected return captures a successful result; repairing the cell in cleanup must not erase the pending error or cause a second finalizer entry.",
+      "predicted_stdout": "F|R|fixed",
+      "source": "<?php\nfunction &g(): string {\n    global $v;\n    try { return $v; }\n    finally { echo 'F|'; $v = 'fixed'; }\n}\n$v = new stdClass;\ntry { $r =& g(); echo 'ACCEPTED'; }\ncatch (TypeError $e) { echo 'R'; }\necho '|', $v;\n"
+    },
+    {
+      "id": "delayed-error-replay-repairs-cell",
+      "purpose": "A second finalizer entry repairs the captured cell, but cleanup must propagate the already pending TypeError rather than retrying the return until it succeeds.",
+      "predicted_stdout": "1|2|R|fixed",
+      "source": "<?php\nfunction &g(): string {\n    global $v, $n;\n    try { return $v; }\n    finally {\n        ++$n; echo $n, '|';\n        if ($n === 1) { $v = new stdClass; }\n        else { $v = 'fixed'; }\n    }\n}\n$v = 'old'; $n = 0;\ntry { $r =& g(); echo 'ACCEPTED'; }\ncatch (TypeError $e) { echo 'R'; }\necho '|', $v;\n"
+    },
+    {
+      "id": "delayed-error-replay-return-override",
+      "purpose": "A second-pass finalizer return supersedes the saved TypeError and selects the new reference cell; it must not enter that finalizer a third time.",
+      "predicted_stdout": "1|2|override|changed|2",
+      "source": "<?php\nfunction &g(): string {\n    global $v, $replacement, $n;\n    try { return $v; }\n    finally {\n        ++$n; echo $n, '|';\n        if ($n === 1) { $v = new stdClass; }\n        else { return $replacement; }\n    }\n}\n$v = 'old'; $replacement = 'override'; $n = 0;\ntry {\n    $r =& g(); echo $r;\n    $r = 'changed'; echo '|', $replacement, '|', $n;\n}\ncatch (TypeError $e) { echo 'R'; }\n"
+    },
+    {
+      "id": "delayed-error-replay-throw-override",
+      "purpose": "A second-pass finalizer exception replaces the pending TypeError without replaying the same finalizer for its own throw site.",
+      "predicted_stdout": "1|2|E|2",
+      "source": "<?php\nfunction &g(): string {\n    global $v, $n;\n    try { return $v; }\n    finally {\n        ++$n; echo $n, '|';\n        if ($n === 1) { $v = new stdClass; }\n        else { throw new Exception; }\n    }\n}\n$v = 'old'; $n = 0;\ntry { $r =& g(); echo 'ACCEPTED'; }\ncatch (TypeError $e) { echo 'WRONG_TYPE'; }\ncatch (Exception $e) { echo 'E'; }\necho '|', $n;\n"
+    },
+    {
+      "id": "delayed-error-nested-finalizers-saved-call",
+      "purpose": "Both normal and exceptional cleanup traverse inner then outer finalizers. The nested ping call authenticates a saved g frame while the original captured cell remains live.",
+      "predicted_stdout": "P|I|O|P|I|O|R",
+      "source": "<?php\nfunction ping() { echo 'P|'; }\nfunction &g(): string {\n    global $v;\n    try {\n        try { return $v; }\n        finally { ping(); echo 'I|'; $v = new stdClass; }\n    }\n    finally { echo 'O|'; }\n}\n$v = 'old';\ntry { g(); echo 'ACCEPTED'; }\ncatch (TypeError $e) { echo 'R'; }\n"
+    },
+    {
+      "id": "first-pass-finalizer-throw-no-self-replay",
+      "purpose": "A throw originating inside the finalizer overrides a valid protected return, so source reconstruction must not replay the finalizer containing that throw.",
+      "predicted_stdout": "F|E",
+      "source": "<?php\nfunction &g(): string {\n    global $v;\n    try { return $v; }\n    finally { echo 'F|'; throw new Exception; }\n}\n$v = 'old';\ntry { $r =& g(); echo 'ACCEPTED'; }\ncatch (Exception $e) { echo 'E'; }\n"
+    },
+    {
+      "id": "delayed-error-local-catch-after-continuation",
+      "purpose": "The protected try's own catch remains eligible after a delayed return error; after catch cleanup, the function resumes after the try and a new reference return selects the live shared cell.",
+      "predicted_stdout": "F1|C|F2|A|caught|shared",
+      "source": "<?php\nfunction &g(): string {\n    global $v, $n;\n    try { return $v; }\n    catch (TypeError $e) { echo 'C|'; $v = 'caught'; }\n    finally { ++$n; echo 'F', $n, '|'; if ($n === 1) { $v = new stdClass; } }\n    echo 'A|'; return $v;\n}\n$v = 'old'; $n = 0;\n$r =& g(); echo $r;\n$r = 'shared'; echo '|', $v;\n"
+    },
+    {
+      "id": "delayed-error-selected-catch-no-siblings",
+      "purpose": "A delayed error from a return in an already selected catch must replay its finalizer and propagate to the caller without reopening a sibling catch.",
+      "predicted_stdout": "C|F1|F2|R|2",
+      "source": "<?php\nfunction &g(): string {\n    global $v, $n;\n    try { throw new Exception; }\n    catch (Exception $e) { echo 'C|'; return $v; }\n    catch (TypeError $e) { echo 'SIBLING|'; $v = 'healed'; return $v; }\n    finally { ++$n; echo 'F', $n, '|'; $v = new stdClass; }\n}\n$v = 'old'; $n = 0;\ntry { g(); echo 'ACCEPTED'; }\ncatch (TypeError $e) { echo 'R'; }\necho '|', $n;\n"
+    },
+    {
+      "id": "parameter-backing-finally-required-recheck-unused",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;try{return $v;}finally{echo 'F|';$v=new stdClass;}}$v=new S;take($v);try{g();echo 'ACCEPTED';}catch(TypeError $e){echo 'R';}echo '|',C::$o===$v&&$v instanceof stdClass?'SHARED':'DETACHED';",
+      "predicted_stdout": "F|F|R|SHARED",
+      "purpose": "Preserved source44f566 delayed return recheck failure through accepted216 backing."
+    }
+  ]
+}

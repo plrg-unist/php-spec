@@ -135,12 +135,14 @@ dec $error_handler_target(pstate, pvalue) : pcalltarget?
 dec $throwable_continuation(pstate, pstate) : pstate
 dec $static_string_result_task(ptask) : bool
 dec $destructor_enter_task(ptask) : bool
+dec $ref_recheck_throw_producer(pstate, pstate) : bool
 dec $throwable_same_frame_continuation(pstate, pstate, ptask*) : pstate
 def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next[.TODO = ptask_tail*] -- otherwise
 def $throwable_continuation(S, S_next) = $throwable_same_frame_continuation(S, S_next, ptask_tail*)
   -- if S.TODO = ptask :: ptask_tail*
   -- if ~$static_string_result_task(ptask)
   -- if ~$destructor_enter_task(ptask)
+  -- if ~$ref_recheck_throw_producer(S, S_next)
   -- if S_next.FRAMES = S.FRAMES
   -- if S_next.CURRENT = S.CURRENT
 def $throwable_continuation(S, S_next) = S_next
