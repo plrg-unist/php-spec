@@ -79,6 +79,18 @@ def $fiber_start_unpack_task(FIBER_TRAVERSE_RESULT pfibertraversal text, n?, pfi
 def $fiber_start_unpack_task(FIBER_TRAVERSE_GENERATOR pfibertraversal text, n?, pfiberstart) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START = pfiberstart)
 def $fiber_start_unpack_at_site(FIBER_TRAVERSE_RESULT pfibertraversal text, n?, porigin) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START.SITE = porigin)
 def $fiber_start_unpack_at_site(FIBER_TRAVERSE_GENERATOR pfibertraversal text, n?, porigin) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START.SITE = porigin)
+def $fiber_start_unpack_task(ERROR_HANDLER_INVOKE perrorcall, n?, pfiberstart) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START = pfiberstart)
+  -- if perrorcall.RESUME = FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan"
+def $fiber_start_unpack_task(ERROR_HANDLER_RESULT perrorcall, n?, pfiberstart) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START = pfiberstart)
+  -- if perrorcall.RESUME = FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan"
+def $fiber_start_unpack_task(ERROR_HANDLER_CLEAN perrorcall, n?, pfiberstart) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START = pfiberstart)
+  -- if perrorcall.RESUME = FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan"
+def $fiber_start_unpack_at_site(ERROR_HANDLER_INVOKE perrorcall, n?, porigin) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START.SITE = porigin)
+  -- if perrorcall.RESUME = FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan"
+def $fiber_start_unpack_at_site(ERROR_HANDLER_RESULT perrorcall, n?, porigin) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START.SITE = porigin)
+  -- if perrorcall.RESUME = FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan"
+def $fiber_start_unpack_at_site(ERROR_HANDLER_CLEAN perrorcall, n?, porigin) = (pfibertraversal.CAPTURE = n? /\ pfibertraversal.START.SITE = porigin)
+  -- if perrorcall.RESUME = FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan"
 def $fiber_traversal_valid(S, pfibertraversal) = true
   -- if $fiber_traversal_object(S, pfibertraversal.OBJECT, true)
   -- if $fiber_traversal_input(S, pfibertraversal)
@@ -98,6 +110,8 @@ def $fiber_traversal_stage(S, pfibertraversal, text) = true
 def $fiber_traversal_stage(S, pfibertraversal, text) = $call_reference_operand_valid(S, pfibertraversal.CURRENT)
   -- if $useriter_instance(S, pfibertraversal.OBJECT)
   -- if text = "key"
+def $fiber_traversal_stage(S, pfibertraversal, "valid-nan") = $generator_from_valid_operand(S, pfibertraversal.CURRENT)
+  -- if $useriter_instance(S, pfibertraversal.OBJECT)
 def $fiber_traversal_stage(S, pfibertraversal, text) = false -- otherwise
 def $fiber_traversal_call_at(CALL_ARGS (METHOD_TARGET n porigin_method) phpType7* n_index poperand* (porigin) z, porigin) = true
 def $fiber_traversal_call_at(ptask, porigin) = false -- otherwise
@@ -325,15 +339,34 @@ rule PhpStep/fiber-traversal-iterator-abrupt: S ~> S_read
   -- if S_read = $resolve_at(S, S.RESULT, pfibertraversal.LINE)
   -- if S_read.COMPLETION =/= NORMAL
 
-;; Its warning can park user handlers and reread reference payloads; retain that
-;; separate required continuation rather than silently coercing NaN here.
-rule PhpStep/fiber-traversal-valid-nan: S ~> S_read[.COMPLETION = UNSUPPORTED "Fiber start Iterator valid NaN warning continuation"]
+;; The C truth test retains the raw valid() retval through its warning, then
+;; rereads its double payload. A copied NaN and a live reference stay distinct.
+rule PhpStep/fiber-traversal-valid-nan: S ~> $error_dispatch(S_read[.ORIGIN = (pfibertraversal.START.SITE)], 2, $ptascii("unexpected NAN value was coerced to bool"), z, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) z, FIBER_TRAVERSE_RESULT pfibertraversal[.CURRENT = S.RESULT] "valid-nan")
   -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "valid") :: ptask*
+  -- if $fiber_traversal_result_valid(S, pfibertraversal, "valid")
   -- if z = pfibertraversal.LINE
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $generator_from_nan(pvalue)
+rule PhpStep/fiber-traversal-valid-nan-current: S ~> $fiber_traversal_call(S, pfibertraversal[.CURRENT = KNOWN PNULL], "current", ptask_tail*)
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan") :: ptask_tail*
+  -- if $generator_from_valid_decision(S, pfibertraversal.CURRENT) = (true)
+rule PhpStep/fiber-traversal-valid-nan-end: S ~> $fiber_traversal_finish(S, pfibertraversal, ptask_tail*)
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan") :: ptask_tail*
+  -- if $generator_from_valid_decision(S, pfibertraversal.CURRENT) = (false)
+rule PhpStep/fiber-traversal-valid-nan-payload: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Fiber start Iterator valid NaN raw payload type change"]
+  -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan") :: ptask_tail*
+  -- if $generator_from_valid_decision(S, pfibertraversal.CURRENT) = eps
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan"
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $fiber_traversal_result_valid(S, pfibertraversal, "valid-nan")
+  -- if perrorcall.SITE = pfibertraversal.START.SITE
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = pfibertraversal.LINE
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
 def $fiber_traversal_nodes(pfibertraversal, true) = $operand_nodes(pfibertraversal.CURRENT) ++ [HOBJECT pfibertraversal.OBJECT] ++ $operand_nodes(pfibertraversal.INPUT)
 def $fiber_traversal_nodes(pfibertraversal, false) = $operand_nodes(pfibertraversal.CURRENT) ++ $operand_nodes(pfibertraversal.INPUT)
 def $task_nodes(FIBER_TRAVERSE_RESULT pfibertraversal text) = $fiber_start_unpack_nodes(pfibertraversal.CAPTURE, pfibertraversal.START[.SENT = pfibertraversal.SENT]) ++ $fiber_traversal_nodes(pfibertraversal, true)
@@ -353,3 +386,5 @@ def $fiber_traversal_discard(S, ptask, pfibertraversal, b_data) = $fiber_start_u
   -- if $fiber_start_unpack_unwind_valid(S, ptask)
 def $return_discard(S, FIBER_TRAVERSE_RESULT pfibertraversal text) = $fiber_traversal_discard(S, FIBER_TRAVERSE_RESULT pfibertraversal text, pfibertraversal, true)
   -- if $fiber_start_unpack_unwind_valid(S, FIBER_TRAVERSE_RESULT pfibertraversal text)
+def $error_read_discard(S, FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan") = $fiber_traversal_discard(S, FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan", pfibertraversal, true)
+  -- if $fiber_start_unpack_unwind_valid(S, FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan")
