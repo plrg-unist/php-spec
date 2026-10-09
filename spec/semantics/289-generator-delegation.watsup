@@ -275,11 +275,11 @@ def $generator_from_next(S, n, porigin, ptask*) = $generator_from_child(S, n, po
 def $generator_from_forward("send") = "send"
 def $generator_from_forward("throw") = "throw"
 def $generator_from_forward(text) = "next" -- otherwise
-def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME "current", SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS eps}
+def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME "current", SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false}
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.POSITION = 0
-def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME $generator_from_forward(pgeneratorop.NAME), SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS pgeneratorop.ARGUMENTS}
+def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME $generator_from_forward(pgeneratorop.NAME), SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS pgeneratorop.ARGUMENTS, STARTPACK false}
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if $(pgeneratorfrom.POSITION > 0)
@@ -602,12 +602,15 @@ def $generator_from_operation_valid(S, pgeneratorop) = ($generator_from_operatio
 def $generator_operation_site(S, pgeneratorop) = $generator_from_operation_valid(S, pgeneratorop)
   -- if $generator_from_site(S, pgeneratorop.SITE)
   -- if pgeneratorop.LOOP = eps
+  -- if ~pgeneratorop.STARTPACK
 def $generator_resumption_valid(S, pgeneratorop) = ($generator_operation_valid(S, pgeneratorop) /\ $generator_resumption_stage(S, pgeneratorop) /\ |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME))
   -- if $generator_from_site(S, pgeneratorop.SITE)
   -- if pgeneratorop.LOOP = eps
+  -- if ~pgeneratorop.STARTPACK
 def $generator_operation_trace(S, pgeneratorop) = eps
   -- if $generator_from_site(S, pgeneratorop.SITE)
   -- if pgeneratorop.LOOP = eps
+  -- if ~pgeneratorop.STARTPACK
 
 def $call_task_valid(S, GENERATOR_FROM_EVAL porigin) = $generator_from_source_context(S, porigin)
 def $call_task_valid(S, GENERATOR_FROM_NEXT n porigin) = ($generator_from_owner(S, n, porigin) /\ $generator_from_input_of(pgenerator.DELEGATE) =/= eps)
