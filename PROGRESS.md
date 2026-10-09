@@ -1431,8 +1431,17 @@ review accepts these private cuts and the actual359 join over `f5c4eed1f`,
 which passes strict compilation at `e77c3eff0` (4.567s) while preserving current
 state-aware207 guards,270 renderer-source classification and30 Generator fields.
 [Ledger](coverage/semantics/undefined-property-review.json).
-Computed names, magic getters/hooks, consumed storage and accepted99 read-call
-reference normalization remain required; held278/279 add no dependency or credit.
+The pinned8.5 reference-call increment keeps the genuine returned HCELL and
+borrows its captured target before PROPERTY_PREP erases the wrapper. Literal
+named noarg nonbuiltin calls without fallback now preserve fixed null after
+target retirement, release wrapper-only replacements at FETCH cleanup and chain
+throwing cleanup B with previous H. Ten exact originals and replacement237 pass
+at `cba3ab695`; pending207/stdClass225 pass at `d615fdf4d` after a fixture-only
+WeakReference timing correction. Strict359 passes at the original changed cut;
+native7/native2/native1 and the failed pending gate retain separate zero-model
+or zero-state credit. Accepted99/79 remain unchanged. [Reference-receiver ledger](coverage/semantics/reference-property-receiver-review.json).
+Computed names, magic getters/hooks, consumed storage and wider reference-call
+receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
