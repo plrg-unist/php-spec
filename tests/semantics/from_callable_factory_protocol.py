@@ -1071,3 +1071,291 @@ $fake_compare_receiver(S_live, n_closure) = (n_receiver)
     text += ''.join(('  -- ' if check.startswith('PhpStep:') else '  -- if ') + check + '\n'
                     for check in checks)
     return text, checks, len(genuine), len(controls)
+
+
+FIBER_FACTORY_PHASE = r'''
+dec $scoped_phase(pstate, nat) : bool
+def $scoped_phase(S, 0) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+def $scoped_phase(S, 1) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CURRENT
+  -- if pconfigcall.SELECTION =/= eps
+  -- if S.ACTIVEFIBER = eps
+def $scoped_phase(S, 2) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CURRENT
+  -- if pconfigcall.SELECTION =/= eps
+  -- if S.ACTIVEFIBER =/= eps
+  -- if $outputs(S.EVENTS) = $ptascii("Q;A;M:suspend;F;O:null;B:")
+def $scoped_phase(S, 3) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pconfigcall.KIND = INTRINSIC_FIBER_CURRENT
+  -- if pconfigcall.SELECTION =/= eps
+  -- if S.ACTIVEFIBER =/= eps
+  -- if $outputs(S.EVENTS) = $ptascii("Q;A;M:suspend;F;O:null;B:same;P:pause;R:")
+def $scoped_phase(S, n) = false -- otherwise
+dec $scoped_seek(pstate, nat, nat) : pstate
+def $scoped_seek(S, n_phase, n) = S
+  -- if $scoped_phase(S, n_phase)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+def $scoped_seek(S, n_phase, n) = $scoped_seek($drive_steps(S[.COMPLETION = NORMAL], 1), n_phase, $nabs($(n - 1)))
+  -- if ~$scoped_phase(S, n_phase)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $(n > 0)
+def $scoped_seek(S, n_phase, 0) = S
+  -- if ~$scoped_phase(S, n_phase)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+def $scoped_seek(S, n_phase, n) = S
+  -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
+'''
+
+
+def factory_fiber_guards(state):
+    return guards(state) + [f'$fiber_state_valid({state})']
+
+
+def render_factory_fiber(program, filename, expected):
+    genuine = [f'S_initial = $php_run({program}, 0, {filename})',
+               'S_initial.COMPLETION = BUDGET']
+    genuine += seek('S_config', 'S_initial', 0)
+    genuine += lines(r'''
+S_config.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_config*
+pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+pconfigcall.OWNER = (n_factory)
+pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_callback))]
+pconfigcall.SELECTION = eps
+pconfigcall.INDEX = 1
+pconfigcall.NAMED
+porigin_invoke = pconfigcall.SITE
+S_config.ORIGIN = (porigin_invoke)
+S_config.CURRENT = eps
+S_config.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_create
+porigin_create =/= porigin_invoke
+$from_factory_site(S_config, porigin_create)
+$from_factory_call_site(S_config, porigin_invoke)
+~$from_site(S_config, porigin_invoke)
+$from_factory_live(S_config, n_factory)
+$from_factory_saved(S_config, n_factory)
+$config_selected_valid(S_config, pconfigcall)
+$config_invoke_valid(S_config, pconfigcall)
+$call_task_valid(S_config, CONFIG_INVOKE pconfigcall)
+$lookup(S_config.ENV, $ptascii("factory")) = (n_factory_cell)
+S_config.STORE[n_factory_cell] = DEFINED PNULL
+$lookup(S_config.ENV, $ptascii("callback")) = (n_callback_cell)
+S_config.STORE[n_callback_cell] = DEFINED (PARRAY n_original_callback)
+$lookup(S_config.ENV, $ptascii("method")) = (n_method_cell)
+S_config.STORE[n_method_cell] = DEFINED pvalue_method
+$string_bytes(pvalue_method) = ($ptascii("getCurrent"))
+n_method_cell <- S_config.REFCELLS
+$entry_lookup(S_config.ARRAYS[n_callback].ITEMS, KINT 1) = (ALIAS n_method_cell)
+$entry_lookup(S_config.ARRAYS[n_original_callback].ITEMS, KINT 1) = (ALIAS n_method_cell)
+pentry* = $fiber_factory_items(S_config, PARRAY n_callback)
+$entry_lookup(pentry*, KINT 0) = (DIRECT pvalue_fiber)
+$string_bytes(pvalue_fiber) = ($ptascii("Fiber"))
+$entry_lookup(pentry*, KINT 1) = (DIRECT pvalue_method)
+$fiber_factory_members(S_config, PARRAY n_callback, pentry*) = ((pvalue_fiber, $ptascii("getCurrent")))
+$fiber_factory_selection(S_config, PARRAY n_callback, pentry*) = ((INTRINSIC_FIBER_CURRENT, $ptascii("getCurrent"), eps))
+$fiber_factory_current(S_config, pconfigcall, PARRAY n_callback)
+$task_nodes(CONFIG_INVOKE pconfigcall) = [HOBJECT n_factory, HARRAY n_callback]
+$node_children(S_config, HOBJECT n_factory) = eps
+$heap_owners($heap_graph(S_config), HOBJECT n_factory) = 1
+$outputs(S_config.EVENTS) = $ptascii("Q;A;")
+''') + factory_fiber_guards('S_config')
+    genuine += lines(r'''
+n_closure = |S_config.OBJECTS|
+pfiberfactory = {CALL pconfigcall, ITEMS pentry*}
+pfibercapture = {SITE porigin_invoke, KIND INTRINSIC_FIBER_CURRENT, NAME ($ptascii("getCurrent")), INPUT eps, FACTORY (pfiberfactory), ARRAY eps}
+PhpStep: S_config ~> S_mint
+S_mint = $from_receive(S_config, pconfigcall, PARRAY n_callback)
+S_mint.COMPLETION = NORMAL
+S_mint.OBJECTS = S_config.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]
+S_mint.ALLOCATIONS = S_config.ALLOCATIONS ++ [HOBJECT n_closure]
+S_mint.RESULT = KNOWN (POBJECT n_closure)
+S_mint.BASE = BASE_VALUE (KNOWN PNULL)
+S_mint.TODO = ptask_config*
+S_mint.EVENTS = S_config.EVENTS
+$fiber_factory_saved_call(S_mint, pconfigcall, INTRINSIC_FIBER_CURRENT, eps)
+$fiber_capture_source_valid(S_mint, pfibercapture)
+$fiber_capture_live(S_mint, n_closure)
+$closure_callable(S_mint, n_closure)
+$closure_live_object_valid(S_mint, n_closure)
+$node_children(S_mint, HOBJECT n_closure) = eps
+S_minted = $drive_steps(S_config, 1)
+S_minted.COMPLETION = BUDGET
+''') + factory_fiber_guards('S_minted')
+    genuine += seek('S_outside', 'S_minted', 1)
+    genuine += lines(r'''
+S_outside.TODO = (CONFIG_INVOKE pconfigcall_outside) :: ptask_outside_release*
+ptask_outside_release* = (FIBER_CAPTURE_RELEASE n_closure pconfigcall_outside.SITE) :: ptask_outside*
+pconfigcall_outside.KIND = INTRINSIC_FIBER_CURRENT
+pconfigcall_outside.OWNER = (n_closure)
+pconfigcall_outside.SELECTION = (n_closure)
+pconfigcall_outside.SENT = eps
+S_outside.ACTIVEFIBER = eps
+S_outside.CURRENT = eps
+S_outside.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_create
+S_outside.OBJECTS[n_closure] = FIBERAPICLOSURE pfibercapture
+S_outside.STORE[n_factory_cell] = DEFINED PNULL
+S_outside.STORE[n_callback_cell] = DEFINED PNULL
+S_outside.STORE[n_method_cell] = DEFINED pvalue_changed
+$string_bytes(pvalue_changed) = ($ptascii("suspend"))
+$string_bytes($entry_value(S_outside, ALIAS n_method_cell)) = ($ptascii("suspend"))
+~((HOBJECT n_factory) <- S_outside.ALLOCATIONS)
+~((HARRAY n_callback) <- S_outside.ALLOCATIONS)
+~((HARRAY n_original_callback) <- S_outside.ALLOCATIONS)
+(HOBJECT n_closure) <- S_outside.ALLOCATIONS
+$heap_owners($heap_graph(S_outside), HOBJECT n_factory) = 0
+$heap_owners($heap_graph(S_outside), HARRAY n_callback) = 0
+$heap_owners($heap_graph(S_outside), HARRAY n_original_callback) = 0
+$node_children(S_outside, HOBJECT n_closure) = eps
+$from_factory_saved(S_outside, n_factory)
+~$from_factory_live(S_outside, n_factory)
+~$config_selected_valid(S_outside, pconfigcall)
+$fiber_factory_saved_call(S_outside, pconfigcall, INTRINSIC_FIBER_CURRENT, eps)
+$fiber_factory_members(S_outside, PARRAY n_callback, pentry*) = ((pvalue_fiber, $ptascii("getCurrent")))
+$fiber_capture_source_valid(S_outside, pfibercapture)
+$fiber_capture_live(S_outside, n_closure)
+$fiber_capture_config_selected(S_outside, pconfigcall_outside)
+$config_invoke_valid(S_outside, pconfigcall_outside)
+$call_task_valid(S_outside, CONFIG_INVOKE pconfigcall_outside)
+$outputs(S_outside.EVENTS) = $ptascii("Q;A;M:suspend;F;O:")
+PhpStep: S_outside ~> S_outside_value
+S_outside_value = $config_receive(S_outside, pconfigcall_outside)
+S_outside_value.COMPLETION = NORMAL
+S_outside_value.RESULT = KNOWN PNULL
+S_outside_value.TODO = (FIBER_CAPTURE_RESULT n_closure pconfigcall_outside false) :: ptask_outside*
+S_outside_value.EVENTS = S_outside.EVENTS
+''') + factory_fiber_guards('S_outside')
+    genuine += seek('S_inside', 'S_outside', 2)
+    genuine += lines(r'''
+S_inside.TODO = (CONFIG_INVOKE pconfigcall_inside) :: ptask_inside_release*
+ptask_inside_release* = (FIBER_CAPTURE_RELEASE n_closure pconfigcall_inside.SITE) :: ptask_inside*
+pconfigcall_inside.KIND = INTRINSIC_FIBER_CURRENT
+pconfigcall_inside.OWNER = (n_closure)
+pconfigcall_inside.SELECTION = (n_closure)
+pconfigcall_inside.SENT = eps
+S_inside.ACTIVEFIBER = (n_fiber)
+S_inside.CURRENT = (pcallcontext_inside)
+$fiber_at(S_inside, n_fiber) = (pfiber_inside)
+pfiber_inside.STATUS = FIBER_RUNNING
+S_inside.OBJECTS[n_closure] = FIBERAPICLOSURE pfibercapture
+~((HOBJECT n_factory) <- S_inside.ALLOCATIONS)
+~((HARRAY n_callback) <- S_inside.ALLOCATIONS)
+$heap_owners($heap_graph(S_inside), HOBJECT n_factory) = 0
+$node_children(S_inside, HOBJECT n_closure) = eps
+$fiber_factory_saved_call(S_inside, pconfigcall, INTRINSIC_FIBER_CURRENT, eps)
+$fiber_capture_source_valid(S_inside, pfibercapture)
+$fiber_capture_live(S_inside, n_closure)
+$fiber_capture_config_selected(S_inside, pconfigcall_inside)
+$call_task_valid(S_inside, CONFIG_INVOKE pconfigcall_inside)
+$outputs(S_inside.EVENTS) = $ptascii("Q;A;M:suspend;F;O:null;B:")
+PhpStep: S_inside ~> S_inside_value
+S_inside_value = $config_receive(S_inside, pconfigcall_inside)
+S_inside_value.COMPLETION = NORMAL
+S_inside_value.RESULT = KNOWN (POBJECT n_fiber)
+S_inside_value.TODO = (FIBER_CAPTURE_RESULT n_closure pconfigcall_inside false) :: ptask_inside*
+S_inside_value.EVENTS = S_inside.EVENTS
+''') + factory_fiber_guards('S_inside')
+    genuine += seek('S_resumed', 'S_inside', 3)
+    genuine += lines(r'''
+S_resumed.TODO = (CONFIG_INVOKE pconfigcall_resumed) :: ptask_resumed_release*
+ptask_resumed_release* = (FIBER_CAPTURE_RELEASE n_closure pconfigcall_resumed.SITE) :: ptask_resumed*
+pconfigcall_resumed.KIND = INTRINSIC_FIBER_CURRENT
+pconfigcall_resumed.OWNER = (n_closure)
+pconfigcall_resumed.SELECTION = (n_closure)
+pconfigcall_resumed.SENT = eps
+S_resumed.ACTIVEFIBER = (n_fiber)
+S_resumed.CURRENT = (pcallcontext_resumed)
+$fiber_at(S_resumed, n_fiber) = (pfiber_resumed)
+pfiber_resumed.STATUS = FIBER_RUNNING
+S_resumed.OBJECTS[n_closure] = FIBERAPICLOSURE pfibercapture
+~((HOBJECT n_factory) <- S_resumed.ALLOCATIONS)
+~((HARRAY n_callback) <- S_resumed.ALLOCATIONS)
+$heap_owners($heap_graph(S_resumed), HOBJECT n_factory) = 0
+$node_children(S_resumed, HOBJECT n_closure) = eps
+$fiber_factory_saved_call(S_resumed, pconfigcall, INTRINSIC_FIBER_CURRENT, eps)
+$fiber_capture_source_valid(S_resumed, pfibercapture)
+$fiber_capture_live(S_resumed, n_closure)
+$fiber_capture_config_selected(S_resumed, pconfigcall_resumed)
+$call_task_valid(S_resumed, CONFIG_INVOKE pconfigcall_resumed)
+$outputs(S_resumed.EVENTS) = $ptascii("Q;A;M:suspend;F;O:null;B:same;P:pause;R:")
+PhpStep: S_resumed ~> S_resumed_value
+S_resumed_value = $config_receive(S_resumed, pconfigcall_resumed)
+S_resumed_value.COMPLETION = NORMAL
+S_resumed_value.RESULT = KNOWN (POBJECT n_fiber)
+S_resumed_value.TODO = (FIBER_CAPTURE_RESULT n_closure pconfigcall_resumed false) :: ptask_resumed*
+S_resumed_value.EVENTS = S_resumed.EVENTS
+''') + factory_fiber_guards('S_resumed')
+    genuine += lines(r'''
+S_done = $drive(S_resumed, 1000)
+S_done.COMPLETION = NORMAL
+S_done.TODO = eps
+S_done.FRAMES = eps
+S_done.TRACE = eps
+S_done.ACTIVEFIBER = eps
+S_done.FIBERCALLERS = eps
+~((HOBJECT n_factory) <- S_done.ALLOCATIONS)
+~((HOBJECT n_closure) <- S_done.ALLOCATIONS)
+~((HOBJECT n_fiber) <- S_done.ALLOCATIONS)
+$heap_owners($heap_graph(S_done), HOBJECT n_factory) = 0
+$heap_owners($heap_graph(S_done), HOBJECT n_closure) = 0
+$heap_owners($heap_graph(S_done), HOBJECT n_fiber) = 0
+$from_factory_saved(S_done, n_factory)
+$fiber_factory_saved_call(S_done, pconfigcall, INTRINSIC_FIBER_CURRENT, eps)
+$fiber_capture_source_valid(S_done, pfibercapture)
+~$fiber_capture_live(S_done, n_closure)
+''') + [f'$outputs(S_done.EVENTS) = $ptascii("{expected}")'] + factory_fiber_guards('S_done')
+
+    controls = lines(r'''
+~$fiber_factory_current(S_config[.TODO = ptask_config*], pconfigcall, PARRAY n_callback)
+~$fiber_factory_current(S_config, pconfigcall, PNULL)
+~$fiber_factory_current(S_config[.ALLOCATIONS = [HARRAY n_callback]], pconfigcall, PARRAY n_callback)
+~$fiber_factory_current(S_config, pconfigcall[.OWNER = eps], PARRAY n_callback)
+~$fiber_factory_current(S_config, pconfigcall[.KIND = INTRINSIC_FROM_CALLABLE], PARRAY n_callback)
+~$fiber_factory_current(S_config, pconfigcall[.SELECTION = (n_factory)], PARRAY n_callback)
+~$fiber_factory_saved_call(S_outside, pconfigcall[.OWNER = eps], INTRINSIC_FIBER_CURRENT, eps)
+~$fiber_factory_saved_call(S_outside, pconfigcall[.OWNER = (n_closure)], INTRINSIC_FIBER_CURRENT, eps)
+n_absent_factory = |S_outside.OBJECTS|
+~$fiber_factory_saved_call(S_outside, pconfigcall[.OWNER = (n_absent_factory)], INTRINSIC_FIBER_CURRENT, eps)
+~$fiber_factory_saved_call(S_outside, pconfigcall[.SELECTION = (n_closure)], INTRINSIC_FIBER_CURRENT, eps)
+~$fiber_factory_saved_call(S_outside, pconfigcall[.KIND = INTRINSIC_FROM_CALLABLE], INTRINSIC_FIBER_CURRENT, eps)
+~$fiber_factory_saved_call(S_outside, pconfigcall[.SITE = porigin_create], INTRINSIC_FIBER_CURRENT, eps)
+~$fiber_factory_saved_call(S_outside, pconfigcall, INTRINSIC_FIBER_SUSPEND, eps)
+~$fiber_factory_saved_call(S_outside, pconfigcall, INTRINSIC_FIBER_CURRENT, (n_factory))
+S_wrong_factory = S_outside[.OBJECTS[n_factory] = INTRINSICCLOSURE INTRINSIC_FROM_CALLABLE]
+~$fiber_capture_source_valid(S_wrong_factory, pfibercapture)
+~$fiber_capture_live(S_wrong_factory, n_closure)
+S_wrong_creation = S_outside[.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_invoke]
+~$fiber_capture_source_valid(S_wrong_creation, pfibercapture)
+~$fiber_capture_source_valid(S_outside[.SOURCES = eps], pfibercapture)
+~$fiber_capture_source_valid(S_outside, pfibercapture[.SITE = porigin_create])
+~$fiber_capture_source_valid(S_outside, pfibercapture[.KIND = INTRINSIC_FIBER_SUSPEND])
+~$fiber_capture_source_valid(S_outside, pfibercapture[.NAME = $ptascii("suspend")])
+~$fiber_capture_source_valid(S_outside, pfibercapture[.INPUT = (n_factory)])
+pfiberfactory_no_owner = pfiberfactory[.CALL = pconfigcall[.OWNER = eps]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_no_owner)])
+pfiberfactory_wrong_site = pfiberfactory[.CALL = pconfigcall[.SITE = porigin_create]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_wrong_site)])
+pfiberfactory_wrong_line = pfiberfactory[.CALL = pconfigcall[.LINE = $(pconfigcall.LINE + 1)]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_wrong_line)])
+pfiberfactory_wrong_index = pfiberfactory[.CALL = pconfigcall[.INDEX = 0]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_wrong_index)])
+pfiberfactory_wrong_named = pfiberfactory[.CALL = pconfigcall[.NAMED = false]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_wrong_named)])
+pfiberfactory_no_sent = pfiberfactory[.CALL = pconfigcall[.SENT = eps]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_no_sent)])
+pfiberfactory_wrong_member = pfiberfactory[.ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_fiber), ENTRY (KINT 1) (DIRECT pvalue_changed)]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_wrong_member)])
+pfiberfactory_live_alias = pfiberfactory[.ITEMS = [ENTRY (KINT 0) (DIRECT pvalue_fiber), ENTRY (KINT 1) (ALIAS n_method_cell)]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_live_alias)])
+pfiberfactory_wrong_class = pfiberfactory[.ITEMS = [ENTRY (KINT 0) (DIRECT (PSTRING ($ptascii("Closure")))), ENTRY (KINT 1) (DIRECT pvalue_method)]]
+~$fiber_capture_source_valid(S_outside, pfibercapture[.FACTORY = (pfiberfactory_wrong_class)])
+''')
+    checks = genuine + controls
+    text = PREFIX[PREFIX.index('dec $outputs'):] + FIBER_FACTORY_PHASE
+    text += '\ndec $main() : bool\ndef $main() = true\n'
+    text += ''.join(('  -- ' if check.startswith('PhpStep:') else '  -- if ') + check + '\n'
+                    for check in checks)
+    return text, checks, len(genuine), len(controls)

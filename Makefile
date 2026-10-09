@@ -206,6 +206,8 @@ test-semantics: build
 	python3 tests/semantics/yield_from_valid_nan_review.py
 	python3 tests/semantics/yield_from_rebound_operand_sources.py
 	python3 tests/semantics/yield_from_rebound_operand_review.py
+	python3 tests/semantics/yield_from_source_compare_sources.py
+	python3 tests/semantics/yield_from_source_compare_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -469,6 +471,12 @@ test-semantics: build
 	python3 tests/semantics/magic_property_owned_protocol.py --group returned-throw
 	python3 tests/semantics/magic_property_owned_protocol.py --group discarded
 	python3 tests/semantics/magic_property_owned_protocol.py --group value
+	python3 tests/semantics/magic_property_integer_protocol.py --group reference-kept
+	python3 tests/semantics/magic_property_integer_protocol.py --group reference-drop
+	python3 tests/semantics/magic_property_integer_protocol.py --group value
+	python3 tests/semantics/magic_property_integer_protocol.py --group owned-reference
+	python3 tests/semantics/magic_property_integer_protocol.py --group weak-getter
+	python3 tests/semantics/magic_property_integer_protocol.py --group strict-getter
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
@@ -595,6 +603,8 @@ test-semantics: build
 	python3 tests/semantics/allow_dynamic_properties_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/backed_get_hook_cases.json
 	python3 tests/semantics/backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/expression_get_hook_cases.json
+	python3 tests/semantics/expression_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

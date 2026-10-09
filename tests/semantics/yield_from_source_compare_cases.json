@@ -1,0 +1,124 @@
+[
+  {
+    "id": "yield-from-source-compare-distinct-aggregate-generator",
+    "source": "<?php\nfunction yieldFromComparePlainGenerator20(): Generator {\n    try { echo \"Y|\"; yield 11 => 7; } finally { echo \"F|\"; }\n    return 23;\n}\nclass YieldFromCompareDistinctPayload20 { public function __destruct() { echo \"P|\"; } }\nclass YieldFromCompareDistinctInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"N|\"; return yieldFromComparePlainGenerator20(); }\n    public function __destruct() { echo \"n|\"; }\n}\nclass YieldFromCompareDistinctOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = new YieldFromCompareDistinctPayload20();\n        return new YieldFromCompareDistinctInner20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction yieldFromCompareDistinct20(): Generator {\n    global $slot;\n    $result = yield from $slot; echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new YieldFromCompareDistinctOuter20();\n$slot = $keeper;\n$generator = yieldFromCompareDistinct20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "04b9f3b2097a7a3d7e50a3f640399bd20d6f58e7d4b4970a839f039c3bdc758f",
+    "purpose": "Yield-from compares a first Aggregate return with the actual original object-valued operand, then each owned recursive layer.",
+    "expected_model": "normal",
+    "native_stdout": "G|N|n|Y|B11:7|F|N1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-source-compare-reference-self-rejection",
+    "source": "<?php\nclass YieldFromCompareRejectIterator20 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void {}\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromCompareRejectInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"X|\"; return new YieldFromCompareRejectIterator20(); }\n    public function __destruct() { echo \"Q|\"; }\n}\nclass YieldFromCompareRejectOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $next;\n        echo \"G|\";\n        $slot = $next;\n        return $next;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction &yieldFromCompareRejectOperand20(): mixed { global $slot; echo \"R|\"; return $slot; }\nfunction yieldFromCompareReject20(): Generator {\n    global $slot;\n    try { $result = yield from yieldFromCompareRejectOperand20(); echo \"N\", $result === null ? 1 : 0, \"|\"; }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$next = new YieldFromCompareRejectInner20();\n$keeper = new YieldFromCompareRejectOuter20();\n$slot = $keeper;\n$generator = yieldFromCompareReject20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\";\necho $slot === $next ? 1 : 0, \"|\";\nunset($generator, $slot, $next, $keeper);\necho \"E\";\n",
+    "source_sha256": "df9974b62bc927c0f290db6e0ab6bc4acbe2f584c35a252a8a2eb0d3848d6247",
+    "purpose": "Yield-from compares a first Aggregate return with the actual original object-valued operand, then each owned recursive layer.",
+    "expected_model": "normal",
+    "native_stdout": "R|G|Objects returned by YieldFromCompareRejectOuter20::getIterator() must be traversable or implement interface Iterator|17|1|Q|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-source-compare-kept-receiver-repeat-rechange",
+    "source": "<?php\nclass YieldFromCompareRepeatIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromCompareRepeatFirst20 { public function __destruct() { echo \"Q|\"; } }\nclass YieldFromCompareRepeatSecond20 { public function __destruct() { echo \"P|\"; } }\nclass YieldFromCompareRepeatAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new YieldFromCompareRepeatFirst20();\n            return $keeper;\n        }\n        echo \"G1|\";\n        $slot = new YieldFromCompareRepeatSecond20();\n        return new YieldFromCompareRepeatIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction yieldFromCompareRepeat20(): Generator {\n    global $slot;\n    $result = yield from $slot; echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new YieldFromCompareRepeatAggregate20();\n$slot = $keeper;\n$generator = yieldFromCompareRepeat20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "d981362c9fe36b972328cecc7a641bf0c83259afb99e41da057ee12af786bf1e",
+    "purpose": "Yield-from compares a first Aggregate return with the actual original object-valued operand, then each owned recursive layer.",
+    "expected_model": "normal",
+    "native_stdout": "G0|G1|Q|W|V|C|K|B11:7|X|V|I|N1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-source-compare-reference-repeat-rechange",
+    "source": "<?php\nclass YieldFromCompareCellIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromCompareCellFirst20 { public function __destruct() { echo \"Q|\"; } }\nclass YieldFromCompareCellSecond20 { public function __destruct() { echo \"P|\"; } }\nclass YieldFromCompareCellAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new YieldFromCompareCellFirst20();\n            return $keeper;\n        }\n        echo \"G1|\";\n        $slot = new YieldFromCompareCellSecond20();\n        return new YieldFromCompareCellIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction &yieldFromCompareCellOperand20(): mixed { global $slot; echo \"R|\"; return $slot; }\nfunction yieldFromCompareCell20(): Generator {\n    global $slot;\n    $result = yield from yieldFromCompareCellOperand20(); echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new YieldFromCompareCellAggregate20();\n$slot = $keeper;\n$generator = yieldFromCompareCell20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "c3af156acfa526ceb5625e5d4bd2daeb15a08dd5b7fc2237610c2eeba3c8f8dd",
+    "purpose": "Yield-from compares a first Aggregate return with the actual original object-valued operand, then each owned recursive layer.",
+    "expected_model": "normal",
+    "native_stdout": "R|G0|G1|Q|W|V|C|K|B11:7|X|V|I|N1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-source-compare-repeated-getter-parks",
+    "source": "<?php\nclass YieldFromCompareParkIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromCompareParkFirst20 { public function __destruct() { echo \"Q|\"; } }\nclass YieldFromCompareParkSecond20 { public function __destruct() { echo \"P|\"; } }\nclass YieldFromCompareParkAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new YieldFromCompareParkFirst20();\n            return $keeper;\n        }\n        echo \"G1|\";\n        $slot = new YieldFromCompareParkSecond20();\n        Fiber::suspend(\"acquire\");\n        echo \"R|\";\n        return new YieldFromCompareParkIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction yieldFromComparePark20(): Generator {\n    global $slot;\n    $result = yield from $slot; echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new YieldFromCompareParkAggregate20();\n$slot = $keeper;\n$fiber = new Fiber(function (): void { $generator = yieldFromComparePark20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\"; unset($generator); });\necho $fiber->start(), \"|\", $fiber->isSuspended() ? 1 : 0, \"|\", $slot === $keeper ? 0 : 1, \"|\";\n$fiber->resume();\necho $fiber->isTerminated() ? 1 : 0, \"|\";\nunset($fiber, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "5cc52d0280cb3e75fd33a16a01ec133187a4e41d7516747e58f08ec2a51b1edb",
+    "purpose": "Yield-from compares a first Aggregate return with the actual original object-valued operand, then each owned recursive layer.",
+    "expected_model": "normal",
+    "native_stdout": "G0|G1|Q|acquire|1|1|R|W|V|C|K|B11:7|X|V|I|N1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-source-compare-repeated-getter-throws",
+    "source": "<?php\nclass YieldFromCompareThrowFirst20 { public function __destruct() { echo \"Q|\"; } }\nclass YieldFromCompareThrowSecond20 { public function __destruct() { echo \"P|\"; } }\nclass YieldFromCompareThrowAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper, $failure;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new YieldFromCompareThrowFirst20();\n            return $keeper;\n        }\n        echo \"G1|\";\n        $slot = new YieldFromCompareThrowSecond20();\n        throw $failure;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction yieldFromCompareThrow20(): Generator {\n    global $slot, $failure;\n    try { $result = yield from $slot; echo \"N\", $result === null ? 1 : 0, \"|\"; }\n    catch (Throwable $caught) { echo \"C\", $caught === $failure ? 1 : 0, \"|\"; }\n    return 17;\n}\n$failure = new Exception(\"yield-from-source-compare-getter\");\n$keeper = new YieldFromCompareThrowAggregate20();\n$slot = $keeper;\n$generator = yieldFromCompareThrow20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "1fb51ba2937827a395b58b456992c4ec0103c29e88a327d9bd4959363dd4f4b7",
+    "purpose": "Yield-from compares a first Aggregate return with the actual original object-valued operand, then each owned recursive layer.",
+    "expected_model": "normal",
+    "native_stdout": "G0|G1|Q|C1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-source-compare-immutable-original-self-rejection",
+    "source": "<?php\nclass YieldFromCompareImmutablePayload20 { public function __destruct() { echo \"P|\"; } }\nclass YieldFromCompareImmutableAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        echo \"G|\";\n        $slot = new YieldFromCompareImmutablePayload20();\n        return $keeper;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction yieldFromCompareImmutableOperand20(): Traversable {\n    global $keeper;\n    echo \"R|\";\n    return $keeper;\n}\nfunction yieldFromCompareImmutable20(): Generator {\n    global $slot;\n    try { $result = yield from yieldFromCompareImmutableOperand20(); echo \"N\", $result === null ? 1 : 0, \"|\"; }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$keeper = new YieldFromCompareImmutableAggregate20();\n$slot = $keeper;\n$generator = yieldFromCompareImmutable20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "023bd21d80f8739c1f3e2a07982f14d1c845a69a54b5bf39025ee619591ba830",
+    "purpose": "Yield-from compares a first Aggregate return with the actual original object-valued operand, then each owned recursive layer.",
+    "expected_model": "normal",
+    "native_stdout": "R|G|Objects returned by YieldFromCompareImmutableAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-source-compare-nonobject-original-control",
+    "source": "<?php\nclass YieldFromCompareNonobjectIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { return $this->step === 0; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->step = 1; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromCompareNonobjectInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"N|\"; return new YieldFromCompareNonobjectIterator20(); }\n    public function __destruct() { echo \"n|\"; }\n}\nclass YieldFromCompareNonobjectOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = null;\n        return new YieldFromCompareNonobjectInner20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction yieldFromCompareNonobject20(): Generator {\n    global $slot;\n    $result = yield from $slot; echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new YieldFromCompareNonobjectOuter20();\n$slot = $keeper;\n$generator = yieldFromCompareNonobject20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\";\necho $slot === null ? 1 : 0, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "f5f2505084483253d56033cba36eef9995a9b3fcc4366d3fa84f1fd947fbe585",
+    "purpose": "Explicit first nonobject original Aggregate self-comparison refusal; native normal behavior receives zero agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "G|N|n|W|B11:7|I|N1|17|1|A|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "yield from IteratorAggregate changed original operand",
+    "unsupported_stdout": "G|n|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "110",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "yield-from-source-compare-deeper-self-rejection",
+    "source": "<?php\nclass YieldFromCompareDeepRejectIterator20 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void {}\n    public function __destruct() { echo \"I|\"; }\n}\nclass YieldFromCompareDeepRejectPayload20 { public function __destruct() { echo \"P|\"; } }\nclass YieldFromCompareDeepRejectAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new YieldFromCompareDeepRejectPayload20();\n            return $keeper;\n        }\n        if ($this->step === 1) { echo \"G1|\"; $this->step = 2; return $keeper; }\n        echo \"G2|\";\n        return new YieldFromCompareDeepRejectIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction yieldFromCompareDeepReject20(): Generator {\n    global $slot;\n    try { $result = yield from $slot; echo \"N\", $result === null ? 1 : 0, \"|\"; }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$keeper = new YieldFromCompareDeepRejectAggregate20();\n$slot = $keeper;\n$generator = yieldFromCompareDeepReject20(); foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; } echo $generator->getReturn(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "aa233a1090c1d0fd484f267cd3a2cd317f352b1df055e0114552aab218656ce9",
+    "purpose": "Yield-from compares a first Aggregate return with the actual original object-valued operand, then each owned recursive layer.",
+    "expected_model": "normal",
+    "native_stdout": "G0|G1|Objects returned by YieldFromCompareDeepRejectAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-rebound-returned-aggregate-self-control",
+    "source": "<?php\nclass ReboundControlIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ReboundControlNext20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"X|\"; return new ReboundControlIterator20(); }\n    public function __destruct() { echo \"Q|\"; }\n}\nclass ReboundControlAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $next;\n        echo \"G|\";\n        $slot = $next;\n        return $next;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction reboundControl20(): Generator {\n    global $slot;\n    try { yield from $slot; }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$keeper = new ReboundControlAggregate20();\n$slot = $keeper;\n$next = new ReboundControlNext20();\n$generator = reboundControl20();\nforeach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $generator->getReturn(), \"|\";\necho $slot === $next ? 1 : 0, \"|\";\nunset($generator, $slot, $next, $keeper);\necho \"E\";\n",
+    "source_sha256": "f559aaa4710fae91d57c72ba73c2d4024a3d5afa1cb07c2985dd6b779aa792f4",
+    "purpose": "Affected live original CV comparison now follows native Aggregate self-return rejection; the historical refusal is preserved separately.",
+    "expected_model": "normal",
+    "native_stdout": "G|Objects returned by ReboundControlAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|Q|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

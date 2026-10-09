@@ -104,15 +104,18 @@ assertions pass at separate cuts in the [consumed-NULL review](../../coverage/se
 General CONST, other effectful VALUE signatures/layouts, other NULL and multiple
 histories remain open.
 
-For a named zero-argument call concatenated with an empty string and a
-nonnullable string return type, runtime156 captures only root-free source history
-of the consumed computed VALUE. Normal resumption uses cleared PNULL and one
-original-line VALUE Notice at the public pause. The repeated check rejects NULL
-before Notice delivery, reenters the outer finalizer, and returns the later
-selected reference cell without repeating the call or restoring its old payload.
-One original and three reached current/saved fixtures/386 assertions
-pass at separate cuts in the [computed-VALUE review](../../coverage/semantics/reference-return-consumed-value-review.json).
-Other VALUE signatures/layouts and multiple histories remain open.
+For a named zero-argument call concatenated with an empty string, runtime156
+captures only root-free source history of the consumed computed VALUE. Normal
+resumption uses cleared PNULL and one original-line VALUE Notice at the public
+pause. Nonnullable string rejects NULL before Notice delivery, reenters the
+outer finalizer and later selects the new reference cell (source1/state3-386
+in the [computed-VALUE review](../../coverage/semantics/reference-return-consumed-value-review.json)).
+The checked ordered string|null mask accepts NULL and delivers one Notice
+before returning a fresh caller cell distinct from x and y. Neither path
+repeats the call or restores its old payload; the nullable path enters no
+second outer finalizer. One nullable original and three reached fixtures/381
+assertions pass at separate cuts in the [nullable computed-VALUE review](../../coverage/semantics/reference-return-consumed-value-nullable-review.json).
+Other VALUE signatures/layouts, owning payloads and multiple histories remain open.
 
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting

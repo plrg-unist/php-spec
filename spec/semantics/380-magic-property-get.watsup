@@ -30,6 +30,7 @@ dec $property_get_context(pstate, pcallcontext) : bool
 dec $property_get_unconstrained(pstate, poperand) : bool
 dec $property_get_verify(pstate, ppropertyget, poperand) : pstate
 dec $property_get_verify_value(pstate, ppropertyget, ppropertydesc, pvalue, ptypeconversion) : pstate
+dec $property_get_integer_apply(pstate, ppropertyget, poperand, int) : pstate
 dec $property_get_complete(pstate, ppropertyget, poperand) : pstate
 dec $property_get_abrupt(pstate, ppropertyget) : pstate
 dec $property_get_drop_pending(pstate) : bool
@@ -312,7 +313,8 @@ def $reference_callback_used(S, pcallcontext) = (true)
   -- if $property_get_context(S, pcallcontext)
 
 ;; Exact verification is identity: neither a checked write nor TYPE_SOURCES
-;; attachment occurs. Coercions and constrained cells remain explicit residuals.
+;; attachment occurs. Integer numeric strings convert only the actual RV or
+;; unconstrained returned cell; wider coercions remain explicit residuals.
 def $property_get_unconstrained(S, KNOWN pvalue) = true
 def $property_get_unconstrained(S, REFERENCE n) = ($propref_at(S.PROPREFS, n) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps)
 def $property_get_unconstrained(S, poperand) = false -- otherwise
@@ -332,12 +334,28 @@ def $property_get_verify(S, ppropertyget, poperand) = $property_get_verify_value
 def $property_get_verify(S, ppropertyget, poperand) = S[.COMPLETION = UNSUPPORTED "magic getter typed reference sources"] -- otherwise
 
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEVALUE pvalue) = S
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEINTEGER pvalue) = $property_get_integer_apply(S, ppropertyget, S.RESULT, i)
+  -- if $typed_string_value(pvalue)
+  -- if $typed_number(pvalue) = (NINT i)
+  -- if $long_range(i)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $property_get_unconstrained(S, S.RESULT)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN pvalue
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEREJECT) = $throw_scalar(S, "TypeError", $ptascii("Value of type ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned from ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::__get() must be compatible with unset property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, ptypeconversion) = S[.COMPLETION = UNSUPPORTED "magic getter property type coercion"] -- otherwise
 
+def $property_get_integer_apply(S, ppropertyget, KNOWN pvalue, i) = S[.RESULT = KNOWN (PINT i)]
+def $property_get_integer_apply(S, ppropertyget, REFERENCE n, i) = $write_cell_checked(S, n, PINT i, ppropertyget.LINE)[.RESULT = REFERENCE n]
+
+def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget S_checked.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
+  -- if S_checked.COMPLETION = NORMAL
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
+  -- if S_checked.COMPLETION =/= NORMAL
 ;; Verification can fail after a real RV was returned. Retain that raw owner
 ;; while the receiver is released under the newly materialized TypeError.
 def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next

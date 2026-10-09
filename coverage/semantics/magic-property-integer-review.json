@@ -1,0 +1,141 @@
+{
+  "status": "independently accepted current-parent composition",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "48b6455fd27a145cd0dcd491423fb87a1de5d0b5/371",
+  "production_revision": "e63770113f61782e37b8f94a1e2365953e7d4147",
+  "scope": "Module380 weak MAGIC_GET verification of numeric strings parsed as an in-range integer (TYPEINTEGER, typed_number NINT, long_range), through the accepted literal-CV and public owned-call receiver protocols. Unconstrained KNOWN RV or actual REFERENCE cell only; exact unchanged values and genuine rejection retain their prior behavior.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL --sl/jobs1; native30/model60/process90/numeric120; profile30719; LC_ALL=C/TZ=UTC; existing tools, no rebuild"
+  },
+  "native_first": {
+    "revision": "067f5ec08cf402da5f76d431ea316382e34c8a9a",
+    "cases": 6,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-coerce-native29-7tmm6uqy/report.json",
+    "seconds": 0.456902,
+    "credit": "Native observations only; exact originals, exit0/empty stderr, actual pinned binary checked."
+  },
+  "unsupported_baseline": {
+    "revision": "898ac1a7ae5d015b21c5c66e1466fa7e7b8903ce",
+    "case": "review-property-magic-coerce-reference-kept29",
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-coerce-baseline29-bbh9dy1_/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|1/0|",
+    "stderr": "",
+    "reason": "magic getter property type coercion",
+    "seconds": 8.025265,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "5324f2a73cd1fae97cf51a2baaced63b56f1539d",
+    "parent": "8e2b571d807c3769dfb0bd145a1cbbe254dea12d",
+    "modules": 371,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-coerce-strict29-53baq0mk/report.json",
+    "seconds": 5.398558,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "revision": "5324f2a73cd1fae97cf51a2baaced63b56f1539d",
+    "cases": 6,
+    "raw": ".tools/properties-magic-coerce29/.tools/dynamic-property-warning-source-cozmod72/report.json",
+    "outcomes": "All checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact, raw/modeled stderr empty."
+  },
+  "source_sha256": {
+    "review-property-magic-coerce-reference-kept29": "7f25ed99997ea1df0a1ecd2ae69334419fa2175791f3d1427c27cef109f1c623",
+    "review-property-magic-coerce-reference-drop29": "f80083dd5b715ab00f44fdafe2f60c7e7da206d47a6d6a4e6c77f5d2c2e040d7",
+    "review-property-magic-coerce-value29": "9696d5acb5e5a083530a9e0aef7131de987035fc688ea4c97d6bee24797a6eb2",
+    "review-property-magic-coerce-owned-reference29": "9864ac7b5702a233a9292f71a74268d1d41901ed01655c55c35ad72f24a2dfe1",
+    "review-property-magic-coerce-weak-getter29": "882aa076468658dfab733d5e71482f9239404468269270d6d4af4a61cf5b5e53",
+    "review-property-magic-coerce-strict-getter29": "6d8372d8e9ca2b5e57d240be536871d418b3860e193ef591718b80a7ca32fdb4"
+  },
+  "reached": [
+    {
+      "group": "reference-kept",
+      "revision": "5324f2a73cd1fae97cf51a2baaced63b56f1539d",
+      "premises": 189,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-integer-rfhajde9/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "revision": "5324f2a73cd1fae97cf51a2baaced63b56f1539d",
+      "premises": 135,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-integer-vftsutyy/report.json"
+    },
+    {
+      "group": "value",
+      "revision": "5324f2a73cd1fae97cf51a2baaced63b56f1539d",
+      "premises": 135,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-integer-n41fd0yt/report.json"
+    },
+    {
+      "group": "owned-reference",
+      "revision": "5324f2a73cd1fae97cf51a2baaced63b56f1539d",
+      "premises": 139,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-integer-_flkok_l/report.json"
+    },
+    {
+      "group": "weak-getter",
+      "revision": "28f289817f9350e16bb8d2fbd72b1c0be98d8312",
+      "premises": 180,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-integer-u736y2hj/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "revision": "28f289817f9350e16bb8d2fbd72b1c0be98d8312",
+      "premises": 131,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-integer-rpjz2ydq/report.json"
+    }
+  ],
+  "reached_scope": "909 setup-inclusive premises across six distinct whole gates: four598 at5324 and affected cross-unit311 at28f. Stable clean cuts, normal SL exit0/true newline/empty stderr. No earlier getter fixture body or evidence is renewed.",
+  "facts": [
+    "REFERENCE verification updates the real unconstrained cell to int7/int9 while retaining the raw wrapper owner; whole checked-state comparisons show only the captured cell changes. Exact int verification is state identity. Readonly backing remains UNSET, PROPREFS/PARAMETERBACKINGS stay absent, repeated getter calls and later changed-string writes remain valid.",
+    "BYVAL verification changes only RESULT to KNOWN int7 and normal completion forwards that converted RV. The caller cell still holds its original string during receiver D. Supplied-value mismatch, NFLOAT/float/bool, TYPEDEPENDENT and constrained-cell countercontrols refuse.",
+    "Getter declaration controls strictness across checked literal eval units: weak getter in strict caller converts7/9; strict getter in weak caller rejects string7 before D repairs it. Nonnormal completion preserves the original raw RV and TypeError through the actual same-frame/COPY cleanup, with previous=null and no result assignment.",
+    "CV getter hold release runs D after real-cell conversion, then COPY receives its changed string without repeating the property check. Owned original TMP instead survives conversion and COPY; raw return cell ownership drops to the global owner before BASE D, and copied int7 remains protected while D changes the cell.",
+    "Each cross-unit fixture reaches the actual SOURCE_PENDING parser wait and supplies the exact main-AST literal bytes plus checked eval program through eval_resume before seeking the property frontier. This is fixture service setup, not a runtime or coercion change."
+  ],
+  "failures": [
+    {
+      "revision": "5324f2a73cd1fae97cf51a2baaced63b56f1539d",
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-integer-jiu1leo6/report.json",
+      "credit": 0,
+      "cause": "Weak-getter fixture omitted the checked literal-eval response and stopped at SOURCE_PENDING before its first property plan. Actual-byte SOURCE_ACCEPT/eval_resume setup corrects only the two cross-unit groups; strict131 was previously unrun."
+    }
+  ],
+  "preparation_failure": {
+    "revision": "8e2b571d807c3769dfb0bd145a1cbbe254dea12d",
+    "working_tree": "uncommitted fixture recorded in raw snapshot",
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-coerce-state-prep29-dyyg84yr/report.json",
+    "credit": 0,
+    "cause": "Full-sort preparation rejected a nested COPY operand pattern without parentheses before evaluation; operand grouping preserves the asserted state."
+  },
+  "compatibility": "Only380 changes at runtime: exact integer application and normal checked-RV forwarding; rejection keeps the original raw operand. No95/30/79/99/270, owner/schema or backing-source change. The old26 synthetic coercion boundary is statically adapted from7 to7.5 with explicit NFLOAT; its historical evidence is not rerun. Fixture-only28f preserves5324 source6/strict and the four unchanged bodies. Public26, denied27 and owned28 ledgers remain unchanged.",
+  "remaining": "Fractional/exponent strings parsed as NFLOAT, lossy/deprecated or callback conversions, constrained returned cells, wider getter signatures/consumer modes and earlier receiver/visibility/quiet/write/recursive/hook residuals remain required.",
+  "engine": [
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter-declaration strictness",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_prop_assignable_by_ref_ex (MAGIC_GET unconstrained RV conversion)",
+    "spec/semantics/95-type-values.watsup:typed_conversion_at/typed_number"
+  ],
+  "recovery": "Tracked source catalog and magic_property_integer_protocol.py reproduce only these six sources/groups. Ignored raw trees retain source/checked AST/eval responses, generated assertions, command/process/streams and before/after identities. Full-sort preparations are elaboration-only and carry no semantic credit.",
+  "actual_parent": {
+    "parent": "e11f0f06c2d1ddbc00e990c4cddfe7f5e54623d1",
+    "tested_revision": "5f96624c8783b693c49f8bd3b2ecf626f7b9ee4c",
+    "modules": 372,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-coerce-strict29-mhp3g8on/report.json",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "runner_mode": "SL",
+    "jobs": 1,
+    "numeric_cap_seconds": 120,
+    "seconds": 5.553894,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0,
+    "bridge": "Pointwise380 join retains all current hook guards; these plain properties have no hook syntax. Constructor-disjoint hook targets, consumed return cursors, GC-overlap and Fiber-factory additions preserve the getter/copy/cleanup interfaces and are inactive here. Private native/source/state and original failures keep their distinct cuts; no current source/state renewal."
+  }
+}

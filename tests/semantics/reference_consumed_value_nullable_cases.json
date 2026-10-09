@@ -1,0 +1,9 @@
+[
+  {
+    "id": "active-finalizer-consumed-effectful-value-nullable-saved",
+    "source": "<?php\n$x=\"old\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction old_value(){echo \"V;\";return \"old\";}\nfunction &f():?string{global $x,$y,$n;try{return old_value().\"\";}finally{echo \"O;\";ping();try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";if($n===1){$y=new stdClass;}else{ping();$y=\"fixed\";}}}catch(TypeError $e){echo \"C;\";}echo \"A;\";}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";echo \"r=\",$r,\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "V;O;P;I1;I2;P;C;A;rnull=1;r=;x=old;n=2;yfixed=1;",
+    "stderr": "Notice: Only variable references should be returned by reference in /home/user/workspace/php-spec/.tools/returns-consumed-literal-native-20/.tools/returns-verify20-consumed-value/native-consumed-effectful-value-nullable-saved-ac66k8n8/source.php on line 5\n",
+    "exit": 0
+  }
+]

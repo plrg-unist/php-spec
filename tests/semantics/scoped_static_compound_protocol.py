@@ -1045,9 +1045,21 @@ CASES += [('stringable-name-captured-factory-selection', ['stringable-name-captu
 CASES += [('stringable-name-explicit-factory-invoke', ['stringable-name-explicit-factory-invoke-byref'])]
 CASES += [('stringable-name-factory-invoke-alias', ['stringable-name-factory-invoke-alias-byref'])]
 CASES += [('from-callable-factory-getter-retirement', ['from-callable-factory-getter-live'])]
+CASES += [('from-callable-factory-fiber-retirement', ['from-callable-factory-fiber-current'])]
+CASES += [('from-callable-factory-bound-fiber-retirement', ['from-callable-factory-fiber-status'])]
 
 
 def render(name, sources):
+    if name == 'from-callable-factory-bound-fiber-retirement':
+        from from_callable_bound_fiber_review import render as render_bound_fiber
+        row = sources['from-callable-factory-fiber-status']
+        text, checks, _, _ = render_bound_fiber(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
+    if name == 'from-callable-factory-fiber-retirement':
+        from from_callable_factory_protocol import render_factory_fiber
+        row = sources['from-callable-factory-fiber-current']
+        text, checks, _, _ = render_factory_fiber(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
     if name == 'from-callable-factory-getter-retirement':
         from from_callable_factory_protocol import render_factory_getter
         row = sources['from-callable-factory-getter-live']

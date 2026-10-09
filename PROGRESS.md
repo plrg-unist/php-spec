@@ -71,13 +71,27 @@ Aggregate yield-from getters may rebind an original CV or reference operand when
 the raw result is a terminal Iterator/Generator or a rejected non-Aggregate value.
 The original class still names rejection; borrowed CV and owning-cell cleanup
 retain their existing owners. Six safe unchanged originals agree at `f82e9b3ed`;
-strict370 passes at that cut. Changed operands returning another Aggregate stay
-explicit Unsupported/zero agreement. Nine genuine-source groups/376 physical
+strict370 passes at that cut. At that earlier cut changed operands returning another
+Aggregate remained Unsupported/zero agreement. Nine genuine-source groups/376 physical
 owner and source-authority premises pass at separate cuts; the two fixture
 failures retain zero credit.
 Actual370 over `288dc800` passes strict SL at `50367af16`; private source/state
 cuts retain their own inputs.
 [Rebound review](coverage/semantics/yield-from-rebound-operand-review.json).
+
+Aggregate yield-from recursion now compares the first known Aggregate return
+against its live object-valued source CV/reference, then later returns against
+their owned raw layer. An independently kept original may be the first repeated
+layer even after deeper source rebinding and comparator retirement; no history
+owner is added. Self returns from immutable inputs and deeper layers retain the
+fixed class rejection. Nine selected originals agree at `25f6a9f33` and strict372
+passes there. The first-nonobject-source control stays Unsupported/zero agreement.
+Sixteen genuine-source groups/732 physical ownership and authority premises pass
+at `890007303`, including the identical forwarded old case9; no state correction
+was needed. Previous rebound checks retain their cuts.
+Actual372 over `488a190bc` passes strict SL at `5c27d4886`; private
+source/state cuts retain their own inputs.
+[Source comparison](coverage/semantics/yield-from-source-comparison-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
@@ -301,7 +315,7 @@ wider attribute protocols remain required. Actual 371-module composition over
 current GC/PROPS/ARG interfaces without renewing private source/state checks.
 [Dynamic-property attribute review](coverage/semantics/allow-dynamic-properties-review.json).
 
-Public backed by-value block get hooks now compile as authentic source functions
+Public backed by-value block and expression get hooks compile as authentic source functions
 with the property's implicit return type. Ordinary CV and `$this` reads invoke
 the hook; backing access bypasses it only in the active hook on that receiver.
 Nested ordinary calls and other receivers dispatch normally, uninitialized
@@ -316,6 +330,15 @@ and hooked unset remain required. Actual 372-module composition over `48b6455fd`
 passes strict initialization at `390c27db4` (5.421 s), preserving parent callable
 and magic-get ownership paths without renewing the private source/state checks.
 [Hook review](coverage/semantics/backed-get-hooks-review.json).
+Expression bodies retain the actual expression origin and compiled return line,
+including untyped return admission and saved Hook source during string conversion.
+Seven new originals and strict 372-module initialization pass at `41ed4ea8d`;
+SL137 (15 derived, 122 reached) proves actual return, saved conversion, parked
+payload and final weak-null release. The virtual nested-closure control remains
+Unsupported. These cuts retain the block results above. Actual 372-module
+composition over `de44ad6d3` passes strict initialization at `5e3f9cbcf`
+(5.448 s), preserving parent yield-from and magic-get dispatch without renewing
+the private checks. [Expression review](coverage/semantics/expression-get-hooks-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
@@ -413,15 +436,19 @@ current/saved fixtures pass 367 assertions at `459978fe0`.
 Actual 371 over `05b0a4db4` passes strict at `c93d4cba4` (5.339s, zero application evaluations).
 [Consumed-NULL review](coverage/semantics/reference-return-consumed-null-review.json).
 
-A consumed computed string return now resumes cleared NULL after a locally
-caught inner rejection. This bounded source concatenates a named zero-argument
-call with an empty string and declares nonnullable string. The source cursor
-retains no old payload and never repeats the call. An original VALUE Notice
-remains pending at the public pause; the repeated check rejects NULL before
-delivery, reenters the outer finalizer, and later returns the selected y alias.
-One original agrees at `bf4a41a2d`; three reached current/saved
-fixtures pass 386 assertions at `e397b1d3c`. Actual 372 over `81a5fd72d` passes strict at `68bb9e555` (5.394s, zero application evaluations).
-[Computed-VALUE review](coverage/semantics/reference-return-consumed-value-review.json).
+Consumed computed string returns resume cleared NULL after a locally caught
+inner rejection. The bounded source concatenates a named zero-argument call
+with an empty string; its cursor retains no old payload and never repeats
+the call. One original VALUE Notice remains pending at the public pause.
+Nonnullable string rejects NULL before delivery, reenters the outer finalizer
+and later returns the selected y alias (source1/state3-386 in the
+[computed-VALUE review](coverage/semantics/reference-return-consumed-value-review.json)).
+The checked ordered string|null mask instead accepts NULL, delivers one
+original-line Notice and returns a fresh caller cell distinct from x and y,
+with no second finalizer entry. One nullable original agrees at `dffae89b0`;
+three reached current/saved fixtures pass 381 assertions at `4e6396234`.
+Actual 372 over `c2e06b6d7` passes strict at `2094ee751` (5.562s, zero application evaluations).
+[Nullable computed-VALUE review](coverage/semantics/reference-return-consumed-value-nullable-review.json).
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
@@ -2175,7 +2202,22 @@ setup-inclusive premises across `e293c490f`, `54e85fba1`, `a2a6f4aae` and
 The actual371 join over `675a2e1b5` passes strict at `d54c66076` (5.417s,
 state credit0). Current compiler severity routing is retained; these getter
 sources have no private-final diagnostic. Private cuts and failures are unchanged.
-Coercions, constrained returned cells, wider signatures, quiet/write/recursive
+Weak MAGIC_GET verification now converts numeric strings parsed as an in-range
+integer. An unconstrained reference updates its real cell; a value return
+forwards only the converted RV. Getter-declaration strictness wins over caller
+strictness, and readonly backing stays UNSET without a new type source. CV
+reception observes later cell changes, while owned reception detaches before
+BASE release. Native6 and the model Unsupported baseline retain separate cuts;
+strict371/source6 and four groups/598 pass at `5324f2a73`. The two cross-unit
+groups pass 180/131 at `28f289817` after their checked literal-eval prelude,
+bringing the total to 909. Original preparation and whole-state failures retain
+zero credit; earlier getter cuts are unchanged.
+[Integer-getter ledger](coverage/semantics/magic-property-integer-review.json).
+The actual372 join over `e11f0f06c` passes strict at `5f96624c8` (5.554s,
+state credit0). Parent hook guards and class/return/collector/Fiber interfaces
+are preserved; these originals use unhooked nongenerator instances. Private
+cuts and original failures retain their credit.
+Wider coercions, constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
 held278/279 add no dependency or credit.
@@ -2438,6 +2480,29 @@ source/renderer bytes are unchanged; relocation renews no runtime evidence.
 Wider getter/binding/library targets and original 7's CLI60 timeout remain open.
 Actual-parent compilation passes at `71edcca7` over `8cc17e6e` with 371 modules;
 pointwise EX/RETURNS review adds no private source, state or native renewal.
+Captured factories now select static `Fiber::getCurrent` with no bound input.
+Actual CONFIG validates the selected live factory; its saved CALL authenticates
+creation and invocation after producer retirement and adds no owner. Frozen
+DIRECT members preserve getCurrent when the source ALIAS cell changes to suspend.
+The direct control agrees at 05b0/371, and the repaired captured source agrees at
+7928/371 before and after Fiber suspension. Its 270 premises (227 genuine/derived,
+43 constructed) pass; the original Unsupported and compiler binding stop remain
+zero credit. Other captured Fiber kinds/bound inputs and original 7's CLI60 timeout
+remain open. Maintained source/fixture relocation adds no runtime renewal.
+Actual-parent compilation and initialized SL270 pass at `f1c392c8` over
+`0a4cf46e` with 372 modules; pointwise Hook/EX39/RETURNS review adds no source/native renewal.
+Captured factories now select bound `Fiber::isSuspended` with one receiver edge.
+The factory, callback arrays and original Fiber cell retire before status calls;
+WeakReference confirms the returned Closure alone keeps the Fiber alive. Frozen
+selection remains isSuspended after the referenced name changes to isTerminated,
+returning false/true/false across INIT, suspension and termination, then releasing
+the last strong owner. Direct agreement stays at e11f/372; captured agreement and
+241 premises (189 genuine/derived, 52 constructed) pass at 151776b71/372, including
+exact zero-budget resumption. Saved producer authority survives final retirement,
+while bound capture source/liveness correctly becomes false. The original
+Unsupported remains zero credit; other targets and original 7 remain OPEN.
+Actual-parent compilation and initialized SL241 pass at `baf287a4` over
+`d2ea8468` with 372 modules; CLASS/CALLS seams preserve prior source/native cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

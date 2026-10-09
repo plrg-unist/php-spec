@@ -63,23 +63,10 @@
     "id": "yield-from-rebound-returned-aggregate-self-control",
     "source": "<?php\nclass ReboundControlIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ReboundControlNext20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"X|\"; return new ReboundControlIterator20(); }\n    public function __destruct() { echo \"Q|\"; }\n}\nclass ReboundControlAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $next;\n        echo \"G|\";\n        $slot = $next;\n        return $next;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction reboundControl20(): Generator {\n    global $slot;\n    try { yield from $slot; }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$keeper = new ReboundControlAggregate20();\n$slot = $keeper;\n$next = new ReboundControlNext20();\n$generator = reboundControl20();\nforeach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $generator->getReturn(), \"|\";\necho $slot === $next ? 1 : 0, \"|\";\nunset($generator, $slot, $next, $keeper);\necho \"E\";\n",
     "source_sha256": "f559aaa4710fae91d57c72ba73c2d4024a3d5afa1cb07c2985dd6b779aa792f4",
-    "purpose": "Explicit changed-input Aggregate self-comparison dependency; native behavior receives zero agreement.",
-    "expected_model": "unsupported",
+    "purpose": "Affected live original CV comparison now follows native Aggregate self-return rejection; the historical refusal is preserved separately.",
+    "expected_model": "normal",
     "native_stdout": "G|Objects returned by ReboundControlAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|Q|A|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "yield from IteratorAggregate changed original operand",
-    "unsupported_stdout": "G|",
-    "unsupported_events": [
-      {
-        "tag": "OUTPUT",
-        "args": [
-          [
-            "71",
-            "124"
-          ]
-        ]
-      }
-    ]
+    "native_exit": 0
   }
 ]

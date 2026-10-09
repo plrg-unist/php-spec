@@ -373,6 +373,16 @@ certificate. The getter reads the receiver's live message after factory retireme
 clones retain the same receiver, and equality ignores the creation certificate.
 The direct control and two repaired sources agree on separate 371-module cuts,
 with 191 state premises. Wider targets and required original 7 remain open.
+Captured factories now select static `Fiber::getCurrent`. Frozen callback members
+survive name mutation and factory/array retirement; the returned Closure reads
+the actual current Fiber across suspension. A direct control and repaired source
+agree on distinct 371-module cuts, with 270 state premises. Other captured Fiber
+targets and required original 7 remain open.
+Captured factories also select bound `Fiber::isSuspended`. The returned Closure
+retains only its receiver after factory and callback retirement; frozen selection
+survives a referenced-name change through real suspension and termination. Direct
+and repaired source agreements remain distinct on the tested 372-module cuts,
+with 241 state premises. Other targets and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -439,9 +449,17 @@ records the separate checks. Wider raw payload changes remain required.
 Aggregate getters may also rebind the original CV or reference operand before
 returning Iterator/Generator data or a rejected raw value. Six safe originals
 agree, and nine genuine-source groups/376 ownership and source-authority premises
-pass; changed operands returning another Aggregate remain explicit Unsupported.
+pass; at that cut changed operands returning another Aggregate remained Unsupported.
 [Rebound review](coverage/semantics/yield-from-rebound-operand-review.json) tracks
 the bounded owner and source checks.
+Known Aggregate returns now compare the first live object-valued CV/reference
+payload, then each owned recursive layer. An independently kept original may
+be the first repeated layer without adding a comparator/history owner. Self
+returns from immutable inputs and deeper layers retain rejection. Nine selected
+originals agree; a first nonobject source with an Aggregate return remains
+Unsupported/zero agreement. [Source comparison](coverage/semantics/yield-from-source-comparison-review.json)
+records nine source agreements and sixteen genuine-source groups/732 ownership
+and source-authority premises at their separate cuts.
 [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
 runs pending finally bodies with real scopes, graph links and cached owners.
 Request 340 adds reverse-global and ascending-store close, handler-before-cache
@@ -635,8 +653,12 @@ constant value and original VALUE Notice; two originals agree and three reached
 current/saved fixtures pass 367 assertions. A bounded
 [computed string VALUE continuation](coverage/semantics/reference-return-consumed-value-review.json) now resumes cleared NULL
 without repeating its call. Its pending VALUE Notice survives the public pause;
-the repeated check rejects before delivery and the next finalizer return selects
+the nonnullable check rejects before delivery and the next finalizer return selects
 the new alias. One original and three reached current/saved fixtures/386
+assertions pass. With the checked nullable string mask, the same cleared NULL
+passes the repeated check, delivers one original-line Notice and returns a fresh
+[caller cell](coverage/semantics/reference-return-consumed-value-nullable-review.json) distinct from x and y, without repeating the call
+or outer finalizer. One nullable original and three reached fixtures/381
 assertions pass. Other VALUE signatures/layouts, general CONST, other NULL and
 multiple-active histories, wider
 Stringable consumers and owner domains remain open.
@@ -1097,12 +1119,15 @@ classes and descendants while ordinary classes retain deprecation. Invalid
 trait/interface/readonly targets preserve diagnostic priority and keyword lines;
 ten sources and 131 derived/reached checks are recorded in the
 [attribute review](coverage/semantics/allow-dynamic-properties-review.json).
-Public backed by-value block `get` hooks execute their source body on each read,
+Public backed by-value `get` hooks execute their block or expression body on each read,
 use the property's return type and retain ordinary writes to the backing slot.
 Only the active hook on the same receiver bypasses dispatch; nested calls and
 other receivers invoke their hooks. Eight originals and 177 source/state checks
 cover exceptions, traces and receiver/result cleanup in the
-[hook review](coverage/semantics/backed-get-hooks-review.json). Virtual/set/reference,
+[hook review](coverage/semantics/backed-get-hooks-review.json). Expression bodies
+retain their real source child and compiled implicit-return line; seven additional
+originals and 137 return/callback/lifetime checks pass in the
+[expression review](coverage/semantics/expression-get-hooks-review.json). Virtual/set/reference,
 inherited/trait and wider receiver or indirect-access families remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
@@ -1424,7 +1449,18 @@ earlier CV/denied getter evidence is unchanged.
 The actual371 join over `675a2e1b5` passes strict at `d54c66076` (5.417s),
 preserving current compiler warning routing and getter interfaces. Private
 source/state cuts retain their original credit.
-Coercions, constrained returned cells, wider getter signatures, quiet/write
+Weak getter verification now accepts numeric strings parsed as an in-range
+integer. Reference returns convert the actual cell; value returns convert only
+the returned value. The getter declaration determines strictness, and readonly
+backing remains UNSET without a new type source. CV reception can observe later
+receiver-destructor changes, while an owned receiver copies the converted value
+before releasing its original temporary. [Six source agreements and six reached
+groups](coverage/semantics/magic-property-integer-review.json) pass 909
+setup-inclusive premises; the original Unsupported and fixture failure keep
+zero credit, and earlier getter evidence is unchanged.
+The actual372 join over `e11f0f06c` passes strict at `5f96624c8` (5.554s),
+preserving current hook/getter and cleanup interfaces. Private cuts retain their credit.
+Wider coercions, constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers

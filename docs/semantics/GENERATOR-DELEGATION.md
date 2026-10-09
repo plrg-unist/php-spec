@@ -54,11 +54,22 @@ returning terminal Iterator/Generator data or a rejected non-Aggregate raw value
 The engine rereads the original operand only for an Aggregate self comparison;
 other rejections use the original class name. Independent keepers protect all
 six validated callback receivers, and existing raw-cell/data ownership is
-unchanged. Changed operands returning another Aggregate remain explicit
+unchanged. At that earlier cut changed operands returning another Aggregate remained
 Unsupported/zero agreement. Nine genuine-source groups/376 physical owner and
 source-authority premises pass; both original fixture failures retain zero credit.
 [Rebound review](../../coverage/semantics/yield-from-rebound-operand-review.json)
 records these originals and their source-reached owner checks.
+
+Known Aggregate returns now compare the first live object-valued CV/reference
+payload, then each owned raw layer. An independently kept original can be the
+first repeated layer even after a deeper getter rebinds the source and retires
+the former payload. Self returns from immutable inputs and deeper layers retain
+the fixed class rejection; no comparator/history owner is added. Returned layers
+and original input still retire before rewind, with terminal data protected.
+Nine selected originals agree; a first nonobject original with a known Aggregate
+return stays Unsupported/zero agreement. The [source-comparison ledger](../../coverage/semantics/yield-from-source-comparison-review.json)
+keeps the affected historical control separate. Sixteen genuine-source
+groups/732 physical ownership and authority premises pass without state corrections.
 
 Getters can detach an independently completed child without resuming the parent.
 The copied current remains available until advancement, while the key becomes

@@ -19,7 +19,7 @@ deprecation capture; see the [attribute review](../../coverage/semantics/allow-d
 A leading-NUL computed name raises the engine error
 for read, write and unset, while quiet tests remain silent.
 
-Public backed by-value block `get` hooks compile into source functions with the
+Public backed by-value block and expression `get` hooks compile into source functions with the
 property's return type. Literal reads through an ordinary CV or `$this` execute
 the hook each time. Direct backing access requires the same property and receiver
 in the active hook; saved hook frames, ordinary helpers and other receivers do
@@ -28,7 +28,12 @@ backing raises its error before magic lookup. One receiver hold moves from the
 selected target to the entered hook. Its return payload survives receiver cleanup,
 and exceptions retain the hook's class/name/line. The
 [hook review](../../coverage/semantics/backed-get-hooks-review.json) records eight
-originals and separate 177 source/state checks. Virtual/set/byref hooks,
+originals and separate 177 source/state checks. Expression bodies reuse implicit
+return compilation at the authentic expression child, preserving its emitted line
+and the Hook source across string callbacks. Seven additional originals and 137
+derived/reached checks are recorded in the
+[expression review](../../coverage/semantics/expression-get-hooks-review.json).
+Virtual/set/byref hooks,
 inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
 and hooked unset remain explicit boundaries.
 
@@ -157,7 +162,7 @@ receiver release. Public UNSET type verification uses the getter's strictness an
 performs no backing-slot write or type-source attachment. An actual mismatch
 raises the declaring property's TypeError before receiver cleanup; later cell
 repair cannot remove it, and a successful check is not repeated after cleanup.
-Verification requiring coercions or constrained returned reference cells remains
+Verification requiring wider coercions or constrained returned reference cells remains
 Unsupported.
 
 Getter throws release the receiver under the pending exception. If receiver
@@ -191,6 +196,22 @@ The [owned-getter review](../../coverage/semantics/magic-property-owned-review.j
 records seven source agreements and 1266 setup-inclusive reached premises at
 distinct retained cuts. By-reference factories, owned denied access and wider
 factory/receiver forms remain Unsupported; prior CV/denied evidence is unchanged.
+
+Weak MAGIC_GET verification also accepts numeric strings parsed as an in-range
+integer, using the getter declaration's strictness rather than the caller's.
+An unconstrained reference return converts the actual cell and retains its
+wrapper owner; a value return forwards the converted RV without changing the
+caller's cell. Exact values require no write. Readonly backing remains UNSET,
+and no property type source is attached, so repeated reads invoke the getter
+and later ordinary cell writes remain valid. CV reception can copy a cell
+changed during receiver destruction; owned reception detaches the converted
+value before BASE release. A strict rejection retains the original raw return
+and TypeError through later receiver cleanup.
+The [integer-getter review](../../coverage/semantics/magic-property-integer-review.json)
+records six source agreements and six whole reached groups/909 setup-inclusive
+premises. Fractional/exponent strings parsed as NFLOAT, lossy or callback-based
+conversions and constrained returned cells remain Unsupported; earlier getter
+evidence retains its distinct cuts.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

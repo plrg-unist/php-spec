@@ -156,7 +156,7 @@ def $ref_return_cursor_concat(S, prefreturncursor) = true
   -- if $base64(text_empty) = eps
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
-  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))]
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))] \/ pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "string"])), (PTBRANCH ([PTBUILTIN "null"]))]
 def $ref_return_cursor_concat(S, prefreturncursor) = false -- otherwise
 def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
