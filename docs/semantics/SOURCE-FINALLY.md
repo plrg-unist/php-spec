@@ -62,7 +62,17 @@ pending98; actual364 adds a genuine carrier71 bridge and strict compilation. The
 [duplicate-release policy](DISCREPANCIES.md) preserves coherent c/d=1 rather than native8.
 Reached capture proves the original identity, but public metadata cannot authenticate
 a fully consistent alternative private history. Wider payload domains, replay from an
-already active finalizer and protected temporary/NULL Notice/Stringable186 remain open.
+already active finalizer and Stringable186 remain open.
+
+Module 379 dispatches VALUE, bare/null and implicit-return reference Notices after
+finalizers and repeated type verification, at the captured source line. The raw
+operand remains owned through the handler; a handler exception materializes the RV
+and leaves through ordinary frame cleanup, without reviving consumed catches.
+A replacing finalizer return cancels its pending Notice. The
+[Notice review](../../coverage/semantics/reference-return-notice-review.json)
+keeps six focused originals, one protected-unused control, eight reached current/saved
+fixtures/722 assertions and actual-parent compilation separate. Already-active finalizer
+replay, Stringable186 and wider owner domains remain required.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.

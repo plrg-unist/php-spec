@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "status": "independently_accepted_bounded_deferred_notice",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "scope": "By-reference VALUE, bare/null and implicit-return Notices now dispatch after protected finalizers and repeated type checks. Captured source designation and line survive current and saved handler scopes; handler throws finish ordinary return cleanup and propagate in the caller. A replacing variable return cancels the old Notice; used and unused results retain their demand and ownership.",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "authority": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_return",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_RETURN_BY_REF",
+    "vendor/php-src/Zend/zend_vm_def.h:zend_leave_helper"
+  ],
+  "source": {
+    "focused_native6": {
+      "first3_revision": "139ff341fff29fa3feee6702cb8072a3bf1264b6",
+      "first3_raw": ".tools/returns-verify20-notice/model-notice-7ou6a6r7/report.json",
+      "remaining3_revision": "2fc2436d04f6a84eb6e04fda5124a79bebaae51d",
+      "remaining3_raw": ".tools/returns-verify20-notice/model-notice-g4lfooqs/report.json"
+    },
+    "protected_unused1": {
+      "source_sha256": "a6864c6840cc2ad71b991de473986a812064a8dfc8b38ea6db59f50b7f2fa983",
+      "raw": ".tools/returns-verify20-notice/model-notice-g4lfooqs/report.json",
+      "legacy_tuple_does_not_establish_notice_order": true
+    }
+  },
+  "state": {
+    "preserved_first3": {
+      "revision": "649d3b0212ca2098f22a990e4147b491122be4a7",
+      "fixtures": 3,
+      "assertions": 315,
+      "raw": ".tools/returns-deferred-notice-20/.tools/returns-notice20/state-wave-er16uzjd/report.json"
+    },
+    "affected_last5": {
+      "revision": "827777a2a7064f8e16843c96d1ac2e32d8752334",
+      "fixtures": 5,
+      "assertions": 407,
+      "raw": ".tools/returns-deferred-notice-20/.tools/returns-notice20/state-last5-kotox7gq/report.json",
+      "report_sha256": "40ae2d789c3c855170b776fc7a9bcb1d69786e4942488c1705c4faa5c532bdc4"
+    },
+    "fixtures": 8,
+    "assertions": 722
+  },
+  "actual_parent_compiler": {
+    "revision": "8d7fad70e2eaf2324bb56480ea9e7413a2bcf418",
+    "canonical_parent": "d23ed96e6c9254057a90b039a64db53d4b43b243",
+    "modules": 367,
+    "raw": ".tools/returns-deferred-notice-publication-20/.tools/returns-notice20/returns-notice-current-compiler-62m0vre0/report.json",
+    "report_sha256": "185d9b48f61a177172db1e05df821dc2e61ddb3e406fa81f68de0b725d61b453",
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "exit": 0,
+    "elapsed_seconds": 5.08162260055542,
+    "timeout": false,
+    "group_after": [],
+    "inputs_module_stats_head_status_stable": true
+  },
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json",
+    "E_ALL": 30719,
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1,
+    "state_cap_seconds": 45
+  },
+  "preserved_failures": [
+    "override original missing semicolon: native parse255, no behavioral credit",
+    "implicit terminal Notice source admission failed at139: interpreter failure0",
+    "implicit false-UNWIND pause admission failed at649d: segmented equality failure0; equality retained"
+  ],
+  "intentional_divergence": false,
+  "remaining": [
+    "already-active finalizer delayed replay",
+    "Stringable186 reference verification",
+    "wider physical owner and lifecycle domains",
+    "full core/final conformance"
+  ],
+  "reviewer": "returns_review_20",
+  "verifier": "returns_verify_20",
+  "recovery": "Kept original sources and raw records remain in ignored canonical .tools. Regenerate source-reached fixtures with tests/semantics/reference_return_notice_state.py --raw .tools/returns-verify20-notice/model-notice-7ou6a6r7 --raw .tools/returns-verify20-notice/model-notice-g4lfooqs --output DIR. First3/315 state bodies/results stay at649d; implicit admission repair and last5/407 stay at827. Execute fixtures serially with the pinned numeric runner --sl and modules.json order; compiler alone initializes with zero application evaluations. Metadata changes do not renew runtime credit."
+}

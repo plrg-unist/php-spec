@@ -526,7 +526,13 @@ frames. Capture requires at least three genuine owners before cleanup and two af
 metadata adds none. Four originals agree exactly; nine delayed COW controls intentionally
 retain c/d=1 instead of native8, with zero agreement credit. State23/1,873, independent
 pending98 and actual-parent carrier71 pass; strict364 is separate. Wider payload domains,
-active-finalizer replay, protected temporary/NULL Notice timing and Stringable186 remain open.
+active-finalizer replay and Stringable186 remain open.
+[Deferred reference-return Notices](coverage/semantics/reference-return-notice-review.json)
+now run after protected finalizers and type rechecks, preserve diagnostic source/line
+through callbacks, and retire cancelled or throwing outcomes through ordinary cleanup.
+Six focused originals and one preserved protected-unused control agree; eight reached
+current/saved fixtures pass 722 assertions. Actual-parent compilation is separate.
+Already-active finalizer replay, Stringable186 and wider owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

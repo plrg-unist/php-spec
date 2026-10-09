@@ -141,7 +141,16 @@ c/d=8(native) to1(spec) differences, with zero agreement for those nine. State23
 and independent pending98 pass across retained cuts. Actual364 over `2c1283f04` passes
 strict at `31838d5ad` (5.033s) and one genuine carrier bridge/71 assertions. Original
 failures/timeouts remain zero-credit. Wider payloads, active-finalizer replay and
-protected NULL/186 remain required. [Owner review](coverage/semantics/reference-return-retired-owner-review.json).
+Stringable186 remain required. [Owner review](coverage/semantics/reference-return-retired-owner-review.json).
+
+By-reference VALUE, bare/null and implicit-return Notices now dispatch after protected
+finalizers and repeated type checks. Captured source and line survive saved handlers;
+throwing handlers leave through ordinary cleanup, and replacing variable returns cancel
+the old Notice. Six focused originals and one protected-unused control agree at retained
+private cuts with 365 modules cuts. Eight reached current/saved fixtures pass 722 assertions (315+407);
+Actual 367-module composition over `d23ed96e6` passes strict compilation at `8d7fad70e` (5.082 s), with zero application evaluations. Active-finalizer replay, Stringable186
+and wider owner domains remain required.
+[Notice review](coverage/semantics/reference-return-notice-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
@@ -3323,10 +3332,10 @@ failures and interrupted evidence.
   wider Closure creation contexts remain Unsupported.
   Uncertified object transfers, unretained update selectors, builtin FCC targets and
   wider callable initializers remain Unsupported; modifiers/attributes stay open.
-  Wider deprecated constant consumers remain open. Generic156 return replay, temporary-return
-  Notice timing and typed
-  by-reference string conversion186 remain open; accepted ordinary by-value
-  classification does not close them. [String contract](docs/semantics/USER-STRING.md),
+  Wider deprecated constant consumers remain open. Generic, scalar-loop, CV/compiled-CONST
+  and bounded physical-array return replay are integrated, as is deferred reference-return
+  Notice dispatch. Already-active-finalizer replay and typed by-reference Stringable
+  conversion186 remain open; accepted ordinary by-value classification does not close them. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
   enums, hooks, readonly and wider instance setter consumers,
@@ -3344,7 +3353,7 @@ failures and interrupted evidence.
 held branches and evidence, and do not retry the rejected engine experiment.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Wider owner domains, already active-finalizer
-returns, protected temporary/NULL Notice timing and Stringable186 remain required.
+returns and Stringable186 remain required; deferred VALUE/NULL Notice dispatch is integrated.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 
