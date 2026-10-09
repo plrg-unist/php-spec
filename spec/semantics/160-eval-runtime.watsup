@@ -533,6 +533,7 @@ def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = $eva
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "eval compiled source transition"]
   -- if ~$source_eval_pending_marker(pevalcontext)
   -- if S_compiled.COMPLETION = NORMAL
+  -- if ~$eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
   -- if P.COMPLETION =/= PPCNORMAL
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "eval compiled source missing code"]
   -- if S_compiled.COMPLETION = NORMAL

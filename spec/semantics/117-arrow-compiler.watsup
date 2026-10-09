@@ -99,6 +99,8 @@ def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, 
   -- if P_body = $pparrow_generator_body(P_uses, pcpath ++ [PCFIELD 5], expression_body)
 def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSDEFAULTREQUEST pscontinuation) = $pparrow_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation[.DIAGNOSTICS = eps])
   -- if P.COMPLETION = PPCNORMAL
+def $pparrow_step(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, PSSATTRIBUTETARGETREQUEST pscontinuation phpType14) = $ppsignature_attribute($ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath ++ [PCFIELD 3, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)], pscontinuation, phpType14)
+  -- if P.COMPLETION = PPCNORMAL
 
 def $pparrow_request(P_outer, P, pcpath, ptbytes, ptbytes_names*, expression_body, metadata, pscontinuation) = $pparrow_step(P_outer, $ppdefault_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n_index), pcpath, ptbytes, ptbytes_names*, expression_body, metadata, $psstep_resume(pscontinuation, PSNONE))
   -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
