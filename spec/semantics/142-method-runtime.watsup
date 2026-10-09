@@ -1583,8 +1583,8 @@ def $promotion_override_parent_layout(S, pclassdesc) = $property_info_layout(S, 
 def $promotion_override_parent_layout(S, pclassdesc) = $throwable_layout(text_kind)
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (INTERNAL_THROWABLE_PARENT text_kind)
 def $promotion_override_parent_layout(S, pclassdesc) = eps -- otherwise
-def $promotion_override_parent_match(ppropertydesc*, ptbytes) = (ppropertydesc.VISIBILITY =/= PROPERTY_PRIVATE)
-  -- if $ppproperty_desc_at(ppropertydesc*, ptbytes) = (ppropertydesc)
+def $promotion_override_parent_match(ppropertydesc_parent*, ptbytes) = (ppropertydesc_found.VISIBILITY =/= PROPERTY_PRIVATE)
+  -- if $ppproperty_desc_at(ppropertydesc_parent*, ptbytes) = (ppropertydesc_found)
 def $promotion_override_parent_match(ppropertydesc*, ptbytes) = false -- otherwise
 def $promotion_override_issue(S, pclassdesc, ppropertydesc_parent*, eps) = eps
 def $promotion_override_issue(S, pclassdesc, ppropertydesc_parent*, ppropertydesc :: ppropertydesc_tail*) = (pclassdesc.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" has #[\\Override] attribute, but no matching parent property exists"))
