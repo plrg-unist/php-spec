@@ -1,0 +1,195 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "nonpromoted-constructor-target",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideTarget21 {\n    public int $value = 5;\n    public function __construct(#[\\Override] int $value) { echo \"BODY\"; }\n}\nnew ParameterOverrideTarget21(7);\n",
+      "source_sha256": "63a9fdb3c1d7f53eaf98be272720a49e15d6eafc0e92bd207962b23285540384",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/native-first/report.json",
+      "native_raw_sha256": "ad196506a956882d274dc72a441d465ade7e56b1f0b6eec0179d72ff9f8f8b0d",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "target-before-type-default",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideDefault21 {\n    public function __construct(#[\\Override] int $value = \"wrong\") { echo \"BODY\"; }\n}\nnew ParameterOverrideDefault21();\n",
+      "source_sha256": "248a980dd6baf7b5abc98ce80fc6fbc3e67945d966d6c8dce6a620155a5d5e78",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/native-first/report.json",
+      "native_raw_sha256": "b54083bde38bf171148adb0f6fbcc4d36f412991c896f34473199e37964b39bb",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "alias-null-spelling",
+      "source": "<?php\nnamespace ParameterOverrideAlias21;\nuse \\oVeRrIdE as Mark;\necho \"BEFORE|\";\nclass A {\n    public function __construct(#[mArK] int $value = null) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "c492c464a9f30b3c80bde859807f0f6774ff5cdcfa09054859488c2529758961",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "93ce38db29e03fc42a47a76793b67131ae00fcf2eae2d5ae303cc9cc5e8817ec",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAib1ZlUnJJZEUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "multiline-param-line",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideMultiline21 {\n    public function __construct(\n        #[\\oVERride]\n        int $value\n    ) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "f51ab4e50b2fdc8d55e266ea1f97e6493327a99f42393e9812e0fbf0024addde",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "9dcb33d97462b382e869c77367c6e9e9031320d0a332678f7448bc40a87130e6",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAib1ZFUnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "constant-default-before-target",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideConstant21 {\n    public function __construct(#[\\Override] int $value = strlen(\"x\")) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "850be676797f8f45c7d103ca03746f97856fc805eda1f41ce4b371a1009d51fa",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "737b1c5a0bc5978eddf5f9740df94d9e8b602b16f2284cb06c1a91ba1d3af64c",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENvbnN0YW50IGV4cHJlc3Npb24gY29udGFpbnMgaW52YWxpZCBvcGVyYXRpb25zIGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "prior-optional-notice",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideOptional21 {\n    public function __construct(int $first = 1, #[\\Override] int $value) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "5ae2e1dfc164872dc952ca57f748c1292204179595956489236c70a11975952a",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "5928f94feb672d365565faa3d12e5b3d15bbf1e141415fc797d16f3be82f8661",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogUGFyYW1ldGVyT3ZlcnJpZGVPcHRpb25hbDIxOjpfX2NvbnN0cnVjdCgpOiBPcHRpb25hbCBwYXJhbWV0ZXIgJGZpcnN0IGRlY2xhcmVkIGJlZm9yZSByZXF1aXJlZCBwYXJhbWV0ZXIgJHZhbHVlIGlzIGltcGxpY2l0bHkgdHJlYXRlZCBhcyBhIHJlcXVpcmVkIHBhcmFtZXRlciBpbiB7RklMRX0gb24gbGluZSA0CkZhdGFsIGVycm9yOiBBdHRyaWJ1dGUgIk92ZXJyaWRlIiBjYW5ub3QgdGFyZ2V0IHBhcmFtZXRlciAoYWxsb3dlZCB0YXJnZXRzOiBtZXRob2QsIHByb3BlcnR5KSBpbiB7RklMRX0gb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+    },
+    {
+      "id": "redefined-before-target",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideRedefined21 {\n    public function __construct($value, #[\\Override] int $value) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "4fc7baa368567429a2d447a6e5de3c6bcad37c2fd51bd831fb40791a5ccbb780",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "6471c8c8a6f3b3322eb61591f41acb21571c0e892db8713892265fec900135c4",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFJlZGVmaW5pdGlvbiBvZiBwYXJhbWV0ZXIgJHZhbHVlIGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "variadic-last-before-target",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideVariadic21 {\n    public function __construct(...$first, #[\\Override] int $value) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "ab58f52bd3ccf95bffa79dd55d6ac63c7a3468dcf47fa3f76074511d948413f5",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "b86731b5f658f5024216ac72a2f56f7403448c8266071a18d3a71d46bd1ee0eb",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IE9ubHkgdGhlIGxhc3QgcGFyYW1ldGVyIGNhbiBiZSB2YXJpYWRpYyBpbiB7RklMRX0gb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K"
+    },
+    {
+      "id": "function-target",
+      "source": "<?php\necho \"BEFORE|\";\nfunction parameterOverrideFunction21(#[\\Override] int $value) { echo \"BODY\"; }\n",
+      "source_sha256": "71381fe5e3e447d43da570826eb66fade785505670579c5f30fec8c0f10c73e1",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "f9f1eba67c0f949f0ce3f95040562dbbbe08c7ac5777506785b079162fadf71c",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "closure-target",
+      "source": "<?php\necho \"BEFORE|\";\n$f = function (#[\\Override] int $value) { echo \"BODY\"; };\n",
+      "source_sha256": "ec35618b56bcd492682ffc1760cd7d6ae60f850da39921b3d99ee53c379e1a48",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "125d09c1602e4fbec3b4e0b75ceab10382ea7fe4304be04e1b5ff61fefb360b1",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "arrow-target",
+      "source": "<?php\necho \"BEFORE|\";\n$f = fn (#[\\Override] int $value) => $value;\n",
+      "source_sha256": "f320e64a8a4159d0d8208674d87c31ced1f9822e441a34bfaf472a64b809b410",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "cc2eeff0d2b8f11266daa2c48b7ab9c3d82ed1fcc73f29b55db565f4ecd8dcfb",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "eval-target-uncatchable",
+      "source": "<?php\necho \"BEFORE|\";\ntry {\n    eval('class ParameterOverrideEval21 { public function __construct(int $first = 1, #[\\Override] int $value) { echo \"BODY\"; } }');\n} catch (Error $error) { echo \"CATCH|\"; }\necho \"AFTER\";\n",
+      "source_sha256": "abecb7fb6aca88f0894a1b2c5462816b487c0b6ab81c58d0128f75ee249df18c",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/focused/native-first/report.json",
+      "native_raw_sha256": "2ccb3865f11969853affb6cf3e8242fb5a3f9edee25221789c25a83a4d48f4b0",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "QkVGT1JFfA==",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogUGFyYW1ldGVyT3ZlcnJpZGVFdmFsMjE6Ol9fY29uc3RydWN0KCk6IE9wdGlvbmFsIHBhcmFtZXRlciAkZmlyc3QgZGVjbGFyZWQgYmVmb3JlIHJlcXVpcmVkIHBhcmFtZXRlciAkdmFsdWUgaXMgaW1wbGljaXRseSB0cmVhdGVkIGFzIGEgcmVxdWlyZWQgcGFyYW1ldGVyIGluIHtGSUxFfSg0KSA6IGV2YWwoKSdkIGNvZGUgb24gbGluZSAxCkZhdGFsIGVycm9yOiBBdHRyaWJ1dGUgIk92ZXJyaWRlIiBjYW5ub3QgdGFyZ2V0IHBhcmFtZXRlciAoYWxsb3dlZCB0YXJnZXRzOiBtZXRob2QsIHByb3BlcnR5KSBpbiB7RklMRX0oNCkgOiBldmFsKCknZCBjb2RlIG9uIGxpbmUgMQpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    },
+    {
+      "id": "multiline-untyped-target",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideUntyped21 {\n    public function __construct(\n        #[\\Override]\n        $value\n    ) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "7d72ce3883bff1d3823bcfb015d8cdd96f125e966be09faa8d4cbdb35b648ef4",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/lines/native-first/report.json",
+      "native_raw_sha256": "6ee0771ef7564a3ae74078666366d8240625f98ecdc3d83cca0f1409b9de6376",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "split-nullable-target",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideNullable21 {\n    public function __construct(\n        #[\\Override]\n        ?\n        int $value = null\n    ) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "d73fb0a399106dc017ae87ca18d22a879157d4acf061bf93c017169128e78f1a",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/lines/native-first/report.json",
+      "native_raw_sha256": "3ee5d36e6973b84a37664ee8d9c294bf96496dd44d82653e11a9b37820221633",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "bare-constant-default-line",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideDefaultLine21 {\n    public function __construct(\n        #[\\Override]\n        int $value =\n        UNKNOWN_TARGET_DEFAULT_21\n    ) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "55d5d07a3f686bb6039195dae7836dcaf95ba0db108afdc63c74dfa93b4972b3",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/default-line/native-first/report.json",
+      "native_raw_sha256": "17b73ad8e585550dcaa19315b64b6157d8f13282c6c08c7b5e01f84738bf6032",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDcKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "nested-constant-default-line",
+      "source": "<?php\necho \"BEFORE|\";\nclass ParameterOverrideNestedLine21 {\n    public function __construct(\n        #[\\Override]\n        array $value = [\n            UNKNOWN_TARGET_A_21,\n            UNKNOWN_TARGET_B_21,\n            5\n        ]\n    ) { echo \"BODY\"; }\n}\n",
+      "source_sha256": "6973324b98fd3f2191f24988f710a26bd7d8606152826156d2b1286445491e42",
+      "native_group": ".tools/constructor-parameter-override-private-21/.tools/constructor-parameter-override-probes-21/nested-line/native-first/report.json",
+      "native_raw_sha256": "02c8001c3b099c2a6fbb064ba19ff0d0cf73c7c7b92b48d6a0cf616586bb5673",
+      "status": "php_error",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IEF0dHJpYnV0ZSAiT3ZlcnJpZGUiIGNhbm5vdCB0YXJnZXQgcGFyYW1ldGVyIChhbGxvd2VkIHRhcmdldHM6IG1ldGhvZCwgcHJvcGVydHkpIGluIHtGSUxFfSBvbiBsaW5lIDgKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    }
+  ]
+}

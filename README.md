@@ -879,8 +879,12 @@ original failure and separate acceptance cuts. One zero-argument builtin
 `#[Override]` on promoted properties now resolves real imports and checks the
 effective parent declaration, including deferred trait links. Thirteen originals
 and 110 genuine source/trait/rollback assertions have separate reviewed cuts in
-[the Override review](coverage/semantics/promoted-override-review.json); other
-parameter attributes/hooks remain required.
+[the Override review](coverage/semantics/promoted-override-review.json).
+The same builtin on ordinary parameters now produces its native target Fatal
+after constant-default compilation and before type checks, preserving spelling,
+compiler lines and prior eval notices. Sixteen originals and 109 derived/reached
+checks retain separate cuts in [the parameter-target review](coverage/semantics/parameter-override-review.json).
+Other parameter attributes/hooks remain required.
 [Public property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md)
 now attach ordered typed sources to shared cells, check writes atomically, and
 preserve aliases across unset and object traversal. Their
