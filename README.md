@@ -1493,8 +1493,13 @@ include bridge checks also agree.
 is installed. It resumes checked `__toString` callbacks for
 by-value returns, including nested weak returns and throwable `previous`
 chains. An installed 90-second interface-method bridge and paused marker check
-pass; the generic 45-second runner times out on that source. By-reference returns
-and wider typed consumers remain open.
+pass; the generic 45-second runner times out on that source.
+[By-reference Stringable conversion](coverage/semantics/reference-return-typed-cv-review.json)
+now preserves selected live unconstrained aliased CV cells through callback GLOBALS
+rebind/unset. Successful conversion writes the selected cell; failure reports its live
+value and retains the previous callback Exception. Thirteen exact originals and eight
+current/saved fixtures with 843 assertions pass. Released/nonreference CV layouts,
+destructor timing and wider typed consumers remain open.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing

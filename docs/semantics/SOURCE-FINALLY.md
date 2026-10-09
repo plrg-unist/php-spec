@@ -84,7 +84,17 @@ binds three exact originals and eight source-reached fixtures/602 assertions acr
 retained367 cuts. Actual-parent strict compilation is separate. Capture and pending
 validity enforce the single-history bound; carried markers authenticate source/site/phase,
 not a fully coherent alternative private history. Wider consumed VALUE/CONST/NULL and
-multiple-active histories, Stringable186 and wider owner domains remain required.
+multiple-active histories, wider Stringable CV layouts and owner domains remain required.
+
+Module 186 converts a selected live unconstrained aliased return CV before protected
+finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
+the captured cell; current/saved f-local bindings authenticate it. Success writes
+that cell atomically before ordinary return unwinding. Callback failure reports the
+live selected value and previous callback Exception, then follows initial error
+unwinding through the finalizer without minting terminal replay or a Notice.
+Thirteen exact originals and eight reached fixtures/843 assertions are recorded in
+the [typed CV review](../../coverage/semantics/reference-return-typed-cv-review.json).
+Released/nonreference CV layouts, destructor timing and wider typed consumers remain open.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.
