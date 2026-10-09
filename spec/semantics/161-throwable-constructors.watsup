@@ -47,6 +47,10 @@ def $constructor_start_ready(S, preqbytes, phpType7*, z) = $ctor_start(S_new, n,
 
 dec $ctor_arguments(pstate, porigin) : pcallarguments
 def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $dynamic_site(S, (porigin))
+  -- if ~$ppfirstclass(phpType7*)
+def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 1
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew phpType28 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
 def $ctor_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
@@ -72,7 +76,10 @@ def $ctor_argument(S, pctorcall) = ((expression, b_unpack, $exit_argument_name(p
 def $ctor_argument(S, pctorcall) = eps -- otherwise
 
 dec $ctor_nodes(pctorcall) : pnode*
-def $ctor_nodes(pctorcall) = [HOBJECT pctorcall.RECEIVER] ++ $named_slots_roots(pctorcall.SENT)
+dec $ctor_mode_nodes(pctorcallmode) : pnode*
+def $ctor_mode_nodes(CTOR_CAPTURE n) = [HOBJECT n]
+def $ctor_mode_nodes(pctorcallmode) = eps -- otherwise
+def $ctor_nodes(pctorcall) = [HOBJECT pctorcall.RECEIVER] ++ $ctor_mode_nodes(pctorcall.MODE) ++ $named_slots_roots(pctorcall.SENT)
 def $task_nodes(CTOR_ARGS pctorcall) = $ctor_nodes(pctorcall)
 def $task_nodes(CTOR_SEND pctorcall) = $ctor_nodes(pctorcall)
 def $task_nodes(CTOR_UNPACK_PREP pctorcall) = $ctor_nodes(pctorcall)
@@ -184,11 +191,13 @@ rule PhpStep/ctor-unpack-done: S ~> S[.TODO = (CTOR_ARGS pctorcall[.INDEX = $(pc
 ;; values, including holes introduced by named arguments.
 dec $ctor_error(pstate, pctorcall, text, ptbytes) : pstate
 dec $ctor_failed(pstate, pctorcall) : pstate
+dec $ctor_trace_frames(pstate, pctorcall, pvalue*) : ptraceframe*
+def $ctor_trace_frames(S, pctorcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, FUNCTION $ptascii("__construct"), CLASS ($ptascii(pctorcall.BASE)), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}] -- otherwise
 def $ctor_failed(S, pctorcall) = $constructor_failed_object(S, pctorcall.RECEIVER) -- if pctorcall.MODE = CTOR_NEW
 def $ctor_failed(S, pctorcall) = S -- if pctorcall.MODE = CTOR_METHOD
-def $ctor_error(S, pctorcall, text_kind, preqbytes) = $throwable_allocate($ctor_failed(S, pctorcall)[.ORIGIN = (pctorcall.SITE)], text_kind, preqbytes, pctorcall.LINE, $source_trace_prefixed(S, [ptraceframe]))
+def $ctor_failed(S, pctorcall) = S -- if pctorcall.MODE = CTOR_CAPTURE n
+def $ctor_error(S, pctorcall, text_kind, preqbytes) = $throwable_allocate($ctor_failed(S, pctorcall)[.ORIGIN = (pctorcall.SITE)], text_kind, preqbytes, pctorcall.LINE, $source_trace_prefixed(S, $ctor_trace_frames(S, pctorcall, pvalue*)))
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pctorcall.SENT))
-  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, FUNCTION $ptascii("__construct"), CLASS ($ptascii(pctorcall.BASE)), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
 dec $ctor_type_error(pstate, pctorcall, nat, ptbytes, ptbytes, pvalue) : pstate
 def $ctor_type_error(S, pctorcall, n_parameter, preqbytes_name, preqbytes_type, pvalue) = $ctor_error(S, pctorcall, "TypeError", $ptascii(pctorcall.BASE) ++ $ptascii("::__construct(): Argument #") ++ $ntunsigned(n_parameter) ++ $ptascii(" ($") ++ preqbytes_name ++ $ptascii(") must be of type ") ++ preqbytes_type ++ $ptascii(", ") ++ $typed_given(S, pvalue) ++ $ptascii(" given"))
 
@@ -241,6 +250,7 @@ def $ctor_commit(S, pctorcall, pvalue_message, PINT z_code, pvalue_previous) = S
   -- if pvalue_result = $ctor_result(pctorcall.MODE, pctorcall.RECEIVER)
 def $ctor_result(CTOR_NEW, n) = POBJECT n
 def $ctor_result(CTOR_METHOD, n) = PNULL
+def $ctor_result(CTOR_CAPTURE n_closure, n) = PNULL
 
 dec $ctor_receive(pstate, pctorcall) : pstate
 dec $error_exception_receive(pstate, pctorcall) : pstate

@@ -12512,18 +12512,23 @@
         "spec/semantics/127-class-runtime.watsup",
         "spec/semantics/161-throwable-constructors.watsup",
         "spec/semantics/250-ordinary-throwable-reception.watsup",
-        "spec/semantics/174-internal-method-callables.watsup"
+        "spec/semantics/174-internal-method-callables.watsup",
+        "spec/semantics/253-closure-current-binding.watsup"
       ],
       "helper_tests": [
         "tests/semantics/sensitive_parameter_protocol.py",
         "tests/semantics/sensitive_value_constructor_protocol.py",
-        "tests/semantics/sensitive_value_getter_protocol.py"
+        "tests/semantics/sensitive_value_getter_protocol.py",
+        "tests/semantics/sensitive_value_constructor_callable_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/sensitive_parameter_cases.json",
         "tests/semantics/method_runtime.py",
         "tests/semantics/sensitive_value_constructor_cases.json",
-        "tests/semantics/sensitive_value_getter_cases.json"
+        "tests/semantics/sensitive_value_getter_cases.json",
+        "tests/semantics/sensitive_value_constructor_callable_cases.json",
+        "tests/semantics/sensitive-value-constructor-callable-heap.php",
+        "tests/semantics/sensitive-value-constructor-callable-args.php"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_attributes.c",
@@ -12531,9 +12536,10 @@
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "coverage/semantics/sensitive-value-constructor-review.json",
         "coverage/semantics/sensitive-value-getter-review.json",
-        "vendor/php-src/Zend/zend_closures.c"
+        "vendor/php-src/Zend/zend_closures.c",
+        "coverage/semantics/sensitive-value-constructor-callables-review.json"
       ],
-      "review": "Trace-generated SensitiveParameterValue objects strongly own dereferenced snapshots and expose zero-argument getValue; physical trace arrays and trace rendering share wrapper identity. Source10/SL112 at e27 validate actual allocation, getter/exact continuation and last-release D|/weak-null in sensitive-parameter-review.json. Direct construction copies one dereferenced mixed snapshot, with ordered named/positional sends, arity-before-readonly, COW and ordinary getter-copy/last-release ownership. Source7 and strict367/state121 (20 constructed,101 reached) retain a50 inputs in sensitive-value-constructor-review.json. First-class constructor, uninitialized getter, debug/property and wider wrapper protocols remain required. First-class getValue callables retain the initialized wrapper/snapshot through GETTERCLOSURE; five originals and strict367/SL76 (15 derived,61 reached) at db70 validate COW, argument priority, computed alias/clone capture and copy last release. Actual368 composition is recorded in sensitive-value-getter-review.json; prior cuts remain unchanged."
+      "review": "Trace-generated SensitiveParameterValue objects strongly own dereferenced snapshots and expose zero-argument getValue; physical trace arrays and trace rendering share wrapper identity. Source10/SL112 at e27 validate actual allocation, getter/exact continuation and last-release D|/weak-null in sensitive-parameter-review.json. Direct construction copies one dereferenced mixed snapshot, with ordered named/positional sends, arity-before-readonly, COW and ordinary getter-copy/last-release ownership. Source7 and strict367/state121 (20 constructed,101 reached) retain a50 inputs in sensitive-value-constructor-review.json. Uninitialized getter, debug/property and wider wrapper protocols remain required. First-class getValue callables retain the initialized wrapper/snapshot through GETTERCLOSURE; five originals and strict367/SL76 (15 derived,61 reached) at db70 validate COW, argument priority, computed alias/clone capture and copy last release. Actual368 composition is recorded in sensitive-value-getter-review.json; prior cuts remain unchanged. First-class initialized constructor captures retain source-certified receivers through ordered SEND/arity/readonly, alias/nullsafe/clone invocation and independent Error argument lifetime. Source5 at420f/9602 and strict368/SL129 (27 derived,102 reached) at a922 retain distinct cuts in sensitive-value-constructor-callables-review.json; original Unsupported, trace mismatch and AL fixture stop remain0. Binding/Closure::call and wider wrapper protocols remain partial; current composition is pending."
     },
     {
       "id": "declarations.Override",

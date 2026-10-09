@@ -198,6 +198,7 @@ def $fake_bind_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if $closure_callable(S, n)
   -- if ~$object_body_real(S.OBJECTS[n])
+  -- if ~$ctor_capture_live(S, n)
 def $fake_bind_object(S, n) = false -- otherwise
 def $object_body_real(pobject) = true -- if $object_body(pobject) = REALCLOSURE porigin pitem* pstaticcell*
 def $object_body_real(pobject) = false -- otherwise
@@ -481,6 +482,7 @@ def $fake_bind_receive(S, pconfigcall) = $fake_bind_select_scope(S, pconfigcall,
   -- if $fake_bind_arity(S, pconfigcall).COMPLETION = NORMAL
   -- if $fake_bind_source(pconfigcall) = (n_source)
   -- if $closure_callable(S, n_source)
+  -- if ~$ctor_capture_live(S, n_source)
   -- if n_offset = $fake_bind_offset(pconfigcall)
   -- if pvalue_receiver = $error_api_value(pconfigcall, n_offset, PNULL)
   -- if pvalue_receiver = PNULL \/ $config_object(pvalue_receiver)

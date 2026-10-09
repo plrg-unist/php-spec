@@ -1,0 +1,81 @@
+{
+  "scope": "First-class constructor capture on initialized SensitiveParameterValue, dynamic/explicit/nullsafe invocation, alias/clone ownership, ordered SEND/arity/readonly and independent rejected-argument Error lifetime. Uninitialized capture, binding/Closure::call, debug/property and wider protocols remain partial.",
+  "target": "PHP 8.5.10 CLI NTS64; profile30719; LC_ALL=C TZ=UTC; jobs1",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+  "engine": [
+    "Zend/zend_attributes.c: SensitiveParameterValue::__construct",
+    "Zend/zend_closures.c: zend_create_closure_ex, zend_get_closure_invoke_method"
+  ],
+  "raw_root": ".tools/sensitive-value-constructor-callables-private-26/.tools/sensitive-value-constructor-callables-probes-26",
+  "native_first": {
+    "original_revision": "ac4a95b5224cf57bd443aa0602b6d3bb1d10bd6c",
+    "originals": 2,
+    "focused_revision": "420f47247dfe2c4b9a7bbdefae8f99882dbda4fc",
+    "focused": 3
+  },
+  "accepted_source": [
+    {
+      "revision": "420f47247dfe2c4b9a7bbdefae8f99882dbda4fc",
+      "report": "changed-model-t4mxz3r4/report.json",
+      "agreements": 2,
+      "report_sha256": "faeaed6ea401450039f6249170bd4f206f79e24896c51a3a82cede0ac556f468"
+    },
+    {
+      "revision": "9602dbc4f4fbeaef8828358c12f3612b056bb675",
+      "report": "focused/changed-model-k38_u2pl/report.json",
+      "agreements": 3,
+      "report_sha256": "912a8e304dfdbf223b76f112ff8c4f2cdb50e9bd260b5508471d4579a5416a6a"
+    }
+  ],
+  "private_strict": {
+    "revision": "a9228bdd8c5eacfecc0cc24709df82839a78e9a7",
+    "modules": 368,
+    "report": "sensitive-constructor-compiler-h9ozu059/report.json",
+    "seconds": 5.232989,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "accepted_state": {
+    "revision": "a9228bdd8c5eacfecc0cc24709df82839a78e9a7",
+    "preparation": "sensitive-constructor-protocol-il6md0pq/PREPARED.json",
+    "report": "sensitive-constructor-checked-rig_02xw/report.json",
+    "report_sha256": "78d1f674823a29cfedc0dbde080aa4aa99f8c75929f0b00aa0cf4c4fd153b8f8",
+    "mode": "SL",
+    "derived_checks": 27,
+    "reached_checks": 102,
+    "real_steps": 5,
+    "algorithmic_seconds": 4.574347,
+    "state_seconds": 15.796976,
+    "cap_seconds": 120,
+    "application_evaluations": 1,
+    "source_agreements": 0
+  },
+  "preserved_zero": [
+    {
+      "report": "accepted-current-baseline/report.json",
+      "selected": "original2",
+      "status": "unsupported",
+      "source_agreements": 0
+    },
+    {
+      "report": "focused/changed-model-arffoup2/report.json",
+      "selected": "explicit-invoke-trace",
+      "cause": "missing Closure invoke frame",
+      "source_agreements": 0,
+      "later": "clone/unpack unrun at this cut"
+    },
+    {
+      "report": "sensitive-constructor-checked-tpi7q0nu/report.json",
+      "cause": "fixture recursive otherwise AL diagnostic before main",
+      "state_credit": 0,
+      "SL": "unrun"
+    }
+  ],
+  "maintained_commands": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_value_constructor_callable_cases.json",
+    "python3 tests/semantics/sensitive_value_constructor_callable_protocol.py --revision HEAD_SHA"
+  ],
+  "recording": "Original bytes/native observations, checked programs, actual argv/caps, streams/exits, stable inputs/head/status and complete reaping retained in ignored raw groups. Prior CLASS cuts are unchanged.",
+  "actual_composition": "Pending exact current-parent pointwise review and one strict init-only check."
+}

@@ -166,7 +166,7 @@ Unsupported with zero agreement; the earlier raw-completion fixture preparation
 was corrected before execution. Actual 367-module composition over `24c1b9e4`
 passes strict initialization at `0e5152643` (5.351 s), preserving current assertion
 fields and sibling constructor arms without renewing private source/state checks.
-First-class constructor, uninitialized getter, debug/property and wider wrapper protocols
+Uninitialized getter, debug/property and wider wrapper protocols
 remain required. [Constructor review](coverage/semantics/sensitive-value-constructor-review.json).
 
 First-class SensitiveParameterValue `getValue(...)` callables own their receiver
@@ -179,6 +179,17 @@ with zero agreement. Actual 368-module composition over `47accb555` passes stric
 initialization at `f4ca5840` (5.209 s), retaining parent owner/runtime paths and
 existing getter-closure ownership without renewing private checks.
 [Getter review](coverage/semantics/sensitive-value-getter-review.json).
+
+First-class wrapper constructors retain their initialized receiver through ordered
+sends, arity checks and readonly rejection. Computed capture names stay fixed;
+aliases, explicit/nullsafe invocation and clones preserve ownership. Five originals
+agree across `420f47247`/`9602dbc4f`. Strict compilation of 368 modules and SL129
+(27 derived, 102 reached checks) pass at `a9228bdd8`: real capture/SEND/Error steps
+and final releases distinguish the callable's old value from the Error's rejected
+replacement; saved caller queues authenticate nested argument calls. Both original
+Unsupported baselines, the initial trace mismatch and fixture AL stop retain zero
+affected credit. Binding/Closure::call and wider wrapper protocols remain partial.
+[Constructor callable review](coverage/semantics/sensitive-value-constructor-callables-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

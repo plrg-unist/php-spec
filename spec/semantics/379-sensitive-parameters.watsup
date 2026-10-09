@@ -184,8 +184,21 @@ def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUP
 def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = $ctor_method_start(S, n, z)
   -- if $ptlc(ptbytes) = $ptascii("__construct")
   -- if ~$ppfirstclass(phpType7*)
+def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = S[.TODO = ptask_tail*][.OBJECTS = S.OBJECTS ++ [CTORCLOSURE n "SensitiveParameterValue" porigin_site]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n_closure]][.RESULT = KNOWN (POBJECT n_closure)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if $sensitive_value_live(S, n)
+  -- if S.OBJECTS[n] = SENSITIVEVALUE pvalue
+  -- if $ptlc(ptbytes) = $ptascii("__construct")
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $ptascii("__construct"))
+  -- if n_closure = |S.OBJECTS|
+def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "uninitialized SensitiveParameterValue constructor capture"][.TODO = eps]
+  -- if $ptlc(ptbytes) = $ptascii("__construct") /\ $ppfirstclass(phpType7*)
+  -- if S.OBJECTS[n] = SENSITIVEUNSET porigin
 def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "SensitiveParameterValue internal method body"][.TODO = eps]
-  -- if $ptlc(ptbytes) = $ptascii("__debuginfo") \/ ($ptlc(ptbytes) = $ptascii("__construct") /\ $ppfirstclass(phpType7*))
+  -- if $ptlc(ptbytes) = $ptascii("__debuginfo")
 def $sensitive_value_select(S, n, ptbytes, phpType7*, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined method SensitiveParameterValue::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)
   -- if ~($ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("__debuginfo"), $ptascii("getvalue")])
 dec $sensitive_getter_source(pcnode) : bool
@@ -214,3 +227,134 @@ def $getter_body(S, pgettercall) = S[.RESULT = KNOWN pvalue]
 def $getter_body(S, pgettercall) = S[.COMPLETION = UNSUPPORTED "uninitialized SensitiveParameterValue getter"]
   -- if pgettercall.METHOD = GET_SENSITIVE_VALUE
   -- if S.OBJECTS[pgettercall.RECEIVER] = SENSITIVEUNSET porigin
+
+;; A captured constructor owns its selected receiver throughout sends. Its
+;; invocation site is independent of the immutable first-class source site.
+def $ctor_capture_live(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver "SensitiveParameterValue" porigin_site
+  -- if $(n_receiver < n)
+  -- if $sensitive_value_live(S, n_receiver)
+  -- if S.OBJECTS[n_receiver] = SENSITIVEVALUE pvalue
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppfirstclass(phpType7*)
+  -- if $method_source_name(phpType20, $ptascii("__construct"))
+def $ctor_capture_live(S, n) = false -- otherwise
+def $node_children(S, HOBJECT n) = [HOBJECT n_receiver]
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+def $closure_live_object_valid(S, n) = $ctor_capture_live(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+def $getclass_live_object(S, n) = $ctor_capture_live(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc(ptbytes) = $ptascii("closure"))
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+  -- if $ctor_capture_live(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+def $closure_callable(S, n) = $ctor_capture_live(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [CTORCLOSURE n_receiver text_base porigin_site]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S.OBJECTS[n_source] = CTORCLOSURE n_receiver text_base porigin_site
+  -- if $ctor_capture_live(S, n_source)
+  -- if n = |S.OBJECTS|
+def $clone_same_kind(CTORCLOSURE n_receiver text_base porigin_site, CTORCLOSURE n_receiver text_base porigin_site) = true
+
+dec $ctor_capture_site(pstate, porigin) : bool
+def $ctor_capture_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall expression (SEQUENCE phpType7*) metadata)
+  -- if $dynamic_site(S, (porigin))
+  -- if ~$ppfirstclass(phpType7*)
+def $ctor_capture_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if ~$ppfirstclass(phpType7*)
+def $ctor_capture_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNullsafeMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $method_source_name(phpType20, $ptascii("__invoke"))
+  -- if ~$ppfirstclass(phpType7*)
+def $ctor_capture_site(S, porigin) = false -- otherwise
+dec $ctor_capture_tasks(ptask*, nat, porigin) : bool
+def $ctor_capture_tasks(eps, n, porigin) = false
+def $ctor_capture_tasks((CTOR_CAPTURE_RESULT n porigin) :: ptask_tail*, n, porigin) = true
+def $ctor_capture_tasks(ptask :: ptask_tail*, n, porigin) = $ctor_capture_tasks(ptask_tail*, n, porigin)
+  -- if ptask =/= CTOR_CAPTURE_RESULT n porigin
+dec $ctor_capture_frames(pframe*, nat, porigin) : bool
+def $ctor_capture_frames(eps, n, porigin) = false
+def $ctor_capture_frames(pframe :: pframe_tail*, n, porigin) = ($ctor_capture_tasks(pframe.TODO, n, porigin) \/ $ctor_capture_frames(pframe_tail*, n, porigin))
+def $ctor_selected(S, pctorcall) = true
+  -- if pctorcall.MODE = CTOR_CAPTURE n
+  -- if $ctor_capture_live(S, n)
+  -- if S.OBJECTS[n] = CTORCLOSURE pctorcall.RECEIVER pctorcall.BASE porigin_site
+  -- if $ctor_capture_site(S, pctorcall.SITE)
+  -- if $ctor_capture_tasks(S.TODO, n, pctorcall.SITE) \/ $ctor_capture_frames(S.FRAMES, n, pctorcall.SITE)
+def $ctor_trace_frames(S, pctorcall, pvalue*) = [ptraceframe_ctor, ptraceframe_invoke]
+  -- if pctorcall.MODE = CTOR_CAPTURE n
+  -- if $ctor_selected(S, pctorcall)
+  -- if $exit_method_site(S, pctorcall.SITE)
+  -- if ptraceframe_ctor = {FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, FUNCTION $ptascii("__construct"), CLASS ($ptascii(pctorcall.BASE)), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pctorcall.SITE), LINE pctorcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+dec $ctor_capture_start(pstate, nat, porigin, int) : pstate
+def $ctor_capture_start(S, n, porigin, z) = S[.TODO = (CTOR_ARGS {SITE porigin, RECEIVER n_receiver, BASE text_base, MODE CTOR_CAPTURE n, INDEX 0, SENT eps, NAMED false, LINE z}) :: (CTOR_CAPTURE_RESULT n porigin) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ctor_capture_live(S, n)
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+  -- if $ctor_capture_site(S, porigin)
+def $dynamic_value(S, porigin, z_init, z_call) = $ctor_capture_start(S, n, porigin, z_call)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+  -- if $ctor_capture_live(S, n)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $ctor_capture_start(S_read[.TODO = ptask_tail*], n, porigin, z)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+  -- if $ctor_capture_live(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $invoke_capture(S_read, n, S.ORIGIN)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = CTORCLOSURE n_receiver text_base porigin_site
+  -- if $ctor_capture_live(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
+def $task_nodes(CTOR_CAPTURE_RESULT n porigin) = [HOBJECT n]
+def $call_task_valid(S, CTOR_CAPTURE_RESULT n porigin) = ($ctor_capture_live(S, n) /\ $ctor_capture_site(S, porigin) /\ S.ORIGIN = (porigin))
+rule PhpStep/ctor-capture-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALUE S.RESULT]
+  -- if S.TODO = (CTOR_CAPTURE_RESULT n porigin) :: ptask_tail*
+  -- if $call_task_valid(S, CTOR_CAPTURE_RESULT n porigin)
+
+;; Temporary rebinding is a distinct protocol, not an ordinary constructor call.
+def $fake_bind_receive(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "captured internal constructor binding"][.TODO = eps]
+  -- if $fake_bind_arity(S, pconfigcall).COMPLETION = NORMAL
+  -- if $fake_bind_source(pconfigcall) = (n_source)
+  -- if $ctor_capture_live(S, n_source)
+  -- if n_offset = $fake_bind_offset(pconfigcall)
+  -- if pvalue_receiver = $error_api_value(pconfigcall, n_offset, PNULL)
+  -- if pvalue_receiver = PNULL \/ $config_object(pvalue_receiver)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "captured internal constructor Closure method"][.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $ctor_capture_live(S_read, n)
+  -- if $ptlc(ptbytes) <- [$ptascii("__construct"), $ptascii("call")]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "Error", $ptascii("Call to undefined method Closure::") ++ $c_string(ptbytes) ++ $ptascii("()"), z)[.TODO = eps]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $ctor_capture_live(S_read, n)
+  -- if $ptlc(ptbytes) =/= $ptascii("__invoke")
+  -- if ~$closure_known_other_method(ptbytes)

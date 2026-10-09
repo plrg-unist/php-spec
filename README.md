@@ -973,6 +973,11 @@ First-class `getValue(...)` callables retain their wrapper and captured value;
 getter copies, callable clones and final release keep ordinary ownership. Five
 originals and separate capture/lifetime checks are recorded in the
 [getter review](coverage/semantics/sensitive-value-getter-review.json).
+First-class `__construct(...)` callables retain the initialized wrapper through
+argument sends and readonly rejection. Aliases, explicit/nullsafe invocation and
+clones preserve ownership; the callable's old snapshot and the Error's rejected
+replacement retire independently. Five originals and separate genuine checks are
+recorded in the [constructor callable review](coverage/semantics/sensitive-value-constructor-callables-review.json).
 [Finally continuations](docs/semantics/SOURCE-FINALLY.md) preserve normal,
 thrown and transferring outcomes, including value/reference returns, loop jumps
 and goto across protected regions. [Source Throwable subclasses](docs/semantics/THROWABLE-SUBCLASSES.md)
