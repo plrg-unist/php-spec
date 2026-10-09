@@ -27,8 +27,13 @@ Three fresh safe originals and236 checks at real frontiers, including a projecte
 ownership query, pass at7eaee/363; strict3 passes4.921s. Warned Stringable RESTORE
 now retains a unary converted call and commits the saved original despite handler
 retirement/shared throw. Two fresh safe originals and211 frontier checks, including
-a projected owner query, pass at05db/365; strict3 passes5.024s. Last-owner Stringable
-entry cleanup, nullable saved-original reentry and NaN timing remain required.
+a projected owner query, pass at05db/365; strict3 passes5.024s. NaN SET now freezes
+the old return and formatted input before conversion warning dispatch, then captures
+live raw/original after the callback. Two fresh safe originals and247 source-frontier
+checks plus eight pure trace-clear companions pass atc2b195/367; strict3 passes5.021s.
+The shared Throwable survives committed NAN/mode0 without a second handler entry;
+the baseline and original entry-certificate failure retain zero credit. Last-owner
+Stringable entry cleanup and nullable saved-original reentry remain required.
 Actual367 over288c passes strict3 ate6c5 (5.224s), preserving Aggregate foreach,
 deferred return Notices, live concat and mixed-CV property ingress; private
 source2/211 cuts are unchanged.

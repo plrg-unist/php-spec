@@ -138,8 +138,10 @@ Stringable SET replaces the actual option argument before the old-return snapsho
 warning/refusal traces use the converted string. Its borrowed conversion evidence
 survives real handler retirement without owning the Option. Warned Stringable
 RESTORE preserves a unary converted call and commits the saved original through
-shared throw/handler retirement. Last-owner entry cleanup, nullable saved-original
-after reentry, NaN timing,
+shared throw/handler retirement. NaN SET freezes the old return before conversion
+warning dispatch and captures raw/original after the callback. Pending shared
+Throwable completion skips an eligible second handler while committing the input.
+Last-owner entry cleanup, nullable saved-original after reentry,
 wider startup/callback facts, Stringable descriptions, exporter forms and single
 named-description/unpack producers remain required.
 

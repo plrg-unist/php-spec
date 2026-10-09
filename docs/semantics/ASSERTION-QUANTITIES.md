@@ -42,6 +42,13 @@ unary converted call with frozen `INPUT=ORIGINAL` and null return. Parsing warni
 receive the converted option in traces; successful restore commits the live saved
 original despite handler raw writes, Option retirement or the shared Throwable.
 
+NaN SET snapshots its old return before formatting the scalar value. The formatted
+`NAN` input stays frozen through its conversion warning; raw pointer/original
+capture occurs afterward, using the live handler-modified state. A pending shared
+Throwable survives the subsequent parsing warning and update. An eligible handler
+is skipped for that second warning; default reporting remains active when ineligible.
+Byte authentication does not repeat conversion or callback dispatch.
+
 The engine releases a frozen modified `prev_value` after a successful warning
 callback, even when a nested update already replaced and released that request
 raw retain. Four retained originals expose the resulting lifetime defect; a
@@ -71,6 +78,10 @@ Stringable RESTORE originals pass at05db with211 frontier checks, including one
 owner projection. The shared Throwable is observed while its handler frame is
 active and after actual restore completion, before catch; the retired Option
 has no allocation or owner at either frontier. Earlier cuts remain separate.
+Two safe NaN originals pass atc2b195 with247 checks at actual entry, conversion,
+parsing and shared-throw frontiers, plus eight explicitly projected trace-clear
+companions. The original unsupported baseline and failed entry certificate stay
+zero credit; the corrected pure byte proof is checked at the real call entry.
 
 ```sh
 python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json --match assertion-quantity
@@ -82,6 +93,5 @@ original, leaving a nullable raw value that this string-only state does not yet
 represent. That path is Unsupported, distinct from the intentional lifetime
 divergence above. Zend quantity parsing dereferences a NULL string; later set/restore
 from that state is not probed. Last-owner Stringable SET/RESTORE entry cleanup
-remains required; NaN conversion warnings need the pre-conversion old return
-snapshot. Wider string identity producers, descriptions, exporter forms and callback
+remains required. Wider string identity producers, descriptions, exporter forms and callback
 paths remain core work. This is a bounded milestone, not complete assertion/INI coverage.

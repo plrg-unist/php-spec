@@ -1491,6 +1491,26 @@
       "exit_status": 0,
       "status": "normal",
       "native_group": ".tools/compiler-assertion-stringable-restore-20/.tools/assertion-stringable-restore-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-nan-warning-mode1",
+      "source": "<?php\n$warnings = 0;\nset_error_handler(function ($level, $message) use (&$warnings) {\n    ++$warnings;\n    echo 'W', $warnings, ':', ini_get('zend.assertions'), '|';\n    $trace = (new Exception('trace'))->getTrace();\n    $value = $trace[1]['args'][1];\n    echo $trace[1]['function'], ':', $value !== $value ? 'nan' : 'wrong', '|';\n    if ($warnings === 1) {\n        echo 'nested:', ini_set('zend.assertions', '2'), '|';\n    }\n    return true;\n});\n$old = ini_set('zend.assertions', NAN);\necho 'old:', $old, '|raw:', ini_get('zend.assertions'), '|';\n$effects = 0;\nassert(++$effects > 0);\necho 'effects:', $effects, '|warnings:', $warnings, '|';\nini_restore('zend.assertions');\necho 'restored:', ini_get('zend.assertions'), '|';\nassert(++$effects > 0);\necho 'after:', $effects;\n",
+      "source_sha256": "aa8d5e9e30e7a117c837bbf0554858670d9a3c5516c54d77f2d17faa03edba6d",
+      "stdout_base64": "VzE6MXxpbmlfc2V0Om5hbnxuZXN0ZWQ6MXxXMjoyfGluaV9zZXQ6bmFufG9sZDoxfHJhdzpOQU58ZWZmZWN0czowfHdhcm5pbmdzOjJ8cmVzdG9yZWQ6MXxhZnRlcjox",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-nan-20/.tools/assertion-nan-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-nan-throw-conversion-mode1",
+      "source": "<?php\n$warnings = 0;\n$effects = 0;\n$returned = 'unset';\n$failure = new Exception('nan-warning');\nset_error_handler(static function ($level, $message) use (&$warnings, $failure) {\n    echo 'W', ++$warnings, ':', ini_get('zend.assertions'), '|';\n    $trace = (new Exception('trace'))->getTrace();\n    $value = $trace[1]['args'][1];\n    echo $trace[1]['function'], ':', $value !== $value ? 'nan|' : 'BAD|';\n    echo 'nested:', ini_set('zend.assertions', '2'), '|';\n    throw $failure;\n});\ntry {\n    $returned = ini_set('zend.assertions', NAN);\n    echo 'BAD|';\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 'same|' : 'other|';\n}\necho 'raw:', ini_get('zend.assertions'), '|returned:', $returned, '|';\nassert(++$effects > 0);\necho 'effects:', $effects, '|warnings:', $warnings, '|';\nini_restore('zend.assertions');\necho 'restored:', ini_get('zend.assertions'), '|';\nassert(++$effects > 0);\necho 'after:', $effects;\n",
+      "source_sha256": "c8a45ac49582928224f00c9228c1bbec02a1fd9a02147499b9a34917d23441af",
+      "stdout_base64": "VzE6MXxpbmlfc2V0Om5hbnxuZXN0ZWQ6MXxzYW1lfHJhdzpOQU58cmV0dXJuZWQ6dW5zZXR8ZWZmZWN0czowfHdhcm5pbmdzOjF8cmVzdG9yZWQ6MXxhZnRlcjox",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-nan-20/.tools/assertion-nan-native-20/run-v1/report.json"
     }
   ],
   "native_profile": {

@@ -209,8 +209,11 @@ old returns, refusal/shared throws and converted trace arguments. Handler retire
 runs the Option destructor without a ghost owner. Three new originals and236
 frontier checks pass at7eaee. Warned Stringable RESTORE retains unary converted
 arguments and commits the saved original through handler retirement/shared throw.
-Two new originals and211 frontier checks pass at05db. Last-owner entry cleanup,
-nullable-original/NaN timing, descriptions and wider forms remain required.
+Two new originals and211 frontier checks pass at05db. NaN SET now preserves the
+pre-conversion old return separately from handler-modified raw state and commits
+through an original pending Throwable without a second handler entry. Two originals,
+247 source-frontier checks and eight pure companions pass atc2b195. Last-owner entry
+cleanup, nullable-original reentry, descriptions and wider forms remain required.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
