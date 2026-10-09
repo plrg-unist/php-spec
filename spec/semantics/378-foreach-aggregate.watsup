@@ -4,6 +4,9 @@ dec $foreach_aggregate_generator_promote(ptask*, pgeneratorop) : ptask*
 dec $foreach_aggregate_input_identity(pforeachaggregate) : bool
 dec $foreach_aggregate_input_stable(pstate, pforeachaggregate) : bool
 dec $foreach_aggregate_no_self_check(pstate, poperand) : bool
+dec $foreach_aggregate_self_object(pstate, pforeachaggregate) : nat?
+dec $foreach_aggregate_mutable_input(poperand) : bool
+dec $foreach_aggregate_acquisition_valid(pstate, pforeachaggregate) : bool
 dec $foreach_aggregate_acquire_result(pstate, pforeachaggregate, ptask*) : pstate
 dec $foreach_aggregate_data_nodes(nat, bool) : pnode*
 dec $foreach_aggregate_error_clear(text) : text
@@ -87,8 +90,8 @@ def $foreach_aggregate_input(S, pforeachaggregate, text) = false -- otherwise
 def $foreach_aggregate_input_identity(pforeachaggregate) = (n = pforeachaggregate.AGGREGATE)
   -- if pforeachaggregate.INPUT = KNOWN (POBJECT n)
 def $foreach_aggregate_input_identity(pforeachaggregate) = true -- otherwise
-;; The native object pointer may address a live CV/reference payload. Changed
-;; source operands require a separate dynamic self-comparison boundary.
+;; The first recursive comparison uses the live original CV/reference payload;
+;; deeper callbacks compare their own protected raw returned object.
 def $foreach_aggregate_input_stable(S, pforeachaggregate) = true -- if pforeachaggregate.ACQUIRED =/= eps
 def $foreach_aggregate_input_stable(S, pforeachaggregate) = true
   -- if pforeachaggregate.ACQUIRED = eps
@@ -110,6 +113,32 @@ def $foreach_aggregate_no_self_check(S, KNOWN pvalue) = ~$generator_from_aggrega
 def $foreach_aggregate_no_self_check(S, REFERENCE n) = true
 def $foreach_aggregate_no_self_check(S, poperand) = false -- otherwise
 
+def $foreach_aggregate_self_object(S, pforeachaggregate) = (pforeachaggregate.OBJECT)
+  -- if pforeachaggregate.ACQUIRED =/= eps
+def $foreach_aggregate_self_object(S, pforeachaggregate) = (n)
+  -- if pforeachaggregate.ACQUIRED = eps
+  -- if pforeachaggregate.INPUT = KNOWN (POBJECT n)
+def $foreach_aggregate_self_object(S, pforeachaggregate) = (n)
+  -- if pforeachaggregate.ACQUIRED = eps
+  -- if pforeachaggregate.INPUT = REFERENCE n_cell
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+def $foreach_aggregate_self_object(S, pforeachaggregate) = (n)
+  -- if pforeachaggregate.ACQUIRED = eps
+  -- if pforeachaggregate.INPUT = VARIABLE n_name* z
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+def $foreach_aggregate_self_object(S, pforeachaggregate) = eps -- otherwise
+def $foreach_aggregate_mutable_input(VARIABLE n_name* z) = true
+def $foreach_aggregate_mutable_input(REFERENCE n) = true
+def $foreach_aggregate_mutable_input(poperand) = false -- otherwise
+def $foreach_aggregate_acquisition_valid(S, pforeachaggregate) = $fiber_traversal_acquisition_valid(S, pforeachaggregate.AGGREGATE, nat*)
+  -- if pforeachaggregate.ACQUIRED = pforeachaggregate.AGGREGATE :: nat*
+  -- if $foreach_aggregate_mutable_input(pforeachaggregate.INPUT)
+  -- if $foreach_aggregate_input_mode(pforeachaggregate.STATEMENT, pforeachaggregate.INPUT)
+  -- if (HOBJECT pforeachaggregate.AGGREGATE) <- S.ALLOCATIONS
+  -- if $generator_from_aggregate(S, POBJECT pforeachaggregate.AGGREGATE)
+def $foreach_aggregate_acquisition_valid(S, pforeachaggregate) = $fiber_traversal_acquisition_valid(S, pforeachaggregate.AGGREGATE, pforeachaggregate.ACQUIRED) -- otherwise
+
 def $foreach_begin(S, S_read, statement, plocation, b, z) = $foreach_aggregate_call(S_read, {STATEMENT statement, SITE porigin, LINE z, AGGREGATE n, OBJECT n, ACQUIRED eps, INPUT S.RESULT, CURRENT (KNOWN PNULL), ITERATOR eps}, "getIterator", ptask_tail*)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
@@ -126,7 +155,7 @@ def $foreach_begin(S, S_read, statement, plocation, b, z) = S_read[.COMPLETION =
 def $foreach_aggregate_original(S, pforeachaggregate) = true
   -- if $(pforeachaggregate.AGGREGATE < |S.OBJECTS|)
   -- if $generator_from_aggregate(S, POBJECT pforeachaggregate.AGGREGATE)
-  -- if $fiber_traversal_acquisition_valid(S, pforeachaggregate.AGGREGATE, pforeachaggregate.ACQUIRED)
+  -- if $foreach_aggregate_acquisition_valid(S, pforeachaggregate)
 def $foreach_aggregate_original(S, pforeachaggregate) = false -- otherwise
 def $foreach_aggregate_stage(S, pforeachaggregate, text) = true
   -- if text <- ["getIterator", "getIterator-error"]
@@ -358,10 +387,11 @@ def $foreach_aggregate_call(S, pforeachaggregate, text, ptask_tail*) = S[.ORIGIN
   -- if S.OBJECTS[pforeachaggregate.OBJECT] = INSTANCE porigin
   -- if $effective_method(S, porigin, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
 def $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*)
-  -- if $foreach_aggregate_input_stable(S, pforeachaggregate) \/ $foreach_aggregate_no_self_check(S, S.RESULT)
+  -- if $foreach_aggregate_input_stable(S, pforeachaggregate) \/ $foreach_aggregate_no_self_check(S, S.RESULT) \/ $foreach_aggregate_self_object(S, pforeachaggregate) =/= eps
 def $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "foreach IteratorAggregate changed original operand"]
   -- if ~$foreach_aggregate_input_stable(S, pforeachaggregate)
   -- if ~$foreach_aggregate_no_self_check(S, S.RESULT)
+  -- if $foreach_aggregate_self_object(S, pforeachaggregate) = eps
 rule PhpStep/foreach-aggregate-getIterator: S ~> $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*)
   -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "getIterator") :: ptask_tail*
 def $foreach_aggregate_error(S, pforeachaggregate, text, ptbytes, ptask_tail*) = $throw_scalar(S[.TODO = (FOREACH_AGGREGATE pforeachaggregate[.CURRENT = S.RESULT] "getIterator-error") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], text, ptbytes, pforeachaggregate.LINE)
@@ -387,7 +417,9 @@ def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $fore
   -- if ~$foreach_aggregate_reference(pforeachaggregate.STATEMENT) \/ $generator_reference_producer(S, pgenerator)
 def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_call(S, pforeachaggregate[.OBJECT = n][.ACQUIRED = pforeachaggregate.ACQUIRED ++ [n]], "getIterator", ptask_tail*)
   -- if S.RESULT = KNOWN (POBJECT n)
-  -- if n =/= pforeachaggregate.OBJECT /\ $generator_from_aggregate(S, POBJECT n)
+  -- if $generator_from_aggregate(S, POBJECT n)
+  -- if $foreach_aggregate_self_object(S, pforeachaggregate) = (n_self)
+  -- if n =/= n_self
 def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_error(S, pforeachaggregate, "Exception", $ptascii("Objects returned by ") ++ $object_name(S, pforeachaggregate.OBJECT) ++ $ptascii("::getIterator() must be traversable or implement interface Iterator"), ptask_tail*) -- otherwise
 
 def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
