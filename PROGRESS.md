@@ -468,6 +468,19 @@ three reached current/saved fixtures pass 381 assertions at `4e6396234`.
 Actual 372 over `c2e06b6d7` passes strict at `2094ee751` (5.562s, zero application evaluations).
 [Nullable computed-VALUE review](coverage/semantics/reference-return-consumed-value-nullable-review.json).
 
+Two already-active ordinary CV finalizers now retain ordered non-owning history
+in a named reference-return function with the exact string signature and no
+destructor operation at capture. Genuine Z then X task/phase/restore triples
+are consumed separately; old operands acquire no new roots. Inner rejection
+replays its finalizer, then leaves Z and X in order. Initial successful
+replacement retires both certificates and returns the selected y alias.
+Two originals agree at `e2275499a`; four reached current/saved
+fixtures pass 439 assertions at `ddc500037`.
+Actual 374 over `626142838` passes strict at `eef043fe1` (5.610s, zero application evaluations).
+[Two-history CV review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Locally caught consumed-Z resumption is explicitly Unsupported; lifecycle
+capture, wider signatures/operands and further histories remain open.
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

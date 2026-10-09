@@ -668,9 +668,13 @@ assertions pass. With the checked nullable string mask, the same cleared NULL
 passes the repeated check, delivers one original-line Notice and returns a fresh
 [caller cell](coverage/semantics/reference-return-consumed-value-nullable-review.json) distinct from x and y, without repeating the call
 or outer finalizer. One nullable original and three reached fixtures/381
-assertions pass. Other VALUE signatures/layouts, general CONST, other NULL and
-multiple-active histories, wider
-Stringable consumers and owner domains remain open.
+assertions pass. Two already-active CV finalizers also retain
+[ordered non-owning history](coverage/semantics/reference-return-multiple-active-cv-review.json) across inner rejection.
+Uncaught replay leaves Z then X; initial success preserves the selected y
+alias. Two originals and four reached fixtures/439 assertions pass.
+Caught consumed-Z resumption, lifecycle-enabled capture, further histories,
+other VALUE signatures/layouts, general CONST, other NULL, wider Stringable
+consumers and owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

@@ -104,7 +104,19 @@ before returning a fresh caller cell distinct from x and y. Neither path
 repeats the call or restores its old payload; the nullable path enters no
 second outer finalizer. One nullable original and three reached fixtures/381
 assertions pass at separate cuts in the [nullable computed-VALUE review](../../coverage/semantics/reference-return-consumed-value-nullable-review.json).
-Other VALUE signatures/layouts, owning payloads and multiple histories remain open.
+Other VALUE signatures/layouts, owning payloads and wider histories remain open.
+
+For exactly two already-active ordinary CV finalizers, runtime156 captures
+the actual ordered Z/X return, phase3 and restore triples in separate steps.
+The pair certificates own no old operands and survive genuine saved frames.
+Uncaught inner rejection replays its finalizer, then leaves Z and X in order;
+initial successful replacement retires the pair and returns the selected y
+alias with x/z unchanged. Capture requires the exact named-function string
+signature and no destructor operation. Two originals and four reached
+current/saved fixtures/439 assertions pass at separate cuts in the
+[two-history CV review](../../coverage/semantics/reference-return-multiple-active-cv-review.json).
+Locally caught consumed-Z resumption is explicitly Unsupported. Lifecycle
+capture, wider signatures/operands and further histories remain open.
 
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
