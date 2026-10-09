@@ -64,13 +64,27 @@ Aggregate yield-from getters may rebind an original CV or reference operand when
 the raw result is a terminal Iterator/Generator or a rejected non-Aggregate value.
 The original class still names rejection; borrowed CV and owning-cell cleanup
 retain their existing owners. Six safe unchanged originals agree at `f82e9b3ed`;
-strict370 passes at that cut. Changed operands returning another Aggregate stay
-explicit Unsupported/zero agreement. Nine genuine-source groups/376 physical
+strict370 passes at that cut. At that earlier cut changed operands returning another
+Aggregate remained Unsupported/zero agreement. Nine genuine-source groups/376 physical
 owner and source-authority premises pass at separate cuts; the two fixture
 failures retain zero credit.
 Actual370 over `288dc800` passes strict SL at `50367af16`; private source/state
 cuts retain their own inputs.
 [Rebound review](coverage/semantics/yield-from-rebound-operand-review.json).
+
+Aggregate yield-from recursion now compares the first known Aggregate return
+against its live object-valued source CV/reference, then later returns against
+their owned raw layer. An independently kept original may be the first repeated
+layer even after deeper source rebinding and comparator retirement; no history
+owner is added. Self returns from immutable inputs and deeper layers retain the
+fixed class rejection. Nine selected originals agree at `25f6a9f33` and strict372
+passes there. The first-nonobject-source control stays Unsupported/zero agreement.
+Sixteen genuine-source groups/732 physical ownership and authority premises pass
+at `890007303`, including the identical forwarded old case9; no state correction
+was needed. Previous rebound checks retain their cuts.
+Actual372 over `488a190bc` passes strict SL at `5c27d4886`; private
+source/state cuts retain their own inputs.
+[Source comparison](coverage/semantics/yield-from-source-comparison-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

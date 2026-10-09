@@ -1,0 +1,214 @@
+{
+  "milestone": "Yield-from IteratorAggregate mutable-source self comparison",
+  "status": "independently reviewed current-parent composition",
+  "baseline": {
+    "revision": "fb58ba46f9f059a9dd7ad96130cd2a93f8fd39ff",
+    "modules": 372
+  },
+  "semantic_revision": "a081766bb31fbdeb62fdce3bcee127f839b1dc76",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_interfaces.c: zend_user_it_get_new_iterator",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_YIELD_FROM"
+  ],
+  "scope": [
+    "First known Aggregate return compares against the actual object-valued original CV/reference payload; later callbacks compare their owned raw layer.",
+    "A first returned layer equal to the independently kept original is admitted only for source-authenticated mutable INPUT; immutable-input and deeper self returns retain fixed-class rejection.",
+    "CV/HCELL, source rechange, former payload retirement, park/throw and raw rejection add no comparator/history field or owner; layers and original input retain their pre-rewind retirement."
+  ],
+  "sources": {
+    "normal_agreements": 9,
+    "unsupported_controls": 1,
+    "control_agreements": 0,
+    "cuts": [
+      {
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/yield-from-source-compare-source-pyfbn7zs/report.json",
+        "revision": "25f6a9f33e336335deb3e49c98887bd66fc8a46d",
+        "selected_ids": [
+          "yield-from-source-compare-distinct-aggregate-generator",
+          "yield-from-source-compare-reference-self-rejection",
+          "yield-from-source-compare-kept-receiver-repeat-rechange",
+          "yield-from-source-compare-reference-repeat-rechange",
+          "yield-from-source-compare-repeated-getter-parks",
+          "yield-from-source-compare-repeated-getter-throws",
+          "yield-from-source-compare-immutable-original-self-rejection",
+          "yield-from-source-compare-nonobject-original-control",
+          "yield-from-source-compare-deeper-self-rejection",
+          "yield-from-rebound-returned-aggregate-self-control"
+        ],
+        "normal_agreements": 9,
+        "unsupported_controls": 1,
+        "inputs_stable": true,
+        "head_stable": true
+      }
+    ],
+    "compatibility": "Only new source10 runs, using native9 and the preserved old affected control. Historical refusal and six earlier rebound sources retain their original cuts."
+  },
+  "compiler": {
+    "report": ".tools/calls-yield-from-aggregate-self-20/.tools/yield-from-source-compare-sl-0crgd8kz/report.json",
+    "revision": "25f6a9f33e336335deb3e49c98887bd66fc8a46d",
+    "modules": 372,
+    "process_seconds": 120,
+    "passed": true
+  },
+  "native_discovery": {
+    "new_originals": 9,
+    "semantic_agreements": 0,
+    "reports": [
+      ".tools/calls-yield-from-aggregate-self-20/.tools/yield-from-source-compare-native-btb3dy1f/report.json"
+    ],
+    "preserved_old_control_report": ".tools/calls-yield-from-rebound-operand-20/.tools/yield-from-rebound-operand-native-s8fxxkfx/report.json",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "native_process_seconds": 75,
+    "model_seconds": 60,
+    "model_process_seconds": 75
+  },
+  "states": {
+    "status": "PASS",
+    "runner": "tests/semantics/yield_from_source_compare_review.py",
+    "fixture_revision": "89000730326033ea7263229c8395bc1e16686cd7",
+    "process_seconds": 120,
+    "groups": 16,
+    "physical_premises": 732,
+    "driver_clauses": 704,
+    "selected": [
+      {
+        "id": "yield-from-cv-self-comparison-permits-first-kept-original-repeat",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-sxw97lcx/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 54,
+        "driver_clauses": 53
+      },
+      {
+        "id": "yield-from-reference-self-comparison-permits-first-kept-original-repeat",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-0ttodamq/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 54,
+        "driver_clauses": 53
+      },
+      {
+        "id": "yield-from-deeper-acquisition-uses-owned-layer-after-earlier-payload-retirement",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-swinpbgw/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 57,
+        "driver_clauses": 55
+      },
+      {
+        "id": "yield-from-repeated-reference-releases-cell-before-data-rewind",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-n3ay17kc/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 48,
+        "driver_clauses": 48
+      },
+      {
+        "id": "yield-from-live-reference-source-equality-rejects-returned-aggregate",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-pjcqzvrj/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 47,
+        "driver_clauses": 46
+      },
+      {
+        "id": "yield-from-immutable-temporary-compares-its-own-input-despite-global-rebind",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-j2gd76zm/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 44,
+        "driver_clauses": 43
+      },
+      {
+        "id": "yield-from-immutable-source-cannot-forge-a-first-repeated-layer",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-ivir047c/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 28,
+        "driver_clauses": 27
+      },
+      {
+        "id": "yield-from-mutable-source-cannot-forge-a-deeper-adjacent-repeat",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-8y5bf1hr/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 36,
+        "driver_clauses": 34
+      },
+      {
+        "id": "yield-from-distinct-acquired-layer-retires-before-generator-startup",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-2_oypn07/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 44,
+        "driver_clauses": 42
+      },
+      {
+        "id": "yield-from-repeated-parked-getter-keeps-raw-layer-and-borrows-current-receiver",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-z_5fa771/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 49,
+        "driver_clauses": 43
+      },
+      {
+        "id": "yield-from-repeated-parked-frame-rejects-duplicate-real-acquisition-marker",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-dyaknr69/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 50,
+        "driver_clauses": 44
+      },
+      {
+        "id": "yield-from-repeated-getter-throw-releases-layer-with-original-exception",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-2k0p3ljq/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 49,
+        "driver_clauses": 49
+      },
+      {
+        "id": "yield-from-live-cv-source-equality-now-rejects-the-affected-original-control",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-rexzcq3j/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 48,
+        "driver_clauses": 47
+      },
+      {
+        "id": "yield-from-nonobject-source-with-aggregate-return-keeps-named-refusal",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-9n86qsw3/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 38,
+        "driver_clauses": 37
+      },
+      {
+        "id": "yield-from-deeper-self-comparison-rejects-owned-original-again",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-5fnq6842/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 47,
+        "driver_clauses": 44
+      },
+      {
+        "id": "yield-from-deeper-self-error-retires-both-raw-original-occurrences",
+        "report": ".tools/calls-yield-from-aggregate-self-20/.tools/fiber-state-review-bvfo0yfd/report.json",
+        "revision": "89000730326033ea7263229c8395bc1e16686cd7",
+        "physical_premises": 39,
+        "driver_clauses": 39
+      }
+    ],
+    "compatibility": "Only the new sixteen groups run; forwarded old case9 equals its selected new dictionary. Historical named-refusal state3sj4bwci and earlier eight rebound groups retain their cuts."
+  },
+  "remaining": [
+    "A first nonobject original operand with a known Aggregate return stays named Unsupported; its observed native control has zero agreement.",
+    "Wider operand/reference-location modes, raw payload changes and complete iterator lifecycle remain partial. START known-Aggregate self comparison after original-operand rebinding and ordinary-call Aggregate unpack remain separate obligations."
+  ],
+  "preserved_failures": [],
+  "historical_forwarding": {
+    "source": "yield-from-rebound-returned-aggregate-self-control",
+    "prior_state_report": ".tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-3sj4bwci/report.json",
+    "prior_state_credit": "Historical named-refusal PASS at02af retains its zero source agreement. Current case9 forwards to the identical selected new error-state dictionary."
+  },
+  "actual_composition": {
+    "parent": "488a190bc22474ba6ed695928ea1b3b77f2429ab",
+    "semantic_revision": "5c27d4886f2945886256af85ae626c2408a2b010",
+    "compiler_report": ".tools/calls-yield-from-source-compare-current-20/.tools/yield-from-source-compare-current-sl-oy8qa7_8/report.json",
+    "modules": 372,
+    "passed": true,
+    "source_state_renewal": false,
+    "review": "Exact one-path380 composition preserves parent modules and fields. Nullable156 string-or-null return cursors, separate380 magic integer getter,358 captured Fiber factory and301 collector residual scopes remain disjoint; private source/native/state cuts retain their own inputs."
+  }
+}

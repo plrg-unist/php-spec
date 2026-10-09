@@ -444,9 +444,17 @@ records the separate checks. Wider raw payload changes remain required.
 Aggregate getters may also rebind the original CV or reference operand before
 returning Iterator/Generator data or a rejected raw value. Six safe originals
 agree, and nine genuine-source groups/376 ownership and source-authority premises
-pass; changed operands returning another Aggregate remain explicit Unsupported.
+pass; at that cut changed operands returning another Aggregate remained Unsupported.
 [Rebound review](coverage/semantics/yield-from-rebound-operand-review.json) tracks
 the bounded owner and source checks.
+Known Aggregate returns now compare the first live object-valued CV/reference
+payload, then each owned recursive layer. An independently kept original may
+be the first repeated layer without adding a comparator/history owner. Self
+returns from immutable inputs and deeper layers retain rejection. Nine selected
+originals agree; a first nonobject source with an Aggregate return remains
+Unsupported/zero agreement. [Source comparison](coverage/semantics/yield-from-source-comparison-review.json)
+records nine source agreements and sixteen genuine-source groups/732 ownership
+and source-authority premises at their separate cuts.
 [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
 runs pending finally bodies with real scopes, graph links and cached owners.
 Request 340 adds reverse-global and ascending-store close, handler-before-cache
