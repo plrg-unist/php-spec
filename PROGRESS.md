@@ -152,8 +152,10 @@ at `db70c7a5`: array COW, argument priority, computed capture/alias and clone
 ownership. Strict initialization of 367 modules and separate SL76 (15 derived,
 61 reached checks) pass; four real steps verify capture, getter-copy ownership
 and final destructor/weak-null release. Both checked baselines retain Unsupported
-with zero agreement. Actual-parent composition is pending; prior CLASS cuts stay
-unchanged. [Getter review](coverage/semantics/sensitive-value-getter-review.json).
+with zero agreement. Actual 368-module composition over `47accb555` passes strict
+initialization at `f4ca5840` (5.209 s), retaining parent owner/runtime paths and
+existing getter-closure ownership without renewing private checks.
+[Getter review](coverage/semantics/sensitive-value-getter-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
