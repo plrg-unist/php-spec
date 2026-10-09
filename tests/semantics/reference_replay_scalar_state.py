@@ -112,7 +112,7 @@ def main():
                     'S_whole.CURRENT = eps', 'S_whole.FRAMES = eps', 'S_whole.TODO = eps',
                     'S_whole.HELD = eps', 'S_whole.ITERATORS = eps',
                     '$lookup(S_whole.ENV, [121]) = (n_y)', '$lookup(S_whole.ENV, [97]) = (n_y)',
-                    'S_whole.STORE[n_y] = DEFINED (PSTRING [113])',
+                    'S_whole.STORE[n_y] = DEFINED (PSTRING $ptascii("q"))',
                     '$heap_valid($heap_graph(S_whole))', '$call_descriptors_valid(S_whole)']
         complete += ['~$throwable_live(S_whole, n_error)']
         assertions = common + checks + error + rejected + complete
