@@ -1644,6 +1644,13 @@ CLI 60/outer 90/100000-step caps, with exact native bytes and zero agreement.
 Prior eight sources and 123/238 plus 23 premise cuts are not renewed.
 Actual-parent compilation passes at 78a713178 over 78a7c210 with 361 modules,
 preserving the one-CV property seam; this checks compiler compatibility only.
+A verbatim module 46 access-lookup clause reorder at 566aac7e over cf9411d67
+passes compilation and 11 path/mode/first-match controls with 361 modules.
+Same-parent prefixes of 400 steps preserve the complete 116,334-byte BUDGET tuple.
+The 1,746,870 ppaccess_at calls remain unchanged; exclusive instrumented time
+falls from 3.1486 s to 2.8034 s, and total time from 20.8399 s to 20.5914 s.
+This modest matched observation is not a CLI estimate. Required original 7 keeps
+its prior timeout and zero agreement; no source or accepted state cut is renewed.
 ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.

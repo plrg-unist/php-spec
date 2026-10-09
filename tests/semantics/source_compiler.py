@@ -163,6 +163,18 @@ def main():
   -- if $ppput(PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1), (([(PCFIELD 0)]), PINT 2)]), ([(PCFIELD 0)]), PINT 1) = PPCCONSTANTS ([(([(PCFIELD 0)]), PINT 1), (([(PCFIELD 0)]), PINT 2)])
   -- if $ppput(PPCINVALID "", eps, PNULL) = PPCINVALID ""
 '''
+            fixtures[-1]+='''  -- if $ppaccess_at(eps, eps) = eps
+  -- if $ppaccess_at(eps, ([(PCFIELD 0)])) = eps
+  -- if $ppaccess_at(([(eps, PPR)]), eps) = (PPR)
+  -- if $ppaccess_at(([(([(PCFIELD 0)]), PPW), (([(PCINDEX 0)]), PPR)]), ([(PCFIELD 0)])) = (PPW)
+  -- if $ppaccess_at(([(([(PCFIELD 0)]), PPW), (([(PCINDEX 0)]), PPF)]), ([(PCINDEX 0)])) = (PPF)
+  -- if $ppaccess_at(([(([(PCFIELD 0)]), PPW), (([(PCINDEX 0)]), PPF)]), ([(PCFIELD 1)])) = eps
+  -- if $ppaccess_at(([(([(PCFIELD 0)]), PPR), (([(PCFIELD 0)]), PPW)]), ([(PCFIELD 0)])) = (PPR)
+  -- if $ppaccess_at(([(([(PCINDEX 0)]), PPUNSET), (([(PCFIELD 0)]), PPRW), (([(PCFIELD 0)]), PPF)]), ([(PCFIELD 0)])) = (PPRW)
+  -- if $ppaccess_at(([(([(PCINDEX 0)]), PPUNSET), (([(PCFIELD 0)]), PPIS)]), ([(PCINDEX 0)])) = (PPUNSET)
+  -- if $ppaccess_at(([(eps, PPW), (([(PCFIELD 0)]), PPIS)]), ([(PCFIELD 0)])) = (PPIS)
+  -- if $ppaccess_at(([(([(PCFIELD 0)]), PPW), (([(PCFIELD 0), (PCFIELD 1)]), PPRW)]), ([(PCFIELD 0), (PCFIELD 1)])) = (PPRW)
+'''
             for source, probes in ACCESS_CASES:
                 i=len(fixtures);parsed=f.request({'op':'parse','source':base64.b64encode(source).decode()});assert parsed['accepted'],parsed
                 checked=a.request({'op':'check','ast':parsed['ast'],'fixture':True})

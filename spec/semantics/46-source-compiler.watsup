@@ -461,10 +461,10 @@ def $ppconstants(P) = PPCINVALID "incomplete source compilation"
 ;; Partial facts below a constant parent may have no ordinary access descriptor.
 var access : (pcpath, ppmode)*
 dec $ppaccess_at((pcpath, ppmode)*, pcpath) : ppmode?
-def $ppaccess_at(eps, pcpath) = eps
-def $ppaccess_at((pcpath, ppmode) :: access, pcpath) = (ppmode)
 def $ppaccess_at((pcpath_other, ppmode) :: access, pcpath) = $ppaccess_at(access, pcpath)
   -- if pcpath_other =/= pcpath
+def $ppaccess_at((pcpath, ppmode) :: access, pcpath) = (ppmode)
+def $ppaccess_at(eps, pcpath) = eps
 dec $ppaccess(ppstate, pcpath) : ppmode?
 def $ppaccess(P, pcpath) = $ppaccess_at(P.ACCESS, pcpath)
   -- if P.COMPLETION = PPCNORMAL

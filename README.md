@@ -302,6 +302,9 @@ a matched prefix of 400 steps while preserving the returned tuple exactly.
 A tested 361-module cut passes compilation and 14 ownership controls for an
 explicit empty statement-root case. Its same-parent prefix tuple remains equal;
 instrumented task dispatch costs fall, while original 7 still hits CLI 60 timeout.
+A verbatim access-lookup clause reorder passes 11 direct controls and preserves
+the complete same-parent prefix tuple. Its modest instrumented saving does not
+close the required original 7 timeout; source and prior state cuts are not renewed.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
