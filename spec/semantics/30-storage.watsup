@@ -234,6 +234,8 @@ syntax pdeclnoticebatch = { KIND pdeclnoticekind, SITE porigin, LINE int, CLASSE
 syntax pdeprecatedconstant = { SITE porigin, LINE int, PREFIX nat }
 syntax pselectedcall = { NONCE nat, SITE porigin, KIND pintrinsic, ORIGINAL nat*, LOOKUP nat*, DEPTH nat, LINE int }
 syntax pgettermethod = GET_MESSAGE | GET_CODE | GET_FILE | GET_LINE | GET_PREVIOUS | GET_TRACE | GET_TRACE_STRING | GET_TO_STRING | GET_SEVERITY | GET_SENSITIVE_VALUE
+;; A captured factory supplies nonowning creation and invocation authority.
+syntax pgettersource = porigin | GETTER_FACTORY nat porigin
 syntax pgettercall = {SITE porigin, RECEIVER nat, BASE text, METHOD pgettermethod, CAPTURE nat?, INDEX nat, SENT poperand*, LINE int}
 syntax pbindkind = INSTANCE_BIND | STATIC_BIND
 syntax pbindcall = {SITE porigin, SOURCE nat?, KIND pbindkind, INDEX nat, SENT poperand*, LINE int}
@@ -440,7 +442,7 @@ syntax pgenerator = { FUNCTION porigin, FRAME pframe?, PHASE pgeneratorphase, FI
 syntax pgeneratorfrom = { SITE porigin, INPUT pvalue?, POSITION nat, CURRENT poperand?, ACQUISITION pyieldfromreceipt? }
 syntax pgeneratorloop = { ITERATOR nat, STATEMENT statement }
 syntax pgeneratorop = { OBJECT nat, NAME text, SITE porigin, LINE int, LOOP pgeneratorloop?, ADVANCE bool, ARGUMENTS pvalue*, STARTPACK bool, BORROWED bool }
-syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text porigin | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
+syntax pobject = SENSITIVEUNSET porigin | SENSITIVEVALUE pvalue | WEAKREFERENCE nat? | FIBERGRACEFUL nat nat | FIBER pfiber | FIBERAPICLOSURE pfibercapture | GENERATOR pgenerator | INTERNALCALLCLOSURE pinternalclosurescope pobject | CONSTANTCLOSURE porigin pobject | PARAMETERSOURCECLOSURE nat pobject | THROWABLE pthrowable | INTRINSICCLOSURE pintrinsic | FROMCALLABLEFACTORY porigin | REALCLOSURE porigin pitem* pstaticcell* | NAMEDCLOSURE porigin | METHODCLOSURE porigin porigin porigin pmethodcapture? | ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture? | STRINGMETHODCLOSURE pcalltarget pstringselection | INVOKECLOSURE nat porigin | GETTERCLOSURE nat pgettermethod text pgettersource | CTORCLOSURE nat text porigin | FROMCALLABLECLOSURE pfrommethod | BOUNDFAKECLOSURE pboundfake | INTERNALSCOPECLOSURE pinternalclosurescope pobject | INSTANCE porigin | STDINSTANCE
 syntax pdeclautoload = (nat, pautoloadcall, pautoloadentry)
 syntax pdeclcause = { UNIT nat, CALLS (porigin, porigin?, porigin?, porigin?)*, AUTOLOAD pdeclautoload* }
 syntax pcompilestop = PCSREJECT | PCSMAINREJECT program | PCSCOMPLETE | PCSCOMPILER | PCSLINK nat | PCSUNSUPPORTED nat

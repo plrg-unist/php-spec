@@ -743,6 +743,7 @@ def $gc_worker_residual_profile(S, pgcplan) = true -- if ~$gc_residual_overlap(S
 def $gc_worker_residual_profile(S, pgcplan) = true
   -- if $gc_residual_overlap(S)
   -- if $gc_worker_mixed_overlap_plan(pgcplan)
+  -- if $gc_overlap_refstate(S, pgcplan)
   -- if $fiber_transfer_domain(S)
   -- if S.ACTIVEFIBER = (n_caller)
   -- if $fiber_at(S, n_caller) = (pfiber_caller)

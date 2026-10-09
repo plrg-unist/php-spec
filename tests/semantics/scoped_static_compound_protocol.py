@@ -1044,9 +1044,15 @@ CASES += [('stringable-name-from-callable-instance-selection', ['stringable-name
 CASES += [('stringable-name-captured-factory-selection', ['stringable-name-captured-factory-instance-byref'])]
 CASES += [('stringable-name-explicit-factory-invoke', ['stringable-name-explicit-factory-invoke-byref'])]
 CASES += [('stringable-name-factory-invoke-alias', ['stringable-name-factory-invoke-alias-byref'])]
+CASES += [('from-callable-factory-getter-retirement', ['from-callable-factory-getter-live'])]
 
 
 def render(name, sources):
+    if name == 'from-callable-factory-getter-retirement':
+        from from_callable_factory_protocol import render_factory_getter
+        row = sources['from-callable-factory-getter-live']
+        text, checks, _, _ = render_factory_getter(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
     if name == 'stringable-name-factory-invoke-alias':
         from from_callable_factory_protocol import render_factory_alias
         row = sources['stringable-name-factory-invoke-alias-byref']

@@ -14,25 +14,25 @@ def $invoke_capture_source(S, porigin_site) = true
 def $invoke_capture_source(S, porigin_site) = false -- otherwise
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $ptlc(preqbytes) = $ptascii("closure")
   -- if $object_body(S.OBJECTS[n]) = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
 
 ;; A finite Throwable getter retains its receiver and selected C owner.
 def $node_children(S, HOBJECT n) = [HOBJECT n_receiver]
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $getclass_live_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
-def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n_receiver pgettermethod text_base porigin_site]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
-  -- if S.OBJECTS[n_source] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
+def $clone_object(S, n_source) = S[.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n_receiver pgettermethod text_base pgettersource]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)]
+  -- if S.OBJECTS[n_source] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
   -- if n = |S.OBJECTS|
-def $clone_same_kind(GETTERCLOSURE n_receiver pgettermethod text_base porigin_site, GETTERCLOSURE n_receiver pgettermethod text_base porigin_site) = true
+def $clone_same_kind(GETTERCLOSURE n_receiver pgettermethod text_base pgettersource, GETTERCLOSURE n_receiver pgettermethod text_base pgettersource) = true
 dec $getter_capture_live(pstate, nat) : bool
 def $getter_capture_live(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -64,31 +64,31 @@ def $getter_capture_live(S, n) = true
 def $getter_capture_live(S, n) = false -- otherwise
 def $closure_live_object_valid(S, n) = $getter_capture_live(S, n)
   -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
   -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
   -- if $getter_capture_live(S, n)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
 def $closure_callable(S, n) = $getter_capture_live(S, n)
   -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
 def $getter_selected(S, pgettercall) = true
   -- if pgettercall.CAPTURE = (n)
   -- if $getter_capture_live(S, n)
-  -- if S.OBJECTS[n] = GETTERCLOSURE pgettercall.RECEIVER pgettercall.METHOD pgettercall.BASE porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE pgettercall.RECEIVER pgettercall.METHOD pgettercall.BASE pgettersource
   -- if $dynamic_site(S, (pgettercall.SITE))
 def $getter_selected(S, pgettercall) = true
   -- if pgettercall.CAPTURE = (n)
   -- if $getter_capture_live(S, n)
-  -- if S.OBJECTS[n] = GETTERCLOSURE pgettercall.RECEIVER pgettercall.METHOD pgettercall.BASE porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE pgettercall.RECEIVER pgettercall.METHOD pgettercall.BASE pgettersource
   -- if $origin_node(S.SOURCES, pgettercall.SITE) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
   -- if ~$ppfirstclass(phpType7*)
   -- if $method_source_name(phpType20, $ptascii("__invoke"))
 def $dynamic_value(S, porigin, z_init, z_call) = S[.TODO = (GETTER_ARGS {SITE porigin, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (n), INDEX 0, SENT eps, LINE z_call}) :: (GETTER_CAPTURE_RESULT n porigin) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.COMPLETION = NORMAL
   -- if S.RESULT = KNOWN (POBJECT n)
-  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
   -- if $closure_callable(S, n)
 def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [GETTER_ARGS {SITE porigin_call, RECEIVER n_receiver, BASE text_base, METHOD pgettermethod, CAPTURE (n), INDEX 0, SENT eps, LINE z}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -96,7 +96,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = [GETTER_
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
-  -- if S_read.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S_read.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if ~$ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)
@@ -104,7 +104,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $invoke_capture(S_read,
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN (POBJECT n)
-  -- if S_read.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base porigin_site
+  -- if S_read.OBJECTS[n] = GETTERCLOSURE n_receiver pgettermethod text_base pgettersource
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if $ppfirstclass(phpType7*)
   -- if $closure_callable(S_read, n)

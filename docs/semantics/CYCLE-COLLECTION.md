@@ -577,3 +577,23 @@ That failure remains zero credit. Whole source37 CLI60 remains OPEN with zero
 agreement; only its default whole-CLI selection is excluded. Main/mixed array
 layouts, references/proxy tables, black/external components, non-idle workers,
 later passes and wider overlap remain required; prior evidence is unchanged.
+
+The fresh component301 also admits unbuffered reference cells in its own DTORS
+reach. Frozen HCELL children must be empty or one object/array; no physical cell
+slot is allowed. A transparent visit follows that child without debit, while a
+buffered BLACK child is removed and charged once. The direct reference-only
+and duplicate-walk checks distinguish this rule even when D's earlier root walk
+would otherwise hide it. All residual reach remains object-only.
+
+Allocated component cells must retain real REFCELLS markers during admission and
+worker validation; retired snapshots are exempt. Independent canonical cell-shape
+validation prevents a forged graph from downgrading the overlap profile after CALLED.
+At `b5fc0476e`/371, corrected-image159/guard130/terminal118 execute 407 premises
+for E→array→reference→D: exact nested image/FREE, marker/shape and guard counterfeits,
+signed -1+2=1, E/array/reference retirement, D self-owner1/weak-live, native events
+through END, caller/request cleanup and replay. Native and compiler/init pass;
+baseline101 is localization only. The original159 literal-record syntax stop retains
+zero credit; its correction changes only parentheses. Whole source38 CLI60 remains
+OPEN/zero agreement, with only its default source selection excluded. Broader
+reference layouts, main/mixed overlap, proxies, black/external components,
+non-idle workers and later passes remain required; prior cuts are unchanged.

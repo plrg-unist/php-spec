@@ -15,6 +15,8 @@ dec $ref_recheck_owner(ptask*, porigin, poperand, int) : porigin?
 dec $finally_ref_source_valid(pstate, porigin, porigin, int) : bool
 dec $finally_outer_origin_valid(pstate, porigin, porigin?) : bool
 dec $ref_return_cursor_site(pstate, prefreturncursor) : bool
+dec $ref_return_cursor_literal(pstate, prefreturncursor) : pvalue?
+dec $ref_return_cursor_old_operand(pstate, prefreturncursor, poperand) : bool
 dec $ref_return_cursor_inside(porigin, porigin) : bool
 dec $ref_return_cursor_valid(pstate, prefreturncursor, porigin, int) : bool
 dec $ref_return_cursor_capture(pstate, porigin, porigin, poperand, int, porigin, poperand, int, bool, ptask*) : pstate
@@ -123,7 +125,31 @@ def $ref_return_cursor_site(S, prefreturncursor) = true
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
   -- if pfunction.SIGNATURE.RETURNS =/= eps
   -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
+def $ref_return_cursor_site(S, prefreturncursor) = true
+  -- if $finally_ref_source_valid(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, prefreturncursor.LINE)
+  -- if $ref_return_cursor_literal(S, prefreturncursor) = (pvalue)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS =/= eps
+  -- if $typed_exact(pfunction.SIGNATURE.RETURNS, pvalue)
+  -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
 def $ref_return_cursor_site(S, prefreturncursor) = false -- otherwise
+;; A literal CONST survives DISCARD_EXCEPTION. Its immutable string or
+;; explicit null source can recover this value without expression effects.
+def $ref_return_cursor_literal(S, prefreturncursor) = (pvalue_literal)
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NScalarString phpType33 metadata_string) metadata)
+  -- if $evaluate(NScalarString phpType33 metadata_string) = VALUE pvalue
+  -- if pvalue_literal = $string_literal_value(pvalue)
+  -- if pvalue_literal = PSTRING_CARRIER INTERNED_STRING n_bytes*
+def $ref_return_cursor_literal(S, prefreturncursor) = (PNULL)
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprConstFetch (NName (BYTES text) metadata_name) metadata_const) metadata)
+  -- if $special_constant($base64(text)) = (PNULL)
+def $ref_return_cursor_literal(S, prefreturncursor) = eps -- otherwise
+def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
+  -- if $ref_return_cursor_literal(S, prefreturncursor) = (pvalue)
+def $ref_return_cursor_old_operand(S, prefreturncursor, poperand) = false -- otherwise
 def $ref_return_cursor_inside(PORIGIN n pcpath_owner, PORIGIN n pcpath_source) = $effect_below(pcpath_owner ++ [PCFIELD 2, PCFIELD 0], pcpath_source)
 def $ref_return_cursor_inside(porigin_owner, porigin_source) = false -- otherwise
 dec $ref_return_cursor_clear(pstate, ptask*) : bool
@@ -136,7 +162,7 @@ dec $ref_return_cursor_single(pstate, porigin, porigin) : bool
 def $ref_return_cursor_single(S, PORIGIN n pcpath_owner, PORIGIN n pcpath_source) = $ref_return_cursor_paths($ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), pcpath_owner, pcpath_source)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
 def $ref_return_cursor_single(S, porigin_owner, porigin_source) = false -- otherwise
-def $ref_return_cursor_capture(S, porigin, porigin_old, REFERENCE n_old, z_old, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*) = S_left[.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ($ref_recheck_clean(ptask_left*) ++ [REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z])]
+def $ref_return_cursor_capture(S, porigin, porigin_old, poperand_old, z_old, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*) = S_left[.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ($ref_recheck_clean(ptask_left*) ++ [REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z])]
   -- if S_left = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*), porigin, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*)
   -- if S_left.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ptask_left*
   -- if $ref_recheck_owner(ptask_left*, porigin_source, REFERENCE n, z) = (porigin_first)
@@ -147,7 +173,7 @@ def $ref_return_cursor_capture(S, porigin, porigin_old, REFERENCE n_old, z_old, 
   -- if $ref_return_cursor_inside(porigin, porigin_source)
   -- if $ref_return_cursor_single(S, porigin, porigin_source)
   -- if $origin_node(S.SOURCES, porigin_source) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
-  -- if $finally_return_operand_valid(S, REFERENCE n_old)
+  -- if $ref_return_cursor_old_operand(S, prefreturncursor, poperand_old)
 def $ref_return_cursor_capture(S, porigin, porigin_old, poperand_old, z_old, porigin_source, poperand, z, b, ptask_tail*) = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, ptask_tail*), porigin, porigin_source, poperand, z, b, ptask_tail*) -- otherwise
 def $ref_return_cursor_task(REF_RETURN_CURSOR prefreturncursor porigin_source z) = true
 def $ref_return_cursor_task(ptask) = false -- otherwise
@@ -839,6 +865,12 @@ rule PhpStep/finally-resume-ref-return: S ~> $finally_leave_ref_return(S, porigi
   -- if S.TODO = (FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*
 rule PhpStep/finally-resume-consumed-ref: S ~> $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN PNULL, prefreturncursor.LINE, true, ptask_tail*)
   -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
+  -- if $ref_return_cursor_literal(S, prefreturncursor) = eps
+rule PhpStep/finally-resume-consumed-literal: S ~> S_left[.TODO = [RETURN_REF_UNWIND (KNOWN pvalue) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RETURN_NOTICE prefreturncursor.SOURCE prefreturncursor.LINE REF_NOTICE_VALUE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN pvalue) prefreturncursor.LINE]]
+  -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
+  -- if $ref_return_cursor_literal(S, prefreturncursor) = (pvalue)
+  -- if S_left = $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN pvalue, prefreturncursor.LINE, true, ptask_tail*)
+  -- if S_left.TODO = (RETURN_REF_UNWIND (KNOWN pvalue) prefreturncursor.LINE true prefreturncursor.SOURCE) :: (REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN pvalue) prefreturncursor.LINE) :: eps
 rule PhpStep/finally-resume-jump: S ~> $jump_loop($finally_leave(S, porigin, ptask_tail*), porigin_source, n_depth, n_original, b_continue)
   -- if S.TODO = (FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) :: ptask_tail*
 rule PhpStep/finally-resume-goto: S ~> S_left[.TODO = (GOTO_UNWIND porigin_source pcpath_source pcpath_target) :: S_left.TODO]

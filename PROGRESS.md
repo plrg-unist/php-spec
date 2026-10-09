@@ -352,6 +352,24 @@ application evaluations); its cut stays separate in the
 Wider consumed VALUE/CONST/NULL and multiple-active-finalizer histories,
 wider Stringable CV layouts and owner domains remain required.
 
+One consumed string literal compiled as CONST now resumes its original interned
+value after an inner delayed TypeError is caught in an already-active finalizer.
+Its non-owning source cursor restores one VALUE Notice at the original return
+line after the catch and finalizer tail. A fresh returned cell keeps the caller
+write separate from the globals. Two exact originals agree at `bdb0f010` and
+`1341b27f`; three reached current/saved fixtures pass 347 assertions at `9b98849d`.
+Actual 371 over `88d7e5d4c` passes strict at `682126ff1` (5.413s, zero application evaluations).
+The [consumed-literal review](coverage/semantics/reference-return-consumed-literal-review.json) keeps these cuts distinct.
+
+Consumed explicit `return null` now resumes its original NULL value after a
+locally caught inner rejection in one already-active finalizer. The checked
+special-constant source restores one VALUE Notice at the original line, without
+an operand root. A fresh returned cell keeps the caller write separate from the
+globals. Two originals agree at `ec95462f7`; three reached
+current/saved fixtures pass 367 assertions at `459978fe0`.
+Actual 371 over `05b0a4db4` passes strict at `c93d4cba4` (5.339s, zero application evaluations).
+[Consumed-NULL review](coverage/semantics/reference-return-consumed-null-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
@@ -1002,6 +1020,23 @@ non-idle caches and later-pass overlap remain required; prior cuts are unchanged
 Actual371 over `d80c97b3c` passes compiler/init at `9233da4ca`; reviewed local-CV
 return, property/caller and captured-constructor interfaces preserve state329 at
 f184 and the whole-source CLI60 OPEN/zero agreement limit.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
+Reference-mediated overlap301 transparently follows genuine unbuffered HCELL
+edges without reference debit. Fresh-component reach, live reference markers and
+canonical frozen cell shapes preserve count/image and current worker authority;
+residual reach remains object-only. Three source-reached cuts corrected159/130/118
+at `b5fc0476e` execute 407 premises: direct/duplicate reference walks, real E guard
+and marker/shape counterfeits, signed -1+2=1, E/array/reference retirement,
+D self-owner1/weak-live, request cleanup and replay. Native grounding and compiler/init
+pass; baseline101 localizes the old refusal. The original159 stops on literal-record
+syntax before semantic checks with zero credit; its separate correction is syntax only.
+Whole source38 CLI60 remains OPEN/zero agreement; only its default whole-CLI
+selection is newly excluded, with all state groups enabled. Broader reference,
+main/mixed, proxy/black/external and later-pass overlap remain required; prior cuts
+are unchanged. Actual371 over `8ea50de70` passes compiler/init at `711bedcfd`;
+reviewed shared compiler/property/return interfaces preserve state407 at b5fc and
+the whole-source CLI60 OPEN/zero agreement limit.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -2278,7 +2313,7 @@ Invocation USER scope controls callback access; creation scope grants no later a
 The initializer Unsupported and pre-child clean-status stop remain zero credit.
 The maintained renderer is byte-identical to the accepted fixture; relocation
 adds no runtime renewal. Invoke aliases, nullsafe/computed method entry,
-computed/keyword creation and captured-factory Fiber/getter callbacks stay open,
+computed/keyword creation and captured-factory Fiber/wider getter callbacks stay open,
 as does required original 7's CLI 60 timeout.
 Current-parent compilation passes at def000e9 over ac4a95b5 with 368 modules;
 pointwise storage/intrinsic/getter review adds no source or state renewal.
@@ -2306,6 +2341,18 @@ remain zero credit. The maintained renderer is byte-identical to the accepted
 fixture; wider computed/nullsafe captures and original 7's CLI60 timeout stay open.
 Actual-parent compilation passes at `0b4de6cd` over `5a127787` with 371 modules;
 pointwise CLASS/ownership review adds no private source, state or native renewal.
+Captured factories now select finite Throwable getters through an immutable,
+nonowning creation/invocation certificate. The returned getter owns only its
+receiver, reads the changed message after factory retirement, and keeps that
+receiver through clone/equality and final release. The direct control agrees at
+557e/371; captured live-message and new clone/equality sources agree at 771e/371.
+Its 191 premises (154 genuine/derived, 37 constructed) prove actual CONFIG/mint,
+parked return cleanup, restored result and last receiver retirement. The prior
+Unsupported and one-step fixture failure remain zero credit. The maintained
+source/renderer bytes are unchanged; relocation renews no runtime evidence.
+Wider getter/binding/library targets and original 7's CLI60 timeout remain open.
+Actual-parent compilation passes at `71edcca7` over `8cc17e6e` with 371 modules;
+pointwise EX/RETURNS review adds no private source, state or native renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
@@ -3720,7 +3767,8 @@ failures and interrupted evidence.
   and bounded physical-array return replay are integrated, as is deferred reference-return
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
   reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
-  Wider consumed VALUE/CONST/NULL and multiple-active histories, genuinely released
+  Immutable string-literal and explicit-NULL consumed continuations are also integrated.
+  Effectful VALUE, general CONST/other NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
@@ -3741,7 +3789,8 @@ held branches and evidence, and do not retry the rejected engine experiment.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
-lifetime 381. Wider owner domains, consumed VALUE/CONST/NULL or multiple-active histories,
+lifetime 381, immutable string-literal and explicit-NULL consumed continuations. Wider
+owner domains, effectful VALUE, general CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
 consumers remain required.
 

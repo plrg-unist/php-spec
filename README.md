@@ -368,6 +368,11 @@ identity and creation authority. The selected call retains it as original and al
 caller cells retire; the returned Closure owns its receiver independently. A REAL
 control and repaired factory source agree on separate 370-module cuts, with 610
 factory premises. Wider invoke/factory forms and original 7 remain open.
+Captured factories now select finite Throwable getters with a nonowning source
+certificate. The getter reads the receiver's live message after factory retirement;
+clones retain the same receiver, and equality ignores the creation certificate.
+The direct control and two repaired sources agree on separate 371-module cuts,
+with 191 state premises. Wider targets and required original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -615,8 +620,16 @@ now carries the actual consumed return cursor without keeping its old operand ro
 Uncaught errors cross it once; local catches resume the cleared old return, and normal
 replacement preserves the new alias. Three originals agree and eight reached
 current/saved fixtures pass 602 assertions; actual-parent compilation is separate.
-Wider consumed VALUE/CONST/NULL and multiple-active histories, Stringable186 and wider
-owner domains remain open.
+[Consumed string-literal replay](coverage/semantics/reference-return-consumed-literal-review.json) now recovers the original interned
+value after a locally caught inner rejection in one already-active finalizer.
+The source cursor owns no operand, restores one original-line VALUE Notice and
+returns a fresh cell distinct from the globals. Two originals agree and three
+reached current/saved fixtures pass 347 assertions; actual-parent compilation is
+separate. [Consumed explicit NULL](coverage/semantics/reference-return-consumed-null-review.json) now recovers its special
+constant value and original VALUE Notice; two originals agree and three reached
+current/saved fixtures pass 367 assertions. Effectful VALUE, general CONST,
+other NULL and multiple-active histories, wider
+Stringable consumers and owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -928,6 +941,13 @@ residual reach stays object-only. A grounded ordinary-Fiber E→array→D case h
 signed -1+2=1, E/array retirement and D self-owner/weak liveness. Its whole source
 CLI60 remains OPEN with zero agreement credit. Main/mixed array layouts,
 references/proxy tables and wider overlap remain required.
+
+That fresh component can also traverse genuine unbuffered reference cells without
+charging them. Live reference markers and canonical frozen cell edges preserve
+admission and guard authority. Three ordinary-Fiber E→array→reference→D cuts
+execute 407 premises, including signed count1, E/array/reference retirement and
+D self-owner/weak liveness. Whole source38 CLI60 remains OPEN with zero agreement
+credit; broader reference, main/mixed and proxy overlap remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
