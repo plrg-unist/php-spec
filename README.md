@@ -847,6 +847,11 @@ and paused-state checks. [Generated Throwable objects](docs/semantics/THROWABLES
 now support ordered no-finally try/catch and throw/rethrow, internal constructors,
 getters and structured traces. The distinct `ErrorException` constructor and
 `getSeverity` have a separate [bounded review](coverage/semantics/error-exception-review.json).
+Ordinary parameters accept one zero-argument builtin `#[SensitiveParameter]`.
+Captured traces store owning `SensitiveParameterValue` snapshots; `getValue()`
+and trace strings observe the same wrappers. The [review](coverage/semantics/sensitive-parameter-review.json)
+records current fixed CVs, original variadic operands and final wrapper release.
+Promoted/mixed attributes and wider wrapper protocols remain required.
 [Finally continuations](docs/semantics/SOURCE-FINALLY.md) preserve normal,
 thrown and transferring outcomes, including value/reference returns, loop jumps
 and goto across protected regions. [Source Throwable subclasses](docs/semantics/THROWABLE-SUBCLASSES.md)

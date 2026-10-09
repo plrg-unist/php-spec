@@ -1,0 +1,130 @@
+{
+  "scope": "Single zero-argument builtin SensitiveParameter on ordinary FLAGS0 parameters and trace-generated owning SensitiveParameterValue/getValue. Promoted/mixed/repeated/argument attributes, hooks, direct wrapper construction, first-class getters and wider wrapper/property protocols remain required.",
+  "target": "PHP8.5.10 CLI NTS64; profile30719; jobs1; SL/cache=false/det=true",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+  "parent": "430face8d23408e6b92d5fe9b53c2e358e469536",
+  "raw_root": ".tools/constructor-sensitive-parameter-private-22/.tools/constructor-sensitive-parameter-probes-22",
+  "engine": [
+    "vendor/php-src/Zend/zend_builtin_functions.c::debug_backtrace_get_args",
+    "vendor/php-src/Zend/zend_attributes.c::SensitiveParameterValue::__construct/getValue",
+    "vendor/php-src/Zend/zend_attributes.c::register_class_SensitiveParameter"
+  ],
+  "first_gap": {
+    "native": {
+      "revision": "430face8d23408e6b92d5fe9b53c2e358e469536",
+      "report": "native-first/report.json",
+      "report_sha256": "d39a03e4e10bea653127bfa9e513b1be65746cdd3fe26f76fd1914c0e5c0ee69",
+      "result": "Fixed live CV17 versus original variadic7/9 despite packed29; normal0/empty stderr"
+    },
+    "baseline": {
+      "revision": "430face8d23408e6b92d5fe9b53c2e358e469536",
+      "report": "accepted-current-baseline/report.json",
+      "report_sha256": "0ca339a0f855deafea29abbd3fc8c40c7d6e3d413903fb59532ecff3490e7d20",
+      "result": "Both checked/parsed, core17 Unsupported(parameter attributes or hooks), source0"
+    },
+    "location": "Core signature admission and trace/wrapper lifetime semantics; no frontend or adapter change"
+  },
+  "accepted_source": {
+    "agreements": 10,
+    "cuts": [
+      {
+        "revision": "e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+        "report": "changed-model-n6c53sly/report.json",
+        "report_sha256": "27855880e73ccf93998cb13177fec9b33f2f4706784dbc0feec8178b6518df80",
+        "result": "Exact original constructor/fixed CV and variadic snapshots, wrapper type/getValue/trace bytes",
+        "agreements": 2
+      },
+      {
+        "revision": "e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+        "report": "focused/changed-model-2r8dqvj_/report.json",
+        "report_sha256": "97fb4934496be49abefec07374f11f48a9a13883017098fcc8d2f12932446a6b",
+        "result": "Alias, fixed reference snapshot, named variadic originals, omitted defaults, wrapper-only lifetime, Closure/arrow, inherited trait and fatal capture",
+        "agreements": 8
+      }
+    ],
+    "bounds_seconds": {
+      "native": 45,
+      "model_internal": 60,
+      "model_outer": 75
+    },
+    "steps": 100000,
+    "unsupported_control": "Namespaced nonbuiltin remains Unsupported/source0; its native normal tuple is retained separately"
+  },
+  "accepted_strict": {
+    "revision": "e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+    "report": "sensitive-parameter-compiler-krg2g43h/report.json",
+    "report_sha256": "123f573198d2ff49cbfa67f93d438d21a367e10fc1096f8de0d613f17dd312d4",
+    "result": "Ordered362 strict SL parse/elaborate/guards/structure/init PASS5.093143s/cap300; application/source0"
+  },
+  "accepted_protocol": {
+    "revision": "e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+    "report": "sensitive-parameter-checked-jmnvnglu/report.json",
+    "report_sha256": "2fa0fd7e40e5e33379d84cc90a8648b5424589084c1623d869bdd0bb03726b91",
+    "result": "Full fixture AL4.205360s then one SL11210.598261s/cap120/true newline/empty stderr/reaped/stable",
+    "derived_source_checks": 34,
+    "reached_lifetime_checks": 78,
+    "real_php_steps": 3,
+    "source_agreements": 0,
+    "fixture_sha256": "f210e1ce67e5c79290683bc6892a873056b80ce59f1039d6247a63d7a3cf1dcc",
+    "review": "Authentic source/capture certificates precede real wrapper/Throwable allocation, physical trace identity/strong edge, getter snapshot/exact continuation and last-wrapper release through production owner transitions. D| and weak-null preserve actual lifetime effects."
+  },
+  "zero_credit_preserved": [
+    {
+      "revision": "430face8d23408e6b92d5fe9b53c2e358e469536",
+      "report": "accepted-current-baseline/report.json",
+      "report_sha256": "0ca339a0f855deafea29abbd3fc8c40c7d6e3d413903fb59532ecff3490e7d20",
+      "result": "Original2 Unsupported before implementation; source0",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+      "report": "focused/changed-model-2r8dqvj_/report.json",
+      "report_sha256": "97fb4934496be49abefec07374f11f48a9a13883017098fcc8d2f12932446a6b",
+      "result": "Selected namespace-nonbuiltin only: explicit Unsupported/source0; other8 retain acceptance",
+      "selected": "namespace-nonbuiltin",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+      "report": "sensitive-parameter-checked-qdd6lk7n/report.json",
+      "report_sha256": "c1ce82047130b8e408177836bba83687801a11d47c12f14b77069b1ff74170ad",
+      "result": "Complete AL passed, original105 evaluated false because raw allocation was checked before production handle registration",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+      "report": "sensitive-parameter-diagnostic-mfwwxyqa/report.json",
+      "report_sha256": "ebbc2cc437663a0dcccc58439a2349e296da18f7e1149250923f5c3e910e89b0",
+      "result": "Zero-credit seven-prefix diagnostic;34/44 true then64+ false",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+      "report": "sensitive-parameter-diagnostic-0dgp4v36/report.json",
+      "report_sha256": "0539e46a2c009da95c301bde20bc8320ba16020c026415a853c7697fc898ddfd",
+      "result": "Zero-credit narrow diagnostic;45\u201363 pass,64 admission false before owner transition",
+      "affected_source": 0,
+      "affected_state": 0
+    }
+  ],
+  "preparations": "Earlier renderer/binder preparations remain unevaluated and ignored. The correction retains all105 assertions and adds7 production transition/exact-continuation premises.",
+  "maintained_commands": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_parameter_cases.json",
+    "python3 tests/semantics/sensitive_parameter_protocol.py --revision \"$(git rev-parse HEAD)\""
+  ],
+  "original_commands": [
+    "python3 .tools/constructor-sensitive-parameter-probes-22/run-compiler.py 430face8d23408e6b92d5fe9b53c2e358e469536 e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+    "python3 .tools/constructor-sensitive-parameter-probes-22/run.py changed --revision e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+    "python3 .tools/constructor-sensitive-parameter-probes-22/focused/run.py changed --revision e27ceb30cdbceb7b8ebdee9f16711433fa2da541",
+    "python3 .tools/constructor-sensitive-parameter-probes-22/run-prepared.py .tools/constructor-sensitive-parameter-probes-22/sensitive-parameter-protocol-7gguy6py/PREPARED.json"
+  ],
+  "actual_composition": {
+    "status": "pending",
+    "source_state_renewal": false
+  }
+}

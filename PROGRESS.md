@@ -45,6 +45,17 @@ over `786137a55` passes strict compilation at `f5eb9399b` (4.954 s), preserving
 current runtime/owner/GC/replay paths without renewing the private checks.
 [Parameter-target review](coverage/semantics/parameter-override-review.json).
 
+Ordinary parameters accept one zero-argument builtin `#[SensitiveParameter]`.
+Fixed trace slots snapshot current CVs; positional/named variadic slots retain
+their original operands, with no invented omitted defaults. Real owning wrappers
+are allocated before callback/retirement and shared by getters and trace rendering.
+Ten originals agree at `e27ceb30c` (362 modules); the namespaced user attribute
+remains explicit Unsupported with zero agreement. Strict compilation and SL112
+(34 derived source checks, 78 reached lifetime checks) pass at the same cut.
+The original false105 fixture and both diagnostics retain zero state credit.
+Current-parent composition is pending; promoted/mixed/hooks and wider wrapper
+protocols remain required. [Sensitive review](coverage/semantics/sensitive-parameter-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
