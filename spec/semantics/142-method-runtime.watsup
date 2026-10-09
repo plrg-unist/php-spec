@@ -1528,6 +1528,7 @@ dec $promotion_type_scope(pclassdesc) : ptscope
 dec $trait_data_import_type(pclassdesc, ptbranch*) : ptbranch*
 dec $promotion_task_valid(pstate, porigin, nat) : bool
 dec $promotion_task_suffix(ptask*, porigin, nat) : ptask*?
+dec $promotion_queued_task_valid(pstate, porigin, nat) : bool
 dec $promotion_write(pstate, nat, ptbytes, nat, psraw) : pstate
 dec $promotion_write_reference(pstate, nat, ptbytes, nat, int) : pstate
 
@@ -1671,13 +1672,14 @@ def $promotion_task_suffix((PROMOTE_PARAMETER porigin n) :: ptask_tail*, porigin
 def $promotion_task_suffix((PROMOTE_PARAMETER porigin n_before) :: ptask_tail*, porigin, n) = $promotion_task_suffix(ptask_tail*, porigin, n)
   -- if $(n_before < n)
 def $promotion_task_suffix(ptask*, porigin, n) = eps -- otherwise
-def $call_task_valid(S, PROMOTE_PARAMETER porigin n) = true
+def $promotion_queued_task_valid(S, porigin, n) = true
   -- if S.TODO = (PROMOTE_PARAMETER porigin n_current) :: ptask_tail*
   -- if $(n_current <= n)
   -- if $promotion_task_valid(S, porigin, n_current)
   -- if $promotion_task_suffix(S.TODO, porigin, n) = (ptask_pending*)
   -- if $promotion_task_valid(S[.TODO = ptask_pending*], porigin, n)
-def $call_task_valid(S, PROMOTE_PARAMETER porigin n) = false -- otherwise
+def $promotion_queued_task_valid(S, porigin, n) = false -- otherwise
+def $call_task_valid(S, PROMOTE_PARAMETER porigin n) = $promotion_queued_task_valid(S, porigin, n)
 
 def $promotion_write(S, n_receiver, ptbytes, n_cell, psraw) = $property_store_key(S, n_receiver, ptbytes, pvalue, psraw.LINE)
   -- if ~psraw.BYREF
