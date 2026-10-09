@@ -26,8 +26,7 @@ without re-evaluating its body.
 The [replay review](../../coverage/semantics/reference-return-replay-review.json)
 binds ten exact replay originals, 14 current/saved source-reached fixtures with 954
 assertions and five affected return controls at private360. Actual361 compilation
-has a distinct compiler-only cut. Physical-array owners, replay from an already
-active finalizer,
+has a distinct compiler-only cut. Replay from an already active finalizer,
 protected temporary/NULL Notice timing and object conversion remain required.
 
 Source-authenticated while/do/for tails resume remaining body, update and
@@ -47,8 +46,23 @@ The [switch review](../../coverage/semantics/reference-return-switch-replay-revi
 binds seven preserved originals and 14 reached fixtures/1,339 assertions at
 private361 cuts, plus separate actual-parent strict compilation. The original
 selected-catch descriptor failure remains zero-credit for that affected fixture.
-Runtime VAR/TMP physical owners, active-finalizer replay and NULL/186 paths remain
-required.
+Module378 preserves the first cleanup of mutable/refcounted switch VAR arrays and
+dense value-foreach arrays. Actual source, ARRAY and cursor become non-owning rows;
+reconstruction never creates an iterator owner or repeats the counted release.
+Capture requires at least three genuine payload-owning edges before cleanup and two
+after, counting a shared cell once. This is conservative admission, not normative PHP.
+Later reconstruction/fetch checks the same live allocation and dense cursor; a no-read
+switch END consumes collected identity without dereferencing it. Current/saved rows
+preserve FIRST and update LAST only through authenticated transfer replacement.
+Ordinary catches inside an active finalizer retain pending rows.
+
+The [owner review](../../coverage/semantics/reference-return-retired-owner-review.json)
+binds four exact sources, nine deliberate COW differences, state23/1,873 and independent
+pending98; actual364 adds a genuine carrier71 bridge and strict compilation. The
+[duplicate-release policy](DISCREPANCIES.md) preserves coherent c/d=1 rather than native8.
+Reached capture proves the original identity, but public metadata cannot authenticate
+a fully consistent alternative private history. Wider payload domains, replay from an
+already active finalizer and protected temporary/NULL Notice/Stringable186 remain open.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.

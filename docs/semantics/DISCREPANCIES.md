@@ -483,3 +483,23 @@ checks conversion phase, alias/cycle behavior and line context. Seven separate
 [request-environment boundaries](../../coverage/semantics/ordinary-request-environment-boundaries.json)
 remain unfinished, including computed this writes and parser-concat GLOBALS access.
 No intentional divergence is selected.
+
+## Delayed reference replay: duplicate array end-owner release
+
+Pinned PHP8.5.10 delayed return rejection repeats FREE_SWITCH/FE_FREE on the same
+physical array; preserved originals expose c/d=8 after later COW writes, while initial
+rejection controls retain1. The coherent specification preserves the first authentic
+cleanup and its effects, then consumes borrowed replay metadata without another
+counted release. It retains c/d=1 without inventing heap roots or resurrecting storage.
+Four controls agree exactly; nine delayed originals are intentional differences with
+zero native-agreement credit. The [owner review](../../coverage/semantics/reference-return-retired-owner-review.json)
+keeps original bytes, native observations, model cuts and failed checks.
+
+Admission is limited to mutable/refcounted payloads with at least three genuine
+ordinary owning edges before cleanup and two after; shared cells count once, metadata
+zero. This conservative domain is not a PHP requirement. Reconstruction and reads
+recheck actual liveness/category/dense cursor; later COW may leave one owner. Collected
+switch END consumes identity without reading or releasing it. Shared immutable empties,
+RW/sparse/deleted/reference/object/destructor and sole-owner/dangling capture remain
+excluded. Source-reached capture proves actual old identity; consistently rewriting
+all historical metadata is outside that proof. No corrected-engine experiment was run.

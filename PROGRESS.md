@@ -110,6 +110,19 @@ The selected-catch admission failure keeps zero affected credit at its original 
 array owners, active-finalizer replay and protected NULL/186 paths remain open.
 [Switch replay review](coverage/semantics/reference-return-switch-replay-review.json).
 
+Protected reference returns now preserve the first cleanup of mutable, refcounted
+switch temporaries and dense value-foreach owners. Non-owning rows retain physical
+identity/cursor through current and saved frames, authenticated replacement and replay.
+Capture conservatively requires at least three genuine owning edges before cleanup
+and two after; aliases sharing a cell count once. Later one-owner reads remain live;
+collected switch END reads nothing, while collected foreach fetch stops explicitly.
+Thirteen originals pass at private362 cuts: four exact native tuples and nine deliberate
+c/d=8(native) to1(spec) differences, with zero agreement for those nine. State23/1,873
+and independent pending98 pass across retained cuts. Actual364 over `2c1283f04` passes
+strict at `31838d5ad` (5.033s) and one genuine carrier bridge/71 assertions. Original
+failures/timeouts remain zero-credit. Wider payloads, active-finalizer replay and
+protected NULL/186 remain required. [Owner review](coverage/semantics/reference-return-retired-owner-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
@@ -3264,8 +3277,9 @@ failures and interrupted evidence.
 
 `returns_verify` has resumed with the authorized temporary verifier. Preserve
 held branches and evidence, and do not retry the rejected engine experiment.
-Delayed return replay and runtime-owner recovery still require validation and
-independent review before integration or dependent work.
+Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
+bounded physical-array owner recovery. Wider owner domains, already active-finalizer
+returns, protected temporary/NULL Notice timing and Stringable186 remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 

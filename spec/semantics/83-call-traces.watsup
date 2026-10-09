@@ -199,11 +199,11 @@ def $error_unwind_trace(S) = S.TRACE -- if S.COMPLETION = USERFATAL n* z b
 def $error_unwind_trace(S) = $eval_exception_trace(S) -- otherwise
 dec $file_warning_drop_scope(pstate) : pstate
 def $file_warning_drop_scope(S) = S -- otherwise
-def $start_error_unwind(S) = $eval_compile_unwind($file_warning_drop_scope($error_release_iterators($silence_unwind(S)))[.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = $error_unwind_trace(S)][.ERRORORIGIN = S.ORIGIN][.TODO = [ERROR_UNWIND S.COMPLETION]][.BORROWEDREAD = eps][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
+def $start_error_unwind(S) = $eval_compile_unwind($file_warning_drop_scope($error_release_iterators($silence_unwind(S)))[.CLASSCONSTANTINIT = eps][.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TRACE = $error_unwind_trace(S)][.ERRORORIGIN = S.ORIGIN][.RETIREDOWNERS = eps][.TODO = [ERROR_UNWIND S.COMPLETION]][.BORROWEDREAD = eps][.ORIGIN = eps][.COMPLETION = NORMAL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
 dec $error_unwind(pstate, pcompletion) : pstate
-def $error_unwind(S, pcompletion) = $eval_compile_unwind($file_warning_drop_scope($error_release_iterators($silence_unwind($restore_frame(S))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.TODO = [ERROR_UNWIND pcompletion]][.BORROWEDREAD = eps][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
+def $error_unwind(S, pcompletion) = $eval_compile_unwind($file_warning_drop_scope($error_release_iterators($silence_unwind($restore_frame(S))))[.CONSTCONTEXT = eps][.OBJECTCAST = eps][.RETIREDOWNERS = eps][.TODO = [ERROR_UNWIND pcompletion]][.BORROWEDREAD = eps][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])
   -- if S.FRAMES =/= eps
-def $error_unwind(S, pcompletion) = $eval_compile_unwind(S[.TODO = eps][.ORIGIN = eps][.COMPLETION = pcompletion])
+def $error_unwind(S, pcompletion) = $eval_compile_unwind(S[.RETIREDOWNERS = eps][.TODO = eps][.ORIGIN = eps][.COMPLETION = pcompletion])
   -- if S.FRAMES = eps
 rule PhpStep/error-unwind: S ~> $error_unwind(S, pcompletion)
   -- if S.TODO = (ERROR_UNWIND pcompletion) :: ptask_tail*

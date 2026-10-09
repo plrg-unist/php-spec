@@ -1,3 +1,4 @@
+dec $retired_select_catch(pstate, porigin, nat) : pstate
 dec $finally_try_unique(pstate, porigin) : bool
 dec $finally_binding_marker(pstate, porigin) : bool
 dec $finally_present(pstate, porigin) : bool
@@ -219,7 +220,7 @@ def $throwable_find_catch(S, n_object, porigin, (NStmtCatch (SEQUENCE name*) php
 dec $throwable_handler(pstate, nat, porigin) : nat?
 def $throwable_handler(S, n, porigin) = $throwable_find_catch(S, n, porigin, phpType66*, 0)
   -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE phpType66*) phpType67 metadata)
-rule PhpStep/throw-search-catch: S ~> S[.TODO = (CATCH_BIND porigin n_index n) :: $finally_catch_tail(S, porigin, ptask_tail*)][.ORIGIN = (porigin)]
+rule PhpStep/throw-search-catch: S ~> $retired_select_catch(S, porigin, n_index)[.TODO = (CATCH_BIND porigin n_index n) :: $finally_catch_tail(S, porigin, ptask_tail*)][.ORIGIN = (porigin)]
   -- if S.TODO = (THROW_SEARCH n) :: (TRY_END porigin) :: ptask_tail*
   -- if $throwable_handler(S, n, porigin) = (n_index)
 rule PhpStep/throw-search-miss: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*]
@@ -248,7 +249,7 @@ rule PhpStep/throw-search-frame: S ~> $throw_frame_resume(S_restored, n)
   -- if S_restored = $restore_frame($constructor_failed(S))
 dec $exception_terminal_tail(pstate, ptask*) : bool
 dec $exception_dispatch_ready(pstate) : bool
-rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = pthrowable.FILEORIGIN]
+rule PhpStep/throw-search-uncaught: S ~> S[.RETIREDOWNERS = eps][.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = pthrowable.FILEORIGIN]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
@@ -257,7 +258,7 @@ rule PhpStep/throw-search-uncaught: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n
   -- if S.FRAMES = eps
   -- if S.OBJECTS[n] = THROWABLE pthrowable
   -- if $throwable_terminal_renderable(S, n, eps)
-rule PhpStep/throw-search-uncaught-source: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = eps]
+rule PhpStep/throw-search-uncaught-source: S ~> S[.RETIREDOWNERS = eps][.TODO = eps][.COMPLETION = UNCAUGHT n][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $exception_terminal_tail(S, ptask_tail*)
   -- if ~$exception_dispatch_ready(S)
