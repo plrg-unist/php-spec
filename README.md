@@ -1280,6 +1280,9 @@ agreements and eight reached groups pass 1293 setup-inclusive premises, covering
 value/reference differences, discarded reads and H/B/C exception cleanup.
 [The getter review](coverage/semantics/magic-property-get-review.json) retains
 distinct native, source, strict and state cuts plus the original failures.
+The actual369 composition over `b9f0b1ae9` passes strict at `bae438b0f`
+(5.181s), preserving current class, Generator, return and callable interfaces.
+Source/state evidence retains its original cuts.
 Coercions, constrained returned cells, wider getter signatures, quiet/write
 access, guarded recursion, computed names, hooks and wider reference-call
 receivers remain required.

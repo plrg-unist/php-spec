@@ -1867,6 +1867,10 @@ Eight whole state groups pass 1293 setup-inclusive premises across `233992212`,
 `176e6efa7` and `d3ee92ffd`. Original native/state failures and diagnostic credit remain zero; earlier
 property milestones retain their separate cuts.
 [Getter ledger](coverage/semantics/magic-property-get-review.json).
+The reviewed actual369 join over `b9f0b1ae9` passes strict at `bae438b0f`
+(5.181s, state credit0). Current class/Generator targets, return cursors and
+callable factory fields are preserved; these untyped nongenerator getters leave
+those paths inactive. Private source8/state1293 retain their separate cuts.
 Coercions, constrained returned cells, wider signatures, quiet/write/recursive
 getters, computed names, hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
