@@ -35,6 +35,9 @@ dec $computed_array_name_plan(pstate) : pnameread?
 dec $computed_array_name_begin(pstate, pnameread) : pstate
 dec $property_null_read_plan(pstate) : pnameread?
 dec $property_null_read_begin(pstate, pnameread) : pstate
+dec $property_undefined_read_plan(pstate) : ppropertywarning?
+def $property_undefined_read_plan(S) = eps -- otherwise
+dec $property_undefined_read_begin(pstate, ppropertywarning) : pstate
 dec $key_read_pending(pstate) : bool
 dec $key_read_begin(pstate) : pstate
 dec $identity_read_begin(pstate, pidentityread) : pstate
@@ -53,7 +56,8 @@ dec $error_context_anchor(pstate, pcallcontext, pcallcontext?, pframe*) : bool
 dec $error_context_receiving_function(pstate, pcallcontext) : pfunction?
 dec $error_handler_registered(pstate, perrorhandler) : bool
 dec $error_trace_capture(pstate, int, ptask) : pstate
-dec $error_fallback_finish(pstate, pvalue) : pstate
+dec $error_fallback_finish(pstate, perrorcall) : pstate
+dec $error_handler_finish(pstate, perrorcall) : pstate
 dec $error_default_event(pstate, pevent) : pevent
 dec $error_trace_arguments(pstate, (pkey, pvalue)*) : preqbytes
 dec $error_trace_location(ptraceframe) : preqbytes
@@ -203,14 +207,14 @@ rule PhpStep/error-handler-invoke: S ~> S_next
   -- if $error_call_valid(S, perrorcall)
   -- if $error_handler_invoke_known(S, perrorcall) = (S_next)
 
-;; A fatal default bails out before Zend reaches automatic raw restoration.
-def $error_fallback_finish(S, pvalue) = $error_handler_restore(S, pvalue) -- if S.COMPLETION = NORMAL
-def $error_fallback_finish(S, pvalue) = S -- if S.COMPLETION =/= NORMAL
-rule PhpStep/error-handler-fallback: S ~> $error_fallback_finish($error_default(S[.TODO = perrorcall.RESUME :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], perrorcall.EVENT, perrorcall.LEVEL), perrorcall.CALLBACK)
+;; Default reporting precedes the same retval/selection cleanup as a handled
+;; warning. A fatal default bails out before automatic raw restoration.
+def $error_fallback_finish(S, perrorcall) = $error_handler_finish(S, perrorcall) -- if S.COMPLETION = NORMAL
+def $error_fallback_finish(S, perrorcall) = S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)] -- if S.COMPLETION =/= NORMAL
+rule PhpStep/error-handler-fallback: S ~> $error_fallback_finish($error_default(S, perrorcall.EVENT, perrorcall.LEVEL), perrorcall)
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
   -- if S.RESULT = KNOWN (PBOOL false)
-dec $error_handler_finish(pstate, perrorcall) : pstate
 rule PhpStep/error-handler-handled: S ~> $error_handler_finish(S, perrorcall)
   -- if S.TODO = (ERROR_HANDLER_RESULT perrorcall) :: ptask_tail*
   -- if $call_task_valid(S, ERROR_HANDLER_RESULT perrorcall)
@@ -257,7 +261,7 @@ def $error_read_plan(S) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
-def $error_read_pending(S) = ($key_read_pending(S) \/ (($error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps \/ $computed_name_plan(S) =/= eps \/ $computed_cv_name_plan(S) =/= eps \/ $computed_array_name_plan(S) =/= eps \/ $property_null_read_plan(S) =/= eps)))
+def $error_read_pending(S) = ($key_read_pending(S) \/ (($error_handler_eligible(S, 2) \/ $eval_compile_recorded_error(S, 2)) /\ ($error_read_plan(S) =/= eps \/ $identity_read_plan(S) =/= eps \/ $global_read_plan(S) =/= eps \/ $computed_name_plan(S) =/= eps \/ $computed_cv_name_plan(S) =/= eps \/ $computed_array_name_plan(S) =/= eps \/ $property_null_read_plan(S) =/= eps \/ $property_undefined_read_plan(S) =/= eps)))
 def $error_read_begin(S) = $key_read_begin(S)
   -- if $key_read_pending(S)
 def $error_read_begin(S) = $global_read_begin(S, pglobalread)
@@ -275,6 +279,9 @@ def $error_read_begin(S) = $computed_array_name_begin(S, pnameread)
 def $error_read_begin(S) = $property_null_read_begin(S, pnameread)
   -- if ~$key_read_pending(S)
   -- if $property_null_read_plan(S) = (pnameread)
+def $error_read_begin(S) = $property_undefined_read_begin(S, ppropertywarning)
+  -- if ~$key_read_pending(S)
+  -- if $property_undefined_read_plan(S) = (ppropertywarning)
 def $error_read_begin(S) = $identity_read_begin(S, pidentityread)
   -- if ~$key_read_pending(S)
   -- if $identity_read_plan(S) = (pidentityread)

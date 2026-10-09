@@ -331,9 +331,13 @@ A renderer rethrow at request C root reports/releases its builtin inner Throwabl
 before abandoning the original report and real Generator/cache owners. A returning
 renderer-installed handler releases its inner exception before registry restoration;
 warning callbacks can refresh the original cached string before fatal reporting.
-Three originals and 611 reached premises retain separate cuts. Throwing callbacks,
-deeper rendering, abrupt exception release, parked/escaped storage and generic
-terminal cleanup remain required.
+Three originals and 611 reached premises retain separate cuts. A throwing
+renderer-installed handler receives its own fatal report while real outer
+handler/report and Generator/cache owners survive. Its reported exception releases
+before bailout, even when its destructor changes reporting to zero. Two new
+originals and 343 strict premises retain separate cuts. Throwing warning callbacks,
+deeper rendering, abrupt child cleanup, parked/escaped storage and generic terminal
+cleanup remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
 identity and genuine parked owners throughout ordinary Generator release,
@@ -700,8 +704,16 @@ suspend again during internal takeover: replacement uses the advanced reset
 cursor while earlier marked targets survive and real FINALLY errors stay
 separate. Both original full continuations pass 212 independent physical
 premises; both whole CLI 60s timeouts retain zero agreement. Final 358 over
-`6ed4873bd` compiles at `0bc957892`. Overlap, different-active-pass reentry and
-whole CLI completion remain required.
+`6ed4873bd` compiles at `0bc957892`. Different-main public reentry now resumes
+the actual parked callback while the fresh main plan retains current tags, even
+when its target slot has been reused. The completed local scan cannot rewind
+onto the fresh destructor. Independent 96/109 physical premises at separate
+`93cb1cfd5`/`950c158d5` cuts complete both unchanged originals and preserve
+old/new error identity. Actual359 over `0c549de11` passes strict compilation/init;
+review preserves GEN176/363 and PROPS207/377 with their shared ownership paths.
+The initial compiler stop, first throw-state 120s timeout and both whole CLI
+60s timeouts retain zero affected/agreement credit. Overlap, active residual and
+wider Fiber-pass reentry, whole CLI completion and broader GC remain required.
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -1000,7 +1012,8 @@ Future explicitly unset typed slots now raise the same Error when no getter is
 present. Three exact originals and 142/147 reached premises distinguish actual
 dynamic-first cleanup order from physical slot indexes, retain visibility and
 alias detachment, and verify pending cleanup and atomic selected binding.
-Consumed slots, wider quiet/getter accesses and untyped unset reads remain required.
+The later undefined-property cut below extends untyped unset reads; consumed
+slots and wider getter accesses remain required.
 The actual356 composition passes strict initialization.
 Future initialized declared values and typed INITIAL/UNSET slots now support
 quiet `isset`, `empty` and `??` without magic consumers. Terminal probes borrow
@@ -1009,6 +1022,17 @@ null and typed INITIAL/UNSET results; 157/138 reached premises prove unchanged
 heap owners, alias rebinding/type detach and kept-child survival.
 The actual358 composition passes strict initialization.
 Consumed/missing storage and wider magic accesses remain required.
+Literal undefined property reads now run real warning handlers with fixed null
+after their writes or receiver retirement. CV/`$this` receivers borrow their
+owner; temporaries hold the receiver until completion. Future untyped UNSET slots
+retain their physical storage carrier through quiet reads and handler throws.
+Six original comparisons and two distinct false-return comparisons retain
+separate cuts; 132/154/166 reached premises and strict initialization pass.
+The reviewed current359 composition over `f5c4eed1f` passes strict compilation
+at `e77c3eff0`, preserving current source and Generator interfaces.
+[The review](coverage/semantics/undefined-property-review.json) preserves the
+original fallback/fixture failures and the weaker bound-Closure witness.
+Computed names, getters/hooks and read-call reference normalization remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;

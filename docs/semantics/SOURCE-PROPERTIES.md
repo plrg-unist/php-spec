@@ -25,6 +25,22 @@ property values and their nested arrays or objects across copies, calls and
 abrupt cleanup. Paused tasks authenticate the property source occurrence and
 line without reconstructing captured receiver values.
 
+Literal undefined reads from ordinary instances and `stdClass` now resume
+warning handlers with fixed null, preserving handler writes and throws. Ordinary
+CV and `$this` receivers remain borrowed and may retire inside the handler;
+temporary receivers retain their actual object owner until the read completes.
+Unvisited, explicitly unset untyped declarations during ordinary instance
+cleanup support quiet null and the same warning continuation through the
+authenticated physical storage carrier. Consumed slots remain refused.
+
+When a handler returns false, default reporting precedes return/selected-target
+cleanup and raw-handler restoration. The
+[undefined-property review](../../coverage/semantics/undefined-property-review.json)
+keeps native/source and reached-state cuts separate. Computed names, magic
+getters/hooks and wider receiver forms remain required. Raw reference-return
+receivers retain an explicit boundary pending read-call normalization through
+accepted module 99; this does not depend on held return-cleanup work.
+
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
 binds source, compiler and paused-state checks. Public property references

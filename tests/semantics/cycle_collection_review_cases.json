@@ -574,5 +574,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-cached-public-throw-during-different-main-pass-prior-identity-review-preparation-31",
+    "source": "<?php\n$w=null;$o=new Exception;$n=new Exception;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w,$o;\n  if($this->k===0){$w->resume();}\n  else{try{throw $o;}finally{Fiber::suspend();}}\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);gc_collect_cycles();\nclass D {\n public $s;public $k;\n function __destruct(){\n  global $w,$o,$n;\n  if($this->k===0){\n   try{$w->throw($n);}catch(Throwable $c){\n    echo $c===$n?'new|':'bad-new|';\n    echo $c->getPrevious()===$o?'old|':'bad-old|';\n   }\n  }else{echo Fiber::getCurrent()===$w?'E:worker|':'E:main|';}\n }\n}\n$d=new D;$d->s=$d;$d->k=0;\n$e=new D;$e->s=$e;$e->k=1;\nunset($d,$e);gc_collect_cycles();\necho $w->isSuspended()?'idle|':'other|';\necho 'END';\n",
+    "source_sha256": "d64e74aab6000116a632d33cf4da7ed619a8f9ab825910f4d07f23c162af4d10",
+    "stdout": "new|old|E:main|idle|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
