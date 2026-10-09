@@ -1929,7 +1929,7 @@ compound-string and static FROMCALLABLE paths are inactive. Source/state credit
 remains at the separate private cuts.
 The first implicit getter family now supports literal ordinary CV-base reads
 through public nonstatic `__get` with one untyped required parameter and no
-declared return type. Missing/public UNSET invokes it; typed INITIAL still
+declared return type. Missing/public UNSET invokes it; accessible typed INITIAL
 raises Error without a getter. Module380 holds the receiver once while the
 getter context borrows it, verifies exact property types before receiver release,
 then copies the current reference payload. Value returns stay fixed, discarded
@@ -1944,9 +1944,19 @@ The reviewed actual369 join over `b9f0b1ae9` passes strict at `bae438b0f`
 (5.181s, state credit0). Current class/Generator targets, return cursors and
 callable factory fields are preserved; these untyped nongenerator getters leave
 those paths inactive. Private source8/state1293 retain their separate cuts.
+Denied private/protected literal-CV reads and ancestor-private fallback now
+invoke the same public getter without hidden property type verification.
+Allowed lexical VALUE uses its physical key; INITIAL raises Error without a
+getter. Source-certified caller scope survives privileged getter/destructor
+contexts without repeating CV/absence lookup. Native6 and source6/strict370
+retain separate cuts; five groups pass 880 premises at `19cce2600`, and the
+affected214 at `b5be8ecec` brings the total to 1094. The original Unsupported
+baseline, preparation failure and failed cleanup-source assertion retain zero credit.
+[Denied-getter ledger](coverage/semantics/magic-property-denied-review.json).
 Coercions, constrained returned cells, wider signatures, quiet/write/recursive
-getters, computed names, hooks, consumed storage and wider reference-call
-receivers remain required; held278/279 add no dependency or credit.
+getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
+names, hooks, consumed storage and wider reference-call receivers remain required;
+held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

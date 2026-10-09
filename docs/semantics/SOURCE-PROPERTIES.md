@@ -125,29 +125,39 @@ remain outside this bounded lane.
 Literal ordinary CV-base reads now invoke public nonstatic `__get` with one
 untyped required parameter and no declared return type. The first family covers
 ordinary instances, literal names and missing or publicly accessible UNSET
-properties. A typed INITIAL slot raises its initialization Error without invoking
-the getter. Writes, quiet probes, inaccessible slots, wider signatures and
-guarded recursion remain explicit Unsupported.
+properties. Denied private/protected reads and ancestor-private literal fallback
+also invoke the getter, with no hidden property type verification,
+even for INITIAL or initialized typed backing. Allowed lexical VALUE reads the
+physical key; accessible typed INITIAL raises Error without invoking the getter.
+Lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, writes, quiet probes,
+wider signatures and guarded recursion remain explicit Unsupported.
 
 Module380 owns one receiver hold while the known-instance getter frame borrows
-it. The raw returned value or reference survives property verification and
-receiver release. Only afterward does read reception copy the reference cell's
+it. The raw returned value or reference survives any captured property verification
+and receiver release. Only afterward does read reception copy the reference cell's
 current payload, so receiver destruction can change that result; a value return
 keeps its original payload. Discarded reads still retain the getter RV through
-receiver release. Exact type verification uses the getter's strictness and
+receiver release. Public UNSET type verification uses the getter's strictness and
 performs no backing-slot write or type-source attachment. An actual mismatch
 raises the declaring property's TypeError before receiver cleanup; later cell
 repair cannot remove it, and a successful check is not repeated after cleanup.
-Valid coercions and constrained returned reference cells remain Unsupported.
+Verification requiring coercions or constrained returned reference cells remains
+Unsupported.
 
 Getter throws release the receiver under the pending exception. If receiver
 cleanup throws after a normal return, the raw reference is materialized and its
 payload released under that exception, preserving a later cleanup exception's
 previous link. Current/saved carrier checks reject missing or duplicate holds;
 entered continuations never reread the caller CV or property absence. The
-[getter review](../../coverage/semantics/magic-property-get-review.json) records
+nonpublic path authenticates the ordinary caller scope from its source site
+before entry and retains that lookup history through privileged getter and
+destructor contexts.
+The [getter review](../../coverage/semantics/magic-property-get-review.json) records
 eight exact source agreements, 1293 setup-inclusive reached premises and the
-separate original failures.
+separate original failures. The
+[denied-getter review](../../coverage/semantics/magic-property-denied-review.json)
+separately records six exact sources and 1094 reached premises for lexical keys,
+absent hidden type info, captured caller scope and reference/exception cleanup.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
