@@ -248,7 +248,7 @@ def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTERROR ptdiag
 def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTUNSUPPORTED text) = PSONEUNSUPPORTED text
 def $pspositionstage(ptcontext, psraw, psinput*, PSDEFAULT phpType5 text, bool, PTOK ptbranch* ptdiagnostic*) = $pserror(ptcontext, "invalid-default", [$psdefaulttypename(text), psraw.NAME, $pttypename(ptbranch*)])
   -- if ~$psacceptdefault(ptbranch*, PSDEFAULT phpType5 text)
-def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTOK ptbranch* ptdiagnostic*) = $pserror(ptcontext, "promotion-outside-constructor", eps)
+def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTOK ptbranch* ptdiagnostic*) = $psprepend($psoptionalnotice(ptcontext, psraw, psinput*, bool), $pserror(ptcontext, "promotion-outside-constructor", eps))
   -- if $psacceptdefault(ptbranch*, psdefault)
   -- if psraw.FLAGS =/= 0 /\ ~$psconstructor_context(ptcontext)
 def $pspositionstage(ptcontext, psraw, psinput*, psdefault, bool, PTOK ptbranch* ptdiagnostic*) = PSONE { NAME psraw.NAME, TYPE ptbranch*, BYREF psraw.BYREF, VARIADIC psraw.VARIADIC, REQUIRED ((psraw.DEFAULT = ABSENT /\ ~psraw.VARIADIC) \/ $psrequiredlater(psinput*) =/= eps), DEFAULT $psretain_default(psinput*, $psconvertdefault(ptbranch*, psdefault)) } ($psoptionalnotice(ptcontext, psraw, psinput*, bool))
