@@ -1519,6 +1519,16 @@ constructed dynamic-image fixture failure remains zero; only its callable-line
 certificate changed. Earlier source10/state669 and all prior failures are unrenewed.
 The actual361 composition over `43a3fed4f` passes strict at `827c12ebf`
 (4.946s), preserving current compiler insertion and class-promotion interfaces.
+One named ordinary CV now uses the same cell reception and authenticates deferred
+SEND23 while preserving documentary INPUT24; known sends retain CV26/property27.
+Native6 retains `ada28d77a`. The original source6 campaign at `3321d2547` failed
+with zero whole-gate credit; its five completed per-case agreements remain valid
+under the explicit source-line bridge. Changed strict361 and the affected
+deferred comparison pass at `85424f5f4`. Five reached groups pass 1008
+setup-inclusive premises at `5ed9fbe45`, covering named slot2/defaults, current/saved
+carriers, fixed null, parameter retirement and protected H/B cleanup.
+Fixture parser, binder and fallback-conversion failures remain zero; earlier
+source6/state760 and source10/state669 are unrenewed.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container

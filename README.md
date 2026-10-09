@@ -1095,8 +1095,8 @@ The reviewed current359 composition over `f5c4eed1f` passes strict compilation
 at `e77c3eff0`, preserving current source and Generator interfaces.
 [The review](coverage/semantics/undefined-property-review.json) preserves the
 original fallback/fixture failures and the weaker bound-Closure witness.
-Literal named reference-return calls with no arguments or one positional CV
-argument now retain the actual returned cell
+Literal calls to named reference-return functions with no arguments or one CV
+argument, positional or named, now retain the actual returned cell
 through undefined-property warnings. The captured target remains borrowed, so
 handler rebinding may retire it while the cell keeps the replacement alive until
 fetch cleanup. Ten exact originals and separate 237/207/225 reached cuts cover
@@ -1109,6 +1109,10 @@ Six further originals and five reached groups cover argument destruction before
 lookup, shared argument/receiver cells, a surviving separate argument alias and
 normal/pending fetch cleanup. The actual361 composition over `43a3fed4f` passes
 strict at `827c12ebf`, preserving current compiler and class-promotion interfaces.
+Named arguments preserve skipped defaults, unknown-label priority and distinct
+known/deferred SEND diagnostic lines. Five original per-case agreements and one
+affected deferred comparison retain separate cuts; five new reached groups
+validate shared cells, captured null, callee cleanup and pending exceptions.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

@@ -411,6 +411,11 @@ test-semantics: build
 	python3 tests/semantics/property_reference_argument_warning_protocol.py --group pending
 	python3 tests/semantics/property_reference_argument_warning_protocol.py --group samecell
 	python3 tests/semantics/property_reference_argument_warning_protocol.py --group alias
+	python3 tests/semantics/property_reference_named_warning_protocol.py --group samecell
+	python3 tests/semantics/property_reference_named_warning_protocol.py --group quiet
+	python3 tests/semantics/property_reference_named_warning_protocol.py --group warning
+	python3 tests/semantics/property_reference_named_warning_protocol.py --group default
+	python3 tests/semantics/property_reference_named_warning_protocol.py --group pending
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup

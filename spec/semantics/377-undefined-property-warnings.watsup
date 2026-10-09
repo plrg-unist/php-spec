@@ -52,6 +52,7 @@ def $property_undefined_reference_name(phpType19) = false -- otherwise
 dec $property_undefined_reference_arguments(phpType7*) : bool
 def $property_undefined_reference_arguments(eps) = true
 def $property_undefined_reference_arguments([(NArg ABSENT (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)]) = true
+def $property_undefined_reference_arguments([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)]) = true
 def $property_undefined_reference_arguments(phpType7*) = false -- otherwise
 dec $property_undefined_reference_source(pstate, pnameread) : bool
 def $property_undefined_reference_source(S, pnameread) = true
@@ -67,6 +68,29 @@ def $property_undefined_reference_source(S, pnameread) = true
   -- if pfunction.SIGNATURE.BYREF
   -- if ~$function_generator(S, pfunction)
 def $property_undefined_reference_source(S, pnameread) = false -- otherwise
+;; A deferred named SEND retains the CV's documentary operand line while the
+;; compiled SEND uses its label line. Capture that producer before resolution.
+dec $property_undefined_named_send_line(pstate, ptask) : int?
+def $property_undefined_named_send_line(S, NAMED_SEND pcalltarget eps 0 pnamedargs (PORIGIN n pcpath_call) z_call) = (z_send)
+  -- if pnamedargs = {SLOTS eps, NAMED eps}
+  -- if $(|pcpath_call| > 0)
+  -- if n_parent = $(|pcpath_call| - 1)
+  -- if pcpath = pcpath_call[0:n_parent]
+  -- if pcpath_call = pcpath ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprPropertyFetch expression_receiver (NIdentifier (BYTES text_name) metadata_name) metadata_property)
+  -- if expression_receiver = NExprFuncCall name (SEQUENCE ([(NArg (NIdentifier (BYTES text_parameter) metadata_parameter) (NExprVariable (BYTES text_argument) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])) metadata_call
+  -- if $property_undefined_reference_source(S, {SITE PORIGIN n pcpath, NAME $base64(text_name), LINE $source_line(metadata_name)})
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath_call) = ((ptbytes_callee, eps))
+  -- if $call_target(S, ptbytes_callee, eps) = (pfunction)
+  -- if pcalltarget = pfunction.ORIGIN
+  -- if $call_task_valid(S, NAMED_SEND pcalltarget eps 0 pnamedargs (PORIGIN n pcpath_call) z_call)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath_call, eps) = (z_call)
+  -- if $code_expression_at_source(S, PORIGIN n pcpath_call, [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (z_send)
+  -- if z_send =/= $source_line(metadata_value)
+def $property_undefined_named_send_line(S, ptask) = eps -- otherwise
+def $error_read_state_shape(S, ptask, poperand, pbase) = $echo_dynamic_named_read_shape(S, ptask, poperand, pbase, z_send)
+  -- if $property_undefined_named_send_line(S, ptask) = (z_send)
 dec $property_undefined_cell(pstate, nat) : bool
 def $property_undefined_cell(S, n) = true
   -- if $(n < |S.STORE|)
