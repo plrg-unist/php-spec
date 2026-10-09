@@ -62,7 +62,7 @@ def $gc_main_context(S, pgcplan, pgcscan) = true
   -- if pgcplan.INDEX = 0 /\ pgcplan.STEPS = eps /\ pgcplan.DONE = eps
   -- if pgcscan.END = |pgcplan.BUFFER| /\ $(pgcscan.INDEX <= pgcscan.END)
   -- if $gc_main_tags(pgcplan, S.GC.BUFFER, 0)
-  -- if ~$gc_overlap_plan(pgcplan) \/ $gc_main_called_prefix(S, pgcplan, pgcscan, pgcplan.DTORS)
+  -- if ~$gc_overlap_plan(pgcplan) \/ $gc_main_called_prefix(S, pgcplan, pgcscan, $destruction_nodes_delete($gc_uncalled_snapshot(S, pgcplan.CANDIDATES, pgcplan.CALLED), $gc_nested_removed(pgcplan)))
   -- if S.GC.BUFFER = $gc_scan_clear(S.GC.BUFFER, 0, pgcscan.INDEX, 0)
 def $gc_main_context(S, pgcplan, pgcscan) = false -- otherwise
 def $gc_main_initial(S, pgcplan, pgcscan) = true

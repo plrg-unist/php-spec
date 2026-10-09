@@ -1,6 +1,7 @@
 ;; zend_generator_resume -> zend_throw_exception_internal at a real C root.
 ;; Render, release the reported exception, then catch bailout and mark all
-;; destructors called. SOURCE/TEXT/FROZEN borrow history; only REPORT owns ex.
+;; destructors called. REPORT owns ex; a child SOURCE also pins its C receiver.
+;; TEXT/FROZEN and ordinary SOURCE records borrow history.
 
 syntax pgenfatal = {SOURCE ptask, OBJECT nat, HANDLERS (pvalue?)*, METHOD porigin?, TEXT preqbytes?, REPORT pobjectprops?, FROZEN pcompletion}
 
@@ -37,6 +38,8 @@ dec $generator_request_render_return_valid(pstate, pgenfatal, nat, bool) : bool
 dec $generator_request_render_warning(pstate, pgenfatal) : preqbytes
 dec $generator_request_render_abrupt(pstate) : bool
 dec $generator_request_render_handler_abrupt(pstate) : bool
+dec $generator_request_release_report(ptask*, pgenfatal) : bool
+dec $generator_request_fatal_receiver(ptask) : pnode*
 
 ;; Request dtor_obj resumes the Generator from C with no execute_data caller.
 ;; Its saved creation context remains source authority, not a trace callsite.
@@ -90,6 +93,27 @@ def $generator_request_fatal_source(S, pgenfatal, (GENERATOR_REQUEST_REPORT pgen
   -- if pgenfatal_parent.METHOD = (porigin_method)
   -- if S_parent = $generator_request_fatal_history(S, pgenfatal)[.ORIGIN = (porigin_method)][.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_tail*]
   -- if $generator_request_report_valid(S_parent, pgenfatal_parent)
+;; zend_exception_error has already emitted its fatal before OBJ_RELEASE(ex).
+;; A child dtor rethrows at C root while the ordinary parent's free_obj is pinned.
+def $generator_request_fatal_source(S, pgenfatal, (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*) = true
+  -- if pgenfatal.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if S.EXCEPTIONHANDLER = eps
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if S_history = $generator_request_fatal_history(S, pgenfatal)[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*]
+  -- if $generator_request_root(S_history) /\ $exception_task_scope(S_history)
+  -- if $destructor_result_valid(S_history, pdestructorcall)
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_original)
+  -- if pdestructionrelease_original.JOBS = (DESTRUCTION_VALUE (HOBJECT pdestructorcall.OBJECT)) :: pdestructionjob*
+  -- if pdestructionrelease = pdestructionrelease_original[.JOBS = pdestructionjob*]
+  -- if $destructor_release_valid(S_history, pdestructionrelease)
+  -- if $instance_storage_valid(S_history, pinstancestorage)
+  -- if $(pinstancestorage.NEXT > 0)
+  -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
+  -- if n_slot = nat_order*[$nabs($(pinstancestorage.NEXT - 1))]
+  -- if $property_slot_nodes([pinstancestorage.SLOTS[n_slot]]) = [HOBJECT pdestructorcall.OBJECT]
+  -- if $generator_request_bailout_at(ptask_tail*) = (pgenfatal_parent)
+  -- if $generator_request_bailout_valid(S_history, pgenfatal_parent)
 def $generator_request_fatal_source(S, pgenfatal, ptask*) = false -- otherwise
 
 def $generator_request_fatal_selected(S) = (pgenfatal)
@@ -116,6 +140,13 @@ def $generator_request_fatal_selected(S) = (pgenfatal)
   -- if $generator_request_render_handler_abrupt(S)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if pgenfatal = {SOURCE THROW_SEARCH n, OBJECT n, HANDLERS S.EXCEPTIONHANDLERS, METHOD eps, TEXT eps, REPORT eps, FROZEN NORMAL}
+def $generator_request_fatal_selected(S) = (pgenfatal)
+  -- if S.COMPLETION = NORMAL
+  -- if $generator_request_release_abrupt(S)
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
+  -- if $throwable_live(S, n)
+  -- if pgenfatal = {SOURCE DESTRUCTOR_RESULT pdestructorcall, OBJECT n, HANDLERS S.EXCEPTIONHANDLERS, METHOD eps, TEXT eps, REPORT eps, FROZEN NORMAL}
+  -- if $generator_request_fatal_source(S, pgenfatal, (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*)
 def $generator_request_fatal_selected(S) = eps -- otherwise
 def $generator_request_fatal_ready(S) = ($generator_request_fatal_selected(S) =/= eps)
 
@@ -125,6 +156,10 @@ def $generator_request_fatal_begin(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_
 def $generator_request_fatal_begin(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = pgenfatal.SOURCE :: ptask_tail*
   -- if pgenfatal.SOURCE = THROW_SEARCH pgenfatal.OBJECT
+;; C-root rethrow precedes both destroy_object and store_del receiver releases.
+def $generator_request_fatal_begin(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: pgenfatal.SOURCE :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH pgenfatal.OBJECT) :: pgenfatal.SOURCE :: ptask_tail*
+  -- if pgenfatal.SOURCE = DESTRUCTOR_RESULT pdestructorcall
 ;; zend_call_function drops its completed receiver frame before C-root rethrow.
 ;; The outer zend_exception_error still owns its actual REPORT claim.
 def $generator_request_fatal_begin(S, pgenfatal) = S[.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_tail*][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -181,8 +216,24 @@ def $generator_request_report_valid(S, pgenfatal) = true
   -- if $generator_request_fatal_source(S_report, pgenfatal, ptask_tail*)
 def $generator_request_report_valid(S, pgenfatal) = false -- otherwise
 def $call_task_valid(S, GENERATOR_REQUEST_REPORT pgenfatal) = $generator_request_report_valid(S, pgenfatal)
-def $task_nodes(GENERATOR_REQUEST_REPORT pgenfatal) = [HOBJECT pgenfatal.OBJECT]
-def $task_nodes(GENERATOR_REQUEST_BAILOUT pgenfatal) = eps
+def $generator_request_fatal_receiver(DESTRUCTOR_RESULT pdestructorcall) = [HOBJECT pdestructorcall.OBJECT]
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+def $generator_request_fatal_receiver(ptask) = eps -- otherwise
+def $task_nodes(GENERATOR_REQUEST_REPORT pgenfatal) = [HOBJECT pgenfatal.OBJECT] ++ $generator_request_fatal_receiver(pgenfatal.SOURCE)
+def $task_nodes(GENERATOR_REQUEST_BAILOUT pgenfatal) = $generator_request_fatal_receiver(pgenfatal.SOURCE)
+;; Pending-call discovery sees the retained actual result through its new fatal
+;; carrier. These structural guards never query the heap or finish the call.
+def $generator_request_release_report((GENERATOR_REQUEST_REPORT pgenfatal) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pgenfatal) = true
+  -- if pgenfatal.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+def $generator_request_release_report(ptask*, pgenfatal) = false -- otherwise
+def $destructor_call_tail((GENERATOR_REQUEST_REPORT pgenfatal) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+  -- if pgenfatal.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+def $destructor_call_tail((GENERATOR_REQUEST_BAILOUT pgenfatal) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*, pdestructorcall) = (ptask_tail*)
+  -- if pgenfatal.SOURCE = DESTRUCTOR_RESULT pdestructorcall
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
 def $eager_explicit_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
 def $eager_explicit_task(GENERATOR_REQUEST_BAILOUT pgenfatal) = true
 def $generator_internal_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
@@ -195,11 +246,23 @@ def $call_after_origin(S, THROW_SEARCH n) = S[.TODO = ptask_tail*]
   -- if pgenfatal_parent.OBJECT = n_parent /\ pgenfatal_parent.METHOD = (porigin_method)
   -- if pgenfatal_parent.FROZEN = NORMAL /\ pgenfatal_parent.TEXT = eps /\ pgenfatal_parent.REPORT = eps
   -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps /\ S.ORIGIN = (porigin_method)
+;; Admission walks the existing bailout after the pending ROOT throw prefix.
+def $call_after_origin(S, THROW_SEARCH n) = S[.TODO = ptask_tail*]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if ptask_tail* = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_parent_tail*
+  -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps /\ pdestructorcall.CONSTCONTEXT = eps
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if $generator_request_bailout_at(ptask_parent_tail*) = (pgenfatal_parent)
+  -- if $shutdown_task_scope(S) /\ S.ACTIVEFIBER = eps /\ S.ORIGIN = eps
 def $call_after_origin(S, GENERATOR_REQUEST_REPORT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = (porigin_method)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if pgenfatal.SOURCE = STRINGIFY_RESULT n_parent porigin_method 0
   -- if $generator_request_fatal_tail(S.TODO, pgenfatal) = (ptask_tail*)
+def $call_after_origin(S, GENERATOR_REQUEST_REPORT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $generator_request_release_report(S.TODO, pgenfatal)
+  -- if $generator_request_fatal_tail(S.TODO, pgenfatal) = (ptask_tail*)
 def $call_after_origin(S, GENERATOR_REQUEST_REPORT pgenfatal) = S[.ORIGIN = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $generator_request_fatal_parent_origin(pgenfatal) = eps
+  -- if ~$generator_request_release_report(S.TODO, pgenfatal)
 def $call_after_origin(S, GENERATOR_REQUEST_BAILOUT pgenfatal) = S[.TODO = ptask_tail*][.ORIGIN = $generator_request_fatal_parent_origin(pgenfatal)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $generator_request_bailout_tail(S.TODO, pgenfatal) = (ptask_tail*)
 def $generator_request_tail_task(GENERATOR_REQUEST_REPORT pgenfatal) = true
@@ -521,5 +584,7 @@ def $generator_request_release_abrupt(S) = true
   -- if $exception_task_scope(S) /\ $destructor_result_valid(S, pdestructorcall)
   -- if ~pdestructorcall.USER /\ pdestructorcall.CALLER = eps /\ pdestructorcall.ORIGIN = eps
   -- if $generator_request_bailout_at(ptask_tail*) =/= eps
+def $shutdown_render_throw_pending(S) = true -- if $generator_request_release_abrupt(S)
 rule PhpStep/generator-request-exception-release-abrupt-required: S ~> S[.COMPLETION = UNSUPPORTED "Generator request fatal exception-release throw"]
   -- if $generator_request_release_abrupt(S)
+  -- if ~$generator_request_fatal_ready(S)

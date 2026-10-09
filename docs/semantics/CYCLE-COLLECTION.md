@@ -505,6 +505,18 @@ premises complete both reached cuts. E's global REF-CV cleanup reuses the freed
 slot for rooted cached W; the retrace removes W as black before the E/D walk.
 The corrected82 binds that real image without code/source/selection renewal;
 original79 and earlier compiler/source/133 failures retain zero credit. Baseline38
-and image110 are localization only. Mixed residuals, black/external roots,
+and image110 are localization only. Black/external roots,
 arrays/references/proxies in the protected component and Fiber/later-pass overlap
 remain explicit boundaries. Earlier205/174 and whole CLI timeouts are unchanged.
+
+Mixed overlap permits uncalled residual F in a separate ordinary-object component
+whose entire reach is disjoint from eligible reach. Incoming untraced owners may
+not reach the white component; all residual reach must be ordinary objects.
+Within admitted white producer histories, surviving unvisited tags remain purple.
+Physical removal leaves F marked outside fresh DTORS/progress, and the surviving
+frozen uncalled prefix authenticates its real selection. At `a2ef8b039`, source1
+and independent215/106 premises confirm F then E then retraced D, signed -2+2=0,
+F/E retirement, D self-owner1/weak-live and unchanged cached-worker cursor.
+Actual slot bindings preserve two-finger compaction without assuming allocation
+order; the original195 ordering failure retains zero credit. Baseline66 is
+localization only. Incoming, nonordinary and broader overlap lanes remain open.

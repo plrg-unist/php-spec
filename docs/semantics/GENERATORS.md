@@ -138,10 +138,19 @@ Exact source1 and compiler358 retain `558e53a9c`; strict220 retains `80be20cde`,
 authentic continuations, malformed producer rejection and budget replay. Original
 binding stops and the incorrect fixed-argument phase remain zero. Actual361 over
 `59c163ef4` passes strict compilation at `7983c825f`, preserving current ARG/CALLS
-fields; private source/state cuts retain their inputs. Absent or throwing
-restored handlers, deeper custom rendering, abrupt child free_obj/destructor/weak-Generator
-lifetimes, message warnings, parked or escaped storage and generic terminal cleanup
-remain required.
+fields; private source/state cuts retain their inputs. A ROOT/nonuser ordinary
+property-child destructor throwing during reported-exception release, with no live
+handler, emits a second fatal before abandoning the real unfinished tail. The
+Parent free_obj pin keeps Weak lookup null while two Leaf C claims and actual
+Generator/cache owners survive. Unreleased fatal FRAME/FRAMES retain INSTANCE pins
+and the old reported Exception's pending HANDLE/occupied GC slot. Discovery excludes
+saved DESTRUCTION and SOURCE certificates. Exact source1 retains `7d3574e75`; strict549
+and complete compiler361 retain `47c8c3c1c`. Prior refusals, diagnostics and failed
+checks remain zero. Final361 over `e889a1592` passes strict compilation at
+`77e534575`, preserving EX34's301/372 collector guards; this source has no collector
+task. Private source/state cuts retain their inputs. Wider handlers, rendering,
+child lifetimes, reacquisition, message warnings, parked or escaped storage and
+generic terminal cleanup remain required.
 
 [Arrow Generators311](ARROW-GENERATORS.md) validate the existing capture
 and implicit-return routes. Eager parameters, sent results, delegation, scope and

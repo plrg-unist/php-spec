@@ -8,6 +8,9 @@ dec $instance_storage_object(pstate, pnode) : pinstancestorage*
 dec $instance_storage_objects(pstate, pnode*) : pinstancestorage*
 dec $instance_storage_callers(pstate, pfibercaller*) : pinstancestorage*
 dec $instance_storage_closers(pstate, pfiberclose*) : pinstancestorage*
+dec $instance_storage_fatal(ptask) : pinstancestorage*
+dec $instance_storage_abandoned(pdestructioncleanup*) : pinstancestorage*
+dec $instance_storage_count(pinstancestorage*, nat) : nat
 dec $instance_storage_all(pstate) : pinstancestorage*
 dec $instance_storage_select(pinstancestorage*, nat) : pinstancestorage?
 dec $instance_storage_for(pstate, nat) : pinstancestorage?
@@ -52,7 +55,20 @@ def $instance_storage_callers(S, eps) = eps
 def $instance_storage_callers(S, pfibercaller :: pfibercaller_tail*) = $instance_storage_vm(S, pfibercaller.VM, pfibercaller.PREVIOUS) ++ $instance_storage_callers(S, pfibercaller_tail*)
 def $instance_storage_closers(S, eps) = eps
 def $instance_storage_closers(S, pfiberclose :: pfiberclose_tail*) = $instance_storage_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS) ++ $instance_storage_closers(S, pfiberclose_tail*)
-def $instance_storage_all(S) = $instance_storage_tasks(S.TODO) ++ $instance_storage_frames(S.FRAMES) ++ $instance_storage_objects(S, S.ALLOCATIONS) ++ $instance_storage_callers(S, S.FIBERCALLERS) ++ $instance_storage_closers(S, S.FIBERCLOSERS)
+;; Fatal frames retain their real unfinished free_obj pins; history is borrowed.
+def $instance_storage_fatal(DESTRUCTOR_FATAL pdestructionfatal) = $instance_storage_tasks(pdestructionfatal.FRAME.TODO) ++ $instance_storage_frames(pdestructionfatal.FRAMES)
+def $instance_storage_fatal(ptask) = eps -- otherwise
+def $instance_storage_abandoned(eps) = eps
+def $instance_storage_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*) = $instance_storage_fatal(pdestructioncleanup.SOURCE) ++ $instance_storage_abandoned(pdestructioncleanup_tail*)
+  -- if ~pdestructioncleanup.RELEASED
+def $instance_storage_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*) = $instance_storage_abandoned(pdestructioncleanup_tail*)
+  -- if pdestructioncleanup.RELEASED
+def $instance_storage_count(eps, n) = 0
+def $instance_storage_count(pinstancestorage :: pinstancestorage_tail*, n) = $(1 + $instance_storage_count(pinstancestorage_tail*, n))
+  -- if pinstancestorage.OBJECT = n
+def $instance_storage_count(pinstancestorage :: pinstancestorage_tail*, n) = $instance_storage_count(pinstancestorage_tail*, n)
+  -- if pinstancestorage.OBJECT =/= n
+def $instance_storage_all(S) = $instance_storage_tasks(S.TODO) ++ $instance_storage_frames(S.FRAMES) ++ $instance_storage_objects(S, S.ALLOCATIONS) ++ $instance_storage_callers(S, S.FIBERCALLERS) ++ $instance_storage_closers(S, S.FIBERCLOSERS) ++ $instance_storage_abandoned(S.DESTRUCTION.ABANDONED)
 def $instance_storage_select(eps, n) = eps
 def $instance_storage_select(pinstancestorage :: pinstancestorage_tail*, n) = (pinstancestorage)
   -- if pinstancestorage.OBJECT = n
@@ -183,7 +199,7 @@ def $gc_retired_valid(S, n) = true
   -- if $instance_storage_for(S, n) = (pinstancestorage)
   -- if $instance_storage_basic(S, pinstancestorage)
   -- if $instance_storage_state_valid(S)
-  -- if $gc_handle_all(S, n) = 1
+  -- if $($gc_handle_all(S, n) + $instance_storage_count($instance_storage_abandoned(S.DESTRUCTION.ABANDONED), n)) = 1
 
 ;; Transparent markers retain the existing pending Throwable and actual caller.
 def $destructor_operation_tasks((INSTANCE_STORAGE_STEP pinstancestorage) :: ptask*, pdestructionoperation, pdestructionoperation_new) = (INSTANCE_STORAGE_STEP pinstancestorage) :: $destructor_operation_tasks(ptask*, pdestructionoperation, pdestructionoperation_new)

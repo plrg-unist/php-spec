@@ -253,9 +253,19 @@ the original empty cached fatal report. Exact source1 and strict compiler358 ret
 owners and malformed source/site/line/origin rejection pass; initial binding stops
 and the incorrect fixed-argument phase retain zero credit. Actual361 over `59c163ef4`
 passes strict compilation at `7983c825f` (6.128 seconds), preserving current ARG/CALLS
-fields; private source/state cuts retain their inputs. Absent or throwing restored
-handlers, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
-message warnings, parked/escaped storage and generic terminal cleanup remain required.
+fields; private source/state cuts retain their inputs. A ROOT/nonuser ordinary
+child destructor throwing during reported-exception release, with no live handler,
+emits a second fatal while retaining the unfinished release tail. The Parent pin
+keeps Weak lookup null; two Leaf C claims and real Generator/cache owners survive.
+Actual unreleased fatal frames retain both INSTANCE pins and nonowning retired
+HANDLE jobs; borrowed history is not another carrier. Source1 retains `7d3574e75`;
+549 SL premises and complete compiler361 retain `47c8c3c1c` (6.459 seconds).
+Original refusal, diagnostic/binding stops, cache/retirement fixture failures and
+Weak/GC admission gaps stay at zero. Final361 over `e889a1592` passes strict
+compilation at `77e534575` (6.488 seconds), preserving EX34's301/372 collector
+guards; this source has no collector task. Private source/state cuts retain their
+inputs. Wider handlers/rendering, child lifetimes, reacquisition, message warnings,
+parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
 guards; private source/state cuts retain their own revisions.
@@ -568,10 +578,23 @@ before CALLED; executable return and future-tag/cursor checks retain authority.
 One unchanged whole CLI60 source and 247 independent premises (165/82) pass at
 `85b9d0b73`. Baseline38 and image110 localize distinct boundaries; earlier compiler,
 source/133 and obsolete79 fixture failures retain zero aggregate credit.
-Mixed/black-root/array/reference/proxy/Fiber overlap and wider GC remain required.
+Black-root/array/reference/proxy/Fiber overlap and wider GC remain required.
 Actual361 over `8ac503030` passes strict compilation/init at `d77cd6d9a`, with
 independently reviewed call, ownership and scalar-return interfaces; earlier
 source/state cuts are unchanged.
+
+Mixed overlap301/372 now permits separate ordinary residual components outside
+the eligible graph, with an incoming-owner closure and surviving-tag authority.
+In the grounded original, nested removal drops D's tag while F survives for selection
+before E; signed -2+2 returns0, F/E retire and D retains its self-owner/weak liveness.
+Source1 and 321 independent premises (215/106) pass at `a2ef8b039`; role-bound
+physical slots preserve exact removal, cached-W reuse, retrace order and replay.
+Baseline66 localizes the old301 refusal. The first195 ordering fixture fails with
+zero aggregate credit; corrected controls change no code/source. Broader
+black/external/nonordinary/Fiber/later-pass overlap remains required; prior cuts
+and whole CLI timeouts are unchanged.
+Actual361 over `be0cfaa7f` passes strict compilation/init at `9391ce28e`, preserving
+reviewed call/ownership/property interfaces; source1/state321 retain their inputs.
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.

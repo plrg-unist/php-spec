@@ -363,8 +363,13 @@ before bailout, even when its destructor changes reporting to zero. Two new
 originals and 343 strict premises retain separate cuts. A throwing renderer warning
 callback redispatches its new exception through the restored handler, then resumes
 the original empty cached fatal report. One exact fatal original and 220 strict
-premises retain separate cuts. Absent or throwing restored handlers, deeper
-rendering, abrupt child cleanup, parked/escaped storage and generic terminal cleanup
+premises retain separate cuts. At the cleared request C root, a property-child
+destructor throwing during reported-exception release emits a second fatal.
+The Parent free_obj pin keeps Weak lookup null; two Leaf C claims and real
+Generator/cache owners survive. Its unfinished fatal frame retains the old
+Exception's occupied GC slot through the pending HANDLE job. One exact source
+and 549 strict premises retain separate cuts. Wider handlers/rendering,
+child lifetimes, reacquisition, parked/escaped storage and generic terminal cleanup
 remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
 [Active Fiber close](docs/semantics/GENERATOR-FIBER-CLOSE.md) preserves current
@@ -774,7 +779,12 @@ Main collection also handles a closed ordinary-object residual/eligible overlap.
 Physical nested removal drops old D's tag before fresh E runs; one retrace calls D,
 frees E and preserves D's self-cycle, with signed count0 and a live weak probe.
 One unchanged source and 247 independent reached premises (165/82) pass at
-`85b9d0b73`; mixed, black-root, array/reference/proxy and Fiber overlap remain open.
+`85b9d0b73`; black-root, array/reference/proxy and Fiber overlap remain open.
+Mixed overlap also admits a separate ordinary residual component outside the
+fresh traced graph. Real F selection uses its surviving physical tag without adding F
+to fresh DTORS or progress; one signed retrace retires F/E and keeps D weak-live.
+One unchanged source and 321 independent premises (215/106) pass at `a2ef8b039`.
+Incoming owners, nonordinary components and wider overlap remain explicit boundaries.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

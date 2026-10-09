@@ -69,6 +69,11 @@ dec $gc_handle_fiber(pstate, pnode, nat) : nat
 dec $gc_handle_fibers(pstate, pnode*, nat) : nat
 dec $gc_handle_callers(pstate, pfibercaller*, nat) : nat
 dec $gc_handle_closers(pstate, pfiberclose*, nat) : nat
+dec $gc_handle_fatal_task(ptask, nat) : nat
+dec $gc_handle_fatal_tasks(ptask*, nat) : nat
+dec $gc_handle_fatal_frames(pframe*, nat) : nat
+dec $gc_handle_fatal(ptask, nat) : nat
+dec $gc_handle_abandoned(pdestructioncleanup*, nat) : nat
 dec $gc_handle_all(pstate, nat) : nat
 dec $gc_begin(pstate, pconfigcall) : pstate
 dec $gc_receive(pstate, pconfigcall) : pstate
@@ -548,6 +553,8 @@ def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobject
 ;; A reached residual tag remains tag3 after collect_roots ORs tag2. Only
 ;; fresh destructor roots become purple; the visited residual stays black.
 ;; Bound this lane to a closed white object component on the main thread.
+;; Unreached residual tags stay purple in admitted histories. Their object
+;; components must remain disjoint from every eligible root's traced graph.
 def $gc_overlap_objects(eps) = true
 def $gc_overlap_objects((HOBJECT n) :: pnode*) = $gc_overlap_objects(pnode*)
 def $gc_overlap_objects(pnode*) = false -- otherwise
@@ -557,11 +564,18 @@ def $gc_overlap_plan(pgcplan) = true
   -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
   -- if pnode_residual* = $destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER))
   -- if pnode_residual* =/= eps
-  -- if $heap_subset(pnode_residual*, pgcplan.COUNTED)
+  -- if pnode_reached* = $heap_intersect(pnode_residual*, pgcplan.COUNTED)
+  -- if pnode_reached* =/= eps
   -- if pnode_component* = $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES)
-  -- if $heap_subset(pnode_residual*, pnode_component*)
-  -- if $heap_subset(pnode_component*, $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)))
+  -- if $heap_subset(pnode_reached*, pnode_component*)
+  -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
+  -- if pnode_outside* = $destruction_nodes_delete(pnode_residual*, pnode_reached*)
+  -- if $heap_intersect($heap_reach(pnode_outside*, eps, pgcplan.GRAPH.EDGES), pnode_traced*) = eps
+  -- if pnode_white* = $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if $heap_subset(pnode_component*, pnode_white*)
+  -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
   -- if $gc_overlap_objects(pnode_component*)
+  -- if $gc_overlap_objects($heap_reach(pnode_residual*, eps, pgcplan.GRAPH.EDGES))
 def $gc_overlap_plan(pgcplan) = false -- otherwise
 def $gc_overlap_ready(S, pgccall) = true
   -- if S.ACTIVEFIBER = eps
@@ -722,7 +736,23 @@ def $gc_handle_callers(S, eps, n) = 0
 def $gc_handle_callers(S, pfibercaller :: pfibercaller_tail*, n) = $($gc_handle_vm(S, pfibercaller.VM, pfibercaller.PREVIOUS, n) + $gc_handle_callers(S, pfibercaller_tail*, n))
 def $gc_handle_closers(S, eps, n) = 0
 def $gc_handle_closers(S, pfiberclose :: pfiberclose_tail*, n) = $($gc_handle_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS, n) + $gc_handle_closers(S, pfiberclose_tail*, n))
-def $gc_handle_all(S, n) = $($gc_handle_tasks(S, S.TODO, n) + $gc_handle_frames(S, S.FRAMES, n) + $gc_handle_fibers(S, S.ALLOCATIONS, n) + $gc_handle_callers(S, S.FIBERCALLERS, n) + $gc_handle_closers(S, S.FIBERCLOSERS, n))
+;; Only actual unfinished fatal frames retain these physical HANDLE jobs.
+;; Admission authenticates their release records through the borrowed history.
+def $gc_handle_fatal_task(AT porigin ptask, n) = $gc_handle_fatal_task(ptask, n)
+def $gc_handle_fatal_task(DESTRUCTOR_RELEASE pdestructionrelease, n) = $gc_handle_jobs(pdestructionrelease.JOBS, n)
+def $gc_handle_fatal_task(ptask, n) = 0 -- otherwise
+def $gc_handle_fatal_tasks(eps, n) = 0
+def $gc_handle_fatal_tasks(ptask :: ptask_tail*, n) = $($gc_handle_fatal_task(ptask, n) + $gc_handle_fatal_tasks(ptask_tail*, n))
+def $gc_handle_fatal_frames(eps, n) = 0
+def $gc_handle_fatal_frames(pframe :: pframe_tail*, n) = $($gc_handle_fatal_tasks(pframe.TODO, n) + $gc_handle_fatal_frames(pframe_tail*, n))
+def $gc_handle_fatal(DESTRUCTOR_FATAL pdestructionfatal, n) = $($gc_handle_fatal_tasks(pdestructionfatal.FRAME.TODO, n) + $gc_handle_fatal_frames(pdestructionfatal.FRAMES, n))
+def $gc_handle_fatal(ptask, n) = 0 -- otherwise
+def $gc_handle_abandoned(eps, n) = 0
+def $gc_handle_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, n) = $($gc_handle_fatal(pdestructioncleanup.SOURCE, n) + $gc_handle_abandoned(pdestructioncleanup_tail*, n))
+  -- if ~pdestructioncleanup.RELEASED
+def $gc_handle_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, n) = $gc_handle_abandoned(pdestructioncleanup_tail*, n)
+  -- if pdestructioncleanup.RELEASED
+def $gc_handle_all(S, n) = $($gc_handle_tasks(S, S.TODO, n) + $gc_handle_frames(S, S.FRAMES, n) + $gc_handle_fibers(S, S.ALLOCATIONS, n) + $gc_handle_callers(S, S.FIBERCALLERS, n) + $gc_handle_closers(S, S.FIBERCLOSERS, n) + $gc_handle_abandoned(S.DESTRUCTION.ABANDONED, n))
 def $gc_retired_valid(S, n) = ($destructor_jobs_valid(S, [DESTRUCTION_HANDLE n]) /\ $gc_handle_all(S, n) = 1) -- otherwise
 def $gc_buffer_unique(pgcslot*) = $heap_unique($gc_physical_nodes(pgcslot*))
 def $gc_slots_valid(S, eps, nat*, n) = true
