@@ -289,6 +289,14 @@ cover that timing, cold initialization with owned RHS temporaries, selected clas
 roots, typed results and multiline access-error cleanup. Another295 independent
 reached premises validate queued owners, resolved-name authority and resumption.
 The separate actual353 composition passes compilation and initialization.
+[Stringable computed static-property names371](coverage/semantics/static-compound-string-review.json)
+freeze the selected class and converted name, check the property address, then
+retire the receiver before reading the live row, reference cell and RHS. Failed conversion plus throwing cleanup
+preserves empty-name lookup and the Error-to-destructor-to-cast exception chain.
+Eight of nine exact originals pass at separate cuts; the pending-masks original
+remains required after the current360 run repeats its unchanged 60-second CLI
+timeout. Prior123 and new238 reached premises retain separate inputs; current360
+algorithmic compilation and pointwise99/156 compatibility review pass.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
