@@ -59,9 +59,9 @@ def main():
     cases += [(name,'','',False) for name in multiline]
     cases += [(name,'','',False) for name in namespaced]
     cases += [('magic-tostring','','C',False)]
-    pending = {'$x=1+2':'nonliteral parameter default requires constant-expression compilation', '$x=[1]':'nonliteral parameter default requires constant-expression compilation', '$x=new A':'nonliteral parameter default requires constant-expression compilation', '$x=-true':'nonnumeric unary parameter default requires constant-expression compilation', '#[A] $x':'parameter attributes, promotion or hooks', 'public $x':'parameter attributes, promotion or hooks'}
+    pending = {'$x=1+2':'nonliteral parameter default requires constant-expression compilation', '$x=[1]':'nonliteral parameter default requires constant-expression compilation', '$x=new A':'nonliteral parameter default requires constant-expression compilation', '$x=-true':'nonnumeric unary parameter default requires constant-expression compilation', '#[A] $x':'parameter attributes or hooks'}
     restrictions = {'void $x':'void cannot be used as a parameter type', '...$x=1':'Variadic parameter cannot have a default value'}
-    cases += [(p,'','',False) for p in [*pending,*restrictions]]
+    cases += [(p,'','',False) for p in [*pending,*restrictions,'public $x']]
     descriptors = {
         'float $x=1': [('x','float',False,False,False,'float')],
         'int|float $x=1': [('x','int|float',False,False,False,'int')],
