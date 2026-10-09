@@ -107,7 +107,7 @@ rule PhpStep/reference-return-notice-result: S ~> $return_step(S_result, S_resul
 
 ;; RETURN_BY_REF finishes its RV even with a pending handler exception, then
 ;; leaves this callable. The caller searches its own exception continuation.
-def $error_read_discard(S, REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) = S_result[.TODO = [THROW_SEARCH n]][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+def $error_read_discard(S, REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) = $throw_frame_resume($restore_frame($constructor_failed(S_result[.TODO = [THROW_SEARCH n]][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps])), n)
   -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
   -- if $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
   -- if S_result = $reference_notice_materialize(S, poperand)
