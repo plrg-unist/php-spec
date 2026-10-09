@@ -292,11 +292,14 @@ def $compiler_event(text, n_message*, pllocation) = DIAGNOSTIC_SOURCE pllocation
   -- if $(pllocation.UNIT > 0)
 def $compiler_event(text, n_message*, pllocation) = DIAGNOSTIC text n_message* pllocation.LINE
   -- if pllocation.UNIT = 0
+dec $compiler_warning_level(text) : int
+def $compiler_warning_level("private-final-method") = 128
+def $compiler_warning_level(text) = 2 -- if text =/= "private-final-method"
 def $compiler_diagnostics(S, pldiagnostic*) = S
   -- if S.COMPLETION =/= NORMAL
 def $compiler_diagnostics(S, eps) = S
   -- if S.COMPLETION = NORMAL
-def $compiler_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics($report_event(S, $compiler_event("Warning", $plmessage(PLDIAGNOSTIC "warning" text ptbytes* pllocation), pllocation), 2), pldiagnostic*)
+def $compiler_diagnostics(S, (PLDIAGNOSTIC "warning" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics($report_event(S, $compiler_event("Warning", $plmessage(PLDIAGNOSTIC "warning" text ptbytes* pllocation), pllocation), $compiler_warning_level(text)), pldiagnostic*)
   -- if S.COMPLETION = NORMAL
 def $compiler_diagnostics(S, (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation) :: pldiagnostic*) = $compiler_diagnostics($report_event(S, $compiler_event("Deprecated", $plmessage(PLDIAGNOSTIC "deprecated" text ptbytes* pllocation), pllocation), 8192), pldiagnostic*)
   -- if S.COMPLETION = NORMAL

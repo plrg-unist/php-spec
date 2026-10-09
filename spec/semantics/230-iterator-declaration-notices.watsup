@@ -99,7 +99,7 @@ dec $iterator_notice_items(pdeclnotice*) : pdeclnoticeitem*
 def $iterator_notice_items(pdeclnotice*) = (METHOD_NOTICE pdeclnotice)*
 dec $iterator_notice_level(pdeclnoticeitem) : int
 def $iterator_notice_level(METHOD_NOTICE pdeclnotice) = 8192
-def $iterator_notice_level(COMPILER_NOTICE (PLDIAGNOSTIC "warning" text ptbytes* pllocation)) = 2
+def $iterator_notice_level(COMPILER_NOTICE (PLDIAGNOSTIC "warning" text ptbytes* pllocation)) = $compiler_warning_level(text)
 def $iterator_notice_level(COMPILER_NOTICE (PLDIAGNOSTIC "deprecated" text ptbytes* pllocation)) = 8192
 dec $iterator_notice_line(pdeclnoticeitem) : int
 def $iterator_notice_line(METHOD_NOTICE pdeclnotice) = pdeclnotice.LINE
