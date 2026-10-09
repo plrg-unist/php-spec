@@ -469,6 +469,12 @@ test-semantics: build
 	python3 tests/semantics/magic_property_owned_protocol.py --group returned-throw
 	python3 tests/semantics/magic_property_owned_protocol.py --group discarded
 	python3 tests/semantics/magic_property_owned_protocol.py --group value
+	python3 tests/semantics/magic_property_integer_protocol.py --group reference-kept
+	python3 tests/semantics/magic_property_integer_protocol.py --group reference-drop
+	python3 tests/semantics/magic_property_integer_protocol.py --group value
+	python3 tests/semantics/magic_property_integer_protocol.py --group owned-reference
+	python3 tests/semantics/magic_property_integer_protocol.py --group weak-getter
+	python3 tests/semantics/magic_property_integer_protocol.py --group strict-getter
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup

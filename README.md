@@ -1420,7 +1420,16 @@ earlier CV/denied getter evidence is unchanged.
 The actual371 join over `675a2e1b5` passes strict at `d54c66076` (5.417s),
 preserving current compiler warning routing and getter interfaces. Private
 source/state cuts retain their original credit.
-Coercions, constrained returned cells, wider getter signatures, quiet/write
+Weak getter verification now accepts numeric strings parsed as an in-range
+integer. Reference returns convert the actual cell; value returns convert only
+the returned value. The getter declaration determines strictness, and readonly
+backing remains UNSET without a new type source. CV reception can observe later
+receiver-destructor changes, while an owned receiver copies the converted value
+before releasing its original temporary. [Six source agreements and six reached
+groups](coverage/semantics/magic-property-integer-review.json) pass 909
+setup-inclusive premises; the original Unsupported and fixture failure keep
+zero credit, and earlier getter evidence is unchanged.
+Wider coercions, constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers

@@ -157,7 +157,7 @@ receiver release. Public UNSET type verification uses the getter's strictness an
 performs no backing-slot write or type-source attachment. An actual mismatch
 raises the declaring property's TypeError before receiver cleanup; later cell
 repair cannot remove it, and a successful check is not repeated after cleanup.
-Verification requiring coercions or constrained returned reference cells remains
+Verification requiring wider coercions or constrained returned reference cells remains
 Unsupported.
 
 Getter throws release the receiver under the pending exception. If receiver
@@ -191,6 +191,22 @@ The [owned-getter review](../../coverage/semantics/magic-property-owned-review.j
 records seven source agreements and 1266 setup-inclusive reached premises at
 distinct retained cuts. By-reference factories, owned denied access and wider
 factory/receiver forms remain Unsupported; prior CV/denied evidence is unchanged.
+
+Weak MAGIC_GET verification also accepts numeric strings parsed as an in-range
+integer, using the getter declaration's strictness rather than the caller's.
+An unconstrained reference return converts the actual cell and retains its
+wrapper owner; a value return forwards the converted RV without changing the
+caller's cell. Exact values require no write. Readonly backing remains UNSET,
+and no property type source is attached, so repeated reads invoke the getter
+and later ordinary cell writes remain valid. CV reception can copy a cell
+changed during receiver destruction; owned reception detaches the converted
+value before BASE release. A strict rejection retains the original raw return
+and TypeError through later receiver cleanup.
+The [integer-getter review](../../coverage/semantics/magic-property-integer-review.json)
+records six source agreements and six whole reached groups/909 setup-inclusive
+premises. Fractional/exponent strings parsed as NFLOAT, lossy or callback-based
+conversions and constrained returned cells remain Unsupported; earlier getter
+evidence retains its distinct cuts.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

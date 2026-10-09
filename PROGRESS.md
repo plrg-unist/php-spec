@@ -2168,7 +2168,18 @@ setup-inclusive premises across `e293c490f`, `54e85fba1`, `a2a6f4aae` and
 The actual371 join over `675a2e1b5` passes strict at `d54c66076` (5.417s,
 state credit0). Current compiler severity routing is retained; these getter
 sources have no private-final diagnostic. Private cuts and failures are unchanged.
-Coercions, constrained returned cells, wider signatures, quiet/write/recursive
+Weak MAGIC_GET verification now converts numeric strings parsed as an in-range
+integer. An unconstrained reference updates its real cell; a value return
+forwards only the converted RV. Getter-declaration strictness wins over caller
+strictness, and readonly backing stays UNSET without a new type source. CV
+reception observes later cell changes, while owned reception detaches before
+BASE release. Native6 and the model Unsupported baseline retain separate cuts;
+strict371/source6 and four groups/598 pass at `5324f2a73`. The two cross-unit
+groups pass 180/131 at `28f289817` after their checked literal-eval prelude,
+bringing the total to 909. Original preparation and whole-state failures retain
+zero credit; earlier getter cuts are unchanged.
+[Integer-getter ledger](coverage/semantics/magic-property-integer-review.json).
+Wider coercions, constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
 held278/279 add no dependency or credit.
