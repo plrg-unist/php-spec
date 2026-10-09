@@ -354,7 +354,11 @@ Literal `->__invoke(callback: ...)` now preserves the selected factory when
 arguments clear its caller cell. Invocation USER scope controls private access;
 errors retain both the API and Closure invoke frames. A separate variable control
 and four explicit sources agree on 368-module cuts, with 552 state premises.
-First-class invoke aliases, wider factory targets and original 7 remain open.
+Literal first-class `->__invoke(...)` aliases now reuse the original factory
+identity and creation authority. The selected call retains it as original and alias
+caller cells retire; the returned Closure owns its receiver independently. A REAL
+control and repaired factory source agree on separate 370-module cuts, with 610
+factory premises. Wider invoke/factory forms and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

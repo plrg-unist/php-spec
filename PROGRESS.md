@@ -2258,6 +2258,15 @@ original interpreter failure remain zero credit. Maintained source/fixture bytes
 are unchanged; relocation adds no runtime renewal. Original 7 stays OPEN timeout0.
 Actual-parent algorithmic compilation passes at b6022a52 over 7cb33cde with
 370 modules; pointwise constructor/COMP/property review renews no source/state cuts.
+Literal first-class factory `->__invoke(...)` now forwards to existing identity
+capture without allocating an alias object or changing the factory creation site.
+The real Closure identity/by-reference control agrees at e2ef/370; the factory
+witness agrees at 3cb295d1d/370 after original and alias caller-cell retirement.
+Its 610 premises (550 genuine/derived, 60 constructed) preserve exact task/tail,
+arena identity, CONFIG owner retention, retired factory provenance and independent
+receiver/RHS/write/retirement. The interpreter failure and fixture variable collision
+remain zero credit. The maintained renderer is byte-identical to the accepted
+fixture; wider computed/nullsafe captures and original 7's CLI60 timeout stay open.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

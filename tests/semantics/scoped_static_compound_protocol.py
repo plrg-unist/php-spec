@@ -1043,9 +1043,15 @@ CASES += [('stringable-name-cold-double-throw', ['stringable-property-name-cold-
 CASES += [('stringable-name-from-callable-instance-selection', ['stringable-name-from-callable-instance-byref'])]
 CASES += [('stringable-name-captured-factory-selection', ['stringable-name-captured-factory-instance-byref'])]
 CASES += [('stringable-name-explicit-factory-invoke', ['stringable-name-explicit-factory-invoke-byref'])]
+CASES += [('stringable-name-factory-invoke-alias', ['stringable-name-factory-invoke-alias-byref'])]
 
 
 def render(name, sources):
+    if name == 'stringable-name-factory-invoke-alias':
+        from from_callable_factory_protocol import render_factory_alias
+        row = sources['stringable-name-factory-invoke-alias-byref']
+        text, checks, _, _ = render_factory_alias(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
     if name == 'stringable-name-explicit-factory-invoke':
         from from_callable_factory_protocol import render_factory_invoke
         row = sources['stringable-name-explicit-factory-invoke-byref']
