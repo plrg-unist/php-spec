@@ -26,8 +26,8 @@ without re-evaluating its body.
 The [replay review](../../coverage/semantics/reference-return-replay-review.json)
 binds ten exact replay originals, 14 current/saved source-reached fixtures with 954
 assertions and five affected return controls at private360. Actual361 compilation
-has a distinct compiler-only cut. CV/compiled-CONST switch recovery, physical-array
-owners, replay from an already active finalizer,
+has a distinct compiler-only cut. Physical-array owners, replay from an already
+active finalizer,
 protected temporary/NULL Notice timing and object conversion remain required.
 
 Source-authenticated while/do/for tails resume remaining body, update and
@@ -37,6 +37,18 @@ in named functions, methods and closures. The [scalar review](../../coverage/sem
 binds 14 exact originals and 15 current/saved fixtures with 1,102 assertions at
 retained private361 cuts. Actual361 over `cf9411d` passes strict compilation at
 `c5579f5d`; fixture typing and label-encoding failures keep zero affected credit.
+
+Source-authenticated CV/compiled-CONST switches restore remaining selected-case
+work and fallthrough without repeating subject/case evaluation. END/PHASE are
+paired source metadata with no operand or heap roots; end, jump and abrupt
+transfer remove both. Region admission preserves enclosing TRY/selected-CATCH
+scope in current and saved callers, including same-catch goto before restoration.
+The [switch review](../../coverage/semantics/reference-return-switch-replay-review.json)
+binds seven preserved originals and 14 reached fixtures/1,339 assertions at
+private361 cuts, plus separate actual-parent strict compilation. The original
+selected-catch descriptor failure remains zero-credit for that affected fixture.
+Runtime VAR/TMP physical owners, active-finalizer replay and NULL/186 paths remain
+required.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.

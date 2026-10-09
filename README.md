@@ -478,8 +478,13 @@ Source-only [scalar-loop recovery](coverage/semantics/reference-return-scalar-re
 preserves initialization and loop steps through caught break/continue/goto in
 named, method and closure frames. Fourteen originals and 15 reached fixtures
 with 1,102 assertions pass; actual361 compilation has a separate cut.
-CV/compiled-CONST switches and physical-array owner recovery, active-finalizer
-replay, protected temporary/NULL Notice timing and Stringable conversion remain open.
+[CV/compiled-CONST switch recovery](coverage/semantics/reference-return-switch-replay-review.json)
+now preserves selected-case remainder, fallthrough and catch scope without
+re-evaluating the subject or creating a freeable owner. Seven preserved originals
+and 14 current/saved fixtures with 1,339 assertions pass at retained private361
+cuts; actual-parent strict compilation remains separate. Runtime VAR/TMP array
+owners, active-finalizer replay, protected temporary/NULL Notice timing and
+Stringable reference conversion remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

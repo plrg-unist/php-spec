@@ -48,9 +48,14 @@ The [scalar continuation increment](../../coverage/semantics/reference-return-sc
 also recovers while/do/for tails and caught break/continue/goto through source
 contexts: 14 originals and 15 reached fixtures with 1,102 assertions pass at
 separate private361 cuts; actual361 strict compilation has a distinct cut.
-CV/compiled-CONST switches and physical-array owner recovery, active-finalizer
-replay, protected temporary/NULL Notice timing and by-reference Stringable
-conversion remain required.
+The [no-FREE switch increment](../../coverage/semantics/reference-return-switch-replay-review.json)
+recovers selected-case remainder and fallthrough for CV/compiled-CONST subjects
+without repeating their evaluation. Adjacent END/PHASE metadata owns no payload
+and retires together on end, jump or incoming transfer. Seven preserved originals
+and 14 current/saved fixtures with 1,339 assertions pass at retained private361
+cuts; actual-parent compilation is separate. Runtime VAR/TMP array owners,
+active-finalizer replay, protected temporary/NULL Notice timing and by-reference
+Stringable conversion remain required.
 
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;

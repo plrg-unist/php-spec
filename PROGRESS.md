@@ -49,8 +49,8 @@ Four preserved affected return controls and one core-only terminal weak-conversi
 control agree. The 361-module composition over `5b7452edd` passes separate strict
 compilation at `2c3dbf30`.
 The old prediction, pre-evaluation declaration failure and Unsupported `gettype`
-observer remain zero-credit at their original cuts. CV/compiled-CONST switch
-recovery, physical-array owners, active-finalizer replay,
+observer remain zero-credit at their original cuts. Physical-array owners,
+active-finalizer replay,
 protected temporary/NULL Notice timing and Stringable reference conversion remain
 required. [Replay review](coverage/semantics/reference-return-replay-review.json).
 
@@ -61,9 +61,19 @@ agree at retained private361 cuts; 15 reached current/saved fixtures pass 1,102
 assertions (13/973 at51eb, corrected label/direct2/129 at89e). The actual361
 composition over `cf9411d` passes strict compilation at `c5579f5d` (4.878s).
 Fixture elaboration and label-finder failures retain zero affected credit.
-CV/compiled-CONST switches, physical-array owners, active-finalizer replay and
-protected temporary/NULL Notice/Stringable paths remain required.
+Physical-array owners, active-finalizer replay and protected temporary/NULL
+Notice/Stringable paths remain required.
 [Scalar replay review](coverage/semantics/reference-return-scalar-replay-review.json).
+
+Source-authenticated CV/compiled-CONST switch tails now recover selected-case
+remainder and fallthrough without repeating subject or case evaluation. Paired
+END/PHASE metadata adds no payload roots or freeable owner and preserves catch
+scope through current/saved frames, goto and abrupt transfer. Seven preserved
+originals and 14 reached fixtures/1,339 assertions pass at retained private361
+cuts; actual361 over `dd6478b` passes strict compilation at `3c06eba5` (4.880s).
+The selected-catch admission failure keeps zero affected credit at its original cut. Runtime VAR/TMP
+array owners, active-finalizer replay and protected NULL/186 paths remain open.
+[Switch replay review](coverage/semantics/reference-return-switch-replay-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.

@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "status": "accepted_bounded_no_free_switch_replay",
+  "target": "PHP 8.5.10 CLI NTS64/profile30719",
+  "scope": "Source-authenticated CV/compiled-CONST switch remainder and fallthrough after caught delayed reference rejection; no runtime freeable subject owner.",
+  "engine": {
+    "commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "basis": "Zend zend_begin_loop and zend_compile_switch emit no runtime FREE for CV/CONST, and delayed VERIFY_RETURN_TYPE exception replay retains its separate accepted ledger."
+  },
+  "behavior": [
+    "Do not repeat subject/case evaluation; retain compiled boolean dispatch and current callable source scope.",
+    "Paired SWITCH_REPLAY_END/PHASE hold source identity only, add no heap roots, and retire together on END/jump/incoming transfer.",
+    "Authenticate enclosing TRY/selected-CATCH region, same-catch goto before AFTER restoration, current saved callers and source category.",
+    "Preserve reference-return captured-original/checked writer arities and ordinary error retirement."
+  ],
+  "source": {
+    "agreements": 7,
+    "catalogue": "tests/semantics/reference_replay_switch_cases.json",
+    "native": ".tools/reference-replay-switch-draft/.tools/switch-replay-source-native-belojvym/report.json",
+    "result": "All seven exact normal stdout/stderr/exit0; original native bytes reused. First six remain at c18; seventh is renewed after source-derived goto phase repair.",
+    "goto_bridge": {
+      "revision": "996cbd2d2fc754e6fed73e95ed7f6a01bd8b7ba6",
+      "agreements": 1,
+      "raw": ".tools/returns-verify20-switch/model-8784e4qr/report.json"
+    },
+    "first6": {
+      "agreements": 6,
+      "revision": "c18f595d159351350d51183a0d00b82812f04d83",
+      "model": ".tools/returns-verify20-switch/model-fckspyj1/report.json"
+    }
+  },
+  "state": {
+    "producer": "tests/semantics/reference_replay_switch_state.py",
+    "fixtures": 14,
+    "assertions": 1339,
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "explicit --sl/modules361/jobs1/cap45 per fixture",
+    "first5": {
+      "revision": "02a342ff900912692ead072e760e64707ac435eb",
+      "fixtures": 5,
+      "assertions": 524,
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-wave-qaj73crz/report.json"
+    },
+    "next6": {
+      "revision": "117fd7ade9c3565bff3afafb9d077411cd4f3a11",
+      "fixtures": 6,
+      "assertions": 580,
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-wave-rcrdkwf_/report.json"
+    },
+    "manifest": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-v3/manifest.json",
+    "manifest_sha256": "d2e676c8a151639a47ef4cd23e8fb372c22f659feaa7173ad4bb6c1242ffc73e",
+    "result": "All14 true/empty stderr/exit0, stable and reaped. Genuine BUDGET frontiers, saved selected-catch switch pair and distinct saved goto REF-only phase; malformed current/saved pairs, zero roots, END/discard transfer ownership, pause/resume equality and terminal alias/error cleanup.",
+    "saved1": {
+      "revision": "8c50a3b4038b065b4984ae4dee86476835594022",
+      "fixtures": 1,
+      "assertions": 96,
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-wave-ky_s6et0/report.json"
+    },
+    "last2": {
+      "revision": "996cbd2d2fc754e6fed73e95ed7f6a01bd8b7ba6",
+      "fixtures": 2,
+      "assertions": 139,
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-wave-o4n0r34g/report.json"
+    }
+  },
+  "private_compilers": [
+    {
+      "revision": "c18f595d159351350d51183a0d00b82812f04d83",
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/returns-switch-current-compiler-l7npxw82/report.json"
+    },
+    {
+      "revision": "117fd7ade9c3565bff3afafb9d077411cd4f3a11",
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/returns-switch-current-compiler-j7061b9k/report.json"
+    },
+    {
+      "revision": "996cbd2d2fc754e6fed73e95ed7f6a01bd8b7ba6",
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/returns-switch-current-compiler-zcs6vyxf/report.json"
+    }
+  ],
+  "actual_parent_compiler": {
+    "revision": "3c06eba5ae196b59b89ee79601e7a58a0e4b1296",
+    "parent": "dd6478b726dacaf840e5636dcc935b7d90c06073",
+    "modules": 361,
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "mode": "SL/cache=false/det=true ordered parse/elaborate/analysis/structure/initialization",
+    "command": "python3 .tools/returns-switch20/run-compiler.py dd6478b726dacaf840e5636dcc935b7d90c06073",
+    "cwd": ".tools/returns-replay-switch-publication-20",
+    "raw": ".tools/returns-replay-switch-publication-20/.tools/returns-switch20/returns-switch-current-compiler-_bfxse98/report.json",
+    "seconds": 4.880491018295288,
+    "exit": 0,
+    "pid": 382513,
+    "group_after": [],
+    "stable": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "interaction_review": "129/151/156/catalogue/producer identical to996c;30 adds only the two switch task variants while preserving upstream vocabulary. Promotion/Override and named PROPERTY hooks absent; earlier Aggregate/Fiber/Generator/GC hooks inactive and receiver/lookup defaults equivalent. Retained restored-goto AFTER cut bridged by renewed seventh and direct current/saved/whole fixtures."
+  },
+  "preserved_failures": [
+    {
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-wave-qaj73crz/report.json",
+      "failed_fixture_credit": 0,
+      "reason": "After first5/524 passes, selected-catch reconstructed END descriptor origin invalid; one-line source-region admission repaired at117fd7, keeping site/pair/owner authentication."
+    },
+    {
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-wave-rcrdkwf_/report.json",
+      "failed_fixture_credit": 0,
+      "reason": "After next6/580 passes, fixture incorrectly required saved g callsite origin to be a catch header; producer8c50 proves actual CALLSITE and later paired ORIGIN_RETURN(selectedCatch)."
+    },
+    {
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-wave-ky_s6et0/report.json",
+      "failed_fixture_credit": 0,
+      "reason": "After corrected saved1/96 passes, pending goto fixture repeated a direct catch-header assumption; producer550d proves body source paths and ordered header transition for current goto and saved g."
+    },
+    {
+      "raw": ".tools/returns-replay-switch-current-20/.tools/returns-switch20/state-wave-wutd6awp/report.json",
+      "failed_fixture_credit": 0,
+      "reason": "Authored goto fixture reaches real transition, then S_next has invalid descriptor: reused REF suffix lost catch-header origin restoration. Source-derived catch hook repairs that transition at996cbd."
+    }
+  ],
+  "reviewer": "returns_review_20",
+  "verifier": "returns_verify_20; temporary gpt-6-sol/max assignment remains active",
+  "intentional_divergence": false,
+  "remaining": [
+    "Runtime VAR/TMP physical-array first-release/COW and value-foreach cursor recovery under the separately agreed conservative domain",
+    "RW reuse, sole-owner/dangling, object/destructor and consumed active-finalizer domains",
+    "Protected temporary/NULL Notice timing and Stringable reference conversion186",
+    "Complete resumed returns verification and complete PHP core"
+  ],
+  "recovery": "Use archived model-fckspyj1 parsed/checked/request packets with the frozen550d producer (--raw/--output), then the pinned b57 runner in explicit --sl and modules.json order. Raw archives remain ignored; source7 and earlier scalar/replay cuts retain their identities; seventh goto is separately bridged after runtime repair."
+}
