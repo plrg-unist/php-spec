@@ -640,8 +640,12 @@ constant value and original VALUE Notice; two originals agree and three reached
 current/saved fixtures pass 367 assertions. A bounded
 [computed string VALUE continuation](coverage/semantics/reference-return-consumed-value-review.json) now resumes cleared NULL
 without repeating its call. Its pending VALUE Notice survives the public pause;
-the repeated check rejects before delivery and the next finalizer return selects
+the nonnullable check rejects before delivery and the next finalizer return selects
 the new alias. One original and three reached current/saved fixtures/386
+assertions pass. With the checked nullable string mask, the same cleared NULL
+passes the repeated check, delivers one original-line Notice and returns a fresh
+[caller cell](coverage/semantics/reference-return-consumed-value-nullable-review.json) distinct from x and y, without repeating the call
+or outer finalizer. One nullable original and three reached fixtures/381
 assertions pass. Other VALUE signatures/layouts, general CONST, other NULL and
 multiple-active histories, wider
 Stringable consumers and owner domains remain open.

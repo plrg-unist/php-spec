@@ -406,15 +406,19 @@ current/saved fixtures pass 367 assertions at `459978fe0`.
 Actual 371 over `05b0a4db4` passes strict at `c93d4cba4` (5.339s, zero application evaluations).
 [Consumed-NULL review](coverage/semantics/reference-return-consumed-null-review.json).
 
-A consumed computed string return now resumes cleared NULL after a locally
-caught inner rejection. This bounded source concatenates a named zero-argument
-call with an empty string and declares nonnullable string. The source cursor
-retains no old payload and never repeats the call. An original VALUE Notice
-remains pending at the public pause; the repeated check rejects NULL before
-delivery, reenters the outer finalizer, and later returns the selected y alias.
-One original agrees at `bf4a41a2d`; three reached current/saved
-fixtures pass 386 assertions at `e397b1d3c`. Actual 372 over `81a5fd72d` passes strict at `68bb9e555` (5.394s, zero application evaluations).
-[Computed-VALUE review](coverage/semantics/reference-return-consumed-value-review.json).
+Consumed computed string returns resume cleared NULL after a locally caught
+inner rejection. The bounded source concatenates a named zero-argument call
+with an empty string; its cursor retains no old payload and never repeats
+the call. One original VALUE Notice remains pending at the public pause.
+Nonnullable string rejects NULL before delivery, reenters the outer finalizer
+and later returns the selected y alias (source1/state3-386 in the
+[computed-VALUE review](coverage/semantics/reference-return-consumed-value-review.json)).
+The checked ordered string|null mask instead accepts NULL, delivers one
+original-line Notice and returns a fresh caller cell distinct from x and y,
+with no second finalizer entry. One nullable original agrees at `dffae89b0`;
+three reached current/saved fixtures pass 381 assertions at `4e6396234`.
+Actual 372 over `c2e06b6d7` passes strict at `2094ee751` (5.562s, zero application evaluations).
+[Nullable computed-VALUE review](coverage/semantics/reference-return-consumed-value-nullable-review.json).
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
