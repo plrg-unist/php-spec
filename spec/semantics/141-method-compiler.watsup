@@ -40,6 +40,9 @@ dec $ppmethod_request(ppstate, ppstate, pcpath, int, ptbytes, phpType47, metadat
 dec $ppmethod_ready(ppstate, ppstate, pcpath, int, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, expression) : ppmembers
 dec $ppmethod_parameter(ppstate, ppstate, pcpath, int, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, psoneresult) : ppmembers
 dec $pppromotion_parameter(ppstate, pcpath, int, psraw, ppropertydesc*, pchheader) : ppropertywork
+dec $pppromotion_override_unbound(ppstate, pchheader, ppropertydesc*, pmethoddesc*) : ppstate
+dec $pppromotion_override_unbound_properties(ppstate, pchheader, ppropertydesc*) : ppstate
+dec $pppromotion_override_source(ppstate, pchheader, ppropertydesc) : bool
 dec $ppmethod_finish(ppstate, ppstate, pcpath, int, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader) : ppmembers
 
 dec $pmethod_user(pmethoddesc, pclassdesc, ptbytes) : pmmethod
@@ -528,8 +531,27 @@ def $ppdispatch(P, pcpath, NExprClassConstFetch name (NIdentifier (BYTES text_me
   -- if $pnclassresolve(P.ENV, name) = PNRESOLVED pnreference
   -- if P_named = $ppclass_name(P, pcpath ++ [PCFIELD 0], PNRESOLVED pnreference)
 
+;; Zend also links simple no-parent classes while compiling conditional and
+;; function-local declarations. Their missing Override error precedes execution.
+def $pppromotion_override_unbound(P, pchheader, ppropertydesc*, pmethoddesc*) = $pppromotion_override_unbound_properties(P, pchheader, ppropertydesc*)
+  -- if P.COMPLETION = PPCNORMAL /\ pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ $ppclass_interfaces(pchheader.INTERFACES, pmethoddesc*) = eps /\ ~$pptrait_body_uses(pchheader.BODY)
+def $pppromotion_override_unbound(P, pchheader, ppropertydesc*, pmethoddesc*) = P -- otherwise
+def $pppromotion_override_unbound_properties(P, pchheader, eps) = P
+def $pppromotion_override_unbound_properties(P, pchheader, ppropertydesc :: ppropertydesc_tail*) = $ppconstant_error(P, pchheader.NAME ++ $ptascii("::$") ++ ppropertydesc.NAME ++ $ptascii(" has #[\\Override] attribute, but no matching parent property exists"), P.LOCATION.LINE)
+  -- if $pppromotion_override_source(P, pchheader, ppropertydesc)
+def $pppromotion_override_unbound_properties(P, pchheader, ppropertydesc :: ppropertydesc_tail*) = $pppromotion_override_unbound_properties(P, pchheader, ppropertydesc_tail*)
+  -- if ~$pppromotion_override_source(P, pchheader, ppropertydesc)
+def $pppromotion_override_source(P, pchheader, ppropertydesc) = true
+  -- if $origin_node([P.FOLD.SOURCE], ppropertydesc.ORIGIN) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
+  -- if $pslower(NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata) = PSINPUT psraw
+  -- if psraw.FLAGS =/= 0 /\ psraw.EXTRA = PSPARAMETERATTRIBUTES phpType14
+  -- if psraw.NAME = ppropertydesc.NAME /\ psraw.LINE = ppropertydesc.LINE
+  -- if $pspromotion_override_attribute($ppproperty_context(P, pchheader, psraw.NAME, psraw.LINE), phpType14)
+def $pppromotion_override_source(P, pchheader, ppropertydesc) = false -- otherwise
+
+
 ;; Property-only and empty class paths remain in 135/133; mixed bodies are ordered here.
-def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pcpath, pchheader, ppropertydesc*, pmethoddesc*)
+def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_properties_root($pppromotion_override_unbound(P_next[.LOCATION = P_header.LOCATION][.FOLD = P_next.FOLD[.VALUE = eps]], pchheader, ppropertydesc*, pmethoddesc*), pcpath, pchheader, ppropertydesc*, pmethoddesc*)
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ $ppmethod_body(pchheader.BODY)
   -- if P_header = $ppclass_diagnostics(P, pchdiagnostic*)
   -- if pchheader.BODY = SEQUENCE statement*
