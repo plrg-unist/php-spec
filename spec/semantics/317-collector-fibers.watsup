@@ -552,7 +552,8 @@ def $gc_source(S) = true
   -- if $gc_worker_guard_at(S) =/= eps
 def $gc_source(S) = true
   -- if S.CURRENT = eps
-  -- if S.GC.PLAN = (pgcplan) /\ $gc_overlap_plan(pgcplan)
+  -- if S.GC.PLAN = (pgcplan)
+  -- if $gc_overlap_plan(pgcplan)
   -- if $gc_plan_live(S, pgcplan) /\ $gc_worker_overlap_image(S, pgcplan)
   -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
