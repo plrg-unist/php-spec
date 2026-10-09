@@ -402,8 +402,12 @@ def $fiber_traversal_finish(S, pfibertraversal, ptask*) = $fiber_start_unpack_re
 def $fiber_traversal_finish_state(S, pfibertraversal, ptask*) = S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = $fiber_start_unpack_args(pfibertraversal.CAPTURE, pfibertraversal.START[.INDEX = $(pfibertraversal.START.INDEX + 1)][.SENT = pfibertraversal.SENT][.PACKS = pfibertraversal.START.PACKS ++ [FIBER_TRAVERSABLE_PACK ptraversablepack]]) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if ptraversablepack = {INDEX pfibertraversal.START.INDEX, SITE pfibertraversal.SITE, LINE pfibertraversal.LINE, OBJECT pfibertraversal.OBJECT, ITEMS pfibertraversal.ITEMS}
 def $fiber_traversal_key(PINT z) = (KINT z)
-def $fiber_traversal_key(PSTRING ptbytes) = (KINT z) -- if $string_key(ptbytes) = INTEGERKEY z
-def $fiber_traversal_key(PSTRING ptbytes) = (KSTRING ptbytes) -- if $string_key(ptbytes) = STRINGKEY
+def $fiber_traversal_key(pvalue) = (KINT z)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if $string_key(ptbytes) = INTEGERKEY z
+def $fiber_traversal_key(pvalue) = (KSTRING ptbytes)
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if $string_key(ptbytes) = STRINGKEY
 def $fiber_traversal_key(pvalue) = eps -- otherwise
 def $fiber_traversal_key_valid(pfibertraversal, pvalue) = true
   -- if $fiber_traversal_key(pvalue) = (KINT z)
