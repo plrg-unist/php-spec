@@ -612,8 +612,11 @@ rule PhpStep/property-base: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PC
   -- if S.TODO = (DIM_PREP (NExprPropertyFetch expression phpType20 metadata)) :: ptask_tail*
   -- if ~$ppnullsafe(NExprPropertyFetch expression phpType20 metadata)
   -- if ~$property_pending_receiver(S, expression)
+dec $property_undefined_reference_receiver(pstate) : bool
+def $property_undefined_reference_receiver(S) = false -- otherwise
 rule PhpStep/property-base-static: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_PROPERTY pvalue $base64(text)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text) metadata_name) z) :: ptask_tail*
+  -- if ~$property_undefined_reference_receiver(S)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
