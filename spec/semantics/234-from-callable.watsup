@@ -28,14 +28,24 @@ dec $from_getter_kind(pstate, nat, ptbytes) : text?
 dec $from_compare(pstate, nat, nat) : bool
 dec $from_object(pobject) : bool
 dec $from_child_valid(pstate, porigin, pclosurescope) : bool
+dec $from_factory_site(pstate, porigin) : bool
+dec $from_factory_capture(pstate, phpType19, ptbytes, phpType7*, int) : bool
+dec $from_factory_saved(pstate, nat) : bool
+dec $from_factory_live(pstate, nat) : bool
+dec $from_factory_call_site(pstate, porigin) : bool
+dec $from_factory_owner(pstate, pconfigcall) : nat?
+dec $from_source_valid(pstate, pfrommethod) : bool
 
-def $intrinsic_name(INTRINSIC_FROM_CALLABLE) = $ptascii("Closure::fromCallable")
-def $config_kind(INTRINSIC_FROM_CALLABLE) = true
-def $config_required(INTRINSIC_FROM_CALLABLE) = 1
-def $config_parameter(INTRINSIC_FROM_CALLABLE, ptbytes) = (0) -- if ptbytes = $ptascii("callback")
-def $config_parameter_name(INTRINSIC_FROM_CALLABLE, 0) = $ptascii("callback")
+def $from_kind(INTRINSIC_FROM_CALLABLE) = true
+def $from_kind(INTRINSIC_FROM_CALLABLE_FACTORY) = true
+def $from_kind(pintrinsic) = false -- otherwise
+def $intrinsic_name(pintrinsic) = $ptascii("Closure::fromCallable") -- if $from_kind(pintrinsic)
+def $config_kind(pintrinsic) = true -- if $from_kind(pintrinsic)
+def $config_required(pintrinsic) = 1 -- if $from_kind(pintrinsic)
+def $config_parameter(pintrinsic, ptbytes) = (0) -- if $from_kind(pintrinsic) -- if ptbytes = $ptascii("callback")
+def $config_parameter_name(pintrinsic, 0) = $ptascii("callback") -- if $from_kind(pintrinsic)
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("fromCallable"), CLASS ($ptascii("Closure")), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
 
 def $from_static_class(S, PORIGIN n_unit pcpath, phpType19) = true
   -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
@@ -69,6 +79,45 @@ def $from_site(S, porigin) = true
   -- if ~$ppfirstclass(phpType7*)
 def $from_site(S, porigin) = false -- otherwise
 
+;; A captured internal factory records its fixed creation occurrence, not the
+;; USER scope that will select a callback when the factory is invoked.
+def $from_factory_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $from_static_class(S, porigin, phpType19)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NIdentifier (BYTES text_name) metadata_name)
+  -- if $ptlc($base64(text_name)) = $ptascii("fromcallable")
+  -- if $ppfirstclass(phpType7*)
+def $from_factory_site(S, porigin) = false -- otherwise
+def $from_factory_capture(S, phpType19, ptbytes, phpType7*, z) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* z) :: ptask_tail*
+  -- if $ptlc(ptbytes) = $ptascii("fromcallable")
+  -- if $from_factory_site(S, porigin)
+  -- if $call_task_valid(S, SCOPED_CLASS phpType19 phpType20 phpType7* z)
+def $from_factory_capture(S, phpType19, ptbytes, phpType7*, z) = false -- otherwise
+def $from_factory_saved(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+  -- if $from_factory_site(S, porigin)
+def $from_factory_saved(S, n) = false -- otherwise
+def $from_factory_live(S, n) = ((HOBJECT n) <- S.ALLOCATIONS /\ $from_factory_saved(S, n))
+def $from_factory_call_site(S, porigin) = ($dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps)
+def $from_factory_owner(S, pconfigcall) = (n)
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if pconfigcall.OWNER = (n)
+  -- if $from_factory_saved(S, n)
+def $from_factory_owner(S, pconfigcall) = eps -- otherwise
+def $from_source_valid(S, pfrommethod) = $from_site(S, pfrommethod.SITE)
+  -- if pfrommethod.FACTORY = eps
+def $from_source_valid(S, pfrommethod) = true
+  -- if pfrommethod.FACTORY = (n)
+  -- if $from_factory_saved(S, n)
+  -- if $from_factory_call_site(S, pfrommethod.SITE)
+def $from_source_valid(S, pfrommethod) = false -- otherwise
+
 def $exit_callable_arguments(S, porigin) = PCALLARGUMENTS phpType7* 2
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
   -- if $from_site(S, porigin) \/ $closure_current_site(S, porigin) \/ $closure_binding_api_site(S, porigin)
@@ -84,6 +133,12 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.OWNER = (n)
   -- if $closure_static_api_owner_valid(S, n)
   -- if $from_method_site(S, pconfigcall.SITE)
+def $config_selected_valid(S, pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if pconfigcall.SELECTION = eps
+  -- if pconfigcall.OWNER = (n)
+  -- if $from_factory_live(S, n)
+  -- if $from_factory_call_site(S, pconfigcall.SITE)
 
 def $from_start(S, porigin, n_owner?, z) = S[.TODO = [CONFIG_ARGS {SITE porigin, KIND INTRINSIC_FROM_CALLABLE, INDEX 0, SENT eps, NAMED false, OWNER n_owner?, SELECTION eps, LINE z, PACKS eps}, METHOD_RESULT] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -97,6 +152,13 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, 
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
   -- if $ptlc(ptbytes_method) = $ptascii("fromcallable")
   -- if $ppfirstclass(phpType7*)
+  -- if ~$from_factory_capture(S, phpType19, ptbytes_method, phpType7*, z)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = S[.OBJECTS = S.OBJECTS ++ [FROMCALLABLEFACTORY porigin]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
+  -- if $from_factory_capture(S, phpType19, ptbytes_method, phpType7*, z)
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if n = |S.OBJECTS|
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING ($ptascii("Closure")))]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
@@ -138,11 +200,11 @@ def $from_identity(S, pvalue) = eps -- otherwise
 
 rule PhpStep/from-callable-invoke: S ~> $config_receive(S, pconfigcall)
   -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
   -- if $config_invoke_valid(S, pconfigcall)
 
 def $config_receive(S, pconfigcall) = $from_receive(S, pconfigcall, pvalue)
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue)]
 def $from_done(S, n) = S[.TODO = ptask_tail*][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
@@ -155,8 +217,12 @@ def $from_receive(S, pconfigcall, PARRAY n) = $api_begin(S, CONFIG_INVOKE pconfi
   -- if $error_handler_array_invalid(S, n) = eps
   -- if $from_getter(S, n) = eps
 def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done(S[.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n_receiver pgettermethod text_base pconfigcall.SITE]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if $from_getter(S, n_array) = ((n_receiver, pgettermethod, text_base))
   -- if n = |S.OBJECTS|
+def $from_receive(S, pconfigcall, PARRAY n_array) = S[.COMPLETION = UNSUPPORTED "captured Closure::fromCallable factory getter callback"]
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if $from_getter(S, n_array) =/= eps
 def $from_receive(S, pconfigcall, pvalue_string) = $api_begin(S, CONFIG_INVOKE pconfigcall, pvalue_string)
   -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if ~$fiber_factory_candidate(S, pvalue_string)
@@ -180,11 +246,11 @@ def $from_receive(S, pconfigcall, pvalue) = $from_finish(S, pconfigcall, pvalue,
 
 def $api_source_valid(S, papiquery) = true
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
   -- if $config_invoke_valid(S, pconfigcall)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN papiquery.VALUE)]
 def $api_finish(S, CONFIG_INVOKE pconfigcall, pvalue, phandlerresolution) = $from_finish(S, pconfigcall, pvalue, phandlerresolution)
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
 
 def $from_finish(S, pconfigcall, pvalue, HANDLERRESOLVED (API_METHOD_TARGET papiquery porigin ptbytes b)) = $from_allocate(S, $from_method(S, papiquery, porigin, ptbytes, b, false))
 def $from_finish(S, pconfigcall, pvalue, HANDLERINVALID ptbytes) = $config_error(S, pconfigcall, "TypeError", $ptascii("Failed to create closure from callable: ") ++ ptbytes)
@@ -193,14 +259,14 @@ def $from_finish(S, pconfigcall, pvalue, phandlerresolution) = S[.COMPLETION = U
 
 def $api_getter_scope(papiquery) = eps
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
 def $api_getter_denied(S, papiquery, pmethoddesc, ptbytes) = $ptascii("Call to ") ++ $method_visibility_name(pmethoddesc.VISIBILITY) ++ $ptascii(" method ") ++ pclassdesc.NAME ++ $ptascii("::") ++ $c_string(ptbytes) ++ $ptascii("() from scope Closure")
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc)
 def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $throwable_previous(S_new, n_new, n_old)
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
   -- if $class_at(S.CLASSES, papiquery.CLASS.REQUESTED) = (pclassdesc)
   -- if S_old = $throwable_materialize($config_error(S, pconfigcall, "Error", ptbytes))
   -- if S_old.COMPLETION = THROWING n_old
@@ -211,7 +277,7 @@ def $api_throw(S, papiquery, ptbytes_method, ptbytes) = $throwable_previous(S_ne
 ;; This hook runs after the failed handler frame/finally and registry restoration.
 def $error_read_discard(S, API_CALLABLE_RESULT papiquery n) = $throwable_begin($throwable_previous(S_new, n_new, n_old)[.TODO = ptask_tail*])
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
   -- if S.TODO = (THROW_SEARCH n_old) :: ptask_tail*
   -- if S_new = $throwable_materialize($config_error(S, pconfigcall, "TypeError", $ptascii("Failed to create closure from callable")))
   -- if S_new.COMPLETION = THROWING n_new
@@ -219,13 +285,13 @@ def $error_context_trigger(S, pcallcontext) = (pconfigcall)
   -- if $error_context_call(S, pcallcontext) = (perrorcall)
   -- if perrorcall.RESUME = API_CALLABLE_RESULT papiquery n
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
 def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
+  -- if $from_kind(pconfigcall.KIND)
 
 ;; Frozen history is metadata. Static selection may remember an object that has
 ;; retired; an entered nonstatic closure must still own its actual receiver.
-def $from_method(S, papiquery, porigin, ptbytes, b_static, b_invoke) = {SITE pconfigcall.SITE, INPUT papiquery.INPUT, METHOD ptbytes_live, SCOPE papiquery.SCOPE, CALLED papiquery.CALLED, THIS papiquery.THIS, CLASS papiquery.CLASS, OUTER papiquery.OUTER, ORIGINAL papiquery.ORIGINAL, PREFIX papiquery.PREFIX, WIDTH papiquery.WIDTH, FUNCTION porigin, NAME ptbytes, STATIC b_static, CREATION $method_capture_current(S, pconfigcall.SITE), ARRAY $is_array_value(papiquery.VALUE), INVOKE b_invoke}
+def $from_method(S, papiquery, porigin, ptbytes, b_static, b_invoke) = {SITE pconfigcall.SITE, FACTORY $from_factory_owner(S, pconfigcall), INPUT papiquery.INPUT, METHOD ptbytes_live, SCOPE papiquery.SCOPE, CALLED papiquery.CALLED, THIS papiquery.THIS, CLASS papiquery.CLASS, OUTER papiquery.OUTER, ORIGINAL papiquery.ORIGINAL, PREFIX papiquery.PREFIX, WIDTH papiquery.WIDTH, FUNCTION porigin, NAME ptbytes, STATIC b_static, CREATION $method_capture_current(S, pconfigcall.SITE), ARRAY $is_array_value(papiquery.VALUE), INVOKE b_invoke}
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
   -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes_live)
 def $from_receiver(pfrommethod) = eps -- if pfrommethod.STATIC
@@ -306,7 +372,7 @@ def $from_leaf(pfrommethod) = (pfrommethod.NAME = pfrommethod.METHOD[pfrommethod
   -- if $(pfrommethod.PREFIX + pfrommethod.WIDTH <= |pfrommethod.METHOD|)
 def $from_leaf(pfrommethod) = false -- otherwise
 def $from_valid(S, pfrommethod) = true
-  -- if $from_site(S, pfrommethod.SITE)
+  -- if $from_source_valid(S, pfrommethod)
   -- if $from_permission(S, pfrommethod)
   -- if $from_history_valid(S, $from_input_roots(pfrommethod.INPUT) ++ $scoped_receiver_nodes(pfrommethod.THIS) ++ $scoped_receiver_nodes(pfrommethod.CLASS.RECEIVER))
   -- if $from_class_valid(S, pfrommethod)
@@ -357,6 +423,37 @@ def $from_split(pfrommethod) = true
 def $from_split(pfrommethod) = false -- otherwise
 
 ;; Invocation, cloning and fake static storage use the selected method.
+def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+def $closure_live_object_valid(S, n) = $from_factory_live(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+def $closure_callable(S, n) = $from_factory_live(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+def $getclass_live_object(S, n) = $from_factory_live(S, n)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+def $class_instanceof(S, POBJECT n, ptbytes) = true
+  -- if $ptlc(ptbytes) = $ptascii("closure")
+  -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+  -- if $from_factory_saved(S, n)
+def $property_live_complete(S, (HOBJECT n) :: pnode_tail*) = $property_live_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+def $closure_scope_complete(S, (HOBJECT n) :: pnode_tail*) = $closure_scope_complete(S, pnode_tail*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin
+  -- if $from_factory_live(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+def $dynamic_value(S, porigin, z_init, z_call) = $config_prepare(S, INTRINSIC_FROM_CALLABLE_FACTORY, z_call, (n), porigin)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin_create
+  -- if $from_factory_live(S, n)
+  -- if S.ORIGIN = (porigin)
+  -- if $from_factory_call_site(S, porigin)
+
 def $closure_scope_row_valid(S, pclosurescope) = true
   -- if pclosurescope.CREATION = eps
   -- if n = pclosurescope.OBJECT
@@ -581,13 +678,13 @@ def $named_closure_same(S, n_left, n_right) = true
 
 ;; Before C API entry, ordinary argument reads preserve captured null. These
 ;; warnings are source SENDs, so throwing handlers are not capture failures.
-def $error_simple_read(CONFIG_SEND pconfigcall) = (pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND))
-def $error_simple_read(CONFIG_UNPACK_PREP pconfigcall) = (pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND))
+def $error_simple_read(CONFIG_SEND pconfigcall) = ($from_kind(pconfigcall.KIND) \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND))
+def $error_simple_read(CONFIG_UNPACK_PREP pconfigcall) = ($from_kind(pconfigcall.KIND) \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND))
 def $error_read_line(CONFIG_SEND pconfigcall, z) = z
 def $error_read_line(CONFIG_UNPACK_PREP pconfigcall, z) = z
 def $error_read_source(S, perrorread) = true
   -- if perrorread.ORIGINAL = CONFIG_SEND pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND)
+  -- if $from_kind(pconfigcall.KIND) \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND)
   -- if $config_pending_valid(S, pconfigcall, false)
   -- if S.ORIGIN = (pconfigcall.SITE)
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, false, ptbytes?, porigin_argument, z))
@@ -596,7 +693,7 @@ def $error_read_source(S, perrorread) = true
   -- if perrorread.LINE = z
 def $error_read_source(S, perrorread) = true
   -- if perrorread.ORIGINAL = CONFIG_UNPACK_PREP pconfigcall
-  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND)
+  -- if $from_kind(pconfigcall.KIND) \/ pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT \/ $closure_bind_kind(pconfigcall.KIND)
   -- if $config_pending_valid(S, pconfigcall, true)
   -- if S.ORIGIN = (pconfigcall.SITE)
   -- if $intrinsic_argument(S, pconfigcall.SITE, pconfigcall.INDEX) = ((expression, true, ptbytes?, porigin_argument, z))

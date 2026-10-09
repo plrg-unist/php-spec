@@ -63,11 +63,16 @@ def $fiber_factory_error(S, pvalue, pentry*) = ($ptascii("non-static method Fibe
 def $fiber_factory_error(S, pvalue, pentry*) = eps -- otherwise
 
 def $from_receive(S, pconfigcall, pvalue) = $fiber_factory_new(S, pconfigcall, pvalue, $fiber_factory_items(S, pvalue))
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if $fiber_factory_candidate(S, pvalue)
   -- if $fiber_factory_selection(S, pvalue, $fiber_factory_items(S, pvalue)) =/= eps
 def $from_receive(S, pconfigcall, pvalue) = $config_error(S, pconfigcall, "TypeError", $ptascii("Failed to create closure from callable: ") ++ ptbytes)
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE
   -- if $fiber_factory_candidate(S, pvalue)
   -- if $fiber_factory_error(S, pvalue, $fiber_factory_items(S, pvalue)) = (ptbytes)
+def $from_receive(S, pconfigcall, pvalue) = S[.COMPLETION = UNSUPPORTED "captured Closure::fromCallable factory Fiber callback"]
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if $fiber_factory_candidate(S, pvalue)
 def $fiber_factory_new(S, pconfigcall, pvalue, pentry*) = $from_done(S[.OBJECTS = S.OBJECTS ++ [FIBERAPICLOSURE pfibercapture]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if $config_invoke_valid(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE

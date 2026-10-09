@@ -337,6 +337,11 @@ selection through the distinct RHS callback. Explicit Closure release retires th
 sole receiver; saved selection evidence remains valid without owning either object.
 Separate ordinary and repaired wrapper sources agree with native PHP on 367-module
 cuts, with 430 wrapper premises. Required original 7 keeps its separate CLI 60 timeout.
+First-class `Closure::fromCallable(...)` can now be invoked as a variable factory.
+Calls retain the factory during arguments; the returned method Closure keeps
+its receiver after factory retirement. Callback access uses the invoking USER scope.
+Eight factory sources and 526 state premises retain separate 367-module cuts.
+Explicit `__invoke`, wider factory targets and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

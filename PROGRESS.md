@@ -2063,6 +2063,21 @@ selection metadata adds no owner. The earlier wrapper Unsupported remains zero
 credit, and required original 7 retains its separate CLI 60 timeout.
 Actual-parent compilation passes at 943e2c3c over 94f4b007 with 367 modules;
 pointwise promotion/property replay review adds no source or state renewal.
+First-class `Closure::fromCallable(...)` now has a source-stamped factory carrier
+and its own owning CONFIG kind. The returned method capture retains a nonowning
+factory certificate after retirement. The direct control agrees at 6e709da7/367;
+captured inherited by-ref NAME/live Stringable RHS and six new permission,
+named/unpacked argument, identity and argument-retirement originals agree at
+8cc7ed12/367. Its 526 state premises pass (467 genuine/derived, 59 constructed),
+including factory creation, CONFIG owner count 2, distinct returned receiver
+ownership, factory retirement, callback/write and explicit receiver retirement.
+Invocation USER scope controls callback access; creation scope grants no later access.
+The initializer Unsupported and pre-child clean-status stop remain zero credit.
+The maintained renderer is byte-identical to the accepted fixture; relocation
+adds no runtime renewal. Explicit __invoke, computed/keyword creation and captured
+factory Fiber/getter callbacks stay open, as does required original 7's CLI 60 timeout.
+The [factory ledger](coverage/semantics/from-callable-review.json) keeps the
+distinct native/source/state cuts and boundaries.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
