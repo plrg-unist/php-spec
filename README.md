@@ -709,7 +709,8 @@ the actual parked callback while the fresh main plan retains current tags, even
 when its target slot has been reused. The completed local scan cannot rewind
 onto the fresh destructor. Independent 96/109 physical premises at separate
 `93cb1cfd5`/`950c158d5` cuts complete both unchanged originals and preserve
-old/new error identity. Actual358 over `ea04fbbe4` passes strict compilation/init.
+old/new error identity. Actual359 over `0c549de11` passes strict compilation/init;
+review preserves GEN176/363 and PROPS207/377 with their shared ownership paths.
 The initial compiler stop, first throw-state 120s timeout and both whole CLI
 60s timeouts retain zero affected/agreement credit. Overlap, active residual and
 wider Fiber-pass reentry, whole CLI completion and broader GC remain required.

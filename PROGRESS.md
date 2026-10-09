@@ -393,8 +393,9 @@ while preserving fresh main tags after the old target slot is reused. Old guard
 INDEX equals the global cursor; the completed local scan must be INDEX+1, so a
 rewind cannot consume the fresh E callback. Independent normal96 at `93cb1cfd5`
 and throw109 at `950c158d5` complete both unchanged originals with exact error
-identity, heap-identical forgeries and budget replay. Actual358 over `ea04fbbe4`
-passes strict compilation/init. The printable-metadata helper is the concrete
+identity, heap-identical forgeries and budget replay. Actual359 over `0c549de11`
+passes strict compilation/init at `280feeb2a`, preserving GEN176/363 and the
+PROPS207/377 warning and ownership interfaces. The printable-metadata helper is the concrete
 changed cost dependency for the one throw-only retry; no general speedup is inferred.
 The initial undefined-helper compiler stop, first throw-state 120s timeout and
 both whole CLI 60s timeouts retain zero affected/agreement credit. Overlap, active

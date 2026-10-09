@@ -467,7 +467,9 @@ separate cuts: normal96 at `93cb1cfd5` and throw109 at `950c158d5`, with the exa
 strengthened fixture committed as `4ec300905`. Both unchanged originals complete
 through full cleanup and recorded native streams; old/new error identity, current
 E authority, heap-identical cursor/end/source/consumer forgeries and budget replay
-pass. Actual358 over `ea04fbbe4` passes compilation and strict initialization.
+pass. Actual359 over `0c549de11` passes compilation and strict initialization
+at `280feeb2a`. GEN176/363 report/renderer shapes and PROPS207/377 undefined-property
+plans are absent here; their shared ownership fallbacks preserve these retained VMs.
 Its printable-metadata lookup changes a concrete `ptascii` cost dependency for
 the throw-only retry; trait and named-CV ECHO paths are disjoint. No general
 speedup or earlier-cut renewal is inferred. The initial undefined-helper compiler
