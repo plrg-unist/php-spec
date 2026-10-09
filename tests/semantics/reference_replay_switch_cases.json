@@ -1,0 +1,62 @@
+{
+  "scope": "Source-authenticated no-FREE CV and compiled-CONST switch continuation after caught delayed reference rejection. Preserve case fallthrough, break depth and same-catch goto without repeating subject/case evaluation. Runtime temporary/VAR owners remain separate.",
+  "historical_native_report": ".tools/reference-replay-switch-draft/.tools/switch-replay-source-native-belojvym/report.json",
+  "cases": [
+    {
+      "id": "ref-replay-switch-cv",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function test(){echo \"K;\";return 1;}function g(){echo \"U;\";}function &f():string{global $x,$y;$k=1;switch($k){case test():try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A;\";case 2:echo \"B;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "source_sha256": "408b23c583be659937c3dac2df1269b2bad1b3c9e32786059ecdd00232909f54",
+      "native_stdout": "K;F;C;F;A;B;a=ok;y=q;",
+      "native_stderr": "",
+      "native_exit": 0
+    },
+    {
+      "id": "ref-replay-switch-const-int",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function test(){echo \"K;\";return 1;}function g(){echo \"U;\";}function &f():string{global $x,$y;switch(1){case test():try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A;\";case 2:echo \"B;\";break;default:echo \"BAD;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "source_sha256": "4f1567c5d834267b4d64d9ead5c397fe340fcfcb6f70a3708a70de699dd62287",
+      "native_stdout": "K;F;C;F;A;B;a=ok;y=q;",
+      "native_stderr": "",
+      "native_exit": 0
+    },
+    {
+      "id": "ref-replay-switch-const-bool",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function test(){echo \"K;\";return 1;}function g(){echo \"U;\";}function &f():string{global $x,$y;switch(true){case test():try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A;\";case 2:echo \"B;\";break;default:echo \"BAD;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "source_sha256": "df5569c919280e5fb51d6eaff66fd4fbee401bb615ba884bea581c5d3792d92f",
+      "native_stdout": "K;F;C;F;A;B;a=ok;y=q;",
+      "native_stderr": "",
+      "native_exit": 0
+    },
+    {
+      "id": "ref-replay-switch-const-array",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function test(){echo \"K;\";return 1;}function g(){echo \"U;\";}function &f():string{global $x,$y;switch([1]){case [1]:try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A;\";case [2]:echo \"B;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "source_sha256": "5adad09d0c125b24925c4e255bfc9a3e57da5231ffe3afad42b3a54522ba97e2",
+      "native_stdout": "F;C;F;A;B;a=ok;y=q;",
+      "native_stderr": "",
+      "native_exit": 0
+    },
+    {
+      "id": "ref-replay-switch-cv-array-cow",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";$src=[1];$copy=$src;function &f():string{global $x,$y,$src,$copy;switch($src){case [1]:try{return $x;}catch(TypeError $e){echo \"C;\";}finally{$src[0]=7;echo \"F\",$src[0],\";\";$x=new N;}echo \"A\",$copy[0],\";\";case [2]:echo \"B;\";break;}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";src=\",$src[0],\";copy=\",$copy[0],\";\";",
+      "source_sha256": "91cdfb5053ca669456e6c394336e2b096407f4ec3cb457ed0c05c4cc54e56584",
+      "native_stdout": "F7;C;F7;A1;B;a=ok;src=7;copy=1;",
+      "native_stderr": "",
+      "native_exit": 0
+    },
+    {
+      "id": "ref-replay-switch-outer-catch",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function test(){echo \"K;\";return 1;}function g(){echo \"U;\";}function &f():string{global $x,$y;try{throw new Exception;}catch(Exception $outer){$k=1;switch($k){case test():try{return $x;}catch(TypeError $e){echo \"C;\";}finally{echo \"F;\";$x=new N;}echo \"A;\";g();case 2:echo \"B;\";}echo \"O;\";}finally{echo \"G;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "source_sha256": "51da2a2b8b19b72ae4daa0f9d08eb4887413aeb55f0842d05b3fc26c50106485",
+      "native_stdout": "K;F;G;C;F;A;U;B;O;G;a=ok;y=q;",
+      "native_stderr": "",
+      "native_exit": 0
+    },
+    {
+      "id": "ref-replay-switch-goto-naked-saved",
+      "source": "<?php class N{} $x=\"s\";$y=\"\";function test(){echo \"K;\";return 1;}function g(){echo \"U;\";}function &f():string{global $x,$y;$k=1;switch($k){case test():try{try{return $x;}catch(TypeError $e){echo \"C;\";goto L;echo \"BAD;\";L:echo \"L;\";g();}echo \"A;\";}finally{echo \"G;\";$x=new N;}case 2:echo \"B;\";break;default:echo \"BAD;\";}$y=\"ok\";return $y;}$a=&f();echo \"a=\",$a,\";\";$a=\"q\";echo \"y=\",$y,\";\";",
+      "source_sha256": "7268c7d78020e8aa73807feb803fd32bd697c59e31d0e87206b1c8e521b29034",
+      "native_stdout": "K;G;C;L;U;A;G;B;a=ok;y=q;",
+      "native_stderr": "",
+      "native_exit": 0
+    }
+  ]
+}

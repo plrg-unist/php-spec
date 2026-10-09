@@ -46,6 +46,8 @@ dec $goto_loop_statement(statement) : bool
 dec $goto_owned_body(pstate, porigin, statement*, porigin?, porigin, ptask*) : pgototasks
 dec $goto_loop(pstate, porigin, statement, porigin, ptask*) : pgototasks
 dec $goto_switch(pstate, porigin, phpType61*, porigin, ptask*, nat) : pgototasks
+dec $goto_switch_replay(pstate, porigin, phpType61*, porigin, ptask*, nat) : pgototasks
+def $goto_switch_replay(S, porigin_target, phpType61*, porigin_owner, ptask_old*, n_index) = GOTOMISSING -- otherwise
 dec $goto_drop_iterators(piterator*, ptask*, porigin) : piterator*
 dec $goto_foreach_keep(porigin?, porigin) : bool
 dec $goto_foreach_task(ptask) : bool
@@ -118,7 +120,7 @@ def $goto_switch(S, PORIGIN n pcpath_target, (NStmtCase phpType5 (SEQUENCE state
   -- if $goto_saved(ptask_old*, PORIGIN n pcpath_switch) = GOTOTASKS ptask_saved*
 def $goto_switch(S, PORIGIN n pcpath_target, phpType61 :: phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, n_index) = $goto_switch(S, PORIGIN n pcpath_target, phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, $(n_index + 1))
   -- if ~$effect_below(pcpath_switch ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 1], pcpath_target)
-def $goto_switch(S, PORIGIN n pcpath_target, phpType61 :: phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, n_index) = GOTOMISSING
+def $goto_switch(S, PORIGIN n pcpath_target, phpType61 :: phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, n_index) = $goto_switch_replay(S, PORIGIN n pcpath_target, phpType61 :: phpType61_tail*, PORIGIN n pcpath_switch, ptask_old*, n_index)
   -- if $effect_below(pcpath_switch ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 1], pcpath_target)
   -- if $goto_saved(ptask_old*, PORIGIN n pcpath_switch) = GOTOMISSING
 

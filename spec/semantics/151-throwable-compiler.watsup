@@ -117,15 +117,19 @@ def $throwable_unit_code_valid(P, pcode) = true
 def $throwable_unit_code_valid(P, pcode) = false -- otherwise
 
 dec $goto_catch(pstate, porigin, phpType66*, porigin, ptask*, ptask*, nat) : pgototasks
+dec $goto_catch_tail(pstate, porigin, ptask*, ptask*) : ptask*
+def $goto_catch_tail(S, porigin, ptask_tail*, ptask_old*) = ptask_tail* -- otherwise
+dec $goto_try_restore(pstate, porigin, ptask*) : porigin?
+def $goto_try_restore(S, porigin, ptask_tail*) = $goto_prior_origin(porigin) -- otherwise
 
 ;; Zend permits goto into a try or catch. Entering a catch skips matching and
 ;; binding, and cannot activate that try's sibling handlers.
-def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch (SEQUENCE statement*) phpType65 ABSENT metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 0])), 0) ++ [TRY_END (PORIGIN n pcpath_try), ORIGIN_RETURN $goto_prior_origin(PORIGIN n pcpath_try)] ++ ptask_tail*, ptask_old*)
+def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch (SEQUENCE statement*) phpType65 ABSENT metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 0])), 0) ++ [TRY_END (PORIGIN n pcpath_try), ORIGIN_RETURN $goto_try_restore(S, PORIGIN n pcpath_try, ptask_tail*)] ++ ptask_tail*, ptask_old*)
   -- if $effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)
 def $goto_open(S, PORIGIN n pcpath_target, NStmtTryCatch phpType23 (SEQUENCE phpType66*) ABSENT metadata, PORIGIN n pcpath_try, ptask_tail*, ptask_old*) = $goto_catch(S, PORIGIN n pcpath_target, phpType66*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, 0)
   -- if ~$effect_below(pcpath_try ++ [PCFIELD 0], pcpath_target)
 def $goto_catch(S, porigin_target, eps, porigin, ptask_tail*, ptask_old*, n_index) = GOTOMISSING
-def $goto_catch(S, PORIGIN n pcpath_target, (NStmtCatch phpType42 phpType43 (SEQUENCE statement*) metadata) :: phpType66*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, n_index) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2])), 0) ++ ptask_tail*, ptask_old*)
+def $goto_catch(S, PORIGIN n pcpath_target, (NStmtCatch phpType42 phpType43 (SEQUENCE statement*) metadata) :: phpType66*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, n_index) = $goto_find(S, PORIGIN n pcpath_target, $statement_tasks(statement*, (PORIGIN n (pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2])), 0) ++ $goto_catch_tail(S, PORIGIN n pcpath_try, ptask_tail*, ptask_old*), ptask_old*)
   -- if $effect_below(pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2], pcpath_target)
 def $goto_catch(S, PORIGIN n pcpath_target, phpType66 :: phpType66_tail*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, n_index) = $goto_catch(S, PORIGIN n pcpath_target, phpType66_tail*, PORIGIN n pcpath_try, ptask_tail*, ptask_old*, $(n_index + 1))
   -- if ~$effect_below(pcpath_try ++ [PCFIELD 1, PCINDEX n_index, PCFIELD 2], pcpath_target)

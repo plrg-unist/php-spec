@@ -452,8 +452,84 @@ def $call_task_valid(S, REF_REPLAY_AFTER porigin_source z prefowner*) = ($ref_re
 rule PhpStep/ref-replay-origin: S ~> $ref_replay_restore(S[.TODO = ptask_tail*], porigin_source, z, prefowner*)
   -- if S.TODO = (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*
 
-;; Scalar loop tails retain no released operand. Rebuild enclosing owners from
-;; source without repeating their initializers or the caught try's body.
+;; CV and compiled-CONST switches have no runtime FREE operand. Their replay
+;; tails carry only the source site, without repeating subject/case evaluation.
+dec $switch_replay_subject(pstate, porigin) : bool
+def $switch_replay_subject(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtSwitch (NExprVariable (BYTES text) metadata_subject) phpType60 metadata)
+  -- if $cv_name(BYTES text) = (n_name*)
+  -- if ~$scope_global(S[.ORIGIN = (porigin)], [PCFIELD 0])
+  -- if ~$ppglobals_base(NExprVariable (BYTES text) metadata_subject)
+  -- if ~$direct_this(BYTES text)
+def $switch_replay_subject(S, porigin) = true
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_subject)
+  -- if $compiled_read(S, porigin_subject) = (pvalue)
+def $switch_replay_subject(S, porigin) = false -- otherwise
+dec $switch_replay_site(pstate, porigin) : bool
+def $switch_replay_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtSwitch expression phpType60 metadata)
+  -- if $goto_scope_valid(S, porigin)
+  -- if $switch_replay_subject(S, porigin)
+def $switch_replay_site(S, porigin) = false -- otherwise
+dec $switch_replay_count(ptask*, ptask) : nat
+def $switch_replay_count(eps, ptask) = 0
+def $switch_replay_count(ptask :: ptask_tail*, ptask) = $(1 + $switch_replay_count(ptask_tail*, ptask))
+def $switch_replay_count(ptask_other :: ptask_tail*, ptask) = $switch_replay_count(ptask_tail*, ptask)
+  -- if ptask_other =/= ptask
+dec $switch_replay_pair(ptask*, porigin) : bool
+def $switch_replay_pair(eps, porigin) = false
+def $switch_replay_pair((SWITCH_REPLAY_END porigin) :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*, porigin) = true
+def $switch_replay_pair(ptask :: ptask_tail*, porigin) = $switch_replay_pair(ptask_tail*, porigin)
+  -- if ptask =/= SWITCH_REPLAY_END porigin
+def $switch_replay_pair(ptask*, porigin) = false -- otherwise
+dec $switch_replay_owner_count(ptask*, porigin) : nat
+def $switch_replay_owner_count(eps, porigin) = 0
+def $switch_replay_owner_count(ptask :: ptask_tail*, porigin) = $(1 + $switch_replay_owner_count(ptask_tail*, porigin))
+  -- if $goto_saved_match(ptask, porigin)
+def $switch_replay_owner_count(ptask :: ptask_tail*, porigin) = $switch_replay_owner_count(ptask_tail*, porigin)
+  -- if ~$goto_saved_match(ptask, porigin)
+dec $switch_replay_valid(pstate, porigin) : bool
+def $switch_replay_valid(S, porigin) = ($switch_replay_site(S, porigin) /\ $switch_replay_pair(S.TODO, porigin) /\ $switch_replay_owner_count(S.TODO, porigin) = 1 /\ $switch_replay_count(S.TODO, SWITCH_REPLAY_PHASE porigin) = 1)
+def $call_task_valid(S, SWITCH_REPLAY_END porigin) = ($switch_replay_valid(S, porigin) /\ S.ORIGIN = (porigin))
+def $call_task_valid(S, SWITCH_REPLAY_PHASE porigin) = $switch_replay_valid(S, porigin)
+def $call_after_origin(S, SWITCH_REPLAY_END porigin) = S[.ORIGIN = (porigin)]
+def $goto_saved((SWITCH_REPLAY_END porigin) :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*, porigin) = GOTOTASKS ((SWITCH_REPLAY_END porigin) :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*)
+def $goto_saved_match(SWITCH_REPLAY_END porigin_marker, porigin) = (porigin_marker = porigin)
+def $goto_marker_origin(SWITCH_REPLAY_END porigin) = (porigin)
+def $goto_marker_valid(S, SWITCH_REPLAY_END porigin) = $switch_replay_site(S, porigin)
+def $goto_marker_valid(S, SWITCH_REPLAY_PHASE porigin) = $switch_replay_site(S, porigin)
+def $loop_marker(SWITCH_REPLAY_END porigin) = true
+def $return_discard(S, SWITCH_REPLAY_END porigin) = S[.TODO = ptask :: ptask_tail*][.ORIGIN = (porigin)]
+  -- if S.TODO = ptask :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*
+  -- if $ref_replay_transfer(ptask)
+def $return_discard(S, SWITCH_REPLAY_END porigin) = S[.TODO = ptask_tail*][.ORIGIN = (porigin)]
+  -- if S.TODO = (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*
+rule PhpStep/switch-replay-end: S ~> S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SWITCH_REPLAY_END porigin) :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*
+  -- if $switch_replay_site(S, porigin)
+def $jump_loop(S, porigin_source, 1, n_original, b) = S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SWITCH_REPLAY_END porigin) :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*
+  -- if $switch_replay_site(S, porigin)
+def $jump_loop(S, porigin_source, n_depth, n_original, b) = $jump_loop(S[.TODO = ptask_tail*][.ORIGIN = (porigin)], porigin_source, $nabs($(n_depth - 1)), n_original, b)
+  -- if S.TODO = (SWITCH_REPLAY_END porigin) :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*
+  -- if $(n_depth > 1)
+  -- if $switch_replay_site(S, porigin)
+
+;; A reconstructed try restores the selected region before the switch pair.
+dec $goto_try_switch_marker(pstate, porigin, ptask) : bool
+def $goto_try_switch_marker(S, PORIGIN n pcpath_try, SWITCH_REPLAY_END (PORIGIN n pcpath_switch)) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_try) = (NStmtTryCatch phpType23 phpType65 phpType67 metadata)
+  -- if $effect_below(pcpath_switch ++ [PCFIELD 1], pcpath_try)
+  -- if $switch_replay_valid(S, PORIGIN n pcpath_switch)
+def $goto_try_switch_marker(S, porigin, ptask) = false -- otherwise
+dec $goto_try_switch_tail(pstate, porigin, ptask*) : bool
+def $goto_try_switch_tail(S, porigin, eps) = false
+def $goto_try_switch_tail(S, porigin, ptask :: ptask_tail*) = ($goto_try_switch_marker(S, porigin, ptask) \/ $goto_try_switch_tail(S, porigin, ptask_tail*))
+def $goto_try_restore(S, porigin, ptask_tail*) = $goto_target_origin(S, porigin, ptask_tail*)
+  -- if $goto_try_switch_tail(S[.TODO = ptask_tail*], porigin, ptask_tail*)
+
+;; Scalar loops and source-only switches rebuild tails without repeating an
+;; initializer, selected case conditions or the caught try's body.
 dec $ref_replay_loop_root(pstate) : nat
 def $ref_replay_loop_root(S) = 0 -- if S.CURRENT = eps
 def $ref_replay_loop_root(S) = |pfunction.BODY|
@@ -464,11 +540,19 @@ def $ref_replay_loop_at(S, PORIGIN n pcpath_target, PORIGIN n pcpath_loop) = (st
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_loop) = (statement)
   -- if $goto_loop_statement(statement)
   -- if $effect_below(pcpath_loop ++ [PCFIELD $loop_body_field(statement)], pcpath_target)
+def $ref_replay_loop_at(S, PORIGIN n pcpath_target, PORIGIN n pcpath_loop) = (NStmtSwitch expression phpType60 metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_loop) = (NStmtSwitch expression phpType60 metadata)
+  -- if $switch_replay_site(S, PORIGIN n pcpath_loop)
+  -- if $effect_below(pcpath_loop ++ [PCFIELD 1], pcpath_target)
 def $ref_replay_loop_at(S, porigin_target, porigin_loop) = eps -- otherwise
+dec $ref_replay_loop_next(statement, porigin) : ptask*
+def $ref_replay_loop_next(NStmtSwitch expression phpType60 metadata, porigin) = [SWITCH_REPLAY_END porigin, SWITCH_REPLAY_PHASE porigin]
+def $ref_replay_loop_next(statement, porigin) = [LOOP_NEXT statement (porigin)]
+  -- if $goto_loop_statement(statement)
 dec $ref_replay_loop_tails(pstate, nat, pcpath, nat, ptask*, ptask*) : pgototasks
 def $ref_replay_loop_tails(S, n, pcpath_target, n_index, ptask_base*, ptask_old*) = GOTOTASKS ptask_old*
   -- if $(n_index >= |pcpath_target|)
-def $ref_replay_loop_tails(S, n, pcpath_target, n_index, ptask_base*, ptask_old*) = $ref_replay_loop_tails(S, n, pcpath_target, $(n_index + 1), ptask_base*, (LOOP_NEXT statement (porigin_loop)) :: (ORIGIN_RETURN $goto_target_origin(S, porigin_loop, ptask_tail*)) :: ptask_tail*)
+def $ref_replay_loop_tails(S, n, pcpath_target, n_index, ptask_base*, ptask_old*) = $ref_replay_loop_tails(S, n, pcpath_target, $(n_index + 1), ptask_base*, $ref_replay_loop_next(statement, porigin_loop) ++ [ORIGIN_RETURN $goto_target_origin(S, porigin_loop, ptask_tail*)] ++ ptask_tail*)
   -- if $(n_index < |pcpath_target|)
   -- if porigin_loop = PORIGIN n pcpath_target[0:n_index]
   -- if $ref_replay_loop_at(S, PORIGIN n pcpath_target, porigin_loop) = (statement)
@@ -487,6 +571,34 @@ def $ref_replay_after_tasks(S, PORIGIN n pcpath) = GOTOTASKS ptask_tail*
   -- if $ref_replay_loop_tails(S, n, pcpath, $ref_replay_loop_root(S), ptask_base*, eps) = GOTOTASKS ptask_old*
   -- if $goto_find(S, PORIGIN n pcpath, ptask_base*, ptask_old*) = GOTOTASKS ((AT (PORIGIN n pcpath) (STMT statement)) :: ptask_tail*)
 def $ref_replay_after_tasks(S, porigin) = GOTOMISSING -- otherwise
+
+;; Only the live selected replay catch can supply a missing source-only switch
+;; continuation when goto reaches its label before AFTER reconstructs the tail.
+dec $switch_replay_guard_here(pstate, porigin, ptask) : bool
+def $switch_replay_guard_here(S, PORIGIN n pcpath_switch, REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) = true
+  -- if $ref_replay_guard_valid(S, porigin_source, z, prefowner :: prefowner_tail*)
+  -- if $ref_owner_origin(prefowner) = PORIGIN n pcpath_owner
+  -- if $effect_below(pcpath_switch ++ [PCFIELD 1], pcpath_owner)
+  -- if $ref_replay_caught(S, PORIGIN n pcpath_owner)
+def $switch_replay_guard_here(S, porigin, ptask) = false -- otherwise
+dec $switch_replay_guard_inside(pstate, porigin, ptask*) : bool
+dec $ref_replay_origin_task(ptask) : bool
+def $ref_replay_origin_task(REF_REPLAY_ORIGIN porigin_source z prefowner*) = true
+def $ref_replay_origin_task(ptask) = false -- otherwise
+def $switch_replay_guard_inside(S, porigin, eps) = false
+def $switch_replay_guard_inside(S, porigin, (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: ptask_tail*) = $switch_replay_guard_here(S, porigin, REF_REPLAY_ORIGIN porigin_source z prefowner*)
+def $switch_replay_guard_inside(S, porigin, ptask :: ptask_tail*) = $switch_replay_guard_inside($call_after_origin(S, ptask), porigin, ptask_tail*)
+  -- if ~$ref_replay_origin_task(ptask)
+def $goto_switch_replay(S, PORIGIN n pcpath_target, phpType61*, PORIGIN n pcpath_switch, ptask_old*, n_index) = $goto_find(S, PORIGIN n pcpath_target, $switch_body_from(phpType61*, PORIGIN n pcpath_switch, 0, n_index) ++ [SWITCH_REPLAY_END (PORIGIN n pcpath_switch), SWITCH_REPLAY_PHASE (PORIGIN n pcpath_switch), ORIGIN_RETURN $goto_target_origin(S, PORIGIN n pcpath_switch, ptask_tail*)] ++ ptask_tail*, ptask_old*)
+  -- if S.ORIGIN = (PORIGIN n pcpath_source)
+  -- if $goto_site(S, PORIGIN n pcpath_source, pcpath_target)
+  -- if $effect_below(pcpath_switch ++ [PCFIELD 1], pcpath_source)
+  -- if $effect_below(pcpath_switch ++ [PCFIELD 1], pcpath_target)
+  -- if $switch_replay_site(S, PORIGIN n pcpath_switch)
+  -- if $switch_replay_guard_inside(S, PORIGIN n pcpath_switch, ptask_old*)
+  -- if $goto_base(S, PORIGIN n pcpath_switch) = GOTOTASKS ptask_base*
+  -- if $ref_replay_loop_tails(S, n, pcpath_switch, $ref_replay_loop_root(S), ptask_base*, eps) = GOTOTASKS ptask_outer*
+  -- if $goto_find(S, PORIGIN n pcpath_switch, ptask_base*, ptask_outer*) = GOTOTASKS ((AT (PORIGIN n pcpath_switch) (STMT statement)) :: ptask_tail*)
 rule PhpStep/ref-replay-after: S ~> S[.TODO = ptask_source*][.ORIGIN = $goto_target_origin(S, $ref_owner_origin(prefowner), ptask_source*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (REF_REPLAY_AFTER porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*
   -- if $ref_replay_after_tasks(S, $ref_owner_origin(prefowner)) = GOTOTASKS ptask_source*
@@ -537,6 +649,7 @@ def $goto_transfer(S, porigin_source, pcpath_target) = $goto_jump(S, porigin_sou
 dec $goto_try_target(porigin, pcpath) : bool
 def $goto_try_target(PORIGIN n pcpath_try, pcpath_target) = $effect_below(pcpath_try, pcpath_target)
 dec $goto_keep_owner(ptask, porigin) : bool
+def $goto_keep_owner(SWITCH_REPLAY_END (PORIGIN n pcpath_owner), PORIGIN n pcpath_target) = $effect_below(pcpath_owner, pcpath_target)
 def $goto_keep_owner(LOOP_NEXT statement (PORIGIN n pcpath_owner), PORIGIN n pcpath_target) = $effect_below(pcpath_owner, pcpath_target)
 def $goto_keep_owner(FOREACH_NEXT n_iter pnode statement (PORIGIN n pcpath_owner) z, PORIGIN n pcpath_target) = $effect_below(pcpath_owner, pcpath_target)
 def $goto_keep_owner(SWITCH_NEXT statement (PORIGIN n pcpath_owner) poperand, PORIGIN n pcpath_target) = $effect_below(pcpath_owner, pcpath_target)
@@ -777,11 +890,19 @@ def $goto_prior_origin(PORIGIN n pcpath) = (PORIGIN n pcpath[0:n_parent])
   -- if $(|pcpath| >= 2)
   -- if n_parent = $(|pcpath| - 2)
 dec $goto_saved_try(ptask*, porigin) : pgototasks
+dec $goto_saved_replay_try(ptask*, porigin) : bool
+def $goto_saved_replay_try((REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: ptask_tail*, porigin) = true
+def $goto_saved_replay_try(ptask*, porigin) = false -- otherwise
 def $goto_saved_try(eps, porigin) = GOTOMISSING
 def $goto_saved_try((TRY_END porigin) :: ptask_tail*, porigin) = GOTOTASKS ptask_tail*
 def $goto_saved_try((FINALLY_ONLY porigin) :: ptask_tail*, porigin) = GOTOTASKS ptask_tail*
+def $goto_saved_try((REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: ptask_tail*, porigin) = GOTOTASKS ((REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: ptask_tail*)
 def $goto_saved_try(ptask :: ptask_tail*, porigin) = $goto_saved_try(ptask_tail*, porigin)
   -- if $finally_marker_origin(ptask) =/= (porigin)
+  -- if ~$goto_saved_replay_try(ptask :: ptask_tail*, porigin)
+def $goto_catch_tail(S, porigin, ptask_tail*, ptask_old*) = ptask_saved*
+  -- if $goto_saved_try(ptask_old*, porigin) = GOTOTASKS ptask_saved*
+  -- if $goto_saved_replay_try(ptask_saved*, porigin)
 dec $goto_saved_finally(ptask*, porigin) : pgototasks
 def $goto_saved_finally(eps, porigin) = GOTOMISSING
 def $goto_saved_finally((FINALLY_RESUME porigin n?) :: ptask_tail*, porigin) = GOTOTASKS ((FINALLY_RESUME porigin n?) :: ptask_tail*)
@@ -794,7 +915,7 @@ def $goto_saved_finally(ptask :: ptask_tail*, porigin) = $goto_saved_finally(pta
 dec $goto_try_tail(pstate, porigin, bool, ptask*, ptask*) : ptask*
 def $goto_try_tail(S, porigin, false, ptask_tail*, ptask_old*) = (TRY_END porigin) :: ptask_saved*
   -- if $goto_saved_try(ptask_old*, porigin) = GOTOTASKS ptask_saved*
-def $goto_try_tail(S, porigin, false, ptask_tail*, ptask_old*) = (TRY_END porigin) :: (ORIGIN_RETURN $goto_prior_origin(porigin)) :: ptask_tail*
+def $goto_try_tail(S, porigin, false, ptask_tail*, ptask_old*) = (TRY_END porigin) :: (ORIGIN_RETURN $goto_try_restore(S, porigin, ptask_tail*)) :: ptask_tail*
   -- if $goto_saved_try(ptask_old*, porigin) = GOTOMISSING
   -- if $finally_present(S, porigin)
 def $goto_try_tail(S, porigin, false, ptask_tail*, ptask_old*) = (TRY_END porigin) :: ptask_tail*
@@ -803,7 +924,7 @@ def $goto_try_tail(S, porigin, false, ptask_tail*, ptask_old*) = (TRY_END porigi
 def $goto_try_tail(S, porigin, true, ptask_tail*, ptask_old*) = (FINALLY_ONLY porigin) :: ptask_saved*
   -- if $goto_saved_try(ptask_old*, porigin) = GOTOTASKS ptask_saved*
   -- if $finally_present(S, porigin)
-def $goto_try_tail(S, porigin, true, ptask_tail*, ptask_old*) = (FINALLY_ONLY porigin) :: (ORIGIN_RETURN $goto_prior_origin(porigin)) :: ptask_tail*
+def $goto_try_tail(S, porigin, true, ptask_tail*, ptask_old*) = (FINALLY_ONLY porigin) :: (ORIGIN_RETURN $goto_try_restore(S, porigin, ptask_tail*)) :: ptask_tail*
   -- if $goto_saved_try(ptask_old*, porigin) = GOTOMISSING
   -- if $finally_present(S, porigin)
 def $goto_try_tail(S, porigin, true, ptask_tail*, ptask_old*) = ptask_saved*

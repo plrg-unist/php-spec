@@ -321,7 +321,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | DYNAMIC_NEW_CLASS int int | DYNAMIC_NEW_FINISH pdynamicnew
   | NOCTOR_ARGS pnoctorcall | NOCTOR_SEND pnoctorcall | NOCTOR_UNPACK_PREP pnoctorcall | NOCTOR_UNPACK_NEXT pnoctorcall poperand nat
   | PIPE_FORCE porigin int int int | PIPE_APPLY porigin poperand int int
-  | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand
+  | SWITCH_START statement porigin | SWITCH_SCAN statement porigin poperand nat | SWITCH_COMPARE statement porigin poperand nat int | SWITCH_NEXT statement porigin poperand | SWITCH_REPLAY_END porigin | SWITCH_REPLAY_PHASE porigin
   | INSTANCEOF_RESULT int
   | PROPERTY_PREP phpType20 int | PROPERTY_NAME pvalue int | PROPERTY_BASE_PREP phpType20 int | PROPERTY_BASE_NAME pbase int
   | STATIC_PROP_CLASS phpType19 phpType31 int | STATIC_PROP_NAME phpType19 poperand int | STATIC_PROP_CAPTURE porigin poperand int
