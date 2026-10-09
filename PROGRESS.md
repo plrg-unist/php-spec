@@ -18,10 +18,10 @@ pass at1a8; template2 passes at6cb. Strict361 compiler3 passes at1a8 (4.623s).
 The [quantity ledger](coverage/semantics/assertion-quantity-review.json) preserves
 failures and the separate diagnostic46. Original recapture/warned restore,
 Stringable-option snapshots, NaN conversion timing and wider producers remain required.
-Actual363 overfbc passes source-backed static70 and Fiber54 plus4 pure key queries,
-three retained incoming originals across0506/2ae, and strict3 at2ae (4.873s).
-Static356/371 and key376 consumers preserve carriers; the ledger keeps failed
-source/VERIFY/fixture cuts and the later parent refresh separate.
+Actual363 over75dade passes final strict3 atb0d8 (4.921s), preserving current
+CALLS/CLASS/PROPS guards. Source-backed static70, Fiber54 plus4 pure key queries
+and three retained incoming originals keep their0506/2ae cuts. Static356/371 and
+key376 preserve carriers; the ledger retains separate failed source/VERIFY/fixture cuts.
 
 Constructor property promotion retains source Param flags/origins, compiles separate
 property defaults and performs ordered value/reference writes after all receives.
