@@ -300,7 +300,7 @@ def $ref_recheck_pending_owner(ptask :: ptask_tail*, porigin_owner*) = $ref_rech
   -- if ~$ref_recheck_pending_task(ptask, porigin_owner*)
 def $call_task_valid(S, RETURN_REF_UNWIND poperand z true porigin_source) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand) /\ ($ref_recheck_last(S.TODO, REF_RECHECK porigin_source porigin_first poperand z) \/ $ref_recheck_pending_owner(S.TODO, porigin_first :: porigin_tail*)))
   -- if $ref_replay_owners(S, porigin_source) = porigin_first :: porigin_tail*
-def $call_task_valid(S, RETURN_REF_UNWIND poperand z b porigin_source) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand))
+def $call_task_valid(S, RETURN_REF_UNWIND poperand z b porigin_source) = (($goto_scope_valid(S, porigin_source) \/ (~b /\ poperand = KNOWN PNULL /\ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z))) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand))
   -- if ~b \/ $ref_replay_owners(S, porigin_source) = eps
 def $call_task_valid(S, REF_RECHECK porigin_source porigin_first poperand z) = $ref_recheck_valid(S, porigin_source, porigin_first, poperand, z)
 def $task_nodes(RETURN_REF_UNWIND poperand z b porigin_source) = $operand_nodes(poperand)

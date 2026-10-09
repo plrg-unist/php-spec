@@ -240,6 +240,7 @@ def main():
         'S_next = $drive_steps(S, 1)',
         'S_next.TODO = [RETURN_REF_UNWIND (KNOWN PNULL) z false porigin_source, ' + marker + ']',
         '$reference_notice_source(S_next, porigin_source, KNOWN PNULL, z, REF_NOTICE_NULL)',
+        '$call_descriptors_valid(S_next)',
         'S_begin = $drive_steps(S_next[.COMPLETION = NORMAL], 1)',
         'ptask_begin = REF_RETURN_NOTICE_BEGIN porigin_source (KNOWN PNULL) z REF_NOTICE_NULL',
         'S_begin.TODO = [ptask_begin]', 'S_begin.ORIGIN = (pfunction.ORIGIN)',
