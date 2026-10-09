@@ -52,8 +52,9 @@ cleanup and raw-handler restoration. The
 keeps native/source and reached-state cuts separate. Computed names, magic
 getters/hooks and wider receiver forms remain required.
 
-At PHP8.5, a literal named noarg nonbuiltin reference-return call without name
-fallback keeps its returned reference cell through callee leave. Module377 now
+At PHP8.5, a literal named nonbuiltin reference-return call without name fallback,
+with no arguments or one ordinary positional CV, keeps its returned reference
+cell through callee leave. Module377 now
 captures that actual cell before PROPERTY_PREP, borrows the live ordinary
 instance/stdClass target and keeps the warning result null even when handler
 rebinding retires that target. FETCH cleanup through270 releases the read's
@@ -64,6 +65,10 @@ refused. [The reference-receiver review](../../coverage/semantics/reference-prop
 records exact native/source cases, reached ownership controls and the pinned8.5
 engine distinction from8.6. Accepted99/79 are unchanged; wider call forms,
 computed receivers and already-freeing targets remain required.
+The one-CV certificate uses compiled source metadata, so callee cleanup or the
+handler can unset the argument. A by-value parameter's last-owner destruction
+may rebind the returned cell before lookup; a by-reference parameter may share
+that same cell. The fixed warning result and existing270 cleanup remain unchanged.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

@@ -1455,6 +1455,13 @@ or zero-state credit. Accepted99/79 remain unchanged. [Reference-receiver ledger
 The independently reviewed actual361 join over `7c18fccada` passes strict
 compilation at `0b6054930` (4.817s), preserving current return-replay vocabulary,
 CALLS pack/NaN schemas and exception interfaces. It renews no source/state cut.
+One ordinary positional CV argument now shares377's authenticated cell reception
+through the existing361 source-image certificate. Native6 retains `2a9aaece4`;
+strict361/source6 pass at `44597addc`, and five reached groups pass760 premises
+at `50fb5bed6`, including parameter retirement before lookup, shared/scalar and
+separate argument cells, saved carriers and pending H/B cleanup. The first
+constructed dynamic-image fixture failure remains zero; only its callable-line
+certificate changed. Earlier source10/state669 and all prior failures are unrenewed.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
