@@ -37,9 +37,22 @@ Generator yield, then retires before current/body with data protected. Rejected
 raw returns still name the original class. Six unchanged originals agree; nine
 genuine-source groups/361 physical ownership and authority premises pass at their
 retained cuts. The [rebound ledger](../../coverage/semantics/foreach-rebound-operand-review.json)
-keeps the changed-Aggregate control and original fixture failure at zero agreement.
-Changed operands returning another Aggregate and wider
-reference-location modes remain explicit Unsupported boundaries.
+preserves the earlier changed-Aggregate refusal and original fixture failure at
+zero agreement.
+
+Foreach now compares a known Aggregate return against the live object-valued
+original CV/reference on the first callback, then against each owned returned
+layer. An independently kept original may be the first returned layer even after
+source rebinding; deeper callbacks remain valid after the earlier payload retires.
+Self returns from immutable inputs and deeper layers are rejected with the
+original class message.
+The raw rejected result stays owned through the authenticated error continuation.
+Nine selected originals agree; sixteen genuine-source groups/666 physical
+ownership and authority premises pass. The nonobject-source control remains
+Unsupported with zero agreement. [Source comparison](../../coverage/semantics/foreach-source-comparison-review.json)
+keeps the forwarded old control separate from its historical refusal. Wider
+reference-location modes and nonobject original values at the first self
+comparison remain explicit Unsupported boundaries.
 
 A Generator getter's stored foreach receipt owns its receiver once and binds the
 actual source statement and iterable line. MAIN break uses the compiled foreach

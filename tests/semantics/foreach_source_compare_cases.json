@@ -1,0 +1,124 @@
+[
+  {
+    "id": "foreach-source-compare-distinct-aggregate-generator",
+    "source": "<?php\nfunction foreachComparePlainGenerator20(): Generator {\n    try { echo \"Y|\"; yield 11 => 7; } finally { echo \"F|\"; }\n    return 23;\n}\nclass ForeachCompareDistinctPayload20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachCompareDistinctInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"N|\"; return foreachComparePlainGenerator20(); }\n    public function __destruct() { echo \"n|\"; }\n}\nclass ForeachCompareDistinctOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = new ForeachCompareDistinctPayload20();\n        return new ForeachCompareDistinctInner20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachCompareDistinct20(): int {\n    global $slot;\n    foreach ($slot as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachCompareDistinctOuter20();\n$slot = $keeper;\necho foreachCompareDistinct20(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "62d652652be84978dde4253f135a8e77c63e368e03b75ca5b508b773f9a8dffe",
+    "purpose": "Foreach first Aggregate self comparison uses the actual original operand, then each owned returned layer.",
+    "expected_model": "normal",
+    "native_stdout": "G|N|n|Y|B11:7|F|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-source-compare-reference-self-rejection",
+    "source": "<?php\nclass ForeachCompareRejectIterator20 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void {}\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachCompareRejectInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"X|\"; return new ForeachCompareRejectIterator20(); }\n    public function __destruct() { echo \"Q|\"; }\n}\nclass ForeachCompareRejectOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $next;\n        echo \"G|\";\n        $slot = $next;\n        return $next;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction &foreachCompareRejectOperand20(): mixed { global $slot; echo \"R|\"; return $slot; }\nfunction foreachCompareReject20(): int {\n    global $slot;\n    try { foreach (foreachCompareRejectOperand20() as $value) { echo \"B|\"; } }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$next = new ForeachCompareRejectInner20();\n$keeper = new ForeachCompareRejectOuter20();\n$slot = $keeper;\necho foreachCompareReject20(), \"|\";\necho $slot === $next ? 1 : 0, \"|\";\nunset($slot, $next, $keeper);\necho \"E\";\n",
+    "source_sha256": "1e0d3ffab1bbfcd4b18cdd2616d53577cc89c60a2b7446d9d0040bc9354f3d10",
+    "purpose": "Foreach first Aggregate self comparison uses the actual original operand, then each owned returned layer.",
+    "expected_model": "normal",
+    "native_stdout": "R|G|Objects returned by ForeachCompareRejectOuter20::getIterator() must be traversable or implement interface Iterator|17|1|Q|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-source-compare-kept-receiver-repeat-rechange",
+    "source": "<?php\nclass ForeachCompareRepeatIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachCompareRepeatFirst20 { public function __destruct() { echo \"Q|\"; } }\nclass ForeachCompareRepeatSecond20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachCompareRepeatAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new ForeachCompareRepeatFirst20();\n            return $keeper;\n        }\n        echo \"G1|\";\n        $slot = new ForeachCompareRepeatSecond20();\n        return new ForeachCompareRepeatIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachCompareRepeat20(): int {\n    global $slot;\n    foreach ($slot as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachCompareRepeatAggregate20();\n$slot = $keeper;\necho foreachCompareRepeat20(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "419cf01e7ac316a402e5768b32880742ed8b1dca012036fa26585ae79464207d",
+    "purpose": "Foreach first Aggregate self comparison uses the actual original operand, then each owned returned layer.",
+    "expected_model": "normal",
+    "native_stdout": "G0|G1|Q|W|V|C|K|B11:7|X|V|I|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-source-compare-reference-repeat-rechange",
+    "source": "<?php\nclass ForeachCompareCellIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachCompareCellFirst20 { public function __destruct() { echo \"Q|\"; } }\nclass ForeachCompareCellSecond20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachCompareCellAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new ForeachCompareCellFirst20();\n            return $keeper;\n        }\n        echo \"G1|\";\n        $slot = new ForeachCompareCellSecond20();\n        return new ForeachCompareCellIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction &foreachCompareCellOperand20(): mixed { global $slot; echo \"R|\"; return $slot; }\nfunction foreachCompareCell20(): int {\n    global $slot;\n    foreach (foreachCompareCellOperand20() as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachCompareCellAggregate20();\n$slot = $keeper;\necho foreachCompareCell20(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "c41ad8e45d5de62c1aab708fddb2d186f23a276f6d66ff44cef51eee4413edb1",
+    "purpose": "Foreach first Aggregate self comparison uses the actual original operand, then each owned returned layer.",
+    "expected_model": "normal",
+    "native_stdout": "R|G0|G1|Q|W|V|C|K|B11:7|X|V|I|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-source-compare-repeated-getter-parks",
+    "source": "<?php\nclass ForeachCompareParkIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachCompareParkFirst20 { public function __destruct() { echo \"Q|\"; } }\nclass ForeachCompareParkSecond20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachCompareParkAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new ForeachCompareParkFirst20();\n            return $keeper;\n        }\n        echo \"G1|\";\n        $slot = new ForeachCompareParkSecond20();\n        Fiber::suspend(\"acquire\");\n        echo \"R|\";\n        return new ForeachCompareParkIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachComparePark20(): int {\n    global $slot;\n    foreach ($slot as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachCompareParkAggregate20();\n$slot = $keeper;\n$fiber = new Fiber(function (): void { echo foreachComparePark20(), \"|\"; });\necho $fiber->start(), \"|\", $fiber->isSuspended() ? 1 : 0, \"|\", $slot === $keeper ? 0 : 1, \"|\";\n$fiber->resume();\necho $fiber->isTerminated() ? 1 : 0, \"|\";\nunset($fiber, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "8a58dc69626c3cf29198155c1e4c9097cc62758078e51b2f524dcf7813ca6a52",
+    "purpose": "Foreach first Aggregate self comparison uses the actual original operand, then each owned returned layer.",
+    "expected_model": "normal",
+    "native_stdout": "G0|G1|Q|acquire|1|1|R|W|V|C|K|B11:7|X|V|I|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-source-compare-repeated-getter-throws",
+    "source": "<?php\nclass ForeachCompareThrowFirst20 { public function __destruct() { echo \"Q|\"; } }\nclass ForeachCompareThrowSecond20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachCompareThrowAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper, $failure;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new ForeachCompareThrowFirst20();\n            return $keeper;\n        }\n        echo \"G1|\";\n        $slot = new ForeachCompareThrowSecond20();\n        throw $failure;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachCompareThrow20(): int {\n    global $slot, $failure;\n    try { foreach ($slot as $value) { echo \"B|\"; } }\n    catch (Throwable $caught) { echo \"C\", $caught === $failure ? 1 : 0, \"|\"; }\n    return 17;\n}\n$failure = new Exception(\"foreach-source-compare-getter\");\n$keeper = new ForeachCompareThrowAggregate20();\n$slot = $keeper;\necho foreachCompareThrow20(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "aac4df164b4ed65411ca8b967e7ae238fee139b5c06126b4e3b26ef67b735315",
+    "purpose": "Foreach first Aggregate self comparison uses the actual original operand, then each owned returned layer.",
+    "expected_model": "normal",
+    "native_stdout": "G0|G1|Q|C1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-source-compare-immutable-original-self-rejection",
+    "source": "<?php\nclass ForeachCompareImmutablePayload20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachCompareImmutableAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        echo \"G|\";\n        $slot = new ForeachCompareImmutablePayload20();\n        return $keeper;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachCompareImmutableOperand20(): Traversable {\n    global $keeper;\n    echo \"R|\";\n    return $keeper;\n}\nfunction foreachCompareImmutable20(): int {\n    global $slot;\n    try { foreach (foreachCompareImmutableOperand20() as $value) { echo \"B|\"; } }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$keeper = new ForeachCompareImmutableAggregate20();\n$slot = $keeper;\necho foreachCompareImmutable20(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "ba8246a2b442f800359e2f7f3b018e4569f6e69f3a96f682c0f1f7c401fefd62",
+    "purpose": "Foreach first Aggregate self comparison uses the actual original operand, then each owned returned layer.",
+    "expected_model": "normal",
+    "native_stdout": "R|G|Objects returned by ForeachCompareImmutableAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-source-compare-nonobject-original-control",
+    "source": "<?php\nclass ForeachCompareNonobjectIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { return $this->step === 0; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->step = 1; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachCompareNonobjectInner20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"N|\"; return new ForeachCompareNonobjectIterator20(); }\n    public function __destruct() { echo \"n|\"; }\n}\nclass ForeachCompareNonobjectOuter20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = null;\n        return new ForeachCompareNonobjectInner20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachCompareNonobject20(): int {\n    global $slot;\n    foreach ($slot as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    return 17;\n}\n$keeper = new ForeachCompareNonobjectOuter20();\n$slot = $keeper;\necho foreachCompareNonobject20(), \"|\";\necho $slot === null ? 1 : 0, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "3ec74fbdb332d81e604d35693a778c82c5ae1ae8f7be1a4adf7b602ab804eac4",
+    "purpose": "Foreach first Aggregate self comparison uses the actual original operand, then each owned returned layer.",
+    "expected_model": "unsupported",
+    "native_stdout": "G|N|n|W|B11:7|I|17|1|A|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "foreach IteratorAggregate changed original operand",
+    "unsupported_stdout": "G|n|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "110",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreach-rebound-returned-aggregate-self-control",
+    "source": "<?php\nclass ForeachReboundControlIterator20 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void {}\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachReboundControlNext20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"X|\"; return new ForeachReboundControlIterator20(); }\n    public function __destruct() { echo \"Q|\"; }\n}\nclass ForeachReboundControlAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $next;\n        echo \"G|\";\n        $slot = $next;\n        return $next;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachReboundControl20(): int {\n    global $slot;\n    try {\n        foreach ($slot as $value) { echo \"B|\"; }\n    } catch (Throwable $caught) {\n        echo $caught->getMessage(), \"|\";\n    }\n    return 17;\n}\n$next = new ForeachReboundControlNext20();\n$keeper = new ForeachReboundControlAggregate20();\n$slot = $keeper;\necho foreachReboundControl20(), \"|\";\necho $slot === $next ? 1 : 0, \"|\";\nunset($slot, $next, $keeper);\necho \"E\";\n",
+    "source_sha256": "42d9dd2f89cae9615fb5397faf500b77a7124b74047c4a5b11c097fa56891081",
+    "purpose": "Foreach Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver through initialization.",
+    "expected_model": "normal",
+    "native_stdout": "G|Objects returned by ForeachReboundControlAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|Q|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-source-compare-deeper-self-rejection",
+    "source": "<?php\nclass ForeachCompareDeepRejectIterator20 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void {}\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachCompareDeepRejectPayload20 { public function __destruct() { echo \"P|\"; } }\nclass ForeachCompareDeepRejectAggregate20 implements IteratorAggregate {\n    private int $step = 0;\n    public function getIterator(): Traversable {\n        global $slot, $keeper;\n        if ($this->step === 0) {\n            echo \"G0|\";\n            $this->step = 1;\n            $slot = new ForeachCompareDeepRejectPayload20();\n            return $keeper;\n        }\n        if ($this->step === 1) { echo \"G1|\"; $this->step = 2; return $keeper; }\n        echo \"G2|\";\n        return new ForeachCompareDeepRejectIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction foreachCompareDeepReject20(): int {\n    global $slot;\n    try { foreach ($slot as $value) { echo \"B|\"; } }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$keeper = new ForeachCompareDeepRejectAggregate20();\n$slot = $keeper;\necho foreachCompareDeepReject20(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "36cb0995083f1c4b757ba1dd6b455ab3fab0089d02aabdb74e7d03f432ac9354",
+    "purpose": "A deeper Aggregate callback compares its own protected raw receiver after the first mutable-source comparison.",
+    "expected_model": "normal",
+    "native_stdout": "G0|G1|Objects returned by ForeachCompareDeepRejectAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
