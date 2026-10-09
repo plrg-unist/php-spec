@@ -112,6 +112,16 @@ passes strict initialization at `5448b4ba` (5.214 s), preserving current owner,
 GC, GEN, PROPS, CALLS and returns paths without renewing private checks.
 [Sensitive promotion review](coverage/semantics/sensitive-promotion-review.json).
 
+Direct SensitiveParameterValue construction uses ordinary ordered argument sends
+and stores an owning dereferenced snapshot. Arity precedes readonly re-entry;
+named arguments, array COW, getter copies and final object release retain ordinary
+semantics. Seven originals, strict compilation of 367 modules and SL121 (20
+constructed, 101 reached checks) pass at `a50f9bc5`. Both checked baselines retain
+Unsupported with zero agreement; the earlier raw-completion fixture preparation
+was corrected before execution. Actual-parent composition is pending. First-class
+constructor/getter, uninitialized getter, debug/property and wider wrapper protocols
+remain required. [Constructor review](coverage/semantics/sensitive-value-constructor-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

@@ -1,0 +1,97 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "SHA256(stdout + NUL + stderr)",
+  "cases": [
+    {
+      "id": "scalar-reference-reentry",
+      "source": "<?php\n$value = 7;\n$alias =& $value;\n$wrapper = new \\SensitiveParameterValue($alias);\n$value = 17;\necho $wrapper->getValue(), \"|\", $alias, \"|\";\ntry { $wrapper->__construct(23); }\ncatch (\\Error $error) { echo $error->getMessage(), \"|\"; }\necho $wrapper->getValue();\n",
+      "source_sha256": "4b16ef04abee1ba7b697ec8e8cc4995b48a145de1a02b2e8e33575766cfd84a3",
+      "native_group": ".tools/constructor-sensitive-value-private-24/.tools/constructor-sensitive-value-probes-24/native-first/report.json",
+      "native_raw_sha256": "1c2fc2ae211820335d4a2e7be537c6217b0dba8b468f3cfb4f0a7135915f74e6",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3wxN3xDYW5ub3QgbW9kaWZ5IHJlYWRvbmx5IHByb3BlcnR5IFNlbnNpdGl2ZVBhcmFtZXRlclZhbHVlOjokdmFsdWV8Nw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "wrapper-value-copy-lifetime",
+      "source": "<?php\nclass DirectSensitiveLeaf24 {\n    public function __destruct() { echo \"D|\"; }\n}\n$leaf = new DirectSensitiveLeaf24();\n$weak = \\WeakReference::create($leaf);\n$wrapper = new \\SensitiveParameterValue($leaf);\nunset($leaf);\necho $weak->get() === null ? \"N|\" : \"L|\";\n$copy = $wrapper->getValue();\nunset($wrapper);\necho $weak->get() === null ? \"N|\" : \"L|\";\nunset($copy);\necho $weak->get() === null ? \"N|\" : \"L|\";\n",
+      "source_sha256": "39ba8b9939f25940fb2f63ffa0874c7852632e4656291d51a1a9f05fcbb275fb",
+      "native_group": ".tools/constructor-sensitive-value-private-24/.tools/constructor-sensitive-value-probes-24/native-first/report.json",
+      "native_raw_sha256": "582cbaca41a33521b1997c85b0dc828324e8f21d82b7d988510f85cd5f31be18",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "THxMfER8Tnw=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "named-array-copy",
+      "source": "<?php\n$input = [7];\n$wrapper = new \\SensitiveParameterValue(value: $input);\n$input[0] = 17;\n$copy = $wrapper->getValue();\n$copy[0] = 23;\n$stored = $wrapper->getValue();\necho $input[0], \"|\", $copy[0], \"|\", $stored[0];\n",
+      "source_sha256": "553f108852a42091444b8ac5c2fc41cf3cadb6d624b7010ccc79858d951c9aa2",
+      "native_group": ".tools/constructor-sensitive-value-private-24/.tools/constructor-sensitive-value-probes-24/focused/native-first/report.json",
+      "native_raw_sha256": "bfb93f27af35777bbd3e49d899684cd861dbdbc3f1eb7d14bad9fa1d062a0a00",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MTd8MjN8Nw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "arity-reentry-priority",
+      "source": "<?php\nfunction direct_arg24($value) { echo \"A\", $value, \"|\"; return $value; }\ntry { new \\SensitiveParameterValue(); }\ncatch (\\ArgumentCountError $error) { echo $error->getMessage(), \"|\"; }\ntry { new \\SensitiveParameterValue(direct_arg24(7), direct_arg24(9)); }\ncatch (\\ArgumentCountError $error) { echo $error->getMessage(), \"|\"; }\n$wrapper = new \\SensitiveParameterValue(17);\ntry { $wrapper->__construct(); }\ncatch (\\ArgumentCountError $error) { echo $error->getMessage(), \"|\"; }\ntry { $wrapper->__construct(direct_arg24(23), direct_arg24(29)); }\ncatch (\\ArgumentCountError $error) { echo $error->getMessage(), \"|\"; }\necho $wrapper->getValue();\n",
+      "source_sha256": "5804f1af0353d5119b765f210fb4566c568373851eb0cdfb5f7d4e44c7a92d7b",
+      "native_group": ".tools/constructor-sensitive-value-private-24/.tools/constructor-sensitive-value-probes-24/focused/native-first/report.json",
+      "native_raw_sha256": "38207dc94c734e2e8967d4d4206333fb50bf259914dcde67d756773f4159d0db",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "U2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWU6Ol9fY29uc3RydWN0KCkgZXhwZWN0cyBleGFjdGx5IDEgYXJndW1lbnQsIDAgZ2l2ZW58QTd8QTl8U2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWU6Ol9fY29uc3RydWN0KCkgZXhwZWN0cyBleGFjdGx5IDEgYXJndW1lbnQsIDIgZ2l2ZW58U2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWU6Ol9fY29uc3RydWN0KCkgZXhwZWN0cyBleGFjdGx5IDEgYXJndW1lbnQsIDAgZ2l2ZW58QTIzfEEyOXxTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZTo6X19jb25zdHJ1Y3QoKSBleHBlY3RzIGV4YWN0bHkgMSBhcmd1bWVudCwgMiBnaXZlbnwxNw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "named-unpack-errors",
+      "source": "<?php\nfunction direct_named24($value) { echo \"A\", $value, \"|\"; return $value; }\n$wrapper = new \\SensitiveParameterValue(...[\"value\" => 7]);\necho $wrapper->getValue(), \"|\";\ntry { new \\SensitiveParameterValue(9, ...[\"value\" => 11]); }\ncatch (\\Error $error) { echo $error->getMessage(), \"|\"; }\ntry { new \\SensitiveParameterValue(Value: direct_named24(13), value: direct_named24(17)); }\ncatch (\\Error $error) { echo $error->getMessage(), \"|\"; }\necho \"END\";\n",
+      "source_sha256": "17614d29a2b991e6758eb2ea1d03e73199cf811440b1cccf63d87c8437b94922",
+      "native_group": ".tools/constructor-sensitive-value-private-24/.tools/constructor-sensitive-value-probes-24/focused/native-first/report.json",
+      "native_raw_sha256": "9c5cc10e606fc9dc62aef0892aa04a4bad2acb0acc2aad1c841a2f0e18c21cb9",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3xOYW1lZCBwYXJhbWV0ZXIgJHZhbHVlIG92ZXJ3cml0ZXMgcHJldmlvdXMgYXJndW1lbnR8QTEzfFVua25vd24gbmFtZWQgcGFyYW1ldGVyICRWYWx1ZXxFTkQ=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "alias-dynamic-class-method",
+      "source": "<?php\nnamespace DirectScope24;\nuse SensitiveParameterValue as Snapshot24;\n$first = new Snapshot24(value: 7);\n$class = \"SensitiveParameterValue\";\n$second = new $class(value: 9);\n$method = \"__CoNsTrUcT\";\ntry { $second->$method(17); }\ncatch (\\Error $error) { echo $error->getMessage(), \"|\"; }\necho $first->getValue(), \"|\", $second->getValue();\n",
+      "source_sha256": "90324e1fbb1466eba74e4c18261b316a5c4ce3dfb09810ca2275010d338b9dae",
+      "native_group": ".tools/constructor-sensitive-value-private-24/.tools/constructor-sensitive-value-probes-24/focused/native-first/report.json",
+      "native_raw_sha256": "c4c5e22962ef3a88e73638c49c6b4bcc70cedc0d774814650f3f62ea0ddc3cb7",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "Q2Fubm90IG1vZGlmeSByZWFkb25seSBwcm9wZXJ0eSBTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZTo6JHZhbHVlfDd8OQ==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "reentry-object-release",
+      "source": "<?php\nclass DirectReentryLeaf24 {\n    public function __construct(public string $label) {}\n    public function __destruct() { echo $this->label, \"|\"; }\n}\n$old = new DirectReentryLeaf24(\"O\");\n$weak = \\WeakReference::create($old);\n$wrapper = new \\SensitiveParameterValue($old);\nunset($old);\ntry { $wrapper->__construct(new DirectReentryLeaf24(\"N\")); }\ncatch (\\Error $error) { echo $error->getMessage(), \"|\"; }\nunset($error);\n$stored = $wrapper->getValue();\necho $stored->label, \"|\";\nunset($stored, $wrapper);\necho $weak->get() === null ? \"NULL\" : \"LIVE\";\n",
+      "source_sha256": "39afae39b4e6e84cbb77ffcd9993f71b2f08a47d3d59a83e7154bee209f61918",
+      "native_group": ".tools/constructor-sensitive-value-private-24/.tools/constructor-sensitive-value-probes-24/focused/native-first/report.json",
+      "native_raw_sha256": "b95391a83eb658e6c5f9abad7db527c760eb2a5f8599f62e97d9578a4984a2e0",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "Q2Fubm90IG1vZGlmeSByZWFkb25seSBwcm9wZXJ0eSBTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZTo6JHZhbHVlfE58T3xPfE5VTEw=",
+      "stderr_template_base64": ""
+    }
+  ]
+}

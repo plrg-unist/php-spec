@@ -1,0 +1,89 @@
+{
+  "scope": "Direct SensitiveParameterValue construction stores one dereferenced mixed snapshot through the existing constructor SEND protocol; arity precedes readonly re-entry. Getter copies retain normal COW/object ownership. First-class constructor/getter, uninitialized getter, debug/property and wider wrapper protocols remain required.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; profile30719; LC_ALL=C; TZ=UTC; jobs1; SL/cache=false/det=true",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+  "parent": "94f4b007dfc286c68076aa878091092c27af6a3e",
+  "raw_root": ".tools/constructor-sensitive-value-private-24/.tools/constructor-sensitive-value-probes-24",
+  "engine": [
+    "vendor/php-src/Zend/zend_attributes.c::SensitiveParameterValue::__construct/getValue",
+    "vendor/php-src/Zend/zend_API.c::zend_update_property_ex",
+    "vendor/php-src/Zend/zend_object_handlers.c::zend_std_write_property"
+  ],
+  "native_first": {
+    "revision": "94f4b007dfc286c68076aa878091092c27af6a3e",
+    "report": "native-first/report.json",
+    "sha256": "9161b7732cc2f7bdbd2317bff3e2ef2d107758d27f8bc58eb4a23f6b7399725f",
+    "result": "Copied alias snapshot7/caller17, readonly re-entry preserves7; object lifetime L|L|D|N|"
+  },
+  "baseline": {
+    "report": "accepted-current-baseline/report.json",
+    "sha256": "277d14a4c964c57466ba02bd7bf27ca5e07b3bbee25a2204b70854fbadc99fee",
+    "result": "Both parsed/checked; Unsupported(internal class construction), source0. Gap in core127; frontend/adapter unchanged."
+  },
+  "accepted_source": {
+    "revision": "a50f9bc555afaeabdea419d0251b54ee6c2fa3e7",
+    "agreements": 7,
+    "cuts": [
+      {
+        "report": "changed-model-c5o8cdg9/report.json",
+        "sha256": "060dfe4a82a564fa933a57ac58050f052302b7135b766a968c407357630686a8",
+        "agreements": 2
+      },
+      {
+        "native_report": "focused/native-first/report.json",
+        "native_sha256": "e93be2d26e6b18a03541e5e7bb986bf161925c96303040e1dfba3aeb6d9b9848",
+        "report": "focused/changed-model-ppaeovrz/report.json",
+        "sha256": "a983b542e4672b5038bf02d81887f953e8f7041cd216557b8f308923749a1a0b",
+        "agreements": 5,
+        "result": "Named array COW, arity-before-readonly, named/unpack errors, alias/dynamic dispatch, rejected-object Error-trace retention and release"
+      }
+    ],
+    "bounds_seconds": {
+      "native": 45,
+      "model_internal": 60,
+      "model_outer": 75
+    },
+    "steps": 100000
+  },
+  "private_strict": {
+    "revision": "a50f9bc555afaeabdea419d0251b54ee6c2fa3e7",
+    "modules": 367,
+    "report": "sensitive-value-compiler-ewt98tyd/report.json",
+    "sha256": "42183ff041107d0687c1fcddcfaf2fe3ca9200638da76371ce2d7a2f12d3a2d5",
+    "seconds": 5.140234,
+    "cap_seconds": 300,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "accepted_state": {
+    "revision": "a50f9bc555afaeabdea419d0251b54ee6c2fa3e7",
+    "report": "sensitive-value-checked-v_nhxv8z/report.json",
+    "sha256": "9d02133a45660b8336b50a0c9524d1b0eccad275e281a996628fc901ea4aae30",
+    "fixture_sha256": "ca8b18d1b5dc8cfd68ca0d9c1420c613548c7eb12439ce00516b13b2cdb60256",
+    "constructed_premises": 20,
+    "reached_premises": 101,
+    "real_php_steps": 7,
+    "algorithmic_seconds": 4.344844,
+    "SL_seconds": 9.848262,
+    "cap_seconds": 120,
+    "source_agreements": 0,
+    "result": "Unset allocation, owning SENT snapshot transfer, getter copy/exact tail, readonly preserving old slot, last-release D|/weak-null; source/mode/site/retired receiver and initialized-null controls"
+  },
+  "preserved_zero": {
+    "sensitive-value-protocol-dcxp3zu9": "Unevaluated preparation only; two raw completion assertions corrected to THROWING before execution. Earlier CLASS failures/cuts remain in their own unchanged ledgers."
+  },
+  "commands": [
+    "python3 .tools/constructor-sensitive-value-probes-24/run-compiler.py 94f4b007dfc286c68076aa878091092c27af6a3e a50f9bc555afaeabdea419d0251b54ee6c2fa3e7",
+    "python3 .tools/constructor-sensitive-value-probes-24/run.py changed --revision a50f9bc555afaeabdea419d0251b54ee6c2fa3e7",
+    "python3 .tools/constructor-sensitive-value-probes-24/focused/run.py native --revision a50f9bc555afaeabdea419d0251b54ee6c2fa3e7",
+    "python3 .tools/constructor-sensitive-value-probes-24/focused/run.py changed --revision a50f9bc555afaeabdea419d0251b54ee6c2fa3e7",
+    "python3 .tools/constructor-sensitive-value-probes-24/run-prepared.py .tools/constructor-sensitive-value-probes-24/sensitive-value-protocol-8deqsxjf/PREPARED.json"
+  ],
+  "maintained_commands": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_value_constructor_cases.json",
+    "python3 tests/semantics/sensitive_value_constructor_protocol.py --revision \"$(git rev-parse HEAD)\""
+  ],
+  "recording": "Accepted runs have exact streams/status, stable inputs/head/status and fully reaped groups. State fixture AL compilation precedes one actual SL application; state does not renew source agreements.",
+  "actual_composition": "Pending exact current-parent pointwise union and one strict init-only check; private source7/state121 retain a50 inputs."
+}
