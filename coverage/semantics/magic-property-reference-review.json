@@ -1,0 +1,116 @@
+{
+  "status": "bounded source and reached-state milestone; independently reviewed semantics",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "c2e06b6d7f13d863be596130a022f9ac863c0596/372",
+  "production_revision": "cebba79fcc7e66f1e7d3cea5e1230d6e1f24a2d6",
+  "scope": "Module384 MAGIC_GET verification of actual returned REFERENCE cells with nonempty unique valid PROPREF sources and no PARAMETERBACKINGS, through accepted public literal-CV or owned ordinary-call receivers. Target types are builtin int/object. Exact compatible values are unchanged; possible fitting integer-string conversion selects a conflict diagnostic without changing the referent. Wider possible conversions and target types remain Unsupported.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL --sl/jobs1; native30/model60/process90/numeric120; profile30719; LC_ALL=C/TZ=UTC; existing tools, no rebuild"
+  },
+  "native_first": {
+    "revision": "16d6f8a5e7b80ee5de36caa0c6f62426f55ac6d0",
+    "cases": 6,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-reference-native30-5ogglafo/report.json",
+    "seconds": 0.467791,
+    "credit": "Native observations only; exact originals, actual pinned binary, all exit0/empty stderr."
+  },
+  "unsupported_baseline": {
+    "revision": "16d6f8a5e7b80ee5de36caa0c6f62426f55ac6d0",
+    "case": "review-property-magic-ref-exact-kept30",
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-reference-baseline30-ocfv8o0c/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|",
+    "stderr": "",
+    "reason": "magic getter typed reference sources",
+    "seconds": 7.712386,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+    "parent": "cebba79fcc7e66f1e7d3cea5e1230d6e1f24a2d6",
+    "modules": 373,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-reference-strict30-2ltrij_s/report.json",
+    "seconds": 5.503133,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+    "cases": 6,
+    "raw": ".tools/properties-magic-coerce29/.tools/dynamic-property-warning-source-vxfoa_kx/report.json",
+    "outcomes": "All checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact, raw/modeled stderr empty."
+  },
+  "source_sha256": {
+    "review-property-magic-ref-exact-kept30": "16b86a8e7df626f7d6eeee89db1b335d03b18b726402fffd53a10fa4c5b4339a",
+    "review-property-magic-ref-conflict-repair30": "2787764465b3f3c8491b41760b292755db4c7acf6fc530aefacc486fddc23b9b",
+    "review-property-magic-ref-reject-repair30": "629c92506f82f3ee0356b975af5f7051ec752bf6168da370c2d448c1068899a2",
+    "review-property-magic-ref-owned-object30": "df37372c28564da7449ef09946b8805ad81335385938b4b47140aedd98e59e34",
+    "review-property-magic-ref-strict-reject30": "3483c0ed30a383e2cb136c96b9388e9099bafbffaed1f53116772dccc35838c7",
+    "review-property-magic-ref-first-source30": "96f85a2f73b374f5d7643ae24dd12ad0e5b50b9d1fe72e227c52ffe4881a3242"
+  },
+  "reached": [
+    {
+      "group": "exact-kept",
+      "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+      "premises": 163,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-reference-7ajp2s2c/report.json"
+    },
+    {
+      "group": "conflict",
+      "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+      "premises": 127,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-reference-32ddi33t/report.json"
+    },
+    {
+      "group": "reject",
+      "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+      "premises": 127,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-reference-lhs5om5m/report.json"
+    },
+    {
+      "group": "owned-object",
+      "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+      "premises": 144,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-reference-u2d0a7on/report.json"
+    },
+    {
+      "group": "strict",
+      "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+      "premises": 140,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-reference-a_ad3wk1/report.json"
+    },
+    {
+      "group": "first-source",
+      "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+      "premises": 128,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-reference-3bn5_07q/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 829,
+  "facts": [
+    "Compatible int7/9 and object returns preserve the whole verification state, real reference wrapper and existing sources; the getter target stays UNSET and acquires no source. Later string writes remain legal under the original int|string source.",
+    "Weak string7 conflicts even though its int|string source accepts the converted int; bad and strict string7 use ordinary MAGIC_GET mismatch. Verification preserves the real cell, then actual reader cleanup detaches its source and repairs7 under the already-created TypeError.",
+    "Two real sources select the first actual insertion entry for diagnostic class/name/type. Reversed insertion order changes the observed label; the source union renders string|int.",
+    "Owned object reception releases the raw RV cell owner before BASE release. Source/global aliases retain the cell until their real removal in readerD; the copied payload remains live and retires only on result release.",
+    "Actual raw REFERENCE, descriptor/receiver/carrier, unique valid nonempty source metadata and absent PARAMETERBACKINGS authenticate the bounded rule. Constructed missing/duplicate/wrong sources and residual conversions are refused; no general history proof is claimed."
+  ],
+  "recorder_failure": {
+    "revision": "9cb4c6ea9d020fe2e572aa58383be7f6df715b06",
+    "raw": ".tools/properties-magic-coerce29/.tools/magic-reference-strict30-parent-argument-failure.json",
+    "cause": "Mistyped full parent argument rejected by existing HEAD^ assertion before output-directory or numeric actor; corrected git-derived argument, no code change.",
+    "credit": 0
+  },
+  "compatibility": "Additive384 only;380/95/138/79/99/270, schema, owner roots and receiver stages unchanged. Existing29 synthetic PROPREF negative has no real mutable alias/source and remains excluded statically; no older body or evidence renewal. Native/source/state/preparation and baseline cuts are distinct.",
+  "remaining": "PARAMETERBACKINGS, wider target types, lossy/fractional/exponent or callback-based possible conversions, and earlier receiver/signature/access/quiet/write/recursive residuals remain required.",
+  "engine": [
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_prop_assignable_by_ref_ex/i_zend_verify_type_assignable_zval/zend_throw_ref_type_error_type",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter strictness",
+    "spec/semantics/138-property-references.watsup:propref_class/propref_label/source validation"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_reference_protocol.py reproduce exactly six sources/groups. Ignored raw trees retain original/checked source/eval bytes, generated fixtures/assertions, commands/process/streams and stable identities. Full-sort preparations carry zero semantic credit."
+}

@@ -1450,7 +1450,7 @@ The actual371 join over `675a2e1b5` passes strict at `d54c66076` (5.417s),
 preserving current compiler warning routing and getter interfaces. Private
 source/state cuts retain their original credit.
 Weak getter verification now accepts numeric strings parsed as an in-range
-integer. Reference returns convert the actual cell; value returns convert only
+integer. Unconstrained reference returns convert the actual cell; value returns convert only
 the returned value. The getter declaration determines strictness, and readonly
 backing remains UNSET without a new type source. CV reception can observe later
 receiver-destructor changes, while an owned receiver copies the converted value
@@ -1460,7 +1460,14 @@ setup-inclusive premises; the original Unsupported and fixture failure keep
 zero credit, and earlier getter evidence is unchanged.
 The actual372 join over `e11f0f06c` passes strict at `5f96624c8` (5.554s),
 preserving current hook/getter and cleanup interfaces. Private cuts retain their credit.
-Wider coercions, constrained returned cells, wider getter signatures, quiet/write
+Typed-property-backed getter references now support exact int/object targets
+without changing the cell or attaching the getter target type. Weak integer
+strings can instead raise a source/target conflict; strict and nonnumeric
+mismatches retain the ordinary getter TypeError. The first actual source selects
+the conflict label, and pending errors survive later source detachment/repair.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-reference-review.json)
+pass 829 setup-inclusive premises; owned copied payloads survive source/cell removal.
+Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers

@@ -2220,7 +2220,17 @@ The actual372 join over `e11f0f06c` passes strict at `5f96624c8` (5.554s,
 state credit0). Parent hook guards and class/return/collector/Fiber interfaces
 are preserved; these originals use unhooked nongenerator instances. Private
 cuts and original failures retain their credit.
-Wider coercions, constrained returned cells, wider signatures, quiet/write/recursive
+Module384 now verifies real typed-property-backed getter references for builtin
+int/object targets. Exact compatible verification is whole-state identity; weak
+fitting integer-string conversion only selects the first-source conflict Error,
+while strict/nonnumeric rejection uses ordinary MAGIC_GET TypeError. No cell write
+or getter type-source attachment occurs. Native6 and the model Unsupported baseline
+(CLI1) retain separate16d6 cuts; strict373/source6 and six whole reached groups pass
+829 setup-inclusive premises at `9cb4c6ea9`. Real source detachment/repair preserves
+pending errors, and owned copied payloads survive source/cell removal. The rejected
+recorder parent argument ran no numeric actor and retains zero credit; prior cuts
+are unchanged. [Reference-getter ledger](coverage/semantics/magic-property-reference-review.json).
+Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
 held278/279 add no dependency or credit.

@@ -162,7 +162,7 @@ receiver release. Public UNSET type verification uses the getter's strictness an
 performs no backing-slot write or type-source attachment. An actual mismatch
 raises the declaring property's TypeError before receiver cleanup; later cell
 repair cannot remove it, and a successful check is not repeated after cleanup.
-Verification requiring wider coercions or constrained returned reference cells remains
+Coercions and returned-reference constraints beyond the bounded cases below remain
 Unsupported.
 
 Getter throws release the receiver under the pending exception. If receiver
@@ -210,8 +210,24 @@ and TypeError through later receiver cleanup.
 The [integer-getter review](../../coverage/semantics/magic-property-integer-review.json)
 records six source agreements and six whole reached groups/909 setup-inclusive
 premises. Fractional/exponent strings parsed as NFLOAT, lossy or callback-based
-conversions and constrained returned cells remain Unsupported; earlier getter
+conversions and wider returned-cell constraints remain Unsupported; earlier getter
 evidence retains its distinct cuts.
+
+Module384 admits actual returned reference cells with nonempty unique valid
+typed-property sources for public UNSET builtin int/object targets. Exact
+compatible verification leaves the whole state unchanged: no checked write or
+getter target type source is added. A weak string parsed as a fitting integer is
+tested purely to select the source/target incompatibility Error, even when its
+source union accepts the converted int. The real cell stays unchanged. Strict
+and nonnumeric rejection uses ordinary MAGIC_GET TypeError, and the first actual
+source entry selects the conflict label. Receiver cleanup can later detach that
+source and repair the cell while the original Error survives. Owned reception
+releases the raw RV cell owner before BASE; surviving aliases can retain the cell
+until their actual removal, while the copied payload stays alive.
+The [reference-getter review](../../coverage/semantics/magic-property-reference-review.json)
+records six source agreements and six whole reached groups/829 setup-inclusive
+premises. PARAMETERBACKINGS, wider target types and possible conversions remain
+Unsupported; existing receiver/consumer residuals and prior evidence are unchanged.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
