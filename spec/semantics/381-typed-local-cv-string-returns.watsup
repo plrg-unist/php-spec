@@ -12,6 +12,7 @@ dec $typed_cv_string_valid(pstate, prefstringcv) : bool
 dec $typed_cv_string_begin(pstate, prefstringcv, ptask*) : pstate
 dec $typed_cv_string_owner(ptask*, prefstringcv) : bool
 dec $typed_cv_string_copy_at(ptask*, nat) : (prefstringcv, pvalue)?
+dec $typed_cv_string_copy_head(ptask, nat) : bool
 dec $typed_cv_string_copy_suffix(ptask*, prefstringcv) : ptask*
 dec $typed_cv_string_copy_valid(pstate, prefstringcv, pvalue) : bool
 dec $typed_cv_string_released_scope(pstate, nat) : bool
@@ -127,8 +128,10 @@ def $stringify_return_state(S, REF_CV_STRING_FETCH prefstringcv, pvalue_text, (R
 def $typed_cv_string_copy_at((REF_CV_STRING_COPY prefstringcv pvalue) :: ptask_tail*, n_cell) = ((prefstringcv, pvalue))
   -- if prefstringcv.CELL = n_cell
 def $typed_cv_string_copy_at(ptask :: ptask_tail*, n_cell) = $typed_cv_string_copy_at(ptask_tail*, n_cell)
-  -- otherwise
+  -- if ~$typed_cv_string_copy_head(ptask, n_cell)
 def $typed_cv_string_copy_at(eps, n_cell) = eps
+def $typed_cv_string_copy_head(REF_CV_STRING_COPY prefstringcv pvalue, n_cell) = (prefstringcv.CELL = n_cell)
+def $typed_cv_string_copy_head(ptask, n_cell) = false -- otherwise
 def $typed_cv_string_copy_valid(S, prefstringcv, pvalue) = true
   -- if $typed_cv_string_cell_valid(S, prefstringcv)
   -- if S.STORE[prefstringcv.CELL] = DEFINED (POBJECT prefstringcv.OBJECT)
