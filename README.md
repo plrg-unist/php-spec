@@ -1118,9 +1118,9 @@ The reviewed current359 composition over `f5c4eed1f` passes strict compilation
 at `e77c3eff0`, preserving current source and Generator interfaces.
 [The review](coverage/semantics/undefined-property-review.json) preserves the
 original fallback/fixture failures and the weaker bound-Closure witness.
-Literal calls to named reference-return functions with no arguments or one CV
-argument, positional or named, now retain the actual returned cell
-through undefined-property warnings. The captured target remains borrowed, so
+Literal calls to named reference-return functions with no arguments, one CV
+argument supplied positionally or by name, or two positional CVs retain the
+actual returned cell through undefined-property warnings. The captured target remains borrowed, so
 handler rebinding may retire it while the cell keeps the replacement alive until
 fetch cleanup. Ten exact originals and separate 237/207/225 reached cuts cover
 callee/finally rebinding, normal and throwing last-owner cleanup, saved callers
@@ -1138,6 +1138,16 @@ affected deferred comparison retain separate cuts; five new reached groups
 validate shared cells, captured null, callee cleanup and pending exceptions.
 The actual361 join over `b82bd2425` passes strict at `432084968`, preserving
 current call, return-replay and class interfaces.
+Two positional CVs now preserve left-to-right live sends: a first Warning fixes
+null while its handler can change or unset the second CV before that later read.
+Deferred SEND2 uses its emitted line while retaining the documentary CV operand
+and captured prefix. Six source agreements and 1207 setup-inclusive reached
+premises cover shared reference formals, parameter cleanup before lookup and
+throwing prefix/replacement cleanup. The original `is_null` observers retain
+their builtin boundary; distinct core-only companions provide the first two
+agreements.
+The actual361 join over `430face8d` passes strict at `4b39fa53c`, preserving
+current CALLS, class attributes, return replay and lifecycle interfaces.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

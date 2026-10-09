@@ -1612,6 +1612,19 @@ source6/state760 and source10/state669 are unrenewed.
 The actual361 join over `b82bd2425` passes strict at `432084968` (4.923s),
 preserving current call roots, return replay and class Override interfaces.
 It renews no source/state credit.
+Two positional ordinary CVs now use a local source certificate in377;
+shared361 ECHO admission and99/79/cell ownership are unchanged. Deferred SEND2
+reports emitted23 while preserving documentary INPUT24 and captured prefix7
+despite caller mutation to99/19. Native6 retains `0be182e03`; distinct core-only
+companion2 observations retain `4e9366787`. Strict361 passes at `f16303c4e`;
+source6 and six reached groups pass 1207 setup-inclusive premises at `64fdea48c`,
+covering first-null/later-live sends, shared formals, both parameter callbacks
+before PREP, current/saved malformed carriers and H/B cleanup. The original
+`is_null` source campaign retains zero credit; the second original remains
+model-unrun. Earlier noarg/one-CV/named cuts and failures are unrenewed.
+The actual361 join over `430face8d` passes strict at `4b39fa53c` (5.028s),
+preserving current CALLS/class compiler, return replay and fatal-cleanup interfaces.
+It adds no source/state credit.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container

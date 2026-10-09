@@ -62,8 +62,8 @@ keeps native/source and reached-state cuts separate. Computed names, magic
 getters/hooks and wider receiver forms remain required.
 
 At PHP8.5, a literal named nonbuiltin reference-return call without name fallback,
-with no arguments or one ordinary CV supplied positionally or by name, keeps its
-returned reference cell through callee leave. Module377 now
+with no arguments, one ordinary CV supplied positionally or by name, or two
+positional ordinary CVs, keeps its returned reference cell through callee leave. Module377 now
 captures that actual cell before PROPERTY_PREP, borrows the live ordinary
 instance/stdClass target and keeps the warning result null even when handler
 rebinding retires that target. FETCH cleanup through270 releases the read's
@@ -85,6 +85,17 @@ target and actual named task before capturing that deferred warning. Handler
 mutation still sends fixed null, and unknown labels fail before CV demand.
 Named default cleanup may replace the receiver during callee leave, so lookup
 captures the returned cell's current object without rereading the argument.
+For two positional CVs,377 separately authenticates both source/SEND occurrences
+without widening361's ECHO certificate. A first argument Warning sends fixed
+null; its handler may change or unset the second CV before the later SEND.
+Deferred SEND2 preserves the already-captured prefix and documentary CV INPUT,
+but reports its actual compiled line. Both last-owned parameter callbacks may
+replace the returned cell during leave before property lookup. Prefix cleanup
+after an argument throw and wrapper cleanup after a property throw preserve
+exception chaining. Core-only companions replace the ordinary `is_null`
+observers in the positive comparison set; original bytes and builtin boundaries
+remain recorded separately. More than two arguments, mixed/named pairs, unpacked or
+computed arguments and dynamic callees remain outside this bounded lane.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
