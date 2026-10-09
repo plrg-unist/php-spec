@@ -24,8 +24,11 @@ COMPUTED_STAGE = ('S.TODO = (SCOPED_NAME (NName (BYTES text_class) metadata_clas
     '(KNOWN (PSTRING n_class*)) phpType7* z) :: ptask_tail* '
     '-- if $ptlc($base64(text_class)) = $ptascii("a") '
     '-- if n_class* = $ptascii("A") '
-    '-- if S.RESULT = KNOWN (PSTRING n_method*) '
-    '-- if n_method* = $ptascii("__construct")' + CLASS_GUARDS)
+    '-- if S.RESULT = VARIABLE preqbytes_method z_method '
+    '-- if preqbytes_method = $ptascii("method")' + CLASS_GUARDS
+    + ' -- if $lookup(S.ENV, $ptascii("method")) = (n_cell_method) '
+    '-- if S.STORE[n_cell_method] = DEFINED (PSTRING n_method*) '
+    '-- if n_method* = $ptascii("__construct")')
 LITERAL_CHECKS = [
     '$scoped_class_task(S, NName (BYTES text_class) metadata_class, NIdentifier (BYTES text_method) metadata_method, phpType7*, z)',
     '$call_task_valid(S, SCOPED_CLASS (NName (BYTES text_class) metadata_class) (NIdentifier (BYTES text_method) metadata_method) phpType7* z)',
@@ -70,7 +73,9 @@ CASES = {'literal': (LITERAL_STAGE, LITERAL_CHECKS), 'computed': (COMPUTED_STAGE
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--prepare-only', action='store_true')
+    parser.add_argument('--case', choices=CASES)
     args = parser.parse_args()
+    selected = {args.case: CASES[args.case]} if args.case else CASES
     recorder.ROOT = ROOT
     sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
@@ -90,6 +95,7 @@ def main():
     flags = [arg for key, value in profile.items() for arg in ('-d', key + '=' + value)]
     report = {'revision': revision, 'working_tree_status': status, 'inputs': before, 'profile': profile,
               'mode': 'SL', 'cache': False, 'det': True, 'source_agreements': 0, 'records': [],
+              'selection': list(selected),
               'evaluated': False, 'application_evaluations': 0,
               'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'PHP_SPEC_SCRIPT_ENCODING': 'absent', 'jobs': 1}}
     try:
@@ -105,7 +111,7 @@ def main():
             assert checked['ok'], checked
         finally:
             checked_worker.close()
-        for name, (stage, checks) in CASES.items():
+        for name, (stage, checks) in selected.items():
             fixture = out / (name + '.watsup')
             fixture.write_text(
                 'dec $stage(pstate) : bool\ndef $stage(S) = true -- if ' + stage + '\n'
@@ -136,11 +142,11 @@ def main():
                                  and (out / (name + '.stdout')).read_bytes() == b'true\n'
                                  and not (out / (name + '.stderr')).read_bytes())
                 print(name, row['passed'], flush=True)
-                assert row['passed'], row
+                assert row['passed'], name
     finally:
         report.update(inputs_stable=before == {str(path): sha(path) for path in watched},
                       head_stable=revision == git('rev-parse', 'HEAD'), status_stable=status == git('status', '--short'))
-        report['passed'] = (len(report['records']) == 2 and all(row['passed'] for row in report['records'])
+        report['passed'] = (len(report['records']) == len(selected) and all(row['passed'] for row in report['records'])
                             and all(report[key] for key in ['inputs_stable', 'head_stable', 'status_stable']))
         (out / ('PREPARED.json' if args.prepare_only else 'report.json')).write_text(json.dumps(report, indent=2) + '\n')
     assert all(report[key] for key in ['passed', 'inputs_stable', 'head_stable', 'status_stable'])
