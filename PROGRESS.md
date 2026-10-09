@@ -1813,6 +1813,13 @@ This modest matched observation is not a CLI estimate. Required original 7 keeps
 its prior timeout and zero agreement; no source or accepted state cut is renewed.
 Actual-parent compilation passes at 640a59899 over 7c3299fd with 361 modules,
 preserving scalar replay hooks; this checks compiler compatibility only.
+A new cold double-throw source at b82bd2425 with 361 modules passes native/model
+agreement and 155 genuine state premises without a production change. Empty-name
+lookup leaves the static default deferred, preserves Error.previous=drop.previous=cast,
+and retires the owned RHS without calling its __toString. Actual operation/FETCH,
+descriptor, history and heap guards pass. The preparation stop and incorrect
+receiver-field fixture failure remain preserved with zero credit. Prior source/state
+cuts are unchanged; required original 7 remains open at its CLI 60 timeout.
 ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.

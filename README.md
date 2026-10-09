@@ -299,6 +299,9 @@ retire the receiver before reading the live row, reference cell and RHS. Failed 
 preserves empty-name lookup and the Error-to-destructor-to-cast exception chain.
 Eight of nine exact originals pass at separate cuts; the pending-masks original
 remains required with an unchanged 60-second CLI timeout and zero agreement.
+A separate cold double-throw witness and 155 state premises pass on a 361-module
+cut: empty-name lookup leaves defaults deferred and retires the RHS without
+stringifying it, preserving Error-to-destructor-to-cast chaining.
 Prior 123/private 238 cuts remain separate. A tested cut with 360 modules passes
 compilation, 238 affected state premises and 23 constant-export/control premises.
 One constant lookup per insertion reduces calls from 689,580 to 229,972 over
