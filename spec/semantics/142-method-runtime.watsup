@@ -1536,13 +1536,14 @@ def $promotion_tasks(S, pfunction) = eps -- otherwise
 def $promotion_tasks_from(porigin, eps, n) = eps
 def $promotion_tasks_from(porigin, phpType17 :: phpType17_tail*, n) = $promotion_task(porigin, n, $pslower(phpType17)) ++ $promotion_tasks_from(porigin, phpType17_tail*, $(n + 1))
 def $promotion_task(porigin, n, PSINPUT psraw) = [PROMOTE_PARAMETER porigin n] -- if psraw.FLAGS =/= 0
+def $promotion_task(porigin, n, PSINPUTATTRIBUTES psraw phpType14) = $promotion_task(porigin, n, PSINPUT psraw)
 def $promotion_task(porigin, n, psinput) = eps -- otherwise
 
 def $promotion_raw(S, pfunction, n) = (psraw)
   -- if $promotion_source(S, pfunction) = (SEQUENCE phpType17*)
   -- if $(n < |phpType17*|) /\ $(n < |pfunction.SIGNATURE.PARAMETERS|)
-  -- if $pslower(phpType17*[n]) = PSINPUT psraw
-  -- if psraw.FLAGS =/= 0 /\ $psattributes_supported($promotion_attribute_context(pfunction), psraw) /\ ~psraw.VARIADIC
+  -- if $pspromotion_raw($promotion_attribute_context(pfunction), $pslower(phpType17*[n])) = (psraw)
+  -- if psraw.FLAGS =/= 0 /\ ~psraw.EXTRA /\ ~psraw.VARIADIC
   -- if $ppproperty_supported(psraw.FLAGS) /\ ~$ppproperty_flag(psraw.FLAGS, 8)
   -- if psraw.NAME = pfunction.SIGNATURE.PARAMETERS[n].NAME
   -- if psraw.BYREF = pfunction.SIGNATURE.PARAMETERS[n].BYREF
@@ -1571,7 +1572,6 @@ def $promotion_override_property(S, pclassdesc, ppropertydesc) = true
   -- if pcpath = pcpath_method ++ [PCFIELD 4, PCINDEX n]
   -- if $class_method_origin(S.CLASSES, PORIGIN n_unit pcpath_method) = (pmethoddesc)
   -- if $promotion_raw(S, pmethoddesc.FUNCTION, n) = (psraw)
-  -- if psraw.EXTRA = PSPARAMETERATTRIBUTES phpType14
   -- if $promotion_descriptor(S, pmethoddesc.FUNCTION, n) = (ppropertydesc_source)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_source)
   -- if (ppropertydesc = ppropertydesc_source /\ pclassdesc.ORIGIN = pmethoddesc.OWNER) \/ (pclassdesc_source.KIND = "trait" /\ ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source))

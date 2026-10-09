@@ -543,8 +543,8 @@ def $pppromotion_override_unbound_properties(P, pchheader, ppropertydesc :: ppro
   -- if ~$pppromotion_override_source(P, pchheader, ppropertydesc)
 def $pppromotion_override_source(P, pchheader, ppropertydesc) = true
   -- if $origin_node([P.FOLD.SOURCE], ppropertydesc.ORIGIN) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
-  -- if $pslower(NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata) = PSINPUT psraw
-  -- if psraw.FLAGS =/= 0 /\ psraw.EXTRA = PSPARAMETERATTRIBUTES phpType14
+  -- if $pslower(NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata) = PSINPUTATTRIBUTES psraw phpType14
+  -- if psraw.FLAGS =/= 0 /\ ~psraw.EXTRA
   -- if psraw.NAME = ppropertydesc.NAME /\ psraw.LINE = ppropertydesc.LINE
   -- if $pspromotion_override_attribute($ppproperty_context(P, pchheader, psraw.NAME, psraw.LINE), phpType14)
 def $pppromotion_override_source(P, pchheader, ppropertydesc) = false -- otherwise

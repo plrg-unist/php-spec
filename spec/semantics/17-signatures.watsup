@@ -1,8 +1,7 @@
 ;; Local signature compilation. Declaration activation and calls are separate.
-syntax psextra = bool | PSPARAMETERATTRIBUTES phpType14
 syntax psraw = { NAME ptbytes, TYPE phpType18, BYREF bool, VARIADIC bool,
-  DEFAULT phpType5, LINE nat, FLAGS int, EXTRA psextra }
-syntax psinput = PSINPUT psraw | PSINPUTUNSUPPORTED text
+  DEFAULT phpType5, LINE nat, FLAGS int, EXTRA bool }
+syntax psinput = PSINPUT psraw | PSINPUTATTRIBUTES psraw phpType14 | PSINPUTUNSUPPORTED text
 syntax psnumber = PSINTEGER int | PSFLOAT | PSNONNUMERIC
 syntax psdefault = PSNONE | PSDEFAULT phpType5 text | PSDEFAULTUNSUPPORTED text
 syntax psparam = { NAME ptbytes, TYPE ptbranch*, BYREF bool, VARIADIC bool,
@@ -20,9 +19,10 @@ syntax psprogress = PSSDONE psresult | PSSDEFAULTREQUEST pscontinuation
 dec $psline(metadata) : nat
 dec $psstartline(metadataEntry) : bool
 dec $pslower(phpType17) : psinput
-dec $psparameter_extra(phpType14, phpType37) : psextra
+dec $psparameter_input(psraw, phpType14) : psinput
 dec $pspromotion_override_attribute(ptcontext, phpType14) : bool
-dec $psattributes_supported(ptcontext, psraw) : bool
+dec $psattributes_supported(ptcontext, psraw, phpType14) : bool
+dec $pspromotion_raw(ptcontext, psinput) : psraw?
 dec $psrequiredlater(psinput*) : ptbytes?
 dec $psdefault(phpType5, ptcontext) : psdefault
 dec $psnumber(expression) : psnumber
@@ -84,29 +84,29 @@ def $psstartline(MstartLine int) = true
 def $psstartline(metadataEntry) = false
   -- otherwise
 
-def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = PSINPUT { NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), FLAGS int, EXTRA $psparameter_extra(phpType14, phpType37) }
+def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = $psparameter_input({ NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), FLAGS int, EXTRA (phpType37 =/= SEQUENCE eps) }, phpType14)
 def $pslower(phpType17) = PSINPUTUNSUPPORTED "edited dynamic parameter name"
   -- otherwise
 
-;; Keep the checked Param attributes for lexical name resolution. Empty and
-;; hook-only parameters retain the earlier boolean guard representation.
-def $psparameter_extra(SEQUENCE eps, SEQUENCE eps) = false
-def $psparameter_extra(phpType14, phpType37) = true
-  -- if phpType37 =/= SEQUENCE eps
-def $psparameter_extra(phpType14, SEQUENCE eps) = PSPARAMETERATTRIBUTES phpType14
-  -- if phpType14 =/= SEQUENCE eps
+;; Keep the checked Param attributes separately from the existing boolean
+;; hook guard. Override is filtered off the parameter target by Zend.
+def $psparameter_input(psraw, phpType14) = PSINPUT psraw
+  -- if psraw.EXTRA \/ phpType14 = SEQUENCE eps
+def $psparameter_input(psraw, phpType14) = PSINPUTATTRIBUTES psraw phpType14
+  -- if ~psraw.EXTRA /\ phpType14 =/= SEQUENCE eps
 def $pspromotion_override_attribute(ptcontext, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = ($ptlc($ptresolve(ptcontext, ptqual, ptbytes)) = $ptascii("override"))
   -- if $ptast(name) = PTNAME ptqual ptbytes
 def $pspromotion_override_attribute(ptcontext, phpType14) = false -- otherwise
-def $psattributes_supported(ptcontext, psraw) = true
-  -- if psraw.EXTRA = false
-def $psattributes_supported(ptcontext, psraw) = true
-  -- if psraw.FLAGS =/= 0
-  -- if psraw.EXTRA = PSPARAMETERATTRIBUTES phpType14
-  -- if $pspromotion_override_attribute(ptcontext, phpType14)
-def $psattributes_supported(ptcontext, psraw) = false -- otherwise
+def $psattributes_supported(ptcontext, psraw, phpType14) = (psraw.FLAGS =/= 0 /\ ~psraw.EXTRA /\ $pspromotion_override_attribute(ptcontext, phpType14))
+def $pspromotion_raw(ptcontext, PSINPUT psraw) = (psraw)
+  -- if ~psraw.EXTRA
+def $pspromotion_raw(ptcontext, PSINPUTATTRIBUTES psraw phpType14) = (psraw)
+  -- if $psattributes_supported(ptcontext, psraw, phpType14)
+def $pspromotion_raw(ptcontext, psinput) = eps -- otherwise
 
 def $psrequiredlater(eps) = eps
+def $psrequiredlater((PSINPUTATTRIBUTES psraw phpType14) :: psinput*) = $psrequiredlater((PSINPUT psraw) :: psinput*)
+  -- if $psrequiredlater(psinput*) = eps
 def $psrequiredlater(psinput :: psinput_rest*) = ptbytes
   -- if $psrequiredlater(psinput_rest*) = ptbytes
 def $psrequiredlater((PSINPUT psraw) :: psinput*) = psraw.NAME
@@ -232,10 +232,10 @@ def $psdefaultguard(ptcontext, psraw, psinput*) = PSGUARDED ($pserror(ptcontext,
   -- if psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT
 def $psdefaultguard(ptcontext, psraw, psinput*) = PSGUARDED (PSONEUNSUPPORTED "parameter attributes or hooks")
   -- if ~(psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT)
-  -- if ~$psattributes_supported(ptcontext, psraw)
+  -- if psraw.EXTRA
 def $psdefaultguard(ptcontext, psraw, psinput*) = PSNEEDDEFAULT
   -- if ~(psraw.VARIADIC /\ psraw.DEFAULT =/= ABSENT)
-  -- if $psattributes_supported(ptcontext, psraw)
+  -- if ~psraw.EXTRA
 
 def $psdefaultline(PSDEFAULT (NExprConstFetch name metadata) "deferred", ptcontext) = $psline(metadata)
 def $psdefaultline(psdefault, ptcontext) = ptcontext.LINE
@@ -368,6 +368,7 @@ def $psreturn_start(ptcontext, psinput*, bool, PTOK ptbranch* ptdiagnostic*) = $
 
 def $psfold_start(ptcontext, eps, pssignature, psdiagnostic*) = PSSDONE (PSOK pssignature psdiagnostic*)
 def $psfold_start(ptcontext, (PSINPUTUNSUPPORTED text) :: psinput*, pssignature, psdiagnostic*) = PSSDONE (PSUNSUPPORTED text)
+def $psfold_start(ptcontext, (PSINPUTATTRIBUTES psraw phpType14) :: psinput*, pssignature, psdiagnostic*) = $psfold_start(ptcontext, (PSINPUT (psraw[.EXTRA = (~$psattributes_supported(ptcontext, psraw, phpType14))])) :: psinput*, pssignature, psdiagnostic*)
 def $psfold_start(ptcontext, (PSINPUT psraw) :: psinput*, pssignature, psdiagnostic*) = $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, $psguard(ptcontext[.LINE = psraw.LINE][.POSITION = PTPARAMETER], psraw, psinput*, (psparam.NAME)*, $psseenvariadic(pssignature.PARAMETERS)))
   -- if psparam* = pssignature.PARAMETERS
 
