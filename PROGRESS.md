@@ -22,22 +22,18 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
-Ordinary unit0 parentless anonymous classes now compile authentic NUL/file/line/hex
-names in real compiler order and publish their descriptors before the first NEW.
-Repeated visits allocate distinct objects with independent defaults; same-line
-sites remain distinct and methods retain lexical class scope. Two fresh originals
-agree at a898dc45c /373, with strict3 (5.324s) and 205 source-frontier/guard checks
-plus 21 pure formatter/domain queries in 126/100 groups. The compile-stage baseline,
-initial compiler stop and three fixture/elaboration stops retain zero credit.
-A separate trace original agrees at e64640919 /373: raw CLASS keeps its full name,
-while getTraceAsString displays the prefix before NUL. Changed strict3 (5.371s)
-and one genuine getter step pass 45 frontier/guard checks plus two pure display
-projection premises. Mixed named RTD consumers, nested and function/Closure
-publication, later source units, parents/interfaces/attributes/constructors and
-wider members/consumers remain required. Earlier cuts and safety boundaries stay
-frozen. The actual composition of 373 modules over 59080391d passes strict3 at
-c4dcd87e (5.324s), preserving canonical Fiber, class-hook, property and acquisition guards.
-Private source2 / 205+21 and trace1 / 45+2 retain their original cuts.
+Simple global noarg/by-value/untyped function and static no-capture Closure factories
+now record authenticated inner class checkpoints, save only restored unit images
+and publish class names before the first call. Two fresh originals agree at
+c417b2b03 /374 (strict3 5.473s), including pre-call dynamic lookup and compile-order
+`$0/$1` independent of call order. Function140 at c417 and Closure140 at 36b2811b
+pass 248 completed-compiler/source-frontier checks plus 32 explicitly pure context
+premises, with eight real AT/EVAL PhpSteps. Changed strict3 passes at 36b2811b
+(5.374s). The original compiler Unsupported, fixture binding stop and short-path
+slice failure retain zero credit; the corrected guard checks length before slicing.
+Original a898 source2 / 205+21 and e646 trace1 / 45+2 cuts remain frozen. Wider RTD
+consumers, factory parameters/captures/types/class scope, incomplete scope images,
+include/eval, constructors and broader class consumers remain required.
 [Anonymous class ledger](coverage/semantics/anonymous-classes-review.json).
 
 Private-final E_COMPILE_WARNING (128) delivery remains accepted at dec3e9968 /371:

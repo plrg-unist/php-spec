@@ -1,5 +1,5 @@
 {
-  "scope": "Ordinary unit0 parentless anonymous-class publication, repeated allocation, same-line identity, lexical scope and full trace names versus C-string display. Partial core; RTD mixtures, nested/publication contexts, constructors, inheritance and attributes remain required.",
+  "scope": "Ordinary unit0 parentless anonymous classes, simple global function/static Closure factories with pre-call publication, repeated allocation, compile-order identities, lexical scope and raw trace names versus C-string display. Partial core; wider RTD/context/member/source-unit interactions remain required.",
   "native_profile": {
     "opcache.enable_cli": "0",
     "opcache.jit": "disable",
@@ -48,6 +48,28 @@
       "status": "normal",
       "native_group": ".tools/anonymous-class-20/.tools/anonymous-class-trace-native-20/run-v1/anonymous-class-trace-name/command.json",
       "native_raw_sha256": "4775aac7f9881cbadabcb1d0b19bc6e4829102cec52dd30651fefd432b89cb9d"
+    },
+    {
+      "id": "anonymous-function-precall",
+      "source": "<?php\nfunction make() {\n    return new class {\n        public $value = 0;\n        public function scope() { return self::class; }\n    };\n}\n$expected = \"class@anonymous\\0\" . __FILE__ . ':3$0';\n$before = new $expected;\n$outside = new class {};\n$first = make();\n$second = make();\n$first->value = 9;\necho $before::class === $expected ? 'pre:yes|' : 'pre:BAD|';\necho $before !== $first && $first !== $second ? 'objects:distinct|' : 'objects:BAD|';\necho $before::class === $first::class && $first::class === $second::class ? 'class:same|' : 'class:BAD|';\necho $first::class === $expected ? 'factory:exact|' : 'factory:BAD|';\necho $outside::class === \"class@anonymous\\0\" . __FILE__ . ':10$1' ? 'outside:exact|' : 'outside:BAD|';\necho $first->scope() === $expected ? 'scope:same|' : 'scope:BAD|';\necho 'one:', $first->value, '|two:', $second->value, '|before:', $before->value;\n",
+      "source_sha256": "6d4599699faf17f80b84d48d1d6f81afc43088ecb165e13e0b4ab07c534f12f6",
+      "stdout_base64": "cHJlOnllc3xvYmplY3RzOmRpc3RpbmN0fGNsYXNzOnNhbWV8ZmFjdG9yeTpleGFjdHxvdXRzaWRlOmV4YWN0fHNjb3BlOnNhbWV8b25lOjl8dHdvOjB8YmVmb3JlOjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-factory-native-20/run-v1/anonymous-function-precall/command.json",
+      "native_raw_sha256": "57d5c8f3dc56187520b284a56985faee72795d6352adf46258ff50e769eb4be2"
+    },
+    {
+      "id": "anonymous-closure-precall",
+      "source": "<?php\nnamespace FactoryProbe;\n$factory = static function () {\n    return new class {\n        public $value = 4;\n        public function identity() { return self::class; }\n    };\n};\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':4$0';\n$before = new $name;\n$outside = new class {};\n$first = $factory();\n$second = $factory();\n$first->value = 9;\necho $before::class === $name ? 'before:yes|' : 'before:BAD|';\necho $outside::class === 'class@anonymous' . \"\\0\" . __FILE__ . ':11$1' ? 'order:yes|' : 'order:BAD|';\necho $first !== $second && $first !== $before && $second !== $before ? 'objects:distinct|' : 'objects:BAD|';\necho $first::class === $name && $second::class === $name ? 'class:same|' : 'class:BAD|';\necho $first->identity() === $name && $second->identity() === $name ? 'self:exact|' : 'self:BAD|';\necho 'values:', $before->value, ':', $first->value, ':', $second->value;\n",
+      "source_sha256": "d43eb9172e3b22ec91eefc3c8481f1c2727dc1ed8a46a2d477be217288c54fc6",
+      "stdout_base64": "YmVmb3JlOnllc3xvcmRlcjp5ZXN8b2JqZWN0czpkaXN0aW5jdHxjbGFzczpzYW1lfHNlbGY6ZXhhY3R8dmFsdWVzOjQ6OTo0",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-factory-native-20/run-v1/anonymous-closure-precall/command.json",
+      "native_raw_sha256": "02591d7473650e75213d90ae7bd79b1348a7962646f5de7c6edb839b7c71a4d9"
     }
   ]
 }

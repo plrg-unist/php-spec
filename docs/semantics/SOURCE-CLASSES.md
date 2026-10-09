@@ -63,15 +63,21 @@ Module383 admits authentic unit0 contexts with no named class/interface/trait/en
 RTD counter consumers or nested class bodies. Forms are parentless, without
 interfaces, attributes or constructor arguments; public untyped property defaults
 use the existing literal/constant-concat parser, and public noarg by-value nonmagic
-methods use existing body compilation. Ordinary functions and Closures do not
-consume the RTD counter, but anonymous descendants in their publication contexts
-remain Unsupported. Include/eval units, inheritance, attributes, constructors,
-wider members/defaults and complete RTD ordering remain required.
+methods use existing body compilation. Plain global noarg/by-value/untyped named
+functions and static no-capture Closures can contain these classes. The compiler
+records only the authentic class checkpoint while inside the factory, then saves
+the image after restoring the containing unit scope. This publishes the class
+before any call and preserves compilation order independently of call order.
+Ordinary function/Closure declarations do not consume the RTD counter. Wider
+factory contexts and incomplete containing-scope images remain Unsupported;
+include/eval units, inheritance, attributes, constructors, wider members/defaults
+and complete RTD ordering remain required.
 
 Raw `getTrace()['class']` retains the entire generated name. The shared trace
 renderer applies `c_string` only to the displayed CLASS bytes, matching Zend's
 `TRACE_APPEND_KEY`; `getTraceAsString()` therefore prints `class@anonymous`.
 Stored names and trace arrays remain intact. The
 [anonymous class review](../../coverage/semantics/anonymous-classes-review.json)
-keeps three exact originals and the publication/allocation and trace frontiers at
-their distinct cuts, with pure formatter/domain/display queries separated.
+keeps five exact originals and publication/allocation, factory and trace frontiers
+at their distinct cuts. Pure formatter/domain/display and compiler-context queries
+are separated from reached states; earlier failures retain zero credit.

@@ -1107,8 +1107,11 @@ distinct objects of one class; separate same-line sites have distinct class
 identities and methods retain lexical scope. Raw exception traces keep
 the full NUL-bearing name; display uses its C-string prefix. Three originals agree
 at separate cuts in the [anonymous class review](coverage/semantics/anonymous-classes-review.json).
-Mixed RTD counters, nested/publication contexts, constructors, inheritance,
-attributes and wider consumers remain required.
+Simple global function and static Closure factories also publish their class before
+the first call while saving only the restored unit image; two fresh originals
+check pre-call lookup, compile-order names and repeated instances. Mixed RTD
+counters, wider factory/publication contexts, constructors, inheritance, attributes
+and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary
 empty-object behavior; its [review](coverage/semantics/stdclass-review.json)
