@@ -179,6 +179,7 @@ def $base_nodes(BASE_SHORT) = eps
 
 dec $task_nodes(ptask) : pnode*
 def $task_nodes(AT porigin ptask) = $task_nodes(ptask)
+def $task_nodes(STMT statement) = eps
 def $task_nodes(ARRAY_UNPACK n phpType13* z) = [HARRAY n]
 def $task_nodes(ARRAY_NEXT n phpType13*) = [HARRAY n]
 def $task_nodes(ARRAY_KEY n expression phpType13*) = [HARRAY n]

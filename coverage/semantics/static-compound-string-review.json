@@ -719,6 +719,105 @@
         "renewed_source_state_credit": 0,
         "scope": "Compiler compatibility only; tested 360-module runtime/profile cuts retain their identities, original 7 remains required timeout with zero agreement"
       }
+    },
+    "statement_root_specialization": {
+      "module": "39-ownership.watsup",
+      "base_revision": "43a3fed4f39d42f01c8f323a6fc468d51121fec7",
+      "gated_revision": "646e075b4ece7a6bb53b82d69ddaf4e9aa1b325c",
+      "modules": 361,
+      "behavior": "An early STMT case returns its existing empty-root result before owning-task dispatch; generic AT recursion, all owning constructors and root list order/duplicates are unchanged",
+      "raw_directory": ".tools/scoped-static-compound-task-cost-20/.tools/scoped-static-compounds",
+      "report": "statement-roots-cost-20-wsm8s553/report.json",
+      "compiler": {
+        "passed": true,
+        "seconds": 4.1466100215911865,
+        "cap": 120
+      },
+      "focused_controls": {
+        "passed": true,
+        "premises": 14,
+        "seconds": 4.985025882720947,
+        "cap": 300,
+        "scope": "Bare/scoped/nested statements, nested owning AT with array and cell roots, mixed duplicate/order roots, and retaining/removing actual task-owned allocations; no prior source/state renewal"
+      },
+      "matched_prefix400": {
+        "same_parent": true,
+        "fixture_binary_source_filename_identical": true,
+        "sole_runtime_module_change": "39-ownership.watsup",
+        "full_returned_tuple_equal": true,
+        "returned_tuple_bytes": 116334,
+        "completion": "BUDGET",
+        "fields": [
+          "COMPLETION",
+          "EVENTS",
+          "TODO",
+          "ORIGIN",
+          "RESULT",
+          "BASE"
+        ],
+        "frontier": "Second boolean case: DESTRUCTOR_RELEASE with empty jobs, then DESTRUCTOR_FRAME_EXIT returning string boolean; first number-case output complete",
+        "steps": 400,
+        "each_cap": 60,
+        "jobs": 1,
+        "credit": 0,
+        "task_nodes_calls": [
+          254563,
+          254563
+        ],
+        "task_nodes_exclusive_seconds": [
+          3.0177,
+          0.8355
+        ],
+        "producer_wall_seconds": [
+          28.359975814819336,
+          25.916433095932007
+        ],
+        "instrumented_seconds": [
+          23.3692,
+          20.8877
+        ],
+        "unchanged_counts": {
+          "tasks_nodes": 139060,
+          "drive_steps": 402,
+          "PhpStep": 400,
+          "ppaccess_at": 1746870,
+          "occurrence_node": 693633
+        },
+        "limits": "Instrumented wall times include compilation/init/evaluation, mix function/relation rows and suppress recursive inclusive attribution; producer wall also includes backend setup/printing. Timings are matched observations, not CLI estimates; the six-field tuple is not a full pstate or whole-source agreement"
+      },
+      "required_original7": {
+        "report": "original7-statement-roots-20-696jtdmw/report.json",
+        "native_exact": true,
+        "native_seconds": 0.003530263900756836,
+        "model_status": "timeout",
+        "model_exit": 1,
+        "model_seconds": 65.15691828727722,
+        "outer_timeout": false,
+        "CLI_cap": 60,
+        "outer_cap": 90,
+        "steps": 100000,
+        "whole_agreement_credit": 0,
+        "observation": "Only status=timeout is returned; no frontend, checked-program, runtime completion or output agreement may be inferred"
+      },
+      "inputs_stable": true,
+      "all_groups_reaped": true,
+      "review": "arguments_review_20 independently accepted the one-line specialization, fourteen controls, same-parent full tuple comparison and measured cost, plus preserved original 7 timeout with zero agreement",
+      "remaining": "Required original 7 remains open. The eight earlier source agreements and prior 123/private 238/current 238 plus 23 keep their cuts; standalone initialization is not renewed. No wider semantic coverage inferred",
+      "current_composition": {
+        "parent": "78a7c210f26ed05900ead37d9180ef5fd6bcb363",
+        "gated_revision": "78a713178cc2333a4c8d88474122f0e2d4fa1115",
+        "modules": 361,
+        "report": ".tools/scoped-static-compound-task-cost-current-20/.tools/scoped-static-compounds/statement-current-compiler-20-4nz9l1k5/report.json",
+        "stage": "algo",
+        "passed": true,
+        "seconds": 4.197786092758179,
+        "stdout_bytes": 11817689,
+        "inputs_stable": true,
+        "all_groups_reaped": true,
+        "pointwise_review": "Only five owned paths change; module39 and controls match646e. Current377 one-CV receiver source admissibility is unchanged and introduces no STMT root ownership",
+        "renewed_source_state_credit": 0,
+        "scope": "Compiler compatibility only; private fourteen controls and same-parent profile retain their cut, required original7 stays timeout with zero agreement"
+      }
     }
   }
 }

@@ -115,6 +115,22 @@ def main():
               ['$heap_valid({NODES eps, EDGES eps, ROOTS ([HCELL 0])}) = false'],
               [f'$prune_allocations($allocate_array({initial}, $array_empty())[.RESULT = KNOWN PNULL]).ALLOCATIONS = eps'],
               [f'$allocate_array({initial}, $array_empty()).ALLOCATIONS = [HARRAY 0]', f'$ensure({initial}, [97]).ALLOCATIONS = [HCELL 0]']]
+    cases += [[
+        '$task_nodes(STMT (NStmtNop eps)) = eps',
+        '$task_nodes(STMT (NStmtExpression (NScalarInt (INTEGER 7) eps) eps)) = eps',
+        '$task_nodes(AT (PORIGIN 1 eps) (STMT (NStmtNop eps))) = eps',
+        '$task_nodes(AT (PORIGIN 1 eps) (AT (PORIGIN 2 eps) (STMT (NStmtNop eps)))) = eps',
+        '$task_nodes(AT (PORIGIN 1 eps) (ARRAY_NEXT 0 eps)) = [HARRAY 0]',
+        '$task_nodes(AT (PORIGIN 1 eps) (AT (PORIGIN 2 eps) (REF_DYNAMIC (KNOWN (PARRAY 0)) 1 1))) = [HARRAY 0, HCELL 1]',
+        '$tasks_nodes([AT (PORIGIN 1 eps) (STMT (NStmtNop eps)), AT (PORIGIN 1 eps) (ARRAY_NEXT 0 eps), STMT (NStmtNop eps), ARRAY_NEXT 0 eps, AT (PORIGIN 2 eps) (BINARY_RIGHT ADD (REFERENCE 1) 1)]) = [HARRAY 0, HARRAY 0, HCELL 1]',
+        f'S_owned = $allocate_array({initial}, $array_empty())[.RESULT = KNOWN PNULL][.TODO = [AT (PORIGIN 1 eps) (STMT (NStmtNop eps)), AT (PORIGIN 1 eps) (ARRAY_NEXT 0 eps)]]',
+        '$machine_roots(S_owned) = [HARRAY 0]',
+        '$heap_owners($heap_graph(S_owned), HARRAY 0) = 1',
+        '$prune_allocations(S_owned).ALLOCATIONS = [HARRAY 0]',
+        'S_statements = S_owned[.TODO = [STMT (NStmtNop eps), AT (PORIGIN 2 eps) (AT (PORIGIN 1 eps) (STMT (NStmtNop eps)))]]',
+        '$machine_roots(S_statements) = eps',
+        '$prune_allocations(S_statements).ALLOCATIONS = eps',
+    ]]
     # Exercise actual task moves, not just the graph projection. One transition
     # is enough to expose accidental duplicate roots of a saved captured value.
     moves = [('BINARY_LEFT ADD (NScalarInt (INTEGER 1) eps) 1', '[HARRAY 0]'),

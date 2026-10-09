@@ -299,6 +299,9 @@ Prior 123/private 238 cuts remain separate. A tested cut with 360 modules passes
 compilation, 238 affected state premises and 23 constant-export/control premises.
 One constant lookup per insertion reduces calls from 689,580 to 229,972 over
 a matched prefix of 400 steps while preserving the returned tuple exactly.
+A tested 361-module cut passes compilation and 14 ownership controls for an
+explicit empty statement-root case. Its same-parent prefix tuple remains equal;
+instrumented task dispatch costs fall, while original 7 still hits CLI 60 timeout.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

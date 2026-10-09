@@ -1621,6 +1621,18 @@ The initial fixture syntax failure remains preserved with zero credit.
 Standalone initialization is not renewed; prior 123/private 238 keep their cuts.
 Actual-parent compilation passes at 64854b87 over 8f9dda67 with 361 modules;
 promotion, HCELL and replay hooks are preserved, with no source/state renewal.
+A module 39 specialization at 646e075b4 over 43a3fed4 with 361 modules returns
+the existing empty roots for STMT before the owning-task fallback. Compilation
+and 14 focused controls pass, retaining nested scopes, ordered duplicate roots
+and task-owned allocations. Same-parent prefixes of 400 steps return identical
+116,334-byte BUDGET tuples. The 254,563 task_nodes calls remain unchanged;
+exclusive instrumented time falls from 3.0177 s to 0.8355 s, and total instrumented
+time from 23.3692 s to 20.8877 s. These measured wall times are not CLI estimates.
+Required original 7 still returns only timeout after 65.157 s under the unchanged
+CLI 60/outer 90/100000-step caps, with exact native bytes and zero agreement.
+Prior eight sources and 123/238 plus 23 premise cuts are not renewed.
+Actual-parent compilation passes at 78a713178 over 78a7c210 with 361 modules,
+preserving the one-CV property seam; this checks compiler compatibility only.
 ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
