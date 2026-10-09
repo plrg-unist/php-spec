@@ -147,9 +147,12 @@ encountering NULL stop explicitly, without probing NULL parsing. Retained-owner
 Stringable descriptions convert once before truth in enabled weak assertions. The
 converted argument resumes the entered test without rechecking the live mode;
 cast-time traces retain the original object and failure traces store the string.
-Original cast Throwable identity survives. Last-owner entry/handoff, unpack and weak
-scalar description trace replacement, wider startup/callback facts, exporter forms
-and single named-description producers remain required.
+Original cast Throwable identity survives. Quiet weak scalar descriptions convert
+once and replace the actual argument before failure policy; traces/callback evidence
+use that converted carrier. Named false becomes empty bytes while NULL and source
+variables stay unchanged. Description warning conversion/unpack, last-owner entry/handoff,
+wider startup/callback facts, exporter forms and single named-description producers
+remain required.
 
 Each intrinsic follows the target's argument/type checks and exception propagation,
 including source-backed early-return cases such as disabled assertions.

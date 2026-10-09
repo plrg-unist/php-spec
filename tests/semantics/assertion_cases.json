@@ -1561,6 +1561,26 @@
       "exit_status": 0,
       "status": "normal",
       "native_group": ".tools/compiler-assertion-description-20/.tools/assertion-description-trace-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-scalar-description-mode1",
+      "source": "<?php\n$returned = 'unset';\ntry {\n    $returned = assert(false, 17);\n    echo 'BAD|';\n} catch (AssertionError $caught) {\n    $trace = $caught->getTrace();\n    echo $trace[0]['function'], '|';\n    echo $trace[0]['args'][0] === false ? 'false|' : 'BAD|';\n    echo $trace[0]['args'][1] === '17' ? 'string:17|' : 'BAD|';\n    echo 'message:', $caught->getMessage(), '|code:', $caught->getCode(), '|';\n}\necho 'returned:', $returned;\n",
+      "source_sha256": "7282e6e4c486792aeda4b9beac2e2f1f67a11da483a1536963c438f0c7aac607",
+      "stdout_base64": "YXNzZXJ0fGZhbHNlfHN0cmluZzoxN3xtZXNzYWdlOjE3fGNvZGU6MXxyZXR1cm5lZDp1bnNldA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-scalar-description-20/.tools/assertion-scalar-description-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-scalar-description-boolean-null-mode1",
+      "source": "<?php\nforeach ([false, null] as $description) {\n    $label = $description === null ? 'null' : 'bool';\n    $returned = 'unset';\n    try {\n        $returned = assert(description: $description, assertion: false);\n        echo 'BAD|';\n    } catch (AssertionError $failure) {\n        $trace = $failure->getTrace();\n        $args = $trace[0]['args'];\n        echo $label, ':', $failure->getMessage() === '' ? 'empty:' : 'BAD:';\n        echo $failure->getCode() === 1 ? 'code1:' : 'BAD:';\n        if ($description === null) {\n            echo $args[1] === null ? 'null:' : 'BAD:';\n        } else {\n            echo $args[1] === '' ? 'string:' : 'BAD:';\n        }\n        echo $args[0] === false ? 'false|' : 'BAD|';\n    }\n    echo 'returned:', $returned, '|source:';\n    echo $description === null ? 'null|' : ($description === false ? 'false|' : 'BAD|');\n}\n",
+      "source_sha256": "83b33ebff624a378ae49bd3904fac581e6d188f8a0c8f1bcb580f03389faf919",
+      "stdout_base64": "Ym9vbDplbXB0eTpjb2RlMTpzdHJpbmc6ZmFsc2V8cmV0dXJuZWQ6dW5zZXR8c291cmNlOmZhbHNlfG51bGw6ZW1wdHk6Y29kZTE6bnVsbDpmYWxzZXxyZXR1cm5lZDp1bnNldHxzb3VyY2U6bnVsbHw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-scalar-description-20/.tools/assertion-scalar-description-native-20/run-v1/report.json"
     }
   ],
   "native_profile": {

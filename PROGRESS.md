@@ -59,8 +59,14 @@ argument/message. Original cast Throwable identity and untouched assignment surv
 Three fresh originals,265 checks at source frontiers and4 pure owner-exclusion queries
 pass atb4ea/367; strict3 passes5.174s. The original raw-descriptor timing failure retains
 zero credit; the corrected fixture checks admission after actual driver publication to
-THROW_SEARCH. Last-owner entry/handoff, unpack and weak scalar trace replacement remain
-required. [Description checkpoint](coverage/semantics/assertion-quantity-review.json).
+THROW_SEARCH. Quiet weak scalar descriptions now apply TYPESTRING and replace only
+the actual second call argument before failure policy and trace capture. Integer17
+gets a fresh authenticated carrier; false gets canonical empty bytes and NULL stays
+NULL, while source variables and assignment sentinels stay unchanged. Two fresh
+originals and217 checks at source-derived frontiers, including helper counterexamples,
+pass at088d14878/370; strict3 passes5.224s. The prior TypeError diagnostic carries
+zero agreement. Description warning conversion/unpack and last-owner entry/handoff
+remain required. [Description checkpoints](coverage/semantics/assertion-quantity-review.json).
 Actual370 over1963b152 passes strict3 atb74fe28fb (5.775s), preserving current
 factory/GEN/SensitiveParameter, implicit-getter, typed-reference and EX worker guards.
 Private description source3/265+4 checks and all previous cuts remain unchanged.

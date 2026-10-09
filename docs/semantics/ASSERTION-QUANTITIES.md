@@ -63,6 +63,10 @@ stores the converted string and message. A cast throw propagates the original
 Throwable without assigning the outer return. Disabled direct/dynamic calls retain
 their existing argument-evaluation distinction. Unpacked descriptions and last-owner
 entry/handoff cleanup remain explicit Unsupported, not completed core behavior.
+Quiet weak scalar descriptions likewise convert once and replace the actual call
+argument before failure policy and trace capture. Integer17 uses a fresh request
+carrier; false uses canonical empty bytes. The separate NULL path and source CVs
+remain unchanged. Warning-capable scalar conversion and unpack stay explicit Unsupported.
 
 The engine releases a frozen modified `prev_value` after a successful warning
 callback, even when a nested update already replaced and released that request
@@ -107,6 +111,12 @@ entry, return, published throw and cast/caller trace frontiers plus4 pure owners
 exclusions. The fixture preserves raw throwing PhpStep facts and checks admission
 after the actual driver publishes THROW_SEARCH. The original premature-descriptor
 failure remains zero credit; these are checks, not269 distinct states.
+Two fresh quiet scalar originals agree at088d with217 source-derived checks: integer
+entry/conversion and reordered named false/NULL calls, exact converted heads/traces,
+unchanged source CVs, three actual PhpSteps and production THROW_SEARCH publication.
+Direct origin/source/slot0/carrier/token-bytes counterexamples query the actual formatted
+intermediate. These are checks, not217 distinct states; the prior TypeError baseline
+has zero agreement. Finite-float formatting retains its existing producer bridge.
 
 ```sh
 python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json --match assertion-quantity
@@ -119,5 +129,5 @@ original capture. Zend quantity parsing dereferences a NULL string; no source
 probes SET-fromNULL or NULL parsing. This supported getter/no-op domain is separate
 from the intentional lifetime divergence above. Last-owner Stringable SET/RESTORE
 entry cleanup remains required. Description last-owner entry/handoff, unpack and
-weak scalar trace-argument replacement, wider string identity producers, exporter
+warning-capable scalar conversion, wider string identity producers, exporter
 forms and callback paths remain core work. This is bounded assertion/INI coverage.

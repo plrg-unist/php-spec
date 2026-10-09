@@ -218,9 +218,11 @@ Two safe originals,323 frontier checks and12 pure exclusion queries pass at24257
 shared throw and later no-op restore preserve the state. Retained-owner Stringable
 descriptions convert before truth and finish an entered assertion despite live mode0.
 Cast-time traces retain the object; failure traces use the converted string. Three
-new originals,265 frontier checks and4 pure ownership queries pass atb4ea. SET/NaN
-from NULL, last-owner entry, description unpack and weak scalar trace replacement
-remain required alongside wider forms.
+new originals,265 frontier checks and4 pure ownership queries pass atb4ea. Quiet
+weak scalar descriptions now replace the actual call argument before failure handling;
+integer17 and named false/NULL controls agree in two fresh originals with217 checks
+at088d. NULL and source variables remain unchanged. SET/NaN from NULL, last-owner
+entry, description warning conversion and unpack remain required alongside wider forms.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
