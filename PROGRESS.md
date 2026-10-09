@@ -55,6 +55,20 @@ Actual370 over `288dc800` passes strict SL at `50367af16`; private source/state
 cuts retain their own inputs.
 [Rebound review](coverage/semantics/yield-from-rebound-operand-review.json).
 
+Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
+non-Aggregate returns after rebinding an independently protected original CV or
+reference. Borrowed CVs and owning cells retain their modes through initial
+Iterator valid-result cleanup or Generator yield; input retirement then precedes
+current/body with data protected.
+Six unchanged originals agree at `4e9dd1014`;
+strict370 passes there. The changed-Aggregate control passes its zero-agreement
+assertions at `1cf220b69`; its original event-encoding failure stays zero.
+Nine genuine-source groups/361 physical ownership and authority premises pass
+at `5a811c3d5`; no state fixture correction was needed.
+Actual371 over `557e8c817` passes strict SL at `ab0808dff`; private source/state
+cuts retain their own inputs.
+[Foreach rebound review](coverage/semantics/foreach-rebound-operand-review.json).
+
 Bounded assertion quantity warnings retain frozen parsed modes and old returns
 through nested raw writes, throw and restore. Immutable string carriers preserve
 INI identity while ordinary consumers use bytes. Seventeen safe originals retain
@@ -230,6 +244,22 @@ Actual 370-module composition over `36b0c6948` passes strict initialization at
 `b39a2a2b0` (5.284 s), preserving current factory/carrier and sibling runtime paths
 without renewing the private source/state checks.
 [Constructor callable review](coverage/semantics/sensitive-value-constructor-callables-review.json).
+
+One zero-argument builtin `#[AllowDynamicProperties]` on a named nonreadonly
+class resolves real namespace/import scope and permits inherited dynamic slots.
+Allowed writes/reference creation and unset/recreation stay silent; ordinary
+classes retain first-creation deprecation. Trait/interface/readonly targets fail
+before body/interface checks, using the actual declaration keyword line.
+Ten originals agree at separate `2945e171`/`8c37b2c6` cuts; a namespaced user
+attribute remains Unsupported with zero agreement. Strict compilation of 370
+modules and SL131 (37 derived, 94 reached checks) pass at `8c37b2c6`, including
+real writes, inherited links and rejection of substituted compiled-name evidence.
+The earlier trait-line mismatch and both pre-main fixture stops retain zero
+affected credit. Mixed/repeated/argument attributes, anonymous/enum targets and
+wider attribute protocols remain required. Actual 371-module composition over
+`55c9c98a9` passes strict initialization at `9f2ed249d` (5.553 s), preserving
+current GC/PROPS/ARG interfaces without renewing private source/state checks.
+[Dynamic-property attribute review](coverage/semantics/allow-dynamic-properties-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
@@ -942,6 +972,23 @@ Wider overlap/throw/reentry, nonordinary/non-idle and later-pass lanes remain re
 prior cuts are unchanged. Actual370 over `71cf292aa` passes compiler/init at
 `aecdcb088`; reviewed typed-return, caller and retained-root interfaces preserve
 the fb872 cuts and whole-source CLI60 OPEN/zero agreement limit.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
+Array-mediated overlap301 now permits nonproxy HARRAY alongside HOBJECT in the
+fresh closed-white component, retaining the object-only residual-reach fence.
+Three source-reached cuts 118/107/corrected104 at `f184ac959` execute 329 premises:
+real ordinary-Fiber E→array→D, nested D/array removal with debit4, exact E guard,
+signed -1+2=1, E/array retirement, D self-owner1/weak-live and terminal replay.
+Native grounding and compiler/init pass; baseline91 localizes the old301 refusal.
+The first104 fixture expects a marked E after real selection normalized it and
+fails with zero credit; its separate correction changes no code/source.
+Whole source37 CLI60 remains OPEN/zero agreement and only that source is newly
+excluded from the default whole-CLI campaign; all three state groups remain enabled.
+Main/mixed array layouts, references/proxy tables, black/external components,
+non-idle caches and later-pass overlap remain required; prior cuts are unchanged.
+Actual371 over `d80c97b3c` passes compiler/init at `9233da4ca`; reviewed local-CV
+return, property/caller and captured-constructor interfaces preserve state329 at
+f184 and the whole-source CLI60 OPEN/zero agreement limit.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -2235,6 +2282,17 @@ original interpreter failure remain zero credit. Maintained source/fixture bytes
 are unchanged; relocation adds no runtime renewal. Original 7 stays OPEN timeout0.
 Actual-parent algorithmic compilation passes at b6022a52 over 7cb33cde with
 370 modules; pointwise constructor/COMP/property review renews no source/state cuts.
+Literal first-class factory `->__invoke(...)` now forwards to existing identity
+capture without allocating an alias object or changing the factory creation site.
+The real Closure identity/by-reference control agrees at e2ef/370; the factory
+witness agrees at 3cb295d1d/370 after original and alias caller-cell retirement.
+Its 610 premises (550 genuine/derived, 60 constructed) preserve exact task/tail,
+arena identity, CONFIG owner retention, retired factory provenance and independent
+receiver/RHS/write/retirement. The interpreter failure and fixture variable collision
+remain zero credit. The maintained renderer is byte-identical to the accepted
+fixture; wider computed/nullsafe captures and original 7's CLI60 timeout stay open.
+Actual-parent compilation passes at `0b4de6cd` over `5a127787` with 371 modules;
+pointwise CLASS/ownership review adds no private source, state or native renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

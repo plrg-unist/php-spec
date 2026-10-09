@@ -239,5 +239,11 @@
     "source": "<?php\nclass InvokeFactoryTraceReview20 {\n    private static function hidden() { echo \"BAD;\"; }\n}\necho \"Q;\";\n$factory = Closure::fromCallable(...);\ntry {\n    $invokeLine = __LINE__ + 1;\n    $closure = $factory->__invoke(callback: [InvokeFactoryTraceReview20::class, \"hidden\"]);\n    echo \"BAD;\";\n} catch (Throwable $error) {\n    echo \"X:\", get_class($error), \":\", $error->getMessage(), \";\";\n    foreach ($error->getTrace() as $frame) {\n        echo \"T:\", $frame[\"class\"], $frame[\"type\"], $frame[\"function\"], \";\";\n        echo \"F:\", isset($frame[\"file\"]) ? ($frame[\"file\"] === __FILE__ ? \"source\" : \"other\") : \"none\", \";\";\n        echo \"L:\", isset($frame[\"line\"]) ? ($frame[\"line\"] === $invokeLine ? \"invoke\" : \"other\") : \"none\", \";\";\n        foreach ($frame[\"args\"] as $key => $value) {\n            echo \"K:\", $key, \";\";\n        }\n    }\n}\n$factory = null;\necho \"E;\";\n",
     "source_sha256": "c8752132f9c456e9dc1d6966e216796b37b3eff33c1927f74c9bed92450e9a85",
     "expected_model": "normal"
+  },
+  {
+    "id": "closure-invoke-alias-real-identity-byref",
+    "source": "<?php\n$counter = 0;\n$value = \"v\";\necho \"Q;\";\n$original = function (&$cell) use (&$counter) {\n    echo \"B;\";\n    ++$counter;\n    $cell .= \"!\";\n    return $cell;\n};\n$alias = $original->__invoke(...);\necho \"S:\", $alias === $original ? \"same\" : \"different\", \";\";\n$original = null;\necho \"F;\";\n$result = $alias($value);\n$alias = null;\necho \"V:\", $value, \";C:\", $counter, \";Z:\", $result, \";E;\";\n",
+    "source_sha256": "0d1a5e20740946cdddc704f4e68b8e23e864728baeabdc82715b8dbbc895e160",
+    "expected_model": "normal"
   }
 ]

@@ -265,10 +265,14 @@ while (($line = fgets(STDIN)) !== false) {
                         if ($token->id !== ord(';') && $token->id !== T_CLOSE_TAG) throw new RuntimeException('Loop control terminator token is missing');
                         $node->setAttribute('statementTerminatorLine', $token->line);
                     }
-                    if ($node instanceof PhpParser\Node\Stmt\Class_ && $node->name !== null) {
+                    if (($node instanceof PhpParser\Node\Stmt\Class_ && $node->name !== null)
+                        || (($node instanceof PhpParser\Node\Stmt\Trait_ || $node instanceof PhpParser\Node\Stmt\Interface_)
+                            && $node->attrGroups !== [])) {
                         $classLine = null;
+                        $classToken = $node instanceof PhpParser\Node\Stmt\Trait_ ? T_TRAIT
+                            : ($node instanceof PhpParser\Node\Stmt\Interface_ ? T_INTERFACE : T_CLASS);
                         for ($index = $node->getStartTokenPos(); $index < $node->name->getStartTokenPos(); ++$index) {
-                            if ($tokens[$index]->id === T_CLASS) $classLine = $tokens[$index]->line;
+                            if ($tokens[$index]->id === $classToken) $classLine = $tokens[$index]->line;
                         }
                         if ($classLine === null) throw new RuntimeException('Named class keyword token is missing');
                         $node->setAttribute('classKeywordLine', $classLine);

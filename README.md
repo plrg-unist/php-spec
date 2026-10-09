@@ -363,7 +363,11 @@ Literal `->__invoke(callback: ...)` now preserves the selected factory when
 arguments clear its caller cell. Invocation USER scope controls private access;
 errors retain both the API and Closure invoke frames. A separate variable control
 and four explicit sources agree on 368-module cuts, with 552 state premises.
-First-class invoke aliases, wider factory targets and original 7 remain open.
+Literal first-class `->__invoke(...)` aliases now reuse the original factory
+identity and creation authority. The selected call retains it as original and alias
+caller cells retire; the returned Closure owns its receiver independently. A REAL
+control and repaired factory source agree on separate 370-module cuts, with 610
+factory premises. Wider invoke/factory forms and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -387,7 +391,11 @@ primary diagnostic through source effects, nested eval/include compilation and
 deferred runtime class-link failures.
 Aggregate foreach acquires nested Iterator/Generator data, retires returned layers
 before initialization and the original operand after initial Iterator valid-result
-cleanup or Generator yield.
+cleanup or Generator yield. A getter with an independently kept receiver may
+rebind the original CV/reference before returning Iterator/Generator data or a
+rejected raw value. Input retirement follows initial Iterator valid-result
+cleanup or Generator yield;
+changed operands returning another Aggregate remain explicit Unsupported.
 Acquisition and cleanup throws preserve data/input order; reference traversal
 accepts reference-yielding Generators and rejects Iterator/nonreference Generator
 results. Retained foreach Generator close frames survive Fiber suspension with
@@ -914,6 +922,13 @@ premises, including F→E→D, count 0, F retirement, D weak liveness and termin
 replay. The whole source retains its CLI60 timeout and zero agreement credit.
 Wider overlap, throwing callbacks and reentry remain required.
 
+The fresh closed-white component check also permits nonproxy arrays while
+residual reach stays object-only. A grounded ordinary-Fiber E→array→D case has
+329 executed state premises covering physical removal, real guard selection,
+signed -1+2=1, E/array retirement and D self-owner/weak liveness. Its whole source
+CLI60 remains OPEN with zero agreement credit. Main/mixed array layouts,
+references/proxy tables and wider overlap remain required.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
@@ -1030,6 +1045,11 @@ links eligible source and `stdClass` parents at their required publication time;
 `instanceof` and class types follow transitive ancestry. Its [review](coverage/semantics/inheritance-review.json)
 binds source, compiler, syntax and paused-state checks. Other internal-class
 bodies and method callbacks remain open.
+A single builtin `#[AllowDynamicProperties]` permits dynamic slots on named
+classes and descendants while ordinary classes retain deprecation. Invalid
+trait/interface/readonly targets preserve diagnostic priority and keyword lines;
+ten sources and 131 derived/reached checks are recorded in the
+[attribute review](coverage/semantics/allow-dynamic-properties-review.json).
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed

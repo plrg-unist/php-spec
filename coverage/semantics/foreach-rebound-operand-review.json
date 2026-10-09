@@ -1,0 +1,166 @@
+{
+  "milestone": "Foreach Aggregate getter original-operand rebinding",
+  "status": "partial; source6 normal/control1, state9 and actual-parent strict371 PASS",
+  "baseline": "2ffab90c2f907ac50d0f469ad8e551f668491052",
+  "semantic_revision": "0704ecf76a17d6a0ef9c8c6e8bfd7f8a41e21881",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_interfaces.c: zend_user_it_get_new_iterator",
+    "vendor/php-src/Zend/zend_execute.c: zend_fe_reset_iterator",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_R/RW"
+  ],
+  "scope": [
+    "Only a known Aggregate raw return rereads the original zval for self comparison; terminal Iterator/Generator and raw rejected returns use the fixed original class.",
+    "For terminal data, INPUT keeps its source-authenticated borrowed CV or owning reference-cell mode through initial Iterator valid-result cleanup or Generator yield, then retires before current/body while data stays protected.",
+    "Independent original receiver keepers ground normal, park, throw and raw-reference rejection; no last-owner callback mutation probe."
+  ],
+  "sources": {
+    "normal_agreements": 6,
+    "unsupported_controls": 1,
+    "control_agreements": 0,
+    "cuts": [
+      {
+        "report": ".tools/calls-foreach-rebound-operand-20/.tools/foreach-rebound-operand-source-6iwi37q1/report.json",
+        "revision": "4e9dd1014c6edd0e72af298831f0de898cc65538",
+        "selected_ids": [
+          "foreach-rebound-cv-object-iterator",
+          "foreach-rebound-cv-null-generator",
+          "foreach-rebound-reference-object-iterator",
+          "foreach-rebound-getter-parks",
+          "foreach-rebound-getter-throws",
+          "foreach-rebound-getter-reference-rejected"
+        ],
+        "normal_agreements": 6,
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "report": ".tools/calls-foreach-rebound-operand-20/.tools/foreach-rebound-operand-source-uyzx2_50/report.json",
+        "revision": "1cf220b6918069c34ccbc00f7811b4322b2a115b",
+        "selected_ids": [
+          "foreach-rebound-returned-aggregate-self-control"
+        ],
+        "unsupported_controls": 1,
+        "semantic_agreements": 0,
+        "inputs_stable": true,
+        "head_stable": true
+      }
+    ]
+  },
+  "compiler": {
+    "report": ".tools/calls-foreach-rebound-operand-20/.tools/foreach-rebound-operand-sl-_ma5yb_l/report.json",
+    "revision": "4e9dd1014c6edd0e72af298831f0de898cc65538",
+    "modules": 370,
+    "process_seconds": 120,
+    "passed": true
+  },
+  "native_discovery": {
+    "new_originals": 7,
+    "semantic_agreements": 0,
+    "report": ".tools/calls-foreach-rebound-operand-20/.tools/foreach-rebound-operand-native-o4lhe5e5/report.json",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "native_process_seconds": 75,
+    "model_seconds": 60,
+    "model_process_seconds": 75
+  },
+  "states": {
+    "status": "PASS",
+    "runner": "tests/semantics/foreach_rebound_operand_review.py",
+    "fixture_revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+    "process_seconds": 120,
+    "groups": 9,
+    "physical_premises": 361,
+    "driver_clauses": 344,
+    "selected": [
+      {
+        "id": "foreach-rebound-cv-terminal-iterator-protects-data-and-original-keeper",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-tjy0vwet/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 49,
+        "driver_clauses": 48
+      },
+      {
+        "id": "foreach-rebound-null-cv-acquires-generator-before-first-resume",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-m6cks62u/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 46,
+        "driver_clauses": 45
+      },
+      {
+        "id": "foreach-rebound-reference-input-survives-first-valid-then-retires-before-current",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-ma1qxiw9/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 50,
+        "driver_clauses": 50
+      },
+      {
+        "id": "foreach-terminal-result-permission-rejects-cleared-original-input",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-4jy3y6cy/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 24,
+        "driver_clauses": 23
+      },
+      {
+        "id": "foreach-parked-rebound-getter-borrows-receiver-and-preserves-keeper",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-a3j2nn2o/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 43,
+        "driver_clauses": 37
+      },
+      {
+        "id": "foreach-parked-rebound-zero-budget-keeps-real-saved-vm",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-7vp3uohw/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 35,
+        "driver_clauses": 29
+      },
+      {
+        "id": "foreach-rebound-getter-throw-discards-acquisition-with-same-exception",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-dnx_s4q9/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 38,
+        "driver_clauses": 38
+      },
+      {
+        "id": "foreach-rebound-raw-reference-rejection-keeps-cell-and-fixed-class-error",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-epkp3adm/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 43,
+        "driver_clauses": 42
+      },
+      {
+        "id": "foreach-changed-known-aggregate-return-retains-genuine-named-refusal",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-do5i0ffa/report.json",
+        "revision": "5a811c3d58abf08b03b355414173298aa0bd8922",
+        "physical_premises": 33,
+        "driver_clauses": 32
+      }
+    ]
+  },
+  "remaining": [
+    "Changed original operands returning a known Aggregate need dynamic mutable-source self comparison.",
+    "Wider original/reference-location modes, raw payload changes and complete iterator lifecycle remain partial."
+  ],
+  "preserved_failures": [
+    {
+      "report": ".tools/calls-foreach-rebound-operand-20/.tools/foreach-rebound-operand-source-6iwi37q1/report.json",
+      "selected_id": "foreach-rebound-returned-aggregate-self-control",
+      "affected_credit": 0,
+      "cause": "Fixture event encoding used kind/int bytes instead of public tag/decimal-string bytes; normal6 retained, only control expectation corrected and rerun."
+    }
+  ],
+  "actual_composition": {
+    "parent": "557e8c817d18559f5904b746ccae632a2d5f1b52",
+    "semantic_revision": "ab0808dff4bcea50ea7ef01a478f86970450331b",
+    "compiler_report": ".tools/calls-foreach-rebound-operand-current-20/.tools/foreach-rebound-operand-current-sl-nypmbjc9/report.json",
+    "modules": 371,
+    "passed": true,
+    "source_state_renewal": false,
+    "review": "Independent exact one-path378 composition; ARG factory alias and CLASS AllowDynamicProperties paths remain disjoint, with parent modules and fields preserved. Private source/native/state cuts retain their own inputs."
+  }
+}

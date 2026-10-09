@@ -1,0 +1,116 @@
+{
+  "scope": "Single zero-argument builtin AllowDynamicProperties on named nonreadonly source classes, inherited permission, ordinary dynamic deprecation contrast, and trait/interface/readonly target errors with declaration keyword lines. Mixed/repeated/argument/user attributes, anonymous/enum targets and wider attribute protocols remain partial.",
+  "target": "PHP8.5.10 CLI NTS64; profile30719; LC_ALL=C TZ=UTC; jobs1",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+  "engine": [
+    "Zend/zend_attributes.c: validate_allow_dynamic_properties",
+    "Zend/zend_compile.c: zend_compile_class_decl, zend_compile_attributes",
+    "Zend/zend_inheritance.c: do_inherit_class",
+    "Zend/zend_object_handlers.c: zend_std_write_property, zend_deprecated_dynamic_property"
+  ],
+  "raw_root": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27",
+  "native_first": {
+    "original_revision": "fee8a50589258913934fc6a98d774784b037443e",
+    "originals": 2,
+    "report": "native-first/report.json",
+    "report_sha256": "34098ca25394c70614359c41fcafd2dc44d5f82b29b0e3d6d799d418c1c3a06b",
+    "focused_revision": "2945e171c5b926e3c317158188a5344f1e6bbedc",
+    "focused": 8,
+    "split_revision": "8c37b2c6e83e2b7f203aafe33b278126c9313641",
+    "split": 1
+  },
+  "accepted_source": [
+    {
+      "revision": "2945e171c5b926e3c317158188a5344f1e6bbedc",
+      "report": "changed-model-u5ovlr8f/report.json",
+      "agreements": 2
+    },
+    {
+      "revision": "2945e171c5b926e3c317158188a5344f1e6bbedc",
+      "report": "focused/changed-model-ljwujl0t/report.json",
+      "selected": "first3 only",
+      "agreements": 3
+    },
+    {
+      "revision": "8c37b2c6e83e2b7f203aafe33b278126c9313641",
+      "report": "focused/changed-model-gsyedf87/report.json",
+      "agreements": 4,
+      "nonbuiltin_boundary": "Unsupported/source0"
+    },
+    {
+      "revision": "8c37b2c6e83e2b7f203aafe33b278126c9313641",
+      "report": "lines/changed-model-tl3extrf/report.json",
+      "agreements": 1
+    }
+  ],
+  "private_strict": {
+    "revision": "8c37b2c6e83e2b7f203aafe33b278126c9313641",
+    "modules": 370,
+    "report": "allow-dynamic-compiler-ws3lmm14/report.json",
+    "seconds": 5.278377,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "accepted_state": {
+    "revision": "8c37b2c6e83e2b7f203aafe33b278126c9313641",
+    "preparation": "allow-dynamic-protocol-cd7lg739/PREPARED.json",
+    "report": "allow-dynamic-state-9gp3lt2e/report.json",
+    "report_sha256": "8aa0a706ed784d2bce45c46c2f9961a994111eb4154d75b044221eefc812dff2",
+    "fixture_sha256": "58fa7a529c5501acbe9b79e0d4a80eb2cf23e8c8400ac8aa6607ddc3d35a16d2",
+    "mode": "SL",
+    "derived_checks": 37,
+    "reached_checks": 94,
+    "real_steps": 3,
+    "algorithmic_seconds": 4.571549,
+    "state_seconds": 9.451619,
+    "cap_seconds": 120,
+    "application_evaluations": 1,
+    "source_agreements": 0
+  },
+  "preserved_zero": [
+    {
+      "report": "accepted-current-baseline/report.json",
+      "selected": "original2",
+      "status": "unsupported",
+      "source_agreements": 0
+    },
+    {
+      "report": "focused/changed-model-ljwujl0t/report.json",
+      "selected": "trait-target-priority only",
+      "cause": "trait attribute start-line instead of keyword-line",
+      "source_agreements": 0
+    },
+    {
+      "report": "allow-dynamic-state-6jxjbij7/report.json",
+      "cause": "metadata iteration sort diagnostic before main",
+      "state_credit": 0,
+      "SL": "unrun"
+    },
+    {
+      "report": "allow-dynamic-state-7s6cyjwi/report.json",
+      "cause": "NArg field order diagnostic before main",
+      "state_credit": 0,
+      "SL": "unrun"
+    }
+  ],
+  "maintained_commands": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/allow_dynamic_properties_cases.json",
+    "python3 tests/semantics/allow_dynamic_properties_protocol.py --revision HEAD_SHA"
+  ],
+  "recording": "Raw original bytes, parsed/checked programs, argv/caps/streams/exits and stable inputs/head/status/reaped groups stay ignored. Capability borrows exact installed CODE authenticated by declaration_history_valid; altered attribute-name evidence is rejected there.",
+  "actual_composition": {
+    "parent": "55c9c98a9b226db35b1a11a3e4066caa7f54ba34",
+    "tested_revision": "9f2ed249d5ced9edd55035d03b32617fdf617c52",
+    "modules": 371,
+    "report": ".tools/allow-dynamic-properties-current-27/.tools/allow-dynamic-properties-current-27/allow-dynamic-compiler-wsa1hqwt/report.json",
+    "report_sha256": "ddf10723bcf12cfbaa0b097e063096358e3cec76b40daed904a67c79a0007cee",
+    "command": "python3 .tools/allow-dynamic-properties-current-27/run-compiler.py 55c9c98a9b226db35b1a11a3e4066caa7f54ba34 9f2ed249d5ced9edd55035d03b32617fdf617c52",
+    "mode": "SL strict init-only",
+    "seconds": 5.552765,
+    "cap_seconds": 300,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "bridge": "All seven owned production files retain reviewed 8c37 bytes; current sibling GC/PROPS/ARG files and the ordered 371-module manifest are preserved pointwise. The ten private source agreements and 131 state checks keep their original cuts."
+  }
+}

@@ -579,3 +579,290 @@ $config_trace_frames(S_config, pconfigcall, [PNULL]) = [ptraceframe_api[.ARGS = 
     text = prefix + INVOKE_PHASE + INVOKE_ARGUMENT_PHASE + '\ndec $main() : bool\ndef $main() = true\n'
     text += ''.join('  -- if ' + check + '\n' for check in checks)
     return text, checks, len(genuine), len(controls)
+
+
+def alias_entry_checks(fixture, filename):
+    checks = [check.replace('InvokeFactory', 'AliasFactory')
+              for check in invoke_entry_checks(fixture, filename)]
+    index = checks.index('~$ppfirstclass(phpType7*)')
+    checks[index:index + 1] = ['$ppfirstclass(phpType7*)',
+                               'phpType7* = [(NVariadicPlaceholder metadata_placeholder)]']
+    index = checks.index('~$from_factory_call_site(S_read, porigin_invoke)')
+    checks[index + 1:index + 1] = ['~$from_factory_invoke_site(S_read, porigin_invoke)',
+                                 '$invoke_capture_source(S_read, porigin_invoke)']
+    return checks
+
+
+ALIAS_PHASE = r'''
+def $scoped_phase(S, 29) = true
+  -- if S.TODO = (CONFIG_ARGS pconfigcall) :: ptask*
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if pconfigcall.INDEX = 0
+  -- if pconfigcall.OWNER =/= eps
+def $scoped_phase(S, 28) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $ptlc(pcallcontext.NAME) = $ptlc($ptascii("clearAliasFactoryArgumentReview20"))
+  -- if $lookup(S.ENV, $ptascii("alias")) = (n_cell)
+  -- if S.STORE[n_cell] = DEFINED PNULL
+  -- if $outputs(S.EVENTS) = $ptascii("Q;S:same;I;A;")
+def $scoped_phase(S, 25) = true
+  -- if S.TODO = (CONFIG_INVOKE pconfigcall) :: ptask*
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if pconfigcall.OWNER =/= eps
+def $scoped_phase(S, 26) = true
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = FROMCALLABLECLOSURE pfrommethod
+  -- if pfrommethod.FACTORY =/= eps
+'''
+
+
+def render_factory_alias(fixture, filename, expected):
+    genuine = alias_entry_checks(fixture, filename)
+    genuine = [check.replace('S_capture', 'S_entry_capture').replace('S_read', 'S_entry_read').replace('porigin_invoke', 'porigin_alias') for check in genuine]
+    genuine += lines(r'''
+$method_receiver_operand_valid(S_entry, expression_receiver, poperand_factory)
+S_alias_budget = $drive_steps(S_entry, 1)
+S_alias_budget.COMPLETION = BUDGET
+S_alias = S_alias_budget[.COMPLETION = NORMAL]
+S_alias = $invoke_capture(S_entry_read, n_factory, (porigin_alias))
+S_alias = $method_select(S_entry, poperand_factory, $base64(text_method), phpType7*, z_entry)
+S_alias.TODO = ptask_entry*
+S_alias.ORIGIN = (porigin_alias)
+S_alias.CURRENT = S_entry.CURRENT
+S_alias.FRAMES = S_entry.FRAMES
+S_alias.RESULT = KNOWN (POBJECT n_factory)
+S_alias.BASE = BASE_VALUE (KNOWN PNULL)
+S_alias.OBJECTS = S_entry.OBJECTS
+S_alias.ALLOCATIONS = S_entry.ALLOCATIONS
+S_alias.CLOSURESCOPES = S_entry.CLOSURESCOPES
+S_alias.CLOSUREBINDINGS = S_entry.CLOSUREBINDINGS
+S_alias.CLASSCONSTANTHISTORY = S_entry.CLASSCONSTANTHISTORY
+$from_factory_live(S_alias, n_factory)
+$from_factory_saved(S_alias, n_factory)
+$node_children(S_alias, HOBJECT n_factory) = eps
+$heap_owners($heap_graph(S_alias), HOBJECT n_factory) = 2
+$outputs(S_alias.EVENTS) = $ptascii("Q;")
+''') + guards('S_alias')
+    genuine += seek('S_start', 'S_alias', 29) + lines(r'''
+S_start.TODO = (CONFIG_ARGS pconfigcall_start) :: ptask_start*
+pconfigcall_start.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+pconfigcall_start.INDEX = 0
+pconfigcall_start.SENT = eps
+~pconfigcall_start.NAMED
+pconfigcall_start.OWNER = (n_factory)
+pconfigcall_start.SELECTION = eps
+pconfigcall_start.PACKS = eps
+porigin_invoke = pconfigcall_start.SITE
+porigin_invoke =/= porigin_create /\ porigin_invoke =/= porigin_alias
+S_start.ORIGIN = (porigin_invoke)
+S_start.CURRENT = eps
+S_start.FRAMES = eps
+$api_frame_scope(S_start) = eps
+$method_current_scope(S_start) = eps
+$from_factory_call_site(S_start, porigin_invoke)
+~$from_factory_invoke_site(S_start, porigin_invoke)
+~$invoke_capture_source(S_start, porigin_invoke)
+$origin_node(S_start.SOURCES, porigin_invoke) = (NExprFuncCall expression_alias (SEQUENCE phpType7_invoke*) metadata_invoke_call)
+$origin_child((porigin_invoke), [PCFIELD 0]) = (porigin_alias_variable)
+$origin_node(S_start.SOURCES, porigin_alias_variable) = (NExprVariable (BYTES text_alias) metadata_alias)
+$base64(text_alias) = $ptascii("alias")
+~$ppfirstclass(phpType7_invoke*)
+S_start.STORE[n_factory_cell] = DEFINED PNULL
+$lookup(S_start.ENV, $ptascii("alias")) = (n_alias_cell)
+S_start.STORE[n_alias_cell] = DEFINED (POBJECT n_factory)
+S_start.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_create
+$from_factory_live(S_start, n_factory)
+$config_selected_valid(S_start, pconfigcall_start)
+$config_call_valid(S_start, pconfigcall_start)
+$call_task_valid(S_start, CONFIG_ARGS pconfigcall_start)
+$task_nodes(CONFIG_ARGS pconfigcall_start) = [HOBJECT n_factory]
+$node_children(S_start, HOBJECT n_factory) = eps
+$heap_owners($heap_graph(S_start), HOBJECT n_factory) = 2
+$outputs(S_start.EVENTS) = $ptascii("Q;S:same;I;")
+''') + guards('S_start')
+    genuine += seek('S_argument', 'S_start', 28) + lines(r'''
+S_argument.CURRENT = (pcallcontext_argument)
+$ptlc(pcallcontext_argument.NAME) = $ptlc($ptascii("clearAliasFactoryArgumentReview20"))
+pcallcontext_argument.LEXICAL_CLASS = eps
+pcallcontext_argument.CALLED_CLASS = eps
+pcallcontext_argument.INSTANCE = eps
+pcallcontext_argument.RECEIVER = eps
+S_argument.STORE[n_factory_cell] = DEFINED PNULL
+S_argument.STORE[n_alias_cell] = DEFINED PNULL
+S_argument_global = $global_table_view(S_argument)
+$lookup(S_argument_global.ENV, $ptascii("alias")) = (n_alias_cell)
+$from_factory_live(S_argument, n_factory)
+$from_factory_saved(S_argument, n_factory)
+$node_children(S_argument, HOBJECT n_factory) = eps
+$heap_owners($heap_graph(S_argument), HOBJECT n_factory) = 1
+pframe_argument = S_argument.FRAMES[0]
+$call_saved_context_valid(S_argument, pframe_argument)
+$tasks_nodes(pframe_argument.TODO) = [HOBJECT n_factory]
+$outputs(S_argument.EVENTS) = $ptascii("Q;S:same;I;A;")
+''') + guards('S_argument')
+    genuine += seek('S_config', 'S_argument', 25) + lines(r'''
+S_config.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_start*
+pconfigcall.SENT = [NAMED_SENT (KNOWN (PARRAY n_callback))]
+pconfigcall = pconfigcall_start[.INDEX = 1][.SENT = [NAMED_SENT (KNOWN (PARRAY n_callback))]][.NAMED = true]
+S_config.ORIGIN = (porigin_invoke)
+S_config.CURRENT = eps
+S_config.FRAMES = eps
+$api_frame_scope(S_config) = eps
+S_config.STORE[n_factory_cell] = DEFINED PNULL
+S_config.STORE[n_alias_cell] = DEFINED PNULL
+S_config.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_create
+$typed_callback_array(S_config, n_callback)
+$entry_lookup(S_config.ARRAYS[n_callback].ITEMS, KINT 0) = (pitem_receiver)
+$entry_lookup(S_config.ARRAYS[n_callback].ITEMS, KINT 1) = (pitem_method)
+$entry_value(S_config, pitem_receiver) = POBJECT n_receiver
+pvalue_method = $entry_value(S_config, pitem_method)
+$string_bytes(pvalue_method) = ($ptascii("append"))
+S_config.OBJECTS[n_receiver] = INSTANCE porigin_child
+(HOBJECT n_receiver) <- S_config.ALLOCATIONS
+(HARRAY n_callback) <- S_config.ALLOCATIONS
+$from_factory_live(S_config, n_factory)
+$from_factory_owner(S_config, pconfigcall) = (n_factory)
+$config_selected_valid(S_config, pconfigcall)
+$config_call_valid(S_config, pconfigcall)
+$config_sent_shape(S_config, pconfigcall)
+$config_invoke_valid(S_config, pconfigcall)
+$call_task_valid(S_config, CONFIG_INVOKE pconfigcall)
+$task_nodes(CONFIG_INVOKE pconfigcall) = [HOBJECT n_factory, HARRAY n_callback]
+$node_children(S_config, HOBJECT n_factory) = eps
+$heap_owners($heap_graph(S_config), HOBJECT n_factory) = 1
+$heap_owners($heap_graph(S_config), HOBJECT n_receiver) = 1
+$outputs(S_config.EVENTS) = $ptascii("Q;S:same;I;A;")
+''') + guards('S_config')
+    genuine += seek('S_return', 'S_config', 26) + lines(r'''
+S_return.RESULT = KNOWN (POBJECT n_produced)
+S_return.OBJECTS[n_produced] = FROMCALLABLECLOSURE pfrommethod_return
+n_produced =/= n_factory /\ n_produced =/= n_receiver
+pfrommethod_return.SITE = porigin_invoke
+pfrommethod_return.FACTORY = (n_factory)
+pfrommethod_return.SCOPE = eps
+pfrommethod_return.CALLED = eps
+pfrommethod_return.THIS = eps
+pfrommethod_return.CREATION = eps
+pfrommethod_return.CLASS.REQUESTED = porigin_child
+pfrommethod_return.CLASS.CALLED = porigin_child
+pfrommethod_return.CLASS.RECEIVER = (n_receiver)
+pfrommethod_return.FUNCTION = pmethoddesc.FUNCTION.ORIGIN
+pfrommethod_return.ARRAY /\ ~pfrommethod_return.INVOKE
+~pfrommethod_return.STATIC
+$from_source_valid(S_return, pfrommethod_return)
+$from_permission(S_return, pfrommethod_return)
+$from_valid(S_return, pfrommethod_return)
+$from_factory_saved(S_return, n_factory)
+~$from_factory_live(S_return, n_factory)
+~((HOBJECT n_factory) <- S_return.ALLOCATIONS)
+~((HARRAY n_callback) <- S_return.ALLOCATIONS)
+$heap_owners($heap_graph(S_return), HOBJECT n_factory) = 0
+$node_children(S_return, HOBJECT n_factory) = eps
+$node_children(S_return, HOBJECT n_produced) = [HOBJECT n_receiver]
+$heap_owners($heap_graph(S_return), HOBJECT n_receiver) = 1
+$outputs(S_return.EVENTS) = $ptascii("Q;S:same;I;A;")
+''') + guards('S_return')
+
+    old_text, inherited, reached, _ = render_instance_wrapper(fixture, filename, expected)
+    prefix = old_text.split('\ndec $main()')[0].replace('FromInstance', 'AliasFactory')
+    inherited = inherited[:reached]
+    inherited = inherited[len(computed_start('S_name', {'fixture': fixture, 'filename': filename}, 8)):]
+    inherited = [check.replace('FromInstance', 'AliasFactory').replace('$ptascii("H;', '$ptascii("Q;S:same;I;A;F;H;')
+                 for check in inherited]
+    inherited = seek('S_name', 'S_return', 8) + inherited
+    index = inherited.index('S_name.OBJECTS[n_closure] = FROMCALLABLECLOSURE pfrommethod')
+    inherited[index + 1:index + 1] = lines(r'''
+n_closure = n_produced
+pfrommethod = pfrommethod_return
+pfrommethod.FACTORY = (n_factory)
+S_name.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_create
+~((HOBJECT n_factory) <- S_name.ALLOCATIONS)
+$heap_owners($heap_graph(S_name), HOBJECT n_factory) = 0
+$from_factory_saved(S_name, n_factory)
+~$from_factory_live(S_name, n_factory)
+$from_source_valid(S_name, pfrommethod)
+$node_children(S_name, HOBJECT n_factory) = eps
+''')
+    index = inherited.index('~$from_current(S_callback)')
+    inherited[index + 1:index + 1] = lines(r'''
+~((HOBJECT n_factory) <- S_callback.ALLOCATIONS)
+$from_factory_saved(S_callback, n_factory)
+$from_source_valid(S_callback, pfrommethod)
+$from_valid(S_callback, pfrommethod)
+''')
+    index = inherited.index('~((HOBJECT n_closure) <- S_done.ALLOCATIONS)')
+    inherited[index + 1:index + 1] = lines(r'''
+~((HOBJECT n_factory) <- S_done.ALLOCATIONS)
+$heap_owners($heap_graph(S_done), HOBJECT n_factory) = 0
+$from_factory_saved(S_done, n_factory)
+$from_source_valid(S_done, pfrommethod)
+''')
+    genuine += inherited
+
+    # Constructed source/task/liveness controls do not evaluate absent dispatch.
+    controls = lines(r'''
+~$invoke_capture_source(S_entry_read, porigin_create)
+~$invoke_capture_source(S_entry_read, porigin_method_name)
+~$invoke_capture_source(S_entry_read, porigin_invoke)
+~$invoke_capture_source(S_entry_read[.SOURCES = eps], porigin_alias)
+~$call_task_valid(S_entry[.ORIGIN = eps], METHOD_PREP phpType20 phpType7* false false z_entry)
+~$call_task_valid(S_entry[.ORIGIN = (porigin_create)], METHOD_PREP phpType20 phpType7* false false z_entry)
+~$method_receiver_operand_valid(S_entry, expression_receiver, KNOWN (POBJECT n_factory))
+~$method_receiver_operand_valid(S_entry, expression_receiver, VARIABLE $ptascii("alias") z_entry)
+~$call_task_valid(S_entry, METHOD_PREP (NIdentifier (BYTES "b3RoZXI=") metadata_name) phpType7* false false z_entry)
+~$call_task_valid(S_entry, METHOD_PREP phpType20 eps false false z_entry)
+~$call_task_valid(S_entry, METHOD_PREP phpType20 phpType7* true false z_entry)
+~$call_task_valid(S_entry, METHOD_PREP phpType20 phpType7* false true z_entry)
+~$call_task_valid(S_entry, METHOD_PREP phpType20 phpType7* false false $(z_entry + 1))
+S_retired_alias_source = S_entry_read[.ALLOCATIONS = eps]
+$from_factory_saved(S_retired_alias_source, n_factory)
+~$from_factory_live(S_retired_alias_source, n_factory)
+~$closure_callable(S_retired_alias_source, n_factory)
+~$closure_live_object_valid(S_retired_alias_source, n_factory)
+S_wrong_creation = S_entry_read[.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_alias]
+~$from_factory_saved(S_wrong_creation, n_factory)
+~$from_factory_live(S_wrong_creation, n_factory)
+~$closure_callable(S_wrong_creation, n_factory)
+S_wrong_factory_kind = S_entry_read[.OBJECTS[n_factory] = INTRINSICCLOSURE INTRINSIC_FROM_CALLABLE_FACTORY]
+~$from_factory_saved(S_wrong_factory_kind, n_factory)
+~$from_factory_live(S_wrong_factory_kind, n_factory)
+~$closure_callable(S_wrong_factory_kind, n_factory)
+~$closure_live_object_valid(S_wrong_factory_kind, n_factory)
+S_no_creation_name = S_entry_read[.CODE[n_unit] = pcode[.NAMES = eps]]
+~$from_factory_saved(S_no_creation_name, n_factory)
+~$from_factory_live(S_no_creation_name, n_factory)
+~$config_selected_valid(S_config, pconfigcall[.OWNER = eps])
+~$config_selected_valid(S_config, pconfigcall[.OWNER = (n_name)])
+~$config_selected_valid(S_config, pconfigcall[.OWNER = (n_receiver)])
+~$config_selected_valid(S_config, pconfigcall[.OWNER = (|S_config.OBJECTS|)])
+~$config_selected_valid(S_config, pconfigcall[.SITE = porigin_create])
+~$config_selected_valid(S_config, pconfigcall[.SITE = porigin_alias])
+~$config_selected_valid(S_config, pconfigcall[.SELECTION = (0)])
+~$config_selected_valid(S_config, pconfigcall[.KIND = INTRINSIC_FROM_CALLABLE])
+~$config_invoke_valid(S_config, pconfigcall[.SENT = eps])
+S_retired_config_owner = S_config[.ALLOCATIONS = eps]
+$from_factory_saved(S_retired_config_owner, n_factory)
+~$from_factory_live(S_retired_config_owner, n_factory)
+~$config_selected_valid(S_retired_config_owner, pconfigcall)
+S_wrong_protocol_object = S_config[.OBJECTS[n_factory] = INTRINSICCLOSURE INTRINSIC_FROM_CALLABLE_FACTORY]
+~$config_selected_valid(S_wrong_protocol_object, pconfigcall)
+~$from_source_valid(S_callback, pfrommethod[.FACTORY = eps])
+~$from_valid(S_callback, pfrommethod[.FACTORY = eps])
+~$from_source_valid(S_callback, pfrommethod[.FACTORY = (n_receiver)])
+~$from_valid(S_callback, pfrommethod[.FACTORY = (n_receiver)])
+~$from_source_valid(S_callback, pfrommethod[.FACTORY = (|S_callback.OBJECTS|)])
+~$from_valid(S_callback, pfrommethod[.FACTORY = (|S_callback.OBJECTS|)])
+~$from_source_valid(S_callback, pfrommethod[.SITE = porigin_create])
+~$from_valid(S_callback, pfrommethod[.SITE = porigin_create])
+~$from_source_valid(S_callback, pfrommethod[.SITE = porigin_alias])
+~$from_valid(S_callback, pfrommethod[.SITE = porigin_alias])
+S_saved_wrong_creation = S_callback[.OBJECTS[n_factory] = FROMCALLABLEFACTORY porigin_alias]
+~$from_source_valid(S_saved_wrong_creation, pfrommethod)
+~$from_valid(S_saved_wrong_creation, pfrommethod)
+$from_source_valid(S_callback[.CURRENT = eps], pfrommethod)
+$from_valid(S_callback[.CURRENT = eps], pfrommethod)
+''')
+    checks = genuine + controls
+    text = prefix + INVOKE_PHASE + ALIAS_PHASE + '\ndec $main() : bool\ndef $main() = true\n'
+    text += ''.join('  -- if ' + check + '\n' for check in checks)
+    return text, checks, len(genuine), len(controls)

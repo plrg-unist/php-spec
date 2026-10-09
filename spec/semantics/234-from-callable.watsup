@@ -483,6 +483,20 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $config_prepare(S_read[
   -- if $from_factory_invoke_site(S_read, porigin)
   -- if $call_task_valid(S, METHOD_PREP phpType20 phpType7* false false z)
 
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $invoke_capture(S_read, n, S.ORIGIN)
+  -- if S.TODO = (METHOD_PREP phpType20 phpType7* false false z) :: ptask_tail*
+  -- if poperand = S.RESULT
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = FROMCALLABLEFACTORY porigin_create
+  -- if $from_factory_live(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if $ppfirstclass(phpType7*)
+  -- if S.ORIGIN = (porigin)
+  -- if $invoke_capture_source(S_read, porigin)
+  -- if $call_task_valid(S, METHOD_PREP phpType20 phpType7* false false z)
+
 def $closure_scope_row_valid(S, pclosurescope) = true
   -- if pclosurescope.CREATION = eps
   -- if n = pclosurescope.OBJECT

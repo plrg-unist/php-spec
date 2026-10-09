@@ -559,3 +559,21 @@ first 146-premise fixture changes saved CURRENT.LINE while preserving its owning
 the original failed heap equality remains zero credit. Baseline 97/projection 66
 are localization only. Wider overlap layouts, throwing callbacks/reentry,
 nonordinary/black/external components, non-idle caches and later passes remain open.
+
+The fresh closed-white overlap component301 also accepts ordinary nonproxy arrays;
+all residual reach remains object-only, and reference/proxy/incoming-owner fences
+are unchanged. The existing nested fold and count rules need no new array rule:
+`gc_collect_white` buffers visited ordinary arrays before buffered BLACK removal.
+The grounded ordinary-Fiber case holds D through E's singleton DIRECT array.
+At `f184ac959`/370, source-reached image118/guard107/corrected-terminal104 execute
+329 premises: COUNTED3, nested D/array removal with debit4 and exact FREE order,
+real E preselection/executable guard, then signed -1+2=1 through one retrace.
+E/array retire, D retains its self-owner1/nonowning weak liveness, and native events
+through END, caller restoration, request worker cleanup and budget replay pass.
+Baseline91 localizes the old object-only refusal; compiler/init pass. The original
+104-premise terminal fixture retains E's old marked tag in its expected image;
+the separate correction normalizes E exactly as the real accepted guard does.
+That failure remains zero credit. Whole source37 CLI60 remains OPEN with zero
+agreement; only its default whole-CLI selection is excluded. Main/mixed array
+layouts, references/proxy tables, black/external components, non-idle workers,
+later passes and wider overlap remain required; prior evidence is unchanged.

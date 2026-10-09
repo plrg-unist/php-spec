@@ -94,8 +94,17 @@ with the invocation line and indexed argument snapshots. The variable control
 agrees at b9f0b1ae/368, and four explicit sources plus 552 premises (512
 genuine/derived, 40 constructed) pass at c1cdc2b5/368. These are separate from
 the earlier 367-module factory cuts; maintained relocation renews no execution.
-First-class invoke aliases, nullsafe/computed method entry, computed/keyword
-factory creation and captured-factory Fiber/getter callbacks remain required.
+Literal first-class `->__invoke(...)` capture on that factory now reuses the
+existing object and original creation site, popping only METHOD_PREP and preserving
+the caller tail. An alias cell keeps it after the original cell is cleared; CONFIG
+then retains the selected owner while argument evaluation clears the alias. The
+returned method Closure owns its receiver independently, and saved factory evidence
+remains valid after retirement. The REAL identity/by-reference control agrees at
+e2ef/370; the repaired factory source and 610 premises (550 genuine/derived,
+60 constructed) pass at 3cb295d1d/370. The interpreter failure and contradictory
+fixture variable binding remain zero credit; maintained relocation renews no execution.
+Nullsafe/computed invoke capture, wider aliases, computed/keyword factory creation
+and captured-factory Fiber/getter callbacks remain required.
 Required original static-compound source 7
 keeps its separate CLI 60 timeout with zero agreement.
 

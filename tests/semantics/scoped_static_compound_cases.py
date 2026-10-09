@@ -1565,4 +1565,70 @@ echo "V:", InvokeFactoryNameChildReview20::$value,
         'expected_stdout': 'Q;A;F;H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
         'discriminator': 'Literal explicit __invoke preserves the selected factory through argument-cell clearing, then independently owns the inherited receiver through NAME/RHS callbacks and explicit retirement.',
     },
+    {
+        'id': 'stringable-name-factory-invoke-alias-byref',
+        'source': '''<?php
+class AliasFactoryNameBaseReview20 {
+    public static string $value = "a";
+    public function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+    public function __destruct() {
+        echo "W;";
+    }
+}
+class AliasFactoryNameChildReview20 extends AliasFactoryNameBaseReview20 {
+    public static string $value = "c";
+}
+class AliasFactoryNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        AliasFactoryNameChildReview20::$value = "d";
+        $rhs = new AliasFactoryRightReview20();
+    }
+}
+class AliasFactoryRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+function clearAliasFactoryArgumentReview20() {
+    global $alias;
+    $alias = null;
+    echo "A;";
+    return [new AliasFactoryNameChildReview20(), "append"];
+}
+$property = new AliasFactoryNameReview20();
+$rhs = "before";
+echo "Q;";
+$factory = Closure::fromCallable(...);
+$alias = $factory->__invoke(...);
+echo "S:", $alias === $factory ? "same" : "different", ";";
+$factory = null;
+echo "I;";
+$closure = $alias(callback: clearAliasFactoryArgumentReview20());
+echo "F;";
+$result = $closure($property, $rhs);
+$rhs = "done";
+$closure = null;
+echo "V:", AliasFactoryNameChildReview20::$value,
+     ";B:", AliasFactoryNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;S:same;I;A;F;H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'Literal first-class __invoke preserves factory identity and its creation authority; selected CONFIG retains it as both caller cells are cleared, and the returned receiver retires independently after by-reference NAME/RHS effects.',
+    },
+
 ]

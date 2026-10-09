@@ -16,6 +16,7 @@ dec $pchimportstage(pchraw, ptbytes, ptcontext) : pchresult
 dec $pchparentoption(ptbytes*) : ptbytes?
 dec $pchparentstage(pchraw, ptbytes, ptcontext, pchrefs) : pchresult
 dec $pchattributes(pchraw, pchheader, ptcontext) : pchresult
+dec $pchallows_dynamic(ptcontext, phpType14) : bool
 dec $pchinterfaces(pchheader, pchrefs) : pchresult
 dec $pchprepend(pchdiagnostic*, pchresult) : pchresult
 dec $pchissue(ptcontext, text, text, ptbytes*) : pchdiagnostic
@@ -97,10 +98,20 @@ def $pchparentstage(pchraw, ptbytes, ptcontext, PCHREFUNSUPPORTED text) = PCHUNS
 def $pchparentstage(pchraw, ptbytes, ptcontext, PCHNAMES ptbytes_parent* pchdiagnostic*) = $pchprepend(pchdiagnostic*, $pchattributes(pchraw, { KIND pchraw.KIND, NAME ptbytes, ABSTRACT (pchraw.FLAGS <- [16,80]), FINAL (pchraw.FLAGS <- [32,96]), READONLY (pchraw.FLAGS <- [64,80,96]), PARENT $pchparentoption(ptbytes_parent*), INTERFACES eps, BODY pchraw.BODY }, ptcontext))
 
 
+def $pchallows_dynamic(ptcontext, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = ($ptlc($ptresolve(ptcontext, ptqual, ptbytes)) = $ptascii("allowdynamicproperties"))
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+def $pchallows_dynamic(ptcontext, phpType14) = false -- otherwise
 def $pchattributes(pchraw, pchheader, ptcontext) = PCHUNSUPPORTED "class attributes require attribute compilation"
   -- if pchraw.ATTRIBUTES =/= SEQUENCE eps
+  -- if ~$pchallows_dynamic(ptcontext, pchraw.ATTRIBUTES)
+def $pchattributes(pchraw, pchheader, ptcontext) = $pcherror(ptcontext, "allow-dynamic-target", [$ptascii(pchheader.KIND), pchheader.NAME])
+  -- if $pchallows_dynamic(ptcontext, pchraw.ATTRIBUTES)
+  -- if pchheader.KIND <- ["trait", "interface"]
+def $pchattributes(pchraw, pchheader, ptcontext) = $pcherror(ptcontext, "allow-dynamic-target", [$ptascii("readonly class"), pchheader.NAME])
+  -- if $pchallows_dynamic(ptcontext, pchraw.ATTRIBUTES)
+  -- if pchheader.KIND = "class" /\ pchheader.READONLY
 def $pchattributes(pchraw, pchheader, ptcontext) = $pchinterfaces(pchheader, $pchrefs(name*, "interface name", ptcontext))
-  -- if pchraw.ATTRIBUTES = SEQUENCE eps
+  -- if pchraw.ATTRIBUTES = SEQUENCE eps \/ ($pchallows_dynamic(ptcontext, pchraw.ATTRIBUTES) /\ pchheader.KIND = "class" /\ ~pchheader.READONLY)
   -- if pchraw.INTERFACES = SEQUENCE name*
 
 def $pchinterfaces(pchheader, PCHNAMES ptbytes* pchdiagnostic*) = PCHOK pchheader[.INTERFACES = ptbytes*] pchdiagnostic*
@@ -150,3 +161,4 @@ def $pchmessage(PCHDIAGNOSTIC text "underscore-declaration" ([ptbytes_role]) ptc
 def $pchmessage(PCHDIAGNOSTIC text "declaration-import-conflict" ([ptbytes]) ptcontext) = $ptascii("Cannot redeclare class ") ++ ptbytes ++ $ptascii(" (previously declared as local import)")
 def $pchmessage(PCHDIAGNOSTIC text "reserved-class-reference" ([ptbytes, ptbytes_role]) ptcontext) = $ptascii("Cannot use \"") ++ ptbytes ++ $ptascii("\" as ") ++ ptbytes_role ++ $ptascii(", as it is reserved")
 def $pchmessage(PCHDIAGNOSTIC text "invalid-class-reference" ([ptbytes]) ptcontext) = $ptascii("'") ++ ptbytes ++ $ptascii("' is an invalid class name")
+def $pchmessage(PCHDIAGNOSTIC text "allow-dynamic-target" ([ptbytes_kind, ptbytes]) ptcontext) = $ptascii("Cannot apply #[\\AllowDynamicProperties] to ") ++ ptbytes_kind ++ $ptascii(" ") ++ ptbytes
