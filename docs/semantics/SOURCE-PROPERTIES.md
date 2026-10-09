@@ -235,7 +235,24 @@ until their actual removal, while the copied payload stays alive.
 The [reference-getter review](../../coverage/semantics/magic-property-reference-review.json)
 records six source agreements and six whole reached groups/829 setup-inclusive
 premises. PARAMETERBACKINGS, wider target types and possible conversions remain
-Unsupported; existing receiver/consumer residuals and prior evidence are unchanged.
+Unsupported beyond the bounded cases below; existing receiver/consumer residuals
+and prior evidence are unchanged.
+
+Builtin float verification widens an original integer on an actual unconstrained
+RV, including strict getter declarations. A reference updates its real cell and
+retains the raw return's owner; a value return forwards only the converted RV.
+The conversion uses the exact binary64 result, including rounding integers beyond
+the exact range. Readonly backing stays UNSET with no getter type-source attachment.
+CV reception copies the cell after receiver destruction; owned reception detaches
+the converted value and releases the raw RV cell owner before BASE release.
+Exact floats with real typed-property sources leave the whole state unchanged.
+An integer instead raises the first-source conflict without converting the real
+cell, even when its int|float source would accept that conversion and the getter
+is strict. Later source detachment and repair retain the already-created Error.
+The [float-getter review](../../coverage/semantics/magic-property-float-review.json)
+records six source agreements and six whole reached groups/904 setup-inclusive
+premises. Numeric strings, booleans, PARAMETERBACKINGS and wider float conversions
+remain Unsupported; prior getter evidence retains its separate cuts.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

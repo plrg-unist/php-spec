@@ -1492,6 +1492,15 @@ the conflict label, and pending errors survive later source detachment/repair.
 pass 829 setup-inclusive premises; owned copied payloads survive source/cell removal.
 The actual374 join over `bed352b5a` passes strict at `e0d62e7ed` (5.399s),
 preserving current anonymous-class and hook interfaces; private cuts remain unchanged.
+Getter verification now widens an actual unconstrained integer return to builtin
+float, including strict getters. Reference returns update the real cell; value
+returns change only the returned value. Exact floats with real typed-property
+sources remain unchanged, while integer widening raises a source conflict without
+converting that cell. Readonly backing stays UNSET without a new type source.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-float-review.json)
+pass 904 setup-inclusive premises, including binary64 rounding and CV versus owned
+receiver cleanup. Numeric strings, booleans and wider float conversions remain open;
+earlier getter evidence is unchanged.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

@@ -2276,6 +2276,17 @@ are unchanged. [Reference-getter ledger](coverage/semantics/magic-property-refer
 The actual374 join over `bed352b5a` passes strict at `e0d62e7ed` (5.399s,
 state credit0). Parent anonymous-class, hook/type and cleanup interfaces are
 preserved; those wider paths are absent from these originals. Private cuts are unchanged.
+Modules380/384 now cover original integer to builtin float getter verification.
+An unconstrained reference converts its actual cell; a value return changes only
+its RV, and strict getter declarations permit integer widening. Exact floats with
+real typed-property sources preserve the whole state; integer widening instead
+raises the first-source conflict without converting the cell or attaching the
+getter target type. Native6 and the CLI1 Unsupported baseline retain separate
+`c96598db0` cuts. Strict374/source6 and six whole reached groups pass 904
+setup-inclusive premises at `a8174525b`, covering repeated reads, binary64 rounding,
+CV post-destructor copy and owned detachment before BASE release. Bits/original-RV,
+string/bool and PARAM controls are constructed; prior cuts and failures are unchanged.
+[Float-getter ledger](coverage/semantics/magic-property-float-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
