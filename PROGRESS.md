@@ -1983,6 +1983,8 @@ RHS callback/write, explicit Closure and receiver retirement, and saved descript
 validity afterward. Missing or substituted current/saved receivers are rejected;
 selection metadata adds no owner. The earlier wrapper Unsupported remains zero
 credit, and required original 7 retains its separate CLI 60 timeout.
+Actual-parent compilation passes at 943e2c3c over 94f4b007 with 367 modules;
+pointwise promotion/property replay review adds no source or state renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
