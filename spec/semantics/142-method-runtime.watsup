@@ -1583,6 +1583,7 @@ def $promotion_override_property(S, pclassdesc, ppropertydesc) = true
   -- if $(n < |phpType17*|)
   -- if phpType17*[n] = NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata
   -- if $promotion_raw(S, pmethoddesc.FUNCTION, n) = (psraw)
+  -- if $pspromotion_override_attribute($promotion_attribute_context(pmethoddesc.FUNCTION), phpType14)
   -- if $promotion_descriptor(S, pmethoddesc.FUNCTION, n) = (ppropertydesc_source)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_source)
   -- if (ppropertydesc = ppropertydesc_source /\ pclassdesc.ORIGIN = pmethoddesc.OWNER) \/ (pclassdesc_source.KIND = "trait" /\ ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source))

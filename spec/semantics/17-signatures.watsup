@@ -122,7 +122,7 @@ def $pspromotion_override_attribute(ptcontext, phpType14) = false -- otherwise
 def $pssensitive_parameter_attribute(ptcontext, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = ($ptlc($ptresolve(ptcontext, ptqual, ptbytes)) = $ptascii("sensitiveparameter"))
   -- if $ptast(name) = PTNAME ptqual ptbytes
 def $pssensitive_parameter_attribute(ptcontext, phpType14) = false -- otherwise
-def $psattributes_supported(ptcontext, psraw, phpType14) = (~psraw.EXTRA /\ ((psraw.FLAGS =/= 0 /\ $pspromotion_override_attribute(ptcontext, phpType14)) \/ (psraw.FLAGS = 0 /\ $pssensitive_parameter_attribute(ptcontext, phpType14))))
+def $psattributes_supported(ptcontext, psraw, phpType14) = (~psraw.EXTRA /\ ((psraw.FLAGS =/= 0 /\ $pspromotion_override_attribute(ptcontext, phpType14)) \/ $pssensitive_parameter_attribute(ptcontext, phpType14)))
 def $psattribute_target(ptcontext, psraw, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = (ptbytes_resolved)
   -- if psraw.FLAGS = 0 /\ ~psraw.EXTRA
   -- if $ptast(name) = PTNAME ptqual ptbytes
