@@ -74,6 +74,7 @@ def $array_receiver(S, PSTRING ptbytes_class, ptbytes, parraymode) = ARRAYINVALI
 def $array_receiver(S, PSTRING ptbytes_class, ptbytes, parraymode) = $array_method(S, porigin_class, eps, ptbytes, parraymode)
   -- if ~($ptlc($typed_callable_name(ptbytes_class)) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
   -- if $class_named(S.CLASSNAMES, $ptlc($typed_callable_name(ptbytes_class))) = (porigin_class)
+def $array_receiver(S, PSTRING_CARRIER pstringidentity ptbytes_class, ptbytes, parraymode) = $array_receiver(S, PSTRING ptbytes_class, ptbytes, parraymode)
 def $array_receiver(S, pvalue, ptbytes, parraymode) = ARRAYUNKNOWN "array callable class, autoload or internal method lookup" -- otherwise
 
 def $array_resolve(S, n, parraymode) = ARRAYINVALID ptbytes
@@ -83,7 +84,7 @@ def $array_resolve(S, n, parraymode) = $array_receiver(S, $entry_value(S, pitem_
   -- if S.ARRAYS[n] = parray
   -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
   -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
-  -- if $entry_value(S, pitem_method) = PSTRING ptbytes
+  -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes)
 def $array_resolve(S, n, parraymode) = ARRAYUNKNOWN "invalid array callable state" -- otherwise
 
 def $array_admission(ARRAYRESOLVED pcalltarget porigin ptbytes) = (true)

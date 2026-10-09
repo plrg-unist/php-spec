@@ -150,7 +150,8 @@ def $target_called_class(S, pcalltarget) = eps -- otherwise
 dec $method_target_eligible(pstate, porigin, pmethoddesc) : bool
 dec $scoped_selector_class(pstate, poperand) : porigin?
 dec $scoped_receiver_valid(pstate, porigin, pmethoddesc, nat?) : bool
-def $scoped_selector_class(S, KNOWN (PSTRING n*)) = $class_named(S.CLASSNAMES, $ptlc(n*))
+def $scoped_selector_class(S, KNOWN pvalue_string) = $class_named(S.CLASSNAMES, $ptlc(n*))
+  -- if $string_bytes(pvalue_string) = (n*)
 def $scoped_selector_class(S, poperand) = eps -- otherwise
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, eps) = true -- if pmethoddesc.STATIC
 def $scoped_receiver_valid(S, porigin_class, pmethoddesc, (n)) = true
@@ -638,6 +639,7 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $throw_scalar(S_read, "
 
 dec $method_string(pvalue) : bool
 def $method_string(PSTRING n*) = true
+def $method_string(PSTRING_CARRIER pstringidentity n*) = true
 def $method_string(pvalue) = false -- otherwise
 
 dec $method_continue(pstate, poperand, phpType20, phpType7*, int) : pstate
@@ -689,7 +691,8 @@ rule PhpStep/method-name: S ~> $method_select(S_name, poperand, n_name*, phpType
   -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
   -- if S_name.COMPLETION = NORMAL
-  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if S_name.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_name*)
 rule PhpStep/method-name-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
@@ -791,13 +794,15 @@ dec $scoped_dynamic_class(pstate, int) : pstate
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING pclassdesc.NAME)]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING n*)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = (porigin_class)
   -- if $class_at(S_read.CLASSES, porigin_class) = (pclassdesc)
 def $scoped_dynamic_class(S, z) = $throw_scalar(S_read, "Error", $ptascii("Class \"") ++ n* ++ $ptascii("\" not found"), z)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING n*)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
   -- if $class_named(S_read.CLASSNAMES, $ptlc(n*)) = eps
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("closure")
   -- if $ptlc($typed_callable_name(n*)) =/= $ptascii("weakreference")
@@ -987,7 +992,8 @@ rule PhpStep/scoped-name: S ~> $scoped_select(S_name, phpType19, poperand_select
   -- if S.TODO = (SCOPED_NAME phpType19 poperand_selector phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
   -- if S_name.COMPLETION = NORMAL
-  -- if S_name.RESULT = KNOWN (PSTRING n_name*)
+  -- if S_name.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_name*)
 rule PhpStep/scoped-name-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (SCOPED_NAME phpType19 poperand_selector phpType7* z) :: ptask_tail*
   -- if S_name = $resolve_at(S, S.RESULT, z)
@@ -1521,6 +1527,8 @@ dec $promotion_descriptor(pstate, pfunction, nat) : ppropertydesc?
 dec $promotion_type_scope(pclassdesc) : ptscope
 dec $trait_data_import_type(pclassdesc, ptbranch*) : ptbranch*
 dec $promotion_task_valid(pstate, porigin, nat) : bool
+dec $promotion_task_suffix(ptask*, porigin, nat) : ptask*?
+dec $promotion_queued_task_valid(pstate, porigin, nat) : bool
 dec $promotion_write(pstate, nat, ptbytes, nat, psraw) : pstate
 dec $promotion_write_reference(pstate, nat, ptbytes, nat, int) : pstate
 
@@ -1577,6 +1585,7 @@ def $promotion_override_property(S, pclassdesc, ppropertydesc) = true
   -- if $(n < |phpType17*|)
   -- if phpType17*[n] = NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata
   -- if $promotion_raw(S, pmethoddesc.FUNCTION, n) = (psraw)
+  -- if $pspromotion_override_attribute($promotion_attribute_context(pmethoddesc.FUNCTION), phpType14)
   -- if $promotion_descriptor(S, pmethoddesc.FUNCTION, n) = (ppropertydesc_source)
   -- if $class_at(S.CLASSES, pmethoddesc.OWNER) = (pclassdesc_source)
   -- if (ppropertydesc = ppropertydesc_source /\ pclassdesc.ORIGIN = pmethoddesc.OWNER) \/ (pclassdesc_source.KIND = "trait" /\ ppropertydesc = $trait_data_property(pclassdesc, ppropertydesc_source))
@@ -1658,7 +1667,19 @@ def $promotion_task_valid(S, porigin, n) = true
   -- if $lookup(S.ENV, psraw.NAME) = (n_cell)
   -- if S.STORE[n_cell] = DEFINED pvalue
 def $promotion_task_valid(S, porigin, n) = false -- otherwise
-def $call_task_valid(S, PROMOTE_PARAMETER porigin n) = $promotion_task_valid(S, porigin, n)
+;; Queued promotions retain the authentic head and each task's source suffix.
+def $promotion_task_suffix((PROMOTE_PARAMETER porigin n) :: ptask_tail*, porigin, n) = ((PROMOTE_PARAMETER porigin n) :: ptask_tail*)
+def $promotion_task_suffix((PROMOTE_PARAMETER porigin n_before) :: ptask_tail*, porigin, n) = $promotion_task_suffix(ptask_tail*, porigin, n)
+  -- if $(n_before < n)
+def $promotion_task_suffix(ptask*, porigin, n) = eps -- otherwise
+def $promotion_queued_task_valid(S, porigin, n) = true
+  -- if S.TODO = (PROMOTE_PARAMETER porigin n_current) :: ptask_tail*
+  -- if $(n_current <= n)
+  -- if $promotion_task_valid(S, porigin, n_current)
+  -- if $promotion_task_suffix(S.TODO, porigin, n) = (ptask_pending*)
+  -- if $promotion_task_valid(S[.TODO = ptask_pending*], porigin, n)
+def $promotion_queued_task_valid(S, porigin, n) = false -- otherwise
+def $call_task_valid(S, PROMOTE_PARAMETER porigin n) = $promotion_queued_task_valid(S, porigin, n)
 
 def $promotion_write(S, n_receiver, ptbytes, n_cell, psraw) = $property_store_key(S, n_receiver, ptbytes, pvalue, psraw.LINE)
   -- if ~psraw.BYREF

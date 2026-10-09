@@ -1,0 +1,82 @@
+[
+  {
+    "id": "foreach-initial-nan-reference-handler",
+    "source": "<?php\n$condition = NAN;\nclass ForeachInitialNanReferenceIterator23 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachInitialNanReferenceAggregate23 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachInitialNanReferenceIterator23(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = 0.0;\n    return true;\n});\nforeach (\n    new ForeachInitialNanReferenceAggregate23()\n    as $value\n) { echo \"B\", $value, \"|\"; break; }\necho \"E|\";\n",
+    "source_sha256": "e5fb153f82213e6b496d6efb4c5620506fa1f86d27ad3ed9deb0378c579e4487",
+    "purpose": "Real foreach valid() NaN warning; raw retval ownership and handler continuation.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|H|2|unexpected NAN value was coerced to bool|23|A|I|E|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-initial-nan-value-handler",
+    "source": "<?php\n$condition = NAN;\nclass ForeachInitialNanValueIterator23 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachInitialNanValueAggregate23 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachInitialNanValueIterator23(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = 0.0;\n    return true;\n});\nforeach (\n    new ForeachInitialNanValueAggregate23()\n    as $value\n) { echo \"B\", $value, \"|\"; break; }\necho \"E|\";\n",
+    "source_sha256": "d3b99a3c7d871e7859dd608ec2928a2769c2d94602e970f0175365979ff1aaaa",
+    "purpose": "Real foreach valid() NaN warning; raw retval ownership and handler continuation.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|H|2|unexpected NAN value was coerced to bool|23|A|C|B7|I|E|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-later-nan-reference-handler",
+    "source": "<?php\n$condition = 1.0;\nclass ForeachLaterNanReferenceIterator23 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { global $condition; echo \"X|\"; $condition = NAN; }\n    public function __destruct() { echo \"I|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = 0.0;\n    return true;\n});\n$count = 0;\nforeach (new ForeachLaterNanReferenceIterator23() as $value) {\n    echo \"B\", $value, \"|\";\n    $count++;\n    if ($count === 2) { break; }\n}\necho \"E|\";\n",
+    "source_sha256": "aec0599356dab29bef860a477a2db42316565bdac761e333e06c11584e4ec8d6",
+    "purpose": "Real foreach valid() NaN warning; raw retval ownership and handler continuation.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|B7|X|V|H|2|unexpected NAN value was coerced to bool|19|I|E|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-initial-nan-handler-parks",
+    "source": "<?php\n$condition = NAN;\nclass ForeachParkedNanIterator23 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachParkedNanAggregate23 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachParkedNanIterator23(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"warn\");\n    echo \"R|\";\n    $condition = 0.0;\n    return true;\n});\n$target = new Fiber(static function () {\n    foreach (new ForeachParkedNanAggregate23() as $value) { echo \"B\", $value, \"|\"; break; }\n    echo \"E|\";\n    return 17;\n});\necho $target->start(), \"|\", (int)$target->isSuspended(), \"|\", (int)$target->isTerminated(), \"|\";\n$target->resume();\necho (int)$target->isTerminated(), \"|\", $target->getReturn();\n",
+    "source_sha256": "851ee637f9eebbe642921e6e227fdb8eccb4a940e0d1b380be8a6c0f29289d18",
+    "purpose": "Real foreach valid() NaN warning; raw retval ownership and handler continuation.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|H|2|unexpected NAN value was coerced to bool|25|warn|1|0|R|A|I|E|1|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-initial-nan-handler-throws",
+    "source": "<?php\n$condition = NAN;\nclass ForeachThrownInitialNanIterator23 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachThrownInitialNanAggregate23 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachThrownInitialNanIterator23(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$failure = new Exception(\"warning handler\");\nset_error_handler(static function ($severity, $message, $file, $line) use ($failure) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\ntry {\n    foreach (new ForeachThrownInitialNanAggregate23() as $value) { echo \"B\", $value, \"|\"; break; }\n} catch (Throwable $caught) { echo (int)($caught === $failure), \"|\"; }\necho \"E|\";\n",
+    "source_sha256": "7e934e6a931f3d321a98d535e6aacf8155e0c12f93caeaef34f514742da855c8",
+    "purpose": "Real foreach valid() NaN warning; raw retval ownership and handler continuation.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|H|2|unexpected NAN value was coerced to bool|22|I|A|1|E|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-later-nan-handler-throws",
+    "source": "<?php\n$condition = 1.0;\nclass ForeachThrownLaterNanIterator23 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { global $condition; echo \"X|\"; $condition = NAN; }\n    public function __destruct() { echo \"I|\"; }\n}\n$failure = new Exception(\"warning handler\");\nset_error_handler(static function ($severity, $message, $file, $line) use ($failure) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\n$count = 0;\ntry {\n    foreach (new ForeachThrownLaterNanIterator23() as $value) {\n        echo \"B\", $value, \"|\";\n        $count++;\n        if ($count === 2) { break; }\n    }\n} catch (Throwable $caught) { echo (int)($caught === $failure), \"|\"; }\necho \"E|\";\n",
+    "source_sha256": "071e6397c2245a82d7a45fe63dc61be1be70ec5a325c501da44e6b13a144e574",
+    "purpose": "Real foreach valid() NaN warning; raw retval ownership and handler continuation.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|B7|X|V|H|2|unexpected NAN value was coerced to bool|19|I|1|E|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-initial-nan-default-warning",
+    "source": "<?php\nclass ForeachDefaultNanIterator23 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { echo \"V|\"; return NAN; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachDefaultNanAggregate23 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachDefaultNanIterator23(); }\n    public function __destruct() { echo \"A|\"; }\n}\nforeach (\n    new ForeachDefaultNanAggregate23()\n    as $value\n) { echo \"B\", $value, \"|\"; break; }\necho \"E|\";\n",
+    "source_sha256": "1c98ea141e720014544d546cda9c3286f6e75f312ef4d7deff9841e001970948",
+    "purpose": "Real foreach valid() NaN warning; raw retval ownership and handler continuation.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|A|C|B7|I|E|",
+    "native_stderr": "Warning: unexpected NAN value was coerced to bool in {source} on line 16\n",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-later-valid-nan-required",
+    "source": "<?php\nclass ForeachLaterNanIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; $this->position = 0; }\n    #[ReturnTypeWillChange]\n    public function valid() { echo \"V|\"; return $this->position === 0 ? true : NAN; }\n    public function current(): mixed { echo \"C|\"; return $this->position + 7; }\n    public function key(): mixed { return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachLaterNanAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachLaterNanIterator22(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\n$count = 0;\nforeach (new ForeachLaterNanAggregate22() as $value) {\n    echo \"B\", $value, \"|\";\n    $count++;\n    if ($count === 2) { break; }\n}\necho \"E\";\n",
+    "source_sha256": "5d5dc136dd61b57817dd7c82a4823b0c6cad9afe30b98bb74f3dffc811899d26",
+    "purpose": "later valid nan required; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|A|C|B7|X|V|H|2|unexpected NAN value was coerced to bool|21|C|B8|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

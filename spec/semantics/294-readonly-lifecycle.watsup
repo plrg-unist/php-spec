@@ -202,6 +202,7 @@ rule PhpStep/readonly-string-begin: S ~> $user_string_begin(S_read, ppropertystr
 rule PhpStep/readonly-string-complete: S ~> S_written[.HELD = S.HELD]
   -- if S.TODO = (PROPERTY_STRING_RESULT ppropertystring) :: ptask_tail*
   -- if $property_string_record_valid(S, ppropertystring)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if S_inputs = $hold_task_inputs(S)
-  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, ppropertystring.TARGET), ppropertystring.TARGET, ppropertystring.KEY, PSTRING ptbytes, ppropertystring.LINE), ppropertystring.TARGET)
+  -- if S_written = $object_table_sync($property_store_key_unshared($object_table_write(S_inputs, ppropertystring.TARGET), ppropertystring.TARGET, ppropertystring.KEY, pvalue_string, ppropertystring.LINE), ppropertystring.TARGET)

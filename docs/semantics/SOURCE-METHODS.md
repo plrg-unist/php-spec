@@ -22,6 +22,17 @@ variance, inherited abstract obligations and constructor-specific exceptions.
 Constructor signatures are unconstrained by ordinary concrete parent constructors;
 abstract constructor prototypes remain constraints.
 
+One zero-argument builtin `#[Override]` on a nonpromoted parameter is resolved
+through the real namespace/import scope and raises the native target Fatal.
+Ordinary parameter guards and constant-default compilation run first; typename,
+nullable and default-type checks run later. The message preserves resolved
+spelling and the compiler line left by the default expression. The request
+authenticates the current declaration's indexed checked Param and canonical
+source. Eval resumes prior notices through its real compiler cursor, then stops
+without publication or entering catch/body. [The focused review](../../coverage/semantics/parameter-override-review.json)
+keeps source and derived/reached checks separate; other attributes/hooks remain
+explicitly unsupported.
+
 Protected lookup compares the caller scope with the root nonprivate prototype,
 so siblings in that family may call an overriding method. An ancestor method's
 own private declaration stays separate from a child's same-name method. A call

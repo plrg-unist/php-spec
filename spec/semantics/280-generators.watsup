@@ -32,6 +32,10 @@ dec $generator_error(pstate, pgeneratorop, text, ptbytes) : pstate
 dec $generator_result(pstate, pgeneratorop) : pstate
 dec $generator_complete(pstate, pgeneratorop) : pstate
 dec $generator_loop_body(pstate, pgeneratorop) : pstate
+dec $generator_loop_ready(pstate, pgeneratorop) : pstate
+def $generator_loop_ready(S, pgeneratorop) = $generator_loop_body(S, pgeneratorop) -- otherwise
+dec $generator_loop_discard(pstate, pgeneratorop) : pstate
+def $generator_loop_discard(S, pgeneratorop) = S[.ITERATORS = $generator_loop_remove(S.ITERATORS, pgeneratorop.LOOP)][.ORIGIN = (pgeneratorop.SITE)] -- otherwise
 dec $generator_method_display(text) : ptbytes
 dec $generator_operate(pstate, pgeneratorop) : pstate
 dec $generator_operate_plain(pstate, pgeneratorop) : pstate
@@ -77,6 +81,7 @@ dec $generator_operation_valid(pstate, pgeneratorop) : bool
 dec $generator_yield_site(pstate, porigin) : bool
 dec $generator_optional_operand(poperand?) : poperand
 dec $generator_owners_valid(pstate) : bool
+dec $generator_saved_fiber_ids(pstate) : nat*
 dec $generator_flat_tasks(ptask*) : bool
 dec $generator_flat_walk(ptask*) : bool
 dec $generator_resume_position(ptask*) : bool
@@ -207,10 +212,10 @@ def $function_fallthrough(S, pfunction) = $typed_fallthrough(pfunction) -- if ~$
 def $generator_object(S, n) = true -- if $(n < |S.OBJECTS|) -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $generator_object(S, n) = false -- otherwise
 def $generator_set(S, n, pgenerator) = S[.OBJECTS = $object_set(S.OBJECTS, n, GENERATOR pgenerator)]
-def $generator_frame(S, ptask*) = {SILENCES S.SILENCES, LOCALS ($active_table(S)), TODO ptask*, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT}
+def $generator_frame(S, ptask*) = {SILENCES S.SILENCES, LOCALS ($active_table(S)), TODO ptask*, ORIGIN S.ORIGIN, HELD S.HELD, CONTEXT S.CURRENT, RETIREDOWNERS S.RETIREDOWNERS, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT}
 dec $generator_creation_frame(pstate, pfunction) : pframe
 def $generator_creation_frame(S, pfunction) = $generator_frame(S, $function_body_tasks(S, pfunction)) -- otherwise
-def $generator_install(S, pframe) = $set_active_table(S[.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
+def $generator_install(S, pframe) = $set_active_table(S[.SILENCES = pframe.SILENCES][.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN][.HELD = pframe.HELD][.CURRENT = pframe.CONTEXT][.RETIREDOWNERS = pframe.RETIREDOWNERS][.BORROWEDREAD = pframe.BORROWEDREAD][.OBJECTCAST = pframe.OBJECTCAST][.CONSTCONTEXT = pframe.CONSTCONTEXT][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], psymboltable)
   -- if pframe.LOCALS = (psymboltable)
 def $generator_create(S, pfunction) = $restore_frame(S[.OBJECTS = S.OBJECTS ++ [GENERATOR {FUNCTION pfunction.ORIGIN, FRAME ($generator_creation_frame(S, pfunction)), PHASE GENERATOR_FRESH, FIRST false, INDEX $(-1), VALUE eps, REFCELL eps, KEY eps, BORROWED eps, RETURN eps, CLOSURE pcallcontext.INSTANCE, DELEGATE eps, ACCESS $access_generator_capture(S, pcallcontext)}]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)][.TODO = eps][.HELD = eps])
   -- if n = |S.OBJECTS|
@@ -313,7 +318,7 @@ def $generator_operate_plain(S, pgeneratorop) = $generator_complete($generator_r
   -- if ~(pgeneratorop.NAME <- ["current", "key"]) \/ $generator_borrowed_readable(S, pgeneratorop.OBJECT, pgeneratorop.NAME = "key")
 def $generator_complete(S, pgeneratorop) = S -- if pgeneratorop.LOOP = eps /\ ~pgeneratorop.STARTPACK
 def $generator_complete(S, pgeneratorop) = $fiber_traversal_complete(S, pgeneratorop) -- if pgeneratorop.STARTPACK
-def $generator_complete(S, pgeneratorop) = $generator_loop_body(S, pgeneratorop)
+def $generator_complete(S, pgeneratorop) = $generator_loop_ready(S, pgeneratorop)
   -- if pgeneratorop.LOOP =/= eps
   -- if S.COMPLETION = NORMAL
 def $generator_complete(S, pgeneratorop) = S -- if pgeneratorop.LOOP =/= eps /\ S.COMPLETION =/= NORMAL
@@ -634,7 +639,7 @@ def $generator_frame_release(S_before, S_after) = $generator_set(S_after, pgener
   -- if S_before.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_RUNNING
 def $generator_frame_release(S_before, S_after) = S_after -- otherwise
-def $return_discard(S, GENERATOR_RESUME pgeneratorop) = S[.ITERATORS = $generator_loop_remove(S.ITERATORS, pgeneratorop.LOOP)][.ORIGIN = (pgeneratorop.SITE)] -- if ~pgeneratorop.STARTPACK
+def $return_discard(S, GENERATOR_RESUME pgeneratorop) = $generator_loop_discard(S, pgeneratorop) -- if ~pgeneratorop.STARTPACK
 def $class_instanceof(S, POBJECT n, preqbytes) = true
   -- if $generator_object(S, n)
   -- if $ptlc(preqbytes) <- [$ptascii("generator"), $ptascii("iterator"), $ptascii("traversable")]
@@ -958,5 +963,7 @@ def $generator_object_cursor_ids(GENERATOR pgenerator) = $useriter_tasks_ids(pfr
   -- if pgenerator.FRAME = (pframe)
 def $generator_object_cursor_ids(pobject) = eps -- otherwise
 def $generator_cursor_owners_valid(S) = $useriter_ids_unique($useriter_tasks_ids(S.TODO) ++ $useriter_frames_ids(S.FRAMES) ++ $generator_suspended_cursor_ids(S, S.ALLOCATIONS))
-def $generator_owners_valid(S) = ($heap_unique((HOBJECT n)*) /\ $generator_running_owners(S, S.ALLOCATIONS, $generator_saved_ids(S.FRAMES)) /\ $generator_resume_pairs(S, S.CURRENT, S.FRAMES))
-  -- if n* = $generator_resume_ids(S.TODO) ++ $generator_saved_ids(S.FRAMES)
+def $generator_saved_fiber_ids(S) = eps -- otherwise
+def $generator_owners_valid(S) = ($heap_unique((HOBJECT n)*) /\ $generator_running_owners(S, S.ALLOCATIONS, $generator_saved_ids(S.FRAMES) ++ n_fiber*) /\ $generator_resume_pairs(S, S.CURRENT, S.FRAMES))
+  -- if n_fiber* = $generator_saved_fiber_ids(S)
+  -- if n* = $generator_resume_ids(S.TODO) ++ $generator_saved_ids(S.FRAMES) ++ n_fiber*

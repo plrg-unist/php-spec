@@ -1,3 +1,5 @@
+dec $retired_drop_transfer(pstate, porigin, int) : pstate
+dec $retired_replace_transfer(pstate, porigin, int, porigin, int, bool, ptask*) : pstate
 ;; Generated-only Stage A previous links form an acyclic chain. Direct
 ;; constructor writes may create cycles and require a later bounded traversal.
 syntax pthrowchain = THROWCHAIN nat* | BADTHROWCHAIN
@@ -147,7 +149,7 @@ def $return_step(S, poperand, (porigin_source), (TRY_END porigin) :: ptask_tail*
 def $return_step(S, poperand, (porigin_source), (FINALLY_ONLY porigin) :: ptask_tail*) = $finally_enter_return(S, porigin, porigin_source, poperand, ptask_tail*)
 def $return_step(S, poperand, (porigin_source), (FINALLY_RESUME porigin n?) :: ptask_tail*) = $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*)
 def $return_step(S, poperand, (porigin_source), (FINALLY_RETURN porigin porigin_old poperand_old) :: ptask_tail*) = $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*)
-def $return_step(S, poperand, (porigin_source), (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: ptask_tail*) = $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*)
+def $return_step(S, poperand, (porigin_source), (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: ptask_tail*) = $finally_leave_return($retired_drop_transfer(S, porigin_old, z_old), porigin, porigin_source, poperand, ptask_tail*)
 def $return_step(S, poperand, (porigin_source), (FINALLY_JUMP porigin porigin_old n_depth n_original b_continue) :: ptask_tail*) = $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*)
 def $return_step(S, poperand, (porigin_source), (FINALLY_GOTO porigin porigin_old pcpath_old pcpath_target) :: ptask_tail*) = $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*)
 
@@ -200,7 +202,7 @@ def $ref_replay_context_paths(S, n, pcpath_source, pcpath_current) = $ref_replay
 dec $ref_replay_contexts(pstate, porigin) : prefowner*
 def $ref_replay_contexts(S, PORIGIN n pcpath_source) = $ref_replay_context_paths(S, n, pcpath_source, pcpath_source)
 def $ref_recheck_throw_producer(S, S_next) = true
-  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
+  -- if $reference_notice_clean(S.TODO) = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
   -- if $ref_replay_owners(S, porigin_source) = porigin_first :: porigin_owner_tail*
   -- if $throwable_pending(S_next.COMPLETION)
   -- if S_next.FRAMES = S.FRAMES
@@ -208,7 +210,7 @@ def $ref_recheck_throw_producer(S, S_next) = true
 def $ref_recheck_throw_producer(S, S_next) = false -- otherwise
 def $throwable_continuation(S, S_next) = S_next[.TODO = (REF_REPLAY porigin_source poperand z prefowner*) :: eps]
   -- if $ref_recheck_throw_producer(S, S_next)
-  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
+  -- if $reference_notice_clean(S.TODO) = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
   -- if prefowner* = $ref_replay_contexts(S, porigin_source)
 dec $ref_owner_origin(prefowner) : porigin
 def $ref_owner_origin(REPLAY_TRY porigin) = porigin
@@ -221,18 +223,21 @@ dec $ref_recheck_task(ptask) : bool
 def $ref_recheck_task(REF_RECHECK porigin_source porigin_first poperand z) = true
 def $ref_recheck_task(ptask) = false -- otherwise
 
+dec $retired_ref_discard(pstate, porigin, int, bool, ptask, ptask*) : pstate
+dec $retired_after_transfer(pstate, porigin, int, ptask, ptask*) : pstate
 dec $return_ref_step(pstate, poperand, int, bool, porigin, ptask*) : pstate
 def $return_ref_step(S, poperand, z, b, porigin_source, (TRY_END porigin) :: ptask_tail*) = $finally_enter_ref_return(S, porigin, porigin_source, poperand, z, ptask_tail*)
   -- if $finally_present(S, porigin)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_ONLY porigin) :: ptask_tail*) = $finally_enter_ref_return(S, porigin, porigin_source, poperand, z, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_RESUME porigin n?) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_RETURN porigin porigin_old poperand_old) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
-def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
+def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: ptask_tail*) = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, ptask_tail*), porigin, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_JUMP porigin porigin_old n_depth n_original b_continue) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_GOTO porigin porigin_old pcpath_old pcpath_target) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
-def $return_ref_step(S, poperand, z, b, porigin_source, ptask :: ptask_tail*) = $return_discard(S[.TODO = (RETURN_REF_UNWIND poperand z b porigin_source) :: ptask_tail*], ptask)
+def $return_ref_step(S, poperand, z, b, porigin_source, ptask :: ptask_tail*) = $retired_ref_discard(S, porigin_source, z, b, ptask, ptask_tail*)
   -- if ~$finally_transfer_marker(S, ptask)
   -- if ~$ref_recheck_task(ptask)
+  -- if ~$reference_notice_marker(ptask)
 def $return_ref_step(S, poperand, z, false, porigin_source, eps) = $return_step(S, poperand, (porigin_source), eps)
 def $return_ref_step(S, poperand, z, true, porigin_source, (REF_RECHECK porigin_source porigin_first poperand z) :: eps) = $return_step(S_checked, $finally_ref_result(S_checked, poperand), (porigin_source), eps)
   -- if S_checked = $finally_ref_recheck(S, poperand, z)
@@ -295,7 +300,7 @@ def $ref_recheck_pending_owner(ptask :: ptask_tail*, porigin_owner*) = $ref_rech
   -- if ~$ref_recheck_pending_task(ptask, porigin_owner*)
 def $call_task_valid(S, RETURN_REF_UNWIND poperand z true porigin_source) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand) /\ ($ref_recheck_last(S.TODO, REF_RECHECK porigin_source porigin_first poperand z) \/ $ref_recheck_pending_owner(S.TODO, porigin_first :: porigin_tail*)))
   -- if $ref_replay_owners(S, porigin_source) = porigin_first :: porigin_tail*
-def $call_task_valid(S, RETURN_REF_UNWIND poperand z b porigin_source) = ($goto_scope_valid(S, porigin_source) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand))
+def $call_task_valid(S, RETURN_REF_UNWIND poperand z b porigin_source) = (($goto_scope_valid(S, porigin_source) \/ (~b /\ poperand = KNOWN PNULL /\ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z))) /\ ($reference_return_source(S[.ORIGIN = (porigin_source)], z) \/ $reference_return_null_valid(S[.ORIGIN = (porigin_source)], z)) /\ $finally_return_operand_valid(S, poperand))
   -- if ~b \/ $ref_replay_owners(S, porigin_source) = eps
 def $call_task_valid(S, REF_RECHECK porigin_source porigin_first poperand z) = $ref_recheck_valid(S, porigin_source, porigin_first, poperand, z)
 def $task_nodes(RETURN_REF_UNWIND poperand z b porigin_source) = $operand_nodes(poperand)
@@ -441,7 +446,7 @@ def $return_discard(S, TRY_END porigin) = $ref_replay_restore(S[.TODO = ptask ::
   -- if $ref_replay_transfer(ptask)
 def $return_discard(S, TRY_END porigin) = $ref_replay_restore(S[.TODO = ptask_tail*], porigin_source, z, (REPLAY_TRY porigin) :: prefowner_tail*)
   -- if S.TODO = (REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z ((REPLAY_TRY porigin) :: prefowner_tail*)) :: ptask_tail*
-def $return_discard(S, REF_REPLAY_AFTER porigin_source z prefowner*) = S[.TODO = ptask :: ptask_tail*][.ORIGIN = $ref_replay_outer(prefowner*)]
+def $return_discard(S, REF_REPLAY_AFTER porigin_source z prefowner*) = $retired_after_transfer(S, porigin_source, z, ptask, ptask_tail*)[.TODO = ptask :: ptask_tail*][.ORIGIN = $ref_replay_outer(prefowner*)]
   -- if S.TODO = ptask :: (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*
   -- if $ref_replay_transfer(ptask)
 dec $ref_replay_pair(ptask*, porigin, int, prefowner*) : bool
@@ -535,6 +540,7 @@ def $ref_replay_loop_root(S) = 0 -- if S.CURRENT = eps
 def $ref_replay_loop_root(S) = |pfunction.BODY|
   -- if S.CURRENT = (pcallcontext)
   -- if $target_function(S, $context_target(pcallcontext)) = (pfunction)
+dec $retired_replay_loop(pstate, porigin, porigin) : statement?
 dec $ref_replay_loop_at(pstate, porigin, porigin) : statement?
 def $ref_replay_loop_at(S, PORIGIN n pcpath_target, PORIGIN n pcpath_loop) = (statement)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_loop) = (statement)
@@ -544,15 +550,18 @@ def $ref_replay_loop_at(S, PORIGIN n pcpath_target, PORIGIN n pcpath_loop) = (NS
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_loop) = (NStmtSwitch expression phpType60 metadata)
   -- if $switch_replay_site(S, PORIGIN n pcpath_loop)
   -- if $effect_below(pcpath_loop ++ [PCFIELD 1], pcpath_target)
+def $ref_replay_loop_at(S, porigin_target, porigin_loop) = (statement)
+  -- if $retired_replay_loop(S, porigin_target, porigin_loop) = (statement)
 def $ref_replay_loop_at(S, porigin_target, porigin_loop) = eps -- otherwise
-dec $ref_replay_loop_next(statement, porigin) : ptask*
-def $ref_replay_loop_next(NStmtSwitch expression phpType60 metadata, porigin) = [SWITCH_REPLAY_END porigin, SWITCH_REPLAY_PHASE porigin]
-def $ref_replay_loop_next(statement, porigin) = [LOOP_NEXT statement (porigin)]
+dec $ref_replay_loop_next(pstate, statement, porigin) : ptask*
+def $ref_replay_loop_next(S, NStmtSwitch expression phpType60 metadata, porigin) = [SWITCH_REPLAY_END porigin, SWITCH_REPLAY_PHASE porigin]
+  -- if $switch_replay_site(S, porigin)
+def $ref_replay_loop_next(S, statement, porigin) = [LOOP_NEXT statement (porigin)]
   -- if $goto_loop_statement(statement)
 dec $ref_replay_loop_tails(pstate, nat, pcpath, nat, ptask*, ptask*) : pgototasks
 def $ref_replay_loop_tails(S, n, pcpath_target, n_index, ptask_base*, ptask_old*) = GOTOTASKS ptask_old*
   -- if $(n_index >= |pcpath_target|)
-def $ref_replay_loop_tails(S, n, pcpath_target, n_index, ptask_base*, ptask_old*) = $ref_replay_loop_tails(S, n, pcpath_target, $(n_index + 1), ptask_base*, $ref_replay_loop_next(statement, porigin_loop) ++ [ORIGIN_RETURN $goto_target_origin(S, porigin_loop, ptask_tail*)] ++ ptask_tail*)
+def $ref_replay_loop_tails(S, n, pcpath_target, n_index, ptask_base*, ptask_old*) = $ref_replay_loop_tails(S, n, pcpath_target, $(n_index + 1), ptask_base*, $ref_replay_loop_next(S, statement, porigin_loop) ++ [ORIGIN_RETURN $goto_target_origin(S, porigin_loop, ptask_tail*)] ++ ptask_tail*)
   -- if $(n_index < |pcpath_target|)
   -- if porigin_loop = PORIGIN n pcpath_target[0:n_index]
   -- if $ref_replay_loop_at(S, PORIGIN n pcpath_target, porigin_loop) = (statement)
@@ -599,7 +608,7 @@ def $goto_switch_replay(S, PORIGIN n pcpath_target, phpType61*, PORIGIN n pcpath
   -- if $goto_base(S, PORIGIN n pcpath_switch) = GOTOTASKS ptask_base*
   -- if $ref_replay_loop_tails(S, n, pcpath_switch, $ref_replay_loop_root(S), ptask_base*, eps) = GOTOTASKS ptask_outer*
   -- if $goto_find(S, PORIGIN n pcpath_switch, ptask_base*, ptask_outer*) = GOTOTASKS ((AT (PORIGIN n pcpath_switch) (STMT statement)) :: ptask_tail*)
-rule PhpStep/ref-replay-after: S ~> S[.TODO = ptask_source*][.ORIGIN = $goto_target_origin(S, $ref_owner_origin(prefowner), ptask_source*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+rule PhpStep/ref-replay-after: S ~> $retired_rebuilt_tail(S, ptask_source*)[.TODO = ptask_source*][.ORIGIN = $goto_target_origin(S, $ref_owner_origin(prefowner), ptask_source*)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (REF_REPLAY_AFTER porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*
   -- if $ref_replay_after_tasks(S, $ref_owner_origin(prefowner)) = GOTOTASKS ptask_source*
 rule PhpStep/ref-replay-after-missing: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "reference return replay requires runtime owner"]
@@ -611,7 +620,7 @@ def $jump_replay_marker(REF_REPLAY_ORIGIN porigin_source z prefowner*) = true
 def $jump_replay_marker(REF_REPLAY_AFTER porigin_source z prefowner*) = true
 def $jump_loop(S, porigin_jump, n_depth, n_original, b_continue) = $jump_loop($ref_replay_restore(S[.TODO = ptask_tail*], porigin_source, z, prefowner*), porigin_jump, n_depth, n_original, b_continue)
   -- if S.TODO = (REF_REPLAY_ORIGIN porigin_source z prefowner*) :: (REF_REPLAY_PHASE porigin_source z prefowner*) :: ptask_tail*
-def $jump_loop(S, porigin_jump, n_depth, n_original, b_continue) = $jump_loop(S[.TODO = ptask_source*][.ORIGIN = $goto_target_origin(S, $ref_owner_origin(prefowner), ptask_source*)], porigin_jump, n_depth, n_original, b_continue)
+def $jump_loop(S, porigin_jump, n_depth, n_original, b_continue) = $jump_loop($retired_rebuilt_tail(S, ptask_source*)[.TODO = ptask_source*][.ORIGIN = $goto_target_origin(S, $ref_owner_origin(prefowner), ptask_source*)], porigin_jump, n_depth, n_original, b_continue)
   -- if S.TODO = (REF_REPLAY_AFTER porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_source z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_source z (prefowner :: prefowner_tail*)) :: ptask_tail*
   -- if $ref_replay_after_tasks(S, $ref_owner_origin(prefowner)) = GOTOTASKS ptask_source*
 def $jump_loop(S, porigin_jump, n_depth, n_original, b_continue) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "reference return replay requires runtime owner"]
@@ -670,7 +679,7 @@ def $goto_unwind_step(S, porigin_source, pcpath_source, pcpath_target, (TRY_END 
 def $goto_unwind_step(S, porigin_source, pcpath_source, pcpath_target, (FINALLY_ONLY porigin) :: ptask_tail*) = $goto_jump(S[.TODO = (FINALLY_ONLY porigin) :: ptask_tail*], porigin_source, pcpath_target)
   -- if $goto_try_target(porigin, pcpath_target)
 def $goto_unwind_step(S, porigin_source, pcpath_source, pcpath_target, (REF_REPLAY_ORIGIN porigin_return z prefowner*) :: (REF_REPLAY_PHASE porigin_return z prefowner*) :: ptask_tail*) = $ref_replay_restore(S[.TODO = (GOTO_UNWIND porigin_source pcpath_source pcpath_target) :: ptask_tail*], porigin_return, z, prefowner*)
-def $goto_unwind_step(S, porigin_source, pcpath_source, pcpath_target, (REF_REPLAY_AFTER porigin_return z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_return z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_return z (prefowner :: prefowner_tail*)) :: ptask_tail*) = S[.TODO = (GOTO_UNWIND porigin_source pcpath_source pcpath_target) :: ptask_source*][.ORIGIN = $goto_target_origin(S, $ref_owner_origin(prefowner), ptask_source*)]
+def $goto_unwind_step(S, porigin_source, pcpath_source, pcpath_target, (REF_REPLAY_AFTER porigin_return z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_return z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_return z (prefowner :: prefowner_tail*)) :: ptask_tail*) = $retired_rebuilt_tail(S, (GOTO_UNWIND porigin_source pcpath_source pcpath_target) :: ptask_source*)[.TODO = (GOTO_UNWIND porigin_source pcpath_source pcpath_target) :: ptask_source*][.ORIGIN = $goto_target_origin(S, $ref_owner_origin(prefowner), ptask_source*)]
   -- if $ref_replay_after_tasks(S, $ref_owner_origin(prefowner)) = GOTOTASKS ptask_source*
 def $goto_unwind_step(S, porigin_source, pcpath_source, pcpath_target, (REF_REPLAY_AFTER porigin_return z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_ORIGIN porigin_return z (prefowner :: prefowner_tail*)) :: (REF_REPLAY_PHASE porigin_return z (prefowner :: prefowner_tail*)) :: ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "reference return replay requires runtime owner"]
   -- if $ref_replay_after_tasks(S, $ref_owner_origin(prefowner)) = GOTOMISSING
@@ -723,7 +732,7 @@ rule PhpStep/finally-replace-throw: S ~> $finally_leave_throw(S_chained, porigin
   -- if S_chained = $finally_exception_previous(S, n, n_old)
 rule PhpStep/finally-replace-return: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_RETURN porigin porigin_source poperand) :: ptask_tail*
-rule PhpStep/finally-replace-ref-return: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)
+rule PhpStep/finally-replace-ref-return: S ~> $finally_leave_throw($retired_drop_transfer(S, porigin_source, z), porigin, n, ptask_tail*)
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*
 rule PhpStep/finally-replace-jump: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) :: ptask_tail*

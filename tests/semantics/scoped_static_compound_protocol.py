@@ -897,12 +897,168 @@ $call_task_valid(S_mask_failed_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_ma
     return checks
 
 
+COLD_EXTRA = r'''
+def $scoped_seek(S, n_phase, 0) = S
+  -- if ~$scoped_phase(S, n_phase)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+def $scoped_phase(S, 19) = true
+  -- if S.TODO = (THROW_VALUE porigin z) :: ptask*
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.NAME = $ptascii("ColdDoubleNameReview20::__toString")
+def $scoped_phase(S, 20) = true
+  -- if S.TODO = (THROW_SEARCH n_lookup) :: ptask*
+  -- if $string_bytes($throwable_field(S, n_lookup, "message")) = ($ptascii("Access to undeclared static property ColdDoubleNameSlotReview20::$"))
+'''
+
+
+def unchanged_cold(state):
+    return [f'~$class_constant_table_done({state}, porigin_cold)',
+            f'$class_static_at({state}.CLASSSTATICS, ppropertydesc_cold.ORIGIN) = (pclassstatic_cold)',
+            f'$class_constant_static_work({state}, pcomputedcompound_cold.CLASS, eps, pcomputedcompound_cold.LINE) = eps',
+            f'$class_constant_static_work({state}, pcomputedcompound_cold.CLASS, $ptascii("value"), pcomputedcompound_cold.LINE) =/= eps']
+
+
+def cold_double_throw(fixture, filename, expected):
+    checks = [f'S_initial = $php_run({fixture}, 0, {filename})',
+              'S_initial.COMPLETION = BUDGET']
+    checks += seek('S_method', 'S_initial', 19) + lines(r'''
+S_method.CURRENT = (pcallcontext_method)
+pcallcontext_method.TARGET = METHOD_TARGET n_name porigin_method
+pcallcontext_method.INSTANCE = eps
+pcallcontext_method.RECEIVER = (n_name)
+(HOBJECT n_name) <- S_method.ALLOCATIONS
+$outputs(S_method.EVENTS) = $ptascii("Q;N;")
+S_global = $global_table_view(S_method)
+$lookup(S_global.ENV, $ptascii("name")) = (n_name_cell)
+S_method.STORE[n_name_cell] = DEFINED pvalue_name
+$string_bytes(pvalue_name) = ($ptascii("other"))
+$lookup(S_global.ENV, $ptascii("cast")) = (n_cast_cell)
+S_method.STORE[n_cast_cell] = DEFINED (POBJECT n_cast)
+$lookup(S_global.ENV, $ptascii("drop")) = (n_drop_cell)
+S_method.STORE[n_drop_cell] = DEFINED (POBJECT n_drop)
+n_cast =/= n_drop
+$throwable_previous_id(S_method, n_cast) = eps
+$throwable_previous_id(S_method, n_drop) = eps
+$class_named(S_method.CLASSNAMES, $ptlc($ptascii("ColdDoubleNameSlotReview20"))) = (porigin_cold)
+$class_at(S_method.CLASSES, porigin_cold) = (pclassdesc_cold)
+pclassdesc_cold.NAME = $ptascii("ColdDoubleNameSlotReview20")
+$class_static_select(S_method, porigin_cold, $ptascii("value")) = (ppropertydesc_cold)
+ppropertydesc_cold.DEFAULT = PROP_DEFERRED porigin_default
+$class_static_at(S_method.CLASSSTATICS, ppropertydesc_cold.ORIGIN) = (pclassstatic_cold)
+pclassstatic_cold.STATE = PROP_DEFERRED porigin_default
+~$class_constant_table_done(S_method, porigin_cold)
+''') + guards('S_method')
+    checks += seek('S_operation', 'S_method', 17) + lines(r'''
+S_operation.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_cold) :: ptask_operation*
+S_operation.DESTRUCTION.OPERATIONS = pdestructionoperation_cold :: pdestructionoperation_tail*
+pdestructionoperation_cold.SOURCE = THROW_SEARCH n_cast
+pdestructionoperation_cold.PENDING = (n_drop)
+pdestructionoperation_cold.COMPLETION = NORMAL
+pdestructionoperation_cold.VALUE = KNOWN PNULL
+pdestructionoperation_cold.CALLER = S_operation.CURRENT
+pdestructionoperation_cold.CALLER =/= (pcallcontext_method)
+$destructor_operation_valid(S_operation, pdestructionoperation_cold)
+$call_task_valid(S_operation, DESTRUCTOR_OPERATION_EXIT pdestructionoperation_cold)
+$computed_static_throw_fetch(ptask_operation*, pdestructionoperation_cold.ORIGIN, n_cast) = (ptask_cast_fetch)
+ptask_cast_fetch = COMPOUND_STATIC_FETCH pcomputedcompound_cold n_name porigin_cold ptbytes_empty n_old_pending?
+ptbytes_empty = eps
+n_old_pending? = (n_cast)
+pcomputedcompound_cold.NAME = VARIABLE $ptascii("name") z_name
+pcomputedcompound_cold.RIGHT = KNOWN (POBJECT n_right)
+n_right =/= n_name
+n_right =/= n_cast
+n_right =/= n_drop
+$scoped_selector_class(S_operation, pcomputedcompound_cold.CLASS) = (porigin_cold)
+pdestructionoperation_cold.ORIGIN = $origin_child((pcomputedcompound_cold.SITE), [PCFIELD 0])
+pdestructionoperation_cold.BASE = BASE_CLASS_STATIC porigin_cold eps
+~((HOBJECT n_name) <- S_operation.ALLOCATIONS)
+(HOBJECT n_right) <- S_operation.ALLOCATIONS
+$heap_owners($heap_graph(S_operation), HOBJECT n_right) = 1
+$outputs(S_operation.EVENTS) = $ptascii("Q;N;D;")
+$computed_static_throw_projection(S_operation, pdestructionoperation_cold)
+S_operation_view = $call_after_origin(S_operation, DESTRUCTOR_OPERATION_EXIT pdestructionoperation_cold)
+S_operation_view.TODO = ptask_operation*
+S_operation_view.BASE = pdestructionoperation_cold.BASE
+S_operation_view.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*
+$call_task_valid(S_operation_view, ptask_cast_fetch)
+''') + unchanged_cold('S_operation') + guards('S_operation')
+    checks += seek('S_fetch', 'S_operation', 14) + lines(r'''
+S_fetch.TODO = ptask_fetch :: ptask_fetch_tail*
+ptask_fetch = COMPOUND_STATIC_FETCH pcomputedcompound_cold n_name porigin_cold eps n_fetch_pending?
+n_fetch_pending? = (n_drop)
+S_fetch.BASE = BASE_CLASS_STATIC porigin_cold eps
+~((HOBJECT n_name) <- S_fetch.ALLOCATIONS)
+$ordinary_internal_string_evidence(S_fetch, n_name)
+(HOBJECT n_right) <- S_fetch.ALLOCATIONS
+$task_nodes(ptask_fetch) = [HOBJECT n_right, HOBJECT n_drop]
+$heap_owners($heap_graph(S_fetch), HOBJECT n_right) = 1
+$string_bytes($throwable_field(S_fetch, n_drop, "message")) = ($ptascii("drop"))
+$throwable_previous_id(S_fetch, n_drop) = (n_cast)
+$string_bytes($throwable_field(S_fetch, n_cast, "message")) = ($ptascii("cast"))
+$throwable_previous_id(S_fetch, n_cast) = eps
+$outputs(S_fetch.EVENTS) = $ptascii("Q;N;D;")
+$computed_static_fetch_ready(S_fetch, pcomputedcompound_cold, n_name, porigin_cold, eps, (n_drop))
+$call_task_valid(S_fetch, ptask_fetch)
+~$call_task_valid(S_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_cold n_name porigin_cold eps eps)
+~$call_task_valid(S_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_cold n_name porigin_cold eps (n_cast))
+~$call_task_valid(S_fetch, COMPOUND_STATIC_FETCH pcomputedcompound_cold n_name porigin_cold $ptascii("value") (n_drop))
+S_nonempty_fetch = S_fetch[.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound_cold n_name porigin_cold $ptascii("value") (n_drop)) :: ptask_fetch_tail*][.BASE = BASE_CLASS_STATIC porigin_cold $ptascii("value")]
+~$computed_static_fetch_ready(S_nonempty_fetch, pcomputedcompound_cold, n_name, porigin_cold, $ptascii("value"), (n_drop))
+''') + unchanged_cold('S_fetch') + guards('S_fetch')
+    checks += seek('S_lookup', 'S_fetch', 20) + lines(r'''
+S_lookup.TODO = (THROW_SEARCH n_lookup) :: ptask_lookup_tail*
+$string_bytes($throwable_field(S_lookup, n_lookup, "message")) = ($ptascii("Access to undeclared static property ColdDoubleNameSlotReview20::$"))
+S_lookup.OBJECTS[n_lookup] = THROWABLE pthrowable_lookup
+pthrowable_lookup.KIND = "Error"
+$throwable_previous_id(S_lookup, n_lookup) = (n_drop)
+$throwable_previous_id(S_lookup, n_drop) = (n_cast)
+$throwable_previous_id(S_lookup, n_cast) = eps
+~((HOBJECT n_name) <- S_lookup.ALLOCATIONS)
+~((HOBJECT n_right) <- S_lookup.ALLOCATIONS)
+$outputs(S_lookup.EVENTS) = $ptascii("Q;N;D;R;")
+$call_task_valid(S_lookup, THROW_SEARCH n_lookup)
+''') + unchanged_cold('S_lookup') + guards('S_lookup')
+    checks += ['S_done = $drive(S_lookup, 1000)',
+               'S_done.COMPLETION = NORMAL', 'S_done.TODO = eps',
+               'S_done.FRAMES = eps', 'S_done.TRACE = eps',
+               f'$outputs(S_done.EVENTS) = $ptascii("{expected}")',
+               '~((HOBJECT n_name) <- S_done.ALLOCATIONS)',
+               '~((HOBJECT n_right) <- S_done.ALLOCATIONS)']
+    checks += unchanged_cold('S_done') + guards('S_done')
+    text = EXTRA + STRINGABLE_EXTRA + COLD_EXTRA + PREFIX.replace('STAGE', '$scoped_phase(S, 19)')
+    text += '\ndec $main() : bool\ndef $main() = true\n'
+    text += ''.join('  -- if ' + check + '\n' for check in checks)
+    return text, checks
+
+
 CASES += DYNAMIC_CASES
 CASES += COMPUTED_CASES
 CASES += STRINGABLE_CASES
+CALLABLE_CASES = [
+    ('stringable-name-ordinary-live-carrier', ['stringable-name-ordinary-live-byref']),
+    ('stringable-name-from-callable-live-selection', ['stringable-name-from-callable-live-byref']),
+]
+CASES += CALLABLE_CASES
+CASES += [('stringable-name-cold-double-throw', ['stringable-property-name-cold-double-throw'])]
+CASES += [('stringable-name-from-callable-instance-selection', ['stringable-name-from-callable-instance-byref'])]
 
 
 def render(name, sources):
+    if name == 'stringable-name-from-callable-instance-selection':
+        from static_name_callable_protocol import render_instance_wrapper
+        row = sources['stringable-name-from-callable-instance-byref']
+        text, checks, _, _ = render_instance_wrapper(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
+    if name in (case[0] for case in CALLABLE_CASES):
+        from static_name_callable_protocol import render_ordinary, render_wrapper
+        case = next(case for case in CALLABLE_CASES if case[0] == name)
+        row = sources[case[1][0]]
+        renderer = render_ordinary if name == CALLABLE_CASES[0][0] else render_wrapper
+        text, checks, _, _ = renderer(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
+    if name == 'stringable-name-cold-double-throw':
+        row = sources['stringable-property-name-cold-double-throw']
+        return cold_double_throw(row['fixture'], row['filename'], row['expected_stdout'])
     if name == CASES[0][0]:
         checks = lexical(sources[CASES[0][1][0]])
     elif name == CASES[1][0]:

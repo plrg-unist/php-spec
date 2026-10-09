@@ -45,6 +45,7 @@ dec $reference_unit_code_valid(ppstate, pcode) : bool
 dec $acquire_call_result_valid(pstate) : bool
 dec $reference_call_frames_valid(pcallcontext?, pframe*) : bool
 dec $reference_return_result_valid(pstate) : bool
+dec $reference_notice_presence(pstate) : bool
 dec $call_declaration_node(pcnode) : bool
 def $call_declaration_node(NExprFuncCall phpType19 phpType6 metadata) = true
 def $call_declaration_node(NExprMethodCall expression phpType20 phpType6 metadata) = true
@@ -178,7 +179,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
-def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $generator_from_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $clone_callback_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $fiber_traversal_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
+def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $generator_from_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $clone_callback_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $fiber_traversal_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $foreach_aggregate_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
 def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call))
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
@@ -212,6 +213,7 @@ def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remainin
   -- if ~$stringify_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$useriter_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$fiber_traversal_pending_site(S, PORIGIN n_unit pcpath)
+  -- if ~$foreach_aggregate_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$access_pending_site(S, PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
@@ -234,6 +236,7 @@ def $call_arity_valid(S, pcallcontext) = true
   -- if ~$error_context_kind(S, pcallcontext)
   -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$fiber_traversal_context_kind(S, pcallcontext)
+  -- if ~$foreach_aggregate_context(S, pcallcontext)
   -- if ~$access_context_kind(S, pcallcontext)
   -- if ~$clone_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
@@ -337,6 +340,7 @@ def $call_saved_context_valid(S, pframe) = $call_context_valid(S, pcallcontext, 
   -- if pframe.LOCALS = (psymboltable)
 def $call_saved_context_valid(S, pframe) = false -- otherwise
 dec $borrowed_read_scope_valid(pstate) : bool
+dec $retired_current_valid(pstate) : bool
 dec $call_frames_valid(pstate, pframe*) : bool
 dec $parameter_string_frame_scope(pstate, pframe, pframe*) : pstate
 dec $constant_context_valid(pstate) : bool
@@ -347,7 +351,7 @@ def $api_saved_frame_scope(S, pframe, pframe_tail*) = S -- otherwise
 dec $destructor_saved_frame_scope(pstate, pframe) : pstate
 def $destructor_saved_frame_scope(S, pframe) = S -- otherwise
 def $call_frames_valid(S, eps) = true
-def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe), pframe.TODO) /\ $borrowed_read_scope_valid(S_scope) /\ $object_cast_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
+def $call_frames_valid(S, pframe :: pframe_tail*) = ($call_tasks_valid($destructor_saved_frame_scope($api_saved_frame_scope($parameter_string_frame_scope(S_scope, pframe, pframe_tail*), pframe, pframe_tail*), pframe), pframe.TODO) /\ $reference_notice_presence(S_scope) /\ $retired_current_valid(S_scope) /\ $borrowed_read_scope_valid(S_scope) /\ $object_cast_scope_valid(S_scope) /\ $call_saved_context_valid(S_scope, pframe) /\ $constant_context_valid(S_scope) /\ $call_frames_valid(S, pframe_tail*))
   -- if S_scope = $constant_frame_scope(S, pframe, pframe_tail*)
 dec $user_constants_valid(pstate, puserconstant*) : bool
 dec $class_constant_state_valid(pstate) : bool
@@ -389,6 +393,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $class_state_valid(S_live)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_tasks_valid(S, S.TODO)
+  -- if $retired_current_valid(S)
   -- if $borrowed_read_scope_valid(S)
   -- if $object_cast_scope_valid(S)
   -- if $selected_log_valid(S, S.SELECTEDCALLS, 0)

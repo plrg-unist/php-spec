@@ -83,7 +83,7 @@ def admission():
         '~$property_undefined_reference_source(S_dynamic, ppropertywarning.READ)',
         '$property_undefined_reference_plan(S_dynamic) = eps',
         '$property_undefined_reference_receiver(S_dynamic)',
-        '~$property_undefined_reference_arguments([phpType7_argument, phpType7_argument])',
+        '~$property_undefined_reference_arguments([phpType7_argument, phpType7_argument, phpType7_argument])',
         '~$property_undefined_reference_arguments([(NArg ABSENT expression_argument (BOOLEAN true) (BOOLEAN false) metadata_argument)])',
         '~$property_undefined_reference_arguments([(NArg ABSENT expression_argument (BOOLEAN false) (BOOLEAN true) metadata_argument)])',
         '~$property_undefined_reference_arguments([(NArg ABSENT (NScalarInt (INTEGER 7) metadata_value) (BOOLEAN false) (BOOLEAN false) metadata_argument)])',

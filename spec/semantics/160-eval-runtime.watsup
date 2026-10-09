@@ -41,6 +41,7 @@ def $eval_location_available(S, (pconstantlocation)) = $declaration_active_class
 
 dec $eval_string_result(pvalue) : bool
 def $eval_string_result(PSTRING n*) = true
+def $eval_string_result(PSTRING_CARRIER pstringidentity n*) = true
 def $eval_string_result(pvalue) = false -- otherwise
 dec $eval_operand(pstate, int) : pstate
 dec $eval_callback_ready(pstate, int) : bool
@@ -75,10 +76,12 @@ def $eval_class_origin(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallc
 def $eval_class_origin(S) = eps -- otherwise
 def $eval_request_start(S, porigin, z, ptask_tail*) = $source_helper_result(S[.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)], HELPER_EMPTY_EVAL, ptask_tail*)
   -- if $eval_site_valid(S, porigin, z)
-  -- if S.RESULT = KNOWN (PSTRING eps)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (eps)
 def $eval_request_start(S, porigin, z, ptask_tail*) = $declaration_enter(S, n_unit, (porigin))[.FILES = S.FILES ++ [SOURCEFILE n_unit n_file*]][.EVALCONTEXTS = pevalcontext :: S.EVALCONTEXTS][.TODO = (EVAL_AWAIT n_unit) :: ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
   -- if $eval_site_valid(S, porigin, z)
-  -- if S.RESULT = KNOWN (PSTRING (n_byte :: n_tail*))
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = ((n_byte :: n_tail*))
   -- if n_unit = $next_eval_unit(S.FILES)
   -- if n_file* = $eval_filename(S, porigin, z, $class_constant_location(S))
   -- if n_owner = |S.FRAMES|
@@ -436,18 +439,18 @@ dec $eval_frame_context(pstate, pframe, pframe*) : ptraceframe*
 dec $shutdown_render_trace_frame(pstate, pframe, pframe*) : ptraceframe*
 def $eval_frame_context(S, pframe, pframe_tail*) = $shutdown_render_trace_frame(S, pframe, pframe_tail*)
   -- if pframe.CONTEXT = eps
-def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
+def $eval_frame_context(S, pframe, pframe_tail*) = $sensitive_trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]
   -- if ~$default_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$ordinary_internal_callback_context($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext) /\ ~$autoload_context_kind($constant_frame_scope(S, pframe, pframe_tail*), pcallcontext)
   -- if $config_string_trace_context(S_context, pcallcontext)
-def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
+def $eval_frame_context(S, pframe, pframe_tail*) = $sensitive_trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = $constant_frame_scope(S, pframe, pframe_tail*)
   -- if $default_internal_callback_context(S_context, pcallcontext) \/ $ordinary_internal_callback_context(S_context, pcallcontext) \/ $autoload_context_kind(S_context, pcallcontext)
-def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context($generator_trace_scope(S, pframe.CONTEXT, pframe_tail*), psymboltable.ENV, pframe.CONTEXT)
+def $eval_frame_context(S, pframe, pframe_tail*) = $sensitive_trace_context($generator_trace_scope(S, pframe.CONTEXT, pframe_tail*), psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]
@@ -475,7 +478,7 @@ def $eval_exception_trace_from(S, ptraceframe_prefix*) = ptraceframe_before* ++ 
   -- if ptraceframe_before* = ptraceframe_prefix* ++ $class_constant_trace(S)
   -- if preqbytes_before? = $source_trace_file(ptraceframe_prefix*, eps)
   -- if ptraceframe_source* = $source_trace_at_before(S, S.EVALCONTEXTS, S.FILECONTEXTS, |S.FRAMES|, preqbytes_before?)
-  -- if ptraceframe_context* = $trace_context(S, S.ENV, S.CURRENT)
+  -- if ptraceframe_context* = $sensitive_trace_context(S, S.ENV, S.CURRENT)
   -- if preqbytes_next? = $source_trace_context_file(S, S.CURRENT, ptraceframe_context*, $source_trace_file(ptraceframe_source*, preqbytes_before?))
 dec $eval_exception_trace_raw(pstate) : ptraceframe*
 def $eval_exception_trace_raw(S) = $eval_exception_trace_from(S, eps)
@@ -533,6 +536,7 @@ def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = $eva
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "eval compiled source transition"]
   -- if ~$source_eval_pending_marker(pevalcontext)
   -- if S_compiled.COMPLETION = NORMAL
+  -- if ~$eval_compile_paused_unit(S_compiled, pevalcontext.UNIT)
   -- if P.COMPLETION =/= PPCNORMAL
 def $eval_compile_result(S_compiled, pevalcontext, pevalcontext_tail*, P) = S_compiled[.EVALCONTEXTS = pevalcontext_tail*][.TODO = pevalcontext.TAIL][.SERVICELEFT = eps][.COMPLETION = UNSUPPORTED "eval compiled source missing code"]
   -- if S_compiled.COMPLETION = NORMAL

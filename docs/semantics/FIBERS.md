@@ -557,8 +557,21 @@ returns raise the native Exception and survive until authenticated unwind.
 Successful cleanup retires returned iterator
 data before a temporary aggregate operand; callback errors preserve the same order
 before the unfinished buffer. The [Aggregate ledger](../../coverage/semantics/fiber-start-aggregate-review.json)
-tracks the contract, source and reached-state cuts. Nested Aggregate acquisition,
-foreach/yield-from/ordinary-call unpack consumers, wider raw payload changes and
+tracks the contract, source and reached-state cuts. Recursive START acquisition
+adds one raw retval owner per returned Aggregate occurrence while preserving the
+original input. It rejects immediate self-return and permits repeated ancestors.
+Returned layers retire inside-out before rewind, with terminal iterator data
+protected throughout. A selected retval destructor's genuine release transfers
+its pending Throwable to the acquired marker while outer layer retirement
+continues, then restores ordinary data/input/buffer unwind. Pending Generator
+startup uses the real literal-output/scalar-yield body while its resumer owns the
+Throwable; close retires a frame with no owned roots without finally and retains
+the cache.
+Pre-yield calls/mutation, frames with owned roots and nonfresh phases remain named gaps. The
+[nested ledger](../../coverage/semantics/fiber-start-nested-aggregate-review.json)
+keeps native discovery, eleven source agreements and twenty independent reached
+groups/544 physical premises separate; original failures retain zero credit.
+Foreach/yield-from/ordinary-call unpack consumers, wider raw payload changes and
 compound array or factory selectors remain required.
 Undefined-result `getReturn` and paused return verification are not extended.
 Relevant engine routes also include `zend_create_closure_ex` and
@@ -574,11 +587,14 @@ suppressed `exit` in a destroyed Fiber remain required consumers.
 
 `getReturn` after graceful close without an actual return, request/fatal cleanup,
 wider core internal callback bodies, reference forwarding, wider API callable/FCC entry,
-nested IteratorAggregate acquisition, wider raw payload changes and switching during
-initialization/source loading remain required. The first transfer domain rejects active or saved constant/default and
-autoload initialization, and active Generator execution, including switches in
-their helper calls. Their shared pending flags and parked ownership remain
-required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
+wider raw payload changes and switching during
+initialization/source loading remain required. The first transfer domain rejects
+active or saved constant/default and autoload initialization. Module378 admits a
+retained foreach Generator's active close frame, authenticated by its genuine
+statement/line receipt and unique saved close ID while preserving one receiver
+owner. Other active Generator execution, including switches in helper calls,
+retains its previous boundary. Shared pending flags and wider parked ownership
+remain required consumers. Actual late Fiber-shutdown/frameless switching restrictions need
 their own stages; ordinary registered shutdown callbacks and destructors are not
 blanket blocked at this pin. Property and broader object consumers remain tracked
 separately. Full core and paused return verification are not closed by this cut.

@@ -282,7 +282,7 @@ def $trace_context(S, pbinding*, (pcallcontext)) = [{FILE eps, LINE $(-1), FUNCT
   -- if pcloneupdatestring.UPDATE.OPERATION.CALL = (pclonecall)
   -- if pvalue* = $trace_extra(S, $clone_trace_operands(pclonecall.SENT))
   -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pclonecall.SITE), LINE pclonecall.LINE, FUNCTION $ptascii("clone"), CLASS eps, TYPE eps, ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
-def $eval_frame_context(S, pframe, pframe_tail*) = $trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
+def $eval_frame_context(S, pframe, pframe_tail*) = $sensitive_trace_context(S_context, psymboltable.ENV, pframe.CONTEXT)
   -- if pframe.CONTEXT = (pcallcontext)
   -- if pframe.LOCALS = (psymboltable)
   -- if S_context = S[.CURRENT = pframe.CONTEXT][.FRAMES = pframe_tail*]

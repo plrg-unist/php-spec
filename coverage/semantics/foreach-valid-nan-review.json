@@ -1,0 +1,232 @@
+{
+  "milestone": "Foreach Iterator valid NaN warning continuations",
+  "status": "partial; independently reviewed actual-parent composition; private source8 and reached18/495 accepted",
+  "baseline": "87752f2a0868305924c07e06883ea8c053832225",
+  "semantic_revision": "5b58c87d73ac9ac1e9b2280dcf720ad4578c477a",
+  "tested_revision": "6ce4b1524f45a91c951cce62c09059713d76f637",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "Zend/zend_interfaces.c:zend_user_it_valid",
+    "Zend/zend_operators.h:i_zend_is_true",
+    "Zend/zend_execute.c:zend_fe_reset_iterator"
+  ],
+  "scope": [
+    "Initial Aggregate and later ordinary Iterator valid() retain the raw retval through generic Warning handlers.",
+    "Exact warning level2/message/event/foreach operand line survive invoke, result and cleanup wrappers with one actual cursor claim.",
+    "The post-handler truth decision rereads a live reference once; a copied NaN remains true. Raw owners retire before initial INPUT or current/body.",
+    "Thrown initial handlers release raw retval, Iterator data and original INPUT in order; later handlers release raw retval before data. Default warning delivery uses the ordinary no-handler dispatch."
+  ],
+  "sources": {
+    "normal_agreements": 8,
+    "unsupported_controls": 0,
+    "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/foreach-valid-nan-source-7k_b4nwt/report.json",
+    "revision": "6ce4b1524f45a91c951cce62c09059713d76f637",
+    "selected_ids": [
+      "foreach-initial-nan-reference-handler",
+      "foreach-initial-nan-value-handler",
+      "foreach-later-nan-reference-handler",
+      "foreach-initial-nan-handler-parks",
+      "foreach-initial-nan-handler-throws",
+      "foreach-later-nan-handler-throws",
+      "foreach-initial-nan-default-warning",
+      "foreach-aggregate-later-valid-nan-required"
+    ],
+    "inputs_stable": true,
+    "head_stable": true,
+    "affected_historical_control": "foreach-aggregate-later-valid-nan-required",
+    "historical_control_agreement_credit": 0
+  },
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/foreach-valid-nan-sl-ob0h_33a/report.json",
+    "revision": "6ce4b1524f45a91c951cce62c09059713d76f637",
+    "modules": 366,
+    "process_seconds": 120,
+    "passed": true
+  },
+  "native_discovery": {
+    "new_originals": 7,
+    "semantic_agreements": 0,
+    "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/foreach-valid-nan-native-ec2f6ci9/report.json",
+    "reused_late_original_report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-20/.tools/foreach-aggregate-valid-native-dt9g3dve/report.json",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1,
+      "PHP_SPEC_SCRIPT_ENCODING": "unset"
+    },
+    "native_process_seconds": 75,
+    "model_seconds": 60,
+    "model_process_seconds": 75
+  },
+  "states": {
+    "status": "PASS; all eighteen genuine-source groups accepted",
+    "runner": "tests/semantics/foreach_valid_nan_review.py",
+    "fixture_revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+    "groups": 18,
+    "physical_premises": 495,
+    "driver_clauses": 460,
+    "process_seconds": 120,
+    "selected": [
+      {
+        "id": "initial-warning-dispatch-keeps-original-reference-and-both-owners",
+        "revision": "35fc0aac72ba5043b6a731cb47bddf1b441a43e6",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-gm4edg5b/report.json",
+        "physical_premises": 39,
+        "driver_clauses": 38
+      },
+      {
+        "id": "initial-reference-handler-rereads-zero-before-empty-input-release",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-02an6z77/report.json",
+        "physical_premises": 40,
+        "driver_clauses": 40
+      },
+      {
+        "id": "initial-copied-nan-survives-global-write-and-clears-before-current",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-tp7n2ew7/report.json",
+        "physical_premises": 32,
+        "driver_clauses": 32
+      },
+      {
+        "id": "later-warning-dispatch-retains-raw-reference-and-one-cursor",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-loakzncf/report.json",
+        "physical_premises": 28,
+        "driver_clauses": 25
+      },
+      {
+        "id": "later-reference-false-removes-cursor-and-orders-raw-before-data",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-58xrhsi0/report.json",
+        "physical_premises": 24,
+        "driver_clauses": 24
+      },
+      {
+        "id": "later-copied-nan-enters-real-current-without-input-owner",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-ctkwa1bg/report.json",
+        "physical_premises": 21,
+        "driver_clauses": 21
+      },
+      {
+        "id": "initial-warning-rejects-coherent-foreign-severity",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-yio5bvtm/report.json",
+        "physical_premises": 15,
+        "driver_clauses": 14
+      },
+      {
+        "id": "initial-warning-rejects-coordinated-line-and-resume-forgery",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-ns9v69sx/report.json",
+        "physical_premises": 17,
+        "driver_clauses": 16
+      },
+      {
+        "id": "initial-operational-clean-keeps-raw-data-input-and-one-cursor",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-l5wfg5dx/report.json",
+        "physical_premises": 32,
+        "driver_clauses": 31
+      },
+      {
+        "id": "later-operational-clean-keeps-reference-data-and-one-cursor",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-rzz3lkvk/report.json",
+        "physical_premises": 23,
+        "driver_clauses": 22
+      },
+      {
+        "id": "parked-handler-retains-real-reference-data-input-and-cursor",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-vfoz7muq/report.json",
+        "physical_premises": 41,
+        "driver_clauses": 34
+      },
+      {
+        "id": "parked-handler-rejects-coordinated-real-frame-line-forgery",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-h7o9d00k/report.json",
+        "physical_premises": 32,
+        "driver_clauses": 25
+      },
+      {
+        "id": "parked-handler-rejects-duplicate-marker-and-cursor-in-real-frame",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-ozajv3x5/report.json",
+        "physical_premises": 33,
+        "driver_clauses": 26
+      },
+      {
+        "id": "initial-thrown-handler-discards-cursor-and-retains-raw-data-input",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-wunfulp8/report.json",
+        "physical_premises": 29,
+        "driver_clauses": 27
+      },
+      {
+        "id": "initial-thrown-handler-reaches-ordered-raw-data-input-release",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-q3ra8c18/report.json",
+        "physical_premises": 20,
+        "driver_clauses": 19
+      },
+      {
+        "id": "later-thrown-handler-discards-cursor-and-retains-raw-and-data",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-r6zzzfpo/report.json",
+        "physical_premises": 22,
+        "driver_clauses": 20
+      },
+      {
+        "id": "later-thrown-handler-reaches-ordered-raw-and-data-release",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-vpi56zqz/report.json",
+        "physical_premises": 19,
+        "driver_clauses": 18
+      },
+      {
+        "id": "default-warning-resumes-directly-with-copied-nan-and-both-owners",
+        "revision": "b3446d6835bed08c513cdc7ef0472ebb98932148",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-zi9fulaf/report.json",
+        "physical_premises": 28,
+        "driver_clauses": 28
+      }
+    ],
+    "full_continuation": "The eight exact whole-source agreements supply full continuations; bounded reached cuts check ownership, warning authority, zero budget and real steps."
+  },
+  "compatibility": "Existing bool Iterator paths, handler defaults and prior START/Aggregate/foreach source-state evidence remain unchanged; their historical cuts receive no renewed credit.",
+  "remaining_gaps": [
+    "Non-numeric raw valid reference payload changes after warning remain explicit Unsupported.",
+    "Wider foreach operand/reference-location modes and Aggregate yield-from/ordinary-call unpack remain required."
+  ],
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/fiber-state-review-22vyqvai/report.json",
+      "reason": "Fixture expected immediate empty marker instead of genuine raw-cell release/operation prefix",
+      "agreement_credit": 0
+    }
+  ],
+  "diagnostics": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-20/.tools/foreach-nan-false-step-_wqtx685/report.json",
+      "scope": "Exact one-step raw CURRENT retirement prefix, valid post descriptors/heap and raw/data/input owners",
+      "agreement_credit": 0
+    }
+  ],
+  "actual_composition": {
+    "parent": "88f132db80a4abc00372d579d66377c7814877f2",
+    "semantic_revision": "0b37a8334d28a1bf4f38646063c15370ca67af7b",
+    "compiler_report": "/home/user/workspace/php-spec/.tools/calls-foreach-valid-nan-current-20/.tools/foreach-valid-nan-sl-g9cnapip/report.json",
+    "modules": 367,
+    "compiler_passed": true,
+    "inputs_stable": true,
+    "process_seconds": 120,
+    "process_exit": 0,
+    "timeout": false,
+    "compatibility": "Four production paths equal reviewed private semantics. Parent reference-return Notice routes and saved-frame presence checks retain their own source protocols; new valid variable references add no Notice.",
+    "renewed_source_state_credit": 0
+  }
+}

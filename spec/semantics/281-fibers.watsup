@@ -47,7 +47,7 @@ def $fiber_caller_nodes(eps) = eps
 
 ;; Main's symbol table is moved into the shared global slot before switching.
 ;; A saved main continuation owns no second copy of those bindings.
-def $fiber_vm(S) = {GLOBAL (S.GLOBALTABLE = eps), TABLE $fiber_local_table(S), TODO S.TODO, ORIGIN S.ORIGIN, CURRENT S.CURRENT, FRAMES S.FRAMES, DESTRUCTORCALLS S.DESTRUCTION.CALLS, DESTRUCTORRELEASES S.DESTRUCTION.RELEASES, DESTRUCTORFRAMES S.DESTRUCTION.FRAMES, DESTRUCTOROPERATIONS S.DESTRUCTION.OPERATIONS, DESTRUCTORCLEANUPS S.DESTRUCTION.CLEANUPS, HELD S.HELD, RESULT S.RESULT, BASE S.BASE, CELL S.CELL, KEY S.KEY, LOCATION S.LOCATION, REPORTING S.REPORTING, SILENCES S.SILENCES, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT, TRACE S.TRACE, ERRORFATALTRACE S.ERRORFATALTRACE, ERRORORIGIN S.ERRORORIGIN}
+def $fiber_vm(S) = {GLOBAL (S.GLOBALTABLE = eps), TABLE $fiber_local_table(S), TODO S.TODO, ORIGIN S.ORIGIN, CURRENT S.CURRENT, RETIREDOWNERS S.RETIREDOWNERS, FRAMES S.FRAMES, DESTRUCTORCALLS S.DESTRUCTION.CALLS, DESTRUCTORRELEASES S.DESTRUCTION.RELEASES, DESTRUCTORFRAMES S.DESTRUCTION.FRAMES, DESTRUCTOROPERATIONS S.DESTRUCTION.OPERATIONS, DESTRUCTORCLEANUPS S.DESTRUCTION.CLEANUPS, HELD S.HELD, RESULT S.RESULT, BASE S.BASE, CELL S.CELL, KEY S.KEY, LOCATION S.LOCATION, REPORTING S.REPORTING, SILENCES S.SILENCES, BORROWEDREAD S.BORROWEDREAD, OBJECTCAST S.OBJECTCAST, CONSTCONTEXT S.CONSTCONTEXT, TRACE S.TRACE, ERRORFATALTRACE S.ERRORFATALTRACE, ERRORORIGIN S.ERRORORIGIN}
 def $fiber_local_table(S) = $empty_table() -- if S.GLOBALTABLE = eps
 def $fiber_local_table(S) = $active_table(S) -- if S.GLOBALTABLE =/= eps
 def $fiber_globals(S) = $active_table(S) -- if S.GLOBALTABLE = eps
@@ -56,8 +56,8 @@ def $fiber_vm_table(S, pfibervm) = $fiber_globals(S) -- if pfibervm.GLOBAL
 def $fiber_vm_table(S, pfibervm) = pfibervm.TABLE -- if ~pfibervm.GLOBAL
 def $fiber_vm_globals(S, pfibervm) = eps -- if pfibervm.GLOBAL
 def $fiber_vm_globals(S, pfibervm) = ($fiber_globals(S)) -- if ~pfibervm.GLOBAL
-def $fiber_vm_restore(S, pfibervm) = $set_active_table(S[.GLOBALTABLE = $fiber_vm_globals(S, pfibervm)][.TODO = pfibervm.TODO][.ORIGIN = pfibervm.ORIGIN][.CURRENT = pfibervm.CURRENT][.FRAMES = pfibervm.FRAMES][.DESTRUCTION.CALLS = pfibervm.DESTRUCTORCALLS][.DESTRUCTION.RELEASES = pfibervm.DESTRUCTORRELEASES][.DESTRUCTION.FRAMES = pfibervm.DESTRUCTORFRAMES][.DESTRUCTION.OPERATIONS = pfibervm.DESTRUCTOROPERATIONS][.DESTRUCTION.CLEANUPS = pfibervm.DESTRUCTORCLEANUPS][.HELD = pfibervm.HELD][.RESULT = pfibervm.RESULT][.BASE = pfibervm.BASE][.CELL = pfibervm.CELL][.KEY = pfibervm.KEY][.LOCATION = pfibervm.LOCATION][.REPORTING = pfibervm.REPORTING][.SILENCES = pfibervm.SILENCES][.BORROWEDREAD = pfibervm.BORROWEDREAD][.OBJECTCAST = pfibervm.OBJECTCAST][.CONSTCONTEXT = pfibervm.CONSTCONTEXT][.TRACE = pfibervm.TRACE][.ERRORFATALTRACE = pfibervm.ERRORFATALTRACE][.ERRORORIGIN = pfibervm.ERRORORIGIN], $fiber_vm_table(S, pfibervm))
-def $fiber_fresh_vm(S, n, pnamedargs) = $set_active_table(S[.GLOBALTABLE = ($fiber_globals(S))][.TODO = [FIBER_ENTER n pnamedargs, FIBER_FINISH n]][.ORIGIN = eps][.CURRENT = eps][.FRAMES = eps][.DESTRUCTION.CALLS = eps][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.FRAMES = eps][.DESTRUCTION.OPERATIONS = eps][.DESTRUCTION.CLEANUPS = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.CELL = 0][.KEY = KINT 0][.LOCATION = ROOT 0][.REPORTING = $reporting_ini_mask(S.REPORTINGINI)][.SILENCES = eps][.BORROWEDREAD = eps][.OBJECTCAST = eps][.CONSTCONTEXT = eps][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps], $empty_table())
+def $fiber_vm_restore(S, pfibervm) = $set_active_table(S[.GLOBALTABLE = $fiber_vm_globals(S, pfibervm)][.TODO = pfibervm.TODO][.ORIGIN = pfibervm.ORIGIN][.CURRENT = pfibervm.CURRENT][.RETIREDOWNERS = pfibervm.RETIREDOWNERS][.FRAMES = pfibervm.FRAMES][.DESTRUCTION.CALLS = pfibervm.DESTRUCTORCALLS][.DESTRUCTION.RELEASES = pfibervm.DESTRUCTORRELEASES][.DESTRUCTION.FRAMES = pfibervm.DESTRUCTORFRAMES][.DESTRUCTION.OPERATIONS = pfibervm.DESTRUCTOROPERATIONS][.DESTRUCTION.CLEANUPS = pfibervm.DESTRUCTORCLEANUPS][.HELD = pfibervm.HELD][.RESULT = pfibervm.RESULT][.BASE = pfibervm.BASE][.CELL = pfibervm.CELL][.KEY = pfibervm.KEY][.LOCATION = pfibervm.LOCATION][.REPORTING = pfibervm.REPORTING][.SILENCES = pfibervm.SILENCES][.BORROWEDREAD = pfibervm.BORROWEDREAD][.OBJECTCAST = pfibervm.OBJECTCAST][.CONSTCONTEXT = pfibervm.CONSTCONTEXT][.TRACE = pfibervm.TRACE][.ERRORFATALTRACE = pfibervm.ERRORFATALTRACE][.ERRORORIGIN = pfibervm.ERRORORIGIN], $fiber_vm_table(S, pfibervm))
+def $fiber_fresh_vm(S, n, pnamedargs) = $set_active_table(S[.GLOBALTABLE = ($fiber_globals(S))][.TODO = [FIBER_ENTER n pnamedargs, FIBER_FINISH n]][.ORIGIN = eps][.CURRENT = eps][.RETIREDOWNERS = eps][.FRAMES = eps][.DESTRUCTION.CALLS = eps][.DESTRUCTION.RELEASES = eps][.DESTRUCTION.FRAMES = eps][.DESTRUCTION.OPERATIONS = eps][.DESTRUCTION.CLEANUPS = eps][.HELD = eps][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.CELL = 0][.KEY = KINT 0][.LOCATION = ROOT 0][.REPORTING = $reporting_ini_mask(S.REPORTINGINI)][.SILENCES = eps][.BORROWEDREAD = eps][.OBJECTCAST = eps][.CONSTCONTEXT = eps][.TRACE = eps][.ERRORFATALTRACE = eps][.ERRORORIGIN = eps], $empty_table())
 dec $fiber_bound_kind(pintrinsic) : bool
 dec $fiber_bound_name(ptbytes) : bool
 dec $fiber_caller_api_trace(pstate, pfiberapi) : ptraceframe*
@@ -65,15 +65,17 @@ dec $fiber_caller_api_nodes(pfibercaller) : pnode*
 dec $fiber_transfer_context(pstate, pcallcontext?) : bool
 dec $fiber_transfer_frames(pstate, pframe*) : bool
 dec $fiber_transfer_reason(pstate) : text
+dec $fiber_generator_transfer(pstate) : bool
 ;; The five active destruction lists move with the real VM stack.
 def $fiber_transfer_reason(S) = "Fiber switch during an initializer, source loader or Generator continuation"
 def $fiber_transfer_context(S, eps) = true
 def $fiber_transfer_context(S, (pcallcontext)) = (pcallcontext.DEFAULTRECEIVE = eps /\ ~$autoload_context_kind(S, pcallcontext))
 def $fiber_transfer_frames(S, eps) = true
-def $fiber_transfer_frames(S, pframe :: pframe_tail*) = (pframe.CONSTCONTEXT = eps /\ $generator_resume_ids(pframe.TODO) = eps /\ $fiber_transfer_context(S, pframe.CONTEXT) /\ $fiber_transfer_frames(S, pframe_tail*))
+def $fiber_transfer_frames(S, pframe :: pframe_tail*) = (pframe.CONSTCONTEXT = eps /\ $fiber_transfer_context(S, pframe.CONTEXT) /\ $fiber_transfer_frames(S, pframe_tail*))
+def $fiber_generator_transfer(S) = ($generator_resume_ids(S.TODO) = eps /\ $generator_saved_ids(S.FRAMES) = eps) -- otherwise
 dec $generator_storage_transfer(pstate) : bool
 def $generator_storage_transfer(S) = true -- otherwise
-def $fiber_transfer_domain(S) = (S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $generator_resume_ids(S.TODO) = eps /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES) /\ $generator_storage_transfer(S))
+def $fiber_transfer_domain(S) = (S.CLASSCONSTANTINIT = eps /\ S.CONSTCONTEXT = eps /\ S.DIRCONTEXT = eps /\ S.FILECONTEXTS = eps /\ S.EVALCONTEXTS = eps /\ $fiber_generator_transfer(S) /\ $fiber_transfer_context(S, S.CURRENT) /\ $fiber_transfer_frames(S, S.FRAMES) /\ $generator_storage_transfer(S))
 
 ;; Fixed-signature Fiber methods reuse CONFIG's by-value SEND and named slots.
 def $fiber_kind(INTRINSIC_FIBER_CONSTRUCT) = true
@@ -214,7 +216,8 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING ($ptascii("Fiber")))]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("fiber")
 def $config_selected_valid(S, pconfigcall) = true
   -- if $fiber_kind(pconfigcall.KIND)
@@ -909,10 +912,10 @@ def $fiber_record_valid(S, n, pfiber) = false -- otherwise
 def $fiber_vm_valid(S, pfibervm, n?, pfibercaller*) = true
   -- if ~pfibervm.GLOBAL \/ (pfibervm.TABLE = $empty_table() /\ pfibervm.CURRENT = eps /\ pfibervm.FRAMES = eps /\ n? = eps)
   -- if $generator_flat_tasks(pfibervm.TODO) /\ $generator_flat_frames(pfibervm.FRAMES)
-  -- if $generator_resume_ids(pfibervm.TODO) = eps /\ $generator_saved_ids(pfibervm.FRAMES) = eps
   ;; The transfer domain excludes a loader in this saved VM. Validate the
   ;; active source/publication on S and this VM's tasks with loader contexts cleared.
   -- if S_view = $fiber_vm_restore(S, pfibervm)[.ACTIVEFIBER = n?][.FIBERCALLERS = pfibercaller*][.COMPLETION = NORMAL][.EVALCONTEXTS = eps][.FILECONTEXTS = eps][.DIRCONTEXT = eps]
+  -- if $fiber_generator_transfer(S_view)
   -- if $eval_tasks_markers_valid(S_view, S_view.TODO)
   -- if $eval_requests_owned(S_view.TODO)
   -- if $eval_frames_markers_valid(S_view, S_view.FRAMES)

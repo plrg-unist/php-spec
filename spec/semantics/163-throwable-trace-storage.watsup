@@ -1,6 +1,6 @@
 ;; A trace is an ordinary array graph owned by the private Throwable trace
 ;; property. Frame descriptions exist only during allocation and error unwind.
-dec $trace_items((pkey, pvalue)*, parray) : parray
+dec $trace_items((pkey, ptracearg)*, parray) : parray
 def $trace_items(eps, parray) = parray
 def $trace_items((pkey, pvalue) :: (pkey_tail, pvalue_tail)*, parray) = $trace_items((pkey_tail, pvalue_tail)*, $array_insert(parray, pkey, DIRECT pvalue))
 
@@ -41,8 +41,9 @@ def $trace_frames_array(S, ptraceframe :: ptraceframe_tail*, n_outer, n_index) =
   -- if S_frame = $trace_frame_array(S, ptraceframe)
   -- if S_frame.RESULT = KNOWN (PARRAY n_frame)
 
-def $trace_materialize(S, ptraceframe*) = $trace_frames_array(S_outer, ptraceframe*, n_outer, 0)
-  -- if S_outer = $allocate_array(S, $array_empty())
+def $trace_materialize(S, ptraceframe*) = $trace_frames_array(S_outer, ptraceframe_values*, n_outer, 0)
+  -- if (S_values, ptraceframe_values*) = $sensitive_trace_frames(S, ptraceframe*)
+  -- if S_outer = $allocate_array(S_values, $array_empty())
   -- if S_outer.RESULT = KNOWN (PARRAY n_outer)
 
 ;; A paused state may not substitute a scalar, alias or fabricated frame array.

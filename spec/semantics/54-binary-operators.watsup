@@ -19,6 +19,7 @@ def $operator_bytes(CONCAT) = [46]
 dec $long_convertible(pvalue) : bool
 def $long_convertible(PARRAY n) = false
 def $long_convertible(POBJECT n) = false
+def $long_convertible(PSTRING_CARRIER pstringidentity n*) = $long_convertible(PSTRING n*)
 def $long_convertible(PSTRING n*) = ($string_long(n*) =/= STRINTERROR)
 def $long_convertible(pvalue) = true -- otherwise
 
@@ -34,6 +35,7 @@ def $integer_coerce(S, PBOOL false, z) = S[.RESULT = KNOWN (PINT 0)]
 def $integer_coerce(S, PBOOL true, z) = S[.RESULT = KNOWN (PINT 1)]
 def $integer_coerce(S, PFLOAT n, z) = $cast_notices(S, castnotice*, n, z)[.RESULT = KNOWN (PINT i)]
   -- if (i, castnotice*) = $float_long(n, true)
+def $integer_coerce(S, PSTRING_CARRIER pstringidentity n*, z) = $integer_coerce(S, PSTRING n*, z)
 def $integer_coerce(S, PSTRING n*, z) = $long_string_notices(S, strcastnotice*, n*, z)[.RESULT = KNOWN (PINT i)]
   -- if $string_long(n*) = STRINT i strcastnotice*
 
@@ -54,12 +56,15 @@ def $byte_binary(BITAND, n_1*, n_2*) = $string_and(n_1*, n_2*)
 def $byte_binary(BITOR, n_1*, n_2*) = $string_or(n_1*, n_2*)
 def $byte_binary(BITXOR, n_1*, n_2*) = $string_xor(n_1*, n_2*)
 dec $byte_operator(pbin, pvalue, pvalue) : bool
-def $byte_operator(pbin, PSTRING n_1*, PSTRING n_2*) = true
+def $byte_operator(pbin, pvalue_1, pvalue_2) = true
   -- if (pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR)
+  -- if $string_bytes(pvalue_1) =/= eps /\ $string_bytes(pvalue_2) =/= eps
 def $byte_operator(pbin, pvalue_1, pvalue_2) = false -- otherwise
 
-def $binary_apply(S, pbin, PSTRING n_1*, PSTRING n_2*, z) = S[.RESULT = KNOWN (PSTRING $byte_binary(pbin, n_1*, n_2*))]
-  -- if $byte_operator(pbin, PSTRING n_1*, PSTRING n_2*)
+def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $string_byte_result(S, $byte_binary(pbin, n_1*, n_2*), |n_1*| = 1 /\ |n_2*| = 1)
+  -- if $byte_operator(pbin, pvalue_1, pvalue_2)
+  -- if $string_bytes(pvalue_1) = (n_1*)
+  -- if $string_bytes(pvalue_2) = (n_2*)
 def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $type_failure(S, pbin, pvalue_1, pvalue_2, z)
   -- if $integer_operator(pbin)
   -- if ~$byte_operator(pbin, pvalue_1, pvalue_2)
@@ -79,13 +84,15 @@ def $binary_apply(S, pbin, pvalue_1, pvalue_2, z) = $integer_result(S_right, $in
   -- if S_right = $integer_coerce(S_left, pvalue_2, z)
   -- if S_right.RESULT = KNOWN (PINT i_2)
 
-def $binary_apply(S, CONCAT, pvalue_1, pvalue_2, z) = S_right[.RESULT = KNOWN (PSTRING (n_1* ++ n_2*))]
+def $binary_apply(S, CONCAT, pvalue_1, pvalue_2, z) = $string_concat_unknown(S_right, pvalue_left, pvalue_right)
   -- if S_left = $stringify(S, pvalue_1, z)
   -- if S_left.COMPLETION = NORMAL
-  -- if S_left.RESULT = KNOWN (PSTRING n_1*)
+  -- if S_left.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (n_1*)
   -- if S_right = $stringify(S_left, pvalue_2, z)
   -- if S_right.COMPLETION = NORMAL
-  -- if S_right.RESULT = KNOWN (PSTRING n_2*)
+  -- if S_right.RESULT = KNOWN pvalue_right
+  -- if $string_bytes(pvalue_right) = (n_2*)
 
 dec $power_result(pstate, pnumber, pnumber, int) : pstate
 def $power_result(S, pnumber_1, pnumber_2, z) = $diagnostic(S, "Deprecated", [80,111,119,101,114,32,111,102,32,98,97,115,101,32,48,32,97,110,100,32,110,101,103,97,116,105,118,101,32,101,120,112,111,110,101,110,116,32,105,115,32,100,101,112,114,101,99,97,116,101,100], z)[.RESULT = KNOWN $number_value(pnumber)]

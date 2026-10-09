@@ -1,0 +1,212 @@
+[
+  {
+    "id": "nested-fresh-iterator-owner-order",
+    "source": "<?php\nclass NestedFreshIterator21 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass NestedLeaf21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'L|'; return new NestedFreshIterator21; }\n    public function __destruct() { echo 'l|'; }\n}\nclass NestedMiddle21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'M|'; return new NestedLeaf21; }\n    public function __destruct() { echo 'm|'; }\n}\nclass NestedOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new NestedMiddle21; }\n    public function __destruct() { echo 'A|'; }\n}\n$target = new Fiber(static function ($value) { echo 'B', $value, '|'; return 17; });\n$target->start(\n    ...new NestedOuter21\n);\necho $target->getReturn();\n",
+    "source_sha256": "cb0b3c9522080d43803baa784d1f3e23f1c425d1370df02f64f9caba2bf9ca91",
+    "purpose": "nested fresh iterator owner order.",
+    "expected_model": "normal",
+    "native_stdout": "O|M|L|l|m|W|I|A|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-plain-generator-owner-order",
+    "source": "<?php\nfunction nestedValues21() {\n    try { echo 'Y|'; yield 7; } finally { echo 'F|'; }\n}\nclass NestedGeneratorInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'N|'; return nestedValues21(); }\n    public function __destruct() { echo 'n|'; }\n}\nclass NestedGeneratorOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new NestedGeneratorInner21; }\n    public function __destruct() { echo 'A|'; }\n}\n$target = new Fiber(static function ($value) { echo 'B', $value, '|'; return 17; });\n$target->start(\n    ...new NestedGeneratorOuter21\n);\necho $target->getReturn();\n",
+    "source_sha256": "ebd42165b2bc132d86a4f5b19ebcc75aac08d27c53297ea4250d5618ef420fc9",
+    "purpose": "nested plain generator owner order.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|n|Y|F|A|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-generator-method-receiver-owner",
+    "source": "<?php\nclass NestedMethodInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        try { echo 'Y|'; yield 7; } finally { echo 'F|'; }\n    }\n    public function __destruct() { echo 'n|'; }\n}\nclass NestedMethodOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new NestedMethodInner21; }\n    public function __destruct() { echo 'A|'; }\n}\n$target = new Fiber(static function ($value) { echo 'B', $value, '|'; return 17; });\n$target->start(\n    ...new NestedMethodOuter21\n);\necho $target->getReturn();\n",
+    "source_sha256": "2f81e5d66e3b564eb8b59089889247af6315e938aaf4041ca074309d05a4575b",
+    "purpose": "nested generator method receiver owner.",
+    "expected_model": "normal",
+    "native_stdout": "O|Y|F|n|A|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-get-iterator-parks",
+    "source": "<?php\nclass NestedParkIterator21 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass NestedParkInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $iterator, $innerWeak;\n        $innerWeak = WeakReference::create($this);\n        echo 'N|';\n        Fiber::suspend('nested');\n        return $iterator;\n    }\n    public function __destruct() { echo 'n|'; }\n}\nclass NestedParkOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new NestedParkInner21; }\n    public function __destruct() { echo 'A|'; }\n}\n$iterator = new NestedParkIterator21;\n$target = new Fiber(static function ($value) { echo 'B', $value, '|'; return 17; });\n$parent = new Fiber(static function () use ($target) {\n    $target->start(\n        ...new NestedParkOuter21\n    );\n    return 23;\n});\necho $parent->start(), '|', (int)($innerWeak->get() !== null), '|', (int)$target->isStarted(), '|';\n$parent->resume();\necho $target->getReturn(), '|', $parent->getReturn(), '|';\n$iterator = null;\necho (int)($innerWeak->get() === null);\n",
+    "source_sha256": "1ffda8963297dc3f9dd4e6d1067608828a29a27eaf96e7ef951bdf0ca847a78b",
+    "purpose": "nested get iterator parks.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|nested|1|0|n|W|A|B7|17|23|I|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-get-iterator-throws-direct-fcc",
+    "source": "<?php\nclass NestedThrowInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable { global $original; echo 'N|'; throw $original; }\n    public function __destruct() { echo 'n|'; }\n}\nclass NestedThrowOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new NestedThrowInner21; }\n    public function __destruct() { echo 'A|'; }\n}\n$original = new Exception('nested');\n$target = new Fiber(static function ($value = 'D') { echo 'B', $value, '|'; return 17; });\n$weak = WeakReference::create($target);\n$start = $target->start(...);\ntry {\n    $start(\n        ...new NestedThrowOuter21\n    );\n} catch (Throwable $error) {\n    echo (int)($error === $original), '|', (int)$target->isStarted(), '|';\n}\n$target = null;\necho (int)($weak->get() !== null), '|';\n$start = null;\necho (int)($weak->get() === null);\n",
+    "source_sha256": "d22b8471e5e8de1292df811973cb889b196d890a110618e84a0e30de5f85a9b7",
+    "purpose": "nested get iterator throws direct fcc.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|n|A|1|0|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-reference-return-rejected",
+    "source": "<?php\nclass NestedReferenceIterator21 implements Iterator {\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void {}\n}\nclass NestedReferenceInner21 implements IteratorAggregate {\n    public function &getIterator(): Traversable { global $iterator; echo 'N|'; return $iterator; }\n    public function __destruct() { echo 'n|'; }\n}\nclass NestedReferenceOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new NestedReferenceInner21; }\n    public function __destruct() { echo 'A|'; }\n}\n$iterator = new NestedReferenceIterator21;\n$target = new Fiber(static function ($value = 'D') { echo 'B', $value, '|'; return 17; });\ntry {\n    $target->start(\n        ...new NestedReferenceOuter21\n    );\n} catch (Throwable $error) {\n    echo get_class($error), '|', $error->getMessage(), '|';\n}\necho (int)$target->isStarted();\n",
+    "source_sha256": "7dfd84d83761482871aef14af60684f5657fc4635e401c2d64e2345cabbca1ed",
+    "purpose": "nested reference return rejected.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|n|A|Exception|Objects returned by NestedReferenceInner21::getIterator() must be traversable or implement interface Iterator|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-stable-self-return-rejected",
+    "source": "<?php\nclass NestedSelfInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'N|'; return $this; }\n    public function __destruct() { echo 'n|'; }\n}\nclass NestedSelfOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { global $inner; echo 'O|'; return $inner; }\n    public function __destruct() { echo 'A|'; }\n}\n$inner = new NestedSelfInner21;\n$outer = new NestedSelfOuter21;\n$target = new Fiber(static function ($value = 'D') { echo 'B', $value, '|'; return 17; });\ntry {\n    $target->start(\n        ...$outer\n    );\n} catch (Throwable $error) {\n    echo get_class($error), '|', $error->getMessage(), '|';\n}\necho (int)$target->isStarted(), '|';\n$inner = null;\n$outer = null;\n",
+    "source_sha256": "9c9fb40e178c75d9bad2358ca827284ad3c7f43932c7b78dfb9ce9de52e0f188",
+    "purpose": "nested stable self return rejected.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|Exception|Objects returned by NestedSelfInner21::getIterator() must be traversable or implement interface Iterator|0|n|A|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-intermediate-destructor-throws",
+    "source": "<?php\nclass NestedDestructorIterator21 implements Iterator {\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void {}\n    public function __destruct() { echo 'I|'; }\n}\nclass NestedDestructorInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'N|'; return new NestedDestructorIterator21; }\n    public function __destruct() { global $original; echo 'n|'; throw $original; }\n}\nclass NestedDestructorOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new NestedDestructorMiddle21; }\n    public function __destruct() { echo 'A|'; }\n}\nclass NestedDestructorMiddle21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'M|'; return new NestedDestructorInner21; }\n    public function __destruct() { echo 'm|'; }\n}\n$original = new Exception('retirement');\n$target = new Fiber(static function ($value = 'D') { echo 'B', $value, '|'; return 17; });\ntry {\n    $target->start(\n        ...new NestedDestructorOuter21\n    );\n} catch (Throwable $error) {\n    echo (int)($error === $original), '|', (int)$target->isStarted();\n}\n",
+    "source_sha256": "cb9b39c7f8c806e5ead989bde6554bf25f94078a39fbf7313c4e4159256145bb",
+    "purpose": "nested intermediate destructor throws.",
+    "expected_model": "normal",
+    "native_stdout": "O|M|N|n|m|I|A|1|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-finite-repeated-ancestor",
+    "source": "<?php\nclass PeerNestedRepeatIterator21 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerNestedRepeatOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $middle;\n        echo 'A|';\n        return $middle;\n    }\n}\nclass PeerNestedRepeatMiddle21 implements IteratorAggregate {\n    private bool $again = true;\n    public function getIterator(): Traversable {\n        global $ancestor, $iterator;\n        echo 'M|';\n        if ($this->again) {\n            $this->again = false;\n            return $ancestor;\n        }\n        return $iterator;\n    }\n}\n$ancestor = new PeerNestedRepeatOuter21;\n$middle = new PeerNestedRepeatMiddle21;\n$iterator = new PeerNestedRepeatIterator21;\n$target = new Fiber(static function ($value) { echo 'B', $value, '|'; return 17; });\n$target->start(\n    ...$ancestor\n);\necho $target->getReturn();\n",
+    "source_sha256": "ce6744df69d0c5d836cf5c6d26ae3b83855d4072f5160980dff9d8be94fe64cc",
+    "purpose": "nested finite repeated ancestor.",
+    "expected_model": "normal",
+    "native_stdout": "A|M|A|M|W|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-nested-acquisition-required",
+    "source": "<?php\nclass PeerNestedIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerNestedInnerAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'N|';\n        return $iterator;\n    }\n}\nclass PeerNestedOuterAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $nested;\n        echo 'O|';\n        return $nested;\n    }\n}\n$iterator = new PeerNestedIterator20;\n$nested = new PeerNestedInnerAggregate20;\n$aggregate = new PeerNestedOuterAggregate20;\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\n$target->start(\n    ...$aggregate\n);\necho $target->getReturn();\n",
+    "source_sha256": "5998f1adfebca1d55dc09512881b94b1f60aa21c648c3f30c5a3fdd8e1f28147",
+    "purpose": "aggregate nested acquisition required.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|W|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-intermediate-destructor-throws-generator",
+    "source": "<?php\nfunction nestedPendingValues21() {\n    try { echo 'Y|'; yield 7; } finally { echo 'F|'; }\n}\nclass NestedPendingInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'N|'; return nestedPendingValues21(); }\n    public function __destruct() { global $original; echo 'n|'; throw $original; }\n}\nclass NestedPendingMiddle21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'M|'; return new NestedPendingInner21; }\n    public function __destruct() { echo 'm|'; }\n}\nclass NestedPendingOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new NestedPendingMiddle21; }\n    public function __destruct() { echo 'A|'; }\n}\n$original = new Exception('retirement');\n$target = new Fiber(static function ($value = 'D') { echo 'B', $value, '|'; return 17; });\ntry {\n    $target->start(\n        ...new NestedPendingOuter21\n    );\n} catch (Throwable $error) {\n    echo (int)($error === $original), '|', (int)$target->isStarted();\n}\n",
+    "source_sha256": "4f2675bbf8587d9df3eb960462b022b424a775fa7c349e02c6e3923f1c7e669d",
+    "purpose": "Pending retval destructor exception initializes a fresh Generator through its literal output, then closes without finally.",
+    "expected_model": "normal",
+    "native_stdout": "O|M|N|n|m|Y|A|1|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "nested-pending-generator-call-required",
+    "source": "<?php\nfunction peerNestedPendingCallValue21() { echo 'C|'; return 7; }\nfunction peerNestedPendingCallValues21() {\n    try { echo 'Y|'; yield peerNestedPendingCallValue21(); } finally { echo 'F|'; }\n}\nclass PeerNestedPendingCallInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'N|'; return peerNestedPendingCallValues21(); }\n    public function __destruct() { global $original; echo 'n|'; throw $original; }\n}\nclass PeerNestedPendingCallMiddle21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'M|'; return new PeerNestedPendingCallInner21; }\n    public function __destruct() { echo 'm|'; }\n}\nclass PeerNestedPendingCallOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new PeerNestedPendingCallMiddle21; }\n    public function __destruct() { echo 'A|'; }\n}\n$original = new Exception('retirement');\n$target = new Fiber(static function ($value = 'D') { echo 'B', $value, '|'; return 17; });\ntry {\n    $target->start(\n        ...new PeerNestedPendingCallOuter21\n    );\n} catch (Throwable $error) {\n    echo (int)($error === $original), '|', (int)$target->isStarted();\n}\n",
+    "source_sha256": "f5b9dfc70a72a9965fb756d6aeec43dd8a132060754e6b838c23a41c77ab8d15",
+    "purpose": "Explicit pending Generator startup boundary; preserved native behavior receives zero model agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "O|M|N|n|m|Y|C|F|A|",
+    "native_stderr": "Fatal error: Uncaught Exception: retirement in {source}:18\nStack trace:\n#0 {main}\n  thrown in {source} on line 18\n",
+    "native_exit": 255,
+    "unsupported_reason": "Fiber start pending exception Generator pre-yield effects",
+    "unsupported_stdout": "O|M|N|n|m|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "79",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "78",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "110",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "109",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nested-pending-generator-owned-frame-required",
+    "source": "<?php\nclass PeerNestedPendingOwnedInner21 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        try { echo 'Y|'; yield 7; } finally { echo 'F|'; }\n    }\n    public function __destruct() { echo 'n|'; }\n}\nclass PeerNestedPendingOwnedMiddle21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'M|'; return new PeerNestedPendingOwnedInner21; }\n    public function __destruct() { global $original; echo 'm|'; throw $original; }\n}\nclass PeerNestedPendingOwnedOuter21 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'O|'; return new PeerNestedPendingOwnedMiddle21; }\n    public function __destruct() { echo 'A|'; }\n}\n$original = new Exception('retirement');\n$target = new Fiber(static function ($value = 'D') { echo 'B', $value, '|'; return 17; });\ntry {\n    $target->start(\n        ...new PeerNestedPendingOwnedOuter21\n    );\n} catch (Throwable $error) {\n    echo (int)($error === $original), '|', (int)$target->isStarted();\n}\n",
+    "source_sha256": "4f423225e6d4752ee6d252b7e21f76e12e79bea83d02032ed4af4a0823a28301",
+    "purpose": "Explicit pending Generator startup boundary; preserved native behavior receives zero model agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "O|M|m|Y|n|A|1|0",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Fiber start pending exception Generator owned frame",
+    "unsupported_stdout": "O|M|m|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "79",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "77",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "109",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]

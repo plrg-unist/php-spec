@@ -184,21 +184,29 @@ def $ppmethod_defaults(P, pcpath, psparam :: psparam_tail*, n) = { INDEX n, ORIG
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, psprogress) = PPMEMBERS P ppropertydesc* pmethoddesc*
   -- if P.COMPLETION =/= PPCNORMAL
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDONE (PSUNSUPPORTED text)) = PPMEMBERS ($ppunsupported(P, text)) ppropertydesc* pmethoddesc*
+  -- if P.COMPLETION = PPCNORMAL
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDONE (PSERROR psdiagnostic*)) = PPMEMBERS ($ppsignature_diagnostics(P, psdiagnostic*)) ppropertydesc* pmethoddesc*
+  -- if P.COMPLETION = PPCNORMAL
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDONE (PSOK pssignature psdiagnostic*)) = PPMEMBERS ($ppunsupported($ppsignature_diagnostics(P, psdiagnostic*), "dependent method type")) ppropertydesc* pmethoddesc*
+  -- if P.COMPLETION = PPCNORMAL
   -- if ~$ppmethod_supported_signature(pssignature, pchheader.KIND)
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, (SEQUENCE statement*), metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppmethod_finish(P_outer, $ppgoto_finish(P_body), pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
   -- if $ppmethod_supported_signature(pssignature, pchheader.KIND)
   -- if pssignature_effective = $ppmethod_returns(ptbytes, pssignature)
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature_effective.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
   -- if P_body = $ppgenerator_body(P_header, pcpath ++ [PCFIELD 6], statement*)
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, ABSENT, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDONE (PSOK pssignature psdiagnostic*)) = $ppmethod_finish(P_outer, P_header, pcpath, flags, ptbytes, pssignature, metadata, ppropertydesc*, pmethoddesc*, pchheader)
+  -- if P.COMPLETION = PPCNORMAL
   -- if $ppmethod_supported_signature(pssignature, pchheader.KIND)
   -- if pssignature_effective = $ppmethod_returns(ptbytes, pssignature)
   -- if psparam* = pssignature.PARAMETERS
   -- if P_header = $ppsignature_diagnostics(P, psdiagnostic*)[.RETURNREF = pssignature.BYREF][.RETURNS = pssignature_effective.RETURNS][.CVS = (psparam.NAME)*][.HEADERASSIGNED = ($ptascii("http_response_header") <- (psparam.NAME)*)][.FOLD = P.FOLD[.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSDEFAULTREQUEST pscontinuation) = $ppmethod_request(P_outer, $ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation[.DIAGNOSTICS = eps])
+  -- if P.COMPLETION = PPCNORMAL
+def $ppmethod_step(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, PSSATTRIBUTETARGETREQUEST pscontinuation phpType14) = PPMEMBERS ($ppsignature_attribute($ppsignature_diagnostics(P, pscontinuation.DIAGNOSTICS), pcpath ++ [PCFIELD 4, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)], pscontinuation, phpType14)) ppropertydesc* pmethoddesc*
+  -- if P.COMPLETION = PPCNORMAL
 
 def $ppmethod_request(P_outer, P, pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation) = $ppmethod_parameter(P_outer, $ppmethod_default_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n), pcpath, flags, ptbytes, phpType47, metadata, ppropertydesc*, pmethoddesc*, pchheader, pscontinuation, $psdefaultready(pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE][.POSITION = PTPARAMETER], pscontinuation.PARAMETER, pscontinuation.REST, PSNONE))
   -- if pscontinuation.PARAMETER.DEFAULT = ABSENT

@@ -55,6 +55,25 @@ arrays use ordinary COW, references contribute their current value, and
 objects retain identity. Closure class names use lexical scope. Trace strings
 render from the stored graph, including the `and defined` suffix on matching
 type/arity messages before the first NUL byte.
+One zero-argument builtin `#[SensitiveParameter]` on an ordinary or promoted parameter
+resolves through its authenticated source namespace/import scope. Fixed trace
+arguments read current dereferenced CVs; variadic extras and named entries keep
+their original operands, and omitted defaults add no trace argument.
+Trace capture tags root their values until real `SensitiveParameterValue`
+objects are allocated before callbacks or frame retirement. Physical trace arrays
+store those wrappers; `getValue()` returns their stored snapshot and trace strings
+render their class. A wrapper strongly owns captured objects while WeakReference
+targets stay weak. Actual allocation/getter/last-release controls and ten original
+source agreements are recorded in the [review](../../coverage/semantics/sensitive-parameter-review.json).
+Promoted constructor parameters retain ordinary value/reference property writes;
+trace capture still reads their live CVs. A by-value property can remain 7 while
+its trace wrapper captures 17; a by-reference property/caller can later become 23
+while the wrapper retains 17. The attribute creates no property Override
+obligation. Eight source agreements and separate genuine property/wrapper and
+queued-admission checks are recorded in the [promotion review](../../coverage/semantics/sensitive-promotion-review.json).
+Mixed/repeated/argument attributes, hooks, direct wrapper construction,
+first-class getters and wider wrapper/property protocols remain required.
+
 `ErrorException` appends a protected typed `severity` as the eighth slot; its
 inherited private fields retain `Exception` declaration IDs. Its own
 six-argument constructor validates all values before writes, resets severity

@@ -27,6 +27,7 @@ dec $update_value(pstate, pupdate, pvalue, int) : pstate
 def $update_value(S, pupdate, PINT i, z) = S[.RESULT = KNOWN $number_value($update_number(pupdate, NINT i))]
 def $update_value(S, pupdate, PFLOAT n, z) = S[.RESULT = KNOWN $number_value($update_number(pupdate, NFLOAT n))]
 def $update_value(S, INCREMENT, PNULL, z) = S[.RESULT = KNOWN (PINT 1)]
+def $update_value(S, pupdate, PSTRING_CARRIER pstringidentity n*, z) = $update_value(S, pupdate, PSTRING n*, z)
 def $update_value(S, pupdate, PSTRING n*, z) = S_warned[.RESULT = KNOWN $update_string_value(stringupdate)]
   -- if (stringupdate, stringupdatenotice*) = $update_string(pupdate, n*)
   -- if S_warned = $update_notices(S, stringupdatenotice*, z)
@@ -172,7 +173,8 @@ dec $rw_dimension(pstate, poperand?, pstringfetch, int) : pstate
 def $rw_dimension(S, poperand?, pstringfetch, z) = S -- if S.COMPLETION =/= NORMAL
 def $rw_dimension(S, poperand?, pstringfetch, z) = $string_dimension_fetch(S, poperand?, pstringfetch, z)
   -- if S.COMPLETION = NORMAL
-  -- if $location_slot(S, S.LOCATION) = DEFINED (PSTRING n*)
+  -- if $location_slot(S, S.LOCATION) = DEFINED pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
 def $rw_dimension(S, poperand?, pstringfetch, z) = $rw_array_dimension($fetch_location_array(S, S.LOCATION, z), poperand?, z) -- otherwise
 
 dec $rw_base(pstate, pbase, pstringfetch, int) : pstate

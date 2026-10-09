@@ -13,15 +13,20 @@ syntax psoneresult = PSONE psparam psdiagnostic* | PSONEERROR psdiagnostic* | PS
 syntax psoneprogress = PSGUARDED psoneresult | PSNEEDDEFAULT
 syntax pscontinuation = { CONTEXT ptcontext, PARAMETER psraw, REST psinput*,
   SIGNATURE pssignature, DIAGNOSTICS psdiagnostic* }
-syntax psprogress = PSSDONE psresult | PSSDEFAULTREQUEST pscontinuation
+syntax psprogress = PSSDONE psresult | PSSDEFAULTREQUEST pscontinuation | PSSATTRIBUTETARGETREQUEST pscontinuation phpType14
 
 
 dec $psline(metadata) : nat
 dec $psstartline(metadataEntry) : bool
 dec $pslower(phpType17) : psinput
 dec $psparameter_input(psraw, phpType14) : psinput
+dec $psattribute_parameter_line(phpType18, nat) : nat
 dec $pspromotion_override_attribute(ptcontext, phpType14) : bool
+dec $pssensitive_parameter_attribute(ptcontext, phpType14) : bool
 dec $psattributes_supported(ptcontext, psraw, phpType14) : bool
+dec $psattribute_target(ptcontext, psraw, phpType14) : ptbytes?
+dec $psattribute_message(ptbytes) : ptbytes
+dec $psattribute_result(pscontinuation, phpType14, psdefault) : psresult
 dec $pspromotion_raw(ptcontext, psinput) : psraw?
 dec $psrequiredlater(psinput*) : ptbytes?
 dec $psdefault(phpType5, ptcontext) : psdefault
@@ -69,6 +74,7 @@ dec $psstep_start(phpType16, phpType18, bool, ptcontext) : psprogress
 dec $psreturn_start(ptcontext, psinput*, bool, ptresult) : psprogress
 dec $psfold_start(ptcontext, psinput*, pssignature, psdiagnostic*) : psprogress
 dec $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, psoneprogress) : psprogress
+dec $psfold_attribute_guarded(ptcontext, psraw, phpType14, psinput*, pssignature, psdiagnostic*, psoneprogress) : psprogress
 dec $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, psoneresult) : psprogress
 dec $psstep_resume(pscontinuation, psdefault) : psprogress
 dec $psstep_finish(psprogress) : psresult
@@ -84,12 +90,28 @@ def $psstartline(MstartLine int) = true
 def $psstartline(metadataEntry) = false
   -- otherwise
 
+;; Zend attaches attributes after creating the ordinary Param. Its compiler
+;; line comes from the first TYPE child, or VAR when no type is present.
+def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = $psparameter_input({ NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psattribute_parameter_line(phpType18, $psline(metadata_var)), FLAGS int, EXTRA false }, phpType14)
+  -- if int = 0 /\ phpType14 =/= SEQUENCE eps /\ phpType37 = SEQUENCE eps
 def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = $psparameter_input({ NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), FLAGS int, EXTRA (phpType37 =/= SEQUENCE eps) }, phpType14)
+  -- if ~(int = 0 /\ phpType14 =/= SEQUENCE eps /\ phpType37 = SEQUENCE eps)
 def $pslower(phpType17) = PSINPUTUNSUPPORTED "edited dynamic parameter name"
   -- otherwise
 
+def $psattribute_parameter_line(ABSENT, n) = n
+def $psattribute_parameter_line(NIdentifier phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NName phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NNameFullyQualified phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NNameRelative phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NVarLikeIdentifier phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NNullableType phpType35 metadata, n) = $psattribute_parameter_line(phpType35, n)
+def $psattribute_parameter_line(NUnionType (SEQUENCE (phpType69 :: phpType69_rest*)) metadata, n) = $psattribute_parameter_line(phpType69, n)
+def $psattribute_parameter_line(NIntersectionType (SEQUENCE (phpType35 :: phpType35_rest*)) metadata, n) = $psattribute_parameter_line(phpType35, n)
+def $psattribute_parameter_line(phpType18, n) = 0 -- otherwise
+
 ;; Keep the checked Param attributes separately from the existing boolean
-;; hook guard. Override is filtered off the parameter target by Zend.
+;; hook guard. Promoted Override is filtered off the parameter target by Zend.
 def $psparameter_input(psraw, phpType14) = PSINPUT psraw
   -- if psraw.EXTRA \/ phpType14 = SEQUENCE eps
 def $psparameter_input(psraw, phpType14) = PSINPUTATTRIBUTES psraw phpType14
@@ -97,7 +119,27 @@ def $psparameter_input(psraw, phpType14) = PSINPUTATTRIBUTES psraw phpType14
 def $pspromotion_override_attribute(ptcontext, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = ($ptlc($ptresolve(ptcontext, ptqual, ptbytes)) = $ptascii("override"))
   -- if $ptast(name) = PTNAME ptqual ptbytes
 def $pspromotion_override_attribute(ptcontext, phpType14) = false -- otherwise
-def $psattributes_supported(ptcontext, psraw, phpType14) = (psraw.FLAGS =/= 0 /\ ~psraw.EXTRA /\ $pspromotion_override_attribute(ptcontext, phpType14))
+def $pssensitive_parameter_attribute(ptcontext, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = ($ptlc($ptresolve(ptcontext, ptqual, ptbytes)) = $ptascii("sensitiveparameter"))
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+def $pssensitive_parameter_attribute(ptcontext, phpType14) = false -- otherwise
+def $psattributes_supported(ptcontext, psraw, phpType14) = (~psraw.EXTRA /\ ((psraw.FLAGS =/= 0 /\ $pspromotion_override_attribute(ptcontext, phpType14)) \/ $pssensitive_parameter_attribute(ptcontext, phpType14)))
+def $psattribute_target(ptcontext, psraw, SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) = (ptbytes_resolved)
+  -- if psraw.FLAGS = 0 /\ ~psraw.EXTRA
+  -- if $ptast(name) = PTNAME ptqual ptbytes
+  -- if ptbytes_resolved = $ptresolve(ptcontext, ptqual, ptbytes)
+  -- if $ptlc(ptbytes_resolved) = $ptascii("override")
+def $psattribute_target(ptcontext, psraw, phpType14) = eps -- otherwise
+def $psattribute_message(ptbytes) = $ptascii("Attribute \"") ++ ptbytes ++ $ptascii("\" cannot target parameter (allowed targets: method, property)")
+def $psattribute_result(pscontinuation, phpType14, PSDEFAULTUNSUPPORTED text) = PSUNSUPPORTED text
+def $psattribute_result(pscontinuation, phpType14, psdefault) = PSUNSUPPORTED "missing deferred default compiler line"
+  -- if psdefault = PSNONE \/ $pshasdefault(psdefault)
+  -- if $psdefaultline(psdefault, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE]) = 0
+  -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) = (ptbytes_resolved)
+def $psattribute_result(pscontinuation, phpType14, psdefault) = PSERROR (pscontinuation.DIAGNOSTICS ++ [$psissue(pscontinuation.CONTEXT[.LINE = $psdefaultline(psdefault, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE])][.POSITION = PTPARAMETER], "error", "attribute-target", [ptbytes_resolved])])
+  -- if psdefault = PSNONE \/ $pshasdefault(psdefault)
+  -- if $psdefaultline(psdefault, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE]) =/= 0
+  -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) = (ptbytes_resolved)
+def $psattribute_result(pscontinuation, phpType14, psdefault) = PSUNSUPPORTED "parameter attribute target" -- otherwise
 def $pspromotion_raw(ptcontext, PSINPUT psraw) = (psraw)
   -- if ~psraw.EXTRA
 def $pspromotion_raw(ptcontext, PSINPUTATTRIBUTES psraw phpType14) = (psraw)
@@ -338,6 +380,7 @@ def $psmessage(PSDIAGNOSTIC text "parameter-redefined" ([ptbytes]) ptcontext) = 
 def $psmessage(PSDIAGNOSTIC text "parameter-this" ptbytes* ptcontext) = $ptascii("Cannot use $this as parameter")
 def $psmessage(PSDIAGNOSTIC text "variadic-last" ptbytes* ptcontext) = $ptascii("Only the last parameter can be variadic")
 def $psmessage(PSDIAGNOSTIC text "variadic-default" ptbytes* ptcontext) = $ptascii("Variadic parameter cannot have a default value")
+def $psmessage(PSDIAGNOSTIC text "attribute-target" ([ptbytes]) ptcontext) = $psattribute_message(ptbytes)
 def $psmessage(PSDIAGNOSTIC text "promotion-outside-constructor" ptbytes* ptcontext) = $ptascii("Cannot declare promoted property outside a constructor")
 def $psmessage(PSDIAGNOSTIC text "invalid-default" ([ptbytes_kind, ptbytes_name, ptbytes_type]) ptcontext) = $ptascii("Cannot use ") ++ ptbytes_kind ++ $ptascii(" as default value for parameter $") ++ ptbytes_name ++ $ptascii(" of type ") ++ ptbytes_type
 def $psmessage(PSDIAGNOSTIC text "implicit-nullable" ([ptbytes]) ptcontext) = $psfunctionname(ptcontext) ++ $ptascii("(): Implicitly marking parameter $") ++ ptbytes ++ $ptascii(" as nullable is deprecated, the explicit nullable type must be used instead")
@@ -368,12 +411,18 @@ def $psreturn_start(ptcontext, psinput*, bool, PTOK ptbranch* ptdiagnostic*) = $
 
 def $psfold_start(ptcontext, eps, pssignature, psdiagnostic*) = PSSDONE (PSOK pssignature psdiagnostic*)
 def $psfold_start(ptcontext, (PSINPUTUNSUPPORTED text) :: psinput*, pssignature, psdiagnostic*) = PSSDONE (PSUNSUPPORTED text)
+def $psfold_start(ptcontext, (PSINPUTATTRIBUTES psraw phpType14) :: psinput*, pssignature, psdiagnostic*) = $psfold_attribute_guarded(ptcontext, psraw, phpType14, psinput*, pssignature, psdiagnostic*, $psguard(ptcontext[.LINE = psraw.LINE][.POSITION = PTPARAMETER], psraw, psinput*, (psparam.NAME)*, $psseenvariadic(pssignature.PARAMETERS)))
+  -- if $psattribute_target(ptcontext, psraw, phpType14) =/= eps
+  -- if psparam* = pssignature.PARAMETERS
 def $psfold_start(ptcontext, (PSINPUTATTRIBUTES psraw phpType14) :: psinput*, pssignature, psdiagnostic*) = $psfold_start(ptcontext, (PSINPUT (psraw[.EXTRA = (~$psattributes_supported(ptcontext, psraw, phpType14))])) :: psinput*, pssignature, psdiagnostic*)
+  -- if $psattribute_target(ptcontext, psraw, phpType14) = eps
 def $psfold_start(ptcontext, (PSINPUT psraw) :: psinput*, pssignature, psdiagnostic*) = $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, $psguard(ptcontext[.LINE = psraw.LINE][.POSITION = PTPARAMETER], psraw, psinput*, (psparam.NAME)*, $psseenvariadic(pssignature.PARAMETERS)))
   -- if psparam* = pssignature.PARAMETERS
 
 def $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, PSGUARDED psoneresult) = $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, psoneresult)
 def $psfold_guarded(ptcontext, psraw, psinput*, pssignature, psdiagnostic*, PSNEEDDEFAULT) = PSSDEFAULTREQUEST { CONTEXT ptcontext, PARAMETER psraw, REST psinput*, SIGNATURE pssignature, DIAGNOSTICS psdiagnostic* }
+def $psfold_attribute_guarded(ptcontext, psraw, phpType14, psinput*, pssignature, psdiagnostic*, PSGUARDED psoneresult) = $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, psoneresult)
+def $psfold_attribute_guarded(ptcontext, psraw, phpType14, psinput*, pssignature, psdiagnostic*, PSNEEDDEFAULT) = PSSATTRIBUTETARGETREQUEST { CONTEXT ptcontext, PARAMETER psraw, REST psinput*, SIGNATURE pssignature, DIAGNOSTICS psdiagnostic* } phpType14
 
 def $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, PSONE psparam psdiagnostic_new*) = $psfold_start(ptcontext, psinput*, pssignature[.PARAMETERS = pssignature.PARAMETERS ++ [psparam]], psdiagnostic* ++ psdiagnostic_new*)
 def $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, PSONEERROR psdiagnostic_new*) = PSSDONE (PSERROR (psdiagnostic* ++ psdiagnostic_new*))
@@ -382,3 +431,4 @@ def $psafterone_start(ptcontext, psinput*, pssignature, psdiagnostic*, PSONEUNSU
 def $psstep_resume(pscontinuation, psdefault) = $psafterone_start(pscontinuation.CONTEXT, pscontinuation.REST, pscontinuation.SIGNATURE, pscontinuation.DIAGNOSTICS, $psdefaultready(pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE][.POSITION = PTPARAMETER], pscontinuation.PARAMETER, pscontinuation.REST, psdefault))
 def $psstep_finish(PSSDONE psresult) = psresult
 def $psstep_finish(PSSDEFAULTREQUEST pscontinuation) = $psstep_finish($psstep_resume(pscontinuation, $psdefault(pscontinuation.PARAMETER.DEFAULT, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE][.POSITION = PTPARAMETER])))
+def $psstep_finish(PSSATTRIBUTETARGETREQUEST pscontinuation phpType14) = $psattribute_result(pscontinuation, phpType14, $psdefault(pscontinuation.PARAMETER.DEFAULT, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE][.POSITION = PTPARAMETER]))

@@ -22,6 +22,26 @@ originals, observed bytes, pointer/free source routes and the longer companion
 timeout. These are candidate engine memory-lifetime defects, not a chosen stable
 replacement behavior or full resolution of the wider consumers.
 
+## Reentrant assertion INI request-string release
+
+`Zend/zend_ini.c::zend_alter_ini_entry_ex` freezes the entry's modified bit and
+previous raw pointer before its warning callback. Successful completion releases
+that previous string when it differs from the stored original. A nested update
+can already replace and release the same request raw retain, so the outer release
+can consume another owner's retain or a reused allocation. The retained float
+pair observes raw `12X` without a pin and raw `3` with a pin; allocating a later
+float string makes the pinned CV read `4`. The matching release path and stale
+value observation establish a lifetime defect in the selected build.
+
+The specification explicitly stops successful completion after a modified request
+OLDRAW has been replaced, except when OLDRAW equals the stored original. It does
+not model freed payloads or allocator reuse. The four originals preserve native
+observations and pass precise Unsupported controls with zero native agreement;
+same-allocation getter and interned-old warning paths remain supported. The
+[quantity ledger](../../coverage/semantics/assertion-quantity-review.json) binds
+the exact source, native and reached-boundary records. This does not exclude the
+INI family or excuse required original-recapture and restore-warning semantics.
+
 ## Optimized argument array in a reference list
 
 PHP 8.5.10 compiles `[&$r]=func_get_args()` in an ordinary body to MAKE_REF
@@ -463,3 +483,23 @@ checks conversion phase, alias/cycle behavior and line context. Seven separate
 [request-environment boundaries](../../coverage/semantics/ordinary-request-environment-boundaries.json)
 remain unfinished, including computed this writes and parser-concat GLOBALS access.
 No intentional divergence is selected.
+
+## Delayed reference replay: duplicate array end-owner release
+
+Pinned PHP8.5.10 delayed return rejection repeats FREE_SWITCH/FE_FREE on the same
+physical array; preserved originals expose c/d=8 after later COW writes, while initial
+rejection controls retain1. The coherent specification preserves the first authentic
+cleanup and its effects, then consumes borrowed replay metadata without another
+counted release. It retains c/d=1 without inventing heap roots or resurrecting storage.
+Four controls agree exactly; nine delayed originals are intentional differences with
+zero native-agreement credit. The [owner review](../../coverage/semantics/reference-return-retired-owner-review.json)
+keeps original bytes, native observations, model cuts and failed checks.
+
+Admission is limited to mutable/refcounted payloads with at least three genuine
+ordinary owning edges before cleanup and two after; shared cells count once, metadata
+zero. This conservative domain is not a PHP requirement. Reconstruction and reads
+recheck actual liveness/category/dense cursor; later COW may leave one owner. Collected
+switch END consumes identity without reading or releasing it. Shared immutable empties,
+RW/sparse/deleted/reference/object/destructor and sole-owner/dangling capture remain
+excluded. Source-reached capture proves actual old identity; consistently rewriting
+all historical metadata is outside that proof. No corrected-engine experiment was run.

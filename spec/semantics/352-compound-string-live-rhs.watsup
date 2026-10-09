@@ -140,18 +140,21 @@ rule PhpStep/compound-live-left-abrupt: S ~> S_string[.TODO = eps]
 rule PhpStep/compound-live-self: S ~> S[.TODO = (COMPOUND_LIVE_RIGHT pcompoundstring[.SELECTED = eps] ptbytes) :: ptask*]
   -- if S.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
   -- if pcompoundstring.SELF
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (ptbytes)
 rule PhpStep/compound-live-right-call: S ~> $user_string_begin(S_read, n, pcompoundstring.SITE, pcompoundstring.LINE, COMPOUND_LIVE_RIGHT pcompoundstring[.SELECTED = (n)] ptbytes_left, ptask*)
   -- if S.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
   -- if ~pcompoundstring.SELF
-  -- if S.RESULT = KNOWN (PSTRING ptbytes_left)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (ptbytes_left)
   -- if S_read = $quiet_operand(S, pcompoundstring.RIGHT)
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $stringable_instance(S_read, n)
 rule PhpStep/compound-live-right-plain: S ~> S_string[.TODO = (COMPOUND_LIVE_RIGHT pcompoundstring[.SELECTED = eps] ptbytes_left) :: ptask*]
   -- if S.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
   -- if ~pcompoundstring.SELF
-  -- if S.RESULT = KNOWN (PSTRING ptbytes_left)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (ptbytes_left)
   -- if S_read = $quiet_operand(S, pcompoundstring.RIGHT)
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$user_string_value(S_read, pvalue)
@@ -160,7 +163,8 @@ rule PhpStep/compound-live-right-plain: S ~> S_string[.TODO = (COMPOUND_LIVE_RIG
 rule PhpStep/compound-live-right-abrupt: S ~> S_string[.TODO = eps]
   -- if S.TODO = (COMPOUND_LIVE_LEFT pcompoundstring) :: ptask*
   -- if ~pcompoundstring.SELF
-  -- if S.RESULT = KNOWN (PSTRING ptbytes_left)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (ptbytes_left)
   -- if S_read = $quiet_operand(S, pcompoundstring.RIGHT)
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$user_string_value(S_read, pvalue)
@@ -185,10 +189,12 @@ def $compound_live_write(S, pcompoundstring, pvalue) = $write_name(S, n_name*, p
   -- if $lookup(S.ENV, n_name*) = eps
 def $compound_live_write(S, pcompoundstring, pvalue) = $compound_string_write(S, pcompoundstring.PLACE, pcompoundstring.SITE, pvalue)
   -- if ~pcompoundstring.CV
-rule PhpStep/compound-live-store: S ~> $compound_live_write(S[.TODO = (COMPOUND_LIVE_RELEASE pcompoundstring) :: ptask*][.LOCATION = pcompoundstring.PLACE][.RESULT = KNOWN pvalue], pcompoundstring, pvalue)
+rule PhpStep/compound-live-store: S ~> $compound_live_write(S_concat[.TODO = (COMPOUND_LIVE_RELEASE pcompoundstring) :: ptask*][.LOCATION = pcompoundstring.PLACE], pcompoundstring, pvalue)
   -- if S.TODO = (COMPOUND_LIVE_RIGHT pcompoundstring ptbytes_left) :: ptask*
-  -- if S.RESULT = KNOWN (PSTRING ptbytes_right)
-  -- if pvalue = PSTRING (ptbytes_left ++ ptbytes_right)
+  -- if S.RESULT = KNOWN pvalue_right
+  -- if $string_bytes(pvalue_right) = (ptbytes_right)
+  -- if S_concat = $string_concat_unknown(S, PSTRING ptbytes_left, pvalue_right)
+  -- if S_concat.RESULT = KNOWN pvalue
 rule PhpStep/compound-live-release: S ~> S[.TODO = (COMPOUND_LIVE_DONE pcompoundstring) :: ptask*]
   -- if S.TODO = (COMPOUND_LIVE_RELEASE pcompoundstring) :: ptask*
 rule PhpStep/compound-live-done: S ~> S[.TODO = ptask*]

@@ -61,7 +61,7 @@ def $call_task_valid(S, SWITCH_SCAN statement porigin poperand n) = ($switch_sca
 def $call_task_valid(S, SWITCH_COMPARE statement porigin poperand n z) = ($switch_compare_valid(S, statement, porigin, n, z) /\ $switch_subject_valid(S, porigin, poperand) /\ S.ORIGIN = (porigin))
 def $call_task_valid(S, SWITCH_NEXT statement porigin poperand) = ($switch_site(S, statement, porigin) /\ $switch_subject_valid(S, porigin, poperand) /\ S.ORIGIN = (porigin))
 
-rule PhpStep/switch-start: S ~> S[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), SWITCH_START statement porigin] ++ ptask_tail*]
+rule PhpStep/switch-start: S ~> $retired_enter(S, (porigin))[.TODO = [$at_task($origin_child((porigin), [PCFIELD 0]), EVAL expression), SWITCH_START statement porigin] ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtSwitch expression phpType60 metadata)) :: ptask_tail*
   -- if statement = NStmtSwitch expression phpType60 metadata
   -- if S.ORIGIN = (porigin)

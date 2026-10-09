@@ -57,7 +57,7 @@ rule PhpStep/discard: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE =
   -- if S.TODO = DISCARD :: ptask_tail*
 rule PhpStep/unset: S ~> S[.TODO = $unset_tasks(expression_tail*, $origin_child(S.ORIGIN, [PCFIELD 0]), 0) ++ ptask_tail*]
   -- if S.TODO = (STMT (NStmtUnset (SEQUENCE expression_tail*) metadata)) :: ptask_tail*
-rule PhpStep/literal: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue]
+rule PhpStep/literal: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN $string_literal_value(pvalue)]
   -- if S.TODO = (EVAL expression) :: ptask_tail*
   -- if $atomic_expression(expression)
   -- if $evaluate(expression) = VALUE pvalue
@@ -120,7 +120,8 @@ rule PhpStep/emit: S ~> S_text[.TODO = ptask_tail*][.EVENTS = S_text.EVENTS ++ [
   -- if ~$user_string_value(S_read, pvalue)
   -- if S_text = $stringify(S_read, pvalue, z)
   -- if S_text.COMPLETION = NORMAL
-  -- if S_text.RESULT = KNOWN (PSTRING n_text*)
+  -- if S_text.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (n_text*)
 rule PhpStep/emit-stringify-abrupt: S ~> S_text[.TODO = eps]
   -- if S.TODO = (EMIT z) :: ptask_tail*
   -- if S_read = $resolve(S, S.RESULT)
@@ -336,12 +337,12 @@ dec $gc_transition_owners(pstate, (pstate, pownerobservation)) : pstate
 def $gc_transition_owners(S, (S_next, pownerobservation)) = $gc_transition(S, S_next) -- otherwise
 dec $drive_steps(pstate, nat) : pstate
 dec $drive_checked(pstate, nat) : pstate
-def $drive_checked(S, n) = $drive_steps(S, n) -- if S.COMPLETION = NORMAL
-def $drive_checked(S, n) = S -- if S.COMPLETION =/= NORMAL
+def $drive_checked(S, n) = $drive_steps($sensitive_trace_freeze(S), n) -- if S.COMPLETION = NORMAL
+def $drive_checked(S, n) = $sensitive_trace_freeze(S) -- if S.COMPLETION =/= NORMAL
 dec $declaration_entry_check(pstate) : pstate
 dec $drive(pstate, nat) : pstate
 def $drive(S, n) = $drive_checked($call_entry_check(S), n) -- if S.COMPLETION = NORMAL
-def $drive(S, n) = $drive_steps($declaration_entry_check(S), n) -- if S.COMPLETION =/= NORMAL
+def $drive(S, n) = $drive_steps($sensitive_trace_freeze($declaration_entry_check(S)), n) -- if S.COMPLETION =/= NORMAL
 def $drive_steps(S, n) = S
   -- if S.TODO = eps
   -- if S.COMPLETION = NORMAL
@@ -391,7 +392,7 @@ def $drive_steps(S, n) = $drive_steps($prune_allocations($error_read_begin(S)), 
   -- if $(n > 0)
   -- if $(n - 1) = n_next
   -- if $error_read_pending(S)
-def $drive_steps(S, n) = $drive_steps($gc_transition_owners(S, $destruction_transition_owners(S, $source_exception_transition(S, $throwable_transition(S, S_next)))), n_next)
+def $drive_steps(S, n) = $drive_steps($gc_transition_owners(S, $destruction_transition_owners(S, $sensitive_trace_freeze($source_exception_transition(S, $throwable_transition(S, S_next))))), n_next)
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.COMPLETION = NORMAL
   -- if ~S.COMPILESTOP
@@ -400,7 +401,7 @@ def $drive_steps(S, n) = $drive_steps($gc_transition_owners(S, $destruction_tran
   -- if ~$error_read_pending(S)
   -- PhpStep: S ~> S_next
 
-def $initial_state(pcompletion) = {OBJECTS eps, CLOSURESCOPES eps, CLOSUREBINDINGS eps, OBJECTPROPS eps, OBJECTTABLES eps, PROPREFS eps, REFCOERCIONS eps, CONTAINERINITS eps, PARAMETERBACKINGS eps, CLONES eps, CLONEMAKERS eps, CLASSES eps, CLASSNAMES eps, DECLARATIONS eps, LINKEDPARENTS eps, LINKEDINTERFACES eps, CLOSURETEMPLATES eps, STATICS eps, CLASSSTATICS eps, INSTANCEDEFAULTS eps, CLASSCONSTANTCACHE eps, CLASSCONSTANTHISTORY eps, CLASSCONSTANTINIT eps, CONSTANTCLOSURES eps, PARAMETERCLOSURES eps, CONSTANTOBJECTS eps, STARTUP eps, ASSERTIONS 1, ASSERTIONSINIT ($ptascii("1")), ASSERTIONSINI ($ptascii("1")), ASSERTIONSMODIFIED false, ASSERTACTIVE {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTBAIL {VALUE false, INITIAL ($ptascii("0")), RAW ($ptascii("0")), MODIFIED false}, ASSERTWARNING {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTEXCEPTION {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTCALLBACK eps, ASSERTOPTIONNEXT 0, ASSERTOPTIONS eps, REPORTING 30719, REPORTINGINI ($ptascii("30719")), REPORTINGMODIFIED false, DISPLAYINIT ($ptascii("stderr")), DISPLAYINI ($ptascii("stderr")), DISPLAYMODIFIED false, PRECISIONINIT ($ptascii("14")), PRECISIONINI ($ptascii("14")), PRECISIONMODIFIED false, SILENCES eps, ERRORHANDLER {CALLBACK eps, LEVELS 0}, ERRORHANDLERS eps, EXCEPTIONHANDLER eps, EXCEPTIONHANDLERS eps, AUTOLOAD {ENTRIES eps, BIRTHS eps, CAPACITY 0}, AUTOSEQ 0, SHUTDOWN {ENTRIES eps, INDEX 0, PHASE SHUTDOWN_PENDING, SENT eps, RECEIVED eps, RENDER eps, COMPLETION NORMAL}, DESTRUCTION {HANDLES eps, FREE eps, NEXT 1, NOREUSE false, CALLED eps, RETIRED eps, PHASE DESTRUCTION_PENDING, NAMES eps, PASS eps, COUNT 0, INDEX 0, COMPLETION NORMAL, RELEASES eps, CALLS eps, FRAMES eps, OPERATIONS eps, CLEANUPS eps, ABANDONED eps, PROPCACHE eps}, GC {ENABLED true, IMMUTABLE eps, BUFFER eps, FREE eps, NEXT 0, ACTIVE eps, PLAN eps, WORKER eps, SCAN {INDEX 0, END 0}}, BORROWEDREAD eps, OBJECTCAST eps, DEFAULTCACHE eps, PARAMETERSEQ 0, PARAMETERRECEIVES eps, CONSTCONTEXT eps, USERCONSTANTS eps, TRACE eps, ERRORFATALTRACE eps, ERRORORIGIN eps, FUNCTIONS eps, CALLABLES eps, GLOBALTABLE eps, ACTIVEFIBER eps, FIBERCALLERS eps, FIBERCLOSERS eps, FIBERSEQ 1, FRAMES eps, CURRENT eps, REQUEST eps, FILECWD eps, FILEINCLUDEPATH eps, FILESEQ 0, DIRSEQ 0, DIRCONVSEQ 0, DIRCONVERSIONS eps, DIRCONTEXT eps, SELECTSEQ 0, SELECTEDCALLS eps, FILECONTEXTS eps, FILEBINDINGS eps, INCLUDEDOPENED eps, EVALCONTEXTS eps, EVALBINDINGS eps, FAILEDSOURCES eps, SOURCEPENDING eps, SERVICELEFT eps, COMPILESTOP false, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0}
+def $initial_state(pcompletion) = {OBJECTS eps, CLOSURESCOPES eps, CLOSUREBINDINGS eps, OBJECTPROPS eps, OBJECTTABLES eps, PROPREFS eps, REFCOERCIONS eps, CONTAINERINITS eps, PARAMETERBACKINGS eps, CLONES eps, CLONEMAKERS eps, CLASSES eps, CLASSNAMES eps, DECLARATIONS eps, LINKEDPARENTS eps, LINKEDINTERFACES eps, CLOSURETEMPLATES eps, STATICS eps, CLASSSTATICS eps, INSTANCEDEFAULTS eps, CLASSCONSTANTCACHE eps, CLASSCONSTANTHISTORY eps, CLASSCONSTANTINIT eps, CONSTANTCLOSURES eps, PARAMETERCLOSURES eps, CONSTANTOBJECTS eps, STARTUP eps, ASSERTIONS 1, ASSERTIONSINIT ($ptascii("1")), ASSERTIONSINI ($ptascii("1")), ASSERTIONSMODIFIED false, ASSERTIONSRAW (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), ASSERTIONSORIGINAL (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), ASSERTIONSMODE {INPUT (PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))), VALUE 1}, ASSERTIONININEXT 0, ASSERTIONINI eps, STRINGDATA eps, ASSERTACTIVE {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTBAIL {VALUE false, INITIAL ($ptascii("0")), RAW ($ptascii("0")), MODIFIED false}, ASSERTWARNING {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTEXCEPTION {VALUE true, INITIAL ($ptascii("1")), RAW ($ptascii("1")), MODIFIED false}, ASSERTCALLBACK eps, ASSERTOPTIONNEXT 0, ASSERTOPTIONS eps, REPORTING 30719, REPORTINGINI ($ptascii("30719")), REPORTINGMODIFIED false, DISPLAYINIT ($ptascii("stderr")), DISPLAYINI ($ptascii("stderr")), DISPLAYMODIFIED false, PRECISIONINIT ($ptascii("14")), PRECISIONINI ($ptascii("14")), PRECISIONMODIFIED false, SILENCES eps, ERRORHANDLER {CALLBACK eps, LEVELS 0}, ERRORHANDLERS eps, EXCEPTIONHANDLER eps, EXCEPTIONHANDLERS eps, AUTOLOAD {ENTRIES eps, BIRTHS eps, CAPACITY 0}, AUTOSEQ 0, SHUTDOWN {ENTRIES eps, INDEX 0, PHASE SHUTDOWN_PENDING, SENT eps, RECEIVED eps, RENDER eps, COMPLETION NORMAL}, DESTRUCTION {HANDLES eps, FREE eps, NEXT 1, NOREUSE false, CALLED eps, RETIRED eps, PHASE DESTRUCTION_PENDING, NAMES eps, PASS eps, COUNT 0, INDEX 0, COMPLETION NORMAL, RELEASES eps, CALLS eps, FRAMES eps, OPERATIONS eps, CLEANUPS eps, ABANDONED eps, PROPCACHE eps}, GC {ENABLED true, IMMUTABLE eps, BUFFER eps, FREE eps, NEXT 0, ACTIVE eps, PLAN eps, WORKER eps, SCAN {INDEX 0, END 0}}, BORROWEDREAD eps, OBJECTCAST eps, DEFAULTCACHE eps, PARAMETERSEQ 0, PARAMETERRECEIVES eps, CONSTCONTEXT eps, USERCONSTANTS eps, TRACE eps, ERRORFATALTRACE eps, ERRORORIGIN eps, FUNCTIONS eps, CALLABLES eps, GLOBALTABLE eps, ACTIVEFIBER eps, FIBERCALLERS eps, FIBERCLOSERS eps, FIBERSEQ 1, FRAMES eps, CURRENT eps, RETIREDOWNERS eps, REQUEST eps, FILECWD eps, FILEINCLUDEPATH eps, FILESEQ 0, DIRSEQ 0, DIRCONVSEQ 0, DIRCONVERSIONS eps, DIRCONTEXT eps, SELECTSEQ 0, SELECTEDCALLS eps, FILECONTEXTS eps, FILEBINDINGS eps, INCLUDEDOPENED eps, EVALCONTEXTS eps, EVALBINDINGS eps, FAILEDSOURCES eps, SOURCEPENDING eps, SERVICELEFT eps, COMPILESTOP false, SYMBOLS eps, CVS eps, HTTPROOTS eps, ACTIVATED eps, TODO eps, EVENTS eps, COMPLETION pcompletion, ENV eps, STORE eps, REFCELLS eps, RESULT KNOWN PNULL, CELL 0, ARRAYS eps, KEY KINT 0, BASE BASE_VALUE (KNOWN PNULL), LOCATION ROOT 0, ALLOCATIONS eps, HELD eps, SOURCES eps, ORIGIN eps, POOLS eps, FILES eps, CODE eps, ITERATORS eps, NEXTITER 0}
 dec $source_filename(nat*) : bool
 def $source_filename(n*) = (n* =/= eps /\ ~(0 <- n*))
 dec $php_run(program, nat, text) : pstate

@@ -35,8 +35,14 @@ the using class links. Compatible trait collisions retain the effective property
 own source obligation. A failed check rolls back class publication. The
 [Override review](../../coverage/semantics/promoted-override-review.json) records
 thirteen source agreements, a separate user-attribute Unsupported control and 110
-genuine certificate/write/rollback assertions. Other parameter attributes/hooks
-remain explicit Unsupported.
+genuine certificate/write/rollback assertions.
+A single builtin `#[SensitiveParameter]` on a promoted constructor parameter
+belongs to the parameter target. It creates no property Override obligation;
+ordinary value/reference writes precede the body, while later trace capture reads
+the live CV. Queued promotions retain the authentic head and each task's source
+suffix. The [Sensitive promotion review](../../coverage/semantics/sensitive-promotion-review.json)
+records eight source agreements and separate source/property/wrapper controls.
+Other parameter attributes/hooks remain explicit Unsupported.
 
 Object `foreach` by value uses a live slot cursor, so later writes can affect
 later iterations. Dynamic deletion leaves a cursor tombstone; reinsertion
@@ -62,8 +68,10 @@ keeps native/source and reached-state cuts separate. Computed names, magic
 getters/hooks and wider receiver forms remain required.
 
 At PHP8.5, a literal named nonbuiltin reference-return call without name fallback,
-with no arguments or one ordinary CV supplied positionally or by name, keeps its
-returned reference cell through callee leave. Module377 now
+with no arguments, one ordinary CV supplied positionally or by name, two
+positional ordinary CVs, two CVs with distinct named labels, or a positional CV
+followed by one named CV, keeps its returned
+reference cell through callee leave. Module377 now
 captures that actual cell before PROPERTY_PREP, borrows the live ordinary
 instance/stdClass target and keeps the warning result null even when handler
 rebinding retires that target. FETCH cleanup through270 releases the read's
@@ -85,6 +93,34 @@ target and actual named task before capturing that deferred warning. Handler
 mutation still sends fixed null, and unknown labels fail before CV demand.
 Named default cleanup may replace the receiver during callee leave, so lookup
 captures the returned cell's current object without rereading the argument.
+For two positional CVs,377 separately authenticates both source/SEND occurrences
+without widening361's ECHO certificate. A first argument Warning sends fixed
+null; its handler may change or unset the second CV before the later SEND.
+Deferred SEND2 preserves the already-captured prefix and documentary CV INPUT,
+but reports its actual compiled line. Both last-owned parameter callbacks may
+replace the returned cell during leave before property lookup. Prefix cleanup
+after an argument throw and wrapper cleanup after a property throw preserve
+exception chaining. Core-only companions replace the ordinary `is_null`
+observers in the positive comparison set; original bytes and builtin boundaries
+remain recorded separately.
+Two distinct named CVs use a separate local certificate without restricting label
+order. SENDs read CVs in source order; named binding puts each captured operand in
+its formal slot. Known sends use individual CV lines, while both deferred
+ordinals use the emitted argument-list line and preserve documentary INPUT and
+already-sent slots. Skipped defaults and parameter destruction follow formal
+order, so lookup captures the cell after all callee-leave callbacks. Unknown and
+duplicate labels fail before that CV's demand. Captured prefix release can leave
+a caller-local owner whose later frame unwind runs its destructor; the pending
+label Error remains protected and may become a cleanup exception's previous.
+A positional CV followed by a named CV uses the same actual named-task protocol.
+Its first Warning fixes null in formal slot0; the later named CV is read after
+handler effects and can bind around a skipped default. The first SEND retains
+its equal documentary line, while a deferred named SEND uses the compiled
+argument-list line without changing INPUT or the captured prefix. Unknown and
+duplicate destinations still fail before CV demand; buffer release and later
+caller-local frame cleanup keep their distinct owners and pending Error.
+More than two arguments, unpacked or computed actuals and dynamic callees
+remain outside this bounded lane.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

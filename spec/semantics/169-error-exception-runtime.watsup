@@ -57,14 +57,17 @@ def $ee_validate(S, pctorcall, 5, pvalue*) = $ee_continue($ee_previous_value(S, 
 def $ee_validate(S, pctorcall, 6, pvalue*) = (S, pvalue*)
 
 dec $ee_commit_location(pstate, pctorcall, pvalue, pvalue) : pstate
-def $ee_commit_location(S, pctorcall, PSTRING preqbytes, PINT z) = $throwable_constructor_field($throwable_constructor_field(S, pctorcall.RECEIVER, "file", PSTRING preqbytes), pctorcall.RECEIVER, "line", PINT z)
-def $ee_commit_location(S, pctorcall, PSTRING preqbytes, PNULL) = $throwable_constructor_field($throwable_constructor_field(S, pctorcall.RECEIVER, "file", PSTRING preqbytes), pctorcall.RECEIVER, "line", PINT 0)
+def $ee_commit_location(S, pctorcall, pvalue_file, PINT z) = $throwable_constructor_field($throwable_constructor_field(S, pctorcall.RECEIVER, "file", pvalue_file), pctorcall.RECEIVER, "line", PINT z)
+  -- if $string_bytes(pvalue_file) = (preqbytes_file)
+def $ee_commit_location(S, pctorcall, pvalue_file, PNULL) = $throwable_constructor_field($throwable_constructor_field(S, pctorcall.RECEIVER, "file", pvalue_file), pctorcall.RECEIVER, "line", PINT 0)
+  -- if $string_bytes(pvalue_file) = (preqbytes_file)
 def $ee_commit_location(S, pctorcall, PNULL, PINT z) = $throwable_constructor_field(S, pctorcall.RECEIVER, "line", PINT z)
 def $ee_commit_location(S, pctorcall, PNULL, PNULL) = S
 
 dec $ee_commit(pstate, pctorcall, pvalue*) : pstate
-def $ee_commit(S, pctorcall, [PSTRING preqbytes_message, PINT z_code, PINT z_severity, pvalue_filename, pvalue_line, pvalue_previous]) = S_location[.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S_message = $ctor_commit_field(S, pctorcall, "message", PSTRING preqbytes_message, $(|pctorcall.SENT| > 0))
+def $ee_commit(S, pctorcall, [pvalue_message, PINT z_code, PINT z_severity, pvalue_filename, pvalue_line, pvalue_previous]) = S_location[.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $string_bytes(pvalue_message) = (preqbytes_message)
+  -- if S_message = $ctor_commit_field(S, pctorcall, "message", pvalue_message, $(|pctorcall.SENT| > 0))
   -- if S_code = $ctor_commit_field(S_message, pctorcall, "code", PINT z_code, $(z_code =/= 0))
   -- if S_previous = $ctor_commit_field(S_code, pctorcall, "previous", pvalue_previous, pvalue_previous =/= PNULL)
   -- if S_severity = $throwable_constructor_field(S_previous, pctorcall.RECEIVER, "severity", PINT z_severity)

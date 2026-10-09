@@ -78,6 +78,7 @@ def $dynamic_new_value_name(S, porigin, PSTRING ptbytes) = $scoped_source_name(S
   -- if $dynamic_new_keyword(S, porigin) = (name)
 def $dynamic_new_value_name(S, porigin, POBJECT n) = ($object_name(S, n))
   -- if $(n < |S.OBJECTS|)
+def $dynamic_new_value_name(S, porigin, PSTRING_CARRIER pstringidentity ptbytes) = $dynamic_new_value_name(S, porigin, PSTRING ptbytes)
 def $dynamic_new_value_name(S, porigin, pvalue) = eps -- otherwise
 
 ;; SOURCE is an immutable selected-value certificate, not a root. FETCH_CLASS
@@ -233,6 +234,7 @@ rule PhpStep/dynamic-new-selector: S ~> S[.TODO = [$at_task($origin_child(S.ORIG
 dec $dynamic_new_live_value(pstate, pvalue) : bool
 def $dynamic_new_live_value(S, POBJECT n) = $getclass_live_object(S, n)
 def $dynamic_new_live_value(S, PSTRING ptbytes) = true
+def $dynamic_new_live_value(S, PSTRING_CARRIER pstringidentity ptbytes) = true
 def $dynamic_new_live_value(S, pvalue) = false -- otherwise
 dec $dynamic_new_known(pstate, ptbytes) : bool
 def $dynamic_new_known(S, ptbytes) = ($class_internal(ptbytes) \/ $class_named(S.CLASSNAMES, $ptlc(ptbytes)) =/= eps)
@@ -258,7 +260,8 @@ rule PhpStep/dynamic-new-unknown: S ~> $throw_scalar(S_read, "Error", $ptascii("
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING ptbytes_raw)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes_raw)
   -- if $dynamic_new_value_name(S_read, porigin, PSTRING ptbytes_raw) = (ptbytes)
   -- if ~$dynamic_new_known(S_read, ptbytes)
   -- if ~$autoload_pending(S_read, ptbytes)
@@ -273,7 +276,8 @@ rule PhpStep/dynamic-new-keyword-error: S ~> $throw_scalar(S_read, "Error", ptby
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve_at(S, S.RESULT, z_fetch)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $dynamic_new_keyword(S_read, porigin) = (NName (BYTES text) metadata)
   -- if $dynamic_new_value_name(S_read, porigin, PSTRING ptbytes) = eps
   -- if ptbytes_message = $dynamic_new_keyword_error(S_read, $ptlc(ptbytes))

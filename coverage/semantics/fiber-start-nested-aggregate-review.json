@@ -1,0 +1,324 @@
+{
+  "milestone": "Fiber START recursive IteratorAggregate acquisition and retval retirement",
+  "status": "partial; independently reviewed actual-parent composition passes strict361; private eleven normal sources, two Unsupported controls and twenty reached-state groups retain their cuts",
+  "baseline": "61e7b80ff39796a8e157f79d55606cf21ef1ef22",
+  "tested_revision": "1b5c9f1655e586a42c16ab6b2cf7859e18a88377",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "Zend/zend_interfaces.c:zend_user_it_get_new_iterator",
+    "Zend/zend_vm_def.h:ZEND_SEND_UNPACK",
+    "Zend/zend_generators.c:zend_generator_resume"
+  ],
+  "scope": [
+    "Each returned Aggregate occurrence adds one owned acquisition-stack occurrence; nonadjacent repeated identities are permitted and immediate self-return is rejected.",
+    "Original Aggregate identity remains nonowning and INPUT remains the genuine borrowed/owning operand. Each implicit getIterator receiver is borrowed.",
+    "Terminal Iterator/Generator data remains protected while recursive raw Aggregate retvals retire inside-out before rewind. Generator creation separately owns the current nested receiver.",
+    "A real selected retval destructor may transfer its pending Throwable into the authenticated acquired-error marker while remaining layer jobs finish, then use ordinary START data/input/buffer unwind.",
+    "Pending exception startup uses genuine Generator resume and first scalar yield only for a literal-output prefix and a frame with no owned roots; native close skips finally and retains the scalar cache. Calls/mutation, frames with owned roots and nonfresh phases remain named gaps."
+  ],
+  "native_discovery": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-nested-native-4zndcsdm/report.json",
+    "sha256": "4ae4c01f2c1cec334780eae52af1907433d6d2ec023044b3b05ff7e76137d9e6",
+    "originals": 9,
+    "semantic_agreements": 0,
+    "inputs_stable": true
+  },
+  "sources": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-nested-aggregate-source-y42fg7a1/report.json",
+    "sha256": "b8099df858bff963511490c8948e0fd7feaaa846e002152b794df3caf4e9b5d7",
+    "normal_agreements": 10,
+    "selected_ids": [
+      "nested-fresh-iterator-owner-order",
+      "nested-plain-generator-owner-order",
+      "nested-generator-method-receiver-owner",
+      "nested-get-iterator-parks",
+      "nested-get-iterator-throws-direct-fcc",
+      "nested-reference-return-rejected",
+      "nested-stable-self-return-rejected",
+      "nested-intermediate-destructor-throws",
+      "nested-finite-repeated-ancestor",
+      "aggregate-nested-acquisition-required"
+    ],
+    "command": "python3 tests/semantics/fiber_start_nested_aggregate_sources.py --native-report .tools/native-reuse-nine.json --native-report .tools/native-reuse-control.json"
+  },
+  "states": {
+    "status": "pass; all selected records retain their separate tested cuts",
+    "groups": 20,
+    "physical_premises": 544,
+    "driver_clauses": 495,
+    "runner": "tests/semantics/fiber_start_nested_aggregate_review.py",
+    "fixture_revision": "8f9b71b7aea6f083d71097e030f3c39cf594e9cb",
+    "selected": [
+      {
+        "id": "nested-deep-getter-borrows-receiver-and-owns-each-raw-layer",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 36,
+        "driver": 35,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-2q9ftp1e/report.json",
+        "sha256": "23c37369bf169913962b259ad75bc1f02069d5bc7a9896bd88d448e9fb82036b"
+      },
+      {
+        "id": "nested-deep-getter-zero-budget-preserves-raw-stack",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 10,
+        "driver": 9,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-8pf_1kxj/report.json",
+        "sha256": "f5f8da655b8c799798566c2c1d1f5a12595a4adc3565bada59f118ce0012f398"
+      },
+      {
+        "id": "nested-getter-rejects-reversed-current-layer",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 16,
+        "driver": 15,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-9w9_f4z7/report.json",
+        "sha256": "b0fb080e5cb16abbfe0a518a7f05335c5da8a46122b75c1a9ea2869fc78db864"
+      },
+      {
+        "id": "nested-getter-rejects-adjacent-self-layer",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 16,
+        "driver": 15,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-tensmh9a/report.json",
+        "sha256": "542c352b2542cda3ea71ccc29598402bfcac4c87c5f328890c4541f40a192497"
+      },
+      {
+        "id": "nested-repeated-ancestor-keeps-two-independent-retval-owners",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 23,
+        "driver": 22,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-gh1r6crd/report.json",
+        "sha256": "f79f89b403288e1e1706f9dc9e061cdd811c86021bf3c82238774598f445bad8"
+      },
+      {
+        "id": "nested-terminal-iterator-protects-data-during-inside-out-release",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 29,
+        "driver": 27,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-l_v6l43y/report.json",
+        "sha256": "58b35cf8cf7bc63369dda9c37400293ffb976bb5cef5493e815420cffed332ee"
+      },
+      {
+        "id": "nested-generator-method-promotes-current-layer-only",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 36,
+        "driver": 33,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-wxwd62vi/report.json",
+        "sha256": "c4e9d01de42c279e5d16cbac38be0a48a48b98895b2f766b698e6a116c1e766f"
+      },
+      {
+        "id": "nested-plain-generator-enters-after-layer-retirement",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 24,
+        "driver": 21,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-q_egorjs/report.json",
+        "sha256": "f339fc26b116e7da2fc4baa1b917c81822f150c11521e1faec36a22c8d0f8b6a"
+      },
+      {
+        "id": "nested-parked-getter-retains-raw-owner-with-borrowed-context",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 37,
+        "driver": 31,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-do0x0vx8/report.json",
+        "sha256": "4ce4ea29443111054757d83bee7ef2729a9f6f71ac3929b14603f131bde87f46"
+      },
+      {
+        "id": "nested-parked-getter-rejects-shifted-unpack-line",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 26,
+        "driver": 20,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-lutphw7i/report.json",
+        "sha256": "5eb8a94c1b6604a51550f1bec6c73f32f4ed5ccabc9145ee33363bf0130d1a34"
+      },
+      {
+        "id": "nested-parked-getter-rejects-duplicate-start-continuation",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 26,
+        "driver": 20,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-cb6az4pj/report.json",
+        "sha256": "4923ca59253cc52aedcad648a7ecfad247b2083ec062139f4d715c530056334e"
+      },
+      {
+        "id": "nested-raw-reference-error-keeps-reference-and-layer-until-unwind",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 26,
+        "driver": 24,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-ot2_ryiq/report.json",
+        "sha256": "1a40ec1d9b8516e9e414f33d0d3f43a546432a1c36e74469d802ae13dfe1b285"
+      },
+      {
+        "id": "nested-getter-throw-retires-layer-before-original-and-keeps-direct-capture",
+        "revision": "298141993e4124361e290e5329c52aaab3b07306",
+        "physical": 28,
+        "driver": 26,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-7313inh5/report.json",
+        "sha256": "da1f1203cdac9aa5d1428367587cae6b033a710f2f803e1b75facc95e6869911"
+      },
+      {
+        "id": "nested-destructor-throw-transfers-pending-owner-before-remaining-layer",
+        "revision": "d941f280d27cdcd6964e5f5345a19270e3fce235",
+        "physical": 38,
+        "driver": 37,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-87j5f1lb/report.json",
+        "sha256": "6689c37131ea47174ae2b4af7c29cb5ea90dd9e9590ebc1c4772f7a0fbe630ed"
+      },
+      {
+        "id": "nested-destructor-pending-hook-rejects-foreign-release-snapshot",
+        "revision": "d941f280d27cdcd6964e5f5345a19270e3fce235",
+        "physical": 21,
+        "driver": 20,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-7j2dz6_r/report.json",
+        "sha256": "713e62eee37a75b3de23d89f299d84142ae4d6ebbc825eef4954475f16a6b492"
+      },
+      {
+        "id": "nested-pending-retirement-finishes-before-data-and-original-unwind",
+        "revision": "8f9b71b7aea6f083d71097e030f3c39cf594e9cb",
+        "physical": 34,
+        "driver": 33,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-lqto73sv/report.json",
+        "sha256": "b36a2d74a9d99a9662aa78ab56e835c5ad71fe3f427791d24d61bc81edebc6c9"
+      },
+      {
+        "id": "nested-pending-generator-runs-real-body-with-exception-in-resumer",
+        "revision": "8f9b71b7aea6f083d71097e030f3c39cf594e9cb",
+        "physical": 34,
+        "driver": 31,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-gizguccv/report.json",
+        "sha256": "8c6cb8f81240e108fa3ef266fb14c8c0bba370fd5614ae09449f334704eeb30f"
+      },
+      {
+        "id": "nested-pending-generator-rejects-nonthrowable-resumer-owner",
+        "revision": "8f9b71b7aea6f083d71097e030f3c39cf594e9cb",
+        "physical": 18,
+        "driver": 15,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-sj9uep27/report.json",
+        "sha256": "48fff0082f5629b26a62ee0f11a92aa56214a13f9911eaae04b2591f1dd1cb3e"
+      },
+      {
+        "id": "nested-pending-generator-closes-paused-empty-frame-without-finally",
+        "revision": "8f9b71b7aea6f083d71097e030f3c39cf594e9cb",
+        "physical": 32,
+        "driver": 29,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-l_cr1vdv/report.json",
+        "sha256": "dcd10883ca52951b03244a4887770f78eb579127376a97b1aaa06034895e94d5"
+      },
+      {
+        "id": "nested-pending-closed-generator-retires-data-before-original",
+        "revision": "8f9b71b7aea6f083d71097e030f3c39cf594e9cb",
+        "physical": 34,
+        "driver": 32,
+        "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-5g9fmwpd/report.json",
+        "sha256": "4072e3e8fed2bfdfbdfc4e6dc507a67977c0cf069e83c67b5c7c02a2d66a6983"
+      }
+    ],
+    "command": "python3 tests/semantics/fiber_start_nested_aggregate_review.py --case <selected-id>; one serial case per original120 cap, stop first failure",
+    "cut_policy": "First13 on298; exact prefix14 and unchanged15 ond941; receiver-order16 and new17-20 on8f9. Semantic modules remain1b5 throughout; original failed14/16 retain zero credit."
+  },
+  "historical_control": {
+    "id": "aggregate-nested-acquisition-required",
+    "native_report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-contract-native-cqf5py8a/report.json",
+    "unsupported_report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-aggregate-20/.tools/fiber-start-aggregate-source-x37j44d6/report.json",
+    "result": "Only the current expected_model advances from Unsupported to normal; the original Unsupported record retains zero agreement."
+  },
+  "budgets": {
+    "native_seconds": 75,
+    "model_seconds": 60,
+    "host_seconds": 75,
+    "strict_seconds": 120,
+    "state_seconds": 120,
+    "jobs": 1
+  },
+  "remaining": [
+    "pending exception Generator pre-yield effects, frames with owned roots and nonfresh rewind phases",
+    "foreach IteratorAggregate acquisition",
+    "yield-from IteratorAggregate acquisition",
+    "ordinary-call IteratorAggregate unpacking",
+    "wider raw valid() payload tag changes and compound selectors"
+  ],
+  "cut_policy": "Existing Aggregate22/state14/425, NaN4/269 and earlier Traversable13/1060 retain their historical inputs. Only the affected old nested assertion is renewed.",
+  "pending_generator_native": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-nested-pending-generator-native-t9rl2l0e/report.json",
+      "sha256": "15e9428aaff5515e68aa1f3e82e8f8248903ae59f7ef118ce652ec96c315127e",
+      "semantic_agreements": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-nested-pending-generator-controls-native-aqabf_p2/report.json",
+      "sha256": "619dfd091a087beed3a8bcd76536203ae1e765d1d8c1a0f17cb371f56be60632",
+      "semantic_agreements": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-nested-pending-generator-owned-native-ewl7s32q/report.json",
+      "sha256": "1c1b753c73e1f271f6d56af703318e25fb143ba0c9e6163e192d119926e8be1a",
+      "semantic_agreements": 0
+    }
+  ],
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-nested-aggregate-source-le1i9h6f/report.json",
+      "sha256": "7304620c8f900c765c24d7593860c6beff869fb410fef2799d7ad1d5bda3501b",
+      "result": "normal model misses Y during pending Generator startup; native O|M|N|n|m|Y|A|1|0, model O|M|N|n|m|A|1|0; zero agreement"
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-traversable-sl-6dl6ks1i/report.json",
+      "sha256": "17637a08d37578ab2f1f3ffc48affa8b69eafd1b32bdf4e0fb2bea4fd8a97bd8",
+      "result": "Strict DSL phase/frame binding conjunction rejected; exact split correction reviewed; no affected source run and zero credit."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-3r9ofyx1/report.json",
+      "sha256": "47f76fb8e45ac281682c43a2454a853e5e1de4d8153b93e53e21b1a75a9fe736",
+      "result": "State14 expected pending-owner query before real selected-Inner cleanup prefix; genuine initial snapshot/global/heap and one step passed, original post-step assertion failed; zero affected credit."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-state-review-3epgunq1/report.json",
+      "sha256": "0917c35deae304484ffdd04d70b72a0885fdc101efdf28c22565e98b9b811a94",
+      "result": "State16 expected only iterator data/original jobs, omitting the ordinary START receiver already required by shared374 discard; exact release shape passed, JOBS assertion failed; zero affected credit. Unrun closed-Generator fixture receives the same exact correction."
+    }
+  ],
+  "pending_sources": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-nested-aggregate-source-4thjke6u/report.json",
+    "sha256": "addd5ebc9c552601fa0ed6be978484a3d1a34e20f77c2099df97f5ba486e3f9a",
+    "normal_agreements": 1,
+    "unsupported_controls": 2,
+    "selected_ids": [
+      "nested-intermediate-destructor-throws-generator",
+      "nested-pending-generator-call-required",
+      "nested-pending-generator-owned-frame-required"
+    ],
+    "status": "pass; controls zero agreement"
+  },
+  "initial_semantic_code": "d3485b61b",
+  "semantic_code": "1b5c9f1655e586a42c16ab6b2cf7859e18a88377",
+  "initial_compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-traversable-sl-i_wr0r8z/report.json",
+    "sha256": "53d8d3e19ac1e1f7eb3e38747b1e3127abeb6b18d57ad66d45e85cd4df889577",
+    "modules": 361,
+    "passed": true
+  },
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/fiber-start-traversable-sl-hllartoq/report.json",
+    "sha256": "32c5004c6332d4238da294b53d354abdd6b9e8118ee5ee359275d48372f8aaf7",
+    "modules": 361,
+    "passed": true
+  },
+  "source_totals": {
+    "normal_agreements": 11,
+    "unsupported_controls": 2,
+    "php_error_agreements": 0,
+    "result": "Ten unchanged normals retained at6e; one new normal and two Unsupported0 controls at1b5."
+  },
+  "destructor_tail_diagnostic": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-20/.tools/nested-pending-step-frontier-ofhut8tc/report.json",
+    "sha256": "6c44867a56105e68b25fd5da35b3fea593688bcbeb605f0761dd078182f433e9",
+    "agreement_credit": 0,
+    "result": "Genuine post-discard release(selected Inner), operation exit, remaining Middle release and acquired-error CURRENT retain one pending Throwable/data/input/Middle owner each; global/heap admit. Fixture correction only; production unchanged."
+  },
+  "actual_composition": {
+    "parent": "fbc87ced31329d1eaece65eecad3a947e32f7ad6",
+    "semantic_commit": "53396820dddf99981f66df04c899fbd42a8b799b",
+    "compiler_report": "/home/user/workspace/php-spec/.tools/calls-fiber-start-nested-aggregate-actual-20/.tools/fiber-start-traversable-sl-5g77fqp6/report.json",
+    "sha256": "9fea68a02845d59e293ab882c0ecc09a5361833a8fb8246a82c1d790d10300f1",
+    "modules": 361,
+    "passed": true,
+    "interaction_review": "Pointwise two-file semantics preserve current SWITCH replay/promotion and shutdown fatal-render paths; generic257/270/280 and module order remain parent bytes. No source/state renewal."
+  }
+}

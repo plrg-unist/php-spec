@@ -13,10 +13,10 @@ def $concat_constant(S, porigin?) = false
   -- otherwise
 def $concat_operand(S, KNOWN (PARRAY n), true, z) = (S_out, S_out.RESULT)
   -- if S_out = $stringify(S, PARRAY n, z)
-def $concat_operand(S, KNOWN (PFLOAT n), true, z) = (S, KNOWN (PSTRING n_text*))
+def $concat_operand(S, KNOWN (PFLOAT n), true, z) = (S, KNOWN (PSTRING_CARRIER INTERNED_STRING n_text*))
   -- if $concat_precision(S) = (z_precision)
   -- if (n_text*, b_warning) = $number_text(NFLOAT n, z_precision)
-def $concat_operand(S, KNOWN pvalue, true, z) = (S, KNOWN (PSTRING $echo_value(pvalue)))
+def $concat_operand(S, KNOWN pvalue, true, z) = (S, KNOWN (PSTRING_CARRIER INTERNED_STRING $echo_value(pvalue)))
   -- if ~$is_array_value(pvalue)
   -- if $type_bytes(pvalue) =/= $ptascii("float")
 def $concat_operand(S, poperand, b, z) = (S, poperand)
@@ -73,24 +73,26 @@ rule PhpStep/concat-left-string-abrupt: S ~> S_string[.TODO = eps]
   -- if ~$user_string_value(S_left, pvalue_left)
   -- if S_string = $stringify(S_left, pvalue_left, z)
   -- if S_string.COMPLETION =/= NORMAL
-rule PhpStep/concat-right-call: S ~> $user_string_begin(S_right, n, porigin_right, z, CONCAT_AFTER_RIGHT porigin_parent n_left* z, ptask_tail*)
+rule PhpStep/concat-right-call: S ~> $user_string_begin(S_right, n, porigin_right, z, CONCAT_AFTER_RIGHT porigin_parent pvalue_left z, ptask_tail*)
   -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
   -- if S.ORIGIN = (porigin_left)
   -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
   -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
-  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (n_left*)
   -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
   -- if S_prepared.COMPLETION = NORMAL
   -- if S_right = $resolve_at(S_prepared, poperand_prepared, z)
   -- if S_right.COMPLETION = NORMAL
   -- if S_right.RESULT = KNOWN (POBJECT n)
   -- if $stringable_instance(S_right, n)
-rule PhpStep/concat-right-scalar: S ~> S_string[.TODO = (CONCAT_AFTER_RIGHT porigin_parent n_left* z) :: ptask_tail*]
+rule PhpStep/concat-right-scalar: S ~> S_string[.TODO = (CONCAT_AFTER_RIGHT porigin_parent pvalue_left z) :: ptask_tail*]
   -- if S.TODO = (CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) :: ptask_tail*
   -- if S.ORIGIN = (porigin_left)
   -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
   -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
-  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (n_left*)
   -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
   -- if S_prepared.COMPLETION = NORMAL
   -- if S_right = $resolve_at(S_prepared, poperand_prepared, z)
@@ -104,7 +106,8 @@ rule PhpStep/concat-right-prepare-abrupt: S ~> S_prepared[.ORIGIN = (porigin_par
   -- if S.ORIGIN = (porigin_left)
   -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
   -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
-  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (n_left*)
   -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
   -- if S_prepared.COMPLETION =/= NORMAL
 rule PhpStep/concat-right-read-abrupt: S ~> S_right[.ORIGIN = (porigin_parent)][.TODO = eps]
@@ -112,7 +115,8 @@ rule PhpStep/concat-right-read-abrupt: S ~> S_right[.ORIGIN = (porigin_parent)][
   -- if S.ORIGIN = (porigin_left)
   -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
   -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
-  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (n_left*)
   -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
   -- if S_prepared.COMPLETION = NORMAL
   -- if S_right = $resolve_at(S_prepared, poperand_prepared, z)
@@ -122,7 +126,8 @@ rule PhpStep/concat-right-string-abrupt: S ~> S_string[.ORIGIN = (porigin_parent
   -- if S.ORIGIN = (porigin_left)
   -- if $concat_left_child_valid(S, porigin_parent, porigin_left, z, b_right)
   -- if porigin_right = $origin_child((porigin_parent), [PCFIELD 1])
-  -- if S.RESULT = KNOWN (PSTRING n_left*)
+  -- if S.RESULT = KNOWN pvalue_left
+  -- if $string_bytes(pvalue_left) = (n_left*)
   -- if (S_prepared, poperand_prepared) = $concat_operand(S[.ORIGIN = (porigin_right)], poperand_right, b_right, z)
   -- if S_prepared.COMPLETION = NORMAL
   -- if S_right = $resolve_at(S_prepared, poperand_prepared, z)
@@ -131,8 +136,11 @@ rule PhpStep/concat-right-string-abrupt: S ~> S_string[.ORIGIN = (porigin_parent
   -- if ~$user_string_value(S_right, pvalue_right)
   -- if S_string = $stringify(S_right, pvalue_right, z)
   -- if S_string.COMPLETION =/= NORMAL
-rule PhpStep/concat-finish: S ~> S[.ORIGIN = (porigin_parent)][.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING (n_left* ++ n_right*))][.BASE = BASE_VALUE (KNOWN (PSTRING (n_left* ++ n_right*)))]
-  -- if S.TODO = (CONCAT_AFTER_RIGHT porigin_parent n_left* z) :: ptask_tail*
+rule PhpStep/concat-finish: S ~> S_concat[.ORIGIN = (porigin_parent)][.TODO = ptask_tail*][.BASE = BASE_VALUE S_concat.RESULT]
+  -- if S.TODO = (CONCAT_AFTER_RIGHT porigin_parent pvalue_left z) :: ptask_tail*
   -- if S.ORIGIN = (porigin_right)
   -- if $concat_right_child_valid(S, porigin_parent, porigin_right, z)
-  -- if S.RESULT = KNOWN (PSTRING n_right*)
+  -- if S.RESULT = KNOWN pvalue_right
+  -- if $string_bytes(pvalue_left) = (n_left*)
+  -- if $string_bytes(pvalue_right) = (n_right*)
+  -- if S_concat = $string_concat(S, pvalue_left, pvalue_right, $concat_constant(S, $origin_child((porigin_parent), [PCFIELD 0])), $concat_constant(S, $origin_child((porigin_parent), [PCFIELD 1])))

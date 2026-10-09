@@ -70,6 +70,11 @@ dec $gc_handle_fiber(pstate, pnode, nat) : nat
 dec $gc_handle_fibers(pstate, pnode*, nat) : nat
 dec $gc_handle_callers(pstate, pfibercaller*, nat) : nat
 dec $gc_handle_closers(pstate, pfiberclose*, nat) : nat
+dec $gc_handle_fatal_task(ptask, nat) : nat
+dec $gc_handle_fatal_tasks(ptask*, nat) : nat
+dec $gc_handle_fatal_frames(pframe*, nat) : nat
+dec $gc_handle_fatal(ptask, nat) : nat
+dec $gc_handle_abandoned(pdestructioncleanup*, nat) : nat
 dec $gc_handle_all(pstate, nat) : nat
 dec $gc_begin(pstate, pconfigcall) : pstate
 dec $gc_receive(pstate, pconfigcall) : pstate
@@ -732,7 +737,23 @@ def $gc_handle_callers(S, eps, n) = 0
 def $gc_handle_callers(S, pfibercaller :: pfibercaller_tail*, n) = $($gc_handle_vm(S, pfibercaller.VM, pfibercaller.PREVIOUS, n) + $gc_handle_callers(S, pfibercaller_tail*, n))
 def $gc_handle_closers(S, eps, n) = 0
 def $gc_handle_closers(S, pfiberclose :: pfiberclose_tail*, n) = $($gc_handle_vm(S, pfiberclose.VM, pfiberclose.PREVIOUS, n) + $gc_handle_closers(S, pfiberclose_tail*, n))
-def $gc_handle_all(S, n) = $($gc_handle_tasks(S, S.TODO, n) + $gc_handle_frames(S, S.FRAMES, n) + $gc_handle_fibers(S, S.ALLOCATIONS, n) + $gc_handle_callers(S, S.FIBERCALLERS, n) + $gc_handle_closers(S, S.FIBERCLOSERS, n))
+;; Only actual unfinished fatal frames retain these physical HANDLE jobs.
+;; Admission authenticates their release records through the borrowed history.
+def $gc_handle_fatal_task(AT porigin ptask, n) = $gc_handle_fatal_task(ptask, n)
+def $gc_handle_fatal_task(DESTRUCTOR_RELEASE pdestructionrelease, n) = $gc_handle_jobs(pdestructionrelease.JOBS, n)
+def $gc_handle_fatal_task(ptask, n) = 0 -- otherwise
+def $gc_handle_fatal_tasks(eps, n) = 0
+def $gc_handle_fatal_tasks(ptask :: ptask_tail*, n) = $($gc_handle_fatal_task(ptask, n) + $gc_handle_fatal_tasks(ptask_tail*, n))
+def $gc_handle_fatal_frames(eps, n) = 0
+def $gc_handle_fatal_frames(pframe :: pframe_tail*, n) = $($gc_handle_fatal_tasks(pframe.TODO, n) + $gc_handle_fatal_frames(pframe_tail*, n))
+def $gc_handle_fatal(DESTRUCTOR_FATAL pdestructionfatal, n) = $($gc_handle_fatal_tasks(pdestructionfatal.FRAME.TODO, n) + $gc_handle_fatal_frames(pdestructionfatal.FRAMES, n))
+def $gc_handle_fatal(ptask, n) = 0 -- otherwise
+def $gc_handle_abandoned(eps, n) = 0
+def $gc_handle_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, n) = $($gc_handle_fatal(pdestructioncleanup.SOURCE, n) + $gc_handle_abandoned(pdestructioncleanup_tail*, n))
+  -- if ~pdestructioncleanup.RELEASED
+def $gc_handle_abandoned(pdestructioncleanup :: pdestructioncleanup_tail*, n) = $gc_handle_abandoned(pdestructioncleanup_tail*, n)
+  -- if pdestructioncleanup.RELEASED
+def $gc_handle_all(S, n) = $($gc_handle_tasks(S, S.TODO, n) + $gc_handle_frames(S, S.FRAMES, n) + $gc_handle_fibers(S, S.ALLOCATIONS, n) + $gc_handle_callers(S, S.FIBERCALLERS, n) + $gc_handle_closers(S, S.FIBERCLOSERS, n) + $gc_handle_abandoned(S.DESTRUCTION.ABANDONED, n))
 def $gc_retired_valid(S, n) = ($destructor_jobs_valid(S, [DESTRUCTION_HANDLE n]) /\ $gc_handle_all(S, n) = 1) -- otherwise
 def $gc_buffer_unique(pgcslot*) = $heap_unique($gc_physical_nodes(pgcslot*))
 def $gc_slots_valid(S, eps, nat*, n) = true

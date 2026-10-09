@@ -190,6 +190,12 @@ test-semantics: build
 	python3 tests/semantics/fiber_start_nan_review.py
 	python3 tests/semantics/fiber_start_aggregate_sources.py
 	python3 tests/semantics/fiber_start_aggregate_review.py
+	python3 tests/semantics/fiber_start_nested_aggregate_sources.py
+	python3 tests/semantics/fiber_start_nested_aggregate_review.py
+	python3 tests/semantics/foreach_aggregate_sources.py
+	python3 tests/semantics/foreach_aggregate_review.py
+	python3 tests/semantics/foreach_valid_nan_sources.py
+	python3 tests/semantics/foreach_valid_nan_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
@@ -416,6 +422,22 @@ test-semantics: build
 	python3 tests/semantics/property_reference_named_warning_protocol.py --group warning
 	python3 tests/semantics/property_reference_named_warning_protocol.py --group default
 	python3 tests/semantics/property_reference_named_warning_protocol.py --group pending
+	python3 tests/semantics/property_reference_two_cv_warning_protocol.py --group mutation
+	python3 tests/semantics/property_reference_two_cv_warning_protocol.py --group unset
+	python3 tests/semantics/property_reference_two_cv_warning_protocol.py --group samecell
+	python3 tests/semantics/property_reference_two_cv_warning_protocol.py --group leave
+	python3 tests/semantics/property_reference_two_cv_warning_protocol.py --group sendthrow
+	python3 tests/semantics/property_reference_two_cv_warning_protocol.py --group pending
+	python3 tests/semantics/property_reference_two_named_warning_protocol.py --group first
+	python3 tests/semantics/property_reference_two_named_warning_protocol.py --group samecell
+	python3 tests/semantics/property_reference_two_named_warning_protocol.py --group leave
+	python3 tests/semantics/property_reference_two_named_warning_protocol.py --group priority
+	python3 tests/semantics/property_reference_two_named_warning_protocol.py --group pending
+	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group first
+	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group samecell
+	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group leave
+	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group priority
+	python3 tests/semantics/property_reference_mixed_warning_protocol.py --group pending
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
@@ -526,6 +548,12 @@ test-semantics: build
 	python3 tests/semantics/constructor_promotion_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/constructor_promotion_override_cases.json
 	python3 tests/semantics/constructor_promotion_override_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/parameter_override_cases.json
+	python3 tests/semantics/parameter_override_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_parameter_cases.json
+	python3 tests/semantics/sensitive_parameter_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/constructor_sensitive_promotion_cases.json
+	python3 tests/semantics/constructor_sensitive_promotion_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json
@@ -715,6 +743,14 @@ test-semantics: build
 	python3 tests/semantics/generator_request_render_handler_throw_protocol.py --mode check --sl
 	python3 tests/semantics/generator_request_render_warning_throw_sources.py --mode full
 	python3 tests/semantics/generator_request_render_warning_throw_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_instance_child_sources.py --mode full
+	python3 tests/semantics/generator_request_instance_child_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_reference_child_sources.py --mode full
+	python3 tests/semantics/generator_request_reference_child_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_array_child_sources.py --mode full
+	python3 tests/semantics/generator_request_array_child_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_array_reference_child_sources.py --mode full
+	python3 tests/semantics/generator_request_array_reference_child_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl

@@ -6,6 +6,7 @@ def $truth(S, PINT i) = (i =/= 0)
 def $truth(S, PFLOAT n) = b
   -- if (b, b_warning) = $number_bool(NFLOAT n)
 def $truth(S, PSTRING n*) = (n* =/= eps /\ n* =/= [48])
+def $truth(S, PSTRING_CARRIER pstringidentity n*) = (n* =/= eps /\ n* =/= [48])
 def $truth(S, PARRAY n) = (S.ARRAYS[n].ITEMS =/= eps)
 
 def $truth_value(S, PFLOAT n, z) = $diagnostic(S[.RESULT = KNOWN (PBOOL b)], "Warning", [117,110,101,120,112,101,99,116,101,100,32,78,65,78,32,118,97,108,117,101,32,119,97,115,32,99,111,101,114,99,101,100,32,116,111,32,98,111,111,108], z)
