@@ -298,8 +298,10 @@ def $gc_worker_overlap_targets(S, pgcplan, n_ordinal, pnode*) = false -- otherwi
 ;; Metadata reads the genuine normalized guard before CALLED is appended.
 ;; Its logical ordinal is distinct from the global physical cursor.
 def $gc_worker_overlap_selected(S, pgcplan, n_object, n_slot) = true
-  -- if S.ACTIVEFIBER = S.GC.WORKER /\ S.GC.WORKER = (n)
-  -- if $fiber_at(S, n) = (pfiber) /\ pfiber.GC = (pgcworker)
+  -- if S.ACTIVEFIBER = S.GC.WORKER
+  -- if S.GC.WORKER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
   -- if pgcworker.GUARD = (pgcguard)
   -- if pgcguard.PUBLIC = eps /\ pgcguard.WORKER = n
   -- if pgcguard.SOURCE = pgcplan.CALL[.PENDING = eps]
@@ -319,15 +321,18 @@ def $gc_worker_overlap_image(S, pgcplan) = true -- if ~$gc_overlap_plan(pgcplan)
 def $gc_worker_overlap_image(S, pgcplan) = true
   -- if $gc_overlap_plan(pgcplan)
   -- if $heap_subset($destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER)), $gc_nested_removed(pgcplan))
-  -- if S.GC.WORKER = (n) /\ S.ACTIVEFIBER = (n)
-  -- if $fiber_at(S, n) = (pfiber) /\ pfiber.GC = (pgcworker)
+  -- if S.GC.WORKER = (n)
+  -- if S.ACTIVEFIBER = (n)
+  -- if $fiber_at(S, n) = (pfiber)
+  -- if pfiber.GC = (pgcworker)
   -- if pfiber.STATUS = FIBER_RUNNING /\ pfiber.VM = eps
   -- if S.FIBERCALLERS = pfibercaller :: pfibercaller_tail*
   -- if $fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps)
   -- if pfibercaller.OBJECT = n /\ $gc_worker_api(pfibercaller.API)
   -- if $fiber_api_valid(S, pfibercaller.API) /\ $fiber_caller_wait(S, pfibercaller)
   -- if pfibercaller.VM.TODO = (GC_WORKER_WAIT n pgcplan) :: ptask_tail*
-  -- if pfibercaller.PREVIOUS = (n_caller) /\ n_caller =/= n
+  -- if pfibercaller.PREVIOUS = (n_caller)
+  -- if n_caller =/= n
   -- if $fiber_at(S, n_caller) = (pfiber_caller)
   -- if pfiber_caller.GC = eps /\ $fiber_record_valid(S, n_caller, pfiber_caller)
   -- if S_caller = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = pfibercaller.PREVIOUS][.FIBERCALLERS = pfibercaller_tail*]
@@ -411,12 +416,15 @@ def $gc_worker_overlap_start_ready(S, pgcplan, true) = true
   -- if $fiber_at(S, n_caller) = (pfiber_caller)
   -- if pfiber_caller.GC = eps /\ $fiber_record_valid(S, n_caller, pfiber_caller)
   -- if $fiber_callers_valid(S, S.ACTIVEFIBER, S.FIBERCALLERS, eps)
-  -- if S.GC.WORKER = (n) /\ n =/= n_caller
+  -- if S.GC.WORKER = (n)
+  -- if n =/= n_caller
   -- if $fiber_at(S, n) = (pfiber)
   -- if $fiber_record_valid(S, n, pfiber)
   -- if pfiber.STATUS = FIBER_SUSPENDED
-  -- if pfiber.GC = (pgcworker) /\ pgcworker.GUARD = eps
-  -- if pfiber.VM = (pfibervm) /\ pfibervm.TODO = [GC_WORKER_IDLE n]
+  -- if pfiber.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+  -- if pfiber.VM = (pfibervm)
+  -- if pfibervm.TODO = [GC_WORKER_IDLE n]
 def $gc_worker_overlap_start_ready(S, pgcplan, b_fresh) = false -- otherwise
 def $gc_worker_start_buffer(S, pgcplan, true) = S[.GC.BUFFER = $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS)][.GC.FREE = eps][.GC.SCAN = {INDEX 0, END n_end}]
   -- if ~$gc_overlap_plan(pgcplan)
