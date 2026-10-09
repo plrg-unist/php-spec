@@ -1440,6 +1440,9 @@ at `cba3ab695`; pending207/stdClass225 pass at `d615fdf4d` after a fixture-only
 WeakReference timing correction. Strict359 passes at the original changed cut;
 native7/native2/native1 and the failed pending gate retain separate zero-model
 or zero-state credit. Accepted99/79 remain unchanged. [Reference-receiver ledger](coverage/semantics/reference-property-receiver-review.json).
+The independently reviewed actual361 join over `7c18fccada` passes strict
+compilation at `0b6054930` (4.817s), preserving current return-replay vocabulary,
+CALLS pack/NaN schemas and exception interfaces. It renews no source/state cut.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container

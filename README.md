@@ -1074,6 +1074,8 @@ fetch cleanup. Ten exact originals and separate 237/207/225 reached cuts cover
 callee/finally rebinding, normal and throwing last-owner cleanup, saved callers
 and stdClass child retirement. [The reference-receiver review](coverage/semantics/reference-property-receiver-review.json)
 records the pinned8.5 wrapper behavior and the refuted8.6 snapshot prediction.
+The actual361 join over `7c18fccada` passes strict compilation at `0b6054930`,
+preserving accepted return replay, CALLS and exception interfaces.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
