@@ -85,7 +85,18 @@ The [typed CV review](../../coverage/semantics/reference-return-typed-cv-review.
 binds 13 exact originals and eight reached fixtures/843 assertions at separate cuts,
 plus actual-parent compilation. Admission checks source, line, receiver, matching
 copies and retained local identity, not a fully coherent rewritten private history.
-Released/nonreference CV layouts, destructor timing and wider typed consumers remain open.
+Module 381 separately admits a sole ordinary nonreference local CV. Plain conversion
+borrows the f-local cell; a protected return first creates the real owning temporary.
+FETCH/THROW certificates own nothing. COPY retains the converted text and masks only
+the captured cell's released old-object edge while the real destructor runs, before
+raw copying into that cell. Current/saved f-local scope authenticates this stage even
+after the old object is collected. Callback failure retains the live object through
+finally and preserves its previous Exception. The
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json)
+records five exact originals and eight reached fixtures/871 assertions, separately
+from the aliased-CV cut. Matching source/cell/task copies do not reconstruct a fully
+coherently rewritten history; parked-VM checks are helper-only. Genuinely released
+targets, destructor throw/reentry, real suspension and wider typed consumers remain open.
 
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;

@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "status": "independently_accepted_bounded_sole_local_cv_stringable_reference_return_lifetime",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "scope": "Weak by-reference string returns from a sole ordinary nonreference local CV borrow its physical cell during verification. Protected returns first create the real owning reference temporary. A successful Stringable conversion releases the old cast receiver and cell edge, runs its destructor while the raw old value remains in the captured cell, then copies the string there. Callback failure retains the original object through finally, creates TypeError from the live selected value and chains the previous callback exception.",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "authority": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_return",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_VERIFY_RETURN_TYPE and ZEND_RETURN_BY_REF",
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_str_weak",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_cast_object_tostring"
+  ],
+  "native": {
+    "originals": 5,
+    "raw": ".tools/returns-localcv-native-20/.tools/returns-verify20-nonref/native-local-cv-ldimqh15/report.json",
+    "report_sha256": "325048d9cf7ddbfd0ba94ef2813436ce3e7d76c44d581a8cdee2d53887c9d813"
+  },
+  "pre_repair_frontiers": {
+    "revision": "71cf292aa0321f0aa1aeab9cdc4fbe40cfc0cbff",
+    "fixtures": 2,
+    "premises": 40,
+    "source_agreements": 0,
+    "raw": ".tools/returns-verify20-nonref/prefetch-local-cv-lwhu488y/report.json",
+    "report_sha256": "0070c183b1e25a51c1f82d1a70bc226631e09dd9cee4c06160bbf30e3f9560e4",
+    "observed": "Both genuine pre-FETCH selected local cells are outside REFCELLS with one owner. Plain has no pending finalizer; protected has its authentic TRY_END tail before any temporary is minted."
+  },
+  "source": {
+    "revision": "18ab1ad5f89afa9eb1c6f3b4fab21dd62ef0c2db",
+    "modules": 371,
+    "exact_agreements": 5,
+    "raw": ".tools/returns-verify20-nonref/model-local-cv-ta75ob61/report.json",
+    "report_sha256": "51a40e2c571518d2e95a3128d800e18a47321a3dcaa610d89d90d602e71675d8",
+    "catalogue": "tests/semantics/reference_typed_local_cv_string_cases.json",
+    "catalogue_sha256": "e92fb644e6a2d0d08af8c5f5eca496e4361a3a763d57bd75dd24d74e267c0f88"
+  },
+  "state": {
+    "preserved_first_five": {
+      "revision": "dfb45bbb741b67031d71cf5a56e8501ae6219081",
+      "fixtures": 5,
+      "assertions": 488,
+      "raw": ".tools/returns-typed-cv-lifetime-20/.tools/returns-local-cv20/local-cv-state-ude0wyb1/report.json",
+      "report_sha256": "4bdccc7f7c3b526c7edc35eed6ee9d5ba2734d77e0c744331bd94f0f13200614",
+      "cut": "Only the first five successful records earn credit; the later fixture failure does not."
+    },
+    "affected_last_three": {
+      "revision": "fbb5d0a848628d5d23344267f72479a4c297bf64",
+      "fixtures": 3,
+      "assertions": 383,
+      "raw": ".tools/returns-typed-cv-lifetime-20/.tools/returns-local-cv20/local-cv-state-last3-vup5ajee/report.json",
+      "report_sha256": "346562eeb36323988246b738a7e7d55a3ad1187fe3a48fb4def8d0e098520219"
+    },
+    "fixtures": 8,
+    "assertions": 871
+  },
+  "private_compiler": {
+    "revision": "18ab1ad5f89afa9eb1c6f3b4fab21dd62ef0c2db",
+    "modules": 371,
+    "raw": ".tools/returns-typed-cv-lifetime-20/.tools/returns-local-cv20/returns-local-cv-current-compiler-gfz3n14z/report.json",
+    "report_sha256": "d0c65415a9f1a927369c77d94945dcffe85ae544f39414927a796b830e328eaf",
+    "mode": "SL",
+    "application_evaluations": 0,
+    "exit": 0
+  },
+  "actual_parent_compiler": {
+    "revision": "cf1094a07d1b37e3f7e0f60345969f5288383252",
+    "canonical_parent": "3d99674e9afe9a6556a6f1412ea94335b7a0b999",
+    "modules": 371,
+    "raw": ".tools/returns-local-cv-publication-20/.tools/returns-local-cv20/returns-local-cv-current-compiler-18j68al6/report.json",
+    "report_sha256": "40a761a411cf7a7dfdda1842265fc219acc0bf473d4a30069358b146584c0065",
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "exit": 0,
+    "elapsed_seconds": 5.293006181716919,
+    "timeout": false,
+    "group_after": [],
+    "inputs_module_stats_head_status_stable": true
+  },
+  "ownership": "FETCH/THROW certificates own nothing. Only protected TEMP adds a cell root; existing STRINGIFY_RESULT retains the cast receiver. COPY owns the converted text and masks only its authenticated captured cell's released old-object edge across current/saved and existing parked representations. It admits collected old payloads without reading or reviving them.",
+  "history_limit": "Source, line, captured cell, f-local binding and matching task copies authenticate the representation. They do not independently reconstruct or reject a fully coherently rewritten private history. Parked-VM snapshot checks are helper-only, with no new Fiber or generator behavior credit.",
+  "retained_aliased_cv_cut": "coverage/semantics/reference-return-typed-cv-review.json retains its separate thirteen-source/eight-state843 evidence; this increment does not renew it.",
+  "runtime": {
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile": "tests/semantics/profile.json",
+    "E_ALL": 30719,
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1,
+    "state_cap_seconds": 45
+  },
+  "preserved_failures": [
+    "71cf baseline diagnostic2 stopped at user object string conversion: zero agreement",
+    "ff625 copy-at recursive otherwise compiler elaboration failure: zero application credit; equivalent pure-head correction tested at 18ab",
+    "dfb callback-error fixture expected immediate THROW_SEARCH before real shared receiver/TEMP release; fixture-only zero credit, first five/488 retained",
+    "bef callback-error terminal fixture expected e/p roots after request cleanup; fixture-only zero credit, reached error lineage/F/D and first five/488 retained"
+  ],
+  "intentional_divergence": false,
+  "remaining": [
+    "genuinely released selected CV targets, callback writes that change the selected local CV and wider layouts",
+    "destructor throw/reentry and real Fiber or generator suspension across this conversion",
+    "wider typed consumers, consumed VALUE/CONST/NULL or multiple-active-finalizer histories, wider physical owners and complete returns/core conformance"
+  ],
+  "reviewer": "returns_review_20",
+  "verifier": "returns_verify_20",
+  "recovery": "Keep original sources/native packets at .tools/returns-verify20-nonref/local_cv_source_proposals.json and the native report above. Regenerate with tests/semantics/reference_typed_local_cv_string_state.py --raw .tools/returns-verify20-nonref/model-local-cv-ta75ob61 --output DIR. Retain first five/488 at dfb45 and affected last three/383 at fbb5; use the pinned numeric runner --sl in modules.json order, serially with cap45. Compiler initialization evaluates no applications; metadata edits earn no renewed runtime credit."
+}

@@ -308,7 +308,17 @@ Thirteen exact originals agree at `010545`/368; eight reached fixtures pass 843 
 (95 at `34607` plus 748 at `436014`). Actual 370 over `6f096ef1` passes strict at
 `cfd5f87d` (5.280s, zero application evaluations); the
 [typed CV review](coverage/semantics/reference-return-typed-cv-review.json) keeps each cut separate.
-Released/nonreference CV layouts, destructor timing and wider typed consumers remain open.
+Sole nonreference local CV string returns now borrow their selected cell, while
+protected returns first create the real owning reference temporary. Successful
+conversion releases the old receiver before raw copying into that cell, so its
+destructor precedes finally; callback failure retains the object through finally
+and reports its live value with the previous callback Exception. Five originals
+agree at `18ab1ad5`/371; eight reached fixtures pass 871 assertions (488 at `dfb45`
+plus 383 at `fbb5d0a`). Actual 371 over `3d99674e` passes strict at `cf1094`
+(5.293s, zero application evaluations). The
+[local CV lifetime review](coverage/semantics/reference-return-local-cv-lifetime-review.json)
+keeps these cuts separate from the earlier aliased-CV evidence. Genuinely released
+targets, destructor throw/reentry, real suspension and wider typed consumers remain open.
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
@@ -3628,8 +3638,9 @@ failures and interrupted evidence.
   Wider deprecated constant consumers remain open. Generic, scalar-loop, CV/compiled-CONST
   and bounded physical-array return replay are integrated, as is deferred reference-return
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
-  reference conversion 186 are integrated. Wider consumed VALUE/CONST/NULL and
-  multiple-active histories, released/nonreference CV layouts and wider typed consumers
+  reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
+  Wider consumed VALUE/CONST/NULL and multiple-active histories, genuinely released
+  CV targets, destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
 - Objects and lifetime: remaining static members, effectful trait data composition,
@@ -3648,9 +3659,10 @@ failures and interrupted evidence.
 held branches and evidence, and do not retry the rejected engine experiment.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
-integrated, as is bounded aliased-CV Stringable reference conversion 186. Wider owner
-domains, consumed VALUE/CONST/NULL or multiple-active histories, released/nonreference
-CV layouts and wider typed consumers remain required.
+integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
+lifetime 381. Wider owner domains, consumed VALUE/CONST/NULL or multiple-active histories,
+genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
+consumers remain required.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 

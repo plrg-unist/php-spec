@@ -94,7 +94,15 @@ live selected value and previous callback Exception, then follows initial error
 unwinding through the finalizer without minting terminal replay or a Notice.
 Thirteen exact originals and eight reached fixtures/843 assertions are recorded in
 the [typed CV review](../../coverage/semantics/reference-return-typed-cv-review.json).
-Released/nonreference CV layouts, destructor timing and wider typed consumers remain open.
+Module 381 handles the distinct sole nonreference local CV lifetime. Plain returns
+borrow the physical cell; protected returns create one real owning temporary before
+verification. Successful conversion releases the old receiver and runs its destructor
+before copying the string into the selected cell and entering finally. Callback error
+retains that object through finally, then ordinary cleanup destroys it. Five exact
+originals and eight reached fixtures/871 assertions are recorded in the
+[local CV lifetime review](../../coverage/semantics/reference-return-local-cv-lifetime-review.json).
+Genuinely released targets, destructor throw/reentry, real suspension and wider typed
+consumers remain open.
 
 Compilation visits the try body, each catch header/body, then finally. Break and
 continue join the ordered goto pass-two stream without generating goto targets.

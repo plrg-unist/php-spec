@@ -1542,8 +1542,14 @@ pass; the generic 45-second runner times out on that source.
 now preserves selected live unconstrained aliased CV cells through callback GLOBALS
 rebind/unset. Successful conversion writes the selected cell; failure reports its live
 value and retains the previous callback Exception. Thirteen exact originals and eight
-current/saved fixtures with 843 assertions pass. Released/nonreference CV layouts,
-destructor timing and wider typed consumers remain open.
+current/saved fixtures with 843 assertions pass. The separate
+[local CV lifetime increment](coverage/semantics/reference-return-local-cv-lifetime-review.json)
+borrows a sole nonreference local CV or preserves its protected owning temporary.
+It runs the old receiver's destructor before copying a successful string into the
+captured cell; callback failure retains the object through finally and chains the
+callback Exception. Five exact originals and eight reached fixtures/871 assertions
+pass. Genuinely released targets, destructor throw/reentry, real suspension and
+wider typed consumers remain open.
 [Weak Stringable parameters](coverage/semantics/weak-string-parameters-review.json)
 now convert supplied fixed parameters in receive order, preserving caller
 strictness, nominal/callable precedence and the entered formal cell. Existing
