@@ -147,6 +147,7 @@ dec $gc_call_local_scope(pstate, pgccall) : pstate
 dec $gc_parked_call_count(pstate, pgccall) : nat
 dec $gc_parked_plan_count(pstate, pgcplan) : nat
 dec $gc_snapshot_fresh(pstate, pgcplan) : bool
+dec $gc_snapshot_nested(pstate, pgcplan) : bool
 dec $gc_worker_state_valid(pstate) : bool
 dec $gc_slot_node(pgcslot) : pnode?
 dec $gc_bare_keep(pstate) : pnode*
@@ -581,6 +582,9 @@ def $gc_fresh_array_plan(pgcplan) = true
   -- if pnode_white* = $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))
   -- if $heap_subset(pnode_component*, pnode_white*)
   -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
+def $gc_fresh_array_plan(pgcplan) = true
+  -- if pgcplan.CALL.PASS = 1 /\ pgcplan.SCAN = eps
+  -- if $gc_fresh_array_plan(pgcplan[.CALL.PASS = 0])
 def $gc_fresh_array_plan(pgcplan) = false -- otherwise
 
 ;; A reached residual tag remains tag3 after collect_roots ORs tag2. Only
@@ -737,12 +741,30 @@ def $gc_fresh_tasks((GC_DTORS pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.
 def $gc_fresh_tasks((GC_FREE pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.INDEX = 0
 def $gc_fresh_tasks((AT porigin ptask) :: ptask_tail*, pgcplan) = $gc_fresh_tasks(ptask :: ptask_tail*, pgcplan)
 def $gc_fresh_tasks(ptask*, pgcplan) = false -- otherwise
-;; Nested removal changes the physical image before the first main callback.
-;; Replay its frozen producer buffer; the main scan separately checks the image.
+;; Nested removal changes the physical image before callbacks. Replay the
+;; frozen producer buffer; each driving lane separately authenticates its image.
+;; Nonoverlap array replay is confined to an actual ordinary Fiber's worker WAIT.
+def $gc_snapshot_nested(S, pgcplan) = true -- if $gc_overlap_plan(pgcplan)
+def $gc_snapshot_nested(S, pgcplan) = true
+  -- if ~$gc_overlap_plan(pgcplan)
+  -- if $gc_fresh_array_plan(pgcplan)
+  -- if S.TODO = (GC_WORKER_WAIT n_worker pgcplan) :: ptask_tail*
+  -- if S.GC.WORKER = (n_worker)
+  -- if S.ACTIVEFIBER = (n_caller)
+  -- if n_worker =/= n_caller
+  -- if $fiber_at(S, n_worker) = (pfiber_worker)
+  -- if pfiber_worker.STATUS = FIBER_RUNNING /\ pfiber_worker.VM = eps
+  -- if pfiber_worker.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+  -- if $fiber_at(S, n_caller) = (pfiber_caller)
+  -- if pfiber_caller.GC = eps
+  -- if $fiber_record_valid(S, n_caller, pfiber_caller)
+  -- if $gc_scope_valid(S, pgcplan.CALL)
+def $gc_snapshot_nested(S, pgcplan) = false -- otherwise
 def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan.CALL))
-  -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_overlap_plan(pgcplan)
+  -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_snapshot_nested(S, pgcplan)
 def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)], pgcplan.CALL))
-  -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_overlap_plan(pgcplan)
+  -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_snapshot_nested(S, pgcplan)
 def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_snapshot_fresh(S, pgcplan)
 def $gc_call_live(S, pgccall) = true
   -- if S.GC.ACTIVE = (pgccall) /\ $(pgccall.NONCE < S.GC.NEXT)
