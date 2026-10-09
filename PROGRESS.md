@@ -838,11 +838,24 @@ ordinal and CALLED authority. Source1 agrees under CLI60 at `e3d359d01`; five
 source-reached cuts155/134/172/54/130 cover all408 original obligations
 (645 executed premises include repeated setup), with count0, E retirement and
 D self-owner/weak-live. Pure lookup/source-site factors preserve all validators.
-Earlier compiler stops, source failures and timeouts retain zero credit; mixed surviving
-residuals, nonordinary/later-pass overlap and wider GC remain required.
+Earlier compiler stops, source failures and timeouts retain zero credit;
+nonordinary/later-pass overlap and wider GC remain required.
 Actual367 over `6e709da74` passes compiler/init at `020f95d30`; reviewed carrier,
 fatal, reference-return and promotion interfaces preserve the unchanged e3 cuts.
 [Ledger](coverage/semantics/cycle-collection-review.json).
+
+Mixed ordinary-Fiber overlap301/345 now scans surviving physical tags after
+nested removal through the actual U caller and cached worker W. Exact initial BUFFER/FREE,
+surviving F/E tags and the selected physical guard retain authority without adding
+F to fresh DTORS/progress. Three independent source-reached cuts 147/95/118 at
+`fb872a74e` execute 360 premises: F→E→D, signed -2+2=0, F/E retirement, D self-owner 1
+and weak-live, request cleanup and replay. Compiler/init pass; baseline 97 and
+projection 66 localize ingress and first selection. The first 146-premise fixture clears an
+owner-bearing caller and fails with zero credit; its corrected LINE-only forgery
+preserves the heap. The whole source CLI60 timeout remains OPEN with zero source
+agreement, and only that source is excluded from the default whole-CLI campaign.
+Wider overlap/throw/reentry, nonordinary/non-idle and later-pass lanes remain required;
+prior cuts are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.

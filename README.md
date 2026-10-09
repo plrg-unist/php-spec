@@ -867,13 +867,19 @@ fresh traced graph. Real F selection uses its surviving physical tag without add
 to fresh DTORS or progress; one signed retrace retires F/E and keeps D weak-live.
 One unchanged source and 321 independent premises (215/106) pass at `a2ef8b039`.
 Incoming owners, nonordinary components and wider overlap remain explicit boundaries.
-Ordinary-Fiber overlap now admits only profiles with every residual tag nested-removed.
+The ordinary-Fiber RUN path handles profiles with every residual tag nested-removed.
 It preserves the computed physical image while fresh E and retraced D run on the
 distinct cached worker. One unchanged source agrees
 under CLI60 at `e3d359d01`; five source-reached cuts cover all408 original state
 obligations, including caller/guard forgeries, count0, weak liveness and terminal
-replay. Mixed surviving-residual, nonordinary and later-pass Fiber overlap remain
-required; earlier cuts retain their inputs.
+replay. Nonordinary and later-pass Fiber overlap remain required; earlier cuts
+retain their inputs.
+Mixed ordinary-Fiber overlap now uses a physical scan when a separate residual F
+survives nested removal. It preserves fresh E-only progress and the real saved
+caller, initial image and current guard. Three source-reached cuts execute 360
+premises, including F→E→D, count 0, F retirement, D weak liveness and terminal
+replay. The whole source retains its CLI60 timeout and zero agreement credit.
+Wider overlap, throwing callbacks and reentry remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
