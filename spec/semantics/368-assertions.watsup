@@ -8,6 +8,8 @@ dec $assertion_quantity_digit(nat) : nat
 dec $assertion_quantity_digits(nat, preqbytes, nat, nat) : ndigits
 dec $assertion_quantity_factor(preqbytes) : nat?
 dec $assertion_quantity(preqbytes) : int?
+dec $assertion_quantity_decode(preqbytes) : (int, preqbytes?)
+dec $assertion_ini_records_valid(pstate, passertini*) : bool
 dec $assertion_restore(pstate) : pstate
 dec $assertion_ini_set(pstate, pconfigcall, pvalue) : pstate
 dec $assertion_ini_blocked(int, int) : bool

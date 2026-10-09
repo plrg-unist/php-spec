@@ -90,7 +90,6 @@ def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = $as
   -- if DIGITS n_value n_count n_tail* = $assertion_quantity_digits(n_base, n_unsigned*, 0, 0)
   -- if $(n_count > 0)
   -- if (z, b_overflow) = $assertion_quantity_integer(n_sign, n_value)
-dec $assertion_quantity_decode(preqbytes) : (int, preqbytes?)
 def $assertion_quantity_decode(n_input*) = (0, eps)
   -- if $assertion_quantity_trim(n_input*) = eps
 def $assertion_quantity_decode(n_input*) = (0, ($assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no valid leading digits")))))
@@ -119,6 +118,7 @@ dec $assertion_ini_remove(passertini*, nat) : passertini*
 def $assertion_ini_remove(eps, n) = eps
 def $assertion_ini_remove(passertini_head :: passertini_tail*, n) = passertini_tail* -- if passertini_head.ID = n
 def $assertion_ini_remove(passertini_head :: passertini_tail*, n) = passertini_head :: $assertion_ini_remove(passertini_tail*, n) -- if passertini_head.ID =/= n
+dec $assertion_ini_phase_valid(passertiniphase, int) : bool
 dec $assertion_ini_record_shape(pstate, passertini) : bool
 def $assertion_ini_record_shape(S, passertini) = true
   -- if $(passertini.ID < S.ASSERTIONININEXT)
@@ -131,12 +131,11 @@ def $assertion_ini_record_shape(S, passertini) = true
   -- if $precision_ini_valid($decimal_integer(passertini.PRECISION))
   -- if $assertion_ini_phase_valid(passertini.PHASE, passertini.VALUE)
 def $assertion_ini_record_shape(S, passertini) = false -- otherwise
-dec $assertion_ini_phase_valid(passertiniphase, int) : bool
 def $assertion_ini_phase_valid(ASSERTION_PARSE, z) = true
 def $assertion_ini_phase_valid(ASSERTION_REFUSE z_old, z) = $assertion_ini_blocked(z_old, z)
-dec $assertion_ini_records_valid(pstate, passertini*) : bool
 def $assertion_ini_records_valid(S, eps) = true
 def $assertion_ini_records_valid(S, passertini_head :: passertini_tail*) = ($assertion_ini_record_shape(S, passertini_head) /\ $assertion_ini_record(passertini_tail*, passertini_head.ID) = eps /\ $assertion_ini_records_valid(S, passertini_tail*))
+dec $assertion_ini_input_copy(pstate, passertini) : bool
 dec $assertion_ini_valid(pstate, passertini) : bool
 def $assertion_ini_valid(S, passertini) = true
   -- if $assertion_ini_record(S.ASSERTIONINI, passertini.ID) = (passertini)
@@ -146,7 +145,6 @@ def $assertion_ini_valid(S, passertini) = true
   -- if $assertion_ini_argument(S, passertini.CALL, passertini.PRECISION) = (n_input*)
   -- if $assertion_ini_input_copy(S, passertini)
 def $assertion_ini_valid(S, passertini) = false -- otherwise
-dec $assertion_ini_input_copy(pstate, passertini) : bool
 def $assertion_ini_input_copy(S, passertini) = (passertini.INPUT = pvalue)
   -- if passertini.CALL.SENT = [NAMED_SENT poperand, NAMED_SENT (KNOWN pvalue)]
   -- if $method_string(pvalue)
