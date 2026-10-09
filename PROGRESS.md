@@ -117,7 +117,10 @@ Unsupported record preserved. Strict361 and fourteen independent source-reached
 groups/425 physical premises pass at their separate cuts. Live interface-link
 admission and rejected raw-return retention are corrected; original failures stay
 at zero credit. Nested acquisition and foreach/yield-from/ordinary-call unpack
-consumers remain required. [Aggregate ledger](coverage/semantics/fiber-start-aggregate-review.json).
+consumers remain required. Actual361 over `5ec31e145` passes strict SL at
+`35d7e73f1`, preserving current promotion, reference-recheck and EX33 collector
+paths; private source/state cuts retain their original inputs.
+[Aggregate ledger](coverage/semantics/fiber-start-aggregate-review.json).
 
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;
