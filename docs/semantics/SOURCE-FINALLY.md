@@ -95,6 +95,14 @@ and three reached current/saved fixtures/347 assertions pass at distinct cuts in
 the [consumed-literal review](../../coverage/semantics/reference-return-consumed-literal-review.json). Actual-parent compilation is
 separate. Effectful VALUE, other CONST/NULL and multiple histories remain required.
 
+An old explicit `return null` with exact declared-type acceptance now recovers
+PNULL only from its checked special-constant source. The consumed cursor owns
+no operand, and normal resumption restores one original-line VALUE Notice before
+a fresh returned cell. It remains distinct from bare/implicit NULL designations
+and cleared CV recovery. Two originals and three reached current/saved fixtures/367
+assertions pass at separate cuts in the [consumed-NULL review](../../coverage/semantics/reference-return-consumed-null-review.json).
+General CONST, effectful VALUE, other NULL and multiple histories remain open.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

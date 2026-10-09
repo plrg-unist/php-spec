@@ -625,7 +625,10 @@ value after a locally caught inner rejection in one already-active finalizer.
 The source cursor owns no operand, restores one original-line VALUE Notice and
 returns a fresh cell distinct from the globals. Two originals agree and three
 reached current/saved fixtures pass 347 assertions; actual-parent compilation is
-separate. Effectful VALUE, other CONST/NULL and multiple-active histories, wider
+separate. [Consumed explicit NULL](coverage/semantics/reference-return-consumed-null-review.json) now recovers its special
+constant value and original VALUE Notice; two originals agree and three reached
+current/saved fixtures pass 367 assertions. Effectful VALUE, general CONST,
+other NULL and multiple-active histories, wider
 Stringable consumers and owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
