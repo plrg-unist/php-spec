@@ -54,7 +54,10 @@ compatibility and bypasses ordinary method access/abstract checks. Private
 constructor errors name the requested class even when the constructor is inherited. Without a compatible receiver,
 an abstract constructor reports the nonstatic-call Error. A variable method name
 follows ordinary lookup; parser-foldable string concatenation of `__construct`
-uses the constructor arm. Class expressions resolve their type and lookup before
+uses the constructor arm. For an ordinary class without a constructor, this arm
+raises `Cannot call constructor`; a computed method name raises the ordinary
+undefined-method Error. Both reject before evaluating arguments. Class expressions
+resolve their type and lookup before
 a computed method name; literal class lookup follows the computed name.
 
 Original-source and genuine rejection checks retain their separate cuts in

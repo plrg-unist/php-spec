@@ -3009,9 +3009,10 @@
         "tests/semantics/fiber_static_api_sources.py",
         "tests/semantics/fiber_static_api_cases.json",
         "tests/semantics/fiber_from_callable_sources.py",
-        "tests/semantics/fiber_from_callable_cases.json"
+        "tests/semantics/fiber_from_callable_cases.json",
+        "tests/semantics/missing_constructor_cases.json"
       ],
-      "review": "Historical ordinary-array constant prepass remains in array-omission-review.json with20/45 and its existing tests. Ordinary static/scoped dispatch and capture are covered separately by static-method-review.json. Selected reference RHS acquisition with untyped return signatures preserves named/parent/self/late-static selection, typed cells and returned-cell cleanup. static-method-reference-review.json separates compiler rejection, typed initialization/error priority, independent scopes and current raw-getter/handler/PIPE interactions. Discarded genuine getters now wrap initialized typed slots, with post-return ownership/type-source checks and an ordinary by-value control. Legal untyped-slot ignored/used getters, shared aliases and typed-source attachment/removal are now bounded; ordinary non-FCC StaticCall direct reference sends retain the real cell, with value-Notice/FCC controls. Broader temporary-return Notice timing, broader resolution and typed return verification remain open; status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Module331 adds source-authenticated static getCurrent/suspend first-class Closures, receiver-free capture and direct/__invoke/C-root ownership through resume/throw cleanup; private cuts and wider API/lifecycle boundaries are retained in fiber-static-api-callables-review.json. Module358 freezes simple Fiber API factory selection across mutated/retired callback arrays and factory owners, with separate bound/static ownership and actual waiting trace sites. Source and reached checks retain distinct cuts in fiber-from-callable-review.json. Ordinary API arrays, effectful compound selectors and outer start unpacking remain required.",
+      "review": "Historical ordinary-array constant prepass remains in array-omission-review.json with20/45 and its existing tests. Ordinary static/scoped dispatch and capture are covered separately by static-method-review.json. Selected reference RHS acquisition with untyped return signatures preserves named/parent/self/late-static selection, typed cells and returned-cell cleanup. static-method-reference-review.json separates compiler rejection, typed initialization/error priority, independent scopes and current raw-getter/handler/PIPE interactions. Discarded genuine getters now wrap initialized typed slots, with post-return ownership/type-source checks and an ordinary by-value control. Legal untyped-slot ignored/used getters, shared aliases and typed-source attachment/removal are now bounded; ordinary non-FCC StaticCall direct reference sends retain the real cell, with value-Notice/FCC controls. Broader temporary-return Notice timing, broader resolution and typed return verification remain open; status stays partial. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. Module331 adds source-authenticated static getCurrent/suspend first-class Closures, receiver-free capture and direct/__invoke/C-root ownership through resume/throw cleanup; private cuts and wider API/lifecycle boundaries are retained in fiber-static-api-callables-review.json. Module358 freezes simple Fiber API factory selection across mutated/retired callback arrays and factory owners, with separate bound/static ownership and actual waiting trace sites. Source and reached checks retain distinct cuts in fiber-from-callable-review.json. Ordinary API arrays, effectful compound selectors and outer start unpacking remain required. Ordinary missing constructors preserve literal/folded constructor dispatch versus computed lookup, with two exact safe originals and distinct17+17 reached SL premises at their recorded cuts; see missing-constructor-review.json.",
       "helper_tests": [
         "tests/semantics/static_method_protocol.py",
         "tests/semantics/static_set_access_protocol.py",
@@ -3019,12 +3020,14 @@
         "tests/semantics/fiber_static_api_state.py",
         "tests/semantics/fiber_static_api_review.py",
         "tests/semantics/fiber_from_callable_review.py",
-        "tests/semantics/fiber_from_callable_state.py"
+        "tests/semantics/fiber_from_callable_state.py",
+        "tests/semantics/missing_constructor_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/ordinary-throwable-reception-review.json",
         "coverage/semantics/fiber-static-api-callables-review.json",
-        "coverage/semantics/fiber-from-callable-review.json"
+        "coverage/semantics/fiber-from-callable-review.json",
+        "coverage/semantics/missing-constructor-review.json"
       ]
     },
     {
@@ -11029,7 +11032,8 @@
         "tests/semantics/class_static_selector_variants_protocol.py",
         "tests/semantics/class_static_selector_unwind_protocol.py",
         "tests/semantics/class_static_interface_failure_protocol.py",
-        "tests/semantics/typed_static_string_protocol.py"
+        "tests/semantics/typed_static_string_protocol.py",
+        "tests/semantics/missing_constructor_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/static_method_cases.json",
@@ -11041,7 +11045,8 @@
         "tests/semantics/typed_static_string_assignment.py",
         "tests/semantics/typed_static_callable.py",
         "tests/semantics/typed_static_restore.py",
-        "tests/semantics/object_class_name_sources.py"
+        "tests/semantics/object_class_name_sources.py",
+        "tests/semantics/missing_constructor_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
@@ -11051,9 +11056,10 @@
         "coverage/semantics/first-class-method-review.json",
         "docs/semantics/SOURCE-CLASS-STATICS.md",
         "coverage/semantics/class-static-properties.json",
-        "coverage/semantics/typed-static-string-assignment-review.json"
+        "coverage/semantics/typed-static-string-assignment-review.json",
+        "coverage/semantics/missing-constructor-review.json"
       ],
-      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class source method captures preserve descriptors, called classes, receivers and direct trace frames; finite internal getter and Closure->__invoke captures, interface methods and broader class integration remain open. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Dynamic object ::class256 is covered separately in object-class-name-review.json: source20/compiler7 and165 reached premises at026ba preserve actual object identity, parser/computed distinctions, compiled lines and captured CV/exception owners. Broader static lookup remains partial. Class-owned ABSTRACT methods now reject before nonstatic checks and arguments, retaining access denial first and unchanged concrete dispatch. One normal source and24 supplied clauses plus6 setup pass at a962cef07/354, including four global validators; five clauses are helper-only flag checks. Concrete nonstatic scoped calls deny access before missing-receiver errors, while literal constructor calls bypass ordinary method access/abstract lookup. Two new normal originals and54 supplied clauses plus12 setup pass at0c48e90f3/356:40 genuine rejection/global clauses and14 helper-only clauses covering flag/source probes; earlier abstract evidence remains separate. Literal private constructor denial also precedes receiver compatibility for unrelated active objects. One new normal original and24 genuine clauses plus6 setup pass atf515fd26b/356, including all four global validators; prior constructor cuts remain separate. Inherited private constructor errors now name the requested class in both Error consumers while retaining declaring-owner proof. One new normal source and28 supplied clauses plus6 setup pass at4c3ece53d/357:26 genuine rejection/global clauses and2 helper-only alternate-consumer clauses."
+      "review": "Bounded static descriptors and scoped calls model visibility, override priority, forwarding called classes, active nonstatic receivers, literal and parser-folded constructor arms, dynamic class/name order, and source-owned selected targets. First-class source method captures preserve descriptors, called classes, receivers and direct trace frames; finite internal getter and Closure->__invoke captures, interface methods and broader class integration remain open. Installed ordinary 187/188 adds declaration-owned static cells, inherited sharing, visibility-before-staticness, source-bound computed selector pairs and tagged static alias constraints (SOURCE-CLASS-STATICS.md; class-static-properties.json). Broader property/reference consumers,186 witness lifecycle, exceptional singleton clone provenance, readonly and asymmetric set access remain open. Bounded weak typed static Stringable assignment197 checks the live row after callbacks and preserves ownership/abrupt effects. Focused INI source2/755, ARG/callable source1 BS|ok and current nested Restore/property source1 are independently accepted with separate tested identities (typed-static-string-assignment-review.json). Dynamic object ::class256 is covered separately in object-class-name-review.json: source20/compiler7 and165 reached premises at026ba preserve actual object identity, parser/computed distinctions, compiled lines and captured CV/exception owners. Broader static lookup remains partial. Class-owned ABSTRACT methods now reject before nonstatic checks and arguments, retaining access denial first and unchanged concrete dispatch. One normal source and24 supplied clauses plus6 setup pass at a962cef07/354, including four global validators; five clauses are helper-only flag checks. Concrete nonstatic scoped calls deny access before missing-receiver errors, while literal constructor calls bypass ordinary method access/abstract lookup. Two new normal originals and54 supplied clauses plus12 setup pass at0c48e90f3/356:40 genuine rejection/global clauses and14 helper-only clauses covering flag/source probes; earlier abstract evidence remains separate. Literal private constructor denial also precedes receiver compatibility for unrelated active objects. One new normal original and24 genuine clauses plus6 setup pass atf515fd26b/356, including all four global validators; prior constructor cuts remain separate. Inherited private constructor errors now name the requested class in both Error consumers while retaining declaring-owner proof. One new normal source and28 supplied clauses plus6 setup pass at4c3ece53d/357:26 genuine rejection/global clauses and2 helper-only alternate-consumer clauses. Ordinary missing constructors preserve literal/folded constructor dispatch versus computed lookup, with two exact safe originals and distinct17+17 reached SL premises at their recorded cuts; see missing-constructor-review.json."
     },
     {
       "id": "classes.instance-lookup",

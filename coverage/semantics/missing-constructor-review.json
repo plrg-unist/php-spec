@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Ordinary class with no effective constructor: literal and parser-folded constructor names use the constructor-null Error; computed names use ordinary undefined-method lookup. Both reject before arguments.",
+  "implementation": [
+    "spec/semantics/142-method-runtime.watsup"
+  ],
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_static_call",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_INIT_STATIC_METHOD_CALL"
+  ],
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "raw_root": ".tools/missing-constructor-literal-computed-private-20",
+  "baseline": {
+    "revision": "f5c4eed1f7c847105c759e3a50c9a8b6f47d9ef1",
+    "modules": 358,
+    "native": ".tools/missing-constructor-probes-20/native-run-da7cy6qv/report.json",
+    "model": ".tools/missing-constructor-probes-20/baseline-run-rsufigju/report.json",
+    "source_agreements": 0,
+    "result": "Normal literal Error message differs; computed message and argument suppression agree."
+  },
+  "accepted_private": {
+    "revision": "fbab085b0f9b3599119ca578e2ab374ba59d21b6",
+    "modules": 358,
+    "exact_source_agreements": 2,
+    "source_reports": [
+      ".tools/missing-constructor-probes-20/changed-run-0dy8kcbn/report.json",
+      ".tools/missing-constructor-probes-20/changed-run-we42leoa/report.json"
+    ],
+    "native_folded": ".tools/missing-constructor-probes-20/native-run-mi7o483z/report.json",
+    "compiler_report": ".tools/missing-constructor-probes-20/missing-constructor-compiler-pou4hyhr/report.json",
+    "compiler_sha256": "c46f03003ee0fa8ef255393cf6fe0f4a2274311bdadd40000c390fa51a1d7790",
+    "compiler": "strict SL cache=false det=true; application/source credit0"
+  },
+  "reached": {
+    "mode": "strict SL cache=false det=true",
+    "genuine_premises": 34,
+    "setup_per_case": 6,
+    "source_credit": 0,
+    "cuts": [
+      {
+        "selected": "literal",
+        "revision": "fbab085b0f9b3599119ca578e2ab374ba59d21b6",
+        "report": ".tools/missing-constructor-protocol-uw5h5wsv/report.json",
+        "sha256": "04ed34250e2b8d025a66408071ef2956b3cf023b587f884509249faabbfde3d5",
+        "accepted_premises": 17
+      },
+      {
+        "selected": "computed",
+        "revision": "87618a93e84e255421eb39d9871cd6c61808f15a",
+        "report": ".tools/missing-constructor-protocol-6aofddga/report.json",
+        "sha256": "36979523efaa8b7e8b39f6c609f638a35e4d55526ec021c69890e887217fb9a8",
+        "accepted_premises": 17
+      }
+    ],
+    "correction": "The provisional computed stage wrongly required KNOWN PSTRING. Authentic SCOPED_NAME retains VARIABLE method line8 and resolves its live STORE bytes in the genuine rejecting PhpStep. Only that affected group was repeated; the17 body checks are unchanged."
+  },
+  "completion": "All accepted producers exit0 without timeout, empty stderr and reaped groups; inputs/head/status stable. Native45s, source45s internal/55s outer, SL groups120s, compiler300s; jobs1, no rebuild.",
+  "zero_credit_preserved": [
+    {
+      "report": ".tools/missing-constructor-protocol-uw5h5wsv/report.json",
+      "selected": "computed",
+      "accepted_premises": 0,
+      "result": "false; unreachable provisional KNOWN-PSTRING selector"
+    },
+    {
+      "report": ".tools/missing-constructor-probes-20/computed-stage-diagnostic-qr9xqsva/report.json",
+      "result": "diagnostic binding error before evaluation"
+    },
+    {
+      "report": ".tools/missing-constructor-probes-20/computed-stage-diagnostic-_s_gy0g9/report.json",
+      "result": "diagnostic confirms authentic VARIABLE operand; no accepted premise/source credit"
+    }
+  ],
+  "reproduction": {
+    "source_catalogue": "tests/semantics/missing_constructor_cases.json",
+    "source_command": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/missing_constructor_cases.json",
+    "states": "python3 tests/semantics/missing_constructor_protocol.py [--case literal|computed]",
+    "compiler": "python3 .tools/missing-constructor-probes-20/run-compiler.py f5c4eed1f7c847105c759e3a50c9a8b6f47d9ef1",
+    "raw": "Exact argv, cwd, profile, relevant fingerprints and process exits are in the reports above. Native capture scripts and original source copies are preserved under the ignored raw root; use a fresh probe directory for a new native capture."
+  },
+  "independent_review": {
+    "reviewer": "traversal_review_20",
+    "status": "accepted private semantics, source2 and distinct17+17 at recorded cuts",
+    "scope": "Semantic completeness/counterexamples, genuine rejection/no argument or allocation effects, all four validators, fixture selection and process reliability."
+  },
+  "limits": [
+    "This small ordinary-class correction does not close the wider method/core family.",
+    "No held returns work or unsafe parent-constructor crash probe was used.",
+    "Current-parent composition is pending."
+  ]
+}
