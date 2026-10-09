@@ -892,12 +892,15 @@ def $eager_cleanup_source_target(ASSERT_CALLBACK_RESULT passertcall) = passertca
 def $eager_cleanup_source(ASSERT_CALLBACK_CLEAN passertcall) = ASSERT_CALLBACK_RESULT passertcall
 def $eager_cleanup_final(ASSERT_CALLBACK_CLEAN passertcall) = true
 def $eager_cleanup_object(S, ASSERT_CALLBACK_RESULT passertcall) = $eager_raw_history_nodes(S, passertcall.CALLBACK)
+;; The borrowed lookup view repeats receiver identities. Pending exceptions
+;; must remain valid on the actual heap rather than on that historical view.
 def $eager_cleanup_valid(S, pdestructioncleanup) = true
   -- if pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall
   -- if $consumer_producer_snapshot(pdestructioncleanup.TARGET)
   -- if pdestructioncleanup.TARGET.SITE = eps /\ pdestructioncleanup.TARGET.INTERNAL /\ pdestructioncleanup.TARGET.CLONE = eps
   -- if passertcall.TARGET = (pdestructioncleanup.TARGET.TARGET)
-  -- if $assertion_callback_valid($eager_cleanup_history(S, pdestructioncleanup), passertcall)
+  -- if $assertion_pending_valid(S, passertcall.FAILURE.PENDING)
+  -- if $assertion_callback_valid($eager_cleanup_history(S, pdestructioncleanup), passertcall[.FAILURE.PENDING = eps])
 def $assertion_callback_cleanup_valid(S, passertcall) = true
   -- if S.DESTRUCTION.CLEANUPS = pdestructioncleanup :: pdestructioncleanup_tail*
   -- if pdestructioncleanup.SOURCE = ASSERT_CALLBACK_RESULT passertcall
