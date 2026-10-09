@@ -130,7 +130,7 @@ EXPECTED = {
     'review-property-reference-call-owned20': 'C|H|0|D|1/1|done',
     'review-property-reference-call-unset20': 'C|H|0|D|1/1|done',
     'review-property-reference-call-throw20': 'C|H|0|D|caught=H|1|done',
-    'review-property-reference-call-callee-cleanup20': 'C|L|H|1|D|1/1/ReferenceCallNew20|N|done',
+    'review-property-reference-call-callee-cleanup20': 'C|L|D|H|0|1/1/ReferenceCallNew20|N|done',
     'review-property-reference-call-writable-control20': 'C|D|1/ReferenceCallWritableNew20|held|N|done',
     'review-property-reference-call-finally20': 'C|F|D|H|Undefined property: ReferenceCallFinallyNew20::$missing|N|1|done',
     'review-property-undefined-borrowed-false20': 'C|H|D|1|1/1|done',

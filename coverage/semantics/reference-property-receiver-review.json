@@ -1,0 +1,36 @@
+{
+  "status": "native-first observations only; semantic proposal awaiting authorization and implementation",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src dfca573f1; profile30719",
+  "parent": "0c549de11176e6c9977713ff675c08b7a920eaa0",
+  "native_revision": "fee272c5bcc89665e9f96e2aac4dc7649591a081",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "raw": ".tools/properties-reference-call20/.tools/property-reference-call-native20-6751r_0k/report.json",
+  "command": "python3 .tools/reference_call_native20.py (private tree, seven selected CASES; serialjobs1, native30)",
+  "native_exit0_empty_stderr": 7,
+  "model_agreements": 0,
+  "state_premises": 0,
+  "cases": {
+    "review-property-reference-call-handler-rebind20": "a89159245266a012a871566fe975aab306c3e01bf54026b7589c465c309d1319",
+    "review-property-reference-call-owned20": "14db958c18e11bfa12e804a7f8e8d5f02363738c15ea932f6895c45f723ef2ee",
+    "review-property-reference-call-unset20": "31c9a6d9d7024ab33217d5d57d956422256a3eadb7e9c03a5bd4f7b163d42119",
+    "review-property-reference-call-throw20": "a8f096135f24da2cb3c575e248f6430a8ee07164190ab8472015c53293ba208a",
+    "review-property-reference-call-callee-cleanup20": "fb17098e7b2710055b2eb7d953ebd69dfe3ebbc801c0c25d18611ecdf5c019fe",
+    "review-property-reference-call-writable-control20": "fb4c28dbd32e4a659e0a584508742d6025b29a91adc37e58d4db738de84d3536",
+    "review-property-reference-call-finally20": "df83c4eb72274c6ded8398ecd5482764836ed58053d28866fb9c08d597c46b6a"
+  },
+  "facts": [
+    "8.5 RETURN_BY_REF leaves a shared reference wrapper through callee leave. Callee cleanup rebinding destroys the old receiver before property lookup; lookup sees the new referent.",
+    "FETCH_OBJ_R dereferences the returned wrapper without a payload copy. Handler assignment retires the captured receiver inside Warning; the wrapper retains the replacement through FETCH cleanup.",
+    "Unsetting a global alias alone leaves the returned wrapper and original receiver alive through Warning. It does not discriminate wrapper versus payload ownership.",
+    "Writable reception retains the reference alias; finally rebinding is visible before property lookup."
+  ],
+  "preserved_prediction": {
+    "case": "review-property-reference-call-callee-cleanup20",
+    "prior": "C|L|H|1|D|1/1/ReferenceCallNew20|N|done",
+    "actual": "C|L|D|H|0|1/1/ReferenceCallNew20|N|done",
+    "credit": 0,
+    "meaning": "The original8.6-style before-leave payload snapshot prediction is false for pinned8.5. Its raw candidate mismatch remains unchanged; only the maintained expected string is corrected from this observation."
+  },
+  "engine": "Pinned Zend/zend_compile.c zend_compile_call_common emits IS_VAR; Zend/zend_vm_def.h RETURN_BY_REF has no zend_return_unwrap_ref and FETCH_OBJ_R dereferences the wrapper then FREE_OP1. Sibling8.6-dev TMP/unref behavior is excluded.",
+  "remaining": "Current377 raw-reference refusal remains. Proposed bounded property reception must preserve actual wrapper ownership and borrow the captured target without absence reread; accepted99 no-write repair is distinct and unaccepted code is not imported."
+}
