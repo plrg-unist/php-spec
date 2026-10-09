@@ -39,6 +39,7 @@ def $ppdefaults_step(P_outer, P, pcpath, ptbytes, statement*, metadata, PSSATTRI
 ;; The checked Param and its lexical scope survive default compilation. An
 ;; invalid builtin target stops before typename/default compatibility checks.
 def $ppsignature_attribute_valid(P, pcpath, pscontinuation, phpType14) = true
+  -- if P.FOLD.SOURCE = $pcsource(P.FOLD.SOURCE.ID, P.FOLD.SOURCE.AST)
   -- if pcpath = P.GOTOROOT ++ [PCFIELD 3, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)] \/ pcpath = P.GOTOROOT ++ [PCFIELD 4, PCINDEX (|pscontinuation.SIGNATURE.PARAMETERS|)]
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath) = (NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata)
   -- if $pslower(NParam phpType14 phpType24 phpType18 phpType4_ref phpType4_var phpType10 phpType5 phpType37 metadata) = PSINPUTATTRIBUTES pscontinuation.PARAMETER phpType14
@@ -57,9 +58,9 @@ def $ppsignature_attribute(P, pcpath, pscontinuation, phpType14) = $ppsignature_
   -- if pscontinuation.PARAMETER.DEFAULT = (expression)
 def $ppsignature_attribute_finish(P, pscontinuation, phpType14) = P
   -- if P.COMPLETION =/= PPCNORMAL
-def $ppsignature_attribute_finish(P, pscontinuation, phpType14) = $ppsignature_issue(P, "error", $psattribute_message(ptbytes), pscontinuation.PARAMETER.LINE)
+def $ppsignature_attribute_finish(P, pscontinuation, phpType14) = $ppsignature_issue(P, "error", $psattribute_message(ptbytes_resolved), pscontinuation.PARAMETER.LINE)
   -- if P.COMPLETION = PPCNORMAL
-  -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) = ptbytes
+  -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) = (ptbytes_resolved)
 
 def $ppdefaults_request(P_outer, P, pcpath, ptbytes, statement*, metadata, pscontinuation) = $ppdefaults_step(P_outer, $ppdefault_parameter(P[.LOCATION.LINE = pscontinuation.PARAMETER.LINE], pcpath, n_index), pcpath, ptbytes, statement*, metadata, $psstep_resume(pscontinuation, PSNONE))
   -- if pscontinuation.PARAMETER.DEFAULT = ABSENT
