@@ -1673,6 +1673,10 @@ bridge. Five whole state gates pass 1245 setup-inclusive premises across separat
 shared cells, formal/default leave order and frame/operation pending cleanup.
 The original whole-source7 and fixture failures remain zero; previous cuts are
 unrenewed.
+The actual364 join over `e26e3fb2d` passes strict at `2383140e3` (5.104s)
+and one affected pending300 gate. Local byte observations accommodate current
+Throwable string carriers; GEN363 and RETURNS378 seams remain disjoint. Earlier
+source/private state cuts retain their own identities and credit.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container

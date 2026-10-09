@@ -1173,6 +1173,9 @@ argument-list lines at both ordinals. Seven per-case source agreements and 1245
 setup-inclusive reached premises cover skipped defaults, shared cells, formal
 cleanup order and label-error priority before later CV demand. Earlier whole
 source and fixture failures retain zero credit.
+The actual364 join over `e26e3fb2d` passes strict at `2383140e3`; one affected
+pending300 gate also passes with exact Throwable message bytes under current
+string carriers. Earlier source/state cuts remain separate.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
