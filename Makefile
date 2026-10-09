@@ -543,6 +543,8 @@ test-semantics: build
 	python3 tests/semantics/parameter_override_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_parameter_cases.json
 	python3 tests/semantics/sensitive_parameter_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/constructor_sensitive_promotion_cases.json
+	python3 tests/semantics/constructor_sensitive_promotion_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

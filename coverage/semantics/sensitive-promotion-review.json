@@ -1,0 +1,177 @@
+{
+  "scope": "One zero-argument builtin SensitiveParameter on promoted constructor parameters. Parameter sensitivity remains separate from property Override; value/reference publication uses ordinary promotion writes, while trace wrappers snapshot the live parameter cell. Mixed/repeated/argument attributes, hooks, user attributes and wider wrapper protocols remain required.",
+  "target": "PHP 8.5.10 CLI NTS 64; profile30719; jobs1; SL/cache=false/det=true",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+  "parent": "7377bb0acfe652af377f57aef6133f3eeb30276d",
+  "raw_root": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_params",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_attributes",
+    "vendor/php-src/Zend/zend_builtin_functions.c::debug_backtrace_get_args"
+  ],
+  "first_gap": {
+    "native": {
+      "revision": "7377bb0acfe652af377f57aef6133f3eeb30276d",
+      "report": "native-first/report.json",
+      "report_sha256": "0c15ffd5e52dd0a7cdaf37b377550fa1241c013567c5b8706ebedafefb157534",
+      "result": "Value property7/live CV17; by-reference property/caller17 then23 while wrapper snapshot stays17; exact normal tuples"
+    },
+    "baseline": {
+      "revision": "7377bb0acfe652af377f57aef6133f3eeb30276d",
+      "report": "accepted-current-baseline/report.json",
+      "report_sha256": "793ecedf022e1f8a48f1d7ccf01bb348fbc165eec717fea43a097aa954fa0a95",
+      "result": "Both parsed/checked; Unsupported(parameter attributes or hooks), source0"
+    },
+    "location": "Core signature and source-authenticated promotion/trace admission; frontend and adapter unchanged"
+  },
+  "accepted_source": {
+    "agreements": 8,
+    "cuts": [
+      {
+        "revision": "bf6e4078417b30d73aee6652b54f7f09b70745ad",
+        "report": "changed-model-mdpfhslh/report.json",
+        "report_sha256": "568fa7ce768677a4c09230b0070d158a735bf2af7aa4fadd3f3498656bf50c5d",
+        "result": "Original value/reference snapshots and exact trace rendering",
+        "agreements": 2
+      },
+      {
+        "revision": "bf6e4078417b30d73aee6652b54f7f09b70745ad",
+        "report": "focused/changed-model-rswnjfat/report.json",
+        "report_sha256": "81ecf08a10215de2cf90680047797f6a53b3f276040f601efb77908ac7365a11",
+        "result": "Selected first four only: lexical alias, readonly re-entry, inherited private and trait import",
+        "agreements": 4,
+        "selected": [
+          "alias-current-cv",
+          "readonly-reentry",
+          "inherited-private",
+          "trait-import"
+        ]
+      },
+      {
+        "revision": "688cb2613b1fa8ab4c32ab99b33b810a15199154",
+        "report": "focused/changed-model-f0onrh0w/report.json",
+        "report_sha256": "11a41dab89ebe6486749ec1c5a9462d981d24cf08b7a73cc126e7b79c3d3008c",
+        "result": "Variadic promotion Fatal and outside-constructor notice-before-Fatal; nonbuiltin boundary is separate",
+        "agreements": 2,
+        "selected": [
+          "variadic-promotion-error",
+          "outside-constructor-error"
+        ]
+      }
+    ],
+    "bounds_seconds": {
+      "native": 45,
+      "model_internal": 60,
+      "model_outer": 75
+    },
+    "steps": 100000,
+    "unsupported_control": "Namespaced user SensitiveParameter stays explicit Unsupported/source0; native observation retained separately"
+  },
+  "accepted_protocol": {
+    "revision": "75c4aba8202e0d6205d89d8d088c84065472b1f9",
+    "report": "sensitive-promotion-checked-vjofm9h2/report.json",
+    "report_sha256": "20cd1806fd1877e11966231073a111da9f10b2539989732241a5e757078d0f1c",
+    "result": "Complete fixture AL4.310496 s then one SL17611.921767 s/cap120/true newline/empty stderr/reaped/stable",
+    "derived_checks": 74,
+    "reached_checks": 102,
+    "real_php_steps": 4,
+    "source_agreements": 0,
+    "fixture_sha256": "9ad858f771199332c0c769a7167e1f2c9bb1ea4b535c6258b3ad606759c8be40",
+    "review": "Authentic promoted source/descriptor admission and negatives, head-anchored queued suffixes, value/reference property publication, physical wrapper snapshots and live final property/caller cells; genuine steps remain distinct from derived abrupt-continuation controls."
+  },
+  "zero_credit_preserved": [
+    {
+      "revision": "7377bb0acfe652af377f57aef6133f3eeb30276d",
+      "report": "accepted-current-baseline/report.json",
+      "report_sha256": "793ecedf022e1f8a48f1d7ccf01bb348fbc165eec717fea43a097aa954fa0a95",
+      "result": "Original2 Unsupported before implementation; source0",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "bf6e4078417b30d73aee6652b54f7f09b70745ad",
+      "report": "focused/changed-model-rswnjfat/report.json",
+      "report_sha256": "81ecf08a10215de2cf90680047797f6a53b3f276040f601efb77908ac7365a11",
+      "result": "Selected variadic row only: overlapping method continuation interpreter failure; other four accepted, later two UNRUN",
+      "selected": "variadic-promotion-error",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "688cb2613b1fa8ab4c32ab99b33b810a15199154",
+      "report": "sensitive-promotion-checked-n7fv6ej8/report.json",
+      "report_sha256": "3fad5c6d3ac32af460deeb6625c40fb228a2e291327832a23a524f74723225bb",
+      "result": "Fixture AL optional-binder diagnostic before main; SL UNRUN",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "688cb2613b1fa8ab4c32ab99b33b810a15199154",
+      "report": "sensitive-promotion-checked-pme4j4gf/report.json",
+      "report_sha256": "224c306edd9453bd90fd0bea12fe65b25406eed4242bf18415598cf88ad66dbd",
+      "result": "Complete fixture AL passed at original5s; original167 SL false; state0",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "688cb2613b1fa8ab4c32ab99b33b810a15199154",
+      "report": "sensitive-promotion-checked-1h90o4m5/report.json",
+      "report_sha256": "d20fe9e047ae23d73a11a4744ae327790407deeeffeaa505cc84750d43991c8c",
+      "result": "Corrected STATICBYTES167 SL false; state0",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "688cb2613b1fa8ab4c32ab99b33b810a15199154",
+      "report": "sensitive-promotion-diagnostic-nql1rvq4/report.json",
+      "report_sha256": "ee10814779fc576ff1f4c454f0ac148df8c4c072ed56bc12d3f5d9992fe1b05c",
+      "result": "Three-arm diagnostic [false,true,true]; zero credit",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "688cb2613b1fa8ab4c32ab99b33b810a15199154",
+      "report": "sensitive-promotion-value-diagnostic-uu7hn5ka/report.json",
+      "report_sha256": "c6ac5bd23f367e5669503438138f753a7cd1fe883c64515fab97535eea038dc4",
+      "result": "Value prefixes19/31 true;44/80 false; zero credit",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "688cb2613b1fa8ab4c32ab99b33b810a15199154",
+      "report": "sensitive-promotion-write-diagnostic-edtx365d/report.json",
+      "report_sha256": "ce446dda933546e250ad5e8e8f43cb1d9f9116f919fab9154d53602140c8283b",
+      "result": "Value32/35 true then36 false: queued promotion admission; zero credit",
+      "affected_source": 0,
+      "affected_state": 0
+    },
+    {
+      "revision": "0f623e69261ad3a74e1cf7d8693dc6cb0f1a608a",
+      "report": "sensitive-promotion-compiler-pyrifcal/report.json",
+      "report_sha256": "13d15b4d935f27a9429d2874b5c3f9219fbdac6b6c353df17bcb191b5b507656",
+      "result": "Duplicate global fallback elaboration stop; AL/SL UNRUN",
+      "affected_source": 0,
+      "affected_state": 0
+    }
+  ],
+  "preparations": "Earlier renderer/placeholder/binder preparations remain unevaluated and ignored. All original167 predicates are retained; nine new queued-admission predicates discriminate the grounded validator repair.",
+  "maintained_commands": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/constructor_sensitive_promotion_cases.json",
+    "python3 tests/semantics/constructor_sensitive_promotion_protocol.py --revision \"$(git rev-parse HEAD)\""
+  ],
+  "actual_composition": {
+    "status": "pending",
+    "source_state_renewal": false
+  },
+  "accepted_strict": {
+    "revision": "75c4aba8202e0d6205d89d8d088c84065472b1f9",
+    "report": "sensitive-promotion-compiler-mbb0z6xu/report.json",
+    "report_sha256": "ae3842db940141c3d5d344bdc47b362db344b2eac52175a9a4c0e156ec9498dd",
+    "result": "Ordered365 strict SL parse/elaborate/guards/structure/init PASS; 5.027135 s/cap300; application/source0"
+  },
+  "original_commands": [
+    "python3 .tools/constructor-sensitive-promotion-probes-23/run-compiler.py 7377bb0acfe652af377f57aef6133f3eeb30276d 75c4aba8202e0d6205d89d8d088c84065472b1f9",
+    "python3 .tools/constructor-sensitive-promotion-probes-23/run-prepared.py .tools/constructor-sensitive-promotion-probes-23/sensitive-promotion-protocol-2lreqbo9/PREPARED.json"
+  ]
+}

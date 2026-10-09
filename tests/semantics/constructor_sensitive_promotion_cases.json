@@ -1,0 +1,125 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "SHA256(stdout + NUL + stderr)",
+  "cases": [
+    {
+      "id": "value-property-vs-cv",
+      "source": "<?php\nclass SensitivePromotedValue23 {\n    public \\Error $error;\n    public function __construct(#[\\SensitiveParameter] public int $secret, public int $visible) {\n        $secret = 17;\n        $this->error = new \\Error(\"E\");\n    }\n}\n$object = new SensitivePromotedValue23(7, 9);\n$error = $object->error;\n$arguments = $error->getTrace()[0][\"args\"];\necho $object->secret, \"|\", $arguments[0]->getValue(), \"|\", $arguments[1], \"|\", $error->getTraceAsString();\n",
+      "source_sha256": "9b7b62da933ee20d49af7bf7cdd1eecbb9818d21318b880b750a0bf3b2f49a60",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/native-first/report.json",
+      "native_raw_sha256": "0bd20becf48d47bc8110bc9ac88ebeaace4c634b6edd07ca2f5a8db4459eb8c6",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3wxN3w5fCMwIC9ob21lL3VzZXIvd29ya3NwYWNlL3BocC1zcGVjLy50b29scy9jb25zdHJ1Y3Rvci1zZW5zaXRpdmUtcHJvbW90aW9uLXByaXZhdGUtMjMvLnRvb2xzL2NvbnN0cnVjdG9yLXNlbnNpdGl2ZS1wcm9tb3Rpb24tcHJvYmVzLTIzL3ZhbHVlLXByb3BlcnR5LXZzLWN2LnBocCg5KTogU2Vuc2l0aXZlUHJvbW90ZWRWYWx1ZTIzLT5fX2NvbnN0cnVjdChPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpLCA5KQojMSB7bWFpbn0=",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "N3wxN3w5fCMwIHtGSUxFfSg5KTogU2Vuc2l0aXZlUHJvbW90ZWRWYWx1ZTIzLT5fX2NvbnN0cnVjdChPYmplY3QoU2Vuc2l0aXZlUGFyYW1ldGVyVmFsdWUpLCA5KQojMSB7bWFpbn0="
+    },
+    {
+      "id": "reference-property-snapshot",
+      "source": "<?php\nclass SensitivePromotedReference23 {\n    public \\Error $error;\n    public function __construct(#[\\SensitiveParameter] public int &$secret) {\n        $this->secret = 17;\n        $this->error = new \\Error(\"E\");\n    }\n}\n$secret = 7;\n$object = new SensitivePromotedReference23($secret);\n$error = $object->error;\n$wrapper = $error->getTrace()[0][\"args\"][0];\necho $secret, \"|\", $object->secret, \"|\", $wrapper->getValue(), \"|\";\n$secret = 23;\necho $secret, \"|\", $object->secret, \"|\", $wrapper->getValue(), \"|\", $error->getTraceAsString();\n",
+      "source_sha256": "5e6ab4d3380d9c08c00eb36e182b3734de09e6a342e1dde7f8dafaabb3161bc4",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/native-first/report.json",
+      "native_raw_sha256": "47efbe3d0497aec129108d5a870f79f3f6618877fb7f4acf933269feba712d0e",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MTd8MTd8MTd8MjN8MjN8MTd8IzAgL2hvbWUvdXNlci93b3Jrc3BhY2UvcGhwLXNwZWMvLnRvb2xzL2NvbnN0cnVjdG9yLXNlbnNpdGl2ZS1wcm9tb3Rpb24tcHJpdmF0ZS0yMy8udG9vbHMvY29uc3RydWN0b3Itc2Vuc2l0aXZlLXByb21vdGlvbi1wcm9iZXMtMjMvcmVmZXJlbmNlLXByb3BlcnR5LXNuYXBzaG90LnBocCgxMCk6IFNlbnNpdGl2ZVByb21vdGVkUmVmZXJlbmNlMjMtPl9fY29uc3RydWN0KE9iamVjdChTZW5zaXRpdmVQYXJhbWV0ZXJWYWx1ZSkpCiMxIHttYWlufQ==",
+      "stderr_template_base64": "",
+      "stdout_template_base64": "MTd8MTd8MTd8MjN8MjN8MTd8IzAge0ZJTEV9KDEwKTogU2Vuc2l0aXZlUHJvbW90ZWRSZWZlcmVuY2UyMy0+X19jb25zdHJ1Y3QoT2JqZWN0KFNlbnNpdGl2ZVBhcmFtZXRlclZhbHVlKSkKIzEge21haW59"
+    },
+    {
+      "id": "alias-current-cv",
+      "source": "<?php\nnamespace SensitiveAlias23;\nuse SensitiveParameter as Mask;\nclass Box {\n    public \\Error $error;\n    public function __construct(#[mAsK] public int $secret) { $secret = 17; $this->error = new \\Error(\"E\"); }\n}\n$box = new Box(7);\necho $box->secret, \"|\", $box->error->getTrace()[0][\"args\"][0]->getValue();\n",
+      "source_sha256": "9458b1789bd6a2409b5604a091918cb25d17722a866b6a0ddd2352e0753b19a7",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/focused/native-first/report.json",
+      "native_raw_sha256": "84b75b897a76b6d9c2811a393ffd35025de44c4eede263a6957d1e50e056eb61",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3wxNw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "readonly-reentry",
+      "source": "<?php\nclass SensitiveReadonly23 {\n    public \\Error $error;\n    public function __construct(#[\\SensitiveParameter] public readonly int $secret) { $secret = 17; $this->error = new \\Error(\"E\"); }\n}\n$object = new SensitiveReadonly23(7);\necho $object->secret, \"|\", $object->error->getTrace()[0][\"args\"][0]->getValue(), \"|\";\ntry { $object->__construct(23); }\ncatch (\\Error $error) { echo \"R|\", $error->getTrace()[0][\"args\"][0]->getValue(), \"|\", $object->secret; }\n",
+      "source_sha256": "9b32f1a6f9cdc83ac12d1d16c720841362713bb171b76f1b9a3230446d71e987",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/focused/native-first/report.json",
+      "native_raw_sha256": "82b738960423292d223629fa0bccae22724bffd9b1c4f285f2381261cf326447",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3wxN3xSfDIzfDc=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "inherited-private",
+      "source": "<?php\nclass SensitiveParent23 {\n    public \\Error $error;\n    public function __construct(#[\\SensitiveParameter] private int $secret) { $secret = 17; $this->error = new \\Error(\"E\"); }\n    public function reveal() { return $this->secret; }\n}\nclass SensitiveChild23 extends SensitiveParent23 {}\n$object = new SensitiveChild23(7);\necho $object->reveal(), \"|\", $object->error->getTrace()[0][\"args\"][0]->getValue();\n",
+      "source_sha256": "616baf15140f191188e9baab80b37211809b8ef60899479f09b2510446c68490",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/focused/native-first/report.json",
+      "native_raw_sha256": "84b75b897a76b6d9c2811a393ffd35025de44c4eede263a6957d1e50e056eb61",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3wxNw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "trait-import",
+      "source": "<?php\ntrait SensitiveTrait23 {\n    public \\Error $error;\n    public function __construct(#[\\SensitiveParameter] private int $secret) { $secret = 17; $this->error = new \\Error(\"E\"); }\n    public function reveal() { return $this->secret; }\n}\nclass SensitiveTraitUser23 { use SensitiveTrait23; }\n$object = new SensitiveTraitUser23(7);\necho $object->reveal(), \"|\", $object->error->getTrace()[0][\"args\"][0]->getValue();\n",
+      "source_sha256": "59fe5a8e004c18afa3345422a7e91b5e5c523ba572e58cea4176307dc1abc2e3",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/focused/native-first/report.json",
+      "native_raw_sha256": "84b75b897a76b6d9c2811a393ffd35025de44c4eede263a6957d1e50e056eb61",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3wxNw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "variadic-promotion-error",
+      "source": "<?php\nclass SensitiveVariadic23 {\n    public function __construct(#[\\SensitiveParameter] public int ...$secret) { echo \"BODY\"; }\n}\necho \"AFTER\";\n",
+      "source_sha256": "d270592bdf2f8303533050811b3a353cc72b056b67931efda4045ff544a16671",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/focused/native-first/report.json",
+      "native_raw_sha256": "e61781bee2292e7726e6d7f9e4308146385a3e6426cbd6d9bc4015a7dd70775d",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBkZWNsYXJlIHZhcmlhZGljIHByb21vdGVkIHByb3BlcnR5IGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo="
+    },
+    {
+      "id": "outside-constructor-error",
+      "source": "<?php\nclass SensitiveOutside23 {\n    public function f(#[\\SensitiveParameter] public int $secret = 1, $required) { echo \"BODY\"; }\n}\necho \"AFTER\";\n",
+      "source_sha256": "3db9a434142ff10c3f3ee004b7fadff924426bebdffaacf6018882a8b6d59c7b",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/focused/native-first/report.json",
+      "native_raw_sha256": "d80ce3d3a076a0baccbbfccccc909e46871a4332281f50791d2803948ff5c727",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogU2Vuc2l0aXZlT3V0c2lkZTIzOjpmKCk6IE9wdGlvbmFsIHBhcmFtZXRlciAkc2VjcmV0IGRlY2xhcmVkIGJlZm9yZSByZXF1aXJlZCBwYXJhbWV0ZXIgJHJlcXVpcmVkIGlzIGltcGxpY2l0bHkgdHJlYXRlZCBhcyBhIHJlcXVpcmVkIHBhcmFtZXRlciBpbiB7RklMRX0gb24gbGluZSAzCkZhdGFsIGVycm9yOiBDYW5ub3QgZGVjbGFyZSBwcm9tb3RlZCBwcm9wZXJ0eSBvdXRzaWRlIGEgY29uc3RydWN0b3IgaW4ge0ZJTEV9IG9uIGxpbmUgMwpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "namespace-nonbuiltin",
+      "source": "<?php\nnamespace SensitiveUser23;\nclass SensitiveParameter {}\nclass Box {\n    public \\Error $error;\n    public function __construct(#[SensitiveParameter] public int $secret) { $secret = 17; $this->error = new \\Error(\"E\"); }\n}\n$box = new Box(7);\necho $box->secret, \"|\", $box->error->getTrace()[0][\"args\"][0];\n",
+      "source_sha256": "986b0c47db97755697daa7cf308591d1dac05e123fc56553a31c86ac69b620ef",
+      "native_group": ".tools/constructor-sensitive-promotion-private-23/.tools/constructor-sensitive-promotion-probes-23/focused/native-first/report.json",
+      "native_raw_sha256": "84b75b897a76b6d9c2811a393ffd35025de44c4eede263a6957d1e50e056eb61",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3wxNw==",
+      "stderr_template_base64": "",
+      "expected_model_status": "unsupported",
+      "source_agreements": 0
+    }
+  ]
+}

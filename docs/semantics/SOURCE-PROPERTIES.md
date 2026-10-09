@@ -35,8 +35,14 @@ the using class links. Compatible trait collisions retain the effective property
 own source obligation. A failed check rolls back class publication. The
 [Override review](../../coverage/semantics/promoted-override-review.json) records
 thirteen source agreements, a separate user-attribute Unsupported control and 110
-genuine certificate/write/rollback assertions. Other parameter attributes/hooks
-remain explicit Unsupported.
+genuine certificate/write/rollback assertions.
+A single builtin `#[SensitiveParameter]` on a promoted constructor parameter
+belongs to the parameter target. It creates no property Override obligation;
+ordinary value/reference writes precede the body, while later trace capture reads
+the live CV. Queued promotions retain the authentic head and each task's source
+suffix. The [Sensitive promotion review](../../coverage/semantics/sensitive-promotion-review.json)
+records eight source agreements and separate source/property/wrapper controls.
+Other parameter attributes/hooks remain explicit Unsupported.
 
 Object `foreach` by value uses a live slot cursor, so later writes can affect
 later iterations. Dynamic deletion leaves a cursor tombstone; reinsertion
