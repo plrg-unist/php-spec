@@ -16,6 +16,19 @@ same storage, with the pinned deprecation on ordinary source classes and no
 deprecation on `stdClass`. A leading-NUL computed name raises the engine error
 for read, write and unset, while quiet tests remain silent.
 
+Constructor promotion declares a property from its original parameter flags and
+source occurrence. A parameter default does not initialize the property, and
+promoted nonnullable types do not acquire ordinary implicit nullable widening.
+All argument receives finish before promotion writes run in parameter order,
+reading each current parameter cell. Value writes preserve ordinary copy behavior;
+reference writes alias that cell and attach the property’s ordered type source.
+Explicit constructor re-entry, inherited private slots and trait aliases use the
+same declaration scope and readonly checks. The original body remains unchanged.
+A promoted WeakReference property owns the wrapper while its target remains weak.
+[The promotion review](../../coverage/semantics/constructor-promotion-review.json)
+records nine exact sources, genuine Weak/byref steps and preserved failures.
+Parameter attributes/hooks remain explicit Unsupported.
+
 Object `foreach` by value uses a live slot cursor, so later writes can affect
 later iterations. Dynamic deletion leaves a cursor tombstone; reinsertion
 appends a new slot. Array casts expose initialized properties. Loose comparison

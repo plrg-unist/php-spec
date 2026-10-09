@@ -1,0 +1,118 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "original-9b85",
+      "source": "<?php\nclass RawArrayLastPayload19 {\n    public function __construct(private WeakReference $target) {}\n    public function __destruct() { echo 'D', (int)($this->target->get() === null), '|'; }\n}\n$target = new Fiber(static function () {\n    try {\n        echo 'B|';\n        Fiber::suspend('Y');\n        Fiber::suspend('Z');\n    } finally { echo 'F|'; }\n});\n$weak = WeakReference::create($target);\necho $target->start(), '|';\n$runner = new Fiber([$target, 'ReSuMe']);\nunset($target);\necho $runner->start(new RawArrayLastPayload19($weak)), '|';\necho $runner->getReturn(), '|', (int)($weak->get() === null), '|', (int)$runner->isTerminated();\n",
+      "source_sha256": "9b8516c5bd1812868e7a8e3a21f6243ca861efa5433f0ce613cd1693feedb9ad",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-first/report.json",
+      "native_raw_sha256": "211ef53b782eb2e29a17b09fa1e2eddf5ec9a6e57f5084b454573a227db4c84c",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "QnxZfEZ8RDF8fFp8MXwx",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "value-default-cow-reentry",
+      "source": "<?php\nclass ValuePromotion20 {\n    public function __construct(public int $value = 7, private array $items = ['a']) {\n        echo $this->value, ':', $this->items[0], '|';\n        $value = 99;\n        $items[0] = 'b';\n        echo $this->value, ':', $this->items[0], '|';\n    }\n}\n$o = new ValuePromotion20();\n$o->__construct(8, ['c']);\necho $o->value;\n",
+      "source_sha256": "4367f1f4deaa72f823a59888deb4d2d3350e898015634b3e60c5d2db92118007",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-value-default-cow-reentry/native.json",
+      "native_raw_sha256": "e86092309128841dc206e3da642f1721f606bb2ba0cee468940589ac7a523a5d",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "NzphfDc6YXw4OmN8ODpjfDg=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "reference-property-caller-type",
+      "source": "<?php\nclass ReferencePromotion20 {\n    public function __construct(public int &$value) { $value = 8; echo $this->value, '|'; }\n}\n$v = 4;\n$o = new ReferencePromotion20($v);\n$o->value = 9;\necho $v, '|';\ntry { $v = []; } catch (TypeError $e) { echo $e->getMessage(), '|'; }\necho $v, '|', $o->value;\n",
+      "source_sha256": "e4a7245fbef713eb5d9e0a029ae7ade3616ddca6f69f539bf02223fd214733ac",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-reference-property-caller-type/native.json",
+      "native_raw_sha256": "9959d71c45690293127e954c06e791e6d41bae0e2d60cd4616a580dac77d7942",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "OHw5fENhbm5vdCBhc3NpZ24gYXJyYXkgdG8gcmVmZXJlbmNlIGhlbGQgYnkgcHJvcGVydHkgUmVmZXJlbmNlUHJvbW90aW9uMjA6OiR2YWx1ZSBvZiB0eXBlIGludHw5fDk=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "all-receives-before-promotions",
+      "source": "<?php\nclass ReceivePromotion20 {\n    public function __construct(public int &$x, public string &$y) { echo 'BODY'; }\n}\n$v = 4;\ntry { new ReceivePromotion20($v, $v); } catch (TypeError $e) { echo $e->getMessage(), '|'; }\necho (int)($v === 4);\n",
+      "source_sha256": "df8ba50416f04ca9fec1c8a1d00ab1f04a89f94081b5b47c3e0b0bc946ff5c64",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-all-receives-before-promotions/native.json",
+      "native_raw_sha256": "d7db37474a7dc8f504e9d6513440b9280fc1434242f331e57821aed3b03a9a8d",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "UmVmZXJlbmNlIHdpdGggdmFsdWUgb2YgdHlwZSBpbnQgaGVsZCBieSBwcm9wZXJ0eSBSZWNlaXZlUHJvbW90aW9uMjA6OiR4IG9mIHR5cGUgaW50IGlzIG5vdCBjb21wYXRpYmxlIHdpdGggcHJvcGVydHkgUmVjZWl2ZVByb21vdGlvbjIwOjokeSBvZiB0eXBlIHN0cmluZ3wx",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "inherited-private-trait-alias",
+      "source": "<?php\nclass ParentPromotion20 {\n    public function __construct(private int $value, protected string $hint = 'h') { echo $this->value, ':', $this->hint, '|'; }\n    public function read() { return $this->value; }\n}\nclass ChildPromotion20 extends ParentPromotion20 {\n    private int $value = 99;\n    public function __construct() { parent::__construct(3); echo $this->value, '|'; }\n}\nclass GrandPromotion20 extends ParentPromotion20 {}\n$c = new ChildPromotion20();\necho $c->read(), '|';\n$g = new GrandPromotion20(4, 'g');\necho $g->read(), '|';\ntrait TraitPromotion20 {\n    public function __construct(public int $value) { echo $this->value, '|'; }\n}\nclass ImportedPromotion20 { use TraitPromotion20 { __construct as init; } }\n$t = new ImportedPromotion20(5);\n$t->init(6);\necho $t->value;\n",
+      "source_sha256": "f53b7a1ce7d540d8b6ebfdbc1da5489977dc9c586d024c7c5bc64d7dc03d2268",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-inherited-private-trait-alias/native.json",
+      "native_raw_sha256": "ef5ee262791500b3b40365c9c6500d1f129609fccb19914dc095a71c1713d7a2",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MzpofDk5fDN8NDpnfDR8NXw2fDY=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "readonly-reentry-reference",
+      "source": "<?php\nclass ReadonlyPromotion20 {\n    public function __construct(public readonly int $value = 7) { echo $this->value, '|'; }\n}\n$o = new ReadonlyPromotion20();\ntry { $o->__construct(8); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $o->value, '|';\nclass ReferenceReadonlyPromotion20 {\n    public function __construct(public readonly int &$value) { echo 'BODY'; }\n}\n$v = 4;\ntry { new ReferenceReadonlyPromotion20($v); } catch (Error $e) { echo $e->getMessage(), '|'; }\necho $v;\n",
+      "source_sha256": "953a1b08b8849053d9ae29adae15a45683a1d0ef49b413a15c17d06d8d225c99",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-readonly-reentry-reference/native.json",
+      "native_raw_sha256": "f4cde1caac73df8cc83c71654ba0541cd2495e7a815e36b6c297cbcbadf55b60",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "N3xDYW5ub3QgbW9kaWZ5IHJlYWRvbmx5IHByb3BlcnR5IFJlYWRvbmx5UHJvbW90aW9uMjA6OiR2YWx1ZXw3fENhbm5vdCBpbmRpcmVjdGx5IG1vZGlmeSByZWFkb25seSBwcm9wZXJ0eSBSZWZlcmVuY2VSZWFkb25seVByb21vdGlvbjIwOjokdmFsdWV8NA==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "parameter-default-is-not-property-default",
+      "source": "<?php\nclass DefaultPromotion20 {\n    public function __construct(public int $value = 5) {}\n}\nclass SkipPromotion20 extends DefaultPromotion20 {\n    public function __construct() { try { echo $this->value; } catch (Error $e) { echo $e->getMessage(); } }\n}\nnew SkipPromotion20();\n",
+      "source_sha256": "b6d49bb5c5f59fa300f6fdbaa818a8805f0f6535d6ed1f6aed4cde6d2ade7b6d",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-parameter-default-is-not-property-default/native.json",
+      "native_raw_sha256": "022b0b46783affbd4c464c7d0314c381ecd812d38d060e69f11e2e78e98cdac8",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "VHlwZWQgcHJvcGVydHkgRGVmYXVsdFByb21vdGlvbjIwOjokdmFsdWUgbXVzdCBub3QgYmUgYWNjZXNzZWQgYmVmb3JlIGluaXRpYWxpemF0aW9u",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "accepted-method-attribute",
+      "source": "<?php\nclass AttributePromotion20 {\n    #[ReturnTypeWillChange]\n    public function __construct(public int $value) { echo $this->value; }\n}\nnew AttributePromotion20(3);\n",
+      "source_sha256": "dd45c9bff8ab77797fa90a865e71b2ea79d40e1e4869d4f764f9b20c47a24e46",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-accepted-method-attribute/native.json",
+      "native_raw_sha256": "cbf51b7b83289b9630bbc2e16ea87caa0fa53df1698f29530e5082b5889b7708",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "Mw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "outside-constructor-notice-order",
+      "source": "<?php\nclass OrderPromotion20 { public function f(public int $value = 1, $required) {} }\n",
+      "source_sha256": "a237c5d07a0a7dec02a4447efd7dd1f08e5e1c04fc72b82a7bc704fec16e8e0c",
+      "native_group": "/home/user/workspace/php-spec/.tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20/native-outside-constructor-notice-order/native.json",
+      "native_raw_sha256": "8e9dacd2792d22a6d400b8994d5f4503ec86e8fff50edadd50d522d68382e921",
+      "status": "static_rejection",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RGVwcmVjYXRlZDogT3JkZXJQcm9tb3Rpb24yMDo6ZigpOiBPcHRpb25hbCBwYXJhbWV0ZXIgJHZhbHVlIGRlY2xhcmVkIGJlZm9yZSByZXF1aXJlZCBwYXJhbWV0ZXIgJHJlcXVpcmVkIGlzIGltcGxpY2l0bHkgdHJlYXRlZCBhcyBhIHJlcXVpcmVkIHBhcmFtZXRlciBpbiB7RklMRX0gb24gbGluZSAyCkZhdGFsIGVycm9yOiBDYW5ub3QgZGVjbGFyZSBwcm9tb3RlZCBwcm9wZXJ0eSBvdXRzaWRlIGEgY29uc3RydWN0b3IgaW4ge0ZJTEV9IG9uIGxpbmUgMgpTdGFjayB0cmFjZToKIzAge21haW59Cg=="
+    }
+  ]
+}

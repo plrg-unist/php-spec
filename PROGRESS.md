@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Constructor property promotion retains source Param flags/origins, compiles separate
+property defaults and performs ordered value/reference writes after all receives.
+Explicit re-entry, private/inherited/trait scope, readonly checks and supported method
+attributes reuse ordinary property protocols. Exact original9b85 now gives
+`B|Y|F|D1||Z|1|1`; eight focused originals add seven normals and one ordered
+CompileError. Private359 at00c passes strict compilation, source9 and genuine
+Weak48/byref47. Historical Unsupported, strict/fixture stops and wrong-status row
+retain zero affected credit. Actual-parent composition is pending; parameter
+attributes/hooks and complete core remain required. [Promotion review](coverage/semantics/constructor-promotion-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
@@ -69,10 +79,11 @@ the receiver, with separate original/copied buffers. Saved states and actual
 callers authenticate parked static, nested, collector and warning continuations.
 Strict 353, twelve exact normals at 6+6 cuts and 293 independent plus 241 author
 reached premises pass. A narrow 296 fix admits nominal WeakReference argument/property
-types and names their diagnostics. The promoted-parameter original, initial
+types and names their diagnostics. The historical promoted-parameter original, initial
 compiler stop, typed-companion failure and fixture parse stop retain zero credit;
 the explicit-property companion is distinct. Compound selectors, start unpacking,
-promotion and broader lifecycle work remain required; paused returns stay excluded.
+broader lifecycle work remain required; paused returns stay excluded.
+Constructor promotion has its separate accepted cut above.
 Actual 355 over `aa8ebb4d1` passes strict compilation at `cb42ba678`, preserving
 current startup/source/collector and retained-method guards; private source/state
 cuts retain their inputs. [Raw-array ledger](coverage/semantics/fiber-array-core-callbacks-review.json).

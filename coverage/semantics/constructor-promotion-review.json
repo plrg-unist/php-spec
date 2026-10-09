@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Source-owned constructor property promotion: declarations retain real Param flags/origin; all receives precede ordered writes from current parameter cells, including constructor re-entry and inherited/trait methods. Value copies, typed references, readonly write checks and separate parameter/property defaults are preserved.",
+  "implementation": [
+    "spec/semantics/17-signatures.watsup",
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/80-call-control.watsup",
+    "spec/semantics/141-method-compiler.watsup",
+    "spec/semantics/142-method-runtime.watsup",
+    "spec/semantics/238-trait-data.watsup"
+  ],
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_params",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ASSIGN_OBJ",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_ASSIGN_OBJ_REF"
+  ],
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "absent",
+    "jobs": 1
+  },
+  "raw_root": ".tools/constructor-property-promotion-private-20/.tools/constructor-promotion-original-20",
+  "baseline": {
+    "revision": "b8946ce5033df51ca309210a8623bf47657358dc",
+    "modules": 359,
+    "original_source_sha256": "9b8516c5bd1812868e7a8e3a21f6243ca861efa5433f0ce613cd1693feedb9ad",
+    "native": {
+      "report": ".tools/constructor-promotion-original-20/native-first/report.json",
+      "sha256": "211ef53b782eb2e29a17b09fa1e2eddf5ec9a6e57f5084b454573a227db4c84c"
+    },
+    "checked_model": {
+      "report": ".tools/constructor-promotion-original-20/accepted-current-baseline/report.json",
+      "sha256": "55f77e343552d744c02b45485fa12d6b2309c7d3a5aacbd16601c30bc81bd5f9"
+    },
+    "source_agreements": 0,
+    "first_gap": "Frontend and adapter accept the original, retaining Param.flags4 and private WeakReference type. Core17 rejects promotion as Unsupported before execution; no frontend change."
+  },
+  "accepted_private": {
+    "revision": "00c50506e766ef23b0f029364d32b0d48697b70e",
+    "modules": 359,
+    "compiler": {
+      "report": ".tools/constructor-promotion-original-20/constructor-promotion-compiler-mf43shat/report.json",
+      "sha256": "8a4f2bd726ce401817a438f52d7f08129d25a2e0581130ae17e2cf0e07145f55"
+    },
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "strict": "SL cache=false det=true; exit0/reaped/stable; application/source0",
+    "exact_source_agreements": 9,
+    "normal_agreements": 8,
+    "static_rejection_agreements": 1,
+    "source_cuts": [
+      {
+        "report": ".tools/constructor-promotion-original-20/promotion-changed-y7d1qdrp/report.json",
+        "sha256": "0ebfbdfb00038c3eb26268a99072a7a1686f076e3be63fe931a39a49bff2ba3b",
+        "accepted": 1,
+        "selected": "original-9b85"
+      },
+      {
+        "report": ".tools/constructor-promotion-original-20/promotion-changed-k9lv6mob/report.json",
+        "sha256": "ed019143dc035263ce459abdac1494f0a085523cc22ddf7919a64298343e6d98",
+        "accepted": 7,
+        "selected": "first seven focused normals only"
+      },
+      {
+        "report": ".tools/constructor-promotion-original-20/promotion-changed-38_skxqp/report.json",
+        "sha256": "1dbe629f16c10a6ba8136fbf95bc7179b65eae94702559ba53c962ebffa8c652",
+        "accepted": 1,
+        "selected": "outside-constructor-notice-order"
+      }
+    ],
+    "focused_native": {
+      "report": ".tools/constructor-promotion-original-20/promotion-native-dkifbh_b/report.json",
+      "sha256": "0689f3de79e5af8ef00c75bf9cd883169bf39a74c2f3790048d1049dec2dae4e"
+    },
+    "original_stdout": "B|Y|F|D1||Z|1|1",
+    "source_controls": [
+      "value/default/COW and explicit re-entry",
+      "byref caller/property type source",
+      "all receives before promotion writes",
+      "private inheritance and trait constructor alias",
+      "readonly re-entry/reference rejection",
+      "parameter default is not property default",
+      "accepted ReturnTypeWillChange method attribute",
+      "optional-before-required notice before outside-constructor CompileError"
+    ]
+  },
+  "reached": {
+    "revision": "00c50506e766ef23b0f029364d32b0d48697b70e",
+    "mode": "strict SL cache=false det=true",
+    "report": {
+      "report": ".tools/constructor-promotion-original-20/promotion-protocol-f7kgcanj/report.json",
+      "sha256": "5f518d50a62fe95aaf4a02f933b4631f0f433413b7541d81659bc9952117e14a"
+    },
+    "genuine_premises": 95,
+    "groups": {
+      "weak": 48,
+      "byref": 47
+    },
+    "setup_per_case": 6,
+    "source_credit": 0,
+    "checks": "One real PhpStep per authentic post-RECV PROMOTE_PARAMETER stage; source/Param admission counterexamples, wrapper owner+1/target unchanged without target edge, and caller-CV/property ALIAS with exact ordered PROPREFS source. Heap/property/history/admission validators hold."
+  },
+  "completion": "Accepted groups exit0 without timeout, empty stderr and reaped groups; inputs/head/status stable. Native45s, source60s internal/75s outer, SL120s, compiler300s, jobs1; no rebuild.",
+  "zero_credit_preserved": [
+    {
+      "report": ".tools/calls-fiber-array-core-19/.tools/fiber-array-core-source-0ai_josr/report.json",
+      "selected": "historical seventh original9b85",
+      "accepted": 0,
+      "result": "Unsupported promotion; historical native/typed companion remain distinct"
+    },
+    {
+      "report": ".tools/constructor-promotion-original-20/accepted-current-baseline/report.json",
+      "sha256": "55f77e343552d744c02b45485fa12d6b2309c7d3a5aacbd16601c30bc81bd5f9",
+      "accepted": 0,
+      "result": "b894 checked original Unsupported before execution"
+    },
+    {
+      "report": ".tools/constructor-promotion-original-20/constructor-promotion-compiler-a856gzgt/report.json",
+      "sha256": "2ee4a65f27457940c2d8b92592251aa6c8417a04339336e725578c1683946536",
+      "accepted": 0,
+      "result": "46dd strict stops at forward declaration of trait_data_import_type; no source invocation"
+    },
+    {
+      "report": ".tools/constructor-promotion-original-20/promotion-changed-k9lv6mob/report.json",
+      "sha256": "ed019143dc035263ce459abdac1494f0a085523cc22ddf7919a64298343e6d98",
+      "selected": "outside-constructor-notice-order only",
+      "accepted": 0,
+      "result": "Exact native/model bytes and255; fixture expected php_error instead of actual checked static_rejection. Only this row was repeated."
+    },
+    {
+      "report": ".tools/constructor-promotion-original-20/promotion-protocol-nl3ma66b/report.json",
+      "sha256": "ce379cedca591dba030bac903db3822dc00a9a7aec49c7684b32a0eb0ebe544f",
+      "accepted": 0,
+      "result": "fixture list/constructor grouping parse stop"
+    },
+    {
+      "report": ".tools/constructor-promotion-original-20/promotion-protocol-2158kb1y/report.json",
+      "sha256": "49705afdebbbd9dfd58b91561e2f7c786abfd9877d46f3ae994c69a20e18513c",
+      "accepted": 0,
+      "result": "fixture SEQUENCE list-argument grouping parse stop"
+    },
+    {
+      "report": ".tools/constructor-promotion-original-20/promotion-protocol-yd3f2c4r/report.json",
+      "sha256": "4dcb6fd8907afc6dd961b5df5669d44a6bdacd50f14994355fba447094d56efd",
+      "accepted": 0,
+      "result": "fixture list/element variable dimension elaboration stop"
+    }
+  ],
+  "reproduction": {
+    "sources": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/constructor_promotion_cases.json",
+    "states": "python3 tests/semantics/constructor_promotion_protocol.py [--case weak|byref]",
+    "compiler": "python3 .tools/constructor-promotion-original-20/run-compiler.py b8946ce5033df51ca309210a8623bf47657358dc",
+    "raw": "Exact source/argv/cwd/profile, compiler/runtime identity, exits and stability are in the ignored reports. Preparation-only rows have evaluated=false and no runtime credit."
+  },
+  "independent_review": {
+    "reviewer": "traversal_review_20",
+    "status": "accepted private semantics, exact source9 and genuine Weak48/byref47; actual-parent compilation pending",
+    "scope": "Ordering, defaults/type diagnostics, inherited/private/trait/attribute certificates, re-entry/current-cell reads, alias sources, Weak/Fiber ownership and fixture/process reliability."
+  },
+  "limits": [
+    "Parameter attributes/hooks remain explicit Unsupported; builtin method attributes use the existing accepted predicate.",
+    "No broader property/hooks or class/core family closure is claimed.",
+    "Historical original failure retains0; its repaired exact source is accepted at its distinct cut. No held replay or unsafe force-closed target observation was used."
+  ]
+}

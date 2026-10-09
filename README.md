@@ -830,7 +830,12 @@ interface tables, broader constant linking and hooked properties remain open.
 and uninitialized slots, source-backed defaults, inherited public overrides,
 dynamic names, direct access, live foreach, casts and comparison. The
 [property review](coverage/semantics/properties-review.json) binds source,
-compiler and paused-task checks. [Public property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md)
+compiler and paused-task checks. [Constructor promotion](coverage/semantics/constructor-promotion-review.json)
+retains source parameter declarations, separate property defaults and ordered
+value/reference writes after all receives, including explicit constructor re-entry
+and inherited/trait scopes. Source9 and genuine Weak48/byref47 preserve the
+original failure and separate acceptance cuts; parameter attributes/hooks remain
+required. [Public property references](docs/semantics/SOURCE-PROPERTY-REFERENCES.md)
 now attach ordered typed sources to shared cells, check writes atomically, and
 preserve aliases across unset and object traversal. Their
 [review](coverage/semantics/property-references-review.json) records exact source,
