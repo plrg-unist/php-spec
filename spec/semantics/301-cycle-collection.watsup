@@ -603,6 +603,9 @@ def $gc_overlap_component(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_component(
 def $gc_overlap_component(pgcplan, pnode*) = false -- otherwise
 def $gc_overlap_residuals(pgcplan, eps) = true
 def $gc_overlap_residuals(pgcplan, (HOBJECT n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
+def $gc_overlap_residuals(pgcplan, (HARRAY n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
+  -- if (HARRAY n) <- $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES)
+  -- if $gc_overlap_component(pgcplan, [HARRAY n])
 def $gc_overlap_residuals(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
   -- if $gc_overlap_component(pgcplan, [HCELL n])
 def $gc_overlap_residuals(pgcplan, pnode*) = false -- otherwise
