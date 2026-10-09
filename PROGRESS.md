@@ -64,13 +64,29 @@ reference. Borrowed CVs and owning cells retain their modes through initial
 Iterator valid-result cleanup or Generator yield; input retirement then precedes
 current/body with data protected.
 Six unchanged originals agree at `4e9dd1014`;
-strict370 passes there. The changed-Aggregate control passes its zero-agreement
+strict370 passes there. At that earlier cut the changed-Aggregate control passed zero-agreement
 assertions at `1cf220b69`; its original event-encoding failure stays zero.
 Nine genuine-source groups/361 physical ownership and authority premises pass
 at `5a811c3d5`; no state fixture correction was needed.
 Actual371 over `557e8c817` passes strict SL at `ab0808dff`; private source/state
 cuts retain their own inputs.
 [Foreach rebound review](coverage/semantics/foreach-rebound-operand-review.json).
+
+Foreach Aggregate recursion now compares the first known Aggregate return against
+its live object-valued source CV/reference, and later returns against their owned
+raw layer. An independently kept original can be the first repeated layer even
+if a deeper callback rebinds the source again. Self returns from immutable inputs
+and deeper layers are rejected with the fixed class message. No comparator/history
+owner is added.
+Nine selected originals agree across `60b6fbdef`, `0a1ef1232` and `ecc2923d8`;
+strict371 passes at the first cut. The nonobject-source control stays Unsupported
+with zero agreement, and its original missing-cleanup-output fixture failure is
+preserved. Sixteen genuine-source groups/666 physical ownership and authority premises pass
+at `7eaed6c5a`, including the identical forwarded old case9; no state correction
+was needed. Previous rebound checks retain their cuts without renewal.
+Actual371 over `aa2483c8b` passes strict SL at `0f9308067`; private
+source/state cuts retain their own inputs.
+[Source comparison](coverage/semantics/foreach-source-comparison-review.json).
 
 Bounded assertion quantity warnings retain frozen parsed modes and old returns
 through nested raw writes, throw and restore. Immutable string carriers preserve

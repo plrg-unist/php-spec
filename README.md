@@ -398,9 +398,14 @@ Aggregate foreach acquires nested Iterator/Generator data, retires returned laye
 before initialization and the original operand after initial Iterator valid-result
 cleanup or Generator yield. A getter with an independently kept receiver may
 rebind the original CV/reference before returning Iterator/Generator data or a
-rejected raw value. Input retirement follows initial Iterator valid-result
-cleanup or Generator yield;
-changed operands returning another Aggregate remain explicit Unsupported.
+rejected raw value. For a known Aggregate return, the first self comparison reads the live
+object-valued source CV/reference; deeper callbacks compare their owned returned
+layer. An independently kept original may be the first returned layer before a
+deeper getter rebinds the source again. Self returns from immutable inputs and
+deeper layers are rejected; a nonobject original at the first comparison remains
+Unsupported.
+[Source comparison](coverage/semantics/foreach-source-comparison-review.json)
+keeps the affected historical control separate from its earlier refusal.
 Acquisition and cleanup throws preserve data/input order; reference traversal
 accepts reference-yielding Generators and rejects Iterator/nonreference Generator
 results. Retained foreach Generator close frames survive Fiber suspension with

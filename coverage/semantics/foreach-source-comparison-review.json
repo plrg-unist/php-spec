@@ -1,0 +1,244 @@
+{
+  "milestone": "Foreach IteratorAggregate mutable-source self comparison",
+  "status": "independently reviewed current-parent composition",
+  "baseline": {
+    "revision": "8f1b22aadfd1a03c8a5fd2bc521ae1a67f892862",
+    "modules": 371
+  },
+  "semantic_revision": "3397c4a787d6e2357458374f2edb3e8f94ec06ae",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_interfaces.c: zend_user_it_get_new_iterator",
+    "vendor/php-src/Zend/zend_execute.c: zend_fe_reset_iterator",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_FE_RESET_R/RW"
+  ],
+  "scope": [
+    "First known Aggregate return compares against the actual object-valued original CV/reference payload; later callbacks compare their owned raw layer.",
+    "A first returned original receiver may repeat only for source-authenticated mutable INPUT; deeper adjacent repeats and immutable KNOWN input retain rejection.",
+    "Independent original receiver keepers ground CV/HCELL, source rechange, payload retirement, park/throw and raw-result rejection; no comparator/history field or owner is added."
+  ],
+  "sources": {
+    "normal_agreements": 9,
+    "unsupported_controls": 1,
+    "control_agreements": 0,
+    "cuts": [
+      {
+        "report": ".tools/calls-foreach-aggregate-self-20/.tools/foreach-source-compare-source-amddjbcf/report.json",
+        "revision": "60b6fbdef7b240c9630f1d587a22cda9b9236e31",
+        "selected_ids": [
+          "foreach-source-compare-distinct-aggregate-generator",
+          "foreach-source-compare-reference-self-rejection",
+          "foreach-source-compare-kept-receiver-repeat-rechange",
+          "foreach-source-compare-reference-repeat-rechange",
+          "foreach-source-compare-repeated-getter-parks",
+          "foreach-source-compare-repeated-getter-throws",
+          "foreach-source-compare-immutable-original-self-rejection"
+        ],
+        "normal_agreements": 7,
+        "unsupported_controls": 0,
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "report": ".tools/calls-foreach-aggregate-self-20/.tools/foreach-source-compare-source-eqkqc3p1/report.json",
+        "revision": "0a1ef1232961905d9ade9d2eefc65052d665f285",
+        "selected_ids": [
+          "foreach-source-compare-nonobject-original-control",
+          "foreach-rebound-returned-aggregate-self-control"
+        ],
+        "normal_agreements": 1,
+        "unsupported_controls": 1,
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "report": ".tools/calls-foreach-aggregate-self-20/.tools/foreach-source-compare-source-mvvd1t2a/report.json",
+        "revision": "ecc2923d8e606c01486ec6e24c1ef881465b4618",
+        "selected_ids": [
+          "foreach-source-compare-deeper-self-rejection"
+        ],
+        "normal_agreements": 1,
+        "unsupported_controls": 0,
+        "inputs_stable": true,
+        "head_stable": true
+      }
+    ],
+    "compatibility": "Same 378 production3397 for all selected source cuts; later commits change only fixtures. Only the affected old foreach control advances; its historical refusal and other rebound checks remain unchanged."
+  },
+  "compiler": {
+    "report": ".tools/calls-foreach-aggregate-self-20/.tools/foreach-source-compare-sl-1x4_l4ny/report.json",
+    "revision": "60b6fbdef7b240c9630f1d587a22cda9b9236e31",
+    "modules": 371,
+    "process_seconds": 120,
+    "passed": true
+  },
+  "native_discovery": {
+    "new_originals": 9,
+    "semantic_agreements": 0,
+    "reports": [
+      ".tools/calls-foreach-aggregate-self-20/.tools/foreach-source-compare-native-ya0hhnel/report.json",
+      ".tools/calls-foreach-aggregate-self-20/.tools/foreach-source-compare-deeper-native-_94b6j9m/report.json"
+    ],
+    "preserved_old_control_report": ".tools/calls-foreach-rebound-operand-20/.tools/foreach-rebound-operand-native-o4lhe5e5/report.json",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "native_process_seconds": 75,
+    "model_seconds": 60,
+    "model_process_seconds": 75
+  },
+  "states": {
+    "status": "PASS",
+    "runner": "tests/semantics/foreach_source_compare_review.py",
+    "fixture_revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+    "process_seconds": 120,
+    "groups": 16,
+    "physical_premises": 666,
+    "driver_clauses": 638,
+    "selected": [
+      {
+        "id": "foreach-cv-self-comparison-permits-first-kept-original-repeat",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-px0vtp_c/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 49,
+        "driver_clauses": 48
+      },
+      {
+        "id": "foreach-reference-self-comparison-permits-first-kept-original-repeat",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-0rbxlomr/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 49,
+        "driver_clauses": 48
+      },
+      {
+        "id": "foreach-deeper-acquisition-uses-owned-layer-after-earlier-payload-retirement",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-yvvroare/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 52,
+        "driver_clauses": 50
+      },
+      {
+        "id": "foreach-repeated-reference-retains-input-through-first-valid-then-releases-cell",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-hn8go9tj/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 41,
+        "driver_clauses": 41
+      },
+      {
+        "id": "foreach-live-reference-source-equality-rejects-returned-aggregate",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-5p8yop36/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 42,
+        "driver_clauses": 41
+      },
+      {
+        "id": "foreach-immutable-temporary-compares-its-own-input-despite-global-rebind",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-g7ud5nmc/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 39,
+        "driver_clauses": 38
+      },
+      {
+        "id": "foreach-immutable-source-cannot-forge-a-first-repeated-layer",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-qe9yxau7/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 24,
+        "driver_clauses": 23
+      },
+      {
+        "id": "foreach-mutable-source-cannot-forge-a-deeper-adjacent-repeat",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-ix91zsrd/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 32,
+        "driver_clauses": 30
+      },
+      {
+        "id": "foreach-distinct-acquired-layer-retires-before-generator-startup",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-tuin9qrd/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 42,
+        "driver_clauses": 40
+      },
+      {
+        "id": "foreach-repeated-parked-getter-keeps-raw-layer-and-borrows-current-receiver",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-8y51_aw0/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 45,
+        "driver_clauses": 39
+      },
+      {
+        "id": "foreach-repeated-parked-frame-rejects-duplicate-real-acquisition-marker",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-owme3g16/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 46,
+        "driver_clauses": 40
+      },
+      {
+        "id": "foreach-repeated-getter-throw-releases-layer-with-original-exception",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-ddng8f86/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 44,
+        "driver_clauses": 44
+      },
+      {
+        "id": "foreach-live-cv-source-equality-now-rejects-the-affected-original-control",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-24xcc73x/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 43,
+        "driver_clauses": 42
+      },
+      {
+        "id": "foreach-nonobject-source-with-aggregate-return-keeps-named-refusal",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-nstb5o_j/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 34,
+        "driver_clauses": 33
+      },
+      {
+        "id": "foreach-deeper-self-comparison-rejects-owned-original-again",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-2_4qhm5_/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 46,
+        "driver_clauses": 43
+      },
+      {
+        "id": "foreach-deeper-self-error-retires-both-raw-original-occurrences",
+        "report": "/home/user/workspace/php-spec/.tools/calls-foreach-aggregate-self-20/.tools/fiber-state-review-x3ykrr_0/report.json",
+        "revision": "7eaed6c5a764a1d64be192ae804369bf0099e8af",
+        "physical_premises": 38,
+        "driver_clauses": 38
+      }
+    ],
+    "compatibility": "Only the selected new sixteen groups run; the forwarded old case9 dictionary is identical to its selected new case, while historical do5i and earlier eight rebound groups retain their original cuts."
+  },
+  "remaining": [
+    "A first nonobject original operand with a known Aggregate raw return stays named Unsupported; the observed native control is zero agreement.",
+    "Wider original/reference-location modes, raw payload changes and complete iterator lifecycle remain partial.",
+    "Mutable original known-Aggregate comparison for yield-from/START and ordinary-call Aggregate unpack remain separate obligations."
+  ],
+  "preserved_failures": [
+    {
+      "report": ".tools/calls-foreach-aggregate-self-20/.tools/foreach-source-compare-source-amddjbcf/report.json",
+      "selected_id": "foreach-source-compare-nonobject-original-control",
+      "affected_credit": 0,
+      "cause": "Fixture expected G| only, omitting actual raw returned Inner retirement n| during Unsupported unwind; retain seven normal agreements and rerun only control+unrun affected old original."
+    }
+  ],
+  "historical_forwarding": {
+    "source": "foreach-rebound-returned-aggregate-self-control",
+    "prior_state_report": ".tools/calls-foreach-rebound-operand-20/.tools/fiber-state-review-do5i0ffa/report.json",
+    "prior_state_credit": "Historical named-refusal state PASS remains at5a811; no upgrade of its zero source agreement. Current case9 forwards to the identical selected new error-state dictionary."
+  },
+  "actual_composition": {
+    "parent": "aa2483c8b5365ee9144733b4574e534f2b715ea6",
+    "semantic_revision": "0f9308067f8cb976e735aa091f7cd8f4c3cde538",
+    "compiler_report": ".tools/calls-foreach-source-compare-current-20/.tools/foreach-source-compare-current-sl-09t3bqkv/report.json",
+    "modules": 371,
+    "passed": true,
+    "source_state_renewal": false,
+    "review": "Exact one-path378 composition preserves parent modules and fields. ARG getter-factory provenance and RETURNS explicit-null recovery remain disjoint; private source/native/state cuts retain their own inputs."
+  }
+}
