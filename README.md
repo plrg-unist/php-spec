@@ -1137,7 +1137,8 @@ at `e77c3eff0`, preserving current source and Generator interfaces.
 [The review](coverage/semantics/undefined-property-review.json) preserves the
 original fallback/fixture failures and the weaker bound-Closure witness.
 Literal calls to named reference-return functions with no arguments, one CV
-argument supplied positionally or by name, or two positional CVs retain the
+argument supplied positionally or by name, two positional CVs, or two CVs with
+distinct named labels retain the
 actual returned cell through undefined-property warnings. The captured target remains borrowed, so
 handler rebinding may retire it while the cell keeps the replacement alive until
 fetch cleanup. Ten exact originals and separate 237/207/225 reached cuts cover
@@ -1166,6 +1167,12 @@ their builtin boundary; distinct core-only companions provide the first two
 agreements.
 The actual361 join over `430face8d` passes strict at `4b39fa53c`, preserving
 current CALLS, class attributes, return replay and lifecycle interfaces.
+Two distinct named CVs preserve source SEND order while binding captured values
+to formal slots. Deferred warnings retain documentary CV operands and emitted
+argument-list lines at both ordinals. Seven per-case source agreements and 1245
+setup-inclusive reached premises cover skipped defaults, shared cells, formal
+cleanup order and label-error priority before later CV demand. Earlier whole
+source and fixture failures retain zero credit.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

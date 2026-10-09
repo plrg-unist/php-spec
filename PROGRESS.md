@@ -1663,6 +1663,16 @@ model-unrun. Earlier noarg/one-CV/named cuts and failures are unrenewed.
 The actual361 join over `430face8d` passes strict at `4b39fa53c` (5.028s),
 preserving current CALLS/class compiler, return replay and fatal-cleanup interfaces.
 It adds no source/state credit.
+Two distinct named ordinary CVs now preserve source SEND order and formal-slot
+binding through377's local certificate;99/79/CELL/270 and shared361 are unchanged.
+Native6 retains `4c64cd257`; the late first-SEND companion retains `b5e60e7b1`.
+Changed strict361 and affected pending/late-first source2 pass at `7c2c5e8ef`;
+five earlier per-case agreements retain `1378c1d0d` under the named-extraction
+bridge. Five whole state gates pass 1245 setup-inclusive premises across separate
+366/316/186/77/300 cuts, authenticating both emitted SEND lines, captured null,
+shared cells, formal/default leave order and frame/operation pending cleanup.
+The original whole-source7 and fixture failures remain zero; previous cuts are
+unrenewed.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
