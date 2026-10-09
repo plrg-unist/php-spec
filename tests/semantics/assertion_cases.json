@@ -1471,6 +1471,26 @@
       "exit_status": 0,
       "status": "normal",
       "native_group": ".tools/compiler-assertion-stringable-20/.tools/assertion-stringable-retire-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-stringable-restore-warning-mode1",
+      "source": "<?php\n$casts = 0;\n$warnings = 0;\n$effects = 0;\nclass AssertionRestoreOption20 {\n    public function __toString(): string {\n        global $casts;\n        echo 'O', ++$casts, ':', ini_get('zend.assertions'), '|';\n        ini_set('zend.assertions', '2');\n        return 'zend.assertions';\n    }\n}\n$option = new AssertionRestoreOption20();\nset_error_handler(static function ($level, $message) use (&$warnings) {\n    echo 'W', ++$warnings, ':', ini_get('zend.assertions'), '|';\n    if ($warnings === 1) {\n        ini_restore('zend.assertions');\n        return true;\n    }\n    $probe = new Exception('trace');\n    $trace = $probe->getTrace();\n    echo $trace[1]['function'], ':',\n        $trace[1]['args'][0] === 'zend.assertions' ? 'converted|' : 'BAD|';\n    ini_set('zend.assertions', '0');\n    return true;\n});\n$seed = ini_set('zend.assertions', '12X');\necho 'seed:', $seed, '|raw:', ini_get('zend.assertions'), '|';\n$fresh = ini_set('zend.assertions', '0');\necho 'fresh:', $fresh, '|raw:', ini_get('zend.assertions'), '|';\nassert(++$effects > 0);\necho 'off:', $effects, '|';\n$returned = ini_restore($option);\necho $returned === null ? 'null|' : 'BAD|';\nassert(++$effects > 0);\necho 'raw:', ini_get('zend.assertions'), '|effects:', $effects,\n    '|casts:', $casts, '|warnings:', $warnings, '|';\nini_restore('zend.assertions');\necho 'after:', ini_get('zend.assertions');\n",
+      "source_sha256": "32be93af522f6b58bb43a232fee3ad95dfab5add000133f1c953c53cfc86eb06",
+      "stdout_base64": "VzE6MXxzZWVkOjF8cmF3OjEyWHxmcmVzaDoxMlh8cmF3OjB8b2ZmOjB8TzE6MHxXMjoyfGluaV9yZXN0b3JlOmNvbnZlcnRlZHxudWxsfHJhdzoxMlh8ZWZmZWN0czoxfGNhc3RzOjF8d2FybmluZ3M6MnxhZnRlcjoxMlg=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-stringable-restore-20/.tools/assertion-stringable-restore-native-20/run-v1/report.json"
+    },
+    {
+      "id": "assertion-stringable-restore-throw-retire-mode1",
+      "source": "<?php\n$casts = 0;\n$warnings = 0;\n$effects = 0;\n$returned = 'unset';\n$failure = new Exception('restore-warning');\nclass AssertionRestoreOptionRetireReview20 {\n    public function __toString(): string {\n        global $casts;\n        echo 'O', ++$casts, ':', ini_get('zend.assertions'), '|';\n        ini_set('zend.assertions', '2');\n        return 'zend.assertions';\n    }\n    public function __destruct() {\n        echo 'D|';\n    }\n}\n$option = new AssertionRestoreOptionRetireReview20();\nset_error_handler(static function ($level, $message) use (&$warnings, &$option, $failure) {\n    echo 'W', ++$warnings, ':', ini_get('zend.assertions'), '|';\n    if ($warnings === 1) {\n        ini_restore('zend.assertions');\n        return true;\n    }\n    $probe = new Exception('trace');\n    $trace = $probe->getTrace();\n    echo $trace[1]['function'], ':',\n        $trace[1]['args'][0] === 'zend.assertions' ? 'converted|' : 'BAD|';\n    $option = null;\n    echo 'retired|';\n    ini_set('zend.assertions', '0');\n    throw $failure;\n});\n$seed = ini_set('zend.assertions', '12X');\necho 'seed:', $seed, '|raw:', ini_get('zend.assertions'), '|';\n$fresh = ini_set('zend.assertions', '0');\necho 'fresh:', $fresh, '|raw:', ini_get('zend.assertions'), '|';\nassert(++$effects > 0);\necho 'off:', $effects, '|';\ntry {\n    $returned = ini_restore($option);\n    echo 'BAD|';\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 'same|' : 'other|';\n}\nassert(++$effects > 0);\necho 'raw:', ini_get('zend.assertions'), '|returned:', $returned,\n    '|effects:', $effects, '|casts:', $casts, '|warnings:', $warnings;\n",
+      "source_sha256": "8e83981d234b28754d4c3d1eecfaa42f880d1aab7cc0be9fd4932011397a80cb",
+      "stdout_base64": "VzE6MXxzZWVkOjF8cmF3OjEyWHxmcmVzaDoxMlh8cmF3OjB8b2ZmOjB8TzE6MHxXMjoyfGluaV9yZXN0b3JlOmNvbnZlcnRlZHxEfHJldGlyZWR8c2FtZXxyYXc6MTJYfHJldHVybmVkOnVuc2V0fGVmZmVjdHM6MXxjYXN0czoxfHdhcm5pbmdzOjI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-stringable-restore-20/.tools/assertion-stringable-restore-native-20/run-v1/report.json"
     }
   ],
   "native_profile": {

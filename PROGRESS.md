@@ -24,8 +24,11 @@ now snapshots the converted option before the old return, warning/refusal and tr
 arguments. The original conversion is borrowed evidence; actual calls own only the
 converted string, so handler retirement runs the Option destructor immediately.
 Three fresh safe originals and236 checks at real frontiers, including a projected
-ownership query, pass at7eaee/363; strict3 passes4.921s. Last-owner entry cleanup,
-warned Stringable RESTORE, nullable saved-original reentry and NaN timing remain required.
+ownership query, pass at7eaee/363; strict3 passes4.921s. Warned Stringable RESTORE
+now retains a unary converted call and commits the saved original despite handler
+retirement/shared throw. Two fresh safe originals and211 frontier checks, including
+a projected owner query, pass at05db/365; strict3 passes5.024s. Last-owner Stringable
+entry cleanup, nullable saved-original reentry and NaN timing remain required.
 Actual365 over7377 passes strict3 at6b2a (5.020s), retaining current GEN/PROPS,
 retired-owner and SensitiveParameter guards; private source3/236 cuts are unchanged.
 Actual363 over1b33 passes strict3 at1ad9 (4.975s), preserving canonical GEN release

@@ -136,8 +136,10 @@ Fresh modification rounds recapture the current raw original; warned restore
 parses that frozen input and preserves pending Throwable identity. Retained-entry
 Stringable SET replaces the actual option argument before the old-return snapshot;
 warning/refusal traces use the converted string. Its borrowed conversion evidence
-survives real handler retirement without owning the Option. Last-owner entry
-cleanup, warned Stringable RESTORE, nullable saved-original after reentry, NaN timing,
+survives real handler retirement without owning the Option. Warned Stringable
+RESTORE preserves a unary converted call and commits the saved original through
+shared throw/handler retirement. Last-owner entry cleanup, nullable saved-original
+after reentry, NaN timing,
 wider startup/callback facts, Stringable descriptions, exporter forms and single
 named-description/unpack producers remain required.
 

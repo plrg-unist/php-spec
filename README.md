@@ -207,7 +207,9 @@ originals and182 source-frontier checks plus one pure trace query pass at57ee.
 Retained-entry Stringable SET now preserves once-only conversion, post-conversion
 old returns, refusal/shared throws and converted trace arguments. Handler retirement
 runs the Option destructor without a ghost owner. Three new originals and236
-frontier checks pass at7eaee. Last-owner entry cleanup, warned Stringable RESTORE,
+frontier checks pass at7eaee. Warned Stringable RESTORE retains unary converted
+arguments and commits the saved original through handler retirement/shared throw.
+Two new originals and211 frontier checks pass at05db. Last-owner entry cleanup,
 nullable-original/NaN timing, descriptions and wider forms remain required.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.

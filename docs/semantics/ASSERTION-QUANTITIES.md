@@ -37,7 +37,10 @@ and then snapshots the old return. Frozen records authenticate the converted cal
 and borrowed original conversion; only the converted call owns and supplies trace
 arguments. Warning/refusal handlers may retire the Option without delaying its
 destructor or invalidating source evidence. Pending shared Throwable identity and
-normal false refusal both survive completion.
+normal false refusal both survive completion. Stringable RESTORE uses a separate
+unary converted call with frozen `INPUT=ORIGINAL` and null return. Parsing warnings
+receive the converted option in traces; successful restore commits the live saved
+original despite handler raw writes, Option retirement or the shared Throwable.
 
 The engine releases a frozen modified `prev_value` after a successful warning
 callback, even when a nested update already replaced and released that request
@@ -63,7 +66,11 @@ the earlier originals, lifetime controls and failures retain their identities.
 Three fresh Stringable SET originals pass at7eaee with236 checks at real frontiers,
 including a projected converted-call ownership query. These checks cover genuine
 handoff/commit, refusal/shared throw, converted trace arguments and Option owners0
-after handler retirement; they are not236 distinct states.
+after handler retirement; they are not236 distinct states. Two further safe
+Stringable RESTORE originals pass at05db with211 frontier checks, including one
+owner projection. The shared Throwable is observed while its handler frame is
+active and after actual restore completion, before catch; the retired Option
+has no allocation or owner at either frontier. Earlier cuts remain separate.
 
 ```sh
 python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json --match assertion-quantity
@@ -74,8 +81,7 @@ Required follow-ons remain explicit: a restore callback can clear the live saved
 original, leaving a nullable raw value that this string-only state does not yet
 represent. That path is Unsupported, distinct from the intentional lifetime
 divergence above. Zend quantity parsing dereferences a NULL string; later set/restore
-from that state is not probed. Last-owner Stringable SET entry cleanup and warned
-Stringable RESTORE remain required; NaN conversion warnings need the pre-conversion
-old return snapshot. Wider string identity producers, descriptions, exporter forms
-and callback paths remain
-core work. This is a bounded milestone, not complete assertion/INI coverage.
+from that state is not probed. Last-owner Stringable SET/RESTORE entry cleanup
+remains required; NaN conversion warnings need the pre-conversion old return
+snapshot. Wider string identity producers, descriptions, exporter forms and callback
+paths remain core work. This is a bounded milestone, not complete assertion/INI coverage.
