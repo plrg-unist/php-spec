@@ -2572,6 +2572,8 @@ Direct agreement stays at fa678cc48/374; repaired agreement and 343 premises
 zero-budget resumption. The original Unsupported remains zero credit; maintained
 source/render relocation renews no runtime evidence. Other targets and required
 original 7's CLI60 timeout remain OPEN.
+Actual-parent compilation and initialized SL343 pass at `56a92700` over
+`a6994698` with 374 modules; RETURNS/COMP seams preserve prior source/native cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
