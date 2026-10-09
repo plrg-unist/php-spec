@@ -10,8 +10,8 @@ dec $assertion_quantity_factor(preqbytes) : nat?
 dec $assertion_quantity(preqbytes) : int?
 dec $assertion_quantity_decode(preqbytes) : (int, preqbytes?)
 dec $assertion_ini_records_valid(pstate, passertini*) : bool
-dec $assertion_restore(pstate) : pstate
 dec $assertion_ini_restore(pstate, pconfigcall) : pstate
+dec $assertion_ini_restore_string_finish(pstate, pconfigcall, pvalue) : pstate
 dec $assertion_ini_set(pstate, pconfigcall, pvalue) : pstate
 dec $assertion_ini_blocked(int, int) : bool
 dec $assertion_ini_warning() : preqbytes
@@ -112,15 +112,6 @@ def $assertion_state_valid(S) = true
   -- if $assertion_ini_records_valid(S, S.ASSERTIONINI)
   -- if z_initial = S.ASSERTIONS \/ ($(z_initial >= 0) /\ $(S.ASSERTIONS >= 0))
 def $assertion_state_valid(S) = false -- otherwise
-;; Quiet Stringable options retain their existing conversion route. Warned
-;; Stringable restores still need an authenticated converted-option snapshot.
-def $assertion_restore(S) = S[.ASSERTIONS = z_original][.ASSERTIONSINI = n_original*][.ASSERTIONSRAW = S.ASSERTIONSORIGINAL][.ASSERTIONSMODE = {INPUT S.ASSERTIONSORIGINAL, VALUE z_original}][.ASSERTIONSMODIFIED = false]
-  -- if S.ASSERTIONSMODIFIED
-  -- if $string_bytes(S.ASSERTIONSORIGINAL) = (n_original*)
-  -- if $assertion_quantity(n_original*) = (z_original)
-  -- if ~$assertion_ini_blocked(S.ASSERTIONS, z_original)
-def $assertion_restore(S) = S -- if ~S.ASSERTIONSMODIFIED
-def $assertion_restore(S) = S[.COMPLETION = UNSUPPORTED "assertion INI Stringable restore warning or refusal"] -- otherwise
 def $assertion_ini_blocked(z_old, z_new) = (z_old =/= z_new /\ ($(z_old < 0) \/ $(z_new < 0)))
 def $assertion_ini_warning() = $ptascii("zend.assertions may be completely enabled or disabled only in php.ini")
 dec $assertion_ini_conversion_warning(pstate, pvalue) : bool
@@ -145,7 +136,7 @@ def $config_ini_get_finish(S, pconfigcall, n_option*) = $string_getter(S[.TODO =
 def $config_ini_unary_finish(S, pconfigcall, n_option*) = $assertion_ini_restore(S, pconfigcall)
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if n_option* = $ptascii("zend.assertions")
-rule PhpStep/assertion-ini-restore-string-result: S ~> $assertion_ini_restore(S_call, pconfigcall)
+rule PhpStep/assertion-ini-restore-string-result: S ~> $assertion_ini_restore_string_finish(S, pconfigcall, pvalue_option)
   -- if S.TODO = (CONFIG_STRING_RESULT pconfigcall n_object porigin_child z_child z_call) :: ptask_tail*
   -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
   -- if S.ORIGIN = (porigin_child)
@@ -153,7 +144,6 @@ rule PhpStep/assertion-ini-restore-string-result: S ~> $assertion_ini_restore(S_
   -- if S.RESULT = KNOWN pvalue_option
   -- if $string_bytes(pvalue_option) = (n_option*)
   -- if n_option* = $ptascii("zend.assertions")
-  -- if S_call = S[.ORIGIN = (pconfigcall.SITE)][.TODO = (CONFIG_INVOKE pconfigcall) :: ptask_tail*]
 
 ;; Quantity phases authenticate frozen input and decide refusal after parsing.
 def $assertion_ini_argument(S, pconfigcall, z_precision) = (preqbytes)
