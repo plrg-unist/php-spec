@@ -934,6 +934,20 @@ prior cuts are unchanged. Actual370 over `71cf292aa` passes compiler/init at
 the fb872 cuts and whole-source CLI60 OPEN/zero agreement limit.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Array-mediated overlap301 now permits nonproxy HARRAY alongside HOBJECT in the
+fresh closed-white component, retaining the object-only residual-reach fence.
+Three source-reached cuts 118/107/corrected104 at `f184ac959` execute 329 premises:
+real ordinary-Fiber E→array→D, nested D/array removal with debit4, exact E guard,
+signed -1+2=1, E/array retirement, D self-owner1/weak-live and terminal replay.
+Native grounding and compiler/init pass; baseline91 localizes the old301 refusal.
+The first104 fixture expects a marked E after real selection normalized it and
+fails with zero credit; its separate correction changes no code/source.
+Whole source37 CLI60 remains OPEN/zero agreement and only that source is newly
+excluded from the default whole-CLI campaign; all three state groups remain enabled.
+Main/mixed array layouts, references/proxy tables, black/external components,
+non-idle caches and later-pass overlap remain required; prior cuts are unchanged.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335

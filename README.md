@@ -905,6 +905,13 @@ premises, including F→E→D, count 0, F retirement, D weak liveness and termin
 replay. The whole source retains its CLI60 timeout and zero agreement credit.
 Wider overlap, throwing callbacks and reentry remain required.
 
+The fresh closed-white component check also permits nonproxy arrays while
+residual reach stays object-only. A grounded ordinary-Fiber E→array→D case has
+329 executed state premises covering physical removal, real guard selection,
+signed -1+2=1, E/array retirement and D self-owner/weak liveness. Its whole source
+CLI60 remains OPEN with zero agreement credit. Main/mixed array layouts,
+references/proxy tables and wider overlap remain required.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their
