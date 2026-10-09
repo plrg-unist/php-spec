@@ -39,6 +39,9 @@ remain intact through the shared Throwable. Two fresh originals and323 checks at
 real frontiers plus12 pure exclusion queries pass at242576/367; strict3 passes5.074s.
 New or active SET/NaN continuations encountering NULL stop explicitly; no source
 executes NULL parsing. Last-owner Stringable entry and wider producers remain required.
+Actual367 over78f866bb passes strict3 at7a2095bf (5.071s), preserving
+SensitiveParameterValue reception and by-reference finalizer cursor/replay guards.
+Private nullable source2/335 and all earlier cuts remain unchanged.
 Actual367 overdb808 passes strict3 atfac7c8 (5.121s), preserving ARG
 receiver/argument/foreach continuations and EX parked-public lookup/collector guards.
 Private source2/255 cuts and prior unsafe boundaries remain unchanged.
