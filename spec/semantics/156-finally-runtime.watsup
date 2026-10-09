@@ -22,6 +22,7 @@ dec $ref_return_cursor_inside(porigin, porigin) : bool
 dec $ref_return_cursor_valid(pstate, prefreturncursor, porigin, int) : bool
 dec $ref_return_cursor_capture(pstate, porigin, porigin, poperand, int, porigin, poperand, int, bool, ptask*) : pstate
 dec $ref_return_cursor_task(ptask) : bool
+dec $destructor_operational(pstate) : bool
 dec $throwable_chain(pstate, nat, nat*) : pthrowchain
 dec $throwable_chain_next(pstate, nat?, nat*) : pthrowchain
 def $throwable_chain(S, n, n_seen*) = $throwable_chain_next(S, $throwable_previous_id(S, n), n_seen* ++ [n])
@@ -179,6 +180,86 @@ dec $ref_return_cursor_single(pstate, porigin, porigin) : bool
 def $ref_return_cursor_single(S, PORIGIN n pcpath_owner, PORIGIN n pcpath_source) = $ref_return_cursor_paths($ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), pcpath_owner, pcpath_source)
   -- if $source_unit(S.SOURCES, n) = (pcunit)
 def $ref_return_cursor_single(S, porigin_owner, porigin_source) = false -- otherwise
+;; Two live CV transfers are consumed in order. The partial certificate does
+;; not claim that its outer transfer has already been discarded.
+dec $ref_return_pair_sites(pstate, prefreturncursor, prefreturncursor) : bool
+def $ref_return_pair_sites(S, prefreturncursor_inner, prefreturncursor_outer) = true
+  -- if $ref_return_cursor_site(S, prefreturncursor_inner)
+  -- if $ref_return_cursor_site(S, prefreturncursor_outer)
+  -- if $origin_node(S.SOURCES, prefreturncursor_inner.SOURCE) = (NStmtReturn (NExprVariable (BYTES text_inner) metadata_inner) metadata_return_inner)
+  -- if $origin_node(S.SOURCES, prefreturncursor_outer.SOURCE) = (NStmtReturn (NExprVariable (BYTES text_outer) metadata_outer) metadata_return_outer)
+  -- if $ref_return_cursor_inside(prefreturncursor_outer.OWNER, prefreturncursor_inner.SOURCE)
+  -- if prefreturncursor_inner.OUTER = $origin_child((prefreturncursor_outer.OWNER), [PCFIELD 2])
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))]
+  -- if prefreturncursor_outer.OUTER = (pfunction.ORIGIN)
+def $ref_return_pair_sites(S, prefreturncursor_inner, prefreturncursor_outer) = false -- otherwise
+dec $ref_return_pair_paths(pcpath*, pcpath, pcpath, pcpath) : bool
+def $ref_return_pair_paths(eps, pcpath_inner, pcpath_outer, pcpath_source) = true
+def $ref_return_pair_paths(pcpath :: pcpath_tail*, pcpath_inner, pcpath_outer, pcpath_source) = ((~$effect_below(pcpath ++ [PCFIELD 2], pcpath_source) \/ pcpath = pcpath_inner \/ pcpath = pcpath_outer) /\ $ref_return_pair_paths(pcpath_tail*, pcpath_inner, pcpath_outer, pcpath_source))
+dec $ref_return_pair_site(pstate, prefreturncursor, prefreturncursor, porigin, int) : bool
+def $ref_return_pair_site(S, prefreturncursor_inner, prefreturncursor_outer, PORIGIN n pcpath_source, z) = true
+  -- if $ref_return_pair_sites(S, prefreturncursor_inner, prefreturncursor_outer)
+  -- if prefreturncursor_inner.OWNER = PORIGIN n pcpath_inner
+  -- if prefreturncursor_outer.OWNER = PORIGIN n pcpath_outer
+  -- if $ref_return_cursor_inside(prefreturncursor_inner.OWNER, PORIGIN n pcpath_source)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_source) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $reference_return_fetch_valid(S[.ORIGIN = (PORIGIN n pcpath_source)], z)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $ref_return_pair_paths($ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), pcpath_inner, pcpath_outer, pcpath_source)
+  -- if $ref_replay_owners(S, PORIGIN n pcpath_source) = porigin_first :: eps
+def $ref_return_pair_site(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = false -- otherwise
+dec $ref_return_pair_operand(pstate, porigin, poperand) : bool
+def $ref_return_pair_operand(S, porigin_source, REFERENCE n) = true
+  -- if $origin_node(S.SOURCES, porigin_source) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
+  -- if $lookup(S.ENV, $base64(text)) = (n)
+  -- if $finally_return_operand_valid(S, REFERENCE n)
+def $ref_return_pair_operand(S, porigin_source, poperand) = false -- otherwise
+dec $ref_return_pair_pending_valid(pstate, prefreturncursor, prefreturncursor, porigin, int) : bool
+def $ref_return_pair_pending_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = true
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: (FINALLY_REF_RETURN porigin_outer porigin_old (REFERENCE n_old) z_old) :: (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore?) :: (TYPE_FALLTHROUGH porigin_function) :: (REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z) :: (REF_RECHECK porigin_source porigin_first (REFERENCE n) z) :: eps
+  -- if prefreturncursor_outer = { OWNER porigin_outer, SOURCE porigin_old, LINE z_old, OUTER porigin_restore? }
+  -- if prefreturncursor_outer.OUTER = (porigin_function)
+  -- if $ref_replay_owners(S, porigin_source) = porigin_first :: eps
+  -- if $ref_return_pair_site(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if $ref_return_pair_operand(S, porigin_old, REFERENCE n_old)
+  -- if $ref_return_pair_operand(S, porigin_source, REFERENCE n)
+  -- if n_old =/= n
+def $ref_return_pair_pending_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = false -- otherwise
+dec $ref_return_pair_valid(pstate, prefreturncursor, prefreturncursor, porigin, int) : bool
+def $ref_return_pair_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = true
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ptask_tail*
+  -- if prefreturncursor_outer.OUTER = (porigin_function)
+  -- if $ref_replay_owners(S, porigin_source) = porigin_first :: eps
+  -- if ptask_tail* = [REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z] \/ ptask_tail* = [TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]
+  -- if $ref_return_pair_site(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if $ref_return_pair_operand(S, porigin_source, REFERENCE n)
+def $ref_return_pair_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = false -- otherwise
+def $call_task_valid(S, REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z) = $ref_return_pair_pending_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+def $call_task_valid(S, REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z) = $ref_return_pair_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+def $task_nodes(REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z) = eps
+def $task_nodes(REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z) = eps
+def $ref_return_cursor_capture(S, porigin_inner, porigin_old, REFERENCE n_inner, z_old, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin_inner 3) :: (ORIGIN_RETURN porigin_restore_inner?) :: (FINALLY_REF_RETURN porigin_outer porigin_old_outer (REFERENCE n_outer) z_outer) :: (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore_outer?) :: (TYPE_FALLTHROUGH porigin_function) :: (REF_RECHECK porigin_source porigin_first (REFERENCE n) z) :: eps) = S_left[.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: [FINALLY_REF_RETURN porigin_outer porigin_old_outer (REFERENCE n_outer) z_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?, TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]]
+  -- if b
+  -- if ~$destructor_operational(S)
+  -- if prefreturncursor_inner = { OWNER porigin_inner, SOURCE porigin_old, LINE z_old, OUTER porigin_restore_inner? }
+  -- if prefreturncursor_outer = { OWNER porigin_outer, SOURCE porigin_old_outer, LINE z_outer, OUTER porigin_restore_outer? }
+  -- if porigin_restore_outer? = (porigin_function)
+  -- if $ref_replay_owners(S, porigin_source) = porigin_first :: eps
+  -- if $ref_return_pair_site(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if $ref_return_pair_operand(S, porigin_old, REFERENCE n_inner)
+  -- if $ref_return_pair_operand(S, porigin_old_outer, REFERENCE n_outer)
+  -- if $ref_return_pair_operand(S, porigin_source, REFERENCE n)
+  -- if n_inner =/= n_outer /\ n_inner =/= n /\ n_outer =/= n
+  -- if ptask_tail* = [FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN porigin_restore_inner?, FINALLY_REF_RETURN porigin_outer porigin_old_outer (REFERENCE n_outer) z_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?, TYPE_FALLTHROUGH porigin_function, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]
+  -- if S_left = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, ptask_tail*), porigin_inner, porigin_source, REFERENCE n, z, b, ptask_tail*)
+def $ref_return_cursor_capture(S, porigin_outer, porigin_old, REFERENCE n_outer, z_old, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore?) :: (TYPE_FALLTHROUGH porigin_function) :: (REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z) :: (REF_RECHECK porigin_source porigin_first (REFERENCE n) z) :: eps) = S_left[.TODO = [RETURN_REF_UNWIND (REFERENCE n) z true porigin_source, TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]]
+  -- if $ref_return_pair_pending_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if prefreturncursor_outer = { OWNER porigin_outer, SOURCE porigin_old, LINE z_old, OUTER porigin_restore? }
+  -- if ptask_tail* = [FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore?, TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]
+  -- if S_left = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, ptask_tail*), porigin_outer, porigin_source, REFERENCE n, z, b, ptask_tail*)
 def $ref_return_cursor_capture(S, porigin, porigin_old, poperand_old, z_old, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*) = S_left[.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ($ref_recheck_clean(ptask_left*) ++ [REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z])]
   -- if S_left = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*), porigin, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*)
   -- if S_left.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: ptask_left*
@@ -193,6 +274,8 @@ def $ref_return_cursor_capture(S, porigin, porigin_old, poperand_old, z_old, por
   -- if $ref_return_cursor_old_operand(S, prefreturncursor, poperand_old)
 def $ref_return_cursor_capture(S, porigin, porigin_old, poperand_old, z_old, porigin_source, poperand, z, b, ptask_tail*) = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, ptask_tail*), porigin, porigin_source, poperand, z, b, ptask_tail*) -- otherwise
 def $ref_return_cursor_task(REF_RETURN_CURSOR prefreturncursor porigin_source z) = true
+def $ref_return_cursor_task(REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z) = true
+def $ref_return_cursor_task(REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z) = true
 def $ref_return_cursor_task(ptask) = false -- otherwise
 dec $ref_return_cursor_suffix(pstate, ptask*, prefreturncursor, porigin, porigin, poperand, int) : bool
 def $ref_return_cursor_suffix(S, [REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first poperand z], prefreturncursor, porigin_source, porigin_first, poperand, z) = true
@@ -245,6 +328,7 @@ def $finally_transfer_marker(S, FINALLY_RESUME porigin n?) = true
 def $finally_transfer_marker(S, FINALLY_RETURN porigin porigin_source poperand) = true
 def $finally_transfer_marker(S, FINALLY_REF_RETURN porigin porigin_source poperand z) = true
 def $finally_transfer_marker(S, FINALLY_REF_CONSUMED prefreturncursor) = true
+def $finally_transfer_marker(S, FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) = true
 def $finally_transfer_marker(S, FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) = true
 def $finally_transfer_marker(S, FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target) = true
 def $finally_transfer_marker(S, ptask) = false -- otherwise
@@ -255,6 +339,7 @@ def $return_step(S, poperand, (porigin_source), (FINALLY_RESUME porigin n?) :: p
 def $return_step(S, poperand, (porigin_source), (FINALLY_RETURN porigin porigin_old poperand_old) :: ptask_tail*) = $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*)
 def $return_step(S, poperand, (porigin_source), (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: ptask_tail*) = $finally_leave_return($retired_drop_transfer(S, porigin_old, z_old), porigin, porigin_source, poperand, ptask_tail*)
 def $return_step(S, poperand, (porigin_source), (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*) = $finally_leave_return(S, prefreturncursor.OWNER, porigin_source, poperand, ptask_tail*)
+def $return_step(S, poperand, (porigin_source), (FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) :: ptask_tail*) = $finally_leave_return(S, prefreturncursor_inner.OWNER, porigin_source, poperand, ptask_tail*)
 def $return_step(S, poperand, (porigin_source), (FINALLY_JUMP porigin porigin_old n_depth n_original b_continue) :: ptask_tail*) = $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*)
 def $return_step(S, poperand, (porigin_source), (FINALLY_GOTO porigin porigin_old pcpath_old pcpath_target) :: ptask_tail*) = $finally_leave_return(S, porigin, porigin_source, poperand, ptask_tail*)
 
@@ -307,7 +392,13 @@ def $ref_replay_context_paths(S, n, pcpath_source, pcpath_current) = $ref_replay
 dec $ref_replay_contexts(pstate, porigin) : prefowner*
 def $ref_replay_contexts(S, PORIGIN n pcpath_source) = $ref_replay_context_paths(S, n, pcpath_source, pcpath_source)
 def $ref_recheck_throw_producer(S, S_next) = true
-  -- if S.TODO = [RETURN_REF_UNWIND poperand z true porigin_source, REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first poperand z]
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
+  -- if $ref_return_pair_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if $throwable_pending(S_next.COMPLETION)
+  -- if S_next.FRAMES = S.FRAMES
+  -- if S_next.CURRENT = S.CURRENT
+def $ref_recheck_throw_producer(S, S_next) = true
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RETURN_CURSOR prefreturncursor porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
   -- if $ref_return_cursor_valid(S, prefreturncursor, porigin_source, z)
   -- if $throwable_pending(S_next.COMPLETION)
   -- if S_next.FRAMES = S.FRAMES
@@ -325,7 +416,11 @@ def $throwable_continuation(S, S_next) = S_next[.TODO = (REF_REPLAY porigin_sour
   -- if prefowner* = $ref_replay_contexts(S, porigin_source)
 def $throwable_continuation(S, S_next) = S_next[.TODO = [REF_REPLAY_ACTIVE porigin_source poperand z prefowner* prefreturncursor]]
   -- if $ref_recheck_throw_producer(S, S_next)
-  -- if S.TODO = [RETURN_REF_UNWIND poperand z true porigin_source, REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first poperand z]
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RETURN_CURSOR prefreturncursor porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
+  -- if prefowner* = $ref_replay_contexts(S, porigin_source)
+def $throwable_continuation(S, S_next) = S_next[.TODO = [REF_REPLAY_TWO porigin_source poperand z prefowner* prefreturncursor_inner prefreturncursor_outer]]
+  -- if $ref_recheck_throw_producer(S, S_next)
+  -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
   -- if prefowner* = $ref_replay_contexts(S, porigin_source)
 dec $ref_owner_origin(prefowner) : porigin
 def $ref_owner_origin(REPLAY_TRY porigin) = porigin
@@ -348,6 +443,7 @@ def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_RESUME porigin 
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_RETURN porigin porigin_old poperand_old) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: ptask_tail*) = $ref_return_cursor_capture(S, porigin, porigin_old, poperand_old, z_old, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*) = $finally_leave_ref_return(S, prefreturncursor.OWNER, porigin_source, poperand, z, b, ptask_tail*)
+def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) :: ptask_tail*) = $finally_leave_ref_return(S, prefreturncursor_inner.OWNER, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_JUMP porigin porigin_old n_depth n_original b_continue) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_GOTO porigin porigin_old pcpath_old pcpath_target) :: ptask_tail*) = $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b, ptask_tail*)
 def $return_ref_step(S, poperand, z, b, porigin_source, ptask :: ptask_tail*) = $retired_ref_discard(S, porigin_source, z, b, ptask, ptask_tail*)
@@ -356,6 +452,14 @@ def $return_ref_step(S, poperand, z, b, porigin_source, ptask :: ptask_tail*) = 
   -- if ~$reference_notice_marker(ptask)
   -- if ~$ref_return_cursor_task(ptask)
 def $return_ref_step(S, poperand, z, false, porigin_source, eps) = $return_step(S, poperand, (porigin_source), eps)
+def $return_ref_step(S, poperand, z, true, porigin_source, (REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps) = $return_step(S_checked, $finally_ref_result(S_checked, poperand), (porigin_source), eps)
+  -- if $ref_return_pair_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if S_checked = $finally_ref_recheck(S, poperand, z)
+  -- if S_checked.COMPLETION = NORMAL
+def $return_ref_step(S, poperand, z, true, porigin_source, (REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps) = S_checked
+  -- if $ref_return_pair_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if S_checked = $finally_ref_recheck(S, poperand, z)
+  -- if S_checked.COMPLETION =/= NORMAL
 def $return_ref_step(S, poperand, z, true, porigin_source, (REF_RETURN_CURSOR prefreturncursor porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps) = $return_step(S_checked, $finally_ref_result(S_checked, poperand), (porigin_source), eps)
   -- if $ref_return_cursor_valid(S, prefreturncursor, porigin_source, z)
   -- if S_checked = $finally_ref_recheck(S, poperand, z)
@@ -456,6 +560,44 @@ def $ref_consumed_tail([FINALLY_REF_CONSUMED prefreturncursor, FINALLY_PHASE por
 def $ref_consumed_tail(ptask :: ptask_tail*) = $ref_consumed_tail(ptask_tail*)
   -- if ~$ref_consumed_task(ptask)
 def $ref_consumed_tail(ptask*) = eps -- otherwise
+dec $ref_consumed_pair_tasks(prefreturncursor, prefreturncursor) : ptask*
+def $ref_consumed_pair_tasks(prefreturncursor_inner, prefreturncursor_outer) = [ORIGIN_RETURN $origin_child((prefreturncursor_inner.OWNER), [PCFIELD 2]), FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer, FINALLY_PHASE prefreturncursor_inner.OWNER 3, ORIGIN_RETURN prefreturncursor_inner.OUTER, FINALLY_REF_CONSUMED prefreturncursor_outer, FINALLY_PHASE prefreturncursor_outer.OWNER 3, ORIGIN_RETURN prefreturncursor_outer.OUTER]
+dec $ref_consumed_pair_task(ptask) : bool
+def $ref_consumed_pair_task(FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) = true
+def $ref_consumed_pair_task(ptask) = false -- otherwise
+dec $ref_consumed_pair_tail(ptask*) : ptask*
+def $ref_consumed_pair_tail([FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer, FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN porigin_restore_inner?, FINALLY_REF_CONSUMED prefreturncursor_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?]) = [FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer, FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN porigin_restore_inner?, FINALLY_REF_CONSUMED prefreturncursor_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?]
+  -- if porigin_inner = prefreturncursor_inner.OWNER
+  -- if porigin_restore_inner? = prefreturncursor_inner.OUTER
+  -- if porigin_outer = prefreturncursor_outer.OWNER
+  -- if porigin_restore_outer? = prefreturncursor_outer.OUTER
+def $ref_consumed_pair_tail(ptask :: ptask_tail*) = $ref_consumed_pair_tail(ptask_tail*)
+  -- if ~$ref_consumed_pair_task(ptask)
+  -- if ~$ref_consumed_task(ptask)
+def $ref_consumed_pair_tail(ptask*) = eps -- otherwise
+dec $ref_consumed_scope_tail(ptask*) : ptask*
+def $ref_consumed_scope_tail(ptask*) = ptask_pair*
+  -- if ptask_pair* = $ref_consumed_pair_tail(ptask*)
+  -- if ptask_pair* =/= eps
+def $ref_consumed_scope_tail(ptask*) = $ref_consumed_tail(ptask*)
+  -- if $ref_consumed_pair_tail(ptask*) = eps
+dec $ref_replay_two_valid(pstate, porigin, poperand, int, prefowner*, prefreturncursor, prefreturncursor) : bool
+def $ref_replay_two_valid(S, porigin_source, poperand, z, prefowner*, prefreturncursor_inner, prefreturncursor_outer) = true
+  -- if S.TODO = (THROW_SEARCH n) :: (REF_REPLAY_TWO porigin_source poperand z prefowner* prefreturncursor_inner prefreturncursor_outer) :: eps
+  -- if $ref_replay_valid(S[.TODO = [THROW_SEARCH n, REF_REPLAY porigin_source poperand z prefowner*]], porigin_source, poperand, z, prefowner*)
+  -- if $ref_return_pair_site(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if $ref_return_pair_operand(S, porigin_source, poperand)
+def $ref_replay_two_valid(S, porigin_source, poperand, z, prefowner*, prefreturncursor_inner, prefreturncursor_outer) = false -- otherwise
+def $call_task_valid(S, REF_REPLAY_TWO porigin_source poperand z prefowner* prefreturncursor_inner prefreturncursor_outer) = $ref_replay_two_valid(S, porigin_source, poperand, z, prefowner*, prefreturncursor_inner, prefreturncursor_outer)
+def $throwable_marker(REF_REPLAY_TWO porigin_source poperand z prefowner* prefreturncursor_inner prefreturncursor_outer) = true
+def $task_nodes(REF_REPLAY_TWO porigin_source poperand z prefowner* prefreturncursor_inner prefreturncursor_outer) = $operand_nodes(poperand)
+rule PhpStep/ref-replay-two: S ~> S[.TODO = (THROW_SEARCH n) :: (ptask_replay* ++ ptask_consumed*)][.ORIGIN = (porigin_replay)]
+  -- if S.TODO = (THROW_SEARCH n) :: (REF_REPLAY_TWO porigin_source poperand z prefowner* prefreturncursor_inner prefreturncursor_outer) :: eps
+  -- if prefowner* = prefowner_first :: prefowner_tail*
+  -- if $ref_replay_two_valid(S, porigin_source, poperand, z, prefowner*, prefreturncursor_inner, prefreturncursor_outer)
+  -- if ptask_replay* = $ref_replay_tasks(porigin_source, z, prefowner*)
+  -- if ptask_consumed* = $ref_consumed_pair_tasks(prefreturncursor_inner, prefreturncursor_outer)
+  -- if porigin_replay = $ref_owner_origin(prefowner_first)
 dec $ref_replay_active_valid(pstate, porigin, poperand, int, prefowner*, prefreturncursor) : bool
 def $ref_replay_active_valid(S, porigin_source, poperand, z, prefowner*, prefreturncursor) = ($ref_replay_valid(S[.TODO = [THROW_SEARCH n, REF_REPLAY porigin_source poperand z prefowner*]], porigin_source, poperand, z, prefowner*) /\ $ref_return_cursor_site(S, prefreturncursor) /\ $ref_return_cursor_inside(prefreturncursor.OWNER, porigin_source))
   -- if S.TODO = [THROW_SEARCH n, REF_REPLAY_ACTIVE porigin_source poperand z prefowner* prefreturncursor]
@@ -540,6 +682,9 @@ def $ref_replay_guard_tail(eps, porigin_source, z, prefowner*) = false
 dec $ref_replay_guard_next(ptask*, porigin, int, prefowner*) : bool
 dec $ref_replay_remainder(ptask*, ptask*) : bool
 def $ref_replay_remainder(ptask*, ptask*) = true
+def $ref_replay_remainder(ptask*, ptask_expected*) = true
+  -- if $ref_consumed_pair_tail(ptask*) = [FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer, FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN porigin_restore_inner?, FINALLY_REF_CONSUMED prefreturncursor_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?]
+  -- if ptask* = ptask_expected* ++ $ref_consumed_pair_tasks(prefreturncursor_inner, prefreturncursor_outer)
 def $ref_replay_remainder(ptask*, ptask_expected*) = true
   -- if $ref_consumed_tail(ptask*) = [FINALLY_REF_CONSUMED prefreturncursor, FINALLY_PHASE porigin 3, ORIGIN_RETURN porigin_outer?]
   -- if ptask* = ptask_expected* ++ $ref_consumed_tasks(prefreturncursor)
@@ -737,7 +882,7 @@ def $ref_replay_loop_tails(S, n, pcpath_target, n_index, ptask_base*, ptask_old*
 dec $ref_replay_after_tasks(pstate, porigin) : pgototasks
 def $ref_replay_after_tasks(S, PORIGIN n pcpath) = GOTOTASKS ptask_tail*
   -- if $goto_base(S, PORIGIN n pcpath) = GOTOTASKS ptask_base*
-  -- if $ref_replay_loop_tails(S, n, pcpath, $ref_replay_loop_root(S), ptask_base*, $ref_consumed_tail(S.TODO)) = GOTOTASKS ptask_old*
+  -- if $ref_replay_loop_tails(S, n, pcpath, $ref_replay_loop_root(S), ptask_base*, $ref_consumed_scope_tail(S.TODO)) = GOTOTASKS ptask_old*
   -- if $goto_find(S, PORIGIN n pcpath, ptask_base*, ptask_old*) = GOTOTASKS ((AT (PORIGIN n pcpath) (STMT statement)) :: ptask_tail*)
 def $ref_replay_after_tasks(S, porigin) = GOTOMISSING -- otherwise
 
@@ -884,6 +1029,10 @@ rule PhpStep/finally-resume-consumed-ref: S ~> $finally_leave_ref_return(S, pref
   -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
   -- if $ref_return_cursor_literal(S, prefreturncursor) = eps
   -- if ~$ref_return_cursor_concat(S, prefreturncursor)
+;; This first two-history slice covers uncaught replay and an initial successful
+;; override. A caught inner error resuming the discarded middle CV is separate.
+rule PhpStep/finally-resume-consumed-pair: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "caught two-history reference return replay"]
+  -- if S.TODO = (FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) :: ptask_tail*
 rule PhpStep/finally-resume-consumed-concat: S ~> S_left[.TODO = [RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RETURN_NOTICE prefreturncursor.SOURCE prefreturncursor.LINE REF_NOTICE_VALUE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE]]
   -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
   -- if $ref_return_cursor_concat(S, prefreturncursor)
@@ -910,6 +1059,8 @@ rule PhpStep/finally-replace-ref-return: S ~> $finally_leave_throw($retired_drop
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*
 rule PhpStep/finally-replace-consumed-ref: S ~> $finally_leave_throw(S, prefreturncursor.OWNER, n, ptask_tail*)
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
+rule PhpStep/finally-replace-consumed-pair: S ~> $finally_leave_throw(S, prefreturncursor_inner.OWNER, n, ptask_tail*)
+  -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) :: ptask_tail*
 rule PhpStep/finally-replace-jump: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) :: ptask_tail*
 rule PhpStep/finally-replace-goto: S ~> $finally_leave_throw(S, porigin, n, ptask_tail*)
@@ -920,12 +1071,14 @@ def $throwable_marker(FINALLY_RESUME porigin n?) = true
 def $throwable_marker(FINALLY_RETURN porigin porigin_source poperand) = true
 def $throwable_marker(FINALLY_REF_RETURN porigin porigin_source poperand z) = true
 def $throwable_marker(FINALLY_REF_CONSUMED prefreturncursor) = true
+def $throwable_marker(FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) = true
 def $throwable_marker(FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) = true
 def $throwable_marker(FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target) = true
 def $task_nodes(FINALLY_RESUME porigin n?) = $instance_roots(n?)
 def $task_nodes(FINALLY_RETURN porigin porigin_source poperand) = $operand_nodes(poperand)
 def $task_nodes(FINALLY_REF_RETURN porigin porigin_source poperand z) = $operand_nodes(poperand)
 def $task_nodes(FINALLY_REF_CONSUMED prefreturncursor) = eps
+def $task_nodes(FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) = eps
 
 ;; The current source origin distinguishes catch/try continuation from an
 ;; executing finalizer. Each frame may hold at most one marker for a source try.
@@ -935,6 +1088,7 @@ def $finally_marker_origin(FINALLY_RESUME porigin n?) = (porigin)
 def $finally_marker_origin(FINALLY_RETURN porigin porigin_source poperand) = (porigin)
 def $finally_marker_origin(FINALLY_REF_RETURN porigin porigin_source poperand z) = (porigin)
 def $finally_marker_origin(FINALLY_REF_CONSUMED prefreturncursor) = (prefreturncursor.OWNER)
+def $finally_marker_origin(FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) = (prefreturncursor_inner.OWNER)
 def $finally_marker_origin(FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) = (porigin)
 def $finally_marker_origin(FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target) = (porigin)
 def $finally_marker_origin(AT porigin ptask) = $finally_marker_origin(ptask)
@@ -967,6 +1121,7 @@ def $finally_phase_of(FINALLY_RESUME porigin n?) = ($finally_outcome_phase(n?))
 def $finally_phase_of(FINALLY_RETURN porigin porigin_source poperand) = (2)
 def $finally_phase_of(FINALLY_REF_RETURN porigin porigin_source poperand z) = (3)
 def $finally_phase_of(FINALLY_REF_CONSUMED prefreturncursor) = (3)
+def $finally_phase_of(FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) = (3)
 def $finally_phase_of(FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) = (4)
 def $finally_phase_of(FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target) = (5)
 def $finally_phase_of(ptask) = eps -- otherwise
@@ -1042,6 +1197,7 @@ def $call_task_valid(S, RETURN_UNWIND poperand porigin_source?) = ($return_unwin
 def $call_task_valid(S, FINALLY_RETURN porigin porigin_source poperand) = ($finally_resume_valid(S, porigin, eps) /\ $finally_phase_at(S.TODO, FINALLY_RETURN porigin porigin_source poperand, 2) /\ $finally_return_source_valid(S, porigin, porigin_source) /\ $finally_return_operand_valid(S, poperand))
 def $call_task_valid(S, FINALLY_REF_RETURN porigin porigin_source poperand z) = ($finally_resume_valid(S, porigin, eps) /\ $finally_phase_at(S.TODO, FINALLY_REF_RETURN porigin porigin_source poperand z, 3) /\ $finally_ref_source_valid(S, porigin, porigin_source, z) /\ $finally_return_operand_valid(S, poperand))
 def $call_task_valid(S, FINALLY_REF_CONSUMED prefreturncursor) = ($ref_return_cursor_site(S, prefreturncursor) /\ $finally_resume_valid(S, prefreturncursor.OWNER, eps) /\ $finally_phase_at(S.TODO, FINALLY_REF_CONSUMED prefreturncursor, 3) /\ $ref_consumed_tail(S.TODO) = [FINALLY_REF_CONSUMED prefreturncursor, FINALLY_PHASE prefreturncursor.OWNER 3, ORIGIN_RETURN prefreturncursor.OUTER])
+def $call_task_valid(S, FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) = ($ref_return_pair_sites(S, prefreturncursor_inner, prefreturncursor_outer) /\ $finally_resume_valid(S, prefreturncursor_inner.OWNER, eps) /\ $finally_phase_at(S.TODO, FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer, 3) /\ $ref_consumed_pair_tail(S.TODO) = [FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer, FINALLY_PHASE prefreturncursor_inner.OWNER 3, ORIGIN_RETURN prefreturncursor_inner.OUTER, FINALLY_REF_CONSUMED prefreturncursor_outer, FINALLY_PHASE prefreturncursor_outer.OWNER 3, ORIGIN_RETURN prefreturncursor_outer.OUTER])
 def $call_task_valid(S, FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) = ($finally_resume_valid(S, porigin, eps) /\ $finally_phase_at(S.TODO, FINALLY_JUMP porigin porigin_source n_depth n_original b_continue, 4) /\ $finally_jump_source_valid(S, porigin, porigin_source, n_depth, n_original, b_continue))
 def $call_task_valid(S, FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target) = ($finally_resume_valid(S, porigin, eps) /\ $finally_phase_at(S.TODO, FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target, 5) /\ $finally_goto_source_valid(S, porigin, porigin_source, pcpath_source, pcpath_target))
 def $finally_return_operand_valid(S, KNOWN pvalue) = true
@@ -1069,6 +1225,7 @@ def $finally_resume_at(FINALLY_RESUME porigin n?, porigin) = true
 def $finally_resume_at(FINALLY_RETURN porigin porigin_source poperand, porigin) = true
 def $finally_resume_at(FINALLY_REF_RETURN porigin porigin_source poperand z, porigin) = true
 def $finally_resume_at(FINALLY_REF_CONSUMED prefreturncursor, porigin) = (prefreturncursor.OWNER = porigin)
+def $finally_resume_at(FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer, porigin) = (prefreturncursor_inner.OWNER = porigin)
 def $finally_resume_at(FINALLY_JUMP porigin porigin_source n_depth n_original b_continue, porigin) = true
 def $finally_resume_at(FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target, porigin) = true
 
@@ -1101,6 +1258,8 @@ def $goto_saved_finally((FINALLY_RETURN porigin porigin_source poperand) :: ptas
 def $goto_saved_finally((FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*, porigin) = GOTOTASKS ((FINALLY_REF_RETURN porigin porigin_source poperand z) :: ptask_tail*)
 def $goto_saved_finally((FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*, porigin) = GOTOTASKS ((FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*)
   -- if prefreturncursor.OWNER = porigin
+def $goto_saved_finally((FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) :: ptask_tail*, porigin) = GOTOTASKS ((FINALLY_REF_PAIR prefreturncursor_inner prefreturncursor_outer) :: ptask_tail*)
+  -- if prefreturncursor_inner.OWNER = porigin
 def $goto_saved_finally((FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) :: ptask_tail*, porigin) = GOTOTASKS ((FINALLY_JUMP porigin porigin_source n_depth n_original b_continue) :: ptask_tail*)
 def $goto_saved_finally((FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target) :: ptask_tail*, porigin) = GOTOTASKS ((FINALLY_GOTO porigin porigin_source pcpath_source pcpath_target) :: ptask_tail*)
 def $goto_saved_finally(ptask :: ptask_tail*, porigin) = $goto_saved_finally(ptask_tail*, porigin)

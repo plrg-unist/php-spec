@@ -1048,9 +1048,15 @@ CASES += [('from-callable-factory-getter-retirement', ['from-callable-factory-ge
 CASES += [('from-callable-factory-fiber-retirement', ['from-callable-factory-fiber-current'])]
 CASES += [('from-callable-factory-bound-fiber-retirement', ['from-callable-factory-fiber-status'])]
 CASES += [('from-callable-factory-static-fiber-suspension', ['from-callable-factory-fiber-suspend'])]
+CASES += [('from-callable-factory-bound-fiber-resume', ['from-callable-factory-fiber-resume'])]
 
 
 def render(name, sources):
+    if name == 'from-callable-factory-bound-fiber-resume':
+        from from_callable_resume_fiber_review import render as render_resume_fiber
+        row = sources['from-callable-factory-fiber-resume']
+        text, checks, _, _ = render_resume_fiber(row['fixture'], row['filename'], row['expected_stdout'])
+        return text, checks
     if name == 'from-callable-factory-static-fiber-suspension':
         from from_callable_suspend_fiber_review import render as render_suspend_fiber
         row = sources['from-callable-factory-fiber-suspend']

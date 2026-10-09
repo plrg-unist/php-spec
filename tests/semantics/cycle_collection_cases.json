@@ -304,5 +304,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-fiber-residual-array-overlap-preparation-40",
+    "source": "<?php\n$w=null;$weak=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){\n  global $w;\n  if($this->k===0){echo 'A|',$w->resume(),'|';}\n  else{\n   echo Fiber::getCurrent()===$w?'B|':'bad-worker|';\n   echo Fiber::suspend('paused')===null?'B:null|':'B:other|';\n  }\n }\n}\n$a=new C;$a->s=$a;$a->k=0;\n$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);\necho gc_collect_cycles(),'|';\nclass D {\n public $s;\n function __destruct(){global $w;echo Fiber::getCurrent()===$w?'D:cached|':'D:other|';}\n}\n$t=new Fiber(function(){\n global $weak;\n $d=new D;$d->s=[$d];$weak=WeakReference::create($d);unset($d);\n echo 'new-GC|',gc_collect_cycles(),'|';\n});\n$t->start();\nclass E {\n public $s;public $peer;\n function __destruct(){global $w;echo Fiber::getCurrent()===$w?'E:cached|':'E:other|';}\n}\n$e=new E;$e->s=$e;$e->peer=$weak->get();echo $e->peer===null?'peer:gone|':'peer:live|';unset($e);\n$u=new Fiber(function(){echo 'next-fiber-GC|',gc_collect_cycles(),'|';});\n$u->start();\necho $weak->get()===null?'D:gone|':'D:live|';\necho 'END';\n",
+    "source_sha256": "636151649c935137ae5f0c924ac8b14fa90e96da8f0645b7d8eacdc74ade0127",
+    "stdout": "A|B|paused|1|new-GC|B:null|1|peer:live|next-fiber-GC|E:cached|D:cached|0|D:live|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]

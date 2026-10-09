@@ -1,0 +1,127 @@
+{
+  "status": "bounded source and reached-state milestone; independently reviewed semantics",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "8a81891ce394ec633d09273e0533602962daa403/374",
+  "production_revision": "baeb6c03c20b77bc47c68e7ad7a55799134e4c4e",
+  "scope": "Modules380/384 MAGIC_GET builtin float verification on accepted public literal-CV and owned ordinary-call receivers. Actual unconstrained original PINT widens to the exact float_of_int binary64 value, including strict getters. Real valid nonempty unique PROPREF sources allow exact PFLOAT identity but forbid PINT widening with a first-source conflict; no PARAMETERBACKINGS or wider conversions.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL --sl/jobs1; native30/model60/process90/numeric120; profile30719; LC_ALL=C/TZ=UTC; retained tools, no rebuild"
+  },
+  "native_first": {
+    "revision": "c96598db0ace312b5b964992f18f44f87818b8ff",
+    "cases": 6,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-float-native31-jq77lbp6/report.json",
+    "seconds": 0.3875612551346421,
+    "credit": "Native observations only; exact original bytes, actual pinned binary, all exit0/empty stderr."
+  },
+  "unsupported_baseline": {
+    "revision": "c96598db0ace312b5b964992f18f44f87818b8ff",
+    "case": "review-property-magic-float-reference-kept31",
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-float-baseline31-746cx4xw/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|1/0|",
+    "stderr": "",
+    "reason": "magic getter property type coercion",
+    "seconds": 8.397003804333508,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "a8174525ba6f0860f890a239be4a8f0e36390c75",
+    "parent": "baeb6c03c20b77bc47c68e7ad7a55799134e4c4e",
+    "modules": 374,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-float-strict31-_7rqlizk/report.json",
+    "seconds": 5.399828237481415,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "revision": "a8174525ba6f0860f890a239be4a8f0e36390c75",
+    "cases": 6,
+    "raw": ".tools/properties-magic-coerce29/.tools/dynamic-property-warning-source-gcmw25u6/report.json",
+    "outcomes": "All checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact, raw/modeled stderr empty."
+  },
+  "source_sha256": {
+    "review-property-magic-float-reference-kept31": "857087e06f715c7f46dbb37e743af00df86294afe1ec5959792881104804098f",
+    "review-property-magic-float-reference-drop31": "856065205ebe1306df61ca2e67dd6b47480e20b9ab9e8d96dab2117590b91c28",
+    "review-property-magic-float-value31": "b2615033865f14b6ab2d5677a8ca1105667933753065187524753a75ed313dc9",
+    "review-property-magic-float-owned31": "d6634ceb54165c36f856a7521835d12fb7b87f37d2682b89b14fb47a52677206",
+    "review-property-magic-float-source-conflict31": "af14d62624410093fc655d92f8226ad525333350ef167ab8c165171ce6c42182",
+    "review-property-magic-float-source-exact31": "e161c234ae2e1e01ed3fa21f3d3ee74599258e25f1e7fa4e4e1719278e68d42d"
+  },
+  "reached": [
+    {
+      "group": "reference-kept",
+      "revision": "a8174525ba6f0860f890a239be4a8f0e36390c75",
+      "premises": 182,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-float-570yhgog/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "revision": "a8174525ba6f0860f890a239be4a8f0e36390c75",
+      "premises": 128,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-float-2a7f9pm6/report.json"
+    },
+    {
+      "group": "value",
+      "revision": "a8174525ba6f0860f890a239be4a8f0e36390c75",
+      "premises": 128,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-float-cxi095gs/report.json"
+    },
+    {
+      "group": "owned",
+      "revision": "a8174525ba6f0860f890a239be4a8f0e36390c75",
+      "premises": 134,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-float-522z2lvz/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "revision": "a8174525ba6f0860f890a239be4a8f0e36390c75",
+      "premises": 130,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-float-nycyigzo/report.json"
+    },
+    {
+      "group": "source-exact",
+      "revision": "a8174525ba6f0860f890a239be4a8f0e36390c75",
+      "premises": 202,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-float-ihbhzsy7/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 904,
+  "facts": [
+    "Strict unconstrained reference returns convert actual integer7/9 cells to float7/9 while retaining the raw reference owner. By-value verification changes only RESULT, preserving the original global integer. Whole verified state comparisons show no readonly backing or getter type-source write; later integer/string writes remain legal.",
+    "CV reader destruction sees the verified float before changing the cell, and subsequent reception copies that changed referent. Owned strict integer9007199254740993 rounds to float9007199254740992; COPY detaches that value and releases the raw return cell owner before BASE destruction. A surviving global alias retains the cell until its actual removal.",
+    "Real int|float property sources preserve the whole state for exact float7/9. Strict and weak integer widening raise first-source conflicts without converting the actual integer or source rows. The reader can later detach the real source and repair float7 while the original TypeError survives; a legal integer19 write precedes the third weak conflict.",
+    "Constructed mismatched float bits, original integer/RV, valid weak string/bool conversions and PARAMETERBACKINGS test the narrow conversion guard. Actual PROPREF refusal is checked through guarded verify_value and whole verification, rather than the unguarded application primitive."
+  ],
+  "preparation": {
+    "runtime": ".tools/properties-magic-coerce29/.tools/property-magic-float-runtime-prep31-gg9xmj48/report.json",
+    "states": ".tools/properties-magic-coerce29/.tools/property-magic-float-state-prep31-sl0atavp/report.json",
+    "credit": "Full-sort elaboration only; zero application/state evaluation, all workers closed."
+  },
+  "compatibility": "Only380/384 conversion rules change. Existing95/138 classifications, schema, owner roots, receiver stages, 79/99/270 and earlier exact/rejection paths are preserved. Normal success forwards the checked RV; rejection retains the original raw return. Prior getter ledgers and failures keep their historical cuts.",
+  "remaining": "Numeric strings, booleans and wider float conversions, PARAMETERBACKINGS, callback-based verification and previous receiver/signature/access/quiet/write/recursive residuals remain required.",
+  "engine": [
+    "vendor/php-src/Zend/zend_execute.c:i_zend_verify_type_assignable_zval/zend_verify_prop_assignable_by_ref_ex",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter strictness",
+    "spec/semantics/95-type-values.watsup:typed_conversion/typed_after_int",
+    "spec/semantics/138-property-references.watsup:propref_class/propref_possible"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_float_protocol.py reproduce exactly six sources/groups. Ignored raw trees retain source/checked programs, generated fixtures/assertions, commands/process/streams and stable identities. Sparse tracked vendor source removal preserves the retained pinned providers and all raw artifacts.",
+  "actual_parent": {
+    "parent": "2c0d9531c4bc1f05587b4ab71c50dfdbee414f52",
+    "tested_revision": "076606980a3c8781d2d3481d7b5cbd8902f152a7",
+    "modules": 374,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-float-strict31-3pc40fpv/report.json",
+    "seconds": 5.481307038106024,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0,
+    "bridge": "Pointwise380/384 equals reviewed private rules; all other semantics/module order/schema retain exact parent. CLASS136/261/382 virtual/hook guards are preserved and absent from these unhooked originals. Parent replay/Fiber/compiler paths remain inactive. No private source/state/native/baseline renewal."
+  }
+}

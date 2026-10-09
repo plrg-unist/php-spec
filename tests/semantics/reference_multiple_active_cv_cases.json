@@ -1,0 +1,16 @@
+[
+  {
+    "id": "active-finalizer-two-consumed-cv-histories",
+    "source": "<?php\n$x=\"old\";$z=\"mid\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$z,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{return $z;}finally{echo \"M;\";ping();try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;M;P;I1;P;I2;P;R;x=old;z=mid;n=2;yfixed=1;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "active-finalizer-two-consumed-cv-histories-normal",
+    "source": "<?php\n$x=\"old\";$z=\"mid\";$y=\"new\";$n=1;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$z,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{return $z;}finally{echo \"M;\";ping();try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;M;P;I2;P;rnull=0;x=old;z=mid;n=2;yfixed=0;",
+    "stderr": "",
+    "exit": 0
+  }
+]

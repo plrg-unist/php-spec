@@ -8,6 +8,8 @@ dec $gc_snapshot_slot(pgcslot, pnode*) : pgcslot
 dec $gc_snapshot_slots(pgcslot*, pnode*) : pgcslot*
 dec $gc_residual_overlap(pstate) : bool
 dec $gc_overlap_objects(pnode*) : bool
+dec $gc_fresh_array_component(pgcplan, pnode*) : bool
+dec $gc_fresh_array_plan(pgcplan) : bool
 dec $gc_overlap_component(pgcplan, pnode*) : bool
 dec $gc_overlap_residuals(pgcplan, pnode*) : bool
 dec $gc_overlap_plan(pgcplan) : bool
@@ -145,6 +147,7 @@ dec $gc_call_local_scope(pstate, pgccall) : pstate
 dec $gc_parked_call_count(pstate, pgccall) : nat
 dec $gc_parked_plan_count(pstate, pgcplan) : nat
 dec $gc_snapshot_fresh(pstate, pgcplan) : bool
+dec $gc_snapshot_nested(pstate, pgcplan) : bool
 dec $gc_worker_state_valid(pstate) : bool
 dec $gc_slot_node(pgcslot) : pnode?
 dec $gc_bare_keep(pstate) : pnode*
@@ -558,6 +561,32 @@ def $gc_step_done((GC_SKIPPED pnode) :: pgcprogress*) = $gc_step_done(pgcprogres
 def $gc_tables_valid(S, eps, pnode*) = true
 def $gc_tables_valid(S, pobjecttable :: pobjecttable_tail*, pnode*) = ($(pobjecttable.OBJECT < |S.OBJECTS|) /\ $(pobjecttable.TABLE < |S.ARRAYS|) /\ (HOBJECT pobjecttable.OBJECT) <- pnode* /\ (HARRAY pobjecttable.TABLE) <- pnode* /\ $gc_tables_valid(S, pobjecttable_tail*, pnode*))
 
+;; Fresh ordinary arrays beneath a destructor are BLACK buffered children,
+;; even before any residual tag exists. Bound this producer to a closed white
+;; object/array component; references and proxy tables need separate admission.
+def $gc_fresh_array_component(pgcplan, eps) = true
+def $gc_fresh_array_component(pgcplan, (HOBJECT n) :: pnode*) = $gc_fresh_array_component(pgcplan, pnode*)
+def $gc_fresh_array_component(pgcplan, (HARRAY n) :: pnode*) = $gc_fresh_array_component(pgcplan, pnode*)
+  -- if ~$gc_proxy_tables(pgcplan.TABLES, pgcplan.GRAPH.NODES, n)
+def $gc_fresh_array_component(pgcplan, pnode*) = false -- otherwise
+def $gc_fresh_array_plan(pgcplan) = true
+  -- if pgcplan.CALL.PASS = 0 /\ pgcplan.DTORS =/= eps
+  -- if pgcplan.BUFFER = $gc_unmarked_slots(pgcplan.BUFFER)
+  -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
+  -- if pnode_component* = $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES)
+  -- if ~$gc_overlap_objects(pnode_component*)
+  -- if $gc_fresh_array_component(pgcplan, pnode_component*)
+  -- if $heap_subset(pnode_component*, pgcplan.COUNTED)
+  -- if $heap_subset(pnode_component*, $gc_nodes(pgcplan.BUFFER))
+  -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
+  -- if pnode_white* = $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if $heap_subset(pnode_component*, pnode_white*)
+  -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
+def $gc_fresh_array_plan(pgcplan) = true
+  -- if pgcplan.CALL.PASS = 1 /\ pgcplan.SCAN = eps
+  -- if $gc_fresh_array_plan(pgcplan[.CALL.PASS = 0])
+def $gc_fresh_array_plan(pgcplan) = false -- otherwise
+
 ;; A reached residual tag remains tag3 after collect_roots ORs tag2. Only
 ;; fresh destructor roots become purple; the visited residual stays black.
 ;; Bound this lane to a closed white component of objects, nonproxy arrays
@@ -578,6 +607,9 @@ def $gc_overlap_component(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_component(
 def $gc_overlap_component(pgcplan, pnode*) = false -- otherwise
 def $gc_overlap_residuals(pgcplan, eps) = true
 def $gc_overlap_residuals(pgcplan, (HOBJECT n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
+def $gc_overlap_residuals(pgcplan, (HARRAY n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
+  -- if (HARRAY n) <- $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES)
+  -- if $gc_overlap_component(pgcplan, [HARRAY n])
 def $gc_overlap_residuals(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
   -- if $gc_overlap_component(pgcplan, [HCELL n])
 def $gc_overlap_residuals(pgcplan, pnode*) = false -- otherwise
@@ -709,12 +741,30 @@ def $gc_fresh_tasks((GC_DTORS pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.
 def $gc_fresh_tasks((GC_FREE pgcplan) :: ptask*, pgcplan) = true -- if pgcplan.INDEX = 0
 def $gc_fresh_tasks((AT porigin ptask) :: ptask_tail*, pgcplan) = $gc_fresh_tasks(ptask :: ptask_tail*, pgcplan)
 def $gc_fresh_tasks(ptask*, pgcplan) = false -- otherwise
-;; Nested removal changes the physical image before the first main callback.
-;; Replay its frozen producer buffer; the main scan separately checks the image.
+;; Nested removal changes the physical image before callbacks. Replay the
+;; frozen producer buffer; each driving lane separately authenticates its image.
+;; Nonoverlap array replay is confined to an actual ordinary Fiber's worker WAIT.
+def $gc_snapshot_nested(S, pgcplan) = true -- if $gc_overlap_plan(pgcplan)
+def $gc_snapshot_nested(S, pgcplan) = true
+  -- if ~$gc_overlap_plan(pgcplan)
+  -- if $gc_fresh_array_plan(pgcplan)
+  -- if S.TODO = (GC_WORKER_WAIT n_worker pgcplan) :: ptask_tail*
+  -- if S.GC.WORKER = (n_worker)
+  -- if S.ACTIVEFIBER = (n_caller)
+  -- if n_worker =/= n_caller
+  -- if $fiber_at(S, n_worker) = (pfiber_worker)
+  -- if pfiber_worker.STATUS = FIBER_RUNNING /\ pfiber_worker.VM = eps
+  -- if pfiber_worker.GC = (pgcworker)
+  -- if pgcworker.GUARD = eps
+  -- if $fiber_at(S, n_caller) = (pfiber_caller)
+  -- if pfiber_caller.GC = eps
+  -- if $fiber_record_valid(S, n_caller, pfiber_caller)
+  -- if $gc_scope_valid(S, pgcplan.CALL)
+def $gc_snapshot_nested(S, pgcplan) = false -- otherwise
 def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = pgcplan.BUFFER][.GC.FREE = eps], pgcplan.CALL))
-  -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_overlap_plan(pgcplan)
+  -- if $gc_snapshot_fresh(S, pgcplan) /\ $gc_snapshot_nested(S, pgcplan)
 def $gc_snapshot_valid(S, pgcplan) = (pgcplan = $gc_plan(S[.GC.BUFFER = $gc_snapshot_slots(S.GC.BUFFER, pgcplan.DTORS)], pgcplan.CALL))
-  -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_overlap_plan(pgcplan)
+  -- if $gc_snapshot_fresh(S, pgcplan) /\ ~$gc_snapshot_nested(S, pgcplan)
 def $gc_snapshot_valid(S, pgcplan) = $gc_tables_valid(S, pgcplan.TABLES, pgcplan.GRAPH.NODES) -- if ~$gc_snapshot_fresh(S, pgcplan)
 def $gc_call_live(S, pgccall) = true
   -- if S.GC.ACTIVE = (pgccall) /\ $(pgccall.NONCE < S.GC.NEXT)
@@ -742,6 +792,7 @@ def $gc_plan_live(S, pgcplan) = true
   -- if $gc_cell_shapes(pgcplan.GRAPH, pgcplan.GRAPH.NODES)
   -- if pgcplan.CANDIDATES = $gc_nodes(pgcplan.BUFFER)
   -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
+  -- if $heap_subset(pgcplan.COUNTED, $gc_nodes(pgcplan.BUFFER))
   -- if $heap_subset(pgcplan.CANDIDATES, pgcplan.GRAPH.NODES)
   -- if $destructor_unique(pgcplan.CALLED) /\ $destructor_numbers_valid(pgcplan.CALLED, |S.OBJECTS|)
   -- if $gc_called_subset(pgcplan.CALLED, S.DESTRUCTION.CALLED)

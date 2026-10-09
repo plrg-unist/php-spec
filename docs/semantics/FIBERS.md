@@ -484,8 +484,8 @@ during arguments; saved creation and invocation authority needs no live producer
 or current USER frame. Frozen members survive referenced-name mutation and array
 retirement. The returned Closure adds no factory/array root and reads the actual
 active Fiber across suspension. Other captured-factory Fiber kinds and bound
-inputs beyond the separately validated bound `isSuspended` and receiver-free
-static `suspend` remain explicit Unsupported boundaries. The [core-factory ledger](../../coverage/semantics/from-callable-review.json)
+inputs beyond the separately validated bound `isSuspended`/`resume` and
+receiver-free static `suspend` remain explicit Unsupported boundaries. The [core-factory ledger](../../coverage/semantics/from-callable-review.json)
 keeps the direct control, repaired source and 270 state premises at distinct cuts.
 
 Bound captured-factory `isSuspended` keeps the selected Fiber through a single
@@ -508,6 +508,19 @@ owner. Separate 372-module direct/repaired sources and 299 premises authenticate
 these states and exact zero-budget resumption; the initial premature-result
 fixture failure keeps zero credit. Object-style input and wider captured targets
 require separate evidence.
+
+Bound captured-factory `resume` retains a single receiver INPUT edge after factory,
+callback and original receiver-cell retirement. Its frozen selection remains resume
+when the referenced name becomes isTerminated. Value-argument evaluation clears
+the selected Closure cell before switching; the actual saved caller WAIT/result
+tail retains that Closure once and borrows the receiver through its edge. The
+child receives the exact value and termination returns null. Eager last-owner
+cleanup retires the Closure and Fiber before restoring the consumer tail, as
+WeakReference observes. Separate direct/repaired 374-module sources and 343
+premises authenticate real saved-VM authority, release and zero-budget resumption.
+Saved producer evidence stays valid after retirement, while bound capture source
+and live checks correctly become false. Resume errors and wider forms require
+separate evidence.
 
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver

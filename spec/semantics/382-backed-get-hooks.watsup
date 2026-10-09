@@ -1,4 +1,4 @@
-;; PHP 8.5.10: a backed, public by-value get is a real source function.
+;; PHP 8.5.10: a public by-value get is a real source function.
 ;; Its implicit return type is the property's type, with no ordinary method entry.
 dec $hook_boundary(pcnode) : bool
 def $hook_boundary(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
@@ -11,16 +11,32 @@ def $hook_boundary(NStmtEnum phpType14 phpType3 phpType50 phpType42 phpType23 me
 def $hook_boundary(pcnode) = false -- otherwise
 dec $hook_uses_node(pcnode, ptbytes) : bool
 dec $hook_uses_children(pcoccurrence*, ptbytes) : bool
-def $hook_uses_node(NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) metadata, ptbytes) = true
-  -- if $base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes
-def $hook_uses_node(NExprNullsafePropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) metadata, ptbytes) = true
-  -- if $base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes
+dec $hook_literal_this(expression) : bool
+def $hook_literal_this(NExprVariable (BYTES text) metadata) = ($base64(text) = $ptascii("this"))
+def $hook_literal_this(NExprVariable (NScalarString (BYTES text) metadata_string) metadata) = ($base64(text) = $ptascii("this"))
+def $hook_literal_this(expression) = false -- otherwise
+dec $hook_literal_name(phpType20) : ptbytes?
+def $hook_literal_name(NIdentifier (BYTES text) metadata) = ($base64(text))
+def $hook_literal_name(NScalarString (BYTES text) metadata) = ($base64(text))
+def $hook_literal_name(phpType20) = eps -- otherwise
+def $hook_uses_node(NExprPropertyFetch expression phpType20 metadata, ptbytes) = true
+  -- if $hook_literal_this(expression)
+  -- if $hook_literal_name(phpType20) = (ptbytes_name)
+  -- if ptbytes_name = ptbytes
+def $hook_uses_node(NExprNullsafePropertyFetch expression phpType20 metadata, ptbytes) = true
+  -- if $hook_literal_this(expression)
+  -- if $hook_literal_name(phpType20) = (ptbytes_name)
+  -- if ptbytes_name = ptbytes
 def $hook_uses_node(pcnode, ptbytes) = false -- if $hook_boundary(pcnode)
 def $hook_uses_node(pcnode, ptbytes) = $hook_uses_children($pcchildren(pcnode, eps), ptbytes)
   -- otherwise
 def $hook_uses_children(eps, ptbytes) = false
 def $hook_uses_children((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*, ptbytes) = ($hook_uses_node(pcnode, ptbytes) \/ $hook_uses_children(pcoccurrence*, ptbytes))
 dec $hook_body_backed(phpType39, ptbytes) : bool
+dec $hook_body_supported(phpType39) : bool
+def $hook_body_supported(SEQUENCE statement*) = (~$generator_statements(statement*))
+def $hook_body_supported(expression) = (~$generator_syntax(expression))
+def $hook_body_supported(phpType39) = false -- otherwise
 def $hook_body_backed(SEQUENCE statement*, ptbytes) = (~$generator_statements(statement*) /\ $hook_uses_children($pcfield_phpType39(SEQUENCE statement*, eps), ptbytes))
 def $hook_body_backed(expression, ptbytes) = (~$generator_syntax(expression) /\ $hook_uses_node(expression, ptbytes))
 def $hook_body_backed(phpType39, ptbytes) = false -- otherwise
@@ -49,17 +65,18 @@ def $ppproperty_hook_group(P, pcpath, statement, ppropertydesc*, pchheader) = PP
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) (SEQUENCE statement*) metadata, pchheader) = $pphook_finish(P, $ppgoto_finish($ppstatements(P_hook, pcpath ++ [PCFIELD 5], 0, statement*)), pcpath, ppropertydesc, metadata, pchheader)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if ~$generator_statements(statement*)
-  -- if $hook_uses_children($pcfield_phpType39(SEQUENCE statement*, eps), ppropertydesc.NAME)
+  -- if ($hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false})[.RETURNREF = false][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 def $pphook_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata, pchheader) = $pphook_finish(P, $pparrow_body(P_hook, pcpath ++ [PCFIELD 5], expression), pcpath, ppropertydesc, metadata, pchheader)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
-  -- if $hook_body_backed(expression, ppropertydesc.NAME)
+  -- if $hook_body_supported(expression)
+  -- if ($hook_body_backed(expression, ppropertydesc.NAME) \/ ppropertydesc.DEFAULT = PROP_NULL \/ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false})[.RETURNREF = false][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
-def $pphook_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "virtual, set, by-reference or attributed property hook") -- otherwise
+def $pphook_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "set, by-reference, attributed or defaulted virtual property hook") -- otherwise
 
 def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, metadata, pchheader) = P_body
   -- if P_body.COMPLETION =/= PPCNORMAL
@@ -93,8 +110,35 @@ def $property_hook_origin(S, ppropertydesc) = (PORIGIN n (pcpath_group ++ [PCFIE
   -- if flags <- [0,1] /\ ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY
   -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
   -- if $ptlc($base64(text_get)) = $ptascii("get")
-  -- if $hook_body_backed(phpType39, ppropertydesc.NAME)
+  -- if $hook_body_supported(phpType39)
+  -- if ($hook_body_backed(phpType39, ppropertydesc.NAME) \/ phpType5 = ABSENT)
 def $property_hook_origin(S, ppropertydesc) = eps -- otherwise
+
+;; Virtual declarations retain type and function metadata, but own no slot.
+def $property_hook_virtual(S, ppropertydesc) = true
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if (ppropertydesc.TYPE = eps /\ ppropertydesc.DEFAULT = PROP_NULL) \/ (ppropertydesc.TYPE =/= eps /\ ppropertydesc.DEFAULT = PROP_UNINITIALIZED)
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
+  -- if ~$hook_body_backed(phpType39, ppropertydesc.NAME)
+def $property_hook_virtual(S, ppropertydesc) = false -- otherwise
+dec $property_hook_properties(pstate, ppropertydesc*) : bool
+def $property_hook_properties(S, eps) = false
+def $property_hook_properties(S, ppropertydesc :: ppropertydesc_tail*) = ($property_hook_origin(S, ppropertydesc) =/= eps \/ $property_hook_properties(S, ppropertydesc_tail*))
+def $property_hook_instance(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INSTANCE porigin_class
+  -- if $property_hook_properties(S, $property_layout(S, porigin_class, |S.CLASSES|))
+def $property_hook_instance(S, n) = false -- otherwise
+
+def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = $throw_scalar(S, "Error", $ptascii("Property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)) ++ $ptascii(" is read-only"), z)
+  -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
+  -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_hook_virtual(S, ppropertydesc)
 
 def $property_hook_declared(S, n, ptbytes) = true
   -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
@@ -108,6 +152,8 @@ def $property_hook_backing(S, n, ppropertydesc) = true
   -- if ppropertyhook.OBJECT = n /\ ppropertyhook.PROPERTY = ppropertydesc.ORIGIN
   -- if pcallcontext.RECEIVER = (n) /\ pcallcontext.FUNCTION = ppropertyhook.HOOK
   -- if $property_hook_origin(S, ppropertydesc) = (ppropertyhook.HOOK)
+  -- if $origin_node(S.SOURCES, ppropertyhook.HOOK) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
+  -- if $hook_body_backed(phpType39, ppropertydesc.NAME)
 def $property_hook_backing(S, n, ppropertydesc) = false -- otherwise
 
 def $property_hook_read_needed(S, n, ptbytes) = true

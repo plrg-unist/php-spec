@@ -1,0 +1,105 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": {
+    "native-first": "1802ada2e88c361f3606681377bd0fca7087e38527beab3bccf977e5d908bbb4",
+    "focused/native-first": "5f41cc4f28fd67e7b6cc772f0a03db614aad38da8e1259f7ac6baabcea2b7b5e",
+    "literal/native-first": "67c3321ff28b26cea46097fddaf0033de9899917a603c6bcbd3a3c3d56aab9a0"
+  },
+  "cases": [
+    {
+      "id": "repeated-read-denied-write",
+      "source": "<?php\nfunction virtual_write30(int $value): int { echo \"R\", $value, \"|\"; return $value; }\nclass VirtualGetter30 {\n    public int $value {\n        get { echo \"G|\"; return 7; }\n    }\n}\n$box = new VirtualGetter30;\necho $box->value, \"|\", $box->value, \"|\";\ntry {\n    echo \"W|\";\n    $box->value = virtual_write30(23);\n    echo \"AFTER|\";\n} catch (Error $error) {\n    echo $error->getMessage(), \"|\";\n}\necho $box->value, \"|\";\n",
+      "source_sha256": "a4f2d2be186838483eb503f38fb1e7f876059299d64e291084e5701781cfb57f",
+      "native_group": "native-first",
+      "native_raw_sha256": "1802ada2e88c361f3606681377bd0fca7087e38527beab3bccf977e5d908bbb4",
+      "exit_status": 0,
+      "stdout_base64": "R3w3fEd8N3xXfFIyM3xQcm9wZXJ0eSBWaXJ0dWFsR2V0dGVyMzA6OiR2YWx1ZSBpcyByZWFkLW9ubHl8R3w3fA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "result-without-backing-owner",
+      "source": "<?php\nclass VirtualLeaf30 {\n    public function __destruct() { echo \"D|\"; }\n}\nfunction virtual_leaf30(): VirtualLeaf30 {\n    echo \"G|\";\n    return new VirtualLeaf30;\n}\nclass VirtualHeap30 {\n    public VirtualLeaf30 $value { get => virtual_leaf30(); }\n    public function __destruct() { echo \"B|\"; }\n}\n$box = new VirtualHeap30;\n$result = $box->value;\n$weak = WeakReference::create($result);\necho $weak->get() === null ? \"N|\" : \"L|\";\nunset($result);\necho $weak->get() === null ? \"N|\" : \"L|\";\n$result = $box->value;\n$weak2 = WeakReference::create($result);\nunset($box);\necho $weak2->get() === null ? \"N|\" : \"L|\";\nunset($result);\necho $weak2->get() === null ? \"N|\" : \"L|\";\n",
+      "source_sha256": "1e2e57d02c2c36eb8e6090f731a0edc2ff4735ea3fc68068e0ded98f6e0a6da9",
+      "native_group": "native-first",
+      "native_raw_sha256": "1802ada2e88c361f3606681377bd0fca7087e38527beab3bccf977e5d908bbb4",
+      "exit_status": 0,
+      "stdout_base64": "R3xMfER8TnxHfEJ8THxEfE58",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "denial-before-coercion",
+      "source": "<?php\nclass VirtualStringable30 {\n    public function __toString(): string { echo \"S|\"; return \"converted\"; }\n    public function __destruct() { echo \"D|\"; }\n}\nfunction virtual_rhs30(): VirtualStringable30 { echo \"R|\"; return new VirtualStringable30; }\nclass VirtualString30 {\n    public string $value { get => \"seed\"; }\n}\n$box = new VirtualString30;\ntry { $box->value = virtual_rhs30(); } catch (Error $error) { echo $error->getMessage(), \"|\"; }\nunset($error);\ntry { $box->value = [7]; } catch (Error $error) { echo $error->getMessage(), \"|\"; }\necho $box->value, \"|\";\n",
+      "source_sha256": "309d17e3321d6f2c562dc75a747dc8ecc051323aeb4e42ed9f5d0ec1a7cdc99d",
+      "native_group": "focused/native-first",
+      "native_raw_sha256": "5f41cc4f28fd67e7b6cc772f0a03db614aad38da8e1259f7ac6baabcea2b7b5e",
+      "exit_status": 0,
+      "stdout_base64": "UnxEfFByb3BlcnR5IFZpcnR1YWxTdHJpbmczMDo6JHZhbHVlIGlzIHJlYWQtb25seXxQcm9wZXJ0eSBWaXJ0dWFsU3RyaW5nMzA6OiR2YWx1ZSBpcyByZWFkLW9ubHl8c2VlZHw=",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "mixed-slot-array-view",
+      "source": "<?php\nclass VirtualMixed30 {\n    public int $before = 3;\n    public int $value { get => 7; }\n    public int $after = 5;\n    public int $backing = 11 { get => $this->backing + 1; }\n}\n$box = new VirtualMixed30;\n$copy = clone $box;\n$copy->before = 13;\nforeach ([$box, $copy] as $object) {\n    foreach ((array) $object as $key => $value) { echo $key, \"=\", $value, \"|\"; }\n}\necho $box->value, \"|\", $copy->value, \"|\", $box->backing, \"|\";\n",
+      "source_sha256": "86be09a4b19d59eb8c1a527076fbb0f9f59f8a6dab12c1332acd273e422b5db8",
+      "native_group": "focused/native-first",
+      "native_raw_sha256": "5f41cc4f28fd67e7b6cc772f0a03db614aad38da8e1259f7ac6baabcea2b7b5e",
+      "exit_status": 0,
+      "stdout_base64": "YmVmb3JlPTN8YWZ0ZXI9NXxiYWNraW5nPTExfGJlZm9yZT0xM3xhZnRlcj01fGJhY2tpbmc9MTF8N3w3fDEyfA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "untyped-virtual-pair",
+      "source": "<?php\nclass VirtualUntyped30 {\n    public $value { get { echo \"U|\"; return 7; } }\n    public $other { get => 17; }\n}\n$box = new VirtualUntyped30;\necho $box->value, \"|\", $box->other, \"|\", $box->value, \"|\";\ntry { $box->other = null; } catch (Error $error) { echo $error->getMessage(), \"|\"; }\necho $box->other, \"|\";\n",
+      "source_sha256": "472109eddb14b78b317fce8f9b3114d0a87139595c7c7bc75bee97865991439b",
+      "native_group": "focused/native-first",
+      "native_raw_sha256": "5f41cc4f28fd67e7b6cc772f0a03db614aad38da8e1259f7ac6baabcea2b7b5e",
+      "exit_status": 0,
+      "stdout_base64": "VXw3fDE3fFV8N3xQcm9wZXJ0eSBWaXJ0dWFsVW50eXBlZDMwOjokb3RoZXIgaXMgcmVhZC1vbmx5fDE3fA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "literal-backing-slots",
+      "source": "<?php\nclass LiteralBacking30 {\n    public int $value { get => $this->{'value'}; }\n    public int $other { get => ${'this'}->other; }\n}\n$box = new LiteralBacking30;\n$box->value = 7;\n$box->other = 9;\nforeach ((array) $box as $key => $value) { echo $key, \"=\", $value, \"|\"; }\n",
+      "source_sha256": "0bf135333e94f30ca2d0dca53099fd617584e8a930f04d4b0915524609ac344d",
+      "native_group": "literal/native-first",
+      "native_raw_sha256": "67c3321ff28b26cea46097fddaf0033de9899917a603c6bcbd3a3c3d56aab9a0",
+      "exit_status": 0,
+      "stdout_base64": "dmFsdWU9N3xvdGhlcj05fA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "hooked-iteration-boundary",
+      "source": "<?php\nclass BackedIteration30 {\n    public int $value = 7 { get { echo \"G|\"; return $this->value + 1; } }\n}\nclass VirtualIteration30 {\n    public int $value { get { echo \"V|\"; return 9; } }\n}\nforeach ([new BackedIteration30, new VirtualIteration30] as $box) {\n    foreach ($box as $key => $value) { echo $key, \"=\", $value, \"|\"; }\n}\n",
+      "source_sha256": "5dfc7fead65e75369d5664a09345615ebffa2ed851105982f611cda7f896cb04",
+      "native_group": "focused/native-first",
+      "native_raw_sha256": "5f41cc4f28fd67e7b6cc772f0a03db614aad38da8e1259f7ac6baabcea2b7b5e",
+      "exit_status": 0,
+      "stdout_base64": "R3x2YWx1ZT04fFZ8dmFsdWU9OXw=",
+      "stderr_template_base64": "",
+      "status": "normal",
+      "expected_model_status": "unsupported",
+      "source_agreements": 0
+    }
+  ]
+}

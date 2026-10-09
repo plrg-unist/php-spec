@@ -13,7 +13,7 @@ def $property_get_propref(S, ppropertyget, n_cell) = true
   -- if ppropertyget.DECL = (ppropertyid)
   -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))]
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if ppropref.SOURCES =/= eps
   -- if $proprefs_valid(S)
@@ -33,6 +33,10 @@ def $property_get_propref_check(S, ppropertyget, ppropertydesc, pvalue, pproptyp
 def $property_get_propref_check(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, PROP_POSSIBLE) = $property_get_propref_possible(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, false))
 
 def $property_get_propref_possible(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, TYPEREJECT) = $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEREJECT)
+def $property_get_propref_possible(S, ppropertyget, ppropertydesc, PINT i, pproptypesource, TYPEVALUE (PFLOAT n_float)) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $typed_given(S, PINT i) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
+  -- if $long_range(i)
+  -- if n_float = $float_of_int(i)
 def $property_get_propref_possible(S, ppropertyget, ppropertydesc, pvalue, pproptypesource, TYPEINTEGER pvalue) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $typed_given(S, pvalue) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
   -- if $typed_string_value(pvalue)
   -- if $typed_number(pvalue) = (NINT i)

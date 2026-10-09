@@ -33,9 +33,17 @@ return compilation at the authentic expression child, preserving its emitted lin
 and the Hook source across string callbacks. Seven additional originals and 137
 derived/reached checks are recorded in the
 [expression review](../../coverage/semantics/expression-get-hooks-review.json).
-Virtual/set/byref hooks,
+Virtual getters without defaults retain the same declaration, function and return
+type while omitting the physical slot. The receiver owns no returned-value edge;
+result copies survive receiver cleanup and release independently. Ordinary writes
+evaluate the RHS before read-only rejection and skip destination coercion. Literal
+string `$this`/property forms still establish backing; nested function bodies do
+not. Eight affected originals and 139 derived/reached checks are recorded in the
+[virtual review](../../coverage/semantics/virtual-get-hooks-review.json).
+Hooked object iteration is explicit Unsupported rather than a raw storage view;
+array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
-and hooked unset remain explicit boundaries.
+and hooked unset remain boundaries.
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
@@ -227,7 +235,24 @@ until their actual removal, while the copied payload stays alive.
 The [reference-getter review](../../coverage/semantics/magic-property-reference-review.json)
 records six source agreements and six whole reached groups/829 setup-inclusive
 premises. PARAMETERBACKINGS, wider target types and possible conversions remain
-Unsupported; existing receiver/consumer residuals and prior evidence are unchanged.
+Unsupported beyond the bounded cases below; existing receiver/consumer residuals
+and prior evidence are unchanged.
+
+Builtin float verification widens an original integer on an actual unconstrained
+RV, including strict getter declarations. A reference updates its real cell and
+retains the raw return's owner; a value return forwards only the converted RV.
+The conversion uses the exact binary64 result, including rounding integers beyond
+the exact range. Readonly backing stays UNSET with no getter type-source attachment.
+CV reception copies the cell after receiver destruction; owned reception detaches
+the converted value and releases the raw RV cell owner before BASE release.
+Exact floats with real typed-property sources leave the whole state unchanged.
+An integer instead raises the first-source conflict without converting the real
+cell, even when its int|float source would accept that conversion and the getter
+is strict. Later source detachment and repair retain the already-created Error.
+The [float-getter review](../../coverage/semantics/magic-property-float-review.json)
+records six source agreements and six whole reached groups/904 setup-inclusive
+premises. Numeric strings, booleans, PARAMETERBACKINGS and wider float conversions
+remain Unsupported; prior getter evidence retains its separate cuts.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

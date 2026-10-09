@@ -31,6 +31,7 @@ dec $property_get_unconstrained(pstate, poperand) : bool
 dec $property_get_verify(pstate, ppropertyget, poperand) : pstate
 dec $property_get_verify_value(pstate, ppropertyget, ppropertydesc, pvalue, ptypeconversion) : pstate
 dec $property_get_integer_apply(pstate, ppropertyget, poperand, int) : pstate
+dec $property_get_float_apply(pstate, ppropertyget, poperand, nat) : pstate
 dec $property_get_complete(pstate, ppropertyget, poperand) : pstate
 dec $property_get_abrupt(pstate, ppropertyget) : pstate
 dec $property_get_drop_pending(pstate) : bool
@@ -314,7 +315,8 @@ def $reference_callback_used(S, pcallcontext) = (true)
 
 ;; Exact verification is identity: neither a checked write nor TYPE_SOURCES
 ;; attachment occurs. Integer numeric strings convert only the actual RV or
-;; unconstrained returned cell; wider coercions remain explicit residuals.
+;; unconstrained returned cell. Integer-to-float widening likewise changes only
+;; the actual RV or unconstrained cell; wider coercions remain explicit residuals.
 def $property_get_unconstrained(S, KNOWN pvalue) = true
 def $property_get_unconstrained(S, REFERENCE n) = ($propref_at(S.PROPREFS, n) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps)
 def $property_get_unconstrained(S, poperand) = false -- otherwise
@@ -334,6 +336,14 @@ def $property_get_verify(S, ppropertyget, poperand) = $property_get_verify_value
 def $property_get_verify(S, ppropertyget, poperand) = S[.COMPLETION = UNSUPPORTED "magic getter typed reference sources"] -- otherwise
 
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEVALUE pvalue) = S
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, PINT i, TYPEVALUE (PFLOAT n_float)) = $property_get_float_apply(S, ppropertyget, S.RESULT, n_float)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
+  -- if $long_range(i)
+  -- if n_float = $float_of_int(i)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $property_get_unconstrained(S, S.RESULT)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PINT i)
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEINTEGER pvalue) = $property_get_integer_apply(S, ppropertyget, S.RESULT, i)
   -- if $typed_string_value(pvalue)
   -- if $typed_number(pvalue) = (NINT i)
@@ -347,6 +357,9 @@ def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, ptypeconv
 
 def $property_get_integer_apply(S, ppropertyget, KNOWN pvalue, i) = S[.RESULT = KNOWN (PINT i)]
 def $property_get_integer_apply(S, ppropertyget, REFERENCE n, i) = $write_cell_checked(S, n, PINT i, ppropertyget.LINE)[.RESULT = REFERENCE n]
+
+def $property_get_float_apply(S, ppropertyget, KNOWN pvalue, n_float) = S[.RESULT = KNOWN (PFLOAT n_float)]
+def $property_get_float_apply(S, ppropertyget, REFERENCE n, n_float) = $write_cell_checked(S, n, PFLOAT n_float, ppropertyget.LINE)[.RESULT = REFERENCE n]
 
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget S_checked.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*

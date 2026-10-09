@@ -337,8 +337,8 @@ backing precedes magic, and traces retain `$value::get`. Eight originals and
 strict compilation of 372 modules pass at `3ae28b26`. SL177 (19 derived, 158
 reached checks) proves real entry/backing/throw steps and receiver/result cleanup,
 including the payload parked across receiver destruction and final weak-null.
-The virtual nested-closure control stays Unsupported; prior compiler/fixture
-stops, false states and diagnostics retain zero affected credit. Virtual/set/byref,
+The virtual nested-closure control was Unsupported at that cut; prior compiler/fixture
+stops, false states and diagnostics retain zero affected credit. Defaulted virtual/set/byref,
 inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
 and hooked unset remain required. Actual 372-module composition over `48b6455fd`
 passes strict initialization at `390c27db4` (5.421 s), preserving parent callable
@@ -348,11 +348,26 @@ Expression bodies retain the actual expression origin and compiled return line,
 including untyped return admission and saved Hook source during string conversion.
 Seven new originals and strict 372-module initialization pass at `41ed4ea8d`;
 SL137 (15 derived, 122 reached) proves actual return, saved conversion, parked
-payload and final weak-null release. The virtual nested-closure control remains
-Unsupported. These cuts retain the block results above. Actual 372-module
+payload and final weak-null release. Its virtual declaration control was
+Unsupported at that cut. These cuts retain the block results above. Actual 372-module
 composition over `de44ad6d3` passes strict initialization at `5e3f9cbcf`
 (5.448 s), preserving parent yield-from and magic-get dispatch without renewing
 the private checks. [Expression review](coverage/semantics/expression-get-hooks-review.json).
+
+Public by-value virtual get hooks without a default retain their declaration and
+return type while owning no backing slot. Repeated reads execute the body;
+ordinary writes evaluate the RHS before the read-only Error, without conversion.
+Returned values survive receiver release and die when their last result owner is
+removed. Literal string forms of `$this` and property names establish backing
+correctly. Eight source agreements retain `90d182c4` (5) and `c4dd589c` (3),
+including the two formerly Unsupported virtual controls. SL139 at `c4dd589c`
+(13 derived, 126 reached) proves pending CV writes, forged-slot rejection and
+result ownership; false135 and diagnostic runs retain zero credit. Hooked object
+iteration is explicitly Unsupported; defaulted virtual/set/byref and wider
+receiver/access families remain partial. Actual 374-module composition over
+`2112d1e9` passes strict initialization at `964aa9e4` (5.479 s), retaining the
+parent magic-get/reference paths and the private source/state cuts.
+[Virtual hook review](coverage/semantics/virtual-get-hooks-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
@@ -463,6 +478,19 @@ with no second finalizer entry. One nullable original agrees at `dffae89b0`;
 three reached current/saved fixtures pass 381 assertions at `4e6396234`.
 Actual 372 over `c2e06b6d7` passes strict at `2094ee751` (5.562s, zero application evaluations).
 [Nullable computed-VALUE review](coverage/semantics/reference-return-consumed-value-nullable-review.json).
+
+Two already-active ordinary CV finalizers now retain ordered non-owning history
+in a named reference-return function with the exact string signature and no
+destructor operation at capture. Genuine Z then X task/phase/restore triples
+are consumed separately; old operands acquire no new roots. Inner rejection
+replays its finalizer, then leaves Z and X in order. Initial successful
+replacement retires both certificates and returns the selected y alias.
+Two originals agree at `e2275499a`; four reached current/saved
+fixtures pass 439 assertions at `ddc500037`.
+Actual 374 over `626142838` passes strict at `eef043fe1` (5.610s, zero application evaluations).
+[Two-history CV review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Locally caught consumed-Z resumption is explicitly Unsupported; lifecycle
+capture, wider signatures/operands and further histories remain open.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
@@ -1146,6 +1174,24 @@ Residual arrays/outside references, main/mixed layouts, black/external component
 non-idle workers, later passes and broader GC remain required; prior cuts unchanged.
 Actual372 over `fb58ba46f` passes compiler/init at `fb0d5750e`; reviewed hook,
 getter/caller and return interfaces preserve state375 at1c1de and source39 CLI60 OPEN/0.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
+Protected residual arrays301 now require nonproxy fresh-DTORS reach. Closed white
+object/array producers remove nested BLACK data before parked callback takeover
+and ordinary worker PASS1; the zero-owner image task and saved WAIT authenticate
+transfer, while worker-only frozen replay retains separate current-image/guard pins.
+Six source-reached cuts117/127/112/84/83/36 execute559 premises at their preserved
+b481/f2/1df revisions (372 modules): signed -1+1=0, live D/array owners1, E retirement,
+weak liveness and native END/request cleanup. Native/compiler/init pass. Terminal36
+executes one full continuation; independent pure-function congruence of its checked
+zero-budget state identity supplies the omitted second-drive equality. Earlier
+zero/one-step replay checks execute. Full58/compact37 SL120 timeouts retain zero
+credit. Whole source40 CLI60 remains OPEN/zero agreement
+at144cc1, with only that default source selection newly excluded; all six state
+groups stay enabled. New main source agreement, fresh reference/proxy producers,
+outside/black/external components and broader GC remain required; prior cuts unchanged.
+Actual374 over `4368f9d6` passes compiler/init at `e4606537`; reviewed return,
+factory/property/class interfaces preserve the original559 cuts and source40 OPEN/0.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
@@ -2244,6 +2290,20 @@ are unchanged. [Reference-getter ledger](coverage/semantics/magic-property-refer
 The actual374 join over `bed352b5a` passes strict at `e0d62e7ed` (5.399s,
 state credit0). Parent anonymous-class, hook/type and cleanup interfaces are
 preserved; those wider paths are absent from these originals. Private cuts are unchanged.
+Modules380/384 now cover original integer to builtin float getter verification.
+An unconstrained reference converts its actual cell; a value return changes only
+its RV, and strict getter declarations permit integer widening. Exact floats with
+real typed-property sources preserve the whole state; integer widening instead
+raises the first-source conflict without converting the cell or attaching the
+getter target type. Native6 and the CLI1 Unsupported baseline retain separate
+`c96598db0` cuts. Strict374/source6 and six whole reached groups pass 904
+setup-inclusive premises at `a8174525b`, covering repeated reads, binary64 rounding,
+CV post-destructor copy and owned detachment before BASE release. Bits/original-RV,
+string/bool and PARAM controls are constructed; prior cuts and failures are unchanged.
+[Float-getter ledger](coverage/semantics/magic-property-float-review.json).
+The actual374 join over `2c0d9531c` passes strict at `076606980` (5.481s,
+state credit0). Current virtual-hook guards are preserved and inactive in these
+unhooked originals; private cuts and prior failures retain their credit.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
@@ -2543,6 +2603,20 @@ credit. Maintained source/render bytes are unchanged; no relocation renewal.
 Other targets and required original 7's CLI60 timeout remain OPEN.
 Actual-parent compilation and initialized SL299 pass at `288bb478` over
 `8a81891c` with 374 modules; COMP383/PROPS384 seams preserve prior source/native cuts.
+Captured factories now select bound `Fiber::resume`. The producer retires during
+selection arguments; frozen resume survives later name mutation and callback
+retirement. Clearing the selected capture cell in its value argument leaves the
+saved caller result marker
+as the sole Closure owner; its INPUT edge retains the receiver through the child
+transfer. The child receives the exact done value and the call returns null.
+Authentic eager cleanup retires both before restoring the original consumer tail.
+Direct agreement stays at fa678cc48/374; repaired agreement and 343 premises
+(264 genuine/derived, 79 constructed) pass at 2daa5c433/374, including exact
+zero-budget resumption. The original Unsupported remains zero credit; maintained
+source/render relocation renews no runtime evidence. Other targets and required
+original 7's CLI60 timeout remain OPEN.
+Actual-parent compilation and initialized SL343 pass at `56a92700` over
+`a6994698` with 374 modules; RETURNS/COMP seams preserve prior source/native cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

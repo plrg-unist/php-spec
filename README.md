@@ -388,6 +388,11 @@ The parked result marker keeps the selected Closure alive after its caller cell
 retires; resume returns the exact value and cleanup releases the last owner.
 The direct and repaired sources agree on distinct 372-module cuts, with 299 state
 premises. Wider targets and original 7 remain open.
+Captured factories additionally select bound `Fiber::resume`. Its saved caller
+keeps the Closure and receiver through transfer after argument evaluation clears
+the caller cell; last-owner cleanup releases both before final weak reads. Direct
+and repaired sources agree on distinct 374-module cuts, with 343 state premises.
+Other targets and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -668,9 +673,13 @@ assertions pass. With the checked nullable string mask, the same cleared NULL
 passes the repeated check, delivers one original-line Notice and returns a fresh
 [caller cell](coverage/semantics/reference-return-consumed-value-nullable-review.json) distinct from x and y, without repeating the call
 or outer finalizer. One nullable original and three reached fixtures/381
-assertions pass. Other VALUE signatures/layouts, general CONST, other NULL and
-multiple-active histories, wider
-Stringable consumers and owner domains remain open.
+assertions pass. Two already-active CV finalizers also retain
+[ordered non-owning history](coverage/semantics/reference-return-multiple-active-cv-review.json) across inner rejection.
+Uncaught replay leaves Z then X; initial success preserves the selected y
+alias. Two originals and four reached fixtures/439 assertions pass.
+Caught consumed-Z resumption, lifecycle-enabled capture, further histories,
+other VALUE signatures/layouts, general CONST, other NULL, wider Stringable
+consumers and owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
@@ -996,7 +1005,15 @@ Three ordinary-Fiber E→D→reference→D cuts execute 375 premises, including
 zero reference debit, exact image/guard authority and signed count0.
 D and its reference remain live with one owner each; E retires and request cleanup
 and replay pass. Whole source39 CLI60 remains OPEN with zero agreement credit;
-residual arrays, outside references and wider overlap remain required.
+wider residual-array layouts, outside references and wider overlap remain required.
+
+Protected residual reach also admits nonproxy arrays within fresh-DTORS reach.
+Closed white object/array producers remove nested data before parked-worker
+continuation and ordinary worker retrace, with separate snapshot and current-image
+checks. Six reached cuts execute 559 premises for the ordinary-Fiber D→array→D
+case: signed count0, live D/array owners1, E retirement and request cleanup.
+Whole source40 CLI60 remains OPEN/zero agreement; wider main/mixed, reference,
+outside-array, black/external and proxy layouts remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
@@ -1139,8 +1156,13 @@ cover exceptions, traces and receiver/result cleanup in the
 [hook review](coverage/semantics/backed-get-hooks-review.json). Expression bodies
 retain their real source child and compiled implicit-return line; seven additional
 originals and 137 return/callback/lifetime checks pass in the
-[expression review](coverage/semantics/expression-get-hooks-review.json). Virtual/set/reference,
-inherited/trait and wider receiver or indirect-access families remain required.
+[expression review](coverage/semantics/expression-get-hooks-review.json). Virtual getters
+without defaults retain declaration/type metadata and own no backing slot; writes
+evaluate the RHS before read-only rejection and returned values have ordinary
+result ownership. Eight affected source agreements and 139 derived/reached checks
+are recorded in the [virtual review](coverage/semantics/virtual-get-hooks-review.json).
+Hooked iteration, defaulted virtual/set/reference, inherited/trait and wider
+receiver or indirect-access families remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed
@@ -1481,6 +1503,17 @@ the conflict label, and pending errors survive later source detachment/repair.
 pass 829 setup-inclusive premises; owned copied payloads survive source/cell removal.
 The actual374 join over `bed352b5a` passes strict at `e0d62e7ed` (5.399s),
 preserving current anonymous-class and hook interfaces; private cuts remain unchanged.
+Getter verification now widens an actual unconstrained integer return to builtin
+float, including strict getters. Reference returns update the real cell; value
+returns change only the returned value. Exact floats with real typed-property
+sources remain unchanged, while integer widening raises a source conflict without
+converting that cell. Readonly backing stays UNSET without a new type source.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-float-review.json)
+pass 904 setup-inclusive premises, including binary64 rounding and CV versus owned
+receiver cleanup. Numeric strings, booleans and wider float conversions remain open;
+earlier getter evidence is unchanged.
+The actual374 join over `2c0d9531c` passes strict at `076606980` (5.481s),
+preserving current virtual-hook interfaces; private cuts retain their original credit.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

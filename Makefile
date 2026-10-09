@@ -212,7 +212,7 @@ test-semantics: build
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py
 	python3 tests/semantics/weak_reference_state_review.py
-	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces --exclude-match collector-residual-dtor-public-resume-preparation-25 --exclude-match collector-residual-dtor-next-internal-fiber-pass-preparation-26 --exclude-match collector-residual-dtor-next-main-pass-preparation-27 --exclude-match collector-residual-internal-callback-suspends-and-detaches-preparation-28 --exclude-match collector-residual-internal-suspension-releases-last-cache-owner-preparation-29 --exclude-match collector-public-callback-resuspends-during-internal-takeover-preparation-30 --exclude-match collector-cached-public-reentry-during-different-main-pass-preparation-31 --exclude-match collector-fiber-mixed-residual-tags-and-fresh-eligible-overlap-preparation-36 --exclude-match collector-fiber-array-edge-residual-overlap-preparation-37 --exclude-match collector-fiber-reference-edge-residual-overlap-preparation-38 --exclude-match collector-fiber-residual-self-reference-overlap-preparation-39
+	python3 tests/semantics/cycle_collection_sources.py --exclude-match collector-detached-throw-has-worker-and-real-resumer-traces --exclude-match collector-residual-dtor-public-resume-preparation-25 --exclude-match collector-residual-dtor-next-internal-fiber-pass-preparation-26 --exclude-match collector-residual-dtor-next-main-pass-preparation-27 --exclude-match collector-residual-internal-callback-suspends-and-detaches-preparation-28 --exclude-match collector-residual-internal-suspension-releases-last-cache-owner-preparation-29 --exclude-match collector-public-callback-resuspends-during-internal-takeover-preparation-30 --exclude-match collector-cached-public-reentry-during-different-main-pass-preparation-31 --exclude-match collector-fiber-mixed-residual-tags-and-fresh-eligible-overlap-preparation-36 --exclude-match collector-fiber-array-edge-residual-overlap-preparation-37 --exclude-match collector-fiber-reference-edge-residual-overlap-preparation-38 --exclude-match collector-fiber-residual-self-reference-overlap-preparation-39 --exclude-match collector-fiber-residual-array-overlap-preparation-40
 	python3 tests/semantics/cycle_collection_state.py
 	python3 tests/semantics/cycle_collection_review.py --exclude-match collector-detached-pending-review-18 --exclude-match collector-detached-quiescent-throwing-fiber-prior-error-review-19 --exclude-match collector-active-interval-bound-core-throw-review-21 --exclude-match collector-active-public-cached-core-old-pending-new-throw-review-22 --exclude-match collector-active-public-cached-core-two-identities-compact-review-22 --exclude-match collector-public-postpass-core-old-pending-new-throw-review-23 --exclude-match collector-new-fiber-pass-keeps-parked-old-error-review-24 --exclude-match collector-internal-takeover-old-error-compact-preparation-24 --exclude-match collector-residual-dtor-next-internal-old-pending-review-preparation-26 --exclude-match collector-residual-dtor-main-old-pending-review-preparation-27 --exclude-match collector-residual-internal-suspension-separates-replacement-error-review-preparation-28 --exclude-match collector-residual-last-owner-failed-finally-prior-error-review-preparation-29 --exclude-match collector-public-internal-resuspension-separates-two-finally-errors-review-preparation-30 --exclude-match collector-cached-public-throw-during-different-main-pass-prior-identity-review-preparation-31
 	python3 tests/semantics/cycle_collection_state_review.py --sl
@@ -483,6 +483,12 @@ test-semantics: build
 	python3 tests/semantics/magic_property_reference_protocol.py --group owned-object
 	python3 tests/semantics/magic_property_reference_protocol.py --group strict
 	python3 tests/semantics/magic_property_reference_protocol.py --group first-source
+	python3 tests/semantics/magic_property_float_protocol.py --group reference-kept
+	python3 tests/semantics/magic_property_float_protocol.py --group reference-drop
+	python3 tests/semantics/magic_property_float_protocol.py --group value
+	python3 tests/semantics/magic_property_float_protocol.py --group owned
+	python3 tests/semantics/magic_property_float_protocol.py --group source-conflict
+	python3 tests/semantics/magic_property_float_protocol.py --group source-exact
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
@@ -611,6 +617,8 @@ test-semantics: build
 	python3 tests/semantics/backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/expression_get_hook_cases.json
 	python3 tests/semantics/expression_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_get_hook_cases.json
+	python3 tests/semantics/virtual_get_hook_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json
