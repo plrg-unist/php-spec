@@ -20,6 +20,7 @@ dec $error_handler_invoke_known(pstate, perrorcall) : pstate?
 dec $error_missing_operand(pstate, poperand) : bool
 dec $error_simple_read(ptask) : bool
 dec $error_read_shape(ptask, poperand, pbase) : perrorread?
+dec $error_read_state_shape(pstate, ptask, poperand, pbase) : perrorread?
 dec $error_read_line(ptask, int) : int
 dec $error_read_operand(perrorread) : poperand
 dec $error_read_plan(pstate) : perrorread?
@@ -244,6 +245,7 @@ def $error_read_shape(ptask, VARIABLE n* z, pbase) = ({ORIGINAL ptask, INPUT VAR
 def $error_read_shape(BINARY_RIGHT pbin (VARIABLE n* z_origin) z, poperand, pbase) = ({ORIGINAL BINARY_RIGHT pbin (VARIABLE n* z_origin) z, INPUT poperand, BASE pbase, NAME n*, LINE z, TASK BINARY_RIGHT pbin (KNOWN PNULL) z, RESULT poperand})
 def $error_read_shape(BINARY_RIGHT pbin (KNOWN pvalue) z, VARIABLE n* z_origin, pbase) = ({ORIGINAL BINARY_RIGHT pbin (KNOWN pvalue) z, INPUT VARIABLE n* z_origin, BASE pbase, NAME n*, LINE z, TASK BINARY_RIGHT pbin (KNOWN pvalue) z, RESULT KNOWN PNULL})
 def $error_read_shape(ptask, poperand, pbase) = eps -- otherwise
+def $error_read_state_shape(S, ptask, poperand, pbase) = $error_read_shape(ptask, poperand, pbase) -- otherwise
 def $error_read_line(EMIT z, z_origin) = z_origin
 def $error_read_line(PRINT_EMIT porigin z, z_origin) = z_origin
 def $error_read_line(WRITE_NAME n* z, z_origin) = z
@@ -251,7 +253,7 @@ def $error_read_line(UNARY punary z, z_origin) = z
 def $error_read_operand(perrorread) = VARIABLE perrorread.NAME perrorread.LINE
 def $error_read_plan(S) = (perrorread)
   -- if S.TODO = ptask :: ptask_tail*
-  -- if $error_read_shape(ptask, S.RESULT, S.BASE) = (perrorread)
+  -- if $error_read_state_shape(S, ptask, S.RESULT, S.BASE) = (perrorread)
   -- if $error_missing_operand(S, $error_read_operand(perrorread))
   -- if $error_read_source(S, perrorread)
 def $error_read_plan(S) = eps -- otherwise
@@ -355,7 +357,7 @@ def $code_expression_at_source(S, PORIGIN n pcpath_parent, pcpath) = (z)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_parent ++ pcpath) = ((z, b))
 def $code_expression_at_source(S, porigin, pcpath) = eps -- otherwise
-def $error_read_valid(S, perrorread) = ($error_read_shape(perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread) /\ $error_read_source(S, perrorread))
+def $error_read_valid(S, perrorread) = ($error_read_state_shape(S, perrorread.ORIGINAL, perrorread.INPUT, perrorread.BASE) = (perrorread) /\ $error_read_source(S, perrorread))
 def $call_task_valid(S, ERROR_READ_RESULT perrorread) = $error_read_valid(S, perrorread)
 
 ;; Source-derived continuation certificates distinguish these C callbacks from

@@ -120,7 +120,11 @@ The one-positional-CV increment preserves selected targets across SEND warnings,
 with INIT5/call7/SEND-ECHO9 and existing temporary/reference output owners.
 Throwing SEND handlers retire the invoker at9; ordinary body throws retire it at7.
 Nine fresh exact originals and231 independent premises pass; actual358 passes
-strict compilation. Wider callees/arguments remain required.
+strict compilation. One named CV argument now separates SEND/ECHO line9 from the
+CV's source line11, preserving the second slot, defaults, unknown-name priority
+and captured-null warnings. Eight exact originals and251 independent premises
+retain private358; actual358 passes strict compilation. Earlier cuts retain their
+inputs; wider callees/arguments remain required.
 
 [Named Stringable `chdir`](coverage/semantics/include-named-current-review.json)
 admits `directory:` through computed and owned callable forms. The installed
@@ -1100,8 +1104,11 @@ An authenticated retained `self::n(argument())` rejects the exact abstract metho
 arguments, using completed data binding and copied requirements. One shutdown
 original and41 supplied conditions plus6 setup clauses pass, including all four
 global validators; unknown phases stay Unsupported.
-Parameter-view full-source constructor,
-handler and variadic cases, broader differing-owner later births
+Three full parameter-view originals now agree with PHP at the original45/55 limits:
+constructor/default rejection, error-handler reception and positional/named variadic
+Stringable conversion preserve old, later and cloned scopes. Exact ASCII lookup and
+disjoint property/header guards reduce repeated source replay work without changing
+authority. Broader mixed parameter-view contexts, differing-owner later births
 and wider failed-owner member/construction behavior remain open. Wider
 initializer contexts, held/open failed links and readonly
 storage remain

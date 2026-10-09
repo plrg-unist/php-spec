@@ -135,7 +135,15 @@ CASES = {'regular': 'deferred-regular.php',
          'echo-dynamic-cv-argument-retirement-throw': 'echo-dynamic-cv-argument-retirement-throw-child.php',
          'echo-dynamic-cv-argument-eval-reference': None,
          'echo-dynamic-cv-argument-baseline-lifetime': None,
-         'echo-dynamic-cv-argument-callee-throw': 'echo-dynamic-cv-argument-callee-throw-child.php'}
+         'echo-dynamic-cv-argument-callee-throw': 'echo-dynamic-cv-argument-callee-throw-child.php',
+         'echo-dynamic-cv-named-argument-live-second': 'echo-dynamic-cv-named-argument-live-second-child.php',
+         'echo-dynamic-cv-named-argument-warning-return': 'echo-dynamic-cv-named-argument-warning-return-child.php',
+         'echo-dynamic-cv-named-argument-warning-throw': 'echo-dynamic-cv-named-argument-warning-throw-child.php',
+         'echo-dynamic-cv-named-argument-unknown-name': 'echo-dynamic-cv-named-argument-unknown-name-child.php',
+         'echo-dynamic-cv-named-argument-undefined-callee': 'echo-dynamic-cv-named-argument-undefined-callee-child.php',
+         'echo-dynamic-cv-named-argument-retirement-throw': 'echo-dynamic-cv-named-argument-retirement-throw-child.php',
+         'echo-dynamic-cv-named-argument-eval-reference': None,
+         'echo-dynamic-cv-named-argument-baseline-lifetime': None}
 
 b64 = lambda value: base64.b64encode(value).decode()
 REQUEST_EXEC = '''import os,sys
@@ -173,7 +181,7 @@ def main():
     parser.add_argument('--semantic-root', type=Path, default=ROOT)
     args = parser.parse_args()
     semantic = args.semantic_root.resolve()
-    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-', 'echo-cv-call-', 'echo-named-cv-call-', 'echo-dynamic-cv-call-', 'echo-dynamic-cv-argument-')) and name != 'generator-source')
+    selected = (args.case,) if args.case else tuple(name for name in CASES if not name.startswith(('first-', 'expression-', 'autoglobal-', 'globals-', 'this-', 'computed-', 'cv-name-', 'call-argument-', 'named-argument-', 'missing-name-cv-', 'stringable-name-', 'array-name-', 'dim-', 'call-key-', 'echo-call-', 'echo-cv-call-', 'echo-named-cv-call-', 'echo-dynamic-cv-call-', 'echo-dynamic-cv-argument-', 'echo-dynamic-cv-named-argument-')) and name != 'generator-source')
     recorder.ROOT = ROOT
     out = Path(tempfile.mkdtemp(prefix='source-stringable-retirement-sources-', dir=ROOT / '.tools'))
     print(out, flush=True)
