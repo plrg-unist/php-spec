@@ -1113,6 +1113,8 @@ Named arguments preserve skipped defaults, unknown-label priority and distinct
 known/deferred SEND diagnostic lines. Five original per-case agreements and one
 affected deferred comparison retain separate cuts; five new reached groups
 validate shared cells, captured null, callee cleanup and pending exceptions.
+The actual361 join over `b82bd2425` passes strict at `432084968`, preserving
+current call, return-replay and class interfaces.
 Computed names, getters/hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit

@@ -1529,6 +1529,9 @@ setup-inclusive premises at `5ed9fbe45`, covering named slot2/defaults, current/
 carriers, fixed null, parameter retirement and protected H/B cleanup.
 Fixture parser, binder and fallback-conversion failures remain zero; earlier
 source6/state760 and source10/state669 are unrenewed.
+The actual361 join over `b82bd2425` passes strict at `432084968` (4.923s),
+preserving current call roots, return replay and class Override interfaces.
+It renews no source/state credit.
 Computed names, magic getters/hooks, consumed storage and wider reference-call
 receivers remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
