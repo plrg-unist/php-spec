@@ -1,0 +1,75 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "SHA256(stdout + NUL + stderr)",
+  "cases": [
+    {
+      "id": "array-snapshot-copy",
+      "source": "<?php\n$input = [7];\n$wrapper = new \\SensitiveParameterValue($input);\n$getter = $wrapper->getValue(...);\n$input[0] = 17;\nunset($wrapper);\n$copy = $getter();\n$copy[0] = 23;\n$stored = $getter();\necho $input[0], \"|\", $copy[0], \"|\", $stored[0];\n",
+      "source_sha256": "28047141270ea1f7ded0df0f14936886215689d4cb3478dc790bfd0caf8b322d",
+      "native_group": ".tools/sensitive-value-getter-callables-private-25/.tools/sensitive-value-getter-callables-probes-25/native-first/report.json",
+      "native_raw_sha256": "bfb93f27af35777bbd3e49d899684cd861dbdbc3f1eb7d14bad9fa1d062a0a00",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MTd8MjN8Nw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "captured-receiver-value-lifetime",
+      "source": "<?php\nclass SensitiveGetterLeaf25 {\n    public function __destruct() { echo \"D|\"; }\n}\n$leaf = new SensitiveGetterLeaf25();\n$weak = \\WeakReference::create($leaf);\n$wrapper = new \\SensitiveParameterValue($leaf);\n$getter = $wrapper->getValue(...);\nunset($leaf, $wrapper);\necho $weak->get() === null ? \"N|\" : \"L|\";\n$copy = $getter();\nunset($getter);\necho $weak->get() === null ? \"N|\" : \"L|\";\nunset($copy);\necho $weak->get() === null ? \"N|\" : \"L|\";\n",
+      "source_sha256": "e1637239dfc12cd8b4c1208ad74509fd1c3103fb7abad32ad6470218b53ef2ce",
+      "native_group": ".tools/sensitive-value-getter-callables-private-25/.tools/sensitive-value-getter-callables-probes-25/native-first/report.json",
+      "native_raw_sha256": "582cbaca41a33521b1997c85b0dc828324e8f21d82b7d988510f85cd5f31be18",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "THxMfER8Tnw=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "extra-named-errors",
+      "source": "<?php\nfunction getter_arg25($value) { echo \"A\", $value, \"|\"; return $value; }\n$wrapper = new \\SensitiveParameterValue(7);\n$getter = $wrapper->getValue(...);\ntry { $getter(getter_arg25(9), getter_arg25(11)); }\ncatch (\\ArgumentCountError $error) { echo $error->getMessage(), \"|\"; }\ntry { $getter(value: getter_arg25(13), later: getter_arg25(17)); }\ncatch (\\Error $error) { echo $error->getMessage(), \"|\"; }\necho $getter();\n",
+      "source_sha256": "04eb4d7eeee216e4f56f9bb985c40cd220491fe491896a616996df05608f6f65",
+      "native_group": ".tools/sensitive-value-getter-callables-private-25/.tools/sensitive-value-getter-callables-probes-25/focused/native-first/report.json",
+      "native_raw_sha256": "8b0cf614bea155926058884807928ce003f56da66e8621e72928e317c259b70c",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "QTl8QTExfFNlbnNpdGl2ZVBhcmFtZXRlclZhbHVlOjpnZXRWYWx1ZSgpIGV4cGVjdHMgZXhhY3RseSAwIGFyZ3VtZW50cywgMiBnaXZlbnxBMTN8VW5rbm93biBuYW1lZCBwYXJhbWV0ZXIgJHZhbHVlfDc=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "dynamic-method-invoke-alias",
+      "source": "<?php\n$wrapper = new \\SensitiveParameterValue(19);\n$method = \"gEtVaLuE\";\n$getter = $wrapper->$method(...);\n$method = \"missing\";\n$alias = $getter->__invoke(...);\nunset($wrapper, $getter);\necho $alias();\n",
+      "source_sha256": "8793bd6509b0678354f02c125d96b4d2707dd3b00fae539ffa75f9ae15c66954",
+      "native_group": ".tools/sensitive-value-getter-callables-private-25/.tools/sensitive-value-getter-callables-probes-25/focused/native-first/report.json",
+      "native_raw_sha256": "ee387e45749ed6a9067b6fe143c7b1deae0c8ac107c7629f56588c8fcb64ec4c",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "MTk=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "clone-owner-release",
+      "source": "<?php\nclass SensitiveGetterCloneLeaf25 {\n    public function __destruct() { echo \"D|\"; }\n}\n$leaf = new SensitiveGetterCloneLeaf25();\n$weak = \\WeakReference::create($leaf);\n$wrapper = new \\SensitiveParameterValue($leaf);\n$first = $wrapper->getValue(...);\n$second = clone $first;\nunset($leaf, $wrapper, $first);\necho $weak->get() === null ? \"N|\" : \"L|\";\n$copy = $second();\nunset($second);\necho $weak->get() === null ? \"N|\" : \"L|\";\nunset($copy);\necho $weak->get() === null ? \"N|\" : \"L|\";\n",
+      "source_sha256": "e0ccbce6e01ee5ff2efaf321a15b42e2ad49d8a1321d3f8672d0aa044b78ac57",
+      "native_group": ".tools/sensitive-value-getter-callables-private-25/.tools/sensitive-value-getter-callables-probes-25/focused/native-first/report.json",
+      "native_raw_sha256": "582cbaca41a33521b1997c85b0dc828324e8f21d82b7d988510f85cd5f31be18",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_base64": "THxMfER8Tnw=",
+      "stderr_template_base64": ""
+    }
+  ]
+}

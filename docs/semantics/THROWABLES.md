@@ -77,7 +77,12 @@ preserve the old snapshot. Getter copies own objects independently of the wrappe
 and last release triggers ordinary destruction and WeakReference notification.
 Seven originals and separate allocation/SEND/getter/retirement checks are recorded
 in the [constructor review](../../coverage/semantics/sensitive-value-constructor-review.json).
-Mixed/repeated/argument attributes, hooks, first-class constructor/getters,
+First-class `getValue(...)` callables strongly own the wrapper and its captured
+value. Invoked getters return ordinary copies; callable clones and aliases retain
+the same receiver while last copy release triggers destruction and weak-target
+notification. Five originals and separate authentic capture/getter/last-release
+checks are recorded in the [getter review](../../coverage/semantics/sensitive-value-getter-review.json).
+Mixed/repeated/argument attributes, hooks, first-class constructors,
 uninitialized getter, debug/property and wider wrapper protocols remain required.
 
 `ErrorException` appends a protected typed `severity` as the eighth slot; its

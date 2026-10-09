@@ -948,6 +948,10 @@ Direct `SensitiveParameterValue` construction copies a dereferenced mixed value;
 readonly re-entry preserves that snapshot, and getter copies retain ordinary
 ownership. Seven originals and separate constructor/lifetime checks are recorded
 in the [constructor review](coverage/semantics/sensitive-value-constructor-review.json).
+First-class `getValue(...)` callables retain their wrapper and captured value;
+getter copies, callable clones and final release keep ordinary ownership. Five
+originals and separate capture/lifetime checks are recorded in the
+[getter review](coverage/semantics/sensitive-value-getter-review.json).
 [Finally continuations](docs/semantics/SOURCE-FINALLY.md) preserve normal,
 thrown and transferring outcomes, including value/reference returns, loop jumps
 and goto across protected regions. [Source Throwable subclasses](docs/semantics/THROWABLE-SUBCLASSES.md)

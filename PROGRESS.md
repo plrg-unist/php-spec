@@ -143,8 +143,17 @@ Unsupported with zero agreement; the earlier raw-completion fixture preparation
 was corrected before execution. Actual 367-module composition over `24c1b9e4`
 passes strict initialization at `0e5152643` (5.351 s), preserving current assertion
 fields and sibling constructor arms without renewing private source/state checks.
-First-class constructor/getter, uninitialized getter, debug/property and wider wrapper protocols
+First-class constructor, uninitialized getter, debug/property and wider wrapper protocols
 remain required. [Constructor review](coverage/semantics/sensitive-value-constructor-review.json).
+
+First-class SensitiveParameterValue `getValue(...)` callables own their receiver
+and snapshot through the existing getter-closure protocol. Five originals agree
+at `db70c7a5`: array COW, argument priority, computed capture/alias and clone
+ownership. Strict initialization of 367 modules and separate SL76 (15 derived,
+61 reached checks) pass; four real steps verify capture, getter-copy ownership
+and final destructor/weak-null release. Both checked baselines retain Unsupported
+with zero agreement. Actual-parent composition is pending; prior CLASS cuts stay
+unchanged. [Getter review](coverage/semantics/sensitive-value-getter-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

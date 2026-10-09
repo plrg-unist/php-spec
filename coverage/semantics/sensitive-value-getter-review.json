@@ -1,0 +1,85 @@
+{
+  "scope": "First-class SensitiveParameterValue::getValue callables own the initialized receiver and its snapshot, using the existing GETTERCLOSURE protocol. Ordinary getter copies, zero-argument SEND/arity, computed capture, __invoke aliases and clone ownership are preserved. Constructor first-class capture, uninitialized getter, debug/property and wider wrapper/binding protocols remain required.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; profile30719; LC_ALL=C; TZ=UTC; jobs1; SL/cache=false/det=true",
+  "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+  "parent": "99f3432edcd37ed54996140d3e5535d64c736179",
+  "raw_root": ".tools/sensitive-value-getter-callables-private-25/.tools/sensitive-value-getter-callables-probes-25",
+  "engine": [
+    "vendor/php-src/Zend/zend_closures.c::zend_create_closure_ex/zend_closure_free_storage",
+    "vendor/php-src/Zend/zend_attributes.c::SensitiveParameterValue::getValue"
+  ],
+  "native_first": {
+    "report": "native-first/report.json",
+    "sha256": "32df208efd78421b7183ad9876d01b673747f98540231f7dee8b012e320e6a2b",
+    "result": "Array copies17|23|7; captured receiver/value lifetime L|L|D|N|; both normal0."
+  },
+  "baseline": {
+    "report": "accepted-current-baseline/report.json",
+    "sha256": "5030c1d4a23193f06de9a2a6bae13066e82307373b7f21105804a21dafac929d",
+    "result": "Both parsed/checked; Unsupported(SensitiveParameterValue internal method body), source0. Gap in core379; frontend/adapter unchanged."
+  },
+  "accepted_source": {
+    "revision": "db70c7a50d5bc970c40ff99fee74d7103b871f52",
+    "agreements": 5,
+    "cuts": [
+      {
+        "report": "changed-model-tcm4j0ko/report.json",
+        "sha256": "c603849527338e17a9d6648bcea082e08a7f49b75642504fbafb01b7fe443f21",
+        "agreements": 2
+      },
+      {
+        "native_report": "focused/native-first/report.json",
+        "native_sha256": "39e6a35354cf8644e179d8d607637c1ae28e58303ea7bea5d96f94a87b6cf60d",
+        "report": "focused/changed-model-ndzs5oss/report.json",
+        "sha256": "ff5dd5579a730a59136079096e2f1d28e53ea722115720782e5fff0a7b09fd67",
+        "agreements": 3,
+        "result": "Extra operands evaluated before arity; first named operand before unknown-name error suppresses later operand; computed getter identity/__invoke alias; cloned callable lifetime."
+      }
+    ],
+    "bounds_seconds": {
+      "native": 45,
+      "model_internal": 60,
+      "model_outer": 75
+    },
+    "steps": 100000
+  },
+  "private_strict": {
+    "revision": "db70c7a50d5bc970c40ff99fee74d7103b871f52",
+    "modules": 367,
+    "report": "sensitive-getter-compiler-17698d83/report.json",
+    "sha256": "1473a52454281780cede57b603b1bb8793e88baf3f5d98a7ca220217208e827a",
+    "seconds": 5.138134,
+    "cap_seconds": 300,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "accepted_state": {
+    "revision": "db70c7a50d5bc970c40ff99fee74d7103b871f52",
+    "report": "sensitive-getter-checked-0p3vqyz2/report.json",
+    "sha256": "f1f4c7ee529e3ac8535893602f987df15e208748b13f16b3b8f34cc2c1c210ca",
+    "fixture_sha256": "1ee8172af79bffb8397c4edb4a57f4c7e04d421e672091480cb1b3d50d641dc5",
+    "derived_premises": 15,
+    "reached_premises": 61,
+    "real_php_steps": 4,
+    "algorithmic_seconds": 4.421622,
+    "SL_seconds": 8.953388,
+    "cap_seconds": 120,
+    "source_agreements": 0,
+    "result": "Authentic first-class capture and physical callable-to-wrapper-to-leaf edges; exact getter continuation and copied leaf ownership; closure/wrapper retirement followed by sole-copy destruction/weak-null. Forged method/base/source/receiver/retired/uninitialized capture controls remain separate."
+  },
+  "preserved_zero": "Both original Unsupported baselines retain0. Untracked build-directory symlinks were corrected to real ignored directories/existing regular tool leaves before execution; no build or semantic credit. Prior CLASS failures and accepted cuts remain in their unchanged ledgers.",
+  "commands": [
+    "python3 .tools/sensitive-value-getter-callables-probes-25/run-compiler.py 99f3432edcd37ed54996140d3e5535d64c736179 db70c7a50d5bc970c40ff99fee74d7103b871f52",
+    "python3 .tools/sensitive-value-getter-callables-probes-25/run.py changed --revision db70c7a50d5bc970c40ff99fee74d7103b871f52",
+    "python3 .tools/sensitive-value-getter-callables-probes-25/focused/run.py native --revision db70c7a50d5bc970c40ff99fee74d7103b871f52",
+    "python3 .tools/sensitive-value-getter-callables-probes-25/focused/run.py changed --revision db70c7a50d5bc970c40ff99fee74d7103b871f52",
+    "python3 .tools/sensitive-value-getter-callables-probes-25/run-prepared.py .tools/sensitive-value-getter-callables-probes-25/sensitive-getter-protocol-9s2x37ts/PREPARED.json"
+  ],
+  "maintained_commands": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_value_getter_cases.json",
+    "python3 tests/semantics/sensitive_value_getter_protocol.py --revision \"$(git rev-parse HEAD)\""
+  ],
+  "recording": "Exact observed streams/status, stable inputs/head/status and fully reaped groups. State fixture complete AL compilation precedes one actual SL application; maintained relocation preserves all76 premises and source bytes.",
+  "actual_composition": "Pending exact then-current parent seam review and one init-only strict gate; private source5/state76 are not renewed."
+}
