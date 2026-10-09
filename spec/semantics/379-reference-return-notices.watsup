@@ -82,8 +82,8 @@ def $return_ref_step(S, poperand, z, true, porigin, (REF_RETURN_NOTICE porigin z
 ;; Diagnostic occurrence/line remains captured. Live control is at the
 ;; completed callable boundary, so consumed catches/finalizers stay consumed.
 def $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice) = ($reference_notice_source(S, porigin, poperand, z, prefreturnnotice) /\ S.ORIGIN = ($reference_notice_boundary(S)) /\ $finally_return_operand_valid(S, poperand) /\ $heap_subset($operand_nodes(poperand), S.ALLOCATIONS))
-def $call_task_valid(S, REF_RETURN_NOTICE_BEGIN porigin poperand z prefreturnnotice) = $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
-def $call_task_valid(S, REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) = $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
+def $call_task_valid(S, REF_RETURN_NOTICE_BEGIN porigin poperand z prefreturnnotice) = (S.TODO = [REF_RETURN_NOTICE_BEGIN porigin poperand z prefreturnnotice] /\ $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice))
+def $call_task_valid(S, REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) = (S.TODO = [REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice] /\ $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice))
 def $task_nodes(REF_RETURN_NOTICE_BEGIN porigin poperand z prefreturnnotice) = $operand_nodes(poperand)
 def $task_nodes(REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) = $operand_nodes(poperand)
 rule PhpStep/reference-return-notice: S ~> $error_dispatch(S, 8, $ptascii("Only variable references should be returned by reference"), z, DIAGNOSTIC "Notice" $ptascii("Only variable references should be returned by reference") z, REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice)
