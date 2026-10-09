@@ -39,7 +39,8 @@ def $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
   -- if $origin_node(S.SOURCES, porigin) = (NExprAssignOpConcat (NExprStaticPropertyFetch phpType19 (NVarLikeIdentifier (BYTES text) metadata_name) metadata_property) expression_right metadata)
   -- if $static_compound_selection(S, pstaticcompound.DECL, porigin) = ((pstaticcompound.CLASS, ppropertydesc))
 def $static_compound_descriptor(S, pstaticcompound, porigin) = eps -- otherwise
-def $static_compound_string(PSTRING ptbytes) = true
+def $static_compound_string(pvalue) = true
+  -- if $string_bytes(pvalue) =/= eps
 def $static_compound_string(pvalue) = false -- otherwise
 def $static_compound_verify(S, ppropertydesc, eps, pvalue) = (ppropertydesc.TYPE =/= eps /\ ~$static_compound_string(pvalue))
 def $static_compound_verify(S, ppropertydesc, (n), pvalue) = ($propref_at(S.PROPREFS, n) =/= eps /\ ~$static_compound_string(pvalue))
@@ -178,7 +179,9 @@ def $reference_coercion_admission(S, n, porigin, z, ptbytes) = true
   -- if ~pstaticcompound.VERIFY
   -- if pcompoundstring.LINE = z
   -- if $(n < |S.STORE|) /\ n <- S.REFCELLS /\ (HCELL n) <- S.ALLOCATIONS
-  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = (ptbytes)
 def $static_compound_unchecked(S, pstaticcompound, porigin, z, ptbytes) = S_written[.CLASSCONSTANTHISTORY = S_written.CLASSCONSTANTHISTORY ++ [CCCOMPOUNDWRITE pstaticcompound porigin z ptbytes (|S.DECLARATIONS|)]]
   -- if pstaticcompound.CELL = (n)
   -- if $reference_coercion_admission(S, n, porigin, z, ptbytes)
@@ -190,7 +193,8 @@ def $static_compound_write_seen(eps, prefcoercion) = false
 def $static_compound_write_seen(pclassconstantevent :: pclassconstantevent_tail*, prefcoercion) = ($static_compound_write_event(pclassconstantevent, prefcoercion) \/ $static_compound_write_seen(pclassconstantevent_tail*, prefcoercion))
 def $reference_coercion_row_valid(S, prefcoercion) = true
   -- if $(prefcoercion.CELL < |S.STORE|) /\ prefcoercion.CELL <- S.REFCELLS /\ (HCELL prefcoercion.CELL) <- S.ALLOCATIONS
-  -- if S.STORE[prefcoercion.CELL] = DEFINED (PSTRING prefcoercion.VALUE)
+  -- if S.STORE[prefcoercion.CELL] = DEFINED pvalue
+  -- if $string_bytes(pvalue) = (prefcoercion.VALUE)
   -- if $static_compound_write_seen(S.CLASSCONSTANTHISTORY, prefcoercion)
   -- if $class_constant_history_valid(S)
 
@@ -217,9 +221,11 @@ def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = $class_stat
   -- if pstaticcompound.CELL = eps /\ pstaticcompound.VERIFY
   -- if $static_compound_descriptor(S, pstaticcompound, porigin) = (ppropertydesc)
   -- if $typed_conversion_at(S, ppropertydesc.TYPE, pvalue, $property_strict(S)) = TYPEREJECT
-def $static_compound_store(S, pstaticcompound, porigin, z, PSTRING ptbytes) = $static_compound_unchecked(S, pstaticcompound, porigin, z, ptbytes)
+def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = $static_compound_unchecked(S, pstaticcompound, porigin, z, ptbytes)
   -- if pstaticcompound.CELL = (n)
   -- if ~pstaticcompound.VERIFY
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = (ptbytes)
 def $static_compound_store(S, pstaticcompound, porigin, z, pvalue) = $write_cell_checked(S, n, pvalue, z)
   -- if pstaticcompound.CELL = (n)
   -- if pstaticcompound.VERIFY
