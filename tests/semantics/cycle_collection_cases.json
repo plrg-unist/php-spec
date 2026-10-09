@@ -232,5 +232,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-active-main-idle-public-scans-remaining-residual-tags-unset-order-companion-32",
+    "source": "<?php\n$w=null;\nclass S {\n public $s;\n function __destruct(){global $w;$w=Fiber::getCurrent();}\n}\n$f=new Fiber(function(){\n $a=new S;$a->s=$a;$b=new S;$b->s=$b;\n unset($a,$b);gc_collect_cycles();\n});\n$f->start();unset($f);\nclass C {\n public $s;public $k;\n function __destruct(){global $w;if($this->k===0){$w->resume();}else{echo Fiber::suspend()===null?'B:null|':'bad-B|';}}\n}\n$a=new C;$a->s=$a;$a->k=0;$b=new C;$b->s=$b;$b->k=1;\nunset($a,$b);gc_collect_cycles();\nclass R {\n public $s;public $k;\n function __destruct(){\n  global $w;\n  if($this->k===0){echo 'D|';$w->resume();echo 'back|';}\n  else{echo Fiber::getCurrent()===$w?'F:worker|':'F:main|';}\n }\n}\n$t=new Fiber(function(){\n $d=new R;$d->s=$d;$d->k=0;$f=new R;$f->s=$f;$f->k=1;\n unset($f,$d);gc_collect_cycles();\n});\n$t->start();\nclass E {\n public $s;\n function __destruct(){global $w;echo Fiber::getCurrent()===$w?'E:worker|':'E:main|';}\n}\n$e=new E;$e->s=$e;unset($e);\necho 'main|',gc_collect_cycles(),'|';\necho $w->isSuspended()?'idle|':'other|';\necho 'END';\n",
+    "source_sha256": "3827ee5b1b6e7cd7f87000ea2dce324194009a2c75a54293328e91a2b0a1a3e4",
+    "stdout": "B:null|main|D|F:worker|back|E:main|1|idle|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal"
   }
 ]
