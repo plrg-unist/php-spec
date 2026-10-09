@@ -2431,6 +2431,15 @@ source/renderer bytes are unchanged; relocation renews no runtime evidence.
 Wider getter/binding/library targets and original 7's CLI60 timeout remain open.
 Actual-parent compilation passes at `71edcca7` over `8cc17e6e` with 371 modules;
 pointwise EX/RETURNS review adds no private source, state or native renewal.
+Captured factories now select static `Fiber::getCurrent` with no bound input.
+Actual CONFIG validates the selected live factory; its saved CALL authenticates
+creation and invocation after producer retirement and adds no owner. Frozen
+DIRECT members preserve getCurrent when the source ALIAS cell changes to suspend.
+The direct control agrees at 05b0/371, and the repaired captured source agrees at
+7928/371 before and after Fiber suspension. Its 270 premises (227 genuine/derived,
+43 constructed) pass; the original Unsupported and compiler binding stop remain
+zero credit. Other captured Fiber kinds/bound inputs and original 7's CLI60 timeout
+remain open. Maintained source/fixture relocation adds no runtime renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

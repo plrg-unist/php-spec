@@ -373,6 +373,11 @@ certificate. The getter reads the receiver's live message after factory retireme
 clones retain the same receiver, and equality ignores the creation certificate.
 The direct control and two repaired sources agree on separate 371-module cuts,
 with 191 state premises. Wider targets and required original 7 remain open.
+Captured factories now select static `Fiber::getCurrent`. Frozen callback members
+survive name mutation and factory/array retirement; the returned Closure reads
+the actual current Fiber across suspension. A direct control and repaired source
+agree on distinct 371-module cuts, with 270 state premises. Other captured Fiber
+targets and required original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

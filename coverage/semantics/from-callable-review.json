@@ -289,7 +289,7 @@
   },
   "review": "Independent semantic/publication signoff is affirmative on1019 and actual5836 composition b672. Earlier250 and author69/52 retain their cuts; author creator74/import80, independent nested child82 and affected source interactions pass. Actual230-module AL gate passes. Exact source/fixture relocation and metadata add no execution credit.",
   "remaining": [
-    "Wider internal factory creation/invocation forms and captured-factory Fiber/wider getter callbacks, arbitrary library captures, magic/autoload and transformed fake-Closure binding.",
+    "Wider internal factory creation/invocation forms and captured-factory Fiber callbacks beyond static getCurrent and wider getter callbacks, arbitrary library captures, magic/autoload and transformed fake-Closure binding.",
     "Default/variadic, exception/shutdown registration and other internal/user-return keyword consumers require genuine staged adapters."
   ],
   "compiler": {
@@ -429,7 +429,7 @@
     "review": "Independent production, native, authentic state526, source checks and maintained net accepted. Exact current-parent pointwise review accepted; algorithmic compilation passes. Private native/source/state cuts remain separate.",
     "remaining": [
       "Computed/nullsafe/wider invoke capture and computed/keyword factory creation remain outside the reviewed literal source scope.",
-      "Captured-factory Fiber/wider getter callbacks are explicit Unsupported boundaries; the finite Throwable getter extension below has separate source/state cuts.",
+      "Captured-factory Fiber callbacks beyond static getCurrent and wider getter callbacks remain explicit Unsupported boundaries; the finite Throwable getter and static getCurrent extensions below have separate source/state cuts.",
       "Wider captured-factory clone/binding/library consumers and arbitrary internal factory targets remain required.",
       "The certificate does not establish rejection of a substituted otherwise-equivalent genuine factory object.",
       "Required original static-compound source 7 remains OPEN with its unchanged CLI 60 timeout and zero agreement. Existing eight originals, prior state cuts, ARG329 EPS/mixed-Notice, INI/empty identity and held returns remain separate."
@@ -816,5 +816,96 @@
       "source_state_renewal_credit": 0,
       "scope": "Compiler compatibility only on current371. Current runtime/init/source/state checks remain UNRUN; direct557e/source1, repaired771e/source2 and state191 retain their private cuts. No original7 retry; its CLI60 timeout0 remains OPEN."
     }
+  },
+  "captured_factory_fiber_current": {
+    "status": "ACCEPTED_PRIVATE_PARTIAL",
+    "base_revision": "05b0a4db44eef972931d4e13984fbd962524ddbd",
+    "semantic_revision": "7928ef27ee09a6938b10bbac1aedfbb547a9fe0f",
+    "modules": 371,
+    "artifact_root": ".tools/captured-factory-fiber-20",
+    "scope": "Captured first-class Closure::fromCallable factory selects static Fiber::getCurrent with INPUT eps. Variable invocation, callback member reference mutation, producer/array retirement and actual active identity across suspension are validated.",
+    "implementation": [
+      "spec/semantics/358-fiber-from-callable.watsup"
+    ],
+    "behavior": [
+      "Actual CONFIG_INVOKE and config_invoke_valid authenticate the selected live factory before mint. The completed factory CALL and frozen DIRECT members retain creation/invocation, source line, arity and sent-shape authority after producer retirement without CURRENT or new owning edges.",
+      "The referenced original method cell changes to suspend while the returned capture remains getCurrent. Its static body owns no producer, callback array or receiver; it returns null outside and the actual Fiber before and after suspension.",
+      "The old direct saved proof is unchanged. Other captured Fiber kinds or bound inputs remain explicit Unsupported boundaries."
+    ],
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_closures.c: zend_create_closure_from_callable, zend_create_fake_closure",
+      "vendor/php-src/Zend/zend_fibers.c: Fiber::getCurrent"
+    ],
+    "cuts": {
+      "native": {
+        "report": ".tools/captured-factory-fiber/captured-factory-fiber-native-20-d3rvcluf/report.json",
+        "sha256": "6f4a5517b582c6e81d848508d4fb97ac51c58281c1576f5b06e7ea8b5373643e",
+        "revision": "05b0a4db44eef972931d4e13984fbd962524ddbd",
+        "oracle_cases": 2,
+        "model_credit": 0,
+        "stdout": "Q;A;M:suspend;F;O:null;B:same;P:pause;R:same;V:done;E;"
+      },
+      "baseline": {
+        "report": ".tools/captured-factory-fiber/captured-factory-fiber-model-20-sao80uki/report.json",
+        "sha256": "e11726d2083f8f24ace3b53bbeb95c5b3810c2a40e766a4d1405857acad63bb2",
+        "revision": "05b0a4db44eef972931d4e13984fbd962524ddbd",
+        "direct_agreement": 1,
+        "captured_agreement": 0,
+        "captured_status": "unsupported",
+        "captured_stdout": "Q;A;",
+        "reason": "captured Closure::fromCallable factory Fiber callback"
+      },
+      "state": {
+        "report": ".tools/captured-factory-fiber/factory-fiber-state-20-aoj4ymts/report.json",
+        "sha256": "06661deb5d321d97b68e7ffd2996686eab7916a2c54ef1a7f7c7602a484abcf8",
+        "revision": "7928ef27ee09a6938b10bbac1aedfbb547a9fe0f",
+        "compiler": "PASS",
+        "compiler_seconds": 4.652711868286133,
+        "state": "PASS",
+        "state_seconds": 19.174187421798706,
+        "state_premises": 270,
+        "genuine_and_derived": 227,
+        "constructed": 43,
+        "source_credit": 0
+      },
+      "public": {
+        "report": ".tools/captured-factory-fiber/factory-fiber-repair-model-20-55b6jmz1/report.json",
+        "sha256": "52c1fcc7217d65258dcf59e0dbfe059581e3d6f62e391aa46576717701b21ba2",
+        "revision": "7928ef27ee09a6938b10bbac1aedfbb547a9fe0f",
+        "agreement_cases": [
+          "captured-factory-fiber-current"
+        ],
+        "source_credit": 1,
+        "seconds": 14.5872642993927
+      }
+    },
+    "maintained": {
+      "sources": "tests/semantics/scoped_static_compound_cases.py",
+      "ids": [
+        "from-callable-direct-fiber-current",
+        "from-callable-factory-fiber-current"
+      ],
+      "renderer": "tests/semantics/from_callable_factory_protocol.py: render_factory_fiber",
+      "dispatch": "tests/semantics/scoped_static_compound_protocol.py: from-callable-factory-fiber-retirement",
+      "source_bytes": "Exact accepted native originals",
+      "fixture_bytes": 44989,
+      "fixture_premises": 270,
+      "relocation_runtime_renewal": 0
+    },
+    "failures": [
+      {
+        "report": ".tools/captured-factory-fiber/factory-fiber-state-20-srlluhlr/report.json",
+        "status": "fixture elaboration stop: fresh CONFIG call was used in a non-invertible SITE projection",
+        "affected_credit": 0,
+        "strict": "UNRUN",
+        "public": "UNRUN",
+        "correction": "Extract each actual CONFIG call and its tail before checking its dependent release-marker SITE."
+      }
+    ],
+    "review": "Semantic code, state and public raw independently accepted by arguments_review_20; maintained net pending pointwise review.",
+    "remaining": [
+      "Other captured-factory Fiber kinds, bound inputs and wider selection/invocation forms require separate source/state evidence.",
+      "Required original static-compound source 7 remains OPEN with its unchanged CLI60 timeout and zero agreement; all earlier factory, getter, alias and static-compound cuts stay separate."
+    ]
   }
 }

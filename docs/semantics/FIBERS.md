@@ -478,6 +478,15 @@ independently from handler-entry error formatting.
 The [factory ledger](../../coverage/semantics/fiber-from-callable-review.json)
 keeps the new checks and original trace failure at their distinct cuts.
 
+Captured first-class `Closure::fromCallable(...)` factories additionally select
+static `getCurrent` with no bound input. The selected CONFIG owns the live factory
+during arguments; saved creation and invocation authority needs no live producer
+or current USER frame. Frozen members survive referenced-name mutation and array
+retirement. The returned Closure adds no factory/array root and reads the actual
+active Fiber across suspension. Other captured-factory Fiber kinds and bound
+inputs remain explicit Unsupported boundaries. The [core-factory ledger](../../coverage/semantics/from-callable-review.json)
+keeps the direct control, repaired source and 270 state premises at distinct cuts.
+
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver
 and method members before arguments. Nonowning receipts authenticate genuine CONFIG, saved WAIT and static

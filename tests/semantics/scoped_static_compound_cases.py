@@ -1727,4 +1727,75 @@ echo "V:", $result, ";E;";
         'discriminator': 'Direct and factory captures compare equal without identical objects; cloning preserves method, receiver and nonowning source certificate after the other captures and factory retire.',
     },
 
+    {
+        'id': 'from-callable-direct-fiber-current',
+        'source': '''<?php
+function discardFactoryFiberArgumentReview20() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$method = "getCurrent";
+$callback = ["Fiber", &$method];
+$factory = null;
+$current = Closure::fromCallable(callback: discardFactoryFiberArgumentReview20());
+$callback[1] = "suspend";
+$callback = null;
+echo "M:", $method, ";F;";
+echo "O:", $current() === null ? "null" : "other", ";";
+$fiber = new Fiber(function () use ($current) {
+    echo "B:", $current() === Fiber::getCurrent() ? "same" : "wrong", ";";
+    Fiber::suspend("pause");
+    echo "R:", $current() === Fiber::getCurrent() ? "same" : "wrong", ";";
+    return "done";
+});
+$paused = $fiber->start();
+echo "P:", $paused, ";";
+$fiber->resume();
+$result = $fiber->getReturn();
+$fiber = null;
+$current = null;
+echo "V:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;A;M:suspend;F;O:null;B:same;P:pause;R:same;V:done;E;',
+        'discriminator': 'Direct factory control freezes getCurrent through a referenced callback-name mutation, returns null outside a Fiber and the actual current Fiber before and after suspension.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-current',
+        'source': '''<?php
+function discardFactoryFiberArgumentReview20() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+echo "Q;";
+$method = "getCurrent";
+$callback = ["Fiber", &$method];
+$factory = Closure::fromCallable(...);
+$current = $factory(callback: discardFactoryFiberArgumentReview20());
+$callback[1] = "suspend";
+$callback = null;
+echo "M:", $method, ";F;";
+echo "O:", $current() === null ? "null" : "other", ";";
+$fiber = new Fiber(function () use ($current) {
+    echo "B:", $current() === Fiber::getCurrent() ? "same" : "wrong", ";";
+    Fiber::suspend("pause");
+    echo "R:", $current() === Fiber::getCurrent() ? "same" : "wrong", ";";
+    return "done";
+});
+$paused = $fiber->start();
+echo "P:", $paused, ";";
+$fiber->resume();
+$result = $fiber->getReturn();
+$fiber = null;
+$current = null;
+echo "V:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;A;M:suspend;F;O:null;B:same;P:pause;R:same;V:done;E;',
+        'discriminator': 'Selected captured factory survives argument-cell clearing; nonowning saved invocation authority and frozen getCurrent survive producer/callback retirement and referenced name mutation across Fiber suspension.',
+    },
+
 ]
