@@ -35,7 +35,7 @@ def unwind(named):
         'S.ACTIVEFIBER = eps', 'S.FIBERCALLERS = eps', 'S.CURRENT = eps',
         'S.FRAMES = eps', 'S.ORIGIN = (pfiberstart.SITE)', 'pfiberstart.INDEX = 1',
         '$intrinsic_count(S, pfiberstart.SITE) = (2)', slot,
-        'pfiberstart.PACKS = [pconfigpack]', 'pconfigpack.INDEX = 0',
+        'pfiberstart.PACKS = [(FIBER_ARRAY_PACK pconfigpack)]', 'pconfigpack.INDEX = 0',
         f'pconfigpack.ITEMS = [{item}]',
         '~((HARRAY pconfigpack.ARRAY) <- S.ALLOCATIONS)',
         '$fiber_start_pack_source_valid(S, pfiberstart.SITE, pconfigpack)',
@@ -66,14 +66,14 @@ def unwind(named):
     ]
     if not named:
         checks += [
-            'pfiberstart_index = pfiberstart[.PACKS = [pconfigpack[.INDEX = 1]]]',
+            'pfiberstart_index = pfiberstart[.PACKS = [(FIBER_ARRAY_PACK pconfigpack[.INDEX = 1])]]',
             'S_index = S[.TODO = (THROW_SEARCH n_throwable) :: '
             '(FIBER_UNPACK_PREP eps pfiberstart_index) :: '
             '(FIBER_ARRAY_START_RELEASE pfiberarray) :: ptask_tail*]',
             '$heap_graph(S_index) = H',
             '~$fiber_start_unpack_pending(S_index, eps, pfiberstart_index)',
             '~$call_descriptors_valid(S_index)',
-            'pfiberstart_line = pfiberstart[.PACKS = [pconfigpack[.LINE = $(pconfigpack.LINE + 1)]]]',
+            'pfiberstart_line = pfiberstart[.PACKS = [(FIBER_ARRAY_PACK pconfigpack[.LINE = $(pconfigpack.LINE + 1)])]]',
             'S_line = S[.TODO = (THROW_SEARCH n_throwable) :: '
             '(FIBER_UNPACK_PREP eps pfiberstart_line) :: '
             '(FIBER_ARRAY_START_RELEASE pfiberarray) :: ptask_tail*]',
@@ -164,7 +164,7 @@ CASES = {
             'pfibercaller.API.START = (pfiberstart.SENT)',
             'pfibercaller.API.SITE = pfiberstart.SITE',
             'pfibercaller.API.LINE = pfiberstart.LINE',
-            'pfibercaller.API.PACKS = [pconfigpack]', 'pconfigpack.INDEX = 0',
+            'pfibercaller.API.PACKS = [(FIBER_ARRAY_PACK pconfigpack)]', 'pconfigpack.INDEX = 0',
             'pconfigpack.ITEMS = [ENTRY (KSTRING ($ptascii("value"))) (DIRECT (PSTRING ($ptascii("7")))), '
             'ENTRY (KSTRING ($ptascii("tail"))) (DIRECT (PSTRING ($ptascii("X"))))]',
             '(HARRAY pconfigpack.ARRAY) <- S.ALLOCATIONS',
@@ -173,8 +173,8 @@ CASES = {
             'S_outer = $fiber_vm_restore(S, pfibercaller.VM)[.ACTIVEFIBER = eps][.FIBERCALLERS = eps]',
             '$fiber_api_valid(S_outer, pfibercaller.API)',
             '$fiber_start_pack_source_valid(S_outer, pfiberstart.SITE, pconfigpack)',
-            '$fiber_start_shape(S_outer, pfiberstart.SITE, 1, pfiberstart.SENT, [pconfigpack])',
-            '~$fiber_start_shape(S_outer, pfiberstart.SITE, 2, pfiberstart.SENT, [pconfigpack])',
+            '$fiber_start_shape(S_outer, pfiberstart.SITE, 1, pfiberstart.SENT, [(FIBER_ARRAY_PACK pconfigpack)])',
+            '~$fiber_start_shape(S_outer, pfiberstart.SITE, 2, pfiberstart.SENT, [(FIBER_ARRAY_PACK pconfigpack)])',
             '$fiber_start_core_actor(S)', '$fiber_start_core_live(S, n_capture)',
             '$fiber_start_core_result_valid(S, n_runner, n_capture, pfiberstart)',
             '$call_task_valid(S, FIBER_START_CORE_INVOKE n_runner n_capture pfiberstart)',
@@ -193,10 +193,10 @@ CASES = {
             '$heap_owners(H, HARRAY pconfigpack.ARRAY) = 1',
             '$heap_count(HARRAY pconfigpack.ARRAY, $pools_nodes(S.POOLS)) = 1', *review.VALID,
             *outer_pack('missing', 'eps'),
-            *outer_pack('duplicate', '[pconfigpack, pconfigpack]'),
-            *outer_pack('line', '[pconfigpack[.LINE = $(pconfigpack.LINE + 1)]]'),
-            *outer_pack('index', '[pconfigpack[.INDEX = 1]]'),
-            'pfiberstart_inner = pfiberstart[.PACKS = [pconfigpack]]',
+            *outer_pack('duplicate', '[(FIBER_ARRAY_PACK pconfigpack), (FIBER_ARRAY_PACK pconfigpack)]'),
+            *outer_pack('line', '[(FIBER_ARRAY_PACK pconfigpack[.LINE = $(pconfigpack.LINE + 1)])]'),
+            *outer_pack('index', '[(FIBER_ARRAY_PACK pconfigpack[.INDEX = 1])]'),
+            'pfiberstart_inner = pfiberstart[.PACKS = [(FIBER_ARRAY_PACK pconfigpack)]]',
             'S_inner = S[.TODO = [FIBER_START_CORE_INVOKE n_runner n_capture pfiberstart_inner, '
             'FIBER_START_CORE_RESULT n_runner n_capture pfiberstart_inner, FIBER_FINISH n_runner]]',
             '$heap_graph(S_inner) = H',
