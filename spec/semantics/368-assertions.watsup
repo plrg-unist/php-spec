@@ -148,8 +148,13 @@ rule PhpStep/assertion-ini-restore-string-result: S ~> $assertion_ini_restore_st
 
 ;; Quantity phases authenticate frozen input and decide refusal after parsing.
 def $assertion_ini_argument(S, pconfigcall, z_precision) = (preqbytes)
+  -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN (PFLOAT n))]
+  -- if $precision_ini_valid($decimal_integer(z_precision))
+  -- if (preqbytes, true) = $number_text(NFLOAT n, z_precision)
+def $assertion_ini_argument(S, pconfigcall, z_precision) = (preqbytes)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
   -- if $precision_ini_valid($decimal_integer(z_precision))
+  -- if ~$assertion_ini_conversion_warning($precision_memory(S, z_precision), pvalue)
   -- if $config_ini_value_conversion(pvalue) = ptypeconversion
   -- if ptypeconversion =/= TYPEREJECT
   -- if S_value = $typed_apply($precision_memory(S, z_precision), ptypeconversion, pconfigcall.LINE)
