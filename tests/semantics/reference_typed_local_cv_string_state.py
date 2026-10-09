@@ -256,9 +256,8 @@ def main():
         '$throwable_field(S_destructor, n_new, "previous") = POBJECT n_old',
         '$call_descriptors_valid(S_destructor)', '$heap_valid($heap_graph(S_destructor))'],
         terminal=['~((HCELL n_cell) <- S_whole.ALLOCATIONS)', '~((HOBJECT n_object) <- S_whole.ALLOCATIONS)',
-        '$lookup(S_whole.ENV, $ptascii("e")) = (n_error_cell)', 'S_whole.STORE[n_error_cell] = DEFINED (POBJECT n_new)',
-        '$throwable_live(S_whole, n_new)', '$throwable_field(S_whole, n_new, "previous") = POBJECT n_old',
-        '$lookup(S_whole.ENV, $ptascii("p")) = (n_previous_cell)', 'S_whole.STORE[n_previous_cell] = DEFINED (POBJECT n_old)'])
+        '$lookup(S_whole.ENV, $ptascii("e")) = eps', '$lookup(S_whole.ENV, $ptascii("p")) = eps',
+        '~((HOBJECT n_new) <- S_whole.ALLOCATIONS)', '~((HOBJECT n_old) <- S_whole.ALLOCATIONS)'])
 
     call_prefix = '(CALL_ARGS (METHOD_TARGET n_object porigin_method) eps 0 eps (prefstringcv.SOURCE) z) :: (STRINGIFY_RESULT n_object prefstringcv.SOURCE z) :: '
     fixture('current-local-cv-certificates', 'local-cv-string-protected-used', {0: capture}, capture_checks(True, True), bad=[
