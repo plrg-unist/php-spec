@@ -10,6 +10,8 @@ dec $gc_worker_public_context(pstate, pgcpublic) : bool
 dec $gc_worker_public_pass_context(pstate, pgcpublic) : bool
 dec $gc_worker_public_foreign_context(pstate, pgcpublic) : bool
 dec $gc_worker_public_foreign_attachment(pstate, pgcguard) : bool
+dec $gc_main_marked(pgcplan, nat, nat) : bool
+dec $gc_main_tags(pgcplan, pgcslot*, nat) : bool
 dec $gc_worker_public_residual_pass(pstate) : bool
 dec $gc_worker_public_residual_context(pstate, pgcpublic) : bool
 dec $gc_worker_public_residual_attachment(pstate, pgcguard, pgcpublic) : bool
