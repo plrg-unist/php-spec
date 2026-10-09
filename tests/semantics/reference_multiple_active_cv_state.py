@@ -35,8 +35,8 @@ def $ma_history_count(eps) = 0
 def $ma_history_count(ptask :: ptask_tail*) = $(1 + $ma_history_count(ptask_tail*)) -- if $ma_history_task(ptask)
 def $ma_history_count(ptask :: ptask_tail*) = $ma_history_count(ptask_tail*) -- if ~$ma_history_task(ptask)
 dec $ma_diagnostic(pevent) : bool
-def $ma_diagnostic(DIAGNOSTIC ptbytes_level ptbytes_message z) = true
-def $ma_diagnostic(DIAGNOSTIC_SOURCE n ptbytes_level ptbytes_message z) = true
+def $ma_diagnostic(DIAGNOSTIC text_level ptbytes_message z) = true
+def $ma_diagnostic(DIAGNOSTIC_SOURCE n text_level ptbytes_message z) = true
 def $ma_diagnostic(pevent) = false -- otherwise
 dec $ma_diagnostics(pevent*) : nat
 def $ma_diagnostics(eps) = 0
