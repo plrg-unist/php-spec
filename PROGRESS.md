@@ -855,7 +855,10 @@ owner-bearing caller and fails with zero credit; its corrected LINE-only forgery
 preserves the heap. The whole source CLI60 timeout remains OPEN with zero source
 agreement, and only that source is excluded from the default whole-CLI campaign.
 Wider overlap/throw/reentry, nonordinary/non-idle and later-pass lanes remain required;
-prior cuts are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+prior cuts are unchanged. Actual370 over `71cf292aa` passes compiler/init at
+`aecdcb088`; reviewed typed-return, caller and retained-root interfaces preserve
+the fb872 cuts and whole-source CLI60 OPEN/zero agreement limit.
+[Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
