@@ -405,8 +405,13 @@ reread live numeric references once, and preserve parent ownership when a handle
 parks. False results and thrown handlers release raw retval before iterator data.
 Nine exact originals and twenty genuine-source groups/637 ownership and warning
 authority premises pass; [warning review](coverage/semantics/yield-from-valid-nan-review.json)
-records the separate checks. Wider raw payload changes and changed original operands
-remain required.
+records the separate checks. Wider raw payload changes remain required.
+Aggregate getters may also rebind the original CV or reference operand before
+returning Iterator/Generator data or a rejected raw value. Six safe originals
+agree, and nine genuine-source groups/376 ownership and source-authority premises
+pass; changed operands returning another Aggregate remain explicit Unsupported.
+[Rebound review](coverage/semantics/yield-from-rebound-operand-review.json) tracks
+the bounded owner and source checks.
 [Last-owner close](docs/semantics/GENERATOR-FORCE-CLOSE.md)
 runs pending finally bodies with real scopes, graph links and cached owners.
 Request 340 adds reverse-global and ascending-store close, handler-before-cache

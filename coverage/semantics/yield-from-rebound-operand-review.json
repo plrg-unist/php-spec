@@ -1,0 +1,157 @@
+{
+  "milestone": "Yield-from Aggregate getter original-operand rebinding",
+  "status": "partial; private source6 normal/control1, state9 and actual-parent strict370 PASS",
+  "baseline": "36b0c6948be1a9d1d9e0e6686282201749d26a32",
+  "semantic_revision": "bb4e85b0592c8d240acea3710fb3783d479eabcf",
+  "tested_revision": "f82e9b3edb2a5031eafde1ca2055f57e3c0f42e1",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "Zend/zend_interfaces.c:zend_user_it_get_new_iterator"
+  ],
+  "scope": [
+    "Getter rebinding of the original borrowed CV or owning reference operand permits terminal Iterator/Generator results and rejected non-Aggregate raw results.",
+    "Only known Aggregate results still require unchanged original input for the bounded self-comparison route; the refusal remains explicit.",
+    "Fixed original receiver class names raw-reference rejection; existing data, cell, keeper and saved-Fiber owners remain unchanged."
+  ],
+  "sources": {
+    "normal_agreements": 6,
+    "unsupported_controls": 1,
+    "control_agreements": 0,
+    "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/yield-from-rebound-operand-source-ls8b2hih/report.json",
+    "revision": "f82e9b3edb2a5031eafde1ca2055f57e3c0f42e1",
+    "selected_ids": [
+      "yield-from-rebound-cv-object-iterator",
+      "yield-from-rebound-cv-null-generator",
+      "yield-from-rebound-reference-object-iterator",
+      "yield-from-rebound-getter-parks",
+      "yield-from-rebound-getter-throws",
+      "yield-from-rebound-getter-reference-rejected",
+      "yield-from-rebound-returned-aggregate-self-control"
+    ],
+    "inputs_stable": true,
+    "head_stable": true
+  },
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/yield-from-rebound-operand-sl-6pjj_btd/report.json",
+    "revision": "f82e9b3edb2a5031eafde1ca2055f57e3c0f42e1",
+    "modules": 370,
+    "process_seconds": 120,
+    "passed": true
+  },
+  "native_discovery": {
+    "new_originals": 7,
+    "semantic_agreements": 0,
+    "reports": [
+      "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/yield-from-rebound-operand-native-s8fxxkfx/report.json"
+    ],
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1,
+      "PHP_SPEC_SCRIPT_ENCODING": "unset"
+    },
+    "native_process_seconds": 75,
+    "model_seconds": 60,
+    "model_process_seconds": 75
+  },
+  "states": {
+    "status": "PASS; all nine genuine-source groups accepted",
+    "runner": "tests/semantics/yield_from_rebound_operand_review.py",
+    "process_seconds": 120,
+    "selected": [
+      {
+        "id": "rebound-cv-terminal-iterator-preserves-original-keeper-and-data-transfer",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-1zowur5_/report.json",
+        "revision": "5b7c6f218d895bd28728ef560adbb3acb760e984",
+        "physical_premises": 50,
+        "driver_clauses": 49
+      },
+      {
+        "id": "rebound-null-cv-acquires-fresh-generator-before-startup",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-wy1ply15/report.json",
+        "revision": "5b7c6f218d895bd28728ef560adbb3acb760e984",
+        "physical_premises": 46,
+        "driver_clauses": 45
+      },
+      {
+        "id": "rebound-reference-input-retires-one-cell-owner-before-rewind",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-54234lp7/report.json",
+        "revision": "5b7c6f218d895bd28728ef560adbb3acb760e984",
+        "physical_premises": 50,
+        "driver_clauses": 50
+      },
+      {
+        "id": "terminal-result-permission-does-not-admit-cleared-original-input",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-hqiyrdzh/report.json",
+        "revision": "5b7c6f218d895bd28728ef560adbb3acb760e984",
+        "physical_premises": 28,
+        "driver_clauses": 27
+      },
+      {
+        "id": "parked-rebound-getter-keeps-only-independent-original-receiver-owner",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-w3ry97tw/report.json",
+        "revision": "5b7c6f218d895bd28728ef560adbb3acb760e984",
+        "physical_premises": 42,
+        "driver_clauses": 36
+      },
+      {
+        "id": "parked-rebound-operand-zero-budget-keeps-real-saved-vm",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-l4ti6msb/report.json",
+        "revision": "5b7c6f218d895bd28728ef560adbb3acb760e984",
+        "physical_premises": 33,
+        "driver_clauses": 27
+      },
+      {
+        "id": "rebound-getter-throw-discards-acquisition-with-original-exception",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-grl3wdm4/report.json",
+        "revision": "358408d5349c8f6c634f9f52ad5fe389f2daea8c",
+        "physical_premises": 43,
+        "driver_clauses": 43
+      },
+      {
+        "id": "rebound-source-raw-reference-rejection-keeps-cell-and-fixed-class-error",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-6k59hoav/report.json",
+        "revision": "358408d5349c8f6c634f9f52ad5fe389f2daea8c",
+        "physical_premises": 47,
+        "driver_clauses": 46
+      },
+      {
+        "id": "changed-known-aggregate-return-remains-genuine-named-refusal",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-3sj4bwci/report.json",
+        "revision": "02af0db53ecb41010ee3b4cfb9bf3900dba95b9a",
+        "physical_premises": 37,
+        "driver_clauses": 36
+      }
+    ],
+    "fixture_revision": "02af0db53ecb41010ee3b4cfb9bf3900dba95b9a",
+    "groups": 9,
+    "physical_premises": 376,
+    "driver_clauses": 359
+  },
+  "remaining": [
+    "Changed original operands returning a known Aggregate require dynamic self-comparison/history semantics.",
+    "Wider operand and receiver lifecycle forms remain partial."
+  ],
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-q8hc09c8/report.json",
+      "affected_credit": 0,
+      "cause": "Fixture required plain PSTRING for source constructor literal; corrected only exact message-byte comparison."
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-20/.tools/fiber-state-review-1fx5rk80/report.json",
+      "affected_credit": 0,
+      "cause": "Fixture required terminal Unsupported at a bounded step; corrected only BUDGET plus authenticated ERROR_UNWIND carrying the named refusal."
+    }
+  ],
+  "actual_composition": {
+    "parent": "288dc800446dbf35803a971d2d98afbc771e69dc",
+    "semantic_revision": "50367af161ec6c4876327ff8065867e96a123d43",
+    "compiler_report": "/home/user/workspace/php-spec/.tools/calls-yield-from-rebound-operand-current-20/.tools/yield-from-rebound-operand-current-sl-3p56mr8f/report.json",
+    "modules": 370,
+    "passed": true,
+    "source_state_renewal": false,
+    "review": "Independent introduced380/ARG/PROPS source, scope and ownership interaction review accepted; private source/state cuts retain their own inputs."
+  }
+}

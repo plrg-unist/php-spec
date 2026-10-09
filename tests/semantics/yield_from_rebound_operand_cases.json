@@ -1,0 +1,85 @@
+[
+  {
+    "id": "yield-from-rebound-cv-object-iterator",
+    "source": "<?php\nclass ReboundCvIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ReboundCvPayload20 { public function __destruct() { echo \"P|\"; } }\nclass ReboundCvAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = new ReboundCvPayload20();\n        return new ReboundCvIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction reboundCv20(): Generator {\n    global $slot;\n    $result = yield from $slot;\n    echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new ReboundCvAggregate20();\n$slot = $keeper;\n$generator = reboundCv20();\nforeach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $generator->getReturn(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "177e4065175346d2b56b7f691f07769fb0302721cc5f7a384147304372632ba0",
+    "purpose": "Yield-from Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|C|K|B11:7|X|V|I|N1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-rebound-cv-null-generator",
+    "source": "<?php\nfunction reboundData20(): Generator {\n    try { echo \"Y|\"; yield 11 => 7; }\n    finally { echo \"F|\"; }\n    return 23;\n}\nclass ReboundGeneratorAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = null;\n        return reboundData20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction reboundGenerator20(): Generator {\n    global $slot;\n    $result = yield from $slot;\n    echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new ReboundGeneratorAggregate20();\n$slot = $keeper;\n$generator = reboundGenerator20();\nforeach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $generator->getReturn(), \"|\";\necho $slot === null ? 1 : 0, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "bc7f7d39b7cb81e55631ec939c9fd006c0c4b1b2a60321e1107473d6eeec9667",
+    "purpose": "Yield-from Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver.",
+    "expected_model": "normal",
+    "native_stdout": "G|Y|B11:7|F|N1|17|1|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-rebound-reference-object-iterator",
+    "source": "<?php\nclass ReboundReferenceIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ReboundReferencePayload20 { public function __destruct() { echo \"P|\"; } }\nclass ReboundReferenceAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = new ReboundReferencePayload20();\n        return new ReboundReferenceIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction &reboundOperand20(): mixed {\n    global $slot;\n    echo \"R|\";\n    return $slot;\n}\nfunction reboundReference20(): Generator {\n    global $slot;\n    $result = yield from reboundOperand20();\n    echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new ReboundReferenceAggregate20();\n$slot = $keeper;\n$generator = reboundReference20();\nforeach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $generator->getReturn(), \"|\";\necho $slot === $keeper ? 0 : 1, \"|\";\nunset($generator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "3ed2d4b6b1687e653a6024b09d9334913856f6f71b6026d307b1f64753717040",
+    "purpose": "Yield-from Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver.",
+    "expected_model": "normal",
+    "native_stdout": "R|G|W|V|C|K|B11:7|X|V|I|N1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-rebound-getter-parks",
+    "source": "<?php\nclass ReboundParkIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ReboundParkPayload20 { public function __destruct() { echo \"P|\"; } }\nclass ReboundParkAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot;\n        echo \"G|\";\n        $slot = new ReboundParkPayload20();\n        Fiber::suspend(\"acquire\");\n        echo \"R|\";\n        return new ReboundParkIterator20();\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction reboundPark20(): Generator {\n    global $slot;\n    $result = yield from $slot;\n    echo \"N\", $result === null ? 1 : 0, \"|\";\n    return 17;\n}\n$keeper = new ReboundParkAggregate20();\n$slot = $keeper;\n$fiber = new Fiber(function () {\n    $generator = reboundPark20();\n    foreach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\n    echo $generator->getReturn(), \"|\";\n});\necho $fiber->start(), \"|\", $fiber->isSuspended() ? 1 : 0, \"|\", $slot === $keeper ? 0 : 1, \"|\";\n$fiber->resume();\necho $fiber->isTerminated() ? 1 : 0, \"|\";\nunset($fiber, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "4213677dec86b7e378ec125b040c5b87fbdc94befb1c4bc14703586c4e77ca42",
+    "purpose": "Yield-from Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver.",
+    "expected_model": "normal",
+    "native_stdout": "G|acquire|1|1|R|W|V|C|K|B11:7|X|V|I|N1|17|1|P|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-rebound-getter-throws",
+    "source": "<?php\nclass ReboundThrowAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $failure;\n        echo \"G|\";\n        $slot = null;\n        throw $failure;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction reboundThrow20(): Generator {\n    global $slot, $failure;\n    try { yield from $slot; }\n    catch (Throwable $caught) { echo \"C\", $caught === $failure ? 1 : 0, \"|\"; }\n    return 17;\n}\n$keeper = new ReboundThrowAggregate20();\n$slot = $keeper;\n$failure = new Exception(\"rebound-getter\");\n$generator = reboundThrow20();\nforeach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $generator->getReturn(), \"|\";\necho $slot === null ? 1 : 0, \"|\";\nunset($generator, $slot, $keeper, $failure);\necho \"E\";\n",
+    "source_sha256": "3240b960d974436441cc3eccfd5700289732e9084b717accebd158cb3ded7f73",
+    "purpose": "Yield-from Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver.",
+    "expected_model": "normal",
+    "native_stdout": "G|C1|17|1|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-rebound-getter-reference-rejected",
+    "source": "<?php\nclass ReboundRawIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ReboundRawAggregate20 implements IteratorAggregate {\n    public function &getIterator(): Traversable {\n        global $slot, $savedIterator;\n        echo \"G|\";\n        $slot = false;\n        return $savedIterator;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction reboundRaw20(): Generator {\n    global $slot;\n    try { yield from $slot; }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$keeper = new ReboundRawAggregate20();\n$slot = $keeper;\n$savedIterator = new ReboundRawIterator20();\n$generator = reboundRaw20();\nforeach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $generator->getReturn(), \"|\";\necho $slot === false ? 1 : 0, \"|\";\nunset($generator, $savedIterator, $slot, $keeper);\necho \"E\";\n",
+    "source_sha256": "6bf323af99d1d15b742576d546ca8aa46a631a4e0f26bd39fd40845e6457627a",
+    "purpose": "Yield-from Aggregate getter rebinds its original CV/reference while an independent keeper protects the receiver.",
+    "expected_model": "normal",
+    "native_stdout": "G|Objects returned by ReboundRawAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|I|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "yield-from-rebound-returned-aggregate-self-control",
+    "source": "<?php\nclass ReboundControlIterator20 implements Iterator {\n    private int $step = 0;\n    public function rewind(): void { $this->step = 0; echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->step === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { $this->step = 1; echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ReboundControlNext20 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"X|\"; return new ReboundControlIterator20(); }\n    public function __destruct() { echo \"Q|\"; }\n}\nclass ReboundControlAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $slot, $next;\n        echo \"G|\";\n        $slot = $next;\n        return $next;\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction reboundControl20(): Generator {\n    global $slot;\n    try { yield from $slot; }\n    catch (Throwable $caught) { echo $caught->getMessage(), \"|\"; }\n    return 17;\n}\n$keeper = new ReboundControlAggregate20();\n$slot = $keeper;\n$next = new ReboundControlNext20();\n$generator = reboundControl20();\nforeach ($generator as $key => $value) { echo \"B\", $key, \":\", $value, \"|\"; }\necho $generator->getReturn(), \"|\";\necho $slot === $next ? 1 : 0, \"|\";\nunset($generator, $slot, $next, $keeper);\necho \"E\";\n",
+    "source_sha256": "f559aaa4710fae91d57c72ba73c2d4024a3d5afa1cb07c2985dd6b779aa792f4",
+    "purpose": "Explicit changed-input Aggregate self-comparison dependency; native behavior receives zero agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "G|Objects returned by ReboundControlAggregate20::getIterator() must be traversable or implement interface Iterator|17|1|Q|A|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "yield from IteratorAggregate changed original operand",
+    "unsupported_stdout": "G|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]

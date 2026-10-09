@@ -17,8 +17,8 @@ it before catch. Seventeen unchanged originals agree across the retained source1
 and owning-reference source1 cuts; strict368 passes at `b1164af45`. Independent
 25/720 physical owner and source-authority premises pass at separate cuts.
 Original compiler/source/fixture failures remain zero. At that acquisition cut,
-Iterator NaN warnings remained required; changed original operands and ordinary-call
-Aggregate unpack remain required.
+Iterator NaN warnings and changed original operands remained required.
+Ordinary-call Aggregate unpack remains required.
 Actual368 over `7b449476` passes strict compilation at `f4567b30`; private
 source/state cuts retain their inputs. [Yield-from review](coverage/semantics/yield-from-aggregate-review.json).
 
@@ -32,6 +32,18 @@ Twenty independent genuine-source groups/637 physical ownership and warning
 authority premises pass at `d825e3fc0`. Wider raw payload changes stay explicit Unsupported. Actual370 over `d827dc635` passes strict SL at `4723282ff`;
 private source/state cuts retain their own inputs.
 [Warning review](coverage/semantics/yield-from-valid-nan-review.json).
+
+Aggregate yield-from getters may rebind an original CV or reference operand when
+the raw result is a terminal Iterator/Generator or a rejected non-Aggregate value.
+The original class still names rejection; borrowed CV and owning-cell cleanup
+retain their existing owners. Six safe unchanged originals agree at `f82e9b3ed`;
+strict370 passes at that cut. Changed operands returning another Aggregate stay
+explicit Unsupported/zero agreement. Nine genuine-source groups/376 physical
+owner and source-authority premises pass at separate cuts; the two fixture
+failures retain zero credit.
+Actual370 over `288dc800` passes strict SL at `50367af16`; private source/state
+cuts retain their own inputs.
+[Rebound review](coverage/semantics/yield-from-rebound-operand-review.json).
 
 Bounded assertion quantity warnings retain frozen parsed modes and old returns
 through nested raw writes, throw and restore. Immutable string carriers preserve
