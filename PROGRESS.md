@@ -2179,6 +2179,10 @@ groups pass 180/131 at `28f289817` after their checked literal-eval prelude,
 bringing the total to 909. Original preparation and whole-state failures retain
 zero credit; earlier getter cuts are unchanged.
 [Integer-getter ledger](coverage/semantics/magic-property-integer-review.json).
+The actual372 join over `e11f0f06c` passes strict at `5f96624c8` (5.554s,
+state credit0). Parent hook guards and class/return/collector/Fiber interfaces
+are preserved; these originals use unhooked nongenerator instances. Private
+cuts and original failures retain their credit.
 Wider coercions, constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

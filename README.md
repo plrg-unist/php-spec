@@ -1429,6 +1429,8 @@ before releasing its original temporary. [Six source agreements and six reached
 groups](coverage/semantics/magic-property-integer-review.json) pass 909
 setup-inclusive premises; the original Unsupported and fixture failure keep
 zero credit, and earlier getter evidence is unchanged.
+The actual372 join over `e11f0f06c` passes strict at `5f96624c8` (5.554s),
+preserving current hook/getter and cleanup interfaces. Private cuts retain their credit.
 Wider coercions, constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.
