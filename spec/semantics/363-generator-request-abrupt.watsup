@@ -40,6 +40,7 @@ dec $generator_request_render_abrupt(pstate) : bool
 dec $generator_request_render_handler_abrupt(pstate) : bool
 dec $generator_request_release_report(ptask*, pgenfatal) : bool
 dec $generator_request_fatal_receiver(ptask) : pnode*
+dec $generator_request_release_slot(pstate, ppropertyslot, nat) : bool
 
 ;; Request dtor_obj resumes the Generator from C with no execute_data caller.
 ;; Its saved creation context remains source authority, not a trace callsite.
@@ -93,6 +94,17 @@ def $generator_request_fatal_source(S, pgenfatal, (GENERATOR_REQUEST_REPORT pgen
   -- if pgenfatal_parent.METHOD = (porigin_method)
   -- if S_parent = $generator_request_fatal_history(S, pgenfatal)[.ORIGIN = (porigin_method)][.TODO = (GENERATOR_REQUEST_REPORT pgenfatal_parent) :: ptask_tail*]
   -- if $generator_request_report_valid(S_parent, pgenfatal_parent)
+;; A consumed reference slot borrows its retired cell's value as release evidence.
+;; It contributes no cell root or referent edge after the actual child transfer.
+def $generator_request_release_slot(S, ppropertyslot, n) = true
+  -- if $property_slot_nodes([ppropertyslot]) = [HOBJECT n]
+def $generator_request_release_slot(S, ppropertyslot, n) = true
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n_cell)
+  -- if $(n_cell < |S.STORE|) /\ n_cell <- S.REFCELLS
+  -- if ~((HCELL n_cell) <- S.ALLOCATIONS)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+def $generator_request_release_slot(S, ppropertyslot, n) = false -- otherwise
+
 ;; zend_exception_error has already emitted its fatal before OBJ_RELEASE(ex).
 ;; A child dtor rethrows at C root while the ordinary parent's free_obj is pinned.
 def $generator_request_fatal_source(S, pgenfatal, (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (INSTANCE_STORAGE_STEP pinstancestorage) :: ptask_tail*) = true
@@ -111,7 +123,7 @@ def $generator_request_fatal_source(S, pgenfatal, (DESTRUCTOR_RESULT pdestructor
   -- if $(pinstancestorage.NEXT > 0)
   -- if nat_order* = $instance_storage_order(pinstancestorage.SLOTS, true, 0) ++ $instance_storage_order(pinstancestorage.SLOTS, false, 0)
   -- if n_slot = nat_order*[$nabs($(pinstancestorage.NEXT - 1))]
-  -- if $property_slot_nodes([pinstancestorage.SLOTS[n_slot]]) = [HOBJECT pdestructorcall.OBJECT]
+  -- if $generator_request_release_slot(S_history, pinstancestorage.SLOTS[n_slot], pdestructorcall.OBJECT)
   -- if $generator_request_bailout_at(ptask_tail*) = (pgenfatal_parent)
   -- if $generator_request_bailout_valid(S_history, pgenfatal_parent)
 def $generator_request_fatal_source(S, pgenfatal, ptask*) = false -- otherwise

@@ -64,7 +64,7 @@ def terminal_reject(checks, label, expression, original, same_heap=True):
                f'$call_entry_check({state}) = {state}']
 
 
-def assertions(checked, path, directory, name):
+def assertions(checked, path, directory, name, source=source):
     byte_expr = driver.driver.byte_expr
     first = byte_expr(source.FIRST_FATAL.replace(b'{file}', os.fsencode(path)))
     both = byte_expr((source.FIRST_FATAL + source.SECOND_FATAL).replace(b'{file}', os.fsencode(path)))
@@ -384,7 +384,7 @@ $gc_state_valid(S_history)
 $generator_request_bailout_valid(S_history,pgenfatal_bailout)
 ''')
     checks += ['$request_fatal_stderr(S_resumed.EVENTS) = ' + both,
-               '$close_outputs(S_resumed.EVENTS) = ' + byte_expr(CASES[name][1])]
+               '$close_outputs(S_resumed.EVENTS) = ' + byte_expr(source.CASES[name][1])]
     checks += valid('S_resumed')
     for label, replacement, count in [
         ('missing', 'eps', 0),
