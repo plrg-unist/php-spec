@@ -11,6 +11,11 @@ dec $generator_from_key(pstate, nat, nat) : pvalue
 dec $generator_from_path(pstate, nat, nat, nat) : bool
 dec $generator_from_input(pstate, pvalue) : bool
 dec $generator_from_start(pstate, porigin, pvalue) : pstate
+dec $generator_from_begin(pstate, pstate, porigin, pvalue) : pstate
+def $generator_from_begin(S, S_read, porigin, pvalue) = $generator_from_start(S_read, porigin, pvalue) -- otherwise
+dec $generator_from_shared(pstate, pgeneratorfrom?) : bool
+dec $generator_from_mode_valid(pstate, pgeneratorfrom) : bool
+dec $generator_from_next_task(nat, pgeneratorfrom) : ptask
 dec $generator_from_park(pstate, nat, porigin, ptask*) : pstate
 dec $generator_from_finish(pstate, nat, porigin, pvalue, ptask*) : pstate
 dec $generator_from_next(pstate, nat, porigin, ptask*) : pstate
@@ -118,12 +123,13 @@ def $generator_from_raw(S, n, n_depth) = $generator_from_raw(S, n_child, $nabs($
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if $generator_object(S, n_child)
 def $generator_from_raw(S, n, n_depth) = pgeneratorfrom.CURRENT
   -- if $(n_depth > 0)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
-  -- if ~(pgeneratorfrom.INPUT =/= eps /\ $generator_from_generator(S, pgeneratorfrom.INPUT))
+  -- if ~$generator_from_shared(S, (pgeneratorfrom))
   -- if pgeneratorfrom.CURRENT =/= eps
 def $generator_from_raw(S, n, n_depth) = (KNOWN pvalue)
   -- if $(n_depth > 0)
@@ -138,7 +144,11 @@ def $generator_from_raw(S, n, n_depth) = eps
   -- if $generator_borrowed_value(pgenerator) = eps
 ;; Presence is independent of the cached value being null.
 def $generator_from_cache(S, eps) = false
-def $generator_from_cache(S, (pgeneratorfrom)) = (pgeneratorfrom.CURRENT =/= eps \/ $generator_from_generator(S, pgeneratorfrom.INPUT))
+def $generator_from_cache(S, (pgeneratorfrom)) = (pgeneratorfrom.CURRENT =/= eps \/ $generator_from_shared(S, (pgeneratorfrom)))
+def $generator_from_shared(S, (pgeneratorfrom)) = (pgeneratorfrom.ACQUISITION = eps /\ $generator_from_generator(S, pgeneratorfrom.INPUT))
+def $generator_from_shared(S, eps) = false
+def $generator_from_mode_valid(S, pgeneratorfrom) = true -- if pgeneratorfrom.ACQUISITION = eps
+def $generator_from_next_task(n, pgeneratorfrom) = GENERATOR_FROM_NEXT n pgeneratorfrom.SITE -- if pgeneratorfrom.ACQUISITION = eps
 def $generator_from_generator(S, (POBJECT n)) = $generator_object(S, n)
 def $generator_from_generator(S, pvalue?) = false -- otherwise
 def $generator_from_key(S, n, 0) = PNULL
@@ -147,6 +157,7 @@ def $generator_from_key(S, n, n_depth) = $generator_from_key(S, n_child, $nabs($
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
   -- if pgenerator_child.PHASE =/= GENERATOR_CLOSED
 def $generator_from_key(S, n, n_depth) = PNULL
@@ -154,12 +165,13 @@ def $generator_from_key(S, n, n_depth) = PNULL
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
   -- if pgenerator_child.PHASE = GENERATOR_CLOSED
 def $generator_from_key(S, n, n_depth) = $generator_cache_value(pgenerator.KEY)
   -- if $(n_depth > 0)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
-  -- if ~$generator_from_generator(S, $generator_from_input_of(pgenerator.DELEGATE))
+  -- if ~$generator_from_shared(S, pgenerator.DELEGATE)
   -- if pgenerator.KEY =/= eps \/ pgenerator.BORROWED = eps
 def $generator_from_input_of(eps) = eps
 def $generator_from_input_of((pgeneratorfrom)) = pgeneratorfrom.INPUT
@@ -182,6 +194,7 @@ def $generator_from_path(S, n, n_target, n_depth) = $generator_from_path(S, n_ch
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if $generator_object(S, n_child)
 def $generator_from_path(S, n, n_target, n_depth) = false -- otherwise
 
@@ -192,7 +205,7 @@ rule PhpStep/generator-from-eval: S ~> S[.TODO = [$at_task($origin_child((porigi
   -- if S.TODO = (EVAL (NExprYieldFrom expression metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $generator_active(S)
-rule PhpStep/generator-from-value: S ~> $generator_from_start(S_value, porigin, pvalue)
+rule PhpStep/generator-from-value: S ~> $generator_from_begin(S, S_value, porigin, pvalue)
   -- if S.TODO = (GENERATOR_FROM_EVAL porigin) :: ptask_tail*
   -- if S_value = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
   -- if S_value.COMPLETION = NORMAL
@@ -203,7 +216,7 @@ rule PhpStep/generator-from-value-abrupt: S ~> S_value
   -- if S_value = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
   -- if S_value.COMPLETION =/= NORMAL
   -- if ~$generator_close_active(S)
-def $generator_from_start(S, porigin, pvalue) = $generator_set(S[.ORIGIN = (porigin)][.TODO = (GENERATOR_FROM_NEXT n porigin) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pgenerator[.DELEGATE = ({SITE porigin, INPUT (pvalue), POSITION 0, CURRENT eps})])
+def $generator_from_start(S, porigin, pvalue) = $generator_set(S[.ORIGIN = (porigin)][.TODO = (GENERATOR_FROM_NEXT n porigin) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], n, pgenerator[.DELEGATE = ({SITE porigin, INPUT (pvalue), POSITION 0, CURRENT eps, ACQUISITION eps})])
   -- if S.TODO = ptask :: ptask_tail*
   -- if n = $generator_from_active(S)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
@@ -212,8 +225,6 @@ def $generator_from_start(S, porigin, pvalue) = $generator_set(S[.ORIGIN = (pori
 def $generator_from_start(S, porigin, pvalue) = $throw_scalar(S[.ORIGIN = (porigin)], "Error", $ptascii("Can use \"yield from\" only with arrays and Traversables"), $generator_from_line(S, porigin))
   -- if ~$generator_from_input(S, pvalue)
   -- if ~$generator_from_aggregate(S, pvalue)
-def $generator_from_start(S, porigin, pvalue) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "yield from IteratorAggregate acquisition"]
-  -- if $generator_from_aggregate(S, pvalue)
 def $generator_from_start(S, porigin, POBJECT n_child) = $throw_scalar(S[.ORIGIN = (porigin)], "Error", $ptascii("Generator passed to yield from was aborted without proper return and is unable to continue"), $generator_from_line(S, porigin))
   -- if $generator_object(S, n_child)
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
@@ -239,7 +250,7 @@ def $generator_from_item(DIRECT pvalue) = KNOWN pvalue
 def $generator_from_item(ALIAS n) = REFERENCE n
 rule PhpStep/generator-from-next: S ~> $generator_from_next(S, n, porigin, ptask_tail*)
   -- if S.TODO = (GENERATOR_FROM_NEXT n porigin) :: ptask_tail*
-def $generator_from_next(S, n, porigin, ptask*) = $generator_from_park($generator_set(S, n, pgenerator[.VALUE = eps][.KEY = ($foreach_key_value(pkey))][.DELEGATE = (pgeneratorfrom[.POSITION = $(n_position + 1)][.CURRENT = ($generator_from_item(pitem))])]), n, porigin, (GENERATOR_FROM_NEXT n porigin) :: ptask*)
+def $generator_from_next(S, n, porigin, ptask*) = $generator_from_park($generator_set(S, n, pgenerator[.VALUE = eps][.KEY = ($foreach_key_value(pkey))][.DELEGATE = (pgeneratorfrom[.POSITION = $(n_position + 1)][.CURRENT = ($generator_from_item(pitem))])]), n, porigin, ($generator_from_next_task(n, pgeneratorfrom)) :: ptask*)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (PARRAY n_array)
@@ -266,16 +277,17 @@ def $generator_from_next(S, n, porigin, ptask*) = $generator_from_child(S, n, po
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if $generator_object(S, n_child)
 
 def $generator_from_forward("send") = "send"
 def $generator_from_forward("throw") = "throw"
 def $generator_from_forward(text) = "next" -- otherwise
-def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME "current", SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false}
+def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME "current", SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false}
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.POSITION = 0
-def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME $generator_from_forward(pgeneratorop.NAME), SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS pgeneratorop.ARGUMENTS, STARTPACK false}
+def $generator_from_operation(S, n, porigin, n_child) = {OBJECT n_child, NAME $generator_from_forward(pgeneratorop.NAME), SITE porigin, LINE $generator_from_line(S, porigin), LOOP eps, ADVANCE false, ARGUMENTS pgeneratorop.ARGUMENTS, STARTPACK false, BORROWED false}
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if $(pgeneratorfrom.POSITION > 0)
@@ -289,7 +301,7 @@ def $generator_from_child(S, n, porigin, n_child, ptask*) = $generator_from_chil
   -- if pgenerator_child.PHASE = GENERATOR_CLOSED
 rule PhpStep/generator-from-child-result: S ~> $generator_from_child_result(S, n, porigin, n_child, ptask_tail*)
   -- if S.TODO = (GENERATOR_FROM_RESULT n porigin n_child) :: ptask_tail*
-def $generator_from_child_result(S, n, porigin, n_child, ptask*) = $generator_from_park($generator_set(S, n, pgenerator[.DELEGATE = (pgeneratorfrom[.POSITION = 1])]), n, porigin, (GENERATOR_FROM_NEXT n porigin) :: ptask*)
+def $generator_from_child_result(S, n, porigin, n_child, ptask*) = $generator_from_park($generator_set(S, n, pgenerator[.DELEGATE = (pgeneratorfrom[.POSITION = 1])]), n, porigin, ($generator_from_next_task(n, pgeneratorfrom)) :: ptask*)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
@@ -338,6 +350,9 @@ def $generator_from_nan(PFLOAT n) = $fparts_nan($float_decode(n))
 def $generator_from_nan(pvalue) = false -- otherwise
 rule PhpStep/generator-from-valid-nan: S ~> $error_dispatch(S_read[.ORIGIN = (porigin)], 2, $ptascii("unexpected NAN value was coerced to bool"), z, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) z, GENERATOR_FROM_VALID n porigin S.RESULT)
   -- if S.TODO = (GENERATOR_FROM_CALLBACK n porigin "valid") :: ptask_tail*
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if z = $generator_from_line(S, porigin)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
@@ -363,7 +378,7 @@ rule PhpStep/generator-from-callback-key: S ~> $generator_from_call($generator_s
   -- if S.TODO = (GENERATOR_FROM_CALLBACK n porigin "current") :: ptask_tail*
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
-rule PhpStep/generator-from-callback-park: S ~> $generator_from_park($generator_set(S_read, n, pgenerator[.VALUE = eps][.KEY = (pvalue)][.DELEGATE = (pgeneratorfrom[.POSITION = 1])]), n, porigin, (GENERATOR_FROM_NEXT n porigin) :: ptask_tail*)
+rule PhpStep/generator-from-callback-park: S ~> $generator_from_park($generator_set(S_read, n, pgenerator[.VALUE = eps][.KEY = (pvalue)][.DELEGATE = (pgeneratorfrom[.POSITION = 1])]), n, porigin, ($generator_from_next_task(n, pgeneratorfrom)) :: ptask_tail*)
   -- if S.TODO = (GENERATOR_FROM_CALLBACK n porigin "key") :: ptask_tail*
   -- if S_read = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
   -- if S_read.COMPLETION = NORMAL
@@ -391,6 +406,7 @@ def $generator_from_update_plain(S, pgeneratorop) = $generator_from_detach(S, pg
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
   -- if pgenerator_child.PHASE = GENERATOR_CLOSED
   -- if pgenerator_child.RETURN =/= eps
@@ -400,6 +416,7 @@ def $generator_from_update_plain(S, pgeneratorop) = $generator_from_aborted(S, p
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
   -- if pgenerator_child.PHASE = GENERATOR_CLOSED
   -- if pgenerator_child.RETURN = eps
@@ -421,12 +438,12 @@ def $generator_operate_plain(S, pgeneratorop) = $generator_resume(S, pgeneratoro
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if pgeneratorop.NAME <- ["next", "send", "throw"]
-  -- if pgeneratorop.NAME =/= "throw" \/ $generator_from_generator(S, $generator_from_input_of(pgenerator.DELEGATE))
+  -- if pgeneratorop.NAME =/= "throw" \/ $generator_from_shared(S, pgenerator.DELEGATE)
 def $generator_operate_plain(S, pgeneratorop) = S_resumed[.TODO = (THROW_SEARCH n) :: S_resumed.TODO]
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if pgeneratorop.NAME = "throw"
-  -- if ~$generator_from_generator(S, $generator_from_input_of(pgenerator.DELEGATE))
+  -- if ~$generator_from_shared(S, pgenerator.DELEGATE)
   -- if pgeneratorop.ARGUMENTS = [POBJECT n]
   -- if S_resumed = $generator_resume(S, pgeneratorop[.ADVANCE = false])
 rule PhpStep/generator-from-complete: S ~> S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -462,7 +479,7 @@ def $generator_from_cached_operand(S, (KNOWN pvalue)) = $call_reference_operand_
 def $generator_from_cached_operand(S, (REFERENCE n)) = $call_reference_operand_valid(S, REFERENCE n)
 def $generator_from_cached_operand(S, poperand?) = false -- otherwise
 def $generator_storage_current_borrowed(S, pgeneratorfrom) = false -- otherwise
-def $generator_from_cache_valid(S, pgeneratorfrom) = (($generator_from_cached_operand(S, pgeneratorfrom.CURRENT) \/ $generator_storage_current_borrowed(S, pgeneratorfrom)) /\ $generator_from_optional_input(S, pgeneratorfrom.INPUT))
+def $generator_from_cache_valid(S, pgeneratorfrom) = ($generator_from_mode_valid(S, pgeneratorfrom) /\ ($generator_from_cached_operand(S, pgeneratorfrom.CURRENT) \/ $generator_storage_current_borrowed(S, pgeneratorfrom)) /\ $generator_from_optional_input(S, pgeneratorfrom.INPUT))
 def $generator_from_optional_input(S, eps) = true
 def $generator_from_optional_input(S, (PARRAY n)) = (HARRAY n <- S.ALLOCATIONS)
 def $generator_from_optional_input(S, (POBJECT n)) = ((HOBJECT n <- S.ALLOCATIONS) /\ ($generator_object(S, n) \/ $useriter_instance(S, n)))
@@ -501,6 +518,7 @@ def $generator_from_result_valid(S, n, porigin, n_child) = true
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if $generator_object(S, n_child)
   -- if (HOBJECT n_child) <- S.ALLOCATIONS
   -- if pgeneratorfrom.CURRENT = eps
@@ -510,6 +528,7 @@ def $generator_from_complete_valid(S, n, porigin, n_child, pvalue) = true
   -- if $generator_from_owner(S, n, porigin)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if pgeneratorfrom.INPUT = eps
   -- if $(n_child < |S.OBJECTS|)
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
@@ -599,14 +618,17 @@ def $generator_operation_site(S, pgeneratorop) = $generator_from_operation_valid
   -- if $generator_from_site(S, pgeneratorop.SITE)
   -- if pgeneratorop.LOOP = eps
   -- if ~pgeneratorop.STARTPACK
+  -- if ~pgeneratorop.BORROWED
 def $generator_resumption_valid(S, pgeneratorop) = ($generator_operation_valid(S, pgeneratorop) /\ $generator_resumption_stage(S, pgeneratorop) /\ |pgeneratorop.ARGUMENTS| = $generator_argument_count(pgeneratorop.NAME))
   -- if $generator_from_site(S, pgeneratorop.SITE)
   -- if pgeneratorop.LOOP = eps
   -- if ~pgeneratorop.STARTPACK
+  -- if ~pgeneratorop.BORROWED
 def $generator_operation_trace(S, pgeneratorop) = eps
   -- if $generator_from_site(S, pgeneratorop.SITE)
   -- if pgeneratorop.LOOP = eps
   -- if ~pgeneratorop.STARTPACK
+  -- if ~pgeneratorop.BORROWED
 
 def $call_task_valid(S, GENERATOR_FROM_EVAL porigin) = $generator_from_source_context(S, porigin)
 def $call_task_valid(S, GENERATOR_FROM_NEXT n porigin) = ($generator_from_owner(S, n, porigin) /\ $generator_from_input_of(pgenerator.DELEGATE) =/= eps)
@@ -668,7 +690,7 @@ def $generator_from_record_valid(S, n, pgenerator) = true
   -- if $generator_from_position_valid(S, pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = eps \/ pgenerator.PHASE <- [GENERATOR_RUNNING, GENERATOR_DELEGATING]
   -- if n_child = $generator_from_child_id(pgeneratorfrom.INPUT)
-  -- if ~$generator_from_generator(S, pgeneratorfrom.INPUT) \/ ~$generator_from_path(S, n_child, n, $(|S.OBJECTS| + 1))
+  -- if ~$generator_from_shared(S, (pgeneratorfrom)) \/ ~$generator_from_path(S, n_child, n, $(|S.OBJECTS| + 1))
 def $generator_from_record_valid(S, n, pgenerator) = false -- otherwise
 def $generator_from_child_id((POBJECT n)) = n
 def $generator_from_child_id(pvalue?) = 0 -- otherwise
@@ -710,6 +732,7 @@ def $generator_from_leaf(S, n, n_depth) = $generator_from_leaf(S, n_child, $nabs
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if $generator_object(S, n_child)
 def $generator_from_leaf(S, n, n_depth) = n -- otherwise
 def $generator_from_refresh(S, n, 0) = S
@@ -719,6 +742,7 @@ def $generator_from_refresh(S, n, n_depth) = $generator_from_refresh_join($gener
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if $generator_object(S, n_child)
 def $generator_from_refresh(S, n, n_depth) = S -- otherwise
 def $generator_from_refresh_join(S, n, n_child) = $generator_from_detach(S, n, n_child)
@@ -734,6 +758,7 @@ def $generator_from_update_plain(S, pgeneratorop) = $generator_resume(S, pgenera
   -- if pgenerator.PHASE = GENERATOR_DELEGATING
   -- if pgenerator.DELEGATE = (pgeneratorfrom)
   -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if pgeneratorfrom.ACQUISITION = eps
   -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
   -- if pgenerator_child.PHASE =/= GENERATOR_CLOSED
   -- if n_leaf = $generator_from_leaf(S, n_child, $(|S.OBJECTS| + 1))

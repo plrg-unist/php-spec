@@ -62,6 +62,7 @@ dec $generator_function_context(pstate, pcallcontext?) : bool
 dec $generator_frame_scope(pstate, pframe) : pstate
 dec $method_source_spelling(phpType20) : ptbytes
 dec $generator_operation_site(pstate, pgeneratorop) : bool
+def $generator_operation_site(S, pgeneratorop) = false -- otherwise
 dec $generator_source_method(pstate, porigin, ptbytes) : bool
 dec $generator_method_node(pcnode?, ptbytes) : bool
 dec $generator_loop_site(pstate, pgeneratorop, pgeneratorloop) : bool
@@ -466,7 +467,8 @@ def $getclass_live_object(S, n) = true
   -- if S.OBJECTS[n] = GENERATOR pgenerator
 def $generator_arguments_nodes(eps) = eps
 def $generator_arguments_nodes(pvalue :: pvalue_tail*) = $value_nodes(pvalue) ++ $generator_arguments_nodes(pvalue_tail*)
-def $generator_operation_nodes(pgeneratorop) = [HOBJECT pgeneratorop.OBJECT] ++ $generator_arguments_nodes(pgeneratorop.ARGUMENTS)
+def $generator_operation_nodes(pgeneratorop) = [HOBJECT pgeneratorop.OBJECT] ++ $generator_arguments_nodes(pgeneratorop.ARGUMENTS) -- if ~pgeneratorop.BORROWED
+def $generator_operation_nodes(pgeneratorop) = $generator_arguments_nodes(pgeneratorop.ARGUMENTS) -- if pgeneratorop.BORROWED
 def $task_nodes(GENERATOR_RESUME pgeneratorop) = $generator_operation_nodes(pgeneratorop)
 def $task_nodes(GENERATOR_ARGS pgeneratorop phpType7* poperand*) = $generator_operation_nodes(pgeneratorop) ++ $operands_roots(poperand*)
 def $task_nodes(GENERATOR_SEND pgeneratorop phpType7* poperand*) = $generator_operation_nodes(pgeneratorop) ++ $operands_roots(poperand*)
@@ -485,7 +487,7 @@ def $generator_method(ptbytes) = "getreturn" -- if $ptlc(ptbytes) = $ptascii("ge
 def $generator_method(ptbytes) = "send" -- if $ptlc(ptbytes) = $ptascii("send")
 def $generator_method(ptbytes) = "throw" -- if $ptlc(ptbytes) = $ptascii("throw")
 def $generator_method(ptbytes) = "" -- otherwise
-def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (GENERATOR_ARGS {OBJECT n, NAME $generator_method(ptbytes), SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false} phpType7* eps) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.TODO = (GENERATOR_ARGS {OBJECT n, NAME $generator_method(ptbytes), SITE porigin, LINE z, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false} phpType7* eps) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S_read = $resolve_at(S, poperand, z)
@@ -560,7 +562,7 @@ def $generator_invoke_effect(S, pgeneratorop, pvalue) = $generator_error(S, pgen
 
 ;; Language foreach calls the native iterator hooks without a synthetic
 ;; Generator method frame, and owns the iterator data through the body.
-def $foreach_start(S, statement, plocation, b, z) = $generator_error(S, {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR S.NEXTITER, STATEMENT statement}), ADVANCE false, ARGUMENTS eps, STARTPACK false}, "Exception", $ptascii("Cannot traverse an already closed generator"))
+def $foreach_start(S, statement, plocation, b, z) = $generator_error(S, {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR S.NEXTITER, STATEMENT statement}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false}, "Exception", $ptascii("Cannot traverse an already closed generator"))
   -- if S.ORIGIN = (porigin)
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
@@ -570,7 +572,7 @@ def $foreach_start(S, statement, plocation, true, z) = $throw_scalar(S, "Excepti
   -- if S.OBJECTS[n] = GENERATOR pgenerator
   -- if pgenerator.PHASE =/= GENERATOR_CLOSED
   -- if ~$generator_reference_producer(S, pgenerator)
-def $foreach_start(S, statement, plocation, b, z) = $generator_operate(S[.TODO = ptask_tail*][.ITERATORS = S.ITERATORS ++ [GENERATORITER n_iterator n]][.NEXTITER = $(n_iterator + 1)], {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR n_iterator, STATEMENT statement}), ADVANCE false, ARGUMENTS eps, STARTPACK false})
+def $foreach_start(S, statement, plocation, b, z) = $generator_operate(S[.TODO = ptask_tail*][.ITERATORS = S.ITERATORS ++ [GENERATORITER n_iterator n]][.NEXTITER = $(n_iterator + 1)], {OBJECT n, NAME "rewind", SITE porigin, LINE z, LOOP ({ITERATOR n_iterator, STATEMENT statement}), ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED false})
   -- if S.TODO = ptask :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if S.RESULT = KNOWN (POBJECT n)
@@ -654,6 +656,7 @@ def $generator_operation_trace(S, pgeneratorop) = [{FILE $call_sourcefile(S.FILE
   -- if pgeneratorop.LOOP = eps
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
   -- if ~pgeneratorop.STARTPACK
+  -- if ~pgeneratorop.BORROWED
 def $generator_operation_trace(S, pgeneratorop) = eps -- if pgeneratorop.LOOP =/= eps
 def $generator_error(S, pgeneratorop, text, ptbytes) = $throwable_allocate(S, text, ptbytes, pgeneratorop.LINE, $source_trace_prefixed(S, $generator_operation_trace(S, pgeneratorop)))
 def $generator_argument_count(text) = 1 -- if text <- ["send", "throw"]
@@ -691,9 +694,11 @@ def $generator_operation_site(S, pgeneratorop) = ($generator_source_method(S, pg
   -- if pgeneratorop.LOOP = eps
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
   -- if ~pgeneratorop.STARTPACK
+  -- if ~pgeneratorop.BORROWED
 def $generator_operation_site(S, pgeneratorop) = $generator_loop_site(S, pgeneratorop, pgeneratorloop)
   -- if pgeneratorop.LOOP = (pgeneratorloop)
   -- if ~pgeneratorop.STARTPACK
+  -- if ~pgeneratorop.BORROWED
 def $generator_loop_site(S, pgeneratorop, {ITERATOR n, STATEMENT (NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata)}) = ($origin_node(S.SOURCES, pgeneratorop.SITE) = (NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) /\ (~$ppforeach_references(expression_value, b_ref) \/ $generator_reference_producer(S, pgenerator)) /\ $goto_foreach_line_valid(S, NStmtForeach expression phpType5_key (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata, pgeneratorop.SITE, pgeneratorop.LINE) /\ (pgeneratorop.NAME <- ["rewind", "next"]) /\ $(n < S.NEXTITER) /\ $iterator_lookup(S.ITERATORS, n) = (GENERATORITER n pgeneratorop.OBJECT) /\ $useriter_cursor_count(S.ITERATORS, n) = 1)
   -- if S.OBJECTS[pgeneratorop.OBJECT] = GENERATOR pgenerator
 def $generator_loop_site(S, pgeneratorop, pgeneratorloop) = false -- otherwise
@@ -718,6 +723,7 @@ def $generator_resumption_valid(S, pgeneratorop) = true
   -- if pgeneratorop.LOOP = eps
   -- if ~$generator_from_site(S, pgeneratorop.SITE)
   -- if ~pgeneratorop.STARTPACK
+  -- if ~pgeneratorop.BORROWED
   -- if $getter_arguments(S, pgeneratorop.SITE) = PCALLARGUMENTS phpType7* 2
   -- if $generator_arguments_supported(phpType7*)
   -- if |phpType7*| = $generator_argument_count(pgeneratorop.NAME)

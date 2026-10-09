@@ -1,0 +1,430 @@
+;; ZEND_YIELD_FROM acquires non-Generator Traversables through get_iterator.
+;; Returned Generator objects are iterator data, never native child graphs.
+dec $yield_from_receipt_valid(pstate, pyieldfromreceipt) : bool
+dec $yield_from_aggregate_receipt(pstate, pyieldfromaggregate) : pyieldfromreceipt
+dec $yield_from_aggregate_input_mode(pstate, porigin, poperand) : bool
+dec $yield_from_aggregate_input_stable(pstate, pyieldfromaggregate) : bool
+dec $yield_from_aggregate_input(pstate, pyieldfromaggregate, text) : bool
+dec $yield_from_aggregate_input_identity(pyieldfromaggregate) : bool
+dec $yield_from_aggregate_stage(pstate, pyieldfromaggregate, text) : bool
+dec $yield_from_aggregate_valid(pstate, pyieldfromaggregate, text) : bool
+dec $yield_from_aggregate_count(ptask*, porigin) : nat
+dec $yield_from_aggregate_at(ptask, porigin) : bool
+dec $yield_from_aggregate_target(pstate, pyieldfromaggregate, pcalltarget) : bool
+dec $yield_from_aggregate_frame(pstate, pcallcontext, pframe) : bool
+dec $yield_from_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+dec $yield_from_aggregate_generator_context(pstate, pcallcontext) : bool
+dec $yield_from_aggregate_call(pstate, pyieldfromaggregate, ptask*) : pstate
+dec $yield_from_aggregate_acquire(pstate, pyieldfromaggregate, ptask*) : pstate
+dec $yield_from_aggregate_acquire_result(pstate, pyieldfromaggregate, ptask*) : pstate
+dec $yield_from_aggregate_error(pstate, pyieldfromaggregate, ptbytes, ptask*) : pstate
+dec $yield_from_aggregate_acquired(pstate, pyieldfromaggregate, ptask*) : pstate
+dec $yield_from_aggregate_nodes(pyieldfromaggregate, text) : pnode*
+dec $yield_from_aggregate_data(text) : bool
+dec $yield_from_aggregate_error_stage(text) : text
+dec $yield_from_retained_indexed(pstate, pyieldfromretained*, nat) : bool
+dec $yield_from_iterator_valid(pstate, nat, pyieldfromreceipt) : bool
+dec $yield_from_iterator_result_valid(pstate, nat, pyieldfromreceipt, nat) : bool
+dec $yield_from_iterator_operation_owner(pstate, pgeneratorop, nat, pyieldfromreceipt, nat, pcallcontext?) : bool
+dec $yield_from_iterator_operation_tasks(pstate, pgeneratorop, ptask*, pcallcontext?) : bool
+dec $yield_from_iterator_operation_frames(pstate, pgeneratorop, pframe*) : bool
+dec $yield_from_iterator_operation_valid(pstate, pgeneratorop) : bool
+dec $yield_from_iterator_operation(pstate, nat, pyieldfromreceipt, nat) : pgeneratorop
+dec $yield_from_iterator_result(pstate, nat, pyieldfromreceipt, nat, ptask*) : pstate
+
+
+def $yield_from_receipt_valid(S, pyieldfromreceipt) = true
+  -- if $(pyieldfromreceipt.AGGREGATE < |S.OBJECTS|)
+  -- if $generator_from_aggregate(S, POBJECT pyieldfromreceipt.AGGREGATE)
+  -- if $function_at($all_functions(S), pyieldfromreceipt.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
+  -- if pyieldfromreceipt.SITE = PORIGIN n pcpath
+  -- if pfunction.CODE.UNIT = n
+  -- if $generator_from_site(S, pyieldfromreceipt.SITE)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((pyieldfromreceipt.LINE, false))
+def $yield_from_receipt_valid(S, pyieldfromreceipt) = false -- otherwise
+def $yield_from_aggregate_receipt(S, pyieldfromaggregate) = {AGGREGATE pyieldfromaggregate.AGGREGATE, FUNCTION pgenerator.FUNCTION, SITE pyieldfromaggregate.SITE, LINE pyieldfromaggregate.LINE}
+  -- if S.OBJECTS[pyieldfromaggregate.PARENT] = GENERATOR pgenerator
+
+def $yield_from_aggregate_input_mode(S, porigin, VARIABLE n_name* z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYieldFrom expression metadata)
+  -- if $reference_cv(expression) = (n_name*)
+  -- if expression = NExprVariable phpType32 metadata_var
+  -- if z = $variable_line(phpType32, metadata_var)
+def $yield_from_aggregate_input_mode(S, porigin, KNOWN (POBJECT n)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYieldFrom expression metadata)
+  -- if $reference_cv(expression) = eps
+  -- if ~$foreach_aggregate_this(expression)
+def $yield_from_aggregate_input_mode(S, porigin, REFERENCE n) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprYieldFrom expression metadata)
+  -- if $reference_cv(expression) = eps
+  -- if ~$foreach_aggregate_this(expression)
+def $yield_from_aggregate_input_mode(S, porigin, poperand) = false -- otherwise
+def $yield_from_aggregate_input(S, pyieldfromaggregate, text) = (pyieldfromaggregate.INPUT = KNOWN PNULL)
+  -- if text <- ["ready", "ready-error"]
+def $yield_from_aggregate_input(S, pyieldfromaggregate, text) = true
+  -- if ~(text <- ["ready", "ready-error"])
+  -- if $yield_from_aggregate_input_mode(S, pyieldfromaggregate.SITE, pyieldfromaggregate.INPUT)
+  -- if $call_reference_operand_valid(S, pyieldfromaggregate.INPUT)
+  -- if $yield_from_aggregate_input_identity(pyieldfromaggregate)
+def $yield_from_aggregate_input(S, pyieldfromaggregate, text) = false -- otherwise
+def $yield_from_aggregate_input_identity(pyieldfromaggregate) = (n = pyieldfromaggregate.AGGREGATE) -- if pyieldfromaggregate.INPUT = KNOWN (POBJECT n)
+def $yield_from_aggregate_input_identity(pyieldfromaggregate) = true -- otherwise
+def $yield_from_aggregate_input_stable(S, pyieldfromaggregate) = true -- if pyieldfromaggregate.ACQUIRED =/= eps
+def $yield_from_aggregate_input_stable(S, pyieldfromaggregate) = true
+  -- if pyieldfromaggregate.ACQUIRED = eps
+  -- if pyieldfromaggregate.INPUT = KNOWN (POBJECT pyieldfromaggregate.AGGREGATE)
+def $yield_from_aggregate_input_stable(S, pyieldfromaggregate) = true
+  -- if pyieldfromaggregate.ACQUIRED = eps
+  -- if pyieldfromaggregate.INPUT = REFERENCE n
+  -- if S.STORE[n] = DEFINED (POBJECT pyieldfromaggregate.AGGREGATE)
+def $yield_from_aggregate_input_stable(S, pyieldfromaggregate) = true
+  -- if pyieldfromaggregate.ACQUIRED = eps
+  -- if pyieldfromaggregate.INPUT = VARIABLE n_name* z
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if S.STORE[n] = DEFINED (POBJECT pyieldfromaggregate.AGGREGATE)
+def $yield_from_aggregate_input_stable(S, pyieldfromaggregate) = false -- otherwise
+
+def $generator_from_begin(S, S_read, porigin, POBJECT n) = $yield_from_aggregate_call(S_read, {PARENT $generator_from_active(S_read), SITE porigin, LINE $generator_from_line(S_read, porigin), AGGREGATE n, OBJECT n, ACQUIRED eps, INPUT S.RESULT, CURRENT KNOWN PNULL}, ptask_tail*)
+  -- if S.TODO = (GENERATOR_FROM_EVAL porigin) :: ptask_tail*
+  -- if $generator_from_aggregate(S_read, POBJECT n)
+  -- if $yield_from_aggregate_input_mode(S, porigin, S.RESULT)
+def $generator_from_begin(S, S_read, porigin, POBJECT n) = S_read[.COMPLETION = UNSUPPORTED "yield from IteratorAggregate operand ownership"]
+  -- if $generator_from_aggregate(S_read, POBJECT n)
+  -- if ~$yield_from_aggregate_input_mode(S, porigin, S.RESULT)
+
+def $yield_from_aggregate_stage(S, pyieldfromaggregate, text) = true
+  -- if text <- ["getIterator", "getIterator-error"]
+  -- if pyieldfromaggregate.OBJECT = $fiber_traversal_acquisition_last(pyieldfromaggregate.AGGREGATE, pyieldfromaggregate.ACQUIRED)
+  -- if $generator_from_aggregate(S, POBJECT pyieldfromaggregate.OBJECT)
+  -- if text =/= "getIterator" \/ pyieldfromaggregate.CURRENT = KNOWN PNULL
+  -- if $call_reference_operand_valid(S, pyieldfromaggregate.CURRENT)
+def $yield_from_aggregate_stage(S, pyieldfromaggregate, text) = true
+  -- if text <- ["acquired", "acquired-error", "ready", "ready-error"]
+  -- if pyieldfromaggregate.ACQUIRED = eps
+  -- if $fiber_traversal_object(S, pyieldfromaggregate.OBJECT, true)
+  -- if ~(text <- ["acquired-error", "ready-error"]) \/ $foreach_aggregate_pending_value(S, pyieldfromaggregate.CURRENT)
+  -- if text <- ["acquired-error", "ready-error"] \/ pyieldfromaggregate.CURRENT = KNOWN PNULL
+def $yield_from_aggregate_stage(S, pyieldfromaggregate, text) = false -- otherwise
+def $yield_from_aggregate_at(YIELD_FROM_AGGREGATE pyieldfromaggregate text, porigin) = (pyieldfromaggregate.SITE = porigin)
+def $yield_from_aggregate_at(ptask, porigin) = false -- otherwise
+def $yield_from_aggregate_count(eps, porigin) = 0
+def $yield_from_aggregate_count(ptask :: ptask_tail*, porigin) = $(1 + $yield_from_aggregate_count(ptask_tail*, porigin)) -- if $yield_from_aggregate_at(ptask, porigin)
+def $yield_from_aggregate_count(ptask :: ptask_tail*, porigin) = $yield_from_aggregate_count(ptask_tail*, porigin) -- if ~$yield_from_aggregate_at(ptask, porigin)
+def $yield_from_aggregate_valid(S, pyieldfromaggregate, text) = true
+  -- if (HOBJECT pyieldfromaggregate.PARENT) <- S.ALLOCATIONS
+  -- if S.OBJECTS[pyieldfromaggregate.PARENT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING /\ pgenerator.DELEGATE = eps
+  -- if $yield_from_receipt_valid(S, $yield_from_aggregate_receipt(S, pyieldfromaggregate))
+  -- if $fiber_traversal_acquisition_valid(S, pyieldfromaggregate.AGGREGATE, pyieldfromaggregate.ACQUIRED)
+  -- if $yield_from_aggregate_input(S, pyieldfromaggregate, text)
+  -- if $yield_from_aggregate_stage(S, pyieldfromaggregate, text)
+  -- if $yield_from_aggregate_count(S.TODO, pyieldfromaggregate.SITE) = 1
+  -- if $fiber_traversal_call_count(S.TODO, pyieldfromaggregate.SITE) = 0
+def $yield_from_aggregate_valid(S, pyieldfromaggregate, "getIterator") = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (pyieldfromaggregate.SITE) pyieldfromaggregate.LINE) :: (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+  -- if $yield_from_aggregate_target(S, pyieldfromaggregate, pcalltarget)
+  -- if $fiber_traversal_call_count(S.TODO, pyieldfromaggregate.SITE) = 1
+  -- if $yield_from_aggregate_valid(S[.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*], pyieldfromaggregate, "getIterator")
+def $yield_from_aggregate_valid(S, pyieldfromaggregate, text) = false -- otherwise
+
+def $yield_from_aggregate_call(S, pyieldfromaggregate, ptask_tail*) = S[.ORIGIN = (pyieldfromaggregate.SITE)][.TODO = (CALL_ARGS (AGGREGATE_METHOD_TARGET pyieldfromaggregate.OBJECT pmethoddesc.FUNCTION.ORIGIN) eps 0 eps (pyieldfromaggregate.SITE) pyieldfromaggregate.LINE) :: (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[pyieldfromaggregate.OBJECT] = INSTANCE porigin
+  -- if $effective_method(S, porigin, $ptascii("getIterator"), |S.CLASSES|) = (pmethoddesc)
+def $yield_from_aggregate_acquire(S, pyieldfromaggregate, ptask_tail*) = $yield_from_aggregate_acquire_result(S, pyieldfromaggregate, ptask_tail*)
+  -- if $yield_from_aggregate_input_stable(S, pyieldfromaggregate)
+def $yield_from_aggregate_acquire(S, pyieldfromaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "yield from IteratorAggregate changed original operand"]
+  -- if ~$yield_from_aggregate_input_stable(S, pyieldfromaggregate)
+rule PhpStep/yield-from-aggregate-getIterator: S ~> $yield_from_aggregate_acquire(S, pyieldfromaggregate, ptask_tail*)
+  -- if S.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+def $yield_from_aggregate_error(S, pyieldfromaggregate, ptbytes, ptask_tail*) = $throw_scalar(S[.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate[.CURRENT = S.RESULT] "getIterator-error") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], "Exception", ptbytes, pyieldfromaggregate.LINE)
+def $yield_from_aggregate_acquire_result(S, pyieldfromaggregate, ptask_tail*) = $yield_from_aggregate_acquired(S, pyieldfromaggregate[.OBJECT = n], ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $useriter_instance(S, n)
+def $yield_from_aggregate_acquire_result(S, pyieldfromaggregate, ptask_tail*) = $yield_from_aggregate_error(S, pyieldfromaggregate, $ptascii("Cannot traverse an already closed generator"), ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+def $yield_from_aggregate_acquire_result(S, pyieldfromaggregate, ptask_tail*) = $yield_from_aggregate_acquired(S, pyieldfromaggregate[.OBJECT = n], ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_CLOSED
+def $yield_from_aggregate_acquire_result(S, pyieldfromaggregate, ptask_tail*) = $yield_from_aggregate_call(S, pyieldfromaggregate[.OBJECT = n][.ACQUIRED = pyieldfromaggregate.ACQUIRED ++ [n]], ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if n =/= pyieldfromaggregate.OBJECT /\ $generator_from_aggregate(S, POBJECT n)
+def $yield_from_aggregate_acquire_result(S, pyieldfromaggregate, ptask_tail*) = $yield_from_aggregate_error(S, pyieldfromaggregate, $ptascii("Objects returned by ") ++ $object_name(S, pyieldfromaggregate.OBJECT) ++ $ptascii("::getIterator() must be traversable or implement interface Iterator"), ptask_tail*) -- otherwise
+
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+  -- if $yield_from_aggregate_valid(S, pyieldfromaggregate, "getIterator")
+  -- if S_next.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate_error "getIterator-error") :: ptask_tail*
+  -- if pyieldfromaggregate_error = pyieldfromaggregate[.CURRENT = S.RESULT]
+  -- if S_next.COMPLETION = THROWN "Exception" ptbytes pyieldfromaggregate.LINE
+  -- if S_next = $yield_from_aggregate_acquire(S, pyieldfromaggregate, ptask_tail*)
+
+def $yield_from_aggregate_acquired(S, pyieldfromaggregate, ptask_tail*) = $fiber_start_unpack_release(S[.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate[.ACQUIRED = eps] "acquired") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $fiber_traversal_acquisition_nodes(pyieldfromaggregate.ACQUIRED))
+rule PhpStep/yield-from-aggregate-input: S ~> $fiber_start_unpack_release(S[.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate[.INPUT = KNOWN PNULL] "ready") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(pyieldfromaggregate.INPUT))
+  -- if S.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "acquired") :: ptask_tail*
+rule PhpStep/yield-from-aggregate-pending-input: S ~> $fiber_start_unpack_release(S[.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate[.INPUT = KNOWN PNULL] "ready-error") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(pyieldfromaggregate.INPUT))
+  -- if S.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "acquired-error") :: ptask_tail*
+rule PhpStep/yield-from-aggregate-ready: S ~> $generator_set(S[.TODO = (YIELD_FROM_ITERATOR_NEXT pyieldfromaggregate.PARENT pyieldfromreceipt) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pyieldfromaggregate.PARENT, pgenerator[.DELEGATE = ({SITE pyieldfromaggregate.SITE, INPUT (POBJECT pyieldfromaggregate.OBJECT), POSITION 0, CURRENT eps, ACQUISITION (pyieldfromreceipt)})])
+  -- if S.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "ready") :: ptask_tail*
+  -- if S.OBJECTS[pyieldfromaggregate.PARENT] = GENERATOR pgenerator
+  -- if pyieldfromreceipt = $yield_from_aggregate_receipt(S, pyieldfromaggregate)
+
+;; Only an already constructed iterator is retained by the engine's early
+;; exception branch. Ordinary acquisition rejection and rewind error do not leak.
+rule PhpStep/yield-from-aggregate-retain: S ~> S[.TODO = (THROW_SEARCH n_error) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.YIELDRETAINED = S.YIELDRETAINED ++ [{PARENT pyieldfromaggregate.PARENT, DATA pyieldfromaggregate.OBJECT, RECEIPT $yield_from_aggregate_receipt(S, pyieldfromaggregate), INDEX n_index}]]
+  -- if S.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "ready-error") :: ptask_tail*
+  -- if $yield_from_aggregate_valid(S, pyieldfromaggregate, "ready-error")
+  -- if pyieldfromaggregate.CURRENT = KNOWN (POBJECT n_error)
+  -- if $throwable_live(S, n_error)
+  -- if n_index = |S.YIELDRETAINED|
+def $yield_from_retained_nodes(eps) = eps
+def $yield_from_retained_nodes(pyieldfromretained :: pyieldfromretained_tail*) = [HOBJECT pyieldfromretained.DATA] ++ $yield_from_retained_nodes(pyieldfromretained_tail*)
+def $yield_from_retained_valid(S, pyieldfromretained*) = $yield_from_retained_indexed(S, pyieldfromretained*, 0)
+def $yield_from_retained_indexed(S, eps, n) = true
+def $yield_from_retained_indexed(S, pyieldfromretained :: pyieldfromretained_tail*, n) = true
+  -- if pyieldfromretained.INDEX = n
+  -- if $yield_from_receipt_valid(S, pyieldfromretained.RECEIPT)
+  -- if $(pyieldfromretained.PARENT < |S.OBJECTS|)
+  -- if S.OBJECTS[pyieldfromretained.PARENT] = GENERATOR pgenerator
+  -- if pgenerator.FUNCTION = pyieldfromretained.RECEIPT.FUNCTION
+  -- if $fiber_traversal_object(S, pyieldfromretained.DATA, true)
+  -- if $yield_from_retained_indexed(S, pyieldfromretained_tail*, $(n + 1))
+def $yield_from_retained_indexed(S, pyieldfromretained*, n) = false -- otherwise
+
+;; A selected layer/input destructor may throw while further release jobs remain.
+def $destructor_resume_pending(S, pdestructorcall) = S[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (YIELD_FROM_AGGREGATE pyieldfromaggregate[.CURRENT = KNOWN (POBJECT n)] $yield_from_aggregate_error_stage(text)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (YIELD_FROM_AGGREGATE pyieldfromaggregate text) :: ptask_tail*
+  -- if text <- ["acquired", "acquired-error", "ready", "ready-error"]
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_before)
+  -- if pdestructionrelease_before.JOBS = pdestructionjob :: pdestructionjob_tail*
+  -- if $destruction_job_node(pdestructionjob) = (HOBJECT pdestructorcall.OBJECT)
+  -- if pdestructionrelease = pdestructionrelease_before[.JOBS = pdestructionjob_tail*]
+  -- if S_check = S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (YIELD_FROM_AGGREGATE pyieldfromaggregate text) :: ptask_tail*][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS]
+  -- if $destructor_result_valid(S_check, pdestructorcall)
+  -- if $destructor_release_valid(S_check, pdestructionrelease)
+  -- if $yield_from_aggregate_valid(S_check, pyieldfromaggregate, text)
+  -- if $throwable_live(S, n)
+def $yield_from_aggregate_error_stage(text) = "acquired-error" -- if text <- ["acquired", "acquired-error"]
+def $yield_from_aggregate_error_stage(text) = "ready-error" -- otherwise
+def $destructor_tail_pending((YIELD_FROM_AGGREGATE pyieldfromaggregate text) :: ptask_tail*) = (n)
+  -- if text <- ["acquired-error", "ready-error"]
+  -- if pyieldfromaggregate.CURRENT = KNOWN (POBJECT n)
+def $yield_from_aggregate_data(text) = ~(text <- ["getIterator", "getIterator-error"])
+def $yield_from_aggregate_nodes(pyieldfromaggregate, text) = $operand_nodes(pyieldfromaggregate.CURRENT) ++ $foreach_aggregate_data_nodes(pyieldfromaggregate.OBJECT, $yield_from_aggregate_data(text)) ++ $fiber_traversal_acquisition_nodes(pyieldfromaggregate.ACQUIRED) ++ $operand_nodes(pyieldfromaggregate.INPUT)
+def $task_nodes(YIELD_FROM_AGGREGATE pyieldfromaggregate text) = $yield_from_aggregate_nodes(pyieldfromaggregate, text)
+def $call_task_valid(S, YIELD_FROM_AGGREGATE pyieldfromaggregate text) = $yield_from_aggregate_valid(S, pyieldfromaggregate, text)
+def $return_discard(S, YIELD_FROM_AGGREGATE pyieldfromaggregate text) = $fiber_start_unpack_release(S[.ORIGIN = (pyieldfromaggregate.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $yield_from_aggregate_nodes(pyieldfromaggregate, text))
+def $generator_internal_task(YIELD_FROM_AGGREGATE pyieldfromaggregate text) = true
+
+;; Borrowed getIterator selection is authenticated by its pending or entered
+;; caller frame. Source syntax alone grants no implicit method permission.
+def $yield_from_aggregate_target(S, pyieldfromaggregate, AGGREGATE_METHOD_TARGET n porigin_method) = $fiber_traversal_method_selected(S, n, porigin_method, "getIterator")
+  -- if n = pyieldfromaggregate.OBJECT
+def $yield_from_aggregate_target(S, pyieldfromaggregate, pcalltarget) = false -- otherwise
+def $yield_from_aggregate_pending_site(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+  -- if pyieldfromaggregate.SITE = porigin /\ pyieldfromaggregate.LINE = z
+  -- if $yield_from_aggregate_valid(S, pyieldfromaggregate, "getIterator")
+  -- if $yield_from_aggregate_target(S, pyieldfromaggregate, pcalltarget)
+def $yield_from_aggregate_pending_site(S, porigin) = false -- otherwise
+def $yield_from_aggregate_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+  -- if pframe.ORIGIN = (pyieldfromaggregate.SITE)
+  -- if pcallcontext.CALLSITE = (pyieldfromaggregate.SITE) /\ pcallcontext.LINE = pyieldfromaggregate.LINE
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $yield_from_aggregate_target(S, pyieldfromaggregate, $context_target(pcallcontext))
+  -- if $yield_from_aggregate_valid(S[.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN], pyieldfromaggregate, "getIterator")
+  -- if pframe.CONTEXT = (pcallcontext_parent)
+  -- if S.OBJECTS[pyieldfromaggregate.PARENT] = GENERATOR pgenerator
+  -- if pcallcontext_parent.FUNCTION = pgenerator.FUNCTION
+def $yield_from_aggregate_frame(S, pcallcontext, pframe) = false -- otherwise
+def $yield_from_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $yield_from_aggregate_frame(S, pcallcontext, pframe)
+  -- if $context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin)
+def $yield_from_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $yield_from_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+  -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin))
+def $yield_from_aggregate_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $yield_from_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+def $yield_from_aggregate_entered(S, pcallcontext?, eps, pcalltarget, porigin) = false
+def $yield_from_aggregate_selected(S, pcalltarget, porigin) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: ptask_tail*
+  -- if $yield_from_aggregate_pending_site(S, porigin)
+def $yield_from_aggregate_selected(S, pcalltarget, porigin) = true -- if $yield_from_aggregate_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin)
+def $yield_from_aggregate_selected(S, pcalltarget, porigin) = false -- otherwise
+def $yield_from_aggregate_context(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $yield_from_aggregate_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
+def $yield_from_aggregate_context(S, pcallcontext) = true -- if $yield_from_aggregate_generator_context(S, pcallcontext)
+def $yield_from_aggregate_context(S, pcallcontext) = false -- otherwise
+def $call_arguments_valid(S, (porigin), 0, eps, eps, 0) = true -- if $yield_from_aggregate_pending_site(S, porigin)
+def $call_arity_valid(S, pcallcontext) = true -- if $yield_from_aggregate_context(S, pcallcontext)
+def $call_extent_valid(S, pcallcontext) = true -- if $yield_from_aggregate_context(S, pcallcontext)
+def $named_context_valid(S, pcallcontext) = true -- if $yield_from_aggregate_context(S, pcallcontext)
+def $reference_callback_used(S, pcallcontext) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $yield_from_aggregate_context(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+
+def $generator_creation_frame(S, pfunction) = pframe[.CONTEXT = (pcallcontext[.TARGET = YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method pyieldfromaggregate.PARENT pyieldfromaggregate.SITE pyieldfromaggregate.LINE])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AGGREGATE_METHOD_TARGET n porigin_method
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if S.FRAMES = pframe_caller :: pframe_tail*
+  -- if pframe_caller.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+  -- if $yield_from_aggregate_frame(S, pcallcontext, pframe_caller)
+  -- if pframe = $generator_frame(S, $function_body_tasks(S, pfunction))
+def $target_nodes(YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z) = [HOBJECT n]
+def $target_instance(YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z) = eps
+def $target_receiver(S, YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z) = $target_receiver(S, METHOD_TARGET n porigin_method)
+def $target_lexical_class(S, YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z) = $target_lexical_class(S, METHOD_TARGET n porigin_method)
+def $target_called_class(S, YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z) = $target_called_class(S, METHOD_TARGET n porigin_method)
+def $target_function(S, YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z) = (pfunction)
+  -- if $fiber_traversal_method_selected(S, n, porigin_method, "getIterator")
+  -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
+  -- if $function_generator(S, pfunction)
+def $yield_from_aggregate_generator_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z
+  -- if $(n_parent < |S.OBJECTS|)
+  -- if S.OBJECTS[n_parent] = GENERATOR pgenerator
+  -- if $generator_from_code(S, pgenerator, porigin)
+  -- if z = $generator_from_line(S, porigin)
+  -- if pcallcontext.CALLSITE = (porigin) /\ pcallcontext.LINE = z
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (n)
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $generator_context_retained(S, pcallcontext)
+  -- if $fiber_traversal_call_count(S.TODO, porigin) = 0
+def $yield_from_aggregate_generator_context(S, pcallcontext) = false -- otherwise
+def $call_selected_valid(S, YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z, (porigin)) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = YIELD_FROM_AGGREGATE_GENERATOR_TARGET n porigin_method n_parent porigin z
+  -- if $yield_from_aggregate_generator_context(S, pcallcontext)
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AGGREGATE_METHOD_TARGET n porigin_method
+  -- if S.FRAMES = pframe_caller :: pframe_tail*
+  -- if pframe_caller.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+  -- if $yield_from_aggregate_frame(S, pcallcontext, pframe_caller)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
+
+;; The acquisition getter's parent Generator moves only with its actual Fiber
+;; VM. Existing saved-VM occurrence collectors retain exact-one ownership.
+def $fiber_generator_transfer(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.FRAMES = pframe_getter :: pframe_tail*
+  -- if pframe_getter.TODO = (YIELD_FROM_AGGREGATE pyieldfromaggregate "getIterator") :: ptask_tail*
+  -- if $yield_from_aggregate_frame(S, pcallcontext, pframe_getter)
+  -- if $generator_resume_ids(S.TODO) = eps
+  -- if $generator_saved_ids(S.FRAMES) = [pyieldfromaggregate.PARENT]
+
+;; The receipt is repeated in the real next/result continuation. Changing
+;; mode cannot turn the acquired Generator into a native shared child graph.
+def $generator_from_mode_valid(S, pgeneratorfrom) = ($yield_from_receipt_valid(S, pyieldfromreceipt) /\ pgeneratorfrom.SITE = pyieldfromreceipt.SITE)
+  -- if pgeneratorfrom.ACQUISITION = (pyieldfromreceipt)
+def $generator_from_next_task(n, pgeneratorfrom) = YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt
+  -- if pgeneratorfrom.ACQUISITION = (pyieldfromreceipt)
+def $yield_from_iterator_valid(S, n, pyieldfromreceipt) = true
+  -- if $generator_from_owner(S, n, pyieldfromreceipt.SITE)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.FUNCTION = pyieldfromreceipt.FUNCTION
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.ACQUISITION = (pyieldfromreceipt)
+  -- if pgeneratorfrom.INPUT =/= eps
+  -- if $generator_from_cache_valid(S, pgeneratorfrom)
+def $yield_from_iterator_valid(S, n, pyieldfromreceipt) = false -- otherwise
+rule PhpStep/yield-from-iterator-next: S ~> $generator_from_next(S, n, pyieldfromreceipt.SITE, ptask_tail*)
+  -- if S.TODO = (YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) :: ptask_tail*
+  -- if $yield_from_iterator_valid(S, n, pyieldfromreceipt)
+def $generator_from_next(S, n, porigin, ptask*) = $generator_operate(S[.ORIGIN = (porigin)][.TODO = (YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) :: ptask*], $yield_from_iterator_operation(S, n, pyieldfromreceipt, n_child))
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.ACQUISITION = (pyieldfromreceipt)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if $generator_object(S, n_child)
+  -- if porigin = pyieldfromreceipt.SITE
+def $yield_from_iterator_operation(S, n, pyieldfromreceipt, n_child) = {OBJECT n_child, NAME "rewind", SITE pyieldfromreceipt.SITE, LINE pyieldfromreceipt.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED true}
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.POSITION = 0
+def $yield_from_iterator_operation(S, n, pyieldfromreceipt, n_child) = {OBJECT n_child, NAME "next", SITE pyieldfromreceipt.SITE, LINE pyieldfromreceipt.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK false, BORROWED true}
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.POSITION = 1
+def $yield_from_iterator_result_valid(S, n, pyieldfromreceipt, n_child) = true
+  -- if $yield_from_iterator_valid(S, n, pyieldfromreceipt)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.INPUT = (POBJECT n_child)
+  -- if $generator_object(S, n_child)
+  -- if $(pgeneratorfrom.POSITION <= 1)
+def $yield_from_iterator_result_valid(S, n, pyieldfromreceipt, n_child) = false -- otherwise
+rule PhpStep/yield-from-iterator-result: S ~> $yield_from_iterator_result(S, n, pyieldfromreceipt, n_child, ptask_tail*)
+  -- if S.TODO = (YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) :: ptask_tail*
+def $yield_from_iterator_result(S, n, pyieldfromreceipt, n_child, ptask*) = $generator_from_park($generator_set(S, n, pgenerator[.VALUE = eps][.KEY = ($generator_cached_value(S, n_child, true))][.DELEGATE = (pgeneratorfrom[.CURRENT = $generator_from_raw(S, n_child, $(|S.OBJECTS| + 1))][.POSITION = 1])]), n, pyieldfromreceipt.SITE, (YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) :: ptask*)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
+  -- if pgenerator_child.PHASE =/= GENERATOR_CLOSED
+def $yield_from_iterator_result(S, n, pyieldfromreceipt, n_child, ptask*) = $generator_from_finish(S, n, pyieldfromreceipt.SITE, PNULL, ptask*)
+  -- if S.OBJECTS[n_child] = GENERATOR pgenerator_child
+  -- if pgenerator_child.PHASE = GENERATOR_CLOSED
+
+def $yield_from_iterator_operation_owner(S, pgeneratorop, n, pyieldfromreceipt, n_child, (pcallcontext)) = true
+  -- if $yield_from_iterator_result_valid(S, n, pyieldfromreceipt, n_child)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pcallcontext.FUNCTION = pyieldfromreceipt.FUNCTION
+  -- if pgeneratorop.BORROWED /\ ~pgeneratorop.STARTPACK
+  -- if pgeneratorop.OBJECT = n_child /\ pgeneratorop.SITE = pyieldfromreceipt.SITE
+  -- if pgeneratorop.LINE = pyieldfromreceipt.LINE /\ pgeneratorop.LOOP = eps
+  -- if pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if $generator_id_count($generator_saved_ids(S.FRAMES), n) = 1
+  -- if (pgeneratorfrom.POSITION = 0 /\ pgeneratorop.NAME = "rewind") \/ (pgeneratorfrom.POSITION = 1 /\ pgeneratorop.NAME = "next")
+def $yield_from_iterator_operation_owner(S, pgeneratorop, n, pyieldfromreceipt, n_child, pcallcontext?) = false -- otherwise
+def $yield_from_iterator_operation_tasks(S, pgeneratorop, (GENERATOR_RESUME pgeneratorop) :: (YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) :: ptask*, pcallcontext?) = $yield_from_iterator_operation_owner(S, pgeneratorop, n, pyieldfromreceipt, n_child, pcallcontext?)
+def $yield_from_iterator_operation_tasks(S, pgeneratorop, ptask*, pcallcontext?) = false -- otherwise
+def $yield_from_iterator_operation_frames(S, pgeneratorop, eps) = false
+def $yield_from_iterator_operation_frames(S, pgeneratorop, pframe :: pframe_tail*) = ($yield_from_iterator_operation_tasks(S, pgeneratorop, pframe.TODO, pframe.CONTEXT) \/ $yield_from_iterator_operation_frames(S, pgeneratorop, pframe_tail*))
+def $yield_from_iterator_operation_valid(S, pgeneratorop) = ($yield_from_iterator_operation_tasks(S, pgeneratorop, S.TODO, S.CURRENT) \/ $yield_from_iterator_operation_frames(S, pgeneratorop, S.FRAMES))
+def $generator_operation_site(S, pgeneratorop) = $yield_from_iterator_operation_valid(S, pgeneratorop)
+  -- if pgeneratorop.BORROWED
+  -- if $generator_from_site(S, pgeneratorop.SITE)
+def $generator_resumption_valid(S, pgeneratorop) = ($generator_operation_valid(S, pgeneratorop) /\ $generator_resumption_stage(S, pgeneratorop) /\ pgeneratorop.ARGUMENTS = eps)
+  -- if pgeneratorop.BORROWED
+  -- if $generator_from_site(S, pgeneratorop.SITE)
+def $generator_operation_trace(S, pgeneratorop) = eps
+  -- if pgeneratorop.BORROWED
+  -- if $generator_from_site(S, pgeneratorop.SITE)
+
+def $task_nodes(YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = eps
+def $task_nodes(YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) = eps
+def $call_task_valid(S, YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = $yield_from_iterator_valid(S, n, pyieldfromreceipt)
+def $call_task_valid(S, YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) = $yield_from_iterator_result_valid(S, n, pyieldfromreceipt, n_child)
+def $return_discard(S, YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = $generator_from_drop(S[.ORIGIN = (pyieldfromreceipt.SITE)], n)
+def $return_discard(S, YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) = $generator_from_drop(S[.ORIGIN = (pyieldfromreceipt.SITE)], n)
+def $generator_internal_task(YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = true
+def $generator_internal_task(YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) = true
+def $generator_from_head((YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) :: ptask*) = true
+def $generator_from_claim(YIELD_FROM_ITERATOR_NEXT n pyieldfromreceipt) = [n]
+def $generator_from_claim(YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) = [n]
+def $generator_from_tasks_position((GENERATOR_RESUME pgeneratorop) :: (YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) :: ptask*) = ($generator_from_claims(ptask*) = eps)
+def $generator_from_search_position((GENERATOR_RESUME pgeneratorop) :: (YIELD_FROM_ITERATOR_RESULT n pyieldfromreceipt n_child) :: ptask*) = ($generator_from_claims(ptask*) = eps)
+
+rule PhpStep/yield-from-acquired-valid-nan-required: S ~> S[.COMPLETION = UNSUPPORTED "yield from acquired Iterator valid NaN warning continuation"]
+  -- if S.TODO = (GENERATOR_FROM_CALLBACK n porigin "valid") :: ptask_tail*
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.DELEGATE = (pgeneratorfrom)
+  -- if pgeneratorfrom.ACQUISITION =/= eps
+  -- if S_read = $resolve_at(S, S.RESULT, $generator_from_line(S, porigin))
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $generator_from_nan(pvalue)

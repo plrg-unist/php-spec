@@ -214,6 +214,7 @@ def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remainin
   -- if ~$useriter_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$fiber_traversal_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$foreach_aggregate_pending_site(S, PORIGIN n_unit pcpath)
+  -- if ~$yield_from_aggregate_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$access_pending_site(S, PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
@@ -237,6 +238,7 @@ def $call_arity_valid(S, pcallcontext) = true
   -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$fiber_traversal_context_kind(S, pcallcontext)
   -- if ~$foreach_aggregate_context(S, pcallcontext)
+  -- if ~$yield_from_aggregate_context(S, pcallcontext)
   -- if ~$access_context_kind(S, pcallcontext)
   -- if ~$clone_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)
@@ -391,6 +393,7 @@ def $call_descriptors_scoped_valid(S_live, S) = true
   -- if $object_tables_valid(S)
   -- if $eval_state_valid(S_live)
   -- if $class_state_valid(S_live)
+  -- if $yield_from_retained_valid(S_live, S_live.YIELDRETAINED)
   -- if $call_registry_valid(S.FUNCTIONS, S.CALLABLES)
   -- if $call_tasks_valid(S, S.TODO)
   -- if $retired_current_valid(S)

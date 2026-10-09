@@ -297,7 +297,7 @@ def $target_called_class(S, AGGREGATE_METHOD_TARGET n porigin) = $target_called_
 def $target_function(S, AGGREGATE_METHOD_TARGET n porigin) = $target_function(S, METHOD_TARGET n porigin)
   -- if $generator_from_aggregate(S, POBJECT n)
   -- if $fiber_traversal_method_selected(S, n, porigin, "getIterator")
-def $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, (porigin_call)) = ($fiber_traversal_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $foreach_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call))
+def $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, (porigin_call)) = ($fiber_traversal_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $foreach_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $yield_from_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call))
 ;; GENERATOR_CREATE copies the borrowed callback frame and adds one This owner.
 ;; Its retained receipt authenticates the original unpack even without a caller.
 def $generator_creation_target(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin?) = $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin?)
@@ -361,7 +361,7 @@ def $fiber_traversal_method_selected(S, n, porigin_method, text) = false -- othe
 
 ;; A tagged Generator operation borrows no invented method frame. During its
 ;; native resume the operation owns iterator data and the marker owns operand.
-def $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, text) = (pgeneratorop.STARTPACK /\ pfibertraversal.ACQUIRED = eps /\ pgeneratorop.OBJECT = pfibertraversal.OBJECT /\ pgeneratorop.SITE = pfibertraversal.START.SITE /\ pgeneratorop.LINE = pfibertraversal.LINE /\ pgeneratorop.LOOP = eps /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE /\ pgeneratorop.NAME = text /\ (text <- ["rewind", "next"]) /\ pfibertraversal.CURRENT = KNOWN PNULL /\ ((text = "rewind" /\ pfibertraversal.ITEMS = eps) \/ (text = "next" /\ pfibertraversal.ITEMS =/= eps)))
+def $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, text) = (pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED /\ pfibertraversal.ACQUIRED = eps /\ pgeneratorop.OBJECT = pfibertraversal.OBJECT /\ pgeneratorop.SITE = pfibertraversal.START.SITE /\ pgeneratorop.LINE = pfibertraversal.LINE /\ pgeneratorop.LOOP = eps /\ pgeneratorop.ARGUMENTS = eps /\ ~pgeneratorop.ADVANCE /\ pgeneratorop.NAME = text /\ (text <- ["rewind", "next"]) /\ pfibertraversal.CURRENT = KNOWN PNULL /\ ((text = "rewind" /\ pfibertraversal.ITEMS = eps) \/ (text = "next" /\ pfibertraversal.ITEMS =/= eps)))
   -- if text =/= "rewind-error"
 def $fiber_traversal_generator_header(pgeneratorop, pfibertraversal, "rewind-error") = $fiber_traversal_generator_header(pgeneratorop, pfibertraversal[.CURRENT = KNOWN PNULL], "rewind")
   -- if pfibertraversal.CURRENT = KNOWN (POBJECT n)
@@ -377,9 +377,9 @@ def $fiber_traversal_generator_tasks(S, pgeneratorop, ptask*) = false -- otherwi
 def $fiber_traversal_generator_frames(S, pgeneratorop, eps) = false
 def $fiber_traversal_generator_frames(S, pgeneratorop, pframe :: pframe_tail*) = ($fiber_traversal_generator_tasks($constant_frame_scope(S, pframe, pframe_tail*), pgeneratorop, pframe.TODO) \/ $fiber_traversal_generator_frames(S, pgeneratorop, pframe_tail*))
 def $fiber_traversal_generator_valid(S, pgeneratorop) = ($fiber_traversal_generator_tasks(S, pgeneratorop, S.TODO) \/ $fiber_traversal_generator_frames(S, pgeneratorop, S.FRAMES))
-def $generator_operation_site(S, pgeneratorop) = $fiber_traversal_generator_valid(S, pgeneratorop) -- if pgeneratorop.STARTPACK
-def $generator_resumption_valid(S, pgeneratorop) = ($generator_operation_valid(S, pgeneratorop) /\ $generator_resumption_stage(S, pgeneratorop)) -- if pgeneratorop.STARTPACK
-def $generator_operation_trace(S, pgeneratorop) = eps -- if pgeneratorop.STARTPACK
+def $generator_operation_site(S, pgeneratorop) = $fiber_traversal_generator_valid(S, pgeneratorop) -- if pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+def $generator_resumption_valid(S, pgeneratorop) = ($generator_operation_valid(S, pgeneratorop) /\ $generator_resumption_stage(S, pgeneratorop)) -- if pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
+def $generator_operation_trace(S, pgeneratorop) = eps -- if pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
 def $fiber_traversal_promote((FIBER_TRAVERSE_GENERATOR pfibertraversal text) :: ptask*) = (FIBER_TRAVERSE_RESULT pfibertraversal "generator") :: ptask*
   -- if text =/= "rewind-error"
 def $fiber_traversal_promote((FIBER_TRAVERSE_GENERATOR pfibertraversal "rewind-error") :: ptask*) = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask*
@@ -401,10 +401,10 @@ def $fiber_traversal_complete(S, pgeneratorop) = $generator_set(S[.TODO = (THROW
   -- if pgenerator.FRAME = (pframe)
   -- if $generator_close_frame_nodes(S, pframe) = eps
 def $fiber_traversal_generator(S, pfibertraversal, text, ptask*) = S_run[.TODO = $fiber_traversal_promote(S_run.TODO)]
-  -- if pgeneratorop = {OBJECT pfibertraversal.OBJECT, NAME text, SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true}
+  -- if pgeneratorop = {OBJECT pfibertraversal.OBJECT, NAME text, SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED false}
   -- if S_run = $generator_operate(S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal text) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pgeneratorop)
 def $return_discard(S, GENERATOR_RESUME pgeneratorop) = S[.TODO = $fiber_traversal_promote(S.TODO)][.ORIGIN = (pgeneratorop.SITE)]
-  -- if pgeneratorop.STARTPACK
+  -- if pgeneratorop.STARTPACK /\ ~pgeneratorop.BORROWED
 
 def $fiber_traversal_begin(S, n_capture?, pfiberstart, n, poperand, porigin, z, ptask*) = $throw_scalar(S, "Exception", $ptascii("Cannot traverse an already closed generator"), z)
   -- if S.OBJECTS[n] = GENERATOR pgenerator
@@ -503,7 +503,7 @@ def $fiber_traversal_pending_body(S, n) = true
   -- if $function_at($all_functions(S), pgenerator.FUNCTION) = (pfunction)
   -- if $fiber_traversal_pending_prefix($function_body_tasks(S, pfunction))
 def $fiber_traversal_pending_body(S, n) = false -- otherwise
-def $fiber_traversal_pending_generator(S, pfibertraversal, ptask*) = $generator_resume(S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal "rewind-error") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pfibertraversal.OBJECT, NAME "rewind", SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true})
+def $fiber_traversal_pending_generator(S, pfibertraversal, ptask*) = $generator_resume(S[.ORIGIN = (pfibertraversal.START.SITE)][.TODO = (FIBER_TRAVERSE_GENERATOR pfibertraversal "rewind-error") :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], {OBJECT pfibertraversal.OBJECT, NAME "rewind", SITE pfibertraversal.START.SITE, LINE pfibertraversal.LINE, LOOP eps, ADVANCE false, ARGUMENTS eps, STARTPACK true, BORROWED false})
 rule PhpStep/fiber-traversal-acquired-generator-pending: S ~> $fiber_traversal_pending_generator(S, pfibertraversal, ptask_tail*)
   -- if S.TODO = (FIBER_TRAVERSE_RESULT pfibertraversal "acquired-error") :: ptask_tail*
   -- if $fiber_traversal_result_valid(S, pfibertraversal, "acquired-error")
