@@ -1313,7 +1313,8 @@ whose original/current UNSET images match. Native3 and the unchanged dynamic
 Unsupported baseline at `0824519ef` are separate from changed strict/source3 at
 `f43b28b47` and 142/147 reached premises at `bad93efed`. The resolved-default
 fixture correction preserves its original uncredited failure; no earlier
-campaign is renewed. Wider quiet/getter and untyped unset access remain required.
+campaign is renewed. The later377 cut below extends untyped unset reads;
+wider getter access remains required.
 The actual356 join over `976a55232` passes strict initialization at `4b31fc1cc`.
 Future initialized declared values and typed INITIAL/UNSET slots now support
 quiet `isset`/`empty` and coalescing with ordinary visibility and no magic consumers. Terminal booleans add no payload owner;
@@ -1325,6 +1326,18 @@ corrections. Earlier quiet assertions are adapted statically only; no campaign
 is renewed. The actual358 join over `77d86df730` passes strict initialization
 at `36df1d531` (4.663s); source3/295 retain their original changed cut.
 Consumed/missing slots and wider magic access remain required.
+Module377 resumes literal undefined-property warnings with fixed null after
+handler writes, throws or borrowed CV/`$this` receiver retirement. Real temporary
+owners and future359 untyped UNSET carriers retain their separate cleanup paths.
+Strict359/source6 retain `bd419da30`; the false-only207 repair passes strict359
+at `cb1c19466`. Borrowed132, owned154 and pending166 pass at separate cuts;
+two distinct false sources pass at `192e33452`, including static handler replacement
+and default emission before its destructor disables reporting. The original
+fallback and direct-relation fixture failures keep zero credit; the earlier
+bound-Closure native witness remains a weaker separate observation. Independent
+review accepts these private cuts. [Ledger](coverage/semantics/undefined-property-review.json).
+Computed names, magic getters/hooks, consumed storage and accepted99 read-call
+reference normalization remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects

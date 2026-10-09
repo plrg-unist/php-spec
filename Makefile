@@ -393,6 +393,9 @@ test-semantics: build
 	python3 tests/semantics/instance_future_unset_read_protocol.py --group pending
 	python3 tests/semantics/instance_future_quiet_read_protocol.py --group borrowed
 	python3 tests/semantics/instance_future_quiet_read_protocol.py --group coalesce
+	python3 tests/semantics/property_undefined_warning_protocol.py --group borrowed
+	python3 tests/semantics/property_undefined_warning_protocol.py --group owned
+	python3 tests/semantics/property_undefined_warning_protocol.py --group pending
 	python3 tests/semantics/generator_request_delegation_instance_sources.py --mode full
 	python3 tests/semantics/generator_request_delegation_instance_protocol.py --mode check --sl
 	python3 tests/semantics/duplicate_property_reference_protocol.py --group receiver-cleanup
