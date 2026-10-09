@@ -328,8 +328,10 @@ including untyped return admission and saved Hook source during string conversio
 Seven new originals and strict 372-module initialization pass at `41ed4ea8d`;
 SL137 (15 derived, 122 reached) proves actual return, saved conversion, parked
 payload and final weak-null release. The virtual nested-closure control remains
-Unsupported. These cuts retain the block results above; actual-parent composition
-is pending. [Expression review](coverage/semantics/expression-get-hooks-review.json).
+Unsupported. These cuts retain the block results above. Actual 372-module
+composition over `de44ad6d3` passes strict initialization at `5e3f9cbcf`
+(5.448 s), preserving parent yield-from and magic-get dispatch without renewing
+the private checks. [Expression review](coverage/semantics/expression-get-hooks-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
