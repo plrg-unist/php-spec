@@ -15,7 +15,7 @@ dec $reference_notice_finish(pstate, porigin, poperand, int, prefreturnnotice, b
 dec $reference_notice_materialize(pstate, poperand) : pstate
 
 def $reference_notice_source(S, porigin, poperand, z, REF_NOTICE_VALUE) = ($goto_scope_valid(S, porigin) /\ $reference_return_value_valid(S[.ORIGIN = (porigin)], z) /\ $reference_return_notice(S[.ORIGIN = (porigin)], poperand))
-def $reference_notice_source(S, porigin, poperand, z, REF_NOTICE_NULL) = ($goto_scope_valid(S, porigin) /\ $reference_return_null_valid(S[.ORIGIN = (porigin)], z) /\ poperand = KNOWN PNULL)
+def $reference_notice_source(S, porigin, poperand, z, REF_NOTICE_NULL) = (($goto_scope_valid(S, porigin) \/ porigin = $reference_notice_boundary(S)) /\ $reference_return_null_valid(S[.ORIGIN = (porigin)], z) /\ poperand = KNOWN PNULL)
 def $reference_notice_boundary(S) = pfunction.ORIGIN
   -- if S.CURRENT = (pcallcontext)
   -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
