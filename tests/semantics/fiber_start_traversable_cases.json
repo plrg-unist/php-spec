@@ -73,13 +73,11 @@
     "id": "author-fiber-start-iterator-aggregate-acquisition",
     "source": "<?php\nclass StartAggregate376 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'A|'; yield 'value' => '7'; yield 'tail' => 'X'; }\n}\n$target = new Fiber(static function (int $value, ...$extra) { echo $value, '|', $extra['tail'], '|'; return 17; });\n$target->start(...new StartAggregate376);\necho $target->getReturn();\n",
     "source_sha256": "927e998fd6e16541b83871c3dbff7556b6144941faeefc2d3acf7b3e0a7b8a53",
-    "purpose": "Real IteratorAggregate acquisition delegates to the returned Generator; separate required dependency if class protocol is not yet admitted.",
-    "expected_model": "unsupported",
+    "purpose": "Real IteratorAggregate acquisition delegates named unpack values to the returned Generator.",
+    "expected_model": "normal",
     "native_stdout": "A|7|X|17",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "internal interface method contract",
-    "unsupported_events": []
+    "native_exit": 0
   },
   {
     "id": "peer-fiber-start-advanced-generator-rewind-error-preserves-live-pack-before-status",

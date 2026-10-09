@@ -82,8 +82,9 @@ def main():
         else:
             native = recorded([str(ROOT / '.tools/php/bin/php'), '-n', *flags, str(source)], directory, 'native', env, 75)
             nout, nerr = (directory / 'native.stdout').read_bytes(), (directory / 'native.stderr').read_bytes()
+        expected_stderr = row['native_stderr'].replace('{source}', str(source)).encode()
         passed = (native.get('exit') == row['native_exit'] and not native.get('timeout')
-                  and nout == row['native_stdout'].encode() and nerr == row['native_stderr'].encode())
+                  and nout == row['native_stdout'].encode() and nerr == expected_stderr)
         record = {'id': row['id'], 'source_sha256': row['source_sha256'], 'native': native, 'passed': False}
         if passed:
             model = recorded([str(ROOT / 'bin/php-semantics'), str(source), '--steps', '100000', '--timeout', '60'], directory, 'model', env, 75)
@@ -101,10 +102,12 @@ def main():
                           and outcome.get('stdout') == base64.b64encode(row.get('unsupported_stdout', '').encode()).decode()
                           and outcome.get('stderr') == '')
             else:
-                passed = (passed and model['exit'] == 0 and outcome.get('status') == 'normal'
-                          and outcome.get('exit_status') == 0
+                passed = (passed and model['exit'] == 0 and outcome.get('status') == row.get('expected_model', 'normal')
+                          and outcome.get('exit_status') == row['native_exit'] and outcome.get('reason') is None
                           and outcome.get('stdout') == base64.b64encode(nout).decode()
                           and outcome.get('stderr') == base64.b64encode(nerr).decode())
+                if row.get('expected_model') == 'php_error':
+                    passed = passed and row['native_exit'] == 255 and outcome.get('diagnostic') is not None
             record.update(model=model, outcome=outcome)
         record['passed'] = passed
         records.append(record)
@@ -115,6 +118,7 @@ def main():
     report = {'revision': revision, 'inputs': before, 'inputs_stable': stable,
               'head_stable': revision == git('rev-parse', 'HEAD'), 'selection': [row['id'] for row in cases],
               'records': records, 'normal_agreements': sum(row['passed'] and row.get('outcome', {}).get('status') == 'normal' for row in records),
+              'php_error_agreements': sum(row['passed'] and row.get('outcome', {}).get('status') == 'php_error' for row in records),
               'runtime': runtime, 'profile': profile, 'environment': {'LC_ALL': 'C', 'TZ': 'UTC', 'jobs': 1},
               'compiler': {'mode': 'SL', 'cache': False, 'determinism_checks': True,
                            'spectec_commit': 'da36ac3c434cd291940293a63da64544307730a3', 'ocaml': '5.1.0'},

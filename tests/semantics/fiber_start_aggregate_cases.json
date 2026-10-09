@@ -1,0 +1,243 @@
+[
+  {
+    "id": "safe-aggregate-iterator-acquisition",
+    "source": "<?php\nclass SafeStartIterator20 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo 'W|'; $this->position = 0; }\n    public function valid(): bool { return $this->position < 2; }\n    public function current(): mixed { return $this->position === 0 ? '7' : 'X'; }\n    public function key(): mixed { return $this->position === 0 ? 'value' : 'tail'; }\n    public function next(): void { ++$this->position; }\n}\nclass SafeStartAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\n$iterator = new SafeStartIterator20;\n$aggregate = new SafeStartAggregate20;\n$target = new Fiber(static function (int $value, ...$extra) {\n    echo $value, '|', $extra['tail'], '|';\n    return 17;\n});\n$target->start(...$aggregate);\necho $target->getReturn(), '|', (int)($aggregate instanceof IteratorAggregate);\n",
+    "source_sha256": "97490c0084e5c1dba471e94a9ce070d636588c73ed7579597af1266a5f7f8185",
+    "purpose": "safe aggregate iterator acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "A|W|7|X|17|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-fresh-iterator-owner-order",
+    "source": "<?php\nclass FreshStartIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass FreshStartAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        echo 'G|';\n        return new FreshStartIterator20;\n    }\n    public function __destruct() { echo 'A|'; }\n}\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\n$target->start(\n    ...new FreshStartAggregate20\n);\necho $target->getReturn();\n",
+    "source_sha256": "9596a45c464ae3779c1b179a190f7de1c6d0f1f9b8791456c1ad41b7fb9a6074",
+    "purpose": "aggregate fresh iterator owner order.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|I|A|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-generator-acquisition",
+    "source": "<?php\nfunction acquiredStartGenerator20() {\n    try {\n        echo 'Y|';\n        yield 7;\n    } finally {\n        echo 'F|';\n    }\n}\nclass GeneratorStartAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        echo 'G|';\n        return acquiredStartGenerator20();\n    }\n    public function __destruct() { echo 'A|'; }\n}\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\n$target->start(\n    ...new GeneratorStartAggregate20\n);\necho $target->getReturn();\n",
+    "source_sha256": "5d86fd8a56438dbfed85b8dd0fe327d33dc9840735af2293cf3a371534d2e606",
+    "purpose": "aggregate generator acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|Y|F|A|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-get-iterator-parks",
+    "source": "<?php\nclass ParkedStartIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass ParkedStartAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'G|';\n        Fiber::suspend('acquire');\n        return $iterator;\n    }\n    public function __destruct() { echo 'A|'; }\n}\n$iterator = new ParkedStartIterator20;\n$aggregate = new ParkedStartAggregate20;\n$keep = $aggregate;\n$weak = WeakReference::create($aggregate);\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\n$parent = new Fiber(static function () use ($target) {\n    global $aggregate;\n    $target->start(\n        ...$aggregate\n    );\n    return 23;\n});\necho $parent->start(), '|';\n$aggregate = null;\necho (int)($weak->get() !== null), '|', (int)$target->isStarted(), '|';\n$parent->resume();\necho $target->getReturn(), '|', $parent->getReturn(), '|';\n$keep = null;\n$iterator = null;\necho (int)($weak->get() === null);\n",
+    "source_sha256": "3c408b34cebc5fbe94f28f3a3c82989c41ad5567cdb7c67df50ec7fbeb4b7b37",
+    "purpose": "aggregate get iterator parks.",
+    "expected_model": "normal",
+    "native_stdout": "G|acquire|1|0|W|B7|17|23|A|I|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-get-iterator-throws-direct-fcc",
+    "source": "<?php\nclass ThrowingStartAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $original;\n        echo 'G|';\n        throw $original;\n    }\n    public function __destruct() { echo 'A|'; }\n}\n$original = new Exception('acquisition');\n$target = new Fiber(static function ($value = 'D') {\n    echo 'B', $value, '|';\n    return 17;\n});\n$weak = WeakReference::create($target);\n$start = $target->start(...);\ntry {\n    $start(\n        ...new ThrowingStartAggregate20\n    );\n} catch (Throwable $error) {\n    echo (int)($error === $original), '|', (int)$target->isStarted(), '|';\n}\n$target = null;\necho (int)($weak->get() !== null), '|';\n$start = null;\necho (int)($weak->get() === null);\n",
+    "source_sha256": "11176eb9cc59c1599ff0aa383440fdf8b362cda71209d90ca11fe404859dc3e8",
+    "purpose": "aggregate get iterator throws direct fcc.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|1|0|1|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "safe-aggregate-reference-iterator-acquisition",
+    "source": "<?php\nclass SafeReferenceStartIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass SafeReferenceStartAggregate20 implements IteratorAggregate {\n    public function &getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\n$iterator = new SafeReferenceStartIterator20;\n$aggregate = new SafeReferenceStartAggregate20;\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\ntry {\n    $target->start(...$aggregate);\n} catch (Throwable $error) {\n    echo get_class($error), '|', $error->getMessage(), '|';\n}\necho (int)$target->isStarted(), '|';\nif ($target->isTerminated()) {\n    echo $target->getReturn();\n}\n",
+    "source_sha256": "f6bd6af3f1fc4ce91cbd47cc366035dbd5a6d8329d127ce6eded2b839b7e7961",
+    "purpose": "safe aggregate reference iterator acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "A|Exception|Objects returned by SafeReferenceStartAggregate20::getIterator() must be traversable or implement interface Iterator|0|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "stable-self-returning-aggregate",
+    "source": "<?php\nclass PeerStableSelfAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        echo 'A|';\n        return $this;\n    }\n}\n$aggregate = new PeerStableSelfAggregate20;\n$target = new Fiber(static function ($value = 'D') {\n    echo 'B', $value, '|';\n    return 17;\n});\ntry {\n    $target->start(\n        ...$aggregate\n    );\n} catch (Throwable $error) {\n    echo get_class($error), '|', $error->getMessage(), '|';\n}\necho (int)$target->isStarted();\n",
+    "source_sha256": "fe70cbd1827e7598ee8a1905b62e710d43fd5909d8a2596d2426d7b68eb3dff6",
+    "purpose": "stable self returning aggregate.",
+    "expected_model": "normal",
+    "native_stdout": "A|Exception|Objects returned by PeerStableSelfAggregate20::getIterator() must be traversable or implement interface Iterator|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "scalar-returning-aggregate",
+    "source": "<?php\nclass PeerScalarAggregate20 implements IteratorAggregate {\n    #[ReturnTypeWillChange]\n    public function getIterator() {\n        echo 'A|';\n        return 7;\n    }\n}\n$aggregate = new PeerScalarAggregate20;\n$target = new Fiber(static function ($value = 'D') {\n    echo 'B', $value, '|';\n    return 17;\n});\ntry {\n    $target->start(\n        ...$aggregate\n    );\n} catch (Throwable $error) {\n    echo get_class($error), '|', $error->getMessage(), '|';\n}\necho (int)$target->isStarted();\n",
+    "source_sha256": "d86c00c177285f94731a1c644847a9081ee5703b7fc1ab97dccbdc37da1b560b",
+    "purpose": "scalar returning aggregate.",
+    "expected_model": "normal",
+    "native_stdout": "A|Exception|Objects returned by PeerScalarAggregate20::getIterator() must be traversable or implement interface Iterator|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "source-interface-inherited-get-iterator",
+    "source": "<?php\ninterface PeerStartAggregateContract20 extends IteratorAggregate {}\nclass PeerStartLinkedIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerStartAggregateBase20 implements PeerStartAggregateContract20 {\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\nclass PeerStartAggregateLeaf20 extends PeerStartAggregateBase20 {}\n$iterator = new PeerStartLinkedIterator20;\n$aggregate = new PeerStartAggregateLeaf20;\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\necho (int)($aggregate instanceof IteratorAggregate), '|',\n    (int)($aggregate instanceof Traversable), '|';\n$target->start(\n    ...$aggregate\n);\necho $target->getReturn();\n",
+    "source_sha256": "a1ea5fa17aef0334fdac5dd932b4615357b4cd8c6e1b521c2e984deae6696fc2",
+    "purpose": "source interface inherited get iterator.",
+    "expected_model": "normal",
+    "native_stdout": "1|1|A|W|B7|17",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-missing-method-contract",
+    "source": "<?php\nclass PeerMissingAggregate20 implements IteratorAggregate {}\necho 'unreached';\n",
+    "source_sha256": "67eee25bf911fe1eb51626c97e62f085e00f261b915ae3096a9e8c86d4a4e82a",
+    "purpose": "aggregate missing method contract.",
+    "expected_model": "php_error",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Class PeerMissingAggregate20 contains 1 abstract method and must therefore be declared abstract or implement the remaining method (IteratorAggregate::getIterator) in {source} on line 2\nStack trace:\n#0 {main}\n",
+    "native_exit": 255
+  },
+  {
+    "id": "aggregate-protected-method-contract",
+    "source": "<?php\nclass PeerProtectedAggregate20 implements IteratorAggregate {\n    protected function getIterator(): Traversable {\n        throw new Exception('not called');\n    }\n}\necho 'unreached';\n",
+    "source_sha256": "1aae720bab764ca03fda9c37e778d1bb2fc2113af85119398b4c3adfc66a4fbe",
+    "purpose": "aggregate protected method contract.",
+    "expected_model": "php_error",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Access level to PeerProtectedAggregate20::getIterator() must be public (as in class IteratorAggregate) in {source} on line 3\nStack trace:\n#0 {main}\n",
+    "native_exit": 255
+  },
+  {
+    "id": "aggregate-static-method-contract",
+    "source": "<?php\nclass PeerStaticAggregate20 implements IteratorAggregate {\n    public static function getIterator(): Traversable {\n        throw new Exception('not called');\n    }\n}\necho 'unreached';\n",
+    "source_sha256": "4cb4dae62057976c5f5bd42ea891102baf21f79be0462c1fe33535f87b3ba9e8",
+    "purpose": "aggregate static method contract.",
+    "expected_model": "php_error",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Cannot make non static method IteratorAggregate::getIterator() static in class PeerStaticAggregate20 in {source} on line 3\nStack trace:\n#0 {main}\n",
+    "native_exit": 255
+  },
+  {
+    "id": "aggregate-required-argument-contract",
+    "source": "<?php\nclass PeerRequiredArgumentAggregate20 implements IteratorAggregate {\n    public function getIterator($required): Traversable {\n        throw new Exception('not called');\n    }\n}\necho 'unreached';\n",
+    "source_sha256": "5f80ad8c7a4ae0be5c24435d92abd531e90281b5e6ea25ea419d7b52d45e0703",
+    "purpose": "aggregate required argument contract.",
+    "expected_model": "php_error",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Declaration of PeerRequiredArgumentAggregate20::getIterator($required): Traversable must be compatible with IteratorAggregate::getIterator(): Traversable in {source} on line 3\nStack trace:\n#0 {main}\n",
+    "native_exit": 255
+  },
+  {
+    "id": "aggregate-iterator-exclusive-contract",
+    "source": "<?php\nabstract class PeerBothIteratorAggregate20 implements IteratorAggregate, Iterator {}\necho 'unreached';\n",
+    "source_sha256": "d7607c6e0d4eeec77d5f30afc80a90af9d3fd5c6456670d5c191ac952130663d",
+    "purpose": "aggregate iterator exclusive contract.",
+    "expected_model": "php_error",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Class PeerBothIteratorAggregate20 cannot implement both Iterator and IteratorAggregate at the same time in {source} on line 2\nStack trace:\n#0 {main}\n",
+    "native_exit": 255
+  },
+  {
+    "id": "aggregate-tentative-return-notice",
+    "source": "<?php\nset_error_handler(static function ($severity, $message, $file, $line) {\n    echo $severity, '|', $message, '|', $line, '|';\n    return true;\n});\nif (true) {\n    class PeerNoticeAggregate20 implements IteratorAggregate {\n        public function getIterator(): int {\n            echo 'A|';\n            return 7;\n        }\n    }\n}\n$aggregate = new PeerNoticeAggregate20;\n$target = new Fiber(static function ($value = 'D') {\n    echo 'B', $value, '|';\n    return 17;\n});\ntry {\n    $target->start(\n        ...$aggregate\n    );\n} catch (Throwable $error) {\n    echo get_class($error), '|', $error->getMessage(), '|';\n}\nrestore_error_handler();\necho (int)$target->isStarted();\n",
+    "source_sha256": "c381029f0c77822f8e215181fbc959184f80e4ebd901a91331c5dd4a78f04909",
+    "purpose": "aggregate tentative return notice.",
+    "expected_model": "normal",
+    "native_stdout": "8192|Return type of PeerNoticeAggregate20::getIterator(): int should either be compatible with IteratorAggregate::getIterator(): Traversable, or the #[\\ReturnTypeWillChange] attribute should be used to temporarily suppress the notice|8|A|Exception|Objects returned by PeerNoticeAggregate20::getIterator() must be traversable or implement interface Iterator|0",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-nested-acquisition-required",
+    "source": "<?php\nclass PeerNestedIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerNestedInnerAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'N|';\n        return $iterator;\n    }\n}\nclass PeerNestedOuterAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $nested;\n        echo 'O|';\n        return $nested;\n    }\n}\n$iterator = new PeerNestedIterator20;\n$nested = new PeerNestedInnerAggregate20;\n$aggregate = new PeerNestedOuterAggregate20;\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\n$target->start(\n    ...$aggregate\n);\necho $target->getReturn();\n",
+    "source_sha256": "5998f1adfebca1d55dc09512881b94b1f60aa21c648c3f30c5a3fdd8e1f28147",
+    "purpose": "aggregate nested acquisition required.",
+    "expected_model": "unsupported",
+    "native_stdout": "O|N|W|B7|17",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Fiber start nested IteratorAggregate acquisition",
+    "unsupported_stdout": "O|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "79",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aggregate-foreach-acquisition-required",
+    "source": "<?php\nclass PeerForeachIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerForeachAggregate20 implements IteratorAggregate {\n    public string $property = 'wrong';\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\n$iterator = new PeerForeachIterator20;\n$aggregate = new PeerForeachAggregate20;\nforeach ($aggregate as $value) {\n    echo 'V', $value, '|';\n}\necho 'E';\n",
+    "source_sha256": "54b80be17efdcd58d529164596917fd2066991eb971f19dc889af9c31cb1b342",
+    "purpose": "aggregate foreach acquisition required.",
+    "expected_model": "unsupported",
+    "native_stdout": "A|W|V7|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "foreach IteratorAggregate acquisition",
+    "unsupported_stdout": "",
+    "unsupported_events": []
+  },
+  {
+    "id": "aggregate-yield-from-acquisition-required",
+    "source": "<?php\nclass PeerDelegatedIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerDelegatedAggregate20 implements IteratorAggregate {\n    public string $property = 'wrong';\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\n$iterator = new PeerDelegatedIterator20;\n$aggregate = new PeerDelegatedAggregate20;\nfunction peerForwardAggregate20() {\n    global $aggregate;\n    yield from $aggregate;\n}\nforeach (peerForwardAggregate20() as $value) {\n    echo 'V', $value, '|';\n}\necho 'E';\n",
+    "source_sha256": "53448f7e85abc624bdec8513d67b6efccad277deb3553ff2307600c3093fb363",
+    "purpose": "aggregate yield from acquisition required.",
+    "expected_model": "unsupported",
+    "native_stdout": "A|W|V7|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "yield from IteratorAggregate acquisition",
+    "unsupported_stdout": "",
+    "unsupported_events": []
+  },
+  {
+    "id": "aggregate-borrowed-cv-retired-keeper",
+    "source": "<?php\nclass PeerKeeperIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void {\n        global $keep, $weak;\n        echo 'W|';\n        $keep = null;\n        echo (int)($weak->get() === null), '|';\n    }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n    public function __destruct() { echo 'I|'; }\n}\nclass PeerKeeperAggregate20 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $aggregate, $iterator;\n        $aggregate = null;\n        echo 'G|';\n        return $iterator;\n    }\n    public function __destruct() { echo 'A|'; }\n}\n$iterator = new PeerKeeperIterator20;\n$aggregate = new PeerKeeperAggregate20;\n$keep = $aggregate;\n$weak = WeakReference::create($aggregate);\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\n$target->start(\n    ...$aggregate\n);\necho $target->getReturn(), '|';\n$iterator = null;\necho (int)($weak->get() === null);\n",
+    "source_sha256": "3f3df05d91e47da603dad21cb777a6b614291c5e2b12e4229c796e71e8a75c8d",
+    "purpose": "aggregate borrowed cv retired keeper.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|A|1|B7|17|I|1",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-covariant-iterator-generator-override",
+    "source": "<?php\nclass PeerCovariantIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerCovariantAggregate20 implements IteratorAggregate {\n    public function getIterator(): Iterator {\n        global $iterator;\n        echo 'I|';\n        return $iterator;\n    }\n}\nfunction peerCovariantGenerator20() {\n    echo 'Y|';\n    yield 7;\n}\nclass PeerCovariantGeneratorAggregate20 extends PeerCovariantAggregate20 {\n    public function getIterator(): Generator {\n        echo 'G|';\n        return peerCovariantGenerator20();\n    }\n}\n$iterator = new PeerCovariantIterator20;\n$aggregate = new PeerCovariantAggregate20;\n$target = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 17;\n});\n$target->start(\n    ...$aggregate\n);\necho $target->getReturn(), '|';\n$derived = new PeerCovariantGeneratorAggregate20;\n$second = new Fiber(static function ($value) {\n    echo 'B', $value, '|';\n    return 23;\n});\n$second->start(\n    ...$derived\n);\necho $second->getReturn();\n",
+    "source_sha256": "e8d761e3df73a29c9504ce1e45b96cbb36ebd3c5622a43d7a1fd1e1845bcad92",
+    "purpose": "Declared Iterator and covariant Generator return types share real Traversable ancestry.",
+    "expected_model": "normal",
+    "native_stdout": "I|W|B7|17|G|Y|B7|23",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "aggregate-ordinary-call-unpack-required",
+    "source": "<?php\nclass PeerCallUnpackIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerCallUnpackAggregate20 implements IteratorAggregate {\n    public string $property = 'wrong';\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\nfunction peerCallUnpack20($value) {\n    echo 'B', $value, '|';\n}\n$iterator = new PeerCallUnpackIterator20;\n$aggregate = new PeerCallUnpackAggregate20;\npeerCallUnpack20(\n    ...$aggregate\n);\necho 'E';\n",
+    "source_sha256": "85363a5c0ba544e0be7c3d9ebba48eda41e7849652ccfc0ca6a5a936079b92d3",
+    "purpose": "Ordinary call unpack stays a distinct required Aggregate acquisition route.",
+    "expected_model": "unsupported",
+    "native_stdout": "A|W|B7|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "call argument IteratorAggregate unpacking",
+    "unsupported_events": []
+  },
+  {
+    "id": "author-fiber-start-iterator-aggregate-acquisition",
+    "source": "<?php\nclass StartAggregate376 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo 'A|'; yield 'value' => '7'; yield 'tail' => 'X'; }\n}\n$target = new Fiber(static function (int $value, ...$extra) { echo $value, '|', $extra['tail'], '|'; return 17; });\n$target->start(...new StartAggregate376);\necho $target->getReturn();\n",
+    "source_sha256": "927e998fd6e16541b83871c3dbff7556b6144941faeefc2d3acf7b3e0a7b8a53",
+    "purpose": "Real IteratorAggregate acquisition delegates named unpack values to the returned Generator.",
+    "expected_model": "normal",
+    "native_stdout": "A|7|X|17",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
