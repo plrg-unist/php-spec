@@ -113,7 +113,7 @@ def main():
         return ('$php_request_run(' + checked['fixture'] + ', 0, ' + json.dumps(facts['file']) +
                 ', ' + request_fixture(facts) + ')')
 
-    def fixture(name, case, stages, checks, bad=(), terminal=None, negative_case=False):
+    def fixture(name, case, stages, checks, bad=(), terminal=None, negative_case=False, completion=True):
         common = ['S_initial = ' + initial(case, negative_case), 'S_initial.COMPLETION = BUDGET',
                   'S_start = S_initial[.COMPLETION = NORMAL]', 'S = $owner_find(S_start, 3000, 0)',
                   'S.COMPLETION = NORMAL', '$owner_stage(S, 0)', '$call_descriptors_valid(S)',
@@ -128,8 +128,8 @@ def main():
         complete = ['S_zero = $drive(S, 0)', 'S_zero.COMPLETION = BUDGET',
                     'S_one = $replay_resume(S_zero, 1)', 'S_adjacent = $replay_resume(S_one, 10000)',
                     'S_frontier = $drive(S, 10001)', 'S_whole = $drive(S_start, 10001)',
-                    'S_adjacent = S_frontier', 'S_frontier = S_whole']
-        if terminal is None:
+                    'S_adjacent = S_frontier', 'S_frontier = S_whole'] if completion else []
+        if completion and terminal is None:
             complete += ['S_whole.COMPLETION = NORMAL',
                          '$replay_outputs(S_whole.EVENTS) = ' + str(list(cases[case]['expected_coherent_stdout'].encode())),
                          'S_whole.CURRENT = eps', 'S_whole.FRAMES = eps', 'S_whole.TODO = eps',
@@ -143,7 +143,7 @@ def main():
                          'S_whole.STORE[n_selected_terminal] = DEFINED (PSTRING $ptascii("' + ('s' if case == 'foreach-return-active-finalizer-inner-catch-saved' else 'new' if case == 'foreach-pending-header-reference-return' else 'ok') + '"))',
                          '$owner_errors_dead(S_whole, S_whole.OBJECTS, 0)',
                          '$heap_valid($heap_graph(S_whole))', '$call_descriptors_valid(S_whole)']
-        else:
+        elif completion:
             complete += terminal
         assertions = common + checks + rejected + complete
         stage_text = ''
@@ -338,13 +338,15 @@ def main():
         'S.CURRENT = (pcallcontext)', 'pcallcontext.CALLSITE = pframe.ORIGIN',
         'pframe.ORIGIN = (porigin_call)',
         '$origin_node(S.SOURCES, porigin_call) = (NExprFuncCall (NName (BYTES "cGluZw==") metadata_name) (SEQUENCE eps) metadata_call)',
-        '$call_tasks_valid(S_scope, pframe.TODO)',
-        'S_restored = $owner_find($drive_steps(S, 1), 3000, 1)',
+        '$call_tasks_valid(S_scope, pframe.TODO)']
+    restored = ['S_restored = $owner_find($drive_steps(S, 1), 3000, 1)',
         'S_restored.RETIREDOWNERS = pframe.RETIREDOWNERS',
         '$retired_pair_valid(S_restored, pretiredowner)', '$call_descriptors_valid(S_restored)']
     fixture('saved-installed-owner-pair', case, {
         0: stage, 1: f + ['$replay_outputs(S.EVENTS) = ' + str(list(b'F1;C1;F1;A1;P;'))]},
-        checks, pair_bad('S_scope', saved=True))
+        checks + restored)
+    fixture('saved-installed-owner-pair-malformed', case, {0: stage},
+        checks, pair_bad('S_scope', saved=True), completion=False)
     stage = f + ['S.TODO = (STMT (NStmtContinue phpType5 metadata)) :: ptask_tail*',
                  'S.RETIREDOWNERS = [pretiredowner]', 'pretiredowner.POSITION = (1)']
     checks = stage[1:] + pair() + [
