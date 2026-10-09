@@ -377,7 +377,11 @@ Exception's occupied GC slot through the pending HANDLE job. One exact source
 and 549 strict premises retain separate cuts. A declared reference-cell child,
 after its last local alias is unset, follows the same second-fatal path. Its
 retired cell/STORE value certifies the actual Leaf release without adding an owner;
-one new exact source and 677 strict premises retain separate cuts. Wider handlers/rendering,
+one new exact source and 677 strict premises retain separate cuts. An array child's
+sole owning Leaf entry follows the same path after real array retirement; retired
+contents add no owner. An external shared array retains the Leaf and emits only the
+first fatal. Two exact sources and 712/77 strict premises retain their private cut.
+Wider handlers/rendering,
 child lifetimes, reacquisition, parked/escaped storage and generic terminal cleanup
 remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
