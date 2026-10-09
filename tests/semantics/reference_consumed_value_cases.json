@@ -1,0 +1,9 @@
+[
+  {
+    "id": "active-finalizer-consumed-effectful-value-saved",
+    "source": "<?php\n$x=\"old\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction old_value(){echo \"V;\";return \"old\";}\nfunction &f():string{global $x,$y,$n;try{return old_value().\"\";}finally{echo \"O;\";ping();try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";if($n===1){$y=new stdClass;}else{ping();$y=\"fixed\";}}}catch(TypeError $e){echo \"C;\";}echo \"A;\";}}\ntry{$r=&f();echo \"r=\",$r,\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "V;O;P;I1;I2;P;C;A;O;P;I3;P;r=fixed;x=old;n=3;yfixed=0;",
+    "stderr": "",
+    "exit": 0
+  }
+]

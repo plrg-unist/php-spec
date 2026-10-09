@@ -16,6 +16,7 @@ dec $finally_ref_source_valid(pstate, porigin, porigin, int) : bool
 dec $finally_outer_origin_valid(pstate, porigin, porigin?) : bool
 dec $ref_return_cursor_site(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_literal(pstate, prefreturncursor) : pvalue?
+dec $ref_return_cursor_concat(pstate, prefreturncursor) : bool
 dec $ref_return_cursor_old_operand(pstate, prefreturncursor, poperand) : bool
 dec $ref_return_cursor_inside(porigin, porigin) : bool
 dec $ref_return_cursor_valid(pstate, prefreturncursor, porigin, int) : bool
@@ -116,7 +117,7 @@ dec $finally_leave_ref_return(pstate, porigin, porigin, poperand, int, bool, pta
 def $finally_leave_ref_return(S, porigin, porigin_source, poperand, z, b_finalized, ptask_tail*) = S_left[.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: $ref_recheck_tail(S_left, porigin, porigin_source, poperand, z, S_left.TODO)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S_left = $finally_leave(S, porigin, ptask_tail*)
 
-;; DISCARD_EXCEPTION releases the old CV return operand but retains the
+;; DISCARD_EXCEPTION clears the old freeable return operand but retains the
 ;; FAST_CALL address. This bounded certificate owns no value or reference cell.
 def $ref_return_cursor_site(S, prefreturncursor) = true
   -- if $finally_ref_source_valid(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, prefreturncursor.LINE)
@@ -133,6 +134,10 @@ def $ref_return_cursor_site(S, prefreturncursor) = true
   -- if pfunction.SIGNATURE.RETURNS =/= eps
   -- if $typed_exact(pfunction.SIGNATURE.RETURNS, pvalue)
   -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
+def $ref_return_cursor_site(S, prefreturncursor) = true
+  -- if $finally_ref_source_valid(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, prefreturncursor.LINE)
+  -- if $ref_return_cursor_concat(S, prefreturncursor)
+  -- if $finally_outer_origin_valid(S, prefreturncursor.OWNER, prefreturncursor.OUTER)
 def $ref_return_cursor_site(S, prefreturncursor) = false -- otherwise
 ;; A literal CONST survives DISCARD_EXCEPTION. Its immutable string or
 ;; explicit null source can recover this value without expression effects.
@@ -145,10 +150,22 @@ def $ref_return_cursor_literal(S, prefreturncursor) = (PNULL)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprConstFetch (NName (BYTES text) metadata_name) metadata_const) metadata)
   -- if $special_constant($base64(text)) = (PNULL)
 def $ref_return_cursor_literal(S, prefreturncursor) = eps -- otherwise
+;; A call operand prevents constant folding; concat emits a freeable TMP.
+def $ref_return_cursor_concat(S, prefreturncursor) = true
+  -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprBinaryOpConcat (NExprFuncCall (NName (BYTES text_function) metadata_name) (SEQUENCE eps) metadata_call) (NScalarString (BYTES text_empty) metadata_string) metadata_concat) metadata)
+  -- if $base64(text_empty) = eps
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "string"]))]
+def $ref_return_cursor_concat(S, prefreturncursor) = false -- otherwise
 def $ref_return_cursor_old_operand(S, prefreturncursor, REFERENCE n) = $finally_return_operand_valid(S, REFERENCE n)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata)
 def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
   -- if $ref_return_cursor_literal(S, prefreturncursor) = (pvalue)
+def $ref_return_cursor_old_operand(S, prefreturncursor, KNOWN pvalue) = true
+  -- if $ref_return_cursor_concat(S, prefreturncursor)
+  -- if $typed_string_value(pvalue)
+  -- if $operand_nodes(KNOWN pvalue) = eps
 def $ref_return_cursor_old_operand(S, prefreturncursor, poperand) = false -- otherwise
 def $ref_return_cursor_inside(PORIGIN n pcpath_owner, PORIGIN n pcpath_source) = $effect_below(pcpath_owner ++ [PCFIELD 2, PCFIELD 0], pcpath_source)
 def $ref_return_cursor_inside(porigin_owner, porigin_source) = false -- otherwise
@@ -866,6 +883,12 @@ rule PhpStep/finally-resume-ref-return: S ~> $finally_leave_ref_return(S, porigi
 rule PhpStep/finally-resume-consumed-ref: S ~> $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN PNULL, prefreturncursor.LINE, true, ptask_tail*)
   -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
   -- if $ref_return_cursor_literal(S, prefreturncursor) = eps
+  -- if ~$ref_return_cursor_concat(S, prefreturncursor)
+rule PhpStep/finally-resume-consumed-concat: S ~> S_left[.TODO = [RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RETURN_NOTICE prefreturncursor.SOURCE prefreturncursor.LINE REF_NOTICE_VALUE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE]]
+  -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
+  -- if $ref_return_cursor_concat(S, prefreturncursor)
+  -- if S_left = $finally_leave_ref_return(S, prefreturncursor.OWNER, prefreturncursor.SOURCE, KNOWN PNULL, prefreturncursor.LINE, true, ptask_tail*)
+  -- if S_left.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor.LINE true prefreturncursor.SOURCE) :: (REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN PNULL) prefreturncursor.LINE) :: eps
 rule PhpStep/finally-resume-consumed-literal: S ~> S_left[.TODO = [RETURN_REF_UNWIND (KNOWN pvalue) prefreturncursor.LINE true prefreturncursor.SOURCE, REF_RETURN_NOTICE prefreturncursor.SOURCE prefreturncursor.LINE REF_NOTICE_VALUE, REF_RECHECK prefreturncursor.SOURCE prefreturncursor.OWNER (KNOWN pvalue) prefreturncursor.LINE]]
   -- if S.TODO = (FINALLY_REF_CONSUMED prefreturncursor) :: ptask_tail*
   -- if $ref_return_cursor_literal(S, prefreturncursor) = (pvalue)
