@@ -1057,7 +1057,10 @@ Ordinary abstract scoped calls reject before arguments, and inaccessible concret
 nonstatic methods report access errors before missing-receiver errors. Literal
 constructor calls retain separate opcode dispatch: private denial precedes
 receiver compatibility, and inherited private constructor errors name the requested
-class.
+class. A missing constructor reports `Cannot call constructor` for literal/folded method
+names and the ordinary undefined-method Error for computed names; both suppress
+argument evaluation. [The focused review](coverage/semantics/missing-constructor-review.json)
+records two exact originals and distinct17+17 reached SL checks.
 Deferred trait parameter constructors preserve selected scope through class-table
 work and retain valid initialization history after an ordinary capture is released.
 A fresh original and38 reached checks pass independently; unpublished-FCC work

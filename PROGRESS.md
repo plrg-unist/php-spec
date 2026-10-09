@@ -2215,6 +2215,18 @@ Current19 raw evidence is `method-runtime-svn8anig`, `closure-call-protocol-66s2
 original normal mismatch `s0r3su65` retains zero agreement. Prior constructor
 cuts are not renewed; current375 collector/task fields remain preserved.
 
+Ordinary scoped calls without an effective constructor now preserve Zend's
+constructor arm: literal and folded names raise `Cannot call constructor`,
+while computed names retain the undefined-method Error before arguments.
+Two safe originals and distinct17+17 genuine SL premises pass at `fbab085b0` and
+`87618a93e`/358, with no argument/allocation effects and all four validators.
+Strict compilation passes; the original baseline mismatch and unreached computed
+fixture remain zero credit. The corrected fixture uses the authentic live CV.
+[The focused ledger](coverage/semantics/missing-constructor-review.json) retains
+the separate cuts. Actual `d47aee7c3` composition at `6e462b5e`/359 passes strict
+SL in 4.801s with zero runtime/source credit, preserving ASSERT/INI and GC/PROP
+interfaces. Private sources/states are not renewed; wider method/core stays open.
+
 Deferred trait parameter constructors now preserve their selected scope across
 class-table initialization, including actual arguments, constructor choice and
 source line. Independent actual1fa6af571 compiler gates, one fresh ordinary source
