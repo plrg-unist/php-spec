@@ -17,11 +17,12 @@ def $sensitive_trace_parameter(S, pfunction, n) = true
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (pcnode)
   -- if $sensitive_source_parameters(pcnode) = ((n_field, phpType17*))
   -- if $(n < |phpType17*|) /\ $(n < |pfunction.SIGNATURE.PARAMETERS|)
-  -- if phpType17*[n] = NParam phpType14 (INTEGER 0) phpType18 phpType4_ref phpType4_var phpType10 phpType5 (SEQUENCE eps) metadata
+  -- if phpType17*[n] = NParam phpType14 (INTEGER flags) phpType18 phpType4_ref phpType4_var phpType10 phpType5 (SEQUENCE eps) metadata
   -- if $origin_child((pfunction.ORIGIN), [PCFIELD n_field, PCINDEX n]) = (porigin_param)
   -- if $origin_node(S.SOURCES, porigin_param) = (phpType17*[n])
   -- if $pslower(phpType17*[n]) = PSINPUTATTRIBUTES psraw phpType14
-  -- if ~psraw.EXTRA /\ psraw.FLAGS = 0
+  -- if ~psraw.EXTRA
+  -- if psraw.FLAGS = 0 \/ ($promotion_raw(S, pfunction, n) = (psraw) /\ $promotion_descriptor(S, pfunction, n) =/= eps)
   -- if psraw.NAME = pfunction.SIGNATURE.PARAMETERS[n].NAME
   -- if psraw.BYREF = pfunction.SIGNATURE.PARAMETERS[n].BYREF
   -- if psraw.VARIADIC = pfunction.SIGNATURE.PARAMETERS[n].VARIADIC

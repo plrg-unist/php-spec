@@ -89,8 +89,18 @@ remains explicit Unsupported with zero agreement. Strict compilation and SL112
 The original false105 fixture and both diagnostics retain zero state credit.
 Actual 365-module composition over `88ddc64c5` passes strict compilation at
 `78453102d` (5.083 s), preserving current retirement, string, GEN and PROPS paths
-without renewing the private checks. Promoted/mixed/hooks and wider wrapper
-protocols remain required. [Sensitive review](coverage/semantics/sensitive-parameter-review.json).
+without renewing the private checks. Mixed/repeated/argument attributes, hooks and
+wider wrapper protocols remain required. [Sensitive review](coverage/semantics/sensitive-parameter-review.json).
+
+Promoted constructor parameters also accept the single builtin SensitiveParameter.
+Value/reference property writes retain ordinary semantics; trace wrappers capture
+later live CVs without creating a property Override obligation. Source8 passes at
+separate bf6/688 cuts, including readonly/private/trait and ordered promotion
+errors. Strict 365-module compilation and SL176 (74 derived, 102 reached checks)
+pass at `75c4aba82`, including authentic queued-promotion admission. Earlier
+Unsupported, method-continuation failure, fixture stops, false states and diagnostics
+retain zero affected credit. Current-parent composition remains pending.
+[Sensitive promotion review](coverage/semantics/sensitive-promotion-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

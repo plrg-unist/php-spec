@@ -65,7 +65,7 @@ DERIVED = [
     '~$sensitive_trace_parameter(S,pfunction[.SIGNATURE.PARAMETERS = [psparam[.NAME = $ptascii("other")]]],0)',
     '~$sensitive_trace_parameter(S,pfunction[.SIGNATURE.PARAMETERS = [psparam[.BYREF = ~psparam.BYREF]]],0)',
     '~$sensitive_trace_parameter(S,pfunction[.SIGNATURE.PARAMETERS = [psparam[.VARIADIC = ~psparam.VARIADIC]]],0)',
-    '~$psattributes_supported(ptcontext,psraw[.FLAGS = 1],phpType14_param)',
+    '$psattributes_supported(ptcontext,psraw[.FLAGS = 1],phpType14_param)',
     '~$psattributes_supported(ptcontext,psraw[.EXTRA = true],phpType14_param)',
     '~$psattributes_supported(ptcontext,psraw,SEQUENCE eps)',
     'phpType14_param = SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name_attribute (SEQUENCE eps) metadata_attribute)])) metadata_group)])',
