@@ -229,6 +229,25 @@ retain their inputs. Other Aggregate consumers and broader pending Generator
 startup remain required.
 [Nested ledger](coverage/semantics/fiber-start-nested-aggregate-review.json).
 
+Aggregate foreach378 acquires nested real Iterator/Generator data with borrowed
+getter receivers and one raw owner per returned layer. Layers retire before
+initialization; raw valid retval cleanup precedes original input retirement and
+the loop body. Acquisition/layer throws prevent startup, while retval/input throws
+keep exact data-before-input unwind. Persistent reference-mode CVs stay borrowed;
+reference-valued inputs retain their HCELL, and reference-yielding Generators keep
+ordinary live aliases. Retained foreach Generator close runs real finally throw
+and Fiber suspension, with source-authenticated receipts and unique operation
+ownership across saved VMs. Twenty selected normal sources and strict362 pass;
+the later-valid NaN control stays Unsupported/zero agreement. Twenty-six independent reached
+groups/719 physical premises pass at separate retained cuts; genuine getter
+creation readiness and one initializer cursor claim are checked. Original admission/source failures stay
+zero; prior Aggregate/START evidence is not renewed. Changed original CV/reference
+operands, wider byref locations, foreach NaN handlers and remaining Aggregate
+consumers stay required. Actual366 over `c07eac043` passes strict SL at
+`646095932`, preserving current retired-owner replay, sensitive trace wrappers
+and assertion conversion; private source/state cuts retain their inputs.
+[Foreach ledger](coverage/semantics/foreach-aggregate-review.json).
+
 Actual358 over `0f28f9d62` passes strict compilation at `8b1b71064`, preserving
 current physical collector, source-line, assertion and retained-method fields;
 private source/state cuts retain their inputs.

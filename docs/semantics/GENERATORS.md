@@ -69,16 +69,21 @@ Array, source Iterator and Generator graph delegation are covered by
 [Module289](GENERATOR-DELEGATION.md), including shared progress, return transfer,
 live callback references and natural owner cleanup. [Reference yields328](GENERATOR-REFERENCE-YIELDS.md)
 add live cells, value-API snapshots, foreach/destructuring aliases and authentic
-Notice/cleanup readback. IteratorAggregate, broader reference producers, dynamic/nullsafe
-API calls, named/unpacked API arguments, scoped static and other implicit callback
-creation, and creation through changed/imported caller scope remain required.
+Notice/cleanup readback. Aggregate acquisition has separate START and
+[foreach scopes](ITERATORS.md). Aggregate yield-from/ordinary-call unpack,
+broader reference producers, dynamic/nullsafe API calls, named/unpacked API
+arguments, scoped static and other implicit callback creation, and creation
+through changed/imported caller scope remain required.
 [Module303](GENERATOR-FORCE-CLOSE.md) adds ordinary last-owner forced close,
 pending finally execution and ordered input/frame/cache release.
 [Module310](GENERATOR-FIBER-CLOSE.md) extends ordinary paused-Generator release
-to the active Fiber stack while preserving real parked caller owners. Wider
-terminal cleanup, parked running Generators, switching finalizers, general user
-destructors and cyclic collection remain required; their explicit Unsupported controls earn no
-agreement. Natural return/throw/finally cleanup remains distinct from forced close.
+to the active Fiber stack while preserving real parked caller owners. Module378
+retains a foreach Generator getter's real receiver and statement/line receipt
+through break-driven finally throw and Fiber suspension; saved close IDs preserve
+unique running-operation ownership. Wider terminal cleanup, running-Generator
+transfers, switching finalizers, general user destructors and cyclic collection
+remain required; their explicit Unsupported controls earn no agreement. Natural
+return/throw/finally cleanup remains distinct from forced close.
 
 Normal request cleanup340 uses real global/store owners and borrowed zero-owner
 buckets. Module349 also closes fresh store frames without running their bodies,

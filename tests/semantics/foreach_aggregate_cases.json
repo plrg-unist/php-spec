@@ -1,0 +1,303 @@
+[
+  {
+    "id": "foreach-aggregate-by-reference-generator",
+    "source": "<?php\nfunction &foreach_reference_values22() {\n    $source = 7;\n    echo \"Y|\";\n    yield $source;\n    echo \"R\", $source, \"|\";\n}\nclass ForeachReferenceGeneratorAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return foreach_reference_values22(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$aggregate = new ForeachReferenceGeneratorAggregate22();\nforeach ($aggregate as &$value) {\n    echo \"B\", $value, \"|\";\n    $value = 9;\n}\necho $value, \"|\";\nunset($value);\nunset($aggregate);\n",
+    "source_sha256": "9b41893b4712d74e806b08dc0a8a802b8f89cb0dc3f2af20efe4382efbc1e9e5",
+    "purpose": "by reference generator; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|Y|B7|R9|9|A|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-by-reference-iterator-refused",
+    "source": "<?php\nclass ForeachReferenceIterator22 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return true; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachReferenceIteratorAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachReferenceIterator22(); }\n    public function __destruct() { echo \"A|\"; }\n}\ntry {\n    foreach (new ForeachReferenceIteratorAggregate22() as &$value) { echo \"B|\"; break; }\n} catch (Error $caught) {\n    echo $caught->getMessage(), \"|\";\n}\n",
+    "source_sha256": "2b36042bd93c4be2a3909643cce27466f27cc0415c1052772d726b33fb33269d",
+    "purpose": "by reference iterator refused; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|I|A|An iterator cannot be used with foreach by reference|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-deep-getter-parks",
+    "source": "<?php\nclass ForeachParkIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; $this->position = 0; }\n    public function valid(): bool { echo \"V|\"; return $this->position === 0; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { echo \"X|\"; $this->position = 1; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachParkInner22 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo \"N|\";\n        Fiber::suspend(\"acquire\");\n        return $iterator;\n    }\n    public function __destruct() { echo \"n|\"; }\n}\nclass ForeachParkOuter22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"O|\"; return new ForeachParkInner22(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$iterator = new ForeachParkIterator22();\n$fiber = new Fiber(function () {\n    foreach (new ForeachParkOuter22() as $value) { echo \"B\", $value, \"|\"; }\n});\necho $fiber->start(), \"|\", $fiber->isSuspended(), \"|\", $fiber->isTerminated() ? 1 : 0, \"|\";\n$fiber->resume();\nunset($iterator);\necho $fiber->isTerminated(), \"|\";\n",
+    "source_sha256": "6093707c68aeec8574f0c3e150bbaedfe926cc329d8cb14c915d1cea52028636",
+    "purpose": "deep getter parks; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|acquire|1|0|n|W|V|A|C|B7|X|V|I|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-deep-getter-throws",
+    "source": "<?php\nclass ForeachThrowInner22 implements IteratorAggregate {\n    public function getIterator(): Traversable { global $failure; echo \"N|\"; throw $failure; }\n    public function __destruct() { echo \"n|\"; }\n}\nclass ForeachThrowOuter22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"O|\"; return new ForeachThrowInner22(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$failure = new Exception(\"getter\");\ntry {\n    foreach (new ForeachThrowOuter22() as $value) { echo \"B|\"; }\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 1 : 0, \"|\", $caught->getTrace()[0][\"line\"], \"|\";\n}\n",
+    "source_sha256": "f5cd62f3bc94a711018ad637196a469ac2ccdac03e3e9bdae537ff3ec50a36e3",
+    "purpose": "deep getter throws; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "O|N|n|A|1||",
+    "native_stderr": "Warning: Undefined array key 0 in {source} on line 14\nWarning: Trying to access array offset on null in {source} on line 14\n",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-empty-iterator",
+    "source": "<?php\nclass ForeachEmptyIterator22 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return false; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachEmptyAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachEmptyIterator22(); }\n    public function __destruct() { echo \"A|\"; }\n}\nforeach (new ForeachEmptyAggregate22() as $value) { echo \"B|\"; }\necho \"E\";\n",
+    "source_sha256": "7050e9e2c4893cfecebe3ea3fb28bdd686a2757309ea3fe2299708a2cf5503d0",
+    "purpose": "empty iterator; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|A|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-generator-method-break",
+    "source": "<?php\nclass ForeachGeneratorMethodAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        echo \"Y|\";\n        try { yield 11 => 7; }\n        finally { echo \"F|\"; }\n    }\n    public function __destruct() { echo \"A|\"; }\n}\nforeach (new ForeachGeneratorMethodAggregate22() as $key => $value) {\n    echo \"B\", $key, \":\", $value, \"|\";\n    break;\n}\necho \"E\";\n",
+    "source_sha256": "259ead82cf5d5578618c40afa010a2975ae36ac760983bca056bf81888c1be50",
+    "purpose": "generator method break; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "Y|B11:7|F|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-input-destructor-throws",
+    "source": "<?php\nclass ForeachInputThrowIterator22 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return true; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachInputThrowAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachInputThrowIterator22(); }\n    public function __destruct() { global $failure; echo \"A|\"; throw $failure; }\n}\n$failure = new Exception(\"input\");\ntry {\n    foreach (new ForeachInputThrowAggregate22() as $key => $value) { echo \"B|\"; }\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 1 : 0, \"|\";\n}\n",
+    "source_sha256": "0c77ac9859a0a6e456cd931ce5df37d3f904bf67e1761ffd464ebb8ddbe6cb52",
+    "purpose": "input destructor throws; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|A|I|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-layer-destructor-throws-generator",
+    "source": "<?php\nfunction foreach_pending_values22() {\n    echo \"Y|\";\n    try { yield 7; }\n    finally { echo \"F|\"; }\n}\nclass ForeachPendingInner22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"N|\"; return foreach_pending_values22(); }\n    public function __destruct() { global $failure; echo \"n|\"; throw $failure; }\n}\nclass ForeachPendingMiddle22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"M|\"; return new ForeachPendingInner22(); }\n    public function __destruct() { echo \"m|\"; }\n}\nclass ForeachPendingOuter22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"O|\"; return new ForeachPendingMiddle22(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$failure = new Exception(\"layer\");\ntry {\n    foreach (new ForeachPendingOuter22() as $value) { echo \"B|\"; }\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 1 : 0, \"|\";\n}\n",
+    "source_sha256": "ab0e781dc2c4ea14bbd2bea9be4dd23b4f1be548ed15773aaa7a10859ae4a323",
+    "purpose": "layer destructor throws generator; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "O|M|N|n|m|A|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-multiline-getter-lines",
+    "source": "<?php\nclass ForeachMultilineAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { throw new Exception(\"line\"); }\n}\nfunction foreach_multiline_operand22() { return new ForeachMultilineAggregate22(); }\ntry {\n    foreach (\n        foreach_multiline_operand22()\n        as $value\n    ) { echo \"B|\"; }\n} catch (Exception $caught) {\n    echo $caught->getTrace()[0][\"line\"], \"|\";\n}\n$aggregate = new ForeachMultilineAggregate22();\ntry {\n    foreach (\n        $aggregate\n        as $value\n    ) { echo \"B|\"; }\n} catch (Exception $caught) {\n    echo $caught->getTrace()[0][\"line\"], \"|\";\n}\n",
+    "source_sha256": "77a91606fae74168bdad581130db214d522919a3586d83c80261001dcd37678b",
+    "purpose": "multiline getter lines; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "8|17|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-nested-temporary-break",
+    "source": "<?php\nclass ForeachNestedIterator22 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return true; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachNestedInner22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"N|\"; return new ForeachNestedIterator22(); }\n    public function __destruct() { echo \"n|\"; }\n}\nclass ForeachNestedMiddle22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"M|\"; return new ForeachNestedInner22(); }\n    public function __destruct() { echo \"m|\"; }\n}\nclass ForeachNestedOuter22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"O|\"; return new ForeachNestedMiddle22(); }\n    public function __destruct() { echo \"A|\"; }\n}\nforeach (new ForeachNestedOuter22() as $key => $value) {\n    echo \"B\", $key, \":\", $value, \"|\";\n    break;\n}\necho \"E\";\n",
+    "source_sha256": "e18834be13a49fbc328749fd384b2160d1de638354b1c52bcf90ff99a000ade7",
+    "purpose": "nested temporary break; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "O|M|N|n|m|W|V|A|C|K|B11:7|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-nonreference-generator-refused",
+    "source": "<?php\nfunction foreach_nonreference_values22() {\n    echo \"Y|\";\n    try { yield 7; }\n    finally { echo \"F|\"; }\n}\nclass ForeachNonreferenceGeneratorAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return foreach_nonreference_values22(); }\n    public function __destruct() { echo \"A|\"; }\n}\ntry {\n    foreach (new ForeachNonreferenceGeneratorAggregate22() as &$value) { echo \"B|\"; }\n} catch (Exception $caught) {\n    echo $caught->getMessage(), \"|\";\n}\n",
+    "source_sha256": "0f6ed82355676074f92455aca11cbbe461059d2be5b22b7354a8cf59a8039998",
+    "purpose": "nonreference generator refused; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|You can only iterate a generator by-reference if it declared that it yields by-reference|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-plain-generator",
+    "source": "<?php\nfunction foreach_plain_values22() {\n    echo \"Y|\";\n    try { yield 11 => 7; }\n    finally { echo \"F|\"; }\n}\nclass ForeachPlainGeneratorAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return foreach_plain_values22(); }\n    public function __destruct() { echo \"A|\"; }\n}\nforeach (new ForeachPlainGeneratorAggregate22() as $key => $value) {\n    echo \"B\", $key, \":\", $value, \"|\";\n}\necho \"E\";\n",
+    "source_sha256": "a7b8236c3b4c6b25feff01f4c431b6cd9086b369ec3d3ffc4b8a04adebcc104f",
+    "purpose": "plain generator; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|Y|A|B11:7|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-raw-reference-return-rejected",
+    "source": "<?php\nclass ForeachRawReferenceIterator22 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { return false; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void {}\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachRawReferenceAggregate22 implements IteratorAggregate {\n    public function &getIterator(): Traversable { global $iterator; echo \"G|\"; return $iterator; }\n    public function __destruct() { echo \"A|\"; }\n}\n$iterator = new ForeachRawReferenceIterator22();\ntry {\n    foreach (new ForeachRawReferenceAggregate22() as $value) { echo \"B|\"; }\n} catch (Exception $caught) {\n    echo $caught->getMessage(), \"|\";\n}\nunset($iterator);\n",
+    "source_sha256": "77083e8f257dc58e5fbcbcb29320f02e186144bb9c3e68375de1ef10439c151c",
+    "purpose": "raw reference return rejected; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|A|Objects returned by ForeachRawReferenceAggregate22::getIterator() must be traversable or implement interface Iterator|I|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-reference-original-operand",
+    "source": "<?php\nclass ForeachReferenceOperandIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; $this->position = 0; }\n    public function valid(): bool { echo \"V|\"; return $this->position === 0; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { $this->position = 1; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachReferenceOperandAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { global $iterator; echo \"G|\"; return $iterator; }\n    public function __destruct() { echo \"A|\"; }\n}\nfunction &foreach_reference_operand22() { global $aggregate; echo \"R|\"; return $aggregate; }\n$iterator = new ForeachReferenceOperandIterator22();\n$aggregate = new ForeachReferenceOperandAggregate22();\n$keeper = $aggregate;\nforeach (foreach_reference_operand22() as $value) { echo \"B\", $value, \"|\"; }\necho \"E|\";\nunset($aggregate, $keeper, $iterator);\n",
+    "source_sha256": "1f4ed745dde9e1b3a656c17b8e4c2c500fa28907c35d33787a95bae9b38a469a",
+    "purpose": "reference original operand; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "R|G|W|V|B7|V|E|A|I|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-valid-retval-retirement",
+    "source": "<?php\nclass ForeachValidRetval22 {\n    public function __destruct() { echo \"R|\"; }\n}\nclass ForeachRetvalIterator22 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { echo \"V|\"; return new ForeachValidRetval22(); }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachRetvalAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachRetvalIterator22(); }\n    public function __destruct() { echo \"A|\"; }\n}\nforeach (new ForeachRetvalAggregate22() as $value) {\n    echo \"B\", $value, \"|\";\n    break;\n}\necho \"E\";\n",
+    "source_sha256": "d189141f4df2e2a35b2d626a7d956a099e84a34815129b20e5b2d3b78332a9e0",
+    "purpose": "valid retval retirement; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|R|A|C|B7|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-valid-retval-destructor-throws",
+    "source": "<?php\nclass ForeachThrowValidRetval22 {\n    public function __destruct() { global $failure; echo \"R|\"; throw $failure; }\n}\nclass ForeachThrowRetvalIterator22 implements Iterator {\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { echo \"V|\"; return new ForeachThrowValidRetval22(); }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { return 11; }\n    public function next(): void { echo \"X|\"; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachThrowRetvalAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachThrowRetvalIterator22(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$failure = new Exception(\"retval\");\ntry {\n    foreach (new ForeachThrowRetvalAggregate22() as $value) { echo \"B|\"; break; }\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 1 : 0, \"|\";\n}\n",
+    "source_sha256": "62576885ca2de05bb5f5380d2d8d1a9e7a3b554a405d125933104e8371381936",
+    "purpose": "valid retval destructor throws; real foreach Aggregate acquisition.",
+    "expected_model": "normal",
+    "native_stdout": "G|W|V|R|I|A|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-later-valid-nan-required",
+    "source": "<?php\nclass ForeachLaterNanIterator22 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; $this->position = 0; }\n    #[ReturnTypeWillChange]\n    public function valid() { echo \"V|\"; return $this->position === 0 ? true : NAN; }\n    public function current(): mixed { echo \"C|\"; return $this->position + 7; }\n    public function key(): mixed { return $this->position; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nclass ForeachLaterNanAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return new ForeachLaterNanIterator22(); }\n    public function __destruct() { echo \"A|\"; }\n}\nset_error_handler(function ($severity, $message, $file, $line) {\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\n$count = 0;\nforeach (new ForeachLaterNanAggregate22() as $value) {\n    echo \"B\", $value, \"|\";\n    $count++;\n    if ($count === 2) { break; }\n}\necho \"E\";\n",
+    "source_sha256": "5d5dc136dd61b57817dd7c82a4823b0c6cad9afe30b98bb74f3dffc811899d26",
+    "purpose": "later valid nan required; real foreach Aggregate acquisition.",
+    "expected_model": "unsupported",
+    "native_stdout": "G|W|V|A|C|B7|X|V|H|2|unexpected NAN value was coerced to bool|21|C|B8|I|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Iterator foreach valid NaN warning continuation",
+    "unsupported_stdout": "G|W|V|A|C|B7|X|V|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "71",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "87",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "65",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "66"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "55"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "88",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aggregate-foreach-acquisition-required",
+    "source": "<?php\nclass PeerForeachIterator20 implements Iterator {\n    private bool $more = true;\n    public function rewind(): void { echo 'W|'; }\n    public function valid(): bool { return $this->more; }\n    public function current(): mixed { return 7; }\n    public function key(): mixed { return 0; }\n    public function next(): void { $this->more = false; }\n}\nclass PeerForeachAggregate20 implements IteratorAggregate {\n    public string $property = 'wrong';\n    public function getIterator(): Traversable {\n        global $iterator;\n        echo 'A|';\n        return $iterator;\n    }\n}\n$iterator = new PeerForeachIterator20;\n$aggregate = new PeerForeachAggregate20;\nforeach ($aggregate as $value) {\n    echo 'V', $value, '|';\n}\necho 'E';\n",
+    "source_sha256": "54b80be17efdcd58d529164596917fd2066991eb971f19dc889af9c31cb1b342",
+    "purpose": "aggregate foreach acquisition required.",
+    "expected_model": "normal",
+    "native_stdout": "A|W|V7|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-generator-body-throws",
+    "source": "<?php\nfunction foreach_throwing_values22() {\n    global $failure;\n    echo \"Y|\";\n    try {\n        throw $failure;\n        yield 7;\n    } finally {\n        echo \"F|\";\n    }\n}\nclass ForeachThrowingGeneratorAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable { echo \"G|\"; return foreach_throwing_values22(); }\n    public function __destruct() { echo \"A|\"; }\n}\n$failure = new Exception(\"body\");\ntry {\n    foreach (new ForeachThrowingGeneratorAggregate22() as $value) { echo \"B|\"; }\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 1 : 0, \"|\";\n}\n",
+    "source_sha256": "bbe3e730fc9c445980947e0911031dea33a01ed8d9f300d0eb4b414afa0fa24c",
+    "purpose": "Real Generator initialization throw retains acquired data through ordinary unwind.",
+    "expected_model": "normal",
+    "native_stdout": "G|Y|F|A|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-generator-finally-throws",
+    "source": "<?php\nclass ForeachFinallyThrowAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        echo \"Y|\";\n        try { yield 7; }\n        finally { global $failure; echo \"F|\"; throw $failure; }\n    }\n    public function __destruct() { echo \"A|\"; }\n}\n$failure = new Exception(\"close\");\ntry {\n    foreach (new ForeachFinallyThrowAggregate22() as $value) {\n        echo \"B\", $value, \"|\";\n        break;\n    }\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 1 : 0, \"|\";\n}\necho \"E\";\n",
+    "source_sha256": "7570805b527855932aa205e8e3a9ecd4d341c2480dbeefb8e45784acc6d0cf44",
+    "purpose": "Real foreach Generator finalizer throw and receiver retirement.",
+    "expected_model": "normal",
+    "native_stdout": "Y|B7|F|A|1|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "foreach-aggregate-generator-finally-parks",
+    "source": "<?php\nclass ForeachFinallyParkAggregate22 implements IteratorAggregate {\n    public function getIterator(): Traversable {\n        echo \"Y|\";\n        try { yield 7; }\n        finally {\n            echo \"F|\";\n            Fiber::suspend(\"close\");\n            echo \"R|\";\n        }\n    }\n    public function __destruct() { echo \"A|\"; }\n}\n$fiber = new Fiber(function () {\n    foreach (new ForeachFinallyParkAggregate22() as $value) {\n        echo \"B\", $value, \"|\";\n        break;\n    }\n    echo \"E|\";\n});\necho $fiber->start(), \"|\", $fiber->isSuspended(), \"|\", $fiber->isTerminated() ? 1 : 0, \"|\";\n$fiber->resume();\necho $fiber->isTerminated(), \"|\";\n",
+    "source_sha256": "ac1c673b1dded090a51ed648a1d18d15712c1c348c9b82e935fcc9a9766d1b64",
+    "purpose": "Real foreach Generator finalizer parking and retained receiver retirement.",
+    "expected_model": "normal",
+    "native_stdout": "Y|B7|F|close|1|0|R|A|E|1|",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

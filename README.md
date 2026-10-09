@@ -339,7 +339,15 @@ compilation at each publication; handler throws or exit preserve later class
 publication, while user fatals stop it. Compiler fatal formatting retains the
 primary diagnostic through source effects, nested eval/include compilation and
 deferred runtime class-link failures.
-IteratorAggregate and other Traversable consumers remain required.
+Aggregate foreach acquires nested Iterator/Generator data, retires returned layers
+before initialization and the original operand after initial Iterator valid-result
+cleanup or Generator yield.
+Acquisition and cleanup throws preserve data/input order; reference traversal
+accepts reference-yielding Generators and rejects Iterator/nonreference Generator
+results. Retained foreach Generator close frames survive Fiber suspension with
+one receiver owner. [Focused acceptance](coverage/semantics/foreach-aggregate-review.json)
+keeps original source/state cuts separate. Foreach NaN warning continuations,
+wider operand modes and Aggregate yield-from/ordinary-call unpack remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and
