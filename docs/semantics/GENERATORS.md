@@ -148,7 +148,14 @@ saved DESTRUCTION and SOURCE certificates. Exact source1 retains `7d3574e75`; st
 and complete compiler361 retain `47c8c3c1c`. Prior refusals, diagnostics and failed
 checks remain zero. Final361 over `e889a1592` passes strict compilation at
 `77e534575`, preserving EX34's301/372 collector guards; this source has no collector
-task. Private source/state cuts retain their inputs. Wider handlers, rendering,
+task. Private source/state cuts retain their inputs. A declared property ALIAS,
+after its last local alias is unset, transfers HCELL then Leaf during release and
+follows the same second-fatal path. The model never reuses reference-cell IDs;
+the retired marker and STORE value provide release evidence without a cell root
+or referent edge. Actual SOURCE/result claims still retain exactly two Leaf C
+owners. New source1/compiler361 retain `c5b8de418`; strict677 retains `4870a1a8c`.
+Original refusal, reached discriminator and bounds syntax stop remain zero;
+current-parent compilation is pending. Wider handlers, rendering,
 child lifetimes, reacquisition, message warnings, parked or escaped storage and
 generic terminal cleanup remain required.
 

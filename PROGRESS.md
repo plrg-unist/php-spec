@@ -298,7 +298,14 @@ Original refusal, diagnostic/binding stops, cache/retirement fixture failures an
 Weak/GC admission gaps stay at zero. Final361 over `e889a1592` passes strict
 compilation at `77e534575` (6.488 seconds), preserving EX34's301/372 collector
 guards; this source has no collector task. Private source/state cuts retain their
-inputs. Wider handlers/rendering, child lifetimes, reacquisition, message warnings,
+inputs. A declared property ALIAS whose last local alias is unset transfers its
+HCELL then Leaf through the actual release chain and emits the same second fatal.
+Stable retired-cell markers and STORE evidence certify the consumed child without
+owning it; Parent Weak-null and both Leaf C claims survive. Source1/compiler361
+retain `c5b8de418` (6.315 seconds); 677 strict SL premises retain `4870a1a8c`.
+The original Unsupported, reached discriminator and pre-evaluation bounds syntax
+stop retain zero credit; current-parent compilation is pending. Wider
+handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source

@@ -368,7 +368,10 @@ destructor throwing during reported-exception release emits a second fatal.
 The Parent free_obj pin keeps Weak lookup null; two Leaf C claims and real
 Generator/cache owners survive. Its unfinished fatal frame retains the old
 Exception's occupied GC slot through the pending HANDLE job. One exact source
-and 549 strict premises retain separate cuts. Wider handlers/rendering,
+and 549 strict premises retain separate cuts. A declared reference-cell child,
+after its last local alias is unset, follows the same second-fatal path. Its
+retired cell/STORE value certifies the actual Leaf release without adding an owner;
+one new exact source and 677 strict premises retain separate cuts. Wider handlers/rendering,
 child lifetimes, reacquisition, parked/escaped storage and generic terminal cleanup
 remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
