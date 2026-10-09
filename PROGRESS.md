@@ -946,6 +946,9 @@ Whole source37 CLI60 remains OPEN/zero agreement and only that source is newly
 excluded from the default whole-CLI campaign; all three state groups remain enabled.
 Main/mixed array layouts, references/proxy tables, black/external components,
 non-idle caches and later-pass overlap remain required; prior cuts are unchanged.
+Actual371 over `d80c97b3c` passes compiler/init at `9233da4ca`; reviewed local-CV
+return, property/caller and captured-constructor interfaces preserve state329 at
+f184 and the whole-source CLI60 OPEN/zero agreement limit.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
