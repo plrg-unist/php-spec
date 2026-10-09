@@ -48,13 +48,15 @@ def assertions(checked, path, directory, name):
     checks += fatal.lines(r'''
 S_abrupt.TODO = (THROW_SEARCH n_warning) :: (ERROR_HANDLER_RESULT perrorcall) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_parent_tail*
 perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n_inner true
-pgenfatal.METHOD = (porigin_method) /\ S_abrupt.ORIGIN = (porigin_method)
+pgenfatal.METHOD = (porigin_method)
+S_abrupt.ORIGIN = (porigin_method)
 perrorcall.SITE = porigin_method /\ perrorcall.LEVEL = 2 /\ perrorcall.LINE = 0
 perrorcall.MESSAGE = $generator_request_render_warning(S_abrupt,pgenfatal)
 perrorcall.EVENT = DIAGNOSTIC_INTERNAL "Warning" perrorcall.MESSAGE 0
 $error_entered_call_valid(S_abrupt,perrorcall)
 $error_handler_values(S_abrupt,perrorcall) = [PINT 2,PSTRING perrorcall.MESSAGE,PSTRING ($ptascii("Unknown")),PINT 0]
-S_abrupt.ERRORHANDLER.CALLBACK = eps /\ S_abrupt.EXCEPTIONHANDLER = (pvalue_callback)
+S_abrupt.ERRORHANDLER.CALLBACK = eps
+S_abrupt.EXCEPTIONHANDLER = (pvalue_callback)
 $exception_task_scope(S_abrupt) /\ $shutdown_render_throw_pending(S_abrupt)
 $exception_dispatch_ready(S_abrupt)
 $generator_request_fatal_selected(S_abrupt) = eps
