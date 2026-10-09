@@ -16,7 +16,10 @@ Unsupported; four native lifetime probes have zero agreement, with no allocator 
 Affected Throwable source3, genuine trace47 and retained Generator source1/report52
 pass at1a8; template2 passes at6cb. Strict361 compiler3 passes at1a8 (4.623s).
 The [quantity ledger](coverage/semantics/assertion-quantity-review.json) preserves
-failures and the separate diagnostic46. Original recapture/warned restore,
+failures and the separate diagnostic46. Per-round original recapture and warned
+restore now pass two fresh safe originals and182 source-frontier checks plus one
+pure NULL trace query at57ee/363; strict3 passes5.024s. Pending shared Throwable
+identity and real restore commits remain intact. Nullable saved-original reentry,
 Stringable-option snapshots, NaN conversion timing and wider producers remain required.
 Actual363 over75dade passes final strict3 atb0d8 (4.921s), preserving current
 CALLS/CLASS/PROPS guards. Source-backed static70, Fiber54 plus4 pure key queries

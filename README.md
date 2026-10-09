@@ -201,8 +201,11 @@ and valid foreach companion stay distinct. [Bounded quantity warnings](docs/sema
 preserve frozen numeric modes after handler raw writes, throw or restore. Runtime
 string carriers retain INI identity while ordinary consumers observe bytes. Four
 reentrant request-string lifetime probes remain explicit Unsupported with zero
-native agreement. Original recapture/warned restore, Stringable-option refusal,
-Stringable descriptions and wider expression/callback forms remain required.
+native agreement. Fresh updates recapture the current original, and warned restore
+preserves pending Throwable identity while enabling assertions again. Two new safe
+originals and182 source-frontier checks plus one pure trace query pass at57ee.
+Nullable saved-original reentry, Stringable-option refusal/descriptions and wider
+expression/callback forms remain required.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 

@@ -132,8 +132,10 @@ retains the bounded source/state cuts and excluded Count observer separately.
 when handlers change raw bytes, throw or restore; copied string identities govern
 raw installation while ordinary consumers compare bytes. Reentrant release of a
 replaced modified request raw is explicit Unsupported, with zero native agreement.
-Original recapture/warned restore, authenticated Stringable-option refusal, wider
-startup facts, callback forms, Stringable descriptions, wider export and single
+Fresh modification rounds recapture the current raw original; warned restore
+parses that frozen input and preserves pending Throwable identity. Nullable saved
+original after reentry, authenticated Stringable-option refusal, wider startup
+facts, callback forms, Stringable descriptions, wider export and single
 named-description/unpack producers remain required core work.
 
 Each intrinsic follows the target's argument/type checks and exception propagation,

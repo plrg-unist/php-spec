@@ -1419,6 +1419,28 @@
       "status": "php_error",
       "native_group": "/home/user/workspace/php-spec/.tools/traversal-generator-request-abrupt-19/.tools/generator-force-close-review-nw63yxps/report.json",
       "native_raw_sha256": "ba9739cade2a1b0b5d3b2d388db63e074671f178f8e9bfd244b1cacf08b17e8d"
+    },
+    {
+      "id": "recapture-malformed-original-warned-restore-mode1",
+      "source": "<?php\n$warnings = 0;\n$effects = 0;\nset_error_handler(static function ($level, $message) use (&$warnings) {\n    echo 'W', ++$warnings, ':', $level, ':', $message, '|';\n    if ($warnings === 1) {\n        ini_restore('zend.assertions');\n    }\n    return true;\n});\n$outer = ini_set('zend.assertions', '12X');\necho 'outer:', $outer, '|raw:', ini_get('zend.assertions'), '|';\n$old = ini_set('zend.assertions', '0');\nassert(++$effects > 0);\necho 'old:', $old, '|raw:', ini_get('zend.assertions'), '|off:', $effects, '|';\nini_restore('zend.assertions');\nassert(++$effects > 0);\necho 'restored:', ini_get('zend.assertions'), '|on:', $effects, '|warnings:', $warnings;\n",
+      "source_sha256": "4ec2355dd6aa4fc224e58791cdbbbd5db10ca10bb6ace7c0ef02970ac4e4788b",
+      "stdout_base64": "VzE6MjpJbnZhbGlkICJ6ZW5kLmFzc2VydGlvbnMiIHNldHRpbmcuIEludmFsaWQgcXVhbnRpdHkgIjEyWCI6IHVua25vd24gbXVsdGlwbGllciAiWCIsIGludGVycHJldGluZyBhcyAiMTIiIGZvciBiYWNrd2FyZHMgY29tcGF0aWJpbGl0eXxvdXRlcjoxfHJhdzoxMlh8b2xkOjEyWHxyYXc6MHxvZmY6MHxXMjoyOkludmFsaWQgInplbmQuYXNzZXJ0aW9ucyIgc2V0dGluZy4gSW52YWxpZCBxdWFudGl0eSAiMTJYIjogdW5rbm93biBtdWx0aXBsaWVyICJYIiwgaW50ZXJwcmV0aW5nIGFzICIxMiIgZm9yIGJhY2t3YXJkcyBjb21wYXRpYmlsaXR5fHJlc3RvcmVkOjEyWHxvbjoxfHdhcm5pbmdzOjI=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-recapture-20/.tools/assertion-recapture-native-20/run-v1/report.json",
+      "native_raw_sha256": "0c21dc4b6e0b8fe33065261e76f0701d6bbe645947267a4fbcd846033a6dfe25"
+    },
+    {
+      "id": "recapture-malformed-original-warned-restore-shared-throw-mode1",
+      "source": "<?php\n$warnings = 0;\n$effects = 0;\n$failure = new Exception('restore-warning');\nset_error_handler(static function ($level, $message) use (&$warnings, $failure) {\n    echo 'W', ++$warnings, ':', ini_get('zend.assertions'), '|';\n    if ($warnings === 1) {\n        ini_restore('zend.assertions');\n        return true;\n    }\n    throw $failure;\n});\nini_set('zend.assertions', '12X');\n$old = ini_set('zend.assertions', '0');\necho 'old:', $old, '|raw:', ini_get('zend.assertions'), '|';\ntry {\n    ini_restore('zend.assertions');\n    echo 'BAD|';\n} catch (Throwable $caught) {\n    echo $caught === $failure ? 'same|' : 'other|';\n}\nassert(++$effects > 0);\necho 'raw:', ini_get('zend.assertions'), '|effects:', $effects, '|warnings:', $warnings;\n",
+      "source_sha256": "03e9e49e3e5c18ea68029b2997d33bedeb6dafa9056484e720926dcec5264f8f",
+      "stdout_base64": "VzE6MXxvbGQ6MTJYfHJhdzowfFcyOjB8c2FtZXxyYXc6MTJYfGVmZmVjdHM6MXx3YXJuaW5nczoy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/compiler-assertion-recapture-20/.tools/assertion-recapture-native-20/run-v1/report.json",
+      "native_raw_sha256": "ca0f8eff4d1f22466739918c1078497fdc1a1382fc8a848b1be518bcb13df1b2"
     }
   ],
   "native_profile": {
