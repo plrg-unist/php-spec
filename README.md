@@ -945,8 +945,9 @@ premises, including F→E→D, count 0, F retirement, D weak liveness and termin
 replay. The whole source retains its CLI60 timeout and zero agreement credit.
 Wider overlap, throwing callbacks and reentry remain required.
 
-The fresh closed-white component check also permits nonproxy arrays while
-residual reach stays object-only. A grounded ordinary-Fiber E→array→D case has
+The fresh closed-white component check also permits nonproxy arrays; residual
+arrays and references outside the protected component remain excluded. A grounded
+ordinary-Fiber E→array→D case has
 329 executed state premises covering physical removal, real guard selection,
 signed -1+2=1, E/array retirement and D self-owner/weak liveness. Its whole source
 CLI60 remains OPEN with zero agreement credit. Main/mixed array layouts,
@@ -958,6 +959,13 @@ admission and guard authority. Three ordinary-Fiber E→array→reference→D cu
 execute 407 premises, including signed count1, E/array/reference retirement and
 D self-owner/weak liveness. Whole source38 CLI60 remains OPEN with zero agreement
 credit; broader reference, main/mixed and proxy overlap remain required.
+
+Protected residual reach now also permits a genuine unbuffered self-reference.
+Three ordinary-Fiber E→D→reference→D cuts execute 375 premises, including
+zero reference debit, exact image/guard authority and signed count0.
+D and its reference remain live with one owner each; E retires and request cleanup
+and replay pass. Whole source39 CLI60 remains OPEN with zero agreement credit;
+residual arrays, outside references and wider overlap remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

@@ -583,7 +583,8 @@ reach. Frozen HCELL children must be empty or one object/array; no physical cell
 slot is allowed. A transparent visit follows that child without debit, while a
 buffered BLACK child is removed and charged once. The direct reference-only
 and duplicate-walk checks distinguish this rule even when D's earlier root walk
-would otherwise hide it. All residual reach remains object-only.
+would otherwise hide it. Residual arrays and references outside the protected
+component remain excluded.
 
 Allocated component cells must retain real REFCELLS markers during admission and
 worker validation; retired snapshots are exempt. Independent canonical cell-shape
@@ -597,3 +598,17 @@ zero credit; its correction changes only parentheses. Whole source38 CLI60 remai
 OPEN/zero agreement, with only its default source selection excluded. Broader
 reference layouts, main/mixed overlap, proxies, black/external components,
 non-idle workers and later passes remain required; prior cuts are unchanged.
+
+Residual reach301 also permits unbuffered canonical reference cells only within
+the protected fresh-DTORS component. Outsider residual reach keeps its object
+closure; no physical cell slot or reference debit is introduced. The grounded
+ordinary-Fiber source changes only D's self property from a value to an ALIAS.
+At `1c1de818d`/371, image138/guard122/terminal115 execute 375 premises, including
+HCELL-first/duplicate walks through D→reference→D, actual nested removal/debit3,
+marker/shape/image/guard forgeries and signed -1+1=0. D and the reference remain
+allocated with one owner each, E retires, and weak liveness, native END events,
+caller/request cleanup and replay pass. Native/compiler/init pass; baseline98 is
+localization only. Whole source39 CLI60 remains OPEN/zero agreement, and only its
+default source selection is excluded. Residual arrays/outside references,
+main/mixed layouts, proxies, black/external components, non-idle workers and
+later passes remain required; earlier cuts are unchanged.
