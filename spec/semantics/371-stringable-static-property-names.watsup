@@ -1,0 +1,329 @@
+;; Static address lookup frees an evaluated name only after checking the row.
+;; Its destructor can change that row and op2 before ASSIGN_STATIC_PROP_OP reads
+;; either value. The post-address continuation therefore owns only the RHS.
+dec $computed_static_cast_valid(pstate, pcomputedcompound, nat, porigin) : bool
+dec $computed_static_receiver(poperand, nat) : bool
+dec $computed_static_fetch(pstate, pcomputedcompound, nat, porigin, ptbytes, nat?, ptask*) : pstate
+dec $computed_static_fetch_prepared(pstate, nat?, ptask*) : pstate
+dec $computed_static_fetch_ready(pstate, pcomputedcompound, nat, porigin, ptbytes, nat?) : bool
+dec $computed_static_fetch_marker(pstate, ptask*, pcomputedcompound, nat, porigin, ptbytes, nat?) : bool
+dec $computed_static_fetch_pair(ptask*, pcomputedcompound, nat, porigin, ptbytes, nat?) : bool
+dec $computed_static_address_valid(pstate, pcomputedaddress) : bool
+dec $computed_static_pending_valid(pstate, nat?) : bool
+dec $computed_static_pending_merge(pstate, nat, nat?) : pstate
+dec $computed_static_pending_end(pstate, nat?, ptask*) : pstate
+dec $computed_static_pending_compound(pstate, pcomputedaddress) : pstate
+dec $computed_static_pending_binary(pstate, pcomputedaddress, pvalue, pvalue) : pstate
+dec $computed_static_pending_conversion(ptbranch*, ptbytes, bool) : ptypeconversion
+dec $computed_static_pending_store(pstate, pcomputedaddress, pstate) : pstate
+dec $computed_static_pending_captured(pstate, pcomputedaddress, pstaticcompound, ptbytes) : pstate
+dec $computed_static_pending_direct(pstate, pcomputedaddress, pstaticcompound, ptypeconversion) : pstate
+dec $computed_static_pending_writer(pstate, pcomputedaddress) : bool
+dec $computed_static_fetch_identity(ptask, nat, porigin, int) : bool
+dec $computed_static_fetch_find(ptask*, nat, porigin, int) : ptask?
+dec $computed_static_fetch_pending(ptask*, ptask, ptask) : ptask*
+dec $computed_static_throw_fetch(ptask*, porigin?, nat) : ptask?
+dec $computed_static_throw_task(ptask, porigin?, nat) : bool
+dec $computed_static_array(pvalue) : bool
+dec $computed_static_object(pvalue) : bool
+
+def $computed_static_name_call(S, pcomputedcompound) = true
+  -- if $call_task_valid(S, COMPOUND_STATIC_NAME pcomputedcompound)
+  -- if S_class = $class_static_prepare_base_ready(S, pcomputedcompound.CLASS, eps, pcomputedcompound.LINE)
+  -- if S_class.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_class, pcomputedcompound.NAME, pcomputedcompound.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $stringable_instance(S_read, n)
+rule PhpStep/computed-static-name-call: S ~> $user_string_begin(S_read[.ORIGIN = (pcomputedcompound.SITE)], n, pcomputedcompound.SITE, pcomputedcompound.LINE, COMPOUND_STATIC_CAST pcomputedcompound n porigin_root, ptask*)
+  -- if S.TODO = (COMPOUND_STATIC_NAME pcomputedcompound) :: ptask*
+  -- if $computed_static_name_call(S, pcomputedcompound)
+  -- if S_class = $class_static_prepare_base_ready(S, pcomputedcompound.CLASS, eps, pcomputedcompound.LINE)
+  -- if S_class.BASE = BASE_CLASS_STATIC porigin_root ptbytes_unused
+  -- if S_read = $resolve_at(S_class, pcomputedcompound.NAME, pcomputedcompound.LINE)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+
+;; The selected receiver is nonowning history after STRINGIFY_RESULT retires;
+;; source operands retain exactly their own CV/VAR/TMP ownership throughout.
+def $computed_static_receiver(KNOWN (POBJECT n), n) = true
+def $computed_static_receiver(VARIABLE n_name* z, n) = true
+def $computed_static_receiver(REFERENCE n_cell, n) = true
+def $computed_static_receiver(poperand, n) = false -- otherwise
+def $computed_static_cast_valid(S, pcomputedcompound, n, porigin_root) = ($computed_static_valid(S, pcomputedcompound) /\ $computed_static_receiver(pcomputedcompound.NAME, n) /\ $ordinary_internal_string_evidence(S, n) /\ $scoped_selector_class(S, pcomputedcompound.CLASS) = (porigin_root))
+def $task_nodes(COMPOUND_STATIC_CAST pcomputedcompound n porigin_root) = $operand_nodes(pcomputedcompound.NAME) ++ $operand_nodes(pcomputedcompound.RIGHT)
+def $task_nodes(COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?) = $operand_nodes(pcomputedcompound.NAME) ++ $operand_nodes(pcomputedcompound.RIGHT) ++ $instance_roots(n_pending?)
+def $task_nodes(COMPOUND_STATIC_APPLY pcomputedaddress) = $operand_nodes(pcomputedaddress.RIGHT) ++ $instance_roots(pcomputedaddress.PENDING)
+def $stringify_source(S, porigin, z, COMPOUND_STATIC_CAST pcomputedcompound n porigin_root) = ($computed_static_cast_valid(S, pcomputedcompound, n, porigin_root) /\ porigin = pcomputedcompound.SITE /\ z = pcomputedcompound.LINE)
+def $stringify_source_consumer(COMPOUND_STATIC_CAST pcomputedcompound n porigin_root) = true
+def $stringify_consumer_tail_valid(S, porigin, z, COMPOUND_STATIC_CAST pcomputedcompound n porigin_root, ptask*) = $stringify_source(S, porigin, z, COMPOUND_STATIC_CAST pcomputedcompound n porigin_root)
+def $stringify_consumer_receiver_valid(S, n, COMPOUND_STATIC_CAST pcomputedcompound n_selected porigin_root) = (n = n_selected)
+def $compound_string_frame((STRINGIFY_RESULT n porigin z) :: (COMPOUND_STATIC_CAST pcomputedcompound n_selected porigin_root) :: ptask*) = (porigin = pcomputedcompound.SITE /\ z = pcomputedcompound.LINE)
+def $call_task_valid(S, COMPOUND_STATIC_CAST pcomputedcompound n porigin_root) = ($computed_static_cast_valid(S, pcomputedcompound, n, porigin_root) /\ S.ORIGIN = (pcomputedcompound.SITE))
+def $computed_static_fetch(S, pcomputedcompound, n, porigin_root, ptbytes, n_pending?, ptask*) = $computed_static_fetch_prepared(S_prepared, n_pending?, ptask*)
+  -- if S_prepared = $class_static_prepare_base(S[.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?) :: ptask*][.ORIGIN = $origin_child((pcomputedcompound.SITE), [PCFIELD 0])][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL], pcomputedcompound.CLASS, ptbytes, pcomputedcompound.LINE)
+def $computed_static_fetch_prepared(S, n_pending?, ptask*) = S -- if S.COMPLETION = NORMAL
+def $computed_static_fetch_prepared(S, n_pending?, ptask*) = $throwable_begin($computed_static_pending_end(S[.TODO = ptask*], n_pending?, ptask*))
+  -- if $throwable_pending(S.COMPLETION)
+def $computed_static_fetch_prepared(S, n_pending?, ptask*) = S
+  -- if S.COMPLETION =/= NORMAL /\ ~$throwable_pending(S.COMPLETION)
+rule PhpStep/computed-static-name-cast: S ~> $computed_static_fetch(S, pcomputedcompound, n, porigin_root, ptbytes, eps, ptask*)
+  -- if S.TODO = (COMPOUND_STATIC_CAST pcomputedcompound n porigin_root) :: ptask*
+  -- if $call_task_valid(S, COMPOUND_STATIC_CAST pcomputedcompound n porigin_root)
+  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+
+def $computed_static_fetch_ready(S, pcomputedcompound, n, porigin, ptbytes, n_pending?) = (S.BASE = BASE_CLASS_STATIC porigin ptbytes /\ $class_constant_static_work(S, pcomputedcompound.CLASS, ptbytes, pcomputedcompound.LINE) = eps)
+  -- if S.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound n porigin ptbytes n_pending?) :: ptask*
+def $computed_static_fetch_ready(S, pcomputedcompound, n, porigin, ptbytes, n_pending?) = $computed_static_fetch_marker(S, S.TODO, pcomputedcompound, n, porigin, ptbytes, n_pending?)
+  -- if S.TODO = ptask_head :: ptask_tail*
+  -- if ptask_head =/= COMPOUND_STATIC_FETCH pcomputedcompound n porigin ptbytes n_pending?
+def $computed_static_fetch_ready(S, pcomputedcompound, n, porigin, ptbytes, n_pending?) = false -- if S.TODO = eps
+def $computed_static_fetch_pair((CLASS_CONST_STATIC poperand ptbytes_marker z) :: ptask_fetch :: ptask*, pcomputedcompound, n, porigin, ptbytes, n_pending?) = (ptask_fetch = COMPOUND_STATIC_FETCH pcomputedcompound n porigin ptbytes n_pending?)
+def $computed_static_fetch_pair((CLASS_CONST_SELECTED pstaticselection ptbytes_marker z) :: ptask_fetch :: ptask*, pcomputedcompound, n, porigin, ptbytes, n_pending?) = (ptask_fetch = COMPOUND_STATIC_FETCH pcomputedcompound n porigin ptbytes n_pending?)
+def $computed_static_fetch_pair(ptask*, pcomputedcompound, n, porigin, ptbytes, n_pending?) = false -- otherwise
+def $computed_static_fetch_marker(S, (CLASS_CONST_STATIC poperand ptbytes_marker z) :: ptask_fetch :: ptask*, pcomputedcompound, n, porigin, ptbytes, n_pending?) = (ptbytes_marker = ptbytes /\ poperand = pcomputedcompound.CLASS /\ z = pcomputedcompound.LINE)
+  -- if $computed_static_fetch_pair((CLASS_CONST_STATIC poperand ptbytes_marker z) :: ptask_fetch :: ptask*, pcomputedcompound, n, porigin, ptbytes, n_pending?)
+def $computed_static_fetch_marker(S, (CLASS_CONST_SELECTED pstaticselection ptbytes_marker z) :: ptask_fetch :: ptask*, pcomputedcompound, n, porigin, ptbytes, n_pending?) = (ptbytes_marker = ptbytes /\ pstaticselection.ROOT = porigin /\ pstaticselection.SITE = $origin_child((pcomputedcompound.SITE), [PCFIELD 0]) /\ z = pcomputedcompound.LINE /\ $class_static_selection_valid(S, pstaticselection))
+  -- if $computed_static_fetch_pair((CLASS_CONST_SELECTED pstaticselection ptbytes_marker z) :: ptask_fetch :: ptask*, pcomputedcompound, n, porigin, ptbytes, n_pending?)
+def $computed_static_fetch_marker(S, ptask_head :: ptask_tail*, pcomputedcompound, n, porigin, ptbytes, n_pending?) = $computed_static_fetch_marker(S, ptask_tail*, pcomputedcompound, n, porigin, ptbytes, n_pending?)
+  -- if ~$computed_static_fetch_pair(ptask_head :: ptask_tail*, pcomputedcompound, n, porigin, ptbytes, n_pending?)
+def $computed_static_fetch_marker(S, eps, pcomputedcompound, n, porigin, ptbytes, n_pending?) = false
+def $call_task_valid(S, COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?) = ($computed_static_cast_valid(S, pcomputedcompound, n, porigin_root) /\ S.ORIGIN = $origin_child((pcomputedcompound.SITE), [PCFIELD 0]) /\ $computed_static_name_compatible(S, pcomputedcompound.SITE, ptbytes) /\ $computed_static_pending_valid(S, n_pending?) /\ $computed_static_fetch_ready(S, pcomputedcompound, n, porigin_root, ptbytes, n_pending?))
+
+rule PhpStep/computed-static-name-address: S ~> S_read[.TODO = (COMPOUND_STATIC_APPLY {CLASS pcomputedcompound.CLASS, RIGHT pcomputedcompound.RIGHT, SITE pcomputedcompound.SITE, LINE pcomputedcompound.LINE, ROOT porigin_root, NAME ptbytes, PENDING n_pending?}) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_CLASS_STATIC porigin_root ptbytes]
+  -- if S.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?) :: ptask*
+  -- if $call_task_valid(S, COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?)
+  -- if S_read = $class_static_read(S, porigin_root, ptbytes, pcomputedcompound.LINE)
+  -- if S_read.COMPLETION = NORMAL
+rule PhpStep/computed-static-name-address-abrupt: S ~> $computed_static_pending_end(S_read[.TODO = eps], n_pending?, ptask*)
+  -- if S.TODO = (COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?) :: ptask*
+  -- if $call_task_valid(S, COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?)
+  -- if S_read = $class_static_read(S, porigin_root, ptbytes, pcomputedcompound.LINE)
+  -- if S_read.COMPLETION =/= NORMAL
+
+;; NAME is absent here: a genuine VAR/TMP/reference name may already be dead.
+;; The frozen class/name selects an address; current row/alias/value is read
+;; by the unchanged compound writer only after that release has completed.
+def $computed_static_address_valid(S, pcomputedaddress) = true
+  -- if $computed_static_source(S, pcomputedaddress.SITE)
+  -- if $compound_string_site_valid(S, pcomputedaddress.SITE, pcomputedaddress.LINE)
+  -- if $origin_child((pcomputedaddress.SITE), [PCFIELD 0]) = (porigin_fetch)
+  -- if $origin_node(S.SOURCES, porigin_fetch) = (NExprStaticPropertyFetch phpType19 expression_name metadata)
+  -- if S_fetch = S[.ORIGIN = (porigin_fetch)]
+  -- if pcomputedaddress.LINE = $runtime_line(S_fetch, eps, NExprStaticPropertyFetch phpType19 expression_name metadata)
+  -- if $class_static_ref_selector_matches(S_fetch, phpType19, pcomputedaddress.CLASS)
+  -- if $scoped_selector_class(S, pcomputedaddress.CLASS) = (pcomputedaddress.ROOT)
+  -- if $computed_static_name_compatible(S, pcomputedaddress.SITE, pcomputedaddress.NAME)
+  -- if $class_static_select(S, pcomputedaddress.ROOT, pcomputedaddress.NAME) = (ppropertydesc)
+  -- if $class_static_at(S.CLASSSTATICS, ppropertydesc.ORIGIN) =/= eps
+  -- if $computed_static_operand(S, pcomputedaddress.SITE, [PCFIELD 1], pcomputedaddress.RIGHT)
+  -- if $heap_subset($operand_nodes(pcomputedaddress.RIGHT), S.ALLOCATIONS)
+  -- if $call_reference_operand_valid(S, pcomputedaddress.RIGHT)
+  -- if $computed_static_pending_valid(S, pcomputedaddress.PENDING)
+def $computed_static_address_valid(S, pcomputedaddress) = false -- otherwise
+def $call_task_valid(S, COMPOUND_STATIC_APPLY pcomputedaddress) = ($computed_static_address_valid(S, pcomputedaddress) /\ S.ORIGIN = $origin_child((pcomputedaddress.SITE), [PCFIELD 0]) /\ S.BASE = BASE_CLASS_STATIC pcomputedaddress.ROOT pcomputedaddress.NAME)
+;; The proof walker has discarded destructor results before reaching this
+;; operation exit. Its genuine FETCH snapshot restores the same inert address
+;; that the actual operation finish restores, without changing the live VM.
+def $eager_operation_validation_base(S, pdestructionoperation) = pdestructionoperation.BASE
+  -- if pdestructionoperation.SOURCE = COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?
+  -- if pdestructionoperation.BASE = BASE_CLASS_STATIC porigin_root ptbytes /\ pdestructionoperation.VALUE = KNOWN PNULL
+  -- if pdestructionoperation.ORIGIN = $origin_child((pcomputedcompound.SITE), [PCFIELD 0]) /\ pdestructionoperation.CALLER = S.CURRENT
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if $computed_static_address_valid(S, {CLASS pcomputedcompound.CLASS, RIGHT pcomputedcompound.RIGHT, SITE pcomputedcompound.SITE, LINE pcomputedcompound.LINE, ROOT porigin_root, NAME ptbytes, PENDING n_pending?})
+rule PhpStep/computed-static-name-apply: S ~> S_updated[.HELD = S.HELD]
+  -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
+  -- if $call_task_valid(S, COMPOUND_STATIC_APPLY pcomputedaddress)
+  -- if pcomputedaddress.PENDING = eps
+  -- if S_updated = $compound_target($hold_task_inputs(S)[.ORIGIN = (pcomputedaddress.SITE)], CONCAT, BASE_CLASS_STATIC pcomputedaddress.ROOT pcomputedaddress.NAME, pcomputedaddress.RIGHT, pcomputedaddress.LINE)
+
+;; Non-try name conversion returns empty bytes after a failing __toString.
+;; The address helper still runs and may replace that pending exception.
+def $computed_static_pending_valid(S, eps) = true
+def $computed_static_pending_valid(S, (n)) = $eval_compile_pending_object(S, THROWING n)
+def $computed_static_pending_merge(S, n, eps) = S
+def $computed_static_pending_merge(S, n_new, (n_old)) = $throwable_previous(S, n_new, n_old)
+def $computed_static_pending_end(S, eps, ptask*) = S
+def $computed_static_pending_end(S, (n), ptask*) = S[.TODO = (THROW_SEARCH n) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+def $computed_static_pending_end(S, (n_old), ptask*) = $throwable_previous(S_new, n_new, n_old)
+  -- if $throwable_pending(S.COMPLETION)
+  -- if S_new = $throwable_materialize(S)
+  -- if S_new.COMPLETION = THROWING n_new
+def $computed_static_pending_end(S, (n), ptask*) = S
+  -- if S.COMPLETION =/= NORMAL /\ ~$throwable_pending(S.COMPLETION)
+def $return_discard(S, STRINGIFY_RESULT n porigin z) = $computed_static_fetch(S, pcomputedcompound, n, porigin_root, eps, (n_pending), ptask*)
+  -- if S.TODO = (THROW_SEARCH n_pending) :: (COMPOUND_STATIC_CAST pcomputedcompound n porigin_root) :: ptask*
+  -- if porigin = pcomputedcompound.SITE /\ z = pcomputedcompound.LINE
+  -- if $call_task_valid(S, COMPOUND_STATIC_CAST pcomputedcompound n porigin_root)
+  -- if $computed_static_pending_valid(S, (n_pending))
+def $return_discard(S, COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes (n_old)) = $computed_static_pending_merge(S, n_new, (n_old))
+  -- if S.TODO = (THROW_SEARCH n_new) :: ptask*
+  -- if $computed_static_cast_valid(S, pcomputedcompound, n, porigin_root)
+  -- if $computed_static_pending_valid(S, (n_old)) /\ $computed_static_pending_valid(S, (n_new))
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (COMPOUND_STATIC_CAST pcomputedcompound n porigin_root) :: ptask*) = $computed_static_fetch(S, pcomputedcompound, n, porigin_root, ptbytes, (n_pending), ptask*)
+  -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT n pcomputedcompound.SITE pcomputedcompound.LINE
+  -- if pdestructionoperation.ORIGIN = (pcomputedcompound.SITE) /\ pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.VALUE = KNOWN (PSTRING ptbytes)
+  -- if $computed_static_cast_valid(S, pcomputedcompound, n, porigin_root)
+  -- if $computed_static_pending_valid(S, (n_pending))
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*) = S_linked[.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress[.PENDING = (n_pending)]) :: ptask*][.RESULT = KNOWN PNULL][.BASE = pdestructionoperation.BASE][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = COMPOUND_STATIC_FETCH pcomputedcompound n pcomputedaddress.ROOT pcomputedaddress.NAME pcomputedaddress.PENDING
+  -- if pcomputedaddress.CLASS = pcomputedcompound.CLASS /\ pcomputedaddress.RIGHT = pcomputedcompound.RIGHT
+  -- if pcomputedaddress.SITE = pcomputedcompound.SITE /\ pcomputedaddress.LINE = pcomputedcompound.LINE
+  -- if pdestructionoperation.ORIGIN = $origin_child((pcomputedaddress.SITE), [PCFIELD 0]) /\ pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.VALUE = KNOWN PNULL /\ pdestructionoperation.BASE = BASE_CLASS_STATIC pcomputedaddress.ROOT pcomputedaddress.NAME
+  -- if $computed_static_address_valid(S, pcomputedaddress)
+  -- if $computed_static_pending_valid(S, (n_pending))
+  -- if S_linked = $computed_static_pending_merge(S, n_pending, pcomputedaddress.PENDING)
+  -- if S_linked.COMPLETION = NORMAL
+
+;; Failed conversion has already installed empty-name FETCH when releasing
+;; its final receiver throws. Preserve any genuine queued class preparation,
+;; replacing only that FETCH's pending exception before address lookup.
+def $computed_static_fetch_identity(COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_pending?, n, porigin, z) = (pcomputedcompound.SITE = porigin /\ pcomputedcompound.LINE = z)
+def $computed_static_fetch_identity(ptask, n, porigin, z) = false -- otherwise
+def $computed_static_fetch_find(ptask :: ptask_tail*, n, porigin, z) = (ptask)
+  -- if $computed_static_fetch_identity(ptask, n, porigin, z)
+def $computed_static_fetch_find(ptask :: ptask_tail*, n, porigin, z) = $computed_static_fetch_find(ptask_tail*, n, porigin, z)
+  -- if ~$computed_static_fetch_identity(ptask, n, porigin, z)
+def $computed_static_fetch_find(eps, n, porigin, z) = eps
+def $computed_static_fetch_pending(ptask_old :: ptask*, ptask_old, ptask_new) = ptask_new :: ptask*
+def $computed_static_fetch_pending(ptask :: ptask_tail*, ptask_old, ptask_new) = ptask :: $computed_static_fetch_pending(ptask_tail*, ptask_old, ptask_new)
+  -- if ptask =/= ptask_old
+def $computed_static_fetch_pending(eps, ptask_old, ptask_new) = eps
+def $computed_static_throw_task(COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_fetch?, porigin?, n_old) = (n_fetch? = (n_old) /\ ptbytes = eps /\ porigin? = $origin_child((pcomputedcompound.SITE), [PCFIELD 0]))
+def $computed_static_throw_task(ptask, porigin?, n_old) = false -- otherwise
+def $computed_static_throw_fetch(ptask :: ptask_tail*, porigin?, n_old) = (ptask)
+  -- if $computed_static_throw_task(ptask, porigin?, n_old)
+def $computed_static_throw_fetch(ptask :: ptask_tail*, porigin?, n_old) = $computed_static_throw_fetch(ptask_tail*, porigin?, n_old)
+  -- if ~$computed_static_throw_task(ptask, porigin?, n_old)
+def $computed_static_throw_fetch(eps, porigin?, n_old) = eps
+;; The descriptor walker checks the original queued FETCH after this exit.
+;; Retain its genuine ready address without applying the runtime replacement.
+def $computed_static_throw_projection(S, pdestructionoperation) = true
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_old
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN PNULL
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if $destructor_operation_valid(S, pdestructionoperation)
+  -- if $computed_static_throw_fetch(ptask*, pdestructionoperation.ORIGIN, n_old) = (ptask_fetch)
+  -- if $call_task_valid(S[.TODO = ptask*][.BASE = pdestructionoperation.BASE], ptask_fetch)
+def $call_after_origin(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.TODO = ptask*][.RESULT = $eager_operation_validation_value(S, pdestructionoperation)][.BASE = pdestructionoperation.BASE]
+  -- if S.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation) :: ptask*
+  -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if $computed_static_throw_projection(S, pdestructionoperation)
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, ptask*) = S_linked[.TODO = $computed_static_fetch_pending(ptask*, ptask_fetch, COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes (n_pending))][.RESULT = KNOWN PNULL][.BASE = pdestructionoperation.BASE][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT n porigin z
+  -- if pdestructionoperation.ORIGIN = $origin_child((porigin), [PCFIELD 0]) /\ pdestructionoperation.CALLER = S.CURRENT
+  -- if pdestructionoperation.VALUE = KNOWN PNULL
+  -- if $computed_static_fetch_find(ptask*, n, porigin, z) = (ptask_fetch)
+  -- if ptask_fetch = COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes (n_old)
+  -- if $call_task_valid(S[.TODO = ptask*][.BASE = pdestructionoperation.BASE], ptask_fetch)
+  -- if $computed_static_pending_valid(S, (n_pending))
+  -- if S_linked = $computed_static_pending_merge(S, n_pending, (n_old))
+  -- if S_linked.COMPLETION = NORMAL
+;; Exception unwinding discards STRINGIFY_RESULT inside a THROW_SEARCH step.
+;; Its real eager operation therefore carries that THROW_SEARCH as SOURCE.
+def $destructor_pending_finish(S, pdestructionoperation, n_pending, ptask*) = S_linked[.TODO = $computed_static_fetch_pending(ptask*, ptask_fetch, COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes (n_pending))][.RESULT = KNOWN PNULL][.BASE = pdestructionoperation.BASE][.COMPLETION = NORMAL]
+  -- if pdestructionoperation.SOURCE = THROW_SEARCH n_old
+  -- if pdestructionoperation.COMPLETION = NORMAL /\ pdestructionoperation.VALUE = KNOWN PNULL
+  -- if pdestructionoperation.CALLER = S.CURRENT
+  -- if $computed_static_throw_fetch(ptask*, pdestructionoperation.ORIGIN, n_old) = (ptask_fetch)
+  -- if ptask_fetch = COMPOUND_STATIC_FETCH pcomputedcompound n porigin_root ptbytes n_fetch?
+  -- if n_fetch? = (n_old)
+  -- if $call_task_valid(S[.TODO = ptask*][.BASE = pdestructionoperation.BASE], ptask_fetch)
+  -- if $computed_static_pending_valid(S, (n_old)) /\ $computed_static_pending_valid(S, (n_pending))
+  -- if S_linked = $computed_static_pending_merge(S, n_pending, (n_old))
+  -- if S_linked.COMPLETION = NORMAL
+
+;; An already pending exception prevents zend_call_function from entering an
+;; object conversion. Scalar concatenation still writes before HANDLE_EXCEPTION;
+;; a warning from an array's try conversion instead aborts the binary operation.
+def $computed_static_object(POBJECT n) = true
+def $computed_static_object(pvalue) = false -- otherwise
+def $computed_static_array(PARRAY n) = true
+def $computed_static_array(pvalue) = false -- otherwise
+def $computed_static_pending_compound(S, pcomputedaddress) = S_place
+  -- if S_place = $compound_location(S, BASE_CLASS_STATIC pcomputedaddress.ROOT pcomputedaddress.NAME, pcomputedaddress.LINE)
+  -- if S_place.COMPLETION =/= NORMAL
+def $computed_static_pending_compound(S, pcomputedaddress) = S_read
+  -- if S_place = $compound_location(S, BASE_CLASS_STATIC pcomputedaddress.ROOT pcomputedaddress.NAME, pcomputedaddress.LINE)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_place, pcomputedaddress.RIGHT, pcomputedaddress.LINE)
+  -- if S_read.COMPLETION =/= NORMAL
+def $computed_static_pending_compound(S, pcomputedaddress) = $computed_static_pending_binary(S_read, pcomputedaddress, pvalue_left, pvalue_right)
+  -- if S_place = $compound_location(S, BASE_CLASS_STATIC pcomputedaddress.ROOT pcomputedaddress.NAME, pcomputedaddress.LINE)
+  -- if S_place.COMPLETION = NORMAL
+  -- if S_read = $resolve_at(S_place, pcomputedaddress.RIGHT, pcomputedaddress.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if $location_slot(S_read, S_read.LOCATION) = DEFINED pvalue_left
+  -- if S_read.RESULT = KNOWN pvalue_right
+def $computed_static_pending_binary(S, pcomputedaddress, pvalue_left, pvalue_right) = S
+  -- if $computed_static_object(pvalue_left)
+def $computed_static_pending_binary(S, pcomputedaddress, pvalue_left, pvalue_right) = $stringify(S, pvalue_left, pcomputedaddress.LINE)
+  -- if $computed_static_array(pvalue_left)
+def $computed_static_pending_binary(S, pcomputedaddress, pvalue_left, pvalue_right) = S
+  -- if ~$computed_static_object(pvalue_left) /\ ~$computed_static_array(pvalue_left)
+  -- if $computed_static_object(pvalue_right)
+def $computed_static_pending_binary(S, pcomputedaddress, pvalue_left, pvalue_right) = $stringify(S, pvalue_right, pcomputedaddress.LINE)
+  -- if ~$computed_static_object(pvalue_left) /\ ~$computed_static_array(pvalue_left)
+  -- if $computed_static_array(pvalue_right)
+def $computed_static_pending_binary(S, pcomputedaddress, pvalue_left, pvalue_right) = $computed_static_pending_store(S, pcomputedaddress, $binary_apply(S, CONCAT, pvalue_left, pvalue_right, pcomputedaddress.LINE))
+  -- if ~$computed_static_object(pvalue_left) /\ ~$computed_static_array(pvalue_left)
+  -- if ~$computed_static_object(pvalue_right) /\ ~$computed_static_array(pvalue_right)
+
+;; Weak scalar parsers abort under EG(exception). The numeric int|float
+;; union shortcut parses the new string directly; exact string/mixed succeeds.
+def $computed_static_pending_conversion(ptbranch*, ptbytes, b) = TYPEVALUE (PSTRING ptbytes)
+  -- if $typed_exact(ptbranch*, PSTRING ptbytes)
+def $computed_static_pending_conversion(ptbranch*, ptbytes, false) = TYPEVALUE $number_value(pnumber)
+  -- if ~$typed_exact(ptbranch*, PSTRING ptbytes)
+  -- if "int" <- $ptmasks(ptbranch*) /\ "float" <- $ptmasks(ptbranch*)
+  -- if $typed_number(PSTRING ptbytes) = (pnumber)
+def $computed_static_pending_conversion(ptbranch*, ptbytes, b) = TYPEREJECT -- otherwise
+def $computed_static_pending_writer(S, pcomputedaddress) = true
+  -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
+  -- if pcomputedaddress.PENDING = (n_pending)
+  -- if S.ORIGIN = (pcomputedaddress.SITE)
+  -- if $call_task_valid(S[.ORIGIN = $origin_child((pcomputedaddress.SITE), [PCFIELD 0])], COMPOUND_STATIC_APPLY pcomputedaddress)
+def $computed_static_pending_writer(S, pcomputedaddress) = false -- otherwise
+def $propref_conversion(S, ptbranch*, PSTRING ptbytes, b) = $computed_static_pending_conversion(ptbranch*, ptbytes, b)
+  -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
+  -- if $computed_static_pending_writer(S, pcomputedaddress)
+def $computed_static_pending_store(S, pcomputedaddress, S_changed) = S_changed
+  -- if S_changed.COMPLETION =/= NORMAL
+def $computed_static_pending_store(S, pcomputedaddress, S_changed) = $computed_static_pending_captured(S_entered, pcomputedaddress, pstaticcompound, ptbytes)
+  -- if S_changed.COMPLETION = NORMAL
+  -- if S_changed.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.LOCATION = CLASS_STATIC ppropertyid
+  -- if $static_compound_capture(S, ppropertyid, pcomputedaddress.SITE, |S.CLASSCONSTANTHISTORY|) = (pstaticcompound)
+  -- if S_entered = S_changed[.LOCATION = STATIC_COMPOUND pstaticcompound][.CLASSCONSTANTHISTORY = S_changed.CLASSCONSTANTHISTORY ++ [$static_compound_enter_event(S, pstaticcompound, pcomputedaddress.SITE, pcomputedaddress.LINE)]]
+def $computed_static_pending_captured(S, pcomputedaddress, pstaticcompound, ptbytes) = $static_compound_store(S, pstaticcompound, pcomputedaddress.SITE, pcomputedaddress.LINE, PSTRING ptbytes)
+  -- if ~pstaticcompound.VERIFY
+def $computed_static_pending_captured(S, pcomputedaddress, pstaticcompound, ptbytes) = $computed_static_pending_direct(S, pcomputedaddress, pstaticcompound, $computed_static_pending_conversion(ppropertydesc.TYPE, ptbytes, $property_strict(S)))
+  -- if pstaticcompound.VERIFY /\ pstaticcompound.CELL = eps
+  -- if $static_compound_descriptor(S, pstaticcompound, pcomputedaddress.SITE) = (ppropertydesc)
+def $computed_static_pending_captured(S, pcomputedaddress, pstaticcompound, ptbytes) = $write_cell_checked(S, n, PSTRING ptbytes, pcomputedaddress.LINE)
+  -- if pstaticcompound.VERIFY
+  -- if pstaticcompound.CELL = (n)
+def $computed_static_pending_direct(S, pcomputedaddress, pstaticcompound, TYPEVALUE pvalue) = $static_compound_direct(S, pstaticcompound, pcomputedaddress.SITE, pcomputedaddress.LINE, pvalue)
+def $computed_static_pending_direct(S, pcomputedaddress, pstaticcompound, TYPEREJECT) = S
+
+;; A current string/reference bypasses verification, just like the ordinary
+;; static concat fast path. Bind its raw backing to the actual pending writer
+;; and fresh ENTRY rather than granting authority from an AST alone.
+def $reference_coercion_admission(S, n, porigin, z, ptbytes) = true
+  -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
+  -- if $computed_static_pending_writer(S, pcomputedaddress)
+  -- if pcomputedaddress.SITE = porigin /\ pcomputedaddress.LINE = z
+  -- if S.LOCATION = STATIC_COMPOUND pstaticcompound
+  -- if pstaticcompound.CELL = (n) /\ ~pstaticcompound.VERIFY
+  -- if $static_compound_source(S, pstaticcompound, porigin, z)
+  -- if $(pstaticcompound.ENTRY + 1 = |S.CLASSCONSTANTHISTORY|)
+  -- if $static_compound_capture(S, pstaticcompound.DECL, porigin, pstaticcompound.ENTRY) = (pstaticcompound)
+  -- if S.COMPLETION = NORMAL /\ S.RESULT = KNOWN (PSTRING ptbytes)
+rule PhpStep/computed-static-name-apply-pending: S ~> $computed_static_pending_end(S_updated[.HELD = S.HELD], pcomputedaddress.PENDING, ptask*)
+  -- if S.TODO = (COMPOUND_STATIC_APPLY pcomputedaddress) :: ptask*
+  -- if $call_task_valid(S, COMPOUND_STATIC_APPLY pcomputedaddress)
+  -- if pcomputedaddress.PENDING = (n_pending)
+  -- if S_updated = $computed_static_pending_compound(S[.ORIGIN = (pcomputedaddress.SITE)][.BASE = BASE_CLASS_STATIC pcomputedaddress.ROOT pcomputedaddress.NAME], pcomputedaddress)

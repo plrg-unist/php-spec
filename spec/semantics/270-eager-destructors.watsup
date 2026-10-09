@@ -349,8 +349,13 @@ def $destructor_operation_finish(S, pdestructionoperation) = $destructor_operati
 def $destructor_pending_finish(S, pdestructionoperation, n, ptask_tail*) = S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL] -- otherwise
 dec $eager_operation_validation_value(pstate, pdestructionoperation) : poperand
 def $eager_operation_validation_value(S, pdestructionoperation) = S.RESULT -- otherwise
-def $call_after_origin(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.RESULT = $eager_operation_validation_value(S, pdestructionoperation)]
+dec $eager_operation_validation_base(pstate, pdestructionoperation) : pbase
+def $eager_operation_validation_base(S, pdestructionoperation) = S.BASE -- otherwise
+dec $computed_static_throw_projection(pstate, pdestructionoperation) : bool
+def $computed_static_throw_projection(S, pdestructionoperation) = false -- otherwise
+def $call_after_origin(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*][.RESULT = $eager_operation_validation_value(S, pdestructionoperation)][.BASE = $eager_operation_validation_base(S, pdestructionoperation)]
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
+  -- if ~$computed_static_throw_projection(S, pdestructionoperation)
 def $return_discard(S, DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = $eager_cleanup_finish(S, pdestructionoperation)[.DESTRUCTION.OPERATIONS = pdestructionoperation_tail*]
   -- if S.DESTRUCTION.OPERATIONS = pdestructionoperation :: pdestructionoperation_tail*
 def $destructor_call_pending_valid(S, pdestructorcall) = true

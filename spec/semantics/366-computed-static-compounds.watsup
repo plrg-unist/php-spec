@@ -10,6 +10,8 @@ dec $computed_static_name_compatible(pstate, porigin, ptbytes) : bool
 dec $computed_static_named_root(pstate, porigin) : porigin?
 dec $computed_static_base(pstate, ppropertyid, porigin) : (porigin, ptbytes)?
 dec $computed_static_selection_allowed(pstate, porigin) : bool
+dec $computed_static_name_call(pstate, pcomputedcompound) : bool
+def $computed_static_name_call(S, pcomputedcompound) = false -- otherwise
 
 def $compound_string_line(S, porigin, NExprStaticPropertyFetch phpType19 expression_name metadata_fetch, expression_right, metadata) = $runtime_line(S[.ORIGIN = $origin_child((porigin), [PCFIELD 0])], eps, NExprStaticPropertyFetch phpType19 expression_name metadata_fetch)
   -- if $class_static_computed_name(expression_name)
@@ -81,6 +83,7 @@ def $call_task_valid(S, COMPOUND_STATIC_READY pcomputedcompound porigin ptbytes)
 
 rule PhpStep/computed-static-name: S ~> $class_static_prepare_base(S_name[.TODO = (COMPOUND_STATIC_READY pcomputedcompound porigin_root ptbytes) :: ptask*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], pcomputedcompound.CLASS, ptbytes, pcomputedcompound.LINE)
   -- if S.TODO = (COMPOUND_STATIC_NAME pcomputedcompound) :: ptask*
+  -- if ~$computed_static_name_call(S, pcomputedcompound)
   -- if $call_task_valid(S, COMPOUND_STATIC_NAME pcomputedcompound)
   -- if S_class = $class_static_prepare_base_ready(S, pcomputedcompound.CLASS, eps, pcomputedcompound.LINE)
   -- if S_class.COMPLETION = NORMAL
@@ -94,6 +97,7 @@ rule PhpStep/computed-static-class-abrupt: S ~> S_class[.TODO = eps]
   -- if S_class.COMPLETION =/= NORMAL
 rule PhpStep/computed-static-name-abrupt: S ~> S_name[.TODO = eps]
   -- if S.TODO = (COMPOUND_STATIC_NAME pcomputedcompound) :: ptask*
+  -- if ~$computed_static_name_call(S, pcomputedcompound)
   -- if S_class = $class_static_prepare_base_ready(S, pcomputedcompound.CLASS, eps, pcomputedcompound.LINE)
   -- if S_class.COMPLETION = NORMAL
   -- if S_name = $resolve_name(S_class, pcomputedcompound.NAME, pcomputedcompound.LINE)
