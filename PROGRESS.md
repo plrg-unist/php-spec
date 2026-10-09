@@ -377,8 +377,19 @@ physical premises complete both unchanged originals. The affected error fixture
 now checks request-final retirement of the new error; its obsolete lookup has
 zero affected credit. Both whole CLI 60s timeouts retain zero agreement. Final
 358 over `6ed4873bd` compiles at `0bc957892`, preserving reviewed Generator render
-and dynamic-source hooks. Overlap, different-active-pass reentry, whole CLI
-completion and broader GC remain required.
+and dynamic-source hooks.
+Different-main public reentry345 now authenticates the actual parked VM/fresh API
+while preserving fresh main tags after the old target slot is reused. Old guard
+INDEX equals the global cursor; the completed local scan must be INDEX+1, so a
+rewind cannot consume the fresh E callback. Independent normal96 at `93cb1cfd5`
+and throw109 at `950c158d5` complete both unchanged originals with exact error
+identity, heap-identical forgeries and budget replay. Actual358 over `ea04fbbe4`
+passes strict compilation/init. The printable-metadata helper is the concrete
+changed cost dependency for the one throw-only retry; no general speedup is inferred.
+The initial undefined-helper compiler stop, first throw-state 120s timeout and
+both whole CLI 60s timeouts retain zero affected/agreement credit. Overlap, active
+residual and wider Fiber-pass reentry, whole CLI completion and broader GC remain
+required; earlier cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
