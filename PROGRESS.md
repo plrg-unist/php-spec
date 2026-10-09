@@ -301,7 +301,17 @@ Original refusal, diagnostic/binding stops, cache/retirement fixture failures an
 Weak/GC admission gaps stay at zero. Final361 over `e889a1592` passes strict
 compilation at `77e534575` (6.488 seconds), preserving EX34's301/372 collector
 guards; this source has no collector task. Private source/state cuts retain their
-inputs. Wider handlers/rendering, child lifetimes, reacquisition, message warnings,
+inputs. A declared property ALIAS whose last local alias is unset transfers its
+HCELL then Leaf through the actual release chain and emits the same second fatal.
+Stable retired-cell markers and STORE evidence certify the consumed child without
+owning it; Parent Weak-null and both Leaf C claims survive. Source1/compiler361
+retain `c5b8de418` (6.315 seconds); 677 strict SL premises retain `4870a1a8c`.
+The original Unsupported, reached discriminator and pre-evaluation bounds syntax
+stop retain zero credit. Actual363 over `d54dd9fa8` passes strict compilation
+and the affected 677 SL group at `a2847abb8` (compiler 6.438 seconds). Three shared
+message predicates observe bytes across the parent's immutable carriers;
+private source/compilerc5 and state487 retain their cuts. Wider
+handlers/rendering, child lifetimes, reacquisition, message warnings,
 parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict
 compilation at `ba1c17c07`, preserving current schema, storage and collector/source
@@ -1806,6 +1816,15 @@ This modest matched observation is not a CLI estimate. Required original 7 keeps
 its prior timeout and zero agreement; no source or accepted state cut is renewed.
 Actual-parent compilation passes at 640a59899 over 7c3299fd with 361 modules,
 preserving scalar replay hooks; this checks compiler compatibility only.
+A new cold double-throw source at b82bd2425 with 361 modules passes native/model
+agreement and 155 genuine state premises without a production change. Empty-name
+lookup leaves the static default deferred, preserves Error.previous=drop.previous=cast,
+and retires the owned RHS without calling its __toString. Actual operation/FETCH,
+descriptor, history and heap guards pass. The preparation stop and incorrect
+receiver-field fixture failure remain preserved with zero credit. Prior source/state
+cuts are unchanged; required original 7 remains open at its CLI 60 timeout.
+Current publication over ee06368a4 with 363 modules passes compilation and 156
+carrier-aware cold fixture premises at 2009abf79; source agreement stays at b82.
 ARG329 EPS/mixed-Notice and held return-verifier work remain excluded.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.

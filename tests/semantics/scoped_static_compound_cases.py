@@ -1079,4 +1079,43 @@ echo "P:", $name, ";Z:", $result, ";E;";
         'expected_stdout': 'Q;N;D;R;X:Undefined constant self::MISSING;Q:drop;L:2;P:other;Z:sentinel;E;',
         'discriminator': 'A borrowed selected receiver destructor leaves a pending exception before genuine cold static initialization; initializer failure replaces it while the evaluated RHS temporary retires.',
     },
+    {
+        'id': 'stringable-property-name-cold-double-throw',
+        'source': r'''<?php
+class ColdDoubleNameSlotReview20 { public static string $value = self::MISSING; }
+class ColdDoubleNameReview20 {
+    public function __toString(): string {
+        global $name, $cast;
+        echo "N;";
+        $name = "other";
+        throw $cast;
+    }
+    public function __destruct() { global $drop; echo "D;"; throw $drop; }
+}
+class ColdDoubleNameRightReview20 {
+    public function __toString(): string { echo "B;"; return "b"; }
+    public function __destruct() { echo "R;"; }
+}
+function coldDoubleNameRightReview20() { echo "Q;"; return new ColdDoubleNameRightReview20(); }
+$name = new ColdDoubleNameReview20();
+$cast = new Exception("cast");
+$drop = new Exception("drop");
+$result = "sentinel";
+try { $result = (ColdDoubleNameSlotReview20::${$name} .= coldDoubleNameRightReview20()); }
+catch (Throwable $e) {
+    echo "X:", $e->getMessage(), ";Q:";
+    $previous = $e->getPrevious();
+    if ($previous === null) { echo "none;C:none"; }
+    else {
+        echo $previous->getMessage(), ";C:";
+        $before = $previous->getPrevious();
+        if ($before === null) { echo "none"; } else { echo $before->getMessage(); }
+    }
+    echo ";";
+}
+echo "P:", $name, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;N;D;R;X:Access to undeclared static property ColdDoubleNameSlotReview20::$;Q:drop;C:cast;P:other;Z:sentinel;E;',
+        'discriminator': 'Failed NAME conversion and throwing receiver cleanup preserve empty-name lookup before cold defaults, chain Error to drop to cast, and retire the owned RHS without stringifying it.',
+    },
 ]

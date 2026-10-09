@@ -727,6 +727,8 @@ test-semantics: build
 	python3 tests/semantics/generator_request_render_warning_throw_protocol.py --mode check --sl
 	python3 tests/semantics/generator_request_instance_child_sources.py --mode full
 	python3 tests/semantics/generator_request_instance_child_protocol.py --mode check --sl
+	python3 tests/semantics/generator_request_reference_child_sources.py --mode full
+	python3 tests/semantics/generator_request_reference_child_protocol.py --mode check --sl
 	python3 tests/semantics/generator_fiber_close_prepare.py --mode full
 	python3 tests/semantics/generator_fiber_close_review.py --mode full
 	python3 tests/semantics/generator_fiber_close_protocol.py --mode check --sl

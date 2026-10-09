@@ -302,6 +302,9 @@ retire the receiver before reading the live row, reference cell and RHS. Failed 
 preserves empty-name lookup and the Error-to-destructor-to-cast exception chain.
 Eight of nine exact originals pass at separate cuts; the pending-masks original
 remains required with an unchanged 60-second CLI timeout and zero agreement.
+A separate cold double-throw witness and 155 state premises pass on a 361-module
+cut: empty-name lookup leaves defaults deferred and retires the RHS without
+stringifying it, preserving Error-to-destructor-to-cast chaining.
 Prior 123/private 238 cuts remain separate. A tested cut with 360 modules passes
 compilation, 238 affected state premises and 23 constant-export/control premises.
 One constant lookup per insertion reduces calls from 689,580 to 229,972 over
@@ -371,7 +374,10 @@ destructor throwing during reported-exception release emits a second fatal.
 The Parent free_obj pin keeps Weak lookup null; two Leaf C claims and real
 Generator/cache owners survive. Its unfinished fatal frame retains the old
 Exception's occupied GC slot through the pending HANDLE job. One exact source
-and 549 strict premises retain separate cuts. Wider handlers/rendering,
+and 549 strict premises retain separate cuts. A declared reference-cell child,
+after its last local alias is unset, follows the same second-fatal path. Its
+retired cell/STORE value certifies the actual Leaf release without adding an owner;
+one new exact source and 677 strict premises retain separate cuts. Wider handlers/rendering,
 child lifetimes, reacquisition, parked/escaped storage and generic terminal cleanup
 remain required.
 [Earlier cuts](coverage/semantics/generator-request-finally-review.json).
