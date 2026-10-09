@@ -1931,6 +1931,8 @@ and actual request retirement. The wrapper matches native bytes; 359 premises
 (239 reached, 120 constructed) authenticate the entry and reject narrow forgeries.
 All prior stops remain zero credit. EPS saved selection keeps ordinary compatibility;
 other Closure families, INI identity, ARG329 and required original 7 remain open.
+Actual-parent compilation passes at a67b4e4a over 633ecec1e with 367 modules;
+pointwise Notice/ownership review adds no source or state renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
