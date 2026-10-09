@@ -1,0 +1,235 @@
+{
+  "milestone": "Acquired Iterator yield-from valid NaN warning continuations",
+  "status": "partial; private source9/state20 and actual-parent strict370 PASS",
+  "baseline": "47accb555b8c683b0085e492506029b750460a55",
+  "semantic_revision": "40be19859942d39fa009f9c33796ecc5e0296e1f",
+  "tested_revision": "c52ae1d161a9585f0fb631fd91ce37323d080de5",
+  "target": "PHP8.5.10 CLI NTS64/profile30719; SpecTec da36ac3c434cd291940293a63da64544307730a3, OCaml5.1.0, SL/cachefalse/determinism checks",
+  "engine_routes": [
+    "Zend/zend_interfaces.c:zend_user_it_valid",
+    "Zend/zend_operators.h:i_zend_is_true",
+    "Zend/zend_generators.c:zend_generator_get_next_delegated_value"
+  ],
+  "scope": [
+    "Initial and later acquired Iterator valid NaN warnings preserve the original raw retval and acquisition receipt through generic handler invoke/result/cleanup or default dispatch.",
+    "Exact severity2/message/event/source line survive warning delivery; one post-handler decision rereads numeric references while copied NaN remains true.",
+    "Genuine parked handlers retain one parent resumer and one delegation claim in the actual saved Fiber VM; direct markers cannot substitute for acquired mode.",
+    "False decisions and thrown handlers release raw retval before Iterator data after rewind, with no request-retention record."
+  ],
+  "sources": {
+    "normal_agreements": 9,
+    "unsupported_controls": 0,
+    "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/yield-from-valid-nan-source-a8ov6f2o/report.json",
+    "revision": "c52ae1d161a9585f0fb631fd91ce37323d080de5",
+    "selected_ids": [
+      "yield-from-acquired-initial-nan-reference",
+      "yield-from-acquired-initial-nan-value",
+      "yield-from-acquired-later-nan-reference",
+      "yield-from-acquired-later-nan-value",
+      "yield-from-acquired-nan-handler-parks",
+      "yield-from-acquired-initial-nan-handler-throws",
+      "yield-from-acquired-later-nan-handler-throws",
+      "yield-from-acquired-initial-nan-default-warning",
+      "yield-from-acquired-initial-nan-reference-true"
+    ],
+    "inputs_stable": true,
+    "head_stable": true
+  },
+  "compiler": {
+    "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/yield-from-valid-nan-sl-ibxxx4fp/report.json",
+    "revision": "c52ae1d161a9585f0fb631fd91ce37323d080de5",
+    "modules": 368,
+    "process_seconds": 120,
+    "passed": true
+  },
+  "native_discovery": {
+    "new_originals": 9,
+    "semantic_agreements": 0,
+    "reports": [
+      "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/yield-from-valid-nan-native-bmqhjhfp/report.json",
+      "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/yield-from-valid-nan-reference-true-native-ihal33s3/report.json"
+    ],
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1,
+      "PHP_SPEC_SCRIPT_ENCODING": "unset"
+    },
+    "native_process_seconds": 75,
+    "model_seconds": 60,
+    "model_process_seconds": 75
+  },
+  "states": {
+    "status": "PASS; all twenty genuine-source groups accepted",
+    "runner": "tests/semantics/yield_from_valid_nan_review.py",
+    "fixture_revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+    "groups": 20,
+    "physical_premises": 637,
+    "driver_clauses": 589,
+    "process_seconds": 120,
+    "selected": [
+      {
+        "id": "initial-dispatch-keeps-raw-reference-receipt-and-one-data-owner",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-tr_698cj/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 46,
+        "driver_clauses": 42
+      },
+      {
+        "id": "default-warning-keeps-copied-nan-and-real-operand-line",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-1j797uu5/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 36,
+        "driver_clauses": 31
+      },
+      {
+        "id": "initial-reference-zero-retires-raw-before-data-at-natural-end",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-ijt_2qee/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 43,
+        "driver_clauses": 43
+      },
+      {
+        "id": "initial-copied-nan-enters-current-after-handler-writes-zero",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-bj75zol3/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 38,
+        "driver_clauses": 38
+      },
+      {
+        "id": "later-reference-zero-retires-raw-data-without-request-retention",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-tkd_tti7/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 35,
+        "driver_clauses": 35
+      },
+      {
+        "id": "later-copied-nan-retains-generic-mode-before-second-current",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-pzqypsmd/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 34,
+        "driver_clauses": 34
+      },
+      {
+        "id": "reference-one-retires-numeric-raw-before-authentic-current-call",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-ucfnl61p/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 38,
+        "driver_clauses": 38
+      },
+      {
+        "id": "operational-clean-keeps-one-parent-and-original-raw-reference",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-3_v26yxi/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 35,
+        "driver_clauses": 34
+      },
+      {
+        "id": "warning-rejects-coherent-wrong-severity",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-ojuu5lgi/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 14,
+        "driver_clauses": 13
+      },
+      {
+        "id": "warning-rejects-coordinated-receipt-and-packet-line-forgery",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-x59t5w6y/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 29,
+        "driver_clauses": 28
+      },
+      {
+        "id": "acquired-mode-rejects-substitution-of-old-direct-warning-marker",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-j91fujyn/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 14,
+        "driver_clauses": 14
+      },
+      {
+        "id": "warning-receipt-rejects-cleared-delegate-acquisition-mode",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-eo1noss4/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 25,
+        "driver_clauses": 25
+      },
+      {
+        "id": "parked-handler-keeps-raw-data-and-unique-real-parent-operation",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-8woe8axl/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 44,
+        "driver_clauses": 37
+      },
+      {
+        "id": "parked-warning-zero-budget-preserves-exact-saved-vm",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-bjcuws0z/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 19,
+        "driver_clauses": 12
+      },
+      {
+        "id": "parked-warning-rejects-coherent-shifted-receipt-and-handler-line",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-6ce46_13/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 36,
+        "driver_clauses": 29
+      },
+      {
+        "id": "parked-warning-rejects-duplicate-wrapper-and-parent-claim",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-bae309h8/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 38,
+        "driver_clauses": 31
+      },
+      {
+        "id": "initial-handler-throw-drops-delegate-and-keeps-ordered-raw-data-owners",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-2u176202/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 37,
+        "driver_clauses": 34
+      },
+      {
+        "id": "later-handler-throw-drops-data-before-catch-and-finally",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-5ayszd4i/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 38,
+        "driver_clauses": 35
+      },
+      {
+        "id": "initial-error-reaches-real-raw-before-data-release-without-retention",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-nkgf9z5f/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 19,
+        "driver_clauses": 18
+      },
+      {
+        "id": "later-error-reaches-real-raw-before-data-release-without-retention",
+        "report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-20/.tools/fiber-state-review-2ihjeta2/report.json",
+        "revision": "d825e3fc0f12361bd2fb17c369a749f14ef5ed24",
+        "physical_premises": 19,
+        "driver_clauses": 18
+      }
+    ],
+    "full_continuation": "Nine unchanged whole-source agreements supply complete continuations; bounded reached cuts separately check authority, raw/data ownership, zero budget and real transitions."
+  },
+  "compatibility": "Earlier direct289 warning markers keep their own EPS acquisition domain. Numeric warning retirement is scoped to the new acquired marker. Previous source/state/native cuts receive no renewed credit.",
+  "required_gaps": [
+    "Post-handler raw payload tags outside the supported numeric domain",
+    "Changed original operand identity and wider operand modes",
+    "Wider running-Generator transfers and complete lifecycle",
+    "Complete PHP core semantics"
+  ],
+  "preserved_failures": [],
+  "actual_parent_composition": {
+    "parent": "d827dc635a7bd6289d5ce9437b4c31ec51ee2096",
+    "semantic_revision": "4723282ff5467f2287e1fa37f705b73d7503ba86",
+    "compiler_report": "/home/user/workspace/php-spec/.tools/calls-yield-from-valid-nan-current-20/.tools/yield-from-valid-nan-current-sl-x0jl3_1n/report.json",
+    "modules": 370,
+    "passed": true,
+    "inputs_stable": true,
+    "process_seconds": 120,
+    "process_exit": 0,
+    "timeout": false,
+    "compatibility": "Three reviewed production paths preserve parent magic-get, callable-factory, typed string-reference return and assertion/residual-GC protocols; parent module order remains unchanged. Private source9/state20 cuts retain their own identities with no renewed credit."
+  }
+}

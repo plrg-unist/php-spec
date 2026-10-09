@@ -32,8 +32,22 @@ Seventeen unchanged native-grounded originals agree at separate private cuts.
 Twenty-five genuine-source groups/720 ownership and counterexample premises pass;
 original failures retain zero credit in the
 [Aggregate ledger](../../coverage/semantics/yield-from-aggregate-review.json).
-Changed original operands, wider operand modes and acquired Iterator NaN warning
-continuations remain explicit required gaps.
+At that acquisition cut, Iterator NaN warning continuations remained required.
+Changed original operands and wider operand modes remain explicit required gaps.
+
+Acquired Iterator `valid()` NaN warnings retain the raw returned operand and the
+actual acquisition receipt through ordinary handler invoke, result and cleanup.
+The final decision rereads a live numeric reference once; a copied NaN stays true.
+The original Aggregate operand has already retired. False results and thrown
+handlers release the raw retval before iterator data immediately, without adding
+a request-retention record. Default warnings use the ordinary dispatcher.
+Genuine parked handlers preserve the parent resumer and one delegation claim in
+their Fiber VM; shifted receipts, old direct markers and duplicate saved claims
+are rejected. Nine exact originals agree at `c52ae1d16`; twenty genuine-source
+groups/637 physical ownership and authority premises pass at `d825e3fc0`. The
+[warning ledger](../../coverage/semantics/yield-from-valid-nan-review.json) tracks
+their separate state checks. Other post-handler raw payload tags remain an explicit
+Unsupported dependency. Earlier direct-delegation evidence is unchanged.
 
 Getters can detach an independently completed child without resuming the parent.
 The copied current remains available until advancement, while the key becomes
