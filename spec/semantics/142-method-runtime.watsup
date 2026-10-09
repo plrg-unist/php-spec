@@ -853,8 +853,7 @@ def $scoped_ctor_arm_at(S, porigin_site) = true
 def $scoped_ctor_arm_at(S, porigin_site) = false -- otherwise
 def $scoped_ctor_arm(S) = $scoped_ctor_arm_at(S, porigin_site) -- if S.ORIGIN = (porigin_site)
 def $scoped_ctor_arm(S) = false -- otherwise
-def $scoped_missing(S, NName (BYTES text) metadata, ptbytes_class, ptbytes_method, z) = $throw_scalar(S, "Error", $ptascii("Cannot call constructor"), z)[.TODO = eps]
-  -- if $ptlc($base64(text)) = $ptascii("parent")
+def $scoped_missing(S, phpType19, ptbytes_class, ptbytes_method, z) = $throw_scalar(S, "Error", $ptascii("Cannot call constructor"), z)[.TODO = eps]
   -- if $ptlc(ptbytes_method) = $ptascii("__construct")
   -- if $scoped_ctor_arm(S)
 def $scoped_missing(S, phpType19, ptbytes_class, ptbytes_method, z) = $throw_scalar(S, "Error", $ptascii("Call to undefined method ") ++ ptbytes_class ++ $ptascii("::") ++ $c_string(ptbytes_method) ++ $ptascii("()"), z)[.TODO = eps] -- otherwise
