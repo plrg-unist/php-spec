@@ -12,11 +12,23 @@ acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
 and later ordinary writes remain checked. Sixteen of17 focused originals agree,
 with private358 independent35 and13 source-reached fixtures/483 assertions passing.
-The seventeenth exposes the held delayed-TypeError replay gap: native
-`F|F|R|SHARED`, model `F|R|SHARED`, zero agreement. Parser-only fixture stops and
-the original prediction remain preserved. Actual359 over6536a8339 passes strict SL compilation at37b08adeb (4.679s);
-private358 source/state cuts retain their inputs. Held replay/owner recovery and
-Stringable reference conversion remain required. [Exact-return review](coverage/semantics/reference-return-exact-review.json).
+Actual359 over6536a8339 passes strict SL compilation at37b08adeb (4.679s);
+those source/state cuts and the original seventeenth failure retain their identities.
+[Exact-return review](coverage/semantics/reference-return-exact-review.json).
+
+Delayed reference-return TypeError now re-enters the protected exception chain
+once, preserving pending-error ownership, selected catch eligibility and code
+after a caught try. Ten replay originals agree at `247446c` (360 modules), including
+the former `F|F|R|SHARED` mismatch; 14 source-reached current/saved fixtures pass
+954 assertions.
+Four preserved affected return controls and one core-only terminal weak-conversion
+control agree. The 361-module composition over `5b7452edd` passes separate strict
+compilation at `2c3dbf30`.
+The old prediction, pre-evaluation declaration failure and Unsupported `gettype`
+observer remain zero-credit at their original cuts. Current-base scalar-loop and
+CV/compiled-CONST switch recovery, physical-array owners, active-finalizer replay,
+protected temporary/NULL Notice timing and Stringable reference conversion remain
+required. [Replay review](coverage/semantics/reference-return-replay-review.json).
 
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.

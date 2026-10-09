@@ -1,0 +1,13 @@
+{
+  "scope": "Terminal normal reference recheck must write an actual weak scalar conversion to the captured shared cell. Separate from the ten replay sources.",
+  "cases": [
+    {
+      "id": "terminal-reference-weak-conversion-after-finally-core",
+      "purpose": "After initial exact string acceptance, finally changes the captured shared cell to int; strict string identity observes terminal weak conversion to that same cell. Later returned-alias write stays shared.",
+      "predicted_stdout": "F|string|2|changed",
+      "derived_from_source_sha256": "24c288faa953e56d9d8ef11e2d32625b37d46e9c5beca729e7cb3f94b1c99213",
+      "source": "<?php\nfunction &g(): string {\n    global $v;\n    try { return $v; }\n    finally { echo 'F|'; $v = 2; }\n}\n$v = 'old'; $alias =& $v;\n$r =& g();\nif ($alias === '2') { echo 'string'; } else { echo 'other'; }\necho '|', $r;\n$r = 'changed'; echo '|', $v;\n",
+      "source_sha256": "a5293fecfcdfe5c911e648d0ea1cac1bc1ffd37e458f941e855dab11e6113429"
+    }
+  ]
+}

@@ -461,8 +461,13 @@ now preserve existing cells, property sources and parameter-backing certificates
 through forwarded calls and `finally`; real conversions, missing-slot initialization
 and ordinary checked writes retain their behavior. Sixteen focused source agreements
 and private358 state cuts of 35 plus 483 assertions pass; actual359 passes separate
-strict compilation. The separate delayed-TypeError
-finalizer replay mismatch remains required work.
+strict compilation. [Delayed reference-return replay](coverage/semantics/reference-return-replay-review.json)
+now follows the protected exception chain once, retaining pending-error ownership,
+selected catch eligibility and the continuation after a caught try. Ten replay
+originals, 14 current/saved fixtures with 954 assertions and five affected return
+controls pass at private360; actual361 passes a separate strict compiler gate.
+Scalar-loop/CV-CONST continuation and physical-array owner recovery, active-finalizer
+replay, protected temporary/NULL Notice timing and Stringable conversion remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

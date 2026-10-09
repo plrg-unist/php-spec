@@ -38,11 +38,15 @@ The [focused review](../../coverage/semantics/reference-return-exact-review.json
 records 16 focused source agreements and private358 state cuts of 35 independent
 plus 483 reviewed assertions across 13 fixtures. Actual359 over6536a8339
 passes separate strict SL compilation at37b08adeb, with zero runtime evaluations.
-A separate delayed-TypeError
-replay original remains failing: PHP prints `F|F|R|SHARED`, the model
-`F|R|SHARED`. Its original prediction and raw failure remain preserved; generic
-replay, runtime-owner recovery and by-reference Stringable conversion remain
-required.
+That ledger retains the original delayed-TypeError failure and disproved
+`F|R|SHARED` prediction. The same original now matches PHP's `F|F|R|SHARED` in the
+[replay increment](../../coverage/semantics/reference-return-replay-review.json):
+ten replay originals and 14 current/saved fixtures with 954 assertions pass at
+private360. Four preserved affected return controls and one core-only terminal
+weak-conversion control also agree; actual361 compilation retains a distinct cut.
+Current-base scalar-loop/CV-CONST continuation and physical-array owner recovery,
+active-finalizer replay, protected temporary/NULL Notice timing and by-reference
+Stringable conversion remain required.
 
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;
