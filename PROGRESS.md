@@ -1180,6 +1180,22 @@ Actual372 over `fb58ba46f` passes compiler/init at `fb0d5750e`; reviewed hook,
 getter/caller and return interfaces preserve state375 at1c1de and source39 CLI60 OPEN/0.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Protected residual arrays301 now require nonproxy fresh-DTORS reach. Closed white
+object/array producers remove nested BLACK data before parked callback takeover
+and ordinary worker PASS1; the zero-owner image task and saved WAIT authenticate
+transfer, while worker-only frozen replay retains separate current-image/guard pins.
+Six source-reached cuts117/127/112/84/83/36 execute559 premises at their preserved
+b481/f2/1df revisions (372 modules): signed -1+1=0, live D/array owners1, E retirement,
+weak liveness and native END/request cleanup. Native/compiler/init pass. Terminal36
+executes one full continuation; independent pure-function congruence of its checked
+zero-budget state identity supplies the omitted second-drive equality. Earlier
+zero/one-step replay checks execute. Full58/compact37 SL120 timeouts retain zero
+credit. Whole source40 CLI60 remains OPEN/zero agreement
+at144cc1, with only that default source selection newly excluded; all six state
+groups stay enabled. New main source agreement, fresh reference/proxy producers,
+outside/black/external components and broader GC remain required; prior cuts unchanged.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335

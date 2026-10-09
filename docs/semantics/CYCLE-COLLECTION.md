@@ -612,3 +612,30 @@ localization only. Whole source39 CLI60 remains OPEN/zero agreement, and only it
 default source selection is excluded. Residual arrays/outside references,
 main/mixed layouts, proxies, black/external components, non-idle workers and
 later passes remain required; earlier cuts are unchanged.
+
+Protected residual arrays301 must lie inside fresh-DTORS reach and remain nonproxy.
+The ordinary-Fiber source changes only D's self property to a singleton array.
+Its earlier parked-callback producer and later fresh D retrace also remove nested
+BLACK buffered arrays before dispatch. These fresh profiles require a closed white,
+fully counted/buffered object/array component; reference cells stay excluded.
+The zero-owner TAKEOVER_IMAGE task authenticates the exact initial BUFFER/FREE
+before the old callback resumes, without adding a second collection consumer or
+preventing later legitimate worker-slot reuse. COUNTED must remain covered by the
+frozen physical buffer. Nonoverlap frozen snapshot replay is confined to an actual
+ordinary caller's worker WAIT; current image, future target and selected guard
+checks independently pin normalization, physical cursor, source and CALLED.
+The existing fold and pass-count rules are unchanged.
+
+Six maintained source-reached cuts execute559 premises: takeover117 atb481,
+E image127/guard112 atf2, and repaired PASS1 image84/D guard83/terminal36 at1df
+(all372 modules). They cover role-bound physical order/debit, nested array removal,
+snapshot/image/caller/guard counterfeits, signed -1+1=0 and exact native END events.
+D and its array remain live with one owner each; E retires and request cleanup
+clears the cache and terminates W. Zero/one-step replay is executed in earlier cuts.
+Terminal36 checks that zero-budget normalization returns exactly its input and
+executes one full continuation; pure-function congruence entails the omitted second
+drive equality. The full58/compact37 SL120 timeouts have zero credit and no second
+full drive is claimed. Whole source40 CLI60 remains OPEN/zero agreement; only its
+default source selection is newly excluded. Main source agreement, mixed/reference
+array layouts, outside arrays, proxy/black/external components, non-idle workers
+and wider GC remain required; historical cuts are unchanged.

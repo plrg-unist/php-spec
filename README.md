@@ -1005,7 +1005,15 @@ Three ordinary-Fiber E→D→reference→D cuts execute 375 premises, including
 zero reference debit, exact image/guard authority and signed count0.
 D and its reference remain live with one owner each; E retires and request cleanup
 and replay pass. Whole source39 CLI60 remains OPEN with zero agreement credit;
-residual arrays, outside references and wider overlap remain required.
+wider residual-array layouts, outside references and wider overlap remain required.
+
+Protected residual reach also admits nonproxy arrays within fresh-DTORS reach.
+Closed white object/array producers remove nested data before parked-worker
+continuation and ordinary worker retrace, with separate snapshot and current-image
+checks. Six reached cuts execute 559 premises for the ordinary-Fiber D→array→D
+case: signed count0, live D/array owners1, E retirement and request cleanup.
+Whole source40 CLI60 remains OPEN/zero agreement; wider main/mixed, reference,
+outside-array, black/external and proxy layouts remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
