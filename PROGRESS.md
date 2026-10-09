@@ -305,7 +305,9 @@ including the payload parked across receiver destruction and final weak-null.
 The virtual nested-closure control stays Unsupported; prior compiler/fixture
 stops, false states and diagnostics retain zero affected credit. Virtual/set/byref,
 inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
-and hooked unset remain required. Actual current-parent composition is pending.
+and hooked unset remain required. Actual 372-module composition over `48b6455fd`
+passes strict initialization at `390c27db4` (5.421 s), preserving parent callable
+and magic-get ownership paths without renewing the private source/state checks.
 [Hook review](coverage/semantics/backed-get-hooks-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
