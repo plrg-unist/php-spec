@@ -127,8 +127,13 @@ def $psattribute_target(ptcontext, psraw, SEQUENCE ([(NAttributeGroup (SEQUENCE 
 def $psattribute_target(ptcontext, psraw, phpType14) = eps -- otherwise
 def $psattribute_message(ptbytes) = $ptascii("Attribute \"") ++ ptbytes ++ $ptascii("\" cannot target parameter (allowed targets: method, property)")
 def $psattribute_result(pscontinuation, phpType14, PSDEFAULTUNSUPPORTED text) = PSUNSUPPORTED text
+def $psattribute_result(pscontinuation, phpType14, psdefault) = PSUNSUPPORTED "missing deferred default compiler line"
+  -- if psdefault = PSNONE \/ $pshasdefault(psdefault)
+  -- if $psdefaultline(psdefault, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE]) = 0
+  -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) = (ptbytes_resolved)
 def $psattribute_result(pscontinuation, phpType14, psdefault) = PSERROR (pscontinuation.DIAGNOSTICS ++ [$psissue(pscontinuation.CONTEXT[.LINE = $psdefaultline(psdefault, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE])][.POSITION = PTPARAMETER], "error", "attribute-target", [ptbytes_resolved])])
   -- if psdefault = PSNONE \/ $pshasdefault(psdefault)
+  -- if $psdefaultline(psdefault, pscontinuation.CONTEXT[.LINE = pscontinuation.PARAMETER.LINE]) =/= 0
   -- if $psattribute_target(pscontinuation.CONTEXT, pscontinuation.PARAMETER, phpType14) = (ptbytes_resolved)
 def $psattribute_result(pscontinuation, phpType14, psdefault) = PSUNSUPPORTED "parameter attribute target" -- otherwise
 def $pspromotion_raw(ptcontext, PSINPUT psraw) = (psraw)
