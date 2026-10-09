@@ -1020,6 +1020,8 @@ owner; temporaries hold the receiver until completion. Future untyped UNSET slot
 retain their physical storage carrier through quiet reads and handler throws.
 Six original comparisons and two distinct false-return comparisons retain
 separate cuts; 132/154/166 reached premises and strict initialization pass.
+The reviewed current359 composition over `f5c4eed1f` passes strict compilation
+at `e77c3eff0`, preserving current source and Generator interfaces.
 [The review](coverage/semantics/undefined-property-review.json) preserves the
 original fallback/fixture failures and the weaker bound-Closure witness.
 Computed names, getters/hooks and read-call reference normalization remain required.

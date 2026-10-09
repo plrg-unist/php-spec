@@ -1335,7 +1335,10 @@ two distinct false sources pass at `192e33452`, including static handler replace
 and default emission before its destructor disables reporting. The original
 fallback and direct-relation fixture failures keep zero credit; the earlier
 bound-Closure native witness remains a weaker separate observation. Independent
-review accepts these private cuts. [Ledger](coverage/semantics/undefined-property-review.json).
+review accepts these private cuts and the actual359 join over `f5c4eed1f`,
+which passes strict compilation at `e77c3eff0` (4.567s) while preserving current
+state-aware207 guards,270 renderer-source classification and30 Generator fields.
+[Ledger](coverage/semantics/undefined-property-review.json).
 Computed names, magic getters/hooks, consumed storage and accepted99 read-call
 reference normalization remain required; held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
