@@ -17,34 +17,35 @@ def $property_prototype(S, porigin, ptbytes, n) = $property_prototype(S, porigin
   -- if ppropertydesc.VISIBILITY =/= PROPERTY_PRIVATE
 def $property_prototype(S, porigin, ptbytes, n) = porigin -- otherwise
 
-dec $property_protected_allowed(pstate, ppropertydesc) : bool
-def $property_protected_allowed(S, ppropertydesc) = ($class_origin_matches(S, porigin_scope, pclassdesc_prototype.NAME, |S.CLASSES|) \/ $class_origin_matches(S, porigin_prototype, pclassdesc_scope.NAME, |S.CLASSES|))
-  -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+dec $property_lookup_scope(pstate) : porigin?
+def $property_lookup_scope(S) = pcallcontext.LEXICAL_CLASS -- if S.CURRENT = (pcallcontext)
+def $property_lookup_scope(S) = eps -- otherwise
+dec $property_protected_scope(pstate, ppropertydesc, porigin?) : bool
+def $property_protected_scope(S, ppropertydesc, (porigin_scope)) = ($class_origin_matches(S, porigin_scope, pclassdesc_prototype.NAME, |S.CLASSES|) \/ $class_origin_matches(S, porigin_prototype, pclassdesc_scope.NAME, |S.CLASSES|))
   -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_declaring)
   -- if porigin_prototype = $property_prototype(S, porigin_declaring, ppropertydesc.NAME, |S.CLASSES|)
   -- if $class_at(S.CLASSES, porigin_prototype) = (pclassdesc_prototype)
-def $property_protected_allowed(S, ppropertydesc) = true
+def $property_protected_scope(S, ppropertydesc, (porigin_scope)) = true
   -- if ppropertydesc.ORIGIN = INTERNAL_PROPERTY text_owner ptbytes_field
   -- if ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
-  -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
   -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
   -- if $class_throwable_kind(S, porigin_scope, |S.CLASSES|) = (text_kind)
   -- if $throwable_nominal(text_kind, $ptascii(text_owner), 4)
-def $property_protected_allowed(S, ppropertydesc) = false -- otherwise
+def $property_protected_scope(S, ppropertydesc, porigin?) = false -- otherwise
+dec $property_protected_allowed(pstate, ppropertydesc) : bool
+def $property_protected_allowed(S, ppropertydesc) = $property_protected_scope(S, ppropertydesc, $property_lookup_scope(S))
 
-dec $property_lexical_private(pstate, nat, ptbytes) : ppropertydesc?
-def $property_lexical_private(S, n, ptbytes) = (ppropertydesc)
-  -- if S.CURRENT = (pcallcontext)
-  -- if pcallcontext.LEXICAL_CLASS = (porigin_scope)
+dec $property_private_scope(pstate, nat, ptbytes, porigin?) : ppropertydesc?
+def $property_private_scope(S, n, ptbytes, (porigin_scope)) = (ppropertydesc)
   -- if $class_at(S.CLASSES, porigin_scope) = (pclassdesc_scope)
   -- if $ppproperty_desc_at(pclassdesc_scope.PROPERTIES, ptbytes) = (ppropertydesc)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_origin_matches(S, porigin, pclassdesc_scope.NAME, |S.CLASSES|)
-def $property_lexical_private(S, n, ptbytes) = eps -- otherwise
+def $property_private_scope(S, n, ptbytes, porigin?) = eps -- otherwise
+dec $property_lexical_private(pstate, nat, ptbytes) : ppropertydesc?
+def $property_lexical_private(S, n, ptbytes) = $property_private_scope(S, n, ptbytes, $property_lookup_scope(S))
 
 dec $property_effective_desc(pstate, nat, ptbytes) : ppropertydesc?
 def $property_effective_desc(S, n, ptbytes) = $ppproperty_desc_at($property_info_layout(S, porigin, |S.CLASSES|), ptbytes)
@@ -60,34 +61,38 @@ def $property_dynamic_name_allowed(S, porigin, ptbytes) = true
   -- if porigin_declaring =/= porigin
 def $property_dynamic_name_allowed(S, porigin, ptbytes) = false -- otherwise
 
-dec $property_resolve_desc(pstate, nat, ptbytes, ppropertydesc?) : ppropertyaccess
-def $property_resolve_desc(S, n, ptbytes, eps) = PROPERTY_ACCESS ptbytes
-def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_ACCESS ppropertydesc.KEY
+dec $property_resolve_desc_scope(pstate, nat, ptbytes, ppropertydesc?, porigin?) : ppropertyaccess
+def $property_resolve_desc_scope(S, n, ptbytes, eps, porigin_scope?) = PROPERTY_ACCESS ptbytes
+def $property_resolve_desc_scope(S, n, ptbytes, (ppropertydesc), porigin_scope?) = PROPERTY_ACCESS ppropertydesc.KEY
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC
-def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_ACCESS ppropertydesc.KEY
+def $property_resolve_desc_scope(S, n, ptbytes, (ppropertydesc), porigin_scope?) = PROPERTY_ACCESS ppropertydesc.KEY
   -- if ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
-  -- if $property_protected_allowed(S, ppropertydesc)
-def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_ACCESS ptbytes
+  -- if $property_protected_scope(S, ppropertydesc, porigin_scope?)
+def $property_resolve_desc_scope(S, n, ptbytes, (ppropertydesc), porigin_scope?) = PROPERTY_ACCESS ptbytes
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_declaring)
   -- if porigin_declaring =/= porigin
-def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_DENIED ppropertydesc
+def $property_resolve_desc_scope(S, n, ptbytes, (ppropertydesc), porigin_scope?) = PROPERTY_DENIED ppropertydesc
   -- if ppropertydesc.VISIBILITY = PROPERTY_PROTECTED
-  -- if ~$property_protected_allowed(S, ppropertydesc)
-def $property_resolve_desc(S, n, ptbytes, (ppropertydesc)) = PROPERTY_DENIED ppropertydesc
+  -- if ~$property_protected_scope(S, ppropertydesc, porigin_scope?)
+def $property_resolve_desc_scope(S, n, ptbytes, (ppropertydesc), porigin_scope?) = PROPERTY_DENIED ppropertydesc
   -- if ppropertydesc.VISIBILITY = PROPERTY_PRIVATE
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin)
 
-def $property_resolve(S, n, ptbytes) = PROPERTY_BADNAME
+dec $property_resolve_desc(pstate, nat, ptbytes, ppropertydesc?) : ppropertyaccess
+def $property_resolve_desc(S, n, ptbytes, ppropertydesc?) = $property_resolve_desc_scope(S, n, ptbytes, ppropertydesc?, $property_lookup_scope(S))
+dec $property_resolve_scope(pstate, nat, ptbytes, porigin?) : ppropertyaccess
+def $property_resolve_scope(S, n, ptbytes, porigin_scope?) = PROPERTY_BADNAME
   -- if $property_bad_name(ptbytes)
-def $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ppropertydesc.KEY
+def $property_resolve_scope(S, n, ptbytes, porigin_scope?) = PROPERTY_ACCESS ppropertydesc.KEY
   -- if ~$property_bad_name(ptbytes)
-  -- if $property_lexical_private(S, n, ptbytes) = (ppropertydesc)
-def $property_resolve(S, n, ptbytes) = $property_resolve_desc(S, n, ptbytes, $property_effective_desc(S, n, ptbytes))
+  -- if $property_private_scope(S, n, ptbytes, porigin_scope?) = (ppropertydesc)
+def $property_resolve_scope(S, n, ptbytes, porigin_scope?) = $property_resolve_desc_scope(S, n, ptbytes, $property_effective_desc(S, n, ptbytes), porigin_scope?)
   -- if ~$property_bad_name(ptbytes)
-  -- if $property_lexical_private(S, n, ptbytes) = eps
+  -- if $property_private_scope(S, n, ptbytes, porigin_scope?) = eps
+def $property_resolve(S, n, ptbytes) = $property_resolve_scope(S, n, ptbytes, $property_lookup_scope(S))
 
 def $property_accessible(S, n, ptbytes) = true
   -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes_key

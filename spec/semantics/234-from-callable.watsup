@@ -33,6 +33,7 @@ dec $from_factory_capture(pstate, phpType19, ptbytes, phpType7*, int) : bool
 dec $from_factory_saved(pstate, nat) : bool
 dec $from_factory_live(pstate, nat) : bool
 dec $from_factory_call_site(pstate, porigin) : bool
+dec $from_factory_invoke_site(pstate, porigin) : bool
 dec $from_factory_owner(pstate, pconfigcall) : nat?
 dec $from_source_valid(pstate, pfrommethod) : bool
 
@@ -44,8 +45,15 @@ def $config_kind(pintrinsic) = true -- if $from_kind(pintrinsic)
 def $config_required(pintrinsic) = 1 -- if $from_kind(pintrinsic)
 def $config_parameter(pintrinsic, ptbytes) = (0) -- if $from_kind(pintrinsic) -- if ptbytes = $ptascii("callback")
 def $config_parameter_name(pintrinsic, 0) = $ptascii("callback") -- if $from_kind(pintrinsic)
+def $config_trace_frames(S, pconfigcall, pvalue*) = [ptraceframe, ptraceframe_invoke]
+  -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
+  -- if $from_factory_invoke_site(S, pconfigcall.SITE)
+  -- if pvalue_original* = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if ptraceframe = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("fromCallable"), CLASS ($ptascii("Closure")), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}
+  -- if ptraceframe_invoke = {FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("__invoke"), CLASS ($ptascii("Closure")), TYPE ($ptascii("->")), ARGS $trace_indexed_args(pvalue_original*, 0), HASARGS true}
 def $config_trace_frames(S, pconfigcall, pvalue*) = [{FILE $call_sourcefile(S.FILES, pconfigcall.SITE), LINE pconfigcall.LINE, FUNCTION $ptascii("fromCallable"), CLASS ($ptascii("Closure")), TYPE ($ptascii("::")), ARGS $trace_indexed_args(pvalue*, 0), HASARGS true}]
   -- if $from_kind(pconfigcall.KIND)
+  -- if ~(pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY /\ $from_factory_invoke_site(S, pconfigcall.SITE))
 
 def $from_static_class(S, PORIGIN n_unit pcpath, phpType19) = true
   -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
@@ -104,7 +112,15 @@ def $from_factory_saved(S, n) = true
   -- if $from_factory_site(S, porigin)
 def $from_factory_saved(S, n) = false -- otherwise
 def $from_factory_live(S, n) = ((HOBJECT n) <- S.ALLOCATIONS /\ $from_factory_saved(S, n))
-def $from_factory_call_site(S, porigin) = ($dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps)
+def $from_factory_invoke_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if ~$ppnullsafe(NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NIdentifier (BYTES text_name) metadata_name)
+  -- if $ptlc($base64(text_name)) = $ptascii("__invoke")
+  -- if ~$ppfirstclass(phpType7*)
+def $from_factory_invoke_site(S, porigin) = false -- otherwise
+def $from_factory_call_site(S, porigin) = (($dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps) \/ $from_factory_invoke_site(S, porigin))
 def $from_factory_owner(S, pconfigcall) = (n)
   -- if pconfigcall.KIND = INTRINSIC_FROM_CALLABLE_FACTORY
   -- if pconfigcall.OWNER = (n)
@@ -452,7 +468,20 @@ def $dynamic_value(S, porigin, z_init, z_call) = $config_prepare(S, INTRINSIC_FR
   -- if S.OBJECTS[n] = FROMCALLABLEFACTORY porigin_create
   -- if $from_factory_live(S, n)
   -- if S.ORIGIN = (porigin)
-  -- if $from_factory_call_site(S, porigin)
+  -- if $dynamic_site(S, (porigin)) /\ $dynamic_fixed_name(S, porigin) = eps
+
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $config_prepare(S_read[.TODO = METHOD_RESULT :: ptask_tail*], INTRINSIC_FROM_CALLABLE_FACTORY, z, (n), porigin)
+  -- if S.TODO = (METHOD_PREP phpType20 phpType7* false false z) :: ptask_tail*
+  -- if poperand = S.RESULT
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if S_read.OBJECTS[n] = FROMCALLABLEFACTORY porigin_create
+  -- if $from_factory_live(S_read, n)
+  -- if $ptlc(ptbytes) = $ptascii("__invoke")
+  -- if S.ORIGIN = (porigin)
+  -- if $from_factory_invoke_site(S_read, porigin)
+  -- if $call_task_valid(S, METHOD_PREP phpType20 phpType7* false false z)
 
 def $closure_scope_row_valid(S, pclosurescope) = true
   -- if pclosurescope.CREATION = eps

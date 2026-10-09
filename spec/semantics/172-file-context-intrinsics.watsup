@@ -1026,6 +1026,7 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
+  -- if ~$from_kind(pconfigcall.KIND)
   -- if $exit_fixed(S, pconfigcall.SITE) = eps
   -- if $exit_dynamic_site(S, pconfigcall.SITE)
 def $config_selected_valid(S, pconfigcall) = true
@@ -1034,6 +1035,7 @@ def $config_selected_valid(S, pconfigcall) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pconfigcall.KIND
+  -- if ~$from_kind(pconfigcall.KIND)
   -- if $exit_method_site(S, pconfigcall.SITE)
 def $config_selected_valid(S, pconfigcall) = false -- otherwise
 dec $config_slots_valid(pstate, pnamedslot*) : bool

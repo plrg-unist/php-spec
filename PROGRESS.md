@@ -1935,7 +1935,7 @@ compound-string and static FROMCALLABLE paths are inactive. Source/state credit
 remains at the separate private cuts.
 The first implicit getter family now supports literal ordinary CV-base reads
 through public nonstatic `__get` with one untyped required parameter and no
-declared return type. Missing/public UNSET invokes it; typed INITIAL still
+declared return type. Missing/public UNSET invokes it; accessible typed INITIAL
 raises Error without a getter. Module380 holds the receiver once while the
 getter context borrows it, verifies exact property types before receiver release,
 then copies the current reference payload. Value returns stay fixed, discarded
@@ -1950,9 +1950,23 @@ The reviewed actual369 join over `b9f0b1ae9` passes strict at `bae438b0f`
 (5.181s, state credit0). Current class/Generator targets, return cursors and
 callable factory fields are preserved; these untyped nongenerator getters leave
 those paths inactive. Private source8/state1293 retain their separate cuts.
+Denied private/protected literal-CV reads and ancestor-private fallback now
+invoke the same public getter without hidden property type verification.
+Allowed lexical VALUE uses its physical key; INITIAL raises Error without a
+getter. Source-certified caller scope survives privileged getter/destructor
+contexts without repeating CV/absence lookup. Native6 and source6/strict370
+retain separate cuts; five groups pass 880 premises at `19cce2600`, and the
+affected214 at `b5be8ecec` brings the total to 1094. The original Unsupported
+baseline, preparation failure and failed cleanup-source assertion retain zero credit.
+[Denied-getter ledger](coverage/semantics/magic-property-denied-review.json).
+The actual370 join over `e2ef06143` passes strict at `2fc127185` (5.422s,
+state credit0). Current factory/constructor callable, Generator/collector and
+assertion additions preserve the ordinary getter interfaces and are inactive
+in these originals. Private source6/state1094 and all failures keep their cuts.
 Coercions, constrained returned cells, wider signatures, quiet/write/recursive
-getters, computed names, hooks, consumed storage and wider reference-call
-receivers remain required; held278/279 add no dependency or credit.
+getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
+names, hooks, consumed storage and wider reference-call receivers remain required;
+held278/279 add no dependency or credit.
 Released-CV mutation, raw retired-container
 reads, wider wrapper-pointer consumers, internal Generator/Fiber descendants,
 binding-time exit, nonordinary replacement objects
@@ -2171,12 +2185,24 @@ ownership, factory retirement, callback/write and explicit receiver retirement.
 Invocation USER scope controls callback access; creation scope grants no later access.
 The initializer Unsupported and pre-child clean-status stop remain zero credit.
 The maintained renderer is byte-identical to the accepted fixture; relocation
-adds no runtime renewal. Explicit __invoke, computed/keyword creation and captured
-factory Fiber/getter callbacks stay open, as does required original 7's CLI 60 timeout.
+adds no runtime renewal. Invoke aliases, nullsafe/computed method entry,
+computed/keyword creation and captured-factory Fiber/getter callbacks stay open,
+as does required original 7's CLI 60 timeout.
 Current-parent compilation passes at def000e9 over ac4a95b5 with 368 modules;
 pointwise storage/intrinsic/getter review adds no source or state renewal.
 The [factory ledger](coverage/semantics/from-callable-review.json) keeps the
 distinct native/source/state cuts and boundaries.
+Literal captured-factory `->__invoke(callback: ...)` now authenticates method
+entry and preserves METHOD_RESULT plus the caller tail. CONFIG owns the selected
+factory while an argument clears its caller cell; the returned Closure owns its
+receiver independently after factory retirement. Invocation USER permission and
+API→Closure invoke error frames match native PHP. The variable control agrees at
+b9f0b1ae/368; four explicit sources and 552 state premises (512 genuine/derived,
+40 constructed) pass at c1cdc2b5/368. The wrong-representation state failure and
+original interpreter failure remain zero credit. Maintained source/fixture bytes
+are unchanged; relocation adds no runtime renewal. Original 7 stays OPEN timeout0.
+Actual-parent algorithmic compilation passes at b6022a52 over 7cb33cde with
+370 modules; pointwise constructor/COMP/property review renews no source/state cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

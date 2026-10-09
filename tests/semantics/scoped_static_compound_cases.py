@@ -1443,4 +1443,126 @@ echo "V:", FromFactoryNameChildReview20::$value,
         'expected_stdout': 'Q;F;H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
         'discriminator': 'A first-class captured fromCallable factory receives a named callback, retires before the returned method Closure runs, and preserves by-ref Stringable NAME/RHS effects and explicit receiver retirement.',
     },
+    {
+        'id': 'stringable-name-variable-factory-argument-retirement',
+        'source': '''<?php
+class InvokeFactoryNameBaseReview20 {
+    public static string $value = "a";
+    public function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+    public function __destruct() {
+        echo "W;";
+    }
+}
+class InvokeFactoryNameChildReview20 extends InvokeFactoryNameBaseReview20 {
+    public static string $value = "c";
+}
+class InvokeFactoryNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        InvokeFactoryNameChildReview20::$value = "d";
+        $rhs = new InvokeFactoryRightReview20();
+    }
+}
+class InvokeFactoryRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+function clearFactoryInvokeArgumentReview20() {
+    global $factory;
+    $factory = null;
+    echo "A;";
+    return [new InvokeFactoryNameChildReview20(), "append"];
+}
+$property = new InvokeFactoryNameReview20();
+$rhs = "before";
+echo "Q;";
+$factory = Closure::fromCallable(...);
+$closure = $factory(callback: clearFactoryInvokeArgumentReview20());
+echo "F;";
+$result = $closure($property, $rhs);
+$rhs = "done";
+$closure = null;
+echo "V:", InvokeFactoryNameChildReview20::$value,
+     ";B:", InvokeFactoryNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;A;F;H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'Variable factory control keeps its selected owner through caller-cell clearing before the returned inherited by-reference NAME/RHS method runs.',
+    },
+    {
+        'id': 'stringable-name-explicit-factory-invoke-byref',
+        'source': '''<?php
+class InvokeFactoryNameBaseReview20 {
+    public static string $value = "a";
+    public function append(&$property, &$rhs) {
+        echo "H;";
+        return (static::${$property} .= $rhs);
+    }
+    public function __destruct() {
+        echo "W;";
+    }
+}
+class InvokeFactoryNameChildReview20 extends InvokeFactoryNameBaseReview20 {
+    public static string $value = "c";
+}
+class InvokeFactoryNameReview20 {
+    public function __toString(): string {
+        global $property;
+        echo "N;";
+        $property = "other";
+        return "value";
+    }
+    public function __destruct() {
+        global $rhs;
+        echo "D;";
+        InvokeFactoryNameChildReview20::$value = "d";
+        $rhs = new InvokeFactoryRightReview20();
+    }
+}
+class InvokeFactoryRightReview20 {
+    public function __toString(): string {
+        echo "B;";
+        return "retired";
+    }
+    public function __destruct() {
+        echo "R;";
+    }
+}
+function clearFactoryInvokeArgumentReview20() {
+    global $factory;
+    $factory = null;
+    echo "A;";
+    return [new InvokeFactoryNameChildReview20(), "append"];
+}
+$property = new InvokeFactoryNameReview20();
+$rhs = "before";
+echo "Q;";
+$factory = Closure::fromCallable(...);
+$closure = $factory->__invoke(callback: clearFactoryInvokeArgumentReview20());
+echo "F;";
+$result = $closure($property, $rhs);
+$rhs = "done";
+$closure = null;
+echo "V:", InvokeFactoryNameChildReview20::$value,
+     ";B:", InvokeFactoryNameBaseReview20::$value,
+     ";P:", $property, ";R:", $rhs, ";Z:", $result, ";E;";
+''',
+        'expected_stdout': 'Q;A;F;H;N;D;B;R;W;V:dretired;B:a;P:other;R:done;Z:dretired;E;',
+        'discriminator': 'Literal explicit __invoke preserves the selected factory through argument-cell clearing, then independently owns the inherited receiver through NAME/RHS callbacks and explicit retirement.',
+    },
 ]

@@ -350,7 +350,11 @@ First-class `Closure::fromCallable(...)` can now be invoked as a variable factor
 Calls retain the factory during arguments; the returned method Closure keeps
 its receiver after factory retirement. Callback access uses the invoking USER scope.
 Eight factory sources and 526 state premises retain separate 367-module cuts.
-Explicit `__invoke`, wider factory targets and original 7 remain open.
+Literal `->__invoke(callback: ...)` now preserves the selected factory when
+arguments clear its caller cell. Invocation USER scope controls private access;
+errors retain both the API and Closure invoke frames. A separate variable control
+and four explicit sources agree on 368-module cuts, with 552 state premises.
+First-class invoke aliases, wider factory targets and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
@@ -1298,7 +1302,7 @@ Earlier source/state cuts retain their original credit.
 The actual367 join over `4d7ef44ee` passes strict at `87aca689f` (5.179s),
 preserving accepted Notice, GEN and ARG interfaces without renewing those cuts.
 Literal CV-base reads now invoke a first public `__get` family for missing or
-explicitly unset public properties. Never-initialized typed properties still
+explicitly unset public properties. Accessible never-initialized typed properties
 raise Error without invoking the getter. One real receiver hold survives the
 borrowed getter call; exact property verification precedes receiver release,
 and a reference result is copied afterward from its current cell. Eight source
@@ -1309,9 +1313,18 @@ distinct native, source, strict and state cuts plus the original failures.
 The actual369 composition over `b9f0b1ae9` passes strict at `bae438b0f`
 (5.181s), preserving current class, Generator, return and callable interfaces.
 Source/state evidence retains its original cuts.
+Denied private/protected reads and inherited-private literal fallback now invoke
+the getter without applying the hidden property's type. Allowed lexical reads
+use the physical backing key or raise its initialization Error. The original
+caller scope remains valid through privileged getter/destructor callbacks.
+[Six new source agreements and six reached groups](coverage/semantics/magic-property-denied-review.json)
+pass 1094 setup-inclusive premises; earlier public-getter evidence is unchanged.
+The actual370 join over `e2ef06143` passes strict at `2fc127185` (5.422s),
+preserving current callable, class, Generator, collector and assertion interfaces.
+Private source/state cuts retain their original credit.
 Coercions, constrained returned cells, wider getter signatures, quiet/write
-access, guarded recursion, computed names, hooks and wider reference-call
-receivers remain required.
+access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
+recursion, computed names, hooks and wider reference-call receivers remain required.
 Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers
 and internal Generator/Fiber retirement, binding-time exit
 and expired notice buckets remain explicit boundaries;
