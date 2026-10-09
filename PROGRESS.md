@@ -1015,7 +1015,10 @@ syntax before semantic checks with zero credit; its separate correction is synta
 Whole source38 CLI60 remains OPEN/zero agreement; only its default whole-CLI
 selection is newly excluded, with all state groups enabled. Broader reference,
 main/mixed, proxy/black/external and later-pass overlap remain required; prior cuts
-are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+are unchanged. Actual371 over `8ea50de70` passes compiler/init at `711bedcfd`;
+reviewed shared compiler/property/return interfaces preserve state407 at b5fc and
+the whole-source CLI60 OPEN/zero agreement limit.
+[Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
