@@ -1,0 +1,113 @@
+;; zend_compile_return verifies before cleanup and again after finally.
+;; RETURN_BY_REF then notices, materializes its RV, and leaves the function.
+syntax prefnoticepending = REF_NOTICE_PENDING porigin poperand int | NO_REF_NOTICE_PENDING
+dec $reference_notice_source(pstate, porigin, poperand, int, prefreturnnotice) : bool
+dec $reference_notice_boundary(pstate) : porigin
+dec $reference_notice_count(ptask*) : nat
+dec $reference_notice_pending_task(ptask) : bool
+dec $reference_notice_first(ptask*) : prefnoticepending
+dec $reference_notice_suffix(ptask*, porigin, int) : bool
+dec $reference_notice_end(ptask*, porigin, int, prefreturnnotice) : bool
+dec $reference_notice_discarding(pstate) : bool
+dec $reference_notice_stage(pstate, porigin, poperand, int, prefreturnnotice) : bool
+dec $reference_notice_checked_operand(pstate, poperand, bool) : poperand
+dec $reference_notice_finish(pstate, porigin, poperand, int, prefreturnnotice, bool) : pstate
+dec $reference_notice_materialize(pstate, poperand) : pstate
+
+def $reference_notice_source(S, porigin, poperand, z, REF_NOTICE_VALUE) = ($goto_scope_valid(S, porigin) /\ $reference_return_value_valid(S[.ORIGIN = (porigin)], z) /\ $reference_return_notice(S[.ORIGIN = (porigin)], poperand))
+def $reference_notice_source(S, porigin, poperand, z, REF_NOTICE_NULL) = ($goto_scope_valid(S, porigin) /\ $reference_return_null_valid(S[.ORIGIN = (porigin)], z) /\ poperand = KNOWN PNULL)
+def $reference_notice_boundary(S) = pfunction.ORIGIN
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+
+def $reference_notice_count(eps) = 0
+def $reference_notice_count((REF_RETURN_NOTICE porigin z prefreturnnotice) :: ptask_tail*) = $(1 + $reference_notice_count(ptask_tail*))
+def $reference_notice_count(ptask :: ptask_tail*) = $reference_notice_count(ptask_tail*)
+  -- if ~$reference_notice_marker(ptask)
+def $reference_notice_pending_task(RETURN_REF_UNWIND poperand z b porigin) = true
+def $reference_notice_pending_task(FINALLY_REF_RETURN porigin_owner porigin poperand z) = true
+def $reference_notice_pending_task(ptask) = false -- otherwise
+def $reference_notice_first(eps) = NO_REF_NOTICE_PENDING
+def $reference_notice_first((RETURN_REF_UNWIND poperand z b porigin) :: ptask_tail*) = REF_NOTICE_PENDING porigin poperand z
+def $reference_notice_first((FINALLY_REF_RETURN porigin_owner porigin poperand z) :: ptask_tail*) = REF_NOTICE_PENDING porigin poperand z
+def $reference_notice_first(ptask :: ptask_tail*) = $reference_notice_first(ptask_tail*)
+  -- if ~$reference_notice_pending_task(ptask)
+def $reference_notice_suffix(eps, porigin, z) = true
+def $reference_notice_suffix((REF_RECHECK porigin porigin_first poperand z) :: eps, porigin, z) = true
+def $reference_notice_suffix(ptask*, porigin, z) = false -- otherwise
+def $reference_notice_end(eps, porigin, z, prefreturnnotice) = false
+def $reference_notice_end((REF_RETURN_NOTICE porigin_notice z_notice prefreturnnotice_notice) :: ptask_tail*, porigin, z, prefreturnnotice) = (porigin_notice = porigin /\ z_notice = z /\ prefreturnnotice_notice = prefreturnnotice /\ $reference_notice_suffix(ptask_tail*, porigin, z))
+def $reference_notice_end(ptask :: ptask_tail*, porigin, z, prefreturnnotice) = $reference_notice_end(ptask_tail*, porigin, z, prefreturnnotice)
+  -- if ~$reference_notice_marker(ptask)
+def $reference_notice_discarding(S) = $throwable_live(S, n)
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+def $reference_notice_discarding(S) = false -- otherwise
+
+;; The first live return wins when a finalizer replaces its older transfer.
+;; Deleting or moving the mandatory Notice cannot silently suppress delivery.
+def $reference_notice_presence(S) = ($reference_notice_count(S.TODO) = 1 /\ $reference_notice_end(S.TODO, porigin, z, REF_NOTICE_NULL))
+  -- if $reference_notice_first(S.TODO) = REF_NOTICE_PENDING porigin poperand z
+  -- if $reference_return_null_valid(S[.ORIGIN = (porigin)], z)
+def $reference_notice_presence(S) = ($reference_notice_count(S.TODO) = 1 /\ $reference_notice_end(S.TODO, porigin, z, REF_NOTICE_VALUE))
+  -- if $reference_notice_first(S.TODO) = REF_NOTICE_PENDING porigin poperand z
+  -- if ~$reference_return_null_valid(S[.ORIGIN = (porigin)], z)
+  -- if $reference_return_notice(S[.ORIGIN = (porigin)], poperand)
+  -- if ~$access_reference_value_get(S[.ORIGIN = (porigin)])
+def $reference_notice_presence(S) = ($reference_notice_count(S.TODO) = 0)
+  -- if $reference_notice_first(S.TODO) = REF_NOTICE_PENDING porigin poperand z
+  -- if ~$reference_return_null_valid(S[.ORIGIN = (porigin)], z)
+  -- if ~$reference_return_notice(S[.ORIGIN = (porigin)], poperand) \/ $access_reference_value_get(S[.ORIGIN = (porigin)])
+def $reference_notice_presence(S) = ($reference_notice_count(S.TODO) = 0 \/ $reference_notice_discarding(S))
+  -- if $reference_notice_first(S.TODO) = NO_REF_NOTICE_PENDING
+
+def $call_task_valid(S, REF_RETURN_NOTICE porigin z prefreturnnotice) = ($reference_notice_count(S.TODO) = 1 /\ $reference_notice_end(S.TODO, porigin, z, prefreturnnotice) /\ $reference_notice_source(S, porigin, KNOWN PNULL, z, prefreturnnotice))
+def $task_nodes(REF_RETURN_NOTICE porigin z prefreturnnotice) = eps
+
+def $reference_notice_checked_operand(S, poperand, false) = poperand
+def $reference_notice_checked_operand(S, REFERENCE n, true) = REFERENCE n
+def $reference_notice_checked_operand(S, poperand, true) = KNOWN pvalue
+  -- if ~$reference_operand(poperand)
+  -- if S.RESULT = KNOWN pvalue
+def $reference_notice_finish(S, porigin, poperand, z, prefreturnnotice, false) = S[.TODO = [REF_RETURN_NOTICE_BEGIN porigin poperand z prefreturnnotice]][.ORIGIN = ($reference_notice_boundary(S))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.RETIREDOWNERS = eps]
+def $reference_notice_finish(S, porigin, poperand, z, prefreturnnotice, true) = S_checked[.TODO = [REF_RETURN_NOTICE_BEGIN porigin ($reference_notice_checked_operand(S_checked, poperand, true)) z prefreturnnotice]][.ORIGIN = ($reference_notice_boundary(S_checked))][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps][.RETIREDOWNERS = eps]
+  -- if S_checked = $finally_ref_recheck(S, poperand, z)
+  -- if S_checked.COMPLETION = NORMAL
+def $reference_notice_finish(S, porigin, poperand, z, prefreturnnotice, true) = S_checked
+  -- if S_checked = $finally_ref_recheck(S, poperand, z)
+  -- if S_checked.COMPLETION =/= NORMAL
+def $return_ref_step(S, poperand, z, false, porigin, (REF_RETURN_NOTICE porigin z prefreturnnotice) :: eps) = $reference_notice_finish(S, porigin, poperand, z, prefreturnnotice, false)
+def $return_ref_step(S, poperand, z, true, porigin, (REF_RETURN_NOTICE porigin z prefreturnnotice) :: eps) = $reference_notice_finish(S, porigin, poperand, z, prefreturnnotice, true)
+def $return_ref_step(S, poperand, z, true, porigin, (REF_RETURN_NOTICE porigin z prefreturnnotice) :: (REF_RECHECK porigin porigin_first poperand z) :: eps) = $reference_notice_finish(S, porigin, poperand, z, prefreturnnotice, true)
+
+;; Diagnostic occurrence/line remains captured. Live control is at the
+;; completed callable boundary, so consumed catches/finalizers stay consumed.
+def $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice) = ($reference_notice_source(S, porigin, poperand, z, prefreturnnotice) /\ S.ORIGIN = ($reference_notice_boundary(S)) /\ $finally_return_operand_valid(S, poperand) /\ $heap_subset($operand_nodes(poperand), S.ALLOCATIONS))
+def $call_task_valid(S, REF_RETURN_NOTICE_BEGIN porigin poperand z prefreturnnotice) = $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
+def $call_task_valid(S, REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) = $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
+def $task_nodes(REF_RETURN_NOTICE_BEGIN porigin poperand z prefreturnnotice) = $operand_nodes(poperand)
+def $task_nodes(REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) = $operand_nodes(poperand)
+rule PhpStep/reference-return-notice: S ~> $error_dispatch(S, 8, $ptascii("Only variable references should be returned by reference"), z, DIAGNOSTIC "Notice" $ptascii("Only variable references should be returned by reference") z, REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice)
+  -- if S.TODO = (REF_RETURN_NOTICE_BEGIN porigin poperand z prefreturnnotice) :: eps
+  -- if $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice
+  -- if $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
+  -- if perrorcall.SITE = $reference_notice_boundary(S)
+  -- if perrorcall.LEVEL = 8
+  -- if perrorcall.LINE = z
+  -- if perrorcall.MESSAGE = $ptascii("Only variable references should be returned by reference")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Notice" perrorcall.MESSAGE z
+
+def $reference_notice_materialize(S, REFERENCE n) = $reference_return_materialize(S, REFERENCE n, PNULL)
+def $reference_notice_materialize(S, KNOWN pvalue) = $reference_return_materialize(S, KNOWN pvalue, pvalue)
+rule PhpStep/reference-return-notice-result: S ~> $return_step(S_result, S_result.RESULT, (porigin), eps)
+  -- if S.TODO = (REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) :: eps
+  -- if $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
+  -- if S_result = $reference_notice_materialize($hold_task_inputs(S), poperand)
+
+;; RETURN_BY_REF finishes its RV even with a pending handler exception, then
+;; leaves this callable. The caller searches its own exception continuation.
+def $error_read_discard(S, REF_RETURN_NOTICE_RESULT porigin poperand z prefreturnnotice) = S_result[.TODO = [THROW_SEARCH n]][.BASE = BASE_VALUE (KNOWN PNULL)][.HELD = eps]
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $reference_notice_stage(S, porigin, poperand, z, prefreturnnotice)
+  -- if S_result = $reference_notice_materialize(S, poperand)

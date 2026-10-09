@@ -1,0 +1,59 @@
+{
+  "scope": "Deferred RETURN_BY_REF Notice through finally; preserved pinned originals.",
+  "cases": [
+    {
+      "id": "protected-literal-handler",
+      "source": "<?php function notice20($n,$m,$f,$l){echo \"H;\";return true;}set_error_handler(\"notice20\");function &f(){try{return 1;}finally{echo \"F;\";}}$r=&f();echo \"R:\",$r,\";\";",
+      "source_sha256": "15833964d252a4fb02a6ce96c9d6ef6304322f805b667dc2bbe08ff8648d537c",
+      "stdout": "F;H;R:1;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "handler callback and protected finalizer order for temporary literal"
+    },
+    {
+      "id": "protected-literal-handler-throw",
+      "source": "<?php function notice20($n,$m,$f,$l){echo \"H;\";throw new Exception(\"N\");}set_error_handler(\"notice20\");function &f(){try{return 1;}finally{echo \"F;\";}}try{$r=&f();echo \"BAD;\";}catch(Exception $e){echo \"C:\",$e->getMessage(),\";\";}",
+      "source_sha256": "21a7d72da0f2a535412b47096e52fe9b2d5d7a1ed641689b55f1a2b63d9aa583",
+      "stdout": "F;H;C:N;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "throwing Notice callback versus protected finalizer and caller catch"
+    },
+    {
+      "id": "protected-bare-handler",
+      "source": "<?php function notice20($n,$m,$f,$l){echo \"H;\";return true;}set_error_handler(\"notice20\");function &f(){try{return;}finally{echo \"F;\";}}$r=&f();echo \"R:\",(int)($r===null),\";\";",
+      "source_sha256": "e9d63927f80e57efc39c3135c5806bbdb94ac2bb1831307ec40a4f4b16b54ce9",
+      "stdout": "F;H;R:1;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "bare NULL Notice, protected finalizer and used reference result"
+    },
+    {
+      "id": "implicit-after-finally-handler",
+      "source": "<?php function notice20($n,$m,$f,$l){echo \"H;\";return true;}set_error_handler(\"notice20\");function &f(){try{echo \"T;\";}finally{echo \"F;\";}}$r=&f();echo \"R:\",(int)($r===null),\";\";",
+      "source_sha256": "8eec45ed42365dfeb09254c3ff12c30355592e59c07251df693ef7d83125c845",
+      "stdout": "T;F;H;R:1;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "implicit fallthrough NULL Notice after exiting protected try/finally"
+    },
+    {
+      "id": "protected-null-literal-handler",
+      "source": "<?php function notice20($n,$m,$f,$l){echo \"H;\";return true;}set_error_handler(\"notice20\");function &f(){try{return null;}finally{echo \"F;\";}}$r=&f();echo \"R:\",(int)($r===null),\";\";",
+      "source_sha256": "c649b2f1867eef4dc616fc4dc5c7fedd168c77ee747cdf05543d1b31a0c49e09",
+      "stdout": "F;H;R:1;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "explicit NULL expression Notice versus bare return"
+    },
+    {
+      "id": "protected-value-overridden-by-variable-return",
+      "source": "<?php $x='old';function h($n,$m,$f,$l){echo 'H;';return true;}set_error_handler('h');function &f(){global $x;try{return 1;}finally{echo 'F;';return $x;}}$r=&f();echo 'R:',$r,';';$r='new';echo 'X:',$x,';';",
+      "source_sha256": "d7036be2ea306221e08d510ba51cdd37451b0f750ad31eff24193297e8eb54d7",
+      "stdout": "F;R:old;X:new;",
+      "stderr": "",
+      "exit": 0,
+      "purpose": "An inner value-designated reference return is replaced inside finally by a variable reference return; its pending Notice must be cancelled, and the selected variable remains the caller's reference cell."
+    }
+  ]
+}
