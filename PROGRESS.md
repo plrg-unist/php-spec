@@ -27,8 +27,9 @@ agree at `373f804e` (361 modules);
 the namespaced user attribute stays Unsupported with zero agreement. Strict
 compilation and 110 genuine assertions (own 63, trait 26, rollback 21) pass at
 `456ebb0b`; the source cut and four earlier compiler stops retain their identities.
-Actual-parent composition remains
-pending. [Override review](coverage/semantics/promoted-override-review.json).
+The actual 361-module composition over `61e7b80ff` passes strict compilation at
+`6c098ce8` (4.979 s), preserving current EX/CALLS interfaces without renewing
+the private checks. [Override review](coverage/semantics/promoted-override-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
