@@ -2494,6 +2494,8 @@ the last strong owner. Direct agreement stays at e11f/372; captured agreement an
 exact zero-budget resumption. Saved producer authority survives final retirement,
 while bound capture source/liveness correctly becomes false. The original
 Unsupported remains zero credit; other targets and original 7 remain OPEN.
+Actual-parent compilation and initialized SL241 pass at `baf287a4` over
+`d2ea8468` with 372 modules; CLASS/CALLS seams preserve prior source/native cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
