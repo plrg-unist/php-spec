@@ -391,14 +391,16 @@ rule PhpStep/generator-request-render-handler: S ~> S[.TODO = (EXCEPTION_HANDLER
 def $generator_request_render_source(THROW_SEARCH n, pgenfatal, n, false) = true
 def $generator_request_render_source(EXCEPTION_HANDLER_RESULT pexceptioncall, pgenfatal, n, false) = (pexceptioncall.OBJECT = n /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
 def $generator_request_render_source(EXCEPTION_HANDLER_CLEAN pexceptioncall b_released, pgenfatal, n, false) = (pexceptioncall.OBJECT = n /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
+def $generator_request_render_source(EXCEPTION_HANDLER_RESULT pexceptioncall, pgenfatal, n, true) = (pexceptioncall.ORIGIN = pgenfatal.METHOD)
+def $generator_request_render_source(EXCEPTION_HANDLER_CLEAN pexceptioncall b_released, pgenfatal, n, true) = (pexceptioncall.ORIGIN = pgenfatal.METHOD)
 def $generator_request_render_source(ERROR_HANDLER_RESULT perrorcall, pgenfatal, n, true) = (perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true)
 def $generator_request_render_source(ERROR_HANDLER_CLEAN perrorcall, pgenfatal, n, true) = (perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n true)
 def $generator_request_render_source(ptask, pgenfatal, n, b) = false -- otherwise
 def $generator_request_render_prefix(ptask, pgenfatal, n, b) = true
   -- if ptask =/= THROW_SEARCH n
   -- if $generator_request_render_source(ptask, pgenfatal, n, b)
-def $generator_request_render_prefix(EXCEPTION_HANDLER_INVOKE pexceptioncall, pgenfatal, n, false) = (pexceptioncall.OBJECT = n /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
-def $generator_request_render_prefix(EXCEPTION_HANDLER_ENTER pexceptioncall, pgenfatal, n, false) = (pexceptioncall.OBJECT = n /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
+def $generator_request_render_prefix(EXCEPTION_HANDLER_INVOKE pexceptioncall, pgenfatal, n, b) = ((b \/ pexceptioncall.OBJECT = n) /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
+def $generator_request_render_prefix(EXCEPTION_HANDLER_ENTER pexceptioncall, pgenfatal, n, b) = ((b \/ pexceptioncall.OBJECT = n) /\ pexceptioncall.ORIGIN = pgenfatal.METHOD)
 def $generator_request_render_prefix(DESTRUCTOR_RELEASE pdestructionrelease, pgenfatal, n, b) = true
   -- if ~pdestructionrelease.USER /\ pdestructionrelease.CALLER = eps /\ pdestructionrelease.CONSTCONTEXT = eps
   -- if pdestructionrelease.ORIGIN = eps \/ pdestructionrelease.ORIGIN = pgenfatal.METHOD
@@ -498,9 +500,20 @@ def $generator_request_render_handler_abrupt(S) = true
   -- if $generator_request_render_return_valid(S, pgenfatal, n_old, false)
 def $generator_request_render_handler_abrupt(S) = false -- otherwise
 def $shutdown_render_throw_pending(S) = true -- if $generator_request_render_abrupt(S)
+;; zend_call_function rethrows the warning callback at C root. The restored
+;; exception handler consumes that new object, then returns to the real warning.
+def $exception_dispatch_ready(S) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: (ERROR_HANDLER_RESULT perrorcall) :: (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
+  -- if perrorcall.RESUME = GENERATOR_REQUEST_RENDER_RETURN pgenfatal n_inner true
+  -- if $exception_task_scope(S) /\ S.ORIGIN = pgenfatal.METHOD
+  -- if S.ERRORHANDLER.CALLBACK = eps /\ S.EXCEPTIONHANDLER = (pvalue)
+  -- if $throwable_live(S, n)
+  -- if $error_entered_call_valid(S, perrorcall)
 rule PhpStep/generator-request-render-handler-abrupt-required: S ~> S[.COMPLETION = UNSUPPORTED "Generator request fatal renderer handler or warning exception"]
   -- if $generator_request_render_abrupt(S)
   -- if ~$generator_request_fatal_ready(S)
+  -- if ~$exception_dispatch_ready(S)
 def $generator_request_release_abrupt(S) = true
   -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RESULT pdestructorcall) :: ptask_tail*
   -- if $exception_task_scope(S) /\ $destructor_result_valid(S, pdestructorcall)
