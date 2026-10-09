@@ -57,16 +57,16 @@ def $assertion_quantity_integer(1, n) = ($(-n), false)
 def $assertion_quantity_integer(0, n) = (n, false)
   -- if $(n < 9223372036854775808)
 dec $assertion_quantity_end(preqbytes, int, bool) : (int, preqbytes?)
-def $assertion_quantity_end(n_input*, z, true) = (z, ($assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\": value is out of range, using overflow result for backwards compatibility"))))
+def $assertion_quantity_end(n_input*, z, true) = (z, [$assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\": value is out of range, using overflow result for backwards compatibility"))])
 def $assertion_quantity_end(n_input*, z, false) = (z, eps)
 dec $assertion_quantity_suffix(preqbytes, preqbytes, int, bool) : (int, preqbytes?)
 def $assertion_quantity_suffix(n_input*, eps, z, b_overflow) = $assertion_quantity_end(n_input*, z, b_overflow)
-def $assertion_quantity_suffix(n_input*, n_tail*, z, b_overflow) = (z, ($assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\": unknown multiplier \"") ++ $assertion_quantity_escape([n_last]) ++ $ptascii("\", interpreting as \"") ++ $assertion_quantity_escape(n_interpreted*) ++ $ptascii("\" for backwards compatibility"))))
+def $assertion_quantity_suffix(n_input*, n_tail*, z, b_overflow) = (z, [$assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\": unknown multiplier \"") ++ $assertion_quantity_escape([n_last]) ++ $ptascii("\", interpreting as \"") ++ $assertion_quantity_escape(n_interpreted*) ++ $ptascii("\" for backwards compatibility"))])
   -- if n_tail* =/= eps
   -- if n_last = n_tail*[$nabs($(|n_tail*| - 1))]
   -- if $assertion_quantity_factor([n_last]) = eps
   -- if n_interpreted* = n_input*[0:$nabs($(|$assertion_quantity_right_trim(n_input*)| - |n_tail*|))]
-def $assertion_quantity_suffix(n_input*, n_tail*, z, b_overflow) = (z_result, ($assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\", interpreting as \"") ++ $assertion_quantity_escape(n_interpreted*) ++ $assertion_quantity_escape([n_last]) ++ $ptascii("\" for backwards compatibility"))))
+def $assertion_quantity_suffix(n_input*, n_tail*, z, b_overflow) = (z_result, [$assertion_quantity_diagnostic($ptascii("Invalid quantity \"") ++ $assertion_quantity_escape(n_input*) ++ $ptascii("\", interpreting as \"") ++ $assertion_quantity_escape(n_interpreted*) ++ $assertion_quantity_escape([n_last]) ++ $ptascii("\" for backwards compatibility"))])
   -- if $(|n_tail*| > 1)
   -- if n_last = n_tail*[$nabs($(|n_tail*| - 1))]
   -- if $assertion_quantity_factor([n_last]) = (n_factor)
@@ -76,11 +76,11 @@ def $assertion_quantity_suffix(n_input*, [n_last], z, b_overflow) = $assertion_q
   -- if $assertion_quantity_factor([n_last]) = (n_factor)
   -- if z_result = $long_signed($($long_unsigned(z) * n_factor \ 18446744073709551616))
 dec $assertion_quantity_digits_result(preqbytes, nat, preqbytes, nat) : (int, preqbytes?)
-def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = (0, ($assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no digits after base prefix")))))
+def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = (0, [$assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no digits after base prefix")))])
   -- if $assertion_quantity_prefixed(n_digits*)
   -- if $assertion_quantity_base(n_digits*) = ((n_base, n_unsigned*))
   -- if $assertion_quantity_bad_prefix(n_unsigned*, n_base)
-def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = (0, ($assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no valid leading digits")))))
+def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = (0, [$assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no valid leading digits")))])
   -- if $assertion_quantity_base(n_digits*) = ((n_base, n_unsigned*))
   -- if ~$assertion_quantity_prefixed(n_digits*) \/ ~$assertion_quantity_bad_prefix(n_unsigned*, n_base)
   -- if DIGITS n_value 0 n_tail* = $assertion_quantity_digits(n_base, n_unsigned*, 0, 0)
@@ -92,12 +92,12 @@ def $assertion_quantity_digits_result(n_input*, n_sign, n_digits*, n_base) = $as
   -- if (z, b_overflow) = $assertion_quantity_integer(n_sign, n_value)
 def $assertion_quantity_decode(n_input*) = (0, eps)
   -- if $assertion_quantity_trim(n_input*) = eps
-def $assertion_quantity_decode(n_input*) = (0, ($assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no valid leading digits")))))
+def $assertion_quantity_decode(n_input*) = (0, [$assertion_quantity_diagnostic($assertion_quantity_invalid(n_input*, $ptascii("no valid leading digits")))])
   -- if n_trimmed* = $assertion_quantity_trim(n_input*)
   -- if n_trimmed* =/= eps
   -- if (n_sign, n_digits*) = $ntsign(n_trimmed*)
   -- if ~$assertion_quantity_leading(n_digits*)
-def $assertion_quantity_decode(n_input*) = (0, ($assertion_quantity_diagnostic($ptascii("Invalid prefix \"0") ++ [n_digits*[1]] ++ $ptascii("\", interpreting as \"0\" for backwards compatibility"))))
+def $assertion_quantity_decode(n_input*) = (0, [$assertion_quantity_diagnostic($ptascii("Invalid prefix \"0") ++ [n_digits*[1]] ++ $ptascii("\", interpreting as \"0\" for backwards compatibility"))])
   -- if n_trimmed* = $assertion_quantity_trim(n_input*)
   -- if (n_sign, n_digits*) = $ntsign(n_trimmed*)
   -- if $assertion_quantity_leading(n_digits*)
@@ -232,7 +232,7 @@ def $selected_task_nonce(ASSERTION_INI_RESULT passertini) = passertini.CALL.SELE
 def $call_task_valid(S, ASSERTION_INI_RESULT passertini) = $assertion_ini_valid(S, passertini)
 dec $assertion_ini_message(passertini) : preqbytes?
 def $assertion_ini_message(passertini) = passertini.WARNING -- if passertini.PHASE = ASSERTION_PARSE
-def $assertion_ini_message(passertini) = ($assertion_ini_warning()) -- if passertini.PHASE = ASSERTION_REFUSE z_old
+def $assertion_ini_message(passertini) = [$assertion_ini_warning()] -- if passertini.PHASE = ASSERTION_REFUSE z_old
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = ASSERTION_INI_RESULT passertini
   -- if $assertion_ini_valid(S, passertini)
