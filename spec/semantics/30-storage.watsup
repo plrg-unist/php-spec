@@ -120,6 +120,7 @@ syntax perrorhandler = { CALLBACK pvalue?, LEVELS int }
 syntax passertflag = { VALUE bool, INITIAL nat*, RAW nat*, MODIFIED bool }
 syntax passertmode = { INPUT pvalue, VALUE int }
 syntax passertiniphase = ASSERTION_PARSE | ASSERTION_REFUSE int
+syntax ptask
 syntax passertiniconversion = { SOURCE ptask, VALUE pvalue }
 syntax passertini = { ID nat, CALL pconfigcall, CONVERSION passertiniconversion?, INPUT pvalue, OLDRAW pvalue, OLDRETURN pvalue, ORIGINAL pvalue, ENTRYMODIFIED bool, VALUE int, WARNING (nat*)?, PRECISION int, PHASE passertiniphase }
 syntax passertoption = { ID nat, CALL pconfigcall, OPTION int, OLD bool }
@@ -129,7 +130,7 @@ syntax phandlerresolution = HANDLERRESOLVED pcalltarget | HANDLERINVALID ptbytes
 syntax pgeneratorop, pgeneratorloop, pgenerator, pgeneratorphase, pgeneratorfrom, pgeneratoraccess
 syntax pgenclosestage, pgenclose, pgenrelease, pgenstorage
 syntax prefowner = REPLAY_TRY porigin | REPLAY_CATCH porigin
-syntax ptask, pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
+syntax pdircontext, perrorread, perrorcall, pdeclnoticebatch, pevalcompile, pevalcompileplan, pevalcompilefatal, pbindwarning
 syntax pgenfatal
 syntax papiclass = { REQUESTED porigin, CALLED porigin, RECEIVER nat?, STRICT bool }
 syntax papiclassresult = API_CLASS papiclass | API_CLASS_INVALID ptbytes | API_CLASS_UNKNOWN text
