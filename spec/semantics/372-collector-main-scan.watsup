@@ -24,7 +24,8 @@ def $gc_main_trace(S, pgcplan) = $gc_replace(S[.GC.BUFFER = $gc_mark_dtors(pgcpl
 def $gc_main_trace(S, pgcplan) = $gc_replace(S[.GC.BUFFER = pgcslot*][.GC.FREE = nat_free*], pgcplan, GC_MAIN_SCAN pgcplan pgcscan)
   -- if $gc_overlap_plan(pgcplan)
   -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
-  -- if pgcscan = {INDEX 0, END |pgcplan.BUFFER|}
+  -- if n_end = |pgcplan.BUFFER|
+  -- if pgcscan = {INDEX 0, END n_end}
 def $gc_task_consumer(GC_MAIN_SCAN pgcplan pgcscan, pgccall) = 1 -- if pgcplan.CALL = pgccall
 def $gc_task_consumer(GC_MAIN_RETURN pgcplan pgcscan n, pgccall) = 1 -- if pgcplan.CALL = pgccall
 def $gc_task_plan_consumer(GC_MAIN_SCAN pgcplan_task pgcscan, pgcplan) = 1 -- if pgcplan_task = pgcplan
