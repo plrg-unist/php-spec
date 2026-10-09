@@ -385,14 +385,16 @@ def $eager_internal_source(ptask) = false -- otherwise
 def $source_operand_marker(ERROR_HANDLER_CLEAN perrorcall) = $source_operand_marker(perrorcall.RESUME)
 dec $gc_source(pstate) : bool
 def $gc_source(S) = false -- otherwise
-def $destructor_source_site(S) = eps
+dec $destructor_source_site_gc(pstate, bool) : porigin?
+def $destructor_source_site(S) = $destructor_source_site_gc(S, $gc_source(S))
+def $destructor_source_site_gc(S, b_gc) = eps
   -- if $destructor_operation_for(S) = (pdestructionoperation)
   -- if $eager_internal_source(pdestructionoperation.SOURCE)
   -- if $destructor_user_source(S)
-def $destructor_source_site(S) = S.ORIGIN
-  -- if $destructor_user_source(S) /\ ~$gc_source(S)
+def $destructor_source_site_gc(S, b_gc) = S.ORIGIN
+  -- if $destructor_user_source(S) /\ ~b_gc
   -- if $destructor_operation_for(S) = eps \/ ~$eager_operation_internal(S)
-def $destructor_source_site(S) = eps -- if ~$destructor_user_source(S)
+def $destructor_source_site_gc(S, b_gc) = eps -- if ~$destructor_user_source(S)
 def $eager_operation_internal(S) = $eager_internal_source(pdestructionoperation.SOURCE)
   -- if $destructor_operation_for(S) = (pdestructionoperation)
 def $eager_operation_internal(S) = false -- otherwise

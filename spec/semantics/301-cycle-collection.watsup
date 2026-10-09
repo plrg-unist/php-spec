@@ -976,7 +976,7 @@ def $gc_source(S) = true
   -- if $(pgcplan.INDEX < |pgcplan.DTORS|)
   -- if pgcplan.DTORS[pgcplan.INDEX] = HOBJECT n
   -- if $gc_dtor_anchor_tasks(S.TODO, n) = ((pgcplan, n)) \/ $gc_dtor_anchor_frames(S.FRAMES, n) = ((pgcplan, n))
-def $destructor_source_site(S) = eps -- if $gc_source(S)
+def $destructor_source_site_gc(S, true) = eps
 def $destructor_tail_pending((GC_DTOR_RETURN pgcplan n) :: ptask*) = pgcplan.CALL.PENDING
 def $gc_pending_tasks((GC_DTOR_RETURN pgcplan n) :: ptask*, pgcplan, pgcplan_new) = (GC_DTOR_RETURN pgcplan_new n) :: ptask*
 def $gc_pending_tasks((DESTRUCTOR_RELEASE pdestructionrelease) :: ptask*, pgcplan, pgcplan_new) = (DESTRUCTOR_RELEASE pdestructionrelease) :: $gc_pending_tasks(ptask*, pgcplan, pgcplan_new)
