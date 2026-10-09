@@ -178,7 +178,7 @@ def $call_selected_valid(S, porigin_function, (PORIGIN n pcpath)) = true
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
   -- if $call_candidate(pfunction.NAME, preqbytes, preqbytes_fallback?)
   -- if $callable_at(S.CALLABLES, $ptlc(pfunction.NAME)) = (porigin_function)
-def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $generator_from_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $clone_callback_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $fiber_traversal_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
+def $call_selected_valid(S, METHOD_TARGET n_object porigin_method, (porigin_call)) = ($method_call_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $stringify_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $useriter_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $access_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $generator_from_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $clone_callback_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $fiber_traversal_selected(S, METHOD_TARGET n_object porigin_method, porigin_call) \/ $foreach_aggregate_selected(S, METHOD_TARGET n_object porigin_method, porigin_call))
 def $call_selected_valid(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call)) = $method_call_selected(S, STATIC_METHOD_TARGET porigin_class porigin_method, (porigin_call))
 def $call_selected_valid(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, (porigin_call)) = $scoped_call_selected(S, SCOPED_TARGET porigin_requested porigin_method porigin_called n_receiver? poperand_selector, porigin_call)
 def $call_selected_valid(S, pcalltarget_function, porigin?) = false -- otherwise
@@ -212,6 +212,7 @@ def $call_arguments_valid(S, (PORIGIN n_unit pcpath), n_index, phpType7_remainin
   -- if ~$stringify_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$useriter_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$fiber_traversal_pending_site(S, PORIGIN n_unit pcpath)
+  -- if ~$foreach_aggregate_pending_site(S, PORIGIN n_unit pcpath)
   -- if ~$access_pending_site(S, PORIGIN n_unit pcpath)
   -- if $call_argument_source(S, PORIGIN n_unit pcpath) = PCALLARGUMENTS phpType7* n_field
   -- if ~$named_present(phpType7*)
@@ -234,6 +235,7 @@ def $call_arity_valid(S, pcallcontext) = true
   -- if ~$error_context_kind(S, pcallcontext)
   -- if ~$useriter_context_kind(S, pcallcontext)
   -- if ~$fiber_traversal_context_kind(S, pcallcontext)
+  -- if ~$foreach_aggregate_context(S, pcallcontext)
   -- if ~$access_context_kind(S, pcallcontext)
   -- if ~$clone_context_kind(S, pcallcontext)
   -- if pcallcontext.CALLSITE = (PORIGIN n_unit pcpath)

@@ -297,7 +297,7 @@ def $target_called_class(S, AGGREGATE_METHOD_TARGET n porigin) = $target_called_
 def $target_function(S, AGGREGATE_METHOD_TARGET n porigin) = $target_function(S, METHOD_TARGET n porigin)
   -- if $generator_from_aggregate(S, POBJECT n)
   -- if $fiber_traversal_method_selected(S, n, porigin, "getIterator")
-def $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, (porigin_call)) = $fiber_traversal_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call)
+def $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, (porigin_call)) = ($fiber_traversal_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call) \/ $foreach_aggregate_selected(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin_call))
 ;; GENERATOR_CREATE copies the borrowed callback frame and adds one This owner.
 ;; Its retained receipt authenticates the original unpack even without a caller.
 def $generator_creation_target(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin?) = $call_selected_valid(S, AGGREGATE_METHOD_TARGET n porigin_method, porigin?)
@@ -686,7 +686,7 @@ def $error_read_discard(S, FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan") = 
   -- if $fiber_start_unpack_unwind_valid(S, FIBER_TRAVERSE_RESULT pfibertraversal "valid-nan")
 
 ;; Other consumers retain a named gap after Aggregate class admission widens.
-def $foreach_start(S, statement, plocation, b, z) = S[.COMPLETION = UNSUPPORTED "foreach IteratorAggregate acquisition"]
+def $foreach_start(S, statement, plocation, b, z) = S[.COMPLETION = UNSUPPORTED "foreach IteratorAggregate reference location"]
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $generator_from_aggregate(S, POBJECT n)
 def $unpack_prepare(S, punpackcall) = S_read[.COMPLETION = UNSUPPORTED "call argument IteratorAggregate unpacking"]

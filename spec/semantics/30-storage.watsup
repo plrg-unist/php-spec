@@ -20,7 +20,7 @@ syntax pcallableaccess = { SITE porigin?, SCOPE porigin?, OBJECT bool, CREATION 
 syntax papiquery
 syntax pfibercallable
 syntax pfiberrawapi
-syntax pcalltarget = porigin | FIBER_REPORTING_TARGET | FIBER_API_TARGET nat | FIBER_ARRAY_TARGET pfiberrawapi | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | AGGREGATE_METHOD_TARGET nat porigin | AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable
+syntax pcalltarget = porigin | FIBER_REPORTING_TARGET | FIBER_API_TARGET nat | FIBER_ARRAY_TARGET pfiberrawapi | CLOSURE_TARGET nat | CLOSURE_CALL_TARGET nat nat | METHOD_TARGET nat porigin | AGGREGATE_METHOD_TARGET nat porigin | AGGREGATE_GENERATOR_TARGET nat porigin nat porigin int | FOREACH_AGGREGATE_GENERATOR_TARGET nat porigin porigin int | STATIC_METHOD_TARGET porigin porigin | SCOPED_TARGET porigin porigin porigin nat? poperand | ARRAY_METHOD_TARGET pcalltarget parrayselection | STRING_METHOD_TARGET pcalltarget pstringselection | HANDLER_METHOD_TARGET bool porigin ptbytes pcalltarget | SCOPE_METHOD_TARGET pcalltarget pcallableaccess | API_METHOD_TARGET papiquery porigin ptbytes bool | FIBER_METHOD_TARGET pfibercallable
 syntax parraymode = ARRAY_ADMISSION | ARRAY_DISPATCH
 syntax parrayresolution = ARRAYRESOLVED pcalltarget porigin ptbytes | ARRAYADMITTED | ARRAYINVALID ptbytes | ARRAYUNKNOWN text
 syntax pconstant = PCONSTANT pcpath pvalue | PCCLASS pcpath pvalueclass | PCCPRECISION pcpath int | PCCASSERTION pcpath nat*
@@ -255,6 +255,7 @@ syntax psourcehelper = HELPER_EMPTY_EVAL | HELPER_ONCE_SKIP pfilecontext preqbyt
 syntax pfiberapi = { SITE porigin, OBJECT nat, KIND pintrinsic?, START pnamedargs?, SENT pvalue?, LINE int, SEQUENCE nat, PACKS pfiberpack* }
 syntax pgcpublic = {API pfiberapi, SOURCE pgccall, INDEX nat, END nat, PENDING nat?, RESIDUAL bool}
 syntax pfiberstart = { SITE porigin, OBJECT nat, INDEX nat, SENT pnamedargs, LINE int, PACKS pfiberpack* }
+syntax pforeachaggregate = { STATEMENT statement, SITE porigin, LINE int, AGGREGATE nat, OBJECT nat, ACQUIRED nat*, INPUT poperand, CURRENT poperand, ITERATOR nat? }
 syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGATE nat?, ACQUIRED nat*, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
 syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
@@ -307,6 +308,7 @@ syntax ptask = INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pfo
   | GLOBAL_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | PARAMETER_CONSTANT_METHOD_RESUME porigin porigin porigin nat
   | GLOBAL_CONSTANT_DUPLICATE porigin pvalue pvalueclass nat pconstantfact* int
+  | FOREACH_AGGREGATE pforeachaggregate text
   | USERITER_RESULT nat nat statement porigin int text poperand | USERITER_NEXT nat nat statement porigin int poperand
   | EVAL_COMPILE_RESUME pevalcompile | EVAL_COMPILE_END nat | EVAL_COMPILE_EXIT int | EVAL_COMPILE_FORMAT_EXIT int | EVAL_COMPILE_FATAL pevalcompilefatal | EVAL_COMPILE_RENDER pevalcompilefatal pshutdownrender
   | TRAIT_DATA_SEED pdeclnoticeitem* | TRAIT_NOTICE_REPLAY porigin nat nat | DECL_NOTICE_SEED porigin pdeclnotice* | DECL_COMPILER_SEED pldiagnostic | DECL_NOTICES pdeclnoticebatch | DECL_NOTICE_RESUME pdeclnoticebatch
@@ -1061,6 +1063,9 @@ dec $fiber_api_valid(pstate, pfiberapi) : bool
 dec $fiber_fixed_buffer_valid(pstate, porigin, pintrinsic, pvalue?) : bool
 dec $intrinsic_extent(pstate, porigin) : nat
 dec $fiber_start_shape(pstate, porigin, nat, pnamedargs, pfiberpack*) : bool
+dec $foreach_aggregate_selected(pstate, pcalltarget, porigin) : bool
+dec $foreach_aggregate_pending_site(pstate, porigin) : bool
+dec $foreach_aggregate_context(pstate, pcallcontext) : bool
 dec $fiber_traversal_selected(pstate, pcalltarget, porigin) : bool
 dec $fiber_traversal_pending_site(pstate, porigin) : bool
 dec $fiber_traversal_context_kind(pstate, pcallcontext) : bool

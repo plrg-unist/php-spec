@@ -1,0 +1,494 @@
+dec $foreach_aggregate_generator_record(ptask*, pgeneratorop) : pforeachaggregate?
+dec $foreach_aggregate_generator_match(ptask, pgeneratorop) : bool
+dec $foreach_aggregate_generator_promote(ptask*, pgeneratorop) : ptask*
+dec $foreach_aggregate_input_identity(pforeachaggregate) : bool
+dec $foreach_aggregate_input_stable(pstate, pforeachaggregate) : bool
+dec $foreach_aggregate_acquire_result(pstate, pforeachaggregate, ptask*) : pstate
+dec $foreach_aggregate_data_nodes(nat, bool) : pnode*
+dec $foreach_aggregate_error_clear(text) : text
+dec $foreach_aggregate_error_stage(text) : text
+dec $foreach_aggregate_decision(bool) : text
+dec $foreach_aggregate_cursor(pstate, pforeachaggregate, nat) : bool
+dec $foreach_aggregate_pending_value(pstate, poperand) : bool
+dec $foreach_aggregate_this(expression) : bool
+;; FE_RESET acquires recursively, checks acquisition exceptions before rewind,
+;; and frees its original operand after the first valid result, before FE_FETCH.
+dec $foreach_aggregate_site(pstate, statement, porigin, int) : bool
+dec $foreach_aggregate_input(pstate, pforeachaggregate, text) : bool
+dec $foreach_aggregate_input_mode(statement, poperand) : bool
+dec $foreach_aggregate_original(pstate, pforeachaggregate) : bool
+dec $foreach_aggregate_stage(pstate, pforeachaggregate, text) : bool
+dec $foreach_aggregate_valid(pstate, pforeachaggregate, text) : bool
+dec $foreach_aggregate_count(ptask*, porigin) : nat
+dec $foreach_aggregate_at(ptask, porigin) : bool
+dec $foreach_aggregate_result_valid(pstate, pforeachaggregate, text) : bool
+dec $foreach_aggregate_target(pstate, pforeachaggregate, pcalltarget, text) : bool
+dec $foreach_aggregate_frame(pstate, pcallcontext, pframe) : bool
+dec $foreach_aggregate_entered(pstate, pcallcontext?, pframe*, pcalltarget, porigin) : bool
+dec $foreach_aggregate_generator_context(pstate, pcallcontext) : bool
+dec $foreach_aggregate_close_vm_ids(pstate, pfibervm) : nat*
+dec $foreach_aggregate_close_object_ids(pstate, pnode*) : nat*
+dec $foreach_aggregate_close_node_ids(pstate, pnode) : nat*
+dec $foreach_aggregate_close_caller_ids(pstate, pfibercaller*) : nat*
+dec $foreach_aggregate_close_closer_ids(pstate, pfiberclose*) : nat*
+dec $foreach_aggregate_call(pstate, pforeachaggregate, text, ptask*) : pstate
+dec $foreach_aggregate_acquire(pstate, pforeachaggregate, ptask*) : pstate
+dec $foreach_aggregate_error(pstate, pforeachaggregate, text, ptbytes, ptask*) : pstate
+dec $foreach_aggregate_acquired(pstate, pforeachaggregate, ptask*) : pstate
+dec $foreach_aggregate_initial(pstate, pforeachaggregate, ptask*) : pstate
+dec $foreach_aggregate_reference(statement) : bool
+dec $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate) : bool
+dec $foreach_aggregate_ids(nat?) : nat*
+dec $foreach_aggregate_remove(piterator*, nat?) : piterator*
+dec $foreach_aggregate_data(text) : bool
+dec $foreach_aggregate_nodes(pforeachaggregate, text) : pnode*
+
+def $foreach_aggregate_site(S, statement, porigin, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+  -- if statement = NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], [PCFIELD 0], expression)
+def $foreach_aggregate_site(S, statement, porigin, z) = false -- otherwise
+def $foreach_aggregate_reference(NStmtForeach expression phpType5 (BOOLEAN b_ref) expression_value phpType23 (BOOLEAN false) metadata) = $ppforeach_references(expression_value, b_ref)
+def $foreach_aggregate_reference(statement) = false -- otherwise
+
+;; FE_FREE remains user execution at MAIN's compiled foreach statement site.
+;; Its iterable expression supplies the source boundary after the cursor drops.
+def $eager_source_origin(S, (porigin)) = true
+  -- if $origin_source(porigin) = PORIGIN n pcpath
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtForeach expression phpType5 phpType4 expression_value phpType23 phpType4_else metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = eps
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) =/= eps
+
+;; CVs remain borrowed. A returned reference is an owning raw operand, while
+;; the raw getIterator retval is checked independently without dereferencing.
+def $foreach_aggregate_input_mode(NStmtForeach expression phpType5 phpType4 expression_value phpType23 phpType4_else metadata, VARIABLE n_name* z) = true
+  -- if $reference_cv(expression) = (n_name*)
+  -- if expression = NExprVariable phpType32 metadata_var
+  -- if z = $variable_line(phpType32, metadata_var)
+def $foreach_aggregate_input_mode(NStmtForeach expression phpType5 phpType4 expression_value phpType23 phpType4_else metadata, KNOWN (POBJECT n)) = true
+  -- if $reference_cv(expression) = eps
+  -- if ~$foreach_aggregate_this(expression)
+def $foreach_aggregate_input_mode(NStmtForeach expression phpType5 phpType4 expression_value phpType23 phpType4_else metadata, REFERENCE n) = true
+  -- if $reference_cv(expression) = eps
+  -- if ~$foreach_aggregate_this(expression)
+def $foreach_aggregate_input_mode(statement, poperand) = false -- otherwise
+def $foreach_aggregate_this(NExprVariable phpType32 metadata) = $direct_this(phpType32)
+def $foreach_aggregate_this(expression) = false -- otherwise
+def $foreach_aggregate_input(S, pforeachaggregate, text) = (pforeachaggregate.INPUT = KNOWN PNULL)
+  -- if text <- ["current", "finish", "input-error"]
+def $foreach_aggregate_input(S, pforeachaggregate, text) = true
+  -- if ~(text <- ["current", "finish", "input-error"])
+  -- if $foreach_aggregate_input_mode(pforeachaggregate.STATEMENT, pforeachaggregate.INPUT)
+  -- if $call_reference_operand_valid(S, pforeachaggregate.INPUT)
+  -- if $foreach_aggregate_input_identity(pforeachaggregate)
+def $foreach_aggregate_input(S, pforeachaggregate, text) = false -- otherwise
+def $foreach_aggregate_input_identity(pforeachaggregate) = (n = pforeachaggregate.AGGREGATE)
+  -- if pforeachaggregate.INPUT = KNOWN (POBJECT n)
+def $foreach_aggregate_input_identity(pforeachaggregate) = true -- otherwise
+;; The native object pointer may address a live CV/reference payload. Changed
+;; source operands require a separate dynamic self-comparison boundary.
+def $foreach_aggregate_input_stable(S, pforeachaggregate) = true -- if pforeachaggregate.ACQUIRED =/= eps
+def $foreach_aggregate_input_stable(S, pforeachaggregate) = true
+  -- if pforeachaggregate.ACQUIRED = eps
+  -- if pforeachaggregate.INPUT = KNOWN (POBJECT pforeachaggregate.AGGREGATE)
+def $foreach_aggregate_input_stable(S, pforeachaggregate) = true
+  -- if pforeachaggregate.ACQUIRED = eps
+  -- if pforeachaggregate.INPUT = REFERENCE n
+  -- if S.STORE[n] = DEFINED (POBJECT pforeachaggregate.AGGREGATE)
+def $foreach_aggregate_input_stable(S, pforeachaggregate) = true
+  -- if pforeachaggregate.ACQUIRED = eps
+  -- if pforeachaggregate.INPUT = VARIABLE n_name* z
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if ~(n <- S.REFCELLS)
+  -- if S.STORE[n] = DEFINED (POBJECT pforeachaggregate.AGGREGATE)
+def $foreach_aggregate_input_stable(S, pforeachaggregate) = false -- otherwise
+
+def $foreach_begin(S, S_read, statement, plocation, b, z) = $foreach_aggregate_call(S_read, {STATEMENT statement, SITE porigin, LINE z, AGGREGATE n, OBJECT n, ACQUIRED eps, INPUT S.RESULT, CURRENT (KNOWN PNULL), ITERATOR eps}, "getIterator", ptask_tail*)
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_from_aggregate(S_read, POBJECT n)
+  -- if $foreach_aggregate_site(S_read, statement, porigin, z)
+  -- if b = $foreach_aggregate_reference(statement)
+  -- if $foreach_aggregate_input_mode(statement, S.RESULT)
+def $foreach_begin(S, S_read, statement, plocation, b, z) = S_read[.COMPLETION = UNSUPPORTED "foreach IteratorAggregate operand ownership"]
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $generator_from_aggregate(S_read, POBJECT n)
+  -- if ~$foreach_aggregate_input_mode(statement, S.RESULT)
+
+def $foreach_aggregate_original(S, pforeachaggregate) = true
+  -- if $(pforeachaggregate.AGGREGATE < |S.OBJECTS|)
+  -- if $generator_from_aggregate(S, POBJECT pforeachaggregate.AGGREGATE)
+  -- if $fiber_traversal_acquisition_valid(S, pforeachaggregate.AGGREGATE, pforeachaggregate.ACQUIRED)
+def $foreach_aggregate_original(S, pforeachaggregate) = false -- otherwise
+def $foreach_aggregate_stage(S, pforeachaggregate, text) = true
+  -- if text <- ["getIterator", "getIterator-error"]
+  -- if pforeachaggregate.ITERATOR = eps
+  -- if pforeachaggregate.OBJECT = $fiber_traversal_acquisition_last(pforeachaggregate.AGGREGATE, pforeachaggregate.ACQUIRED)
+  -- if $generator_from_aggregate(S, POBJECT pforeachaggregate.OBJECT)
+  -- if text =/= "getIterator" \/ pforeachaggregate.CURRENT = KNOWN PNULL
+  -- if $call_reference_operand_valid(S, pforeachaggregate.CURRENT)
+def $foreach_aggregate_stage(S, pforeachaggregate, text) = true
+  -- if text <- ["acquired", "acquired-error"]
+  -- if pforeachaggregate.ITERATOR = eps /\ pforeachaggregate.ACQUIRED = eps
+  -- if $fiber_traversal_object(S, pforeachaggregate.OBJECT, true)
+  -- if text =/= "acquired" \/ pforeachaggregate.CURRENT = KNOWN PNULL
+  -- if text =/= "acquired-error" \/ $foreach_aggregate_pending_value(S, pforeachaggregate.CURRENT)
+def $foreach_aggregate_stage(S, pforeachaggregate, text) = true
+  -- if text <- ["rewind", "valid"]
+  -- if pforeachaggregate.ITERATOR = (n)
+  -- if pforeachaggregate.ACQUIRED = eps /\ pforeachaggregate.CURRENT = KNOWN PNULL
+  -- if ~$foreach_aggregate_reference(pforeachaggregate.STATEMENT)
+  -- if $useriter_instance(S, pforeachaggregate.OBJECT)
+  -- if $useriter_cursor_valid(S, n, pforeachaggregate.OBJECT)
+def $foreach_aggregate_stage(S, pforeachaggregate, text) = true
+  -- if text <- ["ready", "empty", "current", "finish", "input-error", "generator"]
+  -- if pforeachaggregate.ITERATOR = (n)
+  -- if pforeachaggregate.ACQUIRED = eps
+  -- if $fiber_traversal_object(S, pforeachaggregate.OBJECT, true)
+  -- if $foreach_aggregate_cursor(S, pforeachaggregate, n)
+  -- if text =/= "input-error" \/ $foreach_aggregate_pending_value(S, pforeachaggregate.CURRENT)
+  -- if text = "input-error" \/ pforeachaggregate.CURRENT = KNOWN PNULL
+  -- if text =/= "generator" \/ $generator_object(S, pforeachaggregate.OBJECT)
+def $foreach_aggregate_stage(S, pforeachaggregate, text) = false -- otherwise
+def $foreach_aggregate_pending_value(S, KNOWN (POBJECT n)) = $throwable_live(S, n)
+def $foreach_aggregate_pending_value(S, poperand) = false -- otherwise
+def $foreach_aggregate_cursor(S, pforeachaggregate, n) = $useriter_cursor_valid(S, n, pforeachaggregate.OBJECT)
+  -- if $useriter_instance(S, pforeachaggregate.OBJECT)
+def $foreach_aggregate_cursor(S, pforeachaggregate, n) = true
+  -- if $generator_object(S, pforeachaggregate.OBJECT)
+  -- if $(n < S.NEXTITER)
+  -- if $useriter_cursor_count(S.ITERATORS, n) = 1
+  -- if $iterator_lookup(S.ITERATORS, n) = (GENERATORITER n pforeachaggregate.OBJECT)
+def $foreach_aggregate_cursor(S, pforeachaggregate, n) = false -- otherwise
+
+def $foreach_aggregate_at(FOREACH_AGGREGATE pforeachaggregate text, porigin) = (pforeachaggregate.SITE = porigin)
+def $foreach_aggregate_at(ptask, porigin) = false -- otherwise
+def $foreach_aggregate_count(eps, porigin) = 0
+def $foreach_aggregate_count(ptask :: ptask_tail*, porigin) = $(1 + $foreach_aggregate_count(ptask_tail*, porigin)) -- if $foreach_aggregate_at(ptask, porigin)
+def $foreach_aggregate_count(ptask :: ptask_tail*, porigin) = $foreach_aggregate_count(ptask_tail*, porigin) -- if ~$foreach_aggregate_at(ptask, porigin)
+def $foreach_aggregate_valid(S, pforeachaggregate, text) = ($foreach_aggregate_site(S, pforeachaggregate.STATEMENT, pforeachaggregate.SITE, pforeachaggregate.LINE) /\ $foreach_aggregate_original(S, pforeachaggregate) /\ $foreach_aggregate_input(S, pforeachaggregate, text) /\ $foreach_aggregate_stage(S, pforeachaggregate, text) /\ $foreach_aggregate_count(S.TODO, pforeachaggregate.SITE) = 1)
+def $foreach_aggregate_result_valid(S, pforeachaggregate, text) = $foreach_aggregate_valid(S, pforeachaggregate, text)
+  -- if $fiber_traversal_call_count(S.TODO, pforeachaggregate.SITE) = 0
+  -- if text =/= "generator"
+def $foreach_aggregate_result_valid(S, pforeachaggregate, text) = true
+  -- if text <- ["getIterator", "rewind", "valid"]
+  -- if $foreach_aggregate_valid(S, pforeachaggregate, text)
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (pforeachaggregate.SITE) pforeachaggregate.LINE) :: (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*
+  -- if $foreach_aggregate_target(S, pforeachaggregate, pcalltarget, text)
+  -- if $fiber_traversal_call_count(S.TODO, pforeachaggregate.SITE) = 1
+def $foreach_aggregate_result_valid(S, pforeachaggregate, "generator") = true
+  -- if $foreach_aggregate_valid(S, pforeachaggregate, "generator")
+  -- if S.TODO = (GENERATOR_RESUME pgeneratorop) :: (FOREACH_AGGREGATE pforeachaggregate "generator") :: ptask_tail*
+  -- if $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate)
+  -- if $generator_operation_valid(S, pgeneratorop)
+def $foreach_aggregate_result_valid(S, pforeachaggregate, "generator") = true
+  -- if $foreach_aggregate_valid(S, pforeachaggregate, "generator")
+  -- if S.TODO = (THROW_SEARCH n) :: (GENERATOR_RESUME pgeneratorop) :: (FOREACH_AGGREGATE pforeachaggregate "generator") :: ptask_tail*
+  -- if $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate)
+  -- if $generator_operation_valid(S, pgeneratorop)
+def $foreach_aggregate_result_valid(S, pforeachaggregate, text) = false -- otherwise
+
+;; The real callback and its saved continuation authenticate each borrowed
+;; Aggregate receiver and each ordinary Iterator initialization method.
+def $foreach_aggregate_target(S, pforeachaggregate, AGGREGATE_METHOD_TARGET n porigin, "getIterator") = $fiber_traversal_method_selected(S, n, porigin, "getIterator") -- if n = pforeachaggregate.OBJECT
+def $foreach_aggregate_target(S, pforeachaggregate, METHOD_TARGET n porigin, text) = $useriter_method_selected(S, n, porigin, text)
+  -- if n = pforeachaggregate.OBJECT /\ text <- ["rewind", "valid"]
+def $foreach_aggregate_target(S, pforeachaggregate, pcalltarget, text) = false -- otherwise
+def $foreach_aggregate_pending_site(S, porigin) = true
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*
+  -- if pforeachaggregate.SITE = porigin /\ pforeachaggregate.LINE = z
+  -- if $foreach_aggregate_result_valid(S, pforeachaggregate, text)
+  -- if $foreach_aggregate_target(S, pforeachaggregate, pcalltarget, text)
+def $foreach_aggregate_pending_site(S, porigin) = false -- otherwise
+def $foreach_aggregate_frame(S, pcallcontext, pframe) = true
+  -- if pframe.TODO = (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*
+  -- if pframe.ORIGIN = (pforeachaggregate.SITE)
+  -- if pcallcontext.CALLSITE = (pforeachaggregate.SITE) /\ pcallcontext.LINE = pforeachaggregate.LINE
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $foreach_aggregate_target(S, pforeachaggregate, $context_target(pcallcontext), text)
+  -- if $foreach_aggregate_result_valid(S[.TODO = pframe.TODO][.ORIGIN = pframe.ORIGIN], pforeachaggregate, text)
+def $foreach_aggregate_frame(S, pcallcontext, pframe) = false -- otherwise
+def $foreach_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $foreach_aggregate_frame(S, pcallcontext, pframe)
+  -- if $context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin)
+def $foreach_aggregate_entered(S, (pcallcontext), pframe :: pframe_tail*, pcalltarget, porigin) = $foreach_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+  -- if ~($context_target(pcallcontext) = pcalltarget /\ pcallcontext.CALLSITE = (porigin))
+def $foreach_aggregate_entered(S, eps, pframe :: pframe_tail*, pcalltarget, porigin) = $foreach_aggregate_entered(S, pframe.CONTEXT, pframe_tail*, pcalltarget, porigin)
+def $foreach_aggregate_entered(S, pcallcontext?, eps, pcalltarget, porigin) = false
+def $foreach_aggregate_selected(S, pcalltarget, porigin) = true
+  -- if S.TODO = (CALL_ARGS pcalltarget eps 0 eps (porigin) z) :: ptask_tail*
+  -- if $foreach_aggregate_pending_site(S, porigin)
+def $foreach_aggregate_selected(S, pcalltarget, porigin) = true -- if $foreach_aggregate_entered(S, S.CURRENT, S.FRAMES, pcalltarget, porigin)
+def $foreach_aggregate_selected(S, pcalltarget, porigin) = false -- otherwise
+def $foreach_aggregate_context(S, pcallcontext) = true
+  -- if pcallcontext.CALLSITE = (porigin)
+  -- if $foreach_aggregate_entered(S, S.CURRENT, S.FRAMES, $context_target(pcallcontext), porigin)
+def $foreach_aggregate_context(S, pcallcontext) = true -- if $foreach_aggregate_generator_context(S, pcallcontext)
+def $foreach_aggregate_context(S, pcallcontext) = false -- otherwise
+def $call_line_valid(S, (porigin), z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+  -- if $foreach_aggregate_site(S, statement, porigin, z)
+  -- if ~$useriter_site(S, statement, porigin, z)
+def $call_arguments_valid(S, (porigin), 0, eps, eps, 0) = true -- if $foreach_aggregate_pending_site(S, porigin)
+def $call_arity_valid(S, pcallcontext) = true
+  -- if $foreach_aggregate_context(S, pcallcontext)
+  -- if ~$useriter_context(S, pcallcontext)
+def $call_extent_valid(S, pcallcontext) = true
+  -- if $foreach_aggregate_context(S, pcallcontext)
+  -- if ~$useriter_context(S, pcallcontext)
+def $named_context_valid(S, pcallcontext) = true
+  -- if $foreach_aggregate_context(S, pcallcontext)
+  -- if ~$useriter_context(S, pcallcontext)
+def $useriter_frame(S, pcallcontext, pframe) = true -- if $foreach_aggregate_frame(S, pcallcontext, pframe)
+def $useriter_marker(pframe) = true
+  -- if pframe.TODO = (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*
+  -- if text <- ["getIterator", "rewind", "valid"]
+def $reference_callback_used(S, pcallcontext) = (text = "getIterator" \/ text = "valid")
+  -- if S.CURRENT = (pcallcontext)
+  -- if $foreach_aggregate_context(S, pcallcontext)
+  -- if S.FRAMES = pframe :: pframe_tail*
+  -- if pframe.TODO = (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*
+
+;; Only the copied Generator frame promotes the borrowed This to an owner.
+;; Its receipt names the actual foreach, not a fabricated START argument.
+def $generator_creation_frame(S, pfunction) = pframe[.CONTEXT = (pcallcontext[.TARGET = FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method pforeachaggregate.SITE pforeachaggregate.LINE])]
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AGGREGATE_METHOD_TARGET n porigin_method
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if S.FRAMES = pframe_caller :: pframe_tail*
+  -- if pframe_caller.TODO = (FOREACH_AGGREGATE pforeachaggregate "getIterator") :: ptask_tail*
+  -- if $foreach_aggregate_frame(S, pcallcontext, pframe_caller)
+  -- if pframe = $generator_frame(S, $function_body_tasks(S, pfunction))
+def $target_nodes(FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z) = [HOBJECT n]
+def $target_instance(FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z) = eps
+def $target_receiver(S, FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z) = $target_receiver(S, METHOD_TARGET n porigin_method)
+def $target_lexical_class(S, FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z) = $target_lexical_class(S, METHOD_TARGET n porigin_method)
+def $target_called_class(S, FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z) = $target_called_class(S, METHOD_TARGET n porigin_method)
+def $target_function(S, FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z) = (pfunction)
+  -- if $fiber_traversal_method_selected(S, n, porigin_method, "getIterator")
+  -- if $target_function(S, METHOD_TARGET n porigin_method) = (pfunction)
+  -- if $function_generator(S, pfunction)
+def $foreach_aggregate_generator_context(S, pcallcontext) = true
+  -- if pcallcontext.TARGET = FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z
+  -- if pcallcontext.CALLSITE = (porigin) /\ pcallcontext.LINE = z
+  -- if pcallcontext.INSTANCE = eps /\ pcallcontext.RECEIVER = (n)
+  -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps
+  -- if $origin_node(S.SOURCES, porigin) = (statement)
+  -- if $foreach_aggregate_site(S, statement, porigin, z)
+  -- if $target_function(S, pcallcontext.TARGET) = (pfunction)
+  -- if pcallcontext.FUNCTION = pfunction.ORIGIN
+  -- if $generator_context_retained(S, pcallcontext)
+  -- if $fiber_traversal_call_count(S.TODO, porigin) = 0
+def $foreach_aggregate_generator_context(S, pcallcontext) = false -- otherwise
+
+;; Implicit foreach getters have no source argument list for named preflight.
+def $named_receives_ready(S, pfunction) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = AGGREGATE_METHOD_TARGET n porigin_method
+  -- if S.FRAMES = pframe_foreach :: pframe_tail*
+  -- if pframe_foreach.TODO = (FOREACH_AGGREGATE pforeachaggregate "getIterator") :: ptask_tail*
+  -- if $foreach_aggregate_frame(S, pcallcontext, pframe_foreach)
+  -- if $receiving_function(S, pcallcontext.FUNCTION) = (pfunction)
+  -- if $function_generator(S, pfunction)
+  -- if n_received = $call_received(pcallcontext.ARGC, |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $unpack_defined_prefix(S, $call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS), n_received)
+
+;; A foreach Generator's active force-close frame moves with its Fiber VM.
+;; Ordinary Generator continuations retain the existing transfer refusal.
+def $fiber_generator_transfer(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if $foreach_aggregate_generator_context(S, pcallcontext)
+  -- if S.FRAMES = pframe_close :: pframe_tail*
+  -- if pframe_close.TODO = (GENERATOR_CLOSE_DONE pgenclose) :: ptask_tail*
+  -- if $generator_close_saved(S, S.CURRENT, S.FRAMES) = (pgenclose)
+  -- if S.OBJECTS[pgenclose.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_RUNNING
+  -- if pgenerator.FRAME = eps /\ pgenclose.FRAME = eps
+  -- if pgenclose.STAGE =/= CLOSE_QUEUED /\ pgenclose.STAGE =/= CLOSE_FINISHED
+  -- if $generator_resume_ids(S.TODO) = eps
+  -- if $generator_saved_ids(S.FRAMES) = [pgenclose.OBJECT]
+  -- if S_caller = $constant_frame_scope(S, pframe_close, pframe_tail*)
+  -- if $generator_close_done_valid(S_caller, pgenclose)
+
+;; Saved close records remain the running Generator's unique operation owner.
+;; Collect occurrences rather than erasing duplicates across real VM stacks.
+def $foreach_aggregate_close_vm_ids(S, pfibervm) = [n]
+  -- if $generator_resume_ids(pfibervm.TODO) = eps
+  -- if $generator_saved_ids(pfibervm.FRAMES) = [n]
+  -- if S_view = $fiber_vm_restore(S, pfibervm)[.COMPLETION = NORMAL]
+  -- if $fiber_generator_transfer(S_view)
+def $foreach_aggregate_close_vm_ids(S, pfibervm) = eps -- otherwise
+def $foreach_aggregate_close_object_ids(S, eps) = eps
+def $foreach_aggregate_close_object_ids(S, pnode :: pnode_tail*) = $foreach_aggregate_close_node_ids(S, pnode) ++ $foreach_aggregate_close_object_ids(S, pnode_tail*)
+def $foreach_aggregate_close_node_ids(S, HOBJECT n) = $foreach_aggregate_close_vm_ids(S, pfibervm)
+  -- if S.OBJECTS[n] = FIBER pfiber
+  -- if pfiber.VM = (pfibervm)
+  -- if S.ACTIVEFIBER =/= (n)
+def $foreach_aggregate_close_node_ids(S, pnode) = eps -- otherwise
+def $foreach_aggregate_close_caller_ids(S, eps) = eps
+def $foreach_aggregate_close_caller_ids(S, pfibercaller :: pfibercaller_tail*) = $foreach_aggregate_close_vm_ids(S, pfibercaller.VM) ++ $foreach_aggregate_close_caller_ids(S, pfibercaller_tail*)
+def $foreach_aggregate_close_closer_ids(S, eps) = eps
+def $foreach_aggregate_close_closer_ids(S, pfiberclose :: pfiberclose_tail*) = $foreach_aggregate_close_vm_ids(S, pfiberclose.VM) ++ $foreach_aggregate_close_closer_ids(S, pfiberclose_tail*)
+def $generator_saved_fiber_ids(S) = $foreach_aggregate_close_object_ids(S, S.ALLOCATIONS) ++ $foreach_aggregate_close_caller_ids(S, S.FIBERCALLERS) ++ $foreach_aggregate_close_closer_ids(S, S.FIBERCLOSERS)
+def $call_selected_valid(S, FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z, (porigin)) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = FOREACH_AGGREGATE_GENERATOR_TARGET n porigin_method porigin z
+  -- if $foreach_aggregate_generator_context(S, pcallcontext)
+
+def $foreach_aggregate_call(S, pforeachaggregate, text, ptask_tail*) = S[.ORIGIN = (pforeachaggregate.SITE)][.TODO = (CALL_ARGS $fiber_traversal_method_target(pforeachaggregate.OBJECT, pmethoddesc.FUNCTION.ORIGIN, text) eps 0 eps (pforeachaggregate.SITE) pforeachaggregate.LINE) :: (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.OBJECTS[pforeachaggregate.OBJECT] = INSTANCE porigin
+  -- if $effective_method(S, porigin, $ptascii(text), |S.CLASSES|) = (pmethoddesc)
+def $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*)
+  -- if $foreach_aggregate_input_stable(S, pforeachaggregate)
+def $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*) = S[.COMPLETION = UNSUPPORTED "foreach IteratorAggregate changed original operand"]
+  -- if ~$foreach_aggregate_input_stable(S, pforeachaggregate)
+rule PhpStep/foreach-aggregate-getIterator: S ~> $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*)
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "getIterator") :: ptask_tail*
+def $foreach_aggregate_error(S, pforeachaggregate, text, ptbytes, ptask_tail*) = $throw_scalar(S[.TODO = (FOREACH_AGGREGATE pforeachaggregate[.CURRENT = S.RESULT] "getIterator-error") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], text, ptbytes, pforeachaggregate.LINE)
+def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_error(S, pforeachaggregate, "Error", $ptascii("An iterator cannot be used with foreach by reference"), ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $useriter_instance(S, n) /\ $foreach_aggregate_reference(pforeachaggregate.STATEMENT)
+def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_acquired(S, pforeachaggregate[.OBJECT = n], ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $useriter_instance(S, n) /\ ~$foreach_aggregate_reference(pforeachaggregate.STATEMENT)
+def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_error(S, pforeachaggregate, "Exception", $ptascii("Cannot traverse an already closed generator"), ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE = GENERATOR_CLOSED
+def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_error(S, pforeachaggregate, "Exception", $ptascii("You can only iterate a generator by-reference if it declared that it yields by-reference"), ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_CLOSED
+  -- if $foreach_aggregate_reference(pforeachaggregate.STATEMENT) /\ ~$generator_reference_producer(S, pgenerator)
+def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_acquired(S, pforeachaggregate[.OBJECT = n], ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.OBJECTS[n] = GENERATOR pgenerator
+  -- if pgenerator.PHASE =/= GENERATOR_CLOSED
+  -- if ~$foreach_aggregate_reference(pforeachaggregate.STATEMENT) \/ $generator_reference_producer(S, pgenerator)
+def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_call(S, pforeachaggregate[.OBJECT = n][.ACQUIRED = pforeachaggregate.ACQUIRED ++ [n]], "getIterator", ptask_tail*)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if n =/= pforeachaggregate.OBJECT /\ $generator_from_aggregate(S, POBJECT n)
+def $foreach_aggregate_acquire_result(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_error(S, pforeachaggregate, "Exception", $ptascii("Objects returned by ") ++ $object_name(S, pforeachaggregate.OBJECT) ++ $ptascii("::getIterator() must be traversable or implement interface Iterator"), ptask_tail*) -- otherwise
+
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "getIterator") :: ptask_tail*
+  -- if $foreach_aggregate_result_valid(S, pforeachaggregate, "getIterator")
+  -- if S_next.TODO = (FOREACH_AGGREGATE pforeachaggregate_error "getIterator-error") :: ptask_tail*
+  -- if pforeachaggregate_error = pforeachaggregate[.CURRENT = S.RESULT]
+  -- if S_next.COMPLETION = THROWN text ptbytes z
+  -- if text <- ["Exception", "Error"]
+  -- if z = pforeachaggregate.LINE
+  -- if S_next = $foreach_aggregate_acquire(S, pforeachaggregate, ptask_tail*)
+
+def $foreach_aggregate_acquired(S, pforeachaggregate, ptask_tail*) = $fiber_start_unpack_release(S[.TODO = (FOREACH_AGGREGATE pforeachaggregate[.ACQUIRED = eps] "acquired") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $fiber_traversal_acquisition_nodes(pforeachaggregate.ACQUIRED))
+rule PhpStep/foreach-aggregate-acquired: S ~> $foreach_aggregate_initial(S, pforeachaggregate, ptask_tail*)
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "acquired") :: ptask_tail*
+def $foreach_aggregate_initial(S, pforeachaggregate, ptask_tail*) = $foreach_aggregate_call(S[.ITERATORS = S.ITERATORS ++ [OBJECTITER n pforeachaggregate.OBJECT 0 false]][.NEXTITER = $(n + 1)], pforeachaggregate[.ITERATOR = (n)], "rewind", ptask_tail*)
+  -- if $useriter_instance(S, pforeachaggregate.OBJECT)
+  -- if n = S.NEXTITER
+def $foreach_aggregate_initial(S, pforeachaggregate, ptask_tail*) = $generator_operate(S[.ITERATORS = S.ITERATORS ++ [GENERATORITER n pforeachaggregate.OBJECT]][.NEXTITER = $(n + 1)][.TODO = (FOREACH_AGGREGATE pforeachaggregate[.ITERATOR = (n)] "generator") :: ptask_tail*], {OBJECT pforeachaggregate.OBJECT, NAME "rewind", SITE pforeachaggregate.SITE, LINE pforeachaggregate.LINE, LOOP ({ITERATOR n, STATEMENT pforeachaggregate.STATEMENT}), ADVANCE false, ARGUMENTS eps, STARTPACK false})
+  -- if $generator_object(S, pforeachaggregate.OBJECT)
+  -- if n = S.NEXTITER
+rule PhpStep/foreach-aggregate-rewind: S ~> $foreach_aggregate_call(S, pforeachaggregate, "valid", ptask_tail*)
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "rewind") :: ptask_tail*
+rule PhpStep/foreach-aggregate-valid: S ~> S_read[.TODO = (FOREACH_AGGREGATE pforeachaggregate $foreach_aggregate_decision($truth(S_read, pvalue))) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "valid") :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, pforeachaggregate.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if ~$generator_from_nan(pvalue)
+rule PhpStep/foreach-aggregate-valid-nan-required: S ~> S_read[.COMPLETION = UNSUPPORTED "Iterator foreach valid NaN warning continuation"]
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "valid") :: ptask_tail*
+  -- if S_read = $resolve_at(S, S.RESULT, pforeachaggregate.LINE)
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $generator_from_nan(pvalue)
+def $foreach_aggregate_decision(true) = "ready"
+def $foreach_aggregate_decision(false) = "empty"
+
+def $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate) = (~pgeneratorop.STARTPACK /\ pgeneratorop.OBJECT = pforeachaggregate.OBJECT /\ pgeneratorop.NAME = "rewind" /\ pgeneratorop.SITE = pforeachaggregate.SITE /\ pgeneratorop.LINE = pforeachaggregate.LINE /\ pgeneratorop.LOOP = ({ITERATOR n, STATEMENT pforeachaggregate.STATEMENT}) /\ ~pgeneratorop.ADVANCE /\ pgeneratorop.ARGUMENTS = eps)
+  -- if pforeachaggregate.ITERATOR = (n)
+def $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate) = false -- otherwise
+def $generator_loop_ready(S, pgeneratorop) = S[.TODO = (FOREACH_AGGREGATE pforeachaggregate $foreach_aggregate_decision(pgenerator.PHASE =/= GENERATOR_CLOSED)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "generator") :: ptask_tail*
+  -- if $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate)
+  -- if S.OBJECTS[pforeachaggregate.OBJECT] = GENERATOR pgenerator
+  -- if pgenerator.PHASE <- [GENERATOR_PAUSED, GENERATOR_DELEGATING, GENERATOR_CLOSED]
+def $foreach_aggregate_generator_record((FOREACH_AGGREGATE pforeachaggregate "generator") :: ptask_tail*, pgeneratorop) = (pforeachaggregate)
+  -- if $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate)
+def $foreach_aggregate_generator_record(ptask :: ptask_tail*, pgeneratorop) = $foreach_aggregate_generator_record(ptask_tail*, pgeneratorop)
+  -- if ~$foreach_aggregate_generator_match(ptask, pgeneratorop)
+def $foreach_aggregate_generator_record(eps, pgeneratorop) = eps
+def $foreach_aggregate_generator_match(FOREACH_AGGREGATE pforeachaggregate "generator", pgeneratorop) = $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate)
+def $foreach_aggregate_generator_match(ptask, pgeneratorop) = false -- otherwise
+def $foreach_aggregate_generator_promote((FOREACH_AGGREGATE pforeachaggregate "generator") :: ptask_tail*, pgeneratorop) = (FOREACH_AGGREGATE pforeachaggregate[.ITERATOR = eps] "acquired") :: ptask_tail*
+  -- if $foreach_aggregate_generator_header(pgeneratorop, pforeachaggregate)
+def $foreach_aggregate_generator_promote(ptask :: ptask_tail*, pgeneratorop) = ptask :: $foreach_aggregate_generator_promote(ptask_tail*, pgeneratorop)
+  -- if ~$foreach_aggregate_generator_match(ptask, pgeneratorop)
+def $foreach_aggregate_generator_promote(eps, pgeneratorop) = eps
+def $generator_loop_discard(S, pgeneratorop) = S[.TODO = $foreach_aggregate_generator_promote(S.TODO, pgeneratorop)][.ITERATORS = $foreach_aggregate_remove(S.ITERATORS, pforeachaggregate.ITERATOR)][.ORIGIN = (pforeachaggregate.SITE)]
+  -- if $foreach_aggregate_generator_record(S.TODO, pgeneratorop) = (pforeachaggregate)
+  -- if $foreach_aggregate_valid(S, pforeachaggregate, "generator")
+
+
+;; Raw valid() retval retirement happens before this step can release INPUT.
+;; Both true and false decisions retain data while FREE_OP1 runs user code.
+rule PhpStep/foreach-aggregate-ready-input: S ~> $fiber_start_unpack_release(S[.TODO = (FOREACH_AGGREGATE pforeachaggregate[.INPUT = KNOWN PNULL] "current") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(pforeachaggregate.INPUT))
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "ready") :: ptask_tail*
+rule PhpStep/foreach-aggregate-empty-input: S ~> $fiber_start_unpack_release(S[.TODO = (FOREACH_AGGREGATE pforeachaggregate[.INPUT = KNOWN PNULL] "finish") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $operand_nodes(pforeachaggregate.INPUT))
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "empty") :: ptask_tail*
+rule PhpStep/foreach-aggregate-current: S ~> $useriter_call(S, n, pforeachaggregate.OBJECT, pforeachaggregate.STATEMENT, pforeachaggregate.SITE, pforeachaggregate.LINE, "current", KNOWN PNULL, ptask_tail*)
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "current") :: ptask_tail*
+  -- if pforeachaggregate.ITERATOR = (n)
+  -- if $useriter_instance(S, pforeachaggregate.OBJECT)
+rule PhpStep/foreach-aggregate-generator-body: S ~> $generator_loop_body(S[.TODO = ptask_tail*], {OBJECT pforeachaggregate.OBJECT, NAME "rewind", SITE pforeachaggregate.SITE, LINE pforeachaggregate.LINE, LOOP ({ITERATOR n, STATEMENT pforeachaggregate.STATEMENT}), ADVANCE false, ARGUMENTS eps, STARTPACK false})
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "current") :: ptask_tail*
+  -- if pforeachaggregate.ITERATOR = (n)
+  -- if $generator_object(S, pforeachaggregate.OBJECT)
+rule PhpStep/foreach-aggregate-finish: S ~> $foreach_finish(S, n)
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate "finish") :: ptask_tail*
+  -- if pforeachaggregate.ITERATOR = (n)
+
+;; Preserve actual remaining layer/input release work when a destructor throws.
+;; The snapshot must be the real selected call, with exactly its head consumed.
+def $destructor_resume_pending(S, pdestructorcall) = S[.TODO = (DESTRUCTOR_RELEASE pdestructionrelease) :: (FOREACH_AGGREGATE pforeachaggregate[.CURRENT = KNOWN (POBJECT n)] $foreach_aggregate_error_stage(text)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if pdestructorcall.FRAME = eps /\ pdestructorcall.OPERATION = eps
+  -- if S.TODO = (THROW_SEARCH n) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*
+  -- if text <- ["acquired", "acquired-error", "current", "finish", "input-error"]
+  -- if pdestructorcall.RELEASE = (pdestructionrelease_before)
+  -- if pdestructionrelease_before.JOBS = pdestructionjob :: pdestructionjob_tail*
+  -- if $destruction_job_node(pdestructionjob) = (HOBJECT pdestructorcall.OBJECT)
+  -- if pdestructionrelease = pdestructionrelease_before[.JOBS = pdestructionjob_tail*]
+  -- if S_check = S[.TODO = (DESTRUCTOR_RESULT pdestructorcall) :: (DESTRUCTOR_RELEASE pdestructionrelease) :: (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*][.DESTRUCTION.CALLS = pdestructorcall :: S.DESTRUCTION.CALLS]
+  -- if $destructor_result_valid(S_check, pdestructorcall)
+  -- if $destructor_release_valid(S_check, pdestructionrelease)
+  -- if $foreach_aggregate_result_valid(S_check, pforeachaggregate, text)
+  -- if $throwable_live(S, n)
+def $foreach_aggregate_error_stage(text) = "acquired-error" -- if text <- ["acquired", "acquired-error"]
+def $foreach_aggregate_error_stage(text) = "input-error" -- otherwise
+def $destructor_tail_pending((FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*) = (n)
+  -- if text <- ["acquired-error", "input-error"]
+  -- if pforeachaggregate.CURRENT = KNOWN (POBJECT n)
+rule PhpStep/foreach-aggregate-pending-error: S ~> S[.TODO = (THROW_SEARCH n) :: (FOREACH_AGGREGATE pforeachaggregate[.CURRENT = KNOWN PNULL] $foreach_aggregate_error_clear(text)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (FOREACH_AGGREGATE pforeachaggregate text) :: ptask_tail*
+  -- if text <- ["acquired-error", "input-error"]
+  -- if pforeachaggregate.CURRENT = KNOWN (POBJECT n)
+def $foreach_aggregate_error_clear("acquired-error") = "acquired"
+def $foreach_aggregate_error_clear(text) = "current" -- otherwise
+
+def $foreach_aggregate_ids(eps) = eps
+def $foreach_aggregate_ids((n)) = [n]
+def $foreach_aggregate_remove(piterator*, eps) = piterator*
+def $foreach_aggregate_remove(piterator*, (n)) = $iterator_remove(piterator*, n)
+def $foreach_aggregate_data(text) = ~(text <- ["getIterator", "getIterator-error", "generator"])
+def $foreach_aggregate_nodes(pforeachaggregate, text) = $operand_nodes(pforeachaggregate.CURRENT) ++ $foreach_aggregate_data_nodes(pforeachaggregate.OBJECT, $foreach_aggregate_data(text)) ++ $fiber_traversal_acquisition_nodes(pforeachaggregate.ACQUIRED) ++ $operand_nodes(pforeachaggregate.INPUT)
+def $foreach_aggregate_data_nodes(n, true) = [HOBJECT n]
+def $foreach_aggregate_data_nodes(n, false) = eps
+def $task_nodes(FOREACH_AGGREGATE pforeachaggregate text) = $foreach_aggregate_nodes(pforeachaggregate, text)
+def $call_task_valid(S, FOREACH_AGGREGATE pforeachaggregate text) = $foreach_aggregate_result_valid(S, pforeachaggregate, text)
+def $useriter_task_ids(FOREACH_AGGREGATE pforeachaggregate "generator") = eps
+def $useriter_task_ids(FOREACH_AGGREGATE pforeachaggregate text) = $foreach_aggregate_ids(pforeachaggregate.ITERATOR) -- if text =/= "generator"
+def $error_task_iterator(FOREACH_AGGREGATE pforeachaggregate text) = $foreach_aggregate_ids(pforeachaggregate.ITERATOR)
+def $return_discard(S, FOREACH_AGGREGATE pforeachaggregate text) = $fiber_start_unpack_release(S[.ITERATORS = $foreach_aggregate_remove(S.ITERATORS, pforeachaggregate.ITERATOR)][.ORIGIN = (pforeachaggregate.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $foreach_aggregate_nodes(pforeachaggregate, text))
