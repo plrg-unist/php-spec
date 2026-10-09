@@ -445,6 +445,13 @@ gates, exact926 state bridges and canonical CLI8.
 [Source reference returns](docs/semantics/SOURCE-REFERENCE-RETURNS.md) now preserve
 caller demand, alias ownership and shared-cell type coercion; [independent review](coverage/semantics/reference-return-review.json)
 binds942 source/state/protocol gates and the one-state-test bridge.
+[Exact reference-return checks](coverage/semantics/reference-return-exact-review.json)
+now preserve existing cells, property sources and parameter-backing certificates
+through forwarded calls and `finally`; real conversions, missing-slot initialization
+and ordinary checked writes retain their behavior. Sixteen focused source agreements
+and private358 state cuts of 35 plus 483 assertions pass; actual359 passes separate
+strict compilation. The separate delayed-TypeError
+finalizer replay mismatch remains required work.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

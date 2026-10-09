@@ -28,6 +28,22 @@ quietly. Successful coercion writes the shared source location/cell before frame
 cleanup, including when the caller discards the result. Existing value-return
 coercion remains detached from external aliases.
 
+Exact reference-return verification and acquisition now avoid assigning the
+unchanged cell. This preserves genuine parameter-backing certificates and
+property type sources, including forwarded reference calls and the repeated
+check after `finally`. Writers compare the checked value with the captured
+pre-check input; real scalar conversions and quiet missing-slot initialization
+still write, and ordinary later assignments/binds still enforce property types.
+The [focused review](../../coverage/semantics/reference-return-exact-review.json)
+records 16 focused source agreements and private358 state cuts of 35 independent
+plus 483 reviewed assertions across 13 fixtures. Actual359 over6536a8339
+passes separate strict SL compilation at37b08adeb, with zero runtime evaluations.
+A separate delayed-TypeError
+replay original remains failing: PHP prints `F|F|R|SHARED`, the model
+`F|R|SHARED`. Its original prediction and raw failure remain preserved; generic
+replay, runtime-owner recovery and by-reference Stringable conversion remain
+required.
+
 Caller demand comes from the original checked callsite's immediate source
 consumers. Expression statements and discarded for clauses have unused results;
 casts to void, ternary/coalesce expressions and value/reference consumers retain

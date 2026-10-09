@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Exact reference returns99 avoid unchanged checked writes during verification,
+acquisition and156 repeated finalizer checks. Genuine backing certificates,
+selected cells and property sources survive; conversions, quiet initialization
+and later ordinary writes remain checked. Sixteen of17 focused originals agree,
+with private358 independent35 and13 source-reached fixtures/483 assertions passing.
+The seventeenth exposes the held delayed-TypeError replay gap: native
+`F|F|R|SHARED`, model `F|R|SHARED`, zero agreement. Parser-only fixture stops and
+the original prediction remain preserved. Actual359 over6536a8339 passes strict SL compilation at37b08adeb (4.679s);
+private358 source/state cuts retain their inputs. Held replay/owner recovery and
+Stringable reference conversion remain required. [Exact-return review](coverage/semantics/reference-return-exact-review.json).
+
 Deprecated assertion options preserve raw flags, old-value snapshots, callback
 arguments and live warning/exception/bail policy after callback/retval retirement.
 Per-constant protection survives namespace publication and parked handlers.
@@ -2918,10 +2929,10 @@ failures and interrupted evidence.
   Called-class introspection223 leaves builtin Closure rebinding, builtin API
   callback targets, suspension and wider reference-result consumers open.
 
-`returns_verify` is temporarily paused by the user. Preserve its branches and
-evidence; do not retry the blocked engine experiment, substitute a reviewer,
-merge changes awaiting its validation, or begin work depending on those
-unaccepted changes. Independent work proceeds from the accepted baseline.
+`returns_verify` has resumed with the authorized temporary verifier. Preserve
+held branches and evidence, and do not retry the rejected engine experiment.
+Delayed return replay and runtime-owner recovery still require validation and
+independent review before integration or dependent work.
 
 Rocq interaction-tree semantics and BOLA proofs follow completed PHP core.
 
