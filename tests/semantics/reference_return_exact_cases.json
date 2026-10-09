@@ -92,6 +92,18 @@
       "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;try{return $v;}finally{echo 'F|';}}$v=new S;take($v);try{g();echo $v;}catch(TypeError $e){echo 'RETURN_ERROR';}try{$v='s';echo '|WRITE_ACCEPTED';}catch(TypeError $e){echo '|WRITE_REJECTED';}",
       "predicted_stdout": "F|s|WRITE_REJECTED",
       "source_sha256": "85f8bcd5e7acf317769ba6dbe5d64f792e87aa27f1e6fe18442374f3c6f13ad2"
+    },
+    {
+      "id": "parameter-backing-finally-global-rebind",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function ping(){echo 'F|';}function &g():string{global $v;try{return $v;}finally{ping();unset($GLOBALS['v']);$GLOBALS['v']='new';}}$v=new S;take($v);$r=&g();echo $r,'|',$v,'|',C::$o===$r?'old':'lost';$r=new stdClass;echo '|',C::$o===$r&&$v==='new'?'SHARED':'DETACHED';",
+      "predicted_stdout": "F|s|new|old|SHARED",
+      "source_sha256": "9caeb3ff868f74ef19ce383502b40fabc573c62deea7ce6fddcfcf5ada81361e"
+    },
+    {
+      "id": "parameter-backing-finally-required-recheck-unused",
+      "source": "<?php class C{public static object $o;}class S{function __toString(){global $v;C::$o=&$v;return 's';}}function take(string &$s){}function &g():string{global $v;try{return $v;}finally{echo 'F|';$v=new stdClass;}}$v=new S;take($v);try{g();echo 'ACCEPTED';}catch(TypeError $e){echo 'R';}echo '|',C::$o===$v&&$v instanceof stdClass?'SHARED':'DETACHED';",
+      "predicted_stdout": "F|R|SHARED",
+      "source_sha256": "44f566f645f39927bf956ec80be1addb8d2368e7e1b955822573f801f19f9b59"
     }
   ],
   "prepared_parent": "ea04fbbe4e0d4948c10d829a3c1f6ec4672728d9"
