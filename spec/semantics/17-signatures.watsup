@@ -20,6 +20,7 @@ dec $psline(metadata) : nat
 dec $psstartline(metadataEntry) : bool
 dec $pslower(phpType17) : psinput
 dec $psparameter_input(psraw, phpType14) : psinput
+dec $psattribute_parameter_line(phpType18, nat) : nat
 dec $pspromotion_override_attribute(ptcontext, phpType14) : bool
 dec $psattributes_supported(ptcontext, psraw, phpType14) : bool
 dec $psattribute_target(ptcontext, psraw, phpType14) : ptbytes?
@@ -88,9 +89,25 @@ def $psstartline(MstartLine int) = true
 def $psstartline(metadataEntry) = false
   -- otherwise
 
+;; Zend attaches attributes after creating the ordinary Param. Its compiler
+;; line comes from the first TYPE child, or VAR when no type is present.
+def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = $psparameter_input({ NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psattribute_parameter_line(phpType18, $psline(metadata_var)), FLAGS int, EXTRA false }, phpType14)
+  -- if int = 0 /\ phpType14 =/= SEQUENCE eps /\ phpType37 = SEQUENCE eps
 def $pslower(NParam phpType14 (INTEGER int) phpType18 (BOOLEAN bool_ref) (BOOLEAN bool_var) (NExprVariable (BYTES text) metadata_var) phpType5 phpType37 metadata) = $psparameter_input({ NAME $base64(text), TYPE phpType18, BYREF bool_ref, VARIADIC bool_var, DEFAULT phpType5, LINE $psline(metadata), FLAGS int, EXTRA (phpType37 =/= SEQUENCE eps) }, phpType14)
+  -- if ~(int = 0 /\ phpType14 =/= SEQUENCE eps /\ phpType37 = SEQUENCE eps)
 def $pslower(phpType17) = PSINPUTUNSUPPORTED "edited dynamic parameter name"
   -- otherwise
+
+def $psattribute_parameter_line(ABSENT, n) = n
+def $psattribute_parameter_line(NIdentifier phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NName phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NNameFullyQualified phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NNameRelative phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NVarLikeIdentifier phpType33 metadata, n) = $psline(metadata)
+def $psattribute_parameter_line(NNullableType phpType35 metadata, n) = $psattribute_parameter_line(phpType35, n)
+def $psattribute_parameter_line(NUnionType (SEQUENCE (phpType69 :: phpType69_rest*)) metadata, n) = $psattribute_parameter_line(phpType69, n)
+def $psattribute_parameter_line(NIntersectionType (SEQUENCE (phpType35 :: phpType35_rest*)) metadata, n) = $psattribute_parameter_line(phpType35, n)
+def $psattribute_parameter_line(phpType18, n) = 0 -- otherwise
 
 ;; Keep the checked Param attributes separately from the existing boolean
 ;; hook guard. Promoted Override is filtered off the parameter target by Zend.
