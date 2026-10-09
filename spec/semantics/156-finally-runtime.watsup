@@ -900,9 +900,10 @@ def $goto_saved_try((REF_REPLAY_ORIGIN porigin_source z ((REPLAY_TRY porigin) ::
 def $goto_saved_try(ptask :: ptask_tail*, porigin) = $goto_saved_try(ptask_tail*, porigin)
   -- if $finally_marker_origin(ptask) =/= (porigin)
   -- if ~$goto_saved_replay_try(ptask :: ptask_tail*, porigin)
-def $goto_catch_tail(S, porigin, ptask_tail*, ptask_old*) = ptask_saved*
+def $goto_catch_tail(S, porigin, porigin_catch, ptask_tail*, ptask_old*) = (ORIGIN_RETURN (porigin_catch)) :: ptask_saved*
   -- if $goto_saved_try(ptask_old*, porigin) = GOTOTASKS ptask_saved*
   -- if $goto_saved_replay_try(ptask_saved*, porigin)
+  -- if $finally_catch_origin(S, porigin, (porigin_catch))
 dec $goto_saved_finally(ptask*, porigin) : pgototasks
 def $goto_saved_finally(eps, porigin) = GOTOMISSING
 def $goto_saved_finally((FINALLY_RESUME porigin n?) :: ptask_tail*, porigin) = GOTOTASKS ((FINALLY_RESUME porigin n?) :: ptask_tail*)
