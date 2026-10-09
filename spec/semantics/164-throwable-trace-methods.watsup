@@ -62,15 +62,16 @@ def $trace_display_message(text, preqbytes) = preqbytes ++ $ptascii(" and define
 def $trace_display_message(text, preqbytes) = preqbytes -- otherwise
 def $throwable_single_string(S, n) = $ptascii(pthrowable.KIND) ++ $ptascii(" in ") ++ preqbytes_file ++ [58] ++ $decimal_integer(z_line) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $trace_array_string(S, n_trace)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
-  -- if $throwable_field(S, n, "message") = PSTRING eps
-  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $string_bytes($throwable_field(S, n, "message")) = (preqbytes_message)
+  -- if preqbytes_message = eps
+  -- if $string_bytes($throwable_field(S, n, "file")) = (preqbytes_file)
   -- if $throwable_field(S, n, "line") = PINT z_line
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
 def $throwable_single_string(S, n) = $ptascii(pthrowable.KIND) ++ $ptascii(": ") ++ $trace_display_message(pthrowable.KIND, preqbytes_message) ++ $ptascii(" in ") ++ preqbytes_file ++ [58] ++ $decimal_integer(z_line) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $trace_array_string(S, n_trace)
   -- if S.OBJECTS[n] = THROWABLE pthrowable
-  -- if $throwable_field(S, n, "message") = PSTRING preqbytes_message
+  -- if $string_bytes($throwable_field(S, n, "message")) = (preqbytes_message)
   -- if preqbytes_message =/= eps
-  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $string_bytes($throwable_field(S, n, "file")) = (preqbytes_file)
   -- if $throwable_field(S, n, "line") = PINT z_line
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
 def $throwable_single_string(S, n) = $object_name(S, n) ++ $ptascii(" in ") ++ preqbytes_file ++ [58] ++ $decimal_integer(z_line) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $trace_array_string(S, n_trace)
@@ -78,7 +79,7 @@ def $throwable_single_string(S, n) = $object_name(S, n) ++ $ptascii(" in ") ++ p
   -- if $throwable_member(S, n)
   -- if $throwable_field(S, n, "message") = pvalue_message
   -- if $echo_value(pvalue_message) = eps
-  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $string_bytes($throwable_field(S, n, "file")) = (preqbytes_file)
   -- if $throwable_field(S, n, "line") = PINT z_line
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
 def $throwable_single_string(S, n) = $object_name(S, n) ++ $ptascii(": ") ++ preqbytes_message ++ $ptascii(" in ") ++ preqbytes_file ++ [58] ++ $decimal_integer(z_line) ++ [10] ++ $ptascii("Stack trace:") ++ [10] ++ $trace_array_string(S, n_trace)
@@ -87,7 +88,7 @@ def $throwable_single_string(S, n) = $object_name(S, n) ++ $ptascii(": ") ++ pre
   -- if $throwable_field(S, n, "message") = pvalue_message
   -- if preqbytes_message = $echo_value(pvalue_message)
   -- if preqbytes_message =/= eps
-  -- if $throwable_field(S, n, "file") = PSTRING preqbytes_file
+  -- if $string_bytes($throwable_field(S, n, "file")) = (preqbytes_file)
   -- if $throwable_field(S, n, "line") = PINT z_line
   -- if $throwable_field(S, n, "trace") = PARRAY n_trace
 dec $throwable_chain_string(pstate, nat, nat*) : preqbytes

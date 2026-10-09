@@ -1,0 +1,73 @@
+;; String pointer identity is immutable metadata, with no heap owners. Ordinary
+;; PHP comparisons and conversions observe bytes. Only INI installation compares
+;; authenticated carriers; legacy byte-only producers have unknown identity.
+dec $startup_bytes(preqbytes) : bool
+dec $string_plain(pvalue) : pvalue
+dec $string_bytes(pvalue) : (nat*)?
+dec $string_literal_value(pvalue) : pvalue
+dec $string_carrier_valid(pstate, pvalue) : bool
+dec $string_request(pstate, nat*) : pstate
+dec $string_getter(pstate, pvalue) : pstate
+dec $string_same(pvalue, pvalue) : bool?
+def $string_plain(PSTRING_CARRIER pstringidentity n*) = PSTRING n*
+def $string_plain(pvalue) = pvalue -- otherwise
+def $string_bytes(PSTRING n*) = (n*)
+def $string_bytes(PSTRING_CARRIER pstringidentity n*) = (n*)
+def $string_bytes(pvalue) = eps -- otherwise
+def $string_literal_value(PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
+def $string_literal_value(pvalue) = pvalue -- otherwise
+def $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n*) = $startup_bytes(n*)
+def $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = true
+  -- if $(n < |S.STRINGDATA|)
+  -- if S.STRINGDATA[n] = n_bytes*
+  -- if $startup_bytes(n_bytes*)
+def $string_carrier_valid(S, pvalue) = false -- otherwise
+def $string_request(S, n*) = S[.STRINGDATA = S.STRINGDATA ++ [n*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) n*)]
+dec $string_getter_value(pvalue) : pvalue?
+def $string_getter_value(PSTRING_CARRIER INTERNED_STRING n*) = (PSTRING_CARRIER INTERNED_STRING n*)
+def $string_getter_value(PSTRING_CARRIER pstringidentity n*) = (PSTRING_CARRIER INTERNED_STRING n*)
+  -- if pstringidentity =/= INTERNED_STRING
+  -- if $(|n*| <= 1)
+def $string_getter_value(PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = (PSTRING_CARRIER (REQUEST_STRING n) n_bytes*)
+  -- if $(|n_bytes*| > 1)
+def $string_getter_value(pvalue) = eps -- otherwise
+def $string_getter(S, pvalue) = S[.RESULT = KNOWN pvalue_result]
+  -- if $string_carrier_valid(S, pvalue)
+  -- if $string_getter_value(pvalue) = (pvalue_result)
+def $string_getter(S, pvalue) = S[.COMPLETION = UNSUPPORTED "INI raw string identity producer"] -- otherwise
+def $string_same(PSTRING_CARRIER pstringidentity n*, PSTRING_CARRIER pstringidentity_other n_other*) = (pstringidentity = pstringidentity_other /\ n* = n_other*)
+def $string_same(pvalue, pvalue_other) = (false)
+  -- if $string_bytes(pvalue) = (n*)
+  -- if $string_bytes(pvalue_other) = (n_other*)
+  -- if n* =/= n_other*
+  -- if $string_plain(pvalue) = pvalue \/ $string_plain(pvalue_other) = pvalue_other
+def $string_same(pvalue, pvalue_other) = eps -- otherwise
+
+dec $string_byte_result(pstate, nat*, bool) : pstate
+def $string_byte_result(S, n*, true) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n*)]
+def $string_byte_result(S, n*, false) = $string_request(S, n*)
+
+;; VM string concatenation reuses an empty operand only when that operand is
+;; not a compiled constant. Other call sites without that fact keep identity unknown.
+dec $string_concat(pstate, pvalue, pvalue, bool, bool) : pstate
+def $string_concat(S, pvalue_left, pvalue_right, false, b_right) = S[.RESULT = KNOWN pvalue_right]
+  -- if $string_bytes(pvalue_left) = (eps)
+  -- if $string_bytes(pvalue_right) = (n_right*)
+def $string_concat(S, pvalue_left, pvalue_right, b_left, false) = S[.RESULT = KNOWN pvalue_left]
+  -- if $string_bytes(pvalue_left) = (n_left*)
+  -- if b_left \/ n_left* =/= eps
+  -- if $string_bytes(pvalue_right) = (eps)
+def $string_concat(S, pvalue_left, pvalue_right, b_left, b_right) = $string_request(S, n_left* ++ n_right*)
+  -- if $string_bytes(pvalue_left) = (n_left*)
+  -- if $string_bytes(pvalue_right) = (n_right*)
+  -- if b_left \/ n_left* =/= eps
+  -- if b_right \/ n_right* =/= eps
+dec $string_concat_unknown(pstate, pvalue, pvalue) : pstate
+def $string_concat_unknown(S, pvalue_left, pvalue_right) = $string_request(S, n_left* ++ n_right*)
+  -- if $string_bytes(pvalue_left) = (n_left*)
+  -- if $string_bytes(pvalue_right) = (n_right*)
+  -- if n_left* =/= eps /\ n_right* =/= eps
+def $string_concat_unknown(S, pvalue_left, pvalue_right) = S[.RESULT = KNOWN (PSTRING (n_left* ++ n_right*))]
+  -- if $string_bytes(pvalue_left) = (n_left*)
+  -- if $string_bytes(pvalue_right) = (n_right*)
+  -- if n_left* = eps \/ n_right* = eps

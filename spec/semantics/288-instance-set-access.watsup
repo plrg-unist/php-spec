@@ -248,12 +248,14 @@ rule PhpStep/compound-string-left-abrupt: S ~> S_string[.TODO = eps]
 rule PhpStep/compound-string-right-call: S ~> $user_string_begin(S, n, porigin_site, z, COMPOUND_STRING_RIGHT plocation ptbytes_left porigin_site z, ptask_tail*)
   -- if S.TODO = (COMPOUND_STRING_LEFT plocation (POBJECT n) porigin_site z) :: ptask_tail*
   -- if $compound_string_source(S, plocation, porigin_site, z)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes_left)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes_left)
   -- if $stringable_instance(S, n)
 rule PhpStep/compound-string-right-plain: S ~> S_string[.TODO = (COMPOUND_STRING_RIGHT plocation ptbytes_left porigin_site z) :: ptask_tail*]
   -- if S.TODO = (COMPOUND_STRING_LEFT plocation pvalue_right porigin_site z) :: ptask_tail*
   -- if $compound_string_source(S, plocation, porigin_site, z)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes_left)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes_left)
   -- if ~$user_string_value(S, pvalue_right)
   -- if S_string = $stringify(S, pvalue_right, z)
   -- if S_string.COMPLETION = NORMAL
@@ -271,5 +273,6 @@ def $compound_string_write(S, plocation, porigin_site, pvalue) = $location_write
 rule PhpStep/compound-string-store: S ~> S_written
   -- if S.TODO = (COMPOUND_STRING_RIGHT plocation ptbytes_left porigin_site z) :: ptask_tail*
   -- if $compound_string_source(S, plocation, porigin_site, z)
-  -- if S.RESULT = KNOWN (PSTRING ptbytes_right)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes_right)
   -- if S_written = $compound_string_write(S[.TODO = ptask_tail*][.LOCATION = plocation], plocation, porigin_site, PSTRING (ptbytes_left ++ ptbytes_right))

@@ -9,7 +9,8 @@ def $bitnot_apply(S, pvalue, z) = $bitnot_value(S, pvalue, z)
 def $bitnot_value(S, PINT i, z) = S[.RESULT = KNOWN (PINT $long_not(i))]
 def $bitnot_value(S, PFLOAT n, z) = $cast_notices(S, castnotice*, n, z)[.RESULT = KNOWN (PINT $long_not(i))]
   -- if (i, castnotice*) = $float_long(n, true)
-def $bitnot_value(S, PSTRING n*, z) = S[.RESULT = KNOWN (PSTRING $string_not(n*))]
+def $bitnot_value(S, PSTRING_CARRIER pstringidentity n*, z) = $string_byte_result(S, $string_not(n*), |n*| = 1)
+def $bitnot_value(S, PSTRING n*, z) = $string_byte_result(S, $string_not(n*), |n*| = 1)
 def $bitnot_value(S, pvalue, z) = $throw_scalar(S, "TypeError", [67,97,110,110,111,116,32,112,101,114,102,111,114,109,32,98,105,116,119,105,115,101,32,110,111,116,32,111,110,32] ++ $bitnot_type_at(S, pvalue), z)
   -- otherwise
 def $bitnot_type(PBOOL true) = [116,114,117,101]

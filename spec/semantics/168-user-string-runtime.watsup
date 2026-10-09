@@ -107,7 +107,7 @@ def $stringify_source(S, porigin_site, z, CAST_RESULT CASTSTRING z) = true
 def $stringify_source(S, porigin_site, z, EVAL_REQUEST porigin_parent z) = $eval_operand_site_valid(S, porigin_parent, porigin_site, z)
 def $stringify_source(S, porigin_site, z_call, CONFIG_STRING_RESULT pconfigcall n porigin_site z_child z_call) = $config_string_site_valid(S, pconfigcall, n, porigin_site, z_child, z_call)
 def $stringify_source(S, porigin_site, z, CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) = $concat_left_child_valid(S, porigin_parent, porigin_site, z, b_right)
-def $stringify_source(S, porigin_site, z, CONCAT_AFTER_RIGHT porigin_parent n_left* z) = $concat_right_child_valid(S, porigin_parent, porigin_site, z)
+def $stringify_source(S, porigin_site, z, CONCAT_AFTER_RIGHT porigin_parent pvalue_left z) = $concat_right_child_valid(S, porigin_parent, porigin_site, z)
 def $stringify_source(S, porigin_site, z, RETURN_VALUE z) = $typed_return_source(S, porigin_site, z)
 def $stringify_source(S, porigin_site, z, ptask) = false -- otherwise
 
@@ -283,7 +283,7 @@ def $call_task_valid(S, CONCAT_PREP poperand_left poperand_right b_left b_right 
 def $call_task_valid(S, CONCAT_AFTER_LEFT porigin_parent poperand_right b_right z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if $concat_left_child_valid(S, porigin_parent, porigin_site, z, b_right)
-def $call_task_valid(S, CONCAT_AFTER_RIGHT porigin_parent n_left* z) = true
+def $call_task_valid(S, CONCAT_AFTER_RIGHT porigin_parent pvalue_left z) = true
   -- if S.ORIGIN = (porigin_site)
   -- if $concat_right_child_valid(S, porigin_parent, porigin_site, z)
 def $call_task_valid(S, EMIT z) = true
@@ -335,9 +335,9 @@ rule PhpStep/user-string-cast-call: S ~> $user_string_begin(S_read, n, porigin_s
   -- if S_read.RESULT = KNOWN (POBJECT n)
   -- if $stringable_instance(S_read, n)
 
-dec $stringify_return_state(pstate, ptask, preqbytes, ptask*) : pstate
-def $stringify_return_state(S, ptask, n_text*, ptask_tail*) = S[.TODO = ptask :: ptask_tail*][.RESULT = KNOWN (PSTRING n_text*)][.BASE = BASE_VALUE (KNOWN (PSTRING n_text*))] -- otherwise
-rule PhpStep/user-string-return: S ~> $stringify_return_state(S_read, ptask_consumer, n_text*, ptask_tail*)
+dec $stringify_return_state(pstate, ptask, pvalue, ptask*) : pstate
+def $stringify_return_state(S, ptask, pvalue_text, ptask_tail*) = S[.TODO = ptask :: ptask_tail*][.RESULT = KNOWN pvalue_text][.BASE = BASE_VALUE (KNOWN pvalue_text)] -- otherwise
+rule PhpStep/user-string-return: S ~> $stringify_return_state(S_read, ptask_consumer, pvalue_text, ptask_tail*)
   -- if S.TODO = (STRINGIFY_RESULT n porigin_site z) :: ptask_consumer :: ptask_tail*
   -- if $stringify_result_valid(S, n, porigin_site, z)
   -- if $stringify_consumer_receiver_valid(S, n, ptask_consumer)
@@ -346,4 +346,5 @@ rule PhpStep/user-string-return: S ~> $stringify_return_state(S_read, ptask_cons
   -- if $stringify_consumer_tail_valid(S, porigin_site, z, ptask_consumer, ptask_tail*)
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING n_text*)
+  -- if S_read.RESULT = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (n_text*)

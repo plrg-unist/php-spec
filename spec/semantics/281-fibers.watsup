@@ -214,7 +214,8 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING ($ptascii("Fiber")))]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("fiber")
 def $config_selected_valid(S, pconfigcall) = true
   -- if $fiber_kind(pconfigcall.KIND)

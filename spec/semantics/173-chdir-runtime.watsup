@@ -45,7 +45,8 @@ def $dir_requested_valid(S, pdircontext) = (pdircontext.REQUESTED = n_requested*
   -- if $config_conversion(S, pdircontext.CALL, pvalue) = ptypeconversion
   -- if ptypeconversion =/= TYPEREJECT
   -- if S_converted = $typed_apply(S, ptypeconversion, pdircontext.CALL.LINE)
-  -- if S_converted.RESULT = KNOWN (PSTRING n_requested*)
+  -- if S_converted.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_requested*)
 def $dir_requested_valid(S, pdircontext) = true
   -- if pdircontext.CALL.SENT = [NAMED_SENT (KNOWN (POBJECT n_object))]
   -- if $config_string_source(S, pdircontext.CALL) = ((porigin_child, z_child))

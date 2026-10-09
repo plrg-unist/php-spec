@@ -197,8 +197,12 @@ live callback failure policy and pending exceptions through selected-receiver
 cleanup. Constant protection survives parked handlers. The
 [options ledger](coverage/semantics/assertion-options-review.json) keeps 20 source
 originals and 117/67 reached checks at separate cuts; the excluded Count observer
-and valid foreach companion stay distinct. Parsing warnings, Stringable-option INI
-refusal, Stringable descriptions and wider expression/callback forms remain required.
+and valid foreach companion stay distinct. [Bounded quantity warnings](docs/semantics/ASSERTION-QUANTITIES.md)
+preserve frozen numeric modes after handler raw writes, throw or restore. Runtime
+string carriers retain INI identity while ordinary consumers observe bytes. Four
+reentrant request-string lifetime probes remain explicit Unsupported with zero
+native agreement. Original recapture/warned restore, Stringable-option refusal,
+Stringable descriptions and wider expression/callback forms remain required.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 

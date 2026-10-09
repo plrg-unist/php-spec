@@ -38,7 +38,8 @@ def $file_include_path((preqbytes)) = ($c_string(preqbytes))
 dec $file_request_start(pstate, porigin, int, int, ptask*) : pstate
 dec $file_empty_operand(pstate, int) : bool
 def $file_empty_operand(S, n_kind) = true
-  -- if S.RESULT = KNOWN (PSTRING eps)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (eps)
   -- if n_kind = 1 \/ n_kind = 3
 def $file_empty_operand(S, int) = false -- otherwise
 def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = $throw_scalar(S, "ValueError", $ptascii("Path must not be empty"), z)
@@ -49,7 +50,8 @@ def $file_request_start(S, porigin, z, n_kind, ptask_tail*) = S[.FILESEQ = $(n_n
   -- if ~$file_empty_operand(S, n_kind)
   -- if S.FILECWD = (preqbytes_cwd)
   -- if $file_include_path(S.FILEINCLUDEPATH) = (preqbytes_include_path)
-  -- if S.RESULT = KNOWN (PSTRING n_requested*)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n_requested*)
   -- if n_nonce = S.FILESEQ
   -- if n_owner = |S.FRAMES|
   -- if n_caller* = $call_sourcefile(S.FILES, porigin)

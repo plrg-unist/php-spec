@@ -9,6 +9,7 @@ def $typed_tag(PBOOL false) = "false"
 def $typed_tag(PINT i) = "int"
 def $typed_tag(PFLOAT n) = "float"
 def $typed_tag(PSTRING n*) = "string"
+def $typed_tag(PSTRING_CARRIER pstringidentity n*) = "string"
 def $typed_tag(PARRAY n) = "array"
 dec $typed_exact(ptbranch*, pvalue) : bool
 def $typed_exact(ptbranch*, pvalue) = (ptbranch* = eps \/ "mixed" <- $ptmasks(ptbranch*) \/ $typed_tag(pvalue) <- $ptmasks(ptbranch*))
@@ -18,6 +19,7 @@ def $typed_number(PBOOL true) = (NINT 1)
 def $typed_number(PINT i) = (NINT i)
 def $typed_number(PFLOAT n) = (NFLOAT n)
 def $typed_number(PSTRING n*) = (pnumber) -- if $numeric_string(n*) = FULLNUM pnumber
+def $typed_number(PSTRING_CARRIER pstringidentity n*) = (pnumber) -- if $numeric_string(n*) = FULLNUM pnumber
 def $typed_number(pvalue) = eps -- otherwise
 
 dec $typed_integer_fit(pnumber) : bool
@@ -25,12 +27,14 @@ def $typed_integer_fit(NINT i) = true
 def $typed_integer_fit(NFLOAT n) = $fparts_fits($float_decode(n))
 dec $typed_string_value(pvalue) : bool
 def $typed_string_value(PSTRING n*) = true
+def $typed_string_value(PSTRING_CARRIER pstringidentity n*) = true
 def $typed_string_value(pvalue) = false -- otherwise
 dec $typed_scalar(pvalue) : bool
 def $typed_scalar(PBOOL b) = true
 def $typed_scalar(PINT i) = true
 def $typed_scalar(PFLOAT n) = true
 def $typed_scalar(PSTRING n*) = true
+def $typed_scalar(PSTRING_CARRIER pstringidentity n*) = true
 def $typed_scalar(pvalue) = false -- otherwise
 
 dec $typed_int_conversion(text*, pvalue) : ptypeconversion?
@@ -123,6 +127,7 @@ dec $array_resolve(pstate, nat, parraymode) : parrayresolution
 dec $array_admission(parrayresolution) : bool?
 dec $typed_callback_receiver(pvalue) : bool
 def $typed_callback_receiver(PSTRING ptbytes) = true
+def $typed_callback_receiver(PSTRING_CARRIER pstringidentity ptbytes) = true
 def $typed_callback_receiver(POBJECT n) = true
 def $typed_callback_receiver(pvalue) = false -- otherwise
 dec $typed_callback_array(pstate, nat) : bool
@@ -132,7 +137,7 @@ def $typed_callback_array(S, n) = true
   -- if $entry_lookup(parray.ITEMS, KINT 0) = (pitem_receiver)
   -- if $entry_lookup(parray.ITEMS, KINT 1) = (pitem_method)
   -- if $typed_callback_receiver($entry_value(S, pitem_receiver))
-  -- if $entry_value(S, pitem_method) = PSTRING ptbytes
+  -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes)
 def $typed_callback_array(S, n) = false -- otherwise
 
 dec $string_callable(pstate, ptbytes) : bool?
@@ -144,6 +149,7 @@ def $typed_callable(S, POBJECT n) = (false)
   -- if $class_plain_instance(S, n)
   -- if $object_invoke_method(S, n) = eps
 def $typed_callable(S, POBJECT n) = eps -- if ~$typed_closure(S, n) /\ ~$class_plain_instance(S, n) /\ ~$throwable_object(S, n)
+def $typed_callable(S, PSTRING_CARRIER pstringidentity ptbytes) = $typed_callable(S, PSTRING ptbytes)
 def $typed_callable(S, PSTRING ptbytes) = (true) -- if $typed_registered(S, ptbytes)
 def $typed_callable(S, PSTRING ptbytes) = $string_callable(S, ptbytes)
   -- if ~$typed_registered(S, ptbytes)

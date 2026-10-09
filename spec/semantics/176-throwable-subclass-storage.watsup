@@ -43,6 +43,7 @@ def $throwable_member(S, n) = true
 def $throwable_member(S, n) = false -- otherwise
 
 def $throwable_terminal_message_supported(PSTRING n*) = true
+def $throwable_terminal_message_supported(PSTRING_CARRIER pstringidentity n*) = true
 def $throwable_terminal_message_supported(PINT z) = true
 def $throwable_terminal_message_supported(PBOOL b) = true
 def $throwable_terminal_message_supported(PNULL) = true
@@ -177,7 +178,8 @@ rule PhpStep/terminal-string-return: S ~> S[.TODO = eps][.COMPLETION = UNCAUGHT_
   -- if S.TODO = (TERMINAL_STRING n) :: ptask_tail*
   -- if ptask_tail* = eps
   -- if $throwable_member(S, n)
-  -- if S.RESULT = KNOWN (PSTRING preqbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (preqbytes)
 
 def $ctor_start(S, n, pctorcallmode, z) = S[.TODO = (CTOR_ARGS {SITE porigin_site, RECEIVER n, BASE $throwable_constructor_owner(text_kind), MODE pctorcallmode, INDEX 0, SENT eps, NAMED false, LINE z}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.ORIGIN = (porigin_site)

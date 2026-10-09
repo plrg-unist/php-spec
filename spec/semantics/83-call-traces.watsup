@@ -36,6 +36,7 @@ def $trace_value_text(S, PBOOL false) = $ptascii("false")
 def $trace_value_text(S, PINT z) = $decimal_integer(z)
 def $trace_value_text(S, PFLOAT n) = $trace_float_precision(n, $precision_value(S))
 def $trace_value_text(S, PSTRING n*) = $trace_string(n*)
+def $trace_value_text(S, PSTRING_CARRIER pstringidentity n*) = $trace_string(n*)
 def $trace_value_text(S, PARRAY n) = $ptascii("Array")
 def $trace_value_text(S, POBJECT n) = $ptascii("Object(") ++ $object_name(S, n) ++ [41]
 dec $trace_slot(pstate, pbinding*, preqbytes) : pvalue

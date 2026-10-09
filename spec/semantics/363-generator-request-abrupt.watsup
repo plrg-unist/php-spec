@@ -309,7 +309,8 @@ rule PhpStep/generator-request-fatal-report-string: S ~> $generator_request_repo
   -- if S.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
   -- if $generator_request_report_valid(S, pgenfatal)
   -- if pgenfatal.METHOD =/= eps
-  -- if S.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
 rule PhpStep/generator-request-fatal-message-required: S ~> S[.COMPLETION = UNSUPPORTED "Generator request fatal message rendering"]
   -- if S.TODO = (GENERATOR_REQUEST_REPORT pgenfatal) :: ptask_tail*
   -- if $generator_request_report_valid(S, pgenfatal)

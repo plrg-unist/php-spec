@@ -100,7 +100,8 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, 
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING ($ptascii("Closure")))]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
-  -- if S_read.RESULT = KNOWN (PSTRING ptbytes)
+  -- if S_read.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $ptlc($typed_callable_name(ptbytes)) = $ptascii("closure")
 def $scoped_dynamic_class(S, z) = S_read[.RESULT = KNOWN (PSTRING ($ptascii("Closure")))]
   -- if S_read = $resolve_at(S, S.RESULT, z)
@@ -130,7 +131,7 @@ def $from_identity(S, PARRAY n) = (n_object)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 0) = (pitem_receiver)
   -- if $entry_lookup(S.ARRAYS[n].ITEMS, KINT 1) = (pitem_method)
   -- if $entry_value(S, pitem_receiver) = POBJECT n_object
-  -- if $entry_value(S, pitem_method) = PSTRING ptbytes
+  -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes)
   -- if $ptlc(ptbytes) = $ptascii("__invoke")
   -- if $closure_callable(S, n_object)
 def $from_identity(S, pvalue) = eps -- otherwise
@@ -156,14 +157,17 @@ def $from_receive(S, pconfigcall, PARRAY n) = $api_begin(S, CONFIG_INVOKE pconfi
 def $from_receive(S, pconfigcall, PARRAY n_array) = $from_done(S[.OBJECTS = S.OBJECTS ++ [GETTERCLOSURE n_receiver pgettermethod text_base pconfigcall.SITE]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
   -- if $from_getter(S, n_array) = ((n_receiver, pgettermethod, text_base))
   -- if n = |S.OBJECTS|
-def $from_receive(S, pconfigcall, PSTRING ptbytes) = $api_begin(S, CONFIG_INVOKE pconfigcall, PSTRING ptbytes)
-  -- if ~$fiber_factory_candidate(S, PSTRING ptbytes)
+def $from_receive(S, pconfigcall, pvalue_string) = $api_begin(S, CONFIG_INVOKE pconfigcall, pvalue_string)
+  -- if $string_bytes(pvalue_string) = (ptbytes)
+  -- if ~$fiber_factory_candidate(S, pvalue_string)
   -- if ~$typed_registered(S, ptbytes)
   -- if $method_string_parts(ptbytes) =/= eps
-def $from_receive(S, pconfigcall, PSTRING ptbytes) = $from_done(S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+def $from_receive(S, pconfigcall, pvalue_string) = $from_done(S[.OBJECTS = S.OBJECTS ++ [NAMEDCLOSURE pfunction.ORIGIN]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $call_target(S, $typed_callable_name(ptbytes), eps) = (pfunction)
   -- if n = |S.OBJECTS|
-def $from_receive(S, pconfigcall, PSTRING ptbytes) = $from_done(S[.OBJECTS = S.OBJECTS ++ [INTRINSICCLOSURE pintrinsic]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+def $from_receive(S, pconfigcall, pvalue_string) = $from_done(S[.OBJECTS = S.OBJECTS ++ [INTRINSICCLOSURE pintrinsic]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]], n)
+  -- if $string_bytes(pvalue_string) = (ptbytes)
   -- if $call_target(S, $typed_callable_name(ptbytes), eps) = eps
   -- if $intrinsic_named($typed_callable_name(ptbytes)) = (pintrinsic)
   -- if n = |S.OBJECTS|
@@ -223,7 +227,7 @@ def $error_handler_trace_values(S, pcallcontext, pconfigcall) = $trace_extra(S, 
 ;; retired; an entered nonstatic closure must still own its actual receiver.
 def $from_method(S, papiquery, porigin, ptbytes, b_static, b_invoke) = {SITE pconfigcall.SITE, INPUT papiquery.INPUT, METHOD ptbytes_live, SCOPE papiquery.SCOPE, CALLED papiquery.CALLED, THIS papiquery.THIS, CLASS papiquery.CLASS, OUTER papiquery.OUTER, ORIGINAL papiquery.ORIGINAL, PREFIX papiquery.PREFIX, WIDTH papiquery.WIDTH, FUNCTION porigin, NAME ptbytes, STATIC b_static, CREATION $method_capture_current(S, pconfigcall.SITE), ARRAY $is_array_value(papiquery.VALUE), INVOKE b_invoke}
   -- if papiquery.SOURCE = CONFIG_INVOKE pconfigcall
-  -- if $entry_value(S, papiquery.METHOD) = PSTRING ptbytes_live
+  -- if $string_bytes($entry_value(S, papiquery.METHOD)) = (ptbytes_live)
 def $from_receiver(pfrommethod) = eps -- if pfrommethod.STATIC
 def $from_receiver(pfrommethod) = pfrommethod.CLASS.RECEIVER -- if ~pfrommethod.STATIC
 def $from_allocate(S, pfrommethod) = $from_done(S[.OBJECTS = S.OBJECTS ++ [FROMCALLABLECLOSURE pfrommethod]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.CLOSURESCOPES = S.CLOSURESCOPES ++ [{OBJECT n, LEXICAL pmethoddesc.OWNER, CALLED pfrommethod.CLASS.CALLED, RECEIVER $from_receiver(pfrommethod), CREATION eps}]], n)
@@ -346,7 +350,7 @@ def $from_split(pfrommethod) = true
 def $from_split(pfrommethod) = true
   -- if ~pfrommethod.ARRAY /\ ~pfrommethod.INVOKE
   -- if pfrommethod.OUTER = eps
-  -- if pfrommethod.INPUT = PSTRING ptbytes_class
+  -- if $string_bytes(pfrommethod.INPUT) = (ptbytes_class)
   -- if pfrommethod.METHOD = pfrommethod.ORIGINAL
   -- if $method_string_parts(pfrommethod.ORIGINAL) = ((ptbytes_class, ptbytes_method))
   -- if pfrommethod.PREFIX = $(|ptbytes_class| + 2) /\ pfrommethod.WIDTH = |ptbytes_method|
@@ -530,7 +534,7 @@ def $from_getter(S, n_array) = ((n_receiver, pgettermethod, $getter_owner(text_k
   -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KINT 0) = (pitem_receiver)
   -- if $entry_lookup(S.ARRAYS[n_array].ITEMS, KINT 1) = (pitem_method)
   -- if $entry_value(S, pitem_receiver) = POBJECT n_receiver
-  -- if $entry_value(S, pitem_method) = PSTRING ptbytes
+  -- if $string_bytes($entry_value(S, pitem_method)) = (ptbytes)
   -- if $(n_receiver < |S.OBJECTS|) /\ (HOBJECT n_receiver) <- S.ALLOCATIONS
   -- if $from_getter_kind(S, n_receiver, ptbytes) = (text_kind)
   -- if $getter_named(ptbytes) = (pgettermethod)

@@ -128,6 +128,7 @@ def $exit_receive_strict(S, pexitcall) = $exit_strict(S, pexitcall.SITE) -- othe
 dec $exit_conversion(pvalue, bool) : ptypeconversion
 def $exit_conversion(PINT z, b) = TYPEVALUE (PINT z)
 def $exit_conversion(PSTRING n*, b) = TYPEVALUE (PSTRING n*)
+def $exit_conversion(PSTRING_CARRIER pstringidentity n*, b) = TYPEVALUE (PSTRING_CARRIER pstringidentity n*)
 def $exit_conversion(pvalue, false) = $typed_weak(["int", "string"], pvalue)
   -- if $typed_tag(pvalue) =/= "int"
   -- if $typed_tag(pvalue) =/= "string"
@@ -139,10 +140,12 @@ def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED $ntprec
   -- if S.RESULT = KNOWN (PINT z)
 def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.COMPLETION = NORMAL
-  -- if S.RESULT = KNOWN (PSTRING eps)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (eps)
 def $exit_finish(S) = S[.TODO = eps][.ORIGIN = eps][.EVENTS = S.EVENTS ++ [OUTPUT n*]][.COMPLETION = EXITED 0][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.TRACE = eps][.ERRORORIGIN = eps]
   -- if S.COMPLETION = NORMAL
-  -- if S.RESULT = KNOWN (PSTRING n*)
+  -- if S.RESULT = KNOWN pvalue_string
+  -- if $string_bytes(pvalue_string) = (n*)
   -- if n* =/= eps
 def $exit_finish(S) = S -- if S.COMPLETION =/= NORMAL
 dec $exit_receive(pstate, pexitcall) : pstate

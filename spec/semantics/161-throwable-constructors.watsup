@@ -233,8 +233,9 @@ dec $ctor_result(pctorcallmode, nat) : pvalue
 def $ctor_commit_field(S, pctorcall, text_field, pvalue, true) = $throwable_constructor_field(S, pctorcall.RECEIVER, text_field, pvalue)
 def $ctor_commit_field(S, pctorcall, text_field, pvalue, false) = S
 dec $ctor_commit(pstate, pctorcall, pvalue, pvalue, pvalue) : pstate
-def $ctor_commit(S, pctorcall, PSTRING preqbytes_message, PINT z_code, pvalue_previous) = S_previous[.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S_message = $ctor_commit_field(S, pctorcall, "message", PSTRING preqbytes_message, $(|pctorcall.SENT| > 0))
+def $ctor_commit(S, pctorcall, pvalue_message, PINT z_code, pvalue_previous) = S_previous[.RESULT = KNOWN pvalue_result][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $string_bytes(pvalue_message) = (preqbytes_message)
+  -- if S_message = $ctor_commit_field(S, pctorcall, "message", pvalue_message, $(|pctorcall.SENT| > 0))
   -- if S_code = $ctor_commit_field(S_message, pctorcall, "code", PINT z_code, $(z_code =/= 0))
   -- if S_previous = $ctor_commit_field(S_code, pctorcall, "previous", pvalue_previous, pvalue_previous =/= PNULL)
   -- if pvalue_result = $ctor_result(pctorcall.MODE, pctorcall.RECEIVER)

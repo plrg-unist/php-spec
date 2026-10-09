@@ -6175,7 +6175,9 @@
         "spec/semantics/56-casts.watsup",
         "spec/semantics/58-ordinary-expressions.watsup",
         "spec/semantics/343-stringable-computed-cv-name.watsup",
-        "spec/semantics/350-array-computed-cv-name.watsup"
+        "spec/semantics/350-array-computed-cv-name.watsup",
+        "spec/semantics/30-string-carriers.watsup",
+        "spec/semantics/251-string-interpolation.watsup"
       ],
       "helper_tests": [
         "tests/semantics/numeric_format.py",
@@ -6189,9 +6191,10 @@
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
         "coverage/semantics/source-stringable-name-review.json",
-        "coverage/semantics/source-array-name-review.json"
+        "coverage/semantics/source-array-name-review.json",
+        "coverage/semantics/assertion-quantity-review.json"
       ],
-      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. Stringable ordinary computed-name CVs retain captured bytes through cast-owner retirement before live target lookup; pending destructor exceptions preserve default warnings while suppressing eligible handlers. Eight exact originals and134 premises retain private325; actual329 passes strict compilation with reviewed compatibility. See source-stringable-name-review.json. Module350 adds borrowed ordinary array name-CVs: handled warnings fix Array before live target lookup; throws abort FETCH. Private331 source7/independent117 and actual335 strict compilation retain separate cuts. See source-array-name-review.json."
+      "review": "Reviewed ordinary source activation for current scalar/array values preserves compiler phases, operand timing and ownership. The historical ordinary-checkpoint 4,407-source campaign plus 25 negatives, 25 state programs/2,875 assertions and 62 independent source controls pass (ordinary-review.json, ordinary-campaign-audit.json). Seven historical absent-request Unsupported cases now have explicit-request witnesses at652d10b7/request-environment-review.json; original outcomes are unchanged, objects and full family closure remain open. Stringable ordinary computed-name CVs retain captured bytes through cast-owner retirement before live target lookup; pending destructor exceptions preserve default warnings while suppressing eligible handlers. Eight exact originals and134 premises retain private325; actual329 passes strict compilation with reviewed compatibility. See source-stringable-name-review.json. Module350 adds borrowed ordinary array name-CVs: handled warnings fix Array before live target lookup; throws abort FETCH. Private331 source7/independent117 and actual335 strict compilation retain separate cuts. See source-array-name-review.json. Immutable string carriers preserve bounded Zend producer identity and CV/reference/string copies while ordinary consumers observe bytes. Selected copy/Stringable and affected consumer/state cuts pass in assertion-quantity-review.json; unknown identity producers remain explicit Unsupported where required."
     },
     {
       "id": "coercion.cast-array",
@@ -12375,7 +12378,10 @@
       "implementation": [
         "spec/semantics/151-throwable-compiler.watsup",
         "spec/semantics/152-throwable-runtime.watsup",
-        "spec/semantics/250-ordinary-throwable-reception.watsup"
+        "spec/semantics/250-ordinary-throwable-reception.watsup",
+        "spec/semantics/83-call-traces.watsup",
+        "spec/semantics/164-throwable-trace-methods.watsup",
+        "spec/semantics/169-error-exception-runtime.watsup"
       ],
       "helper_tests": [
         "tests/semantics/throwable_compiler.py",
@@ -12394,9 +12400,10 @@
         "vendor/php-src/Zend/zend_interfaces.c",
         "docs/semantics/THROWABLES.md",
         "coverage/semantics/ordinary-throwable-reception-review.json",
-        "coverage/semantics/fiber-callable-constructors-review.json"
+        "coverage/semantics/fiber-callable-constructors-review.json",
+        "coverage/semantics/assertion-quantity-review.json"
       ],
-      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. The unchanged322 throwing-handler original requires finite RuntimeException kind, inherited Exception parent/base and constructor admissions; its normal agreement retains the e955 cut. The directly affected inherited-storage/interface state group passes at df28 in fiber-callable-constructors-review.json; no wider SPL class coverage is claimed."
+      "review": "Generated builtin Throwable identity and ancestry, source throw/rethrow and ordered no-finally catches have independent private review. Binding consumes catch eligibility before strict aliased CV assignment. Pending/uncaught objects and trace values remain owned across task/frame unwinding. Constructors, accessors, internal properties, subclasses, finally, full traces and callback/lifecycle integrations remain required. Canonical integration and regression bridge pending. Ordinary Throwable effects250 are covered in ordinary-throwable-reception-review.json: source17/current1 and reached141+29 keep separate cuts. Broader producers and complete core remain partial. The unchanged322 throwing-handler original requires finite RuntimeException kind, inherited Exception parent/base and constructor admissions; its normal agreement retains the e955 cut. The directly affected inherited-storage/interface state group passes at df28 in fiber-callable-constructors-review.json; no wider SPL class coverage is claimed. Carrier byte adapters preserve actual stored message/file/trace values. Three affected exact Throwable originals and genuine trace47 pass at1a8; the affected Generator renderer and report52 are separately accepted in assertion-quantity-review.json."
     },
     {
       "id": "protocols.Exception",
@@ -15690,7 +15697,9 @@
         "spec/semantics/225-startup-ini.watsup",
         "spec/semantics/237-display-errors.watsup",
         "spec/semantics/272-live-precision.watsup",
-        "spec/semantics/236-eval-declaration-notices.watsup"
+        "spec/semantics/236-eval-declaration-notices.watsup",
+        "spec/semantics/368-assertions.watsup",
+        "spec/semantics/368-assertion-quantity.watsup"
       ],
       "helper_tests": [
         "tests/semantics/startup_ini_protocol.py",
@@ -15710,9 +15719,10 @@
         "coverage/semantics/request-environment-review.json",
         "coverage/semantics/startup-ini-review.json",
         "coverage/semantics/display-errors-review.json",
-        "coverage/semantics/precision-review.json"
+        "coverage/semantics/precision-review.json",
+        "coverage/semantics/assertion-quantity-review.json"
       ],
-      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Precision272 adds nonnullable registered bytes, raw get/set/Restore and independent optional startup transport while retaining reporting/path/display facts. Partial16 source/profile,194 supplied checks and12 transport cuts remain separate in precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required."
+      "review": "Effective variables_order and auto_globals_jit inputs reviewed; broader configuration remains pending. Accepted bounded scope at652d10b7; request-environment-review.json binds explicit request inputs,263 request literals and44 ordinary magic literals across preserved run identities. Full family closure remains open. Registered two-slot startup225 and modified-only Restore are reviewed in startup-ini-review.json:9 exact profile comparisons/99 state/15 transport at36810, with source-equivalent221-module actual0592 preservation. Wider startup directives/parsing/profiles and lifecycle remain required. Live display_errors237 adds nullable original/live raw get/set/Restore and captured ordinary text-CLI destinations;11 exact profile/source comparisons,76 state premises and17 transport controls pass at b8e8/223. Actualddb6/233 preservation adds no execution credit. Actual231/237 held-original fatal freezing agrees atccd900 after rendering and before queue mode writes; shutdown-functions-review.json records that separate composition. Wider display/configuration and later request stages remain required. Precision272 adds nonnullable registered bytes, raw get/set/Restore and independent optional startup transport while retaining reporting/path/display facts. Partial16 source/profile,194 supplied checks and12 transport cuts remain separate in precision-review.json. Later eval compiler precision and exact array/class image refresh retain scoped source/state cuts in precision-review.json; wider callback, source and configuration contexts remain required. Bounded zend.assertions parser warnings preserve frozen quantity/old return, later live refusal and nested raw/throw/restore effects. Reentrant request retirement is an intentional lifetime-defect boundary; recapture/warned restore and wider configuration remain required. See assertion-quantity-review.json."
     },
     {
       "id": "environment.initialization",
@@ -16120,16 +16130,18 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/368-assertions.watsup"
+        "spec/semantics/368-assertions.watsup",
+        "spec/semantics/368-assertion-quantity.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/assertion_cases.json"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/assertion-quantity-review.json"
       ],
-      "review": "Module368 selects the resolved direct builtin before argument compilation: -1 elides it;0 compiles arguments but skips runtime evaluation. Main/eval/include inherited modes and user/global aliases agree in the25-source catalogue. Quiet runtime0/1 updates, positive2 and eval compilation agree in twelve additional source profiles at1593cd3ca/354; wider startup facts and parsing-warning paths remain required."
+      "review": "Module368 selects the resolved direct builtin before argument compilation: -1 elides it;0 compiles arguments but skips runtime evaluation. Main/eval/include inherited modes and user/global aliases agree in the25-source catalogue. Quiet runtime0/1 updates, positive2 and eval compilation agree in twelve additional source profiles at1593cd3ca/354; wider startup facts and remaining INI follow-ons remain required. Bounded parser-warning updates freeze numeric mode independently of raw handler writes; independent00X proves direct elision versus dynamic evaluation. Separate quantity cuts and remaining follow-ons are in assertion-quantity-review.json."
     },
     {
       "id": "source.assertion-description",
@@ -16144,9 +16156,10 @@
         "tests/semantics/assertion_cases.json"
       ],
       "evidence": [
-        "vendor/php-src/Zend/zend_ast.c"
+        "vendor/php-src/Zend/zend_ast.c",
+        "coverage/semantics/assertion-quantity-review.json"
       ],
-      "review": "Module368 captures normalized AST bytes before compiling arguments, preserving original names, named spelling, quote/control escapes, precedence, parser-folded concat and separate parse/export precision. Quote7/export17 and genuine metadata authenticity checks pass at their recorded cuts. Wider AST export and single named-description/unpack producers remain required."
+      "review": "Module368 captures normalized AST bytes before compiling arguments, preserving original names, named spelling, quote/control escapes, precedence, parser-folded concat and separate parse/export precision. Quote7/export17 and genuine metadata authenticity checks pass at their recorded cuts. Wider AST export and single named-description/unpack producers remain required. Prefix increment export now matches Zend precedence240/child241; an independent observable description/effects original agrees at4141. See assertion-quantity-review.json; wider exporter forms remain open."
     },
     {
       "id": "protocols.assert",
@@ -16154,16 +16167,19 @@
       "status": "partial",
       "dependencies": [],
       "implementation": [
-        "spec/semantics/368-assertions.watsup"
+        "spec/semantics/368-assertions.watsup",
+        "spec/semantics/30-string-carriers.watsup",
+        "spec/semantics/368-assertion-quantity.watsup"
       ],
       "helper_tests": [],
       "source_tests": [
         "tests/semantics/assertion_cases.json"
       ],
       "evidence": [
-        "vendor/php-src/ext/standard/assert.c"
+        "vendor/php-src/ext/standard/assert.c",
+        "coverage/semantics/assertion-quantity-review.json"
       ],
-      "review": "Module368 startup1/0/-1, direct/dynamic/FCC distinction, description validation before truth and supplied Throwable identity pass25 source tuples and64 reached premises at02f0d61c4/350. Quiet runtime INI updates retain raw/initial bytes and modified/restore timing, refuse changes involving a negative mode and preserve nested/throwing handlers; twelve further source profiles,54 typed quantity/state and96 authentic state premises pass at1593cd3ca/354. Bounded deprecated options/callbacks now retain separate reviewed evidence in assertion-options-review.json. Parsing warnings, authenticated Stringable-option refusal and Stringable descriptions remain required."
+      "review": "Module368 startup1/0/-1, direct/dynamic/FCC distinction, description validation before truth and supplied Throwable identity pass25 source tuples and64 reached premises at02f0d61c4/350. Quiet runtime INI updates retain raw/initial bytes and modified/restore timing, refuse changes involving a negative mode and preserve nested/throwing handlers; twelve further source profiles,54 typed quantity/state and96 authentic state premises pass at1593cd3ca/354. Bounded deprecated options/callbacks now retain separate reviewed evidence in assertion-options-review.json. Authenticated Stringable-option refusal and Stringable descriptions remain required. Bounded quantity-warning completion and string identity/byte consumers pass17 safe originals across separate cuts and208 well-defined reached checks;26 reached rejection checks and4 lifetime Unsupported controls carry zero native agreement. Original recapture/warned restore, Stringable-option snapshots and wider producers remain required; see assertion-quantity-review.json."
     },
     {
       "id": "protocols.assert_options",
@@ -16182,7 +16198,7 @@
       "evidence": [
         "vendor/php-src/ext/standard/assert.c"
       ],
-      "review": "Bounded deprecated flags/options, callback arguments/live failure policy, returned/selected-receiver cleanup, pending Throwable chaining and nested/parked constant protection accepted across 20 distinct source originals and separate 117/67 reached cuts; assertion-options-review.json preserves revisions/failures. Wider argument/callback forms, Stringable descriptions and INI warning paths remain required."
+      "review": "Bounded deprecated flags/options, callback arguments/live failure policy, returned/selected-receiver cleanup, pending Throwable chaining and nested/parked constant protection accepted across 20 distinct source originals and separate 117/67 reached cuts; assertion-options-review.json preserves revisions/failures. Wider argument/callback forms, Stringable descriptions and remaining INI follow-ons remain required; bounded quantity warnings are reviewed separately in assertion-quantity-review.json."
     },
     {
       "id": "diagnostics.assertion-failure",
@@ -16371,6 +16387,15 @@
       "implementation": "spec/semantics/63-list-control.watsup",
       "helper_evidence": "coverage/semantics/argument-introspection-review.json",
       "source_integration": "pending full inventory closure; bounded private source/list-store language validation is separately accepted"
+    },
+    {
+      "id": "reentrant-assertion-ini-retired-request-string",
+      "description": "Stop successful reentrant assertion INI completion after modified request OLDRAW was replaced (except stored original), instead of simulating the observed Zend extra-release/freed-string defect; four originals have zero native agreement.",
+      "decision": "docs/semantics/DISCREPANCIES.md",
+      "oracle_evidence": "coverage/semantics/assertion-quantity-review.json",
+      "implementation": "spec/semantics/368-assertion-quantity.watsup",
+      "helper_evidence": "coverage/semantics/assertion-quantity-review.json",
+      "source_integration": "Four exact Unsupported controls and26 genuine reached rejection checks; safe quantity/handler paths stay supported."
     }
   ]
 }

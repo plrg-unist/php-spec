@@ -41,7 +41,8 @@ def $call_task_valid(S, SOURCE_STRING_RESULT psourceoperand n) = ($source_operan
 
 ;; Capture returned bytes before dropping the cast receiver. Its destructor can
 ;; throw after a successful string return; READY survives as the pending owner.
-def $stringify_return_state(S, SOURCE_STRING_RESULT psourceoperand n, n_text*, ptask_tail*) = S[.TODO = (SOURCE_STRING_READY psourceoperand n n_text*) :: ptask_tail*][.RESULT = KNOWN (PSTRING n_text*)][.BASE = BASE_VALUE (KNOWN (PSTRING n_text*))]
+def $stringify_return_state(S, SOURCE_STRING_RESULT psourceoperand n, pvalue_text, ptask_tail*) = S[.TODO = (SOURCE_STRING_READY psourceoperand n n_text*) :: ptask_tail*][.RESULT = KNOWN pvalue_text][.BASE = BASE_VALUE (KNOWN pvalue_text)]
+  -- if $string_bytes(pvalue_text) = (n_text*)
   -- if $call_task_valid(S, SOURCE_STRING_RESULT psourceoperand n)
 def $task_nodes(SOURCE_STRING_READY psourceoperand n n_text*) = $operand_nodes(psourceoperand.INPUT)
 def $call_task_valid(S, SOURCE_STRING_READY psourceoperand n n_text*) = ($source_operand_valid(S, psourceoperand) /\ S.ORIGIN = ($source_operand_child(psourceoperand)) /\ $source_operand_suffix(S.TODO, SOURCE_STRING_READY psourceoperand n n_text*, psourceoperand.TAIL))
@@ -63,7 +64,8 @@ def $destructor_pending_finish(S, pdestructionoperation, n_pending, (SOURCE_STRI
   -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT n_receiver porigin_child psourceoperand.LINE
   -- if porigin_child = $source_operand_child(psourceoperand)
   -- if pdestructionoperation.ORIGIN = (porigin_child)
-  -- if pdestructionoperation.VALUE = KNOWN (PSTRING n_text*)
+  -- if pdestructionoperation.VALUE = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (n_text*)
   -- if psourceoperand.TAIL = ptask_tail*
   -- if $source_operand_valid(S, psourceoperand)
 
@@ -222,7 +224,8 @@ def $eval_trace_preparser(S, (pcallcontext), pframe) = [{FILE $call_sourcefile(S
   -- if pdestructorcall.OPERATION = (pdestructionoperation)
   -- if $source_string_ready_record(ptask_rest*) = ((psourceoperand, n_receiver, n_text*))
   -- if pdestructionoperation.SOURCE = STRINGIFY_RESULT n_receiver porigin_child psourceoperand.LINE
-  -- if pdestructionoperation.VALUE = KNOWN (PSTRING n_text*)
+  -- if pdestructionoperation.VALUE = KNOWN pvalue_text
+  -- if $string_bytes(pvalue_text) = (n_text*)
   -- if pdestructionoperation.ORIGIN = (porigin_child)
   -- if porigin_child = $source_operand_child(psourceoperand)
   -- if S_scope = $source_string_owner_scope(S, psourceoperand.OWNER)
