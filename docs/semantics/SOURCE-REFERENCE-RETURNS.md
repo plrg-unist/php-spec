@@ -90,7 +90,18 @@ no operand, and normal resumption restores one original-line VALUE Notice before
 a fresh returned cell. It remains distinct from bare/implicit NULL designations
 and cleared CV recovery. Two originals and three reached current/saved fixtures/367
 assertions pass at separate cuts in the [consumed-NULL review](../../coverage/semantics/reference-return-consumed-null-review.json).
-General CONST, effectful VALUE, other NULL and multiple histories remain open.
+General CONST, other effectful VALUE signatures/layouts, other NULL and multiple
+histories remain open.
+
+For a named zero-argument call concatenated with an empty string and a
+nonnullable string return type, runtime156 captures only root-free source history
+of the consumed computed VALUE. Normal resumption uses cleared PNULL and one
+original-line VALUE Notice at the public pause. The repeated check rejects NULL
+before Notice delivery, reenters the outer finalizer, and returns the later
+selected reference cell without repeating the call or restoring its old payload.
+One original and three reached current/saved fixtures/386 assertions
+pass at separate cuts in the [computed-VALUE review](../../coverage/semantics/reference-return-consumed-value-review.json).
+Other VALUE signatures/layouts and multiple histories remain open.
 
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding

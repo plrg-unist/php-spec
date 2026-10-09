@@ -406,6 +406,16 @@ current/saved fixtures pass 367 assertions at `459978fe0`.
 Actual 371 over `05b0a4db4` passes strict at `c93d4cba4` (5.339s, zero application evaluations).
 [Consumed-NULL review](coverage/semantics/reference-return-consumed-null-review.json).
 
+A consumed computed string return now resumes cleared NULL after a locally
+caught inner rejection. This bounded source concatenates a named zero-argument
+call with an empty string and declares nonnullable string. The source cursor
+retains no old payload and never repeats the call. An original VALUE Notice
+remains pending at the public pause; the repeated check rejects NULL before
+delivery, reenters the outer finalizer, and later returns the selected y alias.
+One original agrees at `bf4a41a2d`; three reached current/saved
+fixtures pass 386 assertions at `e397b1d3c`. Actual 372 over `81a5fd72d` passes strict at `68bb9e555` (5.394s, zero application evaluations).
+[Computed-VALUE review](coverage/semantics/reference-return-consumed-value-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
@@ -3820,8 +3830,9 @@ failures and interrupted evidence.
   and bounded physical-array return replay are integrated, as is deferred reference-return
   Notice dispatch. Bounded single-active-finalizer CV replay and aliased-CV Stringable
   reference conversion 186 and bounded sole-local-CV lifetime 381 are integrated.
-  Immutable string-literal and explicit-NULL consumed continuations are also integrated.
-  Effectful VALUE, general CONST/other NULL and multiple-active histories, genuinely released
+  Immutable string-literal, explicit-NULL and bounded computed string VALUE consumed
+  continuations are also integrated. Other VALUE signatures/layouts, general CONST/other
+  NULL and multiple-active histories, genuinely released
   CV targets, destructor throw/reentry, real suspension and wider typed consumers
   remain open. [String contract](docs/semantics/USER-STRING.md),
   [finally contract](docs/semantics/SOURCE-FINALLY.md).
@@ -3842,8 +3853,9 @@ held branches and evidence, and do not retry the rejected engine experiment.
 Generic, scalar-loop and CV/compiled-CONST delayed replay are integrated, as is
 bounded physical-array owner recovery. Bounded single-active-finalizer CV replay and deferred VALUE/NULL Notice dispatch are
 integrated, as are bounded aliased-CV Stringable reference conversion 186 and sole-local-CV
-lifetime 381, immutable string-literal and explicit-NULL consumed continuations. Wider
-owner domains, effectful VALUE, general CONST/other NULL or multiple-active histories,
+lifetime 381, immutable string-literal, explicit-NULL and bounded computed string VALUE
+consumed continuations. Wider owner domains, other VALUE signatures/layouts, general
+CONST/other NULL or multiple-active histories,
 genuinely released CV targets, destructor throw/reentry, real suspension and wider typed
 consumers remain required.
 

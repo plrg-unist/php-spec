@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "status": "accepted-bounded",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "One consumed already-active finalizer whose old typed reference return concatenates a named zero-argument call with an empty string and declares nonnullable string. Capture binds the actual KNOWN string operand with zero node roots; the nonconstant source classifies a freeable result slot without reconstructing its payload.",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "authority": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_return, zend_compile_binary_op",
+    "vendor/php-src/Zend/zend_vm_def.h: DISCARD_EXCEPTION, FAST_RET, RETURN_BY_REF",
+    "vendor/php-src/Zend/zend_operators.c: zend_concat_function empty-right operand",
+    "pinned native computed VALUE saved original"
+  ],
+  "native": {
+    "raw": ".tools/returns-consumed-literal-native-20/.tools/returns-verify20-consumed-value/native-consumed-effectful-value-saved-sq7dn3o6/report.json",
+    "report_sha256": "7b15ed6c745f085474a1c8237939a0e2a026fcb4e457dfa6429cd05f8e1b3cb8",
+    "source_sha256": "743cca7240f711d650a5675f575cb5b21ea07f625c92d890e441a93967cc6319"
+  },
+  "source": {
+    "revision": "bf4a41a2d3434c037b17fffcd4785055ccc3e4a2",
+    "raw": ".tools/returns-consumed-value-20/.tools/returns-consumed-value20/model-consumed-effectful-value-agreement-05_2q74k/report.json",
+    "report_sha256": "c33fe3a7c338f1309b8063381040845a2480327e4c497a7feb705cef135a6c62",
+    "agreements": 1
+  },
+  "state": {
+    "revision": "e397b1d3c18a46015fab6ddc4a48d42dfac9ea75",
+    "fixtures": 3,
+    "assertions": 386,
+    "raw": ".tools/returns-consumed-value-20/.tools/returns-consumed-value20/consumed-value-state-myycecmq/report.json",
+    "report_sha256": "3d6a919cf4b349f5864a23bc91fe1d574de81a44980e5abd1e07f6006914b1fe"
+  },
+  "private_compiler": {
+    "revision": "bf4a41a2d3434c037b17fffcd4785055ccc3e4a2",
+    "modules": 371,
+    "raw": ".tools/returns-consumed-value-20/.tools/returns-consumed-value20/returns-consumed-value-current-compiler-yk_gran7/report.json",
+    "report_sha256": "92a2830723b1ef2d34f946a4a050f39c299d85ea9d7e5d9926d219aec0cd5ce5",
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "actual_parent_compiler": {
+    "revision": "68bb9e55523275a86f2d977fb19cf123e984094f",
+    "canonical_parent": "81a5fd72df98c77a7e920270fd571d22a49d7b21",
+    "modules": 372,
+    "raw": ".tools/returns-consumed-value-publication-20/.tools/returns-consumed-value20/returns-consumed-value-current-compiler-rbtkx9r7/report.json",
+    "report_sha256": "36f502a3eb7094defdf1ad7d9aeef31699ee72750321a33b745a37f20cbbf46e",
+    "compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "mode": "SL",
+    "cache": false,
+    "det": true,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "exit": 0,
+    "elapsed_seconds": 5.393966913223267,
+    "timeout": false,
+    "group_after": [],
+    "inputs_module_stats_head_status_stable": true
+  },
+  "history_limit": "Reached capture requires the actual old finalizer task, phase, source, line and a root-free KNOWN string operand. Current and saved cursor checks authenticate the carried site and phase, without retaining or re-evaluating the computed value. These checks do not establish complete history after coherent rewriting of all source and continuation copies; altered-source classification controls are helper-only.",
+  "helper_limit": "Wrong old KNOWN kind, a folded literal concat or a nonempty right operand refuse capture in helper-only controls. Generic FINALLY_REF_RETURN admission does not prove old payload history.",
+  "preserved_baseline": {
+    "raw": ".tools/returns-effectful-value-baseline-20/.tools/returns-effectful20/model-consumed-effectful-value-buiyt9z8/report.json",
+    "report_sha256": "de1dba4cddb169a5e916607ddae2f1cbae748d5b9d349b8a904587064855898a",
+    "result": "Unsupported reference return replay requires runtime finalizer",
+    "agreement_credit": 0
+  },
+  "remaining": [
+    "Other effectful VALUE signatures or expression layouts, general CONST and other consumed NULL producers",
+    "Multiple already-active finalizer histories",
+    "Genuinely released typed-CV targets and wider owner/lifecycle domains",
+    "Full core PHP conformance and complete returns verification"
+  ],
+  "reviewer": "returns_review_20",
+  "verifier": "returns_verify_20",
+  "recovery": "Use maintained reference_consumed_value_cases.json and reference_consumed_value_state.py with the archived model1 packet directory. The producer reuses neutral helpers from NULL, literal and active-finalizer state producers. Generated DSL/raw logs stay ignored; execute explicit SL with the archived pinned runtimes and inherited cap45/jobs1."
+}
