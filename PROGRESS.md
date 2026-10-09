@@ -17,6 +17,9 @@ checks plus six pure known-directive/nonliteral exclusions in 105/129 groups.
 Type-only elab2 has zero runtime credit; the original compile Unsupported remains
 zero agreement. Ticks, encoding, wider literal/body/publication and dynamic-source
 interactions remain required; previous cuts and safety boundaries stay frozen.
+The actual composition of 374 modules over fa678cc48 passes strict3 at
+6ff4ac8d (5.474s), preserving canonical Fiber358 and property384 guards.
+Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Ordinary unit0 parentless anonymous classes now compile authentic NUL/file/line/hex
