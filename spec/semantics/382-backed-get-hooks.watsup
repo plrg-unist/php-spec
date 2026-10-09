@@ -229,6 +229,25 @@ def $property_hook_source(S, ppropertyhook) = true
   -- if $property_hook_function(S, ppropertyhook) =/= eps
 def $property_hook_source(S, ppropertyhook) = false -- otherwise
 
+;; The quiet mode belongs to the actual parent operator and indexed operand.
+dec $property_hook_isset_site(pstate, porigin, bool) : bool
+def $property_hook_isset_site(S, PORIGIN n pcpath, true) = true
+  -- if $(|pcpath| >= 1)
+  -- if pcpath_parent = pcpath[0:$nabs($( |pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprEmpty expression_operand metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression_operand)
+def $property_hook_isset_site(S, PORIGIN n pcpath, false) = true
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_parent = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if PCINDEX n_operand = pcpath[$nabs($( |pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0, PCINDEX n_operand]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprIsset (SEQUENCE expression*) metadata)
+  -- if $(n_operand < |expression*|)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression_operand)
+  -- if expression_operand = expression*[n_operand]
+def $property_hook_isset_site(S, porigin, b) = false -- otherwise
+
 dec $property_hook_valid(pstate, ppropertyhook, bool) : bool
 def $property_hook_valid(S, ppropertyhook, b_live) = ($property_hook_source(S, ppropertyhook) /\ (~b_live \/ ((HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, ppropertyhook.OBJECT))))
 
@@ -263,6 +282,43 @@ rule PhpStep/property-hook-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALU
   -- if S.TODO = (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
 
+def $property_hook_isset_pending(S) = true
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ISSET_RESULT b z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if $property_hook_isset_site(S, porigin_site, b)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_hook_read_needed(S, n, $base64(text_name))
+def $property_hook_isset_pending(S) = false -- otherwise
+
+dec $property_hook_isset_plan(pstate) : ppropertyhook?
+def $property_hook_isset_plan(S) = (ppropertyhook)
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ISSET_RESULT b z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_site)
+  -- if $property_hook_isset_site(S, porigin_site, b)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n)
+  -- if $property_hook_read_needed(S, n, $base64(text_name))
+  -- if $property_resolve(S, n, $base64(text_name)) = PROPERTY_ACCESS $base64(text_name)
+  -- if $property_effective_desc(S, n, $base64(text_name)) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
+  -- if $property_hook_valid(S, ppropertyhook, true)
+def $property_hook_isset_plan(S) = eps -- otherwise
+rule PhpStep/property-hook-isset-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_HOOK_ISSET_RESULT ppropertyhook b] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (ISSET_RESULT b z) :: ptask_tail*
+  -- if $property_hook_isset_plan(S) = (ppropertyhook)
+rule PhpStep/property-hook-isset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "quiet property hook source or function"]
+  -- if $property_hook_isset_pending(S)
+  -- if $property_hook_isset_plan(S) = eps
+rule PhpStep/property-hook-isset-result: S ~> $isset_value(S[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)], pvalue, b, ppropertyhook.LINE)
+  -- if S.TODO = (PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN pvalue
+  -- if $property_hook_valid(S, ppropertyhook, false)
+  -- if $property_hook_isset_site(S, ppropertyhook.SITE, b)
+
 ;; The call target owns the receiver until the genuine frame takes it over.
 ;; RESULT owns the returned payload before frame cleanup releases the receiver.
 def $target_nodes(PROPERTY_HOOK_TARGET ppropertyhook) = [HOBJECT ppropertyhook.OBJECT]
@@ -274,10 +330,21 @@ def $target_called_class(S, PROPERTY_HOOK_TARGET ppropertyhook) = (porigin)
 def $target_function(S, PROPERTY_HOOK_TARGET ppropertyhook) = $property_hook_function(S, ppropertyhook)
   -- if $property_hook_valid(S, ppropertyhook, true)
 def $task_nodes(PROPERTY_HOOK_RESULT ppropertyhook) = eps
+def $task_nodes(PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) = eps
+
+dec $property_hook_result_tail(pstate, ppropertyhook, ptask*) : bool
+def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*) = true
+  -- if $property_hook_valid(S, ppropertyhook, false)
+  -- if ~$property_hook_isset_site(S, ppropertyhook.SITE, false) /\ ~$property_hook_isset_site(S, ppropertyhook.SITE, true)
+def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) :: ptask_tail*) = true
+  -- if $property_hook_valid(S, ppropertyhook, false)
+  -- if $property_hook_isset_site(S, ppropertyhook.SITE, b)
+def $property_hook_result_tail(S, ppropertyhook, ptask*) = false -- otherwise
 
 dec $property_hook_pending_call(pstate, ppropertyhook) : bool
 def $property_hook_pending_call(S, ppropertyhook) = true
-  -- if S.TODO = (CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE) :: (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*
+  -- if S.TODO = (CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE) :: ptask_tail*
+  -- if $property_hook_result_tail(S, ppropertyhook, ptask_tail*)
   -- if S.ORIGIN = (ppropertyhook.SITE)
   -- if $property_hook_valid(S, ppropertyhook, true)
 def $property_hook_pending_call(S, ppropertyhook) = false -- otherwise
@@ -288,7 +355,7 @@ def $property_hook_frame(S, pcallcontext, pframe, ppropertyhook) = true
   -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
   -- if pcallcontext.CALLSITE = (ppropertyhook.SITE) /\ pcallcontext.LINE = ppropertyhook.LINE
   -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
-  -- if pframe.TODO = (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*
+  -- if $property_hook_result_tail(S, ppropertyhook, pframe.TODO)
   -- if pframe.ORIGIN = (ppropertyhook.SITE)
   -- if $property_hook_valid(S, ppropertyhook, true)
 def $property_hook_frame(S, pcallcontext, pframe, ppropertyhook) = false -- otherwise
@@ -319,7 +386,8 @@ def $call_extent_valid(S, pcallcontext) = $property_hook_context_valid(S, pcallc
   -- if $property_hook_context_kind(pcallcontext)
 def $named_context_valid(S, pcallcontext) = $property_hook_context_valid(S, pcallcontext)
   -- if $property_hook_context_kind(pcallcontext)
-def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = $property_hook_valid(S, ppropertyhook, false)
+def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = $property_hook_result_tail(S, ppropertyhook, [PROPERTY_HOOK_RESULT ppropertyhook])
+def $call_task_valid(S, PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) = $property_hook_result_tail(S, ppropertyhook, [PROPERTY_HOOK_ISSET_RESULT ppropertyhook b])
 
 def $trace_context_function(S, pcallcontext) = $hook_name(ppropertydesc.NAME)
   -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
