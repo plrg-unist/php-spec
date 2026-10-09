@@ -378,6 +378,11 @@ survive name mutation and factory/array retirement; the returned Closure reads
 the actual current Fiber across suspension. A direct control and repaired source
 agree on distinct 371-module cuts, with 270 state premises. Other captured Fiber
 targets and required original 7 remain open.
+Captured factories also select bound `Fiber::isSuspended`. The returned Closure
+retains only its receiver after factory and callback retirement; frozen selection
+survives a referenced-name change through real suspension and termination. Direct
+and repaired source agreements remain distinct on the tested 372-module cuts,
+with 241 state premises. Other targets and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

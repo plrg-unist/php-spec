@@ -2484,6 +2484,16 @@ zero credit. Other captured Fiber kinds/bound inputs and original 7's CLI60 time
 remain open. Maintained source/fixture relocation adds no runtime renewal.
 Actual-parent compilation and initialized SL270 pass at `f1c392c8` over
 `0a4cf46e` with 372 modules; pointwise Hook/EX39/RETURNS review adds no source/native renewal.
+Captured factories now select bound `Fiber::isSuspended` with one receiver edge.
+The factory, callback arrays and original Fiber cell retire before status calls;
+WeakReference confirms the returned Closure alone keeps the Fiber alive. Frozen
+selection remains isSuspended after the referenced name changes to isTerminated,
+returning false/true/false across INIT, suspension and termination, then releasing
+the last strong owner. Direct agreement stays at e11f/372; captured agreement and
+241 premises (189 genuine/derived, 52 constructed) pass at 151776b71/372, including
+exact zero-budget resumption. Saved producer authority survives final retirement,
+while bound capture source/liveness correctly becomes false. The original
+Unsupported remains zero credit; other targets and original 7 remain OPEN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
