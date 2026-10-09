@@ -1194,6 +1194,8 @@ credit. Whole source40 CLI60 remains OPEN/zero agreement
 at144cc1, with only that default source selection newly excluded; all six state
 groups stay enabled. New main source agreement, fresh reference/proxy producers,
 outside/black/external components and broader GC remain required; prior cuts unchanged.
+Actual374 over `4368f9d6` passes compiler/init at `e4606537`; reviewed return,
+factory/property/class interfaces preserve the original559 cuts and source40 OPEN/0.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
