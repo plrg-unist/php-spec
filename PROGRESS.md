@@ -104,8 +104,9 @@ retain prior exceptions and Generator/cache owners while the new renderer holds
 three roots; frozen reporting precedes its release and reporting-zero destructor.
 The release replay starts from its already authenticated bailout; all 180 premises
 remain. Earlier nondeterminism, wrong renderer-owner and 120-second AL/SL timeouts
-retain zero affected credit. Actual 358 over `2aa14083a` passes strict compilation
-at `646916637`; private source/state cuts retain their revisions. Throwing warning
+retain zero affected credit. Final 358 over `ea04fbbe4` passes strict compilation
+at `ff3d3278b`, preserving named-SEND warning shapes; the earlier 2aa/646 compiler
+and private source/state cuts retain their revisions. Throwing warning
 callbacks, deeper rendering, abrupt child free_obj/destructor/weak-Generator lifetimes,
 message warnings, parked/escaped storage and generic terminal cleanup remain required.
 Actual 351 over `7c4a13bc1` passes strict

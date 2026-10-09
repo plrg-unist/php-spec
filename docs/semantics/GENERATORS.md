@@ -127,8 +127,9 @@ the original exception and Generator/cache alive; its custom renderer has three
 real owners from CURRENT, STRINGIFY_RESULT and REPORT. The new exception releases
 after frozen emission and before bailout, including a destructor that sets reporting
 to zero. Two exact fatal originals and 163/180 strict premises retain separate cuts.
-Actual 358 over `2aa14083a` passes strict compilation at `646916637`; earlier cuts
-retain their inputs. Throwing warning callbacks, deeper custom rendering, abrupt
+Final 358 over `ea04fbbe4` passes strict compilation at `ff3d3278b`, preserving the
+named-SEND warning shapes. Earlier 2aa/646 and source/state cuts retain their inputs.
+Throwing warning callbacks, deeper custom rendering, abrupt
 child free_obj/destructor/weak-Generator lifetimes, message warnings, parked or
 escaped storage and generic terminal cleanup remain required.
 
