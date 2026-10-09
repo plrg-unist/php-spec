@@ -150,9 +150,13 @@ and the next result's diagnostics; `PLCOMPILED` itself carries no diagnostics.
 Post-statement namespace verification occurs after successful ordinary work and
 uses its final compiler line. Halt has an explicit exception, matching
 `zend_compile_top_stmt`; an outer halt after a braced namespace must not acquire
-the outside-namespace-code error. The halt work itself still must be compiled,
-including its payload/offset and outermost-scope obligations. No halt semantics
-are supplied merely by this continuation exception.
+the outside-namespace-code error. Root-terminal HALT work now authenticates its
+exact source occurrence and folds ordinary halt-offset reads from the original
+file's byte position; its runtime step removes only the statement, without an
+exit or payload event. [HALT evidence](../../coverage/semantics/halt-compiler-review.json)
+keeps encoded profiles, wider constant/default/class contexts and filename-local
+include/eval registration open. The continuation exception alone does not supply
+those remaining semantics.
 
 Diagnostics retain severity, symbolic code, byte arguments and `pllocation`
 (unit ID, path, original file and compiler line). `$plmessage` renders their exact

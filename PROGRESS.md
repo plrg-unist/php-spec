@@ -7,6 +7,16 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Root-terminal HALT compilation now folds original-file byte offsets and treats
+the authenticated final statement as a no-op, preserving pools, events and the
+remaining continuation. Two fresh originals agree at c78beb627/371, including
+namespace/global379 versus local17 and UTF-8 byte positioning. Strict3 passes 5.272s;
+104 checks at real source frontiers plus 20 pure queries pass in 66/58 groups.
+A separate pure payload decoder2 passes; the compile-stage baseline and two
+fixture failures retain zero credit. Encoded profiles, broader constant/default/class
+contexts and include/eval registration remain required.
+[HALT ledger](coverage/semantics/halt-compiler-review.json).
+
 Aggregate yield-from380 recursively acquires real Iterator/Generator data through
 borrowed getter calls, retires raw layers and the original operand before rewind,
 and keeps returned Generators in generic iterator mode: null result, no send/throw

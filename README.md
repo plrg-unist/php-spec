@@ -229,6 +229,15 @@ queries pass atbb485b; wider exporter forms remain open.
 Run the [catalogue](tests/semantics/assertion_cases.json)
 with `method_runtime.py --catalogue tests/semantics/assertion_cases.json`.
 
+Root-terminal `__halt_compiler()` now discards its payload without an exit event.
+Ordinary `__COMPILER_HALT_OFFSET__` reads fold the original file's byte offset,
+including plain/global reads inside a namespace; namespace-relative local constants
+keep ordinary lookup. Two fresh originals and 104 source-frontier checks plus 20 pure
+queries pass at c78beb627. [HALT review](coverage/semantics/halt-compiler-review.json)
+records the partial scope; encoded profiles, wider constant/default/class consumers
+and include/eval registration remain required. The [catalogue](tests/semantics/halt_compiler_cases.json)
+uses the existing `method_runtime.py --catalogue tests/semantics/halt_compiler_cases.json`.
+
 [Ordinary string interpolation](docs/semantics/SOURCE-INTERPOLATION.md) follows
 effective CAST/FAST_CONCAT/ROPE order, retaining fetched temporaries separately
 from live variables through Stringable and warning callbacks. Nine exact source
