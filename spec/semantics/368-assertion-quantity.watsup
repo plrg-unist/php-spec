@@ -140,6 +140,7 @@ def $assertion_ini_records_valid(S, passertini_head :: passertini_tail*) = ($ass
 dec $assertion_ini_input_copy(pstate, passertini) : bool
 dec $assertion_ini_valid(pstate, passertini) : bool
 def $assertion_ini_valid(S, passertini) = true
+  -- if $assertion_state_valid(S)
   -- if $assertion_ini_record(S.ASSERTIONINI, passertini.ID) = (passertini)
   -- if $assertion_ini_record_shape(S, passertini)
   -- if $config_invoke_valid(S, passertini.CALL)

@@ -148,8 +148,7 @@ rule PhpStep/assertion-ini-restore-string-result: S ~> $assertion_restore(S)[.OR
   -- if $string_bytes(pvalue_option) = (n_option*)
   -- if n_option* = $ptascii("zend.assertions")
 
-;; The previous quiet-refusal task remains a compatibility bridge. Quantity
-;; warning phases authenticate frozen input and decide refusal after parsing.
+;; Quantity phases authenticate frozen input and decide refusal after parsing.
 def $assertion_ini_argument(S, pconfigcall, z_precision) = (preqbytes)
   -- if pconfigcall.SENT = [NAMED_SENT (KNOWN pvalue_option), NAMED_SENT (KNOWN pvalue)]
   -- if $precision_ini_valid($decimal_integer(z_precision))
