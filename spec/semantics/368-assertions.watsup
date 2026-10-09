@@ -178,7 +178,10 @@ def $assertion_ini_option_valid(S, pconfigcall) = true
   -- if n_option* = $ptascii("zend.assertions")
 def $assertion_ini_option_valid(S, pconfigcall) = false -- otherwise
 def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
-  -- if pconfigcall.KIND = INTRINSIC_INI_SET \/ pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if pconfigcall.KIND = INTRINSIC_INI_SET
+def $error_trigger_trace_values(S, pconfigcall) = $trace_extra(S, $getclass_trace_operands(pconfigcall.SENT))
+  -- if pconfigcall.KIND = INTRINSIC_INI_RESTORE
+  -- if $assertion_ini_option_valid(S, pconfigcall)
 
 def $intrinsic_name(INTRINSIC_ASSERT) = $ptascii("assert")
 def $intrinsic_named(preqbytes) = (INTRINSIC_ASSERT) -- if $ptlc(preqbytes) = $ptascii("assert")
