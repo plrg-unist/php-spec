@@ -490,7 +490,7 @@ def $switch_replay_owner_count(ptask :: ptask_tail*, porigin) = $switch_replay_o
   -- if ~$goto_saved_match(ptask, porigin)
 dec $switch_replay_valid(pstate, porigin) : bool
 def $switch_replay_valid(S, porigin) = ($switch_replay_site(S, porigin) /\ $switch_replay_pair(S.TODO, porigin) /\ $switch_replay_owner_count(S.TODO, porigin) = 1 /\ $switch_replay_count(S.TODO, SWITCH_REPLAY_PHASE porigin) = 1)
-def $call_task_valid(S, SWITCH_REPLAY_END porigin) = ($switch_replay_valid(S, porigin) /\ S.ORIGIN = (porigin))
+def $call_task_valid(S, SWITCH_REPLAY_END porigin) = ($switch_replay_valid(S, porigin) /\ S.ORIGIN = $goto_target_origin(S, porigin, S.TODO))
 def $call_task_valid(S, SWITCH_REPLAY_PHASE porigin) = $switch_replay_valid(S, porigin)
 def $call_after_origin(S, SWITCH_REPLAY_END porigin) = S[.ORIGIN = (porigin)]
 def $goto_saved((SWITCH_REPLAY_END porigin) :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*, porigin) = GOTOTASKS ((SWITCH_REPLAY_END porigin) :: (SWITCH_REPLAY_PHASE porigin) :: ptask_tail*)
