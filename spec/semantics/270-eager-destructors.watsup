@@ -176,7 +176,7 @@ def $eager_task_inputs(S, ptask) = eps
 def $eager_task_inputs(S, ptask) = $task_nodes(ptask) -- otherwise
 def $eager_base_inputs(S, ptask) = eps
   -- if $eager_property_finish_task(ptask) /\ $eager_cv_property(S)
-def $eager_base_inputs(S, ptask) = $base_nodes(S.BASE) -- otherwise
+def $eager_base_inputs(S, ptask) = $machine_base_roots(S) -- otherwise
 ;; ASSIGN_OBJ's cache is per opcode and holds only its most recent class.
 ;; Cold standard writes retain OP_DATA while freeing the old slot; warmed fast
 ;; TMP writes transfer it into the property before that decrement.

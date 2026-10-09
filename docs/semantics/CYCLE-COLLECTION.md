@@ -62,6 +62,14 @@ retained local interval can finish without callbacks even after old slots move.
 Retired caller metadata grants no current scope, owner or physical-slot authority;
 global scan state and nonce remain unchanged.
 
+A later main pass can remove the pinned old target from the root buffer and reuse
+its slot. The actual parked VM and fresh public API authenticate that old callback
+without borrowing the retired caller or slot; the live main plan retains current
+tag authority. SOURCE distinguishes the retained local loop and adds no owner or
+scope. The old guard cursor must equal the global cursor, and its completed local
+scan must be one past it. A heap-identical rewind is rejected even when the old
+slot now contains a fresh destructor, which remains on the main thread.
+
 A new internal collection resumes that actual parked callback with null, using
 the genuine new GC_WAIT caller. Its frozen PLAN.SCAN records the authenticated
 old local suffix while the global scan resets for the new collection. Completion
@@ -75,7 +83,7 @@ The pinned release 8.5.10 executes this path despite matching debug assertions
 for !dtor_fiber_running and GC_IS_ROOT; the model preserves the observed tag
 instead of silently normalizing it. The later cuts below add public and fresh
 internal residual dispatch. Main residual dispatch, overlap, repeated internal
-suspension and different-active-pass public reentry remain required work.
+suspension and wider different-active-pass public reentry remain required work.
 
 Potential roots follow actual outgoing-owner decrements, including a same-target
 assignment. The buffer preserves physical slots, reuses freed holes, and
@@ -169,7 +177,7 @@ zero-owner retention, counts or frees. Reached tests include heap-valid forged
 plans, roots and metadata plus budget identity and resumption.
 
 Explicit boundaries remain for wider internal lifetime graphs, callback reentry
-during a different active pass/internal takeover, active-pass failed close and wider
+during wider different active passes/internal takeover, active-pass failed close and wider
 callbackless close-return contexts,
 resurrection of initially free non-destructor garbage, a new zero-owner
 destructor target after the second trace, and automatic threshold collection.
@@ -453,3 +461,18 @@ credit. Both whole CLI 60s timeouts retain zero agreement. Final 358 over
 `6ed4873bd` compiles at `0bc957892`, preserving Generator renderer/handler and
 dynamic-source hooks. Overlap, different-pass reentry and whole CLI completion
 remain required.
+
+Different-main public reentry345 has 205 independent physical premises across
+separate cuts: normal96 at `93cb1cfd5` and throw109 at `950c158d5`, with the exact
+strengthened fixture committed as `4ec300905`. Both unchanged originals complete
+through full cleanup and recorded native streams; old/new error identity, current
+E authority, heap-identical cursor/end/source/consumer forgeries and budget replay
+pass. Actual359 over `0c549de11` passes compilation and strict initialization
+at `280feeb2a`. GEN176/363 report/renderer shapes and PROPS207/377 undefined-property
+plans are absent here; their shared ownership fallbacks preserve these retained VMs.
+Its printable-metadata lookup changes a concrete `ptascii` cost dependency for
+the throw-only retry; trait and named-CV ECHO paths are disjoint. No general
+speedup or earlier-cut renewal is inferred. The initial undefined-helper compiler
+stop, first throw-state 120s timeout and both whole CLI 60s timeouts retain zero
+affected/agreement credit. Active idle/residual tags, overlap, wider Fiber-pass
+reentry, whole CLI completion and broader GC remain required.

@@ -130,7 +130,8 @@ def source(row, directory, path):
         assert outcome['diagnostic']['class'] == 'Exception' and outcome['diagnostic']['line'] == line
         assert base64.b64decode(outcome['diagnostic']['message'], validate=True) == b'X'
     else:
-        assert not observed.stderr and outcome['diagnostic'] is None
+        expected_stderr = row.get('expected_stderr_template', '').replace('{FILE}', str(path)).encode()
+        assert observed.stderr == expected_stderr and outcome['diagnostic'] is None
     return {'status': outcome['status'], 'exit_status': outcome['exit_status']}
 
 
