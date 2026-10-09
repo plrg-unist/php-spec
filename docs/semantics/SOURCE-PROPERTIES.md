@@ -13,7 +13,10 @@ converts against its declaration before checking the current alias's other type
 sources, and returns the converted value. Aliased compound updates keep the generic
 reference checks. Dynamic properties use the
 same storage, with the pinned deprecation on ordinary source classes and no
-deprecation on `stdClass`. A leading-NUL computed name raises the engine error
+deprecation on `stdClass` or a source class/descendant with the single builtin
+`#[AllowDynamicProperties]`. Allowed creation uses the existing slots and bypasses
+deprecation capture; see the [attribute review](../../coverage/semantics/allow-dynamic-properties-review.json).
+A leading-NUL computed name raises the engine error
 for read, write and unset, while quiet tests remain silent.
 
 Constructor promotion declares a property from its original parameter flags and

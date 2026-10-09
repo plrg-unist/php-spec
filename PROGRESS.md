@@ -221,6 +221,20 @@ Actual 370-module composition over `36b0c6948` passes strict initialization at
 without renewing the private source/state checks.
 [Constructor callable review](coverage/semantics/sensitive-value-constructor-callables-review.json).
 
+One zero-argument builtin `#[AllowDynamicProperties]` on a named nonreadonly
+class resolves real namespace/import scope and permits inherited dynamic slots.
+Allowed writes/reference creation and unset/recreation stay silent; ordinary
+classes retain first-creation deprecation. Trait/interface/readonly targets fail
+before body/interface checks, using the actual declaration keyword line.
+Ten originals agree at separate `2945e171`/`8c37b2c6` cuts; a namespaced user
+attribute remains Unsupported with zero agreement. Strict compilation of 370
+modules and SL131 (37 derived, 94 reached checks) pass at `8c37b2c6`, including
+real writes, inherited links and rejection of substituted compiled-name evidence.
+The earlier trait-line mismatch and both pre-main fixture stops retain zero
+affected credit. Mixed/repeated/argument attributes, anonymous/enum targets and
+wider attribute protocols remain required. Actual-parent composition is pending.
+[Dynamic-property attribute review](coverage/semantics/allow-dynamic-properties-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

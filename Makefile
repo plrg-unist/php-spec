@@ -580,6 +580,8 @@ test-semantics: build
 	python3 tests/semantics/sensitive_value_getter_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/sensitive_value_constructor_callable_cases.json
 	python3 tests/semantics/sensitive_value_constructor_callable_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/allow_dynamic_properties_cases.json
+	python3 tests/semantics/allow_dynamic_properties_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

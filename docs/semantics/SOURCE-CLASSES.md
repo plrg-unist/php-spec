@@ -39,3 +39,14 @@ source and paused-state checks. Other internal-class construction, constructor
 arguments, inheritance, properties, methods, dynamic class names, late-bound
 `self`/`parent`/`static`, array and class-method callback invocation, and
 lifecycle protocols remain separate obligations.
+
+A single zero-argument builtin `#[AllowDynamicProperties]` resolves through the
+class declaration's actual namespace/import scope. Named nonreadonly classes and
+their published source descendants permit dynamic-property creation without
+minting a deprecation handler owner. The capability uses authenticated source,
+compiled names and parent links, with no additional owning field. Trait, interface
+and readonly targets fail before interface/body checks; attributed trait/interface
+diagnostics use the token-derived declaration keyword line. Mixed/repeated/argument
+and user attributes, anonymous/enum targets and wider attribute protocols remain
+Unsupported. The [attribute review](../../coverage/semantics/allow-dynamic-properties-review.json)
+separates ten source agreements from genuine write/history/link checks.

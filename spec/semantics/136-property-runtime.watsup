@@ -1,3 +1,30 @@
+dec $class_dynamic_attribute(pstate, porigin) : bool
+dec $class_dynamic_parent(pstate, pclassdesc, nat) : bool
+dec $class_allows_dynamic(pstate, porigin, nat) : bool
+def $class_dynamic_attribute(S, PORIGIN n pcpath) = true
+  -- if $class_at(S.CLASSES, PORIGIN n pcpath) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (PORIGIN n pcpath)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if pcunit = $pcsource(n, pcunit.AST)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NStmtClass (SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])) (INTEGER z_flags) phpType3 phpType44 phpType42 phpType23 metadata)
+  -- if z_flags <- [0, 16, 32]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath ++ [PCFIELD 0, PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0]) = ((ptbytes, eps))
+  -- if $ptlc(ptbytes) = $ptascii("allowdynamicproperties")
+def $class_dynamic_attribute(S, porigin) = false -- otherwise
+def $class_dynamic_parent(S, pclassdesc, n) = $class_allows_dynamic(S, porigin_parent, n)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+def $class_dynamic_parent(S, pclassdesc, n) = false -- otherwise
+def $class_allows_dynamic(S, porigin, n) = ($class_origin_matches(S, porigin, $ptascii("stdClass"), n) \/ $class_dynamic_attribute(S, porigin) \/ $class_dynamic_parent(S, pclassdesc, $nabs($(n - 1))))
+  -- if $(n > 0)
+  -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (porigin)
+def $class_allows_dynamic(S, porigin, n) = false -- otherwise
+
 dec $property_readonly_desc(pstate, nat, ptbytes) : ppropertydesc?
 dec $property_readonly_written(pstate, nat, ptbytes) : bool
 dec $clone_reinitable(pstate, nat, ptbytes) : bool
@@ -487,7 +514,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_warned[.OBJECTPRO
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
-  -- if ~$class_origin_matches(S, porigin, $ptascii("stdClass"), |S.CLASSES|)
+  -- if ~$class_allows_dynamic(S, porigin, |S.CLASSES|)
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
@@ -497,7 +524,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_warned
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
-  -- if ~$class_origin_matches(S, porigin, $ptascii("stdClass"), |S.CLASSES|)
+  -- if ~$class_allows_dynamic(S, porigin, |S.CLASSES|)
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps
@@ -507,7 +534,7 @@ def $property_store_key_unshared(S, n, ptbytes, pvalue, z) = S_marked[.OBJECTPRO
   -- if S.OBJECTS[n] = INSTANCE porigin
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if ~pclassdesc.READONLY
-  -- if $class_origin_matches(S, porigin, $ptascii("stdClass"), |S.CLASSES|)
+  -- if $class_allows_dynamic(S, porigin, |S.CLASSES|)
   -- if $property_desc_at($property_layout(S, porigin, |S.CLASSES|), ptbytes) = eps
   -- if $objectprops_record_at(S.OBJECTPROPS, n) = (pobjectprops)
   -- if $property_slot_at(pobjectprops.SLOTS, ptbytes) = eps

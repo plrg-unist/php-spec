@@ -25,17 +25,17 @@ def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_p
 
 def $ppstatement(P, pcpath, NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata, false, $ppclass_context(P_line)))
   -- if P.CLASSCONTEXT = eps /\ P.COMPLETION = PPCNORMAL
-  -- if $source_line(metadata) = z
+  -- if $class_header_line(metadata, phpType3, phpType14) = z
   -- if $(z > 0)
   -- if P_line = $pplocate(P, pcpath, z)
 def $ppstatement(P, pcpath, NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata, true, $ppclass_context(P_line)))
   -- if P.CLASSCONTEXT = (ptcontext)
   -- if P.COMPLETION = PPCNORMAL
-  -- if $source_line(metadata) = z
+  -- if $class_header_line(metadata, phpType3, phpType14) = z
   -- if $(z > 0)
   -- if P_line = $pplocate(P, pcpath, z)
 def $ppstatement(P, pcpath, NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = $ppunsupported(P, "missing interface compiler line")
-  -- if P.COMPLETION = PPCNORMAL /\ $source_line(metadata) = 0
+  -- if P.COMPLETION = PPCNORMAL /\ $class_header_line(metadata, phpType3, phpType14) = 0
 
 ;; An interface has no instance storage. Hooked properties and constants have
 ;; separate pending compiler obligations; an ordinary property is a PHP error.

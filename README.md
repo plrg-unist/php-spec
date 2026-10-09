@@ -1028,6 +1028,11 @@ links eligible source and `stdClass` parents at their required publication time;
 `instanceof` and class types follow transitive ancestry. Its [review](coverage/semantics/inheritance-review.json)
 binds source, compiler, syntax and paused-state checks. Other internal-class
 bodies and method callbacks remain open.
+A single builtin `#[AllowDynamicProperties]` permits dynamic slots on named
+classes and descendants while ordinary classes retain deprecation. Invalid
+trait/interface/readonly targets preserve diagnostic priority and keyword lines;
+ten sources and 131 derived/reached checks are recorded in the
+[attribute review](coverage/semantics/allow-dynamic-properties-review.json).
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed

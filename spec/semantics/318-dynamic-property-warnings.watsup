@@ -56,7 +56,7 @@ def $property_dynamic_valid(S, pdynamicproperty) = true
   -- if S.OBJECTS[pdynamicproperty.TARGET] = INSTANCE porigin_class
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if ~pclassdesc.READONLY
-  -- if ~$class_origin_matches(S, porigin_class, $ptascii("stdClass"), |S.CLASSES|)
+  -- if ~$class_allows_dynamic(S, porigin_class, |S.CLASSES|)
   -- if $property_desc_at($property_layout(S, porigin_class, |S.CLASSES|), pdynamicproperty.KEY) = eps
   -- if $heap_subset($base_nodes(pdynamicproperty.BASE) ++ $operand_nodes(pdynamicproperty.RHS), S.ALLOCATIONS)
   -- if $destructor_pending_valid(S, pdynamicproperty.PENDING)

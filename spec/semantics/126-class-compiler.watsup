@@ -201,7 +201,8 @@ def $ppclass_early(pclassdesc :: pclassdesc_tail*, ptbytes) = $ppclass_early(pcl
 
 dec $ppclass_result(ppstate, pcpath, pchresult) : ppstate
 dec $ppclass_result_body(ppstate, pcpath, pchresult) : ppstate
-def $ppclass_result(P, pcpath, pchresult) = $ppimage_publication($ppclass_result_body(P, pcpath, pchresult), PORIGIN P.FOLD.SOURCE.ID pcpath, PPCLASS, P.EARLY = (pcpath))
+dec $ppclass_attribute_name(ppstate, pcpath, pchresult) : ppstate
+def $ppclass_result(P, pcpath, pchresult) = $ppimage_publication($ppclass_result_body($ppclass_attribute_name(P, pcpath, pchresult), pcpath, pchresult), PORIGIN P.FOLD.SOURCE.ID pcpath, PPCLASS, P.EARLY = (pcpath))
 dec $ppproperty_body(phpType23) : bool
 dec $ppmethod_body(phpType23) : bool
 def $ppclass_result_body(P, pcpath, PCHUNSUPPORTED text) = $ppunsupported(P, text)
@@ -213,6 +214,10 @@ def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $ppclass_d
   -- if pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ pchheader.INTERFACES = eps /\ pchheader.BODY = SEQUENCE eps
 
 dec $class_keyword_line(metadata, phpType3) : int
+dec $class_header_line(metadata, phpType3, phpType14) : int
+def $class_header_line(metadata, phpType3, SEQUENCE eps) = $source_line(metadata)
+def $class_header_line(metadata, phpType3, phpType14) = $class_keyword_line(metadata, phpType3)
+  -- if phpType14 =/= SEQUENCE eps
 def $ppstatement(P, pcpath, NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = $ppunsupported(P, "missing ordinary compiler line")
   -- if P.COMPLETION = PPCNORMAL
   -- if $class_keyword_line(metadata, phpType3) = 0
@@ -247,6 +252,15 @@ def $pnclassresolve(plenv, name) = PNUNSUPPORTED "self, parent, and static class
 def $pnclassresolve(plenv, name) = PNUNSUPPORTED "invalid class name" -- otherwise
 def $pnclassclear(PNRESOLVED pnreference) = PNRESOLVED pnreference[.FALLBACK = eps]
 def $pnclassclear(PNUNSUPPORTED text) = PNUNSUPPORTED text
+
+def $ppclass_attribute_name(P, pcpath, PCHOK pchheader pchdiagnostic*) = P[.NAMES = P.NAMES ++ [(pcpath ++ [PCFIELD 0, PCINDEX 0, PCFIELD 0, PCINDEX 0, PCFIELD 0], pnreference)]]
+  -- if P.COMPLETION = PPCNORMAL
+  -- if $origin_node([P.FOLD.SOURCE], PORIGIN P.FOLD.SOURCE.ID pcpath) = (statement)
+  -- if $pchlower(statement) = PCHRAW pchraw
+  -- if $pchallows_dynamic($ppclass_context(P), pchraw.ATTRIBUTES)
+  -- if pchraw.ATTRIBUTES = SEQUENCE ([(NAttributeGroup (SEQUENCE ([(NAttribute name (SEQUENCE eps) metadata_attribute)])) metadata_group)])
+  -- if $pnclassresolve(P.ENV, name) = PNRESOLVED pnreference
+def $ppclass_attribute_name(P, pcpath, pchresult) = P -- otherwise
 def $ppclass_name(P, pcpath, PNUNSUPPORTED text) = $ppunsupported(P, text)
 def $ppclass_name(P, pcpath, PNRESOLVED pnreference) = P[.NAMES = P.NAMES ++ [(pcpath, pnreference)]][.FOLD = P.FOLD[.VALUE = eps]]
 

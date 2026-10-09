@@ -147,11 +147,11 @@ def $ppclass_result_body(P, pcpath, PCHOK pchheader pchdiagnostic*) = $pptrait_a
   -- if PPMEMBERS P_next ppropertydesc* pmethoddesc* = $ppmember_groups(P_header, pcpath, 0, statement*, eps, eps, pchheader)
 def $ppstatement(P, pcpath, NStmtTrait phpType14 phpType3 phpType23 metadata) = $ppclass_result(P_line, pcpath, $pchcompile(NStmtTrait phpType14 phpType3 phpType23 metadata, P.CLASSCONTEXT =/= eps, $ppclass_context(P_line)))
   -- if P.COMPLETION = PPCNORMAL
-  -- if $($source_line(metadata) > 0)
-  -- if P_line = $pplocate(P, pcpath, $source_line(metadata))
+  -- if $($class_header_line(metadata, phpType3, phpType14) > 0)
+  -- if P_line = $pplocate(P, pcpath, $class_header_line(metadata, phpType3, phpType14))
 def $ppstatement(P, pcpath, NStmtTrait phpType14 phpType3 phpType23 metadata) = $ppunsupported(P, "missing trait compiler line")
   -- if P.COMPLETION = PPCNORMAL
-  -- if $source_line(metadata) = 0
+  -- if $class_header_line(metadata, phpType3, phpType14) = 0
 
 ;; __TRAIT__, __METHOD__, __FUNCTION__ keep their source spelling. __CLASS__
 ;; and self::class remain deferred until the imported lexical scope is selected.

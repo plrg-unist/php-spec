@@ -1,0 +1,144 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "SHA256(stdout + NUL + stderr)",
+  "cases": [
+    {
+      "id": "annotated-vs-ordinary",
+      "source": "<?php\nclass DynamicPlain27 {}\n#[\\AllowDynamicProperties]\nclass DynamicAllowed27 {}\nset_error_handler(function($level, $message) { echo \"W|\", $message, \"|\"; return true; });\n$plain = new DynamicPlain27();\n$plain->extra = 7;\n$plain->extra = 9;\necho \"P\", $plain->extra, \"|\";\n$allowed = new DynamicAllowed27();\n$allowed->extra = 17;\n$allowed->extra = 19;\necho \"A\", $allowed->extra, \"|\";\n",
+      "source_sha256": "718c7684aa6fc7d1e3ccef4ba553576e92c3d6477d7c3ab053e6d0453b9f44a4",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/native-first/report.json",
+      "native_raw_sha256": "2fc98d155b19adcf528d831c1d8dcd9296632ca1ec4379ff0c795ffd5c9d0048",
+      "exit_status": 0,
+      "stdout_base64": "V3xDcmVhdGlvbiBvZiBkeW5hbWljIHByb3BlcnR5IER5bmFtaWNQbGFpbjI3OjokZXh0cmEgaXMgZGVwcmVjYXRlZHxQOXxBMTl8",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "inherited-namespace-alias",
+      "source": "<?php\nnamespace DynamicScope27;\nuse AllowDynamicProperties as Dynamic;\n#[Dynamic]\nclass Parent27 {}\nclass Child27 extends Parent27 {}\nclass Grandchild27 extends Child27 {}\n$child = new Child27();\n$child->extra = 7;\n$grandchild = new Grandchild27();\n$grandchild->extra = 9;\necho $child->extra, \"|\", $grandchild->extra, \"|\";\n",
+      "source_sha256": "56ecc7ddca6dc13c91868d8964d40b9b7cc198ef8499bf57b99376a100cd9c8b",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/native-first/report.json",
+      "native_raw_sha256": "0a5687ce1553251033d9614aa16d918e53548b36c646e8b8fb17478d7005b38d",
+      "exit_status": 0,
+      "stdout_base64": "N3w5fA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "trait-method-reference",
+      "source": "<?php\nnamespace DynamicTrait27;\nuse aLLoWdYnAmIcPrOpErTiEs as Open;\ntrait Writer27 { public function put($value) { $this->extra = $value; } }\n#[Open]\nclass Owner27 { use Writer27; }\nset_error_handler(function($level, $message) { echo \"W|\", $message, \"|\"; return true; });\n$owner = new Owner27();\n$owner->put(7);\n$alias =& $owner->created;\n$alias = 9;\necho $owner->extra, \"|\", $owner->created, \"|\";\n",
+      "source_sha256": "4300c36723c2013d0be2e56a8447d30273b7b5b92ec0c724f383c6115aa3141f",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/focused/native-first/report.json",
+      "native_raw_sha256": "0a5687ce1553251033d9614aa16d918e53548b36c646e8b8fb17478d7005b38d",
+      "exit_status": 0,
+      "stdout_base64": "N3w5fA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "function-local-inherited",
+      "source": "<?php\n#[\\AllowDynamicProperties]\nclass DynamicRoot27 {}\nfunction declare_dynamic27() {\n    class DynamicLocal27 extends DynamicRoot27 {}\n}\ndeclare_dynamic27();\n$value = new DynamicLocal27();\n$value->extra = 7;\necho $value->extra, \"|\";\n",
+      "source_sha256": "a277e29657b94d8f387efb530fbe1442ac3398a52da9085a2a85e86d12b2dc79",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/focused/native-first/report.json",
+      "native_raw_sha256": "cc930bcbfa0aac31181a9d559685b271697baeeeabba7466aebe2b69ceafb643",
+      "exit_status": 0,
+      "stdout_base64": "N3w=",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "unset-recreation",
+      "source": "<?php\n#[\\AllowDynamicProperties]\nclass DynamicRecreate27 {}\nset_error_handler(function($level, $message) { echo \"W|\", $message, \"|\"; return true; });\n$value = new DynamicRecreate27();\n$value->extra = 7;\nunset($value->extra);\n$value->extra = 9;\necho $value->extra, \"|\";\n",
+      "source_sha256": "27ee0a4f2855e8a9ca107739b72e0a2b82f4aef68853a4c939365c2202736bcd",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/focused/native-first/report.json",
+      "native_raw_sha256": "a6453af2aa36c17c000a20d803dc42b5f8d307a484cd7c677e5271db8b9affd6",
+      "exit_status": 0,
+      "stdout_base64": "OXw=",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "trait-target-priority",
+      "source": "<?php\necho \"BEFORE|\";\n#[\\AllowDynamicProperties]\ntrait DynamicBadTrait27 { public int $value = \"wrong\"; }\n",
+      "source_sha256": "8f961b338ee2daf3eb5cbc03355baca596520e5d755e3ed1545e22386f8296d8",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/focused/native-first/report.json",
+      "native_raw_sha256": "3bdfd0e32ab47c2dce0e4cb81e59f4e1a61d039f39c383da778ffe44d07f07a5",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhcHBseSAjW1xBbGxvd0R5bmFtaWNQcm9wZXJ0aWVzXSB0byB0cmFpdCBEeW5hbWljQmFkVHJhaXQyNyBpbiB7RklMRX0gb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "status": "static_rejection"
+    },
+    {
+      "id": "interface-target-priority",
+      "source": "<?php\necho \"BEFORE|\";\n#[\\AllowDynamicProperties]\ninterface DynamicBadInterface27 extends MissingDynamicInterface27 {}\n",
+      "source_sha256": "7ee23ec61f399717a0d815ca8dd87506ff827d8c576b80743ebae94d8e679a13",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/focused/native-first/report.json",
+      "native_raw_sha256": "2d7b0c8b0415d3ea40677fe8b0a4423d4491cfb1898b51b3a4953e2edb83ac8b",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhcHBseSAjW1xBbGxvd0R5bmFtaWNQcm9wZXJ0aWVzXSB0byBpbnRlcmZhY2UgRHluYW1pY0JhZEludGVyZmFjZTI3IGluIHtGSUxFfSBvbiBsaW5lIDQKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "status": "static_rejection"
+    },
+    {
+      "id": "readonly-target-priority",
+      "source": "<?php\necho \"BEFORE|\";\n#[\\AllowDynamicProperties]\nreadonly class DynamicBadReadonly27 { public $value; }\n",
+      "source_sha256": "136461998120a50c03ac8115905945de4e7f8e852d69b1ecb325917dbedc4a28",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/focused/native-first/report.json",
+      "native_raw_sha256": "e33fa80fcc5083baff339d78eeafec63a3300ffa93c77f8322590347852108de",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhcHBseSAjW1xBbGxvd0R5bmFtaWNQcm9wZXJ0aWVzXSB0byByZWFkb25seSBjbGFzcyBEeW5hbWljQmFkUmVhZG9ubHkyNyBpbiB7RklMRX0gb24gbGluZSA0ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "status": "static_rejection"
+    },
+    {
+      "id": "annotated-child-plain-parent",
+      "source": "<?php\nclass DynamicParentPlain27 {}\n#[\\AllowDynamicProperties]\nclass DynamicChildOpen27 extends DynamicParentPlain27 { public int $declared = 7; }\nset_error_handler(function($level, $message) { echo \"W|\", $message, \"|\"; return true; });\n$parent = new DynamicParentPlain27();\n$child = new DynamicChildOpen27();\n$parent->extra = 9;\n$child->extra = 17;\ntry { $child->declared = \"wrong\"; }\ncatch (\\TypeError $error) { echo $error->getMessage(), \"|\"; }\necho $child->extra, \"|\", $child->declared, \"|\";\n",
+      "source_sha256": "4e1ad17c778a4af1353e84583514492313e8c3ea0ee035eca48ec23e02d674a6",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/focused/native-first/report.json",
+      "native_raw_sha256": "6cb8aed3dc210371ae185bf24f4e790430a41cb7fbd6da97608afe39ccc0e1a2",
+      "exit_status": 0,
+      "stdout_base64": "V3xDcmVhdGlvbiBvZiBkeW5hbWljIHByb3BlcnR5IER5bmFtaWNQYXJlbnRQbGFpbjI3OjokZXh0cmEgaXMgZGVwcmVjYXRlZHxDYW5ub3QgYXNzaWduIHN0cmluZyB0byBwcm9wZXJ0eSBEeW5hbWljQ2hpbGRPcGVuMjc6OiRkZWNsYXJlZCBvZiB0eXBlIGludHwxN3w3fA==",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "split-keyword-name",
+      "source": "<?php\necho \"BEFORE|\";\n#[\\AllowDynamicProperties]\n// Keep attribute, keyword and name on distinct lines.\n\ntrait\nDynamicSplitTrait27 {}\n",
+      "source_sha256": "8187255f11066f46205721739ebd4c3ad20a5ab2a6bfae19b5972b56c24214c2",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/lines/native-first/report.json",
+      "native_raw_sha256": "3215800b5080d40703f0e7f0b1e60d5b84cb81e8c77ebc8d4b12d984451c8ef3",
+      "exit_status": 255,
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCBhcHBseSAjW1xBbGxvd0R5bmFtaWNQcm9wZXJ0aWVzXSB0byB0cmFpdCBEeW5hbWljU3BsaXRUcmFpdDI3IGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "status": "static_rejection"
+    }
+  ],
+  "unsupported_controls": [
+    {
+      "id": "namespace-nonbuiltin",
+      "source": "<?php\nnamespace DynamicBoundary27;\nclass AllowDynamicProperties {}\n#[AllowDynamicProperties]\nclass Owner27 {}\nset_error_handler(function($level, $message) { echo \"W|\", $message, \"|\"; return true; });\n$value = new Owner27();\n$value->extra = 7;\necho $value->extra, \"|\";\n",
+      "source_sha256": "a1fe8443dc94898099131bbd3afd166d7bc1ce314916083af5beee5c5ea89c9e",
+      "native_group": ".tools/allow-dynamic-properties-private-27/.tools/allow-dynamic-properties-probes-27/focused/native-first/report.json",
+      "native_raw_sha256": "95c9c65516c9516c33289e0412c6353411901456da2abada5a19ab22a70aeb3c",
+      "exit_status": 0,
+      "stdout_base64": "V3xDcmVhdGlvbiBvZiBkeW5hbWljIHByb3BlcnR5IER5bmFtaWNCb3VuZGFyeTI3XE93bmVyMjc6OiRleHRyYSBpcyBkZXByZWNhdGVkfDd8",
+      "stderr_template_base64": "",
+      "expected_model_status": "unsupported",
+      "source_agreements": 0
+    }
+  ]
+}

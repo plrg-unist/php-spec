@@ -133,24 +133,35 @@
         "spec/semantics/17-signatures.watsup",
         "spec/semantics/379-sensitive-parameters.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/126-class-compiler.watsup",
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/177-interface-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup",
+        "spec/semantics/318-dynamic-property-warnings.watsup",
+        "frontend/worker.php"
       ],
       "source_tests": [
         "tests/semantics/sensitive_parameter_cases.json",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/constructor_sensitive_promotion_cases.json"
+        "tests/semantics/constructor_sensitive_promotion_cases.json",
+        "tests/semantics/allow_dynamic_properties_cases.json"
       ],
-      "review": "Single zero-argument builtin SensitiveParameter Param attributes/groups are preserved and lexically resolved from authenticated checked source. Source10/state112 are reviewed in sensitive-parameter-review.json; mixed/repeated/argument attributes, hooks and general attribute metadata/target protocols remain partial. Promoted constructor SensitiveParameter preserves ordinary property writes and live-CV trace snapshots without a property Override obligation. Source8 at bf6/688 and strict365/state176 (74 derived,102 reached) at75c retain distinct cuts in sensitive-promotion-review.json; authentic queued suffix admission and all prior failures are preserved. Wider attributes/hooks and wrapper protocols remain partial.",
+      "review": "Single zero-argument builtin SensitiveParameter Param attributes/groups are preserved and lexically resolved from authenticated checked source. Source10/state112 are reviewed in sensitive-parameter-review.json; mixed/repeated/argument attributes, hooks and general attribute metadata/target protocols remain partial. Promoted constructor SensitiveParameter preserves ordinary property writes and live-CV trace snapshots without a property Override obligation. Source8 at bf6/688 and strict365/state176 (74 derived,102 reached) at75c retain distinct cuts in sensitive-promotion-review.json; authentic queued suffix admission and all prior failures are preserved. Wider attributes/hooks and wrapper protocols remain partial. Single zero-argument builtin AllowDynamicProperties class attributes resolve actual namespace/imports and permit inherited dynamic slots without a deprecation owner. Trait/interface/readonly targets retain priority and keyword lines. Source10 at separate 2945/8c cuts and strict 370/SL131 (37 derived, 94 reached) at 8c are independently reviewed in allow-dynamic-properties-review.json; original failures retain zero affected credit. Mixed/repeated/argument/user attributes, anonymous/enum targets and wider attribute protocols remain partial; current composition pending.",
       "helper_tests": [
         "tests/semantics/sensitive_parameter_protocol.py",
-        "tests/semantics/constructor_sensitive_promotion_protocol.py"
+        "tests/semantics/constructor_sensitive_promotion_protocol.py",
+        "tests/semantics/allow_dynamic_properties_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/sensitive-parameter-review.json",
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "vendor/php-src/Zend/zend_attributes.c",
         "coverage/semantics/sensitive-promotion-review.json",
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/allow-dynamic-properties-review.json",
+        "vendor/php-src/Zend/zend_inheritance.c"
       ]
     },
     {
@@ -164,24 +175,35 @@
         "spec/semantics/17-signatures.watsup",
         "spec/semantics/379-sensitive-parameters.watsup",
         "spec/semantics/141-method-compiler.watsup",
-        "spec/semantics/142-method-runtime.watsup"
+        "spec/semantics/142-method-runtime.watsup",
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/126-class-compiler.watsup",
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/177-interface-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup",
+        "spec/semantics/318-dynamic-property-warnings.watsup",
+        "frontend/worker.php"
       ],
       "source_tests": [
         "tests/semantics/sensitive_parameter_cases.json",
         "tests/semantics/method_runtime.py",
-        "tests/semantics/constructor_sensitive_promotion_cases.json"
+        "tests/semantics/constructor_sensitive_promotion_cases.json",
+        "tests/semantics/allow_dynamic_properties_cases.json"
       ],
-      "review": "Single zero-argument builtin SensitiveParameter Param attributes/groups are preserved and lexically resolved from authenticated checked source. Source10/state112 are reviewed in sensitive-parameter-review.json; mixed/repeated/argument attributes, hooks and general attribute metadata/target protocols remain partial. Promoted constructor SensitiveParameter preserves ordinary property writes and live-CV trace snapshots without a property Override obligation. Source8 at bf6/688 and strict365/state176 (74 derived,102 reached) at75c retain distinct cuts in sensitive-promotion-review.json; authentic queued suffix admission and all prior failures are preserved. Wider attributes/hooks and wrapper protocols remain partial.",
+      "review": "Single zero-argument builtin SensitiveParameter Param attributes/groups are preserved and lexically resolved from authenticated checked source. Source10/state112 are reviewed in sensitive-parameter-review.json; mixed/repeated/argument attributes, hooks and general attribute metadata/target protocols remain partial. Promoted constructor SensitiveParameter preserves ordinary property writes and live-CV trace snapshots without a property Override obligation. Source8 at bf6/688 and strict365/state176 (74 derived,102 reached) at75c retain distinct cuts in sensitive-promotion-review.json; authentic queued suffix admission and all prior failures are preserved. Wider attributes/hooks and wrapper protocols remain partial. Single zero-argument builtin AllowDynamicProperties class attributes resolve actual namespace/imports and permit inherited dynamic slots without a deprecation owner. Trait/interface/readonly targets retain priority and keyword lines. Source10 at separate 2945/8c cuts and strict 370/SL131 (37 derived, 94 reached) at 8c are independently reviewed in allow-dynamic-properties-review.json; original failures retain zero affected credit. Mixed/repeated/argument/user attributes, anonymous/enum targets and wider attribute protocols remain partial; current composition pending.",
       "helper_tests": [
         "tests/semantics/sensitive_parameter_protocol.py",
-        "tests/semantics/constructor_sensitive_promotion_protocol.py"
+        "tests/semantics/constructor_sensitive_promotion_protocol.py",
+        "tests/semantics/allow_dynamic_properties_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/sensitive-parameter-review.json",
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "vendor/php-src/Zend/zend_attributes.c",
         "coverage/semantics/sensitive-promotion-review.json",
-        "vendor/php-src/Zend/zend_compile.c"
+        "vendor/php-src/Zend/zend_compile.c",
+        "coverage/semantics/allow-dynamic-properties-review.json",
+        "vendor/php-src/Zend/zend_inheritance.c"
       ]
     },
     {
@@ -4097,7 +4119,11 @@
         "spec/semantics/179-interface-methods.watsup",
         "spec/semantics/180-interface-obligations.watsup",
         "spec/semantics/224-user-iterator.watsup",
-        "spec/semantics/230-iterator-declaration-notices.watsup"
+        "spec/semantics/230-iterator-declaration-notices.watsup",
+        "spec/semantics/177-interface-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup",
+        "spec/semantics/318-dynamic-property-warnings.watsup",
+        "frontend/worker.php"
       ],
       "source_tests": [
         "tests/semantics/object_classes.py",
@@ -4115,22 +4141,27 @@
         "tests/semantics/arrayaccess_cases.py",
         "tests/semantics/arrayaccess_current.php",
         "tests/semantics/fiber_start_aggregate_sources.py",
-        "tests/semantics/fiber_start_aggregate_cases.json"
+        "tests/semantics/fiber_start_aggregate_cases.json",
+        "tests/semantics/allow_dynamic_properties_cases.json"
       ],
-      "review": "Source class publication and ancestry are reviewed in object-classes-review.json and inheritance-review.json. Public instance properties and public instance methods/constructors now compile and link with ordered declarations, inherited properties/signatures and abstract/final constraints (properties-review.json, methods-review.json). Nonpublic/static/readonly members, hooks, interfaces/traits and other internal bodies remain open. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. IteratorAggregate now has real Traversable ancestry and getIterator prototype/inherited/source-interface publication, including public/nonstatic/parameter obligations, tentative-return notices and Iterator exclusivity. Bounded contract/source evidence is in fiber-start-aggregate-review.json; other internal contracts and acquisition consumers remain required.",
+      "review": "Source class publication and ancestry are reviewed in object-classes-review.json and inheritance-review.json. Public instance properties and public instance methods/constructors now compile and link with ordered declarations, inherited properties/signatures and abstract/final constraints (properties-review.json, methods-review.json). Nonpublic/static/readonly members, hooks, interfaces/traits and other internal bodies remain open. Module284 adds the builtin ArrayAccess contract and direct R/IS/isset/empty/Set/append/Unset calls with genuine receiver/key/parameter owners, captured warnings and borrowed post-Set result pointers. Author13/205 and independent20/287 share five originals (28 unique/492); actual465d current6ccb agrees. arrayaccess-review.json keeps cuts/failures distinct; full nested/RW/reference/wider memoized consumers and combined Iterator/ArrayAccess notice ordering remain required. IteratorAggregate now has real Traversable ancestry and getIterator prototype/inherited/source-interface publication, including public/nonstatic/parameter obligations, tentative-return notices and Iterator exclusivity. Bounded contract/source evidence is in fiber-start-aggregate-review.json; other internal contracts and acquisition consumers remain required. Single zero-argument builtin AllowDynamicProperties class attributes resolve actual namespace/imports and permit inherited dynamic slots without a deprecation owner. Trait/interface/readonly targets retain priority and keyword lines. Source10 at separate 2945/8c cuts and strict 370/SL131 (37 derived, 94 reached) at 8c are independently reviewed in allow-dynamic-properties-review.json; original failures retain zero affected credit. Mixed/repeated/argument/user attributes, anonymous/enum targets and wider attribute protocols remain partial; current composition pending.",
       "helper_tests": [
         "tests/semantics/class_headers.py",
         "coverage/semantics/class-headers.json",
         "tests/semantics/arrayaccess_protocol.py",
         "tests/semantics/arrayaccess_prepare.py",
-        "tests/semantics/fiber_start_aggregate_review.py"
+        "tests/semantics/fiber_start_aggregate_review.py",
+        "tests/semantics/allow_dynamic_properties_protocol.py"
       ],
       "evidence": [
         "coverage/semantics/object-classes-review.json",
         "coverage/semantics/inheritance-review.json",
         "docs/semantics/SOURCE-ARRAYACCESS.md",
         "coverage/semantics/arrayaccess-review.json",
-        "coverage/semantics/fiber-start-aggregate-review.json"
+        "coverage/semantics/fiber-start-aggregate-review.json",
+        "coverage/semantics/allow-dynamic-properties-review.json",
+        "vendor/php-src/Zend/zend_attributes.c",
+        "vendor/php-src/Zend/zend_inheritance.c"
       ]
     },
     {
@@ -11905,12 +11936,18 @@
         "spec/semantics/261-object-casts.watsup",
         "spec/semantics/324-dynamic-property-reference-foreach.watsup",
         "spec/semantics/346-typed-property-slot-retirement.watsup",
-        "spec/semantics/359-instance-storage-pin.watsup"
+        "spec/semantics/359-instance-storage-pin.watsup",
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/126-class-compiler.watsup",
+        "spec/semantics/177-interface-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup",
+        "frontend/worker.php"
       ],
       "helper_tests": [
         "tests/semantics/duplicate_property_reference_protocol.py",
         "tests/semantics/instance_storage_pin_protocol.py",
-        "tests/semantics/stdinstance_storage_pin_protocol.py"
+        "tests/semantics/stdinstance_storage_pin_protocol.py",
+        "tests/semantics/allow_dynamic_properties_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/properties.py",
@@ -11926,7 +11963,9 @@
         "tests/semantics/private_property_scope_protocol.py",
         "tests/semantics/dynamic_property_warning_sources.py",
         "tests/semantics/dynamic_property_warning_protocol.py",
-        "tests/semantics/duplicate_property_reference_protocol.py"
+        "tests/semantics/duplicate_property_reference_protocol.py",
+        "tests/semantics/allow_dynamic_properties_cases.json",
+        "tests/semantics/method_runtime.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_object_handlers.c",
@@ -11936,9 +11975,12 @@
         "coverage/semantics/property-private-review.json",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/dynamic-property-warning-review.json",
-        "coverage/semantics/duplicate-property-reference-review.json"
+        "coverage/semantics/duplicate-property-reference-review.json",
+        "coverage/semantics/allow-dynamic-properties-review.json",
+        "vendor/php-src/Zend/zend_attributes.c",
+        "vendor/php-src/Zend/zend_inheritance.c"
       ],
-      "review": "Dynamic names use the shared slot store and source-class deprecation. Raw leading-NUL access cannot address mangled protected keys; embedded NUL keeps full-byte identity while diagnostic display truncates. Inherited-private dynamic fallback is implemented; magic access remains open. See properties-review.json and property-visibility-review.json. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module318 resumes eligible user warnings for ordinary literal simple-assignment creation, preserving receiver C ownership, retirement across resurrection, plain CV versus old reference/TMP RHS selection, throw continuation, duplicate physical buckets and used/unused result cleanup. Fifteen private normal originals retain separate cuts; actual297 adds one GC-protected original and69/98 reached premises. At the318 cut, handler exit, duplicate array casts/reference foreach and expired or undefined RHS pointers remain explicit Unsupported boundaries. Computed names and wider writes remain required; see dynamic-property-warning-review.json. Module324 selects physical duplicate dynamic buckets independently, retaining declared readonly/type checks and latest named access. Previous plain-CV own-destructor object cleanup reads its raw slot while still live before atomic normal/throw reference installation. Reference traversal owns the actual shared receiver HCELL through alias writes, unset/recreate and object/array/scalar table changes; late scalar warning callbacks preserve that owner and normal/abrupt iterator removal. Initial12 normals/288 premises and added12 normals/current491 premises keep separate cuts with strictSL298. Plain prior-CV arrays and ordinary no-own-destructor instances now release descendant callbacks before binding, preserving shared owners, dynamic-before-declared object order and pending exception chains; source/state cuts remain separate in the review. Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers, internal-close descendants, binding-time exit, nonordinary replacement objects and expired borrowed notice buckets remain required; source/current-address admission does not prove historical reachability. See duplicate-property-reference-review.json. Module346 preserves ordinary typed slot sources until their individual release visits, including genuine parked Fiber queues; each marker owns only its existing HCELL and detaches exactly one source. Six normal originals and151/84 reached premises retain separate cuts; scoped Throwable checks use the actual live heap. Private Generator-close queues now preserve the same timing, including genuine parked Fiber ownership; four further exact originals and134/71 reached premises retain separate cuts in duplicate-property-reference-review.json. Last-owner previous reference wrappers now retire on genuine eager jobs while a separate nonowning raw CV preserves safe own-destructor reads; selected binding remains atomic after throws. Five exact originals and136/139 reached premises retain separate cuts in duplicate-property-reference-review.json. Whole-GLOBALS snapshots, released-CV mutation and wider pointer consumers remain required. Ordinary INSTANCE storage359 retains one physical parent pin with exact slot owner/type transfer and early Weak notification; five originals and164/57/67 fresh premises retain distinct cuts in duplicate-property-reference-review.json. Wider raw-payload/escape and private303 storage remain required. Ordinary stdClass storage359 extends the physical pin through one property-table HARRAY transfer; shared tables retain their children. Five exact originals and150/91/51 reached premises keep separate cuts in duplicate-property-reference-review.json."
+      "review": "Dynamic names use the shared slot store and source-class deprecation. Raw leading-NUL access cannot address mangled protected keys; embedded NUL keeps full-byte identity while diagnostic display truncates. Inherited-private dynamic fallback is implemented; magic access remains open. See properties-review.json and property-visibility-review.json. Private declaring keys, ancestor lexical shadows and inherited-private dynamic fallback are reviewed separately in property-private-review.json; aliases, casts, foreach and clone retain exact physical identities. Module318 resumes eligible user warnings for ordinary literal simple-assignment creation, preserving receiver C ownership, retirement across resurrection, plain CV versus old reference/TMP RHS selection, throw continuation, duplicate physical buckets and used/unused result cleanup. Fifteen private normal originals retain separate cuts; actual297 adds one GC-protected original and69/98 reached premises. At the318 cut, handler exit, duplicate array casts/reference foreach and expired or undefined RHS pointers remain explicit Unsupported boundaries. Computed names and wider writes remain required; see dynamic-property-warning-review.json. Module324 selects physical duplicate dynamic buckets independently, retaining declared readonly/type checks and latest named access. Previous plain-CV own-destructor object cleanup reads its raw slot while still live before atomic normal/throw reference installation. Reference traversal owns the actual shared receiver HCELL through alias writes, unset/recreate and object/array/scalar table changes; late scalar warning callbacks preserve that owner and normal/abrupt iterator removal. Initial12 normals/288 premises and added12 normals/current491 premises keep separate cuts with strictSL298. Plain prior-CV arrays and ordinary no-own-destructor instances now release descendant callbacks before binding, preserving shared owners, dynamic-before-declared object order and pending exception chains; source/state cuts remain separate in the review. Released-CV mutation, raw retired-container reads, wider wrapper-pointer consumers, internal-close descendants, binding-time exit, nonordinary replacement objects and expired borrowed notice buckets remain required; source/current-address admission does not prove historical reachability. See duplicate-property-reference-review.json. Module346 preserves ordinary typed slot sources until their individual release visits, including genuine parked Fiber queues; each marker owns only its existing HCELL and detaches exactly one source. Six normal originals and151/84 reached premises retain separate cuts; scoped Throwable checks use the actual live heap. Private Generator-close queues now preserve the same timing, including genuine parked Fiber ownership; four further exact originals and134/71 reached premises retain separate cuts in duplicate-property-reference-review.json. Last-owner previous reference wrappers now retire on genuine eager jobs while a separate nonowning raw CV preserves safe own-destructor reads; selected binding remains atomic after throws. Five exact originals and136/139 reached premises retain separate cuts in duplicate-property-reference-review.json. Whole-GLOBALS snapshots, released-CV mutation and wider pointer consumers remain required. Ordinary INSTANCE storage359 retains one physical parent pin with exact slot owner/type transfer and early Weak notification; five originals and164/57/67 fresh premises retain distinct cuts in duplicate-property-reference-review.json. Wider raw-payload/escape and private303 storage remain required. Ordinary stdClass storage359 extends the physical pin through one property-table HARRAY transfer; shared tables retain their children. Five exact originals and150/91/51 reached premises keep separate cuts in duplicate-property-reference-review.json. Single zero-argument builtin AllowDynamicProperties class attributes resolve actual namespace/imports and permit inherited dynamic slots without a deprecation owner. Trait/interface/readonly targets retain priority and keyword lines. Source10 at separate 2945/8c cuts and strict 370/SL131 (37 derived, 94 reached) at 8c are independently reviewed in allow-dynamic-properties-review.json; original failures retain zero affected credit. Mixed/repeated/argument/user attributes, anonymous/enum targets and wider attribute protocols remain partial; current composition pending."
     },
     {
       "id": "properties.promotion",
@@ -12435,15 +12477,30 @@
     {
       "id": "declarations.attribute-targets",
       "milestone": "4b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_attributes.c"
+      "implementation": [
+        "spec/semantics/18-class-headers.watsup",
+        "spec/semantics/126-class-compiler.watsup",
+        "spec/semantics/136-property-runtime.watsup",
+        "spec/semantics/177-interface-compiler.watsup",
+        "spec/semantics/228-trait-methods.watsup",
+        "spec/semantics/318-dynamic-property-warnings.watsup",
+        "frontend/worker.php"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/allow_dynamic_properties_protocol.py"
+      ],
+      "source_tests": [
+        "tests/semantics/allow_dynamic_properties_cases.json",
+        "tests/semantics/method_runtime.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_attributes.c",
+        "coverage/semantics/allow-dynamic-properties-review.json",
+        "vendor/php-src/Zend/zend_inheritance.c"
+      ],
+      "review": "Single zero-argument builtin AllowDynamicProperties class attributes resolve actual namespace/imports and permit inherited dynamic slots without a deprecation owner. Trait/interface/readonly targets retain priority and keyword lines. Source10 at separate 2945/8c cuts and strict 370/SL131 (37 derived, 94 reached) at 8c are independently reviewed in allow-dynamic-properties-review.json; original failures retain zero affected credit. Mixed/repeated/argument/user attributes, anonymous/enum targets and wider attribute protocols remain partial; current composition pending."
     },
     {
       "id": "declarations.attribute-repeatability",
