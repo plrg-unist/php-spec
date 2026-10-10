@@ -148,6 +148,12 @@ rule PhpStep/anonymous-new: S ~> $new_class(S[.TODO = ptask_tail*], ptbytes_name
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
   -- if ~$new_has_ctor(S, ptbytes_name)
+rule PhpStep/anonymous-new-constructor: S ~> $constructor_start(S[.TODO = ptask_tail*], ptbytes_name, eps, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata))
+  -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
+  -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if $new_has_ctor(S, ptbytes_name)
 
 dec $anonymous_new_task_valid(pstate, expression) : bool
 def $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata) = true
