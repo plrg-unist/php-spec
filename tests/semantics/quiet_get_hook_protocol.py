@@ -121,7 +121,7 @@ DERIVED = [
     r'~$call_task_valid(S_result,PROPERTY_HOOK_RESULT ppropertyhook) /\ ~$call_task_valid(S_result,PROPERTY_HOOK_ISSET_RESULT ppropertyhook true)',
     r'ppropertyhook.SITE = PORIGIN n pcpath /\ S.SOURCES = pcunit :: pcunit_tail* /\ pcunit.ID = n',
     r'pcpath_parent = pcpath[0:$nabs($( |pcpath| - 2))]',
-    r'$origin_node(S.SOURCES,PORIGIN n pcpath_parent) = (NExprIsset (SEQUENCE [expression_operand]) metadata_parent)',
+    r'$origin_node(S.SOURCES,PORIGIN n pcpath_parent) = (NExprIsset (SEQUENCE ([expression_operand])) metadata_parent)',
     r'pcunit_coalesce = pcunit[.OCCURRENCES = [PCOCCURRENCE pcpath_parent (NExprBinaryOpCoalesce expression_operand (NScalarInt (INTEGER 7) metadata_parent) metadata_parent), PCOCCURRENCE pcpath expression_operand]]',
     r'S_coalesce = S[.SOURCES = pcunit_coalesce :: pcunit_tail*]',
     r'~$property_hook_isset_site(S_coalesce,ppropertyhook.SITE,false) /\ ~$property_hook_isset_pending(S_coalesce) /\ $property_hook_isset_plan(S_coalesce) = eps',
