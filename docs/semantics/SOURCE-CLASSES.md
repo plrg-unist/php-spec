@@ -70,8 +70,20 @@ the image after restoring the containing unit scope. This publishes the class
 before any call and preserves compilation order independently of call order.
 Ordinary function/Closure declarations do not consume the RTD counter. Wider
 factory contexts and incomplete containing-scope images remain Unsupported;
-include/eval units, inheritance, attributes, constructors, wider members/defaults
+include/eval units, inheritance, attributes, wider members/defaults
 and complete RTD ordering remain required.
+
+Public zero-parameter by-value untyped `__construct` methods use the ordinary
+constructor protocol, including default-public and case-insensitive spelling.
+Authenticated anonymous source/name receipts select the method after allocation;
+property defaults precede the body, and automatic `new` ignores its return value.
+Explicit constructor calls retain ordinary method return behavior. Throws retain
+the original Throwable, execute ordinary `finally` blocks and leave caller
+assignment untouched. Ordinary ownership retires unescaped failed receivers and
+preserves escaped receivers. Constructor arguments,
+parameters/types, nonpublic constructors and broader lifecycle interactions remain
+required. The [constructor review](../../coverage/semantics/anonymous-constructors-review.json)
+separates original-source agreement, actual call/unwind states and pure receipt queries.
 
 Raw `getTrace()['class']` retains the entire generated name. The shared trace
 renderer applies `c_string` only to the displayed CLASS bytes, matching Zend's

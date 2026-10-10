@@ -22,6 +22,20 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
+Public noarg/by-value/untyped constructors on parentless anonymous classes now
+use ordinary allocation, call frames, result and throw cleanup with authenticated
+source/name receipts. Defaults precede body effects; automatic `new` ignores
+`return 99` while explicit calls observe it. Four fresh originals agree at
+5d3e3da49 /374 (strict3 5.421s), including factory pre-call lookup, repeated effects,
+shared Throwable identity and constructor `finally`. Author and independent groups
+pass 391 checks: 371 setup/source-frontier premises and 20 pure queries, with 17
+actual PhpSteps. The unescaped failed receiver loses its marker owner and is pruned;
+escaped receivers and the shared Throwable survive. Terminal same-class result
+receipt acceptance remains an explicit preexisting abstraction. Original interpreter
+and fixture parse failures retain zero credit; syntax-only preparation/elaboration
+adds none. Arguments/types/nonpublic constructors and broader anonymous contexts
+remain required. [Constructor ledger](coverage/semantics/anonymous-constructors-review.json).
+
 Simple global noarg/by-value/untyped function and static no-capture Closure factories
 now record authenticated inner class checkpoints, save only restored unit images
 and publish class names before the first call. Two fresh originals agree at
@@ -33,7 +47,7 @@ premises, with eight real AT/EVAL PhpSteps. Changed strict3 passes at 36b2811b
 slice failure retain zero credit; the corrected guard checks length before slicing.
 Original a898 source2 / 205+21 and e646 trace1 / 45+2 cuts remain frozen. Wider RTD
 consumers, factory parameters/captures/types/class scope, incomplete scope images,
-include/eval, constructors and broader class consumers remain required.
+include/eval, constructor arguments/types and broader class consumers remain required.
 Actual composition of 374 modules over 3609d8d4 passes strict3 at 137edf830
 (5.572s), preserving task-specific hook, finalizer, Fiber, property/yield and GC
 guards. Private source2 and separate function140/Closure140 cuts retain their
