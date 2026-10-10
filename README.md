@@ -1176,7 +1176,11 @@ untyped constructors now initialize defaults before the body, ignore automatic
 return values and preserve shared Throwable identity through ordinary unwind.
 [Four further originals](coverage/semantics/anonymous-constructors-review.json)
 also check explicit calls, factory effects and constructor `finally` blocks.
-Mixed RTD counters, wider factory/publication contexts, constructor arguments/types,
+Plain empty global named classes can now share the unit: early declarations consume
+no RTD key; deferred declarations consume one even when never executed.
+[Three further originals](coverage/semantics/anonymous-mixed-rtd-review.json)
+check those counters, runtime publication and factory lookup before calls.
+Wider RTD counters, factory/publication contexts, constructor arguments/types,
 inheritance, attributes and broader consumers remain required.
 The actual375 join over 57f2f4b8 passes strict3 at 77f9c0eda (5.521s);
 private constructor source/state cuts remain unchanged.

@@ -1,0 +1,53 @@
+{
+  "scope": "Ordinary unit0 parentless anonymous classes mixed with plain empty global named declarations. Early root declarations consume no RTD key; deferred global declarations consume one even when never executed. Existing simple function factories keep compile-order names and pre-call publication independent of invocation order. Wider named/class/source contexts remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-mixed-early",
+      "source": "<?php\n$early = new EarlyBefore;\nclass EarlyBefore {}\n$firstLine = __LINE__ + 1;\n$first = new class {\n    public $value = 0;\n    public function scope() { return self::class; }\n};\nclass EarlyBetween {}\n$secondLine = __LINE__ + 1;\n$second = new class {};\nclass EarlyAfter {}\n$firstName = \"class@anonymous\\0\" . __FILE__ . ':' . $firstLine . '$0';\n$secondName = \"class@anonymous\\0\" . __FILE__ . ':' . $secondLine . '$1';\necho $early::class === 'EarlyBefore' ? 'early|' : 'BAD|';\necho $first::class === $firstName ? 'first|' : 'BAD|';\necho $second::class === $secondName ? 'second|' : 'BAD|';\n$before = new $firstName;\n$before->value = 9;\necho $before !== $first ? 'fresh|' : 'BAD|';\necho $before::class === $first::class && $before->scope() === $firstName ? 'same|' : 'BAD|';\necho 'values:', $first->value, ':', $before->value;\n",
+      "source_sha256": "0ee35efa38e6699d54af1da7cbd3049900fb5c222a6720df94a1ed423354a1d1",
+      "stdout_base64": "ZWFybHl8Zmlyc3R8c2Vjb25kfGZyZXNofHNhbWV8dmFsdWVzOjA6OQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-mixed-native-22/run-v1/anonymous-mixed-early/command.json",
+      "native_raw_sha256": "40eae79979aa6e8acf1c323468d16bd4fbf259814d55be33ef13a1484b995af9"
+    },
+    {
+      "id": "anonymous-mixed-conditional",
+      "source": "<?php\n$firstLine = __LINE__ + 1;\n$first = new class {};\nif (false) { class NeverPublished {} }\n$secondLine = __LINE__ + 1;\n$second = new class {};\nif (true) { class LaterPublished {} }\n$thirdLine = __LINE__ + 1;\n$third = new class {};\necho $first::class === \"class@anonymous\\0\" . __FILE__ . ':' . $firstLine . '$0' ? 'first|' : 'BAD|';\necho $second::class === \"class@anonymous\\0\" . __FILE__ . ':' . $secondLine . '$2' ? 'second|' : 'BAD|';\necho $third::class === \"class@anonymous\\0\" . __FILE__ . ':' . $thirdLine . '$4' ? 'third|' : 'BAD|';\ntry { $never = new NeverPublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'never|'; }\n$later = new LaterPublished;\necho $later::class === 'LaterPublished' ? 'later' : 'BAD';\n",
+      "source_sha256": "f0fb748478708dec20c445600a8d4fe87787f91fb9a01cf31ed016665559ee2d",
+      "stdout_base64": "Zmlyc3R8c2Vjb25kfHRoaXJkfG5ldmVyfGxhdGVy",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-mixed-native-22/run-v1/anonymous-mixed-conditional/command.json",
+      "native_raw_sha256": "ea65f344f6ec488f4f84f4e3831c3621671778f869a4dd297884f12ad40e35f3"
+    },
+    {
+      "id": "anonymous-mixed-factory",
+      "source": "<?php\nclass Early {}\nfunction leftFactory() { return new class {}; }\nif (false) { class NeverHidden {} }\nfunction rightFactory() { return new class {}; }\n$early = new Early;\necho $early::class === Early::class ? 'early|' : 'BAD|';\ntry { $never = new NeverHidden; echo 'BAD|'; }\ncatch (Error $caught) { echo $caught->getMessage() === 'Class \"NeverHidden\" not found' ? 'never|' : 'BAD|'; }\ntry { $later = new Later; echo 'BAD|'; }\ncatch (Error $caught) { echo $caught->getMessage() === 'Class \"Later\" not found' ? 'later-missing|' : 'BAD|'; }\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':3$0';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':5$2';\n$beforeLeft = new $leftName;\n$beforeRight = new $rightName;\n$right = rightFactory();\n$left = leftFactory();\necho $left::class === $leftName && $beforeLeft::class === $leftName ? 'left|' : 'BAD|';\necho $right::class === $rightName && $beforeRight::class === $rightName ? 'right|' : 'BAD|';\necho $left !== $beforeLeft && $right !== $beforeRight ? 'fresh|' : 'BAD|';\nif (true) { class Later {} }\n$later = new Later;\necho $later::class === Later::class ? 'later-live|' : 'BAD|';\n$third = new class {}; $thirdName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . __LINE__ . '$4';\necho $third::class === $thirdName ? 'third|' : 'BAD|';\n$named = new Later;\necho $named::class === Later::class ? 'named' : 'BAD';\n",
+      "source_sha256": "19dd0d45f508904859d2fb2333577860b5ac565c354921e1c36e638c5721a26c",
+      "stdout_base64": "ZWFybHl8bmV2ZXJ8bGF0ZXItbWlzc2luZ3xsZWZ0fHJpZ2h0fGZyZXNofGxhdGVyLWxpdmV8dGhpcmR8bmFtZWQ=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-mixed-native-22/run-retry1/anonymous-mixed-factory/command.json",
+      "native_raw_sha256": "3a24eccb32084d21ef5d46eb353a19661d1000b049325da00b66ab99bc92dfdd"
+    }
+  ]
+}

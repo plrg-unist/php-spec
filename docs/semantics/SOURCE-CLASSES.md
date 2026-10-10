@@ -54,13 +54,20 @@ separates ten source agreements from genuine write/history/link checks.
 Ordinary anonymous `new class` expressions use source-authenticated class headers
 and publish a parentless class before the first runtime visit. The compiled name
 is `class@anonymous`, NUL, the original filename, start line and a hexadecimal
-uint32 suffix. The suffix follows actual compiler descriptor order; it is not a
+uint32 suffix. The suffix follows actual compiler RTD-key consumption; it is not a
 runtime visit count. Namespace scope does not prefix the name, and distinct sites
 on one physical line remain distinct. Each visit allocates a fresh object from
 the same class, with independent property storage and the real lexical scope.
 
-Module383 admits authentic unit0 contexts with no named class/interface/trait/enum
-RTD counter consumers or nested class bodies. Forms are parentless, without
+Module383 admits authentic unit0 contexts with plain empty global named classes.
+Eligible root declarations bind early and consume no RTD key; deferred declarations
+consume one even when their branch never executes. The compiler folds descriptors
+in its actual walk order, authenticating source, name, line and derived early binding
+rather than counting descriptors. Whole-source projection and declaration history
+retain compiler order; the counter helper alone is not a general ordering certificate.
+Named declarations inside standalone block statements, namespaces, functions or Closures,
+other named bodies/modifiers, interfaces/traits/enums and nested class bodies remain
+Unsupported. Anonymous forms are parentless, without
 interfaces, attributes or constructor arguments; public untyped property defaults
 use the existing literal/constant-concat parser, and public noarg by-value nonmagic
 methods use existing body compilation. Plain global noarg/by-value/untyped named
@@ -71,7 +78,9 @@ before any call and preserves compilation order independently of call order.
 Ordinary function/Closure declarations do not consume the RTD counter. Wider
 factory contexts and incomplete containing-scope images remain Unsupported;
 include/eval units, inheritance, attributes, wider members/defaults
-and complete RTD ordering remain required.
+and wider RTD ordering remain required. The
+[mixed-class review](../../coverage/semantics/anonymous-mixed-rtd-review.json)
+separates early/deferred name consumption from runtime publication and factory call order.
 
 Public zero-parameter by-value untyped `__construct` methods use the ordinary
 constructor protocol, including default-public and case-insensitive spelling.

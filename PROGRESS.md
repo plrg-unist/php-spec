@@ -22,6 +22,20 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
+Anonymous classes can now share unit0 with plain empty global named declarations.
+Early root declarations consume no RTD key; deferred declarations consume one even
+when never executed. Three fresh originals agree at 234734715 /375, including factory
+lookup before calls and reversed call order. Author166 there and independent115 at
+c860977b0 pass 281 checks: 256 setup/source-frontier premises plus 25 pure queries,
+with 13 actual PhpSteps for early no-op, runtime publication and anonymous allocation.
+Changed strict3 passes at c860 (5.671s). The independent Closure admission failure
+exposed shared pattern variables; the one-line fix keeps static/byref flags independent.
+That failure and the original reserved-name native probe retain zero credit;
+syntax-only preparation/elaboration adds none. Named declarations inside explicit
+blocks/namespaces/functions/Closures, broader named headers/bodies and wider RTD
+ordering remain required. Source3/author166 retain their pointwise unchanged cut.
+[Mixed-class ledger](coverage/semantics/anonymous-mixed-rtd-review.json).
+
 Public noarg/by-value/untyped constructors on parentless anonymous classes now
 use ordinary allocation, call frames, result and throw cleanup with authenticated
 source/name receipts. Defaults precede body effects; automatic `new` ignores

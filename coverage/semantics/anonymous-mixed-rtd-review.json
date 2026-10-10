@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Ordinary unit0 parentless anonymous classes mixed with plain empty global named declarations; existing simple function factories. Named declarations inside standalone block statements/namespaces/functions/Closures, wider named headers/bodies and complete RTD ordering remain Unsupported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_mixed_class_cases.json"
+  },
+  "semantic_revision": "c860977b07d053656d12845d9bda17d49aadeeea",
+  "prerequisite": "0e847d333d75afc36e3792dbc5ea92eb62c01ba0",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "Fold compiler descriptors: anonymous+1, eligible root empty named+0, deferred empty named+1. Derive root eligibility from source placement, preceding early names and internal names; authenticate the entire empty named descriptor rather than trusting EARLY.",
+    "admission": "Whole unit excludes named descendants of standalone block statements, namespaces, functions and Closures before compiling any anonymous site. Closure static/byref fields use independent pattern variables.",
+    "execution": "Existing ordinary compiler/publication/allocation/frame protocols reused; no new fields/tasks/modules/schema/adapter. Runtime anonymous receipts retain completed source/CODE projection and live names/early history."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_generate_anon_class_name, zend_compile_class_decl, zend_build_runtime_definition_key, zend_compile_top_stmt"
+  ],
+  "native_cuts": [
+    {
+      "revision": "0e847d333d75afc36e3792dbc5ea92eb62c01ba0",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-native-22/run-v1/report.json",
+      "normal_originals": 2,
+      "scope": "Author early and conditional originals; reserved-name peer compile rejection is separate."
+    },
+    {
+      "revision": "0e847d333d75afc36e3792dbc5ea92eb62c01ba0",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-native-22/run-retry1/report.json",
+      "normal_originals": 1,
+      "scope": "Corrected independent factory original only; author2 unchanged."
+    }
+  ],
+  "source": {
+    "revision": "2347347150d0fe07ab1f3bf79f40c24497dfb01d",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-model-22/run-v1/report.json",
+    "native_agreements": 3,
+    "normal": 3
+  },
+  "strict": {
+    "revision": "c860977b07d053656d12845d9bda17d49aadeeea",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-gate-22/report-retry1.json",
+    "premises": 3,
+    "seconds": 5.671076536178589
+  },
+  "state_cuts": [
+    {
+      "revision": "2347347150d0fe07ab1f3bf79f40c24497dfb01d",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-state-22/report.json",
+      "group": "early",
+      "checks": 97,
+      "setup_source_frontier_checks": 86,
+      "pure_queries": 11,
+      "PhpSteps": 6,
+      "seconds": 17.692842960357666
+    },
+    {
+      "revision": "2347347150d0fe07ab1f3bf79f40c24497dfb01d",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-state-22/report.json",
+      "group": "conditional",
+      "checks": 69,
+      "setup_source_frontier_checks": 66,
+      "pure_queries": 3,
+      "PhpSteps": 3,
+      "seconds": 12.987102508544922
+    },
+    {
+      "revision": "c860977b07d053656d12845d9bda17d49aadeeea",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-peer-state-22/report-retry1.json",
+      "group": "factory-publication",
+      "checks": 115,
+      "setup_source_frontier_checks": 104,
+      "pure_queries": 11,
+      "PhpSteps": 4,
+      "seconds": 18.84318780899048
+    }
+  ],
+  "state_totals": {
+    "checks": 281,
+    "setup_source_frontier_checks": 256,
+    "pure_queries": 25,
+    "PhpSteps": 13
+  },
+  "state_method": "Exact checked native originals/file/cwd: completed source compiler descriptor count and early registries, allocation before named declaration and real no-op, conditional absence and actual Later publication/history, source-authenticated anonymous allocations, pre-call fullnames and right-before-left factory effects. Setup-inclusive checks are not distinct states. Pure context/early/counterfactual receipt arguments are separately counted.",
+  "counter_helper_boundary": "The counter helper does not authenticate every permutation of zero-cost early descriptors; only the anonymous-order negative is claimed. Full compilation projection and declaration history preserve actual compiler order. No execution of forged ordering is claimed.",
+  "compatibility": "Source3 and author166 retain revision234734715. The only subsequent semantic change separates two Closure flag pattern variables; all three checked original programs contain no NExprClosure, so those exact source/author paths are pointwise unchanged. Existing anonymous-only Closure units still pass the no-named-descendants gate. The affected independent115 fixture and changed strict3 pass at c860; no unrelated renewal.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-mixed-state-22/preparation.json",
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-mixed-state-22/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-mixed-peer-state-22/report-elab-retry1.json"
+    ],
+    "credit": 0
+  },
+  "preserved_failures": [
+    {
+      "revision": "0e847d333d75afc36e3792dbc5ea92eb62c01ba0",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-native-22/run-v1/report.json",
+      "group": "anonymous-mixed-factory",
+      "source_sha256": "90dcc1025ebcc017492dd46eab1aed3600c290801cf3958ec17850b43cd69a69",
+      "reason": "Native compilation rejects reserved class name Never before execution, exit255/empty stdout. Original source/raw retained; correction only Never to NeverHidden at a new file path, then affected native1.",
+      "credit": 0
+    },
+    {
+      "revision": "2347347150d0fe07ab1f3bf79f40c24497dfb01d",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-mixed-peer-state-22/report.json",
+      "reason": "Independent pure Closure-context query returned true because one pattern variable constrained static and byref flags equal. One-line semantic correction separates variables; unchanged115 fixture passes affected retry.",
+      "credit": 0
+    }
+  ],
+  "validation": "Passing phases retain exact source bytes/profile/file/cwd and raw streams, stable watched inputs, exits/cleanup0, empty owned PGIDs and no unrun. Serial jobs1: native55s, model45s/55s host/100000 steps, syntax Worker30s, elab30s and strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Raw artifacts stay ignored outside Git.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_mixed_class_cases.json",
+    "cases": 3,
+    "runner": "tests/semantics/method_runtime.py --cases tests/semantics/anonymous_mixed_class_cases.json",
+    "scope": "Unchanged normal native originals; generated names compute original file/line within source. Metadata publication adds no execution credit."
+  },
+  "remaining": [
+    "Named declarations inside standalone block statements/namespaces/functions/Closures; nonempty/modified/attributed/inherited named bodies, interfaces/traits/enums, RTD collisions/wrap and complete ordering.",
+    "Wider anonymous factory signatures/captures/class contexts, include/eval units, constructor arguments/types/access and broader consumers."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "independent_review": "comp_review_21 accepted final admission/counter net, source3 and state281 at their distinct cuts; independently read passing raw reports and preserved failures0."
+}
