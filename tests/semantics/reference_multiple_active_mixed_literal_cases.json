@@ -1,0 +1,23 @@
+[
+  {
+    "id": "active-finalizer-mixed-literal-cv-histories-local-catch",
+    "source": "<?php\n$x=\"old\";$z=\"mid\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$z,$y,$n;try{return \"old\";}finally{echo \"O;\";ping();try{return $z;}finally{echo \"M;\";ping();try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}catch(TypeError $e){echo \"C;\";}echo \"A;\";}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;M;P;I1;P;I2;P;C;A;M;P;I3;P;rnull=0;x=old;z=mid;n=3;yfixed=0;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "active-finalizer-mixed-literal-cv-inner-catch-rethrows",
+    "source": "<?php\n$x=\"old\";$z=\"mid\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$z,$y,$n;try{return \"old\";}finally{echo \"O;\";ping();try{return $z;}finally{echo \"M;\";ping();try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}catch(TypeError $e){throw $e;}echo \"A;\";}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;M;P;I1;P;I2;P;R;x=old;z=mid;n=2;yfixed=1;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "active-finalizer-mixed-literal-cv-inner-y-succeeds",
+    "source": "<?php\n$x=\"old\";$z=\"mid\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$z,$y,$n;try{return \"old\";}finally{echo \"O;\";ping();try{return $z;}finally{echo \"M;\";ping();try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=\"fixed\";}else{$y=\"fixed\";}}}catch(TypeError $e){echo \"C;\";}echo \"A;\";}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;M;P;I1;P;rnull=0;x=old;z=mid;n=1;yfixed=0;",
+    "stderr": "",
+    "exit": 0
+  }
+]
