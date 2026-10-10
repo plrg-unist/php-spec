@@ -283,7 +283,7 @@ rule PhpStep/property-hook-result: S ~> S[.TODO = ptask_tail*][.BASE = BASE_VALU
   -- if S.COMPLETION = NORMAL
 
 def $property_hook_isset_pending(S) = true
-  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ISSET_RESULT b z) :: ptask_tail*
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin_site)) :: (ISSET_RESULT b z) :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
   -- if $property_hook_isset_site(S, porigin_site, b)
   -- if S_read = $quiet_operand(S, S.RESULT)
@@ -293,7 +293,7 @@ def $property_hook_isset_pending(S) = false -- otherwise
 
 dec $property_hook_isset_plan(pstate) : ppropertyhook?
 def $property_hook_isset_plan(S) = (ppropertyhook)
-  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ISSET_RESULT b z) :: ptask_tail*
+  -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (ORIGIN_RETURN (porigin_site)) :: (ISSET_RESULT b z) :: ptask_tail*
   -- if S.ORIGIN = (porigin_site)
   -- if $property_hook_isset_site(S, porigin_site, b)
   -- if S_read = $quiet_operand(S, S.RESULT)
@@ -306,8 +306,9 @@ def $property_hook_isset_plan(S) = (ppropertyhook)
   -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z}
   -- if $property_hook_valid(S, ppropertyhook, true)
 def $property_hook_isset_plan(S) = eps -- otherwise
-rule PhpStep/property-hook-isset-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_HOOK_ISSET_RESULT ppropertyhook b] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
-  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (ISSET_RESULT b z) :: ptask_tail*
+;; DIM_PREP restores this same property origin before its quiet consumer.
+rule PhpStep/property-hook-isset-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_HOOK_ISSET_RESULT ppropertyhook b, ORIGIN_RETURN (ppropertyhook.SITE)] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_PREP phpType20 z) :: (ORIGIN_RETURN (porigin_site)) :: (ISSET_RESULT b z) :: ptask_tail*
   -- if $property_hook_isset_plan(S) = (ppropertyhook)
 rule PhpStep/property-hook-isset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "quiet property hook source or function"]
   -- if $property_hook_isset_pending(S)
