@@ -1,0 +1,178 @@
+{
+  "status": "private slice independently accepted; actual-parent integration pending",
+  "scope": [
+    "Ordinary source-function direct Iterator by-reference warnings admit copied KNOWN plain strings and authenticated interned/request string carriers.",
+    "Copied current bytes/carrier survive key and warning-handler source writes, named variadic binding, actual Fiber parking/resume and injected throw. The callee gets a distinct fresh reference cell.",
+    "Strings remain immutable metadata without heap nodes; copied raw string retirement has no destruction jobs. Throw cleanup retires Iterator DATA then temporary INPUT before catch."
+  ],
+  "remaining": [
+    "Initial REFERENCE string payloads and scalar references changed to strings by a handler",
+    "Array/object pre-warning payload holds",
+    "Direct Generator/IteratorAggregate unpack, other call targets and Generator callback methods",
+    "Nonnumeric raw valid-result changes"
+  ],
+  "parent": "aa4a7c27b17641b555fa5e264bb6642e5e9d2cae",
+  "implementation_revision": "f96cae5f4dafbe8bb319f8d3dd197e872d375199",
+  "prior_evidence": [
+    "coverage/semantics/iterator-call-unpack-review.json",
+    "coverage/semantics/iterator-call-unpack-nan-review.json"
+  ],
+  "engine_route": "PHP8.5.10 Zend/zend_vm_def.h SEND_UNPACK named/positional Traversable arms use ZVAL_DEREF and Z_TRY_ADDREF_P before zend_error, then ZVAL_NEW_REF afterward. Copied strings retain their original payload across that warning. Module30 string carriers are immutable authenticated metadata without heap owners; the existing fresh-reference send and ordered abort cleanup need no new owner field. A live dereferenced reference may change payload under the handler, so its string/array/object hold behavior remains a separate obligation.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "native": {
+    "revision": "f96cae5f4dafbe8bb319f8d3dd197e872d375199",
+    "report": ".tools/calls-iterator-copied-string-21/.tools/iterator-call-unpack-string-native-8cw16o3o/report.json",
+    "report_sha256": "ab215a25dd7cb221a568aaef0f969da2c06559ee6c3043ce8a51c91fc95cbe46",
+    "command": [
+      "timeout",
+      "-k",
+      "10s",
+      "60s",
+      "prlimit",
+      "--as=6442450944",
+      "--",
+      "python3",
+      "-u",
+      ".tools/native.py"
+    ],
+    "runner_sha256": "6f1088fb3a8d650a51d541bbdc72f0eee0456801a8898ab800c0a180ce69d231",
+    "originals": 6,
+    "matching_native_expectations": 6,
+    "normal_agreements": 0,
+    "process_seconds": 8,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "strict": {
+    "revision": "f96cae5f4dafbe8bb319f8d3dd197e872d375199",
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "report": ".tools/calls-iterator-copied-string-21/.tools/iterator-call-unpack-string-sl-ypdkuc5j/report.json",
+    "report_sha256": "13a5858f1c2602727a3e2402acc6eeb92b53712aa3c2e97f1d4126236b3e2869",
+    "command": [
+      "timeout",
+      "-k",
+      "10s",
+      "150s",
+      "prlimit",
+      "--as=6442450944",
+      "--",
+      "python3",
+      "-u",
+      ".tools/strict.py"
+    ],
+    "runner_sha256": "39778a25c42d8e2637d94b727cf27ac67a3d41ff6ad226f4441983573f41fa3c",
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "revision": "f96cae5f4dafbe8bb319f8d3dd197e872d375199",
+    "report": ".tools/calls-iterator-copied-string-21/.tools/iterator-call-unpack-string-source-d0s2ksk1/report.json",
+    "report_sha256": "c2627c2ce35dbb70ef8dbc66afd5b7d272fcbab2670deb8d41db7912d162aedd",
+    "command": [
+      "timeout",
+      "-k",
+      "10s",
+      "600s",
+      "prlimit",
+      "--as=6442450944",
+      "--",
+      "python3",
+      "-u",
+      ".tools/source.py",
+      "--native-report",
+      ".tools/iterator-call-unpack-string-native-8cw16o3o/report.json"
+    ],
+    "runner_sha256": "0587530e28bb72d7e40ebd40fb0393c93a6003fca96fc37eba1d204d290f1129",
+    "selection": [
+      "iterator-call-unpack-string-copied-dynamic-source-mutation",
+      "iterator-call-unpack-string-copied-named-variadic",
+      "iterator-call-unpack-string-copied-fiber-resume",
+      "iterator-call-unpack-string-copied-fiber-throw",
+      "iterator-call-unpack-string-reference-interned-control",
+      "iterator-call-unpack-string-scalar-to-interned-control"
+    ],
+    "normal_agreements": 4,
+    "unsupported_controls": 2,
+    "unsupported_agreement": 0,
+    "unsupported_output_events": [
+      4,
+      11
+    ],
+    "new_native_executions": 0,
+    "budgets": {
+      "steps": 100000,
+      "model_seconds": 60,
+      "process_seconds": 75
+    },
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "state_review": {
+    "revision": "b42b46cedd2f3a9bcbda3bd97ea709103c72d438",
+    "command": [
+      "timeout",
+      "-k",
+      "10s",
+      "1100s",
+      "prlimit",
+      "--as=6442450944",
+      "--",
+      "python3",
+      "-u",
+      ".tools/string-state-stop-first.py"
+    ],
+    "runner_sha256": "5633c445f59d83d7c5296211af300a52e89954fc0b9571d1a87d5f9220685133",
+    "groups": 8,
+    "physical_premises": 331,
+    "driver_clauses": 322,
+    "budgets": {
+      "seek_steps": 4000,
+      "finish_steps": 4000,
+      "process_seconds": 120,
+      "jobs": 1
+    },
+    "report": ".tools/calls-iterator-copied-string-21/.tools/fiber-state-review-3bbuhmfa/report.json",
+    "report_sha256": "c6cb6ef908efd20fd5de056e902fb2839763d7c2fdf67f04dfe5e6a590da939a",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "resource_cap": {
+    "address_space_bytes": 6442450944,
+    "jobs": 1,
+    "stop_first": true,
+    "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; existing recorded BaseException cleanup kills and waits for the numeric process group, and provider workers close in finally."
+  },
+  "compatibility": "Only three scalar_operand lines in385 change. Prior Iterator unpack25+Unsupported1/state29 and valid-NaN11+Unsupported1/state12 retain their original inputs and failures without renewed credit."
+}

@@ -109,9 +109,17 @@ For null/bool/int/float payloads, handlers may mutate a live reference, park or
 throw. Resume reads the raw payload once and creates a fresh callee reference
 cell; a copied current value is unaffected by handler writes to its source.
 Warnings retain actual cursor/cache ownership through invoke/result/cleanup and
-saved Fiber views. Direct Generator/Aggregate unpack, other call targets,
-Generator callback methods and refcounted by-reference warning payloads remain
-explicit follow-ons.
+saved Fiber views. Copied KNOWN strings also keep their bytes and authenticated
+carrier through key/handler writes, named variadic binding and Fiber park/throw.
+Zend SEND_UNPACK dereferences and adds a payload reference before the warning,
+then wraps the value in a fresh callee cell. Copied strings remain stable across
+the callback; immutable string metadata has no modeled heap owners. A live
+REFERENCE string, or scalar reference changed to a string by the handler, stays
+Unsupported pending its separate pre-warning payload-hold contract.
+Direct Generator/Aggregate unpack, other call targets, Generator callbacks and
+array/object by-reference warning payloads remain explicit follow-ons. The
+[string review](../../coverage/semantics/iterator-call-unpack-string-review.json)
+records the bounded source and independent state cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

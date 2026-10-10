@@ -456,11 +456,15 @@ order. Sent copies may keep their values alive. Pending abort cleanup continues
 after a destructor throws, preserving the previous exception.
 By-reference warnings support null/bool/int/float payloads, including handler
 mutation, Fiber suspension and throw; the callee receives a fresh reference cell.
+Copied string payloads also preserve their original bytes through key/handler
+writes, named variadic binding and Fiber park/throw; see the
+[string review](coverage/semantics/iterator-call-unpack-string-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
-raw valid changes and refcounted by-reference warning payloads remain required.
+raw valid changes, reference string payloads, handler changes to strings and
+array/object by-reference warning payloads remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and

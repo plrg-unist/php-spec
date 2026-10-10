@@ -159,8 +159,21 @@ and affected two at `76cf54a4c`; the original parked-owner fixture failure stays
 zero campaign credit. Actual375 over `0e847d333` passes strict SL at `ced657d93`;
 private source/state cuts retain their own inputs. Direct Generator/Aggregate
 unpack, other call targets, Generator callbacks, nonnumeric raw valid changes and
-refcounted by-reference warning payloads remain required.
+refcounted by-reference warning payloads remained required at that cut.
 [NaN warning review](coverage/semantics/iterator-call-unpack-nan-review.json).
+
+Copied KNOWN strings now survive direct Iterator by-reference argument warnings
+with their original bytes/carrier, including key/handler source writes, named
+variadic binding and Fiber park/throw. The callee receives a distinct private
+reference cell. Strict375 and four original source agreements pass at `f96cae5f4`;
+two live-reference string controls retain Unsupported/zero agreement with4/11
+output events. Eight independent reached-state groups/331 physical premises pass
+at `b42b46ced`, including fresh-cell ownership, actual parked line/cursor guards,
+throw cleanup and out-of-pool carrier rejection.
+Reference string payloads, handler changes to strings and array/object
+pre-warning payload holds remain required; earlier Iterator/NaN evidence keeps
+its original cuts.
+[String review](coverage/semantics/iterator-call-unpack-string-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
