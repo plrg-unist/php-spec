@@ -1,5 +1,5 @@
 {
-  "status": "bounded private slice accepted; actual-parent composition pending",
+  "status": "reviewed private slice and actual-parent strict accepted",
   "scope": [
     "Ordinary source-function direct Iterator valid NaN warnings retain the raw retval and the authenticated unpack cursor through handler invoke/result/cleanup and saved Fiber views.",
     "One post-warning numeric payload reread preserves copied NaN versus a live reference; integer payloads use their double bits without tag redispatch or a second warning.",
@@ -211,6 +211,45 @@
     }
   ],
   "compatibility": "Only module385 warning continuation changes; earlier direct Iterator source25/Unsupported1/state29/1174/1122 cuts remain frozen. The state-only fixture commits leave accepted strict/source791 inputs unchanged.",
-  "actual_composition": null,
+  "actual_composition": {
+    "parent": "0e847d333d75afc36e3792dbc5ea92eb62c01ba0",
+    "semantic_revision": "ced657d931db6e08572ead78ad535cb4943be54d",
+    "private_net": "91b704e8c81806fe898c5b762a428f7b8f491387",
+    "modules": 375,
+    "report": ".tools/calls-iterator-valid-nan-current-21/.tools/iterator-call-unpack-nan-current-sl-1zo_cpgy/report.json",
+    "report_sha256": "1aa85c80a064ce3488d95f6569905646baaa5627c25eeac2ef68313d9523db63",
+    "command": [
+      "timeout",
+      "-k",
+      "10s",
+      "150s",
+      "prlimit",
+      "--as=6442450944",
+      "--",
+      "python3",
+      "-u",
+      ".tools/strict.py"
+    ],
+    "runner_sha256": "73c4a9e6cd9f12b9946b42bee15d53968d2b99725811adcc06f323d0ad3bc7d5",
+    "ordered_inputs": "spec/semantics/modules.json",
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "determinism_checks": true,
+      "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+      "ocaml": "5.1.0"
+    },
+    "budgets": {
+      "process_seconds": 120,
+      "outer_seconds": 150,
+      "address_space_bytes": 6442450944,
+      "jobs": 1
+    },
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "retained_evidence": "Private native/source and reached-state cuts retain their original inputs and are not renewed."
+  },
   "state_fixture_correction_revision": "76cf54a4cf312b12f8a47424c8d9bc495648d90e"
 }

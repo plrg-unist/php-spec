@@ -156,9 +156,10 @@ control is Unsupported/zero agreement. Three original Fiber expectation failures
 and the ENOSPC-interrupted source campaign retain zero credit. Twelve independent
 reached-state groups/432 physical premises pass across retained ten at `64d205280`
 and affected two at `76cf54a4c`; the original parked-owner fixture failure stays
-zero campaign credit. Direct Generator/Aggregate unpack, other call targets,
-Generator callbacks, nonnumeric raw valid changes and refcounted by-reference
-warning payloads remain required.
+zero campaign credit. Actual375 over `0e847d333` passes strict SL at `ced657d93`;
+private source/state cuts retain their own inputs. Direct Generator/Aggregate
+unpack, other call targets, Generator callbacks, nonnumeric raw valid changes and
+refcounted by-reference warning payloads remain required.
 [NaN warning review](coverage/semantics/iterator-call-unpack-nan-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
