@@ -511,8 +511,16 @@ Two originals agree at `e2275499a`; four reached current/saved
 fixtures pass 439 assertions at `ddc500037`.
 Actual 374 over `626142838` passes strict at `eef043fe1` (5.610s, zero application evaluations).
 [Two-history CV review](coverage/semantics/reference-return-multiple-active-cv-review.json).
-Locally caught consumed-Z resumption is explicitly Unsupported; lifecycle
-capture, wider signatures/operands and further histories remain open.
+Locally caught inner rejection now resumes the consumed middle CV as cleared NULL.
+The atomic Z/X restoration carries no old operand root; NULL rejection creates a
+fresh TypeError at Z's line, replays its finalizer and retains the outer history
+through saved ping frames before the selected y alias returns. One original
+agrees at `478eb1e4`; three reached current/saved fixtures pass 391 assertions
+(163+80+148) at `0068f567`. Private strict374 passes at `478eb1e4` in 5.513s.
+The helper-internal first Z leave is not a public frontier; missing CLEARED is
+helper refusal only. The old state439 caught-Unsupported boundary is superseded
+only for this slice. Other caught layouts, lifecycle capture, wider
+signatures/operands, further histories and broad returns verification remain open.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that

@@ -2,12 +2,13 @@
   "version": 1,
   "status": "accepted-bounded",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "scope": "Two consumed already-active finalizers for ordinary variable CV reference returns in a named function with the exact nonnullable string signature, with destructor_operational false at capture. The genuine old histories are captured in inner-to-outer order from their FINALLY_REF_RETURN/phase3/restore triples.",
+  "scope": "Two consumed already-active ordinary CV finalizers in a named function with the exact nonnullable string signature and destructor_operational false at capture. Ordered root-free Z/X history supports uncaught replay, initial successful replacement and the bounded locally caught middle-CV resumption below.",
   "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
   "authority": [
     "vendor/php-src/Zend/zend_vm_def.h: DISCARD_EXCEPTION, FAST_RET, RETURN_BY_REF",
     "vendor/php-src/Zend/zend_compile.c: zend_compile_return, zend_compile_try",
-    "pinned two-history original n0/n1 and genuine saved/current phase3/restore predecessor"
+    "pinned two-history original n0/n1 and genuine saved/current phase3/restore predecessor",
+    "vendor/php-src/Zend/zend_vm_def.h: CATCH and pinned caught-middle original"
   ],
   "source": {
     "revision": "e2275499a05523b58a9aa5973ffd3cb6b378f217",
@@ -92,12 +93,74 @@
     }
   ],
   "remaining": [
-    "Normal resumption of consumed Z after a locally caught inner error is explicitly Unsupported",
+    "Other caught-middle layouts, wider signatures/operands and further active histories",
     "Lifecycle-enabled pair capture, wider signatures, non-CV operands and further active histories",
     "Genuinely released typed-CV targets, destructor throw/reentry, real suspension and broader owner domains",
     "Complete returns verification and full core PHP conformance"
   ],
   "reviewer": "returns_review_20",
   "verifier": "returns_verify_20",
-  "recovery": "Use maintained reference_multiple_active_cv_cases.json and reference_multiple_active_cv_state.py with the archived model2 packets. The producer imports only neutral active-finalizer and request-state helpers. Generated DSL/raw records stay ignored; use explicit SL with pinned runtimes and cap45/jobs1."
+  "recovery": "Use maintained reference_multiple_active_cv_cases.json and reference_multiple_active_cv_state.py with the archived model2 packets. The producer imports only neutral active-finalizer and request-state helpers. Generated DSL/raw records stay ignored; use explicit SL with pinned runtimes and cap45/jobs1. For the caught-middle increment use reference_multiple_active_cv_caught_cases.json and reference_multiple_active_cv_caught_state.py with its model singleton packets; the earlier state439 helper-only caught-Unsupported boundary remains historical.",
+  "caught_middle": {
+    "status": "accepted-bounded",
+    "scope": "Normal middle-CV resumption after a delayed inner TypeError is caught inside its finalizer, within the existing exact two-CV/named-function/nonnullable-string/inactive-destruction pair domain.",
+    "source": {
+      "revision": "478eb1e4f69bcd3483f4d1828834d3b4ea47208c",
+      "agreements": 1,
+      "raw": ".tools/returns-multiple-active-caught-20/.tools/returns-multiple-active-caught20/model-multiple-active-cv-local-catch-nv5rpjp5/report.json",
+      "report_sha256": "ae059cfcf4c9435c57526d009963504cedb57f2edbf05abee786b44e45ba3a44"
+    },
+    "state": {
+      "revision": "0068f567a887d16fd9137b7861ccb59cd2260fc3",
+      "fixtures": 3,
+      "assertions": 391,
+      "raw": ".tools/returns-multiple-active-caught-20/.tools/returns-multiple-active-caught20/multiple-active-caught-state-0_ltkmt5/report.json",
+      "report_sha256": "94ec52cab25529f98eb880f7c7be4b91dcb0a5e3694a2002b5287ec8bb1e6c45",
+      "assertions_by_fixture": [
+        163,
+        80,
+        148
+      ]
+    },
+    "private_compiler": {
+      "revision": "478eb1e4f69bcd3483f4d1828834d3b4ea47208c",
+      "modules": 374,
+      "raw": ".tools/returns-multiple-active-caught-20/.tools/returns-multiple-active-caught20/returns-multiple-active-caught-current-compiler-p2mt2ia3/report.json",
+      "report_sha256": "f04b1192b615b913f5e1b410df3d88bd84992a521010009d4d52934ade0ac951",
+      "application_evaluations": 0,
+      "source_agreements": 0,
+      "elapsed_seconds": 5.512958526611328
+    },
+    "actual_parent_compiler": null,
+    "history_limit": "The authentic normal pair departure runs both existing non-owning restoration leaves atomically, then carries a distinct cleared-Z certificate with no old operand/cell root. Its terminal/source/line/ordered-copy and replay guards preserve legacy incoming-REFERENCE admission. Coherent rewriting of all source and continuation copies is not independently disproved.",
+    "helper_limit": "The first Z leave is helper-internal and does not satisfy legacy consumed-tail public validity; only actual pair and CLEARED endpoints are public frontiers. Missing the CLEARED tag is direct-helper refusal, not an independent public rejection claim.",
+    "superseded_boundary": "The earlier state439 cut retains its historical helper-only caught-pair Unsupported assertion; that deliberate boundary is superseded by this scoped implementation. Its uncaught and initial successful source cuts stay distinct.",
+    "preserved_diagnostics": [
+      {
+        "kind": "caught local baseline",
+        "revision": "a6994698f5bbbc960eadf4a6992c10a41d24d661",
+        "raw": ".tools/returns-multiple-active-publication-20/.tools/returns-multiple-active20/model-multiple-active-cv-local-catch-rn5l1i_f/report.json",
+        "report_sha256": "032d6a9c04228d1fa47d1d860b11844e932ba45e0fe78fc360ecc0790b3d602e",
+        "result": "Unsupported caught two-history reference return replay after C/A",
+        "agreement_credit": 0
+      },
+      {
+        "kind": "caught normal pair predecessor",
+        "revision": "a6994698f5bbbc960eadf4a6992c10a41d24d661",
+        "raw": ".tools/returns-multiple-active-publication-20/.tools/returns-multiple-active20/multiple-active-caught-predecessor-71za9iqv/report.json",
+        "report_sha256": "3553d410bee6f0b8eb7227e0bcbb88be02777501c58789603b8837054e4a9f1a",
+        "assertions": 66,
+        "agreement_credit": 0
+      }
+    ],
+    "reviewer": "returns_review_20",
+    "verifier": "returns_verify_20",
+    "native_observation": {
+      "revision": "d80c97b3c44ea5796a262d5429b0988c94237e37",
+      "raw": ".tools/returns-consumed-literal-native-20/.tools/returns-verify20-consumed-value/native-multiple-active-cv-local-catch-5c44gd5v/report.json",
+      "report_sha256": "c568696914d952e61ea65a9409371aa1f29fe175a30c9a9697f30fb7829e3b13",
+      "model_evaluations": 0,
+      "source_agreements": 0
+    }
+  }
 }

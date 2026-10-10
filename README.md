@@ -694,7 +694,11 @@ assertions pass. Two already-active CV finalizers also retain
 [ordered non-owning history](coverage/semantics/reference-return-multiple-active-cv-review.json) across inner rejection.
 Uncaught replay leaves Z then X; initial success preserves the selected y
 alias. Two originals and four reached fixtures/439 assertions pass.
-Caught consumed-Z resumption, lifecycle-enabled capture, further histories,
+Locally caught inner rejection now resumes the consumed middle CV as cleared NULL,
+then replays its finalizer while retaining the outer history. One original agrees
+and three reached current/saved fixtures pass 391 assertions at their private cuts;
+the earlier state439 caught-Unsupported helper boundary is superseded only here.
+Lifecycle-enabled capture, other caught layouts and further histories,
 other VALUE signatures/layouts, general CONST, other NULL, wider Stringable
 consumers and owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded

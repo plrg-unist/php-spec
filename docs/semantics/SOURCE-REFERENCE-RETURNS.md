@@ -115,8 +115,16 @@ alias with x/z unchanged. Capture requires the exact named-function string
 signature and no destructor operation. Two originals and four reached
 current/saved fixtures/439 assertions pass at separate cuts in the
 [two-history CV review](../../coverage/semantics/reference-return-multiple-active-cv-review.json).
-Locally caught consumed-Z resumption is explicitly Unsupported. Lifecycle
-capture, wider signatures/operands and further histories remain open.
+After a locally caught inner rejection, the consumed middle CV resumes as cleared
+NULL. Atomic Z/X restoration adds no payload root; the fresh NULL TypeError uses
+Z's original line and replays its finalizer with the outer history retained.
+The selected y alias later returns. One original at `478eb1e4` and three reached
+current/saved fixtures/391 assertions at `0068f567` pass; private strict374 is
+separate. Only the complete pair and CLEARED endpoints are public frontiers:
+the first Z leave is helper-internal, and missing CLEARED is helper refusal.
+The earlier state439 caught-Unsupported helper boundary is superseded only for
+this slice. Other caught layouts, lifecycle capture, wider signatures/operands,
+further histories and broad returns verification remain open.
 
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
