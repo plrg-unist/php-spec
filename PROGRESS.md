@@ -517,6 +517,8 @@ fresh TypeError at Z's line, replays its finalizer and retains the outer history
 through saved ping frames before the selected y alias returns. One original
 agrees at `478eb1e4`; three reached current/saved fixtures pass 391 assertions
 (163+80+148) at `0068f567`. Private strict374 passes at `478eb1e4` in 5.513s.
+Actual375 over `204200d1` passes strict at `45223cc60` in 5.546s,
+with zero application evaluations; private source/state cuts keep their identities.
 The helper-internal first Z leave is not a public frontier; missing CLEARED is
 helper refusal only. The old state439 caught-Unsupported boundary is superseded
 only for this slice. Other caught layouts, lifecycle capture, wider
