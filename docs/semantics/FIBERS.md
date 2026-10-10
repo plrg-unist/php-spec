@@ -532,8 +532,10 @@ comparison confirms identity. Handled termination returns null, releases the
 exception before the nonowning historical result buffer, then retires Closure
 and Fiber through authentic eager cleanup. Distinct direct/repaired 374-module
 sources and 439 premises (343 genuine/derived, 96 constructed) validate source,
-owned buffer, continuation and zero-budget resumption. Unhandled injection,
-throw errors and wider forms require separate evidence.
+owned buffer, continuation and zero-budget resumption. The current 375-module
+composition passes compilation and initialized SL439 separately; private source
+and native cuts retain their original inputs. Unhandled injection, throw errors
+and wider forms require separate evidence.
 
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver

@@ -2651,6 +2651,9 @@ Direct agreement stays at 2112d1e9/374; repaired agreement and 439 premises
 zero-budget resumption. Original Unsupported retains zero credit. Maintained
 source/render relocation renews no runtime evidence; wider throw/error paths
 and original 7's CLI60 timeout remain OPEN.
+Actual-parent compilation and initialized SL439 pass at `6d26cefa5` over
+`9f00481d` with 375 modules; CALLS385 Iterator and inherited GC/property/anonymous
+guards preserve prior source/native cuts.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
