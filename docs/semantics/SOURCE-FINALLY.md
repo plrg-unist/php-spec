@@ -134,7 +134,16 @@ current/saved fixtures/391 assertions at `0068f567` pass; private strict374 is
 separate. Only the complete pair and CLEARED endpoints are public frontiers:
 the first Z leave is helper-internal, and missing CLEARED is helper refusal.
 The earlier state439 caught-Unsupported helper boundary is superseded only for
-this slice. Other caught layouts, lifecycle capture, wider signatures/operands,
+this slice.
+
+The outer history may also be a source-equal immutable string literal; middle Z
+and inner Y remain ordinary distinct CV returns. The literal owns no cell or
+operand root, and its canceled VALUE Notice stays absent through caught Y
+replay, cleared-Z replay and saved ping frames. Y has two source replay contexts
+but one finalizer owner. Successful Y or error escape retires both histories.
+Three exact originals, five reached fixtures/461 assertions and independent
+three/187 pass at separate cuts in the same review. Actual outer-literal
+resumption/Notice, other caught layouts, lifecycle capture, wider signatures/operands,
 further histories and broad returns verification remain open.
 
 Module 186 converts a selected live unconstrained aliased return CV before protected

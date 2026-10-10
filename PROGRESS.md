@@ -566,8 +566,17 @@ Actual375 over `204200d1` passes strict at `45223cc60` in 5.546s,
 with zero application evaluations; private source/state cuts keep their identities.
 The helper-internal first Z leave is not a public frontier; missing CLEARED is
 helper refusal only. The old state439 caught-Unsupported boundary is superseded
-only for this slice. Other caught layouts, lifecycle capture, wider
-signatures/operands, further histories and broad returns verification remain open.
+only for this slice.
+
+An immutable outer string literal now shares the ordered pair with ordinary Z/Y
+CV returns. Source-equal interned history owns no cell; replacement cancels its
+VALUE Notice. Caught inner rejection replays cleared Z with the literal history
+retained; successful Y or error escape retires it with x/z unchanged. Three exact
+originals agree at `46247e9b`; five reached fixtures pass 461 assertions
+(133+139+66+62+61) at `beec37fa`, and independent three/187 pass at `56f553af`.
+Private strict374 at `46247e9b` passes in 5.767s with zero applications.
+Actual outer-literal resumption/Notice, other caught layouts, lifecycle capture,
+wider signatures/operands, further histories and broad returns verification remain open.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that

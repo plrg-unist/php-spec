@@ -705,7 +705,11 @@ Locally caught inner rejection now resumes the consumed middle CV as cleared NUL
 then replays its finalizer while retaining the outer history. One original agrees
 and three reached current/saved fixtures pass 391 assertions at their private cuts;
 the earlier state439 caught-Unsupported helper boundary is superseded only here.
-Lifecycle-enabled capture, other caught layouts and further histories,
+An immutable outer string literal also shares the pair with middle Z and inner Y
+CV returns. Its source-equal history owns no cell; replacement cancels its VALUE
+Notice, and selected Y or error escape retires it. Three exact originals, five
+reached fixtures/461 assertions and independent three/187 pass at separate cuts.
+Actual outer-literal resumption/Notice, lifecycle capture, other caught layouts and further histories,
 other VALUE signatures/layouts, general CONST, other NULL, wider Stringable
 consumers and owner domains remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded

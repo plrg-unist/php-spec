@@ -2,7 +2,7 @@
   "version": 1,
   "status": "accepted-bounded",
   "target": "PHP 8.5.10 CLI NTS 64-bit",
-  "scope": "Two consumed already-active ordinary CV finalizers in a named function with the exact nonnullable string signature and destructor_operational false at capture. Ordered root-free Z/X history supports uncaught replay, initial successful replacement and the bounded locally caught middle-CV resumption below.",
+  "scope": "Two consumed already-active ordinary CV finalizers in a named function with the exact nonnullable string signature and destructor_operational false at capture. Ordered root-free Z/X history supports uncaught replay, initial successful replacement and the bounded locally caught middle-CV resumption below. The mixed_literal increment separately admits one source-equal immutable outer string literal with ordinary middle Z and inner Y CV returns.",
   "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
   "authority": [
     "vendor/php-src/Zend/zend_vm_def.h: DISCARD_EXCEPTION, FAST_RET, RETURN_BY_REF",
@@ -94,13 +94,13 @@
   ],
   "remaining": [
     "Other caught-middle layouts, wider signatures/operands and further active histories",
-    "Lifecycle-enabled pair capture, wider signatures, non-CV operands and further active histories",
+    "Lifecycle-enabled pair capture, wider signatures, other non-CV operands and further active histories",
     "Genuinely released typed-CV targets, destructor throw/reentry, real suspension and broader owner domains",
     "Complete returns verification and full core PHP conformance"
   ],
   "reviewer": "returns_review_20",
   "verifier": "returns_verify_20",
-  "recovery": "Use maintained reference_multiple_active_cv_cases.json and reference_multiple_active_cv_state.py with the archived model2 packets. The producer imports only neutral active-finalizer and request-state helpers. Generated DSL/raw records stay ignored; use explicit SL with pinned runtimes and cap45/jobs1. For the caught-middle increment use reference_multiple_active_cv_caught_cases.json and reference_multiple_active_cv_caught_state.py with its model singleton packets; the earlier state439 helper-only caught-Unsupported boundary remains historical.",
+  "recovery": "Use maintained reference_multiple_active_cv_cases.json and reference_multiple_active_cv_state.py with the archived model2 packets. The producer imports only neutral active-finalizer and request-state helpers. Generated DSL/raw records stay ignored; use explicit SL with pinned runtimes and cap45/jobs1. For the caught-middle increment use reference_multiple_active_cv_caught_cases.json and reference_multiple_active_cv_caught_state.py with its model singleton packets; the earlier state439 helper-only caught-Unsupported boundary remains historical. For the mixed increment use reference_multiple_active_mixed_literal_cases.json and reference_multiple_active_mixed_literal_state.py with its frozen model3 packets; all prior cuts and failed fixtures keep their original identities.",
   "caught_middle": {
     "status": "accepted-bounded",
     "scope": "Normal middle-CV resumption after a delayed inner TypeError is caught inside its finalizer, within the existing exact two-CV/named-function/nonnullable-string/inactive-destruction pair domain.",
@@ -171,5 +171,108 @@
       "model_evaluations": 0,
       "source_agreements": 0
     }
+  },
+  "mixed_literal": {
+    "status": "accepted-bounded",
+    "scope": "Source-equal NScalarString/INTERNED_STRING outer history, ordinary middle Z and inner Y CV returns, exact named-function nonnullable string signature and destructor_operational false at capture. Locally caught Y rejection, error escape and initial Y success are the three exact source paths.",
+    "source": {
+      "revision": "46247e9bfde8635aeba591b71db4d98ef6559fc2",
+      "agreements": 3,
+      "raw": ".tools/returns-multiple-active-mixed-literal-21/.tools/returns-multiple-active-mixed-literal21/model-multiple-active-mixed-literal-e3u6p9bk/report.json",
+      "report_sha256": "c9b9e07a0fc10fd84fb45eb1119dbb925ba882fabe007152cab1eea9e3880e8d"
+    },
+    "state": {
+      "revision": "beec37fa2511e9adc3026244fcaea5744c7cf292",
+      "fixtures": 5,
+      "assertions": 461,
+      "assertions_by_fixture": [
+        133,
+        139,
+        66,
+        62,
+        61
+      ],
+      "public_refusals": 10,
+      "raw": ".tools/returns-multiple-active-mixed-literal-21/.tools/returns-multiple-active-mixed-literal21/multiple-active-mixed-literal-state-tpkd6exh/report.json",
+      "report_sha256": "4b95089f7780218fc7c62aa5c46588a94bf6cfd928f09e82539b713e64ef74d4"
+    },
+    "independent_state": {
+      "revision": "56f553af1a71abafacd07af75c35f1c7515650af",
+      "runtime_revision": "46247e9bfde8635aeba591b71db4d98ef6559fc2",
+      "fixtures": 3,
+      "assertions": 187,
+      "raw": ".tools/returns-multiple-active-mixed-literal-21/.tools/returns-verify21-mixed-state/verify-mixed-literal-state-e2q5zoxa/report.json",
+      "report_sha256": "e4e863974616b6315f46962d634db18b262068c75dcea6019183ab3214534e33"
+    },
+    "private_compiler": {
+      "revision": "46247e9bfde8635aeba591b71db4d98ef6559fc2",
+      "modules": 374,
+      "raw": ".tools/returns-multiple-active-mixed-literal-21/.tools/returns-multiple-active-mixed-literal21/returns-mixed-literal-current-compiler-t8pfa31l/report.json",
+      "report_sha256": "242b37b337e598d32d90f4bb6b82fd9e8aa97edfba362eb80aaf79e77b88c659",
+      "elapsed_seconds": 5.767228841781616,
+      "application_evaluations": 0,
+      "source_agreements": 0
+    },
+    "actual_parent_compiler": null,
+    "history_limit": "Genuine source-reached Z and outer-literal phase3/restore triples enter pending then pair markers in two actual steps. Source/value/line/order guards authenticate the literal; it owns no cell or operand root. Y replacement cancels the old VALUE Notice, which stays absent through reached Y TypeError, cleared-Z replay, saved ping and selected-Y/error-escape cleanup. Y has two replay contexts (inner TRY plus catch-only TRY), but one finalizer owner. Coherent rewriting of every source/copy/tail is not independently disproved.",
+    "helper_limit": "The existing first-Z internal leave and missing-CLEARED direct-helper refusal limits remain. Reached pending, CLEARED and saved-state mutations are ten public descriptor refusals; no helper-only probe is counted as public rejection.",
+    "preserved_baseline": {
+      "revision": "0068f567a887d16fd9137b7861ccb59cd2260fc3",
+      "raw": ".tools/returns-verify21-mixed-baseline/run1/report.json",
+      "report_sha256": "b5134a80ce2c2cc71a35c68353401bb202e18cf1f3c825f35609051891bc181f",
+      "result": "Unsupported reference return replay requires runtime finalizer after O;P;M;P;I1;P;. Genuine initial literal VALUE Notice and simultaneous literal/Z predecessor fixtures pin the subsequent loss of both restoration tails.",
+      "agreement_credit": 0
+    },
+    "native_observations": [
+      {
+        "raw": ".tools/returns-consumed-literal-native-20/.tools/returns-verify20-consumed-value/native-multiple-active-mixed-literal-fv26fk77/report.json",
+        "report_sha256": "c5ad95ffb8bba1ed61db11b8af356876276b815e30e8158f8dc344a7e797af97",
+        "sources": 1,
+        "source_agreements": 0
+      },
+      {
+        "raw": ".tools/returns-verify21-mixed-baseline/native-tail-controls/report.json",
+        "report_sha256": "485f678ac1112a9c6f5288d378864e04a337fc1930a3978d85327b5852900cdb",
+        "sources": 2,
+        "source_agreements": 0
+      }
+    ],
+    "preserved_failures": [
+      {
+        "revision": "56f553af1a71abafacd07af75c35f1c7515650af",
+        "raw": ".tools/returns-multiple-active-mixed-literal-21/.tools/returns-multiple-active-mixed-literal21/multiple-active-mixed-literal-state-410p4etn/report.json",
+        "report_sha256": "676ab56b0cc3516660ebcdb68ce9315260e6204f2d8e892a13c051229f405b89",
+        "result": "First author fixture incorrectly asserted one Y replay context; last four unrun.",
+        "state_assertion_credit": 0
+      },
+      {
+        "revision": "a6563c45cc3e4a82880d00a339a2aa7f3531636e",
+        "raw": ".tools/returns-multiple-active-mixed-literal-21/.tools/returns-multiple-active-mixed-literal21/multiple-active-mixed-literal-state-4s9o6kjv/report.json",
+        "report_sha256": "2f51accd43821695f1ba8212dcf2c50270c94de2906eed485e9c4c79a18cd2e0",
+        "result": "First author fixture failed elaboration of explicit catch-source pattern before assertions; last four unrun.",
+        "state_assertion_credit": 0
+      },
+      {
+        "revision": "b3634e2c54fe1835d790020497eb8707c10528cc",
+        "raw": ".tools/returns-multiple-active-mixed-literal-21/.tools/returns-multiple-active-mixed-literal21/multiple-active-mixed-literal-state-tu7ismhz/report.json",
+        "report_sha256": "3e49c527ffc53d98cd4ca0f3560138ea1bb244800e3ed43b4cf5ee1077b31227",
+        "result": "All five full fixtures compiled with zero applications. First state group hit cap45 with duplicate full-drive budget tails; last four unrun. Four byte-identical full-fixture compilations are retained at this cut.",
+        "state_assertion_credit": 0
+      },
+      {
+        "revision": "56f553af1a71abafacd07af75c35f1c7515650af",
+        "raw": ".tools/returns-multiple-active-mixed-literal-21/.tools/returns-verify21-mixed-state/verify-mixed-literal-state-fbk3v8wd/report.json",
+        "report_sha256": "f9517166b7977d1074a1928e44cfd642b0e4fe3cf13c2c7d917a3c240c3977a2",
+        "result": "Independent fixture failed elaboration of untyped cursor metavariables before assertions.",
+        "state_assertion_credit": 0
+      }
+    ],
+    "remaining": [
+      "Actual outer-literal resumption and restored original-line VALUE Notice after mixed pair history",
+      "Other caught layouts, lifecycle-enabled capture, wider signatures/operands and further active histories",
+      "Complete returns verification and full core PHP conformance"
+    ],
+    "reviewer": "returns_review_21",
+    "verifier": "returns_verify_21"
   }
 }
