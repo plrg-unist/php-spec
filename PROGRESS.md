@@ -139,11 +139,27 @@ previous Throwable. Strict373 passes at `9d8afc613`; 25 selected source agreemen
 retain `a59`/`9d8` cuts, and a Generator Unsupported control keeps zero agreement.
 Twenty-nine genuine-source groups/1174 physical premises pass at retained
 `4eb`/`79d`/`20e1` cuts; original compiler and fixture failures stay zero credit.
-Direct Generator/Aggregate unpack, other call targets, Generator callbacks,
-valid NaN and refcounted by-reference warning payloads remain required.
+At that cut direct Generator/Aggregate unpack, other call targets, Generator
+callbacks, valid NaN and refcounted by-reference warning payloads remained required.
 Actual375 over `e1a016144` passes strict SL at `6ece4f690`; private
 source/state cuts retain their own inputs.
 [Iterator unpack ledger](coverage/semantics/iterator-call-unpack-review.json).
+
+Direct Iterator call-unpack valid NaN warnings now retain the raw retval through
+numeric handler mutation, Fiber park and throw. One numeric reread distinguishes
+copied NaN from live references, including integer-minimum signed-zero bits;
+retval retirement precedes current or Iterator/input teardown. False later warnings
+keep prior named/sent owners into target entry; thrown warnings retire remaining
+owners in native order.
+Strict375 and eleven source agreements pass at `79104d0da`; the nonnumeric raw-tag
+control is Unsupported/zero agreement. Three original Fiber expectation failures
+and the ENOSPC-interrupted source campaign retain zero credit. Twelve independent
+reached-state groups/432 physical premises pass across retained ten at `64d205280`
+and affected two at `76cf54a4c`; the original parked-owner fixture failure stays
+zero campaign credit. Direct Generator/Aggregate unpack, other call targets,
+Generator callbacks, nonnumeric raw valid changes and refcounted by-reference
+warning payloads remain required.
+[NaN warning review](coverage/semantics/iterator-call-unpack-nan-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

@@ -1,0 +1,241 @@
+[
+  {
+    "id": "iterator-call-unpack-nan-initial-reference-zero",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = 0.0;\n    return true;\n});\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "c0f4de2172651fb4106f5e0af20050e4dec787f9e70f46c2528537cb223f0cf3",
+    "purpose": "initial reference zero",
+    "expected_model": "normal",
+    "native_stdout": "W|V|H|2|unexpected NAN value was coerced to bool|23|I|B3:4|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-initial-copied-zero",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = 0.0;\n    return true;\n});\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "956c0c884cbf395653a7632a117cfb708f293f18f7f979cd908c5f9e0db9311f",
+    "purpose": "initial copied zero",
+    "expected_model": "normal",
+    "native_stdout": "W|V|H|2|unexpected NAN value was coerced to bool|23|C|K|X|V|I|B7:4|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-initial-reference-intmin",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = PHP_INT_MIN;\n    return true;\n});\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "2a274217632a9d25837fc41ebdf507a2b2a8918e7d4473c5ed3b7a66df3093da",
+    "purpose": "initial reference intmin",
+    "expected_model": "normal",
+    "native_stdout": "W|V|H|2|unexpected NAN value was coerced to bool|23|I|B3:4|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-initial-reference-one",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = 1.0;\n    return true;\n});\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "ec8c5d9dadbeef8ccd9ab54c00be3d17561d776133c4dce53b10dd2cc607310f",
+    "purpose": "Live-reference NaN warning rereads one and retires its raw cell before current.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|H|2|unexpected NAN value was coerced to bool|23|C|K|X|V|I|B7:4|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-default-warning-copied",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "50adc95bc165326104f852a38c07c6598bbe5f343e0184e6cee5a1aa0dee45c0",
+    "purpose": "default warning copied",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|I|B7:4|E",
+    "native_stderr": "Warning: unexpected NAN value was coerced to bool in {source} on line 17\n",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-initial-reference-throw",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n    return true;\n});\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "f9f48026806757ac3442fc283bdc4f60e9a5233fdc4e355bc925ace6ada1b43c",
+    "purpose": "initial reference throw",
+    "expected_model": "normal",
+    "native_stdout": "W|V|H|2|unexpected NAN value was coerced to bool|23|I|T41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-later-named-reference-zero",
+    "source": "<?php\n$condition = 1.0;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return new NanSent21(); }\n    public function key(): mixed { echo \"K|\"; return \"a\"; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = $this->position === 1 ? NAN : 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = 0.0;\n    return true;\n});\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "e964450df5543d77b260d012ca6bd98a1290a42f8a680a528d5274bd427d97f2",
+    "purpose": "later named reference zero",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|H|2|unexpected NAN value was coerced to bool|23|I|BO:4|S|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-later-named-reference-throw",
+    "source": "<?php\n$condition = 1.0;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return new NanSent21(); }\n    public function key(): mixed { echo \"K|\"; return \"a\"; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = $this->position === 1 ? NAN : 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n    return true;\n});\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "ab2b1f5cdf9845c7e44c71ae56740587594dddaa5b66fcfb6a21c04e7374c0d1",
+    "purpose": "later named reference throw",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|H|2|unexpected NAN value was coerced to bool|23|I|S|T41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-fiber-reference-zero",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try {\n        NanTarget21(...new NanIterator21());\n    } catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\n    echo \"F|\";\n});\necho \"A\", $fiber->start(), \"|\";\n$condition = 0.0;\n$fiber->resume();\necho \"E\";\n",
+    "source_sha256": "00d79e25a092a828ef959176c4848b802acde29b4b76be86eaf5ccc1ab5af2c4",
+    "purpose": "fiber reference zero",
+    "expected_model": "normal",
+    "native_stdout": "AW|V|H|2|unexpected NAN value was coerced to bool|24|P|I|B3:4|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-fiber-copied-zero",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try {\n        NanTarget21(...new NanIterator21());\n    } catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\n    echo \"F|\";\n});\necho \"A\", $fiber->start(), \"|\";\n$condition = 0.0;\n$fiber->resume();\necho \"E\";\n",
+    "source_sha256": "236ff2af4ff9081c19898794fcde32a2f0e49b7cc34108ecec9586a22cb25224",
+    "purpose": "fiber copied zero",
+    "expected_model": "normal",
+    "native_stdout": "AW|V|H|2|unexpected NAN value was coerced to bool|24|P|C|K|X|V|I|B7:4|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-fiber-reference-throw",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try {\n        NanTarget21(...new NanIterator21());\n    } catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\n    echo \"F|\";\n});\necho \"A\", $fiber->start(), \"|\";\n$condition = 0.0;\n$fiber->throw($failure);\necho \"E\";\n",
+    "source_sha256": "048dc6ffcf0440c502412399fa079c2aaf6748e70e3e99be74e963d1b0edd62d",
+    "purpose": "fiber reference throw",
+    "expected_model": "normal",
+    "native_stdout": "AW|V|H|2|unexpected NAN value was coerced to bool|24|P|I|T41|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-nan-raw-bool-change-control",
+    "source": "<?php\n$condition = NAN;\n$failure = new Exception(\"stop\", 41);\nclass NanSent21 { public function __destruct() { echo \"S|\"; } }\nclass NanIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    #[ReturnTypeWillChange]\n    public function &valid() { global $condition; echo \"V|\"; return $condition; }\n    public function current(): mixed { echo \"C|\"; return 7; }\n    public function key(): mixed { echo \"K|\"; return 11; }\n    public function next(): void { global $condition; echo \"X|\"; $this->position++; $condition = 0.0; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction NanTarget21($a = 3, $b = 4) { echo \"B\", $a instanceof NanSent21 ? \"O\" : $a, \":\", $b, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $condition, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $condition = false;\n    return true;\n});\ntry {\n    NanTarget21(...new NanIterator21());\n} catch (Exception $caught) { echo \"T\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "65b8bad94da9d1dbc204eecbbeefefb4b7081f5b79a05d601f0d2b0baa794455",
+    "purpose": "raw bool change control",
+    "expected_model": "unsupported",
+    "native_stdout": "W|V|H|2|unexpected NAN value was coerced to bool|23|C|K|X|V|I|B7:4|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Iterator unpack valid NaN raw payload type change",
+    "unsupported_stdout": "W|V|H|2|unexpected NAN value was coerced to bool|23|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "87",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "72",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "50"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "117",
+            "110",
+            "101",
+            "120",
+            "112",
+            "101",
+            "99",
+            "116",
+            "101",
+            "100",
+            "32",
+            "78",
+            "65",
+            "78",
+            "32",
+            "118",
+            "97",
+            "108",
+            "117",
+            "101",
+            "32",
+            "119",
+            "97",
+            "115",
+            "32",
+            "99",
+            "111",
+            "101",
+            "114",
+            "99",
+            "101",
+            "100",
+            "32",
+            "116",
+            "111",
+            "32",
+            "98",
+            "111",
+            "111",
+            "108"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "50",
+            "51"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]

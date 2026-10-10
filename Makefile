@@ -210,6 +210,8 @@ test-semantics: build
 	python3 tests/semantics/yield_from_source_compare_review.py
 	python3 tests/semantics/iterator_call_unpack_sources.py
 	python3 tests/semantics/iterator_call_unpack_review.py
+	python3 tests/semantics/iterator_call_unpack_nan_sources.py
+	python3 tests/semantics/iterator_call_unpack_nan_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

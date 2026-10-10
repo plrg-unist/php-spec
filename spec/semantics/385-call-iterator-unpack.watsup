@@ -96,6 +96,9 @@ def $iterator_unpack_stage(S, piteratorunpack, "byref") = true
   -- if $named_reference(pfunction, pnamedtarget)
   -- if $named_can_store(piteratorunpack.CALL.SENT, pnamedtarget)
   -- if $unpack_key_named(pkey) \/ ~piteratorunpack.NAMED
+def $iterator_unpack_stage(S, piteratorunpack, "valid-nan") = true
+  -- if piteratorunpack.KEY = KNOWN PNULL
+  -- if $generator_from_valid_operand(S, piteratorunpack.CURRENT)
 def $iterator_unpack_stage(S, piteratorunpack, text) = false -- otherwise
 def $iterator_unpack_valid(S, piteratorunpack, text) = true
   -- if S.ORIGIN = $unpack_origin(S, piteratorunpack.CALL)
@@ -197,12 +200,25 @@ rule PhpStep/iterator-unpack-valid-empty: S ~> $iterator_unpack_retire(S_read, p
   -- if S_read.RESULT = KNOWN pvalue
   -- if ~$generator_from_nan(pvalue)
   -- if ~$truth(S_read, pvalue)
-rule PhpStep/iterator-unpack-valid-nan: S ~> S[.COMPLETION = UNSUPPORTED "Iterator unpack valid NaN warning"]
+;; Retain the raw valid() retval through the warning, then reread its double
+;; payload once before retiring it and entering current() or iterator teardown.
+rule PhpStep/iterator-unpack-valid-nan: S ~> $error_dispatch(S_read, 2, $ptascii("unexpected NAN value was coerced to bool"), z, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) z, ITERATOR_UNPACK piteratorunpack[.CURRENT = S.RESULT] "valid-nan")
   -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "valid") :: ptask_tail*
-  -- if S_read = $resolve_at(S, S.RESULT, $unpack_line(S, piteratorunpack.CALL))
+  -- if $iterator_unpack_result_valid(S, piteratorunpack, "valid")
+  -- if z = $unpack_line(S, piteratorunpack.CALL)
+  -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
   -- if $generator_from_nan(pvalue)
+rule PhpStep/iterator-unpack-valid-nan-current: S ~> $iterator_unpack_retire(S, piteratorunpack[.CURRENT = KNOWN PNULL], "current-start", ptask_tail*, $operand_nodes(piteratorunpack.CURRENT))
+  -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "valid-nan") :: ptask_tail*
+  -- if $generator_from_valid_decision(S, piteratorunpack.CURRENT) = (true)
+rule PhpStep/iterator-unpack-valid-nan-empty: S ~> $iterator_unpack_retire(S, piteratorunpack[.CURRENT = KNOWN PNULL], "finish", ptask_tail*, $operand_nodes(piteratorunpack.CURRENT))
+  -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "valid-nan") :: ptask_tail*
+  -- if $generator_from_valid_decision(S, piteratorunpack.CURRENT) = (false)
+rule PhpStep/iterator-unpack-valid-nan-payload: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "Iterator unpack valid NaN raw payload type change"]
+  -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "valid-nan") :: ptask_tail*
+  -- if $generator_from_valid_decision(S, piteratorunpack.CURRENT) = eps
 rule PhpStep/iterator-unpack-current-result: S ~> S[.TODO = (ITERATOR_UNPACK piteratorunpack[.CURRENT = S.RESULT] "key-start") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "current") :: ptask_tail*
 rule PhpStep/iterator-unpack-key-result: S ~> S_key[.TODO = (ITERATOR_UNPACK piteratorunpack[.KEY = S_key.RESULT] "send") :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
@@ -286,6 +302,7 @@ rule PhpStep/iterator-unpack-byref-payload: S ~> S[.COMPLETION = UNSUPPORTED "It
 
 ;; A warning retains this exact cursor/raw cache through invoke/result/cleanup.
 def $iterator_unpack_warning_resume(ITERATOR_UNPACK piteratorunpack "byref") = true
+def $iterator_unpack_warning_resume(ITERATOR_UNPACK piteratorunpack "valid-nan") = true
 def $iterator_unpack_warning_resume(ptask) = false -- otherwise
 def $useriter_task_ids(ERROR_HANDLER_INVOKE perrorcall) = $useriter_task_ids(perrorcall.RESUME) -- if $iterator_unpack_warning_resume(perrorcall.RESUME)
 def $useriter_task_ids(ERROR_HANDLER_RESULT perrorcall) = $useriter_task_ids(perrorcall.RESUME) -- if $iterator_unpack_warning_resume(perrorcall.RESUME)
@@ -299,6 +316,15 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.LEVEL = 2
   -- if perrorcall.LINE = $unpack_line(S, piteratorunpack.CALL)
   -- if perrorcall.MESSAGE = $iterator_unpack_warning_message(S, piteratorunpack)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = ITERATOR_UNPACK piteratorunpack "valid-nan"
+  -- if S.ORIGIN = (perrorcall.SITE)
+  -- if $unpack_origin(S, piteratorunpack.CALL) = (perrorcall.SITE)
+  -- if $iterator_unpack_result_valid(S, piteratorunpack, "valid-nan")
+  -- if perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = $unpack_line(S, piteratorunpack.CALL)
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
 
 def $iterator_unpack_finish(S, piteratorunpack, ptask_tail*) = $fiber_start_unpack_release(S[.ITERATORS = $iterator_remove(S.ITERATORS, piteratorunpack.ITERATOR)][.ORIGIN = piteratorunpack.CALL.CALLSITE][.TODO = (UNPACK_ARGS $unpack_advance(piteratorunpack.CALL, piteratorunpack.CALL.SENT)) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], $iterator_unpack_nodes(piteratorunpack))
@@ -322,7 +348,7 @@ def $iterator_unpack_abort_input(S, piteratorunpack) = true
 def $iterator_unpack_abort_input(S, piteratorunpack) = false -- otherwise
 def $eager_operation_source_valid(S, pdestructionoperation) = true
   -- if pdestructionoperation.SOURCE = ITERATOR_UNPACK piteratorunpack text
-  -- if text <- ["rewind-start", "rewind", "valid-start", "valid", "current-start", "current", "key-start", "key", "send", "error", "byref", "next-start", "next", "finish"]
+  -- if text <- ["rewind-start", "rewind", "valid-start", "valid", "valid-nan", "current-start", "current", "key-start", "key", "send", "error", "byref", "next-start", "next", "finish"]
   -- if pdestructionoperation.CLEANUP = eps /\ pdestructionoperation.NOGC = eps
   -- if pdestructionoperation.PENDING =/= eps
   -- if pdestructionoperation.COMPLETION = NORMAL
@@ -356,6 +382,8 @@ def $return_discard(S, ITERATOR_UNPACK piteratorunpack text) = $iterator_unpack_
   -- if $iterator_unpack_result_valid(S[.TODO = (THROW_SEARCH n) :: (ITERATOR_UNPACK piteratorunpack text) :: ptask_tail*], piteratorunpack, text)
 def $error_read_discard(S, ITERATOR_UNPACK piteratorunpack "byref") = $iterator_unpack_discard(S, piteratorunpack, "byref")
   -- if $iterator_unpack_result_valid(S[.TODO = (ITERATOR_UNPACK piteratorunpack "byref") :: S.TODO], piteratorunpack, "byref")
+def $error_read_discard(S, ITERATOR_UNPACK piteratorunpack "valid-nan") = $iterator_unpack_discard(S, piteratorunpack, "valid-nan")
+  -- if $iterator_unpack_result_valid(S[.TODO = (ITERATOR_UNPACK piteratorunpack "valid-nan") :: S.TODO], piteratorunpack, "valid-nan")
 def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
   -- if S.TODO = (ITERATOR_UNPACK piteratorunpack "send") :: ptask_tail*
   -- if $iterator_unpack_result_valid(S, piteratorunpack, "send")

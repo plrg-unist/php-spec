@@ -110,5 +110,18 @@ throw. Resume reads the raw payload once and creates a fresh callee reference
 cell; a copied current value is unaffected by handler writes to its source.
 Warnings retain actual cursor/cache ownership through invoke/result/cleanup and
 saved Fiber views. Direct Generator/Aggregate unpack, other call targets,
-Generator callback methods, valid NaN and refcounted by-reference warning
-payloads remain explicit follow-ons.
+Generator callback methods and refcounted by-reference warning payloads remain
+explicit follow-ons.
+
+Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
+result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper
+calls `i_zend_is_true`, retires that retval, then permits SEND_UNPACK to check the
+exception or fetch current. Its DOUBLE arm rereads the payload after the warning
+without redispatching its tag. Numeric references therefore use their live double
+bits; an integer minimum reads signed-zero bits and is false. Copied NaN stays true.
+The pure existing numeric decision helper performs one reread without another
+warning, and raw retval cleanup precedes current or DATA/INPUT teardown. Later
+warnings keep earlier sent owners and named phase; handler throw preserves ordered
+abort cleanup. Nonnumeric raw-tag changes stay explicit Unsupported.
+The [NaN review](../../coverage/semantics/iterator-call-unpack-nan-review.json)
+keeps this increment separate from the original unpack source/state cuts.

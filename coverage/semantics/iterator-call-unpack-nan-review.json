@@ -1,0 +1,216 @@
+{
+  "status": "bounded private slice accepted; actual-parent composition pending",
+  "scope": [
+    "Ordinary source-function direct Iterator valid NaN warnings retain the raw retval and the authenticated unpack cursor through handler invoke/result/cleanup and saved Fiber views.",
+    "One post-warning numeric payload reread preserves copied NaN versus a live reference; integer payloads use their double bits without tag redispatch or a second warning.",
+    "Raw retval retires before current or empty teardown. False later warnings preserve named/sent owners into target entry; thrown warnings retire raw retval, Iterator DATA, temporary INPUT, then unfinished sent values."
+  ],
+  "remaining": [
+    "Raw valid reference changes to nonnumeric tags",
+    "Direct Generator/IteratorAggregate unpack, other call targets and Generator callback methods",
+    "Refcounted payloads during by-reference argument warnings"
+  ],
+  "implementation_revision": "5105a63b93284b1b6d56a9554c426f5578a48b35",
+  "expectation_correction_revision": "79104d0dac7cece2be11cf1d2fe00148d9b077cf",
+  "parent": "9f00481d84b292bb74cfd25098b04024cdb9b20c",
+  "prior_unpack_evidence": "coverage/semantics/iterator-call-unpack-review.json",
+  "engine_route": "PHP8.5.10 Zend/zend_interfaces.c zend_user_it_valid calls i_zend_is_true then destroys its raw retval before SEND_UNPACK checks exceptions or fetches current. Zend/zend_operators.h i_zend_is_true warns inside the DOUBLE arm and rereads Z_DVAL_P without tag redispatch; a live integer minimum therefore reads signed-zero bits. The existing generator_from_valid_decision pure helper models the numeric reread.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "strict": {
+    "revision": "79104d0dac7cece2be11cf1d2fe00148d9b077cf",
+    "modules": 375,
+    "report": ".tools/calls-iterator-valid-nan-21/.tools/iterator-call-unpack-nan-sl-j73sjioq/report.json",
+    "report_sha256": "3944bb5f85748906ba01cfd191ea76b2cb0b9f1ece8aa49f31f40441fafd4ac2",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "budgets": {
+      "process_seconds": 120,
+      "outer_seconds": 150,
+      "address_space_bytes": 6442450944
+    }
+  },
+  "source": {
+    "revision": "79104d0dac7cece2be11cf1d2fe00148d9b077cf",
+    "report": ".tools/calls-iterator-valid-nan-21/.tools/iterator-call-unpack-nan-source-mu0mnr_4/report.json",
+    "report_sha256": "d261432c1420137cc0fb7e61db787d5fc9cfe3e93db0078f130bd7ba54f74535",
+    "command": [
+      "python3",
+      "tests/semantics/iterator_call_unpack_nan_sources.py",
+      "--native-report",
+      ".tools/native-reuse.json"
+    ],
+    "selection": [
+      "iterator-call-unpack-nan-initial-reference-zero",
+      "iterator-call-unpack-nan-initial-copied-zero",
+      "iterator-call-unpack-nan-initial-reference-intmin",
+      "iterator-call-unpack-nan-initial-reference-one",
+      "iterator-call-unpack-nan-default-warning-copied",
+      "iterator-call-unpack-nan-initial-reference-throw",
+      "iterator-call-unpack-nan-later-named-reference-zero",
+      "iterator-call-unpack-nan-later-named-reference-throw",
+      "iterator-call-unpack-nan-fiber-reference-zero",
+      "iterator-call-unpack-nan-fiber-copied-zero",
+      "iterator-call-unpack-nan-fiber-reference-throw",
+      "iterator-call-unpack-nan-raw-bool-change-control"
+    ],
+    "normal_agreements": 11,
+    "unsupported_controls": 1,
+    "unsupported_agreement": 0,
+    "inputs_stable": true,
+    "head_stable": true,
+    "budgets": {
+      "steps": 100000,
+      "model_seconds": 60,
+      "process_seconds": 75,
+      "outer_seconds": 900,
+      "address_space_bytes": 6442450944
+    },
+    "passed": true,
+    "unsupported_output_events": 9
+  },
+  "native": {
+    "revision": "5105a63b93284b1b6d56a9554c426f5578a48b35",
+    "report": ".tools/calls-iterator-valid-nan-21/.tools/iterator-call-unpack-nan-native-pcy52h56/report.json",
+    "report_sha256": "4d5d98f082d6766522f57fb8243c338d5275dd80c40e9d089a57079237cc6306",
+    "originals": 12,
+    "normal_agreements": 0,
+    "reused_adapter": ".tools/calls-iterator-valid-nan-21/.tools/native-reuse.json",
+    "reused_adapter_sha256": "2696b5184640942c9332eb4374c33872ad9a8d427ff5c09407ef8c2ff6532109",
+    "new_executions_after_expectation_correction": 0
+  },
+  "state_review": {
+    "groups": 12,
+    "physical_premises": 432,
+    "driver_clauses": 415,
+    "retained_cut": {
+      "revision": "64d205280c94436ce5dc4d0564fbbb3c823ce548",
+      "raw": ".tools/calls-iterator-valid-nan-21/.tools/fiber-state-review-dwzzslmz/",
+      "selection": [
+        "raw-reference-warning-dispatch-keeps-one-cell-and-authentic-line",
+        "warning-clean-retains-cell-and-one-real-cursor",
+        "live-reference-zero-retires-before-empty-teardown",
+        "copied-nan-survives-source-zero-and-enters-current",
+        "integer-minimum-reread-uses-signed-zero-bits",
+        "live-reference-one-enters-current-after-raw-cell-release",
+        "later-named-false-keeps-the-already-sent-object",
+        "later-finish-retires-data-and-input-before-target-entry",
+        "thrown-later-warning-queues-raw-data-input-then-sent",
+        "retired-data-source-receipt-keeps-pending-sent-cleanup-authentic"
+      ],
+      "groups": 10,
+      "physical_premises": 349,
+      "driver_clauses": 339,
+      "complete_group_records": true,
+      "complete_campaign_report": false,
+      "campaign_credit": 0,
+      "command": [
+        "python3",
+        "-u",
+        ".tools/nan-state-stop-first.py"
+      ],
+      "outer_seconds": 1500,
+      "host_exit": 1,
+      "preserved_failure": "parked handler fixture owner count"
+    },
+    "affected_cut": {
+      "revision": "76cf54a4cf312b12f8a47424c8d9bc495648d90e",
+      "report": ".tools/calls-iterator-valid-nan-21/.tools/fiber-state-review-beasyd7e/report.json",
+      "report_sha256": "27863897d370252c9238257ef6f6161c1f7c1888c9dd58c8b9611ac103133b46",
+      "selection": [
+        "parked-handler-keeps-raw-reference-cursor-and-data",
+        "raw-bool-change-stops-as-unsupported-after-real-handler"
+      ],
+      "groups": 2,
+      "physical_premises": 83,
+      "driver_clauses": 76,
+      "command": [
+        "timeout",
+        "-k",
+        "10s",
+        "300s",
+        "prlimit",
+        "--as=6442450944",
+        "--",
+        "python3",
+        "-u",
+        ".tools/nan-state-stop-first.py",
+        "--case",
+        "parked-handler-keeps-raw-reference-cursor-and-data",
+        "--case",
+        "raw-bool-change-stops-as-unsupported-after-real-handler"
+      ],
+      "wrapper_sha256": "16d56be0c0eb883d8413c729d79dfc673698f771d1ebbb125b7565ebae15f9c9",
+      "budgets": {
+        "seek_steps": 4000,
+        "finish_steps": 4000,
+        "process_seconds": 120,
+        "outer_seconds": 300,
+        "address_space_bytes": 6442450944,
+        "jobs": 1
+      },
+      "exit": 0,
+      "timeout": false,
+      "passed": true
+    },
+    "basis": "Ten complete unchanged groups retain their64 cut; only the affected parked group and unrun raw-bool group execute at76. The original incomplete host wave remains zero campaign credit.",
+    "passed": true
+  },
+  "preserved_failures": [
+    {
+      "kind": "native fixture expectation order",
+      "revision": "5105a63b93284b1b6d56a9554c426f5578a48b35",
+      "report": ".tools/calls-iterator-valid-nan-21/.tools/iterator-call-unpack-nan-native-pcy52h56/report.json",
+      "failed_expectations": 3,
+      "reason": "Fiber echo prefix A executes before start callbacks; only three expected strings changed, with exact original source/native bytes retained.",
+      "credit": 0
+    },
+    {
+      "kind": "harness ENOSPC",
+      "revision": "79104d0dac7cece2be11cf1d2fe00148d9b077cf",
+      "raw": ".tools/calls-iterator-valid-nan-21/.tools/iterator-call-unpack-nan-source-vvv0jb6o/",
+      "exit": 1,
+      "report_completed": false,
+      "reason": "No disk space while recording the fourth source case; partial campaign has zero credit. The affected source12 campaign alone was retried after capacity recovery.",
+      "credit": 0
+    },
+    {
+      "kind": "parked handler fixture owner count",
+      "revision": "64d205280c94436ce5dc4d0564fbbb3c823ce548",
+      "raw": ".tools/calls-iterator-valid-nan-21/.tools/fiber-state-review-dwzzslmz/",
+      "exit": 1,
+      "timeout": false,
+      "report_completed": false,
+      "passed_groups_before_failure": 10,
+      "failed_group": "parked-handler-keeps-raw-reference-cursor-and-data",
+      "unrun_groups": 1,
+      "reason": "Suspended handler keeps a global condition alias in its local table. Two expected owner counts changed from2/3 to3/4, with both table aliases explicitly checked; production/source and unaffected ten groups stayed unchanged.",
+      "credit": 0
+    }
+  ],
+  "compatibility": "Only module385 warning continuation changes; earlier direct Iterator source25/Unsupported1/state29/1174/1122 cuts remain frozen. The state-only fixture commits leave accepted strict/source791 inputs unchanged.",
+  "actual_composition": null,
+  "state_fixture_correction_revision": "76cf54a4cf312b12f8a47424c8d9bc495648d90e"
+}
