@@ -592,7 +592,8 @@ def $gc_fresh_array_plan(pgcplan) = false -- otherwise
 ;; Bound this lane to a closed white component of objects, nonproxy arrays
 ;; and genuine unbuffered references.
 ;; Unreached residual tags stay purple in admitted histories. Their object
-;; components must remain disjoint from every eligible root's traced graph.
+;; components, including genuine unbuffered references, must remain disjoint
+;; from every eligible root's traced graph. Outside arrays stay excluded.
 def $gc_overlap_objects(eps) = true
 def $gc_overlap_objects((HOBJECT n) :: pnode*) = $gc_overlap_objects(pnode*)
 def $gc_overlap_objects(pnode*) = false -- otherwise
@@ -612,6 +613,12 @@ def $gc_overlap_residuals(pgcplan, (HARRAY n) :: pnode*) = $gc_overlap_residuals
   -- if $gc_overlap_component(pgcplan, [HARRAY n])
 def $gc_overlap_residuals(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
   -- if $gc_overlap_component(pgcplan, [HCELL n])
+def $gc_overlap_residuals(pgcplan, (HCELL n) :: pnode*) = $gc_overlap_residuals(pgcplan, pnode*)
+  -- if ~((HCELL n) <- $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
+  -- if pnode_residual* = $destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if (HCELL n) <- $heap_reach(pnode_residual*, eps, pgcplan.GRAPH.EDGES)
+  -- if $gc_slot_find(pgcplan.BUFFER, HCELL n, 0) = eps
+  -- if $gc_nested_reference(pgcplan.GRAPH, HCELL n)
 def $gc_overlap_residuals(pgcplan, pnode*) = false -- otherwise
 def $gc_overlap_plan(pgcplan) = true
   -- if pgcplan.SCAN = eps /\ pgcplan.CALL.PASS = 0
@@ -633,7 +640,8 @@ def $gc_overlap_plan(pgcplan) = true
   -- if $gc_overlap_residuals(pgcplan, $heap_reach(pnode_residual*, eps, pgcplan.GRAPH.EDGES))
 def $gc_overlap_plan(pgcplan) = false -- otherwise
 ;; The frozen graph cannot certify IS_REFERENCE. Authenticate markers only
-;; for its still-live component cells; retired snapshots retain no such demand.
+;; for its still-live protected and residual cells; retired snapshots retain
+;; no such demand.
 def $gc_overlap_refmarks(S, eps) = true
 def $gc_overlap_refmarks(S, (HCELL n) :: pnode*) = $gc_overlap_refmarks(S, pnode*)
   -- if ~((HCELL n) <- S.ALLOCATIONS) \/ n <- S.REFCELLS
@@ -641,9 +649,11 @@ def $gc_overlap_refmarks(S, (HOBJECT n) :: pnode*) = $gc_overlap_refmarks(S, pno
 def $gc_overlap_refmarks(S, (HARRAY n) :: pnode*) = $gc_overlap_refmarks(S, pnode*)
 def $gc_overlap_refmarks(S, pnode*) = false -- otherwise
 def $gc_overlap_refstate(S, pgcplan) = true
-  -- if $gc_overlap_refmarks(S, $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
+  -- if pnode_residual* = $destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if $gc_overlap_refmarks(S, $heap_reach(pgcplan.DTORS ++ pnode_residual*, eps, pgcplan.GRAPH.EDGES))
 def $gc_overlap_refstate(S, pgcplan) = true
-  -- if ~$gc_overlap_refmarks(S, $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES))
+  -- if pnode_residual* = $destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if ~$gc_overlap_refmarks(S, $heap_reach(pgcplan.DTORS ++ pnode_residual*, eps, pgcplan.GRAPH.EDGES))
   -- if ~$gc_overlap_plan(pgcplan)
 def $gc_overlap_refstate(S, pgcplan) = false -- otherwise
 def $gc_overlap_ready(S, pgccall) = true
