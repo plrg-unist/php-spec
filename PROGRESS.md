@@ -34,7 +34,9 @@ escaped receivers and the shared Throwable survive. Terminal same-class result
 receipt acceptance remains an explicit preexisting abstraction. Original interpreter
 and fixture parse failures retain zero credit; syntax-only preparation/elaboration
 adds none. Arguments/types/nonpublic constructors and broader anonymous contexts
-remain required. [Constructor ledger](coverage/semantics/anonymous-constructors-review.json).
+remain required. Actual375 over 57f2f4b8 passes strict3 at 77f9c0eda (5.521s);
+private source/state cuts retain their revisions.
+[Constructor ledger](coverage/semantics/anonymous-constructors-review.json).
 
 Simple global noarg/by-value/untyped function and static no-capture Closure factories
 now record authenticated inner class checkpoints, save only restored unit images

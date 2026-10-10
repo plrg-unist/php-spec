@@ -1154,6 +1154,8 @@ return values and preserve shared Throwable identity through ordinary unwind.
 also check explicit calls, factory effects and constructor `finally` blocks.
 Mixed RTD counters, wider factory/publication contexts, constructor arguments/types,
 inheritance, attributes and broader consumers remain required.
+The actual375 join over 57f2f4b8 passes strict3 at 77f9c0eda (5.521s);
+private constructor source/state cuts remain unchanged.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary
 empty-object behavior; its [review](coverage/semantics/stdclass-review.json)
