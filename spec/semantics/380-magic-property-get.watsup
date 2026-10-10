@@ -315,8 +315,8 @@ def $reference_callback_used(S, pcallcontext) = (true)
 
 ;; Exact verification is identity: neither a checked write nor TYPE_SOURCES
 ;; attachment occurs. Integer numeric strings convert only the actual RV or
-;; unconstrained returned cell. Integer-to-float widening and FULLNUM/NFLOAT
-;; strings likewise change only that RV/cell; wider coercions remain residuals.
+;; unconstrained returned cell. Integer-to-float widening and FULLNUM/NINT or
+;; NFLOAT strings likewise change only that RV/cell; wider coercions remain residuals.
 def $property_get_unconstrained(S, KNOWN pvalue) = true
 def $property_get_unconstrained(S, REFERENCE n) = ($propref_at(S.PROPREFS, n) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps)
 def $property_get_unconstrained(S, poperand) = false -- otherwise
@@ -348,6 +348,16 @@ def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEVALUE
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
   -- if $typed_string_value(pvalue)
   -- if $typed_number(pvalue) = (NFLOAT n_float)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $property_get_unconstrained(S, S.RESULT)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN pvalue
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEVALUE (PFLOAT n_float)) = $property_get_float_apply(S, ppropertyget, S.RESULT, n_float)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
+  -- if $typed_string_value(pvalue)
+  -- if $typed_number(pvalue) = (NINT i)
+  -- if $long_range(i)
+  -- if n_float = $float_of_int(i)
   -- if $call_reference_operand_valid(S, S.RESULT)
   -- if $property_get_unconstrained(S, S.RESULT)
   -- if S_read = $quiet_operand(S, S.RESULT)

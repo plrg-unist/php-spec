@@ -1,0 +1,128 @@
+{
+  "status": "Bounded source and reached-state milestone; independently reviewed semantics and retained results.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "b8f90d5ca9fd38432782b04a6df094a6eac453ab; phase31/32 evidence is not renewed",
+  "runtime_revision": "8e5ee355ba14304694eb63f9104714e16dc08f3d",
+  "tested_revision": "498b2281df6d0f91dd99f636b8523f8673eb4232",
+  "scope": "Modules380/384 weak builtin-float MAGIC_GET verification of FULLNUM/NINT strings on accepted public literal-CV or owned ordinary-call receivers. Unconstrained actual REFERENCE cells convert in place; BYVAL changes only RV. Real property sources select a diagnostic-only first-source conflict while preserving raw string/source. Getter-declaration strictness and existing owner stages are unchanged.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained tools, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/380-magic-property-get.watsup": "37959ac847f0a92258bd63697ebc8fff259f26d6df4cea270b9cd60470cf9414",
+    "spec/semantics/384-magic-property-reference-types.watsup": "37536f42bd7a42c267801a4129e71872996b2231e01c9592d554b212dbee55a4",
+    "tests/semantics/dynamic_property_warning_sources.py": "980db4a94c8104895f82de193014c7a2da375f5ef3f27917d9f7eb26b39c7d84",
+    "tests/semantics/magic_property_float_protocol.py": "2c924190746b2e281c881d92f8729f90a07e49dffa6655a26a58229a75f34c98",
+    "tests/semantics/magic_property_decimal_protocol.py": "172ece4a29b0158a494577e93c4cfdaff51b72190780a9927fe9289cc751584f",
+    "tests/semantics/magic_property_integer_float_protocol.py": "5ed7f82f4fd1ce421136ef1d49aa17bbc0e48cc20cb5a3218062e51838956d15"
+  },
+  "native_first": {
+    "revision": "26c1b4b555a29d8a1fce9dfc68ef2abd3ecd448a",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-float-native33-w80q5g1i/report.json",
+    "seconds": 0.1581181650981307,
+    "credit": "Native observations only; original bytes, actual pinned binary, all exit0/empty stderr."
+  },
+  "unsupported_baseline": {
+    "revision": "26c1b4b555a29d8a1fce9dfc68ef2abd3ecd448a",
+    "case": "review-property-magic-integer-float-reference-kept33",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-float-baseline33-jmftsbti/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|1/0|",
+    "reason": "magic getter property type coercion",
+    "seconds": 9.230949681252241,
+    "credit": 0
+  },
+  "strict": {
+    "modules": 375,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-float-strict33-q2vnv96t/report.json",
+    "seconds": 5.502352191135287,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-l6lpid6l/report.json",
+    "outcomes": "All checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact; raw/modeled stderr empty and diagnostics null."
+  },
+  "source_sha256": {
+    "review-property-magic-integer-float-reference-kept33": "773c6af04a910332d74e06a218d2ce22110fa051c7443aae29e2c389e178e50f",
+    "review-property-magic-integer-float-reference-drop33": "723cb0741dac285941c3e90b3e9ce2773c0c7652940cf3141509b48aed4b6030",
+    "review-property-magic-integer-float-source-conflict33": "544514bb738449a3e0447ca57ce942d1986d8767648170fea8b6235b543f1b17",
+    "review-property-magic-integer-float-value33": "27a069d956df07fbff7be30eb4588602c88574eaef89430d4a31bdf40957d467",
+    "review-property-magic-integer-float-owned33": "96f318663b33d2dc01e57d676ef232540a57c3adf86f78c2201e94d150bdb2c1",
+    "review-property-magic-integer-float-strict-getter33": "a92c0c2aa282484c8e4c455590c11a4696d76512fcda64cd7b13afb87e5c8b1e"
+  },
+  "reached": [
+    {
+      "group": "reference-kept",
+      "premises": 235,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-float-f6_2agye/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "premises": 131,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-float-jsg4b3fx/report.json"
+    },
+    {
+      "group": "value",
+      "premises": 131,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-float-j6joivfb/report.json"
+    },
+    {
+      "group": "owned",
+      "premises": 137,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-float-h8d2jdb0/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "premises": 133,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-float-evy_1896/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "premises": 132,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-integer-float-1qcov__j/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 899,
+  "facts": [
+    "Whole-state verification converts raw full strings through their parsed signed64 integer. Fixed binary64 expectations cover +9007199254740993 to 9007199254740992 (4845873199050653696), -0 to positive zero (0), -7 (13842939354630062080), LONG_MAX to +2^63 (4890909195324358656), LONG_MIN to -2^63 (14114281232179134464), and 7 (4619567317775286272). Readonly backing stays UNSET without a getter target source; repeated reads call the getter again.",
+    "CV destruction observes converted -7 before changing the referent; reception copies that changed value. BYVAL preserves the raw global string while returning its converted float. Owned reception detaches the LONG_MIN float and drops the raw-cell owner before BASE destruction; later global mutation does not change the copied value.",
+    "The real string|float source accepts both raw string and possible float, but verification selects a source conflict and leaves the raw string/source intact. Actual cleanup detaches and repairs that source while the pending TypeError survives with null previous. A strict getter under a weak caller rejects the string before later destructor repair.",
+    "Strict caller/weak getter acceptance and weak caller/strict getter rejection use checked literal eval units. 7tail is LEADNUM and rejects without prefix conversion. Wrong bits/original/RV, bool and PARAM controls are constructed separately from reached-source assertions.",
+    "Exactly two old constructed NINT Unsupported outcomes in float/decimal helpers now expect S[.RESULT=KNOWN F7]. Their six clauses run only in the new kept group; old phase31/32 reports and source/reached credit are not renewed."
+  ],
+  "preparation": {
+    "parser": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-float-parse33-8n44slkl/report.json",
+    "states": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-float-state-prep33-py95rjem/report.json",
+    "credit": "Original/literal-eval parse/check and full-sort six-group elaboration only; zero application/state evaluation."
+  },
+  "preserved_failures": [
+    {
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-float-baseline33-vx_60ske/report.json",
+      "cause": "Missing tracked vendor/php-parser in sparse closure; frontend failed before checked execution. Restored only exact-parent tracked parser files, then prepared the same original/literal eval before affected baseline relaunch.",
+      "credit": 0
+    },
+    {
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-integer-float-state-prep33-_he020rd/report.json",
+      "cause": "Negative NINT constructor fixture argument lacked parentheses. Corrected only new helper formatting for -7/LONG_MIN; the partial preparation retains zero application credit.",
+      "credit": 0
+    }
+  ],
+  "compatibility": "Only guarded380 conversion and diagnostic-only384 possible conversion change. Existing95/138, schema, strict rejection, owner roots and receiver stages are unchanged. Prior phase31/32 evidence retains its original cuts; only two obsolete constructed expected outcomes were maintained.",
+  "remaining": "Booleans/wider conversions, PARAMETERBACKINGS, callback-based verification and prior receiver/signature/access/quiet/write/recursive residuals remain required.",
+  "engine": [
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_double_weak IS_LONG cast",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_weak_scalar_type_hint/zend_verify_scalar_type_hint/zend_verify_prop_assignable_by_ref_ex",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter strictness and verification before receiver release",
+    "spec/semantics/95-type-values.watsup:typed_number/typed_conversion; spec/semantics/00-numeric.watsup:float_of_int"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_integer_float_protocol.py reproduce the six sources/groups; only --group reference-kept includes the six maintained legacy clauses. Ignored raw trees retain originals/checked/eval sources, fixtures/assertions, argv/cwd/process/streams and stable identities. Reused private providers and exact-parent parser closure; no portability/rebuild claim."
+}

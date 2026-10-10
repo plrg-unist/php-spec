@@ -1564,7 +1564,13 @@ pass 877 setup-inclusive premises, covering exact 7.5/0.1 bits, prefix/getter-st
 rejection, real string|float source conflicts and CV versus owned cleanup.
 The actual375 join over `22adef5d5` passes strict at `cab88a623` (5.527s);
 private source/state cuts retain their original inputs.
-NINT-classified strings to float, booleans and wider conversions remain required.
+Weak float getters also convert NINT-classified full strings using the parsed
+integer's binary64 cast, including rounding beyond 2^53 and positive zero for `-0`.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-integer-float-review.json)
+pass 899 setup-inclusive premises at `498b2281d`, covering signed limits,
+strict rejection, real source conflicts and CV versus owned cleanup.
+The two older constructed NINT controls now expect conversion; their earlier
+reports retain their original cuts. Booleans and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

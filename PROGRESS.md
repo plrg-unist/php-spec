@@ -2402,9 +2402,18 @@ pass 877 setup-inclusive premises at `770d69b20`, using reviewed runtime `9dbbb8
 The actual375 join over `22adef5d5` passes strict at `cab88a623` (5.527s,
 state credit0); private source/state cuts retain their original inputs.
 The fixture-only LEADINGNUM preparation failure retains zero credit after its
-LEADNUM correction. NINT-classified strings to float, booleans, PARAMETERBACKINGS
-and wider conversions remain required; phase31 evidence is not renewed.
+LEADNUM correction; phase31 evidence is not renewed.
 [Numeric-string float ledger](coverage/semantics/magic-property-decimal-review.json).
+NINT-classified full strings now also verify against weak builtin-float getters,
+casting the parsed integer with ties-to-even rounding and positive zero for `-0`.
+Native6 and the unchanged Unsupported baseline retain `26c1b4b55`; strict375/source6
+and six whole reached groups pass 899 setup-inclusive premises at `498b2281d`.
+Signed limits, actual reference/RV mutation, source conflict, strict rejection
+and CV/owned cleanup are distinct. Two obsolete constructed NINT outcomes are
+corrected and covered only in the new kept group; phase31/32 reports are unchanged.
+The missing-parser baseline and negative-NINT fixture preparation failures retain
+zero credit. Booleans, PARAMETERBACKINGS and wider conversions remain required.
+[Integer-string float ledger](coverage/semantics/magic-property-integer-float-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

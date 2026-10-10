@@ -263,7 +263,9 @@ premises. At that cut numeric strings, booleans, PARAMETERBACKINGS and wider flo
 conversions remained Unsupported; prior getter evidence retains its separate cuts.
 
 Weak builtin-float MAGIC_GET verification also accepts full numeric strings
-classified NFLOAT, using the getter declaration's strictness. The actual
+classified NFLOAT or NINT, using the getter declaration's strictness. NINT casts
+the parsed in-range integer to binary64, including ties-to-even rounding beyond
+2^53 and positive zero for `-0`. The actual
 unconstrained reference cell converts in place; a by-value return changes only
 its RV. Repeated 7.5/0.1 reads preserve exact binary64 bits, UNSET readonly backing
 and no getter type-source attachment. CV reception copies the referent after
@@ -274,9 +276,12 @@ survives later source detachment and repair. Leading-numeric `7.5tail` and a
 strict getter under a weak caller reject before conversion.
 The [numeric-string float review](../../coverage/semantics/magic-property-decimal-review.json)
 records six source agreements and six whole reached groups/877 setup-inclusive
-premises. NINT-classified strings to float, booleans, PARAMETERBACKINGS and wider
-conversions remain Unsupported; earlier evidence and the failed fixture
-preparation retain their original cuts.
+premises for NFLOAT strings. The separate
+[integer-string float review](../../coverage/semantics/magic-property-integer-float-review.json)
+records six source agreements and six whole reached groups/899 setup-inclusive
+premises for NINT strings, including signed limits and strict-getter rejection.
+Booleans, PARAMETERBACKINGS and wider conversions remain Unsupported; earlier
+evidence and failed preparations retain their original cuts.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
