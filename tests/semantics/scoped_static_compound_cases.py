@@ -2066,3 +2066,114 @@ echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
         'discriminator': 'Frozen bound resume survives producer/callback retirement and referenced-name mutation; clearing the selected capture cell in its value argument leaves the real saved caller holding the Closure and receiver through transfer, then both retire before final weak reads.',
     },
 ]
+
+CASES += [
+    {
+        'id': 'from-callable-direct-fiber-throw',
+        'source': '''<?php
+function discardFactoryThrowCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireSelectedThrowExceptionReview21() {
+    global $selected, $exception;
+    $selected = null;
+    $value = $exception;
+    $exception = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$method = "throw";
+$exception = new Exception("injected");
+$weakException = WeakReference::create($exception);
+$fiber = new Fiber(function () {
+    echo "B;";
+    try {
+        Fiber::suspend("pause");
+        echo "U;";
+    } catch (Throwable $caught) {
+        global $weakException, $weakSelected;
+        echo "I:", $caught === $weakException->get() ? "same" : "other", ";";
+        echo "C:", $weakSelected->get() !== null ? "held" : "gone", ";";
+    }
+    return "finished";
+});
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = null;
+$selected = Closure::fromCallable(callback: discardFactoryThrowCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isTerminated";
+$callback = null;
+echo "M:", $method, ";F;";
+$paused = $fiber->start();
+echo "P:", $paused, ";";
+$fiber = null;
+echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+$returned = $selected(exception: retireSelectedThrowExceptionReview21());
+echo "V:", $returned === null ? "null" : "other", ";";
+echo "X:", $weakException->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isTerminated;F;B;P:pause;H:held;V;I:same;C:held;V:null;X:gone;C:gone;H:gone;E;',
+        'discriminator': 'Frozen bound throw survives producer/callback retirement and name mutation; clearing selected and exception cells leaves an authentic owned Throwable buffer, exact same-object catch and saved-caller capture/receiver hold, then all three retire before final weak reads.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-throw',
+        'source': '''<?php
+function discardFactoryThrowCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireSelectedThrowExceptionReview21() {
+    global $selected, $exception;
+    $selected = null;
+    $value = $exception;
+    $exception = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$method = "throw";
+$exception = new Exception("injected");
+$weakException = WeakReference::create($exception);
+$fiber = new Fiber(function () {
+    echo "B;";
+    try {
+        Fiber::suspend("pause");
+        echo "U;";
+    } catch (Throwable $caught) {
+        global $weakException, $weakSelected;
+        echo "I:", $caught === $weakException->get() ? "same" : "other", ";";
+        echo "C:", $weakSelected->get() !== null ? "held" : "gone", ";";
+    }
+    return "finished";
+});
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = Closure::fromCallable(...);
+$selected = $factory(callback: discardFactoryThrowCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isTerminated";
+$callback = null;
+echo "M:", $method, ";F;";
+$paused = $fiber->start();
+echo "P:", $paused, ";";
+$fiber = null;
+echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+$returned = $selected(exception: retireSelectedThrowExceptionReview21());
+echo "V:", $returned === null ? "null" : "other", ";";
+echo "X:", $weakException->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isTerminated;F;B;P:pause;H:held;V;I:same;C:held;V:null;X:gone;C:gone;H:gone;E;',
+        'discriminator': 'Frozen bound throw survives producer/callback retirement and name mutation; clearing selected and exception cells leaves an authentic owned Throwable buffer, exact same-object catch and saved-caller capture/receiver hold, then all three retire before final weak reads.',
+    },
+]

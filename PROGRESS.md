@@ -2639,6 +2639,18 @@ source/render relocation renews no runtime evidence. Other targets and required
 original 7's CLI60 timeout remain OPEN.
 Actual-parent compilation and initialized SL343 pass at `56a92700` over
 `a6994698` with 374 modules; RETURNS/COMP seams preserve prior source/native cuts.
+Captured factories now select bound `Fiber::throw` with frozen selection and
+retired producer/callback. Clearing selected and exception caller cells leaves
+the authentic SENT buffer owning the Throwable; injection preserves its identity
+through THROW_SEARCH and CATCH_BIND. The saved WAIT/result tail retains one
+Closure and its receiver edge while the child catches the exact object. Handled
+termination returns null; ordinary cleanup retires the exception before the
+historical result descriptor, then releases Closure and Fiber before the consumer.
+Direct agreement stays at 2112d1e9/374; repaired agreement and 439 premises
+(343 genuine/derived, 96 constructed) pass at 07fb94254/374, including exact
+zero-budget resumption. Original Unsupported retains zero credit. Maintained
+source/render relocation renews no runtime evidence; wider throw/error paths
+and original 7's CLI60 timeout remain OPEN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

@@ -1249,7 +1249,7 @@
     },
     "review": "Narrow 358 semantics, native and distinct direct/repaired public raw plus state343 independently accepted by arguments_review_21. Maintained exact source/render/dispatch bytes and documentation independently accepted; no relocation runtime renewal. Exact a6994698/374 composition, compiler and initialized state343 independently reviewed; current source/native cuts are not renewed.",
     "remaining": [
-      "Captured-factory Fiber targets beyond static getCurrent, receiver-free static suspend, bound isSuspended and bound resume, plus resume errors and wider selection/invocation forms require separate source/state evidence.",
+      "Captured-factory Fiber targets beyond static getCurrent, receiver-free static suspend, bound isSuspended, bound resume and bound throw, plus resume errors and wider selection/invocation forms require separate source/state evidence.",
       "Required original static-compound source 7 remains OPEN with unchanged CLI60 timeout and zero agreement; no older getter/factory/alias/Fiber/static-compound cut is renewed."
     ],
     "current_composition": {
@@ -1269,5 +1269,107 @@
       "source_native_renewal_credit": 0,
       "introduced_seam": "RETURNS30/156/257 reference-return/finally and COMP33/92/93 declaration paths preserved pointwise; one initialized affected fixture, no separate init producer or old-cut renewal."
     }
+  },
+  "captured_factory_fiber_throw": {
+    "status": "ACCEPTED_PRIVATE_PARTIAL",
+    "base_revision": "2112d1e9d8e8b09997188de1154931c63b2ebd16",
+    "semantic_revision": "07fb942540ddefec4ea79bc11f2bf9a5ae3ee75f",
+    "modules": 374,
+    "artifact_root": ".tools/captured-factory-fiber-20",
+    "scope": "Captured first-class Closure::fromCallable factory selecting bound Fiber::throw through variable invocation. Handled same-object injection, retired caller cells, saved caller ownership and final argument/capture/receiver cleanup are validated.",
+    "implementation": [
+      "spec/semantics/358-fiber-from-callable.watsup"
+    ],
+    "behavior": [
+      "Actual CONFIG_INVOKE and live config_invoke_valid admit only INTRINSIC_FIBER_THROW with nonempty INPUT. Existing allocator, frozen-member/line/arity/certificate checks and disjoint Unsupported remain exact.",
+      "The factory retires during callback selection arguments. The source name changes to isTerminated before callback and original receiver-cell retirement. Historical CALL/ITEMS own no producer/array; returned capture owns only its selected Fiber.",
+      "Named exception argument evaluation clears selected Closure and exception caller cells. CONFIG SENT then owns the Throwable; after transfer the saved API buffer and authentic THROW_SEARCH/CATCH_BIND or caught cell own the same object, while the result tail retains one capture and its receiver edge.",
+      "The main-created exception has an empty trace and no hidden receiver/capture edge. Catch observes exact identity through WeakReference; handled termination returns null. Exception retirement precedes the false result marker whose historical SENT is nonowning; eager cleanup then retires Closure/Fiber before the original consumer.",
+      "Exact zero-budget/full resumption, final three weak reads and separately constructed source/receiver/API/type controls discriminate authority and cleanup. Saved factory proof remains valid after retirement; bound source/live validation becomes false after receiver release."
+    ],
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_closures.c: zend_create_closure_from_callable and fake Closure receiver retention",
+      "vendor/php-src/Zend/zend_fibers.c: Fiber::throw, zend_fiber_resume_internal error flag, zend_fiber_delegate_transfer_result",
+      "spec/semantics/281-fibers.watsup: fiber_inject; 152-throwable-runtime.watsup: throwable_begin and CATCH_BIND"
+    ],
+    "cuts": {
+      "native": {
+        "report": ".tools/captured-factory-fiber-throw-21/captured-factory-fiber-throw-native-21-6heyntts/report.json",
+        "sha256": "ea05af6c08387413d4e0376909ec8be90e5747cd348beab296c5e8ad7db08554",
+        "revision": "2112d1e9d8e8b09997188de1154931c63b2ebd16",
+        "oracle_cases": 2,
+        "model_credit": 0,
+        "stdout": "Q;A;M:isTerminated;F;B;P:pause;H:held;V;I:same;C:held;V:null;X:gone;C:gone;H:gone;E;"
+      },
+      "baseline": {
+        "report": ".tools/captured-factory-fiber-throw-21/captured-factory-fiber-throw-model-21-m36n_1u0/report.json",
+        "sha256": "7dc7b4f3324e19e2914151168e3056304c18519c53be18c7886d245f057c4ba3",
+        "revision": "2112d1e9d8e8b09997188de1154931c63b2ebd16",
+        "direct_agreement": 1,
+        "direct_seconds": 30.70390248298645,
+        "captured_agreement": 0,
+        "captured_status": "unsupported",
+        "captured_seconds": 10.417567253112793,
+        "captured_stdout": "Q;A;",
+        "reason": "captured Closure::fromCallable factory Fiber callback"
+      },
+      "state": {
+        "report": ".tools/captured-factory-fiber-throw-21/factory-fiber-throw-state-21-2pm4pczs/report.json",
+        "sha256": "1a0e6d89c524092a246b9f6972ab2889eb4dadddc9558a7003a662ab789208d7",
+        "revision": "07fb942540ddefec4ea79bc11f2bf9a5ae3ee75f",
+        "compiler": "PASS",
+        "compiler_seconds": 4.771734237670898,
+        "state": "PASS",
+        "state_seconds": 81.11880779266357,
+        "state_premises": 439,
+        "genuine_and_derived": 343,
+        "constructed": 96,
+        "source_credit": 0
+      },
+      "public": {
+        "report": ".tools/captured-factory-fiber-throw-21/factory-fiber-throw-repair-model-21-dvm75ce3/report.json",
+        "sha256": "57ebb951751dfbaf5fa893ae9be3b2ef878e93bd75c4bd88731989c2c98e2653",
+        "revision": "07fb942540ddefec4ea79bc11f2bf9a5ae3ee75f",
+        "agreement_cases": [
+          "captured-factory-fiber-throw"
+        ],
+        "source_credit": 1,
+        "seconds": 30.148253440856934
+      }
+    },
+    "commands": [
+      "python3 .tools/captured-factory-fiber-throw-21/run-captured-factory-fiber-throw-native-21.py",
+      "python3 .tools/captured-factory-fiber-throw-21/run-captured-factory-fiber-throw-model-21.py",
+      "python3 .tools/captured-factory-fiber-throw-21/run-factory-fiber-throw-state-21.py",
+      "python3 .tools/captured-factory-fiber-throw-21/run-factory-fiber-throw-repair-model-21.py .tools/captured-factory-fiber-throw-21/factory-fiber-throw-state-21-2pm4pczs/report.json"
+    ],
+    "caps": {
+      "native": 45,
+      "worker_request": 30,
+      "compiler": 120,
+      "state": 300,
+      "CLI": 60,
+      "outer": 90,
+      "steps": 100000,
+      "jobs": 1
+    },
+    "maintained": {
+      "sources": "tests/semantics/scoped_static_compound_cases.py",
+      "ids": [
+        "from-callable-direct-fiber-throw",
+        "from-callable-factory-fiber-throw"
+      ],
+      "renderer": "tests/semantics/from_callable_throw_fiber_review.py",
+      "dispatch": "tests/semantics/scoped_static_compound_protocol.py: from-callable-factory-bound-fiber-throw",
+      "source_bytes": "Exact accepted native originals",
+      "fixture_bytes": 74072,
+      "fixture_premises": 439,
+      "relocation_runtime_renewal": 0
+    },
+    "review": "Narrow 358 semantics, native and distinct direct/repaired public raw plus state439 independently accepted by arguments_review_21. Maintained exact source/render/dispatch byte identity and documentation independently accepted; no relocation runtime renewal.",
+    "remaining": [
+      "Captured-factory Fiber targets beyond static getCurrent, receiver-free static suspend, bound isSuspended/resume/throw, and unhandled injection, throw errors and wider selection/invocation forms require separate source/state evidence.",
+      "Required original static-compound source 7 remains OPEN with unchanged CLI60 timeout and zero agreement; no older getter/factory/alias/Fiber/static-compound cut is renewed."
+    ]
   }
 }

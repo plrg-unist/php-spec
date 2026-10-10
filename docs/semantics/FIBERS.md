@@ -484,7 +484,7 @@ during arguments; saved creation and invocation authority needs no live producer
 or current USER frame. Frozen members survive referenced-name mutation and array
 retirement. The returned Closure adds no factory/array root and reads the actual
 active Fiber across suspension. Other captured-factory Fiber kinds and bound
-inputs beyond the separately validated bound `isSuspended`/`resume` and
+inputs beyond the separately validated bound `isSuspended`/`resume`/`throw` and
 receiver-free static `suspend` remain explicit Unsupported boundaries. The [core-factory ledger](../../coverage/semantics/from-callable-review.json)
 keeps the direct control, repaired source and 270 state premises at distinct cuts.
 
@@ -521,6 +521,19 @@ premises authenticate real saved-VM authority, release and zero-budget resumptio
 Saved producer evidence stays valid after retirement, while bound capture source
 and live checks correctly become false. Resume errors and wider forms require
 separate evidence.
+
+Bound captured-factory `throw` adds an owned Throwable argument buffer while
+retaining a single receiver INPUT edge. Frozen selection survives name mutation
+and producer/callback retirement; argument evaluation clears both selected and
+exception caller cells. The real saved caller WAIT/result tail keeps the Closure
+and borrows its receiver, while its API owns the sent exception. Injection keeps
+that exact object through THROW_SEARCH and CATCH_BIND; the child's weak-reference
+comparison confirms identity. Handled termination returns null, releases the
+exception before the nonowning historical result buffer, then retires Closure
+and Fiber through authentic eager cleanup. Distinct direct/repaired 374-module
+sources and 439 premises (343 genuine/derived, 96 constructed) validate source,
+owned buffer, continuation and zero-budget resumption. Unhandled injection,
+throw errors and wider forms require separate evidence.
 
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver
