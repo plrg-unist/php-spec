@@ -2783,6 +2783,15 @@ throw/error forms and original 7 remain OPEN.
 Exact aa4a7c27/375 validation-only composition is statically reviewed: guarded
 reference-return, property, anonymous NEW and Iterator unpack tasks are absent
 from these originals. Source2/state542 retain the 204 cut; current runtime is UNRUN.
+Wrong-Throwable scalar 7 on an INITIAL Fiber rejects before state checking or
+transfer. Two direct/captured originals agree at 47b318154/375; 340 premises
+(288 genuine/derived, 52 constructed) validate the fresh scalar argument trace,
+original RELEASE tail and ordinary callback/capture/Fiber pruning before catch.
+Algo and initialized SL pass; the two corrected fixture failures retain zero
+state credit. No runtime change or older-cut renewal is needed.
+Exact f09a7275/375 validation-only composition is statically reviewed; guarded
+reference-return, GC-plan, magic-property and Iterator unpack paths are absent.
+The 47b source2/state340 cut stays distinct; current runtime is UNRUN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

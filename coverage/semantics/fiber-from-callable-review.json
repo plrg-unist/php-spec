@@ -223,8 +223,9 @@
   },
   "captured_factory_throw": {
     "status": "ACCEPTED_PARTIAL",
-    "scope": "Captured first-class Closure::fromCallable factory selects bound throw; frozen name, retired producer/caller cells, owned Throwable buffer, exact handled injection, saved caller capture/receiver edge and final three retirements validated. Separate new unhandled injection through ordinary child finally reaches the same-object outer catch after callback/capture/Fiber retirement; caught-cell null removes the last exception owner on unchanged 204200d1f/375.",
+    "scope": "Captured first-class Closure::fromCallable factory selects bound throw; frozen name, retired producer/caller cells, owned Throwable buffer, exact handled injection, saved caller capture/receiver edge and final three retirements validated. Separate new unhandled injection through ordinary child finally reaches the same-object outer catch after callback/capture/Fiber retirement; caught-cell null removes the last exception owner on unchanged 204200d1f/375. Separate wrong-Throwable scalar 7 originals on an INITIAL Fiber agree on unchanged 47b318154/375; 340 premises validate actual scalar error trace, original RELEASE tail and ordinary capture/Fiber/callback pruning before outer catch.",
     "ledger": "coverage/semantics/from-callable-review.json: captured_factory_fiber_throw",
-    "unhandled_ledger": "coverage/semantics/from-callable-review.json: captured_factory_fiber_throw.unhandled_injection"
+    "unhandled_ledger": "coverage/semantics/from-callable-review.json: captured_factory_fiber_throw.unhandled_injection",
+    "wrong_argument_ledger": "coverage/semantics/from-callable-review.json: captured_factory_fiber_throw.wrong_throwable_argument"
   }
 }

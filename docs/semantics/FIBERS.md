@@ -544,8 +544,17 @@ and eager cleanup retires capture/Fiber before the outer catch. The catch cell
 then solely owns the same Throwable until explicit null. Historical SENT is
 nonowning; the empty trace has no capture or receiver edges. Two fresh
 direct/captured originals and 542 premises (433 genuine/derived, 109 controls)
-pass on unchanged 204200d1f/375. Throw errors,
-replacing/nested injections and wider forms require separate evidence.
+pass on unchanged 204200d1f/375.
+Wrong-Throwable scalar 7 on an INITIAL Fiber raises TypeError before unstarted-state
+rejection or transfer. Its real trace contains one Fiber->throw frame with scalar
+argument 7 and no capture/receiver edge. Same-frame throwable continuation restores
+the original FIBER_CAPTURE_RELEASE tail. Sequence 1 with no destructor class
+creates no eager operation: ordinary allocation pruning retires capture, Fiber and
+raw callback in the release step, while the pending error survives to outer catch.
+Caught-cell null then retires the error and trace. Two direct/captured originals
+and 340 premises (288 genuine/derived, 52 controls) pass at 47b318154/375; the two
+original fixture failures retain zero credit. Wider error forms and replacing/nested
+injections require separate evidence.
 
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver

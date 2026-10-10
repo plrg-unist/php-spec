@@ -2304,3 +2304,98 @@ echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
         'discriminator': 'Frozen bound throw delivers the same main-created Throwable through ordinary child finally while capture/receiver remain held; abrupt delivery retires capture and Fiber before the outer catch, whose cell owns the exception until explicit null. U markers stay absent.',
     },
 ]
+
+CASES += [
+    {
+        'id': 'from-callable-direct-fiber-throw-argument',
+        'source': '''<?php
+function discardThrowArgumentCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireThrowArgumentSelectionReview21() {
+    global $selected;
+    $selected = null;
+    echo "V;";
+    return 7;
+}
+echo "Q;";
+$method = "throw";
+$fiber = new Fiber(function () { echo "U;"; });
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = null;
+$selected = Closure::fromCallable(callback: discardThrowArgumentCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isStarted";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+try {
+    $returned = $selected(exception: retireThrowArgumentSelectionReview21());
+    echo "U;";
+} catch (Throwable $caught) {
+    $weakError = WeakReference::create($caught);
+    echo "T:", $caught instanceof TypeError ? "TypeError" : "other", ";";
+    echo "D:", $caught->getMessage(), ";";
+    echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+    echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+    $caught = null;
+}
+echo "X:", $weakError->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;T:TypeError;D:Fiber::throw(): Argument #1 ($exception) must be of type Throwable, int given;C:gone;H:gone;X:gone;C:gone;H:gone;E;',
+        'discriminator': 'Frozen bound throw rejects scalar 7 with TypeError before INITIAL state rejection or callback transfer. Argument evaluation clears selected; capture/Fiber are gone by the outer catch and the generated error retires after caught-cell null. Both U markers stay absent.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-throw-argument',
+        'source': '''<?php
+function discardThrowArgumentCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireThrowArgumentSelectionReview21() {
+    global $selected;
+    $selected = null;
+    echo "V;";
+    return 7;
+}
+echo "Q;";
+$method = "throw";
+$fiber = new Fiber(function () { echo "U;"; });
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = Closure::fromCallable(...);
+$selected = $factory(callback: discardThrowArgumentCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isStarted";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+try {
+    $returned = $selected(exception: retireThrowArgumentSelectionReview21());
+    echo "U;";
+} catch (Throwable $caught) {
+    $weakError = WeakReference::create($caught);
+    echo "T:", $caught instanceof TypeError ? "TypeError" : "other", ";";
+    echo "D:", $caught->getMessage(), ";";
+    echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+    echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+    $caught = null;
+}
+echo "X:", $weakError->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;T:TypeError;D:Fiber::throw(): Argument #1 ($exception) must be of type Throwable, int given;C:gone;H:gone;X:gone;C:gone;H:gone;E;',
+        'discriminator': 'Frozen bound throw rejects scalar 7 with TypeError before INITIAL state rejection or callback transfer. Argument evaluation clears selected; capture/Fiber are gone by the outer catch and the generated error retires after caught-cell null. Both U markers stay absent.',
+    },
+]
