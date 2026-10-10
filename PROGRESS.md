@@ -575,6 +575,8 @@ retained; successful Y or error escape retires it with x/z unchanged. Three exac
 originals agree at `46247e9b`; five reached fixtures pass 461 assertions
 (133+139+66+62+61) at `beec37fa`, and independent three/187 pass at `56f553af`.
 Private strict374 at `46247e9b` passes in 5.767s with zero applications.
+Actual375 over `0228435a` passes strict at `cdf702106` in 5.533s,
+with zero application evaluations; private source/state cuts keep their identities.
 Actual outer-literal resumption/Notice, other caught layouts, lifecycle capture,
 wider signatures/operands, further histories and broad returns verification remain open.
 
