@@ -1,0 +1,106 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit, profile 30719, LC_ALL=C/TZ=UTC, jobs 1",
+  "scope": "Literal ordinary CV/This isset and empty through public by-value backed/virtual block or expression get hooks. The original scalar getter maps false to 7, so quiet tests must observe the getter result rather than backing storage.",
+  "engine": [
+    "vendor/php-src/Zend/zend_object_handlers.c::zend_std_has_property (get call/receiver hold, nullness vs truth, RV destruction before return to caller)",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_ISSET_ISEMPTY_PROP_OBJ (boolean branch after property handler)"
+  ],
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/136-property-runtime.watsup",
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "semantic_revision": "f67a994c0ce81f8f944b7efd55bf68d4ca6d332f",
+  "state_revision": "ec1f309d951666f73468fbe48b40abd28466a6ba",
+  "module_count": 374,
+  "native": {
+    "revision": "2c0d9531c4bc1f05587b4ab71c50dfdbee414f52",
+    "sources": 2,
+    "source_agreements": 0,
+    "report": "native-first/report.json",
+    "sha256": "300297c93e4028bc6ba7807976ce37471cb5b3d239d3d4b735995daf670b04a8"
+  },
+  "baseline": {
+    "revision": "2c0d9531c4bc1f05587b4ab71c50dfdbee414f52",
+    "checked_sources": 2,
+    "reason": "quiet property hook read",
+    "source_agreements": 0,
+    "report": "accepted-current-baseline/report.json",
+    "sha256": "b94e604e7b6a54323cf8280afc5d41946626b6ed291396edfa73a96f48438870"
+  },
+  "sources": {
+    "agreements": 2,
+    "catalogue": "tests/semantics/quiet_get_hook_cases.json",
+    "report": "changed-model-tr5cxn20/report.json",
+    "sha256": "7387a47cab5acd5ae42e6cbd5ec0d73e94f7b401cf1ed64fb5d782e8f05d62b6",
+    "observations": "CV/This getters each run for null/0/false/7; false maps to 7. Temporary object results produce G|D|I|N|G|D|F|N|LIVE|B|, with weak-null after each probe and the box still live."
+  },
+  "strict": {
+    "mode": "SL",
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "elapsed_seconds": 6.028,
+    "report": "quiet-hook-compiler-aquqynq5/report.json",
+    "sha256": "55df6cd2e5f34b5a08965fc50a90c71c88cc9ed2718c2243af928b9f9702ad30"
+  },
+  "state": {
+    "reached": 143,
+    "derived": 19,
+    "premises": 162,
+    "application_evaluations": 1,
+    "source_agreements": 0,
+    "report": "quiet-get-hook-protocol-ttpoow87/report.json",
+    "sha256": "cacc86579a7835fb73146d9d627e12b48b2daadd5daf2f61b0be4cba358b8a3c",
+    "fixture_sha256": "1529c259e447dc5e84a4660db5fe6242e7dc403f40854ad6dd7e4d6190bc9933",
+    "algorithmic_seconds": 4.834,
+    "strict_SL_seconds": 27.047,
+    "stdout": "true\n",
+    "observations": "Genuine checked source/setup, prep/call/entered/returned states; CV receiver owners 1->2->1; This pre-call RESULT adds one owner (3), replaced by selected target (3), then method-only result context (2). A sole returned RV owner disappears at the boolean step, queues a real destructor operation and clears its WeakReference before I/F output. Result tasks own no receiver/payload.",
+    "derived_controls": "Missing/wrong marker, wrong mode/source/line/property/hook/function and ordinary-vs-quiet result modes reject. Substituting an OCCURRENCES coalesce parent only tests parent-mode exclusion; no coalesce source, native or runtime execution."
+  },
+  "validation": "Pinned PHP b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398 and SpecTec26d77; strict compiler60 init-only, native45, model60/outer75/100000 steps, affected state AL90 then SL90. Cache=false/det=true; exact source/stdout/stderr/exit agreement; clean stable inputs/fixture/HEAD/status and fully reaped groups. Author and independent reviewer bound the source and state cuts; later fixture/documentation commits renew no source/native evidence.",
+  "preserved": [
+    {
+      "revision": "9556d79da3de956bef825305691d2a68903e67cf",
+      "strict": "quiet-hook-compiler-tl1wvfsi/report.json",
+      "strict_sha256": "98c0663d3784b45e1d597913151dd584e4e015b453b7cf42ea5295cc393268b3",
+      "report": "changed-model-wk2opnuv/report.json",
+      "sha256": "acb6de26e2b55c47e0a5b774c4c460d1ad1defb5522fcab038d7ae0a3c509cdb",
+      "result": "Strict initialization passed, first scalar original Unsupported quiet property hook read; RV second original UNRUN; source0."
+    },
+    {
+      "revision": "7b032481fb06ae1b6e1d5357206da88834262f63",
+      "report": "quiet-get-hook-protocol-rrcufic3/report.json",
+      "sha256": "297df867e7f74c98aa9828b27905eddfecb34c4e3ce824485ceb8d09bd7934d2",
+      "result": "AL stopped on ungrouped singleton SEQUENCE; application0, SL unrun, source0."
+    },
+    {
+      "revision": "8de58a36e26e931fc4147e01d475b43b99dc2b1c",
+      "report": "quiet-get-hook-protocol-vbg4lgpa/report.json",
+      "sha256": "2d5733966b8d5ca6b9cab3cb39476050dd2a6aa3697006573fe73a5b9aeac366",
+      "result": "AL stopped on fresh output bindings inside conjunctions; application0, SL unrun, source0."
+    },
+    {
+      "revision": "8b552c00c72aa0c9cbb1809ecc4727e7cf8f7a66",
+      "report": "quiet-get-hook-protocol-vn280pes/report.json",
+      "sha256": "d34fc08dbd85609107da954a7d01ae2e3ff887662fcbcdd5931c920d1e3eb8dd",
+      "result": "AL passed; SL false162 due to pre-call This owner expectation2, state/source credit0."
+    },
+    {
+      "revision": "8b552c00c72aa0c9cbb1809ecc4727e7cf8f7a66",
+      "report": "quiet-hook-this-owners-diagnostic-8b552/report.json",
+      "sha256": "ea00cbb402e138328d9cb34ba5580e1446afbfa0db5368a8e2ca7ca23eb8e796",
+      "result": "Authentic scalar prefix/current/RESULT checks return actual owners3; localization only, zero state-gate/source credit."
+    }
+  ],
+  "remaining": "Coalescing (runtime/source credit0), setters/byref/defaulted virtual hooks, inherited/trait hooks, temporary/computed receivers, wider quiet/reference/indirect access, hooked unset and iteration remain partial. No intentional engine divergence.",
+  "raw_roots": {
+    "sources": ".tools/expression-get-hooks-private-29/.tools/quiet-get-hooks-probes-31",
+    "states": ".tools/expression-get-hooks-private-29/.tools"
+  },
+  "recovery": [
+    "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/quiet_get_hook_cases.json",
+    "python3 tests/semantics/quiet_get_hook_protocol.py --revision \"$(git rev-parse HEAD)\""
+  ],
+  "actual_composition": "Pending parent integration; these accepted cuts are private374 over2c0 and do not claim later canonical composition."
+}
