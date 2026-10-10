@@ -1531,10 +1531,16 @@ sources remain unchanged, while integer widening raises a source conflict withou
 converting that cell. Readonly backing stays UNSET without a new type source.
 [Six source agreements and six reached groups](coverage/semantics/magic-property-float-review.json)
 pass 904 setup-inclusive premises, including binary64 rounding and CV versus owned
-receiver cleanup. Numeric strings, booleans and wider float conversions remain open;
-earlier getter evidence is unchanged.
+receiver cleanup. That cut leaves numeric strings, booleans and wider float
+conversions open; earlier getter evidence is unchanged.
 The actual374 join over `2c0d9531c` passes strict at `076606980` (5.481s),
 preserving current virtual-hook interfaces; private cuts retain their original credit.
+Weak float getter verification now also accepts full numeric strings classified
+NFLOAT, converting the actual unconstrained reference cell or only the by-value RV.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-decimal-review.json)
+pass 877 setup-inclusive premises, covering exact 7.5/0.1 bits, prefix/getter-strict
+rejection, real string|float source conflicts and CV versus owned cleanup.
+NINT-classified strings to float, booleans and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

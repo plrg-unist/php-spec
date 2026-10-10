@@ -1,0 +1,118 @@
+{
+  "status": "bounded source and reached-state milestone; independently reviewed semantics and retained results",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "4368f9d6f phase31/374 modules; earlier float-getter evidence is not renewed",
+  "runtime_revision": "9dbbb824d0a58bc04aa213ec4aac5420a5b3b50b",
+  "tested_revision": "770d69b2059a6371e2891889e4bd7c59fdf719f7",
+  "scope": "Modules380/384 builtin-float MAGIC_GET verification of full numeric strings classified NFLOAT, on accepted public literal-CV or owned ordinary-call receivers. Weak unconstrained real REFERENCE cells convert in place; BYVAL changes only RV. Real valid property sources select a first-source conflict without converting the string or attaching the getter target type. Strict getter and leading-numeric rejection retain ordinary TypeError.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL --sl/jobs1; native30/model60/process90/numeric120; profile30719; LC_ALL=C/TZ=UTC; retained tools, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/380-magic-property-get.watsup": "38252d051b1695c7732cb51defa1211ef822ff1e24d47ea91bd8b53efefe6873",
+    "spec/semantics/384-magic-property-reference-types.watsup": "0dbd5be274d728360953385cdf2d43f3edcfd7a16c00ad40d0d8766cae97dafe",
+    "tests/semantics/dynamic_property_warning_sources.py": "91897bbd8e1a30b117f753dfacec1afea17166e811a020defa925f3332d95960",
+    "tests/semantics/magic_property_decimal_protocol.py": "c5535f74c3866c143700bd5b52bc3bc54bf87a72ead9f0b5734bc74e17b8a372"
+  },
+  "native_first": {
+    "revision": "ddd6b8292934f9852a67f75ddad7326fad1bba91",
+    "cases": 6,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-decimal-native32-j4w7_pw4/report.json",
+    "seconds": 0.37034008372575045,
+    "credit": "Native observations only; exact original bytes, actual pinned binary, all exit0/empty stderr."
+  },
+  "unsupported_baseline": {
+    "revision": "ddd6b8292934f9852a67f75ddad7326fad1bba91",
+    "case": "review-property-magic-decimal-reference-kept32",
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-decimal-baseline32-_qyww5pr/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|1/0|",
+    "reason": "magic getter property type coercion",
+    "credit": 0
+  },
+  "strict": {
+    "modules": 374,
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-decimal-strict32-6_ud5mp1/report.json",
+    "seconds": 6.120708869770169,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "cases": 6,
+    "raw": ".tools/properties-magic-coerce29/.tools/dynamic-property-warning-source-fhrfet2c/report.json",
+    "outcomes": "All checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact; raw/modeled stderr empty."
+  },
+  "source_sha256": {
+    "review-property-magic-decimal-reference-kept32": "298da864aaa2e82557e0379d206f0093db946f1c6fb5a620b02aa93dae18d440",
+    "review-property-magic-decimal-reference-drop32": "ed67ca1d3e8ed95d42021972e83c8cfdf4e583ef097b920e4057a3ec4a7753e0",
+    "review-property-magic-decimal-source-conflict32": "b1de3c478e2fd5ebc9564bcf8dfc381a18900e7fbd9eb3a5d41e7ec98de68ca4",
+    "review-property-magic-decimal-value32": "7ad07a9d4ca20d01bf90722cdf1325eca8204fd5b0c08f1cc3300c943128ddbb",
+    "review-property-magic-decimal-owned32": "af6c56a2ac2000a5ad0b2a90c7854da0e1132930ab3b2a85f0d3a69cd1d64644",
+    "review-property-magic-decimal-strict-getter32": "821cb31760797e9235e804bbb893fb39d7f9bfc0e85499ce979384f13035c0c1"
+  },
+  "reached": [
+    {
+      "group": "reference-kept",
+      "premises": 218,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-decimal-ed9f13dz/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "premises": 130,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-decimal-l1uvam66/report.json"
+    },
+    {
+      "group": "value",
+      "premises": 130,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-decimal-jvp9awtw/report.json"
+    },
+    {
+      "group": "owned",
+      "premises": 136,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-decimal-f8pjmtdu/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "premises": 131,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-decimal-8e4i_8r5/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "premises": 132,
+      "raw": ".tools/properties-magic-coerce29/.tools/magic-property-decimal-_h5vz5f8/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 877,
+  "facts": [
+    "Whole verified-state comparisons isolate 7.5/0.1 conversion to the actual unconstrained reference cell or BYVAL RV. Independent binary64 expectations are 4620130267728707584 and 4591870180066957722. Readonly backing remains UNSET with no getter type source, and repeated reads invoke the getter again.",
+    "CV reader destruction sees the converted reference before mutating it; reception copies the changed referent. BYVAL preserves the raw global string while forwarding its converted value. Owned reception detaches 0.1 and drops the raw cell owner before BASE destruction, retaining the detached float through the destructor mutation.",
+    "The real string|float property source accepts the raw string and would accept the converted float, but verification raises its first-source conflict while preserving the raw string/source. Actual reader cleanup later detaches that source and repairs 7.5 while the already-created TypeError survives.",
+    "7.5tail is LEADNUM and rejected without prefix conversion. A strict getter in a checked eval unit rejects 7.5 under a weak caller before cleanup; its original error survives later repair. Both outcomes retain null previous links.",
+    "Constructed wrong bits, original string/RV, NINT string, boolean and PARAMETERBACKINGS inputs test the narrow guard; these are separate from source reachability."
+  ],
+  "preparation": {
+    "runtime": ".tools/properties-magic-coerce29/.tools/property-magic-decimal-runtime-prep32-o9rl5c1_/report.json",
+    "states": ".tools/properties-magic-coerce29/.tools/property-magic-decimal-state-prep32-lw0jyb15/report.json",
+    "credit": "Full-sort elaboration only; zero application/state evaluation."
+  },
+  "preserved_failure": {
+    "raw": ".tools/properties-magic-coerce29/.tools/property-magic-decimal-state-prep32-qrt6k8x7/report.json",
+    "cause": "Fixture-only LEADINGNUM token instead of declared LEADNUM; records empty. Only that fixture token was corrected.",
+    "credit": 0
+  },
+  "compatibility": "Only380/384 conversion rules change. Existing95/138 classification, schema, owner roots, receiver stages, strict rejection and exact identity are unchanged. Phase31 NINT-string boundary remains Unsupported and its accepted evidence keeps its original cut.",
+  "remaining": "NINT-classified numeric strings to float, booleans/wider conversions, PARAMETERBACKINGS, callback-based verification and previous receiver/signature/access/quiet/write/recursive residuals remain required.",
+  "engine": [
+    "vendor/php-src/Zend/zend_execute.c:i_zend_verify_type_assignable_zval/zend_verify_prop_assignable_by_ref_ex",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter strictness and verification before receiver release",
+    "spec/semantics/95-type-values.watsup:typed_number/typed_conversion",
+    "spec/semantics/138-property-references.watsup:propref_class/propref_possible"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_decimal_protocol.py reproduce exactly six sources/groups. Ignored raw trees retain original/checked/eval sources, generated fixtures/assertions, commands/process/streams and stable identities. Existing sparse private providers were reused; no new portability/rebuild claim."
+}

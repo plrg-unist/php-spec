@@ -2336,6 +2336,17 @@ string/bool and PARAM controls are constructed; prior cuts and failures are unch
 The actual374 join over `2c0d9531c` passes strict at `076606980` (5.481s,
 state credit0). Current virtual-hook guards are preserved and inactive in these
 unhooked originals; private cuts and prior failures retain their credit.
+Weak full numeric strings classified NFLOAT now verify against builtin-float
+magic getter targets. Actual unconstrained references convert in place; by-value
+returns change only their RV. Exact 7.5/0.1 bits, readonly UNSET backing, prefix
+and strict-getter rejection, real string|float source conflicts and CV/owned
+cleanup retain distinct behavior. Native6 and the unchanged CLI1 Unsupported
+baseline remain at `ddd6b8292`; strict374/source6 and six whole reached groups
+pass 877 setup-inclusive premises at `770d69b20`, using reviewed runtime `9dbbb824d`.
+The fixture-only LEADINGNUM preparation failure retains zero credit after its
+LEADNUM correction. NINT-classified strings to float, booleans, PARAMETERBACKINGS
+and wider conversions remain required; phase31 evidence is not renewed.
+[Numeric-string float ledger](coverage/semantics/magic-property-decimal-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

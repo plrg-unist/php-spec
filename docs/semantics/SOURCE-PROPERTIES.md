@@ -251,8 +251,24 @@ cell, even when its int|float source would accept that conversion and the getter
 is strict. Later source detachment and repair retain the already-created Error.
 The [float-getter review](../../coverage/semantics/magic-property-float-review.json)
 records six source agreements and six whole reached groups/904 setup-inclusive
-premises. Numeric strings, booleans, PARAMETERBACKINGS and wider float conversions
-remain Unsupported; prior getter evidence retains its separate cuts.
+premises. At that cut numeric strings, booleans, PARAMETERBACKINGS and wider float
+conversions remained Unsupported; prior getter evidence retains its separate cuts.
+
+Weak builtin-float MAGIC_GET verification also accepts full numeric strings
+classified NFLOAT, using the getter declaration's strictness. The actual
+unconstrained reference cell converts in place; a by-value return changes only
+its RV. Repeated 7.5/0.1 reads preserve exact binary64 bits, UNSET readonly backing
+and no getter type-source attachment. CV reception copies the referent after
+reader destruction, while owned reception detaches before BASE destruction.
+A real string|float property source instead selects a first-source conflict
+without converting the string or changing its source. The original TypeError
+survives later source detachment and repair. Leading-numeric `7.5tail` and a
+strict getter under a weak caller reject before conversion.
+The [numeric-string float review](../../coverage/semantics/magic-property-decimal-review.json)
+records six source agreements and six whole reached groups/877 setup-inclusive
+premises. NINT-classified strings to float, booleans, PARAMETERBACKINGS and wider
+conversions remain Unsupported; earlier evidence and the failed fixture
+preparation retain their original cuts.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)
