@@ -91,7 +91,7 @@ SCALAR = [
     *reach('S_this', '$qh_after(S_empty_result,S_empty_boolean)', 3, 'false'),
     r'$property_hook_isset_plan(S_this) = (ppropertyhook_this)',
     r'S_this.CURRENT = (pcallcontext_method)',
-    r'ppropertyhook_this.OBJECT = ppropertyhook.OBJECT /\ $this_receiver(S_this) = (ppropertyhook.OBJECT) /\ $heap_owners($heap_prune($heap_graph(S_this)),HOBJECT ppropertyhook.OBJECT) = 2 /\ $qh_guard(S_this)',
+    r'ppropertyhook_this.OBJECT = ppropertyhook.OBJECT /\ $this_receiver(S_this) = (ppropertyhook.OBJECT) /\ S_this.RESULT = KNOWN (POBJECT ppropertyhook.OBJECT) /\ $heap_owners($heap_prune($heap_graph(S_this)),HOBJECT ppropertyhook.OBJECT) = 3 /\ $qh_guard(S_this)',
     r'PhpStep: S_this ~> S_this_call_raw',
     r'S_this_call = $qh_after(S_this,S_this_call_raw)',
     r'$property_hook_pending_call(S_this_call,ppropertyhook_this) /\ $heap_owners($heap_prune($heap_graph(S_this_call)),HOBJECT ppropertyhook.OBJECT) = 3 /\ $qh_guard(S_this_call)',
