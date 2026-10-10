@@ -1,0 +1,42 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "76840928d18525b848a821c257d70395b7169af7edb9207cad425eb32c2b0716",
+  "cases": [
+    {
+      "id": "null-zero-getter-false-this",
+      "source": "<?php\nfunction hook_coalesce_fallback32(): int { echo \"R|\"; return 13; }\nclass HookCoalesceScalar32 {\n    public mixed $value = null {\n        get { echo \"G|\"; return $this->value === false ? 7 : ($this->value === 7 ? false : $this->value); }\n    }\n    public function inspect(): void {\n        $kept = $this->value ?? hook_coalesce_fallback32();\n        echo $kept === false ? \"TF|\" : ($kept === 0 ? \"T0|\" : ($kept === 7 ? \"T7|\" : ($kept === 13 ? \"T13|\" : \"TX|\")));\n    }\n}\n$box = new HookCoalesceScalar32;\nforeach ([null, 0, false, 7] as $value) {\n    $box->value = $value;\n    $kept = $box->value ?? hook_coalesce_fallback32();\n    echo $kept === false ? \"F|\" : ($kept === 0 ? \"0|\" : ($kept === 7 ? \"7|\" : ($kept === 13 ? \"13|\" : \"X|\")));\n    $box->inspect();\n}\n",
+      "source_sha256": "49574f2681315e09481ba91ceaae876b923f31aadcdebdf3e177c8555851e42f",
+      "native_group": "coalesce-get-hooks32-native2-57f2f4b8b",
+      "native_raw_sha256": "76840928d18525b848a821c257d70395b7169af7edb9207cad425eb32c2b0716",
+      "exit_status": 0,
+      "stdout_base64": "R3xSfDEzfEd8UnxUMTN8R3wwfEd8VDB8R3w3fEd8VDd8R3xGfEd8VEZ8",
+      "stderr_template_base64": "",
+      "status": "normal"
+    },
+    {
+      "id": "coalesce-owned-result",
+      "source": "<?php\nclass HookCoalesceLeaf32 {\n    public function __destruct() { echo \"D|\"; }\n}\nfunction hook_coalesce_leaf32(): object {\n    global $weak;\n    echo \"G|\";\n    $leaf = new HookCoalesceLeaf32;\n    $weak = WeakReference::create($leaf);\n    return $leaf;\n}\nfunction hook_coalesce_fallback_leaf32(): object { echo \"R|\"; return new HookCoalesceLeaf32; }\nclass HookCoalesceBox32 {\n    public object $value { get => hook_coalesce_leaf32(); }\n    public function __destruct() { echo \"B|\"; }\n}\n$weak = null;\n$box = new HookCoalesceBox32;\n$kept = $box->value ?? hook_coalesce_fallback_leaf32();\necho $weak->get() === $kept ? \"HELD|\" : \"X|\";\nunset($box);\necho $weak->get() === $kept ? \"LIVE|\" : \"X|\";\nunset($kept);\necho $weak->get() === null ? \"N|\" : \"X|\";\n",
+      "source_sha256": "80259d9476c39d84410fc5589daa21239af4d2e2c38509a1d36dcf28269869f5",
+      "native_group": "coalesce-get-hooks32-native2-57f2f4b8b",
+      "native_raw_sha256": "76840928d18525b848a821c257d70395b7169af7edb9207cad425eb32c2b0716",
+      "exit_status": 0,
+      "stdout_base64": "R3xIRUxEfEJ8TElWRXxEfE58",
+      "stderr_template_base64": "",
+      "status": "normal"
+    }
+  ]
+}
