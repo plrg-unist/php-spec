@@ -272,6 +272,7 @@ def $property_hook_coalesce_result_tail(S, ppropertyhook, ptask*) = ($property_h
 
 dec $property_hook_valid(pstate, ppropertyhook, bool) : bool
 def $property_hook_valid(S, ppropertyhook, b_live) = ($property_hook_source(S, ppropertyhook) /\ (~b_live \/ ((HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, ppropertyhook.OBJECT))))
+dec $property_hook_result_tail(pstate, ppropertyhook, ptask*) : bool
 
 def $property_hook_pending(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
@@ -378,7 +379,6 @@ def $target_function(S, PROPERTY_HOOK_TARGET ppropertyhook) = $property_hook_fun
 def $task_nodes(PROPERTY_HOOK_RESULT ppropertyhook) = eps
 def $task_nodes(PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) = eps
 
-dec $property_hook_result_tail(pstate, ppropertyhook, ptask*) : bool
 def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*) = true
   -- if $property_hook_valid(S, ppropertyhook, false)
   -- if ~$property_hook_isset_site(S, ppropertyhook.SITE, false) /\ ~$property_hook_isset_site(S, ppropertyhook.SITE, true)
