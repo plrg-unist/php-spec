@@ -1569,6 +1569,8 @@ integer's binary64 cast, including rounding beyond 2^53 and positive zero for `-
 [Six source agreements and six reached groups](coverage/semantics/magic-property-integer-float-review.json)
 pass 899 setup-inclusive premises at `498b2281d`, covering signed limits,
 strict rejection, real source conflicts and CV versus owned cleanup.
+The actual375 join over `2d0146317` passes strict at `50ba5293a` (5.512s);
+private source/state cuts retain their original inputs.
 The two older constructed NINT controls now expect conversion; their earlier
 reports retain their original cuts. Booleans and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write

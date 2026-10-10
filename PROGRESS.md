@@ -2414,6 +2414,8 @@ corrected and covered only in the new kept group; phase31/32 reports are unchang
 The missing-parser baseline and negative-NINT fixture preparation failures retain
 zero credit. Booleans, PARAMETERBACKINGS and wider conversions remain required.
 [Integer-string float ledger](coverage/semantics/magic-property-integer-float-review.json).
+The actual375 join over `2d0146317` passes strict at `50ba5293a` (5.512s,
+state/source/native credit0); private source6/state899 are not renewed.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
