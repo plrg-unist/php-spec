@@ -173,6 +173,8 @@ throw cleanup and out-of-pool carrier rejection.
 Reference string payloads, handler changes to strings and array/object
 pre-warning payload holds remain required; earlier Iterator/NaN evidence keeps
 its original cuts.
+Actual375 over `b002fc277` passes strict SL at `ad7a95533`; private native/source
+and independent state cuts retain their original inputs.
 [String review](coverage/semantics/iterator-call-unpack-string-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
