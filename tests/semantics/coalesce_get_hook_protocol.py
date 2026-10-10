@@ -88,7 +88,7 @@ SCALAR = [
     r'S_parent_raw.ORIGIN = (porigin_parent) /\ S_parent_raw.TODO = (COALESCE_QUIET expression_right z z_right) :: ptask_tail* /\ S_parent_raw.RESULT = KNOWN PNULL',
     r'S_parent = $ch_after(S_base,S_parent_raw)',
     r'PhpStep: S_parent ~> S_rhs_raw',
-    r'S_rhs_raw.TODO = [AT $origin_child((porigin_parent),[PCFIELD 1]) (EVAL expression_right), VALUE_COPY z_right] ++ ptask_tail*',
+    r'S_rhs_raw.TODO = [$at_task($origin_child((porigin_parent),[PCFIELD 1]),EVAL expression_right), VALUE_COPY z_right] ++ ptask_tail*',
     r'S_rhs_raw.ORIGIN = (porigin_parent) /\ S_rhs_raw.RESULT = KNOWN PNULL /\ S_rhs_raw.BASE = BASE_VALUE (KNOWN PNULL) /\ S_rhs_raw.EVENTS = S_result.EVENTS',
     r'S_rhs = $ch_after(S_parent,S_rhs_raw)',
     r'$ch_guard(S_rhs)',
@@ -109,7 +109,7 @@ SCALAR = [
     r'S_this_rhs_found = $drive_steps(S_this_result,3)',
     r'S_this_rhs_found.COMPLETION = NORMAL \/ S_this_rhs_found.COMPLETION = BUDGET',
     r'S_this_rhs = S_this_rhs_found[.COMPLETION = NORMAL]',
-    r'S_this_rhs.TODO = [AT $origin_child((porigin_parent_this),[PCFIELD 1]) (EVAL expression_right_this), VALUE_COPY z_right_this] ++ ptask_this*',
+    r'S_this_rhs.TODO = [$at_task($origin_child((porigin_parent_this),[PCFIELD 1]),EVAL expression_right_this), VALUE_COPY z_right_this] ++ ptask_this*',
     r'S_this_rhs.ORIGIN = (porigin_parent_this) /\ S_this_rhs.RESULT = KNOWN PNULL /\ S_this_rhs.BASE = BASE_VALUE (KNOWN PNULL) /\ S_this_rhs.EVENTS = S_this_result.EVENTS /\ $ch_guard(S_this_rhs)',
 ]
 
