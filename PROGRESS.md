@@ -400,6 +400,8 @@ eager destructor/weak-null states. Earlier source failure, two AL stops and fals
 retain zero affected credit. Coalesce has only a derived parent exclusion and no
 runtime/source credit; wider hook access remains required.
 [Quiet hook review](coverage/semantics/quiet-get-hooks-review.json).
+Actual375 composition over `b8f90d5` passes strict initialization at `a259f2ec`
+(5.572 s), preserving parent magic-get verification and the private source/state cuts.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
