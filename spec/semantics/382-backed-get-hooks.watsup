@@ -435,7 +435,8 @@ def $named_context_valid(S, pcallcontext) = $property_hook_context_valid(S, pcal
   -- if $property_hook_context_kind(pcallcontext)
 def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = ($property_hook_pending_call(S, ppropertyhook) \/ $property_hook_result_tail(S, ppropertyhook, S.TODO))
   -- if $property_hook_coalesce_parent(S, ppropertyhook.SITE) =/= eps
-def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = $property_hook_result_tail(S, ppropertyhook, [PROPERTY_HOOK_RESULT ppropertyhook]) -- otherwise
+def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = $property_hook_result_tail(S, ppropertyhook, [PROPERTY_HOOK_RESULT ppropertyhook])
+  -- if $property_hook_coalesce_parent(S, ppropertyhook.SITE) = eps
 def $call_task_valid(S, PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) = $property_hook_result_tail(S, ppropertyhook, [PROPERTY_HOOK_ISSET_RESULT ppropertyhook b])
 
 def $trace_context_function(S, pcallcontext) = $hook_name(ppropertydesc.NAME)
