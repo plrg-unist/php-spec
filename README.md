@@ -1047,6 +1047,13 @@ case: signed count0, live D/array owners1, E retirement and request cleanup.
 Whole source40 CLI60 remains OPEN/zero agreement; wider main/mixed, reference,
 outside-array, black/external and proxy layouts remain required.
 
+Disjoint residual reach also admits canonical unbuffered references, with live
+markers authenticated through the worker scan and selected guard. Four reached
+cuts execute 244 source/control checks plus nine pure array exclusions for the
+ordinary-Fiber F self-reference: its surviving tag and genuine F/E selections
+preserve the existing image, fold and owners. Whole source41 and terminal
+retirement remain OPEN/zero credit; broader reference layouts remain required.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

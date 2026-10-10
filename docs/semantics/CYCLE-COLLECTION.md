@@ -639,3 +639,22 @@ full drive is claimed. Whole source40 CLI60 remains OPEN/zero agreement; only it
 default source selection is newly excluded. Main source agreement, mixed/reference
 array layouts, outside arrays, proxy/black/external components, non-idle workers
 and wider GC remain required; historical cuts are unchanged.
+
+Disjoint residual-root reach301 also admits genuine unbuffered reference cells.
+The protected fresh-DTORS component is unchanged; an outside reference must belong to
+frozen residual reach, have canonical children and no physical cell slot.
+Live markers authenticate both protected and residual cells through SCAN and
+selected guards. Outside arrays remain excluded; fold, count and owners are
+unchanged. The source changes only F's value-self property to a reference.
+
+Four maintained cuts at374 modules execute244 source/control checks plus9 pure
+array exclusions: first-SCAN55 at000bee, marker/shape57+pure9 at ac32, and genuine
+F65/E67 selections at9140. They cover the actual F ALIAS/image, heap-identical
+missing markers, coherent frozen duplicate shapes and saved consumers, buffered
+and incoming fences, physical F clearing, live E guards and zero/one-step replay.
+Compiler/init pass; baseline115 localizes the former refusal. Retained native113
+is unchanged. Whole source41 CLI60 and terminal81 remain OPEN/zero credit, as do
+both original197 runs. The original E66 syntax failure is separate from corrected67;
+old guard126/terminal142 remain unrun. Reference retirement, broader main/mixed
+layouts, external aliases, black/proxy components and non-idle workers remain
+required; earlier cuts and source40 are unchanged.

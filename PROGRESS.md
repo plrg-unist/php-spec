@@ -1282,6 +1282,19 @@ Actual374 over `4368f9d6` passes compiler/init at `e4606537`; reviewed return,
 factory/property/class interfaces preserve the original559 cuts and source40 OPEN/0.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Disjoint residual-root reach301 now admits canonical unbuffered references while
+the protected component and outside-array fence remain unchanged. Live markers
+cover both protected and residual reach through SCAN and selected guards; fold,
+count and owner rules are unchanged. The literal F.s reference variant of source36
+passes first-SCAN55 at000bee, marker/shape57+pure9 at ac32, and genuine F65/E67
+selection at9140 (all374). Exact maintained transfers preserve every prior case.
+Compiler/init pass at000bee; baseline115 at983e is localization only. Native113
+is retained, while whole source41 CLI60, both image197 runs and terminal81 retain
+zero credit. E66's syntax-only failure is preserved separately from corrected67.
+Terminal reference retirement, wider main/mixed/black/external/reference layouts
+and non-idle workers remain required; source40 and earlier cuts are unchanged.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335
