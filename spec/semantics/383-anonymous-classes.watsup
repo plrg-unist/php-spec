@@ -1,5 +1,5 @@
 ;; Parentless ordinary anonymous classes use a compiled identity, not a visit
-;; counter. Named RTD keys, nested classes and later units remain explicit.
+;; counter. Empty global named classes contribute only deferred RTD keys.
 dec $anonymous_hex(nat) : ptbytes
 def $anonymous_hex(n) = [$(48 + n)] -- if $(n < 10)
 def $anonymous_hex(n) = [$(87 + n)] -- if $(n >= 10 /\ n < 16)
@@ -41,6 +41,14 @@ def $anonymous_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) ABSENT ABSENT (S
   -- if $(z_line > 0 /\ z_end >= z_line)
 def $anonymous_class_node(pcnode) = false -- otherwise
 
+dec $anonymous_named_class_node(pcnode) : bool
+def $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata) = true
+  -- if $ptvalidname($base64(text), false)
+  -- if z_line = $source_line(metadata)
+  -- if z_end = $source_end_line(metadata)
+  -- if $(z_line > 0 /\ z_end >= z_line)
+def $anonymous_named_class_node(pcnode) = false -- otherwise
+
 dec $anonymous_class_like(pcnode) : bool
 def $anonymous_class_like(NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata) = true
 def $anonymous_class_like(NStmtInterface phpType14 phpType3 phpType42 phpType23 metadata) = true
@@ -51,10 +59,23 @@ dec $anonymous_no_classes(pcoccurrence*) : bool
 def $anonymous_no_classes(eps) = true
 def $anonymous_no_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = (~$anonymous_class_like(pcnode) /\ $anonymous_no_classes(pcoccurrence*))
 
+;; Named declarations inside these contexts need a wider early-binding model.
+dec $anonymous_named_scope(pcnode) : bool
+def $anonymous_named_scope(NStmtBlock phpType23 metadata) = true
+def $anonymous_named_scope(NStmtNamespace phpType44 phpType23 metadata) = true
+def $anonymous_named_scope(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
+def $anonymous_named_scope(NExprClosure phpType14 phpType4 phpType4 phpType16 phpType21 phpType18 phpType23 metadata) = true
+def $anonymous_named_scope(pcnode) = false -- otherwise
+dec $anonymous_no_named_classes(pcoccurrence*) : bool
+def $anonymous_no_named_classes(eps) = true
+def $anonymous_no_named_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ((~$anonymous_class_like(pcnode) \/ $anonymous_class_node(pcnode)) /\ $anonymous_no_named_classes(pcoccurrence*))
+
 dec $anonymous_unit_node(pcnode) : bool
-def $anonymous_unit_node(pcnode) = ($anonymous_class_node(pcnode) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
+def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous_named_class_node(pcnode)) /\ $anonymous_no_classes($pcwalk($pcchildren(pcnode, eps))))
   -- if $anonymous_class_like(pcnode)
-def $anonymous_unit_node(pcnode) = true -- if ~$anonymous_class_like(pcnode)
+def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
+  -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
+def $anonymous_unit_node(pcnode) = true -- if ~$anonymous_class_like(pcnode) /\ ~$anonymous_named_scope(pcnode)
 dec $anonymous_unit_nodes(pcoccurrence*) : bool
 def $anonymous_unit_nodes(eps) = true
 def $anonymous_unit_nodes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($anonymous_unit_node(pcnode) /\ $anonymous_unit_nodes(pcoccurrence*))
@@ -62,9 +83,16 @@ dec $anonymous_unit(pcunit) : bool
 def $anonymous_unit(pcunit) = (pcunit.ID = 0 /\ pcunit = $pcsource(0, pcunit.AST) /\ $anonymous_unit_nodes(pcunit.OCCURRENCES))
 
 ;; Descriptor order follows the real compiler walk, including loop ordering.
-dec $anonymous_class_prefix(pcunit, ptbytes, pclassdesc*, nat) : bool
-def $anonymous_class_prefix(pcunit, ptbytes_file, eps, n_counter) = true
-def $anonymous_class_prefix(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, n_counter) = true
+;; A plain root declaration binds early only if its name is still available.
+dec $anonymous_named_early(pcpath, pclassdesc*, ptbytes) : bool
+def $anonymous_named_early([PCINDEX n], pclassdesc*, ptbytes) = (~$ppclass_early(pclassdesc*, ptbytes) /\ ~$class_internal(ptbytes))
+def $anonymous_named_early(pcpath, pclassdesc*, ptbytes) = false -- otherwise
+dec $anonymous_named_key(bool) : nat
+def $anonymous_named_key(true) = 0
+def $anonymous_named_key(false) = 1
+dec $anonymous_class_count(pcunit, ptbytes, pclassdesc*, pclassdesc*, nat) : nat?
+def $anonymous_class_count(pcunit, ptbytes_file, eps, pclassdesc_seen*, n_counter) = (n_counter)
+def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + 1))
   -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
   -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (pcnode)
   -- if $anonymous_class_node(pcnode)
@@ -72,8 +100,17 @@ def $anonymous_class_prefix(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*
   -- if $anonymous_class_name(ptbytes_file, pclassdesc.LINE, n_counter) = (pclassdesc.NAME)
   -- if pclassdesc.KIND = "class" /\ pclassdesc.EARLY
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
-  -- if $anonymous_class_prefix(pcunit, ptbytes_file, pclassdesc_tail*, $(n_counter + 1))
-def $anonymous_class_prefix(pcunit, ptbytes_file, pclassdesc*, n_counter) = false -- otherwise
+def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*, pclassdesc_seen*, n_counter) = $anonymous_class_count(pcunit, ptbytes_file, pclassdesc_tail*, pclassdesc_seen* ++ [pclassdesc], $(n_counter + $anonymous_named_key(b_early)))
+  -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
+  -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata)
+  -- if $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata)
+  -- if b_early = $anonymous_named_early(pcpath, pclassdesc_seen*, $base64(text))
+  -- if pclassdesc = { ORIGIN PORIGIN 0 pcpath, KIND "class", NAME $base64(text), PARENT eps, INTERFACES eps, PROPERTIES eps, METHODS eps, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY false, EARLY b_early, LINE $nabs($source_line(metadata)) }
+  -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
+def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc*, pclassdesc_seen*, n_counter) = eps -- otherwise
+
+dec $anonymous_class_prefix(pcunit, ptbytes, pclassdesc*, nat) : bool
+def $anonymous_class_prefix(pcunit, ptbytes_file, pclassdesc*, n_counter) = ($anonymous_class_count(pcunit, ptbytes_file, pclassdesc*, eps, n_counter) =/= eps)
 
 ;; These global factory bodies restore their own CV/code scope before the unit
 ;; image is saved. Only the class checkpoint is recorded inside the body.
@@ -112,10 +149,10 @@ def $ppanonymous_class(P, pcpath, statement) = P_next[.EARLY = P.EARLY][.LOCATIO
   -- if ($ppimage_unit(P) \/ $anonymous_factory_context(P, pcpath)) /\ ~P.FOLD.CONSTANT
   -- if $origin_node([P.FOLD.SOURCE], PORIGIN 0 (pcpath ++ [PCFIELD 0])) = (statement)
   -- if $class_at(P.CLASSES, PORIGIN 0 (pcpath ++ [PCFIELD 0])) = eps
-  -- if $anonymous_class_prefix(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, 0)
+  -- if $anonymous_class_count(P.FOLD.SOURCE, P.LOCATION.FILE, P.CLASSES, eps, 0) = (n_counter)
   -- if $pchlower(statement) = PCHRAW pchraw
   -- if z_line = $source_line($pcmetadata(statement))
-  -- if $anonymous_class_name(P.LOCATION.FILE, z_line, |P.CLASSES|) = (ptbytes_name)
+  -- if $anonymous_class_name(P.LOCATION.FILE, z_line, n_counter) = (ptbytes_name)
   -- if P_class = $pplocate(P[.EARLY = (pcpath ++ [PCFIELD 0])], pcpath ++ [PCFIELD 0], z_line)
   -- if P_next = $ppclass_result(P_class, pcpath ++ [PCFIELD 0], PCHOK { KIND "class", NAME ptbytes_name, ABSTRACT false, FINAL false, READONLY false, PARENT eps, INTERFACES eps, BODY pchraw.BODY } eps)
 def $ppanonymous_class(P, pcpath, statement) = $ppunsupported(P, "anonymous class RTD, body, or compiler publication context") -- otherwise
