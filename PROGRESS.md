@@ -2343,6 +2343,8 @@ and strict-getter rejection, real string|float source conflicts and CV/owned
 cleanup retain distinct behavior. Native6 and the unchanged CLI1 Unsupported
 baseline remain at `ddd6b8292`; strict374/source6 and six whole reached groups
 pass 877 setup-inclusive premises at `770d69b20`, using reviewed runtime `9dbbb824d`.
+The actual375 join over `22adef5d5` passes strict at `cab88a623` (5.527s,
+state credit0); private source/state cuts retain their original inputs.
 The fixture-only LEADINGNUM preparation failure retains zero credit after its
 LEADNUM correction. NINT-classified strings to float, booleans, PARAMETERBACKINGS
 and wider conversions remain required; phase31 evidence is not renewed.

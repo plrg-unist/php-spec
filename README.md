@@ -1540,6 +1540,8 @@ NFLOAT, converting the actual unconstrained reference cell or only the by-value 
 [Six source agreements and six reached groups](coverage/semantics/magic-property-decimal-review.json)
 pass 877 setup-inclusive premises, covering exact 7.5/0.1 bits, prefix/getter-strict
 rejection, real string|float source conflicts and CV versus owned cleanup.
+The actual375 join over `22adef5d5` passes strict at `cab88a623` (5.527s);
+private source/state cuts retain their original inputs.
 NINT-classified strings to float, booleans and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
