@@ -2722,6 +2722,17 @@ and original 7's CLI60 timeout remain OPEN.
 Actual-parent compilation and initialized SL439 pass at `6d26cefa5` over
 `9f00481d` with 375 modules; CALLS385 Iterator and inherited GC/property/anonymous
 guards preserve prior source/native cuts.
+A new unhandled bound injection crosses ordinary child finally and reaches the
+outer caller with the same main-created Throwable. Existing rules agree on two
+fresh direct/captured originals at 204200d1f/375; 542 premises (433 reached/derived,
+109 constructed) validate pending finally, 302 FIBER_THROW_FINISH callback
+retirement, saved API transfer, abrupt capture cleanup and the caught cell's last
+owner. Algo and initialized SL pass at the same cut; no semantic edit or old-cut
+renewal is needed. The interrupted ENOSPC recorder retains zero credit. Wider
+throw/error forms and original 7 remain OPEN.
+Exact aa4a7c27/375 validation-only composition is statically reviewed: guarded
+reference-return, property, anonymous NEW and Iterator unpack tasks are absent
+from these originals. Source2/state542 retain the 204 cut; current runtime is UNRUN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

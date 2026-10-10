@@ -398,7 +398,11 @@ injects the same Throwable into the suspended callback while its saved caller
 retains the Closure and receiver. Handled termination returns null and releases
 all three; direct and repaired sources agree at distinct 374-module cuts, with
 439 state premises. The separate 375-module composition passes compilation and
-initialized SL439. Wider throw/error paths and original 7 remain open.
+initialized SL439. A new unhandled injection through ordinary child finally
+also agrees in direct/captured originals at 204200d1f/375; 542 premises (433
+genuine/derived, 109 controls) validate callback/capture retirement and the outer
+catch's sole exception owner. The existing rules require no change. Wider
+throw/error paths and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

@@ -2177,3 +2177,130 @@ echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
         'discriminator': 'Frozen bound throw survives producer/callback retirement and name mutation; clearing selected and exception cells leaves an authentic owned Throwable buffer, exact same-object catch and saved-caller capture/receiver hold, then all three retire before final weak reads.',
     },
 ]
+
+CASES += [
+    {
+        'id': 'from-callable-direct-fiber-throw-unhandled',
+        'source': '''<?php
+function discardUnhandledThrowCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireSelectedUnhandledExceptionReview21() {
+    global $selected, $exception;
+    $selected = null;
+    $value = $exception;
+    $exception = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$method = "throw";
+$exception = new Exception("injected");
+$weakException = WeakReference::create($exception);
+$fiber = new Fiber(function () {
+    echo "B;";
+    try {
+        Fiber::suspend("pause");
+        echo "U;";
+    } finally {
+        global $weakException, $weakSelected, $weakFiber;
+        echo "F:C:", $weakSelected->get() !== null ? "held" : "gone", ";";
+        echo "X:", $weakException->get() !== null ? "held" : "gone", ";";
+        echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+    }
+});
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = null;
+$selected = Closure::fromCallable(callback: discardUnhandledThrowCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isTerminated";
+$callback = null;
+echo "M:", $method, ";F;";
+$paused = $fiber->start();
+echo "P:", $paused, ";";
+$fiber = null;
+echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+try {
+    $returned = $selected(exception: retireSelectedUnhandledExceptionReview21());
+    echo "U;";
+} catch (Throwable $caught) {
+    echo "I:", $caught === $weakException->get() ? "same" : "other", ";";
+    echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+    echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+    echo "X:", $weakException->get() !== null ? "held" : "gone", ";";
+    $caught = null;
+}
+echo "X:", $weakException->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isTerminated;F;B;P:pause;H:held;V;F:C:held;X:held;H:held;I:same;C:gone;H:gone;X:held;X:gone;C:gone;H:gone;E;',
+        'discriminator': 'Frozen bound throw delivers the same main-created Throwable through ordinary child finally while capture/receiver remain held; abrupt delivery retires capture and Fiber before the outer catch, whose cell owns the exception until explicit null. U markers stay absent.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-throw-unhandled',
+        'source': '''<?php
+function discardUnhandledThrowCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireSelectedUnhandledExceptionReview21() {
+    global $selected, $exception;
+    $selected = null;
+    $value = $exception;
+    $exception = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$method = "throw";
+$exception = new Exception("injected");
+$weakException = WeakReference::create($exception);
+$fiber = new Fiber(function () {
+    echo "B;";
+    try {
+        Fiber::suspend("pause");
+        echo "U;";
+    } finally {
+        global $weakException, $weakSelected, $weakFiber;
+        echo "F:C:", $weakSelected->get() !== null ? "held" : "gone", ";";
+        echo "X:", $weakException->get() !== null ? "held" : "gone", ";";
+        echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+    }
+});
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = Closure::fromCallable(...);
+$selected = $factory(callback: discardUnhandledThrowCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isTerminated";
+$callback = null;
+echo "M:", $method, ";F;";
+$paused = $fiber->start();
+echo "P:", $paused, ";";
+$fiber = null;
+echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+try {
+    $returned = $selected(exception: retireSelectedUnhandledExceptionReview21());
+    echo "U;";
+} catch (Throwable $caught) {
+    echo "I:", $caught === $weakException->get() ? "same" : "other", ";";
+    echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+    echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+    echo "X:", $weakException->get() !== null ? "held" : "gone", ";";
+    $caught = null;
+}
+echo "X:", $weakException->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
+''',
+        'expected_stdout': 'Q;A;M:isTerminated;F;B;P:pause;H:held;V;F:C:held;X:held;H:held;I:same;C:gone;H:gone;X:held;X:gone;C:gone;H:gone;E;',
+        'discriminator': 'Frozen bound throw delivers the same main-created Throwable through ordinary child finally while capture/receiver remain held; abrupt delivery retires capture and Fiber before the outer catch, whose cell owns the exception until explicit null. U markers stay absent.',
+    },
+]

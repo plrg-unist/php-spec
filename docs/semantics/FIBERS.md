@@ -534,8 +534,18 @@ and Fiber through authentic eager cleanup. Distinct direct/repaired 374-module
 sources and 439 premises (343 genuine/derived, 96 constructed) validate source,
 owned buffer, continuation and zero-budget resumption. The current 375-module
 composition passes compilation and initialized SL439 separately; private source
-and native cuts retain their original inputs. Unhandled injection, throw errors
-and wider forms require separate evidence.
+and native cuts retain their original inputs.
+A separate bounded unhandled injection crosses the child's ordinary finally,
+which observes capture, receiver and the pending Throwable still held. Module 302
+retires the callback before completing FIBER_THROW_FINISH. Its task owns the
+pending object once; its FINISH carrier is borrowed. Saved API SENT supplies the
+second owner until transfer returns. Module 331 removes the false result marker
+and eager cleanup retires capture/Fiber before the outer catch. The catch cell
+then solely owns the same Throwable until explicit null. Historical SENT is
+nonowning; the empty trace has no capture or receiver edges. Two fresh
+direct/captured originals and 542 premises (433 genuine/derived, 109 controls)
+pass on unchanged 204200d1f/375. Throw errors,
+replacing/nested injections and wider forms require separate evidence.
 
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver
