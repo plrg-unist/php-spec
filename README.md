@@ -437,6 +437,17 @@ Eight exact originals and eighteen genuine-source groups/495 ownership and
 warning-authority premises pass at retained cuts.
 Wider raw payload/operand modes and Aggregate ordinary-call unpack
 remain required.
+Ordinary source-function calls now unpack direct user Iterators through borrowed
+callbacks. Integer and numeric-string keys send positional values; other string
+keys bind named arguments. Raw current references survive key callbacks and are
+read afterward, while reference-valued keys are unwrapped. Iterator cache, DATA
+and raw INPUT owners retire before target entry; errors follow native cleanup
+order. Sent copies may keep their values alive. Pending abort cleanup continues
+after a destructor throws, preserving the previous exception.
+By-reference warnings support null/bool/int/float payloads, including handler
+mutation, Fiber suspension and throw; the callee receives a fresh reference cell.
+Generator/Aggregate ordinary-call unpack, Generator callback methods, valid NaN
+and refcounted by-reference warning payloads remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and

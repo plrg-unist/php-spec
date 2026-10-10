@@ -1,0 +1,265 @@
+[
+  {
+    "id": "iterator-call-unpack-positional-prefix-named-tail",
+    "source": "<?php\nclass CallUnpackPositionIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 2; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; return $this->pos === 0 ? -11 : 31; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackPrefix20() { echo 'P|'; return 11; }\nfunction callUnpackPosition20($lead, $x, $y, $end) {\n    echo 'B', $lead, ':', $x, ':', $y, ':', $end, '|'; return 23;\n}\n$it = new CallUnpackPositionIterator20();\n$r = callUnpackPosition20(callUnpackPrefix20(), ...$it, end: 17);\necho 'R', $r, '|'; unset($it); echo 'E';\n",
+    "source_sha256": "8c9ea9ecd89d9568f604e58a9a2877d4626476d5dbabf07dca7c4dce9b31c9de",
+    "purpose": "Ordinary Iterator unpack preserves an explicit positional prefix and named arguments following its traversal.",
+    "expected_model": "normal",
+    "native_stdout": "P|W|V|C|K|X|V|C|K|X|V|B11:7:8:17|R23|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reordered-named-keys",
+    "source": "<?php\nclass CallUnpackNamedIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 2; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; return $this->pos === 0 ? 'y' : 'x'; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackNamed20($x, $y) { echo 'B', $x, ':', $y, '|'; return 23; }\n$it = new CallUnpackNamedIterator20();\n$r = callUnpackNamed20(...$it);\necho 'R', $r, '|'; unset($it); echo 'E';\n",
+    "source_sha256": "800a55e55af4452630f4793768c9d1872374c4687c999eb853516ce76c204716",
+    "purpose": "Iterator string keys select real named parameters independently of encounter order.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|X|V|B8:7|R23|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-temporary-data-before-body",
+    "source": "<?php\nclass CallUnpackTemporaryIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackTemporary20($x) { echo 'B', $x, '|'; return 23; }\n$r = callUnpackTemporary20(...new CallUnpackTemporaryIterator20());\necho 'R', $r, '|E';\n",
+    "source_sha256": "fed6ff5e030a8af9483916bc9e5554ecc1e5917b153ae08ab6c8d43896774132",
+    "purpose": "A temporary Iterator retires before the target source function starts.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|I|B7|R23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-empty-temporary-before-default",
+    "source": "<?php\nclass CallUnpackEmptyIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 0; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackEmpty20($x = 17) { echo 'B', $x, '|'; return 23; }\n$r = callUnpackEmpty20(...new CallUnpackEmptyIterator20());\necho 'R', $r, '|E';\n",
+    "source_sha256": "90a4c1b1cbf79177fdb6845ec7bb2891cb359229dae9d25a573f91dab36086f2",
+    "purpose": "An empty temporary Iterator retires before target default-argument evaluation and entry.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|I|B17|R23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-numeric-string-and-variadic-name",
+    "source": "<?php\nclass CallUnpackNumericIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 2; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; return $this->pos === 0 ? '11' : '01'; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackNumeric20($x, ...$extra) {\n    echo 'B', $x, ':', $extra['01'], '|'; return 23;\n}\n$r = callUnpackNumeric20(...new CallUnpackNumericIterator20());\necho 'R', $r, '|E';\n",
+    "source_sha256": "cf17e0e6e17049f436e0e93e159b02e85727b638a98bc714b9549394be09689a",
+    "purpose": "Canonical numeric string keys are positional while a noncanonical numeric string is a named variadic extra.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|X|V|I|B7:8|R23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-positional-after-named",
+    "source": "<?php\nclass CallUnpackAfterNamedIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 2; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; return $this->pos === 0 ? 'x' : 0; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\n$entered = 0;\nfunction CallUnpackAfterNamedTarget20($x, $y = 17) { global $entered; $entered = 1; echo 'B|'; }\n$r = 41;\ntry { $r = CallUnpackAfterNamedTarget20(...new CallUnpackAfterNamedIterator20()); }\ncatch (Throwable $e) { echo 'C|', $e->getMessage(), '|', $entered, '|', $r, '|'; }\necho 'E';\n",
+    "source_sha256": "731b4ac6fdfcabbd64130a12727ecf4b079b03cc7d08a8290dc04deb33199723",
+    "purpose": "A later positional key after a named Iterator key produces the native Error and skips target entry.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|I|C|Cannot use positional argument after named argument during unpacking|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-duplicate-named-key",
+    "source": "<?php\nclass CallUnpackDuplicateIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 2; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; return 'x'; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\n$entered = 0;\nfunction CallUnpackDuplicateTarget20($x, $y = 17) { global $entered; $entered = 1; echo 'B|'; }\n$r = 41;\ntry { $r = CallUnpackDuplicateTarget20(...new CallUnpackDuplicateIterator20()); }\ncatch (Throwable $e) { echo 'C|', $e->getMessage(), '|', $entered, '|', $r, '|'; }\necho 'E';\n",
+    "source_sha256": "c181dadc5eddf6313c04245a67b81b331c900aa30f0dedf3751dfb725891112c",
+    "purpose": "An Iterator key overwriting a previously sent named parameter produces the native Error.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|I|C|Named parameter $x overwrites previous argument|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-invalid-boolean-key",
+    "source": "<?php\nclass CallUnpackInvalidKeyIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 2; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; return true; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\n$entered = 0;\nfunction CallUnpackInvalidKeyTarget20($x, $y = 17) { global $entered; $entered = 1; echo 'B|'; }\n$r = 41;\ntry { $r = CallUnpackInvalidKeyTarget20(...new CallUnpackInvalidKeyIterator20()); }\ncatch (Throwable $e) { echo 'C|', $e->getMessage(), '|', $entered, '|', $r, '|'; }\necho 'E';\n",
+    "source_sha256": "88495371399525ac806229956eec71eb5557a294f51c320ae0532dcd0f48c8c8",
+    "purpose": "A boolean Iterator key produces the native int|string unpack Error without target entry.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|I|C|Keys must be of type int|string during argument unpacking|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-current-reference-key-rewrite",
+    "source": "<?php\n$value = 7;\nclass CallUnpackCurrentRefIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function &current(): mixed { global $value; echo 'C|'; return $value; }\n    public function key(): mixed { global $value; echo 'K|'; $value = 9; return 0; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackCurrentRef20($x) { echo 'B', $x, '|'; return 23; }\n$r = callUnpackCurrentRef20(...new CallUnpackCurrentRefIterator20());\necho 'R', $r, '|V', $value, '|E';\n",
+    "source_sha256": "aac93904562b705331adc2c53714ff967b412662176850714e2655215e96f5ac",
+    "purpose": "A raw current reference is read after key() mutates its independently owned scalar cell.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|I|B9|R23|V9|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-key-reference-unwrapped",
+    "source": "<?php\n$value = 7; $keyCell = 11;\nclass CallUnpackKeyRefIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function &current(): mixed { global $value; echo 'C|'; return $value; }\n    public function &key(): mixed { global $value, $keyCell; echo 'K|'; $value = 9; return $keyCell; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackKeyRef20($x) { echo 'B', $x, '|'; return 23; }\n$r = callUnpackKeyRef20(...new CallUnpackKeyRefIterator20());\necho 'R', $r, '|V', $value, '|K', $keyCell, '|E';\n",
+    "source_sha256": "ae2cf5c56ce24b153aa61baf439c6ac28666e99aefcbe079b4609c18f1a442cb",
+    "purpose": "The user Iterator wrapper unwraps a raw reference-valued key before key normalization.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|I|B9|R23|V9|K11|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-key-parks-before-send",
+    "source": "<?php\nclass CallUnpackParkIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; Fiber::suspend('key'); echo 'S|'; return 0; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackPark20($x) { echo 'B', $x, '|'; return 23; }\n$fiber = new Fiber(function () {\n    $r = callUnpackPark20(...new CallUnpackParkIterator20());\n    echo 'R', $r, '|';\n});\n$pause = $fiber->start();\necho $pause, '|', $fiber->isSuspended(), '|', (int)$fiber->isTerminated(), '|';\n$fiber->resume(17);\necho $fiber->isTerminated(), '|E';\n",
+    "source_sha256": "db3be170d6287db24c2cb02c6fb92e079d9fa8d07358db2f3907841bddc5071b",
+    "purpose": "A real key() callback parks a Fiber before sending the cached current argument.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|key|1|0|S|X|V|I|B7|R23|1|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-key-throw-unsent-current",
+    "source": "<?php\n$failure = new Exception('kept'); $entered = 0;\nclass CallUnpackKeyThrowPayload20 { public function __destruct() { echo 'D|'; } }\nclass CallUnpackKeyThrowIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { echo 'C|'; return new CallUnpackKeyThrowPayload20(); }\n    public function key(): mixed { global $failure; echo 'K|'; throw $failure; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction CallUnpackKeyThrowTarget20($x) { global $entered; $entered = 1; echo 'B|'; }\n$r = 41;\ntry { $r = CallUnpackKeyThrowTarget20(...new CallUnpackKeyThrowIterator20()); }\ncatch (Throwable $e) { echo 'C', (int)($e === $failure), '|', $entered, '|', $r, '|'; }\necho 'E';\n",
+    "source_sha256": "6270ea4b0a1a07b281b1de9e5b44c6deda116b448605760f28a3566b0e8eeb03",
+    "purpose": "A throwing key() retires the unsent cached current object before Iterator DATA.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|D|I|C1|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-next-throw-sent-current",
+    "source": "<?php\n$failure = new Exception('kept'); $entered = 0;\nclass CallUnpackNextThrowPayload20 { public function __destruct() { echo 'D|'; } }\nclass CallUnpackNextThrowIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { echo 'C|'; return new CallUnpackNextThrowPayload20(); }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { global $failure; echo 'X|'; throw $failure; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction CallUnpackNextThrowTarget20($x) { global $entered; $entered = 1; echo 'B|'; }\n$r = 41;\ntry { $r = CallUnpackNextThrowTarget20(...new CallUnpackNextThrowIterator20()); }\ncatch (Throwable $e) { echo 'C', (int)($e === $failure), '|', $entered, '|', $r, '|'; }\necho 'E';\n",
+    "source_sha256": "37e6ad5a49ba959105cd648531459b9e15e38992d9c7df5049de2c5fa2b78c3a",
+    "purpose": "A throwing next() retires Iterator DATA before discarding an already sent object argument.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|I|D|C1|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-rewind-throw-before-current",
+    "source": "<?php\n$failure = new Exception('kept'); $entered = 0;\nclass CallUnpackRewindThrowPayload20 { public function __destruct() { echo 'D|'; } }\nclass CallUnpackRewindThrowIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { global $failure; echo 'W|'; throw $failure; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { echo 'C|'; return new CallUnpackRewindThrowPayload20(); }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction CallUnpackRewindThrowTarget20($x) { global $entered; $entered = 1; echo 'B|'; }\n$r = 41;\ntry { $r = CallUnpackRewindThrowTarget20(...new CallUnpackRewindThrowIterator20()); }\ncatch (Throwable $e) { echo 'C', (int)($e === $failure), '|', $entered, '|', $r, '|'; }\necho 'E';\n",
+    "source_sha256": "1cd7df8fb55effa14038830d305ab32144f7910e95cc518f1a82d8a02b04132d",
+    "purpose": "A throwing rewind() releases Iterator DATA without current(), key() or target entry.",
+    "expected_model": "normal",
+    "native_stdout": "W|I|C1|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-byref-warning-live-reference",
+    "source": "<?php\n$value = 7;\nclass CallUnpackWarningRefIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function &current(): mixed { global $value; echo 'C|'; return $value; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction CallUnpackWarningRefTarget20(&$x) { echo 'B', $x, '|'; $x = 77; echo 'T', $x, '|'; return 23; }\nset_error_handler(function ($level, $message, $file, $line) {\n    global $value; echo 'H|', $level, '|', $message, '|', $line, '|';\n    $value = 9; return true;\n});\n$r = CallUnpackWarningRefTarget20(...new CallUnpackWarningRefIterator20());\nrestore_error_handler();\necho 'R', $r, '|V', $value, '|E';\n",
+    "source_sha256": "cf91eaf12477d087f18081b2eeb2778767b02cc651a8b3c77c5dad14d200fdb8",
+    "purpose": "The Warning handler changes a raw numeric current reference before a fresh private callee cell is created.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of CallUnpackWarningRefTarget20() by unpacking a Traversable, passing by-value instead|18|X|V|I|B9|T77|R23|V9|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-byref-warning-copied-current",
+    "source": "<?php\n$value = 7;\nclass CallUnpackWarningCopyIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { global $value; echo 'C|'; return $value; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction CallUnpackWarningCopyTarget20(&$x) { echo 'B', $x, '|'; $x = 77; echo 'T', $x, '|'; return 23; }\nset_error_handler(function ($level, $message, $file, $line) {\n    global $value; echo 'H|', $level, '|', $message, '|', $line, '|';\n    $value = 9; return true;\n});\n$r = CallUnpackWarningCopyTarget20(...new CallUnpackWarningCopyIterator20());\nrestore_error_handler();\necho 'R', $r, '|V', $value, '|E';\n",
+    "source_sha256": "71a6fe96bd71593bf5e34d77f066aec94d81c548fc6145b60bc5713902cd209b",
+    "purpose": "The same Warning handler mutation does not replace an already copied current value.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of CallUnpackWarningCopyTarget20() by unpacking a Traversable, passing by-value instead|18|X|V|I|B7|T77|R23|V9|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-same-source-reentrant-key",
+    "source": "<?php\nclass CallUnpackReentryIterator20 implements Iterator {\n    public $pos = 0;\n    public $role;\n    public function __construct($role) { $this->role = $role; }\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { echo 'C|'; return $this->pos === 0 ? 7 : 8; }\n    public function key(): mixed { echo 'K|'; if ($this->role === 0) { echo 'N|'; $n = callUnpackReentryRun20(1); echo 'n', $n, '|'; } return 0; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackReentryTarget20($x) { echo 'B', $x, '|'; return 23; }\nfunction callUnpackReentryRun20($role) {\n    return callUnpackReentryTarget20(...new CallUnpackReentryIterator20($role));\n}\n$r = callUnpackReentryRun20(0);\necho 'R', $r, '|E';\n",
+    "source_sha256": "6e9430e6045a793cea2a0c34779dfbb516cbfd6704acaa32cfe41bea3d90929d",
+    "purpose": "Two genuine function frames execute the same static unpack source using distinct Iterator cursors.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|N|W|V|C|K|X|V|I|B7|n23|X|V|I|B7|R23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-original-operand",
+    "source": "<?php\n$value = 7;\nclass CallUnpackOriginalRefIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { global $value; echo 'C|'; return $value; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\n$it = new CallUnpackOriginalRefIterator20();\n$keeper = $it;\nfunction &callUnpackOriginalRefOperand20() { global $it; echo 'R|'; return $it; }\nfunction callUnpackOriginalRefTarget20($x) { echo 'B', $x, '|'; return 23; }\n$r = callUnpackOriginalRefTarget20(...callUnpackOriginalRefOperand20());\necho 'N', $r, '|';\nunset($it); echo 'P|'; unset($keeper); echo 'E';\n",
+    "source_sha256": "c9421de5f38b494e866a9e80963ce2f45f3423966637705c7fd28f55d62e2706",
+    "purpose": "A reference-valued original iterable owns its raw HCELL separately from Iterator DATA through traversal.",
+    "expected_model": "normal",
+    "native_stdout": "R|W|V|C|K|X|V|B7|N23|P|I|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-byref-warning-handler-parks",
+    "source": "<?php\n$value = 7;\nclass CallUnpackWarningParkIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function &current(): mixed { global $value; echo 'C|'; return $value; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction CallUnpackWarningParkTarget20(&$x) { echo 'B', $x, '|'; $x = 77; echo 'T', $x, '|'; return 23; }\nset_error_handler(function ($level, $message, $file, $line) {\n    echo 'H|', $level, '|', $message, '|', $line, '|';\n    Fiber::suspend('warning'); echo 'S|'; return true;\n});\n$fiber = new Fiber(function () {\n    $r = CallUnpackWarningParkTarget20(...new CallUnpackWarningParkIterator20());\n    echo 'R', $r, '|';\n});\n$pause = $fiber->start();\necho $pause, '|', $fiber->isSuspended(), '|', (int)$fiber->isTerminated(), '|';\n$value = 9;\n$fiber->resume(17);\nrestore_error_handler();\necho $fiber->isTerminated(), '|V', $value, '|E';\n",
+    "source_sha256": "81b3c9b1d3ef517b695e030165c0950309bbb88bc95f3336f58ae45748d24d2e",
+    "purpose": "The real by-reference Warning handler parks while retaining raw current, Iterator DATA and pending arguments.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of CallUnpackWarningParkTarget20() by unpacking a Traversable, passing by-value instead|19|warning|1|0|S|X|V|I|B9|T77|R23|1|V9|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-byref-warning-handler-throws",
+    "source": "<?php\n$value = 7; $failure = new Exception('warning'); $entered = 0;\nclass CallUnpackWarningThrowIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function &current(): mixed { global $value; echo 'C|'; return $value; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction CallUnpackWarningThrowTarget20(&$x) { global $entered; $entered = 1; echo 'B|'; $x = 77; }\nset_error_handler(function ($level, $message, $file, $line) {\n    global $value, $failure; echo 'H|', $level, '|', $message, '|', $line, '|';\n    $value = 9; throw $failure;\n});\n$r = 41;\ntry { $r = CallUnpackWarningThrowTarget20(...new CallUnpackWarningThrowIterator20()); }\ncatch (Throwable $caught) { echo 'C', (int)($caught === $failure), '|', $entered, '|', $r, '|V', $value, '|'; }\nrestore_error_handler();\necho 'E';\n",
+    "source_sha256": "6b518b79d4acf69efcd52af467fcb6d8458cde01861ae2de22403bf367906740",
+    "purpose": "A throwing Warning handler releases Iterator DATA before propagating the original Throwable without target entry.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of CallUnpackWarningThrowTarget20() by unpacking a Traversable, passing by-value instead|19|I|C1|0|41|V9|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-valid-object-retval-retirement",
+    "source": "<?php\n$value = 7;\nclass CallUnpackValidRetval20 { public function __destruct() { echo 'R|'; } }\nclass CallUnpackValidRetvalIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    #[ReturnTypeWillChange]\n    public function valid() { echo 'V|'; if ($this->pos < 1) { return new CallUnpackValidRetval20(); } return false; }\n    public function current(): mixed { global $value; echo 'C|'; return $value; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackValidRetvalTarget20($x) { echo 'B', $x, '|'; return 23; }\n$r = callUnpackValidRetvalTarget20(...new CallUnpackValidRetvalIterator20());\necho 'N', $r, '|E';\n",
+    "source_sha256": "80bb7ffd4c867ef076acaefec1d0422295d1180ef9fc900d0ee182de23ea3ffa",
+    "purpose": "A fresh valid() return object is destroyed before the first current() callback.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|R|C|K|X|V|I|B7|N23|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-valid-object-retval-destructor-throws",
+    "source": "<?php\n$value = 7; $failure = new Exception('retval'); $entered = 0;\n\nclass CallUnpackValidThrowRetval20 { public function __destruct() { global $failure; echo 'R|'; throw $failure; } }\nclass CallUnpackValidThrowIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    #[ReturnTypeWillChange]\n    public function valid() { echo 'V|'; return new CallUnpackValidThrowRetval20(); }\n    public function current(): mixed { global $value; echo 'C|'; return $value; }\n    public function key(): mixed { echo 'K|'; return $this->pos; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\n\nfunction callUnpackValidThrowTarget20($x) { global $entered; $entered = 1; echo 'B|'; }\n$r = 41;\ntry { $r = callUnpackValidThrowTarget20(...new CallUnpackValidThrowIterator20()); }\ncatch (Throwable $caught) { echo 'C', (int)($caught === $failure), '|', $entered, '|', $r, '|'; }\necho 'E';\n",
+    "source_sha256": "d85f383312d66795b6d39a1f87a67650a2cfdd0575ad7a013e2762699ca3dea9",
+    "purpose": "A throwing valid() return destructor prevents current() and target entry and preserves original Throwable identity.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|R|I|C1|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-invalid-object-key-retirement",
+    "source": "<?php\n$entered = 0;\nclass CallUnpackInvalidObjectKeyValue20 { public function __destruct() { echo 'J|'; } }\nclass CallUnpackInvalidObjectCurrent20 { public function __destruct() { echo 'D|'; } }\nclass CallUnpackInvalidObjectKeyIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { echo 'C|'; return new CallUnpackInvalidObjectCurrent20(); }\n    public function key(): mixed { echo 'K|'; return new CallUnpackInvalidObjectKeyValue20(); }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\nfunction CallUnpackInvalidObjectKeyTarget20($x) { global $entered; $entered = 1; echo 'B|'; }\n$r = 41;\ntry { $r = CallUnpackInvalidObjectKeyTarget20(...new CallUnpackInvalidObjectKeyIterator20()); }\ncatch (Throwable $caught) { echo 'C|', $caught->getMessage(), '|', $entered, '|', $r, '|'; }\necho 'E';\n",
+    "source_sha256": "7859d5c99207a33d4b2b8b6bf6c7f9337f7c28b6ce75a89748189fe05a3ba741",
+    "purpose": "An invalid fresh object key retires before unsent cached current and Iterator DATA.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|J|D|I|C|Keys must be of type int|string during argument unpacking|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-named-variadic-byref-warning",
+    "source": "<?php\n$lead = 11; $value = 7;\nclass CallUnpackNamedVariadicRefIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 2; }\n    public function &current(): mixed {\n        global $lead, $value; echo 'C|';\n        if ($this->pos === 0) { return $lead; }\n        return $value;\n    }\n    public function key(): mixed { echo 'K|'; return $this->pos === 0 ? 0 : 'label'; }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\nfunction callUnpackNamedVariadicRefTarget20($first, &...$extra) {\n    echo 'B', $first, ':', $extra['label'], '|';\n    $extra['label'] = 77; echo 'T', $extra['label'], '|'; return 23;\n}\nset_error_handler(function ($level, $message, $file, $line) {\n    global $value; echo 'H|', $level, '|', $message, '|', $line, '|';\n    $value = 9; return true;\n});\n$r = callUnpackNamedVariadicRefTarget20(...new CallUnpackNamedVariadicRefIterator20());\nrestore_error_handler();\necho 'R', $r, '|V', $value, '|E';\n",
+    "source_sha256": "c5b8dd76c9de6d3cce1da324f38523ce303be896a0cfa73dd42c1615aff48493",
+    "purpose": "The named variadic reference warning reports actual argument 2, then creates a private callee cell from the post-handler numeric value.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 2 of callUnpackNamedVariadicRefTarget20() by unpacking a Traversable, passing by-value instead|24|X|V|I|B11:9|T77|R23|V9|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-generator-required-control",
+    "source": "<?php\nfunction callUnpackGeneratorData20() {\n    echo 'Y|'; try { yield 7; } finally { echo 'F|'; }\n}\nfunction callUnpackGeneratorTarget20($x) { echo 'B', $x, '|'; return 23; }\n$r = callUnpackGeneratorTarget20(...callUnpackGeneratorData20());\necho 'R', $r, '|E';\n",
+    "source_sha256": "6addcbf0619ae7c46f6452bc8cba870865b26b5da2fdae615bd6abf9b9c03906",
+    "purpose": "Direct Generator ordinary-call unpack remains an explicit Unsupported follow-on; native normal behavior receives zero agreement.",
+    "expected_model": "unsupported",
+    "native_stdout": "Y|F|B7|R23|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "call argument Generator unpacking",
+    "unsupported_stdout": "",
+    "unsupported_events": []
+  },
+  {
+    "id": "iterator-call-unpack-invalid-key-destructor-throws",
+    "source": "<?php\n$failure = new Exception('key');\n$entered = 0;\n$r = 41;\nclass CallUnpackThrowKeyCache20 {\n    public function __destruct() { echo 'D|'; }\n}\nclass CallUnpackThrowKey20 {\n    public function __destruct() { global $failure; echo 'J|'; throw $failure; }\n}\nclass CallUnpackThrowKeyIterator20 implements Iterator {\n    public $pos = 0;\n    public function rewind(): void { echo 'W|'; $this->pos = 0; }\n    public function valid(): bool { echo 'V|'; return $this->pos < 1; }\n    public function current(): mixed { echo 'C|'; return new CallUnpackThrowKeyCache20(); }\n    public function key(): mixed { echo 'K|'; return new CallUnpackThrowKey20(); }\n    public function next(): void { echo 'X|'; ++$this->pos; }\n    public function __destruct() { echo 'I|'; }\n}\nfunction callUnpackThrowKeyTarget20($x) { global $entered; ++$entered; echo 'BAD|'; return 23; }\ntry { $r = callUnpackThrowKeyTarget20(...new CallUnpackThrowKeyIterator20()); }\ncatch (Throwable $e) {\n    $previous = $e->getPrevious();\n    echo 'C', (int) ($e === $failure), '|', (int) ($previous instanceof Error), '|';\n    echo $previous === null ? 'none' : $previous->getMessage(), '|', $entered, '|', $r, '|';\n}\necho 'E';\n",
+    "source_sha256": "9d31db6a78cba8cfdecd12ea208710edcdb1416d8772872935a759fa57d7a6d0",
+    "purpose": "A throwing invalid-key destructor replaces the pending Error while cached current, Iterator DATA and raw input still retire in native order.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|J|D|I|C1|1|Keys must be of type int|string during argument unpacking|0|41|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

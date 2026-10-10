@@ -111,6 +111,24 @@ Actual372 over `488a190bc` passes strict SL at `5c27d4886`; private
 source/state cuts retain their own inputs.
 [Source comparison](coverage/semantics/yield-from-source-comparison-review.json).
 
+Ordinary source-function calls now unpack direct user Iterators through borrowed
+callbacks and a real cursor. Raw current references survive key callbacks;
+reference-valued keys unwrap before positional/named binding. Valid retval,
+cached current, Iterator DATA, raw INPUT and sent argument cleanup preserve native
+order, including object-key errors and same-source reentry. By-reference Warning
+handlers support null/bool/int/float payloads, numeric reference mutation, real
+Fiber park/throw and fresh private callee cells. Pending abort operations finish
+the remaining cleanup when a destructor replaces the exception, preserving its
+previous Throwable. Strict373 passes at `9d8afc613`; 25 selected source agreements
+retain `a59`/`9d8` cuts, and a Generator Unsupported control keeps zero agreement.
+Twenty-nine genuine-source groups/1174 physical premises pass at retained
+`4eb`/`79d`/`20e1` cuts; original compiler and fixture failures stay zero credit.
+Direct Generator/Aggregate unpack, other call targets, Generator callbacks,
+valid NaN and refcounted by-reference warning payloads remain required.
+Actual375 over `e1a016144` passes strict SL at `6ece4f690`; private
+source/state cuts retain their own inputs.
+[Iterator unpack ledger](coverage/semantics/iterator-call-unpack-review.json).
+
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
 reference. Borrowed CVs and owning cells retain their modes through initial

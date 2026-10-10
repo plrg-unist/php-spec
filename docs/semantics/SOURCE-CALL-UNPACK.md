@@ -1,4 +1,4 @@
-# Array call argument unpacking
+# Call argument unpacking
 
 The paired107/108 slice expands arrays into direct user-function calls. Integer
 keys send positional arguments in insertion order; their numeric values do not
@@ -59,12 +59,13 @@ containers keep their accumulated dynamic slots. Prior values are not replayed.
 Arbitrary consistent sent values, container entries and reference-cell values
 remain legitimate paused states.
 
-Traversable expansion requires object semantics. Builtin bodies, builtin default
-receives and callbacks remain required integration work; their source name/mode
-catalogue does not constitute body execution. Reporting configuration, other
-callables, static locals, closures, objects, exceptions, dynamic source, lifetime
-and the final complete-core gates remain pending. This checkpoint closes no
-entire semantic family.
+At the array checkpoint, Traversable expansion required object semantics. The
+direct Iterator extension below adds that consumer. Builtin bodies, builtin
+default receives and wider callbacks remain required integration work; their
+source name/mode catalogue does not constitute body execution. Reporting
+configuration, other callables, static locals, closures, objects, exceptions,
+dynamic source, lifetime and the final complete-core gates remain pending. This
+checkpoint closes no entire semantic family.
 
 Validation covers55 exact source outcomes (31 normal,18 PHP errors,6 static
 rejections),29 compiler phase comparisons and56 source projections,34 public
@@ -80,3 +81,34 @@ The [runtime record](../../coverage/semantics/call-unpack-runtime.json),
 [compiler record](../../coverage/semantics/call-unpack-compiler-pairing.json), and
 [independent review](../../coverage/semantics/call-unpack-review.json) bind the
 source profiles, failed originals, immutable inputs, and raw process closures.
+
+## Direct user Iterators
+
+Module385 admits direct user Iterators in ordinary source-function call unpack.
+The unpack marker owns selected Iterator DATA independently of raw
+temporary/reference INPUT; its cursor tracks traversal. A source CV stays borrowed.
+The actual argument origin, emitted line, callee, source remainder and destination
+modes authenticate pending and saved callbacks. Callback receivers are borrowed;
+same-source reentry uses distinct frame-local cursors rather than a global
+source-site singleton.
+
+The current cache remains raw through key(). The user Iterator wrapper unwraps
+reference-valued keys, normalizes numeric strings, and rejects non-int/string
+keys. Values are dereferenced after key effects. Sent arguments own their copies;
+next() retires the cached current value first. On error, key, unsent cache, DATA
+and raw INPUT retire before pending arguments. Thus an invalid object key dies
+before an unsent current object, while a sent object survives DATA cleanup.
+An abort operation owns the pending exception while the remaining jobs finish,
+including when a destructor replaces the exception. Its source receipt adds no
+owners and remains valid after DATA retirement.
+Raw valid() results retire before current() or empty completion. Temporary DATA
+and INPUT retire before target entry, including empty traversal and defaults.
+
+A by-reference target emits the native argument-number/function/line Warning.
+For null/bool/int/float payloads, handlers may mutate a live reference, park or
+throw. Resume reads the raw payload once and creates a fresh callee reference
+cell; a copied current value is unaffected by handler writes to its source.
+Warnings retain actual cursor/cache ownership through invoke/result/cleanup and
+saved Fiber views. Direct Generator/Aggregate unpack, other call targets,
+Generator callback methods, valid NaN and refcounted by-reference warning
+payloads remain explicit follow-ons.

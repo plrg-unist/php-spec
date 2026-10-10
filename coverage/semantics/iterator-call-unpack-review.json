@@ -1,0 +1,761 @@
+{
+  "status": "accepted private source/state cuts with current-parent strict composition",
+  "scope": [
+    "Direct user Iterators unpack into ordinary source-function calls through authentic borrowed callbacks and one real cursor; raw CV INPUT is borrowed, temporary/reference INPUT remains distinct from selected DATA.",
+    "Integer/numeric-string keys are positional; other strings bind named destinations. Raw current references survive key effects; user Iterator key references unwrap before normalization.",
+    "Invalid key, current cache, DATA and original INPUT retire in native order before unfinished sent arguments; valid raw retval retires before current/empty completion, and temporary DATA/INPUT before target entry.",
+    "Pending abort cleanup continues after an effectful destructor throws, retaining the replacement exception and its original previous Throwable while the remaining ordered jobs finish.",
+    "By-reference Warning delivery supports null/bool/int/float raw values: real argument number/function/emitted line, copied-versus-reference reread, fresh private callee cells, handler mutation, Fiber park and throw.",
+    "Same static unpack source may reenter through distinct real function frames/cursors; wrong origin/line/target, foreign immutable INPUT and duplicate saved cursor claims are rejected."
+  ],
+  "remaining": [
+    "Direct Generator and IteratorAggregate ordinary-call unpack",
+    "Other call targets and Generator callback methods",
+    "Iterator valid NaN warning continuation",
+    "Refcounted raw values during by-reference warnings"
+  ],
+  "implementation_revision": "5bc5fa286240048c8e66c98d2af0aa0fc60d4d50",
+  "semantic_correction_revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+  "semantic_correction": "Pass actual resolved state to the existing $truth(pstate,pvalue) helper in both valid true/false calls; original compiler failure retains zero credit.",
+  "private_parent": "59080391d699bbd05babb4e6852233e1ab940f32",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "strict": {
+    "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+    "modules": 373,
+    "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-sl-shvxft9q/report.json",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "native_observations": {
+    "mode": "native-only diagnostic",
+    "normal_agreements": 0,
+    "discovery": 0,
+    "originals": 26,
+    "reports": [
+      ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-native-uo270_c1/report.json",
+      ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-followon-native-vrhdywqd/report.json",
+      ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-key-native-blvqqeuq/report.json",
+      ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-key-throw-native-556ypjam/report.json"
+    ],
+    "reused_adapters": [
+      ".tools/calls-iterator-unpack-20/.tools/native-reuse1.json",
+      ".tools/calls-iterator-unpack-20/.tools/native-reuse2.json",
+      ".tools/calls-iterator-unpack-20/.tools/native-reuse3.json",
+      ".tools/calls-iterator-unpack-20/.tools/native-reuse4.json"
+    ]
+  },
+  "source_comparisons": {
+    "cuts": [
+      {
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "retained_records": 16,
+        "retained_normal_agreements": 15,
+        "unsupported_controls": 1
+      },
+      {
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "selected_records": 10,
+        "normal_agreements": 10
+      }
+    ],
+    "commands": [
+      [
+        "python3",
+        "tests/semantics/iterator_call_unpack_sources.py",
+        "--native-report",
+        ".tools/native-reuse1.json",
+        "--native-report",
+        ".tools/native-reuse2.json",
+        "--native-report",
+        ".tools/native-reuse3.json"
+      ],
+      [
+        "python3",
+        "tests/semantics/iterator_call_unpack_sources.py",
+        "--native-report",
+        ".tools/native-reuse1.json",
+        "--native-report",
+        ".tools/native-reuse2.json",
+        "--native-report",
+        ".tools/native-reuse3.json",
+        "--native-report",
+        ".tools/native-reuse4.json",
+        "--case",
+        "iterator-call-unpack-positional-after-named",
+        "--case",
+        "iterator-call-unpack-duplicate-named-key",
+        "--case",
+        "iterator-call-unpack-invalid-boolean-key",
+        "--case",
+        "iterator-call-unpack-key-throw-unsent-current",
+        "--case",
+        "iterator-call-unpack-next-throw-sent-current",
+        "--case",
+        "iterator-call-unpack-rewind-throw-before-current",
+        "--case",
+        "iterator-call-unpack-byref-warning-handler-throws",
+        "--case",
+        "iterator-call-unpack-valid-object-retval-destructor-throws",
+        "--case",
+        "iterator-call-unpack-invalid-object-key-retirement",
+        "--case",
+        "iterator-call-unpack-invalid-key-destructor-throws"
+      ]
+    ],
+    "budgets": {
+      "steps": 100000,
+      "model_seconds": 60,
+      "process_seconds": 75
+    },
+    "selection": [
+      {
+        "id": "iterator-call-unpack-positional-prefix-named-tail",
+        "source_sha256": "8c9ea9ecd89d9568f604e58a9a2877d4626476d5dbabf07dca7c4dce9b31c9de",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-reordered-named-keys",
+        "source_sha256": "800a55e55af4452630f4793768c9d1872374c4687c999eb853516ce76c204716",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-temporary-data-before-body",
+        "source_sha256": "fed6ff5e030a8af9483916bc9e5554ecc1e5917b153ae08ab6c8d43896774132",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-empty-temporary-before-default",
+        "source_sha256": "90a4c1b1cbf79177fdb6845ec7bb2891cb359229dae9d25a573f91dab36086f2",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-numeric-string-and-variadic-name",
+        "source_sha256": "cf17e0e6e17049f436e0e93e159b02e85727b638a98bc714b9549394be09689a",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-positional-after-named",
+        "source_sha256": "731b4ac6fdfcabbd64130a12727ecf4b079b03cc7d08a8290dc04deb33199723",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-duplicate-named-key",
+        "source_sha256": "c181dadc5eddf6313c04245a67b81b331c900aa30f0dedf3751dfb725891112c",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-invalid-boolean-key",
+        "source_sha256": "88495371399525ac806229956eec71eb5557a294f51c320ae0532dcd0f48c8c8",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-current-reference-key-rewrite",
+        "source_sha256": "aac93904562b705331adc2c53714ff967b412662176850714e2655215e96f5ac",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-key-reference-unwrapped",
+        "source_sha256": "ae2cf5c56ce24b153aa61baf439c6ac28666e99aefcbe079b4609c18f1a442cb",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-key-parks-before-send",
+        "source_sha256": "db3be170d6287db24c2cb02c6fb92e079d9fa8d07358db2f3907841bddc5071b",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-key-throw-unsent-current",
+        "source_sha256": "6270ea4b0a1a07b281b1de9e5b44c6deda116b448605760f28a3566b0e8eeb03",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-next-throw-sent-current",
+        "source_sha256": "37e6ad5a49ba959105cd648531459b9e15e38992d9c7df5049de2c5fa2b78c3a",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-rewind-throw-before-current",
+        "source_sha256": "1cd7df8fb55effa14038830d305ab32144f7910e95cc518f1a82d8a02b04132d",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-byref-warning-live-reference",
+        "source_sha256": "cf91eaf12477d087f18081b2eeb2778767b02cc651a8b3c77c5dad14d200fdb8",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-byref-warning-copied-current",
+        "source_sha256": "71a6fe96bd71593bf5e34d77f066aec94d81c548fc6145b60bc5713902cd209b",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-same-source-reentrant-key",
+        "source_sha256": "6e9430e6045a793cea2a0c34779dfbb516cbfd6704acaa32cfe41bea3d90929d",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-reference-original-operand",
+        "source_sha256": "c9421de5f38b494e866a9e80963ce2f45f3423966637705c7fd28f55d62e2706",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-byref-warning-handler-parks",
+        "source_sha256": "81b3c9b1d3ef517b695e030165c0950309bbb88bc95f3336f58ae45748d24d2e",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-byref-warning-handler-throws",
+        "source_sha256": "6b518b79d4acf69efcd52af467fcb6d8458cde01861ae2de22403bf367906740",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-valid-object-retval-retirement",
+        "source_sha256": "80bb7ffd4c867ef076acaefec1d0422295d1180ef9fc900d0ee182de23ea3ffa",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-valid-object-retval-destructor-throws",
+        "source_sha256": "d85f383312d66795b6d39a1f87a67650a2cfdd0575ad7a013e2762699ca3dea9",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-invalid-object-key-retirement",
+        "source_sha256": "7859d5c99207a33d4b2b8b6bf6c7f9337f7c28b6ce75a89748189fe05a3ba741",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-named-variadic-byref-warning",
+        "source_sha256": "c5b8dd76c9de6d3cce1da324f38523ce303be896a0cfa73dd42c1615aff48493",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      },
+      {
+        "id": "iterator-call-unpack-generator-required-control",
+        "source_sha256": "6addcbf0619ae7c46f6452bc8cba870865b26b5da2fdae615bd6abf9b9c03906",
+        "expected_model": "unsupported",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-3bklg2d7/report.json",
+        "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+        "native_exit": 0,
+        "model_exit": 1,
+        "normal_agreement": false
+      },
+      {
+        "id": "iterator-call-unpack-invalid-key-destructor-throws",
+        "source_sha256": "9d31db6a78cba8cfdecd12ea208710edcdb1416d8772872935a759fa57d7a6d0",
+        "expected_model": "normal",
+        "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-source-oi1d9wsj/report.json",
+        "revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+        "native_exit": 0,
+        "model_exit": 0,
+        "normal_agreement": true
+      }
+    ],
+    "normal_agreements": 25,
+    "unsupported_controls": 1,
+    "unsupported_agreement": 0,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "state_review": {
+    "status": "PASS",
+    "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+    "runner": "tests/semantics/iterator_call_unpack_review.py",
+    "groups": 29,
+    "physical_premises": 1174,
+    "driver_clauses": 1122,
+    "budgets": {
+      "process_seconds": 120,
+      "jobs": 1
+    },
+    "retained_groups": 20,
+    "retained_physical_premises": 749,
+    "retained_driver_clauses": 713,
+    "affected_or_new_groups": 9,
+    "affected_or_new_physical_premises": 425,
+    "affected_or_new_driver_clauses": 409,
+    "selected": [
+      {
+        "id": "cv-prepare-borrows-source-and-allocates-one-real-cursor",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-7pxtjx69/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 43,
+        "driver_clauses": 43,
+        "source_sha256": "8c9ea9ecd89d9568f604e58a9a2877d4626476d5dbabf07dca7c4dce9b31c9de",
+        "passed": true
+      },
+      {
+        "id": "temporary-input-and-data-stay-owned-through-borrowed-rewind-selection",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-k5i0ejtj/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 44,
+        "driver_clauses": 44,
+        "source_sha256": "fed6ff5e030a8af9483916bc9e5554ecc1e5917b153ae08ab6c8d43896774132",
+        "passed": true
+      },
+      {
+        "id": "entered-implicit-frame-has-no-receiver-owner-or-source-call-authority",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-i3nsngu1/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 27,
+        "driver_clauses": 24,
+        "source_sha256": "fed6ff5e030a8af9483916bc9e5554ecc1e5917b153ae08ab6c8d43896774132",
+        "passed": true
+      },
+      {
+        "id": "owning-original-reference-retires-cell-after-data-with-keeper-protected",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-f3lkwm6y/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 38,
+        "driver_clauses": 38,
+        "source_sha256": "c9421de5f38b494e866a9e80963ce2f45f3423966637705c7fd28f55d62e2706",
+        "passed": true
+      },
+      {
+        "id": "current-reference-rereads-key-rewrite-before-send-and-cache-retirement",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-0224pu1c/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 38,
+        "driver_clauses": 38,
+        "source_sha256": "aac93904562b705331adc2c53714ff967b412662176850714e2655215e96f5ac",
+        "passed": true
+      },
+      {
+        "id": "key-reference-unwrap-keeps-current-reference-live-until-send",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-uresaiu6/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 33,
+        "driver_clauses": 32,
+        "source_sha256": "ae2cf5c56ce24b153aa61baf439c6ac28666e99aefcbe079b4609c18f1a442cb",
+        "passed": true
+      },
+      {
+        "id": "valid-object-retval-retires-before-current-start",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-cvdp_llj/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 31,
+        "driver_clauses": 30,
+        "source_sha256": "80bb7ffd4c867ef076acaefec1d0422295d1180ef9fc900d0ee182de23ea3ffa",
+        "passed": true
+      },
+      {
+        "id": "empty-finish-releases-two-data-occurrences-before-default-entry",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-j0krbem6/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 33,
+        "driver_clauses": 33,
+        "source_sha256": "90a4c1b1cbf79177fdb6845ec7bb2891cb359229dae9d25a573f91dab36086f2",
+        "passed": true
+      },
+      {
+        "id": "numeric-string-key-becomes-position-and-leading-zero-keeps-variadic-name",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-zavsmhgr/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 29,
+        "driver_clauses": 29,
+        "source_sha256": "cf17e0e6e17049f436e0e93e159b02e85727b638a98bc714b9549394be09689a",
+        "passed": true
+      },
+      {
+        "id": "positional-after-named-preserves-error-marker-and-already-sent-slot",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-nheg7iug/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 32,
+        "driver_clauses": 30,
+        "source_sha256": "731b4ac6fdfcabbd64130a12727ecf4b079b03cc7d08a8290dc04deb33199723",
+        "passed": true
+      },
+      {
+        "id": "invalid-object-key-discard-retires-key-before-unsent-cache-and-data",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-uygf6877/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 47,
+        "driver_clauses": 45,
+        "source_sha256": "7859d5c99207a33d4b2b8b6bf6c7f9337f7c28b6ce75a89748189fe05a3ba741",
+        "passed": true
+      },
+      {
+        "id": "key-throw-drops-unsent-cache-before-iterator-and-original",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-1h7pn379/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 51,
+        "driver_clauses": 51,
+        "source_sha256": "6270ea4b0a1a07b281b1de9e5b44c6deda116b448605760f28a3566b0e8eeb03",
+        "passed": true
+      },
+      {
+        "id": "next-throw-retires-iterator-before-already-sent-object",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-bv6bjiz3/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 50,
+        "driver_clauses": 50,
+        "source_sha256": "37e6ad5a49ba959105cd648531459b9e15e38992d9c7df5049de2c5fa2b78c3a",
+        "passed": true
+      },
+      {
+        "id": "throwing-valid-retval-keeps-original-exception-before-current",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-0t48v4lc/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 51,
+        "driver_clauses": 51,
+        "source_sha256": "d85f383312d66795b6d39a1f87a67650a2cfdd0575ad7a013e2762699ca3dea9",
+        "passed": true
+      },
+      {
+        "id": "same-source-reentry-uses-distinct-frame-cursors-and-data",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-r6qm70yy/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 44,
+        "driver_clauses": 42,
+        "source_sha256": "6e9430e6045a793cea2a0c34779dfbb516cbfd6704acaa32cfe41bea3d90929d",
+        "passed": true
+      },
+      {
+        "id": "parked-key-keeps-cache-and-borrowed-context-before-any-send",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-o8en2wsu/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 39,
+        "driver_clauses": 33,
+        "source_sha256": "db3be170d6287db24c2cb02c6fb92e079d9fa8d07358db2f3907841bddc5071b",
+        "passed": true
+      },
+      {
+        "id": "parked-key-rejects-line-forgery-and-duplicate-real-marker",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-_7a6twbg/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 39,
+        "driver_clauses": 33,
+        "source_sha256": "db3be170d6287db24c2cb02c6fb92e079d9fa8d07358db2f3907841bddc5071b",
+        "passed": true
+      },
+      {
+        "id": "byref-warning-dispatch-authenticates-parameter-line-and-level",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-dtlty5b5/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 47,
+        "driver_clauses": 47,
+        "source_sha256": "cf91eaf12477d087f18081b2eeb2778767b02cc651a8b3c77c5dad14d200fdb8",
+        "passed": true
+      },
+      {
+        "id": "byref-reference-rereads-handler-write-into-fresh-private-cell",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-bfn_tbeu/report.json",
+        "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+        "physical_premises": 40,
+        "driver_clauses": 40,
+        "source_sha256": "cf91eaf12477d087f18081b2eeb2778767b02cc651a8b3c77c5dad14d200fdb8",
+        "passed": true
+      },
+      {
+        "id": "byref-copied-current-keeps-seven-in-fresh-cell-after-handler-write",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-rle2dtor/report.json",
+        "revision": "79d3aaaeaca80e61edf248fff8a35967d9f099fb",
+        "physical_premises": 35,
+        "driver_clauses": 35,
+        "source_sha256": "71a6fe96bd71593bf5e34d77f066aec94d81c548fc6145b60bc5713902cd209b",
+        "passed": true
+      },
+      {
+        "id": "operational-warning-clean-retains-one-cursor-and-cache-owner",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-0ktqqc9y/report.json",
+        "revision": "79d3aaaeaca80e61edf248fff8a35967d9f099fb",
+        "physical_premises": 32,
+        "driver_clauses": 31,
+        "source_sha256": "cf91eaf12477d087f18081b2eeb2778767b02cc651a8b3c77c5dad14d200fdb8",
+        "passed": true
+      },
+      {
+        "id": "parked-warning-keeps-raw-reference-data-input-and-handler-context",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-capenbbt/report.json",
+        "revision": "79d3aaaeaca80e61edf248fff8a35967d9f099fb",
+        "physical_premises": 41,
+        "driver_clauses": 34,
+        "source_sha256": "81b3c9b1d3ef517b695e030165c0950309bbb88bc95f3336f58ae45748d24d2e",
+        "passed": true
+      },
+      {
+        "id": "parked-warning-rejects-coherent-line-shift-and-duplicate-wrapper",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-9xhfiyuz/report.json",
+        "revision": "79d3aaaeaca80e61edf248fff8a35967d9f099fb",
+        "physical_premises": 44,
+        "driver_clauses": 37,
+        "source_sha256": "81b3c9b1d3ef517b695e030165c0950309bbb88bc95f3336f58ae45748d24d2e",
+        "passed": true
+      },
+      {
+        "id": "thrown-warning-discards-cursor-and-preserves-original-exception",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-z59tub7i/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 41,
+        "driver_clauses": 39,
+        "source_sha256": "6b518b79d4acf69efcd52af467fcb6d8458cde01861ae2de22403bf367906740",
+        "passed": true
+      },
+      {
+        "id": "thrown-warning-reaches-real-cache-before-data-and-input-release",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-7nj_h_ts/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 31,
+        "driver_clauses": 28,
+        "source_sha256": "6b518b79d4acf69efcd52af467fcb6d8458cde01861ae2de22403bf367906740",
+        "passed": true
+      },
+      {
+        "id": "named-variadic-warning-uses-second-argument-and-a-fresh-extra-cell",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-o2dlk1f9/report.json",
+        "revision": "79d3aaaeaca80e61edf248fff8a35967d9f099fb",
+        "physical_premises": 40,
+        "driver_clauses": 40,
+        "source_sha256": "c5b8dd76c9de6d3cce1da324f38523ce303be896a0cfa73dd42c1615aff48493",
+        "passed": true
+      },
+      {
+        "id": "invalid-key-abort-operation-owns-error-and-authenticates-nonowning-source",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-hxiq88vo/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 63,
+        "driver_clauses": 61,
+        "source_sha256": "9d31db6a78cba8cfdecd12ea208710edcdb1416d8772872935a759fa57d7a6d0",
+        "passed": true
+      },
+      {
+        "id": "replacement-key-exception-keeps-cache-and-data-retirement-pending",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-eeayadtm/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 43,
+        "driver_clauses": 38,
+        "source_sha256": "9d31db6a78cba8cfdecd12ea208710edcdb1416d8772872935a759fa57d7a6d0",
+        "passed": true
+      },
+      {
+        "id": "retired-data-keeps-source-receipt-valid-before-original-exception-search",
+        "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-h5sdz6dx/report.json",
+        "revision": "20e1a033c4fc565caa141a28297c50de483313a7",
+        "physical_premises": 48,
+        "driver_clauses": 46,
+        "source_sha256": "9d31db6a78cba8cfdecd12ea208710edcdb1416d8772872935a759fa57d7a6d0",
+        "passed": true
+      }
+    ]
+  },
+  "preserved_failures": [
+    {
+      "revision": "37a9fe9daea4ceacac6eb0702499526eb3c04529",
+      "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-sl-0_cxhao4/report.json",
+      "kind": "SL compiler failure",
+      "exit": 1,
+      "timeout": false,
+      "credit": 0,
+      "reason": "385 valid truth helper called with one argument instead of (state,value); source comparisons did not run."
+    },
+    {
+      "revision": "4eb6365b92fa5ebafbe905a2e4a68eec659e596c",
+      "report": ".tools/calls-iterator-unpack-20/.tools/fiber-state-review-5fgtqzo5/report.json",
+      "kind": "state fixture tail mismatch",
+      "exit": 1,
+      "timeout": false,
+      "credit": 0,
+      "reason": "Copied numeric CURRENT retirement stages an authentic empty DESTRUCTOR_RELEASE before next-start; the original fixture omitted that prefix. Corrected fixture at79d retains all private-cell/global-value checks."
+    }
+  ],
+  "compatibility": "Only new direct Iterator/Generator recognition extends108; its original array transition remains the exact default. Shared call/heap/destructor/Fiber bodies are unchanged; no prior accepted native/source/state cut is renewed.",
+  "actual_composition": {
+    "parent": "e1a016144d64b8fe0e983bbe49f32884c709c2ef",
+    "semantic_revision": "6ece4f6901b1ae6a2a2dc79e4f1ab9c548bad388",
+    "modules": 375,
+    "report": ".tools/calls-iterator-unpack-current-20/.tools/iterator-call-unpack-current-sl-6e3qsmez/report.json",
+    "report_sha256": "d957d10cb3616f722afe4ced673fddee4cea1ab9298601ae475167a299e56369",
+    "command": [
+      "python3",
+      ".tools/strict.py"
+    ],
+    "compiler": {
+      "mode": "SL",
+      "cache": false,
+      "determinism_checks": true,
+      "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+      "ocaml": "5.1.0"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "jobs": 1
+    },
+    "budgets": {
+      "process_seconds": 120
+    },
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "compatibility": "The current parent preserves all four reviewed semantic deltas. Parent GC takeover/typed-return-pair task forms, property hooks, anonymous factory publication and relocated destructor declaration remain intact; original array rules and shared224/270/84 bodies are unchanged. Exact source/state fixture bytes retain their reviewed private cuts; no private renewal."
+  },
+  "abort_correction_revision": "9d8afc6133e684a703d291e6920c1082322aacc7",
+  "abort_correction": "Authentic pending-Throwable aborts use the existing eager destruction operation: the operation alone owns the pending exception, the nonowning source receipt remains valid after DATA retirement, and remaining key/cache/DATA/INPUT/sent jobs continue when a destructor replaces the exception.",
+  "prior_strict": {
+    "revision": "a59dcf06c62100599c02b55763ccf506a79a515e",
+    "modules": 373,
+    "report": ".tools/calls-iterator-unpack-20/.tools/iterator-call-unpack-sl-iyvx9gzm/report.json",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  }
+}
