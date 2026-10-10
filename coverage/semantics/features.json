@@ -11524,14 +11524,17 @@
       "dependencies": [],
       "implementation": [
         "spec/semantics/383-anonymous-classes.watsup",
-        "spec/semantics/164-throwable-trace-methods.watsup"
+        "spec/semantics/164-throwable-trace-methods.watsup",
+        "spec/semantics/142-method-runtime.watsup"
       ],
       "helper_tests": [
-        "coverage/semantics/anonymous-classes-review.json"
+        "coverage/semantics/anonymous-classes-review.json",
+        "coverage/semantics/anonymous-constructors-review.json"
       ],
       "source_tests": [
         "tests/semantics/method_runtime.py",
-        "tests/semantics/anonymous_class_cases.json"
+        "tests/semantics/anonymous_class_cases.json",
+        "tests/semantics/anonymous_constructor_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
@@ -11539,9 +11542,10 @@
         "vendor/php-src/Zend/zend_vm_def.h",
         "vendor/php-src/Zend/zend_builtin_functions.c",
         "vendor/php-src/Zend/zend_exceptions.c",
-        "coverage/semantics/anonymous-classes-review.json"
+        "coverage/semantics/anonymous-classes-review.json",
+        "coverage/semantics/anonymous-constructors-review.json"
       ],
-      "review": "Module383 adds authentic ordinary unit0 parentless anonymous expressions, generated NUL/file/line/hex site identities, compile-time publication and repeated fresh instances;164 preserves full trace names with C-string display. Original a898/e646 source3 and 205+21 / 45+2 checks stay separate. Simple global noarg/by-value/untyped function and static no-capture Closure factories now record authentic deferred class checkpoints, restore unit images and publish before the first call: fresh source2 at c417, function140 at c417 and Closure140/changed strict3 at 36b2811b, totaling 248 completed/source checks plus 32 pure context premises. Baseline0 and both failures0 are preserved. Mixed RTD consumers, wider factory contexts/incomplete images, include/eval, parents/interfaces/attributes/constructors and broader consumers remain required; anonymous-classes-review.json keeps partial scope."
+      "review": "Module383 adds authentic ordinary unit0 parentless anonymous expressions, generated NUL/file/line/hex site identities, compile-time publication and repeated fresh instances;164 preserves full trace names with C-string display. Original a898/e646 source3 and 205+21 / 45+2 checks stay separate. Simple global noarg/by-value/untyped function and static no-capture Closure factories record authentic deferred class checkpoints, restore unit images and publish before the first call: source2 at c417, function140 at c417 and Closure140/changed strict3 at 36b2811b, totaling 248 completed/source checks plus 32 pure context premises. Public zero-parameter by-value untyped constructors now authenticate anonymous receipts and use ordinary142 allocation/call/result/unwind: fresh source4/strict3 at5d3, author143+141 and independent finally107 total371 setup/source-frontier checks plus20 pure queries, with17 actual PhpSteps. Defaults, ignored automatic return99 versus explicit return99, repeated factory effects, shared Throwable/finally identity and escaped/nonescaped failed receiver roots pass. Preexisting terminal result receipts authenticate class/allocation rather than same-class birth; pair mismatch rejects, pure old-object helper acceptance is explicit. Prior cuts and failures0 remain frozen. Mixed RTD consumers, wider factory contexts/incomplete images, include/eval, parents/interfaces/attributes, constructor arguments/types/nonpublic access and broader consumers remain required; both anonymous ledgers keep partial scope."
     },
     {
       "id": "classes.abstract",

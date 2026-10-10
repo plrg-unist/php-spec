@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Public zero-parameter by-value untyped constructors on ordinary unit0 parentless anonymous classes; existing simple global function/static no-capture Closure factories. No arguments, parents, attributes, widened signatures or lifecycle/suspension consumers.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_constructor_cases.json"
+  },
+  "semantic_revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+  "prerequisite": "e1a016144d64b8fe0e983bbe49f32884c709c2ef",
+  "module_count": 374,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "admission": "Accept only empty-attribute, flags0/1, non-reference __construct with no parameters or return type; preserve exact anonymous CODE projection, original source/file/name/live registry and early history receipts.",
+    "execution": "Concrete class-shaped NEW dispatch calls existing142 constructor_start with empty arguments;80 enters directly from CALL_ARGS into the saved constructor frame. CTOR_RESULT returns the allocated object and ignores body retval; ordinary explicit method calls keep retval. Constructor/no-constructor rules remain disjoint.",
+    "unwind": "Existing152/156/257 shared Throwable/finally/frame restoration and failed automatic constructor markers are reused;39 physical roots/pruning remain ordinary. No new owning field/task/schema/compiler adapter."
+  },
+  "native_cuts": [
+    {
+      "revision": "e1a016144d64b8fe0e983bbe49f32884c709c2ef",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-native-20/run-v1/report.json",
+      "originals": 2
+    },
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-native-21/run-v1/report.json",
+      "originals": 2
+    }
+  ],
+  "source_cuts": [
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-model-21/run-retry1/report.json",
+      "native_agreements": 2,
+      "normal": 2
+    },
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-model-21/run-v1/report.json",
+      "native_agreements": 2,
+      "normal": 2
+    }
+  ],
+  "strict": {
+    "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-gate-21/report-retry1.json",
+    "premises": 3,
+    "seconds": 5.420959711074829
+  },
+  "state_cuts": [
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-state-21/report.json",
+      "group": "repeat",
+      "checks": 143,
+      "setup_source_frontier_checks": 133,
+      "pure_queries": 10,
+      "PhpSteps": 7,
+      "seconds": 27.65950298309326
+    },
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-state-21/report-retry2.json",
+      "group": "shared-throw",
+      "checks": 141,
+      "setup_source_frontier_checks": 133,
+      "pure_queries": 8,
+      "PhpSteps": 5,
+      "seconds": 14.990204095840454
+    },
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-state-21/report-retry1.json",
+      "group": "finally-ownership",
+      "checks": 107,
+      "setup_source_frontier_checks": 105,
+      "pure_queries": 2,
+      "PhpSteps": 5,
+      "seconds": 20.28745150566101
+    }
+  ],
+  "state_method": "Exact checked native originals/file/cwd through completed compiler projection and real AT/NEW, CALL_ARGS, receiver/lexical/called-class frames, repeated defaults/effects, retval99 and CTOR_RESULT, actual THROW_VALUE/shared Throwable/catch and untouched caller assignment. Counts are setup-inclusive checks at source frontiers and separate pure companions, not distinct states; no INVOKE head on this empty-argument route. Independent finally frontiers observe escaped-first retention, nonescaped-second failed marker ownership1, real marker discard0 and ordinary physical pruning while the original Throwable survives both attempts.",
+  "receipt_abstraction": "Preexisting terminal ctor_result_valid checks allocation/class, not same-class birth identity: an earlier live same-class object passes the pure terminal helper probe. Actual source execution returns the newly allocated object; CALL_ARGS/CTOR_RESULT pair mismatch and wrong-class/unallocated results reject. No forged same-class execution or new birth certificate is claimed.",
+  "syntax_only": {
+    "programs": [
+      ".tools/anonymous-class-20/.tools/anonymous-constructor-state-21/preparation.json",
+      ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-state-21/preparation.json"
+    ],
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-constructor-state-21/report-elab-retry2.json",
+      ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-state-21/report-elab-retry1.json"
+    ],
+    "credit": 0
+  },
+  "preserved_failures": [
+    {
+      "revision": "a8c7b1e3c654839b8b276a5a48accc9d50532fa7",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-model-21/run-v1/report.json",
+      "reason": "142 named NEW pattern excludes NStmtClass; repeat interpreter_failure, shared conditional unrun. Fixed by explicit383 typed allocation dispatch.",
+      "credit": 0
+    },
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-state-21/report.json",
+      "group": "shared-throw",
+      "inputs": ".tools/anonymous-class-20/.tools/anonymous-constructor-state-21/syntax-failure-v1",
+      "reason": "Fixture nested PORIGIN list argument parsed as postfix indexing; shared parse failure only, repeat143 passed.",
+      "credit": 0
+    },
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-state-21/report-retry1.json",
+      "inputs": ".tools/anonymous-class-20/.tools/anonymous-constructor-state-21/syntax-failure-retry1",
+      "reason": "Whole task parentheses alone did not repair inner list syntax; list argument parentheses pass cheap elaboration then affected runtime.",
+      "credit": 0
+    },
+    {
+      "revision": "5d3e3da497e2c41093b87af81fd7bbf94360c5d1",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-state-21/report.json",
+      "inputs": ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-state-21/syntax-failure-v1",
+      "reason": "Fixture BODY join inserted a blank line ending main premises; corrected join preserves107 checks.",
+      "credit": 0
+    }
+  ],
+  "validation": "Passing selected phases preserve original bytes/profile/file/cwd and raw streams; stable watched inputs, exit/cleanup0, empty owned PGIDs, jobs1 and no conditional unrun. Host caps: native55s, model45s semantic/55s host/100000 steps, syntax Worker30s, strict/state120s and elab30s. Retained project-local binaries reused, no new build/offline claim; ignored raw artifacts remain outside Git.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_constructor_cases.json",
+    "cases": 4,
+    "runner": "tests/semantics/method_runtime.py --cases tests/semantics/anonymous_constructor_cases.json",
+    "scope": "Unchanged original source bytes; filename-sensitive expected names are computed by source. Metadata publication adds no fresh execution credit."
+  },
+  "remaining": [
+    "Constructor arguments/parameters/types, nonpublic constructors and wider factory signatures/captures/class scopes.",
+    "Parents/interfaces/traits/attributes, mixed RTD counters, include/eval units and incomplete publication images.",
+    "Broader hook, Fiber/Iterator/finalizer/GC and anonymous-class consumers; paused GEN work stays unchanged."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified in this slice; the existing constructed-state receipt abstraction above is explicit.",
+  "state_totals": {
+    "checks": 391,
+    "setup_source_frontier_checks": 371,
+    "pure_queries": 20,
+    "PhpSteps": 17
+  },
+  "independent_review": "comp_review_21 accepted exact semantic admission/dispatch/result/unwind, all four original agreements and391 setup-inclusive state/pure checks within the explicit terminal class/allocation receipt abstraction. Passing raw phases were read independently; prior failures remain zero."
+}

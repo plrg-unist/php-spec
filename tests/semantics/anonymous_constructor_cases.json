@@ -1,0 +1,64 @@
+{
+  "scope": "Public zero-parameter by-value untyped constructors on ordinary unit0 parentless anonymous classes, including simple global function/static no-capture Closure factories. Defaults precede body effects; automatic allocation ignores return values, explicit calls observe them, and repeated shared Throwable/finally unwind preserves caller assignment and escaped receivers. Partial core; wider constructor/context/lifecycle interactions remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-constructor-repeat",
+      "source": "<?php\n$calls = 0;\n$objects = [];\nfor ($i = 0; $i < 2; ++$i) {\n    $object = new class {\n        public $value = 0;\n        public $scope = '';\n        public function __construct() {\n            echo 'C' . (++$GLOBALS['calls']) . ':' . $this->value . '|';\n            $this->value = $GLOBALS['calls'];\n            $this->scope = self::class;\n            return 99;\n        }\n    };\n    $objects[] = $object;\n}\n$first = $objects[0];\n$second = $objects[1];\n$class = $first::class;\n$expected = \"class@anonymous\\0\" . __FILE__ . ':5$0';\necho 'objects:', $first !== $second ? 'distinct' : 'BAD', '|';\necho 'class:', $class === $second::class ? 'same' : 'BAD', '|';\necho 'exact:', $class === $expected ? 'yes' : 'BAD', '|';\necho 'scopes:', $first->scope === $class && $second->scope === $class ? 'same' : 'BAD', '|';\necho 'values:', $first->value, ':', $second->value, '|';\n$first->value = 9;\necho 'after:', $first->value, ':', $second->value, '|calls:', $calls;\n",
+      "source_sha256": "05d9982acc096588797d30c14b7b2f9947457e0cbbc09ee1697bb62743cab521",
+      "stdout_base64": "QzE6MHxDMjowfG9iamVjdHM6ZGlzdGluY3R8Y2xhc3M6c2FtZXxleGFjdDp5ZXN8c2NvcGVzOnNhbWV8dmFsdWVzOjE6MnxhZnRlcjo5OjJ8Y2FsbHM6Mg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-constructor-native-20/run-v1/anonymous-constructor-repeat/command.json",
+      "native_raw_sha256": "b598d31cf86b939254b60c024adfe1bea616a2ededc23ef136126e13457bfe67"
+    },
+    {
+      "id": "anonymous-constructor-shared-throw",
+      "source": "<?php\n$failure = new Exception('shared');\n$escaped = null;\n$calls = 0;\n$returned = 'unset';\ntry {\n    $returned = new class {\n        public $value = 4;\n        public function __construct() {\n            global $failure, $escaped, $calls;\n            ++$calls;\n            echo 'C', $calls, ':', $this->value, '|';\n            $this->value = 7;\n            $escaped = $this;\n            throw $failure;\n        }\n    };\n} catch (Exception $caught) {\n    echo $caught === $failure ? 'same|' : 'BAD|';\n}\necho 'returned:', $returned, '|calls:', $calls, '|escaped:', $escaped->value, '|';\necho $escaped::class === \"class@anonymous\\0\" . __FILE__ . ':7$0' ? 'name:exact' : 'name:BAD';\n",
+      "source_sha256": "a2c79ad5091c04b8de09284f408ed053a133ac3fa2aafe778c838e17170be2d5",
+      "stdout_base64": "QzE6NHxzYW1lfHJldHVybmVkOnVuc2V0fGNhbGxzOjF8ZXNjYXBlZDo3fG5hbWU6ZXhhY3Q=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-constructor-native-20/run-v1/anonymous-constructor-shared-throw/command.json",
+      "native_raw_sha256": "40b13d95522940d8b4d7cfcfd5d1f2028d65f1f547a37db1d9b803d7ef9b344c"
+    },
+    {
+      "id": "anonymous-constructor-peer-factory",
+      "source": "<?php\n$calls = 0;\nfunction make() {\n    return new class {\n        public $value = 0;\n        public function __construct() {\n            global $calls;\n            ++$calls;\n            $this->value = $calls;\n            echo 'F', $calls, '|';\n            return 99;\n        }\n    };\n}\n$factory = static function () {\n    return new class {\n        public $value = 0;\n        function __CONSTRUCT() {\n            global $calls;\n            ++$calls;\n            $this->value = $calls;\n            echo 'C', $calls, '|';\n        }\n    };\n};\n$beforeName = 'class@anonymous' . \"\\0\" . __FILE__ . ':4$0';\n$before = new $beforeName;\n$second = $factory();\n$first = make();\n$again = make();\n$returned = $again->__construct();\necho $returned === 99 ? 'return|' : 'BAD|';\necho $first !== $again && $before !== $first ? 'distinct|' : 'BAD|';\necho $first::class === $beforeName && $again::class === $beforeName ? 'same|' : 'BAD|';\necho $second::class === 'class@anonymous' . \"\\0\" . __FILE__ . ':16$1' ? 'order|' : 'BAD|';\necho 'values:', $before->value, ':', $second->value, ':', $first->value, ':', $again->value, '|calls:', $calls;\n",
+      "source_sha256": "91baa5d4213bc2744835d055dcb258c3b9252026119608ab5fed089418cde16e",
+      "stdout_base64": "RjF8QzJ8RjN8RjR8RjV8cmV0dXJufGRpc3RpbmN0fHNhbWV8b3JkZXJ8dmFsdWVzOjE6MjozOjV8Y2FsbHM6NQ==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-native-21/run-v1/anonymous-constructor-peer-factory/command.json",
+      "native_raw_sha256": "ce61f92c57e43489bffb652dffb65d6abcf7b60994e7a685295516f3cea0072e"
+    },
+    {
+      "id": "anonymous-constructor-peer-finally-throw",
+      "source": "<?php\n$shared = new Exception('shared');\n$escaped = null;\n$calls = 0;\n$last = 0;\nfunction make() {\n    return new class {\n        public $value = 0;\n        public function __construct() {\n            global $shared, $escaped, $calls, $last;\n            ++$calls;\n            if ($calls === 1) { $escaped = $this; }\n            try {\n                $this->value = $calls;\n                echo 'C', $calls, '|';\n                throw $shared;\n            } finally {\n                $this->value = $this->value + 10;\n                $last = $this->value;\n                echo 'F', $calls, '|';\n            }\n        }\n    };\n}\n$assigned = 'kept';\ntry { $assigned = make(); }\ncatch (Throwable $caught) { echo $caught === $shared ? 'same|' : 'BAD|'; }\n$first = $escaped;\ntry { $assigned = make(); }\ncatch (Throwable $caught) { echo $caught === $shared ? 'same|' : 'BAD|'; }\necho $first === $escaped ? 'kept|' : 'BAD|';\necho 'assigned:', $assigned, '|values:', $first->value, ':', $last, '|calls:', $calls;\n",
+      "source_sha256": "46c079e2c51e3ba42b10575cb744e91de3326f4376f53e5f4693ae3996eb2977",
+      "stdout_base64": "QzF8RjF8c2FtZXxDMnxGMnxzYW1lfGtlcHR8YXNzaWduZWQ6a2VwdHx2YWx1ZXM6MTE6MTJ8Y2FsbHM6Mg==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-constructor-peer-native-21/run-v1/anonymous-constructor-peer-finally-throw/command.json",
+      "native_raw_sha256": "d9299c760ba60d2cedc0bd66c12a1d6670375d90a2f372f5804ab170ee6c8ecc"
+    }
+  ]
+}
