@@ -25,6 +25,9 @@ def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN f
   -- if $ptvalidname($base64(text), false)
   -- if $ptlc($base64(text)) =/= $ptascii("__construct")
   -- if ~$ppmethod_magic($base64(text))
+def $anonymous_member(NStmtClassMethod (SEQUENCE eps) (INTEGER flags) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = true
+  -- if flags <- [0,1]
+  -- if $ptlc($base64(text)) = $ptascii("__construct")
 def $anonymous_member(statement) = false -- otherwise
 dec $anonymous_members(statement*) : bool
 def $anonymous_members(eps) = true
@@ -131,14 +134,20 @@ def $anonymous_new_name(S, PORIGIN 0 pcpath) = (pclassdesc.NAME)
   -- if $anonymous_class_prefix(pcunit, $call_sourcefile(S.FILES, pclassdesc.ORIGIN), ppinstalled.CLASSES, 0)
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc.NAME)) = (pclassdesc.ORIGIN)
   -- if $declaration_early(S.DECLARATIONS, pclassdesc.ORIGIN, PPCLASS)
-  -- if ~$new_has_ctor(S, pclassdesc.NAME)
 def $anonymous_new_name(S, porigin) = eps -- otherwise
+
+;; Constructor selection and its result marker reuse the ordinary call receipt.
+;; No-constructor NEW retains the direct allocation path below.
+def $new_source_name(S, porigin) = (ptbytes_name)
+  -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if $new_has_ctor(S, ptbytes_name)
 
 rule PhpStep/anonymous-new: S ~> $new_class(S[.TODO = ptask_tail*], ptbytes_name, $runtime_line(S, eps, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata))
   -- if S.TODO = (EVAL (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $origin_node(S.SOURCES, porigin) = (NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata)
   -- if $anonymous_new_name(S, porigin) = (ptbytes_name)
+  -- if ~$new_has_ctor(S, ptbytes_name)
 
 dec $anonymous_new_task_valid(pstate, expression) : bool
 def $anonymous_new_task_valid(S, NExprNew (NStmtClass phpType14 phpType24 phpType3 phpType44 phpType42 phpType23 metadata_class) (SEQUENCE eps) metadata) = true
