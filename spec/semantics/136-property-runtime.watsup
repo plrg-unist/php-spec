@@ -682,6 +682,7 @@ rule PhpStep/property-base-static: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE
   -- if ~$property_undefined_reference_receiver(S)
   -- if ~$property_get_pending(S)
   -- if ~$property_hook_pending(S)
+  -- if ~$property_hook_isset_pending(S)
   -- if $property_undefined_reference_plan(S) = eps
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL

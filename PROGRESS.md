@@ -391,6 +391,16 @@ receiver/access families remain partial. Actual 374-module composition over
 parent magic-get/reference paths and the private source/state cuts.
 [Virtual hook review](coverage/semantics/virtual-get-hooks-review.json).
 
+Literal CV/`$this` `isset` and `empty` now invoke public by-value backed/virtual
+get hooks, preserve the property origin marker and distinguish returned nullness
+from truthiness. Temporary returned objects die before branch output while the
+receiver remains live. Strict374 and two original agreements pass at `f67a994c`;
+SL162 at `ec1f309d` (143 reached, 19 derived) proves actual call/frame/boolean and
+eager destructor/weak-null states. Earlier source failure, two AL stops and false162
+retain zero affected credit. Coalesce has only a derived parent exclusion and no
+runtime/source credit; wider hook access remains required.
+[Quiet hook review](coverage/semantics/quiet-get-hooks-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

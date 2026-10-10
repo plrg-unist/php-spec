@@ -1182,6 +1182,11 @@ without defaults retain declaration/type metadata and own no backing slot; write
 evaluate the RHS before read-only rejection and returned values have ordinary
 result ownership. Eight affected source agreements and 139 derived/reached checks
 are recorded in the [virtual review](coverage/semantics/virtual-get-hooks-review.json).
+Literal CV/`$this` `isset` and `empty` invoke these getters and test their returned
+value, releasing temporary results before branch output while the receiver
+remains live. Two originals and 162 premises (143 reached, 19 derived) pass in the
+[quiet hook review](coverage/semantics/quiet-get-hooks-review.json); coalescing
+and wider quiet access remain required.
 Hooked iteration, defaulted virtual/set/reference, inherited/trait and wider
 receiver or indirect-access families remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

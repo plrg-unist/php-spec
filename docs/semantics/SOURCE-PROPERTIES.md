@@ -40,9 +40,17 @@ evaluate the RHS before read-only rejection and skip destination coercion. Liter
 string `$this`/property forms still establish backing; nested function bodies do
 not. Eight affected originals and 139 derived/reached checks are recorded in the
 [virtual review](../../coverage/semantics/virtual-get-hooks-review.json).
+Literal CV and `$this` `isset`/`empty` also invoke these public by-value getters.
+The quiet consumer authenticates its source mode and carries the property's
+origin restoration through the call. `isset` tests the returned nullness;
+`empty` negates its truth value. Temporary returned objects release before the
+boolean branch while the receiver remains live. Two originals and 162 state
+premises (143 reached, 19 derived) pass in the
+[quiet hook review](../../coverage/semantics/quiet-get-hooks-review.json).
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
-inheritance/traits, temporary/computed receivers, quiet/reference/indirect access
+inheritance/traits, temporary/computed receivers, coalescing and wider
+quiet/reference/indirect access
 and hooked unset remain boundaries.
 
 Constructor promotion declares a property from its original parameter flags and
