@@ -7,6 +7,9 @@ def $weakmap_at(S, n) = true
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
   -- if $weakmap_object(S.OBJECTS[n])
 def $weakmap_at(S, n) = false -- otherwise
+def $closure_live_object_valid(S, n) = true -- if $weakmap_at(S, n)
+def $closure_scope_complete(S, (HOBJECT n) :: pnode*) = $closure_scope_complete(S, pnode*) -- if $weakmap_at(S, n)
+def $property_live_complete(S, (HOBJECT n) :: pnode*) = $property_live_complete(S, pnode*) -- if $weakmap_at(S, n)
 def $object_name(S, n) = $ptascii("WeakMap") -- if S.OBJECTS[n] = WEAKMAP pweakmapentry?
 def $getclass_live_object(S, n) = true -- if $weakmap_at(S, n)
 def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) <- [$ptascii("weakmap"), $ptascii("arrayaccess"), $ptascii("countable"), $ptascii("iteratoraggregate"), $ptascii("traversable")])
