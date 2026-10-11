@@ -1197,8 +1197,10 @@ Ordinary parent release disposes the acyclic children; the self-cycle waits for
 the next collection. Two distinct ordinary parent properties may also share one
 fresh `stdClass` leaf. Native agreement and238 reached checks cover borrowed
 retention and both property releases, ending at the child's physical cleanup pin
-with weak lookup cleared. Wider graphs, external sharing and worker cases remain
-required.
+with weak lookup cleared. One marked global CV may also hold the fresh leaf
+through parent teardown. Native agreement and281 reached checks cover this
+separate owner and its unset release through the child storage pin. Wider graphs,
+outside carriers and worker cases remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

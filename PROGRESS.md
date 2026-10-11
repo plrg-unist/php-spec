@@ -1903,6 +1903,20 @@ shape/owner/frozen/slot/DONE controls and zero/one replay pass. Baseline61 local
 the old refusal. Wider sharing and child graphs remain required; source41
 OPEN/zero cuts are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Main PASS1 preparation325 also admits one fresh `stdClass` leaf held by its
+called owner-zero parent and a marked global CV cell. The actual global root,
+direct payload, marker and unbuffered carrier are authenticated; existing owner
+and count folds stay unchanged. At `fef445a292`/375, compiler/init, native76 source
+agreement and281 reached source/control checks (retention167/unset114) pass.
+Real FREE keeps the borrowed parent; after ordinary parent teardown, global
+unset transfers the cell owner to a child release and reaches its physical
+storage pin with weak lookup null. Allocation persists at that checkpoint; the
+original source covers its later disposal. Carrier/owner/shape/frozen/slot/DONE
+controls and zero/one replay pass. Baseline77 localizes the old refusal; the first
+compiler iteration diagnostic retains zero gate credit. Wider outside carriers
+and child graphs remain required; source41 OPEN/zero cuts are unchanged.
+[Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335

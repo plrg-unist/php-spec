@@ -199,6 +199,20 @@ null. Coherent outside-owner/shape/frozen/slot/DONE fences and budget replay pas
 Wider internal sharing, external owners, references/arrays and worker/pending
 contexts remain required; this checkpoint does not claim final physical disposal.
 
+The singleton fresh posttrace `stdClass` leaf may also have one direct parent
+edge and one marked global CV cell as its two owners. Admission binds the actual
+allocated global root and direct payload, with no incoming alias/container edge,
+property-reference constraint, physical buffer slot or frozen child edge on the
+carrier. The parent remains called/owner-zero with its authenticated current
+root; existing leaf/shared lanes, owners and count folding are unchanged. At
+`fef445a292`/375, compiler/init, native76 agreement and281 reached checks (167/114)
+pass. The real FREE keeps the borrowed parent; after parent teardown, actual
+global unset transfers HCELL→VALUE ownership into the child storage pin with
+weak lookup null and allocation retained. Original-source agreement covers later
+disposal. Carrier/owner/shape/frozen/slot/DONE controls and budget replay pass.
+Wider outside carriers, graphs, references/arrays and worker/pending contexts
+remain required.
+
 Module335 extends that storage admission to normal detached-worker close after
 the collection is quiescent. It requires the actual control-release, operation-exit
 and worker-release tail, a terminated graceful worker, and exactly the real
