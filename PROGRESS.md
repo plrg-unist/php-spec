@@ -4272,6 +4272,8 @@ and state233 at 4ec/375 pass (214 genuine/derived plus 19 controls), reusing rec
 checked packets after a source-name fixture-origin failure0. Handler/tag/ownership
 are unchanged; wider class/combined expressions and source7 remain open. Exact
 maintained relocation needs no runtime renewal; see the same ledger.
+Exact 409a37be/375 composition passes preserved state233; native/source/private
+cuts are not renewed.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
