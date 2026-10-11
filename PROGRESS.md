@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Parser-backed top-level statics now authenticate source ownership and release
+normal/explicit-return slots in compiler declaration order. Callable slots,
+escaped aliases and copied return operands keep their existing roots. The
+second eval-response refusal is repaired without relaxing parser/public guards.
+At private 19b999682 / 377, four exact checked originals retain their source cuts;
+11 genuine frontiers pass 382 premises and 12 explicit boundary PhpSteps.
+Original parser, model and fixture failures retain zero failed-group credit.
+Caller Closure isolation, abrupt/fatal retirement and throwing-destructor
+interactions remain required; full core stays partial.
+[Source-static ledger](coverage/semantics/source-static-retirement-review.json).
+
 Opened-file identity now follows recorded compiler diagnostics: ordinary
 include/require registers afterward, while once forms register before compilation.
 Nested handlers, shared throws, graceful exit and hard bailout retain native

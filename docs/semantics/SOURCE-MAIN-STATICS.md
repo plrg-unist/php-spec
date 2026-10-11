@@ -1,4 +1,4 @@
-# Statics in the initial main script
+# Statics in main and parser-backed scripts
 
 Static declarations in the initial script use the same persistent reference-cell table as named-function statics. The source declaration identifies a slot; absence is uninitialized and a cell containing null is initialized. Stored initializers, evaluated initializers, duplicate-name priority, source lines, local aliases and copy-on-write reuse the named-function rules.
 
@@ -8,8 +8,14 @@ Initializer calls move the main symbol table into the existing global-table owne
 
 The unit code contains descriptors for nested functions as well as main statements. Resume validation identifies a main slot from an actual initial-unit declaration outside every named-function source body and authenticates its static descriptor against compilation. Main tasks require main context; initialized main slots remain valid while a function is active. Saved main continuations validate their restored source/context without borrowing the active callee's result or requiring its global-table field to be empty. Arbitrary consistent cell values and reference aliases remain valid; guards do not reconstruct initialization history.
 
-This scope is one initial script in one request. Include/eval and repeated op-array activation, closure/method/trait/inherited static identity, object destruction and exceptions remain required later work. No static/storage family closure is claimed.
+Parser-backed eval/file top-level slots additionally require an authentic source binding and a live source-end owner when executing a declaration. Source ancestry excludes function, method, Closure, arrow and property-hook bodies. Source teardown leaves callable-owned slots to their existing callable lifetimes. Cell provenance can remain valid independently of a live task; a retired source cannot borrow an old static declaration as new work.
+
+Normal source end and explicit return release initialized top-level slots in compiler declaration order while retaining the source context. Ordinary destructors therefore still see the dynamic frame. The already copied return operand stays rooted during release, and escaped references keep their cells alive. Later eval responses now admit the state after source statics execute. The [source-static review](../../coverage/semantics/source-static-retirement-review.json) separates the affected source, three independent normal originals and genuine public state frontiers.
+
+Caller Closure isolation, throw/graceful-exit retirement, hard-fatal shutdown roots and destructor-generated throw cleanup remain required. Wider method/trait/inherited identity and lifecycle behavior retain their earlier partial scope. No static/storage family closure is claimed.
 
 The reviewed candidate contains1,008 checked paths (`2829c2a0`). The [runtime evidence](../../coverage/semantics/main-statics-runtime.json) records16 native source agreements,12 compiler phase comparisons,9 protocol controls,12 regressions and two author dense cases. Its [originals archive](../../coverage/semantics/main-statics-runtime-originals.json) preserves exact first and final identities; independent review retains its own source, dense and complete compatibility profiles.
 
 Pinned source routes are [zend_compile_static_var](../../vendor/php-src/Zend/zend_compile.c#L5501), [ZEND_BIND_STATIC](../../vendor/php-src/Zend/zend_vm_def.h#L9133) and [ZEND_BIND_INIT_STATIC_OR_JMP](../../vendor/php-src/Zend/zend_vm_def.h#L9186). Main execution selects the request symbol table in [zend_vm_execute.skl](../../vendor/php-src/Zend/zend_vm_execute.skl#L75), then [zend_attach_symbol_table](../../vendor/php-src/Zend/zend_execute_API.c#L1857) connects its entries to the main CV slots. The publication supplement retains these two additional main-table source files alongside the original archive’s compiler/VM pin.
+
+Dynamic source teardown follows `zend_leave_helper` in `zend_vm_def.h` and `zend_destroy_static_vars` in `zend_opcode.c`: the temporary op-array table is destroyed before restoring caller execution. The semantic table is released one declaration slot at a time to preserve observable destructor order.

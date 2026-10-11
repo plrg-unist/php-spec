@@ -1336,6 +1336,11 @@ error cleanup; [review](coverage/semantics/function-statics-review.json) binds
 source/state/protocol evidence and22 old-state bridges. [Main-script statics](docs/semantics/SOURCE-MAIN-STATICS.md)
 now bind persistent cells through the global symbol table; [review](coverage/semantics/main-statics-review.json)
 retains source/state/protocol checks and20 complete old-state responses.
+Parser-backed eval/file top-level statics now release their source-owned slots
+before normal source end or explicit return, preserving callable slots and the
+copied return operand. [Review](coverage/semantics/source-static-retirement-review.json)
+retains the second-parser-response repair and selected normal lifetime checks;
+caller Closure isolation and abrupt/throwing-destructor cleanup remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object
