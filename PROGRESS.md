@@ -509,6 +509,8 @@ Nine genuine-source state groups pass 632 physical/601 driver premises at
 and trace-only container/child ownership after private frame retirement.
 Untyped named arrays, other type shapes, wider sites, broader array/COW interactions
 and live REFERENCE payloads remain required; prior cuts stay frozen.
+Actual375 over `b10b0042` is composed at `720ec713`; independent pointwise seam
+review retains private strict/source/state cuts without a new current execution.
 [Typed named array review](coverage/semantics/iterator-call-unpack-array-typed-named-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
