@@ -144,3 +144,27 @@ map teardown, mutation or wrapper creation during freeing, additional strong key
 owners retained beyond callback cleanup, wider entry/key/value protocols and ephemeron
 collection remain required. Countable
 is nominal-only; count execution remains excluded/Unsupported per CORE.
+
+## Ordinary dimension reads
+
+Module386 admits authenticated object-key `KEY_R` reads from a live map. The
+source access certificate must match the current task, BASE/result and key input.
+A matching entry returns through `key_read_done`, creating a genuine strong value
+result. Key notification then removes only the map owner: a held CV keeps the
+value live and uncalled until its own release.
+
+A missing object key throws Error using its class name and actual destruction
+store handle, preserving the existing entry and value ownership. The 56-byte
+held-copy and 88-byte missing-key originals agree at `c4c097e`. Checks for the
+value copy (110), key release with a held value (74) and missing-key Error (113)
+total 297, including three setup assertions per case. The missing cut follows real
+Error materialization before catch; originals supply complete endings. The original 73-check control
+miscounted the two `DESTRUCTOR_ENTER` roots and retains zero credit. Earlier cuts
+stay at their tested revisions.
+
+The engine basis is `zend_weakmap_read_dimension` in `Zend/zend_weakrefs.c`: an
+ordinary `BP_VAR_R` read returns the stored zval; a missing object key reports the
+class and object-store handle. Presence/isset, reference/compound reads, other key
+types, methods/iteration, wider entry shapes, mutation during freeing and ephemeron
+collection remain required. Countable stays nominal-only; count execution remains
+excluded/Unsupported per CORE.

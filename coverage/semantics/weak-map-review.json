@@ -282,5 +282,76 @@
     "caps_environment": "Native30/host120; source CLI60/recorder75/host180; state SL120/recorder200/host240/worker30; CPU2/jobs1/C/UTC/script encoding absent. Reports bind the same pinned PHP/profile identities recorded above.",
     "engine_basis": "Zend/zend_weakrefs.c zend_weakrefs_hash_clean_ex/zend_weakmap_free_obj unregister keys and release values before map std_dtor; zend_weakref_get adds real temporary ownership. Zend/zend_objects_API.c zend_objects_store_del creates the physical free_obj pin.",
     "boundaries": "Wider nonempty-map teardown, mutation/wrapper creation during freeing, additional strong key/map owners retained beyond callback cleanup, multiple maps per key, wider entry/key/value/read/method/iteration protocols and ephemeron collection remain required. Countable stays nominal-only; count execution is excluded/Unsupported per CORE. No cycle/count closure; all prior cuts and failures stay unchanged."
+  },
+  "dimension_read_58": {
+    "scope": "Ordinary object-key dimension read value copies and missing-key Error preserving the existing entry.",
+    "base_revision": "2a5dcf424098344e9074caf7966c033e327c78c7",
+    "tested_revision": "c4c097e9a5ccfaf8ca3126b4ea91974f8b695478",
+    "modules": 378,
+    "raw_root": ".tools/weak-map-read-58",
+    "recovery": "All reports below are relative to raw_root; original source bytes, commands and raw streams remain at their ignored paths.",
+    "representation": "Current KEY_READ_DIM task, source access certificate, BASE/result and INPUT/key must agree. key_read_done creates a real strong result; key notification removes only the map edge, leaving a held CV owner. Missing Error uses class plus actual destruction-store handle, not semantic object index.",
+    "source_agreements": [
+      {
+        "case": "weak-map-read-value-copy-58",
+        "source_sha256": "dbac4e88e7a8dfa1c0f3d4d302e212eb1e7b64809da20a20e4544dd3911e2d2b",
+        "stdout_bytes": 56,
+        "stdout_sha256": "cd9179a3fb277e1c5470004d83d067cb362839ea25e4b355aa4dc65f1eb3d6ef",
+        "native_report": ".tools/weak-map-read-value-copy-native-58-jwl8_2jf/report.json",
+        "model_report": ".tools/weak-map-read-value-copy-source-58-cqlxp8nd/report.json"
+      },
+      {
+        "case": "weak-map-read-missing-object-key-58",
+        "source_sha256": "de58b900d6293653d86d0d877ea88d3b586d56058a62f79c8cc942514667f274",
+        "stdout_bytes": 88,
+        "stdout_sha256": "73f74c90668212b95125f7630425ee03cf0fd35952d71e4190530bfd4879aee3",
+        "native_report": ".tools/weak-map-read-missing-object-key-native-58-v5n93517/report.json",
+        "model_report": ".tools/weak-map-read-missing-object-key-source-58-wjq2icve/report.json"
+      }
+    ],
+    "state": {
+      "assertions": [
+        110,
+        74,
+        113
+      ],
+      "total_checked_assertions": 297,
+      "candidate_sha256": "50e9ecc986ecd919a04eba50617e44734f08a61e4971d9498ce342f998d47a41",
+      "corrected_held_candidate_sha256": "c3253f418797755bcc29b42b8f76f9eae4a87911d746a235c1d6ab2ee9381dc5",
+      "reports": [
+        ".tools/weak-map-read-state-58-h1j1vplr/report.json",
+        ".tools/weak-map-read-held-corrected-state-58-oxiafpue/report.json",
+        ".tools/weak-map-read-state-58-bchetdba/report.json"
+      ],
+      "result": "Strict true newline/exits0/no timeout/stderr0/interruptionNone/groups empty/stable. Includes three setup assertions per case. Real read value ownership rises from 1 to 2, shared key-notice release reduces it from 2 to 1, and Error materialization preserves the entry without full terminal drive; originals supply catch and complete endings."
+    },
+    "compiler_init": {
+      "compiler_report": ".tools/weak-map-read-58-compiler-as6we0b9/report.json",
+      "init_report": ".tools/weak-map-read-58-init-bblgz1my/report.json",
+      "result": "Actual algo/struct syntax artifacts and strict true newline; exits0/no timeout/stderr0/interruptionNone/groups empty/stable."
+    },
+    "localization": {
+      "revision": "2a5dcf424098344e9074caf7966c033e327c78c7",
+      "candidate_sha256": "5ca1de4946b526bdc47b6c9b9962ec0ff7956ec2a832f22bac8d75dbfdcfee4a",
+      "assertions": 62,
+      "report": ".tools/weak-map-read-baseline-58-niocbtzq/report.json",
+      "result": "Genuine KEY_READ_DIM Unsupported with raw state unchanged except completion; localization only."
+    },
+    "preserved_zero_credit": [
+      ".tools/weak-map-read-value-copy-source-58-gd4l9z_9/report.json: original accepted-source read Unsupported, empty output.",
+      ".tools/weak-map-read-missing-object-key-source-58-nwomtw_3/report.json: original accepted-source read Unsupported, empty output.",
+      ".tools/weak-map-read-state-58-5d5reldg/report.json: original73 selected-owner1 forecast miscounted the two actual DESTRUCTOR_ENTER task roots; corrected74 is separate."
+    ],
+    "maintained": {
+      "transfer_revision": "200a99fbdc8bea93d20bea81df344f0ed393a3af",
+      "source_cases": 57,
+      "state_cases": 124,
+      "state_sha256": "5f8fe05b60b57266017719b3fc81bee160192326e8e3d93b7e024deb3d546a10",
+      "change": "All prior55 source rows/order and121 CASES/order preserved; two exact normal originals and three literal tested state records added. Harness outside CASES unchanged."
+    },
+    "caps_environment": "Native30/host120; original CLI60/recorder75/host180; state SL120/recorder200/host240/worker30; CPU2/jobs1/C/UTC/script encoding absent. Runtime/profile identities match the initial WeakMap cut.",
+    "engine_basis": "Zend/zend_weakrefs.c zend_weakmap_read_dimension: ordinary BP_VAR_R stored-zval read and missing-object-key Error with class and object-store handle.",
+    "compatibility": "New arms require WeakMap ACCESS_READ KEY_R and the actual current consumer/operands; prior write, notification/storage and ordinary ArrayAccess arms are unchanged. Earlier cuts retain their tested revisions without renewal.",
+    "boundaries": "Presence/isset, reference/compound reads, other key types, method/iteration, replacement/wider entry shapes, mutation during freeing and ephemeron collection remain required. Countable is nominal-only; count execution stays excluded/Unsupported per CORE. Earlier failures retain zero credit."
   }
 }

@@ -1098,6 +1098,12 @@ multiple maps per key, wrapper creation or mutation during freeing, retained str
 additional key/map owners retained beyond callback cleanup and wider entry/read/
 mutation protocols remain required.
 
+Ordinary object-key dimension reads now copy the stored value into a strong
+result, so a held copy survives key removal. A missing key throws Error using its
+actual object-store handle and preserves the existing entry. Two originals agree
+with PHP at `c4c097e`; 297 reached checks pass. Presence,
+reference and wider map protocols remain required.
+
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
 retirement. Fiber protection scans reuse one graph within an unchanged state,

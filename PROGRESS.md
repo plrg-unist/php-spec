@@ -3055,6 +3055,16 @@ pin (104) and 86 freeing-write refusal checks pass at `061e372`, totaling 553. P
 endings. Wider maps, wrapper creation or mutation during freeing, additional key/map
 owners retained beyond callback cleanup and ephemeron collection remain required.
 Earlier failures retain zero credit.
+
+Ordinary object-key reads now create a strong stored-value copy; its held CV
+survives removal of the map edge and delays the value destructor. Missing keys
+throw Error with the actual object-store handle while preserving the existing
+entry. The 56-byte held-copy and 88-byte missing-key originals agree at `c4c097e`;
+110 checks for the value copy, 74 for release with a held value and 113 for the
+missing-key Error pass, totaling 297. The Error cut stops after real materialization;
+originals supply catch and complete endings. The original 73-check owner forecast remains zero;
+its corrected control authenticates the two real destructor-entry task roots.
+Presence/reference/method and wider key/map protocols remain required.
 [Ledger](coverage/semantics/weak-map-review.json).
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
