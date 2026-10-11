@@ -3022,6 +3022,8 @@ Unsupported and both fixture preparation failures stay0; pure self-comparison ob
 preserve native output. Object/array callback replacements, changed type sources and wider
 getter/PARAM scope remain required; phase40 evidence is frozen.
 [NaN-string ledger](coverage/semantics/magic-property-nan-string-review.json).
+The actual375 join over `6f2a0d742` at `925c3b1bd` preserves disjoint parent paths.
+Private and parent compiler cuts are reused; fresh strict/source/state/native credit remains0.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

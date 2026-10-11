@@ -1883,6 +1883,8 @@ the post-handler value, and handler throws commit before receiver cleanup.
 pass 1,014 premises at `3f19892d8`; strict375 retains `00902286f`.
 Strict getter rejection emits no warning. Original observer/preparation failures stay0;
 object/array callback replacements and changed source constraints remain required.
+The actual375 join over `6f2a0d742` at `925c3b1bd` preserves disjoint parent paths.
+Private and parent compiler cuts are reused; fresh strict/source/state/native credit remains0.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
