@@ -926,7 +926,9 @@ or selected-Y success retires it. Two originals and five reached fixtures/504
 assertions (165+78+78+101+82) pass at `d28f2a0c`; independent partial96/8 is
 separate. Private strict375 passes in 5.831s with zero applications. The original
 597 elaboration failure keeps zero credit. Normal mixed clearing/resumption,
-other operand/layout/lifecycle domains and broad returns_verify remain OPEN.
+other operand/layout/lifecycle domains and broad returns_verify remain OPEN. Actual375 over
+`d6df5f11` passes strict at `9d6c4a4e` in 5.814s with zero applications;
+private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
