@@ -575,6 +575,16 @@ required. [Unset review](coverage/semantics/hooked-unset-review.json).
 Actual375 over `af067517` passes strict initialization at `99a51c34` (5.737 s),
 preserving the private source2/state182 cuts and earlier failures.
 
+Literal CV/`$this` public backed by-value hook `+=` uses the actual getter value
+with an already evaluated integer RHS. It refetches the receiver after the RHS
+and retains that selected receiver across getter rebinding, arithmetic and store.
+Strict375 and three originals pass at `ee1ae2f1`. Separate state cuts retain
+scalar291 at `77a0f81c` (265 reached, 26 derived) and affected receiver/lifetime129
+at `7070262a` (all reached). Genuine pending TypeError cleanup releases the RV
+while the selected receiver lives, then retires it before catch. False410 and
+localization diagnostics retain zero whole-gate credit; earlier hook cuts stay
+unchanged. [Addition-assignment review](coverage/semantics/backed-get-hook-addassign-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

@@ -1287,6 +1287,12 @@ Direct literal CV/`$this` unset of backed or virtual hooked properties raises
 Backing values survive rejection and release with receiver storage. Two originals
 and 182 premises (178 reached, 4 derived) pass in the
 [unset review](coverage/semantics/hooked-unset-review.json).
+Literal CV/`$this` backed get-hook `+=` with an evaluated integer RHS uses the
+getter's actual value and stores on the receiver selected after the RHS.
+Getter rebinding preserves that selected target. Arithmetic errors keep it live
+through returned-value cleanup, then release it before catch. Three originals and
+separate scalar/derived and receiver/lifetime state cuts are recorded in the
+[addition-assignment review](coverage/semantics/backed-get-hook-addassign-review.json).
 Hooked iteration, defaulted virtual/set/reference, inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
