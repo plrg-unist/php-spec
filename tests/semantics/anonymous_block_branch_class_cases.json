@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables inside direct If main/elseif/else bodies, with If hosts under authenticated standalone root/valid-namespace Block chains. Precompiled anonymous availability versus callable publication/Closure creation, reversed class publication and guarded fresh defaults/lexical namespaces retain the exact original observations. Independent skipped forms, prior deferred qualified name versus eligible case-spelled root class and shared RTD counters are included. Nested If hosts, Blocks after If, loops and nested factories or wider signatures/targets/captures remain Unsupported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "block-branch-reversed",
+      "source": "<?php\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':22$3';\n$rightFactory = null;\n$leftBefore = new $leftName; $rightBefore = new $rightName;\necho $leftBefore::class === $leftName && $leftBefore->scope() === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeLeftBlockBranch(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\n{\n    {\n        if (true) {\n            function makeLeftBlockBranch() {\n                class LeftBlockBranchPublished {}\n                return new class { public function scope() { return self::class; } };\n            }\n        } elseif (false) {} else {}\n    }\n}\n{\n    if (false) {} elseif (true) {\n        $rightFactory = static function () {\n            class RightBlockBranchPublished {}\n            return new class {};\n        };\n    } else {}\n}\ntry { new LeftBlockBranchPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\ntry { new RightBlockBranchPublished; echo 'BAD|'; } catch (Error $caught) { echo 'right-missing|'; }\n$right = $rightFactory();\n$rightNamed = new RightBlockBranchPublished;\necho $right::class === $rightName && $rightNamed::class === 'RightBlockBranchPublished' ? 'right|' : 'BAD|';\ntry { new LeftBlockBranchPublished; echo 'BAD|'; } catch (Error $caught) { echo 'still-missing|'; }\n$left = makeLeftBlockBranch();\n$leftNamed = new LeftBlockBranchPublished;\necho $left::class === $leftName && $left->scope() === $leftName && $leftNamed::class === 'LeftBlockBranchPublished' ? 'left|' : 'BAD|';\necho $leftBefore !== $left && $rightBefore !== $right && $left !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "fd591c2f82283626d757b6bef02be575f838a17593d5f9382e926bb5652f7333",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8bGVmdC1taXNzaW5nfHJpZ2h0LW1pc3Npbmd8cmlnaHR8c3RpbGwtbWlzc2luZ3xsZWZ0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-branch-native-33/run-v1/block-branch-reversed/command.json",
+      "native_raw_sha256": "e266cec72930bdeb0831a9a442d53bef50e955625002f77583814b603fea589d"
+    },
+    {
+      "id": "block-branch-repeated",
+      "source": "<?php\nnamespace DeclaringBlockBranch;\n$functionSeen = false; $closureSeen = false; $make = null;\n$functionName = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$1';\n$closureName = 'class@anonymous' . \"\\0\" . __FILE__ . ':24$3';\n$functionBefore = new $functionName; $closureBefore = new $closureName;\necho $functionBefore::class === $functionName && $closureBefore::class === $closureName && $make === null ? 'before|' : 'BAD|';\ntry { makeRepeatedBlockBranch(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\n{\n    if (false) {} elseif (false) {} else {\n        function makeRepeatedBlockBranch() {\n            global $functionSeen;\n            if (!$functionSeen) { $functionSeen = true; class FunctionPublished {} }\n            return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n        }\n    }\n}\n{\n    {\n        if (true) {\n            $make = static function () {\n                global $closureSeen;\n                if (!$closureSeen) { $closureSeen = true; class ClosurePublished {} }\n                return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n            };\n        } elseif (false) {} else {}\n    }\n}\nnamespace CallingBlockBranch;\n$functionFirst = \\DeclaringBlockBranch\\makeRepeatedBlockBranch(); $closureFirst = $make();\n$functionNamed = new \\DeclaringBlockBranch\\FunctionPublished; $closureNamed = new \\DeclaringBlockBranch\\ClosurePublished;\necho $functionFirst::class === $functionName && $closureFirst::class === $closureName && $functionFirst->space() === 'DeclaringBlockBranch' && $closureFirst->space() === 'DeclaringBlockBranch' && $functionNamed::class === 'DeclaringBlockBranch\\\\FunctionPublished' && $closureNamed::class === 'DeclaringBlockBranch\\\\ClosurePublished' ? 'first|' : 'BAD|';\n$functionFirst->value = 9; $closureFirst->value = 9;\n$functionSecond = \\DeclaringBlockBranch\\makeRepeatedBlockBranch(); $closureSecond = $make();\necho $functionSecond::class === $functionName && $closureSecond::class === $closureName && $functionSecond->value === 0 && $closureSecond->value === 0 ? 'second|' : 'BAD|';\necho $functionSeen && $closureSeen && $functionBefore !== $functionFirst && $functionFirst !== $functionSecond && $closureBefore !== $closureFirst && $closureFirst !== $closureSecond && $functionFirst !== $closureFirst ? 'fresh|' : 'BAD|';\necho $functionBefore->value, ':', $functionFirst->value, ':', $functionSecond->value, ':', $closureBefore->value, ':', $closureFirst->value, ':', $closureSecond->value;\n",
+      "source_sha256": "b10c92d275ee73636e1818d5403ef402cc3f9005e27fc99204869ffb26d7b3f2",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8c2Vjb25kfGZyZXNofDA6OTowOjA6OTow",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-branch-native-33/run-v1/block-branch-repeated/command.json",
+      "native_raw_sha256": "5306b68d4f027a680cb850f9161e3c865096a673aee155c8c235b64a28c89d58"
+    },
+    {
+      "id": "block-branch-prior-deferred",
+      "source": "<?php\nnamespace BlockBranchSide;\n$chosenName = 'class@anonymous' . \"\\0\" . __FILE__ . ':17$3';\n$closureName = 'class@anonymous' . \"\\0\" . __FILE__ . ':29$7';\n$make = null; $hiddenClosure = null; $seen = false;\n$before = new $chosenName; $closureBefore = new $closureName;\n$early = new Exception;\necho $before::class === $chosenName && $closureBefore::class === $closureName && $early::class === 'BlockBranchSide\\\\eXcEpTiOn' && $make === null ? 'before|' : 'BAD|';\ntry { selectedBlockBranch(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\n{\n    {\n        if (false) {\n            function hiddenBlockBranch() { class HiddenFunction {} return new class {}; }\n        } elseif (true) {\n            function selectedBlockBranch() {\n                if (false) { class Exception {} }\n                return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n            }\n        } else {}\n    }\n}\n{\n    if (false) {\n        $hiddenClosure = static function () { class HiddenClosure {} return new class {}; };\n    } else {\n        $make = static function () {\n            global $seen;\n            if (!$seen) { $seen = true; class Published {} }\n            return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n        };\n    }\n}\nclass eXcEpTiOn {}\necho $hiddenClosure === null ? 'skipped|' : 'BAD|';\nnamespace BlockBranchCaller;\n$chosen = \\BlockBranchSide\\selectedBlockBranch();\necho $chosen::class === $chosenName && $chosen->space() === 'BlockBranchSide' && $chosen->value === 0 ? 'chosen|' : 'BAD|';\n$first = $make();\n$published = new \\BlockBranchSide\\Published;\necho $first::class === $closureName && $first->space() === 'BlockBranchSide' && $published::class === 'BlockBranchSide\\\\Published' ? 'first|' : 'BAD|';\n$first->value = 9;\n$second = $make();\necho $second::class === $closureName && $second->space() === 'BlockBranchSide' && $second->value === 0 ? 'second|' : 'BAD|';\ntry { \\BlockBranchSide\\hiddenBlockBranch(); echo 'BAD|'; } catch (\\Error $caught) { echo 'hidden|' ; }\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$8';\necho $last::class === $lastName ? 'last|' : 'BAD|';\necho $seen && $before !== $chosen && $closureBefore !== $first && $first !== $second && $before->value === 0 && $first->value === 9 && $last !== $second ? 'fresh' : 'BAD';\n",
+      "source_sha256": "637a2e832c0f97b93cff0d99bf07e7c2292554caf16d6402ec2a8bb764a0e79d",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8c2tpcHBlZHxjaG9zZW58Zmlyc3R8c2Vjb25kfGhpZGRlbnxsYXN0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-branch-native-33/run-v1/block-branch-prior-deferred/command.json",
+      "native_raw_sha256": "78acf5e4367071e0e6f7d1fda4ab4cc105bf4f5281645639b220362116841ea7"
+    }
+  ]
+}

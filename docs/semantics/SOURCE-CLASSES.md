@@ -95,7 +95,7 @@ preserves state apart from consuming its task. Named descendants in nested
 or other unsupported function ancestors remain Unsupported. The
 [block-factory review](../../coverage/semantics/anonymous-block-factory-rtd-review.json)
 separates publication, no-op and allocation frontiers from pure ancestry queries.
-Exact named functions directly in actual root or valid namespace `if` main,
+Exact named functions directly in actual `if` main,
 `elseif` or `else` bodies also admit plain empty named descendants. Anonymous
 names are already live while
 the function remains unavailable; its executed statement appends one source-bound
@@ -110,18 +110,24 @@ placement/signature/receipt queries. Two executed case-insensitive same-name dec
 fail at the second statement, retaining the first callable and history before either
 body runs. The [conditional-factory review](../../coverage/semantics/anonymous-conditional-factory-rtd-review.json)
 separates these real publication/allocation/fatal steps from pure placement queries.
-Named descendants in nested or Block-contained If function paths, loops and
+The If host may lie at root or a valid namespace body through authenticated
+standalone Block chains. Admission checks every real Block ancestor of that host
+and the actual main/elseif/else suffix; path lengths are checked before slicing.
+The [Block-branch review](../../coverage/semantics/anonymous-block-branch-rtd-review.json)
+separates authentic mixed function/Closure frontiers from pure path/receipt queries.
+Named descendants in nested If paths, Blocks after If, loops and
 other unsupported function ancestors remain Unsupported.
 Variable assignments to static no-capture noarg by-value untyped Closures at root
 or a valid namespace body, through authenticated standalone Block chains or directly
-in actual `if` main, `elseif` or `else` bodies, admit plain empty named descendants.
+in actual `if` main, `elseif` or `else` bodies with the same authenticated Block-host
+ancestry, admit plain empty named descendants.
 Admission authenticates the expression statement, by-value assignment, ordinary
 variable target, exact Closure signature and actual Block or conditional ancestors.
 Anonymous names exist before creation; skipped assignments preserve their variables.
 The [conditional-Closure review](../../coverage/semantics/anonymous-conditional-closure-rtd-review.json)
 separates real creation/capture, named publication and fresh allocations from pure
-placement/signature/receipt queries. Named descendants under nested or Block-contained
-If paths, loops, nested functions or nested Closures, other targets, captures and
+placement/signature/receipt queries. Named descendants under nested If paths,
+Blocks after If, loops, nested functions or nested Closures, other targets, captures and
 signatures remain Unsupported.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)
 separates real Block/creation/publication/allocation steps from pure admission queries.

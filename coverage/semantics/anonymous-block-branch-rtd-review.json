@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables, directly in If main/elseif/else bodies whose hosts occur at root or a valid namespace body through authenticated standalone Block chains. Blocks after If, nested If, loops, nested factories and wider targets/captures/signatures remain Unsupported; historical anonymous-only contexts are preserved.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_block_branch_class_cases.json"
+  },
+  "semantic_revision": "5d91ff5fe5468a077c3d2bfa92143aab65a6c11c",
+  "private_base": "8728e2d1336ead43a8d78b85d41046c77fe259aa",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "Three length-guarded suffix arms derive the actual If prefix and match known slices of lengths 2/4/3 against main/elseif/else path suffixes. Actual If and ElseIf/Else nodes plus terminal presence are authenticated; top_path checks every real standalone Block and namespace ancestor of the If host. The existing full named-function or ordinary-variable Closure-assignment/signature caller remains mandatory. Full class/source/CODE/name/EARLY/count, runtime/publication, schema and module manifest are unchanged.",
+    "publication": "Anonymous names exist before callable publication or selected Closure creation. Executed function statements append genuine CALLABLES/PDRFUNCTION; selected Closure creation/capture makes a REALCLOSURE instance from its compiled template. Calls publish source-selected empty named classes with PDRCLASS/CCLINK under actual targets/current/callsites/saved caller frames. Reversed function/Closure calls publish in call order; guarded repeats preserve one publication per family and independent defaults0→9→fresh0 across namespaces.",
+    "boundary": "Historical31/32 Block-hosted If negatives retain their original cuts and are superseded only for the new host ancestry. Placement helpers alone certify placement/presence, not complete function/assignment/signature or canonical terminal occurrences. Namespace-helper-alone terminal and zero-cost ordering limits remain; terminal constructor receipts accept older allocated same-class objects."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_top_stmt (around 11653) recurses through STMT_LIST; zend_compile_if (around 6186) compiles every branch body with runtime selection jumps.",
+    "vendor/php-src/Zend/zend_compile.c: zend_begin_func_decl (around 8410) emits ZEND_DECLARE_FUNCTION or ZEND_DECLARE_LAMBDA_FUNCTION for nested declarations. Function/Closure declarations consume no class RTD key; class runtime definition and anonymous naming retain compile-order keys.",
+    "Existing 40 block entry, 80 callable activation/calls, 116 Closure creation/capture and 190/196 class publication/callsite causes are reused; 184 appends CCLINK even for empty named classes."
+  ],
+  "native_cut": {
+    "revision": "8728e2d1336ead43a8d78b85d41046c77fe259aa",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-native-33/run-v1/report.json",
+    "originals": 3,
+    "normal": 3,
+    "exit_status": 0
+  },
+  "source_cuts": [
+    {
+      "revision": "5d91ff5fe5468a077c3d2bfa92143aab65a6c11c",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-model-33/run-retry1/report.json",
+      "accepted_groups": [
+        "block-branch-reversed",
+        "block-branch-repeated"
+      ],
+      "native_agreements": 2,
+      "seconds": [
+        16.934676218777895,
+        36.009705228731036
+      ],
+      "scope": "Only these two accepted rows; the campaign third row timed out and retains zero credit."
+    },
+    {
+      "revision": "5d91ff5fe5468a077c3d2bfa92143aab65a6c11c",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-model-33/run-prior-retry1/report.json",
+      "accepted_groups": [
+        "block-branch-prior-deferred"
+      ],
+      "native_agreements": 1,
+      "seconds": [
+        63.04167105816305
+      ],
+      "semantic_cap_seconds": 90,
+      "host_cap_seconds": 100,
+      "scope": "Affected-only original third case; no source/native/strict replay."
+    }
+  ],
+  "strict": {
+    "revision": "5d91ff5fe5468a077c3d2bfa92143aab65a6c11c",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-gate-33/report-retry2.json",
+    "premises": 3,
+    "seconds": 5.922365427017212
+  },
+  "state_revision": "5d91ff5fe5468a077c3d2bfa92143aab65a6c11c",
+  "state_cuts": [
+    {
+      "group": "reversed",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-state-33/report.json",
+      "checks": 218,
+      "setup_source_frontier_checks": 211,
+      "pure_queries": 7,
+      "PhpSteps": 8,
+      "seconds": 35.46397280693054
+    },
+    {
+      "group": "repeated",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-state-33/report.json",
+      "checks": 317,
+      "setup_source_frontier_checks": 308,
+      "pure_queries": 9,
+      "PhpSteps": 10,
+      "seconds": 102.82375478744507
+    },
+    {
+      "group": "prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-peer-state-33/report.json",
+      "checks": 202,
+      "setup_source_frontier_checks": 185,
+      "pure_queries": 17,
+      "PhpSteps": 7,
+      "seconds": 104.88461971282959
+    }
+  ],
+  "state_totals": {
+    "checks": 737,
+    "setup_source_frontier_checks": 704,
+    "pure_queries": 33,
+    "PhpSteps": 25
+  },
+  "state_method": "Two actual containing Block entries, three genuine callable publications, six selected Closure creation/capture steps, five class publications with exact PDRCLASS/CCLINK deltas, eight anonymous allocations and one eligible case-class whole-state no-op. Real targets/templates/current/callsites/saved frames distinguish function and Closure owners. Guarded repeated calls retain one publication per family with first9/fresh0 values. Owned Error objects from preliminary catches are unrestricted. Fixtures stop after required allocations; full original outcomes belong to source/native comparisons. Thirty-three pure placement/prefix/receipt/cause queries, including short paths, are separate; setup premises are not unique PHP states or behaviours.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-block-branch-state-33/preparation.json",
+    "checked_originals": 3,
+    "frontend_adapter_workers": 6,
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-block-branch-state-33/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-block-branch-peer-state-33/report-elab.json"
+    ],
+    "runtime_credit": 0
+  },
+  "validation": "Closed selected records preserve original bytes/profile/file/cwd/streams, executed binary identities and stable watched inputs. Native/source 3 agree normally with exact bytes/exit0; accepted strict/state/elaboration exit+cleanup0, empty owned groups/no unrun. Serial jobs1: PHP55s, first two source45s/host55s and affected third source90s/host100s with 100000 steps, syntax Worker30s, EL30s and strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Large raw evidence stays ignored outside Git.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_block_branch_class_cases.json",
+    "cases": 3,
+    "runner": "tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_block_branch_class_cases.json",
+    "scope": "Metadata-only publication of unchanged originals adds no execution credit; hashes identify retained immutable native START records."
+  },
+  "remaining": [
+    "Blocks after If, nested If hosts, loops, nested factories and wider signatures/Closure targets/captures; wider named bodies/modifiers and complete RTD/publication ordering.",
+    "Include/eval units, parents/interfaces/attributes, broader anonymous members/defaults/consumers and constructor arguments/types/nonpublic access."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "failures": [
+    {
+      "phase": "initial cb955 strict elaboration",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-gate-33/report.json",
+      "scope": "Fresh branch indices were bound through non-invertible path concatenation. Preserve original raw/commit; only three equalities changed to known suffix slices. No runtime credit.",
+      "runtime_credit": 0
+    },
+    {
+      "phase": "first 57539 reversed source interpreter failure",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-model-33/run-v1/report.json",
+      "scope": "Suffix slice second operand used whole path length, producing out-of-bounds [5,12) for length 7. Preserve original raw; correct only suffix lengths 2/4/3, then affected strict/source and previously unrun cases. The passed 57539 strict retains its original report-retry1 cut.",
+      "runtime_credit": 0
+    },
+    {
+      "phase": "third 5d91 source timeout",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-branch-model-33/run-retry1/report.json",
+      "scope": "The prior-deferred case timed out under 45 semantic/55 host cap. Preserve timeout 0 and accepted first two rows; retry only original third case under 90 semantic/100 host cap. Syntax preparation was previously unrun.",
+      "runtime_credit": 0
+    }
+  ],
+  "independent_review": "comp_review_21 accepted exact383, native/source 3/strict 3 and source-bound frontiers/counterexamples; focused independent 202 complements author 535 without full-end or historical-control replay. Closed raw records and final metadata are independently reviewed before integration."
+}

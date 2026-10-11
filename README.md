@@ -1345,6 +1345,13 @@ call-order publication and fresh defaults. The earlier
 retains fatal redeclaration before another allocation.
 The earlier Block Closure join of 375 modules over 92f726a3 passes strict3 at
 fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
+Both factory kinds also admit direct branch bodies when the `if` host lies inside
+authenticated standalone root/namespace Block chains. Three mixed originals agree
+at 5d91ff5f; focused fixtures pass 737 setup-inclusive checks with 25 real steps for
+Block entry, callable/Closure creation, class publication and fresh allocation.
+The [Block-branch review](coverage/semantics/anonymous-block-branch-rtd-review.json)
+preserves both initial rule failures and the third-source timeout; only affected
+checks were retried. Fixtures stop at their required frontiers without an end drive.
 Wider Closure targets/placements/signatures, function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)

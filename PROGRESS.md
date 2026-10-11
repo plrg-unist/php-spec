@@ -22,22 +22,28 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
-Static no-capture noarg by-value untyped Closure assignments directly in actual
-root or valid namespace `if`, `elseif` and `else` bodies now admit plain empty named
-descendants. Three originals agree at 80a2707 /375 (strict3 5.875s): anonymous
-fullnames preexist Closure creation, skipped variables stay untouched, reversed
-calls publish named classes in call order, and guarded repeats preserve one
-publication with independent defaults and lexical namespaces. Author and independent
-fixtures pass 577 premises: 527 setup/source-frontier and 50 pure queries, with 19
-actual PhpSteps for creation/capture, PDRCLASS/CCLINK publication, eligible class
-no-op and saved-frame allocation. The original peer elseif-list type elaboration
-failure retains zero credit; only that type variable changed before affected EL/SL.
-Syntax preparation/elaboration adds no runtime credit. Nested or Block-contained
-If paths, loops, nested factories, wider targets/captures/signatures and consumers
-remain required.
-The 375 join over 4b13f151 passes strict3 at 7983239b (5.925s), checking the
-shared task datatype. Review preserves the reached parentless class-link identity;
-private native/source/state cuts retain their original revisions without replay.
+Exact noarg by-value untyped named functions and static no-capture Closure
+assignments directly in `if`, `elseif` and `else` bodies now admit plain empty
+named descendants when the If host lies inside authenticated standalone
+root/valid-namespace Block chains. Three originals agree at 5d91ff5f /375
+(strict3 5.922s): names preexist publication/creation, mixed calls publish in call
+order, and guarded repeats retain one publication per family and fresh defaults.
+Author535 and focused independent202 pass 737 premises: 704 setup/source-frontier
+and 33 pure queries, with 25 actual PhpSteps for Block entry, callable publication,
+Closure creation/capture, class PDRCLASS/CCLINK publication, eligible class no-op
+and saved-frame allocation. Fixtures stop after required allocations.
+Initial non-invertible binding and suffix-length rule failures retain zero credit;
+only three affected equalities were corrected. The third-source timeout retains
+zero credit; only that case received a larger bound. Syntax prep/EL adds no runtime
+credit. Blocks after If, nested If, loops, nested factories and wider signatures,
+targets/captures/consumers remain required.
+[Block-branch ledger](coverage/semantics/anonymous-block-branch-rtd-review.json).
+
+The earlier conditional-Closure cut retains source3/state577 at 80a2707, its
+original peer type-elaboration failure0 and all original cuts. Historical Block-hosted
+If negatives are superseded only for the new source-authenticated host ancestry.
+Its 375 join over 4b13f151 passes strict3 at 7983239b (5.925s); independent review
+preserves the reached parentless class-link identity without private replay.
 [Conditional-Closure ledger](coverage/semantics/anonymous-conditional-closure-rtd-review.json).
 
 The earlier branch-function cut retains source4/state665 at d66d951a, selected
