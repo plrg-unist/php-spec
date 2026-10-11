@@ -23,6 +23,20 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Plain empty named declarations now publish from direct root or valid namespace-body
+variable assignments to static no-capture noarg by-value untyped Closures. Four
+originals agree at 0587228b /375 (strict3 5.725s): anonymous fullnames work before
+Closure creation, calls control named publication order, guarded repeats retain
+fresh defaults, and an unguarded second declaration fails before another allocation.
+Author and independent fixtures pass 539 checks: 498 setup/source-frontier premises
+and 41 pure queries, with 15 actual PhpSteps for Closure creation/capture,
+named publication, anonymous allocation and direct fatal redeclaration. Genuine
+Closure targets/templates, lexical namespaces, callsites and saved frames remain
+authenticated. The original public-status fixture error and before-main binding
+failure retain zero affected credit; syntax preparation/elaboration adds none.
+Other targets, placements, captures/signatures and wider RTD contexts remain required.
+[Named-Closure ledger](coverage/semantics/anonymous-named-closure-rtd-review.json).
+
+The earlier named-function cut publishes from direct root or valid namespace-body
 noarg by-value untyped named functions, including guarded repeated calls. They cost
 one RTD key even when never published; anonymous names remain available before calls.
 Three originals agree at 65c3071c /375 (strict3 5.675s). Author and independent fixtures
@@ -30,8 +44,8 @@ pass 388 checks: 356 setup/source-frontier premises and 32 pure queries, with te
 PhpSteps for three named publications and seven anonymous allocations. Source-bound
 PDRCLASS causes retain function/callsite and saved caller frames; right-before-left
 publication follows calls, while one guarded publication retains fresh defaults.
-Syntax preparation/elaboration adds zero runtime credit. Named Closure descendants,
-wider function placements/signatures and named/anonymous contexts remain required.
+Syntax preparation/elaboration adds zero runtime credit. Wider function
+placements/signatures and named/anonymous contexts remain required.
 Actual375 over 9ae5ca333 passes strict3 at 684ff104 (5.825s); private
 native/source/state cuts retain their original revisions.
 [Named-factory ledger](coverage/semantics/anonymous-named-factory-rtd-review.json).

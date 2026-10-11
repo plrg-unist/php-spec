@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named declarations inside direct root or valid namespace-body ordinary variable assignments to static no-capture noarg by-value untyped Closures beside ordinary parentless anonymous forms. Named descendants consume one RTD key even when never published; authentic Closure calls determine publication and fatal redeclaration. Other assignment targets/placements/signatures remain Unsupported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_named_closure_class_cases.json"
+  },
+  "semantic_revision": "0587228b0ce1eada9884a18ce5edcb0c9044eb4d",
+  "private_base": "7c8f8fec3a7ad94a30e02d15b41dec2c8c1bd740",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "Per-occurrence admission authenticates the exact expression statement, by-value assignment, ordinary named variable LHS and static/noattr/noarg/no-capture/by-value/untyped Closure signature at direct root or actual valid namespace body. Existing named-function arms, canonical traversal, whole source/CODE projection, qualified names/line/EARLY/prior/internal checks and RTD count remain unchanged. No new fields/tasks/modules/schema/adapter.",
+    "publication": "Existing REALCLOSURE creation/capture and ordinary Closure calls retain template/current/instance and saved caller frames. Existing class STMT activation appends source-owned PDRCLASS or fails on duplicate before another anonymous allocation.",
+    "boundary": "Namespace context alone does not authenticate a terminal path; the counter alone is not a complete zero-cost ordering certificate. Terminal constructor result receipts authenticate source/class while accepting older allocated same-class objects."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_closure, zend_compile_func_decl_ex, zend_compile_class_decl, zend_build_runtime_definition_key, zend_generate_anon_class_name",
+    "spec/semantics/115-closure-compiler.watsup, 116-closures.watsup and 182-closure-call.watsup: existing Closure template, capture and call protocol",
+    "spec/semantics/127-class-runtime.watsup, 190-declaration-publication.watsup and 196-declaration-causes.watsup: source-owned activation, call causes and duplicate fatal"
+  ],
+  "native": {
+    "revision": "7c8f8fec3a7ad94a30e02d15b41dec2c8c1bd740",
+    "reports": [
+      ".tools/anonymous-class-20/.tools/anonymous-named-closure-native-27/run-v1/report.json",
+      ".tools/anonymous-class-20/.tools/anonymous-named-closure-native-27/run-redeclare-v1/report.json"
+    ],
+    "originals": 4,
+    "normal": 3,
+    "fatal_redeclaration": 1,
+    "exit_statuses": [
+      0,
+      255
+    ]
+  },
+  "source": {
+    "revision": "0587228b0ce1eada9884a18ce5edcb0c9044eb4d",
+    "normal_report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-model-27/run-v1/report.json",
+    "fatal_retry_report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-model-27/run-redeclare-retry1/report.json",
+    "native_agreements": 4,
+    "normal": 3,
+    "php_error": 1,
+    "fatal_exit_status": 255
+  },
+  "strict": {
+    "revision": "0587228b0ce1eada9884a18ce5edcb0c9044eb4d",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-gate-27/report.json",
+    "premises": 3,
+    "seconds": 5.725131273269653
+  },
+  "state_revision": "0587228b0ce1eada9884a18ce5edcb0c9044eb4d",
+  "state_cuts": [
+    {
+      "group": "reversed",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-state-27/report-retry1.json",
+      "checks": 167,
+      "setup_source_frontier_checks": 158,
+      "pure_queries": 9,
+      "PhpSteps": 6,
+      "seconds": 24.252662181854248
+    },
+    {
+      "group": "repeated",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-state-27/report-retry1.json",
+      "checks": 129,
+      "setup_source_frontier_checks": 123,
+      "pure_queries": 6,
+      "PhpSteps": 3,
+      "seconds": 21.046067714691162
+    },
+    {
+      "group": "redeclare",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-state-27/report-retry1.json",
+      "checks": 93,
+      "setup_source_frontier_checks": 90,
+      "pure_queries": 3,
+      "PhpSteps": 3,
+      "seconds": 6.575170040130615
+    },
+    {
+      "group": "prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-peer-state-27/report.json",
+      "checks": 150,
+      "setup_source_frontier_checks": 127,
+      "pure_queries": 23,
+      "PhpSteps": 3,
+      "seconds": 26.79479193687439
+    }
+  ],
+  "state_totals": {
+    "checks": 539,
+    "setup_source_frontier_checks": 498,
+    "pure_queries": 41,
+    "PhpSteps": 15
+  },
+  "state_method": "Exact checked originals/file/cwd and installed projection/shared RTD counters. Two real Closure creation/capture steps occur after authentic dynamic anonymous allocations before Closure creation. Four real named STMT publications append exact registry/PDRCLASS causes in runtime call order while preserving genuine Closure target/template/instance, lexical namespace, callsite and saved caller frame/store. Eight actual anonymous allocations retain authenticated source/name receipts and fresh independent defaults. A guarded repeat preserves one publication after first-object mutation. One direct second-call fatal step preserves registry/history/object/allocation/current/frame state immediately and prevents another allocation/publication. Twenty-three independent placement/signature/target/prefix/receipt queries and eighteen author source/task/cause/qualification/receipt queries are explicitly pure; setup counts are not unique states or request-cleanup claims.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-named-closure-state-27/preparation.json",
+    "checked_originals": 4,
+    "frontend_adapter_workers": 8,
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-named-closure-state-27/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-named-closure-state-27/report-elab-retry1.json",
+      ".tools/anonymous-class-20/.tools/anonymous-named-closure-peer-state-27/report-elab.json"
+    ],
+    "runtime_credit": 0
+  },
+  "preserved_failures": [
+    {
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-model-27/run-v1/report.json",
+      "affected_case": "named-closure-redeclare",
+      "agreement_credit": 0,
+      "disposition": "Native stdout/stderr/exit255 already matched; only expected public status fatal was wrong. bin/php-semantics maps FATAL to php_error. Original cases-status-failure-v1.json and raw report remain; affected model1 passed after only status correction. Normal3 and strict/native were not replayed."
+    },
+    {
+      "report": ".tools/anonymous-class-20/.tools/anonymous-named-closure-state-27/report.json",
+      "affected_group": "reversed166",
+      "runtime_credit": 0,
+      "conditional_unrun": [
+        "repeated128",
+        "redeclare92"
+      ],
+      "disposition": "Before-main strict binding failure from fresh Closure template pattern inside a conjunction. Original386 fixtures/builder/plan/recorders retained in binding-failure-v1 with original raw/EL3. Only three initial binding premises split; author389 affected/unrun EL/SL passed, peer150 untouched."
+    }
+  ],
+  "validation": "Selected records bind exact originals/profile/file/cwd/raw streams and stable watched inputs. Native exits0 or255; model/strict/state tool exits and cleanup0, empty owned groups and no unrun on accepted cuts. Serial jobs1: native55s, model45s/55s host/100000 steps, syntax Worker30s, elab30s and strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Raw originals/evidence remain ignored outside Git; historical cuts/failures are preserved rather than replayed.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_named_closure_class_cases.json",
+    "cases": 4,
+    "runner": "tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_named_closure_class_cases.json",
+    "scope": "Metadata-only publication of unchanged originals adds no execution credit. Fatal stderr uses only the existing exact {FILE} template; native_raw_sha256 follows the command-record hash convention."
+  },
+  "remaining": [
+    "Wider named Closure targets/placements/signatures/captures and named-function placements/signatures; nonempty/modified/attributed/inherited named bodies, interfaces/traits/enums, RTD collisions/wrap and complete ordering.",
+    "Wider anonymous factory signatures/captures/class contexts, include/eval units, constructor arguments/types/access and broader consumers."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "independent_review": "comp_review_21 accepted exact383 and native4/source4/strict3, reviewed author389 and independent150 reached fixtures, and independently bound passing raw cuts. Fixture-status and before-main binding failures remain separate."
+}

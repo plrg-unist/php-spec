@@ -1,0 +1,64 @@
+{
+  "scope": "Exact unchanged native original file/cwd: plain empty named declarations in direct root or valid namespace-body variable assignments to static noarg/no-capture/by-value/untyped Closures. Actual reversed publication, guarded repeats, pre-Closure-creation anonymous fullnames, qualified prior deferred versus root early names, and second-call fatal redeclaration. Other Closure placements/signatures/targets remain excluded.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "named-closure-reversed",
+      "source": "<?php\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':8$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':12$3';\n$leftBefore = new $leftName; $rightBefore = new $rightName;\necho $leftBefore::class === $leftName && $leftBefore->scope() === $leftName && $rightBefore::class === $rightName ? 'before|' : 'BAD|';\n$leftFactory = static function () {\n    class LeftClosurePublished {}\n    return new class { public function scope() { return self::class; } };\n};\n$rightFactory = static function () {\n    class RightClosurePublished {}\n    return new class {};\n};\ntry { $missing = new LeftClosurePublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'left-missing|'; }\ntry { $missing = new RightClosurePublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'right-missing|'; }\n$right = $rightFactory();\n$rightNamed = new RightClosurePublished;\necho $right::class === $rightName && $rightNamed::class === 'RightClosurePublished' ? 'right|' : 'BAD|';\ntry { $missing = new LeftClosurePublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'still-missing|'; }\n$left = $leftFactory();\n$leftNamed = new LeftClosurePublished;\necho $left::class === $leftName && $left->scope() === $leftName && $leftNamed::class === 'LeftClosurePublished' ? 'left|' : 'BAD|';\necho $leftBefore !== $left && $rightBefore !== $right && $left !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "886638945b8b716d53becbc2dc4001e310eff6553dfa0d974008bd1a6146f2d0",
+      "stdout_base64": "YmVmb3JlfGxlZnQtbWlzc2luZ3xyaWdodC1taXNzaW5nfHJpZ2h0fHN0aWxsLW1pc3Npbmd8bGVmdHxmcmVzaA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-named-closure-native-27/run-v1/named-closure-reversed/command.json",
+      "native_raw_sha256": "b0854474e04e7998428c1e7dacf56a64ae9f70f6fefeecc193d0e3ec6a1e34a8"
+    },
+    {
+      "id": "named-closure-repeated",
+      "source": "<?php\nnamespace DeclaringClosure {\n    $seen = false;\n    $make = static function () {\n        global $seen;\n        if (!$seen) {\n            { class Published {} }\n            $seen = true;\n        }\n        return new class {\n            public $value = 0;\n            public function space() { return __NAMESPACE__; }\n        };\n    };\n}\nnamespace CallingClosure {\n    $name = 'class@anonymous' . \"\\0\" . __FILE__ . ':10$1';\n    $before = new $name;\n    echo $before::class === $name && $before->space() === 'DeclaringClosure' ? 'before|' : 'BAD|';\n    try { $missing = new \\DeclaringClosure\\Published; echo 'BAD|'; }\n    catch (\\Error $caught) { echo 'missing|'; }\n    $first = $make();\n    $published = new \\DeclaringClosure\\Published;\n    echo $first::class === $name && $first->space() === 'DeclaringClosure' && $published::class === 'DeclaringClosure\\\\Published' ? 'first|' : 'BAD|';\n    $first->value = 9;\n    $second = $make();\n    $namedAgain = new \\DeclaringClosure\\Published;\n    echo $second::class === $name && $second->space() === 'DeclaringClosure' && $namedAgain::class === $published::class ? 'second|' : 'BAD|';\n    echo $seen && $before !== $first && $first !== $second && $before !== $second ? 'fresh|' : 'BAD|';\n    echo $before->value, ':', $first->value, ':', $second->value;\n}\n",
+      "source_sha256": "431e278cd63b633b03b2d81bd4c7f65950225eda87870f2fd59308cde51beba9",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8c2Vjb25kfGZyZXNofDA6OTow",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-named-closure-native-27/run-v1/named-closure-repeated/command.json",
+      "native_raw_sha256": "878afd1b0ae9f578bba1af76971b9b7f98c0f9aa3fe7948b102c5190fcff353d"
+    },
+    {
+      "id": "named-closure-prior-deferred",
+      "source": "<?php\nnamespace ClosureSide;\n$factoryName = 'class@anonymous' . \"\\0\" . __FILE__ . ':8$1';\n$before = new $factoryName;\necho $before::class === $factoryName && $before->space() === 'ClosureSide' ? 'before|' : 'BAD|';\n$make = static function() {\n    if (false) { { class Exception {} } }\n    return new class {\n        public function space() { return __NAMESPACE__; }\n    };\n};\n{ class eXcEpTiOn {} }\n$named = new Exception;\necho $named::class === 'ClosureSide\\eXcEpTiOn' ? 'named|' : 'BAD|';\n\nnamespace CallerSide;\n$first = $make();\necho $first::class === $factoryName && $first->space() === 'ClosureSide' ? 'first|' : 'BAD|';\n$second = $make();\necho $second::class === $factoryName && $second->space() === 'ClosureSide' ? 'second|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$2';\necho $last::class === $lastName ? 'last|' : 'BAD|';\necho $before !== $first && $first !== $second && $before !== $second && $last !== $first ? 'fresh' : 'BAD';\n",
+      "source_sha256": "531a901ed2e9e203ed22555b2eda5bc4fdac7cc02af75e1c8fcda6966014c71a",
+      "stdout_base64": "YmVmb3JlfG5hbWVkfGZpcnN0fHNlY29uZHxsYXN0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-named-closure-native-27/run-v1/named-closure-prior-deferred/command.json",
+      "native_raw_sha256": "3bba438aa8443d34fb9db2e77a4d22e15802d3be3e8d1c3f796195f11ce13239"
+    },
+    {
+      "id": "named-closure-redeclare",
+      "source": "<?php\n$make = static function () {\n    class OnceClosure {}\n    return new class {};\n};\n$first = $make();\necho $first::class === \"class@anonymous\\0\" . __FILE__ . ':4$1' ? 'first|' : 'wrong|';\n$again = $make();\necho 'unreached';\n",
+      "source_sha256": "4339a7e4f8fc33975897c144290d7455309984890e6e82feaeacd429f7fc8aa8",
+      "stdout_base64": "Zmlyc3R8",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCByZWRlY2xhcmUgY2xhc3MgT25jZUNsb3N1cmUgKHByZXZpb3VzbHkgZGVjbGFyZWQgaW4ge0ZJTEV9OjMpIGluIHtGSUxFfSBvbiBsaW5lIDMKU3RhY2sgdHJhY2U6CiMwIHtGSUxFfSg4KToge2Nsb3N1cmU6e0ZJTEV9OjJ9KCkKIzEge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-named-closure-native-27/run-redeclare-v1/named-closure-redeclare/command.json",
+      "native_raw_sha256": "9b282c66ee934d978220d28a6938583e632ff6a9bbb2797b7dd6fa0106ec1739"
+    }
+  ]
+}

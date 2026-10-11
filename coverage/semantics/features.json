@@ -11778,7 +11778,8 @@
         "coverage/semantics/anonymous-block-rtd-review.json",
         "coverage/semantics/anonymous-namespace-rtd-review.json",
         "coverage/semantics/anonymous-unbracketed-rtd-review.json",
-        "coverage/semantics/anonymous-named-factory-rtd-review.json"
+        "coverage/semantics/anonymous-named-factory-rtd-review.json",
+        "coverage/semantics/anonymous-named-closure-rtd-review.json"
       ],
       "source_tests": [
         "tests/semantics/method_runtime.py",
@@ -11788,7 +11789,8 @@
         "tests/semantics/anonymous_block_class_cases.json",
         "tests/semantics/anonymous_namespace_class_cases.json",
         "tests/semantics/anonymous_unbracketed_class_cases.json",
-        "tests/semantics/anonymous_named_factory_class_cases.json"
+        "tests/semantics/anonymous_named_factory_class_cases.json",
+        "tests/semantics/anonymous_named_closure_class_cases.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_inheritance.c",
@@ -11802,9 +11804,10 @@
         "coverage/semantics/anonymous-block-rtd-review.json",
         "coverage/semantics/anonymous-namespace-rtd-review.json",
         "coverage/semantics/anonymous-unbracketed-rtd-review.json",
-        "coverage/semantics/anonymous-named-factory-rtd-review.json"
+        "coverage/semantics/anonymous-named-factory-rtd-review.json",
+        "coverage/semantics/anonymous-named-closure-rtd-review.json"
       ],
-      "review": "Ordinary unit0 parentless anonymous classes publish authenticated NUL/file/line/hex names before execution, allocate fresh instances on each visit and retain lexical method scope; traces keep full names with C-string display. Simple global noarg/by-value/untyped function and static no-capture Closure factories publish before calls using restored unit images. Public noarg by-value untyped constructors use ordinary allocation/frames/result/unwind: defaults precede effects, automatic new ignores return values, explicit calls observe them, and shared Throwable/finally plus escaped/nonescaped receiver cleanup remain ordinary. Plain empty named declarations may share the unit globally, in valid named namespace styles1/2, or inside direct root/namespace-body noarg by-value untyped named functions; ABSENT global namespaces require style2. Qualified eligible root/actual-block classes cost0, deferred classes cost1 even when never published, and anonymous sites cost1 in the shared compiler walk, including repeated namespace sections. Named-function runtime publication records the actual function/callsite cause and preserves saved caller frames; guarded repeat calls retain one publication and fresh defaults. Whole source/CODE projection and history retain compiler order; the counter alone does not certify zero-cost permutations, and namespace context alone does not certify a terminal path. Terminal constructor result receipts validate an allocated object of the authenticated source/class while accepting older same-class objects. Linked ledgers preserve original cuts, failures and separate pure/source-state controls;25 replaces the historical24 style1 exclusion. Named Closure descendants and wider function placement/signatures, factory contexts/captures/incomplete images, include/eval, parents/interfaces/attributes, broader members/RTD ordering and constructor arguments/types/nonpublic access remain required."
+      "review": "Ordinary unit0 parentless anonymous classes publish authenticated NUL/file/line/hex names before execution, allocate fresh instances on each visit and retain lexical method scope; traces keep full names with C-string display. Simple global noarg/by-value/untyped function and static no-capture Closure factories publish before calls using restored unit images. Public noarg by-value untyped constructors use ordinary allocation/frames/result/unwind: defaults precede effects, automatic new ignores return values, explicit calls observe them, and shared Throwable/finally plus escaped/nonescaped receiver cleanup remain ordinary. Plain empty named declarations may share the unit globally, in valid named namespace styles1/2, or inside direct root/namespace-body noarg by-value untyped named functions or direct root/namespace-body variable assignments to static no-capture noarg by-value untyped Closures; ABSENT global namespaces require style2. Qualified eligible root/actual-block classes cost0, deferred classes cost1 even when never published, and anonymous sites cost1 in the shared compiler walk, including repeated namespace sections. Runtime publication records the actual function or Closure/callsite cause and preserves authentic current/templates and saved caller frames; guarded repeats retain one publication and fresh defaults, while an unguarded second named declaration fails before another allocation. Exact statement/assignment/ordinary variable target and Closure signature admission keeps other named Closure placements excluded. Whole source/CODE projection and history retain compiler order; the counter alone does not certify zero-cost permutations, and namespace context alone does not certify a terminal path. Terminal constructor result receipts validate an allocated object of the authenticated source/class while accepting older same-class objects. Linked ledgers preserve original cuts, failures and separate pure/source-state controls;25 replaces the historical24 style1 exclusion. Wider named Closure targets/placements/signatures and function placement/signatures, factory contexts/captures/incomplete images, include/eval, parents/interfaces/attributes, broader members/RTD ordering and constructor arguments/types/nonpublic access remain required."
     },
     {
       "id": "classes.abstract",

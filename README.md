@@ -1251,7 +1251,12 @@ records 388 checks with ten actual steps for call-order publication, function/ca
 history, saved frames and guarded repeated fresh defaults.
 Actual375 over 9ae5ca333 passes strict3 at 684ff104 (5.825s); private
 native/source/state cuts retain their original revisions.
-Named Closure descendants, wider function placement/signatures and RTD/publication contexts,
+Direct root or namespace-body variable assignments to static no-capture noarg
+by-value untyped Closures also admit plain empty named declarations. Their
+[review](coverage/semantics/anonymous-named-closure-rtd-review.json) covers anonymous
+lookup before Closure creation, call-order publication, fresh repeated defaults
+and fatal redeclaration before another allocation.
+Wider Closure targets/placements/signatures, function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
 now allocates an owned empty object with exact nominal typing and ordinary
