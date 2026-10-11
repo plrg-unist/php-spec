@@ -1609,6 +1609,11 @@ preserve its slot. Incompatible getters fail at the child hook declaration.
 Three originals and separate CV, inherited `$this`, write, lifetime and rejection
 checks are recorded in the
 [backed-child covariance review](coverage/semantics/virtual-parent-backed-get-hook-covariance-review.json).
+Removing an inherited type from these own-backed children also fails at the
+getter declaration. The typed-child/untyped-parent direction retains the later
+class-line property error; both-untyped controls keep the child slot and writes.
+Three originals and separate rejection/read/write checks are recorded in the
+[cross-shape type-presence review](coverage/semantics/virtual-parent-backed-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

@@ -1049,6 +1049,17 @@ variance remain boundaries.
 Exact `e5f605aa` composition carries these cuts through unchanged hook/type/layout paths;
 the disjoint parent additions require no current actor.
 
+Closed virtual get-only parents now reject a genuine own-body-backed child
+removing the inherited type at hook line 6, before the property-type check.
+A typed child of an untyped parent retains the class-line error; both-untyped
+controls keep an empty Parent and one Child slot through private/inherited `$this`
+reads and write 300/getter 313. Strict375 and three originals pass at `03c2456e`,
+repairing one diagnostic and preserving two baseline controls. Separate remove48
+(26 reached, 22 derived), add26, CV69, This71 and write67 pass at `9573b369`
+(259 reached, 22 derived across five setups). The original AL fixture-domain stop
+stays zero credit; pure variance/layout/runtime and prior hook cuts stay unchanged.
+[Cross-shape type-presence review](coverage/semantics/virtual-parent-backed-get-hook-type-presence-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
