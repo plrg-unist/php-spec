@@ -195,9 +195,10 @@ images preserve escaped tables, callback allocations and bound class data.
 Deferred AST operands instead convert with live precision. `serialize_precision`,
 wider formatter consumers and Array eval/include warning ingress remain required.
 
-Backticks remain core syntax. Their command construction/dispatch is specified;
-a finite shell service supplies explicit response bytes/failure/effects. Missing
-service yields Unsupported. Implementing the process library is outside this
+Backticks remain core syntax. [Module389](SHELL-DISPATCH.md) constructs commands
+through ordinary interpolation, retains compile-time deprecation and builtin
+validation/trace behavior, and consumes finite pipe/output facts with explicit
+request environment and CWD. Missing service yields Unsupported. Implementing the process library is outside this
 boundary. Includes similarly need a source provider, not every filesystem stream.
 Fixture inputs/services must be reviewed, finite and shared by both executions.
 The [request fixture transport](REQUEST-INPUTS.md) supplies explicit clock and

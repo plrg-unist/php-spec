@@ -32,6 +32,11 @@ convert before path lookup and once checks. Failed-open warnings resume handlers
 with live path sampling, saved owners and zero-argument file traces; fatal cleanup
 preserves frozen output before shutdown callbacks.
 
+[Backticks](docs/semantics/SHELL-DISPATCH.md) now construct commands through
+ordinary interpolation, retain compiler deprecations and `shell_exec` errors and
+traces, and consume explicit finite pipe/output facts. Requests preserve raw
+environment order and current CWD; the semantic process never launches a shell.
+
 [Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
 now delay ordinary include/require registration through warning callbacks;
 the once forms register before compilation. Handler throws and graceful exit

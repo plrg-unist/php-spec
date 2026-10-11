@@ -1,0 +1,75 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "reviewer": "/root/core_breadth_review_01",
+  "decision": "accepted bounded private semantics; master interaction remains pending",
+  "base_revision": "2a5dcf424098344e9074caf7966c033e327c78c7",
+  "implementation": {
+    "spec/semantics/389-shell-dispatch.watsup": "1a0d590e0403e1ae6109e1bcc0e6d053737e08c6029c1b4dcb5e67a4349b9bcb",
+    "spec/semantics/30-storage.watsup": "2556a9f981cedef2298d707dd6da522254f961efe7d8314ddaf0da8ce2853470",
+    "spec/semantics/40-control.watsup": "041769b292469cd4e59dc976f5e7ad37363cea914720004c40f79039b9b5c575",
+    "spec/semantics/84-call-integrity.watsup": "38ce7e4364bf2800f418dfe6b96f95ba1067688f368a861237c4916dce5ce4d2",
+    "adapter/main.ml": "81e2b33db5b9d6b2898f30906941da5d8ff05bd5c2a6c224df65e1008bcb08f0",
+    "bin/php-semantics": "8cc55a3a4a7b7fb762a30e3758e8664e88717386af52ee43da2f79add6de3696",
+    "spec/semantics/modules.json": "750ecad39422db9532944ef9b5476718ea86115471e1885a1935331eb1307055"
+  },
+  "runtime": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    ".tools/request-clock.so": "c087e402a692db4da64a21aade7a0487b8d74e36a6b5bb01c4745e810e5e6064",
+    "_build/default/adapter/main.exe": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7"
+  },
+  "scope": [
+    "compile-time E_DEPRECATED and root shell_exec selection",
+    "existing interpolation conversion/callback/throw behavior",
+    "empty/NUL validation before service and real builtin traces",
+    "authenticated finite command/CWD/raw environment/nonce/frame/tail requests",
+    "opened stdout string/null, raw stderr, failed-open warning then false/abrupt callback",
+    "fresh string identity, exact byte results, response corruption/replay and budget controls"
+  ],
+  "author_evidence": {
+    "ledger": "coverage/semantics/shell-dispatch-author.json",
+    "source_cases": 20,
+    "source_cuts": "18 unchanged original records + 2 affected post-fix handlers; no whole failed-campaign pass",
+    "compatibility": "Only389 eligible OPEN_FAILED-handler S_ready changed. Restoring its removed TODO-tail update reproduces the prior389 SHA exactly. Initial18 do not enter that branch.",
+    "state_groups": 11,
+    "SL_premises": 823,
+    "state_report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/state-all-01/report.json",
+    "state_report_sha256": "7bc9319e926af8154123849c353ba2ae9c08efa49beb10c36b659d74c9095588"
+  },
+  "independent_source_cut": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-01/independent-01/report.json",
+    "sha256": "e54ef4f55ca0caf39d6a25861c5b21f1df77ab3e1525f6bb4115e395bb8cd178",
+    "accepted_record_ids": [
+      "empty-cv-independent",
+      "pipe-failure-independent-nested",
+      "pipe-failure-independent-suppressed",
+      "cwd-after-stringable"
+    ],
+    "native_agreements": 4,
+    "whole_campaign_pass": false,
+    "whole_campaign_credit": 0,
+    "failure": "First Unsupported control incorrectly expected CLI exit0. Actual exit1 and emitted prefixes were correct; original raw failure retained.",
+    "commands": "independent.py <private-project> <external>/independent-01; fixed printf commands and child RLIMIT_NOFILE4 for pipe failure; explicit native clock/environment provider"
+  },
+  "independent_controls": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-review-01/controls-02/report.json",
+    "sha256": "86140b2cf3bca62129c009304393b3e021c224e8d3bef48e13751bdca5126a26",
+    "ids": [
+      "absent-facts",
+      "command-mismatch",
+      "env-mismatch"
+    ],
+    "passed": 3,
+    "native_agreements": 0,
+    "assertions": "Unsupported CLI exit1 with exact existing stdout prefix and compiler diagnostic for absent facts, command mismatch and raw environment mismatch",
+    "command": "independent.py <private-project> <external>/controls-02 --select absent-facts,command-mismatch,env-mismatch"
+  },
+  "review_findings": "No unresolved semantic counterexample in the admitted scope. Generator bindings and malformed-byte syntax were corrected before state acceptance; original failures retain zero credit. Numeric actors were serial and reaped.",
+  "limits": [
+    "finite reviewed pipe/output effects only; persistent/asynchronous process effects remain excluded",
+    "ordinary process-library calls and disabled/replaced root builtin configuration remain unsupported",
+    "no full-core equivalence, full obligation closure or portability claim"
+  ],
+  "raw_recovery": "Original sources, request/snapshot bytes, commands, native/model stdout/stderr/exits and reports are in the external roots above. The external independent.py is the review harness; its one-line control exit correction is recorded in the failed and corrected cuts. No external artifact is a production build dependency.",
+  "integration": null
+}

@@ -7,6 +7,17 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Backtick command construction and finite shell dispatch are implemented in389.
+Compiler deprecation, root-builtin lookup, Stringable/array/undefined interpolation,
+empty/NUL errors with builtin traces, exact byte/null results and real pipe-failure
+handlers are covered. Shell requests authenticate source, nonce, converted command,
+post-interpolation CWD and ordered raw environment; missing/forged/replayed facts
+remain Unsupported. Author20 source cases retain separate18+2 cuts and original
+warning-dispatch failure0; SL11 groups/823 premises pass. Independent4 source
+interactions and3 Unsupported controls are accepted at their separate cuts. [Contract](docs/semantics/SHELL-DISPATCH.md),
+[author evidence](coverage/semantics/shell-dispatch-author.json),
+[independent review](coverage/semantics/shell-dispatch-review.json).
+
 Eval/file top-level static tables now retire before body exceptions cross to
 caller catch. Pending Throwables remain rooted through real destructor operations;
 replacement exceptions retain Previous, and normal-end destructor throws still

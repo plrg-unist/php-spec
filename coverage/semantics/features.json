@@ -3312,13 +3312,21 @@
       "status": "partial",
       "implementation": [
         "spec/semantics/20-machine.watsup",
-        "spec/semantics/45-constant-context.watsup"
+        "spec/semantics/45-constant-context.watsup",
+        "spec/semantics/389-shell-dispatch.watsup",
+        "spec/semantics/251-string-interpolation.watsup",
+        "adapter/main.ml",
+        "bin/php-semantics"
       ],
       "source_tests": [
         "tests/semantics/array_omissions.py",
-        "tests/semantics/validate.py"
+        "tests/semantics/validate.py",
+        "tests/semantics/shell_sources.py",
+        "tests/semantics/shell_state.py",
+        "coverage/semantics/shell-dispatch-author.json",
+        "coverage/semantics/shell-dispatch-review.json"
       ],
-      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. This does not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json."
+      "review": "Bounded ordinary-array constant prepass: explicit Zend barriers/traversals, selected coalesce redirects, parser-literal concat facts or eligible pure casts;262 exact source/lint cases and independent source/context/rebase gates pass the frozen prerequisite. That historical prepass alone did not admit ordinary execution of this constructor. Constant class lookup/named ::class and broader source contexts remain explicit pending obligations; no family closure or refreshed full source campaign is claimed. Accepted9b82507a/reports22b36687; see array-omission-review.json. Module389 now implements backtick interpolation, compile-time deprecation, root builtin validation/traces and explicit finite shell services. Author20 selected cases retain separate18+2 cuts; SL11 groups/823 reached premises pass. Independent review accepts4 further exact interactions and3 Unsupported controls at their separate cuts; wider startup/process providers remain partial."
     },
     {
       "node": "Expr_StaticCall",
@@ -16392,15 +16400,27 @@
     {
       "id": "dynamic.shell-dispatch",
       "milestone": "5a",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_execute.c"
+      "implementation": [
+        "spec/semantics/389-shell-dispatch.watsup",
+        "spec/semantics/251-string-interpolation.watsup",
+        "adapter/main.ml",
+        "bin/php-semantics"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/shell_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/shell_sources.py",
+        "coverage/semantics/shell-dispatch-author.json",
+        "coverage/semantics/shell-dispatch-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c::zend_compile_shell_exec",
+        "vendor/php-src/ext/standard/exec.c::PHP_FUNCTION(shell_exec)"
+      ],
+      "review": "Module389 implements the finite shell boundary in docs/semantics/SHELL-DISPATCH.md. Author20 distinct source cases retain18 initial agreements plus2 affected post-fix warning-handler agreements; original failure0. SL11 groups/823 genuine-source premises pass. Independent review accepts4 further exact interactions and3 Unsupported controls at their separate cuts; see shell-dispatch-review.json. Nonempty requests need explicit current CWD and ordered raw process environment; missing/forged/replayed responses Unsupported. Wider providers/startup and ordinary process-library operations remain outside this admitted boundary."
     },
     {
       "id": "resumable.generator-creation",
@@ -18303,15 +18323,27 @@
     {
       "id": "environment.shell-provider",
       "milestone": "5a-5b",
-      "status": "pending",
+      "status": "partial",
       "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/main/main.c"
+      "implementation": [
+        "spec/semantics/389-shell-dispatch.watsup",
+        "spec/semantics/251-string-interpolation.watsup",
+        "adapter/main.ml",
+        "bin/php-semantics"
       ],
-      "review": null
+      "helper_tests": [
+        "tests/semantics/shell_state.py"
+      ],
+      "source_tests": [
+        "tests/semantics/shell_sources.py",
+        "coverage/semantics/shell-dispatch-author.json",
+        "coverage/semantics/shell-dispatch-review.json"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_compile.c::zend_compile_shell_exec",
+        "vendor/php-src/ext/standard/exec.c::PHP_FUNCTION(shell_exec)"
+      ],
+      "review": "Module389 implements the finite shell boundary in docs/semantics/SHELL-DISPATCH.md. Author20 distinct source cases retain18 initial agreements plus2 affected post-fix warning-handler agreements; original failure0. SL11 groups/823 genuine-source premises pass. Independent review accepts4 further exact interactions and3 Unsupported controls at their separate cuts; see shell-dispatch-review.json. Nonempty requests need explicit current CWD and ordered raw process environment; missing/forged/replayed responses Unsupported. Wider providers/startup and ordinary process-library operations remain outside this admitted boundary."
     },
     {
       "id": "environment.config",
