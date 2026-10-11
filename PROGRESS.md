@@ -18,6 +18,9 @@ recorder and broad-seek fixture failures retain zero failed-group credit.
 Graceful-exit retirement, hard-fatal shutdown roots and wider destructor/return
 interactions remain required; full core stays partial.
 [Source-static throw ledger](coverage/semantics/source-static-throw-review.json).
+The 378 composition over acaee66fa passes one exact destructor-override source
+and 116 public/pending-root premises at 6d568f59c. Earlier source/state cuts
+retain their original revisions.
 
 Top-level eval/file statics now stay separate from a real Closure caller's
 instance table. Each source unit retains its cached cell, later units allocate
