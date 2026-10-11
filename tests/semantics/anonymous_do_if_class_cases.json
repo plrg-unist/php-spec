@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables in If/elseif/else branches beneath authenticated Do ancestry and existing body-Block chains. Actual Do/If/Block nodes, branch wrappers, terminal presence and complete factory guards remain mandatory. Existing authenticated If/While/Do ancestry can compose around the new If path, including Do\u2192If\u2192While; direct While beneath Do remains Unsupported. Originals distinguish pre-publication anonymous names, selected then/elseif/else behavior, reverse named-class publication, retained Closure receivers from one template, lexical namespace, fresh defaults and qualified prior-deferred versus case-spelled EARLY ownership. Wider loops, targets/signatures/captures and nested factories remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "do-if-reversed",
+      "source": "<?php\n$selected = true; $leftCondition = false; $rightCondition = false; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':28$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeDoIfLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\ndo {\n    {\n        if ($selected) {\n            {\n                function makeDoIfLeft() {\n                    class DoIfLeftPublished {}\n                    return new class { public function kind() { return 'left'; } };\n                }\n            }\n        }\n    }\n} while ($leftCondition);\n{\n    do {\n        if (false) {\n            echo 'BAD|';\n        } elseif ($selected) {\n            {\n                $rightFactory = static function () {\n                    class DoIfRightPublished {}\n                    return new class { public function kind() { return 'right'; } };\n                };\n            }\n        } else {\n            echo 'BAD|';\n        }\n    } while ($rightCondition);\n}\n$right = $rightFactory(); $rightNamed = new DoIfRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'DoIfRightPublished' ? 'right|' : 'BAD|';\ntry { new DoIfLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeDoIfLeft(); $leftNamed = new DoIfLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'DoIfLeftPublished' ? 'left|' : 'BAD|';\necho !$leftCondition && !$rightCondition && $selected && $before !== $left && $rightBefore !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "7d1f34b8f30b035689c80c843e10cfa9653e5ac01edc6bf9529a258a80727463",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-do-if-46/.tools/anonymous-do-if-native-46/run-v1/do-if-reversed/command.json",
+      "native_raw_sha256": "41149ffbbf44fd950e3e9287e82f4c31640ed2940b8dd249710d8d385b47915c"
+    },
+    {
+      "id": "do-if-repeated",
+      "source": "<?php\nnamespace RepeatDoIfSide;\n$i = 0; $seen = false; $make = null; $previous = null;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':19$1';\n$before = new $name;\necho $before::class === $name && $before->value === 0 && $make === null && $previous === null ? 'before|' : 'BAD|';\ndo {\n    {\n        if (false) {\n            echo 'BAD|';\n        } elseif (false) {\n            echo 'BAD|';\n        } else {\n            {\n                $previous = $make;\n                $make = static function () {\n                    global $seen;\n                    if (!$seen) { $seen = true; class Published {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                };\n            }\n        }\n    }\n    $i = $i + 1;\n} while ($i < 2);\necho $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatDoIfCaller;\n$first = $previous(); $named = new \\RepeatDoIfSide\\Published;\necho $first::class === $name && $first->space() === 'RepeatDoIfSide' && $named::class === 'RepeatDoIfSide\\\\Published' ? 'first|' : 'BAD|';\n$first->value = 9; $second = $make();\necho $second::class === $name && $second->space() === 'RepeatDoIfSide' && $second->value === 0 ? 'second|' : 'BAD|';\necho $seen && $before !== $first && $first !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "1db1d5f25a29f63b59eed011b526930ce6687202c5189e0889b94c41400ff685",
+      "stdout_base64": "YmVmb3JlfHRlbXBsYXRlc3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-do-if-46/.tools/anonymous-do-if-native-46/run-v1/do-if-repeated/command.json",
+      "native_raw_sha256": "ad77f814f35fc83ce71a94c018d3b874aa5b8ac7741c24ea33991c3f1ce28ef2"
+    },
+    {
+      "id": "do-if-prior-deferred",
+      "source": "<?php\nnamespace DoIfSelectedSide {\n    $selected = true; $visit = true;\n    $qualified = __NAMESPACE__ . '\\\\Exception';\n    $name = 'class@anonymous' . \"\\0\" . __FILE__ . ':19$2';\n    $outside = 'class@anonymous' . \"\\0\" . __FILE__ . ':32$3';\n    $before = new $name; $root = new $qualified;\n    echo $before::class === $name && $before->value === 0 && $root::class === __NAMESPACE__ . '\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\n    try { makeDoIfSelected(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\n    do {\n        {\n            if (false) {\n                function skippedDoIfFactory() { class HiddenDoIf {} }\n            } elseif ($selected) {\n                while ($visit) {\n                    {\n                        function makeDoIfSelected() {\n                            if (false) { class Exception {} }\n                            return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                        }\n                    }\n                    $visit = false;\n                }\n            } else { $selected = false; }\n        }\n    } while (false);\n    class eXcEpTiOn {}\n    $first = makeDoIfSelected();\n    echo $first::class === $name && $first->value === 0 && $first->space() === __NAMESPACE__ ? 'first|' : 'BAD|';\n    $first->value = 9; $second = makeDoIfSelected();\n    echo $first !== $second && $second->value === 0 && $first->value === 9 && !$visit && $selected ? 'fresh|' : 'BAD|';\n    $last = new class {};\n    echo $last::class === $outside ? 'last|' : 'BAD|';\n    try { skippedDoIfFactory(); echo 'BAD'; } catch (\\Error $caught) { echo 'skipped'; }\n}\n",
+      "source_sha256": "784def91efe34461a0346224b3781232fbb5e8c57b4f340023b98249469b195f",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8ZnJlc2h8bGFzdHxza2lwcGVk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-do-if-46/.tools/anonymous-do-if-native-46/run-v1/do-if-prior-deferred/command.json",
+      "native_raw_sha256": "91bcbbe68f48498beb977f5d58cf29d3a11c4a166d0dc318ff47a60a72ec0739"
+    }
+  ]
+}

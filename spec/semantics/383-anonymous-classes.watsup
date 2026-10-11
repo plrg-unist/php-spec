@@ -96,7 +96,7 @@ def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous
 def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
 def $anonymous_unit_node(pcnode) = true -- if ~$anonymous_class_like(pcnode) /\ ~$anonymous_named_scope(pcnode)
-;; Exact named factories admit authenticated If/While/Block paths and If/While-hosted or nested Do bodies.
+;; Exact named factories admit authenticated If/While/Block paths and Do ancestry before If or Do bodies.
 dec $anonymous_named_factory_node(pcnode) : bool
 def $anonymous_named_factory_node(NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = $ptvalidname($base64(text), false)
 def $anonymous_named_factory_node(pcnode) = false -- otherwise
@@ -105,19 +105,20 @@ def $anonymous_named_closure_statement(NStmtExpression (NExprAssign (NExprVariab
 def $anonymous_named_closure_statement(pcnode) = false -- otherwise
 dec $anonymous_top_path(pcunit, pcpath) : bool
 dec $anonymous_while_factory_path(pcunit, pcpath) : bool
+dec $anonymous_do_factory_path(pcunit, pcpath) : bool
 dec $anonymous_conditional_factory_path(pcunit, pcpath) : bool
 def $anonymous_conditional_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 3)
   -- if pcpath_if = pcpath[0:$nabs($(|pcpath| - 2))]
   -- if pcpath[$nabs($(|pcpath| - 2)):2] = [(PCFIELD 1),(PCINDEX n_factory)]
-  -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if)
+  -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if) \/ $anonymous_do_factory_path(pcunit, pcpath_if)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
 def $anonymous_conditional_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 5)
   -- if pcpath_if = pcpath[0:$nabs($(|pcpath| - 4))]
   -- if pcpath[$nabs($(|pcpath| - 4)):4] = [(PCFIELD 2),(PCINDEX n_elseif),(PCFIELD 1),(PCINDEX n_factory)]
-  -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if)
+  -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if) \/ $anonymous_do_factory_path(pcunit, pcpath_if)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
   -- if $origin_node([pcunit], PORIGIN 0 (pcpath_if ++ [(PCFIELD 2),(PCINDEX n_elseif)])) = (NStmtElseIf expression_branch phpType23_branch metadata_branch)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
@@ -125,7 +126,7 @@ def $anonymous_conditional_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 4)
   -- if pcpath_if = pcpath[0:$nabs($(|pcpath| - 3))]
   -- if pcpath[$nabs($(|pcpath| - 3)):3] = [(PCFIELD 3),(PCFIELD 0),(PCINDEX n_factory)]
-  -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if)
+  -- if $anonymous_top_path(pcunit, pcpath_if) \/ $anonymous_conditional_factory_path(pcunit, pcpath_if) \/ $anonymous_while_factory_path(pcunit, pcpath_if) \/ $anonymous_do_factory_path(pcunit, pcpath_if)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath_if) = (NStmtIf expression phpType23 phpType53 phpType55 metadata)
   -- if $origin_node([pcunit], PORIGIN 0 (pcpath_if ++ [(PCFIELD 3)])) = (NStmtElse phpType23_branch metadata_branch)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
@@ -152,7 +153,6 @@ def $anonymous_while_factory_path(pcunit, pcpath) = true
   -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
   -- if $anonymous_while_factory_path(pcunit, pcpath_parent)
 def $anonymous_while_factory_path(pcunit, pcpath) = false -- otherwise
-dec $anonymous_do_factory_path(pcunit, pcpath) : bool
 def $anonymous_do_factory_path(pcunit, pcpath) = true
   -- if $(|pcpath| >= 3)
   -- if pcpath_do = pcpath[0:$nabs($(|pcpath| - 2))]
