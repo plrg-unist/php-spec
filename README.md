@@ -305,6 +305,10 @@ and array values, with [independent evidence](coverage/semantics/comparison-revi
 [Prefix/postfix increment and decrement](docs/semantics/UPDATES.md) execute for
 current scalar/array locations, preserving copied results and diagnostic order;
 [independent review](coverage/semantics/incdec-review.json) records the source and resumption gates.
+[Direct-CV warning callbacks](coverage/semantics/incdec-warning-review.json) now
+restore captured bool/null values even after a handler throws; strings restore
+only after normal handling. Aliases, fresh handlers and copied results are checked.
+Restoration destructors, late type sources and handler exit remain explicit obligations.
 All twelve [compound assignments](docs/semantics/UPDATES.md) preserve captured
 targets, delayed reads and alias ownership; [independent evidence](coverage/semantics/compound-review.json)
 records 2,639 exact source comparisons and the corrected diagnostic phases.

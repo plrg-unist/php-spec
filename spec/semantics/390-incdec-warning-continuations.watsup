@@ -1,0 +1,219 @@
+;; increment_function/decrement_function borrow the selected zval. Bool/null
+;; restoration precedes the exception check; strings restore only on success.
+;; A handler-created CV reference is destroyed, not followed for restoration.
+syntax pupdatepointer = UPDATE_CV ptbytes | UPDATE_CELL nat
+syntax pupdatewarning = { SITE porigin, OP pupdate, POST bool, NAME ptbytes, LINE int, POINTER pupdatepointer, INPUT pvalue, PENDING nat? }
+
+dec $update_warning_kind(pcnode) : (pupdate, bool)?
+def $update_warning_kind(NExprPreInc expression metadata) = ((INCREMENT, false))
+def $update_warning_kind(NExprPostInc expression metadata) = ((INCREMENT, true))
+def $update_warning_kind(NExprPreDec expression metadata) = ((DECREMENT, false))
+def $update_warning_kind(NExprPostDec expression metadata) = ((DECREMENT, true))
+def $update_warning_kind(pcnode) = eps -- otherwise
+
+dec $update_warning_notice(pupdate, pvalue) : (int, ptbytes)?
+def $update_warning_notice(pupdate, PBOOL b) = ((2, $update_verb(pupdate) ++ $ptascii(" on type bool has no effect, this will change in the next major version of PHP")))
+def $update_warning_notice(DECREMENT, PNULL) = ((2, $update_verb(DECREMENT) ++ $ptascii(" on type null has no effect, this will change in the next major version of PHP")))
+def $update_warning_notice(pupdate, PSTRING_CARRIER pstringidentity n*) = $update_warning_notice(pupdate, PSTRING n*)
+def $update_warning_notice(pupdate, PSTRING n*) = ((8192, $update_notice(stringupdatenotice)))
+  -- if $update_string(pupdate, n*) = (stringupdate, [stringupdatenotice])
+def $update_warning_notice(pupdate, pvalue) = eps -- otherwise
+dec $update_warning_after(pupdate, pvalue) : pvalue?
+def $update_warning_after(pupdate, PBOOL b) = (PBOOL b)
+def $update_warning_after(DECREMENT, PNULL) = (PNULL)
+def $update_warning_after(pupdate, PSTRING_CARRIER pstringidentity n*) = $update_warning_after(pupdate, PSTRING n*)
+def $update_warning_after(pupdate, PSTRING n*) = ($update_string_value(stringupdate))
+  -- if $update_string(pupdate, n*) = (stringupdate, [stringupdatenotice])
+def $update_warning_after(pupdate, pvalue) = eps -- otherwise
+dec $update_warning_restores_throw(pvalue) : bool
+def $update_warning_restores_throw(PBOOL b) = true
+def $update_warning_restores_throw(PNULL) = true
+def $update_warning_restores_throw(pvalue) = false -- otherwise
+
+dec $update_warning_source(pstate, pupdatewarning) : bool
+def $update_warning_source(S, pupdatewarning) = true
+  -- if S.ORIGIN = (pupdatewarning.SITE)
+  -- if $origin_node(S.SOURCES, pupdatewarning.SITE) = (pcnode)
+  -- if $update_warning_kind(pcnode) = ((pupdatewarning.OP, pupdatewarning.POST))
+  -- if $error_variable_source(S, (pupdatewarning.SITE), [PCFIELD 0], pupdatewarning.NAME)
+  -- if $code_expression_at_source(S, pupdatewarning.SITE, eps) = (pupdatewarning.LINE)
+def $update_warning_source(S, pupdatewarning) = false -- otherwise
+dec $update_warning_pointer_source(pstate, pupdatewarning) : bool
+def $update_warning_pointer_source(S, pupdatewarning) = true
+  -- if pupdatewarning.POINTER = UPDATE_CV pupdatewarning.NAME
+def $update_warning_pointer_source(S, pupdatewarning) = true
+  -- if pupdatewarning.POINTER = UPDATE_CELL n
+  -- if $(n < |S.STORE|)
+def $update_warning_pointer_source(S, pupdatewarning) = false -- otherwise
+dec $update_warning_valid(pstate, pupdatewarning) : bool
+def $update_warning_valid(S, pupdatewarning) = ($update_warning_source(S, pupdatewarning) /\ $update_warning_pointer_source(S, pupdatewarning) /\ $update_warning_notice(pupdatewarning.OP, pupdatewarning.INPUT) =/= eps /\ $update_warning_after(pupdatewarning.OP, pupdatewarning.INPUT) =/= eps /\ $destructor_pending_valid(S, pupdatewarning.PENDING))
+
+dec $update_warning_select(pstate, ptbytes) : pupdatepointer?
+def $update_warning_select(S, ptbytes) = (UPDATE_CELL n)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if n <- S.REFCELLS
+  -- if $propref_at(S.PROPREFS, n) = eps
+def $update_warning_select(S, ptbytes) = (UPDATE_CV ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if ~(n <- S.REFCELLS)
+def $update_warning_select(S, ptbytes) = eps -- otherwise
+dec $update_warning_pointer_value(pstate, pupdatepointer) : pslot?
+def $update_warning_pointer_value(S, UPDATE_CV ptbytes) = (S.STORE[n])
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if $(n < |S.STORE|)
+def $update_warning_pointer_value(S, UPDATE_CV ptbytes) = (UNDEFINED)
+  -- if ~$environment_blocked(S, ptbytes)
+  -- if $lookup(S.ENV, ptbytes) = eps
+def $update_warning_pointer_value(S, UPDATE_CELL n) = (S.STORE[n])
+  -- if $(n < |S.STORE|)
+  -- if n <- S.REFCELLS
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $($heap_owners($heap_prune($heap_graph(S)), HCELL n) > 0)
+def $update_warning_pointer_value(S, pupdatepointer) = eps -- otherwise
+dec $update_warning_plan(pstate) : pupdatewarning?
+def $update_warning_plan(S) = (pupdatewarning)
+  -- if S.TODO = (UPDATE_PREP pupdate b_post z) :: ptask_tail*
+  -- if ~$key_write_pending(S)
+  -- if S.BASE = BASE_VALUE (VARIABLE ptbytes z_name)
+  -- if S.ORIGIN = (porigin)
+  -- if $update_warning_select(S, ptbytes) = (pupdatepointer)
+  -- if $update_warning_pointer_value(S, pupdatepointer) = (DEFINED pvalue)
+  -- if $update_warning_notice(pupdate, pvalue) = ((i, ptbytes_message))
+  -- if $error_handler_eligible(S, i)
+  -- if pupdatewarning = {SITE porigin, OP pupdate, POST b_post, NAME ptbytes, LINE z, POINTER pupdatepointer, INPUT pvalue, PENDING eps}
+  -- if $update_warning_valid(S, pupdatewarning)
+def $update_warning_plan(S) = eps -- otherwise
+def $update_warning_pending(S) = ($update_warning_plan(S) =/= eps)
+
+;; Releasing a callback-owned object (also inside an array/reference) can call
+;; its destructor before the captured scalar is stored. That continuation is
+;; still required; this cut does not silently write first and prune afterward.
+dec $update_warning_no_objects(pnode*) : bool
+def $update_warning_no_objects(eps) = true
+def $update_warning_no_objects((HOBJECT n) :: pnode*) = false
+def $update_warning_no_objects((HCELL n) :: pnode*) = $update_warning_no_objects(pnode*)
+def $update_warning_no_objects((HARRAY n) :: pnode*) = $update_warning_no_objects(pnode*)
+dec $update_warning_release_safe(pstate, pslot) : bool
+def $update_warning_release_safe(S, UNDEFINED) = true
+def $update_warning_release_safe(S, DEFINED pvalue) = $update_warning_no_objects($heap_reach($value_nodes(pvalue), eps, $allocation_edges(S, S.ALLOCATIONS)))
+def $update_warning_release_safe(S, pslot) = false -- otherwise
+dec $update_warning_store(pstate, pupdatepointer, pvalue) : pstate
+def $update_warning_store(S, UPDATE_CELL n, pvalue) = $reference_coercion_store(S, n, DEFINED pvalue)
+def $update_warning_store(S, UPDATE_CV ptbytes, pvalue) = $reference_coercion_store(S, n, DEFINED pvalue)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if ~(n <- S.REFCELLS)
+def $update_warning_store(S, UPDATE_CV ptbytes, pvalue) = $reference_coercion_store(S_new, S_new.CELL, DEFINED pvalue)
+  -- if $lookup(S.ENV, ptbytes) = (n)
+  -- if n <- S.REFCELLS
+  -- if S_new = $ensure($unset_name(S, ptbytes), ptbytes)
+def $update_warning_store(S, UPDATE_CV ptbytes, pvalue) = $reference_coercion_store(S_new, S_new.CELL, DEFINED pvalue)
+  -- if $lookup(S.ENV, ptbytes) = eps
+  -- if S_new = $ensure(S, ptbytes)
+
+rule PhpStep/update-warning-begin: S ~> S[.TODO = (UPDATE_WARNING_NOTICE pupdatewarning) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (UPDATE_PREP pupdate b_post z) :: ptask_tail*
+  -- if $update_warning_plan(S) = (pupdatewarning)
+rule PhpStep/update-warning-notice: S ~> $error_dispatch(S, i, ptbytes_message, pupdatewarning.LINE, DIAGNOSTIC $integer_notice_name(i) ptbytes_message pupdatewarning.LINE, UPDATE_WARNING_RESTORE pupdatewarning)
+  -- if S.TODO = (UPDATE_WARNING_NOTICE pupdatewarning) :: ptask_tail*
+  -- if $call_task_valid(S, UPDATE_WARNING_NOTICE pupdatewarning)
+  -- if $update_warning_notice(pupdatewarning.OP, pupdatewarning.INPUT) = ((i, ptbytes_message))
+rule PhpStep/update-warning-expired: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement restoration target is expired or constrained"]
+  -- if S.TODO = (UPDATE_WARNING_RESTORE pupdatewarning) :: ptask_tail*
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = eps
+rule PhpStep/update-warning-object-boundary: S ~> S[.COMPLETION = UNSUPPORTED "increment/decrement restoration requires destructor-before-commit continuation"]
+  -- if S.TODO = (UPDATE_WARNING_RESTORE pupdatewarning) :: ptask_tail*
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
+  -- if ~$update_warning_release_safe(S, pslot)
+rule PhpStep/update-warning-restore: S ~> S_written[.TODO = (UPDATE_WARNING_DONE pupdatewarning) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (UPDATE_WARNING_RESTORE pupdatewarning) :: ptask_tail*
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (pslot)
+  -- if $update_warning_release_safe(S, pslot)
+  -- if $update_warning_after(pupdatewarning.OP, pupdatewarning.INPUT) = (pvalue)
+  -- if S_written = $update_warning_store(S, pupdatewarning.POINTER, pvalue)
+rule PhpStep/update-warning-post-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pupdatewarning.INPUT]
+  -- if S.TODO = (UPDATE_WARNING_DONE pupdatewarning) :: ptask_tail*
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if pupdatewarning.PENDING = eps
+  -- if pupdatewarning.POST
+rule PhpStep/update-warning-pre-result: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue]
+  -- if S.TODO = (UPDATE_WARNING_DONE pupdatewarning) :: ptask_tail*
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if pupdatewarning.PENDING = eps
+  -- if ~pupdatewarning.POST
+  -- if $update_warning_after(pupdatewarning.OP, pupdatewarning.INPUT) = (pvalue)
+rule PhpStep/update-warning-resume-throw: S ~> S[.TODO = (THROW_SEARCH n) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (UPDATE_WARNING_DONE pupdatewarning) :: ptask_tail*
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if pupdatewarning.PENDING = (n)
+
+;; Bool/null restoration runs after handler unwinding, retaining the supplied
+;; Throwable once. Borrowed CV/cell pointers and captured scalars add no owner.
+def $error_read_discard(S, UPDATE_WARNING_RESTORE pupdatewarning) = S[.TODO = (UPDATE_WARNING_RESTORE pupdatewarning[.PENDING = (n)]) :: ptask_tail*]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n) :: ptask_tail*
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if pupdatewarning.PENDING = eps
+  -- if $update_warning_restores_throw(pupdatewarning.INPUT)
+
+;; UnwindExit also returns through increment_function/decrement_function. The
+;; generic exit path drops producers, so stop while their authority is present.
+dec $update_warning_exit_marker(ptask) : bool
+def $update_warning_exit_marker(UPDATE_WARNING_NOTICE pupdatewarning) = true
+def $update_warning_exit_marker(UPDATE_WARNING_RESTORE pupdatewarning) = true
+def $update_warning_exit_marker(UPDATE_WARNING_DONE pupdatewarning) = true
+def $update_warning_exit_marker(ERROR_HANDLER_INVOKE perrorcall) = $update_warning_exit_marker(perrorcall.RESUME)
+def $update_warning_exit_marker(ERROR_HANDLER_RESULT perrorcall) = $update_warning_exit_marker(perrorcall.RESUME)
+def $update_warning_exit_marker(ERROR_HANDLER_CLEAN perrorcall) = $update_warning_exit_marker(perrorcall.RESUME)
+def $update_warning_exit_marker(ptask) = false -- otherwise
+dec $update_warning_exit_tasks(pstate, ptask*) : bool
+def $update_warning_exit_tasks(S, eps) = false
+def $update_warning_exit_tasks(S, ptask :: ptask_tail*) = true
+  -- if $update_warning_exit_marker(ptask)
+  -- if $call_task_valid(S, ptask)
+def $update_warning_exit_tasks(S, ptask :: ptask_tail*) = $update_warning_exit_tasks($call_after_origin(S, ptask), ptask_tail*)
+  -- if ~($update_warning_exit_marker(ptask) /\ $call_task_valid(S, ptask))
+dec $update_warning_exit_frames(pstate, pframe*) : bool
+def $update_warning_exit_frames(S, eps) = false
+def $update_warning_exit_frames(S, pframe :: pframe_tail*) = ($update_warning_exit_tasks($constant_frame_scope(S, pframe, pframe_tail*), pframe.TODO) \/ $update_warning_exit_frames(S, pframe_tail*))
+def $update_warning_exit_pending(S) = ($update_warning_exit_tasks(S, S.TODO) \/ $update_warning_exit_frames(S, S.FRAMES))
+def $exit_start_unwind(S, z) = S[.COMPLETION = UNSUPPORTED "increment/decrement warning exit continuation"]
+  -- if ~$fiber_closing(S, S.ACTIVEFIBER)
+  -- if ~$property_dynamic_exit_pending(S)
+  -- if ~$foreach_bind_exit_pending(S)
+  -- if $update_warning_exit_pending(S)
+
+def $task_nodes(UPDATE_WARNING_NOTICE pupdatewarning) = $instance_roots(pupdatewarning.PENDING)
+def $task_nodes(UPDATE_WARNING_RESTORE pupdatewarning) = $instance_roots(pupdatewarning.PENDING)
+def $task_nodes(UPDATE_WARNING_DONE pupdatewarning) = $instance_roots(pupdatewarning.PENDING)
+def $call_task_valid(S, UPDATE_WARNING_NOTICE pupdatewarning) = ($update_warning_valid(S, pupdatewarning) /\ pupdatewarning.PENDING = eps /\ $update_warning_pointer_value(S, pupdatewarning.POINTER) = (DEFINED pupdatewarning.INPUT))
+def $call_task_valid(S, UPDATE_WARNING_RESTORE pupdatewarning) = $update_warning_valid(S, pupdatewarning)
+def $call_task_valid(S, UPDATE_WARNING_DONE pupdatewarning) = $update_warning_valid(S, pupdatewarning)
+def $source_operand_marker(UPDATE_WARNING_NOTICE pupdatewarning) = UPDATE_PREP pupdatewarning.OP pupdatewarning.POST pupdatewarning.LINE
+def $source_operand_marker(UPDATE_WARNING_RESTORE pupdatewarning) = UPDATE_PREP pupdatewarning.OP pupdatewarning.POST pupdatewarning.LINE
+def $source_operand_marker(UPDATE_WARNING_DONE pupdatewarning) = UPDATE_PREP pupdatewarning.OP pupdatewarning.POST pupdatewarning.LINE
+
+dec $update_warning_entry(pstate, perrorcall, pupdatewarning) : bool
+def $update_warning_entry(S, perrorcall, pupdatewarning) = true
+  -- if perrorcall.TARGET = eps
+  -- if $update_warning_select(S, pupdatewarning.NAME) = (pupdatewarning.POINTER)
+  -- if $update_warning_pointer_value(S, pupdatewarning.POINTER) = (DEFINED pupdatewarning.INPUT)
+def $update_warning_entry(S, perrorcall, pupdatewarning) = true
+  -- if perrorcall.TARGET =/= eps
+def $update_warning_entry(S, perrorcall, pupdatewarning) = false -- otherwise
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = UPDATE_WARNING_RESTORE pupdatewarning
+  -- if $update_warning_valid(S, pupdatewarning)
+  -- if $update_warning_entry(S, perrorcall, pupdatewarning)
+  -- if pupdatewarning.PENDING = eps
+  -- if $update_warning_notice(pupdatewarning.OP, pupdatewarning.INPUT) = ((perrorcall.LEVEL, perrorcall.MESSAGE))
+  -- if perrorcall.SITE = pupdatewarning.SITE
+  -- if perrorcall.LINE = pupdatewarning.LINE
+  -- if perrorcall.EVENT = DIAGNOSTIC $integer_notice_name(perrorcall.LEVEL) perrorcall.MESSAGE perrorcall.LINE

@@ -1,0 +1,126 @@
+{
+  "scope": "Direct defined untyped-CV pre/post increment/decrement Warning and Deprecated callbacks, normal return or supplied-Throwable throw; borrowed initial reference cells and callback-created wrappers.",
+  "status": "independently_reviewed_bounded_runtime_pending_integration",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "production_revision": "53deea71eb337669d5bae435ea8b6af54cf0ae30",
+  "current_fixture_revision": "9c26252205a906254b6b71748dd6de047ab4c16b",
+  "semantic_sha256": {
+    "spec/semantics/390-incdec-warning-continuations.watsup": "35d0cb82f9d8fbb35294e182e39d48b84c065df6d5169759447f93260be69c8b"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_operators.c: increment_function/decrement_function restore captured bool/null after a warning even with a pending exception. increment_string and empty/nonnumeric string decrement restore captured strings only after normal handling; zval_ptr_dtor precedes the captured store.",
+    "vendor/php-src/Zend/zend_vm_def.h: pre/post inc/dec helpers select the initial dereferenced zval; prefix copies after the helper and postfix copies beforehand. Typed references use a distinct helper."
+  ],
+  "contract": [
+    "Source occurrence, compiled operator/line, direct CV name, pointer bounds, notice and pending Throwable constrain the continuation. The initial borrowed cell adds no owner; captured scalar values add no roots.",
+    "Initially referenced CVs restore their old live untyped cell after global rebinding. Initially plain CVs detach wrappers created during the handler, preserving peer aliases. Normal postfix returns the prior scalar snapshot.",
+    "Bool/null handler throws retain the original Throwable once while restoration runs; string handler throws retain callback writes and skip restoration. Existing error dispatch supplies current handler selection and fallback diagnostics.",
+    "Object-bearing restoration, late typed-cell sources and handler exit remain explicit controls, with retained native obligations rather than silently writing before cleanup."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "53deea71eb337669d5bae435ea8b6af54cf0ae30",
+      "modules": 379,
+      "mode": "SL main=true; compile-only, zero PHP runtime credit",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-03/strict-53deea71e/report.json"
+    },
+    "source": {
+      "author_ordinary": 50,
+      "independent_ordinary": 28,
+      "explicit_unsupported_controls": 8,
+      "control_agreement_credit": 0,
+      "result": "Checked originals match native stdout/stderr/exit with normal status; controls require checked Unsupported and the exact documented reason.",
+      "cuts": [
+        {
+          "revision": "53deea71eb337669d5bae435ea8b6af54cf0ae30",
+          "ordinary": 2,
+          "selection": [
+            "pre-inc-bool-true-return",
+            "post-dec-string-throw"
+          ],
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-03/smoke-53deea71e-pre-inc-bool-true-return/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-03/smoke-53deea71e-post-dec-string-throw/report.json"
+          ]
+        },
+        {
+          "revision": "68095db8144537062b0113b6a79cd175cd830351",
+          "ordinary": 48,
+          "controls": 3,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-03/remaining-source51-68095db81/report.json"
+        },
+        {
+          "revision": "5857087da3abb5108474418d4e36d87239ddfde6",
+          "ordinary": 28,
+          "controls": 5,
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-warning-review-03/source-5857087da-33/report.json"
+        }
+      ]
+    },
+    "author_reached": {
+      "mode": "SL",
+      "fixtures": 9,
+      "conditions": 539,
+      "result": "Genuine capture/dispatch/restore/result, supplied-throw ownership, old-cell rebinding, wrapper detachment, compiled array pool owners, zero/one/resumed execution and public object/exit boundary steps.",
+      "cuts": [
+        {
+          "revision": "5857087da3abb5108474418d4e36d87239ddfde6",
+          "fixtures": 6,
+          "conditions": 377,
+          "selection": [
+            "pre-inc-bool-true-return",
+            "post-dec-string-return",
+            "pre-dec-null-throw",
+            "post-dec-string-throw",
+            "pre-inc-reference-rebind",
+            "pre-inc-new-reference"
+          ],
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-03/author-state9-5857087da/report.json"
+        },
+        {
+          "revision": "9c26252205a906254b6b71748dd6de047ab4c16b",
+          "fixtures": 3,
+          "conditions": 162,
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-03/state-tail-9c2625220-pre-inc-array-replacement/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-03/state-tail-9c2625220-destructor-bool-return/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-03/state-tail-9c2625220-review-handler-exit-bool/report.json"
+          ]
+        }
+      ]
+    },
+    "independent_reached": {
+      "revision": "5857087da3abb5108474418d4e36d87239ddfde6",
+      "mode": "SL",
+      "fixtures": 3,
+      "conditions": 155,
+      "result": "Retained-cell null throw/rebind with one original Throwable root; late wrapper detachment keeps alias7; nested current-registry false then true restoration with budget resume.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-warning-review-03/state-5857087da-3/report.json"
+    }
+  },
+  "preserved_zero_credit": [
+    "Native/frontend preparations remain zero agreement. Raw source bytes, streams, commands, profile, binaries, environment and reaped processes remain external.",
+    "baseline-362ce092d-pre-inc-bool-true-return preserves the original checked Unsupported producer-continuation gap.",
+    "author-state9-68095db81 preserves the first failed budget-resume fixture. b3a only resets BUDGET to NORMAL before resumption; no production/source change.",
+    "author-state9-5857087da preserves the failed array owner premise. Its first six groups retain their own accepted cut; the failed/unrun groups receive zero credit. Corrected pool-root and owner-count clauses run only in the affected tail.",
+    "Source controls are destructor-bool-return, destructor-bool-throw, destructor-string-return, review-late-property-source, review-array-owned-destructor-before-commit and three review-handler-exit forms. Unsupported is not native agreement."
+  ],
+  "boundaries": [
+    "Restoration can release an object directly or transitively through arrays/references; its destructor must run before captured scalar commit. This is the immediate next milestone. String handler-throw already skips restoration and retains its object until later explicit unset.",
+    "Initial typed cells are excluded from this route. Late type-source attachment, expired borrowed targets and handler graceful exit require further continuations. Wider names/dimensions/properties, object update handlers and suspended contexts remain partial.",
+    "Reports bind effective C/UTC with PHP_SPEC_SCRIPT_ENCODING removed, explicit SL, exact streams, exits, no timeout/interruption and empty process groups. Linked retained tools are not a fresh rebuild or portability claim."
+  ],
+  "recovery": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/operators-03",
+    "independent_archive_root": "/home/user/workspace/php-spec-evidence-archive/operators-incdec-warning-review-03",
+    "source_helpers": [
+      "tests/semantics/incdec_warnings.py",
+      "tests/semantics/incdec_warning_review.py"
+    ],
+    "state_helpers": [
+      "tests/semantics/incdec_warning_protocol.py",
+      "tests/semantics/incdec_warning_state_review.py"
+    ],
+    "instructions": "Use recorded revisions/profile/tools and fresh external output directories. Coordinate numeric slots; fixture-only or metadata changes do not renew unrelated accepted cuts."
+  }
+}

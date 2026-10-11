@@ -18,6 +18,18 @@ binary64; numeric strings follow the numeric scanner, while nonnumeric strings
 use byte-wise carry or the pinned no-effect/deprecation behavior. Null and boolean
 updates retain their distinct results and warnings. Arrays throw a TypeError.
 
+Module390 stages registered warning/deprecation callbacks for defined direct CVs
+with initially untyped scalar values. Bool and decrement-null restore the captured
+value even when the handler throws; nonnumeric/empty strings restore only on normal
+return. An initially referenced target keeps its borrowed old cell after rebinding.
+An initially plain CV detaches a reference wrapper created by the callback. Postfix
+returns the prior scalar snapshot; prefix returns the restored value. Source lines,
+fresh handler selection, supplied Throwable identity and real alias owners are checked
+in the [focused ledger](../../coverage/semantics/incdec-warning-review.json).
+Object-bearing restoration needs a destructor before scalar commit, including objects
+inside arrays. Late typed-cell attachment and handler exit also remain explicit
+Unsupported boundaries in this cut; the retained native originals are next obligations.
+
 String dimensions validate the key before rejecting increment/decrement; nested
 string dimensions retain the separate nested-array error. Generic dimension
 fetches preserve the reference-wrapper distinction in

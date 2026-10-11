@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Module390 resumes direct defined untyped-CV pre/post inc/dec warnings. Bool/null
+restore captured values after returning or throwing handlers; strings restore
+only after normal handling. Borrowed old cells and callback-created wrappers keep
+their distinct writes and owners. Author 50 and independent 28 ordinary originals
+agree at retained cuts; eight explicit Unsupported controls receive zero agreement.
+Nine author SL fixtures pass 539 conditions at 585/9c and three independent fixtures
+pass 155 at 585, including genuine throw roots, alias detachment, fresh nested
+registry selection and budget resume. Original fixture failures retain zero failed-group
+credit. Destructor-before-commit, late typed sources and handler exit are the next
+required work; wider locations stay partial.
+[Inc/dec warning ledger](coverage/semantics/incdec-warning-review.json).
+
 Backtick command construction and finite shell dispatch are implemented in389.
 Compiler deprecation, root-builtin lookup, Stringable/array/undefined interpolation,
 empty/NUL errors with builtin traces, exact byte/null results and real pipe-failure
