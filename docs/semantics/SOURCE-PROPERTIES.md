@@ -177,11 +177,18 @@ class, authenticates the parent's backing basis and the child's own null default
 and leaves the rejected child unpublished. Reverse addition keeps the class-line
 error. Repeated untyped controls retain one null slot and getter 13 after write 300;
 [effective-storage type-presence review](../../coverage/semantics/effective-backed-parent-unbacked-get-hook-type-presence-review.json).
+That getter error priority also covers a genuinely body-backed child with its own
+default below the source-unbacked, effectively backed parent. Before publication,
+the proof authenticates the parent's source classification and bounded backing
+ancestry, then the child's exact own descriptor and genuine backing body. It does
+not require an ancestry link for the rejected child. Reverse type addition retains
+the class-line error; both-untyped controls distinguish Root 100, First null and
+one child slot 200, active getter backing access, child/private scope and Grand
+called scope. An ordinary write stores 300 and the getter returns 313;
+[own-backed-child type-presence review](../../coverage/semantics/effective-backed-parent-backed-get-hook-type-presence-review.json).
 The hook linker still refuses ordinary-parent hooks and plain redeclarations.
-Backed-parent inheritance retains invariant types;
-TYPE-presence into genuinely body-backed children below a body-unbacked but
-effectively backed parent, broader type equivalence and wider hook variance
-remain required.
+Backed-parent inheritance retains invariant types; broader type equivalence and
+wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 other inheritance/traits, temporary/computed receivers, other compound operators/RHS

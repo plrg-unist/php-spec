@@ -1680,6 +1680,13 @@ type. Intervening classes retain the actual declaring getter; reverse type addit
 and repeated null-slot reads/writes remain controls. Three originals and five
 separate state checks are recorded in the
 [effective-storage type-presence review](coverage/semantics/effective-backed-parent-unbacked-get-hook-type-presence-review.json).
+This getter error priority also applies when the child has genuine backing access
+and its own default. The proof follows the effectively backed parent's declaring
+getter across intervening classes. Reverse type addition and both-untyped controls
+retain the child's slot 200, inherited/private reads returning 213, and write 300
+followed by getter result 313. Three originals and five separate state checks are
+recorded in the
+[own-backed-child type-presence review](coverage/semantics/effective-backed-parent-backed-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

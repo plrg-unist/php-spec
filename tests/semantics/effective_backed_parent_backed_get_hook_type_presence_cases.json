@@ -1,0 +1,57 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "92bd5f848f25eeeaeb3adf5fc0a076c8e43b8ac6254e15a2aa18f0f278c3c4d4",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "remove",
+      "source": "<?php\nclass EffectiveBackedRemoveRoot48 {\n    public int $value = 100 { get => $this->value; }\n}\nclass EffectiveBackedRemoveFirst48 extends EffectiveBackedRemoveRoot48 {\n    public int $value { get => 7; }\n}\nclass EffectiveBackedRemoveBridge48 extends EffectiveBackedRemoveFirst48 {}\nclass EffectiveBackedRemoveSecond48 extends EffectiveBackedRemoveBridge48 {\n    public $value = 200 { get => $this->value; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "8065fa6c9e311b70a420c4c43b06ff9221053a18f0f2169edcb923552374ca4e",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Declaration of EffectiveBackedRemoveSecond48::$value::get() must be compatible with EffectiveBackedRemoveFirst48::$value::get(): int in {FILE} on line 10\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIEVmZmVjdGl2ZUJhY2tlZFJlbW92ZVNlY29uZDQ4OjokdmFsdWU6OmdldCgpIG11c3QgYmUgY29tcGF0aWJsZSB3aXRoIEVmZmVjdGl2ZUJhY2tlZFJlbW92ZUZpcnN0NDg6OiR2YWx1ZTo6Z2V0KCk6IGludCBpbiB7RklMRX0gb24gbGluZSAxMApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "effective-backed-parent-backed-get-hook-type-presence48-native-bc93c428",
+      "native_raw_sha256": "92bd5f848f25eeeaeb3adf5fc0a076c8e43b8ac6254e15a2aa18f0f278c3c4d4"
+    },
+    {
+      "id": "add",
+      "source": "<?php\nclass EffectiveBackedAddRoot48 {\n    public $value = 100 { get => $this->value; }\n}\nclass EffectiveBackedAddFirst48 extends EffectiveBackedAddRoot48 {\n    public $value { get => 7; }\n}\nclass EffectiveBackedAddBridge48 extends EffectiveBackedAddFirst48 {}\nclass EffectiveBackedAddSecond48 extends EffectiveBackedAddBridge48 {\n    public int $value = 200 { get => $this->value; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "82788e8bfdcc16b74a08acf49c64b9965be83ad8fec5a916b97f9c863ebfb070",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of EffectiveBackedAddSecond48::$value must be omitted to match the parent definition in class EffectiveBackedAddFirst48 in {FILE} on line 9\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgRWZmZWN0aXZlQmFja2VkQWRkU2Vjb25kNDg6OiR2YWx1ZSBtdXN0IGJlIG9taXR0ZWQgdG8gbWF0Y2ggdGhlIHBhcmVudCBkZWZpbml0aW9uIGluIGNsYXNzIEVmZmVjdGl2ZUJhY2tlZEFkZEZpcnN0NDggaW4ge0ZJTEV9IG9uIGxpbmUgOQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "effective-backed-parent-backed-get-hook-type-presence48-native-bc93c428",
+      "native_raw_sha256": "92bd5f848f25eeeaeb3adf5fc0a076c8e43b8ac6254e15a2aa18f0f278c3c4d4"
+    },
+    {
+      "id": "scalar",
+      "source": "<?php\nclass EffectiveBackedStorageRoot48 {\n    public $value = 100 { get => $this->value; }\n    public function parentRead() {\n        echo \"H|\";\n        return $this->value;\n    }\n}\nclass EffectiveBackedStorageFirst48 extends EffectiveBackedStorageRoot48 {\n    public $value { get => 7; }\n}\nclass EffectiveBackedStorageBridge48 extends EffectiveBackedStorageFirst48 { private function answer() { return 500; } }\nclass EffectiveBackedStorageSecond48 extends EffectiveBackedStorageBridge48 {\n    public $value = 200 {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass EffectiveBackedStorageGrand48 extends EffectiveBackedStorageSecond48 { private function answer() { return 900; } }\n$root = new EffectiveBackedStorageRoot48();\n$first = new EffectiveBackedStorageFirst48();\n$second = new EffectiveBackedStorageSecond48();\n$grand = new EffectiveBackedStorageGrand48();\n$raw = (array)$root;\necho $raw === [\"value\" => 100] ? \"R100|\" : \"BAD|\";\n$raw = (array)$first;\necho $raw === [\"value\" => null] ? \"FNULL|\" : \"BAD|\";\n$raw = (array)$second;\necho $raw === [\"value\" => 200] ? \"S200|\" : \"BAD|\";\n$raw = (array)$grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $root->value, \"|\", $first->value, \"|\", $second->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array)$grand;\necho $raw === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array)$grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "d7af28330a70bb3b73073fa24682c5b789ea3485888e304ab297462c35d9015a",
+      "stdout_base64": "UjEwMHxGTlVMTHxTMjAwfEcyMDB8MTAwfDd8QzpFZmZlY3RpdmVCYWNrZWRTdG9yYWdlU2Vjb25kNDgvRWZmZWN0aXZlQmFja2VkU3RvcmFnZVNlY29uZDQ4fDIxM3xIfEM6RWZmZWN0aXZlQmFja2VkU3RvcmFnZVNlY29uZDQ4L0VmZmVjdGl2ZUJhY2tlZFN0b3JhZ2VHcmFuZDQ4fDIxM3xHMjAwfEczMDB8QzpFZmZlY3RpdmVCYWNrZWRTdG9yYWdlU2Vjb25kNDgvRWZmZWN0aXZlQmFja2VkU3RvcmFnZUdyYW5kNDh8MzEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "effective-backed-parent-backed-get-hook-type-presence48-native-bc93c428",
+      "native_raw_sha256": "92bd5f848f25eeeaeb3adf5fc0a076c8e43b8ac6254e15a2aa18f0f278c3c4d4"
+    }
+  ]
+}
