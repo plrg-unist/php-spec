@@ -125,6 +125,8 @@ def $property_hook_origin(S, ppropertydesc) = eps -- otherwise
 ;; of whether the child's own body uses that storage.
 dec $property_hook_override_pair(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_override_shape(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_hook_virtual_edge(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_hook_covariance(pstate, ppropertydesc, ppropertydesc) : pvresult
 dec $property_hook_override_backed(pstate, ppropertydesc) : bool
 dec $property_hook_inherited_backing(pstate, ppropertydesc) : bool
 dec $property_hook_inherited_backing_walk(pstate, ppropertydesc, nat) : bool
@@ -181,7 +183,7 @@ def $property_hook_virtual_chain(S, ppropertydesc, n) = $property_hook_virtual_c
   -- if pclassdesc.PARENT =/= eps
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
   -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc_parent)
-  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc)
+  -- if $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc)
 def $property_hook_virtual_chain(S, ppropertydesc, n) = false -- otherwise
 dec $property_hook_properties(pstate, ppropertydesc*) : bool
 def $property_hook_properties(S, eps) = false
@@ -713,7 +715,7 @@ def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
 def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S[.COMPLETION = UNSUPPORTED "by-value property hook indirect access"]
   -- if $property_hook_read_needed(S, n, ptbytes)
 
-;; Equal-type get overrides retain effective backing or a closed virtual chain.
+;; Backing stays invariant; closed virtual get-only chains allow covariance.
 ;; Other hook inheritance cannot borrow the ordinary property merge.
 def $property_hook_override_backed(S, ppropertydesc) = true
   -- if ~ppropertydesc.FINAL /\ ppropertydesc.SETVISIBILITY = eps
@@ -731,7 +733,68 @@ def $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) 
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39)
   -- if $hook_body_backed(phpType39, ppropertydesc_child.NAME) \/ ppropertydesc_child.DEFAULT = PROP_NULL \/ ppropertydesc_child.DEFAULT = PROP_UNINITIALIZED
 def $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
-def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = ($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent) \/ ($property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|))))
+def $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child) = $pvcovariant(ppropertydesc_child.TYPE, $trait_data_scope(S, pclassdesc_child), ppropertydesc_parent.TYPE, $trait_data_scope(S, pclassdesc_parent), $method_active_registry(S, S.CLASSNAMES))
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc_parent.ORIGIN) = (porigin_parent)
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc_child.ORIGIN) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+def $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child) = PVUNSUPPORTED "property hook declaring scope" -- otherwise
+def $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
+  -- if ppropertydesc_parent.TYPE = eps /\ ppropertydesc_child.TYPE = eps
+def $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
+  -- if ppropertydesc_parent.TYPE =/= eps /\ ppropertydesc_child.TYPE =/= eps
+  -- if $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child) = PVCOMPATIBLE
+def $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
+def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent))) \/ ($property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) /\ $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|)))
+
+;; Before publication only the parent's chain is closed. The child's real
+;; source/default shape supplies its declaring scope without registering it.
+def $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if ~$trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if ppropertydesc_parent.TYPE =/= eps /\ ppropertydesc_child.TYPE =/= eps
+  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
+  -- if $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|)
+  -- if $property_hook_override_virtual(S, ppropertydesc_child)
+def $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
+dec $property_hook_get_declaration(pstate, ppropertydesc) : ptbytes?
+def $property_hook_get_declaration(S, ppropertydesc) = ($pmcstring(pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME) ++ $ptascii("(): ") ++ $pmtypename(ppropertydesc.TYPE, $trait_data_scope(S, pclassdesc))))
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_class)
+  -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
+  -- if $property_hook_origin(S, ppropertydesc) =/= eps /\ ppropertydesc.TYPE =/= eps
+def $property_hook_get_declaration(S, ppropertydesc) = eps -- otherwise
+dec $property_hook_covariance_message(pstate, ppropertydesc, ppropertydesc, pvresult) : ptbytes?
+def $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, PVINCOMPATIBLE) = ($ptascii("Declaration of ") ++ ptbytes_child ++ $ptascii(" must be compatible with ") ++ ptbytes_parent)
+  -- if $property_hook_get_declaration(S, ppropertydesc_child) = (ptbytes_child)
+  -- if $property_hook_get_declaration(S, ppropertydesc_parent) = (ptbytes_parent)
+def $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, pvresult) = eps -- otherwise
+def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertydesc_parent, ppropertydesc_child) = $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child))
+  -- if $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child)
+
+;; The returned issue still selects the first parent-table property error.
+;; Only its matching getter incompatibility uses the actual hook source line.
+dec $property_hook_override_fatal_at(pstate, pclassdesc, ppropertydesc*, ppropertydesc*, ptbytes) : pstate
+dec $property_hook_covariance_error_site(pstate, ppropertydesc*, ppropertydesc, ptbytes) : (porigin, int)?
+def $property_hook_override_fatal(S, pclassdesc, ptbytes_message) = $property_hook_override_fatal_at(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES, ptbytes_message)
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+def $property_hook_override_fatal(S, pclassdesc, ptbytes_message) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, pclassdesc.LINE) -- otherwise
+def $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, eps, ptbytes_message) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, pclassdesc.LINE)
+def $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, ppropertydesc_child :: ppropertydesc_tail*, ptbytes_message) = $pil_method_fatal(S, porigin_hook, ptbytes_message, z)
+  -- if $property_hook_covariance_error_site(S, ppropertydesc_inherited*, ppropertydesc_child, ptbytes_message) = ((porigin_hook, z))
+def $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, ppropertydesc_child :: ppropertydesc_tail*, ptbytes_message) = $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, ppropertydesc_tail*, ptbytes_message)
+  -- if $property_hook_covariance_error_site(S, ppropertydesc_inherited*, ppropertydesc_child, ptbytes_message) = eps
+def $property_hook_covariance_error_site(S, ppropertydesc_inherited*, ppropertydesc_child, ptbytes_message) = ((porigin_hook, z))
+  -- if $ppproperty_desc_at(ppropertydesc_inherited*, ppropertydesc_child.NAME) = (ppropertydesc_parent)
+  -- if $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child) = PVINCOMPATIBLE
+  -- if $property_hook_covariance_message(S, ppropertydesc_parent, ppropertydesc_child, PVINCOMPATIBLE) = (ptbytes_message)
+  -- if $property_hook_origin(S, ppropertydesc_child) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
+  -- if z = $source_line(metadata)
+  -- if $(z > 0)
+def $property_hook_covariance_error_site(S, ppropertydesc_inherited*, ppropertydesc_child, ptbytes_message) = eps -- otherwise
 dec $property_hook_parent_overlap(pstate, ppropertydesc*, ppropertydesc*) : bool
 dec $property_hook_parent_match(pstate, ppropertydesc, ppropertydesc?) : bool
 def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false

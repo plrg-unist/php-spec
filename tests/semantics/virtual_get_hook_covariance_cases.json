@@ -1,0 +1,54 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "e0b6b4234db45ac495c197324148ffb157c57d0f280cb527d2afdb65a1517ba6",
+  "native_gate_completed": false,
+  "cases": [
+    {
+      "id": "scalar-covariance",
+      "source": "<?php\nclass CovParent40 {\n    public int|string $value {\n        get { echo \"P:\", __CLASS__, \"/\", static::class, \"|\"; return \"root\"; }\n    }\n    public function parentRead() { return $this->value; }\n}\nclass CovBridge40 extends CovParent40 {}\nclass CovChild40 extends CovBridge40 {\n    public int $value {\n        get { echo \"C:\", __CLASS__, \"/\", static::class, \"|\"; return $this->answer(); }\n    }\n    private function answer() { return 13; }\n}\nclass CovGrand40 extends CovChild40 {\n    private function answer() { return 900; }\n}\nfunction covRhs40() { echo \"R|\"; return 300; }\n$parent = new CovParent40;\necho ((array) $parent === []) ? \"PE|\" : \"BAD|\";\necho $parent->value, \"|\";\n$child = new CovChild40;\necho ((array) $child === []) ? \"CE|\" : \"BAD|\";\necho $child->value, \"|\";\n$grand = new CovGrand40;\necho ((array) $grand === []) ? \"GE|\" : \"BAD|\";\necho $grand->parentRead(), \"|\";\ntry { $grand->value = covRhs40(); }\ncatch (Error $error) { echo $error->getMessage(), \":\", $error->getLine(), \"|\"; }\necho ((array) $grand === []) ? \"WE|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "e7af870b57b93dc5b22be271278e76c6dd7461d8923282b00e74f9d95d65c2a2",
+      "stdout_base64": "UEV8UDpDb3ZQYXJlbnQ0MC9Db3ZQYXJlbnQ0MHxyb290fENFfEM6Q292Q2hpbGQ0MC9Db3ZDaGlsZDQwfDEzfEdFfEM6Q292Q2hpbGQ0MC9Db3ZHcmFuZDQwfDEzfFJ8UHJvcGVydHkgQ292R3JhbmQ0MDo6JHZhbHVlIGlzIHJlYWQtb25seToyOHxXRXxDOkNvdkNoaWxkNDAvQ292R3JhbmQ0MHwxM3w=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-get-hook-covariance40-native3-2b482dea",
+      "native_raw_sha256": "e0b6b4234db45ac495c197324148ffb157c57d0f280cb527d2afdb65a1517ba6"
+    },
+    {
+      "id": "returned-payload-lifetime",
+      "source": "<?php\nclass Animal40 {\n    public function tag() { return \"ANIMAL|\"; }\n}\nclass Dog40 extends Animal40 {\n    public function tag() { return \"DOG|\"; }\n    public function __destruct() { echo \"DD|\"; }\n}\nfunction freshDog40() {\n    global $weak_leaf;\n    echo \"H|\";\n    $leaf = new Dog40;\n    $weak_leaf = WeakReference::create($leaf);\n    return $leaf;\n}\nclass CovLifeParent40 {\n    public Animal40 $value { get => new Animal40; }\n    public function parentRead() { return $this->value; }\n    public function __destruct() { echo ((array) $this === []) ? \"BEMPTY|\" : \"BAD|\"; }\n}\nclass CovLifeBridge40 extends CovLifeParent40 {}\nclass CovLifeChild40 extends CovLifeBridge40 {\n    public Dog40 $value { get => freshDog40(); }\n}\nclass CovLifeGrand40 extends CovLifeChild40 {}\n$box = new CovLifeGrand40;\n$weak_box = WeakReference::create($box);\n$kept = $box->parentRead();\necho $kept->tag();\necho ((array) $box === []) ? \"EMPTY|\" : \"BAD|\";\necho ($weak_leaf->get() !== null) ? \"LIVE|\" : \"BAD|\";\nunset($box);\necho ($weak_box->get() === null) ? \"BN|\" : \"BAD|\";\necho ($weak_leaf->get() !== null) ? \"LIVE|\" : \"BAD|\";\nunset($kept);\necho ($weak_leaf->get() === null) ? \"N|\" : \"BAD|\";\n",
+      "source_sha256": "077410c3c5e67c2bd9f68b9c4e63813d8b8319657651fb47a09e3cf427c79b6f",
+      "stdout_base64": "SHxET0d8RU1QVFl8TElWRXxCRU1QVFl8Qk58TElWRXxERHxOfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-get-hook-covariance40-native3-2b482dea",
+      "native_raw_sha256": "e0b6b4234db45ac495c197324148ffb157c57d0f280cb527d2afdb65a1517ba6"
+    },
+    {
+      "id": "invalid-widening",
+      "source": "<?php\nclass CovInvalidParent40 {\n    public int $value { get => 7; }\n}\nclass CovInvalidChild40 extends CovInvalidParent40 {\n    public int|string $value { get => \"wider\"; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "a7349492e29ab19d7245036476025bd61937ec5dd4cb68b464ed7d819723e34f",
+      "stdout_base64": "",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIENvdkludmFsaWRDaGlsZDQwOjokdmFsdWU6OmdldCgpOiBzdHJpbmd8aW50IG11c3QgYmUgY29tcGF0aWJsZSB3aXRoIENvdkludmFsaWRQYXJlbnQ0MDo6JHZhbHVlOjpnZXQoKTogaW50IGluIHtGSUxFfSBvbiBsaW5lIDYKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-get-hook-covariance40-native3-2b482dea",
+      "native_raw_sha256": "e0b6b4234db45ac495c197324148ffb157c57d0f280cb527d2afdb65a1517ba6"
+    }
+  ]
+}
