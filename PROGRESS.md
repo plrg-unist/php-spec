@@ -16,6 +16,9 @@ independent exact originals agree; three genuine groups pass 360 public/ownershi
 premises and 16 explicit boundary PhpSteps. The original Closure/parser refusal
 remains zero credit. Abrupt/fatal/throwing-destructor cleanup remains required.
 [Source-static identity ledger](coverage/semantics/source-static-identity-review.json).
+The 378 composition over e0668aabe passes one exact cache/reference source and
+118 public ownership premises at 3b9c3cd26. Earlier source/state cuts retain
+their original revisions.
 
 Integer operators now retain evaluated literal/unary/ternary copies and owning
 reference-assignment/named byref-call results through conversion callbacks.
