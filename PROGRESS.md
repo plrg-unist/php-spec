@@ -24,21 +24,25 @@ Private source2 / 228+6 checks retain their original cuts.
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
 assignments now admit plain empty named descendants through authenticated standalone
-Block chains inside While bodies, retaining root/valid-namespace/Block host ancestry.
-Three originals agree at 35adca9a /375 (strict3 6.125s): anonymous identities
-preexist publication/creation, reverse calls publish in order, and two live Closure
-instances from one template retain old/current targets, one guarded publication,
-lexical namespace and fresh defaults. Author501 and independent237 pass 738
-premises: 708 setup/source frontier and 30 pure queries, with 29 real PhpSteps
-for body-Block entry, callable publication, creation/capture, PDRCLASS/CCLINK,
-eligible no-op and saved-frame allocation. Fixtures stop at required allocations;
-syntax preparation/elaboration add no runtime credit. No executed COMP37 failures.
-Conditional/nested While hosts, other loops, nested functions/Closures and wider
-signatures/targets/captures remain required.
-The 375 composition at ac329f66 over 772760f0 reuses strict3 at tested
+Block chains inside While bodies, now with existing authenticated If ancestry
+before the host as well as root/valid-namespace/Block placement. Three originals
+agree at 376de1e1 /375 (strict3 6.226s): selected branches publish functions or
+create Closures, skipped branches preserve precompiled anonymous identities, and
+genuine targets retain reverse publication, old/current receivers, lexical namespace
+and fresh defaults. Author613 and independent274 pass 887 premises: 853 setup/source
+frontier and 34 pure queries, with 38 real If/CHOOSE, Block, publication, creation/capture
+and allocation steps. Fixtures stop at required allocations; syntax preparation/elaboration
+add no runtime credit. The original independent Else-union type failure retains zero
+runtime credit; its affected fixture retry passes. Nested While hosts, other loops,
+nested functions/Closures and wider signatures/targets/captures remain required.
+[If-hosted While ledger](coverage/semantics/anonymous-conditional-while-rtd-review.json).
+
+The earlier body-Block cut retains source3/state738 at 35adca9a. Its 375
+composition at ac329f66 over 772760f0 reuses strict3 at tested
 35adca9a (6.125s), with unchanged task/schema/manifest and reviewed exclusion of
 the parent by-reference finally, first-class bind and Iterator-unpack routes.
-No current actor or private replay is claimed; source3/state738 retain their cuts.
+No current actor or private replay is claimed. Historical conditional-While
+negatives are superseded only for authenticated If ancestry; other cuts remain frozen.
 [While body-Block ledger](coverage/semantics/anonymous-while-block-rtd-review.json).
 
 The earlier direct-While cut retains source4/state1007 at ff82bb60 and its

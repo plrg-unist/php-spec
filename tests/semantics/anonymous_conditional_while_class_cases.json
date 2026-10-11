@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary named variables in While bodies, including existing body-Block chains, with root/valid-namespace/standalone Block or source-authenticated If ancestry before the actual While host. Core observations distinguish selected versus skipped hosts, preexisting anonymous identities, reverse publication, qualified prior-deferred versus early case ownership and two live Closure instances from one compiled template retaining old/current receivers and guarded fresh defaults across a namespace switch. Named descendants under nested While/other-loop/nested-factory ancestors or wider signatures/targets/captures remain Unsupported; prior anonymous-only contexts remain supported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "conditional-while-reversed",
+      "source": "<?php\n$outerLeft = true; $outerRight = false; $leftReady = true; $rightReady = true; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':25$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeConditionalWhileLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\nif ($outerLeft) {\n    while ($leftReady) {\n        {\n            function makeConditionalWhileLeft() {\n                class ConditionalWhileLeftPublished {}\n                return new class { public function kind() { return 'left'; } };\n            }\n        }\n        $leftReady = false;\n    }\n}\nif ($outerRight) { $rightFactory = null; } else {\n    {\n        while ($rightReady) {\n            {\n                $rightFactory = static function () {\n                    class ConditionalWhileRightPublished {}\n                    return new class { public function kind() { return 'right'; } };\n                };\n            }\n            $rightReady = false;\n        }\n    }\n}\n$right = $rightFactory(); $rightNamed = new ConditionalWhileRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'ConditionalWhileRightPublished' ? 'right|' : 'BAD|';\ntry { new ConditionalWhileLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeConditionalWhileLeft(); $leftNamed = new ConditionalWhileLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'ConditionalWhileLeftPublished' ? 'left|' : 'BAD|';\necho !$leftReady && !$rightReady && $before !== $left && $rightBefore !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "d4eef98ecf8c56ff072fd6511398f512978d4c31a04f477abc9c5aa0b59d7c48",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-conditional-while-native-38/run-v1/conditional-while-reversed/command.json",
+      "native_raw_sha256": "e4a499690b2cf5b868e91846a18f71c0cb62b705dc3da17c4cecb2ae6cf6af07"
+    },
+    {
+      "id": "conditional-while-repeated",
+      "source": "<?php\nnamespace RepeatConditionalWhileSide;\n$outer = true; $i = 0; $seen = false; $make = null; $previous = null;\n$skipName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$1';\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':24$3';\n$before = new $name; $skippedBefore = new $skipName;\necho $before->value === 0 && $skippedBefore->value === 0 && $make === null ? 'before|' : 'BAD|';\ntry { skippedConditionalWhile(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nif (false) {\n    while (true) {\n        function skippedConditionalWhile() {\n            class Skipped {}\n            return new class { public $value = 0; };\n        }\n    }\n} elseif ($outer) {\n    {\n        while ($i < 2) {\n            {\n                $previous = $make;\n                $make = static function () {\n                    global $seen;\n                    if (!$seen) { $seen = true; class Published {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                };\n                $i = $i + 1;\n            }\n        }\n    }\n} else { $make = null; }\necho $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatConditionalWhileCaller;\n$first = $previous(); $named = new \\RepeatConditionalWhileSide\\Published;\necho $first::class === $name && $first->space() === 'RepeatConditionalWhileSide' && $named::class === 'RepeatConditionalWhileSide\\Published' ? 'first|' : 'BAD|';\n$first->value = 9; $second = $make();\necho $second->space() === 'RepeatConditionalWhileSide' && $second->value === 0 ? 'second|' : 'BAD|';\ntry { \\RepeatConditionalWhileSide\\skippedConditionalWhile(); echo 'BAD|'; } catch (\\Error $caught) { echo 'skipped|'; }\necho $seen && $before !== $first && $first !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "27b216c50a9db478f009b9bbabbf620b9060d1c1c70c5681adcf2a4defc5629e",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8dGVtcGxhdGVzfGZpcnN0fHNlY29uZHxza2lwcGVkfGZyZXNofDA6OTow",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-conditional-while-native-38/run-v1/conditional-while-repeated/command.json",
+      "native_raw_sha256": "24481d477bab13ad40231ec321caa054a108f479cc4f260e9fe599c5c360842e"
+    },
+    {
+      "id": "conditional-while-prior-deferred",
+      "source": "<?php\nnamespace ConditionalWhileSelectedSide;\n$functionName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$3';\n$closureName = 'class@anonymous' . \"\\0\" . __FILE__ . ':23$5';\n$before = new $functionName; $closureBefore = new $closureName; $early = new Exception;\n$run = true; $create = true; $choose = true; $make = null;\necho $before::class === $functionName && $closureBefore::class === $closureName && $early::class === 'ConditionalWhileSelectedSide\\\\eXcEpTiOn' && $make === null ? 'before|' : 'BAD|';\ntry { selectedWhileBranchFactory(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nif (false) { while (true) { function skippedWhileBranchFactory() { class Skipped {} return new class {}; } } }\nelseif ($choose) {\n    while ($run) {\n        $run = false;\n        { function selectedWhileBranchFactory() { if (false) { class Exception {} } return new class { public $value = 0; }; } }\n    }\n}\nif (false) {}\nelseif (false) {}\nelse {\n    { while ($create) {\n        $create = false;\n        { $make = static function () {\n            class Published {}\n            return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n        }; }\n    } }\n}\nclass eXcEpTiOn {};\nnamespace ConditionalWhileSelectedCaller;\n$chosen = \\ConditionalWhileSelectedSide\\selectedWhileBranchFactory(); $first = $make(); $named = new \\ConditionalWhileSelectedSide\\Published;\necho $chosen::class === $functionName && $first::class === $closureName && $first->space() === 'ConditionalWhileSelectedSide' && $named::class === 'ConditionalWhileSelectedSide\\\\Published' ? 'first|' : 'BAD|';\n$chosen->value = 9; $first->value = 9; $freshFunction = new $functionName; $freshClosure = new $closureName;\necho !$run && !$create && $before !== $chosen && $closureBefore !== $first && $freshFunction !== $chosen && $freshClosure !== $first && $freshFunction->value === 0 && $freshClosure->value === 0 && $chosen->value === 9 && $first->value === 9 && $freshClosure->space() === 'ConditionalWhileSelectedSide' ? 'fresh|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$6';\necho $last::class === $lastName ? 'last|' : 'BAD|';\ntry { \\ConditionalWhileSelectedSide\\skippedWhileBranchFactory(); echo 'BAD'; } catch (\\Error $caught) { echo 'skipped'; }\n",
+      "source_sha256": "749caf6b04593c98765fa2cb2242c61c2d4340af047f8a80d30babf6bb650398",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8ZnJlc2h8bGFzdHxza2lwcGVk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-conditional-while-native-38/run-v1/conditional-while-prior-deferred/command.json",
+      "native_raw_sha256": "751ff3ae73e0bda55ccfcd472dbc7745a8e321b29dc687d80dcf8f96616b8eea"
+    }
+  ]
+}

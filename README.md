@@ -1385,11 +1385,16 @@ retains fatal redeclaration before another allocation.
 The earlier Block Closure join of 375 modules over 92f726a3 passes strict3 at
 fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
 Both factory kinds also admit authentic `while` bodies through standalone Block
-chains, with root/valid-namespace and standalone Block ancestry before the host.
+chains, with root/valid-namespace, standalone Block and authenticated `if`
+ancestry before the host. Selected branches publish functions or create Closures;
+skipped branches retain their anonymous identities without either action.
 Anonymous names precede publication or Closure creation, including skipped loops.
 Two live Closure instances from one compiled template preserve old/current targets,
 one guarded class publication, lexical namespace and fresh defaults.
-The [While body-Block review](coverage/semantics/anonymous-while-block-rtd-review.json)
+The [If-hosted While review](coverage/semantics/anonymous-conditional-while-rtd-review.json)
+binds three exact originals to branch selection, callable/Closure ownership and
+publication/allocation frontiers. Nested While hosts and other loops remain required.
+The earlier [While body-Block review](coverage/semantics/anonymous-while-block-rtd-review.json)
 binds three exact originals and focused Block/publication/creation/allocation
 frontiers; state fixtures stop at their required allocation.
 The 375 join at ac329f66 over 772760f0 reuses strict3 at tested 35adca9a
