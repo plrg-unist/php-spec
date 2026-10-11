@@ -275,8 +275,8 @@ LIFETIME = classes('VirtualOverrideLife') + [
     r'pcallcontext_destruct.LEXICAL_CLASS = (porigin_parent) /\ pcallcontext_destruct.CALLED_CLASS = (porigin_grand) /\ pcallcontext_destruct.RECEIVER = (ppropertyhook_S_this.OBJECT) /\ $objectprops_at(S_destruct.OBJECTPROPS,ppropertyhook_S_this.OBJECT) = (eps) /\ $heap_owners($heap_prune($heap_graph(S_destruct)),HOBJECT n_leaf) = 1 /\ $vo_guard(S_destruct)',
     *reach('S_box_exit','S_destruct',10),
     r'S_box_exit.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_box) :: ptask_box_exit*',
-    r'$vo_output(S_box_exit.EVENTS) = $ptascii("EMPTY|GC|HC|READ_EMPTY|Property VirtualOverrideLifeGrand39::$value is read-only:30|STILL_EMPTY|LIVE|BEMPTY|") /\ $heap_owners($heap_prune($heap_graph(S_box_exit)),HOBJECT n_leaf) = 1 /\ (HOBJECT ppropertyhook_S_this.OBJECT) <- $heap_free_roots($heap_graph(S_box_exit))',
-    r'$weak_reference_get(S_box_exit,n_weak_box,1).RESULT = KNOWN PNULL /\ $weak_reference_get(S_box_exit,n_weak_leaf,1).RESULT = KNOWN (POBJECT n_leaf)',
+    r'$vo_output(S_box_exit.EVENTS) = $ptascii("EMPTY|GC|HC|READ_EMPTY|Property VirtualOverrideLifeGrand39::$value is read-only:30|STILL_EMPTY|LIVE|BEMPTY|") /\ $heap_owners($heap_prune($heap_graph(S_box_exit)),HOBJECT n_leaf) = 1 /\ ~((HOBJECT ppropertyhook_S_this.OBJECT) <- S_box_exit.ALLOCATIONS)',
+    r'$weakref_get(S_box_exit,n_weak_box) = PNULL /\ $weakref_get(S_box_exit,n_weak_leaf) = POBJECT n_leaf',
     r'PhpStep: S_box_exit ~> S_box_finished_raw',
     r'S_box_finished = $vo_after(S_box_exit,S_box_finished_raw)',
     *reach('S_kept','S_box_finished',12),
@@ -285,9 +285,9 @@ LIFETIME = classes('VirtualOverrideLife') + [
     r'$lookup(S_kept_raw.ENV,$ptascii("kept")) = eps /\ $heap_owners($heap_prune($heap_graph(S_kept_raw)),HOBJECT n_leaf) = 0 /\ S_kept_raw.EVENTS = S_kept.EVENTS',
     r'S_kept_release = $vo_after(S_kept,S_kept_raw)',
     *reach('S_leaf_exit','S_kept_release',13),
-    r'$vo_output(S_leaf_exit.EVENTS) = $ptascii("EMPTY|GC|HC|READ_EMPTY|Property VirtualOverrideLifeGrand39::$value is read-only:30|STILL_EMPTY|LIVE|BEMPTY|BN|LIVE|DC|") /\ (HOBJECT n_leaf) <- $heap_free_roots($heap_graph(S_leaf_exit)) /\ $weak_reference_get(S_leaf_exit,n_weak_leaf,1).RESULT = KNOWN PNULL',
+    r'$vo_output(S_leaf_exit.EVENTS) = $ptascii("EMPTY|GC|HC|READ_EMPTY|Property VirtualOverrideLifeGrand39::$value is read-only:30|STILL_EMPTY|LIVE|BEMPTY|BN|LIVE|DC|") /\ ~((HOBJECT n_leaf) <- S_leaf_exit.ALLOCATIONS) /\ $weakref_get(S_leaf_exit,n_weak_leaf) = PNULL',
     r'S_done = $drive_steps(S_leaf_exit,10000)',
-    r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ $vo_output(S_done.EVENTS) = EXPECTED_OUTPUT /\ $weak_reference_get(S_done,n_weak_box,1).RESULT = KNOWN PNULL /\ $weak_reference_get(S_done,n_weak_leaf,1).RESULT = KNOWN PNULL /\ $vo_guard(S_done)',
+    r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ $vo_output(S_done.EVENTS) = EXPECTED_OUTPUT /\ $weakref_get(S_done,n_weak_box) = PNULL /\ $weakref_get(S_done,n_weak_leaf) = PNULL /\ $vo_guard(S_done)',
 ]
 
 
