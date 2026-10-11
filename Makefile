@@ -643,6 +643,9 @@ test-semantics: build
 	python3 tests/semantics/backed_get_hook_addassign_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/backed_get_hook_override_cases.json
 	python3 tests/semantics/backed_get_hook_override_protocol.py --revision "$$(git rev-parse HEAD)"
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/effective_backed_get_hook_cases.json
+	python3 tests/semantics/effective_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group scalar
+	python3 tests/semantics/effective_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group lifetime
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

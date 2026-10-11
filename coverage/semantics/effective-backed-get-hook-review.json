@@ -1,0 +1,128 @@
+{
+  "scope": "Named nonabstract/nonfinal subclasses with public plain by-value get hooks and identical normalized TYPE: a child without its own backing access or initializer overrides an immediate parent whose getter body is source-backed. Literal CV/This reads and ordinary writes.",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "engine": "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook; Zend/zend_compile.c: zend_compile_property_hooks; Zend/zend_object_handlers.c: zend_std_read_property",
+    "behavior": "Keep hook_body_backed as the source predicate. Authenticate the child own descriptor and SOURCE_PARENT link, use bounded parent property_layout and a narrow equal-TYPE hook pair to establish effective physical storage. The child supplies PROP_UNINITIALIZED or PROP_NULL, removing the parent default. No default copying, task, context or ownership change.",
+    "guard_correction": "Authenticate the standalone child hook occurrence and retain body-backed or absent-default admission. This preserves the maintained default200-to-unbacked-body refusal; the earlier dca source pass remains a separate cut.",
+    "maintained_fixture": "M36 DERIVED19 now checks the newly admitted child shape with ABSTRACT/FINAL exclusions. DERIVED23 is unchanged; historical M36 source/state/failure receipts are retained without renewal."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, jobs=1, cache=false, det=true",
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "catalogue": "tests/semantics/effective_backed_get_hook_cases.json",
+  "native": {
+    "revision": "c3fbb2570567e205e441017602052291e02c76a7",
+    "cases": 2,
+    "cap_seconds": 45,
+    "source_agreements": 0,
+    "observations": "Typed child begins with no initialized slot; untyped child has one null slot. Ordinary writes expose one slot containing300/5 while child reads remain7/false. Child lexical/private scope and Grand called scope survive inherited This dispatch. Stored S releases BS/DS with receiver storage while kept returned R remains live until DR/RN.",
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hooks-probes-37/native-first/report.json",
+    "sha256": "f77671855b39e689acb853b1f722115ebe02ff75579f8977805957cd1026d7e2"
+  },
+  "unchanged_baseline": {
+    "revision": "c3fbb2570567e205e441017602052291e02c76a7",
+    "outcome": "Both checked originals Unsupported property hook visibility, inheritance, attributes or shape; empty bytes/events.",
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hooks-probes-37/accepted-current-baseline/report.json",
+    "sha256": "70bb37e5ed8092c24e47c3ce1fcf27777122cf095879ba6891b5522aa8806e6b"
+  },
+  "strict": {
+    "revision": "64d12f44c36ea73ce0313abda7bbb9f7785bc37f",
+    "modules": 375,
+    "mode": "SL init-only",
+    "cap_seconds": 60,
+    "elapsed_seconds": 5.747421,
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hooks-probes-37/effective-backed-hook-compiler-7xky12tm/report.json",
+    "sha256": "9fc7d38b2e9310892eeb3b3dd0c8ba64365694114521f87bb7d85a0dbc434e79"
+  },
+  "sources": {
+    "revision": "64d12f44c36ea73ce0313abda7bbb9f7785bc37f",
+    "agreements": 2,
+    "model_cap_seconds": 60,
+    "outer_cap_seconds": 75,
+    "steps": 100000,
+    "outcome": "Both checked originals normal, exact retained native stdout/stderr/exit for effective defaults/storage, Child/Grand/inherited dispatch and separate stored/returned payload cleanup.",
+    "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hooks-probes-37/changed-model-ntq_c7k_/report.json",
+    "sha256": "86a77036d92ece7744279b618e94820bc24be5d10065670551be3312d997b08a"
+  },
+  "state": {
+    "scalar": {
+      "revision": "b589ca70e049bf6ea5b708e5ef3d7779d0c9028d",
+      "mode": "AL90 -> SL90; --group scalar",
+      "reached": 161,
+      "derived": 24,
+      "total": 185,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "outcome": "true",
+      "AL_seconds": 5.012237,
+      "SL_seconds": 81.493501,
+      "fixture_sha256": "0f7f009362b7a4846c890b6b4618253128785cc889d18d976e219f6991c5ee2d",
+      "observations": "Genuine linked parent/own child descriptor and physical slot; typed PROP_INITIAL and untyped DIRECT NULL replace parent defaults. Child/private vs Grand called scope, inherited ParentRead, actual ordinary writes300/5, hook/current/frame ownership and caller restoration.",
+      "derived_controls": "New D19 admission with ABSTRACT/FINAL guards, defaulted/body/byref/source/TYPE/ordinary-parent/virtual-parent/link refusals, scope checks and rollback.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hook-protocol-w5yll5jm/report.json",
+      "sha256": "37f287a456390af888fbe532f70ed0a61f1d826085e34ced03f081bf1d9bcce5"
+    },
+    "lifetime": {
+      "revision": "b589ca70e049bf6ea5b708e5ef3d7779d0c9028d",
+      "mode": "AL90 -> SL90; --group lifetime",
+      "reached": 100,
+      "derived": 0,
+      "total": 100,
+      "application_evaluations": 1,
+      "source_agreements": 0,
+      "outcome": "true",
+      "AL_seconds": 5.000226,
+      "SL_seconds": 41.295915,
+      "fixture_sha256": "7471a50b418c4b2710ef847ff68f9faa3ca5c7de2a5939a122bf8811bac14c47",
+      "observations": "Distinct stored S slot edge and fresh R RESULT1 -> BASE+RESULT2 -> keptCV1. Genuine post-destructor INSTANCE_STORAGE_STEP NEXT0 and slot transfer release S, real UNSET-box exit frees receiver/S with weak-null while R stays live; real kept unset frees R/weak-null.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hook-protocol-9z4su34u/report.json",
+      "sha256": "9033d0516d45505d8f99378b1b01aea355739f9644df3fa21ee2c718d27e903c"
+    },
+    "compatibility": "Split only the selection after the combined timeout; PREFIX and all285 premises are unchanged from f32. Scalar185 and lifetime100 are separate accepted invocations, with no combined285 pass.",
+    "stability": "Both selected cuts exit0/rawtrue with empty stderr, stable inputs/fixture/HEAD/status, no timeout or surviving process group."
+  },
+  "earlier_cuts": {
+    "revision": "dca5784bbc4b09fd9fbc55e257dabf0925e3e974",
+    "outcome": "Initial narrow strict/source2 pass before the standalone-occurrence guard; not renewed.",
+    "strict": {
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hooks-probes-37/effective-backed-hook-compiler-vi57q2x_/report.json",
+      "sha256": "cafef5e9fda4118256c756187a4dfb75c184b1d9da0cd37b8b869cfb3ea29d76"
+    },
+    "sources": {
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hooks-probes-37/changed-model-xoc5dbra/report.json",
+      "sha256": "8aaeca5888600ac5d13278dd7f591d0dcd59c9b98c4d3e0e39a97306a31f2476"
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "Combined285 timeout",
+      "revision": "f32def31fdea2a9bd39afdfa5573dba43efafefe",
+      "outcome": "AL passed5.117311; SL killed after90.132512s with exit-9 and empty output; application evaluation0, gate/source0, stable4/reaped.",
+      "path": ".tools/coalesce-get-hooks-private-32/.tools/effective-backed-get-hook-protocol-dnarg_uh/report.json",
+      "sha256": "099245522c5c11833df0ca75c9b76d55a433e63cfa76e9bcfa4473baf0d708f9"
+    }
+  ],
+  "commands": [
+    "python3 .tools/effective-backed-get-hooks-probes-37/run.py native --revision c3fbb2570567e205e441017602052291e02c76a7",
+    "python3 .tools/effective-backed-get-hooks-probes-37/run.py baseline --revision c3fbb2570567e205e441017602052291e02c76a7",
+    "python3 .tools/effective-backed-get-hooks-probes-37/run-compiler.py c3fbb2570567e205e441017602052291e02c76a7 64d12f44c36ea73ce0313abda7bbb9f7785bc37f",
+    "python3 .tools/effective-backed-get-hooks-probes-37/run.py changed --revision 64d12f44c36ea73ce0313abda7bbb9f7785bc37f",
+    "python3 tests/semantics/effective_backed_get_hook_protocol.py --revision b589ca70e049bf6ea5b708e5ef3d7779d0c9028d --group scalar",
+    "python3 tests/semantics/effective_backed_get_hook_protocol.py --revision b589ca70e049bf6ea5b708e5ef3d7779d0c9028d --group lifetime"
+  ],
+  "recovery": "Commands run from retained private32. Permanent originals/case hashes/exact native observations are in the catalogue; ignored raw/probe/runner/binary paths remain in place. Historical M36 and earlier hook cuts retain their identities.",
+  "remaining": [
+    "Overrides of an immediate parent whose own getter body is unbacked, including repeated unbacked overrides over this effective-backed child",
+    "Virtual-parent pairs, ordinary-parent new hooks and plain redeclarations inheriting hooks",
+    "Broader type equivalence/covariance, set/byref/defaulted virtual/trait hooks and wider receivers/consumers"
+  ]
+}

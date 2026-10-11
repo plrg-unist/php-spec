@@ -709,6 +709,17 @@ remain required. [Override review](coverage/semantics/backed-get-hook-override-r
 Actual375 over `b1e869f5` passes strict initialization at `4534b2c2` (5.747 s);
 private source2/scalar238/lifetime97 retain their separate accepted revisions.
 
+A public by-value child getter without backing access or an initializer now
+retains a physical slot over an immediate parent whose getter body is backed,
+with equal normalized types. The child's typed uninitialized or untyped null
+default replaces the parent's default; ordinary writes and inherited `$this`
+dispatch keep the child slot and scope. Strict375 and two originals pass at
+`64d12f44`. Separate scalar185 (161 reached, 24 derived) and lifetime100
+(all reached) pass at `b589ca70`, checking distinct stored/returned payload
+cleanup. The combined285 timeout retains zero credit; M36 cuts remain frozen.
+Repeated body-unbacked overrides, virtual parents and broader hook inheritance
+remain required. [Effective backing review](coverage/semantics/effective-backed-get-hook-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

@@ -33,8 +33,8 @@ return compilation at the authentic expression child, preserving its emitted lin
 and the Hook source across string callbacks. Seven additional originals and 137
 derived/reached checks are recorded in the
 [expression review](../../coverage/semantics/expression-get-hooks-review.json).
-Virtual getters without defaults retain the same declaration, function and return
-type while omitting the physical slot. The receiver owns no returned-value edge;
+Effective virtual getters without defaults retain the same declaration, function
+and return type while omitting the physical slot. The receiver owns no returned-value edge;
 result copies survive receiver cleanup and release independently. Ordinary writes
 evaluate the RHS before read-only rejection and skip destination coercion. Literal
 string `$this`/property forms still establish backing; nested function bodies do
@@ -86,9 +86,17 @@ the effective child getter. Direct backing access still requires the active
 property and receiver; returning a fresh object does not store it in that slot.
 Two originals and separate scalar238/lifetime97 cuts are recorded in the
 [override review](../../coverage/semantics/backed-get-hook-override-review.json).
-Admission requires a nonabstract, nonfinal named subclass and backed bodies
-on both sides. Broader type equivalence/covariance, virtual cross-shapes and
-plain redeclarations of inherited hooks remain explicit Unsupported.
+A child getter without its own backing access or initializer also retains a
+physical slot over an immediate parent whose getter body is backed. Its own
+uninitialized typed or null untyped default removes the parent default; ordinary
+writes use that slot while reads still invoke the child getter. Receiver cleanup
+releases the backing reference independently of a returned object retained by
+the caller. Two originals and separate scalar185/lifetime100 cuts are recorded
+in the [effective backing review](../../coverage/semantics/effective-backed-get-hook-review.json).
+Admission requires a nonabstract, nonfinal named subclass, public by-value getters
+and identical normalized types. Overrides of a body-unbacked immediate parent,
+virtual-parent pairs, broader type equivalence/covariance and plain redeclarations
+of inherited hooks remain explicit Unsupported.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 other inheritance/traits, temporary/computed receivers, other compound operators/RHS
