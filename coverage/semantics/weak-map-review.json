@@ -1,0 +1,112 @@
+{
+  "scope": "WeakMap empty construction, first insertion with an ordinary stdClass leaf key and INSTANCE leaf value, key nonownership and real value release on ordinary key retirement.",
+  "status": "independently_reviewed_partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "base_revision": "409a37be5c6eb0393abacfe507f62aa9dde0b8fd",
+  "modules": 376,
+  "raw_root": ".tools/weak-map-key-retirement-55",
+  "representation": "One optional entry records a nonowning key ID and an owning value. Actual key storage359 pin precedes entry-to-DESTRUCTION_VALUE transfer; the key and value remain physically allocated at the reached weak-null endpoint. Empty map release uses the existing ordinary path. No global heap relaxation or count change.",
+  "source_agreement": {
+    "revision": "0fc26e6b6c0bbac771424a943f55158faea88d2a",
+    "agreements": 1,
+    "source_sha256": "547205105e5c95c1c80e92f9fd02b1d9f4d8157ceecca87a69b23f37be620eff",
+    "native_report": ".tools/weak-map-key-retirement-native-55-r5czjcbq/report.json",
+    "model_report": ".tools/weak-map-key-retirement-source-55-eriao70r/report.json",
+    "native_stdout_bytes": 45,
+    "native_stdout_sha256": "a4d564262feba8845bf78306dc6c57ba44e9d18f954c69afd980b77bbed44040",
+    "caps": "CLI60 / recorder75 / host180 / jobs1"
+  },
+  "state_cuts": [
+    {
+      "revision": "58b8873ba232256e55ccb33680525d099821a3fe",
+      "scope": "Constructor, first insertion, value retention and key-notice callback/storage",
+      "assertions": [
+        64,
+        105,
+        80,
+        126
+      ],
+      "candidate_sha256": "df437372c0465ec0b0d89ddfb69671d71bc253a39b76c1fc80beda758af5019c",
+      "reports": [
+        ".tools/weak-map-key-retirement-state-55-fkkqvgv_/report.json",
+        ".tools/weak-map-key-retirement-state-55-1me4oo2m/report.json",
+        ".tools/weak-map-key-retirement-state-55-1vrxp307/report.json",
+        ".tools/weak-map-key-retirement-state-55-sz4x3fcb/report.json"
+      ]
+    },
+    {
+      "revision": "58b8873ba232256e55ccb33680525d099821a3fe",
+      "scope": "Authentic nonempty-map collection refusal and terminal driver cleanup",
+      "assertions": [
+        49
+      ],
+      "candidate_sha256": "26919616992971cafd3a5e3791708136ed6addbea87d118d7c1ad9566452766a",
+      "report": ".tools/weak-map-nonempty-collection-refusal-state-55-ihca5idy/report.json"
+    },
+    {
+      "revision": "8df280811d3de60c905a3105d4f19a4177b6a3dc",
+      "scope": "Real key-pin GET refusal, unchanged state/replay, bounds/pin controls and coherent complementary live-map GET",
+      "assertions": [
+        116
+      ],
+      "candidate_sha256": "09e363659287c8c689b3b1efcdb21cab58515fcb8c35fcf934421cad82b5d1bf",
+      "report": ".tools/weak-map-notification-order-refusal-state-55-m1379yw3/report.json"
+    }
+  ],
+  "validation": {
+    "lifetime_assertions": 375,
+    "expected_refusal_control_assertions": 165,
+    "combined_checked_assertions": 540,
+    "counting": "Includes three startup assertions per case; not 540 distinct PHP behaviors or collection agreement. Six focused cuts use no full terminal drive. Actual strict stdout true newline, exit0, empty stderr, no timeout, stable selected inputs/revision/status and reaped process groups.",
+    "state_caps": "strict120 / host240 / worker30 / jobs1"
+  },
+  "final_compiler_init": {
+    "revision": "8df280811d3de60c905a3105d4f19a4177b6a3dc",
+    "compiler_report": ".tools/weak-map-key-retirement-55-compiler-314rtz2j/report.json",
+    "init_report": ".tools/weak-map-key-retirement-55-init-wg2eh6wh/report.json",
+    "result": "Actual algo/struct syntax artifacts and strict true newline; exits0/no timeout/stderr0/stable/reaped."
+  },
+  "compatibility": "The three closed WEAKMAP validator arms at 58b do not affect original php_run entry before map allocation or its Closure-free drive_steps path. The 8df GET guard is false for every original55 read: none occurs in a key storage pin callback. Pure weakref_get and owners are unchanged. Earlier source/state cuts retain their exact tested revisions; no renewal is claimed.",
+  "localization": {
+    "constructor_report": ".tools/weak-map-key-retirement-first-refusal-55-iivbpz0p/report.json",
+    "constructor_assertions": 28,
+    "constructor_revision": "409a37be5c6eb0393abacfe507f62aa9dde0b8fd",
+    "late_native_report": ".tools/weak-map-notification-order-native-55-98bw10jy/report.json",
+    "late_source_sha256": "fc49fe3ab9ef84cdc82452a403b8b0b7e648ff080346a5f9001f7954604becb8",
+    "late_native_stdout_bytes": 59,
+    "late_native_stdout_sha256": "097feb2c2bbfabdef90511c0f2f56e51754182012d16dec034846a743fd4e03d",
+    "old_get_report": ".tools/weak-map-notification-order-first-get-55-r1u82x0h/report.json",
+    "old_get_revision": "58b8873ba232256e55ccb33680525d099821a3fe",
+    "old_get_assertions": 67,
+    "result": "Native late-registration callback sees the key live; one genuine old GET returns PNULL. Counterexample/localization only, zero source agreement. The current guard reports WeakMap key notification reference order without changing state."
+  },
+  "preserved_zero_credit": [
+    ".tools/weak-map-key-retirement-source-55-eykxnqsj/report.json: original internal-class NEW Unsupported, no events",
+    ".tools/weak-map-key-retirement-55-compiler-gxuocnoh/report.json: algo undefined-helper diagnostic; struct/init unrun",
+    ".tools/weak-map-key-retirement-55-compiler-0res64qp/report.json: algo compound-binding diagnostic; struct/init unrun",
+    ".tools/weak-map-key-retirement-55-compiler-v6sypg_2/report.json: algo compound-binding diagnostic; struct/init unrun",
+    ".tools/weak-map-key-retirement-state-55-9_1cz50a/report.json: constructor64 closed-validator failure before three narrow form arms",
+    ".tools/weak-map-key-retirement-state-55-vzm6phc6/report.json: GC41 driver-equality fixture failure; corrected49 is distinct"
+  ],
+  "maintained": {
+    "source_cases": "tests/semantics/cycle_collection_cases.json",
+    "state_cases": "tests/semantics/cycle_collection_state_review.py",
+    "state_sha256": "500fc77bd2e60228752ecb2af8e1751f7e1f9acac8778ea942bda20c49bb2479",
+    "transfer_revision": "5894da0f34493202c289b25632fab60500b41070",
+    "prior_sources_preserved": 49,
+    "prior_state_cases_preserved": 107,
+    "new_source_cases": 1,
+    "new_state_cases": 6
+  },
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C / TZ=UTC / PHP_SPEC_SCRIPT_ENCODING absent / CPU2; full recorded commands and identities remain in the listed reports"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_weakrefs.c: entry value addref, raw-key registration, ordered notification and map free_obj",
+    "vendor/php-src/Zend/zend_objects.c: std_dtor notification",
+    "vendor/php-src/Zend/zend_objects_API.c: destructor/storage lifetime"
+  ],
+  "boundaries": "Wider entries and key/value shapes, read/mutation/method/iteration protocols, nonempty-map free, late registration callback behavior and ephemeron collection remain required. Countable is nominal-only; count library execution is excluded/Unsupported per CORE. The new refusals are correctness boundaries, not complete WeakMap/GC semantics. Source41 wholeCLI60/180 remains OPEN/zero; all prior failures retain their original zero credit and unchanged evidence."
+}

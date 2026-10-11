@@ -1027,11 +1027,19 @@ live. Ordinary object free clears weak lookup before property children; Generato
 storage notifies after its Closure/cache releases. Twenty-one
 exact sources and nine reached cuts (344 physical premises) pass; five Unsupported
 controls earn zero agreement. Pending-carrier unwind, deferred construction,
-wider consumers and WeakMap remain required. Canonical292/304
+wider consumers and wider WeakMap protocols remain required. Canonical292/304
 composition separately passes strict277 initialization and one exact weak lifetime
 source; earlier cuts retain their inputs.
 Wrappers also satisfy nominal `WeakReference` argument and property types after
 their referent retires; diagnostics retain the actual internal class name.
+
+[WeakMap386](docs/semantics/WEAK-REFERENCES.md) supports empty construction and one
+first insertion with a `stdClass` leaf key and ordinary leaf value. The map owns
+its value; the key stays nonowning. Actual key free transfers the entry to real
+destructor release jobs while retaining its storage pin. One original agrees
+with native PHP; 375 lifetime assertions and 165 refusal/control assertions pass
+at separate cuts. Nonempty-map free, ephemeron GC and registration-order-dependent
+callback reads stop explicitly; wider entry/read/mutation protocols remain required.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak

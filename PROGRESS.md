@@ -2757,9 +2757,20 @@ validated parked stacks. Twenty-one exact originals and nine reached cuts/344
 physical premises retain their private275 inputs in the
 [ledger](coverage/semantics/weak-reference-review.json); five Unsupported controls
 earn zero agreement. The [contract](docs/semantics/WEAK-REFERENCES.md) keeps
-pending-carrier unwind, deferred construction, wider consumers, GC and WeakMap
-open. Actual292/304/270 composition passes strict277 initialization and one new
-exact weak lifetime original, with stable inputs and separate recorded cuts.
+pending-carrier unwind, deferred construction, wider consumers, GC and wider
+WeakMap protocols open. Actual292/304/270 composition passes strict277 initialization
+and one new exact weak lifetime original, with stable inputs and separate recorded cuts.
+
+WeakMap386 now admits one first entry with a nonowning `stdClass` leaf key and
+strong ordinary leaf value. Key notification replaces the map edge with an
+authentic VALUE release before the value callback, preserving the key storage pin.
+The original matches all 45 native output bytes at `0fc26e6`; four reached lifetime
+cuts pass 375 assertions at `58b8873`. Expected GC refusal (49 checks) and
+notification-order refusal (116 checks) keep separate cuts, totaling 540 checks.
+The late-registration native trace and old GET cut identify the mismatch without
+source agreement; wider maps, nonempty-map free and ephemeron collection remain
+required. Earlier failed gates
+and fixtures retain zero credit. [Ledger](coverage/semantics/weak-map-review.json).
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and
 supports final compound append, including null-key Get/Set on returned children.

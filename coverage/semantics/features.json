@@ -17765,15 +17765,32 @@
     {
       "id": "lifecycle.weak-map",
       "milestone": "5b",
-      "status": "pending",
-      "dependencies": [],
-      "implementation": [],
-      "helper_tests": [],
-      "source_tests": [],
-      "evidence": [
-        "vendor/php-src/Zend/zend_gc.c"
+      "status": "partial",
+      "dependencies": [
+        "lifecycle.destructor-timing",
+        "lifecycle.weak-reference"
       ],
-      "review": null
+      "implementation": [
+        "spec/semantics/386-weak-map-lifetime.watsup",
+        "spec/semantics/30-storage.watsup",
+        "spec/semantics/296-weak-references.watsup",
+        "spec/semantics/301-cycle-collection.watsup",
+        "spec/semantics/359-instance-storage-pin.watsup"
+      ],
+      "helper_tests": [
+        "tests/semantics/cycle_collection_state_review.py"
+      ],
+      "source_tests": [
+        "tests/semantics/cycle_collection_cases.json",
+        "tests/semantics/cycle_collection_sources.py"
+      ],
+      "evidence": [
+        "vendor/php-src/Zend/zend_weakrefs.c",
+        "vendor/php-src/Zend/zend_objects.c",
+        "vendor/php-src/Zend/zend_gc.c",
+        "coverage/semantics/weak-map-review.json"
+      ],
+      "review": "Bounded module386 first-entry protocol: allocated stdClass leaf key is nonowning; the ordinary leaf value is owned by the map until actual key notification transfers it into a real VALUE release. The 45-byte native original agrees at 0fc26e6; 375 constructor/write/retention/callback assertions at 58b8873 and 49 GC refusal plus 116 notification-order checks at their separate cuts total 540. Callback retirement retains both physical pins with weak-null; the late-registration native trace and old GET cut localize the false-null boundary, now explicit Unsupported. Countable is nominal-only; count library execution is excluded/Unsupported per CORE. Wider entries, reads/mutation/methods/iteration, nonempty-map free, registration order and ephemeron GC remain required. Prior failures retain zero credit; no cycle-collection or full WeakMap closure."
     },
     {
       "id": "lifecycle.resurrection",
