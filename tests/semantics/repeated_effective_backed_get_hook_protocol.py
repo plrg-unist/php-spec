@@ -331,6 +331,17 @@ CONTROLS = classes('RepeatedStorage') + [
 ]
 
 
+TYPED_CV = TYPED[:57]
+TYPED_THIS = TYPED[:26] + CONTROLS[20:28] + TYPED[60:95]
+TYPED_WRITE = TYPED[:26] + [
+    'S_write = S',
+    TYPED[98],
+    r'$lookup(S_write.ENV,$ptascii("grand")) = (n_grand_cell)',
+    r'S_write.STORE[n_grand_cell] = DEFINED (POBJECT n_grand)',
+    r'S_write.OBJECTS[n_grand] = INSTANCE porigin_grand /\ (HOBJECT n_grand) <- S_write.ALLOCATIONS',
+] + [clause.replace('ppropertyhook_S_this.OBJECT', 'n_grand') for clause in TYPED[99:]]
+
+
 DERIVED = [
     r'~$property_hook_inherited_backing_walk(S,ppropertydesc_child,0) /\ ~$property_hook_inherited_backing_walk(S,ppropertydesc_child,1) /\ $property_hook_inherited_backing_walk(S,ppropertydesc_child,2)',
     r'~$property_hook_override_pair(S,ppropertydesc_child,ppropertydesc_child) /\ ~$property_hook_override_shape(S,ppropertydesc_child,ppropertydesc_child) /\ $property_hook_parent_match(S,ppropertydesc_child,eps)',
@@ -369,7 +380,7 @@ DERIVED = [
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
-    parser.add_argument('--group', choices=['typed', 'controls', 'untyped', 'lifetime'], required=True)
+    parser.add_argument('--group', choices=['typed', 'cv', 'this', 'write', 'controls', 'untyped', 'lifetime'], required=True)
     parser.add_argument('--prepare-only', action='store_true')
     args = parser.parse_args()
     recorder.ROOT = ROOT
@@ -380,6 +391,9 @@ def main():
     assert data['native_profile'] == profile
     clauses, negatives, case_index, start_stage = {
         'typed': (TYPED, [], 0, 12),
+        'cv': (TYPED_CV, [], 0, 12),
+        'this': (TYPED_THIS, [], 0, 12),
+        'write': (TYPED_WRITE, [], 0, 4),
         'controls': (CONTROLS, DERIVED, 0, 12),
         'untyped': (UNTYPED, [], 0, 13),
         'lifetime': (LIFETIME, [], 1, 0),
