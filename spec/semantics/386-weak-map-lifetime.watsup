@@ -64,6 +64,7 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
   -- if paccess.OBJECT = (n_map)
   -- if $weakmap_at(S, n_map)
+  -- if ~$instance_storage_freeing(S, n_map)
   -- if S_base = $quiet_operand(S, poperand)
   -- if S_base.COMPLETION = NORMAL
   -- if S_base.RESULT = KNOWN (POBJECT n_map)
