@@ -1221,10 +1221,14 @@ are recorded in the [virtual review](coverage/semantics/virtual-get-hooks-review
 Literal CV/`$this` `isset` and `empty` invoke these getters and test their returned
 value, releasing temporary results before branch output while the receiver
 remains live. Two originals and 162 premises (143 reached, 19 derived) pass in the
-[quiet hook review](coverage/semantics/quiet-get-hooks-review.json); coalescing
-and wider quiet access remain required.
+[quiet hook review](coverage/semantics/quiet-get-hooks-review.json).
+Literal CV/`$this` hook coalescing retains returned zero, false and object values;
+only null selects the fallback. Kept objects survive receiver destruction and
+release when their last result owner disappears. Two originals and 249 premises
+(224 reached, 25 derived) pass in the
+[coalesce review](coverage/semantics/coalesce-get-hooks-review.json).
 Hooked iteration, defaulted virtual/set/reference, inherited/trait and wider
-receiver or indirect-access families remain required.
+receiver, quiet or indirect-access families remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed

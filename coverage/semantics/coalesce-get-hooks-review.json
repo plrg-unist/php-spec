@@ -1,0 +1,132 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit; profile30719; LC_ALL=C/TZ=UTC; jobs1",
+  "scope": "Literal ordinary CV/This left operands of ?? through public by-value backed/virtual block or expression get hooks. The actual returned value is retained; only null selects the original RHS.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_coalesce (BP_VAR_IS left, actual RHS)",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_FETCH_OBJ_IS / ZEND_COALESCE (get-hook RV, nonnull value retained without truth conversion)",
+    "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_property / zend_call_get_hook (temporary receiver hold and returned RV)"
+  ],
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "semantic_revision": "0023fecf364b9098b4a0bdfbd097647313ae9b51",
+  "state_revision": "6be8d904a7d8306c1585fe105bc64914a904b6d3",
+  "module_count": 375,
+  "native": {
+    "revision": "57f2f4b8b16bba863930d16ae6ffd6fe53da1265",
+    "sources": 2,
+    "source_agreements": 0,
+    "report": "native-first/report.json",
+    "sha256": "76840928d18525b848a821c257d70395b7169af7edb9207cad425eb32c2b0716"
+  },
+  "baseline": {
+    "revision": "57f2f4b8b16bba863930d16ae6ffd6fe53da1265",
+    "checked_sources": 2,
+    "reason": "quiet property hook read",
+    "source_agreements": 0,
+    "report": "accepted-current-baseline/report.json",
+    "sha256": "5ff258feed8ad8669af27a0f4e55ade35f836f35055189b612e5c3cf6a2c53a5"
+  },
+  "sources": {
+    "agreements": 2,
+    "catalogue": "tests/semantics/coalesce_get_hook_cases.json",
+    "report": "changed-model-3z3cnvnj/report.json",
+    "sha256": "ccb4603c7d851e128c2b97d8a8e3a614de8d63e3b6798c63281cb24085807805",
+    "observations": "CV/This returned null runs R then selects13; returned0 and false are retained. Backing false becomes7 and backing7 becomesfalse. Virtual expression getter returns an object kept through receiver B and LIVE, with D and weak-null only after kept unset: G|HELD|B|LIVE|D|N|.",
+    "elapsed_seconds": [
+      15.6027,
+      9.04862
+    ]
+  },
+  "strict": {
+    "mode": "SL",
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "elapsed_seconds": 5.638463,
+    "report": "coalesce-hook-compiler-kctpbj0b/report.json",
+    "sha256": "56fa7623d1f1f9121e14fc6a8b2f433e2382a9a06824f69d52013daa8ebb3777"
+  },
+  "state": {
+    "reached": 224,
+    "derived": 25,
+    "premises": 249,
+    "application_evaluations": 1,
+    "source_agreements": 0,
+    "report": "coalesce-get-hook-protocol-4j0coe7j/report.json",
+    "sha256": "930658b607586861fc134dfca439519e53303a755258e4dd7c11c21a4543f9f1",
+    "fixture_sha256": "eb6ad118eabef717c7541739861dfbeb425ea065aed9d88c18dbdd045d58f49b",
+    "algorithmic_seconds": 5.511196,
+    "strict_SL_seconds": 42.468233,
+    "stdout": "true\n",
+    "observations": "Genuine checked source/setup, prep/call/frame/result and actual parent restoration. Null schedules original RHS at PCFIELD1 with its emitted line; all six CV/This nonnull0/7/false frontiers skip RHS unchanged. This receiver owners3->3->2. Returned RV RESULT1->RESULT+BASE2->raw selected RESULT1->release job plus saved result2->finished RESULT1; no destructor or weak-null during selection. Kept CV survives receiver B; actual ENV unset removes last owner before leaf D/weak-null. Result tasks add no receiver or payload root.",
+    "derived_controls": "Missing/wrong restoration marker, consumer mode, both emitted lines, RHS, origin, property/hook/function and substituted empty parent, at the tested plan/pending-call/frame/result gates. Parent mutations do not claim every old task-local fallback rejects them."
+  },
+  "validation": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "state_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "caps": "native45; strictSL60 init-only; model60/outer75/100000steps; affected state AL90 then SL90",
+    "execution": "Cache=false/det=true; exact original source/stdout/stderr/exit agreement; clean stable inputs/fixture/HEAD/status and fully reaped groups. Fixture/publication commits preserve semantic0023 and native57 cuts without renewal."
+  },
+  "preserved": [
+    {
+      "revision": "241ea56a41944a4e7ae9df8af4ffc25963534c30",
+      "report": "coalesce-hook-compiler-l5jpqsid/report.json",
+      "sha256": "d24bd6c7ec1876235b108eaee98b82f0073903de98f9082209f35aa48177f20b",
+      "result": "Strict elaboration stopped on result-tail declaration after first use; app/source0, both changed originals UNRUN.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "681e3b9042310c89d92e5c5ebf0e92f5c1e7f6c6",
+      "report": "coalesce-hook-compiler-biyhjmh9/report.json",
+      "sha256": "7ef96dd1dd3882a3d8428158cf403647661ad31270ec63dcb9a736b090ae5075",
+      "result": "Strict elaboration stopped on a second call-task default; app/source0, both changed originals UNRUN.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "536ad71ca358fe64c7570221e194c5cd9521c3f0",
+      "report": "coalesce-get-hook-protocol-co7srwdz/report.json",
+      "sha256": "5b368acfdee3bccdd361630f1c75f1cb5c8248a31e0bcd1099697927818283da",
+      "result": "AL diagnostic rejected optional origin passed directly to AT; exit0 but no compiled main, app0, SL UNRUN.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "de981324287e77904161285bd5108d03b6d0852f",
+      "report": "coalesce-get-hook-protocol-ua5elq46/report.json",
+      "sha256": "d7b5b0a8ae1881b513dfe9e8af15e20e71d6ce2c18ed804476515bf289a5e351",
+      "result": "AL passed; SL false240 at premature selected-owner/empty-operation expectation; a later inert STORE assertion also needed correction; state/source credit0.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "de981324287e77904161285bd5108d03b6d0852f",
+      "report": "coalesce-unset-owners-diagnostic-de981/report.json",
+      "sha256": "f805aa680656565ddc5f49fd4b39174ec833053b47f7a5c94bc586ba55ce20cb",
+      "result": "Diagnostic (true,(999,false,false)): scalar verdict true, lifetime prefix failed before raw unset expectations; state/source credit0.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "de981324287e77904161285bd5108d03b6d0852f",
+      "report": "coalesce-lifetime-frontiers-diagnostic-de981/report.json",
+      "sha256": "d09de1763bfc6e088bfeaaf4a941dc39e8046c62fd064782c677af045cd08ccf",
+      "result": "One authentic lifetime walk isolated only clause34 false: raw selected RESULT1 but protected operation2; box UNSET exit valid, raw kept unset ENV missing/owners0/STORE inert; state/source credit0.",
+      "affected_credit": 0
+    }
+  ],
+  "prior_quiet": "quiet-get-hooks-review.json remains unchanged; its coalesce parent exclusion has runtime/source credit0 at that historical cut. This ledger records the separate new genuine coalesce source/state cut.",
+  "remaining": "Defaulted virtual/set/byref hooks, inheritance/traits, temporary/computed receivers, coalescing assignment and wider quiet/reference/indirect access remain partial.",
+  "review": "Author class_dev_21 and independent class_review_21 accepted the semantic net, original native/baseline/strict/source cuts and exact state249 raw binding. Earlier quiet cuts remain unchanged.",
+  "recovery": {
+    "private_root": ".tools/coalesce-get-hooks-private-32",
+    "probe_root": ".tools/coalesce-get-hooks-private-32/.tools/coalesce-get-hooks-probes-32",
+    "state_and_diagnostics_root": ".tools/coalesce-get-hooks-private-32/.tools",
+    "commands": [
+      "python3 .tools/coalesce-get-hooks-probes-32/run.py native --revision 57f2f4b8b16bba863930d16ae6ffd6fe53da1265",
+      "python3 .tools/coalesce-get-hooks-probes-32/run.py baseline --revision 57f2f4b8b16bba863930d16ae6ffd6fe53da1265",
+      "python3 .tools/coalesce-get-hooks-probes-32/run-compiler.py 57f2f4b8b16bba863930d16ae6ffd6fe53da1265 0023fecf364b9098b4a0bdfbd097647313ae9b51",
+      "python3 .tools/coalesce-get-hooks-probes-32/run.py changed --revision 0023fecf364b9098b4a0bdfbd097647313ae9b51",
+      "python3 tests/semantics/coalesce_get_hook_protocol.py --revision 6be8d904a7d8306c1585fe105bc64914a904b6d3"
+    ],
+    "note": "Use separate clean worktrees at the recorded revisions, retain original probe bytes/recorders and private raw directories, then run only the affected command. Permanent catalogue retains original bytes/hashes and observed native outcome. Each diagnostic run.py is frozen in its named private directory; no raw archive is tracked."
+  }
+}

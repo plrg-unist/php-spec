@@ -460,11 +460,20 @@ from truthiness. Temporary returned objects die before branch output while the
 receiver remains live. Strict374 and two original agreements pass at `f67a994c`;
 SL162 at `ec1f309d` (143 reached, 19 derived) proves actual call/frame/boolean and
 eager destructor/weak-null states. Earlier source failure, two AL stops and false162
-retain zero affected credit. Coalesce has only a derived parent exclusion and no
-runtime/source credit; wider hook access remains required.
+retain zero affected credit. At that quiet cut, coalesce has only a derived parent
+exclusion and no runtime/source credit; wider hook access remains required.
 [Quiet hook review](coverage/semantics/quiet-get-hooks-review.json).
 Actual375 composition over `b8f90d5` passes strict initialization at `a259f2ec`
 (5.572 s), preserving parent magic-get verification and the private source/state cuts.
+
+Literal CV/`$this` public by-value hook coalescing now retains the actual getter
+value, including zero and false, and evaluates the original RHS only for null.
+Two original agreements and strict375 pass at `0023fecf`; SL249 at `6be8d904`
+(224 reached, 25 derived) proves source parent/RHS lines, ordinary result ownership
+through decrement completion, and kept-object survival across receiver cleanup.
+Earlier elaboration/fixture failures and diagnostics retain zero affected credit;
+native/source/quiet cuts remain frozen. Wider hook families remain required.
+[Coalesce review](coverage/semantics/coalesce-get-hooks-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
