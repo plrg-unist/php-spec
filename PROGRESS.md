@@ -334,6 +334,8 @@ queries. The original parked timeout and final request-marker fixture failure
 retain zero campaign credit. Typed/wider-site tails, general shared named
 buffers, arrays and REFERENCE object payloads remain required; earlier cuts stay
 frozen.
+Actual375 over `334be798` passes strict SL at `b70b5df5`; private native/source/state
+cuts retain their original inputs.
 [Positional variadic review](coverage/semantics/iterator-call-unpack-object-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
