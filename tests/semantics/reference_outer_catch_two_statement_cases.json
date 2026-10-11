@@ -1,0 +1,23 @@
+[
+  {
+    "id": "outer-catch-call-literal-resumption",
+    "source": "<?php\n$x=\"old\";$z=\"mid\";$y=\"new\";$n=0;$m=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$z,$y,$n,$m;try{return \"old\";}finally{echo \"O;\";ping();try{try{return $z;}finally{++$m;echo \"M\",$m,\";\";ping();if($m===1){try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();$y=new stdClass;}}catch(TypeError $e){echo \"C;\";$y=\"fixed\";}$z=null;}}}catch(TypeError $e){echo \"D;\";}ping();echo \"B;\";}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";rold=\",(int)($r===\"old\"),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";znull=\",(int)($z===null),\";n=\",$n,\";m=\",$m,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;M1;P;I1;P;I2;P;C;M2;P;D;P;B;rnull=0;rold=1;x=old;znull=1;n=2;m=2;yfixed=1;",
+    "stderr": "Notice: Only variable references should be returned by reference in /home/user/workspace/php-spec/.tools/returns-multiple-active-caught-current-21/.tools/returns-verify21-next/outer-catch-two-statement/native-outer-catch-two-statement-lu_fsyvs/source.php on line 4\n",
+    "exit": 0
+  },
+  {
+    "id": "inner-y-succeeds",
+    "source": "<?php\n$x=\"old\";$z=\"mid\";$y=\"new\";$n=0;$m=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$z,$y,$n,$m;try{return \"old\";}finally{echo \"O;\";ping();try{try{return $z;}finally{++$m;echo \"M\",$m,\";\";ping();if($m===1){try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();$y=\"fixed\";}}catch(TypeError $e){echo \"C;\";$y=\"fixed\";}$z=null;}}}catch(TypeError $e){echo \"D;\";}ping();echo \"B;\";}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";rold=\",(int)($r===\"old\"),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";znull=\",(int)($z===null),\";n=\",$n,\";m=\",$m,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;M1;P;I1;P;rnull=0;rold=0;x=old;znull=0;n=1;m=1;yfixed=0;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "outer-catch-rethrows",
+    "source": "<?php\n$x=\"old\";$z=\"mid\";$y=\"new\";$n=0;$m=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$z,$y,$n,$m;try{return \"old\";}finally{echo \"O;\";ping();try{try{return $z;}finally{++$m;echo \"M\",$m,\";\";ping();if($m===1){try{try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();$y=new stdClass;}}catch(TypeError $e){echo \"C;\";$y=\"fixed\";}$z=null;}}}catch(TypeError $e){throw $e;}ping();echo \"B;\";}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";rold=\",(int)($r===\"old\"),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";znull=\",(int)($z===null),\";n=\",$n,\";m=\",$m,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;M1;P;I1;P;I2;P;C;M2;P;R;x=old;znull=1;n=2;m=2;yfixed=1;",
+    "stderr": "",
+    "exit": 0
+  }
+]

@@ -192,6 +192,7 @@ def $ref_return_pair_outer_site(S, prefreturncursor) = false -- otherwise
 ;; Recover its exact source continuation; it is not a generic task passage.
 dec $ref_return_pair_catch_tail(ptask*, porigin, porigin?) : ptask*?
 def $ref_return_pair_catch_tail([AT porigin_catch (STMT statement), AT porigin_echo (STMT (NStmtEcho phpType25 metadata))], porigin_catch, porigin_final?) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, AT porigin_echo (STMT (NStmtEcho phpType25 metadata))])
+def $ref_return_pair_catch_tail([AT porigin_catch (STMT statement), AT porigin_call (STMT (NStmtExpression (NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata_call) metadata_statement)), AT porigin_echo (STMT (NStmtEcho phpType25 metadata))], porigin_catch, porigin_final?) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, AT porigin_call (STMT (NStmtExpression (NExprFuncCall (NName (BYTES text) metadata_name) (SEQUENCE eps) metadata_call) metadata_statement)), AT porigin_echo (STMT (NStmtEcho phpType25 metadata))])
 def $ref_return_pair_catch_tail((AT porigin (STMT statement)) :: ptask_tail*, porigin_catch, porigin_final?) = $ref_return_pair_catch_tail(ptask_tail*, porigin_catch, porigin_final?)
   -- if porigin =/= porigin_catch
 def $ref_return_pair_catch_tail(ptask*, porigin_catch, porigin_final?) = eps -- otherwise
@@ -270,11 +271,17 @@ def $ref_return_pair_pending_scope(S, prefreturncursor_inner, prefreturncursor_o
 def $ref_return_pair_pending_scope(S, prefreturncursor_inner, prefreturncursor_outer) = true
   -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_echo])
   -- if S.ORIGIN = porigin_final?
+def $ref_return_pair_pending_scope(S, prefreturncursor_inner, prefreturncursor_outer) = true
+  -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_call, ptask_echo])
+  -- if S.ORIGIN = porigin_final?
 def $ref_return_pair_pending_scope(S, prefreturncursor_inner, prefreturncursor_outer) = false -- otherwise
 dec $ref_return_pair_pending_passage(pstate, prefreturncursor, prefreturncursor, ptask*) : bool
 def $ref_return_pair_pending_passage(S, prefreturncursor_inner, prefreturncursor_outer, ptask_prefix*) = true
   -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_echo])
   -- if (S.ORIGIN = (porigin_catch) /\ (ptask_prefix* = [TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_echo] \/ ptask_prefix* = [ORIGIN_RETURN porigin_final?, ptask_echo])) \/ (S.ORIGIN = porigin_final? /\ ptask_prefix* = [ptask_echo])
+def $ref_return_pair_pending_passage(S, prefreturncursor_inner, prefreturncursor_outer, ptask_prefix*) = true
+  -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_call, ptask_echo])
+  -- if (S.ORIGIN = (porigin_catch) /\ (ptask_prefix* = [TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_call, ptask_echo] \/ ptask_prefix* = [ORIGIN_RETURN porigin_final?, ptask_call, ptask_echo])) \/ (S.ORIGIN = porigin_final? /\ (ptask_prefix* = [ptask_call, ptask_echo] \/ ptask_prefix* = [ptask_echo]))
 def $ref_return_pair_pending_passage(S, prefreturncursor_inner, prefreturncursor_outer, ptask_prefix*) = false -- otherwise
 dec $ref_return_pair_pending_valid(pstate, prefreturncursor, prefreturncursor, porigin, int) : bool
 def $ref_return_pair_pending_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = true
@@ -315,6 +322,9 @@ dec $ref_return_pair_pending_projected(pstate, prefreturncursor, prefreturncurso
 def $ref_return_pair_pending_projected(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = ($ref_return_pair_pending_valid(S[.ORIGIN = (porigin_catch)], prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) \/ $ref_return_pair_pending_valid(S[.ORIGIN = porigin_final?], prefreturncursor_inner, prefreturncursor_outer, porigin_source, z))
   -- if S.ORIGIN = prefreturncursor_outer.OUTER
   -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_echo])
+def $ref_return_pair_pending_projected(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = ($ref_return_pair_pending_valid(S[.ORIGIN = (porigin_catch)], prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) \/ $ref_return_pair_pending_valid(S[.ORIGIN = porigin_final?], prefreturncursor_inner, prefreturncursor_outer, porigin_source, z))
+  -- if S.ORIGIN = prefreturncursor_outer.OUTER
+  -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, ptask_call, ptask_echo])
 def $ref_return_pair_pending_projected(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = false -- otherwise
 dec $ref_return_pair_valid(pstate, prefreturncursor, prefreturncursor, porigin, int) : bool
 def $ref_return_pair_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z) = true
@@ -363,6 +373,21 @@ def $ref_return_cursor_capture(S, porigin_inner, porigin_old, REFERENCE n_inner,
   -- if $ref_return_pair_operand(S, porigin_source, REFERENCE n)
   -- if n_inner =/= n /\ $ref_return_pair_separate(poperand_outer, n_inner) /\ $ref_return_pair_separate(poperand_outer, n)
   -- if ptask_tail* = [FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN porigin_restore_inner?, TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, AT porigin_echo (STMT statement_echo), FINALLY_REF_RETURN porigin_outer porigin_old_outer poperand_outer z_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?, TYPE_FALLTHROUGH porigin_function, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]
+  -- if S_left = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, ptask_tail*), porigin_inner, porigin_source, REFERENCE n, z, b, ptask_tail*)
+def $ref_return_cursor_capture(S, porigin_inner, porigin_old, REFERENCE n_inner, z_old, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin_inner 3) :: (ORIGIN_RETURN porigin_restore_inner?) :: (TRY_END porigin_catch) :: (ORIGIN_RETURN porigin_final?) :: (AT porigin_call (STMT statement_call)) :: (AT porigin_echo (STMT statement_echo)) :: (FINALLY_REF_RETURN porigin_outer porigin_old_outer poperand_outer z_outer) :: (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore_outer?) :: (TYPE_FALLTHROUGH porigin_function) :: (REF_RECHECK porigin_source porigin_first (REFERENCE n) z) :: eps) = S_left[.TODO = [RETURN_REF_UNWIND (REFERENCE n) z true porigin_source, TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, AT porigin_call (STMT statement_call), AT porigin_echo (STMT statement_echo), FINALLY_REF_RETURN porigin_outer porigin_old_outer poperand_outer z_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?, TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]]
+  -- if b
+  -- if ~$destructor_operational(S)
+  -- if prefreturncursor_inner = { OWNER porigin_inner, SOURCE porigin_old, LINE z_old, OUTER porigin_restore_inner? }
+  -- if prefreturncursor_outer = { OWNER porigin_outer, SOURCE porigin_old_outer, LINE z_outer, OUTER porigin_restore_outer? }
+  -- if porigin_restore_outer? = (porigin_function)
+  -- if $ref_return_pair_catch_passage(S, prefreturncursor_inner, prefreturncursor_outer) = ([TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, AT porigin_call (STMT statement_call), AT porigin_echo (STMT statement_echo)])
+  -- if $ref_replay_owners(S, porigin_source) = porigin_first :: eps
+  -- if $ref_return_pair_site(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)
+  -- if $ref_return_pair_operand(S, porigin_old, REFERENCE n_inner)
+  -- if $ref_return_pair_outer_operand(S, prefreturncursor_outer, poperand_outer)
+  -- if $ref_return_pair_operand(S, porigin_source, REFERENCE n)
+  -- if n_inner =/= n /\ $ref_return_pair_separate(poperand_outer, n_inner) /\ $ref_return_pair_separate(poperand_outer, n)
+  -- if ptask_tail* = [FINALLY_PHASE porigin_inner 3, ORIGIN_RETURN porigin_restore_inner?, TRY_END porigin_catch, ORIGIN_RETURN porigin_final?, AT porigin_call (STMT statement_call), AT porigin_echo (STMT statement_echo), FINALLY_REF_RETURN porigin_outer porigin_old_outer poperand_outer z_outer, FINALLY_PHASE porigin_outer 3, ORIGIN_RETURN porigin_restore_outer?, TYPE_FALLTHROUGH porigin_function, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]
   -- if S_left = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, b, ptask_tail*), porigin_inner, porigin_source, REFERENCE n, z, b, ptask_tail*)
 def $ref_return_cursor_capture(S, porigin_outer, porigin_old, poperand_old, z_old, porigin_source, REFERENCE n, z, b, (FINALLY_PHASE porigin_outer 3) :: (ORIGIN_RETURN porigin_restore?) :: (TYPE_FALLTHROUGH porigin_function) :: (REF_RETURN_PAIR_PENDING prefreturncursor_inner prefreturncursor_outer porigin_source z) :: (REF_RECHECK porigin_source porigin_first (REFERENCE n) z) :: eps) = S_left[.TODO = [RETURN_REF_UNWIND (REFERENCE n) z true porigin_source, TYPE_FALLTHROUGH porigin_function, REF_RETURN_PAIR prefreturncursor_inner prefreturncursor_outer porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]]
   -- if $ref_return_pair_pending_valid(S, prefreturncursor_inner, prefreturncursor_outer, porigin_source, z)

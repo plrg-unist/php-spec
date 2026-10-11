@@ -156,6 +156,13 @@ pending63/7 pass at separate cuts in the same review. Other passages/layouts,
 lifecycle capture, wider signatures/operands, further histories and broad returns
 verification remain open.
 
+A checked named zero-argument call may precede that echo. Five reached pending
+suffixes preserve D/outer-finally scope; the saved post-D ping restores f with
+the root-free old literal and canceled Notice. D;P;B precedes the original Notice
+and fresh caller cell. Three originals, six/514 reached checks and independent
+saved-ping70/4 pass at separate cuts in the same review; throwing, mutating and
+reentrant call bodies remain open.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

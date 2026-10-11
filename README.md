@@ -745,6 +745,10 @@ five reached fixtures/480 assertions and independent pending63/7 pass at separat
 cuts in the same review. Lifecycle capture, other caught layouts and further histories,
 other VALUE signatures/layouts, general CONST, other NULL, wider Stringable
 consumers, owner domains and broad return verification remain open.
+A checked no-argument call can now precede B after D; the observed ping preserves
+the old literal through its saved frame, then D;P;B precedes the original Notice.
+Three originals, six/514 reached checks and independent saved-ping70/4 pass at
+separate cuts; throwing, mutating and reentrant call bodies remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

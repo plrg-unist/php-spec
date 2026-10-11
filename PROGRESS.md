@@ -724,6 +724,14 @@ complete returns verification remain open.
 Actual375 over `5e28bb06` passes strict at `83375f47` in 5.663s,
 with zero application evaluations; private source/state/independent cuts remain separate.
 
+The catch passage also admits a checked named no-argument call before B. At
+`e4d16551`, three originals agree and six reached fixtures pass 514 assertions
+(155+55+140+60+51+53); independent saved post-D ping70/4 passes separately.
+Pending4/3 retain D scope and 2/1/0 follow its actual restore; the saved call keeps
+root-free literal history/Notice0, then D;P;B restores one Notice and a fresh cell.
+Private strict375 passes in 5.659s with zero applications. Throwing, mutating and
+reentrant call bodies and broad returns_verify remain OPEN.
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
