@@ -18,6 +18,9 @@ accepts authentic string carriers. Original source/fixture failures retain zero
 failed-group credit. Wider source/provider contexts and Stringable/null message
 conversion remain required; full core stays partial.
 [File compiler-notice ledger](coverage/semantics/file-compile-notice-review.json).
+The 376 composition over 804fe189 passes one exact repeated-exit source and
+41 public exit-frontier premises with full SL admission at b9dfa5def.
+Earlier source/state cuts retain their original revisions.
 
 Unknown literal `declare` names now compile ordered E_COMPILE_WARNING (128)
 diagnostics with original spelling and the first item's line. Runtime no-op/body
