@@ -130,10 +130,10 @@ The [interned reference review](../../coverage/semantics/iterator-call-unpack-in
 retains the two affected originals' earlier native bytes without replaying the
 four copied-string agreements or six unaffected state groups.
 
-Copied KNOWN objects now acquire an explicit HOLD before the warning when SENT
-is empty. This matches SEND_UNPACK's Z_TRY_ADDREF_P before zend_error, followed
-by ZVAL_NEW_REF even when the handler throws. Normal resume transfers HOLD to
-the fresh private reference cell and retires the raw current cache before next().
+The first copied KNOWN object slice acquires an explicit HOLD before the warning
+when SENT is empty. This matches SEND_UNPACK's Z_TRY_ADDREF_P before zend_error,
+followed by ZVAL_NEW_REF even when the handler throws. Normal resume transfers HOLD
+to the fresh private reference cell and retires the raw current cache before next().
 Throw retires cache, DATA and raw INPUT before the failed argument's hold, so
 the retained originals destroy the distinct Iterator before the payload after a
 handler drops the last independent source owner. Actual Fiber park/resume and
@@ -141,10 +141,21 @@ injected throw keep that payload separate from a rewritten global source. HOLD
 matches the exact copied object only at byref; earlier, NaN and completed stages
 require no hold.
 The abort SOURCE receipt validates this shape after payload retirement without
-adding an owner. Arrays, REFERENCE objects and copied-object warnings after
-earlier sent arguments remain Unsupported. The
+adding an owner. The
 [object hold review](../../coverage/semantics/iterator-call-unpack-object-review.json)
 records the native-first slice separately from earlier evidence.
+
+Later copied-object warnings now admit a vacant fixed parameter slot when the
+earlier sent buffer contains only fixed slots. The parked task retains HOLD
+separately; abort inserts that owner at the selected slot before enumerating
+argument cleanup. Native positional sends destroy the earlier payload first;
+reversed named keys destroy the failed first-parameter payload first. Both follow
+cache, DATA and raw INPUT retirement. Active and retired SOURCE admission check
+the real by-reference target, slot vacancy and positional/named phase without
+requiring retired payloads to remain live. Arrays, REFERENCE objects and later
+extra-named/variadic object warnings remain Unsupported. The
+[fixed-slot review](../../coverage/semantics/iterator-call-unpack-object-sent-review.json)
+keeps the five new originals and their reached checks separate from prior cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

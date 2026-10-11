@@ -1,0 +1,123 @@
+{
+  "status": "private native, focused source, changed strict and independent state accepted; current-parent integration pending",
+  "scope": [
+    "Copied KNOWN object by-reference warnings after prior fixed-slot sends, including reversed named keys and real Fiber park/injected throw.",
+    "HOLD remains separate while parked, transfers to a fresh private cell on resume, or maps to its vacant fixed parameter slot in failed argument cleanup after cache/DATA/INPUT."
+  ],
+  "remaining": [
+    "Later copied-object warnings involving extra named or variadic slots",
+    "Arrays, REFERENCE objects, request/plain reference strings and handler changes to those strings",
+    "Direct Generator/IteratorAggregate ordinary-call unpack, other call targets and Generator callback methods",
+    "Nonnumeric raw valid-result changes"
+  ],
+  "parent": "4a30db48d0c48410133e6a07df6ceac5fe7ebf09",
+  "implementation_revision": "2f055195aa55797909cfbd0fb1e9d1983ce4d373",
+  "prior_evidence": "coverage/semantics/iterator-call-unpack-object-review.json",
+  "engine_route": "PHP8.5.10 SEND_UNPACK installs ZVAL_NEW_REF(top,arg) even after a warning handler throws. zend_vm_stack_free_args in Zend/zend_execute.h walks fixed arguments in parameter order; zend_execute.c frees extra named parameters afterward. The model maps HOLD through named_store before enumerating failed argument roots, while active task roots retain its separate owner. Contextual admission checks the real by-reference target, slot vacancy and key phase after restoring the caller; retired SOURCE adds no owners or payload liveness requirement.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "native": {
+    "revision": "2b8b026b0eadbb26566b2ddcff0fb7cd49bcde0e",
+    "report": ".tools/calls-iterator-copied-object-sent-22/.tools/iterator-call-unpack-object-sent-native-13c4jihe/report.json",
+    "report_sha256": "c9436026ac2e82250aea376d9ef47a1cf01f2b297d131af8ffa986af21fe5188",
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "f57eef4b4b5912bc829c58908aeef43bc8311f67bcbd6a7952d2b0c2926dd4b2",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "originals": 5,
+    "matching_native_expectations": 5,
+    "normal_agreements": 0,
+    "process_seconds": 8
+  },
+  "strict": {
+    "revision": "2f055195aa55797909cfbd0fb1e9d1983ce4d373",
+    "report": ".tools/calls-iterator-copied-object-sent-22/.tools/iterator-call-unpack-object-sent-sl-5wxpeql3/report.json",
+    "report_sha256": "79b9ebbef1e843c26ab733d4eb67ddef685c84a5f4334cd15947969b63da13be",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "404f27d3c804607e61c62c239249bed345a29aec2bd6a24531f2bee43a8cda55",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120
+  },
+  "source": {
+    "status": "passed",
+    "revision": "2f055195aa55797909cfbd0fb1e9d1983ce4d373",
+    "command": "timeout -k 10s 450s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-object-sent-native-13c4jihe/report.json",
+    "runner_sha256": "931713ce10bc2979535537074ce07520ba3ee62becf010000ef01503b7254165",
+    "selection": [
+      "iterator-call-unpack-object-sent-positional-normal",
+      "iterator-call-unpack-object-sent-positional-throw",
+      "iterator-call-unpack-object-sent-reversed-named-normal",
+      "iterator-call-unpack-object-sent-reversed-named-throw",
+      "iterator-call-unpack-object-sent-reversed-named-parked-throw"
+    ],
+    "report": ".tools/calls-iterator-copied-object-sent-22/.tools/iterator-call-unpack-object-sent-source-b_t6_s8i/report.json",
+    "report_sha256": "5b53d9c9194e7416deb2283977e8d301770d9b91d336fa01d4a2502109713d3a",
+    "normal_agreements": 5,
+    "new_native_executions": 0,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "source_budgets": {
+    "steps": 100000,
+    "model_seconds": 60,
+    "process_seconds": 75
+  },
+  "state_review": {
+    "status": "passed",
+    "revision": "97b67a7b5d86fa431577b1307816578c3b2a9dfc",
+    "report": ".tools/calls-iterator-copied-object-sent-22/.tools/fiber-state-review-nt8ydwy1/report.json",
+    "report_sha256": "f0974e579014284576e6db3168b7e060219c2afc6666b85921197cc51b2daf39",
+    "command": "timeout -k 10s 1350s prlimit --as=6442450944 -- python3 -u .tools/object-sent-state-stop-first.py",
+    "runner_sha256": "f7feed2d4c51e012d57683aa673b453a66d5cec0334ab02e8ec4e77adf9da257",
+    "fixture_sha256": "ea465d5962c1e75a6554a3e312fc57ae812ebcb89f2da85b7b39bc4ed5156598",
+    "groups": 10,
+    "physical_main_premises": 586,
+    "driver_assertions": 555,
+    "pure_queries": 0,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true,
+    "process_seconds": 120,
+    "seek_steps": 4000,
+    "coverage": "Genuine second-send warning, both fresh-cell placements and mapped abort/destructor orders; nonowning retired SOURCE and NAMED forgery; actual parked ownership, occupied target and duplicate cursor rejects; injected reversed-named throw."
+  },
+  "resource_cap": {
+    "address_space_bytes": 6442450944,
+    "jobs": 1,
+    "stop_first": true,
+    "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; existing recorded BaseException cleanup kills and waits for the process group; providers close in finally."
+  },
+  "compatibility": "The maintained two-argument hold_valid API and earlier source/state catalogs remain unchanged. Old cuts and original failures retain their inputs; the null-HOLD cleanup branch keeps its previous roots."
+}

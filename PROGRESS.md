@@ -251,6 +251,19 @@ Actual375 over `5f467baee` passes strict SL at `45cfc118d`; private native/sourc
 and independent state cuts retain their original inputs.
 [Object hold review](coverage/semantics/iterator-call-unpack-object-review.json).
 
+Copied-object warnings now retain earlier fixed-slot arguments while the failed
+payload maps to its real parameter slot. Cache/DATA/input retire first; positional
+throws release the earlier payload first, while reversed named keys release the
+failed payload first.
+Normal resume transfers the held payload into a fresh private cell; real parked
+throw preserves both earlier SENT and main scalar rewrites. Native5 passes at
+`2b8b026b0`; strict375 and five original agreements pass at `2f055195a` without
+fresh native capture. Ten genuine-source state groups pass 586 physical/555 driver
+ownership and authority premises at `97b67a7b5`, including occupied-slot and retired
+SOURCE forgeries. Later extra-named/variadic object sends remain required; earlier
+cuts stay frozen.
+[Fixed-slot review](coverage/semantics/iterator-call-unpack-object-sent-review.json).
+
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
 reference. Borrowed CVs and owning cells retain their modes through initial
