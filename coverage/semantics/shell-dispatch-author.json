@@ -1,0 +1,100 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "status": "implementation validated; independent acceptance pending",
+  "base_revision": "2a5dcf424098344e9074caf7966c033e327c78c7",
+  "semantic_module_sha256": "1a0d590e0403e1ae6109e1bcc0e6d053737e08c6029c1b4dcb5e67a4349b9bcb",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "adapter_sha256": "a020259d548af118d8de54a366c18877d0b41a551784f1c376428a31790713b7",
+  "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+  "source_cuts": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/sources-01/report.json",
+      "sha256": "de2c267f60ff6521c450304a352fb850c8f45e22306b7c0afca69e8202f58caf",
+      "passed": false,
+      "completed": false,
+      "records": 18
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/source-warning-fix-01/report.json",
+      "sha256": "9f4cd22a6b6d4cca0b167b64fd90e7a70a39a10a11f567a9375b372fc14785a0",
+      "passed": true,
+      "completed": true,
+      "records": 2
+    }
+  ],
+  "source_credit": {
+    "distinct_selected_cases": 20,
+    "initial_unchanged_cases": 18,
+    "affected_warning_handlers_after_fix": 2,
+    "original_failed_handler_credit": 0,
+    "compatibility": "The sole module389 change between the source cuts removes the premature TODO-tail rewrite only in the OPEN_FAILED eligible-handler branch. The initial18 cases do not enter that branch. The old module bytes are retained under sources-01/original-inputs/spec/semantics and match its recorded hash. No current-source replay credit is assigned to the initial cut."
+  },
+  "state_cuts": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/state-literal-02/report.json",
+      "sha256": "678d97a94a74dc4d60052d2d24240d05b058897f0e1cbff6504f2502eaa0a393",
+      "passed": true,
+      "completed": true,
+      "records": 1
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/state-all-01/report.json",
+      "sha256": "7bc9319e926af8154123849c353ba2ae9c08efa49beb10c36b659d74c9095588",
+      "passed": true,
+      "completed": true,
+      "records": 11
+    }
+  ],
+  "state_scope": {
+    "groups": 11,
+    "premises": 823,
+    "mode": "SL",
+    "source_reached": true,
+    "claims": [
+      "exact pending site/line/frame/tail/nonce/command/CWD/environment",
+      "fresh request-string output including NUL",
+      "empty stdout null",
+      "pre-service errors and interpolation throw consume no nonce",
+      "response authentication, malformed bytes, replay rejection",
+      "warning handler builtin trace and frozen false or original throw",
+      "zero-budget service resumption and second genuine nonce"
+    ]
+  },
+  "validation_commands": [
+    "python3 tests/semantics/shell_sources.py --output <external>/sources-01",
+    "python3 tests/semantics/shell_sources.py --select pipe-failure-handler,pipe-failure-throw --output <external>/source-warning-fix-01",
+    "python3 tests/semantics/shell_state.py --select literal --output <external>/state-literal-02",
+    "python3 tests/semantics/shell_state.py --output <external>/state-all-01"
+  ],
+  "profile": "tests/semantics/profile.json plus variables_order=EGPCS and explicit native request provider; controlled env/clock; fixed safe shell builtins; child RLIMIT_NOFILE=4 for pipe failures",
+  "failures": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/smoke-01/report.json",
+      "sha256": "bb30d54c1b0a0294f7452e581aa29122390ec122f3ccfe384d6d2ea2236a2645",
+      "credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/smoke-02/report.json",
+      "sha256": "303010f9ce27f3a48b56b2ef75e4fd3ea6d772c88b647c28789dae3ce29b85e3",
+      "credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/smoke-03/report.json",
+      "sha256": "557aedd56b321d52a42d70097b217cc36bc8a636203a8cfc6b890c82411d92e7",
+      "credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/core-breadth-dev-01/state-literal-01/report.json",
+      "sha256": "3dcb0421f32da08e300bfd484eb3811282fcf4a07aec330a19f7b41f353090d0",
+      "credit": 0
+    }
+  ],
+  "raw_recovery": "Raw commands, exact source/request/snapshot bytes, stdout/stderr, exits and checked/numeric fixtures are preserved under the listed external roots. Rebuild project-local tools and rerun the listed selectors; no archive or sibling checkout is a runtime prerequisite.",
+  "limits": [
+    "finite reviewed process facts only",
+    "no ordinary process-library implementation",
+    "disable_functions/replacement root function remains unsupported configuration",
+    "no full-core equivalence or portability claim"
+  ],
+  "implementation_revision": "0f029c571"
+}
