@@ -803,6 +803,16 @@ def $property_hook_missing_return_parent(S, ppropertydesc_parent, ppropertydesc_
   -- if $property_declaring_class(S.CLASSES, porigin_child_property) = (porigin_child)
   -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
   -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_child_property) = (ppropertydesc_child)
+def $property_hook_missing_return_parent(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if ~$trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if ppropertydesc_parent.TYPE =/= eps /\ ppropertydesc_child.TYPE = eps
+  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
+  -- if $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|)
+  -- if $property_hook_override_backed(S, ppropertydesc_child)
+  -- if ppropertydesc_child.ORIGIN = porigin_child_property
+  -- if $property_declaring_class(S.CLASSES, porigin_child_property) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_child_property) = (ppropertydesc_child)
 def $property_hook_missing_return_parent(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
 dec $property_hook_get_declaration(pstate, ppropertydesc) : ptbytes?
 def $property_hook_get_declaration(S, ppropertydesc) = ($pmcstring(pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME) ++ $ptascii("()") ++ $pmif(ppropertydesc.TYPE =/= eps, $ptascii(": ") ++ $pmtypename(ppropertydesc.TYPE, $trait_data_scope(S, pclassdesc)))))
