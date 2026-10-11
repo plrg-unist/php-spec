@@ -1425,6 +1425,9 @@ and 653 premises (616 setup/frontier, 37 pure), with 26 genuine entry, selection
 publication, creation/capture, allocation and eligible no-op steps. Strict3 passes
 at 2ee1454b /375 (5.974s); fixtures stop at required allocations. Do body Blocks,
 If/While/nested-Do hosts and wider factory signatures remain required.
+The 375 join at 5306defe over 75aaa60f reuses strict3 at tested 2ee1454b
+(5.974s). Unchanged task/schema/manifest and review of the bind/hook guards preserve
+reached parentless linking; no current actor or private replay is claimed.
 The [While-hosted If review](coverage/semantics/anonymous-while-if-rtd-review.json)
 checks genuine If/CHOOSE selection, callable publication, Closure creation/capture
 and authentic saved-frame allocations. Unsupported loop placements and nested factories remain required.

@@ -35,6 +35,9 @@ allocations; syntax preparation/elaboration has zero runtime credit. No executed
 COMP41 failures. Do body Blocks, If/While/nested-Do hosts and wider factory guards
 remain required.
 [Do ledger](coverage/semantics/anonymous-do-rtd-review.json).
+The 375 join at 5306defe over 75aaa60f reuses strict3 at tested 2ee1454b
+(5.974s). Unchanged task/schema/manifest and reviewed bind/hook exclusions retain
+reached parentless class-link identity; no current actor or private replay is claimed.
 
 The earlier While-hosted If cut retains source3/state722 at df0ae18c and its original
 zero-credit literal-list elaboration failure. Its 375 composition at de256ec9 over
