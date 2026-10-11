@@ -54,3 +54,31 @@ def $gc_worker_guard_zero(S, pgcguard) = $gc_bare_return($gc_bare_record(S_dropp
   -- if S_dropped = $gc_worker_guard_drop(S, pgcguard)
   -- if $heap_owners($heap_graph(S_dropped), HOBJECT pgcguard.OBJECT) = 0
   -- if $gc_ordinary_node(S_dropped, HOBJECT pgcguard.OBJECT)
+
+;; The final retrace also drops the callback pin with bare GC_DELREF. A called
+;; ordinary leaf at owner zero keeps its existing root slot until acquisition.
+dec $gc_terminal_leaf(pstate, nat) : bool
+dec $gc_terminal_leaves(pstate, pnode*) : bool
+dec $gc_terminal_record(pstate, pnode*) : pstate
+def $gc_terminal_leaf(S, n) = true
+  -- if $gc_bare_valid(S, n)
+  -- if $node_children(S, HOBJECT n) = eps
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (n_slot)
+  -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n)
+def $gc_terminal_leaf(S, n) = false -- otherwise
+def $gc_terminal_leaves(S, eps) = true
+def $gc_terminal_leaves(S, (HOBJECT n) :: pnode*) = ($gc_terminal_leaf(S, n) /\ $gc_terminal_leaves(S, pnode*))
+def $gc_terminal_leaves(S, pnode*) = false -- otherwise
+def $gc_terminal_record(S, eps) = S
+def $gc_terminal_record(S, (HOBJECT n) :: pnode*) = $gc_terminal_record($gc_bare_record(S, n), pnode*)
+def $gc_terminal_prepare(S, pgcplan) = ($gc_terminal_record(S, pnode*))
+  -- if $gc_terminal_park(S, pgcplan)
+  -- if S.ACTIVEFIBER = eps /\ S.GC.WORKER = eps
+  -- if pgcplan.SCAN = eps /\ pgcplan.CALL.PENDING = eps
+  -- if S.TODO = (GC_FREE pgcplan) :: ptask_tail*
+  -- if $call_task_valid(S, GC_FREE pgcplan)
+  -- if $gc_buffer_valid(S, S.GC)
+  -- if ~$gc_nested_boundary(S, pgcplan)
+  -- if pnode* = $destruction_zero($heap_graph(S), $heap_intersect(pgcplan.DONE, S.ALLOCATIONS))
+  -- if $heap_intersect(pnode*, pgcplan.FREESET) = eps
+  -- if $gc_terminal_leaves(S, pnode*)

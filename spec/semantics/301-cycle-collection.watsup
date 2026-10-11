@@ -143,6 +143,7 @@ dec $gc_graph_nodes(pstate, pnode*) : pnode*
 dec $gc_graph(pstate) : hgraph
 dec $gc_transition_done(pstate, pstate, pgc) : pstate
 dec $gc_terminal_park(pstate, pgcplan) : bool
+dec $gc_terminal_prepare(pstate, pgcplan) : pstate?
 dec $gc_fiber_trace(pstate, pgcplan) : pstate
 dec $gc_consumer_scope(pstate, pgccall) : pstate?
 dec $gc_call_local_scope(pstate, pgccall) : pstate
@@ -1041,30 +1042,32 @@ def $gc_pass_count(pgcplan) = |$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)
   -- if pgcplan.DTORS = eps
 def $gc_nested_boundary(S, pgcplan) = ($heap_intersect(pgcplan.FREESET, $heap_reach($machine_roots(S), eps, $heap_graph(S).EDGES)) =/= eps)
 def $gc_terminal_park(S, pgcplan) = (pgcplan.CALL.PASS = 1 /\ $destruction_zero($heap_graph(S), $heap_intersect(pgcplan.DONE, S.ALLOCATIONS)) =/= eps)
+def $gc_terminal_prepare(S, pgcplan) = (S) -- if ~$gc_terminal_park(S, pgcplan)
+def $gc_terminal_prepare(S, pgcplan) = eps -- otherwise
 def $gc_free_prepare(S, pgcplan) = (S) -- if ~$gc_nested_boundary(S, pgcplan)
 def $gc_free_prepare(S, pgcplan) = eps -- otherwise
 def $gc_free(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "resurrection of non-destructor garbage during collection"]
   -- if $gc_free_prepare(S, pgcplan) = eps
 def $gc_free(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "zero-owner destructor garbage after collector retrace"]
   -- if $gc_free_prepare(S, pgcplan) = (S_prepared)
-  -- if $gc_terminal_park(S_prepared, pgcplan)
+  -- if $gc_terminal_prepare(S_prepared, pgcplan) = eps
 def $gc_free(S, pgcplan) = S_next[.TODO = (GC_TRACE pgccall_next) :: ptask*][.GC.ACTIVE = (pgccall_next)][.GC.PLAN = (pgcplan[.CALL = pgccall_next])]
   -- if $gc_free_prepare(S, pgcplan) = (S_prepared)
-  -- if ~$gc_terminal_park(S_prepared, pgcplan)
-  -- if S_prepared.TODO = (GC_FREE pgcplan) :: ptask*
-  -- if pnode_free* = $gc_free_order(pgcplan, S_prepared.ALLOCATIONS)
-  -- if pnode_live* = $destruction_nodes_delete(S_prepared.ALLOCATIONS, pnode_free*)
-  -- if S_dropped = $prune_live($destruction_store_drop(S_prepared, pnode_free*), pnode_live*)
+  -- if $gc_terminal_prepare(S_prepared, pgcplan) = (S_parked)
+  -- if S_parked.TODO = (GC_FREE pgcplan) :: ptask*
+  -- if pnode_free* = $gc_free_order(pgcplan, S_parked.ALLOCATIONS)
+  -- if pnode_live* = $destruction_nodes_delete(S_parked.ALLOCATIONS, pnode_free*)
+  -- if S_dropped = $prune_live($destruction_store_drop(S_parked, pnode_free*), pnode_live*)
   -- if S_next = S_dropped[.GC = $gc_compact($gc_buffer_remove_nodes(S_dropped.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*)))]
   -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + $gc_pass_count(pgcplan))][.PASS = 1]
   -- if pgcplan.DTORS =/= eps /\ pgcplan.CALL.PASS = 0
 def $gc_free(S, pgcplan) = $gc_finish(S_next, pgccall_next)
   -- if $gc_free_prepare(S, pgcplan) = (S_prepared)
-  -- if ~$gc_terminal_park(S_prepared, pgcplan)
-  -- if S_prepared.TODO = (GC_FREE pgcplan) :: ptask*
-  -- if pnode_free* = $gc_free_order(pgcplan, S_prepared.ALLOCATIONS)
-  -- if pnode_live* = $destruction_nodes_delete(S_prepared.ALLOCATIONS, pnode_free*)
-  -- if S_dropped = $prune_live($destruction_store_drop(S_prepared, pnode_free*), pnode_live*)
+  -- if $gc_terminal_prepare(S_prepared, pgcplan) = (S_parked)
+  -- if S_parked.TODO = (GC_FREE pgcplan) :: ptask*
+  -- if pnode_free* = $gc_free_order(pgcplan, S_parked.ALLOCATIONS)
+  -- if pnode_live* = $destruction_nodes_delete(S_parked.ALLOCATIONS, pnode_free*)
+  -- if S_dropped = $prune_live($destruction_store_drop(S_parked, pnode_free*), pnode_live*)
   -- if S_next = S_dropped[.GC = $gc_compact($gc_buffer_remove_nodes(S_dropped.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*)))]
   -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + $gc_pass_count(pgcplan))]
   -- if pgcplan.DTORS = eps \/ pgcplan.CALL.PASS = 1
