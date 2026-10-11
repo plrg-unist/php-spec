@@ -205,7 +205,7 @@ def write(s, line, value, class_name, owners, this=False):
         f'$heap_owners($heap_prune($heap_graph({s}_raw)),HOBJECT n_{s}) = {owners if this else owners+1}',
         f'{s}_throw = $vo_after({s},{s}_raw)',
         f'{s}_throw.COMPLETION = THROWING n_error_{s}',
-        f'$throwable_field({s}_throw,n_error_{s},$ptascii("message")) = PSTRING ($ptascii("{message}")) /\\ $throwable_field({s}_throw,n_error_{s},$ptascii("line")) = PINT z_{s}',
+        f'$throwable_field({s}_throw,n_error_{s},"message") = PSTRING ($ptascii("{message}")) /\\ $throwable_field({s}_throw,n_error_{s},"line") = PINT z_{s}',
         f'{s}_search_raw = $throwable_begin({s}_throw)',
         f'{s}_search_raw.COMPLETION = NORMAL /\\ {s}_search_raw.TODO = (THROW_SEARCH n_error_{s}) :: ptask_{s}* /\\ {s}_search_raw.BASE = BASE_VALUE (KNOWN PNULL) /\\ {s}_search_raw.RESULT = KNOWN PNULL',
         f'{s}_search = {s}_search_raw',
