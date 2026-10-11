@@ -785,6 +785,8 @@ separate stored/returned-object cleanup. Counts include repeated setup and metad
 Typed159/typed128 timeouts retain zero credit; M37 cuts stay frozen. No-backed-anchor
 virtual pairs, ordinary-parent/plain redeclarations and broader hook inheritance
 remain required. [Repeated override review](coverage/semantics/repeated-effective-backed-get-hook-review.json).
+Actual375 over `2f3cbc4b` passes strict initialization at `b1176d40` (5.948 s);
+private source2 and the six separate state cuts retain their accepted revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
