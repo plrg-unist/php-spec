@@ -4640,6 +4640,14 @@ Unsupported remains zero. General member admission is distinct from this concat
 witness; nullsafe/name-argument retirement, wider evidence and source7 stay open.
 Exact relocation needs no runtime renewal; old lifetime/bridge cuts stay separate.
 
+Member CURRENT315 also passes on exact 2288777932a / 378 modules at 24a4f260
+(compiler 5.181748 s, initialized SL 43.825590 s), preserving the fixture
+and its 293 genuine/derived plus 22 controls. The request-carrier/METHOD_NAME,
+receiver selection and quiet weak-release path bind current task/storage routing;
+source-static identity, by-reference destructor, typed getter, WeakMap freeing
+and integer warning routes are absent. Source credit 0/private renewal 0; prior
+cuts remain frozen.
+
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
 api-null write leaves the captured API held versus the direct API gone before
