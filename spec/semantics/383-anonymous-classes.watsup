@@ -96,7 +96,7 @@ def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous
 def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
 def $anonymous_unit_node(pcnode) = true -- if ~$anonymous_class_like(pcnode) /\ ~$anonymous_named_scope(pcnode)
-;; Exact named factories admit Block chains; named functions also admit direct If branches.
+;; Exact named factories admit Block chains and direct If branches.
 dec $anonymous_named_factory_node(pcnode) : bool
 def $anonymous_named_factory_node(NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = $ptvalidname($base64(text), false)
 def $anonymous_named_factory_node(pcnode) = false -- otherwise
@@ -142,7 +142,7 @@ def $anonymous_named_factory_path(pcunit, pcpath) = true
   -- if pcpath = pcpath_statement ++ [(PCFIELD 0),(PCFIELD 1)]
   -- if $origin_node([pcunit], PORIGIN 0 pcpath_statement) = (pcnode)
   -- if $anonymous_named_closure_statement(pcnode)
-  -- if $anonymous_top_path(pcunit, pcpath_statement)
+  -- if $anonymous_top_path(pcunit, pcpath_statement) \/ $anonymous_conditional_factory_path(pcunit, pcpath_statement)
 def $anonymous_named_factory_path(pcunit, pcpath) = false -- otherwise
 dec $anonymous_unit_nodes(pcunit, pcoccurrence*) : bool
 def $anonymous_unit_nodes(pcunit, eps) = true
