@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables through authentic standalone Block chains inside While bodies. Hosts retain root/valid-namespace/standalone Block ancestry. Exact original file/cwd/profile observations distinguish preexisting anonymous identities, reverse publication and two live Closure instances from one compiled template with guarded class publication, lexical namespace and fresh defaults. Named descendants under conditional/nested While hosts, other loops, nested functions/Closures or wider targets/signatures/captures remain Unsupported; earlier anonymous-only contexts are preserved.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "while-block-reversed",
+      "source": "<?php\n$leftReady = true; $rightReady = true; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':24$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeWhileBlockLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\nwhile ($leftReady) {\n    {\n        {\n            function makeWhileBlockLeft() {\n                class WhileBlockLeftPublished {}\n                return new class { public function kind() { return 'left'; } };\n            }\n        }\n    }\n    $leftReady = false;\n}\nwhile ($rightReady) {\n    {\n        {\n            $rightFactory = static function () {\n                class WhileBlockRightPublished {}\n                return new class { public function kind() { return 'right'; } };\n            };\n        }\n    }\n    $rightReady = false;\n}\n$right = $rightFactory(); $rightNamed = new WhileBlockRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'WhileBlockRightPublished' ? 'right|' : 'BAD|';\ntry { new WhileBlockLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeWhileBlockLeft(); $leftNamed = new WhileBlockLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'WhileBlockLeftPublished' ? 'left|' : 'BAD|';\necho !$leftReady && !$rightReady && $before !== $left && $rightBefore !== $right && $right !== $left ? 'fresh' : 'BAD';\n",
+      "source_sha256": "4e29d40604ee58254f90c762495fe3442b28b0600792f18e3433a6765614351f",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-block-native-37/run-v1/while-block-reversed/command.json",
+      "native_raw_sha256": "94041769f254dc5176e7944ce8205f16b4fd499300cd3acc2757cb9104a6a848"
+    },
+    {
+      "id": "while-block-repeated",
+      "source": "<?php\nnamespace RepeatWhileBlockSide;\n$i = 0; $seen = false; $make = null; $previous = null;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':15$1';\n$before = new $name;\necho $before->value === 0 && $make === null ? 'before|' : 'BAD|';\n{\n    while ($i < 2) {\n        {\n            {\n                $previous = $make;\n                $make = static function () {\n                    global $seen;\n                    if (!$seen) { $seen = true; class Published {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                };\n                $i = $i + 1;\n            }\n        }\n    }\n}\necho $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatWhileBlockCaller;\n$first = $previous(); $named = new \\RepeatWhileBlockSide\\Published;\necho $first::class === $name && $first->space() === 'RepeatWhileBlockSide' && $named::class === 'RepeatWhileBlockSide\\Published' ? 'first|' : 'BAD|';\n$first->value = 9; $second = $make();\necho $second->space() === 'RepeatWhileBlockSide' && $second->value === 0 ? 'second|' : 'BAD|';\necho $seen && $before !== $first && $first !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "0e479409523c975480dab5720d336b0a23d6d7f7c2f939510d90fcce65f4bad7",
+      "stdout_base64": "YmVmb3JlfHRlbXBsYXRlc3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-block-native-37/run-v1/while-block-repeated/command.json",
+      "native_raw_sha256": "d9caa8548375408c6cb9d061b1a5f6cc3643ac6c37b828f3dee0a5f8221c603b"
+    },
+    {
+      "id": "while-block-prior-deferred",
+      "source": "<?php\nnamespace WhileBlockSelectedSide;\n$functionName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$3';\n$closureName = 'class@anonymous' . \"\\0\" . __FILE__ . ':23$5';\n$before = new $functionName; $closureBefore = new $closureName; $early = new Exception;\n$i = 0; $seen = false; $take = true; $make = null; $previous = null;\necho $before::class === $functionName && $closureBefore::class === $closureName && $early::class === 'WhileBlockSelectedSide\\\\eXcEpTiOn' && $make === null ? 'before|' : 'BAD|';\nwhile (false) { { function skippedBlockFactory() { class Skipped {} return new class {}; } } }\nwhile ($take) {\n    $take = false;\n    { { function chosenBlockFactory() {\n        if (false) { class Exception {} }\n        return new class { public $value = 0; };\n    } } }\n}\nwhile ($i < 2) {\n    {\n        {\n            $previous = $make;\n            $make = static function () {\n                global $seen;\n                if (!$seen) { $seen = true; class Published {} }\n                return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n            };\n            $i = $i + 1;\n        }\n    }\n}\nclass eXcEpTiOn {};\nnamespace WhileBlockSelectedCaller;\n$chosen = \\WhileBlockSelectedSide\\chosenBlockFactory(); $first = $previous(); $named = new \\WhileBlockSelectedSide\\Published;\necho $chosen::class === $functionName && $first::class === $closureName && $first->space() === 'WhileBlockSelectedSide' && $named::class === 'WhileBlockSelectedSide\\\\Published' ? 'first|' : 'BAD|';\n$chosen->value = 9; $first->value = 9; $again = \\WhileBlockSelectedSide\\chosenBlockFactory(); $second = $make();\necho $i === 2 && $previous !== $make && $seen && $before !== $chosen && $closureBefore !== $first && $chosen !== $again && $first !== $second && $again->value === 0 && $second->value === 0 && $second->space() === 'WhileBlockSelectedSide' ? 'fresh|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$6';\necho $last::class === $lastName ? 'last|' : 'BAD|';\ntry { \\WhileBlockSelectedSide\\skippedBlockFactory(); echo 'BAD'; } catch (\\Error $caught) { echo 'skipped'; }\n",
+      "source_sha256": "97be17a08bfac494d96bf35b6790ca5ac64811157c3c7d9bbf4fb42799d7f30c",
+      "stdout_base64": "YmVmb3JlfGZpcnN0fGZyZXNofGxhc3R8c2tpcHBlZA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-block-native-37/run-v1/while-block-prior-deferred/command.json",
+      "native_raw_sha256": "a64d8fbe2a31ae4b151fbf568cb40dde26d866cf3be81a07383bc847487383db"
+    }
+  ]
+}

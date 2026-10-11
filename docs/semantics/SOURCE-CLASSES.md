@@ -125,16 +125,16 @@ The [nested-host review](../../coverage/semantics/anonymous-nested-branch-rtd-re
 adds strictly shrinking source-authenticated If ancestry. Genuine nested If/CHOOSE
 steps consume each condition once before selected publication or creation; skipped
 outer hosts retain live anonymous names without callable publication.
-Exact named functions also admit plain empty named descendants directly in
-authentic `while` bodies. The host must occur at root or a valid namespace body
+Exact named functions also admit plain empty named descendants in authentic
+`while` bodies through authenticated standalone Block chains. The host must occur at root or a valid namespace body
 through authenticated standalone Block ancestry. Anonymous names preexist false
 loops, while selected function statements publish only when executed.
 Named descendants under unsupported loop or function ancestors remain Unsupported.
 Variable assignments to static no-capture noarg by-value untyped Closures at root
 or a valid namespace body, through authenticated standalone Block chains or
 in actual `if` main, `elseif` or `else` bodies through authenticated branch-body
-Block chains and the same Block/nested-If host ancestry, or directly in authentic
-`while` bodies with the same root/namespace and standalone Block host ancestry,
+Block chains and the same Block/nested-If host ancestry, or in authentic `while`
+bodies through standalone Block chains with the same root/namespace/Block host ancestry,
 admit plain empty named descendants.
 Admission authenticates the expression statement, by-value assignment, ordinary
 variable target, exact Closure signature and actual Block, conditional or While ancestors.
@@ -145,9 +145,12 @@ placement/signature/receipt queries. The [While review](../../coverage/semantics
 checks false LOOP_TEST/CHOOSE skipping, real selection/publication, two distinct
 REALCLOSURE instances from one unchanged template, guarded defaults and the
 same-source function redeclaration fatal on its second iteration before any factory
-body call in that probe. Named descendants
-under conditional or nested While hosts, additional Blocks between the While body
-and factory, other loops, nested functions or nested Closures, other targets,
+body call in that probe. The
+[While body-Block review](../../coverage/semantics/anonymous-while-block-rtd-review.json)
+checks authentic Block entry and real publication/creation/allocation frontiers,
+retaining old/current Closure receivers from one template and fresh defaults.
+Named descendants under conditional or nested While hosts, other loops,
+nested functions or nested Closures, other targets,
 captures and signatures remain Unsupported.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)
 separates real Block/creation/publication/allocation steps from pure admission queries.

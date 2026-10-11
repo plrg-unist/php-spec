@@ -1372,19 +1372,17 @@ call-order publication and fresh defaults. The earlier
 retains fatal redeclaration before another allocation.
 The earlier Block Closure join of 375 modules over 92f726a3 passes strict3 at
 fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
-Both factory kinds also admit direct bodies of authentic `while` statements at
-root or valid namespaces, with standalone Block ancestry before the host.
-Anonymous names exist before callable publication or Closure creation, including
-skipped false loops. Repeated assignment creates two distinct Closure instances
-from one compiled template; guarded calls retain one named-class publication and
-fresh defaults. Reexecuting an unguarded function declaration at the same source
-fails; the fatal probe reaches this before any factory body call.
-The [While review](coverage/semantics/anonymous-while-factory-rtd-review.json)
-binds four exact originals, genuine loop selection and publication/allocation
-frontiers; state fixtures stop after their required allocation or direct fatal.
-The 375 join over 30a22375 passes strict3 at 1c0ffdae (5.925s), checking the
-shared task datatype. Review preserves the parentless class-link identity;
-private cuts retain their original revisions.
+Both factory kinds also admit authentic `while` bodies through standalone Block
+chains, with root/valid-namespace and standalone Block ancestry before the host.
+Anonymous names precede publication or Closure creation, including skipped loops.
+Two live Closure instances from one compiled template preserve old/current targets,
+one guarded class publication, lexical namespace and fresh defaults.
+The [While body-Block review](coverage/semantics/anonymous-while-block-rtd-review.json)
+binds three exact originals and focused Block/publication/creation/allocation
+frontiers; state fixtures stop at their required allocation.
+The earlier [While review](coverage/semantics/anonymous-while-factory-rtd-review.json)
+retains direct loop selection and same-source second-iteration fatal observations,
+source4/state1007 at ff82bb60 and the 1c0ffdae/30a22375 strict3 join (5.925s).
 The earlier [nested-host review](coverage/semantics/anonymous-nested-branch-rtd-review.json)
 retains source3/state882 and its strict reuse over f37653ce, without replay.
 The earlier [branch-body Block review](coverage/semantics/anonymous-branch-block-rtd-review.json)

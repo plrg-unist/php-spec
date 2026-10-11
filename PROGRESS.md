@@ -23,26 +23,24 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
-assignments now admit plain empty named descendants directly in authentic While
-bodies, with root/valid-namespace and standalone Block host ancestry. Four exact
-originals agree at ff82bb60 /375 (strict3 5.876s): false loops retain anonymous
-identities without callable publication or Closure creation, reversed calls publish
-in call order, and repeated assignment creates two distinct REALCLOSURE instances
-from one compiled template. Guarded calls preserve one publication and fresh
-defaults; the fatal probe repeats the same-source function declaration on its
-second iteration before any factory body call (php_error/255).
-Author784 and independent223 pass 1007 premises: 970 setup/source frontier and
-37 pure queries, with 43 actual PhpSteps for While entry/test/CHOOSE, callable
-publication, creation/capture, PDRCLASS/CCLINK, eligible no-op, saved-frame allocation
-and the direct fatal. Fixtures stop after required allocation or fatal; syntax
-preparation/elaboration add no runtime credit. No executed COMP36 failures.
-Conditional/nested While hosts, additional body Blocks, other loops, nested
-functions/Closures and wider signatures/targets/captures remain required.
-The 375 join over 30a22375 passes strict3 at 1c0ffdae (5.925s), checking the
-shared PROPERTY_GET_LONG task datatype. Independent review preserves the reached
-parentless class-link identity and excludes the intrinsic-bind, typed-getter,
-virtual-hook, collector and Iterator reception paths; private native/source/state
-cuts retain their original revisions without replay.
+assignments now admit plain empty named descendants through authenticated standalone
+Block chains inside While bodies, retaining root/valid-namespace/Block host ancestry.
+Three originals agree at 35adca9a /375 (strict3 6.125s): anonymous identities
+preexist publication/creation, reverse calls publish in order, and two live Closure
+instances from one template retain old/current targets, one guarded publication,
+lexical namespace and fresh defaults. Author501 and independent237 pass 738
+premises: 708 setup/source frontier and 30 pure queries, with 29 real PhpSteps
+for body-Block entry, callable publication, creation/capture, PDRCLASS/CCLINK,
+eligible no-op and saved-frame allocation. Fixtures stop at required allocations;
+syntax preparation/elaboration add no runtime credit. No executed COMP37 failures.
+Conditional/nested While hosts, other loops, nested functions/Closures and wider
+signatures/targets/captures remain required.
+[While body-Block ledger](coverage/semantics/anonymous-while-block-rtd-review.json).
+
+The earlier direct-While cut retains source4/state1007 at ff82bb60 and its
+1c0ffdae/30a22375 strict3 join (5.925s), including loop selection and same-source
+second-iteration fatal before any factory body call in that probe. Historical body-Block
+negatives are superseded only for authenticated Block chains; no replay.
 [While ledger](coverage/semantics/anonymous-while-factory-rtd-review.json).
 
 The earlier nested-host cut retains source3/state882 and its 75edad90/f37653ce
