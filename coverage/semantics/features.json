@@ -8002,7 +8002,8 @@
       "helper_tests": [
         "tests/semantics/function_statics_protocol.py",
         "tests/semantics/function_statics_state.py",
-        "tests/semantics/source_static_retirement_protocol.py"
+        "tests/semantics/source_static_retirement_protocol.py",
+        "tests/semantics/source_static_identity_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
@@ -8017,14 +8018,15 @@
         "tests/semantics/main_statics_protocol.py",
         "tests/semantics/main_statics_state.py",
         "coverage/semantics/main-statics-review.json",
-        "coverage/semantics/source-static-retirement-review.json"
+        "coverage/semantics/source-static-retirement-review.json",
+        "coverage/semantics/source-static-identity-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_compile.c",
         "vendor/php-src/Zend/zend_vm_def.h",
         "coverage/semantics/function-statics-review.json"
       ],
-      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Parser-backed top-level statics388 now authenticate source ownership and release normal/explicit-return slots in compiler declaration order, preserving callable slots and copied return roots. Four checked originals and genuine public frontiers are separate retained cuts in source-static-retirement-review.json. Caller Closure isolation, abrupt/throwing-destructor retirement, fatal shutdown roots and wider static identity remain required; no storage family closure.",
+      "review": "Named-function111/112 and initial-main-script113/114 statics preserve initialized-only persistent reference cells, cached null, recursive winners, aliases, COW and suppression/error cleanup. Main static bindings use the existing active/global table movement; source-owned unit0 slots exclude named-function ancestry. function-statics-review.json retains the named-static999 checkpoint and its repaired receive-readiness evidence. Current main-statics-review.json binds1008/2829 source16, compiler12/59 projections, protocol9/173, author dense2/283, independent dense4/623 and20 old999 complete responses with no projection. Parser-backed top-level statics388 now authenticate source ownership and release normal/explicit-return slots in compiler declaration order, preserving callable slots and copied return roots. Four checked originals and genuine public frontiers are separate retained cuts in source-static-retirement-review.json. Module116 now keeps authentic top-level eval/file slots outside a real Closure caller's table. Fresh source units, within-unit cache, escaped references, nested source cells and unchanged caller metadata have separate source/state cuts in source-static-identity-review.json. Abrupt/throwing-destructor retirement, fatal shutdown roots and wider static identity remain required; no storage family closure.",
       "planned_source_tests": [
         "tests/semantics/conformance/function-statics.php"
       ]
@@ -11182,13 +11184,15 @@
         "tests/semantics/closure_compiler.py",
         "tests/semantics/closures_protocol.py",
         "tests/semantics/closures_state.py",
-        "tests/semantics/source_static_retirement_protocol.py"
+        "tests/semantics/source_static_retirement_protocol.py",
+        "tests/semantics/source_static_identity_protocol.py"
       ],
       "source_tests": [
         "tests/semantics/function_statics.py",
         "tests/semantics/main_statics.py",
         "tests/semantics/closures.py",
-        "coverage/semantics/source-static-retirement-review.json"
+        "coverage/semantics/source-static-retirement-review.json",
+        "coverage/semantics/source-static-identity-review.json"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_execute_API.c",
@@ -11199,7 +11203,7 @@
         "docs/semantics/SOURCE-MAIN-STATICS.md",
         "docs/semantics/SOURCE-CLOSURES.md"
       ],
-      "review": "Bounded named111/112, initial-main113/114 and explicit-Closure115/116 statics are independently accepted: initialized persistent reference cells, null initialization, recursive winners and distinct function/main/instance storage. Their historical 999/048498dc, 1008/2829c2a0 and 1017/9325300f evidence stays separate. Method/inherited, bind and clone interactions have further bounded milestones; broader trait/inheritance sharing and lifecycle/GC remain required. Parser-backed source statics388 now admit authentic cells and retire normal/explicit-return top-level slots without consuming callable tables or copied return roots; source-static-retirement-review.json keeps the response repair and selected normal source/state cuts separate. Caller Closure isolation and abrupt/fatal/throwing-destructor source cleanup remain required. No complete static-variable or callable-family acceptance.",
+      "review": "Bounded named111/112, initial-main113/114 and explicit-Closure115/116 statics are independently accepted: initialized persistent reference cells, null initialization, recursive winners and distinct function/main/instance storage. Their historical 999/048498dc, 1008/2829c2a0 and 1017/9325300f evidence stays separate. Method/inherited, bind and clone interactions have further bounded milestones; broader trait/inheritance sharing and lifecycle/GC remain required. Parser-backed source statics388 now admit authentic cells and retire normal/explicit-return top-level slots without consuming callable tables or copied return roots; source-static-retirement-review.json keeps the response repair and selected normal source/state cuts separate. Module116 now separates top-level source slots from a real Closure caller's instance table, preserving cached cells, fresh unit identities, escaped aliases and caller metadata; source-static-identity-review.json records the new source/state cut. Abrupt/fatal/throwing-destructor source cleanup remains required. No complete static-variable or callable-family acceptance.",
       "planned_source_tests": [
         "tests/semantics/conformance/function-statics.php"
       ]

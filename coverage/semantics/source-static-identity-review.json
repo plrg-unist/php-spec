@@ -1,0 +1,133 @@
+{
+  "scope": "Parser-backed top-level eval/file static cells stay outside a real Closure caller's instance table. Each unit retains its cache, later units allocate fresh cells, and normal retirement preserves escaped references and caller metadata.",
+  "status": "independently_reviewed_private",
+  "published_revision": "93d2abdb14e619120a4eae89de4b7e375079e138",
+  "tested_base_revision": "3a43e09afb9279cd0ca454b08e827c356b2307cf",
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "compiler_pin": "da36ac3c434cd291940293a63da64544307730a3",
+  "modules": 377,
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "other": "inherited"
+  },
+  "caps_seconds": {
+    "model": 60,
+    "wrapper": 90,
+    "state_sl": 90
+  },
+  "design": [
+    "Only REALCLOSURE lookup/install dispatch changes. Authentic top-level source origins use request STATICS; callable origins keep their existing instance table. The alternatives are disjoint.",
+    "Installing a source slot leaves OBJECTS intact, including caller static cells, captures and wrapper metadata. Existing eps/NAMED/METHOD/fake/fromCallable dispatch, source-origin authentication, live owner guards, parser guards and schemas remain unchanged.",
+    "The previous source-retirement cut removes source slots at normal end/explicit return. This cut makes that table visible under a real Closure caller; it adds no abrupt/fatal teardown rule."
+  ],
+  "cut_binding": {
+    "semantic_diff_sha256": "921c2a5a88fb73bb2028f636be084a347788f25103d135c4ebace644827eec17",
+    "changed_module": {
+      "path": "spec/semantics/116-closures.watsup",
+      "sha256": "5e0c9d4a4a6f3d3efb613f1d6265f8fbbc55ccd2044a021b158fb2e6631d6c40"
+    },
+    "maintained_protocol": {
+      "path": "tests/semantics/source_static_identity_protocol.py",
+      "sha256": "a4757cc1a855c32e013745f4285ac818b32b54c9163055ffc053026894226127"
+    },
+    "note": "All new source and state reports pin the same dirty-base116 module bytes. Full input maps, commands, cwd, providers, exact originals, native raw and checked completions remain in their immutable reports; the published commit contains those bytes."
+  },
+  "native": [
+    {
+      "path": ".tools/dynamic-review-02/static-native-v1/report.json",
+      "sha256": "841a7cca6f3c05035bac46d056feab66d79c5cb5e4069079dad4a637ef6c4659",
+      "selection": [
+        "eval-closure-isolation"
+      ]
+    },
+    {
+      "path": ".tools/dynamic-review-02/static-native-v7/report.json",
+      "sha256": "77306a8e91758e322105e96ef79e47b99cdf4cab6eda651620463214ee88d7ee",
+      "selection": [
+        "eval-closure-object-release",
+        "file-closure-object-release",
+        "eval-closure-cache-reference",
+        "file-closure-cache-reference",
+        "eval-closure-nested-isolation"
+      ]
+    }
+  ],
+  "source": {
+    "unique_agreements": 6,
+    "author": {
+      "path": ".tools/dynamic-source-statics-closure-model-04/report.json",
+      "sha256": "1890810dade787cb6d3d238d9ba3c71319fc8efaacf6f5e7f6a52d059d364fad",
+      "selection": [
+        "eval-closure-isolation"
+      ],
+      "outcome": "accepted/program normal0; stdout2|100|2|100|, stderr empty, CLI runner0, stable inputs"
+    },
+    "independent": {
+      "path": ".tools/dynamic-review-02/identity-model-v1/report.json",
+      "sha256": "1b1116d1194dacd8ccd3e9f0c5132b52d09846d710c79faa00576d7a40ef7006",
+      "selection": [
+        "eval-closure-object-release",
+        "file-closure-object-release",
+        "eval-closure-cache-reference",
+        "file-closure-cache-reference",
+        "eval-closure-nested-isolation"
+      ],
+      "outcome": "Five accepted/program normal0 tuples exactly match native exit/stdout/stderr, CLI runner0, stable inputs; Box normal release, cache/references/fresh units and nested eval isolation."
+    }
+  },
+  "state": {
+    "frontiers": 3,
+    "accepted_premises": 360,
+    "explicit_boundary_steps": 16,
+    "reports": [
+      {
+        "path": ".tools/dynamic-source-statics-identity-state-02/check-report.json",
+        "sha256": "45b352339682480940cd0eee6a9f7b9eeb4deba6c0cdb509df99eac00e833244",
+        "selection": {
+          "eval-cache": {
+            "premises": 118,
+            "steps": 5
+          }
+        }
+      },
+      {
+        "path": ".tools/dynamic-source-statics-identity-state-02/check-2-report.json",
+        "sha256": "8cc40de763729993d84bacea4adc5ddcbf418c8744786360a41b4857ffd3d4fb",
+        "selection": {
+          "file-cache": {
+            "premises": 124,
+            "steps": 5
+          },
+          "nested-eval": {
+            "premises": 118,
+            "steps": 6
+          }
+        }
+      }
+    ],
+    "checks": "Source-derived pending/resume reaches a real Closure caller and top-level STATIC_INIT. Genuine install/rebind/end/fresh-unit steps preserve caller tables, captures, scopes and current metadata; escaped array entries name the same old cell while a fresh unit allocates another. Nested inner retirement keeps the outer table. Whole call/declaration/heap guards pass; placing an authentic source slot into the caller Closure table fails provenance and public admission."
+  },
+  "failure_history": [
+    {
+      "path": ".tools/dynamic-source-statics-closure-baseline-03/report.json",
+      "sha256": "045de22f9bde737692555618faf4ad17d1786f168cdb24964e2a7805b7e06572",
+      "credit": 0,
+      "outcome": "Unchanged 3a43 accepted/program Unsupported invalid eval parser response at second eval; stdout2|100|, stderr empty, CLI runner1, stable. Original raw remains intact; no parser guard relaxation."
+    }
+  ],
+  "remaining": [
+    "Body throws, graceful exit, hard-fatal shutdown roots and destructor-generated throws remain required; this cut grants no abrupt/fatal lifetime agreement.",
+    "Prior source-static retirement/origin/callable-exclusion and copied-return cuts retain their exact revisions and are not renewed. Only REALCLOSURE caller table isolation is superseded by this new evidence.",
+    "Broader source/provider/callable contexts, wrapper and method/trait/inheritance lifetime interactions, sticky exit status and exception chaining remain partial. No complete core/storage/static-variable claim or engine divergence is adopted."
+  ],
+  "recovery": "Raw archives are relative to the project root under .tools, outside Git. Each report binds commands/environment and raw per-actor command/process/stdout/stderr. Preserve baseline03, scalar04, reviewer identity-model-v1 and state02; native-v7 originals/snapshots are unchanged. Use source_static_identity_protocol.py --phase fixtures for fresh syntax-only fixtures, then --phase check --stage NAME with the existing full numeric_runner --sl under a 90s cap. Do not overwrite accepted outputs or count preparation as runtime evidence."
+}

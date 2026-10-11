@@ -1342,7 +1342,12 @@ Parser-backed eval/file top-level statics now release their source-owned slots
 before normal source end or explicit return, preserving callable slots and the
 copied return operand. [Review](coverage/semantics/source-static-retirement-review.json)
 retains the second-parser-response repair and selected normal lifetime checks;
-caller Closure isolation and abrupt/throwing-destructor cleanup remain required.
+top-level source slots now also stay separate from a real Closure caller's own
+table, preserving each unit's cached cells and escaped references while later
+units allocate fresh cells.
+[Identity review](coverage/semantics/source-static-identity-review.json) records
+the affected and independent source/state cuts. Abrupt/fatal retirement and
+throwing-destructor cleanup remain required.
 [Real closure instances](docs/semantics/SOURCE-CLOSURES.md) now retain explicit captures,
 selected callee owners and per-instance statics through invocation and cleanup.
 [Independent review](coverage/semantics/closures-review.json) binds source, object
