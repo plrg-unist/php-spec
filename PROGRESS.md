@@ -572,6 +572,8 @@ checks authentic errors, This root retirement and receiver/leaf cleanup through
 a declaration compiler stop; false182 and diagnostics retain zero affected credit.
 `__unset` declarations/consumers, indirect access and wider hook families remain
 required. [Unset review](coverage/semantics/hooked-unset-review.json).
+Actual375 over `af067517` passes strict initialization at `99a51c34` (5.737 s),
+preserving the private source2/state182 cuts and earlier failures.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
