@@ -114,7 +114,8 @@ def $anonymous_top_path(pcunit, (PCINDEX n) :: (PCFIELD 1) :: (PCINDEX n_body) :
   -- if $origin_node([pcunit], PORIGIN 0 ([(PCINDEX n)])) = (pcnode)
   -- if $anonymous_namespace_name(pcnode) = (ptbytes)
 def $anonymous_top_path(pcunit, (PCINDEX n) :: pcpath_tail) = $anonymous_top_block(pcunit, [(PCINDEX n)], pcpath_tail)
-  -- otherwise
+  -- if $origin_node([pcunit], PORIGIN 0 ([(PCINDEX n)])) = (pcnode)
+  -- if ~$anonymous_namespace_tag(pcnode)
 def $anonymous_top_path(pcunit, pcpath) = false -- otherwise
 dec $anonymous_named_early(pcunit, pcpath, pclassdesc*, ptbytes) : bool
 def $anonymous_named_early(pcunit, pcpath, pclassdesc*, ptbytes) = ($anonymous_top_path(pcunit, pcpath) /\ ~$ppclass_early(pclassdesc*, ptbytes) /\ ~$class_internal(ptbytes))
