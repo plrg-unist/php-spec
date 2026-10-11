@@ -273,7 +273,7 @@ DERIVED += [
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
-    parser.add_argument('--group', choices=['all', 'scalar'], default='all')
+    parser.add_argument('--group', choices=['all', 'scalar', 'lifetime'], default='all')
     parser.add_argument('--prepare-only', action='store_true')
     args = parser.parse_args()
     recorder.ROOT = ROOT
@@ -286,6 +286,8 @@ def main():
     cases = data['cases']
     if args.group == 'scalar':
         selections, cases = selections[:1], cases[:1]
+    elif args.group == 'lifetime':
+        selections, cases = selections[1:], cases[1:]
     sources = [HERE / ('effective-backed-get-hook-' + row[0] + '.php') for row in selections]
     php, adapter, bridge, worker, runner, compiler = (ROOT / name for name in [
         '.tools/php/bin/php', '_build/default/adapter/main.exe', '.tools/php-file.so',
