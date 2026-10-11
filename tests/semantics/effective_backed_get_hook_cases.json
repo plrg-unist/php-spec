@@ -1,0 +1,42 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "f77671855b39e689acb853b1f722115ebe02ff75579f8977805957cd1026d7e2",
+  "cases": [
+    {
+      "id": "scalar-storage",
+      "source": "<?php\nclass InheritedStorageParent37 {\n    public int $value = 100 {\n        get {\n            echo \"P:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + 1;\n        }\n    }\n    public function parentRead() { return $this->value; }\n}\nclass InheritedStorageChild37 extends InheritedStorageParent37 {\n    public int $value { get => $this->answer(); }\n    private function answer() {\n        echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n        return 7;\n    }\n}\nclass InheritedStorageGrand37 extends InheritedStorageChild37 {\n    private function answer() { echo \"BADGRAND|\"; return 99; }\n}\nclass InheritedStorageUntypedParent37 {\n    public $value = \"seed\" { get { return $this->value; } }\n}\nclass InheritedStorageUntypedChild37 extends InheritedStorageUntypedParent37 {\n    public $value { get => false; }\n}\n$parent = new InheritedStorageParent37;\n$result = $parent->value;\necho \"P\", $result, \":\", ((array)$parent === [\"value\" => 100] ? \"ONE|\" : \"BAD|\");\n$child = new InheritedStorageChild37;\necho ((array)$child === [] ? \"CE|\" : \"BAD|\");\n$result = $child->value;\necho \"C\", $result, \"|\";\n$grand = new InheritedStorageGrand37;\necho ((array)$grand === [] ? \"GE|\" : \"BAD|\");\n$result = $grand->parentRead();\necho \"T\", $result, \"|\";\n$grand->value = 300;\necho ((array)$grand === [\"value\" => 300] ? \"ONE300|\" : \"BAD|\");\n$result = $grand->value;\necho \"W\", $result, \"|\";\n$untyped = new InheritedStorageUntypedChild37;\necho ((array)$untyped === [\"value\" => null] ? \"NULLSLOT|\" : \"BAD|\");\n$result = $untyped->value;\necho ($result === false ? \"FALSE|\" : \"BAD|\");\n$untyped->value = 5;\necho ((array)$untyped === [\"value\" => 5] ? \"ONE5|\" : \"BAD|\");\n",
+      "source_sha256": "3030c732a3c2c7f9d211f8e3c37e65b260a4c1e59a748b4834e88237d3ba1a1e",
+      "stdout_base64": "UDpJbmhlcml0ZWRTdG9yYWdlUGFyZW50MzcvSW5oZXJpdGVkU3RvcmFnZVBhcmVudDM3fFAxMDE6T05FfENFfEM6SW5oZXJpdGVkU3RvcmFnZUNoaWxkMzcvSW5oZXJpdGVkU3RvcmFnZUNoaWxkMzd8Qzd8R0V8QzpJbmhlcml0ZWRTdG9yYWdlQ2hpbGQzNy9Jbmhlcml0ZWRTdG9yYWdlR3JhbmQzN3xUN3xPTkUzMDB8QzpJbmhlcml0ZWRTdG9yYWdlQ2hpbGQzNy9Jbmhlcml0ZWRTdG9yYWdlR3JhbmQzN3xXN3xOVUxMU0xPVHxGQUxTRXxPTkU1fA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "effective-backed-hook37-native2-c3fbb257",
+      "native_raw_sha256": "f77671855b39e689acb853b1f722115ebe02ff75579f8977805957cd1026d7e2"
+    },
+    {
+      "id": "separate-payload-lifetime",
+      "source": "<?php\nclass InheritedStorageLeaf37 {\n    public $tag;\n    public function __destruct() { echo \"D\", $this->tag, \"|\"; }\n}\nfunction inheritedStorageFresh37() {\n    global $weak_returned;\n    echo \"G|\";\n    $leaf = new InheritedStorageLeaf37;\n    $leaf->tag = \"R\";\n    $weak_returned = WeakReference::create($leaf);\n    return $leaf;\n}\nclass InheritedStorageLifeParent37 {\n    public mixed $value = 100 { get { return $this->value; } }\n    public function parentRead() { return $this->value; }\n    public function __destruct() {\n        $raw = (array)$this;\n        $leaf = $raw[\"value\"];\n        echo \"B\", $leaf->tag, \"|\";\n    }\n}\nclass InheritedStorageLifeChild37 extends InheritedStorageLifeParent37 {\n    public mixed $value { get => inheritedStorageFresh37(); }\n}\nclass InheritedStorageLifeGrand37 extends InheritedStorageLifeChild37 {}\n$box = new InheritedStorageLifeGrand37;\n$weak_box = WeakReference::create($box);\necho ((array)$box === [] ? \"EMPTY|\" : \"BAD|\");\n$stored = new InheritedStorageLeaf37;\n$stored->tag = \"S\";\n$weak_stored = WeakReference::create($stored);\n$box->value = $stored;\nunset($stored);\necho \"STORED|\";\n$kept = $box->parentRead();\necho \"HELD|\";\nunset($box);\necho ($weak_box->get() === null ? \"BN|\" : \"BL|\");\necho ($weak_stored->get() === null ? \"SN|\" : \"SL|\");\necho ($weak_returned->get() === null ? \"RN|\" : \"LIVE|\");\nunset($kept);\necho ($weak_returned->get() === null ? \"RN|\" : \"LIVE|\");\n",
+      "source_sha256": "bdebe1bd4ce7ac445034591a9409f3f683b3e3c3dfdb9c50fe887d093c086eb2",
+      "stdout_base64": "RU1QVFl8U1RPUkVEfEd8SEVMRHxCU3xEU3xCTnxTTnxMSVZFfERSfFJOfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "effective-backed-hook37-native2-c3fbb257",
+      "native_raw_sha256": "f77671855b39e689acb853b1f722115ebe02ff75579f8977805957cd1026d7e2"
+    }
+  ]
+}
