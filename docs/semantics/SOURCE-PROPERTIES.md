@@ -62,11 +62,16 @@ The pending target borrows a CV and refetches its current receiver at write;
 nonnull selection. Returned objects gain no extra base copy or task value owner.
 Three originals and 308 premises (264 reached, 44 derived) pass in the
 [assignment review](../../coverage/semantics/coalesce-assignment-get-hooks-review.json).
+Direct literal CV and `$this` unset of these public hooked properties resolves
+visibility before raising `Error` with the runtime class, property name and source
+line. It invokes no getter and preserves storage; active getter backing permission
+does not permit unset. The backing payload survives each rejected unset and releases
+when receiver storage is freed. Two originals and 182 premises (178 reached,
+4 derived) pass in the [unset review](../../coverage/semantics/hooked-unset-review.json).
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 inheritance/traits, temporary/computed receivers, wider coalescing assignment and
-quiet/reference/indirect access
-and hooked unset remain boundaries.
+quiet/reference/indirect access and `__unset` declarations/consumers remain boundaries.
 
 Constructor promotion declares a property from its original parameter flags and
 source occurrence. A parameter default does not initialize the property, and
