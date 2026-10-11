@@ -3179,6 +3179,9 @@ capture/Fiber before weak reads, while the other two retain exact heap and sourc
 resumption checks. Existing isSuspended and API protocols are unchanged. Original
 Unsupported, failed admission and the genuine guard probe retain zero credit;
 source 7 and wider consumers remain OPEN. [Status cuts](coverage/semantics/from-callable-review.json).
+Exact 9e263fb/375 composition passes compiler and initialized SL1287 at
+73245eed (5.532s/288.774s), retaining actual emit/cleanup ownership checks.
+Current source credit and private renewal remain 0.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
