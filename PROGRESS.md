@@ -1349,6 +1349,8 @@ zero applications. Compiles2/3 are retained from the original receiver-field
 fixture failure, which keeps zero state credit; the maintained producer is exact.
 Other destructor effects, active direct validation and broad returns_verify remain
 OPEN. [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual376 over `0e36f837` passes strict at `ce3ad7b0` in 6.116s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
