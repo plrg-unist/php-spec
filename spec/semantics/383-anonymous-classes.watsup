@@ -59,7 +59,7 @@ dec $anonymous_no_classes(pcoccurrence*) : bool
 def $anonymous_no_classes(eps) = true
 def $anonymous_no_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = (~$anonymous_class_like(pcnode) /\ $anonymous_no_classes(pcoccurrence*))
 
-;; Bracketed namespace bodies keep root eligibility and qualified names.
+;; Named namespace bodies keep root eligibility and qualified names.
 dec $anonymous_namespace_tag(pcnode) : bool
 def $anonymous_namespace_tag(NStmtNamespace phpType44 phpType23 metadata) = true
 def $anonymous_namespace_tag(pcnode) = false -- otherwise
@@ -67,7 +67,7 @@ dec $anonymous_namespace_name(pcnode) : ptbytes?
 def $anonymous_namespace_name(NStmtNamespace ABSENT (SEQUENCE statement*) metadata) = (eps)
   -- if $plstyle(metadata) = 2
 def $anonymous_namespace_name(NStmtNamespace (NName (BYTES text) metadata_name) (SEQUENCE statement*) metadata) = ($base64(text))
-  -- if $plstyle(metadata) = 2
+  -- if $plstyle(metadata) <- [1,2]
   -- if $ptvalidname($base64(text), true)
   -- if $ptlc($base64(text)) =/= $ptascii("namespace")
 def $anonymous_namespace_name(pcnode) = eps -- otherwise
