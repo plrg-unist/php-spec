@@ -1159,6 +1159,17 @@ cuts retain their identities.
 Exact `5ab0f736` composition preserves these cuts through unchanged hook/type/layout paths;
 disjoint object-Closure capture and dynamic-static binding require no current actor.
 
+Ordinary public parent properties now link genuine own-body-backed, plain
+by-value child getters with equal normalized TYPE. The proof authenticates actual
+source/own descriptors and child ancestry across Bridge. Two originals formerly
+Unsupported now match native: Parent 100 versus Child/Grand 200, private/inherited
+result 213, then slot 300/getter 313; separate stored S and returned R cleanup.
+Strict378/source2 pass at `0dda8304`; separate CV111 (70 reached, 41 derived),
+This68, write64 and lifetime104 pass at `83b032a1` (306 reached, 41 derived).
+Existing layout/default/store/task/owner rules and earlier cuts retain their identities;
+ordinary-parent/body-unbacked children and plain children inheriting hooks remain required.
+[Ordinary-parent review](coverage/semantics/ordinary-parent-backed-get-hook-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

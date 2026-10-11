@@ -1687,6 +1687,12 @@ retain the child's slot 200, inherited/private reads returning 213, and write 30
 followed by getter result 313. Three originals and five separate state checks are
 recorded in the
 [own-backed-child type-presence review](coverage/semantics/effective-backed-parent-backed-get-hook-type-presence-review.json).
+Ordinary public parent properties now also admit a genuinely backed child getter
+of the same normalized type. The child keeps its own slot and default; inherited
+reads use child/private scope and runtime descendant dispatch. Backing references
+release independently of retained getter results. Two originals and separate CV,
+inherited `$this`, write and lifetime checks are recorded in the
+[ordinary-parent review](coverage/semantics/ordinary-parent-backed-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

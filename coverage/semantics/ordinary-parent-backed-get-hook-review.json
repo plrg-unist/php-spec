@@ -1,0 +1,177 @@
+{
+  "scope": "Named ordinary public parent property to genuine own-body-backed, plain by-value get child; equal normalized TYPE, no static/readonly/final/asymmetric/attributed declarations. Intervening Bridge and descendant Grand preserve actual parent/property and child getter scope.",
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook",
+      "vendor/php-src/Zend/tests/property_hooks/plain_to_hook.phpt",
+      "vendor/php-src/Zend/tests/property_hooks/gh17376.phpt"
+    ],
+    "change": "A separate post-link proof authenticates the ordinary empty-hook parent source and exact own descriptor, child actual plain backed get and exact own descriptor, then real child SOURCE_PARENT plus bounded parent layout across Bridge. Old hooked-parent shape/backing/virtual proofs and all layout/default/store/task/ownership rules are unchanged."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "recorders": {
+    "native_source_sha256": "da50bf9a0feee41b9b9da86231f6fa6c293b8177d6fd8132afb14a332a432692",
+    "strict_sha256": "46ed7fdd8059b4153c97377b520438d52416c8ab9030bb1fc124d07832afeb0c",
+    "protocol_sha256": "6cf40c4dc13a01135a3183ffd921d2ee7ee38a1c3030bb0e7355a7f206fd058c"
+  },
+  "native": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/ordinary-parent-backed-get-hook-probes-49/native-first/report.json",
+    "report_sha256": "3ea2c8af4c7f0511e9f872f5d1cf7097459776496c344a0b25d656e372810dbc",
+    "revision": "e208e1d781f4b09d2faf9b38d501dc6f86ec54a7",
+    "process_observations": 2,
+    "exits": [
+      0,
+      0
+    ],
+    "completed": true,
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "Actual ordinary Parent100 versus own Child/Grand200; Child private13/inherited Grand This returns213, then slot300/get313. Mixed storage holds S while the getter returns fresh R: BS/DS at receiver cleanup, kept R remains LIVE until DR/RN. Actual streams, not anticipations, supply maintained expectations."
+  },
+  "unchanged_baseline": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/ordinary-parent-backed-get-hook-probes-49/accepted-current-baseline/report.json",
+    "report_sha256": "c79abd468b186178508f991aab59f97d744ec892fc586c7a54bb5504ae374c1a",
+    "revision": "e208e1d781f4b09d2faf9b38d501dc6f86ec54a7",
+    "checked_originals": 2,
+    "source_agreements": 0,
+    "stable_and_reaped": true,
+    "result": "Both genuine checked originals complete Unsupported inherited property hook override, empty events/stdout/stderr, CLI exit1. This is the measured core admission gap."
+  },
+  "strict": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/ordinary-parent-backed-get-hook-probes-49/ordinary-parent-backed-get-hook-compiler-5ic84p0r/report.json",
+    "report_sha256": "f8b13093006dd5d045e0f5afb4b59b7e2d134c46df9e81723c49ae1ca8bfea79",
+    "revision": "0dda8304eb845b4abc426ac3d3cf7f61f692d94b",
+    "modules": 378,
+    "seconds": 6.060956,
+    "result": "PASS exact SL initialization; exit0/empty stderr/no timeout",
+    "stable_and_reaped": true,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/ordinary-parent-backed-get-hook-probes-49/changed-model-giaw0qtg/report.json",
+    "report_sha256": "6ad1a15cdffce1fc6547b27f966a0d5684c4624c2c15cc947c431316615c7df2",
+    "revision": "0dda8304eb845b4abc426ac3d3cf7f61f692d94b",
+    "checked_originals": 2,
+    "source_agreements": 2,
+    "seconds": {
+      "scalar": 12.310679,
+      "lifetime": 24.926066
+    },
+    "stable_and_reaped": true,
+    "result": "Two checked original normal outcomes agree with full actual native streams/exits."
+  },
+  "catalogue": {
+    "path": "tests/semantics/ordinary_parent_backed_get_hook_cases.json",
+    "sha256": "9e5df730e97f2b1134675107e35bfc3813efb8122876fb7b71a9b6e654c50cac"
+  },
+  "state": {
+    "cuts": [
+      {
+        "group": "cv",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/ordinary-parent-backed-get-hook-protocol-0xrddbhy/report.json",
+        "report_sha256": "dc175c311b39528d0badf64c7ce3fbb549023d0d2845b6732d4016b437443267",
+        "revision": "83b032a191886ce75ad1bbcacfedb693d42b39a5",
+        "fixture_sha256": "6ca7d823645cc9ae277eb30bded786e91a86ea3f4e39745823cbd03c176a7273",
+        "reached": 70,
+        "derived": 41,
+        "AL_seconds": 5.056185,
+        "SL_seconds": 17.249562,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "this",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/ordinary-parent-backed-get-hook-protocol-g8psv8rl/report.json",
+        "report_sha256": "42d8417e7f8ce8f0d861394c15407fc6848f15447d51ffa379edb52fcea795d3",
+        "revision": "83b032a191886ce75ad1bbcacfedb693d42b39a5",
+        "fixture_sha256": "ba3ee1950ddb8c22ac96dae7ea1775c252adb05ac78141d097ddafe222ab7e60",
+        "reached": 68,
+        "derived": 0,
+        "AL_seconds": 5.089791,
+        "SL_seconds": 19.157284,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "write",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/ordinary-parent-backed-get-hook-protocol-qqgd30ml/report.json",
+        "report_sha256": "ece7d6ff4d87955d08001c8cb495ca7b42c6fc3249b89ad991b1f2f1327556c6",
+        "revision": "83b032a191886ce75ad1bbcacfedb693d42b39a5",
+        "fixture_sha256": "bdd4465810f595b3dd0e477dde1a22e602dfca0b5c478539436503dc6f6885ad",
+        "reached": 64,
+        "derived": 0,
+        "AL_seconds": 5.079787,
+        "SL_seconds": 21.00681,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "lifetime",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/ordinary-parent-backed-get-hook-protocol-v7jp7s8k/report.json",
+        "report_sha256": "12b6fe9ab7916441ac0354ade97d1f018fe3b233d5bda6a8de95f1845346885d",
+        "revision": "83b032a191886ce75ad1bbcacfedb693d42b39a5",
+        "fixture_sha256": "3cd8460a124f560194585e6661a10bfdda0d4be6df7af048edc46650ea8de856",
+        "reached": 104,
+        "derived": 0,
+        "AL_seconds": 5.165699,
+        "SL_seconds": 58.419991,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      }
+    ],
+    "total_reached": 306,
+    "total_derived": 41,
+    "application_invocations": 4,
+    "source_agreements": 0,
+    "note": "Four separate selected invocations include repeated source setup/metadata; no combined invocation claim. Production382 is byte-identical to strict/source-tested0dda at all four83b032 cuts."
+  },
+  "state_contract": [
+    "Reached linked states prove actual ordinary parent hook_origin=eps and default100 or null, genuine child backing/default200 or null, Bridge layout selecting the parent and Grand layout selecting the child. The new ordinary proof is positive; failure of a virtual/backing lookup is not an admission basis.",
+    "Actual Child lexical/private13 and Grand called scope, inherited ParentRead context restoration and receiver owners1\u21922\u21921 (CV) and3\u21923\u21922 (This) are authenticated. Same-property backing bypass holds inside the actual child hook; external and restored contexts still dispatch.",
+    "Real pending Grand writer at source34 stores300 into the same Child-origin slot without getter dispatch, then its getter returns313 and final output matches native.",
+    "Mixed storage owns S separately from fresh returned R: RESULT1\u2192BASE2\u2192kept1, genuine inherited raw-array destructor, actual Grand storage NEXT0 then S slot transfer and filtered UNSET-box exit. Box/S allocations disappear and weak handles become null while kept R remains owner1; separate kept unset gives DR/weak-null.",
+    "Forty-one derived premises cover NAME/TYPE/origin/default/flags/own/source authenticity, actual standalone child byref/attributes/name/args/body, missing child/Bridge links, forged slots and rollback. These source-only mutations are separate from native cases. Adding a parent hook refuses only the ordinary proof, since another hooked-parent arm may apply."
+  ],
+  "remaining": [
+    "Ordinary parent to body-unbacked child, plain redeclarations inheriting parent hooks, unequal TYPE or TYPE-presence combinations and broader type equivalence.",
+    "Set/ref/trait/attributed hooks, wider flags/receivers and operators; no family or GC closure."
+  ],
+  "commands": {
+    "native": "python3 .tools/ordinary-parent-backed-get-hook-probes-49/run.py native --revision e208e1d781f4b09d2faf9b38d501dc6f86ec54a7",
+    "baseline": "python3 .tools/ordinary-parent-backed-get-hook-probes-49/run.py baseline --revision e208e1d781f4b09d2faf9b38d501dc6f86ec54a7",
+    "strict": "python3 .tools/ordinary-parent-backed-get-hook-probes-49/run-compiler.py e208e1d781f4b09d2faf9b38d501dc6f86ec54a7 0dda8304eb845b4abc426ac3d3cf7f61f692d94b",
+    "sources": "python3 .tools/ordinary-parent-backed-get-hook-probes-49/run.py changed --revision 0dda8304eb845b4abc426ac3d3cf7f61f692d94b",
+    "state": "python3 tests/semantics/ordinary_parent_backed_get_hook_protocol.py --revision 83b032a191886ce75ad1bbcacfedb693d42b39a5 --group <cv|this|write|lifetime>",
+    "caps": "Native45; model60/outer75/100000 steps; strictSL60 init-only; each stateAL90 then conditionalSL90; jobs1/stop-first/reap, LC_ALL=C/TZ=UTC."
+  },
+  "recovery": "Historical commands run from retained activeprivate32. Original ignored inputs/raw streams/recorders/compiler paths remain unchanged; permanent catalogue/protocol regenerate selectors. Earlier hook cuts remain historical without renewal."
+}
