@@ -3696,6 +3696,9 @@ Four failed full fixtures and one localization cut retain 0. Exact maintained
 source/renderer/dispatch relocation preserves all 26 legacy fixtures/counts by pure
 comparison; no runtime renewal. Wider captures and argument-retirement forms stay
 open in the [ledger](coverage/semantics/closure-current-binding-review.json).
+Exact current composition at `90d4caa2` over `c3fbb257` (375 modules) passes all
+447 premises: compiler 5.171 s, initialized SL 53.584 s. Common control/storage
+interfaces are checked; original body/named and source/native cuts retain their inputs.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
