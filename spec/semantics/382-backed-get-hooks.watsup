@@ -126,6 +126,9 @@ def $property_hook_origin(S, ppropertydesc) = eps -- otherwise
 dec $property_hook_override_pair(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_backed_over_virtual(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_backed_over_ordinary(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_hook_ordinary_parent(pstate, ppropertydesc, nat) : ppropertydesc?
+dec $property_hook_unbacked_over_ordinary(pstate, ppropertydesc, ppropertydesc, nat) : bool
+dec $property_hook_ordinary_backing(pstate, ppropertydesc, nat) : bool
 dec $property_hook_override_shape(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_virtual_edge(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_covariance(pstate, ppropertydesc, ppropertydesc) : pvresult
@@ -157,6 +160,7 @@ def $property_hook_virtual(S, ppropertydesc) = true
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
   -- if ~$hook_body_backed(phpType39, ppropertydesc.NAME)
   -- if ~$property_hook_inherited_backing(S, ppropertydesc)
+  -- if ~$property_hook_ordinary_backing(S, ppropertydesc, |S.CLASSES|)
 def $property_hook_virtual(S, ppropertydesc) = false -- otherwise
 
 ;; Virtual overrides must close at an authentic virtual root, not a failed
@@ -788,7 +792,42 @@ def $property_hook_backed_over_ordinary(S, ppropertydesc_parent, ppropertydesc_c
   -- if $class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT porigin_parent)
   -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc_child.KEY) = (ppropertydesc_parent)
 def $property_hook_backed_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
-def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent))) \/ ($property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) /\ $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|)) \/ $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_backed_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child))
+;; Ordinary ancestry also supplies storage when the child getter never reads it.
+def $property_hook_ordinary_parent(S, ppropertydesc, n) = (ppropertydesc_parent)
+  -- if $(n > 0)
+  -- if ppropertydesc.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if pclassdesc_child.PARENT =/= eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT porigin_parent)
+  -- if $property_desc_at($property_layout(S, porigin_parent, $nabs($(n - 1))), ppropertydesc.KEY) = (ppropertydesc_parent)
+def $property_hook_ordinary_parent(S, ppropertydesc, n) = eps -- otherwise
+def $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child, n) = true
+  -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.TYPE = ppropertydesc_child.TYPE /\ ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
+  -- if ppropertydesc_parent.VISIBILITY = PROPERTY_PUBLIC /\ ~ppropertydesc_parent.STATIC /\ ~ppropertydesc_parent.READONLY /\ ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps
+  -- if ppropertydesc_parent.ORIGIN = porigin_parent_property
+  -- if $property_declaring_class(S.CLASSES, porigin_parent_property) = (porigin_declaring_parent)
+  -- if $class_at(S.CLASSES, porigin_declaring_parent) = (pclassdesc_parent)
+  -- if $hook_property_at(pclassdesc_parent.PROPERTIES, porigin_parent_property) = (ppropertydesc_parent)
+  -- if porigin_parent_property = PORIGIN n_parent pcpath_parent
+  -- if $(|pcpath_parent| >= 2)
+  -- if pcpath_group = pcpath_parent[0:$nabs($(|pcpath_parent| - 2))]
+  -- if pcpath_parent = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n_parent pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE eps) metadata)
+  -- if flags <- [0,1] /\ ppropertydesc_parent.NAME = $base64(text_name) /\ ppropertydesc_parent.KEY = ppropertydesc_parent.NAME
+  -- if ~ppropertydesc_child.FINAL /\ ppropertydesc_child.SETVISIBILITY = eps
+  -- if (ppropertydesc_child.TYPE = eps /\ ppropertydesc_child.DEFAULT = PROP_NULL) \/ (ppropertydesc_child.TYPE =/= eps /\ ppropertydesc_child.DEFAULT = PROP_UNINITIALIZED)
+  -- if $property_hook_origin(S, ppropertydesc_child) = (porigin_child_hook)
+  -- if $origin_node(S.SOURCES, porigin_child_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_get_name) (SEQUENCE eps) phpType39 metadata_hook)
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39) /\ ~$hook_body_backed(phpType39, ppropertydesc_child.NAME)
+  -- if $property_hook_ordinary_parent(S, ppropertydesc_child, n) = (ppropertydesc_parent)
+def $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child, n) = false -- otherwise
+def $property_hook_ordinary_backing(S, ppropertydesc, n) = true
+  -- if $property_hook_ordinary_parent(S, ppropertydesc, n) = (ppropertydesc_parent)
+  -- if $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc, n)
+def $property_hook_ordinary_backing(S, ppropertydesc, n) = false -- otherwise
+def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent))) \/ ($property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) /\ $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|)) \/ $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_backed_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child) \/ $property_hook_unbacked_over_ordinary(S, ppropertydesc_parent, ppropertydesc_child, |S.CLASSES|))
 
 ;; Before publication only the parent's chain is closed. The child's real
 ;; source/default shape supplies its declaring scope without registering it.

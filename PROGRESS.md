@@ -1249,10 +1249,23 @@ result 213, then slot 300/getter 313; separate stored S and returned R cleanup.
 Strict378/source2 pass at `0dda8304`; separate CV111 (70 reached, 41 derived),
 This68, write64 and lifetime104 pass at `83b032a1` (306 reached, 41 derived).
 Existing layout/default/store/task/owner rules and earlier cuts retain their identities;
-ordinary-parent/body-unbacked children and plain children inheriting hooks remain required.
+plain children inheriting hooks remain required.
 [Ordinary-parent review](coverage/semantics/ordinary-parent-backed-get-hook-review.json).
 Joined released `0940b7ee`/378 with retained private cuts and zero current actors;
 incoming Closure/reference/WeakMap/operator/anonymous-factory paths are disjoint.
+
+Ordinary public parent properties now retain physical storage under plain by-value
+child getters without initializers or backing reads, with equal normalized TYPE.
+A bounded parent-layout proof authenticates the ordinary source and actual child
+ancestry across Bridge, supporting linking and physical classification. Typed
+child slots start uninitialized; untyped slots start null. Writes store 300/5 while
+getters remain 13/false; distinct stored S and returned R release separately.
+Strict378/source2 pass at `8f8626b4`; CV117 (71 reached, 46 derived), This69 and
+write65 pass at `ae89d874`, untyped79 and lifetime105 at `6e80fc03` (389 reached,
+46 derived across five invocations). Two untyped AL fixture failures retain zero
+credit; native NNULL supersedes the informational NEMPTY anticipation. Existing
+default/layout/store/task/owner rules and earlier cuts retain their identities.
+[Ordinary-storage review](coverage/semantics/ordinary-parent-unbacked-get-hook-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

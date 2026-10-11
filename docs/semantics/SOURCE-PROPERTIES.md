@@ -193,8 +193,16 @@ layout across intervening classes. The child keeps its own default and single sl
 private/inherited reads dispatch to its getter and ordinary writes update that slot.
 Backing references release independently of retained getter results;
 [ordinary-parent review](../../coverage/semantics/ordinary-parent-backed-get-hook-review.json).
-Ordinary-parent/body-unbacked children and plain redeclarations inheriting hooks
-remain required.
+Ordinary parents also back a plain by-value getter child with no initializer or
+own-property read, at equal normalized TYPE. A bounded pure parent-layout lookup
+across intervening classes authenticates the ordinary descriptor and source; the
+same positive proof admits the pair and prevents virtual classification. Typed
+slots start uninitialized, untyped slots null; source backing and active getter
+bypass remain false. Writes update physical slots while getter results stay
+independent. Distinct stored S and retained returned R use the existing cleanup;
+[ordinary-storage review](../../coverage/semantics/ordinary-parent-unbacked-get-hook-review.json).
+Repeated hooked redeclarations over this ordinary backing and plain declarations
+inheriting hooks remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
 wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;

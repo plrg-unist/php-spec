@@ -1741,6 +1741,12 @@ reads use child/private scope and runtime descendant dispatch. Backing reference
 release independently of retained getter results. Two originals and separate CV,
 inherited `$this`, write and lifetime checks are recorded in the
 [ordinary-parent review](coverage/semantics/ordinary-parent-backed-get-hook-review.json).
+Ordinary parents also preserve physical storage under a child getter without an
+initializer or backing read. Typed child slots start uninitialized; untyped slots
+start null. Ordinary writes update those slots while getters keep their independent
+results. Two originals and separate read, write, untyped and lifetime checks are
+recorded in the
+[ordinary-storage review](coverage/semantics/ordinary-parent-unbacked-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
