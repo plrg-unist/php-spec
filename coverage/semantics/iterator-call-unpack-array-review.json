@@ -1,5 +1,5 @@
 {
-  "status": "private native/source/strict and composed independent state accepted; actual-parent integration pending",
+  "status": "integrated actual-parent strict composition; private native/source and composed independent state cuts retained",
   "scope": "Copied KNOWN arrays in a first positional send into an untyped fixed by-reference parameter at one direct construction of a statically named Iterator implementation. The original tests use an acyclic array with one destructible object child.",
   "remaining": [
     "Later, named or typed array warning sends and wider call sites",
@@ -135,5 +135,28 @@
       "unrun_groups": 2,
       "complete_campaign_credit": 0
     }
-  ]
+  ],
+  "actual_composition": {
+    "parent": "32ed50567100585dba6284ca0dcea374588c6164",
+    "private_tip": "0198cd264bb02c382ab449b4019442234139c490",
+    "semantic_revision": "79f2ad1b51849fd7fd21761b2d5b92eab2d13907",
+    "strict_report": ".tools/calls-iterator-copied-array-current-28/.tools/iterator-call-unpack-array-current-sl-p7jkm7lf/report.json",
+    "strict_report_sha256": "867b2d04061db588c60b0991143adfd54099c88edc8dc9464fab80aac43bb510",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "bc05fc06d11c8c5e8b3f50c09f771437908691f100f06bd1afa1a92172635ad0",
+    "modules": 375,
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "process_seconds": 120,
+    "host_seconds": 150,
+    "memory_bytes": 6442450944,
+    "jobs": 1,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "seam": "Only module 385 differs semantically from parent. Introduced captured Closure::getCurrent, GC self-cycle and conditional factory Block rules do not enter these ordinary root classes, direct Iterator construction and acyclic destructible array sources. Ownership, receive rules, schema, task datatype and ordered manifest are unchanged from the private base.",
+    "retention": "Native4/source3 plus REFERENCE-array Unsupported0 and composed genuine state9 481 physical/456 driver remain their original cuts; this actual-parent strict gate adds no native/source/state execution credit. The original injected-source fixture failure remains zero campaign credit."
+  }
 }

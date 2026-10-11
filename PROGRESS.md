@@ -421,6 +421,8 @@ six at `cf0cba5c` and corrected three at `7c6d28d3`, with no pure queries. The
 original injected-source fixture lookup failure remains zero credit. Later/named/
 typed array warnings, wider array/COW interactions and live REFERENCE payloads
 stay open; prior cuts remain frozen.
+Actual375 over `32ed5056` passes strict SL at `79f2ad1b`; private native/source/state
+cuts and the original fixture failure retain their inputs without renewal.
 [Array review](coverage/semantics/iterator-call-unpack-array-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
