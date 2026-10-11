@@ -775,12 +775,17 @@ def $trait_property_inherit_message(S, ptbytes_child, ptbytes_parent, ppropertyd
 ;; The returned issue still selects the first parent-table property error.
 ;; Only its matching getter incompatibility uses the actual hook source line.
 dec $property_hook_override_fatal_at(pstate, pclassdesc, ppropertydesc*, ppropertydesc*, ptbytes) : pstate
+dec $property_hook_covariance_error_site(pstate, ppropertydesc*, ppropertydesc, ptbytes) : (porigin, int)?
 def $property_hook_override_fatal(S, pclassdesc, ptbytes_message) = $property_hook_override_fatal_at(S, pclassdesc, $property_info_layout(S, porigin_parent, |S.CLASSES|), pclassdesc.PROPERTIES, ptbytes_message)
   -- if pclassdesc.PARENT = (ptbytes_parent)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
 def $property_hook_override_fatal(S, pclassdesc, ptbytes_message) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, pclassdesc.LINE) -- otherwise
 def $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, eps, ptbytes_message) = $pil_method_fatal(S, pclassdesc.ORIGIN, ptbytes_message, pclassdesc.LINE)
 def $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, ppropertydesc_child :: ppropertydesc_tail*, ptbytes_message) = $pil_method_fatal(S, porigin_hook, ptbytes_message, z)
+  -- if $property_hook_covariance_error_site(S, ppropertydesc_inherited*, ppropertydesc_child, ptbytes_message) = ((porigin_hook, z))
+def $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, ppropertydesc_child :: ppropertydesc_tail*, ptbytes_message) = $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, ppropertydesc_tail*, ptbytes_message)
+  -- if $property_hook_covariance_error_site(S, ppropertydesc_inherited*, ppropertydesc_child, ptbytes_message) = eps
+def $property_hook_covariance_error_site(S, ppropertydesc_inherited*, ppropertydesc_child, ptbytes_message) = ((porigin_hook, z))
   -- if $ppproperty_desc_at(ppropertydesc_inherited*, ppropertydesc_child.NAME) = (ppropertydesc_parent)
   -- if $property_hook_covariance_parent(S, ppropertydesc_parent, ppropertydesc_child)
   -- if $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child) = PVINCOMPATIBLE
@@ -789,7 +794,7 @@ def $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, pp
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
   -- if z = $source_line(metadata)
   -- if $(z > 0)
-def $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, ppropertydesc_child :: ppropertydesc_tail*, ptbytes_message) = $property_hook_override_fatal_at(S, pclassdesc, ppropertydesc_inherited*, ppropertydesc_tail*, ptbytes_message) -- otherwise
+def $property_hook_covariance_error_site(S, ppropertydesc_inherited*, ppropertydesc_child, ptbytes_message) = eps -- otherwise
 dec $property_hook_parent_overlap(pstate, ppropertydesc*, ppropertydesc*) : bool
 dec $property_hook_parent_match(pstate, ppropertydesc, ppropertydesc?) : bool
 def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false
