@@ -166,6 +166,11 @@ root or a valid namespace body, with standalone Block hosts, existing authentica
 If/While/Block conditional ancestry, direct authentic While hosts or nested Do hosts.
 The existing Do and While host ancestry remains admissible. Actual Do/While and
 each parent Block, terminal occurrences and complete factory guards stay mandatory.
+If main/elseif/else bodies now accept actual Do ancestry through these Block
+chains. The [Do-hosted If review](../../coverage/semantics/anonymous-do-if-rtd-review.json)
+records selected branches, reverse publication, retained Closure receivers and
+fresh defaults, including a Do→If→While function host. Each actual If/ElseIf/Else
+wrapper and complete factory guard remains required.
 The [nested-Do review](../../coverage/semantics/anonymous-nested-do-rtd-review.json)
 authenticates both actual Do hosts and body Blocks before publication or creation,
 reverse class publication and old/current Closure saved-frame allocations.
@@ -180,7 +185,7 @@ authenticates real body-Block entries before publication or creation/capture, re
 class publication and old/current saved-frame allocations. The earlier
 [direct-Do review](../../coverage/semantics/anonymous-do-rtd-review.json) retains
 body-before-false-condition and LOOP_NEXT/CHOOSE stopping/repeat checks without replay.
-If or While hosts beneath Do, other intervening loop nodes,
+Direct While hosts beneath Do, other intervening loop nodes,
 nested functions or nested Closures, other targets,
 captures and signatures remain Unsupported by this Do context.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)

@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables in actual If/elseif/else branches beneath authenticated Do ancestry and existing Block chains. Actual branch wrappers, terminal presence and complete factory guards remain mandatory. Existing recursion composes Do→If→While; direct Do→While and Do→While→If remain Unsupported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_do_if_class_cases.json"
+  },
+  "semantic_revision": "8ba686a69201019d732e4bc80ac4fe6d808e54aa",
+  "private_base": "bc93c4282dfcf75397c76a5e8a7fd429f36627ec",
+  "module_count": 377,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "sha256": "8e8c7988a31111b424385b3a39de38ca14217f4c5447232ef858856f0566d43f",
+    "rule": "Forward-declare anonymous_do_factory_path and admit it on the already shortened host prefix in each existing If main/elseif/else alternative. All source-node, path-length, terminal and complete factory guards stay unchanged. No class/count/runtime/task/schema/manifest change.",
+    "boundary": "Only the historical If-beneath-Do exclusion is superseded. Direct While beneath Do, wider loops, nested factories and other callable targets/signatures/captures remain required. Placement helpers alone do not certify full occurrences or signatures."
+  },
+  "engine_evidence": [
+    "Pinned Zend compiles Do body before its condition and all If branches in source order. Anonymous names consume the shared filename/start-line/hex RTD counter before selected branch execution. Existing callable publication, Closure creation/capture and named-class cause/CCLINK rules are reused."
+  ],
+  "native_cut": {
+    "revision": "bc93c4282dfcf75397c76a5e8a7fd429f36627ec",
+    "report": ".tools/anonymous-do-if-native-46/run-v1/report.json",
+    "sha256": "ca2eb91dba48d9651ac5d38ec14c3ab91a6049246d27b7c66e826690f287337c",
+    "originals": 3,
+    "normal": 3,
+    "exit_statuses": [0, 0, 0]
+  },
+  "baseline_cut": {
+    "revision": "bc93c4282dfcf75397c76a5e8a7fd429f36627ec",
+    "report": ".tools/anonymous-do-if-baseline-46/run-v1/report.json",
+    "sha256": "83e887558f46b9e9a09e18911f911283d29f991459356340d16617b04021cab9",
+    "checked_program": "Unsupported",
+    "reason": "anonymous class RTD, body, or compiler publication context",
+    "native_agreements": 0,
+    "note": "The original normal-source recorder expected exit0; actual exit+cleanup1 leaves its report FAIL. This measured boundary failure is retained without a wording-only replay."
+  },
+  "source_cut": {
+    "revision": "8ba686a69201019d732e4bc80ac4fe6d808e54aa",
+    "report": ".tools/anonymous-do-if-model-46/run-v1/report.json",
+    "sha256": "62338f205eb7464bd60c3ed8716addc694122e33303fdd21cbd3eb859186e6b5",
+    "groups": ["do-if-reversed", "do-if-repeated", "do-if-prior-deferred"],
+    "native_agreements": 3,
+    "normal": 3,
+    "seconds": [20.8900304791, 17.7907430027, 23.9984091781],
+    "semantic_caps_seconds": [45, 45, 90],
+    "host_caps_seconds": [55, 55, 100],
+    "steps_cap": 100000
+  },
+  "strict": {
+    "revision": "8ba686a69201019d732e4bc80ac4fe6d808e54aa",
+    "report": ".tools/anonymous-do-if-gate-46/report.json",
+    "sha256": "6306b6dd323569db70c57acef6b1a8781838b52c3048ed6df698735ae34a3abd",
+    "premises": 3,
+    "seconds": 6.074082851409912
+  },
+  "state_cuts": [
+    {
+      "group": "author/reversed",
+      "report": ".tools/anonymous-do-if-state-46/report.json",
+      "sha256": "e8da707dadc90f2b2fb561dfb8879da6d510dcb83fd3dbd72bc65db33966e679",
+      "fixture_sha256": "7338f422ded3b6c5d211f6c2745b872e7369cb56c0f74f5bf59ed7932759562e",
+      "checks": 355,
+      "setup_source_frontier_checks": 340,
+      "pure_queries": 15,
+      "PhpSteps": 15,
+      "seconds": 44.427128076553345
+    },
+    {
+      "group": "author/repeated",
+      "report": ".tools/anonymous-do-if-state-46/report.json",
+      "sha256": "e8da707dadc90f2b2fb561dfb8879da6d510dcb83fd3dbd72bc65db33966e679",
+      "fixture_sha256": "cc3120e5d5b5182ecaaddd93deb28b40c3cec36dc63edb050d82d33fa2026ed4",
+      "checks": 302,
+      "setup_source_frontier_checks": 294,
+      "pure_queries": 8,
+      "PhpSteps": 13,
+      "seconds": 32.21271324157715
+    },
+    {
+      "group": "independent/prior-deferred",
+      "report": ".tools/anonymous-do-if-peer-state-46/report-retry2.json",
+      "sha256": "cafedde68a55d65a0dc7705214e0b32377bdea574a0e18487d3d95669ea7dc08",
+      "fixture_sha256": "43337d78640bc19acd22cde460015f01fa34d9f24f2b275b4c968e46a3804676",
+      "checks": 211,
+      "setup_source_frontier_checks": 187,
+      "pure_queries": 24,
+      "PhpSteps": 8,
+      "seconds": 64.18714833259583
+    }
+  ],
+  "state_method": {
+    "frontiers": "Actual Do/Block/If/ElseIf/Else ancestry and source-bound CHOOSE deltas precede function publication or Closure creation/capture. Reverse publication preserves PDRCLASS/CCLINK and genuine callsites36/39. Repeated else creation retains distinct old/current REALCLOSURE receivers from one template and authentic calls28/30 with first9/fresh0 defaults. The independent Do→If→While function frontier distinguishes skipped main, selected elseif, qualified prior-deferred ownership and root-case EARLY whole-state no-op, then authentic call28 allocation with genuine current/caller frames and unrestricted Error heap.",
+    "stopping": "Required allocations only; no END or earlier loop-control/fatal replay. Pure controls are separate. Syntax preparation/elaboration has zero runtime credit.",
+    "allocation_contract": "The exact raw PhpStep allocation equality is retained. Raw allocation adds an object before lifecycle handle registration, so destruction_state_valid and therefore call_descriptors_valid are temporarily false. The independent fixture additionally certifies the raw handle deficit and checks the original full class/call/heap contract after drive_steps(S_new,1) processes that same allocation through existing lifecycle/GC rules. This adds no PhpStep credit and changes no production ownership rule.",
+    "steps": {
+      "Block_entry": 8,
+      "If_entry": 4,
+      "CHOOSE": 7,
+      "callable_publication": 2,
+      "Closure_creation_capture": 6,
+      "named_class_publication_CCLINK": 3,
+      "anonymous_allocation": 5,
+      "eligible_named_class_noop": 1
+    }
+  },
+  "state_totals": {
+    "checks": 868,
+    "setup_source_frontier_checks": 821,
+    "pure_queries": 47,
+    "PhpSteps": 36,
+    "unique_php_behaviors": false
+  },
+  "syntax_only": {
+    "preparation": ".tools/anonymous-do-if-state-46/preparation.json",
+    "preparation_sha256": "67809d9b474df968baccb99439b2f2449ddb2f599a3ff423237c1012a5831359",
+    "checked_originals": 3,
+    "frontend_adapter_closes": 6,
+    "author_elaboration": ".tools/anonymous-do-if-state-46/report-elab.json",
+    "author_elaboration_sha256": "96c4819233d95558d61224065bda6c1dac84346f0350cc53fb4e20f46a10130b",
+    "independent_elaboration": ".tools/anonymous-do-if-peer-state-46/report-elab-retry2.json",
+    "independent_elaboration_sha256": "222dd673115e477e872a8b905abd7a54c68fe7a1be2f06f74fa783d6cbd72049",
+    "runtime_credit": 0
+  },
+  "validation": "Original source/file/CWD/profile and native immutable START command hashes are bound. Exact revised commands, input watches, exits and raw streams are retained; accepted strict/state SL returned true newline, EL returned syntax output, stderr was empty, exit+cleanup0, owned groups empty, stable inputs and no unrun. Serial jobs1, EL30/SL120, existing local binaries; no new build/offline claim.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_do_if_class_cases.json",
+    "sha256": "29b43d933adeba7cd82e3df52282c4c23c41e95a137ab9ade2db4fa714e4223a",
+    "original_bytes_and_native_records": true,
+    "runner": "python3 tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_do_if_class_cases.json"
+  },
+  "preserved_failures": [
+    {
+      "report": ".tools/anonymous-do-if-peer-state-46/report-elab.json",
+      "sha256": "ad7fb3ff5a52aca3c53ae73b97946815d12474a37f8371facd81ce063b274730",
+      "cause": "Two synthetic pure-control programme roots used SEQUENCE instead of PROGRAM; before-main diagnostic was in stdout, exit+cleanup0, SL unrun. Exact two-token fixture correction only.",
+      "credit": 0
+    },
+    {
+      "report": ".tools/anonymous-do-if-peer-state-46/report-retry1.json",
+      "sha256": "f22749e58170e1f5ece47fb5cdf9d20be4f09196874560513f4df26c1148a863",
+      "cause": "Final broad validity was asserted immediately after raw allocation, before driver lifecycle processing. All eight earlier raw Steps and exact allocation equality had passed; the failed aggregate receives zero credit.",
+      "credit": 0
+    },
+    {
+      "report": ".tools/anonymous-do-if-peer-state-46/report-diagnose1.json",
+      "sha256": "4652dab9b9ca6fc7c6919da7307dbc83f133c232939d7791df26cd49827d3ef0",
+      "cause": "Splitting the same final conjunction isolated call_descriptors_valid; class_state_valid passed and heap was unexecuted. Static source diagnosis found the raw handle deficit; a further 268-check predicate expansion stayed unrun.",
+      "credit": 0
+    }
+  ],
+  "original_evidence": {
+    "root": "/home/user/workspace/php-spec/.tools/anonymous-do-if-46",
+    "directories": [
+      ".tools/anonymous-do-if-native-46",
+      ".tools/anonymous-do-if-baseline-46",
+      ".tools/anonymous-do-if-model-46",
+      ".tools/anonymous-do-if-gate-46",
+      ".tools/anonymous-do-if-state-46",
+      ".tools/anonymous-do-if-peer-state-46"
+    ],
+    "recovery": "Bulky originals remain outside Git at these paths. Reports retain exact commands, environment, compiler/runtime hashes and source/programme bindings. Earlier peer inputs are preserved in program-wrapper-failure-v1, post-allocation-invariant-failure-v1 and call-predicate-failure-v1; unrun-predicate-diagnosis-v1 has zero execution credit. Reproduce source comparisons through the maintained catalogue; recover private fixture runs with semantic_revision, the original root/file/CWD and retained pinned local binaries."
+  },
+  "remaining": [
+    "Direct While hosts beneath Do, wider loops, nested factories and other targets/signatures/captures.",
+    "Broader class/constructor/RTD consumers and final combined source/rebuild validation."
+  ],
+  "engine_bugs_or_intentional_divergence": [],
+  "independent_review": "Author and reviewer independently preflighted the narrow semantic change and complementary fixtures. Reviewer bound native3, unchanged baseline, source3, strict3 and author657; author bound final independent211 commands/raw once. Failed originals and unrun diagnosis retain zero credit. Reviewer independently cleared the final scoped private metadata at 8ba/377; actual released-parent compatibility is reviewed separately."
+}

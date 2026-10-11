@@ -95,6 +95,17 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
+Exact named-function and static no-capture Closure factories now admit plain empty
+named descendants in If/elseif/else branches beneath actual Do ancestry and body
+Blocks. Three originals agree at 8ba686a6 /377 (strict3 6.074s), including selected
+Do→If→While publication, reversed calls, retained Closure receivers and fresh
+defaults. Author657 and independent211 pass 868 checks: 821 setup/frontier +47 pure,
+with 36 genuine branch/publication/creation/allocation steps. Direct While hosts
+beneath Do and wider guards remain Unsupported. The original baseline recorder
+exit-label failure and peer fixture failures retain zero credit; the baseline's
+checked-program Unsupported reason establishes the prior gap.
+[Do-hosted If ledger](coverage/semantics/anonymous-do-if-rtd-review.json).
+
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
 assignments now admit plain empty named descendants in nested Do bodies through
 existing Do host ancestry and body-Block chains. Three originals agree at
@@ -103,8 +114,8 @@ retained Closure receivers, lexical namespace and fresh defaults. Author543 and
 independent159 pass 702 premises: 649 setup/frontier +53 pure, with 25 genuine Block,
 publication, creation/capture, allocation and eligible no-op steps. Fixtures stop at
 required allocations; syntax-only preparation/elaboration has zero runtime credit.
-No executed COMP45 failures. If or While hosts beneath Do and wider factory guards
-remain Unsupported.
+No executed COMP45 failures. Only the authenticated If-beneath-Do placement is now
+superseded; direct While hosts beneath Do and wider factory guards remain Unsupported.
 [Nested-Do ledger](coverage/semantics/anonymous-nested-do-rtd-review.json).
 The [earlier While-hosted Do ledger](coverage/semantics/anonymous-while-do-rtd-review.json)
 retains source3/state683 at 5a13bfe4 and its 5ff2413e/d02e5167 strict3 composition.

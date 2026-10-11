@@ -1509,8 +1509,14 @@ Closures; skipped hosts preserve missing callables while anonymous names already
 The [nested-Do review](coverage/semantics/anonymous-nested-do-rtd-review.json)
 checks both actual Do ancestors, reverse class publication, retained Closure receivers
 and fresh defaults. Three originals agree at 686cb43f /376 (strict3 6.126s), with
-702 focused premises and 25 genuine steps. If or While hosts beneath Do and wider
-factory guards remain Unsupported. The earlier [While-hosted Do review](coverage/semantics/anonymous-while-do-rtd-review.json)
+702 focused premises and 25 genuine steps at that cut. The
+[Do-hosted If review](coverage/semantics/anonymous-do-if-rtd-review.json) adds
+authenticated main/elseif/else branches beneath Do and existing Block chains.
+Three originals agree at 8ba686a6 /377 (strict3 6.074s), including Do→If→While
+selection, reversed publication, retained Closure receivers and fresh defaults.
+Author and independent fixtures pass 868 focused checks with 36 genuine steps.
+Direct While hosts beneath Do and wider factory guards remain Unsupported.
+The earlier [While-hosted Do review](coverage/semantics/anonymous-while-do-rtd-review.json)
 retains source3/state683 and its 5ff2413e/d02e5167 strict3 composition; only its
 nested-Do exclusion is superseded. The earlier [If-hosted Do review](coverage/semantics/anonymous-conditional-do-rtd-review.json)
 retains its original source/state cuts and WeakMap composition; only its direct
