@@ -456,3 +456,19 @@ full state/budget/owner checks and malformed continuation controls. Shared strin
 typed conversion and generic warning dispatch stay unchanged. Original observer and
 preparation failures retain zero credit; phase40 cuts are frozen. Object/array callback
 replacements, changed sources, PARAMETERBACKINGS and wider getter scope remain required.
+
+Weak builtin-int MAGIC_GET also accepts original in-range floats. Integral values,
+including negative zero, convert quietly; fractional values capture truncation
+before deprecation dispatch. Normal return commits the saved int to an unconstrained
+REF or BYVAL RV. Handler throws preserve the handler-changed scalar instead, with
+no int write or second TypeError before genuine receiver cleanup. Real sources
+retain the initial conflict decision and diagnose the live post-handler value.
+The [float-integer review](../../coverage/semantics/magic-property-float-integer-review.json)
+records six exact sources and seven whole reached groups/1,338 premises. Eight
+maintained constructed clauses run only in the new kept/conflict groups. Integral 7,
+negative zero and fractional 7.5 have native evidence; MIN/upper/nonfinite/invalid64
+bounds are constructed controls. The original whole425 timeout remains0 after a
+fixture-only split. Object/array callback replacements, changed sources/tails,
+PARAMETERBACKINGS and wider receiver/conversion scope remain required. Shared
+numeric/typed conversion and generic warning dispatch stay unchanged; phase41
+evidence retains its original cuts.

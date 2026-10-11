@@ -1899,6 +1899,14 @@ Strict getter rejection emits no warning. Original observer/preparation failures
 object/array callback replacements and changed source constraints remain required.
 The actual375 join over `6f2a0d742` at `925c3b1bd` preserves disjoint parent paths.
 Private and parent compiler cuts are reused; fresh strict/source/state/native credit remains0.
+Weak int MAGIC_GET now accepts integral floats quietly, including negative zero,
+and captures fractional truncation before precision-loss deprecation handlers.
+Normal return commits the saved int on an unconstrained RV; throwing handlers
+preserve their scalar writes before getter cleanup. Real source conflicts diagnose the live value.
+[Six exact sources and seven reached groups](coverage/semantics/magic-property-float-integer-review.json)
+pass 1,338 premises; strict375 retains `6674a8cdb`. The original whole425 fixture
+timeout stays0 after a fixture-only split. Range controls are constructed;
+object/array callback replacements and changed source constraints remain required.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

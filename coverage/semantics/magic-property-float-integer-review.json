@@ -1,0 +1,132 @@
+{
+  "status": "Bounded source and reached-state milestone; independently reviewed semantics and retained results.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "e687b9f15af700971cf46c87e02a09e861b9d85a; phase41 evidence frozen",
+  "runtime_revision": "6674a8cdbd046bce7621b472c4a00e6d3712b631",
+  "tested_revision": "d6ce7f2cd5c05c655fa27409d31951d8c99e6ec7",
+  "scope": "Modules30/380/384 authenticate weak builtin-int MAGIC_GET in-range PFLOAT verification. Quiet integral conversion, including -0, writes the original unconstrained RV/cell. Fractional conversion captures truncation before dispatch; normal handler return commits saved int, abrupt return preserves callback mutation with no int write. Genuine sources retain the pre-warning conflict decision and diagnose the live referent. Scalar/string callback referents and unchanged real sources/tail only.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules": 375,
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained providers, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/30-storage.watsup": "98226a6410449e7e2edb51be8f6f0cfd6890b978f8c1a21706a457a3a217c927",
+    "spec/semantics/380-magic-property-get.watsup": "bf95a5ba3b95b7867ea72dac1098d7669a2bddc136838e4bcedf424bc464a071",
+    "spec/semantics/384-magic-property-reference-types.watsup": "f54f93bfdb50757e6e9d3e6403e81d2e67c4400aaf1b82040c1a5dedbb1ef708",
+    "tests/semantics/dynamic_property_warning_sources.py": "11ad5c184f19809513dfdf1d9dae8b923134df702c1a14c64998bcc051578723",
+    "tests/semantics/magic_property_float_integer_protocol.py": "9a32dbadf499dec691ce5739d1c7e6a1f436ec61006ce4c5ed914332355f4519",
+    "tests/semantics/magic_property_integer_protocol.py": "b4ba3859756b5e2a5312a7620b854fef99ef51021200d9d62c12681e80f0cb3c",
+    "tests/semantics/magic_property_reference_protocol.py": "b89b4e4e639c0877ea37eb3d01b9ec91fb20b9393a036f5bb12aeba493d9c332",
+    "tests/semantics/magic_property_boolean_integer_protocol.py": "01c25cc0661279a41b4da9fc1129f5aeee6831beb53cb2d4238d477af6d7a8bb"
+  },
+  "native_first": {
+    "revision": "d8ae8106597bfc80b5bc264c630318d409fcd02b",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-integer-native42-zne1svfb/report.json",
+    "seconds": 0.16630198992788792,
+    "credit": "Observation-only six processes0/empty; model/state/agreement0."
+  },
+  "unsupported_baseline": {
+    "revision": "d8ae8106597bfc80b5bc264c630318d409fcd02b",
+    "case": "review-property-magic-float-integer-reference-kept42",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-integer-baseline42-3mafa9o9/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|",
+    "reason": "magic getter property type coercion",
+    "seconds": 18.12503019347787,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "6674a8cdbd046bce7621b472c4a00e6d3712b631",
+    "parent": "d8ae8106597bfc80b5bc264c630318d409fcd02b",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-integer-strict42-w152itdh/report.json",
+    "modules": 375,
+    "seconds": 5.96411313675344,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "revision": "6674a8cdbd046bce7621b472c4a00e6d3712b631",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-6mciyh1p/report.json",
+    "outcomes": "Six accepted/checked normal model exits0 and actual native/model processes0; exact model stdout=native=EXPECTED, all stderr empty and reason/diagnostic null."
+  },
+  "source_sha256": {
+    "review-property-magic-float-integer-reference-kept42": "3bd47cb8eb18655c37424b1b20f864810bfddaa4b1b20a1960f5a19dd1c940af",
+    "review-property-magic-float-integer-value42": "ef61c8e1e1127d537d8be21d8603a27613c391421f65379ebbb6c300cbfbf23c",
+    "review-property-magic-float-integer-owned42": "c59360168ca1eaef172cef2029b8b90dc0cc3d61c292f68aee8fcc011f618c1a",
+    "review-property-magic-float-integer-source-conflict42": "c42cdaf3e3094d968c36a070a9ff0a0a0e36da3560cb6381dfe658ebde8de125",
+    "review-property-magic-float-integer-handler-throw42": "3921d2215c350d52ef4f5a2d812c7878d657cf61db3bee3dd14c3bd9666178e7",
+    "review-property-magic-float-integer-strict-getter42": "2d49ac1f8e79db7a3aa16742d3cf7059e0d380ba7b9b9998a80f306398a0b3ef"
+  },
+  "reached": [
+    {
+      "group": "reference-kept",
+      "premises": 295,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-integer-8n_1k6ig/report.json"
+    },
+    {
+      "group": "reference-quiet",
+      "premises": 230,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-integer-6ka0y8y_/report.json"
+    },
+    {
+      "group": "value",
+      "premises": 149,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-integer-v8t3c963/report.json"
+    },
+    {
+      "group": "owned",
+      "premises": 170,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-integer-9svsr4qu/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "premises": 231,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-integer-a9nrr28t/report.json"
+    },
+    {
+      "group": "handler-throw",
+      "premises": 145,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-integer-2ys3mbje/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "premises": 118,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-integer-mr48aq94/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 1338,
+  "facts": [
+    "Actual REPORTING0 masked and eligible-handler dispatch captures int7 without new string allocation. Normal REF callback string is overwritten; BYVAL leaves the changed global, owned reception detaches before BASE retirement. Quiet7/-0 verification and full driver budgets preserve genuine alias/owner transitions.",
+    "Genuine int|float source first exact read is whole-state identity. Lossy temp conversion warns, then compatible handler int42 still produces first-source TypeError with current given type int. Raw/source remain until destructor detach/repair.",
+    "Throwing wrapper discard restores the callback but does not commit captured int. Getter destruction sees the handler string; cleanup42/previouswarning42 preserves actual exception roots. Strict integral float rejection has no warning.",
+    "Eight maintained constructed clauses (three controls) are maintained only in new kept/conflict groups. Constructed MIN/exclusiveupper/Inf/NaN/invalid64 and malformed INTEGER/input/site/owner/tail/PARAM exclusions are distinct from six native originals."
+  ],
+  "preparation": {
+    "original_six": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-integer-state-prep42-ax4bkwn9/report.json",
+    "affected_split": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-integer-state-prep42-peougu3e/report.json",
+    "credit": "Original six1238/full-sort0 and affected split295+230/full-sort0; closed workers0/empty. Five unchanged tail fixtures/prefix retained."
+  },
+  "original_failures": [
+    {
+      "revision": "6674a8cdbd046bce7621b472c4a00e6d3712b631",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-integer-sa79osws/report.json",
+      "cause": "Whole kept425 numeric timeout120 with empty stdout/stderr; no assertion mismatch reported. Whole-state credit0, tails unrun. Fixture-only split preserves every original premise and original source/runtime/caps."
+    }
+  ],
+  "compatibility": "6674\u2192d6ce changes only the reached helper: split295+230 retains every original kept425 premise; phase11 is local to quiet group, both literal-eval/caller/owner classifications are unchanged. Five tail clause arrays/PREFIX, all runtime and six original/EXPECTED bytes remain exact; private strict/source cuts reused without renewal.",
+  "remaining": "Object/array callback replacements, changed/removed real sources/tails, PARAMETERBACKINGS and wider receiver/signature/access/quiet/write/recursive/coercion scope remain required. Native MIN/upper/nonfinite variants are not claimed.",
+  "engine": [
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_long_weak computes truncation and deprecation before success; exception returns false before ZVAL_LONG commit",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_weak_scalar_type_hint and zend_verify_prop_assignable_by_ref_ex preserve strictness, temporary warning conflict decision and live first-source diagnostics",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property verifies before OBJ_RELEASE; existing207/270 restore handler wrappers and pending cleanup"
+  ],
+  "recovery": "Tracked catalog and float-integer helper reproduce six originals/seven whole groups. Ignored exact raw trees retain checked/literal-eval programs, whole fixtures/assertions, argv/cwd/process/streams and clean identities. current32/owned28 remain live providers; no portability/rebuild claim."
+}

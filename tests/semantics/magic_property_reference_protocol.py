@@ -118,7 +118,7 @@ def boundaries():
     # Constructed helper classification boundaries keep real source state fixed.
     for tag, value in [('decimal', 'PSTRING ($ptascii("7.5"))'), ('float', 'PFLOAT $float_of_int(7)'), ('bool', 'PBOOL true')]:
         checks += [f'S_{tag} = $property_get_propref_possible(S_return, ppropertyget, ppropertydesc_get, {value}, pproptypesource_first, TYPEINTEGER ({value}))',
-            'S_bool.COMPLETION = THROWN "TypeError" ptbytes_bool_message ppropertyget.LINE /\\ S_bool = S_return[.COMPLETION = S_bool.COMPLETION]' if tag == 'bool' else f'S_{tag} = S_return[.COMPLETION = UNSUPPORTED "magic getter constrained reference coercion"]']
+            'S_bool.COMPLETION = THROWN "TypeError" ptbytes_bool_message ppropertyget.LINE /\\ S_bool = S_return[.COMPLETION = S_bool.COMPLETION]' if tag == 'bool' else 'S_float.COMPLETION = THROWN "TypeError" ptbytes_float_message ppropertyget.LINE /\\ S_float = S_return[.COMPLETION = S_float.COMPLETION]' if tag == 'float' else f'S_{tag} = S_return[.COMPLETION = UNSUPPORTED "magic getter constrained reference coercion"]']
     return checks
 
 

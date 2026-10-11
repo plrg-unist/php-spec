@@ -49,6 +49,15 @@ dec $property_get_nan_valid(pstate, ppropertynan) : bool
 dec $property_get_nan_commit(pstate, ppropertynan) : pstate
 dec $property_get_nan_finish(pstate, ppropertynan) : pstate
 dec $property_get_nan_abrupt(pstate, ppropertynan) : pstate
+dec $property_get_long_context(pstate, ppropertyget) : bool
+dec $property_get_long_sources(pstate, ppropertyget, poperand) : pproptypesource*?
+dec $property_get_long_ready(pstate, ppropertyget) : bool
+dec $property_get_long_begin(pstate, ppropertyget) : pstate
+dec $property_get_long_input(poperand, nat) : bool
+dec $property_get_long_valid(pstate, ppropertylong) : bool
+dec $property_get_long_commit(pstate, ppropertylong) : pstate
+dec $property_get_long_finish(pstate, ppropertylong) : pstate
+dec $property_get_long_abrupt(pstate, ppropertylong) : pstate
 
 ;; Accessible INITIAL does not invoke __get. The UNSET state is distinct.
 def $property_get_method(S, n) = $effective_method(S, porigin, $ptascii("__get"), |S.CLASSES|)
@@ -394,6 +403,15 @@ def $property_get_verify_value(S, ppropertyget, ppropertydesc, PBOOL b, TYPEINTE
   -- if $property_get_unconstrained(S, S.RESULT)
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN (PBOOL b)
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, PFLOAT n_float, TYPEINTEGER (PFLOAT n_float)) = $property_get_integer_apply(S, ppropertyget, S.RESULT, i)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if $(n_float < 18446744073709551616)
+  -- if $fparts_fits($float_decode(n_float)) /\ $fparts_integral($float_decode(n_float))
+  -- if (i, eps) = $float_long(n_float, true)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $property_get_unconstrained(S, S.RESULT)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PFLOAT n_float)
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEINTEGER pvalue) = $property_get_integer_apply(S, ppropertyget, S.RESULT, i)
   -- if $typed_string_value(pvalue)
   -- if $typed_number(pvalue) = (NINT i)
@@ -450,14 +468,17 @@ def $property_get_float_string_apply(S, ppropertyget, REFERENCE n, n_float) = $w
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_nan_begin(S, ppropertyget)
   -- if poperand = S.RESULT
   -- if $property_get_nan_ready(S, ppropertyget)
+def $property_get_complete(S, ppropertyget, poperand) = $property_get_long_begin(S, ppropertyget)
+  -- if poperand = S.RESULT
+  -- if $property_get_long_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget S_checked.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
-  -- if ~$property_get_nan_ready(S, ppropertyget) \/ poperand =/= S.RESULT
+  -- if (~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget)) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION = NORMAL
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
-  -- if ~$property_get_nan_ready(S, ppropertyget) \/ poperand =/= S.RESULT
+  -- if (~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget)) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION =/= NORMAL
 ;; Verification can fail after a real RV was returned. Retain that raw owner
@@ -691,3 +712,125 @@ def $property_get_nan_abrupt(S, ppropertynan) = S[.TODO = (THROW_SEARCH n_error)
 def $property_get_nan_abrupt(S, ppropertynan) = S[.COMPLETION = UNSUPPORTED "magic getter NaN warning cleanup"] -- otherwise
 def $error_read_discard(S, PROPERTY_GET_NAN ppropertynan) = $property_get_nan_abrupt(S, ppropertynan)
 def $return_discard(S, PROPERTY_GET_NAN ppropertynan) = $property_get_nan_abrupt(S, ppropertynan)
+
+def $property_get_long_context(S, ppropertyget) = true
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_tail_valid(S, ppropertyget)
+  -- if S.ORIGIN = (ppropertyget.SITE)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if ppropertyget.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.CODE.STRICT
+def $property_get_long_context(S, ppropertyget) = false -- otherwise
+
+def $property_get_long_sources(S, ppropertyget, poperand) = (eps)
+  -- if $call_reference_operand_valid(S, poperand)
+  -- if $property_get_unconstrained(S, poperand)
+def $property_get_long_sources(S, ppropertyget, REFERENCE n) = (ppropref.SOURCES)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if $propref_at(S.PROPREFS, n) = (ppropref)
+  -- if ppropref.SOURCES =/= eps
+  -- if $proprefs_valid(S)
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+def $property_get_long_sources(S, ppropertyget, poperand) = eps -- otherwise
+
+def $property_get_long_ready(S, ppropertyget) = true
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_long_context(S, ppropertyget)
+  -- if $property_get_long_sources(S, ppropertyget, S.RESULT) = (pproptypesource*)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PFLOAT n_float)
+  -- if $(n_float < 18446744073709551616)
+  -- if $fparts_fits($float_decode(n_float))
+  -- if $reporting_lossy_value(PFLOAT n_float) = ((i, preqbytes))
+  -- if $typed_conversion_at(S, [(PTBRANCH ([PTBUILTIN "int"]))], PFLOAT n_float, false) = TYPEINTEGER (PFLOAT n_float)
+def $property_get_long_ready(S, ppropertyget) = false -- otherwise
+
+def $property_get_long_begin(S, ppropertyget) = $error_dispatch(S[.RESULT = KNOWN PNULL], 8192, preqbytes, ppropertyget.LINE, DIAGNOSTIC "Deprecated" preqbytes ppropertyget.LINE, PROPERTY_GET_LONG ppropertylong)
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_long_ready(S, ppropertyget)
+  -- if $property_get_long_sources(S, ppropertyget, S.RESULT) = (pproptypesource*)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PFLOAT n_float)
+  -- if $reporting_lossy_value(PFLOAT n_float) = ((i, preqbytes))
+  -- if ppropertylong = {GET ppropertyget, INPUT S.RESULT, FLOAT n_float, INTEGER i, SOURCES pproptypesource*, OWNER (|S.FRAMES|), TAIL ptask_tail*}
+
+def $property_get_carrier(ptask, n, porigin) = 1
+  -- if $source_operand_marker(ptask) = PROPERTY_GET_LONG ppropertylong
+  -- if ppropertylong.GET.OBJECT = n /\ ppropertylong.GET.SITE = porigin
+def $property_get_base_pair(ptask :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*, ppropertyget) = true
+  -- if $source_operand_marker(ptask) = PROPERTY_GET_LONG ppropertylong
+  -- if ppropertylong.GET = ppropertyget
+
+def $property_get_long_input(KNOWN (PFLOAT n_float), n_float) = true
+def $property_get_long_input(REFERENCE n, n_float) = true
+def $property_get_long_input(poperand, n_float) = false -- otherwise
+
+def $property_get_long_valid(S, ppropertylong) = true
+  -- if $property_get_long_input(ppropertylong.INPUT, ppropertylong.FLOAT)
+  -- if $property_get_long_context(S, ppropertylong.GET)
+  -- if ppropertylong.OWNER = |S.FRAMES|
+  -- if $source_operand_suffix(S.TODO, PROPERTY_GET_LONG ppropertylong, ppropertylong.TAIL)
+  -- if $(ppropertylong.FLOAT < 18446744073709551616)
+  -- if $fparts_fits($float_decode(ppropertylong.FLOAT))
+  -- if $reporting_lossy_value(PFLOAT ppropertylong.FLOAT) = ((ppropertylong.INTEGER, preqbytes))
+  -- if $property_get_long_sources(S, ppropertylong.GET, ppropertylong.INPUT) = (ppropertylong.SOURCES)
+  -- if S_read = $quiet_operand(S, ppropertylong.INPUT)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $value_nodes(pvalue) = eps
+def $property_get_long_valid(S, ppropertylong) = false -- otherwise
+
+def $task_nodes(PROPERTY_GET_LONG ppropertylong) = [HOBJECT ppropertylong.GET.OBJECT] ++ $operand_nodes(ppropertylong.INPUT)
+def $call_task_valid(S, PROPERTY_GET_LONG ppropertylong) = $property_get_long_valid(S, ppropertylong)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_GET_LONG ppropertylong
+  -- if $property_get_long_valid(S, ppropertylong)
+  -- if perrorcall.SITE = ppropertylong.GET.SITE /\ perrorcall.LEVEL = 8192
+  -- if perrorcall.LINE = ppropertylong.GET.LINE
+  -- if $reporting_lossy_value(PFLOAT ppropertylong.FLOAT) = ((ppropertylong.INTEGER, perrorcall.MESSAGE))
+  -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" perrorcall.MESSAGE perrorcall.LINE
+
+;; Weak long conversion writes the captured integer only after a normal warning.
+;; Callback object/array replacements and changed type sources remain excluded.
+def $property_get_long_commit(S, ppropertylong) = S[.RESULT = KNOWN (PINT ppropertylong.INTEGER)]
+  -- if ppropertylong.INPUT = KNOWN (PFLOAT ppropertylong.FLOAT)
+  -- if ppropertylong.SOURCES = eps
+def $property_get_long_commit(S, ppropertylong) = $write_cell_checked(S[.RESULT = REFERENCE n], n, PINT ppropertylong.INTEGER, ppropertylong.GET.LINE)[.RESULT = REFERENCE n]
+  -- if ppropertylong.INPUT = REFERENCE n
+  -- if ppropertylong.SOURCES = eps
+def $property_get_long_commit(S, ppropertylong) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $property_get_given(S, pvalue) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertylong.GET.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertylong.GET.LINE)
+  -- if ppropertylong.SOURCES = pproptypesource :: pproptypesource_tail*
+  -- if S_read = $quiet_operand(S, ppropertylong.INPUT)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $property_desc_at($property_layout(S, ppropertylong.GET.CLASS, |S.CLASSES|), ppropertylong.GET.NAME) = (ppropertydesc)
+
+def $property_get_long_finish(S, ppropertylong) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertylong.GET S_checked.RESULT) :: ppropertylong.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ppropertylong.SOURCES = eps
+  -- if S_checked = $property_get_long_commit(S, ppropertylong)
+def $property_get_long_finish(S, ppropertylong) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertylong.GET ppropertylong.INPUT) :: ppropertylong.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ppropertylong.SOURCES =/= eps
+  -- if S_checked = $property_get_long_commit(S, ppropertylong)
+rule PhpStep/property-get-long: S ~> $property_get_long_finish(S, ppropertylong)
+  -- if S.TODO = (PROPERTY_GET_LONG ppropertylong) :: ptask_tail*
+  -- if $property_get_long_valid(S, ppropertylong)
+rule PhpStep/property-get-long-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic getter float integer warning continuation"]
+  -- if S.TODO = (PROPERTY_GET_LONG ppropertylong) :: ptask_tail*
+  -- if ~$property_get_long_valid(S, ppropertylong)
+
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (PROPERTY_GET_LONG ppropertylong) :: ptask_tail*
+  -- if $property_get_long_valid(S, ppropertylong)
+  -- if S_next.TODO = (PROPERTY_GET_COPY ppropertylong.GET ppropertylong.INPUT) :: ptask_tail*
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+
+def $property_get_long_abrupt(S, ppropertylong) = S[.TODO = (THROW_SEARCH n_error) :: (PROPERTY_GET_COPY ppropertylong.GET ppropertylong.INPUT) :: ppropertylong.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertylong.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $property_get_long_valid(S[.TODO = (PROPERTY_GET_LONG ppropertylong) :: ppropertylong.TAIL], ppropertylong)
+def $property_get_long_abrupt(S, ppropertylong) = S[.COMPLETION = UNSUPPORTED "magic getter float integer warning cleanup"] -- otherwise
+def $error_read_discard(S, PROPERTY_GET_LONG ppropertylong) = $property_get_long_abrupt(S, ppropertylong)
+def $return_discard(S, PROPERTY_GET_LONG ppropertylong) = $property_get_long_abrupt(S, ppropertylong)

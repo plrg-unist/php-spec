@@ -3072,6 +3072,21 @@ getter/PARAM scope remain required; phase40 evidence is frozen.
 [NaN-string ledger](coverage/semantics/magic-property-nan-string-review.json).
 The actual375 join over `6f2a0d742` at `925c3b1bd` preserves disjoint parent paths.
 Private and parent compiler cuts are reused; fresh strict/source/state/native credit remains0.
+Weak builtin-int MAGIC_GET now accepts quiet integral floats, including 7.0/-0.0,
+and captures in-range fractional truncation before deprecation dispatch. Normal
+REF return overwrites scalar callback mutation; BYVAL changes only RV. A throwing
+handler preserves the changed referent without a captured-int write or second
+TypeError, then getter cleanup retains warning/cleanup previous links. Genuine
+source constraints retain the pre-warning conflict and diagnose the current value.
+Native6/baseline1 retain `d8ae81065`, strict375/source6 retain `6674a8cdb` (5.964s).
+Seven whole reached groups pass 1,338 setup-inclusive premises at `d6ce7f2cd`,
+including owners, full dispatch/commit/discard budgets and eight maintained
+constructed clauses. The original whole425 timeout remains0; two fixture-only
+parts retain every original premise under the same cap, with five tails unchanged.
+MIN/upper/nonfinite/invalid64 bounds remain constructed controls. Object/array
+callback replacements, changed sources/tails, PARAM and wider getter scope remain
+required; phase41 cuts are frozen.
+[Float-integer ledger](coverage/semantics/magic-property-float-integer-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

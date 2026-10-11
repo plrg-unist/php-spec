@@ -183,7 +183,7 @@ def boundaries():
                         ('float', 'PFLOAT $float_of_int(7)'), ('bool', 'PBOOL true')]:
         checks += [f'S_{name} = S_return[.RESULT = KNOWN ({value})]',
             f'S_{name}_checked = $property_get_verify_value(S_{name}, ppropertyget, ppropertydesc_get, {value}, TYPEINTEGER ({value}))',
-            f'S_{name}_checked = '+('S_bool[.RESULT = KNOWN (PINT 1)]' if name == 'bool' else f'S_{name}[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]')]
+            f'S_{name}_checked = '+('S_bool[.RESULT = KNOWN (PINT 1)]' if name == 'bool' else 'S_float[.RESULT = KNOWN (PINT 7)]' if name == 'float' else f'S_{name}[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]')]
     checks += ['$typed_number(PSTRING ($ptascii("7.5"))) = (NFLOAT n_decimal)',
         'S_dependent = $property_get_verify_value(S_return, ppropertyget, ppropertydesc_get, pvalue_raw, TYPEDEPENDENT "user object string conversion")',
         'S_dependent = S_return[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',
