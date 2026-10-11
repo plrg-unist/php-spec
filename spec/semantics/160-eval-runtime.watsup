@@ -618,19 +618,39 @@ def $eval_continue_result(n?, S_next) = S_next
   -- if S_next.COMPLETION =/= NORMAL
   -- if ~$shutdown_ready(S_next) /\ ~$destructor_ready(S_next)
 
+dec $source_static_next(pstate, nat) : porigin?
+dec $source_static_drop(pstate, nat) : pstate
+rule PhpStep/eval-static-release: S ~> $source_static_drop(S, n)
+  -- if S.TODO = (EVAL_END n) :: ptask_tail*
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = n
+  -- if pevalcontext.PHASE = UNIT_RUN
+  -- if pevalcontext.OWNER = |S.FRAMES|
+  -- if pevalcontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n) =/= eps
 rule PhpStep/eval-end: S ~> S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pevalcontext.SITE)]
   -- if S.TODO = (EVAL_END n) :: ptask_tail*
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
   -- if pevalcontext.UNIT = n
   -- if pevalcontext.PHASE = UNIT_RUN
+  -- if pevalcontext.OWNER = |S.FRAMES|
   -- if pevalcontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n) = eps
 
+def $return_step(S, poperand, (PORIGIN n pcpath_source), (EVAL_END n) :: ptask_tail*) = $source_static_drop(S, n)
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = n
+  -- if pevalcontext.PHASE = UNIT_RUN
+  -- if pevalcontext.OWNER = |S.FRAMES|
+  -- if pevalcontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n) =/= eps
 def $return_step(S, poperand, (PORIGIN n pcpath_source), (EVAL_END n) :: ptask_tail*) = S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = ptask_tail*][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pevalcontext.SITE)][.HELD = eps]
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
   -- if pevalcontext.UNIT = n
   -- if pevalcontext.PHASE = UNIT_RUN
   -- if pevalcontext.OWNER = |S.FRAMES|
   -- if pevalcontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n) = eps
 def $throwable_marker(EVAL_END n) = true
 rule PhpStep/eval-throw-cross: S ~> S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = (THROW_SEARCH n_object) :: ptask_tail*][.ORIGIN = (pevalcontext.SITE)][.HELD = eps]
   -- if S.TODO = (THROW_SEARCH n_object) :: (EVAL_END n_unit) :: ptask_tail*

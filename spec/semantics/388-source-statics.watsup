@@ -1,0 +1,70 @@
+;; A parser-backed unit owns its top-level static slots. Callable bodies in the
+;; aggregate unit code retain their separate function or Closure tables.
+dec $source_static_callable(pcnode) : bool
+def $source_static_callable(NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata) = true
+def $source_static_callable(pcnode) = $ppfinally_callable(pcnode) -- otherwise
+dec $source_static_nested(pcoccurrence*, pcpath) : bool
+def $source_static_nested(eps, pcpath) = false
+def $source_static_nested((PCOCCURRENCE pcpath_node pcnode) :: pcoccurrence*, pcpath) = (($source_static_callable(pcnode) /\ $effect_below(pcpath_node, pcpath)) \/ $source_static_nested(pcoccurrence*, pcpath))
+dec $source_static_bound(pstate, nat) : bool
+def $source_static_bound(S, n) = (($(n > 0) /\ $eval_binding_at(S.EVALBINDINGS, n) =/= eps /\ $file_binding_at(S.FILEBINDINGS, n) = eps) \/ ($(n > 0) /\ $eval_binding_at(S.EVALBINDINGS, n) = eps /\ $file_binding_at(S.FILEBINDINGS, n) =/= eps))
+def $source_static_origin(S, PORIGIN n pcpath) = true
+  -- if $source_static_bound(S, n)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if pcunit_expected = $pcsource(n, pcunit.AST)
+  -- if $origin_node([pcunit_expected], PORIGIN n pcpath) = (NStaticVar phpType10 phpType5 metadata)
+  -- if ~$source_static_nested(pcunit_expected.OCCURRENCES, pcpath)
+  -- if $static_descriptor(S, PORIGIN n pcpath) =/= eps
+def $source_static_origin(S, porigin) = false -- otherwise
+
+;; Cell provenance persists independently of live tasks. Executing a static
+;; declaration additionally requires the source's current end-marker owner.
+dec $source_static_file_owner(pstate, pfilecontext, nat) : bool
+def $source_static_file_owner(S, pfilecontext, n) = (pfilecontext.UNIT = (n) /\ pfilecontext.PHASE = FILE_UNIT_RUN /\ pfilecontext.OWNER = |S.FRAMES| /\ $file_context_valid(S, pfilecontext))
+dec $source_static_file_running(pstate, pfilecontext*, nat) : bool
+def $source_static_file_running(S, eps, n) = false
+def $source_static_file_running(S, pfilecontext :: pfilecontext_tail*, n) = ($source_static_file_owner(S, pfilecontext, n) \/ $source_static_file_running(S, pfilecontext_tail*, n))
+dec $source_static_eval_owner(pstate, pevalcontext?) : bool
+def $source_static_eval_owner(S, eps) = false
+def $source_static_eval_owner(S, (pevalcontext)) = (pevalcontext.PHASE = UNIT_RUN /\ pevalcontext.OWNER = |S.FRAMES| /\ $eval_context_valid(S, pevalcontext))
+dec $source_static_running(pstate, nat) : bool
+def $source_static_running(S, n) = ($source_static_eval_owner(S, $eval_context_at(S.EVALCONTEXTS, n)) \/ $source_static_file_running(S, S.FILECONTEXTS, n))
+dec $source_static_caller(pstate, nat) : bool
+def $source_static_caller(S, n) = true -- if S.CURRENT = eps
+def $source_static_caller(S, n) = (n_caller =/= n)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $origin_source(pcallcontext.FUNCTION) = PORIGIN n_caller pcpath
+def $source_static_caller(S, n) = false -- otherwise
+def $static_task_valid(S, PORIGIN n pcpath, b_bind) = true
+  -- if S.ORIGIN = (PORIGIN n pcpath)
+  -- if $source_static_origin(S, PORIGIN n pcpath)
+  -- if $source_static_running(S, n)
+  -- if $source_static_caller(S, n)
+  -- if $static_descriptor(S, PORIGIN n pcpath) = ((ptbytes, z_begin, z_bind, b_stored))
+  -- if ~b_bind \/ ~b_stored
+
+;; Release one initialized slot in compiler declaration order. The end marker
+;; and copied return operand remain live while ordinary destruction runs.
+dec $source_static_candidate(pstate, nat, pcodeexpr) : porigin?
+def $source_static_candidate(S, n, CODESTATIC pcpath ptbytes z_begin z_bind b) = (PORIGIN n pcpath)
+  -- if $source_static_origin(S, PORIGIN n pcpath)
+  -- if $static_at(S.STATICS, PORIGIN n pcpath) =/= eps
+def $source_static_candidate(S, n, pcodeexpr) = eps -- otherwise
+dec $source_static_next_code(pstate, nat, pcodeexpr*) : porigin?
+def $source_static_next_code(S, n, eps) = eps
+def $source_static_next_code(S, n, pcodeexpr :: pcodeexpr_tail*) = (porigin)
+  -- if $source_static_candidate(S, n, pcodeexpr) = (porigin)
+def $source_static_next_code(S, n, pcodeexpr :: pcodeexpr_tail*) = $source_static_next_code(S, n, pcodeexpr_tail*)
+  -- if $source_static_candidate(S, n, pcodeexpr) = eps
+def $source_static_next(S, n) = $source_static_next_code(S, n, pcode.EXPRESSIONS)
+  -- if $code_at(S.CODE, n) = (pcode)
+def $source_static_next(S, n) = eps -- otherwise
+dec $source_static_remove(pstaticcell*, porigin) : pstaticcell*
+def $source_static_remove(eps, porigin) = eps
+def $source_static_remove(pstaticcell :: pstaticcell_tail*, porigin) = pstaticcell_tail*
+  -- if pstaticcell.ORIGIN = porigin
+def $source_static_remove(pstaticcell :: pstaticcell_tail*, porigin) = pstaticcell :: $source_static_remove(pstaticcell_tail*, porigin)
+  -- if pstaticcell.ORIGIN =/= porigin
+def $source_static_drop(S, n) = S[.STATICS = $source_static_remove(S.STATICS, porigin)]
+  -- if $source_static_next(S, n) = (porigin)
+def $source_static_drop(S, n) = S -- otherwise

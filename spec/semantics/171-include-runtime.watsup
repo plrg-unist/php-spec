@@ -429,6 +429,14 @@ def $file_parse_continued(S, S_next) = S_next
   -- if S_next.COMPLETION =/= NORMAL
   -- if ~$shutdown_ready(S_next) /\ ~$destructor_ready(S_next)
 
+rule PhpStep/file-static-release: S ~> $source_static_drop(S, n_unit)
+  -- if S.TODO = (FILE_END n_unit) :: ptask_tail*
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if pfilecontext.OWNER = |S.FRAMES|
+  -- if pfilecontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n_unit) =/= eps
 rule PhpStep/file-end: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_tail*][.RESULT = KNOWN (PINT 1)][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)]
   -- if S.TODO = (FILE_END n_unit) :: ptask_tail*
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
@@ -436,13 +444,22 @@ rule PhpStep/file-end: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_
   -- if pfilecontext.PHASE = FILE_UNIT_RUN
   -- if pfilecontext.OWNER = |S.FRAMES|
   -- if pfilecontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n_unit) = eps
 def $eval_end_marker(FILE_END n_unit) = true
+def $return_step(S, poperand, (PORIGIN n_unit pcpath_source), (FILE_END n_unit) :: ptask_tail*) = $source_static_drop(S, n_unit)
+  -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if pfilecontext.OWNER = |S.FRAMES|
+  -- if pfilecontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n_unit) =/= eps
 def $return_step(S, poperand, (PORIGIN n_unit pcpath_source), (FILE_END n_unit) :: ptask_tail*) = S[.FILECONTEXTS = pfilecontext_tail*][.TODO = ptask_tail*][.RESULT = poperand][.BASE = BASE_VALUE (KNOWN PNULL)][.ORIGIN = (pfilecontext.SITE)][.HELD = eps]
   -- if S.FILECONTEXTS = pfilecontext :: pfilecontext_tail*
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.PHASE = FILE_UNIT_RUN
   -- if pfilecontext.OWNER = |S.FRAMES|
   -- if pfilecontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n_unit) = eps
 def $throwable_marker(FILE_END n_unit) = true
 rule PhpStep/file-throw-cross: S ~> S[.FILECONTEXTS = pfilecontext_tail*][.TODO = (THROW_SEARCH n_object) :: ptask_tail*][.ORIGIN = (pfilecontext.SITE)][.HELD = eps]
   -- if S.TODO = (THROW_SEARCH n_object) :: (FILE_END n_unit) :: ptask_tail*
