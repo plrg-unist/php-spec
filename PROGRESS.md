@@ -1383,6 +1383,17 @@ OPEN. [Multiple-history review](coverage/semantics/reference-return-multiple-act
 Actual376 over `0e36f837` passes strict at `ce3ad7b0` in 6.116s with zero
 applications; original private source/state/independent cuts remain separate.
 
+The idle lifecycle certificate now admits one checked global string-CV import/write
+before echo/TypeError throw, tied to W's source beneath the surviving outer X.
+Source2 and reached3/355 (107+165+83) pass at `a8110086`; changed W survives actual
+public WX/X retirement, caller error/late Previous and late budget equality. The
+selected-Y bypass keeps its alias without object birth/write. Independent saved
+post-write110/1 authenticates executed local/global W and full registered prefix,
+with wrong-cell public refusal; original metadata-binder failure stays zero credit. Private strict376 passes in 5.901s with zero
+applications; maintained producer is byte-identical. After W retirement the
+reconstruction is a local source certificate. Other mutation/lifecycle/returns
+remain OPEN. [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

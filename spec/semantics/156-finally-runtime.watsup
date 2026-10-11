@@ -1717,10 +1717,54 @@ def $ref_chain_echo_class(S) = true
   -- if $ref_chain_function(S) = (PORIGIN n pcpath_function)
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath_class
 def $ref_chain_echo_class(S) = false -- otherwise
+;; The outer source retains W's checked return after its cursor has retired.
+;; This local certificate links one string-global write to that same CV cell.
+dec $ref_chain_matching_cursor(prefreturncursor*, prefreturncursor) : bool
+def $ref_chain_matching_cursor(eps, prefreturncursor_expected) = true
+def $ref_chain_matching_cursor(prefreturncursor :: prefreturncursor_tail*, prefreturncursor_expected) = $ref_chain_matching_cursor(prefreturncursor_tail*, prefreturncursor_expected)
+  -- if prefreturncursor.OWNER =/= prefreturncursor_expected.OWNER
+def $ref_chain_matching_cursor(prefreturncursor :: prefreturncursor_tail*, prefreturncursor_expected) = $ref_chain_matching_cursor(prefreturncursor_tail*, prefreturncursor_expected)
+  -- if prefreturncursor = prefreturncursor_expected
+def $ref_chain_matching_cursor(prefreturncursor*, prefreturncursor_expected) = false -- otherwise
+dec $ref_chain_mutation_cursor(pstate, prefreturncursor*) : prefreturncursor?
+def $ref_chain_mutation_cursor(S, prefreturncursor_chain*) = (prefreturncursor_w)
+  -- if prefreturncursor_chain* =/= eps
+  -- if n_last = $nabs($(|prefreturncursor_chain*| - 1))
+  -- if prefreturncursor_outer = prefreturncursor_chain*[n_last]
+  -- if $ref_chain_cursor(S, prefreturncursor_outer)
+  -- if prefreturncursor_outer.OUTER = $ref_chain_function(S) /\ prefreturncursor_outer.OUTER =/= eps
+  -- if $origin_child((prefreturncursor_outer.OWNER), [PCFIELD 2, PCFIELD 0, PCINDEX 2]) = (porigin_w)
+  -- if $origin_child((porigin_w), [PCFIELD 0, PCINDEX 0]) = (porigin_return_w)
+  -- if $origin_node(S.SOURCES, porigin_return_w) = (NStmtReturn (NExprVariable (BYTES text_w) metadata_variable) metadata_return)
+  -- if prefreturncursor_w = {OWNER porigin_w, SOURCE porigin_return_w, LINE $source_line(metadata_return), OUTER $origin_child((prefreturncursor_outer.OWNER), [PCFIELD 2])}
+  -- if $ref_chain_string_cursors(S, [prefreturncursor_w])
+  -- if $ref_chain_matching_cursor(prefreturncursor_chain*, prefreturncursor_w)
+def $ref_chain_mutation_cursor(S, prefreturncursor_chain*) = eps -- otherwise
+dec $ref_chain_mutating_class(pstate, prefreturncursor*) : bool
+def $ref_chain_mutating_class(S, prefreturncursor_chain*) = true
+  -- if S.CLASSES = pclassdesc :: eps
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if pclassdesc.METHODS = pmethoddesc :: eps
+  -- if pmethoddesc.OWNER = pclassdesc.ORIGIN /\ pmethoddesc.NAME = $ptascii("__destruct")
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_class) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE ([statement_method])) metadata_class)
+  -- if $origin_child((pclassdesc.ORIGIN), [PCFIELD 5, PCINDEX 0]) = (pmethoddesc.FUNCTION.ORIGIN)
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER 1) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method_name) (SEQUENCE eps) ABSENT (SEQUENCE ([NStmtGlobal (SEQUENCE ([NExprVariable (BYTES text_global) metadata_global_variable])) metadata_global, NStmtExpression (NExprAssign (NExprVariable (BYTES text_write) metadata_write_variable) (NScalarString (BYTES text_value) metadata_value) metadata_assign) metadata_statement, statement_echo, statement_throw])) metadata_method
+  -- if $base64(text_global) = $base64(text_write)
+  -- if $ref_chain_destructor_body([statement_echo, statement_throw])
+  -- if $ref_chain_mutation_cursor(S, prefreturncursor_chain*) = (prefreturncursor_w)
+  -- if $origin_node(S.SOURCES, prefreturncursor_w.SOURCE) = (NStmtReturn (NExprVariable (BYTES text_w) metadata_variable) metadata_return)
+  -- if $base64(text_global) = $base64(text_w)
+  -- if $base64(text_method) = $ptascii("__destruct")
+  -- if $ref_chain_function(S) = (PORIGIN n pcpath_function)
+  -- if pclassdesc.ORIGIN = PORIGIN n pcpath_class
+def $ref_chain_mutating_class(S, prefreturncursor_chain*) = false -- otherwise
 dec $ref_chain_lifecycle_safe(pstate, prefreturncursor*) : bool
 def $ref_chain_lifecycle_safe(S, prefreturncursor*) = true -- if ~$destructor_operational(S)
 def $ref_chain_lifecycle_safe(S, prefreturncursor*) = true
-  -- if $ref_chain_echo_class(S)
+  -- if $ref_chain_echo_class(S) \/ $ref_chain_mutating_class(S, prefreturncursor*)
   -- if $ref_chain_string_cursors(S, prefreturncursor*)
   -- if $ref_chain_distinct(S, prefreturncursor*, eps)
   -- if S.CURRENT = (pcallcontext)

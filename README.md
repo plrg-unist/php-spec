@@ -880,6 +880,12 @@ links the original Y TypeError and preserves that same fresh error through order
 retirement to the caller. Two originals, reached3/335 and independent post-D91/1
 pass separately; a native caller observer confirms the late Previous relation.
 Other destructor effects and broad returns verification remain OPEN.
+A checked destructor can also import W's global string cell and assign a literal
+before echoing/throwing. Changed W survives ordered Z/W/X retirement; the selected-Y
+bypass retains its alias and skips the write. Two originals, reached3/355 and an
+independent post-write saved-frame110/1 pass separately. Reconstructed W after
+retirement is a local source certificate; broader mutation/lifecycle and returns
+verification remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

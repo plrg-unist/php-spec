@@ -236,6 +236,16 @@ Y-finally replacement. Source2, reached3/335 and independent post-D91/1 pass at
 `df2d4e0b`; the native caller observer supports the late link. Public post-callback
 admission requires the operation exit. Other destructor effects remain OPEN.
 
+The lifecycle certificate also admits an exact global CV import and string-literal
+write before the checked echo/TypeError throw. Names agree with reconstructed W's
+return source and its live ordinary ENV/GLOBALTABLE cell; W is recovered beneath
+the last outer X so public consumed validation remains linked at suffix X.
+Source2, reached3/355 and independent post-write saved-frame110/1 pass at `a8110086`.
+Changed W reaches the caller through ordered retirement; bypass skips the write.
+Existing registered prefix validation remains authoritative. Reconstruction after
+W retirement is local source evidence, not a physical predecessor-history seal;
+other mutation/lifecycle layouts and broad returns verification remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

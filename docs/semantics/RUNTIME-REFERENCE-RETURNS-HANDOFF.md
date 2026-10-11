@@ -155,6 +155,15 @@ post-D91/1 pass. The full registered prefix admits publicly and deleting its
 operation exit refuses; no active branch or error-chaining rule was added.
 Broader destructor effects and lifecycle layouts remain OPEN.
 
+The lifecycle31 extension links one checked global string write to W's return
+beneath the last outer X. Preserve that source/cell relation as W retires: actual
+WX and X public states retain the changed value. Source2/state3/355 and independent
+post-write saved-frame110/1 pass; executed destructor ENV/global cell equality and
+the full registered prefix are authenticated, with wrong-cell public refusal.
+Fresh/late error identity, bypass alias/no object birth and late budget equality
+remain distinct. This is a local source certificate after W retirement, with all
+old idle/Notice/class/string/prefix guards; other mutation/lifecycle stays OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs
