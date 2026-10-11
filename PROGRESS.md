@@ -576,6 +576,8 @@ no standalone pure-query groups. Original alias, compiler and state fixture
 failures remain zero credit. Other reference-object sources, live payload
 replacements, reference arrays, later/named/typed sends and wider sites remain
 required.
+Actual375 over `df1ed558` passes strict SL at `292e0bc8`; the parent bool-NaN task
+and Iterator snapshot compose without renewing native/source/state cuts.
 [Property reference review](coverage/semantics/iterator-call-unpack-reference-object-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
