@@ -185,12 +185,24 @@ two live-reference string controls retain Unsupported/zero agreement with4/11
 output events. Eight independent reached-state groups/331 physical premises pass
 at `b42b46ced`, including fresh-cell ownership, actual parked line/cursor guards,
 throw cleanup and out-of-pool carrier rejection.
-Reference string payloads, handler changes to strings and array/object
-pre-warning payload holds remain required; earlier Iterator/NaN evidence keeps
+At that cut reference strings, handler changes to strings and array/object
+pre-warning payload holds remained required; earlier Iterator/NaN evidence keeps
 its original cuts.
 Actual375 over `b002fc277` passes strict SL at `ad7a95533`; private native/source
 and independent state cuts retain their original inputs.
 [String review](coverage/semantics/iterator-call-unpack-string-review.json).
+
+Authenticated INTERNED_STRING references now reread the live key/handler/main
+literal into a distinct fresh callee cell, including scalar-to-interned handler
+changes, named variadic binding and Fiber park/throw. Interned strings need no
+pre-warning refcounted payload hold. Strict375 and four new source agreements
+pass at `27477d9fb`; the safe REQUEST reference control stays Unsupported with4
+output events and zero agreement. Two affected prior literal originals now agree
+using their unchanged `f96` native bytes, without replaying four copied sources
+or six unaffected state groups. Eight independent reached-state groups/353
+physical premises pass at `230682b1c`. REQUEST/plain reference strings, handler
+replacements with those strings and array/object pre-warning holds remain required.
+[Interned reference review](coverage/semantics/iterator-call-unpack-interned-reference-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

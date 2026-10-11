@@ -114,12 +114,21 @@ carrier through key/handler writes, named variadic binding and Fiber park/throw.
 Zend SEND_UNPACK dereferences and adds a payload reference before the warning,
 then wraps the value in a fresh callee cell. Copied strings remain stable across
 the callback; immutable string metadata has no modeled heap owners. A live
-REFERENCE string, or scalar reference changed to a string by the handler, stays
-Unsupported pending its separate pre-warning payload-hold contract.
+REFERENCE payload may change during the handler. Authenticated INTERNED_STRING
+references now reread that live payload into the fresh callee cell, including
+scalar-to-interned handler changes and named variadic or parked Fiber sends.
+Zend's interned string flag makes Z_TRY_ADDREF_P inert; no detached payload owner
+is needed. The raw source cell retires before next(), independently of the new
+callee cell. Handler throw retires raw cell, DATA and temporary INPUT in order.
+REQUEST_STRING and plain reference strings, including handler replacements,
+remain Unsupported pending their separate pre-warning payload-hold contract.
 Direct Generator/Aggregate unpack, other call targets, Generator callbacks and
 array/object by-reference warning payloads remain explicit follow-ons. The
 [string review](../../coverage/semantics/iterator-call-unpack-string-review.json)
 records the bounded source and independent state cuts.
+The [interned reference review](../../coverage/semantics/iterator-call-unpack-interned-reference-review.json)
+retains the two affected originals' earlier native bytes without replaying the
+four copied-string agreements or six unaffected state groups.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

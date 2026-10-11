@@ -1,0 +1,157 @@
+{
+  "status": "private slice independently accepted",
+  "scope": [
+    "Direct ordinary source-function Iterator by-reference warnings admit authenticated INTERNED_STRING REFERENCE payloads and scalar references changed to interned strings by a handler.",
+    "Resume rereads the live handler/main literal into a distinct fresh positional or named-variadic callee cell. Real Fiber park/throw retains source/cursor authority and raw-cell retirement before DATA/input cleanup."
+  ],
+  "remaining": [
+    "REQUEST_STRING/plain reference payloads and handler replacements with those strings",
+    "Array/object pre-warning payload holds",
+    "Direct Generator/IteratorAggregate unpack, other call targets and Generator callback methods",
+    "Nonnumeric raw valid-result changes"
+  ],
+  "parent": "f09a7275b740bd404d8febe1bca0fa9d7d79fb09",
+  "implementation_revision": "27477d9fb88aded40fdac79b157f97acb761088f",
+  "prior_evidence": "coverage/semantics/iterator-call-unpack-string-review.json",
+  "engine_route": "PHP8.5.10 Zend/zend_vm_def.h SEND_UNPACK named/positional Traversable arms use ZVAL_DEREF and Z_TRY_ADDREF_P before zend_error, then ZVAL_NEW_REF afterward. Zend/zend_compile.c zend_insert_literal calls zval_make_interned_string. Zend/zend_types.h ZVAL_STR marks interned strings non-refcounted, so Z_TRY_ADDREF_P is inert. Immutable module30 authenticated string metadata therefore needs no detached payload owner for this slice; REQUEST references remain a separate hold obligation. Generic REFERENCE nonstring and dedicated interned guards are disjoint at both send and byref resume.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "native": {
+    "revision": "27477d9fb88aded40fdac79b157f97acb761088f",
+    "report": ".tools/calls-iterator-interned-reference-21/.tools/iterator-call-unpack-interned-ref-native-e4hfbn3d/report.json",
+    "report_sha256": "8a175c8b7bf49ad5e38abe0fa0b18a40671cf7f4390d48d1ac30be0f421a857c",
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "f880233452105b319f6d5edadf2eb6b9a1cba28ef22d1cb120a101e2aae0781e",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "originals": 5,
+    "matching_native_expectations": 5,
+    "normal_agreements": 0,
+    "process_seconds": 8
+  },
+  "strict": {
+    "revision": "27477d9fb88aded40fdac79b157f97acb761088f",
+    "report": ".tools/calls-iterator-interned-reference-21/.tools/iterator-call-unpack-interned-ref-sl-9wdyw5d_/report.json",
+    "report_sha256": "bdcae80dbb52ac48430793e92f04ea8b626f17941a40c00a4e1a86bcc2a62cde",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "725f7aa8410d79d50286fad3cf8cabbc3e3fc73bbfdc769bfc268a9d7e0b06c9",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120
+  },
+  "new_source": {
+    "revision": "27477d9fb88aded40fdac79b157f97acb761088f",
+    "report": ".tools/calls-iterator-interned-reference-21/.tools/iterator-call-unpack-interned-ref-source-f1jzfweh/report.json",
+    "report_sha256": "bda8a216244c44744dd9182ac4adac855e3c1514b4c3aed73d001c28dc3eb9bb",
+    "command": "timeout -k 10s 450s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-interned-ref-native-e4hfbn3d/report.json",
+    "runner_sha256": "d7f779efd1d5bce600c4954acecb650f265ebf283740a40ee6d35c4b45873119",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "selection": [
+      "iterator-call-unpack-interned-ref-key-handler-literals",
+      "iterator-call-unpack-interned-ref-named-variadic",
+      "iterator-call-unpack-interned-ref-fiber-resume",
+      "iterator-call-unpack-interned-ref-fiber-throw",
+      "iterator-call-unpack-interned-ref-request-reference-control"
+    ],
+    "normal_agreements": 4,
+    "unsupported_controls": 1,
+    "unsupported_agreement": 0,
+    "unsupported_output_events": 4,
+    "new_native_executions": 0,
+    "head_stable": true
+  },
+  "affected_source": {
+    "revision": "27477d9fb88aded40fdac79b157f97acb761088f",
+    "report": ".tools/calls-iterator-interned-reference-21/.tools/iterator-call-unpack-string-source-9vs5lygu/report.json",
+    "report_sha256": "3ebe58ca9bb342543a13d45aaa778aab756bff96f3ce581a79eb51065cbe95b2",
+    "command": "timeout -k 10s 180s prlimit --as=6442450944 -- python3 -u .tools/affected-source.py --case iterator-call-unpack-string-reference-interned-control --case iterator-call-unpack-string-scalar-to-interned-control --native-report ../calls-iterator-copied-string-21/.tools/iterator-call-unpack-string-native-8cw16o3o/report.json",
+    "runner_sha256": "0587530e28bb72d7e40ebd40fb0393c93a6003fca96fc37eba1d204d290f1129",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "normal_agreements": 2,
+    "new_native_executions": 0,
+    "head_stable": true,
+    "native_revision": "f96cae5f4dafbe8bb319f8d3dd197e872d375199",
+    "native_report": ".tools/calls-iterator-copied-string-21/.tools/iterator-call-unpack-string-native-8cw16o3o/report.json",
+    "native_report_sha256": "ab215a25dd7cb221a568aaef0f969da2c06559ee6c3043ce8a51c91fc95cbe46",
+    "reuse": "Only the two source-identical literal-reference and scalar-to-literal rows; their historical model Unsupported cuts retain zero agreement."
+  },
+  "source_budgets": {
+    "steps": 100000,
+    "model_seconds": 60,
+    "process_seconds": 75
+  },
+  "state_review": {
+    "status": "passed",
+    "revision": "230682b1c68cc204a7e588c7a8407157cdf8eda5",
+    "command": "timeout -k 10s 1100s prlimit --as=6442450944 -- python3 -u .tools/interned-ref-state-stop-first.py",
+    "runner_sha256": "713ca5fcdbde7dcaed4958980fdea3f7fc4c8f1064c9e0a98c591336e6e10459",
+    "selection": "six new reached groups and only two affected prior groups",
+    "groups": 8,
+    "physical_premises": 353,
+    "driver_clauses": 344,
+    "budgets": {
+      "seek_steps": 4000,
+      "process_seconds": 120,
+      "jobs": 1
+    },
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "reports": [
+      {
+        "report": ".tools/calls-iterator-interned-reference-21/.tools/fiber-state-review-vor0i2xa/report.json",
+        "report_sha256": "ac056bbf534278127531cba5e09c6b6b33da78cf7475750e5b9a0cdbf6dbfd97",
+        "groups": 6,
+        "physical_premises": 272,
+        "driver_clauses": 263
+      },
+      {
+        "report": ".tools/calls-iterator-interned-reference-21/.tools/fiber-state-review-7wwipyh5/report.json",
+        "report_sha256": "d7c81db6cdd13877195819ea6566341ec316e5c25fa36f15a4c63c9fbbc1942d",
+        "groups": 2,
+        "physical_premises": 81,
+        "driver_clauses": 81
+      }
+    ]
+  },
+  "resource_cap": {
+    "address_space_bytes": 6442450944,
+    "jobs": 1,
+    "stop_first": true,
+    "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; existing recorded BaseException cleanup kills and waits for the process group; providers close in finally."
+  },
+  "compatibility": "Only scalar_operand reference admission in385 changes; no schema or owner-field changes. Four copied-string agreements and six unaffected state groups remain at f96/b42b without replay. Older Iterator/NaN evidence and all original failures retain their original cuts."
+}
