@@ -32,6 +32,11 @@ convert before path lookup and once checks. Failed-open warnings resume handlers
 with live path sampling, saved owners and zero-argument file traces; fatal cleanup
 preserves frozen output before shutdown callbacks.
 
+[Recorded file-compiler diagnostics](coverage/semantics/file-compile-notice-review.json)
+now delay ordinary include/require registration through warning callbacks;
+the once forms register before compilation. Handler throws and graceful exit
+finish registration, while a hard fatal skips ordinary registration.
+
 Array eval/include operands now dispatch the real conversion warning before
 parser or file-provider work. [The Array operand ledger](coverage/semantics/source-array-review.json)
 records frozen `Array` bytes after callbacks, borrowed versus captured owners,

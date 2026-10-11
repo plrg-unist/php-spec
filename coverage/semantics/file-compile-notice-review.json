@@ -1,0 +1,284 @@
+{
+  "scope": "Opened-file identity at recorded compiler-diagnostic delivery: ordinary include/require versus once, handler reentry/throw/graceful exit/hard bailout. Partial core.",
+  "status": "independently_reviewed_private",
+  "published_revision": "6e99c4ff88d4a8bff678705a11e880b88068f2a9",
+  "tested_base_revision": "7925550a0c8cb95793b854f4f5cae4851d1c633d",
+  "target": "PHP8.5.10 CLI NTS64",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "compiler_pin": "da36ac3c434cd291940293a63da64544307730a3",
+  "modules": 375,
+  "runtime_sha256": {
+    ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    ".tools/php-file.so": "386395dc90027be911c3618700a2fda72bab28caf15dbba091bf4cc7484af73f",
+    "_build/default/adapter/main.exe": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d"
+  },
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "other": "inherited"
+  },
+  "caps_seconds": {
+    "native": 30,
+    "model": 60,
+    "model_wrapper": 90,
+    "state_SL": 90
+  },
+  "design": [
+    "Ordinary opened identity waits for authenticated recorded notices; once identity exists before compilation. No-notice ordinary identity precedes body work.",
+    "Normal done, throw discard and graceful exit complete idempotently through current/saved notice owners; hard bailout retires contexts without finishing registration.",
+    "Declaration replay suppresses the live handler in its replay copy; real diagnostic history and public guards remain authenticated.",
+    "trigger_error accepts authentic string-carrier bytes without changing SENT or carrier identity."
+  ],
+  "cuts": {
+    "notice_completion": "6f43243ab95bc305d5478a4c8b0b3b6e5b3abccd75f8f0f9f1952eb4dbe6fb38",
+    "replay_retirement": "695d20951ad356c6f90e316c6d39ec67b5fdd63f4db29d62e189eca7bf5aa180",
+    "string_carrier": "a7b330c95439e41a3c4893b653442f9dbe520e5987843243175a421297f12238"
+  },
+  "cut_definition": "SHA256 of git diff HEAD -- spec/semantics at tested_base_revision; report input maps bind modules/runner/frontend/profile. Later metadata commits do not renew these cuts.",
+  "native": [
+    {
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/native-report.json",
+      "sha256": "7c3ed151f612d710285219bf9a3c94bfa9215b8e3aa671daa3d5cedab65718e1",
+      "accepted_sources": 20
+    },
+    {
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/native-2-report.json",
+      "sha256": "797f2b3b06db8c16d7aaf1d45ae03dd8507ddc3f49330ebecca25a5732c23319",
+      "accepted_sources": 1
+    }
+  ],
+  "source": {
+    "authored_unique": 21,
+    "independent_unique": 4,
+    "comparison": "checked program, exact status, raw stdout/stderr and PHP exit, runner exit0; originals and finite path/byte snapshots retained",
+    "batches": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-2-report.json",
+        "sha256": "c89414f85576a5ebe67e6e24038a4ecd63ddba5994526d926e7e5969df618756",
+        "cut": "notice_completion",
+        "report_result": "pass",
+        "accepted_cases": [
+          "include-nested"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-3-report.json",
+        "sha256": "f33363de97664f645cc6d11d1b0b3274dcd9788f98cdf9d4f5602a58d068acb8",
+        "cut": "notice_completion",
+        "report_result": "fail",
+        "accepted_cases": [
+          "include-throw"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-5-report.json",
+        "sha256": "664bb61de7dbbd6ebdfc85eb581a8431eb948c4d427b78421f7d07d228c87ebf",
+        "cut": "replay_retirement",
+        "report_result": "pass",
+        "accepted_cases": [
+          "include-exit"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-7-report.json",
+        "sha256": "9e7676e5447940bf0a2c38142b178ebb32e8af56b60cd7a9e434bf163a36e76c",
+        "cut": "string_carrier",
+        "report_result": "pass",
+        "accepted_cases": [
+          "include-fatal"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-8-report.json",
+        "sha256": "cd2bc462f248e4351bbf6b74d316d9dc8c5596cea1676195080fc55f93ff8454",
+        "cut": "string_carrier",
+        "report_result": "pass",
+        "accepted_cases": [
+          "require-nested",
+          "require-throw",
+          "require-exit",
+          "require-fatal",
+          "include_once-nested",
+          "include_once-throw",
+          "include_once-exit",
+          "include_once-fatal",
+          "require_once-nested",
+          "require_once-throw",
+          "require_once-exit",
+          "require_once-fatal",
+          "include-repeated",
+          "include-throw-repeated",
+          "include-exit-repeated",
+          "body-once",
+          "include-return"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-review-01/independent-model-v1/report.json",
+        "sha256": "35edf0648ae97588bbece2f25898915967deb18e26f2318014bbfdb0bfe39784",
+        "cut": "notice_completion",
+        "report_result": "pass",
+        "accepted_cases": [
+          "scoped-require-alias-reentry",
+          "scoped-require-throw-register",
+          "no-warning-before-body-once"
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-review-01/shutdown-model-v1/report.json",
+        "sha256": "88f87968997e6584f49893c569ea096b7a31edd055617a642b836d6925f142ad",
+        "cut": "replay_retirement",
+        "report_result": "pass",
+        "accepted_cases": [
+          "shutdown-include-warning-exit-destructor-once"
+        ]
+      }
+    ]
+  },
+  "state": {
+    "frontiers": 8,
+    "accepted_premises": 263,
+    "explicit_boundary_PhpSteps": 7,
+    "batches": [
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-state-02/check-2-report.json",
+        "sha256": "2b272357e66021d4dc7554a88033a5d75fdc1bc5a83f4e4133ff78d487fc3979",
+        "cut": "replay_retirement",
+        "report_result": "pass",
+        "accepted_frontiers": {
+          "pending": 52
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-state-02/check-3-report.json",
+        "sha256": "57f78ceb3e0fd5bcafc7fa62cfc3942d7776d774e5b8ab7efe2949fe0e48e91c",
+        "cut": "string_carrier",
+        "report_result": "fail",
+        "accepted_frontiers": {
+          "once-pending": 24,
+          "saved-handler": 32,
+          "done": 27,
+          "throw": 28
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-state-03/check-4-report.json",
+        "sha256": "5f81761fdbb9c87862a30f270ede18daf307aab471d14858ea823cfefecfe088",
+        "cut": "string_carrier",
+        "report_result": "fail",
+        "accepted_frontiers": {
+          "exit": 41,
+          "fatal": 38
+        }
+      },
+      {
+        "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-state-04/check-5-report.json",
+        "sha256": "1883e6f7da147a42747bb1e343640f9ac2ed7edb803db34af5d19441663f4c69",
+        "cut": "string_carrier",
+        "report_result": "pass",
+        "accepted_frontiers": {
+          "body": 21
+        }
+      }
+    ]
+  },
+  "admission": {
+    "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-state-02/admission-report.json",
+    "sha256": "2d578de6c86d1b77af5ad24148cf8434ea75583fe01bd02995de8b0068760d47",
+    "result": "pass",
+    "runtime_assertions": 0,
+    "note": "Pending admission and fixture preparation alone have zero state credit. Each runtime --sl actor also performs full strict compiler admission."
+  },
+  "diagnosis": [
+    "/home/user/workspace/php-spec/.tools/dynamic-review-01/pending-diagnosis-v1/report.json",
+    "/home/user/workspace/php-spec/.tools/dynamic-review-01/pending-diagnosis-v2/report.json",
+    "/home/user/workspace/php-spec/.tools/dynamic-review-01/pending-diagnosis-v4/report.json",
+    "/home/user/workspace/php-spec/.tools/dynamic-file-notice-fatal-diagnosis-01/report.json"
+  ],
+  "preserved_failures": [
+    {
+      "reason": "Malformed v2 snapshot omitted chdir_entries; runner failure before semantics.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-review-01/baseline-once-warning-v1/report.json",
+      "sha256": "4e8abb592a6266dcaf00cdc7523b7b9e9271c0bfd8145a82a220f8f13ef557c0",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "Corrected unmodified baseline checked NORMAL but skipped the inner body too early.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-review-01/baseline-once-warning-v2/report.json",
+      "sha256": "cf60b9f3f7b172410f2a12fedabc99e557b18fe5815b538c60a9c74ef99bbc2b",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "New helper used before its forward declaration; compiler failure.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-report.json",
+      "sha256": "c57e4eeaf8a4e438897e296ad2fcd56ae3b9d045c9dad35f6178fcec964a31bc",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "Exit shutdown reached invalid history/response; earlier NORMAL prefix remains separately credited.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-3-report.json",
+      "sha256": "f33363de97664f645cc6d11d1b0b3274dcd9788f98cdf9d4f5602a58d068acb8",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "Context retirement alone did not repair chronological replay.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-4-report.json",
+      "sha256": "edf16a8e6ef270dc6d200ab0125b46577c46d1aea2164756bdd7639556593424",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "Genuine pending public guard rejected chronological replay with a live handler.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-state-02/check-report.json",
+      "sha256": "e31eb131299d39c526a28004d56191a51b6812407335a4dc6b24f7f1b85c1943",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "Reviewer projection fixture had a literal-pair syntax failure before runtime.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-review-01/pending-diagnosis-v3/report.json",
+      "sha256": "152ae3310dbc1371c24f290d4cb01c4e20289ece2e5cc67c376d6e83abedfff4",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "Carrier string rejected as string before E_USER_ERROR bailout.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-native-01/model-6-report.json",
+      "sha256": "9916b1305bdf3cd3c23fc283185341bfd1f4c2909d0c73071f1744d017f3410f",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "Exit fixture retained BUDGET before invoking the normal step; accepted prefix retained.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-state-02/check-3-report.json",
+      "sha256": "57f78ceb3e0fd5bcafc7fa62cfc3942d7776d774e5b8ab7efe2949fe0e48e91c",
+      "failed_group_credit": 0
+    },
+    {
+      "reason": "Body fixture used an unbound main path before runtime; exit/fatal prefix retained.",
+      "report": "/home/user/workspace/php-spec/.tools/dynamic-file-notice-state-03/check-4-report.json",
+      "sha256": "5f81761fdbb9c87862a30f270ede18daf307aab471d14858ea823cfefecfe088",
+      "failed_group_credit": 0
+    }
+  ],
+  "reproduce": [
+    "Use a fresh RAW directory: python3 tests/semantics/file_compile_notice_sources.py --phase native --output RAW; then --phase model --output RAW.",
+    "Use a fresh STATE directory: python3 tests/semantics/file_compile_notice_protocol.py --phase fixtures --sources RAW --output STATE; then --phase check --sources RAW --output STATE.",
+    "Historical exact commands, CWD/environment, exits, original bytes, snapshots, fixtures and streams are adjacent to each external report; preserve recorded paths for exact native stderr.",
+    "Independent originals and observer are under .tools/dynamic-review-01 outside Git; no previous source/state campaign was renewed."
+  ],
+  "review": {
+    "reviewer": "/root/dynamic_review_01",
+    "decision": "accepted semantic implementation and maintained tests",
+    "independent_cases": [
+      "scoped-require-alias-reentry",
+      "scoped-require-throw-register",
+      "no-warning-before-body-once",
+      "shutdown-include-warning-exit-destructor-once"
+    ]
+  },
+  "limitations": [
+    "Further provider/stream and compiler checkpoint/resumable contexts remain required.",
+    "trigger_error Stringable/null message conversion remains unfinished; this repair admits real string carriers.",
+    "No dynamic-source or full-core family closure is claimed; schema/manifest and dormant source_dev_20 path facts were unchanged."
+  ],
+  "intentional_divergences": [],
+  "engine_bugs": "None observed."
+}

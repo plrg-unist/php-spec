@@ -19,6 +19,21 @@ OS/stream-open facts supplied by the snapshot; the parser and model do not
 derive them from Zend execution. An already included resolved path skips before
 those failure facts produce a warning.
 
+[Recorded compiler diagnostics](../../coverage/semantics/file-compile-notice-review.json)
+precede opened-path registration for ordinary `include` and `require`. The once
+forms register before compilation. A warning-handler reentry through the same
+canonical path therefore executes `include_once` during an ordinary outer include,
+but skips during an outer once form. With no queued diagnostics, ordinary
+registration still precedes body execution.
+
+An authenticated notice owner in the current or saved caller permits that delayed
+ordinary registration. Normal delivery, handler throw and graceful exit finish it
+once, preserving any inner registration. Remaining eligible callbacks are skipped
+after throw or exit; ineligible diagnostics retain their ordered default delivery.
+A hard fatal retires the context without finishing ordinary registration. Compiler
+history replay validates recorded diagnostics without invoking the live handler.
+The finite provider and broader dynamic-source obligations remain partial.
+
 [Stringable file operands](../../coverage/semantics/file-operand-review.json)
 run the ordinary checked `__toString` callback before resolution, once checks or
 provider creation. Conversion retains its receiver after global rebinding;

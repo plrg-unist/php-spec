@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Opened-file identity now follows recorded compiler diagnostics: ordinary
+include/require registers afterward, while once forms register before compilation.
+Nested handlers, shared throws, graceful exit and hard bailout retain native
+ordering and cleanup. Twenty-one authored originals and four independent originals
+agree at their retained cuts. Eight reached frontiers pass 263 premises and seven
+explicit boundary PhpSteps, including public rejection of forged notice owners.
+Replay validates diagnostics without invoking the live handler; `trigger_error`
+accepts authentic string carriers. Original source/fixture failures retain zero
+failed-group credit. Wider source/provider contexts and Stringable/null message
+conversion remain required; full core stays partial.
+[File compiler-notice ledger](coverage/semantics/file-compile-notice-review.json).
+
 Unknown literal `declare` names now compile ordered E_COMPILE_WARNING (128)
 diagnostics with original spelling and the first item's line. Runtime no-op/body
 work authenticates the source and enters PCFIELD1 children; compilation retains
