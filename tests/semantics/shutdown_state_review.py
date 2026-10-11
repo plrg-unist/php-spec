@@ -471,7 +471,7 @@ def run(selected):
             + ''.join('  -- ' + ('' if clause.startswith('PhpStep:') else 'if ') + clause + '\n'
                       for clause in case['checks']))
         process = recorded([ROOT / 'tests/semantics/_build/default/numeric_runner.exe',
-                            *modules, fixture], directory, 'model', environment, 120)
+                            *modules, fixture], directory, 'model', environment, case.get('timeout', 120))
         passed = not process['timeout'] and process['exit'] == 0 and (
             directory / 'model.stdout').read_bytes() == b'true\n' and not (
             directory / 'model.stderr').read_bytes()
