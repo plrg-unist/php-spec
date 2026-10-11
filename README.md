@@ -1352,6 +1352,9 @@ Block entry, callable/Closure creation, class publication and fresh allocation.
 The [Block-branch review](coverage/semantics/anonymous-block-branch-rtd-review.json)
 preserves both initial rule failures and the third-source timeout; only affected
 checks were retried. Fixtures stop at their required frontiers without an end drive.
+The 375 join at 431dacbd over c35c223e reuses strict3 from tested 5d91ff5f
+(5.922s). Independent review excludes the new captured-Closure API, GC self-child
+and typed Iterator-unpack routes; no current actor or private replay was needed.
 Wider Closure targets/placements/signatures, function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)

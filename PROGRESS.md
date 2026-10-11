@@ -37,6 +37,11 @@ only three affected equalities were corrected. The third-source timeout retains
 zero credit; only that case received a larger bound. Syntax prep/EL adds no runtime
 credit. Blocks after If, nested If, loops, nested factories and wider signatures,
 targets/captures/consumers remain required.
+The 375 join at 431dacbd over c35c223e reuses strict3 from tested 5d91ff5f
+(5.922s). Review excludes new captured-API CONFIG owner/tag, posttrace STDINSTANCE
+self-child and typed Iterator-unpack premises for these ordinary REALCLOSURE/noarg
+and INSTANCE/Error witnesses. No schema/manifest change or current actor was needed;
+private native/source/state cuts retain their original revisions without replay.
 [Block-branch ledger](coverage/semantics/anonymous-block-branch-rtd-review.json).
 
 The earlier conditional-Closure cut retains source3/state577 at 80a2707, its
