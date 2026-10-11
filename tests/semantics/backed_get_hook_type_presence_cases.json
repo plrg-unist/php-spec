@@ -1,0 +1,57 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "7be047413608317e54e5bc1fec1dc00de7a12467bd716a4389ec8228d3665a6c",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "typed-to-untyped",
+      "source": "<?php\nclass BackedTypedParent42 {\n    public int $value = 100 { get => $this->value; }\n}\nclass BackedMissingChild42 extends BackedTypedParent42 {\n    public $value = 200 { get => $this->value; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "9332e43dc69541f4432f5199db4563a5d64c2f37f5edf5f143f29e3f740e3281",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Declaration of BackedMissingChild42::$value::get() must be compatible with BackedTypedParent42::$value::get(): int in {FILE} on line 6\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIEJhY2tlZE1pc3NpbmdDaGlsZDQyOjokdmFsdWU6OmdldCgpIG11c3QgYmUgY29tcGF0aWJsZSB3aXRoIEJhY2tlZFR5cGVkUGFyZW50NDI6OiR2YWx1ZTo6Z2V0KCk6IGludCBpbiB7RklMRX0gb24gbGluZSA2ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "backed-get-hook-type-presence42-native3-592735d4",
+      "native_raw_sha256": "7be047413608317e54e5bc1fec1dc00de7a12467bd716a4389ec8228d3665a6c"
+    },
+    {
+      "id": "untyped-to-typed",
+      "source": "<?php\nclass BackedUntypedParent42 {\n    public $value = 100 { get => $this->value; }\n}\nclass BackedAddedChild42 extends BackedUntypedParent42 {\n    public int $value = 200 { get => $this->value; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "b75c355e2ae91d511b78e60163fc9059087018b51abc659729e233c100afe236",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of BackedAddedChild42::$value must be omitted to match the parent definition in class BackedUntypedParent42 in {FILE} on line 5\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgQmFja2VkQWRkZWRDaGlsZDQyOjokdmFsdWUgbXVzdCBiZSBvbWl0dGVkIHRvIG1hdGNoIHRoZSBwYXJlbnQgZGVmaW5pdGlvbiBpbiBjbGFzcyBCYWNrZWRVbnR5cGVkUGFyZW50NDIgaW4ge0ZJTEV9IG9uIGxpbmUgNQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "backed-get-hook-type-presence42-native3-592735d4",
+      "native_raw_sha256": "7be047413608317e54e5bc1fec1dc00de7a12467bd716a4389ec8228d3665a6c"
+    },
+    {
+      "id": "untyped-dispatch",
+      "source": "<?php\nclass BackedPresenceParent42 {\n    public $value = 100 {\n        get {\n            echo \"P:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value;\n        }\n    }\n    public function parentRead() {\n        echo \"H|\";\n        return $this->value;\n    }\n}\nclass BackedPresenceBridge42 extends BackedPresenceParent42 {\n    private function answer() { return 500; }\n}\nclass BackedPresenceChild42 extends BackedPresenceBridge42 {\n    public $value = 200 {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass BackedPresenceGrand42 extends BackedPresenceChild42 {\n    private function answer() { return 900; }\n}\n$parent = new BackedPresenceParent42();\n$child = new BackedPresenceChild42();\n$grand = new BackedPresenceGrand42();\necho (array)$parent === [\"value\" => 100] ? \"P100|\" : \"BAD|\";\necho (array)$child === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\necho (array)$grand === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "f9bf3de2f95a7c4c436d0d6232a6ebff3ecdee69befac8011820bb0b0a0d125b",
+      "stdout_base64": "UDEwMHxDMjAwfEcyMDB8UDpCYWNrZWRQcmVzZW5jZVBhcmVudDQyL0JhY2tlZFByZXNlbmNlUGFyZW50NDJ8MTAwfEM6QmFja2VkUHJlc2VuY2VDaGlsZDQyL0JhY2tlZFByZXNlbmNlQ2hpbGQ0MnwyMTN8SHxDOkJhY2tlZFByZXNlbmNlQ2hpbGQ0Mi9CYWNrZWRQcmVzZW5jZUdyYW5kNDJ8MjEzfEcyMDB8RzMwMHxDOkJhY2tlZFByZXNlbmNlQ2hpbGQ0Mi9CYWNrZWRQcmVzZW5jZUdyYW5kNDJ8MzEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "backed-get-hook-type-presence42-native3-592735d4",
+      "native_raw_sha256": "7be047413608317e54e5bc1fec1dc00de7a12467bd716a4389ec8228d3665a6c"
+    }
+  ]
+}
