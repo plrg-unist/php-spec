@@ -413,5 +413,14 @@
     "stderr": "",
     "status": "normal",
     "exit": 0
+  },
+  {
+    "id": "collector-main-second-pass-destructor-posttrace-child-finalizer-53",
+    "source": "<?php\nclass Child {\n public function __destruct() { echo \"C|\"; }\n}\nclass Later {\n    public $next;\n    public $child;\n    public function __destruct() {\n        global $childWeak;\n        echo \"L|\";\n        $this->next = null;\n        $this->child = new Child();\n        $childWeak = WeakReference::create($this->child);\n    }\n}\nclass First {\n    public $next;\n    public function __destruct() {\n        global $laterWeak;\n        echo \"F|\";\n        $later = new Later();\n        $later->next = $later;\n        $laterWeak = WeakReference::create($later);\n    }\n}\n$o = new First();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"first-null|\" : \"first-live|\";\necho $childWeak->get() === null ? \"child-null|\" : \"child-live|\";\necho $laterWeak->get() === null ? \"later-null|\" : \"later-live|\";\necho gc_collect_cycles(), \"|\";\necho $childWeak->get() === null ? \"child-null|\" : \"child-live|\";\necho $laterWeak->get() === null ? \"later-null|END\" : \"later-live|END\";\n",
+    "source_sha256": "e2564b013d1442406692e3f9079921dd0836f7cd401c298f5f7e04c085c93e6e",
+    "stdout": "F|L|1|first-null|child-live|C|later-live|0|child-null|later-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
   }
 ]
