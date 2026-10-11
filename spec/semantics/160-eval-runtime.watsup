@@ -652,6 +652,14 @@ def $return_step(S, poperand, (PORIGIN n pcpath_source), (EVAL_END n) :: ptask_t
   -- if pevalcontext.TAIL = ptask_tail*
   -- if $source_static_next(S, n) = eps
 def $throwable_marker(EVAL_END n) = true
+rule PhpStep/eval-throw-static-release: S ~> $source_static_drop(S, n_unit)
+  -- if S.TODO = (THROW_SEARCH n_object) :: (EVAL_END n_unit) :: ptask_tail*
+  -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
+  -- if pevalcontext.UNIT = n_unit
+  -- if pevalcontext.PHASE = UNIT_RUN
+  -- if pevalcontext.OWNER = |S.FRAMES|
+  -- if pevalcontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n_unit) =/= eps
 rule PhpStep/eval-throw-cross: S ~> S[.EVALCONTEXTS = pevalcontext_tail*][.TODO = (THROW_SEARCH n_object) :: ptask_tail*][.ORIGIN = (pevalcontext.SITE)][.HELD = eps]
   -- if S.TODO = (THROW_SEARCH n_object) :: (EVAL_END n_unit) :: ptask_tail*
   -- if S.EVALCONTEXTS = pevalcontext :: pevalcontext_tail*
@@ -659,3 +667,4 @@ rule PhpStep/eval-throw-cross: S ~> S[.EVALCONTEXTS = pevalcontext_tail*][.TODO 
   -- if pevalcontext.PHASE = UNIT_RUN
   -- if pevalcontext.OWNER = |S.FRAMES|
   -- if pevalcontext.TAIL = ptask_tail*
+  -- if $source_static_next(S, n_unit) = eps
