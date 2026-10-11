@@ -1394,6 +1394,9 @@ one guarded class publication, lexical namespace and fresh defaults.
 The [If-hosted While review](coverage/semantics/anonymous-conditional-while-rtd-review.json)
 binds three exact originals to branch selection, callable/Closure ownership and
 publication/allocation frontiers. Nested While hosts and other loops remain required.
+The 375 join at aa241bdf over 1867decf reuses strict3 at tested 376de1e1
+(6.226s). Review preserves parentless class linking and excludes the changed
+hook/finally/bind/collector/Iterator routes; no current actor or private replay is claimed.
 The earlier [While body-Block review](coverage/semantics/anonymous-while-block-rtd-review.json)
 binds three exact originals and focused Block/publication/creation/allocation
 frontiers; state fixtures stop at their required allocation.

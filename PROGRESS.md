@@ -36,6 +36,11 @@ add no runtime credit. The original independent Else-union type failure retains 
 runtime credit; its affected fixture retry passes. Nested While hosts, other loops,
 nested functions/Closures and wider signatures/targets/captures remain required.
 [If-hosted While ledger](coverage/semantics/anonymous-conditional-while-rtd-review.json).
+The 375 composition at aa241bdf over 1867decf reuses strict3 at tested
+376de1e1 (6.226s), with unchanged task/schema/manifest and reviewed exclusion of
+the new hook/finally/bind/collector/Iterator specializations. Parentless class linking
+remains the reached identity. No current actor or private replay is claimed;
+source3/state887 and the original fixture failure retain their cuts.
 
 The earlier body-Block cut retains source3/state738 at 35adca9a. Its 375
 composition at ac329f66 over 772760f0 reuses strict3 at tested
