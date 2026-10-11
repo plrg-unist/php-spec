@@ -59,6 +59,21 @@ def $gc_worker_guard_zero(S, pgcguard) = $gc_bare_return($gc_bare_record(S_dropp
 ;; ordinary owner-zero target retains its root slot after the final callback.
 dec $gc_terminal_leaf(pstate, nat) : bool
 dec $gc_terminal_target(pstate, pgcplan, nat) : bool
+dec $gc_terminal_child_method(pstate, porigin, pmethoddesc) : bool
+def $gc_terminal_child_method(S, porigin, pmethoddesc) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+def $gc_terminal_child_method(S, porigin, pmethoddesc) = true
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PRIVATE /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if porigin = PORIGIN n_source pcpath
+  -- if pmethoddesc.OWNER = porigin
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n_source pcpath_method
+  -- if $(|pcpath_method| = |pcpath| + 2)
+  -- if pcpath_method[0:|pcpath|] = pcpath
+  -- if pcpath_method[|pcpath|:2] = [PCFIELD 5, PCINDEX n_member]
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (NStmtClassMethod phpType14 (INTEGER flags) (BOOLEAN b) (NIdentifier (BYTES text) metadata_name) phpType16 phpType18 phpType47 metadata)
+  -- if $base64(text) = pmethoddesc.NAME
+  -- if $ppmethod_visibility(flags) = PROPERTY_PRIVATE /\ ~$ppproperty_flag(flags, 8) /\ ~$ppproperty_flag(flags, 16)
+def $gc_terminal_child_method(S, porigin, pmethoddesc) = false -- otherwise
 dec $gc_terminal_child_hold(pstate, pgcplan, hgraph, nat, hedge) : bool
 def $gc_terminal_child_hold(S, pgcplan, H, n_child, HEDGE (HCELL n_cell) (HOBJECT n_child)) = true
   -- if (HCELL n_cell) <- S.ALLOCATIONS
@@ -84,7 +99,7 @@ def $gc_terminal_target(S, pgcplan, n) = true
   -- if $(n_child < |S.OBJECTS|)
   -- if S.OBJECTS[n_child] = INSTANCE porigin
   -- if $destructor_method(S, n_child) = (pmethoddesc)
-  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if $gc_terminal_child_method(S, porigin, pmethoddesc)
   -- if ~(n_child <- S.DESTRUCTION.CALLED)
   -- if ~((HOBJECT n_child) <- pgcplan.GRAPH.NODES)
   -- if ~((HOBJECT n_child) <- pgcplan.FREESET)
