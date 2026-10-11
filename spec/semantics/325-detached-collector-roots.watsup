@@ -79,6 +79,25 @@ def $gc_terminal_target(S, pgcplan, n) = true
   -- if ($node_children(S, HOBJECT n_child) = eps /\ $heap_owners($heap_graph(S), HOBJECT n_child) = 1) \/ ($node_children(S, HOBJECT n_child) = [HOBJECT n_child] /\ $heap_owners($heap_graph(S), HOBJECT n_child) = 2)
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (n_slot)
   -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n)
+def $gc_terminal_target(S, pgcplan, n) = true
+  -- if $gc_bare_valid(S, n)
+  -- if $node_children(S, HOBJECT n) = [HOBJECT n_child]
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if $(n_child < |S.OBJECTS|)
+  -- if S.OBJECTS[n_child] = STDINSTANCE
+  -- if ~((HOBJECT n_child) <- pgcplan.GRAPH.NODES)
+  -- if ~((HOBJECT n_child) <- pgcplan.FREESET)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_child) = 1
+  -- if $node_children(S, HOBJECT n_child) = [HOBJECT n_leaf]
+  -- if (HOBJECT n_leaf) <- S.ALLOCATIONS
+  -- if $(n_leaf < |S.OBJECTS|)
+  -- if S.OBJECTS[n_leaf] = STDINSTANCE
+  -- if ~((HOBJECT n_leaf) <- pgcplan.GRAPH.NODES)
+  -- if ~((HOBJECT n_leaf) <- pgcplan.FREESET)
+  -- if $heap_owners($heap_graph(S), HOBJECT n_leaf) = 1
+  -- if $node_children(S, HOBJECT n_leaf) = eps
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (n_slot)
+  -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n)
 def $gc_terminal_target(S, pgcplan, n) = false -- otherwise
 def $gc_terminal_targets(S, pgcplan, eps) = true
 def $gc_terminal_targets(S, pgcplan, (HOBJECT n) :: pnode*) = ($gc_terminal_target(S, pgcplan, n) /\ $gc_terminal_targets(S, pgcplan, pnode*))
