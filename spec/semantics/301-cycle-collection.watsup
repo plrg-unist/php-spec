@@ -95,6 +95,7 @@ dec $gc_main_trace(pstate, pgcplan) : pstate
 dec $gc_dtor_begin(pstate, pgcplan, nat) : pstate
 dec $gc_dtor_done(pstate, pgcplan, nat) : pstate
 dec $gc_free(pstate, pgcplan) : pstate
+dec $gc_free_prepare(pstate, pgcplan) : pstate?
 dec $gc_pass_count(pgcplan) : int
 dec $gc_finish(pstate, pgccall) : pstate
 dec $gc_pending_tasks(ptask*, pgcplan, pgcplan) : ptask*
@@ -1040,31 +1041,149 @@ def $gc_pass_count(pgcplan) = |$heap_intersect(pgcplan.COUNTED, pgcplan.FREESET)
   -- if pgcplan.DTORS = eps
 def $gc_nested_boundary(S, pgcplan) = ($heap_intersect(pgcplan.FREESET, $heap_reach($machine_roots(S), eps, $heap_graph(S).EDGES)) =/= eps)
 def $gc_terminal_park(S, pgcplan) = (pgcplan.CALL.PASS = 1 /\ $destruction_zero($heap_graph(S), $heap_intersect(pgcplan.DONE, S.ALLOCATIONS)) =/= eps)
+def $gc_free_prepare(S, pgcplan) = (S) -- if ~$gc_nested_boundary(S, pgcplan)
+def $gc_free_prepare(S, pgcplan) = eps -- otherwise
 def $gc_free(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "resurrection of non-destructor garbage during collection"]
-  -- if $gc_nested_boundary(S, pgcplan)
+  -- if $gc_free_prepare(S, pgcplan) = eps
 def $gc_free(S, pgcplan) = S[.COMPLETION = UNSUPPORTED "zero-owner destructor garbage after collector retrace"]
-  -- if ~$gc_nested_boundary(S, pgcplan) /\ $gc_terminal_park(S, pgcplan)
+  -- if $gc_free_prepare(S, pgcplan) = (S_prepared)
+  -- if $gc_terminal_park(S_prepared, pgcplan)
 def $gc_free(S, pgcplan) = S_next[.TODO = (GC_TRACE pgccall_next) :: ptask*][.GC.ACTIVE = (pgccall_next)][.GC.PLAN = (pgcplan[.CALL = pgccall_next])]
-  -- if ~$gc_nested_boundary(S, pgcplan) /\ ~$gc_terminal_park(S, pgcplan)
-  -- if S.TODO = (GC_FREE pgcplan) :: ptask*
-  -- if pnode_free* = $gc_free_order(pgcplan, S.ALLOCATIONS)
-  -- if pnode_live* = $destruction_nodes_delete(S.ALLOCATIONS, pnode_free*)
-  -- if S_dropped = $prune_live($destruction_store_drop(S, pnode_free*), pnode_live*)
+  -- if $gc_free_prepare(S, pgcplan) = (S_prepared)
+  -- if ~$gc_terminal_park(S_prepared, pgcplan)
+  -- if S_prepared.TODO = (GC_FREE pgcplan) :: ptask*
+  -- if pnode_free* = $gc_free_order(pgcplan, S_prepared.ALLOCATIONS)
+  -- if pnode_live* = $destruction_nodes_delete(S_prepared.ALLOCATIONS, pnode_free*)
+  -- if S_dropped = $prune_live($destruction_store_drop(S_prepared, pnode_free*), pnode_live*)
   -- if S_next = S_dropped[.GC = $gc_compact($gc_buffer_remove_nodes(S_dropped.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*)))]
   -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + $gc_pass_count(pgcplan))][.PASS = 1]
   -- if pgcplan.DTORS =/= eps /\ pgcplan.CALL.PASS = 0
 def $gc_free(S, pgcplan) = $gc_finish(S_next, pgccall_next)
-  -- if ~$gc_nested_boundary(S, pgcplan) /\ ~$gc_terminal_park(S, pgcplan)
-  -- if S.TODO = (GC_FREE pgcplan) :: ptask*
-  -- if pnode_free* = $gc_free_order(pgcplan, S.ALLOCATIONS)
-  -- if pnode_live* = $destruction_nodes_delete(S.ALLOCATIONS, pnode_free*)
-  -- if S_dropped = $prune_live($destruction_store_drop(S, pnode_free*), pnode_live*)
+  -- if $gc_free_prepare(S, pgcplan) = (S_prepared)
+  -- if ~$gc_terminal_park(S_prepared, pgcplan)
+  -- if S_prepared.TODO = (GC_FREE pgcplan) :: ptask*
+  -- if pnode_free* = $gc_free_order(pgcplan, S_prepared.ALLOCATIONS)
+  -- if pnode_live* = $destruction_nodes_delete(S_prepared.ALLOCATIONS, pnode_free*)
+  -- if S_dropped = $prune_live($destruction_store_drop(S_prepared, pnode_free*), pnode_live*)
   -- if S_next = S_dropped[.GC = $gc_compact($gc_buffer_remove_nodes(S_dropped.GC, $destruction_nodes_delete(S.ALLOCATIONS, pnode_live*)))]
   -- if pgccall_next = pgcplan.CALL[.TOTAL = $(pgcplan.CALL.TOTAL + $gc_pass_count(pgcplan))]
   -- if pgcplan.DTORS = eps \/ pgcplan.CALL.PASS = 1
 rule PhpStep/gc-free: S ~> $gc_free(S, pgcplan)
   -- if S.TODO = (GC_FREE pgcplan) :: ptask*
   -- if $call_task_valid(S, GC_FREE pgcplan)
+
+;; Zend disposes remaining GARBAGE tags before retracing, even after a weak get
+;; copied one into a CV. Preserve that retired identity without a heap owner.
+;; This lane admits only separate stdClass self-cycles and direct global cells.
+dec $gc_retired_binding(pbinding*, nat) : bool
+def $gc_retired_binding(eps, n) = false
+def $gc_retired_binding((BIND n_name* n) :: pbinding*, n) = true
+def $gc_retired_binding((BIND n_name* n_other) :: pbinding*, n) = $gc_retired_binding(pbinding*, n) -- if n_other =/= n
+dec $gc_retired_incoming(hedge*, pnode) : bool
+def $gc_retired_incoming(eps, pnode) = false
+def $gc_retired_incoming((HEDGE pnode_from pnode) :: hedge*, pnode) = true
+def $gc_retired_incoming((HEDGE pnode_from pnode_other) :: hedge*, pnode) = $gc_retired_incoming(hedge*, pnode) -- if pnode_other =/= pnode
+dec $gc_retired_cv(pstate, pgcplan, hgraph, nat, nat) : bool
+def $gc_retired_cv(S, pgcplan, H, n_cell, n_target) = true
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_target)
+  -- if (HCELL n_cell) <- H.ROOTS
+  -- if $gc_retired_binding($global_table_view(S).ENV, n_cell)
+  -- if ~$gc_retired_incoming(H.EDGES, HCELL n_cell)
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if $gc_slot_find(S.GC.BUFFER, HCELL n_cell, 0) = eps
+  -- if $heap_children(HCELL n_cell, pgcplan.GRAPH.EDGES) = eps
+def $gc_retired_cv(S, pgcplan, H, n_cell, n_target) = false -- otherwise
+dec $gc_retired_edges(pstate, pgcplan, hgraph, hedge*, nat) : bool
+def $gc_retired_edges(S, pgcplan, H, eps, n) = true
+def $gc_retired_edges(S, pgcplan, H, (HEDGE (HOBJECT n) (HOBJECT n)) :: hedge*, n) = $gc_retired_edges(S, pgcplan, H, hedge*, n)
+def $gc_retired_edges(S, pgcplan, H, (HEDGE (HCELL n_cell) (HOBJECT n)) :: hedge*, n) = ($gc_retired_cv(S, pgcplan, H, n_cell, n) /\ $gc_retired_edges(S, pgcplan, H, hedge*, n))
+def $gc_retired_edges(S, pgcplan, H, (HEDGE pnode_from pnode_to) :: hedge*, n) = $gc_retired_edges(S, pgcplan, H, hedge*, n) -- if pnode_to =/= HOBJECT n
+def $gc_retired_edges(S, pgcplan, H, hedge*, n) = false -- otherwise
+dec $gc_retired_targets(pstate, pgcplan, hgraph, pnode*) : bool
+def $gc_retired_targets(S, pgcplan, H, eps) = true
+def $gc_retired_targets(S, pgcplan, H, (HOBJECT n) :: pnode*) = $gc_retired_targets(S, pgcplan, H, pnode*)
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if $heap_children(HOBJECT n, H.EDGES) = [HOBJECT n]
+  -- if (HOBJECT n) <- S.ALLOCATIONS /\ (HOBJECT n) <- pgcplan.COUNTED
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (n_slot)
+  -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n)
+  -- if $gc_retired_edges(S, pgcplan, H, H.EDGES, n)
+def $gc_retired_targets(S, pgcplan, H, pnode*) = false -- otherwise
+dec $gc_retired_ready(pstate, pgcplan) : bool
+def $gc_retired_ready(S, pgcplan) = true
+  -- if S.TODO = (GC_FREE pgcplan) :: ptask_tail*
+  -- if S.ACTIVEFIBER = eps /\ S.CURRENT = eps /\ S.FRAMES = eps /\ S.HELD = eps
+  -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if pgcplan.CALL.PASS = 0 /\ pgcplan.DTORS =/= eps
+  -- if $call_task_valid(S, GC_FREE pgcplan) /\ ~$gc_overlap_plan(pgcplan)
+  -- if H = $heap_graph(S)
+  -- if $heap_valid(H)
+  -- if pnode* = $heap_intersect(pgcplan.FREESET, $heap_reach(H.ROOTS, eps, H.EDGES))
+  -- if pnode* =/= eps /\ $heap_intersect(pnode*, H.ROOTS) = eps
+  -- if $gc_retired_targets(S, pgcplan, H, pnode*)
+def $gc_retired_ready(S, pgcplan) = false -- otherwise
+dec $gc_retired_store(pslot*, pnode*) : pslot*
+def $gc_retired_store(eps, pnode*) = eps
+def $gc_retired_store((DEFINED (POBJECT n)) :: pslot*, pnode*) = (GC_RETIRED_OBJECT n) :: $gc_retired_store(pslot*, pnode*) -- if (HOBJECT n) <- pnode*
+def $gc_retired_store(pslot :: pslot_tail*, pnode*) = pslot :: $gc_retired_store(pslot_tail*, pnode*) -- otherwise
+def $gc_free_prepare(S, pgcplan) = (S[.STORE = $gc_retired_store(S.STORE, pnode*)])
+  -- if $gc_retired_ready(S, pgcplan)
+  -- if pnode* = $heap_intersect(pgcplan.FREESET, $heap_reach($machine_roots(S), eps, $heap_graph(S).EDGES))
+def $node_children(S, HCELL n) = eps -- if S.STORE[n] = GC_RETIRED_OBJECT n_target
+def $read_name(S, n_name*, z) = S[.COMPLETION = UNSUPPORTED "read of a retired collector object"]
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = GC_RETIRED_OBJECT n_target
+def $quiet_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "read of a retired collector object"]
+  -- if (~$environment_blocked(S, n_name*) \/ $this_name(n_name*))
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = GC_RETIRED_OBJECT n_target
+def $global_read_local(S, n_name*, z) = S[.COMPLETION = UNSUPPORTED "read of a retired collector object"]
+  -- if ~$environment_blocked(S, n_name*) /\ ~$this_name(n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = GC_RETIRED_OBJECT n_target
+def $find_name(S, n_name*, z, b) = S[.COMPLETION = UNSUPPORTED "read of a retired collector object"]
+  -- if ~$environment_blocked(S, n_name*) /\ ~$this_name(n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = GC_RETIRED_OBJECT n_target
+def $fetch_write_name(S, n_name*) = S[.COMPLETION = UNSUPPORTED "reference to a retired collector object"]
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = GC_RETIRED_OBJECT n_target
+def $resolve(S, REFERENCE n) = S[.COMPLETION = UNSUPPORTED "reference to a retired collector object"] -- if S.STORE[n] = GC_RETIRED_OBJECT n_target
+
+;; Only strict null identity consumes a retired direct CV. The raw ID remains a
+;; pure comparison operand; it is never installed as an owning RESULT value.
+dec $gc_retired_operand(pstate, poperand) : nat?
+def $gc_retired_operand(S, VARIABLE n_name* z) = (n_target)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = GC_RETIRED_OBJECT n_target
+def $gc_retired_operand(S, poperand) = eps -- otherwise
+def $gc_retired_binary(S, pbin, poperand) = true
+  -- if pbin = IDENTICAL \/ pbin = NOTIDENTICAL
+  -- if $gc_retired_operand(S, poperand) =/= eps \/ $gc_retired_operand(S, S.RESULT) =/= eps
+dec $gc_retired_identity_value(pstate, poperand) : pvalue?
+def $gc_retired_identity_value(S, KNOWN PNULL) = (PNULL)
+def $gc_retired_identity_value(S, VARIABLE n_name* z) = (POBJECT n_target)
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if S.STORE[n_cell] = GC_RETIRED_OBJECT n_target
+  -- if (HCELL n_cell) <- S.ALLOCATIONS /\ ~((HOBJECT n_target) <- S.ALLOCATIONS)
+  -- if $(n_target < |S.OBJECTS|) /\ S.OBJECTS[n_target] = STDINSTANCE
+def $gc_retired_identity_value(S, poperand) = eps -- otherwise
+dec $gc_retired_identity(pstate, pbin, poperand) : pstate
+def $gc_retired_identity(S, pbin, poperand) = S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL (b =/= (pbin = NOTIDENTICAL)))][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = ptask :: ptask_tail*
+  -- if $gc_retired_identity_value(S, poperand) = (pvalue_left)
+  -- if $gc_retired_identity_value(S, S.RESULT) = (pvalue_right)
+  -- if pvalue_left = PNULL \/ pvalue_right = PNULL
+  -- if b = $strict_identical(pvalue_left, pvalue_right)
+def $gc_retired_identity(S, pbin, poperand) = S[.COMPLETION = UNSUPPORTED "retired collector identity operand"] -- otherwise
+rule PhpStep/gc-retired-identity: S ~> $gc_retired_identity(S, pbin, poperand)
+  -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
+  -- if $gc_retired_binary(S, pbin, poperand)
 def $gc_finish(S, pgccall) = S[.GC.ACTIVE = eps][.GC.PLAN = eps][.TODO = ptask_tail*][.RESULT = KNOWN (PINT pgccall.TOTAL)][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = ptask :: ptask_tail*
   -- if pgccall.PENDING = eps

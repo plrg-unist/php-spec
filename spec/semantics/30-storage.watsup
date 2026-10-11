@@ -1,5 +1,5 @@
 ;; Names designate cells. Rebinding a name changes its cell, not the old cell's value.
-syntax pslot = UNDEFINED | DEFINED pvalue
+syntax pslot = UNDEFINED | DEFINED pvalue | GC_RETIRED_OBJECT nat
 syntax pbinding = BIND nat* nat
 syntax porigin = PORIGIN nat pcpath | TRAIT_ORIGIN porigin porigin ptbytes | TRAIT_MEMBER_ORIGIN porigin porigin
 ;; Retired array identity is non-owning, local to one active or saved call.

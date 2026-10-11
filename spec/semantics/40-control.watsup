@@ -164,8 +164,11 @@ rule PhpStep/binary-notidentical: S ~> S[.TODO = [$at_task($origin_child(S.ORIGI
   -- if S.TODO = (EVAL (NExprBinaryOpNotIdentical expression_1 expression_2 metadata)) :: ptask_tail*
 rule PhpStep/binary-left: S ~> S[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), BINARY_RIGHT pbin S.RESULT z] ++ ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = (BINARY_LEFT pbin expression z) :: ptask_tail*
+dec $gc_retired_binary(pstate, pbin, poperand) : bool
+def $gc_retired_binary(S, pbin, poperand) = false -- otherwise
 rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
+  -- if ~$gc_retired_binary(S, pbin, poperand)
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION = NORMAL
   -- if S_left.RESULT = KNOWN pvalue_1
@@ -175,10 +178,12 @@ rule PhpStep/binary-right: S ~> S_out[.HELD = S.HELD]
   -- if S_out = $binary_apply(S_right, pbin, pvalue_1, pvalue_2, z)
 rule PhpStep/binary-left-abrupt: S ~> S_left[.TODO = eps][.HELD = S.HELD]
   -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
+  -- if ~$gc_retired_binary(S, pbin, poperand)
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION =/= NORMAL
 rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
   -- if S.TODO = (BINARY_RIGHT pbin poperand z) :: ptask_tail*
+  -- if ~$gc_retired_binary(S, pbin, poperand)
   -- if S_left = $resolve_at($hold_task_inputs(S), poperand, z)
   -- if S_left.COMPLETION = NORMAL
   -- if S_right = $resolve_at(S_left, S.RESULT, z)
