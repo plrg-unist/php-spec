@@ -153,6 +153,14 @@ report the declaring child type; incompatible getters fail at the hook line.
 Separate stored and returned objects retain independent cleanup. Three originals
 and five selected state cuts are recorded in the
 [backed-child covariance review](../../coverage/semantics/virtual-parent-backed-get-hook-covariance-review.json).
+These own-body-backed children also reject removal of an inherited type at the
+getter declaration. The prepublication proof authenticates closed virtual-parent
+ancestry and the child's own TYPE/default descriptor; the rejected child has no
+ancestry link. A typed child overriding an untyped parent retains the later
+class-line property error. Both-untyped controls keep the child slot, private scope,
+inherited `$this` dispatch and ordinary writes. Three originals and five separate
+state cuts are recorded in the
+[cross-shape type-presence review](../../coverage/semantics/virtual-parent-backed-get-hook-type-presence-review.json).
 The hook linker still refuses ordinary-parent hooks and plain redeclarations.
 Backed-parent inheritance retains invariant types;
 TYPE-presence changes for body-unbacked declarations with inherited storage,
