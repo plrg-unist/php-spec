@@ -2012,6 +2012,8 @@ later conversion conflicts without writing the referent; strict getters and null
 pass 1,053 premises at `a303833a8`, including signed zero/INF, aliases and full budgets.
 The fixture preparation failure stays0. NaN warning/control observations retain
 zero model/state/agreement; its continuation and wider target/PARAM scope remain required.
+The `ffc9103a` composition preserves disjoint CLASS42 hooks; accepted private and
+parent-family compiler cuts are reused with zero fresh executions.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

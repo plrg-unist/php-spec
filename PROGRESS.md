@@ -3325,6 +3325,8 @@ NaN native control observes normal overwrite/current-type conflict/throw no-writ
 with model/state/agreement0; its warning continuation and wider target/PARAM scope
 remain required. Shared50/95 and owner rules stay unchanged; phase43 cuts are frozen.
 [Scalar-boolean ledger](coverage/semantics/magic-property-scalar-boolean-review.json).
+Exact-current `3de7c5ca` joins `ffc9103a` pointwise; CLASS42 hook guards are disjoint.
+Private and retained parent compiler cuts are reused with no fresh executions.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
