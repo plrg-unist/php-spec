@@ -349,5 +349,14 @@
     "stderr": "",
     "exit": 0,
     "status": "normal"
+  },
+  {
+    "id": "collector-main-nondestructor-weak-resurrection-44",
+    "source": "<?php\nclass Actor {\n    public $next;\n    public function __destruct() {\n        global $wb, $hold;\n        $hold = $wb->get();\n        echo $hold === null ? \"B:null|\" : \"B:held|\";\n    }\n}\n$hold = null;\n$a = new Actor();\n$a->next = $a;\n$b = new stdClass();\n$b->self = $b;\n$wa = WeakReference::create($a);\n$wb = WeakReference::create($b);\nunset($a);\nunset($b);\necho gc_collect_cycles(), \"|\";\necho $wa->get() === null ? \"A:null|\" : \"A:live|\";\necho $wb->get() === $hold ? \"held|\" : \"lost|\";\nunset($hold);\necho gc_collect_cycles(), \"|\";\necho $wb->get() === null ? \"B:null|END\" : \"B:live|END\";\n",
+    "stdout": "B:held|2|A:null|lost|0|B:null|END",
+    "stderr": "",
+    "exit": 0,
+    "status": "normal",
+    "source_sha256": "593ab6d9684ee904aca20a4369cac1cf824c276f6fd5c8775a82f77f499b8ac4"
   }
 ]
