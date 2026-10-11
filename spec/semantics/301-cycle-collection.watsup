@@ -1124,10 +1124,13 @@ def $gc_retired_ready(S, pgcplan) = true
   -- if pnode* =/= eps /\ $heap_intersect(pnode*, H.ROOTS) = eps
   -- if $gc_retired_targets(S, pgcplan, H, pnode*)
 def $gc_retired_ready(S, pgcplan) = false -- otherwise
+dec $gc_retired_slot(pslot, pnode*) : bool
+def $gc_retired_slot(DEFINED (POBJECT n), pnode*) = true -- if (HOBJECT n) <- pnode*
+def $gc_retired_slot(pslot, pnode*) = false -- otherwise
 dec $gc_retired_store(pslot*, pnode*) : pslot*
 def $gc_retired_store(eps, pnode*) = eps
 def $gc_retired_store((DEFINED (POBJECT n)) :: pslot*, pnode*) = (GC_RETIRED_OBJECT n) :: $gc_retired_store(pslot*, pnode*) -- if (HOBJECT n) <- pnode*
-def $gc_retired_store(pslot :: pslot_tail*, pnode*) = pslot :: $gc_retired_store(pslot_tail*, pnode*) -- otherwise
+def $gc_retired_store(pslot :: pslot_tail*, pnode*) = pslot :: $gc_retired_store(pslot_tail*, pnode*) -- if ~$gc_retired_slot(pslot, pnode*)
 def $gc_free_prepare(S, pgcplan) = (S[.STORE = $gc_retired_store(S.STORE, pnode*)])
   -- if $gc_retired_ready(S, pgcplan)
   -- if pnode* = $heap_intersect(pgcplan.FREESET, $heap_reach($machine_roots(S), eps, $heap_graph(S).EDGES))
