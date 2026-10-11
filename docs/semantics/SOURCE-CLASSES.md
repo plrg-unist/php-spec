@@ -95,10 +95,15 @@ preserves state apart from consuming its task. Named descendants in nested,
 conditional or other unsupported function ancestors remain Unsupported. The
 [block-factory review](../../coverage/semantics/anonymous-block-factory-rtd-review.json)
 separates publication, no-op and allocation frontiers from pure ancestry queries.
-Direct root or namespace-body variable assignments to static no-capture noarg by-value untyped Closures also admit plain
-empty named descendants. Admission authenticates the actual expression statement,
-by-value assignment, ordinary variable target and Closure signature; other targets,
-placements, captures and signatures remain Unsupported. Runtime publication appends a
+Variable assignments to static no-capture noarg by-value untyped Closures at root
+or a valid namespace body, including authenticated standalone Block chains, also
+admit plain empty named descendants. Admission authenticates the actual expression
+statement, by-value assignment, ordinary variable target, Closure signature and every
+Block ancestor. Named descendants in assignments under conditional/loop/nested-function
+or nested-Closure ancestors, other targets, captures and signatures remain Unsupported.
+The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)
+separates real Block/creation/publication/allocation steps from pure admission queries.
+Runtime publication appends a
 source-bound PDRCLASS cause with the function or Closure/callsite, preserving the saved caller
 frame. Reversed calls publish in call order, and a guarded repeat preserves one
 publication while returning independent defaults. The

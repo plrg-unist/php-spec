@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named descendants in exact static noattr/no-capture/noarg/by-value/untyped Closure factories assigned by value to ordinary variables inside authenticated standalone root or valid namespace-body Block chains. Anonymous fullnames precede Closure creation; calls control deferred publication order and guarded repeats keep fresh defaults. Prior deferred same-qualified-name declarations do not block eligible root case retention. Named descendants in Closure assignments under conditionals, loops, nested functions or nested Closures, other targets or wider signatures remain unsupported; existing anonymous-only contexts are preserved.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "block-closure-reversed",
+      "source": "<?php\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':9$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':15$3';\n$leftBefore = new $leftName; $rightBefore = new $rightName;\necho $leftBefore::class === $leftName && $leftBefore->scope() === $leftName && $rightBefore::class === $rightName ? 'before|' : 'BAD|';\n{{\n$leftFactory = static function () {\n    class LeftClosurePublished {}\n    return new class { public function scope() { return self::class; } };\n};\n}}\n{\n$rightFactory = static function () {\n    class RightClosurePublished {}\n    return new class {};\n};\n}\ntry { $missing = new LeftClosurePublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'left-missing|'; }\ntry { $missing = new RightClosurePublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'right-missing|'; }\n$right = $rightFactory();\n$rightNamed = new RightClosurePublished;\necho $right::class === $rightName && $rightNamed::class === 'RightClosurePublished' ? 'right|' : 'BAD|';\ntry { $missing = new LeftClosurePublished; echo 'BAD|'; }\ncatch (Error $caught) { echo 'still-missing|'; }\n$left = $leftFactory();\n$leftNamed = new LeftClosurePublished;\necho $left::class === $leftName && $left->scope() === $leftName && $leftNamed::class === 'LeftClosurePublished' ? 'left|' : 'BAD|';\necho $leftBefore !== $left && $rightBefore !== $right && $left !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "75183580d55b3788a0f6c4669ea7f789840a4a3f8572f90425623c6fd594add1",
+      "stdout_base64": "YmVmb3JlfGxlZnQtbWlzc2luZ3xyaWdodC1taXNzaW5nfHJpZ2h0fHN0aWxsLW1pc3Npbmd8bGVmdHxmcmVzaA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-closure-native-29/run-v1/block-closure-reversed/command.json",
+      "native_raw_sha256": "f3c9e2a18a56bef4b22d7ff2131bae4a4cfd7b0f1229889b343c6e6487bce623"
+    },
+    {
+      "id": "block-closure-repeated",
+      "source": "<?php\nnamespace DeclaringClosure {\n    $seen = false;\n    {{\n    $make = static function () {\n        global $seen;\n        if (!$seen) {\n            { class Published {} }\n            $seen = true;\n        }\n        return new class {\n            public $value = 0;\n            public function space() { return __NAMESPACE__; }\n        };\n    };\n    }}\n}\nnamespace CallingClosure {\n    $name = 'class@anonymous' . \"\\0\" . __FILE__ . ':11$1';\n    $before = new $name;\n    echo $before::class === $name && $before->space() === 'DeclaringClosure' ? 'before|' : 'BAD|';\n    try { $missing = new \\DeclaringClosure\\Published; echo 'BAD|'; }\n    catch (\\Error $caught) { echo 'missing|'; }\n    $first = $make();\n    $published = new \\DeclaringClosure\\Published;\n    echo $first::class === $name && $first->space() === 'DeclaringClosure' && $published::class === 'DeclaringClosure\\\\Published' ? 'first|' : 'BAD|';\n    $first->value = 9;\n    $second = $make();\n    $namedAgain = new \\DeclaringClosure\\Published;\n    echo $second::class === $name && $second->space() === 'DeclaringClosure' && $namedAgain::class === $published::class ? 'second|' : 'BAD|';\n    echo $seen && $before !== $first && $first !== $second && $before !== $second ? 'fresh|' : 'BAD|';\n    echo $before->value, ':', $first->value, ':', $second->value;\n}\n",
+      "source_sha256": "dc7f704ca9616467575cd314c16fdbe6ce78ba1894cc1e67b84715fc24bd2f7b",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8c2Vjb25kfGZyZXNofDA6OTow",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-closure-native-29/run-v1/block-closure-repeated/command.json",
+      "native_raw_sha256": "082a5f3fd3bd82940c6fd35c636d7f53c1082d8fd30e43ca8af919ce8a9c264c"
+    },
+    {
+      "id": "block-closure-prior-deferred",
+      "source": "<?php\nnamespace BlockClosureSide;\n$factoryName = 'class@anonymous' . \"\\0\" . __FILE__ . ':10$1';\n$before = new $factoryName;\n$named = new Exception;\necho $before::class === $factoryName && $before->space() === 'BlockClosureSide' && $named::class === 'BlockClosureSide\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\n{{\n    $make = static function() {\n        if (false) { { class Exception {} } }\n        return new class {\n            public function space() { return __NAMESPACE__; }\n        };\n    };\n}}\n{ class eXcEpTiOn {} }\n$first = $make();\necho $first::class === $factoryName && $first->space() === 'BlockClosureSide' ? 'first|' : 'BAD|';\n\nnamespace BlockClosureCaller;\n$second = $make();\necho $second::class === $factoryName && $second->space() === 'BlockClosureSide' ? 'second|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$2';\necho $last::class === $lastName ? 'last|' : 'BAD|';\necho $before !== $first && $first !== $second && $before !== $second && $last !== $first ? 'fresh' : 'BAD';\n",
+      "source_sha256": "c0fa66086a7d1fb39203dbda304b7b64bb6436be927272bf4a936f72ecdeb384",
+      "stdout_base64": "YmVmb3JlfGZpcnN0fHNlY29uZHxsYXN0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-closure-native-29/run-v1/block-closure-prior-deferred/command.json",
+      "native_raw_sha256": "e24344e6634fb0c4bfe95ec1a2b046512709a72081089b148770048a7d2e8864"
+    }
+  ]
+}

@@ -22,38 +22,28 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
-Plain empty named declarations now publish from direct root or valid namespace-body
-variable assignments to static no-capture noarg by-value untyped Closures. Four
-originals agree at 0587228b /375 (strict3 5.725s): anonymous fullnames work before
-Closure creation, calls control named publication order, guarded repeats retain
-fresh defaults, and an unguarded second declaration fails before another allocation.
-Author and independent fixtures pass 539 checks: 498 setup/source-frontier premises
-and 41 pure queries, with 15 actual PhpSteps for Closure creation/capture,
-named publication, anonymous allocation and direct fatal redeclaration. Genuine
-Closure targets/templates, lexical namespaces, callsites and saved frames remain
-authenticated. The original public-status fixture error and before-main binding
-failure retain zero affected credit; syntax preparation/elaboration adds none.
-Other targets, placements, captures/signatures and wider RTD contexts remain required.
-Actual375 over 096e3dd2 passes strict3 at c4a942ec (5.825s); private
-native/source/state cuts retain their original revisions.
-[Named-Closure ledger](coverage/semantics/anonymous-named-closure-rtd-review.json).
+Plain empty named declarations now publish from ordinary variable assignments to
+exact static no-capture noarg by-value untyped Closures through authenticated
+standalone root/namespace-body Block chains. Three originals agree at 6e5f5075 /375
+(strict3 5.772s): anonymous fullnames precede Closure creation, calls control named
+publication order, and guarded repeats retain fresh defaults/lexical namespaces.
+Author and independent fixtures pass 539 checks: 496 setup/source-frontier premises
+and 43 pure queries, with 18 actual PhpSteps for Block entry, Closure creation/capture,
+named publication, eligible class no-op and anonymous allocation. Genuine Closure
+templates/instances/targets, current/callsites and saved frames stay authenticated.
+No failures in this slice; syntax preparation/elaboration adds no runtime credit.
+The historical28 Block-Closure exclusion is superseded; conditional/loop/nested
+assignments, other targets/signatures/captures and wider RTD contexts remain required.
+[Block-Closure ledger](coverage/semantics/anonymous-block-closure-rtd-review.json).
+The earlier [direct-Closure cut](coverage/semantics/anonymous-named-closure-rtd-review.json)
+retains source4/state539, fatal redeclaration and both zero-credit fixture failures
+at 058; its c4a942ec/096e strict join and all private cuts remain unchanged.
 
-Named-function factories also admit authenticated standalone root/namespace-body
-Block chains with the existing exact noattr/noarg/by-value/untyped signature.
-They are callable before the blocks; later eligible function declarations leave
-state unchanged apart from consuming their tasks. Three originals agree at
-55dc18ba /375 (strict3 5.824s), including deferred named publication, guarded fresh
-storage and an uncalled conditional anonymous-only factory. Author and independent
-fixtures pass 424 checks: 381 setup/source-frontier premises and 43 pure queries,
-with 13 actual PhpSteps for named publication, Block entry, function no-op and
-anonymous allocation. Syntax preparation/elaboration adds no runtime credit.
-The historical26 Block-function exclusion is superseded; its accepted direct-factory
-source/state388 and 684ff104/9ae join retain their original cuts. Named descendants
-under conditional/loop/nested functions, wider signatures and Block-contained named
-Closure assignments remain required.
-The 375 composition d176816f over 0d53475a reuses tested 55dc strict3 after
-independent EX44 retired-slot/ordinary-binary compatibility review; no new current
-strict actor or private native/source/state replay was needed.
+Named-function factories retain callable-before-Block and eligible function no-op
+behavior. Their source3/state424 at 55dc and d176816f/0d53475a composition reuse
+the tested strict3 after independent retired-slot/ordinary-binary compatibility
+review, with no replay. The historical26 Block-function exclusion is superseded;
+its original direct-factory source/state388 and 684ff104/9ae join remain unchanged.
 [Block-factory ledger](coverage/semantics/anonymous-block-factory-rtd-review.json);
 [earlier named-factory ledger](coverage/semantics/anonymous-named-factory-rtd-review.json).
 

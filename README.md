@@ -1279,12 +1279,14 @@ The [block-factory review](coverage/semantics/anonymous-block-factory-rtd-review
 binds three originals to actual publication, no-op and fresh-allocation checks.
 Its 375 join over 0d53475a retains the tested 55dc compiler check after review of
 the guarded retired-object paths; no private cuts were replayed.
-Direct root or namespace-body variable assignments to static no-capture noarg
-by-value untyped Closures also admit plain empty named declarations. Their
-[review](coverage/semantics/anonymous-named-closure-rtd-review.json) covers anonymous
-lookup before Closure creation, call-order publication, fresh repeated defaults
-and fatal redeclaration before another allocation.
-Actual375 over 096e3dd2 passes strict3 at c4a942ec (5.825s); private
+Static no-capture noarg by-value untyped Closures assigned to ordinary variables
+at root/namespace body or through authenticated standalone Block chains also admit
+plain empty named declarations. The [block-Closure review](coverage/semantics/anonymous-block-closure-rtd-review.json)
+binds three originals and 18 actual steps for Block entry, Closure capture,
+call-order publication and fresh defaults. The earlier
+[direct-Closure review](coverage/semantics/anonymous-named-closure-rtd-review.json)
+retains fatal redeclaration before another allocation.
+The prior direct Closure join of 375 modules over 096e3dd2 passes strict3 at c4a942ec (5.825s); private
 native/source/state cuts retain their original revisions.
 Wider Closure targets/placements/signatures, function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
