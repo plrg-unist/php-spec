@@ -3260,6 +3260,8 @@ adds no execution. Generic range clones earn no fresh credit. Scalar/string call
 referents and unchanged sources/tails bound the producer; object/array replacements
 and wider getter/PARAM scope remain required. Phase42 cuts are frozen.
 [Numeric-string integer ledger](coverage/semantics/magic-property-numeric-string-integer-review.json).
+The join over `69333905f` at `0de05afcb` preserves reviewed parent routes with 375 modules.
+Retained private and parent-family compiler cuts are reused; fresh strict/source/state/native counts remain 0.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
