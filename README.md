@@ -1458,6 +1458,9 @@ The [If-hosted Do review](coverage/semantics/anonymous-conditional-do-rtd-review
 checks three original programs, genuine branch selection, reverse class publication,
 retained Closure receivers and saved caller frames. Direct While→Do, nested Do,
 If hosts beneath Do and wider factory guards remain Unsupported.
+The 376 join at d5bccfb4 over 1df8dd33 reuses private strict3 at 6d4067a /375
+(6.026s) alongside the parent's accepted WeakMap validation. Review preserves
+parentless linking and empty-map notification identity; private cuts stay frozen.
 The earlier [Do body-Block review](coverage/semantics/anonymous-do-block-rtd-review.json)
 binds three originals at 9d2ca309 /375 (strict3 6.025s) and 690 premises:
 648 setup/frontier, 42 pure, with 27 genuine Block, publication, creation/capture,
