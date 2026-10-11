@@ -1466,6 +1466,9 @@ and fresh defaults. Three originals agree at 5a13bfe4 /376 (strict3 6.026s), wit
 and wider factory guards remain Unsupported. The earlier [If-hosted Do review](coverage/semantics/anonymous-conditional-do-rtd-review.json)
 retains its original source/state cuts and WeakMap composition; only its direct
 While-host exclusion is superseded.
+The 376 join over d02e5167 passes strict3 at 5ff2413e (6.124s), checking the
+shared getter-string task domain. Review preserves parentless class linking;
+private source/state cuts retain their original revisions.
 The earlier [Do body-Block review](coverage/semantics/anonymous-do-block-rtd-review.json)
 binds three originals at 9d2ca309 /375 (strict3 6.025s) and 690 premises:
 648 setup/frontier, 42 pure, with 27 genuine Block, publication, creation/capture,

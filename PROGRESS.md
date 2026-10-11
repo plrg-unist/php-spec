@@ -33,6 +33,9 @@ required allocations; syntax-only preparation/elaboration has zero runtime credi
 No executed COMP44 failures. Nested Do, If or While hosts beneath Do and wider
 factory guards remain Unsupported.
 [While-hosted Do ledger](coverage/semantics/anonymous-while-do-rtd-review.json).
+The 376 join over d02e5167 passes strict3 at 5ff2413e (6.124s), checking the
+shared getter-string task domain. Review preserves parentless class linking;
+private source/state cuts retain their original revisions.
 
 The [earlier If-hosted Do ledger](coverage/semantics/anonymous-conditional-do-rtd-review.json)
 retains its source3/state841 and accepted WeakMap composition; only authenticated
