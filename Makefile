@@ -657,6 +657,11 @@ test-semantics: build
 	python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group controls
 	python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group untyped
 	python3 tests/semantics/repeated_effective_backed_get_hook_protocol.py --revision "$$(git rev-parse HEAD)" --group lifetime
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_get_hook_override_cases.json
+	python3 tests/semantics/virtual_get_hook_override_protocol.py --revision "$$(git rev-parse HEAD)" --group cv
+	python3 tests/semantics/virtual_get_hook_override_protocol.py --revision "$$(git rev-parse HEAD)" --group this
+	python3 tests/semantics/virtual_get_hook_override_protocol.py --revision "$$(git rev-parse HEAD)" --group writes
+	python3 tests/semantics/virtual_get_hook_override_protocol.py --revision "$$(git rev-parse HEAD)" --group lifetime
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

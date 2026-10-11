@@ -100,9 +100,19 @@ The newest child retains its own default, slot and getter scope. Separate CV,
 inherited `$this`, write, ancestry, untyped and lifetime checks are recorded in the
 [repeated override review](../../coverage/semantics/repeated-effective-backed-get-hook-review.json).
 Admission requires a nonabstract, nonfinal named subclass, public by-value getters
-and identical normalized types. Chains without a source-backed hook anchor,
-virtual-parent pairs, broader type equivalence/covariance and plain redeclarations
-of inherited hooks remain explicit Unsupported.
+and identical normalized types.
+Virtual getters without initializers also override another virtual getter when
+a separate bounded ancestry check closes at an authentic virtual root. Child
+declaration defaults remain metadata; neither typed uninitialized nor untyped
+null metadata creates a physical slot. Reads retain child lexical/private scope
+and runtime descendant dispatch, including inherited `$this` methods. Ordinary
+writes raise read-only errors naming the runtime class at the actual write line,
+without getter dispatch or slot mutation. Returned objects can survive receiver
+cleanup. Two originals and four separate state cuts are recorded in the
+[virtual override review](../../coverage/semantics/virtual-get-hook-override-review.json).
+The hook linker still refuses ordinary-parent hooks, plain redeclarations and
+backed children of virtual parents. Broader type equivalence/covariance remains
+required; current ordinary invariant property-type checks precede hook linking.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 other inheritance/traits, temporary/computed receivers, other compound operators/RHS

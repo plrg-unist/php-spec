@@ -1440,6 +1440,13 @@ without backing access or initializers, including intervening classes without a
 redeclaration. Two originals and separate dispatch, write, ancestry and lifetime
 checks are recorded in the
 [repeated override review](coverage/semantics/repeated-effective-backed-get-hook-review.json).
+Virtual getters can override another virtual getter of the same normalized type,
+without initializers, when their linked ancestry closes at a genuine virtual root.
+They retain no physical slot; reads use the child's lexical scope and runtime
+descendant dispatch, and writes raise a read-only error naming that descendant.
+Retained return values survive receiver cleanup. Two originals and separate
+CV, inherited `$this`, write and lifetime checks are recorded in the
+[virtual override review](coverage/semantics/virtual-get-hook-override-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

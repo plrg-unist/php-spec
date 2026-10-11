@@ -782,11 +782,23 @@ at `4dc91304` retain untyped58, lifetime109 and controls73 (42 reached, 31 deriv
 CV62, inherited This74 and write60 pass at `4503b112`. These check uninitialized/null
 defaults, private/called scope, ordinary writes, bounded ancestry refusals and
 separate stored/returned-object cleanup. Counts include repeated setup and metadata.
-Typed159/typed128 timeouts retain zero credit; M37 cuts stay frozen. No-backed-anchor
-virtual pairs, ordinary-parent/plain redeclarations and broader hook inheritance
+Typed159/typed128 timeouts retain zero credit; M37 cuts stay frozen. At this cut,
+virtual pairs without a backed anchor, ordinary-parent/plain redeclarations and broader hook inheritance
 remain required. [Repeated override review](coverage/semantics/repeated-effective-backed-get-hook-review.json).
 Actual375 over `2f3cbc4b` passes strict initialization at `b1176d40` (5.948 s);
 private source2 and the six separate state cuts retain their accepted revisions.
+
+Public by-value virtual getters without initializers now override another virtual
+getter with identical normalized TYPE. A bounded positive ancestry check closes
+at a genuine virtual root; child/private scope and runtime descendant dispatch
+retain no physical slot. Writes raise runtime-class read-only errors at the actual
+write line. Strict375 and two originals pass at `fbc19eb9`. Separate CV90 at
+`5d5e6361` (63 reached, 27 derived), This87/writes74 at `2318e256` and lifetime95
+at `44686722` check dispatch, pending errors, empty storage and kept-object cleanup.
+The latter three groups are all reached; counts include four source setups.
+Two AL fixture stops and This85 false retain zero credit. Broader virtual type
+covariance remains required; prior hook cuts stay frozen.
+[Virtual override review](coverage/semantics/virtual-get-hook-override-review.json).
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,

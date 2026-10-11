@@ -1,0 +1,198 @@
+{
+  "scope": "M39: named nonabstract/nonfinal subclasses; public plain by-value virtual get overrides without initializers and identical normalized TYPE; literal CV and inherited This reads/writes.",
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook",
+      "vendor/php-src/Zend/zend_object_handlers.c: zend_std_read_property, zend_std_write_property"
+    ],
+    "change": "Positive fuel-bounded virtual ancestry authenticates own declaring descriptor, plain source hook and absent default. Root requires both source PARENT and linked parent empty; recursive hops use actual SOURCE_PARENT and pure parent layout, including ancestor-declared Bridge descriptors. Both override declarations close; no task/default/storage/ownership change."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": "tests/semantics/profile.json; LC_ALL=C, TZ=UTC, jobs=1, cache=false, det=true",
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "catalogue": {
+    "path": "tests/semantics/virtual_get_hook_override_cases.json",
+    "sha256": "687a4242918febedd010eec4f2f6d0af6d573c55df20667eace0bcc47f8480fb",
+    "originals": "Permanent scalar/lifetime PHP files are byte-identical to retained native originals; catalogue preserves exact source hashes, outputs and native report hash."
+  },
+  "native": {
+    "revision": "6f2a0d742df69fbd9d608e31c8663dadbc65aae0",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-overrides-probes-39/native-first/report.json",
+    "report_sha256": "2b8e2d776f9d0ffaa9b73ae9741920af82e79c2733380a61d84cf8ccd86a4c3a",
+    "seconds": {
+      "scalar-dispatch": 0.004308,
+      "returned-payload-lifetime": 0.003607
+    },
+    "stable_and_reaped": true,
+    "observations": 2,
+    "source_agreements": 0,
+    "result": "Both exact originals exit0 with empty stderr; no physical slots, runtime-class Error lines, child lexical/descendant called scope and kept RV across receiver destruction."
+  },
+  "unchanged_baseline": {
+    "revision": "6f2a0d742df69fbd9d608e31c8663dadbc65aae0",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-overrides-probes-39/accepted-current-baseline/report.json",
+    "report_sha256": "ba6736aa38c5770a72eec4ee7f3302f1b843fc3477ac77d05cacba4a6e001930",
+    "seconds": {
+      "scalar-dispatch": 11.584565,
+      "returned-payload-lifetime": 7.861962
+    },
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "Both checked originals stop Unsupported: inherited property hook override, with empty stdout/events."
+  },
+  "strict": {
+    "revision": "fbc19eb9d4c743538a7defef55e0197ab92ab5a8",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-overrides-probes-39/virtual-get-hook-override-compiler-q72t1hdz/report.json",
+    "report_sha256": "a0283a6bc9a5a253d6ca4e93daabdc3c5e53400ff4f0cf00eb0dd4f9e80d3c98",
+    "seconds": 5.872139,
+    "stable_and_reaped": true,
+    "result": "PASS exact SL initialization375",
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "revision": "fbc19eb9d4c743538a7defef55e0197ab92ab5a8",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-overrides-probes-39/changed-model-8gu2rrfh/report.json",
+    "report_sha256": "7a1c7a2d24c79a0d7feaee38f1160bd5a4068ad49ef8f1f3e9e523b63294f443",
+    "seconds": {
+      "scalar-dispatch": 26.24761,
+      "returned-payload-lifetime": 18.308208
+    },
+    "stable_and_reaped": true,
+    "source_agreements": 2,
+    "result": "Both genuine checked originals normal; stdout/stderr/exit exactly match retained native observations."
+  },
+  "state": {
+    "cuts": [
+      {
+        "group": "cv",
+        "revision": "5d5e636109fdcf3ca4255960ff7e324b3be0f226",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-override-protocol-_boclvls/report.json",
+        "report_sha256": "9f250f65bf967c62be7045dbbb886623d7387b7f1a9ce8c23e846266feec9151",
+        "fixture_sha256": "95c2b4b07c23fcad996f57e9623ab264e03606b01e6e1631d2a6dbc4222ae86e",
+        "seconds": {
+          "algorithmic-compilation": 5.022429,
+          "strict-SL-application": 49.895344
+        },
+        "stable_and_reaped": true,
+        "reached": 63,
+        "derived": 27,
+        "application_evaluations": 1
+      },
+      {
+        "group": "this",
+        "revision": "2318e2568950a77ec246a62c217c5836853f8f46",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-override-protocol-qz0kkdzl/report.json",
+        "report_sha256": "139a7c5d7a7ad38cd84819a3f3d27d3ca56ebc924544f794ead58bd08d77b43d",
+        "fixture_sha256": "90e29253d38951c2ae40b42a51ccb6d4afce744a7ce8e950a883aa7137bafa36",
+        "seconds": {
+          "algorithmic-compilation": 5.046926,
+          "strict-SL-application": 69.769885
+        },
+        "stable_and_reaped": true,
+        "reached": 87,
+        "derived": 0,
+        "application_evaluations": 1
+      },
+      {
+        "group": "writes",
+        "revision": "2318e2568950a77ec246a62c217c5836853f8f46",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-override-protocol-h4_rx89f/report.json",
+        "report_sha256": "baecfc040c2ab3d2293fe0b71a998fc03a68d84f7de9e60a720b9723bcf4a3cf",
+        "fixture_sha256": "65645e9e065232cafaec0748306455a9e5799e2f370b750a010d3da49d5cac5d",
+        "seconds": {
+          "algorithmic-compilation": 5.129911,
+          "strict-SL-application": 66.846482
+        },
+        "stable_and_reaped": true,
+        "reached": 74,
+        "derived": 0,
+        "application_evaluations": 1
+      },
+      {
+        "group": "lifetime",
+        "revision": "4468672261cb1988656bc10d8ea77075fb3fabd2",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-override-protocol-cx14s20w/report.json",
+        "report_sha256": "ba139daaa9a4cf4324aa715ba379955b6f27aa633ecdd1b52d202d869b4cbf58",
+        "fixture_sha256": "dae8647305b3aad131c29ca9014770b65032ee6631c4152921fce6461244b77e",
+        "seconds": {
+          "algorithmic-compilation": 5.051177,
+          "strict-SL-application": 37.343795
+        },
+        "stable_and_reaped": true,
+        "reached": 95,
+        "derived": 0,
+        "application_evaluations": 1
+      }
+    ],
+    "result": "Four separate PASS invocations:346 premises=319 reached+27 derived, including repeated source setups; source agreements0. No combined application claimed."
+  },
+  "state_contract": [
+    "Actual child/default/function descriptors have no physical slot before/after getter calls. Child-private13 remains distinct from Bridge500/Grand900, while inherited Parent methods restore their caller and retain descendant dispatch.",
+    "Real pending writes preserve store/slots/events, then raise runtime-class read-only Error at CV39/47/59 or method9. This method RHS remains VARIABLE(value,9) and resolves to400 only at consumption; genuine throwable_begin resumes pending unwind.",
+    "RV has RESULT owner1, BASE+RESULT2, then keptCV1; inherited BEMPTY and actual receiver allocation removal leave it live, kept unset reaches DC/weak-null.",
+    "27 derived controls separately cover authentic root/fuel, missing links/sources/descriptors, all-virtual cycle, incompatible shape/type/default/byref, forged slots and wrong function/context."
+  ],
+  "preserved_zero_credit": [
+    {
+      "revision": "5d5e636109fdcf3ca4255960ff7e324b3be0f226",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-override-protocol-irci8dbj/report.json",
+      "report_sha256": "6f5b32c0b6b25722036de9f2ccf100d280e26347f9bf494b95439da5e7d49d6c",
+      "fixture_sha256": "71edff9d6b935c91fd4bd0a906815115936578554e48421c70b08ba4b096f509",
+      "seconds": {
+        "algorithmic-compilation": 4.179333
+      },
+      "stable_and_reaped": true,
+      "credit": 0,
+      "result": "AL fixture stop: throwable_field field names supplied bytes instead of text; application0, SL unrun."
+    },
+    {
+      "revision": "df2a76e8f4f7f940e6dba53f9a22911589cca831",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-override-protocol-02fcqs1m/report.json",
+      "report_sha256": "1d669dc05aefb7eb840aab5fbbb0da3c9c6d82446ec562c71a7aaf63ef9847a4",
+      "fixture_sha256": "81c22da7ef6e1c8f526bfcec2de517fafb3851c8e5abb6d2ad20481bf665b85b",
+      "seconds": {
+        "algorithmic-compilation": 5.072051,
+        "strict-SL-application": 65.327327
+      },
+      "stable_and_reaped": true,
+      "credit": 0,
+      "result": "This85 false: method parameter RHS remains VARIABLE(value,9); corrected pure resolve query checks400 while preserving the actual step input."
+    },
+    {
+      "revision": "2318e2568950a77ec246a62c217c5836853f8f46",
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-override-protocol-ssv2slj3/report.json",
+      "report_sha256": "2c9baa3e3747880ffe70704b96baffe28abe5807ee7fd3c51fd3ca40fa71b433",
+      "fixture_sha256": "03c456769b723dc766c57c487c76cc21488cea1a2d769899aae214d43d1629be",
+      "seconds": {
+        "algorithmic-compilation": 4.207276
+      },
+      "stable_and_reaped": true,
+      "credit": 0,
+      "result": "AL lifetime stop: unavailable heap_free_roots/weak_reference_get; replaced by real allocation absence and existing weakref_get pvalue checks; application0, SL unrun."
+    }
+  ],
+  "commands": {
+    "native": "python3 .tools/virtual-get-hook-overrides-probes-39/run.py native --revision 6f2a0d742df69fbd9d608e31c8663dadbc65aae0",
+    "baseline": "python3 .tools/virtual-get-hook-overrides-probes-39/run.py baseline --revision 6f2a0d742df69fbd9d608e31c8663dadbc65aae0",
+    "strict": "python3 .tools/virtual-get-hook-overrides-probes-39/run-compiler.py 6f2a0d742df69fbd9d608e31c8663dadbc65aae0 fbc19eb9d4c743538a7defef55e0197ab92ab5a8",
+    "sources": "python3 .tools/virtual-get-hook-overrides-probes-39/run.py changed --revision fbc19eb9d4c743538a7defef55e0197ab92ab5a8",
+    "state": "python3 tests/semantics/virtual_get_hook_override_protocol.py --revision <each cut revision> --group <cv|this|writes|lifetime>",
+    "caps": "Native45, model60/outer75/100000 steps; strictSL60 init-only; each state AL90 then conditionalSL90; jobs1, stop-first and group reap."
+  },
+  "recovery": "Historical commands run from retained private32. Ignored originals/raws/recorders/binaries remain at original paths; tracked catalogue and protocol regenerate affected fixtures. Production382 is byte-identical to strict/source-tested fbc throughout all accepted state cuts. Prior M36\u201338 and other hook evidence retains its original identity without renewal.",
+  "remaining": [
+    "Get-only virtual type covariance and broader type equivalence: existing ordinary invariant property-type check precedes hook link; no new agreement for differing TYPE.",
+    "Virtual-parent backed-child pairs, ordinary-parent new hooks and plain redeclarations inheriting hooks.",
+    "Set/byref/defaulted virtual/trait hooks, abstract/final classes and wider receivers/consumers."
+  ],
+  "composition": null
+}
