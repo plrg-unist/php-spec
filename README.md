@@ -1401,6 +1401,9 @@ one guarded class publication, lexical namespace and fresh defaults.
 The [nested-While review](coverage/semantics/anonymous-nested-while-rtd-review.json)
 binds three exact originals to selected/skipped nested hosts, reverse publication
 and old/current Closure receivers. If hosts inside While and other loops remain required.
+The 375 join over c40c6f57 passes strict3 at fb295c7c (5.976s), checking
+the shared task datatype. Review preserves parentless class linking and excludes
+the changed bind/getter/hook/collector routes; private cuts retain their revisions.
 The earlier [If-hosted While review](coverage/semantics/anonymous-conditional-while-rtd-review.json)
 retains its branch selection, callable/Closure ownership and allocation cuts.
 The 375 join at aa241bdf over 1867decf reuses strict3 at tested 376de1e1

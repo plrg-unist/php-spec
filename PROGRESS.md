@@ -34,6 +34,10 @@ eligible no-op steps. Fixtures stop at required allocations; syntax preparation
 and elaboration add no runtime credit. No failures in this cut. If hosts inside While, other
 loops, nested factories and wider signatures/targets/captures remain required.
 [Nested-While ledger](coverage/semantics/anonymous-nested-while-rtd-review.json).
+The 375 join over c40c6f57 passes strict3 at fb295c7c (5.976s), checking
+the shared PROPERTY_GET_STRING_LONG task datatype. Separate review preserves
+reached parentless class linking and excludes the specialized bind/getter/hook/collector
+routes. Private source3/state636 retain their original 8089 cuts without replay.
 
 The earlier If-hosted While cut retains source3/state887 at 376de1e1 and its
 zero-credit Else-union elaboration failure. Its 375 composition at aa241bdf over
