@@ -1189,7 +1189,11 @@ Plain empty global named classes can now share the unit: early declarations cons
 no RTD key; deferred declarations consume one even when never executed.
 [Three further originals](coverage/semantics/anonymous-mixed-rtd-review.json)
 check those counters, runtime publication and factory lookup before calls.
-The current375 join over e68ebf38 passes strict3 at 02c43d49 (5.575s),
+Standalone global blocks preserve early binding through their actual block
+ancestors; blocks inside conditionals remain deferred. [Three block originals](coverage/semantics/anonymous-block-rtd-review.json)
+also check nested ancestry, earlier deferred names and case-insensitive lookup;
+259 reached-source and pure checks keep those observations separate.
+The previous mixed375 join over e68ebf38 passes strict3 at 02c43d49 (5.575s),
 preserving the private source/state cuts.
 Wider RTD counters, factory/publication contexts, constructor arguments/types,
 inheritance, attributes and broader consumers remain required.

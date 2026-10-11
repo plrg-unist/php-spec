@@ -1,0 +1,53 @@
+{
+  "scope": "Ordinary unit0 parentless anonymous classes mixed with plain empty global named declarations in standalone blocks. Actual root block ancestry retains early binding/cost0; blocks below conditionals stay deferred/cost1 even when not executed. Prior deferred same-name declarations do not block later eligible early binding. Wider named/class/source contexts remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-root-block",
+      "source": "<?php\n$early = new DeepEarly;\necho $early::class === 'DeepEarly' ? 'early|' : 'bad-early|';\n{\n    class RootEarly {}\n    {\n        class DeepEarly {}\n        $firstName = \"class@anonymous\\0\" . __FILE__ . ':' . __LINE__ . '$0'; $first = new class { public $value = 0; public function scope() { return self::class; } };\n    }\n    class AfterEarly {}\n}\n$secondName = \"class@anonymous\\0\" . __FILE__ . ':' . __LINE__ . '$1'; $second = new class { public $value = 0; };\necho $first::class === $firstName && $first->scope() === $firstName ? 'first|' : 'bad-first|';\necho $second::class === $secondName ? 'second|' : 'bad-second|';\n$again = new $firstName;\n$again->value = 9;\necho $again !== $first && $again::class === $first::class ? 'fresh|' : 'bad-fresh|';\necho $first->value, ':', $again->value, '|';\necho (new RootEarly)::class === 'RootEarly' && (new AfterEarly)::class === 'AfterEarly' ? 'named' : 'bad-named';\n",
+      "source_sha256": "dc8e10e23654cea149f14152f7686d53c78da2d121b2721c3d0257cf6a8a0af8",
+      "stdout_base64": "ZWFybHl8Zmlyc3R8c2Vjb25kfGZyZXNofDA6OXxuYW1lZA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-native-23/run-v1/anonymous-root-block/command.json",
+      "native_raw_sha256": "6c06ab092bdac26db6519e4b42e579cb010c4cb6648cd53af5fad51ca645f18f"
+    },
+    {
+      "id": "anonymous-conditional-block",
+      "source": "<?php\n$firstName = \"class@anonymous\\0\" . __FILE__ . ':' . __LINE__ . '$0'; $first = new class {};\nif (false) {\n    { class HiddenNested {} }\n}\n$secondName = \"class@anonymous\\0\" . __FILE__ . ':' . __LINE__ . '$2'; $second = new class {};\ntry { new HiddenNested; } catch (Error $e) {\n    echo $e->getMessage() === 'Class \"HiddenNested\" not found' ? 'hidden|' : 'bad-hidden|';\n}\ntry { new LaterNested; } catch (Error $e) {\n    echo $e->getMessage() === 'Class \"LaterNested\" not found' ? 'missing|' : 'bad-missing|';\n}\nif (true) {\n    { { class LaterNested {} } }\n}\n$thirdName = \"class@anonymous\\0\" . __FILE__ . ':' . __LINE__ . '$4'; $third = new class {};\necho $first::class === $firstName ? 'first|' : 'bad-first|';\necho $second::class === $secondName ? 'second|' : 'bad-second|';\necho $third::class === $thirdName ? 'third|' : 'bad-third|';\necho (new LaterNested)::class === 'LaterNested' ? 'live' : 'bad-live';\n",
+      "source_sha256": "76d7cc2ee2bf14554baa48847d750e4b98de43817bec60e3b54e1b7e0002cdc7",
+      "stdout_base64": "aGlkZGVufG1pc3Npbmd8Zmlyc3R8c2Vjb25kfHRoaXJkfGxpdmU=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-native-23/run-v1/anonymous-conditional-block/command.json",
+      "native_raw_sha256": "610b1b4197e0bfb6059c0f8369437c8e5c3e5b4cba643673cd8c1eec9d0a64fc"
+    },
+    {
+      "id": "anonymous-prior-deferred-block",
+      "source": "<?php\nif (false) {\n    { class Shadowed {} }\n}\n$early = new Shadowed;\necho $early::class === 'sHaDoWeD' ? 'early|' : 'BAD|';\n$firstLine = __LINE__ + 1;\n$first = new class {};\n{\n    {\n        class sHaDoWeD {}\n    }\n}\n$secondLine = __LINE__ + 1;\n$second = new class {};\n$again = new SHADOWED;\n$firstName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $firstLine . '$1';\n$secondName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $secondLine . '$2';\necho $first::class === $firstName ? 'first|' : 'BAD|';\necho $second::class === $secondName ? 'second|' : 'BAD|';\necho $again::class === $early::class ? 'named|' : 'BAD|';\necho $again !== $early && $first !== $second ? 'fresh' : 'BAD';\n",
+      "source_sha256": "4418ff1df9058933a16ba1724b5e19e21d380b3911f8b457cd275de95c625265",
+      "stdout_base64": "ZWFybHl8Zmlyc3R8c2Vjb25kfG5hbWVkfGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-native-23/run-v1/anonymous-prior-deferred-block/command.json",
+      "native_raw_sha256": "1aa4b73db5c7e8caa0c5bd15679516e5bd95435949d24c39954748759bd8947c"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty global named declarations in standalone blocks alongside existing ordinary parentless anonymous classes. Root block chains retain early binding; blocks under other control ancestry remain deferred. Named descendants of namespaces/functions/Closures and wider named headers/bodies remain Unsupported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_block_class_cases.json"
+  },
+  "semantic_revision": "7f52ed18db700cea55a896d0d16ab8c78ffaf156",
+  "prerequisite": "78cd4d6e83ca9402243b1f5b7e9a5abe148ce18e",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "anonymous_top_path/anonymous_top_block authenticate every actual NStmtBlock ancestor and the terminal occurrence. Derived EARLY also checks prior early same-name and internal names; complete descriptor/source/name/line authentication remains.",
+    "counter": "Eligible root/nested-block named+0; deferred named+1; anonymous+1, in the real compiler walk order. Prior deferred same-name declarations do not block later eligible early binding.",
+    "boundary": "Whole-unit named descendant bans retain namespaces/functions/Closures; no new fields/tasks/modules/schema/adapter. Existing source/CODE projection, live name and declaration-history receipts authenticate runtime work."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_top_stmt, zend_compile_class_decl, zend_build_runtime_definition_key, zend_generate_anon_class_name",
+    "spec/semantics/46-source-compiler.watsup: ppstatement, ppblockstatements"
+  ],
+  "native": {
+    "revision": "78cd4d6e83ca9402243b1f5b7e9a5abe148ce18e",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-block-native-23/run-v1/report.json",
+    "normal_originals": 3
+  },
+  "source": {
+    "revision": "7f52ed18db700cea55a896d0d16ab8c78ffaf156",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-block-model-23/run-v1/report.json",
+    "native_agreements": 3,
+    "normal": 3
+  },
+  "strict": {
+    "revision": "7f52ed18db700cea55a896d0d16ab8c78ffaf156",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-block-gate-23/report.json",
+    "premises": 3,
+    "seconds": 5.6241185665130615
+  },
+  "state_revision": "7f52ed18db700cea55a896d0d16ab8c78ffaf156",
+  "state_cuts": [
+    {
+      "group": "root-block",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-state-23/report.json",
+      "checks": 99,
+      "setup_source_frontier_checks": 87,
+      "pure_queries": 12,
+      "PhpSteps": 6,
+      "seconds": 14.98823070526123
+    },
+    {
+      "group": "conditional-block",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-state-23/report.json",
+      "checks": 73,
+      "setup_source_frontier_checks": 68,
+      "pure_queries": 5,
+      "PhpSteps": 3,
+      "seconds": 12.634750843048096
+    },
+    {
+      "group": "prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-peer-state-23/report.json",
+      "checks": 87,
+      "setup_source_frontier_checks": 75,
+      "pure_queries": 12,
+      "PhpSteps": 3,
+      "seconds": 10.532565355300903
+    }
+  ],
+  "state_totals": {
+    "checks": 259,
+    "setup_source_frontier_checks": 230,
+    "pure_queries": 29,
+    "PhpSteps": 12
+  },
+  "state_method": "Exact checked original bytes/file/cwd: initial early registries and pre-declaration instances; genuine block entry and whole-state early class no-op; conditional absence, real publication/history and anonymous allocation. Independent same-name/case-retention source checks a prior deferred descriptor does not own the early registry. Pure ancestry, descriptor and reached receipt counterfactuals are counted separately; checks include setup and are not unique states.",
+  "counter_helper_boundary": "The counter helper alone does not authenticate every permutation of zero-cost early descriptors. Full compiler projection and declaration history retain actual order; no forged execution or general ordering certificate is claimed.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-block-state-23/preparation.json",
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-block-state-23/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-block-peer-state-23/report-elab.json"
+    ],
+    "runtime_credit": 0
+  },
+  "preserved_failure": {
+    "record": ".tools/anonymous-class-20/.tools/anonymous-block-state-23/prelaunch-failure-v1.json",
+    "reason": "Cleanup removed an intermediate retained-tool alias. Author SL stopped before subprocess creation or execution; no semantic/fixture failure. Only ignored aliases repaired, then affected author172 runtime-only passed.",
+    "runtime_credit": 0
+  },
+  "tool_repair": "Numeric runner, checked adapter, PHP and php-file aliases resolve to preserved providers with hashes matching their accepted reports. The unselected request-clock alias was restored to canonical c087e402; no historical clock digest or original-chain proof was available, so no same-byte clock identity is claimed. No rebuild or unrelated source/native/strict/peer renewal.",
+  "validation": "Passing runs keep exact originals/profile/file/cwd and raw streams, stable watched inputs, exit/cleanup0, empty owned groups and no unrun. Serial jobs1: native55s, model45s/55s host/100000 steps, syntax Worker30s, elab30s, strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Raw evidence stays ignored outside Git.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_block_class_cases.json",
+    "cases": 3,
+    "runner": "tests/semantics/method_runtime.py --cases tests/semantics/anonymous_block_class_cases.json",
+    "scope": "Metadata-only publication of unchanged normal native originals adds no execution credit."
+  },
+  "remaining": [
+    "Named declarations inside namespaces/functions/Closures; nonempty/modified/attributed/inherited named bodies, interfaces/traits/enums, RTD collisions/wrap and complete ordering.",
+    "Wider anonymous factory signatures/captures/class contexts, include/eval units, constructor arguments/types/access and broader consumers."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "independent_review": "comp_review_21 accepted exact semantic net, original source3 and author172/independent87; independently read closed passing raw reports, pure controls and the prelaunch failure/repair disposition."
+}

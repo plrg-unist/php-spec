@@ -65,7 +65,13 @@ consume one even when their branch never executes. The compiler folds descriptor
 in its actual walk order, authenticating source, name, line and derived early binding
 rather than counting descriptors. Whole-source projection and declaration history
 retain compiler order; the counter helper alone is not a general ordering certificate.
-Named declarations inside standalone block statements, namespaces, functions or Closures,
+Standalone global blocks preserve early eligibility through nested blocks. The
+placement helper authenticates every actual `NStmtBlock` ancestor; matching
+field/index paths beneath conditionals or other control statements stay deferred.
+An earlier deferred same-name declaration does not block a later eligible early
+declaration. The [block-class review](../../coverage/semantics/anonymous-block-rtd-review.json)
+separates native originals, real no-op/publication/allocation frontiers and pure
+ancestry/receipt queries. Named declarations inside namespaces, functions or Closures,
 other named bodies/modifiers, interfaces/traits/enums and nested class bodies remain
 Unsupported. Anonymous forms are parentless, without
 interfaces, attributes or constructor arguments; public untyped property defaults

@@ -22,6 +22,20 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
+Standalone global blocks now preserve early class binding through each actual
+block ancestor; nested conditional blocks remain deferred. Three fresh originals
+agree at 7f52ed18 /375 (strict3 5.624s), including prior deferred same-name classes,
+pre-declaration allocation and case-insensitive name retention. Author172 and
+independent87 pass 259 checks: 230 setup/source-frontier premises and 29 pure
+queries, with 12 actual PhpSteps for block entry, exact early no-op, publication
+and anonymous allocation. Eligible named root-block classes cost0; deferred named
+classes cost1 even when never published. A same-shaped do-body path is rejected by checking
+the actual ancestor. Syntax-only preparation/elaboration adds no runtime credit.
+The missing retained-tool alias stopped before execution and retains zero credit;
+repaired exercised tools match accepted binaries. Namespaces/functions/Closures,
+wider named declarations and RTD ordering remain required.
+[Block-class ledger](coverage/semantics/anonymous-block-rtd-review.json).
+
 Anonymous classes can now share unit0 with plain empty global named declarations.
 Early root declarations consume no RTD key; deferred declarations consume one even
 when never executed. Three fresh originals agree at 234734715 /375, including factory
@@ -31,8 +45,8 @@ with 13 actual PhpSteps for early no-op, runtime publication and anonymous alloc
 Changed strict3 passes at c860 (5.671s). The independent Closure admission failure
 exposed shared pattern variables; the one-line fix keeps static/byref flags independent.
 That failure and the original reserved-name native probe retain zero credit;
-syntax-only preparation/elaboration adds none. Named declarations inside standalone
-block statements, namespaces, functions or Closures, broader named headers/bodies
+syntax-only preparation/elaboration adds none. Named declarations inside
+namespaces, functions or Closures, broader named headers/bodies
 and wider RTD ordering remain required. Actual375 over e68ebf38 passes strict3 at
 02c43d49 (5.575s); private source/author/peer cuts retain their revisions.
 [Mixed-class ledger](coverage/semantics/anonymous-mixed-rtd-review.json).
