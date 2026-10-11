@@ -1814,7 +1814,7 @@ Actual FREE retains the parent at owner0 and child at owner2 without a new machi
 coherent shape/owner/frozen/slot/DONE controls and zero/one replay pass. A genuine
 second TRACE observes the parent retired and child self-owner1/current ROOT,
 then traces and frees only that cycle; the short ending matches native66.
-Baseline54 localizes the old refusal. Wider child layouts, shared owners,
+Baseline54 localizes the old refusal. Wider child layouts, external sharing,
 references, arrays, workers and pending collectors remain required; existing leaf
 behavior, count folding and source41 OPEN/zero cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
@@ -1828,6 +1828,18 @@ keeps the borrowed parent and full chain; the leaf's BASE/operand copies release
 zero/one replay pass. Baseline64 localizes the old refusal; its initial text/bytes
 fixture elaboration failure retains zero credit. Wider child graphs and earlier
 OPEN/zero cuts remain unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+
+Main PASS1 preparation325 also retains one fresh `stdClass` leaf reached by two
+distinct direct properties of the called owner-zero parent. Child owners are
+exactly those two edges; outside ownership is excluded. At `31605c292`/375,
+compiler/init, native66 source agreement and238 reached source/control checks
+(retention134/property-release104) pass. Real FREE preserves the borrowed parent;
+ordinary teardown transfers and releases each property owner separately, keeping
+the child weak-live after the first release and clearing weak identity at its
+last-owner storage pin. Allocation persists at that checkpoint. Coherent
+shape/owner/frozen/slot/DONE controls and zero/one replay pass. Baseline61 localizes
+the old refusal. Wider sharing and child graphs remain required; source41
+OPEN/zero cuts are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.

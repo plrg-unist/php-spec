@@ -1181,7 +1181,11 @@ with unique incoming owners. Native PHP agrees with all three originals;
 199 leaf,212 self-cycle and227 chain checks cover retention, temporary release
 and later collection.
 Ordinary parent release disposes the acyclic children; the self-cycle waits for
-the next collection. Wider graphs, shared owners and worker cases remain required.
+the next collection. Two distinct ordinary parent properties may also share one
+fresh `stdClass` leaf. Native agreement and238 reached checks cover borrowed
+retention and both property releases, ending at the child's physical cleanup pin
+with weak lookup cleared. Wider graphs, external sharing and worker cases remain
+required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

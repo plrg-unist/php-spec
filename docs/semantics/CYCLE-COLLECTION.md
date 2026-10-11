@@ -163,7 +163,7 @@ acquisition/release disposes both before the second collection returns0. At
 `800e`/375, compiler/init, source agreement and199 reached checks pass (129/70),
 including coherent nonleaf/type/owner/frozen-plan/slot/DONE controls and budget
 replay. The first127 fixture run retains zero credit: an update-only slot helper
-left its supposed nonleaf unchanged. Wider children, shared ownership, references,
+left its supposed nonleaf unchanged. Wider children, external sharing, references,
 arrays, workers and pending contexts remain required; folds and owners are unchanged.
 
 The fresh child can also have exactly one self-edge and total owner count2: the
@@ -186,6 +186,18 @@ At `d690cf5e`/375, compiler/init, native86 source agreement and227 reached check
 fences and the leaf's actual BASE/operand release3→2→1 with budget replay.
 Ordinary parent release disposes the chain in the original source. Deeper/shared/
 cyclic leaf graphs, references/arrays and worker/pending contexts remain required.
+
+The main PASS1 parent may instead have two distinct direct ordinary property
+slots pointing to the same fresh `stdClass` leaf. Exactly those two edges own the
+allocated child, which is absent from frozen GRAPH/FREESET. The existing borrowed
+tag retains both edges without a machine root or count change. Zend's
+`zend_object_std_dtor` clears weak identity before destroying declared property
+zvals in order. At `31605c292`/375, compiler/init, native66 agreement and238 reached
+checks (134/104) pass: the first property release leaves the child owned once and
+weak-live; the second starts its physical storage cleanup pin with weak lookup
+null. Coherent outside-owner/shape/frozen/slot/DONE fences and budget replay pass.
+Wider internal sharing, external owners, references/arrays and worker/pending
+contexts remain required; this checkpoint does not claim final physical disposal.
 
 Module335 extends that storage admission to normal detached-worker close after
 the collection is quiescent. It requires the actual control-release, operation-exit
