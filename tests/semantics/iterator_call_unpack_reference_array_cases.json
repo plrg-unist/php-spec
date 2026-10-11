@@ -1,0 +1,52 @@
+[
+  {
+    "id": "iterator-call-unpack-reference-array-normal",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35(&$item) { echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "ac9e2ca7e8cd2c224d76acfbd70ebacce919287f3bdad106845f80ee399af452",
+    "purpose": "Iterator-property reference array gains a detached container owner before the warning; unaliased fresh-cell nested write releases its child after Iterator teardown and before F.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|21|X|V|I|B|O|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-array-separate-alias",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35(&$item) { echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho $alias[0] === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "e64608ab9de1c0c877b7b81b98bba6a4d7a28443780747e3576e3203c562f6aa",
+    "purpose": "Direct GLOBALS alias retains the original array and child after the fresh callee cell performs nested COW; original alias[0] is observed after F, then its final owner is dropped.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|22|X|V|I|B|F|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-array-warning-throw",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35(&$item) { echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\ntry { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "4aea03541582c50738f9ff4c153df99436a548fefed8656d6e0a63a135d77976",
+    "purpose": "Original shared Exception51 survives warning abort while raw cell and Iterator retire before detached array and its child.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|21|I|O|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-array-parked-resume",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35(&$item) { echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$marker = 0;\n$fiber = new Fiber(static function () {\n    try { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$marker = 17;\n$fiber->resume();\necho \"M|\", $marker, \"|\";\necho \"E\";\n",
+    "source_sha256": "3ff01375eca3019c6798ea82cb1f4c5991818f67488143b09276db370729b0b7",
+    "purpose": "A real parked warning retains distinct source-cell, detached array and single child-edge owners; main mutates only an unrelated scalar marker, then resume performs nested write.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|24|P|X|V|I|B|O|F|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-array-parked-throw",
+    "source": "<?php\nclass ReferenceArrayChild35 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceArrayIterator35 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = [new ReferenceArrayChild35()]; }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceArrayTarget35(&$item) { echo \"B|\"; $item[0] = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$marker = 0;\n$fiber = new Fiber(static function () {\n    try { ReferenceArrayTarget35(...new ReferenceArrayIterator35()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$marker = 17;\n$fiber->throw($failure);\necho \"M|\", $marker, \"|\";\necho \"E\";\n",
+    "source_sha256": "6936a3b33d21b1364b99a8bc12d0075c0a47488cb8e1c77329be1ec7fbc1a1b3",
+    "purpose": "A real parked warning injects original Exception51 without changing the payload or alias; Iterator retirement precedes detached array/child cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceArrayTarget35() by unpacking a Traversable, passing by-value instead|24|P|I|O|T|51|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
