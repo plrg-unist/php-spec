@@ -4311,6 +4311,14 @@ maintained relocation needs no runtime renewal; see the same ledger.
 Exact 409a37be/375 composition passes preserved state233; native/source/private
 cuts are not renewed.
 
+Evaluated nonnamed class expressions with literal BIND members now reuse existing
+normalized class/source authority. The concat-class witness produces a genuine
+request string, prepares canonical Closure and mints before separate prefix/suffix
+writes preserve selection. Native2/literal1 at a303 and repaired computed1/state236
+at 43fd/375 pass (216 genuine/derived plus 20 controls). Handler/tag/receipt and
+old cuts remain unchanged; combined expression capture and wider evaluation
+evidence stay open. Exact relocation needs no runtime renewal; see the same ledger.
+
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
 share their object values with instances and preserve exact successful bindings

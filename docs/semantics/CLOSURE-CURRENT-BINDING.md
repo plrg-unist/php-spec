@@ -124,7 +124,16 @@ Native2/literal1 at 64be and computed source1/state233 at 4ec/375 pass
 string helper from the genuine normalized concat step and shares admission
 controls once. Original Unsupported and the source-name fixture-origin failure
 retain zero credit; checked packets are reused without old lifetime renewal.
-Wider class and combined expression contexts remain required.
+Combined expression capture and wider evaluation contexts remain required.
+
+Evaluated nonnamed class BIND capture with a literal member now uses existing
+class evaluation/canonicalization and source/task/line/FCC authority. The witness
+`($prefix . $suffix)::bind(...)` produces a genuine request string, then prepares
+canonical Closure and mints in one wrapped source step; later separate writes
+to `std` and `Class` preserve the API. Native2/literal1 at a303 and computed
+source1/state236 at 43fd/375 pass (216 genuine/derived plus 20 controls). Raw class
+carrier and derived preparation remain distinct; CONFIG/receipt/ownership are
+unchanged. Combined expression capture and wider evaluation evidence remain open.
 
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the

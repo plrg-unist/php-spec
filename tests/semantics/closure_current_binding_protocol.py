@@ -13,6 +13,7 @@ import closure_bind_computed_review as bind_computed_review
 import closure_bind_method_review as bind_method_review
 import closure_bind_class_method_review as bind_class_method_review
 import closure_bind_member_expression_review as bind_member_expression_review
+import closure_bind_class_expression_review as bind_class_expression_review
 
 CASES = {'bound-private-method-shared-statics-retired-source': {'source': '<?php\n'
                                                                   'class FakeOwner253 {\n'
@@ -1168,6 +1169,9 @@ for row in json.loads(CATALOGUE.read_text()):
     elif row['id'] in ('argument-direct-current-api-retirement', 'argument-captured-current-api-retirement'):
         CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
                             'current_argument_captured': '-captured-' in row['id']}
+    elif row['id'] == 'class-expression-captured-bind':
+        CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
+                            'bind_class_expression_capture': True}
     elif row['id'] == 'member-expression-captured-bind':
         CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
                             'bind_member_expression_capture': True}
@@ -1189,6 +1193,9 @@ for row in json.loads(CATALOGUE.read_text()):
 
 
 def capture_fixture(case, program, filename):
+    if 'bind_class_expression_capture' in case:
+        text, checks, _, _ = bind_class_expression_review.render(program, filename, case['native_stdout'])
+        return text, len(checks)
     if 'bind_member_expression_capture' in case:
         text, checks, _, _ = bind_member_expression_review.render(program, filename, case['native_stdout'])
         return text, len(checks)
@@ -1234,5 +1241,6 @@ if __name__ == '__main__':
                                         Path(bind_method_review.__file__),
                                         Path(bind_class_method_review.__file__),
                                         Path(bind_member_expression_review.__file__),
+                                        Path(bind_class_expression_review.__file__),
                                         Path(__file__).with_name('error_handler_protocol.py')),
                  fixture_renderer=capture_fixture)

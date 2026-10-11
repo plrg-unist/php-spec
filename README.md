@@ -2237,7 +2237,8 @@ remains borrowed. Simple class-CV `$class::bind(...)` capture also freezes the
 resolved Closure before the class cell changes. Literal-class `Closure::$method(...)`
 also freezes a simple method CV after resolving its string bytes. Combined simple
 class/member-CV capture now authenticates internal Closure task authority and
-keeps that selection after both cells change. Named-class computed members also
+keeps that selection after both cells change. Evaluated class expressions with a
+literal bind member also freeze selection. Named-class computed members also
 freeze selection after their expression evaluates; a concat witness retains the
 API after both operands change. Wider API
 captures, argument forms and temporary current escape remain required.
