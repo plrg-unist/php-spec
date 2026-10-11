@@ -439,6 +439,8 @@ state groups pass 783 physical/750 driver premises at `0465c123`, with no pure
 queries, including container-to-child cleanup, retired SOURCE authority and real
 parked ownership. Extra-named/variadic/typed array warnings, broader array/COW
 interactions and live REFERENCE payloads stay open; prior cuts remain frozen.
+Actual375 over `8f3f57de` passes strict SL at `7f6968ed`; private native/source/state
+cuts retain their original inputs without renewal.
 [Array fixed-slot review](coverage/semantics/iterator-call-unpack-array-sent-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
