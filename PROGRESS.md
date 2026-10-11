@@ -677,8 +677,22 @@ originals agree at `46247e9b`; five reached fixtures pass 461 assertions
 Private strict374 at `46247e9b` passes in 5.767s with zero applications.
 Actual375 over `0228435a` passes strict at `cdf702106` in 5.533s,
 with zero application evaluations; private source/state cuts keep their identities.
-Actual outer-literal resumption/Notice, other caught layouts, lifecycle capture,
-wider signatures/operands, further histories and broad returns verification remain open.
+At this cut, actual outer-literal resumption/Notice remained required.
+
+An authenticated catch passage now preserves the middle CV and outer literal
+histories while ordinary catch/finalizer statements run. Four reached pending
+suffixes retain the actual D/outer-finally origin; Y has three replay contexts
+and Z has two. After caught Y rejection, M2 skips Y; Z's fresh NULL TypeError
+reaches D, then B and the original literal resume with one original-line VALUE
+Notice and a fresh caller cell distinct from x/z/y. Three exact originals and
+strict375 pass at `9b206d38` (5.581s, zero applications). Five reached fixtures
+pass 480 assertions (176+140+60+51+53) at `dfe52b85`, including public zero-budget
+admission of the expanded pair; independent pending63/7 passes at `9b206d38`.
+The retained capture176/four compilations and affected group2/remaining groups
+keep their separate raw cuts. Original compiler/fixture failures and the expanded
+descriptor discrepancy remain preserved in the same review. The first-Z helper
+remains nonpublic; other passages/layouts, lifecycle capture, wider operands and
+complete returns verification remain open.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that

@@ -142,9 +142,19 @@ operand root, and its canceled VALUE Notice stays absent through caught Y
 replay, cleared-Z replay and saved ping frames. Y has two source replay contexts
 but one finalizer owner. Successful Y or error escape retires both histories.
 Three exact originals, five reached fixtures/461 assertions and independent
-three/187 pass at separate cuts in the same review. Actual outer-literal
-resumption/Notice, other caught layouts, lifecycle capture, wider signatures/operands,
-further histories and broad returns verification remain open.
+three/187 pass at separate cuts in the same review.
+
+A literal-only catch passage authenticates the intervening D catch and following
+echo from checked source. Pending suffixes 3/2 retain D's actual origin; 1/0 use
+the outer-finally origin after its real restore. Y has three replay contexts and
+Z has two. Caught Y rejection retains the histories; M2 skips Y, fresh Z NULL
+rejection reaches D, and B precedes literal resumption with one original-line
+VALUE Notice and a fresh caller cell. Expanded pair admission projects scope
+only for the intact authenticated tail; the first-Z helper remains nonpublic.
+Three exact originals, five reached fixtures/480 assertions and independent
+pending63/7 pass at separate cuts in the same review. Other passages/layouts,
+lifecycle capture, wider signatures/operands, further histories and broad returns
+verification remain open.
 
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting

@@ -732,9 +732,13 @@ An immutable outer string literal also shares the pair with middle Z and inner Y
 CV returns. Its source-equal history owns no cell; replacement cancels its VALUE
 Notice, and selected Y or error escape retires it. Three exact originals, five
 reached fixtures/461 assertions and independent three/187 pass at separate cuts.
-Actual outer-literal resumption/Notice, lifecycle capture, other caught layouts and further histories,
+A checked catch passage now preserves both histories through Y rejection and
+fresh Z NULL rejection. M2 skips Y, D catches Z, and the old literal resumes
+with one original-line VALUE Notice and a fresh caller cell. Three exact originals,
+five reached fixtures/480 assertions and independent pending63/7 pass at separate
+cuts in the same review. Lifecycle capture, other caught layouts and further histories,
 other VALUE signatures/layouts, general CONST, other NULL, wider Stringable
-consumers and owner domains remain open.
+consumers, owner domains and broad return verification remain open.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)
