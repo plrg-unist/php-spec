@@ -394,6 +394,8 @@ queries, including typed ALIAS writes and keyed trace owners after callee
 retirement. Other type shapes, wider sites, general
 shared named buffers, arrays and REFERENCE payloads remain required; prior cuts
 stay frozen.
+Actual375 over `8728e2d1` passes strict SL at `bf83dfb8`; private native/source/state
+cuts retain their original inputs without renewal.
 [Typed named review](coverage/semantics/iterator-call-unpack-object-typed-named-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
