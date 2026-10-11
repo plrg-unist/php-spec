@@ -1625,6 +1625,8 @@ real int|bool sources conflict without converting the cell.
 pass 915 setup-inclusive premises across `03ed0aa16`/`90fad5bed`, covering CV/owned
 cleanup and pending errors. Two maintained constructed controls contribute five
 selected clauses; prior cuts are unchanged and three fixture/preparation failures retain zero credit.
+The actual375 join over `036035583` passes strict at `9c0bce310` (5.582s);
+private source/state cuts retain their original inputs.
 Boolean-to-string, PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

@@ -2527,6 +2527,8 @@ constructed outcomes contribute only five selected clauses. Two preparation fail
 and the original conflict compilation failure retain zero credit; phase31–34 cuts are unchanged.
 Boolean-to-string, PARAMETERBACKINGS and wider conversions remain required.
 [Boolean-integer ledger](coverage/semantics/magic-property-boolean-integer-review.json).
+The actual375 join over `036035583` passes strict at `9c0bce310` (5.582s,
+state/source/native credit0); private source6/state915 are not renewed.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
