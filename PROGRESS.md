@@ -33,7 +33,8 @@ classes cost1 even when never published. A same-shaped do-body path is rejected 
 the actual ancestor. Syntax-only preparation/elaboration adds no runtime credit.
 The missing retained-tool alias stopped before execution and retains zero credit;
 repaired exercised tools match accepted binaries. Namespaces/functions/Closures,
-wider named declarations and RTD ordering remain required.
+wider named declarations and RTD ordering remain required. Actual375 over
+651c4a5d passes strict3 at 4263f24e (5.625s); private cuts retain their revisions.
 [Block-class ledger](coverage/semantics/anonymous-block-rtd-review.json).
 
 Anonymous classes can now share unit0 with plain empty global named declarations.

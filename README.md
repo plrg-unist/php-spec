@@ -1193,8 +1193,8 @@ Standalone global blocks preserve early binding through their actual block
 ancestors; blocks inside conditionals remain deferred. [Three block originals](coverage/semantics/anonymous-block-rtd-review.json)
 also check nested ancestry, earlier deferred names and case-insensitive lookup;
 259 reached-source and pure checks keep those observations separate.
-The previous mixed375 join over e68ebf38 passes strict3 at 02c43d49 (5.575s),
-preserving the private source/state cuts.
+The current375 join over 651c4a5d passes strict3 at 4263f24e (5.625s),
+preserving the private native/source/state cuts.
 Wider RTD counters, factory/publication contexts, constructor arguments/types,
 inheritance, attributes and broader consumers remain required.
 The actual375 join over 57f2f4b8 passes strict3 at 77f9c0eda (5.521s);
