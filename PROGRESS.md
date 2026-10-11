@@ -324,6 +324,8 @@ driver ownership and authority premises at `a8f7e9f1`, including both private-ce
 receives, retired SOURCE guards and F-to-A-to-B cleanup; no pure queries are counted.
 The direct-site, untyped variadic and no-positional-extra guards remain; general
 shared buffers, later positional variadic and REFERENCE payloads remain required.
+Actual375 over `36a9933d` passes strict SL at `f4245b43`; private native/source/state
+cuts retain their original inputs.
 [Extra-to-extra review](coverage/semantics/iterator-call-unpack-object-extra-extra-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected

@@ -1,5 +1,5 @@
 {
-  "status": "private native/source/strict/state accepted",
+  "status": "integrated native/source/strict and independent state accepted",
   "scope": "Copied KNOWN objects after earlier extra names: one direct statically named Iterator construction, untyped by-reference variadic and no positional extras. Private cells retain payloads through separated logical rest writes; this does not claim Zend pre-write shared-array identity.",
   "remaining": [
     "General shared-buffer external-alias release before COW and later positional variadic objects",
@@ -111,5 +111,22 @@
     "stop_first": true,
     "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; recorded kills/waits for process group; providers close in finally."
   },
-  "compatibility": "Only the nonempty-buffer NAMED_EXTRA object-order arm changes. Existing contextual target/vacancy/key/site/type guards, mapped cleanup and per-cell private receive are unchanged; prior native/source/state cuts stay frozen."
+  "compatibility": "Only the nonempty-buffer NAMED_EXTRA object-order arm changes. Existing contextual target/vacancy/key/site/type guards, mapped cleanup and per-cell private receive are unchanged; prior native/source/state cuts stay frozen.",
+  "actual_composition": {
+    "parent": "36a9933d038f71ac30707b5e0ec12ac3fd24c154",
+    "semantic_revision": "f4245b43aadbfaa48e5e00b9c35f48fb54e47467",
+    "private_net": "fbd6de00af2d12a1ac047cabc6e620b55ff7b2ae",
+    "report": ".tools/calls-iterator-copied-object-extra-extra-current-24/.tools/iterator-call-unpack-object-extra-extra-current-sl-k_nziffz/report.json",
+    "report_sha256": "2966a31197525563a7c6e47da0d792d609e9804aa76c003c8388d89c1c6cc0ac",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "ee0dc8270c6a4a2f19059d271ce6a12eb2b47fa50f68db4265f6b38f55929f60",
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "seam_review": "Parent hooked += tasks, named-factory Blocks and retired-GC guards are outside these acyclic plain Iterator/global sources and direct-Closure Fibers. Only385 differs semantically from parent; private source/catalog/state bytes and parent modules are preserved. This current strict adds no native/source/state agreement."
+  }
 }
