@@ -3821,8 +3821,10 @@ captured source at b5f/375 each agree with their own oracle. The 527 state premi
 pass (488 genuine/derived plus 39 controls). Recorded zero-argument bridges (54/57)
 validate the new tag/owner and unchanged current identity and named Error without
 renewing old 447. Three syntax failures remain 0; exact
-maintained relocation requires no runtime renewal. Wider forms and source7 remain
-open in the [ledger](coverage/semantics/closure-current-binding-review.json).
+maintained relocation requires no runtime renewal. Current 333bd/375 composition
+passes the preserved 527-premise compiler→initialized gate (5.530/92.496s), covering
+reached emit cleanup and shared type/guard changes; source/private renewal 0. Wider
+forms and source7 remain open in the [ledger](coverage/semantics/closure-current-binding-review.json).
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
