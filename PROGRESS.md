@@ -2909,6 +2909,9 @@ object until the original consumer resumes; selected-null retires capture/Fiber,
 then returned-null retires the object and empty trace. Original Unsupported and
 syntax failure retain zero credit. [GetReturn cuts](coverage/semantics/from-callable-review.json)
 stay separate; wider getReturn forms and source 7 remain OPEN.
+Exact 4a30db48/375 composition passes algo and initialized SL413 at cef6efde
+(5.537s/49.561s). The preserved fixture validates the current ordinary object
+carrier and cleanup; private source/native/state cuts remain distinct.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
