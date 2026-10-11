@@ -83,7 +83,7 @@ entry. Its value edge becomes an authentic DESTRUCTION_VALUE job, so shared
 owners survive and the last owner selects the value destructor once. The initial
 callback/storage cut keeps both key and value allocated under physical pins
 while their weak lookups are null; the original supplies eventual physical retirement.
-Nonempty-map free and explicit collection with a live nonempty map remain
+Wider nonempty-map free and explicit collection with a live nonempty map remain
 Unsupported. No ephemeron tracing or cycle/count closure is claimed.
 
 Zend notification payloads preserve registration order. When a key wrapper is
@@ -106,11 +106,41 @@ totaling 393 with three setup assertions per case. Pin cuts stop at a scheduled 
 release; the originals supply complete endings. The first normal fixture's
 elaboration failure retains zero credit, separately from its corrected pass.
 Multiple maps per key, wrapper creation during freeing, retained strong keys,
-wider map protocols, nonempty-map free and ephemeron collection remain required. No collection/count
-closure is claimed. Maintained checks reuse cycle_collection_cases.json and
+wider map protocols, wider nonempty-map free and ephemeron collection remain
+required. No collection/count closure is claimed. Maintained checks reuse cycle_collection_cases.json and
 cycle_collection_state_review.py; the
 [WeakMap ledger](../../coverage/semantics/weak-map-review.json) preserves all
 separate cuts, failures and raw recovery paths. The engine basis is
 `Zend/zend_weakrefs.c` (entry addref, zend_weakref_register/unref and
 zend_weakmap_free_obj), plus `Zend/zend_objects.c` and
 `Zend/zend_objects_API.c` for ordinary storage notification and destructor order.
+
+## WeakMap own teardown
+
+A genuine last-owner VALUE release can retire one nonempty map whose stdClass leaf
+key remains strongly held and whose ordinary INSTANCE leaf value has no children.
+The entry detaches into an authentic value release before its destructor, while
+an empty WEAKMAP storage pin owns the map. Borrowed NOTIFY postpones notification
+of its existing wrapper through callback cleanup; it adds no owner.
+GET creates ordinary temporary ownership;
+notification clears before physical map retirement. Throwing value cleanup retains
+its pending Exception through both transitions, and the key CV stays independent.
+
+The normal 81-byte and throwing 88-byte originals agree at `0c9b358`.
+Retention (161 checks) passes there; callback GET (97 checks), normal pin (105)
+and throwing pin (104) pass at `061e372`, totaling 467 lifetime checks. A separate 86-check genuine write refusal keeps a freeing map pin empty;
+its coherent no-pin control uses the same authenticated assignment operands.
+The original 82-check control's missing retired-slot cleanup retains zero credit.
+Both pin cuts stop at a scheduled valid HANDLE release without consuming it;
+the originals supply complete endings. The final compiler and strict init pass at
+`061e372`; the earlier struct-header recorder failure and its revalidated actual
+artifacts remain separately recorded in the ledger.
+
+The engine basis is `zend_weakrefs_hash_clean_ex` and `zend_weakmap_free_obj` in
+`Zend/zend_weakrefs.c`: key registrations detach and stored values destruct before
+the map's own std_dtor notification. `zend_objects_store_del` gives free_obj its
+physical pin; `zend_weakref_get` adds the callback's real temporary owner. Wider
+map teardown, mutation or wrapper creation during freeing, additional strong key/map
+owners retained beyond callback cleanup, wider entry/key/value protocols and ephemeron
+collection remain required. Countable
+is nominal-only; count execution remains excluded/Unsupported per CORE.

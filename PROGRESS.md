@@ -2950,9 +2950,15 @@ pass 393 checks for GET ownership, notification timing and physical key retireme
 stopping at the scheduled HANDLE release. The initial 45-byte agreement and
 375 lifetime plus 49 GC-refusal checks retain their original cuts; the old
 116-check notification refusal is historical and superseded by the 106-check
-late GET case. Wider maps, wrapper
-creation during freeing, retained strong keys, nonempty-map free and ephemeron
-collection remain required. Earlier failures retain zero credit.
+late GET case. Last-owner map teardown now detaches its value into a real VALUE
+release while a live leaf-key CV survives. The emptied map stays pinned and
+weak-live through normal or throwing value cleanup, then notifies before physical
+retirement. The normal 81-byte and throwing 88-byte originals agree at `0c9b358`;
+161 retention checks pass there. Callback GET (97 checks), normal pin (105), throwing
+pin (104) and 86 freeing-write refusal checks pass at `061e372`, totaling 553. Pin cuts stop at the scheduled HANDLE release; originals supply full
+endings. Wider maps, wrapper creation or mutation during freeing, additional key/map
+owners retained beyond callback cleanup and ephemeron collection remain required.
+Earlier failures retain zero credit.
 [Ledger](coverage/semantics/weak-map-review.json).
 
 ArrayAccess304 reconstructs intermediate `[]` after ordinary by-value Get and

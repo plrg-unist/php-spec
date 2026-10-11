@@ -1070,9 +1070,14 @@ null before the value callback; a wrapper registered after insertion returns the
 pinned key until callback cleanup finishes, including a throwing callback.
 Borrowed notification metadata adds no owner; successful reads add ordinary
 temporary ownership. Three ordering originals agree with PHP and 393 reached
-checks pass at `c1cf6c7`, alongside the separate first-entry cuts. Nonempty-map free
-and ephemeron GC stop explicitly; multiple maps per key, wrapper creation during
-freeing, retained strong keys and wider entry/read/mutation protocols remain required.
+checks pass at `c1cf6c7`, alongside the separate first-entry cuts. Last-owner map
+teardown also releases its single leaf value while retaining the emptied map's
+physical pin and live weak identity through normal or throwing callback cleanup.
+Two originals agree at `0c9b358`; 467 lifetime checks and 86 freeing-write refusal
+checks pass at their separate cuts. Wider map free and ephemeron GC stop explicitly;
+multiple maps per key, wrapper creation or mutation during freeing, retained strong
+additional key/map owners retained beyond callback cleanup and wider entry/read/
+mutation protocols remain required.
 
 [Ordinary collection301](docs/semantics/CYCLE-COLLECTION.md) implements explicit
 object/array cycle collection, ordered destructor callbacks and real weak
