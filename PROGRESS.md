@@ -1122,6 +1122,8 @@ zero credit. The syntactic named-call admission is wider than this pure E-call e
 mutating/reentrant/suspending calls, other catch layouts and broad returns_verify remain
 OPEN. The [multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json)
 keeps these cuts separate from earlier replay and the next abrupt-callee probe.
+Actual375 over `fd12fd35` passes strict at `5001d1f8` in 5.927s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
