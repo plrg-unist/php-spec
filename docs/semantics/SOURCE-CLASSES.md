@@ -87,11 +87,15 @@ namespace after caller namespace switches. The
 [unbracketed review](../../coverage/semantics/anonymous-unbracketed-rtd-review.json)
 separates actual compiled constant reads/method frames from pure admission queries.
 ABSENT namespace bodies still require bracketed style. Plain empty named declarations
-inside direct root or valid namespace-body noarg by-value untyped named functions
-are deferred and consume one key. Per-occurrence admission authenticates the actual
-function placement and signature; named descendants in nested, conditional or
-block-contained functions remain Unsupported. Direct root or namespace-body variable
-assignments to static no-capture noarg by-value untyped Closures also admit plain
+inside noarg by-value untyped named functions declared at root or a valid namespace
+body, including standalone Block chains, are deferred and consume one key. Per-occurrence
+admission authenticates the actual function signature and every Block ancestor.
+Eligible functions are callable before their blocks; the later function statement
+preserves state apart from consuming its task. Named descendants in nested,
+conditional or other unsupported function ancestors remain Unsupported. The
+[block-factory review](../../coverage/semantics/anonymous-block-factory-rtd-review.json)
+separates publication, no-op and allocation frontiers from pure ancestry queries.
+Direct root or namespace-body variable assignments to static no-capture noarg by-value untyped Closures also admit plain
 empty named descendants. Admission authenticates the actual expression statement,
 by-value assignment, ordinary variable target and Closure signature; other targets,
 placements, captures and signatures remain Unsupported. Runtime publication appends a

@@ -38,19 +38,21 @@ Actual375 over 096e3dd2 passes strict3 at c4a942ec (5.825s); private
 native/source/state cuts retain their original revisions.
 [Named-Closure ledger](coverage/semantics/anonymous-named-closure-rtd-review.json).
 
-The earlier named-function cut publishes from direct root or valid namespace-body
-noarg by-value untyped named functions, including guarded repeated calls. They cost
-one RTD key even when never published; anonymous names remain available before calls.
-Three originals agree at 65c3071c /375 (strict3 5.675s). Author and independent fixtures
-pass 388 checks: 356 setup/source-frontier premises and 32 pure queries, with ten actual
-PhpSteps for three named publications and seven anonymous allocations. Source-bound
-PDRCLASS causes retain function/callsite and saved caller frames; right-before-left
-publication follows calls, while one guarded publication retains fresh defaults.
-Syntax preparation/elaboration adds zero runtime credit. Wider function
-placements/signatures and named/anonymous contexts remain required.
-Actual375 over 9ae5ca333 passes strict3 at 684ff104 (5.825s); private
-native/source/state cuts retain their original revisions.
-[Named-factory ledger](coverage/semantics/anonymous-named-factory-rtd-review.json).
+Named-function factories also admit authenticated standalone root/namespace-body
+Block chains with the existing exact noattr/noarg/by-value/untyped signature.
+They are callable before the blocks; later eligible function declarations leave
+state unchanged apart from consuming their tasks. Three originals agree at
+55dc18ba /375 (strict3 5.824s), including deferred named publication, guarded fresh
+storage and an uncalled conditional anonymous-only factory. Author and independent
+fixtures pass 424 checks: 381 setup/source-frontier premises and 43 pure queries,
+with 13 actual PhpSteps for named publication, Block entry, function no-op and
+anonymous allocation. Syntax preparation/elaboration adds no runtime credit.
+The historical26 Block-function exclusion is superseded; its accepted direct-factory
+source/state388 and 684ff104/9ae join retain their original cuts. Named descendants
+under conditional/loop/nested functions, wider signatures and Block-contained named
+Closure assignments remain required.
+[Block-factory ledger](coverage/semantics/anonymous-block-factory-rtd-review.json);
+[earlier named-factory ledger](coverage/semantics/anonymous-named-factory-rtd-review.json).
 
 The earlier namespace cuts retain qualified early root/block cost0, deferred cost1,
 repeated unbracketed sections and lexical method namespaces. Their source3/state392

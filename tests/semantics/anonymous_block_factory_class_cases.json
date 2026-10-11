@@ -1,0 +1,53 @@
+{
+  "scope": "Ordinary unit0 parentless anonymous classes mixed with plain empty named descendants in exact noattr/noarg/by-value/untyped named-function factories inside authenticated standalone root or valid namespace-body Block chains. Eligible functions are callable before their blocks; their runtime declaration is a no-op. Function-body named classes consume one deferred RTD key and publish by calls; guarded repeats preserve one publication and fresh defaults. Named descendants under conditional or other unsupported function ancestors or wider Closure placement remain unsupported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "block-factory-root-block",
+      "source": "<?php\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':11$1';\n$before = new $name;\n$seen = false;\necho $before::class === $name && $before->value === 0 ? 'before|' : 'BAD|';\n$first = makeBlockFactory();\n{{\n    function makeBlockFactory() {\n        global $seen;\n        if (!$seen) { class BlockPublished {} $seen = true; }\n        return new class { public $value = 0; public function scope() { return self::class; } };\n    }\n}}\n$named = new BlockPublished;\necho $first::class === $name && $first->scope() === $name && $named::class === 'BlockPublished' ? 'first|' : 'BAD|';\n$first->value = 9;\n$second = makeBlockFactory();\necho $second::class === $name && $second->scope() === $name ? 'second|' : 'BAD|';\necho $before !== $first && $first !== $second && $before !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "43415d86ae93696949cd1b0879a2607e460fac5c9417c385dbfa26b0e736465b",
+      "stdout_base64": "YmVmb3JlfGZpcnN0fHNlY29uZHxmcmVzaHwwOjk6MA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-factory-native-28/run-v1/block-factory-root-block/command.json",
+      "native_raw_sha256": "c6eef9b9e511bc5d7f5ba3f049c45424c9225d3cca43089b459ced32ae0e383c"
+    },
+    {
+      "id": "block-factory-conditional-block",
+      "source": "<?php\n$earlyName = 'class@anonymous' . \"\\0\" . __FILE__ . ':11$1';\n$hiddenName = 'class@anonymous' . \"\\0\" . __FILE__ . ':15$2';\n$earlyBefore = new $earlyName;\n$hiddenBefore = new $hiddenName;\necho $earlyBefore::class === $earlyName && $hiddenBefore::class === $hiddenName ? 'before|' : 'BAD|';\n$first = makeRootBlock();\n{\n    function makeRootBlock() {\n        class RootBlockPublished {}\n        return new class { public function scope() { return self::class; } };\n    }\n}\nif (false) {\n    { function hiddenBlockFactory() { return new class {}; } }\n}\n$named = new RootBlockPublished;\necho $first::class === $earlyName && $first->scope() === $earlyName && $named::class === 'RootBlockPublished' ? 'first|' : 'BAD|';\ntry { hiddenBlockFactory(); echo 'BAD|'; }\ncatch (Error $caught) { echo 'hidden-missing|'; }\necho $earlyBefore !== $first && $hiddenBefore !== $first ? 'fresh' : 'BAD';\n",
+      "source_sha256": "c498f1d7f4c33cb447765c944868fdb4a63892492c89f21f2b4cdc3860581d92",
+      "stdout_base64": "YmVmb3JlfGZpcnN0fGhpZGRlbi1taXNzaW5nfGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-factory-native-28/run-v1/block-factory-conditional-block/command.json",
+      "native_raw_sha256": "10a9db2309262f09b78c834514f86cf5fca5481aa50c25e916a120fe9f5ac139"
+    },
+    {
+      "id": "block-factory-prior-deferred",
+      "source": "<?php\nnamespace BlockSide;\n$factoryName = 'class@anonymous' . \"\\0\" . __FILE__ . ':10$1';\n$before = new $factoryName;\n$first = makeBlock();\necho $before::class === $factoryName && $first::class === $factoryName && $first->space() === 'BlockSide' ? 'before|' : 'BAD|';\n{{\n    function makeBlock() {\n        if (false) { { class Exception {} } }\n        return new class {\n            public function space() { return __NAMESPACE__; }\n        };\n    }\n}}\n{ class eXcEpTiOn {} }\n$named = new Exception;\necho $named::class === 'BlockSide\\eXcEpTiOn' ? 'named|' : 'BAD|';\n\nnamespace BlockCaller;\n$second = \\BlockSide\\makeBlock();\necho $second::class === $factoryName && $second->space() === 'BlockSide' ? 'second|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$2';\necho $last::class === $lastName ? 'last|' : 'BAD|';\necho $before !== $first && $first !== $second && $before !== $second && $last !== $first ? 'fresh' : 'BAD';\n",
+      "source_sha256": "c411aebe3b6a5e4039f4cfe177aa2f0ac355aa93ac388262841cf3c1abe6d29d",
+      "stdout_base64": "YmVmb3JlfG5hbWVkfHNlY29uZHxsYXN0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-block-factory-native-28/run-v1/block-factory-prior-deferred/command.json",
+      "native_raw_sha256": "29a6df9fc85337a3d8d9a20ea8709c276395bb4589dc731ff8a0043abbbe8deb"
+    }
+  ]
+}

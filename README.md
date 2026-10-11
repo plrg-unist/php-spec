@@ -1258,6 +1258,10 @@ records 388 checks with ten actual steps for call-order publication, function/ca
 history, saved frames and guarded repeated fresh defaults.
 Actual375 over 9ae5ca333 passes strict3 at 684ff104 (5.825s); private
 native/source/state cuts retain their original revisions.
+Named functions also admit standalone root/namespace-body Block chains: they are
+callable before the blocks, and the later function statement preserves state.
+The [block-factory review](coverage/semantics/anonymous-block-factory-rtd-review.json)
+binds three originals to actual publication, no-op and fresh-allocation checks.
 Direct root or namespace-body variable assignments to static no-capture noarg
 by-value untyped Closures also admit plain empty named declarations. Their
 [review](coverage/semantics/anonymous-named-closure-rtd-review.json) covers anonymous
