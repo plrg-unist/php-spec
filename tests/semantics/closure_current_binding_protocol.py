@@ -7,6 +7,7 @@ import json
 import closure_call_protocol as protocol
 import closure_current_capture_review as capture_review
 import closure_current_argument_review as argument_review
+import closure_current_class_review as current_class_review
 import closure_bind_capture_review as bind_review
 import closure_bind_argument_review as bind_argument_review
 import closure_bind_computed_review as bind_computed_review
@@ -1164,7 +1165,10 @@ CASES = {'bound-private-method-shared-statics-retired-source': {'source': '<?php
 
 CATALOGUE = Path(__file__).with_name('closure_current_binding_cases.json')
 for row in json.loads(CATALOGUE.read_text()):
-    if row['id'] in ('literal-captured-current-body', 'literal-captured-current-named'):
+    if row['id'] == 'class-current-captured-body':
+        CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
+                            'current_class_capture': True}
+    elif row['id'] in ('literal-captured-current-body', 'literal-captured-current-named'):
         CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
                             'current_capture_named': row['id'].endswith('-named')}
     elif row['id'] in ('argument-direct-current-api-retirement', 'argument-captured-current-api-retirement'):
@@ -1197,6 +1201,9 @@ for row in json.loads(CATALOGUE.read_text()):
 
 
 def capture_fixture(case, program, filename):
+    if 'current_class_capture' in case:
+        text, checks, _, _ = current_class_review.render(program, filename, case['native_stdout'])
+        return text, len(checks)
     if 'bind_combined_expression_capture' in case:
         text, checks, _, _ = bind_combined_expression_review.render(program, filename, case['native_stdout'])
         return text, len(checks)
@@ -1242,6 +1249,7 @@ if __name__ == '__main__':
     assert selected, 'no current/binding state selected'
     protocol.run(selected, extra_inputs=(Path(__file__), CATALOGUE, Path(capture_review.__file__),
                                         Path(argument_review.__file__),
+                                        Path(current_class_review.__file__),
                                         Path(bind_review.__file__),
                                         Path(bind_argument_review.__file__),
                                         Path(bind_computed_review.__file__),

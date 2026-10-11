@@ -4331,6 +4331,15 @@ Exact current composition at `90d4caa2` over `c3fbb257` (375 modules) passes all
 447 premises: compiler 5.171 s, initialized SL 53.584 s. Common control/storage
 interfaces are checked; original body/named and source/native cuts retain their inputs.
 
+Simple class-CV `$class::getCurrent(...)` capture now prepares canonical Closure
+before minting the API; a later `stdClass` write leaves its selected current-body
+identity intact. Native2/literal1 at 05679 and repaired computed1/state166 at
+1cb70154/375 pass (152 genuine/derived plus 14 controls), binding raw VARIABLE,
+prepared class, genuine mint, real class write and existing owned CONFIG/result.
+Original Unsupported remains 0; wider CURRENT capture expressions and source7
+stay open. Exact maintained relocation needs no runtime renewal; old lifetime and
+bridge cuts retain their evidence in the same ledger.
+
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
 api-null write leaves the captured API held versus the direct API gone before

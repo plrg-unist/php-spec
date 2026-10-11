@@ -9,7 +9,8 @@ Closures. Named functions, methods and fake captures raise `Error` with
 uses that object's type as historical selection evidence; its receiver adds no
 owner during argument effects.
 
-Literal named-static `Closure::getCurrent(...)` also creates an API Closure.
+Literal named-static and simple class-CV `$class::getCurrent(...)` capture create
+an API Closure.
 Calling it observes the immediate ordinary body; a named helper still raises
 `Error` even under an ordinary outer Closure. Dynamic calls pin the selected API
 in CONFIG through argument evaluation. Its OWNER/SELECTION tag carries the
@@ -22,6 +23,15 @@ earlier three native originals, one direct and two repaired captured sources,
 body (206) and named (241) cuts, four failed full fixtures and localization cut
 retain their original evidence. Recorded zero-argument bridges (54/57) validate the new
 CONFIG tag/owner and the same successful current identity and named rejection.
+
+A class-CV capture reads and prepares the canonical `Closure` class before the
+genuine API mint. A later class-cell write to `stdClass` leaves that selection
+intact; its zero-argument call returns the same nonnull immediate ordinary body.
+Native2/literal1 at 05679 and computed source1/state166 at 1cb70154/375 pass
+(152 genuine/derived plus 14 controls). The focused state cut binds raw VARIABLE,
+prepared class, registered mint, real class write and existing owned CONFIG/result;
+old lifetime and bridge cuts retain their original evidence. Original Unsupported
+stays zero; broader CURRENT capture expressions remain required.
 
 An ordinary positional helper may clear the sole API cell after a call has been
 selected. Native static calls observe that API gone; captured calls observe it

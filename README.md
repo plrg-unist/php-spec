@@ -2285,7 +2285,9 @@ Literal named-static `Closure::getCurrent(...)` capture now preserves the immedi
 ordinary caller; selected API and returned body retire independently. A named
 helper still errors under an outer Closure. Three native originals, one direct and
 two repaired source comparisons and two separate state cuts totaling 447 premises
-pass. Literal `Closure::bind(...)` capture also reaches the existing binding handler;
+pass. Simple class-CV `$class::getCurrent(...)` also prepares Closure and freezes
+selection before the class cell changes; one affected source and 166 focused state
+premises pass. Literal `Closure::bind(...)` capture also reaches the existing binding handler;
 its copied receipt survives original API/body retirement while the bound Closure
 and returned value retain the receiver separately. A captured BIND call now pins
 its API when a third-argument helper clears the selected cell; static authority
