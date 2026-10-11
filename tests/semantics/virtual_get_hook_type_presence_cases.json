@@ -1,0 +1,57 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "3f1985e8f7fb0c1be07c284a8c70adcda783d55fdfa64fb5b39d4ae35b5c6f87",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "typed-to-untyped",
+      "source": "<?php\nclass PresenceTypedParent41 {\n    public int $value { get => 1; }\n}\nclass PresenceMissingChild41 extends PresenceTypedParent41 {\n    public $value { get => 2; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "66d523126e144d14f293795b30f92315406288926c8cf5163fa32641e98fae07",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Declaration of PresenceMissingChild41::$value::get() must be compatible with PresenceTypedParent41::$value::get(): int in {FILE} on line 6\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIFByZXNlbmNlTWlzc2luZ0NoaWxkNDE6OiR2YWx1ZTo6Z2V0KCkgbXVzdCBiZSBjb21wYXRpYmxlIHdpdGggUHJlc2VuY2VUeXBlZFBhcmVudDQxOjokdmFsdWU6OmdldCgpOiBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-get-hook-type-presence41-native3-fd12fd35",
+      "native_raw_sha256": "3f1985e8f7fb0c1be07c284a8c70adcda783d55fdfa64fb5b39d4ae35b5c6f87"
+    },
+    {
+      "id": "untyped-to-typed",
+      "source": "<?php\nclass PresenceUntypedParent41 {\n    public $value { get => 1; }\n}\nclass PresenceAddedChild41 extends PresenceUntypedParent41 {\n    public int $value { get => 2; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "f10e24bb5c0fb80a2e02d1c8cdf077caabf9a4ccc7659fa216615789e7cb3e96",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of PresenceAddedChild41::$value must be omitted to match the parent definition in class PresenceUntypedParent41 in {FILE} on line 5\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgUHJlc2VuY2VBZGRlZENoaWxkNDE6OiR2YWx1ZSBtdXN0IGJlIG9taXR0ZWQgdG8gbWF0Y2ggdGhlIHBhcmVudCBkZWZpbml0aW9uIGluIGNsYXNzIFByZXNlbmNlVW50eXBlZFBhcmVudDQxIGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "virtual-get-hook-type-presence41-native3-fd12fd35",
+      "native_raw_sha256": "3f1985e8f7fb0c1be07c284a8c70adcda783d55fdfa64fb5b39d4ae35b5c6f87"
+    },
+    {
+      "id": "untyped-dispatch",
+      "source": "<?php\nclass PresenceParent41 {\n    public $value {\n        get {\n            echo \"P:\", __CLASS__, \"/\", static::class, \"|\";\n            return \"root\";\n        }\n    }\n    public function parentRead() {\n        echo \"H|\";\n        return $this->value;\n    }\n}\nclass PresenceBridge41 extends PresenceParent41 {\n    private function answer() { return 500; }\n}\nclass PresenceChild41 extends PresenceBridge41 {\n    public $value {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass PresenceGrand41 extends PresenceChild41 {\n    private function answer() { return 900; }\n}\n$parent = new PresenceParent41;\n$child = new PresenceChild41;\n$grand = new PresenceGrand41;\necho (array) $parent === [] ? \"PE|\" : \"PS|\";\necho $parent->value, \"|\";\necho (array) $child === [] ? \"CE|\" : \"CS|\";\necho $child->value, \"|\";\necho (array) $grand === [] ? \"GE|\" : \"GS|\";\necho $grand->parentRead(), \"|\";\necho (array) $parent === [] && (array) $child === [] && (array) $grand === [] ? \"EMPTY|\" : \"SLOTS|\";\n",
+      "source_sha256": "31b99998851a445cf9cab49331da1d4563b2ce6246c1d48fa62d35aff0f89942",
+      "stdout_base64": "UEV8UDpQcmVzZW5jZVBhcmVudDQxL1ByZXNlbmNlUGFyZW50NDF8cm9vdHxDRXxDOlByZXNlbmNlQ2hpbGQ0MS9QcmVzZW5jZUNoaWxkNDF8MTN8R0V8SHxDOlByZXNlbmNlQ2hpbGQ0MS9QcmVzZW5jZUdyYW5kNDF8MTN8RU1QVFl8",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-get-hook-type-presence41-native3-fd12fd35",
+      "native_raw_sha256": "3f1985e8f7fb0c1be07c284a8c70adcda783d55fdfa64fb5b39d4ae35b5c6f87"
+    }
+  ]
+}

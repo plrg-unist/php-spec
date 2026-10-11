@@ -1,0 +1,175 @@
+{
+  "scope": "Named nonabstract, nonfinal public get-only by-value virtual overrides without initializers: typed parent to untyped child, untyped parent to typed child, and both-untyped inheritance. Backed properties and task/ownership protocols remain outside this slice.",
+  "implementation": {
+    "files": [
+      "spec/semantics/134-inheritance-runtime.watsup",
+      "spec/semantics/238-trait-data.watsup",
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_compile.c: zend_compile_property_hooks",
+      "vendor/php-src/Zend/zend_inheritance.c: do_inherit_property, inherit_property_hook, perform_delayable_implementation_check, emit_incompatible_method_error"
+    ],
+    "change": "An authentic typed virtual parent and untyped child select missing getter-return incompatibility before the old property-type path. Getter declarations format an optional return suffix; only the exact returned getter message selects the hook origin/line. Flag/access priority and the correct untyped-parent type-addition class-line error remain unchanged. Pure pvcovariant still returns PVUNSUPPORTED for missing types; runtime, physical backing and both-present covariance are unchanged."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "catalogue": {
+    "path": "tests/semantics/virtual_get_hook_type_presence_cases.json",
+    "sha256": "b0e2ab7c757febae760370b05e48dee21387ca58589aacab0ace2d207d3cdf8c",
+    "protocol": "tests/semantics/virtual_get_hook_type_presence_protocol.py",
+    "protocol_sha256": "61f31aa3e8305453d3506e85d8606086e48b8e0e4d4522328d0d58606f7ad150"
+  },
+  "native": {
+    "revision": "fd12fd35681973e440c662f66d5f124fe4ebabdf",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-type-presence-probes-41/native-first/report.json",
+    "report_sha256": "3f1985e8f7fb0c1be07c284a8c70adcda783d55fdfa64fb5b39d4ae35b5c6f87",
+    "process_observations": 3,
+    "exits": [
+      255,
+      255,
+      0
+    ],
+    "completed": true,
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "Observed missing child type: getter compatibility fatal at hook line6. Added child type: omitted-parent-type fatal at class line5. Both-untyped control: Child private13 and Grand inherited This dispatch, no slots.",
+    "informational_anticipation_miss": "The added-type fatal includes Stack trace/#0 main, absent from anticipation; actual streams stay authoritative and the original false anticipation flag is preserved."
+  },
+  "unchanged_baseline": {
+    "revision": "fd12fd35681973e440c662f66d5f124fe4ebabdf",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-type-presence-probes-41/accepted-current-baseline/report.json",
+    "report_sha256": "c7c3b9407611c2cc49c51eea1f02e2f8f0326da9f1757aa34c9bea11ae53c454",
+    "checked_originals": 3,
+    "source_agreements": 2,
+    "stable_and_reaped": true,
+    "result": "Two existing controls agree: added-type class5 rejection and untyped dispatch. Typed-to-untyped incorrectly emits invariant property error at class5 instead of getter declaration error at hook6."
+  },
+  "strict": {
+    "revision": "ce4a654b695a9d983b202cfbbb9c221f90db41a2",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-type-presence-probes-41/virtual-get-hook-type-presence-compiler-m4p8zkp6/report.json",
+    "report_sha256": "7fccadc0594c235febdc938ea90f4011114da866094cee9572a60050e4880c98",
+    "seconds": 5.923624,
+    "modules": 375,
+    "result": "PASS exact SL initialization",
+    "stable_and_reaped": true,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "revision": "ce4a654b695a9d983b202cfbbb9c221f90db41a2",
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-type-presence-probes-41/changed-model-n6gc4es3/report.json",
+    "report_sha256": "1e5c0afbb64b08a705397495f80401b78298ec9c3e83c28a24d52e13180f0f4d",
+    "source_agreements": 3,
+    "seconds": {
+      "typed-to-untyped": 6.35302,
+      "untyped-to-typed": 6.452391,
+      "untyped-dispatch": 10.757558
+    },
+    "stable_and_reaped": true,
+    "result": "All three genuine checked originals agree with full native streams/exits255/255/0. One repaired diagnostic and two retained baseline controls."
+  },
+  "state": {
+    "cuts": [
+      {
+        "group": "remove",
+        "revision": "fab1ea9c9bd717191cf7934d9fb78d84286ccf20",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-type-presence-protocol-6b2ekvyy/report.json",
+        "report_sha256": "cd3d1d59be4c59b1ee5ac3950f4bd0d93ab07c9b1941a32da89e4001d79868bf",
+        "fixture_sha256": "4f93228bd2c1a63943894070772a4fa946e1b5a8aff6d58a91bd073822cde4a1",
+        "reached": 26,
+        "derived": 22,
+        "AL_seconds": 4.9264,
+        "SL_seconds": 6.298432,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "add",
+        "revision": "fab1ea9c9bd717191cf7934d9fb78d84286ccf20",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-type-presence-protocol-l78d752p/report.json",
+        "report_sha256": "bad799390a3fedeb238f063a2717727b5687e7bb2b48048db05b05715f0a930c",
+        "fixture_sha256": "34c0894eecb2eae6b2bb5ac05ced7dba673bd625571b7fa861c08f6adb0d7c47",
+        "reached": 26,
+        "derived": 0,
+        "AL_seconds": 4.922776,
+        "SL_seconds": 6.092181,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "cv",
+        "revision": "fab1ea9c9bd717191cf7934d9fb78d84286ccf20",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-type-presence-protocol-eac2aswa/report.json",
+        "report_sha256": "5ff4fc19b040fa3f4dc671d8f6f5f9f0d800b5fcbc82a5c17f936128053af4ac",
+        "fixture_sha256": "f0acfeafe78dbb921cd2cc861b416c06a1036187515292143a1a2502add490d3",
+        "reached": 62,
+        "derived": 0,
+        "AL_seconds": 4.94534,
+        "SL_seconds": 17.162646,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      },
+      {
+        "group": "this",
+        "revision": "fab1ea9c9bd717191cf7934d9fb78d84286ccf20",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-get-hook-type-presence-protocol-709vw2iu/report.json",
+        "report_sha256": "25711ff1d27efd34f6e2ba98ec021b7e3781de56d78af8eeac11d37035b53d38",
+        "fixture_sha256": "c03daa13eabf4052f304b48f77b0df4a7ef370d6a54a9b9927d77ee830446762",
+        "reached": 64,
+        "derived": 0,
+        "AL_seconds": 4.998822,
+        "SL_seconds": 17.591822,
+        "result": "PASS true; exit0/empty stderr/no timeout/stable4/reaped",
+        "application_evaluations": 1,
+        "source_agreements": 0
+      }
+    ],
+    "total_reached": 178,
+    "total_derived": 22,
+    "application_invocations": 4,
+    "source_agreements": 0,
+    "note": "Four separate selected invocations, not a combined application. Counts include repeated setup/metadata."
+  },
+  "state_contract": [
+    "Both rejection cuts bind actual installed synthesized hook SIGNATURE.RETURNS presence/absence, hook line6 versus class line5, main ERRORORIGIN eps, parent publication and absent child publication/body effects.",
+    "The removal cut separately checks22 derived direction/source/default/ancestry/byref and final/static/readonly/access-priority controls; missing TYPE never becomes mixed.",
+    "Fresh both-untyped CV and inherited This control uses real hook/private-helper calls, frames and caller restoration: Child lexical/private13 versus Grand called scope; no physical slots. Receiver owners follow1→2→1 and3→3→2."
+  ],
+  "commands": {
+    "native": "python3 .tools/virtual-get-hook-type-presence-probes-41/run.py native --revision fd12fd35681973e440c662f66d5f124fe4ebabdf",
+    "baseline": "python3 .tools/virtual-get-hook-type-presence-probes-41/run.py baseline --revision fd12fd35681973e440c662f66d5f124fe4ebabdf",
+    "strict": "python3 .tools/virtual-get-hook-type-presence-probes-41/run-compiler.py fd12fd35681973e440c662f66d5f124fe4ebabdf ce4a654b695a9d983b202cfbbb9c221f90db41a2",
+    "sources": "python3 .tools/virtual-get-hook-type-presence-probes-41/run.py changed --revision ce4a654b695a9d983b202cfbbb9c221f90db41a2",
+    "state": "python3 tests/semantics/virtual_get_hook_type_presence_protocol.py --revision fab1ea9c9bd717191cf7934d9fb78d84286ccf20 --group <remove|add|cv|this>",
+    "caps": "Native45, model60/outer75/100000 steps; strictSL60 init-only; each state AL90 then conditionalSL90; jobs1, stop-first/group reap, LC_ALL=C/TZ=UTC."
+  },
+  "recovery": "Historical commands run from retained private32. Ignored original sources, raw streams, runners and binaries remain at their original paths. Permanent catalogue/protocol regenerate selected fixtures. Production 134/238/382 is byte-identical to strict/source-tested ce4a at all four accepted state cuts; prior hook cuts remain historical without renewal.",
+  "remaining": [
+    "Backed-property TYPE-presence inheritance, broader type equivalence and other property/hook variance.",
+    "Ordinary-parent hooks, plain redeclarations inheriting hooks, virtual-parent backed-child pairs, setters/byref/defaulted virtual/trait hooks and broader access/receiver families."
+  ]
+}

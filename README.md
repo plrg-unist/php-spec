@@ -1513,6 +1513,12 @@ property-type checks;
 backed properties remain invariant. Three originals and separate CV, inherited
 `$this`, lifetime and rejection checks are recorded in the
 [covariance review](coverage/semantics/virtual-get-hook-covariance-review.json).
+For these virtual getters, removing the inherited property type fails at the
+child getter declaration before the property-type check. A typed child overriding
+an untyped parent retains the later property diagnostic at the class declaration;
+both-untyped overrides retain child scope and inherited `$this` dispatch.
+Three originals and separate rejection/dispatch checks are recorded in the
+[type-presence review](coverage/semantics/virtual-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
