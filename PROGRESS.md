@@ -474,6 +474,8 @@ through decrement completion, and kept-object survival across receiver cleanup.
 Earlier elaboration/fixture failures and diagnostics retain zero affected credit;
 native/source/quiet cuts remain frozen. Wider hook families remain required.
 [Coalesce review](coverage/semantics/coalesce-get-hooks-review.json).
+Actual375 over `b0fc24b6` passes strict initialization at `4e98563e` (6.637 s);
+the private source2/state249 cuts retain their original revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
