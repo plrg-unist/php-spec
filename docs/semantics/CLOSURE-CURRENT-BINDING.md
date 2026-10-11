@@ -67,20 +67,31 @@ its real lexical origin. `self`/`static` names, parent errors and anonymous
 Literal named-static `Closure::bind(...)` creates an API Closure and dynamic
 invocation uses the existing binding handler. Explicit null scope with a
 `stdClass` receiver produces the copied internal scope described above. The
-creating CONFIG authenticates the selected live BIND API; its OWNER remains
-borrowed while the main API cell stays live across arguments. Historical receipt
+creating CONFIG authenticates the selected live BIND API. Dynamic calls now pin
+that API with the same owned selection tag as CURRENT; direct static-API
+authority remains borrowed. Historical receipt
 source forms admit dynamic and literal `__invoke` calls while preserving the
 copied source/function/scope/receiver checks. Actual null writes retire the API
 and original body, then the bound Closure, then the returned receiver separately.
 Two native originals, one direct and one repaired captured comparison, and 289
-state premises (269 genuine/derived plus 20 controls) pass. Original Unsupported
+state premises (269 genuine/derived plus 20 controls) retain their original tested
+cut, where the main API cell stays live across arguments. Original Unsupported
 and the first interpreter failure retain zero credit.
+
+A third-argument null-scope helper can clear the selected BIND API cell. The
+captured call keeps it live through the saved CONFIG_SEND; the direct static
+control releases it before the helper's weak read. Consuming the binding CONFIG
+then releases the API and creates the same copied receipt. Two native originals,
+one direct and one repaired captured comparison, and 413 state premises
+(375 genuine/derived plus 38 controls) pass. The state cut includes a narrow
+recorded bridge for the old CONFIG tag/roots; the original 289 cut is unchanged.
+The initial global-table fixture failure retains zero credit.
 
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the
 [ordinary binding contract](CLOSURE-BINDING.md) records validation order, compiled
-flag authority and copied storage. Wider binding API captures and BIND API
-retirement during argument evaluation, object/computed current
+flag authority and copied storage. Wider binding API captures and argument
+retirement beyond the literal dynamic BIND scope above, object/computed current
 captures, wider argument-retirement routes, temporary REAL `Closure::call` current-object
 escape and further internally scoped keyword consumers remain required.
 Temporary-call behavior stays separate.

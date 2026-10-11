@@ -3937,9 +3937,17 @@ after the API and original body retire; the bound Closure and returned cell reta
 the receiver at distinct cleanup stages. Native2/direct1 at 22c4, affected captured1 and
 state289 at 1f58/375 pass (269 genuine/derived plus 20 controls). Original Unsupported
 and the first interpreter failure remain 0. The API main cell stays live across
-args; wider BIND argument-retirement forms stay open. Exact maintained relocation
-requires no runtime renewal. Exact e687/375 composition at 82389 passes the preserved
-289 compiler/initialized-SL gate; current source/private renewal 0. See the
+args in that original cut. Exact e687/375 composition at 82389 passes the preserved
+289 compiler/initialized-SL gate; current source/private renewal 0.
+Captured BIND now uses the existing owned CURRENT tag:
+a third-argument helper's API-null write leaves saved CONFIG_SEND as its sole
+owner, while the static control observes it gone. Consuming CONFIG releases the
+API before the next weak read, preserving the copied binding receipt and distinct
+source-body/receiver retirement. Native2/direct1 at 3352, repaired captured1 and
+state413 at 5ecda/375 pass (375 genuine/derived plus 38 controls), including only a
+34-premise recorded bridge for changed old CONFIG authority. Original 289 remains
+frozen; the initial global-table fixture failure retains 0. Wider forms remain
+open; exact relocation needs no renewal. See the
 [ledger](coverage/semantics/closure-current-binding-review.json).
 
 Object defaults (module252) now create static/no-use source Closures and

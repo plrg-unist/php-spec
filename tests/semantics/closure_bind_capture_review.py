@@ -115,7 +115,7 @@ $closure_static_api_owner_valid(S_minted, n_api)
 S_config.TODO = (CONFIG_INVOKE pconfigcall_bind) :: ptask_config*
 pconfigcall_bind.KIND = INTRINSIC_CLOSURE_BIND
 pconfigcall_bind.OWNER = (n_api)
-pconfigcall_bind.SELECTION = eps
+pconfigcall_bind.SELECTION = (n_api)
 pconfigcall_bind.INDEX = 3 /\ pconfigcall_bind.PACKS = eps /\ ~pconfigcall_bind.NAMED
 $lookup(S_config.ENV, $ptascii("api")) = (n_api_cell)
 S_config.STORE[n_api_cell] = DEFINED (POBJECT n_api)
@@ -141,8 +141,8 @@ $config_invoke_valid(S_config, pconfigcall_bind)
 $call_task_valid(S_config, CONFIG_INVOKE pconfigcall_bind)
 $dynamic_site(S_config, (pconfigcall_bind.SITE))
 $closure_binding_api_site(S_config, pconfigcall_bind.SITE)
-$task_nodes(CONFIG_INVOKE pconfigcall_bind) = [HOBJECT n_body, HOBJECT n_receiver]
-$heap_owners($heap_graph(S_config), HOBJECT n_api) = 1
+$task_nodes(CONFIG_INVOKE pconfigcall_bind) = [HOBJECT n_api, HOBJECT n_body, HOBJECT n_receiver]
+$heap_owners($heap_graph(S_config), HOBJECT n_api) = 2
 $heap_owners($heap_graph(S_config), HOBJECT n_body) = 2
 $heap_owners($heap_graph(S_config), HOBJECT n_receiver) = 2
 S_config.CURRENT = eps /\ S_config.FRAMES = eps

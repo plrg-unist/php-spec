@@ -2083,8 +2083,10 @@ helper still errors under an outer Closure. Three native originals, one direct a
 two repaired source comparisons and two separate state cuts totaling 447 premises
 pass. Literal `Closure::bind(...)` capture also reaches the existing binding handler;
 its copied receipt survives original API/body retirement while the bound Closure
-and returned value retain the receiver separately. Wider API captures,
-BIND argument-side API retirement and temporary current escape remain required.
+and returned value retain the receiver separately. A captured BIND call now pins
+its API when a third-argument helper clears the selected cell; static authority
+remains borrowed. Wider API captures, argument forms and temporary current escape
+remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.
