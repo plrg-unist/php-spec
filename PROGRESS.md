@@ -4041,6 +4041,8 @@ computed1/state161 at 275fc/375 pass (148 genuine/derived plus 13 controls), bin
 the raw/prepared class, genuine mint, class write and existing CONFIG/receipt.
 Original Unsupported, elaboration failure and raw-mint fixture failure remain 0;
 computed method names and wider class expressions stay open in the same ledger.
+Exact 1310460b/375 composition passes preserved state161; native/source/private
+cuts are not renewed.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
