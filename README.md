@@ -1212,6 +1212,8 @@ also check namespace-local `Exception`, same-short-name separation and an unname
 global namespace. Author and independent fixtures pass 269 setup/source-frontier
 checks plus 36 pure queries, with 15 actual steps; private strict3 passes at
 6c8233e3 (5.724s). Earlier cuts and the original elaboration failure stay separate.
+The namespace375 join over 1dd6e543 passes strict3 at a219a473 (5.671s);
+private namespace native/source/state cuts remain unchanged.
 Wider RTD counters, factory/publication contexts, constructor arguments/types,
 inheritance, attributes and broader consumers remain required.
 The actual375 join over 57f2f4b8 passes strict3 at 77f9c0eda (5.521s);

@@ -34,6 +34,8 @@ zero runtime credit; namespace lowering has no runtime namespace task. The initi
 duplicate fallback failed elaboration and retains zero credit; the explicit root
 guard fixes it. Unbracketed namespaces, named function/Closure descendants and
 wider named declarations/RTD ordering remain required.
+Actual375 over 1dd6e543 passes strict3 at a219a473 (5.671s), including the
+Iterator cursor datatype join; private native/source/state cuts retain their revisions.
 [Namespace-class ledger](coverage/semantics/anonymous-namespace-rtd-review.json).
 
 Standalone global blocks now preserve early class binding through each actual
