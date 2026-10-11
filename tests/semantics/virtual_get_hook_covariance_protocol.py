@@ -113,7 +113,7 @@ def prep(s, called, owners):
             f'{s}.TODO = (PROPERTY_PREP phpType20_{s} z_{s}) :: (DIM_FETCH z_{s}) :: ptask_{s}*',
             f'$property_effective_desc({s},ppropertyhook_{s}.OBJECT,$ptascii("value")) = (ppropertydesc_{s})',
             f'$property_hook_function({s},ppropertyhook_{s}) = (pfunction_{s})',
-            f'{s}.OBJECTS[ppropertyhook_{s}.OBJECT] = INSTANCE porigin_{called} /\\ ppropertydesc_{s} = ppropertydesc_child /\\ ppropertyhook_{s}.PROPERTY = ppropertydesc_child.ORIGIN /\\ pfunction_{s}.RETURNS = ppropertydesc_child.TYPE',
+            f'{s}.OBJECTS[ppropertyhook_{s}.OBJECT] = INSTANCE porigin_{called} /\\ ppropertydesc_{s} = ppropertydesc_child /\\ ppropertyhook_{s}.PROPERTY = ppropertydesc_child.ORIGIN /\\ pfunction_{s}.SIGNATURE.RETURNS = ppropertydesc_child.TYPE',
             f'$target_lexical_class({s},PROPERTY_HOOK_TARGET ppropertyhook_{s}) = (porigin_child) /\\ $target_called_class({s},PROPERTY_HOOK_TARGET ppropertyhook_{s}) = (porigin_{called}) /\\ $objectprops_at({s}.OBJECTPROPS,ppropertyhook_{s}.OBJECT) = (eps) /\\ $vo_slot({s},ppropertyhook_{s}.OBJECT,$ptascii("value")) = eps',
             f'$heap_owners($heap_prune($heap_graph({s})),HOBJECT ppropertyhook_{s}.OBJECT) = {owners} /\\ $vo_guard({s})']
 
