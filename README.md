@@ -1618,7 +1618,14 @@ pending errors. Getter diagnostics use `bool`; other type-check contexts are unc
 Three older constructed boolean controls are maintained only in the new kept group.
 The actual375 join over `78cd4d6e8` passes strict at `f44398f38` (5.646s);
 private source/state cuts retain their original inputs.
-Boolean-to-int/string, PARAMETERBACKINGS and wider conversions remain required.
+Weak int getters now convert original false to zero and true to one on the actual
+unconstrained reference cell or only the by-value RV. Strict getters and null reject;
+real int|bool sources conflict without converting the cell.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-boolean-integer-review.json)
+pass 915 setup-inclusive premises across `03ed0aa16`/`90fad5bed`, covering CV/owned
+cleanup and pending errors. Two maintained constructed controls contribute five
+selected clauses; prior cuts are unchanged and three fixture/preparation failures retain zero credit.
+Boolean-to-string, PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

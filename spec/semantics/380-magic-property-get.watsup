@@ -375,6 +375,13 @@ def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEVALUE
   -- if $property_get_unconstrained(S, S.RESULT)
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN pvalue
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, PBOOL b, TYPEINTEGER (PBOOL b)) = $property_get_integer_apply(S, ppropertyget, S.RESULT, i)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
+  -- if $typed_number(PBOOL b) = (NINT i)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $property_get_unconstrained(S, S.RESULT)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PBOOL b)
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEINTEGER pvalue) = $property_get_integer_apply(S, ppropertyget, S.RESULT, i)
   -- if $typed_string_value(pvalue)
   -- if $typed_number(pvalue) = (NINT i)

@@ -302,7 +302,18 @@ does; shared95's value names `false`/`true` remain unchanged in other contexts.
 The [boolean-float review](../../coverage/semantics/magic-property-boolean-float-review.json)
 records six source agreements and six whole reached groups/911 setup-inclusive
 premises. Three maintained constructed boolean controls contribute nine clauses
-only to the new kept group; phase31–33 evidence is not renewed. Boolean-to-int/string,
+only to the new kept group; phase31–33 evidence is not renewed.
+
+Weak builtin-int MAGIC_GET also converts original false to zero and true to one
+using the existing TYPEINTEGER marker. Actual unconstrained references update their
+cell; by-value returns change only RV. Getter-declaration strictness and null reject.
+Real int|bool sources conflict while preserving the raw bool/source, even though
+the source accepts both types. CV reception copies after destruction; owned results
+detach before BASE release, and later source repair preserves pending TypeError.
+The [boolean-integer review](../../coverage/semantics/magic-property-boolean-integer-review.json)
+records six source agreements and six whole reached groups/915 setup-inclusive
+premises. Two maintained constructed controls contribute three kept and two conflict
+clauses; earlier whole campaigns retain their cuts. Boolean-to-string,
 PARAMETERBACKINGS and wider targets/conversions retain their explicit boundaries.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and

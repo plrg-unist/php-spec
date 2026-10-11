@@ -2513,10 +2513,20 @@ at `cf9bcd566`, covering CV/owned reception and pending-error repair. Local gett
 diagnostics name `bool` without changing shared95 value names. Exactly three older
 constructed boolean outcomes are corrected; their nine distinctly named clauses
 run only in the new kept group. Phase31–33 reports retain their original cuts.
-Boolean-to-int/string, PARAMETERBACKINGS and wider conversions remain required.
 [Boolean-float ledger](coverage/semantics/magic-property-boolean-float-review.json).
 The actual375 join over `78cd4d6e8` passes strict at `f44398f38` (5.646s,
 state/source/native credit0); private source6/state911 are not renewed.
+Weak builtin-int MAGIC_GET now converts original false to zero and true to one
+on the actual unconstrained reference cell or only the by-value RV. Strict getters
+and null reject; real int|bool sources select a diagnostic-only conflict before cleanup.
+Native6 and the unchanged CLI1 Unsupported baseline retain `0c3a7d0ca`;
+strict375/source6 and four reached groups/641 pass at `03ed0aa16`. A fixture-only
+binding correction precedes conflict140/strict134 at `90fad5bed`, completing 915
+setup-inclusive premises without renewing the passing groups. Two maintained
+constructed outcomes contribute only five selected clauses. Two preparation failures
+and the original conflict compilation failure retain zero credit; phase31–34 cuts are unchanged.
+Boolean-to-string, PARAMETERBACKINGS and wider conversions remain required.
+[Boolean-integer ledger](coverage/semantics/magic-property-boolean-integer-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

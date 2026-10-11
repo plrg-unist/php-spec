@@ -1,0 +1,139 @@
+{
+  "status": "Bounded source and reached-state milestone; independently reviewed semantics and retained results.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "0d481985fff26c2424692428db0dc0b5949b9548; phase31\u201334 evidence is not renewed",
+  "runtime_revision": "1ade8143637cd2432197f79d30157d478007ebc1",
+  "tested_revision": "03ed0aa1608d52303eab0f9d08ea03546b5ba75b",
+  "fixture_tail_revision": "90fad5bed87124e5caba758ca9ea9c1819a0f1e7",
+  "scope": "Modules380/384 weak builtin-int MAGIC_GET verification of original booleans on accepted public literal-CV or owned ordinary-call receivers. Actual unconstrained REFERENCE cells convert in place; BYVAL changes only RV. Real property sources select a diagnostic-only first-source conflict while preserving raw bool/source. Getter declaration controls strictness; existing receiver owner stages are unchanged.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained tools, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/380-magic-property-get.watsup": "0904afb0f7e70973a5da2215a8ecc9299255bdbf7b21cd3c1b8a27819bdfff4a",
+    "spec/semantics/384-magic-property-reference-types.watsup": "eb89d6e8b65beaa14bc16a7a80be14ca6018d51acbd3e429daef2aa55f662cb1",
+    "tests/semantics/dynamic_property_warning_sources.py": "206bc0ea1ca5dfc891910a49a40043aeb78baf4ba5e7ea0d7569ac53725469e1",
+    "tests/semantics/magic_property_integer_protocol.py": "afe039b67ac0d8206b674b3d1501fc6b2d2050d2bcbcdd4234769a37eaa9c647",
+    "tests/semantics/magic_property_reference_protocol.py": "ca28712b6a388989d0fcbfd48de8c090ce0d9d020388a262dd535904bece8bd0",
+    "tests/semantics/magic_property_boolean_integer_protocol.py": "dcf7762f65cac295b03a54927fe5498ae7f5933c6b25bdec470c605c4e6cd035"
+  },
+  "native_first": {
+    "revision": "0c3a7d0ca4b88fee418d80fe43aecb4495c214c7",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-integer-native35-b93y0nsy/report.json",
+    "seconds": 0.1976259546354413,
+    "credit": "Native observations only; original bytes, actual pinned binary, all exit0/empty stderr."
+  },
+  "unsupported_baseline": {
+    "revision": "0c3a7d0ca4b88fee418d80fe43aecb4495c214c7",
+    "case": "review-property-magic-boolean-integer-reference-kept35",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-integer-baseline35-xy5_nf2d/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|1/0|",
+    "reason": "magic getter property type coercion",
+    "seconds": 9.330848785117269,
+    "credit": 0
+  },
+  "strict": {
+    "modules": 375,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-integer-strict35-g8a4ss0f/report.json",
+    "seconds": 5.591303908266127,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-9khpv0dx/report.json",
+    "outcomes": "All checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact; raw/modeled stderr empty and diagnostics null."
+  },
+  "source_sha256": {
+    "review-property-magic-boolean-integer-reference-kept35": "430e2bb67d974d45318e1191a4ec7f63f12096e1448e2744bbb9869048b5103a",
+    "review-property-magic-boolean-integer-reference-drop35": "436b12c10f8555a2cee6223153670ca74cd5e4b1474b00949ec16d9b895b718b",
+    "review-property-magic-boolean-integer-source-conflict35": "d052e6c2a5caa6a8d62065869623b04e68928e53c2294ac2e9bceb366ac6270c",
+    "review-property-magic-boolean-integer-value35": "16e3a03473b72024565b4d9814e155b6cdae8c13b9260910576dec008263ceb9",
+    "review-property-magic-boolean-integer-owned35": "87c228ee6d2d6b4e7fee57c7a28367c2d1bf13c3f61d72b589ce33fbc4ead213",
+    "review-property-magic-boolean-integer-strict-getter35": "6f3f7c0c6f81200ae847eaf4d0f4fb28d9c46ce90066f5ac870ef2d1c862ccb4"
+  },
+  "reached": [
+    {
+      "group": "reference-kept",
+      "premises": 239,
+      "revision": "03ed0aa1608d52303eab0f9d08ea03546b5ba75b",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-integer-h6gnm5o9/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "premises": 132,
+      "revision": "03ed0aa1608d52303eab0f9d08ea03546b5ba75b",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-integer-rk2n42c7/report.json"
+    },
+    {
+      "group": "value",
+      "premises": 132,
+      "revision": "03ed0aa1608d52303eab0f9d08ea03546b5ba75b",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-integer-x0ufpoej/report.json"
+    },
+    {
+      "group": "owned",
+      "premises": 138,
+      "revision": "03ed0aa1608d52303eab0f9d08ea03546b5ba75b",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-integer-b5ev_ll6/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "premises": 140,
+      "revision": "90fad5bed87124e5caba758ca9ea9c1819a0f1e7",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-integer-1lsc6_df/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "premises": 134,
+      "revision": "90fad5bed87124e5caba758ca9ea9c1819a0f1e7",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-integer-_3d1zpsw/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 915,
+  "facts": [
+    "Whole-state verification converts original false to PINT0 and true to PINT1 using TYPEINTEGER(PBOOL b), typed_number=NINT0/1 and existing integer_apply only on the actual unconstrained live raw RV/cell. A strict caller with a weak getter accepts both; readonly backing stays UNSET without a getter target source. Repeated reads call the getter again; null remains rejected.",
+    "CV destruction observes converted true/int1 before changing its referent; reception copies that changed string. BYVAL preserves the raw global bool while forwarding only its int RV. Owned reception detaches false as int0 and drops the raw-cell owner before BASE destruction; later global mutation does not change the copied int.",
+    "The genuine int|bool source accepts both raw bool and possible int, but getter verification selects a conflict and preserves raw bool/source. Cleanup detaches and repairs the source while pending TypeError survives with null previous. A strict getter under a weak caller rejects false before later destructor repair; existing property_get_given names bool without changing95.",
+    "Exactly two obsolete constructed boolean outcomes in integer/reference helpers are maintained. Three integer clauses run only in new kept; two self-contained reference clauses run only in new conflict, comparing whole state with an independently native-bound message. Constructed guards and legacy classification remain distinct from genuine source reachability; no old whole campaign is renewed."
+  ],
+  "preparation": {
+    "states": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-integer-state-prep35-e3xqstkn/report.json",
+    "corrected_conflict": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-integer-state-prep35-gkn157ub/report.json",
+    "credit": "Full-sort six-group and affected conflict-only elaboration; zero application/state evaluation."
+  },
+  "original_failures": [
+    {
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-integer-state-prep35-r_uz_wan/report.json",
+      "cause": "EXPECTED was seeded as bytes instead of the existing text contract; six literal representations corrected without changing UTF-8/native bytes.",
+      "credit": 0
+    },
+    {
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-integer-state-prep35-rr1h1nx2/report.json",
+      "cause": "Invalid-RV constructed REFERENCE length argument needed parentheses; fixture syntax only.",
+      "credit": 0
+    },
+    {
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-integer-97qvx65f/report.json",
+      "cause": "Expected message used inside a non-invertible whole-state update before binding; no application. Self-contained completion pattern and native literal-first ordering fixed only the affected fixture.",
+      "credit": 0
+    }
+  ],
+  "compatibility": "Only guarded380 boolean-int conversion and diagnostic-only384 possible conversion change;95/138/schema/strictness/owners are unchanged. Current input hashes bind final90fad. Strict/source6/first four641 retain03ed; fixture-only message binding/standalone-control correction affects conflict only. Corrected conflict140 and remaining strict134 pass at90fad. Runtime/source and four passing bodies are unchanged; no renewed credit. Earlier cuts and all failures keep their identities.",
+  "remaining": "Boolean-to-string and wider conversions, PARAMETERBACKINGS, callback-based verification and prior receiver/signature/access/quiet/write/recursive residuals remain required.",
+  "engine": [
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_long_weak IS_FALSE/IS_TRUE",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_weak_scalar_type_hint/zend_verify_scalar_type_hint/zend_verify_prop_assignable_by_ref_ex/zend_magic_get_property_type_inconsistency_error",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter strictness and verification before receiver release",
+    "spec/semantics/95-type-values.watsup:typed_number/typed_conversion; spec/semantics/380-magic-property-get.watsup:property_get_integer_apply/property_get_given"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_boolean_integer_protocol.py reproduce six sources/groups; only kept/conflict select the five maintained legacy clauses. Ignored raw trees retain originals/checked/eval sources, fixtures/assertions, argv/cwd/process/streams and stable identities. Reused private providers/parser closure; no portability/rebuild claim."
+}
