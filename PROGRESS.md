@@ -630,6 +630,8 @@ at `7070262a` (all reached). Genuine pending TypeError cleanup releases the RV
 while the selected receiver lives, then retires it before catch. False410 and
 localization diagnostics retain zero whole-gate credit; earlier hook cuts stay
 unchanged. [Addition-assignment review](coverage/semantics/backed-get-hook-addassign-review.json).
+Actual375 over `d233bb59` passes strict initialization at `8f3aae08` (5.854 s),
+preserving source3 and the separate scalar291/affected129 cuts.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
