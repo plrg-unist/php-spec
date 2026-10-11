@@ -673,6 +673,11 @@ test-semantics: build
 	python3 tests/semantics/virtual_get_hook_covariance_protocol.py --revision "$$(git rev-parse HEAD)" --group this
 	python3 tests/semantics/virtual_get_hook_covariance_protocol.py --revision "$$(git rev-parse HEAD)" --group lifetime
 	python3 tests/semantics/virtual_get_hook_covariance_protocol.py --revision "$$(git rev-parse HEAD)" --group invalid
+	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/virtual_get_hook_type_presence_cases.json
+	python3 tests/semantics/virtual_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group remove
+	python3 tests/semantics/virtual_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group add
+	python3 tests/semantics/virtual_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group cv
+	python3 tests/semantics/virtual_get_hook_type_presence_protocol.py --revision "$$(git rev-parse HEAD)" --group this
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_publication_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/compiler_composed_retry_cases.json
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/assertion_cases.json

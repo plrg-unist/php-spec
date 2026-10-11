@@ -887,6 +887,17 @@ the retained native process observations and prior hook cuts remain frozen.
 Actual375 over `3601e385` passes strict initialization at `c36d7732` (6.010 s);
 private source3 and the four separate state cuts retain their accepted revisions.
 
+Public get-only virtual overrides without initializers now reject removal of an
+inherited type at the child getter line, before property-type compatibility.
+A typed child overriding an untyped parent retains the existing class-line diagnostic;
+both-untyped overrides retain child/private and descendant inherited `$this`
+dispatch with no slots. Strict375 and three originals pass at `ce4a654b`, repairing
+the removal case while preserving two baseline controls. Separate remove48
+(26 reached, 22 derived), add26, CV62 and This64 pass at `fab1ea9c`; the latter
+three are all reached. Counts include four source setups. Native's informational
+anticipation-suffix miss and prior hook cuts remain frozen.
+[Type-presence review](coverage/semantics/virtual-get-hook-type-presence-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

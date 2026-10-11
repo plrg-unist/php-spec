@@ -120,10 +120,18 @@ final errors keep their existing priority. Unresolved comparisons defer to the
 hook-link refusal rather than becoming a known-incompatible fatal. Three originals
 and four separate state cuts are recorded in the
 [covariance review](../../coverage/semantics/virtual-get-hook-covariance-review.json).
+In this public get-only virtual scope, removing the inherited type removes the
+synthesized getter return annotation and raises its compatibility fatal at the
+child hook line. A typed child overriding an untyped parent preserves the later property
+TYPE-presence fatal at the class line. Both-untyped overrides keep their empty
+return annotation, child/private scope and inherited `$this` dispatch without
+physical storage. Three originals and four separate compiler/dispatch state cuts
+are recorded in the
+[type-presence review](../../coverage/semantics/virtual-get-hook-type-presence-review.json).
 The hook linker still refuses ordinary-parent hooks, plain redeclarations and
 backed children of virtual parents. Physical backing retains invariant types;
-typed/untyped mismatches, broader type equivalence and wider hook variance remain
-required.
+backed-property type-presence changes, broader type equivalence and wider hook
+variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 other inheritance/traits, temporary/computed receivers, other compound operators/RHS
