@@ -1,0 +1,42 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "2b8e2d776f9d0ffaa9b73ae9741920af82e79c2733380a61d84cf8ccd86a4c3a",
+  "cases": [
+    {
+      "id": "scalar-dispatch",
+      "source": "<?php\nclass VirtualOverrideParent39 {\n    public int $value { get => $this->answer(); }\n    private function answer() {\n        echo \"P:\", __CLASS__, \"/\", static::class, \"|\";\n        return 7;\n    }\n    public function parentRead() { return $this->value; }\n    public function parentWrite($value) { $this->value = $value; }\n}\nclass VirtualOverrideBridge39 extends VirtualOverrideParent39 {\n    private function answer() { echo \"BADBRIDGE|\"; return 500; }\n}\nclass VirtualOverrideChild39 extends VirtualOverrideBridge39 {\n    public int $value { get => $this->answer(); }\n    private function answer() {\n        echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n        return 13;\n    }\n}\nclass VirtualOverrideGrand39 extends VirtualOverrideChild39 {\n    private function answer() { echo \"BADGRAND|\"; return 900; }\n}\nclass VirtualOverrideUntypedParent39 {\n    public $value { get => false; }\n}\nclass VirtualOverrideUntypedChild39 extends VirtualOverrideUntypedParent39 {\n    public $value { get => 0; }\n}\nfunction virtualOverrideRhs39() { echo \"R|\"; return 300; }\n$parent = new VirtualOverrideParent39;\necho ((array)$parent === [] ? \"PE|\" : \"BAD|\");\n$result = $parent->value;\necho \"P\", $result, \"|\";\n$child = new VirtualOverrideChild39;\necho ((array)$child === [] ? \"CE|\" : \"BAD|\");\n$result = $child->value;\necho \"C\", $result, \"|\";\ntry { $child->value = 200; }\ncatch (Error $error) { echo $error->getMessage(), \":\", $error->getLine(), \"|\"; }\necho ((array)$child === [] ? \"CWE|\" : \"BAD|\");\n$grand = new VirtualOverrideGrand39;\necho ((array)$grand === [] ? \"GE|\" : \"BAD|\");\n$result = $grand->parentRead();\necho \"T\", $result, \"|\";\necho ((array)$grand === [] ? \"RE|\" : \"BAD|\");\ntry { $grand->value = virtualOverrideRhs39(); }\ncatch (Error $error) { echo $error->getMessage(), \":\", $error->getLine(), \"|\"; }\necho ((array)$grand === [] ? \"WE|\" : \"BAD|\");\n$result = $grand->value;\necho \"W\", $result, \"|\";\ntry { $grand->parentWrite(400); }\ncatch (Error $error) { echo $error->getMessage(), \":\", $error->getLine(), \"|\"; }\necho ((array)$grand === [] ? \"TE|\" : \"BAD|\");\n$untyped = new VirtualOverrideUntypedChild39;\necho ((array)$untyped === [] ? \"UE|\" : \"BAD|\");\n$result = $untyped->value;\necho ($result === 0 ? \"ZERO|\" : \"BAD|\");\ntry { $untyped->value = 5; }\ncatch (Error $error) { echo $error->getMessage(), \":\", $error->getLine(), \"|\"; }\necho ((array)$untyped === [] ? \"UWE|\" : \"BAD|\");\n",
+      "source_sha256": "cb4dd5433659ca3b831589ed5ef96a608fb60e9334a01a616580dcc519a02718",
+      "stdout_base64": "UEV8UDpWaXJ0dWFsT3ZlcnJpZGVQYXJlbnQzOS9WaXJ0dWFsT3ZlcnJpZGVQYXJlbnQzOXxQN3xDRXxDOlZpcnR1YWxPdmVycmlkZUNoaWxkMzkvVmlydHVhbE92ZXJyaWRlQ2hpbGQzOXxDMTN8UHJvcGVydHkgVmlydHVhbE92ZXJyaWRlQ2hpbGQzOTo6JHZhbHVlIGlzIHJlYWQtb25seTozOXxDV0V8R0V8QzpWaXJ0dWFsT3ZlcnJpZGVDaGlsZDM5L1ZpcnR1YWxPdmVycmlkZUdyYW5kMzl8VDEzfFJFfFJ8UHJvcGVydHkgVmlydHVhbE92ZXJyaWRlR3JhbmQzOTo6JHZhbHVlIGlzIHJlYWQtb25seTo0N3xXRXxDOlZpcnR1YWxPdmVycmlkZUNoaWxkMzkvVmlydHVhbE92ZXJyaWRlR3JhbmQzOXxXMTN8UHJvcGVydHkgVmlydHVhbE92ZXJyaWRlR3JhbmQzOTo6JHZhbHVlIGlzIHJlYWQtb25seTo5fFRFfFVFfFpFUk98UHJvcGVydHkgVmlydHVhbE92ZXJyaWRlVW50eXBlZENoaWxkMzk6OiR2YWx1ZSBpcyByZWFkLW9ubHk6NTl8VVdFfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-get-hook-override39-native2-6f2a0d74",
+      "native_raw_sha256": "2b8e2d776f9d0ffaa9b73ae9741920af82e79c2733380a61d84cf8ccd86a4c3a"
+    },
+    {
+      "id": "returned-payload-lifetime",
+      "source": "<?php\nclass VirtualOverrideLeaf39 {\n    public $tag;\n    public function __destruct() { echo \"D\", $this->tag, \"|\"; }\n}\nfunction virtualOverrideFresh39($tag) {\n    global $weak_leaf;\n    echo \"G\", $tag, \"|\";\n    $leaf = new VirtualOverrideLeaf39;\n    $leaf->tag = $tag;\n    $weak_leaf = WeakReference::create($leaf);\n    return $leaf;\n}\nclass VirtualOverrideLifeParent39 {\n    public mixed $value { get => virtualOverrideFresh39(\"P\"); }\n    public function parentRead() { return $this->value; }\n    public function __destruct() { echo ((array)$this === [] ? \"BEMPTY|\" : \"BAD|\"); }\n}\nclass VirtualOverrideLifeBridge39 extends VirtualOverrideLifeParent39 {}\nclass VirtualOverrideLifeChild39 extends VirtualOverrideLifeBridge39 {\n    public mixed $value { get => virtualOverrideFresh39(\"C\"); }\n}\nclass VirtualOverrideLifeGrand39 extends VirtualOverrideLifeChild39 {}\n$box = new VirtualOverrideLifeGrand39;\n$weak_box = WeakReference::create($box);\necho ((array)$box === [] ? \"EMPTY|\" : \"BAD|\");\n$kept = $box->parentRead();\necho \"H\", $kept->tag, \"|\";\necho ((array)$box === [] ? \"READ_EMPTY|\" : \"BAD|\");\ntry { $box->value = 7; }\ncatch (Error $error) { echo $error->getMessage(), \":\", $error->getLine(), \"|\"; }\necho ((array)$box === [] ? \"STILL_EMPTY|\" : \"BAD|\");\necho ($weak_leaf->get() === null ? \"N|\" : \"LIVE|\");\nunset($box);\necho ($weak_box->get() === null ? \"BN|\" : \"BL|\");\necho ($weak_leaf->get() === null ? \"N|\" : \"LIVE|\");\nunset($kept);\necho ($weak_leaf->get() === null ? \"N|\" : \"LIVE|\");\n",
+      "source_sha256": "5c408e33ecbefa9eca3e9f73fbb284238bb3cffd8ac9b64f5cfcf65e3289181f",
+      "stdout_base64": "RU1QVFl8R0N8SEN8UkVBRF9FTVBUWXxQcm9wZXJ0eSBWaXJ0dWFsT3ZlcnJpZGVMaWZlR3JhbmQzOTo6JHZhbHVlIGlzIHJlYWQtb25seTozMHxTVElMTF9FTVBUWXxMSVZFfEJFTVBUWXxCTnxMSVZFfERDfE58",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-get-hook-override39-native2-6f2a0d74",
+      "native_raw_sha256": "2b8e2d776f9d0ffaa9b73ae9741920af82e79c2733380a61d84cf8ccd86a4c3a"
+    }
+  ]
+}
