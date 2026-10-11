@@ -240,7 +240,10 @@ def $iterator_unpack_scalar_operand(S, KNOWN pvalue) = $iterator_unpack_scalar(p
   -- if $string_bytes(pvalue) = eps
 def $iterator_unpack_scalar_operand(S, KNOWN (PSTRING n*)) = $startup_bytes(n*)
 def $iterator_unpack_scalar_operand(S, KNOWN (PSTRING_CARRIER pstringidentity n*)) = $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*)
-def $iterator_unpack_scalar_operand(S, REFERENCE n) = $iterator_unpack_scalar(pvalue) -- if S.STORE[n] = DEFINED pvalue
+def $iterator_unpack_scalar_operand(S, REFERENCE n) = $iterator_unpack_scalar(pvalue)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $string_bytes(pvalue) = eps
+def $iterator_unpack_scalar_operand(S, REFERENCE n) = $startup_bytes(n_bytes*) -- if S.STORE[n] = DEFINED (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $iterator_unpack_scalar_operand(S, poperand) = false -- otherwise
 def $iterator_unpack_warning_message(S, piteratorunpack) = $ptascii("Cannot pass by-reference argument ") ++ $ntunsigned($(n + 1)) ++ $ptascii(" of ") ++ pfunction.NAME ++ $ptascii("() by unpacking a Traversable, passing by-value instead")
   -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)

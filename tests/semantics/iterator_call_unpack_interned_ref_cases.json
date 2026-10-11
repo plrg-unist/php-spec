@@ -1,0 +1,55 @@
+[
+  {
+    "id": "iterator-call-unpack-interned-ref-key-handler-literals",
+    "source": "<?php\n$suffix = 3;\n$source = \"literal\";\n$failure = new Exception(\"stop\", 51);\nclass StringIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { global $source; echo \"K|\"; $source = \"key\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction StringTarget21(&$item) { echo \"B|\", $item, \"|\"; $item = \"callee\"; echo \"F|\", $item, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = \"handler\";\n    return true;\n});\nStringTarget21(...new StringIterator21());\necho \"M|\", $source, \"|E\";\n",
+    "source_sha256": "c448fa23f7001f3209001d7bbf17c7bead04b67e147ccb6bdd656564c0f28644",
+    "purpose": "reference key handler literals",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of StringTarget21() by unpacking a Traversable, passing by-value instead|21|X|V|I|B|handler|F|callee|M|handler|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-interned-ref-named-variadic",
+    "source": "<?php\n$suffix = 3;\n$source = \"literal\";\n$failure = new Exception(\"stop\", 51);\nclass StringIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { global $source; echo \"K|\"; $source = \"key\"; return \"named\"; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction StringTarget21(&...$items) { echo \"B|\", $items[\"named\"], \"|\"; $items[\"named\"] = \"callee\"; echo \"F|\", $items[\"named\"], \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = \"handler\";\n    return true;\n});\nStringTarget21(...new StringIterator21());\necho \"M|\", $source, \"|E\";\n",
+    "source_sha256": "8043b2112c9350925335fedb8ec2a74ffbe9db20ced552757d8bae93922cfb4d",
+    "purpose": "reference named variadic",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of StringTarget21() by unpacking a Traversable, passing by-value instead|21|X|V|I|B|handler|F|callee|M|handler|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-interned-ref-fiber-resume",
+    "source": "<?php\n$suffix = 3;\n$source = \"literal\";\n$failure = new Exception(\"stop\", 51);\nclass StringIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { global $source; echo \"K|\"; $source = \"key\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction StringTarget21(&$item) { echo \"B|\", $item, \"|\"; $item = \"callee\"; echo \"F|\", $item, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try {\n        StringTarget21(...new StringIterator21());\n    } catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"A\", $fiber->start(), \"|\";\n$source = \"main\";\n$fiber->resume();\necho \"M|\", $source, \"|E\";\n",
+    "source_sha256": "1cdb5537ef4a49815566e19da4140c58dd25569b82b4f5ce1ae3009d022fddd0",
+    "purpose": "reference fiber resume",
+    "expected_model": "normal",
+    "native_stdout": "AW|V|C|K|H|2|Cannot pass by-reference argument 1 of StringTarget21() by unpacking a Traversable, passing by-value instead|23|P|X|V|I|B|main|F|callee|FIB|M|main|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-interned-ref-fiber-throw",
+    "source": "<?php\n$suffix = 3;\n$source = \"literal\";\n$failure = new Exception(\"stop\", 51);\nclass StringIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { global $source; echo \"K|\"; $source = \"key\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction StringTarget21(&$item) { echo \"B|\", $item, \"|\"; $item = \"callee\"; echo \"F|\", $item, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try {\n        StringTarget21(...new StringIterator21());\n    } catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"A\", $fiber->start(), \"|\";\n$source = \"main\";\n$fiber->throw($failure);\necho \"M|\", $source, \"|E\";\n",
+    "source_sha256": "5f03ba3db1abc9d391f6b15b37173171816e289be93dfa95ba4e8464a275506a",
+    "purpose": "reference fiber throw",
+    "expected_model": "normal",
+    "native_stdout": "AW|V|C|K|H|2|Cannot pass by-reference argument 1 of StringTarget21() by unpacking a Traversable, passing by-value instead|23|P|I|T|51|FIB|M|main|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-interned-ref-request-reference-control",
+    "source": "<?php\n$suffix = 3;\n$source = \"old\" . $suffix;\n$failure = new Exception(\"stop\", 51);\nclass StringIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { global $source; echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction StringTarget21(&$item) { echo \"B|\", $item, \"|\"; $item = \"callee\"; echo \"F|\", $item, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\nStringTarget21(...new StringIterator21());\necho \"M|\", $source, \"|E\";\n",
+    "source_sha256": "0fc1039a0b7f5fde1ed11bddaffc33927942d1dede9d9ecd96ee5b7c8b1cc5bc",
+    "purpose": "request reference remains unsupported before warning; native handler leaves payload unchanged",
+    "expected_model": "unsupported",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of StringTarget21() by unpacking a Traversable, passing by-value instead|20|X|V|I|B|old3|F|callee|M|old3|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Iterator unpack by-reference raw payload",
+    "unsupported_stdout": "W|V|C|K|",
+    "unsupported_events": [{"tag": "OUTPUT", "args": [["87", "124"]]}, {"tag": "OUTPUT", "args": [["86", "124"]]}, {"tag": "OUTPUT", "args": [["67", "124"]]}, {"tag": "OUTPUT", "args": [["75", "124"]]}]
+  }
+]

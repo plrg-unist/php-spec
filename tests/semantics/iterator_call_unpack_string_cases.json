@@ -44,25 +44,19 @@
     "source": "<?php\n$suffix = 3;\n$source = \"literal\";\n$failure = new Exception(\"stop\", 51);\nclass StringIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { global $source; echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction StringTarget21(&$item) { echo \"B|\", $item, \"|\"; $item = \"callee\"; echo \"F|\", $item, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\nStringTarget21(...new StringIterator21());\necho \"M|\", $source, \"|E\";\n",
     "source_sha256": "44d7148c0c4210a7fc7cc34c1696371cee1b14abdf9cbbb0b78cf110ccecc342",
     "purpose": "reference interned control",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of StringTarget21() by unpacking a Traversable, passing by-value instead|20|X|V|I|B|literal|F|callee|M|literal|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "Iterator unpack by-reference raw payload",
-    "unsupported_stdout": "W|V|C|K|",
-    "unsupported_events": [{"tag": "OUTPUT", "args": [["87", "124"]]}, {"tag": "OUTPUT", "args": [["86", "124"]]}, {"tag": "OUTPUT", "args": [["67", "124"]]}, {"tag": "OUTPUT", "args": [["75", "124"]]}]
+    "native_exit": 0
   },
   {
     "id": "iterator-call-unpack-string-scalar-to-interned-control",
     "source": "<?php\n$suffix = 3;\n$source = 5;\n$failure = new Exception(\"stop\", 51);\nclass StringIterator21 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { global $source; echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction StringTarget21(&$item) { echo \"B|\", $item, \"|\"; $item = \"callee\"; echo \"F|\", $item, \"|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = \"literal\";\n    return true;\n});\nStringTarget21(...new StringIterator21());\necho \"M|\", $source, \"|E\";\n",
     "source_sha256": "6fb706ecb9add54062a87852a096cca26bb71efd043f19c470d172d4fb0b3620",
     "purpose": "scalar to interned control",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of StringTarget21() by unpacking a Traversable, passing by-value instead|21|X|V|I|B|literal|F|callee|M|literal|E",
     "native_stderr": "",
-    "native_exit": 0,
-    "unsupported_reason": "Iterator unpack by-reference raw payload",
-    "unsupported_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of StringTarget21() by unpacking a Traversable, passing by-value instead|21|",
-    "unsupported_events": [{"tag": "OUTPUT", "args": [["87", "124"]]}, {"tag": "OUTPUT", "args": [["86", "124"]]}, {"tag": "OUTPUT", "args": [["67", "124"]]}, {"tag": "OUTPUT", "args": [["75", "124"]]}, {"tag": "OUTPUT", "args": [["72", "124"]]}, {"tag": "OUTPUT", "args": [["50"]]}, {"tag": "OUTPUT", "args": [["124"]]}, {"tag": "OUTPUT", "args": [["67", "97", "110", "110", "111", "116", "32", "112", "97", "115", "115", "32", "98", "121", "45", "114", "101", "102", "101", "114", "101", "110", "99", "101", "32", "97", "114", "103", "117", "109", "101", "110", "116", "32", "49", "32", "111", "102", "32", "83", "116", "114", "105", "110", "103", "84", "97", "114", "103", "101", "116", "50", "49", "40", "41", "32", "98", "121", "32", "117", "110", "112", "97", "99", "107", "105", "110", "103", "32", "97", "32", "84", "114", "97", "118", "101", "114", "115", "97", "98", "108", "101", "44", "32", "112", "97", "115", "115", "105", "110", "103", "32", "98", "121", "45", "118", "97", "108", "117", "101", "32", "105", "110", "115", "116", "101", "97", "100"]]}, {"tag": "OUTPUT", "args": [["124"]]}, {"tag": "OUTPUT", "args": [["50", "49"]]}, {"tag": "OUTPUT", "args": [["124"]]}]
+    "native_exit": 0
   }
 ]
