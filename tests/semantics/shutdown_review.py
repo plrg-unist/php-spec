@@ -87,7 +87,8 @@ def run(match, exclude_matches, start_at, native_only, native_reports):
                   and nerr == row['stderr'].replace('{file}', str(source)).encode())
         result = {'id': row['id'], 'native': native, 'passed': passed}
         if passed and not native_only:
-            model_command = [ROOT / 'bin/php-semantics', source, '--steps', '100000', '--timeout', '60']
+            model_cap = row.get('timeout', 60)
+            model_command = [ROOT / 'bin/php-semantics', source, '--steps', '100000', '--timeout', str(model_cap)]
             if 'request' in row:
                 request = dict(row['request'])
                 filename = base64.b64encode(os.fsencode(source)).decode()
@@ -97,7 +98,7 @@ def run(match, exclude_matches, start_at, native_only, native_reports):
                 model_command.extend(['--request-context', context])
                 result.update(request=request, request_scope=row['request_scope'])
             model = recorded(model_command,
-                             directory, 'model', environment, 75)
+                             directory, 'model', environment, model_cap + 15)
             try:
                 actual = json.loads((directory / 'model.stdout').read_bytes())
             except ValueError:
