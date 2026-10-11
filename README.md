@@ -1363,15 +1363,18 @@ call-order publication and fresh defaults. The earlier
 retains fatal redeclaration before another allocation.
 The earlier Block Closure join of 375 modules over 92f726a3 passes strict3 at
 fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
-Both factory kinds also admit authenticated nested `if` hosts and standalone
-Block chains before the host or inside its main, `elseif` and `else` bodies.
-Anonymous names preexist selected publication/creation, including skipped hosts.
-The [nested-host review](coverage/semantics/anonymous-nested-branch-rtd-review.json)
-binds three originals to actual branch selection, publication, capture and
-saved-frame allocation; guarded repeats preserve fresh defaults. Fixtures stop
-after their required allocations.
-The 375 join over f37653ce retains the tested 4ea0db1d strict3 (5.972s) after
-review of the guarded GC and Iterator changes, with no current actor or replay.
+Both factory kinds also admit direct bodies of authentic `while` statements at
+root or valid namespaces, with standalone Block ancestry before the host.
+Anonymous names exist before callable publication or Closure creation, including
+skipped false loops. Repeated assignment creates two distinct Closure instances
+from one compiled template; guarded calls retain one named-class publication and
+fresh defaults. Reexecuting an unguarded function declaration at the same source
+fails; the fatal probe reaches this before any factory body call.
+The [While review](coverage/semantics/anonymous-while-factory-rtd-review.json)
+binds four exact originals, genuine loop selection and publication/allocation
+frontiers; state fixtures stop after their required allocation or direct fatal.
+The earlier [nested-host review](coverage/semantics/anonymous-nested-branch-rtd-review.json)
+retains source3/state882 and its strict reuse over f37653ce, without replay.
 The earlier [branch-body Block review](coverage/semantics/anonymous-branch-block-rtd-review.json)
 retains its private cuts and ae8b65a9/d3beefe6 strict join without replay.
 The earlier [Block-host review](coverage/semantics/anonymous-block-branch-rtd-review.json)

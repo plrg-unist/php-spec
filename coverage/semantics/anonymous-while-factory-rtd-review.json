@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables directly in authentic While bodies. Hosts require root/valid-namespace and standalone Block ancestry; conditional/nested While hosts, additional body Blocks, other loops, nested functions/Closures and wider targets/captures/signatures remain Unsupported. Earlier anonymous-only contexts are preserved.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_while_factory_class_cases.json"
+  },
+  "semantic_revision": "ff82bb60754a08bd79a87ab015f58e115d2e797c",
+  "private_base": "831868976bc251a18dda2fdb682e6d314ffe7832",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "A new placement helper requires length>=3 before matching the known trailing FIELD1/INDEX suffix, authenticates the actual While host through top_path and checks terminal presence. Its OR occurs only in the unchanged complete named-function and ordinary-variable Closure-assignment/signature callers. Existing conditional recursion, class/count/EARLY/source/CODE/name receipts, runtime/publication, schema and manifest are unchanged.",
+    "publication": "Anonymous names precede callable publication or Closure creation even for false loops. Real While entry/test/CHOOSE consumes each selected predicate before publication/creation. Executed function statements append CALLABLES/PDRFUNCTION; Closure creation/capture makes a REALCLOSURE instance from its compiled template. Repeated assignment retains two distinct instances of that same template and calls the actual first or second CLOSURE_TARGET. Calls publish empty named classes with PDRCLASS/CCLINK under genuine current/callsites/saved frames. Guarded repeats retain one publication and first9/fresh0 defaults. The fatal probe repeats the same unguarded function declaration and produces immediate FATAL6 before any factory body call; no inner named-class publication, second allocation or shutdown cleanup claim.",
+    "boundary": "Historical35 loop negatives retain their original cut and are superseded only for authenticated direct While bodies. Placement helpers alone certify placement/presence, not complete factory signatures/statements or canonical occurrences. Namespace-helper-alone terminal and zero-cost ordering limits remain; terminal constructor receipts accept older allocated same-class objects."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_while compiles the body before the predicate; class sites in false bodies still consume the shared compile-order RTD counter.",
+    "vendor/php-src/Zend/zend_compile.c: zend_begin_func_decl emits deferred ZEND_DECLARE_FUNCTION/ZEND_DECLARE_LAMBDA_FUNCTION; each selected Closure execution creates an instance from its compiled function.",
+    "Existing 47 While compiler, 50 LOOP_TEST/CHOOSE/LOOP_NEXT, 80 callable activation, 116 Closure creation/capture and 190/196 publication causes are reused; 184 appends CCLINK even for an empty named class."
+  ],
+  "native_cut": {
+    "revision": "831868976bc251a18dda2fdb682e6d314ffe7832",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-while-factory-native-36/run-v1/report.json",
+    "originals": 4,
+    "normal": 3,
+    "fatal": 1,
+    "exit_statuses": [
+      0,
+      0,
+      0,
+      255
+    ]
+  },
+  "source_cuts": [
+    {
+      "revision": "ff82bb60754a08bd79a87ab015f58e115d2e797c",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-while-factory-model-36/run-v1/report.json",
+      "accepted_groups": [
+        "while-factory-reversed",
+        "while-factory-repeated",
+        "while-factory-prior-deferred",
+        "while-factory-redeclare"
+      ],
+      "native_agreements": 4,
+      "normal": 3,
+      "php_error": 1,
+      "seconds": [
+        17.241934917867184,
+        42.6829435583204,
+        62.455214535817504,
+        6.5259415581822395
+      ],
+      "semantic_caps_seconds": [
+        45,
+        45,
+        90,
+        45
+      ],
+      "host_caps_seconds": [
+        55,
+        55,
+        100,
+        55
+      ]
+    }
+  ],
+  "strict": {
+    "revision": "ff82bb60754a08bd79a87ab015f58e115d2e797c",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-while-factory-gate-36/report.json",
+    "premises": 3,
+    "seconds": 5.875553846359253
+  },
+  "state_revision": "ff82bb60754a08bd79a87ab015f58e115d2e797c",
+  "state_cuts": [
+    {
+      "group": "reversed",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-while-factory-state-36/report.json",
+      "checks": 282,
+      "setup_source_frontier_checks": 274,
+      "pure_queries": 8,
+      "PhpSteps": 13,
+      "seconds": 35.616952657699585
+    },
+    {
+      "group": "repeated",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-while-factory-state-36/report.json",
+      "checks": 434,
+      "setup_source_frontier_checks": 424,
+      "pure_queries": 10,
+      "PhpSteps": 19,
+      "seconds": 118.63996982574463
+    },
+    {
+      "group": "redeclare",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-while-factory-state-36/report.json",
+      "checks": 68,
+      "setup_source_frontier_checks": 66,
+      "pure_queries": 2,
+      "PhpSteps": 2,
+      "seconds": 7.127121686935425
+    },
+    {
+      "group": "prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-while-factory-peer-state-36/report.json",
+      "checks": 223,
+      "setup_source_frontier_checks": 206,
+      "pure_queries": 17,
+      "PhpSteps": 9,
+      "seconds": 89.94345688819885
+    }
+  ],
+  "state_totals": {
+    "checks": 1007,
+    "setup_source_frontier_checks": 970,
+    "pure_queries": 37,
+    "PhpSteps": 43
+  },
+  "state_method": "Four While entries, six LOOP_TEST and six CHOOSE transitions (including authentic false-loop skipping), four callable publications, eight Closure creation/capture steps, five class publications with exact PDRCLASS/CCLINK, eight anonymous allocations, one eligible case-class whole-state no-op and one immediate same-source fatal. Source hosts, initialized CV or compiled false predicates, genuine targets/templates/current/callsites/saved frames and first-versus-second Closure receivers are authenticated. Owned preliminary Error objects remain unrestricted. Fixtures stop at required allocation or direct fatal; complete outcomes belong to original source/native comparisons. Thirty-seven pure placement/prefix/receipt/cause premises remain separate; these counts are not unique PHP behaviours.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-while-factory-state-36/preparation.json",
+    "checked_originals": 4,
+    "frontend_adapter_workers": 8,
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-while-factory-state-36/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-while-factory-peer-state-36/report-elab.json"
+    ],
+    "runtime_credit": 0
+  },
+  "validation": "Closed records preserve exact original bytes/profile/file/cwd/streams, executed identities and stable watched inputs. Native normal3/fatal255 and source4 agree byte-exactly; native fatal cleanup is 255, while all strict/state/elaboration and model host exits+cleanup are 0 with empty owned groups/no unrun. Serial jobs1: PHP55s; normal first2 and fatal semantic45s/host55s, prior semantic90s/host100s with 100000 steps; syntax Worker30s, EL30s, strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Large raw evidence remains ignored outside Git.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_while_factory_class_cases.json",
+    "cases": 4,
+    "runner": "tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_while_factory_class_cases.json",
+    "scope": "Metadata-only publication of unchanged originals adds no execution credit; hashes identify retained immutable native START records. Fatal FILE-template expansion preserves the original native path."
+  },
+  "remaining": [
+    "Conditional/nested While hosts, additional Blocks between While body and factory, other loops, nested functions/Closures and wider signatures/Closure targets/captures; wider named bodies/modifiers and complete RTD/publication ordering.",
+    "Include/eval units, parents/interfaces/attributes, broader anonymous members/defaults/consumers and constructor arguments/types/nonpublic access."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "failures": [],
+  "independent_review": "comp_review_21 accepted exact383, native/source4/strict3, author784 and focused independent223 including skipped factories, true and false loop selection, two instances of one template, qualified prior-deferred/early case ownership and same-source fatal. An unrun compiled_read shape was corrected during peer preflight before any actor; it is not an executed failure. Raw closed results and final metadata receive independent review before integration."
+}

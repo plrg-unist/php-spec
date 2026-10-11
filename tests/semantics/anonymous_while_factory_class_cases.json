@@ -1,0 +1,64 @@
+{
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables directly in authentic While bodies. The host may occur at root or valid namespace body through standalone Block ancestry. Exact original file/cwd/profile observations distinguish anonymous availability before callable publication or Closure creation, skipped false-loop factories, reverse class publication, two Closure instances from one compiled template, qualified prior-deferred versus early case ownership, guarded defaults/lexical namespaces and a duplicate function declaration at the same source on its second iteration before either body runs. Named descendants in factories under conditional/nested While hosts, additional Blocks between the While body and factory, other loops, nested functions/Closures or wider signatures/targets/captures remain Unsupported; earlier anonymous-only contexts are preserved.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "while-factory-reversed",
+      "source": "<?php\n$leftReady = true; $rightReady = true; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':11$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':18$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeWhileLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\nwhile ($leftReady) {\n    function makeWhileLeft() {\n        class WhileLeftPublished {}\n        return new class { public function kind() { return 'left'; } };\n    }\n    $leftReady = false;\n}\nwhile ($rightReady) {\n    $rightFactory = static function () {\n        class WhileRightPublished {}\n        return new class { public function kind() { return 'right'; } };\n    };\n    $rightReady = false;\n}\n$right = $rightFactory(); $rightNamed = new WhileRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'WhileRightPublished' ? 'right|' : 'BAD|';\ntry { new WhileLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeWhileLeft(); $leftNamed = new WhileLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'WhileLeftPublished' ? 'left|' : 'BAD|';\necho !$leftReady && !$rightReady && $before !== $left && $rightBefore !== $right && $right !== $left ? 'fresh' : 'BAD';\n",
+      "source_sha256": "69e64c928df9be39824be2eabb46695129cd0435610332920878732e3ff7b54d",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-factory-native-36/run-v1/while-factory-reversed/command.json",
+      "native_raw_sha256": "0f8f3c8e0dfe13adeededa87ce3cf9adc4776f7f7442c703c7a13c7f6e46f020"
+    },
+    {
+      "id": "while-factory-repeated",
+      "source": "<?php\nnamespace RepeatWhileSide;\n$functionReady = true; $functionSeen = false; $closureSeen = false; $i = 0; $make = null; $previous = null;\n$functionName = 'class@anonymous' . \"\\0\" . __FILE__ . ':12$1';\n$closureName = 'class@anonymous' . \"\\0\" . __FILE__ . ':22$3';\n$before = new $functionName; $closureBefore = new $closureName;\necho $before->value === 0 && $closureBefore->value === 0 && $make === null ? 'before|' : 'BAD|';\nwhile ($functionReady) {\n    function makeRepeatWhile() {\n        global $functionSeen;\n        if (!$functionSeen) { $functionSeen = true; class FunctionPublished {} }\n        return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n    }\n    $functionReady = false;\n}\n{\n    while ($i < 2) {\n        $previous = $make;\n        $make = static function () {\n            global $closureSeen;\n            if (!$closureSeen) { $closureSeen = true; class ClosurePublished {} }\n            return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n        };\n        $i = $i + 1;\n    }\n}\necho $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatWhileCaller;\n$functionFirst = \\RepeatWhileSide\\makeRepeatWhile(); $closureFirst = $previous();\n$functionNamed = new \\RepeatWhileSide\\FunctionPublished; $closureNamed = new \\RepeatWhileSide\\ClosurePublished;\necho $functionFirst::class === $functionName && $closureFirst::class === $closureName && $functionFirst->space() === 'RepeatWhileSide' && $closureFirst->space() === 'RepeatWhileSide' ? 'first|' : 'BAD|';\n$functionFirst->value = 9; $closureFirst->value = 9;\n$functionSecond = \\RepeatWhileSide\\makeRepeatWhile(); $closureSecond = $make();\necho $functionSecond->space() === 'RepeatWhileSide' && $closureSecond->space() === 'RepeatWhileSide' && $functionSecond->value === 0 && $closureSecond->value === 0 ? 'second|' : 'BAD|';\necho $functionSeen && $closureSeen && $before !== $functionFirst && $closureBefore !== $closureFirst && $functionFirst !== $functionSecond && $closureFirst !== $closureSecond ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $functionFirst->value . ':' . $functionSecond->value . ':' . $closureBefore->value . ':' . $closureFirst->value . ':' . $closureSecond->value;\n",
+      "source_sha256": "e64d1fcc036d84aa4b6ad8669001740abaa8b67c9fd56aa8d2ba4241a57d6f37",
+      "stdout_base64": "YmVmb3JlfHRlbXBsYXRlc3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA6MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-factory-native-36/run-v1/while-factory-repeated/command.json",
+      "native_raw_sha256": "fe9994789c040ff82ff4029264376b166f9faf09d1e5a280826ad93aee47b115"
+    },
+    {
+      "id": "while-factory-prior-deferred",
+      "source": "<?php\nnamespace WhileSelectedSide;\n$functionName = \"class@anonymous\\0\" . __FILE__ . \":12\\$5\";\n$closureName = \"class@anonymous\\0\" . __FILE__ . \":17\\$7\";\n$make = null; $never = null; $seen = false; $take = true;\n$before = new $functionName(); $closureBefore = new $closureName(); $early = new Exception();\necho $before::class === $functionName && $closureBefore::class === $closureName && $early::class === 'WhileSelectedSide\\\\eXcEpTiOn' && $make === null ? 'before|' : 'BAD|';\nwhile (false) { function skippedWhileFactory() { class SkippedFunction {} return new class {}; } }\nwhile (false) { $never = static function () { class SkippedClosure {} return new class {}; }; }\ntry { chosenWhileFactory(); } catch (\\Error $error) { echo 'missing|'; }\nwhile ($take) { $take = false; function chosenWhileFactory() { if (false) { class Exception {} }\n    return new class { public $value = 0; };\n} }\n$take = true;\nwhile ($take) { $take = false;\n    $make = static function () { global $seen; if (!$seen) { $seen = true; class Published {} }\n        return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n    };\n}\nclass eXcEpTiOn {}\nnamespace WhileSelectedCaller;\n$chosen = \\WhileSelectedSide\\chosenWhileFactory(); $first = $make(); $published = new \\WhileSelectedSide\\Published();\necho $chosen::class === $functionName && $first::class === $closureName && $first->space() === 'WhileSelectedSide' && $published::class === 'WhileSelectedSide\\\\Published' && $never === null ? 'first|' : 'BAD|';\n$chosen->value = 9; $first->value = 9; $again = \\WhileSelectedSide\\chosenWhileFactory(); $second = $make();\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = \"class@anonymous\\0\" . __FILE__ . ':' . $lastLine . '$8';\necho $last::class === $lastName ? 'last|' : 'BAD|';\ntry { \\WhileSelectedSide\\skippedWhileFactory(); } catch (\\Error $error) { echo 'skipped|'; }\necho $seen && $chosen !== $again && $first !== $second && $again->value === 0 && $chosen->value === 9 && $second->value === 0 && $first->value === 9 ? 'fresh' : 'BAD';\n",
+      "source_sha256": "69fbb839310d888de17b44ef2aba22e6a9249e2a236829f8b86c8f7c74ab9881",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8bGFzdHxza2lwcGVkfGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-factory-native-36/run-v1/while-factory-prior-deferred/command.json",
+      "native_raw_sha256": "5ae0f8eb18f93192b1806a1e9947b08e38a406ff792f1dbb8d12bf360b7db343"
+    },
+    {
+      "id": "while-factory-redeclare",
+      "source": "<?php\n$i = 0;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':8$1';\n$before = new $name; echo $before::class === $name ? 'before|' : 'BAD|';\nwhile ($i < 2) {\n    function OnceWhileFactory() {\n        class NeverInvokedWhileInner {}\n        return new class {};\n    }\n    echo 'published|';\n    $i = $i + 1;\n}\necho 'BAD';\n",
+      "source_sha256": "1e43d7ebedcead7ca60ea8b1844e7ec449c0a5c9175115762b2892d051b7ad7d",
+      "stdout_base64": "YmVmb3JlfHB1Ymxpc2hlZHw=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCByZWRlY2xhcmUgZnVuY3Rpb24gT25jZVdoaWxlRmFjdG9yeSgpIChwcmV2aW91c2x5IGRlY2xhcmVkIGluIHtGSUxFfTo2KSBpbiB7RklMRX0gb24gbGluZSA2ClN0YWNrIHRyYWNlOgojMCB7bWFpbn0K",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-factory-native-36/run-v1/while-factory-redeclare/command.json",
+      "native_raw_sha256": "aaee96bae3e5d8a3fbfa639266d7479bc2eeb91ddb618b910b94f246d7020c68"
+    }
+  ]
+}

@@ -23,22 +23,27 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
-assignments now admit plain empty named descendants under authenticated nested
-If hosts, retaining actual main/elseif/else and standalone Block ancestry at root
-or valid namespaces. Three originals agree at 4ea0db1d /375 (strict3 5.972s):
-anonymous identities precede selected publication/creation, skipped outer hosts
-preserve missing callables, and mixed calls retain call-order publication and
-fresh defaults. Author654 and independent228 pass 882 premises: 848 setup/source
-frontier and 34 pure queries, with 34 actual PhpSteps for nested If/CHOOSE
-selection, Block entry, callable publication, Closure creation/capture, class
-PDRCLASS/CCLINK publication, eligible class no-op and saved-frame allocation.
-Fixtures stop after required allocations; syntax preparation and elaboration
-add no runtime credit. Loops, nested functions/Closures and wider signatures,
-targets/captures/consumers remain required.
-The 375 composition at 75edad90 over f37653ce reuses strict3 at tested
-4ea0db1d (5.972s). Independent review excludes the new terminal-GC and Iterator
-warning-hold guards; no datatype/interface change, current actor or private
-replay is involved. Native/source/state cuts retain their original revisions.
+assignments now admit plain empty named descendants directly in authentic While
+bodies, with root/valid-namespace and standalone Block host ancestry. Four exact
+originals agree at ff82bb60 /375 (strict3 5.876s): false loops retain anonymous
+identities without callable publication or Closure creation, reversed calls publish
+in call order, and repeated assignment creates two distinct REALCLOSURE instances
+from one compiled template. Guarded calls preserve one publication and fresh
+defaults; the fatal probe repeats the same-source function declaration on its
+second iteration before any factory body call (php_error/255).
+Author784 and independent223 pass 1007 premises: 970 setup/source frontier and
+37 pure queries, with 43 actual PhpSteps for While entry/test/CHOOSE, callable
+publication, creation/capture, PDRCLASS/CCLINK, eligible no-op, saved-frame allocation
+and the direct fatal. Fixtures stop after required allocation or fatal; syntax
+preparation/elaboration add no runtime credit. No executed COMP36 failures.
+Conditional/nested While hosts, additional body Blocks, other loops, nested
+functions/Closures and wider signatures/targets/captures remain required.
+[While ledger](coverage/semantics/anonymous-while-factory-rtd-review.json).
+
+The earlier nested-host cut retains source3/state882 and its 75edad90/f37653ce
+composition reusing strict3 at tested 4ea0db1d (5.972s), without a current actor
+or private replay. Historical loop exclusions are superseded only for authentic
+direct While bodies; other original cuts remain frozen.
 [Nested-host ledger](coverage/semantics/anonymous-nested-branch-rtd-review.json).
 
 The earlier branch-body Block cut retains source3/state784 and its original
