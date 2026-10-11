@@ -22,6 +22,20 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
+Bracketed namespaces now qualify plain empty named declarations alongside
+anonymous sites. Namespace body/root blocks retain early cost0; conditional
+declarations retain the prefix and cost1. Three fresh originals agree at
+6c8233e3 /375 (strict3 5.724s), including namespace-local `Exception`, same-short-name
+separation, an unnamed global namespace and shared cross-namespace counters.
+Author206 and independent99 pass 305 checks: 269 setup/source-frontier premises
+plus 36 pure queries, with 15 actual PhpSteps for block entry, qualified class
+no-op/publication and anonymous allocation. Syntax preparation/elaboration adds
+zero runtime credit; namespace lowering has no runtime namespace task. The initial
+duplicate fallback failed elaboration and retains zero credit; the explicit root
+guard fixes it. Unbracketed namespaces, named function/Closure descendants and
+wider named declarations/RTD ordering remain required.
+[Namespace-class ledger](coverage/semantics/anonymous-namespace-rtd-review.json).
+
 Standalone global blocks now preserve early class binding through each actual
 block ancestor; nested conditional blocks remain deferred. Three fresh originals
 agree at 7f52ed18 /375 (strict3 5.624s), including prior deferred same-name classes,

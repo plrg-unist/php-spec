@@ -1,0 +1,53 @@
+{
+  "scope": "Ordinary unit0 parentless anonymous classes mixed with plain empty named declarations in bracketed namespaces. Source-authenticated namespace body and root-block ancestry retain early binding/cost0; conditional declarations cost1 even when not executed. Qualified names separate namespace-local internal-looking and same-short-name classes; ABSENT global namespace and shared cross-namespace RTD counters are included. Wider contexts remain required.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-namespace-root",
+      "source": "<?php\nnamespace NamedRoot {\n    $early = new Early;\n    { { class Early {} } }\n    $firstLine = __LINE__ + 1;\n    $first = new class {\n        public $value = 0;\n        public function scope() { return self::class; }\n    };\n    class After {}\n    $secondLine = __LINE__ + 1;\n    $second = new class {};\n    $firstName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $firstLine . '$0';\n    $secondName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $secondLine . '$1';\n    echo $early::class === 'NamedRoot\\Early' ? 'early|' : 'BAD|';\n    echo $first::class === $firstName && $first->scope() === $firstName ? 'first|' : 'BAD|';\n    echo $second::class === $secondName ? 'second|' : 'BAD|';\n    $again = new $firstName;\n    $again->value = 9;\n    echo $again !== $first && $again::class === $firstName ? 'fresh|' : 'BAD|';\n    echo $first->value, ':', $again->value, '|';\n    $after = new After;\n    echo $after::class === 'NamedRoot\\After' ? 'named' : 'BAD';\n}\n",
+      "source_sha256": "49b9aa8ed0c72693b1f19daf4239eaafa1bfb3bb12b4c27d490d7df39d189d85",
+      "stdout_base64": "ZWFybHl8Zmlyc3R8c2Vjb25kfGZyZXNofDA6OXxuYW1lZA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-namespace-native-24/run-v1/anonymous-namespace-root/command.json",
+      "native_raw_sha256": "62debbafdd29a8a7794a0df8d69c41440dab76f6d8f3595cb3afae1e6379d89c"
+    },
+    {
+      "id": "anonymous-namespace-deferred",
+      "source": "<?php\nnamespace FirstSpace {\n    $first = new class {}; $firstName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . __LINE__ . '$0';\n    class Same {}\n    $namedFirst = new Same;\n    echo $first::class === $firstName && $namedFirst::class === 'FirstSpace\\Same' ? 'left|' : 'BAD|';\n}\nnamespace SecondSpace {\n    if (false) { { class Hidden {} } }\n    try { $missing = new Hidden; echo 'BAD|'; }\n    catch (\\Error $caught) { echo 'hidden|'; }\n    try { $missing = new Same; echo 'BAD|'; }\n    catch (\\Error $caught) { echo 'missing|'; }\n    $second = new class {}; $secondName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . __LINE__ . '$2';\n    echo $second::class === $secondName ? 'second|' : 'BAD|';\n    if (true) { { { class Same {} } } }\n    $namedSecond = new Same;\n    echo $namedSecond::class === 'SecondSpace\\Same' && $namedSecond::class !== $namedFirst::class ? 'live|' : 'BAD|';\n    $third = new class {}; $thirdName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . __LINE__ . '$4';\n    echo $third::class === $thirdName ? 'third|' : 'BAD|';\n}\nnamespace {\n    $global = new GlobalEarly;\n    { class GlobalEarly {} }\n    $fourth = new class {}; $fourthName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . __LINE__ . '$5';\n    echo $global::class === 'GlobalEarly' ? 'global|' : 'BAD|';\n    echo $fourth::class === $fourthName ? 'fourth' : 'BAD';\n}\n",
+      "source_sha256": "4b4df4b22526006b12dd49a802c141f6f77956a1d49eaf2d60f9801635acc1b2",
+      "stdout_base64": "bGVmdHxoaWRkZW58bWlzc2luZ3xzZWNvbmR8bGl2ZXx0aGlyZHxnbG9iYWx8Zm91cnRo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-namespace-native-24/run-v1/anonymous-namespace-deferred/command.json",
+      "native_raw_sha256": "0893b49abad6bfeb321ecafd840b0f4052c87ddea13e755e7602ee1fe0b5fc8c"
+    },
+    {
+      "id": "anonymous-namespace-cross",
+      "source": "<?php\nnamespace LeftSide {\n    if (false) {\n        { class Exception {} }\n    }\n    $left = new Exception;\n    echo $left::class === 'LeftSide\\eXcEpTiOn' ? 'left|' : 'BAD|';\n    {\n        { class eXcEpTiOn {} }\n    }\n    $firstLine = __LINE__ + 1;\n    $first = new class {};\n    $firstName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $firstLine . '$1';\n    echo $first::class === $firstName ? 'first|' : 'BAD|';\n}\nnamespace RightSide {\n    $right = new Exception;\n    { class Exception {} }\n    echo $right::class === 'RightSide\\Exception' ? 'right|' : 'BAD|';\n    $secondLine = __LINE__ + 1;\n    $second = new class {};\n    $secondName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $secondLine . '$2';\n    echo $second::class === $secondName ? 'second|' : 'BAD|';\n    echo $left::class !== $right::class ? 'separate|' : 'BAD|';\n    $again = new $firstName;\n    echo $again::class === $firstName && $again !== $first && $first !== $second ? 'fresh' : 'BAD';\n}\n",
+      "source_sha256": "b56550bc7cd3fec928d550e2ffac3cd45fb3a45cc1776bcccc1f5e45823bac24",
+      "stdout_base64": "bGVmdHxmaXJzdHxyaWdodHxzZWNvbmR8c2VwYXJhdGV8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-namespace-native-24/run-v1/anonymous-namespace-cross/command.json",
+      "native_raw_sha256": "734c7800936f2409dad394c509efd01661905a1e50e452cac73cf3750e7be8d7"
+    }
+  ]
+}

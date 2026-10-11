@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named declarations in bracketed namespaces alongside existing ordinary parentless anonymous classes, including ABSENT global bodies. Source-authenticated namespace/body/root-block ancestry retains early binding; conditional declarations stay qualified and deferred. Unbracketed namespace/function/Closure named descendants and wider named headers/bodies remain Unsupported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_namespace_class_cases.json"
+  },
+  "semantic_revision": "6c8233e3c8291e6afdd45f3d031903e07519d9d4",
+  "prerequisite": "0360355836502b7ae3b8822b267263923243bc9d",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "anonymous_namespace_name/named_namespace authenticate actual bracketed namespace names/style/body and derive full qualified named descriptors. top_path authenticates namespace-body entry then each actual root NStmtBlock ancestor and terminal occurrence; derived EARLY compares full qualified prior/internal names.",
+    "counter": "Eligible namespace/root-block named+0; deferred named+1 even when never published; anonymous+1 in the shared unit compiler walk. Qualified names separate namespace-local internal-looking and same-short-name declarations.",
+    "boundary": "Whole-unit unbracketed namespace/function/Closure named descendant exclusions remain; anonymous-only existing contexts are preserved. No new fields/tasks/modules/schema/adapter. Full source/CODE projection, live names and declaration history authenticate runtime work."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_namespace, zend_compile_top_stmt, zend_compile_class_decl, zend_build_runtime_definition_key, zend_generate_anon_class_name",
+    "spec/semantics/21-source-context.watsup: plnamespace",
+    "spec/semantics/46-source-compiler.watsup: namespace lexical driver, ppstatement, ppblockstatements"
+  ],
+  "native": {
+    "revision": "0360355836502b7ae3b8822b267263923243bc9d",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-namespace-native-24/run-v1/report.json",
+    "normal_originals": 3
+  },
+  "source": {
+    "revision": "6c8233e3c8291e6afdd45f3d031903e07519d9d4",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-namespace-model-24/run-v1/report.json",
+    "native_agreements": 3,
+    "normal": 3
+  },
+  "strict": {
+    "revision": "6c8233e3c8291e6afdd45f3d031903e07519d9d4",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-namespace-gate-24/report-retry1.json",
+    "premises": 3,
+    "seconds": 5.724460124969482
+  },
+  "state_revision": "6c8233e3c8291e6afdd45f3d031903e07519d9d4",
+  "state_cuts": [
+    {
+      "group": "bracketed-root",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-namespace-state-24/report.json",
+      "checks": 99,
+      "setup_source_frontier_checks": 87,
+      "pure_queries": 12,
+      "PhpSteps": 6,
+      "seconds": 15.839897155761719
+    },
+    {
+      "group": "bracketed-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-namespace-state-24/report.json",
+      "checks": 107,
+      "setup_source_frontier_checks": 99,
+      "pure_queries": 8,
+      "PhpSteps": 6,
+      "seconds": 23.402809858322144
+    },
+    {
+      "group": "cross-namespace",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-namespace-peer-state-24/report.json",
+      "checks": 99,
+      "setup_source_frontier_checks": 83,
+      "pure_queries": 16,
+      "PhpSteps": 3,
+      "seconds": 12.47917366027832
+    }
+  ],
+  "state_totals": {
+    "checks": 305,
+    "setup_source_frontier_checks": 269,
+    "pure_queries": 36,
+    "PhpSteps": 15
+  },
+  "state_method": "Exact checked originals/file/cwd: initial qualified early registries and pre-declaration instances, real block entry and whole-state early class no-op; qualified conditional absence/publication/PDRCLASS, actual anonymous allocations and dynamic fullname freshness across namespaces. ABSENT global body keeps early no-op and shared counters. Namespace lowering has no runtime namespace task. Pure ancestry, admission, descriptor and reached receipt counterfactuals are counted separately; checks include setup and are not unique states.",
+  "helper_boundaries": "Namespace context alone can supply a prefix for an absent terminal; class_count authenticates the actual named occurrence and top_path the terminal ancestry. The counter helper alone does not authenticate all zero-cost early permutations. Full compiler projection/history retain actual order; no forged execution or general ordering certificate is claimed.",
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-namespace-state-24/preparation.json",
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-namespace-state-24/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-namespace-peer-state-24/report-elab.json"
+    ],
+    "runtime_credit": 0
+  },
+  "preserved_failure": {
+    "revision": "e7364eb8dfb1dda541c04bc438f56e2c1d9f92f6",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-namespace-gate-24/report.json",
+    "reason": "Initial top_path had two otherwise clauses and failed elaboration before main execution. The narrow correction makes namespace-body and authenticated non-Namespace root arms disjoint with one final default. Source/preparation remained unrun at that failed cut; corrected strict3 and affected source/state checks pass.",
+    "runtime_credit": 0
+  },
+  "validation": "Passing runs retain exact originals/profile/file/cwd/raw streams, stable watched inputs, exit/cleanup0, empty owned groups and no unrun. Serial jobs1: native55s, model45s/55s host/100000 steps, syntax Worker30s, elab30s, strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Raw evidence stays ignored outside Git.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_namespace_class_cases.json",
+    "cases": 3,
+    "runner": "tests/semantics/method_runtime.py --cases tests/semantics/anonymous_namespace_class_cases.json",
+    "scope": "Metadata-only publication of unchanged normal native originals adds no execution credit; native_raw_sha256 follows the existing command-record hash convention."
+  },
+  "remaining": [
+    "Named declarations inside unbracketed namespaces/functions/Closures; nonempty/modified/attributed/inherited named bodies, interfaces/traits/enums, RTD collisions/wrap and complete ordering.",
+    "Wider anonymous factory signatures/captures/class contexts, include/eval units, constructor arguments/types/access and broader consumers."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "independent_review": "comp_review_21 accepted the exact corrected semantic net, original source3 and author206/independent99; independently read closed passing raw reports, pure controls and the original elaboration failure disposition."
+}

@@ -59,7 +59,8 @@ runtime visit count. Namespace scope does not prefix the name, and distinct site
 on one physical line remain distinct. Each visit allocates a fresh object from
 the same class, with independent property storage and the real lexical scope.
 
-Module383 admits authentic unit0 contexts with plain empty global named classes.
+Module383 admits authentic unit0 contexts with plain empty named classes globally
+or in bracketed namespaces, including an unnamed global namespace body.
 Eligible root declarations bind early and consume no RTD key; deferred declarations
 consume one even when their branch never executes. The compiler folds descriptors
 in its actual walk order, authenticating source, name, line and derived early binding
@@ -71,7 +72,16 @@ field/index paths beneath conditionals or other control statements stay deferred
 An earlier deferred same-name declaration does not block a later eligible early
 declaration. The [block-class review](../../coverage/semantics/anonymous-block-rtd-review.json)
 separates native originals, real no-op/publication/allocation frontiers and pure
-ancestry/receipt queries. Named declarations inside namespaces, functions or Closures,
+ancestry/receipt queries. Bracketed namespace bodies qualify declaration names and
+retain root eligibility through actual block ancestors. Conditional declarations
+keep the namespace prefix while consuming a deferred key. Full qualified names
+separate same-short-name declarations and namespace-local internal-looking names;
+anonymous names remain unqualified and use the shared unit counter. The namespace
+context helper supplies the prefix; exact class occurrence and terminal ancestry
+checks remain separate. The [namespace-class review](../../coverage/semantics/anonymous-namespace-rtd-review.json)
+separates native/source agreements, qualified publication and early no-op frontiers
+from pure placement/descriptor/receipt queries. Named declarations inside
+unbracketed namespaces, functions or Closures,
 other named bodies/modifiers, interfaces/traits/enums and nested class bodies remain
 Unsupported. Anonymous forms are parentless, without
 interfaces, attributes or constructor arguments; public untyped property defaults

@@ -1203,8 +1203,15 @@ Standalone global blocks preserve early binding through their actual block
 ancestors; blocks inside conditionals remain deferred. [Three block originals](coverage/semantics/anonymous-block-rtd-review.json)
 also check nested ancestry, earlier deferred names and case-insensitive lookup;
 259 reached-source and pure checks keep those observations separate.
-The current375 join over 651c4a5d passes strict3 at 4263f24e (5.625s),
+The previous block375 join over 651c4a5d passes strict3 at 4263f24e (5.625s),
 preserving the private native/source/state cuts.
+Bracketed namespaces now qualify plain empty named classes while sharing the
+anonymous RTD counter. Namespace body/root blocks bind early; conditional classes
+stay deferred. [Three namespace originals](coverage/semantics/anonymous-namespace-rtd-review.json)
+also check namespace-local `Exception`, same-short-name separation and an unnamed
+global namespace. Author and independent fixtures pass 269 setup/source-frontier
+checks plus 36 pure queries, with 15 actual steps; private strict3 passes at
+6c8233e3 (5.724s). Earlier cuts and the original elaboration failure stay separate.
 Wider RTD counters, factory/publication contexts, constructor arguments/types,
 inheritance, attributes and broader consumers remain required.
 The actual375 join over 57f2f4b8 passes strict3 at 77f9c0eda (5.521s);
