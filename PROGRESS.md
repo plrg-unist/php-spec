@@ -4184,10 +4184,19 @@ method-cell write to `getCurrent` leaves its selection and binding receipt intac
 Native2/literal1 at 836b and computed source1/state169 at 48fee/375 pass
 (150 genuine/derived plus 19 controls), with recorded checked-program reuse and
 no frontend or old lifetime renewal. The original Unsupported, failed first
-repair and guard diagnostic retain 0; combined class/member and wider expressions
-stay open in the same ledger.
+repair and guard diagnostic retain 0; wider expressions stay open in the same ledger.
 Exact 4a489b79/375 composition passes preserved state169; native/source/private
 cuts are not renewed.
+
+Combined simple class/member-CV `$class::$method(...)` BIND capture now has
+source-authenticated internal Closure task authority. Genuine class evaluation,
+member carrier resolution and handle-normalized mint precede separate writes to
+`stdClass` and `getCurrent`, which preserve the API and existing CONFIG/receipt.
+Native2/literal1 at 1cb688 and repaired computed1/state237 at 06e6/375 pass
+(209 genuine/derived plus 28 controls). Original Unsupported and initial fixture
+elaboration failure retain 0; the corrected state reuses its checked program with
+frontend0. Wider expressions remain open; exact maintained relocation needs no
+runtime renewal. See the same ledger.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates

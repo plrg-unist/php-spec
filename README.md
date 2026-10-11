@@ -2180,7 +2180,9 @@ and returned value retain the receiver separately. A captured BIND call now pins
 its API when a third-argument helper clears the selected cell; static authority
 remains borrowed. Simple class-CV `$class::bind(...)` capture also freezes the
 resolved Closure before the class cell changes. Literal-class `Closure::$method(...)`
-also freezes a simple method CV after resolving its string bytes. Wider API
+also freezes a simple method CV after resolving its string bytes. Combined simple
+class/member-CV capture now authenticates internal Closure task authority and
+keeps that selection after both cells change. Wider API
 captures, argument forms and temporary current escape remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.

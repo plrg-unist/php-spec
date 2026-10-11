@@ -103,8 +103,17 @@ CONFIG and copied binding receipt. Native2/literal1 at 836b and computed source1
 and 169 state premises at 48fee/375 pass (150 genuine/derived plus 19 controls).
 The state test separates raw VARIABLE, resolved carrier and genuine handle-normalized
 mint; a byte-equivalent plain string also passes. Original Unsupported, first
-repair Unsupported and the diagnostic retain zero credit. Combined computed
-class/member and wider member expressions remain required.
+repair Unsupported and the diagnostic retain zero credit.
+
+Combined simple class/member-CV `$class::$method(...)` BIND capture authenticates
+the internal Closure call task without a user-class descriptor. The real class
+evaluation precedes member resolution and minting; later writes to `stdClass` and
+`getCurrent` preserve the selected API. Two native originals, one literal control,
+one repaired computed source and 237 state premises (209 genuine/derived plus
+28 controls) pass. Certificate checks remain separate from method-byte admission;
+existing mint/tag/handler/receipt rules are unchanged. Original Unsupported and
+the initial EVAL-tail fixture elaboration failure retain zero credit. Wider class
+and member expressions remain required.
 
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the
