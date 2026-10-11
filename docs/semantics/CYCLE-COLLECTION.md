@@ -166,6 +166,17 @@ replay. The first127 fixture run retains zero credit: an update-only slot helper
 left its supposed nonleaf unchanged. Wider children, shared ownership, references,
 arrays, workers and pending contexts remain required; folds and owners are unchanged.
 
+The fresh child can also have exactly one self-edge and total owner count2: the
+parent edge plus that self-edge. Existing leaf admission and all type, allocation,
+frozen-graph/FREESET, current-slot and consumer fences remain. Extra owners,
+nonself or multiple child edges fail admission. Actual FREE retains the borrowed
+parent at owner0 without adding a machine root; after ordinary parent release the child
+has only its self-owner and current ordinary root. The next real collection
+traces and frees that cycle. At `746417`/375, compiler/init, exact native66 source
+agreement and212 reached checks (130/82) cover both frontiers, coherent negatives
+and budget replay. Baseline54 authenticates the former refusal; broader child
+graphs, reference/array shapes and worker/pending contexts remain required.
+
 Module335 extends that storage admission to normal detached-worker close after
 the collection is quiescent. It requires the actual control-release, operation-exit
 and worker-release tail, a terminated graceful worker, and exactly the real

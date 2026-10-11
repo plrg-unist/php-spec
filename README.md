@@ -1167,10 +1167,11 @@ The final main retrace also retains a called ordinary zero-owner leaf in its
 existing borrowed root slot, without adding a heap owner. A real WeakReference
 temporary promotes that slot; ordinary release clears weak lookup under the
 storage cleanup pin. The original agrees with native PHP and 203 reached
-source/control checks pass. One fresh `stdClass` leaf child created after the final
-trace is also retained without an added owner; native PHP agrees and199 reached checks
-cover retention and the child's temporary release. Wider worker, shared and nested
-child cases remain required.
+source/control checks pass. A fresh `stdClass` child created after the final trace
+may be a leaf or have exactly one self-edge. Native PHP agrees with both originals;
+199 leaf and212 self-cycle checks cover retention and the distinct release paths.
+After ordinary parent release, the child cycle survives for the next collection.
+Wider worker, shared and nested child cases remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

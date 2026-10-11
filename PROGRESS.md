@@ -1724,6 +1724,17 @@ parent stays borrowed; ordinary parent acquisition/release later disposes both.
 Coherent graph/type/owner/slot/DONE negatives and zero/one replay pass. Baseline51
 localizes the former refusal; the original127 no-op nonleaf control retains zero
 credit. Wider child/reference/array/worker/pending graphs remain required.
+
+The posttrace child may also have exactly one self-edge, with only its parent and
+self as strong owners. At `746417`/375, full compiler/init, native66 source agreement
+and212 reached source/control checks (retention130/second-collection82) pass.
+Actual FREE retains the parent at owner0 and child at owner2 without a new machine root;
+coherent shape/owner/frozen/slot/DONE controls and zero/one replay pass. A genuine
+second TRACE observes the parent retired and child self-owner1/current ROOT,
+then traces and frees only that cycle; the short ending matches native66.
+Baseline54 localizes the old refusal. Wider child layouts, shared owners,
+references, arrays, workers and pending collectors remain required; existing leaf
+behavior, count folding and source41 OPEN/zero cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
