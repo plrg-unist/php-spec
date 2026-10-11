@@ -3904,7 +3904,9 @@ the receiver at distinct cleanup stages. Native2/direct1 at 22c4, affected captu
 state289 at 1f58/375 pass (269 genuine/derived plus 20 controls). Original Unsupported
 and the first interpreter failure remain 0. The API main cell stays live across
 args; wider BIND argument-retirement forms stay open. Exact maintained relocation
-requires no runtime renewal; see the [ledger](coverage/semantics/closure-current-binding-review.json).
+requires no runtime renewal. Exact e687/375 composition at 82389 passes the preserved
+289 compiler/initialized-SL gate; current source/private renewal 0. See the
+[ledger](coverage/semantics/closure-current-binding-review.json).
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
