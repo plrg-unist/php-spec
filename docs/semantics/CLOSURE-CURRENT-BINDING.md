@@ -10,8 +10,8 @@ uses that object's type as historical selection evidence; its receiver adds no
 owner during argument effects.
 
 Literal named-static captures, evaluated nonnamed classes with literal members,
-named classes with evaluated members, and combined evaluated class/member forms
-create an API Closure.
+named classes with evaluated members, combined evaluated class/member forms and
+ordinary object-form literal members create an API Closure.
 Calling it observes the immediate ordinary body; a named helper still raises
 `Error` even under an ordinary outer Closure. Dynamic calls pin the selected API
 in CONFIG through argument evaluation. Its OWNER/SELECTION tag carries the
@@ -58,9 +58,23 @@ authentic member source/compiler authority before the registered mint. Four real
 operand writes leave the API and its nonnull immediate ordinary body result intact.
 Native2/literal1 at 5c25 and affected source1/state353 at bf0e/375 pass
 (328 genuine/derived plus 25 controls). Original Unsupported remains zero.
-General class/member admission is distinct from this concat witness; object
-captures, wider evaluation evidence and source7 remain open. Mint, owned CONFIG,
+General class/member admission is distinct from this concat witness; computed
+object captures, wider evaluation evidence and source7 remain open. Mint, owned CONFIG,
 handler and old lifetime/bridge cuts are unchanged.
+
+Ordinary object-form literal `getCurrent(...)` capture uses a live Closure as
+selection evidence and mints the same receiver-free API. The selector-CV witness
+authenticates genuine METHOD_PREP and its original borrowed VARIABLE operand
+before deriving the resolved live selector. One registered mint adds no selector
+edge; the real selector-null write and quiet release make its weak target null
+before API invocation. Existing owned CONFIG then returns the nonnull immediate
+ordinary body, distinct from that selector. Native2/literal1 at 6fdb and affected
+object1/state200 at 59ef/375 pass (180 genuine/derived plus 20 controls); original
+Unsupported stays zero. Source-authenticated ordinary receiver admission is
+distinct from this CV evidence. Computed/nullsafe members, receiver retirement
+during name/argument effects and wider temporary forms remain required. Scoped
+capture guards, mint helper, CONFIG tag and CURRENT handler are unchanged; no old
+lifetime/bridge evidence is renewed.
 
 An ordinary positional helper may clear the sole API cell after a call has been
 selected. Native static calls observe that API gone; captured calls observe it

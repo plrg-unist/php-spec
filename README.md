@@ -2378,6 +2378,9 @@ with a literal CURRENT member also freeze selection; one concat-class original a
 Combined evaluated class and member CURRENT captures also freeze selection;
 one both-concat original and 353 focused state premises validate distinct request
 indexes, source authority, four operand writes and the same immediate body result.
+Ordinary object-form literal CURRENT capture creates the same receiver-free API;
+one selector-CV original and 200 focused premises validate selector retirement
+before its weak read and the distinct immediate body result.
 Literal `Closure::bind(...)` capture also reaches the existing binding handler;
 its copied receipt survives original API/body retirement while the bound Closure
 and returned value retain the receiver separately. A captured BIND call now pins

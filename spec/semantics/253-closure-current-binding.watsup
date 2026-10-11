@@ -5,6 +5,7 @@ dec $closure_current_start(pstate, porigin, nat?, int) : pstate
 dec $closure_current_object(pstate) : nat?
 dec $closure_current_capture_site(pstate, porigin) : bool
 dec $closure_current_capture(pstate, phpType19, ptbytes, phpType7*, int) : bool
+dec $closure_current_method_capture(pstate, poperand, ptbytes, phpType7*, int) : bool
 dec $closure_bind_capture(pstate, phpType19, ptbytes, phpType7*, int) : bool
 dec $fake_bind_object(pstate, nat) : bool
 dec $fake_bind_scope(pstate, nat) : pbindscope
@@ -157,6 +158,22 @@ def $closure_current_capture(S, phpType19, ptbytes_method, phpType7*, z) = true
   -- if $ppfirstclass(phpType7*)
 def $closure_current_capture(S, phpType19, ptbytes, phpType7*, z) = false -- otherwise
 
+;; Static CURRENT capture through a Closure object adds no receiver edge.
+def $closure_current_method_capture(S, poperand, ptbytes, phpType7*, z) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (METHOD_PREP phpType20 phpType7* false false z) :: ptask_tail*
+  -- if $call_task_valid(S, METHOD_PREP phpType20 phpType7* false false z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression phpType20 (SEQUENCE phpType7*) metadata)
+  -- if phpType20 = NIdentifier (BYTES text_name) metadata_name
+  -- if $ptlc($base64(text_name)) = $ptlc(ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("getcurrent")
+  -- if $method_receiver_operand_valid(S, expression, poperand)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $closure_callable(S, n)
+  -- if $ppfirstclass(phpType7*)
+def $closure_current_method_capture(S, poperand, ptbytes, phpType7*, z) = false -- otherwise
+
 def $closure_callable(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if (HOBJECT n) <- S.ALLOCATIONS
@@ -244,6 +261,11 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UN
   -- if $closure_callable(S_read, n)
   -- if $ptlc(ptbytes) = $ptascii("getcurrent")
   -- if $ppfirstclass(phpType7*)
+  -- if ~$closure_current_method_capture(S_read, poperand, ptbytes, phpType7*, z)
+def $method_select(S, poperand, ptbytes, phpType7*, z) = $intrinsic_firstclass(S_read[.TODO = ptask_tail*], INTRINSIC_CLOSURE_CURRENT)
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if $closure_current_method_capture(S_read, poperand, ptbytes, phpType7*, z)
+  -- if S_read.TODO = ptask :: ptask_tail*
 
 def $closure_current_object(S) = (n)
   -- if S.CURRENT = (pcallcontext)

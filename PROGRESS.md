@@ -4552,6 +4552,16 @@ Current composition over bc93c428/377 passes the preserved353 gate at 9e0ce
 and operator paths; integer warning, WeakMap key-pin, reference-return, hook and
 nested Do factory routes are guarded out. Source/private renewal stays zero.
 
+Ordinary object-form literal CURRENT FCC now authenticates the borrowed receiver
+source and live Closure before minting the same receiver-free API. Native2/literal1
+at 6fdb and affected object1/state200 at 59ef/375 pass (180 genuine/derived plus
+20 controls), binding genuine METHOD_PREP/resolve/mint and the real selector-null
+quiet release before its weak producer. Existing owned CONFIG returns the exact
+nonnull distinct immediate body; original Unsupported stays zero. Computed/nullsafe
+object forms, name/argument retirement, wider receiver evidence and source7 stay
+open. Exact relocation needs no runtime renewal; old lifetime/bridge cuts remain
+separate.
+
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
 api-null write leaves the captured API held versus the direct API gone before
