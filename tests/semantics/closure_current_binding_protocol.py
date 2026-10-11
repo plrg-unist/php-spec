@@ -2,8 +2,10 @@
 """Current identity, copied binding history, receiver owners and warning unwind."""
 from pathlib import Path
 import argparse
+import json
 
 import closure_call_protocol as protocol
+import closure_current_capture_review as capture_review
 
 CASES = {'bound-private-method-shared-statics-retired-source': {'source': '<?php\n'
                                                                   'class FakeOwner253 {\n'
@@ -1151,6 +1153,21 @@ CASES = {'bound-private-method-shared-statics-retired-source': {'source': '<?php
                                                                     '$closure_state_valid(S_done)',
                                                                     '$heap_valid($heap_graph(S_done))']}}
 
+CATALOGUE = Path(__file__).with_name('closure_current_binding_cases.json')
+for row in json.loads(CATALOGUE.read_text()):
+    if row['id'] in ('literal-captured-current-body', 'literal-captured-current-named'):
+        CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
+                            'current_capture_named': row['id'].endswith('-named')}
+
+
+def capture_fixture(case, program, filename):
+    if 'current_capture_named' not in case:
+        return None
+    text, checks, _, _ = capture_review.render(program, filename, case['native_stdout'],
+                                               named=case['current_capture_named'])
+    return text, len(checks)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--match', default='')
@@ -1158,4 +1175,6 @@ if __name__ == '__main__':
     protocol.MODULES.append(Path(__file__).with_suffix('.watsup'))
     selected = {name: case for name, case in CASES.items() if args.match in name}
     assert selected, 'no current/binding state selected'
-    protocol.run(selected, extra_inputs=(Path(__file__),))
+    protocol.run(selected, extra_inputs=(Path(__file__), CATALOGUE, Path(capture_review.__file__),
+                                        Path(__file__).with_name('error_handler_protocol.py')),
+                 fixture_renderer=capture_fixture)

@@ -154,5 +154,26 @@
     "source": "<?php\nclass PropertyCurrentOwner253 {\n    private static function run() {\n        static $n = 0;\n        return self::class . ':' . static::class . ':' . ++$n;\n    }\n    public Closure $real = static function () { return Closure::getCurrent(); };\n    public Closure $fake = self::run(...);\n}\nclass PropertyCurrentChild253 extends PropertyCurrentOwner253 {}\n$holder = new PropertyCurrentChild253;\n$real = $holder->real;\n$invoke = $real->__invoke(...);\n$fake = $holder->fake;\n$bound = $fake->bindTo(null);\n$copy = clone $bound;\nunset($holder, $fake);\necho (int)($real() === $real), ':', (int)($invoke === $real), '|';\necho $bound(), '|', $copy(), '|';\nunset($real, $invoke, $bound, $copy);\n",
     "source_sha256": "3c0c4bf87c7b72933d1879ad2618a17acd4c82552854ecea3284c2b83889162a",
     "expected_model": "normal"
+  },
+  {
+    "id": "literal-direct-current-body",
+    "source": "<?php\nfunction retireCurrentBodyReview21() {\n    global $body;\n    $body = null;\n    echo \"A;\";\n    return 7;\n}\necho \"Q;\";\n$body = function($ignored) {\n    global $weakBody;\n    echo \"B;\";\n    $current = Closure::getCurrent();\n    echo \"I:\", $current !== null && $current === $weakBody->get() ? \"same\" : \"different\", \";\";\n    echo \"P:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n    return $current;\n};\n$weakBody = WeakReference::create($body);\n$returned = $body(ignored: retireCurrentBodyReview21());\necho \"R:\", $returned !== null && $returned === $weakBody->get() ? \"same\" : \"different\", \";\";\necho \"H:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n$returned = null;\necho \"F:\", $weakBody->get() === null ? \"gone\" : \"held\", \";E;\";\n",
+    "source_sha256": "ef1188805c6bc3ac0123089e4c3b7f7e2940b7283d1b79a340ecf4281a31678a",
+    "expected_model": "normal",
+    "native_stdout": "Q;A;B;I:same;P:held;R:same;H:held;F:gone;E;"
+  },
+  {
+    "id": "literal-captured-current-body",
+    "source": "<?php\nfunction retireCurrentBodyReview21() {\n    global $body;\n    $body = null;\n    echo \"A;\";\n    return 7;\n}\necho \"Q;\";\n$api = Closure::getCurrent(...);\n$weakApi = WeakReference::create($api);\n$body = function($ignored) {\n    global $api, $weakApi, $weakBody;\n    echo \"B;\";\n    $picked = $api;\n    $api = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    $current = $picked();\n    echo \"I:\", $current !== null && $current === $weakBody->get() ? \"same\" : \"different\", \";\";\n    $picked = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"P:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n    return $current;\n};\n$weakBody = WeakReference::create($body);\n$returned = $body(ignored: retireCurrentBodyReview21());\necho \"R:\", $returned !== null && $returned === $weakBody->get() ? \"same\" : \"different\", \";\";\necho \"H:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n$returned = null;\necho \"F:\", $weakBody->get() === null ? \"gone\" : \"held\", \";E;\";\n",
+    "source_sha256": "14798d92762191a3623305bafe3836b469642e86fb33aed0b7a3c881ef134a2b",
+    "expected_model": "normal",
+    "native_stdout": "Q;A;B;C:held;I:same;C:gone;P:held;R:same;H:held;F:gone;E;"
+  },
+  {
+    "id": "literal-captured-current-named",
+    "source": "<?php\nfunction retireCurrentBodyReview21() {\n    global $body;\n    $body = null;\n    echo \"A;\";\n    return 7;\n}\nfunction invokeCurrentNamedReview21() {\n    global $api, $weakApi;\n    echo \"N;\";\n    $picked = $api;\n    $api = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    $current = $picked();\n    echo \"U:helper;\";\n    return $current;\n}\necho \"Q;\";\n$api = Closure::getCurrent(...);\n$weakApi = WeakReference::create($api);\n$body = function($ignored) {\n    echo \"B;\";\n    $current = invokeCurrentNamedReview21();\n    echo \"U:body;\";\n    return $current;\n};\n$weakBody = WeakReference::create($body);\ntry {\n    $returned = $body(ignored: retireCurrentBodyReview21());\n    echo \"U:main;\";\n} catch (Throwable $caught) {\n    $weakError = WeakReference::create($caught);\n    echo \"E:\", $caught::class, \":\", $caught->getMessage(), \";\";\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"B:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"E:\", $weakError->get() === null ? \"gone\" : \"held\", \";\";\n    $caught = null;\n    echo \"E:\", $weakError->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"B:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n}\necho \"Z;\";\n",
+    "source_sha256": "c3e8222656d9fcab6c7e922639f506b70bbe51ba5c853ff7009c8b0bf786c71c",
+    "expected_model": "normal",
+    "native_stdout": "Q;A;B;N;C:held;E:Error:Current function is not a closure;C:gone;B:gone;E:held;E:gone;C:gone;B:gone;Z;"
   }
 ]

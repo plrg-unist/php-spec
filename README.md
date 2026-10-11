@@ -1985,7 +1985,11 @@ retire. [REAL binding](docs/semantics/CLOSURE-BINDING.md) now stages ordered
 static/internal warnings and uses the function's compiled `$this` flag when
 removing a receiver. Valid unbinding copies REAL statics, preserves reference
 captures and resets called scope; explicit null scope removes class permission.
-Temporary-current and internal API capture consumers remain required.
+Literal named-static `Closure::getCurrent(...)` capture now preserves the immediate
+ordinary caller; selected API and returned body retire independently. A named
+helper still errors under an outer Closure. Three native originals, one direct and
+two repaired source comparisons and two separate state cuts totaling 447 premises
+pass. Wider API captures and temporary current escape remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
 Current named-handler checks retain the selected caller and its argument vector.

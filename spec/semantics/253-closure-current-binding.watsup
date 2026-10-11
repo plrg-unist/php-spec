@@ -3,6 +3,8 @@ dec $closure_current_temporary(pstate) : bool
 dec $bind_receiver_live(pstate, nat?) : bool
 dec $closure_current_start(pstate, porigin, nat?, int) : pstate
 dec $closure_current_object(pstate) : nat?
+dec $closure_current_capture_site(pstate, porigin) : bool
+dec $closure_current_capture(pstate, phpType19, ptbytes, phpType7*, int) : bool
 dec $fake_bind_object(pstate, nat) : bool
 dec $fake_bind_scope(pstate, nat) : pbindscope
 dec $fake_bind_static(pstate, nat) : bool
@@ -98,6 +100,35 @@ def $closure_current_site(S, porigin) = true
   -- if ~$ppfirstclass(phpType7*)
 def $closure_current_site(S, porigin) = false -- otherwise
 
+;; Literal named static capture reuses the internal handler identity. Invoking
+;; that identity observes its ordinary caller without adding a user frame.
+def $closure_current_capture_site(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
+  -- if $ppscoped_named(phpType19) /\ ~$ppscoped_keyword(phpType19)
+  -- if $from_static_class(S, porigin, phpType19)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NIdentifier (BYTES text_name) metadata_name)
+  -- if $ptlc($base64(text_name)) = $ptascii("getcurrent")
+  -- if $ppfirstclass(phpType7*)
+def $closure_current_capture_site(S, porigin) = false -- otherwise
+def $closure_current_capture(S, phpType19, ptbytes, phpType7*, z) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (SCOPED_CLASS phpType19 phpType20 phpType7* z) :: ptask_tail*
+  -- if $ptlc(ptbytes) = $ptascii("getcurrent")
+  -- if $closure_current_capture_site(S, porigin)
+  -- if $call_task_valid(S, SCOPED_CLASS phpType19 phpType20 phpType7* z)
+def $closure_current_capture(S, phpType19, ptbytes, phpType7*, z) = false -- otherwise
+
+def $closure_callable(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
+def $closure_live_object_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if (HOBJECT n) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
+
 def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
   -- if pconfigcall.SELECTION = eps
@@ -123,6 +154,11 @@ def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, 
   -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
   -- if $ptlc(ptbytes_method) = $ptascii("getcurrent")
   -- if $ppfirstclass(phpType7*)
+  -- if ~$closure_current_capture(S, phpType19, ptbytes_method, phpType7*, z)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = $intrinsic_firstclass(S[.TODO = ptask_tail*], INTRINSIC_CLOSURE_CURRENT)
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("closure")
+  -- if $closure_current_capture(S, phpType19, ptbytes_method, phpType7*, z)
+  -- if S.TODO = ptask :: ptask_tail*
 def $method_select(S, poperand, ptbytes, phpType7*, z) = $closure_current_start(S_read, porigin, (n), z)
   -- if S_read = $resolve_at(S, poperand, z)
   -- if S_read.COMPLETION = NORMAL
@@ -343,6 +379,9 @@ def $closure_static_api_owner_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+def $closure_static_api_owner_valid(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
 def $closure_static_api_owner_valid(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = INTRINSICCLOSURE pintrinsic

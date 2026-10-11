@@ -3687,6 +3687,16 @@ escape and further API/keyword consumers required. REAL warning/unbinding is
 covered separately by264 above. Return verification stays paused and complete
 core remains open.
 
+Literal named-static current FCC capture now reuses the receiver-free API identity
+without changing CURRENT or frames. Three native originals/one direct at 16b and
+two repaired captured sources at 257/375 agree; separate body (206) and named (241)
+gates validate the immediate ordinary caller, borrowed CONFIG authority, distinct picked-null/returned-null
+retirement and named Error/caught-null cleanup (425 genuine/derived plus 22 controls).
+Four failed full fixtures and one localization cut retain 0. Exact maintained
+source/renderer/dispatch relocation preserves all 26 legacy fixtures/counts by pure
+comparison; no runtime renewal. Wider captures and argument-retirement forms stay
+open in the [ledger](coverage/semantics/closure-current-binding-review.json).
+
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
 share their object values with instances and preserve exact successful bindings

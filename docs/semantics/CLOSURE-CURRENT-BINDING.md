@@ -9,6 +9,18 @@ Closures. Named functions, methods and fake captures raise `Error` with
 uses that object's type as historical selection evidence; its receiver adds no
 owner during argument effects.
 
+Literal named-static `Closure::getCurrent(...)` also creates an API Closure.
+Calling it observes the immediate ordinary body; a named helper still raises
+`Error` even under an ordinary outer Closure. The checked zero-argument call
+borrows CONFIG authority from the API while its selected cell keeps it live.
+Clearing that cell retires the API independently of the returned body; clearing
+the returned cell retires the body. The named error's three scalar-only trace
+frames retain neither object, and the actual caught-null write prunes the error
+graph. Three native originals, one direct and two repaired captured source cuts,
+and separate body (206) and named (241) state cuts (425 genuine/derived plus 22
+controls) pass.
+Four failed full fixtures and one localization cut remain zero-credit.
+
 Direct first-class conversion of `$closure->__invoke(...)` returns that existing
 Closure, matching the factory's `__invoke` identity rule. Invocation then uses
 its ordinary selected body and frame rather than an extra invoke wrapper.
@@ -42,9 +54,10 @@ its real lexical origin. `self`/`static` names, parent errors and anonymous
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the
 [ordinary binding contract](CLOSURE-BINDING.md) records validation order, compiled
-flag authority and copied storage. Capturing the internal current/binding APIs,
-temporary REAL `Closure::call` current-object escape and further internally scoped
-keyword consumers remain required. Temporary-call behavior stays separate.
+flag authority and copied storage. Binding API captures, object/computed current
+captures, supplied-argument retirement, temporary REAL `Closure::call` current-object
+escape and further internally scoped keyword consumers remain required.
+Temporary-call behavior stays separate.
 
 The temporary-current issue is independent of paused return verification. At the
 8.5.10 pin, non-generator `Closure::call` zeroes a temporary object's standard
