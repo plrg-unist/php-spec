@@ -891,6 +891,11 @@ bypass retains its alias and skips the write. Two originals, reached3/355 and an
 independent post-write saved-frame110/1 pass separately. Reconstructed W after
 retirement is a local source certificate; broader mutation/lifecycle and returns
 verification remain OPEN.
+The checked W write can also use an in-range integer literal. W stays integer17
+through public history retirement and caller cleanup; every other history keeps
+its string guard. Two originals, reached2/266 and independent saved109/1 pass
+separately; wrong W18 and non-W X17 are publicly refused. The selected bypass
+skips the write. Other scalar mutations and broader returns remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

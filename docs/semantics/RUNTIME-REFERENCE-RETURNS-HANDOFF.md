@@ -164,6 +164,14 @@ Fresh/late error identity, bypass alias/no object birth and late budget equality
 remain distinct. This is a local source certificate after W retirement, with all
 old idle/Notice/class/string/prefix guards; other mutation/lifecycle stays OPEN.
 
+The lifecycle32 route admits an in-range integer literal only for source-linked W.
+Use mutation_source_cursor or mutation_write_cursor at reached WX/X; the old
+string mutation_cursor must remain absent when W=PINT17. Source2/state2/266 and
+independent saved109/1 pass, with exact PINT17 alias/store, full prefix, wrong-W18
+and non-W-X17 public refusals, late caller/error/budget and bypass checks.
+Preserve original parse failure71e18 zero state credit. No coercion, active branch
+or new Previous rule; post-W reconstruction stays local and broader returns OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs

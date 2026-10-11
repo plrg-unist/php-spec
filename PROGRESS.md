@@ -1427,6 +1427,18 @@ remain OPEN. [Multiple-history review](coverage/semantics/reference-return-multi
 Actual376 over `6d134df2` passes strict at `5bf62df1` in 5.878s with zero
 applications; original private source/state/independent cuts remain separate.
 
+The same idle lifecycle certificate now admits an in-range integer-literal W
+write, retaining the original string checks on all other histories. Source2 and
+reached2/266 (183+83) pass at `b38a164b`: W remains PINT17 through actual public
+WX/X retirement, caller error/late Previous and late budget equality; bypass keeps
+its alias without object birth/write. Independent saved109/1 binds executed
+local/global/saved W and the full prefix, refusing payload18; author rejects
+non-W X17. Original parse failure keeps zero state credit. Private strict376
+passes in 5.875s with zero applications; maintained producer is byte-identical.
+Post-W reconstruction remains a local source certificate; only integer17 is
+observed, and wider mutation/lifecycle/returns remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

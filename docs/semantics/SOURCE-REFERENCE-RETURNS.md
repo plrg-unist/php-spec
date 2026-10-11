@@ -246,6 +246,15 @@ Existing registered prefix validation remains authoritative. Reconstruction afte
 W retirement is local source evidence, not a physical predecessor-history seal;
 other mutation/lifecycle layouts and broad returns verification remain OPEN.
 
+An additive integer-literal write route separates checked W source reconstruction
+from payload validation. W may hold a string or exactly the checked
+in-range integer; all other supplied cursors retain the original string guards.
+Source2, reached2/266 and independent saved109/1 pass at `b38a164b`: actual W=PINT17
+survives public WX/X retirement and caller cleanup; W18 and non-W X17 refuse.
+The old string mutation helper still rejects integer W. Existing assignment and
+registered-prefix validation supply the effects; local reconstruction after W
+retirement and the integer17 witness do not close wider mutation/returns scope.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success
