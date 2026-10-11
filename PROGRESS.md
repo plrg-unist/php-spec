@@ -34,6 +34,10 @@ publication, Closure creation/capture, class PDRCLASS/CCLINK publication, eligib
 class no-op and genuine saved-frame allocation. Fixtures stop after required allocations. Syntax preparation and
 elaboration add no runtime credit. Nested If hosts, loops, nested factories and
 wider signatures, targets/captures/consumers remain required.
+The 375 join over d3beefe6 passes strict3 at ae8b65a9 (5.925s), checking
+the shared task domain. Independent review preserves ordinary REALCLOSURE calls
+and reached parentless class-link identity; private native/source/state cuts keep
+their original revisions without replay.
 [Branch-body Block ledger](coverage/semantics/anonymous-branch-block-rtd-review.json).
 
 The earlier Block-host cut retains source3/state737, its three zero-credit failures

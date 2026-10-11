@@ -1359,6 +1359,9 @@ publication and guarded fresh defaults. The
 [branch-body Block review](coverage/semantics/anonymous-branch-block-rtd-review.json)
 separates genuine Block/publication/capture/allocation frontiers from pure ancestry
 and receipt queries; fixtures stop after their required allocations.
+The 375 join over d3beefe6 passes strict3 at ae8b65a9 (5.925s), checking
+the shared task domain. Review preserves ordinary REALCLOSURE calls and parentless
+class-link identity; private cuts retain their original revisions.
 The earlier [Block-host review](coverage/semantics/anonymous-block-branch-rtd-review.json)
 retains its original failures and reused strict3 at 5d91ff5f for the 431dacbd/c35c223e
 join, without a current actor or private replay.
