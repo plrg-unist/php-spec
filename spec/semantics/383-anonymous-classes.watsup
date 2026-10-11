@@ -61,7 +61,6 @@ def $anonymous_no_classes((PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = (~$an
 
 ;; Named declarations inside these contexts need a wider early-binding model.
 dec $anonymous_named_scope(pcnode) : bool
-def $anonymous_named_scope(NStmtBlock phpType23 metadata) = true
 def $anonymous_named_scope(NStmtNamespace phpType44 phpType23 metadata) = true
 def $anonymous_named_scope(NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 phpType23 metadata) = true
 def $anonymous_named_scope(NExprClosure phpType14 phpType4_static phpType4_byref phpType16 phpType21 phpType18 phpType23 metadata) = true
@@ -83,10 +82,17 @@ dec $anonymous_unit(pcunit) : bool
 def $anonymous_unit(pcunit) = (pcunit.ID = 0 /\ pcunit = $pcsource(0, pcunit.AST) /\ $anonymous_unit_nodes(pcunit.OCCURRENCES))
 
 ;; Descriptor order follows the real compiler walk, including loop ordering.
-;; A plain root declaration binds early only if its name is still available.
-dec $anonymous_named_early(pcpath, pclassdesc*, ptbytes) : bool
-def $anonymous_named_early([PCINDEX n], pclassdesc*, ptbytes) = (~$ppclass_early(pclassdesc*, ptbytes) /\ ~$class_internal(ptbytes))
-def $anonymous_named_early(pcpath, pclassdesc*, ptbytes) = false -- otherwise
+;; Root block lists retain early binding; other enclosing statements do not.
+dec $anonymous_top_block(pcunit, pcpath, pcpath) : bool
+def $anonymous_top_block(pcunit, pcpath_prefix, eps) = ($origin_node([pcunit], PORIGIN 0 pcpath_prefix) =/= eps)
+def $anonymous_top_block(pcunit, pcpath_prefix, (PCFIELD 0) :: (PCINDEX n) :: pcpath_tail) = $anonymous_top_block(pcunit, pcpath_prefix ++ [(PCFIELD 0),(PCINDEX n)], pcpath_tail)
+  -- if $origin_node([pcunit], PORIGIN 0 pcpath_prefix) = (NStmtBlock phpType23 metadata)
+def $anonymous_top_block(pcunit, pcpath_prefix, pcpath_tail) = false -- otherwise
+dec $anonymous_top_path(pcunit, pcpath) : bool
+def $anonymous_top_path(pcunit, (PCINDEX n) :: pcpath_tail) = $anonymous_top_block(pcunit, [(PCINDEX n)], pcpath_tail)
+def $anonymous_top_path(pcunit, pcpath) = false -- otherwise
+dec $anonymous_named_early(pcunit, pcpath, pclassdesc*, ptbytes) : bool
+def $anonymous_named_early(pcunit, pcpath, pclassdesc*, ptbytes) = ($anonymous_top_path(pcunit, pcpath) /\ ~$ppclass_early(pclassdesc*, ptbytes) /\ ~$class_internal(ptbytes))
 dec $anonymous_named_key(bool) : nat
 def $anonymous_named_key(true) = 0
 def $anonymous_named_key(false) = 1
@@ -104,7 +110,7 @@ def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc :: pclassdesc_tail*,
   -- if pclassdesc.ORIGIN = PORIGIN 0 pcpath
   -- if $origin_node([pcunit], pclassdesc.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata)
   -- if $anonymous_named_class_node(NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata)
-  -- if b_early = $anonymous_named_early(pcpath, pclassdesc_seen*, $base64(text))
+  -- if b_early = $anonymous_named_early(pcunit, pcpath, pclassdesc_seen*, $base64(text))
   -- if pclassdesc = { ORIGIN PORIGIN 0 pcpath, KIND "class", NAME $base64(text), PARENT eps, INTERFACES eps, PROPERTIES eps, METHODS eps, CONSTANTS eps, ABSTRACT false, FINAL false, READONLY false, EARLY b_early, LINE $nabs($source_line(metadata)) }
   -- if $class_at(pclassdesc_tail*, pclassdesc.ORIGIN) = eps
 def $anonymous_class_count(pcunit, ptbytes_file, pclassdesc*, pclassdesc_seen*, n_counter) = eps -- otherwise
