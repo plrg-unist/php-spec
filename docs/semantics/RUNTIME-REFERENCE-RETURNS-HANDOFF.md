@@ -183,6 +183,17 @@ bypass pass. Preserve caller-table failure73a37924 zero state credit and retaine
 bypass compilation. No new roots, rebinding/eager/Previous rules or native Previous
 observer; the certificate is local and wider rebinding/returns remain OPEN.
 
+The lifecycle34 route admits checked singleton GLOBALS-W unset before echo/throw.
+Keep global table presence, original live local W and all non-W global/string
+guards; only W may be absent globally, including after its marker retires.
+Source2/state2/326 and independent public134/1 pass. Actual callback current7/
+saved21 and registered1/2/2 preserve W while global W is absent; forged global W
+and non-W X targets refuse publicly. At main, GLOBALTABLE is absent and active
+ENV has no W. Count WARNING events: zero through retirement/caller entry, then
+two source-qualified WARNING(w,6) reads. Bypass is quiet; late error/budget checks
+remain separate from the older native Previous observer. Reconstruction remains
+local, with no unset/eager/active/Notice rule change; wider returns stay OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs

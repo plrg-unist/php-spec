@@ -1564,6 +1564,18 @@ remains a local source certificate; wider rebinding/lifecycle/returns remain OPE
 Actual378 over `2a5dcf424` passes strict at `2ff75de2` in 5.940s with zero
 applications; original private source/state/independent cuts remain separate.
 
+The idle lifecycle certificate now admits checked `unset($GLOBALS["w"])` before
+echo/TypeError throw. Global W disappears while f retains its original local
+W/string cell through public WX/X retirement. Source2 and reached2/326 (240+86)
+pass at `cec65d21`; both actual caller reads emit WARNING(w,6), with zero warnings
+through retirement/caller entry. Fresh error/late Previous, budget equality and
+quiet bypass are checked. Independent public134/1 authenticates current7/saved21
+registered1/2/2 and rejects forged global W→Z; author rejects wrong non-W global X.
+Private strict378 passes in 6.100s with zero applications. The maintained producer
+is byte-identical; there was no author fixture failure. Post-W reconstruction
+remains a local source certificate; wider unset/lifecycle/returns remain OPEN.
+[Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

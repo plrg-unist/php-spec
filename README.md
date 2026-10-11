@@ -908,6 +908,11 @@ W while global W follows X through the caller's later write. Two originals,
 reached2/293 and independent public136/1 pass separately, including wrong global
 W/X refusals and selected bypass. Post-retirement W reconstruction remains local;
 wider rebinding and returns verification remain OPEN.
+Checked direct `unset($GLOBALS["w"])` now preserves f's original local W while
+removing its global binding. Two originals, reached2/326 and independent public134/1
+pass separately; both caller reads emit their original line6 Warning, with none
+during retirement. The bypass stays quiet. Post-W reconstruction remains local;
+wider unset/lifecycle and returns verification remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

@@ -265,6 +265,15 @@ local W stays unchanged, full registered prefixes admit and wrong global targets
 refuse. Existing rebinding/destructor rules supply the effects. The retained W
 relation is a local source certificate; wider rebinding and returns remain OPEN.
 
+An additive checked singleton GLOBALS-W unset route admits either the original
+global W binding or its absence, retaining a present global table and f's original
+live local W string cell. Non-W histories keep the old global/string guards, and
+W is reconstructed even at reduced [X]. Source2, reached2/326 and independent
+public134/1 pass at `cec65d21`: actual unset keeps saved W, complete registered
+prefixes admit, wrong global W/X targets refuse, and both caller reads warn on
+line6 only after retirement. Existing unset/destructor rules supply all effects;
+local reconstruction and the bounded witness leave wider unset/returns OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success
