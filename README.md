@@ -1380,6 +1380,9 @@ one guarded class publication, lexical namespace and fresh defaults.
 The [While body-Block review](coverage/semantics/anonymous-while-block-rtd-review.json)
 binds three exact originals and focused Block/publication/creation/allocation
 frontiers; state fixtures stop at their required allocation.
+The 375 join at ac329f66 over 772760f0 reuses strict3 at tested 35adca9a
+(6.125s). Review excludes the changed finally/bind/Iterator routes; no current
+actor or private replay is claimed.
 The earlier [While review](coverage/semantics/anonymous-while-factory-rtd-review.json)
 retains direct loop selection and same-source second-iteration fatal observations,
 source4/state1007 at ff82bb60 and the 1c0ffdae/30a22375 strict3 join (5.925s).

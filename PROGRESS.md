@@ -35,6 +35,10 @@ eligible no-op and saved-frame allocation. Fixtures stop at required allocations
 syntax preparation/elaboration add no runtime credit. No executed COMP37 failures.
 Conditional/nested While hosts, other loops, nested functions/Closures and wider
 signatures/targets/captures remain required.
+The 375 composition at ac329f66 over 772760f0 reuses strict3 at tested
+35adca9a (6.125s), with unchanged task/schema/manifest and reviewed exclusion of
+the parent by-reference finally, first-class bind and Iterator-unpack routes.
+No current actor or private replay is claimed; source3/state738 retain their cuts.
 [While body-Block ledger](coverage/semantics/anonymous-while-block-rtd-review.json).
 
 The earlier direct-While cut retains source4/state1007 at ff82bb60 and its
