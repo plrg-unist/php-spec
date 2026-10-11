@@ -1393,6 +1393,8 @@ with wrong-cell public refusal; original metadata-binder failure stays zero cred
 applications; maintained producer is byte-identical. After W retirement the
 reconstruction is a local source certificate. Other mutation/lifecycle/returns
 remain OPEN. [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual376 over `6d134df2` passes strict at `5bf62df1` in 5.878s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
