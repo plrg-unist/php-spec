@@ -1575,6 +1575,8 @@ Private strict378 passes in 6.100s with zero applications. The maintained produc
 is byte-identical; there was no author fixture failure. Post-W reconstruction
 remains a local source certificate; wider unset/lifecycle/returns remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual379 over `03ebb6ed` passes strict at `f01eb8f8` in 6.274s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
