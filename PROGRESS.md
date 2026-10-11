@@ -4106,6 +4106,9 @@ the raw/prepared class, genuine mint, class write and existing CONFIG/receipt.
 Original Unsupported, elaboration failure and raw-mint fixture failure remain 0;
 wider class expressions stay open in the same ledger.
 
+Exact 1310460b/375 composition passes preserved state161; native/source/private
+cuts are not renewed.
+
 Literal-class method-CV `Closure::$method(...)` BIND capture now resolves string
 bytes, including the reached interned carrier, before minting the API. A real
 method-cell write to `getCurrent` leaves its selection and binding receipt intact.
@@ -4114,7 +4117,7 @@ Native2/literal1 at 836b and computed source1/state169 at 48fee/375 pass
 no frontend or old lifetime renewal. The original Unsupported, failed first
 repair and guard diagnostic retain 0; combined class/member and wider expressions
 stay open in the same ledger.
-Exact 1310460b/375 composition passes preserved state161; native/source/private
+Exact 4a489b79/375 composition passes preserved state169; native/source/private
 cuts are not renewed.
 
 Object defaults (module252) now create static/no-use source Closures and
