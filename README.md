@@ -1375,6 +1375,13 @@ while the called class remains the runtime descendant. Returned objects survive
 receiver cleanup independently. Two originals and separate scalar/lifetime state
 cuts are recorded in the
 [override review](coverage/semantics/backed-get-hook-override-review.json).
+A child getter without its own backing access or initializer also keeps a
+physical slot when its immediate parent's getter body is backed and the property
+types match. The child replaces the parent default with uninitialized typed
+storage or untyped null; ordinary writes use that slot. Receiver cleanup releases
+the backing reference; separately retained return values can survive.
+Two originals and separate scalar185/lifetime100 checks are recorded in the
+[effective backing review](coverage/semantics/effective-backed-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
