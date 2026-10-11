@@ -96,7 +96,7 @@ def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous
 def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
 def $anonymous_unit_node(pcnode) = true -- if ~$anonymous_class_like(pcnode) /\ ~$anonymous_named_scope(pcnode)
-;; Exact named factories admit authenticated Blocks, If branches and direct While bodies.
+;; Exact named factories admit authenticated Blocks, If branches and While body Blocks.
 dec $anonymous_named_factory_node(pcnode) : bool
 def $anonymous_named_factory_node(NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = $ptvalidname($base64(text), false)
 def $anonymous_named_factory_node(pcnode) = false -- otherwise
@@ -144,6 +144,13 @@ def $anonymous_while_factory_path(pcunit, pcpath) = true
   -- if $anonymous_top_path(pcunit, pcpath_while)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath_while) = (NStmtWhile expression phpType23 metadata)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+def $anonymous_while_factory_path(pcunit, pcpath) = true
+  -- if $(|pcpath| >= 3)
+  -- if pcpath_parent = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if pcpath[$nabs($(|pcpath| - 2)):2] = [(PCFIELD 0),(PCINDEX n_child)]
+  -- if $origin_node([pcunit], PORIGIN 0 pcpath_parent) = (NStmtBlock phpType23 metadata)
+  -- if $origin_node([pcunit], PORIGIN 0 pcpath) =/= eps
+  -- if $anonymous_while_factory_path(pcunit, pcpath_parent)
 def $anonymous_while_factory_path(pcunit, pcpath) = false -- otherwise
 dec $anonymous_named_factory_path(pcunit, pcpath) : bool
 def $anonymous_named_factory_path(pcunit, pcpath) = true
