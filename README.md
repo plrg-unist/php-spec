@@ -1591,7 +1591,15 @@ strict rejection, real source conflicts and CV versus owned cleanup.
 The actual375 join over `2d0146317` passes strict at `50ba5293a` (5.512s);
 private source/state cuts retain their original inputs.
 The two older constructed NINT controls now expect conversion; their earlier
-reports retain their original cuts. Booleans and wider conversions remain required.
+reports retain their original cuts.
+Weak float getters now convert false to positive zero and true to one on the
+actual unconstrained reference cell or only the by-value RV. Strict getters and
+null reject; real float|bool sources select a conflict without converting the cell.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-boolean-float-review.json)
+pass 911 setup-inclusive premises at `cf9bcd566`, including CV/owned cleanup and
+pending errors. Getter diagnostics use `bool`; other type-check contexts are unchanged.
+Three older constructed boolean controls are maintained only in the new kept group.
+Boolean-to-int/string, PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

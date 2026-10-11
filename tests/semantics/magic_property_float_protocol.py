@@ -110,8 +110,7 @@ def boundaries():
         checks += [f'S_{tag} = S_return[.RESULT = KNOWN ({original})]',
             f'$typed_conversion_at(S_{tag}, ppropertydesc_get.TYPE, {original}, false) = TYPEVALUE ({converted})',
             f'$property_get_verify_value(S_{tag}, ppropertyget, ppropertydesc_get, {original}, TYPEVALUE ({converted})) = '+
-            (f'S_{tag}[.RESULT = KNOWN ({converted})]' if tag == 'string' else
-             f'S_{tag}[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]')]
+            f'S_{tag}[.RESULT = KNOWN ({converted})]']
     return checks + ['S_wrong_rv = S_return[.RESULT = KNOWN (PINT 9)]',
         f'$property_get_verify_value(S_wrong_rv, ppropertyget, ppropertydesc_get, PINT 7, TYPEVALUE ({F7})) = S_wrong_rv[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',
         'S_backed = S_return[.PARAMETERBACKINGS = [{FUNCTION ppropertyget.METHOD, INDEX 0, CELL n_return_cell, LINE ppropertyget.LINE, VALUE ($ptascii("7"))}]]',

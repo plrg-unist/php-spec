@@ -126,7 +126,7 @@ def boundaries():
         f'$property_get_verify_value(S_return, ppropertyget, ppropertydesc_get, PSTRING ($ptascii("7")), TYPEVALUE ({F7})) = S_return[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',
         'S_bool = S_return[.RESULT = KNOWN (PBOOL false)]',
         f'$typed_conversion_at(S_bool, ppropertydesc_get.TYPE, PBOOL false, false) = TYPEVALUE ({FZERO})',
-        f'$property_get_verify_value(S_bool, ppropertyget, ppropertydesc_get, PBOOL false, TYPEVALUE ({FZERO})) = S_bool[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',
+        f'$property_get_verify_value(S_bool, ppropertyget, ppropertydesc_get, PBOOL false, TYPEVALUE ({FZERO})) = S_bool[.RESULT = KNOWN ({FZERO})]',
         'S_wrong_rv = S_return[.RESULT = KNOWN (PSTRING ($ptascii("7")))]',
         f'$property_get_verify_value(S_wrong_rv, ppropertyget, ppropertydesc_get, pvalue_raw, TYPEVALUE ({FROUND})) = S_wrong_rv[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',
         'S_backed = S_return[.PARAMETERBACKINGS = [{FUNCTION ppropertyget.METHOD, INDEX 0, CELL n_return_cell, LINE ppropertyget.LINE, VALUE ($ptascii("  +9007199254740993  "))}]]',

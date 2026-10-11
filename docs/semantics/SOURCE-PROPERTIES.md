@@ -280,8 +280,23 @@ premises for NFLOAT strings. The separate
 [integer-string float review](../../coverage/semantics/magic-property-integer-float-review.json)
 records six source agreements and six whole reached groups/899 setup-inclusive
 premises for NINT strings, including signed limits and strict-getter rejection.
-Booleans, PARAMETERBACKINGS and wider conversions remain Unsupported; earlier
+PARAMETERBACKINGS and wider conversions remain Unsupported; earlier
 evidence and failed preparations retain their original cuts.
+
+Weak builtin-float MAGIC_GET also accepts booleans: false becomes positive zero
+and true becomes one. The actual unconstrained reference cell converts in place;
+a by-value return changes only its RV. Getter-declaration strictness rejects a
+boolean, and null remains rejected. Real float|bool property sources select a
+first-source conflict without converting the cell or changing its source; later
+source repair preserves the pending TypeError. CV reception still copies after
+reader destruction, while owned reception detaches before BASE release.
+Getter rejection/conflict diagnostics name `bool`, as Zend's type-name helper
+does; shared95's value names `false`/`true` remain unchanged in other contexts.
+The [boolean-float review](../../coverage/semantics/magic-property-boolean-float-review.json)
+records six source agreements and six whole reached groups/911 setup-inclusive
+premises. Three maintained constructed boolean controls contribute nine clauses
+only to the new kept group; phase31–33 evidence is not renewed. Boolean-to-int/string,
+PARAMETERBACKINGS and wider targets/conversions retain their explicit boundaries.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

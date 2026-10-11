@@ -30,6 +30,7 @@ dec $property_get_context(pstate, pcallcontext) : bool
 dec $property_get_unconstrained(pstate, poperand) : bool
 dec $property_get_verify(pstate, ppropertyget, poperand) : pstate
 dec $property_get_verify_value(pstate, ppropertyget, ppropertydesc, pvalue, ptypeconversion) : pstate
+dec $property_get_given(pstate, pvalue) : ptbytes
 dec $property_get_integer_apply(pstate, ppropertyget, poperand, int) : pstate
 dec $property_get_float_apply(pstate, ppropertyget, poperand, nat) : pstate
 dec $property_get_complete(pstate, ppropertyget, poperand) : pstate
@@ -316,7 +317,7 @@ def $reference_callback_used(S, pcallcontext) = (true)
 ;; Exact verification is identity: neither a checked write nor TYPE_SOURCES
 ;; attachment occurs. Integer numeric strings convert only the actual RV or
 ;; unconstrained returned cell. Integer-to-float widening and FULLNUM/NINT or
-;; NFLOAT strings likewise change only that RV/cell; wider coercions remain residuals.
+;; NFLOAT strings and weak booleans likewise change only that RV/cell; wider coercions remain residuals.
 def $property_get_unconstrained(S, KNOWN pvalue) = true
 def $property_get_unconstrained(S, REFERENCE n) = ($propref_at(S.PROPREFS, n) = eps /\ $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps)
 def $property_get_unconstrained(S, poperand) = false -- otherwise
@@ -335,7 +336,19 @@ def $property_get_verify(S, ppropertyget, poperand) = $property_get_verify_value
   -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
 def $property_get_verify(S, ppropertyget, poperand) = S[.COMPLETION = UNSUPPORTED "magic getter typed reference sources"] -- otherwise
 
+;; Getter diagnostics use the bool type name, not the true/false value name.
+def $property_get_given(S, PBOOL b) = $ptascii("bool")
+def $property_get_given(S, pvalue) = $typed_given(S, pvalue) -- otherwise
+
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEVALUE pvalue) = S
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, PBOOL b, TYPEVALUE (PFLOAT n_float)) = $property_get_float_apply(S, ppropertyget, S.RESULT, n_float)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
+  -- if $typed_number(PBOOL b) = (NINT i)
+  -- if n_float = $float_of_int(i)
+  -- if $call_reference_operand_valid(S, S.RESULT)
+  -- if $property_get_unconstrained(S, S.RESULT)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PBOOL b)
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, PINT i, TYPEVALUE (PFLOAT n_float)) = $property_get_float_apply(S, ppropertyget, S.RESULT, n_float)
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
   -- if $long_range(i)
@@ -370,7 +383,7 @@ def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEINTEG
   -- if $property_get_unconstrained(S, S.RESULT)
   -- if S_read = $quiet_operand(S, S.RESULT)
   -- if S_read.RESULT = KNOWN pvalue
-def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEREJECT) = $throw_scalar(S, "TypeError", $ptascii("Value of type ") ++ $typed_given(S, pvalue) ++ $ptascii(" returned from ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::__get() must be compatible with unset property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
+def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, TYPEREJECT) = $throw_scalar(S, "TypeError", $ptascii("Value of type ") ++ $property_get_given(S, pvalue) ++ $ptascii(" returned from ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::__get() must be compatible with unset property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
 def $property_get_verify_value(S, ppropertyget, ppropertydesc, pvalue, ptypeconversion) = S[.COMPLETION = UNSUPPORTED "magic getter property type coercion"] -- otherwise
 
 def $property_get_integer_apply(S, ppropertyget, KNOWN pvalue, i) = S[.RESULT = KNOWN (PINT i)]
