@@ -4376,8 +4376,10 @@ task certificate. The both-concat witness reaches two distinct request-string
 producers, canonical saved Closure and genuine mint before four separate operand
 writes. Native2/literal1 at e360 and repaired computed1/state347 at 53a19b/375 pass
 (322 genuine/derived plus 25 controls), with unchanged CONFIG/receipt and shared
-authority controls. Wider evaluation evidence and source7 stay open; exact
-maintained relocation needs no runtime renewal. See the same ledger.
+authority controls. Wider evaluation evidence and source7 stay open. Actual de65
+composition at 68d7 passes the preserved347 gate (5.224s compiler, 71.244s
+initialized SL); native/source/private cuts retain their original revisions.
+See the same ledger.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
