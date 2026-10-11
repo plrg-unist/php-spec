@@ -1507,6 +1507,8 @@ caller-table fixture failure keeps zero state credit; bypass compilation is
 retained and the maintained producer is byte-identical. Post-W reconstruction
 remains a local source certificate; wider rebinding/lifecycle/returns remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual378 over `2a5dcf424` passes strict at `2ff75de2` in 5.940s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
