@@ -59,6 +59,15 @@ def $gc_worker_guard_zero(S, pgcguard) = $gc_bare_return($gc_bare_record(S_dropp
 ;; ordinary owner-zero target retains its root slot after the final callback.
 dec $gc_terminal_leaf(pstate, nat) : bool
 dec $gc_terminal_target(pstate, pgcplan, nat) : bool
+dec $gc_terminal_child_hold(pstate, pgcplan, hgraph, nat, hedge) : bool
+def $gc_terminal_child_hold(S, pgcplan, H, n_child, HEDGE (HCELL n_cell) (HOBJECT n_child)) = true
+  -- if (HCELL n_cell) <- S.ALLOCATIONS
+  -- if n_cell <- S.REFCELLS
+  -- if $gc_retired_cv(S, pgcplan, H, n_cell, n_child)
+def $gc_terminal_child_hold(S, pgcplan, H, n_child, hedge) = false -- otherwise
+dec $gc_terminal_child_held(pstate, pgcplan, hgraph, nat, hedge*) : bool
+def $gc_terminal_child_held(S, pgcplan, H, n_child, eps) = false
+def $gc_terminal_child_held(S, pgcplan, H, n_child, hedge :: hedge*) = ($gc_terminal_child_hold(S, pgcplan, H, n_child, hedge) \/ $gc_terminal_child_held(S, pgcplan, H, n_child, hedge*))
 dec $gc_terminal_targets(pstate, pgcplan, pnode*) : bool
 dec $gc_terminal_record(pstate, pnode*) : pstate
 def $gc_terminal_leaf(S, n) = true
@@ -108,6 +117,20 @@ def $gc_terminal_target(S, pgcplan, n) = true
   -- if ~((HOBJECT n_child) <- pgcplan.FREESET)
   -- if $heap_owners($heap_graph(S), HOBJECT n_child) = 2
   -- if $node_children(S, HOBJECT n_child) = eps
+  -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (n_slot)
+  -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n)
+def $gc_terminal_target(S, pgcplan, n) = true
+  -- if $gc_bare_valid(S, n)
+  -- if $node_children(S, HOBJECT n) = [HOBJECT n_child]
+  -- if (HOBJECT n_child) <- S.ALLOCATIONS
+  -- if $(n_child < |S.OBJECTS|)
+  -- if S.OBJECTS[n_child] = STDINSTANCE
+  -- if ~((HOBJECT n_child) <- pgcplan.GRAPH.NODES)
+  -- if ~((HOBJECT n_child) <- pgcplan.FREESET)
+  -- if $node_children(S, HOBJECT n_child) = eps
+  -- if H = $heap_graph(S)
+  -- if $heap_owners(H, HOBJECT n_child) = 2
+  -- if $gc_terminal_child_held(S, pgcplan, H, n_child, H.EDGES)
   -- if $gc_slot_find(S.GC.BUFFER, HOBJECT n, 0) = (n_slot)
   -- if S.GC.BUFFER[n_slot] = GC_ROOT (HOBJECT n)
 def $gc_terminal_target(S, pgcplan, n) = false -- otherwise
