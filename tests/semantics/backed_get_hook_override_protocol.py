@@ -238,7 +238,7 @@ DERIVED=[
     r'pchheader_child = {KIND pclassdesc_child.KIND, NAME pclassdesc_child.NAME, ABSTRACT pclassdesc_child.ABSTRACT, FINAL pclassdesc_child.FINAL, READONLY pclassdesc_child.READONLY, PARENT pclassdesc_child.PARENT, INTERFACES pclassdesc_child.INTERFACES, BODY phpType23_class}',
     r'$origin_node(S.SOURCES,ppropertyhook_S_child.HOOK) = (NPropertyHook phpType14_hook phpType24_hook phpType4_hook phpType11_hook phpType16_hook phpType39_hook metadata_hook)',
     r'phpType38_hook = NPropertyHook phpType14_hook phpType24_hook phpType4_hook phpType11_hook phpType16_hook phpType39_hook metadata_hook',
-    r'$origin_node(S.SOURCES,ppropertydesc_child.ORIGIN) = (NPropertyItem phpType40_name phpType5_default metadata_property)',
+    r'$origin_node(S.SOURCES,ppropertyhook_S_child.PROPERTY) = (NPropertyItem phpType40_name phpType5_default metadata_property)',
     r'$pphook_class_shape(pchheader_child,phpType40_name,phpType38_hook) /\ ~$pphook_class_shape(pchheader_child[.ABSTRACT = true],phpType40_name,phpType38_hook) /\ ~$pphook_class_shape(pchheader_child[.FINAL = true],phpType40_name,phpType38_hook)',
     r'phpType38_virtual = NPropertyHook phpType14_hook phpType24_hook phpType4_hook phpType11_hook phpType16_hook (NScalarInt (INTEGER 7) metadata_hook) metadata_hook',
     r'~$pphook_class_shape(pchheader_child,phpType40_name,phpType38_virtual) /\ $pphook_class_shape(pchheader_child[.PARENT = eps],phpType40_name,phpType38_virtual)',
