@@ -1130,9 +1130,10 @@ self edge or a canonical unbuffered property reference inside fresh destructor
 reach. D's old physical tag is removed while D stays live; collection runs E,
 returns −1, and request shutdown calls D after `END`. Both originals agree with native PHP
 at separate cuts. The reference variant adds 99 source/control checks plus two
-pure array exclusions. The separate held-F frontier preserves its untraced tag;
-its larger whole CLI60 and source41 remain OPEN/zero agreement. Wider reference
-layouts, array components and worker overlap remain required.
+pure array exclusions. The separate held-F original also matches native output
+under its recorded 180-second cap, with F weak-live after the callbacks. Its earlier
+CLI60 timeout keeps zero credit; source41 remains OPEN/zero agreement. Wider
+reference layouts, array components and worker overlap remain required.
 
 Main collection also retires a separate non-destructor `stdClass` self-cycle
 reacquired through `WeakReference::get()` during a destructor. Its saved global

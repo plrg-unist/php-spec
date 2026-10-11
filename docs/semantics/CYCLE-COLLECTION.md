@@ -689,9 +689,13 @@ the signed result is −1, and D runs only after END. Image/selection71 executes
 69 source/control checks plus2 pure type exclusions; held-F frontier34 binds
 its real CV/weak liveness and surviving physical slot. Zero/one-step replay,
 nonwhite/COUNTED, retained-tag and duplicate-consumer controls pass. Compiler/init
-also pass. Baseline35 localizes the former refusal; the larger held-F whole CLI60
-timeout retains OPEN/zero credit. Black reference/array components, broader
-external ownership, non-idle workers and wider overlap remain required.
+also pass. Baseline35 localizes the former refusal. The same held-F original now
+matches retained native110 at `84e975`/375 in107.411s under CLI180/recorder195:
+F/E/D callbacks run during collection, the returned result is −1, and held F
+remains weak-live at END. Only this source uses the longer cap; default source
+caps stay60/75. Its original CLI60 timeout retains zero credit; no collector rule
+or count/owner fold changes. Black reference/array components, broader external
+ownership, non-idle workers and wider overlap remain required.
 
 The held-D reference companion changes only `$d->s=$d` to `$d->s=&$d`. The live
 component fence now accepts objects and canonical unbuffered references inside
@@ -709,7 +713,7 @@ states reject; zero/one-step replay passes. Baseline49 preserves the earlier
 first refusal at `15951738`. This establishes live reference behavior through
 selection and source completion, with no terminal reference-cell retirement or
 new count/owner closure claim. Wider reference layouts, array components, workers
-and later passes remain required; source41/held-F42 whole CLI60 stay OPEN/zero.
+and later passes remain required; source41 whole CLI60 stays OPEN/zero.
 
 Main PASS0 also admits disposal of a separate non-destructor `stdClass` self-cycle
 copied into a direct global CV by `WeakReference::get()` during a destructor.

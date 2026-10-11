@@ -1585,8 +1585,11 @@ pass: real TRACE/image/E selection, held/weak D, marker/shape/slot/consumer
 negatives and zero/one-step replay. Collection returns −1; D runs after END.
 Baseline35/49 localize the respective original refusals. Count folding/owners
 are unchanged; wider reference/array/worker/later-pass overlap remains required.
-Source41 and the larger held-F42 whole CLI60 remain OPEN/zero; prior cuts are
-unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+The held-F42 original completes at `84e975`/375 in107.411s under CLI180/recorder195,
+matching retained native110 with F weak-live at END. Its existing source row is
+enabled with that cap; other source cases retain60/75. The original CLI60 timeout
+keeps zero credit; source41 remains OPEN/zero and prior cuts are unchanged.
+[Ledger](coverage/semantics/cycle-collection-review.json).
 
 Main collection301 now disposes a separate non-destructor `stdClass` self-cycle
 reacquired through WeakReference during a destructor. The marked global CV becomes
