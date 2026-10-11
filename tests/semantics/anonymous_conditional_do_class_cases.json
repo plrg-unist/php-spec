@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables in Do bodies. Actual Do hosts may lie in the existing authenticated If/While/Block conditional ancestry; body Block chains, terminal presence and full factory guards stay mandatory. Selected/skipped branches, reverse class publication, retained old/current Closure targets, lexical namespace, fresh defaults and qualified prior-deferred versus case-spelled EARLY ownership are observed. Direct While or nested-Do hosts, conditional hosts beneath Do, other loops, nested factories and wider callable guards remain Unsupported by this Do context; earlier admitted and anonymous-only contexts stay supported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "conditional-do-reversed",
+      "source": "<?php\n$leftSelect = true; $rightSelect = false; $once = false; $rightFactory = null; $skipped = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':28$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeConditionalDoLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\nif ($leftSelect) {\n    do {\n        {\n            {\n                function makeConditionalDoLeft() {\n                    class ConditionalDoLeftPublished {}\n                    return new class { public function kind() { return 'left'; } };\n                }\n            }\n        }\n    } while ($once);\n} else { $skipped = 'BAD'; }\n{\n    if ($rightSelect) { $rightFactory = 'BAD'; }\n    else {\n        {\n            do {\n                {\n                    $rightFactory = static function () {\n                        class ConditionalDoRightPublished {}\n                        return new class { public function kind() { return 'right'; } };\n                    };\n                }\n            } while ($once);\n        }\n    }\n}\n$right = $rightFactory(); $rightNamed = new ConditionalDoRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'ConditionalDoRightPublished' ? 'right|' : 'BAD|';\ntry { new ConditionalDoLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeConditionalDoLeft(); $leftNamed = new ConditionalDoLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'ConditionalDoLeftPublished' ? 'left|' : 'BAD|';\necho $leftSelect && !$rightSelect && !$once && $skipped === null && $before !== $left && $rightBefore !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "10d02a4990d4a29ce92f319c10c3b9fbb1a706046f88af124a2fa775a04d8686",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-conditional-do-native-43/run-v1/conditional-do-reversed/command.json",
+      "native_raw_sha256": "35bc3b9f95bbc9edf81b18504d6afcc1f52afffff62279613b554ef1d06780db"
+    },
+    {
+      "id": "conditional-do-repeated",
+      "source": "<?php\nnamespace RepeatConditionalDoSide;\n$run = true; $select = true; $i = 0; $seen = false; $make = null; $previous = null; $skipped = null;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':16$1';\n$before = new $name;\necho $before::class === $name && $before->value === 0 && $make === null && $previous === null ? 'before|' : 'BAD|';\nwhile ($run) {\n    if (false) { $make = 'BAD'; }\n    elseif ($select) {\n        do {\n            {\n                $previous = $make;\n                $make = static function () {\n                    global $seen;\n                    if (!$seen) { $seen = true; class Published {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                };\n            }\n            $i = $i + 1;\n        } while ($i < 2);\n    } else { $skipped = 'BAD'; }\n    $run = false;\n}\necho !$run && $select && $skipped === null && $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatConditionalDoCaller;\n$first = $previous(); $named = new \\RepeatConditionalDoSide\\Published;\necho $first::class === $name && $first->space() === 'RepeatConditionalDoSide' && $named::class === 'RepeatConditionalDoSide\\Published' ? 'first|' : 'BAD|';\n$first->value = 9; $second = $make();\necho $second::class === $name && $second->space() === 'RepeatConditionalDoSide' && $second->value === 0 ? 'second|' : 'BAD|';\necho $seen && $before !== $first && $first !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "f741bfd9151f052a3d05965567aed37c2536357f72b1a74f633edef537dcf399",
+      "stdout_base64": "YmVmb3JlfHRlbXBsYXRlc3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-conditional-do-native-43/run-v1/conditional-do-repeated/command.json",
+      "native_raw_sha256": "cbcfbc5af2a36f1be09a840586b15fda5f6003e2306790b5f4ccc3941e3ade20"
+    },
+    {
+      "id": "conditional-do-prior-deferred",
+      "source": "<?php\nnamespace DoBranchSelectedSide;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':15$2';\n$before = new $name; $early = new Exception; $chooseBranch = true;\necho $before::class === $name && $early::class === 'DoBranchSelectedSide\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\ntry { chosenDoFactory(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nif (false) {\n    do { function skippedDoFactory() { class HiddenDoBranch {} } } while (false);\n} elseif ($chooseBranch) {\n    {\n        do {\n            {\n                function chosenDoFactory() {\n                    if (false) { class Exception {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                }\n            }\n        } while (false);\n    }\n}\nclass eXcEpTiOn {};\nnamespace CallerDoBranchSide;\n$first = \\DoBranchSelectedSide\\chosenDoFactory();\necho $first::class === $name && $first->space() === 'DoBranchSelectedSide' ? 'first|' : 'BAD|';\n$first->value = 9; $fresh = new $name;\necho $before !== $first && $fresh !== $first && $before->value === 0 && $first->value === 9 && $fresh->value === 0 && $fresh->space() === 'DoBranchSelectedSide' ? 'fresh|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$3';\necho $last::class === $lastName ? 'last|' : 'BAD|';\ntry { \\DoBranchSelectedSide\\skippedDoFactory(); echo 'BAD'; } catch (\\Error $caught) { echo 'skipped'; }\n",
+      "source_sha256": "5496890bcf5f816dc0c6b609890afa8a03a555a1e07f80c63dd83d549c10ba1a",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8ZnJlc2h8bGFzdHxza2lwcGVk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-conditional-do-native-43/run-v1/conditional-do-prior-deferred/command.json",
+      "native_raw_sha256": "4f6debd540c1283a64f3a3241c23ebada34a7b9e4ad136beee1177ee47d3cd34"
+    }
+  ]
+}

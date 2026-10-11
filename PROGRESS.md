@@ -23,17 +23,20 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
-assignments now admit plain empty named descendants through authenticated standalone
-Block chains inside root or valid namespace Do bodies, retaining standalone Block
-host ancestry. Three originals agree at 9d2ca309 /375 (strict3 6.025s): reverse calls
-publish classes in call order, two Closure instances retain old/current targets from
-one template, and fresh defaults and qualified prior-deferred/root-case EARLY owners
-remain distinct. Author538 and independent152 pass 690 premises: 648 setup/frontier,
-42 pure, with 27 genuine body-Block, publication, creation/capture, allocation and
-eligible no-op steps. Fixtures stop at required allocations; syntax-only preparation
-and elaboration have zero runtime credit. No executed COMP42 failures. Other Do
-host/body ancestry and wider factory guards remain required.
-[Do body-Block ledger](coverage/semantics/anonymous-do-block-rtd-review.json).
+assignments now admit plain empty named descendants in If-hosted Do bodies through
+the existing authenticated If/While/Block ancestry and Do body-Block chains.
+Three originals agree at 6d4067a /375 (strict3 6.026s), including selected/skipped
+branches, reverse publication and retained Closure receivers with fresh defaults.
+Author647 and independent194 pass 841 premises: 795 setup/frontier +46 pure,
+with 35 genuine branch, Block, publication, creation/capture, allocation and eligible
+no-op steps. Fixtures stop at required allocations; syntax-only preparation and
+elaboration have zero runtime credit. No executed COMP43 failures. Direct While→Do,
+nested Do, If hosts beneath Do and wider factory guards remain Unsupported.
+[If-hosted Do ledger](coverage/semantics/anonymous-conditional-do-rtd-review.json).
+
+The [earlier Do body-Block ledger](coverage/semantics/anonymous-do-block-rtd-review.json)
+retains source3/state690 at 9d2ca309; only authenticated conditional hosts supersede
+its Do-host exclusions.
 The 375 join over 75c2bdfc passes strict3 at 15c9705e (5.972s), checking
 the shared getter task and Iterator snapshot record. Review preserves parentless
 class linking and excludes the bool-typed __get/Iterator reception routes; private

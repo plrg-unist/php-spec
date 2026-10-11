@@ -162,15 +162,19 @@ The [While-hosted If review](../../coverage/semantics/anonymous-while-if-rtd-rev
 authenticates each actual If/While host and selected branch, with genuine If/CHOOSE
 transitions before publication or creation and saved-frame allocations.
 Both exact factory forms also admit Do bodies through standalone Block chains at
-root or a valid namespace body, with standalone Block host ancestry. Actual Do and
+root or a valid namespace body, with standalone Block hosts or the existing
+authenticated If/While/Block conditional ancestry. Actual Do and
 each parent Block plus terminal occurrences and complete factory guards stay mandatory.
+The [If-hosted Do review](../../coverage/semantics/anonymous-conditional-do-rtd-review.json)
+checks genuine If/CHOOSE selection before publication or creation, reverse class
+publication and old/current saved-frame allocations, including While→If→Do hosts.
 The [Do body-Block review](../../coverage/semantics/anonymous-do-block-rtd-review.json)
 authenticates real body-Block entries before publication or creation/capture, reverse
 class publication and old/current saved-frame allocations. The earlier
 [direct-Do review](../../coverage/semantics/anonymous-do-rtd-review.json) retains
 body-before-false-condition and LOOP_NEXT/CHOOSE stopping/repeat checks without replay.
-Other Do host/body ancestry, including If/While/nested-Do hosts or intervening
-If/loop nodes, nested functions or nested Closures, other targets,
+Direct While or nested-Do hosts, If hosts beneath Do, other intervening loop nodes,
+nested functions or nested Closures, other targets,
 captures and signatures remain Unsupported by this Do context.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)
 separates real Block/creation/publication/allocation steps from pure admission queries.

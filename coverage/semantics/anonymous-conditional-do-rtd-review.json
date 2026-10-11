@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables in Do bodies. Actual Do hosts may lie in the existing authenticated If/While/Block conditional ancestry; body Block chains, terminal presence and full factory guards stay mandatory. Selected/skipped branches, reverse class publication, retained old/current Closure targets, lexical namespace, fresh defaults and qualified prior-deferred versus case-spelled EARLY ownership are observed. Direct While or nested-Do hosts, conditional hosts beneath Do, other loops, nested factories and wider callable guards remain Unsupported by this Do context; earlier admitted and anonymous-only contexts stay supported.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_conditional_do_class_cases.json"
+  },
+  "semantic_revision": "6d4067a833824be965828a0ee34ac0f9c580d378",
+  "private_base": "de65d5953cb1a6a0eb280285ba6d36ca14f2d981",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "sha256": "719dbf9e7181b0940ef0879fe1491238366bf592da4eef7a9d27a75ab5e22c35",
+    "rule": "Add only the existing anonymous_conditional_factory_path host alternative to the authentic Do arm. The already shortened Do host is authenticated through actual If/ElseIf/Else, While and Block nodes; recursive prefixes strictly shrink. Length guard, known invertible Do suffix, actual Do/terminal/body-Block recursion and complete named-function or expression-statement/assignment/Closure guards remain mandatory. Class/count/EARLY/source/CODE/name receipts, runtime/tasks/schema/manifest are unchanged.",
+    "publication": "Genuine If entry and defined-CV or compiled-false CHOOSE select the source branch before Do body-Block entry, CALLABLES/PDRFUNCTION publication or creation/capture of REALCLOSURE instances from compiled templates. Reverse calls retain exact PDRCLASS/CCLINK, current/target/callsite and saved caller frames. Repeated creation retains old/current instances from one template with one guarded class publication and first9/fresh0 defaults.",
+    "boundary": "Historical Do-host negatives retain their original cuts and are superseded only for the existing authenticated conditional ancestry, including While→If→Do. Direct While→Do, nested Do and If hosts beneath Do remain excluded. Placement helpers alone do not certify signatures or canonical full occurrences. Qualified-prefix/zero-cost ordering and older same-class constructor receipt limits remain unchanged."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_if (6186) compiles conditions with zend_compile_expr and branch bodies with zend_compile_stmt. zend_compile_do_while (6010) compiles the body with zend_compile_stmt before the condition with zend_compile_expr; zend_compile_stmt_list (7047) preserves nested declaration binding through Blocks, unlike zend_compile_top_stmt (11653). Host branches and Blocks add no class RTD keys.",
+    "Existing40/50 If/CHOOSE and Block entry,47 body-before-condition compilation,80 callable publication,116 Closure creation/capture,184 CCLINK and190/196 publication causes are reused. No loop/call/runtime protocol change; accepted Do/While controls and earlier fatal cuts are not replayed."
+  ],
+  "native_cut": {
+    "revision": "de65d5953cb1a6a0eb280285ba6d36ca14f2d981",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-native-43/run-v1/report.json",
+    "originals": 3,
+    "normal": 3,
+    "exit_statuses": [
+      0,
+      0,
+      0
+    ]
+  },
+  "source_cuts": [
+    {
+      "revision": "6d4067a833824be965828a0ee34ac0f9c580d378",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-model-43/run-v1/report.json",
+      "accepted_groups": [
+        "conditional-do-reversed",
+        "conditional-do-repeated",
+        "conditional-do-prior-deferred"
+      ],
+      "native_agreements": 3,
+      "normal": 3,
+      "seconds": [
+        20.13781358487904,
+        20.037607895210385,
+        16.783960977569222
+      ],
+      "semantic_caps_seconds": [
+        45,
+        45,
+        90
+      ],
+      "host_caps_seconds": [
+        55,
+        55,
+        100
+      ]
+    }
+  ],
+  "strict": {
+    "revision": "6d4067a833824be965828a0ee34ac0f9c580d378",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-gate-43/report.json",
+    "premises": 3,
+    "seconds": 6.025624990463257
+  },
+  "state_revision": "6d4067a833824be965828a0ee34ac0f9c580d378",
+  "state_cuts": [
+    {
+      "group": "author/reversed",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-state-43/report.json",
+      "checks": 349,
+      "setup_source_frontier_checks": 337,
+      "pure_queries": 12,
+      "PhpSteps": 15,
+      "seconds": 43.27698516845703
+    },
+    {
+      "group": "author/repeated",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-state-43/report.json",
+      "checks": 298,
+      "setup_source_frontier_checks": 291,
+      "pure_queries": 7,
+      "PhpSteps": 12,
+      "seconds": 37.5683810710907
+    },
+    {
+      "group": "independent/prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-peer-state-43/report.json",
+      "checks": 194,
+      "setup_source_frontier_checks": 167,
+      "pure_queries": 27,
+      "PhpSteps": 8,
+      "seconds": 25.457297801971436
+    }
+  ],
+  "state_method": {
+    "frontiers": "Source-authenticated root main/else and namespace While→elseif Do hosts reach actual If entries, single condition selections and Do body/host Blocks before publication or creation. Reverse class causes and CCLINK authenticate callsites35/38 and saved frames. Repeated Do body-Block visits authenticate i0/i1, previous/current REALCLOSURE instances and old/current allocations at26/28 with source-ordered seen=true and first9/fresh0 storage. Independent selected callable publication, qualified prior-deferred versus root-case EARLY ownership, eligible whole-state no-op and call23 allocation retain genuine caller frames. Owned Error heap objects are unrestricted.",
+    "stopping": "Required allocation only; no END drive. Native/model3 retain full scalar outcomes. No old Do/While loop-control/fatal or historical pure-corpus replay.",
+    "steps": {
+      "Block_entry": 8,
+      "If_entry": 4,
+      "CHOOSE_selection": 6,
+      "callable_publication": 2,
+      "Closure_creation_capture": 6,
+      "named_class_publication_CCLINK": 3,
+      "anonymous_allocation": 5,
+      "eligible_named_class_noop": 1
+    }
+  },
+  "syntax_only": {
+    "preparation": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-state-43/preparation.json",
+    "checked_originals": 3,
+    "frontend_adapter_closes": 6,
+    "author_elaboration": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-state-43/report-elab.json",
+    "independent_elaboration": ".tools/anonymous-class-20/.tools/anonymous-conditional-do-peer-state-43/report-elab.json",
+    "runtime_credit": 0
+  },
+  "validation": "Accepted runs bind exact revision/inputs/profile/final command records; native immutable START identities and raw streams remain retained. SL raw true newline/empty stderr, stable inputs/exit+cleanup0/empty owned groups/no unrun. Existing local binaries are reused; no fresh build/offline claim.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_conditional_do_class_cases.json",
+    "sha256": "fab8f38a8072d6a81eff5229f433a4d8da71ec771c681e67ad5fb450a6b76c8d",
+    "original_bytes_and_native_records": true,
+    "runner": "tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_conditional_do_class_cases.json"
+  },
+  "remaining": [
+    "Direct While→Do or nested Do hosts, If hosts beneath Do, other intervening loops, nested factories and wider signatures/targets/captures.",
+    "Broader class/constructor/RTD consumers and final combined source/rebuild validation."
+  ],
+  "engine_bugs_or_intentional_divergence": [],
+  "failures": [],
+  "independent_review": "Exact native/source/semantic/recorder/fixture preflight and closed strict/source/preparation, author647 plus independent194 raw records accepted. Final six scoped metadata paths independently accepted with concise behavior-led scope and retained cuts. Setup/pure/step counts remain separate; no accepted private evidence is renewed.",
+  "state_totals": {
+    "checks": 841,
+    "setup_source_frontier_checks": 795,
+    "pure_queries": 46,
+    "PhpSteps": 35,
+    "unique_php_behaviors": false
+  }
+}
