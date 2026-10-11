@@ -23,21 +23,23 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
-assignments now admit plain empty named descendants through authenticated standalone
-Block chains inside actual `if`, `elseif` and `else` bodies. The If host retains
-root/valid-namespace/standalone Block ancestry. Three originals agree at ef5ccc95
-/375 (strict3 5.925s): anonymous names preexist publication/creation, mixed calls
-publish named classes in call order, and guarded repeats preserve fresh defaults.
-Author565 and focused independent219 pass 784 premises: 756 setup/source-frontier
-and 28 pure queries, with 29 actual PhpSteps for branch-body Block entry, callable
-publication, Closure creation/capture, class PDRCLASS/CCLINK publication, eligible
-class no-op and genuine saved-frame allocation. Fixtures stop after required allocations. Syntax preparation and
-elaboration add no runtime credit. Nested If hosts, loops, nested factories and
-wider signatures, targets/captures/consumers remain required.
-The 375 join over d3beefe6 passes strict3 at ae8b65a9 (5.925s), checking
-the shared task domain. Independent review preserves ordinary REALCLOSURE calls
-and reached parentless class-link identity; private native/source/state cuts keep
-their original revisions without replay.
+assignments now admit plain empty named descendants under authenticated nested
+If hosts, retaining actual main/elseif/else and standalone Block ancestry at root
+or valid namespaces. Three originals agree at 4ea0db1d /375 (strict3 5.972s):
+anonymous identities precede selected publication/creation, skipped outer hosts
+preserve missing callables, and mixed calls retain call-order publication and
+fresh defaults. Author654 and independent228 pass 882 premises: 848 setup/source
+frontier and 34 pure queries, with 34 actual PhpSteps for nested If/CHOOSE
+selection, Block entry, callable publication, Closure creation/capture, class
+PDRCLASS/CCLINK publication, eligible class no-op and saved-frame allocation.
+Fixtures stop after required allocations; syntax preparation and elaboration
+add no runtime credit. Loops, nested functions/Closures and wider signatures,
+targets/captures/consumers remain required.
+[Nested-host ledger](coverage/semantics/anonymous-nested-branch-rtd-review.json).
+
+The earlier branch-body Block cut retains source3/state784 and its original
+revisions, including the ae8b65a9/d3beefe6 strict join. Historical nested-If
+negatives are superseded only for authenticated nested hosts, without replay.
 [Branch-body Block ledger](coverage/semantics/anonymous-branch-block-rtd-review.json).
 
 The earlier Block-host cut retains source3/state737, its three zero-credit failures

@@ -1355,16 +1355,15 @@ call-order publication and fresh defaults. The earlier
 retains fatal redeclaration before another allocation.
 The earlier Block Closure join of 375 modules over 92f726a3 passes strict3 at
 fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
-Both factory kinds admit authenticated standalone Block chains before an `if`
-host and inside its actual main, `elseif` or `else` body. Three mixed originals
-agree at ef5ccc95, retaining pre-publication anonymous names, call-order named
-publication and guarded fresh defaults. The
-[branch-body Block review](coverage/semantics/anonymous-branch-block-rtd-review.json)
-separates genuine Block/publication/capture/allocation frontiers from pure ancestry
-and receipt queries; fixtures stop after their required allocations.
-The 375 join over d3beefe6 passes strict3 at ae8b65a9 (5.925s), checking
-the shared task domain. Review preserves ordinary REALCLOSURE calls and parentless
-class-link identity; private cuts retain their original revisions.
+Both factory kinds also admit authenticated nested `if` hosts and standalone
+Block chains before the host or inside its main, `elseif` and `else` bodies.
+Anonymous names preexist selected publication/creation, including skipped hosts.
+The [nested-host review](coverage/semantics/anonymous-nested-branch-rtd-review.json)
+binds three originals to actual branch selection, publication, capture and
+saved-frame allocation; guarded repeats preserve fresh defaults. Fixtures stop
+after their required allocations.
+The earlier [branch-body Block review](coverage/semantics/anonymous-branch-block-rtd-review.json)
+retains its private cuts and ae8b65a9/d3beefe6 strict join without replay.
 The earlier [Block-host review](coverage/semantics/anonymous-block-branch-rtd-review.json)
 retains its original failures and reused strict3 at 5d91ff5f for the 431dacbd/c35c223e
 join, without a current actor or private replay.

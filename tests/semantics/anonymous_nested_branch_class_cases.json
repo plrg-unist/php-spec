@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables, under authenticated nested If hosts at root or valid namespace bodies with actual main/elseif/else and standalone Block ancestry. Exact original file/cwd/profile observations distinguish anonymous availability before callable publication or Closure creation, independently selected outer/inner predicates, reverse publication, skipped callable absence, qualified prior-deferred versus early case ownership, and guarded independent defaults/lexical namespaces. Named descendants under loops, nested functions/Closures or wider signatures/targets/captures remain Unsupported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "nested-branch-reversed",
+      "source": "<?php\n$outer = true; $chooseLeft = true; $chooseRight = false; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':12$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':20$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeLeftNested(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\nif ($outer) {\n    if (false) {} elseif ($chooseLeft) {\n        function makeLeftNested() {\n            class LeftNestedPublished {}\n            return new class { public function kind() { return 'left'; } };\n        }\n    }\n}\nif (false) {} elseif ($outer) {\n    if ($chooseRight) {} else {\n        $rightFactory = static function () {\n            class RightNestedPublished {}\n            return new class { public function kind() { return 'right'; } };\n        };\n    }\n}\n$right = $rightFactory(); $rightNamed = new RightNestedPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'RightNestedPublished' ? 'right|' : 'BAD|';\ntry { new LeftNestedPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeLeftNested(); $leftNamed = new LeftNestedPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'LeftNestedPublished' ? 'left|' : 'BAD|';\necho $before !== $left && $rightBefore !== $right && $right !== $left ? 'fresh' : 'BAD';\n",
+      "source_sha256": "57ae0a0e04b8904217690e8e86c3ae4c8ca925e4679ff7ab8184402c702a931a",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-branch-native-35/run-v1/nested-branch-reversed/command.json",
+      "native_raw_sha256": "840c4ffa89590948bdbcbc82c825bbdcde262e94a9098d38351637f86821474e"
+    },
+    {
+      "id": "nested-branch-repeated",
+      "source": "<?php\nnamespace RepeatNestedSide;\n$outer = true; $closureChoice = true; $functionSeen = false; $closureSeen = false; $make = null;\n$functionName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$1';\n$closureName = 'class@anonymous' . \"\\0\" . __FILE__ . ':24$3';\n$before = new $functionName; $closureBefore = new $closureName;\necho $before->value === 0 && $closureBefore->value === 0 && $make === null ? 'before|' : 'BAD|';\nif (false) {} elseif ($outer) {\n    if (false) {} elseif (false) {} else {\n        function makeRepeatNested() {\n            global $functionSeen;\n            if (!$functionSeen) { $functionSeen = true; class FunctionPublished {} }\n            return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n        }\n    }\n}\nif (false) {} else {\n    {\n        if ($closureChoice) {\n            {\n                $make = static function () {\n                    global $closureSeen;\n                    if (!$closureSeen) { $closureSeen = true; class ClosurePublished {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                };\n            }\n        }\n    }\n}\nnamespace RepeatNestedCaller;\n$functionFirst = \\RepeatNestedSide\\makeRepeatNested(); $closureFirst = $make();\n$functionNamed = new \\RepeatNestedSide\\FunctionPublished; $closureNamed = new \\RepeatNestedSide\\ClosurePublished;\necho $functionFirst::class === $functionName && $closureFirst::class === $closureName && $functionFirst->space() === 'RepeatNestedSide' && $closureFirst->space() === 'RepeatNestedSide' ? 'first|' : 'BAD|';\n$functionFirst->value = 9; $closureFirst->value = 9;\n$functionSecond = \\RepeatNestedSide\\makeRepeatNested(); $closureSecond = $make();\necho $functionSecond->space() === 'RepeatNestedSide' && $closureSecond->space() === 'RepeatNestedSide' && $functionSecond->value === 0 && $closureSecond->value === 0 ? 'second|' : 'BAD|';\necho $functionSeen && $closureSeen && $before !== $functionFirst && $closureBefore !== $closureFirst && $functionFirst !== $functionSecond && $closureFirst !== $closureSecond ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $functionFirst->value . ':' . $functionSecond->value . ':' . $closureBefore->value . ':' . $closureFirst->value . ':' . $closureSecond->value;\n",
+      "source_sha256": "c0cd5d0aa4119cd6caf0830619be8b4143d24ee190a12da0f1c9d624cb17e1a7",
+      "stdout_base64": "YmVmb3JlfGZpcnN0fHNlY29uZHxmcmVzaHwwOjk6MDowOjk6MA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-branch-native-35/run-v1/nested-branch-repeated/command.json",
+      "native_raw_sha256": "d4ab0a9aa57f03599182c2b812ae8a804865b063c57b837f15bbf6ba678ac656"
+    },
+    {
+      "id": "nested-branch-prior-deferred",
+      "source": "<?php\nnamespace NestedBranchSide;\n$functionName = 'class@anonymous' . \"\\0\" . __FILE__ . ':17$3';\n$closureName = 'class@anonymous' . \"\\0\" . __FILE__ . ':28$5';\n$make = null; $seen = false; $skipped = 0;\n$before = new $functionName; $closureBefore = new $closureName; $early = new Exception;\necho $before::class === $functionName && $closureBefore::class === $closureName && $early::class === 'NestedBranchSide\\\\eXcEpTiOn' && $make === null ? 'before|' : 'BAD|';\ntry { chosenNestedBranch(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nif (false) {\n    if (true) { function skippedNestedBranch() { class SkippedNamed {} return new class {}; } }\n}\nif (true) {\n    if (false) { $skipped = 1; } elseif (true) {\n        {\n            function chosenNestedBranch() {\n                if (false) { class Exception {} }\n                return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n            }\n        }\n    } else {}\n}\nif (false) { $skipped = 2; } else {\n    if (false) { $skipped = 3; } elseif (false) { $skipped = 4; } else {\n        {\n            $make = static function () {\n                global $seen;\n                if (!$seen) { $seen = true; class Published {} }\n                return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n            };\n        }\n    }\n}\nclass eXcEpTiOn {}\necho $skipped === 0 && $make !== null ? 'selected|' : 'BAD|';\nnamespace NestedBranchCaller;\ntry { \\NestedBranchSide\\skippedNestedBranch(); echo 'BAD|'; } catch (\\Error $caught) { echo 'skipped|'; }\n$chosen = \\NestedBranchSide\\chosenNestedBranch(); $first = $make(); $published = new \\NestedBranchSide\\Published;\necho $chosen::class === $functionName && $first::class === $closureName && $chosen->space() === 'NestedBranchSide' && $first->space() === 'NestedBranchSide' && $published::class === 'NestedBranchSide\\\\Published' ? 'first|' : 'BAD|';\n$chosen->value = 9; $first->value = 9;\n$chosenAgain = \\NestedBranchSide\\chosenNestedBranch(); $second = $make();\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$6';\necho $last::class === $lastName ? 'last|' : 'BAD|';\necho $seen && $before !== $chosen && $closureBefore !== $first && $chosen !== $chosenAgain && $first !== $second && $before->value === 0 && $closureBefore->value === 0 && $chosen->value === 9 && $first->value === 9 && $chosenAgain->value === 0 && $second->value === 0 ? 'fresh' : 'BAD';\n",
+      "source_sha256": "1717ab67bdf965a7fdd09611c9d4a054cf753d685d3bc4a020be526eff05558d",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8c2VsZWN0ZWR8c2tpcHBlZHxmaXJzdHxsYXN0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-branch-native-35/run-v1/nested-branch-prior-deferred/command.json",
+      "native_raw_sha256": "4b85e7906a0aef979ef268fdf8f4a3a8a02b96c0a787cef6a0fd4607586971a3"
+    }
+  ]
+}
