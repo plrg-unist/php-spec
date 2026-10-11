@@ -1266,6 +1266,8 @@ write65 pass at `ae89d874`, untyped79 and lifetime105 at `6e80fc03` (389 reached
 credit; native NNULL supersedes the informational NEMPTY anticipation. Existing
 default/layout/store/task/owner rules and earlier cuts retain their identities.
 [Ordinary-storage review](coverage/semantics/ordinary-parent-unbacked-get-hook-review.json).
+Joined exact `3fd8e25a`/380; one count-only current init check passes with no application.
+Private source/state cuts remain retained through neutral shell state and disjoint incoming paths.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
