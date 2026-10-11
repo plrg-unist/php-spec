@@ -4339,6 +4339,10 @@ prepared class, genuine mint, real class write and existing owned CONFIG/result.
 Original Unsupported remains 0; wider CURRENT capture expressions and source7
 stay open. Exact maintained relocation needs no runtime renewal; old lifetime and
 bridge cuts retain their evidence in the same ledger.
+Actual375 over c9377bec passes the preserved166 compatibility gate at 4dd91e3ce
+(algo 5.168s / initialized SL 30.134s), binding reached EMIT BASE cleanup
+and shared storage/pruning; guarded Iterator/getter/factory/history paths are
+absent. Private/native/source cuts remain frozen.
 
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
