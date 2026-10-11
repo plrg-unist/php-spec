@@ -32,6 +32,8 @@ PDRCLASS causes retain function/callsite and saved caller frames; right-before-l
 publication follows calls, while one guarded publication retains fresh defaults.
 Syntax preparation/elaboration adds zero runtime credit. Named Closure descendants,
 wider function placements/signatures and named/anonymous contexts remain required.
+Actual375 over 9ae5ca333 passes strict3 at 684ff104 (5.825s); private
+native/source/state cuts retain their original revisions.
 [Named-factory ledger](coverage/semantics/anonymous-named-factory-rtd-review.json).
 
 The earlier namespace cuts retain qualified early root/block cost0, deferred cost1,

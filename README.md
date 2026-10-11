@@ -1239,6 +1239,8 @@ noarg by-value untyped named functions. Three originals agree at 65c3071c; the
 [named-factory review](coverage/semantics/anonymous-named-factory-rtd-review.json)
 records 388 checks with ten actual steps for call-order publication, function/callsite
 history, saved frames and guarded repeated fresh defaults.
+Actual375 over 9ae5ca333 passes strict3 at 684ff104 (5.825s); private
+native/source/state cuts retain their original revisions.
 Named Closure descendants, wider function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
