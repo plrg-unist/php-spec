@@ -51,6 +51,14 @@ dec $property_get_nan_valid(pstate, ppropertynan) : bool
 dec $property_get_nan_commit(pstate, ppropertynan) : pstate
 dec $property_get_nan_finish(pstate, ppropertynan) : pstate
 dec $property_get_nan_abrupt(pstate, ppropertynan) : pstate
+dec $property_get_bool_nan_context(pstate, ppropertyget) : bool
+dec $property_get_bool_nan_ready(pstate, ppropertyget) : bool
+dec $property_get_bool_nan_begin(pstate, ppropertyget) : pstate
+dec $property_get_bool_nan_decision(pstate, poperand) : bool?
+dec $property_get_bool_nan_valid(pstate, ppropertyboolnan) : bool
+dec $property_get_bool_nan_commit(pstate, ppropertyboolnan) : pstate
+dec $property_get_bool_nan_finish(pstate, ppropertyboolnan) : pstate
+dec $property_get_bool_nan_abrupt(pstate, ppropertyboolnan) : pstate
 dec $property_get_long_context(pstate, ppropertyget) : bool
 dec $property_get_long_sources(pstate, ppropertyget, poperand) : pproptypesource*?
 dec $property_get_long_ready(pstate, ppropertyget) : bool
@@ -507,6 +515,9 @@ def $property_get_float_string_apply(S, ppropertyget, REFERENCE n, n_float) = $w
   -- if S_string = $stringify(S, PFLOAT n_float, ppropertyget.LINE)
   -- if S_string.RESULT = KNOWN pvalue_string
 
+def $property_get_complete(S, ppropertyget, poperand) = $property_get_bool_nan_begin(S, ppropertyget)
+  -- if poperand = S.RESULT
+  -- if $property_get_bool_nan_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_nan_begin(S, ppropertyget)
   -- if poperand = S.RESULT
   -- if $property_get_nan_ready(S, ppropertyget)
@@ -518,12 +529,12 @@ def $property_get_complete(S, ppropertyget, poperand) = $property_get_string_lon
   -- if $property_get_string_long_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget S_checked.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
-  -- if (~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget)) \/ poperand =/= S.RESULT
+  -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget)) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION = NORMAL
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
-  -- if (~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget)) \/ poperand =/= S.RESULT
+  -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget)) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION =/= NORMAL
 ;; Verification can fail after a real RV was returned. Retain that raw owner
@@ -990,3 +1001,122 @@ def $property_get_string_long_abrupt(S, ppropertystringlong) = S[.TODO = (THROW_
 def $property_get_string_long_abrupt(S, ppropertystringlong) = S[.COMPLETION = UNSUPPORTED "magic getter numeric string integer warning cleanup"] -- otherwise
 def $error_read_discard(S, PROPERTY_GET_STRING_LONG ppropertystringlong) = $property_get_string_long_abrupt(S, ppropertystringlong)
 def $return_discard(S, PROPERTY_GET_STRING_LONG ppropertystringlong) = $property_get_string_long_abrupt(S, ppropertystringlong)
+
+;; Weak bool truth reads the selected double payload after warning dispatch.
+;; Numeric live REF payloads differ from a saved BYVAL/source-conversion copy.
+def $property_get_bool_nan_context(S, ppropertyget) = true
+  -- if $property_get_valid(S, ppropertyget, true)
+  -- if $property_get_tail_valid(S, ppropertyget)
+  -- if S.ORIGIN = (ppropertyget.SITE)
+  -- if S.BASE = BASE_VALUE (KNOWN PNULL)
+  -- if ppropertyget.DECL = (ppropertyid)
+  -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
+  -- if ppropertydesc.ORIGIN = ppropertyid
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "bool"]))]
+  -- if $property_get_method(S, ppropertyget.OBJECT) = (pmethoddesc)
+  -- if ~pmethoddesc.FUNCTION.CODE.STRICT
+def $property_get_bool_nan_context(S, ppropertyget) = false -- otherwise
+
+def $property_get_bool_nan_ready(S, ppropertyget) = true
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_bool_nan_context(S, ppropertyget)
+  -- if $property_get_nan_sources(S, ppropertyget, S.RESULT) = (pproptypesource*)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PFLOAT n_float)
+  -- if $(n_float < 18446744073709551616)
+  -- if $float_decode(n_float) = NOTNUMBER n_float
+  -- if $typed_conversion_at(S, [(PTBRANCH ([PTBUILTIN "bool"]))], PFLOAT n_float, false) = TYPEBOOL (PFLOAT n_float)
+def $property_get_bool_nan_ready(S, ppropertyget) = false -- otherwise
+
+def $property_get_bool_nan_begin(S, ppropertyget) = $error_dispatch(S[.RESULT = KNOWN PNULL], 2, $ptascii("unexpected NAN value was coerced to bool"), ppropertyget.LINE, DIAGNOSTIC "Warning" ($ptascii("unexpected NAN value was coerced to bool")) ppropertyget.LINE, PROPERTY_GET_BOOL_NAN ppropertyboolnan)
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_bool_nan_ready(S, ppropertyget)
+  -- if $property_get_nan_sources(S, ppropertyget, S.RESULT) = (pproptypesource*)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (PFLOAT n_float)
+  -- if ppropertyboolnan = {GET ppropertyget, INPUT S.RESULT, FLOAT n_float, SOURCES pproptypesource*, OWNER (|S.FRAMES|), TAIL ptask_tail*}
+
+def $property_get_carrier(ptask, n, porigin) = 1
+  -- if $source_operand_marker(ptask) = PROPERTY_GET_BOOL_NAN ppropertyboolnan
+  -- if ppropertyboolnan.GET.OBJECT = n /\ ppropertyboolnan.GET.SITE = porigin
+def $property_get_base_pair(ptask :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*, ppropertyget) = true
+  -- if $source_operand_marker(ptask) = PROPERTY_GET_BOOL_NAN ppropertyboolnan
+  -- if ppropertyboolnan.GET = ppropertyget
+
+def $property_get_bool_nan_decision(S, KNOWN (PFLOAT n_float)) = (true)
+  -- if $(n_float < 18446744073709551616)
+  -- if $float_decode(n_float) = NOTNUMBER n_float
+def $property_get_bool_nan_decision(S, REFERENCE n) = $generator_from_valid_decision(S, REFERENCE n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED (PINT i)
+  -- if $long_range(i)
+def $property_get_bool_nan_decision(S, REFERENCE n) = $generator_from_valid_decision(S, REFERENCE n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED (PFLOAT n_float)
+  -- if $(n_float < 18446744073709551616)
+def $property_get_bool_nan_decision(S, poperand) = eps -- otherwise
+
+def $property_get_bool_nan_valid(S, ppropertyboolnan) = true
+  -- if $property_get_nan_input(ppropertyboolnan.INPUT, ppropertyboolnan.FLOAT)
+  -- if $property_get_bool_nan_context(S, ppropertyboolnan.GET)
+  -- if ppropertyboolnan.OWNER = |S.FRAMES|
+  -- if $source_operand_suffix(S.TODO, PROPERTY_GET_BOOL_NAN ppropertyboolnan, ppropertyboolnan.TAIL)
+  -- if $(ppropertyboolnan.FLOAT < 18446744073709551616)
+  -- if $float_decode(ppropertyboolnan.FLOAT) = NOTNUMBER ppropertyboolnan.FLOAT
+  -- if $property_get_nan_sources(S, ppropertyboolnan.GET, ppropertyboolnan.INPUT) = (ppropertyboolnan.SOURCES)
+  -- if S_read = $quiet_operand(S, ppropertyboolnan.INPUT)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $value_nodes(pvalue) = eps
+def $property_get_bool_nan_valid(S, ppropertyboolnan) = false -- otherwise
+
+def $task_nodes(PROPERTY_GET_BOOL_NAN ppropertyboolnan) = [HOBJECT ppropertyboolnan.GET.OBJECT] ++ $operand_nodes(ppropertyboolnan.INPUT)
+def $call_task_valid(S, PROPERTY_GET_BOOL_NAN ppropertyboolnan) = $property_get_bool_nan_valid(S, ppropertyboolnan)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = PROPERTY_GET_BOOL_NAN ppropertyboolnan
+  -- if $property_get_bool_nan_valid(S, ppropertyboolnan)
+  -- if perrorcall.SITE = ppropertyboolnan.GET.SITE /\ perrorcall.LEVEL = 2
+  -- if perrorcall.LINE = ppropertyboolnan.GET.LINE
+  -- if perrorcall.MESSAGE = $ptascii("unexpected NAN value was coerced to bool")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+
+def $property_get_bool_nan_commit(S, ppropertyboolnan) = $property_get_bool_apply(S, ppropertyboolnan.GET, ppropertyboolnan.INPUT, b)
+  -- if ppropertyboolnan.SOURCES = eps
+  -- if $property_get_bool_nan_decision(S, ppropertyboolnan.INPUT) = (b)
+def $property_get_bool_nan_commit(S, ppropertyboolnan) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $property_get_given(S, pvalue) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyboolnan.GET.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyboolnan.GET.LINE)
+  -- if ppropertyboolnan.SOURCES = pproptypesource :: pproptypesource_tail*
+  -- if S_read = $quiet_operand(S, ppropertyboolnan.INPUT)
+  -- if S_read.RESULT = KNOWN pvalue
+  -- if $property_desc_at($property_layout(S, ppropertyboolnan.GET.CLASS, |S.CLASSES|), ppropertyboolnan.GET.NAME) = (ppropertydesc)
+
+def $property_get_bool_nan_finish(S, ppropertyboolnan) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyboolnan.GET S_checked.RESULT) :: ppropertyboolnan.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ppropertyboolnan.SOURCES = eps
+  -- if $property_get_bool_nan_decision(S, ppropertyboolnan.INPUT) = (b)
+  -- if S_checked = $property_get_bool_nan_commit(S, ppropertyboolnan)
+def $property_get_bool_nan_finish(S, ppropertyboolnan) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyboolnan.GET ppropertyboolnan.INPUT) :: ppropertyboolnan.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ppropertyboolnan.SOURCES =/= eps
+  -- if S_checked = $property_get_bool_nan_commit(S, ppropertyboolnan)
+def $property_get_bool_nan_finish(S, ppropertyboolnan) = S[.COMPLETION = UNSUPPORTED "magic getter NaN bool raw payload type change"]
+  -- if ppropertyboolnan.SOURCES = eps
+  -- if $property_get_bool_nan_decision(S, ppropertyboolnan.INPUT) = eps
+rule PhpStep/property-get-nantruth: S ~> $property_get_bool_nan_finish(S, ppropertyboolnan)
+  -- if S.TODO = (PROPERTY_GET_BOOL_NAN ppropertyboolnan) :: ptask_tail*
+  -- if $property_get_bool_nan_valid(S, ppropertyboolnan)
+rule PhpStep/property-get-nantruth-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic getter NaN bool warning continuation"]
+  -- if S.TODO = (PROPERTY_GET_BOOL_NAN ppropertyboolnan) :: ptask_tail*
+  -- if ~$property_get_bool_nan_valid(S, ppropertyboolnan)
+
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (PROPERTY_GET_BOOL_NAN ppropertyboolnan) :: ptask_tail*
+  -- if $property_get_bool_nan_valid(S, ppropertyboolnan)
+  -- if S_next.TODO = (PROPERTY_GET_COPY ppropertyboolnan.GET ppropertyboolnan.INPUT) :: ptask_tail*
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+
+;; A throwing handler makes weak bool verification fail before ZVAL_BOOL.
+def $property_get_bool_nan_abrupt(S, ppropertyboolnan) = S[.TODO = (THROW_SEARCH n_error) :: (PROPERTY_GET_COPY ppropertyboolnan.GET ppropertyboolnan.INPUT) :: ppropertyboolnan.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertyboolnan.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $property_get_bool_nan_valid(S[.TODO = (PROPERTY_GET_BOOL_NAN ppropertyboolnan) :: ppropertyboolnan.TAIL], ppropertyboolnan)
+def $property_get_bool_nan_abrupt(S, ppropertyboolnan) = S[.COMPLETION = UNSUPPORTED "magic getter NaN bool warning cleanup"] -- otherwise
+def $error_read_discard(S, PROPERTY_GET_BOOL_NAN ppropertyboolnan) = $property_get_bool_nan_abrupt(S, ppropertyboolnan)
+def $return_discard(S, PROPERTY_GET_BOOL_NAN ppropertyboolnan) = $property_get_bool_nan_abrupt(S, ppropertyboolnan)

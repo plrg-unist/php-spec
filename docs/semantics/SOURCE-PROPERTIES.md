@@ -539,8 +539,25 @@ The [scalar-boolean review](../../coverage/semantics/magic-property-scalar-boole
 records seven source agreements and seven whole groups/1,053 setup-inclusive premises,
 including fixed values, aliases, full driver budgets, REF/BYVAL/owned reception,
 pending errors and constructed actual-RV/carrier/PARAM/NaN/invalid-bit exclusions.
-One preparation-only failure stays0. The separate native NaN control observes warning
-callbacks but has zero model/state/agreement; no pre-warning captured bool is claimed.
-NaN continuation, conversion targets beyond exact builtin-bool, PARAMETERBACKINGS and
-wider getter/coercion domains remain required. Shared truth/type/owner rules and prior
+At phase44, one preparation-only failure stays0. The separate native NaN control observes
+warning callbacks with zero model/state/agreement; no pre-warning captured bool is claimed.
+Conversion targets beyond exact builtin-bool, PARAMETERBACKINGS and wider getter/coercion
+domains remain required. Shared truth/type/owner rules and prior
 phase43 evidence retain their original cuts.
+
+Weak builtin-bool MAGIC_GET NaN conversion has an authenticated warning continuation
+retaining original operand/getter roots and site/caller/tail/source authority. Normal
+unconstrained REF reads only numeric raw payload after callback: LONG_MIN bits are
+double negative zero/false, whereas int7 is true; float -0 also yields false.
+BYVAL retains saved NaN true despite global int0. Constrained copied NaN keeps the
+conflict decision and diagnoses current bool without writing. Handler throw also
+skips the bool write; restored callback and cleanup45.previous warning45 remain real.
+Owned COPY detaches before BASE retirement; CV receipt sees destructor mutation.
+Declaration-strict rejection emits no warning and preserves its error through repair.
+The [NaN-boolean review](../../coverage/semantics/magic-property-nan-boolean-review.json)
+records source7/ten compact stages/1,014 premises with whole states, full budgets and
+input/bits/range/site/owner/tail/PARAM controls at `a3f383502`. Original prep failure stays0.
+Literal false and string0 replacement natives both yielded true in this pinned build;
+normal unconstrained payload history remains Unsupported/native-only0. Throwing scalar/string
+and constrained current-type paths do not decide that payload. Object/array replacements,
+changed source/tail and wider targets/getters/PARAM remain required; prior44 cuts stay frozen.

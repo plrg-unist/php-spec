@@ -2047,10 +2047,18 @@ before receiver cleanup. Real bool|string sources preserve exact reads and diagn
 later conversion conflicts without writing the referent; strict getters and null reject.
 [Seven source agreements and seven reached groups](coverage/semantics/magic-property-scalar-boolean-review.json)
 pass 1,053 premises at `a303833a8`, including signed zero/INF, aliases and full budgets.
-The fixture preparation failure stays0. NaN warning/control observations retain
-zero model/state/agreement; its continuation and wider target/PARAM scope remain required.
+The fixture preparation failure stays0. At the phase44 cut, NaN warning/control
+observations retain zero model/state/agreement; later numeric-payload handling is recorded below.
 The `ffc9103a` composition preserves disjoint CLASS42 hooks; accepted private and
 parent-family compiler cuts are reused with zero fresh executions.
+NaN bool MAGIC_GET now resumes its warning before reading live numeric reference
+payloads: handler-written LONG_MIN and negative zero yield false. BYVAL retains
+saved NaN true; real sources diagnose the current type without conversion, and
+throwing handlers skip the bool write before receiver cleanup and exception chaining.
+[Seven source agreements and ten compact reached stages](coverage/semantics/magic-property-nan-boolean-review.json)
+pass 1,014 premises at `a3f383502`, including whole states and full driver budgets.
+The original preparation failure stays0. Normal bool/string payload history remains
+Unsupported with a separate native-only control0; wider object/array/source/PARAM scope stays open.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

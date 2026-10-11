@@ -1,0 +1,168 @@
+{
+  "status": "implemented-reviewed-bounded",
+  "target": "PHP8.5.10 CLI NTS64",
+  "accepted_parent": "04a224891d1cd683c0f222f9c185df556b777d87",
+  "runtime_revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+  "tested_revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+  "scope": "Modules30/380 authenticate original NaN to exact weak builtin-bool MAGIC_GET. Normal unconstrained REF rereads bounded numeric raw payload after warning; KNOWN BYVAL retains original NaN. Real sources retain the copied-temporary conflict and diagnose current type without a bool write. Throwing handlers preserve the changed scalar/string input with no write. Strict getter rejection remains warning-free.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules": 375,
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained providers, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/30-storage.watsup": "59f129183bed91c794214f403c3b0f3f4fe1c081b1275f0f59d65a93323a4e64",
+    "spec/semantics/380-magic-property-get.watsup": "522f48f2b3bacf38f49c550d65e83436cdf2de3ccfa9bc2c1e3d60f824509011",
+    "tests/semantics/dynamic_property_warning_sources.py": "98f420946a01a6482aa522ac74622ea140b9974661e1dcf4fbe6b5510cfc64d8",
+    "tests/semantics/magic_property_nan_boolean_protocol.py": "e925a9a931f22a58c003392297b54c1d797b41f9f3657fc528a4895cc7d25b2f"
+  },
+  "native_first": {
+    "revision": "feef3ed01fdea5c6bf019343fc2f4bf177427467",
+    "primary_cases": 7,
+    "control_cases": 1,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-boolean-native45-owj97s7g/report.json",
+    "seconds": 0.2190870027989149,
+    "credit": "Eight observed processes0/empty; model/state/agreement0."
+  },
+  "unsupported_baseline": {
+    "revision": "feef3ed01fdea5c6bf019343fc2f4bf177427467",
+    "case": "review-property-magic-nan-boolean-reference-kept45",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-boolean-baseline45-nn8714xj/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|",
+    "reason": "magic getter property type coercion",
+    "seconds": 13.502128256484866,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+    "parent": "3850cbb5891a8bb81aa28b3c690683653ba89d35",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-boolean-strict45-hlkbeq9j/report.json",
+    "modules": 375,
+    "seconds": 6.1241677310317755,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+    "cases": 7,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-9kz0tl63/report.json",
+    "outcomes": "Seven accepted/checked normal model exits0 and actual native/model processes0; decoded model stdout=native=EXPECTED bytewise, all stderr empty and reason/diagnostic null. Native-only payload control excluded."
+  },
+  "source_sha256": {
+    "review-property-magic-nan-boolean-reference-kept45": "fe149beb8fd76d7b63e18250996f0b62e9b09042d23cf9d0d647e2e3f4e801e0",
+    "review-property-magic-nan-boolean-reference-drop45": "0beb6dd5acc29e75dcee895581c0f5194a944faa242da909c388396af77f4232",
+    "review-property-magic-nan-boolean-value45": "b0d72c20b88a1ba3886016c20e7242d7ad81ce4770a4203bc30223cee141104e",
+    "review-property-magic-nan-boolean-owned45": "cb424e2b34bb43a576a9c90b020beadfad50468d3517faef70c47a3791f1f70e",
+    "review-property-magic-nan-boolean-source-conflict45": "6438cb2232e8c2ab294ed9eac50053f576e42993e8a6ed1da85d1557402a0067",
+    "review-property-magic-nan-boolean-handler-throw45": "d18fbdef9c19ee1cc260edd2f9b0d97886e1d7d604036446bd9bc0fedd531657",
+    "review-property-magic-nan-boolean-strict-getter45": "5accc431ad8fb8f640adb2b8221fbd466dce330d09ab4634d772256e992c1e12"
+  },
+  "reached": [
+    {
+      "group": "reference-masked",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 121,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-ssn5vg6a/report.json"
+    },
+    {
+      "group": "reference-entry",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 60,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-pla9he4g/report.json"
+    },
+    {
+      "group": "reference-resume",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 71,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-39v24pzi/report.json"
+    },
+    {
+      "group": "reference-zero",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 111,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-cjy3hwlr/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 118,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-lede8kjy/report.json"
+    },
+    {
+      "group": "value",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 118,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-wlaz8cn8/report.json"
+    },
+    {
+      "group": "owned",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 130,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-t72rx450/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 111,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-0a477_p6/report.json"
+    },
+    {
+      "group": "handler-throw",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 94,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-1h3x6m7d/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+      "premises": 80,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-nan-boolean-0_2_qyb0/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 1014,
+  "facts": [
+    "No STRINGDATA allocation: normal REF truth reads post-handler numeric raw payload through the unchanged289 decision. LONG_MIN bits are negative zero and yield false; PFLOAT negative zero also yields false.",
+    "Masked original NaN yields true; saved BYVAL NaN yields true despite global int0. REF0 converts false before receiver destructor writes7 and actual CV receipt; owned int7 converts true and detaches before BASE retirement.",
+    "The same real bool|float source has an exact bool first read, then warns on copied NaN. A compatible handler false still conflicts, diagnoses current bool/float|bool, and survives source detach/repair without conversion.",
+    "Actual ERROR_HANDLER_RESULT restores callback and takes no bool-write branch on throw; receiver cleanup sees string0, cleanup45 retains previous warning45/previous null. Strict getter emits no warning and preserves TypeError through repair.",
+    "Ten compact checks stop at authentic warning/commit/CV or pending-cleanup stages; full-source agreement separately covers all endpoints. Whole states, full driver budget0/1 and malformed input/bits/range/owner/site/tail/PARAM controls are independent."
+  ],
+  "nan_payload_control": {
+    "case": "review-property-magic-nan-boolean-payload-control45",
+    "source_sha256": "cfc68d9b9e03fc4e4b1a8e2e6586901f43105cf0f0539eb3f5e4891fbba5b31f",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-boolean-native45-owj97s7g/report.json",
+    "observations": "Literal false and string0 callback replacements both yielded true in this pinned build; normal typed truth does not represent retained raw payload history.",
+    "model_evaluations": 0,
+    "state_premises": 0,
+    "agreement": 0
+  },
+  "preparation": {
+    "revision": "a3f38350245df9265a7adcaeb2f3d377cb780f9d",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-boolean-state-prep45-hcqat3fy/report.json",
+    "premises": 1014,
+    "credit": "Ten full-sort responses ok/workers closed0/empty; evaluation0."
+  },
+  "original_failures": [
+    {
+      "revision": "3850cbb5891a8bb81aa28b3c690683653ba89d35",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-nan-boolean-state-prep45-cjls7wi8/report.json",
+      "cause": "Reserved bool token in two new rule labels rejected full-sort before evaluation. Only labels and four authentic reception seek parents were corrected.",
+      "credit": 0
+    }
+  ],
+  "compatibility": "Source/native bytes stay unchanged feef through a3f383. 3850\u2192a3f383 changes only two rule labels and four reception seek parents; actual commit/full driver expectations remain intact. Existing44/41/42/43 direct verification, generic50/95 truth/types,289 decision,384 and owner protocols are unchanged and their cuts are not renewed.",
+  "remaining": "Normal unconstrained REF bool/string payload history remains explicit Unsupported, with native-only control0. Object/array callback replacements, changed real sources/tails, PARAMETERBACKINGS, targets beyond exact builtin-bool and wider receiver/signature/access/quiet/write/recursive/coercion domains remain required. This local complete-stage producer does not widen generic direct verification.",
+  "engine": [
+    "vendor/php-src/Zend/zend_operators.h:i_zend_is_true chooses IS_DOUBLE before warning and reads the raw double payload afterward without rechecking the type tag; ZVAL_BOOL/FALSE/TRUE preserve the union payload.",
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_bool_weak checks EG(exception) after truth; vendor/php-src/Zend/zend_execute.c:zend_verify_weak_scalar_type_hint writes bool only on success.",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_prop_assignable_by_ref_ex converts a copied temporary before post-handler current-referent first-source diagnosis; vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property verifies before OBJ_RELEASE.",
+    "spec/semantics/289-generator-delegation.watsup:$generator_from_valid_decision interprets current PINT unsigned64 bits as PFLOAT, current PFLOAT directly, and immutable KNOWN NaN as true; unchanged rule reused behind local bounded context."
+  ],
+  "recovery": "Tracked catalog and nan-boolean helper reproduce seven originals/ten reached fixtures; payload original stays in NATIVE_CONTROLS. Commands: .tools/magic_nan_boolean_native45.py; .tools/magic_nan_boolean_baseline45.py; .tools/magic_nan_boolean_strict45.py 3850cbb5891a8bb81aa28b3c690683653ba89d35; dynamic_property_warning_sources.py source --select exact seven45 IDs; magic_property_nan_boolean_protocol.py --group each listed group. Ignored raw holds snapshots, programs/literal-eval, full assertions, argv/cwd/process/streams and original failures. current32/owned28 remain live providers; no portability/rebuild claim."
+}

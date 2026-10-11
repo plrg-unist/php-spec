@@ -3375,12 +3375,27 @@ Native8/baseline1 retain `3cccdd0ea`; strict375/source7 and seven whole reached 
 pass 1,053 setup-inclusive premises at `a303833a8`, including fixed truth values,
 aliases, full driver budgets, source/STRINGDATA preservation and constructed exclusions.
 The original fixture preparation failure stays0 after a one-line driver wrapper correction.
-NaN native control observes normal overwrite/current-type conflict/throw no-write,
-with model/state/agreement0; its warning continuation and wider target/PARAM scope
-remain required. Shared50/95 and owner rules stay unchanged; phase43 cuts are frozen.
+At phase44, NaN native control observes normal overwrite/current-type conflict/throw no-write
+with model/state/agreement0; that report retains its historical cut. Shared50/95 and
+owner rules stay unchanged; phase43 cuts are frozen.
 [Scalar-boolean ledger](coverage/semantics/magic-property-scalar-boolean-review.json).
 Exact-current `3de7c5ca` joins `ffc9103a` pointwise; CLASS42 hook guards are disjoint.
 Private and retained parent compiler cuts are reused with no fresh executions.
+Weak builtin-bool MAGIC_GET NaN conversion now retains the actual input/getter pin
+through warning dispatch. Unconstrained references read only bounded numeric payloads
+on resume: LONG_MIN unsigned bits are negative zero/false, as is handler float -0.
+Saved BYVAL NaN stays true despite global int0; real sources keep the copied-temporary
+conflict and diagnose current bool without writing. Throwing handlers restore the
+callback and preserve their string write before cleanup45.previous warning45.
+Strict getter rejection remains warning-free; owned reception detaches before BASE release.
+Native8/baseline1 retain `feef3ed01`; strict375/source7 and ten compact reached stages
+pass 1,014 setup-inclusive premises at `a3f383502`, including whole commit/discard
+states, actual CV/cleanup reception, full driver budgets and authority exclusions.
+The original rule-label preparation failure stays0. Normal unconstrained bool/string
+payload histories remain Unsupported with native-only control0; object/array replacements,
+changed source/tail authority, PARAM and wider getter/type scope remain required.
+Prior44 cuts and generic50/95/289/owner rules are unchanged.
+[NaN-boolean ledger](coverage/semantics/magic-property-nan-boolean-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
