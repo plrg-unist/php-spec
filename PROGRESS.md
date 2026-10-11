@@ -34,6 +34,9 @@ templates/instances/targets, current/callsites and saved frames stay authenticat
 No failures in this slice; syntax preparation/elaboration adds no runtime credit.
 The historical28 Block-Closure exclusion is superseded; conditional/loop/nested
 assignments, other targets/signatures/captures and wider RTD contexts remain required.
+The 375 join over 92f726a3 passes strict3 at fbacca7a (5.976s), including the
+shared task datatype and scalar-echo guard compatibility. Private cuts retain
+their original revisions; no source/state replay was needed.
 [Block-Closure ledger](coverage/semantics/anonymous-block-closure-rtd-review.json).
 The earlier [direct-Closure cut](coverage/semantics/anonymous-named-closure-rtd-review.json)
 retains source4/state539, fatal redeclaration and both zero-credit fixture failures

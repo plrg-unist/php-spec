@@ -1286,8 +1286,8 @@ binds three originals and 18 actual steps for Block entry, Closure capture,
 call-order publication and fresh defaults. The earlier
 [direct-Closure review](coverage/semantics/anonymous-named-closure-rtd-review.json)
 retains fatal redeclaration before another allocation.
-The prior direct Closure join of 375 modules over 096e3dd2 passes strict3 at c4a942ec (5.825s); private
-native/source/state cuts retain their original revisions.
+The current Block Closure join of 375 modules over 92f726a3 passes strict3 at
+fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
 Wider Closure targets/placements/signatures, function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)
