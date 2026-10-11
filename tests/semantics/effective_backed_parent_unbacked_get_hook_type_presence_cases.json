@@ -1,0 +1,58 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "9ef6639853398403cbcb359d6d705ecd0aa2a756b873a5d1e73145eccd3dbf01",
+  "native_scalar_raw_hash": "e0c1570622cadb373e320b2f8ca460fdc09fe471f6c2b990e9619d07d1d0c598",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "remove",
+      "source": "<?php\nclass EffectiveRemoveRoot47 {\n    public int $value = 100 { get => $this->value; }\n}\nclass EffectiveRemoveFirst47 extends EffectiveRemoveRoot47 {\n    public int $value { get => 7; }\n}\nclass EffectiveRemoveBridge47 extends EffectiveRemoveFirst47 {}\nclass EffectiveRemoveSecond47 extends EffectiveRemoveBridge47 {\n    public $value { get => 13; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "0d77a4ea664bd8ec6a4e7677435e2a82a232ef2c1528fc47cb655522ce0723e2",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Declaration of EffectiveRemoveSecond47::$value::get() must be compatible with EffectiveRemoveFirst47::$value::get(): int in {FILE} on line 10\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIEVmZmVjdGl2ZVJlbW92ZVNlY29uZDQ3OjokdmFsdWU6OmdldCgpIG11c3QgYmUgY29tcGF0aWJsZSB3aXRoIEVmZmVjdGl2ZVJlbW92ZUZpcnN0NDc6OiR2YWx1ZTo6Z2V0KCk6IGludCBpbiB7RklMRX0gb24gbGluZSAxMApTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "effective-backed-parent-unbacked-get-hook-type-presence47-native-original-negatives-41da6ffb",
+      "native_raw_sha256": "9ef6639853398403cbcb359d6d705ecd0aa2a756b873a5d1e73145eccd3dbf01"
+    },
+    {
+      "id": "add",
+      "source": "<?php\nclass EffectiveAddRoot47 {\n    public $value = 100 { get => $this->value; }\n}\nclass EffectiveAddFirst47 extends EffectiveAddRoot47 {\n    public $value { get => 7; }\n}\nclass EffectiveAddBridge47 extends EffectiveAddFirst47 {}\nclass EffectiveAddSecond47 extends EffectiveAddBridge47 {\n    public int $value { get => 13; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "951c083482e04bd882621c5259aa28b9866dccf0dbbb9ad081cc6dd959066b24",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of EffectiveAddSecond47::$value must be omitted to match the parent definition in class EffectiveAddFirst47 in {FILE} on line 9\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgRWZmZWN0aXZlQWRkU2Vjb25kNDc6OiR2YWx1ZSBtdXN0IGJlIG9taXR0ZWQgdG8gbWF0Y2ggdGhlIHBhcmVudCBkZWZpbml0aW9uIGluIGNsYXNzIEVmZmVjdGl2ZUFkZEZpcnN0NDcgaW4ge0ZJTEV9IG9uIGxpbmUgOQpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "effective-backed-parent-unbacked-get-hook-type-presence47-native-original-negatives-41da6ffb",
+      "native_raw_sha256": "9ef6639853398403cbcb359d6d705ecd0aa2a756b873a5d1e73145eccd3dbf01"
+    },
+    {
+      "id": "scalar",
+      "source": "<?php\nclass EffectiveStorageRoot47 {\n    public $value = 100 { get => $this->value; }\n    public function parentRead() {\n        echo \"H|\";\n        return $this->value;\n    }\n}\nclass EffectiveStorageFirst47 extends EffectiveStorageRoot47 {\n    public $value { get => 7; }\n}\nclass EffectiveStorageBridge47 extends EffectiveStorageFirst47 { private function answer() { return 500; } }\nclass EffectiveStorageSecond47 extends EffectiveStorageBridge47 {\n    public $value {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass EffectiveStorageGrand47 extends EffectiveStorageSecond47 { private function answer() { return 900; } }\n$root = new EffectiveStorageRoot47();\n$first = new EffectiveStorageFirst47();\n$second = new EffectiveStorageSecond47();\n$grand = new EffectiveStorageGrand47();\n$raw = (array)$root;\necho $raw === [\"value\" => 100] ? \"R100|\" : \"BAD|\";\n$raw = (array)$first;\necho $raw === [\"value\" => null] ? \"FNULL|\" : \"BAD|\";\n$raw = (array)$second;\necho $raw === [\"value\" => null] ? \"SNULL|\" : \"BAD|\";\n$raw = (array)$grand;\necho $raw === [\"value\" => null] ? \"GNULL|\" : \"BAD|\";\necho $root->value, \"|\", $first->value, \"|\", $second->value, \"|\";\necho $grand->parentRead(), \"|\";\n$raw = (array)$grand;\necho $raw === [\"value\" => null] ? \"GNULL|\" : \"BAD|\";\n$grand->value = 300;\n$raw = (array)$grand;\necho $raw === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "25d8a529fadd16a04cd4dcfbc4352d242999a44fd0092223d7010386d5fd552c",
+      "stdout_base64": "UjEwMHxGTlVMTHxTTlVMTHxHTlVMTHwxMDB8N3xDOkVmZmVjdGl2ZVN0b3JhZ2VTZWNvbmQ0Ny9FZmZlY3RpdmVTdG9yYWdlU2Vjb25kNDd8MTN8SHxDOkVmZmVjdGl2ZVN0b3JhZ2VTZWNvbmQ0Ny9FZmZlY3RpdmVTdG9yYWdlR3JhbmQ0N3wxM3xHTlVMTHxHMzAwfEM6RWZmZWN0aXZlU3RvcmFnZVNlY29uZDQ3L0VmZmVjdGl2ZVN0b3JhZ2VHcmFuZDQ3fDEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "effective-backed-parent-unbacked-get-hook-type-presence47-native-scalar-r2-41da6ffb",
+      "native_raw_sha256": "e0c1570622cadb373e320b2f8ca460fdc09fe471f6c2b990e9619d07d1d0c598"
+    }
+  ]
+}
