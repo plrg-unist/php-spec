@@ -1,0 +1,178 @@
+{
+  "status": "Bounded source and reached-state milestone; independently reviewed semantics and retained results.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "5f467baee0c5628b4cb76e7fa102874bef00f999; phase31\u201335 evidence is not renewed",
+  "runtime_revision": "225200706eafd3e51b14c4cca26744ccb8e14e4b",
+  "tested_revision": "eaaf00ba076518d4a8e5813741155c0c92cd7e43",
+  "source_tail_revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+  "scope": "Modules380/384 weak builtin-string MAGIC_GET verification of original booleans on accepted public literal-CV or owned ordinary-call receivers. Actual unconstrained REFERENCE cells convert in place; BYVAL changes only RV. Real property sources preserve exact string identity or select a diagnostic-only first-source conflict. Getter declaration controls strictness; receiver owner stages are unchanged.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained tools, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/380-magic-property-get.watsup": "0e9c7ea3b89b19d0cd8626f147fc736f07b0c97df16b6b3ace7b704692cbd208",
+    "spec/semantics/384-magic-property-reference-types.watsup": "951edaea66e7a69624777d3ca1b69257beddb454bd2e7ed183f23143e2ea0bc7",
+    "tests/semantics/dynamic_property_warning_sources.py": "fc2e9056d51d2e07de4258d93defcb5c5a45629db62440ced25ab0bfa1a26a27",
+    "tests/semantics/magic_property_boolean_string_protocol.py": "353925070da4e673c44a84fa8f03f4b5af901c8da4f8c4a618140ebbb1a65ea3"
+  },
+  "native_first": {
+    "revision": "90347840c873c9d073d078c7cf60f92ca72c3b85",
+    "cases": 6,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-native36-fz_z47ch/report.json",
+    "seconds": 0.17280562035739422,
+    "credit": "Native observations only; original bytes, pinned binary, all exit0/empty stderr."
+  },
+  "unsupported_baseline": {
+    "revision": "90347840c873c9d073d078c7cf60f92ca72c3b85",
+    "case": "review-property-magic-boolean-string-reference-kept36",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-baseline36-sb261wrm/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|1/0|",
+    "reason": "magic getter property type coercion",
+    "seconds": 9.253588747233152,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "eaaf00ba076518d4a8e5813741155c0c92cd7e43",
+    "parent": "225200706eafd3e51b14c4cca26744ccb8e14e4b",
+    "modules": 375,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-strict36-k4wzj_rg/report.json",
+    "seconds": 5.583304617553949,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "cases": 6,
+    "cuts": [
+      {
+        "revision": "eaaf00ba076518d4a8e5813741155c0c92cd7e43",
+        "groups": [
+          "reference-kept",
+          "reference-drop",
+          "value",
+          "owned"
+        ],
+        "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-nm6hfzvp/report.json",
+        "credit": 4
+      },
+      {
+        "revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+        "groups": [
+          "source-conflict",
+          "strict-getter"
+        ],
+        "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-p0wordhp/report.json",
+        "credit": 2
+      }
+    ],
+    "outcomes": "All six accepted/checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact; raw/modeled stderr empty and diagnostics null."
+  },
+  "source_sha256": {
+    "review-property-magic-boolean-string-reference-kept36": "28f3cfac396c1af0f48bf00d54ac26660457f8c41df01c275dea412838d27845",
+    "review-property-magic-boolean-string-reference-drop36": "362228d3d91769ec746b32f05034076f83e0176406e74f68530735ec07a98332",
+    "review-property-magic-boolean-string-value36": "411470d7fc02ad3c89782458207f3161dd8a4bab938737d74362eb508709fdd5",
+    "review-property-magic-boolean-string-owned36": "56dc6f4260c33f11800b64fb4fc39b66ad7133757350538a804467ea1d952adc",
+    "review-property-magic-boolean-string-source-conflict36": "14623d2be0372922064059ed7731836cf36264b7287b20807bc6faef2a8170ab",
+    "review-property-magic-boolean-string-strict-getter36": "826769fe58ee08c9baf2fbdf33300e1ee0ac2a104caf472e1c561ae9b36d3864"
+  },
+  "affected_native": {
+    "revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+    "cases": 1,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-native-conflict36-397a_pfa/report.json",
+    "seconds": 0.05492478981614113,
+    "credit": "Observation only. Conflict echo changed concat to comma; native output equals original native and unchanged EXPECTED. Other five originals and runtime/helper bytes unchanged."
+  },
+  "reached": [
+    {
+      "group": "reference-kept",
+      "premises": 238,
+      "revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-string-e6ayots1/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "premises": 133,
+      "revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-string-0z2p8i_e/report.json"
+    },
+    {
+      "group": "value",
+      "premises": 133,
+      "revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-string-ix_nbkyr/report.json"
+    },
+    {
+      "group": "owned",
+      "premises": 139,
+      "revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-string-cyhsg7x1/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "premises": 221,
+      "revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-string-nowm5tno/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "premises": 133,
+      "revision": "cdbd762a14883ce8096f51fdf60ec79b9cc32164",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-boolean-string-lh9sn822/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 997,
+  "facts": [
+    "Whole-state verification converts original false to interned empty and true to interned ASCII1 using existing TYPESTRING/echo semantics on the actual unconstrained live raw RV/cell. REF keeps RESULT identity; BYVAL changes only its RV. Getter strictness, caller strictness, readonly UNSET and repeated reads are distinct; null remains rejected.",
+    "CV destruction sees converted string1 before changing its referent; reception copies that changed value. BYVAL leaves the raw global bool intact into destruction and forwards string1. Owned reception detaches false as empty before BASE destruction; later global mutation does not change the copied string.",
+    "The genuine string|bool source first returns exact string1 with whole-state identity and unchanged cell/backing/source. The same source-backed cell later holds bool; source accepts raw bool and possible string yet getter verification conflicts, preserving raw/source. Destructor detach/repair retains pending native TypeError; declaration-strict rejection under a weak caller retains bool until repair.",
+    "Constructed controls retain wrong target/marker/original/RV, invalid reference and PARAMETERBACKINGS boundaries. No existing TYPESTRING magic controls needed maintenance and no old whole campaign is renewed."
+  ],
+  "preparation": {
+    "states": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-state-prep36-fzl7s774/report.json",
+    "affected_conflict": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-state-prep36-2gu4sjxf/report.json",
+    "credit": "Full-sort six-group and changed-source conflict-only elaboration; zero numeric application/state evaluation."
+  },
+  "original_failures": [
+    {
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-state-prep36-aqo2byci/report.json",
+      "cause": "Bare ASCII1 byte list parsed as indexing in a state update; one fixture constant parenthesized.",
+      "credit": 0
+    },
+    {
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-entry-probe36-uzmvsito/full-sort-adapter/0.response",
+      "cause": "Diagnostic CHECKS field list needed parentheses; preparation only.",
+      "credit": 0
+    },
+    {
+      "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-nm6hfzvp/report.json",
+      "source_sha256": "d1baa4b587b049d16df5a20a4aec40811c155d5b8c119b5bc36d89de1d2f3cbe",
+      "cause": "Original concatenated-echo source: fifth checked model is Unsupported magic getter receiver, signature or recursive access before G2; native is exit0/empty stderr. First four passes retain their own credit. Scratch BASE consumer remains unresolved.",
+      "credit": 0
+    }
+  ],
+  "entry_diagnostic": {
+    "revision": "eaaf00ba076518d4a8e5813741155c0c92cd7e43",
+    "preparation": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-entry-probe36-yz_5_r78/report.json",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-boolean-string-entry-probe36-yz_5_r78/diagnostic-report.json",
+    "executions": 1,
+    "exit": 0,
+    "seconds": 16.918628280982375,
+    "source_state_agreement_credit": 0,
+    "finding": "18 actual second-entry checks: only BASE-null is false. BASE retains concatenated before-conflict string; RESULT/receiver/source/history guards pass. Runtime entry guard is unchanged; original remains a counterexample."
+  },
+  "compatibility": "Final input hashes bind cdbd. Strict and first four source passes retain eaaf; only conflict observation bytes change concat to comma, with native-equivalent output and affected source/full-sort checks. Other five originals and all runtime/helper bytes unchanged. Six new state groups pass at cdbd.95/138/schema/owners/strictness and prior cuts are unchanged.",
+  "remaining": "Concatenated-echo scratch-BASE getter entry, PARAMETERBACKINGS, wider string conversions, callback verification and prior receiver/signature/access/quiet/write/recursive residuals remain required.",
+  "engine": [
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_str_weak; Zend/zend_operators.c:_convert_to_string false empty/true ASCII1",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_scalar_type_hint/zend_verify_prop_assignable_by_ref_ex/zend_magic_get_property_type_inconsistency_error",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter strictness and verification before receiver release",
+    "spec/semantics/95-type-values.watsup:typed_conversion;35-scalar-operations.watsup:stringify/echo_value;380:property_get_string_apply/property_get_given"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_boolean_string_protocol.py reproduce six originals/groups. Ignored raw trees retain old/new originals, checked/eval sources, whole fixtures/assertions, argv/cwd/process/streams and stable identities. Diagnostic raw retains original source and all18 flags. Reused active private providers/parser closure; no portability/rebuild claim."
+}

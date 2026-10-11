@@ -13,7 +13,7 @@ def $property_get_propref(S, ppropertyget, n_cell) = true
   -- if ppropertyget.DECL = (ppropertyid)
   -- if $property_desc_at($property_layout(S, ppropertyget.CLASS, |S.CLASSES|), ppropertyget.NAME) = (ppropertydesc)
   -- if ppropertydesc.ORIGIN = ppropertyid
-  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "object"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))] \/ ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
   -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
   -- if ppropref.SOURCES =/= eps
   -- if $proprefs_valid(S)
@@ -51,6 +51,8 @@ def $property_get_propref_possible(S, ppropertyget, ppropertydesc, PBOOL b, ppro
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]
   -- if $typed_number(PBOOL b) = (NINT i)
   -- if n_float = $float_of_int(i)
+def $property_get_propref_possible(S, ppropertyget, ppropertydesc, PBOOL b, pproptypesource, TYPESTRING (PBOOL b)) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $property_get_given(S, PBOOL b) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "string"]))]
 def $property_get_propref_possible(S, ppropertyget, ppropertydesc, PBOOL b, pproptypesource, TYPEINTEGER (PBOOL b)) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $property_get_given(S, PBOOL b) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertyget.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertyget.LINE)
   -- if ppropertydesc.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]
   -- if $typed_number(PBOOL b) = (NINT i)

@@ -1661,7 +1661,16 @@ cleanup and pending errors. Two maintained constructed controls contribute five
 selected clauses; prior cuts are unchanged and three fixture/preparation failures retain zero credit.
 The actual375 join over `036035583` passes strict at `9c0bce310` (5.582s);
 private source/state cuts retain their original inputs.
-Boolean-to-string, PARAMETERBACKINGS and wider conversions remain required.
+Weak string getters now convert original false to interned empty and true to ASCII
+`1` on the actual unconstrained reference cell or only the by-value RV. Strict
+getters and null reject; real string|bool sources preserve an exact first read and
+select a later boolean conflict without converting the cell.
+[Six source agreements and six reached groups](coverage/semantics/magic-property-boolean-string-review.json)
+pass 997 setup-inclusive premises at `cdbd762a1`, covering CV/owned cleanup and
+pending errors. Source credit retains four passes at `eaaf00ba0` and two at `cdbd762a1`.
+The original concatenated-echo source still leaves scratch BASE that blocks getter
+entry; its failure and diagnostic retain zero agreement credit.
+PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
 recursion, computed names, hooks and wider reference-call receivers remain required.

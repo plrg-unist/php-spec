@@ -321,8 +321,20 @@ detach before BASE release, and later source repair preserves pending TypeError.
 The [boolean-integer review](../../coverage/semantics/magic-property-boolean-integer-review.json)
 records six source agreements and six whole reached groups/915 setup-inclusive
 premises. Two maintained constructed controls contribute three kept and two conflict
-clauses; earlier whole campaigns retain their cuts. Boolean-to-string,
-PARAMETERBACKINGS and wider targets/conversions retain their explicit boundaries.
+clauses; earlier whole campaigns retain their cuts.
+
+Weak builtin-string MAGIC_GET converts original false to interned empty and true to
+ASCII `1` using existing TYPESTRING/echo semantics. Actual unconstrained references
+update their cell; by-value returns change only RV. Getter-declaration strictness
+and null reject. Real string|bool sources preserve a whole-state exact first read;
+the later boolean conversion is diagnostic-only, preserving raw/source before
+destructor repair. CV reception copies after destruction; owned results detach
+before BASE release, and pending TypeError survives repair.
+The [boolean-string review](../../coverage/semantics/magic-property-boolean-string-review.json)
+records six source agreements and six whole reached groups/997 setup-inclusive
+premises. The original concatenated-echo consumer remains Unsupported: its scratch
+BASE blocks getter entry. A comma-echo observation preserves native output; only
+affected checks resume. PARAMETERBACKINGS and wider targets/conversions remain required.
 
 The compiler and runtime rules are in `135-property-compiler.watsup` and
 `136-property-runtime.watsup`. [The review](../../coverage/semantics/properties-review.json)

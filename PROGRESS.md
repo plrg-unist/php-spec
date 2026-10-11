@@ -2597,10 +2597,21 @@ binding correction precedes conflict140/strict134 at `90fad5bed`, completing 915
 setup-inclusive premises without renewing the passing groups. Two maintained
 constructed outcomes contribute only five selected clauses. Two preparation failures
 and the original conflict compilation failure retain zero credit; phase31–34 cuts are unchanged.
-Boolean-to-string, PARAMETERBACKINGS and wider conversions remain required.
 [Boolean-integer ledger](coverage/semantics/magic-property-boolean-integer-review.json).
 The actual375 join over `036035583` passes strict at `9c0bce310` (5.582s,
 state/source/native credit0); private source6/state915 are not renewed.
+Weak builtin-string MAGIC_GET now converts original false to interned empty and
+true to ASCII `1` on the actual unconstrained reference cell or only the by-value RV.
+Strict getters and null reject; real string|bool sources preserve the exact first
+read and select a later diagnostic-only boolean conflict without changing raw/source.
+Native6 and unchanged CLI1 Unsupported baseline retain `90347840c`; strict375 and
+four source passes retain `eaaf00ba0`. A comma-echo observation correction has identical
+native output; affected conflict/strict source checks and six whole reached groups
+pass 997 setup-inclusive premises at `cdbd762a1`, completing source6 without renewal.
+The original concatenated-echo source remains Unsupported because scratch BASE blocks
+getter entry; its one diagnostic execution has zero agreement credit. Both preparation
+failures retain zero credit. PARAMETERBACKINGS and wider conversions remain required.
+[Boolean-string ledger](coverage/semantics/magic-property-boolean-string-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
