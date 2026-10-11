@@ -1072,7 +1072,8 @@ timeouts keep zero credit. Maintained producer `511ed517` removes only one EOF
 newline from tested c670 and preserves its AST. Exact-length Cons suffixes avoid
 a confirmed pinned SpecTec dispatch overlap limitation without a vendor edit.
 Other mixed layouts, lifecycle/typed capture, effectful calls and broad
-returns_verify remain OPEN; actual-parent compilation is pending.
+returns_verify remain OPEN. Actual375 over `4f93b073` passes strict at
+`36238b5f` in 5.980s with zero applications; private cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
