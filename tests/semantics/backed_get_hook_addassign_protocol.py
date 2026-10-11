@@ -132,8 +132,15 @@ REBIND = ['S_rhs = S']+prep('S_rhs')+[
     r'S_rhs.STORE[n_weak_rhs_cell] = DEFINED (POBJECT n_weak_rhs)',
     r'$weakref_get(S_rhs,n_weak_rhs) = PNULL /\ $hac_slot(S_rhs,ppropertyhook_S_rhs.OBJECT,$ptascii("label")) = (PROP_VALUE (DIRECT (PINT 2))) /\ $base_nodes(pbase_S_rhs) = eps /\ $heap_owners($heap_prune($heap_graph(S_rhs)),HOBJECT ppropertyhook_S_rhs.OBJECT) = 1 /\ $hac_output(S_rhs.EVENTS) = $ptascii("R0|D1:100|RN|")',
 ]+result('S_rhs','S_rhs','PINT 7')+math('S_rhs',10)+[
-    r'$heap_owners($heap_prune($heap_graph(S_rhs_result)),HOBJECT ppropertyhook_S_rhs.OBJECT) = 2 /\ $heap_owners($heap_prune($heap_graph(S_rhs_finish)),HOBJECT ppropertyhook_S_rhs.OBJECT) = 1 /\ $hac_output(S_rhs_finish.EVENTS) = $ptascii("R0|D1:100|RN|G2|") /\ $hac_guard(S_rhs_finish)',
-    *reach('S_getter','S_rhs_finish',0),
+    r'$heap_owners($heap_prune($heap_graph(S_rhs_result)),HOBJECT ppropertyhook_S_rhs.OBJECT) = 2 /\ $heap_owners($heap_prune($heap_graph(S_rhs_finish)),HOBJECT ppropertyhook_S_rhs.OBJECT) = 2 /\ $hac_output(S_rhs_finish.EVENTS) = $ptascii("R0|D1:100|RN|G2|") /\ $hac_guard(S_rhs_finish)',
+    r'S_rhs_finish.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_rhs) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_rhs) :: (ORIGIN_RETURN (porigin_S_rhs)) :: ptask_S_rhs*',
+    r'pdestructionrelease_rhs.JOBS = [DESTRUCTION_VALUE (HOBJECT ppropertyhook_S_rhs.OBJECT)] /\ pdestructionoperation_rhs.SOURCE = PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook_S_rhs pbase_S_rhs 3 z_S_rhs /\ pdestructionoperation_rhs.VALUE = KNOWN (PINT 10) /\ pdestructionoperation_rhs.PENDING = eps',
+    *reach('S_rhs_decrement','S_rhs_finish',3),
+    r'S_rhs_decrement.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_rhs) :: (ORIGIN_RETURN (porigin_S_rhs)) :: ptask_S_rhs* /\ $heap_owners($heap_prune($heap_graph(S_rhs_decrement)),HOBJECT ppropertyhook_S_rhs.OBJECT) = 1 /\ S_rhs_decrement.EVENTS = S_rhs_finish.EVENTS /\ $hac_guard(S_rhs_decrement)',
+    r'PhpStep: S_rhs_decrement ~> S_rhs_clean_raw',
+    r'S_rhs_clean_raw.RESULT = KNOWN (PINT 10) /\ S_rhs_clean_raw.TODO = (ORIGIN_RETURN (porigin_S_rhs)) :: ptask_S_rhs* /\ S_rhs_clean_raw.DESTRUCTION.OPERATIONS = eps /\ $heap_owners($heap_prune($heap_graph(S_rhs_clean_raw)),HOBJECT ppropertyhook_S_rhs.OBJECT) = 1',
+    r'S_rhs_clean = $hac_after(S_rhs_decrement,S_rhs_clean_raw)',
+    *reach('S_getter','S_rhs_clean',0),
 ]+prep('S_getter')+[
     r'$lookup(S_getter.ENV,$ptascii("weak")) = (n_weak_getter_cell)',
     r'S_getter.STORE[n_weak_getter_cell] = DEFINED (POBJECT n_weak_getter)',
@@ -172,7 +179,8 @@ LIFETIME = ['S_rv = S']+prep('S_rv')+[
     r'S_rv_math_raw.COMPLETION = THROWN "TypeError" ($ptascii("Unsupported operand types: HookCompoundLeaf35 + int")) 32 /\ S_rv_math_raw.RESULT = KNOWN PNULL /\ S_rv_math_raw.BASE = BASE_VALUE (KNOWN PNULL) /\ S_rv_math_raw.TODO = (PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook_S_rv pbase_S_rv 3 z_S_rv) :: (ORIGIN_RETURN (porigin_S_rv)) :: (COMPOUND_PREP ADD expression_target_S_rv expression_rhs_S_rv z_S_rv) :: ptask_S_rv* /\ S_rv_math_raw.OBJECTPROPS = S_rv_result.OBJECTPROPS /\ S_rv_math_raw.EVENTS = S_rv_result.EVENTS /\ $heap_owners($heap_prune($heap_graph(S_rv_math_raw)),HOBJECT n_leaf) = 0 /\ $heap_owners($heap_prune($heap_graph(S_rv_math_raw)),HOBJECT ppropertyhook_S_rv.OBJECT) = 1',
     r'S_rv_throw = $throwable_transition(S_rv_result,S_rv_math_raw)',
     r'S_rv_throw.COMPLETION = THROWING n_error',
-    r'S_rv_throw.TODO = S_rv_math_raw.TODO /\ S_rv_throw.RESULT = KNOWN PNULL /\ $call_task_valid(S_rv_throw,PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook_S_rv pbase_S_rv 3 z_S_rv) /\ $heap_owners($heap_prune($heap_graph(S_rv_throw)),HOBJECT ppropertyhook_S_rv.OBJECT) = 1',
+    r'S_rv_throw.RESULT = KNOWN (PARRAY n_error_trace)',
+    r'S_rv_throw.TODO = S_rv_math_raw.TODO /\ $throwable_field(S_rv_throw,n_error,"trace") = PARRAY n_error_trace /\ $call_task_valid(S_rv_throw,PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook_S_rv pbase_S_rv 3 z_S_rv) /\ $heap_owners($heap_prune($heap_graph(S_rv_throw)),HOBJECT ppropertyhook_S_rv.OBJECT) = 1',
     r'S_rv_release = $hac_after(S_rv_result,S_rv_math_raw)',
     r'S_rv_release.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_leaf) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_leaf) :: (PROPERTY_HOOK_COMPOUND_FINISH ppropertyhook_S_rv pbase_S_rv 3 z_S_rv) :: (ORIGIN_RETURN (porigin_S_rv)) :: (COMPOUND_PREP ADD expression_target_S_rv expression_rhs_S_rv z_S_rv) :: ptask_S_rv*',
     r'pdestructionrelease_leaf.JOBS = [DESTRUCTION_VALUE (HOBJECT n_leaf)] /\ pdestructionoperation_leaf.SOURCE = PROPERTY_HOOK_COMPOUND_RESULT ppropertyhook_S_rv pbase_S_rv 3 z_S_rv /\ pdestructionoperation_leaf.PENDING = (n_error) /\ pdestructionoperation_leaf.VALUE = KNOWN PNULL /\ S_rv_release.COMPLETION = NORMAL /\ $heap_owners($heap_prune($heap_graph(S_rv_release)),HOBJECT n_leaf) = 1 /\ $heap_owners($heap_prune($heap_graph(S_rv_release)),HOBJECT ppropertyhook_S_rv.OBJECT) = 1 /\ $weakref_get(S_rv_release,n_weak_leaf) = POBJECT n_leaf /\ $hac_output(S_rv_release.EVENTS) = $ptascii("R|G|") /\ $hac_guard(S_rv_release)',
@@ -226,6 +234,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--revision', required=True)
     parser.add_argument('--prepare-only', action='store_true')
+    parser.add_argument('--group', choices=('all', 'affected'), default='all')
     args = parser.parse_args()
     recorder.ROOT = ROOT
     catalogue = HERE / 'backed_get_hook_addassign_cases.json'
@@ -234,6 +243,9 @@ def main():
     profile = json.loads(profile_file.read_bytes())
     assert data['native_profile'] == profile
     selections = [('scalar', SCALAR, DERIVED), ('rebind', REBIND, []), ('lifetime', LIFETIME, [])]
+    cases = data['cases']
+    if args.group == 'affected':
+        selections, cases = selections[1:], cases[1:]
     sources = [HERE / ('backed-get-hook-addassign-' + row[0] + '.php') for row in selections]
     php, adapter, bridge, worker, runner, compiler = (ROOT / name for name in [
         '.tools/php/bin/php', '_build/default/adapter/main.exe', '.tools/php-file.so',
@@ -254,7 +266,7 @@ def main():
     print(out, flush=True)
     derived = sum(len(row[2]) for row in selections)
     reached = sum(5 + len(row[1]) for row in selections)
-    report = {'revision': revision, 'inputs': before, 'profile': profile, 'module_count': len(modules),
+    report = {'revision': revision, 'inputs': before, 'profile': profile, 'module_count': len(modules), 'group': args.group,
               'mode': 'SL', 'cache': False, 'det': True, 'records': [],
               'application_invocations': 0, 'application_evaluations': 0, 'source_agreements': 0,
               'derived_premises': derived, 'reached_premises': reached, 'premises': derived + reached,
@@ -263,7 +275,7 @@ def main():
     try:
         flags = [part for key, value in profile.items() for part in ('-d', key + '=' + value)]
         fixtures = []
-        for i, (source, case) in enumerate(zip(sources, data['cases'])):
+        for i, (source, case) in enumerate(zip(sources, cases)):
             assert source.read_bytes() == case['source'].encode() and sha(source) == case['source_sha256']
             frontend = Worker([str(php), '-n', *flags, '-d', 'extension=' + str(bridge), str(worker)], out / ('frontend-' + str(i)))
             adapter_worker = None
@@ -279,7 +291,7 @@ def main():
                     adapter_worker.close()
                 frontend.close()
         content = PREFIX
-        for selection, ast_fixture, source, case in zip(selections, fixtures, sources, data['cases']):
+        for selection, ast_fixture, source, case in zip(selections, fixtures, sources, cases):
             name, clauses, negatives = selection
             setup = ['S_initial = $php_run(' + ast_fixture + ',0,' + json.dumps(base64.b64encode(str(source).encode()).decode()) + ')',
                      r'S_initial.COMPLETION = NORMAL \/ S_initial.COMPLETION = BUDGET',
@@ -291,7 +303,7 @@ def main():
                 condition = condition.replace('EXPECTED_OUTPUT', byte_expr(base64.b64decode(case['stdout_base64'])))
                 content += '  -- ' + ('' if condition.startswith('PhpStep:') else 'if ') + condition + '\n'
             content += 'def $hac_' + name + '() = false -- otherwise\n'
-        content += '\ndec $main() : bool\ndef $main() = ($hac_scalar() /\\ $hac_rebind() /\\ $hac_lifetime())\n'
+        content += '\ndec $main() : bool\ndef $main() = (' + ' /\\ '.join('$hac_' + name + '()' for name, _, _ in selections) + ')\n'
         fixture = out / 'hook.watsup'
         fixture.write_text(content)
         report.update(fixture=str(fixture), fixture_sha256=sha(fixture), prepared=True, passed=True)
