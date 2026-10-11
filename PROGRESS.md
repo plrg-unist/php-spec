@@ -923,6 +923,8 @@ the removal case while preserving two baseline controls. Separate remove48
 three are all reached. Counts include four source setups. Native's informational
 anticipation-suffix miss and prior hook cuts remain frozen.
 [Type-presence review](coverage/semantics/virtual-get-hook-type-presence-review.json).
+Actual375 over `709fd7af` passes strict initialization at `8846907e` (5.822 s);
+private source3 and four separate state cuts retain their accepted revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
