@@ -314,7 +314,7 @@ def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_POSITION
 def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_EXTRA preqbytes) = true
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
-  -- if pfunction.SIGNATURE.PARAMETERS[n_fixed].TYPE = eps
+  -- if pfunction.SIGNATURE.PARAMETERS[n_fixed].TYPE = eps \/ $iterator_unpack_positional_extra(pfunction, n_fixed)
   -- if $(|piteratorunpack.CALL.SENT.SLOTS| <= n_fixed)
   -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
 def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, pnamedtarget) = false -- otherwise

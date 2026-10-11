@@ -200,9 +200,21 @@ earlier item has entered rest. A generated TypeError captures dereferenced
 argument values in its owning trace; the caught error retains both payloads
 after the private cells and partial rest retire, through the final output.
 Warning-handler and parked injected exceptions keep the earlier Iterator-then-
-payload cleanup order. Other type shapes, typed named buffers and wider sites
-remain open. The [typed positional review](../../coverage/semantics/iterator-call-unpack-object-typed-positional-variadic-review.json)
+payload cleanup order. Typed named buffers remained open at that cut; other type
+shapes and wider sites stay open. The [typed positional review](../../coverage/semantics/iterator-call-unpack-object-typed-positional-variadic-review.json)
 preserves the corrected native expectation and the separate validation cuts.
+
+The same nullable single-class signature now permits named copied-object warnings
+at the authenticated direct Iterator construction, with no positional extras.
+Typed `RECV_VARIADIC` separates rest, verifies each item and retains its reference.
+The existing ALIAS fallback shares each private cell with the named-send owner;
+a current-item write destroys its payload before F. A later rejected class leaves
+only the earlier rest item, then the TypeError trace owns both dereferenced values
+under their original keys and insertion order. Handler and parked injection retain
+raw/DATA/INPUT retirement before named payloads. Other type shapes, wider sites and
+general shared-buffer alias/COW interactions remain open. The
+[typed named review](../../coverage/semantics/iterator-call-unpack-object-typed-named-variadic-review.json)
+keeps these originals and reached checks separate from prior cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

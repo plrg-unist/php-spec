@@ -375,11 +375,26 @@ zero credit. Strict375 and four source agreements pass at `1ad2ce8a` using retai
 native bytes. Eight genuine-source state groups pass 501 physical/480 driver
 premises at `ce17751e`, with no pure queries, including partial typed receive,
 owning trace snapshots after frame retirement, packed ALIAS writes and parked
-resume guards. Other type shapes, typed named buffers, wider sites, arrays and
-REFERENCE payloads remain required; earlier cuts stay frozen.
+resume guards. At that cut typed named buffers remained open; other type shapes,
+wider sites, arrays and REFERENCE payloads stay required. Earlier cuts remain frozen.
 Actual375 over `e6879e16` passes strict SL at `80000219`; private native/source/state
 cuts retain their original inputs and original expectation failure.
 [Typed positional review](coverage/semantics/iterator-call-unpack-object-typed-positional-variadic-review.json).
+
+Nullable single-class named tails now admit copied-object warnings at one direct
+statically named Iterator construction with no positional extras. Receive checks
+each item before collecting an ALIAS; clearing the current rest item destroys its
+payload before F. A later rejected class leaves only the earlier rest item, while
+the generated TypeError trace keeps both named payloads in insertion order through
+E. Handler and parked injected throws retain Iterator-before-payload cleanup.
+Four native originals pass at `f2af82e5`; strict375 and four unchanged-source
+agreements pass at `cf6d4358` without fresh native execution. Eight genuine-source
+state groups pass 505 physical/484 driver premises at `5cbc1a29`, with no pure
+queries, including typed ALIAS writes and keyed trace owners after callee
+retirement. Other type shapes, wider sites, general
+shared named buffers, arrays and REFERENCE payloads remain required; prior cuts
+stay frozen.
+[Typed named review](coverage/semantics/iterator-call-unpack-object-typed-named-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
