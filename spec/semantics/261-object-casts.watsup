@@ -420,6 +420,7 @@ def $object_foreach_reset(S, n) = $objectprops_mark(S, n)
   -- if ~$instance_storage_freeing(S, n)
   -- if ~$property_hook_instance(S, n)
   -- if S.OBJECTS[n] =/= STDINSTANCE
+  -- if ~$weakmap_object(S.OBJECTS[n])
 dec $object_foreach_select(pstate, nat) : pstate
 def $object_foreach_select(S, n) = S[.COMPLETION = UNSUPPORTED "property hook iteration"]
   -- if ~$instance_storage_freeing(S, n)

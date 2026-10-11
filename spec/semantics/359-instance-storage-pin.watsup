@@ -145,7 +145,7 @@ def $instance_storage_valid(S, pinstancestorage) = false -- otherwise
 
 def $instance_storage_called(S, n) = S -- if n <- S.DESTRUCTION.CALLED
 def $instance_storage_called(S, n) = S[.DESTRUCTION.CALLED = S.DESTRUCTION.CALLED ++ [n]] -- if ~(n <- S.DESTRUCTION.CALLED)
-def $instance_storage_begin(S, n) = $gc_store_retire($instance_storage_called(S[.TODO = (INSTANCE_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], SLOTS ppropertyslot*, NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n), HOBJECT n)
+def $instance_storage_begin(S, n) = $weakmap_key_notice($gc_store_retire($instance_storage_called(S[.TODO = (INSTANCE_STORAGE_STEP {OBJECT n, HANDLE S.DESTRUCTION.HANDLES[n], SLOTS ppropertyslot*, NEXT 0, CALLER S.CURRENT, ORIGIN S.ORIGIN, CONSTCONTEXT S.CONSTCONTEXT, USER $destructor_user_source(S)}) :: S.TODO], n), HOBJECT n), n)
   -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
 def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $instance_storage_begin(S, n)
   -- if $instance_storage_node(S, n)

@@ -1,0 +1,133 @@
+;; Zend/zend_weakrefs.c: the entry owns its value, never its key. This first
+;; slice admits one ordinary key/leaf value and actual std_dtor notification.
+dec $weakmap_object(pobject) : bool
+def $weakmap_object(WEAKMAP pweakmapentry?) = true
+def $weakmap_object(pobject) = false -- otherwise
+dec $weakmap_at(pstate, nat) : bool
+def $weakmap_at(S, n) = true
+  -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
+  -- if $weakmap_object(S.OBJECTS[n])
+def $weakmap_at(S, n) = false -- otherwise
+def $object_name(S, n) = $ptascii("WeakMap") -- if S.OBJECTS[n] = WEAKMAP pweakmapentry?
+def $getclass_live_object(S, n) = true -- if $weakmap_at(S, n)
+def $class_instanceof(S, POBJECT n, ptbytes) = ($ptlc($typed_callable_name(ptbytes)) <- [$ptascii("weakmap"), $ptascii("arrayaccess"), $ptascii("countable"), $ptascii("iteratoraggregate"), $ptascii("traversable")])
+  -- if S.OBJECTS[n] = WEAKMAP pweakmapentry?
+def $typed_object_exact(S, ptbranch*, POBJECT n) = ($typed_class_type(ptbranch*, $ptascii("WeakMap")) \/ $typed_class_type(ptbranch*, $ptascii("ArrayAccess")) \/ $typed_class_type(ptbranch*, $ptascii("Countable")) \/ $typed_class_type(ptbranch*, $ptascii("IteratorAggregate")) \/ $typed_class_type(ptbranch*, $ptascii("Traversable")))
+  -- if S.OBJECTS[n] = WEAKMAP pweakmapentry?
+def $typed_given(S, POBJECT n) = $ptascii("WeakMap") -- if S.OBJECTS[n] = WEAKMAP pweakmapentry?
+def $node_children(S, HOBJECT n) = eps -- if S.OBJECTS[n] = WEAKMAP eps
+def $node_children(S, HOBJECT n) = $value_nodes(pweakmapentry.VALUE)
+  -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
+
+dec $weakmap_new_site(pstate) : bool
+def $weakmap_new_site(S) = true
+  -- if S.CONSTCONTEXT = eps
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprNew name (SEQUENCE eps) metadata)
+  -- if $new_source_name(S, porigin) = (ptbytes)
+  -- if $ptlc(ptbytes) = $ptascii("weakmap")
+def $weakmap_new_site(S) = false -- otherwise
+def $new_class(S, ptbytes, z) = S[.OBJECTS = S.OBJECTS ++ [WEAKMAP eps]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT n]][.RESULT = KNOWN (POBJECT n)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ptlc(ptbytes) = $ptascii("weakmap") /\ $weakmap_new_site(S)
+  -- if n = |S.OBJECTS|
+def $new_class(S, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap constructor arguments or deferred initialization"]
+  -- if $ptlc(ptbytes) = $ptascii("weakmap") /\ ~$weakmap_new_site(S)
+
+def $noctor_object_valid(S, pnoctorcall) = true
+  -- if $weakmap_at(S, pnoctorcall.OBJECT)
+  -- if S.OBJECTS[pnoctorcall.OBJECT] = WEAKMAP eps
+  -- if $ptlc(pnoctorcall.CLASS) = $ptascii("weakmap")
+  -- if $weakmap_new_site(S)
+
+;; Reuse the language's ArrayAccess operand/source protocol, without invoking
+;; an invented user method. RHS readback remains the assignment's result.
+dec $weakmap_key_maps(pstate, pnode*, nat) : nat*
+def $weakmap_key_maps(S, eps, n_key) = eps
+def $weakmap_key_maps(S, (HOBJECT n) :: pnode_tail*, n_key) = n :: $weakmap_key_maps(S, pnode_tail*, n_key)
+  -- if $weakmap_has_key(S, n, n_key)
+def $weakmap_key_maps(S, (HOBJECT n) :: pnode_tail*, n_key) = $weakmap_key_maps(S, pnode_tail*, n_key)
+  -- if ~$weakmap_has_key(S, n, n_key)
+def $weakmap_key_maps(S, (HCELL n) :: pnode_tail*, n_key) = $weakmap_key_maps(S, pnode_tail*, n_key)
+def $weakmap_key_maps(S, (HARRAY n) :: pnode_tail*, n_key) = $weakmap_key_maps(S, pnode_tail*, n_key)
+dec $weakmap_has_key(pstate, nat, nat) : bool
+def $weakmap_has_key(S, n, n_key) = true
+  -- if $weakmap_at(S, n)
+  -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry) /\ pweakmapentry.KEY = n_key
+def $weakmap_has_key(S, n, n_key) = false -- otherwise
+dec $weakmap_write_allowed(pstate, paccess) : bool
+def $weakmap_write_allowed(S, paccess) = true
+  -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
+  -- if paccess.BASE = BASE_VALUE poperand
+  -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
+  -- if paccess.OBJECT = (n_map) /\ $weakmap_at(S, n_map)
+  -- if S_base = $quiet_operand(S, poperand)
+  -- if S_base.COMPLETION = NORMAL /\ S_base.RESULT = KNOWN (POBJECT n_map)
+  -- if S_key = $quiet_operand(S, paccess.INPUT)
+  -- if S_key.COMPLETION = NORMAL /\ S_key.RESULT = KNOWN paccess.OFFSET
+  -- if S_value = $quiet_operand(S, paccess.SELECTED)
+  -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN paccess.VALUE
+  -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
+  -- if S.OBJECTS[n_map] = WEAKMAP eps
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if $(n_key < |S.OBJECTS|) /\ (HOBJECT n_key) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_key] = STDINSTANCE /\ ~$instance_storage_freeing(S, n_key)
+  -- if $node_children(S, HOBJECT n_key) = eps
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+  -- if paccess.VALUE = POBJECT n_value
+  -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
+  -- if S.OBJECTS[n_value] = INSTANCE porigin /\ ~$instance_storage_freeing(S, n_value)
+  -- if $node_children(S, HOBJECT n_value) = eps
+def $weakmap_write_allowed(S, paccess) = false -- otherwise
+def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE})], paccess, pvalue_result)
+  -- if paccess.OBJECT = (n_map) /\ $weakmap_at(S, n_map)
+  -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_write_allowed(S, paccess)
+  -- if paccess.OFFSET = POBJECT n_key
+  -- if S_read = $quiet_operand(S, paccess.SELECTED)
+  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN pvalue_result
+def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dimension protocol outside first insertion"]
+  -- if paccess.OBJECT = (n_map) /\ $weakmap_at(S, n_map)
+  -- if ptbytes =/= $ptascii("offsetSet") \/ ~$weakmap_write_allowed(S, paccess)
+
+;; std_dtor has already hidden the key behind an authenticated physical pin.
+;; Replace the map edge by one real VALUE job before executing the callback.
+dec $weakmap_key_notice(pstate, nat) : pstate
+def $weakmap_key_notice(S, n_key) = S -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
+def $weakmap_key_notice(S, n_key) = $destructor_release_begin(S[.OBJECTS[n_map] = WEAKMAP eps], $destruction_values($value_nodes(pweakmapentry.VALUE)))
+  -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = [n_map]
+  -- if S.OBJECTS[n_map] = WEAKMAP (pweakmapentry)
+  -- if $instance_storage_for(S, n_key) = (pinstancestorage)
+  -- if $instance_storage_valid(S, pinstancestorage)
+  -- if pinstancestorage.NEXT = 0 /\ pinstancestorage.SLOTS = eps
+  -- if S.OBJECTS[n_key] = STDINSTANCE
+  -- if $destructor_jobs_valid(S, $destruction_values($value_nodes(pweakmapentry.VALUE)))
+def $weakmap_key_notice(S, n_key) = S[.COMPLETION = UNSUPPORTED "WeakMap key notification storage authority"] -- otherwise
+
+;; free_obj ordering and ephemeron tracing require separate native evidence.
+def $destruction_storage_free(S, HOBJECT n, pdestructionrelease) = $destructor_release_replace(S, pdestructionrelease[.JOBS = (DESTRUCTION_VALUE (HOBJECT n)) :: pdestructionrelease.JOBS])[.COMPLETION = UNSUPPORTED "nonempty WeakMap storage destruction"]
+  -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
+dec $weakmap_nonempty(pstate, pnode*) : bool
+def $weakmap_nonempty(S, eps) = false
+def $weakmap_nonempty(S, pnode :: pnode_tail*) = true -- if $weakmap_nonempty_node(S, pnode)
+def $weakmap_nonempty(S, pnode :: pnode_tail*) = $weakmap_nonempty(S, pnode_tail*) -- if ~$weakmap_nonempty_node(S, pnode)
+dec $weakmap_nonempty_node(pstate, pnode) : bool
+def $weakmap_nonempty_node(S, HOBJECT n) = true
+  -- if $weakmap_at(S, n)
+  -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
+def $weakmap_nonempty_node(S, pnode) = false -- otherwise
+def $gc_begin(S, pconfigcall) = S[.COMPLETION = UNSUPPORTED "WeakMap ephemeron collection"] -- if $weakmap_nonempty(S, S.ALLOCATIONS)
+
+def $method_select(S, poperand, ptbytes, phpType7*, z) = S_read[.COMPLETION = UNSUPPORTED "WeakMap method protocol"]
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN (POBJECT n)
+  -- if $weakmap_at(S_read, n)
+def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes, phpType7*, z) = S[.COMPLETION = UNSUPPORTED "WeakMap static method protocol"]
+  -- if $ptlc($typed_callable_name(ptbytes_class)) = $ptascii("weakmap")
+def $clone_value(S, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "WeakMap clone protocol"] -- if $weakmap_at(S, n)
+def $cast_value(S, CASTARRAY, POBJECT n, z) = S[.COMPLETION = UNSUPPORTED "WeakMap array cast protocol"] -- if $weakmap_at(S, n)
+def $object_foreach_reset(S, n) = S[.COMPLETION = UNSUPPORTED "WeakMap iteration protocol"] -- if $weakmap_at(S, n)
+def $property_unset_key_unshared(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap property unset protocol"] -- if $weakmap_at(S, n)
+def $property_quiet_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "WeakMap quiet property protocol"] -- if $weakmap_at(S, n)
+def $value_order(S, POBJECT n_left, POBJECT n_right, pnode_seen*) = ORDERUNSUPPORTED "WeakMap comparison protocol"
+  -- if n_left =/= n_right
+  -- if ~($instance_storage_freeing(S, n_left) \/ $instance_storage_freeing(S, n_right))
+  -- if $weakmap_at(S, n_left) \/ $weakmap_at(S, n_right)
