@@ -638,6 +638,32 @@ def $gc_overlap_plan(pgcplan) = true
   -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
   -- if $gc_overlap_component(pgcplan, pnode_component*)
   -- if $gc_overlap_residuals(pgcplan, $heap_reach(pnode_residual*, eps, pgcplan.GRAPH.EDGES))
+;; Eligible tracing also colors an externally live ordinary child black.
+;; Keep that child out of COUNTED; its residual physical tag still participates
+;; in nested-data removal. This lane has no array/reference component.
+def $gc_overlap_plan(pgcplan) = true
+  -- if pgcplan.SCAN = eps /\ pgcplan.CALL.PASS = 0
+  -- if pgcplan.DTORS =/= eps
+  -- if $gc_nodes(pgcplan.BUFFER) = $gc_physical_nodes(pgcplan.BUFFER)
+  -- if pnode_residual* = $destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if pnode_residual* =/= eps
+  -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
+  -- if pnode_reached* = $heap_intersect(pnode_residual*, pnode_traced*)
+  -- if pnode_reached* =/= eps
+  -- if pnode_component* = $heap_reach(pgcplan.DTORS, eps, pgcplan.GRAPH.EDGES)
+  -- if $gc_overlap_objects(pnode_component*)
+  -- if $heap_subset(pnode_reached*, pnode_component*)
+  -- if pnode_outside* = $destruction_nodes_delete(pnode_residual*, pnode_reached*)
+  -- if $heap_intersect($heap_reach(pnode_outside*, eps, pgcplan.GRAPH.EDGES), pnode_traced*) = eps
+  -- if pnode_white* = $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER))
+  -- if pnode_live* = $heap_reach(pgcplan.GRAPH.ROOTS, eps, pgcplan.GRAPH.EDGES)
+  -- if pnode_black* = $heap_intersect(pnode_component*, pnode_live*)
+  -- if pnode_black* =/= eps
+  -- if $heap_subset(pgcplan.DTORS, pnode_white*)
+  -- if $heap_subset(pnode_component*, pnode_white* ++ pnode_black*)
+  -- if $heap_intersect(pgcplan.COUNTED, pnode_black*) = eps
+  -- if $heap_intersect($heap_reach($destruction_nodes_delete(pgcplan.GRAPH.NODES, pnode_traced*), eps, pgcplan.GRAPH.EDGES), pnode_white*) = eps
+  -- if $gc_overlap_residuals(pgcplan, $heap_reach(pnode_residual*, eps, pgcplan.GRAPH.EDGES))
 def $gc_overlap_plan(pgcplan) = false -- otherwise
 ;; The frozen graph cannot certify IS_REFERENCE. Authenticate markers only
 ;; for its still-live protected and residual cells; retired snapshots retain
@@ -698,8 +724,11 @@ def $gc_nested_slots(H, pnode_black*, pgcslot*, nat_free*, n_slot, n_debit) = $g
 def $gc_nested_slots(H, pnode_black*, pgcslot*, nat_free*, n_slot, n_debit) = $gc_nested_slots(H, pnode_black*, pgcslot*, nat_free*, $(n_slot + 1), n_debit)
   -- if $(n_slot < |pgcslot*|)
   -- if $gc_eligible_slot(pgcslot*[n_slot]) = $gc_nodes([pgcslot*[n_slot]])
-def $gc_nested_image(pgcplan) = $gc_nested_slots(pgcplan.GRAPH, $destruction_nodes_delete(pnode_visit*, pgcplan.DTORS), $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS), eps, 0, 0)
+def $gc_nested_image(pgcplan) = $gc_nested_slots(pgcplan.GRAPH, pnode_black*, $gc_mark_dtors(pgcplan.BUFFER, pgcplan.DTORS), eps, 0, 0)
   -- if (pnode_visit*, pnode_counted*) = $gc_walk(pgcplan.GRAPH, pgcplan.PROXIES, $gc_root_visits($gc_eligible_nodes(pgcplan.BUFFER)), $gc_white(pgcplan.GRAPH, $gc_eligible_nodes(pgcplan.BUFFER)), eps, eps)
+  -- if pnode_traced* = $heap_reach($gc_eligible_nodes(pgcplan.BUFFER), eps, pgcplan.GRAPH.EDGES)
+  -- if pnode_live* = $heap_reach(pgcplan.GRAPH.ROOTS, eps, pgcplan.GRAPH.EDGES)
+  -- if pnode_black* = $destruction_nodes_delete(pnode_visit*, pgcplan.DTORS) ++ $heap_intersect(pnode_traced*, pnode_live*)
 def $gc_nested_removed(pgcplan) = $destruction_nodes_delete($gc_nodes(pgcplan.BUFFER), $gc_nodes(pgcslot*))
   -- if $gc_overlap_plan(pgcplan)
   -- if (pgcslot*, nat_free*, n_debit) = $gc_nested_image(pgcplan)
