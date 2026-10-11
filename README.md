@@ -2059,6 +2059,8 @@ throwing handlers skip the bool write before receiver cleanup and exception chai
 pass 1,014 premises at `a3f383502`, including whole states and full driver budgets.
 The original preparation failure stays0. Normal bool/string payload history remains
 Unsupported with a separate native-only control0; wider object/array/source/PARAM scope stays open.
+The `58d5c5fe` join preserves disjoint parent paths and reuses retained compiler cuts.
+Private observations retain their revisions; fresh strict/source/state/native evaluations stay0.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

@@ -3396,6 +3396,8 @@ payload histories remain Unsupported with native-only control0; object/array rep
 changed source/tail authority, PARAM and wider getter/type scope remain required.
 Prior44 cuts and generic50/95/289/owner rules are unchanged.
 [NaN-boolean ledger](coverage/semantics/magic-property-nan-boolean-review.json).
+Exact-current `1e818f74f` joins `58d5c5fee` pointwise across disjoint parent guards.
+Private and retained parent-family compiler cuts are reused; fresh strict/source/state/native counts remain0.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
