@@ -4317,7 +4317,9 @@ request string, prepares canonical Closure and mints before separate prefix/suff
 writes preserve selection. Native2/literal1 at a303 and repaired computed1/state236
 at 43fd/375 pass (216 genuine/derived plus 20 controls). Handler/tag/receipt and
 old cuts remain unchanged; combined expression capture and wider evaluation
-evidence stay open. Exact relocation needs no runtime renewal; see the same ledger.
+evidence stay open. One preserved current236 compatibility gate at f890/661bf
+passes the reached shared EMIT/storage/pruning seam (5.249/60.095s), with current
+source/private renewal0. Exact relocation needs no runtime renewal; see the same ledger.
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
