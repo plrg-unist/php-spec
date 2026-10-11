@@ -1680,7 +1680,7 @@ def $ref_chain_distinct(S, prefreturncursor :: prefreturncursor_tail*, n_seen*) 
 def $ref_chain_distinct(S, prefreturncursor :: eps, n_seen*) = $ref_chain_outer_literal(S, prefreturncursor)
   -- if $ref_return_cursor_literal(S, prefreturncursor) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $ref_chain_distinct(S, prefreturncursor*, n_seen*) = false -- otherwise
-;; A registered echo-only destructor does not make retirement of globally live
+;; A registered simple destructor does not make retirement of globally live
 ;; string CV histories effectful. Active disposal prefixes must first pass the
 ;; existing destructor validators and project their metadata away.
 dec $ref_chain_string_cursors(pstate, prefreturncursor*) : bool
@@ -1696,6 +1696,10 @@ def $ref_chain_string_cursors(S, prefreturncursor :: prefreturncursor_tail*) = $
   -- if S.STORE[n_cell] = DEFINED pvalue
   -- if $string_bytes(pvalue) = (n_bytes*)
 def $ref_chain_string_cursors(S, prefreturncursor*) = false -- otherwise
+dec $ref_chain_destructor_body(statement*) : bool
+def $ref_chain_destructor_body([NStmtEcho (SEQUENCE ([NScalarString (BYTES text_echo) metadata_string])) metadata_echo]) = true
+def $ref_chain_destructor_body([NStmtEcho (SEQUENCE ([NScalarString (BYTES text_echo) metadata_string])) metadata_echo, NStmtExpression (NExprThrow (NExprNew (NName (BYTES text_type) metadata_type) (SEQUENCE ([NArg ABSENT (NScalarString (BYTES text_message) metadata_message) (BOOLEAN false) (BOOLEAN false) metadata_arg])) metadata_new) metadata_throw) metadata_statement]) = ($base64(text_type) = $ptascii("TypeError"))
+def $ref_chain_destructor_body(statement*) = false -- otherwise
 dec $ref_chain_echo_class(pstate) : bool
 def $ref_chain_echo_class(S) = true
   -- if S.CLASSES = pclassdesc :: eps
@@ -1707,7 +1711,8 @@ def $ref_chain_echo_class(S) = true
   -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_class) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE ([statement_method])) metadata_class)
   -- if $origin_child((pclassdesc.ORIGIN), [PCFIELD 5, PCINDEX 0]) = (pmethoddesc.FUNCTION.ORIGIN)
   -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
-  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER 1) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method_name) (SEQUENCE eps) ABSENT (SEQUENCE ([NStmtEcho (SEQUENCE ([NScalarString (BYTES text_echo) metadata_string])) metadata_echo])) metadata_method
+  -- if statement_method = NStmtClassMethod (SEQUENCE eps) (INTEGER 1) (BOOLEAN false) (NIdentifier (BYTES text_method) metadata_method_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata_method
+  -- if $ref_chain_destructor_body(statement*)
   -- if $base64(text_method) = $ptascii("__destruct")
   -- if $ref_chain_function(S) = (PORIGIN n pcpath_function)
   -- if pclassdesc.ORIGIN = PORIGIN n pcpath_class

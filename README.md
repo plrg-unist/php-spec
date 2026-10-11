@@ -869,6 +869,12 @@ Two originals, three reached fixtures/306 checks and independent saved-D frame82
 pass separately. Selected Y keeps its alias without creating the object. Other
 lifecycle/caught/mixed layouts and broad returns verification remain OPEN.
 [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+The checked destructor may also echo then throw a literal TypeError. Its fresh
+error has no Previous inside the callback; ordinary finally replacement later
+links the original Y TypeError and preserves that same fresh error through ordered
+retirement to the caller. Two originals, reached3/335 and independent post-D91/1
+pass separately; a native caller observer confirms the late Previous relation.
+Other destructor effects and broad returns verification remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

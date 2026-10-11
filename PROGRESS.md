@@ -1337,6 +1337,19 @@ OPEN. [Multiple-history review](coverage/semantics/reference-return-multiple-act
 Actual375 over `167731401` passes strict at `5a9ba189` in 5.941s with zero
 applications; original private source/state/independent cuts remain separate.
 
+The same idle lifecycle certificate now admits a checked literal echo followed by
+`throw new TypeError` with a literal message. Existing eager/finally rules create
+the fresh destructor error, then link the original Y TypeError after Y-finally
+replacement; the callback's immediate Previous is empty. Ordered Z/W/X retirement
+preserves the fresh caller error and late Previous. Source2, reached3/335
+(102+150+83) and independent post-D91/1 pass at `df2d4e0b`; deleting only the
+registered operation exit is publicly refused. A separate native caller observer
+confirms message/line/distinct Previous. Private strict375 passes in 5.851s with
+zero applications. Compiles2/3 are retained from the original receiver-field
+fixture failure, which keeps zero state credit; the maintained producer is exact.
+Other destructor effects, active direct validation and broad returns_verify remain
+OPEN. [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

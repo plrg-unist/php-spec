@@ -227,6 +227,15 @@ registered result/release/operation-exit prefix validates before existing projec
 reaches idle scope; deleting the exit is publicly refused. Direct active consumed
 validation and other lifecycle/caught/mixed domains remain OPEN.
 
+The checked destructor body also admits literal echo then literal-message
+`throw new TypeError`. This only extends body admission; class, global string-CV,
+distinctness, idle metadata and full registered-prefix guards remain intact.
+Ordinary eager disposal and finally replacement preserve a distinct fresh error:
+Previous is empty inside the callback and becomes the original Y TypeError after
+Y-finally replacement. Source2, reached3/335 and independent post-D91/1 pass at
+`df2d4e0b`; the native caller observer supports the late link. Public post-callback
+admission requires the operation exit. Other destructor effects remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

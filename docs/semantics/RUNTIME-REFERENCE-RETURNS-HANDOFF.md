@@ -147,6 +147,14 @@ eager retirement schedules real work even while other CV aliases survive. Source
 state3/306 and independent saved82/1 pass; active direct consumed validation and
 other destructor bodies/lifecycle layouts remain OPEN.
 
+The lifecycle30 body extension admits checked literal echo then literal-message
+TypeError throw under the same certificate. Bind the fresh callback error with
+empty Previous separately from its late Y-finally/caller Previous link; do not
+infer object identity from `R:destructor` alone. Source2, state3/335 and independent
+post-D91/1 pass. The full registered prefix admits publicly and deleting its
+operation exit refuses; no active branch or error-chaining rule was added.
+Broader destructor effects and lifecycle layouts remain OPEN.
+
 Typed-property reference constraints, finally rechecks, objects/methods, dynamic
 sources and dynamic callables, named/unpacked/variadic calls, generators/Fibers and lifecycle remain
 required later core work. Publish reviewed paired code, evidence and concise docs
