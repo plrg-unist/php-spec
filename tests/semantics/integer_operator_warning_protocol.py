@@ -61,7 +61,7 @@ def conditions(name, program, path, stdout):
         '$integer_operation_valid(S_entry, pintegeroperation)',
         '~$integer_operation_valid(S_entry, pintegeroperation[.LINE = $(pintegeroperation.LINE + 1)])',
         '~$integer_operation_valid(S_entry, pintegeroperation[.OP = ADD])',
-        '~$integer_operation_valid(S_entry, pintegeroperation[.LEFT = $ptascii("missing")])',
+        '~$integer_operation_valid(S_entry, pintegeroperation[.LEFT = VARIABLE ($ptascii("missing")) 1])',
         '~$integer_operation_valid(S_entry[.ORIGIN = eps], pintegeroperation)',
         'n_invalid = |S_entry.STORE|',
         '~$integer_operation_valid(S_entry, pintegeroperation[.LEFTPOINTER = INTEGER_CELL n_invalid])',

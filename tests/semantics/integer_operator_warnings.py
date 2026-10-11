@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 
 from error_handler_run import ENV, recorded
+import integer_operator_copy_cases as copies
 
 ROOT = Path(__file__).resolve().parents[2]
 OPERATORS = ('%', '<<', '>>', '&', '|', '^')
@@ -121,21 +122,29 @@ set_error_handler('h'); $a={value}; $b=2;
 $v=$a % $b; echo "V:",$v,":",$v===((int)$v),":",$a===3;
 '''.encode()
 
+DIRECT_CASES = tuple(CASES)
+CASES.update(copies.CASES)
+
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--case', choices=tuple(CASES))
+    parser.add_argument('--family', choices=('direct', 'copied', 'all'), default='direct')
+    parser.add_argument('--exclude', choices=tuple(CASES), action='append', default=[])
     parser.add_argument('--native-only', action='store_true')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
-    names = (args.case,) if args.case else tuple(CASES)
+    names = (args.case,) if args.case else (DIRECT_CASES if args.family == 'direct' else tuple(copies.CASES) if args.family == 'copied' else tuple(CASES))
+    names = tuple(name for name in names if name not in args.exclude)
+    if not names:
+        parser.error('the selection contains no cases')
     out = args.output or Path(tempfile.mkdtemp(prefix='integer-operator-warnings-', dir=ROOT / '.tools'))
     out.mkdir(parents=True, exist_ok=True)
     print(out, flush=True)
     modules = [ROOT / name for name in json.loads((ROOT / 'spec/semantics/modules.json').read_bytes())]
     watched = [*modules, ROOT / 'spec/semantics/modules.json', ROOT / 'bin/php-semantics',
                ROOT / '_build/default/adapter/main.exe', ROOT / '.tools/php/bin/php',
-               ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py', Path(__file__)]
+               ROOT / 'tests/semantics/profile.json', ROOT / 'tests/semantics/error_handler_run.py', Path(__file__), Path(copies.__file__)]
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     before = {str(path.relative_to(ROOT)): digest(path) for path in watched}
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
@@ -168,10 +177,12 @@ def main():
                 and base64.b64decode(outcome.get('stderr', '')) == (directory / 'native.stderr').read_bytes())
         rows.append(row)
         print(name, row['passed'], flush=True)
+        if not row['passed']:
+            break
     assert before == {str(path.relative_to(ROOT)): digest(path) for path in watched}
     assert revision == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     (out / 'report.json').write_text(json.dumps({'revision': revision, 'inputs': before, 'profile': profile,
-        'rows': rows, 'environment': environment, 'scope': 'native-only preparation' if args.native_only else 'checked original-source agreement'}, indent=2) + '\n')
+        'rows': rows, 'environment': environment, 'family': args.family, 'selection': names, 'scope': 'native-only preparation' if args.native_only else 'checked original-source agreement'}, indent=2) + '\n')
     return all(row['passed'] for row in rows)
 
 

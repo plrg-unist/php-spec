@@ -25,8 +25,18 @@ Borrowed reference pointers add no owner. Each notice reads the current handler
 registry; a thrown handler prevents later conversion notices and the result.
 The [review ledger](../../coverage/semantics/integer-operator-warning-review.json)
 keeps source and genuine production-SL state checks at their tested revisions.
-Copied/reference-result producers and object conversion remain open. Expired
-pointers stay Unsupported; six callback-unset native originals crashed with
+Evaluated literal/unary/ternary copies and reference-assignment/named byref-call
+results now keep their original operands as real owners; selected pointers and
+conversion snapshots add no owner. Rebinding the sole global owner preserves
+an owning reference result, and two operands may own the same cell twice.
+Bitwise conversion follows Zend's physical opcode order: CONST1, TMP2, VAR4,
+CV8, with lower-ranked left slots swapped before conversion. Source evaluation
+remains left to right. This determines callback order, saved integers and the
+TypeError operand order; `%` and shifts retain left-first conversion.
+The [COPY ledger](../../coverage/semantics/integer-operator-copy-review.json)
+binds 37 source cases and 714 reached conditions, preserving the original swap mismatch.
+Wider bitwise producer classes and object conversion remain open. Expired
+pointers stay Unsupported; six earlier callback-unset native originals crashed with
 signal11, with no diagnosed engine cause or agreement claim.
 
 Concatenation has an additional compile/runtime distinction. The compiler visits

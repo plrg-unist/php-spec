@@ -1,0 +1,94 @@
+{
+  "scope": "Evaluated scalar/array operands in %, <<, >> and mixed &, |, ^ with registered handlers: literal/unary/ternary copies, reference assignments and named byref-call results.",
+  "status": "independently_reviewed_bounded_runtime_private",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "tested_revision": "197c19845d62e27d7bcc02d80c8f239de82acdd4",
+  "semantic_sha256": {
+    "spec/semantics/387-integer-operator-warnings.watsup": "c74492693d99fa8d86a35ee99697f101db0fe7f3639dc1feeba902ce7dbe2906"
+  },
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_BW_OR/AND/XOR handlers specify COMMUTATIVE.",
+    "vendor/php-src/Zend/zend_vm_execute.h: zend_vm_set_opcode_handler and its _ex variant swap operands when op1_type < op2_type under the commutative rule.",
+    "vendor/php-src/Zend/zend_compile.h: IS_CONST=1, IS_TMP_VAR=2, IS_VAR=4 and IS_CV=8; zend_compile.c preserves left-to-right binary source evaluation and emits the admitted unary/ternary/user-call result classes.",
+    "vendor/php-src/Zend/zend_operators.c: bitwise_or/and/xor_function dereference both physical operands before op1-first numeric conversion and use that operand order for type errors."
+  ],
+  "contract": [
+    "Original evaluated operands retain their real cell/array owners exactly once each. Selected COPY/CELL pointers and scalar conversion snapshots add no roots; two REFERENCE operands can own one cell twice.",
+    "%/shifts defer only direct RHS CV reads. Copies retain their values; owned reference results keep old cells alive after global rebinding and read their live payload at conversion.",
+    "Bitwise operators preserve source evaluation order but convert physical opcode operands after Zend's COMMUTATIVE slot swap. CONST1/TMP2/VAR4/CV8 order determines callback priority, saved integers and TypeError operand order.",
+    "Source operator/operands/line, compiled producer kind, SWAPPED, pointer kind/bounds and original owned roots constrain admission. Reference-producing source cannot be relabelled as a KNOWN copy. Captured conversion/cursor and existing error dispatch constrain warning resume and throw cleanup."
+  ],
+  "accepted": {
+    "strict": {
+      "revision": "197c19845d62e27d7bcc02d80c8f239de82acdd4",
+      "modules": 377,
+      "mode": "SL main=true; compile-only, zero PHP runtime credit",
+      "elapsed_seconds": 6.0542120933532715,
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-02/strict-197c19845/report.json"
+    },
+    "source": {
+      "cases": 37,
+      "result": "Checked original sources exactly match native normal exit/stdout/stderr with no Unsupported reason.",
+      "cuts": [
+        {
+          "revision": "31e476449b7d1839286608d82bc86f258be58bed",
+          "cases": ["copy-right-0", "refcall-right-0"],
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-02/smoke-31e476449-copy-right-0/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-02/smoke-31e476449-refcall-right-0/report.json"
+          ]
+        },
+        {
+          "revision": "222593673f41471c258977f1cf7972f4a9629ff5",
+          "cases": 14,
+          "selection": "The first 14 passing rows only. Their noncommutative or unswapped source routes are unchanged by the later authenticated swap correction.",
+          "report": "/home/user/workspace/php-spec-evidence-archive/operators-02/source-remaining-222593673/report.json"
+        },
+        {
+          "revision": "197c19845d62e27d7bcc02d80c8f239de82acdd4",
+          "cases": 21,
+          "selection": "Corrected copy-left-3 plus the disjoint 20 previously unrun originals; accepted 16 were excluded.",
+          "reports": [
+            "/home/user/workspace/php-spec-evidence-archive/operators-02/changed-197c19845-copy-left-3/report.json",
+            "/home/user/workspace/php-spec-evidence-archive/operators-02/source-tail-197c19845/report.json"
+          ]
+        }
+      ]
+    },
+    "author_reached": {
+      "revision": "197c19845d62e27d7bcc02d80c8f239de82acdd4",
+      "mode": "SL",
+      "fixtures": 11,
+      "conditions": 657,
+      "result": "All true: real source frontiers, immutable copies, owning reference cleanup, arrays, supplied throws, ref-as-copy counterfeits, swapped no-warning failure, CV-first saved2 and zero/one/resumed execution.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-02/state-sl-197c19845/report.json"
+    },
+    "independent_reached": {
+      "revision": "197c19845d62e27d7bcc02d80c8f239de82acdd4",
+      "mode": "SL",
+      "fixtures": 1,
+      "conditions": 57,
+      "result": "True: two real temporary reference owners share one cell, callback rebinding leaves a real alias, the second conversion reads 3.75 then keeps 3 despite a later write 7.75, and final ownership drops to one alias. Native-bound ending is exact; no separate public-source count.",
+      "report": "/home/user/workspace/php-spec-evidence-archive/operators-02/review-state-shared-197c19845/report.json"
+    }
+  },
+  "preserved_zero_credit": [
+    "Native/frontend preparations at native-fd269309c, frontend-fd269309c, native-refassign-live-{0,3}-1c485ab3d, state-prep-31e476449, state-prep-53bd208a5 and review-prep-shared-53bd208a5 are preparation only.",
+    "baseline-fd269309c-copy-right-0 and baseline-fd269309c-refcall-right-0 preserve the original checked Unsupported producer-continuation gaps.",
+    "source-remaining-222593673/copy-left-3 preserves the genuine mismatch: native array & float/no handler versus model handler then float & array. Its failed row receives no agreement credit; the preceding 14 exact rows retain their own cut.",
+    "Earlier direct-CV fixture failures, AL-only observations and six native signal11 originals remain external in the direct-CV ledger, with no engine-cause claim."
+  ],
+  "boundaries": [
+    "Bitwise slot authority currently recognizes compiled constants, direct CVs, actual owning references, explicit unary/ternary copies and resolved named user by-value calls. Optimized intrinsic and wider producer result classes remain open.",
+    "Checked originals cover literal/unary/ternary copies, reference assignments and named noarg byref calls. Broader producer contexts require further validation; this consumer increment changes no reference-return producer semantics.",
+    "Initial/late objects and expired borrowed pointers remain outside this increment. Other operator/conversion/comparison obligations remain partial; the prior direct-CV evidence is not renewed.",
+    "Reports retain profile/effective C/UTC environment, exact commands/exits/streams, module/fixture/tool identities and empty reaped groups. Author tools use links to retained project binaries; no fresh rebuild or portability result is claimed."
+  ],
+  "recovery": {
+    "archive_root": "/home/user/workspace/php-spec-evidence-archive/operators-02",
+    "source_helper": "tests/semantics/integer_operator_warnings.py --family copied",
+    "author_state": "tests/semantics/integer_operator_copy_protocol.py (explicit SL)",
+    "independent_state": "tests/semantics/integer_operator_copy_review.py; retained thin run-state.py reuses exact native/frontend preparation",
+    "instructions": "Use each recorded revision and retained tools/profile. Select a fresh external output directory and obtain a numeric lease; metadata-only publication changes need no runtime renewal."
+  }
+}

@@ -6885,19 +6885,24 @@
       ],
       "helper_tests": [
         "tests/semantics/integer_operator_warning_protocol.py",
-        "tests/semantics/integer_operator_warning_review_protocol.py"
+        "tests/semantics/integer_operator_warning_review_protocol.py",
+        "tests/semantics/integer_operator_copy_protocol.py",
+        "tests/semantics/integer_operator_copy_review.py"
       ],
       "source_tests": [
         "tests/semantics/validate.py",
         "tests/semantics/integer_operator_warnings.py",
         "tests/semantics/integer_operator_warning_review.py",
-        "coverage/semantics/source.json"
+        "coverage/semantics/source.json",
+        "tests/semantics/integer_operator_copy_cases.py",
+        "tests/semantics/integer_operator_copy_review_cases.py"
       ],
       "evidence": [
         "vendor/php-src/Zend/zend_operators.c",
-        "coverage/semantics/integer-operator-warning-review.json"
+        "coverage/semantics/integer-operator-warning-review.json",
+        "coverage/semantics/integer-operator-copy-review.json"
       ],
-      "review": " Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Module387 adds registered scalar integer-conversion warning/deprecation handlers for two defined direct CV operands in modulo, shifts and mixed bitwise operations, with captured conversion, borrowed versus live RHS timing, fresh registry selection and throw cleanup. Source4+independent30 and author SL5/304 plus independent SL3/174 premises retain separate cuts in integer-operator-warning-review.json. Copied/reference-result producers, objects and expired pointers remain open; status stays partial."
+      "review": " Independent scalar source bridge reviewed e3fbd6e8: 157 exact observations and 16 outcome negatives repeated; full callback/type/operator contexts remain pending. Module387 adds registered scalar integer-conversion warning/deprecation handlers for two defined direct CV operands in modulo, shifts and mixed bitwise operations, with captured conversion, borrowed versus live RHS timing, fresh registry selection and throw cleanup. Source4+independent30 and author SL5/304 plus independent SL3/174 premises retain separate cuts in integer-operator-warning-review.json. The copied-operand increment retains literal/unary/ternary copies and reference-assignment/named byref-call results with real temporary ownership. Source-authenticated bitwise compiler slot order preserves array-first errors and a converted RHS across later callbacks. The 37 source cases retain unchanged 2/14 and corrected 21 cuts; 11 author SL fixtures with 657 conditions plus one independent shared-cell SL fixture with 57 conditions pass 714 conditions at 197c. integer-operator-copy-review.json preserves the original mismatch and baseline gaps. Wider producer classes, objects and expired pointers remain open; status stays partial."
     },
     {
       "id": "coercion.cast-bool",

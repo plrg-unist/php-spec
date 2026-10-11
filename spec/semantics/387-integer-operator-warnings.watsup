@@ -1,8 +1,10 @@
 ;; zendi_try_get_long snapshots the number and float-string before diagnostics.
 ;; MOD/SL/SR dereference the right operand after the left conversion. BW_* does
-;; both dereferences before conversion; those pointers borrow real reference cells.
-syntax pintegerpointer = INTEGER_CV ptbytes | INTEGER_CELL nat
-syntax pintegeroperation = { SITE porigin, OP pbin, LINE int, LEFT ptbytes, RIGHT ptbytes, LEFTPOINTER pintegerpointer, RIGHTPOINTER pintegerpointer }
+;; both dereferences before conversion, in physical opcode order after the
+;; COMMUTATIVE slot swap. Evaluated operands retain their real owners;
+;; selected cell pointers borrow them and never add a second owner.
+syntax pintegerpointer = INTEGER_CV ptbytes | INTEGER_CELL nat | INTEGER_COPY pvalue
+syntax pintegeroperation = { SITE porigin, OP pbin, LINE int, SWAPPED bool, LEFT poperand, RIGHT poperand, LEFTPOINTER pintegerpointer, RIGHTPOINTER pintegerpointer }
 syntax pintegerphase = INTEGER_LEFT | INTEGER_RIGHT int
 syntax pintegerconversion = { INPUT pvalue, VALUE int, NOTICES (int, ptbytes)* }
 
@@ -16,31 +18,105 @@ def $integer_source_operator(NExprBinaryOpBitwiseAnd expression_left expression_
 def $integer_source_operator(NExprBinaryOpBitwiseOr expression_left expression_right metadata) = (BITOR)
 def $integer_source_operator(NExprBinaryOpBitwiseXor expression_left expression_right metadata) = (BITXOR)
 def $integer_source_operator(pcnode) = eps -- otherwise
+dec $integer_reference_source(pstate, porigin) : bool
+def $integer_reference_source(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprAssignRef expression_left expression_right metadata)
+def $integer_reference_source(S, PORIGIN n pcpath) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprFuncCall name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+  -- if pfunction.SIGNATURE.BYREF
+def $integer_reference_source(S, porigin) = false -- otherwise
+dec $integer_operand_source(pstate, porigin, pcpath, poperand) : bool
+def $integer_operand_source(S, porigin, pcpath, VARIABLE ptbytes z) = true
+  -- if $error_variable_source(S, (porigin), pcpath, ptbytes)
+  -- if $code_expression_at_source(S, porigin, pcpath) = (z)
+def $integer_operand_source(S, porigin, pcpath, KNOWN pvalue) = true
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $origin_node(S.SOURCES, porigin_operand) = (expression)
+  -- if $reference_cv(expression) = eps
+  -- if $compiled_read(S, porigin_operand) = eps
+  -- if ~$integer_reference_source(S, porigin_operand)
+def $integer_operand_source(S, porigin, pcpath, KNOWN pvalue) = true
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $origin_node(S.SOURCES, porigin_operand) = (expression)
+  -- if $reference_cv(expression) = eps
+  -- if $compiled_read(S, porigin_operand) = (pvalue_compiled)
+  -- if pvalue = $compiled_string_value(S, porigin_operand, pvalue_compiled)
+def $integer_operand_source(S, porigin, pcpath, REFERENCE n) = true
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $integer_reference_source(S, porigin_operand)
+  -- if $compiled_read(S, porigin_operand) = eps
+def $integer_operand_source(S, porigin, pcpath, poperand) = false -- otherwise
+;; Zend slot classes: CONST=1, TMP=2, VAR=4, CV=8. Wider producer
+;; classes need their own compiler authority; a send-var flag is insufficient.
+dec $integer_tmp_source(pcnode) : bool
+def $integer_tmp_source(NExprUnaryPlus expression metadata) = true
+def $integer_tmp_source(NExprUnaryMinus expression metadata) = true
+def $integer_tmp_source(NExprTernary expression phpType5 expression_false metadata) = true
+def $integer_tmp_source(pcnode) = false -- otherwise
+dec $integer_slot_rank(pstate, porigin, pcpath, poperand) : nat?
+def $integer_slot_rank(S, porigin, pcpath, VARIABLE ptbytes z) = (8)
+def $integer_slot_rank(S, porigin, pcpath, REFERENCE n) = (4)
+def $integer_slot_rank(S, porigin, pcpath, KNOWN pvalue) = (1)
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $compiled_read(S, porigin_operand) = (pvalue_compiled)
+def $integer_slot_rank(S, porigin, pcpath, KNOWN pvalue) = (2)
+  -- if $origin_child((porigin), pcpath) = (porigin_operand)
+  -- if $compiled_read(S, porigin_operand) = eps
+  -- if $origin_node(S.SOURCES, porigin_operand) = (pcnode)
+  -- if $integer_tmp_source(pcnode)
+def $integer_slot_rank(S, porigin, pcpath, KNOWN pvalue) = (4)
+  -- if $origin_child((porigin), pcpath) = (PORIGIN n pcpath_operand)
+  -- if $compiled_read(S, PORIGIN n pcpath_operand) = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_operand) = (NExprFuncCall name (SEQUENCE phpType7*) metadata)
+  -- if ~$ppfirstclass(phpType7*)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_name(pcode.NAMES, pcpath_operand) = ((preqbytes, preqbytes_fallback?))
+  -- if $call_target(S, preqbytes, preqbytes_fallback?) = (pfunction)
+  -- if ~pfunction.SIGNATURE.BYREF
+def $integer_slot_rank(S, porigin, pcpath, poperand) = eps -- otherwise
+dec $integer_source_swapped(pstate, porigin, pbin, poperand, poperand) : bool?
+def $integer_source_swapped(S, porigin, pbin, poperand_left, poperand_right) = (false)
+  -- if ~$integer_bitwise(pbin)
+def $integer_source_swapped(S, porigin, pbin, poperand_left, poperand_right) = (b)
+  -- if $integer_bitwise(pbin)
+  -- if $integer_slot_rank(S, porigin, [PCFIELD 0], poperand_left) = (n_left)
+  -- if $integer_slot_rank(S, porigin, [PCFIELD 1], poperand_right) = (n_right)
+  -- if b = $(n_left < n_right)
+def $integer_source_swapped(S, porigin, pbin, poperand_left, poperand_right) = eps -- otherwise
 dec $integer_operation_source(pstate, pintegeroperation) : bool
 def $integer_operation_source(S, pintegeroperation) = true
   -- if S.ORIGIN = (pintegeroperation.SITE)
   -- if $origin_node(S.SOURCES, pintegeroperation.SITE) = (pcnode)
   -- if $integer_source_operator(pcnode) = (pintegeroperation.OP)
-  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 0], pintegeroperation.LEFT)
-  -- if $error_variable_source(S, S.ORIGIN, [PCFIELD 1], pintegeroperation.RIGHT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 0], pintegeroperation.LEFT)
+  -- if $integer_operand_source(S, pintegeroperation.SITE, [PCFIELD 1], pintegeroperation.RIGHT)
   -- if $code_expression_at_source(S, pintegeroperation.SITE, [PCFIELD 1]) = (pintegeroperation.LINE)
+  -- if $integer_source_swapped(S, pintegeroperation.SITE, pintegeroperation.OP, pintegeroperation.LEFT, pintegeroperation.RIGHT) = (pintegeroperation.SWAPPED)
 def $integer_operation_source(S, pintegeroperation) = false -- otherwise
 
-dec $integer_pointer_select(pstate, ptbytes) : pintegerpointer?
-def $integer_pointer_select(S, ptbytes) = (INTEGER_CELL n)
+dec $integer_pointer_select(pstate, poperand) : pintegerpointer?
+def $integer_pointer_select(S, KNOWN pvalue) = (INTEGER_COPY pvalue)
+def $integer_pointer_select(S, REFERENCE n) = (INTEGER_CELL n)
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+def $integer_pointer_select(S, VARIABLE ptbytes z) = (INTEGER_CELL n)
   -- if ~$environment_blocked(S, ptbytes)
   -- if $lookup(S.ENV, ptbytes) = (n)
   -- if $(n < |S.STORE|)
   -- if S.STORE[n] = DEFINED pvalue
   -- if n <- S.REFCELLS
-def $integer_pointer_select(S, ptbytes) = (INTEGER_CV ptbytes)
+def $integer_pointer_select(S, VARIABLE ptbytes z) = (INTEGER_CV ptbytes)
   -- if ~$environment_blocked(S, ptbytes)
   -- if $lookup(S.ENV, ptbytes) = (n)
   -- if $(n < |S.STORE|)
   -- if S.STORE[n] = DEFINED pvalue
   -- if ~(n <- S.REFCELLS)
-def $integer_pointer_select(S, ptbytes) = eps -- otherwise
+def $integer_pointer_select(S, poperand) = eps -- otherwise
 dec $integer_pointer_value(pstate, pintegerpointer) : pvalue?
+def $integer_pointer_value(S, INTEGER_COPY pvalue) = (pvalue)
 def $integer_pointer_value(S, INTEGER_CV ptbytes) = (pvalue)
   -- if ~$environment_blocked(S, ptbytes)
   -- if $lookup(S.ENV, ptbytes) = (n)
@@ -52,33 +128,36 @@ def $integer_pointer_value(S, INTEGER_CELL n) = (pvalue)
   -- if S.STORE[n] = DEFINED pvalue
   -- if $($heap_owners($heap_prune($heap_graph(S)), HCELL n) > 0)
 def $integer_pointer_value(S, pintegerpointer) = eps -- otherwise
-dec $integer_pointer_source(pstate, pintegerpointer, ptbytes) : bool
-def $integer_pointer_source(S, INTEGER_CV ptbytes, ptbytes) = true
-def $integer_pointer_source(S, INTEGER_CELL n, ptbytes) = $(n < |S.STORE|)
-def $integer_pointer_source(S, pintegerpointer, ptbytes) = false -- otherwise
+dec $integer_pointer_source(pstate, pintegerpointer, poperand) : bool
+def $integer_pointer_source(S, INTEGER_COPY pvalue, KNOWN pvalue) = true
+def $integer_pointer_source(S, INTEGER_CV ptbytes, VARIABLE ptbytes z) = true
+def $integer_pointer_source(S, INTEGER_CELL n, VARIABLE ptbytes z) = $(n < |S.STORE|)
+def $integer_pointer_source(S, INTEGER_CELL n, REFERENCE n) = $(n < |S.STORE|)
+def $integer_pointer_source(S, pintegerpointer, poperand) = false -- otherwise
+dec $integer_right_pointer(pbin, poperand, pintegerpointer) : pintegerpointer
+def $integer_right_pointer(pbin, VARIABLE ptbytes z, pintegerpointer) = INTEGER_CV ptbytes -- if ~$integer_bitwise(pbin)
+def $integer_right_pointer(pbin, poperand, pintegerpointer) = pintegerpointer -- otherwise
 dec $integer_operation_valid(pstate, pintegeroperation) : bool
-def $integer_operation_valid(S, pintegeroperation) = ($integer_operation_source(S, pintegeroperation) /\ $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT) /\ $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT) /\ ($integer_bitwise(pintegeroperation.OP) \/ pintegeroperation.RIGHTPOINTER = INTEGER_CV pintegeroperation.RIGHT))
+def $integer_operation_valid(S, pintegeroperation) = ($integer_operation_source(S, pintegeroperation) /\ $integer_pointer_source(S, pintegeroperation.LEFTPOINTER, pintegeroperation.LEFT) /\ $integer_pointer_source(S, pintegeroperation.RIGHTPOINTER, pintegeroperation.RIGHT) /\ pintegeroperation.RIGHTPOINTER = $integer_right_pointer(pintegeroperation.OP, pintegeroperation.RIGHT, pintegeroperation.RIGHTPOINTER) /\ $call_reference_operand_valid(S, pintegeroperation.LEFT) /\ $call_reference_operand_valid(S, pintegeroperation.RIGHT) /\ $heap_subset($operand_nodes(pintegeroperation.LEFT) ++ $operand_nodes(pintegeroperation.RIGHT), S.ALLOCATIONS))
 
-dec $integer_right_pointer(pbin, ptbytes, pintegerpointer) : pintegerpointer
 def $integer_operator_plan(S) = (pintegeroperation)
   -- if $error_handler_eligible(S, 2) \/ $error_handler_eligible(S, 8192)
   -- if S.ORIGIN = (porigin)
-  -- if S.TODO = (BINARY_RIGHT pbin (VARIABLE n_left* z_left) z) :: ptask_tail*
-  -- if ~$gc_retired_binary(S, pbin, VARIABLE n_left* z_left)
-  -- if S.RESULT = VARIABLE n_right* z_right
+  -- if S.TODO = (BINARY_RIGHT pbin poperand_left z) :: ptask_tail*
+  -- if ~$gc_retired_binary(S, pbin, poperand_left)
+  -- if poperand_right = S.RESULT
   -- if $integer_operator(pbin)
-  -- if $integer_pointer_select(S, n_left*) = (pintegerpointer_left)
-  -- if $integer_pointer_select(S, n_right*) = (pintegerpointer_right)
+  -- if $integer_pointer_select(S, poperand_left) = (pintegerpointer_left)
+  -- if $integer_pointer_select(S, poperand_right) = (pintegerpointer_right)
   -- if $integer_pointer_value(S, pintegerpointer_left) = (pvalue_left)
   -- if $integer_pointer_value(S, pintegerpointer_right) = (pvalue_right)
   -- if ~$cast_object_value(pvalue_left) /\ ~$cast_object_value(pvalue_right)
   -- if ~$byte_operator(pbin, pvalue_left, pvalue_right)
-  -- if pintegerpointer_saved = $integer_right_pointer(pbin, n_right*, pintegerpointer_right)
-  -- if pintegeroperation = {SITE porigin, OP pbin, LINE z, LEFT n_left*, RIGHT n_right*, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_saved}
+  -- if pintegerpointer_saved = $integer_right_pointer(pbin, poperand_right, pintegerpointer_right)
+  -- if $integer_source_swapped(S, porigin, pbin, poperand_left, poperand_right) = (b_swapped)
+  -- if pintegeroperation = {SITE porigin, OP pbin, LINE z, SWAPPED b_swapped, LEFT poperand_left, RIGHT poperand_right, LEFTPOINTER pintegerpointer_left, RIGHTPOINTER pintegerpointer_saved}
   -- if $integer_operation_valid(S, pintegeroperation)
 def $integer_operator_plan(S) = eps -- otherwise
-def $integer_right_pointer(pbin, ptbytes, pintegerpointer) = pintegerpointer -- if $integer_bitwise(pbin)
-def $integer_right_pointer(pbin, ptbytes, pintegerpointer) = INTEGER_CV ptbytes -- if ~$integer_bitwise(pbin)
 
 dec $integer_float_notices(castnotice*, nat) : (int, ptbytes)*
 def $integer_float_notices(eps, n) = eps
@@ -105,8 +184,10 @@ dec $integer_phase_valid(pintegerphase) : bool
 def $integer_phase_valid(INTEGER_LEFT) = true
 def $integer_phase_valid(INTEGER_RIGHT i) = $(i >= -9223372036854775808 /\ i <= 9223372036854775807)
 dec $integer_phase_pointer(pintegeroperation, pintegerphase) : pintegerpointer
-def $integer_phase_pointer(pintegeroperation, INTEGER_LEFT) = pintegeroperation.LEFTPOINTER
-def $integer_phase_pointer(pintegeroperation, INTEGER_RIGHT i) = pintegeroperation.RIGHTPOINTER
+def $integer_phase_pointer(pintegeroperation, INTEGER_LEFT) = pintegeroperation.LEFTPOINTER -- if ~pintegeroperation.SWAPPED
+def $integer_phase_pointer(pintegeroperation, INTEGER_RIGHT i) = pintegeroperation.RIGHTPOINTER -- if ~pintegeroperation.SWAPPED
+def $integer_phase_pointer(pintegeroperation, INTEGER_LEFT) = pintegeroperation.RIGHTPOINTER -- if pintegeroperation.SWAPPED
+def $integer_phase_pointer(pintegeroperation, INTEGER_RIGHT i) = pintegeroperation.LEFTPOINTER -- if pintegeroperation.SWAPPED
 dec $integer_converted(pstate, pintegeroperation, pintegerphase, int) : pstate
 def $integer_converted(S, pintegeroperation, INTEGER_LEFT, i) = S[.TODO = (INTEGER_OPERATOR_CONVERT pintegeroperation (INTEGER_RIGHT i)) :: ptask_tail*][.RESULT = KNOWN PNULL]
   -- if S.TODO = ptask :: ptask_tail*
@@ -115,8 +196,8 @@ def $integer_converted(S, pintegeroperation, INTEGER_RIGHT i_left, i_right) = $i
 dec $integer_failure(pstate, pintegeroperation) : pstate
 def $integer_failure(S, pintegeroperation) = $type_failure(S[.TODO = ptask_tail*], pintegeroperation.OP, pvalue_left, pvalue_right, pintegeroperation.LINE)
   -- if S.TODO = ptask :: ptask_tail*
-  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
-  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, INTEGER_LEFT)) = (pvalue_left)
+  -- if $integer_pointer_value(S, $integer_phase_pointer(pintegeroperation, INTEGER_RIGHT 0)) = (pvalue_right)
   -- if ~$cast_object_value(pvalue_left) /\ ~$cast_object_value(pvalue_right)
 def $integer_failure(S, pintegeroperation) = S[.COMPLETION = UNSUPPORTED "integer operator object or expired pointer"] -- otherwise
 dec $integer_warning_valid(pstate, pintegeroperation, pintegerphase, pintegerconversion, nat) : bool
@@ -155,9 +236,10 @@ rule PhpStep/integer-operator-converted: S ~> $integer_converted(S, pintegeroper
   -- if $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n)
   -- if n = |pintegerconversion.NOTICES|
 
-;; The copied conversion has no array/object owners; the pointers are borrowed.
-def $task_nodes(INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase) = eps
-def $task_nodes(INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion n) = eps
+;; Original evaluated operands own their cells/arrays exactly once. Selected
+;; pointers and the scalar conversion snapshot add no roots.
+def $task_nodes(INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase) = $operand_nodes(pintegeroperation.LEFT) ++ $operand_nodes(pintegeroperation.RIGHT)
+def $task_nodes(INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion n) = $operand_nodes(pintegeroperation.LEFT) ++ $operand_nodes(pintegeroperation.RIGHT)
 def $call_task_valid(S, INTEGER_OPERATOR_CONVERT pintegeroperation pintegerphase) = ($integer_operation_valid(S, pintegeroperation) /\ $integer_phase_valid(pintegerphase))
 def $call_task_valid(S, INTEGER_OPERATOR_WARNING pintegeroperation pintegerphase pintegerconversion n) = $integer_warning_valid(S, pintegeroperation, pintegerphase, pintegerconversion, n)
 def $error_call_valid(S, perrorcall) = true

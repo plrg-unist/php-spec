@@ -7,6 +7,18 @@ Git; [ARTIFACTS.md](docs/ARTIFACTS.md) locates it.
 
 ## Current checkpoint
 
+Integer operators now retain evaluated literal/unary/ternary copies and owning
+reference-assignment/named byref-call results through conversion callbacks.
+Bitwise operations preserve source evaluation but convert in Zend's physical
+CONST/TMP/VAR/CV order, including array-first failure before a float warning.
+The 37 source cases retain their unchanged 2/14 and corrected 21 cuts; 11 author
+SL fixtures and one independent shared-cell fixture pass 714 conditions
+(657 author, 57 independent) at 197c/377. The
+[COPY ledger](coverage/semantics/integer-operator-copy-review.json) records
+actual temporary roots, captured conversions and preserved baseline/mismatch
+failures. Wider bitwise producer classes, objects and expired borrowed pointers
+remain open; no reference-return producer semantics changed.
+
 Parser-backed top-level statics now authenticate source ownership and release
 normal/explicit-return slots in compiler declaration order. Callable slots,
 escaped aliases and copied return operands keep their existing roots. The
@@ -46,8 +58,8 @@ separate cuts; author5 production-SL state fixtures pass304 premises and indepen
 pass174. The [ledger](coverage/semantics/integer-operator-warning-review.json) records
 their revisions and raw evidence.
 Fixture parser/elaboration failures and AL-only observations have zero credit.
-Copied/reference-result producers and object conversions remain open; genuinely
-expired pointers stay Unsupported. Six callback-unset native originals crashed
+Wider producers and object conversions remain open beyond the COPY increment;
+genuinely expired pointers stay Unsupported. Six callback-unset native originals crashed
 with signal11 and receive no agreement or engine-cause claim.
 The 377 composition over c5e88ccc passes strict3 at 7a0567247 (6.022s),
 preserving parent error-handler, property/WeakMap and return guards. Prior
