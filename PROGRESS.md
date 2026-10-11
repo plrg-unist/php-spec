@@ -18,6 +18,8 @@ registry selection and budget resume. Original fixture failures retain zero fail
 credit. Destructor-before-commit, late typed sources and handler exit are the next
 required work; wider locations stay partial.
 [Inc/dec warning ledger](coverage/semantics/incdec-warning-review.json).
+The 380-module join over f12 passes strict SL (6.121s) and the affected
+GLOBALS-unset callback original at 0b564; earlier source/state cuts retain their revisions.
 
 Backtick command construction and finite shell dispatch are implemented in389.
 Compiler deprecation, root-builtin lookup, Stringable/array/undefined interpolation,
