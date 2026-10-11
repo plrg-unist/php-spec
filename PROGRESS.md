@@ -2471,6 +2471,8 @@ constructed boolean outcomes are corrected; their nine distinctly named clauses
 run only in the new kept group. Phase31–33 reports retain their original cuts.
 Boolean-to-int/string, PARAMETERBACKINGS and wider conversions remain required.
 [Boolean-float ledger](coverage/semantics/magic-property-boolean-float-review.json).
+The actual375 join over `78cd4d6e8` passes strict at `f44398f38` (5.646s,
+state/source/native credit0); private source6/state911 are not renewed.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

@@ -1599,6 +1599,8 @@ null reject; real float|bool sources select a conflict without converting the ce
 pass 911 setup-inclusive premises at `cf9bcd566`, including CV/owned cleanup and
 pending errors. Getter diagnostics use `bool`; other type-check contexts are unchanged.
 Three older constructed boolean controls are maintained only in the new kept group.
+The actual375 join over `78cd4d6e8` passes strict at `f44398f38` (5.646s);
+private source/state cuts retain their original inputs.
 Boolean-to-int/string, PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
