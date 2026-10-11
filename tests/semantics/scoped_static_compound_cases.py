@@ -2399,3 +2399,113 @@ echo "H:", $weakFiber->get() === null ? "gone" : "held", ";E;";
         'discriminator': 'Frozen bound throw rejects scalar 7 with TypeError before INITIAL state rejection or callback transfer. Argument evaluation clears selected; capture/Fiber are gone by the outer catch and the generated error retires after caught-cell null. Both U markers stay absent.',
     },
 ]
+
+
+CASES += [
+    {
+        'id': 'from-callable-direct-fiber-throw-initial',
+        'source': '''<?php
+function discardInitialThrowCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireInitialThrowSelectionReview21() {
+    global $selected, $argument;
+    $selected = null;
+    $value = $argument;
+    $argument = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$method = "throw";
+$argument = new Exception("argument");
+$weakArgument = WeakReference::create($argument);
+$fiber = new Fiber(function () { echo "U;"; });
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = null;
+$selected = Closure::fromCallable(callback: discardInitialThrowCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isStarted";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+try {
+    $returned = $selected(exception: retireInitialThrowSelectionReview21());
+    echo "U;";
+} catch (Throwable $caught) {
+    $weakError = WeakReference::create($caught);
+    echo "T:", $caught instanceof FiberError ? "FiberError" : "other", ";";
+    echo "D:", $caught->getMessage(), ";";
+    echo "X:", $weakArgument->get() === null ? "gone" : "held", ";";
+    echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+    echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+    echo "E:", $weakError->get() === null ? "gone" : "held", ";";
+    $caught = null;
+}
+echo "E:", $weakError->get() === null ? "gone" : "held", ";";
+echo "X:", $weakArgument->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";Z;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;T:FiberError;D:Cannot resume a fiber that is not suspended;X:held;C:gone;H:gone;E:held;E:gone;X:gone;C:gone;H:gone;Z;',
+        'discriminator': 'Frozen bound throw accepts the same main-created Throwable, then rejects the INITIAL Fiber with FiberError before transfer. Caller/helper argument cells retire; the fresh error trace retains the supplied object after capture/Fiber cleanup. Clearing the outer caught cell retires both objects and trace graphs. Both U markers stay absent.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-throw-initial',
+        'source': '''<?php
+function discardInitialThrowCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireInitialThrowSelectionReview21() {
+    global $selected, $argument;
+    $selected = null;
+    $value = $argument;
+    $argument = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$method = "throw";
+$argument = new Exception("argument");
+$weakArgument = WeakReference::create($argument);
+$fiber = new Fiber(function () { echo "U;"; });
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = Closure::fromCallable(...);
+$selected = $factory(callback: discardInitialThrowCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isStarted";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() !== null ? "held" : "gone", ";";
+try {
+    $returned = $selected(exception: retireInitialThrowSelectionReview21());
+    echo "U;";
+} catch (Throwable $caught) {
+    $weakError = WeakReference::create($caught);
+    echo "T:", $caught instanceof FiberError ? "FiberError" : "other", ";";
+    echo "D:", $caught->getMessage(), ";";
+    echo "X:", $weakArgument->get() === null ? "gone" : "held", ";";
+    echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+    echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+    echo "E:", $weakError->get() === null ? "gone" : "held", ";";
+    $caught = null;
+}
+echo "E:", $weakError->get() === null ? "gone" : "held", ";";
+echo "X:", $weakArgument->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";Z;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;T:FiberError;D:Cannot resume a fiber that is not suspended;X:held;C:gone;H:gone;E:held;E:gone;X:gone;C:gone;H:gone;Z;',
+        'discriminator': 'Frozen bound throw accepts the same main-created Throwable, then rejects the INITIAL Fiber with FiberError before transfer. Caller/helper argument cells retire; the fresh error trace retains the supplied object after capture/Fiber cleanup. Clearing the outer caught cell retires both objects and trace graphs. Both U markers stay absent.',
+    },
+]

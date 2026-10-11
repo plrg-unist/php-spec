@@ -2846,6 +2846,15 @@ state credit. No runtime change or older-cut renewal is needed.
 Exact f09a7275/375 validation-only composition is statically reviewed; guarded
 reference-return, GC-plan, magic-property and Iterator unpack paths are absent.
 The 47b source2/state340 cut stays distinct; current runtime is UNRUN.
+Valid main-created Throwable arguments on the same INITIAL path instead produce
+FiberError; its trace keeps the supplied object after capture/Fiber retirement.
+Two new direct/captured originals and 456 premises (400 genuine/derived, 56 controls)
+pass at 62405de0a/375, including the reached caught-null step that prunes both
+Throwable objects and trace graphs before final weak reads. The derived trace-owner
+fixture failure retains zero credit; runtime rules and older cuts are unchanged.
+Exact 6598b059/375 validation-only composition is statically reviewed; guarded
+magic-property, hook-coalesce, empty-class and Iterator unpack changes are absent.
+The 624 native2/source2/state456 cut stays distinct; current runtime is UNRUN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

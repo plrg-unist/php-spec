@@ -404,6 +404,9 @@ genuine/derived, 109 controls) validate callback/capture retirement and the oute
 catch's sole exception owner. Scalar 7 on an INITIAL Fiber raises TypeError before
 transfer; two direct/captured originals and 340 premises at 47b318154/375 validate
 the generated scalar trace and capture/receiver/callback retirement before catch.
+Valid Throwable arguments instead raise FiberError on that INITIAL path; its trace
+retains the supplied object until caught-cell null. Two new originals and 456
+premises pass at 62405de0a/375, including retirement before the final weak reads.
 The existing rules require no change. Wider throw/error paths and original 7 remain open.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat

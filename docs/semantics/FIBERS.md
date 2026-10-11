@@ -553,8 +553,17 @@ creates no eager operation: ordinary allocation pruning retires capture, Fiber a
 raw callback in the release step, while the pending error survives to outer catch.
 Caught-cell null then retires the error and trace. Two direct/captured originals
 and 340 premises (288 genuine/derived, 52 controls) pass at 47b318154/375; the two
-original fixture failures retain zero credit. Wider error forms and replacing/nested
-injections require separate evidence.
+original fixture failures retain zero credit.
+Supplying a main-created Throwable to that INITIAL call instead raises a distinct
+FiberError with the native resume wording. Its single Fiber->throw trace frame owns
+the exact supplied object, whose original trace is empty. The consumed CONFIG
+leaves only that argument edge; original RELEASE cleanup retires capture, receiver
+and raw callback before outer catch. Clearing the caught cell then prunes both
+Throwable objects and trace graphs at a reached source step before final weak reads.
+Two new originals and 456 premises (400 genuine/derived, 56 controls) pass on
+unchanged 62405de0a/375. The original fixture's derived trace owner assumption
+retains zero credit; no runtime edit or older-cut renewal is needed.
+Wider error forms and replacing/nested injections require separate evidence.
 
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver
