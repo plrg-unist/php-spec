@@ -269,7 +269,7 @@ syntax pyieldfromretained = { PARENT nat, DATA nat, RECEIPT pyieldfromreceipt, I
 syntax pforeachaggregate = { STATEMENT statement, SITE porigin, LINE int, AGGREGATE nat, OBJECT nat, ACQUIRED nat*, INPUT poperand, CURRENT poperand, ITERATOR nat? }
 syntax pfibertraversal = { CAPTURE nat?, START pfiberstart, OBJECT nat, AGGREGATE nat?, ACQUIRED nat*, INPUT poperand, SITE porigin, LINE int, CURRENT poperand, SENT pnamedargs, ITEMS pentry* }
 syntax pfiberfinish = { OBJECT nat, PENDING nat?, SEQUENCE nat, PROTECTED (nat, nat)? }
-syntax ptask = PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
+syntax ptask = PROPERTY_HOOK_RESULT ppropertyhook | PROPERTY_HOOK_ISSET_RESULT ppropertyhook bool | PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase | INSTANCE_STORAGE_STEP pinstancestorage | FOREACH_BIND_RELEASE pforeachbind | FOREACH_BIND_COMMIT pforeachbind | FOREACH_SCALAR_END nat nat porigin pvalue int
   | PROMOTE_PARAMETER porigin nat
   | GC_MAIN_SCAN pgcplan pgcscan | GC_MAIN_RETURN pgcplan pgcscan nat
   | GC_WORKER_PHYSICAL_REPLACE pgcplan pgcscan

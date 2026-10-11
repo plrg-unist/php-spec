@@ -1,4 +1,5 @@
 ;; Edited internal code cannot substitute a missing/ambiguous write line.
+dec $property_hook_assign_pending(pstate) : bool
 dec $code_write_lines(pcodeexpr*, pcpath) : int*
 def $code_write_lines(eps, pcpath) = eps
 def $code_write_lines((CODEWRITE pcpath z) :: pcodeexpr*, pcpath) = z :: $code_write_lines(pcodeexpr*, pcpath)
@@ -53,6 +54,7 @@ rule PhpStep/coalesce-assignment: S ~> S[.TODO = [$at_task($origin_child(S.ORIGI
 rule PhpStep/coalesce-assignment-present: S ~> S_read[.TODO = ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
   -- if ~$key_coalesce_pending(S)
+  -- if ~$property_hook_assign_pending(S)
   -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
   -- if S_read = $quiet_base(S, S.BASE, z)
   -- if S_read.COMPLETION = NORMAL
@@ -61,6 +63,7 @@ rule PhpStep/coalesce-assignment-present: S ~> S_read[.TODO = ptask_tail*][.BASE
 rule PhpStep/coalesce-assignment-absent: S ~> S_read[.TODO = [$at_task($origin_child(S.ORIGIN, [PCFIELD 1]), EVAL expression), COALESCE_ASSIGN_WRITE $memoized_write_base(S, S.BASE, [PCFIELD 0]) $assignment_self(expression_target, expression) z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
   -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
   -- if ~$key_coalesce_pending(S)
+  -- if ~$property_hook_assign_pending(S)
   -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
   -- if S_read = $quiet_base(S, S.BASE, z)
   -- if S_read.COMPLETION = NORMAL
@@ -68,6 +71,7 @@ rule PhpStep/coalesce-assignment-absent: S ~> S_read[.TODO = [$at_task($origin_c
 rule PhpStep/coalesce-assignment-quiet-abrupt: S ~> S_read[.TODO = eps][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
   -- if ~$key_coalesce_pending(S)
+  -- if ~$property_hook_assign_pending(S)
   -- if $memoized_write_ready(S, S.BASE, [PCFIELD 0])
   -- if S_read = $quiet_base(S, S.BASE, z)
   -- if S_read.COMPLETION =/= NORMAL
@@ -89,6 +93,7 @@ rule PhpStep/coalesce-assignment-self-abrupt: S ~> S_read[.TODO = eps]
 
 rule PhpStep/coalesce-assignment-invalid-code: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid memoized write descriptor"]
   -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression z) :: ptask_tail*
+  -- if ~$property_hook_assign_pending(S)
   -- if ~$memoized_write_ready(S, S.BASE, [PCFIELD 0])
 
 def $code_write_lines((CODEARG pcpath_other) :: pcodeexpr*, pcpath) = $code_write_lines(pcodeexpr*, pcpath)
