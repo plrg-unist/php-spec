@@ -1282,6 +1282,8 @@ failures retain zero credit; exact frontier finders account for real eager work.
 The maintained producer is byte-identical to the tested producer. Other destructor
 effects, reentry/suspension, caught/mixed lifecycle and broad returns_verify remain
 OPEN. [Multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual375 over `167731401` passes strict at `5a9ba189` in 5.941s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
