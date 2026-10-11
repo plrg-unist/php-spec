@@ -4406,6 +4406,14 @@ Actual375 over c9377bec passes the preserved166 compatibility gate at 4dd91e3ce
 and shared storage/pruning; guarded Iterator/getter/factory/history paths are
 absent. Private/native/source cuts remain frozen.
 
+Named-class evaluated CURRENT members now authenticate SCOPED_NAME capture
+and freeze `getCurrent` after member evaluation. The concat original agrees at
+db0ef348/375; state242 passes (223 genuine/derived plus 19 controls), binding
+the actual request carrier/index, registered mint, two real operand writes and
+unchanged owned CONFIG returning the exact immediate body. Native2/literal1 and
+original Unsupported0 retain f98; wider class/combined forms and source7 stay open.
+Exact maintained relocation preserves old dispatch without runtime renewal.
+
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
 api-null write leaves the captured API held versus the direct API gone before

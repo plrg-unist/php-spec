@@ -2327,7 +2327,10 @@ helper still errors under an outer Closure. Three native originals, one direct a
 two repaired source comparisons and two separate state cuts totaling 447 premises
 pass. Simple class-CV `$class::getCurrent(...)` also prepares Closure and freezes
 selection before the class cell changes; one affected source and 166 focused state
-premises pass. Literal `Closure::bind(...)` capture also reaches the existing binding handler;
+premises pass. Named-class evaluated CURRENT members also freeze selection;
+one concat original and 242 focused state premises validate the request carrier,
+two operand writes and the same immediate body result. Literal `Closure::bind(...)`
+capture also reaches the existing binding handler;
 its copied receipt survives original API/body retirement while the bound Closure
 and returned value retain the receiver separately. A captured BIND call now pins
 its API when a third-argument helper clears the selected cell; static authority

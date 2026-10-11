@@ -9,8 +9,8 @@ Closures. Named functions, methods and fake captures raise `Error` with
 uses that object's type as historical selection evidence; its receiver adds no
 owner during argument effects.
 
-Literal named-static and simple class-CV `$class::getCurrent(...)` capture create
-an API Closure.
+Literal named-static, simple class-CV `$class::getCurrent(...)` and named-class
+evaluated-member capture create an API Closure.
 Calling it observes the immediate ordinary body; a named helper still raises
 `Error` even under an ordinary outer Closure. Dynamic calls pin the selected API
 in CONFIG through argument evaluation. Its OWNER/SELECTION tag carries the
@@ -32,6 +32,14 @@ Native2/literal1 at 05679 and computed source1/state166 at 1cb70154/375 pass
 prepared class, registered mint, real class write and existing owned CONFIG/result;
 old lifetime and bridge cuts retain their original evidence. Original Unsupported
 stays zero; broader CURRENT capture expressions remain required.
+
+Named-class evaluated members resolve through genuine SCOPED_NAME authority
+before CURRENT capture. The get+Current concat witness binds its real request
+index/carrier and registered mint, then changes both operand cells without
+changing the selected API or immediate ordinary body result. Affected source1
+and state242 at db0ef348/375 pass (223 genuine/derived plus 19 controls); native2,
+literal1 and original Unsupported0 stay at f98. General member admission is
+distinct from this concat evidence; wider class/combined forms remain required.
 
 An ordinary positional helper may clear the sole API cell after a call has been
 selected. Native static calls observe that API gone; captured calls observe it
@@ -161,8 +169,8 @@ Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the
 [ordinary binding contract](CLOSURE-BINDING.md) records validation order, compiled
 flag authority and copied storage. Wider binding API captures and argument
-retirement beyond the BIND scopes above, object/computed current
-captures, wider argument-retirement routes, temporary REAL `Closure::call` current-object
+retirement beyond the BIND scopes above, object and wider computed CURRENT
+captures beyond the scopes above, wider argument-retirement routes, temporary REAL `Closure::call` current-object
 escape and further internally scoped keyword consumers remain required.
 Temporary-call behavior stays separate.
 
