@@ -1,5 +1,14 @@
 [
   {
+    "id": "weak-map-key-retirement-55",
+    "source": "<?php\nclass Value {\n    public function __destruct() { echo \"V|\"; }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|END\" : \"value-live|END\";\n",
+    "source_sha256": "547205105e5c95c1c80e92f9fd02b1d9f4d8157ceecca87a69b23f37be620eff",
+    "stdout": "key-live|value-live|V|key-null|value-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
     "id": "stdclass-selfcycle-retains-target-until-explicit-collection",
     "source": "<?php $o=new stdClass;$o->self=$o;$w=WeakReference::create($o);unset($o);echo ($w->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|\",($w->get()===null?\"null\":\"live\"),\"|\",gc_collect_cycles(),\"|END\";",
     "source_sha256": "bb37fd1c41d4a1321ffcdd0ddbecebd557d22d5cc094f4dbfd8235cc4cc0cb1c",
