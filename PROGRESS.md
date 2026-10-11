@@ -38,6 +38,9 @@ Only these affected fixtures change; passed groups and source/native/strict cuts
 remain frozen. Syntax preparation/elaboration adds no runtime credit. Nested or
 Block-contained If function paths, loops, wider signatures and conditional Closure
 assignments remain required.
+The 375 join over a123a1a5 passes strict3 at 8bde7b9d (5.925s), checking the
+shared task datatype. Review preserves the parentless class-link identity; private
+native/source/state cuts retain their original revisions; no evidence was replayed.
 [Branch-factory ledger](coverage/semantics/anonymous-branch-factory-rtd-review.json).
 
 The earlier direct-main cut retains source4/state578 at 9386d628, duplicate executed

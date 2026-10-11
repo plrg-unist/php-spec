@@ -1308,6 +1308,9 @@ fullnames exist before callable publication; executed function statements publis
 then publish their named classes. The [branch-factory review](coverage/semantics/anonymous-branch-factory-rtd-review.json)
 checks skipped branches, reverse calls, fresh defaults and the selected callable
 origin when mutually exclusive branches share a case-insensitive function name.
+The 375 join over a123a1a5 passes strict3 at 8bde7b9d (5.925s), checking
+the shared task datatype. Review preserves the parentless class-link identity;
+private cuts retain their original revisions.
 The earlier [conditional-factory review](coverage/semantics/anonymous-conditional-factory-rtd-review.json)
 retains duplicate executed declaration failure before either body runs.
 Its earlier 375 join over 8087545b passes strict3 at 78decf21 (5.875s), covering
