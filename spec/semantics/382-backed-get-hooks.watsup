@@ -813,6 +813,23 @@ def $property_hook_missing_return_parent(S, ppropertydesc_parent, ppropertydesc_
   -- if $property_declaring_class(S.CLASSES, porigin_child_property) = (porigin_child)
   -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
   -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_child_property) = (ppropertydesc_child)
+def $property_hook_missing_return_parent(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if ~$trait_property_source_fast_equal(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if ppropertydesc_parent.TYPE =/= eps /\ ppropertydesc_child.TYPE = eps
+  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child[.TYPE = ppropertydesc_parent.TYPE])
+  -- if $property_hook_override_backed(S, ppropertydesc_parent)
+  -- if ppropertydesc_child.DEFAULT = PROP_NULL
+  -- if $property_hook_origin(S, ppropertydesc_child) = (porigin_child_hook)
+  -- if $origin_node(S.SOURCES, porigin_child_hook) = (NPropertyHook phpType14_hook phpType24_hook phpType4_hook phpType11_hook phpType16_hook phpType39_hook metadata_hook)
+  -- if ~$hook_body_backed(phpType39_hook, ppropertydesc_child.NAME)
+  -- if ppropertydesc_parent.ORIGIN = porigin_parent_property
+  -- if $property_declaring_class(S.CLASSES, porigin_parent_property) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if $hook_property_at(pclassdesc_parent.PROPERTIES, porigin_parent_property) = (ppropertydesc_parent)
+  -- if ppropertydesc_child.ORIGIN = porigin_child_property
+  -- if $property_declaring_class(S.CLASSES, porigin_child_property) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_child_property) = (ppropertydesc_child)
 def $property_hook_missing_return_parent(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
 dec $property_hook_get_declaration(pstate, ppropertydesc) : ptbytes?
 def $property_hook_get_declaration(S, ppropertydesc) = ($pmcstring(pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME) ++ $ptascii("()") ++ $pmif(ppropertydesc.TYPE =/= eps, $ptascii(": ") ++ $pmtypename(ppropertydesc.TYPE, $trait_data_scope(S, pclassdesc)))))

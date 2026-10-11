@@ -1,0 +1,57 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "f7890b05401611b43f6cf73cd79723beb513d769fc29de983088bd5017ecbb97",
+  "native_gate_completed": true,
+  "cases": [
+    {
+      "id": "remove",
+      "source": "<?php\nclass StorageBodyRemoveParent46 {\n    public int $value = 100 { get => $this->value; }\n}\nclass StorageBodyRemoveChild46 extends StorageBodyRemoveParent46 {\n    public $value { get => 13; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "822ac4c72a4a5c1a807db8661430cb2c0a065bcfda2170856dfd21005a3f4015",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Declaration of StorageBodyRemoveChild46::$value::get() must be compatible with StorageBodyRemoveParent46::$value::get(): int in {FILE} on line 6\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IERlY2xhcmF0aW9uIG9mIFN0b3JhZ2VCb2R5UmVtb3ZlQ2hpbGQ0Njo6JHZhbHVlOjpnZXQoKSBtdXN0IGJlIGNvbXBhdGlibGUgd2l0aCBTdG9yYWdlQm9keVJlbW92ZVBhcmVudDQ2OjokdmFsdWU6OmdldCgpOiBpbnQgaW4ge0ZJTEV9IG9uIGxpbmUgNgpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "backed-parent-unbacked-get-hook-type-presence46-native3-0e36f837",
+      "native_raw_sha256": "f7890b05401611b43f6cf73cd79723beb513d769fc29de983088bd5017ecbb97"
+    },
+    {
+      "id": "add",
+      "source": "<?php\nclass StorageBodyAddParent46 {\n    public $value = 100 { get => $this->value; }\n}\nclass StorageBodyAddChild46 extends StorageBodyAddParent46 {\n    public int $value { get => 13; }\n}\necho \"UNREACHED|\";\n",
+      "source_sha256": "477b0945026b8f796b7a72be789f20735ea45e3724b6da7d6e30f7c16b6fac61",
+      "stdout_base64": "",
+      "stderr_template": "Fatal error: Type of StorageBodyAddChild46::$value must be omitted to match the parent definition in class StorageBodyAddParent46 in {FILE} on line 5\nStack trace:\n#0 {main}\n",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IFR5cGUgb2YgU3RvcmFnZUJvZHlBZGRDaGlsZDQ2OjokdmFsdWUgbXVzdCBiZSBvbWl0dGVkIHRvIG1hdGNoIHRoZSBwYXJlbnQgZGVmaW5pdGlvbiBpbiBjbGFzcyBTdG9yYWdlQm9keUFkZFBhcmVudDQ2IGluIHtGSUxFfSBvbiBsaW5lIDUKU3RhY2sgdHJhY2U6CiMwIHttYWlufQo=",
+      "exit_status": 255,
+      "status": "static_rejection",
+      "native_group": "backed-parent-unbacked-get-hook-type-presence46-native3-0e36f837",
+      "native_raw_sha256": "f7890b05401611b43f6cf73cd79723beb513d769fc29de983088bd5017ecbb97"
+    },
+    {
+      "id": "scalar",
+      "source": "<?php\nclass StorageBodyParent46 {\n    public $value = 100 {\n        get { echo \"P:\", __CLASS__, \"/\", static::class, \"|\"; return $this->value; }\n    }\n    public function parentRead() { echo \"H|\"; return $this->value; }\n}\nclass StorageBodyBridge46 extends StorageBodyParent46 {\n    private function answer() { return 500; }\n}\nclass StorageBodyChild46 extends StorageBodyBridge46 {\n    public $value {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass StorageBodyGrand46 extends StorageBodyChild46 {\n    private function answer() { return 900; }\n}\n$parent = new StorageBodyParent46;\n$child = new StorageBodyChild46;\n$grand = new StorageBodyGrand46;\necho (array)$parent === [\"value\" => 100] ? \"P100|\" : \"BAD|\";\necho (array)$child === [\"value\" => null] ? \"CNULL|\" : \"BAD|\";\necho (array)$grand === [\"value\" => null] ? \"GNULL|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\necho (array)$grand === [\"value\" => null] ? \"GNULL|\" : \"BAD|\";\n$grand->value = 300;\necho (array)$grand === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "d8f5ae60245aec58c9efe1806c4157b2121eaf685f7d773e0f7aa46c911bd5f3",
+      "stdout_base64": "UDEwMHxDTlVMTHxHTlVMTHxQOlN0b3JhZ2VCb2R5UGFyZW50NDYvU3RvcmFnZUJvZHlQYXJlbnQ0NnwxMDB8QzpTdG9yYWdlQm9keUNoaWxkNDYvU3RvcmFnZUJvZHlDaGlsZDQ2fDEzfEh8QzpTdG9yYWdlQm9keUNoaWxkNDYvU3RvcmFnZUJvZHlHcmFuZDQ2fDEzfEdOVUxMfEczMDB8QzpTdG9yYWdlQm9keUNoaWxkNDYvU3RvcmFnZUJvZHlHcmFuZDQ2fDEzfA==",
+      "stderr_template": "",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "backed-parent-unbacked-get-hook-type-presence46-native3-0e36f837",
+      "native_raw_sha256": "f7890b05401611b43f6cf73cd79723beb513d769fc29de983088bd5017ecbb97"
+    }
+  ]
+}

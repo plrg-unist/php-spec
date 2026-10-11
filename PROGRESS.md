@@ -1087,6 +1087,19 @@ stays zero credit; pure variance/layout/runtime and prior hook cuts stay unchang
 Actual376 over `142e91d7` passes strict initialization at `9b39b8b1` (5.922 s);
 private source3 and five selected state cuts retain their accepted revisions.
 
+Typed source-body-backed parents now reject an untyped, body-unbacked child without
+an initializer at hook line 6, before the property-type check. The reverse direction
+retains its class-line error. Both-untyped controls distinguish Parent backing
+100 from the inherited Child null slot, private/inherited reads returning 13,
+and an ordinary write storing 300 while the getter stays 13. Strict376 and three
+originals pass at `ea5a608c`, repairing one diagnostic and retaining two baseline
+controls. Separate remove50 (26 reached, 24 derived), add26, CV69, This71 and
+write67 pass at `3bbfe1af` (259 reached, 24 derived across five setups).
+Pure variance/layout/runtime and earlier hook cuts retain their identities.
+[Inherited-storage type-presence review](coverage/semantics/backed-parent-unbacked-get-hook-type-presence-review.json).
+Exact `22dd4b27d` composition preserves these cuts through unchanged hook/type/layout paths;
+disjoint file-notice, Stringable and reference-finally additions require no current actor.
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
