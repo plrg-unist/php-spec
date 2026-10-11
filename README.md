@@ -1417,9 +1417,17 @@ skipped branches retain their anonymous identities without either action.
 Anonymous names precede publication or Closure creation, including skipped loops.
 Two live Closure instances from one compiled template preserve old/current targets,
 one guarded class publication, lexical namespace and fresh defaults.
+Both exact factory forms also admit direct `do` bodies at root or a valid namespace
+body, with standalone Block host ancestry. A false condition still allows one body
+visit before testing; repeated execution creates distinct Closure instances.
+The [Do review](coverage/semantics/anonymous-do-rtd-review.json) binds three originals
+and 653 premises (616 setup/frontier, 37 pure), with 26 genuine entry, selection,
+publication, creation/capture, allocation and eligible no-op steps. Strict3 passes
+at 2ee1454b /375 (5.974s); fixtures stop at required allocations. Do body Blocks,
+If/While/nested-Do hosts and wider factory signatures remain required.
 The [While-hosted If review](coverage/semantics/anonymous-while-if-rtd-review.json)
 checks genuine If/CHOOSE selection, callable publication, Closure creation/capture
-and authentic saved-frame allocations. Other loops and nested factories remain required.
+and authentic saved-frame allocations. Unsupported loop placements and nested factories remain required.
 The 375 composition at de256ec9 over 07af20a3 reuses strict3 at tested
 df0ae18c (6.122s). Review retains parentless class linking and excludes the changed
 reference-notice, bind, getter, hook, collector and Iterator routes. No current actor

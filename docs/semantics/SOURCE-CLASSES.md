@@ -140,7 +140,7 @@ bodies through standalone Block chains with the same root/namespace/Block/If or
 authenticated nested While host ancestry,
 admit plain empty named descendants.
 Admission authenticates the expression statement, by-value assignment, ordinary
-variable target, exact Closure signature and actual Block, conditional or While ancestors.
+variable target, exact Closure signature and actual Block, conditional, While or direct Do ancestors.
 Anonymous names exist before creation; skipped assignments preserve their variables.
 The [conditional-Closure review](../../coverage/semantics/anonymous-conditional-closure-rtd-review.json)
 separates real creation/capture, named publication and fresh allocations from pure
@@ -161,7 +161,13 @@ publication and genuine function or old/current Closure allocation targets.
 The [While-hosted If review](../../coverage/semantics/anonymous-while-if-rtd-review.json)
 authenticates each actual If/While host and selected branch, with genuine If/CHOOSE
 transitions before publication or creation and saved-frame allocations.
-Named descendants under Do or other loops,
+Both exact factory forms also admit direct Do bodies at root or a valid namespace
+body through standalone Block host chains. Actual Do and terminal occurrences plus
+complete factory guards remain mandatory. The
+[Do review](../../coverage/semantics/anonymous-do-rtd-review.json) checks body entry
+before a false predicate, real callable publication, LOOP_NEXT/CHOOSE stopping or
+repeat selection, distinct Closure instances, reverse class publication and saved-frame
+allocations. Do body Blocks, If/While/nested-Do hosts and other unsupported loops,
 nested functions or nested Closures, other targets,
 captures and signatures remain Unsupported.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)

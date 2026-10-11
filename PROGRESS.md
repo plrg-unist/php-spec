@@ -23,24 +23,27 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
-assignments now admit plain empty named descendants in authentic If branches
-inside While ancestry, retaining existing standalone Block and nested If/While
-paths. Three originals agree at df0ae18c /375 (strict3 6.122s): selected If/CHOOSE
-steps precede callable publication or Closure creation; reverse calls and two live
-Closure receivers retain class history, lexical namespace and first9/fresh0 defaults.
-Author539 and independent183 pass 722 premises: 683 setup/source-frontier and
-39 pure queries, with 29 genuine selection, Block, publication, creation/capture,
-allocation and eligible no-op steps. Fixtures stop at required allocations;
-syntax preparation and elaboration add no runtime credit. The original author
-literal-list elaboration failure retains zero credit; its affected checks pass after
-two parentheses corrections. Do/other loops, nested factories and wider signatures,
-targets or captures remain required.
+assignments now admit plain empty named descendants directly in authentic root or
+valid namespace Do bodies, including standalone Block host chains. Three originals
+agree at 2ee1454b /375 (strict3 5.974s): a false condition permits one body visit,
+reverse calls publish classes in call order, and repeated assignment preserves two
+Closure instances from one template with old/current targets and first9/fresh0 defaults.
+Author499 and independent154 pass 653 premises: 616 setup/source-frontier and
+37 pure queries, with 26 genuine Do/Block entry, condition selection, publication,
+creation/capture, allocation and eligible no-op steps. Fixtures stop at required
+allocations; syntax preparation/elaboration has zero runtime credit. No executed
+COMP41 failures. Do body Blocks, If/While/nested-Do hosts and wider factory guards
+remain required.
+[Do ledger](coverage/semantics/anonymous-do-rtd-review.json).
+
+The earlier While-hosted If cut retains source3/state722 at df0ae18c and its original
+zero-credit literal-list elaboration failure. Its 375 composition at de256ec9 over
+07af20a3 reuses strict3 at tested df0ae18c (6.122s), with unchanged task/schema/manifest,
+reviewed reference-notice/bind/getter/hook/collector/Iterator exclusions and reached
+parentless class-link identity. No current actor or private replay is claimed.
+Historical Do negatives are superseded only for authenticated direct bodies;
+other original cuts stay frozen.
 [While-hosted If ledger](coverage/semantics/anonymous-while-if-rtd-review.json).
-The 375 composition at de256ec9 over 07af20a3 reuses strict3 at tested
-df0ae18c (6.122s). Unchanged task/schema/manifest and the reviewed exclusion of
-reference-notice, bind, getter, hook, collector and Iterator routes preserve the
-private source3/state722 cut; reached parentless class linking remains identity.
-No current actor or private replay is claimed.
 
 The earlier nested-While cut retains source3/state636 at 8089eb5f and its
 fb295c7c/c40c6f57 strict3 join (5.976s), including the shared task datatype and
