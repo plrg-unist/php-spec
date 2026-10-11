@@ -213,6 +213,23 @@ disposal. Carrier/owner/shape/frozen/slot/DONE controls and budget replay pass.
 Wider outside carriers, graphs, references/arrays and worker/pending contexts
 remain required.
 
+A singleton fresh ordinary INSTANCE leaf with an uncalled public, nonstatic,
+concrete destructor is also admitted outside frozen GRAPH/FREESET, with exactly
+one parent owner. Existing borrowed retention adds no machine root or count.
+Zend's `gc_call_destructors` uses bare DELREF after the final callback;
+`Zend/zend_objects_API.c:zend_objects_store_del` pins the destructor call and
+subsequent `free_obj`. `zend_objects_destroy_object` invokes the child destructor
+before `zend_object_std_dtor` notifies weak references. At `6222daeb8` with 375
+modules, compiler/init, native 68-byte agreement and 216 reached checks (128/88)
+pass. The actual child callback runs during ordinary parent teardown before
+`later-live|`; its weak lookup stays live while the parent's is null under the
+parent pin. Real callback-result and last-owner release steps
+then clear child weak identity under an authenticated storage pin with allocation
+retained. Descriptor/owner/shape/frozen/slot/DONE and release-authority controls
+plus budget replay pass; the original source supplies eventual disposal.
+Wider finalizer effects, graphs, external sharing and worker/pending collectors
+remain required; no count/owner or general WeakReference closure is claimed.
+
 Module335 extends that storage admission to normal detached-worker close after
 the collection is quiescent. It requires the actual control-release, operation-exit
 and worker-release tail, a terminated graceful worker, and exactly the real

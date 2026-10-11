@@ -1212,6 +1212,13 @@ through parent teardown. Native agreement and281 reached checks cover this
 separate owner and its unset release through the child storage pin. Wider graphs,
 outside carriers and worker cases remain required.
 
+A fresh ordinary leaf child with a public destructor created after the final
+collector trace can also be retained through its borrowed parent. The original
+agrees with native PHP: child destruction occurs during the parent's weak
+temporary release, before the next output. Another 216 reached checks cover
+retention, callback authority and weak retirement under the child's storage pin.
+Wider callbacks and graphs remain required.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

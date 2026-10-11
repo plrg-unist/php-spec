@@ -1972,6 +1972,19 @@ compiler iteration diagnostic retains zero gate credit. Wider outside carriers
 and child graphs remain required; source41 OPEN/zero cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Main PASS1 preparation 325 also retains one fresh ordinary INSTANCE leaf with an
+uncalled public, nonstatic, concrete destructor, owned only by its called owner-zero
+parent and outside frozen GRAPH/FREESET. At `6222daeb8`/375, compiler/init, exact
+native 68-byte source agreement and 216 reached source/control checks (retention 128/
+callback 88) pass. Real FREE preserves the borrowed parent and uncalled child;
+the source-reached callback is weak-live with unique called authority while the
+parent is storage-pinned/weak-null. Actual result and VALUE release steps then
+clear child weak identity under its own storage pin, retaining allocation there.
+Descriptor/owner/shape/frozen/slot/DONE and consumer controls plus budget replay
+pass. Baseline 61 localizes the original refusal. Wider child graphs, callbacks,
+worker/pending contexts and count/owner closure remain required; source 41 and
+prior OPEN/zero cuts are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335
