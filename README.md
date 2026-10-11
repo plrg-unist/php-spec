@@ -1362,6 +1362,8 @@ The [nested-host review](coverage/semantics/anonymous-nested-branch-rtd-review.j
 binds three originals to actual branch selection, publication, capture and
 saved-frame allocation; guarded repeats preserve fresh defaults. Fixtures stop
 after their required allocations.
+The 375 join over f37653ce retains the tested 4ea0db1d strict3 (5.972s) after
+review of the guarded GC and Iterator changes, with no current actor or replay.
 The earlier [branch-body Block review](coverage/semantics/anonymous-branch-block-rtd-review.json)
 retains its private cuts and ae8b65a9/d3beefe6 strict join without replay.
 The earlier [Block-host review](coverage/semantics/anonymous-block-branch-rtd-review.json)

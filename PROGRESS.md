@@ -35,6 +35,10 @@ PDRCLASS/CCLINK publication, eligible class no-op and saved-frame allocation.
 Fixtures stop after required allocations; syntax preparation and elaboration
 add no runtime credit. Loops, nested functions/Closures and wider signatures,
 targets/captures/consumers remain required.
+The 375 composition at 75edad90 over f37653ce reuses strict3 at tested
+4ea0db1d (5.972s). Independent review excludes the new terminal-GC and Iterator
+warning-hold guards; no datatype/interface change, current actor or private
+replay is involved. Native/source/state cuts retain their original revisions.
 [Nested-host ledger](coverage/semantics/anonymous-nested-branch-rtd-review.json).
 
 The earlier branch-body Block cut retains source3/state784 and its original
