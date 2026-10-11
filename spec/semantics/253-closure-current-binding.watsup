@@ -172,6 +172,18 @@ def $closure_current_method_capture(S, poperand, ptbytes, phpType7*, z) = true
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $closure_callable(S, n)
   -- if $ppfirstclass(phpType7*)
+def $closure_current_method_capture(S, poperand, ptbytes, phpType7*, z) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (porigin)
+  -- if S.TODO = (METHOD_NAME poperand phpType7* z) :: ptask_tail*
+  -- if $call_task_valid(S, METHOD_NAME poperand phpType7* z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprMethodCall expression_receiver expression_name (SEQUENCE phpType7*) metadata)
+  -- if $property_computed_name(expression_name)
+  -- if $ptlc(ptbytes) = $ptascii("getcurrent")
+  -- if $method_receiver_operand_valid(S, expression_receiver, poperand)
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $closure_callable(S, n)
+  -- if $ppfirstclass(phpType7*)
 def $closure_current_method_capture(S, poperand, ptbytes, phpType7*, z) = false -- otherwise
 
 def $closure_callable(S, n) = true

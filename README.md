@@ -2405,6 +2405,9 @@ indexes, source authority, four operand writes and the same immediate body resul
 Ordinary object-form literal CURRENT capture creates the same receiver-free API;
 one selector-CV original and 200 focused premises validate selector retirement
 before its weak read and the distinct immediate body result.
+Ordinary object-form evaluated CURRENT members also use that receiver-free mint;
+one get+Current/selector-CV original and 315 premises bind the actual name carrier,
+two member writes and selector release before the distinct current-body result.
 Literal `Closure::bind(...)` capture also reaches the existing binding handler;
 its copied receipt survives original API/body retirement while the bound Closure
 and returned value retain the receiver separately. A captured BIND call now pins

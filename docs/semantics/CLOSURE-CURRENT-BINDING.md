@@ -11,7 +11,7 @@ owner during argument effects.
 
 Literal named-static captures, evaluated nonnamed classes with literal members,
 named classes with evaluated members, combined evaluated class/member forms and
-ordinary object-form literal members create an API Closure.
+ordinary object forms with literal or evaluated members create an API Closure.
 Calling it observes the immediate ordinary body; a named helper still raises
 `Error` even under an ordinary outer Closure. Dynamic calls pin the selected API
 in CONFIG through argument evaluation. Its OWNER/SELECTION tag carries the
@@ -58,7 +58,7 @@ authentic member source/compiler authority before the registered mint. Four real
 operand writes leave the API and its nonnull immediate ordinary body result intact.
 Native2/literal1 at 5c25 and affected source1/state353 at bf0e/375 pass
 (328 genuine/derived plus 25 controls). Original Unsupported remains zero.
-General class/member admission is distinct from this concat witness; computed
+General class/member admission is distinct from this concat witness; nullsafe
 object captures, wider evaluation evidence and source7 remain open. Mint, owned CONFIG,
 handler and old lifetime/bridge cuts are unchanged.
 
@@ -71,10 +71,24 @@ before API invocation. Existing owned CONFIG then returns the nonnull immediate
 ordinary body, distinct from that selector. Native2/literal1 at 6fdb and affected
 object1/state200 at 59ef/375 pass (180 genuine/derived plus 20 controls); original
 Unsupported stays zero. Source-authenticated ordinary receiver admission is
-distinct from this CV evidence. Computed/nullsafe members, receiver retirement
+distinct from this CV evidence. Nullsafe members, receiver retirement
 during name/argument effects and wider temporary forms remain required. Scoped
 capture guards, mint helper, CONFIG tag and CURRENT handler are unchanged; no old
 lifetime/bridge evidence is renewed.
+
+Ordinary object-form evaluated members authenticate METHOD_NAME and its original
+borrowed receiver through source/CODE authority. The get+Current witness preserves
+the genuine request carrier and method bytes before derived live-selector resolve;
+one registered receiver-free mint consumes that task. Both later bi/nd writes
+preserve the selected API, then selector-null/quiet release precedes its weak
+producer. Existing owned CONFIG returns the nonnull distinct immediate ordinary
+body. Native2/literal1 at 054f and affected source1/state315 at 1f4b / 375 pass
+(293 genuine/derived plus 22 controls); original Unsupported remains zero. General
+evaluated-member admission is distinct from this selector-CV/concat evidence. The
+selector stays live throughout name evaluation; receiver retirement during name
+or argument effects, nullsafe/temporary forms and wider evidence remain required.
+The literal arm, method-select resolution, mint/tag/handler and old lifetime/bridge
+cuts are unchanged.
 
 An ordinary positional helper may clear the sole API cell after a call has been
 selected. Native static calls observe that API gone; captured calls observe it

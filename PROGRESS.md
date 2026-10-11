@@ -4630,6 +4630,16 @@ and initialized SL 39.217533 s pass strict output/stability/reaping; guarded dyn
 source/end-marker, reference-return and class/operator routes are absent. This
 current compatibility check adds source credit 0/private renewal 0; prior cuts stay frozen.
 
+Ordinary object-form evaluated CURRENT members now authenticate METHOD_NAME
+source/CODE and the original borrowed receiver before the same receiver-free mint.
+Native2/literal1 at 054f and affected source1/state315 at 1f4b / 375 pass
+(293 genuine/derived plus 22 controls), binding real get+Current request production,
+two later operand writes and selector-null quiet release before its weak producer.
+Existing owned CONFIG returns the nonnull distinct immediate body; original
+Unsupported remains zero. General member admission is distinct from this concat
+witness; nullsafe/name-argument retirement, wider evidence and source7 stay open.
+Exact relocation needs no runtime renewal; old lifetime/bridge cuts stay separate.
+
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
 api-null write leaves the captured API held versus the direct API gone before

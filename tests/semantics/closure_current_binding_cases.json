@@ -371,5 +371,19 @@
     "source_sha256": "bf48930cc90f4968d9dbf910c14b2590b605cff42e1494d38fb7f2153327ef60",
     "expected_model": "normal",
     "native_stdout": "Q;S:gone;A;B;C:held;I:same;C:gone;P:held;R:same;H:held;F:gone;E;"
+  },
+  {
+    "id": "object-member-current-literal-control",
+    "source": "<?php\nfunction retireCurrentObjectMemberBodyReview21() {\n    global $body;\n    $body = null;\n    echo \"A;\";\n    return 7;\n}\necho \"Q;\";\n$selector = function() {};\n$weakSelector = WeakReference::create($selector);\n$left = \"get\";\n$right = \"Current\";\n$api = Closure::getCurrent(...);\n$weakApi = WeakReference::create($api);\n$left = \"bi\";\n$right = \"nd\";\necho \"M:changed;\";\n$selector = null;\necho \"S:\", $weakSelector->get() === null ? \"gone\" : \"held\", \";\";\n$body = function($ignored) {\n    global $api, $weakApi, $weakBody;\n    echo \"B;\";\n    $picked = $api;\n    $api = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    $current = $picked();\n    echo \"I:\", $current !== null && $current === $weakBody->get() ? \"same\" : \"different\", \";\";\n    $picked = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"P:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n    return $current;\n};\n$weakBody = WeakReference::create($body);\n$returned = $body(retireCurrentObjectMemberBodyReview21());\necho \"R:\", $returned !== null && $returned === $weakBody->get() ? \"same\" : \"different\", \";\";\necho \"H:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n$returned = null;\necho \"F:\", $weakBody->get() === null ? \"gone\" : \"held\", \";E;\";\n",
+    "source_sha256": "cede03da871f4067042dc155a9e79f265d7b96bf89b62d11af752fd07335482c",
+    "expected_model": "normal",
+    "native_stdout": "Q;M:changed;S:gone;A;B;C:held;I:same;C:gone;P:held;R:same;H:held;F:gone;E;"
+  },
+  {
+    "id": "object-member-current-captured-body",
+    "source": "<?php\nfunction retireCurrentObjectMemberBodyReview21() {\n    global $body;\n    $body = null;\n    echo \"A;\";\n    return 7;\n}\necho \"Q;\";\n$selector = function() {};\n$weakSelector = WeakReference::create($selector);\n$left = \"get\";\n$right = \"Current\";\n$api = $selector->{$left . $right}(...);\n$weakApi = WeakReference::create($api);\n$left = \"bi\";\n$right = \"nd\";\necho \"M:changed;\";\n$selector = null;\necho \"S:\", $weakSelector->get() === null ? \"gone\" : \"held\", \";\";\n$body = function($ignored) {\n    global $api, $weakApi, $weakBody;\n    echo \"B;\";\n    $picked = $api;\n    $api = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    $current = $picked();\n    echo \"I:\", $current !== null && $current === $weakBody->get() ? \"same\" : \"different\", \";\";\n    $picked = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"P:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n    return $current;\n};\n$weakBody = WeakReference::create($body);\n$returned = $body(retireCurrentObjectMemberBodyReview21());\necho \"R:\", $returned !== null && $returned === $weakBody->get() ? \"same\" : \"different\", \";\";\necho \"H:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n$returned = null;\necho \"F:\", $weakBody->get() === null ? \"gone\" : \"held\", \";E;\";\n",
+    "source_sha256": "82942147849d1835673f6121603efc6dd0f271b17da809a0fda9d493af6b9856",
+    "expected_model": "normal",
+    "native_stdout": "Q;M:changed;S:gone;A;B;C:held;I:same;C:gone;P:held;R:same;H:held;F:gone;E;"
   }
 ]
