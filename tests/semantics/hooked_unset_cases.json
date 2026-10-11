@@ -1,0 +1,59 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "07d2f3ec264e26e0e29296a9fdae9be09ecda29822fed1efd0a63f9c5555a50b",
+  "cases": [
+    {
+      "id": "scalar-backing-virtual",
+      "source": "<?php\nfunction hook_unset_virtual_read34(): int { echo \"VG|\"; return 9; }\nclass HookUnsetBacked34 {\n    public int $value = 7 {\n        get {\n            echo \"G|\";\n            try { unset($this->value); }\n            catch (Error $e) { echo \"A:\", $e->getMessage(), \":\", $e->getLine(), \"|\"; }\n            return $this->value;\n        }\n    }\n    public function inspect(): void {\n        try { unset($this->value); }\n        catch (Error $e) { echo \"T:\", $e->getMessage(), \":\", $e->getLine(), \"|\"; }\n        $snapshot = (array) $this;\n        echo $snapshot[\"value\"], \"|\";\n    }\n\n    public function __destruct() { echo \"B|\"; }\n}\nclass HookUnsetVirtual34 {\n    public int $value { get => hook_unset_virtual_read34(); }\n    public function inspect(): void {\n        try { unset($this->value); }\n        catch (Error $e) { echo \"VT:\", $e->getMessage(), \":\", $e->getLine(), \"|\"; }\n        $snapshot = (array) $this;\n        echo isset($snapshot[\"value\"]) ? \"SLOT|\" : \"EMPTY|\";\n    }\n\n    public function __destruct() { echo \"V|\"; }\n}\n$box = new HookUnsetBacked34;\n$weak = WeakReference::create($box);\ntry { unset($box->value); }\ncatch (Error $e) { echo \"CV:\", $e->getMessage(), \":\", $e->getLine(), \"|\"; }\n$snapshot = (array) $box;\necho $snapshot[\"value\"], \"|\";\nunset($snapshot, $e);\n$box->inspect();\necho \"READ:\", $box->value, \"|\";\nunset($box);\necho $weak->get() === null ? \"N|\" : \"LIVE|\";\n$virtual = new HookUnsetVirtual34;\ntry { unset($virtual->value); }\ncatch (Error $e) { echo \"VCV:\", $e->getMessage(), \":\", $e->getLine(), \"|\"; }\n$snapshot = (array) $virtual;\necho isset($snapshot[\"value\"]) ? \"SLOT|\" : \"EMPTY|\";\nunset($snapshot, $e);\n$virtual->inspect();\nunset($virtual);\n",
+      "source_sha256": "ad8c3b421e93eeb0167c5274d6b5bd749010b821a3c6f4999e1420ce82cc1902",
+      "stdout_base64": "Q1Y6Q2Fubm90IHVuc2V0IGhvb2tlZCBwcm9wZXJ0eSBIb29rVW5zZXRCYWNrZWQzNDo6JHZhbHVlOjM0fDd8VDpDYW5ub3QgdW5zZXQgaG9va2VkIHByb3BlcnR5IEhvb2tVbnNldEJhY2tlZDM0OjokdmFsdWU6MTN8N3xSRUFEOkd8QTpDYW5ub3QgdW5zZXQgaG9va2VkIHByb3BlcnR5IEhvb2tVbnNldEJhY2tlZDM0OjokdmFsdWU6N3w3fEJ8TnxWQ1Y6Q2Fubm90IHVuc2V0IGhvb2tlZCBwcm9wZXJ0eSBIb29rVW5zZXRWaXJ0dWFsMzQ6OiR2YWx1ZTo0NHxFTVBUWXxWVDpDYW5ub3QgdW5zZXQgaG9va2VkIHByb3BlcnR5IEhvb2tVbnNldFZpcnR1YWwzNDo6JHZhbHVlOjI0fEVNUFRZfFZ8",
+      "exit_status": 0,
+      "native_group": "hooked-unset34-r2-native2-f0656d75",
+      "native_raw_sha256": "07d2f3ec264e26e0e29296a9fdae9be09ecda29822fed1efd0a63f9c5555a50b",
+      "status": "normal",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "source": ".tools/hooked-unset-probes-34/scalar-backing-virtual.php",
+        "source_sha256": "480ba05155e0820a917ebe2e383881f5d12bf02f0a9b10e6529dea1d32c1f365",
+        "change": "Blank unsupported __unset declarations; preserve all other bytes and original line numbers.",
+        "blanked_lines": [
+          18,
+          29
+        ]
+      }
+    },
+    {
+      "id": "backing-leaf-lifetime",
+      "source": "<?php\nfunction hook_unset_leaf_read34(mixed $value): mixed { echo \"G|\"; return $value; }\nclass HookUnsetLeaf34 { public function __destruct() { echo \"D|\"; } }\nclass HookUnsetBox34 {\n    public mixed $value = null { get => hook_unset_leaf_read34($this->value); }\n    public function inspect(): void {\n        try { unset($this->value); }\n        catch (Error $e) { echo \"T:\", $e->getMessage(), \":\", $e->getLine(), \"|\"; }\n    }\n\n    public function __destruct() { echo \"B|\"; }\n}\n$box = new HookUnsetBox34;\n$leaf = new HookUnsetLeaf34;\n$weakLeaf = WeakReference::create($leaf);\n$weakBox = WeakReference::create($box);\n$box->value = $leaf;\nunset($leaf);\ntry { unset($box->value); }\ncatch (Error $e) { echo \"CV:\", $e->getMessage(), \":\", $e->getLine(), \"|\"; }\nunset($e);\n$box->inspect();\necho $weakLeaf->get() === null ? \"DEAD|\" : \"LIVE|\";\nunset($box);\necho $weakLeaf->get() === null ? \"LN|\" : \"LL|\";\necho $weakBox->get() === null ? \"BN|\" : \"BL|\";\n",
+      "source_sha256": "142dde696f9a901c69279ad6f0dc7da8c2361d2d2645538f550b02a4f9aade26",
+      "stdout_base64": "Q1Y6Q2Fubm90IHVuc2V0IGhvb2tlZCBwcm9wZXJ0eSBIb29rVW5zZXRCb3gzNDo6JHZhbHVlOjE5fFQ6Q2Fubm90IHVuc2V0IGhvb2tlZCBwcm9wZXJ0eSBIb29rVW5zZXRCb3gzNDo6JHZhbHVlOjd8TElWRXxCfER8TE58Qk58",
+      "exit_status": 0,
+      "native_group": "hooked-unset34-r2-native2-f0656d75",
+      "native_raw_sha256": "07d2f3ec264e26e0e29296a9fdae9be09ecda29822fed1efd0a63f9c5555a50b",
+      "status": "normal",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "source": ".tools/hooked-unset-probes-34/backing-leaf-lifetime.php",
+        "source_sha256": "773888b5e7202cdc29f35b988c5ddd69faa8fbe58491cc01b8ff4fea2e7985d0",
+        "change": "Blank unsupported __unset declarations; preserve all other bytes and original line numbers.",
+        "blanked_lines": [
+          10
+        ]
+      }
+    }
+  ]
+}

@@ -564,6 +564,15 @@ the ordinary receiver control and prior hook cuts remain separate.
 Actual375 over `5709f4f8` passes strict initialization at `576cfa58` (5.829 s);
 private source3/state308 and earlier hook cuts retain their original revisions.
 
+Direct literal CV/`$this` unset of public backed/virtual get hooks raises `Error`
+without dispatch or slot mutation, including inside the active getter. Strict375
+and two originals pass at `7c7a322a`; SL182 at `3aa7cd48` (178 reached, 4 derived)
+checks authentic errors, This root retirement and receiver/leaf cleanup through
+`B|D` and weak-null. Magic-bearing originals remain native-only observations with
+a declaration compiler stop; false182 and diagnostics retain zero affected credit.
+`__unset` declarations/consumers, indirect access and wider hook families remain
+required. [Unset review](coverage/semantics/hooked-unset-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization

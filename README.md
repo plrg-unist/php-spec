@@ -1282,8 +1282,13 @@ writes the original fallback only for null. A CV receiver is refetched after
 the RHS, including rebinding; returned objects keep ordinary result ownership.
 Three originals and 308 premises (264 reached, 44 derived) pass in the
 [coalesce-assignment review](coverage/semantics/coalesce-assignment-get-hooks-review.json).
+Direct literal CV/`$this` unset of backed or virtual hooked properties raises
+`Error`, including inside the active getter, without reading or changing the slot.
+Backing values survive rejection and release with receiver storage. Two originals
+and 182 premises (178 reached, 4 derived) pass in the
+[unset review](coverage/semantics/hooked-unset-review.json).
 Hooked iteration, defaulted virtual/set/reference, inherited/trait and wider
-receiver, quiet or indirect-access families remain required.
+receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
 and `implements` declarations, enforce method prototypes and abstract
 obligations, and add finite `Stringable`/`Throwable` nominal ancestry. The installed
