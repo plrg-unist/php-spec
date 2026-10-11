@@ -135,8 +135,17 @@ Both-untyped controls retain the child effective slot/private scope through CV
 and inherited `$this` reads and ordinary integer writes. Three originals and five
 separate state cuts are recorded in the
 [backed type-presence review](../../coverage/semantics/backed-get-hook-type-presence-review.json).
-The hook linker still refuses ordinary-parent hooks, plain redeclarations and
-backed children of virtual parents. Physical backing retains invariant types;
+A genuinely source-body-backed child also overrides a virtual parent of the same
+normalized TYPE, including an intervening class without a redeclaration. Admission
+requires positive closed virtual ancestry, the child's actual own descriptor and
+its linked parent layout. The child retains its own physical slot/default rather
+than a parent slot; inherited reads use its lexical/private scope and the runtime
+descendant. Ordinary writes change that slot, while receiver cleanup releases its
+backing reference independently of a retained returned object. Two originals and
+four separate state cuts are recorded in the
+[virtual-parent review](../../coverage/semantics/virtual-parent-backed-get-hook-review.json).
+The hook linker still refuses ordinary-parent hooks and plain redeclarations.
+Backed-parent inheritance retains invariant types;
 TYPE-presence changes for body-unbacked declarations with inherited storage,
 broader type equivalence and wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
