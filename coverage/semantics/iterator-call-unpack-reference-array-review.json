@@ -1,0 +1,93 @@
+{
+  "status": "private evidence accepted; actual-current integration pending",
+  "scope": "Stable initial REFERENCE arrays held by an Iterator-owned declared untyped nonstatic property, at the first integer-key positional send with an empty sent buffer, direct statically named Iterator construction and one untyped fixed BYREF target. Originals use one acyclic destructible child without embedded references.",
+  "remaining": [
+    "Other reference sources and live handler/main payload replacement",
+    "Later/named/typed reference sends and wider sites",
+    "Broader array contents, embedded references, cycles and COW interactions"
+  ],
+  "engine_route": "SEND_UNPACK dereferences the raw current cell and adds a container owner before its by-reference warning, then constructs a fresh private reference. The nonowning snapshot authenticates live property/cell/payload identity; documentary SOURCE reads no retired STORE, property or array contents. A nested callee write separates its array when a key-created global alias retains the original container and child through F until alias unset. Without that alias the child retires before F. Abort retires raw HCELL, DATA/INPUT, held container and then its child. Existing COW and generic node graph carry container and child separately; object-only capture-query compatibility is preserved.",
+  "implementation": [
+    "spec/semantics/385-call-iterator-unpack.watsup",
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/39-ownership.watsup"
+  ],
+  "catalog": "tests/semantics/iterator_call_unpack_reference_array_cases.json",
+  "source_runner": "tests/semantics/iterator_call_unpack_reference_array_sources.py",
+  "state_runner": "tests/semantics/iterator_call_unpack_reference_array_review.py",
+  "profile": "tests/semantics/profile.json",
+  "native": {
+    "revision": "af04e4a3a986b2e2e4218c9bb1e05f436855f0de",
+    "report": ".tools/calls-iterator-reference-array-35/.tools/iterator-call-unpack-reference-array-native-ppckxfv9/report.json",
+    "report_sha256": "9a3acc7fc9fdf82c8342f072e7d25fa5c670faf06307ae78c95ab6f673481076",
+    "selection": [
+      "iterator-call-unpack-reference-array-normal",
+      "iterator-call-unpack-reference-array-separate-alias",
+      "iterator-call-unpack-reference-array-warning-throw",
+      "iterator-call-unpack-reference-array-parked-resume",
+      "iterator-call-unpack-reference-array-parked-throw"
+    ],
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "26676f8f96cdec3a69e6542e95986f2a10002b64e3c1cd0726248be62e8a8da2",
+    "process_seconds": 8,
+    "observed_originals": 5,
+    "model_agreements": 0,
+    "passed": true
+  },
+  "strict": {
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "e0dd7446fbd1615bcf1fefb707aea03eca0d7da04eb3462d89b217dfd9463f1f",
+    "modules": 375,
+    "process_seconds": 120,
+    "revision": "3f6ddf6fe294dffd7cd1ee42a94e0f2f208f71f0",
+    "report": ".tools/calls-iterator-reference-array-35/.tools/iterator-call-unpack-reference-array-sl-76sdu9ub/report.json",
+    "report_sha256": "38080ddbf05aee648fb6b14a1358adca1f13124c47cb3e0407bb90d0c435caec",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "command": "timeout -k 10s 450s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-reference-array-native-ppckxfv9/report.json",
+    "runner_sha256": "d7182ddea80174c0a572c857b3315f8b2f12f44f4d3ca212c40d3dfcdf64334f",
+    "source_process_seconds": 75,
+    "model_seconds": 60,
+    "steps": 100000,
+    "jobs": 1,
+    "native_executions": 0,
+    "revision": "3f6ddf6fe294dffd7cd1ee42a94e0f2f208f71f0",
+    "report": ".tools/calls-iterator-reference-array-35/.tools/iterator-call-unpack-reference-array-source-knyc9ot5/report.json",
+    "report_sha256": "0f16bc033f879b8b5ec02c377b411319caccc1c3468be76b01f7151ef3f2338e",
+    "selection": [
+      "iterator-call-unpack-reference-array-normal",
+      "iterator-call-unpack-reference-array-separate-alias",
+      "iterator-call-unpack-reference-array-warning-throw",
+      "iterator-call-unpack-reference-array-parked-resume",
+      "iterator-call-unpack-reference-array-parked-throw"
+    ],
+    "normal_agreements": 5,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "state_review": {
+    "status": "passed",
+    "pure_query_groups": 0,
+    "process_seconds": 180,
+    "seek_steps": 4000,
+    "finish_steps": 4000,
+    "jobs": 1,
+    "revision": "e0a34c6f1be9ec4e92b6f0dbcd3f01c9294e0c9c",
+    "command": "timeout -k 10s 1750s prlimit --as=6442450944 -- python3 -u .tools/reference-array-state-180.py",
+    "runner_sha256": "018df2cb594526ea30a7177a82f9095fc97e8d802fca246ebf52eeb2e633da87",
+    "fixture_sha256": "aa973a7c223062b76366c7037a6f84ef7e4cf023d90e92145b1a78705ebbd192",
+    "groups": 9,
+    "physical_main_premises": 617,
+    "driver_assertions": 594,
+    "report": ".tools/calls-iterator-reference-array-35/.tools/fiber-state-review-fnjmyy07/report.json",
+    "report_sha256": "806e8cbcaf4a991face2d6259a711e1c2d54e6ce1d5b791285338e2835eca37d",
+    "host_exit": 0,
+    "passed": true
+  },
+  "retention": "The accepted object-reference and copied-array cuts keep their original identities and failures without replay. Original raw sources/processes/reports stay at recorded ignored paths; maintained files and project-local providers recover this slice."
+}
