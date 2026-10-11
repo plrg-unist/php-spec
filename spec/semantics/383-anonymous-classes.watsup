@@ -96,22 +96,19 @@ def $anonymous_unit_node(pcnode) = (($anonymous_class_node(pcnode) \/ $anonymous
 def $anonymous_unit_node(pcnode) = $anonymous_no_named_classes($pcwalk($pcchildren(pcnode, eps)))
   -- if ~$anonymous_class_like(pcnode) /\ $anonymous_named_scope(pcnode)
 def $anonymous_unit_node(pcnode) = true -- if ~$anonymous_class_like(pcnode) /\ ~$anonymous_named_scope(pcnode)
-;; Direct root or namespace-body factories authenticate their containing source.
+;; Named functions admit authenticated root/namespace standalone Block chains.
 dec $anonymous_named_factory_node(pcnode) : bool
 def $anonymous_named_factory_node(NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text) metadata_name) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata) = $ptvalidname($base64(text), false)
 def $anonymous_named_factory_node(pcnode) = false -- otherwise
 dec $anonymous_named_closure_statement(pcnode) : bool
 def $anonymous_named_closure_statement(NStmtExpression (NExprAssign (NExprVariable (BYTES text) metadata_variable) (NExprClosure (SEQUENCE eps) (BOOLEAN true) (BOOLEAN false) (SEQUENCE eps) (SEQUENCE eps) ABSENT (SEQUENCE statement*) metadata_closure) metadata_assign) metadata) = $ptvalidname($base64(text), false)
 def $anonymous_named_closure_statement(pcnode) = false -- otherwise
+dec $anonymous_top_path(pcunit, pcpath) : bool
 dec $anonymous_named_factory_path(pcunit, pcpath) : bool
-def $anonymous_named_factory_path(pcunit, [(PCINDEX n)]) = true
-  -- if $origin_node([pcunit], PORIGIN 0 ([(PCINDEX n)])) = (pcnode)
+def $anonymous_named_factory_path(pcunit, pcpath) = true
+  -- if $origin_node([pcunit], PORIGIN 0 pcpath) = (pcnode)
   -- if $anonymous_named_factory_node(pcnode)
-def $anonymous_named_factory_path(pcunit, [(PCINDEX n),(PCFIELD 1),(PCINDEX n_body)]) = true
-  -- if $origin_node([pcunit], PORIGIN 0 ([(PCINDEX n)])) = (pcnode_namespace)
-  -- if $anonymous_namespace_name(pcnode_namespace) = (ptbytes_namespace)
-  -- if $origin_node([pcunit], PORIGIN 0 ([(PCINDEX n),(PCFIELD 1),(PCINDEX n_body)])) = (pcnode)
-  -- if $anonymous_named_factory_node(pcnode)
+  -- if $anonymous_top_path(pcunit, pcpath)
 def $anonymous_named_factory_path(pcunit, [(PCINDEX n),(PCFIELD 0),(PCFIELD 1)]) = true
   -- if $origin_node([pcunit], PORIGIN 0 ([(PCINDEX n)])) = (pcnode)
   -- if $anonymous_named_closure_statement(pcnode)
@@ -134,7 +131,6 @@ def $anonymous_top_block(pcunit, pcpath_prefix, eps) = ($origin_node([pcunit], P
 def $anonymous_top_block(pcunit, pcpath_prefix, (PCFIELD 0) :: (PCINDEX n) :: pcpath_tail) = $anonymous_top_block(pcunit, pcpath_prefix ++ [(PCFIELD 0),(PCINDEX n)], pcpath_tail)
   -- if $origin_node([pcunit], PORIGIN 0 pcpath_prefix) = (NStmtBlock phpType23 metadata)
 def $anonymous_top_block(pcunit, pcpath_prefix, pcpath_tail) = false -- otherwise
-dec $anonymous_top_path(pcunit, pcpath) : bool
 def $anonymous_top_path(pcunit, (PCINDEX n) :: (PCFIELD 1) :: (PCINDEX n_body) :: pcpath_tail) = $anonymous_top_block(pcunit, [(PCINDEX n),(PCFIELD 1),(PCINDEX n_body)], pcpath_tail)
   -- if $origin_node([pcunit], PORIGIN 0 ([(PCINDEX n)])) = (pcnode)
   -- if $anonymous_namespace_name(pcnode) = (ptbytes)
