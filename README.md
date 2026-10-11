@@ -1670,6 +1670,8 @@ pass 997 setup-inclusive premises at `cdbd762a1`, covering CV/owned cleanup and
 pending errors. Source credit retains four passes at `eaaf00ba0` and two at `cdbd762a1`.
 The original concatenated-echo source still leaves scratch BASE that blocks getter
 entry; its failure and diagnostic retain zero agreement credit.
+The actual375 join over `619170565` passes strict at `828bad179` (5.769s);
+private source/state cuts retain their original inputs.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

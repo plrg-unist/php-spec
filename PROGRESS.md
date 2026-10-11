@@ -2612,6 +2612,8 @@ The original concatenated-echo source remains Unsupported because scratch BASE b
 getter entry; its one diagnostic execution has zero agreement credit. Both preparation
 failures retain zero credit. PARAMETERBACKINGS and wider conversions remain required.
 [Boolean-string ledger](coverage/semantics/magic-property-boolean-string-review.json).
+The actual375 join over `619170565` passes strict at `828bad179` (5.769s,
+state/source/native credit0); private source6/state997 are not renewed.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
