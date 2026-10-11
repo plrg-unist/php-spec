@@ -1,0 +1,42 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "da1151813b29015e646ac2ad9ebd17332ef1b4c679408087959f30dcf90c722f",
+  "cases": [
+    {
+      "id": "virtual-parent-backed-scalar",
+      "source": "<?php\nclass VirtualBackedParent43 {\n    public int $value {\n        get {\n            echo \"P:\", __CLASS__, \"/\", static::class, \"|\";\n            return 7;\n        }\n    }\n    public function parentRead() {\n        echo \"H|\";\n        return $this->value;\n    }\n}\nclass VirtualBackedBridge43 extends VirtualBackedParent43 {\n    private function answer() { return 500; }\n}\nclass VirtualBackedChild43 extends VirtualBackedBridge43 {\n    public int $value = 200 {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass VirtualBackedGrand43 extends VirtualBackedChild43 {\n    private function answer() { return 900; }\n}\n$parent = new VirtualBackedParent43;\n$child = new VirtualBackedChild43;\n$grand = new VirtualBackedGrand43;\necho (array)$parent === [] ? \"EMPTY|\" : \"BAD|\";\necho (array)$child === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\necho (array)$grand === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "2393306a3886385e76abc992966222bd5deed0f2a02a2bfa8b6ae413c751a47b",
+      "stdout_base64": "RU1QVFl8QzIwMHxHMjAwfFA6VmlydHVhbEJhY2tlZFBhcmVudDQzL1ZpcnR1YWxCYWNrZWRQYXJlbnQ0M3w3fEM6VmlydHVhbEJhY2tlZENoaWxkNDMvVmlydHVhbEJhY2tlZENoaWxkNDN8MjEzfEh8QzpWaXJ0dWFsQmFja2VkQ2hpbGQ0My9WaXJ0dWFsQmFja2VkR3JhbmQ0M3wyMTN8RzIwMHxHMzAwfEM6VmlydHVhbEJhY2tlZENoaWxkNDMvVmlydHVhbEJhY2tlZEdyYW5kNDN8MzEzfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-parent-backed-hook43-native2-ffc9103a",
+      "native_raw_sha256": "da1151813b29015e646ac2ad9ebd17332ef1b4c679408087959f30dcf90c722f"
+    },
+    {
+      "id": "virtual-parent-backed-lifetime",
+      "source": "<?php\nclass VirtualBackedLeaf43 {\n    public $tag;\n    public function __destruct() { echo \"D\", $this->tag, \"|\"; }\n}\nfunction virtualBackedFresh43($tag) {\n    global $weak_returned;\n    echo \"G\", $tag, \"|\";\n    $leaf = new VirtualBackedLeaf43;\n    $leaf->tag = $tag;\n    $weak_returned = WeakReference::create($leaf);\n    return $leaf;\n}\nclass VirtualBackedLifeParent43 {\n    public mixed $value { get => virtualBackedFresh43(\"P\"); }\n    public function parentRead() { return $this->value; }\n    public function __destruct() {\n        $raw = (array)$this;\n        $leaf = $raw[\"value\"];\n        echo \"B\", $leaf->tag, \"|\";\n    }\n}\nclass VirtualBackedLifeBridge43 extends VirtualBackedLifeParent43 {}\nclass VirtualBackedLifeChild43 extends VirtualBackedLifeBridge43 {\n    public mixed $value = null {\n        get {\n            $backing = $this->value;\n            echo \"C\", $backing->tag, \"|\";\n            return virtualBackedFresh43(\"R\");\n        }\n    }\n}\nclass VirtualBackedLifeGrand43 extends VirtualBackedLifeChild43 {}\n$box = new VirtualBackedLifeGrand43;\n$weak_box = WeakReference::create($box);\necho ((array)$box === [\"value\" => null] ? \"NULL_SLOT|\" : \"BAD|\");\n$stored = new VirtualBackedLeaf43;\n$stored->tag = \"S\";\n$weak_stored = WeakReference::create($stored);\n$box->value = $stored;\nunset($stored);\necho \"STORED|\";\n$kept = $box->parentRead();\necho \"H\", $kept->tag, \"|\";\necho ((array)$box === [\"value\" => $weak_stored->get()] ? \"SLOT_S|\" : \"BAD|\");\nunset($box);\necho ($weak_box->get() === null ? \"BN|\" : \"BL|\");\necho ($weak_stored->get() === null ? \"SN|\" : \"SL|\");\necho ($weak_returned->get() === null ? \"RN|\" : \"LIVE|\");\nunset($kept);\necho ($weak_returned->get() === null ? \"RN|\" : \"LIVE|\");\n",
+      "source_sha256": "d63edde476b6507516564477fad334eacc582d641cd884cbc48db3b02baaae0f",
+      "stdout_base64": "TlVMTF9TTE9UfFNUT1JFRHxDU3xHUnxIUnxTTE9UX1N8QlN8RFN8Qk58U058TElWRXxEUnxSTnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "virtual-parent-backed-hook43-native2-ffc9103a",
+      "native_raw_sha256": "da1151813b29015e646ac2ad9ebd17332ef1b4c679408087959f30dcf90c722f"
+    }
+  ]
+}
