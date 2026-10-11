@@ -2962,6 +2962,9 @@ callback retirement precedes buffer release, then RESULTfalse retires capture/Fi
 Direct agreement stays at 922abc0e; repaired capture and 472 premises (415
 genuine/derived, 57 controls) pass at c471c767/375. Original Unsupported and syntax
 failure keep zero credit; wider START forms and source 7 remain OPEN.
+Exact f0656d75/375 composition passes algo and initialized SL472 at 07e319450
+(5.202s/75.748s), preserving the named-buffer and ordinary cleanup paths. Private
+source/native/state cuts retain their original identities without renewal.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
