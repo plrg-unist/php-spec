@@ -127,7 +127,8 @@ steps consume each condition once before selected publication or creation; skipp
 outer hosts retain live anonymous names without callable publication.
 Exact named functions also admit plain empty named descendants in authentic
 `while` bodies through authenticated standalone Block chains. The host must occur at root or a valid namespace body
-through authenticated standalone Block or existing If main/elseif/else ancestry.
+through authenticated standalone Block, existing If main/elseif/else ancestry or
+actual nested While hosts.
 Anonymous names preexist false
 loops, while selected function statements publish only when executed.
 Named descendants under unsupported loop or function ancestors remain Unsupported.
@@ -135,7 +136,8 @@ Variable assignments to static no-capture noarg by-value untyped Closures at roo
 or a valid namespace body, through authenticated standalone Block chains or
 in actual `if` main, `elseif` or `else` bodies through authenticated branch-body
 Block chains and the same Block/nested-If host ancestry, or in authentic `while`
-bodies through standalone Block chains with the same root/namespace/Block/If host ancestry,
+bodies through standalone Block chains with the same root/namespace/Block/If or
+authenticated nested While host ancestry,
 admit plain empty named descendants.
 Admission authenticates the expression statement, by-value assignment, ordinary
 variable target, exact Closure signature and actual Block, conditional or While ancestors.
@@ -153,7 +155,10 @@ retaining old/current Closure receivers from one template and fresh defaults.
 The [If-hosted While review](../../coverage/semantics/anonymous-conditional-while-rtd-review.json)
 checks genuine If/CHOOSE selection before selected factory publication or creation,
 then authentic targets, saved frames, class history and first allocations.
-Named descendants under nested While hosts, other loops,
+The [nested-While review](../../coverage/semantics/anonymous-nested-while-rtd-review.json)
+authenticates both actual While ancestors and intervening/body Blocks, selected
+publication and genuine function or old/current Closure allocation targets.
+Named descendants under If hosts inside While, other loops,
 nested functions or nested Closures, other targets,
 captures and signatures remain Unsupported.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)

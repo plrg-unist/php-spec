@@ -1392,15 +1392,17 @@ retains fatal redeclaration before another allocation.
 The earlier Block Closure join of 375 modules over 92f726a3 passes strict3 at
 fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
 Both factory kinds also admit authentic `while` bodies through standalone Block
-chains, with root/valid-namespace, standalone Block and authenticated `if`
-ancestry before the host. Selected branches publish functions or create Closures;
+chains, with root/valid-namespace, standalone Block, authenticated `if`
+ancestry or actual nested `while` hosts. Selected branches publish functions or create Closures;
 skipped branches retain their anonymous identities without either action.
 Anonymous names precede publication or Closure creation, including skipped loops.
 Two live Closure instances from one compiled template preserve old/current targets,
 one guarded class publication, lexical namespace and fresh defaults.
-The [If-hosted While review](coverage/semantics/anonymous-conditional-while-rtd-review.json)
-binds three exact originals to branch selection, callable/Closure ownership and
-publication/allocation frontiers. Nested While hosts and other loops remain required.
+The [nested-While review](coverage/semantics/anonymous-nested-while-rtd-review.json)
+binds three exact originals to selected/skipped nested hosts, reverse publication
+and old/current Closure receivers. If hosts inside While and other loops remain required.
+The earlier [If-hosted While review](coverage/semantics/anonymous-conditional-while-rtd-review.json)
+retains its branch selection, callable/Closure ownership and allocation cuts.
 The 375 join at aa241bdf over 1867decf reuses strict3 at tested 376de1e1
 (6.226s). Review preserves parentless class linking and excludes the changed
 hook/finally/bind/collector/Iterator routes; no current actor or private replay is claimed.

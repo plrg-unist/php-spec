@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary named variables in While bodies, including existing body-Block chains, now with source-authenticated nested While and standalone Block host ancestry. Core observations distinguish selected versus skipped loops, preexisting anonymous identities, reverse publication, qualified prior-deferred versus early case ownership and two live Closure instances from one compiled template retaining old/current receivers and guarded fresh defaults across a namespace switch. Named descendants under If hosts inside While, other loops, nested factories or wider signatures/targets/captures remain Unsupported; prior anonymous-only contexts remain supported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "nested-while-reversed",
+      "source": "<?php\n$leftOuter = true; $leftInner = true; $rightOuter = true; $rightInner = true; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':15$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':27$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeNestedWhileLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\nwhile ($leftOuter) {\n    $leftOuter = false;\n    {\n        while ($leftInner) {\n            $leftInner = false;\n            function makeNestedWhileLeft() {\n                class NestedWhileLeftPublished {}\n                return new class { public function kind() { return 'left'; } };\n            }\n        }\n    }\n}\nwhile ($rightOuter) {\n    $rightOuter = false;\n    while ($rightInner) {\n        $rightInner = false;\n        {\n            $rightFactory = static function () {\n                class NestedWhileRightPublished {}\n                return new class { public function kind() { return 'right'; } };\n            };\n        }\n    }\n}\n$right = $rightFactory(); $rightNamed = new NestedWhileRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'NestedWhileRightPublished' ? 'right|' : 'BAD|';\ntry { new NestedWhileLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeNestedWhileLeft(); $leftNamed = new NestedWhileLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'NestedWhileLeftPublished' ? 'left|' : 'BAD|';\necho !$leftOuter && !$leftInner && !$rightOuter && !$rightInner && $before !== $left && $rightBefore !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "66fa056277aff86a21cd7ccc59d10b648bc05ba2eadf50acf3b18caa4d89b95c",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-while-native-39/run-v1/nested-while-reversed/command.json",
+      "native_raw_sha256": "6255f5fd5bbab6908a233f290e99d7d52bd41d403cffefc40aefc7cf89a60100"
+    },
+    {
+      "id": "nested-while-repeated",
+      "source": "<?php\nnamespace RepeatNestedWhileSide;\n$outer = true; $i = 0; $seen = false; $make = null; $previous = null;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':16$1';\n$before = new $name;\necho $before::class === $name && $before->value === 0 && $make === null && $previous === null ? 'before|' : 'BAD|';\nwhile ($outer) {\n    $outer = false;\n    {\n        while ($i < 2) {\n            {\n                $previous = $make;\n                $make = static function () {\n                    global $seen;\n                    if (!$seen) { $seen = true; class Published {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                };\n                $i = $i + 1;\n            }\n        }\n    }\n}\necho !$outer && $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatNestedWhileCaller;\n$first = $previous(); $named = new \\RepeatNestedWhileSide\\Published;\necho $first::class === $name && $first->space() === 'RepeatNestedWhileSide' && $named::class === 'RepeatNestedWhileSide\\Published' ? 'first|' : 'BAD|';\n$first->value = 9; $second = $make();\necho $second::class === $name && $second->space() === 'RepeatNestedWhileSide' && $second->value === 0 ? 'second|' : 'BAD|';\necho $seen && $before !== $first && $first !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "4e984b9b269fa6d75b7d9aeee56dba19e0ab9a4ecc0ba13411d4937c4cd1d071",
+      "stdout_base64": "YmVmb3JlfHRlbXBsYXRlc3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-while-native-39/run-v1/nested-while-repeated/command.json",
+      "native_raw_sha256": "2db20aafaa180f34234e554e3b11e7092d46a6db285807877a1bae8da69b0127"
+    },
+    {
+      "id": "nested-while-prior-deferred",
+      "source": "<?php\nnamespace NestedWhileSelectedSide;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$2';\n$before = new $name; $early = new Exception; $outer = true; $inner = true;\necho $before::class === $name && $early::class === 'NestedWhileSelectedSide\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\ntry { selectedNestedWhileFactory(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nwhile (false) { while (true) { function skippedNestedWhileFactory() { class Hidden {} } } }\nwhile ($outer) {\n    $outer = false;\n    {\n        while ($inner) {\n            $inner = false;\n            { function selectedNestedWhileFactory() {\n                if (false) { class Exception {} } return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n            } }\n        }\n    }\n}\nclass eXcEpTiOn {};\nnamespace NestedWhileSelectedCaller;\n$first = \\NestedWhileSelectedSide\\selectedNestedWhileFactory();\necho $first::class === $name && $first->space() === 'NestedWhileSelectedSide' ? 'first|' : 'BAD|';\n$first->value = 9; $fresh = new $name;\necho !$outer && !$inner && $before !== $first && $fresh !== $first && $before->value === 0 && $first->value === 9 && $fresh->value === 0 && $fresh->space() === 'NestedWhileSelectedSide' ? 'fresh|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$3';\necho $last::class === $lastName ? 'last|' : 'BAD|';\ntry { \\NestedWhileSelectedSide\\skippedNestedWhileFactory(); echo 'BAD'; } catch (\\Error $caught) { echo 'skipped'; }\n",
+      "source_sha256": "2b9785aa34589955bfe0ff2f3372b9998f99ed2ca6d8b60722bad0123d5d3543",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8ZnJlc2h8bGFzdHxza2lwcGVk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-nested-while-native-39/run-v1/nested-while-prior-deferred/command.json",
+      "native_raw_sha256": "edd9f28d4476c882b66c109a4d57fb9060eee6ef9d36eba71c621caf6a173311"
+    }
+  ]
+}
