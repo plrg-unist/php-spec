@@ -1114,6 +1114,13 @@ pure array exclusions. The separate held-F frontier preserves its untraced tag;
 its larger whole CLI60 and source41 remain OPEN/zero agreement. Wider reference
 layouts, array components and worker overlap remain required.
 
+Main collection also retires a separate non-destructor `stdClass` self-cycle
+reacquired through `WeakReference::get()` during a destructor. Its saved global
+CV becomes a nonowning retired slot: weak lookup is null, direct strict-null
+comparison and release work, and unsafe reads remain explicit Unsupported.
+The original agrees with native PHP; 146 reached source/control checks pass.
+Broader retired-object comparisons, container owners and resurrection remain open.
+
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact
 originals and two independent reached groups (216 physical premises) retain their

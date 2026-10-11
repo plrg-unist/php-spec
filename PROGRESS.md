@@ -1519,6 +1519,18 @@ are unchanged; wider reference/array/worker/later-pass overlap remains required.
 Source41 and the larger held-F42 whole CLI60 remain OPEN/zero; prior cuts are
 unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Main collection301 now disposes a separate non-destructor `stdClass` self-cycle
+reacquired through WeakReference during a destructor. The marked global CV becomes
+a nonowning retired slot; weak lookup clears, direct strict-null identity and
+overwrite/unset work, and unsafe reads remain explicit Unsupported. Free order,
+count folding and ordinary heap validity are unchanged. At `5cc17`/375, compiler/init,
+one exact native33 source agreement and146 reached source/control checks (101/45)
+pass, including genuine disposal/comparison, owner fences and zero/one-step replay.
+Baseline38 localizes the old refusal; the first recursive-fallback compiler stop
+retains zero gate credit. Broader retired-object identity, containers, pending owners,
+workers/later passes and resurrection remain required; old whole CLI OPEN/zero cuts
+are unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335

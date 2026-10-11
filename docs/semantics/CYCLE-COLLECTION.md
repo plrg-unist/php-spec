@@ -699,3 +699,27 @@ first refusal at `15951738`. This establishes live reference behavior through
 selection and source completion, with no terminal reference-cell retirement or
 new count/owner closure claim. Wider reference layouts, array components, workers
 and later passes remain required; source41/held-F42 whole CLI60 stay OPEN/zero.
+
+Main PASS0 also admits disposal of a separate non-destructor `stdClass` self-cycle
+copied into a direct global CV by `WeakReference::get()` during a destructor.
+Zend's `zend_gc_collect_cycles` destroys remaining GARBAGE tags before retracing;
+`zend_weakref_get` copies the object without removing that garbage tag. The native
+target therefore retires despite the callback's nonnull hold.
+
+The model replaces the saved CV slot with `GC_RETIRED_OBJECT`, preserving its
+REFCELLS marker without a heap child or owning value. Admission authenticates the
+actual FREE plan, self-cycle and newly acquired global cells, excluding direct
+target roots, incoming containers/property owners, typed-property reference sources
+and physical holder slots. Ordinary heap validity, free order and count folding
+remain intact. Direct strict-null identity consumes only a pure retired ID and
+returns a boolean; ordinary reads/reference acquisition are explicit Unsupported.
+Overwrite and unset release the slot without re-owning or freeing the target.
+
+At `5cc17`/375, compiler/init, the exact native33 original and146 reached checks
+(retirement101/identity45) pass. They bind actual FREE disposal/weak-null, the real
+source comparison, nonownership, release, owner/frozen-state fences and budget replay.
+Baseline38 preserves the old refusal; the first compiler artifact failure has zero
+gate credit. The original makes no new object allocation before releasing the hold.
+Retired/live-object or two-retired comparisons, dereference, wider containers,
+pending owners, workers/later passes and broader resurrection remain required;
+this is no general safe-dangling-pointer guarantee. Earlier evidence is unchanged.
