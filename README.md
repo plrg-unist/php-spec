@@ -1824,6 +1824,8 @@ REF/BYVAL/owned cleanup, genuine string|float conflicts and strict/null rejectio
 The original eight-read composite retains timeout/zero agreement; two smaller originals
 fit the same caps. A native NaN control observes both conversion warnings and keeps
 zero model agreement; NaN continuation support remains required.
+The actual375 join over `ca764836f` at `35f7dc33f` preserves disjoint parent paths.
+Accepted parent/private compiler cuts and private source7/state1351 are reused; no new numeric execution.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

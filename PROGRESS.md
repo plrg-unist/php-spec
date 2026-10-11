@@ -2893,6 +2893,8 @@ keeps CLI60 timeout/source agreement0; source-only split preserves the runtime/c
 and five original fixtures. NaN is guarded out of both new routes: its native control
 observes two warnings and keeps model/state/agreement0. Earlier cuts are not renewed.
 [Float-string ledger](coverage/semantics/magic-property-float-string-review.json).
+The actual375 join over `ca764836f` at `35f7dc33f` preserves disjoint parent paths.
+Accepted parent/private compiler cuts and private source7/state1351 are reused; no new numeric execution.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
