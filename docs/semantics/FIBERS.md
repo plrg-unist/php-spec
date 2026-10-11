@@ -587,6 +587,18 @@ outer weak reads. The callback stores literal 7 while the API returns null.
 Direct/repaired sources and 472 premises (415 genuine/derived, 57 controls) keep
 their distinct 922/c471 cuts; broader START forms and original source 7 remain open.
 
+Bound captured-factory constructor selection retains the receiver and original
+factory authority through referenced-name mutation and producer retirement.
+A valid registered, capture-free Closure reaches 281's repeated-constructor
+FiberError on an initialized, unstarted receiver. No callback executes or Fiber
+transfer occurs. Derived receive retains CONFIG and trace-materialization RESULT;
+the genuine source step consumes those owners and restores the original RELEASE
+tail. Quiet sequence-1 cleanup retires the old callback, capture and Fiber while
+the error's one-frame argument trace keeps the same fresh Closure. Real catch and
+the explicit caught-null write then retire the error/trace/argument graph before
+weak reads. Direct/repaired sources and 489 premises (433 genuine/derived,
+56 controls) keep distinct 799/e716 cuts; broader constructor forms remain open.
+
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver
 and method members before arguments. Nonowning receipts authenticate genuine CONFIG, saved WAIT and static

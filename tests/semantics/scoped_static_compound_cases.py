@@ -2686,4 +2686,120 @@ echo "P:", $weakPayload->get() === null ? "gone" : "held", ";Z;";
         'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;B;I:same;P:held;L:held;R:null;C:gone;H:gone;P:gone;Z;',
         'discriminator': 'Frozen bound START survives referenced-name mutation and caller selector retirement. The callback receives the same named object; after its local value clears the original API buffer keeps the payload live. Literal callback return 7 differs from the null API result, and ordinary completion retires buffer/payload before final capture/Fiber weak reads.',
     },
+    {
+        'id': 'from-callable-direct-fiber-constructor',
+        'source': '''<?php
+function discardConstructorCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireConstructorSelectionReview21() {
+    global $selected, $fresh;
+    $selected = null;
+    $value = $fresh;
+    $fresh = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$old = function () { echo "U:old;"; return 7; };
+$weakOld = WeakReference::create($old);
+$fiber = new Fiber($old);
+$old = null;
+$weakFiber = WeakReference::create($fiber);
+$method = "__construct";
+$callback = [$fiber, &$method];
+$factory = null;
+$selected = Closure::fromCallable(callback: discardConstructorCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isStarted";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+$fresh = function () { echo "U:new;"; return 11; };
+$weakFresh = WeakReference::create($fresh);
+$weakError = null;
+try {
+    $returned = $selected(callback: retireConstructorSelectionReview21());
+    echo "U:return;";
+} catch (Throwable $caught) {
+    $weakError = WeakReference::create($caught);
+    echo "E:", $caught::class, ":", $caught->getMessage(), ";";
+    echo "O:", $weakOld->get() === null ? "gone" : "held", ";";
+    echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+    echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+    echo "N:", $weakFresh->get() === null ? "gone" : "held", ";";
+    echo "E:", $weakError->get() === null ? "gone" : "held", ";";
+}
+$caught = null;
+echo "E:", $weakError === null || $weakError->get() === null ? "gone" : "held", ";";
+echo "O:", $weakOld->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+echo "N:", $weakFresh->get() === null ? "gone" : "held", ";Z;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;E:FiberError:Cannot call constructor twice;O:gone;C:gone;H:gone;N:held;E:held;E:gone;O:gone;C:gone;H:gone;N:gone;Z;',
+        'discriminator': 'Frozen bound constructor survives referenced-name mutation and caller selector retirement. A valid fresh capture-free Closure on an initialized unstarted Fiber raises FiberError before either callback executes. The old callback, capture and receiver retire before catch while the exact fresh argument remains in the error trace; clearing caught retires that error and argument.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-constructor',
+        'source': '''<?php
+function discardConstructorCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireConstructorSelectionReview21() {
+    global $selected, $fresh;
+    $selected = null;
+    $value = $fresh;
+    $fresh = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$old = function () { echo "U:old;"; return 7; };
+$weakOld = WeakReference::create($old);
+$fiber = new Fiber($old);
+$old = null;
+$weakFiber = WeakReference::create($fiber);
+$method = "__construct";
+$callback = [$fiber, &$method];
+$factory = Closure::fromCallable(...);
+$selected = $factory(callback: discardConstructorCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isStarted";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+$fresh = function () { echo "U:new;"; return 11; };
+$weakFresh = WeakReference::create($fresh);
+$weakError = null;
+try {
+    $returned = $selected(callback: retireConstructorSelectionReview21());
+    echo "U:return;";
+} catch (Throwable $caught) {
+    $weakError = WeakReference::create($caught);
+    echo "E:", $caught::class, ":", $caught->getMessage(), ";";
+    echo "O:", $weakOld->get() === null ? "gone" : "held", ";";
+    echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+    echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+    echo "N:", $weakFresh->get() === null ? "gone" : "held", ";";
+    echo "E:", $weakError->get() === null ? "gone" : "held", ";";
+}
+$caught = null;
+echo "E:", $weakError === null || $weakError->get() === null ? "gone" : "held", ";";
+echo "O:", $weakOld->get() === null ? "gone" : "held", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+echo "N:", $weakFresh->get() === null ? "gone" : "held", ";Z;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;E:FiberError:Cannot call constructor twice;O:gone;C:gone;H:gone;N:held;E:held;E:gone;O:gone;C:gone;H:gone;N:gone;Z;',
+        'discriminator': 'Frozen bound constructor survives referenced-name mutation and caller selector retirement. A valid fresh capture-free Closure on an initialized unstarted Fiber raises FiberError before either callback executes. The old callback, capture and receiver retire before catch while the exact fresh argument remains in the error trace; clearing caught retires that error and argument.',
+    },
 ]

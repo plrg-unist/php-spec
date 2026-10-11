@@ -3016,6 +3016,13 @@ failure keep zero credit; wider START forms and source 7 remain OPEN.
 Exact f0656d75/375 composition passes algo and initialized SL472 at 07e319450
 (5.202s/75.748s), preserving the named-buffer and ordinary cleanup paths. Private
 source/native/state cuts retain their original identities without renewal.
+Captured factory bound constructor now reaches the existing repeated-constructor
+FiberError for a valid fresh Closure on an initialized, unstarted receiver.
+Direct agreement stays at 799681aa; repaired capture and 489 premises (433
+genuine/derived, 56 controls) pass at e716e2f5/375. The same fresh argument stays
+owned by the error trace after old callback/capture/Fiber retirement; the actual
+caught-null write prunes that graph before final weak reads. Original Unsupported
+keeps zero credit; broader constructor forms and source 7 remain OPEN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

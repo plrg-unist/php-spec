@@ -1861,5 +1861,96 @@
       "private_source_native_state_renewal": 0,
       "review": "arguments_review_22 independently accepted the exact-parent composition, driver and raw compatibility gate. Current reference-finally, property-hook/coalesce and class guards are absent from this source. The preserved 472 fixture validates genuine named-buffer ownership and ordinary callback/buffer/capture cleanup against actual ordered 375 inputs; original private cuts and syntax failure0 remain separate."
     }
+  },
+  "captured_factory_fiber_constructor": {
+    "status": "ACCEPTED_PARTIAL",
+    "base_revision": "799681aab08e39b56e1af26407a39229b3dbd31e",
+    "semantic_revision": "e716e2f57e0d458b40ca78b52746ceaaeaabdb84",
+    "modules": 375,
+    "scope": "Captured Closure::fromCallable factory selects bound __construct through the existing constructor protocol. Validation covers one valid fresh capture-free registered Closure on an initialized, unstarted Fiber; wider constructor argument, status and callback forms require separate evidence.",
+    "implementation": [
+      "spec/semantics/358-fiber-from-callable.watsup"
+    ],
+    "behavior": "Genuine factory CONFIG/SENT with nonempty INPUT mints bound CONSTRUCT under original factory/site authority. Selection survives __construct-to-isStarted mutation and producer retirement. A valid fresh registered Closure reaches repeated-constructor FiberError before either callback or transfer. Derived receive keeps CONFIG and trace RESULT owners distinct from the genuine one-step continuation. Original RELEASE plus quiet sequence1 pruning retire old RAW callback/capture/Fiber while the pending error trace owns the SAME fresh argument. Real CATCH_BIND and the reached WRITE_NAME(caught,NULL) predecessor/one source step retire the error/trace/argument graph before weak reads.",
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_fibers.c: ZEND_METHOD(Fiber, __construct), Z_PARAM_FUNC, initialized-fci/status rejection before fci_cache replacement",
+      "vendor/php-src/Zend/zend.c: zend_throw_error; Zend/zend_exceptions.c: zend_default_exception_new trace construction",
+      "vendor/php-src/Zend/zend_closures.c: zend_create_fake_closure bound this_ptr"
+    ],
+    "artifact_worktree": ".tools/captured-factory-fiber-throw-unhandled-21",
+    "artifact_root": ".tools/captured-factory-fiber-constructor-21",
+    "cuts": {
+      "native": {
+        "revision": "799681aab08e39b56e1af26407a39229b3dbd31e",
+        "report": ".tools/captured-factory-fiber-constructor-21/captured-factory-fiber-constructor-native-21-256epprh/report.json",
+        "sha256": "8abede541db94191d28ff8b160f52e7147ab50e24cdc7ff4aab3b3ed3218ea01",
+        "oracle_cases": 2,
+        "source_credit": 0
+      },
+      "unchanged_public": {
+        "revision": "799681aab08e39b56e1af26407a39229b3dbd31e",
+        "report": ".tools/captured-factory-fiber-constructor-21/captured-factory-fiber-constructor-model-21-uscnn3nj/report.json",
+        "sha256": "62b7b837909af6ed3c02d2be00b18057a92e161e411c5775270c476c0676c40c",
+        "direct_source_credit": 1,
+        "captured": "Unsupported at factory selection after Q;A;",
+        "captured_source_credit": 0
+      },
+      "captured_repair": {
+        "revision": "e716e2f57e0d458b40ca78b52746ceaaeaabdb84",
+        "report": ".tools/captured-factory-fiber-constructor-21/captured-factory-fiber-constructor-repair-21-klujgsa2/report.json",
+        "sha256": "83fc71dd327ab57fd302c9506ae8daab61eecfbbd92399400c4adaeef0e0625b",
+        "source_credit": 1,
+        "seconds": 29.677700757980347
+      },
+      "state": {
+        "revision": "e716e2f57e0d458b40ca78b52746ceaaeaabdb84",
+        "report": ".tools/captured-factory-fiber-constructor-21/factory-fiber-constructor-state-21-4h5ghzjs/report.json",
+        "sha256": "7b0e127e04c6ae8a0e4f2bcf708371c9b1bd4dcc7d698c4570a139b9a450d1e9",
+        "compiler": "PASS",
+        "compiler_seconds": 5.426288604736328,
+        "initialized_SL489": "PASS",
+        "state_seconds": 76.3539924621582,
+        "genuine_and_derived": 433,
+        "constructed": 56,
+        "source_credit": 0
+      }
+    },
+    "maintained": {
+      "ids": [
+        "from-callable-direct-fiber-constructor",
+        "from-callable-factory-fiber-constructor"
+      ],
+      "sources": "tests/semantics/scoped_static_compound_cases.py",
+      "renderer": "tests/semantics/from_callable_construct_fiber_review.py",
+      "renderer_sha256": "8edac38b81a1bca7cf1de5c098ddc28414068b71a9032d5386f7617fd5faedf8",
+      "dispatch": "tests/semantics/scoped_static_compound_protocol.py: from-callable-factory-bound-fiber-constructor",
+      "fixture_bytes": 90828,
+      "fixture_sha256": "f0cba039f1e699ebd7afde3fd977a4b1580e758c5c4510be64ac5c2530b77700",
+      "relocation_runtime_renewal": 0
+    },
+    "commands": [
+      "python3 .tools/captured-factory-fiber-constructor-21/run-captured-factory-fiber-constructor-native-21.py",
+      "python3 .tools/captured-factory-fiber-constructor-21/run-captured-factory-fiber-constructor-model-21.py .tools/captured-factory-fiber-constructor-21/captured-factory-fiber-constructor-native-21-256epprh/report.json",
+      "python3 .tools/captured-factory-fiber-constructor-21/run-captured-factory-fiber-constructor-repair-21.py .tools/captured-factory-fiber-constructor-21/captured-factory-fiber-constructor-native-21-256epprh/report.json",
+      "python3 .tools/captured-factory-fiber-constructor-21/run-factory-fiber-constructor-state-21.py"
+    ],
+    "caps": {
+      "native": 45,
+      "CLI": 60,
+      "outer": 90,
+      "steps": 100000,
+      "worker_request": 30,
+      "compiler": 120,
+      "state": 300,
+      "seek": 1000,
+      "finish": 1000,
+      "jobs": 1
+    },
+    "recovery": "Original sources/native stdout, checked program, fixture, renderer/driver snapshots and raw exits remain below artifact_root in artifact_worktree. Each cut binds its clean revision and pinned PHP/profile; model/state cuts bind ordered 375 semantic modules. Maintained relocation preserves exact bytes and renews no runtime evidence.",
+    "review": "arguments_review_22 independently accepted native2, direct1/original captured Unsupported0, minimal 358 CONSTRUCT admission, captured-only source1 repair, finite preflight and initialized raw state489. Prior START/getReturn/throw cuts and original source 7 OPEN remain separate.",
+    "remaining": [
+      "Wider constructor arguments/errors/statuses, callable-query warning continuations, captures and lifecycle interactions need separate validation.",
+      "Required original static-compound source 7 CLI60 timeout stays OPEN with zero agreement."
+    ]
   }
 }
