@@ -412,6 +412,10 @@ Captured factories now select bound `Fiber::getReturn` for a defined ordinary
 object result. Direct and repaired sources preserve identity and separate
 capture/Fiber retirement from returned-object retirement; 413 state premises
 pass at 3a31fc727/375. Original Unsupported and fixture failure retain zero credit.
+Captured factory `Fiber::start` also forwards an ordinary named object through
+the original API buffer. Direct/repaired sources and 472 state premises preserve
+identity, ownership after callback-local null and ordinary buffer/capture cleanup;
+the callback's literal return 7 remains distinct from the null API result.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;

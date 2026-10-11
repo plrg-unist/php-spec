@@ -1745,5 +1745,102 @@
       "Reference-result and wider lifecycle/API/callback consumers remain open.",
       "Required original static-compound source 7 CLI60 timeout stays OPEN with zero agreement."
     ]
+  },
+  "captured_factory_fiber_start": {
+    "status": "ACCEPTED_PARTIAL",
+    "base_revision": "922abc0ea19e45f9b7f06138dc21264a7022a6d2",
+    "semantic_revision": "c471c767422929e6a5b9c638b90ff7754be4aff1",
+    "modules": 375,
+    "scope": "Captured Closure::fromCallable factory selects bound start through the existing named-buffer protocol. Validation covers one ordinary named object argument and a capture-free callback returning literal 7; wider START argument, status and callback forms require separate evidence.",
+    "implementation": [
+      "spec/semantics/358-fiber-from-callable.watsup"
+    ],
+    "behavior": "A genuine factory CONFIG and saved call-site certificate mint bound START with nonempty INPUT. Selection remains start after isStarted mutation and producer/callback retirement. The original named buffer holds the same main-created object through FIBER_START_CAPTURE_ARGS and waiting API.START. Completed callback-local null leaves API.START as its sole owner before the next weak read. Actual 302 callback retirement precedes the genuine 270 buffer-release operation, then START_RESULTfalse marker release retires capture/Fiber. Historical SENT is nonowning; callback result 7 stays distinct from the null API result.",
+    "engine_routes": [
+      "vendor/php-src/Zend/zend_fibers.c: ZEND_METHOD(Fiber, start), Z_PARAM_VARIADIC_WITH_NAMED, zend_fiber_init_context, zend_fiber_resume_internal and zend_fiber_delegate_transfer_result",
+      "vendor/php-src/Zend/zend_closures.c: zend_create_fake_closure bound this_ptr"
+    ],
+    "artifact_worktree": ".tools/captured-factory-fiber-throw-unhandled-21",
+    "artifact_root": ".tools/captured-factory-fiber-start-21",
+    "cuts": {
+      "native": {
+        "revision": "922abc0ea19e45f9b7f06138dc21264a7022a6d2",
+        "report": ".tools/captured-factory-fiber-start-21/captured-factory-fiber-start-native-21-8tdxriw6/report.json",
+        "sha256": "136fabc0bad0052e1adceb55da0e8476df11a4b12e8a852a1f52be43b2d0cd1c",
+        "oracle_cases": 2,
+        "source_credit": 0
+      },
+      "unchanged_public": {
+        "revision": "922abc0ea19e45f9b7f06138dc21264a7022a6d2",
+        "report": ".tools/captured-factory-fiber-start-21/captured-factory-fiber-start-model-21-5n20i1wp/report.json",
+        "sha256": "83f4e160dba33b87ec7ae3ad2a811e429cc44b7a33b2946ebc718049cc5c1386",
+        "direct_source_credit": 1,
+        "captured": "Unsupported at factory selection after Q;A;",
+        "captured_source_credit": 0
+      },
+      "captured_repair": {
+        "revision": "c471c767422929e6a5b9c638b90ff7754be4aff1",
+        "report": ".tools/captured-factory-fiber-start-21/captured-factory-fiber-start-repair-21-ss0ixvb9/report.json",
+        "sha256": "6e0b0fbc6cd3d1a585831680a073c197410c1dd6401d739db541c5a76ebf1776",
+        "source_credit": 1,
+        "seconds": 24.83211922645569
+      },
+      "state": {
+        "revision": "c471c767422929e6a5b9c638b90ff7754be4aff1",
+        "report": ".tools/captured-factory-fiber-start-21/factory-fiber-start-state-21-34appi8p/report.json",
+        "sha256": "5c5f37d7342eb945cc20c2aa5cccc1d40a742c5734ab8cb152926fb2a9162ee4",
+        "compiler": "PASS",
+        "compiler_seconds": 5.315964937210083,
+        "initialized_SL472": "PASS",
+        "state_seconds": 75.37450098991394,
+        "genuine_and_derived": 415,
+        "constructed": 57,
+        "source_credit": 0
+      }
+    },
+    "preserved_fixture_failure": {
+      "report": ".tools/captured-factory-fiber-start-21/factory-fiber-start-state-21-kclhs2nz/report.json",
+      "sha256": "cc562f39d723a0932c6236d2d9e33a611610ebfea1b78fc00459e9cad6997fae",
+      "reason": "Original 471 used an unsupported inline tuple-list record-field binding at fixture 166. The syntax gate rejected it. Separate SLOTS/NAMED projections and the alternative NAMED updater preserve the same buffer, producing 472 premises without source or semantic changes.",
+      "state_execution": "UNRUN",
+      "state_credit": 0
+    },
+    "maintained": {
+      "ids": [
+        "from-callable-direct-fiber-start",
+        "from-callable-factory-fiber-start"
+      ],
+      "sources": "tests/semantics/scoped_static_compound_cases.py",
+      "renderer": "tests/semantics/from_callable_start_fiber_review.py",
+      "renderer_sha256": "166a9e04c4f04a2b2cf881daaa90998ffc15364206700fe501b830284d9a95f8",
+      "dispatch": "tests/semantics/scoped_static_compound_protocol.py: from-callable-factory-bound-fiber-start",
+      "fixture_bytes": 73735,
+      "fixture_sha256": "d88963c162150ccd524b3932001ee1cddbe482bccfda7de6a408df2cbb061153",
+      "relocation_runtime_renewal": 0
+    },
+    "commands": [
+      "python3 .tools/captured-factory-fiber-start-21/run-captured-factory-fiber-start-native-21.py",
+      "python3 .tools/captured-factory-fiber-start-21/run-captured-factory-fiber-start-model-21.py .tools/captured-factory-fiber-start-21/captured-factory-fiber-start-native-21-8tdxriw6/report.json",
+      "python3 .tools/captured-factory-fiber-start-21/run-captured-factory-fiber-start-repair-21.py .tools/captured-factory-fiber-start-21/captured-factory-fiber-start-native-21-8tdxriw6/report.json",
+      "python3 .tools/captured-factory-fiber-start-21/run-factory-fiber-start-state-21.py"
+    ],
+    "caps": {
+      "native": 45,
+      "CLI": 60,
+      "outer": 90,
+      "steps": 100000,
+      "worker_request": 30,
+      "compiler": 120,
+      "state": 300,
+      "seek": 1000,
+      "finish": 1000,
+      "jobs": 1
+    },
+    "recovery": "Original sources/native stdout, checked program, fixture, driver snapshots and raw exits remain below artifact_root in artifact_worktree. Each cut binds its clean revision and pinned PHP/profile; model/state cuts bind ordered 375 semantic modules. Maintained relocation preserves exact bytes and renews no runtime evidence.",
+    "review": "arguments_review_22 independently accepted native2, direct1/original captured Unsupported0, minimal 358 START admission, captured-only source1 repair, finite preflight, original syntax failure0 and corrected raw state472. Prior getReturn/throw cuts and original source 7 OPEN remain separate.",
+    "remaining": [
+      "Wider START argument forms, errors/statuses, suspension, callbacks and lifecycle interactions need separate validation.",
+      "Required original static-compound source 7 CLI60 timeout stays OPEN with zero agreement."
+    ]
   }
 }

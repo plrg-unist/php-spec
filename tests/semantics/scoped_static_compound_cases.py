@@ -2588,4 +2588,102 @@ echo "P:", $weakPayload->get() === null ? "gone" : "held", ";Z;";
         'expected_stdout': 'Q;B;P:held;A;M:isTerminated;F;H:held;I:same;C:held;C:gone;H:gone;P:held;P:gone;Z;',
         'discriminator': 'Defined ordinary object getReturn preserves the exact payload after main argument retirement and frozen getReturn selection survives referenced-name mutation. Clearing selected retires capture/Fiber while the returned cell still owns the payload; clearing returned then retires it.',
     },
+    {
+        'id': 'from-callable-direct-fiber-start',
+        'source': '''<?php
+function discardStartCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireStartSelectionReview21() {
+    global $selected, $payload;
+    $selected = null;
+    $value = $payload;
+    $payload = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$method = "start";
+$payload = new Exception("payload");
+$weakPayload = WeakReference::create($payload);
+$fiber = new Fiber(function ($value) {
+    global $weakPayload;
+    echo "B;";
+    echo "I:", $value === $weakPayload->get() ? "same" : "different", ";";
+    echo "P:", $weakPayload->get() === null ? "gone" : "held", ";";
+    $value = null;
+    echo "L:", $weakPayload->get() === null ? "gone" : "held", ";";
+    return 7;
+});
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = null;
+$selected = Closure::fromCallable(callback: discardStartCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isStarted";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+$returned = $selected(value: retireStartSelectionReview21());
+echo "R:", $returned === null ? "null" : "other", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+echo "P:", $weakPayload->get() === null ? "gone" : "held", ";Z;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;B;I:same;P:held;L:held;R:null;C:gone;H:gone;P:gone;Z;',
+        'discriminator': 'Frozen bound START survives referenced-name mutation and caller selector retirement. The callback receives the same named object; after its local value clears the original API buffer keeps the payload live. Literal callback return 7 differs from the null API result, and ordinary completion retires buffer/payload before final capture/Fiber weak reads.',
+    },
+    {
+        'id': 'from-callable-factory-fiber-start',
+        'source': '''<?php
+function discardStartCallbackReview21() {
+    global $factory, $callback;
+    $factory = null;
+    echo "A;";
+    return $callback;
+}
+function retireStartSelectionReview21() {
+    global $selected, $payload;
+    $selected = null;
+    $value = $payload;
+    $payload = null;
+    echo "V;";
+    return $value;
+}
+echo "Q;";
+$method = "start";
+$payload = new Exception("payload");
+$weakPayload = WeakReference::create($payload);
+$fiber = new Fiber(function ($value) {
+    global $weakPayload;
+    echo "B;";
+    echo "I:", $value === $weakPayload->get() ? "same" : "different", ";";
+    echo "P:", $weakPayload->get() === null ? "gone" : "held", ";";
+    $value = null;
+    echo "L:", $weakPayload->get() === null ? "gone" : "held", ";";
+    return 7;
+});
+$weakFiber = WeakReference::create($fiber);
+$callback = [$fiber, &$method];
+$factory = Closure::fromCallable(...);
+$selected = $factory(callback: discardStartCallbackReview21());
+$weakSelected = WeakReference::create($selected);
+$callback[1] = "isStarted";
+$callback = null;
+echo "M:", $method, ";F;";
+$fiber = null;
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+$returned = $selected(value: retireStartSelectionReview21());
+echo "R:", $returned === null ? "null" : "other", ";";
+echo "C:", $weakSelected->get() === null ? "gone" : "held", ";";
+echo "H:", $weakFiber->get() === null ? "gone" : "held", ";";
+echo "P:", $weakPayload->get() === null ? "gone" : "held", ";Z;";
+''',
+        'expected_stdout': 'Q;A;M:isStarted;F;H:held;V;B;I:same;P:held;L:held;R:null;C:gone;H:gone;P:gone;Z;',
+        'discriminator': 'Frozen bound START survives referenced-name mutation and caller selector retirement. The callback receives the same named object; after its local value clears the original API buffer keeps the payload live. Literal callback return 7 differs from the null API result, and ordinary completion retires buffer/payload before final capture/Fiber weak reads.',
+    },
 ]

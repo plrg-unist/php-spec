@@ -576,6 +576,17 @@ its empty trace. Direct/repaired source cuts and 413 premises (363 genuine/deriv
 50 controls) retain their distinct 96bb/3a31 revisions. Original Unsupported and
 syntax failure keep zero credit; broader getReturn statuses require separate evidence.
 
+Bound captured-factory START uses the same receiver and saved factory authority,
+then module 348 forwards its original named buffer through FIBER_START_CAPTURE_ARGS
+and the waiting API.START. Clearing the callback's ordinary parameter leaves that
+API as the object's sole owner before the next weak read. Actual 302 callback
+retirement completes before the genuine 270 buffer-release operation; the restored
+FIBER_START_CAPTURE_RESULTfalse retains capture while its historical SENT does not
+retain the payload. Final marker release retires capture/Fiber before
+outer weak reads. The callback stores literal 7 while the API returns null.
+Direct/repaired sources and 472 premises (415 genuine/derived, 57 controls) keep
+their distinct 922/c471 cuts; broader START forms and original source 7 remain open.
+
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver
 and method members before arguments. Nonowning receipts authenticate genuine CONFIG, saved WAIT and static

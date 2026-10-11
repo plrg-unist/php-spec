@@ -2956,6 +2956,12 @@ stay separate; wider getReturn forms and source 7 remain OPEN.
 Exact 4a30db48/375 composition passes algo and initialized SL413 at cef6efde
 (5.537s/49.561s). The preserved fixture validates the current ordinary object
 carrier and cleanup; private source/native/state cuts remain distinct.
+Captured factory bound START now uses the existing 348 named-buffer protocol.
+The saved API retains the same object after callback-local null; ordinary 302
+callback retirement precedes buffer release, then RESULTfalse retires capture/Fiber.
+Direct agreement stays at 922abc0e; repaired capture and 472 premises (415
+genuine/derived, 57 controls) pass at c471c767/375. Original Unsupported and syntax
+failure keep zero credit; wider START forms and source 7 remain OPEN.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
