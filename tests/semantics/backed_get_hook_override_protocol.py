@@ -246,7 +246,7 @@ DERIVED=[
     r'$origin_node(S.SOURCES,ppropertyhook_S_child.PROPERTY) = (NPropertyItem phpType40_name phpType5_default metadata_property)',
     r'$pphook_class_shape(pchheader_child,phpType40_name,phpType38_hook) /\ ~$pphook_class_shape(pchheader_child[.ABSTRACT = true],phpType40_name,phpType38_hook) /\ ~$pphook_class_shape(pchheader_child[.FINAL = true],phpType40_name,phpType38_hook)',
     r'phpType38_virtual = NPropertyHook phpType14_hook phpType24_hook phpType4_hook phpType11_hook phpType16_hook (NScalarInt (INTEGER 7) metadata_hook) metadata_hook',
-    r'~$pphook_class_shape(pchheader_child,phpType40_name,phpType38_virtual) /\ $pphook_class_shape(pchheader_child[.PARENT = eps],phpType40_name,phpType38_virtual)',
+    r'$pphook_class_shape(pchheader_child,phpType40_name,phpType38_virtual) /\ ~$pphook_class_shape(pchheader_child[.ABSTRACT = true],phpType40_name,phpType38_virtual) /\ ~$pphook_class_shape(pchheader_child[.FINAL = true],phpType40_name,phpType38_virtual)',
     r'S.SOURCES = pcunit :: pcunit_tail*',
     r'porigin_hook_child = ppropertyhook_S_child.HOOK',
     r'porigin_hook_child = PORIGIN n_unit pcpath_hook',
