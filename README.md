@@ -1420,6 +1420,10 @@ one guarded class publication, lexical namespace and fresh defaults.
 The [While-hosted If review](coverage/semantics/anonymous-while-if-rtd-review.json)
 checks genuine If/CHOOSE selection, callable publication, Closure creation/capture
 and authentic saved-frame allocations. Other loops and nested factories remain required.
+The 375 composition at de256ec9 over 07af20a3 reuses strict3 at tested
+df0ae18c (6.122s). Review retains parentless class linking and excludes the changed
+reference-notice, bind, getter, hook, collector and Iterator routes. No current actor
+or private replay is claimed.
 The earlier [nested-While review](coverage/semantics/anonymous-nested-while-rtd-review.json)
 binds three exact originals to selected/skipped nested hosts, reverse publication
 and old/current Closure receivers.

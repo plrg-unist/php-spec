@@ -36,6 +36,11 @@ literal-list elaboration failure retains zero credit; its affected checks pass a
 two parentheses corrections. Do/other loops, nested factories and wider signatures,
 targets or captures remain required.
 [While-hosted If ledger](coverage/semantics/anonymous-while-if-rtd-review.json).
+The 375 composition at de256ec9 over 07af20a3 reuses strict3 at tested
+df0ae18c (6.122s). Unchanged task/schema/manifest and the reviewed exclusion of
+reference-notice, bind, getter, hook, collector and Iterator routes preserve the
+private source3/state722 cut; reached parentless class linking remains identity.
+No current actor or private replay is claimed.
 
 The earlier nested-While cut retains source3/state636 at 8089eb5f and its
 fb295c7c/c40c6f57 strict3 join (5.976s), including the shared task datatype and
