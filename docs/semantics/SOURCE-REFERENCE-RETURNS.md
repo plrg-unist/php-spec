@@ -173,6 +173,16 @@ leaves remain nonpublic, and source reauthentication does not exclude coherent
 history rewrites. Other caught layouts retain explicit Unsupported boundaries;
 mixed histories, lifecycle capture and broad returns_verify remain OPEN.
 
+An immutable string literal may be the final history in this ordered list. Its
+source-equal interned value and original line reconstruct the root-free live
+triple; inner Z/W/Y remain distinct ordinary CVs. Initial VALUE return designates
+one pending Notice, canceled by replacement before capture. Saved Y-error replay
+retains the literal; escape leaves Z, W and literal in order, while immediate Y
+success returns its alias. Two exact originals, five reached fixtures/504
+assertions and independent partial96/8 pass at separate `d28f2a0c` cuts in the
+same review. Normal mixed clearing/resumption remains Unsupported; the all-CV
+cleared route is unchanged. Other layouts, lifecycle and broad returns stay OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

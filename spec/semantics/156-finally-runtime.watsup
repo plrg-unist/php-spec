@@ -1618,7 +1618,8 @@ def $finally_frames_complete(S, eps) = true
 def $finally_frames_complete(S, pframe :: pframe_tail*) = ($finally_current_complete($constant_frame_scope(S, pframe, pframe_tail*)) /\ $finally_frames_complete(S, pframe_tail*))
 def $finally_state_valid(S) = ($finally_current_complete(S) /\ $finally_frames_complete(S, S.FRAMES))
 
-;; More than two adjacent CV transfers retain a source-derived cursor sequence.
+;; More than two adjacent transfers retain a source-derived cursor sequence.
+;; Inner histories are CVs; only the outermost may be an immutable string literal.
 ;; The captured prefix owns nothing; the remaining live triples retain their
 ;; actual operands until each ordinary replacement step retires them.
 syntax prefchainread = REFCHAIN_READ prefreturncursor* | REFCHAIN_MISSING
@@ -1636,8 +1637,15 @@ def $ref_chain_cursor(S, prefreturncursor) = true
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata_return)
   -- if $origin_node(S.SOURCES, prefreturncursor.OWNER) = (NStmtTryCatch phpType23 (SEQUENCE eps) phpType67 metadata_try)
 def $ref_chain_cursor(S, prefreturncursor) = false -- otherwise
+dec $ref_chain_outer_literal(pstate, prefreturncursor) : bool
+def $ref_chain_outer_literal(S, prefreturncursor) = true
+  -- if $ref_return_cursor_site(S, prefreturncursor)
+  -- if $ref_return_cursor_literal(S, prefreturncursor) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if $origin_node(S.SOURCES, prefreturncursor.OWNER) = (NStmtTryCatch phpType23 (SEQUENCE eps) phpType67 metadata_try)
+  -- if prefreturncursor.OUTER = $ref_chain_function(S) /\ prefreturncursor.OUTER =/= eps
+def $ref_chain_outer_literal(S, prefreturncursor) = false -- otherwise
 dec $ref_chain_links(pstate, prefreturncursor*) : bool
-def $ref_chain_links(S, prefreturncursor :: eps) = ($ref_chain_cursor(S, prefreturncursor) /\ prefreturncursor.OUTER = $ref_chain_function(S) /\ prefreturncursor.OUTER =/= eps)
+def $ref_chain_links(S, prefreturncursor :: eps) = (($ref_chain_cursor(S, prefreturncursor) \/ $ref_chain_outer_literal(S, prefreturncursor)) /\ prefreturncursor.OUTER = $ref_chain_function(S) /\ prefreturncursor.OUTER =/= eps)
 def $ref_chain_links(S, prefreturncursor :: prefreturncursor_next :: prefreturncursor_tail*) = ($ref_chain_cursor(S, prefreturncursor) /\ $ref_return_cursor_inside(prefreturncursor_next.OWNER, prefreturncursor.SOURCE) /\ prefreturncursor.OUTER = $origin_child((prefreturncursor_next.OWNER), [PCFIELD 2]) /\ $ref_chain_links(S, prefreturncursor_next :: prefreturncursor_tail*))
 def $ref_chain_links(S, eps) = false
 dec $ref_chain_distinct(pstate, prefreturncursor*, nat*) : bool
@@ -1647,6 +1655,8 @@ def $ref_chain_distinct(S, prefreturncursor :: prefreturncursor_tail*, n_seen*) 
   -- if $lookup(S.ENV, $base64(text)) = (n)
   -- if $ref_return_pair_operand(S, prefreturncursor.SOURCE, REFERENCE n)
   -- if ~(n <- n_seen*)
+def $ref_chain_distinct(S, prefreturncursor :: eps, n_seen*) = $ref_chain_outer_literal(S, prefreturncursor)
+  -- if $ref_return_cursor_literal(S, prefreturncursor) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $ref_chain_distinct(S, prefreturncursor*, n_seen*) = false -- otherwise
 dec $ref_chain_owners(prefreturncursor*) : porigin*
 def $ref_chain_owners(eps) = eps
@@ -1690,6 +1700,9 @@ def $ref_chain_live_tasks(S, eps) = eps
 def $ref_chain_live_tasks(S, prefreturncursor :: prefreturncursor_tail*) = [FINALLY_REF_RETURN prefreturncursor.OWNER prefreturncursor.SOURCE (REFERENCE n) prefreturncursor.LINE, FINALLY_PHASE prefreturncursor.OWNER 3, ORIGIN_RETURN prefreturncursor.OUTER] ++ $ref_chain_live_tasks(S, prefreturncursor_tail*)
   -- if $origin_node(S.SOURCES, prefreturncursor.SOURCE) = (NStmtReturn (NExprVariable (BYTES text) metadata_variable) metadata_return)
   -- if $lookup(S.ENV, $base64(text)) = (n)
+def $ref_chain_live_tasks(S, prefreturncursor :: eps) = [FINALLY_REF_RETURN prefreturncursor.OWNER prefreturncursor.SOURCE (KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)) prefreturncursor.LINE, FINALLY_PHASE prefreturncursor.OWNER 3, ORIGIN_RETURN prefreturncursor.OUTER]
+  -- if $ref_chain_outer_literal(S, prefreturncursor)
+  -- if $ref_return_cursor_literal(S, prefreturncursor) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $ref_chain_live_tasks(S, prefreturncursor*) = eps -- otherwise
 dec $ref_chain_read(pstate, ptask*, porigin, int) : prefchainread
 def $ref_chain_read(S, [TYPE_FALLTHROUGH porigin_function, REF_RECHECK porigin_source porigin_first (REFERENCE n) z], porigin_source, z) = REFCHAIN_READ eps
@@ -1700,6 +1713,11 @@ def $ref_chain_read(S, (FINALLY_REF_RETURN porigin porigin_old (REFERENCE n_old)
   -- if prefreturncursor = { OWNER porigin, SOURCE porigin_old, LINE z_old, OUTER porigin_outer? }
   -- if $ref_return_pair_operand(S, porigin_old, REFERENCE n_old)
   -- if $ref_chain_read(S, ptask_tail*, porigin_source, z) = REFCHAIN_READ prefreturncursor_tail*
+def $ref_chain_read(S, (FINALLY_REF_RETURN porigin porigin_old (KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)) z_old) :: (FINALLY_PHASE porigin 3) :: (ORIGIN_RETURN porigin_outer?) :: ptask_tail*, porigin_source, z) = REFCHAIN_READ (prefreturncursor :: eps)
+  -- if prefreturncursor = { OWNER porigin, SOURCE porigin_old, LINE z_old, OUTER porigin_outer? }
+  -- if $ref_chain_outer_literal(S, prefreturncursor)
+  -- if $ref_return_cursor_literal(S, prefreturncursor) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if $ref_chain_read(S, ptask_tail*, porigin_source, z) = REFCHAIN_READ eps
 def $ref_chain_read(S, ptask*, porigin_source, z) = REFCHAIN_MISSING -- otherwise
 dec $ref_chain_capture_tasks(pstate, prefreturncursor*, prefreturncursor*, porigin, int, nat, porigin, porigin) : ptask*
 def $ref_chain_capture_tasks(S, prefreturncursor_done*, eps, porigin_source, z, n, porigin_first, porigin_function) = [TYPE_FALLTHROUGH porigin_function, REF_RETURN_CHAIN prefreturncursor_done* porigin_source z, REF_RECHECK porigin_source porigin_first (REFERENCE n) z]
@@ -1743,8 +1761,8 @@ def $ref_chain_capture(S, porigin, porigin_old, REFERENCE n_old, z_old, porigin_
   -- if $ref_chain_function(S) = (porigin_function)
   -- if $ref_replay_owners(S, porigin_source) = porigin_first :: eps
   -- if S_left = $finally_leave_ref_return($retired_replace_transfer(S, porigin_old, z_old, porigin_source, z, true, ptask_tail*), porigin, porigin_source, REFERENCE n, z, true, ptask_tail*)
-def $ref_chain_capture(S, porigin, porigin_old, REFERENCE n_old, z_old, porigin_source, REFERENCE n, z, true, ptask_tail*) = (S_left[.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: $ref_chain_capture_tasks(S_left, prefreturncursor_done* ++ [prefreturncursor], prefreturncursor_live*, porigin_source, z, n, porigin_first, porigin_function)])
-  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: (FINALLY_REF_RETURN porigin porigin_old (REFERENCE n_old) z_old) :: ptask_tail*
+def $ref_chain_capture(S, porigin, porigin_old, poperand_old, z_old, porigin_source, REFERENCE n, z, true, ptask_tail*) = (S_left[.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: $ref_chain_capture_tasks(S_left, prefreturncursor_done* ++ [prefreturncursor], prefreturncursor_live*, porigin_source, z, n, porigin_first, porigin_function)])
+  -- if S.TODO = (RETURN_REF_UNWIND (REFERENCE n) z true porigin_source) :: (FINALLY_REF_RETURN porigin porigin_old poperand_old z_old) :: ptask_tail*
   -- if $ref_chain_pending_marker(S.TODO) = (REF_RETURN_CHAIN_PENDING prefreturncursor_done* prefreturncursor_remaining* porigin_source z)
   -- if $ref_chain_pending_valid(S, prefreturncursor_done*, prefreturncursor_remaining*, porigin_source, z)
   -- if prefreturncursor_remaining* = prefreturncursor :: prefreturncursor_live*
@@ -1818,6 +1836,9 @@ dec $ref_chain_cleared_site(pstate, prefreturncursor*) : bool
 def $ref_chain_cleared_site(S, prefreturncursor_chain*) = true
   -- if prefreturncursor_chain* = prefreturncursor_first :: prefreturncursor_tail*
   -- if $ref_chain_links(S, prefreturncursor_chain*)
+  -- if n_last = $nabs($(|prefreturncursor_chain*| - 1))
+  -- if prefreturncursor_last = prefreturncursor_chain*[n_last]
+  -- if $ref_chain_cursor(S, prefreturncursor_last)
   -- if ~$destructor_operational(S)
   -- if $ref_chain_distinct(S, prefreturncursor_chain*, eps)
   -- if $reference_return_fetch_valid(S[.ORIGIN = (prefreturncursor_first.SOURCE)], prefreturncursor_first.LINE)

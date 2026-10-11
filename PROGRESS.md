@@ -919,6 +919,15 @@ passes in 5.888s with zero applications. Other caught/mixed layouts, lifecycle
 capture and broad returns_verify remain OPEN. Actual375 over `52180b3f` passes
 strict at `2d6ea69f4` in 6.082s with zero applications; private cuts remain separate.
 
+The ordered chain now permits a source-equal interned string only as its last
+history, with inner Z/W/Y ordinary CVs. Initial VALUE Notice is canceled before
+capture; the root-free literal survives saved Y replay, then ordered error escape
+or selected-Y success retires it. Two originals and five reached fixtures/504
+assertions (165+78+78+101+82) pass at `d28f2a0c`; independent partial96/8 is
+separate. Private strict375 passes in 5.831s with zero applications. The original
+597 elaboration failure keeps zero credit. Normal mixed clearing/resumption,
+other operand/layout/lifecycle domains and broad returns_verify remain OPEN.
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
