@@ -1455,18 +1455,17 @@ Anonymous names precede publication or Closure creation, including skipped loops
 Two live Closure instances from one compiled template preserve old/current targets,
 one guarded class publication, lexical namespace and fresh defaults.
 Both exact factory forms also admit `do` bodies through authenticated standalone
-Block chains at root or a valid namespace body, with standalone Block hosts or
-the existing authenticated If/While/Block conditional ancestry. Selected branches
-publish functions or create Closures; skipped branches preserve missing callables
-and untouched variables while anonymous names already exist.
-Actual Do/Block ancestors, terminals and complete factory guards stay mandatory.
-The [If-hosted Do review](coverage/semantics/anonymous-conditional-do-rtd-review.json)
-checks three original programs, genuine branch selection, reverse class publication,
-retained Closure receivers and saved caller frames. Direct While→Do, nested Do,
-If hosts beneath Do and wider factory guards remain Unsupported.
-The 376 join at d5bccfb4 over 1df8dd33 reuses private strict3 at 6d4067a /375
-(6.026s) alongside the parent's accepted WeakMap validation. Review preserves
-parentless linking and empty-map notification identity; private cuts stay frozen.
+Block chains at root or a valid namespace body, including existing conditional
+ancestry and direct `while` hosts. Actual Do/While/Block ancestors, terminals and
+complete factory guards stay mandatory. Selected hosts publish functions or create
+Closures; skipped hosts preserve missing callables while anonymous names already exist.
+The [While-hosted Do review](coverage/semantics/anonymous-while-do-rtd-review.json)
+checks reverse class publication, retained Closure receivers, saved caller frames
+and fresh defaults. Three originals agree at 5a13bfe4 /376 (strict3 6.026s), with
+683 focused premises and 23 genuine steps. Nested Do, If or While hosts beneath Do
+and wider factory guards remain Unsupported. The earlier [If-hosted Do review](coverage/semantics/anonymous-conditional-do-rtd-review.json)
+retains its original source/state cuts and WeakMap composition; only its direct
+While-host exclusion is superseded.
 The earlier [Do body-Block review](coverage/semantics/anonymous-do-block-rtd-review.json)
 binds three originals at 9d2ca309 /375 (strict3 6.025s) and 690 premises:
 648 setup/frontier, 42 pure, with 27 genuine Block, publication, creation/capture,

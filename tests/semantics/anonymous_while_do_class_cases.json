@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables in Do bodies. Actual Do hosts may now lie directly in authentic While bodies through the existing While host ancestry; existing If-hosted Do and Do body-Block chains remain admitted. Actual While/Do/Block nodes, terminal presence and complete factory guards remain mandatory. Selected/skipped While hosts, reverse class publication, retained old/current Closure targets, lexical namespace, fresh defaults and qualified prior-deferred versus case-spelled EARLY ownership are observed. Nested Do, If or While hosts beneath Do, other loops, nested factories and wider callable guards remain Unsupported by this Do context; earlier admitted and anonymous-only contexts stay supported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "while-do-reversed",
+      "source": "<?php\n$runLeft = true; $runRight = true; $once = false; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':27$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeWhileDoLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\nwhile ($runLeft) {\n    do {\n        {\n            {\n                function makeWhileDoLeft() {\n                    class WhileDoLeftPublished {}\n                    return new class { public function kind() { return 'left'; } };\n                }\n            }\n        }\n    } while ($once);\n    $runLeft = false;\n}\n{\n    while ($runRight) {\n        do {\n            {\n                $rightFactory = static function () {\n                    class WhileDoRightPublished {}\n                    return new class { public function kind() { return 'right'; } };\n                };\n            }\n        } while ($once);\n        $runRight = false;\n    }\n}\n$right = $rightFactory(); $rightNamed = new WhileDoRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'WhileDoRightPublished' ? 'right|' : 'BAD|';\ntry { new WhileDoLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeWhileDoLeft(); $leftNamed = new WhileDoLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'WhileDoLeftPublished' ? 'left|' : 'BAD|';\necho !$runLeft && !$runRight && !$once && $before !== $left && $rightBefore !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "52fa6b9a411967b8a807e0482433f50601c2bf32917d17fa6ad9cf82acb51797",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-do-native-44/run-v1/while-do-reversed/command.json",
+      "native_raw_sha256": "82a848e6bed0a86b84255b6ab1cdbb00094bba32831bfa23f7143be5ce58a22b"
+    },
+    {
+      "id": "while-do-repeated",
+      "source": "<?php\nnamespace RepeatWhileDoSide;\n$run = true; $choose = true; $i = 0; $seen = false; $make = null; $previous = null; $skipped = null;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':16$1';\n$before = new $name;\necho $before::class === $name && $before->value === 0 && $make === null && $previous === null ? 'before|' : 'BAD|';\nif ($choose) {\n    {\n        while ($run) {\n            do {\n                {\n                    $previous = $make;\n                    $make = static function () {\n                        global $seen;\n                        if (!$seen) { $seen = true; class Published {} }\n                        return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                    };\n                }\n                $i = $i + 1;\n            } while ($i < 2);\n            $run = false;\n        }\n    }\n} else { $skipped = 'BAD'; }\necho !$run && $choose && $skipped === null && $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatWhileDoCaller;\n$first = $previous(); $named = new \\RepeatWhileDoSide\\Published;\necho $first::class === $name && $first->space() === 'RepeatWhileDoSide' && $named::class === 'RepeatWhileDoSide\\Published' ? 'first|' : 'BAD|';\n$first->value = 9; $second = $make();\necho $second::class === $name && $second->space() === 'RepeatWhileDoSide' && $second->value === 0 ? 'second|' : 'BAD|';\necho $seen && $before !== $first && $first !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "6777445cb69d66a906f6c80b20ffcf04a3b81c6e20850babcf58174db4ca4658",
+      "stdout_base64": "YmVmb3JlfHRlbXBsYXRlc3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-do-native-44/run-v1/while-do-repeated/command.json",
+      "native_raw_sha256": "49b5a9553e9b2d71cde9fb49b77d96772f6cd39fdb1986a4debe36404bc63266"
+    },
+    {
+      "id": "while-do-prior-deferred",
+      "source": "<?php\nnamespace WhileDoSelectedSide;\n$run = true;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$2';\n$before = new $name; $early = new Exception;\necho $before::class === $name && $early::class === 'WhileDoSelectedSide\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\ntry { chosenWhileDoFactory(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nwhile (false) { do { function skippedWhileDoFactory() { class HiddenWhileDo {} } } while (false); }\nwhile ($run) {\n    do {\n        {\n            function chosenWhileDoFactory() {\n                if (false) { class Exception {} }\n                return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n            }\n        }\n    } while (false);\n    $run = false;\n}\nclass eXcEpTiOn {};\nnamespace CallerWhileDoSide;\n$first = \\WhileDoSelectedSide\\chosenWhileDoFactory();\necho !$run && $first::class === $name && $first->space() === 'WhileDoSelectedSide' ? 'first|' : 'BAD|';\n$first->value = 9; $fresh = new $name;\necho $before !== $first && $fresh !== $first && $before->value === 0 && $first->value === 9 && $fresh->value === 0 && $fresh->space() === 'WhileDoSelectedSide' ? 'fresh|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$3';\necho $last::class === $lastName ? 'last|' : 'BAD|';\ntry { \\WhileDoSelectedSide\\skippedWhileDoFactory(); echo 'BAD'; } catch (\\Error $caught) { echo 'skipped'; }\n",
+      "source_sha256": "c01a305b28ea5e33c5ca24325ca9734408e8c6497fb999a35475bba61b45b3f9",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8ZnJlc2h8bGFzdHxza2lwcGVk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-while-do-native-44/run-v1/while-do-prior-deferred/command.json",
+      "native_raw_sha256": "da701c5c9f86fa673cdff5bfac41488753c012738b8434f9b96d84cd6fcc7c5e"
+    }
+  ]
+}
