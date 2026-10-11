@@ -541,6 +541,8 @@ pass 608 physical/579 driver premises at `e6f8f16b`, including three counterfact
 receive guards and no standalone pure-query groups.
 General shared named buffers, other types, wider sites, embedded references/cycles,
 broader array/COW interactions and live REFERENCE payloads remain required.
+Actual375 over `5e996a3b` passes strict SL at `ab4c9d22`; private native/source/state
+cuts retain their original inputs without renewal.
 [Untyped named array review](coverage/semantics/iterator-call-unpack-array-named-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
