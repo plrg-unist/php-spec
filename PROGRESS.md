@@ -461,6 +461,8 @@ state groups pass 639 physical/607 driver premises at `76c89432`, with no pure
 queries, including container-to-child retirement, nonowning SOURCE guards, real
 parking and packed-cell aliasing. Extra-named/typed arrays, broader array/COW
 interactions and live REFERENCE payloads remain required; prior cuts stay frozen.
+Actual375 over `d7e80379` passes strict SL at `6b4656fd`; private native/source/state
+cuts retain their original inputs without renewal.
 [Array positional variadic review](coverage/semantics/iterator-call-unpack-array-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
