@@ -444,10 +444,24 @@ agreements pass at `917659fd` using retained native bytes. Eleven genuine-source
 state groups pass 783 physical/750 driver premises at `0465c123`, with no pure
 queries, including container-to-child cleanup, retired SOURCE authority and real
 parked ownership. Extra-named/variadic/typed array warnings, broader array/COW
-interactions and live REFERENCE payloads stay open; prior cuts remain frozen.
+interactions and live REFERENCE payloads remained required at that cut; prior cuts
+stay frozen.
 Actual375 over `8f3f57de` passes strict SL at `7f6968ed`; private native/source/state
 cuts retain their original inputs without renewal.
 [Array fixed-slot review](coverage/semantics/iterator-call-unpack-array-sent-review.json).
+
+Copied-array warnings now admit an untyped positional by-reference variadic at
+the same direct Iterator construction, with no named extras. Packed rest items
+alias fresh private cells; a nested current-item write destroys its child before
+F, while the earlier child remains until frame cleanup. Warning and parked injected
+throws retire Iterator before earlier and current containers/children. Three
+native originals pass at `f87e8531`; strict375 and three unchanged-source
+agreements pass at `ab804d84` using retained native bytes. Nine genuine-source
+state groups pass 639 physical/607 driver premises at `76c89432`, with no pure
+queries, including container-to-child retirement, nonowning SOURCE guards, real
+parking and packed-cell aliasing. Extra-named/typed arrays, broader array/COW
+interactions and live REFERENCE payloads remain required; prior cuts stay frozen.
+[Array positional variadic review](coverage/semantics/iterator-call-unpack-array-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

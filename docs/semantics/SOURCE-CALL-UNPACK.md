@@ -240,10 +240,22 @@ earlier. Each container expands its child edge once. Normal fresh-cell element
 writes destroy the current child before F, while the earlier child survives to
 frame cleanup. Real parked injection retains both containers and scalar main
 rewrites. Documentary SOURCE uses only call/key/slot metadata after array and
-child retirement. Extra-named, variadic and typed arrays stay unsupported by this
-new guard; broader COW and live-reference interactions remain open. The
+child retirement. At that fixed-slot cut, extra-named, variadic and typed arrays remained
+unsupported; broader COW and live-reference interactions remain open. The
 [array fixed-slot review](../../coverage/semantics/iterator-call-unpack-array-sent-review.json)
 keeps these originals and source frontiers separate from the first-send cut.
+
+Untyped positional by-reference variadic array sends use the same container hold
+at the direct construction site, with no named extras. Receive increments each
+incoming reference before packed insertion, so rest items alias the original
+private cells. Nested current-item writes release that child before F; the
+earlier child remains until frame cleanup. Second-warning throws and real parked
+injection retain Iterator-before-earlier-before-current cleanup. The fixed-slot
+arm remains unchanged, while the variadic arm requires integer keys and TYPEeps;
+no receive, schema or documentary contents check changes. Extra-named/typed
+arrays and broader COW/live-reference interactions remain open. The
+[positional variadic review](../../coverage/semantics/iterator-call-unpack-array-positional-variadic-review.json)
+records the three new originals separately from earlier cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

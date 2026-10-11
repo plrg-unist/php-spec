@@ -519,18 +519,22 @@ payload before later body output; a rejected class leaves only the earlier rest
 item while the TypeError trace retains both named payloads. See the
 [typed named review](coverage/semantics/iterator-call-unpack-object-typed-named-variadic-review.json).
 Copied arrays at a direct statically named Iterator construction retain their
-container through warnings into untyped fixed reference parameters. The fresh
-private cell takes that owner; an element write can release the child before
-later body output. Earlier fixed sends and reversed named slots now preserve
-parameter-slot retirement order after Iterator cleanup, including parked throws.
-See the [first-send review](coverage/semantics/iterator-call-unpack-array-review.json)
-and [fixed-slot review](coverage/semantics/iterator-call-unpack-array-sent-review.json).
+container through warnings into untyped fixed or positional variadic reference
+parameters. The fresh private cell takes that owner; an element write can release
+the child before later body output. Earlier fixed sends and reversed named slots
+preserve parameter-slot retirement order after Iterator cleanup, including
+parked throws.
+Packed positional rest items alias the private cells; a nested current-item write
+releases its child before later output while the earlier child is released during return.
+See the [first-send review](coverage/semantics/iterator-call-unpack-array-review.json),
+[fixed-slot review](coverage/semantics/iterator-call-unpack-array-sent-review.json)
+and [positional variadic review](coverage/semantics/iterator-call-unpack-array-positional-variadic-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
-those strings, extra-named/variadic/typed array warnings, broader array/COW interactions,
+those strings, extra-named/typed array warnings, broader array/COW interactions,
 reference arrays/objects, general shared named buffers and
 other type shapes and wider-site variadic object warnings remain
 required.
