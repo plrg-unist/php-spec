@@ -581,11 +581,29 @@ native bytes. Nine genuine-source state groups pass 538 physical/515 driver
 premises across retained prefixes and corrected tails, ending at `3f88b358`, with
 no standalone pure-query groups. Original alias, compiler and state fixture
 failures remain zero credit. Other reference-object sources, live payload
-replacements, reference arrays, later/named/typed sends and wider sites remain
-required.
+replacements, reference arrays, later/named/typed sends and wider sites remained
+required at that reference-object cut.
 Actual375 over `df1ed558` passes strict SL at `292e0bc8`; the parent bool-NaN task
 and Iterator snapshot compose without renewing native/source/state cuts.
 [Property reference review](coverage/semantics/iterator-call-unpack-reference-object-review.json).
+
+Stable Iterator-owned property references now retain array payloads with one
+acyclic destructible child at the same first positional, empty-buffer, direct-site
+and untyped fixed-reference target. The detached container HOLD and nonowning
+snapshot remain separate from the raw HCELL. A fresh callee cell copies the array
+on nested write when a global alias retains the original; its child survives
+through F until alias unset. Without that alias, the child retires before F.
+Warning and real parked throws retire Iterator before container and child.
+Five native originals pass at `af04e4a3`; strict375 and five unchanged-source
+agreements pass at `3f6ddf6f` using retained native bytes. Nine genuine-source state
+groups pass 617 physical/594 driver premises at `e0a34c6f`, with no standalone pure
+queries, including alias COW, retired receipts and authentic parked ownership.
+Other reference sources,
+live payload replacement, later/named/typed sends, wider sites and broader
+array/COW interactions remain required; earlier cuts retain their original inputs.
+[Property reference array review](coverage/semantics/iterator-call-unpack-reference-array-review.json).
+Exact `7925550a` composition retains the private cuts through unchanged Iterator/schema
+inputs; the disjoint parent changes require no current actor.
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

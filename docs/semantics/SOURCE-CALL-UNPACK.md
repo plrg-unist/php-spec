@@ -315,9 +315,23 @@ Normal send transfers HOLD into a fresh private callee cell; a key-created globa
 alias remains an object after that cell is cleared. Abort releases raw HCELL,
 DATA/INPUT and then detached object, preserving Iterator-before-payload output.
 Other reference sources, live payload replacement, reference arrays and broader
-send/target shapes remain required. The
+send/target shapes remained required at that object cut. The
 [property reference review](../../coverage/semantics/iterator-call-unpack-reference-object-review.json)
 preserves the corrected alias source and original failed probe separately.
+
+The same stable property-reference capture now accepts array containers with one
+acyclic destructible child, without embedded references. HOLD owns the container;
+SNAPSHOT adds no owner, and the raw HCELL remains independent. The fresh callee
+cell shares that container until a nested write separates it when the source
+global alias survives Iterator retirement. Its original child then stays alive
+through F until alias unset; without that alias, the child's destructor precedes
+F. Abort consumes raw HCELL, DATA/INPUT, held container and then its child. Active
+capture checks remain exact, while documentary SOURCE reads no retired STORE,
+property or array contents. Object-only query compatibility is retained.
+Other reference sources, live replacements, later/named/typed sends, wider sites
+and broader array/COW interactions remain required. The
+[reference array review](../../coverage/semantics/iterator-call-unpack-reference-array-review.json)
+records this slice separately from the object cut.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

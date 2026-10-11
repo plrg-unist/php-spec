@@ -552,13 +552,21 @@ cell: a separate global alias survives its clearing. Warning and parked throws
 release Iterator before the held object. A nonowning snapshot authenticates live
 callbacks; cleanup receipts remain valid after the source cell retires. See the
 [property reference review](coverage/semantics/iterator-call-unpack-reference-object-review.json).
+The same stable property-reference route now retains an array container separately
+from its raw cell. A nested write in the fresh callee cell copies the container
+when a global alias retains the original, leaving its child alive through body
+output until that alias is unset. Without the alias, the child retires before
+later output. Warning and parked throws release Iterator before the held
+container and its child. See the
+[reference array review](coverage/semantics/iterator-call-unpack-reference-array-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,
-reference arrays, other reference-object sources and live payload replacements,
+other reference-array/object sources, later/named/typed reference sends and live
+payload replacements,
 general shared named buffers and
 other type shapes and wider-site variadic object warnings remain
 required.

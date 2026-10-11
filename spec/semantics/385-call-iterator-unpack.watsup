@@ -24,6 +24,7 @@ dec $iterator_unpack_hold_allowed(pstate, piteratorunpack, text) : bool
 dec $iterator_unpack_hold_live(pstate, piteratorunpack, text) : bool
 dec $iterator_unpack_reference_allowed(pstate, piteratorunpack) : bool
 dec $iterator_unpack_reference_object(pstate, piteratorunpack) : pvalue?
+dec $iterator_unpack_reference_payload(pstate, piteratorunpack) : pvalue?
 dec $iterator_unpack_reference_property(ppropertydesc*, ppropertyslot*, nat) : bool
 dec $iterator_unpack_reference_slot(ppropertydesc*, ppropertyslot, nat) : bool
 dec $iterator_unpack_warning_snapshot(piteratorunpack, poperand) : pvalue?
@@ -126,8 +127,9 @@ def $iterator_unpack_hold_valid(piteratorunpack, "byref") = true
   -- if piteratorunpack.SNAPSHOT = eps
 def $iterator_unpack_hold_valid(piteratorunpack, "byref") = true
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
-  -- if piteratorunpack.SNAPSHOT = (POBJECT n)
-  -- if piteratorunpack.HOLD = KNOWN (POBJECT n)
+  -- if piteratorunpack.SNAPSHOT = (pvalue)
+  -- if piteratorunpack.HOLD = KNOWN pvalue
+  -- if $iterator_unpack_known_hold(piteratorunpack.HOLD)
 def $iterator_unpack_hold_valid(piteratorunpack, text) = true
   -- if piteratorunpack.HOLD = KNOWN PNULL
   -- if piteratorunpack.SNAPSHOT = eps
@@ -139,8 +141,9 @@ def $iterator_unpack_hold_allowed(S, piteratorunpack, "byref") = true
   -- if $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.HOLD)
 def $iterator_unpack_hold_allowed(S, piteratorunpack, "byref") = true
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
-  -- if piteratorunpack.SNAPSHOT = (POBJECT n)
-  -- if piteratorunpack.HOLD = KNOWN (POBJECT n)
+  -- if piteratorunpack.SNAPSHOT = (pvalue)
+  -- if piteratorunpack.HOLD = KNOWN pvalue
+  -- if $iterator_unpack_known_hold(piteratorunpack.HOLD)
   -- if $iterator_unpack_reference_allowed(S, piteratorunpack)
 def $iterator_unpack_hold_allowed(S, piteratorunpack, text) = true
   -- if piteratorunpack.HOLD = KNOWN PNULL
@@ -150,10 +153,10 @@ def $iterator_unpack_hold_allowed(S, piteratorunpack, text) = false -- otherwise
 def $iterator_unpack_hold_live(S, piteratorunpack, "byref") = true
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
   -- if piteratorunpack.SNAPSHOT = (pvalue)
-  -- if $iterator_unpack_reference_object(S, piteratorunpack) = (pvalue)
+  -- if $iterator_unpack_reference_payload(S, piteratorunpack) = (pvalue)
 def $iterator_unpack_hold_live(S, piteratorunpack, text) = true
   -- if piteratorunpack.SNAPSHOT = eps
-  -- if ~(text = "byref" /\ $iterator_unpack_reference_object(S, piteratorunpack) =/= eps)
+  -- if ~(text = "byref" /\ $iterator_unpack_reference_payload(S, piteratorunpack) =/= eps)
 def $iterator_unpack_hold_live(S, piteratorunpack, text) = false -- otherwise
 def $iterator_unpack_valid(S, piteratorunpack, text) = true
   -- if S.ORIGIN = $unpack_origin(S, piteratorunpack.CALL)
@@ -387,20 +390,25 @@ def $iterator_unpack_reference_slot(ppropertydesc_layout*, ppropertyslot, n_cell
 def $iterator_unpack_reference_slot(ppropertydesc_layout*, ppropertyslot, n_cell) = false -- otherwise
 def $iterator_unpack_reference_property(ppropertydesc_layout*, ppropertyslot :: ppropertyslot_tail*, n_cell) = ($iterator_unpack_reference_slot(ppropertydesc_layout*, ppropertyslot, n_cell) \/ $iterator_unpack_reference_property(ppropertydesc_layout*, ppropertyslot_tail*, n_cell))
 def $iterator_unpack_reference_property(ppropertydesc_layout*, eps, n_cell) = false
-def $iterator_unpack_reference_object(S, piteratorunpack) = (POBJECT n)
+def $iterator_unpack_reference_payload(S, piteratorunpack) = (pvalue)
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
   -- if S.OBJECTS[piteratorunpack.OBJECT] = INSTANCE porigin_class
   -- if $objectprops_at(S.OBJECTPROPS, piteratorunpack.OBJECT) = (ppropertyslot*)
   -- if $iterator_unpack_reference_property($property_layout(S, porigin_class, |S.CLASSES|), ppropertyslot*, n_cell)
-  -- if S.STORE[n_cell] = DEFINED (POBJECT n)
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $iterator_unpack_known_hold(KNOWN pvalue)
+def $iterator_unpack_reference_payload(S, piteratorunpack) = eps -- otherwise
+def $iterator_unpack_reference_object(S, piteratorunpack) = (POBJECT n)
+  -- if $iterator_unpack_reference_payload(S, piteratorunpack) = (POBJECT n)
 def $iterator_unpack_reference_object(S, piteratorunpack) = eps -- otherwise
-def $iterator_unpack_warning_snapshot(piteratorunpack, KNOWN (POBJECT n)) = (POBJECT n)
+def $iterator_unpack_warning_snapshot(piteratorunpack, KNOWN pvalue) = (pvalue)
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
+  -- if $iterator_unpack_known_hold(KNOWN pvalue)
 def $iterator_unpack_warning_snapshot(piteratorunpack, poperand) = eps -- otherwise
-def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN (POBJECT n))
+def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN pvalue)
   -- if piteratorunpack.CURRENT = REFERENCE n_cell
   -- if $iterator_unpack_reference_allowed(S, piteratorunpack)
-  -- if $iterator_unpack_reference_object(S, piteratorunpack) = (POBJECT n)
+  -- if $iterator_unpack_reference_payload(S, piteratorunpack) = (pvalue)
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
   -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
   -- if piteratorunpack.KEY = KNOWN pvalue_key
