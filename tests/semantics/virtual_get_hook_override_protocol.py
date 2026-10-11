@@ -316,7 +316,7 @@ DERIVED = [
     r'~$property_hook_virtual_chain(S_parent_byref,ppropertydesc_parent,|S.CLASSES|) /\ ~$property_hook_override_pair(S_parent_byref,ppropertydesc_parent,ppropertydesc_child)',
     r'phpType38_child_backed = NPropertyHook phpType14_child phpType24_child phpType4_child phpType11_child phpType16_child (NExprPropertyFetch (NExprVariable (BYTES "dGhpcw==") metadata_child) (NIdentifier (BYTES "dmFsdWU=") metadata_child) metadata_child) metadata_child',
     r'S_child_backed = S[.SOURCES = pcunit[.OCCURRENCES = $vo_replace(pcunit.OCCURRENCES,pcpath_child_hook,phpType38_child_backed)] :: pcunit_tail*]',
-    r'~$property_hook_virtual_chain(S_child_backed,ppropertydesc_child,|S.CLASSES|) /\ ~$property_hook_override_pair(S_child_backed,ppropertydesc_parent,ppropertydesc_child)',
+    r'~$property_hook_virtual_chain(S_child_backed,ppropertydesc_child,|S.CLASSES|) /\ ~$property_hook_override_pair(S_child_backed[.LINKEDPARENTS = $vo_link_replace(S.LINKEDPARENTS,porigin_child,STDCLASS_PARENT)],ppropertydesc_parent,ppropertydesc_child)',
     r'~$property_slots_valid(S,[ppropertydesc_child],[{ DECL (ppropertyhook_S_child.PROPERTY), NAME ($ptascii("value")), STATE PROP_INITIAL }]) /\ ~$property_slots_valid(S,[ppropertydesc_child],[{ DECL (ppropertyhook_S_child.PROPERTY), NAME ($ptascii("value")), STATE (PROP_VALUE (DIRECT (PINT 300))) }])',
     r'~$property_hook_valid(S_child,ppropertyhook_S_child[.HOOK = porigin_parent_hook],false) /\ ~$call_context_valid(S_child_entered,pcallcontext_hook_S_child[.LEXICAL_CLASS = (porigin_parent)],S_child_entered.CVS) /\ ~$call_context_valid(S_child_entered,pcallcontext_hook_S_child[.CALLED_CLASS = (porigin_grand)],S_child_entered.CVS)',
 ]

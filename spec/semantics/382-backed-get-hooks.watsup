@@ -124,6 +124,7 @@ def $property_hook_origin(S, ppropertydesc) = eps -- otherwise
 ;; A backed hooked parent gives a child getter physical storage independently
 ;; of whether the child's own body uses that storage.
 dec $property_hook_override_pair(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_hook_backed_over_virtual(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_override_shape(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_virtual_edge(pstate, ppropertydesc, ppropertydesc) : bool
 dec $property_hook_covariance(pstate, ppropertydesc, ppropertydesc) : pvresult
@@ -747,7 +748,20 @@ def $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = 
   -- if ppropertydesc_parent.TYPE =/= eps /\ ppropertydesc_child.TYPE =/= eps
   -- if $property_hook_covariance(S, ppropertydesc_parent, ppropertydesc_child) = PVCOMPATIBLE
 def $property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
-def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent))) \/ ($property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) /\ $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|)))
+;; A virtual parent leaves a genuinely backed child's own slot/default intact.
+def $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if $property_hook_override_backed(S, ppropertydesc_child)
+  -- if $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|)
+  -- if ppropertydesc_child.ORIGIN = porigin_property
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_child)
+  -- if $class_at(S.CLASSES, porigin_child) = (pclassdesc_child)
+  -- if $hook_property_at(pclassdesc_child.PROPERTIES, porigin_property) = (ppropertydesc_child)
+  -- if pclassdesc_child.PARENT =/= eps
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_child) = (SOURCE_PARENT porigin_parent)
+  -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc_child.KEY) = (ppropertydesc_parent)
+def $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
+def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent))) \/ ($property_hook_virtual_edge(S, ppropertydesc_parent, ppropertydesc_child) /\ $property_hook_virtual_chain(S, ppropertydesc_parent, |S.CLASSES|) /\ $property_hook_virtual_chain(S, ppropertydesc_child, |S.CLASSES|)) \/ $property_hook_backed_over_virtual(S, ppropertydesc_parent, ppropertydesc_child))
 
 ;; Before publication only the parent's chain is closed. The child's real
 ;; source/default shape supplies its declaring scope without registering it.
