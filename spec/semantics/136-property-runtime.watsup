@@ -627,7 +627,8 @@ def $assign_array(S, BASE_PROPERTY pvalue ptbytes, poperand, z) = $throw_scalar(
 
 dec $property_unset_key(pstate, pvalue, ptbytes, int) : pstate
 dec $property_unset_key_unshared(pstate, pvalue, ptbytes, int) : pstate
-def $property_unset_key(S, POBJECT n, ptbytes, z) = S[.COMPLETION = UNSUPPORTED "hooked property unset"]
+def $property_unset_key(S, POBJECT n, ptbytes, z) = $throw_scalar(S, "Error", $ptascii("Cannot unset hooked property ") ++ $object_name(S, n) ++ $ptascii("::$") ++ $c_string($property_visible_name(S, n, ptbytes)), z)
+  -- if ~$instance_storage_freeing(S, n)
   -- if $property_hook_declared(S, n, ptbytes)
 def $property_unset_key(S, POBJECT n, ptbytes, z) = $property_set_check(S, n, ptbytes, $ptascii("unset"), z)
   -- if ~$instance_storage_freeing(S, n)
