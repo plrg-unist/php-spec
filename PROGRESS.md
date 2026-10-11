@@ -17,6 +17,9 @@ Original parser, model and fixture failures retain zero failed-group credit.
 Caller Closure isolation, abrupt/fatal retirement and throwing-destructor
 interactions remain required; full core stays partial.
 [Source-static ledger](coverage/semantics/source-static-retirement-review.json).
+The 378 composition over a6fdf13c passes one exact returned-object source and
+34 public copied-return premises at 32670dbed. Earlier source/state cuts retain
+their original revisions.
 
 Opened-file identity now follows recorded compiler diagnostics: ordinary
 include/require registers afterward, while once forms register before compilation.
