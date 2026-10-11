@@ -289,7 +289,7 @@ DERIVED += [
     r'$trait_property_inherit_message(S,pclassdesc_child.NAME,pclassdesc_parent.NAME,ppropertydesc_parent,ppropertydesc_child[.STATIC = true]) = (ptbytes_static)',
     r'ptbytes_static = $ptascii("Cannot redeclare non static CovParent40::$value as static CovChild40::$value")',
     r'S_static_fatal = $property_hook_override_fatal(S,pclassdesc_child,ptbytes_static)',
-    r'S_static_fatal.COMPLETION = STATICBYTES ptbytes_static pclassdesc_child.LINE /\ S_static_fatal.ERRORORIGIN = (PORIGIN n_unit eps)',
+    r'S_static_fatal.COMPLETION = STATICBYTES ptbytes_static pclassdesc_child.LINE /\ S_static_fatal.ERRORORIGIN = S.ERRORORIGIN',
     r'$trait_property_inherit_message(S,pclassdesc_child.NAME,pclassdesc_parent.NAME,ppropertydesc_parent,ppropertydesc_child[.READONLY = true]) = (ptbytes_readonly)',
     r'ptbytes_readonly = $ptascii("Cannot redeclare non-readonly property CovParent40::$value as readonly CovChild40::$value")',
     r'$trait_property_inherit_message(S,pclassdesc_child.NAME,pclassdesc_parent.NAME,ppropertydesc_parent,ppropertydesc_child[.VISIBILITY = PROPERTY_PROTECTED]) = (ptbytes_access)',
