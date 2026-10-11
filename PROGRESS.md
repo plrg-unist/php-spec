@@ -31,9 +31,10 @@ with 13 actual PhpSteps for early no-op, runtime publication and anonymous alloc
 Changed strict3 passes at c860 (5.671s). The independent Closure admission failure
 exposed shared pattern variables; the one-line fix keeps static/byref flags independent.
 That failure and the original reserved-name native probe retain zero credit;
-syntax-only preparation/elaboration adds none. Named declarations inside explicit
-blocks/namespaces/functions/Closures, broader named headers/bodies and wider RTD
-ordering remain required. Source3/author166 retain their pointwise unchanged cut.
+syntax-only preparation/elaboration adds none. Named declarations inside standalone
+block statements, namespaces, functions or Closures, broader named headers/bodies
+and wider RTD ordering remain required. Actual375 over e68ebf38 passes strict3 at
+02c43d49 (5.575s); private source/author/peer cuts retain their revisions.
 [Mixed-class ledger](coverage/semantics/anonymous-mixed-rtd-review.json).
 
 Public noarg/by-value/untyped constructors on parentless anonymous classes now

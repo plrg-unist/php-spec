@@ -1180,6 +1180,8 @@ Plain empty global named classes can now share the unit: early declarations cons
 no RTD key; deferred declarations consume one even when never executed.
 [Three further originals](coverage/semantics/anonymous-mixed-rtd-review.json)
 check those counters, runtime publication and factory lookup before calls.
+The current375 join over e68ebf38 passes strict3 at 02c43d49 (5.575s),
+preserving the private source/state cuts.
 Wider RTD counters, factory/publication contexts, constructor arguments/types,
 inheritance, attributes and broader consumers remain required.
 The actual375 join over 57f2f4b8 passes strict3 at 77f9c0eda (5.521s);
