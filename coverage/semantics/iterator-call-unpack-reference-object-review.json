@@ -1,0 +1,211 @@
+{
+  "status": "accepted private validation",
+  "scope": "Initial REFERENCE object payload from an Iterator-owned declared untyped nonstatic ALIAS property, first positional send/empty SENT, one direct statically named Iterator construction and untyped fixed BYREF target. Handler/main leave the payload unchanged.",
+  "remaining": [
+    "Other reference-object sources, reference arrays and live payload replacement",
+    "Later, named, typed and wider-site reference-object sends",
+    "Existing general shared-buffer and array/COW boundaries"
+  ],
+  "engine_route": "SEND_UNPACK dereferences the current reference and adds the payload owner before warning dispatch, then installs a fresh call reference. HOLD owns the captured object; SNAPSHOT is nonowning identity metadata. Active admission checks the property-backed source cell and captured object. Documentary SOURCE checks structural target/site/slot authority without retired STORE/property reads. Normal send transfers the detached owner to a distinct fresh cell; raw cell, DATA/INPUT and then detached payload retire on abort. A separate global alias survives callee NULL and F. Warning and injected throws preserve the original Exception51 and Iterator-before-object order.",
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/385-call-iterator-unpack.watsup",
+    "spec/semantics/39-ownership.watsup"
+  ],
+  "catalog": "tests/semantics/iterator_call_unpack_reference_object_cases.json",
+  "source_runner": "tests/semantics/iterator_call_unpack_reference_object_sources.py",
+  "state_runner": "tests/semantics/iterator_call_unpack_reference_object_review.py",
+  "profile": "tests/semantics/profile.json",
+  "native": {
+    "observed_originals": 5,
+    "model_agreements": 0,
+    "selection": [
+      "iterator-call-unpack-reference-object-normal",
+      "iterator-call-unpack-reference-object-separate-alias",
+      "iterator-call-unpack-reference-object-warning-throw",
+      "iterator-call-unpack-reference-object-parked-resume",
+      "iterator-call-unpack-reference-object-parked-throw"
+    ],
+    "normal_reuse": {
+      "original_revision": "908b08efaa61fee2542364c48c63d0f826ead8db",
+      "expectation_revision": "8be397ccd1125078e39a7a34b629910246eb26d8",
+      "report": ".tools/calls-iterator-reference-object-34/.tools/native-normal-reuse.json",
+      "report_sha256": "bdb06d7c1f5f24c573823f12b6ff5326a1eb6d0b36d1b969d6c027f36fa203d7",
+      "fresh_native_executions": 0
+    },
+    "affected_remaining": {
+      "revision": "8be397ccd1125078e39a7a34b629910246eb26d8",
+      "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native_remaining.py",
+      "runner_sha256": "ab898726d2a7fd80d5271c3cd3a87acb6e446477d6b800d2f5bad297309ae848",
+      "report": ".tools/calls-iterator-reference-object-34/.tools/iterator-call-unpack-reference-object-native-remaining-s_0qgmxr/report.json",
+      "report_sha256": "06e46ea243d33a109194323abd6e35e0849aa38127f37d64db3c7fd8016825f4",
+      "originals": 4,
+      "host_exit": 0
+    },
+    "process_seconds": 8,
+    "jobs": 1,
+    "passed": true
+  },
+  "failures": [
+    {
+      "revision": "908b08efaa61fee2542364c48c63d0f826ead8db",
+      "report": ".tools/calls-iterator-reference-object-34/.tools/iterator-call-unpack-reference-object-native-hvst27fe/report.json",
+      "report_sha256": "481c03dc04e4972cd7738ebdf7cdaf13b7eaf542711a1ee347584adb7e468e8a",
+      "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+      "runner_sha256": "16c4c642eabd5e893db59c750ec8580b7d5a2b51a9e0e57f77d3e2da94c580d1",
+      "host_exit": 1,
+      "timeout": false,
+      "campaign_credit": 0,
+      "remaining_unrun": 3,
+      "cause": "Method-local alias rebinding did not replace the global slot. Only alias source changed to direct GLOBALS reference assignment at 8be397cc; normal raw reused, corrected alias and remaining three captured."
+    },
+    {
+      "revision": "a84fd5ace1a0d2577c0efd2863109514b5591c39",
+      "report": ".tools/calls-iterator-reference-object-34/.tools/iterator-call-unpack-reference-object-sl-b45z41eo/report.json",
+      "report_sha256": "03776dbcdeba76f9ad1047fe7474198f225bdfc86f3a333447778a16afa1d468",
+      "host_exit": 1,
+      "model_exit": 1,
+      "timeout": false,
+      "campaign_credit": 0,
+      "source_unrun": 5,
+      "cause": "Constructor-pattern otherwise mixed with non-pure premises. Pure reference_slot boolean plus list recursion correction at 78fd08436."
+    },
+    {
+      "revision": "761a1ac21cf23ed74089e8d11e2260a0bc08df55",
+      "raw": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-rf7bgiq8",
+      "process": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-rf7bgiq8/stable-property-reference-transfers-hold-to-distinct-fresh-cell/model.process.json",
+      "process_sha256": "c87920f0286014fcf926c3449365ed33af7aebc6aac8cf36ab24656f5d5ac471",
+      "host_exit": 1,
+      "model_exit": 1,
+      "timeout": false,
+      "final_report": false,
+      "campaign_credit": 0,
+      "remaining_unrun": 7,
+      "cause": "Group2 expected next-start after raw release but 257 retains an empty release task for one additional step. Only that group changed to assert both exact frontiers at 593ea84a; passed group1 retained."
+    },
+    {
+      "revision": "593ea84a2eb075e7e87264f9220bd71b2677a260",
+      "raw": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-jjhkf7ew",
+      "process": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-jjhkf7ew/retired-source-authentication-does-not-read-dead-reference-contents/model.process.json",
+      "process_sha256": "d08115fc50dc4f7336e44aa18088dad8cb6c198349da34c9bd407f64fc2167e8",
+      "host_exit": 1,
+      "model_exit": 1,
+      "timeout": false,
+      "final_report": false,
+      "campaign_credit": 0,
+      "remaining_unrun": 4,
+      "cause": "Retired raw-cell classification remains in REFCELLS; liveness is determined by allocation/owner graph. Only group5 changed to assert retained tag with absent allocation at f4618521; passed groups2\u20134 retained."
+    },
+    {
+      "revision": "f4618521c9108fb7789fde7c171c87f09e32cb04",
+      "raw": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-wcx9u4aq",
+      "process": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-wcx9u4aq/parked-reference-warning-keeps-cell-and-payload-owners-distinct/model.process.json",
+      "process_sha256": "8a6f244296152a2ad522a25b217ffe5da0e324c60b880b83b5353cda5322ed95",
+      "host_exit": 1,
+      "model_exit": 1,
+      "timeout": false,
+      "final_report": false,
+      "campaign_credit": 0,
+      "remaining_unrun": 3,
+      "cause": "Saved handler TABLE is local and has no unrelated marker. Only group6 changed to assert local absence at 3f88b358; main marker17 retained. Remaining resume/injection checks use the actual shared GLOBALTABLE, independently verified."
+    }
+  ],
+  "strict": {
+    "status": "passed",
+    "revision": "78fd08436f869dd07159e497c36153f17a7b8e6f",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "4d27f990db40eaa0cd1abb8817a5d360cd0c0f331491a7eecc8fb46b47badee0",
+    "modules": 375,
+    "process_seconds": 120,
+    "report": ".tools/calls-iterator-reference-object-34/.tools/iterator-call-unpack-reference-object-sl-vncfvg7g/report.json",
+    "report_sha256": "767ace9a22e08f568601fbe84a5879f794ed7677a4d23c479a33c12bff8254c8",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "status": "passed",
+    "command": "timeout -k 10s 450s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/native-normal-reuse.json --native-report .tools/iterator-call-unpack-reference-object-native-remaining-s_0qgmxr/report.json",
+    "runner_sha256": "dc7efba49ff4c43c825a4a644acc2b991e681819e265b83cccd49b5b1727a0bb",
+    "source_process_seconds": 75,
+    "model_seconds": 60,
+    "steps": 100000,
+    "jobs": 1,
+    "native_executions": 0,
+    "revision": "78fd08436f869dd07159e497c36153f17a7b8e6f",
+    "report": ".tools/calls-iterator-reference-object-34/.tools/iterator-call-unpack-reference-object-source-tbbn_ibf/report.json",
+    "report_sha256": "29a23c567f5c7ab719962b0f0502d875772e5837e2a55fdc687a92e2618ea07c",
+    "normal_agreements": 5,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "state_review": {
+    "status": "passed composed cuts",
+    "groups": 9,
+    "physical_main_premises": 538,
+    "driver_assertions": 515,
+    "pure_query_groups": 0,
+    "process_seconds": 180,
+    "seek_steps": 4000,
+    "finish_steps": 4000,
+    "jobs": 1,
+    "revision": "3f88b358ec9dce9a8ac7224f3e818a0f1b01f4ca",
+    "command": "timeout -k 10s 850s prlimit --as=6442450944 -- python3 -u .tools/reference-object-state-180.py --case parked-reference-warning-keeps-cell-and-payload-owners-distinct --case resumed-reference-warning-transfers-the-same-payload-to-a-fresh-cell --case injected-reference-warning-retires-iterator-before-held-object --case fresh-argument-clearing-destroys-unaliased-object-before-F",
+    "runner_sha256": "17e9cbf29bf78f662b087a2e08d59790587a4d57755035707909af425417ed7e",
+    "fixture_sha256": "1caa6aa53c2d6c93650374d0f536510c8f3a75da26ab370a51effca56f3d8f53",
+    "retained_cuts": [
+      {
+        "revision": "761a1ac21cf23ed74089e8d11e2260a0bc08df55",
+        "command": "timeout -k 10s 1750s prlimit --as=6442450944 -- python3 -u .tools/reference-object-state-180.py",
+        "fixture_sha256": "1442f922d4c0ae49cd5a6ca73c7b4dd46a2f2b66fa7c634aaf0fd1cb438adaac",
+        "process": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-rf7bgiq8/property-reference-warning-adds-payload-owner-with-nonowning-snapshot/model.process.json",
+        "process_sha256": "9f33c0b287181acb42345a4b1b1301c09745e8d72c257d35d738a72389b176bd",
+        "groups": 1,
+        "physical_main_premises": 60,
+        "driver_assertions": 60,
+        "passed": true
+      },
+      {
+        "revision": "593ea84a2eb075e7e87264f9220bd71b2677a260",
+        "command": "timeout -k 10s 1550s prlimit --as=6442450944 -- python3 -u .tools/reference-object-state-180.py --case stable-property-reference-transfers-hold-to-distinct-fresh-cell --case global-alias-survives-clearing-the-fresh-callee-cell --case warning-throw-retires-raw-cell-before-data-input-and-detached-object --case retired-source-authentication-does-not-read-dead-reference-contents --case parked-reference-warning-keeps-cell-and-payload-owners-distinct --case resumed-reference-warning-transfers-the-same-payload-to-a-fresh-cell --case injected-reference-warning-retires-iterator-before-held-object --case fresh-argument-clearing-destroys-unaliased-object-before-F",
+        "fixture_sha256": "dc37989967a5aaf6af9c6807c6bae805862e67cf7cd2444f783142b5d1948e53",
+        "raw": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-jjhkf7ew",
+        "selection": [
+          "stable-property-reference-transfers-hold-to-distinct-fresh-cell",
+          "global-alias-survives-clearing-the-fresh-callee-cell",
+          "warning-throw-retires-raw-cell-before-data-input-and-detached-object"
+        ],
+        "process_sha256": [
+          "5bd1205d854915cdfebaf8138cd957bd47ae1aafbbc6a552d70620d029d3ea74",
+          "5bdc3e0b6319238ad761316fcb8d06af8b6d4ef9fecdd070bdb242e4af9d6313",
+          "970009c3fd835e50afb5d4ab5a07ab90932c6fee73d1cafafb6c02bdab714b9e"
+        ],
+        "groups": 3,
+        "physical_main_premises": 197,
+        "driver_assertions": 191,
+        "passed": true
+      },
+      {
+        "revision": "f4618521c9108fb7789fde7c171c87f09e32cb04",
+        "command": "timeout -k 10s 1000s prlimit --as=6442450944 -- python3 -u .tools/reference-object-state-180.py --case retired-source-authentication-does-not-read-dead-reference-contents --case parked-reference-warning-keeps-cell-and-payload-owners-distinct --case resumed-reference-warning-transfers-the-same-payload-to-a-fresh-cell --case injected-reference-warning-retires-iterator-before-held-object --case fresh-argument-clearing-destroys-unaliased-object-before-F",
+        "fixture_sha256": "4528c1571dd718b9cc04efb130d895050dd54e0acf477156f5441765c46fc3eb",
+        "process": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-wcx9u4aq/retired-source-authentication-does-not-read-dead-reference-contents/model.process.json",
+        "process_sha256": "79bfc4b6f84f90033ad1c21012314f8ea3ed04bdb246575de906d4249b5287fd",
+        "groups": 1,
+        "physical_main_premises": 45,
+        "driver_assertions": 41,
+        "passed": true
+      }
+    ],
+    "selected_groups": 4,
+    "selected_physical_main_premises": 236,
+    "selected_driver_assertions": 223,
+    "report": ".tools/calls-iterator-reference-object-34/.tools/fiber-state-review-7cgzj11g/report.json",
+    "report_sha256": "a7bdcdbc9a69429e0d8bb2db5e7a8151e4ccb6e0b5fa88db4e0332a3cb300e90",
+    "host_exit": 0,
+    "passed": true
+  },
+  "retention": "Composed state9=538/515 uses retained group1@761a60/60, groups2\u20134@593e197/191, group5@f46145/41 and final4@3f88236/223. Whole failed native/compiler/state waves remain zero credit; their accepted prefixes retain saved process identities. Original raw paths/providers remain unchanged in ignored .tools without copies or backups. Earlier global-only REFERENCE-object Unsupported control and accepted cuts remain frozen."
+}

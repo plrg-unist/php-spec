@@ -545,13 +545,21 @@ through later body output and retire in named insertion order. This abstracts
 Zend's shared rest table before the write, without claiming native table identity
 or owner counts. See the
 [untyped named array review](coverage/semantics/iterator-call-unpack-array-named-variadic-review.json).
+An Iterator-owned untyped property returned by reference now retains a detached
+object payload across the first positional warning at a direct construction and
+untyped fixed reference target. The fresh callee cell is independent of the source
+cell: a separate global alias survives its clearing. Warning and parked throws
+release Iterator before the held object. A nonowning snapshot authenticates live
+callbacks; cleanup receipts remain valid after the source cell retires. See the
+[property reference review](coverage/semantics/iterator-call-unpack-reference-object-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
 those strings, other typed array warnings, broader array/COW interactions,
-reference arrays/objects, general shared named buffers and
+reference arrays, other reference-object sources and live payload replacements,
+general shared named buffers and
 other type shapes and wider-site variadic object warnings remain
 required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "iterator-call-unpack-reference-object-normal",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34(&$item) { echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "5a287fdfc9b4bdc610c19ec0f42b78cd90281eb68d4a43ae8d24f72cfff28ec4",
+    "purpose": "Iterator-owned reference payload gains a detached object owner before the warning; fresh argument clearing destroys it after Iterator teardown and before F.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|21|X|V|I|B|O|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-object-separate-alias",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; $GLOBALS[\"alias\"] =& $this->payload; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34(&$item) { echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\n$alias = null;\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho $alias === null ? \"NULL|\" : \"HELD|\";\nunset($alias);\necho \"E\";\n",
+    "source_sha256": "043db38a968de48f698758d744f573a29ed60dd5c404b0f8cceb25a16e5d76f9",
+    "purpose": "A global symbol-table alias created by key() stays nonnull after the fresh callee cell is cleared; alias removal occurs only after F.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|22|X|V|I|B|F|HELD|O|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-object-warning-throw",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34(&$item) { echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    throw $failure;\n});\ntry { ReferenceTarget34(...new ReferenceIterator34()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\necho \"E\";\n",
+    "source_sha256": "9d57d921a0a367f06fddad4ed6cd637b853139844fcfc951cd6e12f910366575",
+    "purpose": "Original shared Exception51 survives warning abort while raw source cell and Iterator retire before detached payload.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|21|I|O|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-object-parked-resume",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34(&$item) { echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$marker = 0;\n$fiber = new Fiber(static function () {\n    try { ReferenceTarget34(...new ReferenceIterator34()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$marker = 17;\n$fiber->resume();\necho \"M|\", $marker, \"|\";\necho \"E\";\n",
+    "source_sha256": "e3b58c2cde3d758823a178b50d28a64a797fb592a9f4e733e84165cec71743a3",
+    "purpose": "A real parked warning retains distinct source reference-cell and detached object owners; main mutates only an unrelated scalar marker.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|24|P|X|V|I|B|O|F|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-reference-object-parked-throw",
+    "source": "<?php\nclass ReferencePayload34 { public function __destruct() { echo \"O|\"; } }\nclass ReferenceIterator34 implements Iterator {\n    public $payload;\n    private int $position = 0;\n    public function __construct() { $this->payload = new ReferencePayload34(); }\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { echo \"C|\"; return $this->payload; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ReferenceTarget34(&$item) { echo \"B|\"; $item = null; echo \"F|\"; }\n$failure = new Exception(\"stop\", 51);\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    Fiber::suspend(\"P\");\n    return true;\n});\n$marker = 0;\n$fiber = new Fiber(static function () {\n    try { ReferenceTarget34(...new ReferenceIterator34()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$marker = 17;\n$fiber->throw($failure);\necho \"M|\", $marker, \"|\";\necho \"E\";\n",
+    "source_sha256": "1d0be67f43a427d3e5632a4495764bea14a11e0dc1815e971d99a84d66dc0be5",
+    "purpose": "A real parked warning retains distinct source reference-cell and detached object owners; main mutates only an unrelated scalar marker.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 1 of ReferenceTarget34() by unpacking a Traversable, passing by-value instead|24|P|I|O|T|51|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

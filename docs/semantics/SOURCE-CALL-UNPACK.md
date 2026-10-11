@@ -302,6 +302,23 @@ cycles and broader COW/live-reference interactions remain required. The
 [untyped named array review](../../coverage/semantics/iterator-call-unpack-array-named-variadic-review.json)
 records three new originals separately from the typed cut.
 
+Initial reference-object payloads are now admitted when CURRENT is the ALIAS cell
+of an Iterator-owned declared untyped nonstatic property. This bounded route uses
+the first positional send, empty sent buffer, direct statically named Iterator
+construction and untyped fixed by-reference target. SEND_UNPACK dereferences and
+adds a payload owner before warning dispatch; HOLD owns that object independently
+of the raw HCELL. SNAPSHOT records its identity without adding an owner. Live
+callback admission checks property/source-cell identity and rejects missing,
+foreign or changed captures. Documentary SOURCE checks only frozen structural
+authority after retirement, without reading dead STORE/property contents.
+Normal send transfers HOLD into a fresh private callee cell; a key-created global
+alias remains an object after that cell is cleared. Abort releases raw HCELL,
+DATA/INPUT and then detached object, preserving Iterator-before-payload output.
+Other reference sources, live payload replacement, reference arrays and broader
+send/target shapes remain required. The
+[property reference review](../../coverage/semantics/iterator-call-unpack-reference-object-review.json)
+preserves the corrected alias source and original failed probe separately.
+
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper
 calls `i_zend_is_true`, retires that retval, then permits SEND_UNPACK to check the

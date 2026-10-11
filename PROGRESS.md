@@ -555,10 +555,28 @@ pass at `06189ef8` using retained native bytes. Eight genuine-source state group
 pass 608 physical/579 driver premises at `e6f8f16b`, including three counterfactual
 receive guards and no standalone pure-query groups.
 General shared named buffers, other types, wider sites, embedded references/cycles,
-broader array/COW interactions and live REFERENCE payloads remain required.
+broader array/COW interactions and live REFERENCE payloads remained required at
+that untyped named-array cut.
 Actual375 over `5e996a3b` passes strict SL at `ab4c9d22`; private native/source/state
 cuts retain their original inputs without renewal.
 [Untyped named array review](coverage/semantics/iterator-call-unpack-array-named-variadic-review.json).
+
+Property-backed Iterator reference objects now retain a detached payload owner
+across the first positional warning at a direct construction, empty sent buffer
+and untyped fixed by-reference target. A nonowning snapshot authenticates the live
+source cell; retired SOURCE receipts do not read dead STORE/property contents.
+The fresh callee cell is independent: a separate global alias survives its NULL
+write through F. Warning and real parked throws retire Iterator before payload;
+main changes only an unrelated scalar marker. Five native originals are observed
+across retained normal and corrected-alias/remaining captures at `8be397cc`.
+Strict375 and five unchanged-source agreements pass at `78fd0843` using retained
+native bytes. Nine genuine-source state groups pass 538 physical/515 driver
+premises across retained prefixes and corrected tails, ending at `3f88b358`, with
+no standalone pure-query groups. Original alias, compiler and state fixture
+failures remain zero credit. Other reference-object sources, live payload
+replacements, reference arrays, later/named/typed sends and wider sites remain
+required.
+[Property reference review](coverage/semantics/iterator-call-unpack-reference-object-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
