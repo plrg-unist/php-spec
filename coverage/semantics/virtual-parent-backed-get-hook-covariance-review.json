@@ -1,0 +1,271 @@
+{
+  "scope": "Named nonabstract, nonfinal public plain by-value get overrides: a positively closed virtual parent and a genuine own-body-backed child with both TYPEs present and its own literal default. Builtin int|string to int and linked nullable Animal to Dog narrowing; intervening classes and runtime descendants.",
+  "implementation": {
+    "files": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "engine": [
+      "vendor/php-src/Zend/zend_inheritance.c: prop_get_variance, do_inherit_property, inherit_property_hook"
+    ],
+    "change": "Variance is selected by the closed virtual get-only parent. Prelink compatibility authenticates the unpublished child own descriptor/body; linked admission uses the existing one-way virtual edge while retaining child SOURCE_PARENT/parent-layout proof. The backed-parent equality walk, pure variance, layout/default/runtime/task/ownership rules remain unchanged.",
+    "maintained_fixture": "Directly superseded M40 DERIVED25 now checks missing-child-link refusal for the covariant body-backed mutation; its virtual-chain refusal and historical cuts remain. M44 stage8 and two write RHS patterns use the authentic INTERNED_STRING carrier; Throwable message bytes and real execution assertions are unchanged."
+  },
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor pin 34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "binaries": {
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "AL_compiler_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "SL_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "recorders": {
+    "native_source_sha256": "b9d9cba86094a604c05c6c185884a81a4fc266c06e73bc3ce4cf8a7566e7c561",
+    "strict_sha256": "c1e10b4de4dcca0daefbaa0aef00c17f940d854ed6d90bbbe28e700471f1b6c3"
+  },
+  "native": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-probes-44/native-first/report.json",
+    "report_sha256": "525ac11fe3d702c091ec12da6df3cb5dbcda1a305b78ca94d354e8e5b730e1be",
+    "revision": "661bfef1431891a0c1179919a3c9781315821cb4",
+    "process_observations": 3,
+    "exits": [
+      0,
+      0,
+      255
+    ],
+    "completed": true,
+    "stable_and_reaped": true,
+    "source_agreements": 0,
+    "result": "Parent EMPTY versus child/grand slot200; child/private getter213 and inherited This; store300 followed by rejected string TypeError at line36 preserves300/getter313. Stored S releases at receiver cleanup while kept returned Dog R survives. Getter widening fails at child hook6, not class5."
+  },
+  "unchanged_baseline": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-probes-44/accepted-current-baseline/report.json",
+    "report_sha256": "ff6459d9b28907e7ffc27f05a57a41fc46dc9103c552fb53c5f0daad8fab0d84",
+    "revision": "661bfef1431891a0c1179919a3c9781315821cb4",
+    "checked_originals": 3,
+    "source_agreements": 0,
+    "stable_and_reaped": true,
+    "outcomes": {
+      "scalar": "static_rejection: invariant string|int property error at child class11",
+      "lifetime": "php_error/CompileError: invariant ?Animal property error at child class25",
+      "invalid": "static_rejection: invariant int property error at child class5"
+    },
+    "result": "All three checked programs complete; none matches native. The lifetime baseline is php_error, not Unsupported or static_rejection."
+  },
+  "strict": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-probes-44/virtual-parent-backed-get-hook-covariance-compiler-hzjetdkf/report.json",
+    "report_sha256": "d9d033de1167d6443136fc0ed6d7294d27b24d7a660bc06732d4039d142e3413",
+    "revision": "f902fe15951ca70448ab8ae33b4922cb1a85c332",
+    "modules": 375,
+    "seconds": 5.829425,
+    "result": "PASS exact SL initialization",
+    "stable_and_reaped": true,
+    "application_evaluations": 0,
+    "source_agreements": 0
+  },
+  "sources": {
+    "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-probes-44/changed-model-kb9nyysy/report.json",
+    "report_sha256": "454e9a91c8e3618ca717bf9fd4477351adea76fa12f8e3596e55274e79000aab",
+    "revision": "f902fe15951ca70448ab8ae33b4922cb1a85c332",
+    "checked_originals": 3,
+    "source_agreements": 3,
+    "seconds": {
+      "scalar": 15.282727,
+      "lifetime": 24.933404,
+      "invalid": 6.649683
+    },
+    "outcomes": [
+      "normal",
+      "normal",
+      "static_rejection"
+    ],
+    "stable_and_reaped": true,
+    "result": "All three original full stdout/stderr streams and exits0/0/255 match retained native exactly."
+  },
+  "catalogue": {
+    "path": "tests/semantics/virtual_parent_backed_get_hook_covariance_cases.json",
+    "sha256": "5bd378cd2c6ad5ce6bf1c048e04fc62b57de7027f0ebe33d9a425702b9954b13",
+    "protocol": "tests/semantics/virtual_parent_backed_get_hook_covariance_protocol.py",
+    "protocol_sha256": "755b2c1297aa200540c9a1a540369cab69a320b17fca0dcb7b03a3f5a0d4ead2",
+    "original_source_sha256": {
+      "scalar": "3a323345fb78e20aa4dd917025711a167b8d4432e3d80f2b7411bc5fd315fb87",
+      "lifetime": "9215c9b0273945ee0d28826938b5686cf36f03c0519f2eadf84d5fe6731d4569",
+      "invalid": "ff43cb4c91066a5634650c9441ee17f07c41afc9a3880c2cc9f4d28fc0f15a6e"
+    }
+  },
+  "state": {
+    "cuts": [
+      {
+        "group": "cv",
+        "revision": "5cc79ee048bc7960414f50ff4fac5c42e70b26c2",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-protocol-29xd1732/report.json",
+        "report_sha256": "6d7303ce541cf8505517481aaa092dc76055cf781366f0ad20e993a82b30d08f",
+        "fixture_sha256": "f40e01ac73881f4175ca1bc7b1f11a2d272af9869d87359983ccb9604fe84689",
+        "reached": 72,
+        "derived": 56,
+        "AL_seconds": 5.019749,
+        "SL_seconds": 27.398385,
+        "result": "PASS raw true",
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable_and_reaped": true
+      },
+      {
+        "group": "this",
+        "revision": "5cc79ee048bc7960414f50ff4fac5c42e70b26c2",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-protocol-f3y82vea/report.json",
+        "report_sha256": "2973d6b55eb1eb2af93b50d18af01e7f85e46597cadd640c74deb3ece4767e4f",
+        "fixture_sha256": "36d1dff2a9fe16554359d17cb0f666311deb08244e48949e689b4cff11484cd2",
+        "reached": 71,
+        "derived": 0,
+        "AL_seconds": 5.166437,
+        "SL_seconds": 31.62657,
+        "result": "PASS raw true",
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable_and_reaped": true
+      },
+      {
+        "group": "write",
+        "revision": "d2ae7862b8feca77cbc4fae52498090ae37550ce",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-protocol-hlbn526a/report.json",
+        "report_sha256": "f29e3b378a534b8d3f68a74490e933bd8a0b6893d43eac8a879ae5c6093a9695",
+        "fixture_sha256": "3749ab8f97d3792715f03812a77a812fe3ff7b42f94f784f05da2b23d4e6362c",
+        "reached": 86,
+        "derived": 0,
+        "AL_seconds": 5.080784,
+        "SL_seconds": 38.120389,
+        "result": "PASS raw true",
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable_and_reaped": true
+      },
+      {
+        "group": "lifetime",
+        "revision": "d2ae7862b8feca77cbc4fae52498090ae37550ce",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-protocol-qhuz8opc/report.json",
+        "report_sha256": "3956dd1d5a9eb78b7617c13f4f5de4dcc6391a8b74eef61c1c3fb4bf19cdc3ce",
+        "fixture_sha256": "03af3b96bd63e3a8801f6893b225884b8ef02b9cac0a80a536f19829371e83ff",
+        "reached": 111,
+        "derived": 0,
+        "AL_seconds": 5.111118,
+        "SL_seconds": 76.856187,
+        "result": "PASS raw true",
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable_and_reaped": true
+      },
+      {
+        "group": "invalid",
+        "revision": "d2ae7862b8feca77cbc4fae52498090ae37550ce",
+        "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-protocol-elbu4565/report.json",
+        "report_sha256": "284842df8fe9d0f452b1033483f53af619ea59db56005c6341a039dcb850a3c5",
+        "fixture_sha256": "25dfee856360f9b6943cf556b58be66cd5125c886ea5b9cf85cd39401d4fa347",
+        "reached": 18,
+        "derived": 0,
+        "AL_seconds": 5.115684,
+        "SL_seconds": 7.06378,
+        "result": "PASS raw true",
+        "application_evaluations": 1,
+        "source_agreements": 0,
+        "stable_and_reaped": true
+      }
+    ],
+    "total_reached": 358,
+    "total_derived": 56,
+    "application_invocations": 5,
+    "source_agreements": 0,
+    "note": "Five separate selected invocations, including repeated setup. CV/This retain their 5cc cuts; write/lifetime/invalid use the carrier-corrected d2ae fixtures. No combined invocation is claimed."
+  },
+  "state_contract": [
+    "Real linked descriptors/Bridge layout and closed virtual ancestry select covariance; child own narrowed default/physical slot and active backing bypass remain. CV1-to2-to1 and This3-to3-to2 preserve Child private13, Grand called scope and restored ParentRead caller.",
+    "Genuine store300 and interned-string bad RHS retain the actual target; raw TypeError names declaring Child/line36 without mutating300. Real throwable allocation/search/catch yields final313.",
+    "Active nullable Dog-to-Animal registry is authenticated. Distinct S slot ownership and fresh R RESULT1-toBASE2-tokept1; real post-destructor storageNEXT0/slot-transfer/filtered UNSET frees S/receiver while R1 survives, then separate kept UNSET gives DR/weak-null.",
+    "Genuine php_run rejection authenticates synthesized signatures, getter hook6 versus class5, ERRORORIGIN eps, parent publication/child absence and no body effects.",
+    "Fifty-six derived controls cover type/source/default/parent/link/context/rollback refusals. Effective-backing classification controls show body-unbacked physical backing; their prospective child is a TYPE-mutated parent descriptor, not a third source declaration, so that refusal alone does not isolate the parent-variance guard."
+  ],
+  "failures_and_localization": [
+    {
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-protocol-9qnh9nwf/report.json",
+      "report_sha256": "95acdba2c287419cf193f886d4f26d994ccea184335082b37dcd152841da773d",
+      "revision": "5cc79ee048bc7960414f50ff4fac5c42e70b26c2",
+      "fixture_sha256": "90322d49e2dc51cdb53fd9125cd7d960b929c9f3432449de021387cf938028fc",
+      "AL_seconds": 5.017632,
+      "SL_seconds": 23.291291,
+      "application_evaluations": 1,
+      "state_gate_credit": 0,
+      "source_agreements": 0,
+      "stable_and_reaped": true,
+      "result": "Original write86 returns false; the stage8 byte-only predicate misses the authentic interned-string RHS. Lifetime/invalid were unrun in this stop-first packet.",
+      "application_invocations": 1
+    },
+    {
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-write-diagnostic-5cc/report.json",
+      "report_sha256": "f8da2b858265a0b11f64619dbd924c3bbcee346d1273880e2162c2724038b18f",
+      "revision": "5cc79ee048bc7960414f50ff4fac5c42e70b26c2",
+      "fixture_sha256": "269e4fede24fb506bf183653e01b45cccbe1a022365d52536ab649e53c3f8127",
+      "AL_seconds": 5.039495,
+      "SL_seconds": 23.342691,
+      "state_gate_credit": 0,
+      "source_agreements": 0,
+      "stable_and_reaped": true,
+      "result": "Prefix/known-atom observer returns its fallback; it establishes no store/throw observations.",
+      "application_invocations": 1
+    },
+    {
+      "report": ".tools/coalesce-get-hooks-private-32/.tools/virtual-parent-backed-get-hook-covariance-write-frontiers-diagnostic-5cc/report.json",
+      "report_sha256": "76d468fd8352601ba1f18306d4a49c21f63dcb0d7c5f6c11c4442f393bb1d6c6",
+      "revision": "5cc79ee048bc7960414f50ff4fac5c42e70b26c2",
+      "fixture_sha256": "14a8d8fe16930826508148b1169aaa9e6d37d3264decd6106770a3b488148bd9",
+      "AL_seconds": 5.033012,
+      "SL_seconds": 15.79287,
+      "state_gate_credit": 0,
+      "source_agreements": 0,
+      "stable_and_reaped": true,
+      "result": "Actual-frontier observer confirms store300, real owner release, then terminal exact-native output without finding stage8. Compiled literal/return helpers preserve INTERNED_STRING, localizing the three fixture patterns.",
+      "application_invocations": 1
+    }
+  ],
+  "remaining": [
+    "Backed or effective-backed parents retain invariant property types; body-unbacked effective-backing-chain variance and wider TYPE-presence changes are not covered here.",
+    "Wider unresolved nominal compatibility, setters, by-reference hooks, traits, plain redeclarations/ordinary parents, abstract/final/asymmetric forms and broader hook inheritance remain partial."
+  ],
+  "commands": {
+    "native": "python3 .tools/virtual-parent-backed-get-hook-covariance-probes-44/run.py native --revision 661bfef1431891a0c1179919a3c9781315821cb4",
+    "baseline": "python3 .tools/virtual-parent-backed-get-hook-covariance-probes-44/run.py baseline --revision 661bfef1431891a0c1179919a3c9781315821cb4",
+    "strict": "python3 .tools/virtual-parent-backed-get-hook-covariance-probes-44/run-compiler.py 661bfef1431891a0c1179919a3c9781315821cb4 f902fe15951ca70448ab8ae33b4922cb1a85c332",
+    "sources": "python3 .tools/virtual-parent-backed-get-hook-covariance-probes-44/run.py changed --revision f902fe15951ca70448ab8ae33b4922cb1a85c332",
+    "state": [
+      "python3 tests/semantics/virtual_parent_backed_get_hook_covariance_protocol.py --revision 5cc79ee048bc7960414f50ff4fac5c42e70b26c2 --group <cv|this>",
+      "python3 tests/semantics/virtual_parent_backed_get_hook_covariance_protocol.py --revision d2ae7862b8feca77cbc4fae52498090ae37550ce --group <write|lifetime|invalid>"
+    ],
+    "localization": [
+      "python3 .tools/virtual-parent-backed-get-hook-covariance-write-diagnostic-5cc/run.py",
+      "python3 .tools/virtual-parent-backed-get-hook-covariance-write-frontiers-diagnostic-5cc/run.py"
+    ],
+    "caps": "Native45; model60/outer75/100000 steps; strictSL60 init-only; selected stateAL90 then conditionalSL90; diagnosticAL90 then conditionalSL60; jobs1/stop-first/reap, LC_ALL=C/TZ=UTC, cachefalse/dettrue."
+  },
+  "recovery": "Historical commands run from retained private32. Original ignored inputs, failed/passing raw streams, runners and binaries remain at exact paths. Permanent catalogue/protocol regenerate selected fixtures. Production382 is byte-identical to strict/source-tested f902 at both state revisions; the d2ae delta is fixture-only. Prior CLASS cuts keep their original identities without renewal.",
+  "composition": {
+    "canonical_parent": "e5f605aa5a78c3f91ad08a00448c6b836b9eaffc",
+    "publication": "88c862fe9ba5fb7393e9a71dbcfad403c566c93f",
+    "modules": 375,
+    "result": "Independent pointwise compatibility review; no current compiler or application invocation.",
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "seam": "Since the private base, 156 adds a lifecycle proof only for genuine reference-return cursors/ref_chain_site or consumed_valid; 270 only relocates its declaration. 253 handles computed Closure capture; 383 adds anonymous Do factories; 385 requires Iterator/byref warning snapshots; 30/380 add magic-getter bool-NaN carriers. Named plain by-value hook originals use none of those carriers. Critical134/136/154/228/238/382 inputs and manifest remain unchanged before this join. Joined382, affected M40 helper and new tests retain publication blobs; every other parent semantic blob remains exact, and inventory is the parent plus nine reviewed appends. Private f902 strict/source3 and five separate 5cc/d2ae state cuts retain their identities without renewal."
+  }
+}

@@ -1011,11 +1011,25 @@ keeps the runtime descendant. Strict375 and two originals pass at `3f03c88b`.
 Separate CV104 (69 reached, 35 derived), This68, write64 and lifetime104 pass at
 `c6ff1271` (305 reached, 35 derived across four setups). These check child slot 200,
 raw write 300/getter 313, ancestry refusals and stored-S release independently of
-retained-R cleanup. Layout/default/runtime/owner rules and prior cuts stay unchanged;
-unequal types and wider hook inheritance remain required.
+retained-R cleanup. Layout/default/runtime/owner rules and prior cuts stay unchanged.
 [Virtual-parent review](coverage/semantics/virtual-parent-backed-get-hook-review.json).
 Exact `c1198518` composition retains private strict/source/state cuts through
 unchanged hook/layout/task interfaces; the disjoint additions require no new actor.
+
+Virtual get-only parents now admit covariant own-body-backed children with both
+TYPEs present. Builtin and linked nullable nominal narrowing retain the child
+slot/default, private scope and inherited `$this` dispatch. An incompatible string
+store preserves slot 300 and raises TypeError at line 36; getter widening fails at
+hook line 6. Strict375 and three originals pass at `f902fe15`. Separate CV128
+(72 reached, 56 derived) and This71 pass at `5cc79ee0`; write86, lifetime111 and
+invalid18 pass at `d2ae7862` (358 reached, 56 derived across five setups).
+The write fixture's literal-carrier correction preserves the original false cut
+and both zero-credit localizations. Layout/default/tasks/pure variance remain
+unchanged; backed-parent invariance, wider TYPE-presence and effective-backing
+variance remain boundaries.
+[Backed-child covariance review](coverage/semantics/virtual-parent-backed-get-hook-covariance-review.json).
+Exact `e5f605aa` composition carries these cuts through unchanged hook/type/layout paths;
+the disjoint parent additions require no current actor.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
