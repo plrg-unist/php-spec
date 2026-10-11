@@ -1175,10 +1175,12 @@ existing borrowed root slot, without adding a heap owner. A real WeakReference
 temporary promotes that slot; ordinary release clears weak lookup under the
 storage cleanup pin. The original agrees with native PHP and 203 reached
 source/control checks pass. A fresh `stdClass` child created after the final trace
-may be a leaf or have exactly one self-edge. Native PHP agrees with both originals;
-199 leaf and212 self-cycle checks cover retention and the distinct release paths.
-After ordinary parent release, the child cycle survives for the next collection.
-Wider worker, shared and nested child cases remain required.
+may be a leaf, have exactly one self-edge, or point to one fresh `stdClass` leaf
+with unique incoming owners. Native PHP agrees with all three originals;
+199 leaf,212 self-cycle and227 chain checks cover retention, temporary release
+and later collection.
+Ordinary parent release disposes the acyclic children; the self-cycle waits for
+the next collection. Wider graphs, shared owners and worker cases remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

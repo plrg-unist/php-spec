@@ -1784,6 +1784,16 @@ references, arrays, workers and pending collectors remain required; existing lea
 behavior, count folding and source41 OPEN/zero cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
+Main PASS1 preparation325 also retains a fresh child→leaf `stdClass` chain,
+with each descendant owned only by its incoming parent and outside frozen
+GRAPH/FREESET. At `d690cf5e`/375, compiler/init, native86 source agreement and227
+reached source/control checks (retention137/leaf-temporary90) pass. Real FREE
+keeps the borrowed parent and full chain; the leaf's BASE/operand copies release
+3→2→1 without losing either edge. Shape/type/owner/frozen/slot/DONE controls and
+zero/one replay pass. Baseline64 localizes the old refusal; its initial text/bytes
+fixture elaboration failure retains zero credit. Wider child graphs and earlier
+OPEN/zero cuts remain unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
+
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
 Seven exact originals and117 independent premises retain `c2a1051db`/331. Actual335

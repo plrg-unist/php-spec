@@ -168,14 +168,24 @@ arrays, workers and pending contexts remain required; folds and owners are uncha
 
 The fresh child can also have exactly one self-edge and total owner count2: the
 parent edge plus that self-edge. Existing leaf admission and all type, allocation,
-frozen-graph/FREESET, current-slot and consumer fences remain. Extra owners,
-nonself or multiple child edges fail admission. Actual FREE retains the borrowed
-parent at owner0 without adding a machine root; after ordinary parent release the child
+frozen-graph/FREESET, current-slot and consumer fences remain. The self-cycle lane
+excludes extra owners, nonself and multiple child edges. Actual FREE retains the
+borrowed parent at owner0 without adding a machine root; after ordinary parent release the child
 has only its self-owner and current ordinary root. The next real collection
 traces and frees that cycle. At `746417`/375, compiler/init, exact native66 source
 agreement and212 reached checks (130/82) cover both frontiers, coherent negatives
 and budget replay. Baseline54 authenticates the former refusal; broader child
 graphs, reference/array shapes and worker/pending contexts remain required.
+
+A separate lane admits a fresh `stdClass` child pointing to one fresh `stdClass`
+leaf. Both allocated descendants lie outside frozen GRAPH/FREESET, have exactly
+one incoming owner each, and the leaf has no children. Existing parent, slot and
+consumer checks preserve the full chain without a new owner or count change.
+At `d690cf5e`/375, compiler/init, native86 source agreement and227 reached checks
+(137/90) cover real FREE retention, coherent graph/owner/type/frozen/slot/DONE
+fences and the leaf's actual BASE/operand release3→2→1 with budget replay.
+Ordinary parent release disposes the chain in the original source. Deeper/shared/
+cyclic leaf graphs, references/arrays and worker/pending contexts remain required.
 
 Module335 extends that storage admission to normal detached-worker close after
 the collection is quiescent. It requires the actual control-release, operation-exit
