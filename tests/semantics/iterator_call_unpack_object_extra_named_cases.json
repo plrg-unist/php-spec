@@ -1,0 +1,52 @@
+[
+  {
+    "id": "iterator-call-unpack-object-extra-named-fixed-to-extra-normal",
+    "source": "<?php\nclass ExtraEarlier24 { public function __destruct() { echo \"A|\"; } }\nclass ExtraCurrent24 { public function __destruct() { echo \"B|\"; } }\n$earlier = new ExtraEarlier24();\n$current = new ExtraCurrent24();\n$failure = new Exception(\"stop\", 51);\nclass ExtraNamedIterator24 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"first\" : \"extra\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ExtraNamedTarget24($first, &...$rest) { echo \"G|\"; $rest[\"extra\"] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    return true;\n});\ntry { ExtraNamedTarget24(...new ExtraNamedIterator24()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "d59865c4202104c37dbef9fddcdc7c240a5594296db9213ef46a5620b9ab3080",
+    "purpose": "Untyped named variadic receive keeps the original extra named call buffer; its first body write separates the singleton private cell and retains the failed copied payload until call teardown.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 2 of ExtraNamedTarget24() by unpacking a Traversable, passing by-value instead|24|X|V|I|G|F|A|B|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-extra-named-fixed-to-extra-throw",
+    "source": "<?php\nclass ExtraEarlier24 { public function __destruct() { echo \"A|\"; } }\nclass ExtraCurrent24 { public function __destruct() { echo \"B|\"; } }\n$earlier = new ExtraEarlier24();\n$current = new ExtraCurrent24();\n$failure = new Exception(\"stop\", 51);\nclass ExtraNamedIterator24 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"first\" : \"extra\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ExtraNamedTarget24($first, &...$rest) { echo \"G|\"; $rest[\"extra\"] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    throw $failure;\n});\ntry { ExtraNamedTarget24(...new ExtraNamedIterator24()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "29c7f0788905d365e0d904ee0f901f6f44cf8bbbb83c818cb796fbca8c6bd72e",
+    "purpose": "Earlier fixed payload precedes the failed named variadic payload in call cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 2 of ExtraNamedTarget24() by unpacking a Traversable, passing by-value instead|24|I|A|B|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-extra-named-extra-to-fixed-normal",
+    "source": "<?php\nclass ExtraEarlier24 { public function __destruct() { echo \"A|\"; } }\nclass ExtraCurrent24 { public function __destruct() { echo \"B|\"; } }\n$earlier = new ExtraEarlier24();\n$current = new ExtraCurrent24();\n$failure = new Exception(\"stop\", 51);\nclass ExtraNamedIterator24 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"extra\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ExtraNamedTarget24(&$first, ...$rest) { echo \"G|\"; $first = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    return true;\n});\ntry { ExtraNamedTarget24(...new ExtraNamedIterator24()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "77c9b4b026bdf581eedad66bcfdaa8232e816c81c6d52a814a4f82ba25f34a73",
+    "purpose": "Normal warning resume transfers the held copied object to a fresh private fixed cell while retaining the earlier extra named payload.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of ExtraNamedTarget24() by unpacking a Traversable, passing by-value instead|24|X|V|I|G|B|F|A|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-extra-named-extra-to-fixed-throw",
+    "source": "<?php\nclass ExtraEarlier24 { public function __destruct() { echo \"A|\"; } }\nclass ExtraCurrent24 { public function __destruct() { echo \"B|\"; } }\n$earlier = new ExtraEarlier24();\n$current = new ExtraCurrent24();\n$failure = new Exception(\"stop\", 51);\nclass ExtraNamedIterator24 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"extra\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ExtraNamedTarget24(&$first, ...$rest) { echo \"G|\"; $first = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    throw $failure;\n});\ntry { ExtraNamedTarget24(...new ExtraNamedIterator24()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "eb6420f7ca3f2aaefe2cce0b65e761ca67f6dd75e9f6829bfe3b111d1c5b6f7c",
+    "purpose": "Failed vacant fixed payload precedes the earlier extra named payload in call cleanup.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of ExtraNamedTarget24() by unpacking a Traversable, passing by-value instead|24|I|B|A|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-object-extra-named-extra-to-fixed-parked-throw",
+    "source": "<?php\nclass ExtraEarlier24 { public function __destruct() { echo \"A|\"; } }\nclass ExtraCurrent24 { public function __destruct() { echo \"B|\"; } }\n$earlier = new ExtraEarlier24();\n$current = new ExtraCurrent24();\n$failure = new Exception(\"stop\", 51);\nclass ExtraNamedIterator24 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 2; }\n    public function current(): mixed { global $earlier, $current; echo \"C|\"; return $this->position === 0 ? $earlier : $current; }\n    public function key(): mixed { echo \"K|\"; return ($this->position === 0 ? \"extra\" : \"first\"); }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ExtraNamedTarget24(&$first, ...$rest) { echo \"G|\"; $first = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $earlier, $current, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $earlier = null;\n    $current = null;\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try { ExtraNamedTarget24(...new ExtraNamedIterator24()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$earlier = 17;\n$current = 19;\n$fiber->throw($failure);\necho \"M|\", $earlier, \"|\", $current, \"|\";\n$earlier = null;\n$current = null;\necho \"E\";\n",
+    "source_sha256": "4326df795c4a334289b7738c4ec9ec4a67e90f6ee0ccb225b224aaaacf318e00",
+    "purpose": "Failed vacant fixed payload precedes the earlier extra named payload in call cleanup. A real parked warning handler retains both payloads while main rewrites the source globals before injected throw.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|X|V|C|K|H|2|Cannot pass by-reference argument 1 of ExtraNamedTarget24() by unpacking a Traversable, passing by-value instead|26|P|I|B|A|T|51|FIB|M|17|19|E",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

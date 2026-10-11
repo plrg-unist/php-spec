@@ -152,10 +152,25 @@ argument cleanup. Native positional sends destroy the earlier payload first;
 reversed named keys destroy the failed first-parameter payload first. Both follow
 cache, DATA and raw INPUT retirement. Active and retired SOURCE admission check
 the real by-reference target, slot vacancy and positional/named phase without
-requiring retired payloads to remain live. Arrays, REFERENCE objects and later
-extra-named/variadic object warnings remain Unsupported. The
+requiring retired payloads to remain live. Extra-named/variadic object warnings
+remained Unsupported at that cut. The
 [fixed-slot review](../../coverage/semantics/iterator-call-unpack-object-sent-review.json)
 keeps the five new originals and their reached checks separate from prior cuts.
+
+One direct construction of a statically named Iterator implementation now admits
+fixed-to-extra object warnings with an untyped variadic and no positional extras, and
+extra-to-fixed warnings with a by-value variadic tail. Failed arguments map through
+the real named buffer: fixed slots retire before extra named entries, after raw
+cache, DATA and INPUT. Parked HOLD remains separate. An authenticated singleton
+private object cell received by an untyped by-reference variadic is collected as
+a DIRECT item in a separated logical rest array. Its original named-send cell
+still retains the payload until call teardown, so clearing the rest item does not
+destroy it early. This abstracts Zend's shared-table/COW route; the model does not
+claim its pre-write array identity or owner counts. Shared references use the old
+alias path. General shared-buffer release before COW, extra-to-extra and later
+positional variadic object sends, arrays and REFERENCE object payloads remain open.
+The [extra-named review](../../coverage/semantics/iterator-call-unpack-object-extra-named-review.json)
+records the new source cuts and the original failed native expectation.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

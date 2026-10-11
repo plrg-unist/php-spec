@@ -304,6 +304,14 @@ def $named_tail_index(n_fixed, n_args) = n_fixed -- if $(n_fixed >= n_args)
 def $named_tail_index(n_fixed, n_args) = n_args -- if $(n_fixed < n_args)
 dec $named_receive(pstate, pfunction, nat) : pstate
 dec $named_variadic_insert(pstate, pfunction, nat, poperand, pvalue) : pstate
+;; A private Iterator warning cell can be copied as the singleton COW write
+;; does. The original named send still owns its cell and payload until teardown.
+dec $named_variadic_private(pstate, pfunction, nat, poperand, pvalue) : bool
+def $named_variadic_private(S, pfunction, n, poperand, pvalue) = false -- otherwise
+dec $named_variadic_item(pstate, pfunction, nat, poperand, pvalue) : pitem
+def $named_variadic_item(S, pfunction, n, poperand, pvalue) = DIRECT pvalue
+  -- if $named_variadic_private(S, pfunction, n, poperand, pvalue)
+def $named_variadic_item(S, pfunction, n, poperand, pvalue) = $variadic_item(poperand, pvalue) -- otherwise
 def $named_receive(S, pfunction, n) = S_value
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if S.CURRENT = (pcallcontext)
@@ -317,7 +325,7 @@ def $named_receive(S, pfunction, n) = $named_variadic_insert(S_value, pfunction,
   -- if S_value = $variadic_value(S, pfunction, n_fixed, $named_tail_index(n_fixed, pcallcontext.ARGC), poperand)
   -- if S_value.COMPLETION = NORMAL
   -- if S_value.RESULT = KNOWN pvalue
-def $named_variadic_insert(S, pfunction, n, poperand, pvalue) = $literal_item_insert(S_array, n_array, (KSTRING preqbytes), $variadic_item(poperand, pvalue), z)[.TODO = [NAMED_VARIADIC_RECEIVE pfunction.ORIGIN $(n + 1)]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $named_variadic_insert(S, pfunction, n, poperand, pvalue) = $literal_item_insert(S_array, n_array, (KSTRING preqbytes), $named_variadic_item(S_coerced, pfunction, n, poperand, pvalue), z)[.TODO = [NAMED_VARIADIC_RECEIVE pfunction.ORIGIN $(n + 1)]][.ORIGIN = (pfunction.ORIGIN)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
   -- if S.CURRENT = (pcallcontext)
   -- if (preqbytes, poperand_current) = pcallcontext.NAMED[n]

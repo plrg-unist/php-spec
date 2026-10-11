@@ -269,10 +269,27 @@ throw preserves both earlier SENT and main scalar rewrites. Native5 passes at
 `2b8b026b0`; strict375 and five original agreements pass at `2f055195a` without
 fresh native capture. Ten genuine-source state groups pass 586 physical/555 driver
 ownership and authority premises at `97b67a7b5`, including occupied-slot and retired
-SOURCE forgeries. Later extra-named/variadic object sends remain required; earlier
+SOURCE forgeries. Later extra-named/variadic object sends remained required at that cut; earlier
 cuts stay frozen. Actual375 over `9cc8cfa8d` passes strict SL at `352bf99fd`;
 private native/source/state cuts retain their original inputs.
 [Fixed-slot review](coverage/semantics/iterator-call-unpack-object-sent-review.json).
+
+Copied-object warnings in one direct construction of a statically named Iterator
+implementation now map fixed-to-extra arguments and extra-to-fixed arguments with
+a by-value variadic tail through fixed-then-extra cleanup, including parked throw.
+A private singleton object cell in an untyped reference variadic uses a separated
+logical rest array while the original named-send owner survives rest-item writes;
+this does not claim Zend's pre-write shared-table identity. Native5 composes the
+unchanged first observation at `12f9405c` with four previously unrun rows at
+`c4260073`; the first expectation failure remains zero credit. Strict375 and five
+source agreements pass at `777199493` without fresh native execution. Eleven
+independent reached-state groups pass 620 physical/589 driver premises across retained
+six at `283f11cc` and affected five at `9ddd85c0`, including three counterfactual
+helper guards. The strict constructor/binder and state record-syntax/seek-binding
+stops retain zero campaign credit. General shared-buffer release before COW,
+extra-to-extra, later positional variadic, arrays and REFERENCE object payloads
+remain required. Earlier cuts stay frozen.
+[Extra-named review](coverage/semantics/iterator-call-unpack-object-extra-named-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

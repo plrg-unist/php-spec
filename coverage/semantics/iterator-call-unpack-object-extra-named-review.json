@@ -1,0 +1,197 @@
+{
+  "status": "private native/source/strict and composed independent state accepted",
+  "scope": [
+    "Copied KNOWN object warning after fixed sends into an untyped variadic extra name, or after an extra name into a vacant fixed slot with by-value variadic tail; one direct construction of a statically named Iterator implementation.",
+    "HOLD maps through fixed-then-extra argument cleanup after cache/DATA/INPUT. A private singleton object reference in the untyped by-reference variadic is collected as DIRECT in a separated logical rest array; the original named-send cell survives rest-item writes."
+  ],
+  "remaining": [
+    "General shared-buffer external-alias release before COW; extra-to-extra and later positional variadic object sends",
+    "Arrays, REFERENCE objects, request/plain reference strings and handler replacements with those strings",
+    "Direct Generator/IteratorAggregate ordinary-call unpack, other call targets, Generator callback methods and nonnumeric raw valid-result changes"
+  ],
+  "parent": "4fa2162644b72c3a150132c89afef0e3d492bb01",
+  "implementation_revision": "777199493c2dfe80925011d380949ebaed4a98d2",
+  "prior_evidence": "coverage/semantics/iterator-call-unpack-object-sent-review.json",
+  "engine_route": "PHP8.5.10 SEND_UNPACK installs the fresh failed reference even after a warning throw. Fixed call slots retire before extra named entries. Untyped RECV_VARIADIC with no positional extras shares the extra-named table; zend_array_dup_value unwraps singleton references at first COW write. The model separates this logical rest for an authenticated private object cell while retaining the original named-send owner. It claims observed lifetime effects, not native pre-write array identity or owner counts; shared references keep the old ALIAS path.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "native": {
+    "originals": 5,
+    "normal_agreements": 0,
+    "first_observation": {
+      "revision": "12f9405c0b88dd3cb2c06ebdd4efeba03273c5cc",
+      "reuse": ".tools/calls-iterator-copied-object-extra-named-23/.tools/native-reuse.json",
+      "reuse_sha256": "215256380952789ea3fd0ccf5e674cd27725d979386289994ae5d7ef1da8b2bd",
+      "expectation_revision": "c4260073547d12b883471e25e9d63b43de598f95",
+      "new_native_executions": 0,
+      "rows": 1
+    },
+    "remaining_observations": {
+      "revision": "c4260073547d12b883471e25e9d63b43de598f95",
+      "report": ".tools/calls-iterator-copied-object-extra-named-23/.tools/iterator-call-unpack-object-extra-named-native-remaining-f407j77m/report.json",
+      "report_sha256": "187ebfcfe5bf0ca655abc69045a01a0199ed4a160e004c2f19a50ec80b174447",
+      "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native_remaining.py",
+      "runner_sha256": "f08ef1457978bf0d975544c5578923d83749bf5812a8c791905e32f1e177b0cc",
+      "rows": 4,
+      "exit": 0,
+      "timeout": false,
+      "inputs_stable": true,
+      "process_seconds": 8
+    },
+    "first_command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "first_runner_sha256": "9d0d5006604a0e6f85f8ab7b47517a37f7895839d20e76de628299a5131001c2",
+    "observations": "Normal fixed-to-extra retains B through F (G/F/A/B); extra-to-fixed releases B before F (G/B/F/A). Throws release I/A/B or I/B/A respectively; parked injection retains main17/19."
+  },
+  "strict": {
+    "revision": "777199493c2dfe80925011d380949ebaed4a98d2",
+    "report": ".tools/calls-iterator-copied-object-extra-named-23/.tools/iterator-call-unpack-object-extra-named-sl-36m5ine4/report.json",
+    "report_sha256": "04764d290be48f2d0abdc1295d4646ff44b8a1591e52e42260bdf96e7225f8c4",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "c3d477fa374a0f2c6a344ccf3a7c9deae4e8d2d6b55a3808a0861d6fd61debb4",
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true,
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120
+  },
+  "source": {
+    "status": "passed",
+    "revision": "777199493c2dfe80925011d380949ebaed4a98d2",
+    "command": "timeout -k 10s 450s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/native-reuse.json --native-report .tools/iterator-call-unpack-object-extra-named-native-remaining-f407j77m/report.json",
+    "runner_sha256": "3bbfe30b044d1f5410a3e87b21e5d72490db642815e18d163e4dfc1336f45e94",
+    "selection": [
+      "iterator-call-unpack-object-extra-named-fixed-to-extra-normal",
+      "iterator-call-unpack-object-extra-named-fixed-to-extra-throw",
+      "iterator-call-unpack-object-extra-named-extra-to-fixed-normal",
+      "iterator-call-unpack-object-extra-named-extra-to-fixed-throw",
+      "iterator-call-unpack-object-extra-named-extra-to-fixed-parked-throw"
+    ],
+    "new_native_executions": 0,
+    "report": ".tools/calls-iterator-copied-object-extra-named-23/.tools/iterator-call-unpack-object-extra-named-source-q9lpbpzq/report.json",
+    "report_sha256": "9806950d97943cf7808983beea10d898e6cff2207f0ed4fd975c238c89c39fd4",
+    "normal_agreements": 5,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "source_budgets": {
+    "steps": 100000,
+    "model_seconds": 60,
+    "process_seconds": 75
+  },
+  "state_review": {
+    "status": "composed passed",
+    "command": "timeout -k 10s 700s prlimit --as=6442450944 -- python3 -u .tools/object-extra-named-state-stop-first.py --case retired-extra-target-receipt-rejects-occupied-name-with-identical-heap --case parked-extra-send-keeps-owners-and-vacant-fixed-slot-authority --case injected-fiber-throw-releases-fixed-current-before-earlier-extra --case named-variadic-rest-copy-retains-original-private-send-cell --case body-clears-variadic-item-before-original-send-payload-destruction",
+    "runner_sha256": "db2d5e080b1ff2628e68e3841a7376cbfecb00a497bb631abc4ebaf98b308022",
+    "process_seconds": 120,
+    "seek_steps": 4000,
+    "revision": "9ddd85c04766649263238da83606ca36a1234d39",
+    "fixture_sha256": "515cab87f241cf4aa2331411a8703af4c64e5e2963b40861f87a12bba4198562",
+    "retained_first_six": {
+      "revision": "283f11ccad39d7186e075e3ebdc0bdd67549f7e6",
+      "raw_directory": ".tools/calls-iterator-copied-object-extra-named-23/.tools/fiber-state-review-dg2_gig_",
+      "groups": 6,
+      "physical_main_premises": 358,
+      "driver_assertions": 349,
+      "command": "timeout -k 10s 1450s prlimit --as=6442450944 -- python3 -u .tools/object-extra-named-state-stop-first.py",
+      "selection": [
+        "fixed-to-extra-warning-adds-one-hold-beside-fixed-send",
+        "fixed-to-extra-resume-transfers-hold-to-vacant-private-cell",
+        "fixed-to-extra-throw-releases-fixed-before-extra-named-slots",
+        "extra-to-fixed-resume-transfers-hold-to-vacant-private-cell",
+        "extra-to-fixed-throw-releases-fixed-before-extra-named-slots",
+        "fixed-to-extra-first-destructor-follows-fixed-slot-order"
+      ],
+      "compatibility": "All six source bytes, stage/check strings and generated final mains are unchanged by the group7-only stage correction; semantic inputs remain the accepted777199 bytes. The original interrupted hostwave has no final report or complete-campaign credit."
+    },
+    "selection": [
+      "retired-extra-target-receipt-rejects-occupied-name-with-identical-heap",
+      "parked-extra-send-keeps-owners-and-vacant-fixed-slot-authority",
+      "injected-fiber-throw-releases-fixed-current-before-earlier-extra",
+      "named-variadic-rest-copy-retains-original-private-send-cell",
+      "body-clears-variadic-item-before-original-send-payload-destruction"
+    ],
+    "report": ".tools/calls-iterator-copied-object-extra-named-23/.tools/fiber-state-review-vljopbg3/report.json",
+    "report_sha256": "10cfd647bd00b90fe2354f4b4d743c88feafeb15292fd3827cdcf54125cf609d",
+    "affected_groups": 5,
+    "affected_physical_main_premises": 262,
+    "affected_driver_assertions": 240,
+    "groups": 11,
+    "physical_main_premises": 620,
+    "driver_assertions": 589,
+    "counterfactual_helper_controls": 3,
+    "exit": 0,
+    "timeout": false,
+    "passed": true,
+    "coverage": "Retained six source-frontier warning/transfer/mapped-abort/destructor groups plus corrected retired receipt, parked authority, injected throw, separated rest and body-write lifetime groups. Three helper fallback guard controls are counterfactual and add no source credit."
+  },
+  "failed_cuts": [
+    {
+      "revision": "12f9405c0b88dd3cb2c06ebdd4efeba03273c5cc",
+      "report": ".tools/calls-iterator-copied-object-extra-named-23/.tools/iterator-call-unpack-object-extra-named-native-8aqzwdu3/report.json",
+      "report_sha256": "ac128b160f68355dd291de08b03796a6003697539ffec9a86d84d45c48d90587",
+      "reason": "First native expectation placed payload destruction before F; actual first-row observation was G/F/A/B. PHP exit0; stop-first host exit1, four rows unrun.",
+      "complete_campaign_credit": 0
+    },
+    {
+      "revision": "fec4ff91adf461cfc0d9928e431769a9812ddbcd",
+      "report": ".tools/calls-iterator-copied-object-extra-named-23/.tools/iterator-call-unpack-object-extra-named-sl-f2fzk1lk/report.json",
+      "report_sha256": "66ef857f2476d652a2b6e6ba38419c47735feeee296132526563063e4ca229c2",
+      "reason": "Direct-site constructor/list syntax error; source campaign unrun.",
+      "complete_campaign_credit": 0
+    },
+    {
+      "revision": "53044619222aebedc9b9bc3c1407581ee43adf84",
+      "report": ".tools/calls-iterator-copied-object-extra-named-23/.tools/iterator-call-unpack-object-extra-named-sl-wd9sp7eu/report.json",
+      "report_sha256": "92dc04c64ad714680bc98745582a69c9f14484e16c0a56aba37f744a7df7ed4f",
+      "reason": "Optional/singular origin binder empty iteration; source campaign unrun.",
+      "complete_campaign_credit": 0
+    },
+    {
+      "revision": "dcf1b92c829bca3405aa296f7a9d351c88875fe3",
+      "process": ".tools/calls-iterator-copied-object-extra-named-23/.tools/fiber-state-review-zr9egr4j/fixed-to-extra-warning-adds-one-hold-beside-fixed-send/model.process.json",
+      "process_sha256": "7273b9b885449c2eea653b3858d3e71938d8460a1a56ba304b74dc1339cf2821",
+      "fixture_sha256": "8dd4cd3ddebb97e1b005e2532e4018cf7f3be9afb3bd4f0565d323bbf2100186",
+      "reason": "First generated named-buffer record list syntax at test.watsup23.44; host/model exit1, no timeout, no final report; remaining ten groups absent.",
+      "complete_campaign_credit": 0
+    },
+    {
+      "revision": "283f11ccad39d7186e075e3ebdc0bdd67549f7e6",
+      "process": ".tools/calls-iterator-copied-object-extra-named-23/.tools/fiber-state-review-dg2_gig_/retired-extra-target-receipt-rejects-occupied-name-with-identical-heap/model.process.json",
+      "process_sha256": "8024cbb5391c31503ebe680d045ca468a8330587979394fdadea76639deecd59",
+      "reason": "Group7 seek membership used an unbound earlier-object id; host/model exit1, no timeout, no final report; first six raw groups pass and final four absent.",
+      "complete_campaign_credit": 0
+    }
+  ],
+  "resource_cap": {
+    "address_space_bytes": 6442450944,
+    "jobs": 1,
+    "stop_first": true,
+    "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; existing recorded BaseException cleanup kills and waits for the process group; providers close in finally."
+  },
+  "compatibility": "Prior source/state catalogs and the two-argument hold_valid API are unchanged. Null-HOLD cleanup and nonprivate variadic reception retain their old routes; earlier native/source/state cuts are not renewed."
+}

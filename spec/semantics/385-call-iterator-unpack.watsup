@@ -22,6 +22,8 @@ dec $iterator_unpack_known_object(poperand) : bool
 dec $iterator_unpack_hold_valid(piteratorunpack, text) : bool
 dec $iterator_unpack_hold_allowed(pstate, piteratorunpack, text) : bool
 dec $iterator_unpack_object_order(pnamedargs, pfunction, pnamedtarget) : bool
+dec $iterator_unpack_extra_site(pstate, porigin?) : bool
+dec $iterator_unpack_extra_allowed(pstate, piteratorunpack, pfunction, pnamedtarget) : bool
 dec $iterator_unpack_warning_hold(pstate, piteratorunpack) : poperand?
 dec $iterator_unpack_warning_resume(ptask) : bool
 dec $iterator_unpack_discard_nodes(pstate, piteratorunpack) : pnode*
@@ -107,13 +109,12 @@ def $iterator_unpack_stage(S, piteratorunpack, "valid-nan") = true
   -- if $generator_from_valid_operand(S, piteratorunpack.CURRENT)
 def $iterator_unpack_stage(S, piteratorunpack, text) = false -- otherwise
 ;; Z_TRY_ADDREF holds a copied object before the warning. The owner transfers
-;; to the fresh reference, or joins fixed-slot cleanup after DATA/INPUT.
+;; to the fresh reference, or joins mapped call cleanup after DATA/INPUT.
 def $iterator_unpack_known_object(KNOWN (POBJECT n)) = true
 def $iterator_unpack_known_object(poperand) = false -- otherwise
 def $iterator_unpack_hold_valid(piteratorunpack, "byref") = true
   -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
   -- if piteratorunpack.HOLD = piteratorunpack.CURRENT
-  -- if piteratorunpack.CALL.SENT.NAMED = eps
 def $iterator_unpack_hold_valid(piteratorunpack, text) = true
   -- if piteratorunpack.HOLD = KNOWN PNULL
   -- if ~(text = "byref" /\ $iterator_unpack_known_object(piteratorunpack.CURRENT))
@@ -272,9 +273,51 @@ def $iterator_unpack_scalar_operand(S, REFERENCE n) = $iterator_unpack_scalar(pv
 def $iterator_unpack_scalar_operand(S, REFERENCE n) = $startup_bytes(n_bytes*) -- if S.STORE[n] = DEFINED (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $iterator_unpack_scalar_operand(S, poperand) = false -- otherwise
 def $iterator_unpack_object_order({SLOTS eps, NAMED eps}, pfunction, pnamedtarget) = true
-def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_POSITION n) = (pnamedargs.NAMED = eps /\ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|))
+def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_POSITION n) = $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if pnamedargs =/= {SLOTS eps, NAMED eps}
+def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_EXTRA preqbytes) = (pnamedargs.NAMED = eps)
   -- if pnamedargs =/= {SLOTS eps, NAMED eps}
 def $iterator_unpack_object_order(pnamedargs, pfunction, pnamedtarget) = false -- otherwise
+;; Restrict the separated rest representation to one direct, statically named
+;; Iterator construction. General shared extra-named buffers remain open.
+def $iterator_unpack_extra_site(S, (porigin)) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprFuncCall phpType19_name (SEQUENCE ([(NArg ABSENT (NExprNew phpType19_class (SEQUENCE eps) metadata_new) (BOOLEAN false) (BOOLEAN true) metadata_arg)])) metadata_call)
+  -- if $origin_child((porigin), [PCFIELD 1, PCINDEX 0, PCFIELD 1]) = (porigin_new)
+  -- if $new_source_name(S, porigin_new) = (ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes)) = (porigin_class)
+  -- if $class_origin_matches(S, porigin_class, $ptascii("Iterator"), |S.CLASSES|)
+def $iterator_unpack_extra_site(S, porigin?) = false -- otherwise
+def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_POSITION n) = true
+  -- if piteratorunpack.CALL.SENT.NAMED = eps
+def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_POSITION n) = true
+  -- if piteratorunpack.CALL.SENT.NAMED =/= eps
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if ~pfunction.SIGNATURE.PARAMETERS[n_fixed].BYREF
+  -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
+def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_EXTRA preqbytes) = true
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if pfunction.SIGNATURE.PARAMETERS[n_fixed].TYPE = eps
+  -- if $(|piteratorunpack.CALL.SENT.SLOTS| <= n_fixed)
+  -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
+def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, pnamedtarget) = false -- otherwise
+def $named_variadic_private(S, pfunction, n, REFERENCE n_cell, POBJECT n_object) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = pfunction.ORIGIN
+  -- if $call_selected_valid(S, pfunction.ORIGIN, pcallcontext.CALLSITE)
+  -- if $iterator_unpack_extra_site(S, pcallcontext.CALLSITE)
+  -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|
+  -- if $(n_fixed < |pfunction.SIGNATURE.PARAMETERS|)
+  -- if pfunction.SIGNATURE.PARAMETERS[n_fixed].BYREF
+  -- if pfunction.SIGNATURE.PARAMETERS[n_fixed].TYPE = eps
+  -- if pcallcontext.EXTRA = eps
+  -- if $(n < |pcallcontext.NAMED|)
+  -- if (preqbytes, REFERENCE n_cell) = pcallcontext.NAMED[n]
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT n_object)
+  -- if n_cell <- S.REFCELLS
+  -- if $heap_owners($heap_prune($heap_graph(S)), HCELL n_cell) = 1
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
   -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
   -- if piteratorunpack.KEY = KNOWN pvalue_key
@@ -285,6 +328,7 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT
   -- if $named_reference(pfunction, pnamedtarget)
   -- if $named_can_store(piteratorunpack.CALL.SENT, pnamedtarget)
   -- if $iterator_unpack_object_order(piteratorunpack.CALL.SENT, pfunction, pnamedtarget)
+  -- if $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, pnamedtarget)
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN PNULL)
   -- if $iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
 def $iterator_unpack_warning_hold(S, piteratorunpack) = eps -- otherwise
