@@ -4519,6 +4519,10 @@ mint, four operand writes and unchanged owned CONFIG/immediate body result.
 Native2/literal1/original Unsupported0 retain 5c25; wider evaluation evidence,
 object captures and source7 stay open. Exact maintained relocation preserves old
 dispatch without runtime renewal; old lifetime/bridge cuts remain separate.
+Current composition over bc93c428/377 passes the preserved353 gate at 9e0ce
+(5.492s compiler, 41.563s initialized SL). It binds reached shared30/40 storage
+and operator paths; integer warning, WeakMap key-pin, reference-return, hook and
+nested Do factory routes are guarded out. Source/private renewal stays zero.
 
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
