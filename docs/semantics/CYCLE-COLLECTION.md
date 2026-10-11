@@ -681,3 +681,21 @@ nonwhite/COUNTED, retained-tag and duplicate-consumer controls pass. Compiler/in
 also pass. Baseline35 localizes the former refusal; the larger held-F whole CLI60
 timeout retains OPEN/zero credit. Black reference/array components, broader
 external ownership, non-idle workers and wider overlap remain required.
+
+The held-D reference companion changes only `$d->s=$d` to `$d->s=&$d`. The live
+component fence now accepts objects and canonical unbuffered references inside
+fresh-DTORS reach, with the existing simple frozen shape and live REFCELLS marker
+checks. It rejects arrays and unrelated CV cells. Fresh destructors must still be
+white at admission; traced live children stay outside COUNTED. Nested removal,
+count folding and ownership rules are unchanged.
+
+At `21daa`/375, compiler/init and exact native81 whole-source agreement pass.
+Image/selection101 adds99 source/control checks and2 pure array exclusions:
+distinct held/reference cells, real D ALIAS/STORE/marker and frozen D↔HCELL edges,
+actual D-tag removal while held D survives, and genuine E selection. Missing
+markers, malformed frozen shape, buffered cells and forged plan/image/consumer
+states reject; zero/one-step replay passes. Baseline49 preserves the earlier
+first refusal at `15951738`. This establishes live reference behavior through
+selection and source completion, with no terminal reference-cell retirement or
+new count/owner closure claim. Wider reference layouts, array components, workers
+and later passes remain required; source41/held-F42 whole CLI60 stay OPEN/zero.

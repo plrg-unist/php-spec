@@ -1096,13 +1096,14 @@ its reference, leaves D weak-live, clears collector state and matches native END
 Whole source41 CLI60 remains OPEN/zero agreement; broader reference layouts remain
 required.
 
-Main-thread residual overlap also handles an ordinary child held by a live CV.
-Eligible tracing removes D's old physical tag while D stays live; collection runs
-E, returns −1, and request shutdown calls D after `END`. One exact source agreement
-and 103 source/control checks plus two pure type exclusions pass. A separate
-held-F frontier preserves its untraced residual tag. That larger source CLI60
-remains OPEN/zero agreement; black reference/array components and wider overlap
-remain required.
+Main-thread residual overlap handles a child held by a live CV with an ordinary
+self edge or a canonical unbuffered property reference inside fresh destructor
+reach. D's old physical tag is removed while D stays live; collection runs E,
+returns −1, and request shutdown calls D after `END`. Both originals agree with native PHP
+at separate cuts. The reference variant adds 99 source/control checks plus two
+pure array exclusions. The separate held-F frontier preserves its untraced tag;
+its larger whole CLI60 and source41 remain OPEN/zero agreement. Wider reference
+layouts, array components and worker overlap remain required.
 
 Normal last-owner close335 runs the detached worker's `finally` immediately
 and leaves its borrowed target for the next real collection/count1. Two exact

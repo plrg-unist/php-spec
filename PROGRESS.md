@@ -1471,17 +1471,19 @@ and E66's syntax failure retain zero credit. Wider main/mixed/black/external/ref
 layouts and non-idle workers remain required; source40 and earlier cuts are unchanged.
 [Ledger](coverage/semantics/cycle-collection-review.json).
 
-Main-thread object overlap301 now handles a residual D kept live by a held CV
-inside fresh E's traced component. D stays outside COUNTED; nested removal clears
-its old physical tag, collection calls E/returns −1, and request shutdown calls D
-after END. At `8f630`/375, compiler/init, one exact native81 source agreement and
-two strict-SL groups pass: image/selection69+pure2 and outside-held-F34, totaling
-103 source/control checks plus2 pure type exclusions. The outside F keeps its
-untraced residual tag; its earlier whole CLI60 timeout remains OPEN/zero.
-Baseline35 only localizes the original Unsupported. Count folding/owners are
-unchanged; black reference/array components and wider overlap remain required.
-Earlier source41 and all prior cuts retain their results without renewal.
-[Ledger](coverage/semantics/cycle-collection-review.json).
+Main-thread residual overlap301 removes a held live child's old physical tag
+without collecting it. The object cut at `8f630`/375 retains native81 source
+agreement and103 source/control checks plus2 pure exclusions, including the
+outside-held-F frontier. Its reference companion at `21daa`/375 admits canonical
+unbuffered HCELL only inside fresh-DTORS reach; the live REFCELLS marker and
+frozen reference shape remain separate requirements. Compiler/init, native81
+whole-source agreement and99 source/control checks plus2 pure array exclusions
+pass: real TRACE/image/E selection, held/weak D, marker/shape/slot/consumer
+negatives and zero/one-step replay. Collection returns −1; D runs after END.
+Baseline35/49 localize the respective original refusals. Count folding/owners
+are unchanged; wider reference/array/worker/later-pass overlap remains required.
+Source41 and the larger held-F42 whole CLI60 remain OPEN/zero; prior cuts are
+unchanged. [Ledger](coverage/semantics/cycle-collection-review.json).
 
 Source350 admits array-valued ordinary computed-name CVs. Its nonowning warning
 resume fixes `Array` before live target lookup; handler/child exceptions abort FETCH.
