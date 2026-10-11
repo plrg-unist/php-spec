@@ -1664,6 +1664,12 @@ physical child slot with a null default; private and inherited reads still retur
 13 after an ordinary write stores 300. Three originals and separate
 rejection/read/write checks are recorded in the
 [inherited-storage type-presence review](coverage/semantics/backed-parent-unbacked-get-hook-type-presence-review.json).
+The same getter error priority now applies when a source-unbacked parent inherits
+physical backing and a source-unbacked child without an initializer removes its
+type. Intervening classes retain the actual declaring getter; reverse type addition
+and repeated null-slot reads/writes remain controls. Three originals and five
+separate state checks are recorded in the
+[effective-storage type-presence review](coverage/semantics/effective-backed-parent-unbacked-get-hook-type-presence-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

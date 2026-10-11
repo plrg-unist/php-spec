@@ -170,10 +170,18 @@ null slot, source backing from effective storage, and Child/private scope from
 Grand called scope. An ordinary write stores 300 while the getter remains 13.
 Three originals and five separate state cuts are recorded in the
 [inherited-storage type-presence review](../../coverage/semantics/backed-parent-unbacked-get-hook-type-presence-review.json).
+A typed source-unbacked parent with published backing ancestry also rejects an
+untyped source-unbacked child without an initializer at the getter declaration.
+The bounded proof follows the actual declaring descriptor through an intervening
+class, authenticates the parent's backing basis and the child's own null default,
+and leaves the rejected child unpublished. Reverse addition keeps the class-line
+error. Repeated untyped controls retain one null slot and getter 13 after write 300;
+[effective-storage type-presence review](../../coverage/semantics/effective-backed-parent-unbacked-get-hook-type-presence-review.json).
 The hook linker still refuses ordinary-parent hooks and plain redeclarations.
 Backed-parent inheritance retains invariant types;
-TYPE-presence below an immediate body-unbacked but effectively backed parent,
-broader type equivalence and wider hook variance remain required.
+TYPE-presence into genuinely body-backed children below a body-unbacked but
+effectively backed parent, broader type equivalence and wider hook variance
+remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
 other inheritance/traits, temporary/computed receivers, other compound operators/RHS
