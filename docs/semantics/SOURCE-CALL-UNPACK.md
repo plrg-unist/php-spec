@@ -189,9 +189,20 @@ the frame's EXTRA buffer. A rest-item write changes that cell and retires the
 current payload before F, while the earlier payload survives until frame cleanup.
 Warning throw still retires raw cache/DATA/INPUT before earlier and failed
 arguments in positional order, including real parked injection. Typed tails and
-wider call sites remain open. The
+wider call sites remained open at that cut. The
 [positional variadic review](../../coverage/semantics/iterator-call-unpack-object-positional-variadic-review.json)
 records this slice separately from the named DIRECT rest abstraction and prior cuts.
+
+Nullable single-class positional tails now use that same ALIAS receive route.
+Unpack warnings and fresh private-cell sends precede `RECV_VARIADIC` type
+verification, so a rejected later class still has a sent cell while only the
+earlier item has entered rest. A generated TypeError captures dereferenced
+argument values in its owning trace; the caught error retains both payloads
+after the private cells and partial rest retire, through the final output.
+Warning-handler and parked injected exceptions keep the earlier Iterator-then-
+payload cleanup order. Other type shapes, typed named buffers and wider sites
+remain open. The [typed positional review](../../coverage/semantics/iterator-call-unpack-object-typed-positional-variadic-review.json)
+preserves the corrected native expectation and the separate validation cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

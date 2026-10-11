@@ -1,0 +1,135 @@
+{
+  "status": "private native/source/strict and independent state accepted; current composition pending",
+  "scope": "Nullable single-class positional by-reference variadics at one direct statically named Iterator construction, with no prior named extras. Warnings and fresh copied-object cells precede receive-time type checks; accepted packed rest items use ALIAS.",
+  "remaining": [
+    "Other type shapes, typed named buffers and wider sites",
+    "General shared named-buffer alias release before COW, arrays and REFERENCE object payloads",
+    "Request/plain reference strings, Generator/Aggregate ordinary-call unpack and other targets"
+  ],
+  "parent": "8087545b25e2b4461377f4e6d34fd81b2e848bc0",
+  "implementation_revision": "1ad2ce8a1d1741193afaa4ec02ad84bb661a35d8",
+  "prior_evidence": "coverage/semantics/iterator-call-unpack-object-positional-variadic-review.json",
+  "engine_route": "SEND_UNPACK warns and installs fresh copied-object references before receive. Typed RECV_VARIADIC verifies each extra before adding its packed reference owner. zend_default_exception_new/debug_backtrace_get_args capture dereferenced argument values when exception_ignore_args=0; a caught TypeError retains payloads after private cells and partial rest retire.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "selection": [
+    "iterator-call-unpack-object-typed-positional-variadic-normal",
+    "iterator-call-unpack-object-typed-positional-variadic-rejected-later-class",
+    "iterator-call-unpack-object-typed-positional-variadic-second-warning-throw",
+    "iterator-call-unpack-object-typed-positional-variadic-parked-throw"
+  ],
+  "native": {
+    "status": "four accepted observations from retained two and previously unrun two",
+    "original_report": ".tools/calls-iterator-copied-object-typed-positional-variadic-26/.tools/iterator-call-unpack-object-typed-positional-variadic-native-8bpkrwf8/report.json",
+    "original_report_sha256": "1896b9531b5c7feb15480ed8d7c9561174b582fb2806956ae3b8e4105fa2321d",
+    "original_revision": "0f4dac17d757620e8aa36f94e6a45e4df44efe43",
+    "reused_rows": 2,
+    "reuse": ".tools/calls-iterator-copied-object-typed-positional-variadic-26/.tools/native-reuse.json",
+    "reuse_sha256": "fcfe0205fbd7379a088406ea4faf2c4587baf8a433ed475e30df738f309dfc55",
+    "expectation_revision": "43f84aef1f0757ee02573fb9351407d53b2b0e11",
+    "remaining_report": ".tools/calls-iterator-copied-object-typed-positional-variadic-26/.tools/iterator-call-unpack-object-typed-positional-variadic-native-remaining-4sm39w0i/report.json",
+    "remaining_report_sha256": "20d89c7f90500e4ff471ab94385b98a6925babf6f3dde713268304dc37116ac0",
+    "remaining_revision": "43f84aef1f0757ee02573fb9351407d53b2b0e11",
+    "remaining_rows": 2,
+    "original_command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "original_runner_sha256": "3847e216c6a5717fea19940b5eae9c11519be2bbfb6cea6cad113d6e70659e8f",
+    "remaining_command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native_remaining.py",
+    "remaining_runner_sha256": "ac021db6ff1f44cb7c5c75c1f3f824907f23d2c486277913222c5b01576699f4",
+    "process_seconds": 8,
+    "normal_agreements": 0,
+    "observations": "Normal I/G/B/F/A; generated TypeError I/R/E then A/B at request end; handler and injected exceptions I/A/B/original51 with main17/19 preserved."
+  },
+  "strict": {
+    "revision": "1ad2ce8a1d1741193afaa4ec02ad84bb661a35d8",
+    "report": ".tools/calls-iterator-copied-object-typed-positional-variadic-26/.tools/iterator-call-unpack-object-typed-positional-variadic-sl-d_je5t_z/report.json",
+    "report_sha256": "0d164e79f49ad965df49dba6641e6690ca3b404b49fe7c3ed735450d708999f5",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "9028b2e38dd717c7c6028b5db7f9e1c7630a4142f61b2681dfbf3112e08bb81d",
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "status": "passed",
+    "revision": "1ad2ce8a1d1741193afaa4ec02ad84bb661a35d8",
+    "report": ".tools/calls-iterator-copied-object-typed-positional-variadic-26/.tools/iterator-call-unpack-object-typed-positional-variadic-source-c5knstwc/report.json",
+    "report_sha256": "d7ff8cc26b7c4f8440ddc0607eebe99ac0ed38b5904156f3dc6bc3812323ae0b",
+    "command": "timeout -k 10s 450s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/native-reuse.json --native-report .tools/iterator-call-unpack-object-typed-positional-variadic-native-remaining-4sm39w0i/report.json",
+    "runner_sha256": "a21ebda03560344ad085ad645b052cbc95343b82b7af8a476125697074722ec0",
+    "new_native_executions": 0,
+    "normal_agreements": 4,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "source_budgets": {
+    "steps": 100000,
+    "model_seconds": 60,
+    "process_seconds": 75
+  },
+  "state_review": {
+    "status": "passed",
+    "revision": "ce17751ebc42003c76ee5939fa79b25ac1562217",
+    "report": ".tools/calls-iterator-copied-object-typed-positional-variadic-26/.tools/fiber-state-review-ff38qb63/report.json",
+    "report_sha256": "ebeacfc66bc0ed64a074de4f3505492960984fc0adde11a319862f72a1627600",
+    "command": "timeout -k 10s 1550s prlimit --as=6442450944 -- python3 -u .tools/typed-positional-variadic-state-180.py",
+    "runner_sha256": "dd9bd89ca5275232335869021d7aeaeb95b96c43a1ea2f9b0239648e540b8cf9",
+    "fixture": "tests/semantics/iterator_call_unpack_object_typed_positional_variadic_review.py",
+    "fixture_sha256": "eab4c6ed06fe8ab97083fe296b15c232791bf71d4bd6e30e90ba9a18443e0726",
+    "groups": 8,
+    "physical_main_premises": 501,
+    "driver_assertions": 480,
+    "pure_queries": 0,
+    "process_seconds": 180,
+    "seek_steps": 4000,
+    "finish_steps": 4000,
+    "host_exit": 0,
+    "timeout": false,
+    "passed": true,
+    "checks": "Genuine warning/fresh-cell sends before class rejection, typed packed ALIAS receive/body, partial receive with owning DIRECT TypeError snapshots, retained payloads after callee retirement, and parked ownership/phase/site/duplicate-resume controls.",
+    "maintained_budget": "The new fixture delegates to recorded with 180 seconds and records that actual budget; no shared or earlier runner is changed."
+  },
+  "resource_cap": {
+    "address_space_bytes": 6442450944,
+    "jobs": 1,
+    "stop_first": true,
+    "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; recorded kills/waits for process group; providers close in finally."
+  },
+  "compatibility": "Only one disjoint nullable-class+null arm is added to positional-extra eligibility. Prior untyped/fixed/named admission, direct-site/no-NAMED guards, HOLD/mapped cleanup, 103 packed ALIAS receive and owning Throwable trace are unchanged; old cuts are not renewed.",
+  "native_expectation_failure": {
+    "revision": "0f4dac17d757620e8aa36f94e6a45e4df44efe43",
+    "report": ".tools/calls-iterator-copied-object-typed-positional-variadic-26/.tools/iterator-call-unpack-object-typed-positional-variadic-native-8bpkrwf8/report.json",
+    "host_exit": 1,
+    "timeout": false,
+    "executed_rows": 2,
+    "remaining_rows_unrun": 2,
+    "cause": "Expected rejected payloads at frame exit; generated TypeError argument snapshots instead retain both through final output. Only expected stdout/purpose changed; original source and process bytes are reused.",
+    "complete_campaign_credit": 0
+  }
+}

@@ -344,12 +344,27 @@ source agreements pass at `43f44b08` without fresh native execution. Independent
 reached-state groups pass 453 physical/426 driver premises across seven retained
 groups at `49cc58c1` and the corrected final body at `85237e75`, with no pure
 queries. The original parked timeout and final request-marker fixture failure
-retain zero campaign credit. Typed/wider-site tails, general shared named
-buffers, arrays and REFERENCE object payloads remain required; earlier cuts stay
-frozen.
+retain zero campaign credit. At that cut typed/wider-site tails remained required;
+general shared named buffers, arrays and REFERENCE object payloads stay open.
+Earlier cuts stay frozen.
 Actual375 over `334be798` passes strict SL at `b70b5df5`; private native/source/state
 cuts retain their original inputs.
 [Positional variadic review](coverage/semantics/iterator-call-unpack-object-positional-variadic-review.json).
+
+Nullable single-class positional tails now preserve warnings and fresh sends
+before receive-time verification. Accepted rest items alias the private cells;
+a later rejected class leaves only the first rest entry. Its generated TypeError
+trace owns both dereferenced payloads after frame cleanup, retaining them through
+the final output. Handler and parked injected exceptions preserve Iterator-before-
+payload teardown. Four native originals compose retained two at `0f4dac17` with
+two previously unrun rows at `43f84aef`; the original expectation failure stays
+zero credit. Strict375 and four source agreements pass at `1ad2ce8a` using retained
+native bytes. Eight genuine-source state groups pass 501 physical/480 driver
+premises at `ce17751e`, with no pure queries, including partial typed receive,
+owning trace snapshots after frame retirement, packed ALIAS writes and parked
+resume guards. Other type shapes, typed named buffers, wider sites, arrays and
+REFERENCE payloads remain required; earlier cuts stay frozen.
+[Typed positional review](coverage/semantics/iterator-call-unpack-object-typed-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
