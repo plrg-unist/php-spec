@@ -277,6 +277,9 @@ def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_POSITION n) = (pn
 def $iterator_unpack_object_order(pnamedargs, pfunction, pnamedtarget) = false -- otherwise
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
   -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
+  -- if piteratorunpack.KEY = KNOWN pvalue_key
+  -- if $fiber_traversal_key(pvalue_key) = (pkey)
+  -- if $unpack_key_named(pkey) \/ ~piteratorunpack.NAMED
   -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
   -- if pnamedtarget = $iterator_unpack_named_target(S, piteratorunpack)
   -- if $named_reference(pfunction, pnamedtarget)
