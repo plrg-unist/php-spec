@@ -529,12 +529,16 @@ releases its child before later output while the earlier child is released durin
 See the [first-send review](coverage/semantics/iterator-call-unpack-array-review.json),
 [fixed-slot review](coverage/semantics/iterator-call-unpack-array-sent-review.json)
 and [positional variadic review](coverage/semantics/iterator-call-unpack-array-positional-variadic-review.json).
+Nullable-array positional tails preserve the same warnings and packed aliases;
+a later scalar is rejected during receive, and its TypeError trace retains the
+earlier array and child after private call cells retire. See the
+[typed array review](coverage/semantics/iterator-call-unpack-array-typed-positional-variadic-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
-those strings, extra-named/typed array warnings, broader array/COW interactions,
+those strings, extra-named/other typed array warnings, broader array/COW interactions,
 reference arrays/objects, general shared named buffers and
 other type shapes and wider-site variadic object warnings remain
 required.

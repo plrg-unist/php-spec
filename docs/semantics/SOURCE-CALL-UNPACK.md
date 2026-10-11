@@ -252,10 +252,24 @@ private cells. Nested current-item writes release that child before F; the
 earlier child remains until frame cleanup. Second-warning throws and real parked
 injection retain Iterator-before-earlier-before-current cleanup. The fixed-slot
 arm remains unchanged, while the variadic arm requires integer keys and TYPEeps;
-no receive, schema or documentary contents check changes. Extra-named/typed
-arrays and broader COW/live-reference interactions remain open. The
+no receive, schema or documentary contents check changes. At that cut extra-named/
+typed arrays remained open; broader COW/live-reference interactions remain open. The
 [positional variadic review](../../coverage/semantics/iterator-call-unpack-array-positional-variadic-review.json)
 records the three new originals separately from earlier cuts.
+
+Nullable-array positional by-reference tails retain the same warning hold and
+packed ALIAS receive at the direct construction site, with no named extras.
+Only the array-plus-null type shape is added to variadic warning admission;
+fixed parameters still require no type. RECV_VARIADIC verifies each item before
+incrementing its reference and collecting it. A later scalar rejection leaves
+only the earlier rest alias; the generated TypeError trace owns a DIRECT earlier
+array snapshot after private cells retire, retaining its child through E. Normal
+nested writes destroy the current child before F, while warning and parked throws
+retire Iterator before earlier and current children. No receive, trace, schema or
+documentary contents rules change. Extra-named/other typed arrays, broader COW and
+live-reference payloads remain open. The
+[typed positional array review](../../coverage/semantics/iterator-call-unpack-array-typed-positional-variadic-review.json)
+keeps the four originals and their source frontiers separate from prior cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

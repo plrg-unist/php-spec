@@ -355,7 +355,8 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT
   -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
   -- if $iterator_unpack_named_target(S, piteratorunpack) = NAMED_POSITION n_i
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n_i) = (psparam)
-  -- if psparam.BYREF /\ psparam.TYPE = eps
+  -- if psparam.BYREF
+  -- if psparam.TYPE = eps \/ (psparam.VARIADIC /\ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "null"]))])
   -- if (~psparam.VARIADIC /\ $(|piteratorunpack.CALL.SENT.SLOTS| <= |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)) \/ (psparam.VARIADIC /\ ~$unpack_key_named(pkey))
   -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_POSITION n_i)
   -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
