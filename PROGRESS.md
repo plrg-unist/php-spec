@@ -202,6 +202,8 @@ using their unchanged `f96` native bytes, without replaying four copied sources
 or six unaffected state groups. Eight independent reached-state groups/353
 physical premises pass at `230682b1c`. REQUEST/plain reference strings, handler
 replacements with those strings and array/object pre-warning holds remain required.
+Actual375 over `bbbf2c166` passes strict SL at `92ae3426c`; private native/source
+and independent state cuts retain their original inputs.
 [Interned reference review](coverage/semantics/iterator-call-unpack-interned-reference-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
