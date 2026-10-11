@@ -167,10 +167,19 @@ a DIRECT item in a separated logical rest array. Its original named-send cell
 still retains the payload until call teardown, so clearing the rest item does not
 destroy it early. This abstracts Zend's shared-table/COW route; the model does not
 claim its pre-write array identity or owner counts. Shared references use the old
-alias path. General shared-buffer release before COW, extra-to-extra and later
-positional variadic object sends, arrays and REFERENCE object payloads remain open.
+alias path. Extra-to-extra remained open at that cut. General shared-buffer
+release before COW and later positional variadic object sends, arrays and REFERENCE
+object payloads remain open.
 The [extra-named review](../../coverage/semantics/iterator-call-unpack-object-extra-named-review.json)
 records the new source cuts and the original failed native expectation.
+
+Copied-object warnings after earlier extra names retain the earlier private
+cells and append the failed payload in insertion order. Both extra names use the
+same variadic parameter number. Normal rest writes preserve the original cells;
+a thrown second warning retires cache/DATA/INPUT before earlier and failed payloads,
+including real parked injection. The
+[extra-to-extra review](../../coverage/semantics/iterator-call-unpack-object-extra-extra-review.json)
+keeps these originals separate from the prior cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

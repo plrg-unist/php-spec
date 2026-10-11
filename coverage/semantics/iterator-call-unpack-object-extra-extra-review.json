@@ -1,0 +1,115 @@
+{
+  "status": "private native/source/strict/state accepted",
+  "scope": "Copied KNOWN objects after earlier extra names: one direct statically named Iterator construction, untyped by-reference variadic and no positional extras. Private cells retain payloads through separated logical rest writes; this does not claim Zend pre-write shared-array identity.",
+  "remaining": [
+    "General shared-buffer external-alias release before COW and later positional variadic objects",
+    "Arrays, REFERENCE objects and request/plain reference strings",
+    "Generator/Aggregate ordinary-call unpack and other call targets"
+  ],
+  "parent": "096e3dd22d65c37001ad805ddaac40eb2b37392c",
+  "implementation_revision": "fc101300959a52e71e04b7e0334f004b22959c39",
+  "prior_evidence": "coverage/semantics/iterator-call-unpack-object-extra-named-review.json",
+  "engine_route": "SEND_UNPACK installs fresh failed references even after warning throw; zend_handle_named_arg reports the variadic parameter number for each extra name. Named buffer teardown follows insertion order. RECV_VARIADIC/COW singleton unwrapping is represented by separated DIRECT rest items retaining original private named cells. zend_leave_helper retires CV/rest before the extra-named table.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "selection": [
+    "iterator-call-unpack-object-extra-extra-normal",
+    "iterator-call-unpack-object-extra-extra-second-warning-throw",
+    "iterator-call-unpack-object-extra-extra-parked-throw"
+  ],
+  "native": {
+    "revision": "8b914be9b2a7672f6a2449a3b842ad95d76e4a7a",
+    "report": ".tools/calls-iterator-copied-object-extra-extra-24/.tools/iterator-call-unpack-object-extra-extra-native-4_donsm9/report.json",
+    "report_sha256": "e3f0bc78281d8d552057a2d9a0ece3bc8055b407fbec4062ca0393618cf7a380",
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "93e0578906f0eb5c20f3bc9aeea11e2c197a027bf63e5306b807665024bd9d11",
+    "originals": 3,
+    "normal_agreements": 0,
+    "process_seconds": 8,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "observations": "Both warnings use argument1; normal I/G/F/A/B, second-warning and injected throws I/A/B; zeta precedes alpha despite lexical order; main17/19 survives park."
+  },
+  "strict": {
+    "revision": "fc101300959a52e71e04b7e0334f004b22959c39",
+    "report": ".tools/calls-iterator-copied-object-extra-extra-24/.tools/iterator-call-unpack-object-extra-extra-sl-ckvpdd6g/report.json",
+    "report_sha256": "1fe36132b8a725ce80e43b1c73b4609984b3b012f85cda1dccb99d74bf375ed6",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "2c2126240cc6fba3bae2b4d40bbdad458b3f8fdfcff9bf1731d2319b501e6311",
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "status": "passed",
+    "revision": "fc101300959a52e71e04b7e0334f004b22959c39",
+    "command": "timeout -k 10s 300s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-object-extra-extra-native-4_donsm9/report.json",
+    "runner_sha256": "1c1143405b6968e2ae180aa6167ebedbfe2d616fda45d564366de45735366b59",
+    "new_native_executions": 0,
+    "report": ".tools/calls-iterator-copied-object-extra-extra-24/.tools/iterator-call-unpack-object-extra-extra-source-apogv55a/report.json",
+    "report_sha256": "83339bffcc3b19f8c617ff76db792d0d13181e025bc0d6b1f6b00cae2073f750",
+    "normal_agreements": 3,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "source_budgets": {
+    "steps": 100000,
+    "model_seconds": 60,
+    "process_seconds": 75
+  },
+  "state_review": {
+    "status": "passed",
+    "revision": "a8f7e9f1f543d46e96db1d4c178eeabf26cbb5b1",
+    "report": ".tools/calls-iterator-copied-object-extra-extra-24/.tools/fiber-state-review-aoqkelkq/report.json",
+    "report_sha256": "80737b783dda1e56a3a6eb7050b636ff01d27ccc22d4b0fe2c820692a51c1357",
+    "command": "timeout -k 10s 1100s prlimit --as=6442450944 -- python3 -u .tools/object-extra-extra-state-stop-first.py",
+    "runner_sha256": "ec9b741824d65c4b4979992b53222be5c25bed326b078c5ec9ca95bdcda88a1f",
+    "fixture_sha256": "a025cd9f72a2bf3ea1cb704b187f957bee3adfc69a3954e6d1fdff47bf8c3842",
+    "groups": 8,
+    "physical_premises": 446,
+    "driver_assertions": 419,
+    "pure_queries": 0,
+    "seek_steps": 4000,
+    "finish_steps": 4000,
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "resource_cap": {
+    "address_space_bytes": 6442450944,
+    "jobs": 1,
+    "stop_first": true,
+    "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; recorded kills/waits for process group; providers close in finally."
+  },
+  "compatibility": "Only the nonempty-buffer NAMED_EXTRA object-order arm changes. Existing contextual target/vacancy/key/site/type guards, mapped cleanup and per-cell private receive are unchanged; prior native/source/state cuts stay frozen."
+}

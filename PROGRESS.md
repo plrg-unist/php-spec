@@ -308,10 +308,23 @@ independent reached-state groups pass 620 physical/589 driver premises across re
 six at `283f11cc` and affected five at `9ddd85c0`, including three counterfactual
 helper guards. The strict constructor/binder and state record-syntax/seek-binding
 stops retain zero campaign credit. General shared-buffer release before COW,
-extra-to-extra, later positional variadic, arrays and REFERENCE object payloads
-remain required. Earlier cuts stay frozen. Actual375 over `9a478e060` passes
-strict SL at `e5119c633`; private native/source/state cuts retain their original inputs.
+later positional variadic, arrays and REFERENCE object payloads remain required;
+extra-to-extra remained open at that cut. Earlier cuts stay frozen. Actual375 over
+`9a478e060` passes strict SL at `e5119c633`; private native/source/state cuts retain
+their original inputs.
 [Extra-named review](coverage/semantics/iterator-call-unpack-object-extra-named-review.json).
+
+Copied-object extra-to-extra warnings now retain earlier private named cells and
+map failed payloads in insertion order. Both warnings use the same variadic
+argument number; normal rest writes retain original cells through F, and handler
+or parked throws release Iterator then earlier and failed payloads. Native3 passes
+at `8b914be9`; strict375 and three unchanged-source agreements pass at `fc1013009`
+without fresh native execution. Eight genuine-source state groups pass 446 physical/419
+driver ownership and authority premises at `a8f7e9f1`, including both private-cell
+receives, retired SOURCE guards and F-to-A-to-B cleanup; no pure queries are counted.
+The direct-site, untyped variadic and no-positional-extra guards remain; general
+shared buffers, later positional variadic and REFERENCE payloads remain required.
+[Extra-to-extra review](coverage/semantics/iterator-call-unpack-object-extra-extra-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

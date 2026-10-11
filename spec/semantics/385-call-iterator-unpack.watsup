@@ -275,7 +275,7 @@ def $iterator_unpack_scalar_operand(S, poperand) = false -- otherwise
 def $iterator_unpack_object_order({SLOTS eps, NAMED eps}, pfunction, pnamedtarget) = true
 def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_POSITION n) = $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
   -- if pnamedargs =/= {SLOTS eps, NAMED eps}
-def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_EXTRA preqbytes) = (pnamedargs.NAMED = eps)
+def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_EXTRA preqbytes) = true
   -- if pnamedargs =/= {SLOTS eps, NAMED eps}
 def $iterator_unpack_object_order(pnamedargs, pfunction, pnamedtarget) = false -- otherwise
 ;; Restrict the separated rest representation to one direct, statically named
