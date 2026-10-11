@@ -18,6 +18,8 @@ SL fixtures and one independent shared-cell fixture pass 714 conditions
 actual temporary roots, captured conversions and preserved baseline/mismatch
 failures. Wider bitwise producer classes, objects and expired borrowed pointers
 remain open; no reference-return producer semantics changed.
+The 378-module join over e208 passes strict SL at ae107 (6.046s); private
+source/state cuts retain their recorded revisions without renewal.
 
 Parser-backed top-level statics now authenticate source ownership and release
 normal/explicit-return slots in compiler declaration order. Callable slots,
