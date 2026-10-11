@@ -115,7 +115,7 @@ DERIVED = [
     'pcunit.ID = n_unit',
     'phpType38_parent_backed = NPropertyHook phpType14_parent phpType24_parent phpType4_parent phpType11_parent phpType16_parent (NExprPropertyFetch (NExprVariable (BYTES "dGhpcw==") metadata_parent) (NIdentifier (BYTES "dmFsdWU=") metadata_parent) metadata_parent) metadata_parent',
     'S_parent_backed = S[.SOURCES = pcunit[.OCCURRENCES = $vp_replace(pcunit.OCCURRENCES,pcpath_parent_hook,phpType38_parent_backed)] :: pcunit_tail*]',
-    '$property_hook_override_backed(S_parent_backed,ppropertydesc_parent) /\\ ~$property_hook_missing_return_parent(S_parent_backed,ppropertydesc_parent,ppropertydesc_child)',
+    '$property_hook_override_backed(S_parent_backed,ppropertydesc_parent) /\\ ~$property_hook_missing_return_parent(S_parent_backed[.CLASSES = [pclassdesc_parent[.PROPERTIES = eps],pclassdesc_child]],ppropertydesc_parent,ppropertydesc_child)',
     'phpType38_child_byref = NPropertyHook phpType14_hook phpType24_hook (BOOLEAN true) phpType11_hook phpType16_hook phpType39_hook metadata_hook',
     'S_child_byref = S[.SOURCES = pcunit[.OCCURRENCES = $vp_replace(pcunit.OCCURRENCES,pcpath_child_hook,phpType38_child_byref)] :: pcunit_tail*]',
     '~$property_hook_missing_return_parent(S_child_byref,ppropertydesc_parent,ppropertydesc_child)',
