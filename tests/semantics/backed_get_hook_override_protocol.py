@@ -11,7 +11,12 @@ sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 git = lambda *parts: subprocess.check_output(['git', *parts], cwd=ROOT, env=recorder.ENV).decode().strip()
 byte_expr = lambda value: '[' + ','.join(str(byte) for byte in value) + ']'
 
-PREFIX = r'''dec $ho_output(pevent*) : ptbytes
+PREFIX = r'''dec $ho_replace(pcoccurrence*,pcpath,pcnode) : pcoccurrence*
+def $ho_replace(eps,pcpath,pcnode) = eps
+def $ho_replace((PCOCCURRENCE pcpath pcnode_old) :: pcoccurrence*,pcpath,pcnode) = (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*
+def $ho_replace((PCOCCURRENCE pcpath_other pcnode_old) :: pcoccurrence*,pcpath,pcnode) = (PCOCCURRENCE pcpath_other pcnode_old) :: $ho_replace(pcoccurrence*,pcpath,pcnode)
+  -- if pcpath_other =/= pcpath
+dec $ho_output(pevent*) : ptbytes
 def $ho_output(eps) = eps
 def $ho_output((OUTPUT ptbytes) :: pevent*) = ptbytes ++ $ho_output(pevent*)
 dec $ho_stage(pstate,nat) : bool
@@ -246,7 +251,7 @@ DERIVED=[
     r'porigin_hook_child = ppropertyhook_S_child.HOOK',
     r'porigin_hook_child = PORIGIN n_unit pcpath_hook',
     r'pcunit.ID = n_unit',
-    r'S_virtual = S[.SOURCES = pcunit[.OCCURRENCES = $eval_order_set_occurrence(pcunit.OCCURRENCES,pcpath_hook,phpType38_virtual)] :: pcunit_tail*]',
+    r'S_virtual = S[.SOURCES = pcunit[.OCCURRENCES = $ho_replace(pcunit.OCCURRENCES,pcpath_hook,phpType38_virtual)] :: pcunit_tail*]',
     r'~$property_hook_override_pair(S_virtual,ppropertydesc_parent,ppropertydesc_child) /\ $property_hook_parent_match(S_virtual,ppropertydesc_child,(ppropertydesc_parent))',
     r'ppropertyhook_wrong = ppropertyhook_S_grand[.PROPERTY = ppropertyhook_S_parent.PROPERTY][.HOOK = ppropertyhook_S_parent.HOOK]',
     r'~$property_hook_valid(S_grand,ppropertyhook_wrong,true) /\ ~$property_hook_pending_call(S_grand_call,ppropertyhook_wrong)',
