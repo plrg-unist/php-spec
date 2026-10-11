@@ -1,0 +1,53 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "5806070e8a59ea3c208035f5c94a3df3f40b651f2d6d13594ecf375b2343cb1b",
+  "cases": [
+    {
+      "id": "scalar-returned-backing",
+      "source": "<?php\nfunction hook_compound_right35(): int { echo \"R|\"; return 3; }\nclass HookCompoundScalar35 {\n    public mixed $returned = null;\n    public mixed $value = 100 {\n        get { echo \"G|\"; $backing = $this->value; return $this->returned; }\n    }\n    public function probe(): void {\n        $this->value = 100;\n        $kept = ($this->value += hook_compound_right35());\n        $snapshot = (array) $this;\n        echo \"T\", $kept, \":\", $snapshot[\"value\"], \"|\";\n    }\n}\n$box = new HookCompoundScalar35;\nforeach ([null, false, 0, 7] as $returned) {\n    $box->returned = $returned;\n    $box->value = 100;\n    $kept = ($box->value += hook_compound_right35());\n    $snapshot = (array) $box;\n    echo \"C\", $kept, \":\", $snapshot[\"value\"], \"|\";\n    $box->probe();\n}\n",
+      "source_sha256": "4aee0d848b169ed1159726d5b2866da7d7050c469eac5947de114c779ffaca26",
+      "stdout_base64": "UnxHfEMzOjN8UnxHfFQzOjN8UnxHfEMzOjN8UnxHfFQzOjN8UnxHfEMzOjN8UnxHfFQzOjN8UnxHfEMxMDoxMHxSfEd8VDEwOjEwfA==",
+      "exit_status": 0,
+      "native_group": "backed-hook-addassign35-native3-9ae5ca33",
+      "native_raw_sha256": "5806070e8a59ea3c208035f5c94a3df3f40b651f2d6d13594ecf375b2343cb1b",
+      "status": "normal",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "receiver-rebind",
+      "source": "<?php\nclass HookCompoundReceiver35 {\n    public int $label = 1;\n    public bool $rebind = false;\n    public mixed $returned = 7;\n    public mixed $value = 100 {\n        get {\n            global $box, $weak;\n            echo \"G\", $this->label, \"|\";\n            $backing = $this->value;\n            if ($this->rebind) {\n                $box = new HookCompoundReceiver35;\n                $box->label = 2;\n                echo $weak->get() === $this ? \"GL|\" : \"GN|\";\n            }\n            return $this->returned;\n        }\n    }\n    public function __destruct() {\n        $snapshot = (array) $this;\n        echo \"D\", $this->label, \":\", $snapshot[\"value\"], \"|\";\n    }\n}\nfunction hook_compound_rebind_right35(): int {\n    global $box, $weak;\n    echo \"R0|\";\n    $box = new HookCompoundReceiver35;\n    $box->label = 2;\n    echo $weak->get() === null ? \"RN|\" : \"RL|\";\n    return 3;\n}\nfunction hook_compound_plain_right35(): int { echo \"R|\"; return 3; }\n$box = new HookCompoundReceiver35;\n$weak = WeakReference::create($box);\n$kept = ($box->value += hook_compound_rebind_right35());\n$snapshot = (array) $box;\necho $kept, \":\", $snapshot[\"value\"], \"|\";\nunset($box);\n$box = new HookCompoundReceiver35;\n$box->rebind = true;\n$weak = WeakReference::create($box);\n$kept = ($box->value += hook_compound_plain_right35());\n$snapshot = (array) $box;\necho $weak->get() === null ? \"GN|\" : \"GL|\";\necho $kept, \":\", $snapshot[\"value\"], \"|\";\nunset($box);\n",
+      "source_sha256": "e2978c9fa22c224aa915fb846a3ea8449e089190fe2493c74e142ccbe845a31a",
+      "stdout_base64": "UjB8RDE6MTAwfFJOfEcyfDEwOjEwfEQyOjEwfFJ8RzF8R0x8RDE6MTB8R058MTA6MTAwfEQyOjEwMHw=",
+      "exit_status": 0,
+      "native_group": "backed-hook-addassign35-native3-9ae5ca33",
+      "native_raw_sha256": "5806070e8a59ea3c208035f5c94a3df3f40b651f2d6d13594ecf375b2343cb1b",
+      "status": "normal",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "returned-object-error",
+      "source": "<?php\nclass HookCompoundLeaf35 {\n    public function __destruct() {\n        global $weak_box;\n        echo \"D|\", $weak_box->get() === null ? \"BN|\" : \"BL|\";\n    }\n}\nclass HookCompoundObject35 {\n    public int $label = 1;\n    public mixed $value = 100 {\n        get {\n            global $box, $weak_leaf;\n            echo \"G|\";\n            $backing = $this->value;\n            $leaf = new HookCompoundLeaf35;\n            $weak_leaf = WeakReference::create($leaf);\n            $box = new HookCompoundObject35;\n            $box->label = 2;\n            return $leaf;\n        }\n    }\n    public function __destruct() {\n        $snapshot = (array) $this;\n        echo \"B\", $this->label, \":\", $snapshot[\"value\"], \"|\";\n    }\n}\nfunction hook_compound_error_right35(): int { echo \"R|\"; return 3; }\n$weak_leaf = null;\n$box = new HookCompoundObject35;\n$weak_box = WeakReference::create($box);\ntry {\n    $kept = ($box->value += hook_compound_error_right35());\n} catch (TypeError $error) {\n    echo \"E:\", $error->getMessage(), \":\", $error->getLine(), \"|\";\n}\necho $weak_leaf->get() === null ? \"N|\" : \"LIVE|\";\necho $weak_box->get() === null ? \"BN|\" : \"BL|\";\n$snapshot = (array) $box;\necho $snapshot[\"value\"], \"|\";\nunset($box);\necho $weak_box->get() === null ? \"BN|\" : \"BL|\";\n",
+      "source_sha256": "78d112efde26076f3d3aee782d0551dbde35d4f8004c4346c50e2d80f7a2a3cc",
+      "stdout_base64": "UnxHfER8Qkx8QjE6MTAwfEU6VW5zdXBwb3J0ZWQgb3BlcmFuZCB0eXBlczogSG9va0NvbXBvdW5kTGVhZjM1ICsgaW50OjMyfE58Qk58MTAwfEIyOjEwMHxCTnw=",
+      "exit_status": 0,
+      "native_group": "backed-hook-addassign35-native3-9ae5ca33",
+      "native_raw_sha256": "5806070e8a59ea3c208035f5c94a3df3f40b651f2d6d13594ecf375b2343cb1b",
+      "status": "normal",
+      "stderr_template_base64": ""
+    }
+  ]
+}
