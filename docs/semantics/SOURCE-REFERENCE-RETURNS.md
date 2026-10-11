@@ -195,6 +195,18 @@ reached fixtures/811 assertions retain first7/705 there and final106 at validato
 nonpublic; local source certificates do not exclude coherent history rewrites.
 Adjacent mixed clearing, other layouts, lifecycle and broad returns remain OPEN.
 
+The E-catch body additionally admits a checked named zero-argument call followed by
+literal echo, optionally rethrowing that same catch CV. In the measured pure `ping()`
+passage, the saved frame authenticates the complete statement/catch restores, Z replay
+and W/old consumed tail under its restored f scope. The fresh Z-NULL TypeError remains
+in f.e; no Notice is emitted during the call. Returning reaches E/B and old once,
+yielding its original-line Notice and a fresh caller cell. E rethrow preserves the
+identical fresh error and retires W/old; selected Y cancels the call and keeps its alias.
+Source3, reached3/301 and independent saved80/1 pass separately at `e18e338a`; deleting
+the pre-W finalizer restore is publicly refused. A late normalized budget comparison
+passes. Shared selected-owner syntax admits named noarg calls, but arbitrary effects,
+reentry, suspension, other catch layouts and broad returns verification remain OPEN.
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

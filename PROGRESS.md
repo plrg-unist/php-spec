@@ -1110,6 +1110,19 @@ Other mixed layouts, lifecycle/typed capture, effectful calls and broad
 returns_verify remain OPEN. Actual375 over `4f93b073` passes strict at
 `36238b5f` in 5.980s with zero applications; private cuts remain separate.
 
+The checked E catch now admits a named zero-argument call before its literal echo,
+with optional rethrow of the same catch CV. The measured pure `ping()` call preserves
+the parked W/old history and fresh Z TypeError through its saved f frame, then resumes
+E/B and old with one original-line Notice/fresh caller cell, or retires history on
+rethrow. Selected Y keeps its alias and cancels that call. Three original sources,
+three reached fixtures/301 assertions and an independent saved-frame80/1 check pass
+at `e18e338a`; private strict375 passes in 5.954s with zero applications. The maintained
+producer is byte-identical to tested ac7c; original fixture elaboration failures retain
+zero credit. The syntactic named-call admission is wider than this pure E-call evidence;
+mutating/reentrant/suspending calls, other catch layouts and broad returns_verify remain
+OPEN. The [multiple-history review](coverage/semantics/reference-return-multiple-active-cv-review.json)
+keeps these cuts separate from earlier replay and the next abrupt-callee probe.
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.

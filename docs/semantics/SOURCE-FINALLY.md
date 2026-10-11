@@ -210,6 +210,18 @@ interpreter matches Cons on every nonempty sequence. Exact-length Cons suffixes
 preserve catch-tail fallback and the specialized mixed clear-site branch; guards
 and lengths are unchanged, with no vendor modification or PHP divergence.
 
+The E-catch body additionally admits a checked named zero-argument call followed by
+literal echo, optionally rethrowing that same catch CV. The measured pure `ping()`
+preserves the complete saved statement/catch restores, Z replay and root-free W/old
+tail under f scope. Its actual pre-W restore is W.finally, not Z.finally; the fresh
+Z-NULL TypeError stays in f.e. Call return resumes E/B and old once with its original
+Notice and a fresh caller cell. Same-CV rethrow carries that identical fresh error
+through W/old retirement; selected Y cancels the call and keeps its alias. Source3,
+reached3/301 and independent saved80/1 pass separately at `e18e338a`, including public
+refusal of the missing pre-W restore and a late normalized budget comparison.
+The shared source guard admits named noarg calls; general effects, reentry, suspension,
+other catch layouts and broad returns verification remain OPEN.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

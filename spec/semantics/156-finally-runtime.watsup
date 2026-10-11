@@ -1687,6 +1687,8 @@ def $ref_chain_paths(pcpath :: pcpath_tail*, porigin_owner*, n, pcpath_source) =
 dec $ref_chain_catch_body(statement*, ptbytes) : bool
 def $ref_chain_catch_body([NStmtEcho (SEQUENCE ([NScalarString (BYTES text) metadata_string])) metadata_echo], n_name*) = true
 def $ref_chain_catch_body([NStmtEcho (SEQUENCE ([NScalarString (BYTES text) metadata_string])) metadata_echo, NStmtExpression (NExprThrow (NExprVariable (BYTES text_variable) metadata_variable) metadata_throw) metadata_statement], n_name*) = ($base64(text_variable) = n_name*)
+def $ref_chain_catch_body([NStmtExpression (NExprFuncCall (NName (BYTES text_call) metadata_name) (SEQUENCE eps) metadata_call) metadata_call_statement, NStmtEcho (SEQUENCE ([NScalarString (BYTES text) metadata_string])) metadata_echo], n_name*) = true
+def $ref_chain_catch_body([NStmtExpression (NExprFuncCall (NName (BYTES text_call) metadata_name) (SEQUENCE eps) metadata_call) metadata_call_statement, NStmtEcho (SEQUENCE ([NScalarString (BYTES text) metadata_string])) metadata_echo, NStmtExpression (NExprThrow (NExprVariable (BYTES text_variable) metadata_variable) metadata_throw) metadata_statement], n_name*) = ($base64(text_variable) = n_name*)
 def $ref_chain_catch_body(statement*, n_name*) = false -- otherwise
 def $ref_chain_selected_owner(S, porigin) = true
   -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE eps) phpType67 metadata_try)
