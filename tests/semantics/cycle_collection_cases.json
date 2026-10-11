@@ -1,5 +1,23 @@
 [
   {
+    "id": "weak-map-read-value-copy-58",
+    "source": "<?php\nclass Value {\n    public function __destruct() { echo \"V|\"; }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($value);\n$held = $map[$key];\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($held);\necho $valueWeak->get() === null ? \"value-null|END\" : \"value-live|END\";\n",
+    "source_sha256": "dbac4e88e7a8dfa1c0f3d4d302e212eb1e7b64809da20a20e4544dd3911e2d2b",
+    "stdout": "key-live|value-live|key-null|value-live|V|value-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "weak-map-read-missing-object-key-58",
+    "source": "<?php\nclass Value {\n    public function __destruct() { echo \"V|\"; }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$missing = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$map[$key] = $value;\nunset($value);\ntry { $map[$missing]; } catch (Error $e) { echo $e->getMessage(), \"|\"; }\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|END\" : \"value-live|END\";\n",
+    "source_sha256": "de58b900d6293653d86d0d877ea88d3b586d56058a62f79c8cc942514667f274",
+    "stdout": "Object stdClass#3 not contained in WeakMap|key-live|value-live|V|key-null|value-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
     "id": "weak-map-own-retirement-57",
     "source": "<?php\nclass Value {\n    public function __destruct() { global $mapWeak; echo $mapWeak->get() === null ? \"callback-map-null|\" : \"callback-map-live|\"; echo \"V|\"; }\n}\n$map = new WeakMap();\n$key = new stdClass();\n$value = new Value();\n$keyWeak = WeakReference::create($key);\n$valueWeak = WeakReference::create($value);\n$mapWeak = WeakReference::create($map);\n$map[$key] = $value;\nunset($value);\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($map);\necho $mapWeak->get() === null ? \"map-null|\" : \"map-live|\";\necho $keyWeak->get() === null ? \"key-null|\" : \"key-live|\";\necho $valueWeak->get() === null ? \"value-null|\" : \"value-live|\";\nunset($key);\necho $keyWeak->get() === null ? \"key-null|END\" : \"key-live|END\";\n",
     "source_sha256": "2c8856f3061e7d15f31de8b17a3f0e0964fa4ed33975a45b8cc538a8f1397d8c",
