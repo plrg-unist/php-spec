@@ -51,20 +51,25 @@ def $weakmap_key_maps(S, (HCELL n) :: pnode_tail*, n_key) = $weakmap_key_maps(S,
 def $weakmap_key_maps(S, (HARRAY n) :: pnode_tail*, n_key) = $weakmap_key_maps(S, pnode_tail*, n_key)
 def $weakmap_has_key(S, n, n_key) = true
   -- if $weakmap_at(S, n)
-  -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry) /\ pweakmapentry.KEY = n_key
+  -- if S.OBJECTS[n] = WEAKMAP (pweakmapentry)
+  -- if pweakmapentry.KEY = n_key
 def $weakmap_has_key(S, n, n_key) = false -- otherwise
 dec $weakmap_write_allowed(pstate, paccess) : bool
 def $weakmap_write_allowed(S, paccess) = true
   -- if paccess.MODE = ACCESS_SET /\ ~paccess.LATCH /\ ~paccess.KEYHOLE
   -- if paccess.BASE = BASE_VALUE poperand
   -- if paccess.TASK = ASSIGN_ARRAY (BASE_DIM paccess.BASE paccess.INPUT paccess.KEYLINE) paccess.LINE false
-  -- if paccess.OBJECT = (n_map) /\ $weakmap_at(S, n_map)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
   -- if S_base = $quiet_operand(S, poperand)
-  -- if S_base.COMPLETION = NORMAL /\ S_base.RESULT = KNOWN (POBJECT n_map)
+  -- if S_base.COMPLETION = NORMAL
+  -- if S_base.RESULT = KNOWN (POBJECT n_map)
   -- if S_key = $quiet_operand(S, paccess.INPUT)
-  -- if S_key.COMPLETION = NORMAL /\ S_key.RESULT = KNOWN paccess.OFFSET
+  -- if S_key.COMPLETION = NORMAL
+  -- if S_key.RESULT = KNOWN paccess.OFFSET
   -- if S_value = $quiet_operand(S, paccess.SELECTED)
-  -- if S_value.COMPLETION = NORMAL /\ S_value.RESULT = KNOWN paccess.VALUE
+  -- if S_value.COMPLETION = NORMAL
+  -- if S_value.RESULT = KNOWN paccess.VALUE
   -- if $access_valid(S, paccess[.PHASE = ACCESS_CALL $ptascii("offsetSet")])
   -- if S.OBJECTS[n_map] = WEAKMAP eps
   -- if paccess.OFFSET = POBJECT n_key
@@ -74,17 +79,21 @@ def $weakmap_write_allowed(S, paccess) = true
   -- if $weakmap_key_maps(S, S.ALLOCATIONS, n_key) = eps
   -- if paccess.VALUE = POBJECT n_value
   -- if $(n_value < |S.OBJECTS|) /\ (HOBJECT n_value) <- S.ALLOCATIONS
-  -- if S.OBJECTS[n_value] = INSTANCE porigin /\ ~$instance_storage_freeing(S, n_value)
+  -- if S.OBJECTS[n_value] = INSTANCE porigin
+  -- if ~$instance_storage_freeing(S, n_value)
   -- if $node_children(S, HOBJECT n_value) = eps
 def $weakmap_write_allowed(S, paccess) = false -- otherwise
 def $access_call(S, paccess, ptbytes) = $access_done(S_read[.OBJECTS[n_map] = WEAKMAP ({KEY n_key, VALUE paccess.VALUE})], paccess, pvalue_result)
-  -- if paccess.OBJECT = (n_map) /\ $weakmap_at(S, n_map)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
   -- if ptbytes = $ptascii("offsetSet") /\ $weakmap_write_allowed(S, paccess)
   -- if paccess.OFFSET = POBJECT n_key
   -- if S_read = $quiet_operand(S, paccess.SELECTED)
-  -- if S_read.COMPLETION = NORMAL /\ S_read.RESULT = KNOWN pvalue_result
+  -- if S_read.COMPLETION = NORMAL
+  -- if S_read.RESULT = KNOWN pvalue_result
 def $access_call(S, paccess, ptbytes) = S[.COMPLETION = UNSUPPORTED "WeakMap dimension protocol outside first insertion"]
-  -- if paccess.OBJECT = (n_map) /\ $weakmap_at(S, n_map)
+  -- if paccess.OBJECT = (n_map)
+  -- if $weakmap_at(S, n_map)
   -- if ptbytes =/= $ptascii("offsetSet") \/ ~$weakmap_write_allowed(S, paccess)
 
 ;; std_dtor has already hidden the key behind an authenticated physical pin.
