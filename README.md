@@ -1537,6 +1537,13 @@ inherited `$this` dispatch preserve one child backing slot; ordinary writes
 change that slot. Three originals and separate rejection/read/write checks are
 recorded in the
 [backed type-presence review](coverage/semantics/backed-get-hook-type-presence-review.json).
+A genuinely body-backed child getter can also override a virtual getter of the
+same normalized type. The child keeps its own physical slot and default; inherited
+reads use child/private scope and runtime descendant dispatch. Receiver cleanup
+releases the backing reference independently of a retained return value.
+Two originals and separate CV, inherited `$this`, write and lifetime checks are
+recorded in the
+[virtual-parent review](coverage/semantics/virtual-parent-backed-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

@@ -962,6 +962,17 @@ M41 cuts remain unchanged.
 Exact `e1166134` composition retains private strict/source/state cuts through
 unchanged hook/type/task/schema paths; the disjoint additions require no new actor.
 
+Public by-value getters now admit a genuinely body-backed child over a closed
+virtual-parent ancestry with identical normalized TYPE. The child keeps its own
+slot/default, active backing read and private scope; inherited `$this` dispatch
+keeps the runtime descendant. Strict375 and two originals pass at `3f03c88b`.
+Separate CV104 (69 reached, 35 derived), This68, write64 and lifetime104 pass at
+`c6ff1271` (305 reached, 35 derived across four setups). These check child slot 200,
+raw write 300/getter 313, ancestry refusals and stored-S release independently of
+retained-R cleanup. Layout/default/runtime/owner rules and prior cuts stay unchanged;
+unequal types and wider hook inheritance remain required.
+[Virtual-parent review](coverage/semantics/virtual-parent-backed-get-hook-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
