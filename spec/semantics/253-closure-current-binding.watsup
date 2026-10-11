@@ -129,6 +129,28 @@ def $closure_live_object_valid(S, n) = true
   -- if (HOBJECT n) <- S.ALLOCATIONS
   -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
 
+;; A captured call owns its selected API. Static method receivers remain borrowed.
+;; SELECTION repeats that object identity here, rather than a selected-name nonce.
+def $closure_current_config_tag(pconfigcall) = true
+  -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
+  -- if pconfigcall.OWNER = (n)
+  -- if pconfigcall.SELECTION = (n)
+def $closure_current_config_tag(pconfigcall) = false -- otherwise
+def $config_prepare(S, INTRINSIC_CLOSURE_CURRENT, z, (n), porigin) = S[.TODO = (CONFIG_ARGS {SITE porigin, KIND INTRINSIC_CLOSURE_CURRENT, INDEX 0, SENT eps, NAMED false, OWNER (n), SELECTION (n), LINE z, PACKS eps}) :: S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if S.ORIGIN = (porigin)
+  -- if $dynamic_site(S, (porigin)) \/ $exit_method_site(S, porigin)
+  -- if $call_line_valid(S, (porigin), z)
+  -- if $closure_callable(S, n)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
+def $config_selected_valid(S, pconfigcall) = true
+  -- if $closure_current_config_tag(pconfigcall)
+  -- if pconfigcall.OWNER = (n)
+  -- if $closure_callable(S, n)
+  -- if S.OBJECTS[n] = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
+  -- if $dynamic_site(S, (pconfigcall.SITE)) \/ $exit_method_site(S, pconfigcall.SITE)
+
 def $config_selected_valid(S, pconfigcall) = true
   -- if pconfigcall.KIND = INTRINSIC_CLOSURE_CURRENT
   -- if pconfigcall.SELECTION = eps

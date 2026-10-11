@@ -175,5 +175,19 @@
     "source_sha256": "c3e8222656d9fcab6c7e922639f506b70bbe51ba5c853ff7009c8b0bf786c71c",
     "expected_model": "normal",
     "native_stdout": "Q;A;B;N;C:held;E:Error:Current function is not a closure;C:gone;B:gone;E:held;E:gone;C:gone;B:gone;Z;"
+  },
+  {
+    "id": "argument-direct-current-api-retirement",
+    "source": "<?php\nfunction retireCurrentArgumentBody() {\n    global $body;\n    $body = null;\n    echo 'A;';\n    return 7;\n}\nfunction retireSelectedCurrentArgument() {\n    global $api, $weakApi;\n    echo 'S;';\n    $api = null;\n    echo 'C:', $weakApi->get() === null ? 'gone' : 'held', ';';\n    return 7;\n}\necho 'Q;';\n$api = Closure::getCurrent(...);\n$weakApi = WeakReference::create($api);\n$body = function ($ignored) {\n    global $api;\n    echo 'B;';\n    Closure::getCurrent(retireSelectedCurrentArgument());\n    echo 'U:body;';\n};\n$weakBody = WeakReference::create($body);\ntry {\n    $body(ignored: retireCurrentArgumentBody());\n    echo 'U:main;';\n} catch (Throwable $caught) {\n    $weakError = WeakReference::create($caught);\n    echo 'E:', get_class($caught), ':', $caught->getMessage(), ';';\n    echo 'C:', $weakApi->get() === null ? 'gone' : 'held', ';';\n    echo 'B:', $weakBody->get() === null ? 'gone' : 'held', ';';\n    echo 'E:', $weakError->get() === null ? 'gone' : 'held', ';';\n    $caught = null;\n    echo 'E:', $weakError->get() === null ? 'gone' : 'held', ';';\n    echo 'C:', $weakApi->get() === null ? 'gone' : 'held', ';';\n    echo 'B:', $weakBody->get() === null ? 'gone' : 'held', ';';\n}\necho 'Z;';\n",
+    "source_sha256": "9299fad9b6b8f76e85d216506786afb3fcba861be44d3a5c28923645e6994541",
+    "expected_model": "normal",
+    "native_stdout": "Q;A;B;S;C:gone;E:ArgumentCountError:Closure::getCurrent() expects exactly 0 arguments, 1 given;C:gone;B:gone;E:held;E:gone;C:gone;B:gone;Z;"
+  },
+  {
+    "id": "argument-captured-current-api-retirement",
+    "source": "<?php\nfunction retireCurrentArgumentBody() {\n    global $body;\n    $body = null;\n    echo 'A;';\n    return 7;\n}\nfunction retireSelectedCurrentArgument() {\n    global $api, $weakApi;\n    echo 'S;';\n    $api = null;\n    echo 'C:', $weakApi->get() === null ? 'gone' : 'held', ';';\n    return 7;\n}\necho 'Q;';\n$api = Closure::getCurrent(...);\n$weakApi = WeakReference::create($api);\n$body = function ($ignored) {\n    global $api;\n    echo 'B;';\n    $api(retireSelectedCurrentArgument());\n    echo 'U:body;';\n};\n$weakBody = WeakReference::create($body);\ntry {\n    $body(ignored: retireCurrentArgumentBody());\n    echo 'U:main;';\n} catch (Throwable $caught) {\n    $weakError = WeakReference::create($caught);\n    echo 'E:', get_class($caught), ':', $caught->getMessage(), ';';\n    echo 'C:', $weakApi->get() === null ? 'gone' : 'held', ';';\n    echo 'B:', $weakBody->get() === null ? 'gone' : 'held', ';';\n    echo 'E:', $weakError->get() === null ? 'gone' : 'held', ';';\n    $caught = null;\n    echo 'E:', $weakError->get() === null ? 'gone' : 'held', ';';\n    echo 'C:', $weakApi->get() === null ? 'gone' : 'held', ';';\n    echo 'B:', $weakBody->get() === null ? 'gone' : 'held', ';';\n}\necho 'Z;';\n",
+    "source_sha256": "1eb3365b06bb405ef0b4d53575d227a0f74c0ca4ee5c7289ceca53ef6fb00180",
+    "expected_model": "normal",
+    "native_stdout": "Q;A;B;S;C:held;E:ArgumentCountError:Closure::getCurrent() expects exactly 0 arguments, 1 given;C:gone;B:gone;E:held;E:gone;C:gone;B:gone;Z;"
   }
 ]

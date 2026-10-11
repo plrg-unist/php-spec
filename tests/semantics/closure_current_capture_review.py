@@ -106,11 +106,11 @@ pconfigcall_current.KIND = INTRINSIC_CLOSURE_CURRENT
 pconfigcall_current.OWNER = (n_api)
 pconfigcall_current.SENT = eps /\ pconfigcall_current.INDEX = 0
 pconfigcall_current.PACKS = eps /\ ~pconfigcall_current.NAMED
-pconfigcall_current.SELECTION = eps
+pconfigcall_current.SELECTION = (n_api)
 S_config.OBJECTS[n_api] = INTRINSICCLOSURE INTRINSIC_CLOSURE_CURRENT
 $config_invoke_valid(S_config, pconfigcall_current)
 $call_task_valid(S_config, CONFIG_INVOKE pconfigcall_current)
-$task_nodes(CONFIG_INVOKE pconfigcall_current) = eps
+$task_nodes(CONFIG_INVOKE pconfigcall_current) = [HOBJECT n_api]
 $lookup(S_config.ENV, $ptascii("picked")) = (n_picked_cell)
 S_config.STORE[n_picked_cell] = DEFINED (POBJECT n_api)
 S_config.GLOBALTABLE = (psymboltable_global)
@@ -127,7 +127,7 @@ $weakref_get(S_config, n_weak_body) = POBJECT n_body
 n_api =/= n_body
 $object_body(S_config.OBJECTS[n_body]) = REALCLOSURE porigin_body eps eps
 $node_children(S_config, HOBJECT n_body) = eps
-$heap_owners($heap_graph(S_config), HOBJECT n_api) = 1
+$heap_owners($heap_graph(S_config), HOBJECT n_api) = 2
 $heap_owners($heap_graph(S_config), HOBJECT n_body) = 1
 S_config.FIBERSEQ = 1
 ~$destructor_operational(S_config)

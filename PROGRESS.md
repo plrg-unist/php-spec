@@ -3801,7 +3801,7 @@ core remains open.
 Literal named-static current FCC capture now reuses the receiver-free API identity
 without changing CURRENT or frames. Three native originals/one direct at 16b and
 two repaired captured sources at 257/375 agree; separate body (206) and named (241)
-gates validate the immediate ordinary caller, borrowed CONFIG authority, distinct picked-null/returned-null
+gates validate the immediate ordinary caller, distinct picked-null/returned-null
 retirement and named Error/caught-null cleanup (425 genuine/derived plus 22 controls).
 Four failed full fixtures and one localization cut retain 0. Exact maintained
 source/renderer/dispatch relocation preserves all 26 legacy fixtures/counts by pure
@@ -3810,6 +3810,19 @@ open in the [ledger](coverage/semantics/closure-current-binding-review.json).
 Exact current composition at `90d4caa2` over `c3fbb257` (375 modules) passes all
 447 premises: compiler 5.171 s, initialized SL 53.584 s. Common control/storage
 interfaces are checked; original body/named and source/native cuts retain their inputs.
+
+Captured CURRENT calls now pin the resolved selected API in CONFIG during
+ordinary argument evaluation; static receivers remain borrowed. A genuine helper
+api-null write leaves the captured API held versus the direct API gone before
+the weak producer. Consumed arity-error CONFIG retires the API while the ordinary
+body remains current, then caught-null prunes the scalar-only error graph.
+Two native originals are retained; unchanged direct source at 7e and affected
+captured source at b5f/375 each agree with their own oracle. The 527 state premises
+pass (488 genuine/derived plus 39 controls). Recorded zero-argument bridges (54/57)
+validate the new tag/owner and unchanged current identity and named Error without
+renewing old 447. Three syntax failures remain 0; exact
+maintained relocation requires no runtime renewal. Wider forms and source7 remain
+open in the [ledger](coverage/semantics/closure-current-binding-review.json).
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
