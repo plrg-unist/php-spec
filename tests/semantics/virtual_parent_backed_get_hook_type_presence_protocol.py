@@ -22,7 +22,7 @@ REMOVE = [
     'ppropertydesc_parent = pclassdesc_parent.PROPERTIES[0]',
     'ppropertydesc_child = pclassdesc_child.PROPERTIES[0]',
     'ppropertydesc_parent.TYPE = [PTBRANCH ([PTBUILTIN "int"])] /\\ ppropertydesc_child.TYPE = eps',
-    '$property_default_state(S,ppropertydesc_parent) = (PROP_UNINITIALIZED) /\\ $property_default_state(S,ppropertydesc_child) = (PROP_VALUE (DIRECT (PINT 200)))',
+    '$property_default_state(S,ppropertydesc_parent) = (PROP_INITIAL) /\\ $property_default_state(S,ppropertydesc_child) = (PROP_VALUE (DIRECT (PINT 200)))',
     '$property_hook_origin(S,ppropertydesc_parent) = (porigin_parent_hook)',
     '$property_hook_origin(S,ppropertydesc_child) = (porigin_child_hook)',
     'porigin_child_hook = PORIGIN n_unit pcpath_child_hook',
