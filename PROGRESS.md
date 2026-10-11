@@ -719,6 +719,8 @@ dispatch keep the child slot and scope. Strict375 and two originals pass at
 cleanup. The combined285 timeout retains zero credit; M36 cuts remain frozen.
 Repeated body-unbacked overrides, virtual parents and broader hook inheritance
 remain required. [Effective backing review](coverage/semantics/effective-backed-get-hook-review.json).
+Actual375 over `7ba745ca` passes strict initialization at `5afd646c` (5.959 s);
+private source2/scalar185/lifetime100 retain their separate accepted revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
