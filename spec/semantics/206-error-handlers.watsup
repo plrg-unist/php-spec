@@ -168,6 +168,7 @@ def $error_trigger_kind(INTRINSIC_TRIGGER_ERROR) = true
 def $error_trigger_kind(INTRINSIC_USER_ERROR) = true
 def $error_trigger_kind(pintrinsic) = false -- otherwise
 def $error_trigger_message(S, pconfigcall) = (n*) -- if $error_api_value(pconfigcall, 0, PNULL) = PSTRING n*
+def $error_trigger_message(S, pconfigcall) = (n*) -- if $error_api_value(pconfigcall, 0, PNULL) = PSTRING_CARRIER pstringidentity n*
 def $error_trigger_message(S, pconfigcall) = ($echo_value(pvalue))
   -- if pvalue = $error_api_value(pconfigcall, 0, PNULL)
   -- if pvalue =/= PNULL

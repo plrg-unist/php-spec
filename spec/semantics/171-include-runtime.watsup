@@ -160,6 +160,7 @@ def $file_marker_suffix_valid(ptask :: ptask_tail*, pfilecontext) = (ptask_tail*
   -- if $file_marker_match(pfilecontext, ptask)
 def $file_marker_suffix_valid(ptask :: ptask_tail*, pfilecontext) = $file_marker_suffix_valid(ptask_tail*, pfilecontext)
   -- if ~$file_marker_match(pfilecontext, ptask)
+dec $file_once_kind(int) : bool
 dec $file_context_phase_valid(pstate, pfilecontext) : bool
 def $file_context_phase_valid(S, pfilecontext) = (pfilecontext.UNIT = eps /\ pfilecontext.RESOLVED = eps /\ pfilecontext.OPENED = eps /\ pfilecontext.BYTES = eps /\ S.FILECWD = (pfilecontext.CWD) /\ $file_include_path(S.FILEINCLUDEPATH) = (pfilecontext.INCLUDEPATH) /\ S.COMPLETION = SOURCE_PENDING /\ pfilecontext.OWNER = |S.FRAMES| /\ S.ORIGIN = (pfilecontext.SITE) /\ S.TODO = (FILE_RESOLVE_AWAIT pfilecontext.NONCE) :: pfilecontext.TAIL)
   -- if pfilecontext.PHASE = FILE_RESOLVE_WAIT
@@ -169,7 +170,7 @@ def $file_context_phase_valid(S, pfilecontext) = ($source_filename(n_opened*) /\
   -- if pfilecontext.RESOLVED = (n_resolved*)
   -- if pfilecontext.OPENED = (n_opened*)
   -- if pfilecontext.BYTES = (n_bytes*)
-def $file_context_phase_valid(S, pfilecontext) = ($source_filename(n_opened*) /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) =/= eps /\ $file_binding_at(S.FILEBINDINGS, n_unit) = ({UNIT n_unit, SITE pfilecontext.SITE, KIND pfilecontext.KIND, REQUESTED pfilecontext.REQUESTED, RESOLVED n_resolved*, OPENED n_opened*, BYTES n_bytes*, CLASS pfilecontext.LEXICAL_CLASS}) /\ $code_at(S.CODE, n_unit) =/= eps)
+def $file_context_phase_valid(S, pfilecontext) = ($source_filename(n_opened*) /\ $sourcefile_count(S.FILES, n_unit) = 1 /\ $source_unit(S.SOURCES, n_unit) =/= eps /\ $file_binding_at(S.FILEBINDINGS, n_unit) = ({UNIT n_unit, SITE pfilecontext.SITE, KIND pfilecontext.KIND, REQUESTED pfilecontext.REQUESTED, RESOLVED n_resolved*, OPENED n_opened*, BYTES n_bytes*, CLASS pfilecontext.LEXICAL_CLASS}) /\ $code_at(S.CODE, n_unit) =/= eps /\ (n_opened* <- S.INCLUDEDOPENED \/ (~$file_once_kind(pfilecontext.KIND) /\ $iterator_notice_file_flushing(S, pfilecontext))))
   -- if pfilecontext.PHASE = FILE_UNIT_RUN
   -- if pfilecontext.UNIT = (n_unit)
   -- if pfilecontext.RESOLVED = (n_resolved*)
@@ -192,7 +193,6 @@ def $file_binding_opened(pfilebinding :: pfilebinding_tail*, n_opened*) = true
 def $file_binding_opened(pfilebinding :: pfilebinding_tail*, n_opened*) = $file_binding_opened(pfilebinding_tail*, n_opened*)
   -- if pfilebinding.OPENED =/= n_opened*
 dec $file_pending_once_opened(pfilecontext*, preqbytes) : bool
-dec $file_once_kind(int) : bool
 def $file_pending_once_opened(eps, n_opened*) = false
 def $file_pending_once_opened(pfilecontext :: pfilecontext_tail*, n_opened*) = true
   -- if $file_once_kind(pfilecontext.KIND)
@@ -337,9 +337,16 @@ def $file_parse_context_response(pfilecontext :: pfilecontext_tail*, psourceresp
 def $file_parse_response_valid(S, psourceresponse) = (S.COMPLETION = SOURCE_PENDING /\ S.SERVICELEFT =/= eps /\ $file_pending_state_valid(S) /\ $file_parse_context_response(S.FILECONTEXTS, psourceresponse) /\ $eval_response_shape(psourceresponse) /\ $call_descriptors_valid(S))
 
 dec $file_compile_result(pstate, pfilecontext, pfilecontext*, ppstate) : pstate
+dec $file_compiled_paths(pstate, pfilecontext) : preqbytes*
+def $file_compiled_paths(S, pfilecontext) = S.INCLUDEDOPENED
+  -- if ~$file_once_kind(pfilecontext.KIND)
+  -- if $iterator_notice_file_flushing(S, pfilecontext)
+def $file_compiled_paths(S, pfilecontext) = $file_include_after_compile(S.INCLUDEDOPENED, n_opened*)
+  -- if $file_once_kind(pfilecontext.KIND) \/ ~$iterator_notice_file_flushing(S, pfilecontext)
+  -- if pfilecontext.OPENED = (n_opened*)
 dec $file_compile_stop_trace(pstate, pfilecontext, ppstate) : ptraceframe*
 def $file_compile_stop_trace(S, pfilecontext, P) = $eval_exception_trace(S) -- otherwise
-def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN][.TAIL = $source_operand_tail(pfilecontext.TAIL)] :: pfilecontext_tail*][.TODO = $iterator_notice_work(S_compiled.TODO, $source_operand_work(S_compiled, n_unit, $compiled_work(n_unit, P.WORK) ++ [FILE_END n_unit], pfilecontext.TAIL))][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_include_after_compile(S_compiled.INCLUDEDOPENED, n_opened*)]
+def $file_compile_result(S_compiled, pfilecontext, pfilecontext_tail*, P) = S_compiled[.FILECONTEXTS = pfilecontext[.PHASE = FILE_UNIT_RUN][.TAIL = $source_operand_tail(pfilecontext.TAIL)] :: pfilecontext_tail*][.TODO = $iterator_notice_work(S_compiled.TODO, $source_operand_work(S_compiled, n_unit, $compiled_work(n_unit, P.WORK) ++ [FILE_END n_unit], pfilecontext.TAIL))][.SERVICELEFT = eps][.ORIGIN = (pfilecontext.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.INCLUDEDOPENED = $file_compiled_paths(S_compiled, pfilecontext)]
   -- if S_compiled.COMPLETION = NORMAL
   -- if P.COMPLETION = PPCNORMAL
   -- if pfilecontext.UNIT = (n_unit)

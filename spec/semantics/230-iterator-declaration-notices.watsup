@@ -295,7 +295,8 @@ rule PhpStep/iterator-notice-dispatch: S ~> $error_dispatch(S, $iterator_notice_
 rule PhpStep/iterator-notice-resume: S ~> S[.TODO = (DECL_NOTICES pdeclnoticebatch) :: ptask_tail*]
   -- if S.TODO = (DECL_NOTICE_RESUME pdeclnoticebatch) :: ptask_tail*
   -- if $call_task_valid(S, DECL_NOTICE_RESUME pdeclnoticebatch)
-rule PhpStep/iterator-notice-done: S ~> S[.TODO = ptask_tail*]
+dec $file_notice_complete(pstate, pdeclnoticebatch) : pstate
+rule PhpStep/iterator-notice-done: S ~> $file_notice_complete(S, pdeclnoticebatch)[.TODO = ptask_tail*]
   -- if S.TODO = (DECL_NOTICES pdeclnoticebatch) :: ptask_tail*
   -- if $iterator_notice_batch_valid(S, pdeclnoticebatch)
   -- if pdeclnoticebatch.INDEX = |pdeclnoticebatch.NOTICES|
@@ -345,9 +346,57 @@ def $file_trace_frame_before(S, pfilecontext, (preqbytes)) = $file_trace_frame(S
 
 ;; A pending exception suppresses remaining eligible callbacks. Ineligible
 ;; notices still use the live reporting mask before the exception continues.
-def $error_read_discard(S, DECL_NOTICE_RESUME pdeclnoticebatch) = $iterator_notice_throw_tail(S, pdeclnoticebatch.NOTICES[pdeclnoticebatch.INDEX:n_remaining])
+def $error_read_discard(S, DECL_NOTICE_RESUME pdeclnoticebatch) = $file_notice_complete($iterator_notice_throw_tail(S, pdeclnoticebatch.NOTICES[pdeclnoticebatch.INDEX:n_remaining]), pdeclnoticebatch)
   -- if $(pdeclnoticebatch.INDEX <= |pdeclnoticebatch.NOTICES|)
   -- if n_remaining = $nabs($(|pdeclnoticebatch.NOTICES| - pdeclnoticebatch.INDEX))
+
+;; compile_filename records an ordinary opened path after compile_file's
+;; recorded diagnostics return, including a thrown handler or graceful exit.
+;; A hard fatal bails out instead and never calls these completion hooks.
+dec $file_notice_opened(pstate, pfilecontext*, pdeclnoticebatch) : preqbytes?
+def $file_notice_opened(S, eps, pdeclnoticebatch) = eps
+def $file_notice_opened(S, pfilecontext :: pfilecontext_tail*, pdeclnoticebatch) = (pfilebinding.OPENED)
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n_unit
+  -- if pfilecontext.UNIT = (n_unit)
+  -- if pfilecontext.PHASE = FILE_UNIT_RUN
+  -- if pfilecontext.OWNER = |S.FRAMES|
+  -- if pfilecontext.SITE = pdeclnoticebatch.SITE /\ S.ORIGIN = (pfilecontext.SITE)
+  -- if pdeclnoticebatch.LINE = $file_site_line(S, pfilecontext.SITE)
+  -- if $file_binding_at(S.FILEBINDINGS, n_unit) = (pfilebinding)
+  -- if pfilebinding.SITE = pfilecontext.SITE /\ pfilecontext.OPENED = (pfilebinding.OPENED)
+  -- if $iterator_notice_file_owner(S, pdeclnoticebatch)
+  -- if $iterator_notice_batch_items(S, pdeclnoticebatch)
+def $file_notice_opened(S, pfilecontext :: pfilecontext_tail*, pdeclnoticebatch) = $file_notice_opened(S, pfilecontext_tail*, pdeclnoticebatch)
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n_unit
+  -- if pfilecontext.UNIT =/= (n_unit)
+def $file_notice_opened(S, pfilecontext*, pdeclnoticebatch) = eps -- otherwise
+def $file_notice_complete(S, pdeclnoticebatch) = S[.INCLUDEDOPENED = $file_include_after_compile(S.INCLUDEDOPENED, preqbytes)]
+  -- if $file_notice_opened(S, S.FILECONTEXTS, pdeclnoticebatch) = (preqbytes)
+def $file_notice_complete(S, pdeclnoticebatch) = S
+  -- if $file_notice_opened(S, S.FILECONTEXTS, pdeclnoticebatch) = eps
+
+;; Exit drops the active TODO wholesale. Visit only its authenticated file
+;; notice owner before that drop; saved owners complete when their frame restores.
+dec $file_notice_exit_tasks(pstate, ptask*) : pstate
+dec $file_notice_exit_task(pstate, ptask) : pstate
+def $file_notice_exit_scope(S) = $file_notice_exit_tasks(S, S.TODO)
+def $file_notice_exit_tasks(S, eps) = S
+def $file_notice_exit_tasks(S, ptask :: ptask_tail*) = $file_notice_exit_tasks($file_notice_exit_task(S, ptask), ptask_tail*)
+def $file_notice_exit_task(S, ERROR_HANDLER_RESULT perrorcall) = $return_discard(S, ERROR_HANDLER_RESULT perrorcall)
+  -- if perrorcall.RESUME = DECL_NOTICE_RESUME pdeclnoticebatch
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n_unit
+  -- if $file_notice_opened(S, S.FILECONTEXTS, pdeclnoticebatch) =/= eps
+def $file_notice_exit_task(S, ERROR_HANDLER_INVOKE perrorcall) = $return_discard(S, ERROR_HANDLER_INVOKE perrorcall)
+  -- if perrorcall.RESUME = DECL_NOTICE_RESUME pdeclnoticebatch
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n_unit
+  -- if $file_notice_opened(S, S.FILECONTEXTS, pdeclnoticebatch) =/= eps
+def $file_notice_exit_task(S, DECL_NOTICES pdeclnoticebatch) = $error_read_discard(S, DECL_NOTICE_RESUME pdeclnoticebatch)
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n_unit
+  -- if $file_notice_opened(S, S.FILECONTEXTS, pdeclnoticebatch) =/= eps
+def $file_notice_exit_task(S, DECL_NOTICE_RESUME pdeclnoticebatch) = $error_read_discard(S, DECL_NOTICE_RESUME pdeclnoticebatch)
+  -- if pdeclnoticebatch.KIND = NOTICE_FILE n_unit
+  -- if $file_notice_opened(S, S.FILECONTEXTS, pdeclnoticebatch) =/= eps
+def $file_notice_exit_task(S, ptask) = S -- otherwise
 
 def $iterator_notice_resume(DECL_NOTICE_RESUME pdeclnoticebatch) = true
 def $iterator_notice_resume(ptask) = false -- otherwise
