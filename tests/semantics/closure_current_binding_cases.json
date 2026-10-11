@@ -329,5 +329,19 @@
     "source_sha256": "a868e212e2d18da93054bd455420e2b649e49eb554e7b92ddb7501654bb80ada",
     "expected_model": "normal",
     "native_stdout": "Q;M:changed;A;B;C:held;I:same;C:gone;P:held;R:same;H:held;F:gone;E;"
+  },
+  {
+    "id": "class-expression-current-literal-control",
+    "source": "<?php\nfunction retireCurrentClassExpressionBodyReview21() {\n    global $body;\n    $body = null;\n    echo \"A;\";\n    return 7;\n}\necho \"Q;\";\n$prefix = \"Clo\";\n$suffix = \"sure\";\n$api = Closure::getCurrent(...);\n$weakApi = WeakReference::create($api);\n$prefix = \"std\";\n$suffix = \"Class\";\necho \"K:changed;\";\n$body = function($ignored) {\n    global $api, $weakApi, $weakBody;\n    echo \"B;\";\n    $picked = $api;\n    $api = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    $current = $picked();\n    echo \"I:\", $current !== null && $current === $weakBody->get() ? \"same\" : \"different\", \";\";\n    $picked = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"P:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n    return $current;\n};\n$weakBody = WeakReference::create($body);\n$returned = $body(retireCurrentClassExpressionBodyReview21());\necho \"R:\", $returned !== null && $returned === $weakBody->get() ? \"same\" : \"different\", \";\";\necho \"H:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n$returned = null;\necho \"F:\", $weakBody->get() === null ? \"gone\" : \"held\", \";E;\";\n",
+    "source_sha256": "f40a34aa4f9e46e4dd2c11e3b37bbf6cd25f224b7c6e5e3827bb4fc0fcf32581",
+    "expected_model": "normal",
+    "native_stdout": "Q;K:changed;A;B;C:held;I:same;C:gone;P:held;R:same;H:held;F:gone;E;"
+  },
+  {
+    "id": "class-expression-current-captured-body",
+    "source": "<?php\nfunction retireCurrentClassExpressionBodyReview21() {\n    global $body;\n    $body = null;\n    echo \"A;\";\n    return 7;\n}\necho \"Q;\";\n$prefix = \"Clo\";\n$suffix = \"sure\";\n$api = ($prefix . $suffix)::getCurrent(...);\n$weakApi = WeakReference::create($api);\n$prefix = \"std\";\n$suffix = \"Class\";\necho \"K:changed;\";\n$body = function($ignored) {\n    global $api, $weakApi, $weakBody;\n    echo \"B;\";\n    $picked = $api;\n    $api = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    $current = $picked();\n    echo \"I:\", $current !== null && $current === $weakBody->get() ? \"same\" : \"different\", \";\";\n    $picked = null;\n    echo \"C:\", $weakApi->get() === null ? \"gone\" : \"held\", \";\";\n    echo \"P:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n    return $current;\n};\n$weakBody = WeakReference::create($body);\n$returned = $body(retireCurrentClassExpressionBodyReview21());\necho \"R:\", $returned !== null && $returned === $weakBody->get() ? \"same\" : \"different\", \";\";\necho \"H:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\n$returned = null;\necho \"F:\", $weakBody->get() === null ? \"gone\" : \"held\", \";E;\";\n",
+    "source_sha256": "69f03b1a1e27e3b5c37e4610592c17322f31ca0858479d3262ef2d21dccc89a7",
+    "expected_model": "normal",
+    "native_stdout": "Q;K:changed;A;B;C:held;I:same;C:gone;P:held;R:same;H:held;F:gone;E;"
   }
 ]

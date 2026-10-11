@@ -2342,8 +2342,10 @@ pass. Simple class-CV `$class::getCurrent(...)` also prepares Closure and freeze
 selection before the class cell changes; one affected source and 166 focused state
 premises pass. Named-class evaluated CURRENT members also freeze selection;
 one concat original and 242 focused state premises validate the request carrier,
-two operand writes and the same immediate body result. Literal `Closure::bind(...)`
-capture also reaches the existing binding handler;
+two operand writes and the same immediate body result. Evaluated class expressions
+with a literal CURRENT member also freeze selection; one concat-class original and
+240 focused state premises validate canonical preparation before later writes.
+Literal `Closure::bind(...)` capture also reaches the existing binding handler;
 its copied receipt survives original API/body retirement while the bound Closure
 and returned value retain the receiver separately. A captured BIND call now pins
 its API when a third-argument helper clears the selected cell; static authority

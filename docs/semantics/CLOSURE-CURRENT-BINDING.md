@@ -9,8 +9,8 @@ Closures. Named functions, methods and fake captures raise `Error` with
 uses that object's type as historical selection evidence; its receiver adds no
 owner during argument effects.
 
-Literal named-static, simple class-CV `$class::getCurrent(...)` and named-class
-evaluated-member capture create an API Closure.
+Literal named-static captures, evaluated nonnamed classes with literal members,
+and named classes with evaluated members create an API Closure.
 Calling it observes the immediate ordinary body; a named helper still raises
 `Error` even under an ordinary outer Closure. Dynamic calls pin the selected API
 in CONFIG through argument evaluation. Its OWNER/SELECTION tag carries the
@@ -31,7 +31,7 @@ Native2/literal1 at 05679 and computed source1/state166 at 1cb70154/375 pass
 (152 genuine/derived plus 14 controls). The focused state cut binds raw VARIABLE,
 prepared class, registered mint, real class write and existing owned CONFIG/result;
 old lifetime and bridge cuts retain their original evidence. Original Unsupported
-stays zero; broader CURRENT capture expressions remain required.
+stays zero; combined CURRENT capture expressions remain required.
 
 Named-class evaluated members resolve through genuine SCOPED_NAME authority
 before CURRENT capture. The get+Current concat witness binds its real request
@@ -39,7 +39,17 @@ index/carrier and registered mint, then changes both operand cells without
 changing the selected API or immediate ordinary body result. Affected source1
 and state242 at db0ef348/375 pass (223 genuine/derived plus 19 controls); native2,
 literal1 and original Unsupported0 stay at f98. General member admission is
-distinct from this concat evidence; wider class/combined forms remain required.
+distinct from this concat evidence; combined forms and wider evaluation evidence
+remain required.
+
+Evaluated nonnamed classes with a literal `getCurrent` member reuse the existing
+class preparation and source/task authority. The `($prefix . $suffix)` witness
+binds its genuine request-string producer, raw class carrier and derived canonical
+Closure before one registered mint; separate `std`/`Class` writes preserve the
+selected API and immediate ordinary body result. Native2/literal1 at 160b and
+affected source1/state240 at a6b8/375 pass (220 genuine/derived plus 20 controls).
+Original Unsupported stays zero. General evaluated-class admission is distinct
+from this concat evidence; combined forms and wider evaluation evidence stay open.
 
 An ordinary positional helper may clear the sole API cell after a call has been
 selected. Native static calls observe that API gone; captured calls observe it

@@ -4449,6 +4449,15 @@ Its 376-module join over c999a69f passes preserved242 at 7a205094
 compatibility; guarded getter/reference/Iterator/factory routes stay disjoint.
 Private source/state cuts retain their revisions, without renewal.
 
+Evaluated nonnamed classes with literal CURRENT members now reuse prepared
+canonical Closure and existing source/task authority. The concat-class original
+agrees at a6b8/375; state240 passes (220 genuine/derived plus 20 controls), binding
+the real request producer, raw/prepared class, registered mint, two later operand
+writes and unchanged owned CONFIG returning the exact immediate body. The two
+native originals, literal control and original Unsupported0 retain 160b; combined
+forms, wider evaluation evidence and source7 stay open. Exact relocation needs no
+runtime renewal.
+
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
 api-null write leaves the captured API held versus the direct API gone before
