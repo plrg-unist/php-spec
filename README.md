@@ -2134,6 +2134,8 @@ cleanup order; declaration-strict getters call no cast.
 [Nine source agreements and twelve compact reached checks](coverage/semantics/magic-property-stringable-string-review.json)
 bind 899 premises across retained cuts. Original failures remain0; unconstrained input
 changes during callbacks/precommit cleanup and wider replacement/getter/PARAM scope remain required.
+The `fd7eae1` composition preserves the newer storage/lifecycle rules and 376 modules.
+Private cuts and the retained parent compiler are reused; fresh executions remain0.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

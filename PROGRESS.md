@@ -3533,6 +3533,8 @@ Original preparation/source/two fixture failures remain0; one diagnostic adds no
 Unconstrained input changes during callbacks/precommit cleanup, object/array replacements,
 changed sources/tails, PARAM and wider getters remain required; phase45 cuts stay frozen.
 [Stringable-string ledger](coverage/semantics/magic-property-stringable-string-review.json).
+Exact-current `d866388aa` joins `fd7eae1` pointwise with 376 modules and disjoint parent guards.
+Private cuts and the retained M30 compiler are reused; fresh strict/source/state/native counts remain0.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
