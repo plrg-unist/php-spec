@@ -1,0 +1,151 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit; profile30719; LC_ALL=C/TZ=UTC; jobs1",
+  "scope": "Literal ordinary CV/This public by-value backed/virtual block or expression get-hook ??=. Retain the actual getter value separately from the writable pending target; only null evaluates the original RHS and writes. No setter, by-reference/defaulted virtual, inherited/trait, temporary/computed or broader receiver claim.",
+  "engine": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_assign_coalesce / zend_compile_memoized_expr (BP_VAR_IS read, nonnull skip; CV descriptor reused for RHS/write)",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_FETCH_OBJ_IS / ZEND_COALESCE / ZEND_ASSIGN_OBJ",
+    "vendor/php-src/Zend/zend_object_handlers.c::zend_std_read_property / zend_call_get_hook (selected receiver call hold and actual returned RV)"
+  ],
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/72-coalesce-assignment-control.watsup",
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "semantic_revision": "cc6ed08063db777b5f8ce6028c19b00585e2ba38",
+  "state_revision": "8e03445e1089f4458f9f92456a536ee0405c962d",
+  "module_count": 375,
+  "native": {
+    "revision": "bbbf2c166a55f21af06b306af6eb2aa62c9b157a",
+    "observations": 4,
+    "hook_sources": 3,
+    "ordinary_control": 1,
+    "source_agreements": 0,
+    "report": "coalesce-assignment-get-hooks-probes-33/native-first/report.json",
+    "sha256": "6492a96a36ca492c99ce9492191d920007cdf931fdf75046552ec8d643d6c42c"
+  },
+  "baseline": {
+    "revision": "bbbf2c166a55f21af06b306af6eb2aa62c9b157a",
+    "hook_sources": 3,
+    "hook_agreements": 0,
+    "hook_status": "Unsupported quiet property hook read; empty output/events",
+    "ordinary_control_agreements": 1,
+    "report": "coalesce-assignment-get-hooks-probes-33/accepted-current-baseline/report.json",
+    "sha256": "cc98b34a980908ce1505c7d2c4f123ce0004cb111eb9df8df5475a5b5ba31ebc"
+  },
+  "sources": {
+    "agreements": 3,
+    "catalogue": "tests/semantics/coalesce_assignment_get_hook_cases.json",
+    "report": "coalesce-assignment-get-hooks-probes-33/changed-model-3vuipyd4/report.json",
+    "sha256": "e980e897bba572d8c52b63dffb3a0284721146f2e62c796eec63f5bb51177e34",
+    "elapsed_seconds": [
+      22.589276,
+      10.003879,
+      9.424516
+    ],
+    "observations": "CV/This getter false/0 skip RHS and retain null backing; each null probe separately runs R and stores13. Virtual expression result is kept across receiver B/LIVE, with D and weak-null only after kept unset. Hook RHS rebind produces G|R0|H|RN|23:23|H|: old receiver dies during RHS, current replacement receives23. Ordinary19 control remains separate."
+  },
+  "strict": {
+    "mode": "SL init-only",
+    "application_evaluations": 0,
+    "source_agreements": 0,
+    "elapsed_seconds": 5.73606,
+    "report": "coalesce-assignment-get-hooks-probes-33/coalesce-assignment-hook-compiler-3uqm67ee/report.json",
+    "sha256": "4c86a5fd919fa9be082cd340da5a4a33e8c10a1347419248433d812433ab92bd"
+  },
+  "state": {
+    "reached": 264,
+    "derived": 44,
+    "premises": 308,
+    "application_evaluations": 1,
+    "source_agreements": 0,
+    "report": "coalesce-assignment-get-hook-protocol-d15_1n6q/report.json",
+    "sha256": "94039ee98eb60bf200a132ac616faac13913d842bbf3e17446ceb09d395249bb",
+    "fixture_sha256": "97000de1dbab212ac07584d644de5cf0cbd689f38132a829af0c0b12ec3517df",
+    "algorithmic_seconds": 5.109944,
+    "strict_SL_seconds": 53.355757,
+    "stdout": "true\n",
+    "observations": "Genuine checked source/setup and prep/call/frame/returned-value/decision frontiers. CV target roots0, This target root1; This receiver owners3->4 at call->3 returned, then nonnull selected2 with no eager operation in the scalar source, while null transfers target into existing write and keeps3 until writer retires. Returned virtual RV has sole RESULT/kept owner1, no BASE copy or task value root, survives receiver B and dies after kept ENV unset with real D/weak-null. At authentic current-CV writer the old receiver is freed/weak-null and replacement backing null becomes23. Null RHS is original child1 with its emitted line; false/zero never run RHS.",
+    "derived_controls": "Separate changed task/base, source parent/property/hook/function, receiver selector, consumer mode, marker, original RHS/target and read/write line controls. Original consumer remains in the result tail; scanned task base must equal actual continuation base."
+  },
+  "validation": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_sha256": "26d77fb9bfae2b2868e137a94051f55f9b607660c340e9b22ae8300fb0d8ce88",
+    "strict_compiler_sha256": "ff24e91f08a661a415e76ba8297bd0406ef580a63560c322ee46306c0e7f8b5d",
+    "state_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "caps": "native45; strictSL60 init-only; changed model60/outer75/100000steps; affected state AL90 then SL90",
+    "execution": "Cache=false/det=true; exact retained-native original bytes/stdout/stderr/exit comparison; clean stable input/fixture/HEAD/status and fully reaped groups. Fixture-only8e034 preserves semanticcc6/nativebbbf without renewal."
+  },
+  "preserved": [
+    {
+      "revision": "6acfed1f53c6a6fbe73bf650f6e36a36ec786460",
+      "report": "coalesce-assignment-get-hooks-probes-33/coalesce-assignment-hook-compiler-7s91tvgu/report.json",
+      "sha256": "593ea4d74c152e3f1d0794cd7527c74983896c6dd98417f15d31151542be48bc",
+      "result": "Strict elaboration rejected PROPERTY projection in record constructor; stderr diagnostic, app/source0, hook3 UNRUN.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "f6e380ce4507710c5c500ae72902e1747265ccba",
+      "report": "coalesce-assignment-get-hooks-probes-33/coalesce-assignment-hook-compiler-5yoh7r4e/report.json",
+      "sha256": "930060774b7abdc2904029bee5b564211ee69cfc6bd125f51c4e31efa9355cdd",
+      "result": "Strict binding rejected projected hook SITE on CALL_ARGS definition LHS; app/source0, hook3 UNRUN.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "1297a1f8fe54cee35c3d3353584ced7c07af8e79",
+      "report": "coalesce-assignment-get-hook-protocol-mj2os63a/report.json",
+      "sha256": "bd1487aad67847418ee45aa7655a9781fb551ce6af248f0d67952ebd77051dc4",
+      "result": "AL passed; SL false316. Seek inspected assign plan under BUDGET, so skipped every prep; later guessed scalar This eager operation was also wrong. State/source credit0.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "1297a1f8fe54cee35c3d3353584ced7c07af8e79",
+      "report": "coalesce-assignment-this-decrement-diagnostic-1297/report.json",
+      "sha256": "27c72cdf8d19a8fff9f36130a35fd1df561a943c11e0a635baad63d9e3e20c7d",
+      "result": "Prefix-failure sentinel (true,999,false,false); diagnostic0.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "1297a1f8fe54cee35c3d3353584ced7c07af8e79",
+      "report": "coalesce-assignment-scalar-checks-diagnostic-1297/report.json",
+      "sha256": "dbce9dd844c10fa79ccd8ee0d4a5de89fdd4b0771d46dd5df49b0c5e0488c788",
+      "result": "Empty observation sentinel: essential prefix failure, diagnostic0.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "1297a1f8fe54cee35c3d3353584ced7c07af8e79",
+      "report": "coalesce-assignment-driver-frontiers-diagnostic-1297/report.json",
+      "sha256": "8366a369eb2f1743899a7a7605a166b9f94dbda0302592ef59fe8ad6d80b63b6",
+      "result": "AL stdout empty iteration from scalar/iterated frame variable reuse; app0, SL UNRUN.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "1297a1f8fe54cee35c3d3353584ced7c07af8e79",
+      "report": "coalesce-assignment-driver-frontiers-diagnostic-1297-r2/report.json",
+      "sha256": "b7c24de48055bdf84a5ae3143a8949e1ac92bc3629a3f339c61962dcc096eff8",
+      "result": "Empty frontier result; diagnostic0.",
+      "affected_credit": 0
+    },
+    {
+      "revision": "1297a1f8fe54cee35c3d3353584ced7c07af8e79",
+      "report": "coalesce-assignment-initial-frontier-diagnostic-1297/report.json",
+      "sha256": "43df2ee74bbf8f254352b5c190de2fa879ca4b5227d842cbb4f64c8def1c9fea",
+      "result": "Actual BUDGET initial and seek states:1000 one-step traversal passed false/zero outputs while stage0 stayed false; localized resumable-plan predicate, diagnostic0.",
+      "affected_credit": 0
+    }
+  ],
+  "remaining": "Virtual-null ??= read-only rejection after RHS has only static/previous ordinary-write evidence here, no new source agreement. Defaulted virtual/set/byref hooks, inheritance/traits, wider receivers, quiet/reference/indirect access and hooked unset remain partial.",
+  "review": "class_dev_21 author and independent class_review_21 accepted semantic/source cuts, exact state308 and retained prior hook evidence; ordinary control is separate from new hook3.",
+  "recovery": {
+    "private_root": ".tools/coalesce-get-hooks-private-32",
+    "raw_root": ".tools/coalesce-get-hooks-private-32/.tools",
+    "probe_root": ".tools/coalesce-get-hooks-private-32/.tools/coalesce-assignment-get-hooks-probes-33",
+    "commands": [
+      "python3 .tools/coalesce-assignment-get-hooks-probes-33/run.py native --revision bbbf2c166a55f21af06b306af6eb2aa62c9b157a",
+      "python3 .tools/coalesce-assignment-get-hooks-probes-33/run.py baseline --revision bbbf2c166a55f21af06b306af6eb2aa62c9b157a",
+      "python3 .tools/coalesce-assignment-get-hooks-probes-33/run-compiler.py bbbf2c166a55f21af06b306af6eb2aa62c9b157a cc6ed08063db777b5f8ce6028c19b00585e2ba38",
+      "python3 .tools/coalesce-assignment-get-hooks-probes-33/run.py changed --revision cc6ed08063db777b5f8ce6028c19b00585e2ba38",
+      "python3 tests/semantics/coalesce_assignment_get_hook_protocol.py --revision 8e03445e1089f4458f9f92456a536ee0405c962d"
+    ],
+    "note": "Retain ignored original probe/recorder/raw directories and branches. Reproduce only affected commands in a separate clean worktree at recorded revision; permanent catalogue retains original source hashes and observed native outcome. Named diagnostics are frozen with run.py; no bulky raw archive tracked."
+  }
+}
