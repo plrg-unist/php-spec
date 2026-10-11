@@ -532,12 +532,12 @@ UNTYPED = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryUnbackedUntypedPar
  'S_null_result_found.COMPLETION = NORMAL \\/ S_null_result_found.COMPLETION = BUDGET',
  'S_null_result = S_null_result_found[.COMPLETION = NORMAL]',
  'S_null_result.TODO = (PROPERTY_HOOK_RESULT ppropertyhook_S_null) :: ptask_S_null* /\\ '
- 'S_null_result.RESULT = KNOWN PFALSE /\\ S_null_result.CURRENT = eps /\\ '
+ 'S_null_result.RESULT = KNOWN (PBOOL false) /\\ S_null_result.CURRENT = eps /\\ '
  '$heap_owners($heap_prune($heap_graph(S_null_result)),HOBJECT n_child) = 1 /\\ $opu_guard(S_null_result)',
  '$objectprops_at(S_null_result.OBJECTPROPS,n_child) = ([{ DECL (ppropertydesc_child.ORIGIN), NAME '
  'ppropertydesc_child.KEY, STATE PROP_VALUE (DIRECT (PNULL)) }])',
  'PhpStep: S_null_result ~> S_null_base_raw',
- 'S_null_base_raw.RESULT = KNOWN PFALSE /\\ S_null_base_raw.BASE = BASE_VALUE (KNOWN PFALSE) /\\ '
+ 'S_null_base_raw.RESULT = KNOWN (PBOOL false) /\\ S_null_base_raw.BASE = BASE_VALUE (KNOWN (PBOOL false)) /\\ '
  'S_null_base_raw.TODO = ptask_S_null* /\\ S_null_base_raw.EVENTS = S_null_result.EVENTS /\\ '
  'S_null_base_raw.OBJECTPROPS = S_null_result.OBJECTPROPS',
  'S_null_base = $opu_after(S_null_result,S_null_base_raw)',
@@ -570,12 +570,12 @@ UNTYPED = ['$class_named(S.CLASSNAMES,$ptlc($ptascii("OrdinaryUnbackedUntypedPar
  'S_false_found.COMPLETION = NORMAL \\/ S_false_found.COMPLETION = BUDGET',
  'S_false = S_false_found[.COMPLETION = NORMAL]',
  'S_false.TODO = (PROPERTY_HOOK_RESULT ppropertyhook_again) :: ptask_again* /\\ S_false.RESULT = KNOWN '
- 'PFALSE /\\ S_false.CURRENT = eps /\\ $heap_owners($heap_prune($heap_graph(S_false)),HOBJECT n_child) = 1 '
+ '(PBOOL false) /\\ S_false.CURRENT = eps /\\ $heap_owners($heap_prune($heap_graph(S_false)),HOBJECT n_child) = 1 '
  '/\\ ~$property_hook_backing(S_false,n_child,ppropertydesc_child) /\\ $opu_guard(S_false)',
  '$objectprops_at(S_false.OBJECTPROPS,n_child) = ([{ DECL (ppropertydesc_child.ORIGIN), NAME '
  'ppropertydesc_child.KEY, STATE PROP_VALUE (DIRECT (PINT 5)) }])',
  'PhpStep: S_false ~> S_false_raw',
- 'S_false_raw.BASE = BASE_VALUE (KNOWN PFALSE) /\\ S_false_raw.RESULT = KNOWN PFALSE /\\ S_false_raw.TODO '
+ 'S_false_raw.BASE = BASE_VALUE (KNOWN (PBOOL false)) /\\ S_false_raw.RESULT = KNOWN (PBOOL false) /\\ S_false_raw.TODO '
  '= ptask_again* /\\ S_false_raw.EVENTS = S_false.EVENTS /\\ S_false_raw.OBJECTPROPS = S_false.OBJECTPROPS',
  'S_false_base = $opu_after(S_false,S_false_raw)',
  '$opu_guard(S_false_base)',
