@@ -1352,16 +1352,16 @@ call-order publication and fresh defaults. The earlier
 retains fatal redeclaration before another allocation.
 The earlier Block Closure join of 375 modules over 92f726a3 passes strict3 at
 fbacca7a (5.976s); private native/source/state cuts retain their original revisions.
-Both factory kinds also admit direct branch bodies when the `if` host lies inside
-authenticated standalone root/namespace Block chains. Three mixed originals agree
-at 5d91ff5f; focused fixtures pass 737 setup-inclusive checks with 25 real steps for
-Block entry, callable/Closure creation, class publication and fresh allocation.
-The [Block-branch review](coverage/semantics/anonymous-block-branch-rtd-review.json)
-preserves both initial rule failures and the third-source timeout; only affected
-checks were retried. Fixtures stop at their required frontiers without an end drive.
-The 375 join at 431dacbd over c35c223e reuses strict3 from tested 5d91ff5f
-(5.922s). Independent review excludes the new captured-Closure API, GC self-child
-and typed Iterator-unpack routes; no current actor or private replay was needed.
+Both factory kinds admit authenticated standalone Block chains before an `if`
+host and inside its actual main, `elseif` or `else` body. Three mixed originals
+agree at ef5ccc95, retaining pre-publication anonymous names, call-order named
+publication and guarded fresh defaults. The
+[branch-body Block review](coverage/semantics/anonymous-branch-block-rtd-review.json)
+separates genuine Block/publication/capture/allocation frontiers from pure ancestry
+and receipt queries; fixtures stop after their required allocations.
+The earlier [Block-host review](coverage/semantics/anonymous-block-branch-rtd-review.json)
+retains its original failures and reused strict3 at 5d91ff5f for the 431dacbd/c35c223e
+join, without a current actor or private replay.
 Wider Closure targets/placements/signatures, function placement/signatures and RTD/publication contexts,
 constructor arguments/types, inheritance, attributes and broader consumers remain required.
 [Internal `stdClass` identity](docs/semantics/SOURCE-STDCLASS.md)

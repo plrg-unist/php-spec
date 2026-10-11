@@ -22,27 +22,26 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
-Exact noarg by-value untyped named functions and static no-capture Closure
-assignments directly in `if`, `elseif` and `else` bodies now admit plain empty
-named descendants when the If host lies inside authenticated standalone
-root/valid-namespace Block chains. Three originals agree at 5d91ff5f /375
-(strict3 5.922s): names preexist publication/creation, mixed calls publish in call
-order, and guarded repeats retain one publication per family and fresh defaults.
-Author535 and focused independent202 pass 737 premises: 704 setup/source-frontier
-and 33 pure queries, with 25 actual PhpSteps for Block entry, callable publication,
-Closure creation/capture, class PDRCLASS/CCLINK publication, eligible class no-op
-and saved-frame allocation. Fixtures stop after required allocations.
-Initial non-invertible binding and suffix-length rule failures retain zero credit;
-only three affected equalities were corrected. The third-source timeout retains
-zero credit; only that case received a larger bound. Syntax prep/EL adds no runtime
-credit. Blocks after If, nested If, loops, nested factories and wider signatures,
-targets/captures/consumers remain required.
-The 375 join at 431dacbd over c35c223e reuses strict3 from tested 5d91ff5f
-(5.922s). Review excludes new captured-API CONFIG owner/tag, posttrace STDINSTANCE
-self-child and typed Iterator-unpack premises for these ordinary REALCLOSURE/noarg
-and INSTANCE/Error witnesses. No schema/manifest change or current actor was needed;
-private native/source/state cuts retain their original revisions without replay.
-[Block-branch ledger](coverage/semantics/anonymous-block-branch-rtd-review.json).
+Exact noattr/noarg by-value untyped named functions and static no-capture Closure
+assignments now admit plain empty named descendants through authenticated standalone
+Block chains inside actual `if`, `elseif` and `else` bodies. The If host retains
+root/valid-namespace/standalone Block ancestry. Three originals agree at ef5ccc95
+/375 (strict3 5.925s): anonymous names preexist publication/creation, mixed calls
+publish named classes in call order, and guarded repeats preserve fresh defaults.
+Author565 and focused independent219 pass 784 premises: 756 setup/source-frontier
+and 28 pure queries, with 29 actual PhpSteps for branch-body Block entry, callable
+publication, Closure creation/capture, class PDRCLASS/CCLINK publication, eligible
+class no-op and genuine saved-frame allocation. Fixtures stop after required allocations. Syntax preparation and
+elaboration add no runtime credit. Nested If hosts, loops, nested factories and
+wider signatures, targets/captures/consumers remain required.
+[Branch-body Block ledger](coverage/semantics/anonymous-branch-block-rtd-review.json).
+
+The earlier Block-host cut retains source3/state737, its three zero-credit failures
+and all original cuts. Its 431dacbd/c35c223e join reuses strict3 at tested 5d91ff5f
+(5.922s) after independent guarded-route review, with no current actor or replay.
+Historical Blocks-after-If negatives are superseded only for authenticated branch-body
+Block chains; nested If/loop/factory exclusions remain.
+[Block-host ledger](coverage/semantics/anonymous-block-branch-rtd-review.json).
 
 The earlier conditional-Closure cut retains source3/state577 at 80a2707, its
 original peer type-elaboration failure0 and all original cuts. Historical Block-hosted

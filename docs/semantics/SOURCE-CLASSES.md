@@ -113,21 +113,27 @@ separates these real publication/allocation/fatal steps from pure placement quer
 The If host may lie at root or a valid namespace body through authenticated
 standalone Block chains. Admission checks every real Block ancestor of that host
 and the actual main/elseif/else suffix; path lengths are checked before slicing.
+Standalone Block chains inside the branch body are also admitted. A shrinking
+path rule authenticates each actual parent Block and child before reaching the
+source-authenticated If/ElseIf/Else branch; same-shaped Do or loop paths fail.
+The [branch-body Block review](../../coverage/semantics/anonymous-branch-block-rtd-review.json)
+separates these real Block entries and publication/allocation frontiers from pure
+ancestry and receipt queries.
 The [Block-branch review](../../coverage/semantics/anonymous-block-branch-rtd-review.json)
 separates authentic mixed function/Closure frontiers from pure path/receipt queries.
-Named descendants in nested If paths, Blocks after If, loops and
+Named descendants in nested If hosts, loops and
 other unsupported function ancestors remain Unsupported.
 Variable assignments to static no-capture noarg by-value untyped Closures at root
-or a valid namespace body, through authenticated standalone Block chains or directly
-in actual `if` main, `elseif` or `else` bodies with the same authenticated Block-host
-ancestry, admit plain empty named descendants.
+or a valid namespace body, through authenticated standalone Block chains or
+in actual `if` main, `elseif` or `else` bodies through authenticated branch-body
+Block chains and the same Block-host ancestry, admit plain empty named descendants.
 Admission authenticates the expression statement, by-value assignment, ordinary
 variable target, exact Closure signature and actual Block or conditional ancestors.
 Anonymous names exist before creation; skipped assignments preserve their variables.
 The [conditional-Closure review](../../coverage/semantics/anonymous-conditional-closure-rtd-review.json)
 separates real creation/capture, named publication and fresh allocations from pure
-placement/signature/receipt queries. Named descendants under nested If paths,
-Blocks after If, loops, nested functions or nested Closures, other targets, captures and
+placement/signature/receipt queries. Named descendants under nested If hosts,
+loops, nested functions or nested Closures, other targets, captures and
 signatures remain Unsupported.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)
 separates real Block/creation/publication/allocation steps from pure admission queries.
