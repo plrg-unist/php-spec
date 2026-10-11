@@ -490,6 +490,8 @@ trace-held container/child lifetime after private cells retire, parked authority
 and nested ALIAS writes.
 Extra-named/other typed arrays, wider sites, broader array/COW interactions and live
 REFERENCE payloads remain required; earlier cuts retain their original inputs.
+Actual375 over `ab478bca` is composed at `86faf6cc`; independent pointwise seam
+review retains private strict/source/state cuts without a new current execution.
 [Typed positional array review](coverage/semantics/iterator-call-unpack-array-typed-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
