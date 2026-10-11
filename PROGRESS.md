@@ -3055,6 +3055,15 @@ caught-null write prunes that graph before final weak reads. Original Unsupporte
 keeps zero credit; broader constructor forms and source 7 remain OPEN.
 Exact 0952d6f7/375 composition passes compiler and initialized SL489 at
 6de0971e (5.227s/78.994s); current source credit and private renewal remain 0.
+Explicit constructor `__invoke` requires no runtime change. Two fresh originals
+and 536 premises (468 genuine/derived, 68 controls) pass at c21eaf7f/375.
+Both trace argument arrays retain the same fresh Closure: derived CONFIG plus
+copied RESULTtrue gives four owners, while the genuine original RELEASE has two.
+Quiet old callback/capture/Fiber retirement and the actual caught-null write
+prune both trace paths before weak reads; prior cuts remain separate.
+Exact a1b606eb/375 validation-only composition is statically reviewed, including
+the reached generic emit BASE clearing and guarded disjoint parent paths. Native,
+source2 and state536 retain c21; current runtime is UNRUN with renewal 0.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 

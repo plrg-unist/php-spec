@@ -599,6 +599,14 @@ the explicit caught-null write then retire the error/trace/argument graph before
 weak reads. Direct/repaired sources and 489 premises (433 genuine/derived,
 56 controls) keep distinct 799/e716 cuts; broader constructor forms remain open.
 
+Explicit constructor `__invoke` retains two distinct frames and argument arrays,
+each holding the same fresh Closure. Derived reception also owns the copied
+RESULTtrue buffer and CONFIG (four argument owners, two capture owners); the
+genuine error continuation restores the original RELEASE (two and one).
+Quiet cleanup removes the old callback/capture/Fiber, then the actual caught-null
+write prunes both trace paths before weak reads. Two new originals and 536
+premises (468 genuine/derived, 68 controls) pass at c21eaf7f/375 without rule changes.
+
 Module362 selects fixed bound and static APIs through ordinary callable-array
 invocation with simple method names. Dynamic INIT freezes dereferenced receiver
 and method members before arguments. Nonowning receipts authenticate genuine CONFIG, saved WAIT and static

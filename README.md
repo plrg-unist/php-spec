@@ -419,6 +419,8 @@ the callback's literal return 7 remains distinct from the null API result.
 Captured factory `Fiber::__construct` also preserves repeated-constructor
 rejection with a valid fresh Closure argument. Direct/repaired sources and 489
 state premises verify the error's argument trace and separate callback cleanup.
+Explicit `__invoke` agrees in two new originals; 536 state premises distinguish
+its copied buffer from two trace argument edges and validate caught-null cleanup.
 [Ordinary binary operators and casts](docs/semantics/ORDINARY-OPERATORS.md) now pair
 source dispatch with scalar/array conversions, delayed variable reads and concat
 compile/runtime diagnostics. The admitted catalog adds 1,506 exact source inputs;
