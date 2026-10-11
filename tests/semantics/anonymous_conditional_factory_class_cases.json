@@ -1,0 +1,64 @@
+{
+  "scope": "Plain empty named declarations in exact noattr/noarg/by-value/untyped functions directly in actual root or valid namespace If main bodies. Compiled anonymous fullnames precede runtime callable publication; calls then publish named classes in reversed order. Guarded repeats preserve one publication/fresh defaults/lexical namespace; skipped functions remain unavailable. Named descendants in elseif/else, nested or Block-contained If paths, loops or other unsupported function ancestors and conditional Closure assignments remain unsupported. Two executed declarations of the same case-insensitive function name fail at the second publication, before any function body or further allocation.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "conditional-factory-reversed",
+      "source": "<?php\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':12$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':18$3';\n$leftBefore = new $leftName;\n$rightBefore = new $rightName;\necho $leftBefore::class === $leftName && $rightBefore::class === $rightName ? 'before|' : 'BAD|';\ntry { makeConditionalLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'left-function-missing|'; }\ntry { makeConditionalRight(); echo 'BAD|'; } catch (Error $caught) { echo 'right-function-missing|'; }\nif (true) {\n    function makeConditionalLeft() {\n        class LeftConditionalPublished {}\n        return new class { public function scope() { return self::class; } };\n    }\n}\nif (true) {\n    function makeConditionalRight() {\n        class RightConditionalPublished {}\n        return new class { public function scope() { return self::class; } };\n    }\n}\ntry { $absent = new LeftConditionalPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-class-missing|'; }\ntry { $absent = new RightConditionalPublished; echo 'BAD|'; } catch (Error $caught) { echo 'right-class-missing|'; }\n$right = makeConditionalRight();\n$rightNamed = new RightConditionalPublished;\necho $right::class === $rightName && $right->scope() === $rightName && $rightNamed::class === 'RightConditionalPublished' ? 'right|' : 'BAD|';\ntry { $absent = new LeftConditionalPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-still-missing|'; }\n$left = makeConditionalLeft();\n$leftNamed = new LeftConditionalPublished;\necho $left::class === $leftName && $left->scope() === $leftName && $leftNamed::class === 'LeftConditionalPublished' ? 'left|' : 'BAD|';\necho $leftBefore !== $left && $rightBefore !== $right && $left !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "fcf8aec623dcbe2e7a5aced1e881ceeb4f72fa98d9ebafeaa8a737a1dfce863a",
+      "stdout_base64": "YmVmb3JlfGxlZnQtZnVuY3Rpb24tbWlzc2luZ3xyaWdodC1mdW5jdGlvbi1taXNzaW5nfGxlZnQtY2xhc3MtbWlzc2luZ3xyaWdodC1jbGFzcy1taXNzaW5nfHJpZ2h0fGxlZnQtc3RpbGwtbWlzc2luZ3xsZWZ0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-native-30/run-v1/conditional-factory-reversed/command.json",
+      "native_raw_sha256": "3b87f3d197794d6be50cbe569ab7da729942e90ac62d6a7f65b652f325ff310d"
+    },
+    {
+      "id": "conditional-factory-repeated",
+      "source": "<?php\nnamespace DeclaringConditional {\n    $seen = false;\n    $name = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$1';\n    $before = new $name;\n    echo $before::class === $name && $before->value === 0 ? 'before|' : 'BAD|';\n    try { makeConditional(); echo 'BAD|'; }\n    catch (\\Error $caught) { echo 'function-missing|'; }\n    if (true) {\n        function makeConditional() {\n            global $seen;\n            if (!$seen) { class Published {} $seen = true; }\n            return new class {\n                public $value = 0;\n                public function space() { return __NAMESPACE__; }\n            };\n        }\n    }\n    try { $absent = new Published; echo 'BAD|'; }\n    catch (\\Error $caught) { echo 'class-missing|'; }\n}\nnamespace CallingConditional {\n    $first = \\DeclaringConditional\\makeConditional();\n    $named = new \\DeclaringConditional\\Published;\n    echo $first::class === $name && $first->space() === 'DeclaringConditional' && $named::class === 'DeclaringConditional\\\\Published' ? 'first|' : 'BAD|';\n    $first->value = 9;\n    $second = \\DeclaringConditional\\makeConditional();\n    echo $second::class === $name && $second->space() === 'DeclaringConditional' ? 'second|' : 'BAD|';\n    echo $before !== $first && $first !== $second && $before !== $second ? 'fresh|' : 'BAD|';\n    echo $before->value . ':' . $first->value . ':' . $second->value;\n}\n",
+      "source_sha256": "36b52a297ab4663deb622c43c117ff0576da046a0a2bc28d5d1fea6de80f9b63",
+      "stdout_base64": "YmVmb3JlfGZ1bmN0aW9uLW1pc3Npbmd8Y2xhc3MtbWlzc2luZ3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-native-30/run-v1/conditional-factory-repeated/command.json",
+      "native_raw_sha256": "894da9c664ffe90778b6698db8c3986c22a89d717c4bcd074b36f10ca53a0268"
+    },
+    {
+      "id": "conditional-factory-prior-deferred",
+      "source": "<?php\nnamespace ConditionalFactorySide;\n$factoryName = 'class@anonymous' . \"\\0\" . __FILE__ . ':20$3';\n$skippedName = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$1';\n$before = new $factoryName;\n$skipped = new $skippedName;\n$named = new Exception;\necho $before::class === $factoryName && $before->space() === 'ConditionalFactorySide' && $skipped::class === $skippedName && $named::class === 'ConditionalFactorySide\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\ntry { Make(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\ntry { SkippedFactory(); echo 'BAD|'; } catch (\\Error $caught) { echo 'skipped|'; }\nif (false) {\n    function SkippedFactory() {\n        class HiddenInsideSkipped {}\n        return new class {};\n    }\n}\nif (true) {\n    function Make() {\n        if (false) { { class Exception {} } }\n        return new class {\n            public function space() { return __NAMESPACE__; }\n        };\n    }\n}\n{ class eXcEpTiOn {} }\n$first = Make();\necho $first::class === $factoryName && $first->space() === 'ConditionalFactorySide' ? 'first|' : 'BAD|';\n\nnamespace ConditionalFactoryCaller;\n$second = \\ConditionalFactorySide\\Make();\necho $second::class === $factoryName && $second->space() === 'ConditionalFactorySide' ? 'second|' : 'BAD|';\ntry { \\ConditionalFactorySide\\SkippedFactory(); echo 'BAD|'; }\ncatch (\\Error $caught) { echo 'still-skipped|'; }\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$4';\necho $last::class === $lastName ? 'last|' : 'BAD|';\necho $before !== $first && $first !== $second && $before !== $second && $skipped !== $first && $last !== $first ? 'fresh' : 'BAD';\n",
+      "source_sha256": "f532fd33788deb975856f03d7d0f3434731964436664bdccaba2df40e9f7a14d",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8c2tpcHBlZHxmaXJzdHxzZWNvbmR8c3RpbGwtc2tpcHBlZHxsYXN0fGZyZXNo",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-native-30/run-v1/conditional-factory-prior-deferred/command.json",
+      "native_raw_sha256": "24b1925166547a5e041299824b46a65da4c36b6ae5dead1b3a27d076f6058e5d"
+    },
+    {
+      "id": "conditional-factory-redeclare",
+      "source": "<?php\n$anonName = 'class@anonymous' . \"\\0\" . __FILE__ . ':8$1';\n$before = new $anonName;\necho $before::class === $anonName ? 'before|' : 'BAD|';\nif (true) {\n    function OnceIfFactory() {\n        class NeverInvokedInner {}\n        return new class {};\n    }\n}\necho 'published|';\nif (true) {\n    function onceiffactory() {\n        return new class {};\n    }\n}\necho 'BAD';\n",
+      "source_sha256": "0513cf813614acc86a89bd8e1020f1ee1e5fdecea1559144f14199f36d81a411",
+      "stdout_base64": "YmVmb3JlfHB1Ymxpc2hlZHw=",
+      "stderr_template_base64": "RmF0YWwgZXJyb3I6IENhbm5vdCByZWRlY2xhcmUgZnVuY3Rpb24gb25jZWlmZmFjdG9yeSgpIChwcmV2aW91c2x5IGRlY2xhcmVkIGluIHtGSUxFfTo2KSBpbiB7RklMRX0gb24gbGluZSAxMwpTdGFjayB0cmFjZToKIzAge21haW59Cg==",
+      "exit_status": 255,
+      "status": "php_error",
+      "native_group": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-native-30/run-redeclare/conditional-factory-redeclare/command.json",
+      "native_raw_sha256": "3ce9f4fa113c43067f95527032380885218a15bef800f6ea3ab986e7a8118094"
+    }
+  ]
+}

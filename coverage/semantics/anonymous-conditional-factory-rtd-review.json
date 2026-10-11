@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "feature": "classes.anonymous",
+  "status": "partial",
+  "scope": "Plain empty named descendants inside exact noattr/noarg/by-value/untyped named functions directly in actual root or valid namespace If main bodies. Existing authenticated Block functions and static Closure assignments remain admitted; named descendants in elseif/else, nested or Block-contained If paths, loops or other unsupported function ancestors remain Unsupported. Anonymous-only contexts are preserved.",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/anonymous_conditional_factory_class_cases.json"
+  },
+  "semantic_revision": "9386d62893171b29bf529e8df5f23596eedb0f43",
+  "private_base": "e46b7a2771fbb81fcfb1b9fe4bc4eec8bb955787",
+  "module_count": 375,
+  "implementation": {
+    "path": "spec/semantics/383-anonymous-classes.watsup",
+    "rule": "Fixed root3 and namespace5 paths authenticate actual If main bodies and terminal presence; the namespace form authenticates its real namespace host through top_path, rejecting nested-root-If paths with the same field/index shape. The existing whole named-function source/signature guard remains mandatory. Generic Block functions, Closure arms, canonical occurrences and complete class/source/CODE/name/EARLY/count receipts are unchanged. No new tasks, fields, runtime rules, modules, schema or adapter.",
+    "publication": "Anonymous names precede deferred callable publication. Executed function STMT activates a case-folded CALLABLES entry and authentic PDRFUNCTION cause; calls then execute existing named-class activation/PDRCLASS with genuine function/callsite and saved caller frames. Skipped functions remain absent. Two executed same-name declarations fail on the second before either body runs.",
+    "boundary": "Historical conditional-function exclusion is superseded only for these direct If main forms; original cuts are not replayed. The placement helper alone certifies placement/presence, not a full function-kind/signature occurrence. Namespace context alone does not certify a terminal path; the counter alone does not authenticate zero-cost ordering. Terminal constructor receipts retain the older allocated same-class acceptance abstraction."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_func_decl_ex/zend_compile_func_decl use ZEND_DECLARE_FUNCTION and dynamic function definitions for deferred declarations (around8422); this consumes no class RTD key. zend_compile_top_stmt distinguishes eligible statements from conditional bodies.",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_DECLARE_FUNCTION calls do_bind_function (around8013); the duplicate case-insensitive callable fails at the executed declaration.",
+    "vendor/php-src/Zend/zend_compile.c: zend_build_runtime_definition_key and zend_generate_anon_class_name retain compiled class-key consumption independently of runtime publication.",
+    "spec/semantics/80-call-control.watsup, 190-declaration-publication.watsup and 196-declaration-causes.watsup: existing callable activation, duplicate fatal and authenticated function/class publication causes."
+  ],
+  "native_cuts": [
+    {
+      "revision": "e46b7a2771fbb81fcfb1b9fe4bc4eec8bb955787",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-native-30/run-v1/report.json",
+      "originals": 3,
+      "normal": 3,
+      "exit_status": 0
+    },
+    {
+      "revision": "9386d62893171b29bf529e8df5f23596eedb0f43",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-native-30/run-redeclare/report.json",
+      "originals": 1,
+      "fatal": 1,
+      "exit_status": 255
+    }
+  ],
+  "source_cuts": [
+    {
+      "revision": "9386d62893171b29bf529e8df5f23596eedb0f43",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-model-30/run-v1/report.json",
+      "native_agreements": 3,
+      "normal": 3
+    },
+    {
+      "revision": "9386d62893171b29bf529e8df5f23596eedb0f43",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-model-30/run-redeclare/report.json",
+      "native_agreements": 1,
+      "status": "php_error",
+      "exit_status": 255,
+      "seconds": 6.324720710515976
+    }
+  ],
+  "strict": {
+    "revision": "9386d62893171b29bf529e8df5f23596eedb0f43",
+    "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-gate-30/report.json",
+    "premises": 3,
+    "seconds": 5.775002717971802
+  },
+  "state_revision": "9386d62893171b29bf529e8df5f23596eedb0f43",
+  "state_cuts": [
+    {
+      "group": "reversed",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-state-30/report-retry1.json",
+      "checks": 178,
+      "setup_source_frontier_checks": 169,
+      "pure_queries": 9,
+      "PhpSteps": 6,
+      "seconds": 51.09421348571777
+    },
+    {
+      "group": "repeated",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-state-30/report-retry1.json",
+      "checks": 146,
+      "setup_source_frontier_checks": 140,
+      "pure_queries": 6,
+      "PhpSteps": 4,
+      "seconds": 23.201237440109253
+    },
+    {
+      "group": "prior-deferred",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-peer-state-30/report.json",
+      "checks": 182,
+      "setup_source_frontier_checks": 157,
+      "pure_queries": 25,
+      "PhpSteps": 5,
+      "seconds": 60.13312077522278
+    },
+    {
+      "group": "redeclare",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-fatal-peer-state-30/report.json",
+      "checks": 72,
+      "setup_source_frontier_checks": 70,
+      "pure_queries": 2,
+      "PhpSteps": 2,
+      "seconds": 7.4770591259002686
+    }
+  ],
+  "state_totals": {
+    "checks": 578,
+    "setup_source_frontier_checks": 536,
+    "pure_queries": 42,
+    "PhpSteps": 17
+  },
+  "state_method": "Exact checked originals/file/cwd and installed source/CODE projections authenticate shared RTD counts, qualified eligible owners and genuine execution tasks. Four real function STMT steps publish exactly CALLABLES/PDRFUNCTION, including the independent Make declaration while Skipped remains absent despite its live anonymous fullname. Three named STMT/PDRCLASS steps follow reverse call order and authentic function/callsite causes, with saved caller frames. Seven real anonymous allocations retain independent storage, guarded one-time publication and default0/mutated9/fresh0 across lexical namespaces; the eligible case-spelled class statement is a whole-state no-op. Forty-two distinct placement/signature/prefix/receipt/cause queries are pure; setup checks are not unique states. The separate duplicate-callable fixture executes one more function STMT publication, then the second actual STMT immediately produces FATAL at native line13 with original filename/line6. Whole-state equalities preserve the first callable/history, all class/object/allocation state and the pre-declaration instance; neither function body runs. This stops at the immediate fatal frontier, with no shutdown cleanup claim.",
+  "syntax_only": {
+    "preparation": [
+      ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-state-30/preparation.json",
+      ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-redeclare-state-30/preparation.json"
+    ],
+    "checked_originals": 4,
+    "frontend_adapter_workers": 8,
+    "elaboration": [
+      ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-state-30/report-elab-retry1.json",
+      ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-peer-state-30/report-elab.json",
+      ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-fatal-peer-state-30/report-elab.json"
+    ],
+    "runtime_credit": 0
+  },
+  "validation": "Selected reports preserve exact originals/profile/file/cwd/streams and stable watched inputs. Accepted native normal exits0 or fatal255; all modeled-source host exits0 and exact public php_error/255 where fatal. Strict/state/elaboration host exits+cleanup0, empty owned groups and no unrun on accepted cuts. Serial jobs1: PHP55s, model45s/host55s/100000steps, syntax Worker30s, elab30s, strict/state120s. Retained project-local binaries reused; no fresh build/offline claim. Large raw evidence remains ignored outside Git; historical cuts and failures retain their original identities.",
+  "catalogue": {
+    "path": "tests/semantics/anonymous_conditional_factory_class_cases.json",
+    "cases": 4,
+    "runner": "tests/semantics/method_runtime.py --catalogue tests/semantics/anonymous_conditional_factory_class_cases.json",
+    "scope": "Metadata-only publication of unchanged original bytes adds no execution credit. Native command-record hashes follow the retained immutable START convention; fatal stderr templates replace only the exact source filename by {FILE}."
+  },
+  "remaining": [
+    "Named descendants in elseif/else, nested or Block-contained If paths, loops or other unsupported function ancestors; wider named signatures/bodies/modifiers and complete RTD ordering.",
+    "Closure assignments under conditional/loop/nested-function/nested-Closure ancestors, other targets/captures/signatures, include/eval units, wider anonymous class/constructor signatures and consumers."
+  ],
+  "engine_bugs_or_intentional_divergence": "None identified.",
+  "failures": [
+    {
+      "phase": "original author324 syntax elaboration",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-conditional-factory-state-30/report-elab.json",
+      "scope": "First reversed fixture failed parse at87.74-75 on comma-separated record updates. CLI exit+cleanup0 reports the syntax error in stdout; passedfalse, stable/reaped and no groups. The second elaboration and all SL executions were unrun; zero runtime credit. Original builder/fixtures/plan and raw outputs remain in syntax-failure-v1 and the original raw directory. Only three comma-to-chained record updates changed before affected EL2/SL2 retry; normal source/native/strict/peer cuts were not renewed.",
+      "runtime_credit": 0
+    }
+  ],
+  "independent_review": "comp_review_21 accepted exact383/native4/source4/strict3 and independently bound normal author324, peer182 and separate fatal72 closed raw cuts. All fixtures and complete code/source projections, real execution heads/deltas, negative queries and recorders were independently reviewed; original author syntax failure0 is preserved without unrelated replay."
+}

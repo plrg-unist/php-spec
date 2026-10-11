@@ -91,10 +91,20 @@ inside noarg by-value untyped named functions declared at root or a valid namesp
 body, including standalone Block chains, are deferred and consume one key. Per-occurrence
 admission authenticates the actual function signature and every Block ancestor.
 Eligible functions are callable before their blocks; the later function statement
-preserves state apart from consuming its task. Named descendants in nested,
-conditional or other unsupported function ancestors remain Unsupported. The
+preserves state apart from consuming its task. Named descendants in nested
+or other unsupported function ancestors remain Unsupported. The
 [block-factory review](../../coverage/semantics/anonymous-block-factory-rtd-review.json)
 separates publication, no-op and allocation frontiers from pure ancestry queries.
+Exact named functions directly in actual root or valid namespace `if` main bodies
+also admit plain empty named descendants. Anonymous names are already live while
+the function remains unavailable; its executed statement appends one source-bound
+CALLABLES/PDRFUNCTION entry, and later calls publish its named classes. A skipped
+declaration stays unavailable. Two executed case-insensitive same-name declarations
+fail at the second statement, retaining the first callable and history before either
+body runs. The [conditional-factory review](../../coverage/semantics/anonymous-conditional-factory-rtd-review.json)
+separates these real publication/allocation/fatal steps from pure placement queries.
+Named descendants in elseif/else, nested or Block-contained If paths, loops and
+other unsupported function ancestors remain Unsupported.
 Variable assignments to static no-capture noarg by-value untyped Closures at root
 or a valid namespace body, including authenticated standalone Block chains, also
 admit plain empty named descendants. Admission authenticates the actual expression

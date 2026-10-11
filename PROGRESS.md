@@ -22,21 +22,31 @@ The actual composition of 374 modules over fa678cc48 passes strict3 at
 Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
-Plain empty named declarations now publish from ordinary variable assignments to
-exact static no-capture noarg by-value untyped Closures through authenticated
-standalone root/namespace-body Block chains. Three originals agree at 6e5f5075 /375
-(strict3 5.772s): anonymous fullnames precede Closure creation, calls control named
-publication order, and guarded repeats retain fresh defaults/lexical namespaces.
-Author and independent fixtures pass 539 checks: 496 setup/source-frontier premises
-and 43 pure queries, with 18 actual PhpSteps for Block entry, Closure creation/capture,
-named publication, eligible class no-op and anonymous allocation. Genuine Closure
-templates/instances/targets, current/callsites and saved frames stay authenticated.
-No failures in this slice; syntax preparation/elaboration adds no runtime credit.
-The historical28 Block-Closure exclusion is superseded; conditional/loop/nested
-assignments, other targets/signatures/captures and wider RTD contexts remain required.
-The 375 join over 92f726a3 passes strict3 at fbacca7a (5.976s), including the
-shared task datatype and scalar-echo guard compatibility. Private cuts retain
-their original revisions; no source/state replay was needed.
+Plain empty named descendants now compile inside exact noarg by-value untyped
+named functions directly in actual root or valid namespace `if` main bodies.
+Four fresh originals agree at 9386d628 /375 (strict3 5.775s): anonymous fullnames
+are live before callable publication; skipped functions stay absent, calls publish
+named classes in their actual order, and guarded repeats return fresh defaults with
+lexical namespaces. A second executed same-name function declaration fails before
+either body runs, preserving the first callable and history. Author and independent
+fixtures pass 578 checks: 536 setup/source-frontier premises and 42 pure queries,
+with 17 actual PhpSteps for function/class publication, eligible class no-op,
+anonymous allocation under saved frames and immediate duplicate-callable fatal.
+The fatal fixture preserves all class/object/allocation state; no shutdown cleanup
+claim is made. The original author fixture
+parser failure retains zero credit; only chained-update spelling was corrected.
+Syntax preparation/elaboration adds no runtime credit. Elseif/else, nested or
+Block-contained If paths, loops, wider signatures and conditional Closure
+assignments remain required.
+[Conditional-factory ledger](coverage/semantics/anonymous-conditional-factory-rtd-review.json).
+
+The earlier Block-Closure cut retains source3/state539 at 6e5f5075, with 18 actual
+steps for Block entry, Closure creation/capture, named publication, eligible class
+no-op and anonymous allocation. Its 375 join over 92f726a3 passes strict3 at
+fbacca7a (5.976s), including the shared task datatype and scalar-echo guard
+compatibility. Private cuts retain their revisions; no source/state replay was
+needed. The historical28 Block-Closure exclusion is superseded, while
+conditional/loop/nested assignments remain required.
 [Block-Closure ledger](coverage/semantics/anonymous-block-closure-rtd-review.json).
 The earlier [direct-Closure cut](coverage/semantics/anonymous-named-closure-rtd-review.json)
 retains source4/state539, fatal redeclaration and both zero-credit fixture failures
