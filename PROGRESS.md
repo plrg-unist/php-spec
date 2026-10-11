@@ -884,6 +884,8 @@ and line6 rejection before child publication. The original native recorder stop,
 strict/AL stops, false fixtures and diagnostic retain zero affected credit;
 the retained native process observations and prior hook cuts remain frozen.
 [Covariance review](coverage/semantics/virtual-get-hook-covariance-review.json).
+Actual375 over `3601e385` passes strict initialization at `c36d7732` (6.010 s);
+private source3 and the four separate state cuts retain their accepted revisions.
 
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
