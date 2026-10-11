@@ -23,21 +23,24 @@ Private source2 / 228+6 checks retain their original cuts.
 [Declare ledger](coverage/semantics/compiler-declare-review.json).
 
 Exact noattr/noarg by-value untyped named functions and static no-capture Closure
-assignments now admit plain empty named descendants directly in authentic root or
-valid namespace Do bodies, including standalone Block host chains. Three originals
-agree at 2ee1454b /375 (strict3 5.974s): a false condition permits one body visit,
-reverse calls publish classes in call order, and repeated assignment preserves two
-Closure instances from one template with old/current targets and first9/fresh0 defaults.
-Author499 and independent154 pass 653 premises: 616 setup/source-frontier and
-37 pure queries, with 26 genuine Do/Block entry, condition selection, publication,
-creation/capture, allocation and eligible no-op steps. Fixtures stop at required
-allocations; syntax preparation/elaboration has zero runtime credit. No executed
-COMP41 failures. Do body Blocks, If/While/nested-Do hosts and wider factory guards
-remain required.
-[Do ledger](coverage/semantics/anonymous-do-rtd-review.json).
-The 375 join at 5306defe over 75aaa60f reuses strict3 at tested 2ee1454b
-(5.974s). Unchanged task/schema/manifest and reviewed bind/hook exclusions retain
-reached parentless class-link identity; no current actor or private replay is claimed.
+assignments now admit plain empty named descendants through authenticated standalone
+Block chains inside root or valid namespace Do bodies, retaining standalone Block
+host ancestry. Three originals agree at 9d2ca309 /375 (strict3 6.025s): reverse calls
+publish classes in call order, two Closure instances retain old/current targets from
+one template, and fresh defaults and qualified prior-deferred/root-case EARLY owners
+remain distinct. Author538 and independent152 pass 690 premises: 648 setup/frontier,
+42 pure, with 27 genuine body-Block, publication, creation/capture, allocation and
+eligible no-op steps. Fixtures stop at required allocations; syntax-only preparation
+and elaboration have zero runtime credit. No executed COMP42 failures. Other Do
+host/body ancestry and wider factory guards remain required.
+[Do body-Block ledger](coverage/semantics/anonymous-do-block-rtd-review.json).
+
+The earlier direct-Do cut retains source3/state653 at 2ee1454b and its original
+5306defe/75aaa60f composition reusing strict3 at tested 2ee1454b (5.974s), with
+unchanged task/schema/manifest, reviewed bind/hook exclusions and reached parentless
+linking. Historical body-Block negatives are superseded only for authenticated
+Block chains; no old Do-control/fatal or private evidence replay.
+[Direct-Do ledger](coverage/semantics/anonymous-do-rtd-review.json).
 
 The earlier While-hosted If cut retains source3/state722 at df0ae18c and its original
 zero-credit literal-list elaboration failure. Its 375 composition at de256ec9 over

@@ -1425,17 +1425,19 @@ skipped branches retain their anonymous identities without either action.
 Anonymous names precede publication or Closure creation, including skipped loops.
 Two live Closure instances from one compiled template preserve old/current targets,
 one guarded class publication, lexical namespace and fresh defaults.
-Both exact factory forms also admit direct `do` bodies at root or a valid namespace
-body, with standalone Block host ancestry. A false condition still allows one body
-visit before testing; repeated execution creates distinct Closure instances.
-The [Do review](coverage/semantics/anonymous-do-rtd-review.json) binds three originals
-and 653 premises (616 setup/frontier, 37 pure), with 26 genuine entry, selection,
-publication, creation/capture, allocation and eligible no-op steps. Strict3 passes
-at 2ee1454b /375 (5.974s); fixtures stop at required allocations. Do body Blocks,
-If/While/nested-Do hosts and wider factory signatures remain required.
-The 375 join at 5306defe over 75aaa60f reuses strict3 at tested 2ee1454b
-(5.974s). Unchanged task/schema/manifest and review of the bind/hook guards preserve
-reached parentless linking; no current actor or private replay is claimed.
+Both exact factory forms also admit `do` bodies through authenticated standalone
+Block chains at root or a valid namespace body, with standalone Block host ancestry.
+Actual Do/Block ancestors, terminals and complete factory guards stay mandatory.
+The [Do body-Block review](coverage/semantics/anonymous-do-block-rtd-review.json)
+binds three originals at 9d2ca309 /375 (strict3 6.025s) and 690 premises:
+648 setup/frontier, 42 pure, with 27 genuine Block, publication, creation/capture,
+allocation and eligible no-op steps. Fixtures stop at required allocations; native
+observations retain reverse publication, two Closure instances and fresh defaults.
+Other Do ancestry and wider factory signatures remain required.
+The earlier [direct-Do review](coverage/semantics/anonymous-do-rtd-review.json)
+retains source3/state653 at 2ee1454b and its 5306defe/75aaa60f composition,
+reusing strict3 at tested 2ee1454b (5.974s) with reviewed bind/hook exclusions and
+reached parentless linking. No old Do-control/fatal or private evidence replay.
 The [While-hosted If review](coverage/semantics/anonymous-while-if-rtd-review.json)
 checks genuine If/CHOOSE selection, callable publication, Closure creation/capture
 and authentic saved-frame allocations. Unsupported loop placements and nested factories remain required.

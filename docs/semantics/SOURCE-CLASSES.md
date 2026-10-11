@@ -140,7 +140,7 @@ bodies through standalone Block chains with the same root/namespace/Block/If or
 authenticated nested While host ancestry,
 admit plain empty named descendants.
 Admission authenticates the expression statement, by-value assignment, ordinary
-variable target, exact Closure signature and actual Block, conditional, While or direct Do ancestors.
+variable target, exact Closure signature and actual Block, conditional, While or Do ancestors.
 Anonymous names exist before creation; skipped assignments preserve their variables.
 The [conditional-Closure review](../../coverage/semantics/anonymous-conditional-closure-rtd-review.json)
 separates real creation/capture, named publication and fresh allocations from pure
@@ -161,15 +161,17 @@ publication and genuine function or old/current Closure allocation targets.
 The [While-hosted If review](../../coverage/semantics/anonymous-while-if-rtd-review.json)
 authenticates each actual If/While host and selected branch, with genuine If/CHOOSE
 transitions before publication or creation and saved-frame allocations.
-Both exact factory forms also admit direct Do bodies at root or a valid namespace
-body through standalone Block host chains. Actual Do and terminal occurrences plus
-complete factory guards remain mandatory. The
-[Do review](../../coverage/semantics/anonymous-do-rtd-review.json) checks body entry
-before a false predicate, real callable publication, LOOP_NEXT/CHOOSE stopping or
-repeat selection, distinct Closure instances, reverse class publication and saved-frame
-allocations. Do body Blocks, If/While/nested-Do hosts and other unsupported loops,
-nested functions or nested Closures, other targets,
-captures and signatures remain Unsupported.
+Both exact factory forms also admit Do bodies through standalone Block chains at
+root or a valid namespace body, with standalone Block host ancestry. Actual Do and
+each parent Block plus terminal occurrences and complete factory guards stay mandatory.
+The [Do body-Block review](../../coverage/semantics/anonymous-do-block-rtd-review.json)
+authenticates real body-Block entries before publication or creation/capture, reverse
+class publication and old/current saved-frame allocations. The earlier
+[direct-Do review](../../coverage/semantics/anonymous-do-rtd-review.json) retains
+body-before-false-condition and LOOP_NEXT/CHOOSE stopping/repeat checks without replay.
+Other Do host/body ancestry, including If/While/nested-Do hosts or intervening
+If/loop nodes, nested functions or nested Closures, other targets,
+captures and signatures remain Unsupported by this Do context.
 The [block-Closure review](../../coverage/semantics/anonymous-block-closure-rtd-review.json)
 separates real Block/creation/publication/allocation steps from pure admission queries.
 Runtime publication appends a

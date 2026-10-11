@@ -1,0 +1,53 @@
+{
+  "scope": "Plain empty named class descendants in exact noattr/noarg/by-value/untyped named functions and exact static no-capture/noattr/noarg/by-value/untyped Closures assigned by value to ordinary variables through authenticated standalone Block chains inside root or valid namespace Do bodies. Standalone Block host chains remain supported. The actual Do host, each intervening Block and terminal plus complete factory guards stay mandatory. Core observations distinguish pre-publication anonymous availability, reverse named-class publication, qualified prior-deferred versus case-spelled root EARLY ownership, and two distinct Closure instances from one compiled template with old/current receivers and first9/fresh0 defaults across a namespace switch. If/While/nested-Do hosts, other unsupported loop/factory placements and wider targets/signatures/captures remain Unsupported by this Do context; earlier admitted and anonymous-only contexts remain supported.",
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "do-block-reversed",
+      "source": "<?php\n$condition = false; $rightFactory = null;\n$leftName = 'class@anonymous' . \"\\0\" . __FILE__ . ':13$1';\n$rightName = 'class@anonymous' . \"\\0\" . __FILE__ . ':24$3';\n$before = new $leftName; $rightBefore = new $rightName;\necho $before::class === $leftName && $rightBefore::class === $rightName && $rightFactory === null ? 'before|' : 'BAD|';\ntry { makeDoBlockLeft(); echo 'BAD|'; } catch (Error $caught) { echo 'missing|'; }\ndo {\n    {\n        {\n            function makeDoBlockLeft() {\n                class DoBlockLeftPublished {}\n                return new class { public function kind() { return 'left'; } };\n            }\n        }\n    }\n} while ($condition);\n{\n    do {\n        {\n            {\n                $rightFactory = static function () {\n                    class DoBlockRightPublished {}\n                    return new class { public function kind() { return 'right'; } };\n                };\n            }\n        }\n    } while ($condition);\n}\n$right = $rightFactory(); $rightNamed = new DoBlockRightPublished;\necho $right::class === $rightName && $right->kind() === 'right' && $rightNamed::class === 'DoBlockRightPublished' ? 'right|' : 'BAD|';\ntry { new DoBlockLeftPublished; echo 'BAD|'; } catch (Error $caught) { echo 'left-missing|'; }\n$left = makeDoBlockLeft(); $leftNamed = new DoBlockLeftPublished;\necho $left::class === $leftName && $left->kind() === 'left' && $leftNamed::class === 'DoBlockLeftPublished' ? 'left|' : 'BAD|';\necho !$condition && $before !== $left && $rightBefore !== $right ? 'fresh' : 'BAD';\n",
+      "source_sha256": "5536d86e3f590047dcd3ca9c57f607d61d7f697bc8b54f9b3c19edb1b3d9b60a",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8cmlnaHR8bGVmdC1taXNzaW5nfGxlZnR8ZnJlc2g=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-do-block-native-42/run-v1/do-block-reversed/command.json",
+      "native_raw_sha256": "664ad214c3425d9251d63b089119cc9a16c8bb5c2cf1979329b3765dcefd53fa"
+    },
+    {
+      "id": "do-block-repeated",
+      "source": "<?php\nnamespace RepeatDoBlockSide;\n$i = 0; $seen = false; $make = null; $previous = null;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$1';\n$before = new $name;\necho $before::class === $name && $before->value === 0 && $make === null && $previous === null ? 'before|' : 'BAD|';\ndo {\n    {\n        {\n            $previous = $make;\n            $make = static function () {\n                global $seen;\n                if (!$seen) { $seen = true; class Published {} }\n                return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n            };\n        }\n    }\n    $i = $i + 1;\n} while ($i < 2);\necho $i === 2 && $previous !== $make && $previous !== null && $make !== null ? 'templates|' : 'BAD|';\nnamespace RepeatDoBlockCaller;\n$first = $previous(); $named = new \\RepeatDoBlockSide\\Published;\necho $first::class === $name && $first->space() === 'RepeatDoBlockSide' && $named::class === 'RepeatDoBlockSide\\Published' ? 'first|' : 'BAD|';\n$first->value = 9; $second = $make();\necho $second::class === $name && $second->space() === 'RepeatDoBlockSide' && $second->value === 0 ? 'second|' : 'BAD|';\necho $seen && $before !== $first && $first !== $second ? 'fresh|' : 'BAD|';\necho $before->value . ':' . $first->value . ':' . $second->value;\n",
+      "source_sha256": "47c2d58db0fb15bed8ee22e88bea4b7ee42a5794cbd4755442d08bb97ab2ccaf",
+      "stdout_base64": "YmVmb3JlfHRlbXBsYXRlc3xmaXJzdHxzZWNvbmR8ZnJlc2h8MDo5OjA=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-do-block-native-42/run-v1/do-block-repeated/command.json",
+      "native_raw_sha256": "38aa3a51bd85743828d11b82ac230b7dd49d9868d456b9b752c0b267e34c7827"
+    },
+    {
+      "id": "do-block-prior-deferred",
+      "source": "<?php\nnamespace DoBlockSelectedSide;\n$name = 'class@anonymous' . \"\\0\" . __FILE__ . ':14$2';\n$before = new $name; $early = new Exception;\necho $before::class === $name && $early::class === 'DoBlockSelectedSide\\\\eXcEpTiOn' ? 'before|' : 'BAD|';\ntry { selectedDoBlockFactory(); echo 'BAD|'; } catch (\\Error $caught) { echo 'missing|'; }\nwhile (false) { function skippedDoBlockFactory() { class Hidden {} } }\n{\n    do {\n        {\n            {\n                function selectedDoBlockFactory() {\n                    if (false) { class Exception {} }\n                    return new class { public $value = 0; public function space() { return __NAMESPACE__; } };\n                }\n            }\n        }\n    } while (false);\n}\nclass eXcEpTiOn {};\nnamespace DoBlockSelectedCaller;\n$first = \\DoBlockSelectedSide\\selectedDoBlockFactory();\necho $first::class === $name && $first->space() === 'DoBlockSelectedSide' ? 'first|' : 'BAD|';\n$first->value = 9; $fresh = new $name;\necho $before !== $first && $fresh !== $first && $before->value === 0 && $first->value === 9 && $fresh->value === 0 && $fresh->space() === 'DoBlockSelectedSide' ? 'fresh|' : 'BAD|';\n$lastLine = __LINE__ + 1;\n$last = new class {};\n$lastName = 'class@anonymous' . \"\\0\" . __FILE__ . ':' . $lastLine . '$3';\necho $last::class === $lastName ? 'last|' : 'BAD|';\ntry { \\DoBlockSelectedSide\\skippedDoBlockFactory(); echo 'BAD'; } catch (\\Error $caught) { echo 'skipped'; }\n",
+      "source_sha256": "5208ecb26b84d7cb07114e7e0f2a94185aa2a9b120041d2b92b9517cefc1ff92",
+      "stdout_base64": "YmVmb3JlfG1pc3Npbmd8Zmlyc3R8ZnJlc2h8bGFzdHxza2lwcGVk",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "/home/user/workspace/php-spec/.tools/anonymous-class-20/.tools/anonymous-do-block-native-42/run-v1/do-block-prior-deferred/command.json",
+      "native_raw_sha256": "41a5590e338cf69cd4b09b265c741dc74ec7d3940eb33c1e1e554e3b92245454"
+    }
+  ]
+}
