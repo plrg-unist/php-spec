@@ -3947,8 +3947,9 @@ source-body/receiver retirement. Native2/direct1 at 3352, repaired captured1 and
 state413 at 5ecda/375 pass (375 genuine/derived plus 38 controls), including only a
 34-premise recorded bridge for changed old CONFIG authority. Original 289 remains
 frozen; the initial global-table fixture failure retains 0. Wider forms remain
-open; exact relocation needs no renewal. See the
-[ledger](coverage/semantics/closure-current-binding-review.json).
+open; exact relocation needs no renewal. Exact 83186897/375 composition at 8a9e
+passes the preserved413 compiler/initialized-SL gate; current source/private
+renewal 0. See the [ledger](coverage/semantics/closure-current-binding-review.json).
 
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
