@@ -4457,6 +4457,11 @@ writes and unchanged owned CONFIG returning the exact immediate body. The two
 native originals, literal control and original Unsupported0 retain 160b; combined
 forms, wider evaluation evidence and source7 stay open. Exact relocation needs no
 runtime renewal.
+Its 376-module join over 41da6ffb passes preserved 240 at 88c9d696
+(algo 5.488s / initialized SL 36.655s), binding class preparation to current
+replay/storage normalization. Replay clears the already empty error handler;
+file notices, typed property getters and conditional factories are absent.
+Private source/state cuts remain frozen.
 
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
