@@ -207,6 +207,16 @@ the pre-W finalizer restore is publicly refused. A late normalized budget compar
 passes. Shared selected-owner syntax admits named noarg calls, but arbitrary effects,
 reentry, suspension, other catch layouts and broad returns verification remain OPEN.
 
+When legacy throw retirement exposes a surviving live literal return, module379
+restores its missing source-authenticated VALUE Notice without emitting it. Existing
+markers and restores remain intact; NULL-return forms and access-reference VALUE paths are
+excluded. In the guarded E-call reentry witness, unused nested `f()` delivers one
+original-line Notice before T, then the outer return delivers one more. E rethrow
+preserves its error identity and cancels delivery. Source2, reached3/260 and a
+genuine saved nested frame59/1 pass at `23cde2d9`; a wrong Notice line is publicly
+refused. The helper is wider than this string-literal witness; other reentry,
+lifecycle and NULL-form restoration remain OPEN. See the [Notice review](../../coverage/semantics/reference-return-notice-review.json).
+
 Module 186 captures the physical cell of an ordinary live unconstrained aliased CV
 before weak Stringable conversion. Its retained current/saved f-local binding
 authenticates that selection independently of later GLOBALS rebind/unset. Success

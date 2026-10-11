@@ -13,6 +13,7 @@ dec $reference_notice_stage(pstate, porigin, poperand, int, prefreturnnotice) : 
 dec $reference_notice_checked_operand(pstate, poperand, bool) : poperand
 dec $reference_notice_finish(pstate, porigin, poperand, int, prefreturnnotice, bool) : pstate
 dec $reference_notice_materialize(pstate, poperand) : pstate
+dec $reference_notice_restore_tail(ptask*, porigin, int) : ptask*
 
 def $reference_notice_source(S, porigin, poperand, z, REF_NOTICE_VALUE) = ($goto_scope_valid(S, porigin) /\ $reference_return_value_valid(S[.ORIGIN = (porigin)], z) /\ $reference_return_notice(S[.ORIGIN = (porigin)], poperand))
 def $reference_notice_source(S, porigin, poperand, z, REF_NOTICE_NULL) = (($goto_scope_valid(S, porigin) \/ porigin = $reference_notice_boundary(S)) /\ $reference_return_null_valid(S[.ORIGIN = (porigin)], z) /\ poperand = KNOWN PNULL)
@@ -59,6 +60,20 @@ def $reference_notice_presence(S) = ($reference_notice_count(S.TODO) = 0)
   -- if ~$reference_return_notice(S[.ORIGIN = (porigin)], poperand) \/ $access_reference_value_get(S[.ORIGIN = (porigin)])
 def $reference_notice_presence(S) = ($reference_notice_count(S.TODO) = 0 \/ $reference_notice_discarding(S))
   -- if $reference_notice_first(S.TODO) = NO_REF_NOTICE_PENDING
+
+;; A thrown replacement can expose an older live VALUE return again.
+;; Restore its metadata now; delivery still waits for callable completion.
+def $reference_notice_restore(S) = S[.TODO = $reference_notice_restore_tail(S.TODO, porigin, z)]
+  -- if $reference_notice_count(S.TODO) = 0
+  -- if $reference_notice_first(S.TODO) = REF_NOTICE_PENDING porigin poperand z
+  -- if ~$reference_return_null_valid(S[.ORIGIN = (porigin)], z)
+  -- if $reference_notice_source(S, porigin, poperand, z, REF_NOTICE_VALUE)
+  -- if ~$access_reference_value_get(S[.ORIGIN = (porigin)])
+def $reference_notice_restore(S) = S -- otherwise
+def $reference_notice_restore_tail(ptask*, porigin, z) = (REF_RETURN_NOTICE porigin z REF_NOTICE_VALUE) :: ptask*
+  -- if $reference_notice_suffix(ptask*, porigin, z)
+def $reference_notice_restore_tail(ptask :: ptask_tail*, porigin, z) = ptask :: $reference_notice_restore_tail(ptask_tail*, porigin, z)
+  -- if ~$reference_notice_suffix(ptask :: ptask_tail*, porigin, z)
 
 def $call_task_valid(S, REF_RETURN_NOTICE porigin z prefreturnnotice) = ($reference_notice_count(S.TODO) = 1 /\ $reference_notice_end(S.TODO, porigin, z, prefreturnnotice) /\ $reference_notice_source(S, porigin, KNOWN PNULL, z, prefreturnnotice))
 def $task_nodes(REF_RETURN_NOTICE porigin z prefreturnnotice) = eps

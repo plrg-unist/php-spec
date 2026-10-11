@@ -840,6 +840,12 @@ followed by same-CV rethrow. Three original sources, three reached fixtures/301 
 and independent saved-frame80/1 validate the pure `ping()` passage with W/old history,
 fresh-Z identity, literal Notice/fresh caller cell, selected alias and abrupt cleanup.
 Wider call effects and broad returns verification remain OPEN.
+Guarded E-call reentry now preserves a pending source-line VALUE Notice when an
+old live literal return survives finalizer retirement. The unused nested call
+delivers one Notice before T; the outer call delivers one more. Rethrow cancels
+delivery. Two originals, reached3/260 and independent saved-frame59/1 pass at
+separate cuts. VALUE restoration excludes NULL-return forms; wider reentry/lifecycle and
+broad returns verification remain OPEN. [Notice review](coverage/semantics/reference-return-notice-review.json).
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

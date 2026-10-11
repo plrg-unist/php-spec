@@ -222,6 +222,16 @@ refusal of the missing pre-W restore and a late normalized budget comparison.
 The shared source guard admits named noarg calls; general effects, reentry, suspension,
 other catch layouts and broad returns verification remain OPEN.
 
+Legacy throw retirement now restores a missing pending VALUE Notice for the first
+surviving source-authenticated live return. It emits no diagnostic at retirement,
+preserves existing markers/restores, and excludes NULL-return forms and access-reference VALUE
+paths. A guarded E-call reentry witness delivers one nested Notice before T and one
+outer Notice after E/B; rethrow emits neither while retaining the same error. Source2,
+reached3/260 and independent saved-frame59/1 pass at `23cde2d9`, including public
+wrong-line refusal, fresh caller-cell checks and a late budget comparison. The
+generic helper exceeds this string-literal witness; broader reentry/lifecycle/NULL-form
+restoration and complete returns verification remain OPEN.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

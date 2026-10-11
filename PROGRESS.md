@@ -1200,6 +1200,18 @@ keeps these cuts separate from earlier replay and the next abrupt-callee probe.
 Actual375 over `fd12fd35` passes strict at `5001d1f8` in 5.927s with zero
 applications; original private source/state/independent cuts remain separate.
 
+Guarded E-call reentry now restores a missing pending VALUE Notice when throw
+retirement exposes the surviving live literal return. Restoration preserves its
+source/line and emits nothing; nested unused `f()` delivers one Notice before T,
+and outer return delivers one additional Notice. E rethrow emits neither. The
+helper excludes NULL-return forms and access-reference VALUE cases, preserving
+markers. Two originals agree at `23cde2d9`; reached3/260 (86+83+91) and independent
+saved-frame59/1 pass separately. Private strict375 passes in 5.802s with zero
+applications; compile1 is retained from the original fixture elaboration failure.
+The generic helper is wider than this guarded string-literal witness. Other
+layouts/lifecycle/NULL-form restoration and broad returns_verify remain OPEN.
+[Notice review](coverage/semantics/reference-return-notice-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
