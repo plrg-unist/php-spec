@@ -2758,6 +2758,8 @@ callback/cleanup previous links are covered; concat and generic168 remain unchan
 Both original state seek failures stay0; one nested-cleanup diagnostic has agreement0.
 Phase37 cuts are frozen; wider inputs/consumers remain required.
 [Stringable ECHO ledger](coverage/semantics/stringable-echo-review.json).
+The actual375 join over `3d54ec25a` passes strict at `b0d807f94` (5.774s,
+state/source/native credit0); private source6/state787 and original failures are not renewed.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

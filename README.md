@@ -1746,6 +1746,8 @@ cast release, then writes a successful string before a pending destructor except
 pass 787 setup-inclusive premises across `caf0f56ab`/`e6ff87e95`; strict375 and
 source6 retain `b0a90ed31`. Throwing cleanup/previous links and concat timing agree;
 plain strings remain admitted. Two fixture seek failures retain zero credit.
+The actual375 join over `3d54ec25a` passes strict at `b0d807f94` (5.774s);
+private source6/state787 and original failures retain their recorded cuts.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
