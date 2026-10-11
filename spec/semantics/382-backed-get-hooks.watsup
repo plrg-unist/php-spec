@@ -517,7 +517,8 @@ def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = $property_hook_res
   -- if $property_hook_coalesce_parent(S, ppropertyhook.SITE) = eps
 def $call_task_valid(S, PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) = $property_hook_result_tail(S, ppropertyhook, [PROPERTY_HOOK_ISSET_RESULT ppropertyhook b])
 dec $property_hook_assign_task_head(ptask*, ppropertyhook, pbase) : bool
-def $property_hook_assign_task_head((CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE) :: ptask_tail*, ppropertyhook, pbase) = $property_hook_assign_task_head(ptask_tail*, ppropertyhook, pbase)
+def $property_hook_assign_task_head((CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps porigin? z) :: ptask_tail*, ppropertyhook, pbase) = $property_hook_assign_task_head(ptask_tail*, ppropertyhook, pbase)
+  -- if porigin? = (ppropertyhook.SITE) /\ z = ppropertyhook.LINE
 def $property_hook_assign_task_head((PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) :: ptask_tail*, ppropertyhook, pbase) = true
 def $property_hook_assign_task_head(ptask*, ppropertyhook, pbase) = false -- otherwise
 def $call_task_valid(S, PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) = ($property_hook_assign_task_head(S.TODO, ppropertyhook, pbase) /\ ($property_hook_pending_call(S, ppropertyhook) \/ $property_hook_result_tail(S, ppropertyhook, S.TODO)))
