@@ -67,7 +67,7 @@ def $gc_terminal_child_hold(S, pgcplan, H, n_child, HEDGE (HCELL n_cell) (HOBJEC
 def $gc_terminal_child_hold(S, pgcplan, H, n_child, hedge) = false -- otherwise
 dec $gc_terminal_child_held(pstate, pgcplan, hgraph, nat, hedge*) : bool
 def $gc_terminal_child_held(S, pgcplan, H, n_child, eps) = false
-def $gc_terminal_child_held(S, pgcplan, H, n_child, hedge :: hedge*) = ($gc_terminal_child_hold(S, pgcplan, H, n_child, hedge) \/ $gc_terminal_child_held(S, pgcplan, H, n_child, hedge*))
+def $gc_terminal_child_held(S, pgcplan, H, n_child, hedge :: hedge_tail*) = ($gc_terminal_child_hold(S, pgcplan, H, n_child, hedge) \/ $gc_terminal_child_held(S, pgcplan, H, n_child, hedge_tail*))
 dec $gc_terminal_targets(pstate, pgcplan, pnode*) : bool
 dec $gc_terminal_record(pstate, pnode*) : pstate
 def $gc_terminal_leaf(S, n) = true
