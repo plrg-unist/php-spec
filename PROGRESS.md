@@ -364,6 +364,8 @@ premises at `ce17751e`, with no pure queries, including partial typed receive,
 owning trace snapshots after frame retirement, packed ALIAS writes and parked
 resume guards. Other type shapes, typed named buffers, wider sites, arrays and
 REFERENCE payloads remain required; earlier cuts stay frozen.
+Actual375 over `e6879e16` passes strict SL at `80000219`; private native/source/state
+cuts retain their original inputs and original expectation failure.
 [Typed positional review](coverage/semantics/iterator-call-unpack-object-typed-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
