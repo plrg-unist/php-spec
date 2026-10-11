@@ -33,6 +33,9 @@ def $hu_seek(S,n_stage,n) = S
 def $hu_seek(S,n_stage,n) = $hu_seek($drive_steps(S[.COMPLETION = NORMAL],1),n_stage,$nabs($(n - 1)))
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
   -- if ~$hu_stage(S,n_stage) /\ $(n > 0)
+def $hu_seek(S,n_stage,n) = $hu_seek($drive_steps(S,1),n_stage,$nabs($(n - 1)))
+  -- if S.COMPLETION =/= NORMAL /\ S.COMPLETION =/= BUDGET
+  -- if $throwable_pending(S.COMPLETION) /\ $(n > 0)
 def $hu_seek(S,n_stage,n) = S -- otherwise
 dec $hu_after(pstate,pstate) : pstate
 def $hu_after(S,S_next) = $gc_transition_owners(S,$destruction_transition_owners(S,$sensitive_trace_freeze($source_exception_transition(S,$throwable_transition(S,S_next)))))
