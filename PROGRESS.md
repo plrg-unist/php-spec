@@ -1211,6 +1211,8 @@ applications; compile1 is retained from the original fixture elaboration failure
 The generic helper is wider than this guarded string-literal witness. Other
 layouts/lifecycle/NULL-form restoration and broad returns_verify remain OPEN.
 [Notice review](coverage/semantics/reference-return-notice-review.json).
+Actual375 over `41db4e84` passes strict at `6e897cd2` in 5.972s with zero
+applications; original private source/state/independent cuts remain separate.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
