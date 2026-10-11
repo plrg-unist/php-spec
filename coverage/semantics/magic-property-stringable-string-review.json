@@ -1,0 +1,264 @@
+{
+  "status": "implemented-reviewed-bounded",
+  "target": "PHP8.5.10 CLI NTS64",
+  "accepted_parent": "df1ed558b4bd2899a3f10f8a3e7df573626dd74c",
+  "runtime_revision": "01d090c20dd5d321f240afdfeab03ad156cafd60",
+  "tested_revision": "06115ef5b1f1e34d9d5c4f1db35fdedc52651cd6",
+  "scope": "Ordinary weak exact-string MAGIC_GET converts genuine Stringable returns through separate cast, original-argument and getter owners. Release of the original argument or copied temporary owner precedes saved-string commit; object destruction depends on remaining aliases. Successful-cast release exceptions still allow unconstrained commit; callback failure does not convert. Real sources convert a copied temporary and diagnose the current referent, linking pending release errors as the new TypeError.previous. Existing REF/BYVAL/owned and strict-getter authority is preserved.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules": 375,
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained providers, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/30-storage.watsup": "c9e40c0c1cfb867c39707397a07a592c707d8ccdd34efff0e90394368446550f",
+    "spec/semantics/39-ownership.watsup": "5898679605f4c45c25e60b4296a38128d3a124cd2184273ac28a382fc4b0618c",
+    "spec/semantics/168-user-string-runtime.watsup": "f642b86290fde2315ae9a002f64211461e192463d19dcf9195f9f8bef212073c",
+    "spec/semantics/380-magic-property-get.watsup": "3c67711494a92e688fbfa2dd4a338ed15376d567ada9d189d0578ba19f078a62",
+    "spec/semantics/381-typed-local-cv-string-returns.watsup": "810ed2d742e95fd999850cdfd11dcdb756df1c726c2650546e58110bc2f93995",
+    "tests/semantics/dynamic_property_warning_sources.py": "fecc15e4028ab4ebff3d3c1d8dc24037cd1630de58aec243e875439a08a5c48c",
+    "tests/semantics/magic_property_stringable_string_protocol.py": "8d594527411904fa0f61f6798b72b62be0313281fb8cee21748504c5247685c7"
+  },
+  "native_first": [
+    {
+      "revision": "038f26ec5036e4882931c086cad278137670d8e5",
+      "cases": 8,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-native46-wxj_bwvt/report.json",
+      "seconds": 0.21580017544329166,
+      "credit": "Observed native processes0/empty; model/state/agreement0."
+    },
+    {
+      "revision": "eef645e988bc3712b76d751ba23e3cafef600f31",
+      "cases": 1,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-pending-native46-fzsf2rdo/report.json",
+      "seconds": 0.05541977286338806,
+      "credit": "Observed native processes0/empty; model/state/agreement0."
+    }
+  ],
+  "unsupported_baseline": {
+    "revision": "038f26ec5036e4882931c086cad278137670d8e5",
+    "case": "review-property-magic-stringable-string-reference-kept46",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-baseline46-mv7mrwlf/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G|value|",
+    "reason": "magic getter property type coercion",
+    "seconds": 11.614188658073545,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "d8916648eff7fd103e5f96704af6179395d7fb92",
+    "parent": "b613f9440fc58d98501fc81c8bf5b6c15da4a350",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-strict46-ep11ae7a/report.json",
+    "modules": 375,
+    "seconds": 5.997074339538813,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "cases": 9,
+    "cuts": [
+      {
+        "revision": "d8916648eff7fd103e5f96704af6179395d7fb92",
+        "cases": [
+          "review-property-magic-stringable-string-reference-kept46",
+          "review-property-magic-stringable-string-reference-drop46",
+          "review-property-magic-stringable-string-value46",
+          "review-property-magic-stringable-string-owned46",
+          "review-property-magic-stringable-string-source-conflict46"
+        ],
+        "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-wb3y_bo6/report.json"
+      },
+      {
+        "revision": "01d090c20dd5d321f240afdfeab03ad156cafd60",
+        "cases": [
+          "review-property-magic-stringable-string-destructor-throw46",
+          "review-property-magic-stringable-string-cast-throw46",
+          "review-property-magic-stringable-string-strict-getter46",
+          "review-property-magic-stringable-string-source-destructor-throw46"
+        ],
+        "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-yowg0wj4/report.json"
+      }
+    ],
+    "outcomes": "Each whole original is frontend accepted/checked normal0 with actual native/model process0; decoded stdout=native=EXPECTED bytewise, all stderr empty and reason/diagnostic null. Source9 is first5@d891 plus affected4@01d, not a new whole-suite execution."
+  },
+  "source_sha256": {
+    "review-property-magic-stringable-string-reference-kept46": "0ef9b9d345c96f2dd7b9c915c4e511b4e22600a768af2262dbe1dde37f116bb2",
+    "review-property-magic-stringable-string-reference-drop46": "6b446c7972d00e7b358420c9e0ed784cbea1485f37a94c4847830871565abd96",
+    "review-property-magic-stringable-string-value46": "b2e0bcfef1ec86295fed99d6af3589fe1b56b10ac3a97ad0771daab85f57d06e",
+    "review-property-magic-stringable-string-owned46": "7d49f637ef43dfb9be0122b45895de392f705f9609585d4e0664f79e48d61869",
+    "review-property-magic-stringable-string-source-conflict46": "74c94b83c6cf57e1629702a608ae9ffb431105721f79e2b9bd3ecbbacf2e1fab",
+    "review-property-magic-stringable-string-destructor-throw46": "849ba77a369db3e62267013eceb0288a2411344890d1b8a2497944d0f2c567e4",
+    "review-property-magic-stringable-string-cast-throw46": "24195aa63736d332d228542e113bfee5f43d430053b3a0f8a2ddc8e4a8c8a88c",
+    "review-property-magic-stringable-string-strict-getter46": "9f0c4982a55186d8c65399a454c40382c94af713e32715341aec791edc3fdab0",
+    "review-property-magic-stringable-string-source-destructor-throw46": "d6a4bf0cb10b394b2b649997b6722a3a4952d3d218a0eac356747c9791c5820f"
+  },
+  "reached": [
+    {
+      "group": "reference-entry",
+      "revision": "8b2b2f1c9d8d483aa82b50bf1da62fccdd5ab8e0",
+      "premises": 62,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-pjt1reuy/report.json"
+    },
+    {
+      "group": "reference-ready",
+      "revision": "8b2b2f1c9d8d483aa82b50bf1da62fccdd5ab8e0",
+      "premises": 117,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-ot74te31/report.json"
+    },
+    {
+      "group": "reference-copy",
+      "revision": "8b2b2f1c9d8d483aa82b50bf1da62fccdd5ab8e0",
+      "premises": 102,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-dtzu_yge/report.json"
+    },
+    {
+      "group": "reference-drop",
+      "revision": "8b2b2f1c9d8d483aa82b50bf1da62fccdd5ab8e0",
+      "premises": 79,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-7adrmmev/report.json"
+    },
+    {
+      "group": "value",
+      "revision": "8b2b2f1c9d8d483aa82b50bf1da62fccdd5ab8e0",
+      "premises": 79,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-_l7trpvp/report.json"
+    },
+    {
+      "group": "owned",
+      "revision": "8b2b2f1c9d8d483aa82b50bf1da62fccdd5ab8e0",
+      "premises": 102,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-2jwzdns6/report.json"
+    },
+    {
+      "group": "source-exact",
+      "revision": "06115ef5b1f1e34d9d5c4f1db35fdedc52651cd6",
+      "premises": 27,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-g8b6n93r/report.json"
+    },
+    {
+      "group": "source-conflict",
+      "revision": "06115ef5b1f1e34d9d5c4f1db35fdedc52651cd6",
+      "premises": 79,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-3rj8wsb_/report.json"
+    },
+    {
+      "group": "destructor-throw",
+      "revision": "06115ef5b1f1e34d9d5c4f1db35fdedc52651cd6",
+      "premises": 61,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-ecj_vm8k/report.json"
+    },
+    {
+      "group": "source-destructor-throw",
+      "revision": "06115ef5b1f1e34d9d5c4f1db35fdedc52651cd6",
+      "premises": 64,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-817zqipr/report.json"
+    },
+    {
+      "group": "cast-throw",
+      "revision": "06115ef5b1f1e34d9d5c4f1db35fdedc52651cd6",
+      "premises": 56,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-ieoc1is1/report.json"
+    },
+    {
+      "group": "strict-getter",
+      "revision": "06115ef5b1f1e34d9d5c4f1db35fdedc52651cd6",
+      "premises": 71,
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-of6kc0pb/report.json"
+    }
+  ],
+  "setup_inclusive_premises": 899,
+  "facts": [
+    "RESULT retains original INPUT/getter and, for real sources, an independent copied-object temporary. Generic STRINGIFY_RESULT releases only its cast pin; READY retains the original argument. COPY drops that original owner before string commit, exposing the raw REF object in the payload destructor without retaining its retired edge.",
+    "Saved request0 value46 survives actual cast return and original-object retirement. REF updates its cell only after L sees the original object; BYVAL changes only RV while the global owns the object through reader destruction (R before L). Owned reception detaches before BASE reader destruction; ordinary REF reception follows reader cleanup.",
+    "The same genuine Stringable|string source has a whole-state exact PSTRING seed46 first read. Its callback then writes compatible changed46; conversion still selects the current-string first-source TypeError without writing the saved value. Payload release exceptions become this new TypeError.previous before reader repair.",
+    "An unconstrained successful cast commits value46 even when original-object destruction throws payload46; reader destruction sees the committed string. A throwing cast performs no conversion, and cleanup46 retains cast46 as previous. Strict getter calls no cast.",
+    "Twelve compact authentic stages cover whole transitions, full driver budgets, raw-cell/saved-frame projection, physical owner counts and malformed input/object/site/tail/source/owner/carrier controls. Full-source agreement separately establishes all endpoints."
+  ],
+  "preparation": [
+    {
+      "revision": "b613f9440fc58d98501fc81c8bf5b6c15da4a350",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-state-prep46-_cys9kvy/report.json",
+      "prepared_clauses": 875,
+      "scope": "Original12 fixtures; full-sort responses ok, evaluation0.",
+      "evaluation": 0
+    },
+    {
+      "revision": "d8916648eff7fd103e5f96704af6179395d7fb92",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-state-prep46-65t5czcj/report.json",
+      "prepared_clauses": 179,
+      "scope": "Affected entry62+READY117 plain/forged carrier fixtures; other ten retained.",
+      "evaluation": 0
+    },
+    {
+      "revision": "01d090c20dd5d321f240afdfeab03ad156cafd60",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-state-prep46-dnavnv1x/report.json",
+      "prepared_clauses": 125,
+      "scope": "Affected pending61+64 with authentic removed/restored certificate controls.",
+      "evaluation": 0
+    },
+    {
+      "revision": "8b2b2f1c9d8d483aa82b50bf1da62fccdd5ab8e0",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-state-prep46-q6npw_2m/report.json",
+      "prepared_clauses": 62,
+      "scope": "Affected entry62 owner-count correction.",
+      "evaluation": 0
+    },
+    {
+      "revision": "06115ef5b1f1e34d9d5c4f1db35fdedc52651cd6",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-state-prep46-fszbuc8m/report.json",
+      "prepared_clauses": 27,
+      "scope": "Affected exact27 declaration-default PSTRING correction.",
+      "evaluation": 0
+    }
+  ],
+  "original_failures": [
+    {
+      "revision": "e1fd9e23e203e5df34d8bd1c5d20c3c76a073c56",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-state-prep46-195lvnwc/report.json",
+      "cause": "New record preceded the caller-sort declaration; full-sort stopped before evaluation. Record moved after existing forward declarations.",
+      "credit": 0
+    },
+    {
+      "revision": "d8916648eff7fd103e5f96704af6179395d7fb92",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-wb3y_bo6/report.json",
+      "case": "review-property-magic-stringable-string-destructor-throw46",
+      "stdout": "C|G|value|T|1/0|L|1|",
+      "cause": "Checked Unsupported magic getter Stringable copy cleanup: marker-removed pending view lost the authenticated released-cell certificate used by throwable_live. First five complete source agreements retained.",
+      "credit": 0
+    },
+    {
+      "revision": "01d090c20dd5d321f240afdfeab03ad156cafd60",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-9trnujqp/report.json",
+      "cause": "Entry fixture expected two payload owners at METHOD_TARGET; actual target, cast pin and cell edge contribute three. One expectation corrected.",
+      "credit": 0
+    },
+    {
+      "revision": "8b2b2f1c9d8d483aa82b50bf1da62fccdd5ab8e0",
+      "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-stringable-string-zui31241/report.json",
+      "cause": "Exact-source fixture expected an interned carrier for the declaration default; constant folding preserves ordinary PSTRING. One expectation corrected.",
+      "credit": 0
+    }
+  ],
+  "diagnostic": {
+    "revision": "d8916648eff7fd103e5f96704af6179395d7fb92",
+    "preparation_raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-pending-probe-prep46-nw439x0j/report.json",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-stringable-string-pending-probe-run46-ro9_ueb2/report.json",
+    "evaluations": 1,
+    "agreement": 0,
+    "finding": "Authentic pending COPY state satisfied its20 local flags; throwable_live needed the exact restored THROW_SEARCH::COPY certificate view while validating the retired raw-cell edge. Actual commit state is unchanged."
+  },
+  "compatibility": "All nine originals and EXPECTED remain unchanged after their native cuts. d891\u219201d changes only two pending live-error validation views after COPY authentication; strict375 and first five normal sources retain their cuts. 01d\u21928b2b changes only one entry owner expectation; 8b2b\u219206115 changes only one exact-source default expectation. Final state899 is541@8b2b plus358@06115. Prior45 and legacy evidence is not renewed.",
+  "remaining": "Unconstrained inputs must preserve the captured referent through callback/precommit cleanup. Object/array callback replacement cleanup, changed real sources/tails, PARAMETERBACKINGS, wider target/signature/receiver/access/quiet/write/recursive domains remain required. This complete-stage producer does not widen generic typed verification or cast-owner timing.",
+  "engine": [
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_str_weak captures zobj, casts, releases original object before ZVAL_COPY_VALUE, and returns success without a post-release exception check.",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_prop_assignable_by_ref_ex converts a copied temporary, then diagnoses the current referent; successful conversion raises first-source TypeError even with an already pending release exception.",
+    "vendor/php-src/Zend/zend_exceptions.c:zend_throw_exception_internal links the actual pending exception as the new exception.previous.",
+    "spec/semantics/381-typed-local-cv-string-returns.watsup retains its existing released-cell saved-frame/parked-VM traversal; the local380 clause supplies only an authenticated COPY scope."
+  ],
+  "recovery": "Tracked catalog and stringable-string helper reproduce exact9 originals/12 compact stages. Run historical recorders only at their listed revisions: native8 runner .tools/magic_stringable_string_native46.py at038f (asserts8, not the current9 catalog); focused .tools/magic_stringable_string_pending_native46.py ateef; baseline .tools/magic_stringable_string_baseline46.py at038f; strict .tools/magic_stringable_string_strict46.py b613f9440fc58d98501fc81c8bf5b6c15da4a350 atd891. Source selections run at each recorded cut; reached --group commands run at each listed8b2b/06115 cut. Ignored raw retains exact source/program/snapshot/fixture/assertions/argv/cwd/process/streams and original failures. No rebuild/portability claim; current32/owned28 remain live providers."
+}

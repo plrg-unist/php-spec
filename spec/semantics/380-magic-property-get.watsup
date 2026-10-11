@@ -1,5 +1,20 @@
 ;; zend_std_read_property holds the receiver once. The known-instance __get
 ;; frame borrows that hold; its RV is dereferenced only after OBJ_RELEASE.
+dec $property_get_string_capture(pstate, ppropertyget) : ppropertygetstring?
+dec $property_get_string_record(ptask) : ppropertygetstring?
+dec $property_get_string_scope(pstate, ppropertygetstring) : bool
+dec $property_get_string_input(pstate, ppropertygetstring) : bool
+dec $property_get_string_sources(pstate, ppropertygetstring) : bool
+dec $property_get_string_valid(pstate, ppropertygetstring) : bool
+dec $property_get_string_value(pstate, pvalue) : bool
+dec $property_get_string_ready_valid(pstate, ppropertygetstring, pvalue) : bool
+dec $property_get_string_copy_valid(pstate, ppropertygetstring, pvalue) : bool
+dec $property_get_string_copy_at(ptask*, nat) : (ppropertygetstring, pvalue)?
+dec $property_get_string_begin(pstate, ppropertygetstring) : pstate
+dec $property_get_string_commit(pstate, ppropertygetstring, pvalue) : pstate
+dec $property_get_string_finish(pstate, ppropertygetstring, pvalue) : pstate
+dec $property_get_string_abrupt(pstate, ppropertygetstring) : pstate
+dec $property_get_string_copy_abrupt(pstate, ppropertygetstring, pvalue) : pstate
 dec $property_get_source(pstate, ppropertyget) : bool
 dec $property_get_owned_source(pstate, ppropertyget) : bool
 dec $property_get_base_tasks(pstate, ppropertyget) : ptask*
@@ -515,6 +530,9 @@ def $property_get_float_string_apply(S, ppropertyget, REFERENCE n, n_float) = $w
   -- if S_string = $stringify(S, PFLOAT n_float, ppropertyget.LINE)
   -- if S_string.RESULT = KNOWN pvalue_string
 
+def $property_get_complete(S, ppropertyget, poperand) = $property_get_string_begin(S, ppropertygetstring)
+  -- if poperand = S.RESULT
+  -- if $property_get_string_capture(S, ppropertyget) = (ppropertygetstring)
 def $property_get_complete(S, ppropertyget, poperand) = $property_get_bool_nan_begin(S, ppropertyget)
   -- if poperand = S.RESULT
   -- if $property_get_bool_nan_ready(S, ppropertyget)
@@ -529,12 +547,12 @@ def $property_get_complete(S, ppropertyget, poperand) = $property_get_string_lon
   -- if $property_get_string_long_ready(S, ppropertyget)
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget S_checked.RESULT) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
-  -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget)) \/ poperand =/= S.RESULT
+  -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget) /\ $property_get_string_capture(S, ppropertyget) = eps) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION = NORMAL
 def $property_get_complete(S, ppropertyget, poperand) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertyget poperand) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
-  -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget)) \/ poperand =/= S.RESULT
+  -- if (~$property_get_bool_nan_ready(S, ppropertyget) /\ ~$property_get_nan_ready(S, ppropertyget) /\ ~$property_get_long_ready(S, ppropertyget) /\ ~$property_get_string_long_ready(S, ppropertyget) /\ $property_get_string_capture(S, ppropertyget) = eps) \/ poperand =/= S.RESULT
   -- if S_checked = $property_get_verify(S, ppropertyget, poperand)
   -- if S_checked.COMPLETION =/= NORMAL
 ;; Verification can fail after a real RV was returned. Retain that raw owner
@@ -1120,3 +1138,179 @@ def $property_get_bool_nan_abrupt(S, ppropertyboolnan) = S[.TODO = (THROW_SEARCH
 def $property_get_bool_nan_abrupt(S, ppropertyboolnan) = S[.COMPLETION = UNSUPPORTED "magic getter NaN bool warning cleanup"] -- otherwise
 def $error_read_discard(S, PROPERTY_GET_BOOL_NAN ppropertyboolnan) = $property_get_bool_nan_abrupt(S, ppropertyboolnan)
 def $return_discard(S, PROPERTY_GET_BOOL_NAN ppropertyboolnan) = $property_get_bool_nan_abrupt(S, ppropertyboolnan)
+
+;; A weak Stringable check retains the actual RV and the getter hold. Sources
+;; convert an independent temporary; an unconstrained reference converts in place.
+def $property_get_string_capture(S, ppropertyget) = (ppropertygetstring)
+  -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps
+  -- if S.TODO = (PROPERTY_GET_RESULT ppropertyget) :: ptask_tail*
+  -- if $property_get_nan_context(S, ppropertyget)
+  -- if $property_get_nan_sources(S, ppropertyget, S.RESULT) = (pproptypesource*)
+  -- if S_read = $quiet_operand(S, S.RESULT)
+  -- if S_read.RESULT = KNOWN (POBJECT n_object)
+  -- if $typed_conversion_at(S, [(PTBRANCH ([PTBUILTIN "string"]))], POBJECT n_object, false) = TYPEDEPENDENT "user object string conversion"
+  -- if ppropertygetstring = {GET ppropertyget, INPUT S.RESULT, OBJECT n_object, SOURCES pproptypesource*, OWNER (|S.FRAMES|), CALLER S.CURRENT, TAIL ptask_tail*}
+def $property_get_string_capture(S, ppropertyget) = eps -- otherwise
+
+def $property_get_string_record(PROPERTY_GET_STRING_RESULT ppropertygetstring) = (ppropertygetstring)
+def $property_get_string_record(PROPERTY_GET_STRING_READY ppropertygetstring pvalue) = (ppropertygetstring)
+def $property_get_string_record(PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) = (ppropertygetstring)
+def $property_get_string_record(ptask) = eps -- otherwise
+def $property_get_carrier(ptask, n, porigin) = 1
+  -- if $property_get_string_record($source_operand_marker(ptask)) = (ppropertygetstring)
+  -- if ppropertygetstring.GET.OBJECT = n /\ ppropertygetstring.GET.SITE = porigin
+def $property_get_base_pair(ptask :: (PROPERTY_GET_BASE ppropertyget) :: ptask_tail*, ppropertyget) = true
+  -- if $property_get_string_record($source_operand_marker(ptask)) = (ppropertygetstring)
+  -- if ppropertygetstring.GET = ppropertyget
+
+;; This part is also used by the borrowed-cell projection. It does not query
+;; heap owners or global type-source validity, which would recurse into that view.
+def $property_get_string_scope(S, ppropertygetstring) = true
+  -- if $property_get_nan_context(S[.BASE = BASE_VALUE (KNOWN PNULL)], ppropertygetstring.GET)
+  -- if ppropertygetstring.OWNER = |S.FRAMES| /\ ppropertygetstring.CALLER = S.CURRENT
+  -- if $(ppropertygetstring.OBJECT < |S.OBJECTS|)
+  -- if $property_get_string_input(S, ppropertygetstring)
+def $property_get_string_scope(S, ppropertygetstring) = false -- otherwise
+def $property_get_string_input(S, ppropertygetstring) = true
+  -- if ppropertygetstring.INPUT = KNOWN (POBJECT ppropertygetstring.OBJECT)
+  -- if ppropertygetstring.SOURCES = eps
+def $property_get_string_input(S, ppropertygetstring) = true
+  -- if ppropertygetstring.INPUT = REFERENCE n_cell
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if S.STORE[n_cell] = DEFINED (POBJECT ppropertygetstring.OBJECT)
+def $property_get_string_input(S, ppropertygetstring) = true
+  -- if ppropertygetstring.INPUT = REFERENCE n_cell
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if ppropertygetstring.SOURCES =/= eps
+  -- if S.STORE[n_cell] = DEFINED pvalue
+  -- if $value_nodes(pvalue) = eps
+def $property_get_string_input(S, ppropertygetstring) = false -- otherwise
+def $property_get_string_sources(S, ppropertygetstring) = true
+  -- if ppropertygetstring.INPUT = KNOWN (POBJECT ppropertygetstring.OBJECT)
+  -- if ppropertygetstring.SOURCES = eps
+def $property_get_string_sources(S, ppropertygetstring) = true
+  -- if ppropertygetstring.INPUT = REFERENCE n_cell
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+  -- if $propref_at(S.PROPREFS, n_cell) = eps
+  -- if ppropertygetstring.SOURCES = eps
+def $property_get_string_sources(S, ppropertygetstring) = true
+  -- if ppropertygetstring.INPUT = REFERENCE n_cell
+  -- if $call_reference_operand_valid(S, REFERENCE n_cell)
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n_cell) = eps
+  -- if $propref_at(S.PROPREFS, n_cell) = (ppropref)
+  -- if ppropertygetstring.SOURCES = ppropref.SOURCES /\ ppropertygetstring.SOURCES =/= eps
+def $property_get_string_sources(S, ppropertygetstring) = false -- otherwise
+def $property_get_string_valid(S, ppropertygetstring) = ($property_get_string_scope(S, ppropertygetstring) /\ $property_get_string_sources(S, ppropertygetstring) /\ $stringable_instance(S, ppropertygetstring.OBJECT) /\ $source_operand_suffix(S.TODO, PROPERTY_GET_STRING_RESULT ppropertygetstring, ppropertygetstring.TAIL))
+
+def $property_get_string_site_valid(S, porigin_site, z) = true
+  -- if S_view = S[.ORIGIN = (porigin_site)]
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprPropertyFetch expression (NIdentifier (BYTES text_name) metadata_name) metadata)
+  -- if $property_prep_task(S_view, NIdentifier (BYTES text_name) metadata_name, z)
+def $property_get_string_site_valid(S, porigin_site, z) = false -- otherwise
+def $stringify_source(S, porigin_site, z, PROPERTY_GET_STRING_RESULT ppropertygetstring) = ($property_get_string_valid(S, ppropertygetstring) /\ porigin_site = ppropertygetstring.GET.SITE /\ z = ppropertygetstring.GET.LINE)
+def $stringify_source_consumer(PROPERTY_GET_STRING_RESULT ppropertygetstring) = true
+def $stringify_consumer_tail_valid(S, porigin_site, z, PROPERTY_GET_STRING_RESULT ppropertygetstring, ptask_tail*) = ($stringify_source(S, porigin_site, z, PROPERTY_GET_STRING_RESULT ppropertygetstring) /\ ptask_tail* = ppropertygetstring.TAIL)
+def $stringify_consumer_receiver_valid(S, n_object, PROPERTY_GET_STRING_RESULT ppropertygetstring) = (n_object = ppropertygetstring.OBJECT)
+def $parameter_string_frame_scope(S, pframe, pframe_tail*) = $constant_frame_scope(S, pframe, pframe_tail*)
+  -- if pframe.TODO = (STRINGIFY_RESULT n_object porigin_site z) :: (PROPERTY_GET_STRING_RESULT ppropertygetstring) :: ptask_tail*
+def $property_get_string_begin(S, ppropertygetstring) = $user_string_begin(S, ppropertygetstring.OBJECT, ppropertygetstring.GET.SITE, ppropertygetstring.GET.LINE, PROPERTY_GET_STRING_RESULT ppropertygetstring, ppropertygetstring.TAIL)
+def $task_nodes(PROPERTY_GET_STRING_RESULT ppropertygetstring) = [HOBJECT ppropertygetstring.GET.OBJECT] ++ $operand_nodes(ppropertygetstring.INPUT)
+  -- if ppropertygetstring.SOURCES = eps
+def $task_nodes(PROPERTY_GET_STRING_RESULT ppropertygetstring) = [HOBJECT ppropertygetstring.GET.OBJECT, HOBJECT ppropertygetstring.OBJECT] ++ $operand_nodes(ppropertygetstring.INPUT)
+  -- if ppropertygetstring.SOURCES =/= eps
+def $call_task_valid(S, PROPERTY_GET_STRING_RESULT ppropertygetstring) = $property_get_string_valid(S, ppropertygetstring)
+
+;; Generic STRINGIFY_RESULT releases only its cast pin. READY still owns the
+;; original argument or copied temporary, and keeps the returned carrier intact.
+def $property_get_string_value(S, pvalue) = true
+  -- if $string_bytes(pvalue) = (ptbytes)
+  -- if pvalue = PSTRING ptbytes \/ $string_carrier_valid(S, pvalue)
+def $property_get_string_value(S, pvalue) = false -- otherwise
+def $stringify_return_state(S, PROPERTY_GET_STRING_RESULT ppropertygetstring, pvalue_text, ptask_tail*) = S[.TODO = (PROPERTY_GET_STRING_READY ppropertygetstring pvalue_text) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $property_get_string_valid(S, ppropertygetstring)
+  -- if ptask_tail* = ppropertygetstring.TAIL
+  -- if $property_get_string_value(S, pvalue_text)
+def $task_nodes(PROPERTY_GET_STRING_READY ppropertygetstring pvalue) = $task_nodes(PROPERTY_GET_STRING_RESULT ppropertygetstring)
+def $property_get_string_ready_valid(S, ppropertygetstring, pvalue) = (S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL) /\ $property_get_string_scope(S, ppropertygetstring) /\ $property_get_string_sources(S, ppropertygetstring) /\ $stringable_instance(S, ppropertygetstring.OBJECT) /\ $property_get_string_value(S, pvalue) /\ $source_operand_suffix(S.TODO, PROPERTY_GET_STRING_READY ppropertygetstring pvalue, ppropertygetstring.TAIL))
+def $call_task_valid(S, PROPERTY_GET_STRING_READY ppropertygetstring pvalue) = $property_get_string_ready_valid(S, ppropertygetstring, pvalue)
+rule PhpStep/property-get-string-release: S ~> S[.TODO = (PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_GET_STRING_READY ppropertygetstring pvalue) :: ptask_tail*
+  -- if $property_get_string_ready_valid(S, ppropertygetstring, pvalue)
+rule PhpStep/property-get-string-release-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic getter Stringable release continuation"]
+  -- if S.TODO = (PROPERTY_GET_STRING_READY ppropertygetstring pvalue) :: ptask_tail*
+  -- if ~$property_get_string_ready_valid(S, ppropertygetstring, pvalue)
+
+;; COPY's old object id is documentary: its release may already have retired it.
+;; A REF retains raw STORE for destructor reads but owns no old-object edge.
+def $task_nodes(PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) = [HOBJECT ppropertygetstring.GET.OBJECT, HCELL n_cell]
+  -- if ppropertygetstring.INPUT = REFERENCE n_cell
+def $task_nodes(PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) = [HOBJECT ppropertygetstring.GET.OBJECT]
+  -- if ppropertygetstring.INPUT = KNOWN (POBJECT ppropertygetstring.OBJECT)
+def $property_get_string_copy_valid(S, ppropertygetstring, pvalue) = (S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL) /\ $property_get_string_scope(S, ppropertygetstring) /\ $property_get_string_sources(S, ppropertygetstring) /\ $property_get_string_value(S, pvalue) /\ $source_operand_suffix(S.TODO, PROPERTY_GET_STRING_COPY ppropertygetstring pvalue, ppropertygetstring.TAIL))
+def $call_task_valid(S, PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) = $property_get_string_copy_valid(S, ppropertygetstring, pvalue)
+def $property_get_string_copy_at((PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ptask_tail*, n_cell) = ((ppropertygetstring, pvalue))
+  -- if ppropertygetstring.INPUT = REFERENCE n_cell
+def $property_get_string_copy_at(ptask :: ptask_tail*, n_cell) = $property_get_string_copy_at(ptask_tail*, n_cell)
+  -- if $property_get_string_record(ptask) = eps
+def $property_get_string_copy_at(ptask*, n_cell) = eps -- otherwise
+def $typed_cv_string_released_scope(S, n_cell) = true
+  -- if $property_get_string_copy_at(S.TODO, n_cell) = ((ppropertygetstring, pvalue))
+  -- if ppropertygetstring.SOURCES = eps
+  -- if $property_get_string_copy_valid(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)], ppropertygetstring, pvalue)
+
+def $property_get_string_commit(S, ppropertygetstring, pvalue) = S[.RESULT = KNOWN pvalue]
+  -- if ppropertygetstring.INPUT = KNOWN (POBJECT ppropertygetstring.OBJECT)
+  -- if ppropertygetstring.SOURCES = eps
+def $property_get_string_commit(S, ppropertygetstring, pvalue) = S[.STORE = $set_cell(S.STORE, n_cell, DEFINED pvalue)][.RESULT = REFERENCE n_cell]
+  -- if ppropertygetstring.INPUT = REFERENCE n_cell
+  -- if ppropertygetstring.SOURCES = eps
+def $property_get_string_commit(S, ppropertygetstring, pvalue) = $throw_scalar(S, "TypeError", $ptascii("Reference with value of type ") ++ $property_get_given(S, pvalue_live) ++ $ptascii(" held by ") ++ $propref_label(S, pproptypesource) ++ $ptascii(" is not compatible with property ") ++ $property_declaring_name(S.CLASSES, ppropertydesc.ORIGIN) ++ $ptascii("::$") ++ ppropertygetstring.GET.NAME ++ $ptascii(" of type ") ++ $property_type_name(S, ppropertydesc), ppropertygetstring.GET.LINE)
+  -- if ppropertygetstring.SOURCES = pproptypesource :: pproptypesource_tail*
+  -- if S_read = $quiet_operand(S, ppropertygetstring.INPUT)
+  -- if S_read.RESULT = KNOWN pvalue_live
+  -- if $property_desc_at($property_layout(S, ppropertygetstring.GET.CLASS, |S.CLASSES|), ppropertygetstring.GET.NAME) = (ppropertydesc)
+def $property_get_string_finish(S, ppropertygetstring, pvalue) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertygetstring.GET S_checked.RESULT) :: ppropertygetstring.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ppropertygetstring.SOURCES = eps
+  -- if S_checked = $property_get_string_commit(S, ppropertygetstring, pvalue)
+def $property_get_string_finish(S, ppropertygetstring, pvalue) = S_checked[.TODO = (PROPERTY_GET_COPY ppropertygetstring.GET ppropertygetstring.INPUT) :: ppropertygetstring.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if ppropertygetstring.SOURCES =/= eps
+  -- if S_checked = $property_get_string_commit(S, ppropertygetstring, pvalue)
+rule PhpStep/property-get-string-copy: S ~> $property_get_string_finish(S, ppropertygetstring, pvalue)
+  -- if S.TODO = (PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ptask_tail*
+  -- if $property_get_string_copy_valid(S, ppropertygetstring, pvalue)
+rule PhpStep/property-get-string-copy-invalid: S ~> S[.COMPLETION = UNSUPPORTED "magic getter Stringable copy continuation"]
+  -- if S.TODO = (PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ptask_tail*
+  -- if ~$property_get_string_copy_valid(S, ppropertygetstring, pvalue)
+def $throwable_same_frame_continuation(S, S_next, ptask_tail*) = S_next
+  -- if S.TODO = (PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ptask_tail*
+  -- if $property_get_string_copy_valid(S, ppropertygetstring, pvalue)
+  -- if S_next.TODO = (PROPERTY_GET_COPY ppropertygetstring.GET ppropertygetstring.INPUT) :: ptask_tail*
+  -- if S_next.RESULT = KNOWN PNULL /\ S_next.BASE = BASE_VALUE (KNOWN PNULL)
+
+;; Callback failure does not convert. A successful cast whose original-object
+;; destructor threw still copies its saved string before propagating that error.
+def $property_get_string_abrupt(S, ppropertygetstring) = S[.TODO = (THROW_SEARCH n_error) :: (PROPERTY_GET_COPY ppropertygetstring.GET ppropertygetstring.INPUT) :: ppropertygetstring.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertygetstring.TAIL
+  -- if $throwable_live(S, n_error)
+  -- if $property_get_string_valid(S[.TODO = (PROPERTY_GET_STRING_RESULT ppropertygetstring) :: ppropertygetstring.TAIL], ppropertygetstring)
+def $property_get_string_abrupt(S, ppropertygetstring) = S[.COMPLETION = UNSUPPORTED "magic getter Stringable callback cleanup"] -- otherwise
+def $return_discard(S, PROPERTY_GET_STRING_RESULT ppropertygetstring) = $property_get_string_abrupt(S, ppropertygetstring)
+def $property_get_string_copy_abrupt(S, ppropertygetstring, pvalue) = S_written[.TODO = (THROW_SEARCH n_error) :: (PROPERTY_GET_COPY ppropertygetstring.GET S_written.RESULT) :: ppropertygetstring.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertygetstring.TAIL
+  -- if $property_get_string_copy_valid(S[.TODO = (PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ppropertygetstring.TAIL], ppropertygetstring, pvalue)
+  -- if $throwable_live(S[.TODO = (THROW_SEARCH n_error) :: (PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ppropertygetstring.TAIL], n_error)
+  -- if ppropertygetstring.SOURCES = eps
+  -- if S_written = $property_get_string_commit(S, ppropertygetstring, pvalue)
+def $property_get_string_copy_abrupt(S, ppropertygetstring, pvalue) = S_linked[.TODO = (THROW_SEARCH n_new) :: (PROPERTY_GET_COPY ppropertygetstring.GET ppropertygetstring.INPUT) :: ppropertygetstring.TAIL][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = NORMAL]
+  -- if S.TODO = (THROW_SEARCH n_error) :: ppropertygetstring.TAIL
+  -- if $property_get_string_copy_valid(S[.TODO = (PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ppropertygetstring.TAIL], ppropertygetstring, pvalue)
+  -- if $throwable_live(S[.TODO = (THROW_SEARCH n_error) :: (PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) :: ppropertygetstring.TAIL], n_error)
+  -- if ppropertygetstring.SOURCES =/= eps
+  -- if S_error = $property_get_string_commit(S, ppropertygetstring, pvalue)
+  -- if S_new = $throwable_materialize(S_error)
+  -- if S_new.COMPLETION = THROWING n_new
+  -- if S_linked = $throwable_previous(S_new, n_new, n_error)
+  -- if S_linked.COMPLETION = THROWING n_new
+def $property_get_string_copy_abrupt(S, ppropertygetstring, pvalue) = S[.COMPLETION = UNSUPPORTED "magic getter Stringable copy cleanup"] -- otherwise
+def $return_discard(S, PROPERTY_GET_STRING_COPY ppropertygetstring pvalue) = $property_get_string_copy_abrupt(S, ppropertygetstring, pvalue)

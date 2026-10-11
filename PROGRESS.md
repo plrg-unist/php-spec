@@ -3519,6 +3519,20 @@ Prior44 cuts and generic50/95/289/owner rules are unchanged.
 [NaN-boolean ledger](coverage/semantics/magic-property-nan-boolean-review.json).
 Exact-current `1e818f74f` joins `58d5c5fee` pointwise across disjoint parent guards.
 Private and retained parent-family compiler cuts are reused; fresh strict/source/state/native counts remain0.
+Weak string MAGIC_GET now calls ordinary Stringable results with separate cast,
+original argument and getter owners. Release of the argument or copied temporary
+owner precedes the saved string write; a last-owner destructor sees the raw cell. Successful-cast
+release exceptions still allow unconstrained commit; callback failure skips conversion.
+Real sources diagnose the live referent; pending release errors become the new
+first-source TypeError's previous before authentic receiver cleanup. REF reception,
+BYVAL independence, owned detachment and strict no-cast rejection follow native order.
+Native8+1/baseline1 retain their original cuts. Strict375 and nine source agreements
+are retained; twelve compact checks pass 899 setup-inclusive premises across their
+tested cuts, including whole stages, owners and full driver budgets.
+Original preparation/source/two fixture failures remain0; one diagnostic adds no agreement.
+Unconstrained input changes during callbacks/precommit cleanup, object/array replacements,
+changed sources/tails, PARAM and wider getters remain required; phase45 cuts stay frozen.
+[Stringable-string ledger](coverage/semantics/magic-property-stringable-string-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

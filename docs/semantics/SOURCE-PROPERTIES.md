@@ -578,3 +578,23 @@ Literal false and string0 replacement natives both yielded true in this pinned b
 normal unconstrained payload history remains Unsupported/native-only0. Throwing scalar/string
 and constrained current-type paths do not decide that payload. Object/array replacements,
 changed source/tail and wider targets/getters/PARAM remain required; prior44 cuts stay frozen.
+
+Weak exact-string MAGIC_GET also converts ordinary Stringable results through the
+real `__toString` callback. A local continuation retains the returned argument,
+getter receiver and saved string. Cast-pin release precedes release of the original
+argument or copied temporary owner, which precedes the string write. Destruction
+at that last release observes the unchanged raw reference. Saved bytes still commit after a successful
+cast's release exception, while callback failure performs no saved-string write.
+A real source converts an independent temporary and diagnoses the current referent
+without writing. Its new TypeError retains any pending original-object release
+exception as previous. Existing getter cleanup then releases the receiver;
+BYVAL remains independent, CV reception follows cleanup and owned reception detaches
+before BASE release. Declaration-strict rejection invokes no cast.
+The [Stringable-string review](../../coverage/semantics/magic-property-stringable-string-review.json)
+records nine source agreements and twelve compact stage checks/899 premises,
+including whole READY/COPY/commit states, physical owners, full budgets and malformed
+input/site/tail/source/carrier exclusions. Original failures keep zero credit;
+one pending-COPY diagnostic adds no agreement. Unconstrained inputs must retain
+the captured referent through callback/precommit cleanup; object/array replacements,
+changed sources/tails, PARAMETERBACKINGS and wider targets/getters remain required. Generic cast timing,
+typed-CV release behavior and prior phase45 evidence retain their original cuts.

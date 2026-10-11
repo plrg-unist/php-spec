@@ -2124,6 +2124,16 @@ The original preparation failure stays0. Normal bool/string payload history rema
 Unsupported with a separate native-only control0; wider object/array/source/PARAM scope stays open.
 The `58d5c5fe` join preserves disjoint parent paths and reuses retained compiler cuts.
 Private observations retain their revisions; fresh strict/source/state/native evaluations stay0.
+Weak string MAGIC_GET now converts ordinary Stringable results while retaining the
+returned argument and getter receiver. The cast owner releases first, then the
+original argument or copied temporary owner before the saved string write. A successful cast still
+writes its string when that release throws; a throwing callback performs no conversion.
+Real typed sources diagnose the current referent, and a conflict TypeError retains
+an object-release exception as previous. REF/BYVAL/owned reception preserves native
+cleanup order; declaration-strict getters call no cast.
+[Nine source agreements and twelve compact reached checks](coverage/semantics/magic-property-stringable-string-review.json)
+bind 899 premises across retained cuts. Original failures remain0; unconstrained input
+changes during callbacks/precommit cleanup and wider replacement/getter/PARAM scope remain required.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
