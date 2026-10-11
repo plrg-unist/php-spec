@@ -2810,6 +2810,9 @@ only its two driver-transition assertions changed, with runtime/source unchanged
 The maintained constructed integer control contributes three new kept clauses;
 phase31–38 cuts are not renewed.
 [Integer-string ledger](coverage/semantics/magic-property-integer-string-review.json).
+The actual375 join over `753f960e2` at `90da67734` reuses private strict/source6/state1188
+and the accepted CALLS25 parent strict cut. Reviewed disjoint seams require no new
+numeric execution; fresh strict/source/state/native credit remains0.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

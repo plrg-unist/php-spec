@@ -1780,6 +1780,9 @@ limit values retain newly allocated request strings through cleanup.
 pass 1,188 setup-inclusive premises at `7556c579f`; strict375/source6 retain
 `0f910ddb4`. Genuine string|int conflicts and strict/null rejection preserve raw
 values until cleanup; the original kept fixture failure retains zero credit.
+The actual375 join over `753f960e2` at `90da67734` preserves disjoint parent paths.
+Existing parent/private strict cuts and private source6/state1188 are reused;
+this join adds no numeric execution.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
