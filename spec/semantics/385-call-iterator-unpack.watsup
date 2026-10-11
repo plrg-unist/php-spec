@@ -22,6 +22,7 @@ dec $iterator_unpack_known_object(poperand) : bool
 dec $iterator_unpack_hold_valid(piteratorunpack, text) : bool
 dec $iterator_unpack_hold_allowed(pstate, piteratorunpack, text) : bool
 dec $iterator_unpack_object_order(pnamedargs, pfunction, pnamedtarget) : bool
+dec $iterator_unpack_positional_extra(pfunction, nat) : bool
 dec $iterator_unpack_extra_site(pstate, porigin?) : bool
 dec $iterator_unpack_extra_allowed(pstate, piteratorunpack, pfunction, pnamedtarget) : bool
 dec $iterator_unpack_warning_hold(pstate, piteratorunpack) : poperand?
@@ -273,11 +274,16 @@ def $iterator_unpack_scalar_operand(S, REFERENCE n) = $iterator_unpack_scalar(pv
 def $iterator_unpack_scalar_operand(S, REFERENCE n) = $startup_bytes(n_bytes*) -- if S.STORE[n] = DEFINED (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $iterator_unpack_scalar_operand(S, poperand) = false -- otherwise
 def $iterator_unpack_object_order({SLOTS eps, NAMED eps}, pfunction, pnamedtarget) = true
-def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_POSITION n) = $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_POSITION n) = ($(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|) \/ (pnamedargs.NAMED = eps /\ $iterator_unpack_positional_extra(pfunction, n)))
   -- if pnamedargs =/= {SLOTS eps, NAMED eps}
 def $iterator_unpack_object_order(pnamedargs, pfunction, NAMED_EXTRA preqbytes) = true
   -- if pnamedargs =/= {SLOTS eps, NAMED eps}
 def $iterator_unpack_object_order(pnamedargs, pfunction, pnamedtarget) = false -- otherwise
+def $iterator_unpack_positional_extra(pfunction, n) = true
+  -- if $(n >= |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
+  -- if psparam.VARIADIC /\ psparam.BYREF /\ psparam.TYPE = eps
+def $iterator_unpack_positional_extra(pfunction, n) = false -- otherwise
 ;; Restrict the separated rest representation to one direct, statically named
 ;; Iterator construction. General shared extra-named buffers remain open.
 def $iterator_unpack_extra_site(S, (porigin)) = true
@@ -289,6 +295,11 @@ def $iterator_unpack_extra_site(S, (porigin)) = true
 def $iterator_unpack_extra_site(S, porigin?) = false -- otherwise
 def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_POSITION n) = true
   -- if piteratorunpack.CALL.SENT.NAMED = eps
+  -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps} \/ $(n < |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|)
+def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_POSITION n) = true
+  -- if piteratorunpack.CALL.SENT.NAMED = eps /\ piteratorunpack.CALL.SENT =/= {SLOTS eps, NAMED eps}
+  -- if $iterator_unpack_positional_extra(pfunction, n)
+  -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
 def $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, NAMED_POSITION n) = true
   -- if piteratorunpack.CALL.SENT.NAMED =/= eps
   -- if n_fixed = |$call_fixed_parameters(pfunction.SIGNATURE.PARAMETERS)|

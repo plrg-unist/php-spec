@@ -167,8 +167,8 @@ a DIRECT item in a separated logical rest array. Its original named-send cell
 still retains the payload until call teardown, so clearing the rest item does not
 destroy it early. This abstracts Zend's shared-table/COW route; the model does not
 claim its pre-write array identity or owner counts. Shared references use the old
-alias path. Extra-to-extra remained open at that cut. General shared-buffer
-release before COW and later positional variadic object sends, arrays and REFERENCE
+alias path. Extra-to-extra and later positional variadic objects remained open
+at that cut. General shared-buffer release before COW, arrays and REFERENCE
 object payloads remain open.
 The [extra-named review](../../coverage/semantics/iterator-call-unpack-object-extra-named-review.json)
 records the new source cuts and the original failed native expectation.
@@ -180,6 +180,18 @@ a thrown second warning retires cache/DATA/INPUT before earlier and failed paylo
 including real parked injection. The
 [extra-to-extra review](../../coverage/semantics/iterator-call-unpack-object-extra-extra-review.json)
 keeps these originals separate from the prior cuts.
+
+Later positional copied objects now enter an untyped by-reference variadic at
+the same authenticated direct Iterator construction, with no earlier named
+extras. `RECV_VARIADIC` adds a reference owner for each packed rest item; the
+existing ALIAS representation shares the original private argument cell with
+the frame's EXTRA buffer. A rest-item write changes that cell and retires the
+current payload before F, while the earlier payload survives until frame cleanup.
+Warning throw still retires raw cache/DATA/INPUT before earlier and failed
+arguments in positional order, including real parked injection. Typed tails and
+wider call sites remain open. The
+[positional variadic review](../../coverage/semantics/iterator-call-unpack-object-positional-variadic-review.json)
+records this slice separately from the named DIRECT rest abstraction and prior cuts.
 
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper

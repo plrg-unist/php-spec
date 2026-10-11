@@ -504,13 +504,18 @@ See the [extra-named review](coverage/semantics/iterator-call-unpack-object-extr
 Earlier extra names retain their private cells through a second warning and
 retire in insertion order, including real parked throw; see the
 [extra-to-extra review](coverage/semantics/iterator-call-unpack-object-extra-extra-review.json).
+Later positional copied objects in an untyped by-reference variadic also retain
+earlier sent cells at an authenticated direct Iterator construction, with no
+prior named extras. Packed rest items alias the original private cells; a rest
+write releases the current payload before later body output. See the
+[positional variadic review](coverage/semantics/iterator-call-unpack-object-positional-variadic-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
-those strings, arrays, reference objects, general shared variadic buffers and
-later positional variadic object warnings remain required.
+those strings, arrays, reference objects, general shared named buffers and
+typed or wider-site positional variadic object warnings remain required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer
 ordinary bodies in object-owned frames. Value yields, literal iterator methods,
 `getReturn`, `send`, `throw` and value `foreach` retain real resumer scope and

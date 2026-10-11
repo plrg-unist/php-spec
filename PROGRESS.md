@@ -316,10 +316,25 @@ without fresh native execution. Eight genuine-source state groups pass 446 physi
 driver ownership and authority premises at `a8f7e9f1`, including both private-cell
 receives, retired SOURCE guards and F-to-A-to-B cleanup; no pure queries are counted.
 The direct-site, untyped variadic and no-positional-extra guards remain; general
-shared buffers, later positional variadic and REFERENCE payloads remain required.
-Actual375 over `36a9933d` passes strict SL at `f4245b43`; private native/source/state
+shared buffers, later positional variadic and REFERENCE payloads remained required
+at that cut. Actual375 over `36a9933d` passes strict SL at `f4245b43`; private native/source/state
 cuts retain their original inputs.
 [Extra-to-extra review](coverage/semantics/iterator-call-unpack-object-extra-extra-review.json).
+
+Later positional copied-object warnings now admit an untyped by-reference
+variadic at one direct statically named Iterator construction, with no prior
+named extras. Packed rest items alias the original private cells; clearing the
+current item destroys its payload before F, while the earlier payload survives
+until frame cleanup. Warning and parked throws retire Iterator before earlier
+and current payloads. Native3 passes at `29d80a94`; strict375 and three unchanged
+source agreements pass at `43f44b08` without fresh native execution. Independent
+reached-state groups pass 453 physical/426 driver premises across seven retained
+groups at `49cc58c1` and the corrected final body at `85237e75`, with no pure
+queries. The original parked timeout and final request-marker fixture failure
+retain zero campaign credit. Typed/wider-site tails, general shared named
+buffers, arrays and REFERENCE object payloads remain required; earlier cuts stay
+frozen.
+[Positional variadic review](coverage/semantics/iterator-call-unpack-object-positional-variadic-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or

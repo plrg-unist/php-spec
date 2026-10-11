@@ -224,6 +224,8 @@ test-semantics: build
 	python3 tests/semantics/iterator_call_unpack_object_extra_named_review.py
 	python3 tests/semantics/iterator_call_unpack_object_extra_extra_sources.py
 	python3 tests/semantics/iterator_call_unpack_object_extra_extra_review.py
+	python3 tests/semantics/iterator_call_unpack_object_positional_variadic_sources.py
+	python3 tests/semantics/iterator_call_unpack_object_positional_variadic_review.py
 	python3 tests/semantics/weak_reference_sources.py
 	python3 tests/semantics/weak_reference_state.py
 	python3 tests/semantics/weak_reference_review.py

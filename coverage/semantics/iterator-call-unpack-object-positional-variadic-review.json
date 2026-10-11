@@ -1,0 +1,161 @@
+{
+  "status": "private native/source/strict and composed independent state accepted",
+  "scope": "Later positional copied KNOWN objects in an untyped by-reference variadic at one direct statically named Iterator construction, with no prior named extras. Packed rest items alias original private cells; body writes retire the current payload before later output.",
+  "remaining": [
+    "Typed tails, wider sites and positional sends after named extras",
+    "General shared named-buffer external-alias release before COW, arrays and REFERENCE object payloads",
+    "Request/plain reference strings, Generator/Aggregate ordinary-call unpack and other targets"
+  ],
+  "parent": "3d54ec25ad7419edfeeef1ab59f103b345bf3b38",
+  "implementation_revision": "43f44b08a7fd71c2ec92f96f0e843527232d597d",
+  "prior_evidence": "coverage/semantics/iterator-call-unpack-object-extra-extra-review.json",
+  "engine_route": "SEND_UNPACK installs a fresh reference for copied by-value current(), even after warning throw. RECV_VARIADIC increments each incoming reference before packed array insertion (Zend/zend_vm_def.h); the existing ALIAS rest items share the frame EXTRA cells. zend_vm_stack_free_args retires positional slots in ascending order after raw iterator cache, DATA and temporary input teardown.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "int_size": 8,
+    "zts": false,
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "profile": "tests/semantics/profile.json",
+  "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+  "compiler": {
+    "mode": "SL",
+    "cache": false,
+    "determinism_checks": true,
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "jobs": 1
+  },
+  "selection": [
+    "iterator-call-unpack-object-positional-variadic-normal",
+    "iterator-call-unpack-object-positional-variadic-second-warning-throw",
+    "iterator-call-unpack-object-positional-variadic-parked-throw"
+  ],
+  "native": {
+    "revision": "29d80a941ecab088ab778a490507799a9f007df4",
+    "report": ".tools/calls-iterator-copied-object-positional-variadic-25/.tools/iterator-call-unpack-object-positional-variadic-native-cva7ud63/report.json",
+    "report_sha256": "5bfaa9fd0f22dc04a9ca031600d28fd8fca9f4f398ce0cc6cc33522bc19fa546",
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "dbaf1d99e11998945fceb9d1d0606bfb10612936592f6a9dc6750788c84addb0",
+    "originals": 3,
+    "normal_agreements": 0,
+    "process_seconds": 8,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "observations": "Warnings report argument1 then2; normal I/G/B/F/A, handler and injected throws I/A/B with original Throwable51; main17/19 survives park."
+  },
+  "strict": {
+    "revision": "43f44b08a7fd71c2ec92f96f0e843527232d597d",
+    "report": ".tools/calls-iterator-copied-object-positional-variadic-25/.tools/iterator-call-unpack-object-positional-variadic-sl-uox4udl7/report.json",
+    "report_sha256": "64d2e2d77c7a5767811c4e49471f854963b0060dd3ee801ad542b5a4540441d2",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "e8d2e314634ed595ed7efc9a4b44f620d656d7725869b2315b8b0b3346a2ce85",
+    "modules": 375,
+    "ordered_inputs": "spec/semantics/modules.json",
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "status": "passed",
+    "revision": "43f44b08a7fd71c2ec92f96f0e843527232d597d",
+    "command": "timeout -k 10s 300s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-object-positional-variadic-native-cva7ud63/report.json",
+    "runner_sha256": "90770da3cd19bab5317364ab577ae3f507db5fde3d524071a4f0e9077402d7f3",
+    "new_native_executions": 0,
+    "report": ".tools/calls-iterator-copied-object-positional-variadic-25/.tools/iterator-call-unpack-object-positional-variadic-source-46nz15kl/report.json",
+    "report_sha256": "a388b91bf70874fa7b168961a7994ea07b4caf7f2c532b66376600580ed50996",
+    "normal_agreements": 3,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true
+  },
+  "source_budgets": {
+    "steps": 100000,
+    "model_seconds": 60,
+    "process_seconds": 75
+  },
+  "state_review": {
+    "status": "passed from retained seven groups and corrected final body group",
+    "revision": "85237e75f9a54dac73a846538745475cdda64992",
+    "fixture_sha256": "069a760e82ea953092a680460aad85ace3dc1488117c7c9f4ace08133c618512",
+    "retained_cut": {
+      "revision": "49cc58c17bbddb4c91c244fec178d9eb7b36c022",
+      "raw": ".tools/calls-iterator-copied-object-positional-variadic-25/.tools/fiber-state-review-chupf4oo",
+      "command": "timeout -k 10s 1100s prlimit --as=6442450944 -- python3 -u .tools/object-positional-variadic-state-stop-first.py",
+      "runner_sha256": "18153f258b9e083432393a76c5f659c48b05013de53086229f35574b38b50c67",
+      "passed_groups": 4,
+      "physical_premises": 246,
+      "driver_assertions": 234,
+      "process_seconds": 120,
+      "host_exit": 1,
+      "final_report": false,
+      "complete_campaign_credit": 0
+    },
+    "retained_affected_cut": {
+      "revision": "49cc58c17bbddb4c91c244fec178d9eb7b36c022",
+      "raw": ".tools/calls-iterator-copied-object-positional-variadic-25/.tools/fiber-state-review-3hh3ltde",
+      "command": "timeout -k 10s 850s prlimit --as=6442450944 -- python3 -u .tools/object-positional-variadic-state-180.py",
+      "runner_sha256": "a5567b20fa4d20941c2df2af875b276c6886b7984b32a768bca21aed806bde8f",
+      "passed_groups": 3,
+      "physical_premises": 154,
+      "driver_assertions": 143,
+      "process_seconds": 180,
+      "host_exit": 1,
+      "final_report": false,
+      "complete_campaign_credit": 0
+    },
+    "report": ".tools/calls-iterator-copied-object-positional-variadic-25/.tools/fiber-state-review-7zw0vp7n/report.json",
+    "report_sha256": "231a5ba91c9bbc1323593ea4ec242c7f6c527c67cc4fc573a15ab061a3fc5397",
+    "command": "timeout -k 10s 180s prlimit --as=6442450944 -- python3 -u .tools/object-positional-variadic-state-stop-first.py --case body-write-clears-private-current-cell-and-destroys-current-before-F",
+    "runner_sha256": "18153f258b9e083432393a76c5f659c48b05013de53086229f35574b38b50c67",
+    "groups": 8,
+    "physical_premises": 453,
+    "driver_assertions": 426,
+    "pure_queries": 0,
+    "corrected_report_groups": 1,
+    "corrected_report_physical_premises": 53,
+    "corrected_report_driver_assertions": 49,
+    "seek_steps": 4000,
+    "finish_steps": 4000,
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "resource_cap": {
+    "address_space_bytes": 6442450944,
+    "jobs": 1,
+    "stop_first": true,
+    "interrupt_cleanup": "SIGTERM raises KeyboardInterrupt; recorded kills/waits for process group; providers close in finally."
+  },
+  "compatibility": "Only later nonempty-buffer positional object eligibility changes: actual VARIADIC/BYREF/untyped parameter, no prior NAMED buffer and authenticated direct Iterator site. Existing empty-buffer, fixed-slot and named admissions, hold ownership/mapped discard, and 103 ALIAS receive stay unchanged. Prior cuts are not renewed.",
+  "state_timeout_failure": {
+    "revision": "49cc58c17bbddb4c91c244fec178d9eb7b36c022",
+    "process": ".tools/calls-iterator-copied-object-positional-variadic-25/.tools/fiber-state-review-chupf4oo/parked-second-positional-keeps-private-cell-and-rejects-duplicate-resume/model.process.json",
+    "exit": -9,
+    "timeout": true,
+    "process_seconds": 120,
+    "remaining_groups_unrun": 3,
+    "complete_campaign_credit": 0
+  },
+  "state_body_fixture_failure": {
+    "revision": "49cc58c17bbddb4c91c244fec178d9eb7b36c022",
+    "process": ".tools/calls-iterator-copied-object-positional-variadic-25/.tools/fiber-state-review-3hh3ltde/body-write-clears-private-current-cell-and-destroys-current-before-F/model.process.json",
+    "exit": 1,
+    "timeout": false,
+    "cause": "Exact final CALLED list omitted request-end completion marking; 257.destructor_stop marks all object IDs. Body ownership and exact F/A/E events already passed; only final membership expectation changes.",
+    "complete_campaign_credit": 0
+  }
+}
