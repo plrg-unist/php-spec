@@ -1,0 +1,117 @@
+{
+  "status": "Bounded source and reached-state milestone; independently reviewed semantics and retained results.",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348; profile30719",
+  "accepted_parent": "8087545b25e2b4461377f4e6d34fd81b2e848bc0; phase31–39 evidence is not renewed",
+  "runtime_revision": "1923d79398923336a1a0670e519c0dd4beb6ee40",
+  "tested_revision": "d8030561f2bb56727efb1acc493bb7fcfe476df3",
+  "scope": "Modules380/384 weak builtin-string MAGIC_GET verification of original non-NaN floats on accepted public literal-CV or owned ordinary-call receivers. Actual unconstrained REFERENCE cells convert in place; BYVAL changes only RV. Shared stringify uses the post-getter precision and fresh request-string identity for finite/zero/infinite values. Non-NaN real-source conversion remains diagnostic-only; existing strictness/owners are unchanged.",
+  "runtime": {
+    "php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "adapter_sha256": "d830db1d42d1103e2921f3ad7fa0fbefb8ffb33488cf1ec175bed05e651cb03d",
+    "numeric_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "modules": 375,
+    "mode": "SL --sl/jobs1; native30/modelCLI60/process90/numeric120/100000 model steps; profile30719; LC_ALL=C/TZ=UTC; retained tools, no rebuild"
+  },
+  "input_sha256": {
+    "spec/semantics/380-magic-property-get.watsup": "63b60d6e233344db58c91815d474b2287bd0461555811ee9979f0cdd3cc3de16",
+    "spec/semantics/384-magic-property-reference-types.watsup": "5e5d289236b5ee6a40871a3a326ecf8c2556ba1c63ee14c50962e5e6e0c849c4",
+    "tests/semantics/dynamic_property_warning_sources.py": "9788f41d0c12921bed0734573cfc93ff3db970ebdc38b05db38783f58f6b3133",
+    "tests/semantics/magic_property_float_string_protocol.py": "defb2e70c5a3312e965cb3f6c13efd74bdaa8a4df20e03c9949ed644bd27240e",
+    "tests/semantics/magic_property_integer_string_protocol.py": "7447444ea0b76832c027ce6cef5065c117d6513809541160f78a2c61cd0b7afc"
+  },
+  "native_first": {
+    "revision": "f72a39fc40f90e3fc3051180d2bf62e75c3e3b19",
+    "primary_cases": 6,
+    "nan_controls": 1,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-string-native40-7r1w8zqi/report.json",
+    "seconds": 0.2039144765585661,
+    "credit": "Observations only. All exit0; six primary stderr empty; native NaN control warns at both unconstrained and genuine source-constrained accesses, with whole-source model/state/agreement0."
+  },
+  "affected_native": {
+    "revision": "0eacf8b8faf1aa4617cc5f39062abfee4c56a7dd",
+    "cases": 2,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-string-native-split40-1fb0bff9/report.json",
+    "seconds": 0.08039101399481297,
+    "credit": "Short kept and new format exact original observations only; normal0/empty. Five other primary originals and NaN control unchanged."
+  },
+  "unsupported_baseline": {
+    "revision": "f72a39fc40f90e3fc3051180d2bf62e75c3e3b19",
+    "case": "review-property-magic-float-string-reference-kept40",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-string-baseline40-esoqb9t9/report.json",
+    "process_exit": 1,
+    "modeled_exit_status": null,
+    "stdout": "C|G1|value|1/0|",
+    "reason": "magic getter property type coercion",
+    "seconds": 21.006914380937815,
+    "credit": 0
+  },
+  "strict": {
+    "revision": "1923d79398923336a1a0670e519c0dd4beb6ee40",
+    "parent": "f72a39fc40f90e3fc3051180d2bf62e75c3e3b19",
+    "modules": 375,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-string-strict40-zacj_e7i/report.json",
+    "seconds": 5.8969320468604565,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "state_premises": 0
+  },
+  "source": {
+    "revision": "d8030561f2bb56727efb1acc493bb7fcfe476df3",
+    "cases": 7,
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-r1unsm7i/report.json",
+    "outcomes": "All seven accepted/checked programs and native/model processes normal exit0; native/model/EXPECTED stdout exact; raw/modeled stderr empty and diagnostics/reasons null."
+  },
+  "source_sha256": {
+    "review-property-magic-float-string-reference-kept40": "505de58721936939df9749b8b4ac0b5d327190d198093065da671f7ded1b23d9",
+    "review-property-magic-float-string-reference-format40": "513aca2da5d23f87f3911b731372775d8e3c5dd88760b148d8ed9a08ed8bb7cb",
+    "review-property-magic-float-string-reference-drop40": "9dd9865ce59924b98281eec5514d54b874479ec959041b6fad81eba52593e6e3",
+    "review-property-magic-float-string-value40": "13db0ad7ad96b9d43722ee8f9ea0c12689ad065a29725110a57c69a8c974fd76",
+    "review-property-magic-float-string-owned40": "b8ded71b80c16e3f41d6379f5c1d8186e7549004170968305368386c6b20ebcb",
+    "review-property-magic-float-string-source-conflict40": "e15356a60816cb05dad77a555dbd2a58d321042bc63cdaf4d8d5b4f434f46633",
+    "review-property-magic-float-string-strict-getter40": "8b6c2533c7e61ea3af257dc4aa68b9836d6645a4509fbf3f7e2e4db1f5475741"
+  },
+  "nan_control_sha256": "67cf8548d55987188108f673394f9f1fd053534702837d566491be8191897e89",
+  "reached_revision": "d8030561f2bb56727efb1acc493bb7fcfe476df3",
+  "reached": [
+    {"group": "reference-kept", "premises": 320, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-string-zw5omsc9/report.json"},
+    {"group": "reference-format", "premises": 264, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-string-i3zs7n0a/report.json"},
+    {"group": "reference-drop", "premises": 136, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-string-59u41ps5/report.json"},
+    {"group": "value", "premises": 136, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-string-fcl3rzui/report.json"},
+    {"group": "owned", "premises": 141, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-string-7fcpaxt0/report.json"},
+    {"group": "source-conflict", "premises": 222, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-string-uamkjl6e/report.json"},
+    {"group": "strict-getter", "premises": 132, "raw": ".tools/properties-magic-decimal-current32/.tools/magic-property-float-string-dbxnx4rb/report.json"}
+  ],
+  "setup_inclusive_premises": 1351,
+  "facts": [
+    "Fixed 7/+0/-0/0.1/fraction/±INF bytes and full-state verification prove one fresh request append for every conversion, including single digits and positive zero. REF restores its captured operand identity for checked write; BYVAL changes only RV; exact reverify is whole-state identity. Getter precision changes14→6 before fraction formatting; independent fixed bytes are0.123457.",
+    "REF reception copies the cell after destructor mutation; BYVAL retains the raw global through destruction and forwards its detached string. Owned reception detaches -0 before BASE destruction and preserves the copied request carrier after global writes.",
+    "A genuine string|float source preserves exact-first identity/source/backing; later possible float conversion raises the native first-source TypeError without changing raw/source/STRINGDATA. Declaration-strict and null errors retain raw state until cleanup; pending errors survive source detach/repair.",
+    "One maintained PFLOAT1.0 constructed control contributes two distinctly named clauses only in new kept. Wrong marker/target/original/RV, invalid reference/bits, NaN and PARAMETERBACKINGS controls remain explicit. NaN is excluded from both new routes because even constrained temporary conversion warns."
+  ],
+  "preparation": {
+    "original_six": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-string-state-prep40-8gkkax2d/report.json",
+    "affected_pair": ".tools/properties-magic-decimal-current32/.tools/property-magic-float-string-state-prep40-i83pt9op/report.json",
+    "credit": "Six full-sort fixtures1354 at1923; short kept320+format264 atd803. Five other prepared bodies136/136/141/222/132 are unchanged; current total1351. Preparation only, zero numeric/state application."
+  },
+  "original_failure": {
+    "revision": "1923d79398923336a1a0670e519c0dd4beb6ee40",
+    "raw": ".tools/properties-magic-decimal-current32/.tools/dynamic-property-warning-source-cbwf71hk/report.json",
+    "cause": "The original eight-read kept composite returns model CLI timeout under60 seconds (outer process90), with native normal0/EXPECTED exact. Stop-first leaves the other five sources and all states unrun at this cut.",
+    "process_exit": 1,
+    "model_json": {
+      "status": "timeout"
+    },
+    "source_agreement": 0,
+    "state_credit": 0
+  },
+  "compatibility": "Runtime/legacy remain byte-identical1923 across source-only split0eacf and EXPECTED/helperd803. Accepted strict is reused. Short kept proves7/+0/-0/null; separate retained format proves precision6/±INF, while unchanged REF-drop covers0.1. Five unchanged fixture bodies and preparations are reused; original composite/native7/baseline/timeout keep their cuts. No cap widening or phase31–39 renewal.",
+  "remaining": "NaN warnings/handler continuations, PARAMETERBACKINGS, Object/Stringable and wider target conversions, callback verification and receiver/signature/access/quiet/write/recursive residuals remain required. Original composite keeps timeout/zero agreement.",
+  "engine": [
+    "vendor/php-src/Zend/zend_API.c:zend_parse_arg_str_weak; Zend/zend_operators.c:zend_double_to_str/_convert_to_string",
+    "vendor/php-src/Zend/zend_execute.c:zend_verify_scalar_type_hint/zend_verify_prop_assignable_by_ref_ex/zend_magic_get_property_type_inconsistency_error",
+    "vendor/php-src/Zend/zend_object_handlers.c:zend_std_read_property getter strictness and verification before receiver release",
+    "spec/semantics/35-scalar-operations.watsup:stringify/precision_value;30-string-carriers.watsup:string_request;380:property_get_float_string_apply"
+  ],
+  "recovery": "Tracked dynamic_property_warning_sources.py and magic_property_float_string_protocol.py reproduce seven current originals/groups. Ignored raw trees retain original composite, NaN control, exact originals/checked/eval sources/whole fixtures/premises, argv/cwd/process/streams and stable identities. Active current32/owned28 providers and parser closure remain; no portability/rebuild claim."
+}

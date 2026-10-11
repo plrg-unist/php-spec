@@ -400,3 +400,19 @@ and access contract. Non-object casts and stdClass table sharing are described i
 buckets and callback-sensitive iteration. Wider readonly operations, hooks,
 magic setters and quiet access, and wider property consumers remain open.
 Public constructors are implemented separately.
+
+Weak builtin-string MAGIC_GET also converts non-NaN floats using shared stringify
+and the current post-getter precision. Every conversion appends one request string,
+including `7.0`, `+0.0`, `-0.0` and infinities; exact re-verification is identity.
+Actual unconstrained references update their cell, while BYVAL changes only RV.
+CV reception copies after destruction; owned reception detaches before BASE release.
+Genuine string|float sources preserve an exact first read and select the later
+non-NaN conflict without changing raw/source/STRINGDATA. Strict/null rejection and
+pending TypeError survive cleanup. The
+[float-string review](../../coverage/semantics/magic-property-float-string-review.json)
+records seven source agreements and seven whole reached groups/1,351 premises,
+including real getter precision14→6 and two maintained constructed clauses.
+The original composite timeout keeps zero agreement after a source-only split.
+NaN warns even for constrained temporary conversion, so both new routes exclude it;
+its native-only control keeps zero model agreement. PARAMETERBACKINGS, Object/Stringable
+and wider getter/conversion scope remain required; earlier cuts are not renewed.

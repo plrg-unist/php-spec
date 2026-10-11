@@ -121,8 +121,11 @@ def boundaries():
     checks += ['ppropertydesc_wrong = ppropertydesc_get[.TYPE = [(PTBRANCH ([PTBUILTIN "float"]))]]',
         '$property_get_verify_value(S_return, ppropertyget, ppropertydesc_wrong, PINT 0, TYPESTRING (PINT 0)) = S_return[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]']
     for tag, original in [('null', 'PNULL'), ('float', 'PFLOAT 4607182418800017408'), ('range', 'PINT 9223372036854775808')]:
+        outcome = f'S_bad_{tag}[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]'
+        if tag == 'float':
+            outcome = 'S_bad_float[.STRINGDATA = S_bad_float.STRINGDATA ++ [([49])]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING (|S_bad_float.STRINGDATA|)) ([49]))]'
         checks += [f'S_bad_{tag} = S_return[.RESULT = KNOWN ({original})]',
-            f'$property_get_verify_value(S_bad_{tag}, ppropertyget, ppropertydesc_get, {original}, TYPESTRING ({original})) = S_bad_{tag}[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]']
+            f'$property_get_verify_value(S_bad_{tag}, ppropertyget, ppropertydesc_get, {original}, TYPESTRING ({original})) = {outcome}']
     checks += ['S_invalid_rv = S_return[.RESULT = REFERENCE (|S_return.STORE|)]',
         '~$call_reference_operand_valid(S_invalid_rv, S_invalid_rv.RESULT)',
         '$property_get_verify_value(S_invalid_rv, ppropertyget, ppropertydesc_get, pvalue_raw, TYPESTRING pvalue_raw) = S_invalid_rv[.COMPLETION = UNSUPPORTED "magic getter property type coercion"]',

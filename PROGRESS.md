@@ -2880,6 +2880,19 @@ phase31–38 cuts are not renewed.
 The actual375 join over `753f960e2` at `90da67734` reuses private strict/source6/state1188
 and the accepted CALLS25 parent strict cut. Reviewed disjoint seams require no new
 numeric execution; fresh strict/source/state/native credit remains0.
+Weak builtin-string MAGIC_GET now converts original non-NaN floats through shared
+stringify, using the current post-getter precision and fresh request strings even
+for digits, ±0 and ±INF. Actual unconstrained references update their cell; BYVAL
+changes only RV. Native7/baseline1 retain `f72a39fc4`, affected native2 `0eacf8b8f`,
+and strict375 `1923d7939`. Seven source agreements and seven whole reached groups
+pass 1,351 setup-inclusive premises at `d8030561f`, including precision14→6, fixed
+bytes/carriers/one append, aliases, full driver budgets, CV versus owned cleanup,
+real exact-first string|float conflicts and strict/null errors. One maintained
+constructed float control contributes two new kept clauses. The original composite
+keeps CLI60 timeout/source agreement0; source-only split preserves the runtime/caps
+and five original fixtures. NaN is guarded out of both new routes: its native control
+observes two warnings and keeps model/state/agreement0. Earlier cuts are not renewed.
+[Float-string ledger](coverage/semantics/magic-property-float-string-review.json).
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;

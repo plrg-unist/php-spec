@@ -1816,6 +1816,14 @@ values until cleanup; the original kept fixture failure retains zero credit.
 The actual375 join over `753f960e2` at `90da67734` preserves disjoint parent paths.
 Existing parent/private strict cuts and private source6/state1188 are reused;
 this join adds no numeric execution.
+Weak string getters also convert non-NaN floats at the current post-getter precision.
+Every result retains a fresh request string, including digits, signed zero and infinities.
+[Seven source agreements and seven reached groups](coverage/semantics/magic-property-float-string-review.json)
+pass 1,351 setup-inclusive premises at `d8030561f`; strict375 retains `1923d7939`.
+REF/BYVAL/owned cleanup, genuine string|float conflicts and strict/null rejection agree.
+The original eight-read composite retains timeout/zero agreement; two smaller originals
+fit the same caps. A native NaN control observes both conversion warnings and keeps
+zero model agreement; NaN continuation support remains required.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded
