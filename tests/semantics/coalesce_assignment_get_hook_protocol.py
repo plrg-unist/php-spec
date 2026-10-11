@@ -14,7 +14,8 @@ byte_expr = lambda value: '[' + ','.join(str(byte) for byte in value) + ']'
 PREFIX = r'''dec $cha_output(pevent*) : ptbytes
 dec $cha_stage(pstate, nat) : bool
 def $cha_stage(S, 0) = true
-  -- if $property_hook_assign_plan(S) = (ppropertyhook)
+  -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
+  -- if $property_hook_assign_plan(S[.COMPLETION = NORMAL]) = (ppropertyhook)
   -- if $property_hook_assign_parent(S,ppropertyhook.SITE) =/= eps
 def $cha_stage(S, 1) = true
   -- if S.CURRENT = (pcallcontext)
@@ -109,15 +110,8 @@ for label, mode, returned in [('false', 0, 'PBOOL false'), ('zero', 1, 'PINT 0')
             selected = state + '_selected'
             if receiver == 'this' and label == 'false':
                 SCALAR += [
-                    f'{selected}.TODO = (DESTRUCTOR_RELEASE pdestructionrelease_this) :: (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_this) :: (ORIGIN_RETURN ({parent})) :: {tail}',
-                    f'pdestructionoperation_this.SOURCE = PROPERTY_HOOK_ASSIGN_RESULT {hook} {base} /\\ pdestructionoperation_this.VALUE = KNOWN ({returned}) /\\ pdestructionrelease_this.JOBS = [DESTRUCTION_VALUE (HOBJECT {hook}.OBJECT)] /\\ $heap_owners($heap_prune($heap_graph({selected})),HOBJECT {hook}.OBJECT) = 3 /\\ {selected}.EVENTS = {state}_result.EVENTS /\\ $cha_guard({selected})',
-                    *reach(state + '_exit', selected, 6),
-                    f'{state}_exit.TODO = (DESTRUCTOR_OPERATION_EXIT pdestructionoperation_this) :: (ORIGIN_RETURN ({parent})) :: {tail} /\\ $destructor_operation_valid({state}_exit,pdestructionoperation_this) /\\ $heap_owners($heap_prune($heap_graph({state}_exit)),HOBJECT {hook}.OBJECT) = 2 /\\ {state}_exit.EVENTS = {state}_result.EVENTS /\\ $cha_guard({state}_exit)',
-                    f'PhpStep: {state}_exit ~> {state}_finish_raw',
-                    f'{state}_finish_raw.RESULT = KNOWN ({returned}) /\\ {state}_finish_raw.TODO = (ORIGIN_RETURN ({parent})) :: {tail} /\\ {state}_finish_raw.DESTRUCTION.OPERATIONS = eps /\\ $heap_owners($heap_prune($heap_graph({state}_finish_raw)),HOBJECT {hook}.OBJECT) = 2',
-                    f'{state}_finish = $cha_after({state}_exit,{state}_finish_raw)',
+                    f'~$destructor_operational({selected}) /\\ {selected}.RESULT = KNOWN ({returned}) /\\ {selected}.TODO = (ORIGIN_RETURN ({parent})) :: {tail} /\\ {selected}.DESTRUCTION.OPERATIONS = eps /\\ $heap_owners($heap_prune($heap_graph({selected})),HOBJECT {hook}.OBJECT) = 2 /\\ {selected}.EVENTS = {state}_result.EVENTS /\\ $cha_guard({selected})',
                 ]
-                selected = state + '_finish'
             if receiver == 'cv' or label == 'false':
                 SCALAR += [
                     f'PhpStep: {selected} ~> {state}_parent_raw',
