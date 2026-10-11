@@ -1,0 +1,42 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "81a9db00ae8c55667819c2a377734d59b89b847b2b39a378065e5be518c6f69c",
+  "cases": [
+    {
+      "id": "scalar-dispatch",
+      "source": "<?php\nclass HookOverrideParent36 {\n    public int $value = 100 {\n        get {\n            echo \"P:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + $this->bias();\n        }\n    }\n    private function bias() { return 1; }\n    public function parentRead() { return $this->value; }\n}\nclass HookOverrideChild36 extends HookOverrideParent36 {\n    public int $value = 200 {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + $this->bias();\n        }\n    }\n    private function bias() { return 7; }\n    public function childRead() { return $this->value; }\n}\nclass HookOverrideGrand36 extends HookOverrideChild36 {\n    private function bias() { return 99; }\n}\n$parent = new HookOverrideParent36;\necho \"P\", $parent->value, \":\", ((array)$parent === [\"value\" => 100] ? \"ONE\" : \"BAD\"), \"|\";\n$child = new HookOverrideChild36;\necho \"C\", $child->value, \":\", ((array)$child === [\"value\" => 200] ? \"ONE\" : \"BAD\"), \"|\";\n$grand = new HookOverrideGrand36;\necho \"V\", $grand->value, \":\", ((array)$grand === [\"value\" => 200] ? \"ONE\" : \"BAD\"), \"|\";\necho \"T\", $grand->parentRead(), \"|\";\necho \"U\", $grand->childRead(), \"|\";\n$grand->value = 300;\necho \"W\", $grand->value, \":\", ((array)$grand === [\"value\" => 300] ? \"ONE\" : \"BAD\"), \"|\";\n",
+      "source_sha256": "3f497528fd0a58b2ef000456a9e35d9b52398363215bf107cd6d448c65b0f059",
+      "stdout_base64": "UFA6SG9va092ZXJyaWRlUGFyZW50MzYvSG9va092ZXJyaWRlUGFyZW50MzZ8MTAxOk9ORXxDQzpIb29rT3ZlcnJpZGVDaGlsZDM2L0hvb2tPdmVycmlkZUNoaWxkMzZ8MjA3Ok9ORXxWQzpIb29rT3ZlcnJpZGVDaGlsZDM2L0hvb2tPdmVycmlkZUdyYW5kMzZ8MjA3Ok9ORXxUQzpIb29rT3ZlcnJpZGVDaGlsZDM2L0hvb2tPdmVycmlkZUdyYW5kMzZ8MjA3fFVDOkhvb2tPdmVycmlkZUNoaWxkMzYvSG9va092ZXJyaWRlR3JhbmQzNnwyMDd8V0M6SG9va092ZXJyaWRlQ2hpbGQzNi9Ib29rT3ZlcnJpZGVHcmFuZDM2fDMwNzpPTkV8",
+      "exit_status": 0,
+      "native_group": "backed-hook-override36-native2-3d54ec25",
+      "native_raw_sha256": "81a9db00ae8c55667819c2a377734d59b89b847b2b39a378065e5be518c6f69c",
+      "status": "normal",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "returned-lifetime",
+      "source": "<?php\nclass HookOverrideLeaf36 {\n    public function __destruct() { echo \"D|\"; }\n}\nclass HookOverrideLifeParent36 {\n    public mixed $value = 100 {\n        get { echo \"P|\"; return $this->value; }\n    }\n    public function parentRead() { return $this->value; }\n    public function __destruct() {\n        $raw = (array)$this;\n        echo \"B\", $raw[\"value\"], \"|\";\n    }\n}\nclass HookOverrideLifeChild36 extends HookOverrideLifeParent36 {\n    public mixed $value = 200 {\n        get {\n            global $weak;\n            $backing = $this->value;\n            echo \"C\", $backing, \"|\";\n            $leaf = new HookOverrideLeaf36;\n            $weak = WeakReference::create($leaf);\n            return $leaf;\n        }\n    }\n}\nclass HookOverrideLifeGrand36 extends HookOverrideLifeChild36 {}\n$box = new HookOverrideLifeGrand36;\n$weak_box = WeakReference::create($box);\necho ((array)$box === [\"value\" => 200] ? \"ONE|\" : \"BAD|\");\n$kept = $box->parentRead();\necho \"HELD|\";\nunset($box);\necho ($weak_box->get() === null ? \"BN|\" : \"BL|\");\necho ($weak->get() === null ? \"N|\" : \"LIVE|\");\nunset($kept);\necho ($weak->get() === null ? \"N|\" : \"LIVE|\");\n",
+      "source_sha256": "5c0d3c7c3ca61fe1180813673ca985dd8836272710f22ab3ee913b2ae2be1d54",
+      "stdout_base64": "T05FfEMyMDB8SEVMRHxCMjAwfEJOfExJVkV8RHxOfA==",
+      "exit_status": 0,
+      "native_group": "backed-hook-override36-native2-3d54ec25",
+      "native_raw_sha256": "81a9db00ae8c55667819c2a377734d59b89b847b2b39a378065e5be518c6f69c",
+      "status": "normal",
+      "stderr_template_base64": ""
+    }
+  ]
+}

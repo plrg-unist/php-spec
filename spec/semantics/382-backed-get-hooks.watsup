@@ -45,10 +45,17 @@ dec $hook_name(ptbytes) : ptbytes
 def $hook_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::get")
 dec $pphook_compile(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
 dec $pphook_finish(ppstate, ppstate, pcpath, ppropertydesc, metadata, pchheader) : ppstate
+dec $pphook_class_shape(pchheader, phpType40, phpType38) : bool
+def $pphook_class_shape(pchheader, phpType40, phpType38) = true
+  -- if pchheader.PARENT = eps
+def $pphook_class_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata) = true
+  -- if pchheader.PARENT =/= eps /\ ~pchheader.ABSTRACT /\ ~pchheader.FINAL
+  -- if $hook_body_backed(phpType39, $base64(text))
+def $pphook_class_shape(pchheader, phpType40, phpType38) = false -- otherwise
 
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata, ppropertydesc*, pchheader) = PPROPERTIES $pphook_compile(P_next, pcpath ++ [PCFIELD 4, PCINDEX 0], ppropertydesc_new, phpType38, pchheader) ppropertydesc_next*
   -- if flags <- [0,1] /\ pchheader.KIND = "class" /\ ~pchheader.READONLY
-  -- if pchheader.PARENT = eps /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $pphook_class_shape(pchheader, NVarLikeIdentifier (BYTES text) metadata_name, phpType38) /\ ~$pptrait_body_uses(pchheader.BODY)
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem (NVarLikeIdentifier (BYTES text) metadata_name) phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
   -- if P_next.COMPLETION = PPCNORMAL
@@ -56,7 +63,7 @@ def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flag
   -- if ppropertydesc_new = ppropertydesc_next*[|ppropertydesc*|]
 def $ppproperty_hook_group(P, pcpath, NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata, ppropertydesc*, pchheader) = PPROPERTIES P_next ppropertydesc_next*
   -- if flags <- [0,1] /\ pchheader.KIND = "class" /\ ~pchheader.READONLY
-  -- if pchheader.PARENT = eps /\ ~$pptrait_body_uses(pchheader.BODY)
+  -- if $pphook_class_shape(pchheader, phpType40, phpType38) /\ ~$pptrait_body_uses(pchheader.BODY)
   -- if $ppproperty_group_line_valid(P, metadata)
   -- if PPROPERTIES P_next ppropertydesc_next* = $ppproperty_group($pplocate(P, pcpath, $source_line(metadata)), pcpath, flags, phpType18, [NPropertyItem phpType40 phpType5 metadata_item], ppropertydesc*, pchheader, $source_line(metadata))
   -- if P_next.COMPLETION =/= PPCNORMAL
@@ -655,16 +662,27 @@ def $trace_context_type(S, pcallcontext) = ($ptascii("->"))
 def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S[.COMPLETION = UNSUPPORTED "by-value property hook indirect access"]
   -- if $property_hook_read_needed(S, n, ptbytes)
 
-;; A plain overriding declaration cannot silently discard an inherited hook.
+;; Equal-type backed get overrides reuse one effective child slot and function.
+;; Other hook inheritance cannot borrow the ordinary property merge.
+dec $property_hook_override_backed(pstate, ppropertydesc) : bool
+def $property_hook_override_backed(S, ppropertydesc) = true
+  -- if ~ppropertydesc.FINAL /\ ppropertydesc.SETVISIBILITY = eps
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
+  -- if $hook_body_backed(phpType39, ppropertydesc.NAME)
+def $property_hook_override_backed(S, ppropertydesc) = false -- otherwise
+dec $property_hook_override_pair(pstate, ppropertydesc, ppropertydesc) : bool
+def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = (ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.TYPE = ppropertydesc_child.TYPE /\ $property_hook_override_backed(S, ppropertydesc_parent) /\ $property_hook_override_backed(S, ppropertydesc_child))
 dec $property_hook_parent_overlap(pstate, ppropertydesc*, ppropertydesc*) : bool
-dec $property_hook_parent_match(pstate, ppropertydesc?) : bool
+dec $property_hook_parent_match(pstate, ppropertydesc, ppropertydesc?) : bool
 def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false
-def $property_hook_parent_overlap(S, ppropertydesc :: ppropertydesc_tail*, ppropertydesc_parent*) = ($property_hook_parent_match(S, $property_desc_at(ppropertydesc_parent*, ppropertydesc.KEY)) \/ $property_hook_parent_overlap(S, ppropertydesc_tail*, ppropertydesc_parent*))
-def $property_hook_parent_match(S, eps) = false
-def $property_hook_parent_match(S, (ppropertydesc_inherited)) = ($property_hook_origin(S, ppropertydesc_inherited) =/= eps)
+def $property_hook_parent_overlap(S, ppropertydesc :: ppropertydesc_tail*, ppropertydesc_parent*) = ($property_hook_parent_match(S, ppropertydesc, $property_desc_at(ppropertydesc_parent*, ppropertydesc.KEY)) \/ $property_hook_parent_overlap(S, ppropertydesc_tail*, ppropertydesc_parent*))
+def $property_hook_parent_match(S, ppropertydesc, eps) = ($property_hook_origin(S, ppropertydesc) =/= eps)
+def $property_hook_parent_match(S, ppropertydesc, (ppropertydesc_inherited)) = (($property_hook_origin(S, ppropertydesc_inherited) =/= eps \/ $property_hook_origin(S, ppropertydesc) =/= eps) /\ ~$property_hook_override_pair(S, ppropertydesc_inherited, ppropertydesc))
 def $property_hook_link_finish(S, pclassdesc, S_linked) = $trait_restore(S, S_linked[.COMPLETION = UNSUPPORTED "inherited property hook override"])
   -- if S_linked.COMPLETION = NORMAL
   -- if $class_at(S_linked.CLASSES, pclassdesc.ORIGIN) = (pclassdesc_effective)
+  -- if pclassdesc_effective.PARENT =/= eps
   -- if $property_hook_parent_overlap(S_linked, pclassdesc_effective.PROPERTIES, $promotion_override_parent_layout(S_linked, pclassdesc_effective))
 def $property_hook_link_finish(S, pclassdesc, S_linked) = S_linked -- otherwise
 
