@@ -54,9 +54,17 @@ survives the extra base-copy decrement and receiver cleanup; the last kept owner
 then releases the returned object. Two originals and 249 state premises
 (224 reached, 25 derived) pass in the
 [coalesce review](../../coverage/semantics/coalesce-get-hooks-review.json).
+Literal CV and `$this` `??=` tests the actual getter result. False and zero
+skip the RHS and leave null backing unchanged; a null result evaluates the
+original RHS at its emitted child line and uses ordinary property storage.
+The pending target borrows a CV and refetches its current receiver at write;
+`$this` retains its target owner through the null write and releases it on a
+nonnull selection. Returned objects gain no extra base copy or task value owner.
+Three originals and 308 premises (264 reached, 44 derived) pass in the
+[assignment review](../../coverage/semantics/coalesce-assignment-get-hooks-review.json).
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
 array casts retain ordinary storage only. Defaulted virtual/set/byref hooks,
-inheritance/traits, temporary/computed receivers, coalescing assignment and wider
+inheritance/traits, temporary/computed receivers, wider coalescing assignment and
 quiet/reference/indirect access
 and hooked unset remain boundaries.
 

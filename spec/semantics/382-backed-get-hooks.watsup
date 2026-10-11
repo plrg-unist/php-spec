@@ -274,6 +274,78 @@ dec $property_hook_valid(pstate, ppropertyhook, bool) : bool
 def $property_hook_valid(S, ppropertyhook, b_live) = ($property_hook_source(S, ppropertyhook) /\ (~b_live \/ ((HOBJECT ppropertyhook.OBJECT) <- S.ALLOCATIONS /\ ~$instance_storage_freeing(S, ppropertyhook.OBJECT))))
 dec $property_hook_result_tail(pstate, ppropertyhook, ptask*) : bool
 
+;; Coalesce assignment keeps the borrowed writable receiver separately from
+;; the getter's value. The pending base refetches a CV after the original RHS.
+dec $property_hook_assign_parent(pstate, porigin) : porigin?
+def $property_hook_assign_parent(S, PORIGIN n pcpath) = (PORIGIN n pcpath_parent)
+  -- if $(|pcpath| >= 1)
+  -- if pcpath_parent = pcpath[0:$nabs($( |pcpath| - 1))]
+  -- if pcpath = pcpath_parent ++ [PCFIELD 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression_target)
+def $property_hook_assign_parent(S, porigin) = eps -- otherwise
+dec $property_hook_assign_source(pstate, ppropertyhook, pbase, int) : bool
+def $property_hook_assign_source(S, ppropertyhook, pbase, z) = true
+  -- if $property_hook_valid(S, ppropertyhook, false)
+  -- if $property_hook_assign_parent(S, ppropertyhook.SITE) = (porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if S_parent = S[.ORIGIN = (porigin_parent)]
+  -- if z = $runtime_line(S_parent, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $memoized_write_ready(S_parent, pbase, [PCFIELD 0])
+  -- if $property_pending_source_base(S[.ORIGIN = (ppropertyhook.SITE)], pbase, expression_target)
+def $property_hook_assign_source(S, ppropertyhook, pbase, z) = false -- otherwise
+def $property_hook_assign_pending(S) = true
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_receiver
+  -- if S_receiver = $property_pending_resolve(S, pbase, poperand, PPIS, z_receiver, z)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_hook_read_needed(S, n, ptbytes)
+def $property_hook_assign_pending(S) = false -- otherwise
+dec $property_hook_assign_plan(pstate) : ppropertyhook?
+def $property_hook_assign_plan(S) = (ppropertyhook)
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $origin_child((porigin_parent), [PCFIELD 0]) = (porigin_site)
+  -- if S.BASE = BASE_PROPERTY_PENDING pbase poperand z_receiver
+  -- if S_receiver = $property_pending_resolve(S, pbase, poperand, PPIS, z_receiver, z)
+  -- if S_receiver.COMPLETION = NORMAL
+  -- if S_receiver.BASE = BASE_PROPERTY (POBJECT n) ptbytes
+  -- if $property_hook_read_needed(S, n, ptbytes)
+  -- if $property_resolve(S, n, ptbytes) = PROPERTY_ACCESS ptbytes
+  -- if $property_effective_desc(S, n, ptbytes) = (ppropertydesc)
+  -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
+  -- if z_property = $runtime_line(S[.ORIGIN = (porigin_site)], eps, expression_target)
+  -- if porigin_property = ppropertydesc.ORIGIN
+  -- if ppropertyhook = {SITE porigin_site, OBJECT n, PROPERTY porigin_property, HOOK porigin_hook, LINE z_property}
+  -- if $property_hook_valid(S, ppropertyhook, true)
+  -- if $property_hook_assign_source(S, ppropertyhook, S.BASE, z)
+def $property_hook_assign_plan(S) = eps -- otherwise
+
+rule PhpStep/property-hook-coalesce-assignment-call: S ~> S[.TODO = [(CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps (ppropertyhook.SITE) ppropertyhook.LINE), PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook S.BASE, ORIGIN_RETURN S.ORIGIN, COALESCE_ASSIGN_PREP expression_target expression_rhs z] ++ ptask_tail*][.ORIGIN = (ppropertyhook.SITE)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*
+  -- if $property_hook_assign_plan(S) = (ppropertyhook)
+rule PhpStep/property-hook-coalesce-assignment-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "property hook coalesce assignment source or function"]
+  -- if $property_hook_assign_pending(S)
+  -- if $property_hook_assign_plan(S) = eps
+rule PhpStep/property-hook-coalesce-assignment-present: S ~> S[.TODO = (ORIGIN_RETURN (porigin_parent)) :: ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_hook_result_tail(S, ppropertyhook, S.TODO)
+  -- if S.RESULT = KNOWN pvalue
+  -- if pvalue =/= PNULL
+rule PhpStep/property-hook-coalesce-assignment-absent: S ~> S[.TODO = [(ORIGIN_RETURN (porigin_parent)), $at_task($origin_child((porigin_parent), [PCFIELD 1]), EVAL expression_rhs), COALESCE_ASSIGN_WRITE $memoized_write_base(S_parent, pbase, [PCFIELD 0]) $assignment_self(expression_target, expression_rhs) z] ++ ptask_tail*][.BASE = BASE_VALUE (KNOWN PNULL)][.RESULT = KNOWN PNULL]
+  -- if S.TODO = (PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.ORIGIN = (ppropertyhook.SITE)
+  -- if $property_hook_result_tail(S, ppropertyhook, S.TODO)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if S_parent = S[.ORIGIN = (porigin_parent)]
+  -- if z = $runtime_line(S_parent, eps, NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if S.RESULT = KNOWN PNULL
+
 def $property_hook_pending(S) = true
   -- if S.TODO = (PROPERTY_PREP (NIdentifier (BYTES text_name) metadata_name) z) :: (DIM_FETCH z) :: ptask_tail*
   -- if S_read = $quiet_operand(S, S.RESULT)
@@ -378,14 +450,20 @@ def $target_function(S, PROPERTY_HOOK_TARGET ppropertyhook) = $property_hook_fun
   -- if $property_hook_valid(S, ppropertyhook, true)
 def $task_nodes(PROPERTY_HOOK_RESULT ppropertyhook) = eps
 def $task_nodes(PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) = eps
+def $task_nodes(PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) = $base_nodes(pbase)
 
 def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_RESULT ppropertyhook) :: ptask_tail*) = true
   -- if $property_hook_valid(S, ppropertyhook, false)
   -- if ~$property_hook_isset_site(S, ppropertyhook.SITE, false) /\ ~$property_hook_isset_site(S, ppropertyhook.SITE, true)
+  -- if $property_hook_assign_parent(S, ppropertyhook.SITE) = eps
   -- if $property_hook_coalesce_result_tail(S, ppropertyhook, ptask_tail*)
 def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) :: ptask_tail*) = true
   -- if $property_hook_valid(S, ppropertyhook, false)
   -- if $property_hook_isset_site(S, ppropertyhook.SITE, b)
+def $property_hook_result_tail(S, ppropertyhook, (PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) :: (ORIGIN_RETURN (porigin_parent)) :: (COALESCE_ASSIGN_PREP expression_target expression_rhs z) :: ptask_tail*) = true
+  -- if $property_hook_assign_parent(S, ppropertyhook.SITE) = (porigin_parent)
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NExprAssignOpCoalesce expression_target expression_rhs metadata)
+  -- if $property_hook_assign_source(S, ppropertyhook, pbase, z)
 def $property_hook_result_tail(S, ppropertyhook, ptask*) = false -- otherwise
 
 dec $property_hook_pending_call(pstate, ppropertyhook) : bool
@@ -402,7 +480,7 @@ def $property_hook_frame(S, pcallcontext, pframe, ppropertyhook) = true
   -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
   -- if pcallcontext.CALLSITE = (ppropertyhook.SITE) /\ pcallcontext.LINE = ppropertyhook.LINE
   -- if pcallcontext.ARGC = 0 /\ pcallcontext.EXTRA = eps /\ pcallcontext.NAMED = eps /\ pcallcontext.WRAPPER = eps /\ pcallcontext.HOLES = eps
-  -- if $property_hook_result_tail(S, ppropertyhook, pframe.TODO)
+  -- if $property_hook_result_tail(S[.CURRENT = pframe.CONTEXT], ppropertyhook, pframe.TODO)
   -- if pframe.ORIGIN = (ppropertyhook.SITE)
   -- if $property_hook_valid(S, ppropertyhook, true)
 def $property_hook_frame(S, pcallcontext, pframe, ppropertyhook) = false -- otherwise
@@ -438,6 +516,12 @@ def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = ($property_hook_pe
 def $call_task_valid(S, PROPERTY_HOOK_RESULT ppropertyhook) = $property_hook_result_tail(S, ppropertyhook, [PROPERTY_HOOK_RESULT ppropertyhook])
   -- if $property_hook_coalesce_parent(S, ppropertyhook.SITE) = eps
 def $call_task_valid(S, PROPERTY_HOOK_ISSET_RESULT ppropertyhook b) = $property_hook_result_tail(S, ppropertyhook, [PROPERTY_HOOK_ISSET_RESULT ppropertyhook b])
+dec $property_hook_assign_task_head(ptask*, ppropertyhook, pbase) : bool
+def $property_hook_assign_task_head((CALL_ARGS (PROPERTY_HOOK_TARGET ppropertyhook) eps 0 eps porigin? z) :: ptask_tail*, ppropertyhook, pbase) = $property_hook_assign_task_head(ptask_tail*, ppropertyhook, pbase)
+  -- if porigin? = (ppropertyhook.SITE) /\ z = ppropertyhook.LINE
+def $property_hook_assign_task_head((PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) :: ptask_tail*, ppropertyhook, pbase) = true
+def $property_hook_assign_task_head(ptask*, ppropertyhook, pbase) = false -- otherwise
+def $call_task_valid(S, PROPERTY_HOOK_ASSIGN_RESULT ppropertyhook pbase) = ($property_hook_assign_task_head(S.TODO, ppropertyhook, pbase) /\ ($property_hook_pending_call(S, ppropertyhook) \/ $property_hook_result_tail(S, ppropertyhook, S.TODO)))
 
 def $trace_context_function(S, pcallcontext) = $hook_name(ppropertydesc.NAME)
   -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook

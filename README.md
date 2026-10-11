@@ -1263,6 +1263,11 @@ only null selects the fallback. Kept objects survive receiver destruction and
 release when their last result owner disappears. Two originals and 249 premises
 (224 reached, 25 derived) pass in the
 [coalesce review](coverage/semantics/coalesce-get-hooks-review.json).
+Literal CV/`$this` hook `??=` retains the getter's actual nonnull value and
+writes the original fallback only for null. A CV receiver is refetched after
+the RHS, including rebinding; returned objects keep ordinary result ownership.
+Three originals and 308 premises (264 reached, 44 derived) pass in the
+[coalesce-assignment review](coverage/semantics/coalesce-assignment-get-hooks-review.json).
 Hooked iteration, defaulted virtual/set/reference, inherited/trait and wider
 receiver, quiet or indirect-access families remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`

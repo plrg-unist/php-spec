@@ -1,0 +1,53 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "scalar-backing-this",
+      "source": "<?php\nfunction hook_assign_tag33(mixed $value): string {\n    return $value === null ? \"N\" : ($value === false ? \"F\" : (string) $value);\n}\nfunction hook_assign_fallback33(): int { echo \"R|\"; return 13; }\nclass HookAssignScalar33 {\n    public int $mode = 0;\n    public mixed $value = null {\n        get {\n            echo \"G|\";\n            if ($this->mode === 0) { return false; }\n            if ($this->mode === 1) { return 0; }\n            return $this->value;\n        }\n    }\n    public function inspect(): void {\n        $kept = $this->value ??= hook_assign_fallback33();\n        $snapshot = (array) $this;\n        echo \"T\", hook_assign_tag33($kept), \":\", hook_assign_tag33($snapshot[\"value\"]), \"|\";\n    }\n}\n$box = new HookAssignScalar33;\nforeach ([0, 1, 2] as $mode) {\n    $box->mode = $mode;\n    $box->value = null;\n    $kept = $box->value ??= hook_assign_fallback33();\n    $snapshot = (array) $box;\n    echo hook_assign_tag33($kept), \":\", hook_assign_tag33($snapshot[\"value\"]), \"|\";\n    $box->mode = $mode;\n    $box->value = null;\n    $box->inspect();\n}\n",
+      "source_sha256": "4de95a992fe919267f024c17479152877dc5f747731532cf5f90aebed2068089",
+      "stdout_base64": "R3xGOk58R3xURjpOfEd8MDpOfEd8VDA6TnxHfFJ8MTM6MTN8R3xSfFQxMzoxM3w=",
+      "exit_status": 0,
+      "native_group": "coalesce-assignment-get-hooks33-native4-bbbf2c16",
+      "native_raw_sha256": "6492a96a36ca492c99ce9492191d920007cdf931fdf75046552ec8d643d6c42c",
+      "status": "normal",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "retained-virtual-result",
+      "source": "<?php\nclass HookAssignLeaf33 {\n    public function __destruct() { echo \"D|\"; }\n}\nfunction hook_assign_leaf33(): object {\n    global $weak;\n    echo \"G|\";\n    $leaf = new HookAssignLeaf33;\n    $weak = WeakReference::create($leaf);\n    return $leaf;\n}\nfunction hook_assign_fallback_leaf33(): object { echo \"R|\"; return new HookAssignLeaf33; }\nclass HookAssignVirtual33 {\n    public object $value { get => hook_assign_leaf33(); }\n    public function __destruct() { echo \"B|\"; }\n}\n$weak = null;\n$box = new HookAssignVirtual33;\n$kept = $box->value ??= hook_assign_fallback_leaf33();\necho $weak->get() === $kept ? \"HELD|\" : \"X|\";\nunset($box);\necho $weak->get() === $kept ? \"LIVE|\" : \"X|\";\nunset($kept);\necho $weak->get() === null ? \"N|\" : \"X|\";\n",
+      "source_sha256": "0ac91948cd1268937e46986763072e7a66e854f587ca6ebfdf4aa06655960929",
+      "stdout_base64": "R3xIRUxEfEJ8TElWRXxEfE58",
+      "exit_status": 0,
+      "native_group": "coalesce-assignment-get-hooks33-native4-bbbf2c16",
+      "native_raw_sha256": "6492a96a36ca492c99ce9492191d920007cdf931fdf75046552ec8d643d6c42c",
+      "status": "normal",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "hook-receiver-rebind",
+      "source": "<?php\nclass HookAssignRebind33 {\n    public mixed $value = null {\n        get { echo \"G|\"; return $this->value; }\n    }\n    public function __destruct() { echo \"H|\"; }\n}\nfunction hook_assign_rebind33(): int {\n    global $box, $weak;\n    echo \"R0|\";\n    $box = new HookAssignRebind33;\n    echo $weak->get() === null ? \"RN|\" : \"RL|\";\n    return 23;\n}\n$box = new HookAssignRebind33;\n$weak = WeakReference::create($box);\n$kept = $box->value ??= hook_assign_rebind33();\n$snapshot = (array) $box;\necho $kept, \":\", $snapshot[\"value\"] === null ? \"N\" : $snapshot[\"value\"], \"|\";\nunset($box);\n",
+      "source_sha256": "2f4ae61855e9c6f0ae19dc0016ce621fbf033e01e04083b96f8d4d662db5b688",
+      "stdout_base64": "R3xSMHxIfFJOfDIzOjIzfEh8",
+      "exit_status": 0,
+      "native_group": "coalesce-assignment-get-hooks33-native4-bbbf2c16",
+      "native_raw_sha256": "6492a96a36ca492c99ce9492191d920007cdf931fdf75046552ec8d643d6c42c",
+      "status": "normal",
+      "stderr_template_base64": ""
+    }
+  ],
+  "native_raw_hash": "6492a96a36ca492c99ce9492191d920007cdf931fdf75046552ec8d643d6c42c"
+}

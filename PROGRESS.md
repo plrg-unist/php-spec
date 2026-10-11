@@ -536,6 +536,16 @@ native/source/quiet cuts remain frozen. Wider hook families remain required.
 Actual375 over `b0fc24b6` passes strict initialization at `4e98563e` (6.637 s);
 the private source2/state249 cuts retain their original revisions.
 
+Literal CV/`$this` public by-value hook `??=` retains returned false/zero and
+evaluates the original RHS only for null, preserving its writable pending target.
+RHS rebinding releases the old CV receiver before the current replacement receives
+the store. Strict375 and three originals pass at `cc6ed080`; SL308 at `8e03445e`
+(264 reached, 44 derived) checks actual call/frame/decision, This target ownership,
+fallback/write lines, current-CV refetch and sole returned-object cleanup.
+Earlier compiler/fixture failures and diagnostics retain zero affected credit;
+the ordinary receiver control and prior hook cuts remain separate.
+[Assignment review](coverage/semantics/coalesce-assignment-get-hooks-review.json).
+
 Exact reference returns99 avoid unchanged checked writes during verification,
 acquisition and156 repeated finalizer checks. Genuine backing certificates,
 selected cells and property sources survive; conversions, quiet initialization
