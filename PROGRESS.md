@@ -4562,6 +4562,13 @@ object forms, name/argument retirement, wider receiver evidence and source7 stay
 open. Exact relocation needs no runtime renewal; old lifetime/bridge cuts remain
 separate.
 
+Object CURRENT200 also passes on the exact e1af12fa current parent / 378 modules
+with unchanged fixture (180 genuine/derived plus 20 controls), binding shared
+task/storage and selector quiet-release/WeakReference cleanup. Compiler 5.280691 s
+and initialized SL 39.217533 s pass strict output/stability/reaping; guarded dynamic
+source/end-marker, reference-return and class/operator routes are absent. This
+current compatibility check adds source credit 0/private renewal 0; prior cuts stay frozen.
+
 Captured CURRENT calls now pin the resolved selected API in CONFIG during
 ordinary argument evaluation; static receivers remain borrowed. A genuine helper
 api-null write leaves the captured API held versus the direct API gone before
