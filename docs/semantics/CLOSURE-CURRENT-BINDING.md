@@ -124,7 +124,7 @@ Native2/literal1 at 64be and computed source1/state233 at 4ec/375 pass
 string helper from the genuine normalized concat step and shares admission
 controls once. Original Unsupported and the source-name fixture-origin failure
 retain zero credit; checked packets are reused without old lifetime renewal.
-Combined expression capture and wider evaluation contexts remain required.
+Wider evaluation contexts remain required.
 
 Evaluated nonnamed class BIND capture with a literal member now uses existing
 class evaluation/canonicalization and source/task/line/FCC authority. The witness
@@ -133,7 +133,19 @@ canonical Closure and mints in one wrapped source step; later separate writes
 to `std` and `Class` preserve the API. Native2/literal1 at a303 and computed
 source1/state236 at 43fd/375 pass (216 genuine/derived plus 20 controls). Raw class
 carrier and derived preparation remain distinct; CONFIG/receipt/ownership are
-unchanged. Combined expression capture and wider evaluation evidence remain open.
+unchanged. Wider evaluation evidence remains open.
+
+Nonnamed evaluated class and computed member BIND captures now use the same
+internal Closure task certificate, preserving canonical saved class and compiled
+member-child authority without a user-class descriptor. The both-concat witness
+`($prefix . $suffix)::{$left . $right}(...)` produces two request strings at
+distinct actual indexes, prepares Closure before member evaluation, then mints
+before four separate writes to `std`/`Class` and `get`/`Current`. Native2/literal1
+at e360 and computed source1/state347 at 53a19b/375 pass (322 genuine/derived
+plus 25 controls). Named arms and existing mint/tag/handler/receipt/ownership
+remain unchanged; shared certificate and member-byte controls, zero-budget and
+identical full continuation pass. General admission is distinct from this
+concatenation evidence; wider evaluation and argument-retirement routes stay open.
 
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the

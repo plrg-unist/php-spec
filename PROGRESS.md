@@ -4371,6 +4371,14 @@ evidence stay open. One preserved current236 compatibility gate at f890/661bf
 passes the reached shared EMIT/storage/pruning seam (5.249/60.095s), with current
 source/private renewal0. Exact relocation needs no runtime renewal; see the same ledger.
 
+Evaluated nonnamed class and computed BIND member now share the internal Closure
+task certificate. The both-concat witness reaches two distinct request-string
+producers, canonical saved Closure and genuine mint before four separate operand
+writes. Native2/literal1 at e360 and repaired computed1/state347 at 53a19b/375 pass
+(322 genuine/derived plus 25 controls), with unchanged CONFIG/receipt and shared
+authority controls. Wider evaluation evidence and source7 stay open; exact
+maintained relocation needs no runtime renewal. See the same ledger.
+
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
 share their object values with instances and preserve exact successful bindings

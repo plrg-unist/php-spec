@@ -524,11 +524,12 @@ def $method_select(S, poperand, ptbytes, phpType7*, z) = $closure_binding_start(
   -- if $closure_binding_site(S, porigin, INTRINSIC_CLOSURE_BINDTO)
 ;; Internal Closure has no user-class descriptor for a computed call task.
 def $scoped_name_task(S, phpType19, KNOWN (PSTRING ptbytes_class), phpType7*, z) = true
-  -- if phpType19 = NExprVariable (BYTES text_class) metadata_class
+  -- if ~$ppscoped_named(phpType19)
   -- if ptbytes_class = $ptascii("Closure")
   -- if S.ORIGIN = (porigin)
-  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 (NExprVariable (BYTES text_method) metadata_method) (SEQUENCE phpType7*) metadata)
-  -- if $scoped_class_task(S, phpType19, NExprVariable (BYTES text_method) metadata_method, phpType7*, z)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 expression_name (SEQUENCE phpType7*) metadata)
+  -- if $scoped_class_task(S, phpType19, expression_name, phpType7*, z)
+  -- if $property_computed_name(expression_name)
   -- if $origin_child((porigin), [PCFIELD 1]) = (PORIGIN n_unit pcpath)
   -- if $code_at(S.CODE, n_unit) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_name, b))
@@ -578,14 +579,14 @@ def $closure_bind_capture(S, phpType19, ptbytes_method, phpType7*, z) = true
   -- if S.COMPLETION = NORMAL
   -- if S.ORIGIN = (porigin)
   -- if S.TODO = (SCOPED_NAME phpType19 (KNOWN (PSTRING ptbytes_class)) phpType7* z) :: ptask_tail*
-  -- if phpType19 = NExprVariable (BYTES text_class) metadata_class
+  -- if ~$ppscoped_named(phpType19)
   -- if ptbytes_class = $ptascii("Closure")
   -- if S.RESULT = KNOWN pvalue_method
   -- if $string_bytes(pvalue_method) = (ptbytes_method)
   -- if $ptlc(ptbytes_method) = $ptascii("bind")
   -- if $call_task_valid(S, SCOPED_NAME phpType19 (KNOWN (PSTRING ptbytes_class)) phpType7* z)
   -- if $origin_node(S.SOURCES, porigin) = (NExprStaticCall phpType19 phpType20 (SEQUENCE phpType7*) metadata)
-  -- if phpType20 = NExprVariable (BYTES text_method) metadata_method
+  -- if $property_computed_name(phpType20)
   -- if $ppfirstclass(phpType7*)
 def $closure_bind_capture(S, phpType19, ptbytes_method, phpType7*, z) = false -- otherwise
 def $scoped_select(S, phpType19, KNOWN (PSTRING ptbytes_class), ptbytes_method, phpType7*, z) = $intrinsic_firstclass(S[.TODO = ptask_tail*], INTRINSIC_CLOSURE_BIND)

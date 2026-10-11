@@ -2275,7 +2275,8 @@ class/member-CV capture now authenticates internal Closure task authority and
 keeps that selection after both cells change. Evaluated class expressions with a
 literal bind member also freeze selection. Named-class computed members also
 freeze selection after their expression evaluates; a concat witness retains the
-API after both operands change. Wider API
+API after both operands change. Both class and member expressions now share
+internal Closure task authority and freeze selection before later operand writes. Wider API
 captures, argument forms and temporary current escape remain required.
 The FCC compiler clears the callee result fold before recording the capture;
 literal-array captures produce Closure objects while preserving child constants.
