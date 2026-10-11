@@ -191,8 +191,24 @@ one pending Notice, canceled by replacement before capture. Saved Y-error replay
 retains the literal; escape leaves Z, W and literal in order, while immediate Y
 success returns its alias. Two exact originals, five reached fixtures/504
 assertions and independent partial96/8 pass at separate `d28f2a0c` cuts in the
-same review. Normal mixed clearing/resumption remains Unsupported; the all-CV
-cleared route is unchanged. Other layouts, lifecycle and broad returns stay OPEN.
+same review. At that cut, normal mixed clearing/resumption remained Unsupported;
+the all-CV cleared route is unchanged.
+
+A checked C/IF/E passage now admits Z/W/old replay with Y3/Z2/W2/old1 contexts.
+The root-free pending E suffix authenticates actual restores before projected
+task traversal; full consumed tails and throw-only standalone old markers have
+separate public scope guards. C clears Z to NULL, whose fresh error stays distinct
+from the live Y error through saved M2 restoration. E/B resumes old once with its
+original-line Notice and a fresh caller cell; E rethrow retires W/old with the
+same fresh error. Source3 and affected old643 compatibility pass at `4336`; eight
+reached fixtures/811 assertions retain first7/705 there and final106 at validator-only
+`3abc`. Independent E-prefix297/5 is separate. Internal partial leaves remain
+nonpublic; local source certificates do not exclude coherent history rewrites.
+Adjacent mixed clearing, other layouts, lifecycle and broad returns remain OPEN.
+Pinned SpecTec overlap analysis treats Cons/nonempty Fixed as disjoint while its
+interpreter matches Cons on every nonempty sequence. Exact-length Cons suffixes
+preserve catch-tail fallback and the specialized mixed clear-site branch; guards
+and lengths are unchanged, with no vendor modification or PHP divergence.
 
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting

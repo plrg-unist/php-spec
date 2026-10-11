@@ -813,7 +813,12 @@ The ordered chain also accepts an immutable string literal as its last history.
 Initial VALUE Notice is canceled; root-free source history survives saved replay
 and retires during ordered error escape, while successful Y keeps its alias. Two originals, five
 reached fixtures/504 assertions and independent partial96/8 pass at separate cuts.
-Normal mixed clearing/resumption and broad returns verification remain OPEN.
+At that cut, normal mixed clearing/resumption remained Unsupported.
+A checked C/IF/E passage now resumes the terminal old literal after a fresh Z-NULL
+error, with one original-line Notice and a fresh caller cell; E rethrow retires
+that history with the same error. Three originals, eight reached fixtures/811
+assertions and independent E-prefix297/5 pass at separate cuts. Other layouts,
+lifecycle capture, effectful calls and broad returns verification remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

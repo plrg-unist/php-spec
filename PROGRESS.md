@@ -1055,10 +1055,24 @@ capture; the root-free literal survives saved Y replay, then ordered error escap
 or selected-Y success retires it. Two originals and five reached fixtures/504
 assertions (165+78+78+101+82) pass at `d28f2a0c`; independent partial96/8 is
 separate. Private strict375 passes in 5.831s with zero applications. The original
-597 elaboration failure keeps zero credit. Normal mixed clearing/resumption,
+597 elaboration failure keeps zero credit. At that cut, normal mixed clearing/resumption,
 other operand/layout/lifecycle domains and broad returns_verify remain OPEN. Actual375 over
 `d6df5f11` passes strict at `9d6c4a4e` in 5.814s with zero applications;
 private source/state/independent cuts remain separate.
+
+The checked C/IF/E passage now carries Z/W/old literal history through Y rejection,
+fresh Z-NULL error and saved M2 scope. E/B resumes old once with its original line4
+Notice and a fresh caller return cell; selected Y keeps its alias, while E rethrow
+retires W/old with the identical fresh-Z error. Source3 and one affected old643
+compatibility pass at `4336a2a2`; eight reached fixtures/811 assertions pass with
+first7/705 retained there and final106 at validator-only `3abcfc78`.
+Independent E-prefix2 four/297 checks and five public refusals pass separately.
+Private strict375 passes in 5.794s with zero applications; original failures and
+timeouts keep zero credit. Maintained producer `511ed517` removes only one EOF
+newline from tested c670 and preserves its AST. Exact-length Cons suffixes avoid
+a confirmed pinned SpecTec dispatch overlap limitation without a vendor edit.
+Other mixed layouts, lifecycle/typed capture, effectful calls and broad
+returns_verify remain OPEN; actual-parent compilation is pending.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
