@@ -1,0 +1,139 @@
+{
+  "status": "private native/source/strict and composed independent state accepted; actual-parent integration pending",
+  "scope": "Copied KNOWN arrays in a first positional send into an untyped fixed by-reference parameter at one direct construction of a statically named Iterator implementation. The original tests use an acyclic array with one destructible object child.",
+  "remaining": [
+    "Later, named or typed array warning sends and wider call sites",
+    "Broader array contents, embedded references, cycles and COW interactions",
+    "Initial REFERENCE arrays/objects and live refcounted handler replacements",
+    "General shared named-buffer alias release before COW"
+  ],
+  "engine_route": "Zend SEND_UNPACK (zend_vm_def.h:5446) Z_TRY_ADDREFs the dereferenced array before zend_error and installs ZVAL_NEW_REF even after a handler throws. Existing HOLD adds one HARRAY owner, while node_children counts each child edge once. Normal transfer uses the same array in the fresh cell; throw retires raw cache, DATA and INPUT before the mapped failed argument and child expansion. Restored documentary SOURCE validates shape/site/target/key phase without reading array contents or requiring its retired allocation.",
+  "implementation": [
+    "spec/semantics/385-call-iterator-unpack.watsup",
+    "spec/semantics/39-ownership.watsup"
+  ],
+  "catalog": "tests/semantics/iterator_call_unpack_array_cases.json",
+  "source_runner": "tests/semantics/iterator_call_unpack_array_sources.py",
+  "state_runner": "tests/semantics/iterator_call_unpack_array_review.py",
+  "profile": "tests/semantics/profile.json",
+  "native": {
+    "revision": "197b2af0dad5899abdca5ea581ccb8a8e456be20",
+    "report": ".tools/calls-iterator-copied-array-28/.tools/iterator-call-unpack-array-native-2syitsvo/report.json",
+    "report_sha256": "17f9b6ddab225ce93e70f1a24a87af370737a37e3cd8b6af5e1b30203ee45e34",
+    "selection": [
+      "iterator-call-unpack-array-normal-write",
+      "iterator-call-unpack-array-warning-throw",
+      "iterator-call-unpack-array-parked-throw",
+      "iterator-call-unpack-array-reference-array-control"
+    ],
+    "command": "timeout -k 10s 60s prlimit --as=6442450944 -- python3 -u .tools/native.py",
+    "runner_sha256": "2ff0eabd64c4f769b01335cbe5efe485c966eb2ef45b33b130ba0b94eab9acfc",
+    "process_seconds": 8,
+    "passed": true,
+    "observed_originals": 4,
+    "model_agreements": 0
+  },
+  "strict": {
+    "revision": "9a439a21637e4b752578c61cdcf1b32ae7f73ac2",
+    "report": ".tools/calls-iterator-copied-array-28/.tools/iterator-call-unpack-array-sl-yz2cb_y7/report.json",
+    "report_sha256": "3285818dda6329eafaee1f368173ff198f171bf91b87f09fa038bf07331acd95",
+    "command": "timeout -k 10s 150s prlimit --as=6442450944 -- python3 -u .tools/strict.py",
+    "runner_sha256": "b963e0e46f218acbac005bb1e03cf5d510657b01613c7fff49d468478932528a",
+    "modules": 375,
+    "process_seconds": 120,
+    "exit": 0,
+    "timeout": false,
+    "inputs_stable": true,
+    "passed": true
+  },
+  "source": {
+    "command": "timeout -k 10s 450s prlimit --as=6442450944 -- python3 -u .tools/source.py --native-report .tools/iterator-call-unpack-array-native-2syitsvo/report.json",
+    "runner_sha256": "6fef5e4ceee36506f72ca15cacda0cb143ca4c8de9d1432c2c892b7266c9e323",
+    "source_process_seconds": 75,
+    "model_seconds": 60,
+    "steps": 100000,
+    "jobs": 1,
+    "native_executions": 0,
+    "revision": "9a439a21637e4b752578c61cdcf1b32ae7f73ac2",
+    "report": ".tools/calls-iterator-copied-array-28/.tools/iterator-call-unpack-array-source-rpy8kg0c/report.json",
+    "report_sha256": "4c8882d317fc646b5dd39a4437182b49a24119bb3a63e2542b544e7b6776914a",
+    "selection": [
+      "iterator-call-unpack-array-normal-write",
+      "iterator-call-unpack-array-warning-throw",
+      "iterator-call-unpack-array-parked-throw",
+      "iterator-call-unpack-array-reference-array-control"
+    ],
+    "normal_agreements": 3,
+    "inputs_stable": true,
+    "head_stable": true,
+    "passed": true,
+    "unsupported_controls": [
+      {
+        "id": "iterator-call-unpack-array-reference-array-control",
+        "reason": "Iterator unpack by-reference raw payload",
+        "events": 4,
+        "agreement": 0
+      }
+    ]
+  },
+  "state_review": {
+    "status": "accepted composition of retained6 and corrected3",
+    "revision": "7c6d28d39fa6c0c698c673fbbca3a9866f158496",
+    "command": "timeout -k 10s 650s prlimit --as=6442450944 -- python3 -u .tools/array-state-180.py --case injected-throw-keeps-array-hold-last-with-main-scalar-source --case reference-array-remains-unsupported-before-warning --case private-array-element-write-destroys-child-before-target-finishes",
+    "runner_sha256": "518018ee8e20550a07d314d7efc12fd46407b6e6054f23592a6700b22ed4664c",
+    "fixture": "tests/semantics/iterator_call_unpack_array_review.py",
+    "fixture_sha256": "80e48253f4f64bf8e6c81fefe6cca0ddf96c9b2429596b1e5e416a2eb7ff0c52",
+    "pure_queries": 0,
+    "process_seconds": 180,
+    "seek_steps": 4000,
+    "finish_steps": 4000,
+    "jobs": 1,
+    "maintained_budget": "The sole new review runner uses recorded180 and binds only its newly written report budget to180; old/shared runners are unchanged.",
+    "retained_pass_cut": {
+      "revision": "cf0cba5ce35f3469af7e736367302fd073d98432",
+      "raw": ".tools/calls-iterator-copied-array-28/.tools/fiber-state-review-spzfcxlj",
+      "groups": 6,
+      "physical_main_premises": 361,
+      "driver_assertions": 342,
+      "process_seconds": 180,
+      "source_and_assertions_unchanged": true
+    },
+    "report": ".tools/calls-iterator-copied-array-28/.tools/fiber-state-review-sfmkaauq/report.json",
+    "report_sha256": "2e94e86f6261a665eb12486d0e12ef718108d2d46110e8beb62f415e2a4b1022",
+    "groups": 9,
+    "physical_main_premises": 481,
+    "driver_assertions": 456,
+    "host_exit": 0,
+    "timeout": false,
+    "passed": true,
+    "affected_cut": {
+      "groups": 3,
+      "physical_main_premises": 120,
+      "driver_assertions": 114,
+      "selection": [
+        "injected-throw-keeps-array-hold-last-with-main-scalar-source",
+        "reference-array-remains-unsupported-before-warning",
+        "private-array-element-write-destroys-child-before-target-finishes"
+      ]
+    },
+    "checks": "Genuine source frontiers check array owner2-to3 with child1, fresh-cell transfer and raw release, DATA/INPUT before last container and child expansion, nonowning retired SOURCE after content erasure with missing-hold/key-phase rejection, real parked wrong-line/foreign-array/duplicate guards, injected source17, reference-array Unsupported and child destruction before F."
+  },
+  "retention": "Earlier Iterator/object/typed-tail ledgers retain their original native/source/state cuts without renewal. Original raw reports, saved processes and source bytes remain at the recorded ignored paths; rebuild commands use the maintained catalog/source/review files and project providers.",
+  "failed_state_cuts": [
+    {
+      "revision": "cf0cba5ce35f3469af7e736367302fd073d98432",
+      "fixture_sha256": "ec050d1b3f9d1be1f236581c2125611816fbbb684447998743b587f7e68f09e9",
+      "raw": ".tools/calls-iterator-copied-array-28/.tools/fiber-state-review-spzfcxlj",
+      "failed_case": "injected-throw-keeps-array-hold-last-with-main-scalar-source",
+      "diagnostic": "Generated main49 looks up source in the Fiber closure ENV after handler unwind; source belongs to the global table.",
+      "command": "timeout -k 10s 1750s prlimit --as=6442450944 -- python3 -u .tools/array-state-180.py",
+      "host_exit": 1,
+      "model_exit": 1,
+      "timeout": false,
+      "final_report": false,
+      "retained_pass_groups": 6,
+      "unrun_groups": 2,
+      "complete_campaign_credit": 0
+    }
+  ]
+}

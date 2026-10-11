@@ -216,6 +216,20 @@ general shared-buffer alias/COW interactions remain open. The
 [typed named review](../../coverage/semantics/iterator-call-unpack-object-typed-named-variadic-review.json)
 keeps these originals and reached checks separate from prior cuts.
 
+Copied KNOWN arrays now use the existing HOLD and container graph for a first
+positional send into an untyped fixed by-reference parameter at one direct
+statically named Iterator construction. SEND_UNPACK adds the array owner before
+the warning, then transfers it into the fresh private cell. The container's
+child edges are counted once even with multiple container owners. Thrown warnings
+retire raw cache, DATA and INPUT before the last array owner expands child cleanup;
+the acyclic one-child originals destroy the Iterator before the child. Normal
+element writes destroy the child before F. Parked handlers retain the same array
+through main-source replacement. Documentary SOURCE admission checks only shape,
+site, target and key phase after container retirement. Later/named/typed array
+warnings, broader array/COW interactions and raw REFERENCE arrays remain open.
+The [array review](../../coverage/semantics/iterator-call-unpack-array-review.json)
+records these originals separately from previous object and typed-tail cuts.
+
 Iterator valid NaN warnings keep the raw retval in CURRENT through handler invoke,
 result, cleanup and saved Fiber frames. The native `zend_user_it_valid` wrapper
 calls `i_zend_is_true`, retires that retval, then permits SEND_UNPACK to check the

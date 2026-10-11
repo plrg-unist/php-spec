@@ -409,6 +409,20 @@ Actual375 over `8728e2d1` passes strict SL at `bf83dfb8`; private native/source/
 cuts retain their original inputs without renewal.
 [Typed named review](coverage/semantics/iterator-call-unpack-object-typed-named-variadic-review.json).
 
+Copied arrays now retain their container through the first positional warning
+into an untyped fixed by-reference parameter at a direct statically named Iterator
+construction. The fresh private cell takes the hold; element writes release the
+child before F, while handler and parked throws retire Iterator DATA/INPUT before
+the held container and child. Native4 passes at `197b2af0`; strict375 and three
+unchanged-source agreements pass at `9a439a21` using retained native bytes. The
+initial REFERENCE-array control remains Unsupported with four events/zero agreement.
+Nine genuine-source groups compose 481 physical/456 driver premises from retained
+six at `cf0cba5c` and corrected three at `7c6d28d3`, with no pure queries. The
+original injected-source fixture lookup failure remains zero credit. Later/named/
+typed array warnings, wider array/COW interactions and live REFERENCE payloads
+stay open; prior cuts remain frozen.
+[Array review](coverage/semantics/iterator-call-unpack-array-review.json).
+
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
 non-Aggregate returns after rebinding an independently protected original CV or
 reference. Borrowed CVs and owning cells retain their modes through initial

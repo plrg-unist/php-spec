@@ -18,7 +18,7 @@ dec $iterator_unpack_named_target(pstate, piteratorunpack) : pnamedtarget
 dec $iterator_unpack_warning_message(pstate, piteratorunpack) : ptbytes
 dec $iterator_unpack_scalar(pvalue) : bool
 dec $iterator_unpack_scalar_operand(pstate, poperand) : bool
-dec $iterator_unpack_known_object(poperand) : bool
+dec $iterator_unpack_known_hold(poperand) : bool
 dec $iterator_unpack_hold_valid(piteratorunpack, text) : bool
 dec $iterator_unpack_hold_allowed(pstate, piteratorunpack, text) : bool
 dec $iterator_unpack_object_order(pnamedargs, pfunction, pnamedtarget) : bool
@@ -109,19 +109,20 @@ def $iterator_unpack_stage(S, piteratorunpack, "valid-nan") = true
   -- if piteratorunpack.KEY = KNOWN PNULL
   -- if $generator_from_valid_operand(S, piteratorunpack.CURRENT)
 def $iterator_unpack_stage(S, piteratorunpack, text) = false -- otherwise
-;; Z_TRY_ADDREF holds a copied object before the warning. The owner transfers
+;; Z_TRY_ADDREF holds a copied object/array before the warning. The owner transfers
 ;; to the fresh reference, or joins mapped call cleanup after DATA/INPUT.
-def $iterator_unpack_known_object(KNOWN (POBJECT n)) = true
-def $iterator_unpack_known_object(poperand) = false -- otherwise
+def $iterator_unpack_known_hold(KNOWN (POBJECT n)) = true
+def $iterator_unpack_known_hold(KNOWN (PARRAY n)) = true
+def $iterator_unpack_known_hold(poperand) = false -- otherwise
 def $iterator_unpack_hold_valid(piteratorunpack, "byref") = true
-  -- if piteratorunpack.CURRENT = KNOWN (POBJECT n)
+  -- if $iterator_unpack_known_hold(piteratorunpack.CURRENT)
   -- if piteratorunpack.HOLD = piteratorunpack.CURRENT
 def $iterator_unpack_hold_valid(piteratorunpack, text) = true
   -- if piteratorunpack.HOLD = KNOWN PNULL
-  -- if ~(text = "byref" /\ $iterator_unpack_known_object(piteratorunpack.CURRENT))
+  -- if ~(text = "byref" /\ $iterator_unpack_known_hold(piteratorunpack.CURRENT))
 def $iterator_unpack_hold_valid(piteratorunpack, text) = false -- otherwise
 def $iterator_unpack_hold_allowed(S, piteratorunpack, "byref") = true
-  -- if piteratorunpack.HOLD = KNOWN (POBJECT n)
+  -- if $iterator_unpack_known_hold(piteratorunpack.HOLD)
   -- if $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.HOLD)
 def $iterator_unpack_hold_allowed(S, piteratorunpack, text) = true
   -- if piteratorunpack.HOLD = KNOWN PNULL
@@ -345,6 +346,18 @@ def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT
   -- if $named_can_store(piteratorunpack.CALL.SENT, pnamedtarget)
   -- if $iterator_unpack_object_order(piteratorunpack.CALL.SENT, pfunction, pnamedtarget)
   -- if $iterator_unpack_extra_allowed(S, piteratorunpack, pfunction, pnamedtarget)
+def $iterator_unpack_warning_hold(S, piteratorunpack) = (piteratorunpack.CURRENT)
+  -- if piteratorunpack.CURRENT = KNOWN (PARRAY n)
+  -- if piteratorunpack.CALL.SENT = {SLOTS eps, NAMED eps}
+  -- if piteratorunpack.KEY = KNOWN pvalue_key
+  -- if $fiber_traversal_key(pvalue_key) = (pkey)
+  -- if ~$unpack_key_named(pkey) /\ ~piteratorunpack.NAMED
+  -- if $target_function(S, piteratorunpack.CALL.FUNCTION) = (pfunction)
+  -- if $iterator_unpack_named_target(S, piteratorunpack) = NAMED_POSITION 0
+  -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, 0) = (psparam)
+  -- if psparam.BYREF /\ ~psparam.VARIADIC /\ psparam.TYPE = eps
+  -- if $named_can_store(piteratorunpack.CALL.SENT, NAMED_POSITION 0)
+  -- if $iterator_unpack_extra_site(S, piteratorunpack.CALL.CALLSITE)
 def $iterator_unpack_warning_hold(S, piteratorunpack) = (KNOWN PNULL)
   -- if $iterator_unpack_scalar_operand(S, piteratorunpack.CURRENT)
 def $iterator_unpack_warning_hold(S, piteratorunpack) = eps -- otherwise
@@ -485,7 +498,7 @@ def $eager_operation_source_valid(S, pdestructionoperation) = true
 ;; Failed arguments are installed even when zend_error leaves an exception.
 ;; Fixed slots retire in parameter order, independently of send order.
 def $iterator_unpack_discard_nodes(S, piteratorunpack) = $iterator_unpack_nodes(piteratorunpack[.HOLD = KNOWN PNULL]) ++ $unpack_call_roots(piteratorunpack.CALL[.SENT = $named_store(piteratorunpack.CALL.SENT, $iterator_unpack_named_target(S, piteratorunpack), piteratorunpack.HOLD)])
-  -- if piteratorunpack.HOLD = KNOWN (POBJECT n)
+  -- if $iterator_unpack_known_hold(piteratorunpack.HOLD)
 def $iterator_unpack_discard_nodes(S, piteratorunpack) = $iterator_unpack_nodes(piteratorunpack) ++ $unpack_call_roots(piteratorunpack.CALL)
   -- if piteratorunpack.HOLD = KNOWN PNULL
 def $iterator_unpack_discard(S, piteratorunpack, text) = $eager_operation_begin(S_clean, S, ITERATOR_UNPACK piteratorunpack text, $iterator_unpack_discard_nodes(S, piteratorunpack))

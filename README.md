@@ -518,12 +518,19 @@ their separately collected rest array. Clearing the current item destroys its
 payload before later body output; a rejected class leaves only the earlier rest
 item while the TypeError trace retains both named payloads. See the
 [typed named review](coverage/semantics/iterator-call-unpack-object-typed-named-variadic-review.json).
+Copied arrays at a direct statically named Iterator construction now retain their
+container through the first positional warning into an untyped fixed reference
+parameter. The fresh private cell takes that owner; an element write can release
+the child before later body output. Handler and parked throws retire the Iterator
+before the held container and its child. See the
+[array review](coverage/semantics/iterator-call-unpack-array-review.json).
 Valid NaN warnings retain the raw return through handler mutation, Fiber parking
 and throw. One numeric reread distinguishes copied NaN from a live reference;
 the raw return retires before current or iterator teardown.
 Generator/Aggregate ordinary-call unpack, Generator callback methods, nonnumeric
 raw valid changes, request/plain reference strings and handler replacements with
-those strings, arrays, reference objects, general shared named buffers and
+those strings, later/named/typed array warnings, broader array/COW interactions,
+reference arrays/objects, general shared named buffers and
 other type shapes and wider-site variadic object warnings remain
 required.
 [Generators](docs/semantics/GENERATORS.md) receive arguments eagerly and defer

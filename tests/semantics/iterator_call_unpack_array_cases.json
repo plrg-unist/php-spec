@@ -1,0 +1,82 @@
+[
+  {
+    "id": "iterator-call-unpack-array-normal-write",
+    "source": "<?php\nclass ArrayPayload28 { public function __destruct() { echo \"O|\"; } }\n$source = [new ArrayPayload28()];\n$failure = new Exception(\"stop\", 51);\nclass ArrayIterator28 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArrayTarget28(&$item) { echo \"G|\"; $item[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = null;\n    return true;\n});\ntry { ArrayTarget28(...new ArrayIterator28()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$source = null;\necho \"E\";\n",
+    "source_sha256": "9702902559e14cef1f6979673e36e91b004eab08e57b45522e8510b5c241a272",
+    "purpose": "Copied first-send array holds one child through the warning; a fresh private array element write destroys it before F.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ArrayTarget28() by unpacking a Traversable, passing by-value instead|21|X|V|I|G|O|F|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-array-warning-throw",
+    "source": "<?php\nclass ArrayPayload28 { public function __destruct() { echo \"O|\"; } }\n$source = [new ArrayPayload28()];\n$failure = new Exception(\"stop\", 51);\nclass ArrayIterator28 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArrayTarget28(&$item) { echo \"G|\"; $item[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = null;\n    throw $failure;\n});\ntry { ArrayTarget28(...new ArrayIterator28()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$source = null;\necho \"E\";\n",
+    "source_sha256": "fbff17e215edfa6c2ee132ca5b2c7877d068bad83bf9e25800d3ec242296f8c4",
+    "purpose": "A thrown warning retains the array child until after Iterator DATA and temporary INPUT teardown.",
+    "expected_model": "normal",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ArrayTarget28() by unpacking a Traversable, passing by-value instead|21|I|O|T|51|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-array-parked-throw",
+    "source": "<?php\nclass ArrayPayload28 { public function __destruct() { echo \"O|\"; } }\n$source = [new ArrayPayload28()];\n$failure = new Exception(\"stop\", 51);\nclass ArrayIterator28 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArrayTarget28(&$item) { echo \"G|\"; $item[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    $source = null;\n    Fiber::suspend(\"P\");\n    return true;\n});\n$fiber = new Fiber(static function () {\n    try { ArrayTarget28(...new ArrayIterator28()); }\n    catch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n    echo \"FIB|\";\n});\necho \"S|\", $fiber->start(), \"|\";\n$source = 17;\n$fiber->throw($failure);\necho \"M|\", $source, \"|\";\n$source = null;\necho \"E\";\n",
+    "source_sha256": "553fc8ab81328a3c4e7b23ba46cfb030f535c2fa49cff631bfd854cddd35f3c5",
+    "purpose": "A real parked warning retains the array container and its single child edge; injection preserves main source17.",
+    "expected_model": "normal",
+    "native_stdout": "S|W|V|C|K|H|2|Cannot pass by-reference argument 1 of ArrayTarget28() by unpacking a Traversable, passing by-value instead|23|P|I|O|T|51|FIB|M|17|E",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "iterator-call-unpack-array-reference-array-control",
+    "source": "<?php\nclass ArrayPayload28 { public function __destruct() { echo \"O|\"; } }\n$source = [new ArrayPayload28()];\n$failure = new Exception(\"stop\", 51);\nclass ArrayIterator28 implements Iterator {\n    private int $position = 0;\n    public function rewind(): void { echo \"W|\"; }\n    public function valid(): bool { echo \"V|\"; return $this->position < 1; }\n    public function &current(): mixed { global $source; echo \"C|\"; return $source; }\n    public function key(): mixed { echo \"K|\"; return 0; }\n    public function next(): void { echo \"X|\"; $this->position++; }\n    public function __destruct() { echo \"I|\"; }\n}\nfunction ArrayTarget28(&$item) { echo \"G|\"; $item[0] = null; echo \"F|\"; }\nset_error_handler(static function ($severity, $message, $file, $line) {\n    global $source, $failure;\n    echo \"H|\", $severity, \"|\", $message, \"|\", $line, \"|\";\n    return true;\n});\ntry { ArrayTarget28(...new ArrayIterator28()); }\ncatch (Exception $caught) { echo \"T|\", $caught->getCode(), \"|\"; }\n$source = null;\necho \"E\";\n",
+    "source_sha256": "98f31e618723cdefa2f702fb74f49ab6811a53919dca3807ef494f0f0ba7757a",
+    "purpose": "Initial raw REFERENCE array stays explicitly Unsupported; native handler leaves the payload unchanged.",
+    "expected_model": "unsupported",
+    "native_stdout": "W|V|C|K|H|2|Cannot pass by-reference argument 1 of ArrayTarget28() by unpacking a Traversable, passing by-value instead|20|X|V|I|G|F|O|E",
+    "native_stderr": "",
+    "native_exit": 0,
+    "unsupported_reason": "Iterator unpack by-reference raw payload",
+    "unsupported_stdout": "W|V|C|K|",
+    "unsupported_events": [
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "87",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "86",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "67",
+            "124"
+          ]
+        ]
+      },
+      {
+        "tag": "OUTPUT",
+        "args": [
+          [
+            "75",
+            "124"
+          ]
+        ]
+      }
+    ]
+  }
+]
