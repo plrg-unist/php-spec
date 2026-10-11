@@ -249,6 +249,11 @@ def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, po
 def $state_static_at(S, porigin) = $static_at(pstaticcell*, porigin)
   -- if $current_instance(S) = (n)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin_template pitem* pstaticcell*
+  -- if ~$source_static_origin(S, porigin)
+def $state_static_at(S, porigin) = $static_at(S.STATICS, porigin)
+  -- if $current_instance(S) = (n)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin_template pitem* pstaticcell*
+  -- if $source_static_origin(S, porigin)
 def $state_static_at(S, porigin) = $static_at(S.STATICS, $trait_static_key(S, porigin))
   -- if $current_instance(S) = (n)
   -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin_function
@@ -257,6 +262,11 @@ def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticce
 def $state_static_add(S, pstaticcell_new) = S[.OBJECTS = $object_set(S.OBJECTS, n, REALCLOSURE porigin_template pitem* (pstaticcell* ++ [pstaticcell_new]))]
   -- if $current_instance(S) = (n)
   -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin_template pitem* pstaticcell*
+  -- if ~$source_static_origin(S, pstaticcell_new.ORIGIN)
+def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new]]
+  -- if $current_instance(S) = (n)
+  -- if $object_body(S.OBJECTS[n]) = REALCLOSURE porigin_template pitem* pstaticcell*
+  -- if $source_static_origin(S, pstaticcell_new.ORIGIN)
 def $state_static_add(S, pstaticcell_new) = S[.STATICS = S.STATICS ++ [pstaticcell_new[.ORIGIN = $trait_static_key(S, pstaticcell_new.ORIGIN)]]]
   -- if $current_instance(S) = (n)
   -- if $object_body(S.OBJECTS[n]) = NAMEDCLOSURE porigin_function
