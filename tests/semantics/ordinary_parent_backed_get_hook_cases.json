@@ -1,0 +1,42 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "native_raw_hash": "3ea2c8af4c7f0511e9f872f5d1cf7097459776496c344a0b25d656e372810dbc",
+  "cases": [
+    {
+      "id": "ordinary-parent-backed-scalar",
+      "source": "<?php\nclass OrdinaryBackedParent49 {\n    public int $value = 100;\n    public function parentRead() {\n        echo \"H|\";\n        return $this->value;\n    }\n}\nclass OrdinaryBackedBridge49 extends OrdinaryBackedParent49 {\n    private function answer() { return 500; }\n}\nclass OrdinaryBackedChild49 extends OrdinaryBackedBridge49 {\n    public int $value = 200 {\n        get {\n            echo \"C:\", __CLASS__, \"/\", static::class, \"|\";\n            return $this->value + $this->answer();\n        }\n    }\n    private function answer() { return 13; }\n}\nclass OrdinaryBackedGrand49 extends OrdinaryBackedChild49 {\n    private function answer() { return 900; }\n}\n$parent = new OrdinaryBackedParent49;\n$child = new OrdinaryBackedChild49;\n$grand = new OrdinaryBackedGrand49;\necho (array)$parent === [\"value\" => 100] ? \"P100|\" : \"BAD|\";\necho (array)$child === [\"value\" => 200] ? \"C200|\" : \"BAD|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\necho $parent->value, \"|\";\necho $child->value, \"|\";\necho $grand->parentRead(), \"|\";\necho (array)$grand === [\"value\" => 200] ? \"G200|\" : \"BAD|\";\n$grand->value = 300;\necho (array)$grand === [\"value\" => 300] ? \"G300|\" : \"BAD|\";\necho $grand->value, \"|\";\n",
+      "source_sha256": "4db5688128ff95f4007b8961c681a5b537c67af59fffc3df8f19a9263b461306",
+      "stdout_base64": "UDEwMHxDMjAwfEcyMDB8MTAwfEM6T3JkaW5hcnlCYWNrZWRDaGlsZDQ5L09yZGluYXJ5QmFja2VkQ2hpbGQ0OXwyMTN8SHxDOk9yZGluYXJ5QmFja2VkQ2hpbGQ0OS9PcmRpbmFyeUJhY2tlZEdyYW5kNDl8MjEzfEcyMDB8RzMwMHxDOk9yZGluYXJ5QmFja2VkQ2hpbGQ0OS9PcmRpbmFyeUJhY2tlZEdyYW5kNDl8MzEzfA==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "ordinary-parent-backed-hook49-native2-e208e1d7",
+      "native_raw_sha256": "3ea2c8af4c7f0511e9f872f5d1cf7097459776496c344a0b25d656e372810dbc"
+    },
+    {
+      "id": "ordinary-parent-backed-lifetime",
+      "source": "<?php\nclass OrdinaryBackedLeaf49 {\n    public $tag;\n    public function __destruct() { echo \"D\", $this->tag, \"|\"; }\n}\nfunction ordinaryBackedFresh49($tag) {\n    global $weak_returned;\n    echo \"G\", $tag, \"|\";\n    $leaf = new OrdinaryBackedLeaf49;\n    $leaf->tag = $tag;\n    $weak_returned = WeakReference::create($leaf);\n    return $leaf;\n}\nclass OrdinaryBackedLifeParent49 {\n    public mixed $value = null;\n    public function parentRead() { return $this->value; }\n    public function __destruct() {\n        $raw = (array)$this;\n        $leaf = $raw[\"value\"];\n        echo \"B\", $leaf->tag, \"|\";\n    }\n}\nclass OrdinaryBackedLifeBridge49 extends OrdinaryBackedLifeParent49 {}\nclass OrdinaryBackedLifeChild49 extends OrdinaryBackedLifeBridge49 {\n    public mixed $value = null {\n        get {\n            $backing = $this->value;\n            echo \"C\", $backing->tag, \"|\";\n            return ordinaryBackedFresh49(\"R\");\n        }\n    }\n}\nclass OrdinaryBackedLifeGrand49 extends OrdinaryBackedLifeChild49 {}\n$box = new OrdinaryBackedLifeGrand49;\n$weak_box = WeakReference::create($box);\necho ((array)$box === [\"value\" => null] ? \"NULL_SLOT|\" : \"BAD|\");\n$stored = new OrdinaryBackedLeaf49;\n$stored->tag = \"S\";\n$weak_stored = WeakReference::create($stored);\n$box->value = $stored;\nunset($stored);\necho \"STORED|\";\n$kept = $box->parentRead();\necho \"H\", $kept->tag, \"|\";\necho ((array)$box === [\"value\" => $weak_stored->get()] ? \"SLOT_S|\" : \"BAD|\");\nunset($box);\necho ($weak_box->get() === null ? \"BN|\" : \"BL|\");\necho ($weak_stored->get() === null ? \"SN|\" : \"SL|\");\necho ($weak_returned->get() === null ? \"RN|\" : \"LIVE|\");\nunset($kept);\necho ($weak_returned->get() === null ? \"RN|\" : \"LIVE|\");\n",
+      "source_sha256": "9c4c784a45464c11c829765f32cd2ab2931e91d920806c093deb274a1ad8ecec",
+      "stdout_base64": "TlVMTF9TTE9UfFNUT1JFRHxDU3xHUnxIUnxTTE9UX1N8QlN8RFN8Qk58U058TElWRXxEUnxSTnw=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal",
+      "native_group": "ordinary-parent-backed-hook49-native2-e208e1d7",
+      "native_raw_sha256": "3ea2c8af4c7f0511e9f872f5d1cf7097459776496c344a0b25d656e372810dbc"
+    }
+  ]
+}

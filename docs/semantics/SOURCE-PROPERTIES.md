@@ -186,7 +186,15 @@ the class-line error; both-untyped controls distinguish Root 100, First null and
 one child slot 200, active getter backing access, child/private scope and Grand
 called scope. An ordinary write stores 300 and the getter returns 313;
 [own-backed-child type-presence review](../../coverage/semantics/effective-backed-parent-backed-get-hook-type-presence-review.json).
-The hook linker still refuses ordinary-parent hooks and plain redeclarations.
+Ordinary public parent properties also admit genuine own-body-backed, plain
+by-value get children of equal normalized TYPE. Linking authenticates the ordinary
+empty-hook source and both own descriptors, then the child parent link and inherited
+layout across intervening classes. The child keeps its own default and single slot;
+private/inherited reads dispatch to its getter and ordinary writes update that slot.
+Backing references release independently of retained getter results;
+[ordinary-parent review](../../coverage/semantics/ordinary-parent-backed-get-hook-review.json).
+Ordinary-parent/body-unbacked children and plain redeclarations inheriting hooks
+remain required.
 Backed-parent inheritance retains invariant types; broader type equivalence and
 wider hook variance remain required.
 Hooked object iteration is explicit Unsupported rather than a raw storage view;
