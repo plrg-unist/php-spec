@@ -101,5 +101,18 @@
     "Wider anonymous signatures/class contexts, include/eval units, constructor arguments/types/access and broader consumers."
   ],
   "engine_bugs_or_intentional_divergence": "None identified.",
-  "independent_review": "comp_review_21 accepted exact383/native3/source3/strict3 and reviewed author268 plus independent156 reached-state fixtures; closed raw cuts independently bound. No failed validation in this milestone."
+  "independent_review": "comp_review_21 accepted exact383/native3/source3/strict3 and reviewed author268 plus independent156 reached-state fixtures; closed raw cuts independently bound. No failed validation in this milestone.",
+  "actual_composition": {
+    "parent": "0d53475afd14aab7d9baee43e5a4351b81826030",
+    "composed_revision": "d176816fd02c430f76e69c2e32f47b9b3e806490",
+    "module_count": 375,
+    "strict_reused": {
+      "tested_revision": "55dc18bacb2c38ed6466887765912cac3facc06a",
+      "report": ".tools/anonymous-class-20/.tools/anonymous-block-factory-gate-28/report.json",
+      "premises": 3,
+      "seconds": 5.823612689971924
+    },
+    "compatibility": "383 is byte-identical to tested 55dc and the manifest to parent375. Parent EX44 adds GC_RETIRED_OBJECT only via guarded collector retirement absent from these no-GC/no-weak/no-self-cycle/no-destructor witnesses. Reached 40 BINARY_RIGHT guards remain false for ordinary DEFINED/UNDEFINED cells and KNOWN/VARIABLE operands; added read/resolve arms require retired slots. Parent accepted full375 compiler/structuring/init gates cover its datatype extension; the 383 source/path-only delta introduces no slot/schema dependency.",
+    "scope": "Independent exact-parent seam review reuses accepted55dc strict3 and parent datatype gates. No current strict actor was run and no private native/source/state replay; original revisions, counts and raw cuts remain unchanged. Final metadata-only note adds no execution credit."
+  }
 }

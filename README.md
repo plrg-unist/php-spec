@@ -1262,6 +1262,8 @@ Named functions also admit standalone root/namespace-body Block chains: they are
 callable before the blocks, and the later function statement preserves state.
 The [block-factory review](coverage/semantics/anonymous-block-factory-rtd-review.json)
 binds three originals to actual publication, no-op and fresh-allocation checks.
+Its 375 join over 0d53475a retains the tested 55dc compiler check after review of
+the guarded retired-object paths; no private cuts were replayed.
 Direct root or namespace-body variable assignments to static no-capture noarg
 by-value untyped Closures also admit plain empty named declarations. Their
 [review](coverage/semantics/anonymous-named-closure-rtd-review.json) covers anonymous

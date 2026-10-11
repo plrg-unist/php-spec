@@ -51,6 +51,9 @@ The historical26 Block-function exclusion is superseded; its accepted direct-fac
 source/state388 and 684ff104/9ae join retain their original cuts. Named descendants
 under conditional/loop/nested functions, wider signatures and Block-contained named
 Closure assignments remain required.
+The 375 composition d176816f over 0d53475a reuses tested 55dc strict3 after
+independent EX44 retired-slot/ordinary-binary compatibility review; no new current
+strict actor or private native/source/state replay was needed.
 [Block-factory ledger](coverage/semantics/anonymous-block-factory-rtd-review.json);
 [earlier named-factory ledger](coverage/semantics/anonymous-named-factory-rtd-review.json).
 
