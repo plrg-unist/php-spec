@@ -3897,6 +3897,15 @@ passes the preserved 527-premise compiler→initialized gate (5.530/92.496s), co
 reached emit cleanup and shared type/guard changes; source/private renewal 0. Wider
 forms and source7 remain open in the [ledger](coverage/semantics/closure-current-binding-review.json).
 
+Literal named-static `Closure::bind(...)` capture now reaches the existing handler.
+Authentic dynamic-call receipts retain copied internal scope/function/receiver facts
+after the API and original body retire; the bound Closure and returned cell retain
+the receiver at distinct cleanup stages. Native2/direct1 at 22c4, affected captured1 and
+state289 at 1f58/375 pass (269 genuine/derived plus 20 controls). Original Unsupported
+and the first interpreter failure remain 0. The API main cell stays live across
+args; wider BIND argument-retirement forms stay open. Exact maintained relocation
+requires no runtime renewal; see the [ledger](coverage/semantics/closure-current-binding-review.json).
+
 Object defaults (module252) now create static/no-use source Closures and
 function/method callables in genuine declaring scope. Requested-class templates
 share their object values with instances and preserve exact successful bindings

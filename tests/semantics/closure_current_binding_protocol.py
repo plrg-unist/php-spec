@@ -7,6 +7,7 @@ import json
 import closure_call_protocol as protocol
 import closure_current_capture_review as capture_review
 import closure_current_argument_review as argument_review
+import closure_bind_capture_review as bind_review
 
 CASES = {'bound-private-method-shared-statics-retired-source': {'source': '<?php\n'
                                                                   'class FakeOwner253 {\n'
@@ -1162,9 +1163,15 @@ for row in json.loads(CATALOGUE.read_text()):
     elif row['id'] in ('argument-direct-current-api-retirement', 'argument-captured-current-api-retirement'):
         CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
                             'current_argument_captured': '-captured-' in row['id']}
+    elif row['id'] == 'literal-captured-bind':
+        CASES[row['id']] = {'source': row['source'], 'native_stdout': row['native_stdout'],
+                            'bind_capture': True}
 
 
 def capture_fixture(case, program, filename):
+    if 'bind_capture' in case:
+        text, checks, _, _ = bind_review.render(program, filename, case['native_stdout'])
+        return text, len(checks)
     if 'current_argument_captured' in case:
         text, checks, _, _ = argument_review.render(program, filename, case['native_stdout'],
                                                    captured=case['current_argument_captured'])
@@ -1185,5 +1192,6 @@ if __name__ == '__main__':
     assert selected, 'no current/binding state selected'
     protocol.run(selected, extra_inputs=(Path(__file__), CATALOGUE, Path(capture_review.__file__),
                                         Path(argument_review.__file__),
+                                        Path(bind_review.__file__),
                                         Path(__file__).with_name('error_handler_protocol.py')),
                  fixture_renderer=capture_fixture)

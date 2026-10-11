@@ -189,5 +189,19 @@
     "source_sha256": "1eb3365b06bb405ef0b4d53575d227a0f74c0ca4ee5c7289ceca53ef6fb00180",
     "expected_model": "normal",
     "native_stdout": "Q;A;B;S;C:held;E:ArgumentCountError:Closure::getCurrent() expects exactly 0 arguments, 1 given;C:gone;B:gone;E:held;E:gone;C:gone;B:gone;Z;"
+  },
+  {
+    "id": "literal-direct-bind",
+    "source": "<?php\necho \"Q;\";\n$api = null;\n$weakApi = null;\n$body = function() { return $this; };\n$receiver = new stdClass;\n$weakBody = WeakReference::create($body);\n$weakReceiver = WeakReference::create($receiver);\necho \"C:\", $weakApi === null ? \"static\" : ($weakApi->get() === null ? \"gone\" : \"held\"), \";\";\necho \"B:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\necho \"P:\", $weakReceiver->get() === null ? \"gone\" : \"held\", \";A;\";\n$bound = Closure::bind($body, $receiver, null);\necho \"N:\", $bound === null ? \"null\" : \"bound\", \";\";\n$weakBound = WeakReference::create($bound);\n$api = null;\necho \"C:\", $weakApi === null ? \"static\" : ($weakApi->get() === null ? \"gone\" : \"held\"), \";\";\n$body = null;\n$receiver = null;\necho \"B:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\necho \"P:\", $weakReceiver->get() === null ? \"gone\" : \"held\", \";\";\n$returned = $bound();\necho \"I:\", $returned !== null && $returned === $weakReceiver->get() ? \"same\" : \"different\", \";\";\n$bound = null;\necho \"F:\", $weakBound->get() === null ? \"gone\" : \"held\", \";\";\necho \"P:\", $weakReceiver->get() === null ? \"gone\" : \"held\", \";\";\n$returned = null;\necho \"B:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\necho \"F:\", $weakBound->get() === null ? \"gone\" : \"held\", \";\";\necho \"P:\", $weakReceiver->get() === null ? \"gone\" : \"held\", \";Z;\";\n",
+    "source_sha256": "1ee467642a5cf352c2bb46aa712b6b31143db14f4da43907b02730c88eb4b2b0",
+    "expected_model": "normal",
+    "native_stdout": "Q;C:static;B:held;P:held;A;N:bound;C:static;B:gone;P:held;I:same;F:gone;P:held;B:gone;F:gone;P:gone;Z;"
+  },
+  {
+    "id": "literal-captured-bind",
+    "source": "<?php\necho \"Q;\";\n$api = Closure::bind(...);\n$weakApi = WeakReference::create($api);\n$body = function() { return $this; };\n$receiver = new stdClass;\n$weakBody = WeakReference::create($body);\n$weakReceiver = WeakReference::create($receiver);\necho \"C:\", $weakApi === null ? \"static\" : ($weakApi->get() === null ? \"gone\" : \"held\"), \";\";\necho \"B:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\necho \"P:\", $weakReceiver->get() === null ? \"gone\" : \"held\", \";A;\";\n$bound = $api($body, $receiver, null);\necho \"N:\", $bound === null ? \"null\" : \"bound\", \";\";\n$weakBound = WeakReference::create($bound);\n$api = null;\necho \"C:\", $weakApi === null ? \"static\" : ($weakApi->get() === null ? \"gone\" : \"held\"), \";\";\n$body = null;\n$receiver = null;\necho \"B:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\necho \"P:\", $weakReceiver->get() === null ? \"gone\" : \"held\", \";\";\n$returned = $bound();\necho \"I:\", $returned !== null && $returned === $weakReceiver->get() ? \"same\" : \"different\", \";\";\n$bound = null;\necho \"F:\", $weakBound->get() === null ? \"gone\" : \"held\", \";\";\necho \"P:\", $weakReceiver->get() === null ? \"gone\" : \"held\", \";\";\n$returned = null;\necho \"B:\", $weakBody->get() === null ? \"gone\" : \"held\", \";\";\necho \"F:\", $weakBound->get() === null ? \"gone\" : \"held\", \";\";\necho \"P:\", $weakReceiver->get() === null ? \"gone\" : \"held\", \";Z;\";\n",
+    "source_sha256": "cd7fe2b56d97631d975007a16eec2cdecfdb1bf6bdf331ea59901c752428d8e2",
+    "expected_model": "normal",
+    "native_stdout": "Q;C:held;B:held;P:held;A;N:bound;C:gone;B:gone;P:held;I:same;F:gone;P:held;B:gone;F:gone;P:gone;Z;"
   }
 ]

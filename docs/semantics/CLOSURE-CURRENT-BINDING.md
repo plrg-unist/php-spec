@@ -64,10 +64,23 @@ binding site and identical source template. User-class permission still follows
 its real lexical origin. `self`/`static` names, parent errors and anonymous
 `new self` defaults preserve the internal scope.
 
+Literal named-static `Closure::bind(...)` creates an API Closure and dynamic
+invocation uses the existing binding handler. Explicit null scope with a
+`stdClass` receiver produces the copied internal scope described above. The
+creating CONFIG authenticates the selected live BIND API; its OWNER remains
+borrowed while the main API cell stays live across arguments. Historical receipt
+source forms admit dynamic and literal `__invoke` calls while preserving the
+copied source/function/scope/receiver checks. Actual null writes retire the API
+and original body, then the bound Closure, then the returned receiver separately.
+Two native originals, one direct and one repaired captured comparison, and 289
+state premises (269 genuine/derived plus 20 controls) pass. Original Unsupported
+and the first interpreter failure retain zero credit.
+
 Module264 adds the admitted REAL static/internal warnings and `$this`-sensitive
 unbinding through the same genuine handler continuation; the
 [ordinary binding contract](CLOSURE-BINDING.md) records validation order, compiled
-flag authority and copied storage. Binding API captures, object/computed current
+flag authority and copied storage. Wider binding API captures and BIND API
+retirement during argument evaluation, object/computed current
 captures, wider argument-retirement routes, temporary REAL `Closure::call` current-object
 escape and further internally scoped keyword consumers remain required.
 Temporary-call behavior stays separate.
