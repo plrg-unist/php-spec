@@ -1434,6 +1434,10 @@ binds three originals at 9d2ca309 /375 (strict3 6.025s) and 690 premises:
 allocation and eligible no-op steps. Fixtures stop at required allocations; native
 observations retain reverse publication, two Closure instances and fresh defaults.
 Other Do ancestry and wider factory signatures remain required.
+The 375 join over 75c2bdfc passes strict3 at 15c9705e (5.972s), checking
+the shared getter task and Iterator snapshot record. Review preserves parentless
+class linking and excludes the bool-typed __get/Iterator reception routes; private
+cuts keep their original revisions.
 The earlier [direct-Do review](coverage/semantics/anonymous-do-rtd-review.json)
 retains source3/state653 at 2ee1454b and its 5306defe/75aaa60f composition,
 reusing strict3 at tested 2ee1454b (5.974s) with reviewed bind/hook exclusions and

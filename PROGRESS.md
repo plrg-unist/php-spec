@@ -34,6 +34,10 @@ eligible no-op steps. Fixtures stop at required allocations; syntax-only prepara
 and elaboration have zero runtime credit. No executed COMP42 failures. Other Do
 host/body ancestry and wider factory guards remain required.
 [Do body-Block ledger](coverage/semantics/anonymous-do-block-rtd-review.json).
+The 375 join over 75c2bdfc passes strict3 at 15c9705e (5.972s), checking
+the shared getter task and Iterator snapshot record. Review preserves parentless
+class linking and excludes the bool-typed __get/Iterator reception routes; private
+cuts keep their original revisions.
 
 The earlier direct-Do cut retains source3/state653 at 2ee1454b and its original
 5306defe/75aaa60f composition reusing strict3 at tested 2ee1454b (5.974s), with
