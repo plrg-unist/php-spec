@@ -124,8 +124,13 @@ def $property_hook_origin(S, ppropertydesc) = eps -- otherwise
 ;; A backed hooked parent gives a child getter physical storage independently
 ;; of whether the child's own body uses that storage.
 dec $property_hook_override_pair(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_hook_override_shape(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_hook_override_backed(pstate, ppropertydesc) : bool
 dec $property_hook_inherited_backing(pstate, ppropertydesc) : bool
-def $property_hook_inherited_backing(S, ppropertydesc) = true
+dec $property_hook_inherited_backing_walk(pstate, ppropertydesc, nat) : bool
+def $property_hook_inherited_backing(S, ppropertydesc) = $property_hook_inherited_backing_walk(S, ppropertydesc, |S.CLASSES|)
+def $property_hook_inherited_backing_walk(S, ppropertydesc, n) = true
+  -- if $(n > 0)
   -- if ppropertydesc.ORIGIN = porigin_property
   -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_class)
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
@@ -133,8 +138,9 @@ def $property_hook_inherited_backing(S, ppropertydesc) = true
   -- if pclassdesc.PARENT =/= eps
   -- if $class_link_at(S.LINKEDPARENTS, porigin_class) = (SOURCE_PARENT porigin_parent)
   -- if $property_desc_at($property_layout(S, porigin_parent, |S.CLASSES|), ppropertydesc.KEY) = (ppropertydesc_parent)
-  -- if $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc)
-def $property_hook_inherited_backing(S, ppropertydesc) = false -- otherwise
+  -- if $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc)
+  -- if $property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing_walk(S, ppropertydesc_parent, $nabs($(n - 1)))
+def $property_hook_inherited_backing_walk(S, ppropertydesc, n) = false -- otherwise
 
 ;; Effective virtual declarations retain metadata, but own no slot.
 def $property_hook_virtual(S, ppropertydesc) = true
@@ -680,22 +686,23 @@ def $property_instance_indirect_check(S, n, ptbytes, b_object, z) = S[.COMPLETIO
 
 ;; Equal-type get overrides of a backed hook reuse one child slot and function.
 ;; Other hook inheritance cannot borrow the ordinary property merge.
-dec $property_hook_override_backed(pstate, ppropertydesc) : bool
 def $property_hook_override_backed(S, ppropertydesc) = true
   -- if ~ppropertydesc.FINAL /\ ppropertydesc.SETVISIBILITY = eps
   -- if $property_hook_origin(S, ppropertydesc) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook phpType14 phpType24 phpType4 phpType11 phpType16 phpType39 metadata)
   -- if $hook_body_backed(phpType39, ppropertydesc.NAME)
 def $property_hook_override_backed(S, ppropertydesc) = false -- otherwise
-def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = true
+def $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) = true
   -- if ppropertydesc_parent.NAME = ppropertydesc_child.NAME /\ ppropertydesc_parent.TYPE = ppropertydesc_child.TYPE
-  -- if $property_hook_override_backed(S, ppropertydesc_parent)
+  -- if ppropertydesc_parent.ORIGIN =/= ppropertydesc_child.ORIGIN
+  -- if ~ppropertydesc_parent.FINAL /\ ppropertydesc_parent.SETVISIBILITY = eps /\ $property_hook_origin(S, ppropertydesc_parent) =/= eps
   -- if ~ppropertydesc_child.FINAL /\ ppropertydesc_child.SETVISIBILITY = eps
   -- if $property_hook_origin(S, ppropertydesc_child) = (porigin_hook)
   -- if $origin_node(S.SOURCES, porigin_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) phpType39 metadata_hook)
   -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_body_supported(phpType39)
   -- if $hook_body_backed(phpType39, ppropertydesc_child.NAME) \/ ppropertydesc_child.DEFAULT = PROP_NULL \/ ppropertydesc_child.DEFAULT = PROP_UNINITIALIZED
-def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
+def $property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
+def $property_hook_override_pair(S, ppropertydesc_parent, ppropertydesc_child) = ($property_hook_override_shape(S, ppropertydesc_parent, ppropertydesc_child) /\ ($property_hook_override_backed(S, ppropertydesc_parent) \/ $property_hook_inherited_backing(S, ppropertydesc_parent)))
 dec $property_hook_parent_overlap(pstate, ppropertydesc*, ppropertydesc*) : bool
 dec $property_hook_parent_match(pstate, ppropertydesc, ppropertydesc?) : bool
 def $property_hook_parent_overlap(S, eps, ppropertydesc_parent*) = false

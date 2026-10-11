@@ -1435,6 +1435,11 @@ storage or untyped null; ordinary writes use that slot. Receiver cleanup release
 the backing reference; separately retained return values can survive.
 Two originals and separate scalar185/lifetime100 checks are recorded in the
 [effective backing review](coverage/semantics/effective-backed-get-hook-review.json).
+That storage also propagates through repeated equal-type public getter overrides
+without backing access or initializers, including intervening classes without a
+redeclaration. Two originals and separate dispatch, write, ancestry and lifetime
+checks are recorded in the
+[repeated override review](coverage/semantics/repeated-effective-backed-get-hook-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
