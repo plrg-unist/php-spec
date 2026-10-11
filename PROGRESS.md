@@ -829,6 +829,8 @@ separately. Private strict375 passes in 5.719s with zero applications. Earlier
 dispatch and fixture failures retain zero agreement credit. Caught-chain normal
 resumption, larger/mixed histories, lifecycle capture and broad returns_verify
 remain OPEN. [Ordered-chain review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+Actual375 over `324d3f88` passes strict at `d68bbf48` in 5.857s,
+with zero applications; private source/state/independent cuts retain their revisions.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
