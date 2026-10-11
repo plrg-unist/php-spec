@@ -779,8 +779,14 @@ Adjacent ordinary CV histories beyond two now use a source-authenticated ordered
 cursor list without owning discarded operands. The observed Z/W/X chain survives
 Y rejection and saved ping frames, then retires in order; initial success keeps
 the selected y alias. Two originals, five reached fixtures/467 assertions and
-independent partial90/7 pass at separate cuts in the same review. Caught-chain
-normal resumption, larger/mixed histories and lifecycle capture remain open.
+independent partial90/7 pass at separate cuts in the same review.
+A checked singleton TypeError catch in the selected Y owner now resumes the
+consumed Z/W/X chain through root-free cleared NULL. Z raises a fresh TypeError
+while the old Y error stays live; W/X survive replay and saved ping restoration.
+Rethrow preserves the original Y error. Three originals, six reached fixtures/640
+assertions and independent CLEARED75/5 pass at separate cuts. Immediate Y success
+is source evidence only; helper leaves remain nonpublic. Other caught/mixed
+layouts, lifecycle capture and broad returns_verify remain OPEN.
 [Error suppression](docs/semantics/SOURCE-ERROR-SUPPRESSION.md) now preserves folded
 effects, deferred reads and frame-owned masks through cleanup; [review](coverage/semantics/error-suppression-review.json)
 binds951 gates and its print-only bridge. [Reporting and source error handlers](docs/semantics/SOURCE-ERROR-HANDLERS.md)

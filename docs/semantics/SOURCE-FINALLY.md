@@ -171,8 +171,18 @@ partial markers validate the actual next-finalizer origin before virtual task
 traversal. The observed Z/W/X chain survives Y-error replay and saved ping scope,
 then leaves Z, W and X in order; initial success returns the selected y alias.
 Two exact originals, five reached fixtures/467 assertions and independent
-partial90/7 pass at `5a9fd5ba` in the same review. Normal caught-chain resumption
-is explicit Unsupported; larger/mixed histories and lifecycle capture remain open.
+partial90/7 pass at `5a9fd5ba` in the same review.
+
+A checked singleton TypeError catch in the selected Y owner now resumes the
+consumed Z/W/X chain atomically as root-free cleared NULL, retaining first-Z
+source/line/recheck. Its fresh NULL TypeError remains distinct from the live Y
+error; W/X survive replay and authentic saved ping restoration. An optional
+rethrow of the catch CV preserves the original Y error. Three exact originals,
+six reached fixtures/640 assertions and independent CLEARED75/5 pass at separate
+`cc93bbac` cuts. Immediate Y success is source3 evidence only; internal partial
+leaves remain nonpublic, and source reauthentication does not exclude coherent
+history rewrites. Other caught layouts retain explicit Unsupported boundaries;
+mixed histories, lifecycle capture and broad returns_verify remain OPEN.
 
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting

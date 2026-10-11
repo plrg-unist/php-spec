@@ -26,6 +26,7 @@ dec $destructor_operational(pstate) : bool
 dec $ref_chain_capture(pstate, porigin, porigin, poperand, int, porigin, poperand, int, bool, ptask*) : pstate?
 dec $ref_chain_pending_actual(pstate, ptask*) : bool
 dec $ref_chain_return_valid(pstate, prefreturncursor*, porigin, int) : bool
+dec $ref_chain_cleared_valid(pstate, prefreturncursor*) : bool
 dec $ref_chain_consumed_tasks(prefreturncursor*) : ptask*
 dec $ref_chain_consumed_tail(ptask*) : ptask*
 dec $throwable_chain(pstate, nat, nat*) : pthrowchain
@@ -420,6 +421,7 @@ def $ref_return_cursor_task(REF_RETURN_PAIR prefreturncursor_inner prefreturncur
 def $ref_return_cursor_task(REF_RETURN_PAIR_CLEARED prefreturncursor_inner prefreturncursor_outer) = true
 def $ref_return_cursor_task(REF_RETURN_CHAIN_PENDING prefreturncursor_done* prefreturncursor_live* porigin_source z) = true
 def $ref_return_cursor_task(REF_RETURN_CHAIN prefreturncursor* porigin_source z) = true
+def $ref_return_cursor_task(REF_RETURN_CHAIN_CLEARED prefreturncursor*) = true
 def $ref_return_cursor_task(ptask) = false -- otherwise
 dec $ref_return_cursor_suffix(pstate, ptask*, prefreturncursor, porigin, porigin, poperand, int) : bool
 def $ref_return_cursor_suffix(S, [REF_RETURN_CURSOR prefreturncursor porigin_source z, REF_RECHECK porigin_source porigin_first poperand z], prefreturncursor, porigin_source, porigin_first, poperand, z) = true
@@ -567,6 +569,12 @@ def $ref_recheck_throw_producer(S, S_next) = true
   -- if $throwable_pending(S_next.COMPLETION)
   -- if S_next.FRAMES = S.FRAMES
   -- if S_next.CURRENT = S.CURRENT
+def $ref_recheck_throw_producer(S, S_next) = true
+  -- if S.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) z true porigin_source) :: (REF_RETURN_CHAIN_CLEARED prefreturncursor_chain*) :: (REF_RECHECK porigin_source porigin_first (KNOWN PNULL) z) :: eps
+  -- if $ref_chain_cleared_valid(S, prefreturncursor_chain*)
+  -- if $throwable_pending(S_next.COMPLETION)
+  -- if S_next.FRAMES = S.FRAMES
+  -- if S_next.CURRENT = S.CURRENT
 def $ref_recheck_throw_producer(S, S_next) = false -- otherwise
 def $throwable_continuation(S, S_next) = S_next[.TODO = (REF_REPLAY porigin_source poperand z prefowner*) :: eps]
   -- if $ref_recheck_throw_producer(S, S_next)
@@ -588,6 +596,11 @@ def $throwable_continuation(S, S_next) = S_next[.TODO = [REF_REPLAY_CHAIN porigi
   -- if $ref_recheck_throw_producer(S, S_next)
   -- if S.TODO = (RETURN_REF_UNWIND poperand z true porigin_source) :: (REF_RETURN_CHAIN prefreturncursor* porigin_source z) :: (REF_RECHECK porigin_source porigin_first poperand z) :: eps
   -- if prefowner* = $ref_replay_contexts(S, porigin_source)
+def $throwable_continuation(S, S_next) = S_next[.TODO = (REF_REPLAY_CHAIN_CLEARED prefreturncursor_chain* prefowner*) :: eps]
+  -- if $ref_recheck_throw_producer(S, S_next)
+  -- if S.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) z true porigin_source) :: (REF_RETURN_CHAIN_CLEARED prefreturncursor_chain*) :: (REF_RECHECK porigin_source porigin_first (KNOWN PNULL) z) :: eps
+  -- if prefreturncursor_chain* = prefreturncursor_first :: prefreturncursor_tail*
+  -- if prefowner* = $ref_replay_contexts(S, prefreturncursor_first.SOURCE)
 dec $ref_owner_origin(prefowner) : porigin
 def $ref_owner_origin(REPLAY_TRY porigin) = porigin
 def $ref_owner_origin(REPLAY_CATCH porigin) = porigin
@@ -1641,6 +1654,19 @@ def $ref_chain_owners(prefreturncursor :: prefreturncursor_tail*) = prefreturncu
 dec $ref_chain_paths(pcpath*, porigin*, nat, pcpath) : bool
 def $ref_chain_paths(eps, porigin_owner*, n, pcpath_source) = true
 def $ref_chain_paths(pcpath :: pcpath_tail*, porigin_owner*, n, pcpath_source) = ((~$effect_below(pcpath ++ [PCFIELD 2], pcpath_source) \/ (PORIGIN n pcpath) <- porigin_owner*) /\ $ref_chain_paths(pcpath_tail*, porigin_owner*, n, pcpath_source))
+dec $ref_chain_catch_body(statement*, ptbytes) : bool
+def $ref_chain_catch_body([NStmtEcho (SEQUENCE ([NScalarString (BYTES text) metadata_string])) metadata_echo], n_name*) = true
+def $ref_chain_catch_body([NStmtEcho (SEQUENCE ([NScalarString (BYTES text) metadata_string])) metadata_echo, NStmtExpression (NExprThrow (NExprVariable (BYTES text_variable) metadata_variable) metadata_throw) metadata_statement], n_name*) = ($base64(text_variable) = n_name*)
+def $ref_chain_catch_body(statement*, n_name*) = false -- otherwise
+dec $ref_chain_selected_owner(pstate, porigin) : bool
+def $ref_chain_selected_owner(S, porigin) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE eps) phpType67 metadata_try)
+def $ref_chain_selected_owner(S, porigin) = true
+  -- if $throwable_try_valid(S, porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtTryCatch phpType23 (SEQUENCE ([NStmtCatch (SEQUENCE ([NName (BYTES text_type) metadata_type])) (NExprVariable (BYTES text_variable) metadata_variable) (SEQUENCE statement*) metadata_catch])) phpType67 metadata_try)
+  -- if $base64(text_type) = $ptascii("TypeError")
+  -- if $ref_chain_catch_body(statement*, $base64(text_variable))
+def $ref_chain_selected_owner(S, porigin) = false -- otherwise
 dec $ref_chain_site(pstate, prefreturncursor*, porigin, int) : bool
 def $ref_chain_site(S, prefreturncursor*, PORIGIN n pcpath_source, z) = true
   -- if $(|prefreturncursor*| > 2)
@@ -1657,7 +1683,7 @@ def $ref_chain_site(S, prefreturncursor*, PORIGIN n pcpath_source, z) = true
   -- if $ref_chain_paths($ppfinally_protected(pcunit.OCCURRENCES, pcpath_source), $ref_chain_owners(prefreturncursor*), n, pcpath_source)
   -- if $ref_replay_owners(S, PORIGIN n pcpath_source) = porigin_first :: eps
   -- if $ref_replay_contexts(S, PORIGIN n pcpath_source) = [REPLAY_TRY porigin_first]
-  -- if $origin_node(S.SOURCES, porigin_first) = (NStmtTryCatch phpType23 (SEQUENCE eps) phpType67 metadata_try)
+  -- if $ref_chain_selected_owner(S, porigin_first)
 def $ref_chain_site(S, prefreturncursor*, porigin_source, z) = false -- otherwise
 dec $ref_chain_live_tasks(pstate, prefreturncursor*) : ptask*
 def $ref_chain_live_tasks(S, eps) = eps
@@ -1786,8 +1812,49 @@ def $finally_phase_of(FINALLY_REF_CHAIN prefreturncursor*) = (3)
 def $return_ref_step(S, poperand, z, b, porigin_source, (FINALLY_REF_CHAIN (prefreturncursor :: prefreturncursor_tail*)) :: ptask_tail*) = $finally_leave_ref_return(S, prefreturncursor.OWNER, porigin_source, poperand, z, b, ptask_tail*)
 rule PhpStep/finally-replace-consumed-chain: S ~> $finally_leave_throw(S, prefreturncursor.OWNER, n, ptask_tail*)
   -- if S.TODO = (THROW_SEARCH n) :: (FINALLY_REF_CHAIN (prefreturncursor :: prefreturncursor_tail*)) :: ptask_tail*
-rule PhpStep/finally-resume-consumed-chain-missing: S ~> S[.TODO = eps][.COMPLETION = UNSUPPORTED "caught multiple-history reference return replay"]
-  -- if S.TODO = (FINALLY_REF_CHAIN prefreturncursor*) :: ptask_tail*
+;; Cleared CV transfers retain only their source/restore history. Internal
+;; partial leaves are atomic and are not public resumable states.
+dec $ref_chain_cleared_site(pstate, prefreturncursor*) : bool
+def $ref_chain_cleared_site(S, prefreturncursor_chain*) = true
+  -- if prefreturncursor_chain* = prefreturncursor_first :: prefreturncursor_tail*
+  -- if $ref_chain_links(S, prefreturncursor_chain*)
+  -- if ~$destructor_operational(S)
+  -- if $ref_chain_distinct(S, prefreturncursor_chain*, eps)
+  -- if $reference_return_fetch_valid(S[.ORIGIN = (prefreturncursor_first.SOURCE)], prefreturncursor_first.LINE)
+  -- if $ref_replay_owners(S, prefreturncursor_first.SOURCE) = prefreturncursor_first.OWNER :: eps
+  -- if $ref_replay_contexts(S, prefreturncursor_first.SOURCE) = [REPLAY_TRY prefreturncursor_first.OWNER]
+def $ref_chain_cleared_site(S, prefreturncursor_chain*) = false -- otherwise
+def $ref_chain_cleared_valid(S, prefreturncursor_chain*) = true
+  -- if prefreturncursor_chain* = prefreturncursor_first :: prefreturncursor_tail*
+  -- if $ref_chain_cleared_site(S, prefreturncursor_chain*)
+  -- if S.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor_first.LINE true prefreturncursor_first.SOURCE) :: (REF_RETURN_CHAIN_CLEARED prefreturncursor_chain*) :: (REF_RECHECK prefreturncursor_first.SOURCE prefreturncursor_first.OWNER (KNOWN PNULL) prefreturncursor_first.LINE) :: eps
+  -- if S.ORIGIN = $ref_chain_function(S)
+def $ref_chain_cleared_valid(S, prefreturncursor_chain*) = false -- otherwise
+def $call_task_valid(S, REF_RETURN_CHAIN_CLEARED prefreturncursor_chain*) = $ref_chain_cleared_valid(S, prefreturncursor_chain*)
+def $task_nodes(REF_RETURN_CHAIN_CLEARED prefreturncursor_chain*) = eps
+def $return_ref_step(S, KNOWN PNULL, z, true, porigin_source, (REF_RETURN_CHAIN_CLEARED prefreturncursor_chain*) :: (REF_RECHECK porigin_source porigin_first (KNOWN PNULL) z) :: eps) = $finally_ref_recheck(S, KNOWN PNULL, z)
+  -- if $ref_chain_cleared_valid(S, prefreturncursor_chain*)
+dec $ref_chain_clear_rest(pstate, prefreturncursor, prefreturncursor*) : pstate
+def $ref_chain_clear_rest(S, prefreturncursor_first, eps) = S
+  -- if S.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor_first.LINE true prefreturncursor_first.SOURCE) :: (REF_RECHECK prefreturncursor_first.SOURCE prefreturncursor_first.OWNER (KNOWN PNULL) prefreturncursor_first.LINE) :: eps
+  -- if S.ORIGIN = $ref_chain_function(S)
+def $ref_chain_clear_rest(S, prefreturncursor_first, prefreturncursor_current :: prefreturncursor_tail*) = $ref_chain_clear_rest(S_left, prefreturncursor_first, prefreturncursor_tail*)
+  -- if S.TODO = [RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor_first.LINE true prefreturncursor_first.SOURCE] ++ $ref_chain_consumed_body(prefreturncursor_current :: prefreturncursor_tail*) ++ [REF_RECHECK prefreturncursor_first.SOURCE prefreturncursor_first.OWNER (KNOWN PNULL) prefreturncursor_first.LINE]
+  -- if ptask_tail* = (FINALLY_PHASE prefreturncursor_current.OWNER 3) :: (ORIGIN_RETURN prefreturncursor_current.OUTER) :: ($ref_chain_consumed_body(prefreturncursor_tail*) ++ [REF_RECHECK prefreturncursor_first.SOURCE prefreturncursor_first.OWNER (KNOWN PNULL) prefreturncursor_first.LINE])
+  -- if S_left = $finally_leave_ref_return(S, prefreturncursor_current.OWNER, prefreturncursor_first.SOURCE, KNOWN PNULL, prefreturncursor_first.LINE, true, ptask_tail*)
+def $ref_chain_clear_rest(S, prefreturncursor_first, prefreturncursor_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "invalid cleared reference return chain"] -- otherwise
+dec $finally_resume_consumed_chain(pstate, prefreturncursor*, ptask*) : pstate
+def $finally_resume_consumed_chain(S, prefreturncursor_chain*, ptask_tail*) = S_left[.TODO = (RETURN_REF_UNWIND (KNOWN PNULL) prefreturncursor_first.LINE true prefreturncursor_first.SOURCE) :: (REF_RETURN_CHAIN_CLEARED prefreturncursor_chain*) :: (REF_RECHECK prefreturncursor_first.SOURCE prefreturncursor_first.OWNER (KNOWN PNULL) prefreturncursor_first.LINE) :: eps]
+  -- if prefreturncursor_chain* = prefreturncursor_first :: prefreturncursor_tail*
+  -- if $call_task_valid(S, FINALLY_REF_CHAIN prefreturncursor_chain*)
+  -- if $ref_chain_cleared_site(S, prefreturncursor_chain*)
+  -- if S.TODO = $ref_chain_consumed_body(prefreturncursor_chain*)
+  -- if S_inner = $finally_leave_ref_return(S, prefreturncursor_first.OWNER, prefreturncursor_first.SOURCE, KNOWN PNULL, prefreturncursor_first.LINE, true, ptask_tail*)
+  -- if S_left = $ref_chain_clear_rest(S_inner, prefreturncursor_first, prefreturncursor_tail*)
+  -- if S_left.COMPLETION = NORMAL
+def $finally_resume_consumed_chain(S, prefreturncursor_chain*, ptask_tail*) = S[.TODO = eps][.COMPLETION = UNSUPPORTED "caught multiple-history reference return replay"] -- otherwise
+rule PhpStep/finally-resume-consumed-chain: S ~> $finally_resume_consumed_chain(S, prefreturncursor_chain*, ptask_tail*)
+  -- if S.TODO = (FINALLY_REF_CHAIN prefreturncursor_chain*) :: ptask_tail*
 dec $ref_chain_replay_valid(pstate, porigin, poperand, int, prefowner*, prefreturncursor*) : bool
 def $ref_chain_replay_valid(S, porigin_source, poperand, z, prefowner*, prefreturncursor*) = true
   -- if S.TODO = [THROW_SEARCH n, REF_REPLAY_CHAIN porigin_source poperand z prefowner* prefreturncursor*]
@@ -1804,4 +1871,23 @@ rule PhpStep/ref-replay-chain: S ~> S[.TODO = (THROW_SEARCH n) :: (ptask_replay*
   -- if $ref_chain_replay_valid(S, porigin_source, poperand, z, prefowner*, prefreturncursor*)
   -- if ptask_replay* = $ref_replay_tasks(porigin_source, z, prefowner*)
   -- if ptask_consumed* = $ref_chain_consumed_tasks(prefreturncursor*)
+  -- if porigin_replay = $ref_owner_origin(prefowner_first)
+dec $ref_chain_cleared_replay_valid(pstate, prefreturncursor*, prefowner*) : bool
+def $ref_chain_cleared_replay_valid(S, prefreturncursor_chain*, prefowner*) = true
+  -- if prefreturncursor_chain* = prefreturncursor_first :: prefreturncursor_tail*
+  -- if S.TODO = (THROW_SEARCH n) :: (REF_REPLAY_CHAIN_CLEARED prefreturncursor_chain* prefowner*) :: eps
+  -- if $ref_chain_cleared_site(S, prefreturncursor_chain*)
+  -- if S.ORIGIN = $ref_chain_function(S)
+  -- if $ref_replay_valid(S[.TODO = (THROW_SEARCH n) :: (REF_REPLAY prefreturncursor_first.SOURCE (KNOWN PNULL) prefreturncursor_first.LINE prefowner*) :: eps], prefreturncursor_first.SOURCE, KNOWN PNULL, prefreturncursor_first.LINE, prefowner*)
+def $ref_chain_cleared_replay_valid(S, prefreturncursor_chain*, prefowner*) = false -- otherwise
+def $call_task_valid(S, REF_REPLAY_CHAIN_CLEARED prefreturncursor_chain* prefowner*) = $ref_chain_cleared_replay_valid(S, prefreturncursor_chain*, prefowner*)
+def $task_nodes(REF_REPLAY_CHAIN_CLEARED prefreturncursor_chain* prefowner*) = eps
+def $throwable_marker(REF_REPLAY_CHAIN_CLEARED prefreturncursor_chain* prefowner*) = true
+rule PhpStep/ref-replay-chain-cleared: S ~> S[.TODO = (THROW_SEARCH n) :: (ptask_replay* ++ ptask_consumed*)][.ORIGIN = (porigin_replay)]
+  -- if S.TODO = (THROW_SEARCH n) :: (REF_REPLAY_CHAIN_CLEARED prefreturncursor_chain* prefowner*) :: eps
+  -- if prefreturncursor_chain* = prefreturncursor_first :: prefreturncursor_tail*
+  -- if prefowner* = prefowner_first :: prefowner_tail*
+  -- if $ref_chain_cleared_replay_valid(S, prefreturncursor_chain*, prefowner*)
+  -- if ptask_replay* = $ref_replay_tasks(prefreturncursor_first.SOURCE, prefreturncursor_first.LINE, prefowner*)
+  -- if ptask_consumed* = $ref_chain_consumed_tasks(prefreturncursor_tail*)
   -- if porigin_replay = $ref_owner_origin(prefowner_first)

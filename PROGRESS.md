@@ -862,11 +862,23 @@ and saved ping frames, then leaves all three histories in order. Initial success
 keeps the selected y alias. Two originals agree at `5a9fd5ba`; five reached
 fixtures pass 467 assertions (132+78+76+99+82), and independent partial90/7 passes
 separately. Private strict375 passes in 5.719s with zero applications. Earlier
-dispatch and fixture failures retain zero agreement credit. Caught-chain normal
-resumption, larger/mixed histories, lifecycle capture and broad returns_verify
-remain OPEN. [Ordered-chain review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+dispatch and fixture failures retain zero agreement credit. Other caught/mixed
+layouts, lifecycle capture and broad returns_verify remain OPEN. [Ordered-chain review](coverage/semantics/reference-return-multiple-active-cv-review.json).
 Actual375 over `324d3f88` passes strict at `d68bbf48` in 5.857s,
 with zero applications; private source/state/independent cuts retain their revisions.
+
+A source-authenticated singleton TypeError catch in the selected owner now
+resumes the ordinary Z/W/X chain through atomic root-free cleared NULL. First-Z
+source/line/recheck survive every internal leave; its fresh NULL TypeError stays
+distinct from the live Y error while W/X replay and saved ping scope restore.
+Rethrow carries the original Y error to the caller. Three originals agree at
+`cc93bbac`; six reached fixtures pass 640 assertions (138+84+136+93+83+106),
+with first three states and five compilations retained from the original wave.
+Independent CLEARED75/5 passes separately. The saved-callsite fixture correction
+keeps its original group4 failure at zero credit; immediate Y success is source3
+evidence only and helper partial leaves remain nonpublic. Private strict375
+passes in 5.888s with zero applications. Other caught/mixed layouts, lifecycle
+capture and broad returns_verify remain OPEN; actual-parent compilation is pending.
 
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
