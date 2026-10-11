@@ -3023,6 +3023,8 @@ genuine/derived, 56 controls) pass at e716e2f5/375. The same fresh argument stay
 owned by the error trace after old callback/capture/Fiber retirement; the actual
 caught-null write prunes that graph before final weak reads. Original Unsupported
 keeps zero credit; broader constructor forms and source 7 remain OPEN.
+Exact 0952d6f7/375 composition passes compiler and initialized SL489 at
+6de0971e (5.227s/78.994s); current source credit and private renewal remain 0.
 The [ledger](coverage/semantics/static-compound-string-review.json) retains
 the source/state cuts and failures without renewing older evidence.
 
