@@ -1,0 +1,16 @@
+[
+  {
+    "id": "third-cv-history-uncaught",
+    "source": "<?php\n$x=\"old\";$w=\"extra\";$z=\"mid\";$y=\"new\";$n=0;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$w,$z,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{return $w;}finally{echo \"W;\";ping();try{return $z;}finally{echo \"M;\";ping();try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";w=\",$w,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;W;P;M;P;I1;P;I2;P;R;x=old;w=extra;z=mid;n=2;yfixed=1;",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "id": "third-cv-history-selected-y",
+    "source": "<?php\n$x=\"old\";$w=\"extra\";$z=\"mid\";$y=\"new\";$n=1;\nfunction ping(){echo \"P;\";}\nfunction &f():string{global $x,$w,$z,$y,$n;try{return $x;}finally{echo \"O;\";ping();try{return $w;}finally{echo \"W;\";ping();try{return $z;}finally{echo \"M;\";ping();try{return $y;}finally{++$n;echo \"I\",$n,\";\";ping();if($n===1){$y=new stdClass;}else{$y=\"fixed\";}}}}}}\ntry{$r=&f();echo \"rnull=\",(int)($r===null),\";\";$r=\"changed\";}catch(TypeError $e){echo \"R;\";}\necho \"x=\",$x,\";w=\",$w,\";z=\",$z,\";n=\",$n,\";yfixed=\",(int)($y===\"fixed\"),\";\";\n",
+    "stdout": "O;P;W;P;M;P;I2;P;rnull=0;x=old;w=extra;z=mid;n=2;yfixed=0;",
+    "stderr": "",
+    "exit": 0
+  }
+]

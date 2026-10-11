@@ -587,5 +587,119 @@
       "tests/semantics/reference_outer_catch_two_statement_cases.json",
       "tests/semantics/reference_outer_catch_two_statement_state.py"
     ]
+  },
+  "ordered_cv_chain": {
+    "status": "accepted-bounded",
+    "scope": "Ordered source-linked CV cursors for more than two adjacent active finalizers in a named by-reference function with exact string signature, distinct ordinary CVs and no operational destructor. Evidence observes three histories Z/W/X; the two-history and literal/catch branches retain their earlier scope.",
+    "source": {
+      "revision": "5a9fd5ba9ea9c9af1ad2afee8aacce2e9881e452",
+      "raw": ".tools/returns-three-active-cv-23/.tools/returns-three-active-cv23/model-third-active-cv-candidate-1u33fo_9/report.json",
+      "report_sha256": "56a15c0f287963b227d29656e46a3bb3434f1425b5b1f659bcbbc9ab0908084c",
+      "agreements": 2
+    },
+    "state": {
+      "revision": "5a9fd5ba9ea9c9af1ad2afee8aacce2e9881e452",
+      "raw": ".tools/returns-three-active-cv-23/.tools/returns-three-active-cv23/three-active-cv-state-gt4cbhki/report.json",
+      "report_sha256": "b2c92c8ef14ee867fd93326987dab81f0ec11f628b8f5f1f1deda9297b002afd",
+      "producer_revision": "bfc27760c96ecc1c079db5ebdd08874ca06d0157",
+      "producer_sha256": "41b41a4f2f8bb9c2938ae880c8a1b74bbbb32a443d29cd5ca517afe95f893591",
+      "fixtures": 5,
+      "assertions": 467,
+      "assertions_by_fixture": [
+        132,
+        78,
+        76,
+        99,
+        82
+      ],
+      "public_refusals": 7
+    },
+    "independent_state": {
+      "revision": "5a9fd5ba9ea9c9af1ad2afee8aacce2e9881e452",
+      "raw": ".tools/returns-three-active-cv-23/.tools/returns-verify23-chain/third-cv-partial-s2-public-r6gbfmo_/report.json",
+      "report_sha256": "e0f6b55a5f81aa488cdde80d2cc97a2845625c02d68cc292048fec92d3ab8b84",
+      "fixtures": 1,
+      "assertions": 90,
+      "public_refusals": 7
+    },
+    "private_compiler": {
+      "revision": "5a9fd5ba9ea9c9af1ad2afee8aacce2e9881e452",
+      "raw": ".tools/returns-three-active-cv-23/.tools/returns-three-active-cv23/returns-three-active-cv-compiler-959r9lym/report.json",
+      "report_sha256": "aa3d8979f1d347f6d7f98c15fd5829a11cf9eda4b2fee7e3af7889cc90976716",
+      "modules": 375,
+      "elapsed_seconds": 5.718993663787842,
+      "application_evaluations": 0
+    },
+    "actual_parent_compiler": null,
+    "history_limit": "P1 captures Z with W/X live; P2 captures Z/W with X live. Actual next-finalizer scope authenticates public partial states independently of virtual traversal. Old roots retire 3 to 2 once per capture; the complete list is root-free. Y TypeError expansion, saved f scope/restoration, ordered Z/W/X throw retirement and late adjacent/full budget equality pass. Selected-Y success retires the list and preserves the caller alias/write.",
+    "native_observation": {
+      "revision": "0952d6f7146c0bde6b6b2dcec95568cc8cf8ccbb",
+      "raw": ".tools/returns-outer-catch-two-statement-current-22/.tools/returns-three-active-cv22/native-three-active-cv-4c4o1dpy/report.json",
+      "report_sha256": "6ba3b9abf4b8553cfacc63a26a953fb4700ba2e69781d26a8e2f7fbacc7532cb",
+      "sources": 2,
+      "model_evaluations": 0,
+      "source_agreements": 0
+    },
+    "baseline": {
+      "revision": "0952d6f7146c0bde6b6b2dcec95568cc8cf8ccbb",
+      "raw": ".tools/returns-outer-catch-two-statement-current-22/.tools/returns-verify21-next/model-third-active-cv-rig4js32/report.json",
+      "report_sha256": "4614c6d7986904496a2f7f9914f3e2ad3d8ac19c463ede58d3a429e72a1569ca",
+      "model_evaluations": 2,
+      "agreements": 1,
+      "primary_status": "unsupported",
+      "primary_stdout": "O;P;W;P;M;P;I1;P;",
+      "reason": "reference return replay requires runtime finalizer",
+      "selected_y_status": "normal"
+    },
+    "source_frontier": {
+      "revision": "0952d6f7146c0bde6b6b2dcec95568cc8cf8ccbb",
+      "raw": ".tools/returns-outer-catch-two-statement-current-22/.tools/returns-verify21-next/third-cv-first-y-binding-z5rxp4n8/report.json",
+      "report_sha256": "943d499b8b0106657db19bbb3ba22c3d788a5db1aa4798d91e2945e535713d00",
+      "assertions": 61,
+      "scope": "Actual checked 12-task first-Y queue with source returns, distinct live cells and Z/W/X phase/restore triples. Earlier pair-site refusals are helper-only."
+    },
+    "preserved_failures": [
+      {
+        "raw": ".tools/returns-three-active-cv-23/.tools/returns-three-active-cv23/returns-three-active-cv-compiler-6m2kj89_/report.json",
+        "report_sha256": "c139a1d47aebb0ca8af1a1b0b1cd7f4a97c337b0876267b5cfe651612528548c",
+        "scope": "c539 elaboration-only empty-iteration failure; application evaluations and source agreements0."
+      },
+      {
+        "raw": ".tools/returns-three-active-cv-23/.tools/returns-three-active-cv23/model-third-active-cv-candidate-tcdyaow2/report.json",
+        "report_sha256": "012be54def7481e9b2bb5c2687ec61a67405456ca39f1c33617cab9512dd04d8",
+        "scope": "bfc primary execute interpreter failure: one actual attempt, zero completed model results/agreements; selected-Y unrun."
+      },
+      {
+        "raw": ".tools/returns-three-active-cv-23/.tools/returns-verify23-chain/third-cv-replay-probe-12wq2bvk/report.json",
+        "report_sha256": "662e8ff6c9ad89060a1d73af7ed44eacde8a8877a72daefd19ea0dc933afcd57",
+        "scope": "bfc step6 failure after the valid step5 replay queue; steps7/8 unrun, no source agreement."
+      },
+      {
+        "raw": ".tools/returns-three-active-cv-23/.tools/returns-verify23-chain/third-cv-replay-guards-bgv4eisd/report.json",
+        "report_sha256": "c273d5c9bfb1e53f1ae217868c9e2da980fbdf7ccafb0acda621757758aa4d12",
+        "scope": "Untyped diagnostic variable elaboration failure, zero evaluated guard flags."
+      }
+    ],
+    "preserved_diagnostics": [
+      {
+        "raw": ".tools/returns-three-active-cv-23/.tools/returns-verify23-chain/third-cv-capture-probe-0ugs1sym/report.json",
+        "report_sha256": "e7b9d81cb87c0eb9d19103aebadc51c5a6a46e979806da2bf19c5f1244c1d0ff",
+        "scope": "bfc genuine capture/complete/recheck steps1 through5 produce queues; diagnostic only."
+      },
+      {
+        "raw": ".tools/returns-three-active-cv-23/.tools/returns-verify23-chain/third-cv-replay-guards-corrected-9ei4dzkg/report.json",
+        "report_sha256": "26a823cf866bb44fce8d9a6a24f00020a25e076236d1ecef4d198bbec9a2541c",
+        "scope": "All12 actual-step5 flags true. Replay rule re-expression follows existing executable bindings; no source/live guard was weakened."
+      }
+    ],
+    "remaining": [
+      "General finite counts beyond observed three, normal caught-chain continuation, nonadjacent/mixed histories and lifecycle-enabled capture.",
+      "Wider signatures, genuinely released/typed CVs and effectful or reentrant finalizer replacements.",
+      "Broad returns_verify remains OPEN; original two-history/literal/catch cuts and failures keep their identities."
+    ],
+    "recovery": [
+      "tests/semantics/reference_three_active_cv_cases.json",
+      "tests/semantics/reference_three_active_cv_state.py"
+    ]
   }
 }

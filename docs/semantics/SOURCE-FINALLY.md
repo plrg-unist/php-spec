@@ -163,6 +163,17 @@ and fresh caller cell. Three originals, six/514 reached checks and independent
 saved-ping70/4 pass at separate cuts in the same review; throwing, mutating and
 reentrant call bodies remain open.
 
+For more than two adjacent ordinary CV histories, an ordered cursor list
+authenticates each source return, phase3/restore triple and complete protected
+path. Capture requires distinct live CVs, the exact named-function string
+signature and inactive destruction. Each old operand loses its task root once;
+partial markers validate the actual next-finalizer origin before virtual task
+traversal. The observed Z/W/X chain survives Y-error replay and saved ping scope,
+then leaves Z, W and X in order; initial success returns the selected y alias.
+Two exact originals, five reached fixtures/467 assertions and independent
+partial90/7 pass at `5a9fd5ba` in the same review. Normal caught-chain resumption
+is explicit Unsupported; larger/mixed histories and lifecycle capture remain open.
+
 Module 186 converts a selected live unconstrained aliased return CV before protected
 finalizer entry. Stringable callbacks may rebind/unset GLOBALS without redirecting
 the captured cell; current/saved f-local bindings authenticate it. Success writes

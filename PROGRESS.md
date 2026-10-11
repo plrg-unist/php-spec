@@ -818,6 +818,18 @@ reentrant call bodies and broad returns_verify remain OPEN.
 Actual375 over `15951738` passes strict at `c1d95aaf` in 5.785s,
 with zero applications; private source/state/independent cuts retain their revisions.
 
+Adjacent ordinary CV histories now use an ordered non-owning cursor list when
+more than two finalizers are active. Checked source authenticates every return,
+phase3/restore triple, distinct CV and protected path; partial capture retires
+each old operand root once. The observed Z/W/X chain survives Y TypeError replay
+and saved ping frames, then leaves all three histories in order. Initial success
+keeps the selected y alias. Two originals agree at `5a9fd5ba`; five reached
+fixtures pass 467 assertions (132+78+76+99+82), and independent partial90/7 passes
+separately. Private strict375 passes in 5.719s with zero applications. Earlier
+dispatch and fixture failures retain zero agreement credit. Caught-chain normal
+resumption, larger/mixed histories, lifecycle capture and broad returns_verify
+remain OPEN. [Ordered-chain review](coverage/semantics/reference-return-multiple-active-cv-review.json).
+
 Weak by-reference Stringable returns now preserve the selected live, unconstrained
 aliased CV cell through callbacks. Current/saved f-local bindings authenticate that
 cell while GLOBALS may rebind or disappear; conversion writes the old cell atomically.
