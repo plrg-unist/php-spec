@@ -422,5 +422,23 @@
     "stderr": "",
     "status": "normal",
     "exit": 0
+  },
+  {
+    "id": "collector-main-second-pass-destructor-posttrace-child-finalizer-throw-54",
+    "source": "<?php\nclass Child {\n public function __destruct() { echo \"C|\"; throw new Exception(\"child\"); }\n}\nclass Later {\n    public $next;\n    public $child;\n    public function __destruct() {\n        global $childWeak;\n        echo \"L|\";\n        $this->next = null;\n        $this->child = new Child();\n        $childWeak = WeakReference::create($this->child);\n    }\n}\nclass First {\n    public $next;\n    public function __destruct() {\n        global $laterWeak;\n        echo \"F|\";\n        $later = new Later();\n        $later->next = $later;\n        $laterWeak = WeakReference::create($later);\n    }\n}\n$o = new First();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"first-null|\" : \"first-live|\";\necho $childWeak->get() === null ? \"child-null|\" : \"child-live|\";\ntry {\n    echo $laterWeak->get() === null ? \"later-null|\" : \"later-live|\";\n} catch (Exception $e) {\n    echo \"caught|\";\n}\necho $childWeak->get() === null ? \"after-child-null|\" : \"after-child-live|\";\necho $laterWeak->get() === null ? \"after-later-null|\" : \"after-later-live|\";\necho gc_collect_cycles(), \"|\";\necho $childWeak->get() === null ? \"child-null|\" : \"child-live|\";\necho $laterWeak->get() === null ? \"later-null|END\" : \"later-live|END\";\n",
+    "source_sha256": "de209906989131d8a406c9c2a18ab7296a3d257b8186b53e5c69fcb35741cff7",
+    "stdout": "F|L|1|first-null|child-live|C|caught|after-child-null|after-later-null|0|child-null|later-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
+  },
+  {
+    "id": "collector-main-second-pass-destructor-posttrace-child-private-finalizer-54",
+    "source": "<?php\nclass Child {\n private function __destruct() { echo \"C|\"; throw new Exception(\"child\"); }\n}\nclass Later {\n    public $next;\n    public $child;\n    public function __destruct() {\n        global $childWeak;\n        echo \"L|\";\n        $this->next = null;\n        $this->child = new Child();\n        $childWeak = WeakReference::create($this->child);\n    }\n}\nclass First {\n    public $next;\n    public function __destruct() {\n        global $laterWeak;\n        echo \"F|\";\n        $later = new Later();\n        $later->next = $later;\n        $laterWeak = WeakReference::create($later);\n    }\n}\n$o = new First();\n$o->next = $o;\n$weak = WeakReference::create($o);\nunset($o);\necho gc_collect_cycles(), \"|\";\necho $weak->get() === null ? \"first-null|\" : \"first-live|\";\necho $childWeak->get() === null ? \"child-null|\" : \"child-live|\";\ntry {\n    echo $laterWeak->get() === null ? \"later-null|\" : \"later-live|\";\n} catch (Error $e) {\n    echo \"caught|\";\n}\necho $childWeak->get() === null ? \"after-child-null|\" : \"after-child-live|\";\necho $laterWeak->get() === null ? \"after-later-null|\" : \"after-later-live|\";\necho gc_collect_cycles(), \"|\";\necho $childWeak->get() === null ? \"child-null|\" : \"child-live|\";\necho $laterWeak->get() === null ? \"later-null|END\" : \"later-live|END\";\n",
+    "source_sha256": "c2e8ab16981a3d6e215d71b401e57fe0bc0e6e02c28d8fc7f4226f1daf653aa8",
+    "stdout": "F|L|1|first-null|child-live|caught|after-child-null|after-later-null|0|child-null|later-null|END",
+    "stderr": "",
+    "status": "normal",
+    "exit": 0
   }
 ]
