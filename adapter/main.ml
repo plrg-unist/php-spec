@@ -253,7 +253,20 @@ let pending_from_state state =
       let n = int_of_string (string value) in
       if n < 0 || n > 255 then fail "invalid pending source byte" else n)
       |> base64_octets |> fun value -> `String value in
-    if field "DIRCONTEXT" json <> `Null then
+    if field "SHELLCONTEXT" json <> `Null then
+      let context = field "SHELLCONTEXT" json in
+      let encode_octets value = list value |> List.map (fun value -> int_of_string (string value))
+        |> base64_octets |> fun value -> `String value in
+      let command = field "COMMAND" context in
+      let command_bytes = match List.rev (list (field "args" command)) with
+        | value :: _ -> encode_octets value | [] -> fail "missing shell command bytes" in
+      let env = list (field "ENV" context) |> List.map (fun pair ->
+        `List (List.map encode_octets (list pair))) in
+      Some (`Assoc ["id", field "NONCE" context; "mode", `String "shell";
+                    "site", field "SITE" context;
+                    "cwd", encode_field "CWD" context;
+                    "env", `List env; "command", command_bytes])
+    else if field "DIRCONTEXT" json <> `Null then
       let context = field "DIRCONTEXT" json in
       Some (`Assoc ["id", field "NONCE" context; "mode", `String "chdir";
                     "site", field "SITE" (field "CALL" context);
@@ -346,8 +359,10 @@ let absolute_nul_free_bytes json =
 let file_snapshot json =
   let version = J.to_int (field "version" json) in
   if version <> 1 && version <> 2 then fail "file snapshot version mismatch";
+  let shell_fields = if List.mem_assoc "shell_entries" (assoc json) then ["shell_entries"] else [] in
+  if shell_fields <> [] && version <> 2 then fail "shell facts require snapshot version 2";
   exact (["version"; "main"; "cwd"; "include_path"; "entries"] @
-         if version = 2 then ["chdir_entries"] else []) json;
+         (if version = 2 then ["chdir_entries"] else []) @ shell_fields) json;
   ignore (nonempty_bytes (field "main" json));
   ignore (nonempty_bytes (field "cwd" json));
   ignore (nonempty_bytes (field "include_path" json));
@@ -398,6 +413,20 @@ let file_snapshot json =
       else (ignore (nonempty_bytes (field "stream_error" entry));
             if J.to_int (field "errno" entry) <= 0 then fail "invalid chdir errno"))
       (list (field "chdir_entries" json)));
+  if shell_fields <> [] then (
+    List.iteri (fun index entry ->
+      let opened = J.to_bool (field "opened" entry) in
+      exact (["id"; "cwd"; "env"; "command"; "opened"] @
+             if opened then ["stdout"; "stderr"] else []) entry;
+      if source_id (field "id" entry) <> string_of_int index then fail "shell fact id must be its sequence index";
+      absolute_nul_free_bytes (field "cwd" entry);
+      ignore (nonempty_bytes (field "command" entry));
+      List.iter (function
+        | `List [name; value] -> ignore (source_bytes name); ignore (source_bytes value)
+        | _ -> fail "shell environment entry must be a pair") (list (field "env" entry));
+      if opened then (ignore (source_bytes (field "stdout" entry));
+                      ignore (source_bytes (field "stderr" entry))))
+      (list (field "shell_entries" json)));
   json
 let check_file_resolve request =
   exact ["op"; "snapshot"; "pending"; "response"] request;
@@ -705,6 +734,49 @@ let resume_file_resolve request =
   | Run.Fail (at,msg) ->
       `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
               "message", `String (Util.Error.string_of_error at msg)]
+let resume_shell request =
+  exact ["op"; "response"] request;
+  let state, pending = match !active_eval with
+    | Some active -> active | None -> fail "no pending shell request" in
+  if string (field "mode" pending) <> "shell" then fail "not waiting for shell";
+  let snapshot = match !active_snapshot with
+    | Some facts -> facts | None -> fail "shell has no finite snapshot" in
+  let response = field "response" request in
+  let site = field "site" response in
+  let entry = `Assoc (List.remove_assoc "site" (assoc response)) in
+  if site <> field "site" pending then fail "shell response site mismatch";
+  let entries = match List.assoc_opt "shell_entries" (assoc snapshot) with
+    | Some entries -> list entries | None -> fail "shell has no finite facts" in
+  let expected = List.find_opt (fun entry -> field "id" entry = field "id" pending) entries in
+  if expected <> Some entry then fail "shell response differs from finite snapshot";
+  List.iter (fun key -> if field key entry <> field key pending then
+    fail ("shell response " ^ key ^ " mismatch")) ["id"; "cwd"; "env"; "command"];
+  let (module Runner : Run.RUNNER) = Lazy.force semantic_runner in
+  let decode_bytes json =
+    match Runner.Interp.eval_func "base64" [] [bytes_value json] with
+    | Run.Pass value -> check (typ "preqbytes") value; value
+    | Run.Fail (at,msg) -> fail (Util.Error.string_of_error at msg) in
+  let pair_type = T.tuple [typ "preqbytes"; typ "preqbytes"] in
+  let env = list (field "env" entry) |> List.map (function
+    | `List [name; value] -> V.Make.tuple pair_type [decode_bytes name; decode_bytes value]
+    | _ -> fail "shell environment entry must be a pair") in
+  let fields = [V.Make.nat (Bigint.of_string (source_id (field "id" entry)));
+    decode_bytes (field "cwd" entry); V.Make.list (T.list pair_type) env;
+    decode_bytes (field "command" entry)] in
+  let value = if J.to_bool (field "opened" entry) then
+      mk "pshellresponse" "SHELL_OPENED"
+        (fields @ [decode_bytes (field "stdout" entry); decode_bytes (field "stderr" entry)])
+    else mk "pshellresponse" "SHELL_OPEN_FAILED" fields in
+  check (typ "pshellresponse") value;
+  match Runner.Interp.eval_func "shell_continue" [] [state; value] with
+  | Run.Pass next -> check (typ "pstate") next;
+      let following = pending_from_state next in
+      active_eval := Option.map (fun request -> (next, request)) following;
+      `Assoc (state_fields (module Runner) next @
+              match following with Some request -> ["pending", request] | None -> [])
+  | Run.Fail (at,msg) ->
+      `Assoc ["ok", `Bool false; "category", `String "interpreter_failure";
+              "message", `String (Util.Error.string_of_error at msg)]
 let resume_chdir request =
   exact ["op"; "response"] request;
   let state, pending = match !active_eval with
@@ -830,6 +902,7 @@ let () =
       else if op = "check_file_source_service" then check_file_source_service request
       else if op = "resume_file_resolve" then resume_file_resolve request
       else if op = "resume_chdir" then resume_chdir request
+      else if op = "resume_shell" then resume_shell request
       else if op = "resume_file_parse" then resume_file_parse request
       else if op = "resume_eval" then resume_eval request
       else (

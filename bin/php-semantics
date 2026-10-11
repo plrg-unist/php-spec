@@ -384,7 +384,7 @@ def main():
     parser.add_argument('--steps', type=int, default=100000)
     parser.add_argument('--timeout', type=float, default=30)
     parser.add_argument('--request-context', type=Path, help='JSON file containing explicit primitive request facts')
-    parser.add_argument('--file-snapshot', type=Path, help='finite include/require resolution and file-byte facts')
+    parser.add_argument('--file-snapshot', type=Path, help='finite file, directory and shell service facts')
     parser.add_argument('--startup-ini', type=Path, help='JSON registered startup zend.assertions/precision, display_errors (base64 or null), or error_reporting/include_path with optional display_errors/precision/zend.assertions')
     args = parser.parse_args()
     if args.steps < 0 or args.timeout <= 0:
@@ -418,6 +418,20 @@ def main():
         while result.get('ok') and 'pending' in result:
             pending = result['pending']
             mode = pending['mode']
+            if mode == 'shell':
+                entries = file_snapshot.get('shell_entries', []) if file_snapshot is not None else []
+                index = int(pending['id'])
+                if index >= len(entries) or any(entries[index][key] != pending[key]
+                                              for key in ('id', 'cwd', 'env', 'command')):
+                    reason = ('shell execution requires a finite snapshot' if file_snapshot is None
+                              else 'shell request absent or different in finite snapshot')
+                    state = {**result['state'], 'COMPLETION': {'tag': 'UNSUPPORTED', 'args': [reason]}}
+                    outcome = observe(state, filename, result['display_mode'])
+                    outcome.update(frontend='accepted', checked='program')
+                    return outcome
+                result = adapter.request({'op': 'resume_shell',
+                                          'response': {'site': pending['site'], **entries[index]}}, args.timeout)
+                continue
             if mode == 'chdir':
                 if file_snapshot is None or file_snapshot['version'] != 2:
                     return {'status': 'unsupported', 'reason': 'chdir requires a finite version 2 snapshot'}

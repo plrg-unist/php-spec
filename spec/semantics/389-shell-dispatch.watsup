@@ -1,0 +1,172 @@
+;; Backticks compile to the root shell_exec builtin. PHP owns interpolation,
+;; validation and results; a finite service supplies only pipe/output facts.
+def $pptemporary(NExprShellExec phpType29 metadata) = true
+def $stringify_local_consumer(NExprShellExec phpType29 metadata) = true
+def $ppdispatch(P, pcpath, NExprShellExec (SEQUENCE phpType30*) metadata, PPR) = $ppinterpolation(P_notice, pcpath ++ [PCFIELD 0], 0, phpType30*)
+  -- if P_notice = P[.DIAGNOSTICS = P.DIAGNOSTICS ++ [PLDIAGNOSTIC "deprecated" "shell-backtick" eps P.LOCATION]]
+def $plmessage(PLDIAGNOSTIC "deprecated" "shell-backtick" eps pllocation) = $ptascii("The backtick (`) operator is deprecated, use shell_exec() instead")
+
+def $interpolation_parts(S, porigin) = (phpType30*)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprShellExec (SEQUENCE phpType30*) metadata)
+def $interpolation_line(S, porigin, 2, n) = $runtime_line(S[.ORIGIN = (porigin)], eps, NExprShellExec (SEQUENCE phpType30*) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprShellExec (SEQUENCE phpType30*) metadata)
+
+dec $shell_site_valid(pstate, porigin, int) : bool
+def $shell_site_valid(S, porigin, z) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprShellExec phpType29 metadata)
+  -- if z = $runtime_line(S[.ORIGIN = (porigin)], eps, NExprShellExec phpType29 metadata)
+  -- if $method_source_task(S[.ORIGIN = (porigin)], NExprShellExec phpType29 metadata)
+def $shell_site_valid(S, porigin, z) = false -- otherwise
+def $call_task_valid(S, SHELL_INVOKE porigin z) = (S.ORIGIN = (porigin) /\ $shell_site_valid(S, porigin, z))
+
+rule PhpStep/shell-command-start: S ~> S[.TODO = [$interpolation_start(porigin, $interpolation_groups(phpType30*, false)), INTERPOLATE_FINISH porigin, SHELL_INVOKE porigin z] ++ ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (EVAL (NExprShellExec (SEQUENCE phpType30*) metadata)) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if z = $runtime_line(S, eps, NExprShellExec (SEQUENCE phpType30*) metadata)
+  -- if $shell_site_valid(S, porigin, z)
+
+;; Reuse the builtin trace/Throwable machinery, after the command is converted.
+def $intrinsic_name(INTRINSIC_SHELL_EXEC) = $ptascii("shell_exec")
+dec $shell_trace_call(porigin, int, pvalue) : pconfigcall
+def $shell_trace_call(porigin, z, pvalue) = {SITE porigin, KIND INTRINSIC_SHELL_EXEC, INDEX 1, SENT ([NAMED_SENT (KNOWN pvalue)]), NAMED false, OWNER eps, SELECTION eps, LINE z, PACKS eps}
+rule PhpStep/shell-command-nul: S ~> $config_error(S, $shell_trace_call(porigin, z, pvalue), "ValueError", $ptascii("shell_exec(): Argument #1 ($command) must not contain any null bytes"))
+  -- if S.TODO = (SHELL_INVOKE porigin z) :: ptask_tail*
+  -- if $call_task_valid(S, SHELL_INVOKE porigin z)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = (n_command*)
+  -- if 0 <- n_command*
+rule PhpStep/shell-command-empty: S ~> $config_error(S, $shell_trace_call(porigin, z, pvalue), "ValueError", $ptascii("shell_exec(): Argument #1 ($command) must not be empty"))
+  -- if S.TODO = (SHELL_INVOKE porigin z) :: ptask_tail*
+  -- if $call_task_valid(S, SHELL_INVOKE porigin z)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = (eps)
+
+dec $shell_marker_count(ptask*) : nat
+dec $shell_is_await(ptask) : bool
+def $shell_is_await(SHELL_AWAIT pshellcontext) = true
+def $shell_is_await(ptask) = false -- otherwise
+def $shell_marker_count(eps) = 0
+def $shell_marker_count((SHELL_AWAIT pshellcontext) :: ptask_tail*) = $(1 + $shell_marker_count(ptask_tail*))
+def $shell_marker_count(ptask :: ptask_tail*) = $shell_marker_count(ptask_tail*) -- if ~$shell_is_await(ptask)
+dec $shell_frame_marker_count(pframe*) : nat
+def $shell_frame_marker_count(eps) = 0
+def $shell_frame_marker_count(pframe :: pframe_tail*) = $($shell_marker_count(pframe.TODO) + $shell_frame_marker_count(pframe_tail*))
+dec $shell_context_valid(pstate, pshellcontext) : bool
+def $shell_context_valid(S, pshellcontext) = true
+  -- if $shell_site_valid(S, pshellcontext.SITE, pshellcontext.LINE)
+  -- if $dir_canonical(pshellcontext.CWD)
+  -- if $request_env_valid(pshellcontext.ENV)
+  -- if $string_bytes(pshellcontext.COMMAND) = (n_command*)
+  -- if n_command* =/= eps /\ ~(0 <- n_command*)
+def $shell_context_valid(S, pshellcontext) = false -- otherwise
+dec $shell_pending_state_valid(pstate) : bool
+def $shell_pending_state_valid(S) = true
+  -- if S.COMPLETION = SOURCE_PENDING
+  -- if S.SHELLCONTEXT = (pshellcontext)
+  -- if S.SHELLSEQ = $(pshellcontext.NONCE + 1)
+  -- if S.ORIGIN = (pshellcontext.SITE)
+  -- if pshellcontext.FRAMEOWNER = |S.FRAMES|
+  -- if S.FILECWD = (pshellcontext.CWD)
+  -- if S.REQUEST = (Q)
+  -- if Q.ENV = pshellcontext.ENV
+  -- if $shell_context_valid(S, pshellcontext)
+  -- if S.TODO = (SHELL_AWAIT pshellcontext) :: pshellcontext.TAIL
+  -- if $($shell_marker_count(S.TODO) + $shell_frame_marker_count(S.FRAMES)) = 1
+  -- if S.RESULT = KNOWN PNULL /\ S.BASE = BASE_VALUE (KNOWN PNULL)
+def $shell_pending_state_valid(S) = false -- otherwise
+def $eval_pending_state_valid(S) = $shell_pending_state_valid(S)
+  -- if S.COMPLETION = SOURCE_PENDING
+  -- if S.SHELLCONTEXT =/= eps
+def $eval_wrapped_marker(SHELL_AWAIT pshellcontext) = true
+def $eval_marker_valid(S, SHELL_AWAIT pshellcontext) = ($shell_pending_state_valid(S) /\ S.SHELLCONTEXT = (pshellcontext))
+def $shell_state_valid(S) = ($($shell_marker_count(S.TODO) + $shell_frame_marker_count(S.FRAMES)) = 0) -- if S.SHELLCONTEXT = eps
+def $shell_state_valid(S) = $shell_pending_state_valid(S) -- if S.SHELLCONTEXT = (pshellcontext)
+def $call_task_valid(S, SHELL_AWAIT pshellcontext) = ($shell_pending_state_valid(S) /\ S.SHELLCONTEXT = (pshellcontext))
+
+rule PhpStep/shell-command-request: S ~> S[.SHELLSEQ = $(S.SHELLSEQ + 1)][.SHELLCONTEXT = (pshellcontext)][.TODO = (SHELL_AWAIT pshellcontext) :: ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.COMPLETION = SOURCE_PENDING]
+  -- if S.TODO = (SHELL_INVOKE porigin z) :: ptask_tail*
+  -- if $call_task_valid(S, SHELL_INVOKE porigin z)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = (n_command*)
+  -- if n_command* =/= eps /\ ~(0 <- n_command*)
+  -- if S.SHELLCONTEXT = eps
+  -- if S.FILECWD = (n_cwd*)
+  -- if S.REQUEST = (Q)
+  -- if n_owner = |S.FRAMES|
+  -- if pshellcontext = {NONCE S.SHELLSEQ, SITE porigin, LINE z, CWD n_cwd*, ENV Q.ENV, COMMAND pvalue, FRAMEOWNER n_owner, TAIL ptask_tail*}
+  -- if $shell_context_valid(S, pshellcontext)
+rule PhpStep/shell-command-no-environment: S ~> S[.COMPLETION = UNSUPPORTED "shell execution requires explicit cwd and process environment"]
+  -- if S.TODO = (SHELL_INVOKE porigin z) :: ptask_tail*
+  -- if $call_task_valid(S, SHELL_INVOKE porigin z)
+  -- if S.RESULT = KNOWN pvalue
+  -- if $string_bytes(pvalue) = (n_command*)
+  -- if n_command* =/= eps /\ ~(0 <- n_command*)
+  -- if S.FILECWD = eps \/ S.REQUEST = eps
+
+dec $shell_response_identity(pstate, nat, preqbytes, (preqbytes, preqbytes)*, preqbytes) : bool
+def $shell_response_identity(S, n_nonce, n_cwd*, (preqbytes, preqbytes_value)*, n_command*) = ($shell_pending_state_valid(S) /\ $call_descriptors_valid(S) /\ S.SERVICELEFT =/= eps /\ n_nonce = pshellcontext.NONCE /\ n_cwd* = pshellcontext.CWD /\ (preqbytes, preqbytes_value)* = pshellcontext.ENV /\ $string_bytes(pshellcontext.COMMAND) = (n_command*))
+  -- if S.SHELLCONTEXT = (pshellcontext)
+def $shell_response_identity(S, n_nonce, n_cwd*, (preqbytes, preqbytes_value)*, n_command*) = false -- otherwise
+dec $shell_response_valid(pstate, pshellresponse) : bool
+def $shell_response_valid(S, SHELL_OPENED n_nonce n_cwd* (preqbytes, preqbytes_value)* n_command* n_stdout* n_stderr*) = ($shell_response_identity(S, n_nonce, n_cwd*, (preqbytes, preqbytes_value)*, n_command*) /\ $startup_bytes(n_stdout*) /\ $startup_bytes(n_stderr*))
+def $shell_response_valid(S, SHELL_OPEN_FAILED n_nonce n_cwd* (preqbytes, preqbytes_value)* n_command*) = $shell_response_identity(S, n_nonce, n_cwd*, (preqbytes, preqbytes_value)*, n_command*)
+
+dec $shell_warning_message(pshellcontext) : preqbytes
+def $shell_warning_message(pshellcontext) = $ptascii("shell_exec(): Unable to execute '") ++ n_command* ++ [39]
+  -- if $string_bytes(pshellcontext.COMMAND) = (n_command*)
+dec $shell_warning_task(ptask, pshellcontext) : bool
+def $shell_warning_task(SHELL_WARNING_RESULT pshellcontext, pshellcontext) = true
+def $shell_warning_task(ERROR_HANDLER_INVOKE perrorcall, pshellcontext) = (perrorcall.RESUME = SHELL_WARNING_RESULT pshellcontext)
+def $shell_warning_task(ERROR_HANDLER_RESULT perrorcall, pshellcontext) = (perrorcall.RESUME = SHELL_WARNING_RESULT pshellcontext)
+def $shell_warning_task(ptask, pshellcontext) = false -- otherwise
+dec $shell_warning_valid(pstate, pshellcontext) : bool
+def $shell_warning_valid(S, pshellcontext) = true
+  -- if S.TODO = ptask :: pshellcontext.TAIL
+  -- if $shell_warning_task(ptask, pshellcontext)
+  -- if $shell_context_valid(S, pshellcontext)
+  -- if S.ORIGIN = (pshellcontext.SITE)
+  -- if pshellcontext.FRAMEOWNER = $dir_warning_owner(S, S.FRAMES)
+  -- if $(pshellcontext.NONCE < S.SHELLSEQ)
+def $shell_warning_valid(S, pshellcontext) = false -- otherwise
+def $call_task_valid(S, SHELL_WARNING_RESULT pshellcontext) = $shell_warning_valid(S, pshellcontext)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = SHELL_WARNING_RESULT pshellcontext
+  -- if $shell_warning_valid(S, pshellcontext)
+  -- if perrorcall.SITE = pshellcontext.SITE /\ perrorcall.LINE = pshellcontext.LINE
+  -- if perrorcall.LEVEL = 2 /\ perrorcall.MESSAGE = $shell_warning_message(pshellcontext)
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE perrorcall.LINE
+def $error_context_trigger(S, pcallcontext) = ($shell_trace_call(pshellcontext.SITE, pshellcontext.LINE, pshellcontext.COMMAND))
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = SHELL_WARNING_RESULT pshellcontext
+def $error_handler_trace_values(S, pcallcontext, pconfigcall) = [pshellcontext.COMMAND]
+  -- if $error_context_call(S, pcallcontext) = (perrorcall)
+  -- if perrorcall.RESUME = SHELL_WARNING_RESULT pshellcontext
+  -- if pconfigcall = $shell_trace_call(pshellcontext.SITE, pshellcontext.LINE, pshellcontext.COMMAND)
+rule PhpStep/shell-warning-result: S ~> S[.TODO = pshellcontext.TAIL][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (SHELL_WARNING_RESULT pshellcontext) :: ptask_tail*
+  -- if $shell_warning_valid(S, pshellcontext)
+
+dec $shell_output(pstate, preqbytes, preqbytes) : pstate
+def $shell_output(S, eps, n_stderr*) = S[.RESULT = KNOWN PNULL][.EVENTS = S.EVENTS ++ [STDERR n_stderr*]]
+def $shell_output(S, n_stdout*, n_stderr*) = $string_request(S[.EVENTS = S.EVENTS ++ [STDERR n_stderr*]], n_stdout*) -- if n_stdout* =/= eps
+dec $shell_resume(pstate, pshellresponse) : pstate
+dec $shell_resume_checked(pstate, pshellresponse, bool) : pstate
+def $shell_resume(S, pshellresponse) = $shell_resume_checked(S, pshellresponse, $shell_response_valid(S, pshellresponse))
+def $shell_resume_checked(S, SHELL_OPENED n_nonce n_cwd* (preqbytes, preqbytes_value)* n_command* n_stdout* n_stderr*, true) = $shell_output(S[.SHELLCONTEXT = eps][.TODO = pshellcontext.TAIL][.COMPLETION = NORMAL][.SERVICELEFT = eps], n_stdout*, n_stderr*)
+  -- if S.SHELLCONTEXT = (pshellcontext)
+def $shell_resume_checked(S, SHELL_OPEN_FAILED n_nonce n_cwd* (preqbytes, preqbytes_value)* n_command*, true) = $diagnostic(S_ready[.TODO = pshellcontext.TAIL], "Warning", $shell_warning_message(pshellcontext), pshellcontext.LINE)[.RESULT = KNOWN (PBOOL false)]
+  -- if S.SHELLCONTEXT = (pshellcontext)
+  -- if ~$error_handler_eligible(S, 2)
+  -- if S_ready = S[.SHELLCONTEXT = eps][.COMPLETION = NORMAL][.SERVICELEFT = eps]
+def $shell_resume_checked(S, SHELL_OPEN_FAILED n_nonce n_cwd* (preqbytes, preqbytes_value)* n_command*, true) = $error_dispatch(S_ready, 2, $shell_warning_message(pshellcontext), pshellcontext.LINE, DIAGNOSTIC "Warning" $shell_warning_message(pshellcontext) pshellcontext.LINE, SHELL_WARNING_RESULT pshellcontext)
+  -- if S.SHELLCONTEXT = (pshellcontext)
+  -- if $error_handler_eligible(S, 2)
+  -- if S_ready = S[.SHELLCONTEXT = eps][.COMPLETION = NORMAL][.SERVICELEFT = eps]
+def $shell_resume_checked(S, pshellresponse, false) = S[.COMPLETION = UNSUPPORTED "invalid shell provider response"]
+dec $shell_continue(pstate, pshellresponse) : pstate
+dec $shell_continue_result(pstate, pstate) : pstate
+def $shell_continue(S, pshellresponse) = $shell_continue_result(S, $shell_resume(S, pshellresponse))
+def $shell_continue_result(S, S_next) = $drive_steps(S_next, n)
+  -- if S.SERVICELEFT = (n)
+  -- if S_next.COMPLETION = NORMAL
+def $shell_continue_result(S, S_next) = S_next -- if S_next.COMPLETION =/= NORMAL
