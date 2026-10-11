@@ -144,6 +144,15 @@ descendant. Ordinary writes change that slot, while receiver cleanup releases it
 backing reference independently of a retained returned object. Two originals and
 four separate state cuts are recorded in the
 [virtual-parent review](../../coverage/semantics/virtual-parent-backed-get-hook-review.json).
+A closed virtual get-only parent also permits builtin and linked nominal
+covariance for a genuinely body-backed child when both TYPEs are present.
+Prelink compatibility checks the child's own source descriptor; linked admission
+also checks its actual parent layout. The child keeps its own narrowed slot/default,
+backing-read bypass and private scope. Rejected stores preserve that slot and
+report the declaring child type; incompatible getters fail at the hook line.
+Separate stored and returned objects retain independent cleanup. Three originals
+and five selected state cuts are recorded in the
+[backed-child covariance review](../../coverage/semantics/virtual-parent-backed-get-hook-covariance-review.json).
 The hook linker still refuses ordinary-parent hooks and plain redeclarations.
 Backed-parent inheritance retains invariant types;
 TYPE-presence changes for body-unbacked declarations with inherited storage,

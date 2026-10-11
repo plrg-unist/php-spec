@@ -1541,7 +1541,7 @@ property types when both declarations have a type: builtin narrowing and linked
 nominal subtypes preserve child scope, empty storage and retained return values.
 Incompatible getter signatures fail at the actual hook declaration before
 property-type checks;
-backed properties remain invariant. Three originals and separate CV, inherited
+backed-parent inheritance remains invariant. Three originals and separate CV, inherited
 `$this`, lifetime and rejection checks are recorded in the
 [covariance review](coverage/semantics/virtual-get-hook-covariance-review.json).
 For these virtual getters, removing the inherited property type fails at the
@@ -1563,6 +1563,12 @@ releases the backing reference independently of a retained return value.
 Two originals and separate CV, inherited `$this`, write and lifetime checks are
 recorded in the
 [virtual-parent review](coverage/semantics/virtual-parent-backed-get-hook-review.json).
+With both types present, these backed children also accept builtin and linked
+nominal covariant narrowing. Writes enforce the child type; rejected values
+preserve its slot. Incompatible getters fail at the child hook declaration.
+Three originals and separate CV, inherited `$this`, write, lifetime and rejection
+checks are recorded in the
+[backed-child covariance review](coverage/semantics/virtual-parent-backed-get-hook-covariance-review.json).
 Hooked iteration, defaulted virtual/set/reference, other inherited/trait and wider
 receiver, quiet or indirect-access families and `__unset` consumers remain required.
 [Source interfaces](docs/semantics/SOURCE-INTERFACES.md) link ordered `extends`
