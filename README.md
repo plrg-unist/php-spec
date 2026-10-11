@@ -1699,6 +1699,8 @@ pass 570 setup-inclusive premises at `a7ca4b349`, preserving inner getter output
 saved outer concat continuations, delayed CV reads and pending-error cleanup.
 The separate temporary Stringable direct-echo control still destroys its receiver
 before output; its unchanged model-only observation has zero agreement credit.
+The actual375 join over `f8ad4d4a4` passes strict at `3876bc706` (5.671s);
+private source/state/control cuts retain their original inputs.
 PARAMETERBACKINGS and wider conversions remain required.
 Wider coercions, other constrained returned cells, wider getter signatures, quiet/write
 access, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, guarded

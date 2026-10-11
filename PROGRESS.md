@@ -2666,6 +2666,8 @@ BASE counterexample is now supported. The temporary Stringable control retains i
 preexisting early-destruction mismatch with whole-source agreement0, including its
 matching concat suffix. The fixture preparation failure stays0; earlier cuts are
 not renewed. [Concat-consumer ledger](coverage/semantics/concat-emit-review.json).
+The actual375 join over `f8ad4d4a4` passes strict at `3876bc706` (5.671s,
+state/source/native credit0); private source5/state570 and control0 are not renewed.
 Wider coercions, other constrained returned cells, wider signatures, quiet/write/recursive
 getters, lexically accessible nonpublic UNSET, changed Closure scopes for nonpublic access, computed
 names, hooks, consumed storage and wider reference-call receivers remain required;
