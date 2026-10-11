@@ -231,6 +231,8 @@ with 436 physical premises pass at `12a75251c` (two eligibility-only queries); t
 original `9519` fixture syntax failure retains zero credit. Arrays, REFERENCE
 objects, object warnings after earlier sent arguments and request/plain reference
 strings remain required. Earlier cuts keep their original inputs.
+Actual375 over `5f467baee` passes strict SL at `45cfc118d`; private native/source
+and independent state cuts retain their original inputs.
 [Object hold review](coverage/semantics/iterator-call-unpack-object-review.json).
 
 Foreach Aggregate getters now permit terminal Iterator/Generator or rejected
